@@ -59,7 +59,7 @@ Then define your custom buttons
 
 Now a dialog can look like this
 
-[SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/sampleDialogScreenshot.png)
+[![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/sampleDialogScreenshot.png)]
 
 #### Planned Features
 Notice this is just a first preview version. 
