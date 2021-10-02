@@ -57,6 +57,10 @@ Then define your custom buttons
        var dialog = await _dialogService.ShowEx<YourMudDialog>("your dialog title", parameters, options);
 ```
 
+Now a dialog can look like this
+
+[![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/sampleDialogScreenshot.png)]
+
 #### Planned Features
 Notice this is an early first version of an idea to load and unload javascript dependencies for pages and components.
 Generel it is planned to enable easy bundling and minification
