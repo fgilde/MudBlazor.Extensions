@@ -59,8 +59,12 @@ Then define your custom buttons
 
 Now a dialog can look like this
 
-[![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/sampleDialogScreenshot.png)]
+[SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/sampleDialogScreenshot.png)
 
 #### Planned Features
-Notice this is an early first version of an idea to load and unload javascript dependencies for pages and components.
-Generel it is planned to enable easy bundling and minification
+Notice this is just a first preview version. 
+There are some features planned like
+ - Dragging with snap behaviour
+ - Charm in and out behavior for left, right, top and bottom
+ - Automatic generation for a dialog to edit given model
+ 
