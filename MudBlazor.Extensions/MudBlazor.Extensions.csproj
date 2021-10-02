@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <VersionPrefix>1.0</VersionPrefix>
+    <VersionSuffix>preview.$([System.DateTime]::Now.ToString(`yyMMddHHmmss`))</VersionSuffix>
+    <LangVersion>9</LangVersion>
+    <Authors>Florian Gilde</Authors>
+    <Description>MudBlazor.Extensions is a small extension for MudBlazor from https://mudblazor.com/</Description>
+    <PackageProjectUrl>https://github.com/fgilde/MudBlazor.Extensions</PackageProjectUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/fgilde/MudBlazor.Extensions</RepositoryUrl>
+    <PackageIcon>MudExtension.png</PackageIcon>
+    <PackageIconUrl />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\mudBlazorExtensions.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="wwwroot\mudBlazorExtensions.js" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.10" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.10" />
+    <PackageReference Include="MudBlazor" Version="5.1.5" />
+    <PackageReference Include="Nextended.Core" Version="5.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\MudExtension.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -3,3 +3,5 @@
 ################################################################################
 
 /MudBlazor.Extensions/obj
+/MudBlazor.Extensions/bin
+/.vs
