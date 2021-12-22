@@ -61,6 +61,9 @@ Now a dialog can look like this
 
 [![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/sampleDialogScreenshot.png)]
 
+#### Change Log
+ - 1.1.2 New option FullHeight for dialogs
+
 #### Planned Features
 Notice this is just a first preview version. 
 There are some features planned like

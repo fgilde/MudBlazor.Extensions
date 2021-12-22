@@ -7,6 +7,7 @@
         public bool Resizeable { get; set; }
         public MudDialogButton[] Buttons { get; set; }
         public MudDialogDragMode DragMode { get; set; }
-
+        public bool? FullHeight { get; set; }
+        public bool? DisableMargin { get; set; }
     }
 }

@@ -17,16 +17,24 @@ namespace MudBlazor.Extensions
             if (!initialized)
             {
                 //await runtime.InvokeVoidAsync("eval", "document.body.appendChild(Object.assign(document.createElement('script'),{src: './_content/MudBlazor.Extensions/mudBlazorExtensions.js',type: 'text/javascript' })); ");
-                var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
-                var fileInfo = embeddedProvider.GetFileInfo("wwwroot/mudBlazorExtensions.js");
-                await using var stream = fileInfo.CreateReadStream();
-                using var reader = new StreamReader(stream, Encoding.UTF8);
-                var javaScript = await reader.ReadToEndAsync();
-                await runtime.InvokeVoidAsync("eval", javaScript);
+                var js = await GetEmbeddedFileContentAsync("wwwroot/mudBlazorExtensions.js");
+                await runtime.InvokeVoidAsync("eval", js);
+
+                var css = await GetEmbeddedFileContentAsync("wwwroot/mudBlazorExtensions.css");
+                await runtime.InvokeVoidAsync("MudBlazorExtensions.addCss", css);
                 initialized = true;
 
             }
             return runtime;
+        }
+
+        private static async Task<string> GetEmbeddedFileContentAsync(string file)
+        {
+            var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
+            var fileInfo = embeddedProvider.GetFileInfo(file);
+            await using var stream = fileInfo.CreateReadStream();
+            using var reader = new StreamReader(stream, Encoding.UTF8);
+            return await reader.ReadToEndAsync();
         }
     }
 }

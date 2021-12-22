@@ -14,6 +14,30 @@ class MudBlazorExtensionHelper {
         this.mudDialogSelector = options.mudDialogSelector || '.mud-dialog';
         this.mudDialogHeaderSelector = options.mudDialogHeaderSelector || '.mud-dialog-title';
         this.dialog = document.querySelector(this.mudDialogSelector);
+
+        
+        // For animations
+        this.dialog.classList.add('mud-dialog-from-right', 'mud-dialog-animate-ex'); // order is important
+        setTimeout(() => {
+            this.dialog.classList.remove('mud-dialog-from-right');
+            this.dialog.classList.add('mud-dialog-to-right');
+            setTimeout(() => this.dialog.classList.remove('mud-dialog-animate-ex', 'mud-dialog-to-right'), 500); // need to fit transition-duration from css
+            //this.dialog.addEventListener('transitionend', () => {
+            //    this.dialog.classList.remove('mud-dialog-animate-ex');
+            //});
+        }, 5);
+
+
+        // Full height ext
+        if (options.fullHeight) {
+            var cls = options.disableMargin ? 'mud-dialog-height-full-no-margin' : 'mud-dialog-height-full';
+            this.dialog.classList.add(cls);
+        }
+        if (options.fullWidth && options.disableMargin) {
+            this.dialog.classList.remove('mud-dialog-width-full');
+            this.dialog.classList.add('mud-dialog-width-full-no-margin');
+        }
+
         this.dialogHeader = this.dialog.querySelector(this.mudDialogHeaderSelector);
     }
 
@@ -159,5 +183,21 @@ window.MudBlazorExtensions = {
             delete MudBlazorExtensions.helper;
         });
         MudBlazorExtensions.helper.init();
+    },
+
+    addCss: function (cssContent) {
+        var css = cssContent,
+            head = document.head || document.getElementsByTagName('head')[0],
+            style = document.createElement('style');
+
+        head.appendChild(style);
+
+        style.type = 'text/css';
+        if (style.styleSheet) {
+            // This is required for IE8 and below.
+            style.styleSheet.cssText = css;
+        } else {
+            style.appendChild(document.createTextNode(css));
+        }
     }
 };
