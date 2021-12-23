@@ -15,16 +15,16 @@ class MudBlazorExtensionHelper {
         this.mudDialogHeaderSelector = options.mudDialogHeaderSelector || '.mud-dialog-title';
         this.dialog = document.querySelector(this.mudDialogSelector);
 
-        
+        var names = options.dialogPositionNames;
+        debugger;
         // For animations
-        this.dialog.classList.add('mud-dialog-from-right', 'mud-dialog-animate-ex'); // order is important
+        var fromCls = 'mud-dialog-from-right';
+        var toCls = 'mud-dialog-to-right';
+        this.dialog.classList.add(fromCls, 'mud-dialog-animate-ex'); // order is important
         setTimeout(() => {
-            this.dialog.classList.remove('mud-dialog-from-right');
-            this.dialog.classList.add('mud-dialog-to-right');
-            setTimeout(() => this.dialog.classList.remove('mud-dialog-animate-ex', 'mud-dialog-to-right'), 500); // need to fit transition-duration from css
-            //this.dialog.addEventListener('transitionend', () => {
-            //    this.dialog.classList.remove('mud-dialog-animate-ex');
-            //});
+            this.dialog.classList.remove(fromCls);
+            this.dialog.classList.add(toCls);
+            setTimeout(() => this.dialog.classList.remove('mud-dialog-animate-ex', toCls), 500); // need to fit transition-duration from css
         }, 5);
 
 

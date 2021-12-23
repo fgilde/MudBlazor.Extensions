@@ -1,12 +1,11 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.JSInterop;
 
-namespace MudBlazor.Extensions
+namespace MudBlazor.Extensions.Helper
 {
     public static class JsImportHelper
     {

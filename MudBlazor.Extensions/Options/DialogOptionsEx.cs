@@ -1,4 +1,6 @@
-﻿namespace MudBlazor.Extensions
+﻿using MudBlazor.Extensions.Helper;
+
+namespace MudBlazor.Extensions.Options
 {
     public class DialogOptionsEx : DialogOptions
     {
@@ -9,5 +11,8 @@
         public MudDialogDragMode DragMode { get; set; }
         public bool? FullHeight { get; set; }
         public bool? DisableMargin { get; set; }
+        public AnimationOptions Animation { get; set; }
+        public string[] DialogPositionNames => Position.GetPositionNames();
+
     }
 }

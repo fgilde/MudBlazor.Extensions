@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Options;
 using Nextended.Core;
 using Nextended.Core.Extensions;
 
