@@ -1,11 +1,11 @@
 class MudBlazorExtensionHelper {
-    #mudDialogSelector;
-    #mudDialogHeaderSelector;
-    #onDone;
-    #observer;
-    #options;
-    #dialog;
-    #dotnet;
+    mudDialogSelector;
+    mudDialogHeaderSelector;
+    onDone;
+    observer;
+    options;
+    dialog;
+    dotnet;
 
     constructor(options, dotNet, onDone) {
         this.dotnet = dotNet;
@@ -15,8 +15,11 @@ class MudBlazorExtensionHelper {
         this.mudDialogHeaderSelector = options.mudDialogHeaderSelector || '.mud-dialog-title';
         this.dialog = document.querySelector(this.mudDialogSelector);
 
+        if (options.disablePositionMargin) {
+            this.dialog.classList.add('mud-dialog-position-fixed');
+        }
+
         var names = options.dialogPositionNames;
-        debugger;
         // For animations
         var fromCls = 'mud-dialog-from-right';
         var toCls = 'mud-dialog-to-right';
@@ -24,16 +27,17 @@ class MudBlazorExtensionHelper {
         setTimeout(() => {
             this.dialog.classList.remove(fromCls);
             this.dialog.classList.add(toCls);
-            setTimeout(() => this.dialog.classList.remove('mud-dialog-animate-ex', toCls), 500); // need to fit transition-duration from css
+            //setTimeout(() => this.dialog.classList.remove('mud-dialog-animate-ex', toCls), 500); // need to fit transition-duration from css
+            setTimeout(() => this.dialog.classList.remove('mud-dialog-animate-ex'), 500); // need to fit transition-duration from css
         }, 5);
 
 
         // Full height ext
         if (options.fullHeight) {
-            var cls = options.disableMargin ? 'mud-dialog-height-full-no-margin' : 'mud-dialog-height-full';
+            var cls = options.disableSizeMargin ? 'mud-dialog-height-full-no-margin' : 'mud-dialog-height-full';
             this.dialog.classList.add(cls);
         }
-        if (options.fullWidth && options.disableMargin) {
+        if (options.fullWidth && options.disableSizeMargin) {
             this.dialog.classList.remove('mud-dialog-width-full');
             this.dialog.classList.add('mud-dialog-width-full-no-margin');
         }

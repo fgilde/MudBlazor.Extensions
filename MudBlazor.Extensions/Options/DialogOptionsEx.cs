@@ -10,7 +10,8 @@ namespace MudBlazor.Extensions.Options
         public MudDialogButton[] Buttons { get; set; }
         public MudDialogDragMode DragMode { get; set; }
         public bool? FullHeight { get; set; }
-        public bool? DisableMargin { get; set; }
+        public bool? DisablePositionMargin { get; set; }
+        public bool? DisableSizeMargin { get; set; }
         public AnimationOptions Animation { get; set; }
         public string[] DialogPositionNames => Position.GetPositionNames();
 

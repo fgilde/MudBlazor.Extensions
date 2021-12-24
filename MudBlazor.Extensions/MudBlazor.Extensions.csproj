@@ -16,14 +16,12 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="wwwroot\mudBlazorExtensions.css" />
-    <Content Remove="wwwroot\mudBlazorExtensions.js" />
-  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.css" />
-    <EmbeddedResource Include="wwwroot\mudBlazorExtensions.js" />
+    <EmbeddedResource Include="wwwroot\mudBlazorExtensions.es5.js" />
+    <EmbeddedResource Include="wwwroot\mudBlazorExtensions.es5.min.js" />
+    <EmbeddedResource Include="wwwroot\mudBlazorExtensions.min.css" />
   </ItemGroup>
 
   
@@ -51,6 +49,7 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Include="compilerconfig.json" />
   </ItemGroup>
 
 </Project>
