@@ -59,12 +59,20 @@ Then define your custom buttons
 
 Now a dialog can look like this
 
-[![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/sampleDialogScreenshot.png)]
+![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/sampleDialogScreenshot.png)
 
 Use animation to show dialog
 
 ```csharp
-       var options = new DialogOptionsEx { MaximizeButton = true, CloseButton = true, Buttons = buttons, Position = DialogPosition.CenterRight, Animation = AnimationType.SlideIn, FullHeight = true};
+       var options = new DialogOptionsEx { 
+           MaximizeButton = true, 
+           CloseButton = true, 
+           Buttons = buttons, 
+           Position = DialogPosition.CenterRight, 
+           Animation = AnimationType.SlideIn, 
+           AnimationDuration = TimeSpan.FromMilliseconds(500),
+           FullHeight = true
+       };
        var dialog = await _dialogService.ShowEx<YourMudDialog>("your dialog title", parameters, options);
 ```
 
