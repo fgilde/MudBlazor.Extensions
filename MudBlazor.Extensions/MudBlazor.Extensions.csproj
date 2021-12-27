@@ -2,15 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <VersionPrefix>1.1</VersionPrefix>
+    <PackageVersion>0.0.0-dev</PackageVersion>
     <!--<VersionSuffix>preview.$([System.DateTime]::Now.ToString(`yyMMddHHmmss`))</VersionSuffix>-->
     <LangVersion>9</LangVersion>
     <Authors>Florian Gilde</Authors>
-    <Description>MudBlazor.Extensions is a small extension for MudBlazor from https://mudblazor.com/</Description>
+    <Description>MudBlazor.Extensions is a small extension for MudBlazor from https://mudblazor.com/ </Description>
     <PackageProjectUrl>https://github.com/fgilde/MudBlazor.Extensions</PackageProjectUrl>
+    <RepositoryType>Git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/fgilde/MudBlazor.Extensions</RepositoryUrl>
+    <Copyright>Copyright © $(Authors) 2020-$([System.DateTime]::Now.Year)</Copyright>
     <PackageIcon>MudExtension.png</PackageIcon>
     <PackageIconUrl />
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -39,16 +41,24 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.1" />
     <PackageReference Include="MudBlazor" Version="6.0.2" />
     <PackageReference Include="Nextended.Core" Version="6.0.2" />
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.4.231">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <None Include="..\LICENSE">
       <Pack>True</Pack>
-      <PackagePath></PackagePath>
+      <PackagePath>\</PackagePath>
     </None>
     <None Include="..\MudExtension.png">
       <Pack>True</Pack>
-      <PackagePath></PackagePath>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="slideIn.gif">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
     <None Include="..\README.md">
       <Pack>True</Pack>

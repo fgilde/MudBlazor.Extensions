@@ -61,7 +61,18 @@ Now a dialog can look like this
 
 [![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/sampleDialogScreenshot.png)]
 
+Use animation to show dialog
+
+```csharp
+       var options = new DialogOptionsEx { MaximizeButton = true, CloseButton = true, Buttons = buttons, Position = DialogPosition.CenterRight, Animation = AnimationType.SlideIn, FullHeight = true};
+       var dialog = await _dialogService.ShowEx<YourMudDialog>("your dialog title", parameters, options);
+```
+
+
+[![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/slideIn.gif)]
+
 #### Change Log
+ - 1.2.0 Slide in animations for dialogs. 
  - 1.1.2 New option FullHeight for dialogs
 
 #### Planned Features
