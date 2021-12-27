@@ -69,7 +69,7 @@ Use animation to show dialog
 ```
 
 
-[![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/slideIn.gif)]
+[SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/slideIn.gif)
 
 #### Change Log
  - 1.2.0 Slide in animations for dialogs. 
