@@ -16,11 +16,16 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\mudBlazorExtensions.js" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.css" />
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.es5.js" />
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.es5.min.js" />
+    <EmbeddedResource Include="wwwroot\mudBlazorExtensions.js" />
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.min.css" />
   </ItemGroup>
 

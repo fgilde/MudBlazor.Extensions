@@ -14,38 +14,53 @@ class MudBlazorExtensionHelper {
         this.mudDialogSelector = options.mudDialogSelector || '.mud-dialog';
         this.mudDialogHeaderSelector = options.mudDialogHeaderSelector || '.mud-dialog-title';
         this.dialog = document.querySelector(this.mudDialogSelector);
-
-        if (options.disablePositionMargin) {
-            this.dialog.classList.add('mud-dialog-position-fixed');
-        }
-
-        var names = options.dialogPositionNames;
-        // For animations
-        var fromCls = 'mud-dialog-from-right';
-        var toCls = 'mud-dialog-to-right';
-        this.dialog.classList.add(fromCls, 'mud-dialog-animate-ex'); // order is important
-        setTimeout(() => {
-            this.dialog.classList.remove(fromCls);
-            this.dialog.classList.add(toCls);
-            //setTimeout(() => this.dialog.classList.remove('mud-dialog-animate-ex', toCls), 500); // need to fit transition-duration from css
-            setTimeout(() => this.dialog.classList.remove('mud-dialog-animate-ex'), 500); // need to fit transition-duration from css
-        }, 5);
-
-
-        // Full height ext
-        if (options.fullHeight) {
-            var cls = options.disableSizeMargin ? 'mud-dialog-height-full-no-margin' : 'mud-dialog-height-full';
-            this.dialog.classList.add(cls);
-        }
-        if (options.fullWidth && options.disableSizeMargin) {
-            this.dialog.classList.remove('mud-dialog-width-full');
-            this.dialog.classList.add('mud-dialog-width-full-no-margin');
-        }
-
         this.dialogHeader = this.dialog.querySelector(this.mudDialogHeaderSelector);
     }
 
+    init() {
+        this.dialog = this.dialog || document.querySelector(this.mudDialogSelector);
+        if (!this.dialog) {
+            this.observer = new MutationObserver((e) => {
+                var res = e.filter(x => x.addedNodes && x.addedNodes[0] === document.querySelector(this.mudDialogSelector));
+                if (res.length) {
+                    this.dialog = res[0].addedNodes[0];
+                    this.observer.disconnect();
+                    this.handleExtensions();
+                }
+            });
+            this.observer.observe(document, { characterData: true, childList: true, subtree: true });
+        } else {
+            this.handleExtensions();
+        }
+    }
+
     handleExtensions() {
+        // For animations
+        if (this.options.animation != null && this.options.animation !== 0) {
+            this.animate(this.options.animationDescription);
+        }
+
+        if (this.options.disablePositionMargin) {
+            this.dialog.classList.add('mud-dialog-position-fixed');
+        }
+
+        // Full height ext
+        if (this.options.fullHeight) {
+            var cls = this.options.disableSizeMarginY ? 'mud-dialog-height-full-no-margin' : 'mud-dialog-height-full';
+            this.dialog.classList.add(cls);
+            var actions = this.dialog.querySelector('.mud-dialog-actions');
+            if (actions) {
+                actions.classList.add('mud-dialog-actions-fixed-bottom');
+            }
+        }
+        if (this.options.fullWidth && this.options.disableSizeMarginX) {
+            this.dialog.classList.remove('mud-dialog-width-full');
+            this.dialog.classList.add('mud-dialog-width-full-no-margin');
+            if (this.dialog.classList.contains('mud-dialog-width-false')) {
+                this.dialog.classList.remove('mud-dialog-width-false');
+            }
+        }
+
         // Inject buttons
         this.options.buttons.forEach(b => {
             this.dialogHeader.insertAdjacentHTML('beforeend', b.html);
@@ -97,23 +112,6 @@ class MudBlazorExtensionHelper {
             this.observer.disconnect();
         if (this.onDone)
             this.onDone();
-    }
-
-    init() {
-        this.dialog = this.dialog || document.querySelector(this.mudDialogSelector);
-        if (!this.dialog) {
-            this.observer = new MutationObserver((e) => {
-                var res = e.filter(x => x.addedNodes && x.addedNodes[0] === document.querySelector(this.mudDialogSelector));
-                if (res.length) {
-                    this.dialog = res[0].addedNodes[0];
-                    this.observer.disconnect();
-                    this.handleExtensions();
-                }
-            });
-            this.observer.observe(document, { characterData: true, childList: true, subtree: true });
-        } else {
-            this.handleExtensions();
-        }
     }
 
     dragElement(dialogEl, headerEl, container) {
@@ -176,6 +174,35 @@ class MudBlazorExtensionHelper {
             document.onmouseup = null;
             document.onmousemove = null;
         }
+    }
+
+    animate(type) {
+        var removedClsFromContainer = false,
+            toClsNames = this.options.dialogPositionNames.map(n => `mud-dialog-${type}-to-${n}`),
+            fromClsNames = this.options.dialogPositionNames.map(n => `mud-dialog-${type}-from-${n}`),
+            containerClsName = `mud-dialog-${this.options.dialogPositionDescription}`;
+
+        this.dialog.classList.add(...fromClsNames);
+        if (this.dialog.parentNode.classList.contains(containerClsName)) {
+            this.dialog.parentNode.classList.remove(containerClsName);
+            removedClsFromContainer = true;
+        }
+
+        this.dialog.style['transition-duration'] = this.options.animationDurationInMs + 'ms';
+        this.dialog.style['transition-timing-function'] = this.options.animationTimingFunctionString;
+        setTimeout(() => {
+            this.dialog.classList.add('mud-dialog-animate-ex');
+            this.dialog.classList.remove(...fromClsNames);
+            this.dialog.classList.add(...toClsNames);
+            setTimeout(() => {
+                this.dialog.style['transition-duration'] = null;
+                this.dialog.style['transition-timing-function'] = null;
+                this.dialog.classList.remove(...['mud-dialog-animate-ex'].concat(this.options.disablePositionMargin ? [] : toClsNames));
+                if (removedClsFromContainer && !this.options.disablePositionMargin) {
+                    this.dialog.parentNode.classList.add(containerClsName);
+                }
+            }, this.options.animationDurationInMs);
+        }, 50);
     }
 }
 

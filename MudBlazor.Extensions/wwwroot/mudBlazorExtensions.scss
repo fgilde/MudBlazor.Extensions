@@ -1,4 +1,7 @@
-﻿.mud-dialog-height-full {
+﻿/*Overwrites*/
+
+/*Own*/
+.mud-dialog-height-full {
     height: calc(100% - 64px);
 }
 
@@ -7,10 +10,10 @@
 }
 
 .mud-dialog-width-full-no-margin {
-    width: 100%;
+    width: 100%;    
 }
 
-.mud-dialog-from {
+.mud-dialog-slide-from {
     &-left {
         left: -100vw;
     }
@@ -24,16 +27,19 @@
         top: -100vh
     }
 }
-.mud-dialog-to {
+.mud-dialog-slide-to {
     &-left {
         left: 0;
     }
+
     &-right {
-        right: 0;
+        right: 0;        
     }
+
     &-bottom {
         bottom: 0
     }
+
     &-top {
         top: 0
     }
@@ -43,10 +49,15 @@
     position: fixed;
 }
 
+.mud-dialog-actions-fixed-bottom {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
 .mud-dialog-animate-ex {
     position: fixed;
     transition-property: all;
-    transition-duration: 0.5s;
-    transition-timing-function: ease-in-out;
+    /*transition-timing-function: ease-in-out;*/
     /*transition-timing-function: cubic-bezier(0.64, 0.57, 0.67, 1.53);*/
 }

@@ -16,10 +16,14 @@ namespace MudBlazor.Extensions.Helper
             if (!initialized)
             {
                 //await runtime.InvokeVoidAsync("eval", "document.body.appendChild(Object.assign(document.createElement('script'),{src: './_content/MudBlazor.Extensions/mudBlazorExtensions.js',type: 'text/javascript' })); ");
-                var js = await GetEmbeddedFileContentAsync("wwwroot/mudBlazorExtensions.es5.min.js");
+                //var jsToLoad = "wwwroot/mudBlazorExtensions.js";
+                var jsToLoad = "wwwroot/mudBlazorExtensions.es5.min.js";
+                var cssToLoad = "wwwroot/mudBlazorExtensions.min.css";
+
+                var js = await GetEmbeddedFileContentAsync(jsToLoad);
                 await runtime.InvokeVoidAsync("eval", js);
 
-                var css = await GetEmbeddedFileContentAsync("wwwroot/mudBlazorExtensions.min.css");
+                var css = await GetEmbeddedFileContentAsync(cssToLoad);
                 await runtime.InvokeVoidAsync("MudBlazorExtensions.addCss", css);
                 initialized = true;
 

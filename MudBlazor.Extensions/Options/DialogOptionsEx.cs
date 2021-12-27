@@ -1,4 +1,5 @@
-﻿using MudBlazor.Extensions.Helper;
+﻿using System;
+using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Options
 {
@@ -11,9 +12,21 @@ namespace MudBlazor.Extensions.Options
         public MudDialogDragMode DragMode { get; set; }
         public bool? FullHeight { get; set; }
         public bool? DisablePositionMargin { get; set; }
-        public bool? DisableSizeMargin { get; set; }
-        public AnimationOptions Animation { get; set; }
-        public string[] DialogPositionNames => Position.GetPositionNames();
+        public bool? DisableSizeMarginX { get; set; }
+        public bool? DisableSizeMarginY { get; set; }
+        public AnimationType? Animation { get; set; }
+        public AnimationTimingFunction AnimationTimingFunction { get; set; } = AnimationTimingFunction.EaseInOut;
+        public TimeSpan AnimationDuration { get; set; } = TimeSpan.FromMilliseconds(500);
+        public double AnimationDurationInMs
+        {
+            get => AnimationDuration.TotalMilliseconds;
+            set => AnimationDuration = TimeSpan.FromMilliseconds(value);
+        }
 
+        public string AnimationTimingFunctionString => AnimationTimingFunction.ToString();
+        public string[] DialogPositionNames => Position.GetPositionNames();
+        public string DialogPositionDescription => Position.ToDescriptionString();
+        public string AnimationDescription => Animation.ToDescriptionString();
+        
     }
 }
