@@ -62,17 +62,19 @@ class MudBlazorExtensionHelper {
         }
 
         // Inject buttons
-        this.options.buttons.forEach(b => {
-            this.dialogHeader.insertAdjacentHTML('beforeend', b.html);
-            var btnEl = this.dialogHeader.querySelector('#' + b.id);
-            btnEl.onclick = () => {
-                if (b.id.indexOf('mud-button-maximize') >= 0) {
-                    this.maximize();
-                } else {
-                    b.callBackReference.invokeMethodAsync(b.callbackName);
+        if (this.options.buttons && this.options.buttons.length) {
+            this.options.buttons.forEach(b => {
+                this.dialogHeader.insertAdjacentHTML('beforeend', b.html);
+                var btnEl = this.dialogHeader.querySelector('#' + b.id);
+                btnEl.onclick = () => {
+                    if (b.id.indexOf('mud-button-maximize') >= 0) {
+                        this.maximize();
+                    } else {
+                        b.callBackReference.invokeMethodAsync(b.callbackName);
+                    }
                 }
-            }
-        });
+            });
+        }
 
         // Handle drag
         if (this.options.dragMode !== 0 && this.dialog) {

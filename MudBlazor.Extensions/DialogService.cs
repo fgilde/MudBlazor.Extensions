@@ -52,6 +52,7 @@ namespace MudBlazor.Extensions
                 options.Buttons = buttons.ToArray();
             }
 
+            options.Buttons ??= Array.Empty<MudDialogButton>();
             options.Buttons.Apply((i, button) => button.Html = button.GetHtml(i + (options.CloseButton == true ? 1 : 0)));
             await js.InvokeVoidAsync("MudBlazorExtensions.setNextDialogOptions", options, callbackReference);
             return dialogReference;
