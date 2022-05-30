@@ -11,17 +11,21 @@ class MudBlazorExtensionHelper {
         this.dotnet = dotNet;
         this.onDone = onDone;
         this.options = options;
-        this.mudDialogSelector = options.mudDialogSelector || '.mud-dialog';
+        this.mudDialogSelector = options.mudDialogSelector || '.mud-dialog:not([data-mud-extended=true])';
         this.mudDialogHeaderSelector = options.mudDialogHeaderSelector || '.mud-dialog-title';
         this.dialog = document.querySelector(this.mudDialogSelector);
         this.dialogHeader = this.dialog.querySelector(this.mudDialogHeaderSelector);
     }
 
+    findDialog() {
+        return Array.from(document.querySelectorAll(this.mudDialogSelector)).filter(d => !d.__extended)[0];
+    }
+
     init() {
-        this.dialog = this.dialog || document.querySelector(this.mudDialogSelector);
+        this.dialog = this.dialog || this.findDialog();
         if (!this.dialog) {
             this.observer = new MutationObserver((e) => {
-                var res = e.filter(x => x.addedNodes && x.addedNodes[0] === document.querySelector(this.mudDialogSelector));
+                var res = e.filter(x => x.addedNodes && x.addedNodes[0] === this.findDialog());
                 if (res.length) {
                     this.dialog = res[0].addedNodes[0];
                     this.observer.disconnect();
@@ -35,9 +39,12 @@ class MudBlazorExtensionHelper {
     }
 
     handleExtensions() {
+        this.dialog.__extended = true;
+        this.dialog.setAttribute('data-mud-extended', true);
+        setTimeout(() => this.dialog.classList.remove('mud-ex-dialog-initial'), 50);
         // For animations
-        if (this.options.animation != null && this.options.animation !== 0) {
-            this.animate(this.options.animationDescription);
+        if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
+            this.animate(this.options.animationDescriptions);
         }
 
         if (this.options.disablePositionMargin) {
@@ -83,6 +90,10 @@ class MudBlazorExtensionHelper {
         }
 
         // Resize
+        this.checkResizeable();
+    }
+
+    checkResizeable() {
         if (this.options.resizeable) {
             this.dialog.style.position = 'absolute';
             this.dialog.style['resize'] = 'both';
@@ -101,12 +112,13 @@ class MudBlazorExtensionHelper {
         } else {
             this._oldStyle = this.dialog.style;
             this.dialog.style.position = 'absolute';
-            this.dialog.style.left = "0px";
-            this.dialog.style.top = "0px";
+            this.dialog.style.left = "0";
+            this.dialog.style.top = "0";
 
             this.dialog.style.maxWidth = this.dialog.style.width = window.innerWidth + 'px';
             this.dialog.style.maxHeight = this.dialog.style.height = window.innerHeight + 'px';
         }
+        this.checkResizeable();
     }
 
     done() {
@@ -178,44 +190,19 @@ class MudBlazorExtensionHelper {
         }
     }
 
-    animate(type) {
-        var removedClsFromContainer = false,
-            toClsNames = this.options.dialogPositionNames.map(n => `mud-dialog-${type}-to-${n}`),
-            fromClsNames = this.options.dialogPositionNames.map(n => `mud-dialog-${type}-from-${n}`),
-            containerClsName = `mud-dialog-${this.options.dialogPositionDescription}`;
-
-        this.dialog.classList.add(...fromClsNames);
-        if (this.dialog.parentNode.classList.contains(containerClsName)) {
-            this.dialog.parentNode.classList.remove(containerClsName);
-            removedClsFromContainer = true;
-        }
-
-        this.dialog.style['transition-duration'] = this.options.animationDurationInMs + 'ms';
-        this.dialog.style['transition-timing-function'] = this.options.animationTimingFunctionString;
-        setTimeout(() => {
-            this.dialog.classList.add('mud-dialog-animate-ex');
-            this.dialog.classList.remove(...fromClsNames);
-            this.dialog.classList.add(...toClsNames);
-            setTimeout(() => {
-                this.dialog.style['transition-duration'] = null;
-                this.dialog.style['transition-timing-function'] = null;
-                this.dialog.classList.remove(...['mud-dialog-animate-ex'].concat(this.options.disablePositionMargin ? [] : toClsNames));
-                if (removedClsFromContainer && !this.options.disablePositionMargin) {
-                    this.dialog.parentNode.classList.add(containerClsName);
-                }
-            }, this.options.animationDurationInMs);
-        }, 50);
+    animate(types) {
+        var names = types.map(type => this.options.dialogPositionNames.map(n => `kf-mud-dialog-${type}-${n} ${this.options.animationDurationInMs}ms ${this.options.animationTimingFunctionString} 1 alternate`));
+        this.dialog.style.animation = `${names.join(',')}`;
     }
 }
 
 window.MudBlazorExtensions = {
     helper: null,
     setNextDialogOptions: function (options, dotNet) {
-        MudBlazorExtensions.helper = new MudBlazorExtensionHelper(options, dotNet, () => {
+        new MudBlazorExtensionHelper(options, dotNet, () => {
             MudBlazorExtensions.helper = null;
             delete MudBlazorExtensions.helper;
-        });
-        MudBlazorExtensions.helper.init();
+        }).init();
     },
 
     addCss: function (cssContent) {

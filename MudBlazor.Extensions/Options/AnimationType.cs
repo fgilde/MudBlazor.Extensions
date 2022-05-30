@@ -6,6 +6,7 @@ namespace MudBlazor.Extensions.Options
     public enum AnimationType
     {
         Default,
-        [Description("slide")] SlideIn
+        [Description("slide")] SlideIn,
+        [Description("fade")] FadeIn
     }
 }

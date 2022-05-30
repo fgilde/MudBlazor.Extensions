@@ -1,0 +1,99 @@
+@using MudBlazor.Extensions.Extensions
+@namespace MudBlazor.Extensions.Components
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MudExFileDisplayZip> _localizer
+<style>
+     /* TODO: Remove, but currently CSS Isolation not working in this project and I dont know why */
+    .child-count-label {
+        font-size: 7pt;
+        margin-left: 5px;
+        margin-top: -1px;
+        width: 15px;
+        border: 1px solid var(--mud-palette-text-primary);
+        height: 15px;
+        border-radius: 50px;
+        text-align: center;
+    }
+
+    .file-display-zip {
+        padding: 10px;
+        border: 1px dashed var(--mud-palette-primary);
+        max-height: 90vh;
+        height: 100%;
+        width: 100%;
+        border-radius: 5px;
+        overflow: auto;
+    }
+
+    .close-inner-preview {
+        float: right; 
+        position: absolute;
+        right: 30px;
+        top: -10px;
+        background: white;
+        border: 1px solid gray;
+        border-radius: 50px;
+        height: 50px;
+    }
+</style>
+
+
+@if (_innerPreview != null)
+{
+    <div class="close-inner-preview">
+        <MudTooltip Placement="Placement.Left" Delay="600" Color="Color.Primary" Text="@($"{_localizer["Close"]} ({_innerPreview.Name})")">
+            <MudIconButton Style="float: right;" OnClick="@(ClosePreview)" Icon="@Icons.Filled.Close"></MudIconButton>
+        </MudTooltip>
+    </div>
+    <FileDisplay FileName="@_innerPreview.Name" ContentStream="@_innerPreviewStream" ContentType="@_innerPreview.ContentType" Url="@_innerPreviewUrl"></FileDisplay>
+}
+
+else
+{
+    <div class="file-display-zip">
+    @if (AllowToggleTree)
+    {
+        <MudToggleIconButton @bind-Toggled="@ShowAsTree"
+                     Icon="@Icons.Material.Filled.Folder" Color="@Color.Error" Title="Off"
+                     ToggledIcon="@Icons.Material.Filled.Folder" ToggledColor="@Color.Success" ToggledTitle="On" />
+        <span>@(ShowAsTree ? _localizer["Show flat"] : _localizer["Show as Tree"])</span>
+    }
+
+    @if (ShowAsTree)
+    {
+        <MudTreeView Style="width: 100%" T="ZipStructure" Items="@_zipStructure">
+            <ItemTemplate>
+                <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.Children" Icon="@(context.BrowserFile?.GetIcon() ?? Icons.Filled.Folder)" Text="@context.Name" EndText="2" EndTextTypo="@Typo.caption">
+                    <Content>
+                        <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChildren" />
+                        <MudIcon Icon="@(context.IsDirectory ? Icons.Filled.Folder : context.BrowserFile?.GetIcon())" Class="ml-0 mr-2" Color="@Color.Default" />
+                        <MudText>@context.Name</MudText>
+                        @if (context.IsDirectory)
+                        {
+                    <span class="child-count-label">@context.Children.Count</span>
+                        }
+                        else
+                        {
+                    <MudIconButton OnClick="@(() => Preview(context.BrowserFile))" Style="float: right;" Icon="@Icons.Material.Filled.ZoomIn" Color="Color.Inherit" Size="Size.Small" />
+                        }
+            </Content>
+        </MudTreeViewItem>
+    </ItemTemplate>
+</MudTreeView>
+    }
+    else
+    {
+        @foreach (var entry in _zipEntries.Where(file => !file.IsDirectory))
+        {
+            <MudItem xs="12">
+                <MudItem>
+                    <MudAlert Icon="@entry.GetIcon()"
+                  Class="mud-alert-message-w-100">
+                        @entry.FullName
+                        <MudIconButton OnClick="@(() => Preview(entry))" Style="float: right;" Icon="@Icons.Material.Filled.ZoomIn" Color="Color.Inherit" Size="Size.Small" />
+                    </MudAlert>
+                </MudItem>
+            </MudItem>
+        }
+    }
+    </div>
+}

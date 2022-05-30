@@ -1,6 +1,9 @@
-﻿/*Overwrites*/
+﻿/* Private styles can not be used from outside only inside using is possible */
 
-/*Own*/
+
+@import '_animations.scss';
+
+
 .mud-dialog-height-full {
     height: calc(100% - 64px);
 }
@@ -13,51 +16,17 @@
     width: 100%;    
 }
 
-.mud-dialog-slide-from {
-    &-left {
-        left: -100vw;
-    }
-    &-right {
-        right: -100vw;
-    }
-    &-bottom {
-        bottom: -100vh
-    }
-    &-top {
-        top: -100vh
-    }
-}
-.mud-dialog-slide-to {
-    &-left {
-        left: 0;
-    }
-
-    &-right {
-        right: 0;        
-    }
-
-    &-bottom {
-        bottom: 0
-    }
-
-    &-top {
-        top: 0
-    }
-}
 
 .mud-dialog-position-fixed {
     position: fixed;
 }
 
 .mud-dialog-actions-fixed-bottom {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     right: 0;
 }
 
-.mud-dialog-animate-ex {
-    position: fixed;
-    transition-property: all;
-    /*transition-timing-function: ease-in-out;*/
-    /*transition-timing-function: cubic-bezier(0.64, 0.57, 0.67, 1.53);*/
+.mud-ex-dialog-initial {
+    display: none !important;
 }

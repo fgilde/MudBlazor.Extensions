@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <PackageVersion>0.0.0-dev</PackageVersion>
     <!--<VersionSuffix>preview.$([System.DateTime]::Now.ToString(`yyMMddHHmmss`))</VersionSuffix>-->
-    <LangVersion>9</LangVersion>
+    <LangVersion>10</LangVersion>
     <Authors>Florian Gilde</Authors>
     <Description>MudBlazor.Extensions is a small extension for MudBlazor from https://mudblazor.com/ </Description>
     <PackageProjectUrl>https://github.com/fgilde/MudBlazor.Extensions</PackageProjectUrl>
@@ -18,12 +18,10 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="wwwroot\mudBlazorExtensions.js" />
-  </ItemGroup>
-
 
   <ItemGroup>
+    <EmbeddedResource Include="wwwroot\_animations.css" />
+    <EmbeddedResource Include="wwwroot\_animations.min.css" />
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.css" />
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.es5.js" />
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.es5.min.js" />
@@ -37,10 +35,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.4" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.4" />
     <PackageReference Include="MudBlazor" Version="6.0.2" />
-    <PackageReference Include="Nextended.Core" Version="6.0.2" />
+    <PackageReference Include="Nextended.Blazor" Version="6.0.6" />
     <PackageReference Include="Nerdbank.GitVersioning" Version="3.4.231">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -65,6 +63,10 @@
       <PackagePath>\</PackagePath>
     </None>
     <None Include="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>

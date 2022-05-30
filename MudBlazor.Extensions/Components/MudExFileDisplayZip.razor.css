@@ -1,0 +1,31 @@
+﻿.child-count-label {
+    font-size: 7pt;
+    margin-left: 5px;
+    margin-top: -1px;
+    width: 15px;
+    border: 1px solid var(--mud-palette-text-primary);
+    height: 15px;
+    border-radius: 50px;
+    text-align: center;
+}
+
+.file-display-zip {
+    padding: 10px;
+    border: 1px dashed var(--mud-palette-primary);
+    max-height: 90vh;
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    overflow: auto;
+}
+
+.close-inner-preview {
+    float: right; 
+    position: absolute;
+    right: 30px;
+    top: -10px;
+    background: white;
+    border: 1px solid gray;
+    border-radius: 50px;
+    height: 50px;
+}

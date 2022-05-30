@@ -1,0 +1,58 @@
+﻿using System.Linq;
+using System.Net.Mime;
+using HeyRed.Mime;
+using Microsoft.AspNetCore.Components.Forms;
+using Nextended.Blazor.Helper;
+using Nextended.Core.Extensions;
+
+namespace MudBlazor.Extensions.Extensions
+{
+    public static class BrowserFileExt
+    {
+        public static string IconForFile(string contentType)
+        {
+            return IconForFile(new ContentType(contentType));
+        }
+
+        public static string GetIcon(this IBrowserFile file)
+        {
+            return IconForFile(file.ContentType);
+        }
+
+        public static string IconForFile(ContentType contentType)
+        {
+            //Icons.Filled.AlternateEmail
+            //Icons.Custom.Brands.MicrosoftAzure
+            //Icons.Custom.Brands.GitHub
+            var mime = contentType.ToString().ToLower();
+            if (MimeTypeHelper.IsZip(mime))
+                return Icons.Filled.Archive;
+            if (MimeTypeHelper.Matches(mime, "application/x-dotnet*"))
+                return Icons.Custom.Brands.MicrosoftVisualStudio;
+            if (MimeTypeHelper.Matches(mime, "application/vnd.ms-excel", "text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml*", "application/vnd.ms-excel*"))
+                return Icons.Custom.FileFormats.FileExcel;
+
+            if (MimeTypeHelper.Matches(mime, "application/vnd.ms*", "application/msword", "application/vnd.openxmlformats-officedocument*"))
+                return Icons.Custom.FileFormats.FileWord;
+            if (MimeTypeHelper.Matches(mime, "application/pdf"))
+                return Icons.Custom.FileFormats.FilePdf;
+            if (MimeTypeHelper.Matches(mime, "application/java*", "application/json*", "text/html", "text/xml", "application/xml"))
+                return Icons.Custom.FileFormats.FileCode;
+
+            return contentType.MediaType.Split("/").First().ToLower() switch
+            {
+                "image" => Icons.Custom.FileFormats.FileImage,
+                "audio" => Icons.Custom.FileFormats.FileMusic,
+                "video" => Icons.Custom.FileFormats.FileVideo,
+                "text" => Icons.Custom.FileFormats.FileDocument,
+                _ => Icons.Custom.FileFormats.FileDocument
+            };
+        }
+
+
+        public static string IconForExtension(string extension)
+        {
+            return IconForFile(MimeTypesMap.GetMimeType(extension = extension?.EnsureStartsWith(".")));
+        }
+    }
+}

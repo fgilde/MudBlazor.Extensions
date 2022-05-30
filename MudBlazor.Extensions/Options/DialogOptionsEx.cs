@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Linq;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Options
 {
     public class DialogOptionsEx : DialogOptions
     {
+        public IJSRuntime JsRuntime { get; set; }
         public bool? MaximizeButton { get; set; }
         //public bool? MinimizeButton { get; set; }
         public bool Resizeable { get; set; }
@@ -14,7 +17,12 @@ namespace MudBlazor.Extensions.Options
         public bool? DisablePositionMargin { get; set; }
         public bool? DisableSizeMarginX { get; set; }
         public bool? DisableSizeMarginY { get; set; }
-        public AnimationType? Animation { get; set; }
+        [Obsolete("Please use Animations instead")]
+        public AnimationType? Animation {
+            get => Animations?.FirstOrDefault();
+            set => Animations = new[] {value ?? AnimationType.Default};
+        }
+        public AnimationType[] Animations { get; set; }
         public AnimationTimingFunction AnimationTimingFunction { get; set; } = AnimationTimingFunction.EaseInOut;
         public TimeSpan AnimationDuration { get; set; } = TimeSpan.FromMilliseconds(500);
         public double AnimationDurationInMs
@@ -26,7 +34,7 @@ namespace MudBlazor.Extensions.Options
         public string AnimationTimingFunctionString => AnimationTimingFunction.ToString();
         public string[] DialogPositionNames => Position.GetPositionNames();
         public string DialogPositionDescription => Position.ToDescriptionString();
-        public string AnimationDescription => Animation.ToDescriptionString();
+        public string[] AnimationDescriptions => Animations.Select(type => type.ToDescriptionString()).ToArray();
         
     }
 }

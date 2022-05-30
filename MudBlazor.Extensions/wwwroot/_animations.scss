@@ -1,0 +1,171 @@
+﻿.mud-dialog-slide-from {
+    &-left {
+        left: -100vw;
+    }
+    &-right {
+        right: -100vw;
+    }
+    &-bottom {
+        bottom: -100vh
+    }
+    &-top {
+        top: -100vh
+    }
+}
+.mud-dialog-slide-to {
+    &-left {
+        left: 0;
+    }
+
+    &-right {
+        right: 0;        
+    }
+
+    &-bottom {
+        bottom: 0
+    }
+
+    &-top {
+        top: 0
+    }
+}
+
+.mud-dialog-slide-transform-from {
+    &-left {
+        /*left: -100vw;*/
+        transform: translateX(-100vw);
+    }
+
+    &-right {
+        transform: translateX(100vw);
+    }
+
+    &-bottom {
+        transform: translateY(100vh);
+    }
+
+    &-top {
+        transform: translateY(-100vh);
+    }
+}
+
+.mud-dialog-slide-transform-to {
+    &-left {
+        transform: translateX(0);
+    }
+
+    &-right {
+        transform: translateX(0);
+    }
+
+    &-bottom {
+        transform: translateY(0);
+    }
+
+    &-top {
+        transform: translateY(0);
+    }
+}
+
+@keyframes kf-mud-dialog-slide-right {
+    0% {
+        transform: translateX(100vw);
+    }
+
+    85% {
+        transform: translateX(-20px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes kf-mud-dialog-slide-top {
+    0% {
+        transform: translateY(-100vw);
+    }
+
+    85% {
+        transform: translateY(20px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes kf-mud-dialog-slide-left {
+    0% {
+        transform: translateX(-100vw)
+    }
+
+    85% {
+        transform: translateX(20px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes kf-mud-dialog-slide-bottom {
+    0% {
+        transform: translateY(100vw);
+    }
+
+    85% {
+        transform: translateY(-20px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes kf-mud-dialog-fade-right {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes kf-mud-dialog-fade-top {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes kf-mud-dialog-fade-left {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes kf-mud-dialog-fade-bottom {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+
+.mud-dialog-animate-ex {
+    position: fixed;
+    transition-property: all;
+    /*transition-timing-function: ease-in-out;*/
+    /*transition-timing-function: cubic-bezier(0.64, 0.57, 0.67, 1.53);*/
+}

@@ -1,0 +1,79 @@
+@namespace MudBlazor.Extensions.Components
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MudExFileDisplay> _localizer
+
+<style>
+    /* TODO: Remove, but currently CSS Isolation not working in this project and I dont know why */
+    .file-display {
+        padding: 10px;
+        border: 1px dashed var(--mud-palette-primary);
+        height: 100%;
+        width: 100%;
+        border-radius: 5px;
+    }
+
+    .file-display-container {
+        height: calc(100% - 100px);
+    }
+
+    .download-file {
+        float: right;
+    }
+
+    .file-display ::deep > * {
+        width: 100%;
+        height: 100%;
+    }
+
+    .file-display:empty {
+        background: repeating-linear-gradient(135deg, #ccc, #ccc 10px, #aaa 10px, #aaa 20px);
+        opacity: 0.4;
+        border-radius: 5px;
+        transition-property: opacity;
+        transition-duration: 0.6s;
+    }
+
+    .file-display:empty:hover {
+        opacity: 0.6;
+    }
+
+    .file-display ::deep > img:not([data-mimetype='image/svg+xml']) {
+        object-fit: scale-down;
+    }
+
+    .file-display ::deep > .file-display-img-box {
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+    }
+
+    .file-display-error-message {
+        color: var(--mud-palette-error);
+        font-style: italic;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+</style>
+
+
+<div class="file-display-container">
+    @if (_isZip)
+    {
+        <MudExFileDisplayZip RootFolderName="@FileName" ContentStream="@ContentStream" Url="@Url"></MudExFileDisplayZip>
+    }
+    else
+    {
+        <div class="file-display">
+            <MudElement UserAttributes="@renderInfos.attributes" HtmlTag="@renderInfos.tag" />
+        </div>
+    }
+    @if (AllowDownload)
+    {
+        <div class="download-file">
+            <MudTooltip Placement="Placement.Left" Delay="600" Color="Color.Primary" Text="@($"{_localizer["Download"]} ({FileName})")">
+                <MudIconButton Style="float: right;" OnClick="@(Download)" Icon="@Icons.Filled.Download"></MudIconButton>
+            </MudTooltip>
+        </div>
+    }
+</div>

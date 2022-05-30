@@ -2,8 +2,6 @@
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 var MudBlazorExtensionHelper = (function () {
@@ -13,22 +11,29 @@ var MudBlazorExtensionHelper = (function () {
         this.dotnet = dotNet;
         this.onDone = onDone;
         this.options = options;
-        this.mudDialogSelector = options.mudDialogSelector || '.mud-dialog';
+        this.mudDialogSelector = options.mudDialogSelector || '.mud-dialog:not([data-mud-extended=true])';
         this.mudDialogHeaderSelector = options.mudDialogHeaderSelector || '.mud-dialog-title';
         this.dialog = document.querySelector(this.mudDialogSelector);
         this.dialogHeader = this.dialog.querySelector(this.mudDialogHeaderSelector);
     }
 
     _createClass(MudBlazorExtensionHelper, [{
+        key: 'findDialog',
+        value: function findDialog() {
+            return Array.from(document.querySelectorAll(this.mudDialogSelector)).filter(function (d) {
+                return !d.__extended;
+            })[0];
+        }
+    }, {
         key: 'init',
         value: function init() {
             var _this = this;
 
-            this.dialog = this.dialog || document.querySelector(this.mudDialogSelector);
+            this.dialog = this.dialog || this.findDialog();
             if (!this.dialog) {
                 this.observer = new MutationObserver(function (e) {
                     var res = e.filter(function (x) {
-                        return x.addedNodes && x.addedNodes[0] === document.querySelector(_this.mudDialogSelector);
+                        return x.addedNodes && x.addedNodes[0] === _this.findDialog();
                     });
                     if (res.length) {
                         _this.dialog = res[0].addedNodes[0];
@@ -46,9 +51,14 @@ var MudBlazorExtensionHelper = (function () {
         value: function handleExtensions() {
             var _this2 = this;
 
+            this.dialog.__extended = true;
+            this.dialog.setAttribute('data-mud-extended', true);
+            setTimeout(function () {
+                return _this2.dialog.classList.remove('mud-ex-dialog-initial');
+            }, 50);
             // For animations
-            if (this.options.animation != null && this.options.animation !== 0) {
-                this.animate(this.options.animationDescription);
+            if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
+                this.animate(this.options.animationDescriptions);
             }
 
             if (this.options.disablePositionMargin) {
@@ -73,17 +83,19 @@ var MudBlazorExtensionHelper = (function () {
             }
 
             // Inject buttons
-            this.options.buttons.forEach(function (b) {
-                _this2.dialogHeader.insertAdjacentHTML('beforeend', b.html);
-                var btnEl = _this2.dialogHeader.querySelector('#' + b.id);
-                btnEl.onclick = function () {
-                    if (b.id.indexOf('mud-button-maximize') >= 0) {
-                        _this2.maximize();
-                    } else {
-                        b.callBackReference.invokeMethodAsync(b.callbackName);
-                    }
-                };
-            });
+            if (this.options.buttons && this.options.buttons.length) {
+                this.options.buttons.forEach(function (b) {
+                    _this2.dialogHeader.insertAdjacentHTML('beforeend', b.html);
+                    var btnEl = _this2.dialogHeader.querySelector('#' + b.id);
+                    btnEl.onclick = function () {
+                        if (b.id.indexOf('mud-button-maximize') >= 0) {
+                            _this2.maximize();
+                        } else {
+                            b.callBackReference.invokeMethodAsync(b.callbackName);
+                        }
+                    };
+                });
+            }
 
             // Handle drag
             if (this.options.dragMode !== 0 && this.dialog) {
@@ -92,6 +104,11 @@ var MudBlazorExtensionHelper = (function () {
             }
 
             // Resize
+            this.checkResizeable();
+        }
+    }, {
+        key: 'checkResizeable',
+        value: function checkResizeable() {
             if (this.options.resizeable) {
                 this.dialog.style.position = 'absolute';
                 this.dialog.style['resize'] = 'both';
@@ -111,12 +128,13 @@ var MudBlazorExtensionHelper = (function () {
             } else {
                 this._oldStyle = this.dialog.style;
                 this.dialog.style.position = 'absolute';
-                this.dialog.style.left = "0px";
-                this.dialog.style.top = "0px";
+                this.dialog.style.left = "0";
+                this.dialog.style.top = "0";
 
                 this.dialog.style.maxWidth = this.dialog.style.width = window.innerWidth + 'px';
                 this.dialog.style.maxHeight = this.dialog.style.height = window.innerHeight + 'px';
             }
+            this.checkResizeable();
         }
     }, {
         key: 'done',
@@ -190,44 +208,16 @@ var MudBlazorExtensionHelper = (function () {
         }
     }, {
         key: 'animate',
-        value: function animate(type) {
-            var _dialog$classList,
-                _this3 = this;
+        value: function animate(types) {
+            var _this3 = this;
 
-            var removedClsFromContainer = false,
-                toClsNames = this.options.dialogPositionNames.map(function (n) {
-                return 'mud-dialog-' + type + '-to-' + n;
-            }),
-                fromClsNames = this.options.dialogPositionNames.map(function (n) {
-                return 'mud-dialog-' + type + '-from-' + n;
-            }),
-                containerClsName = 'mud-dialog-' + this.options.dialogPositionDescription;
-
-            (_dialog$classList = this.dialog.classList).add.apply(_dialog$classList, _toConsumableArray(fromClsNames));
-            if (this.dialog.parentNode.classList.contains(containerClsName)) {
-                this.dialog.parentNode.classList.remove(containerClsName);
-                removedClsFromContainer = true;
-            }
-
-            this.dialog.style['transition-duration'] = this.options.animationDurationInMs + 'ms';
-            this.dialog.style['transition-timing-function'] = this.options.animationTimingFunctionString;
-            setTimeout(function () {
-                var _dialog$classList2, _dialog$classList3;
-
-                _this3.dialog.classList.add('mud-dialog-animate-ex');
-                (_dialog$classList2 = _this3.dialog.classList).remove.apply(_dialog$classList2, _toConsumableArray(fromClsNames));
-                (_dialog$classList3 = _this3.dialog.classList).add.apply(_dialog$classList3, _toConsumableArray(toClsNames));
-                setTimeout(function () {
-                    var _dialog$classList4;
-
-                    _this3.dialog.style['transition-duration'] = null;
-                    _this3.dialog.style['transition-timing-function'] = null;
-                    (_dialog$classList4 = _this3.dialog.classList).remove.apply(_dialog$classList4, _toConsumableArray(['mud-dialog-animate-ex'].concat(_this3.options.disablePositionMargin ? [] : toClsNames)));
-                    if (removedClsFromContainer && !_this3.options.disablePositionMargin) {
-                        _this3.dialog.parentNode.classList.add(containerClsName);
-                    }
-                }, _this3.options.animationDurationInMs);
-            }, 50);
+            var names = types.map(function (type) {
+                return _this3.options.dialogPositionNames.map(function (n) {
+                    return 'kf-mud-dialog-' + type + '-' + n + ' ' + _this3.options.animationDurationInMs + 'ms ' + _this3.options.animationTimingFunctionString + ' 1 alternate';
+                });
+            });
+            window.ANIMANY = names;
+            this.dialog.style.animation = '' + names.join(',');
         }
     }]);
 
@@ -237,11 +227,10 @@ var MudBlazorExtensionHelper = (function () {
 window.MudBlazorExtensions = {
     helper: null,
     setNextDialogOptions: function setNextDialogOptions(options, dotNet) {
-        MudBlazorExtensions.helper = new MudBlazorExtensionHelper(options, dotNet, function () {
+        new MudBlazorExtensionHelper(options, dotNet, function () {
             MudBlazorExtensions.helper = null;
             delete MudBlazorExtensions.helper;
-        });
-        MudBlazorExtensions.helper.init();
+        }).init();
     },
 
     addCss: function addCss(cssContent) {
