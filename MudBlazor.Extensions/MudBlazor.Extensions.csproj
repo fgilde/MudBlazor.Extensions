@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
-    <Nullable>enable</Nullable>
+    <!--<Nullable>enable</Nullable>-->
     <ImplicitUsings>enable</ImplicitUsings>
     <PackageVersion>0.0.0-dev</PackageVersion>
     <!--<VersionSuffix>preview.$([System.DateTime]::Now.ToString(`yyMMddHHmmss`))</VersionSuffix>-->

@@ -1,5 +1,4 @@
-﻿/* Private styles can not be used from outside only inside using is possible */
-.mud-dialog-slide-from-left {
+﻿.mud-dialog-slide-from-left {
   left: -100vw;
 }
 .mud-dialog-slide-from-right {

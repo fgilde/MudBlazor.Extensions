@@ -171,7 +171,6 @@ public class ZipStructure : Hierarchical<ZipStructure>
         IsExpanded = true;
     }
 
-
     public string Name { get; set; }
 
     public bool IsDirectory => BrowserFile == null || BrowserFile.IsDirectory;

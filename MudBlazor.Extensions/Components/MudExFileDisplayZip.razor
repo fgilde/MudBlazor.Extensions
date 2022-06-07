@@ -2,47 +2,6 @@
 @using Nextended.Blazor.Extensions
 @namespace MudBlazor.Extensions.Components
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MudExFileDisplayZip> _localizer
-<style>
-     /* TODO: Remove, but currently CSS Isolation not working in this project and I dont know why */
-    .child-count-label {
-        font-size: 7pt;
-        margin-left: 5px;
-        width: 15px;
-        border: 1px solid var(--mud-palette-text-primary);
-        height: 15px;
-        border-radius: 50px;
-        text-align: center;
-        padding-left: 4px;
-        padding-right: 4px;
-    }
-
-    .file-display-zip {
-        padding: 10px;
-        border: 1px dashed var(--mud-palette-primary);
-        max-height: 90vh;
-        height: 100%;
-        width: 100%;
-        border-radius: 5px;
-        overflow: auto;
-    }
-
-    .close-inner-preview {
-        float: right;
-        height: 25px;
-        margin-top: -15px;
-        margin-bottom: 15px;
-        margin-right: -10px;
-    }
-
-    .size-display {
-        font-style: italic;
-        font-size: 8pt;
-    }
-
-    .tree-actions {
-        margin-left: 20px;
-    }
-</style>
 
 
 @if (_innerPreview != null)
