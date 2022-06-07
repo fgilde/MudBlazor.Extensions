@@ -7,13 +7,15 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using Nextended.Blazor.Helper;
 using Nextended.Blazor.Models;
+using Nextended.Core.Extensions;
+using PSC.Blazor.Components.BrowserDetect;
 
 namespace MudBlazor.Extensions.Components;
 
 
 public partial class MudExFileDisplay
 {
-    [Inject] private IJSRuntime _jsRuntime { get; set; }
+    [Inject] private IJSRuntime JsRuntime { get; set; }
 
     [Parameter] public string Url { get; set; }
     [Parameter] public string ContentType { get; set; }
@@ -21,70 +23,108 @@ public partial class MudExFileDisplay
     /**
      * Should be true if file is not a binary one
      */
-    [Parameter] public bool FallBackInIframe { get; set; }
-    [Parameter] public bool AllowDownload { get; set; } = true; 
+    [Parameter]
+    public bool FallBackInIframe { get; set; }
+
+    /// <summary>
+    /// Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
+    /// </summary>
+    [Parameter]
+    public bool ViewDependsOnContentType { get; set; } = true;
+
+    [Parameter] public bool ImageAsBackgroundImage { get; set; } = false;
+    [Parameter] public bool AllowDownload { get; set; } = true;
     [Parameter] public string FileName { get; set; }
     [Parameter] public Stream ContentStream { get; set; }
-    
+
+    public BrowserContentTypePlugin PossiblePlugin { get; private set; }
+
+    public BrowserInfo Info
+    {
+        get => _info;
+        set
+        {
+            _info = value;
+            PossiblePlugin = BrowserContentTypePlugin.Find(Info.BrowserName, ContentType);
+            StateHasChanged();
+        }
+    }
+
     public string MediaType => ContentType?.Split("/").FirstOrDefault()?.ToLower();
 
     private bool _isZip;
     private (string tag, Dictionary<string, object> attributes) renderInfos;
+    private BrowserInfo _info;
 
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnParametersSetAsync()
     {
-        _isZip = MimeTypeHelper.IsZip(ContentType);
+        _isZip = ViewDependsOnContentType && MimeTypeHelper.IsZip(ContentType);
         renderInfos = GetRenderInfos();
-        await base.OnInitializedAsync();
+        return base.OnParametersSetAsync();
     }
 
     private (string tag, Dictionary<string, object> attributes) GetRenderInfos()
     {
-        if (MediaType == "image")
+        if (ViewDependsOnContentType)
         {
-            return ("img", new ()
+            switch (MediaType)
             {
-                {"src", Url},
-                {"alt", FileName },
-                {"data-mimetype", ContentType }
-            });
-        }
-
-        if (MediaType == "video")
-        {
-            return ("video", new ()
-            {
-                {"preload", "metadata"},
-                {"controls", null},
-                {"src", Url},
-                {"type", ContentType}
-            });
-        }
-
-        if (MediaType == "audio")
-        {
-            return ("audio", new ()
-            {
-                {"preload", "metadata"},
-                {"controls", null},
-                {"src", Url},
-                {"type", ContentType}
-            });
+                case "image":
+                    return !ImageAsBackgroundImage
+                        ? ("img", new()
+                        {
+                            {"src", Url},
+                            {"loading", "lazy"},
+                            {"alt", FileName},
+                            {"data-mimetype", ContentType}
+                        })
+                        : ("div", new()
+                        {
+                            {"style", $"background-image:url('{Url}')"},
+                            {"class", "file-display-img-box"},
+                            {"src", Url},
+                            {"loading", "lazy"},
+                            {"alt", FileName},
+                            {"data-mimetype", ContentType}
+                        });
+                case "video":
+                    return ("video", new()
+                    {
+                        {"preload", "metadata"},
+                        {"loading", "lazy"},
+                        {"controls", true},
+                        {"src", Url},
+                        {"type", ContentType}
+                    });
+                case "audio":
+                    return ("audio", new()
+                    {
+                        {"preload", "metadata"},
+                        {"loading", "lazy"},
+                        {"controls", true},
+                        {"src", Url},
+                        {"type", ContentType}
+                    });
+            }
         }
 
         if (!FallBackInIframe) // wenn binary
         {
             return ("object", new()
             {
-                { "data", Url },
-                { "type", ContentType }
+                {"data", Url},
+                {"onerror", "document.getElementById('content-type-display-error').classList.add('visible')"},
+                {"loading", "lazy"},
+                {"type", ContentType}
             });
         }
+
         return ("iframe", new()
         {
-            { "src", Url },
-            { "sandbox", "sandbox" }
+            {"src", Url},
+            {"loading", "lazy"},
+            {"sandbox", true}
         });
     }
 
@@ -93,13 +133,20 @@ public partial class MudExFileDisplay
         if (string.IsNullOrWhiteSpace(Url) && ContentStream != null)
         {
             ContentStream.Position = 0;
-            Url = DataUrl.GetDataUrl(ZipBrowserFile.GetBytes(ContentStream), ContentType);
+            Url = await DataUrl.GetDataUrlAsync(ContentStream.ToByteArray(), ContentType);
         }
-        //await _jsRuntime.InvokeVoidAsync(JsNamespace.Get("BrowserHelper", "download"), new
-        //{
-        //    Url,
-        //    FileName = $"{FileName}",
-        //    MimeType = ContentType
-        //});
+
+        await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
+        {
+            Url,
+            FileName = $"{FileName}",
+            MimeType = ContentType
+        });
+    }
+
+    private void CloseContentError()
+    {
+        JsRuntime.InvokeVoidAsync("eval",
+            "document.getElementById('content-type-display-error').classList.remove('visible')");
     }
 }

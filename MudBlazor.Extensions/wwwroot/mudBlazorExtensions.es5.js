@@ -216,7 +216,6 @@ var MudBlazorExtensionHelper = (function () {
                     return 'kf-mud-dialog-' + type + '-' + n + ' ' + _this3.options.animationDurationInMs + 'ms ' + _this3.options.animationTimingFunctionString + ' 1 alternate';
                 });
             });
-            window.ANIMANY = names;
             this.dialog.style.animation = '' + names.join(',');
         }
     }]);
@@ -247,6 +246,21 @@ window.MudBlazorExtensions = {
         } else {
             style.appendChild(document.createTextNode(css));
         }
+    },
+
+    downloadFile: function downloadFile(options) {
+        var fileUrl = options.url || "data:" + options.mimeType + ";base64," + options.base64String;
+        fetch(fileUrl).then(function (response) {
+            return response.blob();
+        }).then(function (blob) {
+            var link = window.document.createElement("a");
+            //link.href = window.URL.createObjectURL(blob, { type: options.mimeType });
+            link.href = window.URL.createObjectURL(blob);
+            link.download = options.fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
     }
 };
 

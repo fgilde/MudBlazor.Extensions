@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
     <PackageVersion>0.0.0-dev</PackageVersion>
     <!--<VersionSuffix>preview.$([System.DateTime]::Now.ToString(`yyMMddHHmmss`))</VersionSuffix>-->
     <LangVersion>10</LangVersion>
@@ -18,6 +21,9 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="wwwroot\_animations.css" />
@@ -29,16 +35,14 @@
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.min.css" />
   </ItemGroup>
 
-  
-  <ItemGroup>
-    <SupportedPlatform Include="browser" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.4" />
+    <!--<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />-->
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.4" />
-    <PackageReference Include="MudBlazor" Version="6.0.2" />
-    <PackageReference Include="Nextended.Blazor" Version="6.0.6" />
+    <PackageReference Include="MudBlazor" Version="6.0.10" />
+    <PackageReference Include="PSC.Blazor.Components.BrowserDetect" Version="1.0.6" />
+    <PackageReference Include="Nextended.Blazor" Version="6.0.7" />
     <PackageReference Include="Nerdbank.GitVersioning" Version="3.4.231">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

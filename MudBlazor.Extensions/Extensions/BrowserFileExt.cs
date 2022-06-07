@@ -2,28 +2,46 @@
 using System.Net.Mime;
 using HeyRed.Mime;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.JSInterop;
+using Nextended.Blazor.Extensions;
 using Nextended.Blazor.Helper;
+using Nextended.Blazor.Models;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Extensions
 {
     public static class BrowserFileExt
     {
+        public static async Task DownloadAsync(this IBrowserFile browserFile, IJSRuntime jsRuntime)
+        {
+            var url = await DataUrl.GetDataUrlAsync(await browserFile.GetBytesAsync(), browserFile.ContentType);
+            await jsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
+            {
+                Url = url,
+                FileName = $"{browserFile.Name}",
+                MimeType = browserFile.ContentType
+            });
+        }
+
         public static string IconForFile(string contentType)
         {
+            if (string.IsNullOrWhiteSpace(contentType))
+                return Icons.Custom.FileFormats.FileDocument;
             return IconForFile(new ContentType(contentType));
         }
 
         public static string GetIcon(this IBrowserFile file)
         {
-            return IconForFile(file.ContentType);
+            return IconForFile(file.GetContentType());
+        }
+
+        public static string GetContentType(this IBrowserFile file)
+        {
+            return string.IsNullOrWhiteSpace(file.ContentType) ? MimeTypesMap.GetMimeType(file.Name) : file.ContentType;
         }
 
         public static string IconForFile(ContentType contentType)
         {
-            //Icons.Filled.AlternateEmail
-            //Icons.Custom.Brands.MicrosoftAzure
-            //Icons.Custom.Brands.GitHub
             var mime = contentType.ToString().ToLower();
             if (MimeTypeHelper.IsZip(mime))
                 return Icons.Filled.Archive;
@@ -31,7 +49,6 @@ namespace MudBlazor.Extensions.Extensions
                 return Icons.Custom.Brands.MicrosoftVisualStudio;
             if (MimeTypeHelper.Matches(mime, "application/vnd.ms-excel", "text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml*", "application/vnd.ms-excel*"))
                 return Icons.Custom.FileFormats.FileExcel;
-
             if (MimeTypeHelper.Matches(mime, "application/vnd.ms*", "application/msword", "application/vnd.openxmlformats-officedocument*"))
                 return Icons.Custom.FileFormats.FileWord;
             if (MimeTypeHelper.Matches(mime, "application/pdf"))

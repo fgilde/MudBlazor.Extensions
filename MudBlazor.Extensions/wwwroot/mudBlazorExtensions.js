@@ -219,5 +219,20 @@ window.MudBlazorExtensions = {
         } else {
             style.appendChild(document.createTextNode(css));
         }
+    },
+
+    downloadFile(options) {
+        var fileUrl = options.url || "data:" + options.mimeType + ";base64," + options.base64String;
+        fetch(fileUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                var link = window.document.createElement("a");
+                //link.href = window.URL.createObjectURL(blob, { type: options.mimeType });
+                link.href = window.URL.createObjectURL(blob);
+                link.download = options.fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
     }
 };
