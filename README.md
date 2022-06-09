@@ -8,7 +8,66 @@ Sure you need a MudBlazor project and the referenced package to MudBlazor for mo
 Add the nuget Package `MudBlazor.Extensions` to your blazor project
 
 Now you can start using it.
-Currently we only have extensions for the Mud Dialog Service
+However if you want to use the Extensions components as well you should change your `_Imports.razor` and add this entries.
+
+```csharp
+@using MudBlazor.Extensions
+@using MudBlazor.Extensions.Components
+```
+
+## Components
+#### MudExFileDisplay
+A Component to display file contents for example as preview before uploading or for referenced files.
+This components automatically tries to display as best as possible and can handle urls or streams directly.
+You can use it like this
+
+```xml
+ <MudExFileDisplay FileName="NameOfYourFile.pdf" ContentType="application/pdf" Url="@Url"></MudExFileDisplay>
+```
+![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/FileDisplayPdf.png)
+
+#### MudExFileDisplayZip 
+ This component is also automatically used by `MudExFileDisplay` but can also used manually if you need to.
+
+ ```xml
+ <MudExFileDisplayZip AllowDownload="@AllowDownload" RootFolderName="@FileName" ContentStream="@ContentStream" Url="@Url"></MudExFileDisplayZip>
+```
+![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/FileDisplayZip.png)
+
+#### MudExFileDisplayDialog
+A small dialog for the `MudExFileDisplay` Component. Can be used with static helpers to show like this
+
+```csharp
+ await MudExFileDisplayDialog.Show(_dialogService, dataUrl, request.FileName, request.ContentType, ex => ex.JsRuntime = _jsRuntime);
+```
+
+Can be used directly with an IBrowserFile
+```csharp
+ IBrowserFile file = File;
+ await MudExFileDisplayDialog.Show(_dialogService, file, ex => ex.JsRuntime = _jsRuntime);
+```
+
+Can also be used completely manually with MudBlazor dialogService
+```csharp
+var parameters = new DialogParameters
+{
+    {nameof(Icon), BrowserFileExtensions.IconForFile(contentType)},
+    {nameof(Url), url},
+    {nameof(ContentType), contentType}
+};
+await dialogService.ShowEx<MudExFileDisplayDialog>(title, parameters, optionsEx);
+```
+
+![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/FileDisplayDialog.gif)
+
+#### (Planned)
+
+One of the next planned Component is an Multi upload component with Features like duplicate check, max size, specific allowed content types, max items, zip auto extract and many more. 
+The current State looks like this
+
+![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/UploadEdit.gif)
+
+## Extensions
 
 #### Make dialogs resizeable or draggable
 
@@ -77,16 +136,20 @@ Use animation to show dialog
 ```
 
 
-![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/slideIn.gif)
+![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/slideIn.gif)
 
 #### Change Log
+ - 1.2.4 Add Components `MudExFileDisplay` `MudExFileDisplayZip` and `MudExFileDisplayDialog`
+ - 1.2.2 Animations can be combined
+ - 1.2.2 Add animation fade
+ - 1.2.2 Improved animations for dialogs
  - 1.2.0 Slide in animations for dialogs. 
  - 1.1.2 New option FullHeight for dialogs
 
 #### Planned Features
 Notice this is just a first preview version. 
 There are some features planned like
- - Dragging with snap behaviour
- - Charm in and out behavior for left, right, top and bottom
+ - Multi upload component with preview and more
+ - Dragging with snap behaviour 
  - Automatic generation for a dialog to edit given model
  
