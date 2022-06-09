@@ -153,3 +153,9 @@ There are some features planned like
  - Dragging with snap behaviour 
  - Automatic generation for a dialog to edit given model
  
+
+ #
+## Links
+[Github Repository](https://github.com/fgilde/MudBlazor.Extensions) | 
+[Nuget Package](https://www.nuget.org/packages/MudBlazor.Extensions/)
+#
