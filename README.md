@@ -66,7 +66,8 @@ One of the next planned Component is an Multi upload component with Features lik
 The current State looks like this
 
 ![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/UploadEdit.gif)
-<a href="https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Screenshots/UploadEdit.mkv?raw=true" target="_blank">Video of upload edit can found here</a>
+<br>
+<a href="https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Screenshots/UploadEdit.mkv?raw=true" target="_blank">Download Video</a>
 
 ## Extensions
 
