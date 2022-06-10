@@ -65,7 +65,7 @@ await dialogService.ShowEx<MudExFileDisplayDialog>(title, parameters, optionsEx)
 One of the next planned Component is an Multi upload component with Features like duplicate check, max size, specific allowed content types, max items, zip auto extract and many more. 
 The current State looks like this
 
-<video preload="metadata" loading="lazy" controls="true" src="https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Screenshots/UploadEdit.mkv?raw=true" ></video>
+![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/UploadEdit.gif)
 <a href="https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Screenshots/UploadEdit.mkv?raw=true" target="_blank">Video of upload edit can found here</a>
 
 ## Extensions
