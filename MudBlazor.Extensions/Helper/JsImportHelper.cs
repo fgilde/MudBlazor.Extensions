@@ -4,15 +4,24 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.JSInterop;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Helper
 {
     public static class JsImportHelper
     {
         private static bool initialized;
-        
-        public static async Task<IJSRuntime> EnsureCanWork(this IJSRuntime runtime)
+        private static IJSRuntime _runtime; 
+
+        internal static async Task<IJSRuntime> GetInitializedJsRuntime(object field, IJSRuntime fallback)
         {
+            var js = fallback ?? _runtime ?? field.ExposeField<IJSRuntime>("_jsRuntime") ?? field.ExposeField<IJSRuntime>("_jsInterop");
+            return await InitializeMudBlazorExtensionsAsync(js);
+        }
+
+        public static async Task<IJSRuntime> InitializeMudBlazorExtensionsAsync(this IJSRuntime runtime)
+        {
+            _runtime = runtime ?? _runtime;
             if (!initialized)
             {
                 //await runtime.InvokeVoidAsync("eval", "document.body.appendChild(Object.assign(document.createElement('script'),{src: './_content/MudBlazor.Extensions/mudBlazorExtensions.js',type: 'text/javascript' })); ");

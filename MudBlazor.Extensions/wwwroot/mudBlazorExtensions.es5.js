@@ -209,14 +209,9 @@ var MudBlazorExtensionHelper = (function () {
     }, {
         key: 'animate',
         value: function animate(types) {
-            var _this3 = this;
-
-            var names = types.map(function (type) {
-                return _this3.options.dialogPositionNames.map(function (n) {
-                    return 'kf-mud-dialog-' + type + '-' + n + ' ' + _this3.options.animationDurationInMs + 'ms ' + _this3.options.animationTimingFunctionString + ' 1 alternate';
-                });
-            });
-            this.dialog.style.animation = '' + names.join(',');
+            //var names = types.map(type => this.options.dialogPositionNames.map(n => `kf-mud-dialog-${type}-${n} ${this.options.animationDurationInMs}ms ${this.options.animationTimingFunctionString} 1 alternate`));
+            //this.dialog.style.animation = `${names.join(',')}`;
+            this.dialog.style.animation = '' + this.options.animationStyle;
         }
     }]);
 

@@ -191,8 +191,9 @@ class MudBlazorExtensionHelper {
     }
 
     animate(types) {
-        var names = types.map(type => this.options.dialogPositionNames.map(n => `kf-mud-dialog-${type}-${n} ${this.options.animationDurationInMs}ms ${this.options.animationTimingFunctionString} 1 alternate`));
-        this.dialog.style.animation = `${names.join(',')}`;
+        //var names = types.map(type => this.options.dialogPositionNames.map(n => `kf-mud-dialog-${type}-${n} ${this.options.animationDurationInMs}ms ${this.options.animationTimingFunctionString} 1 alternate`));
+        //this.dialog.style.animation = `${names.join(',')}`;
+        this.dialog.style.animation = `${this.options.animationStyle}`;
     }
 }
 

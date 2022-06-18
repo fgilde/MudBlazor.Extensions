@@ -39,8 +39,8 @@ namespace MudBlazor.Extensions
         {
             var dialogComponent = await new Func<ComponentBase>(() => dialogReference.Dialog as ComponentBase).WaitForResultAsync();
             DotNetObjectReference<ComponentBase> callbackReference = DotNetObjectReference.Create(dialogComponent);
-            var js = options.JsRuntime ?? dialogComponent.ExposeField<IJSRuntime>("_jsRuntime") ?? dialogComponent.ExposeField<IJSRuntime>("_jsInterop");
-            await js.EnsureCanWork();
+            var js = await JsImportHelper.GetInitializedJsRuntime(dialogComponent, options.JsRuntime);
+
             if (options.MaximizeButton == true)
             {
                 var buttons = options.Buttons?.ToList() ?? new List<MudDialogButton>();
