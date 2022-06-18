@@ -141,6 +141,7 @@ Use animation to show dialog
 ![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/slideIn.gif)
 
 #### Change Log
+ - 1.2.6 Add New Animationtypes for dialog or manual using
  - 1.2.4 Add Components `MudExFileDisplay` `MudExFileDisplayZip` and `MudExFileDisplayDialog`
  - 1.2.2 Animations can be combined
  - 1.2.2 Add animation fade
