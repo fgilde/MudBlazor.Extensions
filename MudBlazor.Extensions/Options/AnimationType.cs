@@ -8,7 +8,8 @@ namespace MudBlazor.Extensions.Options
         Default,
         [Description("kf-mud-dialog-slide-{pos}")] SlideIn,
         [Description("kf-mud-dialog-fade")] FadeIn,
-
+        [Description("scale{InOut}")] Scale,
+        
         [Description("slide{InOut}{Pos}")] Slide,
         [Description("fade{InOut}{Pos?}")] Fade,
 

@@ -103,6 +103,28 @@
     opacity: 1;
   }
 }
+@keyframes scaleOut {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.2);
+  }
+  80% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 .mud-dialog-animate-ex {
   position: fixed;
   transition-property: all;

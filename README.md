@@ -140,6 +140,15 @@ Use animation to show dialog
 
 ![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/slideIn.gif)
 
+If you animate a dialog with dialogServiceEx, you should add the class `mud-ex-dialog-initial` to your dialog to ensure no visibility before animation.
+Currently you can use following animations: `SlideIn,FadeIn,Scale,Slide,Fade,Zoom,Roll,JackInTheBox,Hinge,Rotate,Bounce,Back,Jello,Wobble,Tada,Swing,HeadShake,Shake,RubberBand,Pulse,Flip,FlipX,FlipY`
+
+```csharp
+    <MudDialog Class="mud-ex-dialog-initial">
+```
+> **_BETA (Work still in progress):_** All animations can currently also used on other components for example in this popover. `<MudPopover Style="@(IsOpen $"animation: {new [] {AnimationType.FadeIn, AnimationType.SlideIn}.GetAnimationCssStyle(TimeSpan.FromSeconds(1))}" : "")">Popover content</MudPopover>`
+
+
 #### Change Log
  - 1.2.6 Add New Animationtypes for dialog or manual using
  - 1.2.4 Add Components `MudExFileDisplay` `MudExFileDisplayZip` and `MudExFileDisplayDialog`
