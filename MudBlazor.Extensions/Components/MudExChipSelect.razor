@@ -1,0 +1,128 @@
+﻿@using Nextended.Core.Extensions
+@using Microsoft.AspNetCore.Components.Rendering
+@typeparam T
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MudExChipSelect<T>> _localizer
+
+<style>
+    .chip-select-chipsonly .mud-input-adornment {
+        margin-top: -40px;
+    }
+    .chip-select-chipsonly button {
+        margin-top: -40px;
+    }
+    .chip-select-chipsonly > div > div.mud-shrink~label.mud-input-label.mud-input-label-inputcontrol, .mud-input:focus-within~label.mud-input-label.mud-input-label-inputcontrol {
+        visibility: hidden;
+    }
+    .chip-select-chipsonly > div > div.mud-input.mud-input-text.mud-input-adorned-end.mud-input-underline.mud-shrink.mud-select-input {
+        height: 0;
+    }
+
+    .chip-select-chipsonly .mud-input-slot {
+        visibility: hidden;
+    }
+    .chip-select-chipsonly {
+        margin-top: -6px;
+        align-items: stretch;
+        flex-flow: column-reverse;
+        cursor: pointer;
+    }
+    .chip-select-over .mud-list {
+        padding-top: 0 !important;
+    }
+
+    .filter-select {
+        position: sticky;
+        top: 0;
+        background: var(--mud-palette-surface) !important;
+        z-index: 1;
+    }
+
+    .filter-select .mud-list-item-icon {
+        display: none;
+    }
+</style>
+<MudGrid>
+    @if (ViewMode == ViewMode.ChipsAdditionalAbove)
+    {
+        <MudItem xs="12" md="12">
+            @RenderChips
+        </MudItem>
+    }
+
+    <MudItem xs="12" md="12">
+        @if (ViewMode == ViewMode.ChipsOnly)
+        {
+            @RenderChips
+        }
+        <div class="select-container">
+            <MudSelect T="@T" MultiSelectionTextFunc="MultiSelectionTextFunc"
+                       For="@For"
+                       Label="@(!Label.IsNullOrWhiteSpace() ? _localizer[Label] : "")" HelperText="@(!HelperText.IsNullOrWhiteSpace() ? _localizer[HelperText] : "")"
+                       Clearable="true"
+                       SelectAll="false"
+                       DisableUnderLine="@DisableUnderLine"
+                       Class="@_cssName"
+                       PopoverClass="@($"{_cssName}-over chip-select-over")"
+                       MultiSelection="@MultiSelect" 
+                       AnchorOrigin="Origin.BottomCenter"
+                       @bind-Value="Value" 
+                       @bind-SelectedValues="Selected"
+                       AdornmentIcon="@AdornmentIcon">
+                @if (FilterEnabled)
+                {
+                    <MudSelectItem Class="filter-select" T="@T" Value="default">
+                        <MudTextField Immediate="true" Clearable="true" @bind-Value="Filter" AutoFocus="true" T="string" Placeholder="@_localizer["Filter"]" Label="@_localizer["Filter"]"/>
+                    </MudSelectItem>
+                }
+                @foreach (var item in _available.EmptyIfNull().Where(arg => arg != null && (Filter.IsNullOrWhiteSpace() || ItemNameRender(arg)?.Contains(Filter, StringComparison.CurrentCultureIgnoreCase) == true)))
+                {
+                    <MudSelectItem Style="height: 70px;" T="@T" Value="@item">
+                        @if (UseCustomItemRenderInSelectionPopover)
+                        {
+                            @RenderItem(this.ExposeField<RenderTreeBuilder>("__builder"), item)
+                        }
+                        else
+                        {
+                            <MudHighlighter Text="@ItemNameRender(item)" HighlightedText="@Filter"/>
+                        }
+                    </MudSelectItem>
+                }
+            </MudSelect>
+        </div>
+    </MudItem>
+    
+    @if (ViewMode == ViewMode.ChipsAdditionalBelow)
+    {
+        <MudItem xs="12" md="12">
+            @RenderChips
+        </MudItem>
+    }
+
+</MudGrid>
+
+@code
+{
+    private void RenderChips(RenderTreeBuilder builder)
+    {
+        foreach (var item in Selected.Where(arg => arg != null))
+        {
+            RenderChip(builder, item);
+        }
+    }
+
+    private void RenderChip(RenderTreeBuilder __builder, T item)
+    {
+    <MudChip Size="Size.Large" Variant="@ChipVariant" OnClose="@(chip => Remove(chip, item))" Color="@ChipColor" CloseIcon="@Icons.Material.Filled.Close">
+                @RenderItem(__builder, item)
+    </MudChip>
+    }
+
+    protected virtual RenderFragment RenderItem(RenderTreeBuilder __builder, T item)
+    {
+        if (ItemTemplate != null)
+            return ItemTemplate(item);
+        string name = ItemNameRender(item);
+        return @<p>@name</p>;
+    }
+
+}

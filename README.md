@@ -150,6 +150,7 @@ Currently you can use following animations: `SlideIn,FadeIn,Scale,Slide,Fade,Zoo
 
 
 #### Change Log
+ - 1.2.8 Add New Component `MudExChipSelect`
  - 1.2.6 Add New Animationtypes for dialog or manual using
  - 1.2.4 Add Components `MudExFileDisplay` `MudExFileDisplayZip` and `MudExFileDisplayDialog`
  - 1.2.2 Animations can be combined
