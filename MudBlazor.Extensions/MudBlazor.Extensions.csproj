@@ -37,13 +37,13 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.7" />
     <!--<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />-->
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.4" />
-    <PackageReference Include="MudBlazor" Version="6.0.10" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.7" />
+    <PackageReference Include="MudBlazor" Version="6.0.14" />
     <PackageReference Include="PSC.Blazor.Components.BrowserDetect" Version="1.0.6" />
     <PackageReference Include="Nextended.Blazor" Version="6.0.7" />
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.4.231">
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.5.108">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

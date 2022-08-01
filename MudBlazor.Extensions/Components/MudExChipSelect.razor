@@ -79,7 +79,8 @@
                     <MudSelectItem Style="height: 70px;" T="@T" Value="@item">
                         @if (UseCustomItemRenderInSelectionPopover)
                         {
-                            @RenderItem(this.ExposeField<RenderTreeBuilder>("__builder"), item)
+                            @((RenderTreeBuilder b) => RenderItem(b, item))
+                            @*@RenderItem(this.ExposeField<RenderTreeBuilder>("__builder"), item)*@
                         }
                         else
                         {
