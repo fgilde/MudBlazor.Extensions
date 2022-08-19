@@ -30,6 +30,24 @@ namespace MudBlazor.Extensions
             return await dialogService.Show(type, title, parameters, options).InjectOptionsAsync(options);
         }
 
+        public static async Task<bool?> ShowMessageBoxEx(IDialogService dialogService, MessageBoxOptions mboxOptions, DialogOptionsEx options = null)
+        {
+            DialogParameters parameters = new DialogParameters()
+            {
+                ["Title"] = mboxOptions.Title,
+                ["Message"] = mboxOptions.Message,
+                ["MarkupMessage"] = mboxOptions.MarkupMessage,
+                ["CancelText"] = mboxOptions.CancelText,
+                ["NoText"] = mboxOptions.NoText,
+                ["YesText"] = mboxOptions.YesText
+            };
+            
+            string title = mboxOptions.Title;
+            
+            DialogResult result = await (await dialogService.Show<MudMessageBox>(title, parameters, options).InjectOptionsAsync(options)).Result;
+            return result.Cancelled || !(result.Data is bool data) ? new bool?() : data;
+        }
+
         public static async Task<IDialogReference> ShowEx(this IDialogService dialogService, Type type, string title, DialogOptionsEx options = null)
         {
             return await dialogService.Show(type, title, options).InjectOptionsAsync(options);
