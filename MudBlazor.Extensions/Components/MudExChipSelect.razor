@@ -60,6 +60,7 @@
                        Label="@(!Label.IsNullOrWhiteSpace() ? _localizer[Label] : "")" HelperText="@(!HelperText.IsNullOrWhiteSpace() ? _localizer[HelperText] : "")"
                        Clearable="@(!ReadOnly)"
                        ReadOnly="@ReadOnly"
+                       Adornment="@(ReadOnly ? Adornment.None : Adornment)"
                        SelectAll="false"
                        DisableUnderLine="@DisableUnderLine"
                        Class="@_cssName"
