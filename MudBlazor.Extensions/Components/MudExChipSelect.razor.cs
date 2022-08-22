@@ -26,6 +26,7 @@ public partial class MudExChipSelect<T>
     [Parameter] public T Value { get; set; }
 
     [Parameter] public EventCallback<IEnumerable<T>> SelectedChanged { get; set; }
+    [Parameter] public EventCallback<T> ValueChanged { get; set; }
 
     [Parameter]
     public IEnumerable<T> Selected
@@ -37,11 +38,17 @@ public partial class MudExChipSelect<T>
             if (Selected.Count() != set.Count || !_selected.All(x => set.Contains(x)))
             {
                 _selected = new HashSet<T>(set);
-                SelectedChanged.InvokeAsync(new HashSet<T>(Selected));
+                RaiseChanged();
             }
         }
     }
-    
+
+    private void RaiseChanged()
+    {
+        SelectedChanged.InvokeAsync(new HashSet<T>(Selected));
+        ValueChanged.InvokeAsync(Value);
+    }
+
     [Parameter]
     public string Filter
     {
@@ -71,7 +78,7 @@ public partial class MudExChipSelect<T>
     private void Remove(MudChip chip, T item)
     {
         ((HashSet<T>)_selected).Remove(item);
-        SelectedChanged.InvokeAsync(new HashSet<T>(_selected));
+        RaiseChanged();
     }
 
     public virtual string ItemNameRender(T item) => ItemToStringFunc(item);
