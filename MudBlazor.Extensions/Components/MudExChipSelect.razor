@@ -58,7 +58,7 @@
             <MudSelect T="@T" MultiSelectionTextFunc="MultiSelectionTextFunc"
                        For="@For"
                        Label="@(!Label.IsNullOrWhiteSpace() ? _localizer[Label] : "")" HelperText="@(!HelperText.IsNullOrWhiteSpace() ? _localizer[HelperText] : "")"
-                       Clearable="true"
+                       Clearable="@(!ReadOnly)"
                        ReadOnly="@ReadOnly"
                        SelectAll="false"
                        DisableUnderLine="@DisableUnderLine"
@@ -114,7 +114,7 @@
 
     private void RenderChip(RenderTreeBuilder __builder, T item)
     {
-    <MudChip Size="Size.Large" Variant="@ChipVariant" OnClose="@(chip => Remove(chip, item))" Color="@ChipColor" CloseIcon="@(ReadOnly ? null : Icons.Material.Filled.Close)">
+    <MudChip Size="Size.Large" Variant="@ChipVariant" OnClose="@(( ReadOnly ? null : chip => Remove(chip, item)))" Color="@ChipColor" CloseIcon="@Icons.Material.Filled.Close">
                 @RenderItem(__builder, item)
     </MudChip>
     }
