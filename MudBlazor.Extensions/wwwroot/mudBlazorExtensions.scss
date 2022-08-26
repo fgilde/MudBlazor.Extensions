@@ -29,3 +29,45 @@
 .mud-ex-dialog-initial {
     display: none !important;
 }
+
+.chip-select-chipsonly .mud-input-adornment {
+    margin-top: -40px;
+}
+
+.chip-select-chipsonly button {
+    margin-top: -40px;
+}
+
+.chip-select-chipsonly > div > div.mud-shrink ~ label.mud-input-label.mud-input-label-inputcontrol, .mud-input:focus-within ~ label.mud-input-label.mud-input-label-inputcontrol {
+    visibility: hidden;
+}
+
+.chip-select-chipsonly > div > div.mud-input.mud-input-text.mud-input-adorned-end.mud-input-underline.mud-shrink.mud-select-input {
+    height: 0;
+}
+
+.chip-select-chipsonly .mud-input-slot {
+    visibility: hidden;
+}
+
+.chip-select-chipsonly {
+    margin-top: -6px;
+    align-items: stretch;
+    flex-flow: column-reverse;
+    cursor: pointer;
+}
+
+.chip-select-over .mud-list {
+    padding-top: 0 !important;
+}
+
+.filter-select {
+    position: sticky;
+    top: 0;
+    background: var(--mud-palette-surface) !important;
+    z-index: 1;
+}
+
+.filter-select .mud-list-item-icon {
+    display: none;
+}

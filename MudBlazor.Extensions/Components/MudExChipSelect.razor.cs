@@ -6,6 +6,7 @@ namespace MudBlazor.Extensions.Components;
 
 public partial class MudExChipSelect<T>
 {
+    [Parameter] public Variant Variant { get; set; }
     [Parameter] public Adornment Adornment { get; set; } = Adornment.End;
     [Parameter] public bool ReadOnly { get; set; }
     [Parameter] public Expression<Func<T>>? For { get; set; }

@@ -66,10 +66,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Screenshots\slideIn.gif">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
