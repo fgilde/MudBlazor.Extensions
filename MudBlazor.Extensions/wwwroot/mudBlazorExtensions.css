@@ -3880,8 +3880,8 @@
   height: 0;
 }
 
-.chip-select-chipsonly .mud-input-slot {
-  visibility: visible;
+.chip-select-chipsonly .mud-input.mud-input-text.mud-input-adorned-end.mud-input-underline.mud-shrink.mud-select-input > input {
+  opacity: 0;
 }
 
 .chip-select-chipsonly {
