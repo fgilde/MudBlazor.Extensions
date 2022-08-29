@@ -68,7 +68,7 @@ public partial class MudExChipSelect<T>
     private IEnumerable<T> _available;
     private IEnumerable<T> _selected;
     private string _filter;
-    private string _cssName => $"chip-select-{Enum.GetName(ViewMode)?.ToLower() ?? "none"}";
+    private string _cssName => $"chip-select-{Enum.GetName(ViewMode)?.ToLower() ?? "none"} {(Selected?.Any() == true ? "with-items" : "empty")}";
 
 
     protected override async Task OnParametersSetAsync()

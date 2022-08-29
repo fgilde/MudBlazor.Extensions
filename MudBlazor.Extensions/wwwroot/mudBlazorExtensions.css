@@ -3905,3 +3905,13 @@
 .filter-select .mud-list-item-icon {
   display: none;
 }
+
+.chip-select-chipsonly.with-items .mud-input-helper-text {
+  top: 25px;
+  position: absolute;
+}
+
+.chip-select-chipsonly.empty .mud-input-helper-text {
+  top: 55px;
+  position: absolute;
+}

@@ -3,14 +3,6 @@
 @typeparam T
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MudExChipSelect<T>> _localizer
 
-<style>
-    .chip-select-chipsonly .mud-input-helper-text {
-        /* background: aquamarine; */
-        top: @(Selected?.Any() == true ? "25px" : "55px");
-        position: absolute;
-    }
-</style>
-
 <MudGrid>
     @if (ViewMode == ViewMode.ChipsAdditionalAbove)
     {
