@@ -3881,7 +3881,7 @@
 }
 
 .chip-select-chipsonly .mud-input-slot {
-  visibility: hidden;
+  visibility: visible;
 }
 
 .chip-select-chipsonly {

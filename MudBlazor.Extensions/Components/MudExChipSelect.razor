@@ -37,7 +37,7 @@
                 @if (FilterEnabled)
                 {
                     <MudSelectItem Class="filter-select" T="@T" Value="default">
-                        <MudTextField Immediate="true" Clearable="true" @bind-Value="Filter" AutoFocus="true" T="string" Placeholder="@_localizer["Filter"]" Label="@_localizer["Filter"]"/>
+                        <MudTextField Immediate="true" Clearable="true" @bind-Value="Filter" AutoFocus="@(AutoFocusFilter && FilterEnabled)" T="string" Placeholder="@_localizer["Filter"]" Label="@_localizer["Filter"]"/>
                     </MudSelectItem>
                 }
                 @foreach (var item in _available.EmptyIfNull().Where(arg => arg != null && (Filter.IsNullOrWhiteSpace() || ItemNameRender(arg)?.Contains(Filter, StringComparison.CurrentCultureIgnoreCase) == true)))
