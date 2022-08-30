@@ -3915,3 +3915,7 @@
   top: 55px;
   position: absolute;
 }
+
+.mud-ex-keep-input-label-visible .mud-input-label {
+  visibility: visible !important;
+}
