@@ -94,8 +94,9 @@ class MudBlazorExtensionHelper {
     }
 
     checkResizeable() {
+        this.dialog.style.position = 'absolute';
         if (this.options.resizeable) {
-            this.dialog.style.position = 'absolute';
+            //this.dialog.style.position = 'absolute';
             this.dialog.style['resize'] = 'both';
             this.dialog.style['overflow'] = 'auto';
             this.dialog.style.maxWidth = window.innerWidth + 'px';

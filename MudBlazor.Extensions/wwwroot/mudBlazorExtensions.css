@@ -3880,7 +3880,7 @@
   height: 0;
 }
 
-.chip-select-chipsonly .mud-input.mud-input-text.mud-input-adorned-end.mud-input-underline.mud-shrink.mud-select-input > input {
+.chip-select-chipsonly .mud-input.mud-input-text.mud-select-input > input {
   opacity: 0;
 }
 
