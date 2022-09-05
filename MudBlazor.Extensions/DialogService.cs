@@ -1,30 +1,83 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using Nextended.Core;
 using Nextended.Core.Extensions;
+using Nextended.Core.Helper;
 
 namespace MudBlazor.Extensions
 {
     public static class DialogServiceExt
     {
-        public static async Task<IDialogReference> ShowEx<T>(this IDialogService dialogService, string title, DialogParameters parameters, DialogOptionsEx options = null)
-            where T : ComponentBase
+
+        public static DialogParameters ToDialogParameters(this IEnumerable<KeyValuePair<string, object>> parameters)
         {
-            return await dialogService.Show<T>(title, parameters, options).InjectOptionsAsync(options);
+            var dialogParameters = new DialogParameters();
+            foreach (var parameter in parameters)
+                dialogParameters.Add(parameter.Key, parameter.Value);
+            return dialogParameters;
         }
 
-        public static async Task<IDialogReference> ShowEx<T>(this IDialogService dialogService, string title, DialogOptionsEx options = null)
-            where T : ComponentBase
+        public static DialogParameters ConvertToDialogParameters<TDialog>(this Action<TDialog> dialogParameters) where TDialog : new()
+            => DictionaryHelper.GetValuesDictionary(dialogParameters, true).Where(p => typeof(TDialog).GetProperty(p.Key, BindingFlags.Public | BindingFlags.Instance)?.CanWrite == true).ToDialogParameters();
+
+        public static DialogParameters ConvertToDialogParameters<TDialog>(this TDialog dialogParameters) where TDialog : new()
+            => DictionaryHelper.GetValuesDictionary(dialogParameters, true).Where(p => typeof(TDialog).GetProperty(p.Key, BindingFlags.Public | BindingFlags.Instance)?.CanWrite == true).ToDialogParameters();
+
+        public static Task<IDialogReference> ShowEx<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, Action<DialogOptionsEx> optionsEx)
+            where TDialog : ComponentBase, new()
         {
-            return await dialogService.Show<T>(title, options).InjectOptionsAsync(options);
+            var options = new DialogOptionsEx();
+            optionsEx(options);
+            return dialogService.ShowEx<TDialog>(title, dialogParameters, options);
         }
 
-        public static async Task<IDialogReference> ShowEx(this IDialogService dialogService, Type type, string title, DialogParameters parameters, DialogOptionsEx options = null)
+        public static Task<IDialogReference> ShowEx<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, Action<DialogOptionsEx> optionsEx)
+            where TDialog : ComponentBase, new()
         {
-            return await dialogService.Show(type, title, parameters, options).InjectOptionsAsync(options);
+            var options = new DialogOptionsEx();
+            optionsEx(options);
+            return dialogService.ShowEx<TDialog>(title, dialogParameters, options);
         }
+
+        public static async Task<IDialogReference> ShowEx<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, DialogOptionsEx optionsEx = null) where TDialog : ComponentBase, new()
+            => await dialogService.ShowEx<TDialog>(title, dialogParameters.ConvertToDialogParameters(), optionsEx ?? new DialogOptionsEx());
+
+        public static async Task<IDialogReference> ShowEx<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, DialogOptionsEx optionsEx = null) where TDialog : ComponentBase, new()
+            => await dialogService.ShowEx<TDialog>(title, dialogParameters.ConvertToDialogParameters(), optionsEx ?? new DialogOptionsEx());
+
+        public static IDialogReference Show<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, Action<DialogOptions> options)
+            where TDialog : ComponentBase, new()
+        {
+            var dlgOptions = new DialogOptions();
+            options(dlgOptions);
+            return Show<TDialog>(dialogService, title, dialogParameters, dlgOptions);
+        }
+
+        public static IDialogReference Show<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, Action<DialogOptions> options)
+            where TDialog : ComponentBase, new()
+        {
+            var dlgOptions = new DialogOptions();
+            options(dlgOptions);
+            return dialogService.Show<TDialog>(title, dialogParameters, dlgOptions);
+        }
+
+        public static IDialogReference Show<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, DialogOptions options = null) where TDialog : ComponentBase, new()
+            => dialogService.Show<TDialog>(title, dialogParameters.ConvertToDialogParameters(), options ?? new DialogOptions());
+
+        public static IDialogReference Show<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, DialogOptions options = null) where TDialog : ComponentBase, new()
+            => dialogService.Show<TDialog>(title, dialogParameters.ConvertToDialogParameters(), options ?? new DialogOptions());
+
+        public static async Task<IDialogReference> ShowEx<T>(this IDialogService dialogService, string title, DialogParameters parameters, DialogOptionsEx options = null) where T : ComponentBase 
+            => await dialogService.Show<T>(title, parameters, options).InjectOptionsAsync(options);
+
+        public static async Task<IDialogReference> ShowEx<T>(this IDialogService dialogService, string title, DialogOptionsEx options = null) where T : ComponentBase 
+            => await dialogService.Show<T>(title, options).InjectOptionsAsync(options);
+
+        public static async Task<IDialogReference> ShowEx(this IDialogService dialogService, Type type, string title, DialogParameters parameters, DialogOptionsEx options = null) 
+            => await dialogService.Show(type, title, parameters, options).InjectOptionsAsync(options);
 
         public static async Task<bool?> ShowMessageBoxEx(this IDialogService dialogService, MessageBoxOptions mboxOptions, DialogOptionsEx options = null)
         {

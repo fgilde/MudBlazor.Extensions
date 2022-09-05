@@ -1,18 +1,30 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using Nextended.Core.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MudBlazor.Extensions.Components;
 
 public partial class MudExChipSelect<T>
 {
+    [Inject] private IServiceProvider _serviceProvider { get; set; }
+    [Parameter] public IStringLocalizer Localizer { get; set; }
+    [Parameter] public string LocalizerPattern { get; set; } = "{0}";
+
+    private IStringLocalizer<MudExChipSelect<T>> _fallbackLocalizer => _serviceProvider.GetService<IStringLocalizer<MudExChipSelect<T>>>();
+    protected IStringLocalizer LocalizerToUse => Localizer ?? _fallbackLocalizer;
     [Parameter] public string Class { get; set; }
     [Parameter] public Variant Variant { get; set; }
     [Parameter] public bool AutoFocusFilter { get; set; }
     [Parameter] public Adornment Adornment { get; set; } = Adornment.End;
     [Parameter] public bool ReadOnly { get; set; }
-    [Parameter] public Expression<Func<T>>? For { get; set; }
+    //[Parameter] public Expression<Func<T>>? For { get; set; }
+    [Parameter] public bool RenderValidationComponent { get; set; } = true;
+    [Parameter] public Expression<Func<IEnumerable<T>>>? For { get; set; }
     [Parameter] public bool DisableUnderLine { get; set; }
+    [Parameter] public bool DisableUnderLineForValidationComponent { get; set; } = true;
+    [Parameter] public string StyleForValidationComponent { get; set; } = "margin-top: -38px; pointer-events: none;";
     [Parameter] public virtual Color ChipColor { get; set; } = Color.Primary;
     [Parameter] public virtual Variant ChipVariant { get; set; } = Variant.Filled;
     [Parameter] public virtual ViewMode ViewMode { get; set; } = ViewMode.ChipsOnly;
@@ -85,8 +97,17 @@ public partial class MudExChipSelect<T>
         RaiseChanged();
     }
 
-    public virtual string ItemNameRender(T item) => ItemToStringFunc(item);
-    
+    public virtual string ItemNameRender(T item)
+    {
+        var res = ItemToStringFunc(item);
+        if (!string.IsNullOrWhiteSpace(res) && LocalizerToUse != null && !string.IsNullOrWhiteSpace(LocalizerPattern))
+        {
+            return LocalizerToUse[string.Format(LocalizerPattern, item)];
+        }
+
+        return res;
+    }
+
     protected virtual string MultiSelectionTextFunc(List<string> arg) 
         => string.Join(", ", Selected.Where(a => a != null).Select(r => ItemNameRender(r)?.ToUpper(true)));
     

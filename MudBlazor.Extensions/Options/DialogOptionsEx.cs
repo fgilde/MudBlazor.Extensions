@@ -31,12 +31,6 @@ namespace MudBlazor.Extensions.Options
             set => AnimationDuration = TimeSpan.FromMilliseconds(value);
         }
 
-        public string AnimationStyle => Animations.GetAnimationCssStyle(AnimationDuration, AnimationDirection.In, AnimationTimingFunction, Position);
-
-        //public string AnimationTimingFunctionString => AnimationTimingFunction.ToString();
-        // public string[] DialogPositionNames => Position.GetPositionNames();
-        //public string DialogPositionDescription => Position.ToDescriptionString();
-        //public string[] AnimationDescriptions => Animations.Select(type => type.ToDescriptionString()).ToArray();
-        
+        public string AnimationStyle => Animations?.Any() == true ? Animations.GetAnimationCssStyle(AnimationDuration, AnimationDirection.In, AnimationTimingFunction, Position) : string.Empty;
     }
 }

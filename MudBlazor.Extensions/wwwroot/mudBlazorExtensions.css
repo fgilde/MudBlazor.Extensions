@@ -3919,3 +3919,24 @@
 .mud-ex-keep-input-label-visible .mud-input-label {
   visibility: visible !important;
 }
+
+.mud-ex-alert-message-w-100 > .mud-alert-position > .mud-alert-message {
+  width: 100%;
+}
+
+.mud-ex-collection-edit-label {
+  color: var(--mud-palette-text-secondary);
+  font-size: 1rem;
+}
+
+.mud-ex-collection-edit-label-small {
+  transform: translate(0, 1.5px) scale(0.75);
+  transform-origin: top left;
+}
+
+.mud-ex-collection-edit-outlined-border {
+  border-radius: var(--mud-default-borderradius);
+  border-color: var(--mud-palette-lines-inputs);
+  border-width: 1px;
+  border-style: solid;
+}
