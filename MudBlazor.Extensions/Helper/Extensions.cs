@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Extensions.Localization;
 using MudBlazor.Extensions.Options;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
@@ -24,6 +25,9 @@ namespace MudBlazor.Extensions.Helper
 
             return res;
         }
+
+        public static string TryLocalize(this IStringLocalizer localizer, string text, params object[] args) 
+            => localizer != null ? localizer[text, args] : string.Format(text, args);
 
         public static string GetAnimationCssStyle(this AnimationType type, TimeSpan duration, AnimationDirection? direction = null, AnimationTimingFunction animationTimingFunction = null, DialogPosition? targetPosition = null)
             => GetAnimationCssStyle(new[] { type }, duration, direction, animationTimingFunction, targetPosition);

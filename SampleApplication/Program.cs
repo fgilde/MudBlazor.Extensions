@@ -15,9 +15,9 @@ builder.Services.AddBlazorPrettyCode();
 builder.Services.AddMudServicesWithExtensions();
 builder.Services.AddMudMarkdownServices();
 
-builder.Services.AddLocalization(options =>
-{
-    options.ResourcesPath = "Resources";
-});
+//builder.Services.AddLocalization(options =>
+//{
+//    options.ResourcesPath = "Resources";
+//});
 
 await builder.Build().RunAsync();

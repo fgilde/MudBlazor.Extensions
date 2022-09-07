@@ -1,5 +1,6 @@
 ﻿@using MudBlazor.Extensions.Extensions
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
+@using MudBlazor.Extensions.Helper
 @typeparam T
 
 <style>
@@ -87,7 +88,7 @@ else
                 }
                 @if (FilterMode != PropertyFilterMode.Disabled)
                 {
-                    <MudTextField @ref="_searchBox" OnBlur="@(FilterBoxBlur)" OnKeyDown="@(FilterKeyPress)" Class="@($"animate-all-properties mud-ex-property-filter {(_searchActive || FilterMode == PropertyFilterMode.AlwaysVisible ? "active" : "")}")" Immediate="true" Clearable="true" @bind-Value="Filter" T="string" Placeholder="@LocalizerToUse["Filter"]" Label="@LocalizerToUse["Filter"]"/>
+                    <MudTextField @ref="_searchBox" OnBlur="@(FilterBoxBlur)" OnKeyDown="@(FilterKeyPress)" Class="@($"animate-all-properties mud-ex-property-filter {(_searchActive || FilterMode == PropertyFilterMode.AlwaysVisible ? "active" : "")}")" Immediate="true" Clearable="true" @bind-Value="Filter" T="string" Placeholder="@LocalizerToUse.TryLocalize("Filter")" Label="@LocalizerToUse.TryLocalize("Filter")"/>
                 }
                 @if (FilterMode == PropertyFilterMode.Toggleable)
                 {
@@ -111,7 +112,7 @@ else
             @foreach (var grouping in GroupedMetaPropertyInfos())
             {
                 var groupName = !string.IsNullOrWhiteSpace(grouping.Key) ? grouping.Key : DefaultGroupName;
-                <MudExpansionPanel @ref="@ExpansionPanel" IsInitiallyExpanded="true" Disabled="@(!GroupsCollapsible)" Class="@($"mt-3 {(!string.IsNullOrWhiteSpace(groupName) ? CssClassName : "mud-ex-hidden-group")}")" Text="@(!string.IsNullOrWhiteSpace(groupName) ? LocalizerToUse[groupName] : groupName)">
+                <MudExpansionPanel @ref="@ExpansionPanel" IsInitiallyExpanded="true" Disabled="@(!GroupsCollapsible)" Class="@($"mt-3 {(!string.IsNullOrWhiteSpace(groupName) ? CssClassName : "mud-ex-hidden-group")}")" Text="@(!string.IsNullOrWhiteSpace(groupName) ? LocalizerToUse.TryLocalize(groupName) : groupName)">
 
                     @if (ShouldAddGrid(grouping))
                     {

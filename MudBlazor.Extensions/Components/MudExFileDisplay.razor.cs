@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using Nextended.Blazor.Helper;
 using Nextended.Blazor.Models;
@@ -15,7 +17,11 @@ namespace MudBlazor.Extensions.Components;
 
 public partial class MudExFileDisplay
 {
-    [Inject] private IJSRuntime JsRuntime { get; set; }
+    
+    [Inject] private IServiceProvider _serviceProvider { get; set; }
+
+    private IJSRuntime JsRuntime => _serviceProvider.GetService<IJSRuntime>();
+    private IStringLocalizer<MudExFileDisplay> _localizer => _serviceProvider.GetService<IStringLocalizer<MudExFileDisplay>>();
 
     [Parameter] public string Url { get; set; }
     [Parameter] public string ContentType { get; set; }

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 
 
@@ -73,7 +74,7 @@ public partial class MudExCollectionEditor<T>
             { nameof(MudExObjectEditDialog<T>.DialogIcon), EditIcon },
             { nameof(MudExObjectEditDialog<T>.Localizer), Localizer }
         };
-        var res = await _mudDialogService.EditObject<T>(item, LocalizerToUse["Edit {0}", ItemNameRender(item)] , DialogOptions ?? DefaultOptions(), null, parameters);
+        var res = await _mudDialogService.EditObject<T>(item, LocalizerToUse.TryLocalize("Edit {0}", ItemNameRender(item)) , DialogOptions ?? DefaultOptions(), null, parameters);
         if (!res.Cancelled)
         {
             if (Primitive)
@@ -113,7 +114,7 @@ public partial class MudExCollectionEditor<T>
             { nameof(MudExObjectEditDialog<T>.DialogIcon), AddIcon },
             { nameof(MudExObjectEditDialog<T>.Localizer), Localizer }
         };
-        var res = await _mudDialogService.EditObject<T>(item, LocalizerToUse["Add"], DialogOptions ?? DefaultOptions(), null, parameters);
+        var res = await _mudDialogService.EditObject<T>(item, LocalizerToUse.TryLocalize("Add"), DialogOptions ?? DefaultOptions(), null, parameters);
         if (!res.Cancelled)
         {
             Add(res.Result);

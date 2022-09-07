@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Rendering
 @using Microsoft.AspNetCore.Components
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
+@using MudBlazor.Extensions.Helper
 @using Nextended.Core.Extensions;
 
 @if (PropertyMeta?.ShouldRender() == true)
@@ -32,9 +33,9 @@
                        <div @onclick="@(ResetAsync)" class="mud-ex-property-reset-conatiner">
                            @if (reset.ShowResetText)
                            {
-                               <span>@(Localizer != null ? Localizer[reset.ResetText] : reset.ResetText)</span>
+                               <span>@(Localizer != null ? Localizer.TryLocalize(reset.ResetText) : reset.ResetText)</span>
                            }
-                           <MudIconButton OnClick="@(ResetAsync)" Title="@(string.Format(Localizer != null ? Localizer[reset.ResetText] : reset.ResetText, PropertyMeta.Settings.LabelFor(Localizer)))" Icon="@reset.ResetIcon" Size="Size.Small"></MudIconButton>
+                           <MudIconButton OnClick="@(ResetAsync)" Title="@(string.Format(Localizer != null ? Localizer.TryLocalize(reset.ResetText) : reset.ResetText, PropertyMeta.Settings.LabelFor(Localizer)))" Icon="@reset.ResetIcon" Size="Size.Small"></MudIconButton>
                        </div>
                 </div>;
     }

@@ -6,8 +6,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Extensions;
+using MudBlazor.Extensions.Helper;
 using Nextended.Blazor.Extensions;
 using Nextended.Blazor.Models;
 using Nextended.Core.Extensions;
@@ -18,7 +21,11 @@ namespace MudBlazor.Extensions.Components;
 
 public partial class MudExFileDisplayZip
 {
-    [Inject] private IJSRuntime JsRuntime { get; set; }
+    
+    [Inject] private IServiceProvider _serviceProvider { get; set; }
+    private IJSRuntime JsRuntime => _serviceProvider.GetService<IJSRuntime>();
+    private IStringLocalizer<MudExFileDisplayZip> _localizer => _serviceProvider.GetService<IStringLocalizer<MudExFileDisplayZip>>();
+
     [Parameter] public string RootFolderName { get; set; } = "ROOT";
     [Parameter] public string Url { get; set; }
     [Parameter] public Stream ContentStream { get; set; }
@@ -115,8 +122,8 @@ public partial class MudExFileDisplayZip
     private string DownloadText(ZipStructure structure, bool asZip)
     {
         if (structure.IsDirectory)
-            return asZip ? _localizer["Download {0} with {1} files as zip", structure.Name, structure.ContainingFiles.Count()] : _localizer["Download {0} files separately", structure.ContainingFiles.Count()];
-        return asZip ? _localizer["Download file {0} as zip", structure.Name] : _localizer["Download file {0}", structure.Name];
+            return asZip ? _localizer.TryLocalize("Download {0} with {1} files as zip", structure.Name, structure.ContainingFiles.Count()) : _localizer.TryLocalize("Download {0} files separately", structure.ContainingFiles.Count());
+        return asZip ? _localizer.TryLocalize("Download file {0} as zip", structure.Name) : _localizer.TryLocalize("Download file {0}", structure.Name);
     }
 
     private Task DownloadAsync(ZipBrowserFile file)

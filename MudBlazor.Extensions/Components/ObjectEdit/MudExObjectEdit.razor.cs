@@ -8,6 +8,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Extensions;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using Nextended.Core.Extensions;
 
@@ -98,10 +99,10 @@ public partial class MudExObjectEdit<T>
             editable.BeginEdit();
         ResetConfirmationMessageBoxOptions ??= new MessageBoxOptions
         {
-            Message = LocalizerToUse["Reset all properties?"],
-            Title = LocalizerToUse["Reset all"],
-            CancelText = LocalizerToUse["Cancel"],
-            YesText = LocalizerToUse["Reset"]
+            Message = LocalizerToUse.TryLocalize("Reset all properties?"),
+            Title = LocalizerToUse.TryLocalize("Reset all"),
+            CancelText = LocalizerToUse.TryLocalize("Cancel"),
+            YesText = LocalizerToUse.TryLocalize("Reset")
         };
     }
 

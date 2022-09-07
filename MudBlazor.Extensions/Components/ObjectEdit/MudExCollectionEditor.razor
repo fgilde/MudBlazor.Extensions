@@ -1,4 +1,5 @@
-﻿@typeparam T
+﻿@using MudBlazor.Extensions.Helper
+@typeparam T
 
 
 @if (!string.IsNullOrWhiteSpace(Label))
@@ -51,7 +52,7 @@
                         OnClick="@Add"
                        Size="Size.Small"
                        StartIcon="@(AddIcon)">
-                @(LocalizerToUse["Add"])
+                @(LocalizerToUse.TryLocalize("Add"))
             </MudButton>
 
         }
@@ -59,7 +60,7 @@
 
         @if (ShowClearButton && AllowRemove && Items?.Any() == true && !ReadOnly)
         {
-            <MudIconButton Title="@LocalizerToUse["Remove All"]" OnClick="@RemoveAll" Style="float: right; margin-right: 15px;" Icon="@RemoveAllIcon" Color="Color.Primary" Size="Size.Small" />
+            <MudIconButton Title="@LocalizerToUse.TryLocalize("Remove All")" OnClick="@RemoveAll" Style="float: right; margin-right: 15px;" Icon="@RemoveAllIcon" Color="Color.Primary" Size="Size.Small" />
         }
     </div>
 </div>

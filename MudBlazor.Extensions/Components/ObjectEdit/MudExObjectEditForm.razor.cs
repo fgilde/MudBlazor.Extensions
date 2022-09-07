@@ -4,6 +4,7 @@ using Blazored.FluentValidation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor.Extensions.Extensions;
+using MudBlazor.Extensions.Helper;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
@@ -95,11 +96,11 @@ public partial class MudExObjectEditForm<T>
         if (_fluentValidationValidator == null)
             return Enumerable.Empty<string>();
         var editContext = _fluentValidationValidator.ExposeField<EditContext>("CurrentEditContext");
-        return editContext == null ? Enumerable.Empty<string>() : editContext.GetValidationMessages().Select(s => LocalizerToUse[s].ToString());
+        return editContext == null ? Enumerable.Empty<string>() : editContext.GetValidationMessages().Select(s => LocalizerToUse.TryLocalize(s).ToString());
     }
 
     private IEnumerable<string> GetDataAnnotationErrors() 
-        => _dataValidations.Where(v => !string.IsNullOrEmpty(v.ErrorMessage)).Select(v => LocalizerToUse[v.ErrorMessage].ToString());
+        => _dataValidations.Where(v => !string.IsNullOrEmpty(v.ErrorMessage)).Select(v => LocalizerToUse.TryLocalize(v.ErrorMessage).ToString());
 
     private IEnumerable<string> GetErrors() 
         => GetFluentValidationErrors().Union(GetDataAnnotationErrors());
