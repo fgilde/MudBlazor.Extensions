@@ -1,16 +1,37 @@
 ﻿@page "/dialogs"
-@using MudBlazor.Extensions
 @using MudBlazor.Extensions.Options
+@using Nextended.Core.Extensions
 @inject HttpClient Http
+@inject IJSRuntime Js
 @inject IDialogService dialogService;
 
-<PageTitle>Weather forecast</PageTitle>
+<PageTitle>Sample Dialog</PageTitle>
 
-<MudExObjectEdit Value="@Options"></MudExObjectEdit>
-<MudButton OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
+<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
+    <MudButton OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
+
+    <MudExObjectEdit DefaultGroupName="Other" Value="@Options"></MudExObjectEdit>
+</SampleApplication.Client.Shared.DemoComponent>
 
 @code {
 
+    MudDialogButton[] GetButtons() => new[] {
+        new MudDialogButton( DotNetObjectReference.Create(this as object), nameof(AlarmClick)) {Icon = Icons.Filled.Alarm},
+        new MudDialogButton( DotNetObjectReference.Create(this as object), nameof(ColorLensClick)) {Icon = Icons.Filled.ColorLens},
+    };
+    
+    [JSInvokable]
+    public void AlarmClick()
+    {
+        Js.InvokeVoidAsync("alert", "Alarm Clicked ");
+    }
+
+    [JSInvokable]
+    public void ColorLensClick()
+    {
+        Js.InvokeVoidAsync("alert", "Color Lens Clicked");
+    }
+    
     public DialogOptionsEx Options { get; set; } = new()
     {
             MaximizeButton = true,
@@ -28,7 +49,9 @@
 
     private async Task ShowSampleDialog()
     {
-        await dialogService.ShowEx<SampleDialog>("Simple Dialog", Options);
+        var options = Options.Clone();
+        options.Buttons = GetButtons();
+        await dialogService.ShowEx<SampleDialog>("Simple Dialog", options);
     }
 
 }

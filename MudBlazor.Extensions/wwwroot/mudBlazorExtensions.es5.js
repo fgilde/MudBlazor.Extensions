@@ -85,15 +85,17 @@ var MudBlazorExtensionHelper = (function () {
             // Inject buttons
             if (this.options.buttons && this.options.buttons.length) {
                 this.options.buttons.forEach(function (b) {
-                    _this2.dialogHeader.insertAdjacentHTML('beforeend', b.html);
-                    var btnEl = _this2.dialogHeader.querySelector('#' + b.id);
-                    btnEl.onclick = function () {
-                        if (b.id.indexOf('mud-button-maximize') >= 0) {
-                            _this2.maximize();
-                        } else {
-                            b.callBackReference.invokeMethodAsync(b.callbackName);
-                        }
-                    };
+                    if (_this2.dialogHeader) {
+                        _this2.dialogHeader.insertAdjacentHTML('beforeend', b.html);
+                        var btnEl = _this2.dialogHeader.querySelector('#' + b.id);
+                        btnEl.onclick = function () {
+                            if (b.id.indexOf('mud-button-maximize') >= 0) {
+                                _this2.maximize();
+                            } else {
+                                b.callBackReference.invokeMethodAsync(b.callbackName);
+                            }
+                        };
+                    }
                 });
             }
 

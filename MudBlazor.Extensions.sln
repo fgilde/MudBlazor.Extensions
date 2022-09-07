@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudBlazor.Extensions", "MudBlazor.Extensions\MudBlazor.Extensions.csproj", "{B40775AB-3519-4304-9528-29DD94DC34AB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApplication", "SampleApplication\SampleApplication.Client.csproj", "{4CD3E8D0-7977-486B-A8A4-6D5DC9423EED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApplication.Client", "SampleApplication\SampleApplication.Client.csproj", "{4CD3E8D0-7977-486B-A8A4-6D5DC9423EED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -32,7 +32,5 @@ namespace MudBlazor.Extensions.Options
         }
 
         public string AnimationStyle => Animations?.Any() == true ? Animations.GetAnimationCssStyle(AnimationDuration, AnimationDirection.In, AnimationTimingFunction, Position) : string.Empty;
-
-        public ICollection<AnimationType?> Test2 { get; set; }
     }
 }

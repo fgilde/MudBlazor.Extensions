@@ -17,9 +17,9 @@ public static partial class MudExObjectEditExtensions
         Assembly[] assembliesToSearchImplementationsIn,
         ServiceLifetime lifeTime = ServiceLifetime.Transient)
     {
-        assembliesToSearchImplementationsIn = assembliesToSearchImplementationsIn.IsNullOrEmpty()
-            ? new[] {Assembly.GetCallingAssembly()}
-            : assembliesToSearchImplementationsIn;
+        assembliesToSearchImplementationsIn = (assembliesToSearchImplementationsIn.IsNullOrEmpty()
+            ? new[] {Assembly.GetCallingAssembly(), Assembly.GetExecutingAssembly(), Assembly.GetEntryAssembly() }
+            : assembliesToSearchImplementationsIn).Distinct().ToArray();
         var types = assembliesToSearchImplementationsIn.SelectMany(a => a.GetTypes()).Where(t => t.IsClass && !t.IsAbstract && !t.IsGenericType);
         foreach (var type in types)
         {

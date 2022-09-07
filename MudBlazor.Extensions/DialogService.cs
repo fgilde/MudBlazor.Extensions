@@ -27,7 +27,7 @@ namespace MudBlazor.Extensions
             if (MudExObjectEdit<TModel>.IsPrimitive())
             {
                 var modelForPrimitive = new ModelForPrimitive<TModel>(value);
-                var r = await dialogService.EditObject<ModelForPrimitive<TModel>>(modelForPrimitive, title, options, null, dialogParameters);
+                var r = await dialogService.EditObject(modelForPrimitive, title, options, null, dialogParameters);
                 return (r.Cancelled, r.Result.Value);
             }
             var parameters = new DialogParameters

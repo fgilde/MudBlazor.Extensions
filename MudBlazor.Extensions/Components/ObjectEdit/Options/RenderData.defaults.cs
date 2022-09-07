@@ -113,9 +113,6 @@ public static class RenderDataDefaults
         return null;
     }
 
-    public static bool IsNullableEnum(this Type t) 
-        => Nullable.GetUnderlyingType(t) is {IsEnum: true};
-
     private static bool IsCollection(Type type) 
         => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ICollection<>) || type.GetInterfaces().Any(IsCollection);
 
