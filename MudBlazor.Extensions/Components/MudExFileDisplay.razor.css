@@ -21,7 +21,6 @@
     object-fit: scale-down;
 }
 
-
 .file-display ::deep > object {
     width: 100%;
 }

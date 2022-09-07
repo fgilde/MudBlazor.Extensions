@@ -1,0 +1,152 @@
+﻿@using MudBlazor.Extensions.Extensions
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+@typeparam T
+
+<style>
+    .mud-ex-object-edit-group-flat .mud-expand-panel-text {
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        margin-left: -10px;
+    }
+
+    .mud-ex-object-edit-group-flat .mud-expand-panel-text:after {
+        content: '';
+        flex: 1;
+        margin-left: 1rem;
+        height: 2px;
+        background-color: var(@GroupLineColor.CssVarName());
+    }
+
+    .mud-ex-hidden-group .mud-expand-panel-header {
+        display: none;
+    }
+
+    .mud-ex-hide-expand-btn .mud-expand-panel-icon {
+        display: none;
+    }
+
+    .mud-ex-property-filter.active {
+        width: 50%;
+        opacity: 1;
+    }
+
+    .mud-ex-property-filter {
+        width: 0;
+        flex: 0 1 auto;
+        opacity: 0;
+        padding-bottom: 25px;
+    }
+
+    .mud-ex-toolbar-sticky {
+        position: sticky;
+        z-index: 2;
+    }
+
+    .mud-ex-actionbar-sticky {
+        position: sticky;
+        z-index: 2;
+    }
+        
+    .mud-ex-loading-overlay .mud-overlay-content {
+        position: fixed;
+        top: 50%;
+        bottom: 50%;
+    }
+
+</style>
+
+
+@if (IsLoading || IsInternalLoading)
+{
+    <MudOverlay Class="mud-ex-loading-overlay" Visible="@(IsLoading || IsInternalLoading)" LightBackground="true" Absolute="true" >
+        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+    </MudOverlay>
+}
+
+@if (Primitive)
+{
+    <DynamicComponent Type="@typeof(MudExObjectEdit<ModelForPrimitive<T>>)" Parameters="GetAttributesForPrimitive()"></DynamicComponent>
+}
+else
+{
+    <div class="@($"mud-ex-object-edit {Class}")">
+        <MudPaper Class="@($"{ToolBarPaperClass} {(StickyToolbar ? "mud-ex-toolbar-sticky" : "")}")" Style="@ToolbarStyle()" Elevation="@ToolBarElevation">
+            <MudToolBar Class="@($"{ToolBarClass} pr-4 mt-2 mb-2")">
+                @if (InternalToolBarContent != null)
+                {
+                    @InternalToolBarContent
+                }
+                @if (ToolBarContent != null)
+                {
+                    @ToolBarContent
+                }
+                @if (ToolBarActionAlignment == ActionAlignment.Right)
+                {
+                    <MudSpacer/>
+                }
+                @if (FilterMode != PropertyFilterMode.Disabled)
+                {
+                    <MudTextField @ref="_searchBox" OnBlur="@(FilterBoxBlur)" OnKeyDown="@(FilterKeyPress)" Class="@($"animate-all-properties mud-ex-property-filter {(_searchActive || FilterMode == PropertyFilterMode.AlwaysVisible ? "active" : "")}")" Immediate="true" Clearable="true" @bind-Value="Filter" T="string" Placeholder="@LocalizerToUse["Filter"]" Label="@LocalizerToUse["Filter"]"/>
+                }
+                @if (FilterMode == PropertyFilterMode.Toggleable)
+                {
+                    <MudIconButton Icon="@Icons.Material.Outlined.Search" Color="@(string.IsNullOrWhiteSpace(Filter) ? Color.Default : Color.Warning)" OnClick="@(ToggleSearchBox)"/>
+                }
+                @if (GroupsCollapsible && _groups.Count > 1)
+                {
+                    <MudTooltip Text="Expand/Collapse">
+                        <MudIconButton Icon="@Icons.Material.Filled.Expand" OnClick="@(ExpandCollapse)"/>
+                    </MudTooltip>
+                }
+                @if (GlobalResetSettings.AllowReset)
+                {
+                    <MudTooltip Text="@GlobalResetSettings.ResetText">
+                        <MudIconButton Icon="@GlobalResetSettings.ResetIcon" OnClick="@(OnResetClick)"/>
+                    </MudTooltip>
+                }
+            </MudToolBar>
+        </MudPaper>
+        <MudExpansionPanels Class="mud-ex-object-edit-panels" DisableBorders="@(GroupingStyle == GroupingStyle.Flat)" Elevation="@(GroupElevation ?? (GroupingStyle == GroupingStyle.Flat ? 0 : 1))" MultiExpansion="true">
+            @foreach (var grouping in GroupedMetaPropertyInfos())
+            {
+                var groupName = !string.IsNullOrWhiteSpace(grouping.Key) ? grouping.Key : DefaultGroupName;
+                <MudExpansionPanel @ref="@ExpansionPanel" IsInitiallyExpanded="true" Disabled="@(!GroupsCollapsible)" Class="@($"mt-3 {(!string.IsNullOrWhiteSpace(groupName) ? CssClassName : "mud-ex-hidden-group")}")" Text="@(!string.IsNullOrWhiteSpace(groupName) ? LocalizerToUse[groupName] : groupName)">
+
+                    @if (ShouldAddGrid(grouping))
+                    {
+                        <MudGrid>
+                            @foreach (var property in MetaInformation?.Ordered(grouping))
+                            {
+                                @RenderPropertyEdit(property)
+                                ;
+                            }
+                        </MudGrid>
+                    }
+                    else
+                    {
+                        @foreach (var property in MetaInformation?.Ordered(grouping))
+                        {
+                            @RenderPropertyEdit(property)
+                            ;
+                        }
+                    }
+
+                </MudExpansionPanel>
+            }
+        </MudExpansionPanels>
+    </div>
+}
+@code {
+
+    RenderFragment RenderPropertyEdit(ObjectEditPropertyMeta property)
+    {
+        return @<MudExPropertyEdit @ref="@Ref" DisableFieldFallback="@DisableFieldFallback"
+                                   PropertyValueChanged="@OnPropertyChange"
+                                   ActiveFilterTerm="@Filter"
+                                   Localizer="@LocalizerToUse"
+                                   PropertyResetSettings="@DefaultPropertyResetSettings"
+                                   PropertyMeta="@property">
+    </MudExPropertyEdit>;
+    }
+}

@@ -1,0 +1,34 @@
+﻿@page "/dialogs"
+@using MudBlazor.Extensions
+@using MudBlazor.Extensions.Options
+@inject HttpClient Http
+@inject IDialogService dialogService;
+
+<PageTitle>Weather forecast</PageTitle>
+
+<MudExObjectEdit Value="@Options"></MudExObjectEdit>
+<MudButton OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
+
+@code {
+
+    public DialogOptionsEx Options { get; set; } = new()
+    {
+            MaximizeButton = true,
+            CloseButton = true,
+            FullHeight = true,
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+            DragMode = MudDialogDragMode.Simple,
+            Animations = new[] { AnimationType.SlideIn },
+            Position = DialogPosition.CenterRight,
+            DisableSizeMarginY = true,
+            DisablePositionMargin = true
+        };
+
+    private async Task ShowSampleDialog()
+    {
+        await dialogService.ShowEx<SampleDialog>("Simple Dialog", Options);
+    }
+
+}

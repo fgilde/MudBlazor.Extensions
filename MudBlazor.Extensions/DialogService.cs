@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Components.ObjectEdit;
+using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using Nextended.Core;
@@ -11,7 +13,42 @@ namespace MudBlazor.Extensions
 {
     public static class DialogServiceExt
     {
+        public static async Task<(bool Cancelled, TModel Result)> ShowObject<TModel>(this IDialogService dialogService, TModel value, string title, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null, DialogParameters dialogParameters = null)
+        {
+            return await dialogService.EditObject(value, title, options, meta =>
+            {
+                metaConfig?.Invoke(meta);
+                meta.Properties().AsReadOnly();
+            }, dialogParameters);
+        }
 
+        public static async Task<(bool Cancelled, TModel Result)> EditObject<TModel>(this IDialogService dialogService, TModel value, string title, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null, DialogParameters dialogParameters = null)
+        {
+            if (MudExObjectEdit<TModel>.IsPrimitive())
+            {
+                var modelForPrimitive = new ModelForPrimitive<TModel>(value);
+                var r = await dialogService.EditObject<ModelForPrimitive<TModel>>(modelForPrimitive, title, options, null, dialogParameters);
+                return (r.Cancelled, r.Result.Value);
+            }
+            var parameters = new DialogParameters
+            {
+                {nameof(MudExObjectEditDialog<TModel>.Value), value},
+                {nameof(MudExObjectEditDialog<TModel>.ConfigureMetaInformationAlways), true},
+                {nameof(MudExObjectEditDialog<TModel>.MetaInformation), value.ObjectEditMeta(metaConfig)}
+            };
+            if (dialogParameters != null)
+            {
+                foreach (var param in dialogParameters)
+                    parameters.Add(param.Key, param.Value);
+            }
+
+
+            var dialog = await dialogService.ShowEx<MudExObjectEditDialog<TModel>>(title, parameters, options);
+
+            var res = await dialog.Result;
+            return (res.Cancelled, res.Cancelled ? value : (TModel)res.Data);
+        }
+        
         public static DialogParameters ToDialogParameters(this IEnumerable<KeyValuePair<string, object>> parameters)
         {
             var dialogParameters = new DialogParameters();

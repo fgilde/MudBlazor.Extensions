@@ -1,0 +1,15 @@
+﻿@inject HttpClient Http
+@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<MudMarkdown Value="@Value" />
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        Value = await Http.GetStringAsync("https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/README.md");
+    }
+    private string Value { get; set; }
+}

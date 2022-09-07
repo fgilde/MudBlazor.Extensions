@@ -1,0 +1,75 @@
+﻿@using Microsoft.AspNetCore.Components.Rendering
+@using Microsoft.AspNetCore.Components
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+@using Nextended.Core.Extensions;
+
+@if (PropertyMeta?.ShouldRender() == true)
+{
+    @Render
+}
+
+@code {
+
+    private void Render(RenderTreeBuilder __builder)
+    {
+        @RenderWrapper(PropertyMeta?.RenderData?.Wrapper);
+    }
+    
+    private RenderFragment RenderWrapper(IRenderData wrapper)
+    {
+        if (wrapper == null)
+            return RenderEditor();
+        return @<DynamicComponent Type="@wrapper.ComponentType" Parameters="@wrapper.Attributes.AddOrUpdate("ChildContent", RenderWrapper(wrapper.Wrapper))"></DynamicComponent>;
+    }
+
+    private RenderFragment RenderEditor()
+    {
+        var reset = GetResetSettings();
+        if (!reset.AllowReset || !PropertyMeta.Settings.IsEditable)
+            return RenderPropertyMetaAndLabelIf();
+        return @<div class="mud-ex-property-conatiner">
+                       @RenderPropertyMetaAndLabelIf()
+                       <div @onclick="@(ResetAsync)" class="mud-ex-property-reset-conatiner">
+                           @if (reset.ShowResetText)
+                           {
+                               <span>@(Localizer != null ? Localizer[reset.ResetText] : reset.ResetText)</span>
+                           }
+                           <MudIconButton OnClick="@(ResetAsync)" Title="@(string.Format(Localizer != null ? Localizer[reset.ResetText] : reset.ResetText, PropertyMeta.Settings.LabelFor(Localizer)))" Icon="@reset.ResetIcon" Size="Size.Small"></MudIconButton>
+                       </div>
+                </div>;
+    }
+
+    private RenderFragment RenderPropertyMetaAndLabelIf()
+    {
+        if (PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.SeparateLabelComponentOnly || PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.Both)
+        {
+            return @<div>
+                       <MudHighlighter Text="@PropertyMeta.Settings.LabelFor(Localizer)" HighlightedText="@ActiveFilterTerm" />
+                       @RenderPropertyMeta()
+                   </div>;
+        }
+        return RenderPropertyMeta();
+    }
+    
+    private RenderFragment RenderPropertyMeta()
+    {
+        if (PropertyMeta.RenderData?.CustomRenderer != null)
+        {
+            return builder => RenderAs(builder, PropertyMeta); // Void render as fragment
+        }
+        if (PropertyMeta.RenderData != null)
+        {
+            return @<DynamicComponent Type="@PropertyMeta.RenderData.ComponentType" Parameters="GetPreparedAttributes()"></DynamicComponent>;
+        }
+        if (DisableFieldFallback)
+        {
+            return @<p></p>;
+        }
+        return @<MudTextField ReadOnly="@(!PropertyMeta.Settings.IsEditable)"
+                      HelperText="@(PropertyMeta.Settings.DescriptionFor(Localizer))"
+                      Label="@(PropertyMeta.Settings.LabelFor(Localizer))"
+                          @bind-Value="PropertyMeta.As<string>(true).Value">
+                </MudTextField>;
+    }
+
+}

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudBlazor.Extensions", "MudBlazor.Extensions\MudBlazor.Extensions.csproj", "{B40775AB-3519-4304-9528-29DD94DC34AB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApplication", "SampleApplication\SampleApplication.Client.csproj", "{4CD3E8D0-7977-486B-A8A4-6D5DC9423EED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{B40775AB-3519-4304-9528-29DD94DC34AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B40775AB-3519-4304-9528-29DD94DC34AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B40775AB-3519-4304-9528-29DD94DC34AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CD3E8D0-7977-486B-A8A4-6D5DC9423EED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CD3E8D0-7977-486B-A8A4-6D5DC9423EED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CD3E8D0-7977-486B-A8A4-6D5DC9423EED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CD3E8D0-7977-486B-A8A4-6D5DC9423EED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

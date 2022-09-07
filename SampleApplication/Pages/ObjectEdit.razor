@@ -1,0 +1,23 @@
+﻿@page "/object-edit"
+
+<PageTitle>Object Edit Samples</PageTitle>
+
+<MudExObjectEditForm Value="@User"></MudExObjectEditForm>
+
+
+@code {
+
+    public UserInformation User { get; set; } = new UserInformation()
+    {
+            Id = Guid.NewGuid().ToString(),
+            FirstName = "John",
+            LastName = "Doe",
+    };
+    
+    public class UserInformation
+    {
+        public string Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+}
