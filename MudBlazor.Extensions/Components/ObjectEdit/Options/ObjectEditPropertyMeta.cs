@@ -17,7 +17,9 @@ public class ObjectEditPropertyMeta
     public ObjectEditPropertyMetaGroupInfo GroupInfo { get; set; } = new();
     public object ReferenceHolder { get; private set; }
     public PropertyInfo PropertyInfo { get; }
-    
+
+    internal Type ComponentFieldType => (_renderData as RenderData)?.FieldType ?? ReferenceHolder?.GetType() ?? PropertyInfo.PropertyType;
+
     public ObjectEditPropertyMeta(PropertyInfo propertyInfo, object referenceHolder)
     {
         Settings = new ObjectEditPropertyMetaSettings(this);

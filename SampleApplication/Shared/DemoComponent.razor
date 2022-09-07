@@ -5,14 +5,15 @@
         @ChildContent
     </MudTabPanel>
     <MudTabPanel Text="Code">
-        <PrettyCode CodeFile="@Path">
+        <PrettyCode Title="@CodeFile" CodeFile="@Path">
         </PrettyCode>
     </MudTabPanel>
 </MudTabs>
 
 @code {
     private string baseAddress = "https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/SampleApplication";
-    private string Path => $"{baseAddress}{(CodeFile).EnsureStartsWith("/")}";
+    private string Path => $"{baseAddress}{CodeFile.EnsureStartsWith("/")}";
+    
     [Parameter] public string CodeFile { get; set; }
     [Parameter] public RenderFragment ChildContent { get; set; }
 }

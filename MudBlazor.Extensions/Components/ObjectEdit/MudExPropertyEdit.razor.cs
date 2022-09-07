@@ -23,7 +23,10 @@ public partial class MudExPropertyEdit
     [Parameter] public bool DisableFieldFallback { get; set; }
     
     private Expression<Func<string>> CreateFieldForExpression() 
-        => Check.TryCatch<Expression<Func<string>>, Exception>(() => Expression.Lambda<Func<string>>(Expression.Property(Expression.Constant(PropertyMeta.ReferenceHolder, PropertyMeta.ReferenceHolder.GetType()), PropertyMeta.PropertyInfo)));
+        => Check.TryCatch<Expression<Func<string>>, Exception>(() => Expression.Lambda<Func<string>>(Expression.Property(Expression.Constant(PropertyMeta.ReferenceHolder, PropertyMeta.ComponentFieldType), PropertyMeta.PropertyInfo)));
+
+    //private Expression<Func<string>> CreateFieldForExpression()
+    //    => Check.TryCatch<Expression<Func<string>>, Exception>(() => Expression.Lambda<Func<string>>(Expression.Property(Expression.Constant(PropertyMeta.ReferenceHolder, PropertyMeta.ReferenceHolder.GetType()), PropertyMeta.PropertyInfo)));
 
     private object valueBackup;
     protected override void OnAfterRender(bool firstRender)

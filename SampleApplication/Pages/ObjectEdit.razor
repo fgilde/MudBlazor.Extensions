@@ -1,23 +1,90 @@
 ﻿@page "/object-edit"
+@inject IJSRuntime js;
+@using Newtonsoft.Json
 
 <PageTitle>Object Edit Samples</PageTitle>
 
-<MudExObjectEditForm Value="@User"></MudExObjectEditForm>
+<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")">
+    <MudExObjectEditForm OnValidSubmit="@OnSubmit" Value="@User"></MudExObjectEditForm>
+</SampleApplication.Client.Shared.DemoComponent>
 
 
 @code {
 
+    // Sample data for the form
     public UserInformation User { get; set; } = new UserInformation()
     {
-            Id = Guid.NewGuid().ToString(),
-            FirstName = "John",
-            LastName = "Doe",
+        Id = Guid.NewGuid().ToString(),
+        FirstName = "Florian",
+        LastName = "Gilde",
+        DateValueAsString = DateTime.Now.ToString("yyyy-MM-dd"),
+        SomeUnimportantTestModel = new TestModel
+        {
+            Property1 = "Value for Property 1",
+            Property2 = "Value for Property 2",
+        },
+        MainAddress = new Address
+        {
+            Street = "Street",
+            HouseNumber = "1",
+            PostalCode = "12345",
+            City = "City"
+        },
+        OtherAddresses = new List<Address>
+        {
+            new()
+            {
+                Street = "Street 2",
+                HouseNumber = "2",
+                PostalCode = "32365",
+                City = "City 2"
+            }
+        }
     };
-    
+
     public class UserInformation
     {
         public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string DateValueAsString { get; set; }
+        public int Age { get; set; }
+        public Gender Gender { get; set; }
+        public Address MainAddress { get; set; }
+        public ICollection<Address> OtherAddresses { get; set; }
+        public string Notice { get; set; }
+        public TestModel SomeUnimportantTestModel { get; set; }
     }
+
+    public class Address
+    {
+        public string Street { get; set; }
+        public string HouseNumber { get; set; }
+        public string PostalCode { get; set; }
+        public string City { get; set; }
+        public override string ToString()
+        {
+            return $"{Street} {HouseNumber}, {PostalCode} {City}";
+        }
+    }
+    
+    public class TestModel
+    {
+        public string Property1 { get; set; }
+        public string Property2 { get; set; }
+    }
+
+    public enum Gender
+    {
+        Male,
+        Female,
+        Other
+    }
+    
+    private async Task OnSubmit(EditContext ctx)
+    {
+        var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
+        await js.InvokeVoidAsync("alert", asString);
+    }
+
 }

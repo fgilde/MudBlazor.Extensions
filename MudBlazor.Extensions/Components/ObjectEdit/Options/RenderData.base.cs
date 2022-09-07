@@ -78,6 +78,9 @@ public class RenderData : IRenderData
         SetAttributes(attributes);
     }
 
+    internal virtual Type FieldType => null;
+    internal virtual Type PropertyType => null;
+
     public IRenderData SetAttributes(IDictionary<string, object> attributes)
     {
         if (attributes != null)

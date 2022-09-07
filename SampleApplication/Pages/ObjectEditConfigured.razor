@@ -1,0 +1,158 @@
+﻿@page "/mudex-object-edit-with-configuration"
+@inject IJSRuntime js;
+@using Newtonsoft.Json
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+<PageTitle>Object Edit Samples</PageTitle>
+
+
+<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")">
+    <MudExObjectEditForm DefaultGroupName="Misc" MetaConfiguration="@Configure" OnValidSubmit="@OnSubmit" Value="@User"></MudExObjectEditForm>
+</SampleApplication.Client.Shared.DemoComponent>
+
+
+@code {
+
+    private void Configure(ObjectEditMeta<UserInformation> meta)
+    {
+        meta.WrapEachIn<UserInformation, MudItem>(i => i.xs = 12);
+        meta.WithLabelLocalizerPattern("Label_for_{0}")
+            .WithDescriptionLocalizerPattern("Description_for_{0}")
+            .AllProperties.WithAdditionalAttributes(new Dictionary<string, object>
+                {
+                {nameof(MudTextField<string>.Variant), Variant.Outlined}
+                });
+        meta.Property(m => m.Id).WithOrder(0).WithGroup("Name").WithAdditionalAttributes<MudTextField<string>>(true, t => t.Variant = Variant.Filled).AsReadOnly();
+
+        meta.Property(m => m.FirstName).RenderWith(f => f.Value, new MudTextField<string>
+            {
+                Label = "Name",
+                AdornmentColor = Color.Warning,
+                Adornment = Adornment.End,
+                AdornmentIcon = Icons.Filled.Key
+            }).WithGroup("Name").WrapInMudItem(i => i.xs = 6);
+
+        meta.Properties(m => m.Age, m => m.Gender).WithAdditionalAttribute("Variant", Variant.Text, true).WrapInMudItem(x => x.xs = 6);
+        meta.Property(m => m.Gender)
+            .WithDescription("This changes the Variant if Age is at least 18 and is enabled if Age is more than 1")
+            .AsReadOnlyIf(m => m.Age < 1)
+            .WithAttributesIf(model => model.Age >= 18, new Dictionary<string, object>
+                {
+                {nameof(MudSelect<string>.Variant), Variant.Filled}
+                });
+
+        meta.Property(m => m.LastName).WithLabel("Surname").WithAdditionalAttributes<MudTextField<string>>(
+            t => t.AdornmentIcon = Icons.Outlined.Abc,
+            t => t.Adornment = Adornment.End,
+            t => t.Immediate = true,
+            t => t.Counter = 22)
+            .WithGroup("Name").WrapInMudItem(i => i.xs = 6);
+
+        meta.Property(m => m.SomeUnimportantTestModel).RenderWith<MudTextField<string>, TestModel, string>(f => f.Value, tf =>
+            {
+                tf.Variant = Variant.Outlined;
+                tf.Lines = 8;
+            }, 
+            model => JsonConvert.SerializeObject(model, Formatting.Indented), JsonConvert.DeserializeObject<TestModel>)
+            .WithLabelResolver(pi => $"{pi.Name} as Json")
+            .WithDescription("This is a Json representation of the TestModel")
+            .WithGroup("SubModel as Json").WrapInMudItem(i => i.xs = 12);
+
+        meta.Property(m => m.MainAddress.HouseNumber)
+            .RenderWith<MudNumericField<int>, string, int>(f => f.Value, tf => tf.Variant = Variant.Outlined, int.Parse, i => i.ToString())
+            .WithDescription("Here only number is configured to render with NumEdit edit but DataType is string")
+            .WrapInMudItem(i => i.xs = 6);
+        meta.Properties(m => m.MainAddress.Street, m => m.MainAddress.City, m => m.MainAddress.PostalCode)
+            .WrapInMudItem(i => i.xs = 6);
+
+        meta.Property(m => m.DateValueAsString).RenderWith<MudDatePicker, string, DateTime?>(
+                p => p.Date,
+                p =>
+                {
+                    p.HelperText = "Type is string but configured with converter to render as DatePicker";
+                    p.Variant = Variant.Outlined;
+                },
+                s => DateTime.TryParse(s, out var d) ? d : null,
+                date => date?.ToString("yyyy-MM-dd")
+            ).WrapInMudItem(i => i.xs = 12);
+
+    }
+
+    
+    // Sample data for the form
+    public UserInformation User { get; set; } = new UserInformation()
+        {
+            Id = Guid.NewGuid().ToString(),
+            FirstName = "Florian",
+            LastName = "Gilde",
+            DateValueAsString = DateTime.Now.ToString("yyyy-MM-dd"),
+            SomeUnimportantTestModel = new TestModel
+            {
+                Property1 = "Value for Property 1",
+                Property2 = "Value for Property 2",
+            },
+            MainAddress = new Address
+            {
+                Street = "Street",
+                HouseNumber = "1",
+                PostalCode = "12345",
+                City = "City"
+            },
+            OtherAddresses = new List<Address>
+            {
+                new()
+                {
+                    Street = "Street 2",
+                    HouseNumber = "2",
+                    PostalCode = "32365",
+                    City = "City 2"
+                }
+            }
+        };
+
+    public class UserInformation
+    {
+        public string Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string DateValueAsString { get; set; }
+        public int Age { get; set; }
+        public Gender Gender { get; set; }
+        public Address MainAddress { get; set; }
+        public ICollection<Address> OtherAddresses { get; set; }
+        public string Notice { get; set; }
+        public TestModel SomeUnimportantTestModel { get; set; }
+    }
+
+    public class Address
+    {
+        public string Street { get; set; }
+        public string HouseNumber { get; set; }
+        public string PostalCode { get; set; }
+        public string City { get; set; }
+        public override string ToString()
+        {
+            return $"{Street} {HouseNumber}, {PostalCode} {City}";
+        }
+    }
+
+    public class TestModel
+    {
+        public string Property1 { get; set; }
+        public string Property2 { get; set; }
+    }
+
+    public enum Gender
+    {
+        Male,
+        Female,
+        Other
+    }
+
+    private async Task OnSubmit(EditContext ctx)
+    {
+        var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
+        await js.InvokeVoidAsync("alert", asString);
+    }
+
+}

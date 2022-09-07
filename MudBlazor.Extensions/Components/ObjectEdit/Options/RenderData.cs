@@ -6,6 +6,9 @@ namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 
 public class RenderData<TPropertyType, TFieldType> : RenderData
 {
+    internal override Type FieldType => typeof(TFieldType);
+    internal override Type PropertyType => typeof(TPropertyType);
+
     public Func<TPropertyType, TFieldType> ToFieldTypeConverterFn { get; set; }
     public Func<TFieldType, TPropertyType> ToPropertyTypeConverterFn { get; set; }
 
