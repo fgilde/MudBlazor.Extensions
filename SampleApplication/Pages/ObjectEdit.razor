@@ -1,5 +1,6 @@
 ﻿@page "/object-edit"
 @inject IJSRuntime js;
+@inject IDialogService _dlgService;
 @using Newtonsoft.Json
 
 <PageTitle>Object Edit Samples</PageTitle>
@@ -39,6 +40,17 @@
                 PostalCode = "32365",
                 City = "City 2"
             }
+        },
+        ProgramingSkills = new List<ProgramingSkill>
+        {
+            new()
+            {
+                Name = "C#"
+            },
+            new()
+            {
+                Name = "JavaScript"
+            }
         }
     };
 
@@ -50,10 +62,17 @@
         public string DateValueAsString { get; set; }
         public int Age { get; set; }
         public Gender Gender { get; set; }
+        public ICollection<ProgramingSkill> ProgramingSkills { get; set; }
         public Address MainAddress { get; set; }
         public ICollection<Address> OtherAddresses { get; set; }
         public string Notice { get; set; }
         public TestModel SomeUnimportantTestModel { get; set; }
+    }
+
+    public class ProgramingSkill
+    {
+        public string Name { get; set; }
+        public override string ToString() => Name;
     }
 
     public class Address
@@ -62,10 +81,7 @@
         public string HouseNumber { get; set; }
         public string PostalCode { get; set; }
         public string City { get; set; }
-        public override string ToString()
-        {
-            return $"{Street} {HouseNumber}, {PostalCode} {City}";
-        }
+        public override string ToString() => $"{Street} {HouseNumber}, {PostalCode} {City}";
     }
     
     public class TestModel
@@ -86,5 +102,5 @@
         var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
         await js.InvokeVoidAsync("alert", asString);
     }
-
+    
 }

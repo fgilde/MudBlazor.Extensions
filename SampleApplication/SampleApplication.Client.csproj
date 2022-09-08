@@ -29,6 +29,14 @@
     <Folder Include="ObjectEditMetaConfig\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Shared\ProgrammingSkillSelect.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Shared\ProgrammingSkillSelect.razor" />
+  </ItemGroup>
+
 
   <!-- To Update css files for components -->
   <!--<Target Name="CopyStyles" BeforeTargets="Build">

@@ -1,0 +1,29 @@
+﻿@using System.Threading
+@using SampleApplication.Client.Pages
+@inherits MudExChipSelect<SampleApplication.Client.Pages.ObjectEditConfigured.ProgramingSkill>
+
+@Inherited()
+
+@code {
+    public override string Label { get; set; } = "Programming skills";
+    public override string HelperText { get; set; } = null;
+    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+    
+    protected override Task<IList<ObjectEditConfigured.ProgramingSkill>> GetAvailableItemsAsync(CancellationToken cancellation = default)
+    {
+        return Task.FromResult<IList<ObjectEditConfigured.ProgramingSkill>>(new List<ObjectEditConfigured.ProgramingSkill>
+        {
+            new() { Name = "C#"},
+            new() { Name = "C++"},
+            new() { Name = "C"},
+            new() { Name = "Objective-C"},
+            new() { Name = "Swift"},
+            new() { Name = "TypeScript"},
+            new() { Name = "JavaScript"},
+            new() { Name = "VisualBasic"},
+            new() { Name = "Pascal"}
+        });
+    }
+
+    public override string ItemNameRender(ObjectEditConfigured.ProgramingSkill item) => item?.Name;
+}

@@ -1,21 +1,66 @@
 # MudBlazor.Extensions
 MudBlazor.Extensions is a small extension for MudBlazor from https://mudblazor.com/
 
-### Using
+### Using / Prerequirements
 Using is as easy it can be
 Sure you need a MudBlazor project and the referenced package to MudBlazor for more informations and help see https://mudblazor.com/ and https://github.com/MudBlazor/Templates
 
 Add the nuget Package `MudBlazor.Extensions` to your blazor project
 
-Now you can start using it.
-However if you want to use the Extensions components as well you should change your `_Imports.razor` and add this entries.
+```
+<PackageReference Include="MudBlazor.Extensions" Version="1.4.3" />
+```
+
+For easier using the components should change your `_Imports.razor` and add this entries.
 
 ```csharp
 @using MudBlazor.Extensions
 @using MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Components.ObjectEdit
+```
+
+Register the MudBlazor.Extensions in your `Startup.cs` in the `ConfigureServices` method.
+> **_NOTICE:_** You can pass Assemblies params to search and add the possible service implementations for `IObjectMetaConfiguration` and `IDefaultRenderDataProvider` automaticly. If you don't pass any Assembly the MudBlazor.Extensions will search in the Entry and calling Assembly.
+
+```csharp
+// use this to add MudServices and the MudBlazor.Extensions
+builder.Services.AddMudServicesWithExtensions();
+
+// or this to add only the MudBlazor.Extensions
+builder.Services.AddMudExtensions();
+```
+
+Because the dialog extensions are static you need to set the IJSRuntime somewhere in your code for example in your `App.razor` or `MainLayout.razor` in the `OnAfterRenderAsync` method.
+This is not required but otherwise you need to pass the IJSRuntime in every `DialogOptionsEx`
+If I find a better solution I will change this.
+```csharp
+protected override async Task OnAfterRenderAsync(bool firstRender)
+{
+    if (firstRender)
+        await JsRuntime.InitializeMudBlazorExtensionsAsync();
+    await base.OnAfterRenderAsync(firstRender);
+}
 ```
 
 ## Components
+#### MudExObjectEdit !NEW
+`MudExObjectEdit` is a powerfull component to edit objects and automatically render the whole UI. 
+You can also use the `MudExObjectEditForm` to have automatic validation and submit.
+Validation works automatically for DataAnnotation Validations or fluent registered validations for your model.
+The easiest way to use it is to use the `MudExObjectEditForm` and pass your model to it.
+```csharp
+<MudExObjectEditForm OnValidSubmit="@OnSubmit" Value="@MyModel"></MudExObjectEditForm>
+```
+
+You can also use the `MudExObjectEditDialog` to edit you model in a dialog. The easieest way to do this is to use the extension method `EditObject` on the `IDialogService`.
+```csharp
+dialogService.EditObject(User, "Dialog Title", dialogOptionsEx);
+```
+
+[More Informations of MudExObjectEdit you can find here](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/ObjectEdit.md)
+
+
+
 #### MudExFileDisplay
 A Component to display file contents for example as preview before uploading or for referenced files.
 This components automatically tries to display as best as possible and can handle urls or streams directly.
@@ -150,6 +195,9 @@ Currently you can use following animations: `SlideIn,FadeIn,Scale,Slide,Fade,Zoo
 
 
 #### Change Log
+ - 1.5.0 Add `MudExObjectEdit` `MudExObjectEditForm` `MudExObjectEditDialog` and `MudExCollectionEditor`
+ - 1.4.6 Registered Localizer is no longer a requirement
+ - 1.4.0 Add New Component `MudExEnumSelect`
  - 1.2.8 Add New Component `MudExChipSelect`
  - 1.2.6 Add New Animationtypes for dialog or manual using
  - 1.2.4 Add Components `MudExFileDisplay` `MudExFileDisplayZip` and `MudExFileDisplayDialog`

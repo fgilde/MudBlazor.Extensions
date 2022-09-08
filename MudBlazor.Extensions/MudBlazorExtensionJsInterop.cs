@@ -1,6 +1,7 @@
 using Microsoft.JSInterop;
 using System;
 using System.Threading.Tasks;
+using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions
 {
@@ -17,6 +18,7 @@ namespace MudBlazor.Extensions
 
         public MudBlazorExtensionJsInterop(IJSRuntime jsRuntime)
         {
+            _ = jsRuntime.InitializeMudBlazorExtensionsAsync();
             moduleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
                "import", "./_content/MudBlazor.Extensions/mudBlazorExtensions.js").AsTask());
         }

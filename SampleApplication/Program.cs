@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Extensions;
 using SampleApplication.Client;
+using SampleApplication.Client.ObjectEditMetaConfig;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -15,9 +16,6 @@ builder.Services.AddBlazorPrettyCode();
 builder.Services.AddMudServicesWithExtensions();
 builder.Services.AddMudMarkdownServices();
 
-//builder.Services.AddLocalization(options =>
-//{
-//    options.ResourcesPath = "Resources";
-//});
+MySimpleTypeRegistrations.RegisterRenderDefaults();
 
 await builder.Build().RunAsync();

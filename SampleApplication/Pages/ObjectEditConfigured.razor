@@ -7,7 +7,24 @@
 
 
 <SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")">
-    <MudExObjectEditForm DefaultGroupName="Misc" MetaConfiguration="@Configure" OnValidSubmit="@OnSubmit" Value="@User"></MudExObjectEditForm>
+    <MudMarkdown Value="@($"> **_NOTICE:_** here also works the added default for type registration for type ProgramingSkill {Environment.NewLine} ```RenderDataDefaults.RegisterDefault<ICollection<ObjectEditConfigured.ProgramingSkill>, IEnumerable<ObjectEditConfigured.ProgramingSkill>, ProgrammingSkillSelect>(s => s.Selected);``` {Environment.NewLine} instead of doing this you can also implement `IDefaultRenderDataProvider` or configure the property in the meta with an `IObjectMetaConfiguration` or in the MetaConfiguration param")" />
+    <MudExObjectEditForm
+        DefaultGroupName="Misc"
+        MetaConfiguration="@Configure"
+        OnValidSubmit="@OnSubmit"
+        Value="@User"
+        StickyToolbar="true"
+        StickyActionBar="true"
+        ActionBarColor="Color.Surface"
+        ToolbarColor="Color.Secondary"
+        GroupingStyle="GroupingStyle.Flat">
+        <ActionContent>
+            <MudButton Class="ml-2" DisableElevation Variant="Variant.Filled" Color="Color.Warning">My Custom action</MudButton>
+        </ActionContent>
+        <ToolBarContent>
+            <MudIconButton Icon="@Icons.Material.Filled.BedroomBaby"/>
+        </ToolBarContent>
+    </MudExObjectEditForm>
 </SampleApplication.Client.Shared.DemoComponent>
 
 
@@ -79,36 +96,47 @@
     }
 
     
-    // Sample data for the form
+  // Sample data for the form
     public UserInformation User { get; set; } = new UserInformation()
+    {
+        Id = Guid.NewGuid().ToString(),
+        FirstName = "Florian",
+        LastName = "Gilde",
+        DateValueAsString = DateTime.Now.ToString("yyyy-MM-dd"),
+        SomeUnimportantTestModel = new TestModel
         {
-            Id = Guid.NewGuid().ToString(),
-            FirstName = "Florian",
-            LastName = "Gilde",
-            DateValueAsString = DateTime.Now.ToString("yyyy-MM-dd"),
-            SomeUnimportantTestModel = new TestModel
+            Property1 = "Value for Property 1",
+            Property2 = "Value for Property 2",
+        },
+        MainAddress = new Address
+        {
+            Street = "Street",
+            HouseNumber = "1",
+            PostalCode = "12345",
+            City = "City"
+        },
+        OtherAddresses = new List<Address>
+        {
+            new()
             {
-                Property1 = "Value for Property 1",
-                Property2 = "Value for Property 2",
-            },
-            MainAddress = new Address
-            {
-                Street = "Street",
-                HouseNumber = "1",
-                PostalCode = "12345",
-                City = "City"
-            },
-            OtherAddresses = new List<Address>
-            {
-                new()
-                {
-                    Street = "Street 2",
-                    HouseNumber = "2",
-                    PostalCode = "32365",
-                    City = "City 2"
-                }
+                Street = "Street 2",
+                HouseNumber = "2",
+                PostalCode = "32365",
+                City = "City 2"
             }
-        };
+        },
+        ProgramingSkills = new List<ProgramingSkill>
+        {
+            new()
+            {
+                Name = "C#"
+            },
+            new()
+            {
+                Name = "JavaScript"
+            }
+        }
+    };
 
     public class UserInformation
     {
@@ -118,10 +146,17 @@
         public string DateValueAsString { get; set; }
         public int Age { get; set; }
         public Gender Gender { get; set; }
+        public ICollection<ProgramingSkill> ProgramingSkills { get; set; }
         public Address MainAddress { get; set; }
         public ICollection<Address> OtherAddresses { get; set; }
         public string Notice { get; set; }
         public TestModel SomeUnimportantTestModel { get; set; }
+    }
+
+    public class ProgramingSkill
+    {
+        public string Name { get; set; }
+        public override string ToString() => Name;
     }
 
     public class Address
@@ -130,12 +165,9 @@
         public string HouseNumber { get; set; }
         public string PostalCode { get; set; }
         public string City { get; set; }
-        public override string ToString()
-        {
-            return $"{Street} {HouseNumber}, {PostalCode} {City}";
-        }
+        public override string ToString() => $"{Street} {HouseNumber}, {PostalCode} {City}";
     }
-
+    
     public class TestModel
     {
         public string Property1 { get; set; }
