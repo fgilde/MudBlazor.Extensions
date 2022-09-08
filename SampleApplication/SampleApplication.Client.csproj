@@ -37,13 +37,4 @@
     <_ContentIncludedByDefault Remove="Shared\ProgrammingSkillSelect.razor" />
   </ItemGroup>
 
-
-  <!-- To Update css files for components -->
-  <!--<Target Name="CopyStyles" BeforeTargets="Build">
-    <ItemGroup>
-      <Styles Include="../MudBlazor.Extensions/**/*.razor.css" />
-    </ItemGroup>
-    <Copy SourceFiles="@(Styles)" DestinationFolder="wwwroot/css/ext" SkipUnchangedFiles="true" />
-  </Target>-->
-
 </Project>

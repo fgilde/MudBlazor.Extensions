@@ -1,4 +1,4 @@
-﻿.file-display {
+﻿.mud-ex-file-display {
     padding: 10px;
     border: 1px dashed var(--mud-palette-primary);
     height: 100%;
@@ -8,34 +8,34 @@
     align-items: center;
 }
 
-.file-display-container {
+.mud-ex-file-display-container {
     height: calc(100% - 60px);
 }
 
-.download-file {
+.mud-ex-download-file {
     float: right;
 }
 
 
-.file-display > img:not([data-mimetype='image/svg+xml']) {
+.mud-ex-file-display > img:not([data-mimetype='image/svg+xml']) {
     object-fit: scale-down;
 }
 
 
-.file-display > object {
+.mud-ex-file-display > object {
     width: 100%;
 }
 
-.file-display > iframe {
+.mud-ex-file-display > iframe {
     width: 100%;
 }
 
-.file-display > audio {
+.mud-ex-file-display > audio {
     width: 100%;
     align-self: center;
 }
 
-.file-display > * {
+.mud-ex-file-display > * {
     object-position: center;
     margin-left: auto;
     margin-right: auto;
@@ -45,7 +45,7 @@
     max-width: 100%;
 }
 
-.file-display:empty {
+.mud-ex-file-display:empty {
     background: repeating-linear-gradient(135deg, #ccc, #ccc 10px, #aaa 10px, #aaa 20px);
     opacity: 0.4;
     border-radius: 5px;
@@ -53,12 +53,12 @@
     transition-duration: 0.6s;
 }
 
-.file-display:empty:hover {
+.mud-ex-file-display:empty:hover {
     opacity: 0.6;
 }
 
 
-.file-display > .file-display-img-box {
+.mud-ex-file-display > .mud-ex-file-display-img-box {
     background-size: auto;
     background-repeat: no-repeat;
     background-position: 50% 50%;
@@ -66,7 +66,7 @@
     height: 100%
 }
 
-.file-display-error-message {
+.mud-ex-file-display-error-message {
     color: var(--mud-palette-error);
     font-style: italic;
     display: flex;
@@ -92,4 +92,43 @@
     opacity: 1;
     transform: scale(1);
     animation: scaleIn 1200ms ease-in-out 1 alternate;
+}
+
+.mud-ex-fd-child-count-label {
+    font-size: 7pt;
+    margin-left: 5px;
+    width: 15px;
+    border: 1px solid var(--mud-palette-text-primary);
+    height: 15px;
+    border-radius: 50px;
+    text-align: center;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.mud-ex-file-display-zip {
+    padding: 10px;
+    border: 1px dashed var(--mud-palette-primary);
+    max-height: 90vh;
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    overflow: auto;
+}
+
+.mud-ex-fd-close-inner-preview {
+    float: right;
+    height: 25px;
+    margin-top: -15px;
+    margin-bottom: 15px;
+    margin-right: -10px;
+}
+
+.mud-ex-fd-size-display {
+    font-style: italic;
+    font-size: 8pt;
+}
+
+.mud-ex-fd-tree-actions {
+    margin-left: 20px;
 }

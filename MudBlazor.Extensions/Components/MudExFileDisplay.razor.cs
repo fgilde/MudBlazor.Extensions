@@ -88,7 +88,7 @@ public partial class MudExFileDisplay
                         : ("div", new()
                         {
                             {"style", $"background-image:url('{Url}')"},
-                            {"class", "file-display-img-box"},
+                            {"class", "mud-ex-file-display-img-box"},
                             {"src", Url},
                             {"loading", "lazy"},
                             {"alt", FileName},
