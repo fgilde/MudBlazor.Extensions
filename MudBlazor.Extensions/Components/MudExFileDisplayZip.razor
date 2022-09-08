@@ -8,7 +8,7 @@
 
 @if (_innerPreview != null)
 {
-    <div class="close-inner-preview">
+    <div class="mud-ex-fd-close-inner-preview">
         <MudTooltip Placement="Placement.Left" Delay="600" Color="Color.Primary" Text="@($"{_localizer.TryLocalize("Close")} ({_innerPreview.Name})")">
             <MudIconButton Style="float: right;" OnClick="@(ClosePreview)" Icon="@Icons.Filled.Close"></MudIconButton>
         </MudTooltip>
@@ -18,7 +18,7 @@
 
 else
 {
-    <div class="file-display-zip">
+    <div class="mud-ex-file-display-zip">
         @if (AllowToggleTree)
         {
             <MudToggleIconButton @bind-Toggled="@ShowAsTree"
@@ -40,14 +40,14 @@ else
                                     @context.Name
                                     @if (context.IsDirectory)
                                     {
-                                        <span class="child-count-label">@context.Children.Count</span>
+                                        <span class="mud-ex-fd-child-count-label">@context.Children.Count</span>
                                     }
                                 </p>
                   
-                                <p class="size-display">@Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(context.Size, _localizer, true)</p>
+                                <p class="mud-ex-fd-size-display">@Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(context.Size, _localizer, true)</p>
                             </MudText>
                             
-                            <span class="tree-actions">
+                            <span class="mud-ex-fd-tree-actions">
                             @if (AllowDownload) {
                                     <MudTooltip Placement="Placement.Right" Delay="600" Color="Color.Primary" Text="@($"{_localizer.TryLocalize("Download")} ({context.Name})")">
                                         <MudMenu @ref="_downloadMenu" Style="margin-left: 10px; float: right;" Disabled="@context.IsDownloading" Icon="@(context.IsDownloading ? Icons.Material.Filled.Downloading : Icons.Material.Filled.Download)" Color="@ActionButtonColor" Size="Size.Medium" Dense="true" OffsetY="true">
@@ -74,7 +74,7 @@ else
                         <MudAlert Icon="@entry.GetIcon()"
                       Class="mud-alert-message-w-100 mud-alert-message-mt-5">
                             @entry.FullName
-                            <p class="size-display" style="width: 300px;">@entry.GetReadableFileSize(_localizer, true)</p>
+                            <p class="mud-ex-fd-size-display" style="width: 300px;">@entry.GetReadableFileSize(_localizer, true)</p>
                             <span style="float: right; margin-top: -35px;">
                                 @if (AllowPreview)
                                 {

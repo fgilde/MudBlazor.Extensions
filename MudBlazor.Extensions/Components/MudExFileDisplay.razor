@@ -4,14 +4,14 @@
 
 <BrowserDetect @bind-BrowserInfo="@Info" />
 
-<div class="file-display-container">
+<div class="mud-ex-file-display-container">
     @if (_isZip)
     {
         <MudExFileDisplayZip AllowDownload="@AllowDownload" RootFolderName="@FileName" ContentStream="@ContentStream" Url="@Url"></MudExFileDisplayZip>
     }
     else
     {
-        <div class="file-display">
+        <div class="mud-ex-file-display">
             <MudElement UserAttributes="@renderInfos.attributes" HtmlTag="@renderInfos.tag"/>
         </div>
     }
@@ -38,7 +38,7 @@
     </div>
     @if (AllowDownload)
     {
-        <div class="download-file">
+        <div class="mud-ex-download-file">
             <MudTooltip Placement="Placement.Left" Delay="600" Color="Color.Primary" Text="@($"{_localizer.TryLocalize("Download")} ({FileName})")">
                 <MudIconButton Style="float: right;" OnClick="@(Download)" Icon="@Icons.Filled.Download"></MudIconButton>
             </MudTooltip>

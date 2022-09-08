@@ -37,6 +37,7 @@ public static class RenderDataDefaults
         RegisterDefault<DateOnly, DateTime?, MudDatePicker>(f => f.Date);
         RegisterDefault<TimeOnly, TimeSpan?, MudTimePicker>(f => f.Time);
         RegisterDefault<DateOnly?, DateTime?, MudDatePicker>(f => f.Date);
+        
         RegisterDefault<TimeOnly?, TimeSpan?, MudTimePicker>(f => f.Time);
         RegisterDefault<TimeSpan, TimeSpan?, MudTimePicker>(f => f.Time);
         RegisterDefault<TimeSpan?, MudTimePicker>(f => f.Time);
@@ -44,7 +45,13 @@ public static class RenderDataDefaults
         RegisterDefault<MudColor, MudColor, MudColorPicker>(f => f.Value, c => c, c => c);
         RegisterDefault<System.Drawing.Color, MudColor, MudColorPicker>(f => f.Value, c => new MudColor(c.R, c.G, c.B, c.A), mc => System.Drawing.Color.FromArgb(mc.A, mc.R, mc.G, mc.B));
 
-        RegisterDefault<bool, MudSwitch<bool>>(s => s.Checked, s => s.Color = MudBlazor.Color.Warning);
+        //RegisterDefault<bool, MudSwitch<bool>>(s => s.Checked, s => s.Color = MudBlazor.Color.Warning);
+        RegisterDefault<bool, MudCheckBox<bool>>(s => s.Checked, box =>
+        {
+            box.TriState = false;
+            box.UnCheckedColor = MudBlazor.Color.Default;
+            box.Color = MudBlazor.Color.Warning;
+        });
         RegisterDefault<bool?, MudCheckBox<bool?>>(s => s.Checked, box =>
         {
             box.TriState = true;

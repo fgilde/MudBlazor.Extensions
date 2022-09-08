@@ -15,12 +15,12 @@
     <PackageReference Include="MudBlazor.Markdown" Version="0.0.12" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.3" />
     <PackageReference Include="BlazorPrettyCode" Version="1.6.0" />
-    <!--<PackageReference Include="MudBlazor.Extensions" Version="1.4.3" />-->
+    <PackageReference Include="MudBlazor.Extensions" Version="1.5.1" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <ProjectReference Include="..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
@@ -37,14 +37,5 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Shared\ProgrammingSkillSelect.razor" />
   </ItemGroup>
-
-
-  <!-- To Update css files for components -->
-  <!--<Target Name="CopyStyles" BeforeTargets="Build">
-    <ItemGroup>
-      <Styles Include="../MudBlazor.Extensions/**/*.razor.css" />
-    </ItemGroup>
-    <Copy SourceFiles="@(Styles)" DestinationFolder="wwwroot/css/ext" SkipUnchangedFiles="true" />
-  </Target>-->
 
 </Project>

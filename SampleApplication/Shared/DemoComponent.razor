@@ -4,10 +4,13 @@
     <MudTabPanel Text="Demo">
         @ChildContent
     </MudTabPanel>
-    <MudTabPanel Text="Code">
-        <PrettyCode Title="@CodeFile" CodeFile="@Path">
-        </PrettyCode>
-    </MudTabPanel>
+	@if (!string.IsNullOrEmpty(CodeFile))
+	{
+	    <MudTabPanel Text="Code">
+            <PrettyCode Title="@CodeFile" CodeFile="@Path">
+            </PrettyCode>
+        </MudTabPanel>
+	}
     @foreach (var doc in _docFiles)
     {
         <MudTabPanel Text="@("Doc " + System.IO.Path.GetFileNameWithoutExtension(doc.Key))">
@@ -31,12 +34,16 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        foreach (var doc in DocFiles)
+        try
         {
-            var v = await Load($"{baseAddressExtensions}{doc.EnsureStartsWith("/")}");
-            if (!string.IsNullOrEmpty(v))
-                _docFiles.Add(doc, v);
+            foreach (var doc in DocFiles ?? Array.Empty<string>())
+            {
+                var v = await Load($"{baseAddressExtensions}{doc.EnsureStartsWith("/")}");
+                if (!string.IsNullOrEmpty(v))
+                    _docFiles.Add(doc, v);
+            }
         }
+        catch {}
     }
 
     private async Task<string> Load(string url)

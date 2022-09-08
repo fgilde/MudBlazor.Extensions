@@ -7,7 +7,9 @@
 
 
 <SampleApplication.Client.Shared.DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFile="@($"Pages/{GetType().Name}.razor")">
-    <MudMarkdown Value="@($"> **_NOTICE:_** here also works the added default for type registration for type ProgramingSkill {Environment.NewLine} ```RenderDataDefaults.RegisterDefault<ICollection<ObjectEditConfigured.ProgramingSkill>, IEnumerable<ObjectEditConfigured.ProgramingSkill>, ProgrammingSkillSelect>(s => s.Selected);``` {Environment.NewLine} instead of doing this you can also implement `IDefaultRenderDataProvider` or configure the property in the meta with an `IObjectMetaConfiguration` or in the MetaConfiguration param")" />
+    <MudAlert Severity="Severity.Info" Class="mudex-margin-bottom-1">
+        <span>@($"NOTICE: here also works the added default for type registration for type ProgramingSkill 'RenderDataDefaults.RegisterDefault<ICollection<ObjectEditConfigured.ProgramingSkill>, IEnumerable<ObjectEditConfigured.ProgramingSkill>, ProgrammingSkillSelect>(s => s.Selected);' instead of doing this you can also implement `IDefaultRenderDataProvider` or configure the property in the meta with an `IObjectMetaConfiguration` or in the MetaConfiguration param")</span>
+    </MudAlert>
     <MudExObjectEditForm
         DefaultGroupName="Misc"
         MetaConfiguration="@Configure"
@@ -15,8 +17,10 @@
         Value="@User"
         StickyToolbar="true"
         StickyActionBar="true"
-        ActionBarColor="Color.Surface"
-        ToolbarColor="Color.Secondary"
+        ActionBarColor="Color.Dark"
+        ToolbarColor="Color.Surface"
+        CancelButtonVariant="Variant.Outlined"
+        CancelButtonColor="Color.Warning"
         GroupingStyle="GroupingStyle.Flat">
         <ActionContent>
             <MudButton Class="ml-2" DisableElevation Variant="Variant.Filled" Color="Color.Warning">My Custom action</MudButton>
@@ -82,16 +86,18 @@
         meta.Properties(m => m.MainAddress.Street, m => m.MainAddress.City, m => m.MainAddress.PostalCode)
             .WrapInMudItem(i => i.xs = 6);
 
-        meta.Property(m => m.DateValueAsString).RenderWith<MudDatePicker, string, DateTime?>(
-                p => p.Date,
-                p =>
-                {
-                    p.HelperText = "Type is string but configured with converter to render as DatePicker";
-                    p.Variant = Variant.Outlined;
-                },
-                s => DateTime.TryParse(s, out var d) ? d : null,
-                date => date?.ToString("yyyy-MM-dd")
-            ).WrapInMudItem(i => i.xs = 12);
+        meta.Property(m => m.DateValueAsString)
+            //.RenderWith<MudDatePicker, string, DateTime?>(
+            //    p => p.Date,
+            //    p =>
+            //    {
+            //        p.HelperText = "Type is string but configured with converter to render as DatePicker";
+            //        p.Variant = Variant.Outlined;
+            //    },
+            //    s => DateTime.TryParse(s, out var d) ? d : null,
+            //    date => date?.ToString("yyyy-MM-dd")
+            //)
+            .WrapInMudItem(i => i.xs = 12);
 
     }
 

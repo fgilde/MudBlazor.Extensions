@@ -26,8 +26,11 @@ namespace MudBlazor.Extensions.Helper
             return res;
         }
 
-        public static string TryLocalize(this IStringLocalizer localizer, string text, params object[] args) 
-            => localizer != null ? localizer[text, args] : string.Format(text, args);
+        public static string TryLocalize(this IStringLocalizer localizer, string text, params object[] args)
+        {
+            bool hasArgs = args is {Length: > 0};
+            return localizer != null ? (hasArgs ? localizer[text, args.Where(a => a != null).ToArray()] : localizer[text]) : string.Format(text, args);
+        }
 
         public static string GetAnimationCssStyle(this AnimationType type, TimeSpan duration, AnimationDirection? direction = null, AnimationTimingFunction animationTimingFunction = null, DialogPosition? targetPosition = null)
             => GetAnimationCssStyle(new[] { type }, duration, direction, animationTimingFunction, targetPosition);

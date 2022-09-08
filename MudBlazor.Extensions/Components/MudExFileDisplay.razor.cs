@@ -56,7 +56,7 @@ public partial class MudExFileDisplay
         }
     }
 
-    public string MediaType => ContentType?.Split("/").FirstOrDefault()?.ToLower();
+    public string MediaType => ContentType?.Split("/")?.FirstOrDefault()?.ToLower();
 
     private bool _isZip;
     private (string tag, Dictionary<string, object> attributes) renderInfos;
@@ -65,14 +65,14 @@ public partial class MudExFileDisplay
 
     protected override Task OnParametersSetAsync()
     {
-        _isZip = ViewDependsOnContentType && MimeTypeHelper.IsZip(ContentType);
+        _isZip = ViewDependsOnContentType && !string.IsNullOrEmpty(ContentType) && MimeTypeHelper.IsZip(ContentType);
         renderInfos = GetRenderInfos();
         return base.OnParametersSetAsync();
     }
 
     private (string tag, Dictionary<string, object> attributes) GetRenderInfos()
     {
-        if (ViewDependsOnContentType)
+        if (ViewDependsOnContentType && !string.IsNullOrEmpty(MediaType))
         {
             switch (MediaType)
             {
@@ -88,7 +88,7 @@ public partial class MudExFileDisplay
                         : ("div", new()
                         {
                             {"style", $"background-image:url('{Url}')"},
-                            {"class", "file-display-img-box"},
+                            {"class", "mud-ex-file-display-img-box"},
                             {"src", Url},
                             {"loading", "lazy"},
                             {"alt", FileName},
