@@ -36,15 +36,15 @@
       "Microsoft.Win32.Primitives.dll": "sha256-R2o94i8U\/U4AoERARt4B4uBj8708uqlq7w7lS2XCGj8=",
       "Microsoft.Win32.Registry.dll": "sha256-X7WZVqHwYUVnVjZJntPjT51HUL3wY46Io9httz8imaY=",
       "MimeTypesMap.dll": "sha256-e8zeya5VI4Pw6j4XQ4CHH64AxglE9YmjBrUDpgE73G0=",
-      "MudBlazor.dll": "sha256-yXgrWaNEf4aV6LqWs7dZYOjM8eeyypGkT4MCfFVgxKM=",
-      "MudBlazor.Extensions.dll": "sha256-SvSHq4suCDHdOvRIaPkKUqbnkPICgL8hHqIgi0GdxJg=",
+      "MudBlazor.dll": "sha256-ZljBQTq0shuc5Yx39LuxhVRUrKlhAs49JqMkP1qWutc=",
+      "MudBlazor.Extensions.dll": "sha256-IKVsBb49H+2CJgZymMNCg27SgciovWmkAhgwYO0\/f7E=",
       "MudBlazor.Markdown.dll": "sha256-gTeXcVJ6Q85mglBhD5mGYhQ9X774OTEM+VyVWFDhtro=",
       "netstandard.dll": "sha256-9raRQOW1WPtSYVHvixfZwfvGcD6a\/ZibFhTtg3k8Tlc=",
       "Newtonsoft.Json.dll": "sha256-cs8pHUurDt0IqbB8YXPh560au3q3J\/1wRL9jBddRVmE=",
       "Nextended.Blazor.dll": "sha256-B8XX0fSLMVDuEkAusGicd0MI6+M1ATYUXdOHV63xsaQ=",
       "Nextended.Core.dll": "sha256-eq+k\/JG4FTAbKc57YiA46OXxY+IJk5flduuiT4hmhyQ=",
       "PSC.Blazor.Components.BrowserDetect.dll": "sha256-mI6czUYj4eSDQU0vfGdC\/LtpRd0o0vjFqGtscrmpv28=",
-      "SampleApplication.Client.dll": "sha256-gBx0EC4XhOkzvLsOEkkw6p+AtpmIk8hxhYSxhqvHtME=",
+      "SampleApplication.Client.dll": "sha256-mNq\/FMepmPn92RLrO7tfzqCqHqLwPKmB6d86luVZEgA=",
       "Stateless.dll": "sha256-UnD\/VUyt\/DPLScwekiN1a+Nq+AZrrEbXzj3mroMvz1E=",
       "System.CodeDom.dll": "sha256-v7dQdKwmx2Mrvp\/8EGPOyppWquhqxJE0gda7qIxMSjQ=",
       "System.Collections.Concurrent.dll": "sha256-J6JgiD\/OR96PvqFrv6W\/U0oFupQynVUKSwsRIjeKpMw=",
@@ -122,10 +122,10 @@
       "dotnet.6.0.6.aauw3gytrm.js": "sha256-1JTzpwaVHF+uQhAMSav8netl6tk5X7dEQ4YCt3t5ngc=",
       "dotnet.timezones.blat": "sha256-44J\/Hf\/X8VbgiBAazDB8c0FaVrAFYOb4BbGyQwuzNyk=",
       "dotnet.wasm": "sha256-e0tgNyMXtTKK8pmYAtKV5aJFPOr2kv\/2doHUBSv9byI=",
-      "icudt.dat": "sha256-Zuq0dWAsBm6\/2lSOsz7+H9PvFaRn61KIXHMMwXDfvyE=",
       "icudt_CJK.dat": "sha256-WPyI4hWDPnOw62Nr27FkzGjdbucZnQD+Ph+GOPhAedw=",
       "icudt_EFIGS.dat": "sha256-4RwaPx87Z4dvn77ie\/ro3\/QzyS+\/gGmO3Y\/0CSAXw4k=",
-      "icudt_no_CJK.dat": "sha256-OxylFgLJlFqixsj+nLxYVsv5iZLvfIKMpLf9hrWaChA="
+      "icudt_no_CJK.dat": "sha256-OxylFgLJlFqixsj+nLxYVsv5iZLvfIKMpLf9hrWaChA=",
+      "icudt.dat": "sha256-Zuq0dWAsBm6\/2lSOsz7+H9PvFaRn61KIXHMMwXDfvyE="
     },
     "satelliteResources": null
   }

@@ -1,108 +1,12 @@
 ﻿self.assetsManifest = {
   "assets": [
     {
-      "hash": "sha256-bd2lYMjYMFjGEotDcWzbhYQ0Nx1ExLJEIiQstQBitgA=",
-      "url": "SampleApplication.Client.styles.css"
-    },
-    {
-      "hash": "sha256-IkpaGOzY0LZMovaywgFm4yd5sM97em4AeAD2vViVEYM=",
-      "url": "css\/app.css"
-    },
-    {
-      "hash": "sha256-z8OR40MowJ8GgK6P89Y+hiJK5+cclzFHzLhFQLL92bg=",
-      "url": "css\/bootstrap\/bootstrap.min.css"
-    },
-    {
-      "hash": "sha256-gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=",
-      "url": "css\/bootstrap\/bootstrap.min.css.map"
-    },
-    {
-      "hash": "sha256-90IKfdwD13qcdcfBdC4LNxGVuyC16inaHY6cDAes6FU=",
-      "url": "css\/ext\/ExtMudExFileDisplay.css"
-    },
-    {
-      "hash": "sha256-s7eSSS7KxR3zOo5oOsC\/xlZWwHg\/7f168HIFD6Rs2G0=",
-      "url": "css\/ext\/ExtMudExFileDisplayZip.css"
-    },
-    {
-      "hash": "sha256-c7tZ5yJT27R9v2SSL9J1ikIu9aXpw3up3tcMRJO5ddw=",
-      "url": "css\/ext\/ExtMudExPropertyEdit.css"
-    },
-    {
-      "hash": "sha256-BJ\/G+e+y7bQdrYkS2RBTyNfBHpA9IuGaPmf9htub5MQ=",
-      "url": "css\/open-iconic\/font\/css\/open-iconic-bootstrap.min.css"
-    },
-    {
-      "hash": "sha256-OK3poGPgzKI2NzNgP07XMbJa3Dz6USoUh\/chSkSvQpc=",
-      "url": "css\/open-iconic\/font\/fonts\/open-iconic.eot"
-    },
-    {
-      "hash": "sha256-sDUtuZAEzWZyv\/U1xl\/9D3ehyU69JE+FvAcu5HQ+\/a0=",
-      "url": "css\/open-iconic\/font\/fonts\/open-iconic.otf"
-    },
-    {
-      "hash": "sha256-+P1oQ5jPzOVJGC52E1oxGXIXxxCyMlqy6A9cNxGYzVk=",
-      "url": "css\/open-iconic\/font\/fonts\/open-iconic.svg"
-    },
-    {
-      "hash": "sha256-p+RP8CV3vRK1YbIkNzq3rPo1jyETPnR07ULb+HVYL8w=",
-      "url": "css\/open-iconic\/font\/fonts\/open-iconic.ttf"
-    },
-    {
-      "hash": "sha256-cZPqVlRJfSNW0KaQ4+UPOXZ\/v\/QzXlejRDwUNdZIofI=",
-      "url": "css\/open-iconic\/font\/fonts\/open-iconic.woff"
-    },
-    {
-      "hash": "sha256-jA4J4h\/k76zVxbFKEaWwFKJccmO0voOQ1DbUW+5YNlI=",
-      "url": "css\/open-iconic\/FONT-LICENSE"
-    },
-    {
-      "hash": "sha256-aF5g\/izareSj02F3MPSoTGNbcMBl9nmZKDe04zjU\/ss=",
-      "url": "css\/open-iconic\/ICON-LICENSE"
-    },
-    {
-      "hash": "sha256-p\/oxU91iBE+uaDr3kYOyZPuulf4YcPAMNIz6PRA\/tb0=",
-      "url": "css\/open-iconic\/README.md"
-    },
-    {
-      "hash": "sha256-Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM=",
-      "url": "favicon.ico"
-    },
-    {
-      "hash": "sha256-DbpQaq68ZSb5IoPosBErM1QWBfsbTxpJqhU0REi6wP4=",
-      "url": "icon-192.png"
-    },
-    {
-      "hash": "sha256-oEo6d+KqX5fjxTiZk\/w9NB3Mi0+ycS5yLwCKwr4IkbA=",
-      "url": "icon-512.png"
-    },
-    {
-      "hash": "sha256-T4QltHO8UYTr4am6KREI3VaMd5vXlMJmcEd2W87Sq38=",
-      "url": "index.html"
-    },
-    {
-      "hash": "sha256-VeplgTorJc5u9ddJavjba1CvHIHlU0CLFXJTNWDc2Hc=",
-      "url": "manifest.json"
-    },
-    {
-      "hash": "sha256-lKbi+0OO2FBCorf\/yYb4cvFPcDY0ehwQldhivuhN1zQ=",
-      "url": "sample-data\/sample-zip-file.zip"
-    },
-    {
-      "hash": "sha256-yzFf+O\/mlH+Q9klUSqXP2kxGKOUFLPxaww8da8fKhGU=",
-      "url": "sample-data\/weather.json"
-    },
-    {
       "hash": "sha256-wC+zAyYHVTNzevCw3SFvHI4jG51pV1+b5sQ3Rj11QGI=",
       "url": "_framework\/blazor.webassembly.js"
     },
     {
       "hash": "sha256-44J\/Hf\/X8VbgiBAazDB8c0FaVrAFYOb4BbGyQwuzNyk=",
       "url": "_framework\/dotnet.timezones.blat"
-    },
-    {
-      "hash": "sha256-Zuq0dWAsBm6\/2lSOsz7+H9PvFaRn61KIXHMMwXDfvyE=",
-      "url": "_framework\/icudt.dat"
     },
     {
       "hash": "sha256-WPyI4hWDPnOw62Nr27FkzGjdbucZnQD+Ph+GOPhAedw=",
@@ -117,7 +21,11 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-Gozz8QJy+GD3+gBGHZ8QcG+7Ue73X0\/SyC1Lyy1RLyo=",
+      "hash": "sha256-Zuq0dWAsBm6\/2lSOsz7+H9PvFaRn61KIXHMMwXDfvyE=",
+      "url": "_framework\/icudt.dat"
+    },
+    {
+      "hash": "sha256-4U9pLMKEeCMwyPPgNiuK0bPfHnPixQ4MD+DnFKpjMVA=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -237,11 +145,11 @@
       "url": "_framework\/MimeTypesMap.dll"
     },
     {
-      "hash": "sha256-yXgrWaNEf4aV6LqWs7dZYOjM8eeyypGkT4MCfFVgxKM=",
+      "hash": "sha256-ZljBQTq0shuc5Yx39LuxhVRUrKlhAs49JqMkP1qWutc=",
       "url": "_framework\/MudBlazor.dll"
     },
     {
-      "hash": "sha256-SvSHq4suCDHdOvRIaPkKUqbnkPICgL8hHqIgi0GdxJg=",
+      "hash": "sha256-IKVsBb49H+2CJgZymMNCg27SgciovWmkAhgwYO0\/f7E=",
       "url": "_framework\/MudBlazor.Extensions.dll"
     },
     {
@@ -269,7 +177,7 @@
       "url": "_framework\/PSC.Blazor.Components.BrowserDetect.dll"
     },
     {
-      "hash": "sha256-gBx0EC4XhOkzvLsOEkkw6p+AtpmIk8hxhYSxhqvHtME=",
+      "hash": "sha256-mNq\/FMepmPn92RLrO7tfzqCqHqLwPKmB6d86luVZEgA=",
       "url": "_framework\/SampleApplication.Client.dll"
     },
     {
@@ -553,8 +461,84 @@
       "url": "_framework\/dotnet.wasm"
     },
     {
-      "hash": "sha256-gdRLMG05aA2HQcMmuyNOR0lI3SMIcr2EZr8GoPhXcBE=",
-      "url": "_content\/MudBlazor.Extensions\/MudBlazor.Extensions.bundle.scp.css"
+      "hash": "sha256-ABgHaSM4lP9AEyj8\/Lu\/nOvbiMCKkA8OWuRWWXFkutk=",
+      "url": "SampleApplication.Client.styles.css"
+    },
+    {
+      "hash": "sha256-IkpaGOzY0LZMovaywgFm4yd5sM97em4AeAD2vViVEYM=",
+      "url": "css\/app.css"
+    },
+    {
+      "hash": "sha256-z8OR40MowJ8GgK6P89Y+hiJK5+cclzFHzLhFQLL92bg=",
+      "url": "css\/bootstrap\/bootstrap.min.css"
+    },
+    {
+      "hash": "sha256-gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=",
+      "url": "css\/bootstrap\/bootstrap.min.css.map"
+    },
+    {
+      "hash": "sha256-jA4J4h\/k76zVxbFKEaWwFKJccmO0voOQ1DbUW+5YNlI=",
+      "url": "css\/open-iconic\/FONT-LICENSE"
+    },
+    {
+      "hash": "sha256-BJ\/G+e+y7bQdrYkS2RBTyNfBHpA9IuGaPmf9htub5MQ=",
+      "url": "css\/open-iconic\/font\/css\/open-iconic-bootstrap.min.css"
+    },
+    {
+      "hash": "sha256-OK3poGPgzKI2NzNgP07XMbJa3Dz6USoUh\/chSkSvQpc=",
+      "url": "css\/open-iconic\/font\/fonts\/open-iconic.eot"
+    },
+    {
+      "hash": "sha256-sDUtuZAEzWZyv\/U1xl\/9D3ehyU69JE+FvAcu5HQ+\/a0=",
+      "url": "css\/open-iconic\/font\/fonts\/open-iconic.otf"
+    },
+    {
+      "hash": "sha256-+P1oQ5jPzOVJGC52E1oxGXIXxxCyMlqy6A9cNxGYzVk=",
+      "url": "css\/open-iconic\/font\/fonts\/open-iconic.svg"
+    },
+    {
+      "hash": "sha256-p+RP8CV3vRK1YbIkNzq3rPo1jyETPnR07ULb+HVYL8w=",
+      "url": "css\/open-iconic\/font\/fonts\/open-iconic.ttf"
+    },
+    {
+      "hash": "sha256-cZPqVlRJfSNW0KaQ4+UPOXZ\/v\/QzXlejRDwUNdZIofI=",
+      "url": "css\/open-iconic\/font\/fonts\/open-iconic.woff"
+    },
+    {
+      "hash": "sha256-aF5g\/izareSj02F3MPSoTGNbcMBl9nmZKDe04zjU\/ss=",
+      "url": "css\/open-iconic\/ICON-LICENSE"
+    },
+    {
+      "hash": "sha256-p\/oxU91iBE+uaDr3kYOyZPuulf4YcPAMNIz6PRA\/tb0=",
+      "url": "css\/open-iconic\/README.md"
+    },
+    {
+      "hash": "sha256-Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM=",
+      "url": "favicon.ico"
+    },
+    {
+      "hash": "sha256-DbpQaq68ZSb5IoPosBErM1QWBfsbTxpJqhU0REi6wP4=",
+      "url": "icon-192.png"
+    },
+    {
+      "hash": "sha256-oEo6d+KqX5fjxTiZk\/w9NB3Mi0+ycS5yLwCKwr4IkbA=",
+      "url": "icon-512.png"
+    },
+    {
+      "hash": "sha256-\/0TThsUG+gcSu0f2vdc0teAWJ8EgFR+HeC6L92IfDgc=",
+      "url": "index.html"
+    },
+    {
+      "hash": "sha256-VeplgTorJc5u9ddJavjba1CvHIHlU0CLFXJTNWDc2Hc=",
+      "url": "manifest.json"
+    },
+    {
+      "hash": "sha256-lKbi+0OO2FBCorf\/yYb4cvFPcDY0ehwQldhivuhN1zQ=",
+      "url": "sample-data\/sample-zip-file.zip"
+    },
+    {
+      "hash": "sha256-yzFf+O\/mlH+Q9klUSqXP2kxGKOUFLPxaww8da8fKhGU=",
+      "url": "sample-data\/weather.json"
     },
     {
       "hash": "sha256-fROYVbpfsol+6k5KnCJciIeOtERX+Gf\/xbTAsQjF9rg=",
@@ -563,50 +547,6 @@
     {
       "hash": "sha256-SV5RNnguSzMlgrr9iBw5vAyjikfNB5fUKZ9IlpUTJjg=",
       "url": "_content\/PSC.Blazor.Components.BrowserDetect\/PSC.Blazor.Components.BrowserDetect.bundle.scp.css"
-    },
-    {
-      "hash": "sha256-hLaASkqUWovg7OMxXb\/tl1wIKx2pHkk3Q0T5LvcUbmc=",
-      "url": "_content\/MudBlazor.Extensions\/_animations.css"
-    },
-    {
-      "hash": "sha256-qa5kg3tTF9bCgvc0TMl+hW3atBo2HaMVoPNS\/VW7Eho=",
-      "url": "_content\/MudBlazor.Extensions\/_animations.min.css"
-    },
-    {
-      "hash": "sha256-xiZ5KjDjd4SB67dbC81LK\/a6AojX0j\/yjL0BEOwbenk=",
-      "url": "_content\/MudBlazor.Extensions\/_animations.scss"
-    },
-    {
-      "hash": "sha256-WeOKCkI7IdJHs2kCqsKgLfiWX4\/sNPbaRUspOLefkCY=",
-      "url": "_content\/MudBlazor.Extensions\/background.png"
-    },
-    {
-      "hash": "sha256-L4ruQUW56enO\/nC\/0zox8+PeLPxgoELHC3OSPGgXDPw=",
-      "url": "_content\/MudBlazor.Extensions\/mudBlazorExtensions.css"
-    },
-    {
-      "hash": "sha256-H\/e2J+kM1NJFqSWgFr+Pnqm2AJfDbAI8h+J32hBMKyE=",
-      "url": "_content\/MudBlazor.Extensions\/mudBlazorExtensions.es5.js"
-    },
-    {
-      "hash": "sha256-BcDdOhMybDpDUNL+EiiPnBWi4VUlH3Cb1GTAl2Q6TCM=",
-      "url": "_content\/MudBlazor.Extensions\/mudBlazorExtensions.es5.min.js"
-    },
-    {
-      "hash": "sha256-8EUly7\/M36qrTp9dB+QvWEy7M3\/MRJhvJvyD4hUEeLk=",
-      "url": "_content\/MudBlazor.Extensions\/mudBlazorExtensions.js"
-    },
-    {
-      "hash": "sha256-IMkOdOp4IN+PU3VCv4ezsl+k176tcYOACafpvKuMm0g=",
-      "url": "_content\/MudBlazor.Extensions\/mudBlazorExtensions.min.css"
-    },
-    {
-      "hash": "sha256-1hHS7uJLTY5JwLRBd2XC5UJ7km2A4IkuxQ8JzM9IGu0=",
-      "url": "_content\/MudBlazor.Extensions\/mudBlazorExtensions.scss"
-    },
-    {
-      "hash": "sha256-cZbRmlg9dzTre6b7r7fC+I\/z0E44ZSW9ObDlfrM4pjs=",
-      "url": "_content\/MudBlazor.Extensions\/styles.css"
     },
     {
       "hash": "sha256-F3GQ8XupzEILd\/Z4bUPauaQJ0jATvi+n3OizsOWTrNk=",
@@ -637,6 +577,54 @@
       "url": "_content\/BlazorPrettyCode\/WinterIsComingLight.json"
     },
     {
+      "hash": "sha256-MfI5k+d6O8P8vpj9YkbQuV6hIo0mqBQR7wrfMUbKoAQ=",
+      "url": "_content\/MudBlazor.Extensions\/_animations.scss"
+    },
+    {
+      "hash": "sha256-tW6BvPUbsYhB850aRhxYJrmfFwOAfXhdsKxINllyXek=",
+      "url": "_content\/MudBlazor.Extensions\/_file-display.scss"
+    },
+    {
+      "hash": "sha256-YTrhA9uTnZcsNkZZjgIOjOY9Tpa2CzB2pKv4qM\/p7KE=",
+      "url": "_content\/MudBlazor.Extensions\/_object-edit.scss"
+    },
+    {
+      "hash": "sha256-WeOKCkI7IdJHs2kCqsKgLfiWX4\/sNPbaRUspOLefkCY=",
+      "url": "_content\/MudBlazor.Extensions\/background.png"
+    },
+    {
+      "hash": "sha256-QkZiJ2CyANo7eukjlPZmyQN4rcGQXmcSBTd\/1bEcVTo=",
+      "url": "_content\/MudBlazor.Extensions\/js\/browserDetect.js"
+    },
+    {
+      "hash": "sha256-eSCikEPBdZwb0A9XfjD+eOyaCmXjlXE32J7GKJoxoz0=",
+      "url": "_content\/MudBlazor.Extensions\/mudBlazorExtensions.css"
+    },
+    {
+      "hash": "sha256-H\/e2J+kM1NJFqSWgFr+Pnqm2AJfDbAI8h+J32hBMKyE=",
+      "url": "_content\/MudBlazor.Extensions\/mudBlazorExtensions.es5.js"
+    },
+    {
+      "hash": "sha256-BcDdOhMybDpDUNL+EiiPnBWi4VUlH3Cb1GTAl2Q6TCM=",
+      "url": "_content\/MudBlazor.Extensions\/mudBlazorExtensions.es5.min.js"
+    },
+    {
+      "hash": "sha256-8EUly7\/M36qrTp9dB+QvWEy7M3\/MRJhvJvyD4hUEeLk=",
+      "url": "_content\/MudBlazor.Extensions\/mudBlazorExtensions.js"
+    },
+    {
+      "hash": "sha256-JP83+xxTzBbqYMLzHyVMV6swRJPraO6KUaZxpBQL+nE=",
+      "url": "_content\/MudBlazor.Extensions\/mudBlazorExtensions.min.css"
+    },
+    {
+      "hash": "sha256-x5irM+EvWSRFkrbjOSl4997nOwcbX4eSOsQP71gGNGE=",
+      "url": "_content\/MudBlazor.Extensions\/mudBlazorExtensions.scss"
+    },
+    {
+      "hash": "sha256-cZbRmlg9dzTre6b7r7fC+I\/z0E44ZSW9ObDlfrM4pjs=",
+      "url": "_content\/MudBlazor.Extensions\/styles.css"
+    },
+    {
       "hash": "sha256-4CcabSFuAiMPemBJXz\/YPL4Buv0IsfEBslZtIotn9yk=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/a11y-dark.min.css"
     },
@@ -649,12 +637,12 @@
       "url": "_content\/MudBlazor.Markdown\/code-styles\/agate.min.css"
     },
     {
-      "hash": "sha256-19BZsrRUfiP7cedxvlQeYJycGmqen0sgSOCgRkBi+IU=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/androidstudio.min.css"
-    },
-    {
       "hash": "sha256-287TLGyVSc5Rs0UtvVbw2QJCVUdMwQ02q0g715BOd7A=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/an-old-hope.min.css"
+    },
+    {
+      "hash": "sha256-19BZsrRUfiP7cedxvlQeYJycGmqen0sgSOCgRkBi+IU=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/androidstudio.min.css"
     },
     {
       "hash": "sha256-E1adQNVyPFLk+wNmkebvctWw6+f0L1\/mha8d7U9f\/Ro=",
@@ -669,12 +657,12 @@
       "url": "_content\/MudBlazor.Markdown\/code-styles\/ascetic.min.css"
     },
     {
-      "hash": "sha256-RaSazsmkLJwoYkNVKU74LfTbdB75K8e3X6cguGeJ1xQ=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/atom-one-dark.min.css"
-    },
-    {
       "hash": "sha256-anuTX65gJA36nYIdZy52hWCDuF+SSoLV2fz+m7h0\/zc=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/atom-one-dark-reasonable.min.css"
+    },
+    {
+      "hash": "sha256-RaSazsmkLJwoYkNVKU74LfTbdB75K8e3X6cguGeJ1xQ=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/atom-one-dark.min.css"
     },
     {
       "hash": "sha256-AwGCb2xPzJ+Nua2otjxyTJSFJMN8o8M9gnPuHnMDtdM=",
@@ -693,84 +681,84 @@
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/ashes.min.css"
     },
     {
-      "hash": "sha256-1ZZtP\/Yr1BEgP74zDTXg1+IQH3dxwr2V0IWQuEAdnck=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-cave.min.css"
-    },
-    {
       "hash": "sha256-Mw64o5JasQZaLe7Z8nFigUUlA2W0LuNFFsfOGPih0g0=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-cave-light.min.css"
     },
     {
-      "hash": "sha256-k+1KmH3gqGhhMznqhOX4VYPMv8Xo0WehqM2aPDN3Qc8=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-dune.min.css"
+      "hash": "sha256-1ZZtP\/Yr1BEgP74zDTXg1+IQH3dxwr2V0IWQuEAdnck=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-cave.min.css"
     },
     {
       "hash": "sha256-f9Ttp9Y7oXz5usPW9PWVjL8dUp0enXKPO1PD6o3W4fc=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-dune-light.min.css"
     },
     {
-      "hash": "sha256-Qncli2FKp2TVxyUbZwW2Dg8Fd0eDB4RMwAWjk5F+TOM=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-estuary.min.css"
+      "hash": "sha256-k+1KmH3gqGhhMznqhOX4VYPMv8Xo0WehqM2aPDN3Qc8=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-dune.min.css"
     },
     {
       "hash": "sha256-HxUhNletuEcDn3CD7JCoFpbx45xCxaSOIVuWPC5nAA4=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-estuary-light.min.css"
     },
     {
-      "hash": "sha256-q3c1FVVgnJqDlQ16bxkMtZmGXqDWyqO3Ap95fXOoaKg=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-forest.min.css"
+      "hash": "sha256-Qncli2FKp2TVxyUbZwW2Dg8Fd0eDB4RMwAWjk5F+TOM=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-estuary.min.css"
     },
     {
       "hash": "sha256-wY23KQEDHtVvyjx9e4XyZ7OWU9uMQYU7o14VImkps70=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-forest-light.min.css"
     },
     {
-      "hash": "sha256-uSboqdDCUrRQ9n9x0r73UaUXvDN9KgEFVPPAbkeuDLo=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-heath.min.css"
+      "hash": "sha256-q3c1FVVgnJqDlQ16bxkMtZmGXqDWyqO3Ap95fXOoaKg=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-forest.min.css"
     },
     {
       "hash": "sha256-JlXc+cyGQJAQlaAuFp5OtWDn4D7MWXAbmMpiUytlINg=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-heath-light.min.css"
     },
     {
-      "hash": "sha256-su6zp0Txy3LT74dw\/hrHpHLeNybVbQ1JUc+Scc2YM0A=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-lakeside.min.css"
+      "hash": "sha256-uSboqdDCUrRQ9n9x0r73UaUXvDN9KgEFVPPAbkeuDLo=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-heath.min.css"
     },
     {
       "hash": "sha256-CaujDMM2XgYhnLPF2i9sGRyDsJIaCTe02ifkeq++P40=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-lakeside-light.min.css"
     },
     {
-      "hash": "sha256-IFHLHZnkmIQGg65xq99tt4t0Fmj\/QTpdGtE4r31T+50=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-plateau.min.css"
+      "hash": "sha256-su6zp0Txy3LT74dw\/hrHpHLeNybVbQ1JUc+Scc2YM0A=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-lakeside.min.css"
     },
     {
       "hash": "sha256-dR0foNs3lYPb6bAQJu+OhTmNN6800F0ISxXVMObT1H8=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-plateau-light.min.css"
     },
     {
-      "hash": "sha256-DHKihkfjJ665CDxl7F7O9mph4T2pY7bYiT4qq4QtmHE=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-savanna.min.css"
+      "hash": "sha256-IFHLHZnkmIQGg65xq99tt4t0Fmj\/QTpdGtE4r31T+50=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-plateau.min.css"
     },
     {
       "hash": "sha256-Gj9We0Mesq6sp\/Zhos58Sn+iit4UwHim5BXKrGBlfLE=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-savanna-light.min.css"
     },
     {
-      "hash": "sha256-5VAFCqT07\/m6BT1j+FyaOTxbVjRKw8nLPNK1GhGiAYU=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-seaside.min.css"
+      "hash": "sha256-DHKihkfjJ665CDxl7F7O9mph4T2pY7bYiT4qq4QtmHE=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-savanna.min.css"
     },
     {
       "hash": "sha256-vNrDHGgIRe7AAt4kqNRDucBETOAjFeCg4R6ehbWXWvU=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-seaside-light.min.css"
     },
     {
-      "hash": "sha256-dAH8ZqW8HYpE+7SsvIZD8o12H1ppDZANw3qWAXvssWc=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-sulphurpool.min.css"
+      "hash": "sha256-5VAFCqT07\/m6BT1j+FyaOTxbVjRKw8nLPNK1GhGiAYU=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-seaside.min.css"
     },
     {
       "hash": "sha256-RG8VppWGmJLgl\/4pI\/xRcopHT4\/aop1BXjg\/2XC7\/s0=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-sulphurpool-light.min.css"
+    },
+    {
+      "hash": "sha256-dAH8ZqW8HYpE+7SsvIZD8o12H1ppDZANw3qWAXvssWc=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/atelier-sulphurpool.min.css"
     },
     {
       "hash": "sha256-jAqSAvx6BFlrKEjvp3h564OdBv41VnKju0KzvAM0JSc=",
@@ -779,10 +767,6 @@
     {
       "hash": "sha256-78qB8t5EARYRu645ZyA2xhx3hIVkPdhhgqM62gc6VOw=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/bespin.min.css"
-    },
-    {
-      "hash": "sha256-V3F\/WnvNzgnCErbNxINhVtCEqjxpr+BjH3nXjqcj29k=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/black-metal.min.css"
     },
     {
       "hash": "sha256-2Z9+36kp3g4LeD0nlBsy38\/hqCSgpMY2qiPMB54IHIg=",
@@ -825,6 +809,10 @@
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/black-metal-venom.min.css"
     },
     {
+      "hash": "sha256-V3F\/WnvNzgnCErbNxINhVtCEqjxpr+BjH3nXjqcj29k=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/black-metal.min.css"
+    },
+    {
       "hash": "sha256-H2eUAZrucMadNSlF+9TS\/9dFFuPMtXC1Js0crOWqisw=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/brewer.min.css"
     },
@@ -837,12 +825,12 @@
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/brogrammer.min.css"
     },
     {
-      "hash": "sha256-9+ITjL5ifaDo6klIozVK8D\/1hl1isYCuOxTlGCUE50c=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/brush-trees.min.css"
-    },
-    {
       "hash": "sha256-FMam1NFMAXfL+sJ1Luszok4Pg0Tr7qWXriiyTdhyZpc=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/brush-trees-dark.min.css"
+    },
+    {
+      "hash": "sha256-9+ITjL5ifaDo6klIozVK8D\/1hl1isYCuOxTlGCUE50c=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/brush-trees.min.css"
     },
     {
       "hash": "sha256-MURwAKhMorovHMsSVoh2IOwutWwEVYK2GZb7LzWKjtw=",
@@ -885,16 +873,16 @@
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/darcula.min.css"
     },
     {
+      "hash": "sha256-QCTAL6en3vCqjkshvUswyfajZEpfv2ei\/RHlhqMMSV4=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/dark-violet.min.css"
+    },
+    {
       "hash": "sha256-+lh8Wf3G08L5ZmSFoQF64lRlh+FWXnHQYxx1+5wUmFk=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/darkmoss.min.css"
     },
     {
       "hash": "sha256-\/d9FxyMHikOWtvDiR3qfap5XkDoM4A+31Q2xiLtdbQE=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/darktooth.min.css"
-    },
-    {
-      "hash": "sha256-QCTAL6en3vCqjkshvUswyfajZEpfv2ei\/RHlhqMMSV4=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/dark-violet.min.css"
     },
     {
       "hash": "sha256-f3iMtWzS\/nKrdYQokn3VMm5hRwhqL\/YZWDoTdWmuXiY=",
@@ -953,12 +941,12 @@
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/espresso.min.css"
     },
     {
-      "hash": "sha256-5YWeIm2fGEm5+GHxtpxVTFMyseBynujYFSVq34RSnd8=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/eva.min.css"
-    },
-    {
       "hash": "sha256-N2vy4VkkI\/9nKpXqasaQKewjWZ6CzFby1cm17XZZGoM=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/eva-dim.min.css"
+    },
+    {
+      "hash": "sha256-5YWeIm2fGEm5+GHxtpxVTFMyseBynujYFSVq34RSnd8=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/eva.min.css"
     },
     {
       "hash": "sha256-KJ4Lw72Gh\/mpJpXypvEyNLOQx\/sLZhaPvkcG4xwXNEs=",
@@ -1113,10 +1101,6 @@
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/materia.min.css"
     },
     {
-      "hash": "sha256-7kI3\/3QRB4Auze9UgaDFU8MLXaF6\/W5ojczUzkFF2nI=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/material.min.css"
-    },
-    {
       "hash": "sha256-3OvR2Xwn07p\/BYqntSP5i7QcpeoREoLs3iNGjQ28xgc=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/material-darker.min.css"
     },
@@ -1131,6 +1115,10 @@
     {
       "hash": "sha256-3TbUBxUhGCleFa12TAfR65uil00Os0aioVXOYr40Aqw=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/material-vivid.min.css"
+    },
+    {
+      "hash": "sha256-7kI3\/3QRB4Auze9UgaDFU8MLXaF6\/W5ojczUzkFF2nI=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/material.min.css"
     },
     {
       "hash": "sha256-7NeDuaaKeeSd0YgxeCQlOAgoMLJkex5xyJ0a\/9v0ae8=",
@@ -1169,12 +1157,12 @@
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/oceanicnext.min.css"
     },
     {
-      "hash": "sha256-7lSCiKUbDPEPWOmdkQ12ySXYbNvpvynXhHPD20KpyLo=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/onedark.min.css"
-    },
-    {
       "hash": "sha256-DpHDtzQ+y+yDf5HwOgz6Zl5PjLaedQuXL1zWqIqE3KA=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/one-light.min.css"
+    },
+    {
+      "hash": "sha256-7lSCiKUbDPEPWOmdkQ12ySXYbNvpvynXhHPD20KpyLo=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/onedark.min.css"
     },
     {
       "hash": "sha256-LnXaGBJG3JUTtq88EQ8MErtHquvQz965x0e8xGbQgqI=",
@@ -1225,16 +1213,16 @@
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/rebecca.min.css"
     },
     {
-      "hash": "sha256-RnAdEfocpXqI8LK+WQHkAB3T3S\/rzLWlHoADR4MKzRM=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/ros-pine.min.css"
-    },
-    {
       "hash": "sha256-f3ciHP6zYCO1PS5zHLYnqEOrMXE6Bcg0yutkYFtoYbI=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/ros-pine-dawn.min.css"
     },
     {
       "hash": "sha256-PqLYSwePItm5Sa05\/eN3CD+sKGbrJwxZ9RVKlJpP1RE=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/ros-pine-moon.min.css"
+    },
+    {
+      "hash": "sha256-RnAdEfocpXqI8LK+WQHkAB3T3S\/rzLWlHoADR4MKzRM=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/ros-pine.min.css"
     },
     {
       "hash": "sha256-14wtk9+PaldBeA34Gs93Wiwgb+9yWEPQ0hcyAEn\/dFE=",
@@ -1265,12 +1253,12 @@
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/snazzy.min.css"
     },
     {
-      "hash": "sha256-A53V5wwEYzAuSyA7E5vdakCXXlQ1oarS9pkL2Ib+JrI=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/solar-flare.min.css"
-    },
-    {
       "hash": "sha256-E6Uk2befVHxScnVFPpqfe4P0IuNOINNumvz2ZC9K35k=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/solar-flare-light.min.css"
+    },
+    {
+      "hash": "sha256-A53V5wwEYzAuSyA7E5vdakCXXlQ1oarS9pkL2Ib+JrI=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/solar-flare.min.css"
     },
     {
       "hash": "sha256-JZpNmQZYLpMNXt+vTHmxaPydO3VgPRw\/sJdORaFA+0Y=",
@@ -1317,12 +1305,12 @@
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/tender.min.css"
     },
     {
-      "hash": "sha256-93W+yQ8jcEoQhil1XmunMbaAY9w2GoCLpaooLU9O094=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/tomorrow.min.css"
-    },
-    {
       "hash": "sha256-Hy13s5nLD\/KHvQKX5faSBlj0lc97N9PDY2dXpb9MK1Q=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/tomorrow-night.min.css"
+    },
+    {
+      "hash": "sha256-93W+yQ8jcEoQhil1XmunMbaAY9w2GoCLpaooLU9O094=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/tomorrow.min.css"
     },
     {
       "hash": "sha256-MEpyUyNVu7LC+5LpAJ0K9cDtYwEe3oLOXs7rzx2jd7Q=",
@@ -1341,36 +1329,36 @@
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/vulcan.min.css"
     },
     {
-      "hash": "sha256-MOkxsXL3jR0MKZ7Cofwlht0ygBaflIuVK6e1tflPqq4=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/windows-10.min.css"
-    },
-    {
       "hash": "sha256-9TgNFBXnyJLTqatxSFJ9qIKvQz\/l1sNXPXr8Ku3Trxo=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/windows-10-light.min.css"
     },
     {
-      "hash": "sha256-vSv9XgoVhCbTof034YD+8G5PfV\/51sK8D6mXmyaQQ5g=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/windows-95.min.css"
+      "hash": "sha256-MOkxsXL3jR0MKZ7Cofwlht0ygBaflIuVK6e1tflPqq4=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/windows-10.min.css"
     },
     {
       "hash": "sha256-tSP3neLGcGa+\/yUieW4FhArXIzHp4cLTI8Vcnx4uwa4=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/windows-95-light.min.css"
     },
     {
-      "hash": "sha256-DaS8l7mioZZyzzKcQ2GymrBvwm1Ptn7TWDRdipoD4WI=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/windows-high-contrast.min.css"
+      "hash": "sha256-vSv9XgoVhCbTof034YD+8G5PfV\/51sK8D6mXmyaQQ5g=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/windows-95.min.css"
     },
     {
       "hash": "sha256-eKFuh3YLouEe6aK2MUe2ViF6AsJ0KsgAjRuyiIQ6\/Q4=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/windows-high-contrast-light.min.css"
     },
     {
-      "hash": "sha256-u8vDCT9A1aQ5lBtGwOr8vFfTcGgdzdNai2mEhkfs7Cc=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/windows-nt.min.css"
+      "hash": "sha256-DaS8l7mioZZyzzKcQ2GymrBvwm1Ptn7TWDRdipoD4WI=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/windows-high-contrast.min.css"
     },
     {
       "hash": "sha256-vKnztAuD9h4WaRG6wOBiFyxaqj5P0fozkQXcIWegs+g=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/windows-nt-light.min.css"
+    },
+    {
+      "hash": "sha256-u8vDCT9A1aQ5lBtGwOr8vFfTcGgdzdNai2mEhkfs7Cc=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/base16\/windows-nt.min.css"
     },
     {
       "hash": "sha256-2uonIv\/F9CE1Vn1Rllzvi7FycNsxQqt0s0U21u7eUs0=",
@@ -1425,16 +1413,16 @@
       "url": "_content\/MudBlazor.Markdown\/code-styles\/foundation.min.css"
     },
     {
-      "hash": "sha256-tzdudDkDBx5\/RzG3omGGxxMj9U0EFLGj2pxg\/UcjlGg=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/github.min.css"
+      "hash": "sha256-QaJ88oR\/OfUB2Y0wDSiXvEZ91LxIgCetAlm\/QX2G49U=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/github-dark-dimmed.min.css"
     },
     {
       "hash": "sha256-xrdGkr9dQPjK2EvSCq\/0hq+JOmD\/cVc6p4Tj1os7pTY=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/github-dark.min.css"
     },
     {
-      "hash": "sha256-QaJ88oR\/OfUB2Y0wDSiXvEZ91LxIgCetAlm\/QX2G49U=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/github-dark-dimmed.min.css"
+      "hash": "sha256-tzdudDkDBx5\/RzG3omGGxxMj9U0EFLGj2pxg\/UcjlGg=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/github.min.css"
     },
     {
       "hash": "sha256-YgoZzmigqhV8TZpYs4dzAGZubGntQMcw8gJrd0vxbH4=",
@@ -1501,12 +1489,12 @@
       "url": "_content\/MudBlazor.Markdown\/code-styles\/mono-blue.min.css"
     },
     {
-      "hash": "sha256-qwVuy4wkbUI7SW14OTM\/UDctKRV3QhTDujwocfcyczw=",
-      "url": "_content\/MudBlazor.Markdown\/code-styles\/monokai.min.css"
-    },
-    {
       "hash": "sha256-TcqLHZrDN9egKCnxY5GJoFqyEBb6pnUE0zikTrGGBVA=",
       "url": "_content\/MudBlazor.Markdown\/code-styles\/monokai-sublime.min.css"
+    },
+    {
+      "hash": "sha256-qwVuy4wkbUI7SW14OTM\/UDctKRV3QhTDujwocfcyczw=",
+      "url": "_content\/MudBlazor.Markdown\/code-styles\/monokai.min.css"
     },
     {
       "hash": "sha256-CXbHDaGhdy37dxko3Y1KXcPJx5OzJB7PLj1Dos9\/\/6w=",
@@ -1734,12 +1722,8 @@
     },
     {
       "hash": "sha256-QkZiJ2CyANo7eukjlPZmyQN4rcGQXmcSBTd\/1bEcVTo=",
-      "url": "_content\/MudBlazor.Extensions\/js\/browserDetect.js"
-    },
-    {
-      "hash": "sha256-QkZiJ2CyANo7eukjlPZmyQN4rcGQXmcSBTd\/1bEcVTo=",
       "url": "_content\/PSC.Blazor.Components.BrowserDetect\/js\/browserDetect.js"
     }
   ],
-  "version": "RdzTr0Mu"
+  "version": "0PUmXEVM"
 };
