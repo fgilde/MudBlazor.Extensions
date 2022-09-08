@@ -1,4 +1,10 @@
-﻿.mud-dialog-slide-from-left {
+﻿.mud-ex-animate-all-properties {
+  transition-property: all !important;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+.mud-dialog-slide-from-left {
   left: -100vw;
 }
 .mud-dialog-slide-from-right {
@@ -3836,6 +3842,196 @@
 .animate__slideOutUp {
   -webkit-animation-name: slideOutUp;
   animation-name: slideOutUp;
+}
+
+.mud-ex-file-display {
+  padding: 10px;
+  border: 1px dashed var(--mud-palette-primary);
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.mud-ex-file-display-container {
+  height: calc(100% - 60px);
+}
+
+.mud-ex-download-file {
+  float: right;
+}
+
+.mud-ex-file-display > img:not([data-mimetype="image/svg+xml"]) {
+  object-fit: scale-down;
+}
+
+.mud-ex-file-display > object {
+  width: 100%;
+}
+
+.mud-ex-file-display > iframe {
+  width: 100%;
+}
+
+.mud-ex-file-display > audio {
+  width: 100%;
+  align-self: center;
+}
+
+.mud-ex-file-display > * {
+  object-position: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  max-height: 100%;
+  align-self: stretch;
+  max-width: 100%;
+}
+
+.mud-ex-file-display:empty {
+  background: repeating-linear-gradient(135deg, #ccc, #ccc 10px, #aaa 10px, #aaa 20px);
+  opacity: 0.4;
+  border-radius: 5px;
+  transition-property: opacity;
+  transition-duration: 0.6s;
+}
+
+.mud-ex-file-display:empty:hover {
+  opacity: 0.6;
+}
+
+.mud-ex-file-display > .mud-ex-file-display-img-box {
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  width: 100%;
+  height: 100%;
+}
+
+.mud-ex-file-display-error-message {
+  color: var(--mud-palette-error);
+  font-style: italic;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#content-type-display-error {
+  position: absolute;
+  bottom: 80px;
+  opacity: 0;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+  min-width: 300px;
+  transform: scale(0.2);
+  transition-property: all !important;
+}
+
+#content-type-display-error.visible {
+  opacity: 1;
+  transform: scale(1);
+  animation: scaleIn 1200ms ease-in-out 1 alternate;
+}
+
+.mud-ex-fd-child-count-label {
+  font-size: 7pt;
+  margin-left: 5px;
+  width: 15px;
+  border: 1px solid var(--mud-palette-text-primary);
+  height: 15px;
+  border-radius: 50px;
+  text-align: center;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.mud-ex-file-display-zip {
+  padding: 10px;
+  border: 1px dashed var(--mud-palette-primary);
+  max-height: 90vh;
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  overflow: auto;
+}
+
+.mud-ex-fd-close-inner-preview {
+  float: right;
+  height: 25px;
+  margin-top: -15px;
+  margin-bottom: 15px;
+  margin-right: -10px;
+}
+
+.mud-ex-fd-size-display {
+  font-style: italic;
+  font-size: 8pt;
+}
+
+.mud-ex-fd-tree-actions {
+  margin-left: 20px;
+}
+
+.mud-ex-object-edit-group-flat .mud-expand-panel-text {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  margin-left: -10px;
+}
+
+.mud-ex-object-edit-group-flat .mud-expand-panel-text:after {
+  content: "";
+  flex: 1;
+  margin-left: 1rem;
+  height: 2px;
+}
+
+.mud-ex-hidden-group .mud-expand-panel-header {
+  display: none;
+}
+
+.mud-ex-hide-expand-btn .mud-expand-panel-icon {
+  display: none;
+}
+
+.mud-ex-property-filter.active {
+  width: 50%;
+  opacity: 1;
+}
+
+.mud-ex-property-filter {
+  width: 0;
+  flex: 0 1 auto;
+  opacity: 0;
+  padding-bottom: 25px;
+}
+
+.mud-ex-toolbar-sticky {
+  position: sticky;
+  z-index: 2;
+}
+
+.mud-ex-actionbar-sticky {
+  position: sticky;
+  z-index: 2;
+}
+
+.mud-ex-loading-overlay .mud-overlay-content {
+  position: fixed;
+  top: 50%;
+  bottom: 50%;
+}
+
+.mud-ex-property-reset-conatiner {
+  cursor: pointer;
+  transform: scale(0.7);
+  float: right;
+  margin-right: -7px;
+  margin-top: -3px;
 }
 
 .mud-dialog-height-full {

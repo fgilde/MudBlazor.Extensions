@@ -1,6 +1,6 @@
-﻿
-
-@import '_animations.scss';
+﻿@import '_animations.scss';
+@import '_file-display.scss';
+@import '_object-edit.scss';
 
 
 .mud-dialog-height-full {
@@ -89,9 +89,6 @@
 .mud-ex-alert-message-w-100 > .mud-alert-position > .mud-alert-message {
     width: 100%;
 }
-
-
-
 
 
 .mud-ex-collection-edit-label {
