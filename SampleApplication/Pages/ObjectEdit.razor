@@ -5,7 +5,7 @@
 
 <PageTitle>Object Edit Samples</PageTitle>
 
-<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")">
+<SampleApplication.Client.Shared.DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFile="@($"Pages/{GetType().Name}.razor")">
     <MudExObjectEditForm OnValidSubmit="@OnSubmit" Value="@User"></MudExObjectEditForm>
 </SampleApplication.Client.Shared.DemoComponent>
 
