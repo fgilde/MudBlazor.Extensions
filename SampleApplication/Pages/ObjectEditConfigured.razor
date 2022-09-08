@@ -82,16 +82,18 @@
         meta.Properties(m => m.MainAddress.Street, m => m.MainAddress.City, m => m.MainAddress.PostalCode)
             .WrapInMudItem(i => i.xs = 6);
 
-        meta.Property(m => m.DateValueAsString).RenderWith<MudDatePicker, string, DateTime?>(
-                p => p.Date,
-                p =>
-                {
-                    p.HelperText = "Type is string but configured with converter to render as DatePicker";
-                    p.Variant = Variant.Outlined;
-                },
-                s => DateTime.TryParse(s, out var d) ? d : null,
-                date => date?.ToString("yyyy-MM-dd")
-            ).WrapInMudItem(i => i.xs = 12);
+        meta.Property(m => m.DateValueAsString)
+            //.RenderWith<MudDatePicker, string, DateTime?>(
+            //    p => p.Date,
+            //    p =>
+            //    {
+            //        p.HelperText = "Type is string but configured with converter to render as DatePicker";
+            //        p.Variant = Variant.Outlined;
+            //    },
+            //    s => DateTime.TryParse(s, out var d) ? d : null,
+            //    date => date?.ToString("yyyy-MM-dd")
+            //)
+            .WrapInMudItem(i => i.xs = 12);
 
     }
 
