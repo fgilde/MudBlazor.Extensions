@@ -1,4 +1,10 @@
-﻿.mud-dialog-slide-from-left {
+﻿.mud-ex-animate-all-properties {
+  transition-property: all !important;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+.mud-dialog-slide-from-left {
   left: -100vw;
 }
 .mud-dialog-slide-from-right {

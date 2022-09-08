@@ -40,7 +40,7 @@ else
                 }
                 @if (FilterMode != PropertyFilterMode.Disabled)
                 {
-                    <MudTextField @ref="_searchBox" OnBlur="@(FilterBoxBlur)" OnKeyDown="@(FilterKeyPress)" Class="@($"animate-all-properties mud-ex-property-filter {(_searchActive || FilterMode == PropertyFilterMode.AlwaysVisible ? "active" : "")}")" Immediate="true" Clearable="true" @bind-Value="Filter" T="string" Placeholder="@LocalizerToUse.TryLocalize("Filter")" Label="@LocalizerToUse.TryLocalize("Filter")"/>
+                    <MudTextField @ref="_searchBox" OnBlur="@(FilterBoxBlur)" OnKeyDown="@(FilterKeyPress)" Class="@($"mud-ex-animate-all-properties mud-ex-property-filter {(_searchActive || FilterMode == PropertyFilterMode.AlwaysVisible ? "active" : "")}")" Immediate="true" Clearable="true" @bind-Value="Filter" T="string" Placeholder="@LocalizerToUse.TryLocalize("Filter")" Label="@LocalizerToUse.TryLocalize("Filter")"/>
                 }
                 @if (FilterMode == PropertyFilterMode.Toggleable)
                 {
