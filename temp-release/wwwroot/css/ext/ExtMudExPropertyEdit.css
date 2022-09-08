@@ -1,0 +1,10 @@
+﻿.mud-ex-property-reset-conatiner {
+    cursor: pointer;
+    transform: scale(0.7);
+    float: right;
+    margin-right: -7px;
+    margin-top: -3px;
+}
+
+.mud-ex-property-conatiner {
+}
