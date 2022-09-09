@@ -62,16 +62,22 @@ public class RenderData : IRenderData
     public static RenderData For(ICustomRenderer customRenderer) => new(null) {CustomRenderer = customRenderer};
 
     #endregion
-
     public IRenderData Wrapper { get; set; }
     public Type ComponentType { get; set; }
     public IDictionary<string, object> Attributes { get; set; } = new Dictionary<string, object>();
     public ICustomRenderer CustomRenderer { get; set; }
     public virtual IRenderData InitValueBinding(ObjectEditPropertyMeta propertyMeta, Func<Task> valueChanged) => this;
-    public bool IsValidParameterAttribute(string key) => ComponentType?.GetProperty(key, BindingFlags.Public | BindingFlags.Instance) != null;
+    public bool IsValidParameterAttribute(string key, object value)
+    {
+        var propertyInfo = ComponentType?.GetProperty(key, BindingFlags.Public | BindingFlags.Instance);
+        if (propertyInfo != null && value != null)
+            return propertyInfo.PropertyType.IsInstanceOfType(value);
+        return propertyInfo != null;
+    }
+
     public IRenderData TrySetAttributeIfAllowed(string key, Func<object> valueFn, bool condition = true) => TrySetAttributeIfAllowed(key, valueFn(), condition);
     protected List<(Type modelType, Func<object, bool> condition, Action<IRenderData> trueFn, Action<IRenderData> falseFn)> _conditions;
-    //public IDictionary<string, object> ValidAttributes => Attributes.Where(kvp => IsValidParameterAttribute(kvp.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+    public IDictionary<string, object> ValidAttributes => Attributes.Where(kvp => IsValidParameterAttribute(kvp.Key, kvp.Value)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
     public RenderData(Type componentType, IDictionary<string, object> attributes = null)
     {
         ComponentType = componentType;
@@ -111,14 +117,15 @@ public class RenderData : IRenderData
     {
         if (Attributes.ContainsKey(nameof(MudComponentBase.UserAttributes)))
             Attributes.Remove(nameof(MudComponentBase.UserAttributes));
-        Attributes.Keys.Where(k => !IsValidParameterAttribute(k)).Apply(k => Attributes.Remove(k));
+        Attributes.Where(k => !IsValidParameterAttribute(k.Key, k.Value)).Apply(k => Attributes.Remove(k));
     }
 
     public IRenderData TrySetAttributeIfAllowed(string key, object value, bool condition = true)
     {
-        if (condition && value != null && (!Attributes.ContainsKey(key) || Attributes[key] == null) &&
-            IsValidParameterAttribute(key))
+        //if (condition && value != null && (!Attributes.ContainsKey(key) || Attributes[key] == null) && IsValidParameterAttribute(key))
+        if (condition && value != null && IsValidParameterAttribute(key, value))
             Attributes.AddOrUpdate(key, value);
+        
         return this;
     }
     
@@ -169,4 +176,5 @@ public class RenderData : IRenderData
         return this;
     }
 
+    public virtual object ConvertToPropertyValue(object value) => value;
 }

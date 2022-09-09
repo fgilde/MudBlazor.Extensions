@@ -2,6 +2,7 @@
 @inject IJSRuntime js;
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
+@using System.ComponentModel.DataAnnotations
 
 <PageTitle>Object Edit Samples</PageTitle>
 
@@ -10,7 +11,7 @@
     <MudAlert Severity="Severity.Info" Class="mudex-margin-bottom-1">
         <span>@($"NOTICE: here also works the added default for type registration for type ProgramingSkill 'RenderDataDefaults.RegisterDefault<ICollection<ObjectEditConfigured.ProgramingSkill>, IEnumerable<ObjectEditConfigured.ProgramingSkill>, ProgrammingSkillSelect>(s => s.Selected);' instead of doing this you can also implement `IDefaultRenderDataProvider` or configure the property in the meta with an `IObjectMetaConfiguration` or in the MetaConfiguration param")</span>
     </MudAlert>
-    <MudExObjectEditForm
+    <MudExObjectEditForm @ref="form"
         DefaultGroupName="Misc"
         MetaConfiguration="@Configure"
         OnValidSubmit="@OnSubmit"
@@ -26,14 +27,14 @@
             <MudButton Class="ml-2" DisableElevation Variant="Variant.Filled" Color="Color.Warning">My Custom action</MudButton>
         </ActionContent>
         <ToolBarContent>
-            <MudIconButton Icon="@Icons.Material.Filled.BedroomBaby"/>
+            <MudIconButton Title="Clear" Icon="@Icons.Material.Filled.ClearAll" OnClick="@(() => form.Clear())"/>
         </ToolBarContent>
     </MudExObjectEditForm>
 </SampleApplication.Client.Shared.DemoComponent>
 
 
 @code {
-
+    MudExObjectEditForm<UserInformation> form;
     private void Configure(ObjectEditMeta<UserInformation> meta)
     {
         meta.WrapEachIn<UserInformation, MudItem>(i => i.xs = 12);
@@ -147,10 +148,18 @@
     public class UserInformation
     {
         public string Id { get; set; }
+        [Required]
+        [MinLength(3)]
         public string FirstName { get; set; }
+        [Required]
+        [MinLength(3)]
         public string LastName { get; set; }
         public string DateValueAsString { get; set; }
+        
+        [Range(10, 100)]
+        [Required]
         public int Age { get; set; }
+        
         public Gender Gender { get; set; }
         public ICollection<ProgramingSkill> ProgramingSkills { get; set; }
         public Address MainAddress { get; set; }
@@ -159,8 +168,13 @@
         public TestModel SomeUnimportantTestModel { get; set; }
     }
 
-    public class ProgramingSkill
+    public class ProgramingSkill : IEquatable<ProgramingSkill>
     {
+        public bool Equals(ProgramingSkill? other) => Name == other?.Name;
+        public override int GetHashCode() => Name.GetHashCode();
+        public static bool operator ==(ProgramingSkill? left, ProgramingSkill? right) => Equals(left, right);
+        public static bool operator !=(ProgramingSkill? left, ProgramingSkill? right) => !Equals(left, right);
+
         public string Name { get; set; }
         public override string ToString() => Name;
     }

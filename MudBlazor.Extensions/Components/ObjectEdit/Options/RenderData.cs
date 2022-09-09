@@ -26,13 +26,14 @@ public class RenderData<TPropertyType, TFieldType> : RenderData
         _conditions?.Where(c => c.modelType == typeof(TFieldType)).Apply(condition => (condition.condition(ToFieldTypeConverterFn(ValueWrapper.Value)) ? condition.trueFn : condition.falseFn)(this));
     }
 
+    public override object ConvertToPropertyValue(object value) => ToPropertyTypeConverterFn((TFieldType) value);
+
     public override IRenderData InitValueBinding(ObjectEditPropertyMeta propertyMeta, Func<Task> valueChanged)
     {
         ToFieldTypeConverterFn ??= v => v == null ? default : v.MapTo<TFieldType>();
         ToPropertyTypeConverterFn ??= v => v == null ? default : v.MapTo<TPropertyType>();
 
         ValueWrapper = propertyMeta.As<TPropertyType>();
-        //   if (ValueWrapper.Value != null)
         Attributes.AddOrUpdate(ValueField, ToFieldTypeConverterFn(ValueWrapper.Value));
         AttachValueChanged(propertyMeta.ReferenceHolder, valueChanged);
         return this;
@@ -50,7 +51,7 @@ public class RenderData<TPropertyType, TFieldType> : RenderData
     private bool AttachValueChanged(object eventTarget, Func<Task> valueChanged)
     {
         var eventKeyName = $"{ValueField}Changed";
-        if (!IsValidParameterAttribute(eventKeyName))
+        if (!IsValidParameterAttribute(eventKeyName, null))
             return false;
         Attributes.AddOrUpdate(eventKeyName, RuntimeHelpers.TypeCheck(
             EventCallback.Factory.Create(

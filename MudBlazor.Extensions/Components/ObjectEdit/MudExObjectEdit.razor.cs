@@ -111,10 +111,15 @@ public partial class MudExObjectEdit<T>
         _value = value;
         MetaInformation?.SetValue(value);
         await CreateMetaIfNotExists();
+        Invalidate();
+    }
+
+    public void Invalidate()
+    {
         StateHasChanged();
         Editors.Apply(e => e.Invalidate());
     }
-    
+
     private async Task CreateMetaIfNotExists()
     {
         RenderDataDefaults.AddRenderDataProvider(_serviceProvider);
@@ -168,7 +173,7 @@ public partial class MudExObjectEdit<T>
         return Task.CompletedTask;
     }
 
-    protected List<MudExPropertyEdit> Editors = new();
+    public List<MudExPropertyEdit> Editors = new();
     private T _value;
     public MudExPropertyEdit Ref { set => Editors.Add(value); }
 
@@ -183,12 +188,14 @@ public partial class MudExObjectEdit<T>
         StateHasChanged();
     }
 
-    protected async Task Reset()
+    public async Task Reset()
     {
         await Task.WhenAll(Editors.Select(e => e.ResetAsync()));
         if (Value is IEditableObject editable)
             editable.CancelEdit();
     }
+
+    public Task Clear() => Task.WhenAll(Editors.Select(e => e.ClearAsync()));
 
     private Task<bool?> ShowConfirmationBox()
     {

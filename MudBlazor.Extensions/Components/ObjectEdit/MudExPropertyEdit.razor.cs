@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.Localization;
@@ -21,12 +22,9 @@ public partial class MudExPropertyEdit
     [Parameter] public EventCallback<ObjectEditPropertyMeta> PropertyValueChanged { get; set; }
     [Parameter] public IStringLocalizer Localizer { get; set; }
     [Parameter] public bool DisableFieldFallback { get; set; }
-    
-    private Expression<Func<string>> CreateFieldForExpression() 
-        => Check.TryCatch<Expression<Func<string>>, Exception>(() => Expression.Lambda<Func<string>>(Expression.Property(Expression.Constant(PropertyMeta.ReferenceHolder, PropertyMeta.ComponentFieldType), PropertyMeta.PropertyInfo)));
 
-    //private Expression<Func<string>> CreateFieldForExpression()
-    //    => Check.TryCatch<Expression<Func<string>>, Exception>(() => Expression.Lambda<Func<string>>(Expression.Property(Expression.Constant(PropertyMeta.ReferenceHolder, PropertyMeta.ReferenceHolder.GetType()), PropertyMeta.PropertyInfo)));
+    private Expression<Func<TPropertyType>> CreateFieldForExpression<TPropertyType>()
+        => Check.TryCatch<Expression<Func<TPropertyType>>, Exception>(() => Expression.Lambda<Func<TPropertyType>>(Expression.Property(Expression.Constant(PropertyMeta.ReferenceHolder, PropertyMeta.ReferenceHolder.GetType()), PropertyMeta.PropertyInfo)));
 
     private object valueBackup;
     protected override void OnAfterRender(bool firstRender)
@@ -44,9 +42,11 @@ public partial class MudExPropertyEdit
 
     private IDictionary<string, object> GetPreparedAttributes()
     {
+        MethodInfo createFieldForExpression = GetType().GetMethod(nameof(CreateFieldForExpression), BindingFlags.NonPublic | BindingFlags.Instance);
+        MethodInfo genericMethod = createFieldForExpression?.MakeGenericMethod(PropertyMeta.ComponentFieldType);
         return PropertyMeta.RenderData
-            .InitValueBinding(PropertyMeta, RaisePropertyValueChanged) // () => ValueChanged.InvokeAsync()
-            .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.For), CreateFieldForExpression)
+            .InitValueBinding(PropertyMeta, RaisePropertyValueChanged) 
+            .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.For), genericMethod?.Invoke(this, Array.Empty<object>()) ?? CreateFieldForExpression<string>())
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Label), () => PropertyMeta.Settings.LabelFor(Localizer), PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.Both || PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.DefaultComponentLabeling)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.HelperText), () => PropertyMeta.Settings.DescriptionFor(Localizer))
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Class), () => Class)
@@ -83,16 +83,20 @@ public partial class MudExPropertyEdit
         return type.CreateInstance();
     }
 
-    public Task ResetAsync()
+    public Task ResetAsync() => ClearOrResetAsync(true);
+    public Task ClearAsync() => ClearOrResetAsync(false);
+
+    private Task ClearOrResetAsync(bool reset)
     {
         Check.TryCatch<Exception>(() =>
         {
             if (PropertyMeta.PropertyInfo.CanWrite)
-                PropertyMeta.Value = GetBackup(valueBackup);
+                PropertyMeta.Value = reset ? GetBackup(valueBackup) : PropertyMeta.RenderData.ConvertToPropertyValue(GetDefault(PropertyMeta.PropertyInfo.PropertyType));
         });
         StateHasChanged();
         return Task.CompletedTask;
     }
+
 
     public void Invalidate()
     {

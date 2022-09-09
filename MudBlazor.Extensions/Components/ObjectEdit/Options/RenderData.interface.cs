@@ -2,7 +2,7 @@
 
 public interface IRenderData : ICloneable
 {
-    bool IsValidParameterAttribute(string key);
+    bool IsValidParameterAttribute(string key, object value);
     public Type ComponentType { get; }
     public IDictionary<string, object> Attributes { get; }
     public IRenderData InitValueBinding(ObjectEditPropertyMeta propertyMeta, Func<Task> valueChanged);
@@ -16,4 +16,5 @@ public interface IRenderData : ICloneable
     IRenderData AddAttributes(bool overwriteExisting, params KeyValuePair<string, object>[] attributes);
     IRenderData AddAttributesIf<TModel>(Func<TModel, bool> condition, bool overwriteExisting, params KeyValuePair<string, object>[] attributes);
     IRenderData SetAttributesIf<TModel>(Func<TModel, bool> condition, IDictionary<string, object> attributes);
+    object ConvertToPropertyValue(object value);
 }

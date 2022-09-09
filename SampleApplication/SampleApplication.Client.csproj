@@ -14,12 +14,12 @@
     <PackageReference Include="MudBlazor.Markdown" Version="0.0.12" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.3" />
     <PackageReference Include="BlazorPrettyCode" Version="1.6.0" />
-    <PackageReference Include="MudBlazor.Extensions" Version="1.5.1" />
+    <!--<PackageReference Include="MudBlazor.Extensions" Version="1.5.1" />-->
   </ItemGroup>
 
-  <!--<ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
-  </ItemGroup>-->
+  </ItemGroup>
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />

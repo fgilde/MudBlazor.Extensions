@@ -18,7 +18,7 @@ public class ObjectEditPropertyMeta
     public object ReferenceHolder { get; private set; }
     public PropertyInfo PropertyInfo { get; }
 
-    internal Type ComponentFieldType => (_renderData as RenderData)?.FieldType ?? ReferenceHolder?.GetType() ?? PropertyInfo.PropertyType;
+    internal Type ComponentFieldType => (_renderData as RenderData)?.FieldType ?? PropertyInfo.PropertyType;
 
     public ObjectEditPropertyMeta(PropertyInfo propertyInfo, object referenceHolder)
     {
@@ -38,7 +38,7 @@ public class ObjectEditPropertyMeta
         get => _value ??= PropertyInfo.GetValue(ReferenceHolder);
         set => PropertyInfo.SetValue(ReferenceHolder, _value = value);
     }
-    
+
     internal ObjectEditPropertyMeta SetReferenceHolder(object referenceHolder)
     {
         ReferenceHolder = referenceHolder;
