@@ -33,6 +33,7 @@ public partial class MudExObjectEdit<T>
         get => _value;
         set => SetValue(value);
     }
+    [Parameter] public bool AutoSkeletonOnLoad { get; set; }
     [Parameter] public Color ToolbarColor { get; set; } = Color.Default;
     [Parameter] public Color GroupLineColor { get; set; } = Color.Secondary;
     [Parameter] public int? GroupElevation { get; set; }

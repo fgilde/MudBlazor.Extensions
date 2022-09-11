@@ -54,6 +54,10 @@
     
     private RenderFragment RenderPropertyMeta()
     {
+        if (IsLoading && AutoSkeletonOnLoad)
+        {
+            return @<MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="40px"/>;
+        }
         if (PropertyMeta.RenderData?.CustomRenderer != null)
         {
             return builder => RenderAs(builder, PropertyMeta); // Void render as fragment

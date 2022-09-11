@@ -40,6 +40,7 @@ public partial class MudExChipSelect<T>
     [Parameter] public Func<T, string> ItemToStringFunc { get; set; } = (item => item?.ToString() ?? string.Empty);  
     [Parameter] public string AdornmentIcon { get; set; } = Icons.Material.Filled.ArrowDropDown;
     [Parameter] public T Value { get; set; }
+    [Parameter] public bool UpdateItemsOnStateChange { get; set; }
 
     [Parameter] public EventCallback<IEnumerable<T>> SelectedChanged { get; set; }
     [Parameter] public EventCallback<T> ValueChanged { get; set; }
@@ -79,7 +80,6 @@ public partial class MudExChipSelect<T>
         }
     }
 
-    private IEnumerable<T> _available;
     private IEnumerable<T> _selected;
     private string _filter;
     private string _cssName => $"chip-select-{Enum.GetName(ViewMode)?.ToLower() ?? "none"} {(Selected?.Any() == true ? "with-items" : "empty")}";
@@ -87,7 +87,8 @@ public partial class MudExChipSelect<T>
 
     protected override async Task OnParametersSetAsync()
     {
-        _available = AvailableItems ?? await GetAvailableItemsAsync();
+        if (AvailableItems == null || !AvailableItems.Any() || UpdateItemsOnStateChange)
+            AvailableItems = await GetAvailableItemsAsync();
         await base.OnParametersSetAsync();
     }
 

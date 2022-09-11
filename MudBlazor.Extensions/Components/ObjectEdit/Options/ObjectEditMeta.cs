@@ -41,7 +41,8 @@ public class ObjectEditMeta<T> : ObjectEditMeta
         var infos = expression.GetMemberInfosPaths().ToArray();
         var name = string.Join(".", infos.Select(i => i.Name));
 
-        return (ObjectEditPropertyMetaOf<T>) (Property(infos) ?? Property(name));
+        //return (ObjectEditPropertyMetaOf<T>) (Property(infos) ?? Property(name));
+        return (ObjectEditPropertyMetaOf<T>) (Property(name) ?? Property(infos));
     }
 
     private IEnumerable<ObjectEditPropertyMeta> GetProperties(Type type, object value, ObjectEditMeta owner = null)

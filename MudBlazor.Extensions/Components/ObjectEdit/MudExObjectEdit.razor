@@ -95,6 +95,8 @@ else
     RenderFragment RenderPropertyEdit(ObjectEditPropertyMeta property)
     {
         return @<MudExPropertyEdit @ref="@Ref" DisableFieldFallback="@DisableFieldFallback"
+                                   IsLoading="@(IsLoading || IsInternalLoading)"
+                                   AutoSkeletonOnLoad="@AutoSkeletonOnLoad"
                                    PropertyValueChanged="@OnPropertyChange"
                                    ActiveFilterTerm="@Filter"
                                    Localizer="@LocalizerToUse"

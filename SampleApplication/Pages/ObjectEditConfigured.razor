@@ -11,7 +11,11 @@
     <MudAlert Severity="Severity.Info" Class="mudex-margin-bottom-1">
         <span>@($"NOTICE: here also works the added default for type registration for type ProgramingSkill 'RenderDataDefaults.RegisterDefault<ICollection<ObjectEditConfigured.ProgramingSkill>, IEnumerable<ObjectEditConfigured.ProgramingSkill>, ProgrammingSkillSelect>(s => s.Selected);' instead of doing this you can also implement `IDefaultRenderDataProvider` or configure the property in the meta with an `IObjectMetaConfiguration` or in the MetaConfiguration param")</span>
     </MudAlert>
-    <MudExObjectEditForm @ref="form"
+    <MudButton Title="ToggleLoading" Variant="Variant.Outlined" Color="Color.Warning" OnClick="@(() => _isLoading = !_isLoading)">Toggle loading</MudButton>
+    <MudExObjectEditForm 
+        @ref="form"
+        IsLoading="@_isLoading"
+        AutoSkeletonOnLoad="true"
         DefaultGroupName="Misc"
         MetaConfiguration="@Configure"
         OnValidSubmit="@OnSubmit"
@@ -35,6 +39,8 @@
 
 @code {
     MudExObjectEditForm<UserInformation> form;
+    private bool _isLoading;
+
     private void Configure(ObjectEditMeta<UserInformation> meta)
     {
         meta.WrapEachIn<UserInformation, MudItem>(i => i.xs = 12);

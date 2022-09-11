@@ -14,7 +14,9 @@ namespace MudBlazor.Extensions.Components.ObjectEdit;
 public partial class MudExPropertyEdit
 {
     [Inject] private IServiceProvider _serviceProvider { get; set; }
-    
+
+    [Parameter] public bool IsLoading { get; set; }
+    [Parameter] public bool AutoSkeletonOnLoad { get; set; }
     [Parameter] public string Class { get; set; }
     [Parameter] public string ActiveFilterTerm { get; set; }
     [Parameter] public PropertyResetSettings PropertyResetSettings { get; set; }

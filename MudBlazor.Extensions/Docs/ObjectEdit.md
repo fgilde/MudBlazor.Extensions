@@ -65,7 +65,7 @@ public class MyModelMetaConfiguration : IObjectMetaConfiguration<MyModel>
 
 ## Conditions: 
 Each property can have all options or attributes the used component supports. The Attributes can set as Action<TComponent> or as Dictionary<string,object> and all options can also set with conditions. 
-Use IgnoreIf for example then if the condition is not met the property will not be rendered. In this example we have a method CanEdit for example and setting some options only if this returns falls
+Use IgnoreIf for example then if the condition is not met the property will not be rendered. In this example we have a method CanEdit for example and setting some options only if this returns false
 ```csharp
             meta.Properties(m => m.Text, m => m.Text2, m => m.Text3)
                 .WithAttributesIf(m => !m.CanEdit(),
