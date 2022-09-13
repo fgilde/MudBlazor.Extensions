@@ -19,9 +19,18 @@ public class DialogOptionsExMetaConfig : IObjectMetaConfiguration<DialogOptionsE
         meta.Properties(
             o => o.Animations
         ).WrapInMudItem(i => i.xs = 12);
-        meta.Properties(o => o.DragMode, o => o.Position, o => o.MaxWidth, o => o.AnimationDurationInMs).WithOrder(0).WithGroup("Options").WrapInMudItem(i => i.xs = 6);
-        meta.Properties().Where(p => p.PropertyInfo.PropertyType == typeof(bool) || p.PropertyInfo.PropertyType.IsNullableBool()).WithGroup("Options").WrapInMudItem(i => i.xs = 3);
-        meta.WrapEachInMudItem(i => i.xs = 6);
+        meta.Properties(o => o.DragMode, o => o.Position, o => o.MaxWidth, o => o.AnimationDurationInMs).WithOrder(0).WithGroup("Options");
+        meta.Properties().Where(p => p.PropertyInfo.PropertyType == typeof(bool) || p.PropertyInfo.PropertyType.IsNullableBool()).WithGroup("Options").WrapInMudItem(i =>
+        {
+            i.xl = 3;
+            i.lg = 6;
+            i.xs = 12;
+        });
+        meta.WrapEachInMudItem(i =>
+        {
+            i.xl = 6;
+            i.xs = 12;
+        });
         return Task.CompletedTask;
     }
 }

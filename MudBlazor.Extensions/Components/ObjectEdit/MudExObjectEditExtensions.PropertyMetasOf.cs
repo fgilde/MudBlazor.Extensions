@@ -49,6 +49,8 @@ public static partial class MudExObjectEditExtensions
         => metas.Apply(m => m.WithSettings(settingsAction));
     public static IEnumerable<ObjectEditPropertyMetaOf<TModel>> WithSeparateLabelComponent<TModel>(this IEnumerable<ObjectEditPropertyMetaOf<TModel>> metas)
         => metas.Apply(m => m.WithSeparateLabelComponent());
+    public static IEnumerable<ObjectEditPropertyMetaOf<TModel>> WithSeparateValidationComponent<TModel>(this IEnumerable<ObjectEditPropertyMetaOf<TModel>> metas)
+        => metas.Apply(m => m.WithSeparateValidationComponent());
     public static IEnumerable<ObjectEditPropertyMetaOf<TModel>> WithoutLabel<TModel>(this IEnumerable<ObjectEditPropertyMetaOf<TModel>> metas)
         => metas.Apply(m => m.WithoutLabel());
     public static IEnumerable<ObjectEditPropertyMetaOf<TModel>> WithSeparateLabelComponentOnly<TModel>(this IEnumerable<ObjectEditPropertyMetaOf<TModel>> metas)

@@ -25,8 +25,16 @@ public partial class MudExPropertyEdit
     [Parameter] public IStringLocalizer Localizer { get; set; }
     [Parameter] public bool DisableFieldFallback { get; set; }
 
+    private DynamicComponent editor;
     private Expression<Func<TPropertyType>> CreateFieldForExpression<TPropertyType>()
         => Check.TryCatch<Expression<Func<TPropertyType>>, Exception>(() => Expression.Lambda<Func<TPropertyType>>(Expression.Property(Expression.Constant(PropertyMeta.ReferenceHolder, PropertyMeta.ReferenceHolder.GetType()), PropertyMeta.PropertyInfo)));
+
+    private object CreateFieldForExpressionPropertyType()
+    {
+        MethodInfo createFieldForExpression = GetType().GetMethod(nameof(CreateFieldForExpression), BindingFlags.NonPublic | BindingFlags.Instance);
+        MethodInfo genericMethod = createFieldForExpression?.MakeGenericMethod(PropertyMeta.ComponentFieldType);
+        return genericMethod?.Invoke(this, Array.Empty<object>()) ?? CreateFieldForExpression<string>();
+    }
 
     private object valueBackup;
     protected override void OnAfterRender(bool firstRender)
@@ -44,11 +52,9 @@ public partial class MudExPropertyEdit
 
     private IDictionary<string, object> GetPreparedAttributes()
     {
-        MethodInfo createFieldForExpression = GetType().GetMethod(nameof(CreateFieldForExpression), BindingFlags.NonPublic | BindingFlags.Instance);
-        MethodInfo genericMethod = createFieldForExpression?.MakeGenericMethod(PropertyMeta.ComponentFieldType);
         return PropertyMeta.RenderData
             .InitValueBinding(PropertyMeta, RaisePropertyValueChanged) 
-            .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.For), genericMethod?.Invoke(this, Array.Empty<object>()) ?? CreateFieldForExpression<string>())
+            .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.For), CreateFieldForExpressionPropertyType())
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Label), () => PropertyMeta.Settings.LabelFor(Localizer), PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.Both || PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.DefaultComponentLabeling)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.HelperText), () => PropertyMeta.Settings.DescriptionFor(Localizer))
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Class), () => Class)
@@ -100,8 +106,8 @@ public partial class MudExPropertyEdit
     }
 
 
-    public void Invalidate()
-    {
-        StateHasChanged();
-    }
+    public void Invalidate() => StateHasChanged();
+
+    public object GetCurrentValue() 
+        => editor.Instance?.GetType()?.GetProperty(PropertyMeta.RenderData.ValueField)?.GetValue(editor.Instance);
 }

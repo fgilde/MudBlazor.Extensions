@@ -5,79 +5,34 @@ using Nextended.Core.Helper;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 
-public class RenderData : IRenderData
+public partial class RenderData : IRenderData
 {
-    #region Static Factory Methods
-
-    public static RenderData<TPropertyType, TFieldType> For<TComponent, TPropertyType, TFieldType>(
-        Expression<Func<TComponent, TFieldType>> valueField, Action<TComponent> options,
-        Func<TPropertyType, TFieldType> toFieldTypeConverter = null,
-        Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) where TComponent : new()
-        => new(valueField.GetMemberName(), typeof(TComponent), DictionaryHelper.GetValuesDictionary(options, true))
-        {
-            ToFieldTypeConverterFn = toFieldTypeConverter, ToPropertyTypeConverterFn = toPropertyTypeConverter
-        };
-
-    public static RenderData<TPropertyType, TFieldType> For<TComponent, TPropertyType, TFieldType>(
-        Expression<Func<TComponent, TFieldType>> valueField, TComponent instanceForAttributes,
-        Func<TPropertyType, TFieldType> toFieldTypeConverter = null,
-        Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) where TComponent : new()
-        => new(valueField.GetMemberName(), typeof(TComponent),
-            DictionaryHelper.GetValuesDictionary(instanceForAttributes, true))
-        {
-            ToFieldTypeConverterFn = toFieldTypeConverter, ToPropertyTypeConverterFn = toPropertyTypeConverter
-        };
-
-    public static RenderData<TPropertyType, TFieldType> For<TComponent, TPropertyType, TFieldType>(
-        Expression<Func<TComponent, TFieldType>> valueField,
-        Func<TPropertyType, TFieldType> toFieldTypeConverter = null,
-        Func<TFieldType, TPropertyType> toPropertyTypeConverter = null)
-        => new(valueField.GetMemberName(), typeof(TComponent))
-        {
-            ToFieldTypeConverterFn = toFieldTypeConverter, ToPropertyTypeConverterFn = toPropertyTypeConverter
-        };
-
-    public static RenderData<TPropertyType, TPropertyType> For<TComponent, TPropertyType>(
-        Expression<Func<TComponent, TPropertyType>> valueField, Action<TComponent> options) where TComponent : new()
-        => new(valueField.GetMemberName(), typeof(TComponent), DictionaryHelper.GetValuesDictionary(options, true));
-
-    public static RenderData<TPropertyType, TPropertyType> For<TComponent, TPropertyType>(
-        Expression<Func<TComponent, TPropertyType>> valueField, TComponent instanceForAttributes)
-        where TComponent : new()
-        => new(valueField.GetMemberName(), typeof(TComponent),
-            DictionaryHelper.GetValuesDictionary(instanceForAttributes, true));
-
-    public static RenderData<TPropertyType, TPropertyType> For<TComponent, TPropertyType>(
-        Expression<Func<TComponent, TPropertyType>> valueField)
-        => new(valueField.GetMemberName(), typeof(TComponent));
-
-    public static RenderData For<TComponent>(Action<TComponent> options) where TComponent : new()
-        => For(typeof(TComponent), DictionaryHelper.GetValuesDictionary(options, true));
-
-    public static RenderData For<TComponent>(IDictionary<string, object> attributes = null)
-        => For(typeof(TComponent), attributes);
-
-    public static RenderData For(Type componentType,
-        IDictionary<string, object> attributes = null) => new(componentType, attributes);
-    public static RenderData For(ICustomRenderer customRenderer) => new(null) {CustomRenderer = customRenderer};
-
-    #endregion
     public IRenderData Wrapper { get; set; }
+    public IList<IRenderData> RenderDataBeforeComponent { get; set; } = new List<IRenderData>();
+    public IList<IRenderData> RenderDataAfterComponent { get; set; } = new List<IRenderData>();
     public Type ComponentType { get; set; }
     public IDictionary<string, object> Attributes { get; set; } = new Dictionary<string, object>();
     public ICustomRenderer CustomRenderer { get; set; }
     public virtual IRenderData InitValueBinding(ObjectEditPropertyMeta propertyMeta, Func<Task> valueChanged) => this;
     public bool IsValidParameterAttribute(string key, object value)
     {
+        if (key == nameof(MudComponentBase.UserAttributes))
+            return false;
         var propertyInfo = ComponentType?.GetProperty(key, BindingFlags.Public | BindingFlags.Instance);
         if (propertyInfo != null && value != null)
             return propertyInfo.PropertyType.IsInstanceOfType(value);
         return propertyInfo != null;
     }
-
-    public IRenderData TrySetAttributeIfAllowed(string key, Func<object> valueFn, bool condition = true) => TrySetAttributeIfAllowed(key, valueFn(), condition);
-    protected List<(Type modelType, Func<object, bool> condition, Action<IRenderData> trueFn, Action<IRenderData> falseFn)> _conditions;
     public IDictionary<string, object> ValidAttributes => Attributes.Where(kvp => IsValidParameterAttribute(kvp.Key, kvp.Value)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+    public IRenderData TrySetAttributeIfAllowed(string key, Func<object> valueFn, bool condition = true) => TrySetAttributeIfAllowed(key, valueFn(), condition);
+    public virtual object ConvertToPropertyValue(object value) => value;
+    public bool DisableValueBinding { get; set; }
+    public virtual void SetValue(object value) { }
+
+    public string ValueField { get; set; }
+
+    protected List<(Type modelType, Func<object, bool> condition, Action<IRenderData> trueFn, Action<IRenderData> falseFn)> _conditions;
+    
     public RenderData(Type componentType, IDictionary<string, object> attributes = null)
     {
         ComponentType = componentType;
@@ -131,9 +86,14 @@ public class RenderData : IRenderData
     
     public object Clone()
     {
-        var result = MemberwiseClone() as RenderData;
-        if (result != null && Attributes != null)
-            result.Attributes = Attributes.ToDictionary(entry => entry.Key, entry => entry.Value);
+        var result = (RenderData)MemberwiseClone();
+        
+        result.Attributes = Attributes?.ToDictionary(entry => entry.Key, entry => entry.Value);
+        result.RenderDataBeforeComponent = RenderDataBeforeComponent?.Select(r => r.Clone() as IRenderData).ToList();
+        result.RenderDataAfterComponent = RenderDataAfterComponent?.Select(r => r.Clone() as IRenderData).ToList();
+        result.Wrapper = Wrapper?.Clone() as IRenderData;
+        result._conditions = _conditions?.Select(c => (c.modelType, c.condition, c.trueFn, c.falseFn)).ToList();
+
         return result;
     }
 
@@ -176,5 +136,4 @@ public class RenderData : IRenderData
         return this;
     }
 
-    public virtual object ConvertToPropertyValue(object value) => value;
 }

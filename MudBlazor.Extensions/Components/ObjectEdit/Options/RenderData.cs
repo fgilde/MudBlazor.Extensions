@@ -46,12 +46,13 @@ public class RenderData<TPropertyType, TFieldType> : RenderData
     }
 
     public PropertyValueWrapper<TPropertyType> ValueWrapper { get; set; }
-    public string ValueField { get; }
+    
+    public override void SetValue(object value) => ValueWrapper.Value = ToPropertyTypeConverterFn((TFieldType)value);
 
     private bool AttachValueChanged(object eventTarget, Func<Task> valueChanged)
     {
         var eventKeyName = $"{ValueField}Changed";
-        if (!IsValidParameterAttribute(eventKeyName, null))
+        if (DisableValueBinding || !IsValidParameterAttribute(eventKeyName, null))
             return false;
         Attributes.AddOrUpdate(eventKeyName, RuntimeHelpers.TypeCheck(
             EventCallback.Factory.Create(

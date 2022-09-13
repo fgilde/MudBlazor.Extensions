@@ -16,11 +16,11 @@
         @RenderWrapper(PropertyMeta?.RenderData?.Wrapper);
     }
     
-    private RenderFragment RenderWrapper(IRenderData wrapper)
+    private RenderFragment RenderWrapper(IRenderData wrapper, bool renderEditorAfter = true)
     {
         if (wrapper == null)
-            return RenderEditor();
-        return @<DynamicComponent Type="@wrapper.ComponentType" Parameters="@wrapper.Attributes.AddOrUpdate("ChildContent", RenderWrapper(wrapper.Wrapper))"></DynamicComponent>;
+            return renderEditorAfter ? RenderEditor() : null;
+        return @<DynamicComponent Type="@wrapper.ComponentType" Parameters="@wrapper.Attributes.AddOrUpdate("ChildContent", RenderWrapper(wrapper.Wrapper, renderEditorAfter))"></DynamicComponent>;
     }
 
     private RenderFragment RenderEditor()
@@ -28,7 +28,7 @@
         var reset = GetResetSettings();
         if (!reset.AllowReset || !PropertyMeta.Settings.IsEditable)
             return RenderPropertyMetaAndLabelIf();
-        return @<div class="mud-ex-property-conatiner">
+        return @<div class="@($"mud-ex-property-container mud-ex-property-container-for-{PropertyMeta.PropertyName.Replace(".", "-")}")">
                        @RenderPropertyMetaAndLabelIf()
                        <div @onclick="@(ResetAsync)" class="mud-ex-property-reset-conatiner">
                            @if (reset.ShowResetText)
@@ -54,27 +54,51 @@
     
     private RenderFragment RenderPropertyMeta()
     {
+        RenderFragment result;
         if (IsLoading && AutoSkeletonOnLoad)
         {
             return @<MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="40px"/>;
         }
         if (PropertyMeta.RenderData?.CustomRenderer != null)
         {
-            return builder => RenderAs(builder, PropertyMeta); // Void render as fragment
+            result = builder => RenderAs(builder, PropertyMeta); // Void render as fragment
         }
-        if (PropertyMeta.RenderData != null)
+        else if (PropertyMeta.RenderData != null)
         {
-            return @<DynamicComponent Type="@PropertyMeta.RenderData.ComponentType" Parameters="GetPreparedAttributes()"></DynamicComponent>;
+            result = @<DynamicComponent @ref="editor" Type="@PropertyMeta.RenderData.ComponentType" Parameters="GetPreparedAttributes()"></DynamicComponent>;
         }
-        if (DisableFieldFallback)
+        else if (DisableFieldFallback)
         {
-            return @<p></p>;
+            return null;
         }
-        return @<MudTextField ReadOnly="@(!PropertyMeta.Settings.IsEditable)"
-                      HelperText="@(PropertyMeta.Settings.DescriptionFor(Localizer))"
-                      Label="@(PropertyMeta.Settings.LabelFor(Localizer))"
-                          @bind-Value="PropertyMeta.As<string>(true).Value">
-                </MudTextField>;
+        else
+        {
+            result = @<MudTextField ReadOnly="@(!PropertyMeta.Settings.IsEditable)"
+                                    For="@(CreateFieldForExpression<string>())"
+                                    HelperText="@(PropertyMeta.Settings.DescriptionFor(Localizer))"
+                                    Label="@(PropertyMeta.Settings.LabelFor(Localizer))"
+                                    @bind-Value="PropertyMeta.As<string>(true).Value">
+                     </MudTextField>;
+        }
+
+        if (PropertyMeta.Settings.ValidationComponent || PropertyMeta.RenderData?.RenderDataBeforeComponent?.Any() == true || PropertyMeta.RenderData?.RenderDataAfterComponent?.Any() == true)
+        {
+            return @<div class="@($"mud-ex-property-component-wrapper mud-ex-property-component-wrapper-for-{PropertyMeta.PropertyName.Replace(".", "-")}")">
+                       @foreach (var data in PropertyMeta.RenderData?.RenderDataBeforeComponent ?? Enumerable.Empty<IRenderData>())
+                       { @RenderWrapper(data, false)}
+  
+                       @result
+                       
+                       @foreach (var data in PropertyMeta.RenderData?.RenderDataAfterComponent ?? Enumerable.Empty<IRenderData>())
+                       { @RenderWrapper(data, false)}
+                       
+                       @if(PropertyMeta.Settings.ValidationComponent) {
+                           <MudTextField Class="mud-ex-property-validation-component" DisableUnderLine="true" For="@(CreateFieldForExpression<string>())" ReadOnly="true"/>
+                       }
+                   </div>;
+        }
+        
+        return result;
     }
 
 }

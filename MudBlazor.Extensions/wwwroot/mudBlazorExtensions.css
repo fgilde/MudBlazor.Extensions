@@ -4034,6 +4034,10 @@
   margin-top: -3px;
 }
 
+.mud-ex-property-validation-component .mud-input-control-input-container {
+  display: none;
+}
+
 .mud-dialog-height-full {
   height: calc(100% - 64px);
 }

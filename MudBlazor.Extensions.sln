@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudBlazor.Extensions", "Mud
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApplication.Client", "SampleApplication\SampleApplication.Client.csproj", "{4CD3E8D0-7977-486B-A8A4-6D5DC9423EED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MudBlazor.Extensions.CodeGator.Adapter", "MudBlazor.Extensions.CodeGator.Adapter\MudBlazor.Extensions.CodeGator.Adapter.csproj", "{8D312EBD-3FA9-4F55-8638-4FEABFD4EE7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudBlazor.Extensions.CodeGator.Adapter", "MudBlazor.Extensions.CodeGator.Adapter\MudBlazor.Extensions.CodeGator.Adapter.csproj", "{8D312EBD-3FA9-4F55-8638-4FEABFD4EE7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

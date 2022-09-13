@@ -49,6 +49,8 @@ public static partial class MudExObjectEditExtensions
         => meta?.SetProperties(p => settingsAction(p.Settings ??= new ObjectEditPropertyMetaSettings(meta)));
     public static ObjectEditPropertyMeta WithSeparateLabelComponent(this ObjectEditPropertyMeta meta)
         => meta?.WithSettings(s => s.LabelBehaviour = LabelBehaviour.Both);
+    public static ObjectEditPropertyMeta WithSeparateValidationComponent(this ObjectEditPropertyMeta meta)
+        => meta?.WithSettings(s => s.ValidationComponent = true);
     public static ObjectEditPropertyMeta WithoutLabel(this ObjectEditPropertyMeta meta)
         => meta?.WithSettings(s => s.LabelBehaviour = LabelBehaviour.NoLabel);
     public static ObjectEditPropertyMeta WithSeparateLabelComponentOnly(this ObjectEditPropertyMeta meta)

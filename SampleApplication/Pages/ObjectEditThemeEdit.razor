@@ -1,0 +1,10 @@
+﻿@page "/theme-edit"
+@inject IJSRuntime js;
+@inject IDialogService _dlgService;
+@using Newtonsoft.Json
+
+<PageTitle>Object Edit Samples</PageTitle>
+
+<SampleApplication.Client.Shared.DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFile="@($"Pages/{GetType().Name}.razor")">
+    <MudExObjectEdit @bind-Value="@ClientTheme.DefaultTheme"></MudExObjectEdit>
+</SampleApplication.Client.Shared.DemoComponent>

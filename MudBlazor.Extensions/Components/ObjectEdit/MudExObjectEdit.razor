@@ -65,26 +65,26 @@ else
             {
                 var groupName = !string.IsNullOrWhiteSpace(grouping.Key) ? grouping.Key : DefaultGroupName;
                 <MudExpansionPanel @ref="@ExpansionPanel" IsInitiallyExpanded="true" Disabled="@(!GroupsCollapsible)" Class="@($"mt-3 {(!string.IsNullOrWhiteSpace(groupName) ? CssClassName : "mud-ex-hidden-group")}")" Text="@(!string.IsNullOrWhiteSpace(groupName) ? LocalizerToUse.TryLocalize(groupName) : groupName)">
-
+                    @{
+                        var objectEditPropertyMetas = MetaInformation?.Ordered(grouping).ToList();
+                    }
                     @if (ShouldAddGrid(grouping))
                     {
                         <MudGrid>
-                            @foreach (var property in MetaInformation?.Ordered(grouping))
+                            @foreach (var property in objectEditPropertyMetas)
                             {
                                 @RenderPropertyEdit(property)
-                                ;
                             }
                         </MudGrid>
                     }
                     else
                     {
-                        @foreach (var property in MetaInformation?.Ordered(grouping))
+                        @foreach (var property in objectEditPropertyMetas)
                         {
                             @RenderPropertyEdit(property)
-                            ;
                         }
                     }
-
+                    
                 </MudExpansionPanel>
             }
         </MudExpansionPanels>

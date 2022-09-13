@@ -33,6 +33,7 @@ public partial class MudExObjectEdit<T>
         get => _value;
         set => SetValue(value);
     }
+    //[Parameter] public bool Virtualize { get; set; } = true;
     [Parameter] public bool AutoSkeletonOnLoad { get; set; }
     [Parameter] public Color ToolbarColor { get; set; } = Color.Default;
     [Parameter] public Color GroupLineColor { get; set; } = Color.Secondary;
@@ -107,6 +108,17 @@ public partial class MudExObjectEdit<T>
         };
     }
 
+    public T GetUpdatedValue()
+    {
+        foreach (var meta in MetaInformation.AllProperties.Where(p => p?.RenderData?.DisableValueBinding == true))
+        {
+            var editor = Editors.FirstOrDefault(edit => edit.PropertyMeta == meta);
+            if (editor != null)
+                meta.RenderData.SetValue(editor.GetCurrentValue());
+        }
+        return Value;
+    }
+
     private async void SetValue(T value)
     {
         _value = value;
@@ -139,6 +151,12 @@ public partial class MudExObjectEdit<T>
 
     private Task OnPropertyChange(ObjectEditPropertyMeta property)
     {
+        //return Task.WhenAll(Task.Run(() =>
+        //{
+        //    if (Value != null)
+        //        MetaInformation.AllProperties.Apply(p => p?.UpdateConditionalSettings(Value));
+        //}), ValueChanged.InvokeAsync(Value));
+
         if (Value != null)
             MetaInformation.AllProperties.Apply(p => p?.UpdateConditionalSettings(Value));
         return ValueChanged.InvokeAsync(Value);

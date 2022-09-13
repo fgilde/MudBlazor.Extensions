@@ -92,30 +92,15 @@
             .WrapInMudItem(i => i.xs = 6);
         meta.Properties(m => m.MainAddress.Street, m => m.MainAddress.City, m => m.MainAddress.PostalCode)
             .WrapInMudItem(i => i.xs = 6);
-
-        meta.Property(m => m.DateValueAsString)
-            //.RenderWith<MudDatePicker, string, DateTime?>(
-            //    p => p.Date,
-            //    p =>
-            //    {
-            //        p.HelperText = "Type is string but configured with converter to render as DatePicker";
-            //        p.Variant = Variant.Outlined;
-            //    },
-            //    s => DateTime.TryParse(s, out var d) ? d : null,
-            //    date => date?.ToString("yyyy-MM-dd")
-            //)
-            .WrapInMudItem(i => i.xs = 12);
-
     }
 
     
   // Sample data for the form
-    public UserInformation User { get; set; } = new UserInformation()
+    public UserInformation User { get; set; } = new()
     {
         Id = Guid.NewGuid().ToString(),
         FirstName = "Florian",
         LastName = "Gilde",
-        DateValueAsString = DateTime.Now.ToString("yyyy-MM-dd"),
         SomeUnimportantTestModel = new TestModel
         {
             Property1 = "Value for Property 1",
@@ -160,13 +145,14 @@
         [Required]
         [MinLength(3)]
         public string LastName { get; set; }
-        public string DateValueAsString { get; set; }
-        
+
         [Range(10, 100)]
         [Required]
         public int Age { get; set; }
         
         public Gender Gender { get; set; }
+        [Required]
+        [MinLength(1)]
         public ICollection<ProgramingSkill> ProgramingSkills { get; set; }
         public Address MainAddress { get; set; }
         public ICollection<Address> OtherAddresses { get; set; }

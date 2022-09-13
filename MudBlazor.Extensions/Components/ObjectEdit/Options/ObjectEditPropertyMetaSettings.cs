@@ -22,6 +22,7 @@ public class ObjectEditPropertyMetaSettings
     public bool IsEditable { get; set; }
     public bool Ignored { get; set; }
     public PropertyResetSettings ResetSettings { get; set; }
+    public bool ValidationComponent { get; set; }
     public LabelBehaviour LabelBehaviour { get; set; } = LabelBehaviour.DefaultComponentLabeling;
     public Func<PropertyInfo, string> LabelResolverFn { get; set; } = DefaultLabelResolverFn;
     public Func<PropertyInfo, string> DescriptionResolverFn { get; set; } = DefaultDescriptionResolverFn;

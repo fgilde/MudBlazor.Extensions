@@ -1,8 +1,9 @@
 ﻿@using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Options
 @inherits LayoutComponentBase
 @inject IJSRuntime JsRuntime
 
-<MudThemeProvider />
+<MudThemeProvider Theme="@ClientTheme.DefaultTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -10,6 +11,7 @@
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.Palette" Color="Color.Inherit" OnClick="@EditTheme" />
         <MudIconButton Icon="@Icons.Custom.Brands.Microsoft" Color="Color.Inherit" Link="https://www.nuget.org/packages/MudBlazor.Extensions" Target="_blank" />
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank" />
     </MudAppBar>
@@ -28,7 +30,7 @@
 
 @code {
     bool _drawerOpen = true;
-
+    [Inject] public IDialogService DialogService { get; set; }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -40,4 +42,30 @@
     {
         _drawerOpen = !_drawerOpen;
     }
+
+    private async Task EditTheme()
+    {
+        var parameters = new DialogParameters
+        {
+            {nameof(MudExObjectEditDialog<ClientTheme>.ShowCancelButton), false}
+        };
+        var r = await DialogService.EditObject<ClientTheme>(ClientTheme.DefaultTheme, "Edit current Theme with MudExObjectEdit", new DialogOptionsEx()
+        {
+            MaximizeButton = true,
+            CloseButton = true,
+            FullHeight = true,
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+            DragMode = MudDialogDragMode.Simple,
+            Animations = new[] { AnimationType.SlideIn },
+            Position = DialogPosition.CenterRight,
+            DisableSizeMarginY = true,
+            DisablePositionMargin = true
+        }, null, parameters);
+        
+        ClientTheme.DefaultTheme = r.Result;
+        StateHasChanged();
+    }
+
 }

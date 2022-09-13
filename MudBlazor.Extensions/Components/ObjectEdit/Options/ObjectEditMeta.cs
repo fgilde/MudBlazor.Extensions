@@ -35,6 +35,9 @@ public class ObjectEditMeta<T> : ObjectEditMeta
     public IEnumerable<ObjectEditPropertyMetaOf<T>> Properties(params Expression<Func<T, object>>[] expressions)
         => expressions.Any() ? expressions.Select(Property) : AllProperties.Cast<ObjectEditPropertyMetaOf<T>>();
 
+    public IEnumerable<ObjectEditPropertyMetaOf<T>> Properties<TPropertyType>()
+        => AllProperties.Where(m => m.PropertyInfo.PropertyType == typeof(TPropertyType)).Cast<ObjectEditPropertyMetaOf<T>>();
+
     public ObjectEditPropertyMetaOf<T> Property(Expression<Func<T, object>> expression)
     {
         //var infos = PropertyPath<T>.Get(expression).ToArray();

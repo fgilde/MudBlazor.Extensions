@@ -75,6 +75,7 @@ public partial class MudExObjectEditForm<T>
         IsInternalLoading = true;
         try
         {
+            Value = GetUpdatedValue(); // To ensure data is set also fir disabled value bindings
             if (Value is IEditableObject editable)
                 editable.EndEdit();
             await OnValidSubmit.InvokeAsync(null);
