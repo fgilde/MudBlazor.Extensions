@@ -131,7 +131,5 @@ public class ClientTheme : MudTheme
         LayoutProperties = DefaultLayoutProperties
     };
 
-
-
     #endregion
 }

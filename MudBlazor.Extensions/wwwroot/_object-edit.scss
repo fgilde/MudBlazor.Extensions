@@ -62,3 +62,20 @@
 .mud-ex-property-validation-component .mud-input-control-input-container {
     display:none;
 }
+
+.mud-ex-group-path-text-flat {
+    margin-left: -10px;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    color: var(--mud-palette-info);
+    font-size: .75rem;
+}
+
+.mud-ex-group-path-text-default {
+    margin-top: -35px;
+    margin-bottom: 20px;
+    color: var(--mud-palette-info);
+    font-size: .75rem;
+    float: right;
+    margin-right: 40px;
+}

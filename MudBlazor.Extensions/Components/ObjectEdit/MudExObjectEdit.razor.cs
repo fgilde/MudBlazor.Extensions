@@ -47,6 +47,8 @@ public partial class MudExObjectEdit<T>
     [Parameter] public string StickyToolbarTop { get; set; } = "var(--mud-appbar-height)";
     [Parameter] public EventCallback<T> ValueChanged { get; set; }
     [Parameter] public ObjectEditMeta<T> MetaInformation { get; set; }
+    [Parameter] public bool ShowPathAsTitleForEachProperty { get; set; }
+    [Parameter] public PathDisplayMode PathDisplayMode { get; set; }
     [Parameter] public GroupingStyle GroupingStyle { get; set; }
     [Parameter] public PropertyFilterMode FilterMode { get; set; } = PropertyFilterMode.Toggleable;
     [Parameter] public string Filter { get; set; }
@@ -313,6 +315,13 @@ public enum RegisteredConfigurationBehaviour
     ExecutedBefore,
     ExecutedAfter,
     IgnoreRegisteredConfigurations
+}
+
+public enum PathDisplayMode
+{
+    DisplaySeparate,
+    DisplayAsGroupName,
+    None
 }
 
 public class ModelForPrimitive<T>

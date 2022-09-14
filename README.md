@@ -195,6 +195,13 @@ Currently you can use following animations: `SlideIn,FadeIn,Scale,Slide,Fade,Zoo
 ```
 > **_BETA (Work still in progress):_** All animations can currently also used on other components for example in this popover. `<MudPopover Style="@(IsOpen $"animation: {new [] {AnimationType.FadeIn, AnimationType.SlideIn}.GetAnimationCssStyle(TimeSpan.FromSeconds(1))}" : "")">Popover content</MudPopover>`
 
+#### Remove need of DialogParameters
+Also you can call our extension method with an `Action<YourDialog>` instead of DialogParameters.
+
+```csharp
+    await dialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello"; },options);
+```
+
 
 #### Change Log
  - 1.5.0 Add `MudExObjectEdit` `MudExObjectEditForm` `MudExObjectEditDialog` and `MudExCollectionEditor`

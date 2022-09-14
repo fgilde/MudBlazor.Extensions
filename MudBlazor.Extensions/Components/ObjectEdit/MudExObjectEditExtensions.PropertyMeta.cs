@@ -9,6 +9,40 @@ namespace MudBlazor.Extensions.Components.ObjectEdit;
 
 public static partial class MudExObjectEditExtensions
 {
+    public static ObjectEditPropertyMeta RenderWithMudAutocomplete<TPropertyType>(this ObjectEditPropertyMeta meta,  TPropertyType[] items)
+        => meta.RenderWithMudAutocomplete(_ => { }, false, true, items);
+    public static ObjectEditPropertyMeta RenderWithMudAutocomplete<TPropertyType>(this ObjectEditPropertyMeta meta, bool requireValueFromSuggestion, TPropertyType[] items)
+        => meta.RenderWithMudAutocomplete(_ => { }, requireValueFromSuggestion, true, items);
+    public static ObjectEditPropertyMeta RenderWithMudAutocomplete<TPropertyType>(this ObjectEditPropertyMeta meta, bool requireValueFromSuggestion, bool filterSuggestionForValue, TPropertyType[] items)
+        => meta.RenderWithMudAutocomplete(_ => { }, requireValueFromSuggestion, filterSuggestionForValue, items);
+
+    public static ObjectEditPropertyMeta RenderWithMudAutocomplete<TPropertyType>(this ObjectEditPropertyMeta meta, Type suggesttionsFromEnum, bool requireValueFromSuggestion, bool filterSuggestionForValue = true)
+        => meta.RenderWithMudAutocomplete<TPropertyType>(suggesttionsFromEnum, null, requireValueFromSuggestion, filterSuggestionForValue);
+    public static ObjectEditPropertyMeta RenderWithMudAutocomplete<TPropertyType>(this ObjectEditPropertyMeta meta, Type suggesttionsFromEnum, Action<MudAutocomplete<TPropertyType>> options = null, bool requireValueFromSuggestion = true, bool filterSuggestionForValue = true)
+    {
+        var suggestionItems = suggesttionsFromEnum.IsNullableEnum() ? Nullable.GetUnderlyingType(suggesttionsFromEnum).GetEnumValues().MapElementsTo<TPropertyType>().ToArray() : suggesttionsFromEnum.GetEnumValues().MapElementsTo<TPropertyType>().ToArray();
+        return meta.RenderWithMudAutocomplete(options, requireValueFromSuggestion, filterSuggestionForValue, suggestionItems);
+    }
+    public static ObjectEditPropertyMeta RenderWithMudAutocomplete<TPropertyType>(this ObjectEditPropertyMeta meta, Action<MudAutocomplete<TPropertyType>> options, bool requireValueFromSuggestion, bool filterSuggestionForValue,  params TPropertyType[] suggestionItems)
+    {
+        if ((typeof(TPropertyType).IsEnum || typeof(TPropertyType).IsNullableEnum()) && !suggestionItems.Any())
+            return meta.RenderWithMudAutocomplete(typeof(TPropertyType), options, requireValueFromSuggestion);
+
+        return meta.RenderWith<MudAutocomplete<TPropertyType>, TPropertyType>(ac => ac.Value, ac =>
+        {
+            ac.CoerceValue = !requireValueFromSuggestion;
+            ac.SearchFunc = s => Task.Run(() =>
+            {
+                var res = !filterSuggestionForValue ? suggestionItems : suggestionItems.Where(x => string.IsNullOrWhiteSpace(s) || x?.ToString()?.Contains(s, StringComparison.InvariantCultureIgnoreCase) == true);
+                if (!requireValueFromSuggestion)
+                    return res.Prepend(s.MapTo<TPropertyType>()).Distinct();
+                return res;
+            });
+            options?.Invoke(ac);
+        });
+    }
+
+
     public static ObjectEditPropertyMeta RenderWith<TComponent, TPropertyType, TFieldType>(this ObjectEditPropertyMeta meta, Expression<Func<TComponent, TFieldType>> valueField, Action<TComponent> options, Func<TPropertyType, TFieldType> toFieldTypeConverter = null, Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) where TComponent : new()
     => meta?.SetProperties(p => p.RenderData = RenderData.For<TComponent, TPropertyType, TFieldType>(valueField, options, toFieldTypeConverter, toPropertyTypeConverter));
     public static ObjectEditPropertyMeta RenderWith<TComponent, TPropertyType, TFieldType>(this ObjectEditPropertyMeta meta, Expression<Func<TComponent, TFieldType>> valueField, TComponent instanceForAttributes, Func<TPropertyType, TFieldType> toFieldTypeConverter = null, Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) where TComponent : new()

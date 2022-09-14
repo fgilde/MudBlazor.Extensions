@@ -15,6 +15,7 @@ public partial class MudExPropertyEdit
 {
     [Inject] private IServiceProvider _serviceProvider { get; set; }
 
+    [Parameter] public bool ShowPathAsTitle { get; set; }
     [Parameter] public bool IsLoading { get; set; }
     [Parameter] public bool AutoSkeletonOnLoad { get; set; }
     [Parameter] public string Class { get; set; }
@@ -110,4 +111,7 @@ public partial class MudExPropertyEdit
 
     public object GetCurrentValue() 
         => editor.Instance?.GetType()?.GetProperty(PropertyMeta.RenderData.ValueField)?.GetValue(editor.Instance);
+
+    private string Title() 
+        => ShowPathAsTitle ? PropertyMeta.PropertyName.Replace(".", " > ") : null;
 }

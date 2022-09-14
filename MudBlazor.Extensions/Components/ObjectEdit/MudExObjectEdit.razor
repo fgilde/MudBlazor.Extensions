@@ -63,11 +63,19 @@ else
         <MudExpansionPanels Class="mud-ex-object-edit-panels" DisableBorders="@(GroupingStyle == GroupingStyle.Flat)" Elevation="@(GroupElevation ?? (GroupingStyle == GroupingStyle.Flat ? 0 : 1))" MultiExpansion="true">
             @foreach (var grouping in GroupedMetaPropertyInfos())
             {
+                var objectEditPropertyMetas = MetaInformation?.Ordered(grouping).ToList();
                 var groupName = !string.IsNullOrWhiteSpace(grouping.Key) ? grouping.Key : DefaultGroupName;
+                var pathStr = string.Join(" > ", objectEditPropertyMetas?.FirstOrDefault()?.PropertyName?.Split('.').SkipLast(1) ?? Array.Empty<string>());
+                @if (PathDisplayMode == PathDisplayMode.DisplayAsGroupName && !string.IsNullOrEmpty(pathStr))
+                {
+                    groupName = pathStr;
+                }
                 <MudExpansionPanel @ref="@ExpansionPanel" IsInitiallyExpanded="true" Disabled="@(!GroupsCollapsible)" Class="@($"mt-3 {(!string.IsNullOrWhiteSpace(groupName) ? CssClassName : "mud-ex-hidden-group")}")" Text="@(!string.IsNullOrWhiteSpace(groupName) ? LocalizerToUse.TryLocalize(groupName) : groupName)">
-                    @{
-                        var objectEditPropertyMetas = MetaInformation?.Ordered(grouping).ToList();
+                    @if (PathDisplayMode == PathDisplayMode.DisplaySeparate && !string.IsNullOrEmpty(pathStr) && pathStr != groupName)
+                    {
+                        <p class="@(GroupingStyle == GroupingStyle.Flat ? "mud-ex-group-path-text-flat" : "mud-ex-group-path-text-default")">@pathStr</p>
                     }
+                    
                     @if (ShouldAddGrid(grouping))
                     {
                         <MudGrid>
@@ -95,6 +103,7 @@ else
     RenderFragment RenderPropertyEdit(ObjectEditPropertyMeta property)
     {
         return @<MudExPropertyEdit @ref="@Ref" DisableFieldFallback="@DisableFieldFallback"
+                                   ShowPathAsTitle="@ShowPathAsTitleForEachProperty"
                                    IsLoading="@(IsLoading || IsInternalLoading)"
                                    AutoSkeletonOnLoad="@AutoSkeletonOnLoad"
                                    PropertyValueChanged="@OnPropertyChange"

@@ -28,7 +28,7 @@
         var reset = GetResetSettings();
         if (!reset.AllowReset || !PropertyMeta.Settings.IsEditable)
             return RenderPropertyMetaAndLabelIf();
-        return @<div class="@($"mud-ex-property-container mud-ex-property-container-for-{PropertyMeta.PropertyName.Replace(".", "-")}")">
+        return @<div title="@Title()" class="@($"mud-ex-property-container mud-ex-property-container-for-{PropertyMeta.PropertyName.Replace(".", "-")}")">
                        @RenderPropertyMetaAndLabelIf()
                        <div @onclick="@(ResetAsync)" class="mud-ex-property-reset-conatiner">
                            @if (reset.ShowResetText)
