@@ -44,8 +44,6 @@
 
     private void Configure(ObjectEditMeta<UserInformation> meta)
     {
-        meta.Property(x => x.Notice).RenderWithMudAutocomplete<string>(typeof(LogLevel), false);
-  
         meta.WrapEachIn<UserInformation, MudItem>(i => i.xs = 12);
         meta.WithLabelLocalizerPattern("Label_for_{0}")
             .WithDescriptionLocalizerPattern("Description_for_{0}")
