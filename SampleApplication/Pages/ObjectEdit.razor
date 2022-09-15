@@ -1,7 +1,7 @@
 ﻿@page "/object-edit"
-@inject IJSRuntime js;
-@inject IDialogService _dlgService;
+@inject IDialogService dialogService;
 @using Newtonsoft.Json
+@using MudBlazor.Extensions.Options
 
 <PageTitle>Object Edit Samples</PageTitle>
 
@@ -98,7 +98,12 @@
     private async Task OnSubmit(EditContext ctx)
     {
         var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
-        await js.InvokeVoidAsync("alert", asString);
+        await dialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
+        {
+            Position = DialogPosition.TopCenter,
+            Animation = AnimationType.Slide,
+            MaxWidth = MaxWidth.Medium
+        });
     }
     
 }

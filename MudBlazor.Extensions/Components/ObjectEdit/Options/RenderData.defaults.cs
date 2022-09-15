@@ -103,7 +103,8 @@ public static class RenderDataDefaults
         return res;
     }
 
-
+    internal static bool HasRenderDataForType(Type type) => _renderData.ContainsKey(type);
+    
     public static IRenderData GetRenderData(ObjectEditPropertyMeta propertyMeta)
         => FindFromProvider(propertyMeta) ?? (_renderData.ContainsKey(propertyMeta.PropertyInfo.PropertyType) ? _renderData[propertyMeta.PropertyInfo.PropertyType].Clone() as IRenderData : TryFindDynamicRenderData(propertyMeta));
 
@@ -150,8 +151,8 @@ public static class RenderDataDefaults
             }, s => s.AsEnumerable(), x => x.Select(o => o.MapTo(propertyType)).FirstOrDefault());
         }
 
-        if (IsCollection(propertyMeta.PropertyInfo.PropertyType)) // Collection support
-        {
+        if (IsCollection(propertyMeta.PropertyInfo.PropertyType) || IsEnumerable(propertyMeta.PropertyInfo.PropertyType)) // Collection support
+        { // TODO: When IEnumerable maybe disable add button
             try
             {
                 var collectionType = propertyType.GetGenericArguments().FirstOrDefault() ?? propertyType.GetElementType();
@@ -171,6 +172,8 @@ public static class RenderDataDefaults
 
     private static bool IsCollection(Type type)
         => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ICollection<>) || type.GetInterfaces().Any(IsCollection);
+    private static bool IsEnumerable(Type type)
+        => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>) || type.GetInterfaces().Any(IsCollection);
 
     private static IRenderData FindFromProvider(ObjectEditPropertyMeta propertyMeta)
         => _providers.Select(provider => provider.GetRenderData(propertyMeta)).FirstOrDefault(renderData => renderData != null);

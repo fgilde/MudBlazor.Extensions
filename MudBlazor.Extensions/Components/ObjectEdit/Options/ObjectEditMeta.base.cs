@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Linq.Expressions;
+using System.Reflection;
+using Microsoft.AspNetCore.Components;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
@@ -22,7 +24,17 @@ public abstract class ObjectEditMeta
         if (value == null)
             return null;
         var res = new ObjectEditMeta<T>(value);
+        if (value is IComponent)
+            res = res.WithPropertyResolverFunc(IsEditableComponentParameter);
         configures.EmptyIfNull().Apply(c => c?.Invoke(res));
         return res;
+    }
+
+    static bool IsEventCallback(Type type) => (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(EventCallback<>) || type == typeof(EventCallback));
+    static bool IsExpression(Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Expression<>);
+
+    private static bool IsEditableComponentParameter(PropertyInfo p)
+    {
+        return (p.GetCustomAttribute<ParameterAttribute>() != null || p.GetCustomAttribute<CascadingParameterAttribute>() != null) && !IsEventCallback(p.PropertyType) && !IsExpression(p.PropertyType);
     }
 }

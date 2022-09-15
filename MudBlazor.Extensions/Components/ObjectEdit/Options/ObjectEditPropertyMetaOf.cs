@@ -2,7 +2,7 @@
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 
-public class ObjectEditPropertyMetaOf<T> : ObjectEditPropertyMeta
+public sealed class ObjectEditPropertyMetaOf<T> : ObjectEditPropertyMeta
 {
     public Type ModelType { get; }
 

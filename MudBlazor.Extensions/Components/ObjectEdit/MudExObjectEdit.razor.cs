@@ -10,6 +10,7 @@ using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Extensions;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
+using MudBlazor.Utilities;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
@@ -34,6 +35,7 @@ public partial class MudExObjectEdit<T>
         set => SetValue(value);
     }
     //[Parameter] public bool Virtualize { get; set; } = true;
+    [Parameter] public bool AddScrollToTop { get; set; } = true;
     [Parameter] public bool AutoSkeletonOnLoad { get; set; }
     [Parameter] public Color ToolbarColor { get; set; } = Color.Default;
     [Parameter] public Color GroupLineColor { get; set; } = Color.Secondary;
@@ -71,7 +73,7 @@ public partial class MudExObjectEdit<T>
      */
     [Parameter] public bool ConfigureMetaInformationAlways { get; set; }
 
-    private static Type[] handleAsPrimitive = { typeof(string), typeof(decimal), typeof(DateTime), typeof(DateTimeOffset), typeof(TimeSpan), typeof(TimeOnly), typeof(DateOnly), typeof(Guid) };
+    private static Type[] handleAsPrimitive = { typeof(string), typeof(decimal), typeof(MudColor), typeof(System.Drawing.Color), typeof(DateTime), typeof(DateTimeOffset), typeof(TimeSpan), typeof(TimeOnly), typeof(DateOnly), typeof(Guid) };
     internal static bool IsPrimitive()
     {
         var type = typeof(T).IsNullable() ? Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T) : typeof(T);
@@ -222,7 +224,7 @@ public partial class MudExObjectEdit<T>
     {
         ResetConfirmationDialogOptions ??= new DialogOptionsEx
         {
-            Animations = new[] { AnimationType.Fade },
+            Animations = new[] { AnimationType.Pulse },
             DragMode = MudDialogDragMode.Simple,
             CloseButton = false
         };

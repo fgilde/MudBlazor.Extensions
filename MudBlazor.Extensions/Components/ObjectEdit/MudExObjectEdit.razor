@@ -96,6 +96,12 @@ else
                 </MudExpansionPanel>
             }
         </MudExpansionPanels>
+        @if (AddScrollToTop)
+        {
+            <MudScrollToTop ScrollBehavior="ScrollBehavior.Smooth">
+                <MudFab Color="Color.Tertiary" Icon="@Icons.Filled.ArrowCircleUp"/>
+            </MudScrollToTop>
+        }
     </div>
 }
 @code {

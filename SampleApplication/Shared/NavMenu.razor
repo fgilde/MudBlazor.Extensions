@@ -1,7 +1,34 @@
-﻿<MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-    <MudNavLink Href="dialogs" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Window">Dialog Samples</MudNavLink>
-    <MudNavLink Href="file-display" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FileOpen">File Display</MudNavLink>
-    <MudNavLink Href="object-edit" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Edit">Object Edit Default</MudNavLink>
-    <MudNavLink Href="mudex-object-edit-with-configuration" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Edit">Object Edit Configured</MudNavLink>
-</MudNavMenu>
+﻿@using Nextended.Core.Extensions
+@inject NavigationManager _navigationManager;
+
+<div>
+    <MudNavMenu>
+        <MudTreeView Items="@Entries">
+            <ItemTemplate>
+                <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.Children">
+                        <Content>
+                            @if (HasAction(context))
+                            {
+                                <MudNavLink Href="@context.Href" Match="@(context.Href == "/" ? NavLinkMatch.All : NavLinkMatch.Prefix)" Target="@context.Target" Icon="@context.Icon">
+                                    @context.Text
+                                </MudNavLink>
+                            }
+                            else
+                            {
+                            @if (!context.Icon.IsNullOrWhiteSpace())
+                                {
+                                <MudIcon Icon="@context.Icon" Class="ml-0 mr-2" Color="@Color.Default" />
+                                }
+                                <MudListSubheader Class="@(CanExpand(context) ? "cursor-pointer" : "")" @onclick="() => OnExpandCollapseClick(context)">@context.Text</MudListSubheader>
+
+                                <div class="apply-right">
+                                    <MudTreeViewItemToggleButton Visible="CanExpand(context)" Expanded="context.IsExpanded" ExpandedChanged="() => OnExpandCollapseClick(context)" />
+                                </div>
+                            }
+                    </Content>
+                </MudTreeViewItem>
+            </ItemTemplate>
+        </MudTreeView>
+    </MudNavMenu>
+
+</div>

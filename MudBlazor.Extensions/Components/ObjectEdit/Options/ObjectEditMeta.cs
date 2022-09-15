@@ -1,14 +1,16 @@
 ﻿using System.Linq.Expressions;
+using System.Reflection;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 
-public class ObjectEditMeta<T> : ObjectEditMeta
+public sealed class ObjectEditMeta<T> : ObjectEditMeta
 {
-    public T Value;
+    public T Value { get; set; }
+    public Func<PropertyInfo, bool> PropertyResolverFunc { get; set; }
+    
     private List<ObjectEditPropertyMeta> _properties;
-
     internal Func<ObjectEditPropertyMeta, object> OrderFn { get; set; } = meta => meta.Settings.Order;
     internal bool OrderAscending { get; set; } = true;
 
@@ -47,11 +49,11 @@ public class ObjectEditMeta<T> : ObjectEditMeta
         //return (ObjectEditPropertyMetaOf<T>) (Property(infos) ?? Property(name));
         return (ObjectEditPropertyMetaOf<T>) (Property(name) ?? Property(infos));
     }
-
+    
     private IEnumerable<ObjectEditPropertyMeta> GetProperties(Type type, object value, ObjectEditMeta owner = null)
     {
         var res = new List<ObjectEditPropertyMeta>();
-        foreach (var propertyInfo in (value?.GetType() ?? type).GetProperties(BindingFlags))
+        foreach (var propertyInfo in (value?.GetType() ?? type).GetProperties(BindingFlags).Where(ShouldResolve))
         {
             var t = propertyInfo.PropertyType;
             var editPropertyMeta = new ObjectEditPropertyMetaOf<T>(owner ?? this, propertyInfo, value);
@@ -71,6 +73,9 @@ public class ObjectEditMeta<T> : ObjectEditMeta
         }
         return res;
     }
+
+    private bool ShouldResolve(PropertyInfo arg) 
+        => PropertyResolverFunc?.Invoke(arg) ?? true;
 
     private bool IsEditableSubObject(Type t) 
         => !t.IsValueType && !t.IsPrimitive && t != typeof(decimal) && t != typeof(string) && !t.IsEnumerableOrArray();

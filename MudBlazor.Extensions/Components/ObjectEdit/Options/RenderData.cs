@@ -4,7 +4,7 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 
-public class RenderData<TPropertyType, TFieldType> : RenderData
+public sealed class RenderData<TPropertyType, TFieldType> : RenderData
 {
     internal override Type FieldType => typeof(TFieldType);
     internal override Type PropertyType => typeof(TPropertyType);

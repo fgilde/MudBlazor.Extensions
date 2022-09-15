@@ -47,4 +47,7 @@ public static partial class MudExObjectEditExtensions
         => meta?.SetProperties(m => fieldNames.Apply(f => m.Property(f)?.Ignore()));
     public static ObjectEditMeta<T> IgnoreFields<T>(this ObjectEditMeta<T> meta, params Expression<Func<T, object>>[] fields)
         => meta?.SetProperties(m => fields.Apply(f => m.Property(f)?.Ignore()));
+    public static ObjectEditMeta<T> WithPropertyResolverFunc<T>(this ObjectEditMeta<T> meta, Func<PropertyInfo, bool> shouldHandle)
+        => meta?.SetProperties(m => m.PropertyResolverFunc = shouldHandle);
+
 }

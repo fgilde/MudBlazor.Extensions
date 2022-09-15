@@ -1,5 +1,4 @@
 ﻿using MudBlazor;
-using Nextended.Core.Extensions;
 
 namespace SampleApplication.Client;
 
@@ -111,14 +110,15 @@ public class ClientTheme : MudTheme
 
     private static LayoutProperties DefaultLayoutProperties => new()
     {
-        DefaultBorderRadius = "3px"
+        DefaultBorderRadius = "3px",
+        DrawerWidthLeft = "300px"
     };
 
     #endregion
 
     public static ClientTheme DefaultTheme = new ClientTheme()
     {
-        Palette = new Palette()
+        Palette = new Palette
         {
             Primary = "#199b90",
             AppbarBackground = "#199b90",
