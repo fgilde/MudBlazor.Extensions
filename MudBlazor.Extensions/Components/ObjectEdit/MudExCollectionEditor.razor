@@ -1,4 +1,5 @@
 ﻿@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Extensions
 @typeparam T
 
 
@@ -22,7 +23,17 @@
                                       ShowCloseIcon="@(AllowRemove && !ReadOnly)"
                                       CloseIcon="@RemoveIcon"
                                       CloseIconClicked="(() => Remove(item))">
-                                @ItemNameRender(item)
+                                      
+                                @if (AllowEditOrPreview && !ReadOnly && item is string)
+                                {
+                                    <MudTextField Class="mud-ex-collection-inline-string-edit" T="string" ValueChanged="@(s => SetValue(item, s.MapTo<T>()))" DisableUnderLine="true" Value="@(item.MapTo<string>())"></MudTextField>
+                                }
+                                else
+                                {
+                                    @ItemNameRender(item)
+                                }
+                               
+                                
                                 @if (AllowEditOrPreview)
                                 {
                                     @if (ReadOnly)

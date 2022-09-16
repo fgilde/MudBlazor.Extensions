@@ -77,14 +77,20 @@ public partial class MudExCollectionEditor<T>
         var res = await _mudDialogService.EditObject<T>(item, LocalizerToUse.TryLocalize("Edit {0}", ItemNameRender(item)) , DialogOptions ?? DefaultOptions(), null, parameters);
         if (!res.Cancelled)
         {
-            if (Primitive)
-            {
-                var array = Items.ToArray();
-                array[Array.IndexOf(array, item)] = res.Result;
-                Items = array.ToList();
-            }
-            RaiseChanged();
+            SetValue(item, res.Result);
         }
+    }
+
+    private void SetValue(T item, T newValue)
+    {
+        if (Primitive)
+        {
+            var array = Items.ToArray();
+            array[Array.IndexOf(array, item)] = newValue;
+            Items = array.ToList();
+        }
+
+        RaiseChanged();
     }
 
     public async Task View(T item)

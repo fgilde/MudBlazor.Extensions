@@ -4055,6 +4055,25 @@
   margin-right: 40px;
 }
 
+.mud-ex-collection-inline-string-edit {
+  height: 20px;
+  margin-top: -20px;
+}
+
+.mud-ex-collection-inline-string-edit input:focus {
+  background: var(--mud-palette-surface);
+  border: 1px solid var(--mud-palette-primary);
+  border-radius: var(--mud-default-borderradius);
+}
+
+.mud-ex-collection-inline-string-edit input {
+  background: transparent;
+  border: 1px solid transparent;
+  transition-property: all !important;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+}
+
 .mud-dialog-height-full {
   height: calc(100% - 64px);
 }
