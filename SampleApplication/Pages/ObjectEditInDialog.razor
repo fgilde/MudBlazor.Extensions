@@ -16,10 +16,12 @@
     public class TestObject
     {
         [Required]
-        public string Value { get; set; }
+        public string Value { get; set; } = "Test";
+        [Range(1, 100)]
         public int Number { get; set; }
+        public LogLevel logLevel { get; set; }
     }
-    
+
     public DialogOptionsEx Options => new()
     {
             MaximizeButton = true,
@@ -37,9 +39,17 @@
 
     private async Task ShowSampleDialog()
     {
-        var res = await dialogService.EditObject(new TestObject(),"Auto Generated Editor for TestObject",Options);
+        var res = await dialogService.EditObject(new TestObject(), "Auto Generated Editor for TestObject", OnSubmit, Options, meta => meta.WrapEachInMudItem(i => i.xs = 6));
         if (!res.Cancelled)
             await Js.InvokeVoidAsync("alert", JsonConvert.SerializeObject(res.Result));
+    }
+
+    private async Task<string> OnSubmit(TestObject value)
+    {
+        await Task.Delay(2000); // Simulate server save
+        if (value.Value == "Test")
+            return "'Test' is as Value not allowed or already exists";
+        return null;
     }
 
 }

@@ -196,6 +196,7 @@
 
     private async Task OnSubmit(EditContext ctx)
     {
+        await Task.Delay(1000); // Simulate server save or whatever
         var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
         await dialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
         {

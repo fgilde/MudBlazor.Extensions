@@ -13,13 +13,40 @@ namespace MudBlazor.Extensions
 {
     public static class DialogServiceExt
     {
+        private static DialogParameters MergeParameters(DialogParameters dialogParameters, DialogParameters parameters)
+        {
+            if (dialogParameters != null)
+            {
+                foreach (var param in dialogParameters)
+                    parameters.Add(param.Key, param.Value);
+            }
+
+            return parameters;
+        }
+        
         public static async Task<(bool Cancelled, TModel Result)> ShowObject<TModel>(this IDialogService dialogService, TModel value, string title, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null, DialogParameters dialogParameters = null)
         {
+            var parameters = new DialogParameters
+            {
+                {nameof(MudExObjectEditDialog<TModel>.ShowSaveButton), false},
+                {nameof(MudExObjectEditDialog<TModel>.CancelButtonText), "Close"},
+            };
             return await dialogService.EditObject(value, title, options, meta =>
             {
                 metaConfig?.Invoke(meta);
                 meta.Properties().AsReadOnly();
-            }, dialogParameters);
+            }, MergeParameters(dialogParameters, parameters));
+        }
+
+        public static async Task<(bool Cancelled, TModel Result)> EditObject<TModel>(this IDialogService dialogService,
+            TModel value, string title, Func<TModel, Task<string>> customSubmit, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null,
+            DialogParameters dialogParameters = null)
+        {
+            var parameters = new DialogParameters
+            {
+                {nameof(MudExObjectEditDialog<TModel>.CustomSubmit), customSubmit}
+            };
+            return await dialogService.EditObject(value, title, options, metaConfig, MergeParameters(dialogParameters, parameters));
         }
 
         public static async Task<(bool Cancelled, TModel Result)> EditObject<TModel>(this IDialogService dialogService, TModel value, string title, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null, DialogParameters dialogParameters = null)
@@ -36,14 +63,8 @@ namespace MudBlazor.Extensions
                 {nameof(MudExObjectEditDialog<TModel>.ConfigureMetaInformationAlways), true},
                 {nameof(MudExObjectEditDialog<TModel>.MetaInformation), value.ObjectEditMeta(metaConfig)}
             };
-            if (dialogParameters != null)
-            {
-                foreach (var param in dialogParameters)
-                    parameters.Add(param.Key, param.Value);
-            }
 
-
-            var dialog = await dialogService.ShowEx<MudExObjectEditDialog<TModel>>(title, parameters, options);
+            var dialog = await dialogService.ShowEx<MudExObjectEditDialog<TModel>>(title, MergeParameters(dialogParameters, parameters), options);
 
             var res = await dialog.Result;
             return (res.Cancelled, res.Cancelled ? value : (TModel)res.Data);

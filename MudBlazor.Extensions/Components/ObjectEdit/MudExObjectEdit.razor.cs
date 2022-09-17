@@ -153,7 +153,7 @@ public partial class MudExObjectEdit<T>
         }
     }
 
-    private Task OnPropertyChange(ObjectEditPropertyMeta property)
+    protected virtual Task OnPropertyChange(ObjectEditPropertyMeta property)
     {
         //return Task.WhenAll(Task.Run(() =>
         //{

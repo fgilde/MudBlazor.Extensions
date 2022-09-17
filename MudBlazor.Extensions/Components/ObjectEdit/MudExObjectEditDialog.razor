@@ -1,4 +1,6 @@
 ﻿@inherits MudExObjectEditForm<T>
+@using MudBlazor.Extensions.Options
+@using MudBlazor.Extensions.Helper
 @typeparam T
 
 <EditForm class="@($"{ClassDialogForm}")" Model="@Value" OnValidSubmit="@OnSubmit">
@@ -18,6 +20,13 @@
             @Inherited()
         </DialogContent>
         <DialogActions>
+            @if (!string.IsNullOrWhiteSpace(_errorMessage))
+            {
+                <MudAlert Variant="Variant.Filled" Style="@($"animation: {ErrorAnimation.GetAnimationCssStyle(TimeSpan.FromMilliseconds(300))}; z-index: 3;position: absolute;")" 
+                          ShowCloseIcon="true" CloseIconClicked="@(() => _errorMessage = null)" Severity="Severity.Error">
+                    @_errorMessage
+                </MudAlert>
+            }
             @RenderActionBar
         </DialogActions>
     </MudDialog>
