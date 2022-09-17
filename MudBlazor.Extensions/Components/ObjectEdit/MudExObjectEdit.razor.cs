@@ -35,6 +35,7 @@ public partial class MudExObjectEdit<T>
         set => SetValue(value);
     }
     //[Parameter] public bool Virtualize { get; set; } = true;
+    [Parameter] public bool LightOverlayLoadingBackground { get; set; } = true;
     [Parameter] public bool AddScrollToTop { get; set; } = true;
     [Parameter] public bool AutoSkeletonOnLoad { get; set; }
     [Parameter] public Color ToolbarColor { get; set; } = Color.Default;

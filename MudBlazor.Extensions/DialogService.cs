@@ -39,7 +39,7 @@ namespace MudBlazor.Extensions
         }
 
         public static async Task<(bool Cancelled, TModel Result)> EditObject<TModel>(this IDialogService dialogService,
-            TModel value, string title, Func<TModel, Task<string>> customSubmit, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null,
+            TModel value, string title, Func<TModel, MudExObjectEditDialog<TModel>, Task<string>> customSubmit, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null,
             DialogParameters dialogParameters = null)
         {
             var parameters = new DialogParameters

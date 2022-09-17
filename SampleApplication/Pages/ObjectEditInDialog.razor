@@ -43,12 +43,15 @@
         if (!res.Cancelled)
             await Js.InvokeVoidAsync("alert", JsonConvert.SerializeObject(res.Result));
     }
+    
 
-    private async Task<string> OnSubmit(TestObject value)
+    private async Task<string> OnSubmit(TestObject value, MudExObjectEditDialog<TestObject> dialog)
     {
         await Task.Delay(2000); // Simulate server save
         if (value.Value == "Test")
             return "'Test' is as Value not allowed or already exists";
+        if (value.Value == "Exception")
+            throw new Exception("This is a test exception");
         return null;
     }
 

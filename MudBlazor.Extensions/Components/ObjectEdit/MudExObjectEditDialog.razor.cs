@@ -9,7 +9,7 @@ public partial class MudExObjectEditDialog<T>
 {
     protected override bool OverwriteActionBar => true;
 
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
     [Parameter] public bool DisableSidePadding { get; set; }
     [Parameter] public string ClassDialog { get; set; } = "dialog-content-full-height overflow-hidden mud-ex-object-edit-dialog";
     [Parameter] public string ClassContent { get; set; } = "full-height flex-column";
@@ -27,7 +27,7 @@ public partial class MudExObjectEditDialog<T>
     /// Can be used as custom submit function. Dialog will only closed if result of this function is empty or null otherwise result will displayed as error message.
     /// This is usefull to keep dialog open until server save is succeeded
     /// </summary>
-    [Parameter] public Func<T, Task<string>> CustomSubmit { get; set; }
+    [Parameter] public Func<T, MudExObjectEditDialog<T>, Task<string>> CustomSubmit { get; set; }
 
     private string _errorMessage;
     
@@ -43,12 +43,13 @@ public partial class MudExObjectEditDialog<T>
         {
             IsLoading = true;
             await base.OnSubmit(ctx);
-            if (CustomSubmit == null || string.IsNullOrWhiteSpace(_errorMessage = await CustomSubmit.Invoke(Value)))
+            if (CustomSubmit == null || string.IsNullOrWhiteSpace(_errorMessage = await CustomSubmit.Invoke(Value, this)))
                 MudDialog.Close(DialogResult.Ok(Value));
         }
         finally
         {
             IsLoading = false;
+            StateHasChanged();
         }
     }
 

@@ -12,7 +12,7 @@
 
 @if (IsLoading || IsInternalLoading)
 {
-    <MudOverlay Class="mud-ex-loading-overlay" Visible="@(IsLoading || IsInternalLoading)" LightBackground="true" Absolute="true" >
+    <MudOverlay Class="mud-ex-loading-overlay" Visible="@(IsLoading || IsInternalLoading)" DarkBackground="@(!LightOverlayLoadingBackground)" LightBackground="@LightOverlayLoadingBackground" Absolute="true" >
         <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
     </MudOverlay>
 }
