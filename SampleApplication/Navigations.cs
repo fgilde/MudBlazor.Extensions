@@ -27,6 +27,7 @@ public static class Navigations
                 {
                     new NavigationEntry("With default configuration", Icons.Material.Outlined.DataObject, "/object-edit"),
                     new NavigationEntry("With custom configuration", Icons.Material.Outlined.DataObject, "/mudex-object-edit-with-configuration"),
+                    new NavigationEntry("Object Edit in Dialog", Icons.Material.Outlined.DesktopWindows, "/dialog-object-edit"),
                     new NavigationEntry("Edit Running Component", Icons.Material.Outlined.SettingsInputComponent, "/edit-component"),
                     new NavigationEntry("Edit Current Theme", Icons.Material.Outlined.Palette, "/theme-edit")
                     //new NavigationEntry("More")

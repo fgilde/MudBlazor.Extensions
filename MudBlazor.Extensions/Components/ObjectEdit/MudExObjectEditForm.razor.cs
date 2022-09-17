@@ -51,26 +51,10 @@ public partial class MudExObjectEditForm<T>
     private bool _fluentValidated => _fluentValidationValidator == null || _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
     private bool _dataAnnotationsValidated => _dataAnnotationValidator == null || !_dataValidations.Any();
     private IEnumerable<ValidationResult> _dataValidations => _dataAnnotationValidator?.Validate() ?? Enumerable.Empty<ValidationResult>();
-    private Task OnSubmitButtonClick() => UseFormSubmit ? Task.CompletedTask : Submit();
-
-    
-    private async Task OnSubmit(EditContext arg)
-    {
-        IsInternalLoading = true;
-        try
-        {
-            if (Value is IEditableObject editable)
-                editable.EndEdit();
-            await OnValidSubmit.InvokeAsync(arg);
-        }
-        finally
-        {
-            IsInternalLoading = false;
-        }
-    }
+    private Task OnSubmitButtonClick() => UseFormSubmit ? Task.CompletedTask : OnSubmit(new EditContext(Value));
 
 
-    protected virtual async Task Submit()
+    protected virtual async Task OnSubmit(EditContext arg)
     {
         IsInternalLoading = true;
         try
@@ -78,7 +62,7 @@ public partial class MudExObjectEditForm<T>
             Value = GetUpdatedValue(); // To ensure data is set also fir disabled value bindings
             if (Value is IEditableObject editable)
                 editable.EndEdit();
-            await OnValidSubmit.InvokeAsync(null);
+            await OnValidSubmit.InvokeAsync(arg);
         }
         finally
         {

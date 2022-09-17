@@ -1,18 +1,17 @@
 ﻿@page "/edit-component"
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
-@inject IDialogService dialogService
-@inject NavigationManager NavigationManager
+
 <PageTitle>File Display</PageTitle>
 
 <SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
     
     <MudGrid>
         <MudItem md="8" Class="d-flex justify-center">
-            <MudColorPicker @ref="picker" PickerVariant="PickerVariant.Static" />
+            <MudColorPicker @ref="component" PickerVariant="PickerVariant.Static" />
         </MudItem>
         <MudItem md="4">
             <MudPaper Class="px-4 pt-2 pb-4" Style="height: 70vh; overflow: auto">
-                <MudExObjectEdit MetaConfiguration="@Configure()" Value="@picker"></MudExObjectEdit>
+                <MudExObjectEdit MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
             </MudPaper>
         </MudItem>
     </MudGrid>
@@ -21,9 +20,9 @@
 
 
 @code {
-    MudColorPicker picker;
+    ComponentBase component;
 
-    private Action<ObjectEditMeta<MudColorPicker>> Configure()
+    private Action<ObjectEditMeta<ComponentBase>> Configure()
     {
         return meta =>
         {

@@ -4074,6 +4074,26 @@
   transition-timing-function: ease;
 }
 
+.mud-ex-dialog-max90 .mud-dialog-content {
+  overflow: auto;
+  max-height: 90%;
+}
+
+.mud-ex-object-edit-dialog .mud-dialog-actions {
+  width: 100%;
+  z-index: 100;
+}
+
+.mud-ex-dialog-max90 .mud-dialog-actions {
+  width: 100%;
+  z-index: 100;
+}
+
+.mud-ex-object-edit-dialog-form {
+  overflow: auto;
+  max-height: 90%;
+}
+
 .mud-dialog-height-full {
   height: calc(100% - 64px);
 }

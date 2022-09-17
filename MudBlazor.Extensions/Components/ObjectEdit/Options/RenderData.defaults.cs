@@ -62,6 +62,7 @@ public static class RenderDataDefaults
         });
 
         RegisterDefault<ICollection<string>, MudExCollectionEditor<string>>(f => f.Items);
+        RegisterDefault<CultureInfo, MudExCultureSelect>(s => s.Value);
     }
 
     private static Dictionary<string, object> ColorPickerOptions()

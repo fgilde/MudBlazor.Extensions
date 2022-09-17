@@ -1,32 +1,27 @@
 ﻿@inherits MudExObjectEditForm<T>
 @typeparam T
 
-<style>
-    .mud-ex-dialog-max90 .mud-dialog-content {
-        overflow: auto;
-        max-height: 90%;
-    }
-    .mud-ex-dialog-max90 .mud-dialog-actions {
-        width: 100%;
-        z-index: 100;
-    }
-</style>
-
-<MudDialog Class="dialog-content-full-height overflow-hidden mud-ex-dialog-initial mud-ex-dialog-max90" ClassContent="full-height flex-column">
-    <TitleContent>
-        <MudText Typo="Typo.h6">
-            <MudIcon Color="@DialogIconColor" Icon="@DialogIcon" Class="mr-3 mb-n1" />
-            @MudDialog.Title
-        </MudText>
-    </TitleContent>
-    <DialogContent>
-        @Inherited()
-    </DialogContent>
-    <DialogActions>
-        @RenderActionBar
-    </DialogActions>
-</MudDialog>
-
+<EditForm class="@($"{ClassDialogForm}")" Model="@Value" OnValidSubmit="@OnSubmit">
+    <MudDialog Class="@($"mud-ex-dialog-initial {ClassDialog}")" ClassContent="@ClassContent"
+               ClassActions="@ClassActions"
+               ContentStyle="@ContentStyle"
+               Style="@DialogStyle"
+               DefaultFocus="@DefaultFocus"
+               DisableSidePadding="@DisableSidePadding">
+        <TitleContent>
+            <MudText Class="@ClassTitle" Typo="Typo.h6">
+                <MudIcon Color="@DialogIconColor" Icon="@DialogIcon" Class="mr-3 mb-n1" />
+                @MudDialog.Title
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            @Inherited()
+        </DialogContent>
+        <DialogActions>
+            @RenderActionBar
+        </DialogActions>
+    </MudDialog>
+</EditForm>
 @code {
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 }

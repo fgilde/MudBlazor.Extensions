@@ -1,0 +1,45 @@
+﻿@page "/dialog-object-edit"
+@using MudBlazor.Extensions.Options
+@using System.ComponentModel.DataAnnotations
+@using Newtonsoft.Json
+@inject IJSRuntime Js
+@inject IDialogService dialogService;
+
+<PageTitle>Sample Dialog</PageTitle>
+
+<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
+    <MudButton OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Edit Test Object</MudButton>
+</SampleApplication.Client.Shared.DemoComponent>
+
+@code {
+
+    public class TestObject
+    {
+        [Required]
+        public string Value { get; set; }
+        public int Number { get; set; }
+    }
+    
+    public DialogOptionsEx Options => new()
+    {
+            MaximizeButton = true,
+            CloseButton = true,
+            FullHeight = true,
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+            DragMode = MudDialogDragMode.Simple,
+            Animations = new[] { AnimationType.SlideIn },
+            Position = DialogPosition.CenterRight,
+            DisableSizeMarginY = true,
+            DisablePositionMargin = true
+        };
+
+    private async Task ShowSampleDialog()
+    {
+        var res = await dialogService.EditObject(new TestObject(),"Auto Generated Editor for TestObject",Options);
+        if (!res.Cancelled)
+            await Js.InvokeVoidAsync("alert", JsonConvert.SerializeObject(res.Result));
+    }
+
+}
