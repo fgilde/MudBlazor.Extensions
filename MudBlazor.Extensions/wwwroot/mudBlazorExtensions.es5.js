@@ -223,6 +223,19 @@ var MudBlazorExtensionHelper = (function () {
 
 window.MudBlazorExtensions = {
     helper: null,
+    disposeMudExFileDisplay: function disposeMudExFileDisplay(id) {
+        if (window.__mudExFileDisplay && window.__mudExFileDisplay[id]) {
+            window.__mudExFileDisplay[id] = null;
+            delete window.__mudExFileDisplay[id];
+        }
+    },
+    initMudExFileDisplay: function initMudExFileDisplay(dotNet, id) {
+        window.__mudExFileDisplay = window.__mudExFileDisplay || {};
+        window.__mudExFileDisplay[id] = {
+            callBackReference: dotNet
+        };
+    },
+
     setNextDialogOptions: function setNextDialogOptions(options, dotNet) {
         new MudBlazorExtensionHelper(options, dotNet, function () {
             MudBlazorExtensions.helper = null;

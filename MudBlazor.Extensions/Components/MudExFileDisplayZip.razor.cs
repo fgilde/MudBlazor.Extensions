@@ -34,6 +34,14 @@ public partial class MudExFileDisplayZip
     [Parameter] public bool AllowDownload { get; set; } = true;
     [Parameter] public bool AllowPreview { get; set; } = true;
     [Parameter] public Color ActionButtonColor { get; set; }
+    
+    /**
+     * A function to handle content error. Return true if you have handled the error and false if you want to show the error message
+     * For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
+     * If you reset Url or Data here you need also to reset ContentType
+     */
+    [Parameter] public Func<MudExFileDisplay, Task<bool>> HandleContentErrorFunc { get; set; }
+    [Parameter] public string CustomContentErrorMessage { get; set; }
 
     private MudMenu _downloadMenu;
     private IBrowserFile _innerPreview;

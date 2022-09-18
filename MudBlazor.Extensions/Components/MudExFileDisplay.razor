@@ -7,7 +7,7 @@
 <div class="mud-ex-file-display-container">
     @if (_isZip)
     {
-        <MudExFileDisplayZip AllowDownload="@AllowDownload" RootFolderName="@FileName" ContentStream="@ContentStream" Url="@Url"></MudExFileDisplayZip>
+        <MudExFileDisplayZip HandleContentErrorFunc="@HandleContentErrorFunc" CustomContentErrorMessage="@CustomContentErrorMessage" AllowDownload="@AllowDownload" RootFolderName="@FileName" ContentStream="@ContentStream" Url="@Url"></MudExFileDisplayZip>
     }
     else
     {
@@ -18,7 +18,14 @@
     <div id="content-type-display-error">
         <MudAlert Class="mud-alert-close-no-flex" Severity="Severity.Error" Variant="Variant.Outlined" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="CloseContentError">
             <p>
-                @_localizer.TryLocalize("The content type {0} cannot be displayed without a suitable plugin", ContentType)
+                @if (!string.IsNullOrWhiteSpace(CustomContentErrorMessage))
+                {
+                    @CustomContentErrorMessage
+                }
+                else
+                {
+                    @_localizer.TryLocalize("The content type {0} cannot be displayed without a suitable plugin", ContentType)
+                }
             </p>
 
             @if (PossiblePlugin != null)

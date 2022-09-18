@@ -13,7 +13,7 @@
             <MudIconButton Style="float: right;" OnClick="@(ClosePreview)" Icon="@Icons.Filled.Close"></MudIconButton>
         </MudTooltip>
     </div>
-    <MudExFileDisplay FileName="@_innerPreview.Name" ContentStream="@_innerPreviewStream" ContentType="@_innerPreview.ContentType" Url="@_innerPreviewUrl"></MudExFileDisplay>
+    <MudExFileDisplay HandleContentErrorFunc="@HandleContentErrorFunc" CustomContentErrorMessage="@CustomContentErrorMessage" FileName="@_innerPreview.Name" ContentStream="@_innerPreviewStream" ContentType="@_innerPreview.ContentType" Url="@_innerPreviewUrl"></MudExFileDisplay>
 }
 
 else

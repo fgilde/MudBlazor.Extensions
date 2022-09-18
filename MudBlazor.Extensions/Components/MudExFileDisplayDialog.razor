@@ -1,8 +1,6 @@
 @using BrowserFileExtensions = MudBlazor.Extensions.Extensions.BrowserFileExt
 @using System.IO
 @using MudBlazor.Extensions.Options
-@using Nextended.Blazor.Extensions
-@using Nextended.Blazor.Helper
 
 @namespace MudBlazor.Extensions.Components
 <MudDialog Class="dialog-content-full-height overflow-hidden mud-ex-dialog-initial" ClassContent="full-height">
@@ -13,7 +11,7 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudExFileDisplay FileName="@MudDialog?.Title" ContentStream="@ContentStream" ContentType="@ContentType" Url="@Url"></MudExFileDisplay>
+        <MudExFileDisplay HandleContentErrorFunc="@HandleContentErrorFunc" CustomContentErrorMessage="@CustomContentErrorMessage" FileName="@MudDialog?.Title" ContentStream="@ContentStream" ContentType="@ContentType" Url="@Url"></MudExFileDisplay>
     </DialogContent>
 
 </MudDialog>
@@ -24,61 +22,18 @@
     [Parameter] public string Url { get; set; }
     [Parameter] public string ContentType { get; set; }
     [Parameter] public Stream ContentStream { get; set; }
+    /**
+     * A function to handle content error. Return true if you have handled the error and false if you want to show the error message
+     * For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
+     * If you reset Url or Data here you need also to reset ContentType
+     */
+    [Parameter] public Func<MudExFileDisplay, Task<bool>> HandleContentErrorFunc { get; set; }
+    [Parameter] public string CustomContentErrorMessage { get; set; }
 
+    public static Task<IDialogReference> Show(IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(url, fileName, contentType, options);
 
-    public static async Task<IDialogReference> Show(IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null)
-    {
-        var parameters = new DialogParameters
-        {
-            {nameof(Icon), BrowserFileExtensions.IconForFile(contentType)},
-            {nameof(Url), url},
-            {nameof(ContentType), contentType}
-        };
+    public static Task<IDialogReference> Show(IDialogService dialogService, IBrowserFile browserFile, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(browserFile, options);
 
-        return await Show(dialogService, fileName, parameters, options);
-    }
-
-    public static async Task<IDialogReference> Show(IDialogService dialogService, IBrowserFile browserFile, Action<DialogOptionsEx> options = null)
-    {
-        if (MimeTypeHelper.IsZip(browserFile.ContentType))
-        {
-            var ms = new MemoryStream(await browserFile.GetBytesAsync());
-            return await Show(dialogService, ms, browserFile.Name, browserFile.ContentType, options);
-        }
-        return await Show(dialogService, await browserFile.GetDataUrlAsync(), browserFile.Name, browserFile.ContentType, options);
-    }
-
-    public static async Task<IDialogReference> Show(IDialogService dialogService, Stream stream, string fileName, string contentType, Action<DialogOptionsEx> options = null)
-    {
-        var parameters = new DialogParameters
-        {
-            {nameof(Icon), BrowserFileExtensions.IconForFile(contentType)},
-            {nameof(ContentStream), stream},
-            {nameof(ContentType), contentType}
-        };
-
-        return await Show(dialogService, fileName, parameters, options);
-    }
-
-    private static async Task<IDialogReference>  Show(IDialogService dialogService, string fileName, DialogParameters parameters, Action<DialogOptionsEx> options = null)
-    {
-        var optionsEx = new DialogOptionsEx
-        {
-            CloseButton = true,
-            MaxWidth = MaxWidth.ExtraExtraLarge,
-            FullWidth = true,
-            DisableBackdropClick = false,
-            MaximizeButton = true,
-            DragMode = MudDialogDragMode.Simple,
-            Position = DialogPosition.BottomCenter,
-            Animations = new []{AnimationType.FadeIn, AnimationType.SlideIn},
-            AnimationDuration = TimeSpan.FromSeconds(1),
-            FullHeight = true,
-            Resizeable = true
-        };
-        options?.Invoke(optionsEx);
-
-        return await dialogService.ShowEx<MudExFileDisplayDialog>(fileName, parameters, optionsEx);
-    }
-
+    public static Task<IDialogReference> Show(IDialogService dialogService, Stream stream, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(stream, fileName, contentType, options);
+    
 }

@@ -1,13 +1,19 @@
-﻿using System.Reflection;
+﻿using System.Net.Mime;
+using System.Reflection;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
+using MudBlazor.Extensions.Extensions;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using Nextended.Core;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
+using Nextended.Blazor.Extensions;
+using Nextended.Blazor.Helper;
 
 namespace MudBlazor.Extensions
 {
@@ -23,7 +29,78 @@ namespace MudBlazor.Extensions
 
             return parameters;
         }
-        
+
+        #region File Display
+
+        public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string url, string fileName, string contentType, Func<MudExFileDisplay, Task<bool>> handleContentErrorFunc,  Action<DialogOptionsEx> options = null) 
+            => dialogService.ShowFileDisplayDialog(url, fileName, contentType, options, new DialogParameters { { nameof(MudExFileDisplay.HandleContentErrorFunc), handleContentErrorFunc } });
+
+        public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, IBrowserFile browserFile, Func<MudExFileDisplay, Task<bool>> handleContentErrorFunc, Action<DialogOptionsEx> options = null) 
+            => dialogService.ShowFileDisplayDialog(browserFile, options, new DialogParameters { { nameof(MudExFileDisplay.HandleContentErrorFunc), handleContentErrorFunc } });
+
+        public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, Stream stream, string fileName, string contentType, Func<MudExFileDisplay, Task<bool>> handleContentErrorFunc, Action<DialogOptionsEx> options = null)
+            => dialogService.ShowFileDisplayDialog(stream, fileName, contentType, options, new DialogParameters { { nameof(MudExFileDisplay.HandleContentErrorFunc), handleContentErrorFunc } });
+
+        public static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
+        {
+            var parameters = new DialogParameters
+        {
+            {nameof(MudExFileDisplayDialog.Icon), BrowserFileExt.IconForFile(contentType)},
+            {nameof(MudExFileDisplayDialog.Url), url},
+            {nameof(MudExFileDisplayDialog.ContentType), contentType}
+        };
+            
+            return await dialogService.ShowFileDisplayDialog(fileName, MergeParameters(dialogParameters, parameters), options);
+        }
+
+        public static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, IBrowserFile browserFile, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
+        {
+            if (MimeTypeHelper.IsZip(browserFile.ContentType))
+            {
+                var ms = new MemoryStream(await browserFile.GetBytesAsync());
+                return await dialogService.ShowFileDisplayDialog(ms, browserFile.Name, browserFile.ContentType, options);
+            }
+            return await dialogService.ShowFileDisplayDialog(await browserFile.GetDataUrlAsync(), browserFile.Name, browserFile.ContentType, options, dialogParameters);
+        }
+
+        public static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, Stream stream, string fileName, string contentType, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
+        {
+            var parameters = new DialogParameters
+        {
+            {nameof(MudExFileDisplayDialog.Icon), BrowserFileExt.IconForFile(contentType)},
+            {nameof(MudExFileDisplayDialog.ContentStream), stream},
+            {nameof(MudExFileDisplayDialog.ContentType), contentType}
+        };
+
+            return await dialogService.ShowFileDisplayDialog(fileName, MergeParameters(dialogParameters, parameters), options);
+        }
+
+        private static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string fileName, DialogParameters parameters, Action<DialogOptionsEx> options = null)
+        {
+            var optionsEx = new DialogOptionsEx
+            {
+                CloseButton = true,
+                MaxWidth = MaxWidth.ExtraExtraLarge,
+                FullWidth = true,
+                DisableBackdropClick = false,
+                MaximizeButton = true,
+                DragMode = MudDialogDragMode.Simple,
+                Position = DialogPosition.BottomCenter,
+                Animations = new[] { AnimationType.FadeIn, AnimationType.SlideIn },
+                AnimationDuration = TimeSpan.FromSeconds(1),
+                FullHeight = true,
+                Resizeable = true
+            };
+            options?.Invoke(optionsEx);
+
+            return await dialogService.ShowEx<MudExFileDisplayDialog>(fileName, parameters, optionsEx);
+        }
+
+        #endregion
+
+
+        #region Object edit
+
         public static async Task<(bool Cancelled, TModel Result)> ShowObject<TModel>(this IDialogService dialogService, TModel value, string title, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null, DialogParameters dialogParameters = null)
         {
             var parameters = new DialogParameters
@@ -69,6 +146,8 @@ namespace MudBlazor.Extensions
             var res = await dialog.Result;
             return (res.Cancelled, res.Cancelled ? value : (TModel)res.Data);
         }
+
+        #endregion
         
         public static DialogParameters ToDialogParameters(this IEnumerable<KeyValuePair<string, object>> parameters)
         {

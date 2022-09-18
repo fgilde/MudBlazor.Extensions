@@ -15,17 +15,16 @@ using PSC.Blazor.Components.BrowserDetect;
 namespace MudBlazor.Extensions.Components;
 
 
-public partial class MudExFileDisplay
+public partial class MudExFileDisplay : IAsyncDisposable
 {
     
     [Inject] private IServiceProvider _serviceProvider { get; set; }
-
     private IJSRuntime JsRuntime => _serviceProvider.GetService<IJSRuntime>();
     private IStringLocalizer<MudExFileDisplay> _localizer => _serviceProvider.GetService<IStringLocalizer<MudExFileDisplay>>();
 
     [Parameter] public string Url { get; set; }
     [Parameter] public string ContentType { get; set; }
-
+    
     /**
      * Should be true if file is not a binary one
      */
@@ -42,8 +41,26 @@ public partial class MudExFileDisplay
     [Parameter] public bool AllowDownload { get; set; } = true;
     [Parameter] public string FileName { get; set; }
     [Parameter] public Stream ContentStream { get; set; }
+    
+    /**
+     * A function to handle content error. Return true if you have handled the error and false if you want to show the error message
+     * For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
+     * If you reset Url or Data here you need also to reset ContentType
+     */
+    [Parameter] public Func<MudExFileDisplay, Task<bool>> HandleContentErrorFunc { get; set; }
+    [Parameter] public string CustomContentErrorMessage { get; set; }
 
+
+    protected DotNetObjectReference<MudExFileDisplay> callbackReference;
     public BrowserContentTypePlugin PossiblePlugin { get; private set; }
+    private string _id = Guid.NewGuid().ToString();
+
+    protected override Task OnInitializedAsync()
+    {
+        callbackReference = DotNetObjectReference.Create(this);
+        JsRuntime?.InvokeVoidAsync("MudBlazorExtensions.initMudExFileDisplay", callbackReference, _id);
+        return base.OnInitializedAsync();
+    }
 
     public BrowserInfo Info
     {
@@ -120,7 +137,8 @@ public partial class MudExFileDisplay
             return ("object", new()
             {
                 {"data", Url},
-                {"onerror", "document.getElementById('content-type-display-error').classList.add('visible')"},
+               // {"onerror", "document.getElementById('content-type-display-error').classList.add('visible')"},
+                {"onerror", $"{GetJsOnError()}"},
                 {"loading", "lazy"},
                 {"type", ContentType}
             });
@@ -132,6 +150,47 @@ public partial class MudExFileDisplay
             {"loading", "lazy"},
             {"sandbox", true}
         });
+    }
+
+    private string GetJsOnError()
+    {
+        return @$"
+                    var displayMessage = !window.__mudExFileDisplay || !window.__mudExFileDisplay['{_id}'];
+                    if(displayMessage)
+                    {{
+                        document.getElementById('content-type-display-error').classList.add('visible');
+                    }}
+                    else {{
+                        setTimeout(function(){{
+                            window.__mudExFileDisplay['{_id}'].callBackReference.invokeMethodAsync('{nameof(HandleContentError)}').then(function(isHandled){{
+                                if(!isHandled)
+                                {{
+                                    document.getElementById('content-type-display-error').classList.add('visible');
+                                }}                            
+                            }});
+                        }}, 0)
+                    }}
+                ";
+    }
+
+    private bool internalCall = false;
+    [JSInvokable]
+    public async Task<bool> HandleContentError()
+    {
+        if (internalCall)
+        {
+            internalCall = false;
+            return true;
+        }
+        bool result = HandleContentErrorFunc != null && await HandleContentErrorFunc(this);
+        if (HandleContentErrorFunc != null)
+        {
+            internalCall = true;
+            // Ensure re rendering if something happen on error
+            renderInfos = GetRenderInfos();
+        }
+
+        return result;
     }
 
     private async Task Download(MouseEventArgs arg)
@@ -154,5 +213,10 @@ public partial class MudExFileDisplay
     {
         JsRuntime.InvokeVoidAsync("eval",
             "document.getElementById('content-type-display-error').classList.remove('visible')");
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        return JsRuntime?.InvokeVoidAsync("MudBlazorExtensions.disposeMudExFileDisplay", _id) ?? ValueTask.CompletedTask;
     }
 }

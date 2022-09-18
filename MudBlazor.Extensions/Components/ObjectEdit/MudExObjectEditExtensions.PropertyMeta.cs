@@ -9,6 +9,7 @@ namespace MudBlazor.Extensions.Components.ObjectEdit;
 
 public static partial class MudExObjectEditExtensions
 {
+    // Unfinished
     public static ObjectEditPropertyMeta RenderWithMudAutocomplete<TPropertyType>(this ObjectEditPropertyMeta meta,  TPropertyType[] items)
         => meta.RenderWithMudAutocomplete(_ => { }, false, true, items);
     public static ObjectEditPropertyMeta RenderWithMudAutocomplete<TPropertyType>(this ObjectEditPropertyMeta meta, bool requireValueFromSuggestion, TPropertyType[] items)
@@ -42,6 +43,10 @@ public static partial class MudExObjectEditExtensions
         });
     }
 
+    public static IRenderData WrapIn(this ObjectEditPropertyMeta meta, IRenderData wrappingRenderData)
+        => meta?.RenderData?.WrapIn(wrappingRenderData);
+
+    // End Unfinished
 
     public static ObjectEditPropertyMeta RenderWith<TComponent, TPropertyType, TFieldType>(this ObjectEditPropertyMeta meta, Expression<Func<TComponent, TFieldType>> valueField, Action<TComponent> options, Func<TPropertyType, TFieldType> toFieldTypeConverter = null, Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) where TComponent : new()
     => meta?.SetProperties(p => p.RenderData = RenderData.For<TComponent, TPropertyType, TFieldType>(valueField, options, toFieldTypeConverter, toPropertyTypeConverter));
@@ -109,12 +114,6 @@ public static partial class MudExObjectEditExtensions
         => meta?.WithGroup(new ObjectEditPropertyMetaGroupInfo { Name = groupName });
     public static ObjectEditPropertyMeta WithGroup(this ObjectEditPropertyMeta meta, ObjectEditPropertyMetaGroupInfo groupInfo)
         => meta?.SetProperties(p => p.GroupInfo = groupInfo);
-    public static IRenderData WrapIn<TWrapperComponent>(this IRenderData renderData, params Action<TWrapperComponent>[] options) where TWrapperComponent : new()
-    {
-        if (renderData != null)
-            renderData.Wrapper = RenderData.For(typeof(TWrapperComponent), DictionaryHelper.GetValuesDictionary(true, options));
-        return renderData?.Wrapper;
-    }
     public static IRenderData WrapIn<TWrapperComponent>(this ObjectEditPropertyMeta meta, params Action<TWrapperComponent>[] options) where TWrapperComponent : new()
         => meta?.RenderData?.WrapIn(options);
     public static IRenderData WrapInMudItem(this ObjectEditPropertyMeta meta, params Action<MudItem>[] options)

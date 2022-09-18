@@ -202,6 +202,19 @@ class MudBlazorExtensionHelper {
 
 window.MudBlazorExtensions = {
     helper: null,
+    disposeMudExFileDisplay: function(id) {
+        if (window.__mudExFileDisplay && window.__mudExFileDisplay[id]) {
+            window.__mudExFileDisplay[id] = null;
+            delete window.__mudExFileDisplay[id];
+        }
+    },
+    initMudExFileDisplay: function (dotNet, id) {
+        window.__mudExFileDisplay = window.__mudExFileDisplay || {};
+        window.__mudExFileDisplay[id] = {
+            callBackReference: dotNet
+        }
+    },
+
     setNextDialogOptions: function (options, dotNet) {
         new MudBlazorExtensionHelper(options, dotNet, () => {
             MudBlazorExtensions.helper = null;
