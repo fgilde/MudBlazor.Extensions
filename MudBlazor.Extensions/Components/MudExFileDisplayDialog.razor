@@ -11,13 +11,26 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudExFileDisplay HandleContentErrorFunc="@HandleContentErrorFunc" CustomContentErrorMessage="@CustomContentErrorMessage" FileName="@MudDialog?.Title" ContentStream="@ContentStream" ContentType="@ContentType" Url="@Url"></MudExFileDisplay>
+        <MudExFileDisplay 
+            ShowContentError="@ShowContentError"
+            AllowDownload="@AllowDownload"
+            FallBackInIframe="@FallBackInIframe" 
+            SandBoxIframes="@SandBoxIframes"
+            ImageAsBackgroundImage="@ImageAsBackgroundImage"
+            ViewDependsOnContentType="@ViewDependsOnContentType"
+            HandleContentErrorFunc="@HandleContentErrorFunc" 
+            CustomContentErrorMessage="@CustomContentErrorMessage" 
+            FileName="@MudDialog?.Title" 
+            ContentStream="@ContentStream" 
+            ContentType="@ContentType" 
+            Url="@Url"></MudExFileDisplay>
     </DialogContent>
 
 </MudDialog>
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
+    [Parameter] public bool ShowContentError { get; set; } = true;
     [Parameter] public string Icon { get; set; }
     [Parameter] public string Url { get; set; }
     [Parameter] public string ContentType { get; set; }
@@ -27,8 +40,24 @@
      * For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
      * If you reset Url or Data here you need also to reset ContentType
      */
-    [Parameter] public Func<MudExFileDisplay, Task<bool>> HandleContentErrorFunc { get; set; }
+    [Parameter] public Func<IFileDisplayInfos, Task<ContentErrorResult>> HandleContentErrorFunc { get; set; }
     [Parameter] public string CustomContentErrorMessage { get; set; }
+    
+    /**
+     * Should be true if file is not a binary one
+     */
+    [Parameter]
+    public bool FallBackInIframe { get; set; }
+
+    /// <summary>
+    /// Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
+    /// </summary>
+    [Parameter]
+    public bool ViewDependsOnContentType { get; set; } = true;
+
+    [Parameter] public bool ImageAsBackgroundImage { get; set; } = false;
+    [Parameter] public bool SandBoxIframes { get; set; } = true;
+    [Parameter] public bool AllowDownload { get; set; } = true;
 
     public static Task<IDialogReference> Show(IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(url, fileName, contentType, options);
 

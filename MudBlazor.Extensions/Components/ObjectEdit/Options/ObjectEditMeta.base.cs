@@ -1,6 +1,6 @@
-﻿using System.Linq.Expressions;
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.AspNetCore.Components;
+using Nextended.Blazor.Extensions;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
@@ -30,11 +30,10 @@ public abstract class ObjectEditMeta
         return res;
     }
 
-    static bool IsEventCallback(Type type) => (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(EventCallback<>) || type == typeof(EventCallback));
-    static bool IsExpression(Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Expression<>);
-
     private static bool IsEditableComponentParameter(PropertyInfo p)
     {
-        return (p.GetCustomAttribute<ParameterAttribute>() != null || p.GetCustomAttribute<CascadingParameterAttribute>() != null) && !IsEventCallback(p.PropertyType) && !IsExpression(p.PropertyType);
+        return (p.GetCustomAttribute<ParameterAttribute>() != null || p.GetCustomAttribute<CascadingParameterAttribute>() != null) 
+               && !p.PropertyType.IsEventCallback() 
+               && !p.PropertyType.IsExpression();
     }
 }

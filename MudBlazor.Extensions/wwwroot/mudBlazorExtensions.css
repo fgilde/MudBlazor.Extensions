@@ -3950,7 +3950,7 @@
 }
 
 .mud-ex-file-display-zip {
-  padding: 10px;
+  padding: 0 0 10px 0;
   border: 1px dashed var(--mud-palette-primary);
   max-height: 90vh;
   height: 100%;
@@ -3974,6 +3974,19 @@
 
 .mud-ex-fd-tree-actions {
   margin-left: 20px;
+}
+
+.mud-ex-file-display-zip-search {
+  float: right;
+  margin-top: -10px;
+}
+
+.mud-ex-file-display-tree.mud-alert-text-normal {
+  background-color: transparent;
+}
+
+.mud-ex-fd-tree-actions .mud-tooltip-root {
+  display: inline-flex;
 }
 
 .mud-ex-object-edit-group-flat .mud-expand-panel-text {

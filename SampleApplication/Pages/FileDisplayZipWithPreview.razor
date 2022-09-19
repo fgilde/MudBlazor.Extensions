@@ -1,0 +1,48 @@
+﻿@page "/file-display-zip"
+@using MudBlazor.Extensions.Options
+@using Nextended.Blazor.Extensions
+@using Nextended.Blazor.Models
+@inject NavigationManager NavigationManager
+<PageTitle>File Display Zip with self made preview</PageTitle>
+
+<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
+    
+    
+    <MudGrid Justify="Justify.Center" Style="height: 100%;width: 100%;overflow: auto;">
+        <MudItem Style="width: 50%;height: 75vh;">
+            <MudExFileDisplayZip AllowPreview="false"
+                                 ShowContentError="false"
+                                 @bind-Selected="@Selected"
+                                 SelectionMode="ItemSelectionMode.Single"
+                                 RootFolderName="sample-zip-file.zip" Url="@(NavigationManager.ToAbsoluteUri("sample-data/sample-zip-file.zip").AbsoluteUri)" ></MudExFileDisplayZip>
+        </MudItem>
+        <MudItem Style="width: 50%;height: 75vh;">
+            <MudExFileDisplay ShowContentError="false"
+                              FileName="@_selected?.FullName" ContentType="@_selected?.ContentType" Url="@_selectedUrl" ></MudExFileDisplay>
+        </MudItem>
+    </MudGrid>
+
+</SampleApplication.Client.Shared.DemoComponent>
+
+
+@code {
+
+    private ZipBrowserFile _selected => Selected?.FirstOrDefault();
+    private string _selectedUrl;
+    private IList<ZipBrowserFile> _selectedList;
+
+    public IList<ZipBrowserFile> Selected
+    {
+        get => _selectedList;
+        set
+        {
+            _selectedList = value;
+            _selected?.GetDataUrlAsync().ContinueWith(t =>
+            {
+                _selectedUrl = t.Result;
+                StateHasChanged();
+            });
+        }
+    }
+
+}

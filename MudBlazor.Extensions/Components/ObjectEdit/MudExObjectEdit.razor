@@ -48,7 +48,7 @@ else
                 }
                 @if (GroupsCollapsible && _groups.Count > 1)
                 {
-                    <MudTooltip Text="Expand/Collapse">
+                    <MudTooltip Text="@LocalizerToUse.TryLocalize("Expand/Collapse")">
                         <MudIconButton Icon="@Icons.Material.Filled.Expand" OnClick="@(ExpandCollapse)"/>
                     </MudTooltip>
                 }

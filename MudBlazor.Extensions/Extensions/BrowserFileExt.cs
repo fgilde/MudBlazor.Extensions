@@ -1,27 +1,27 @@
-﻿using System.Linq;
-using System.Net.Mime;
-using HeyRed.Mime;
+﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using Nextended.Blazor.Extensions;
-using Nextended.Blazor.Helper;
-using Nextended.Blazor.Models;
+using Nextended.Core;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Extensions
 {
     public static class BrowserFileExt
     {
-        public static async Task DownloadAsync(this IBrowserFile browserFile, IJSRuntime jsRuntime)
-        {
-            var url = await DataUrl.GetDataUrlAsync(await browserFile.GetBytesAsync(), browserFile.ContentType);
-            await jsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
-            {
-                Url = url,
-                FileName = $"{browserFile.Name}",
-                MimeType = browserFile.ContentType
-            });
-        }
+        public static Task DownloadAsync(this IBrowserFile browserFile, IJSRuntime jsRuntime) 
+            => browserFile.DownloadFileAsync(jsRuntime);
+       
+        //public static async Task DownloadAsync(this IBrowserFile browserFile, IJSRuntime jsRuntime)
+        //{
+        //    var url = await DataUrl.GetDataUrlAsync(await browserFile.GetBytesAsync(), browserFile.ContentType);
+        //    await jsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
+        //    {
+        //        Url = url,
+        //        FileName = $"{browserFile.Name}",
+        //        MimeType = browserFile.ContentType
+        //    });
+        //}
 
         public static string IconForFile(string contentType)
         {
@@ -37,23 +37,23 @@ namespace MudBlazor.Extensions.Extensions
 
         public static string GetContentType(this IBrowserFile file)
         {
-            return string.IsNullOrWhiteSpace(file.ContentType) ? MimeTypesMap.GetMimeType(file.Name) : file.ContentType;
+            return string.IsNullOrWhiteSpace(file.ContentType) ? MimeType.GetMimeType(file.Name) : file.ContentType;
         }
 
         public static string IconForFile(ContentType contentType)
         {
             var mime = contentType.ToString().ToLower();
-            if (MimeTypeHelper.IsZip(mime))
+            if (MimeType.IsZip(mime))
                 return Icons.Filled.Archive;
-            if (MimeTypeHelper.Matches(mime, "application/x-dotnet*"))
+            if (MimeType.Matches(mime, "application/x-dotnet*"))
                 return Icons.Custom.Brands.MicrosoftVisualStudio;
-            if (MimeTypeHelper.Matches(mime, "application/vnd.ms-excel", "text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml*", "application/vnd.ms-excel*"))
+            if (MimeType.Matches(mime, "application/vnd.ms-excel", "text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml*", "application/vnd.ms-excel*"))
                 return Icons.Custom.FileFormats.FileExcel;
-            if (MimeTypeHelper.Matches(mime, "application/vnd.ms*", "application/msword", "application/vnd.openxmlformats-officedocument*"))
+            if (MimeType.Matches(mime, "application/vnd.ms*", "application/msword", "application/vnd.openxmlformats-officedocument*"))
                 return Icons.Custom.FileFormats.FileWord;
-            if (MimeTypeHelper.Matches(mime, "application/pdf"))
+            if (MimeType.Matches(mime, "application/pdf"))
                 return Icons.Custom.FileFormats.FilePdf;
-            if (MimeTypeHelper.Matches(mime, "application/java*", "application/json*", "text/html", "text/xml", "application/xml"))
+            if (MimeType.Matches(mime, "application/java*", "application/json*", "text/html", "text/xml", "application/xml"))
                 return Icons.Custom.FileFormats.FileCode;
 
             return contentType.MediaType.Split("/").First().ToLower() switch
@@ -69,7 +69,7 @@ namespace MudBlazor.Extensions.Extensions
 
         public static string IconForExtension(string extension)
         {
-            return IconForFile(MimeTypesMap.GetMimeType(extension = extension?.EnsureStartsWith(".")));
+            return IconForFile(MimeType.GetMimeType(extension = extension?.EnsureStartsWith(".")));
         }
     }
 }

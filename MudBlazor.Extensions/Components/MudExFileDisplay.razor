@@ -3,11 +3,21 @@
 @namespace MudBlazor.Extensions.Components
 
 <BrowserDetect @bind-BrowserInfo="@Info" />
-
 <div class="mud-ex-file-display-container">
     @if (_isZip)
     {
-        <MudExFileDisplayZip HandleContentErrorFunc="@HandleContentErrorFunc" CustomContentErrorMessage="@CustomContentErrorMessage" AllowDownload="@AllowDownload" RootFolderName="@FileName" ContentStream="@ContentStream" Url="@Url"></MudExFileDisplayZip>
+        <MudExFileDisplayZip 
+            ShowContentError="@ShowContentError" 
+            FallBackInIframe="@FallBackInIframe" 
+            SandBoxIframes="@SandBoxIframes"
+            ImageAsBackgroundImage="@ImageAsBackgroundImage"
+            ViewDependsOnContentType="@ViewDependsOnContentType"
+            HandleContentErrorFunc="@HandleContentErrorFunc" 
+            CustomContentErrorMessage="@CustomContentErrorMessage" 
+            AllowDownload="@AllowDownload" 
+            RootFolderName="@FileName"
+            ContentStream="@ContentStream" 
+            Url="@Url"></MudExFileDisplayZip>
     }
     else
     {
@@ -15,34 +25,37 @@
             <MudElement UserAttributes="@renderInfos.attributes" HtmlTag="@renderInfos.tag"/>
         </div>
     }
-    <div id="content-type-display-error">
-        <MudAlert Class="mud-alert-close-no-flex" Severity="Severity.Error" Variant="Variant.Outlined" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="CloseContentError">
-            <p>
-                @if (!string.IsNullOrWhiteSpace(CustomContentErrorMessage))
-                {
-                    @CustomContentErrorMessage
-                }
-                else
-                {
-                    @_localizer.TryLocalize("The content type {0} cannot be displayed without a suitable plugin", ContentType)
-                }
-            </p>
+    
+    @if(ShowContentError){
+        <div id="content-type-display-error">
+            <MudAlert Class="mud-alert-close-no-flex" Severity="Severity.Error" Variant="Variant.Outlined" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="CloseContentError">
+                <p>
+                    @if (!string.IsNullOrWhiteSpace(CustomContentErrorMessage))
+                    {
+                        @CustomContentErrorMessage
+                    }
+                    else
+                    {
+                        @_localizer.TryLocalize("The content type {0} cannot be displayed without a suitable plugin", ContentType)
+                    }
+                </p>
 
-            @if (PossiblePlugin != null)
-            {
-                <MudButton HtmlTag="label"
-                           Class="w-100 my-4"
-                           Variant="Variant.Text"
-                           Color="Color.Primary"
-                           Size="Size.Small"
-                           Href="@PossiblePlugin.Url"
-                           Target="_blank"
-                           StartIcon="@(Icons.TwoTone.Shop)">
-                    @(_localizer.TryLocalize("The Plugin '{0}' may be able to help", PossiblePlugin.Name))
-                </MudButton>
-            }
-        </MudAlert>
-    </div>
+                @if (PossiblePlugin != null)
+                {
+                    <MudButton HtmlTag="label"
+                               Class="w-100 my-4"
+                               Variant="Variant.Text"
+                               Color="Color.Primary"
+                               Size="Size.Small"
+                               Href="@PossiblePlugin.Url"
+                               Target="_blank"
+                               StartIcon="@(Icons.TwoTone.Shop)">
+                        @(_localizer.TryLocalize("The Plugin '{0}' may be able to help", PossiblePlugin.Name))
+                    </MudButton>
+                }
+            </MudAlert>
+        </div>
+    }
     @if (AllowDownload)
     {
         <div class="mud-ex-download-file">

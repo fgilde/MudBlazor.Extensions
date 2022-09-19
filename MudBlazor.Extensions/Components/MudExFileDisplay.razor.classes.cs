@@ -1,4 +1,4 @@
-﻿using Nextended.Blazor.Helper;
+﻿using Nextended.Core;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -19,7 +19,7 @@ public class BrowserContentTypePlugin
     public string Url { get; set; }
 
     public static BrowserContentTypePlugin Find(string browser, string contentType)
-        => Available.FirstOrDefault(p => p.SupportedBrowsers.Contains(browser, StringComparer.InvariantCultureIgnoreCase) && MimeTypeHelper.Matches(contentType, p.SupportedContentTypes));
+        => Available.FirstOrDefault(p => p.SupportedBrowsers.Contains(browser, StringComparer.InvariantCultureIgnoreCase) && MimeType.Matches(contentType, p.SupportedContentTypes));
 
     public static BrowserContentTypePlugin[] Available = {
         new()

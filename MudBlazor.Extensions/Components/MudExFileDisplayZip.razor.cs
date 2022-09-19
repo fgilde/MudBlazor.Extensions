@@ -1,46 +1,67 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.IO.Compression;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Extensions;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Options;
 using Nextended.Blazor.Extensions;
 using Nextended.Blazor.Models;
 using Nextended.Core.Extensions;
-using Nextended.Core.Types;
 
 namespace MudBlazor.Extensions.Components;
 
 
-public partial class MudExFileDisplayZip
+public partial class MudExFileDisplayZip : IFileDisplayInfos
 {
-    
+
     [Inject] private IServiceProvider _serviceProvider { get; set; }
     private IJSRuntime JsRuntime => _serviceProvider.GetService<IJSRuntime>();
     private IStringLocalizer<MudExFileDisplayZip> _localizer => _serviceProvider.GetService<IStringLocalizer<MudExFileDisplayZip>>();
 
+    [Parameter] public string SearchString { get; set; }
+    [Parameter] public bool AllowSearch { get; set; } = true;
     [Parameter] public string RootFolderName { get; set; } = "ROOT";
     [Parameter] public string Url { get; set; }
+    public string ContentType => "application/zip";
     [Parameter] public Stream ContentStream { get; set; }
     [Parameter] public bool ShowAsTree { get; set; } = true;
     [Parameter] public bool AllowToggleTree { get; set; } = true;
     [Parameter] public bool AllowDownload { get; set; } = true;
     [Parameter] public bool AllowPreview { get; set; } = true;
     [Parameter] public Color ActionButtonColor { get; set; }
-    
+    [Parameter] public PropertyFilterMode FilterMode { get; set; }
+    [Parameter] public string ToolBarPaperClass { get; set; }
+    [Parameter] public bool StickyToolbar { get; set; } = true;
+    [Parameter] public string StickyToolbarTop { get; set; } = "0";
+    [Parameter] public ItemSelectionMode SelectionMode { get; set; } = ItemSelectionMode.None;
+    [Parameter] public IList<ZipBrowserFile> Selected { get; set; }
+    [Parameter] public EventCallback<IList<ZipBrowserFile>> SelectedChanged { get; set; }
+    public bool IsSelected(ZipBrowserFile entry) => entry != null && Selected?.Contains(entry) == true;
+    [Parameter] public bool ShowContentError { get; set; } = true;
+
+    [Parameter]
+    public bool FallBackInIframe { get; set; }
+
+    /// <summary>
+    /// Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
+    /// </summary>
+    [Parameter]
+    public bool ViewDependsOnContentType { get; set; } = true;
+
+    [Parameter] public bool ImageAsBackgroundImage { get; set; } = false;
+    [Parameter] public bool SandBoxIframes { get; set; } = true;
+
     /**
      * A function to handle content error. Return true if you have handled the error and false if you want to show the error message
      * For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
      * If you reset Url or Data here you need also to reset ContentType
      */
-    [Parameter] public Func<MudExFileDisplay, Task<bool>> HandleContentErrorFunc { get; set; }
+    [Parameter] public Func<IFileDisplayInfos, Task<ContentErrorResult>> HandleContentErrorFunc { get; set; }
     [Parameter] public string CustomContentErrorMessage { get; set; }
 
     private MudMenu _downloadMenu;
@@ -49,56 +70,17 @@ public partial class MudExFileDisplayZip
     private Stream _innerPreviewStream;
     private IList<ZipBrowserFile> _zipEntries;
     private (string tag, Dictionary<string, object> attributes) renderInfos;
-
     private HashSet<ZipStructure> _zipStructure;
+    private bool _searchActive;
+    private MudTextField<string> _searchBox;
+    private bool _searchBoxBlur = false;
 
-    void EnsurePartExists(ZipStructure zipContent, List<string> parts, string p)
-    {
-        if (parts.Any() && !string.IsNullOrEmpty(parts.FirstOrDefault()))
-        {
-            var title = parts.First();
-
-            var child = zipContent.Children.SingleOrDefault(x => x.Name == title);
-
-            if (child == null)
-            {
-                child = new ZipStructure(title)
-                {
-                    Parent = zipContent,
-                    Children = FindByPath(p).ToHashSet()
-                };
-
-                zipContent.Children.Add(child);
-            }
-
-            EnsurePartExists(child, parts.Skip(1).ToList(), p);
-        }
-    }
-
-    IEnumerable<ZipStructure> FindByPath(string path = default)
-    {
-        return _zipEntries.Where(f => !f.IsDirectory && f.Path == path).Select(file => new ZipStructure(file));
-    }
-
-
-    HashSet<ZipStructure> CreateStructure()
-    {
-        var paths = _zipEntries.Select(file => file.Path).Distinct().ToArray();
-        var root = new ZipStructure(RootFolderName) { Children = FindByPath("").ToHashSet() };
-        foreach (var p in paths)
-        {
-            var parts = p.Split('/');
-            EnsurePartExists(root, parts.ToList(), p);
-        }
-
-        return new[] { root }.ToHashSet();
-    }
-
+    
     protected override async Task OnInitializedAsync()
     {
         //Url = UriExtensions.AddParameterToUrl(Url, "cb", Guid.NewGuid().ToFormattedId());
         _zipEntries = (await GetZipEntriesAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url))).ToList();
-        _zipStructure = CreateStructure().ToHashSet();
+        _zipStructure = ZipStructure.CreateStructure(_zipEntries, RootFolderName).ToHashSet();
         await base.OnInitializedAsync();
     }
 
@@ -170,60 +152,84 @@ public partial class MudExFileDisplayZip
         structure.IsDownloading = isDownloading;
         StateHasChanged();
     }
-}
 
-public class ZipStructure : Hierarchical<ZipStructure>
-{
-    public ZipStructure(ZipBrowserFile browserFile)
-        : this(browserFile.Name)
+    private bool IsInSearch(ZipBrowserFile entry) 
+        => string.IsNullOrEmpty(SearchString) || entry.FullName.Contains(SearchString, StringComparison.OrdinalIgnoreCase);
+
+    private bool IsInSearch(ZipStructure context)
     {
-        BrowserFile = browserFile;
+        if (string.IsNullOrEmpty(SearchString))
+            return true;
+        return context.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase) || context?.Children?.Any(IsInSearch) == true;
     }
 
-    public ZipStructure(string name)
+    private Task FilterKeyPress(KeyboardEventArgs arg)
     {
-        Name = name;
-        IsExpanded = true;
-    }
-
-    public string Name { get; set; }
-
-    public bool IsDirectory => BrowserFile == null || BrowserFile.IsDirectory;
-
-    public bool IsDownloading { get; set; }
-
-    public long Size => IsDirectory ? ContainingFiles.Sum(f => f.Size) : BrowserFile.Size;
-
-    public IEnumerable<ZipBrowserFile> ContainingFiles
-        => Children?.Recursive(s => s.Children ?? Enumerable.Empty<ZipStructure>()).Where(s => s is { IsDirectory: false }).Select(s => s.BrowserFile);
-
-    public ZipBrowserFile BrowserFile { get; set; }
-
-    public async Task<(MemoryStream Stream, ZipArchive Archive)> ToArchiveAsync()
-    {
-        var ms = new MemoryStream();
-        using ZipArchive archive = new ZipArchive(ms, ZipArchiveMode.Create, true);
-
-        var path = IsDirectory ? string.Join('/', Path.Skip(1).Select(s => s.Name)) : BrowserFile?.Path ?? "";
-        path = !string.IsNullOrWhiteSpace(path) ? path.EnsureEndsWith('/') : path;
-
-        foreach (var file in IsDirectory ? ContainingFiles : new[] { BrowserFile })
+        if (arg.Key == "Escape")
         {
-            var entry = archive.CreateEntry(file.FullName.Substring(path.Length), CompressionLevel.Optimal);
-            await using var stream = entry.Open();
-            await stream.WriteAsync(file.FileBytes);
+            if (!string.IsNullOrWhiteSpace(SearchString))
+                SearchString = string.Empty;
+            else
+                _searchActive = false;
         }
-
-        return (ms, archive);
+        return Task.CompletedTask;
     }
 
-    public async Task<byte[]> ToArchiveBytesAsync()
+    private Task FilterBoxBlur(FocusEventArgs arg)
     {
-        var archive = await ToArchiveAsync();
-        await using (archive.Stream)
+        _searchBoxBlur = true;
+        _searchActive = false;
+        Task.Delay(300).ContinueWith(t => _searchBoxBlur = false);
+        return Task.CompletedTask;
+    }
+    private void ToggleSearchBox()
+    {
+        if (_searchBoxBlur)
+            return;
+        _searchActive = !_searchActive;
+        _searchBox.FocusAsync();
+    }
+
+    private Task ExpandCollapse()
+    {
+        _zipStructure.Recursive(s => s.Children ?? Enumerable.Empty<ZipStructure>()).Where(s => s != null).Apply(s => s.IsExpanded = !s.IsExpanded);
+        return Task.CompletedTask;
+    }
+    private string ToolbarStyle()
+    {
+        var res = string.Empty;
+        if (StickyToolbar && !string.IsNullOrWhiteSpace(StickyToolbarTop))
+            res += $"top: {StickyToolbarTop};";
+        return res;
+    }
+
+    private Task Select(ZipStructure structure, MouseEventArgs args)
+    {
+        return structure.IsDirectory ? Task.CompletedTask : Select(structure.BrowserFile, args);
+    }
+    
+    private async Task Select(ZipBrowserFile entry, MouseEventArgs args)
+    {
+        if (SelectionMode != ItemSelectionMode.None)
         {
-            using var zipArchive = archive.Archive;
-            return archive.Stream.ToArray();
+            Selected ??= new List<ZipBrowserFile>();
+
+            if (Selected.Contains(entry) && SelectionMode == ItemSelectionMode.Single)
+            {
+                Selected.Remove(entry);
+                return;
+            }
+
+            if (SelectionMode == ItemSelectionMode.Single || (SelectionMode == ItemSelectionMode.MultiSelectWithCtrlKey && !args.CtrlKey))
+                Selected.Clear();
+
+            if (Selected.Contains(entry))
+                Selected.Remove(entry);
+            else
+                Selected.Add(entry);
+
+            await SelectedChanged.InvokeAsync(Selected);
         }
     }
+
 }

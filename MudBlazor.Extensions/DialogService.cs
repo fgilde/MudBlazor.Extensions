@@ -13,7 +13,6 @@ using Nextended.Core;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 using Nextended.Blazor.Extensions;
-using Nextended.Blazor.Helper;
 
 namespace MudBlazor.Extensions
 {
@@ -32,13 +31,13 @@ namespace MudBlazor.Extensions
 
         #region File Display
 
-        public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string url, string fileName, string contentType, Func<MudExFileDisplay, Task<bool>> handleContentErrorFunc,  Action<DialogOptionsEx> options = null) 
+        public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string url, string fileName, string contentType, Func<IFileDisplayInfos, Task<ContentErrorResult>> handleContentErrorFunc,  Action<DialogOptionsEx> options = null) 
             => dialogService.ShowFileDisplayDialog(url, fileName, contentType, options, new DialogParameters { { nameof(MudExFileDisplay.HandleContentErrorFunc), handleContentErrorFunc } });
 
-        public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, IBrowserFile browserFile, Func<MudExFileDisplay, Task<bool>> handleContentErrorFunc, Action<DialogOptionsEx> options = null) 
+        public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, IBrowserFile browserFile, Func<IFileDisplayInfos, Task<ContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null) 
             => dialogService.ShowFileDisplayDialog(browserFile, options, new DialogParameters { { nameof(MudExFileDisplay.HandleContentErrorFunc), handleContentErrorFunc } });
 
-        public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, Stream stream, string fileName, string contentType, Func<MudExFileDisplay, Task<bool>> handleContentErrorFunc, Action<DialogOptionsEx> options = null)
+        public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, Stream stream, string fileName, string contentType, Func<IFileDisplayInfos, Task<ContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null)
             => dialogService.ShowFileDisplayDialog(stream, fileName, contentType, options, new DialogParameters { { nameof(MudExFileDisplay.HandleContentErrorFunc), handleContentErrorFunc } });
 
         public static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
@@ -55,7 +54,7 @@ namespace MudBlazor.Extensions
 
         public static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, IBrowserFile browserFile, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
         {
-            if (MimeTypeHelper.IsZip(browserFile.ContentType))
+            if (MimeType.IsZip(browserFile.ContentType))
             {
                 var ms = new MemoryStream(await browserFile.GetBytesAsync());
                 return await dialogService.ShowFileDisplayDialog(ms, browserFile.Name, browserFile.ContentType, options);

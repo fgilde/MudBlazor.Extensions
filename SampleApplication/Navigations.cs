@@ -18,7 +18,8 @@ public static class Navigations
             {
                 Children = new()
                 {
-                    new NavigationEntry("File Display zip", Icons.Material.Outlined.FolderZip, "/file-display"),
+                    new NavigationEntry("File Display", Icons.Material.Outlined.FolderZip, "/file-display"),
+                    new NavigationEntry("Explicit File Display Zip", Icons.Material.Outlined.FolderZip, "/file-display-zip"),
                 }
             },
             new NavigationEntry("MudExObjectEdit")

@@ -4,32 +4,45 @@
 <PageTitle>File Display</PageTitle>
 
 <SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
-    <MudButton OnClick="@OpenAsDialog" Variant="Variant.Filled" Color="Color.Primary">Show As Dialog</MudButton>
-
-    <div style="width: 700px; height: 500px; margin-top: 20px">
-        <MudExFileDisplay HandleContentErrorFunc="@HandleContentError"
-            FileName="sample-zip-file.zip" Url="@(NavigationManager.ToAbsoluteUri("sample-data/sample-zip-file.zip").AbsoluteUri)" ContentType="application/zip"></MudExFileDisplay>
-    </div>
+    <MudSelect Label="File" HelperText="Select sample file" @bind-Value="@SampleFile" Variant="Variant.Outlined" Color="Color.Primary">
+        <MudSelectItem Value="@(Sample("sample-zip-file.zip", "application/zip"))">sample-zip-file.zip</MudSelectItem>
+        <MudSelectItem Value="@(Sample("weather.json", "text/plain"))">weather.json</MudSelectItem>
+    </MudSelect>
+    
+    @if (SampleFile.url != null)
+    {
+        <div style="width: 700px; height: 500px; margin-top: 20px">
+            <MudExFileDisplay HandleContentErrorFunc="@HandleContentError"
+                              FileName="@SampleFile.name" Url="@SampleFile.url" ContentType="@SampleFile.contentType"></MudExFileDisplay>
+        </div>
+        <MudButton OnClick="@OpenAsDialog" Variant="Variant.Filled" Color="Color.Primary">Show As Dialog</MudButton>
+    }
 </SampleApplication.Client.Shared.DemoComponent>
 
 
 @code {
-
+    private string url;
     private async Task OpenAsDialog()
     {
-        await dialogService.ShowFileDisplayDialog(NavigationManager.ToAbsoluteUri("sample-data/sample-zip-file.zip").AbsoluteUri, "sample-zip-file.zip", "application/zip", HandleContentError);
+        await dialogService.ShowFileDisplayDialog(SampleFile.url, SampleFile.name, SampleFile.contentType, HandleContentError);
     }
 
-    private Task<bool> HandleContentError(MudExFileDisplay arg)
+    private Task<ContentErrorResult> HandleContentError(IFileDisplayInfos arg)
     {
         if (arg.ContentType.Contains("word"))
         {
-            arg.Url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiZiqnBKWS8NHcKbRH04UkYjrCgxUMz6sVNw&usqp=CAU";
-            arg.ContentType = "image/png";
-            arg.CustomContentErrorMessage = "No word plugin found we display a sheep";
-            return Task.FromResult(false);
+            return Task.FromResult(ContentErrorResult
+                .RedirectTo("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiZiqnBKWS8NHcKbRH04UkYjrCgxUMz6sVNw&usqp=CAU", "image/png")
+                .WithMessage("No word plugin found we display a sheep"));
         }
-        return Task.FromResult(false);
+        return Task.FromResult(ContentErrorResult.Unhandled);
     }
+    
+    private (string? url, string contentType, string name) Sample(string filename, string contentType)
+    {
+        return (NavigationManager.ToAbsoluteUri($"sample-data/{filename}").AbsoluteUri, contentType, filename);
+    }
+
+    public (string? url, string contentType, string name) SampleFile { get; set; }
 
 }
