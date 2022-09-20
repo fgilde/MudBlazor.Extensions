@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
+using System.Text;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.CompilerServices;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
@@ -11,6 +13,8 @@ using MudBlazor.Extensions.Extensions;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Utilities;
+using Newtonsoft.Json;
+using Nextended.Blazor.Models;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
@@ -23,7 +27,7 @@ public partial class MudExObjectEdit<T>
     private IDialogService dialogService => _serviceProvider.GetService<IDialogService>();
     private IObjectMetaConfiguration<T> _configService => _serviceProvider.GetService<IObjectMetaConfiguration<T>>();
     private IJSRuntime _js => _serviceProvider.GetService<IJSRuntime>();
-
+    private Color _importButtonColor;
     [Parameter] public IStringLocalizer Localizer { get; set; }
     [Parameter] public bool IsLoading { get; set; }
     protected bool IsInternalLoading;
@@ -36,7 +40,17 @@ public partial class MudExObjectEdit<T>
     }
     //[Parameter] public bool Virtualize { get; set; } = true;
     [Parameter] public bool LightOverlayLoadingBackground { get; set; } = true;
+    [Parameter] public Color ToolbarButtonColor { get; set; } = Color.Inherit;
     [Parameter] public bool AddScrollToTop { get; set; } = true;
+    [Parameter] public bool AllowExport { get; set; }
+    [Parameter] public bool AllowImport { get; set; }
+    [Parameter] public bool AutoSaveRestoreState { get; set; }
+    [Parameter] public StateTarget StateTargetStorage { get; set; } = StateTarget.SessionStorage;
+    [Parameter] public string ExportFileName { get; set; }
+    [Parameter] public string ImportIcon { get; set; } = Icons.Material.Outlined.FileOpen;
+    [Parameter] public string SearchIcon { get; set; } = Icons.Material.Outlined.Search;
+    [Parameter] public string ExpandCollapseIcon { get; set; } = Icons.Material.Filled.Expand;
+    [Parameter] public string ExportIcon { get; set; } = Icons.Material.Filled.Save;
     [Parameter] public bool AutoSkeletonOnLoad { get; set; }
     [Parameter] public Color ToolbarColor { get; set; } = Color.Default;
     [Parameter] public Color GroupLineColor { get; set; } = Color.Secondary;
@@ -73,6 +87,7 @@ public partial class MudExObjectEdit<T>
      * If this setting is true a manual passed MetaInformation will also re configured
      */
     [Parameter] public bool ConfigureMetaInformationAlways { get; set; }
+    [Parameter] public string ErrorMessage { get; set; }
 
     private static Type[] handleAsPrimitive = { typeof(string), typeof(decimal), typeof(MudColor), typeof(System.Drawing.Color), typeof(DateTime), typeof(DateTimeOffset), typeof(TimeSpan), typeof(TimeOnly), typeof(DateOnly), typeof(Guid) };
     internal static bool IsPrimitive()
@@ -98,8 +113,10 @@ public partial class MudExObjectEdit<T>
             .Recursive(w => w.Wrapper == null ? Enumerable.Empty<IRenderData>() : new[] { w.Wrapper })
             .Any(d => d.ComponentType == typeof(MudItem));
 
+    private string stateKey => $"mud-ex-object-edit-{typeof(T).FullName}";
     protected override async Task OnParametersSetAsync()
     {
+        _importButtonColor = ToolbarButtonColor;
         await base.OnParametersSetAsync();
         await CreateMetaIfNotExists();
         if (Value is IEditableObject editable)
@@ -113,6 +130,13 @@ public partial class MudExObjectEdit<T>
         };
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && AutoSaveRestoreState)
+            await RestoreState();
+        await base.OnAfterRenderAsync(firstRender);
+    }
+    
     public T GetUpdatedValue()
     {
         foreach (var meta in MetaInformation.AllProperties.Where(p => p?.RenderData?.DisableValueBinding == true))
@@ -161,6 +185,8 @@ public partial class MudExObjectEdit<T>
         //    if (Value != null)
         //        MetaInformation.AllProperties.Apply(p => p?.UpdateConditionalSettings(Value));
         //}), ValueChanged.InvokeAsync(Value));
+        if(AutoSaveRestoreState)
+            _= Task.Run(SaveState);
 
         if (Value != null)
             MetaInformation.AllProperties.Apply(p => p?.UpdateConditionalSettings(Value));
@@ -221,10 +247,28 @@ public partial class MudExObjectEdit<T>
 
     public Task Clear() => Task.WhenAll(Editors.Select(e => e.ClearAsync()));
 
+    public virtual async Task RestoreState()
+    {
+        string json = await _js.InvokeAsync<string>($"{StateTargetStorage.ToDescriptionString()}.getItem", stateKey);
+        if (!string.IsNullOrWhiteSpace(json))
+        {
+            LoadFromJson(json);
+            StateHasChanged();
+        }
+    }
+
+    public virtual async Task SaveState()
+    {
+        string json = JsonConvert.SerializeObject(Value);
+        await _js.InvokeVoidAsync($"{StateTargetStorage.ToDescriptionString()}.setItem", stateKey, json);
+    }
+
     private Task<bool?> ShowConfirmationBox()
     {
         ResetConfirmationDialogOptions ??= new DialogOptionsEx
         {
+            ShowAtCursor = true,
+            CursorPositionOrigin = ToolBarActionAlignment == ActionAlignment.Right ? Origin.CenterRight : Origin.CenterLeft,
             Animations = new[] { AnimationType.Pulse },
             DragMode = MudDialogDragMode.Simple,
             CloseButton = false
@@ -293,49 +337,65 @@ public partial class MudExObjectEdit<T>
         return res;
     }
 
-}
-
-public enum GroupingStyle
-{
-    Flat,
-    DefaultExpansionPanel
-}
-
-public enum PropertyFilterMode
-{
-    Toggleable,
-    AlwaysVisible,
-    Disabled
-}
-public enum ActionAlignment
-{
-    Right,
-    Left
-}
-
-public enum RegisteredConfigurationBehaviour
-{
-    ExecutedBefore,
-    ExecutedAfter,
-    IgnoreRegisteredConfigurations
-}
-
-public enum PathDisplayMode
-{
-    DisplaySeparate,
-    DisplayAsGroupName,
-    None
-}
-
-public class ModelForPrimitive<T>
-{
-    public ModelForPrimitive()
-    {}
-
-    public ModelForPrimitive(T value)
+    private async Task Export()
     {
-        Value = value;
+        IsInternalLoading = true;
+        try
+        {
+            string json = JsonConvert.SerializeObject(Value, Formatting.Indented);
+            var url = await DataUrl.GetDataUrlAsync(await Task.Run(() => Encoding.UTF8.GetBytes(json)), "application/json");
+            await _js.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
+            {
+                Url = url,
+                FileName = !string.IsNullOrWhiteSpace(ExportFileName) ? ExportFileName : $"{Value.GetType().Name}_{DateTime.Now}.json",
+                MimeType = "application/json"
+            });
+        }
+        finally
+        {
+            IsInternalLoading = false;
+        }
     }
 
-    public T Value { get; set; }
+    private async Task Import(InputFileChangeEventArgs e)
+    {
+        if (e.File.ContentType != "application/json")
+        {
+            ErrorMessage = $"Invalid file type: {e.File.ContentType} only JSON files are supported";
+            return;
+        }
+        try
+        {
+            var buffer = new byte[e.File.Size];
+            await e.File.OpenReadStream(e.File.Size).ReadAsync(buffer);
+            var json = Encoding.UTF8.GetString(buffer);
+            LoadFromJson(json);
+            await ImportSuccessUI();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+        finally
+        {
+            IsInternalLoading = false;
+        }
+    }
+
+    private async Task ImportSuccessUI()
+    {
+        var icon = ImportIcon;
+        _importButtonColor = Color.Success;
+        ImportIcon = Icons.Material.Filled.Check;
+        StateHasChanged();
+        await Task.Delay(2500);
+        _importButtonColor = ToolbarButtonColor;
+        ImportIcon = icon;
+    }
+
+    private void LoadFromJson(string json)
+    {
+        var obj = JsonConvert.DeserializeObject(json, Value.GetType());
+        Value = (T) obj;
+    }
 }

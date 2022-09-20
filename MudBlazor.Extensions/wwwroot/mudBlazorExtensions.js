@@ -41,6 +41,9 @@ class MudBlazorExtensionHelper {
     handleExtensions() {
         this.dialog.__extended = true;
         this.dialog.setAttribute('data-mud-extended', true);
+        if (this.options.showAtCursor) {
+            this.moveElementToMousePosition(this.dialog);
+        }
         setTimeout(() => this.dialog.classList.remove('mud-ex-dialog-initial'), 50);
         // For animations
         if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
@@ -90,9 +93,69 @@ class MudBlazorExtensionHelper {
             this.dragElement(this.dialog, this.dialogHeader);
             this.done();
         }
-
+        
         // Resize
         this.checkResizeable();
+    }
+
+    moveElementToMousePosition(element) {
+        var e = MudBlazorExtensions.getCurrentMousePosition();
+        var x = e.clientX;
+        var y = e.clientY;
+        var origin = this.options.cursorPositionOriginName.split('-');
+        
+        var maxWidthFalseOrLargest = this.options.maxWidth === 6 || this.options.maxWidth === 4; // 4=xxl 6=false
+        if (!this.options.fullWidth || !maxWidthFalseOrLargest) {
+            if (origin[1] === 'left') {
+                element.style.left = x + 'px';
+            } else if (origin[1] === 'right') {
+                element.style.left = (x - element.offsetWidth) + 'px';
+            } else if (origin[1] === 'center') {
+                element.style.left = (x - element.offsetWidth / 2) + 'px';
+            }
+        }
+        if (!this.options.fullHeight) {
+            if (origin[0] === 'top') {
+                element.style.top = y + 'px';
+            } else if (origin[0] === 'bottom') {
+                element.style.top = (y - element.offsetHeight) + 'px';
+            } else if (origin[0] === 'center') {
+                element.style.top = (y - element.offsetHeight / 2) + 'px';
+            }
+        }
+        this.ensureElementIsInScreenBounds(element);
+    }
+
+    ensureElementIsInScreenBounds(element) {
+        var rect = element.getBoundingClientRect();
+        var rectIsEmpty = rect.width === 0 && rect.height === 0;
+        if (rectIsEmpty) {
+            const ro = new ResizeObserver(entries => {
+                ro.disconnect();
+                this.ensureElementIsInScreenBounds(element);
+            });
+
+            ro.observe(element);
+            return;
+        }
+        
+        var animationIsRunning = !!element.getAnimations().length;
+        if (animationIsRunning) {
+            element.addEventListener('animationend', (e) => this.ensureElementIsInScreenBounds(element), { once: true});
+            return;
+        }
+        if (rect.left < 0) {
+            element.style.left = '0px';
+        }
+        if (rect.top < 0) {
+            element.style.top = '0px';
+        }
+        if (rect.right > window.innerWidth) {
+            element.style.left = (window.innerWidth - element.offsetWidth) + 'px';
+        }
+        if (rect.bottom > window.innerHeight) {
+            element.style.top = (window.innerHeight - element.offsetHeight) + 'px';
+        }
     }
 
     checkResizeable() {
@@ -202,6 +265,20 @@ class MudBlazorExtensionHelper {
 
 window.MudBlazorExtensions = {
     helper: null,
+    currentMouseArgs: null,
+    
+    __bindEvents: function () {
+        var onMouseUpdate = function(e) {
+            window.MudBlazorExtensions.currentMouseArgs = e;
+        }
+        document.addEventListener('mousemove', onMouseUpdate, false);
+        document.addEventListener('mouseenter', onMouseUpdate, false);
+    },
+    
+    getCurrentMousePosition: function() {
+        return window.MudBlazorExtensions.currentMouseArgs;
+    },
+
     disposeMudExFileDisplay: function(id) {
         if (window.__mudExFileDisplay && window.__mudExFileDisplay[id]) {
             window.__mudExFileDisplay[id] = null;
@@ -253,3 +330,5 @@ window.MudBlazorExtensions = {
             });
     }
 };
+
+window.MudBlazorExtensions.__bindEvents();
