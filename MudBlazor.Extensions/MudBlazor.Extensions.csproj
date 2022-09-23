@@ -72,4 +72,12 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\MudExTaskBar.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\MudExTaskBar.razor" />
+  </ItemGroup>
+
 </Project>

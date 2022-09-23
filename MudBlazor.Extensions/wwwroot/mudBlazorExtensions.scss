@@ -1,14 +1,17 @@
 ﻿@import '_animations.scss';
 @import '_file-display.scss';
 @import '_object-edit.scss';
+@import '_taskbar.scss';
 
 
 .mud-dialog-height-full {
-    height: calc(100% - 64px);
+    height: calc(100vh - 64px);
+    top: 0;
 }
 
 .mud-dialog-height-full-no-margin {
-    height: 100%;
+    height: 100vh;
+    top: 0;
 }
 
 .mud-dialog-width-full-no-margin {
@@ -128,3 +131,7 @@
 .mud-alert-message-mt-5 > .mud-alert-position > .mud-alert-message {
     margin-top: -5px;
 }
+
+/*.mud-dialog-container:has(.mud-dialog) .mud-overlay-dialog {
+    opacity: 0 !important; // initially hide overlay fur mud-ex dialog to ensure no flackering if dialog shouldnt be modal
+}*/

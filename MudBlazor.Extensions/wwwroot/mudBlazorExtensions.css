@@ -4107,12 +4107,57 @@
   max-height: 90%;
 }
 
+.mud-ex-slidebar {
+  margin: 0;
+  z-index: 1301;
+  position: fixed;
+}
+.mud-ex-slidebar .mud-tab-slider {
+  opacity: 0;
+}
+.mud-ex-slidebar.bottom {
+  transform: translateY(80%);
+  width: 100%;
+  bottom: 0;
+}
+.mud-ex-slidebar.top {
+  transform: translateY(-80%);
+  width: 100%;
+  top: 0;
+}
+.mud-ex-slidebar.left {
+  transform: translateX(-90%);
+  height: 100%;
+  left: 0;
+}
+.mud-ex-slidebar.left .mud-tabs {
+  height: 100%;
+}
+.mud-ex-slidebar.right {
+  transform: translateX(90%);
+  height: 100%;
+  right: 0;
+}
+.mud-ex-slidebar.right .mud-tabs {
+  height: 100%;
+}
+.mud-ex-slidebar.open {
+  transform: translateY(0);
+  transform: translateX(0);
+  opacity: 1;
+}
+.mud-ex-slidebar.open .mud-tab-slider {
+  opacity: 1;
+}
+
 .mud-dialog-height-full {
-  height: calc(100% - 64px);
+  height: calc(100vh - 64px);
+  top: 0;
 }
 
 .mud-dialog-height-full-no-margin {
-  height: 100%;
+  height: 100vh;
+  top: 0;
 }
 
 .mud-dialog-width-full-no-margin {
@@ -4229,3 +4274,7 @@
 .mud-alert-message-mt-5 > .mud-alert-position > .mud-alert-message {
   margin-top: -5px;
 }
+
+/*.mud-dialog-container:has(.mud-dialog) .mud-overlay-dialog {
+    opacity: 0 !important; // initially hide overlay fur mud-ex dialog to ensure no flackering if dialog shouldnt be modal
+}*/

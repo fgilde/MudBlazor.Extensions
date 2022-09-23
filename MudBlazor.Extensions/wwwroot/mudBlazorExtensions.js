@@ -80,12 +80,24 @@ class MudBlazorExtensionHelper {
                     btnEl.onclick = () => {
                         if (b.id.indexOf('mud-button-maximize') >= 0) {
                             this.maximize();
+                        }
+                        if (b.id.indexOf('mud-button-minimize') >= 0) {
+                            this.minimize();
                         } else {
                             b.callBackReference.invokeMethodAsync(b.callbackName);
                         }
                     }
                 }
             });
+        }
+
+        
+        if (this.options.modal === false) {
+            this.dialog.parentElement.querySelector('.mud-overlay').style.display = 'none';
+            setTimeout(() => {
+                this.makeDialogAbsolute();
+                this.dialog.parentElement.style.height = '0';
+            }, this.options.animationDurationInMs + 50);
         }
 
         // Handle drag
@@ -96,6 +108,26 @@ class MudBlazorExtensionHelper {
         
         // Resize
         this.checkResizeable();
+    }
+
+    minimize() {
+        let targetElement = document.querySelector(`.mud-ex-task-bar-item-for-${this.dialog.id}`);
+        this.moveToElement(targetElement);
+    }
+
+    moveToElement(targetElement) {
+        var rect = targetElement.getBoundingClientRect();
+        this.dialog.style.height = targetElement.style.height;
+        this.dialog.style.width = targetElement.style.width;
+        this.dialog.style.left = rect.left + "px";
+        this.dialog.style.top = rect.top + "px";
+    }
+
+    makeDialogAbsolute() {
+        this.dialog.style.position = 'absolute';
+        var rect = this.dialog.getBoundingClientRect();
+        this.dialog.style.left = rect.left + "px";
+        this.dialog.style.top = rect.top + "px";
     }
 
     moveElementToMousePosition(element) {
@@ -328,7 +360,17 @@ window.MudBlazorExtensions = {
                 link.click();
                 document.body.removeChild(link);
             });
+    },
+
+    attachDialog(dialogId) {
+        let dialog = document.getElementById(dialogId);
+        let titleCmp = dialog.querySelector('.mud-dialog-title');
+        return {
+            title: titleCmp ? titleCmp.innerText : 'Unnamed window',
+            icon: titleCmp ? titleCmp.querySelector('svg').innerHTML : ''
+        }
     }
+
 };
 
 window.MudBlazorExtensions.__bindEvents();

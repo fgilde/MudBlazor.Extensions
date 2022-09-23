@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Components.Rendering
+@using MudBlazor.Extensions.Components.ObjectEdit
+@inherits MudExSlideBar
+
+@Inherited()
+
+@code {
+    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+    public override RenderFragment ChildContent { get => TaskBarContent; set {} }
+    
+    protected void TaskBarContent(RenderTreeBuilder __builder)
+    {
+        @if (_taskbarItems?.Any() == true || !OnlyVisibleWithWindows)
+        {
+            <MudDynamicTabs Class="mud-ex-task-bar" Elevation="2" Square="true" Rounded="false" Position="@Position" Centered="false" Color="Color.Dark" CloseTab="@(CloseWindow)">
+                @foreach (var taskBarItem in _taskbarItems)
+                {
+                    <MudTabPanel Class="@($"mud-ex-task-bar-item-for-{taskBarItem.DialogId}")" OnClick="@(() => ShowWindow(taskBarItem))" Tag="@taskBarItem.DialogId" Icon="@taskBarItem.DialogData.Icon" Text="@taskBarItem.DialogData.Title"/>
+                }
+            </MudDynamicTabs>
+        }
+    }
+}

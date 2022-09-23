@@ -233,9 +233,24 @@ namespace MudBlazor.Extensions
             return result.Cancelled || !(result.Data is bool data) ? new bool?() : data;
         }
 
+        public static async Task<T> GetDialogAsync<T>(this IDialogReference dialogReference) where T : ComponentBase
+        {
+            await Task.Run(() =>
+            {
+                while (dialogReference.Dialog == null)
+                    Thread.Sleep(10);
+            });
+            return dialogReference.Dialog as T;
+        }
+
         public static async Task<IDialogReference> ShowEx(this IDialogService dialogService, Type type, string title, DialogOptionsEx options = null)
         {
             return await dialogService.Show(type, title, options).InjectOptionsAsync(options);
+        }
+
+        public static string GetDialogId(this IDialogReference dialogReference)
+        {
+            return $"_{dialogReference.Id.ToString().Replace("-", "")}";
         }
 
         private static async Task<IDialogReference> InjectOptionsAsync(this IDialogReference dialogReference, DialogOptionsEx options)
@@ -244,21 +259,34 @@ namespace MudBlazor.Extensions
             DotNetObjectReference<ComponentBase> callbackReference = DotNetObjectReference.Create(dialogComponent);
             var js = await JsImportHelper.GetInitializedJsRuntime(dialogComponent, options.JsRuntime);
 
+            if (options.MinimizeButton == true)
+            {
+                options.Buttons = InsertButton(options, new MudDialogButton(null, null)
+                {
+                    Id = $"mud-button-minimize-{Guid.NewGuid()}",
+                    Icon = Icons.Filled.Minimize
+                });
+            }
             if (options.MaximizeButton == true)
             {
-                var buttons = options.Buttons?.ToList() ?? new List<MudDialogButton>();
-                buttons.Insert(0, new MudDialogButton(null, null)
+                options.Buttons = InsertButton(options, new MudDialogButton(null, null)
                 {
                     Id = $"mud-button-maximize-{Guid.NewGuid()}",
                     Icon = Icons.Filled.AspectRatio
                 });
-                options.Buttons = buttons.ToArray();
             }
 
             options.Buttons ??= Array.Empty<MudDialogButton>();
             options.Buttons.Apply((i, button) => button.Html = button.GetHtml(i + (options.CloseButton == true ? 1 : 0)));
             await js.InvokeVoidAsync("MudBlazorExtensions.setNextDialogOptions", options, callbackReference);
             return dialogReference;
+        }
+
+        private static MudDialogButton[] InsertButton(DialogOptionsEx options, MudDialogButton btn)
+        {
+            var buttons = options.Buttons?.ToList() ?? new List<MudDialogButton>();
+            buttons.Insert(0, btn);
+            return buttons.ToArray();
         }
 
     }

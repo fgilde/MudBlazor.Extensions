@@ -94,12 +94,23 @@ var MudBlazorExtensionHelper = (function () {
                         btnEl.onclick = function () {
                             if (b.id.indexOf('mud-button-maximize') >= 0) {
                                 _this2.maximize();
+                            }
+                            if (b.id.indexOf('mud-button-minimize') >= 0) {
+                                _this2.minimize();
                             } else {
                                 b.callBackReference.invokeMethodAsync(b.callbackName);
                             }
                         };
                     }
                 });
+            }
+
+            if (this.options.modal === false) {
+                this.dialog.parentElement.querySelector('.mud-overlay').style.display = 'none';
+                setTimeout(function () {
+                    _this2.makeDialogAbsolute();
+                    _this2.dialog.parentElement.style.height = '0';
+                }, this.options.animationDurationInMs + 50);
             }
 
             // Handle drag
@@ -110,6 +121,29 @@ var MudBlazorExtensionHelper = (function () {
 
             // Resize
             this.checkResizeable();
+        }
+    }, {
+        key: 'minimize',
+        value: function minimize() {
+            var targetElement = document.querySelector('.mud-ex-task-bar-item-for-' + this.dialog.id);
+            this.moveToElement(targetElement);
+        }
+    }, {
+        key: 'moveToElement',
+        value: function moveToElement(targetElement) {
+            var rect = targetElement.getBoundingClientRect();
+            this.dialog.style.height = targetElement.style.height;
+            this.dialog.style.width = targetElement.style.width;
+            this.dialog.style.left = rect.left + "px";
+            this.dialog.style.top = rect.top + "px";
+        }
+    }, {
+        key: 'makeDialogAbsolute',
+        value: function makeDialogAbsolute() {
+            this.dialog.style.position = 'absolute';
+            var rect = this.dialog.getBoundingClientRect();
+            this.dialog.style.left = rect.left + "px";
+            this.dialog.style.top = rect.top + "px";
         }
     }, {
         key: 'moveElementToMousePosition',
@@ -361,7 +395,17 @@ window.MudBlazorExtensions = {
             link.click();
             document.body.removeChild(link);
         });
+    },
+
+    attachDialog: function attachDialog(dialogId) {
+        var dialog = document.getElementById(dialogId);
+        var titleCmp = dialog.querySelector('.mud-dialog-title');
+        return {
+            title: titleCmp ? titleCmp.innerText : 'Unnamed window',
+            icon: titleCmp ? titleCmp.querySelector('svg').innerHTML : ''
+        };
     }
+
 };
 
 window.MudBlazorExtensions.__bindEvents();
