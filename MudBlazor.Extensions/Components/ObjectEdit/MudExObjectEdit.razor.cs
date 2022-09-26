@@ -62,6 +62,9 @@ public partial class MudExObjectEdit<T>
     [Parameter] public string ToolBarPaperClass { get; set; }
     [Parameter] public bool StickyToolbar { get; set; }
     [Parameter] public string StickyToolbarTop { get; set; } = "var(--mud-appbar-height)";
+    [Parameter] public EventCallback<T> AfterImport { get; set; }
+    [Parameter] public EventCallback<T> AfterExport { get; set; }
+    [Parameter] public EventCallback<T> BeforeExport { get; set; }
     [Parameter] public EventCallback<T> ValueChanged { get; set; }
     [Parameter] public ObjectEditMeta<T> MetaInformation { get; set; }
     [Parameter] public bool ShowPathAsTitleForEachProperty { get; set; }
@@ -339,6 +342,7 @@ public partial class MudExObjectEdit<T>
 
     private async Task Export()
     {
+        await BeforeExport.InvokeAsync(Value);
         IsInternalLoading = true;
         try
         {
@@ -350,6 +354,7 @@ public partial class MudExObjectEdit<T>
                 FileName = !string.IsNullOrWhiteSpace(ExportFileName) ? ExportFileName : $"{Value.GetType().Name}_{DateTime.Now}.json",
                 MimeType = "application/json"
             });
+            await AfterExport.InvokeAsync(Value);
         }
         finally
         {
@@ -371,6 +376,7 @@ public partial class MudExObjectEdit<T>
             var json = Encoding.UTF8.GetString(buffer);
             LoadFromJson(json);
             await ImportSuccessUI();
+            await AfterImport.InvokeAsync(Value);
         }
         catch (Exception ex)
         {
