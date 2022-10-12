@@ -363,12 +363,19 @@ window.MudBlazorExtensions = {
     },
 
     attachDialog(dialogId) {
-        let dialog = document.getElementById(dialogId);
-        let titleCmp = dialog.querySelector('.mud-dialog-title');
-        return {
-            title: titleCmp ? titleCmp.innerText : 'Unnamed window',
-            icon: titleCmp ? titleCmp.querySelector('svg').innerHTML : ''
+        if (dialogId) {
+            let dialog = document.getElementById(dialogId);
+            if (dialog) {
+                let titleCmp = dialog.querySelector('.mud-dialog-title');
+                let iconCmp = titleCmp ? titleCmp.querySelector('svg') : null;
+                const res = {
+                    title: titleCmp ? titleCmp.innerText : 'Unnamed window',
+                    icon: iconCmp ? iconCmp.innerHTML : ''
+                }
+                return res;
+            }
         }
+        return null;
     }
 
 };

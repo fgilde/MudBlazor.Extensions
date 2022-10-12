@@ -250,7 +250,7 @@ namespace MudBlazor.Extensions
 
         public static string GetDialogId(this IDialogReference dialogReference)
         {
-            return $"_{dialogReference.Id.ToString().Replace("-", "")}";
+            return dialogReference != null && dialogReference.Id != Guid.Empty ? $"_{dialogReference.Id.ToString().Replace("-", "")}" : null;
         }
 
         private static async Task<IDialogReference> InjectOptionsAsync(this IDialogReference dialogReference, DialogOptionsEx options)

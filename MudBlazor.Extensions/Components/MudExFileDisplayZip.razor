@@ -45,7 +45,7 @@ else
                 <MudSpacer/>
                 @if (FilterMode != PropertyFilterMode.Disabled)
                 {
-                    <MudTextField @ref="_searchBox" OnBlur="@(FilterBoxBlur)" OnKeyDown="@(FilterKeyPress)" Class="@($"mud-ex-animate-all-properties mud-ex-property-filter {(_searchActive || FilterMode == PropertyFilterMode.AlwaysVisible ? "active" : "")}")" Immediate="true" Clearable="true" @bind-Value="SearchString" T="string" Placeholder="@_localizer.TryLocalize("Filter")" Label="@_localizer.TryLocalize("Filter")"/>
+                    <MudTextField @ref="_searchBox" OnBlur="@(FilterBoxBlur)" OnKeyDown="@(FilterKeyPress)" Class="@($"mud-ex-hide-inputlabel mud-ex-animate-all-properties mud-ex-property-filter {(_searchActive || FilterMode == PropertyFilterMode.AlwaysVisible ? "active" : "")}")" Immediate="true" Clearable="true" @bind-Value="SearchString" T="string" Placeholder="@_localizer.TryLocalize("Filter")" Label="@_localizer.TryLocalize("Filter")"/>
                 }
                 @if (FilterMode == PropertyFilterMode.Toggleable)
                 {

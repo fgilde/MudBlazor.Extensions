@@ -132,6 +132,10 @@
     margin-top: -5px;
 }
 
+.mud-ex-hide-inputlabel > div > div.mud-shrink ~ label.mud-input-label.mud-input-label-inputcontrol, .mud-ex-hide-inputlabel > .mud-input:focus-within ~ label.mud-input-label.mud-input-label-inputcontrol {
+    visibility: hidden;
+}
+
 /*.mud-dialog-container:has(.mud-dialog) .mud-overlay-dialog {
     opacity: 0 !important; // initially hide overlay fur mud-ex dialog to ensure no flackering if dialog shouldnt be modal
 }*/
