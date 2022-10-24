@@ -73,13 +73,20 @@ public partial class MudExPropertyEdit
 
     private async Task<object> GetBackupAsync(object value)
     {
-        var t = PropertyMeta.PropertyInfo.PropertyType;
-        if (value == null)
-            return GetDefault(t);
-        if (t.IsValueType || t.IsPrimitive || t == typeof(string))
-            return value;
+        try
+        {
+            var t = PropertyMeta.PropertyInfo.PropertyType;
+            if (value == null)
+                return GetDefault(t);
+            if (t.IsValueType || t.IsPrimitive || t == typeof(string))
+                return value;
 
-        return await value.MapToAsync(t);
+            return await value.MapToAsync(t);
+        }
+        catch
+        {
+            return value;
+        }
     }
 
     private static object GetDefault(Type type)

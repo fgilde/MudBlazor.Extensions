@@ -1,0 +1,36 @@
+﻿@using MudBlazor.Utilities
+@using Nextended.Core.Extensions
+@using System.Reflection
+@inherits MudColorPicker
+
+@Inherited()
+
+@code {
+    [Parameter] public bool DelayValueChangeToPickerClose { get; set; } = true;
+
+    private bool ShouldDelay => DelayValueChangeToPickerClose && PickerVariant != PickerVariant.Static;
+    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+    EventCallback<MudColor> _originalValueChanged;
+
+    protected override void OnPickerOpened()
+    {
+        base.OnPickerOpened();
+        if (!ShouldDelay) return;
+
+        _originalValueChanged = ValueChanged;
+        ValueChanged = EventCallback.Factory.Create(this,
+            EventCallback.Factory.CreateInferred(this, x =>
+                null,
+                Value
+                )
+            );
+    }
+
+    protected override void OnPickerClosed()
+    {
+        if (ShouldDelay)
+            _originalValueChanged.InvokeAsync(Value);
+        base.OnPickerClosed();
+    }
+    
+}

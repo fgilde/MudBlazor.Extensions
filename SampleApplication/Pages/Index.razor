@@ -1,21 +1,26 @@
 ﻿@inject HttpClient Http
 @page "/"
+@using MudBlazor.Utilities
 
 <PageTitle>Index</PageTitle>
 
 @*<DynamicComponent Type="typeof(MudC<bool>)"></DynamicComponent>*@
 @*<DynamicComponent Type="typeof(MudCheckBox<bool>)"></DynamicComponent>*@
+    @*<MudText>@_color.ToString()</MudText>*@
 
 <MudAlert ContentAlignment="HorizontalAlignment.Center" Severity="Severity.Warning" Icon="@Icons.Material.Filled.Star">
     <MudButton Size="Size.Small" EndIcon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank">
         If you like MudBlazor.Extensions please give a Star
     </MudButton>
+    
+    @*<MudExColorPicker @bind-Value="_color" ></MudExColorPicker>*@
 </MudAlert>
 
 <MudMarkdown Value="@Value" />
 
 @code
 {
+    private MudColor _color = new MudColor(255, 123, 0, 0.5);
     protected override async Task OnInitializedAsync()
     {
         Value = await Http.GetStringAsync("https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/README.md");

@@ -10,7 +10,7 @@ Sure you need a MudBlazor project and the referenced package to MudBlazor for mo
 Add the nuget Package `MudBlazor.Extensions` to your blazor project
 
 ```
-<PackageReference Include="MudBlazor.Extensions" Version="1.6.62" />
+<PackageReference Include="MudBlazor.Extensions" Version="1.6.67" />
 ```
 
 For easier using the components should change your `_Imports.razor` and add this entries.
@@ -204,6 +204,7 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log
+ - 1.6.67 Add `MudExColorPicker` simple extended default MudColorPicker with one option `DelayValueChangeToPickerClose` (default true). If this is true ValueChanged is invoked after picker close
  - 1.5.0 Add `MudExObjectEdit` `MudExObjectEditForm` `MudExObjectEditDialog` and `MudExCollectionEditor`
  - 1.4.6 Registered Localizer is no longer a requirement
  - 1.4.0 Add New Component `MudExEnumSelect`
