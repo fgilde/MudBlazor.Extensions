@@ -119,6 +119,10 @@
     height: 100%;    
 }
 
+.full-height-90 {
+    height: 90%;
+}
+
 
 .mud-alert-close-no-flex > .mud-alert-close {
     display: initial;
@@ -139,3 +143,55 @@
 /*.mud-dialog-container:has(.mud-dialog) .mud-overlay-dialog {
     opacity: 0 !important; // initially hide overlay fur mud-ex dialog to ensure no flackering if dialog shouldnt be modal
 }*/
+
+.mud-ex-scroll-to-top {
+    height: 56px;
+    width: 56px;
+    &.bottomleft {
+        right: auto !important;
+    }
+
+    &.bottomcenter {
+        left: calc(50% + 20px) !important;
+        right: calc(50% + 20px) !important;
+    }
+
+    &.topcenter {
+        left: calc(50% + 20px) !important;
+        right: calc(50% + 20px) !important;
+        top: var(--mud-appbar-height);
+    }
+
+    &.topleft {
+        right: auto !important;
+        top: var(--mud-appbar-height);
+    }
+
+
+    &.topright {
+        top: var(--mud-appbar-height);
+    }
+
+    &.centerright {
+        top: 50%;
+        bottom: 50%;
+    }
+
+    &.center {
+        left: calc(50% + 20px) !important;
+        right: calc(50% + 20px) !important;
+        top: 50%;
+        bottom: 50%;
+    }
+
+    &.centerleft {
+        right: auto !important;
+        top: 50%;
+        bottom: 50%;
+    }
+
+    &.centerright {
+        top: 50%;
+        bottom: 50%;
+    }
+}

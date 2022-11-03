@@ -4270,6 +4270,10 @@
   height: 100%;
 }
 
+.full-height-90 {
+  height: 90%;
+}
+
 .mud-alert-close-no-flex > .mud-alert-close {
   display: initial;
 }
@@ -4289,3 +4293,45 @@
 /*.mud-dialog-container:has(.mud-dialog) .mud-overlay-dialog {
     opacity: 0 !important; // initially hide overlay fur mud-ex dialog to ensure no flackering if dialog shouldnt be modal
 }*/
+.mud-ex-scroll-to-top {
+  height: 56px;
+  width: 56px;
+}
+.mud-ex-scroll-to-top.bottomleft {
+  right: auto !important;
+}
+.mud-ex-scroll-to-top.bottomcenter {
+  left: calc(50% + 20px) !important;
+  right: calc(50% + 20px) !important;
+}
+.mud-ex-scroll-to-top.topcenter {
+  left: calc(50% + 20px) !important;
+  right: calc(50% + 20px) !important;
+  top: var(--mud-appbar-height);
+}
+.mud-ex-scroll-to-top.topleft {
+  right: auto !important;
+  top: var(--mud-appbar-height);
+}
+.mud-ex-scroll-to-top.topright {
+  top: var(--mud-appbar-height);
+}
+.mud-ex-scroll-to-top.centerright {
+  top: 50%;
+  bottom: 50%;
+}
+.mud-ex-scroll-to-top.center {
+  left: calc(50% + 20px) !important;
+  right: calc(50% + 20px) !important;
+  top: 50%;
+  bottom: 50%;
+}
+.mud-ex-scroll-to-top.centerleft {
+  right: auto !important;
+  top: 50%;
+  bottom: 50%;
+}
+.mud-ex-scroll-to-top.centerright {
+  top: 50%;
+  bottom: 50%;
+}

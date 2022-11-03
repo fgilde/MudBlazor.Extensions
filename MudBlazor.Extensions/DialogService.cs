@@ -147,7 +147,52 @@ namespace MudBlazor.Extensions
         }
 
         #endregion
-        
+
+        #region Confirmation Dialog
+
+        public static async Task<bool> ShowConfirmationDialogAsync(this IDialogService dialogService, string title, string message,
+            string confirmText = "Confirm",
+            string cancelText = "Cancel",
+            DialogOptionsEx options = null)
+        {
+            var actions = new[]
+            {
+                new MudExDialogResultAction
+                {
+                    Label = cancelText,
+                    Variant = Variant.Text,
+                    Result = DialogResult.Cancel()
+                },
+                new MudExDialogResultAction
+                {
+                    Label = confirmText,
+                    Color = Color.Error,
+                    Variant = Variant.Filled,
+                    Result = DialogResult.Ok(true)
+                },
+            };
+            var parameters = new DialogParameters
+            {
+                {
+                    nameof(MudExMessageDialog.Message), message
+                },
+                {nameof(MudExMessageDialog.Icon), Icons.Filled.Check},
+                {nameof(MudExMessageDialog.Class), "mud-ex-dialog-initial"},
+                {nameof(MudExMessageDialog.Buttons), actions}
+            };
+            options ??= new DialogOptionsEx
+            {
+                CloseButton = true,
+                DisableBackdropClick = false,
+                Animations = new[] { AnimationType.FadeIn, AnimationType.FlipX }
+            };
+            var dialog = await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options);
+
+            return !(await dialog.Result).Cancelled;
+        }
+
+        #endregion
+
         public static DialogParameters ToDialogParameters(this IEnumerable<KeyValuePair<string, object>> parameters)
         {
             var dialogParameters = new DialogParameters();

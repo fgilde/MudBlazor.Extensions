@@ -10,7 +10,7 @@ Sure you need a MudBlazor project and the referenced package to MudBlazor for mo
 Add the nuget Package `MudBlazor.Extensions` to your blazor project
 
 ```
-<PackageReference Include="MudBlazor.Extensions" Version="1.6.67" />
+<PackageReference Include="MudBlazor.Extensions" Version="1.6.68" />
 ```
 
 For easier using the components should change your `_Imports.razor` and add this entries.
@@ -204,6 +204,10 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log
+ - 1.6.68 New small DialogComponent `MudExMessageDialog` with custom actions and result and with small dialogServiceExtension `dialogService.ShowConfirmationDialogAsync`
+ - 1.6.68 New parameter for MudExObjectEdit `ImportNeedsConfirmation` if this is true and `AllowImport` is true a file preview dialog appears on import and the user needs to confirm the import.
+ - 1.6.68 Import and Export specifix properties only in MudExObjectEdit are now configurable with the MetaConfiguration
+ - 1.6.68 Dialog DragMode without bound check. ScrollToTopPosition for MudExObjectEdit
  - 1.6.67 Add `MudExColorPicker` simple extended default MudColorPicker with one option `DelayValueChangeToPickerClose` (default true). If this is true ValueChanged is invoked after picker close
  - 1.5.0 Add `MudExObjectEdit` `MudExObjectEditForm` `MudExObjectEditDialog` and `MudExCollectionEditor`
  - 1.4.6 Registered Localizer is no longer a requirement

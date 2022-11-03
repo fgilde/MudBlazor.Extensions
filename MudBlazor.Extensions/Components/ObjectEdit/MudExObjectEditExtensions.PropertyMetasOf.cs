@@ -103,6 +103,14 @@ public static partial class MudExObjectEditExtensions
         => metas.Apply(m => m.WithAttributesIf(condition, attributes));
     public static IEnumerable<ObjectEditPropertyMetaOf<TModel>> WithAttributesIf<TModel>(this IEnumerable<ObjectEditPropertyMetaOf<TModel>> metas, Func<TModel, bool> condition, Dictionary<string, object> attributes)
         => metas.Apply(m => m.WithAttributesIf(condition, attributes));
+
+    public static IEnumerable<ObjectEditPropertyMetaOf<TModel>> IgnoreOnExport<TModel>(this IEnumerable<ObjectEditPropertyMetaOf<TModel>> metas, bool ignore = true)
+        => metas.Apply(m => m.IgnoreOnExport(ignore));
+    public static IEnumerable<ObjectEditPropertyMetaOf<TModel>> IgnoreOnImport<TModel>(this IEnumerable<ObjectEditPropertyMetaOf<TModel>> metas, bool ignore = true)
+        => metas.Apply(m => m.IgnoreOnImport(ignore));
+    public static IEnumerable<ObjectEditPropertyMetaOf<TModel>> IgnoreOnExportAndImport<TModel>(this IEnumerable<ObjectEditPropertyMetaOf<TModel>> metas, bool ignore = true)
+        => metas.Apply(m => m.IgnoreOnImport(ignore).IgnoreOnExport(ignore));
+
     //public static IEnumerable<ObjectEditPropertyMetaOf<TModel>> WithAttributesIf<TModel, TComponent>(this IEnumerable<ObjectEditPropertyMetaOf<TModel>> metas, Func<TModel, bool> condition, TComponent instanceForAttributes) where TComponent : new()
     //    => metas.Apply(m => m.WithAttributesIf<TModel, TComponent>(condition, instanceForAttributes));
 }

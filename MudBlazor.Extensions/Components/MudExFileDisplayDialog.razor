@@ -1,9 +1,12 @@
 @using BrowserFileExtensions = MudBlazor.Extensions.Extensions.BrowserFileExt
 @using System.IO
+@using Microsoft.Extensions.Localization
+@using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
+@using Microsoft.Extensions.DependencyInjection;
 
 @namespace MudBlazor.Extensions.Components
-<MudDialog Class="dialog-content-full-height overflow-hidden mud-ex-dialog-initial" ClassContent="full-height">
+<MudDialog Style="@Style" Class="@Class" ClassContent="@ClassContent">
     <TitleContent>
         <MudText Typo="Typo.h6">
             <MudIcon Color="Color.Error" Icon="@Icon" Class="mr-3 mb-n1" />
@@ -25,16 +28,32 @@
             ContentType="@ContentType" 
             Url="@Url"></MudExFileDisplay>
     </DialogContent>
+    <DialogActions>
+        @if (Buttons?.Any() == true)
+        {
+            foreach (var action in Buttons)
+            {
+                <MudButton Color="@action.Color" Variant="@action.Variant" OnClick="@(() => Submit(action.Result))">@localizer.TryLocalize(action.Label)</MudButton>
+            }
+        }
+    </DialogActions>
 
 </MudDialog>
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Inject] private IServiceProvider _serviceProvider { get; set; }
 
+    private IStringLocalizer<MudExFileDisplayDialog> localizer => _serviceProvider.GetService<IStringLocalizer<MudExFileDisplayDialog>>();
+
+    [Parameter] public string Style { get; set; } = string.Empty;
+    [Parameter] public string Class { get; set; } = "dialog-content-full-height overflow-hidden mud-ex-dialog-initial";
+    [Parameter] public string ClassContent { get; set; } = "full-height";
     [Parameter] public bool ShowContentError { get; set; } = true;
     [Parameter] public string Icon { get; set; }
     [Parameter] public string Url { get; set; }
     [Parameter] public string ContentType { get; set; }
     [Parameter] public Stream ContentStream { get; set; }
+    [Parameter] public MudExDialogResultAction[] Buttons { get; set; }
     /**
      * A function to handle content error. Return true if you have handled the error and false if you want to show the error message
      * For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
@@ -60,9 +79,14 @@
     [Parameter] public bool AllowDownload { get; set; } = true;
 
     public static Task<IDialogReference> Show(IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(url, fileName, contentType, options);
-
     public static Task<IDialogReference> Show(IDialogService dialogService, IBrowserFile browserFile, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(browserFile, options);
-
     public static Task<IDialogReference> Show(IDialogService dialogService, Stream stream, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(stream, fileName, contentType, options);
+    
+    void Submit(DialogResult result)
+    {
+        MudDialog.Close(result);
+    }
+
+    void Cancel() => MudDialog.Cancel();
     
 }

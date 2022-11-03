@@ -21,6 +21,8 @@ public class ObjectEditPropertyMetaSettings
     public IStringLocalizer Localizer { get; set; }
     public bool IsEditable { get; set; }
     public bool Ignored { get; set; }
+    public bool IgnoreOnExport { get; set; }
+    public bool IgnoreOnImport { get; set; }
     public PropertyResetSettings ResetSettings { get; set; }
     public bool ValidationComponent { get; set; }
     public LabelBehaviour LabelBehaviour { get; set; } = LabelBehaviour.DefaultComponentLabeling;

@@ -146,6 +146,17 @@ public static partial class MudExObjectEditExtensions
         => meta?.WithAttributesIf(condition, attributes.ToArray());
     public static ObjectEditPropertyMeta WithAttributesIf<TModel>(this ObjectEditPropertyMeta meta, Func<TModel, bool> condition, Dictionary<string, object> attributes)
         => meta?.WithAttributesIf(condition, attributes.ToArray());
+
+    public static ObjectEditPropertyMeta IgnoreOnExport(this ObjectEditPropertyMeta meta, bool ignore = true)
+        => meta?.WithSettings(s => s.IgnoreOnExport = ignore);
+    public static ObjectEditPropertyMeta IgnoreOnImport(this ObjectEditPropertyMeta meta, bool ignore = true)
+        => meta?.WithSettings(s => s.IgnoreOnImport = ignore);
+    public static ObjectEditPropertyMeta IgnoreOnExportAndImport(this ObjectEditPropertyMeta meta, bool ignore = true)
+        => meta?.WithSettings(s =>
+        {
+            s.IgnoreOnImport = ignore;
+            s.IgnoreOnExport = ignore;
+        });
     //public static ObjectEditPropertyMeta WithAttributesIf<TModel, TComponent>(this ObjectEditPropertyMeta meta, Func<TModel, bool> condition, TComponent instanceForAttributes) where TComponent : new()
     //    => meta?.WithAttributesIf(condition, DictionaryHelper.GetValuesDictionary(instanceForAttributes, true));
 }

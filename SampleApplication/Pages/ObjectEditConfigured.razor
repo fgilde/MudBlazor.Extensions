@@ -16,6 +16,7 @@
     <MudExObjectEditForm 
         @ref="form"
         IsLoading="@_isLoading"
+        ImportNeedsConfirmation="true"
         AllowExport="true"
         AllowImport="true"
         AutoSkeletonOnLoad="true"
@@ -80,21 +81,25 @@
             .WithGroup("Name").WrapInMudItem(i => i.xs = 6);
 
         meta.Property(m => m.SomeUnimportantTestModel).RenderWith<MudTextField<string>, TestModel, string>(f => f.Value, tf =>
-            {
-                tf.Variant = Variant.Outlined;
+        {
+            tf.Variant = Variant.Outlined;
                 tf.Lines = 8;
             }, 
             model => JsonConvert.SerializeObject(model, Formatting.Indented), JsonConvert.DeserializeObject<TestModel>)
             .WithLabelResolver(pi => $"{pi.Name} as Json")
-            .WithDescription("This is a Json representation of the TestModel")
-            .WithGroup("SubModel as Json").WrapInMudItem(i => i.xs = 12);
+            .WithDescription("This is a Json representation of the TestModel. This is ignored for Export and Import")
+            .WithGroup("SubModel as Json")
+            .IgnoreOnExportAndImport()
+            .WrapInMudItem(i => i.xs = 12);
 
         meta.Property(m => m.MainAddress.HouseNumber)
             .RenderWith<MudNumericField<int>, string, int>(f => f.Value, tf => tf.Variant = Variant.Outlined, int.Parse, i => i.ToString())
-            .WithDescription("Here only number is configured to render with NumEdit edit but DataType is string")
+            .WithDescription("Here only number is configured to render with NumEdit edit but DataType is string. Also this field is ignored for import")
+            .IgnoreOnImport()
             .WrapInMudItem(i => i.xs = 6);
         meta.Properties(m => m.MainAddress.Street, m => m.MainAddress.City, m => m.MainAddress.PostalCode)
             .WrapInMudItem(i => i.xs = 6);
+
     }
 
     

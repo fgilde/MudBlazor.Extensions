@@ -122,7 +122,7 @@ else
         </MudExpansionPanels>
         @if (AddScrollToTop)
         {
-            <MudScrollToTop ScrollBehavior="ScrollBehavior.Smooth">
+            <MudScrollToTop Class="@($"mud-ex-scroll-to-top {ScrollToTopPosition.ToDescriptionString()}")" ScrollBehavior="ScrollBehavior.Smooth">
                 <MudFab Color="Color.Tertiary" Icon="@Icons.Filled.ArrowCircleUp" />
             </MudScrollToTop>
         }

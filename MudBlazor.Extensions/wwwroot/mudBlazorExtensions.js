@@ -102,7 +102,7 @@ class MudBlazorExtensionHelper {
 
         // Handle drag
         if (this.options.dragMode !== 0 && this.dialog) {
-            this.dragElement(this.dialog, this.dialogHeader);
+            this.dragElement(this.dialog, this.dialogHeader, document.body, this.options.dragMode === 2);
             this.done();
         }
         
@@ -226,7 +226,7 @@ class MudBlazorExtensionHelper {
             this.onDone();
     }
 
-    dragElement(dialogEl, headerEl, container) {
+    dragElement(dialogEl, headerEl, container, disableBoundCheck) {
         var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
         container = container || document.body;
         if (headerEl) {
@@ -266,10 +266,11 @@ class MudBlazorExtensionHelper {
             var aY = (dialogEl.offsetTop - pos2);
             var aX = (dialogEl.offsetLeft - pos1);
             dialogEl.style.position = 'absolute';
-            if ((aX > 0) && (aX < bounds.x)) {
+
+            if (disableBoundCheck || (aX > 0) && (aX < bounds.x)) {
                 dialogEl.style.left = (aX) + "px";
             }
-            if ((aY > 0) && (aY < bounds.y)) {
+            if (disableBoundCheck || (aY > 0) && (aY < bounds.y)) {
                 dialogEl.style.top = (aY) + "px";
             }
 

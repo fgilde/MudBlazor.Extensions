@@ -26,4 +26,13 @@ namespace MudBlazor.Extensions
         }
 
     }
+
+    public class MudExDialogResultAction
+    {
+        public DialogResult Result { get; set; }
+        public string Label { get; set; }
+        public Variant Variant { get; set; }
+        public Color Color { get; set; }
+    }
+
 }

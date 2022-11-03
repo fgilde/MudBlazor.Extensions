@@ -77,7 +77,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\MudExMessageDialog.razor" />
     <_ContentIncludedByDefault Remove="Components\MudExTaskBar.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\MudExMessageDialog.razor" />
   </ItemGroup>
 
 </Project>

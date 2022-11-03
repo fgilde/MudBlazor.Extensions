@@ -16,13 +16,14 @@ using MudBlazor.Utilities;
 using Newtonsoft.Json;
 using Nextended.Blazor.Models;
 using Nextended.Core.Extensions;
+using Nextended.Core.Helper;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 
 public partial class MudExObjectEdit<T>
 {
     [Inject] private IServiceProvider _serviceProvider { get; set; }
-    
+
     private IStringLocalizer<MudExObjectEdit<T>> _fallbackLocalizer => _serviceProvider.GetService<IStringLocalizer<MudExObjectEdit<T>>>();
     private IDialogService dialogService => _serviceProvider.GetService<IDialogService>();
     private IObjectMetaConfiguration<T> _configService => _serviceProvider.GetService<IObjectMetaConfiguration<T>>();
@@ -39,9 +40,13 @@ public partial class MudExObjectEdit<T>
         set => SetValue(value);
     }
     //[Parameter] public bool Virtualize { get; set; } = true;
+    [Parameter] public bool ImportNeedsConfirmation { get; set; }
+    [Parameter] public string ImportConfirmText { get; set; } = "Import";
+    [Parameter] public string ImportCancelText { get; set; } = "Cancel";
     [Parameter] public bool LightOverlayLoadingBackground { get; set; } = true;
     [Parameter] public Color ToolbarButtonColor { get; set; } = Color.Inherit;
     [Parameter] public bool AddScrollToTop { get; set; } = true;
+    [Parameter] public DialogPosition ScrollToTopPosition { get; set; } = DialogPosition.BottomRight;
     [Parameter] public bool AllowExport { get; set; }
     [Parameter] public bool AllowImport { get; set; }
     [Parameter] public bool AutoSaveRestoreState { get; set; }
@@ -98,7 +103,7 @@ public partial class MudExObjectEdit<T>
         var type = typeof(T).IsNullable() ? Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T) : typeof(T);
         return type.IsPrimitive || type.IsEnum || handleAsPrimitive.Contains(type);
     }
-    
+
     protected bool Primitive => IsPrimitive();
 
     protected virtual RenderFragment InternalToolBarContent => null;
@@ -139,7 +144,7 @@ public partial class MudExObjectEdit<T>
             await RestoreState();
         await base.OnAfterRenderAsync(firstRender);
     }
-    
+
     public T GetUpdatedValue()
     {
         foreach (var meta in MetaInformation.AllProperties.Where(p => p?.RenderData?.DisableValueBinding == true))
@@ -188,8 +193,8 @@ public partial class MudExObjectEdit<T>
         //    if (Value != null)
         //        MetaInformation.AllProperties.Apply(p => p?.UpdateConditionalSettings(Value));
         //}), ValueChanged.InvokeAsync(Value));
-        if(AutoSaveRestoreState)
-            _= Task.Run(SaveState);
+        if (AutoSaveRestoreState)
+            _ = Task.Run(SaveState);
 
         if (Value != null)
             MetaInformation.AllProperties.Apply(p => p?.UpdateConditionalSettings(Value));
@@ -254,10 +259,7 @@ public partial class MudExObjectEdit<T>
     {
         string json = await _js.InvokeAsync<string>($"{StateTargetStorage.ToDescriptionString()}.getItem", stateKey);
         if (!string.IsNullOrWhiteSpace(json))
-        {
-            LoadFromJson(json);
-            StateHasChanged();
-        }
+            await LoadFromJson(json, false);
     }
 
     public virtual async Task SaveState()
@@ -316,10 +318,10 @@ public partial class MudExObjectEdit<T>
     {
         string[] ignore = { nameof(Value), nameof(Localizer), nameof(ValueChanged), nameof(MetaConfiguration), nameof(MetaConfigurationAsync), nameof(MetaInformation) };
         var props = typeof(MudExObjectEdit<ModelForPrimitive<T>>).GetProperties().Select(p => p.Name); // Only allow props on this type and not on derived types
-        var res = (from prop in GetType().GetProperties().Where(p => props.Contains(p.Name)) 
-            let attr = prop.GetCustomAttribute<ParameterAttribute>() 
-            where attr != null && !ignore.Contains(prop.Name) && prop.CanWrite 
-            select prop).ToDictionary(prop => prop.Name, prop => prop.GetValue(this));
+        var res = (from prop in GetType().GetProperties().Where(p => props.Contains(p.Name))
+                   let attr = prop.GetCustomAttribute<ParameterAttribute>()
+                   where attr != null && !ignore.Contains(prop.Name) && prop.CanWrite
+                   select prop).ToDictionary(prop => prop.Name, prop => prop.GetValue(this));
         var primitiveWrapper = new ModelForPrimitive<T>(Value);
         res.AddOrUpdate(nameof(Primitive), false);
         res.AddOrUpdate(nameof(Value), primitiveWrapper);
@@ -346,7 +348,7 @@ public partial class MudExObjectEdit<T>
         IsInternalLoading = true;
         try
         {
-            string json = JsonConvert.SerializeObject(Value, Formatting.Indented);
+            var json = await ToJsonAsync();
             var url = await DataUrl.GetDataUrlAsync(await Task.Run(() => Encoding.UTF8.GetBytes(json)), "application/json");
             await _js.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
             {
@@ -362,6 +364,61 @@ public partial class MudExObjectEdit<T>
         }
     }
 
+    private bool IsPropertyPathSubPropertyOf(string propertyPath, string path)
+    {
+        if (string.IsNullOrWhiteSpace(propertyPath) || string.IsNullOrWhiteSpace(path))
+            return false;
+        var pathParts = propertyPath.Split('.');
+        var subPathParts = path.Split('.');
+        return pathParts.Length >= subPathParts.Length && !subPathParts.Where((t, i) => pathParts[i] != t).Any();
+    }
+
+    private Task<string> ToJsonAsync()
+    {
+        return Task.Run(() =>
+        {
+            var ignored = MetaInformation.Properties().Where(p => p.Settings.IgnoreOnExport).Select(m => m.PropertyName).ToHashSet();
+            if (ignored.Count == 0)
+                return JsonConvert.SerializeObject(Value, Formatting.Indented);
+            var dict = Value.ToFlatDictionary().Where(kvp => !ignored.Contains(kvp.Key) && !ignored.Any(path => IsPropertyPathSubPropertyOf(kvp.Key, path))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            var cleaned = JsonDictionaryConverter.Unflatten(dict);
+            return JsonConvert.SerializeObject(cleaned, Formatting.Indented);
+        });
+    }
+
+    private async Task<bool> ShouldCancelImportAsync(IBrowserFile file)
+    {
+        var cancelled = ImportNeedsConfirmation && (await (await dialogService.ShowFileDisplayDialog(file, op =>
+        {
+            op.MaxWidth = MaxWidth.Large;
+            op.FullWidth = false;
+            op.FullHeight = false;
+            op.Position = DialogPosition.TopCenter;
+        }, new DialogParameters
+        {
+            { nameof(MudExFileDisplayDialog.AllowDownload), false },
+            { nameof(MudExFileDisplayDialog.Style), "height:700px; width: 900px;" },
+            { nameof(MudExFileDisplayDialog.ClassContent), "full-height-90" },
+            { nameof(MudExFileDisplayDialog.Buttons), new[]
+            {
+                new MudExDialogResultAction
+                {
+                    Label = LocalizerToUse.TryLocalize(ImportCancelText),
+                    Variant = Variant.Text,
+                    Result = DialogResult.Cancel()
+                },
+                new MudExDialogResultAction
+                {
+                    Label = LocalizerToUse.TryLocalize(ImportConfirmText),
+                    Color = Color.Error,
+                    Variant = Variant.Filled,
+                    Result = DialogResult.Ok(true)
+                },
+            } }
+        })).Result).Cancelled;
+        return cancelled;
+    }
+
     private async Task Import(InputFileChangeEventArgs e)
     {
         if (e.File.ContentType != "application/json")
@@ -371,10 +428,15 @@ public partial class MudExObjectEdit<T>
         }
         try
         {
+            if (await ShouldCancelImportAsync(e.File))
+                return;
+
+            IsInternalLoading = true;
             var buffer = new byte[e.File.Size];
             await e.File.OpenReadStream(e.File.Size).ReadAsync(buffer);
             var json = Encoding.UTF8.GetString(buffer);
-            LoadFromJson(json);
+
+            await LoadFromJson(json, true);
             await ImportSuccessUI();
             await AfterImport.InvokeAsync(Value);
         }
@@ -399,9 +461,24 @@ public partial class MudExObjectEdit<T>
         ImportIcon = icon;
     }
 
-    private void LoadFromJson(string json)
+    private Task LoadFromJson(string json, bool removeIgnoredImports)
     {
-        var obj = JsonConvert.DeserializeObject(json, Value.GetType());
-        Value = (T) obj;
+        return Task.Run(() =>
+        {
+            var ignored = removeIgnoredImports ? MetaInformation.Properties().Where(p => p.Settings.IgnoreOnImport).Select(m => m.PropertyName).ToHashSet() : new HashSet<string>();
+            var obj = JsonConvert.DeserializeObject(json, Value.GetType());
+            var notIgnored = obj.ToFlatDictionary().Where(kvp => !ignored.Contains(kvp.Key) && !ignored.Any(path => IsPropertyPathSubPropertyOf(kvp.Key, path))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+            // Keep current values for ignored import properties
+            var full = Value.ToFlatDictionary();
+            var missing = full.Where(kvp => !notIgnored.ContainsKey(kvp.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            notIgnored.AddRange(missing);
+            var cleaned = JsonDictionaryConverter.Unflatten(notIgnored);
+            Value = cleaned.ToObject<T>();
+
+            foreach (var prop in MetaInformation.AllProperties) // TODO: Get rid of this hack, but otherwise currently not all UI values are updated
+                prop.Value = notIgnored.TryGetValue(prop.PropertyName, out var val) ? val.MapTo(prop.PropertyInfo.PropertyType) : prop.Value;
+        });
+
     }
 }
