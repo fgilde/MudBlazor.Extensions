@@ -15,6 +15,7 @@ using MudBlazor.Extensions.Options;
 using MudBlazor.Utilities;
 using Newtonsoft.Json;
 using Nextended.Blazor.Models;
+using Nextended.Core;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 
@@ -476,8 +477,8 @@ public partial class MudExObjectEdit<T>
             var cleaned = JsonDictionaryConverter.Unflatten(notIgnored);
             Value = cleaned.ToObject<T>();
 
-            foreach (var prop in MetaInformation.AllProperties) // TODO: Get rid of this hack, but otherwise currently not all UI values are updated
-                prop.Value = notIgnored.TryGetValue(prop.PropertyName, out var val) ? val.MapTo(prop.PropertyInfo.PropertyType) : prop.Value;
+            foreach (var prop in MetaInformation.AllProperties.Where(p => p.PropertyInfo.CanWrite)) // TODO: Get rid of this hack, but otherwise currently not all UI values are updated
+                Check.TryCatch<Exception>(() => { prop.Value = notIgnored.TryGetValue(prop.PropertyName, out var val) ? val.MapTo(prop.PropertyInfo.PropertyType) : prop.Value; });
         });
 
     }
