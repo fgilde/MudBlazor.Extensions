@@ -14,11 +14,13 @@
     </MudAlert>
     <MudButton Title="ToggleLoading" Variant="Variant.Outlined" Color="Color.Warning" OnClick="@(() => _isLoading = !_isLoading)">Toggle loading</MudButton>
     <MudExObjectEditForm 
+        T="UserInformation"
         @ref="form"
         IsLoading="@_isLoading"
         ImportNeedsConfirmation="true"
         AllowExport="true"
         AllowImport="true"
+        BeforeImport="OnBeforeImport"
         AutoSkeletonOnLoad="true"
         DefaultGroupName="Misc"
         MetaConfiguration="@Configure"
@@ -211,6 +213,15 @@
             Animation = AnimationType.Slide,
             MaxWidth = MaxWidth.Medium
         });
+    }
+
+    private void OnBeforeImport(ImportData<UserInformation> importData)
+    {
+        // Here you can modify the data before it is imported
+        // For example you can remove some properties or change the values
+        // This is called before the import is executed
+        // importData.Json = "{\"FirstName\": \"Changed Test\"}";
+
     }
 
 }

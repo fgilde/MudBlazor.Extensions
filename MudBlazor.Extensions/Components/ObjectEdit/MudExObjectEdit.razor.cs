@@ -14,6 +14,8 @@ using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Utilities;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using Nextended.Blazor.Models;
 using Nextended.Core;
 using Nextended.Core.Extensions;
@@ -68,9 +70,16 @@ public partial class MudExObjectEdit<T>
     [Parameter] public string ToolBarPaperClass { get; set; }
     [Parameter] public bool StickyToolbar { get; set; }
     [Parameter] public string StickyToolbarTop { get; set; } = "var(--mud-appbar-height)";
-    [Parameter] public EventCallback<T> AfterImport { get; set; }
-    [Parameter] public EventCallback<T> AfterExport { get; set; }
-    [Parameter] public EventCallback<T> BeforeExport { get; set; }
+    [Parameter] public EventCallback<ImportedData<T>> AfterImport { get; set; }
+    [Parameter] public EventCallback<ExportedData<T>> AfterExport { get; set; }
+    /**
+     * Here you can change content of parameter to manipulate export data
+     */
+    [Parameter] public EventCallback<ExportData<T>> BeforeExport { get; set; }
+    /**
+     * Here you can change content of parameter to manipulate import data
+     */
+    [Parameter] public EventCallback<ImportData<T>> BeforeImport { get; set; }
     [Parameter] public EventCallback<T> ValueChanged { get; set; }
     [Parameter] public ObjectEditMeta<T> MetaInformation { get; set; }
     [Parameter] public bool ShowPathAsTitleForEachProperty { get; set; }
@@ -345,11 +354,12 @@ public partial class MudExObjectEdit<T>
 
     private async Task Export()
     {
-        await BeforeExport.InvokeAsync(Value);
+        var exported = new ExportedData<T> { Value = Value, Json = await ToJsonAsync() };
+        await BeforeExport.InvokeAsync(exported);
         IsInternalLoading = true;
         try
         {
-            var json = await ToJsonAsync();
+            var json = exported.Json;
             var url = await DataUrl.GetDataUrlAsync(await Task.Run(() => Encoding.UTF8.GetBytes(json)), "application/json");
             await _js.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
             {
@@ -357,7 +367,7 @@ public partial class MudExObjectEdit<T>
                 FileName = !string.IsNullOrWhiteSpace(ExportFileName) ? ExportFileName : $"{Value.GetType().Name}_{DateTime.Now}.json",
                 MimeType = "application/json"
             });
-            await AfterExport.InvokeAsync(Value);
+            await AfterExport.InvokeAsync(exported);
         }
         finally
         {
@@ -365,31 +375,25 @@ public partial class MudExObjectEdit<T>
         }
     }
 
-    private bool IsPropertyPathSubPropertyOf(string propertyPath, string path)
-    {
-        if (string.IsNullOrWhiteSpace(propertyPath) || string.IsNullOrWhiteSpace(path))
-            return false;
-        var pathParts = propertyPath.Split('.');
-        var subPathParts = path.Split('.');
-        return pathParts.Length >= subPathParts.Length && !subPathParts.Where((t, i) => pathParts[i] != t).Any();
-    }
-
     private Task<string> ToJsonAsync()
     {
         return Task.Run(() =>
         {
-            var ignored = MetaInformation.Properties().Where(p => p.Settings.IgnoreOnExport).Select(m => m.PropertyName).ToHashSet();
-            if (ignored.Count == 0)
-                return JsonConvert.SerializeObject(Value, Formatting.Indented);
-            var dict = Value.ToFlatDictionary().Where(kvp => !ignored.Contains(kvp.Key) && !ignored.Any(path => IsPropertyPathSubPropertyOf(kvp.Key, path))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-            var cleaned = JsonDictionaryConverter.Unflatten(dict);
-            return JsonConvert.SerializeObject(cleaned, Formatting.Indented);
+            var ignored = MetaInformation.Properties().Where(p => p.Settings.IgnoreOnExport).Select(m => m.PropertyName).ToArray();
+            var json = JsonConvert.SerializeObject(Value, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.Indented
+            });
+            return ignored.Any() ? JsonHelper.RemovePropertiesFromJson(json, ignored) : json;
         });
     }
 
-    private async Task<bool> ShouldCancelImportAsync(IBrowserFile file)
+    private async Task<bool> ShouldCancelImportAsync(string json, string fileName)
     {
-        var cancelled = ImportNeedsConfirmation && (await (await dialogService.ShowFileDisplayDialog(file, op =>
+        var mimeType = "application/json";
+        var url = await DataUrl.GetDataUrlAsync(Encoding.UTF8.GetBytes(json), mimeType);
+        var cancelled = ImportNeedsConfirmation && (await (await dialogService.ShowFileDisplayDialog(url, fileName, mimeType, op =>
         {
             op.MaxWidth = MaxWidth.Large;
             op.FullWidth = false;
@@ -429,17 +433,20 @@ public partial class MudExObjectEdit<T>
         }
         try
         {
-            if (await ShouldCancelImportAsync(e.File))
+            var buffer = new byte[e.File.Size];
+            await e.File.OpenReadStream(e.File.Size).ReadAsync(buffer);
+            
+            var toImport = new ImportedData<T> { Json = Encoding.UTF8.GetString(buffer), Value = Value };
+            await BeforeImport.InvokeAsync(toImport);
+            if (await ShouldCancelImportAsync(toImport.Json, e.File.Name))
                 return;
 
             IsInternalLoading = true;
-            var buffer = new byte[e.File.Size];
-            await e.File.OpenReadStream(e.File.Size).ReadAsync(buffer);
-            var json = Encoding.UTF8.GetString(buffer);
 
-            await LoadFromJson(json, true);
+
+            await LoadFromJson(toImport.Json, true);
             await ImportSuccessUI();
-            await AfterImport.InvokeAsync(Value);
+            await AfterImport.InvokeAsync(toImport);
         }
         catch (Exception ex)
         {
@@ -468,7 +475,7 @@ public partial class MudExObjectEdit<T>
         {
             var ignored = removeIgnoredImports ? MetaInformation.Properties().Where(p => p.Settings.IgnoreOnImport).Select(m => m.PropertyName).ToHashSet() : new HashSet<string>();
             var obj = JsonConvert.DeserializeObject(json, Value.GetType());
-            var notIgnored = obj.ToFlatDictionary().Where(kvp => !ignored.Contains(kvp.Key) && !ignored.Any(path => IsPropertyPathSubPropertyOf(kvp.Key, path))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            var notIgnored = obj.ToFlatDictionary().Where(kvp => !ignored.Contains(kvp.Key) && !ignored.Any(path => PropertyHelper.IsPropertyPathSubPropertyOf(kvp.Key, path))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
             // Keep current values for ignored import properties
             var full = Value.ToFlatDictionary();

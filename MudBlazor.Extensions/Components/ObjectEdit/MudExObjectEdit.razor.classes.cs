@@ -54,3 +54,13 @@ public class ModelForPrimitive<T>
 
     public T Value { get; set; }
 }
+
+public class ExportData<T>
+{
+    public T Value { get; set; }
+    public string Json { get; set; }
+}
+
+public class ImportData<T> : ExportData<T> { }
+public class ImportedData<T> : ImportData<T> { }
+public class ExportedData<T> : ExportData<T> { }
