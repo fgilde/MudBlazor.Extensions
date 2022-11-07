@@ -10,7 +10,7 @@ Sure you need a MudBlazor project and the referenced package to MudBlazor for mo
 Add the nuget Package `MudBlazor.Extensions` to your blazor project
 
 ```
-<PackageReference Include="MudBlazor.Extensions" Version="1.6.71" />
+<PackageReference Include="MudBlazor.Extensions" Version="1.6.72" />
 ```
 
 For easier using the components should change your `_Imports.razor` and add this entries.
@@ -204,6 +204,7 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log
+ - 1.6.71 Extension for DialogService to show any component in a dialog `dialogService.ShowComponentInDialogAsync<Component>(...)` [Sample](https://mudex.azurewebsites.net/component-in-dialog)
  - 1.6.70 MudExObjectEdit has now events for before import and beforeexport, that allows you to change imported or exported date before executed
  - 1.6.69 BugFix wrong js was loaded
  - 1.6.68 New small DialogComponent `MudExMessageDialog` with custom actions and result and with small dialogServiceExtension `dialogService.ShowConfirmationDialogAsync`

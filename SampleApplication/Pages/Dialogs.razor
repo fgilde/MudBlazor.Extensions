@@ -16,11 +16,12 @@
             <MudButton Class="mt-3" Size="Size.Large" Disabled="@(OpenDialogTask != null)" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
         </MudItem>
     </MudGrid>
-
+    
     <MudExObjectEdit DefaultGroupName="Other" Value="@Options"></MudExObjectEdit>
 </SampleApplication.Client.Shared.DemoComponent>
 
 @code {
+    
     private Task OpenDialogTask;
     private int seconds = 2;
     MudDialogButton[] GetButtons() => new[] {

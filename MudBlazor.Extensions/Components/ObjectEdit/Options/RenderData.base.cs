@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
+using MudBlazor.Extensions.Helper;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 
@@ -14,15 +15,7 @@ public partial class RenderData : IRenderData
     public IDictionary<string, object> Attributes { get; set; } = new Dictionary<string, object>();
     public ICustomRenderer CustomRenderer { get; set; }
     public virtual IRenderData InitValueBinding(ObjectEditPropertyMeta propertyMeta, Func<Task> valueChanged) => this;
-    public bool IsValidParameterAttribute(string key, object value)
-    {
-        if (key == nameof(MudComponentBase.UserAttributes))
-            return false;
-        var propertyInfo = ComponentType?.GetProperty(key, BindingFlags.Public | BindingFlags.Instance);
-        if (propertyInfo != null && value != null)
-            return propertyInfo.PropertyType.IsInstanceOfType(value);
-        return propertyInfo != null;
-    }
+    public bool IsValidParameterAttribute(string key, object value) => ComponentRenderHelper.IsValidParameterAttribute(ComponentType, key, value);
     public IDictionary<string, object> ValidAttributes => Attributes.Where(kvp => IsValidParameterAttribute(kvp.Key, kvp.Value)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
     public IRenderData TrySetAttributeIfAllowed(string key, Func<object> valueFn, bool condition = true) => TrySetAttributeIfAllowed(key, valueFn(), condition);
     public virtual object ConvertToPropertyValue(object value) => value;

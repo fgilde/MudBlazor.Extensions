@@ -11,7 +11,8 @@ public static class Navigations
             {
                 Children = new()
                 {
-                    new NavigationEntry("Dialog Sample", Icons.Material.Outlined.Window, "/dialogs")
+                    new NavigationEntry("Dialog Sample", Icons.Material.Outlined.Window, "/dialogs"),
+                    new NavigationEntry("Component in Dialog", Icons.Material.Outlined.Window, "/component-in-dialog")
                 }
             },
             new NavigationEntry("File Display")

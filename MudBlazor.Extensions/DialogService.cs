@@ -1,22 +1,15 @@
-﻿using System.Net.Mime;
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
-using MudBlazor.Extensions.Components;
-using MudBlazor.Extensions.Components.ObjectEdit;
-using MudBlazor.Extensions.Components.ObjectEdit.Options;
-using MudBlazor.Extensions.Extensions;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using Nextended.Core;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
-using Nextended.Blazor.Extensions;
 
 namespace MudBlazor.Extensions
 {
-    public static class DialogServiceExt
+    public static partial class DialogServiceExt
     {
         private static DialogParameters MergeParameters(DialogParameters dialogParameters, DialogParameters parameters)
         {
@@ -28,171 +21,7 @@ namespace MudBlazor.Extensions
 
             return parameters;
         }
-
-        #region File Display
-
-        public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string url, string fileName, string contentType, Func<IFileDisplayInfos, Task<ContentErrorResult>> handleContentErrorFunc,  Action<DialogOptionsEx> options = null) 
-            => dialogService.ShowFileDisplayDialog(url, fileName, contentType, options, new DialogParameters { { nameof(MudExFileDisplay.HandleContentErrorFunc), handleContentErrorFunc } });
-
-        public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, IBrowserFile browserFile, Func<IFileDisplayInfos, Task<ContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null) 
-            => dialogService.ShowFileDisplayDialog(browserFile, options, new DialogParameters { { nameof(MudExFileDisplay.HandleContentErrorFunc), handleContentErrorFunc } });
-
-        public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, Stream stream, string fileName, string contentType, Func<IFileDisplayInfos, Task<ContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null)
-            => dialogService.ShowFileDisplayDialog(stream, fileName, contentType, options, new DialogParameters { { nameof(MudExFileDisplay.HandleContentErrorFunc), handleContentErrorFunc } });
-
-        public static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
-        {
-            var parameters = new DialogParameters
-        {
-            {nameof(MudExFileDisplayDialog.Icon), BrowserFileExt.IconForFile(contentType)},
-            {nameof(MudExFileDisplayDialog.Url), url},
-            {nameof(MudExFileDisplayDialog.ContentType), contentType}
-        };
-            
-            return await dialogService.ShowFileDisplayDialog(fileName, MergeParameters(dialogParameters, parameters), options);
-        }
-
-        public static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, IBrowserFile browserFile, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
-        {
-            if (MimeType.IsZip(browserFile.ContentType))
-            {
-                var ms = new MemoryStream(await browserFile.GetBytesAsync());
-                return await dialogService.ShowFileDisplayDialog(ms, browserFile.Name, browserFile.ContentType, options);
-            }
-            return await dialogService.ShowFileDisplayDialog(await browserFile.GetDataUrlAsync(), browserFile.Name, browserFile.ContentType, options, dialogParameters);
-        }
-
-        public static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, Stream stream, string fileName, string contentType, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
-        {
-            var parameters = new DialogParameters
-        {
-            {nameof(MudExFileDisplayDialog.Icon), BrowserFileExt.IconForFile(contentType)},
-            {nameof(MudExFileDisplayDialog.ContentStream), stream},
-            {nameof(MudExFileDisplayDialog.ContentType), contentType}
-        };
-
-            return await dialogService.ShowFileDisplayDialog(fileName, MergeParameters(dialogParameters, parameters), options);
-        }
-
-        private static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string fileName, DialogParameters parameters, Action<DialogOptionsEx> options = null)
-        {
-            var optionsEx = new DialogOptionsEx
-            {
-                CloseButton = true,
-                MaxWidth = MaxWidth.ExtraExtraLarge,
-                FullWidth = true,
-                DisableBackdropClick = false,
-                MaximizeButton = true,
-                DragMode = MudDialogDragMode.Simple,
-                Position = DialogPosition.BottomCenter,
-                Animations = new[] { AnimationType.FadeIn, AnimationType.SlideIn },
-                AnimationDuration = TimeSpan.FromSeconds(1),
-                FullHeight = true,
-                Resizeable = true
-            };
-            options?.Invoke(optionsEx);
-
-            return await dialogService.ShowEx<MudExFileDisplayDialog>(fileName, parameters, optionsEx);
-        }
-
-        #endregion
-
-
-        #region Object edit
-
-        public static async Task<(bool Cancelled, TModel Result)> ShowObject<TModel>(this IDialogService dialogService, TModel value, string title, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null, DialogParameters dialogParameters = null)
-        {
-            var parameters = new DialogParameters
-            {
-                {nameof(MudExObjectEditDialog<TModel>.ShowSaveButton), false},
-                {nameof(MudExObjectEditDialog<TModel>.CancelButtonText), "Close"},
-            };
-            return await dialogService.EditObject(value, title, options, meta =>
-            {
-                metaConfig?.Invoke(meta);
-                meta.Properties().AsReadOnly();
-            }, MergeParameters(dialogParameters, parameters));
-        }
-
-        public static async Task<(bool Cancelled, TModel Result)> EditObject<TModel>(this IDialogService dialogService,
-            TModel value, string title, Func<TModel, MudExObjectEditDialog<TModel>, Task<string>> customSubmit, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null,
-            DialogParameters dialogParameters = null)
-        {
-            var parameters = new DialogParameters
-            {
-                {nameof(MudExObjectEditDialog<TModel>.CustomSubmit), customSubmit}
-            };
-            return await dialogService.EditObject(value, title, options, metaConfig, MergeParameters(dialogParameters, parameters));
-        }
-
-        public static async Task<(bool Cancelled, TModel Result)> EditObject<TModel>(this IDialogService dialogService, TModel value, string title, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null, DialogParameters dialogParameters = null)
-        {
-            if (MudExObjectEdit<TModel>.IsPrimitive())
-            {
-                var modelForPrimitive = new ModelForPrimitive<TModel>(value);
-                var r = await dialogService.EditObject(modelForPrimitive, title, options, null, dialogParameters);
-                return (r.Cancelled, r.Result.Value);
-            }
-            var parameters = new DialogParameters
-            {
-                {nameof(MudExObjectEditDialog<TModel>.Value), value},
-                {nameof(MudExObjectEditDialog<TModel>.ConfigureMetaInformationAlways), true},
-                {nameof(MudExObjectEditDialog<TModel>.MetaInformation), value.ObjectEditMeta(metaConfig)}
-            };
-
-            var dialog = await dialogService.ShowEx<MudExObjectEditDialog<TModel>>(title, MergeParameters(dialogParameters, parameters), options);
-
-            var res = await dialog.Result;
-            return (res.Cancelled, res.Cancelled ? value : (TModel)res.Data);
-        }
-
-        #endregion
-
-        #region Confirmation Dialog
-
-        public static async Task<bool> ShowConfirmationDialogAsync(this IDialogService dialogService, string title, string message,
-            string confirmText = "Confirm",
-            string cancelText = "Cancel",
-            DialogOptionsEx options = null)
-        {
-            var actions = new[]
-            {
-                new MudExDialogResultAction
-                {
-                    Label = cancelText,
-                    Variant = Variant.Text,
-                    Result = DialogResult.Cancel()
-                },
-                new MudExDialogResultAction
-                {
-                    Label = confirmText,
-                    Color = Color.Error,
-                    Variant = Variant.Filled,
-                    Result = DialogResult.Ok(true)
-                },
-            };
-            var parameters = new DialogParameters
-            {
-                {
-                    nameof(MudExMessageDialog.Message), message
-                },
-                {nameof(MudExMessageDialog.Icon), Icons.Filled.Check},
-                {nameof(MudExMessageDialog.Class), "mud-ex-dialog-initial"},
-                {nameof(MudExMessageDialog.Buttons), actions}
-            };
-            options ??= new DialogOptionsEx
-            {
-                CloseButton = true,
-                DisableBackdropClick = false,
-                Animations = new[] { AnimationType.FadeIn, AnimationType.FlipX }
-            };
-            var dialog = await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options);
-
-            return !(await dialog.Result).Cancelled;
-        }
-
-        #endregion
-
+        
         public static DialogParameters ToDialogParameters(this IEnumerable<KeyValuePair<string, object>> parameters)
         {
             var dialogParameters = new DialogParameters();

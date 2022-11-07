@@ -1,0 +1,36 @@
+﻿@page "/component-in-dialog"
+
+@inject IJSRuntime js;
+@inject IDialogService dialogService;
+
+<PageTitle>Sample Dialog</PageTitle>
+
+<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")">
+    <MudGrid>
+        <MudButton Class="mt-3" Size="Size.Large" OnClick="@ShowComponentSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show a DatePicker in a dialog</MudButton>
+    </MudGrid>
+
+</SampleApplication.Client.Shared.DemoComponent>
+
+@code {
+
+    private async Task ShowComponentSampleDialog()
+    {
+       var res = await dialogService.ShowComponentInDialogAsync<MudDatePicker>("Hello...", "Please select a date",
+            p =>
+            {
+                p.PickerVariant = PickerVariant.Static;
+            }, 
+            dialog =>
+            {
+                 dialog.Icon = Icons.Material.Filled.DateRange;
+                dialog.Buttons = MudExDialogResultAction.OkCancel();
+            });
+        if (!res.DialogResult.Cancelled)
+        {
+            await js.InvokeVoidAsync("alert", res.Component.Date.Value.ToString("dd.MM.yyyy"));
+        }
+    }
+    
+
+}

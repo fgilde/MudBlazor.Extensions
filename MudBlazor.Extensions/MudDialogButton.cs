@@ -33,6 +33,27 @@ namespace MudBlazor.Extensions
         public string Label { get; set; }
         public Variant Variant { get; set; }
         public Color Color { get; set; }
+
+        public static MudExDialogResultAction[] OkCancel(string confirmText = "Ok", string cancelText = "Cancel")
+        {
+            var actions = new[]
+            {
+                new MudExDialogResultAction
+                {
+                    Label = cancelText,
+                    Variant = Variant.Text,
+                    Result = DialogResult.Cancel()
+                },
+                new MudExDialogResultAction
+                {
+                    Label = confirmText,
+                    Color = Color.Error,
+                    Variant = Variant.Filled,
+                    Result = DialogResult.Ok(true)
+                },
+            };
+            return actions;
+        }
     }
 
 }
