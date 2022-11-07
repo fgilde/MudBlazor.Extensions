@@ -7,7 +7,7 @@
 
 <SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")">
     <MudGrid>
-        <MudButton Class="mt-3" Size="Size.Large" OnClick="@ShowComponentSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show a DatePicker in a dialog</MudButton>
+        <MudButton Class="mt-3" Size="Size.Large" OnClick="@ShowComponentSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show a slider in a dialog</MudButton>
     </MudGrid>
 
 </SampleApplication.Client.Shared.DemoComponent>
@@ -16,19 +16,19 @@
 
     private async Task ShowComponentSampleDialog()
     {
-       var res = await dialogService.ShowComponentInDialogAsync<MudDatePicker>("Hello...", "Please select a date",
-            p =>
+        var res = await dialogService.ShowComponentInDialogAsync<MudSlider<int>>("Hello...", "Please slide around",
+            slider =>
             {
-                p.PickerVariant = PickerVariant.Static;
+                slider.Color = Color.Warning;
             }, 
             dialog =>
             {
-                 dialog.Icon = Icons.Material.Filled.DateRange;
+                 dialog.Icon = Icons.Material.Filled.StarRate;
                 dialog.Buttons = MudExDialogResultAction.OkCancel();
             });
         if (!res.DialogResult.Cancelled)
         {
-            await js.InvokeVoidAsync("alert", res.Component.Date.Value.ToString("dd.MM.yyyy"));
+            await js.InvokeVoidAsync("alert", res.Component.Value.ToString());
         }
     }
     
