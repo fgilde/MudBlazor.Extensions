@@ -3,17 +3,17 @@
 @using Microsoft.Extensions.DependencyInjection;
 @namespace MudBlazor.Extensions.Components
 
-<MudDialog Class="@Class">
+<MudDialog Style="@Style" Class="@Class" ClassContent="@ClassContent">
     <TitleContent>
         <MudText Typo="Typo.h6">
-            <MudIcon Color="Color.Error" Icon="@Icon" Class="mr-3 mb-n1" />
-            @MudDialog.Title
+            <MudIcon Color="Color.Error" Icon="@Icon" Class="mr-3 mb-n1"/>
+            @localizer.TryLocalize(MudDialog.Title)
         </MudText>
     </TitleContent>
     <DialogContent>
         @if (!string.IsNullOrEmpty(Message))
         {
-            <MudText>@Message</MudText>
+            <MudText>@localizer.TryLocalize(Message)</MudText>
         }
         @if (Content != null)
         {
@@ -39,7 +39,11 @@
     [Inject] private IServiceProvider _serviceProvider { get; set; }
 
     private IStringLocalizer<MudExMessageDialog> localizer => _serviceProvider.GetService<IStringLocalizer<MudExMessageDialog>>();
+    
+    [Parameter] public string Style { get; set; } = string.Empty;
     [Parameter] public string Class { get; set; } = "mud-ex-dialog-initial";
+    [Parameter] public string ClassContent { get; set; } = string.Empty;
+
     [Parameter] public string Message { get; set; }
     [Parameter] public string Icon { get; set; }
     [Parameter] public IEnumerable<string> Details { get; set; }
