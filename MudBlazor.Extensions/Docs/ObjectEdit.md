@@ -7,7 +7,7 @@ The easiest way to use it is to use the `MudExObjectEditForm` and pass your mode
 <MudExObjectEditForm OnValidSubmit="@OnSubmit" Value="@MyModel"></MudExObjectEditForm>
 ```
 
-You can also use the `MudExObjectEditDialog` to edit you model in a dialog. The easieest way to do this is to use the extension method `EditObject` on the `IDialogService`.
+You can also use the `MudExObjectEditDialog` to edit you model in a dialog. The easiest way to do this is to use the extension method `EditObject` on the `IDialogService`.
 ```csharp
 dialogService.EditObject(User, "Dialog Title", dialogOptionsEx);
 ```
@@ -25,8 +25,8 @@ public class MyModelMetaConfiguration : IObjectMetaConfiguration<MyModel>
     }
 ```
 
-The meta configuration is very powerfull you can render every property as you want and have many features like Conditional updtaes, unlimited configuratable wrapper components, label and description resolving and much much more.
-Also there is no requirement to use MudBlazor Components. For example lets configure a property to render with the Syncfusion RichTextEditor
+The meta configuration is very powerfull you can render every property as you want and have many features like Conditional updates, unlimited configurable wrapper components, label and description resolving and much much more.
+There is no requirement to use MudBlazor Components. For example lets configure a property to render with the Syncfusion RichTextEditor
 
 ```csharp
 public class MyModel {
