@@ -40,6 +40,13 @@ public static class Navigations
                     //    }
                     //}
                 }
+            },
+            new NavigationEntry("Other components")
+            {
+                Children = new()
+                {
+                    new NavigationEntry("MudExEnumSelect", Icons.Material.Outlined.List, "/enum-select")
+                }
             }
         };
 }

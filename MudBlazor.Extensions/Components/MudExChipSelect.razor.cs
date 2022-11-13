@@ -55,10 +55,14 @@ public partial class MudExChipSelect<T>
             if (Selected.Count() != set.Count || !_selected.All(x => set.Contains(x)))
             {
                 _selected = new HashSet<T>(set);
+                OnBeforeSelectedChanged(_selected);
                 RaiseChanged();
             }
         }
     }
+
+    protected virtual void OnBeforeSelectedChanged(IEnumerable<T> selected)
+    {}
 
     private void RaiseChanged()
     {

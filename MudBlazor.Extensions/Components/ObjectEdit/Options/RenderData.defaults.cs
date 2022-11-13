@@ -144,13 +144,17 @@ public static class RenderDataDefaults
         var propertyType = propertyMeta.PropertyInfo.PropertyType;
         if (propertyType.IsEnum || propertyType.IsNullableEnum()) // Enum support
         {
-            var values = propertyType.IsNullableEnum() ? Nullable.GetUnderlyingType(propertyType).GetEnumValues().Cast<object>().ToList() : propertyType.GetEnumValues().Cast<object>().ToList();
-            return RenderData.For<MudExChipSelect<object>, object, IEnumerable<object>>(s => s.Selected, s =>
-            {
-                s.AvailableItems = values;
-                s.MultiSelect = false;
-                s.ViewMode = ViewMode.NoChips;
-            }, s => s.AsEnumerable(), x => x.Select(o => o.MapTo(propertyType)).FirstOrDefault());
+            var controlType = typeof(MudExEnumSelect<>).MakeGenericType(propertyType);
+            var renderDataType = typeof(RenderData<,>).MakeGenericType(propertyType, propertyType);
+            return renderDataType.CreateInstance<IRenderData>(nameof(MudExEnumSelect<object>.Value), controlType, null);
+            
+            //Old without MudExEnumSelect
+            //return RenderData.For<MudExChipSelect<object>, object, IEnumerable<object>>(s => s.Selected, s =>
+            //{
+            //    s.AvailableItems = propertyType.IsNullableEnum() ? Nullable.GetUnderlyingType(propertyType).GetEnumValues().Cast<object>().ToList() : propertyType.GetEnumValues().Cast<object>().ToList();
+            //    s.MultiSelect = false;
+            //    s.ViewMode = ViewMode.NoChips;
+            //}, s => s.AsEnumerable(), x => x.Select(o => o.MapTo(propertyType)).FirstOrDefault());
         }
 
         if (IsCollection(propertyMeta.PropertyInfo.PropertyType) || IsEnumerable(propertyMeta.PropertyInfo.PropertyType)) // Collection support

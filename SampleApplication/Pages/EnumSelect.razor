@@ -1,0 +1,119 @@
+﻿@page "/enum-select"
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+<PageTitle>EnumSelect</PageTitle>
+
+<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
+
+    <MudCard Class="mb-10" Elevation="6">
+        <MudCardHeader>
+            <MudText Typo="Typo.h6">Simple Enum</MudText>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem md="6" Class="d-flex justify-center">
+                    <MudExEnumSelect TEnum="TestEnumState" @bind-Value="@State"></MudExEnumSelect>
+                </MudItem>
+                <MudItem md="3">
+                    <MudText>Selected: @State</MudText>
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+    </MudCard>
+
+
+    <MudCard Class="mb-10" Elevation="6">
+        <MudCardHeader>
+            <MudText Typo="Typo.h6">Nullable enum</MudText>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem md="6" Class="d-flex justify-center">
+                    <MudExEnumSelect TEnum="TestEnumState?" @bind-Value="@StateNullable"></MudExEnumSelect>
+
+                </MudItem>
+                <MudItem md="3">
+                    @if (StateNullable.HasValue)
+                    {
+                        <MudText>Selected: @StateNullable</MudText>
+                    }
+                    else
+                    {
+                        <MudText>Selected: NULL</MudText>
+                    }
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+    </MudCard>
+    
+    
+
+    
+    <MudCard Class="mb-10" Elevation="6">
+        <MudCardHeader>
+            <MudText Typo="Typo.h6">Flags Enum</MudText>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem md="6" Class="d-flex justify-center">
+                    <MudExEnumSelect TEnum="DinnerItems" @bind-Value="@ChosenDinnerItems"></MudExEnumSelect>
+                </MudItem>
+                <MudItem md="3">
+                    <MudText>Selected: @ChosenDinnerItems</MudText>
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+    </MudCard>
+    
+    
+    <MudCard Class="mb-10" Elevation="6">
+        <MudCardHeader>
+            <MudText Typo="Typo.h6">Nullable Flags Enum</MudText>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem md="6" Class="d-flex justify-center">
+                    <MudExEnumSelect TEnum="DinnerItems?" @bind-Value="@ChosenDinnerItemsNullable"></MudExEnumSelect>
+                </MudItem>
+                <MudItem md="3">
+                    @if (ChosenDinnerItemsNullable.HasValue)
+                    {
+                        <MudText>Selected: @ChosenDinnerItemsNullable</MudText>
+                    }
+                    else
+                    {
+                        <MudText>Selected: NULL</MudText>
+                    }
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+    </MudCard>
+
+</SampleApplication.Client.Shared.DemoComponent>
+
+
+@code {
+    public DinnerItems ChosenDinnerItems { get; set; } = DinnerItems.Appetizer | DinnerItems.Beverage;
+    public DinnerItems? ChosenDinnerItemsNullable { get; set; } = DinnerItems.Appetizer | DinnerItems.Beverage;
+    public TestEnumState State { get; set; }
+    public TestEnumState? StateNullable { get; set; }
+
+
+    public enum TestEnumState
+    {
+        Open,
+        Closed,
+        InProgress,
+        Cancelled,
+    }
+
+    [Flags] 
+    public enum DinnerItems {
+        Entree = 1,
+        Appetizer = 2,
+        Side = 4,
+        Dessert = 8,
+        Beverage = 16,
+        BarBeverage = 32
+    }
+}
