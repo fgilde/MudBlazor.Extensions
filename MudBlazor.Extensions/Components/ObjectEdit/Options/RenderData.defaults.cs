@@ -147,7 +147,7 @@ public static class RenderDataDefaults
             var controlType = typeof(MudExEnumSelect<>).MakeGenericType(propertyType);
             var renderDataType = typeof(RenderData<,>).MakeGenericType(propertyType, propertyType);
             return renderDataType.CreateInstance<IRenderData>(nameof(MudExEnumSelect<object>.Value), controlType, null);
-            
+
             //Old without MudExEnumSelect
             //return RenderData.For<MudExChipSelect<object>, object, IEnumerable<object>>(s => s.Selected, s =>
             //{

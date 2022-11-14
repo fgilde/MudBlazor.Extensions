@@ -10,8 +10,8 @@
     bool _isFlagsEnum;
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
-    protected override Task<IList<TEnum>> GetAvailableItemsAsync(CancellationToken cancellation = default)
-        => Task.Run(EnumValueList, cancellation);
+    //protected override Task<IList<TEnum>> GetAvailableItemsAsync(CancellationToken cancellation = default)
+    //    => Task.Run(EnumValueList, cancellation);
 
     private static IList<TEnum> EnumValueList()
         => EnumOrUnderlyingType().GetEnumValues().Cast<TEnum>().ToList();
@@ -26,6 +26,7 @@
         ViewMode = ViewMode.NoChips;
         _isFlagsEnum = EnumOrUnderlyingType().GetCustomAttribute<FlagsAttribute>() != null;
         MultiSelect = _isFlagsEnum;
+        AvailableItems = EnumValueList();
         base.OnInitialized();
     }
 
@@ -35,7 +36,7 @@
         if (_isFlagsEnum)
         {
             var valueEnum = Value as Enum;
-            var toSelect = EnumValueList().Where(e => valueEnum?.HasFlag((e as Enum)!) == true).ToList();
+            var toSelect = AvailableItems.Where(e => valueEnum?.HasFlag((e as Enum)!) == true).ToList();
             Selected = toSelect;
         }
         else if (Value != null)
@@ -58,7 +59,7 @@
             {
                 Value = selectedAsArray.FirstOrDefault();
             }
-            foreach (var e in EnumValueList())
+            foreach (var e in AvailableItems)
                 Value = SetFlag(e, false);
             foreach (var e in selectedAsArray)
                 Value = SetFlag(e, true);
