@@ -10,7 +10,7 @@ Sure you need a MudBlazor project and the referenced package to MudBlazor for mo
 Add the nuget Package `MudBlazor.Extensions` to your blazor project
 
 ```
-<PackageReference Include="MudBlazor.Extensions" Version="1.6.76" />
+<PackageReference Include="MudBlazor.Extensions" Version="1.7.10" />
 ```
 
 For easier using the components should change your `_Imports.razor` and add this entries.
@@ -204,6 +204,7 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log
+ - 1.7.10 UPDATE TO .NET 7 and MudBlazor 6.1.2
  - 1.6.76 BugFix in MudExEnumSelect
  - 1.6.74 MudExEnumSelect select now supports nullable enums and flags
  - 1.6.73 Pass Class and ClassContent for MudExMessageDialog as Parameter
