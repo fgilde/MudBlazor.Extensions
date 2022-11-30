@@ -19,10 +19,10 @@ namespace MudBlazor.Extensions.Helper
             return await InitializeMudBlazorExtensionsAsync(js);
         }
 
-        public static async Task<IJSRuntime> InitializeMudBlazorExtensionsAsync(this IJSRuntime runtime)
+        public static async Task<IJSRuntime> InitializeMudBlazorExtensionsAsync(this IJSRuntime runtime, bool force = false)
         {
             _runtime = runtime ?? _runtime;
-            if (!initialized)
+            if (force || !initialized)
             {
                 //await runtime.InvokeVoidAsync("eval", "document.body.appendChild(Object.assign(document.createElement('script'),{src: './_content/MudBlazor.Extensions/mudBlazorExtensions.js',type: 'text/javascript' })); ");
                 //var jsToLoad = "wwwroot/mudBlazorExtensions.js";
