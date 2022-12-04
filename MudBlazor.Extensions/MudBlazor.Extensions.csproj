@@ -35,6 +35,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="BlazorJS" Version="1.0.1" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />

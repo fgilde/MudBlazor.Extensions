@@ -1,0 +1,14 @@
+﻿@using MudBlazor.Extensions.Helper
+<Scripts src="@(JsImportHelper.UtilJs("domHelper"))"></Scripts>
+<Scripts src="@(JsImportHelper.UtilJs("colorHelper"))"></Scripts>
+<Scripts src="@(JsImportHelper.UtilJs("number"))"></Scripts>
+<Scripts src="@(JsImportHelper.UtilJs("eventHelper"))"></Scripts>
+
+<div @ref="_elementReference" style="@Style()" class="cp-color-bubble"></div>
+
+<div @ref="_canvasContainerReference" 
+     style="@CanvasContainerStyle()" class="cp-color-bubble-canvas-container cp-color-bubble-canvas-container-small">
+    <div class="cp-color-bubble-locator">
+
+    </div>
+</div>

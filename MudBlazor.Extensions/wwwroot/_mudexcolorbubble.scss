@@ -1,0 +1,89 @@
+﻿.cp-color-bubble {
+    border-radius: 100%;
+    width: 16px;
+    height: 16px;
+    top: 4px;
+    left: 4px;
+    border: 1px solid transparent;
+    margin: 5px 13px 0 0;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.cp-color-bubble-canvas-container {
+    position: absolute;
+    background-color: transparent;
+    overflow: hidden;
+    z-index: 30000;
+
+    @include cptransition((transform, opacity), 0.5s);
+    @include browserPrefix('transition-timing-function', cubic-bezier(.87, -.41, .19, 1.44));
+
+    canvas {
+        background-color: white;
+        border-radius: 100%;
+        cursor: crosshair;
+    }
+
+    .cp-color-bubble-locator {
+        width: 7px;
+        height: 7px;
+        border-radius: 7px;
+        margin-left: -4px; /* (Durchmesser + 2 * border - 1) / 2 */
+        margin-top: -4px;
+        border: 1px solid black;
+        position: absolute;
+        opacity: 0.75;
+    }
+
+    .cp-color-bubble-preview {
+        position: absolute;
+        right: 0;
+        z-index: 99999999;
+        width: 20px;
+        height: 20px;
+        border: 1px solid black;
+        @include cptransition(opacity, 0.2s);
+    }
+}
+
+.cp-color-bubble-canvas-container-small {
+    @include browserPrefix('transform', scale(0.09) rotate(45deg));
+    opacity: 0;
+    cursor: pointer;
+}
+
+.cp-palette {
+    a.cp-color {
+        width: 24px;
+        height: 24px;
+        margin-right: 5px;
+        display: inline-block;
+
+        .cp-color-inner {
+            @include cptransition((width, height, top, left, opacity), 0.4s);
+            position: relative;
+            border-radius: 12px;
+            width: 16px;
+            height: 16px;
+            top: 4px;
+            left: 4px;
+            opacity: 0.8;
+            border-width: 1px;
+            border-style: solid;
+            border-color: transparent;
+        }
+    }
+
+    a.cp-color-FFFFFF .cp-color-inner {
+        border-color: #CDCDCD;
+    }
+
+    a.cp-color.cp-color-selected .cp-color-inner {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 1.0;
+    }
+}

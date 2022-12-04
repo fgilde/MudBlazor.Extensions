@@ -258,7 +258,6 @@
     -webkit-animation-iteration-count: 1 !important;
     animation-iteration-count: 1 !important;
   }
-
   .animate__animated[class*=Out] {
     opacity: 0;
   }
@@ -3994,6 +3993,122 @@
 
 .mud-ex-fd-tree-actions .mud-tooltip-root {
   display: inline-flex;
+}
+
+.cp-color-bubble {
+  border-radius: 100%;
+  width: 16px;
+  height: 16px;
+  top: 4px;
+  left: 4px;
+  border: 1px solid transparent;
+  margin: 5px 13px 0 0;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.cp-color-bubble-canvas-container {
+  position: absolute;
+  background-color: transparent;
+  overflow: hidden;
+  z-index: 30000;
+  -webkit-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  -ms-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+  -webkit-transition-property: transform, opacity;
+  -moz-transition-property: transform, opacity;
+  -ms-transition-property: transform, opacity;
+  -o-transition-property: transform, opacity;
+  transition-property: transform, opacity;
+  -webkit-transition-timing-function: cubic-bezier(0.87, -0.41, 0.19, 1.44);
+  -moz-transition-timing-function: cubic-bezier(0.87, -0.41, 0.19, 1.44);
+  -ms-transition-timing-function: cubic-bezier(0.87, -0.41, 0.19, 1.44);
+  -o-transition-timing-function: cubic-bezier(0.87, -0.41, 0.19, 1.44);
+  transition-timing-function: cubic-bezier(0.87, -0.41, 0.19, 1.44);
+}
+.cp-color-bubble-canvas-container canvas {
+  background-color: white;
+  border-radius: 100%;
+  cursor: crosshair;
+}
+.cp-color-bubble-canvas-container .cp-color-bubble-locator {
+  width: 7px;
+  height: 7px;
+  border-radius: 7px;
+  margin-left: -4px; /* (Durchmesser + 2 * border - 1) / 2 */
+  margin-top: -4px;
+  border: 1px solid black;
+  position: absolute;
+  opacity: 0.75;
+}
+.cp-color-bubble-canvas-container .cp-color-bubble-preview {
+  position: absolute;
+  right: 0;
+  z-index: 99999999;
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+  -webkit-transition-duration: 0.2s;
+  -moz-transition-duration: 0.2s;
+  -ms-transition-duration: 0.2s;
+  -o-transition-duration: 0.2s;
+  transition-duration: 0.2s;
+  -webkit-transition-property: opacity;
+  -moz-transition-property: opacity;
+  -ms-transition-property: opacity;
+  -o-transition-property: opacity;
+  transition-property: opacity;
+}
+
+.cp-color-bubble-canvas-container-small {
+  -webkit-transform: scale(0.09) rotate(45deg);
+  -moz-transform: scale(0.09) rotate(45deg);
+  -ms-transform: scale(0.09) rotate(45deg);
+  -o-transform: scale(0.09) rotate(45deg);
+  transform: scale(0.09) rotate(45deg);
+  opacity: 0;
+  cursor: pointer;
+}
+
+.cp-palette a.cp-color {
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
+  display: inline-block;
+}
+.cp-palette a.cp-color .cp-color-inner {
+  -webkit-transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  -ms-transition-duration: 0.4s;
+  -o-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  -webkit-transition-property: width, height, top, left, opacity;
+  -moz-transition-property: width, height, top, left, opacity;
+  -ms-transition-property: width, height, top, left, opacity;
+  -o-transition-property: width, height, top, left, opacity;
+  transition-property: width, height, top, left, opacity;
+  position: relative;
+  border-radius: 12px;
+  width: 16px;
+  height: 16px;
+  top: 4px;
+  left: 4px;
+  opacity: 0.8;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+}
+.cp-palette a.cp-color-FFFFFF .cp-color-inner {
+  border-color: #CDCDCD;
+}
+.cp-palette a.cp-color.cp-color-selected .cp-color-inner {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 1;
 }
 
 .mud-ex-object-edit-group-flat .mud-expand-panel-text {
