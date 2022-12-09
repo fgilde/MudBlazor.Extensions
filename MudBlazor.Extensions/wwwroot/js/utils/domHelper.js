@@ -1,4 +1,4 @@
-﻿class DomHelper {
+﻿class MudExDomHelper {
     dom;
     
     constructor(dom) {
@@ -11,7 +11,7 @@
 
     down(q) {
         var d = this.dom.querySelector(q);
-        return d ? new DomHelper(d) : null;
+        return d ? new MudExDomHelper(d) : null;
     }
 
     isVisible(deep) {
@@ -101,7 +101,6 @@
                 // This block is intentionally left blank
             }
         }
-
         return [round(x), round(y)];
     }
 }

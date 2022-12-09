@@ -43,6 +43,13 @@ public static partial class MudExObjectEditExtensions
         => meta?.SetProperties(m => m.AllProperties.Apply(p => p.DisableUnderline(disableUnderline)));
     public static ObjectEditMeta<T> IgnoreAllReadOnlyFields<T>(this ObjectEditMeta<T> meta)
         => meta?.SetProperties(m => m.AllProperties.Where(p => !p.Settings.IsEditable).Apply(p => p.Ignore()));
+    
+    public static ObjectEditMeta<T> IgnoreAllInheritedFields<T>(this ObjectEditMeta<T> meta, params Expression<Func<T, object>>[] except)
+        => meta?.SetProperties(m => m.AllProperties.Where(p => !(except ?? Enumerable.Empty<Expression<Func<T, object>>>() ).Select(m.Property).Contains(p) && p.PropertyInfo.DeclaringType != typeof(T)).Apply(p => p.Ignore()));
+    
+    //public static ObjectEditMeta<T> IgnoreAllDerivedFields<T>(this ObjectEditMeta<T> meta)
+    //    => meta?.SetProperties(m => m.AllProperties.Where(p => p.PropertyInfo.DeclaringType == typeof(T)).Apply(p => p.Ignore()));
+
     public static ObjectEditMeta<T> IgnoreFields<T>(this ObjectEditMeta<T> meta, params string[] fieldNames)
         => meta?.SetProperties(m => fieldNames.Apply(f => m.Property(f)?.Ignore()));
     public static ObjectEditMeta<T> IgnoreFields<T>(this ObjectEditMeta<T> meta, params Expression<Func<T, object>>[] fields)

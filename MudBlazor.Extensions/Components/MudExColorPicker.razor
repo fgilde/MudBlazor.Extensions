@@ -1,11 +1,35 @@
 ﻿@using MudBlazor.Utilities
 @inherits MudColorPicker
 
-@Inherited()
+@if (UseNativeBrowserControl)
+{
+    @if (UseColorPaletteInNativeBrowserControl)
+    {
+        <input list="@presetId" type="color" @onchange="@NativeColorChange" value="@Value.ToString(MudColorOutputFormats.Hex)" />
+
+        <datalist id="@presetId">
+            @foreach (var preset in Palette)
+            {
+                <option value="@preset.ToString(MudColorOutputFormats.Hex)">@preset.ToString(MudColorOutputFormats.Hex)</option>
+            }
+        </datalist>
+    }
+    else
+    {
+        <input type="color" @onchange="@NativeColorChange" value="@Value.ToString(MudColorOutputFormats.Hex)" />
+    }
+}
+else
+{
+    @Inherited()
+}
 
 @code {
     [Parameter] public bool DelayValueChangeToPickerClose { get; set; } = true;
+    [Parameter] public bool UseNativeBrowserControl { get; set; }
+    [Parameter] public bool UseColorPaletteInNativeBrowserControl { get; set; }
 
+    private string presetId = $"preset-{Guid.NewGuid()}";
     private bool ShouldDelay => DelayValueChangeToPickerClose && PickerVariant != PickerVariant.Static;
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
     EventCallback<MudColor> _originalValueChanged;
@@ -30,5 +54,11 @@
             _originalValueChanged.InvokeAsync(Value);
         base.OnPickerClosed();
     }
-    
+
+    private Task NativeColorChange(ChangeEventArgs arg)
+    {
+        Value = new MudColor(arg.Value.ToString());
+        return ValueChanged.InvokeAsync(Value);
+    }
+
 }

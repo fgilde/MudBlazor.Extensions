@@ -44,8 +44,20 @@ public static partial class DialogServiceExt
         DialogOptionsEx options) where TComponent : ComponentBase, new()
     {
         var componentAttributes = componentOptions != null ? DictionaryHelper.GetValuesDictionary(componentOptions, true).ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : new Dictionary<string, object>();
-        return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, componentAttributes, null, options);
+        return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, componentAttributes, null as DialogParameters, options);
     }
+
+
+
+    public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title, string message,
+        Dictionary<string, object> componentOptions,
+        Action<MudExMessageDialog> dialogParameters,
+        DialogOptionsEx options = null) where TComponent : ComponentBase, new()
+    {
+        var parameters = dialogParameters != null ? DictionaryHelper.GetValuesDictionary(dialogParameters, true).ToDialogParameters() : new DialogParameters();
+        return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, componentOptions, parameters, options);
+    }
+
 
 
     public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title, string message,

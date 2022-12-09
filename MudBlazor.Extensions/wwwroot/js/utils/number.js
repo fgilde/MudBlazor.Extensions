@@ -1,4 +1,4 @@
-﻿class Number {
+﻿class MudExNumber {
     static constrain (number, min, max) {
         var x = parseFloat(number);
         if (min === null) {

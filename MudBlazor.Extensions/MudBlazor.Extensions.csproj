@@ -22,14 +22,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.css" />
-    <EmbeddedResource Include="wwwroot\mudBlazorExtensions.es5.js" />
-    <EmbeddedResource Include="wwwroot\mudBlazorExtensions.es5.min.js" />
-    <EmbeddedResource Include="wwwroot\mudBlazorExtensions.js" />
+    <EmbeddedResource Include="wwwroot\js\mudBlazorExtensions.es5.js" />
+    <EmbeddedResource Include="wwwroot\js\mudBlazorExtensions.es5.min.js" />
+    <EmbeddedResource Include="wwwroot\js\mudBlazorExtensions.js" />
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.min.css" />
   </ItemGroup>
 
@@ -37,6 +41,7 @@
   <ItemGroup>
     <PackageReference Include="BlazorJS" Version="1.0.1" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.0.3" />
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <!--<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />-->
@@ -64,6 +69,7 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
   </ItemGroup>
 

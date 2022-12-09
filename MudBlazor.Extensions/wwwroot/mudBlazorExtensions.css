@@ -3995,10 +3995,8 @@
   display: inline-flex;
 }
 
-.cp-color-bubble {
+.mud-ex-color-bubble {
   border-radius: 100%;
-  width: 16px;
-  height: 16px;
   top: 4px;
   left: 4px;
   border: 1px solid transparent;
@@ -4007,8 +4005,8 @@
   cursor: pointer;
 }
 
-.cp-color-bubble-canvas-container {
-  position: absolute;
+.mud-ex-color-bubble-canvas-container {
+  position: fixed;
   background-color: transparent;
   overflow: hidden;
   z-index: 30000;
@@ -4028,12 +4026,12 @@
   -o-transition-timing-function: cubic-bezier(0.87, -0.41, 0.19, 1.44);
   transition-timing-function: cubic-bezier(0.87, -0.41, 0.19, 1.44);
 }
-.cp-color-bubble-canvas-container canvas {
+.mud-ex-color-bubble-canvas-container canvas {
   background-color: white;
   border-radius: 100%;
   cursor: crosshair;
 }
-.cp-color-bubble-canvas-container .cp-color-bubble-locator {
+.mud-ex-color-bubble-canvas-container .mud-ex-color-bubble-locator {
   width: 7px;
   height: 7px;
   border-radius: 7px;
@@ -4043,12 +4041,12 @@
   position: absolute;
   opacity: 0.75;
 }
-.cp-color-bubble-canvas-container .cp-color-bubble-preview {
+.mud-ex-color-bubble-canvas-container .mud-ex-color-bubble-preview {
   position: absolute;
   right: 0;
   z-index: 99999999;
-  width: 20px;
-  height: 20px;
+  width: 10%;
+  height: 10%;
   border: 1px solid black;
   -webkit-transition-duration: 0.2s;
   -moz-transition-duration: 0.2s;
@@ -4062,7 +4060,7 @@
   transition-property: opacity;
 }
 
-.cp-color-bubble-canvas-container-small {
+.mud-ex-color-bubble-canvas-container-small {
   -webkit-transform: scale(0.09) rotate(45deg);
   -moz-transform: scale(0.09) rotate(45deg);
   -ms-transform: scale(0.09) rotate(45deg);
@@ -4072,13 +4070,13 @@
   cursor: pointer;
 }
 
-.cp-palette a.cp-color {
+.mud-ex-palette a.mud-ex-color {
   width: 24px;
   height: 24px;
   margin-right: 5px;
   display: inline-block;
 }
-.cp-palette a.cp-color .cp-color-inner {
+.mud-ex-palette a.mud-ex-color .mud-ex-color-inner {
   -webkit-transition-duration: 0.4s;
   -moz-transition-duration: 0.4s;
   -ms-transition-duration: 0.4s;
@@ -4100,10 +4098,10 @@
   border-style: solid;
   border-color: transparent;
 }
-.cp-palette a.cp-color-FFFFFF .cp-color-inner {
+.mud-ex-palette a.mud-ex-color-FFFFFF .mud-ex-color-inner {
   border-color: #CDCDCD;
 }
-.cp-palette a.cp-color.cp-color-selected .cp-color-inner {
+.mud-ex-palette a.mud-ex-color.mud-ex-color-selected .mud-ex-color-inner {
   width: 100%;
   height: 100%;
   top: 0;

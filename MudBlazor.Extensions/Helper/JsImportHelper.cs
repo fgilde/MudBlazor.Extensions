@@ -1,17 +1,16 @@
 ﻿using System.Reflection;
-using System.Reflection.Metadata;
 using System.Text;
-using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
-using MudBlazor.Extensions.Components;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Helper
 {
     public static class JsImportHelper
     {
+        private const bool useMinified = false;
+        
+        private static string min => useMinified ? ".min" : string.Empty;
         private static bool initialized;
         private static IJSRuntime _runtime; 
 
@@ -26,10 +25,9 @@ namespace MudBlazor.Extensions.Helper
             _runtime = runtime ?? _runtime;
             if (force || !initialized)
             {
-                //await runtime.InvokeVoidAsync("eval", "document.body.appendChild(Object.assign(document.createElement('script'),{src: './_content/MudBlazor.Extensions/mudBlazorExtensions.js',type: 'text/javascript' })); ");
-                //var jsToLoad = "wwwroot/mudBlazorExtensions.js";
-                var jsToLoad = "wwwroot/mudBlazorExtensions.es5.min.js";
-                var cssToLoad = "wwwroot/mudBlazorExtensions.min.css";
+                //var jsToLoad = "wwwroot/js/mudBlazorExtensions.js";
+                var jsToLoad = $"wwwroot/js/mudBlazorExtensions.es5{min}.js";
+                var cssToLoad = $"wwwroot/mudBlazorExtensions{min}.css";
 
                 var js = await GetEmbeddedFileContentAsync(jsToLoad);
                 await runtime.InvokeVoidAsync("eval", js);
@@ -47,6 +45,12 @@ namespace MudBlazor.Extensions.Helper
             return ComponentJs(typeof(TComponent).Name);
         }
 
+        internal static string UtilJs()
+        {
+            var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+            return $"/_content/{assemblyName}/js/mudExUtils{min}.js";
+        }
+
         internal static string UtilJs(string utilName)
         {
             var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
@@ -56,7 +60,7 @@ namespace MudBlazor.Extensions.Helper
         internal static string ComponentJs(string componentName)
         {
             var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-            return $"/_content/{assemblyName}/js/components/{componentName}.js";
+            return $"/_content/{assemblyName}/js/components/{componentName}{min}.js";
         }
 
         internal static Task<IJSObjectReference> ImportModuleAsync<TComponent>(this IJSRuntime js)

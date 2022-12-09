@@ -43,7 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Pages\ObjectEditThemeEdit.razor">
+    <Content Update="Pages\Page_ObjectEditThemeEdit.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>

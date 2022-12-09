@@ -1,5 +1,8 @@
-﻿class EventHelper {
+﻿class MudExEventHelper {
     static isWithin(event, element) {
+        if (!element || !event) {
+            return false;
+        }
         let rect = element.getBoundingClientRect();
         return (event.clientX > rect.left &&
         event.clientX < rect.right &&

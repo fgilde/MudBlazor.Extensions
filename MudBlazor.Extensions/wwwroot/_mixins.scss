@@ -31,7 +31,7 @@
 }
 
 
-@mixin cptransition($properties: (), $duration: 0.5s) {
+@mixin mudextransition($properties: (), $duration: 0.5s) {
     @include browserPrefix('transition-duration', $duration);
     @include browserPrefix('transition-property', $properties);
 }

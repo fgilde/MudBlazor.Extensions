@@ -1,0 +1,14 @@
+[
+  {
+    "outputFileName": "wwwroot/js/mudExUtils.js",
+    "inputFiles": [
+      "wwwroot/js/utils/*"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExColorBubble.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExColorBubble.js"
+    ]
+  }
+]

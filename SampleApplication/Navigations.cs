@@ -32,20 +32,15 @@ public static class Navigations
                     new NavigationEntry("Object Edit in Dialog", Icons.Material.Outlined.DesktopWindows, "/dialog-object-edit"),
                     new NavigationEntry("Edit Running Component", Icons.Material.Outlined.SettingsInputComponent, "/edit-component"),
                     new NavigationEntry("Edit Current Theme", Icons.Material.Outlined.Palette, "/theme-edit")
-                    //new NavigationEntry("More")
-                    //{
-                    //    Children = new()
-                    //    {
-                    //        new NavigationEntry("Edit Files", Icons.Material.Outlined.Language, "/"),
-                    //    }
-                    //}
                 }
             },
             new NavigationEntry("Other components")
             {
                 Children = new()
                 {
-                    new NavigationEntry("MudExEnumSelect", Icons.Material.Outlined.List, "/enum-select")
+                    new NavigationEntry("MudExEnumSelect", Icons.Material.Outlined.List, "/enum-select"),
+                    new NavigationEntry("MudExColorBubble", Icons.Material.Outlined.ColorLens, "/color-bubble"),
+                    new NavigationEntry("MudExColorPicker", Icons.Material.Outlined.Colorize, "/mudexcolor-picker")
                 }
             }
         };

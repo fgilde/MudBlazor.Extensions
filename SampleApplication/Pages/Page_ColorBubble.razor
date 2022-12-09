@@ -1,0 +1,44 @@
+﻿@page "/color-bubble"
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+@using MudBlazor.Utilities
+
+<PageTitle>MudExColorBubble</PageTitle>
+
+<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
+
+    <MudGrid>
+        <MudItem md="8" Class="d-flex justify-center">
+            <MudExColorBubble @bind-Color="@color" @ref="component"></MudExColorBubble>
+        </MudItem>
+        <MudItem md="4">
+            <MudPaper Class="px-4 pt-2 pb-4" Style="height: 70vh; overflow: auto">
+                <MudExObjectEdit MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+</SampleApplication.Client.Shared.DemoComponent>
+
+
+@code {
+    MudExColorBubble component;
+    MudColor color = new("#ff0000");
+    private Action<ObjectEditMeta<MudExColorBubble>> Configure()
+    {
+        return meta =>
+        {
+            meta.Property(m => m.AllowSelectOnPreviewClick).IgnoreIf(m => !m.ShowColorPreview);
+            meta.Property(m => m.Localizer).Ignore();
+            meta.Properties(m => m.MinLuminance, m => m.MaxLuminance)
+                .RenderWith<MudSlider<int>, int>(s => s.Value, s =>
+                {
+                    s.Min = 0;
+                    s.Max = 100;
+                    s.ValueLabel = true;
+                }).WithSeparateLabelComponent();
+            meta.Property(m => m.Color).WithAdditionalAttribute(nameof(MudColorPicker.DisableAlpha), true, true);
+            meta.IgnoreAllReadOnlyFields();
+        };
+    }
+
+}
