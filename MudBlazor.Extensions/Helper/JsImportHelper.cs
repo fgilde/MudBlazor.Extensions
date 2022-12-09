@@ -1,5 +1,7 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using System.Text;
+using BlazorJS;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.JSInterop;
 using Nextended.Core.Extensions;
@@ -8,7 +10,7 @@ namespace MudBlazor.Extensions.Helper
 {
     public static class JsImportHelper
     {
-        private const bool useMinified = false;
+        private static bool useMinified => !Debugger.IsAttached;
         
         private static string min => useMinified ? ".min" : string.Empty;
         private static bool initialized;
@@ -25,15 +27,10 @@ namespace MudBlazor.Extensions.Helper
             _runtime = runtime ?? _runtime;
             if (force || !initialized)
             {
-                //var jsToLoad = "wwwroot/js/mudBlazorExtensions.js";
-                var jsToLoad = $"wwwroot/js/mudBlazorExtensions.es5{min}.js";
                 var cssToLoad = $"wwwroot/mudBlazorExtensions{min}.css";
-
-                var js = await GetEmbeddedFileContentAsync(jsToLoad);
-                await runtime.InvokeVoidAsync("eval", js);
-
                 var css = await GetEmbeddedFileContentAsync(cssToLoad);
-                await runtime.InvokeVoidAsync("MudBlazorExtensions.addCss", css);
+                await runtime.LoadJsAsync(MainJs());
+                await runtime.AddCss(css);
                 initialized = true;
 
             }
@@ -45,16 +42,10 @@ namespace MudBlazor.Extensions.Helper
             return ComponentJs(typeof(TComponent).Name);
         }
 
-        internal static string UtilJs()
+        internal static string MainJs()
         {
             var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-            return $"/_content/{assemblyName}/js/mudExUtils{min}.js";
-        }
-
-        internal static string UtilJs(string utilName)
-        {
-            var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-            return $"/_content/{assemblyName}/js/utils/{utilName}.js";
+            return $"/_content/{assemblyName}/js/mudBlazorExtensions.all{min}.js";
         }
 
         internal static string ComponentJs(string componentName)

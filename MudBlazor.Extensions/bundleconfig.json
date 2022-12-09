@@ -1,8 +1,9 @@
 [
   {
-    "outputFileName": "wwwroot/js/mudExUtils.js",
+    "outputFileName": "wwwroot/js/mudBlazorExtensions.all.js",
     "inputFiles": [
-      "wwwroot/js/utils/*"
+      "wwwroot/js/utils/*",
+      "wwwroot/js/mudBlazorExtensions.js"
     ]
   },
   {

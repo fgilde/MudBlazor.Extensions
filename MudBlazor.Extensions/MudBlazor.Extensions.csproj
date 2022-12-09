@@ -31,15 +31,13 @@
 
   <ItemGroup>
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.css" />
-    <EmbeddedResource Include="wwwroot\js\mudBlazorExtensions.es5.js" />
-    <EmbeddedResource Include="wwwroot\js\mudBlazorExtensions.es5.min.js" />
     <EmbeddedResource Include="wwwroot\js\mudBlazorExtensions.js" />
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.min.css" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <PackageReference Include="BlazorJS" Version="1.0.1" />
+    <PackageReference Include="BlazorJS" Version="1.0.4" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.0.3" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
