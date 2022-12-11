@@ -30,11 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Types\" />
-    <Folder Include="ObjectEditMetaConfig\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <UpToDateCheckInput Remove="Shared\ProgrammingSkillSelect.razor" />
   </ItemGroup>
 

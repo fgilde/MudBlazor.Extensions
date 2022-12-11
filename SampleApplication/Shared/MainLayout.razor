@@ -3,7 +3,7 @@
 @inherits LayoutComponentBase
 @inject IJSRuntime JsRuntime
 
-<MudThemeProvider Theme="@ClientTheme.DefaultTheme" />
+<MudThemeProvider Theme="@ClientTheme.CurrentTheme" />
 <MudDialogProvider />
 <MudExTaskBar/>
 <MudSnackbarProvider />
@@ -54,7 +54,7 @@
     {
         IsOverlayVisible = true;
         await Task.Delay(1);
-        ClientTheme.DefaultTheme = await OpenThemeEdit();
+        ClientTheme.CurrentTheme = await OpenThemeEdit();
         IsOverlayVisible = false;
         StateHasChanged();
     }
@@ -70,7 +70,7 @@
                 {nameof(MudExObjectEditDialog<ClientTheme>.DialogIcon), Icons.Material.Filled.Palette},
                 {nameof(MudExObjectEditDialog<ClientTheme>.ShowPathAsTitleForEachProperty), true}
             };
-            var result = await DialogService.EditObject(ClientTheme.DefaultTheme, "Edit current Theme with MudExObjectEdit", new DialogOptionsEx()
+            var result = await DialogService.EditObject(ClientTheme.CurrentTheme, "Edit current Theme with MudExObjectEdit", new DialogOptionsEx()
             {
                 MaximizeButton = true,
                 CloseButton = true,

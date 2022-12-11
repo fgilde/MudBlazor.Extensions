@@ -63,6 +63,10 @@ public static class RenderDataDefaults
 
         RegisterDefault<ICollection<string>, MudExCollectionEditor<string>>(f => f.Items);
         RegisterDefault<CultureInfo, MudExCultureSelect>(s => s.Value);
+
+        RegisterDefault<IEnumerable<UploadableFile>, MudExUploadEdit<UploadableFile>>(edit => edit.UploadRequests);
+        RegisterDefault<UploadableFile[], IList<UploadableFile>, MudExUploadEdit<UploadableFile>>(edit => edit.UploadRequests, requests => requests?.ToList() ?? new List<UploadableFile>(), requests => requests?.ToArray() ?? Array.Empty<UploadableFile>());
+        RegisterDefault<IList<UploadableFile>, MudExUploadEdit<UploadableFile>>(edit => edit.UploadRequests);
     }
 
     private static Dictionary<string, object> ColorPickerOptions()

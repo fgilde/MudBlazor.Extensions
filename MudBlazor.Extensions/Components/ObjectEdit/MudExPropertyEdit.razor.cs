@@ -59,6 +59,7 @@ public partial class MudExPropertyEdit
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Label), () => PropertyMeta.Settings.LabelFor(Localizer), PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.Both || PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.DefaultComponentLabeling)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.HelperText), () => PropertyMeta.Settings.DescriptionFor(Localizer))
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Class), () => Class)
+            .TrySetAttributeIfAllowed(nameof(Localizer), Localizer)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.ReadOnly), () => !PropertyMeta.Settings.IsEditable).Attributes;
     }
 

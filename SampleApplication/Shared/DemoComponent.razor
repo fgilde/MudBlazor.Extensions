@@ -7,8 +7,19 @@
 	@if (!string.IsNullOrEmpty(CodeFile))
 	{
 	    <MudTabPanel Text="Code">
-            <PrettyCode Title="@CodeFile" CodeFile="@Path">
-            </PrettyCode>
+            <MudCard>
+            @if (CodeFiles.Length > 1)
+            {
+                <MudSelect Label="File" @bind-Value="@SelectedCodeFile" Variant="Variant.Outlined" Color="Color.Primary">
+                    @foreach (var file in CodeFiles)
+                    {
+                        <MudSelectItem Value="@file">@System.IO.Path.GetFileName(file)</MudSelectItem>
+                    }
+                </MudSelect>
+            }
+            <MudLink Href="@SelectedCodeFilePath" Target="_blank" Color="Color.Primary">Show on github</MudLink>
+            </MudCard>
+            <DynamicComponent Type="@RenderType" Parameters="@RenderParameters"/>
         </MudTabPanel>
 	}
     @foreach (var doc in _docFiles)
@@ -23,16 +34,52 @@
     private const string baseAddress = "https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions";
     private string baseAddressExtensions = $"{baseAddress}/main/MudBlazor.Extensions";
     private string baseAddressSampleApp = $"{baseAddress}/main/SampleApplication";
-    private string Path => $"{baseAddressSampleApp}{CodeFile.EnsureStartsWith("/")}";
-
+    private string Path(string file) => $"{baseAddressSampleApp}{file.EnsureStartsWith("/")}";
     private Dictionary<string, string> _docFiles = new();
+    private string _selectedCodeFile;
     [Inject] HttpClient http { get; set; }
-    [Parameter] public string CodeFile { get; set; }
+
+    [Parameter]
+    public string CodeFile
+    {
+        get => CodeFiles.FirstOrDefault();
+        set => CodeFiles = new[] { value };
+    }
+
+    public string SelectedCodeFilePath { get; set; }
+    [Parameter] public string[] CodeFiles { get; set; }
     [Parameter] public string[] DocFiles { get; set; }
     [Parameter] public RenderFragment ChildContent { get; set; }
+    private Type RenderType = typeof(PrettyCode);
+    private Dictionary<string, object> RenderParameters;
+    private string SelectedCodeFile
+    {
+        get => _selectedCodeFile;
+        set
+        {
+            _selectedCodeFile = value;
+            SelectedCodeFilePath = Path(value);
+            RenderType = typeof(MudAlert);
+            RenderParameters = new Dictionary<string, object>
+            {
+                { "Text", "Loading..." },
+                { "Severity", Severity.Info }
+            };
+            StateHasChanged();
+            
+            RenderType = typeof(PrettyCode);
+            RenderParameters = new Dictionary<string, object>
+            {
+                { "Title", SelectedCodeFile },
+                { "CodeFile", SelectedCodeFilePath }
+            };
+            StateHasChanged();
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
+        SelectedCodeFile = CodeFiles.FirstOrDefault();
         await base.OnInitializedAsync();
         try
         {

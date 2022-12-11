@@ -20,6 +20,9 @@ public partial class MudExColorBubble
     [Parameter] 
     public IStringLocalizer Localizer { get; set; }
 
+    [Parameter] public string Style { get; set; }
+    [Parameter] public string Class { get; set; }
+
     [Parameter] 
     public string SelectColorText { get; set; } = "Select color";
 
@@ -171,7 +174,7 @@ public partial class MudExColorBubble
     }
 
 
-    private string Style() => $"background-color: {Color}; height: {Height}px; width: {Width}px;";
+    private string StyleStr() => $"background-color: {Color}; height: {Height}px; width: {Width}px; {Style}";
 
     private string CanvasContainerStyle() => $"border-radius: {(ShowColorPreview ? "0" : "100%")}; width: {SelectorSize}px; height: {SelectorSize}px";
 
@@ -196,4 +199,8 @@ public partial class MudExColorBubble
         };
     }
 
+    private async Task OnClick()
+    {
+        await _jsReference.InvokeVoidAsync("showSelector");
+    }
 }

@@ -11,5 +11,11 @@
     "inputFiles": [
       "wwwroot/js/components/MudExColorBubble.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExUploadEdit.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExUploadEdit.js"
+    ]
   }
 ]

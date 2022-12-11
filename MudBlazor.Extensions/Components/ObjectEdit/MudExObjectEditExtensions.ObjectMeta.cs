@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Extensions.Localization;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
@@ -46,7 +47,15 @@ public static partial class MudExObjectEditExtensions
     
     public static ObjectEditMeta<T> IgnoreAllInheritedFields<T>(this ObjectEditMeta<T> meta, params Expression<Func<T, object>>[] except)
         => meta?.SetProperties(m => m.AllProperties.Where(p => !(except ?? Enumerable.Empty<Expression<Func<T, object>>>() ).Select(m.Property).Contains(p) && p.PropertyInfo.DeclaringType != typeof(T)).Apply(p => p.Ignore()));
-    
+
+    public static ObjectEditMeta<T> GroupByTypes<T>(this ObjectEditMeta<T> meta)
+        => meta?.SetProperties(m => m.AllProperties.Apply(p => p.WithGroup(p.PropertyInfo.PropertyType.Name)));
+    public static ObjectEditMeta<T> GroupByTypes<T>(this ObjectEditMeta<T> meta, params Type[] types)
+        => meta?.SetProperties(m => m.AllProperties.Where(p => types.Contains(p.PropertyInfo.PropertyType)).Apply(p => p.WithGroup(p.PropertyInfo.PropertyType.Name)));
+
+    public static ObjectEditMeta<T> GroupByTypes<T>(this ObjectEditMeta<T> meta, params (Type type, string name)[] types)
+        => meta?.SetProperties(m => m.AllProperties.Where(p => types.Select(t => t.type).Contains(p.PropertyInfo.PropertyType)).Apply(p => p.WithGroup(types.FirstOrDefault(t => t.type == p.PropertyInfo.PropertyType).name ?? p.PropertyInfo.PropertyType.Name)));
+
     //public static ObjectEditMeta<T> IgnoreAllDerivedFields<T>(this ObjectEditMeta<T> meta)
     //    => meta?.SetProperties(m => m.AllProperties.Where(p => p.PropertyInfo.DeclaringType == typeof(T)).Apply(p => p.Ignore()));
 

@@ -1,0 +1,58 @@
+﻿@page "/upload-edit"
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+<PageTitle>MudExUploadEdit</PageTitle>
+
+<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
+
+    <MudGrid>
+        <MudItem md="8" Class="d-flex justify-center">
+            <MudPaper Class="d-flex flex-column align-center justify-center mud-width-full py-8">
+                <MudExUploadEdit MimeTypes="@mimeTypes" T="UploadableFile" Style="max-height: 400px; width: 1000px" @ref="component"></MudExUploadEdit>
+            </MudPaper>
+        </MudItem>
+        <MudItem md="4">
+            <MudPaper Class="px-4 pt-2 pb-4" Style="height: 70vh; overflow: auto">
+                <MudExObjectEdit DefaultGroupName="Misc" MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+</SampleApplication.Client.Shared.DemoComponent>
+
+
+@code {
+    MudExUploadEdit<UploadableFile> component;
+
+    private string[] mimeTypes =
+    {
+        "application/zip*",
+        "application/x-zip*",
+        "audio/*",
+        "application/pdf",
+        "application/msword",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.*",
+        "image/*",
+        "text/*"
+    };
+    
+    private Action<ObjectEditMeta<MudExUploadEdit<UploadableFile>>> Configure()
+    {
+        return meta =>
+        {
+            meta.GroupByTypes((typeof(string), "String Options"), (typeof(bool), "Boolean Options"));
+            meta.IgnoreAllReadOnlyFields();
+            meta.Properties(
+                ue => ue.Localizer,
+                ue => ue.UploadFieldId,
+                ue => ue.UploadRequests,
+                ue => ue.UploadRequest,
+                ue => ue.SelectedRequests,
+                ue => ue.ResolvePreviewDataUrlFunc,
+                ue => ue.HandlePreviewContentErrorFunc
+                ).Ignore();
+        };
+    }
+
+}

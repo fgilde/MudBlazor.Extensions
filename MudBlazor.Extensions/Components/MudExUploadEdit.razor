@@ -1,0 +1,120 @@
+﻿@using MudBlazor.Extensions.Helper
+@typeparam T;
+
+@if (!string.IsNullOrWhiteSpace(Label))
+{
+    <label class="@($"{(UploadRequests?.Any() == true ? "upload-request-label-small" : "")} upload-request-label mud-input-label-animated mud-input-label-text")">@Label</label>
+}
+
+<div class="@(Variant == Variant.Outlined ? "upload-request-outlined-border" : "")">
+
+    <div @ref="dropZoneElement" style="@StyleStr()" class="upload-request-edit @(AllowDrop ? "drop-zone" : "") @Class">
+
+        @if (!string.IsNullOrWhiteSpace(_errorMessage) && DisplayErrors)
+        {
+            <MudAlert Style="@($"animation: {ErrorAnimation.GetAnimationCssStyle(TimeSpan.FromMilliseconds(300))};")"  Severity="Severity.Error" Class="upload-request-alert" ShowCloseIcon="true" CloseIconClicked="@(() => SetError())">
+                <span class="upload-request-alert-text">@_errorMessage</span>
+            </MudAlert>
+        @*<p class="error-message">@_errorMessage</p>*@
+        }
+        else if (AllowDrop && !string.IsNullOrEmpty(TextDropZone) && !HasData())
+        {
+            <p class="mud-ex-upload-edit-drop-zone-text">@TextDropZone</p>
+        }
+
+        <MudGrid Spacing="1">
+
+            @if (!ReadOnly)
+            {
+                @if (AllowMultiple)
+                {
+                    <InputFile @ref="inputFile" id="@(UploadFieldId)" hidden multiple OnChange="UploadFiles" accept="@($"{GetAccept()}")" />
+                }
+                else
+                {
+                    <InputFile @ref="inputFile" id="@(UploadFieldId)" hidden OnChange="UploadFiles" accept="@($"{GetAccept()}")" />
+                }
+            }
+
+            @foreach (var request in (UploadRequests ?? Enumerable.Empty<T>()).Where(r => r?.Data != null || !string.IsNullOrEmpty(r?.Url)))
+            {
+                <MudItem xs="12">
+                    <MudItem>
+                        <MudAlert Icon="@GetIcon(request)"
+                              Class="mud-alert-message-w-100"
+                              Severity="@(IsSelected(request) ? Severity.Warning : (_withErrors.Contains(request) ? Severity.Error : Severity.Normal))"
+                              OnClick="(a) => Select(request, a)"
+                              ShowCloseIcon="@(AllowRemovingItems && !ReadOnly)"
+                              CloseIcon="@Icons.Filled.Delete"
+                              CloseIconClicked="(() => Remove(request))">
+                            @if (AllowRename && !ReadOnly)
+                            {
+                                <MudTextField Class="mud-ex-collection-inline-string-edit" DisableUnderLine="true" Error="@(string.IsNullOrWhiteSpace(request.FileName))" @bind-Value="@request.FileName"></MudTextField>
+                            }
+                            else
+                            {
+                                @request.FileName
+                            }
+                            @if (AllowPreview)
+                            {
+                                <MudIconButton OnClick="@(() => Preview(request))" Style="float: right;" Icon="@Icons.Material.Filled.ZoomIn" Color="Color.Inherit" Size="Size.Small" />
+                            }
+                        </MudAlert>
+                    </MudItem>
+                </MudItem>
+            }
+        </MudGrid>
+    </div>
+
+    <div class="multi-upload-actions">
+        @if (ShowFileUploadButton && !ReadOnly)
+        {
+
+            <MudButton HtmlTag="label"
+                   Variant="Variant.Text"
+                   Color="Color.Primary"
+                   Size="Size.Small"
+                   StartIcon="@(AllowMultiple ? Icons.Filled.FileUpload : Icons.Filled.UploadFile)"
+                   for="@UploadFieldId">
+                @(AllowMultiple ? _localizer.TryLocalize(TextUploadFiles) : _localizer.TryLocalize(TextUploadFile))
+            </MudButton>
+
+        }
+
+        @if (AllowFolderUpload && AllowMultiple && ShowFolderUploadButton && !ReadOnly)
+        {
+            <span class="action-margin"></span>
+            <MudButton HtmlTag="label"
+                   OnClick="@(UploadFolder)"
+                   Variant="Variant.Text"
+                   Color="Color.Primary"
+                   Size="Size.Small"
+                   StartIcon="@Icons.Filled.DriveFolderUpload">
+                @_localizer.TryLocalize(TextUploadFolder)
+            </MudButton>
+        }
+
+        @if (AllowExternalUrl && !ReadOnly)
+        {
+            <span class="action-margin"></span>
+            <MudButton HtmlTag="label"
+                   OnClick="@(AddUrl)"
+                   Variant="Variant.Text"
+                   Color="Color.Primary"
+                   Size="Size.Small"
+                   StartIcon="@Icons.Filled.MoreHoriz">
+                @_localizer.TryLocalize(TextAddUrl)
+            </MudButton>
+        }
+
+        @if (ShowClearButton && HasData() && !ReadOnly)
+        {
+            <MudIconButton Title="@_localizer.TryLocalize(TextRemoveAll)" OnClick="@RemoveAll" Style="float: right; margin-right: 15px;" Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Primary" Size="Size.Small" />
+        }
+    </div>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(HelperText))
+{
+    <label style="margin-left: 8px;" class="mud-input-helper-text">@HelperText</label>
+}

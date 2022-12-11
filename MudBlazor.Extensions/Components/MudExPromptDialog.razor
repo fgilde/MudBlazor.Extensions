@@ -1,0 +1,49 @@
+﻿@using Microsoft.Extensions.DependencyInjection;
+@using Microsoft.Extensions.Localization
+@using MudBlazor.Extensions.Helper
+
+<MudDialog Class="@Class">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Color="Color.Secondary" Icon="@Icon" Class="mr-3 mb-n1" />
+            @MudDialog.Title
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText>@Message</MudText>
+        <MudTextField @bind-Value="@Value"></MudTextField>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@_localizer.TryLocalize(CancelText)</MudButton>
+        <MudButton Disabled="@(!IsValid())" Color="Color.Error" Variant="Variant.Filled" OnClick="@(Submit)">@_localizer.TryLocalize(OkText)</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [Inject] private IServiceProvider _serviceProvider { get; set; }
+    
+    private IStringLocalizer _localizer => Localizer ?? _serviceProvider.GetService<IStringLocalizer<MudExPromptDialog>>() ?? _serviceProvider.GetService<IStringLocalizer>();
+    
+    [Parameter]
+    public IStringLocalizer Localizer { get; set; }
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public string OkText { get; set; } = "Ok";
+    [Parameter] public string CancelText { get; set; } = "Cancel";
+    [Parameter] public string Value { get; set; }
+    [Parameter] public string Class { get; set; } = "mud-ex-dialog-initial";
+    [Parameter] public string Message { get; set; }
+    [Parameter] public string Icon { get; set; }
+    [Parameter] public IEnumerable<string> Details { get; set; }
+    [Parameter] public Func<string, bool> CanConfirm { get; set; } = s => true;
+
+    void Submit()
+    {
+        MudDialog.Close(DialogResult.Ok(Value));
+    }
+
+    void Cancel() => MudDialog.Cancel();
+
+    private bool IsValid() => CanConfirm(Value);
+
+}

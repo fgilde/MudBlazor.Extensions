@@ -10,7 +10,7 @@ namespace MudBlazor.Extensions.Helper
 {
     public static class JsImportHelper
     {
-        private static bool useMinified => !Debugger.IsAttached;
+        private static bool useMinified => false; //!Debugger.IsAttached;
         
         private static string min => useMinified ? ".min" : string.Empty;
         private static bool initialized;
@@ -39,7 +39,13 @@ namespace MudBlazor.Extensions.Helper
 
         internal static string ComponentJs<TComponent>()
         {
-            return ComponentJs(typeof(TComponent).Name);
+            var componentName = GetJsComponentName<TComponent>();
+            return ComponentJs(componentName);
+        }
+
+        private static string GetJsComponentName<TComponent>()
+        {
+            return typeof(TComponent).Name.Split('`')[0];
         }
 
         internal static string MainJs()
@@ -66,7 +72,7 @@ namespace MudBlazor.Extensions.Helper
 
         internal static Task<(IJSObjectReference moduleReference, IJSObjectReference jsObjectReference)> ImportModuleAndCreateJsAsync<TComponent>(this IJSRuntime js, params object?[]? args)
         {
-            return js.ImportModuleAndCreateJsAsync(ComponentJs<TComponent>(), $"initialize{typeof(TComponent).Name}", args);
+            return js.ImportModuleAndCreateJsAsync(ComponentJs<TComponent>(), $"initialize{GetJsComponentName<TComponent>()}", args);
         }
 
         internal static Task<(IJSObjectReference moduleReference, IJSObjectReference jsObjectReference)> ImportModuleAndCreateJsAsync<TComponent>(this IJSRuntime js, string jsCreateMethod, params object?[]? args)

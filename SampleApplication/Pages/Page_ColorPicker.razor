@@ -5,10 +5,12 @@
 <PageTitle>MudExColorPicker</PageTitle>
 <MudAlert Severity="Severity.Info">Just a MudColorPicker with optional possibility do delay event or use native rendering </MudAlert>
 <SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
-
+    
     <MudGrid>
         <MudItem md="8" Class="d-flex justify-center">
-            <MudExColorPicker DisableToolbar="false" @bind-Value="@color" @ref="component"></MudExColorPicker>
+            <MudPaper Class="d-flex flex-column mud-width-full">
+                <MudExColorPicker DisableToolbar="false" @bind-Value="@color" @ref="component"></MudExColorPicker>
+            </MudPaper>
         </MudItem>
         <MudItem md="4">
             <MudPaper Class="px-4 pt-2 pb-4" Style="height: 70vh; overflow: auto">

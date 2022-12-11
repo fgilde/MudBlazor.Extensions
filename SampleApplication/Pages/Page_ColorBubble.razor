@@ -8,7 +8,9 @@
 
     <MudGrid>
         <MudItem md="8" Class="d-flex justify-center">
-            <MudExColorBubble @bind-Color="@color" @ref="component"></MudExColorBubble>
+            <MudPaper Class="mud-width-full">
+                <MudExColorBubble Style="margin-left: 50%; margin-top:25%" @bind-Color="@color" @ref="component"></MudExColorBubble>
+            </MudPaper>
         </MudItem>
         <MudItem md="4">
             <MudPaper Class="px-4 pt-2 pb-4" Style="height: 70vh; overflow: auto">

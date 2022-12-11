@@ -24,7 +24,6 @@
     }
 
     init() {
-        this.elementRef?.addEventListener("click", this._onClick.bind(this));
         document.body.addEventListener("mousedown", this._onBodyClick.bind(this));
     }
 
@@ -57,7 +56,7 @@
     }
 
     dispose() {
-        this.elementRef?.removeEventListener("click", this._onClick.bind(this));
+        document.body.removeEventListener("mousedown", this._onBodyClick.bind(this));
     }
 
     showSelector(evt) {

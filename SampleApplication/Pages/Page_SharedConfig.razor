@@ -1,0 +1,59 @@
+﻿@page "/shared-config"
+@inject IDialogService DialogService;
+@using MudBlazor.Extensions.Options
+@using SampleApplication.Client.Types
+
+<PageTitle>Index</PageTitle>
+
+<MudButton OnClick="@AddUser">Add user to both</MudButton>
+
+<h2 style="text-decoration: underline">Edit a complex Model with included Collection of users</h2>
+<MudExObjectEditForm Value="@Model"></MudExObjectEditForm>
+
+
+<h2 style="text-decoration: underline">Edit only a Collection of users</h2>
+<br />
+<MudExCollectionEditor Items="@Users"></MudExCollectionEditor>
+
+@code {
+    public SomeClassWithUser Model { get; set; } = new();
+
+    public List<UserModel> Users { get; set; } = new()
+    {
+        new() {FirstName = "Florian", LastName = "Gilde", Password = "xyz1234"},
+        new () {FirstName = "Peter", LastName = "Griffin", Password = "jdojdo90udu"},
+        new() { FirstName = "Bart", LastName = "Simpson", Password = "ayCaramba" }
+    };
+
+    public DialogOptionsEx Options => new()
+        {
+            MaximizeButton = true,
+            CloseButton = true,
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+            DragMode = MudDialogDragMode.Simple,
+            Animations = new[] { AnimationType.FlipX },
+            Position = DialogPosition.Center
+        };
+
+    private async Task AddUser()
+    {
+        var res = await DialogService.EditObject<UserModel>(new UserModel(), "Add user", Options, null, new DialogParameters()
+        {
+            {nameof(MudExObjectEditDialog<UserModel>.CancelButtonText), "Annular"},
+            {nameof(MudExObjectEditDialog<UserModel>.SaveButtonText), "Confirminger"},
+            {nameof(MudExObjectEditDialog<UserModel>.SaveButtonColor), Color.Surface}
+        });
+
+        if (!res.Cancelled && res.Result != null && !string.IsNullOrEmpty(res.Result.FirstName))
+        {
+            Users.Add(res.Result);
+            Model.Users.Add(res.Result);
+            //var t = Users.ToList();
+            //Users = null;
+            //Users = new List<UserModel>(t);
+        }
+    }
+
+}

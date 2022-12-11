@@ -4,10 +4,11 @@
 <PageTitle>File Display</PageTitle>
 
 <SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
-    
     <MudGrid>
         <MudItem md="8" Class="d-flex justify-center">
-            <MudColorPicker @ref="component" PickerVariant="PickerVariant.Static" />
+            <MudPaper Class="d-flex flex-column align-center justify-center mud-width-full">
+                <MudColorPicker @ref="component" PickerVariant="PickerVariant.Static" />
+            </MudPaper>
         </MudItem>
         <MudItem md="4">
             <MudPaper Class="px-4 pt-2 pb-4" Style="height: 70vh; overflow: auto">
@@ -15,7 +16,6 @@
             </MudPaper>
         </MudItem>
     </MudGrid>
-
 </SampleApplication.Client.Shared.DemoComponent>
 
 
