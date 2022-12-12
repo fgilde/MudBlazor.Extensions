@@ -63,7 +63,7 @@
                         OnClick="@Add"
                        Size="Size.Small"
                        StartIcon="@(AddIcon)">
-                @(LocalizerToUse.TryLocalize("Add"))
+                @(LocalizerToUse.TryLocalize(TextAdd))
             </MudButton>
 
         }
@@ -71,7 +71,7 @@
 
         @if (ShowClearButton && AllowRemove && Items?.Any() == true && !ReadOnly)
         {
-            <MudIconButton Title="@LocalizerToUse.TryLocalize("Remove All")" OnClick="@RemoveAll" Style="float: right; margin-right: 15px;" Icon="@RemoveAllIcon" Color="Color.Primary" Size="Size.Small" />
+            <MudIconButton Title="@LocalizerToUse.TryLocalize(TextRemoveAll)" OnClick="@RemoveAll" Style="float: right; margin-right: 15px;" Icon="@RemoveAllIcon" Color="Color.Primary" Size="Size.Small" />
         }
     </div>
 </div>

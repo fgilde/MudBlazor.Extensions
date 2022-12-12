@@ -76,6 +76,8 @@ public static class RenderDataDefaults
             {nameof(MudColorPicker.Editable), true},
             {nameof(MudColorPicker.DisableToolbar), false},
             {nameof(MudColorPicker.PickerVariant), PickerVariant.Inline},
+            //{nameof(MudExColorPicker.UseMudExColorBubble), true},
+            //{nameof(MudExColorPicker.UseColorPaletteInNativeBrowserControl), true},
         };
     }
 

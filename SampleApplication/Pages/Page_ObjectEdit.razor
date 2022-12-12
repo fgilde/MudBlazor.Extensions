@@ -3,11 +3,11 @@
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Options
 
-<PageTitle>Object Edit Samples</PageTitle>
+<PageHeader>Object Edit</PageHeader>
 
-<SampleApplication.Client.Shared.DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFile="@($"Pages/{GetType().Name}.razor")">
+<DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFile="@($"Pages/{GetType().Name}.razor")">
     <MudExObjectEditForm OnValidSubmit="@OnSubmit" Value="@User"></MudExObjectEditForm>
-</SampleApplication.Client.Shared.DemoComponent>
+</DemoComponent>
 
 
 @code {

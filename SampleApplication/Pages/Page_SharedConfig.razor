@@ -3,17 +3,19 @@
 @using MudBlazor.Extensions.Options
 @using SampleApplication.Client.Types
 
-<PageTitle>Index</PageTitle>
+<PageHeader>User Edit</PageHeader>
 
-<MudButton OnClick="@AddUser">Add user to both</MudButton>
+<DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "ObjectEditMetaConfig/SomeClassWithUserMetaConfiguration.cs", "ObjectEditMetaConfig/UserModelMetaConfiguration.cs"})">
+    <MudButton Variant="Variant.Outlined" Color="Color.Primary" EndIcon="@Icons.Material.Filled.PersonAdd" OnClick="@AddUser">Add user to both lists</MudButton>
 
-<h2 style="text-decoration: underline">Edit a complex Model with included Collection of users</h2>
-<MudExObjectEditForm Value="@Model"></MudExObjectEditForm>
+    <h2 style="text-decoration: underline">Edit a complex Model with included Collection of users</h2>
+    <MudExObjectEditForm DefaultGroupName="Data" Value="@Model"></MudExObjectEditForm>
 
-
-<h2 style="text-decoration: underline">Edit only a Collection of users</h2>
-<br />
-<MudExCollectionEditor Items="@Users"></MudExCollectionEditor>
+    
+    <h2 style="text-decoration: underline">Edit only a Collection of users</h2>
+    <br />
+    <MudExCollectionEditor Items="@Users"></MudExCollectionEditor>
+</DemoComponent>
 
 @code {
     public SomeClassWithUser Model { get; set; } = new();

@@ -1,9 +1,9 @@
 ﻿@page "/upload-edit"
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
-<PageTitle>MudExUploadEdit</PageTitle>
+<PageHeader>MudExUploadEdit</PageHeader>
 
-<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
+<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
 
     <MudGrid>
         <MudItem md="8" Class="d-flex justify-center">
@@ -18,7 +18,7 @@
         </MudItem>
     </MudGrid>
 
-</SampleApplication.Client.Shared.DemoComponent>
+</DemoComponent>
 
 
 @code {
@@ -50,6 +50,7 @@
                 ue => ue.UploadRequest,
                 ue => ue.SelectedRequests,
                 ue => ue.ResolvePreviewDataUrlFunc,
+                ue => ue.ResolveContentTypeFromUrlFunc,
                 ue => ue.HandlePreviewContentErrorFunc
                 ).Ignore();
         };

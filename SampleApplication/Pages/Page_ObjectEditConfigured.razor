@@ -5,13 +5,10 @@
 @using System.ComponentModel.DataAnnotations
 @using MudBlazor.Extensions.Options
 
-<PageTitle>Object Edit Samples</PageTitle>
+<PageHeader>Object Edit Custom config</PageHeader>
 
 
-<SampleApplication.Client.Shared.DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFile="@($"Pages/{GetType().Name}.razor")">
-    <MudAlert Severity="Severity.Info" Class="mudex-margin-bottom-1">
-        <span>@($"NOTICE: here also works the added default for type registration for type ProgramingSkill 'RenderDataDefaults.RegisterDefault<ICollection<ObjectEditConfigured.ProgramingSkill>, IEnumerable<ObjectEditConfigured.ProgramingSkill>, ProgrammingSkillSelect>(s => s.Selected);' instead of doing this you can also implement `IDefaultRenderDataProvider` or configure the property in the meta with an `IObjectMetaConfiguration` or in the MetaConfiguration param")</span>
-    </MudAlert>
+<DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "ObjectEditMetaConfig/MySimpleTypeRegistrations.cs"})">
     <MudButton Title="ToggleLoading" Variant="Variant.Outlined" Color="Color.Warning" OnClick="@(() => _isLoading = !_isLoading)">Toggle loading</MudButton>
     <MudExObjectEditForm 
         T="UserInformation"
@@ -40,7 +37,7 @@
             <MudIconButton Title="Clear" Icon="@Icons.Material.Filled.ClearAll" OnClick="@(() => form.Clear())"/>
         </ToolBarContent>
     </MudExObjectEditForm>
-</SampleApplication.Client.Shared.DemoComponent>
+</DemoComponent>
 
 
 @code {

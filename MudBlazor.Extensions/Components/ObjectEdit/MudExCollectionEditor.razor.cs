@@ -20,6 +20,10 @@ public partial class MudExCollectionEditor<T>
     [Parameter] public ICollection<T> Items { get; set; }
     [Parameter] public EventCallback<ICollection<T>> ItemsChanged { get; set; }
     [Parameter] public Func<T, string> ItemToStringFunc { get; set; } = (item => item?.ToString() ?? string.Empty);
+    [Parameter] public string TextAdd { get; set; } = "Add";
+    [Parameter] public string TextRemoveAll{ get; set; } = "Remove All";
+    [Parameter] public string TextEdit{ get; set; } = "Edit {0}";
+    
     [Parameter] public string Label { get; set; }
     [Parameter] public bool ReadOnly { get; set; }
     [Parameter] public string HelperText { get; set; }
@@ -74,7 +78,7 @@ public partial class MudExCollectionEditor<T>
             { nameof(MudExObjectEditDialog<T>.DialogIcon), EditIcon },
             { nameof(MudExObjectEditDialog<T>.Localizer), Localizer }
         };
-        var res = await _mudDialogService.EditObject<T>(item, LocalizerToUse.TryLocalize("Edit {0}", ItemNameRender(item)) , DialogOptions ?? DefaultOptions(), null, parameters);
+        var res = await _mudDialogService.EditObject<T>(item, LocalizerToUse.TryLocalize(TextEdit, ItemNameRender(item)) , DialogOptions ?? DefaultOptions(), null, parameters);
         if (!res.Cancelled)
         {
             SetValue(item, res.Result);
@@ -120,7 +124,7 @@ public partial class MudExCollectionEditor<T>
             { nameof(MudExObjectEditDialog<T>.DialogIcon), AddIcon },
             { nameof(MudExObjectEditDialog<T>.Localizer), Localizer }
         };
-        var res = await _mudDialogService.EditObject<T>(item, LocalizerToUse.TryLocalize("Add"), DialogOptions ?? DefaultOptions(), null, parameters);
+        var res = await _mudDialogService.EditObject<T>(item, LocalizerToUse.TryLocalize(TextAdd), DialogOptions ?? DefaultOptions(), null, parameters);
         if (!res.Cancelled)
         {
             Add(res.Result);

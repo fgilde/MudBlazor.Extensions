@@ -1,23 +1,51 @@
 ﻿@using MudBlazor.Utilities
 @inherits MudColorPicker
 
-@if (UseNativeBrowserControl)
+@if (UseNativeBrowserControl || UseMudExColorBubble)
 {
-    @if (UseColorPaletteInNativeBrowserControl)
-    {
-        <input list="@presetId" type="color" @onchange="@NativeColorChange" value="@Value.ToString(MudColorOutputFormats.Hex)" />
-
-        <datalist id="@presetId">
-            @foreach (var preset in Palette)
+    <div>
+        @if (UseNativeBrowserControl)
+        {
+            @if (UseColorPaletteInNativeBrowserControl)
             {
-                <option value="@preset.ToString(MudColorOutputFormats.Hex)">@preset.ToString(MudColorOutputFormats.Hex)</option>
+                <input class="@(PickerVariant != PickerVariant.Static ? "mud-ex-input-color-native" : "")" list="@presetId" type="color" @oninput="@NativeSelectionChange" @onchange="@NativeColorChange" value="@Value.ToString(MudColorOutputFormats.Hex)"/>
+
+                <datalist id="@presetId">
+                    @foreach (var preset in Palette)
+                    {
+                        <option value="@preset.ToString(MudColorOutputFormats.Hex)">@preset.ToString(MudColorOutputFormats.Hex)</option>
+                    }
+                </datalist>
             }
-        </datalist>
-    }
-    else
-    {
-        <input type="color" @onchange="@NativeColorChange" value="@Value.ToString(MudColorOutputFormats.Hex)" />
-    }
+            else
+            {
+                <input class="@(PickerVariant != PickerVariant.Static ? "mud-ex-input-color-native" : "")" type="color" @oninput="@NativeSelectionChange" @onchange="@NativeColorChange" value="@Value.ToString(MudColorOutputFormats.Hex)"/>
+            }
+        }else if (UseMudExColorBubble)
+        {
+
+            <MudExColorBubble Class="@(PickerVariant != PickerVariant.Static ? "mud-ex-color-bubble-in-mud-ex-color-picker" : "")" @bind-Color="@Value"></MudExColorBubble>
+        }
+
+        @if (PickerVariant != PickerVariant.Static)
+        {
+            <MudTextField @bind-Value="@Value"
+                          Variant="@Variant"
+                          Class="@Class"
+                          Style="@Style"
+                          Converter="@ColorConverter"
+                          Clearable="@Clearable"
+                          For="@For"
+                          Label="@Label"
+                          Placeholder="@Placeholder"
+                          Disabled="@Disabled"
+                          ReadOnly="@ReadOnly"
+                          HelperText="@HelperText">
+
+            </MudTextField>
+        }
+
+    </div>
 }
 else
 {
@@ -27,6 +55,7 @@ else
 @code {
     [Parameter] public bool DelayValueChangeToPickerClose { get; set; } = true;
     [Parameter] public bool UseNativeBrowserControl { get; set; }
+    [Parameter] public bool UseMudExColorBubble { get; set; }
     [Parameter] public bool UseColorPaletteInNativeBrowserControl { get; set; }
 
     private string presetId = $"preset-{Guid.NewGuid()}";
@@ -60,5 +89,24 @@ else
         Value = new MudColor(arg.Value.ToString());
         return ValueChanged.InvokeAsync(Value);
     }
+
+
+    private Task NativeSelectionChange(EventArgs arg)
+    {
+        if (!DelayValueChangeToPickerClose)
+        {
+            var args = arg as ChangeEventArgs;
+            Value = new MudColor(args.Value.ToString());
+            return ValueChanged.InvokeAsync(Value);
+        }
+        return Task.CompletedTask;
+    }
+
+    public MudBlazor.Converter<MudColor, string> ColorConverter { get; set; } = new()
+    {
+        GetFunc = s => new MudColor(s),
+        SetFunc = c => c.ToString(MudColorOutputFormats.Hex)
+    };
+
 
 }

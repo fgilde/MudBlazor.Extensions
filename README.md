@@ -10,7 +10,7 @@ Sure you need a MudBlazor project and the referenced package to MudBlazor for mo
 Add the nuget Package `MudBlazor.Extensions` to your blazor project
 
 ```
-<PackageReference Include="MudBlazor.Extensions" Version="1.7.10" />
+<PackageReference Include="MudBlazor.Extensions" Version="1.7.20" />
 ```
 
 For easier using the components should change your `_Imports.razor` and add this entries.
@@ -45,7 +45,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
 ```
 
 ## Components
-#### MudExObjectEdit !NEW
+#### MudExObjectEdit
 `MudExObjectEdit` is a powerfull component to edit objects and automatically render the whole UI. 
 You can also use the `MudExObjectEditForm` to have automatic validation and submit.
 Validation works automatically for DataAnnotation Validations or fluent registered validations for your model.
@@ -204,6 +204,9 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log
+ - 1.7.20 .net6 and .net7 compatible. 
+ - 1.7.20 New componments MudExColorPicker, MudExColorBubble, MudExUploadEdit
+ - 1.7.20 Fixed Bug that localizer is not passed to MudExCollectionEdit 
  - 1.7.10 UPDATE TO .NET 7 and MudBlazor 6.1.2
  - 1.6.76 BugFix in MudExEnumSelect
  - 1.6.74 MudExEnumSelect select now supports nullable enums and flags
@@ -230,10 +233,8 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 #### Planned Features
 Notice this is just a first preview version. 
-There are some features planned like
- - Multi upload component with preview and more
- - Dragging with snap behaviour 
- - Automatic generation for a dialog to edit given model
+There are some features planned like 
+ - Dragging with snap behaviour  
  
 
  #

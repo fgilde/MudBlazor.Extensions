@@ -3,9 +3,9 @@
 @using Nextended.Blazor.Extensions
 @using Nextended.Blazor.Models
 @inject NavigationManager NavigationManager
-<PageTitle>File Display Zip with self made preview</PageTitle>
+<PageHeader>File Display Zip with self made preview</PageHeader>
 
-<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
+<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
     
     
     <MudGrid Justify="Justify.Center" Style="height: 100%;width: 100%;overflow: auto;">
@@ -22,7 +22,7 @@
         </MudItem>
     </MudGrid>
 
-</SampleApplication.Client.Shared.DemoComponent>
+</DemoComponent>
 
 
 @code {

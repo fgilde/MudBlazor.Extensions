@@ -4109,6 +4109,17 @@
   opacity: 1;
 }
 
+.mud-ex-input-color-native {
+  float: right;
+  margin-top: 27px;
+  border-bottom: 1px solid var(--mud-palette-lines-inputs);
+}
+
+.mud-ex-color-bubble-in-mud-ex-color-picker {
+  float: right;
+  margin-top: 27px;
+}
+
 .mud-ex-object-edit-group-flat .mud-expand-panel-text {
   font-weight: bold;
   display: flex;

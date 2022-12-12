@@ -3,14 +3,14 @@
 @inject IJSRuntime js;
 @inject IDialogService dialogService;
 
-<PageTitle>Sample Dialog</PageTitle>
+<PageHeader>Render any component in Dialog</PageHeader>
 
-<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")">
+<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")">
     <MudGrid>
         <MudButton Class="mt-3" Size="Size.Large" OnClick="@ShowComponentSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show a slider in a dialog</MudButton>
     </MudGrid>
 
-</SampleApplication.Client.Shared.DemoComponent>
+</DemoComponent>
 
 @code {
 

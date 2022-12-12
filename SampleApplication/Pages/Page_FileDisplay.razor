@@ -1,9 +1,9 @@
 ﻿@page "/file-display"
 @inject IDialogService dialogService
 @inject NavigationManager NavigationManager
-<PageTitle>File Display</PageTitle>
+<PageHeader>File Display</PageHeader>
 
-<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
+<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
     <MudSelect Label="File" HelperText="Select sample file" @bind-Value="@SampleFile" Variant="Variant.Outlined" Color="Color.Primary">
         <MudSelectItem Value="@(Sample("sample-zip-file.zip", "application/zip"))">sample-zip-file.zip</MudSelectItem>
         <MudSelectItem Value="@(Sample("weather.json", "text/plain"))">weather.json</MudSelectItem>
@@ -17,7 +17,7 @@
         </div>
         <MudButton OnClick="@OpenAsDialog" Variant="Variant.Filled" Color="Color.Primary">Show As Dialog</MudButton>
     }
-</SampleApplication.Client.Shared.DemoComponent>
+</DemoComponent>
 
 
 @code {

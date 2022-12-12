@@ -24,7 +24,7 @@
 	}
     @foreach (var doc in _docFiles)
     {
-        <MudTabPanel Text="@("Doc " + System.IO.Path.GetFileNameWithoutExtension(doc.Key))">
+        <MudTabPanel Text="@("Documentation " + System.IO.Path.GetFileNameWithoutExtension(doc.Key))">
             <MudMarkdown Value="@doc.Value"></MudMarkdown>
         </MudTabPanel>
     }

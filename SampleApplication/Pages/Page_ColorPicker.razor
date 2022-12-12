@@ -2,13 +2,13 @@
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using MudBlazor.Utilities
 
-<PageTitle>MudExColorPicker</PageTitle>
-<MudAlert Severity="Severity.Info">Just a MudColorPicker with optional possibility do delay event or use native rendering </MudAlert>
-<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
+<PageHeader>MudExColorPicker</PageHeader>
+
+<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
     
     <MudGrid>
         <MudItem md="8" Class="d-flex justify-center">
-            <MudPaper Class="d-flex flex-column mud-width-full">
+            <MudPaper Class="d-flex flex-column mud-width-full pt-5 pl-5 pr-5">
                 <MudExColorPicker DisableToolbar="false" @bind-Value="@color" @ref="component"></MudExColorPicker>
             </MudPaper>
         </MudItem>
@@ -19,7 +19,7 @@
         </MudItem>
     </MudGrid>
 
-</SampleApplication.Client.Shared.DemoComponent>
+</DemoComponent>
 
 
 @code {
@@ -29,11 +29,14 @@
     {
         return meta =>
         {
+            meta.Property(m => m.UseColorPaletteInNativeBrowserControl).IgnoreIf(m => !m.UseNativeBrowserControl);
+            meta.Property(m => m.UseMudExColorBubble).IgnoreIf(m => m.UseNativeBrowserControl);
+            meta.Property(m => m.UseNativeBrowserControl).IgnoreIf(m => m.UseMudExColorBubble);
             meta.Property(p => p.Palette)
                 .WithGroup("Palette");
             meta
                 .IgnoreAllReadOnlyFields()
-                .IgnoreAllInheritedFields(p => p.Value, p => p.Palette);
+                .IgnoreAllInheritedFields(p => p.Value, p => p.Palette, p => p.PickerVariant);
         };
     }
 

@@ -3,8 +3,8 @@
 @inject IDialogService _dlgService;
 @using Newtonsoft.Json
 
-<PageTitle>Object Edit Samples</PageTitle>
+<PageHeader>Object Edit Samples</PageHeader>
 
-<SampleApplication.Client.Shared.DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFile="@($"Pages/{GetType().Name}.razor")">
+<DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "ObjectEditMetaConfig/ThemeEditConfig.cs"})">
     <MudExObjectEdit @bind-Value="@ClientTheme.CurrentTheme"></MudExObjectEdit>
-</SampleApplication.Client.Shared.DemoComponent>
+</DemoComponent>

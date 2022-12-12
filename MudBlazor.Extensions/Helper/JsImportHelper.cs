@@ -10,7 +10,7 @@ namespace MudBlazor.Extensions.Helper
 {
     public static class JsImportHelper
     {
-        private static bool useMinified => false; //!Debugger.IsAttached;
+        private static bool useMinified => true; //!Debugger.IsAttached;
         
         private static string min => useMinified ? ".min" : string.Empty;
         private static bool initialized;

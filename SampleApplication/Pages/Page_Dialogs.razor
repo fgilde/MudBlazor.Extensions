@@ -5,9 +5,9 @@
 @inject IJSRuntime Js
 @inject IDialogService dialogService;
 
-<PageTitle>Sample Dialog</PageTitle>
+<PageHeader>Sample Dialog</PageHeader>
 
-<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")">
+<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")">
     <MudGrid>
         <MudItem xs="2">
             <MudNumericField Min="0" Max="30" Variant="Variant.Outlined" Disabled="@(OpenDialogTask != null)" @bind-Value="seconds" Label="@($"Dialog opens in {seconds}s")"></MudNumericField>
@@ -18,7 +18,7 @@
     </MudGrid>
     
     <MudExObjectEdit DefaultGroupName="Other" Value="@Options"></MudExObjectEdit>
-</SampleApplication.Client.Shared.DemoComponent>
+</DemoComponent>
 
 @code {
     

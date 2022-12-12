@@ -5,11 +5,11 @@
 @inject IJSRuntime Js
 @inject IDialogService dialogService;
 
-<PageTitle>Sample Dialog</PageTitle>
+<PageHeader>Object edit in Dialog</PageHeader>
 
-<SampleApplication.Client.Shared.DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
+<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
     <MudButton OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Edit Test Object</MudButton>
-</SampleApplication.Client.Shared.DemoComponent>
+</DemoComponent>
 
 @code {
 
