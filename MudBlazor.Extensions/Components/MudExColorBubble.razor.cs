@@ -151,6 +151,7 @@ public partial class MudExColorBubble
             {
                 {nameof(MudColorPicker.PickerVariant), PickerVariant.Static },
                 {nameof(MudColorPicker.DisableAlpha), true },
+                {nameof(MudExColorPicker.InitialColor), new MudColor(Color.ToString(MudColorOutputFormats.Hex)) },
                 {nameof(MudColorPicker.DisableToolbar), false }
             },
             dialog =>
@@ -187,7 +188,7 @@ public partial class MudExColorBubble
     private object Options()
     {
         _selectorSize = _selectorSize % 2 != 0 ? _selectorSize : _selectorSize + 1;
-        var color = Color.ToString(MudColorOutputFormats.Hex);
+        var color = Color?.ToString(MudColorOutputFormats.Hex);
         return new {
             Color = color, // Color on js needs to be a string
             MinLuminance,

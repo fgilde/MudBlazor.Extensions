@@ -1,4 +1,6 @@
 ﻿@using MudBlazor.Utilities
+@using Nextended.Core.Extensions
+@using System.Reflection
 @inherits MudColorPicker
 
 @if (UseNativeBrowserControl || UseMudExColorBubble)
@@ -57,14 +59,44 @@ else
     [Parameter] public bool UseNativeBrowserControl { get; set; }
     [Parameter] public bool UseMudExColorBubble { get; set; }
     [Parameter] public bool UseColorPaletteInNativeBrowserControl { get; set; }
+    [Parameter] public MudColor InitialColor { get; set; }
 
     private string presetId = $"preset-{Guid.NewGuid()}";
     private bool ShouldDelay => DelayValueChangeToPickerClose && PickerVariant != PickerVariant.Static;
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
     EventCallback<MudColor> _originalValueChanged;
 
+    protected override void OnInitialized()
+    {
+        SetInitialColorOneTime();
+        base.OnInitialized();
+    }
+
+    private void SetInitialColorOneTime()
+    {
+        if (InitialColor != null)
+        {
+            try
+            {
+                var fieldInfo = typeof(MudColorPicker).GetField("_color", BindingFlags.NonPublic | BindingFlags.Instance);
+                var c = fieldInfo?.GetValue(this) as MudColor;
+                fieldInfo?.SetValue(this, InitialColor);
+                typeof(MudColorPicker).GetMethod("UpdateBaseColor", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(this, new object[] { });
+                typeof(MudColorPicker).GetMethod("UpdateColorSelectorBasedOnRgb", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(this, new object[] { });
+                typeof(MudColorPicker).GetMethod("UpdateBaseColorSlider", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(this, new object[] { InitialColor.H });
+                typeof(MudColorPicker).GetMethod("SelectPaletteColor", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(this, new object[] { InitialColor });
+                SetTextAsync(InitialColor.ToString(!DisableAlpha ? MudColorOutputFormats.HexA : MudColorOutputFormats.Hex), false).AndForget();
+                FieldChanged(InitialColor);
+                StateHasChanged();
+                fieldInfo?.SetValue(this, c);
+            }
+            catch { /* ignore */ }
+        }
+    }
+
     protected override void OnPickerOpened()
     {
+
         base.OnPickerOpened();
         if (!ShouldDelay) return;
 

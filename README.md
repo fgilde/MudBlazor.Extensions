@@ -204,6 +204,7 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log
+ - 1.7.21 Correct initial color for colorpicker from MudExColorBubble
  - 1.7.20 .net6 and .net7 compatible. 
  - 1.7.20 New componments MudExColorPicker, MudExColorBubble, MudExUploadEdit
  - 1.7.20 Fixed Bug that localizer is not passed to MudExCollectionEdit 
