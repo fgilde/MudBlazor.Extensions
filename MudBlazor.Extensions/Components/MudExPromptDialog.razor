@@ -11,7 +11,7 @@
     </TitleContent>
     <DialogContent>
         <MudText>@Message</MudText>
-        <MudTextField @bind-Value="@Value"></MudTextField>
+        <MudTextField OnKeyUp="@OnKeyUp" Immediate="@Immediate" @bind-Value="@Value"></MudTextField>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">@_localizer.TryLocalize(CancelText)</MudButton>
@@ -20,14 +20,16 @@
 </MudDialog>
 @code {
     [Inject] private IServiceProvider _serviceProvider { get; set; }
-    
+
     private IStringLocalizer _localizer => Localizer ?? _serviceProvider.GetService<IStringLocalizer<MudExPromptDialog>>() ?? _serviceProvider.GetService<IStringLocalizer>();
-    
+
     [Parameter]
     public IStringLocalizer Localizer { get; set; }
 
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
+    [Parameter] public bool Immediate { get; set; } = true;
+    [Parameter] public bool SubmitOnEnter { get; set; } = true;
     [Parameter] public string OkText { get; set; } = "Ok";
     [Parameter] public string CancelText { get; set; } = "Cancel";
     [Parameter] public string Value { get; set; }
@@ -45,5 +47,13 @@
     void Cancel() => MudDialog.Cancel();
 
     private bool IsValid() => CanConfirm(Value);
+
+    private void OnKeyUp(KeyboardEventArgs arg)
+    {
+        if (arg.Key == "Enter" && SubmitOnEnter && IsValid())
+        {
+            Submit();
+        }
+    }
 
 }

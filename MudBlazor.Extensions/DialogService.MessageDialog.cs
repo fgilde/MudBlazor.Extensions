@@ -186,4 +186,48 @@ public static partial class DialogServiceExt
         return !(await dialog.Result).Cancelled;
     }
 
+    public static async Task<string> PromptAsync(this IDialogService dialogService, string title, string message, DialogOptionsEx options)
+    {
+        return await dialogService.PromptAsync(title, message, "", options: options);
+    }
+
+    public static async Task<string> PromptAsync(this IDialogService dialogService, string title, string message, Func<string, bool> canConfirm, DialogOptionsEx options = null)
+    {
+        return await dialogService.PromptAsync(title, message, "", canConfirm: canConfirm, options: options);
+    }
+
+    public static async Task<string> PromptAsync(this IDialogService dialogService, string title, string message, string icon, Func<string, bool> canConfirm, DialogOptionsEx options = null)
+    {
+        return await dialogService.PromptAsync(title, message, "", icon: icon, canConfirm: canConfirm, options: options);
+    }
+
+    public static async Task<string> PromptAsync(this IDialogService dialogService, string title, string message,
+        string initialValue = "",
+        string buttonOkText = "Ok", 
+        string buttonCancelText = "Cancel",
+        string icon = null,
+        Func<string, bool> canConfirm = null,
+        DialogOptionsEx options = null)
+    {
+        canConfirm ??= (s => true);
+        var parameters = new DialogParameters
+        {
+            {nameof(MudExPromptDialog.Message), message},
+            {nameof(MudExPromptDialog.Icon), icon},
+            {nameof(MudExPromptDialog.OkText), buttonOkText},
+            {nameof(MudExPromptDialog.CancelText), buttonCancelText},
+            {nameof(MudExPromptDialog.CanConfirm), canConfirm},
+            {nameof(MudExPromptDialog.Value), initialValue}
+        };
+        
+        options ??= new DialogOptionsEx { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true, Animations = new[] { AnimationType.FlipX } };
+
+        var res = await dialogService.ShowEx<MudExPromptDialog>(title, parameters, options);
+        var dialogResult = (await res.Result);
+
+        if (!dialogResult.Cancelled && dialogResult.Data != null && canConfirm(dialogResult.Data.ToString()))
+            return dialogResult.Data.ToString();
+        return null;
+    }
+
 }

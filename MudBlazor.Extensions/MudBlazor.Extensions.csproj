@@ -48,7 +48,7 @@
 
   <ItemGroup>
     <PackageReference Include="Nextended.Blazor" Version="7.0.19" />
-    <PackageReference Include="Nextended.Core" Version="7.0.19" />
+    <PackageReference Include="Nextended.Core" Version="7.0.20" />
     <PackageReference Include="BlazorJS" Version="1.0.4" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.0.3" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />

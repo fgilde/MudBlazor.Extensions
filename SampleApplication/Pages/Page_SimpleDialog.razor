@@ -1,0 +1,41 @@
+﻿@page "/simple-dialogs"
+
+@inject IJSRuntime js;
+@inject IDialogService dialogService;
+
+<PageHeader>Render any component in Dialog</PageHeader>
+
+<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")">
+    <MudGrid>
+        <MudButton Class="mt-3" Size="Size.Large" OnClick="@Prompt" Variant="Variant.Filled" Color="Color.Primary">Simple Prompt</MudButton>
+        <MudButton Class="mt-3 ml-3" Size="Size.Large" OnClick="@MessageBox" Variant="Variant.Outlined" Color="Color.Primary">Simple Confirmation</MudButton>
+    </MudGrid>
+
+</DemoComponent>
+
+@code {
+
+    private async Task MessageBox()
+    {
+        var res = await dialogService.ShowConfirmationDialogAsync("Confirmation", "Are you sure?", "Yes", "No");
+        if (res)
+        {
+            await js.InvokeVoidAsync("alert", "You clicked Yes");
+        }
+        else
+        {
+            await js.InvokeVoidAsync("alert", "You clicked No");
+        }
+    }
+
+    private async Task Prompt()
+    {
+        var name = await dialogService.PromptAsync("Enter name", "Please enter your name", Icons.Material.Filled.VerifiedUser, s => !string.IsNullOrEmpty(s));
+        if (name != null)
+        {
+            await js.InvokeVoidAsync("alert", $"Hello {name}");
+        }
+    }
+    
+
+}
