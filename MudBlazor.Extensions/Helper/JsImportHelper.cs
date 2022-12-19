@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
 using BlazorJS;
 using Microsoft.Extensions.FileProviders;
@@ -14,7 +13,7 @@ namespace MudBlazor.Extensions.Helper
         
         private static string min => useMinified ? ".min" : string.Empty;
         private static bool initialized;
-        private static IJSRuntime _runtime; 
+        internal static IJSRuntime _runtime; 
 
         internal static async Task<IJSRuntime> GetInitializedJsRuntime(object field, IJSRuntime fallback)
         {

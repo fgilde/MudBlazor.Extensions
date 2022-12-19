@@ -74,7 +74,7 @@
         OpenDialogTask = null;
         var options = Options.Clone();
         options.Buttons = GetButtons();
-        await dialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; },options);
+        IDialogReference dlgReference = await dialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; },options);
     }
 
 }

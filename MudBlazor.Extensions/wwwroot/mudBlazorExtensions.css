@@ -4471,6 +4471,12 @@
 /*.mud-dialog-container:has(.mud-dialog) .mud-overlay-dialog {
     opacity: 0 !important; // initially hide overlay fur mud-ex dialog to ensure no flackering if dialog shouldnt be modal
 }*/
+.mud-ex-dialog-header-progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
 .mud-ex-scroll-to-top {
   height: 56px;
   width: 56px;

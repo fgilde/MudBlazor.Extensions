@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using Nextended.Core;
@@ -36,7 +37,7 @@ namespace MudBlazor.Extensions
         public static DialogParameters ConvertToDialogParameters<TDialog>(this TDialog dialogParameters) where TDialog : new()
             => DictionaryHelper.GetValuesDictionary(dialogParameters, true).Where(p => typeof(TDialog).GetProperty(p.Key, BindingFlags.Public | BindingFlags.Instance)?.CanWrite == true).ToDialogParameters();
 
-        public static Task<IDialogReference> ShowEx<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, Action<DialogOptionsEx> optionsEx)
+        public static Task<IMudExDialogReference<TDialog>> ShowEx<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, Action<DialogOptionsEx> optionsEx)
             where TDialog : ComponentBase, new()
         {
             var options = new DialogOptionsEx();
@@ -44,7 +45,7 @@ namespace MudBlazor.Extensions
             return dialogService.ShowEx<TDialog>(title, dialogParameters, options);
         }
 
-        public static Task<IDialogReference> ShowEx<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, Action<DialogOptionsEx> optionsEx)
+        public static Task<IMudExDialogReference<TDialog>> ShowEx<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, Action<DialogOptionsEx> optionsEx)
             where TDialog : ComponentBase, new()
         {
             var options = new DialogOptionsEx();
@@ -52,13 +53,13 @@ namespace MudBlazor.Extensions
             return dialogService.ShowEx<TDialog>(title, dialogParameters, options);
         }
 
-        public static async Task<IDialogReference> ShowEx<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, DialogOptionsEx optionsEx = null) where TDialog : ComponentBase, new()
+        public static async Task<IMudExDialogReference<TDialog>> ShowEx<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, DialogOptionsEx optionsEx = null) where TDialog : ComponentBase, new()
             => await dialogService.ShowEx<TDialog>(title, dialogParameters.ConvertToDialogParameters(), optionsEx ?? new DialogOptionsEx());
 
-        public static async Task<IDialogReference> ShowEx<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, DialogOptionsEx optionsEx = null) where TDialog : ComponentBase, new()
+        public static async Task<IMudExDialogReference<TDialog>> ShowEx<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, DialogOptionsEx optionsEx = null) where TDialog : ComponentBase, new()
             => await dialogService.ShowEx<TDialog>(title, dialogParameters.ConvertToDialogParameters(), optionsEx ?? new DialogOptionsEx());
 
-        public static IDialogReference Show<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, Action<DialogOptions> options)
+        public static IMudExDialogReference<TDialog> Show<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, Action<DialogOptions> options)
             where TDialog : ComponentBase, new()
         {
             var dlgOptions = new DialogOptions();
@@ -66,25 +67,25 @@ namespace MudBlazor.Extensions
             return Show<TDialog>(dialogService, title, dialogParameters, dlgOptions);
         }
 
-        public static IDialogReference Show<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, Action<DialogOptions> options)
+        public static IMudExDialogReference<TDialog> Show<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, Action<DialogOptions> options)
             where TDialog : ComponentBase, new()
         {
             var dlgOptions = new DialogOptions();
             options(dlgOptions);
-            return dialogService.Show<TDialog>(title, dialogParameters, dlgOptions);
+            return dialogService.Show<TDialog>(title, dialogParameters, dlgOptions).AsMudExDialogReference<TDialog>();
         }
 
-        public static IDialogReference Show<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, DialogOptions options = null) where TDialog : ComponentBase, new()
-            => dialogService.Show<TDialog>(title, dialogParameters.ConvertToDialogParameters(), options ?? new DialogOptions());
+        public static IMudExDialogReference<TDialog> Show<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, DialogOptions options = null) where TDialog : ComponentBase, new()
+            => dialogService.Show<TDialog>(title, dialogParameters.ConvertToDialogParameters(), options ?? new DialogOptions()).AsMudExDialogReference<TDialog>();
 
-        public static IDialogReference Show<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, DialogOptions options = null) where TDialog : ComponentBase, new()
-            => dialogService.Show<TDialog>(title, dialogParameters.ConvertToDialogParameters(), options ?? new DialogOptions());
+        public static IMudExDialogReference<TDialog> Show<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, DialogOptions options = null) where TDialog : ComponentBase, new()
+            => dialogService.Show<TDialog>(title, dialogParameters.ConvertToDialogParameters(), options ?? new DialogOptions()).AsMudExDialogReference<TDialog>();
 
-        public static async Task<IDialogReference> ShowEx<T>(this IDialogService dialogService, string title, DialogParameters parameters, DialogOptionsEx options = null) where T : ComponentBase 
-            => await dialogService.Show<T>(title, parameters, options).InjectOptionsAsync(options);
+        public static async Task<IMudExDialogReference<T>> ShowEx<T>(this IDialogService dialogService, string title, DialogParameters parameters, DialogOptionsEx options = null) where T : ComponentBase
+            => await dialogService.Show<T>(title, parameters, options).InjectOptionsAsync(options).AsMudExDialogReferenceAsync<T>();
 
-        public static async Task<IDialogReference> ShowEx<T>(this IDialogService dialogService, string title, DialogOptionsEx options = null) where T : ComponentBase 
-            => await dialogService.Show<T>(title, options).InjectOptionsAsync(options);
+        public static async Task<IMudExDialogReference<T>> ShowEx<T>(this IDialogService dialogService, string title, DialogOptionsEx options = null) where T : ComponentBase 
+            => await dialogService.Show<T>(title, options).InjectOptionsAsync(options).AsMudExDialogReferenceAsync<T>();
 
         public static async Task<IDialogReference> ShowEx(this IDialogService dialogService, Type type, string title, DialogParameters parameters, DialogOptionsEx options = null) 
             => await dialogService.Show(type, title, parameters, options).InjectOptionsAsync(options);
