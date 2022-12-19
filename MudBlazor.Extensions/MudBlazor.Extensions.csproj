@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Content Remove="bundleconfig.json" />
+    <Content Remove="wwwroot\js\components\MudExColorBubble.min.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -77,6 +78,7 @@
     </None>
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
+    <None Include="wwwroot\js\components\MudExColorBubble.min.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -93,6 +95,7 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Components\MudExMessageDialog.razor" />
     <_ContentIncludedByDefault Remove="Components\MudExTaskBar.razor" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\components\MudExColorBubble.min.js" />
   </ItemGroup>
 
   <ItemGroup>

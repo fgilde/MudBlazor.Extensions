@@ -10,7 +10,7 @@ Sure you need a MudBlazor project and the referenced package to MudBlazor for mo
 Add the nuget Package `MudBlazor.Extensions` to your blazor project
 
 ```
-<PackageReference Include="MudBlazor.Extensions" Version="1.7.22" />
+<PackageReference Include="MudBlazor.Extensions" Version="1.7.23" />
 ```
 
 For easier using the components should change your `_Imports.razor` and add this entries.
@@ -203,6 +203,7 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log
+ - 1.7.23 New small dialogService extension method `ShowInformationAsync`
  - 1.7.22 New small dialogService extension method `PromptAsync`
  - 1.7.21 Correct initial color for colorpicker from MudExColorBubble
  - 1.7.20 .net6 and .net7 compatible. 

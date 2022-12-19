@@ -28,7 +28,7 @@
                 <MudButton Color="@action.Color" Variant="@action.Variant" OnClick="@(() => Submit(action.Result))">@localizer.TryLocalize(action.Label)</MudButton>
             }
         }
-        else
+        else if (!AllowEmptyActions)
         {
             <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="Cancel">@localizer.TryLocalize("Close")</MudButton>
         }
@@ -45,6 +45,7 @@
     [Parameter] public string ClassContent { get; set; } = string.Empty;
 
     [Parameter] public string Message { get; set; }
+    [Parameter] public bool AllowEmptyActions { get; set; }
     [Parameter] public string Icon { get; set; }
     [Parameter] public IEnumerable<string> Details { get; set; }
     [Parameter] public MudExDialogResultAction[] Buttons { get; set; }

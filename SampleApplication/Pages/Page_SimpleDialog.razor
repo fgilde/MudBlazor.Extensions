@@ -9,6 +9,7 @@
     <MudGrid>
         <MudButton Class="mt-3" Size="Size.Large" OnClick="@Prompt" Variant="Variant.Filled" Color="Color.Primary">Simple Prompt</MudButton>
         <MudButton Class="mt-3 ml-3" Size="Size.Large" OnClick="@MessageBox" Variant="Variant.Outlined" Color="Color.Primary">Simple Confirmation</MudButton>
+        <MudButton Class="mt-3 ml-3" Size="Size.Large" OnClick="@ShowInfo" Variant="Variant.Outlined" Color="Color.Secondary">Show info</MudButton>
     </MudGrid>
 
 </DemoComponent>
@@ -36,6 +37,13 @@
             await js.InvokeVoidAsync("alert", $"Hello {name}");
         }
     }
-    
+
+
+    private async Task ShowInfo()
+    {
+        var dlg = await dialogService.ShowInformationAsync("Information", "This is a simple information dialog that closes after 2 seconds", Icons.Material.Filled.Info, false);
+        await Task.Delay(2000);
+        dlg.Close();
+    }
 
 }

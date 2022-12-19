@@ -161,20 +161,22 @@ public static partial class DialogServiceExt
     }
 
 
-    public static async Task<bool> ShowConfirmationDialogAsync(this IDialogService dialogService, string title, string message,
+    public static async Task<bool> ShowConfirmationDialogAsync(this IDialogService dialogService, string title,
+        string message,
         string confirmText = "Confirm",
         string cancelText = "Cancel",
+        string icon = null,
         DialogOptionsEx options = null)
     {
         var actions = MudExDialogResultAction.OkCancel(confirmText, cancelText);
         var parameters = new DialogParameters
+        {
             {
-                {
-                    nameof(MudExMessageDialog.Message), message
-                },
-                {nameof(MudExMessageDialog.Icon), Icons.Filled.Check},
-                {nameof(MudExMessageDialog.Buttons), actions}
-            };
+                nameof(MudExMessageDialog.Message), message
+            },
+            {nameof(MudExMessageDialog.Icon), icon ?? Icons.Filled.Check},
+            {nameof(MudExMessageDialog.Buttons), actions}
+        };
         options ??= new DialogOptionsEx
         {
             CloseButton = true,
@@ -185,6 +187,55 @@ public static partial class DialogServiceExt
 
         return !(await dialog.Result).Cancelled;
     }
+
+    public static async Task<IDialogReference> ShowInformationAsync(this IDialogService dialogService, string title,
+        string message,
+        string icon = null,
+        DialogOptionsEx options = null)
+    {
+        var actions = MudExDialogResultAction.Ok();
+        var parameters = new DialogParameters
+        {
+            {
+                nameof(MudExMessageDialog.Message), message
+            },
+            {nameof(MudExMessageDialog.AllowEmptyActions), true},
+            {nameof(MudExMessageDialog.Icon), icon ?? Icons.Filled.Check},
+            {nameof(MudExMessageDialog.Buttons), actions}
+        };
+        options ??= new DialogOptionsEx
+        {
+            Animations = new[] { AnimationType.SlideIn, AnimationType.FlipX }
+        };
+        return await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options);
+    }
+
+    public static async Task<IDialogReference> ShowInformationAsync(this IDialogService dialogService, string title,
+        string message,
+        string icon = null,
+        bool canClose = true,
+        DialogOptionsEx options = null)
+    {
+        var actions = canClose ? MudExDialogResultAction.Ok() : null;
+        var parameters = new DialogParameters
+        {
+            {
+                nameof(MudExMessageDialog.Message), message
+            },
+            {nameof(MudExMessageDialog.AllowEmptyActions), true},
+            {nameof(MudExMessageDialog.Icon), icon ?? Icons.Filled.Check},
+            {nameof(MudExMessageDialog.Buttons), actions}
+        };
+        options ??= new DialogOptionsEx
+        {
+            Animations = new[] { AnimationType.SlideIn, AnimationType.FlipX }
+        };
+        options.CloseButton = canClose;
+        options.CloseOnEscapeKey = canClose;
+        options.DisableBackdropClick = !canClose;
+        return await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options);
+    }
+
 
     public static async Task<string> PromptAsync(this IDialogService dialogService, string title, string message, DialogOptionsEx options)
     {
