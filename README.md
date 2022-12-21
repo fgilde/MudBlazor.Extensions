@@ -10,7 +10,7 @@ Sure you need a MudBlazor project and the referenced package to MudBlazor for mo
 Add the nuget Package `MudBlazor.Extensions` to your blazor project
 
 ```
-<PackageReference Include="MudBlazor.Extensions" Version="1.7.24" />
+<PackageReference Include="MudBlazor.Extensions" Version="1.7.25" />
 ```
 
 For easier using the components should change your `_Imports.razor` and add this entries.
@@ -31,6 +31,18 @@ builder.Services.AddMudServicesWithExtensions();
 // or this to add only the MudBlazor.Extensions
 builder.Services.AddMudExtensions();
 ```
+
+You can also provide default dialogOptions here
+```csharp
+builder.Services.AddMudServicesWithExtensions(c =>
+{
+    c.WithDefaultDialogOptions(ex =>
+    {
+        ex.Position = DialogPosition.BottomRight;
+    });
+});
+```
+
 
 Because the dialog extensions are static you need to set the IJSRuntime somewhere in your code for example in your `App.razor` or `MainLayout.razor` in the `OnAfterRenderAsync` method.
 This is not required but otherwise you need to pass the IJSRuntime in every `DialogOptionsEx`
@@ -203,6 +215,7 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log
+ - 1.7.25 DialogOptions can now set as Default for all dialogs where no explicit options are used
  - 1.7.24 Allow converting any IDialogReference to an `IMudExDialogReference<TComponent>` with Extension method AsMudExDialogReference. With this reference, the inner dialog component is type safe accessable
  - 1.7.23 New small dialogService extension method `ShowInformationAsync`
  - 1.7.22 New small dialogService extension method `PromptAsync`

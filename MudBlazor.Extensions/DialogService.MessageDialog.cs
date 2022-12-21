@@ -105,13 +105,7 @@ public static partial class DialogServiceExt
         DialogParameters dialogParameters,
         Action<DialogOptionsEx> options) where TComponent : ComponentBase, new()
     {
-        var optionsEx = new DialogOptionsEx
-        {
-            DragMode = MudDialogDragMode.Simple,
-            CloseButton = true,
-            DisableBackdropClick = false,
-            Animations = new[] { AnimationType.FadeIn, AnimationType.FlipX }
-        };
+        var optionsEx = DefaultOptions();
         options?.Invoke(optionsEx);
         return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, componentOptions, dialogParameters, optionsEx);
     }
@@ -147,14 +141,7 @@ public static partial class DialogServiceExt
 
             builder.CloseComponent();
         }));
-        options ??= new DialogOptionsEx
-        {
-            DragMode = MudDialogDragMode.Simple,
-            CloseButton = true,
-            DisableBackdropClick = false,
-            Animations = new[] { AnimationType.FadeIn, AnimationType.FlipX }
-        };
-
+        options ??= DefaultOptions();
         var dialog = await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options);
         var mudExMessageDialog = ((MudExMessageDialog)dialog.Dialog);
         mudExMessageDialog.Component = component;
@@ -166,12 +153,7 @@ public static partial class DialogServiceExt
         DialogParameters parameters,
         DialogOptionsEx options = null)
     {
-        options ??= new DialogOptionsEx
-        {
-            CloseButton = true,
-            DisableBackdropClick = false,
-            Animations = new[] { AnimationType.FadeIn, AnimationType.FlipX }
-        };
+        options ??= DefaultOptions();
         var dialog = await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options);
 
         return !(await dialog.Result).Cancelled;
@@ -201,10 +183,7 @@ public static partial class DialogServiceExt
         Action<MudExMessageDialog> parameters,
         DialogOptionsEx options = null)
     {
-        options ??= new DialogOptionsEx
-        {
-            Animations = new[] { AnimationType.SlideIn, AnimationType.FlipX }
-        };
+        options ??= DefaultOptions();
         return (await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options)).AsMudExDialogReference<MudExMessageDialog>();
     }
 
@@ -212,10 +191,7 @@ public static partial class DialogServiceExt
         DialogParameters parameters,
         DialogOptionsEx options = null)
     {
-        options ??= new DialogOptionsEx
-        {
-            Animations = new[] { AnimationType.SlideIn, AnimationType.FlipX }
-        };
+        options ??= DefaultOptions();
         return (await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options)).AsMudExDialogReference<MudExMessageDialog>();
     }
 
@@ -234,10 +210,7 @@ public static partial class DialogServiceExt
             {nameof(MudExMessageDialog.Icon), icon ?? Icons.Filled.Check},
             {nameof(MudExMessageDialog.Buttons), actions}
         };
-        options ??= new DialogOptionsEx
-        {
-            Animations = new[] { AnimationType.SlideIn, AnimationType.FlipX }
-        };
+        options ??= DefaultOptions();
         return ShowInformationAsync(dialogService, title, parameters, options);
     }
 
@@ -259,10 +232,7 @@ public static partial class DialogServiceExt
             {nameof(MudExMessageDialog.Buttons), actions},
             {nameof(MudExMessageDialog.ShowProgress), showProgress}
         };
-        options ??= new DialogOptionsEx
-        {
-            Animations = new[] { AnimationType.SlideIn, AnimationType.FlipX }
-        };
+        options ??= DefaultOptions();
         options.CloseButton = canClose;
         options.CloseOnEscapeKey = canClose;
         options.DisableBackdropClick = !canClose;
@@ -305,8 +275,7 @@ public static partial class DialogServiceExt
             {nameof(MudExPromptDialog.Value), initialValue}
         };
         
-        options ??= new DialogOptionsEx { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true, Animations = new[] { AnimationType.FlipX } };
-
+        options ??= DefaultOptions();
         var res = await dialogService.ShowEx<MudExPromptDialog>(title, parameters, options);
         var dialogResult = (await res.Result);
 

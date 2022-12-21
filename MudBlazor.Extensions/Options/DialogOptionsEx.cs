@@ -1,12 +1,30 @@
-﻿using System;
-using System.Linq;
-using Microsoft.JSInterop;
+﻿using Microsoft.JSInterop;
 using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Options
 {
-    public class DialogOptionsEx : DialogOptions
+    public class DialogOptionsEx : DialogOptions, ICloneable
     {
+        #region Statics
+
+        public static DialogOptionsEx DefaultDialogOptions { get; set; } = new()
+        {
+            DragMode = MudDialogDragMode.Simple,
+            CloseButton = true,
+            DisableBackdropClick = false,
+            MaxWidth = MudBlazor.MaxWidth.ExtraSmall,
+            FullWidth = true,
+            Animations = new[] { AnimationType.FlipX }
+        };
+
+        #endregion
+
+        public DialogOptionsEx SetAsDefaultDialogOptions()
+        {
+            DefaultDialogOptions = CloneOptions();
+            return this;
+        }
+
         public IJSRuntime JsRuntime { get; set; }
         public bool Modal { get; set; } = true;
         public bool? MaximizeButton { get; set; }
@@ -36,5 +54,9 @@ namespace MudBlazor.Extensions.Options
         }
         public string CursorPositionOriginName => CursorPositionOrigin.ToDescriptionString();
         public string AnimationStyle => Animations?.Any() == true ? Animations.GetAnimationCssStyle(AnimationDuration, AnimationDirection.In, AnimationTimingFunction, Position) : string.Empty;
+
+        public DialogOptionsEx CloneOptions() => Clone() as DialogOptionsEx;
+
+        public object Clone() => MemberwiseClone();
     }
 }
