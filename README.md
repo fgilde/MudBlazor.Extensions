@@ -10,7 +10,7 @@ Sure you need a MudBlazor project and the referenced package to MudBlazor for mo
 Add the nuget Package `MudBlazor.Extensions` to your blazor project
 
 ```
-<PackageReference Include="MudBlazor.Extensions" Version="1.7.25" />
+<PackageReference Include="MudBlazor.Extensions" Version="1.7.26" />
 ```
 
 For easier using the components should change your `_Imports.razor` and add this entries.
@@ -78,6 +78,7 @@ dialogService.EditObject(User, "Dialog Title", dialogOptionsEx);
 #### MudExFileDisplay
 A Component to display file contents for example as preview before uploading or for referenced files.
 This components automatically tries to display as best as possible and can handle urls or streams directly.
+Also you can easially implement `IMudExFileDisplay`in your own component to register a custom file display. For example if you want to build or use your own video player
 You can use it like this
 
 ```xml
@@ -215,6 +216,7 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log
+ - 1.7.26 Improvements and extensibility for MudExFileDisplay
  - 1.7.25 DialogOptions can now set as Default for all dialogs where no explicit options are used
  - 1.7.24 Allow converting any IDialogReference to an `IMudExDialogReference<TComponent>` with Extension method AsMudExDialogReference. With this reference, the inner dialog component is type safe accessable
  - 1.7.23 New small dialogService extension method `ShowInformationAsync`
