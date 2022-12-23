@@ -6,7 +6,7 @@
 
 <BrowserDetect @bind-BrowserInfo="@Info" />
 
-<div class="mud-ex-file-display-container">
+<div @ref=_elementReference class="mud-ex-file-display-container">
 
     <MoveContent ElementSelector="@($".mud-ex-file-display-toolbar-{ElementId}")">
         <Found>

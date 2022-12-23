@@ -14,10 +14,16 @@ namespace MudBlazor.Extensions.Components;
 
 public partial class MudExFileDisplay : IAsyncDisposable, IMudExFileDisplayInfos
 {
-    
+
+    #region Injection
+
     [Inject] private IServiceProvider _serviceProvider { get; set; }
     private IJSRuntime JsRuntime => _serviceProvider.GetService<IJSRuntime>();
     private IStringLocalizer<MudExFileDisplay> _localizer => _serviceProvider.GetService<IStringLocalizer<MudExFileDisplay>>();
+
+    #endregion
+
+    #region Parameters and Properties
 
     [Parameter] public string Url { get; set; }
     [Parameter] public string ContentType { get; set; }
@@ -63,20 +69,41 @@ public partial class MudExFileDisplay : IAsyncDisposable, IMudExFileDisplayInfos
         }
     }
 
+    #endregion
+
+    #region private fields
+
     private bool _isNativeRendered;
     private string _id = Guid.NewGuid().ToString();
     private (string tag, Dictionary<string, object> attributes) renderInfos;
     private BrowserInfo _info;
     private bool internalOverwrite;
+    private List<IMudExFileDisplay> _possibleRenderControls;
+    private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) _componentForFile;
+
+
+    #endregion
+
+    private ElementReference _elementReference;
+    private IJSObjectReference _jsReference;
+    private IJSObjectReference _module;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            var references = await JsRuntime.ImportModuleAndCreateJsAsync<MudExFileDisplay>(_elementReference, DotNetObjectReference.Create(this), _id);
+            _jsReference = references.jsObjectReference;
+            _module = references.moduleReference;
+        }
+    }
 
     protected override Task OnInitializedAsync()
     {
-        JsRuntime?.InvokeVoidAsync("MudBlazorExtensions.initMudExFileDisplay", DotNetObjectReference.Create(this), _id);
+     //   JsRuntime?.InvokeVoidAsync("MudBlazorExtensions.initMudExFileDisplay", DotNetObjectReference.Create(this), _id);
         return base.OnInitializedAsync();
     }
 
-    private List<IMudExFileDisplay> _possibleRenderControls;
-    private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) _componentForFile;
     protected override Task OnParametersSetAsync()
     {
         _possibleRenderControls = _serviceProvider.GetServices<IMudExFileDisplay>().Where(c => c.GetType() != GetType() && c.CanHandleFile(this)).ToList();
@@ -171,7 +198,7 @@ public partial class MudExFileDisplay : IAsyncDisposable, IMudExFileDisplayInfos
             {"sandbox", SandBoxIframes}
         });
     }
-
+    
     private string GetJsOnError() =>
         @$"
             var displayMessage = !window.__mudExFileDisplay || !window.__mudExFileDisplay['{_id}'];
@@ -256,9 +283,16 @@ public partial class MudExFileDisplay : IAsyncDisposable, IMudExFileDisplayInfos
             "document.getElementById('content-type-display-error').classList.remove('visible')");
     }
 
-    public ValueTask DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
-        return JsRuntime?.InvokeVoidAsync("MudBlazorExtensions.disposeMudExFileDisplay", _id) ?? ValueTask.CompletedTask;
+        if (_jsReference != null)
+        {
+            await _jsReference.InvokeVoidAsync("dispose");
+            await _jsReference.DisposeAsync();
+        }
+
+        if (_module != null)
+            await _module.DisposeAsync();
     }
 
     private void RenderWith(IMudExFileDisplay fileComponent)

@@ -7,6 +7,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExFileDisplay.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExFileDisplay.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MoveContent.min.js",
     "inputFiles": [
       "wwwroot/js/components/MoveContent.js"

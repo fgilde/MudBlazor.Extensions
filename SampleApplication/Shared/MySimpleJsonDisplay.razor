@@ -1,20 +1,23 @@
 ﻿@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Options
 @using Nextended.Blazor.Models
-
+@inject IDialogService dialogService;
 @implements MudBlazor.Extensions.Core.IMudExFileDisplay
-<span style="font-size: 10pt;text-decoration: underline; position: absolute; margin-top: -10px;">This is a self registered control for json files. You only need to implement IMudExFileDisplay see code</span>
+
+<span @onclick="@ShowCode" style="cursor: pointer; font-size: 10pt;text-decoration: underline; position: absolute; margin-top: -10px;">This is a self registered control for json files. Just implement IMudExFileDisplay. Click to see code</span>
 
 <MudTextField ReadOnly="true" Value="@jsonValue" Variant="Variant.Outlined" T="string" Lines="16" Style="margin-top: 3px;"></MudTextField>
 
 @code {
 
-    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos)
+    public string Name => "Most stupid json display"; // Name of your component. (Is displayed in menu if user wants to switch between multiple components for one file type)
+
+    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos) // Here you need to check if your component can handle the file. Please do this as accurate as possible to prevent using the wrong component for a file.
     {
         return fileDisplayInfos.ContentType == "application/json" || (fileDisplayInfos.ContentType == "text/plain" && fileDisplayInfos.FileName.EndsWith(".json"));
     }
 
-    private string jsonValue;
-
+    private IMudExFileDisplayInfos _fileDisplayInfos;
     [Parameter] // Important. The property for FileDisplayInfos from interface IMudExFileDisplayInfos needs to have the [Parameter] attribute
     public IMudExFileDisplayInfos FileDisplayInfos
     {
@@ -26,19 +29,20 @@
         }
     }
 
+    // Thats it what you need to implement from Interface. All other code depends on your component and on what you want to archive
+
+    
+    private string jsonValue;
+
     private void UpdateJsonValue()
     {
+        // Here we load the json string for given file
         if (FileDisplayInfos.ContentStream?.Length > 0)
-            ReadJsonFromStream(FileDisplayInfos.ContentStream);
-        else if (DataUrl.TryParse(FileDisplayInfos.Url, out var data))
-        {
-            jsonValue = System.Text.Encoding.Default.GetString(data.Bytes);
-            StateHasChanged();
-        }
-        else if (!string.IsNullOrEmpty(FileDisplayInfos.Url))
-        {
+            ReadJsonFromStream(FileDisplayInfos.ContentStream); // If we have already a valid stream we can use it
+        else if (DataUrl.TryParse(FileDisplayInfos.Url, out var data)) // If not but given url is a data url we can use the bytes from it
+            ReadJsonFromStream(new MemoryStream(data.Bytes));
+        else if (!string.IsNullOrEmpty(FileDisplayInfos.Url)) // Otherwise we load the file
             new HttpClient().GetStreamAsync(FileDisplayInfos.Url).ContinueWith(t => ReadJsonFromStream(t.Result));
-        }
     }
 
     private void ReadJsonFromStream(Stream t)
@@ -48,7 +52,32 @@
         StateHasChanged();
     }
 
-    private IMudExFileDisplayInfos _fileDisplayInfos;
-    public string Name { get; } = "Most stupid json display";
+
+    private async Task ShowCode()
+    {
+        await dialogService.ShowComponentInDialogAsync<PrettyCode>("Code for this component", "Like this you can implement your own components that is responsible for a File",
+            c => c.CodeFile = $"https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/SampleApplication/Shared/{GetType().Name}.razor",
+            dialog =>
+            {
+                dialog.Style = "overflow: scroll; height: 80%";
+                dialog.Icon = Icons.Material.Filled.Code;
+                dialog.AllowEmptyActions = true;
+            },
+            new DialogOptionsEx
+            {
+                CloseButton = true,
+                MaxWidth = MaxWidth.ExtraLarge,
+                FullWidth = true,
+                DisableBackdropClick = false,
+                MaximizeButton = true,
+                DragMode = MudDialogDragMode.Simple,
+                Position = DialogPosition.BottomCenter,
+                Animations = new[] { AnimationType.FadeIn, AnimationType.SlideIn },
+                AnimationDuration = TimeSpan.FromSeconds(1),
+                FullHeight = true
+            }
+            );
+    }
+
 }
 
