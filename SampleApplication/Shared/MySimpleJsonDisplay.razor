@@ -1,8 +1,7 @@
-﻿@using MudBlazor.Extensions.Core
-@using MudBlazor.Extensions.Options
+﻿@using MudBlazor.Extensions.Options
 @using Nextended.Blazor.Models
 @inject IDialogService dialogService;
-@implements MudBlazor.Extensions.Core.IMudExFileDisplay
+@implements IMudExFileDisplay
 
 <span @onclick="@ShowCode" style="cursor: pointer; font-size: 10pt;text-decoration: underline; position: absolute; margin-top: -10px;">This is a self registered control for json files. Just implement IMudExFileDisplay. Click to see code</span>
 

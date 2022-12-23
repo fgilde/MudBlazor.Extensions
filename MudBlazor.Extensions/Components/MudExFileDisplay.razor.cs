@@ -5,6 +5,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using Nextended.Blazor.Helper;
 using Nextended.Blazor.Models;
 using Nextended.Core.Extensions;
 using PSC.Blazor.Components.BrowserDetect;

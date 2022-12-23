@@ -1,9 +1,10 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Components.ObjectEdit;
-using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Services;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions;
 
