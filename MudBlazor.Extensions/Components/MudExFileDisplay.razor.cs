@@ -6,9 +6,7 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using Nextended.Blazor.Models;
-using Nextended.Core;
 using Nextended.Core.Extensions;
-using Nextended.Core.Helper;
 using PSC.Blazor.Components.BrowserDetect;
 
 namespace MudBlazor.Extensions.Components;
@@ -23,7 +21,9 @@ public partial class MudExFileDisplay : IAsyncDisposable, IMudExFileDisplayInfos
 
     [Parameter] public string Url { get; set; }
     [Parameter] public string ContentType { get; set; }
-    
+    [Parameter] public bool CanClose { get; set; } 
+    [Parameter] public EventCallback OnCloseClick { get; set; }
+    [Parameter] public string ElementId { get; set; } = Guid.NewGuid().ToFormattedId();
     /**
      * Should be true if file is not a binary one
      */
@@ -63,6 +63,7 @@ public partial class MudExFileDisplay : IAsyncDisposable, IMudExFileDisplayInfos
         }
     }
 
+    private bool _isNativeRendered;
     private string _id = Guid.NewGuid().ToString();
     private (string tag, Dictionary<string, object> attributes) renderInfos;
     private BrowserInfo _info;
@@ -78,26 +79,24 @@ public partial class MudExFileDisplay : IAsyncDisposable, IMudExFileDisplayInfos
     private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) _componentForFile;
     protected override Task OnParametersSetAsync()
     {
-        _possibleRenderControls = _serviceProvider.GetServices<IMudExFileDisplay>().Where(c => c.GetType() != GetType()).ToList();
+        _possibleRenderControls = _serviceProvider.GetServices<IMudExFileDisplay>().Where(c => c.GetType() != GetType() && c.CanHandleFile(this)).ToList();
         if (ViewDependsOnContentType)
-            _componentForFile = GetComponentForFile();
+            _componentForFile = GetComponentForFile(_possibleRenderControls.FirstOrDefault());
 
         if (!internalOverwrite)
             renderInfos = GetRenderInfos();
         return base.OnParametersSetAsync();
     }
 
-    private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) GetComponentForFile()
+    private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) GetComponentForFile(IMudExFileDisplay fileComponent)
     {
-        var display = _possibleRenderControls.FirstOrDefault(possibleControl => possibleControl.CanHandleFile(this));
-        var type = display?.GetType();
+        var type = fileComponent?.GetType();
         if (type != null)
         {
             var parameters = ComponentRenderHelper.GetCompatibleParameters(this, type);
             parameters.Add(nameof(IMudExFileDisplay.FileDisplayInfos), this);
-            if (ComponentRenderHelper.IsValidParameterAttribute(type, nameof(HandleContentErrorFunc), HandleContentErrorFunc))
-                parameters.Add(nameof(HandleContentErrorFunc), HandleContentErrorFunc);
-            return (type, display.WrapInMudExFileDisplayDiv, parameters);
+            
+            return (type, fileComponent.WrapInMudExFileDisplayDiv, parameters);
         }
         return default;
     }
@@ -260,5 +259,11 @@ public partial class MudExFileDisplay : IAsyncDisposable, IMudExFileDisplayInfos
     public ValueTask DisposeAsync()
     {
         return JsRuntime?.InvokeVoidAsync("MudBlazorExtensions.disposeMudExFileDisplay", _id) ?? ValueTask.CompletedTask;
+    }
+
+    private void RenderWith(IMudExFileDisplay fileComponent)
+    {
+        CloseContentError();
+        _componentForFile = GetComponentForFile(fileComponent); 
     }
 }

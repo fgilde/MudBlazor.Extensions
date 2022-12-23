@@ -18,6 +18,7 @@
 
 .mud-ex-file-display-container {
     height: calc(100% - 60px);
+    position: relative;
 }
 
 .mud-ex-download-file {
@@ -83,15 +84,15 @@
 }
 
 #content-type-display-error {
-    position: relative;
-    bottom: 45%;
+    position: absolute;
+    bottom: 0;
     opacity: 0;
     background: var(--mud-palette-surface);
     left: 0;
     right: 0;
     margin-left: auto;
     margin-right: auto;
-    width: 85%;
+    width: 100%;
     min-width: 270px;
     transform: scale(.2);
     transition-property: all !important;
@@ -158,6 +159,27 @@
 .mud-ex-file-display-toolbar-text {
     font-size: 10pt;
     font-weight: bold;
-    text-decoration: underline;
+    /*text-decoration: underline;*/
     margin-left: 5px;
+}
+
+.mud-ex-file-display-menu-item-action > div.mud-list-item-icon {
+    min-width: 35px;
+}
+
+.mud-ex-file-display-menu-header {
+    display: flex;
+    padding: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px dotted var(--mud-palette-primary);
+    align-items: center;
+    color: var(--mud-palette-primary);
+    justify-content: center;
+}
+
+.mud-ex-file-display-toolbar {
+    height: 20px;
+    padding: 0;
+    margin-bottom: 4px;
+    z-index: 3;
 }

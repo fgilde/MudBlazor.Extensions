@@ -1,0 +1,13 @@
+﻿@implements IAsyncDisposable
+
+<div @ref="elementReference">
+    @ChildContent
+    @if (ElementFound)
+    {
+        @Found
+    }
+    else
+    {
+        @NotFound
+    }
+</div>

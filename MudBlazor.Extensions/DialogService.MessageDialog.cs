@@ -127,7 +127,7 @@ public static partial class DialogServiceExt
         DialogOptionsEx options) where TComponent : ComponentBase, new()
     {
         TComponent component = null;
-        var componentAttributes = componentOptions != null ? componentOptions.Where(kvp => ComponentRenderHelper.IsValidParameterAttribute(typeof(TComponent), kvp.Key, kvp.Value)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : new Dictionary<string, object>();
+        var componentAttributes = componentOptions != null ? componentOptions.Where(kvp => ComponentRenderHelper.IsValidProperty(typeof(TComponent), kvp.Key, kvp.Value)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : new Dictionary<string, object>();
         var parameters = dialogParameters ?? new DialogParameters();
         parameters.Add(nameof(MudExMessageDialog.Message), message);
         //parameters.Add(nameof(MudExMessageDialog.CanConfirmFn), () => canConfirmFn == null || canConfirmFn(component));

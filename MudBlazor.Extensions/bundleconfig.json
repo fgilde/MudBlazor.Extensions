@@ -7,6 +7,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MoveContent.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MoveContent.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExColorBubble.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExColorBubble.js"

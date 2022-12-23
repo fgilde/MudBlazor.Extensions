@@ -20,12 +20,14 @@ namespace MudBlazor.Extensions.Components;
 
 public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDisplay
 {
+    public string Name { get; } = nameof(MudExFileDisplayZip);
     public bool WrapInMudExFileDisplayDiv => false;
     [Inject] private IServiceProvider _serviceProvider { get; set; }
     private IJSRuntime JsRuntime => _serviceProvider.GetService<IJSRuntime>();
     private IStringLocalizer<MudExFileDisplayZip> _localizer => _serviceProvider.GetService<IStringLocalizer<MudExFileDisplayZip>>();
 
-    [Parameter] public IMudExFileDisplayInfos FileDisplayInfos
+    [Parameter]
+    public IMudExFileDisplayInfos FileDisplayInfos
     {
         get => this;
         set
@@ -36,6 +38,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         }
     }
 
+    [Parameter] public string ElementId { get; set; } = Guid.NewGuid().ToFormattedId();
     [Parameter] public string SearchString { get; set; }
     [Parameter] public bool AllowSearch { get; set; } = true;
     [Parameter] public string RootFolderName { get; set; } = "ROOT";
@@ -88,13 +91,20 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private MudTextField<string> _searchBox;
     private bool _searchBoxBlur = false;
 
-    
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnParametersSetAsync()
     {
-        //Url = UriExtensions.AddParameterToUrl(Url, "cb", Guid.NewGuid().ToFormattedId());
-        _zipEntries = (await GetZipEntriesAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url))).ToList();
-        _zipStructure = ZipStructure.CreateStructure(_zipEntries, RootFolderName).ToHashSet();
-        await base.OnInitializedAsync();
+        try
+        {
+            if (!string.IsNullOrEmpty(Url) || ContentStream != null)
+            {
+
+                _zipEntries = (await GetZipEntriesAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url))).ToList();
+                _zipStructure = ZipStructure.CreateStructure(_zipEntries, RootFolderName).ToHashSet();
+            }
+        }
+        catch {}
+        await base.OnParametersSetAsync();
     }
 
     private async Task<IList<ZipBrowserFile>> GetZipEntriesAsync(Stream stream)
@@ -166,7 +176,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         StateHasChanged();
     }
 
-    private bool IsInSearch(ZipBrowserFile entry) 
+    private bool IsInSearch(ZipBrowserFile entry)
         => string.IsNullOrEmpty(SearchString) || entry.FullName.Contains(SearchString, StringComparison.OrdinalIgnoreCase);
 
     private bool IsInSearch(ZipStructure context)
@@ -220,7 +230,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     {
         return structure.IsDirectory ? Task.CompletedTask : Select(structure.BrowserFile, args);
     }
-    
+
     private async Task Select(ZipBrowserFile entry, MouseEventArgs args)
     {
         if (SelectionMode != ItemSelectionMode.None)

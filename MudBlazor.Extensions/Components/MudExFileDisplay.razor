@@ -1,51 +1,47 @@
 @using System.IO
+@using Microsoft.AspNetCore.Components.Rendering
+@using MudBlazor.Extensions.Extensions
 @using MudBlazor.Extensions.Helper
 @namespace MudBlazor.Extensions.Components
 
 <BrowserDetect @bind-BrowserInfo="@Info" />
+
 <div class="mud-ex-file-display-container">
 
-    <MudToolBar Class="mud-ex-file-display-toolbar" Style="height: 15px;padding: 0;margin-bottom: 4px;" Dense="true">
-        <MudSpacer />
-        <MudMenu AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.TopRight" Dense="true" Size="Size.Small" Icon="@Icons.Material.Filled.MoreVert">
-            <MudText Class="mud-ex-file-display-toolbar-text">@FileName</MudText>
-            <MudMenuItem>Profile</MudMenuItem>
-            <MudMenuItem>My account</MudMenuItem>
-            <MudMenuItem>Logout</MudMenuItem>
-        </MudMenu>
-    </MudToolBar>
-    @{
-        var control = _componentForFile;
-    }
-    @if (control.ControlType != null)
+    <MoveContent ElementSelector="@($".mud-ex-file-display-toolbar-{ElementId}")">
+        <Found>
+            @RenderMenu
+        </Found>
+        <NotFound>
+            <MudToolBar Class="@($"mud-ex-file-display-toolbar mud-ex-file-display-toolbar-{ElementId}")" Dense="true">
+                @RenderMenu
+            </MudToolBar>
+        </NotFound>
+    </MoveContent>
+
+
+    @if (_componentForFile.ControlType != null)
     {
-        @if (control.ShouldAddDiv)
+        _isNativeRendered = false;
+        @if (_componentForFile.ShouldAddDiv)
         {
             <div class="mud-ex-file-display">
-                <DynamicComponent Type="@control.ControlType" Parameters="@control.Parameters" />
+                <DynamicComponent Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters" />
             </div>
         }
         else
         {
-            <DynamicComponent Type="@control.ControlType" Parameters="@control.Parameters" />
+            <DynamicComponent Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters" />
         }
     }
     else
     {
+        _isNativeRendered = true;
         <div class="mud-ex-file-display">
             <MudElement UserAttributes="@renderInfos.attributes" HtmlTag="@renderInfos.tag" />
         </div>
     }
 
-    @if (AllowDownload)
-    {
-        <div class="mud-ex-download-file">
-            <MudTooltip Placement="Placement.Left" Delay="600" Color="Color.Primary" Text="@($"{_localizer.TryLocalize("Download")} ({FileName})")">
-                <MudIconButton Style="float: right;" OnClick="@(Download)" Icon="@Icons.Filled.Download"></MudIconButton>
-            </MudTooltip>
-        </div>
-    }
-    
     @if (ShowContentError)
     {
         <div id="content-type-display-error">
@@ -77,5 +73,37 @@
             </MudAlert>
         </div>
     }
-
 </div>
+
+@code {
+    
+    private void RenderMenu(RenderTreeBuilder __builder)
+    {
+        @if (!string.IsNullOrEmpty(FileName))
+        {
+            <MudSpacer />
+            <MudMenu AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.TopRight" Dense="true" Size="Size.Medium" Icon="@SvgIconHelper.CombineIconsHorizontal(Icons.Material.Filled.MoreVert, BrowserFileExt.IconForFile(ContentType))">
+                <div class="mud-ex-file-display-menu-header">
+                    <MudIcon Icon="@BrowserFileExt.IconForFile(ContentType)"></MudIcon>
+                    <MudText Class="mud-ex-file-display-toolbar-text">@FileName</MudText>
+                </div>
+                @foreach (var c in _possibleRenderControls.Where(c => c.GetType() != _componentForFile.ControlType))
+                {
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWith(c))" IconSize="Size.Small" Icon="@Icons.Material.Filled.Extension">@($"{_localizer.TryLocalize("Render with {0}", c.Name ?? c.GetType().Name)}")</MudMenuItem>
+                }
+                @if (!_isNativeRendered)
+                {
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWith(null))" IconSize="Size.Small" Icon="@Icons.Material.Filled.ExtensionOff">@($"{_localizer.TryLocalize("Render with native control")}")</MudMenuItem>
+                }
+                @if (AllowDownload)
+                {
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(Download)" Icon="@Icons.Material.Filled.Download">@($"{_localizer.TryLocalize("Download")}")</MudMenuItem>
+                }
+                @if (CanClose)
+                {
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(OnCloseClick)" Icon="@Icons.Material.Filled.Close">@($"{_localizer.TryLocalize("Close")}")</MudMenuItem>
+                }
+            </MudMenu>
+        }
+    }
+}
