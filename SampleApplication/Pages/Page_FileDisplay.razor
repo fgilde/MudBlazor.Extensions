@@ -1,19 +1,21 @@
 ﻿@page "/file-display"
+@using MudBlazor.Extensions.Core
 @inject IDialogService dialogService
 @inject NavigationManager NavigationManager
 <PageHeader>File Display</PageHeader>
 
-<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
+<DemoComponent CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "Shared/MySimpleJsonDisplay.razor"})">
     <MudSelect Label="File" HelperText="Select sample file" @bind-Value="@SampleFile" Variant="Variant.Outlined" Color="Color.Primary">
-        <MudSelectItem Value="@(Sample("sample-zip-file.zip", "application/zip"))">sample-zip-file.zip</MudSelectItem>
+        <MudSelectItem Value="@(Sample("sample.zip", "application/zip"))">sample.zip</MudSelectItem>
+        <MudSelectItem Value="@(Sample("sample.pdf", "application/pdf"))">sample.pdf</MudSelectItem>
         <MudSelectItem Value="@(Sample("weather.json", "text/plain"))">weather.json</MudSelectItem>
     </MudSelect>
-    
+
     @if (SampleFile.url != null)
     {
         <div style="width: 700px; height: 500px; margin-top: 20px">
             <MudExFileDisplay HandleContentErrorFunc="@HandleContentError"
-                              FileName="@SampleFile.name" Url="@SampleFile.url" ContentType="@SampleFile.contentType"></MudExFileDisplay>
+                          FileName="@SampleFile.name" Url="@SampleFile.url" ContentType="@SampleFile.contentType"></MudExFileDisplay>
         </div>
         <MudButton OnClick="@OpenAsDialog" Variant="Variant.Filled" Color="Color.Primary">Show As Dialog</MudButton>
     }
@@ -27,17 +29,17 @@
         await dialogService.ShowFileDisplayDialog(SampleFile.url, SampleFile.name, SampleFile.contentType, HandleContentError);
     }
 
-    private Task<ContentErrorResult> HandleContentError(IFileDisplayInfos arg)
+    private Task<MudExFileDisplayContentErrorResult> HandleContentError(IMudExFileDisplayInfos arg)
     {
         if (arg.ContentType.Contains("word"))
         {
-            return Task.FromResult(ContentErrorResult
+            return Task.FromResult(MudExFileDisplayContentErrorResult
                 .RedirectTo("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiZiqnBKWS8NHcKbRH04UkYjrCgxUMz6sVNw&usqp=CAU", "image/png")
                 .WithMessage("No word plugin found we display a sheep"));
         }
-        return Task.FromResult(ContentErrorResult.Unhandled);
+        return Task.FromResult(MudExFileDisplayContentErrorResult.Unhandled);
     }
-    
+
     private (string? url, string contentType, string name) Sample(string filename, string contentType)
     {
         return (NavigationManager.ToAbsoluteUri($"sample-data/{filename}").AbsoluteUri, contentType, filename);

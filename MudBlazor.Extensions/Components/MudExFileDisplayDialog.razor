@@ -4,6 +4,7 @@
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 @using Microsoft.Extensions.DependencyInjection;
+@using MudBlazor.Extensions.Core
 
 @namespace MudBlazor.Extensions.Components
 <MudDialog Style="@Style" Class="@Class" ClassContent="@ClassContent">
@@ -59,7 +60,7 @@
      * For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
      * If you reset Url or Data here you need also to reset ContentType
      */
-    [Parameter] public Func<IFileDisplayInfos, Task<ContentErrorResult>> HandleContentErrorFunc { get; set; }
+    [Parameter] public Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> HandleContentErrorFunc { get; set; }
     [Parameter] public string CustomContentErrorMessage { get; set; }
     
     /**

@@ -11,6 +11,7 @@ using Nextended.Core;
 using BrowserFileExtensions = Nextended.Blazor.Extensions.BrowserFileExtensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using MudBlazor.Extensions.Core;
 using Nextended.Blazor.Models;
 using MudBlazor.Extensions.Helper;
 
@@ -111,7 +112,7 @@ public partial class MudExUploadEdit<T> : IAsyncDisposable where T: IUploadableF
     [Parameter] public EventCallback<T> UploadRequestChanged { get; set; }
     [Parameter] public EventCallback<IList<T>> SelectedRequestsChanged { get; set; }
     
-    [Parameter] public Func<IFileDisplayInfos, Task<ContentErrorResult>> HandlePreviewContentErrorFunc { get; set; }
+    [Parameter] public Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> HandlePreviewContentErrorFunc { get; set; }
 
     [Parameter]
     public Func<T, Task<string>> ResolvePreviewDataUrlFunc { get; set; }

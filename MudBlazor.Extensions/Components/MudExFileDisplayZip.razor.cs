@@ -6,22 +6,35 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.ObjectEdit;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Extensions;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using Nextended.Blazor.Extensions;
 using Nextended.Blazor.Models;
+using Nextended.Core;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
 
-public partial class MudExFileDisplayZip : IFileDisplayInfos
+public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDisplay
 {
-
+    public bool WrapInMudExFileDisplayDiv => false;
     [Inject] private IServiceProvider _serviceProvider { get; set; }
     private IJSRuntime JsRuntime => _serviceProvider.GetService<IJSRuntime>();
     private IStringLocalizer<MudExFileDisplayZip> _localizer => _serviceProvider.GetService<IStringLocalizer<MudExFileDisplayZip>>();
+
+    [Parameter] public IMudExFileDisplayInfos FileDisplayInfos
+    {
+        get => this;
+        set
+        {
+            RootFolderName = value.FileName;
+            Url = value.Url;
+            ContentStream = value.ContentStream;
+        }
+    }
 
     [Parameter] public string SearchString { get; set; }
     [Parameter] public bool AllowSearch { get; set; } = true;
@@ -61,7 +74,7 @@ public partial class MudExFileDisplayZip : IFileDisplayInfos
      * For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
      * If you reset Url or Data here you need also to reset ContentType
      */
-    [Parameter] public Func<IFileDisplayInfos, Task<ContentErrorResult>> HandleContentErrorFunc { get; set; }
+    [Parameter] public Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> HandleContentErrorFunc { get; set; }
     [Parameter] public string CustomContentErrorMessage { get; set; }
 
     private MudMenu _downloadMenu;
@@ -232,4 +245,14 @@ public partial class MudExFileDisplayZip : IFileDisplayInfos
         }
     }
 
+    public string FileName
+    {
+        get => RootFolderName;
+        set => RootFolderName = value;
+    }
+
+    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos)
+    {
+        return MimeType.IsZip(fileDisplayInfos.ContentType);
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Extensions.Components.ObjectEdit;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Services;
 
@@ -11,6 +12,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddMudExtensions(this IServiceCollection services, params Assembly[] serviceImplementationAssemblies)
     {
         //services.AddSingleton<MudBlazorExtensionJsInterop>();
+        services.RegisterAllImplementationsOf(new[] { typeof(IMudExFileDisplay) }, serviceImplementationAssemblies, ServiceLifetime.Scoped);
         return services.AddMudExObjectEdit(serviceImplementationAssemblies);
     }
 

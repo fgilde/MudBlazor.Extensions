@@ -83,23 +83,24 @@
 }
 
 #content-type-display-error {
-    position: absolute;
-    bottom: 105px;
+    position: relative;
+    bottom: 45%;
     opacity: 0;
+    background: var(--mud-palette-surface);
     left: 0;
     right: 0;
     margin-left: auto;
     margin-right: auto;
-    width: 60%;
+    width: 85%;
     min-width: 270px;
-    transform: scale(0.2);
+    transform: scale(.2);
     transition-property: all !important;
 }
 
 #content-type-display-error.visible {
     opacity: 1;
     transform: scale(1);
-    animation: scaleIn 1200ms ease-in-out 1 alternate;
+    animation: scaleIn 800ms ease-in-out 1 alternate;
 }
 
 .mud-ex-fd-child-count-label {
@@ -152,4 +153,11 @@
 
 .mud-ex-fd-tree-actions .mud-tooltip-root {
     display: inline-flex;
+}
+
+.mud-ex-file-display-toolbar-text {
+    font-size: 10pt;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-left: 5px;
 }

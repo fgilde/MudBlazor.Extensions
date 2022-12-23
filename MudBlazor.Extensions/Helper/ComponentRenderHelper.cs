@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Nextended.Core.Helper;
+using System.Reflection;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -12,5 +13,10 @@ public static class ComponentRenderHelper
         if (propertyInfo != null && value != null)
             return propertyInfo.PropertyType.IsInstanceOfType(value);
         return propertyInfo != null;
+    }
+
+    public static IDictionary<string, object> GetCompatibleParameters(object instance, Type targetCompatibleType)
+    {
+        return DictionaryHelper.GetValuesDictionary(instance, false).Where(p => IsValidParameterAttribute(targetCompatibleType, p.Key, p.Value)).ToDictionary(p => p.Key, p => p.Value);
     }
 }

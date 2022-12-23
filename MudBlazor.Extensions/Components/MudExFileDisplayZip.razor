@@ -14,7 +14,7 @@
 {
     <div class="mud-ex-fd-close-inner-preview">
         <MudTooltip Placement="Placement.Left" Delay="600" Color="Color.Primary" Text="@($"{_localizer.TryLocalize("Close")} ({_innerPreview.Name})")">
-            <MudIconButton Style="float: right;" OnClick="@(ClosePreview)" Icon="@Icons.Filled.Close"></MudIconButton>
+            <MudIconButton Size="Size.Small" Class="ml-4" Style="float: right;" OnClick="@(ClosePreview)" Icon="@Icons.Filled.Close"></MudIconButton>
         </MudTooltip>
     </div>
     <MudExFileDisplay FallBackInIframe="@FallBackInIframe" 

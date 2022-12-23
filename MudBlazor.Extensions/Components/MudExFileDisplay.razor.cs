@@ -3,15 +3,18 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
 using Nextended.Blazor.Models;
 using Nextended.Core;
 using Nextended.Core.Extensions;
+using Nextended.Core.Helper;
 using PSC.Blazor.Components.BrowserDetect;
 
 namespace MudBlazor.Extensions.Components;
 
 
-public partial class MudExFileDisplay : IAsyncDisposable, IFileDisplayInfos
+public partial class MudExFileDisplay : IAsyncDisposable, IMudExFileDisplayInfos
 {
     
     [Inject] private IServiceProvider _serviceProvider { get; set; }
@@ -39,13 +42,13 @@ public partial class MudExFileDisplay : IAsyncDisposable, IFileDisplayInfos
     [Parameter] public bool AllowDownload { get; set; } = true;
     [Parameter] public string FileName { get; set; }
     [Parameter] public Stream ContentStream { get; set; }
-    
+
     /**
      * A function to handle content error. Return true if you have handled the error and false if you want to show the error message
      * For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
      * If you reset Url or Data here you need also to reset ContentType
      */
-    [Parameter] public Func<IFileDisplayInfos, Task<ContentErrorResult>> HandleContentErrorFunc { get; set; }
+    [Parameter] public Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> HandleContentErrorFunc { get; set; }
     [Parameter] public string CustomContentErrorMessage { get; set; }
     public string MediaType => ContentType?.Split("/")?.FirstOrDefault()?.ToLower();
     public BrowserContentTypePlugin PossiblePlugin { get; private set; }
@@ -59,28 +62,44 @@ public partial class MudExFileDisplay : IAsyncDisposable, IFileDisplayInfos
             StateHasChanged();
         }
     }
-    
-    protected DotNetObjectReference<MudExFileDisplay> callbackReference;
+
     private string _id = Guid.NewGuid().ToString();
-    private bool _isZip;
     private (string tag, Dictionary<string, object> attributes) renderInfos;
     private BrowserInfo _info;
     private bool internalOverwrite;
 
     protected override Task OnInitializedAsync()
     {
-        callbackReference = DotNetObjectReference.Create(this);
-        JsRuntime?.InvokeVoidAsync("MudBlazorExtensions.initMudExFileDisplay", callbackReference, _id);
+        JsRuntime?.InvokeVoidAsync("MudBlazorExtensions.initMudExFileDisplay", DotNetObjectReference.Create(this), _id);
         return base.OnInitializedAsync();
     }
-    
 
+    private List<IMudExFileDisplay> _possibleRenderControls;
+    private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) _componentForFile;
     protected override Task OnParametersSetAsync()
     {
-        _isZip = ViewDependsOnContentType && !string.IsNullOrEmpty(ContentType) && MimeType.IsZip(ContentType);
+        _possibleRenderControls = _serviceProvider.GetServices<IMudExFileDisplay>().Where(c => c.GetType() != GetType()).ToList();
+        if (ViewDependsOnContentType)
+            _componentForFile = GetComponentForFile();
+
         if (!internalOverwrite)
             renderInfos = GetRenderInfos();
         return base.OnParametersSetAsync();
+    }
+
+    private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) GetComponentForFile()
+    {
+        var display = _possibleRenderControls.FirstOrDefault(possibleControl => possibleControl.CanHandleFile(this));
+        var type = display?.GetType();
+        if (type != null)
+        {
+            var parameters = ComponentRenderHelper.GetCompatibleParameters(this, type);
+            parameters.Add(nameof(IMudExFileDisplay.FileDisplayInfos), this);
+            if (ComponentRenderHelper.IsValidParameterAttribute(type, nameof(HandleContentErrorFunc), HandleContentErrorFunc))
+                parameters.Add(nameof(HandleContentErrorFunc), HandleContentErrorFunc);
+            return (type, display.WrapInMudExFileDisplayDiv, parameters);
+        }
+        return default;
     }
 
     private (string tag, Dictionary<string, object> attributes) GetRenderInfos()
@@ -180,7 +199,7 @@ public partial class MudExFileDisplay : IAsyncDisposable, IFileDisplayInfos
     {
         if (internalCall)
             return !(internalCall = false);
-        var result = HandleContentErrorFunc != null ? await HandleContentErrorFunc(this) : ContentErrorResult.Unhandled;
+        var result = HandleContentErrorFunc != null ? await HandleContentErrorFunc(this) : MudExFileDisplayContentErrorResult.Unhandled;
         if (HandleContentErrorFunc != null && result != null)
         {
             internalCall = true;
@@ -192,7 +211,7 @@ public partial class MudExFileDisplay : IAsyncDisposable, IFileDisplayInfos
         return result?.IsHandled ?? false;
     }
 
-    private void UpdateChangedFields(ContentErrorResult result)
+    private void UpdateChangedFields(MudExFileDisplayContentErrorResult result)
     {
         bool urlChanged = false;
         if (result.ContentStream != null && result.ContentStream != ContentStream)
@@ -242,34 +261,4 @@ public partial class MudExFileDisplay : IAsyncDisposable, IFileDisplayInfos
     {
         return JsRuntime?.InvokeVoidAsync("MudBlazorExtensions.disposeMudExFileDisplay", _id) ?? ValueTask.CompletedTask;
     }
-}
-
-public sealed class ContentErrorResult: IFileDisplayInfos
-{
-    public static ContentErrorResult Unhandled => new() { IsHandled = false };
-    public static ContentErrorResult Handled => new() { IsHandled = true };
-    public static ContentErrorResult DisplayMessage(string message) => new ContentErrorResult().WithMessage(message);
-    public static ContentErrorResult RedirectTo(string url, string contentType = "") => new() { IsHandled = true, ContentType = contentType, Url = url };
-    public static ContentErrorResult RedirectTo(Stream stream, string contentType = "") => new() { IsHandled = true, ContentType = contentType, ContentStream = stream };
-    
-    public ContentErrorResult WithMessage(string message)
-    {
-        IsHandled = false;
-        Message = message;
-        return this;
-    }
-    public bool IsHandled { get; set; }
-    public string Url { get; set; }
-    public string ContentType { get; set; }
-    public string Message { get; set; }
-    public Stream ContentStream { get; set; }
-    public bool? FallBackInIframe { get; set; }
-    public bool? SandBoxIframes { get; set; }
-}
-
-public interface IFileDisplayInfos
-{
-    public string Url { get; }
-    public string ContentType { get; }
-    public Stream ContentStream { get; }
 }

@@ -1,0 +1,54 @@
+﻿@using MudBlazor.Extensions.Core
+@using Nextended.Blazor.Models
+
+@implements MudBlazor.Extensions.Core.IMudExFileDisplay
+<span style="font-size: 10pt;text-decoration: underline; position: absolute; margin-top: -10px;">This is a self registered control for json files. You only need to implement IMudExFileDisplay see code</span>
+
+<MudTextField ReadOnly="true" Value="@jsonValue" Variant="Variant.Outlined" T="string" Lines="16" Style="margin-top: 3px;"></MudTextField>
+
+@code {
+
+    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos)
+    {
+        return fileDisplayInfos.ContentType == "application/json" || (fileDisplayInfos.ContentType == "text/plain" && fileDisplayInfos.FileName.EndsWith(".json"));
+    }
+
+    private string jsonValue;
+
+    [Parameter] // Important. The property for FileDisplayInfos from interface IMudExFileDisplayInfos needs to have the [Parameter] attribute
+    public IMudExFileDisplayInfos FileDisplayInfos
+    {
+        get => _fileDisplayInfos;
+        set
+        {
+            _fileDisplayInfos = value;
+            UpdateJsonValue();
+        }
+    }
+
+    private void UpdateJsonValue()
+    {
+        if (FileDisplayInfos.ContentStream?.Length > 0)
+            ReadJsonFromStream(FileDisplayInfos.ContentStream);
+        else if (DataUrl.TryParse(FileDisplayInfos.Url, out var data))
+        {
+            jsonValue = System.Text.Encoding.Default.GetString(data.Bytes);
+            StateHasChanged();
+        }
+        else if (!string.IsNullOrEmpty(FileDisplayInfos.Url))
+        {
+            new HttpClient().GetStreamAsync(FileDisplayInfos.Url).ContinueWith(t => ReadJsonFromStream(t.Result));
+        }
+    }
+
+    private void ReadJsonFromStream(Stream t)
+    {
+        using var reader = new StreamReader(t);
+        jsonValue = reader.ReadToEnd();
+        StateHasChanged();
+    }
+
+    private IMudExFileDisplayInfos _fileDisplayInfos;
+
+}
+

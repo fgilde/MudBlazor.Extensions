@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor.Extensions.Components;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Extensions;
 using MudBlazor.Extensions.Options;
 using Nextended.Blazor.Extensions;
@@ -9,13 +10,13 @@ namespace MudBlazor.Extensions;
 
 public static partial class DialogServiceExt
 {
-    public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string url, string fileName, string contentType, Func<IFileDisplayInfos, Task<ContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null)
+    public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string url, string fileName, string contentType, Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null)
         => dialogService.ShowFileDisplayDialog(url, fileName, contentType, options, new DialogParameters { { nameof(MudExFileDisplay.HandleContentErrorFunc), handleContentErrorFunc } });
 
-    public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, IBrowserFile browserFile, Func<IFileDisplayInfos, Task<ContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null)
+    public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, IBrowserFile browserFile, Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null)
         => dialogService.ShowFileDisplayDialog(browserFile, options, new DialogParameters { { nameof(MudExFileDisplay.HandleContentErrorFunc), handleContentErrorFunc } });
 
-    public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, Stream stream, string fileName, string contentType, Func<IFileDisplayInfos, Task<ContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null)
+    public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, Stream stream, string fileName, string contentType, Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null)
         => dialogService.ShowFileDisplayDialog(stream, fileName, contentType, options, new DialogParameters { { nameof(MudExFileDisplay.HandleContentErrorFunc), handleContentErrorFunc } });
 
     public static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
