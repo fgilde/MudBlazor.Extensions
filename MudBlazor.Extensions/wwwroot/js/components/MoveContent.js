@@ -40,7 +40,7 @@
     dispose() {
         try {
             var el = this.getSourceAndTarget(this.mode);
-            if (el && el.target && el.source) {
+            if (el && el.target && el.source && el.target.contains(el.source)) {
                 el.target.removeChild(el.source);
             }
         } catch (e) {
