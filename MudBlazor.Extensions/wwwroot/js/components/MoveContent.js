@@ -25,8 +25,15 @@
         var el = this.getSourceAndTarget(mode);
 
         if (this.elFromSelector && !el.target.contains(el.source) && !el.source.contains(el.target)) {
-            // el.target.insertBefore(el.source, el.target.firstChild);
-            el.target.appendChild(el.source);
+            if (position === 'BeforeBegin') {
+                el.target.insertBefore(el.source, el.target.firstChild);
+            } else if (position === 'AfterBegin') { 
+                el.target.insertBefore(el.source, el.target.firstChild.nextSibling);
+            } else if (position === 'BeforeEnd') {
+                el.target.insertBefore(el.source, el.target.lastChild);
+            } else if (position === 'AfterEnd') {
+                el.target.appendChild(el.source);
+            }
         }
     }
 
