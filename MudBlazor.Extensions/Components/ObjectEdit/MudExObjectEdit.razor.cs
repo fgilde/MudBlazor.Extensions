@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Extensions;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
@@ -32,10 +33,15 @@ public partial class MudExObjectEdit<T>
         get => _value;
         set => SetValue(value);
     }
-    //[Parameter] public bool Virtualize { get; set; } = true;
+
+    [Parameter] public int? Height { get; set; }
+    [Parameter] public int? MaxHeight { get; set; }
+    [Parameter] public CssUnit SizeUnit { get; set; } = CssUnit.Pixels;
+    
     [Parameter] public bool ImportNeedsConfirmation { get; set; }
     [Parameter] public string ImportConfirmText { get; set; } = "Import";
     [Parameter] public string ImportCancelText { get; set; } = "Cancel";
+    [Parameter] public bool Virtualize { get; set; } = false;
     [Parameter] public bool LightOverlayLoadingBackground { get; set; } = true;
     [Parameter] public Color ToolbarButtonColor { get; set; } = Color.Inherit;
     [Parameter] public bool AddScrollToTop { get; set; } = true;
@@ -59,7 +65,7 @@ public partial class MudExObjectEdit<T>
     [Parameter] public string ToolBarClass { get; set; }
     [Parameter] public string ToolBarPaperClass { get; set; }
     [Parameter] public bool StickyToolbar { get; set; }
-    [Parameter] public string StickyToolbarTop { get; set; } = "var(--mud-appbar-height)";
+    [Parameter] public string StickyToolbarTop { get; set; } = string.Empty;
     [Parameter] public EventCallback<ImportedData<T>> AfterImport { get; set; }
     [Parameter] public EventCallback<ExportedData<T>> AfterExport { get; set; }
     /**
@@ -78,6 +84,7 @@ public partial class MudExObjectEdit<T>
     [Parameter] public PropertyFilterMode FilterMode { get; set; } = PropertyFilterMode.Toggleable;
     [Parameter] public string Filter { get; set; }
     [Parameter] public bool AutoHideDisabledFields { get; set; }
+    [Parameter] public bool DisableGrouping { get; set; }
     [Parameter] public string DefaultGroupName { get; set; }
     [Parameter] public bool DisableFieldFallback { get; set; }
     [Parameter] public bool? WrapInMudGrid { get; set; }
@@ -111,7 +118,7 @@ public partial class MudExObjectEdit<T>
     private bool ShouldAddGrid(IEnumerable<ObjectEditPropertyMeta> meta) => WrapInMudGrid ?? ContainsMudItemInWrapper(meta);
     private string CssClassName => GroupingStyle == GroupingStyle.Flat ? $"mud-ex-object-edit-group-flat {(!GroupsCollapsible ? "mud-ex-hide-expand-btn" : "")}" : string.Empty;
     private IEnumerable<IGrouping<string, ObjectEditPropertyMeta>> GroupedMetaPropertyInfos()
-        => MetaInformation?.AllProperties?.EmptyIfNull().Where(m => m.ShouldRender() && IsInFilter(m) && (!AutoHideDisabledFields || m.Settings.IsEditable)).GroupBy(m => m.GroupInfo?.Name);
+        => MetaInformation?.AllProperties?.EmptyIfNull().Where(m => m.ShouldRender() && IsInFilter(m) && (!AutoHideDisabledFields || m.Settings.IsEditable)).GroupBy(m => !DisableGrouping ? m.GroupInfo?.Name : string.Empty);
     private bool ContainsMudItemInWrapper(IEnumerable<ObjectEditPropertyMeta> meta)
         => meta.Where(p => p.RenderData?.Wrapper != null)
             .Select(p => p.RenderData.Wrapper)
@@ -260,11 +267,37 @@ public partial class MudExObjectEdit<T>
             : DialogService.ShowMessageBox(ResetConfirmationMessageBoxOptions, ResetConfirmationDialogOptions);
     }
 
+    private string GetStyle()
+    {
+        return CssHelper.GenerateCssString(new
+        {
+            Height,
+            MaxHeight,
+        }, SizeUnit, Style);
+    }
+
+    private bool HasFixedHeight()
+    {
+        return Height != null || MaxHeight != null || Style?.ToLower()?.Contains("height") == true;
+    }
+
+    private string GetToolbarStickyTop()
+    {
+        if (!string.IsNullOrEmpty(StickyToolbarTop))
+            return StickyToolbarTop;
+        return HasFixedHeight() ? "0" : "var(--mud-appbar-height)";
+    }
+
+    private string GetOverflowClass()
+    {
+        return HasFixedHeight() ? "mud-ex-overflow" : "";
+    }
+
     private string ToolbarStyle()
     {
         var res = string.Empty;
-        if (StickyToolbar && !string.IsNullOrWhiteSpace(StickyToolbarTop))
-            res += $"top: {StickyToolbarTop};";
+        if (StickyToolbar && StickyToolbarTop != null)
+            res += $"top: {GetToolbarStickyTop()};";
         if (ToolbarColor != Color.Inherit)
             res += $"background-color: {ToolbarColor.CssVarDeclaration()};";
         return res;

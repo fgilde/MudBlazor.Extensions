@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using Nextended.Core.Extensions;
@@ -7,20 +8,22 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 
-public partial class MudExCollectionEditor<T> 
+public partial class MudExCollectionEditor<T>
 {
     [Parameter] public int? Height { get; set; }
     [Parameter] public int? MaxHeight { get; set; }
+    [Parameter] public CssUnit SizeUnit { get; set; } = CssUnit.Pixels;
     [Parameter] public string Style { get; set; }
-    
+
     [Parameter] public ICollection<T> Items { get; set; }
     [Parameter] public EventCallback<ICollection<T>> ItemsChanged { get; set; }
     [Parameter] public Func<T, string> ItemToStringFunc { get; set; } = (item => item?.ToString() ?? string.Empty);
     [Parameter] public string TextAdd { get; set; } = "Add";
-    [Parameter] public string TextRemoveAll{ get; set; } = "Remove All";
-    [Parameter] public string TextEdit{ get; set; } = "Edit {0}";
-    
+    [Parameter] public string TextRemoveAll { get; set; } = "Remove All";
+    [Parameter] public string TextEdit { get; set; } = "Edit {0}";
+
     [Parameter] public string Label { get; set; }
+    [Parameter] public bool Virtualize { get; set; } = true;
     [Parameter] public bool ReadOnly { get; set; }
     [Parameter] public string HelperText { get; set; }
     [Parameter] public string ItemIcon { get; set; }
@@ -46,13 +49,22 @@ public partial class MudExCollectionEditor<T>
     [Parameter] public string Filter { get; set; }
     [Parameter] public string SearchIcon { get; set; } = Icons.Material.Outlined.Search;
     protected bool Primitive => MudExObjectEdit<T>.IsPrimitive();
-    
+
     private bool IsInFilter(T item)
         => string.IsNullOrWhiteSpace(Filter)
            || ItemNameRender(item).ToLower().Contains(Filter.ToLower())
            || item?.GetProperties().Any(p => p.GetValue(item)?.ToString()?.ToLower().Contains(Filter.ToLower()) ?? false) == true;
 
-   
+
+    private string GetMudGridStyle()
+    {
+        // Display block is required to have virtualization working
+        return !Virtualize ? string.Empty : CssHelper.GenerateCssString(new
+        {
+            Display = "block"
+        });
+    }
+
     private string GetToolbarStyle()
     {
         return CssHelper.GenerateCssString(new
@@ -67,13 +79,13 @@ public partial class MudExCollectionEditor<T>
 
     private string GetStyle()
     {
-       return CssHelper.GenerateCssString(new
-       {
-           Height,
-           MaxHeight,
-       }, Style);
+        return CssHelper.GenerateCssString(new
+        {
+            Height,
+            MaxHeight,
+        }, SizeUnit, Style);
     }
-    
+
     protected override void OnParametersSet()
     {
         if (ToolbarPosition != Position.Bottom && ToolbarPosition != Position.Top)
@@ -87,7 +99,7 @@ public partial class MudExCollectionEditor<T>
         Items?.Add(item);
         RaiseChanged();
     }
-    
+
     public void Remove(T item)
     {
         Items?.Remove(item);
@@ -112,7 +124,7 @@ public partial class MudExCollectionEditor<T>
             { nameof(MudExObjectEditDialog<T>.DialogIcon), EditIcon },
             { nameof(MudExObjectEditDialog<T>.Localizer), Localizer }
         };
-        var res = await DialogService.EditObject<T>(item, TryLocalize(TextEdit, ItemNameRender(item)) , DialogOptions ?? DefaultOptions(), null, parameters);
+        var res = await DialogService.EditObject<T>(item, TryLocalize(TextEdit, ItemNameRender(item)), DialogOptions ?? DefaultOptions(), null, parameters);
         if (!res.Cancelled)
         {
             SetValue(item, res.Result);
@@ -152,7 +164,7 @@ public partial class MudExCollectionEditor<T>
 
     public async Task Add()
     {
-        var item = typeof(T) == typeof(string) ? (T) (object) string.Empty : Primitive ? default : Activator.CreateInstance<T>();
+        var item = typeof(T) == typeof(string) ? (T)(object)string.Empty : Primitive ? default : Activator.CreateInstance<T>();
         DialogParameters parameters = new DialogParameters
         {
             { nameof(MudExObjectEditDialog<T>.DialogIcon), AddIcon },

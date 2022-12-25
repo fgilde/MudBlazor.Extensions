@@ -153,14 +153,6 @@ public static class RenderDataDefaults
             var controlType = typeof(MudExEnumSelect<>).MakeGenericType(propertyType);
             var renderDataType = typeof(RenderData<,>).MakeGenericType(propertyType, propertyType);
             return renderDataType.CreateInstance<IRenderData>(nameof(MudExEnumSelect<object>.Value), controlType, null);
-
-            //Old without MudExEnumSelect
-            //return RenderData.For<MudExChipSelect<object>, object, IEnumerable<object>>(s => s.Selected, s =>
-            //{
-            //    s.AvailableItems = propertyType.IsNullableEnum() ? Nullable.GetUnderlyingType(propertyType).GetEnumValues().Cast<object>().ToList() : propertyType.GetEnumValues().Cast<object>().ToList();
-            //    s.MultiSelect = false;
-            //    s.ViewMode = ViewMode.NoChips;
-            //}, s => s.AsEnumerable(), x => x.Select(o => o.MapTo(propertyType)).FirstOrDefault());
         }
 
         if (IsCollection(propertyMeta.PropertyInfo.PropertyType) || IsEnumerable(propertyMeta.PropertyInfo.PropertyType)) // Collection support
@@ -170,7 +162,10 @@ public static class RenderDataDefaults
                 var collectionType = propertyType.GetGenericArguments().FirstOrDefault() ?? propertyType.GetElementType();
                 var renderDataType = typeof(RenderData<,>).MakeGenericType(propertyMeta.PropertyInfo.PropertyType, typeof(ICollection<>).MakeGenericType(collectionType));
                 var type = typeof(MudExCollectionEditor<>).MakeGenericType(collectionType);
-                return Activator.CreateInstance(renderDataType, nameof(MudExCollectionEditor<object>.Items), type, new Dictionary<string, object>()) as IRenderData;
+                return Activator.CreateInstance(renderDataType, nameof(MudExCollectionEditor<object>.Items), type, new Dictionary<string, object>()
+                {
+                    //{nameof(MudExCollectionEditor<object>.MaxHeight), 400} // TODO: Make this configurable or think about default setting max height to have the advantages of virtualization
+                }) as IRenderData;
             }
             catch (Exception e)
             {

@@ -1,0 +1,211 @@
+﻿@page "/virtualized-object-edit"
+@inject IDialogService dialogService;
+@using Newtonsoft.Json
+@using MudBlazor.Extensions.Options
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+<PageHeader>Object Edit Virtualize (BETA)</PageHeader>
+<MudAlert>This feature is still in progress and not finished yet. Currently reset all field not working correctly for example and it makes problen in flex layout like with MudGrid what is added if wrap in mud item is used. Please use this carefully and only if you have render performance issues</MudAlert>
+
+<DemoComponent DocFiles="@(new[] {"Docs/ObjectEdit.md"})" CodeFile="@($"Pages/{GetType().Name}.razor")">
+    <MudGrid>
+        <MudCheckBox @bind-Checked="@virtualize">Virtualize</MudCheckBox>
+        <MudCheckBox @bind-Checked="@disableGrouping">Disable Grouping</MudCheckBox>
+    </MudGrid>
+    <MudExObjectEditForm Height="80" SizeUnit="CssUnit.ViewportHeight" ActionBarColor="Color.Surface"
+                         Virtualize="@virtualize"
+                         DisableGrouping="@disableGrouping"
+                         MetaConfiguration="@Configure"
+                         ToolbarColor="Color.Surface" StickyActionBar="true" StickyToolbar="true" OnValidSubmit="@OnSubmit" Value="@Model"></MudExObjectEditForm>
+</DemoComponent>
+
+
+@code {
+    private bool virtualize = true;
+    private bool disableGrouping;
+    public BigSampleModel Model { get; set; } = new();
+
+    private async Task OnSubmit(EditContext ctx)
+    {
+        var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
+        await dialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
+            {
+                Position = DialogPosition.TopCenter,
+                Animation = AnimationType.Slide,
+                MaxWidth = MaxWidth.Medium
+            });
+    }
+
+    private void Configure(ObjectEditMeta<BigSampleModel> meta)
+    {
+        // meta.WrapEachInMudItem(i => i.xs = 6); // TODO: Makes currently problems will fixed later after providing own MudExVirtualize
+        meta.GroupByTypes();
+    }
+    // Sample class only
+
+    public class BigSampleModel
+    {
+        public string Name { get; set; } = "John Doe";
+        public string StringProperty1 { get; set; } = nameof(StringProperty1);
+        public string StringProperty2 { get; set; } = nameof(StringProperty2);
+        public string StringProperty3 { get; set; } = nameof(StringProperty3);
+        public string StringProperty4 { get; set; } = nameof(StringProperty4);
+        public string StringProperty5 { get; set; } = nameof(StringProperty5);
+        public string StringProperty6 { get; set; } = nameof(StringProperty6);
+        public string StringProperty7 { get; set; } = nameof(StringProperty7);
+        public string StringProperty8 { get; set; } = nameof(StringProperty8);
+        public string StringProperty9 { get; set; } = nameof(StringProperty9);
+        public string StringProperty10 { get; set; } = nameof(StringProperty10);
+        public string StringProperty11 { get; set; } = nameof(StringProperty11);
+        public string StringProperty12 { get; set; } = nameof(StringProperty12);
+        public string StringProperty13 { get; set; } = nameof(StringProperty13);
+        public string StringProperty14 { get; set; } = nameof(StringProperty14);
+        public string StringProperty15 { get; set; } = nameof(StringProperty15);
+        public string StringProperty16 { get; set; } = nameof(StringProperty16);
+        public string StringProperty17 { get; set; } = nameof(StringProperty17);
+        public string StringProperty18 { get; set; } = nameof(StringProperty18);
+        public string StringProperty19 { get; set; } = nameof(StringProperty19);
+        public string StringProperty20 { get; set; } = nameof(StringProperty20);
+        public string StringProperty21 { get; set; } = nameof(StringProperty21);
+        public string StringProperty22 { get; set; } = nameof(StringProperty22);
+        public string StringProperty23 { get; set; } = nameof(StringProperty23);
+        public string StringProperty24 { get; set; } = nameof(StringProperty24);
+        public string StringProperty25 { get; set; } = nameof(StringProperty25);
+        public string StringProperty26 { get; set; } = nameof(StringProperty26);
+        public string StringProperty27 { get; set; } = nameof(StringProperty27);
+        public string StringProperty28 { get; set; } = nameof(StringProperty28);
+        public string StringProperty29 { get; set; } = nameof(StringProperty29);
+        public string StringProperty30 { get; set; } = nameof(StringProperty30);
+        public string StringProperty31 { get; set; } = nameof(StringProperty31);
+        public string StringProperty32 { get; set; } = nameof(StringProperty32);
+        public string StringProperty33 { get; set; } = nameof(StringProperty33);
+        public string StringProperty34 { get; set; } = nameof(StringProperty34);
+        public string StringProperty35 { get; set; } = nameof(StringProperty35);
+        public string StringProperty36 { get; set; } = nameof(StringProperty36);
+        public string StringProperty37 { get; set; } = nameof(StringProperty37);
+        public string StringProperty38 { get; set; } = nameof(StringProperty38);
+        public string StringProperty39 { get; set; } = nameof(StringProperty39);
+        public string StringProperty40 { get; set; } = nameof(StringProperty40);
+        public string StringProperty41 { get; set; } = nameof(StringProperty41);
+        public string StringProperty42 { get; set; } = nameof(StringProperty42);
+        public string StringProperty43 { get; set; } = nameof(StringProperty43);
+        public string StringProperty44 { get; set; } = nameof(StringProperty44);
+        public string StringProperty45 { get; set; } = nameof(StringProperty45);
+        public string StringProperty46 { get; set; } = nameof(StringProperty46);
+        public string StringProperty47 { get; set; } = nameof(StringProperty47);
+        public string StringProperty48 { get; set; } = nameof(StringProperty48);
+        public string StringProperty49 { get; set; } = nameof(StringProperty49);
+        public string StringProperty50 { get; set; } = nameof(StringProperty50);
+        public string StringProperty51 { get; set; } = nameof(StringProperty51);
+        public string StringProperty52 { get; set; } = nameof(StringProperty52);
+        public string StringProperty53 { get; set; } = nameof(StringProperty53);
+        public string StringProperty54 { get; set; } = nameof(StringProperty54);
+        public string StringProperty55 { get; set; } = nameof(StringProperty55);
+        public string StringProperty56 { get; set; } = nameof(StringProperty56);
+        public string StringProperty57 { get; set; } = nameof(StringProperty57);
+        public string StringProperty58 { get; set; } = nameof(StringProperty58);
+        public string StringProperty59 { get; set; } = nameof(StringProperty59);
+        public string StringProperty60 { get; set; } = nameof(StringProperty60);
+
+        public string AnotherStringProperty10 { get; set; } = nameof(AnotherStringProperty10);
+        public string AnotherStringProperty11 { get; set; } = nameof(AnotherStringProperty11);
+        public string AnotherStringProperty12 { get; set; } = nameof(AnotherStringProperty12);
+        public string AnotherStringProperty13 { get; set; } = nameof(AnotherStringProperty13);
+        public string AnotherStringProperty14 { get; set; } = nameof(AnotherStringProperty14);
+        public string AnotherStringProperty15 { get; set; } = nameof(AnotherStringProperty15);
+        public string AnotherStringProperty16 { get; set; } = nameof(AnotherStringProperty16);
+        public string AnotherStringProperty17 { get; set; } = nameof(AnotherStringProperty17);
+        public string AnotherStringProperty18 { get; set; } = nameof(AnotherStringProperty18);
+        public string AnotherStringProperty19 { get; set; } = nameof(AnotherStringProperty19);
+        public string AnotherStringProperty20 { get; set; } = nameof(AnotherStringProperty20);
+        public string AnotherStringProperty21 { get; set; } = nameof(AnotherStringProperty21);
+        public string AnotherStringProperty22 { get; set; } = nameof(AnotherStringProperty22);
+        public string AnotherStringProperty23 { get; set; } = nameof(AnotherStringProperty23);
+        public string AnotherStringProperty24 { get; set; } = nameof(AnotherStringProperty24);
+        public string AnotherStringProperty25 { get; set; } = nameof(AnotherStringProperty25);
+        public string AnotherStringProperty26 { get; set; } = nameof(AnotherStringProperty26);
+        public string AnotherStringProperty27 { get; set; } = nameof(AnotherStringProperty27);
+        public string AnotherStringProperty28 { get; set; } = nameof(AnotherStringProperty28);
+        public string AnotherStringProperty29 { get; set; } = nameof(AnotherStringProperty29);
+        public string AnotherStringProperty30 { get; set; } = nameof(AnotherStringProperty30);
+        public string AnotherStringProperty31 { get; set; } = nameof(AnotherStringProperty31);
+        public string AnotherStringProperty32 { get; set; } = nameof(AnotherStringProperty32);
+        public string AnotherStringProperty33 { get; set; } = nameof(AnotherStringProperty33);
+        public string AnotherStringProperty34 { get; set; } = nameof(AnotherStringProperty34);
+        public string AnotherStringProperty35 { get; set; } = nameof(AnotherStringProperty35);
+        public string AnotherStringProperty36 { get; set; } = nameof(AnotherStringProperty36);
+        public string AnotherStringProperty37 { get; set; } = nameof(AnotherStringProperty37);
+        public string AnotherStringProperty38 { get; set; } = nameof(AnotherStringProperty38);
+        public string AnotherStringProperty39 { get; set; } = nameof(AnotherStringProperty39);
+        public string AnotherStringProperty40 { get; set; } = nameof(AnotherStringProperty40);
+        public string AnotherStringProperty41 { get; set; } = nameof(AnotherStringProperty41);
+        public string AnotherStringProperty42 { get; set; } = nameof(AnotherStringProperty42);
+        public string AnotherStringProperty43 { get; set; } = nameof(AnotherStringProperty43);
+        public string AnotherStringProperty44 { get; set; } = nameof(AnotherStringProperty44);
+        public string AnotherStringProperty45 { get; set; } = nameof(AnotherStringProperty45);
+        public string AnotherStringProperty46 { get; set; } = nameof(AnotherStringProperty46);
+        public string AnotherStringProperty47 { get; set; } = nameof(AnotherStringProperty47);
+        public string AnotherStringProperty48 { get; set; } = nameof(AnotherStringProperty48);
+        public string AnotherStringProperty49 { get; set; } = nameof(AnotherStringProperty49);
+        public string AnotherStringProperty50 { get; set; } = nameof(AnotherStringProperty50);
+        public string AnotherStringProperty51 { get; set; } = nameof(AnotherStringProperty51);
+        public string AnotherStringProperty52 { get; set; } = nameof(AnotherStringProperty52);
+        public string AnotherStringProperty53 { get; set; } = nameof(AnotherStringProperty53);
+        public string AnotherStringProperty54 { get; set; } = nameof(AnotherStringProperty54);
+        public string AnotherStringProperty55 { get; set; } = nameof(AnotherStringProperty55);
+        public string AnotherStringProperty56 { get; set; } = nameof(AnotherStringProperty56);
+        public string AnotherStringProperty57 { get; set; } = nameof(AnotherStringProperty57);
+        public string AnotherStringProperty58 { get; set; } = nameof(AnotherStringProperty58);
+        public string AnotherStringProperty59 { get; set; } = nameof(AnotherStringProperty59);
+        public string AnotherStringProperty60 { get; set; } = nameof(AnotherStringProperty60);
+
+        public bool Property1 { get; set; } = false;
+        public string Property2 { get; set; } = "abc";
+        public int Property3 { get; set; } = 123;
+        public bool Property4 { get; set; } = true;
+        public string Property5 { get; set; } = "def";
+        public int Property6 { get; set; } = 456;
+        public bool Property7 { get; set; } = false;
+        public string Property8 { get; set; } = "ghi";
+        public int Property9 { get; set; } = 789;
+        public bool Property10 { get; set; } = true;
+        public string Property11 { get; set; } = "jkl";
+        public int Property12 { get; set; } = 246;
+        public bool Property13 { get; set; } = false;
+        public string Property14 { get; set; } = "mno";
+        public int Property15 { get; set; } = 135;
+        public bool Property16 { get; set; } = true;
+        public string Property17 { get; set; } = "pqr";
+        public int Property18 { get; set; } = 567;
+        public bool Property19 { get; set; } = false;
+        public string Property20 { get; set; } = "stu";
+        public int Property21 { get; set; } = 890;
+        public bool Property22 { get; set; } = true;
+        public string Property23 { get; set; } = "vwx";
+        public int Property24 { get; set; } = 321;
+        public bool Property25 { get; set; } = false;
+        public string Property26 { get; set; } = "yz";
+        public int Property27 { get; set; } = 654;
+        public bool Property28 { get; set; } = true;
+        public string Property29 { get; set; } = "abcdef";
+        public int Property30 { get; set; } = 987;
+        public bool Property31 { get; set; } = false;
+        public string Property32 { get; set; } = "ghijkl";
+        public int Property33 { get; set; } = 210;
+        public bool Property34 { get; set; } = true;
+        public string Property35 { get; set; } = "mnopqr";
+        public int Property36 { get; set; } = 753;
+        public bool Property37 { get; set; } = false;
+        public string Property38 { get; set; } = "stuvwx";
+        public int Property39 { get; set; } = 896;
+        public bool Property40 { get; set; } = true;
+        public string Property41 { get; set; } = "yzabc";
+        public int Property42 { get; set; } = 432;
+        public bool Property43 { get; set; } = false;
+        public string Property44 { get; set; } = "defghi";
+        public int Property45 { get; set; } = 675;
+
+    }
+
+}

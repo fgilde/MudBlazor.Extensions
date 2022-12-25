@@ -17,10 +17,10 @@
     }
 
     @* Display block is required to have virtualization working *@
-    <MudGrid Style="display: block;" Spacing="1">
+    <MudGrid Style="@GetMudGridStyle()" Spacing="1">
         @if (Items != null)
         {
-            <Virtualize Context="item" Items="@Items.Where(IsInFilter).ToList()">
+            <MudVirtualize IsEnabled="@Virtualize" Context="item" Items="@Items.Where(IsInFilter).ToList()">
                 <MudItem xs="12">
                     <MudItem>
                         <MudAlert Icon="@ItemIcon"
@@ -54,7 +54,7 @@
                         </MudAlert>
                     </MudItem>
                 </MudItem>
-            </Virtualize>
+            </MudVirtualize>
         }
     </MudGrid>
 

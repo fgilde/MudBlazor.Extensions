@@ -10,7 +10,7 @@ Sure you need a MudBlazor project and the referenced package to MudBlazor for mo
 Add the nuget Package `MudBlazor.Extensions` to your blazor project
 
 ```
-<PackageReference Include="MudBlazor.Extensions" Version="1.7.26" />
+<PackageReference Include="MudBlazor.Extensions" Version="1.7.27" />
 ```
 
 For easier using the components should change your `_Imports.razor` and add this entries.
@@ -216,6 +216,10 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log
+ - 1.7.27 MudExObjectEdit and MudExCollectionEditor now supporting `Virtualize` on [MudExCollectionEditor](https://mudex.azurewebsites.net/shared-config) its default enabled. But you need to specify height of control. On [MudExObjectEdit](https://mudex.azurewebsites.net/virtualized-object-edit) is disabled and currently in Beta
+ - 1.7.27 MudExObjectEdit and MudExCollectionEditor now supporting Height, MaxHeight and custom Style as Parameter
+ - 1.7.27 MudExCollectionEditor now supporting Item search
+ - 1.7.27 MudExCollectionEditor now supporting top or bottom toolbar position by setting the Parameter `ToolbarPosition`
  - 1.7.26 Improvements and extensibility for MudExFileDisplay
  - 1.7.25 DialogOptions can now set as Default for all dialogs where no explicit options are used
  - 1.7.24 Allow converting any IDialogReference to an `IMudExDialogReference<TComponent>` with Extension method AsMudExDialogReference. With this reference, the inner dialog component is type safe accessable
