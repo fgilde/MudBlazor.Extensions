@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.Extensions.Localization;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Utilities;
 using Nextended.Core;
@@ -13,8 +11,6 @@ namespace MudBlazor.Extensions.Components.ObjectEdit;
 
 public partial class MudExPropertyEdit
 {
-    [Inject] private IServiceProvider _serviceProvider { get; set; }
-
     [Parameter] public bool ShowPathAsTitle { get; set; }
     [Parameter] public bool IsLoading { get; set; }
     [Parameter] public bool AutoSkeletonOnLoad { get; set; }
@@ -23,7 +19,6 @@ public partial class MudExPropertyEdit
     [Parameter] public PropertyResetSettings PropertyResetSettings { get; set; }
     [Parameter] public ObjectEditPropertyMeta PropertyMeta { get; set; }
     [Parameter] public EventCallback<ObjectEditPropertyMeta> PropertyValueChanged { get; set; }
-    [Parameter] public IStringLocalizer Localizer { get; set; }
     [Parameter] public bool DisableFieldFallback { get; set; }
 
     private DynamicComponent editor;
@@ -47,7 +42,7 @@ public partial class MudExPropertyEdit
 
     protected override void OnInitialized()
     {
-        RenderDataDefaults.AddRenderDataProvider(_serviceProvider);
+        RenderDataDefaults.AddRenderDataProvider(ServiceProvider);
         base.OnInitialized();
     }
 
@@ -56,8 +51,8 @@ public partial class MudExPropertyEdit
         return PropertyMeta.RenderData
             .InitValueBinding(PropertyMeta, RaisePropertyValueChanged)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.For), CreateFieldForExpressionPropertyType())
-            .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Label), () => PropertyMeta.Settings.LabelFor(Localizer), PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.Both || PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.DefaultComponentLabeling)
-            .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.HelperText), () => PropertyMeta.Settings.DescriptionFor(Localizer))
+            .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Label), () => PropertyMeta.Settings.LabelFor(LocalizerToUse), PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.Both || PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.DefaultComponentLabeling)
+            .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.HelperText), () => PropertyMeta.Settings.DescriptionFor(LocalizerToUse))
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Class), () => Class)
             .TrySetAttributeIfAllowed(nameof(Localizer), Localizer)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.ReadOnly), () => !PropertyMeta.Settings.IsEditable).Attributes;

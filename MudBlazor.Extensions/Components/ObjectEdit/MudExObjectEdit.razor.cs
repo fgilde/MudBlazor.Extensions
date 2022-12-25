@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.CompilerServices;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Extensions;
@@ -14,8 +12,6 @@ using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Utilities;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 using Nextended.Blazor.Models;
 using Nextended.Core;
 using Nextended.Core.Extensions;
@@ -25,14 +21,8 @@ namespace MudBlazor.Extensions.Components.ObjectEdit;
 
 public partial class MudExObjectEdit<T>
 {
-    [Inject] private IServiceProvider _serviceProvider { get; set; }
-
-    private IStringLocalizer<MudExObjectEdit<T>> _fallbackLocalizer => _serviceProvider.GetService<IStringLocalizer<MudExObjectEdit<T>>>();
-    private IDialogService dialogService => _serviceProvider.GetService<IDialogService>();
-    private IObjectMetaConfiguration<T> _configService => _serviceProvider.GetService<IObjectMetaConfiguration<T>>();
-    private IJSRuntime _js => _serviceProvider.GetService<IJSRuntime>();
+    private IObjectMetaConfiguration<T> _configService => Get<IObjectMetaConfiguration<T>>();
     private Color _importButtonColor;
-    [Parameter] public IStringLocalizer Localizer { get; set; }
     [Parameter] public bool IsLoading { get; set; }
     protected bool IsInternalLoading;
 
@@ -118,9 +108,6 @@ public partial class MudExObjectEdit<T>
 
     protected virtual RenderFragment InternalToolBarContent => null;
 
-    protected IStringLocalizer LocalizerToUse => Localizer ?? _fallbackLocalizer;
-    private bool _searchActive;
-    private MudTextField<string> _searchBox;
     private bool ShouldAddGrid(IEnumerable<ObjectEditPropertyMeta> meta) => WrapInMudGrid ?? ContainsMudItemInWrapper(meta);
     private string CssClassName => GroupingStyle == GroupingStyle.Flat ? $"mud-ex-object-edit-group-flat {(!GroupsCollapsible ? "mud-ex-hide-expand-btn" : "")}" : string.Empty;
     private IEnumerable<IGrouping<string, ObjectEditPropertyMeta>> GroupedMetaPropertyInfos()
@@ -141,10 +128,10 @@ public partial class MudExObjectEdit<T>
             editable.BeginEdit();
         ResetConfirmationMessageBoxOptions ??= new MessageBoxOptions
         {
-            Message = LocalizerToUse.TryLocalize("Reset all properties?"),
-            Title = LocalizerToUse.TryLocalize("Reset all"),
-            CancelText = LocalizerToUse.TryLocalize("Cancel"),
-            YesText = LocalizerToUse.TryLocalize("Reset")
+            Message = TryLocalize("Reset all properties?"),
+            Title = TryLocalize("Reset all"),
+            CancelText = TryLocalize("Cancel"),
+            YesText = TryLocalize("Reset")
         };
     }
 
@@ -182,7 +169,7 @@ public partial class MudExObjectEdit<T>
 
     private async Task CreateMetaIfNotExists()
     {
-        RenderDataDefaults.AddRenderDataProvider(_serviceProvider);
+        RenderDataDefaults.AddRenderDataProvider(ServiceProvider);
         Action<ObjectEditMeta<T>> c = MetaConfigurationAsync != null ? await MetaConfigurationAsync : MetaConfiguration;
         bool metaNeedsConfig = MetaInformation == null; // If not configured or not manually bypassed wer configure the Meta
         MetaInformation ??= (Value ??= typeof(T).CreateInstance<T>()).ObjectEditMeta();
@@ -220,27 +207,7 @@ public partial class MudExObjectEdit<T>
            || propertyMeta.GroupInfo?.Name?.Contains(Filter, StringComparison.InvariantCultureIgnoreCase) == true
            || propertyMeta.RenderData?.Attributes.Values.OfType<string>().Any(x => x.Contains(Filter, StringComparison.InvariantCultureIgnoreCase)) == true;
 
-    private Task FilterKeyPress(KeyboardEventArgs arg)
-    {
-        if (arg.Key == "Escape")
-        {
-            if (!string.IsNullOrWhiteSpace(Filter))
-                Filter = string.Empty;
-            else
-                _searchActive = false;
-        }
-        return Task.CompletedTask;
-    }
-
-    private bool _searchBoxBlur = false;
-    private Task FilterBoxBlur(FocusEventArgs arg)
-    {
-        _searchBoxBlur = true;
-        _searchActive = false;
-        Task.Delay(300).ContinueWith(t => _searchBoxBlur = false);
-        return Task.CompletedTask;
-    }
-
+  
     public List<MudExPropertyEdit> Editors = new();
     private T _value;
     public MudExPropertyEdit Ref { set => Editors.Add(value); }
@@ -250,7 +217,7 @@ public partial class MudExObjectEdit<T>
 
     private async Task OnResetClick(MouseEventArgs arg)
     {
-        if (GlobalResetSettings.RequiresConfirmation && dialogService != null && !(await ShowConfirmationBox() ?? false))
+        if (GlobalResetSettings.RequiresConfirmation && DialogService != null && !(await ShowConfirmationBox() ?? false))
             return;
         await Reset();
         StateHasChanged();
@@ -267,7 +234,7 @@ public partial class MudExObjectEdit<T>
 
     public virtual async Task RestoreState()
     {
-        string json = await _js.InvokeAsync<string>($"{StateTargetStorage.ToDescriptionString()}.getItem", stateKey);
+        string json = await JsRuntime.InvokeAsync<string>($"{StateTargetStorage.ToDescriptionString()}.getItem", stateKey);
         if (!string.IsNullOrWhiteSpace(json))
             await LoadFromJson(json, false);
     }
@@ -275,7 +242,7 @@ public partial class MudExObjectEdit<T>
     public virtual async Task SaveState()
     {
         string json = JsonConvert.SerializeObject(Value);
-        await _js.InvokeVoidAsync($"{StateTargetStorage.ToDescriptionString()}.setItem", stateKey, json);
+        await JsRuntime.InvokeVoidAsync($"{StateTargetStorage.ToDescriptionString()}.setItem", stateKey, json);
     }
 
     private Task<bool?> ShowConfirmationBox()
@@ -288,17 +255,9 @@ public partial class MudExObjectEdit<T>
             DragMode = MudDialogDragMode.Simple,
             CloseButton = false
         };
-        return _js != null
-            ? dialogService.ShowMessageBoxEx(ResetConfirmationMessageBoxOptions, ResetConfirmationDialogOptions)
-            : dialogService.ShowMessageBox(ResetConfirmationMessageBoxOptions, ResetConfirmationDialogOptions);
-    }
-
-    private void ToggleSearchBox()
-    {
-        if (_searchBoxBlur)
-            return;
-        _searchActive = !_searchActive;
-        _searchBox.FocusAsync();
+        return JsRuntime != null
+            ? DialogService.ShowMessageBoxEx(ResetConfirmationMessageBoxOptions, ResetConfirmationDialogOptions)
+            : DialogService.ShowMessageBox(ResetConfirmationMessageBoxOptions, ResetConfirmationDialogOptions);
     }
 
     private string ToolbarStyle()
@@ -361,7 +320,7 @@ public partial class MudExObjectEdit<T>
         {
             var json = exported.Json;
             var url = await DataUrl.GetDataUrlAsync(await Task.Run(() => Encoding.UTF8.GetBytes(json)), "application/json");
-            await _js.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
+            await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
             {
                 Url = url,
                 FileName = !string.IsNullOrWhiteSpace(ExportFileName) ? ExportFileName : $"{Value.GetType().Name}_{DateTime.Now}.json",
@@ -393,7 +352,7 @@ public partial class MudExObjectEdit<T>
     {
         var mimeType = "application/json";
         var url = await DataUrl.GetDataUrlAsync(Encoding.UTF8.GetBytes(json), mimeType);
-        var cancelled = ImportNeedsConfirmation && (await (await dialogService.ShowFileDisplayDialog(url, fileName, mimeType, op =>
+        var cancelled = ImportNeedsConfirmation && (await (await DialogService.ShowFileDisplayDialog(url, fileName, mimeType, op =>
         {
             op.MaxWidth = MaxWidth.Large;
             op.FullWidth = false;
@@ -408,13 +367,13 @@ public partial class MudExObjectEdit<T>
             {
                 new MudExDialogResultAction
                 {
-                    Label = LocalizerToUse.TryLocalize(ImportCancelText),
+                    Label = TryLocalize(ImportCancelText),
                     Variant = Variant.Text,
                     Result = DialogResult.Cancel()
                 },
                 new MudExDialogResultAction
                 {
-                    Label = LocalizerToUse.TryLocalize(ImportConfirmText),
+                    Label = TryLocalize(ImportConfirmText),
                     Color = Color.Error,
                     Variant = Variant.Filled,
                     Result = DialogResult.Ok(true)

@@ -10,10 +10,10 @@ public class MudExBaseComponent<T> : ComponentBase
     where T : MudExBaseComponent<T>
 {
     [Inject] protected IServiceProvider ServiceProvider { get; set; }
-    [Inject] protected IJSRuntime JsRuntime { get; set; }
     [Parameter] public IStringLocalizer Localizer { get; set; }
     private IStringLocalizer<T> _fallbackLocalizer => Get<IStringLocalizer<T>>();
     protected IDialogService DialogService => Get<IDialogService>();
+    protected IJSRuntime JsRuntime => Get<IJSRuntime>();
     protected IStringLocalizer LocalizerToUse => Localizer ?? _fallbackLocalizer;
 
     protected TService Get<TService>() => ServiceProvider.GetService<TService>();

@@ -22,6 +22,7 @@
                        Label="@(!Label.IsNullOrWhiteSpace() ? TryLocalize(Label) : "")" 
                        HelperText="@(!HelperText.IsNullOrWhiteSpace() ? TryLocalize(HelperText) : "")"
                        Clearable="@(!ReadOnly)"
+                       OnClose="@OnClose"
                        ReadOnly="@ReadOnly"
                        Adornment="@(ReadOnly ? Adornment.None : Adornment)"
                        SelectAll="false"

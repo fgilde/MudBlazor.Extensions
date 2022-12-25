@@ -4,6 +4,8 @@
 @using MudBlazor.Extensions.Helper
 @using Nextended.Core.Extensions;
 
+@inherits MudExBaseComponent<MudExPropertyEdit>
+
 @if (PropertyMeta?.ShouldRender() == true)
 {
     @Render

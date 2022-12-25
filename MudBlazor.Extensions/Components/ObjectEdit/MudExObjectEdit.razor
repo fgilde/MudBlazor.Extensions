@@ -3,7 +3,7 @@
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 @typeparam T
-
+@inherits MudExBaseComponent<MudExObjectEdit<T>>
 <style>
     .mud-ex-object-edit-group-flat .mud-expand-panel-text:after {
         background-color: var(@GroupLineColor.CssVarName());
@@ -42,28 +42,23 @@ else
                 {
                     <MudSpacer />
                 }
-                @if (FilterMode != PropertyFilterMode.Disabled)
-                {
-                    <MudTextField @ref="_searchBox" OnBlur="@(FilterBoxBlur)" OnKeyDown="@(FilterKeyPress)" Class="@($"mud-ex-hide-inputlabel mud-ex-animate-all-properties mud-ex-property-filter {(_searchActive || FilterMode == PropertyFilterMode.AlwaysVisible ? "active" : "")}")" Immediate="true" Clearable="true" @bind-Value="Filter" T="string" Placeholder="@LocalizerToUse.TryLocalize("Filter")" Label="@LocalizerToUse.TryLocalize("Filter")" />
-                }
-                @if (FilterMode == PropertyFilterMode.Toggleable)
-                {
-                    <MudIconButton Icon="@SearchIcon" Color="@(string.IsNullOrWhiteSpace(Filter) ? ToolbarButtonColor : Color.Warning)" OnClick="@(ToggleSearchBox)" />
-                }
+
+                <MudExToggleableSearch @bind-Filter="@Filter" SearchButtonColor="@ToolbarButtonColor" SearchIcon="@SearchIcon" FilterMode="@FilterMode" />
+                
                 @if (AllowExport)
                 {
-                    <MudTooltip Text="@LocalizerToUse.TryLocalize("Export")">
+                    <MudTooltip Text="@TryLocalize("Export")">
                         <MudIconButton Icon="@ExportIcon" OnClick="@(Export)" Color="@ToolbarButtonColor"/>
                     </MudTooltip>
                 }
                 @if (AllowImport){
-                    <MudTooltip Text="@LocalizerToUse.TryLocalize("Import")">
+                    <MudTooltip Text="@TryLocalize("Import")">
                         <MudIconButton HtmlTag="label" for="importInput" Icon="@ImportIcon" Color="@_importButtonColor" />
                     </MudTooltip>
                 }
                 @if (GroupsCollapsible && _groups.Count > 1)
                 {
-                    <MudTooltip Text="@LocalizerToUse.TryLocalize("Expand/Collapse")">
+                    <MudTooltip Text="@TryLocalize("Expand/Collapse")">
                         <MudIconButton Icon="@ExpandCollapseIcon" OnClick="@(ExpandCollapse)" Color="@ToolbarButtonColor" />
                     </MudTooltip>
                 }
@@ -94,7 +89,7 @@ else
                 {
                     groupName = pathStr;
                 }
-                <MudExpansionPanel @ref="@ExpansionPanel" IsInitiallyExpanded="true" Disabled="@(!GroupsCollapsible)" Class="@($"mt-3 {(!string.IsNullOrWhiteSpace(groupName) ? CssClassName : "mud-ex-hidden-group")}")" Text="@(!string.IsNullOrWhiteSpace(groupName) ? LocalizerToUse.TryLocalize(groupName) : groupName)">
+                <MudExpansionPanel @ref="@ExpansionPanel" IsInitiallyExpanded="true" Disabled="@(!GroupsCollapsible)" Class="@($"mt-3 {(!string.IsNullOrWhiteSpace(groupName) ? CssClassName : "mud-ex-hidden-group")}")" Text="@(!string.IsNullOrWhiteSpace(groupName) ? TryLocalize(groupName) : groupName)">
                     @if (PathDisplayMode == PathDisplayMode.DisplaySeparate && !string.IsNullOrEmpty(pathStr) && pathStr != groupName)
                     {
                         <p class="@(GroupingStyle == GroupingStyle.Flat ? "mud-ex-group-path-text-flat" : "mud-ex-group-path-text-default")">@pathStr</p>

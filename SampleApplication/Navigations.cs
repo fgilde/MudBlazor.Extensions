@@ -42,6 +42,7 @@ public static class Navigations
                 Children = new()
                 {
                     new NavigationEntry("MudExEnumSelect", Icons.Material.Outlined.List, "/enum-select"),
+                    new NavigationEntry("MudExChipSelect", Icons.Material.Outlined.BubbleChart, "/chip-select"),
                     new NavigationEntry("MudExColorBubble", Icons.Material.Outlined.ColorLens, "/color-bubble"),
                     new NavigationEntry("MudExColorPicker", Icons.Material.Outlined.Colorize, "/mudexcolor-picker")
                 }

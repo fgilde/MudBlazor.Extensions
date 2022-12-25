@@ -1,0 +1,63 @@
+﻿@page "/chip-select"
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+@using MudBlazor.Utilities
+@inject IDialogService dialogService;
+
+<PageHeader>MudExColorBubble</PageHeader>
+
+<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
+
+    <MudGrid>
+        <MudItem md="8" Class="d-flex justify-center">
+            <MudPaper Class="d-flex flex-column mud-width-full pt-5 pl-5 pr-5">
+                <MudExChipSelect AvailableItems="@Available" @bind-Selected="Selected" @ref="component"></MudExChipSelect>
+                <MudButton Class="mt-5" OnClick="@OnShowClick">Show selected</MudButton>
+            </MudPaper>
+        </MudItem>
+        <MudItem md="4">
+            <MudPaper Class="px-4 pt-2 pb-4" Style="height: 70vh; overflow: auto">
+                <MudExObjectEdit MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    
+</DemoComponent>
+
+
+@code {
+    
+    public IEnumerable<MyChipItem> Selected { get; set; }
+    public List<MyChipItem> Available { get; set; } = new()
+    {
+        new MyChipItem {Id = 1, Name = "Item 1"},
+        new MyChipItem {Id = 2, Name = "Item 2"},
+        new MyChipItem {Id = 3, Name = "Item 3"},
+        new MyChipItem {Id = 4, Name = "Item 4"},
+        new MyChipItem {Id = 5, Name = "Item 5"}
+    };
+
+    MudExChipSelect<MyChipItem> component;
+    private Action<ObjectEditMeta<MudExChipSelect<MyChipItem>>> Configure()
+    {
+        return meta =>
+        {
+            meta.Properties(m => m.AvailableItemsLoadFunc, m => m.ItemToStringFunc, m => m.Selected, m => m.Value, m => m.ItemTemplate, m => m.Localizer, m => m.StyleForValidationComponent).Ignore();
+            meta.GroupByTypes();
+            meta.IgnoreAllReadOnlyFields();
+        };
+    }
+
+    public class MyChipItem
+    {
+        public string Name { get; set; }  
+        public int Id { get; set; }  
+        public override string ToString() => Name;
+    }
+
+    private async Task OnShowClick()
+    {
+        string str = $"{string.Join(", ", Selected.Select(s => s.Name))}";
+        await dialogService.ShowInformationAsync("Selected", str);
+    }
+
+}

@@ -111,6 +111,11 @@ public partial class MudExChipSelect<T>
     
     protected virtual Task<IList<T>> GetAvailableItemsAsync(CancellationToken cancellation = default) 
         => AvailableItemsLoadFunc != null ? AvailableItemsLoadFunc(cancellation) : Task.FromResult(new List<T>(0) as IList<T>);
+
+    private void OnClose()
+    {
+        Filter = string.Empty;
+    }
 }
 
 public enum ViewMode

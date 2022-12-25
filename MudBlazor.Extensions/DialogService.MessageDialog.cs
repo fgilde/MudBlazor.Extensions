@@ -196,10 +196,17 @@ public static partial class DialogServiceExt
         return (await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options)).AsMudExDialogReference<MudExMessageDialog>();
     }
 
+    public static Task<IMudExDialogReference<MudExMessageDialog>> ShowInformationAsync(
+        this IDialogService dialogService, string title,
+        string message)
+    {
+        return ShowInformationAsync(dialogService, title, message, null, null);
+    }
+
     public static Task<IMudExDialogReference<MudExMessageDialog>> ShowInformationAsync(this IDialogService dialogService, string title,
         string message,
-        string icon = null,
-        DialogOptionsEx options = null)
+        string icon,
+        DialogOptionsEx options)
     {
         var actions = MudExDialogResultAction.Ok();
         var parameters = new DialogParameters
@@ -217,7 +224,7 @@ public static partial class DialogServiceExt
 
     public static async Task<IMudExDialogReference<MudExMessageDialog>> ShowInformationAsync(this IDialogService dialogService, string title,
         string message,
-        string icon = null,
+        string icon,
         bool canClose = true,
         bool showProgress = false,
         DialogOptionsEx options = null)
