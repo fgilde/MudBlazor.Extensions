@@ -103,4 +103,8 @@
     <UpToDateCheckInput Remove="Components\MudExMessageDialog.razor" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Base\" />
+  </ItemGroup>
+
 </Project>

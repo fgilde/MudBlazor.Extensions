@@ -1,22 +1,18 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
+using Nextended.Core.Extensions;
 
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 
-public partial class MudExCollectionEditor<T>
+public partial class MudExCollectionEditor<T> 
 {
-    [Inject] private IServiceProvider _serviceProvider { get; set; }
-    [Parameter] public IStringLocalizer Localizer { get; set; }
-    [Parameter] public string LocalizerPattern { get; set; } = "{0}";
-    private IStringLocalizer<MudExCollectionEditor<T>> _fallbackLocalizer => _serviceProvider.GetService<IStringLocalizer<MudExCollectionEditor<T>>>();
-    private IDialogService _mudDialogService => _serviceProvider.GetService<IDialogService>();
-    protected IStringLocalizer LocalizerToUse => Localizer ?? _fallbackLocalizer;
-
+    [Parameter] public int? Height { get; set; }
+    [Parameter] public int? MaxHeight { get; set; }
+    [Parameter] public string Style { get; set; }
+    
     [Parameter] public ICollection<T> Items { get; set; }
     [Parameter] public EventCallback<ICollection<T>> ItemsChanged { get; set; }
     [Parameter] public Func<T, string> ItemToStringFunc { get; set; } = (item => item?.ToString() ?? string.Empty);
@@ -39,10 +35,49 @@ public partial class MudExCollectionEditor<T>
     [Parameter] public bool AllowEditOrPreview { get; set; } = true;
     [Parameter] public bool AllowRemove { get; set; } = true;
     [Parameter] public DialogOptionsEx DialogOptions { get; set; }
+    [Parameter] public Color ToolbarColor { get; set; } = Color.Surface;
+    [Parameter] public Position ToolbarPosition { get; set; } = Position.Bottom;
+    [Parameter] public bool StickToolbar { get; set; } = true;
+    [Parameter] public string StyleToolbar { get; set; }
+    [Parameter] public string ClassToolbar { get; set; }
+    [Parameter] public string Class { get; set; }
+    [Parameter] public Color ToolbarButtonColor { get; set; } = Color.Inherit;
+    [Parameter] public PropertyFilterMode FilterMode { get; set; } = PropertyFilterMode.Toggleable;
+    [Parameter] public string Filter { get; set; }
+    [Parameter] public string SearchIcon { get; set; } = Icons.Material.Outlined.Search;
     protected bool Primitive => MudExObjectEdit<T>.IsPrimitive();
+    
+    private bool IsInFilter(T item)
+        => string.IsNullOrWhiteSpace(Filter)
+           || ItemNameRender(item).ToLower().Contains(Filter.ToLower())
+           || item?.GetProperties().Any(p => p.GetValue(item)?.ToString()?.ToLower().Contains(Filter.ToLower()) ?? false) == true;
 
+   
+    private string GetToolbarStyle()
+    {
+        return CssHelper.GenerateCssString(new
+        {
+            ZIndex = 1,
+            BackgroundColor = ToolbarColor,
+            Position = StickToolbar ? "sticky" : null,
+            Bottom = ToolbarPosition == Position.Bottom ? 0 as int? : null,
+            Top = ToolbarPosition == Position.Top ? 0 as int? : null
+        }, StyleToolbar);
+    }
+
+    private string GetStyle()
+    {
+       return CssHelper.GenerateCssString(new
+       {
+           Height,
+           MaxHeight,
+       }, Style);
+    }
+    
     protected override void OnParametersSet()
     {
+        if (ToolbarPosition != Position.Bottom && ToolbarPosition != Position.Top)
+            throw new ArgumentException("ToolbarPosition must be either 'Top' or 'Bottom'.");
         base.OnParametersSet();
         Items ??= new List<T>();
     }
@@ -62,7 +97,6 @@ public partial class MudExCollectionEditor<T>
     private void RaiseChanged()
     {
         ItemsChanged.InvokeAsync(Items);
-        //ItemsChanged.InvokeAsync(new HashSet<T>(Items));
     }
 
     private void RemoveAll()
@@ -78,7 +112,7 @@ public partial class MudExCollectionEditor<T>
             { nameof(MudExObjectEditDialog<T>.DialogIcon), EditIcon },
             { nameof(MudExObjectEditDialog<T>.Localizer), Localizer }
         };
-        var res = await _mudDialogService.EditObject<T>(item, LocalizerToUse.TryLocalize(TextEdit, ItemNameRender(item)) , DialogOptions ?? DefaultOptions(), null, parameters);
+        var res = await DialogService.EditObject<T>(item, TryLocalize(TextEdit, ItemNameRender(item)) , DialogOptions ?? DefaultOptions(), null, parameters);
         if (!res.Cancelled)
         {
             SetValue(item, res.Result);
@@ -108,7 +142,7 @@ public partial class MudExCollectionEditor<T>
             {nameof(MudExObjectEditDialog<T>.GlobalResetSettings), new GlobalResetSettings {AllowReset = false}},
             {nameof(MudExObjectEditDialog<T>.CancelButtonText), "Close"}
         };
-        await _mudDialogService.ShowObject<T>(item, ItemNameRender(item), DialogOptions ?? DefaultOptions(), null, parameters);
+        await DialogService.ShowObject<T>(item, ItemNameRender(item), DialogOptions ?? DefaultOptions(), null, parameters);
     }
 
     public virtual string ItemNameRender(T item)
@@ -124,7 +158,7 @@ public partial class MudExCollectionEditor<T>
             { nameof(MudExObjectEditDialog<T>.DialogIcon), AddIcon },
             { nameof(MudExObjectEditDialog<T>.Localizer), Localizer }
         };
-        var res = await _mudDialogService.EditObject<T>(item, LocalizerToUse.TryLocalize(TextAdd), DialogOptions ?? DefaultOptions(), null, parameters);
+        var res = await DialogService.EditObject<T>(item, TryLocalize(TextAdd), DialogOptions ?? DefaultOptions(), null, parameters);
         if (!res.Cancelled)
         {
             Add(res.Result);

@@ -14,7 +14,9 @@
     
     <h2 style="text-decoration: underline">Edit only a Collection of users</h2>
     <br />
-    <MudExCollectionEditor Items="@Users"></MudExCollectionEditor>
+    
+    <MudButton Variant="Variant.Outlined" Color="Color.Primary" EndIcon="@Icons.Material.Filled.PersonAdd" OnClick="@AddSome">Add 1000 random items</MudButton>
+    <MudExCollectionEditor MaxHeight="500" Items="@Users"></MudExCollectionEditor>
 </DemoComponent>
 
 @code {
@@ -52,10 +54,14 @@
         {
             Users.Add(res.Result);
             Model.Users.Add(res.Result);
-            //var t = Users.ToList();
-            //Users = null;
-            //Users = new List<UserModel>(t);
         }
+    }
+
+    private Task AddSome()
+    {
+        var count = Users.Count;
+        Users.AddRange(Enumerable.Range(1, 1000).Select(x => new UserModel {Password = $"{Guid.NewGuid()}", FirstName = $"User {x + count}", LastName = $"Last {x + count}"}).ToList());
+        return Task.CompletedTask;
     }
 
 }

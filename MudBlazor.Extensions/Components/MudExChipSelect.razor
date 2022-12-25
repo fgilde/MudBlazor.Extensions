@@ -1,6 +1,6 @@
 ﻿@using Nextended.Core.Extensions
 @using Microsoft.AspNetCore.Components.Rendering
-@using MudBlazor.Extensions.Helper
+@inherits MudExBaseComponent<MudExChipSelect<T>>
 @typeparam T
 
 <MudGrid>
@@ -19,8 +19,8 @@
         <div class="select-container">
             <MudSelect T="@T" MultiSelectionTextFunc="MultiSelectionTextFunc"
                        Variant="@(ViewMode != ViewMode.ChipsOnly ? Variant : Variant.Text)"
-                       Label="@(!Label.IsNullOrWhiteSpace() ? LocalizerToUse.TryLocalize(Label) : "")" 
-                       HelperText="@(!HelperText.IsNullOrWhiteSpace() ? LocalizerToUse.TryLocalize(HelperText) : "")"
+                       Label="@(!Label.IsNullOrWhiteSpace() ? TryLocalize(Label) : "")" 
+                       HelperText="@(!HelperText.IsNullOrWhiteSpace() ? TryLocalize(HelperText) : "")"
                        Clearable="@(!ReadOnly)"
                        ReadOnly="@ReadOnly"
                        Adornment="@(ReadOnly ? Adornment.None : Adornment)"
@@ -36,7 +36,7 @@
                 @if (FilterEnabled)
                 {
                     <MudSelectItem Class="filter-select" T="@T" Value="default">
-                        <MudTextField onclick="event.stopPropagation();" Immediate="true" Clearable="true" @bind-Value="Filter" AutoFocus="@(AutoFocusFilter && FilterEnabled)" T="string" Placeholder="@LocalizerToUse.TryLocalize("Filter")" Label="@LocalizerToUse.TryLocalize("Filter")"/>
+                        <MudTextField onclick="event.stopPropagation();" Immediate="true" Clearable="true" @bind-Value="Filter" AutoFocus="@(AutoFocusFilter && FilterEnabled)" T="string" Placeholder="@TryLocalize("Filter")" Label="@TryLocalize("Filter")"/>
                     </MudSelectItem>
                 }
                 @foreach (var item in AvailableItems.EmptyIfNull().Where(arg => arg != null && (Filter.IsNullOrWhiteSpace() || ItemNameRender(arg)?.Contains(Filter, StringComparison.CurrentCultureIgnoreCase) == true)))

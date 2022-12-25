@@ -1,6 +1,6 @@
-﻿@implements IAsyncDisposable
+﻿@inherits MudExJsRequiredBaseComponent<MoveContent>
 
-<div @ref="elementReference">
+<div @ref="ElementReference">
     @ChildContent
     @if (ElementFound)
     {

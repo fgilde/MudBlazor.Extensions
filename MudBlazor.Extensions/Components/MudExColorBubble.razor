@@ -1,6 +1,7 @@
 ﻿@using MudBlazor.Extensions.Helper
+@inherits MudExJsRequiredBaseComponent<MudExColorBubble>
 
-<div @ref="_elementReference" onclick="@OnClick" style="@StyleStr()" class="@($"mud-ex-color-bubble mud-ex-animate-all-properties {Class}")"></div>
+<div @ref="ElementReference" onclick="@OnClick" style="@StyleStr()" class="@($"mud-ex-color-bubble mud-ex-animate-all-properties {Class}")"></div>
 
 <div @ref="_canvasContainerReference" 
      style="@CanvasContainerStyle()" class="mud-ex-color-bubble-canvas-container mud-ex-color-bubble-canvas-container-small">

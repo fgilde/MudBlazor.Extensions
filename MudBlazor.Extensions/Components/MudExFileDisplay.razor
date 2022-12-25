@@ -3,10 +3,11 @@
 @using MudBlazor.Extensions.Extensions
 @using MudBlazor.Extensions.Helper
 @namespace MudBlazor.Extensions.Components
+@inherits MudExJsRequiredBaseComponent<MudExFileDisplay>
 
 <BrowserDetect @bind-BrowserInfo="@Info" />
 
-<div @ref=_elementReference class="mud-ex-file-display-container">
+<div @ref=ElementReference class="mud-ex-file-display-container">
 
     <MoveContent ElementSelector="@($".mud-ex-file-display-toolbar-{ElementId}")">
         <Found>
@@ -53,7 +54,7 @@
                     }
                     else
                     {
-                        @_localizer.TryLocalize("The content type {0} cannot be displayed without a suitable plugin", ContentType)
+                        @TryLocalize("The content type {0} cannot be displayed without a suitable plugin", ContentType)
                     }
                 </p>
 
@@ -67,7 +68,7 @@
                        Href="@PossiblePlugin.Url"
                        Target="_blank"
                        StartIcon="@(Icons.TwoTone.Shop)">
-                        @(_localizer.TryLocalize("The Plugin '{0}' may be able to help", PossiblePlugin.Name))
+                        @(TryLocalize("The Plugin '{0}' may be able to help", PossiblePlugin.Name))
                     </MudButton>
                 }
             </MudAlert>
@@ -89,19 +90,19 @@
                 </div>
                 @foreach (var c in _possibleRenderControls.Where(c => c.GetType() != _componentForFile.ControlType))
                 {
-                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWith(c))" IconSize="Size.Small" Icon="@Icons.Material.Filled.Extension">@($"{_localizer.TryLocalize("Render with {0}", c.Name ?? c.GetType().Name)}")</MudMenuItem>
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWith(c))" IconSize="Size.Small" Icon="@Icons.Material.Filled.Extension">@($"{TryLocalize("Render with {0}", c.Name ?? c.GetType().Name)}")</MudMenuItem>
                 }
                 @if (!_isNativeRendered)
                 {
-                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWith(null))" IconSize="Size.Small" Icon="@Icons.Material.Filled.ExtensionOff">@($"{_localizer.TryLocalize("Render with native control")}")</MudMenuItem>
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWith(null))" IconSize="Size.Small" Icon="@Icons.Material.Filled.ExtensionOff">@($"{TryLocalize("Render with native control")}")</MudMenuItem>
                 }
                 @if (AllowDownload)
                 {
-                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(Download)" Icon="@Icons.Material.Filled.Download">@($"{_localizer.TryLocalize("Download")}")</MudMenuItem>
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(Download)" Icon="@Icons.Material.Filled.Download">@($"{TryLocalize("Download")}")</MudMenuItem>
                 }
                 @if (CanClose)
                 {
-                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(OnCloseClick)" Icon="@Icons.Material.Filled.Close">@($"{_localizer.TryLocalize("Close")}")</MudMenuItem>
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(OnCloseClick)" Icon="@Icons.Material.Filled.Close">@($"{TryLocalize("Close")}")</MudMenuItem>
                 }
             </MudMenu>
         }

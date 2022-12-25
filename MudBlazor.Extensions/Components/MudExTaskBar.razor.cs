@@ -17,7 +17,7 @@ public partial class MudExTaskBar: MudExSlideBar
     private async void DialogService_OnDialogInstanceAdded(IDialogReference obj)
     {
         await obj.GetDialogAsync<ComponentBase>(); // Wait until dialog is rendered
-        var data = await Js.InvokeAsync<DialogData>("MudBlazorExtensions.attachDialog", obj?.GetDialogId());
+        var data = await JsRuntime.InvokeAsync<DialogData>("MudBlazorExtensions.attachDialog", obj?.GetDialogId());
         if (data != null)
         {
             _taskbarItems.Add(new DialogTaskBarInfo(obj, data));

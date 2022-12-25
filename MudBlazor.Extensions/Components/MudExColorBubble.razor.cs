@@ -1,26 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
-using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Utilities;
-using System.Reflection;
-
 
 namespace MudBlazor.Extensions.Components;
 
-public partial class MudExColorBubble: IAsyncDisposable
+public partial class MudExColorBubble
 {
-    [Inject] private IJSRuntime _jsRuntime { get; set; }
-    [Inject] private IServiceProvider _serviceProvider { get; set; }
-    
-    private IDialogService _dialogService => _serviceProvider.GetService<IDialogService>();
-    private IStringLocalizer _localizer => Localizer ?? _serviceProvider.GetService<IStringLocalizer<MudExColorBubble>>() ?? _serviceProvider.GetService<IStringLocalizer>();
-
-    [Parameter] 
-    public IStringLocalizer Localizer { get; set; }
-
     [Parameter] public string Style { get; set; }
     [Parameter] public string Class { get; set; }
 
@@ -113,9 +99,6 @@ public partial class MudExColorBubble: IAsyncDisposable
     [Parameter] 
     public int Width { get; set; } = 16;
 
-    private IJSObjectReference _jsReference;
-    private IJSObjectReference _module;
-    private ElementReference _elementReference;
     private ElementReference _canvasContainerReference;
     private MudColor _color;
     private int _selectorSize = 161;
@@ -125,16 +108,16 @@ public partial class MudExColorBubble: IAsyncDisposable
     private bool _allowSelectOnPreviewClick = true;
     private bool _closeAfterSelect = true;
 
+    protected override object[] GetJsArguments()
+    {
+        return new[] { ElementReference, _canvasContainerReference, CreateDotNetObjectReference(), Options() };
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
-        {
-            var references = await _jsRuntime.ImportModuleAndCreateJsAsync<MudExColorBubble>(_elementReference, _canvasContainerReference, DotNetObjectReference.Create(this), Options());
-            _jsReference = references.jsObjectReference;
-            _module = references.moduleReference;
-            await _jsReference.InvokeVoidAsync("init");
-        }
+            await JsReference.InvokeVoidAsync("init");
     }
 
     [JSInvokable]
@@ -148,8 +131,8 @@ public partial class MudExColorBubble: IAsyncDisposable
     [JSInvokable]
     public async Task OnColorPreviewClick()
     {
-        string title = _localizer.TryLocalize(SelectColorText);
-        var res = await _dialogService?.ShowComponentInDialogAsync<MudExColorPicker>(title, "",
+        string title = TryLocalize(SelectColorText);
+        var res = await DialogService?.ShowComponentInDialogAsync<MudExColorPicker>(title, "",
             new Dictionary<string, object>()
             {
                 {nameof(MudColorPicker.PickerVariant), PickerVariant.Static },
@@ -184,8 +167,8 @@ public partial class MudExColorBubble: IAsyncDisposable
 
     private void UpdateJsOptions()
     {
-        if (_jsReference != null)
-            _jsReference.InvokeVoidAsync("setOptions", Options());
+        if (JsReference != null)
+            JsReference.InvokeVoidAsync("setOptions", Options());
     }
 
     private object Options()
@@ -205,19 +188,7 @@ public partial class MudExColorBubble: IAsyncDisposable
 
     private async Task OnClick()
     {
-        await _jsReference.InvokeVoidAsync("showSelector");
+        await JsReference.InvokeVoidAsync("showSelector");
     }
 
-    public async ValueTask DisposeAsync()
-    {
-        if (_jsReference != null)
-        {
-            await _jsReference.InvokeVoidAsync("dispose");
-            await _jsReference.DisposeAsync();
-        }
-
-        if (_module != null)
-            await _module.DisposeAsync();
-
-    }
 }

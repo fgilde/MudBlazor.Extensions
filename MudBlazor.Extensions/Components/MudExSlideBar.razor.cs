@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 
 namespace MudBlazor.Extensions.Components;
 
 public partial class MudExSlideBar
 {
-    [Inject] protected IServiceProvider ServiceProvider { get; set; }
-    protected IJSRuntime Js => ServiceProvider.GetService<IJSRuntime>();
-    protected IDialogService DialogService => ServiceProvider.GetService<IDialogService>();
     private bool _isOpen;
     [Parameter] public Position Position { get; set; } = Position.Bottom;
     [Parameter] public bool AutoCollapse { get; set; } = true;

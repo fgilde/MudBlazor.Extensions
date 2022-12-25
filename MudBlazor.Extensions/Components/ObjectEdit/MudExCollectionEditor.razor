@@ -1,82 +1,102 @@
 ﻿@using MudBlazor.Extensions.Helper
 @using Nextended.Core.Extensions
+@using Microsoft.AspNetCore.Components.Rendering
+@inherits MudExBaseComponent<MudExCollectionEditor<T>>
 @typeparam T
-
 
 @if (!string.IsNullOrWhiteSpace(Label))
 {
     <label class="@($"{(Items?.Any() == true ? "mud-ex-collection-edit-label-small" : "")} mud-ex-collection-edit-label mud-input-label-animated mud-input-label-text")">@Label</label>
 }
 
-<div class="@(Variant == Variant.Outlined ? "mud-ex-collection-edit-outlined-border" : "")">
+<div style="@GetStyle()" class="@($"{(Variant == Variant.Outlined ? "mud-ex-collection-edit-outlined-border" : "")} mud-ex-overflow-y {Class}")">
 
-        <MudGrid Spacing="1">
-            @if (Items != null)
-            {
-                @foreach (var item in Items)
-                {
-                    <MudItem xs="12">
-                        <MudItem>
-                            <MudAlert Icon="@ItemIcon"
-                                      Class="mud-ex-alert-message-w-100"
-                                      Severity="@Severity.Normal"
-                                      ShowCloseIcon="@(AllowRemove && !ReadOnly)"
-                                      CloseIcon="@RemoveIcon"
-                                      CloseIconClicked="(() => Remove(item))">
-                                      
-                                @if (AllowEditOrPreview && !ReadOnly && item is string)
+    @if (ToolbarPosition == Position.Top)
+    {
+        @RenderToolbar
+    }
+
+    @* Display block is required to have virtualization working *@
+    <MudGrid Style="display: block;" Spacing="1">
+        @if (Items != null)
+        {
+            <Virtualize Context="item" Items="@Items.Where(IsInFilter).ToList()">
+                <MudItem xs="12">
+                    <MudItem>
+                        <MudAlert Icon="@ItemIcon"
+                              Class="mud-ex-alert-message-w-100"
+                              Severity="@Severity.Normal"
+                              ShowCloseIcon="@(AllowRemove && !ReadOnly)"
+                              CloseIcon="@RemoveIcon"
+                              CloseIconClicked="(() => Remove(item))">
+
+                            @if (AllowEditOrPreview && !ReadOnly && item is string)
+                            {
+                                <MudTextField Class="mud-ex-collection-inline-string-edit" T="string" ValueChanged="@(s => SetValue(item, s.MapTo<T>()))" DisableUnderLine="true" Value="@(item.MapTo<string>())"></MudTextField>
+                            }
+                            else
+                            {
+                                <MudHighlighter Text="@ItemNameRender(item)" HighlightedText="@Filter" />
+                            }
+
+
+                            @if (AllowEditOrPreview)
+                            {
+                                @if (ReadOnly)
                                 {
-                                    <MudTextField Class="mud-ex-collection-inline-string-edit" T="string" ValueChanged="@(s => SetValue(item, s.MapTo<T>()))" DisableUnderLine="true" Value="@(item.MapTo<string>())"></MudTextField>
+                                    <MudIconButton OnClick="@(() => View(item))" Style="float: right;" Icon="@ViewIcon" Color="Color.Inherit" Size="Size.Small" />
                                 }
                                 else
                                 {
-                                    @ItemNameRender(item)
+                                    <MudIconButton OnClick="@(() => Edit(item))" Style="float: right;" Icon="@EditIcon" Color="Color.Inherit" Size="Size.Small" />
                                 }
-                               
-                                
-                                @if (AllowEditOrPreview)
-                                {
-                                    @if (ReadOnly)
-                                    {
-                                        <MudIconButton OnClick="@(() => View(item))" Style="float: right;" Icon="@ViewIcon" Color="Color.Inherit" Size="Size.Small"/>
-                                    }
-                                    else
-                                    {
-                                        <MudIconButton OnClick="@(() => Edit(item))" Style="float: right;" Icon="@EditIcon" Color="Color.Inherit" Size="Size.Small"/>
-                                    }
-                                }
-                            </MudAlert>
-                        </MudItem>
+                            }
+                        </MudAlert>
                     </MudItem>
-                }
-            }
-        </MudGrid>
-        
-
-    <div>
-        @if (AllowAdd && !ReadOnly)
-        {
-
-            <MudButton HtmlTag="label"
-                       Variant="Variant.Text"
-                       Color="Color.Primary"
-                        OnClick="@Add"
-                       Size="Size.Small"
-                       StartIcon="@(AddIcon)">
-                @(LocalizerToUse.TryLocalize(TextAdd))
-            </MudButton>
-
+                </MudItem>
+            </Virtualize>
         }
-        
+    </MudGrid>
 
-        @if (ShowClearButton && AllowRemove && Items?.Any() == true && !ReadOnly)
-        {
-            <MudIconButton Title="@LocalizerToUse.TryLocalize(TextRemoveAll)" OnClick="@RemoveAll" Style="float: right; margin-right: 15px;" Icon="@RemoveAllIcon" Color="Color.Primary" Size="Size.Small" />
-        }
-    </div>
+    @if (ToolbarPosition == Position.Bottom)
+    {
+        @RenderToolbar
+    }
+
 </div>
 
 @if (!string.IsNullOrWhiteSpace(HelperText))
 {
     <label style="margin-left: 8px;" class="mud-input-helper-text">@HelperText</label>
+}
+
+@code {
+
+    private void RenderToolbar(RenderTreeBuilder __builder)
+    {
+        //<div style="@GetToolbarStyle()" class="@($"{{ClassToolbar}}")">
+        <MudToolBar Style="@GetToolbarStyle()" Class="@($"{ClassToolbar} pr-4 mt-2 mb-2")">
+            @if (AllowAdd && !ReadOnly)
+            {
+
+                <MudButton HtmlTag="label"
+                           Variant="Variant.Text"
+                           Color="Color.Primary"
+                           OnClick="@Add"
+                           Size="Size.Small"
+                           StartIcon="@(AddIcon)">
+                    @(TryLocalize(TextAdd))
+                </MudButton>
+
+            }
+            <MudSpacer/>
+            <MudExToggleableSearch @bind-Filter="@Filter" SearchButtonColor="@ToolbarButtonColor" SearchIcon="@SearchIcon" FilterMode="@FilterMode" />
+
+            @if (ShowClearButton && AllowRemove && Items?.Any() == true && !ReadOnly)
+            {
+                <MudIconButton Title="@TryLocalize(TextRemoveAll)" OnClick="@RemoveAll" Style="float: right; margin-right: 15px;" Icon="@RemoveAllIcon" Color="Color.Primary" Size="Size.Small"/>
+            }
+        </MudToolBar>
+    }
+
 }

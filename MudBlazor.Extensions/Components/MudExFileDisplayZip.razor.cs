@@ -2,13 +2,9 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.ObjectEdit;
-using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Extensions;
-using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using Nextended.Blazor.Extensions;
 using Nextended.Blazor.Models;
@@ -22,10 +18,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
 {
     public string Name { get; } = nameof(MudExFileDisplayZip);
     public bool WrapInMudExFileDisplayDiv => false;
-    [Inject] private IServiceProvider _serviceProvider { get; set; }
-    private IJSRuntime JsRuntime => _serviceProvider.GetService<IJSRuntime>();
-    private IStringLocalizer<MudExFileDisplayZip> _localizer => _serviceProvider.GetService<IStringLocalizer<MudExFileDisplayZip>>();
-
+    
     [Parameter]
     public IMudExFileDisplayInfos FileDisplayInfos
     {
@@ -87,10 +80,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private IList<ZipBrowserFile> _zipEntries;
     private (string tag, Dictionary<string, object> attributes) renderInfos;
     private HashSet<ZipStructure> _zipStructure;
-    private bool _searchActive;
-    private MudTextField<string> _searchBox;
-    private bool _searchBoxBlur = false;
-
+    
 
     protected override async Task OnParametersSetAsync()
     {
@@ -135,8 +125,8 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private string DownloadText(ZipStructure structure, bool asZip)
     {
         if (structure.IsDirectory)
-            return asZip ? _localizer.TryLocalize("Download {0} with {1} files as zip", structure.Name, structure.ContainingFiles.Count()) : _localizer.TryLocalize("Download {0} files separately", structure.ContainingFiles.Count());
-        return asZip ? _localizer.TryLocalize("Download file {0} as zip", structure.Name) : _localizer.TryLocalize("Download file {0}", structure.Name);
+            return asZip ? TryLocalize("Download {0} with {1} files as zip", structure.Name, structure.ContainingFiles.Count()) : TryLocalize("Download {0} files separately", structure.ContainingFiles.Count());
+        return asZip ? TryLocalize("Download file {0} as zip", structure.Name) : TryLocalize("Download file {0}", structure.Name);
     }
 
     private Task DownloadAsync(ZipBrowserFile file)
@@ -184,33 +174,6 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         if (string.IsNullOrEmpty(SearchString))
             return true;
         return context.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase) || context?.Children?.Any(IsInSearch) == true;
-    }
-
-    private Task FilterKeyPress(KeyboardEventArgs arg)
-    {
-        if (arg.Key == "Escape")
-        {
-            if (!string.IsNullOrWhiteSpace(SearchString))
-                SearchString = string.Empty;
-            else
-                _searchActive = false;
-        }
-        return Task.CompletedTask;
-    }
-
-    private Task FilterBoxBlur(FocusEventArgs arg)
-    {
-        _searchBoxBlur = true;
-        _searchActive = false;
-        Task.Delay(300).ContinueWith(t => _searchBoxBlur = false);
-        return Task.CompletedTask;
-    }
-    private void ToggleSearchBox()
-    {
-        if (_searchBoxBlur)
-            return;
-        _searchActive = !_searchActive;
-        _searchBox.FocusAsync();
     }
 
     private Task ExpandCollapse()

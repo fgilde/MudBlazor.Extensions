@@ -9,23 +9,12 @@ using MudBlazor.Extensions.Options;
 using Nextended.Blazor.Extensions;
 using Nextended.Core;
 using BrowserFileExtensions = Nextended.Blazor.Extensions.BrowserFileExtensions;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
-using MudBlazor.Extensions.Core;
 using Nextended.Blazor.Models;
-using MudBlazor.Extensions.Helper;
-
 
 namespace MudBlazor.Extensions.Components;
 
-public partial class MudExUploadEdit<T> : IAsyncDisposable where T: IUploadableFile, new()
+public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
 {
-    [Inject] private IServiceProvider _serviceProvider { get; set; }
-    private IJSRuntime _jsRuntime => _serviceProvider.GetService<IJSRuntime>();
-    private IDialogService _dialogService => _serviceProvider.GetService<IDialogService>();
-    private IStringLocalizer _localizer => Localizer ?? _serviceProvider.GetService<IStringLocalizer<MudExUploadEdit<T>>>() ?? _serviceProvider.GetService<IStringLocalizer>();
-    
-    [Parameter] public IStringLocalizer Localizer { get; set; }
     [Parameter] public string TextDropZone { get; set; } = "Drop files here";
     [Parameter] public string TextUploadFiles { get; set; } = "Upload Files";
     [Parameter] public string TextUploadFile { get; set; } = "Upload File";
@@ -127,10 +116,8 @@ public partial class MudExUploadEdit<T> : IAsyncDisposable where T: IUploadableF
 
     private string _errorMessage = string.Empty;
     private CancellationTokenSource _tokenSource;
-    private ElementReference dropZoneElement;
+    
     private InputFile inputFile;
-    private IJSObjectReference _module;
-    private IJSObjectReference _dropZoneInstance;
     private List<T> _withErrors = new();
     private string _accept;
     private string _acceptExtensions;
@@ -143,15 +130,16 @@ public partial class MudExUploadEdit<T> : IAsyncDisposable where T: IUploadableF
         return base.OnInitializedAsync();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override object[] GetJsArguments()
     {
-        if ((firstRender || _module == null || _dropZoneInstance == null) && AllowDrop && !ReadOnly && inputFile != null)
-        {
+        return new object[] { ElementReference, inputFile.Element, AllowFolderUpload };
+    }
 
-            var references = await _jsRuntime.ImportModuleAndCreateJsAsync<MudExUploadEdit<T>>(dropZoneElement, inputFile.Element, AllowFolderUpload);
-            _module = references.moduleReference;
-            _dropZoneInstance = references.jsObjectReference;
-        }
+    protected override Task ImportModuleAndCreateJsAsync()
+    {
+        if (AllowDrop && !ReadOnly && inputFile != null)
+            return base.ImportModuleAndCreateJsAsync();
+        return Task.CompletedTask;
     }
 
     private void UpdateAcceptInfo()
@@ -217,7 +205,7 @@ public partial class MudExUploadEdit<T> : IAsyncDisposable where T: IUploadableF
     private bool IsAllowed(IBrowserFile file)
     {
         if (MaxFileSize != null && MaxFileSize.Value != default && MaxFileSize.Value > 0 && file.Size > MaxFileSize)
-            return !SetError(_localizer.TryLocalize(TextErrorMaxFileSize, BrowserFileExtensions.GetReadableFileSize(MaxFileSize.Value, _localizer), BrowserFileExtensions.GetReadableFileSize(file.Size - MaxFileSize.Value, _localizer), file.GetReadableFileSize(_localizer)));
+            return !SetError(TryLocalize(TextErrorMaxFileSize, BrowserFileExtensions.GetReadableFileSize(MaxFileSize.Value, LocalizerToUse), BrowserFileExtensions.GetReadableFileSize(file.Size - MaxFileSize.Value, LocalizerToUse), file.GetReadableFileSize(LocalizerToUse)));
 
         return IsAllowed(file.ContentType);
     }
@@ -234,12 +222,12 @@ public partial class MudExUploadEdit<T> : IAsyncDisposable where T: IUploadableF
         if (!MimeTypeAllowed(mimeType))
         {
             if (MimeRestrictionType == MimeTypeRestrictionType.WhiteList)
-                return !SetError(_localizer.TryLocalize(TextErrorMimeTypeNotAllowed, mimeType, _accept, _acceptExtensions));
-            return !SetError(_localizer.TryLocalize(TextErrorMimeTypeNotForbidden, mimeType, _accept, _acceptExtensions));
+                return !SetError(TryLocalize(TextErrorMimeTypeNotAllowed, mimeType, _accept, _acceptExtensions));
+            return !SetError(TryLocalize(TextErrorMimeTypeNotForbidden, mimeType, _accept, _acceptExtensions));
         }
 
         if (UploadRequests?.Count >= Math.Max(1, MaxMultipleFiles))
-            return !SetError(_localizer.TryLocalize(TextErrorMaxFileCount, MaxMultipleFiles));
+            return !SetError(TryLocalize(TextErrorMaxFileCount, MaxMultipleFiles));
 
         return true;
     }
@@ -277,20 +265,6 @@ public partial class MudExUploadEdit<T> : IAsyncDisposable where T: IUploadableF
             ? UploadRequestsChanged.InvokeAsync(UploadRequests)
             : UploadRequestChanged.InvokeAsync(UploadRequest);
     }
-
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_dropZoneInstance != null)
-        {
-            await _dropZoneInstance.InvokeVoidAsync("dispose");
-            await _dropZoneInstance.DisposeAsync();
-        }
-
-        if (_module != null)
-            await _module.DisposeAsync();
-
-    }
     
     public void Remove(T request)
     {
@@ -317,12 +291,12 @@ public partial class MudExUploadEdit<T> : IAsyncDisposable where T: IUploadableF
     public Task Upload(MouseEventArgs arg = null)
     {
         //return _jsRuntime.InvokeVoidAsync("MudExBrowserHelper.clickOnElement", "#" + UploadFieldId).AsTask();
-        return _jsRuntime.InvokeVoidAsync($"(document.querySelector('#{UploadFieldId}'))?.click()").AsTask();
+        return JsRuntime.InvokeVoidAsync($"(document.querySelector('#{UploadFieldId}'))?.click()").AsTask();
     }
 
     public async Task UploadFolder(MouseEventArgs arg)
     {
-        await _dropZoneInstance.InvokeVoidAsync("selectFolder");
+        await JsReference.InvokeVoidAsync("selectFolder");
     }
 
     public bool IsSelected(T request)
@@ -365,14 +339,14 @@ public partial class MudExUploadEdit<T> : IAsyncDisposable where T: IUploadableF
         if (MimeType.IsZip(request.ContentType) && request.Data != null)
         {
             var ms = new MemoryStream(request.Data);
-            await _dialogService.ShowFileDisplayDialog(ms, request.FileName, request.ContentType);
+            await DialogService.ShowFileDisplayDialog(ms, request.FileName, request.ContentType);
         }
         else
         {
             // TODO: Maybe ... some fn to get the preview of the file
             //var dataUrl = _navigationManager.ToAbsoluteServerUri(request.Url ?? await DataUrl.GetDataUrlAsync(request.Data, request.ContentType));
             var dataUrl = await ResolvePreviewUrlAsync(request);
-            await _dialogService.ShowFileDisplayDialog(dataUrl, request.FileName, request.ContentType, HandlePreviewContentErrorFunc);
+            await DialogService.ShowFileDisplayDialog(dataUrl, request.FileName, request.ContentType, HandlePreviewContentErrorFunc);
         }
     }
 
@@ -389,16 +363,16 @@ public partial class MudExUploadEdit<T> : IAsyncDisposable where T: IUploadableF
     {
         var parameters = new DialogParameters
         {
-            {nameof(MudExPromptDialog.Message), _localizer.TryLocalize(TextAddUrlMessage)},
+            {nameof(MudExPromptDialog.Message), TryLocalize(TextAddUrlMessage)},
             {nameof(MudExPromptDialog.Icon), Icons.Material.Filled.Web},
-            {nameof(MudExPromptDialog.OkText), _localizer.TryLocalize(TextAddUrl)},
+            {nameof(MudExPromptDialog.OkText), TryLocalize(TextAddUrl)},
             {nameof(MudExPromptDialog.CanConfirm), IsValidUrl},
             {nameof(MudExPromptDialog.Value), string.Empty},
         };
 
         var options = new DialogOptionsEx { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true, Animations = new[] { AnimationType.FlipX } };
 
-        var res = await _dialogService.ShowEx<MudExPromptDialog>(_localizer.TryLocalize(TextAddUrlTitle), parameters, options);
+        var res = await DialogService.ShowEx<MudExPromptDialog>(TryLocalize(TextAddUrlTitle), parameters, options);
         var dialogResult = (await res.Result);
 
         if (!dialogResult.Cancelled && dialogResult.Data != null && IsValidUrl(dialogResult.Data.ToString()))
@@ -443,7 +417,7 @@ public partial class MudExUploadEdit<T> : IAsyncDisposable where T: IUploadableF
         if (!EqualityComparer<T>.Default.Equals(existing, default))
         {
             _withErrors.Add(existing);
-            SetError(_localizer.TryLocalize(TextErrorDuplicateFile, request.FileName));
+            SetError(TryLocalize(TextErrorDuplicateFile, request.FileName));
             return;
         }
 

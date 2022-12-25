@@ -4563,3 +4563,17 @@
   box-shadow: var(--mud-elevation-10);
   border: 3px dotted var(--mud-palette-primary);
 }
+
+.mud-ex-overflow {
+  overflow: auto;
+}
+
+.mud-ex-overflow-y {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.mud-ex-overflow-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
