@@ -362,9 +362,18 @@ class MudBlazorExtensionHelper {
 
         // Inject buttons
         if (this.options.buttons && this.options.buttons.length) {
-            this.options.buttons.forEach(b => {
-                if (this.dialogHeader) {
-                    this.dialogHeader.insertAdjacentHTML('beforeend', b.html);
+            var dialogButtonWrapper = document.createElement('div');
+            dialogButtonWrapper.classList.add('mud-ex-dialog-header-actions');
+            if (!this.options.closeButton) {
+                dialogButtonWrapper.style.right = '8px'; // No close button, so we need to move the buttons to the right (48 - button width of 40)
+            }
+            
+            if (this.dialogHeader) {
+                dialogButtonWrapper = this.dialogHeader.insertAdjacentElement('beforeend', dialogButtonWrapper);
+            }
+            this.options.buttons.reverse().forEach(b => {
+                if (dialogButtonWrapper) {
+                    dialogButtonWrapper.insertAdjacentHTML('beforeend', b.html);
                     var btnEl = this.dialogHeader.querySelector('#' + b.id);
                     btnEl.onclick = () => {
                         if (b.id.indexOf('mud-button-maximize') >= 0) {

@@ -21,8 +21,8 @@ namespace MudBlazor.Extensions
 
         internal string GetHtml(int pos)
         {
-            int left = 40;
-            return $"<button id=\"{Id}\" style=\"right: {(pos * left)}px;\" type=\"button\" class=\"{Class}\"><span class=\"mud-icon-button-label\"><svg class=\"mud-icon-root mud-svg-icon mud-inherit-text mud-icon-size-medium\" focusable=\"false\" viewBox=\"0 0 24 24\" aria-hidden=\"true\">{Icon}</svg></span></button>";
+            // int left = 40; // style=\"right: {(pos * left)}px;\"
+            return $"<button id=\"{Id}\" type=\"button\" class=\"{Class}\"><span class=\"mud-icon-button-label\"><svg class=\"mud-icon-root mud-svg-icon mud-inherit-text mud-icon-size-medium\" focusable=\"false\" viewBox=\"0 0 24 24\" aria-hidden=\"true\">{Icon}</svg></span></button>";
         }
 
     }

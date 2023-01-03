@@ -59,6 +59,9 @@ internal class MudExDialogRef<T> : IMudExDialogReference<T> where T : ComponentB
         set => DialogReference.RenderFragment = value;
     }
     public Task<DialogResult> Result => DialogReference.Result;
+
+    public TaskCompletionSource<bool> RenderCompleteTaskCompletionSource => DialogReference.RenderCompleteTaskCompletionSource;
+
     public object Dialog => DialogReference.Dialog;
     public T DialogComponent => Dialog as T;
 

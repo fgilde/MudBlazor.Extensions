@@ -50,6 +50,7 @@ namespace MudBlazor.Extensions.Helper
         internal static string MainJs()
         {
             var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+            //return $"/_content/{assemblyName}/js/mudBlazorExtensions.js";
             return $"/_content/{assemblyName}/js/mudBlazorExtensions.all{min}.js";
         }
 
