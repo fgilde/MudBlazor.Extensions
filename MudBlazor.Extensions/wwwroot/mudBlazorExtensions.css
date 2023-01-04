@@ -4583,3 +4583,8 @@
   right: 48px;
   position: absolute;
 }
+
+/* new div element is currently wraped before dialog-content div is avalable. This selector checks if the content element should have full-height and then also applies height 100% to this new extra div */
+.mud-dialog .outline-none div[tabindex="-1"]:has(div.full-height) {
+  height: 100%;
+}
