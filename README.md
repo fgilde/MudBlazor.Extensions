@@ -216,6 +216,7 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log
+ - 1.7.31 Update BlazorJS to v 2.0.0 and MudBlazor to 6.1.8.
  - 1.7.30 Fix broken layout in full-height dialogs with new css selector.
  - 1.7.29 Fix broken dialog header buttons positions based on MudBlazor css changes
  - 1.7.28 Update MudBlazor to 6.1.7 and implement missing members in IMudExDialogReference

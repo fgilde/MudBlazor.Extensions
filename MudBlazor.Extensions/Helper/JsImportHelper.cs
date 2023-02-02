@@ -65,32 +65,11 @@ namespace MudBlazor.Extensions.Helper
             return js.ImportModuleAsync(ComponentJs<TComponent>());
         }
 
-        public static async Task<IJSObjectReference> ImportModuleAsync(this IJSRuntime js, string file)
-        {
-            return await js.InvokeAsync<IJSObjectReference>("import", file);
-        }
-
         internal static Task<(IJSObjectReference moduleReference, IJSObjectReference jsObjectReference)> ImportModuleAndCreateJsAsync<TComponent>(this IJSRuntime js, params object?[]? args)
         {
             return js.ImportModuleAndCreateJsAsync(ComponentJs<TComponent>(), $"initialize{GetJsComponentName<TComponent>()}", args);
         }
-
-        internal static Task<(IJSObjectReference moduleReference, IJSObjectReference jsObjectReference)> ImportModuleAndCreateJsAsync<TComponent>(this IJSRuntime js, string jsCreateMethod, params object?[]? args)
-        {
-            return js.ImportModuleAndCreateJsAsync(ComponentJs<TComponent>(), jsCreateMethod, args);
-        }
-
-        public static async Task<(IJSObjectReference moduleReference, IJSObjectReference jsObjectReference)> ImportModuleAndCreateJsAsync(this IJSRuntime js, string file, string jsCreateMethod, params object?[]? args)
-        {
-            IJSObjectReference jsReference = null;
-            var module = await js.ImportModuleAsync(file);
-            if (module != null)
-            {
-                jsReference = await module.InvokeAsync<IJSObjectReference>(jsCreateMethod, args);
-            }
-            return (module, jsReference);
-        }
-
+        
         private static async Task<string> GetEmbeddedFileContentAsync(string file)
         {
             var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());

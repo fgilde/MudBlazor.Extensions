@@ -24,12 +24,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="bundleconfig.json" />
-    <Content Remove="wwwroot\js\components\MudExColorBubble - Copy.min.js" />
-    <Content Remove="wwwroot\js\components\MudExColorBubble.min.js" />
-  </ItemGroup>
-
-  <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
@@ -40,22 +34,22 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="7.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="7.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.2" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.11" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.13" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Nextended.Blazor" Version="7.0.21" />
     <PackageReference Include="Nextended.Core" Version="7.0.21" />
-    <PackageReference Include="BlazorJS" Version="1.0.4" />
+    <PackageReference Include="BlazorJS" Version="2.0.0" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.0.3" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="MudBlazor" Version="6.1.7" />
+    <PackageReference Include="MudBlazor" Version="6.1.8" />
     <PackageReference Include="PSC.Blazor.Components.BrowserDetect" Version="1.0.6" />
 
     <PackageReference Include="Nerdbank.GitVersioning" Version="3.5.119">
@@ -79,7 +73,6 @@
     </None>
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
-    <None Include="wwwroot\js\components\MudExColorBubble.min.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -96,7 +89,6 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Components\MudExMessageDialog.razor" />
     <_ContentIncludedByDefault Remove="Components\MudExTaskBar.razor" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\components\MudExColorBubble.min.js" />
   </ItemGroup>
 
   <ItemGroup>
