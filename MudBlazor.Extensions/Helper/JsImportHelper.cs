@@ -31,7 +31,6 @@ namespace MudBlazor.Extensions.Helper
                 await runtime.LoadJsAsync(MainJs());
                 await runtime.AddCss(css);
                 initialized = true;
-
             }
             return runtime;
         }

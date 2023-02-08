@@ -4,10 +4,6 @@
     "inputFile": "wwwroot/mudBlazorExtensions.scss"
   },
   {
-    "outputFile": "wwwroot/styles.css",
-    "inputFile": "wwwroot/styles.scss"
-  },
-  {
     "outputFile": "wwwroot/js/mudBlazorExtensions.es5.js",
     "inputFile": "wwwroot/js/mudBlazorExtensions.js"
   }
