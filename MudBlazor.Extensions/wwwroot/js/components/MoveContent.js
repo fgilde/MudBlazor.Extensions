@@ -49,6 +49,8 @@
     }
 }
 
+window.MoveContent = MoveContent;
+
 export function initializeMoveContent(elementRef, dotnet) {
     return new MoveContent(elementRef, dotnet);
 }

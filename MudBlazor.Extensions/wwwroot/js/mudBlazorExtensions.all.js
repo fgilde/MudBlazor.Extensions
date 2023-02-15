@@ -156,6 +156,7 @@ class MudExColorHelper {
     }
     
 }
+window.MudExColorHelper = MudExColorHelper;
 class MudExDomHelper {
     dom;
     
@@ -262,6 +263,8 @@ class MudExDomHelper {
         return [round(x), round(y)];
     }
 }
+
+window.MudExDomHelper = MudExDomHelper;
 class MudExEventHelper {
     static isWithin(event, element) {
         if (!element || !event) {
@@ -274,6 +277,8 @@ class MudExEventHelper {
         event.clientY > rect.top);
     }
 }
+
+window.MudExEventHelper = MudExEventHelper;
 class MudExNumber {
     static constrain (number, min, max) {
         var x = parseFloat(number);
@@ -287,6 +292,8 @@ class MudExNumber {
         return (x < min) ? min : ((x > max) ? max : x);
     }
 }
+
+window.MudExNumber = MudExNumber;
 class MudBlazorExtensionHelper {
     mudDialogSelector;
     mudDialogHeaderSelector;
@@ -593,6 +600,9 @@ class MudBlazorExtensionHelper {
         this.dialog.style.animation = `${this.options.animationStyle}`;
     }
 }
+
+window.MudBlazorExtensionHelper = MudBlazorExtensionHelper;
+
 
 window.MudBlazorExtensions = {
     helper: null,

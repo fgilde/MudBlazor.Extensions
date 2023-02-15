@@ -7,6 +7,13 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/MudBlazor.Extensions.lib.module.js",
+    "inputFiles": [
+      "wwwroot/js/mudBlazorExtensions.all.min.js"
+    ]
+  },
+
+  {
     "outputFileName": "wwwroot/js/components/MudExFileDisplay.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExFileDisplay.js"

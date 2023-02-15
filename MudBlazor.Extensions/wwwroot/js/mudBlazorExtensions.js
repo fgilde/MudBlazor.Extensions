@@ -305,6 +305,9 @@ class MudBlazorExtensionHelper {
     }
 }
 
+window.MudBlazorExtensionHelper = MudBlazorExtensionHelper;
+
+
 window.MudBlazorExtensions = {
     helper: null,
     currentMouseArgs: null,

@@ -340,6 +340,8 @@ var MudBlazorExtensionHelper = (function () {
     return MudBlazorExtensionHelper;
 })();
 
+window.MudBlazorExtensionHelper = MudBlazorExtensionHelper;
+
 window.MudBlazorExtensions = {
     helper: null,
     currentMouseArgs: null,

@@ -10,3 +10,5 @@
         event.clientY > rect.top);
     }
 }
+
+window.MudExEventHelper = MudExEventHelper;

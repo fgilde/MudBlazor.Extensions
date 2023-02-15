@@ -241,6 +241,8 @@
     
 }
 
+window.MudExColorBubble = MudExColorBubble;
+
 export function initializeMudExColorBubble(elementRef, canvasContainer, dotnet, options) {
     return new MudExColorBubble(elementRef, canvasContainer, dotnet, options);
 }

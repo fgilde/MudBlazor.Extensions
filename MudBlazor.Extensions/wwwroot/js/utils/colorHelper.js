@@ -156,3 +156,4 @@
     }
     
 }
+window.MudExColorHelper = MudExColorHelper;

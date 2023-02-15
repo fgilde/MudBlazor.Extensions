@@ -11,3 +11,5 @@
         return (x < min) ? min : ((x > max) ? max : x);
     }
 }
+
+window.MudExNumber = MudExNumber;

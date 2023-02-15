@@ -23,6 +23,8 @@
     }
 }
 
+window.MudExFileDisplay = MudExFileDisplay;
+
 export function initializeMudExFileDisplay(elementRef, dotnet, id) {
     return new MudExFileDisplay(elementRef, dotnet, id);
 }

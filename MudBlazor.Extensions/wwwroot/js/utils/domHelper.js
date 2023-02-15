@@ -104,3 +104,5 @@
         return [round(x), round(y)];
     }
 }
+
+window.MudExDomHelper = MudExDomHelper;
