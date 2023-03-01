@@ -14,7 +14,7 @@
     <PackageReference Include="MudBlazor.Markdown" Version="0.0.12" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.0" />
     <PackageReference Include="BlazorPrettyCode" Version="1.6.0" />
-    <!--<PackageReference Include="MudBlazor.Extensions" Version="1.5.9" />-->
+    <!--<PackageReference Include="MudBlazor.Extensions" Version="1.7.32" />-->
   </ItemGroup>
 
   <ItemGroup>

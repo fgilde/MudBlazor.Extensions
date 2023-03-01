@@ -381,7 +381,7 @@ class MudBlazorExtensionHelper {
             this.options.buttons.reverse().forEach(b => {
                 if (dialogButtonWrapper) {
                     dialogButtonWrapper.insertAdjacentHTML('beforeend', b.html);
-                    var btnEl = this.dialogHeader.querySelector('#' + b.id);
+                    var btnEl = dialogButtonWrapper.querySelector('#' + b.id);
                     btnEl.onclick = () => {
                         if (b.id.indexOf('mud-button-maximize') >= 0) {
                             this.maximize();
