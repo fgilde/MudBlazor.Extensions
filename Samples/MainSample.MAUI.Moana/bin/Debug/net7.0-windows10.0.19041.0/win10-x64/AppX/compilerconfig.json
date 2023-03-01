@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "wwwroot/mudBlazorExtensions.css",
+    "inputFile": "wwwroot/mudBlazorExtensions.scss"
+  },
+  {
+    "outputFile": "wwwroot/js/mudBlazorExtensions.es5.js",
+    "inputFile": "wwwroot/js/mudBlazorExtensions.js"
+  }
+]

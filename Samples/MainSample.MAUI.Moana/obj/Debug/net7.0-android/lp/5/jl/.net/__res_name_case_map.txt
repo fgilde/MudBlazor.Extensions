@@ -1,0 +1,12 @@
+anim/enterfromleft.xml;anim/enterfromleft.xml
+anim/enterfromright.xml;anim/enterfromright.xml
+anim/exittoleft.xml;anim/exittoleft.xml
+anim/exittoright.xml;anim/exittoright.xml
+values/strings.xml;values/strings.xml
+anim/enterfromleft.xml;anim/enterfromleft.xml
+anim/enterfromright.xml;anim/enterfromright.xml
+anim/exittoleft.xml;anim/exittoleft.xml
+anim/exittoright.xml;anim/exittoright.xml
+values/strings.xml;values/strings.xml
+Compatibility/Android/Resources/layout/flyoutcontent.axml;layout/flyoutcontent.xml
+Compatibility/Android/Resources/layout/shellcontent.axml;layout/shellcontent.xml

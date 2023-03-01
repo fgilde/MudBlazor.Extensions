@@ -1,0 +1,185 @@
+﻿.mud-ex-file-display {
+    padding: 10px;
+    border: 1px dashed var(--mud-palette-primary);
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    align-items: center;
+    
+    display: flex;
+/*    flex-direction: column;
+
+    & :first-child {
+        flex: 1;
+        width: 100%;
+        height: 100%;
+    }*/
+}
+
+.mud-ex-file-display-container {
+    height: calc(100% - 60px);
+    position: relative;
+}
+
+.mud-ex-download-file {
+    float: right;
+}
+
+
+.mud-ex-file-display > img:not([data-mimetype='image/svg+xml']) {
+    object-fit: scale-down;
+}
+
+
+.mud-ex-file-display > object {
+    width: 100%;
+}
+
+.mud-ex-file-display > iframe {
+    width: 100%;
+}
+
+.mud-ex-file-display > audio {
+    width: 100%;
+    align-self: center;
+}
+
+.mud-ex-file-display > * {
+    object-position: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    max-height: 100%;
+    align-self: stretch;
+    max-width: 100%;
+}
+
+.mud-ex-file-display:empty {
+    background: repeating-linear-gradient(135deg, #ccc, #ccc 10px, #aaa 10px, #aaa 20px);
+    opacity: 0.4;
+    border-radius: 5px;
+    transition-property: opacity;
+    transition-duration: 0.6s;
+}
+
+.mud-ex-file-display:empty:hover {
+    opacity: 0.6;
+}
+
+
+.mud-ex-file-display > .mud-ex-file-display-img-box {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    width: 100%;
+    height: 100%
+}
+
+.mud-ex-file-display-error-message {
+    color: var(--mud-palette-error);
+    font-style: italic;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#content-type-display-error {
+    position: absolute;
+    bottom: 0;
+    opacity: 0;
+    background: var(--mud-palette-surface);
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    min-width: 270px;
+    transform: scale(.2);
+    transition-property: all !important;
+}
+
+#content-type-display-error.visible {
+    opacity: 1;
+    transform: scale(1);
+    animation: scaleIn 800ms ease-in-out 1 alternate;
+}
+
+.mud-ex-fd-child-count-label {
+    font-size: 7pt;
+    margin-left: 5px;
+    width: 15px;
+    border: 1px solid var(--mud-palette-text-primary);
+    height: 15px;
+    border-radius: 50px;
+    text-align: center;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.mud-ex-file-display-zip {
+    padding: 0 0 10px 0;
+    border: 1px dashed var(--mud-palette-primary);
+    max-height: 90vh;
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    overflow: auto;
+}
+
+.mud-ex-fd-close-inner-preview {
+    float: right;
+    height: 25px;
+    margin-top: -15px;
+    margin-bottom: 15px;
+    margin-right: -10px;
+}
+
+.mud-ex-fd-size-display {
+    font-style: italic;
+    font-size: 8pt;
+}
+
+.mud-ex-fd-tree-actions {
+    margin-left: 20px;
+}
+
+.mud-ex-file-display-zip-search {
+    float: right;
+    margin-top: -10px;
+}
+
+.mud-ex-file-display-tree.mud-alert-text-normal {   
+    background-color: transparent;
+}
+
+.mud-ex-fd-tree-actions .mud-tooltip-root {
+    display: inline-flex;
+}
+
+.mud-ex-file-display-toolbar-text {
+    font-size: 10pt;
+    font-weight: bold;
+    /*text-decoration: underline;*/
+    margin-left: 5px;
+}
+
+.mud-ex-file-display-menu-item-action > div.mud-list-item-icon {
+    min-width: 35px;
+}
+
+.mud-ex-file-display-menu-header {
+    display: flex;
+    padding: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px dotted var(--mud-palette-primary);
+    align-items: center;
+    color: var(--mud-palette-primary);
+    justify-content: center;
+}
+
+.mud-ex-file-display-toolbar {
+    height: 20px;
+    padding: 0;
+    margin-bottom: 4px;
+    z-index: 3;
+}

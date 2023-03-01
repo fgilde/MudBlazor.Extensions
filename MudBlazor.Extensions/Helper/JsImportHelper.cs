@@ -26,7 +26,7 @@ namespace MudBlazor.Extensions.Helper
             _runtime = runtime ?? _runtime;
             if (force || !initialized)
             {
-               // await runtime.LoadJsAsync(MainJs());
+                await runtime.LoadJsAsync(MainJs());
                 await runtime.AddCss(await GetEmbeddedFileContentAsync($"wwwroot/mudBlazorExtensions{min}.css"));
                 initialized = true;
             }

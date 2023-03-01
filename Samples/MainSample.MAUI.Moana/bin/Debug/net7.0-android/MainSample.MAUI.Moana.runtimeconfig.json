@@ -1,0 +1,41 @@
+{
+  "runtimeOptions": {
+    "tfm": "net7.0",
+    "frameworks": [
+      {
+        "name": "Microsoft.NETCore.App",
+        "version": "7.0.0"
+      },
+      {
+        "name": "Microsoft.Android",
+        "version": ""
+      },
+      {
+        "name": "Microsoft.Maui.Core",
+        "version": "**FromWorkload**"
+      },
+      {
+        "name": "Microsoft.Maui.Controls",
+        "version": "**FromWorkload**"
+      },
+      {
+        "name": "Microsoft.Maui.Essentials",
+        "version": "**FromWorkload**"
+      }
+    ],
+    "configProperties": {
+      "Microsoft.Extensions.DependencyInjection.VerifyOpenGenericServiceTrimmability": true,
+      "System.AggressiveAttributeTrimming": true,
+      "System.Diagnostics.Tracing.EventSource.IsSupported": false,
+      "System.Globalization.Invariant": false,
+      "System.Net.Http.EnableActivityPropagation": false,
+      "System.Net.Http.UseNativeHttpHandler": true,
+      "System.Reflection.NullabilityInfoContext.IsSupported": false,
+      "System.Runtime.InteropServices.BuiltInComInterop.IsSupported": false,
+      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false,
+      "System.StartupHookProvider.IsSupported": false,
+      "System.Text.Encoding.EnableUnsafeUTF7Encoding": false,
+      "Xamarin.Android.Net.UseNegotiateAuthentication": false
+    }
+  }
+}

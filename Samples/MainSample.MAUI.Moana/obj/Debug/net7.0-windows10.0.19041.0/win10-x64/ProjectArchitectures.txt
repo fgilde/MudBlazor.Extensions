@@ -1,0 +1,1 @@
+C:\dev\privat\github\MudBlazor.Extensions\Samples\MainSample.MAUI.Moana\MainSample.MAUI.Moana.csproj;x64

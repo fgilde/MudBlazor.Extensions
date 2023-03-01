@@ -1,0 +1,55 @@
+﻿@page "/condition-object-edit"
+@inject IDialogService dialogService;
+@using Newtonsoft.Json
+@using MudBlazor.Extensions.Options
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+<PageHeader>Object Edit</PageHeader>
+
+<DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFile="@($"Pages/{GetType().Name}.razor")">
+    <MudExObjectEditForm MetaConfiguration="@Configure" OnValidSubmit="@OnSubmit" Value="@Test"></MudExObjectEditForm>
+</DemoComponent>
+
+
+@code {
+
+    // Sample data for the form
+    public TestModel Test { get; set; } = new();
+
+
+
+    public class TestModel
+    {
+        public Gender? Gender { get; set; }
+        public string Text { get; set; }
+    }
+
+    public enum Gender
+    {
+        Male,
+        Female,
+        Other
+    }
+
+    private async Task OnSubmit(EditContext ctx)
+    {
+        var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
+        await dialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
+            {
+                Position = DialogPosition.TopCenter,
+                Animation = AnimationType.Slide,
+                MaxWidth = MaxWidth.Medium
+            });
+    }
+
+    private void Configure(ObjectEditMeta<TestModel> meta)
+    {
+
+        meta.Property(m => m.Text)
+            .WithLabelResolver(i => Test.Gender?.ToString() + "_ Text")
+            .WithDescriptionResolver(i => Test.Gender?.ToString())
+            .WithAttributesIf<TestModel, MudTextField<string>>(m => m.Gender == Gender.Male, f => f.Mask = new PatternMask("###-##-##"))
+            .WithAttributesIf<TestModel, MudTextField<string>>(m => m.Gender == Gender.Female, f => f.Mask = new PatternMask("###-##-##"));
+    }
+
+}

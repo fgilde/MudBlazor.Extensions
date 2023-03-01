@@ -1,0 +1,54 @@
+﻿.upload-request-edit {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 15px;
+}
+
+.upload-button {
+    margin-left: 15px;
+}
+
+.multi-upload-actions {
+    padding-left: 15px;
+    margin-bottom: 10px;
+}
+
+.action-margin {
+    margin: 0px 5px;
+}
+
+.error-message {
+    color: var(--mud-palette-error);
+    transition-property: all !important;
+    font-size: 9pt;
+    padding: 2px;
+    animation: fade-in-animation 900ms ease-in 1 alternate;
+}
+
+.upload-request-label {
+    color: var(--mud-palette-text-secondary);
+    font-size: 1rem;
+}
+
+.upload-request-label-small {
+    transform: translate(0,1.5px) scale(.75);
+    transform-origin: top left;
+}
+
+.upload-request-outlined-border {
+    border-radius: var(--mud-default-borderradius);
+    border-color: var(--mud-palette-lines-inputs);
+    border-width: 1px;
+    border-style: solid;
+}
+
+.mud-ex-upload-edit-drop-zone-text {
+    font-style: italic;
+    text-align: center;
+    opacity: .3;
+}
+
+/*.upload-request-edit .mud-input-control.mud-input-input-control {
+    height: 20px;
+    margin-top: -20px;
+}*/

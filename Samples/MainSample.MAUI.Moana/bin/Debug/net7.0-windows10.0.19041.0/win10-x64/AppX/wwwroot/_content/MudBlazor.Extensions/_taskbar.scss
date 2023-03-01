@@ -1,0 +1,51 @@
+﻿.mud-ex-slidebar {
+    margin: 0;
+    z-index: 1301;
+    position: fixed;
+
+    .mud-tab-slider {
+        opacity: 0;
+    }
+
+    &.bottom {
+        transform: translateY(80%);
+        width: 100%;
+        bottom: 0;
+    }
+
+    &.top {
+        transform: translateY(-80%);
+        width: 100%;
+        top: 0;
+    }
+
+    &.left {
+        transform: translateX(-90%);
+        height: 100%;
+        left: 0;
+
+        .mud-tabs {
+            height: 100%
+        }
+    }
+
+    &.right {
+        transform: translateX(90%);
+        height: 100%;
+        right: 0;
+
+        .mud-tabs {
+            height: 100%
+        }
+    }
+
+    &.open {
+        transform: translateY(0);
+        transform: translateX(0);
+        opacity: 1;
+
+        .mud-tab-slider {
+            opacity: 1;
+        }
+    }
+}

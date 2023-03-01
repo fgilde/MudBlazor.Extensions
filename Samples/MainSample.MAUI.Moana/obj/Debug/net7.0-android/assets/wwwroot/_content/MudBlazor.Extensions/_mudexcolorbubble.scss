@@ -1,0 +1,98 @@
+﻿.mud-ex-color-bubble {
+    border-radius: 100%;
+    top: 4px;
+    left: 4px;
+    border: 1px solid transparent;
+    margin: 5px 13px 0 0;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.mud-ex-color-bubble-canvas-container {
+    position: fixed;
+    background-color: transparent;
+    overflow: hidden;
+    z-index: 30000;
+
+    @include mudextransition((transform, opacity), 0.5s);
+    @include browserPrefix('transition-timing-function', cubic-bezier(.87, -.41, .19, 1.44));
+
+    canvas {
+        background-color: white;
+        border-radius: 100%;
+        cursor: crosshair;
+    }
+
+    .mud-ex-color-bubble-locator {
+        width: 7px;
+        height: 7px;
+        border-radius: 7px;
+        margin-left: -4px; /* (Durchmesser + 2 * border - 1) / 2 */
+        margin-top: -4px;
+        border: 1px solid black;
+        position: absolute;
+        opacity: 0.75;
+    }
+
+    .mud-ex-color-bubble-preview {
+        position: absolute;
+        right: 0;
+        z-index: 99999999;
+        width: 10%;
+        height: 10%;
+        border: 1px solid black;
+        @include mudextransition(opacity, 0.2s);
+    }
+}
+
+.mud-ex-color-bubble-canvas-container-small {
+    @include browserPrefix('transform', scale(0.09) rotate(45deg));
+    opacity: 0;
+    cursor: pointer;
+}
+
+.mud-ex-palette {
+    a.mud-ex-color {
+        width: 24px;
+        height: 24px;
+        margin-right: 5px;
+        display: inline-block;
+
+        .mud-ex-color-inner {
+            @include mudextransition((width, height, top, left, opacity), 0.4s);
+            position: relative;
+            border-radius: 12px;
+            width: 16px;
+            height: 16px;
+            top: 4px;
+            left: 4px;
+            opacity: 0.8;
+            border-width: 1px;
+            border-style: solid;
+            border-color: transparent;
+        }
+    }
+
+    a.mud-ex-color-FFFFFF .mud-ex-color-inner {
+        border-color: #CDCDCD;
+    }
+
+    a.mud-ex-color.mud-ex-color-selected .mud-ex-color-inner {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 1.0;
+    }
+}
+
+.mud-ex-input-color-native {
+    float: right;
+    margin-top: 27px;
+    border-bottom: 1px solid var(--mud-palette-lines-inputs);
+}
+
+.mud-ex-color-bubble-in-mud-ex-color-picker {
+    float: right;
+    margin-top: 27px;
+}

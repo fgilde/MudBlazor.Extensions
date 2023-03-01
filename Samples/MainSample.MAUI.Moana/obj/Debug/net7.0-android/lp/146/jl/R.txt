@@ -1,0 +1,11 @@
+int attr defaultNavHost 0x0
+int dimen sliding_pane_detail_pane_width 0x0
+int id nav_host_fragment_container 0x0
+int id sliding_pane_detail_container 0x0
+int id sliding_pane_layout 0x0
+int[] styleable DialogFragmentNavigator { 0x1010003 }
+int styleable DialogFragmentNavigator_android_name 0
+int[] styleable FragmentNavigator { 0x1010003 }
+int styleable FragmentNavigator_android_name 0
+int[] styleable NavHostFragment { 0x0 }
+int styleable NavHostFragment_defaultNavHost 0

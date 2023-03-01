@@ -1,0 +1,120 @@
+﻿.mud-ex-object-edit-group-flat .mud-expand-panel-text {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-left: -10px;
+}
+
+.mud-ex-object-edit-group-flat .mud-expand-panel-text:after {
+    content: '';
+    flex: 1;
+    margin-left: 1rem;
+    height: 2px;    
+}
+
+.mud-ex-hidden-group .mud-expand-panel-header {
+    display: none;
+}
+
+.mud-ex-hide-expand-btn .mud-expand-panel-icon {
+    display: none;
+}
+
+.mud-ex-property-filter.active {
+    width: 50%;
+    opacity: 1;
+}
+
+.mud-ex-property-filter {
+    width: 0;
+    flex: 0 1 auto;
+    opacity: 0;
+    padding-bottom: 25px;
+}
+
+.mud-ex-toolbar-sticky {
+    position: sticky;
+    z-index: 2;
+}
+
+.mud-ex-actionbar-sticky {
+    position: sticky;
+    z-index: 2;
+}
+
+.mud-ex-loading-overlay .mud-overlay-content {
+    position: fixed;
+    top: 50%;
+    bottom: 50%;
+}
+
+.mud-ex-property-reset-conatiner {
+    cursor: pointer;
+    transform: scale(0.7);
+    float: right;
+    margin-right: -7px;
+    margin-top: -3px;
+}
+
+.mud-ex-property-conatiner {
+}
+
+.mud-ex-property-validation-component .mud-input-control-input-container {
+    display:none;
+}
+
+.mud-ex-group-path-text-flat {
+    margin-left: -10px;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    color: var(--mud-palette-info);
+    font-size: .75rem;
+}
+
+.mud-ex-group-path-text-default {
+    margin-top: -35px;
+    margin-bottom: 20px;
+    color: var(--mud-palette-info);
+    font-size: .75rem;
+    float: right;
+    margin-right: 40px;
+}
+
+.mud-ex-collection-inline-string-edit {
+    height: 20px;
+    margin-top: -20px;
+}
+
+.mud-ex-collection-inline-string-edit input:focus {
+    background: var(--mud-palette-surface);
+    border: 1px solid var(--mud-palette-primary);
+    border-radius: var(--mud-default-borderradius);
+}
+.mud-ex-collection-inline-string-edit input {
+    background: transparent;
+    border: 1px solid transparent;
+    transition-property: all !important;
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+}
+
+
+.mud-ex-dialog-max90 .mud-dialog-content {
+    overflow: auto;
+    max-height: 90%;
+}
+
+.mud-ex-object-edit-dialog .mud-dialog-actions {
+    width: 100%;
+    z-index: 100;
+}
+
+.mud-ex-dialog-max90 .mud-dialog-actions {
+    width: 100%;
+    z-index: 100;
+}
+
+.mud-ex-object-edit-dialog-form {
+    overflow: auto;
+    max-height: 90%;
+}

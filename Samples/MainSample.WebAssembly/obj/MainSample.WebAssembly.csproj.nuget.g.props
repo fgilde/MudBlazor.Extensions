@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <RestoreSuccess Condition=" '$(RestoreSuccess)' == '' ">True</RestoreSuccess>
+    <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
+    <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
+    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\fgild\.nuget\packages\;C:\Program Files (x86)\DevExpress 21.1\Components\Offline Packages;C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages;C:\Program Files (x86)\Syncfusion\Essential Studio\WPF\20.1.0.47\ToolboxNuGetPackages</NuGetPackageFolders>
+    <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.4.0</NuGetToolVersion>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <SourceRoot Include="C:\Users\fgild\.nuget\packages\" />
+    <SourceRoot Include="C:\Program Files (x86)\DevExpress 21.1\Components\Offline Packages\" />
+    <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
+    <SourceRoot Include="C:\Program Files (x86)\Syncfusion\Essential Studio\WPF\20.1.0.47\ToolboxNuGetPackages\" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Content Include="$(NuGetPackageRoot)blazorprettycode\1.6.0\contentFiles\any\net5.0\Properties\launchSettings.json" Condition="Exists('$(NuGetPackageRoot)blazorprettycode\1.6.0\contentFiles\any\net5.0\Properties\launchSettings.json')">
+      <NuGetPackageId>BlazorPrettyCode</NuGetPackageId>
+      <NuGetPackageVersion>1.6.0</NuGetPackageVersion>
+      <NuGetItemType>Content</NuGetItemType>
+      <Pack>false</Pack>
+      <Private>False</Private>
+      <Link>Properties\launchSettings.json</Link>
+    </Content>
+  </ItemGroup>
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)psc.blazor.components.browserdetect\1.0.6\buildTransitive\PSC.Blazor.Components.BrowserDetect.props" Condition="Exists('$(NuGetPackageRoot)psc.blazor.components.browserdetect\1.0.6\buildTransitive\PSC.Blazor.Components.BrowserDetect.props')" />
+    <Import Project="$(NuGetPackageRoot)nextended.blazor\7.0.21\buildTransitive\Nextended.Blazor.props" Condition="Exists('$(NuGetPackageRoot)nextended.blazor\7.0.21\buildTransitive\Nextended.Blazor.props')" />
+    <Import Project="$(NuGetPackageRoot)mudblazor\6.1.9\buildTransitive\MudBlazor.props" Condition="Exists('$(NuGetPackageRoot)mudblazor\6.1.9\buildTransitive\MudBlazor.props')" />
+    <Import Project="$(NuGetPackageRoot)mudblazor.markdown\0.0.12\buildTransitive\MudBlazor.Markdown.props" Condition="Exists('$(NuGetPackageRoot)mudblazor.markdown\0.0.12\buildTransitive\MudBlazor.Markdown.props')" />
+    <Import Project="$(NuGetPackageRoot)blazorjs\2.0.2\buildTransitive\BlazorJS.props" Condition="Exists('$(NuGetPackageRoot)blazorjs\2.0.2\buildTransitive\BlazorJS.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.components.webassembly\7.0.0\build\net7.0\Microsoft.AspNetCore.Components.WebAssembly.props" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.components.webassembly\7.0.0\build\net7.0\Microsoft.AspNetCore.Components.WebAssembly.props')" />
+    <Import Project="$(NuGetPackageRoot)blazorprettycode\1.6.0\buildTransitive\BlazorPrettyCode.props" Condition="Exists('$(NuGetPackageRoot)blazorprettycode\1.6.0\buildTransitive\BlazorPrettyCode.props')" />
+  </ImportGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgBuildBundlerMinifier Condition=" '$(PkgBuildBundlerMinifier)' == '' ">C:\Users\fgild\.nuget\packages\buildbundlerminifier\3.2.449</PkgBuildBundlerMinifier>
+    <PkgMicrosoft_AspNetCore_Components_WebAssembly_DevServer Condition=" '$(PkgMicrosoft_AspNetCore_Components_WebAssembly_DevServer)' == '' ">C:\Users\fgild\.nuget\packages\microsoft.aspnetcore.components.webassembly.devserver\7.0.0</PkgMicrosoft_AspNetCore_Components_WebAssembly_DevServer>
+  </PropertyGroup>
+</Project>

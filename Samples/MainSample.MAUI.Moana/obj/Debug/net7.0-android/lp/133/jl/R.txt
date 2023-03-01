@@ -1,0 +1,41 @@
+int attr activityAction 0x0
+int attr activityName 0x0
+int attr alwaysExpand 0x0
+int attr clearTop 0x0
+int attr finishPrimaryWithSecondary 0x0
+int attr finishSecondaryWithPrimary 0x0
+int attr placeholderActivityName 0x0
+int attr primaryActivityName 0x0
+int attr secondaryActivityAction 0x0
+int attr secondaryActivityName 0x0
+int attr splitLayoutDirection 0x0
+int attr splitMinSmallestWidth 0x0
+int attr splitMinWidth 0x0
+int attr splitRatio 0x0
+int id androidx_window_activity_scope 0x0
+int id locale 0x0
+int id ltr 0x0
+int id rtl 0x0
+int[] styleable ActivityFilter { 0x0, 0x0 }
+int styleable ActivityFilter_activityAction 0
+int styleable ActivityFilter_activityName 1
+int[] styleable ActivityRule { 0x0 }
+int styleable ActivityRule_alwaysExpand 0
+int[] styleable SplitPairFilter { 0x0, 0x0, 0x0 }
+int styleable SplitPairFilter_primaryActivityName 0
+int styleable SplitPairFilter_secondaryActivityAction 1
+int styleable SplitPairFilter_secondaryActivityName 2
+int[] styleable SplitPairRule { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
+int styleable SplitPairRule_clearTop 0
+int styleable SplitPairRule_finishPrimaryWithSecondary 1
+int styleable SplitPairRule_finishSecondaryWithPrimary 2
+int styleable SplitPairRule_splitLayoutDirection 3
+int styleable SplitPairRule_splitMinSmallestWidth 4
+int styleable SplitPairRule_splitMinWidth 5
+int styleable SplitPairRule_splitRatio 6
+int[] styleable SplitPlaceholderRule { 0x0, 0x0, 0x0, 0x0, 0x0 }
+int styleable SplitPlaceholderRule_placeholderActivityName 0
+int styleable SplitPlaceholderRule_splitLayoutDirection 1
+int styleable SplitPlaceholderRule_splitMinSmallestWidth 2
+int styleable SplitPlaceholderRule_splitMinWidth 3
+int styleable SplitPlaceholderRule_splitRatio 4

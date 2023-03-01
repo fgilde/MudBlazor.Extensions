@@ -1,0 +1,47 @@
+﻿@mixin browserPrefix($keyName, $value) {
+    -webkit-#{$keyName}: $value;
+    -moz-#{$keyName}: $value;
+    -ms-#{$keyName}: $value;
+    -o-#{$keyName}: $value;
+    #{$keyName}: $value;
+}
+
+@mixin keyframes($name) {
+    $currentKeyframesBrowserPrefix: '';
+
+    @keyframes #{$name} {
+        @content;
+    }
+
+    @-webkit-keyframes #{$name} {
+        $currentKeyframesBrowserPrefix: '-webkit-'; @content;
+    }
+
+    @-moz-keyframes #{$name} {
+        $currentKeyframesBrowserPrefix: '-moz-'; @content;
+    }
+
+    @-ms-keyframes #{$name} {
+        $currentKeyframesBrowserPrefix: '-ms-'; @content;
+    }
+
+    @-o-keyframes #{$name} {
+        $currentKeyframesBrowserPrefix: '-o-'; @content;
+    }
+}
+
+
+@mixin mudextransition($properties: (), $duration: 0.5s) {
+    @include browserPrefix('transition-duration', $duration);
+    @include browserPrefix('transition-property', $properties);
+}
+
+@mixin overlay {
+    content: " ";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
