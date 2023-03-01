@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="fragment_container_view_tag" type="id"/>
-    <item name="special_effects_controller_view_tag" type="id"/>
-    <item name="visible_removing_fragment_view_tag" type="id"/>
-    <declare-styleable name="Fragment">
-        <attr name="android:name"/>
-        <attr name="android:id"/>
-        <attr name="android:tag"/>
-    </declare-styleable>
-    <declare-styleable name="FragmentContainerView">
-        <attr name="android:name"/>
-        <attr name="android:tag"/>
-    </declare-styleable>
+    <item name="ghost_view" type="id"/>
+    <item name="ghost_view_holder" type="id"/>
+    <item name="parent_matrix" type="id"/>
+    <item name="save_non_transition_alpha" type="id"/>
+    <item name="save_overlay_view" type="id"/>
+    <item name="transition_current_scene" type="id"/>
+    <item name="transition_layout_save" type="id"/>
+    <item name="transition_position" type="id"/>
+    <item name="transition_scene_layoutid_cache" type="id"/>
+    <item name="transition_transform" type="id"/>
 </resources>

@@ -1,0 +1,17 @@
+int anim fragment_fast_out_extra_slow_in 0x0
+int animator fragment_close_enter 0x0
+int animator fragment_close_exit 0x0
+int animator fragment_fade_enter 0x0
+int animator fragment_fade_exit 0x0
+int animator fragment_open_enter 0x0
+int animator fragment_open_exit 0x0
+int id fragment_container_view_tag 0x0
+int id special_effects_controller_view_tag 0x0
+int id visible_removing_fragment_view_tag 0x0
+int[] styleable Fragment { 0x10100d0, 0x1010003, 0x10100d1 }
+int styleable Fragment_android_id 0
+int styleable Fragment_android_name 1
+int styleable Fragment_android_tag 2
+int[] styleable FragmentContainerView { 0x1010003, 0x10100d1 }
+int styleable FragmentContainerView_android_name 0
+int styleable FragmentContainerView_android_tag 1

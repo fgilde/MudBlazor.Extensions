@@ -33,7 +33,7 @@
 @code {
     private const string baseAddress = "https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions";
     private string baseAddressExtensions = $"{baseAddress}/main/MudBlazor.Extensions";
-    private string baseAddressSampleApp = $"{baseAddress}/main/SampleApplication";
+    private string baseAddressSampleApp = $"{baseAddress}/main/Samples/MainSample.WebAssembly";
     private string Path(string file) => $"{baseAddressSampleApp}{file.EnsureStartsWith("/")}";
     private Dictionary<string, string> _docFiles = new();
     private string _selectedCodeFile;

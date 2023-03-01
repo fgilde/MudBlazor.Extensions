@@ -55,7 +55,7 @@
     private async Task ShowCode()
     {
         await dialogService.ShowComponentInDialogAsync<PrettyCode>("Code for this component", "Like this you can implement your own components that is responsible for a File",
-            c => c.CodeFile = $"https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/SampleApplication/Shared/{GetType().Name}.razor",
+            c => c.CodeFile = $"https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/Samples/MainSample.WebAssembly/Shared/{GetType().Name}.razor",
             dialog =>
             {
                 dialog.Style = "overflow: scroll; height: 80%";

@@ -1,4 +1,4 @@
-# Copyright (C) 2020 The Android Open Source Project
+# Copyright (C) 2017 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# The default FragmentFactory creates Fragment instances using reflection
--if public class ** extends androidx.fragment.app.Fragment
--keepclasseswithmembers,allowobfuscation public class <1> {
-    public <init>();
+# Keep a field in transition that is used to keep a reference to weakly-referenced object
+-keepclassmembers class androidx.transition.ChangeBounds$* extends android.animation.AnimatorListenerAdapter {
+  androidx.transition.ChangeBounds$ViewBounds mViewBounds;
 }

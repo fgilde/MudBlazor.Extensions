@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
- Copyright (C) 2014 The Android Open Source Project
+ Copyright (C) 2013 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,16 +15,10 @@
      limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="androidx.core" >
+    package="androidx.recyclerview" >
 
-    <uses-sdk android:minSdkVersion="14" />
-
-    <permission
-        android:name="${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-
-    <application android:appComponentFactory="androidx.core.app.CoreComponentFactory" />
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="30" />
 
 </manifest>

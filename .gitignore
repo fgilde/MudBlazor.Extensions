@@ -5,9 +5,10 @@
 /MudBlazor.Extensions/obj
 /MudBlazor.Extensions/bin
 /.vs
-/Samples/*/bin/
-/Samples/*/obj/
+/Samples/MainSample.MAUI.Moana/bin/
+/Samples/MainSample.MAUI.Moana/obj
+/Samples/MainSample.WebAssembly/bin/
+/Samples/MainSample.WebAssembly/obj
 /MudBlazor.Extensions.CodeGator.Adapter/obj
 /MudBlazor.Extensions.CodeGator.Adapter/bin/
 *.user
-/Samples/MainSample.MAUI.Moana/obj/Debug/net7.0-android/assets/wwwroot/_framework/MainSample.WebAssembly.dll.br

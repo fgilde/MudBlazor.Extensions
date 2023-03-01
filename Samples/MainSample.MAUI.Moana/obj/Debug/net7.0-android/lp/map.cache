@@ -1,15 +1,10 @@
+GoogleGson.dll
+Microsoft.AspNetCore.Components.WebView.Maui.dll
 Microsoft.Maui.Controls.Compatibility.dll
 Microsoft.Maui.Controls.dll
 Microsoft.Maui.Controls.Xaml.dll
 Microsoft.Maui.dll
 Microsoft.Maui.Essentials.dll
-Microsoft.Maui.Controls.aar
-Microsoft.Maui.Controls.Compatibility.aar
-maui.aar
-Microsoft.Maui.aar
-Microsoft.Maui.Essentials.aar
-GoogleGson.dll
-Microsoft.AspNetCore.Components.WebView.Maui.dll
 Microsoft.Maui.Graphics.dll
 Xamarin.Android.Glide.Annotations.dll
 Xamarin.Android.Glide.DiskLruCache.dll
@@ -156,4 +151,9 @@ gifdecoder.aar
 glide.aar
 GoogleGson.aar
 Microsoft.AspNetCore.Components.WebView.Maui.aar
+Microsoft.Maui.Controls.aar
+Microsoft.Maui.Controls.Compatibility.aar
+maui.aar
+Microsoft.Maui.aar
+Microsoft.Maui.Essentials.aar
 Xamarin.Google.Crypto.Tink.Android.aar

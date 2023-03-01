@@ -1,4 +1,9 @@
 int attr alpha 0x0
+int attr fastScrollEnabled 0x0
+int attr fastScrollHorizontalThumbDrawable 0x0
+int attr fastScrollHorizontalTrackDrawable 0x0
+int attr fastScrollVerticalThumbDrawable 0x0
+int attr fastScrollVerticalTrackDrawable 0x0
 int attr font 0x0
 int attr fontProviderAuthority 0x0
 int attr fontProviderCerts 0x0
@@ -6,19 +11,21 @@ int attr fontProviderFetchStrategy 0x0
 int attr fontProviderFetchTimeout 0x0
 int attr fontProviderPackage 0x0
 int attr fontProviderQuery 0x0
-int attr fontProviderSystemFontFamily 0x0
 int attr fontStyle 0x0
 int attr fontVariationSettings 0x0
 int attr fontWeight 0x0
-int attr lStar 0x0
-int attr nestedScrollViewStyle 0x0
-int attr queryPatterns 0x0
-int attr shortcutMatchRequired 0x0
+int attr layoutManager 0x0
+int attr recyclerViewStyle 0x0
+int attr reverseLayout 0x0
+int attr spanCount 0x0
+int attr stackFromEnd 0x0
 int attr ttcIndex 0x0
 int color androidx_core_ripple_material_light 0x0
 int color androidx_core_secondary_text_default_material_light 0x0
 int color notification_action_color_filter 0x0
 int color notification_icon_bg_color 0x0
+int color ripple_material_light 0x0
+int color secondary_text_default_material_light 0x0
 int dimen compat_button_inset_horizontal_material 0x0
 int dimen compat_button_inset_vertical_material 0x0
 int dimen compat_button_padding_horizontal_material 0x0
@@ -26,6 +33,12 @@ int dimen compat_button_padding_vertical_material 0x0
 int dimen compat_control_corner_material 0x0
 int dimen compat_notification_large_icon_max_height 0x0
 int dimen compat_notification_large_icon_max_width 0x0
+int dimen fastscroll_default_thickness 0x0
+int dimen fastscroll_margin 0x0
+int dimen fastscroll_minimum_range 0x0
+int dimen item_touch_helper_max_drag_scroll_per_frame 0x0
+int dimen item_touch_helper_swipe_escape_max_velocity 0x0
+int dimen item_touch_helper_swipe_escape_velocity 0x0
 int dimen notification_action_icon_size 0x0
 int dimen notification_action_text_size 0x0
 int dimen notification_big_circle_margin 0x0
@@ -100,6 +113,7 @@ int id icon 0x0
 int id icon_group 0x0
 int id info 0x0
 int id italic 0x0
+int id item_touch_helper_previous_elevation 0x0
 int id line1 0x0
 int id line3 0x0
 int id normal 0x0
@@ -112,15 +126,10 @@ int id tag_accessibility_actions 0x0
 int id tag_accessibility_clickable_spans 0x0
 int id tag_accessibility_heading 0x0
 int id tag_accessibility_pane_title 0x0
-int id tag_on_apply_window_listener 0x0
-int id tag_on_receive_content_listener 0x0
-int id tag_on_receive_content_mime_types 0x0
 int id tag_screen_reader_focusable 0x0
-int id tag_state_description 0x0
 int id tag_transition_group 0x0
 int id tag_unhandled_key_event_manager 0x0
 int id tag_unhandled_key_listeners 0x0
-int id tag_window_insets_animation_callback 0x0
 int id text 0x0
 int id text2 0x0
 int id time 0x0
@@ -141,23 +150,17 @@ int style TextAppearance_Compat_Notification_Time 0x0
 int style TextAppearance_Compat_Notification_Title 0x0
 int style Widget_Compat_NotificationActionContainer 0x0
 int style Widget_Compat_NotificationActionText 0x0
-int[] styleable Capability { 0x0, 0x0 }
-int styleable Capability_queryPatterns 0
-int styleable Capability_shortcutMatchRequired 1
-int[] styleable ColorStateListItem { 0x0, 0x101031f, 0x10101a5, 0x1010647, 0x0 }
+int[] styleable ColorStateListItem { 0x0, 0x101031f, 0x10101a5 }
 int styleable ColorStateListItem_alpha 0
 int styleable ColorStateListItem_android_alpha 1
 int styleable ColorStateListItem_android_color 2
-int styleable ColorStateListItem_android_lStar 3
-int styleable ColorStateListItem_lStar 4
-int[] styleable FontFamily { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
+int[] styleable FontFamily { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 int styleable FontFamily_fontProviderAuthority 0
 int styleable FontFamily_fontProviderCerts 1
 int styleable FontFamily_fontProviderFetchStrategy 2
 int styleable FontFamily_fontProviderFetchTimeout 3
 int styleable FontFamily_fontProviderPackage 4
 int styleable FontFamily_fontProviderQuery 5
-int styleable FontFamily_fontProviderSystemFontFamily 6
 int[] styleable FontFamilyFont { 0x1010532, 0x101053f, 0x1010570, 0x1010533, 0x101056f, 0x0, 0x0, 0x0, 0x0, 0x0 }
 int styleable FontFamilyFont_android_font 0
 int styleable FontFamilyFont_android_fontStyle 1
@@ -185,3 +188,16 @@ int styleable GradientColor_android_type 11
 int[] styleable GradientColorItem { 0x10101a5, 0x1010514 }
 int styleable GradientColorItem_android_color 0
 int styleable GradientColorItem_android_offset 1
+int[] styleable RecyclerView { 0x10100eb, 0x10100f1, 0x10100c4, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
+int styleable RecyclerView_android_clipToPadding 0
+int styleable RecyclerView_android_descendantFocusability 1
+int styleable RecyclerView_android_orientation 2
+int styleable RecyclerView_fastScrollEnabled 3
+int styleable RecyclerView_fastScrollHorizontalThumbDrawable 4
+int styleable RecyclerView_fastScrollHorizontalTrackDrawable 5
+int styleable RecyclerView_fastScrollVerticalThumbDrawable 6
+int styleable RecyclerView_fastScrollVerticalTrackDrawable 7
+int styleable RecyclerView_layoutManager 8
+int styleable RecyclerView_reverseLayout 9
+int styleable RecyclerView_spanCount 10
+int styleable RecyclerView_stackFromEnd 11
