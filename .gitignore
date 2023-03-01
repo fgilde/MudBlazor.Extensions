@@ -12,3 +12,10 @@
 /MudBlazor.Extensions.CodeGator.Adapter/obj
 /MudBlazor.Extensions.CodeGator.Adapter/bin/
 *.user
+/Samples/MainSample.MAUI.Moana/obj/Debug/
+/Samples/MainSample.MAUI.Moana/obj/Debug/net7.0-android/designtime/libraryprojectimports.cache
+/Samples/MainSample.MAUI.Moana/obj/Debug/net7.0-android/designtime/Resource.designer.cs
+/Samples/MainSample.MAUI.Moana/obj/Debug/net7.0-android/MainSample.MAUI.Moana.AssemblyInfo.cs
+/Samples/MainSample.MAUI.Moana/obj/Debug/net7.0-android/lp/map.cache
+/Samples/MainSample.MAUI.Moana/obj/Debug/net7.0-maccatalyst/maccatalyst-x64/MainSample.MAUI.Moana.csproj.AssemblyReference.cache
+/Samples/MainSample.MAUI.Moana/obj/Debug/net7.0-maccatalyst/maccatalyst-x64/MainSample.MAUI.Moana.AssemblyInfo.cs
