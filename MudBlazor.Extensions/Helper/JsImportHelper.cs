@@ -21,12 +21,20 @@ namespace MudBlazor.Extensions.Helper
             return await InitializeMudBlazorExtensionsAsync(js);
         }
 
+        internal static Task<IJSObjectReference> ImportModuleMudEx(this IJSRuntime runtime)
+        {
+            //runtime.InvokeAsync<IJSObjectReference>("import", "./_content/BlazorJS/BlazorJS.lib.module.js").AsTask();
+            return runtime.InvokeAsync<IJSObjectReference>("import", "./_content/MudBlazor.Extensions/MudBlazor.Extensions.lib.module.js").AsTask();
+        }
+
         public static async Task<IJSRuntime> InitializeMudBlazorExtensionsAsync(this IJSRuntime runtime, bool force = false)
         {
             _runtime = runtime ?? _runtime;
             if (force || !initialized)
             {
-                await runtime.LoadJsAsync(MainJs());
+                await runtime.ImportModuleBlazorJS(); // This is a workaround for using module in MAUI apps
+                await runtime.ImportModuleMudEx(); // This is a workaround for using module in MAUI apps
+                //await runtime.LoadJsAsync(MainJs());
                 await runtime.AddCss(await GetEmbeddedFileContentAsync($"wwwroot/mudBlazorExtensions{min}.css"));
                 initialized = true;
             }

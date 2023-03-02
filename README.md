@@ -220,7 +220,9 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 ```
 
 
-#### Change Log
+#### Change Log 
+ - 1.7.33 Fix bug if no header is active on dialogs
+ - 1.7.33 Load Modules manually for MAUI Apps
  - 1.7.31 Update BlazorJS to v 2.0.0 and MudBlazor to 6.1.8.
  - 1.7.30 Fix broken layout in full-height dialogs with new css selector.
  - 1.7.29 Fix broken dialog header buttons positions based on MudBlazor css changes
