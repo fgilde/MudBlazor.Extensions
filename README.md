@@ -1,7 +1,11 @@
 # MudBlazor.Extensions
 MudBlazor.Extensions is a small extension for MudBlazor from https://mudblazor.com/
 
-[Running Sample Application](https://mudex.azurewebsites.net/)
+[Running Sample Application (Azure)](https://mudex.azurewebsites.net/)
+[Running Sample Application (Cloudflare)](https://mudblazor-extensions.pages.dev/)
+<!---
+[Running Sample Application (Github Pages)](https://fgilde.github.io/MudBlazor.Extensions/sample/wwwroot/)
+-->
 
 ### Using / Prerequirements
 Using is as easy it can be
