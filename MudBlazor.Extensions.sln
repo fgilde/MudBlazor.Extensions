@@ -13,6 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MainSample.MAUI.Moana", "Sa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{7B19E2F0-E5F5-437B-9501-409EFF6A8A60}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".scripts", ".scripts", "{BB70EADB-61EA-42F9-9977-355EAC31FDFA}"
+	ProjectSection(SolutionItems) = preProject
+		build.sh = build.sh
+		update-packages.ps1 = update-packages.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
