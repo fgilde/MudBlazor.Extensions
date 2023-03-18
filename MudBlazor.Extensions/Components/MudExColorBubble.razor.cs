@@ -5,6 +5,7 @@ using MudBlazor.Utilities;
 
 namespace MudBlazor.Extensions.Components;
 
+
 public partial class MudExColorBubble
 {
     [Parameter] public string Style { get; set; }
@@ -100,7 +101,7 @@ public partial class MudExColorBubble
     public int Width { get; set; } = 16;
 
     private ElementReference _canvasContainerReference;
-    private MudColor _color;
+    private MudColor _color = new MudColor("#000000");
     private int _selectorSize = 161;
     private bool _showColorPreview = true;
     private int _maxLuminance = 86;
@@ -108,7 +109,7 @@ public partial class MudExColorBubble
     private bool _allowSelectOnPreviewClick = true;
     private bool _closeAfterSelect = true;
 
-    protected override object[] GetJsArguments()
+    public override object[] GetJsArguments()
     {
         return new[] { ElementReference, _canvasContainerReference, CreateDotNetObjectReference(), Options() };
     }

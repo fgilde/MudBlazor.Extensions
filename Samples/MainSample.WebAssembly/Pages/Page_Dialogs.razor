@@ -1,22 +1,29 @@
 ﻿@page "/dialogs"
+@attribute [Demo(Group = "Dialogs")]
 @using MudBlazor.Extensions.Options
 @inject IJSRuntime Js
 @inject IDialogService dialogService;
 
 <PageHeader>Sample Dialog</PageHeader>
 
-<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")">
-
-    <MudExObjectEditForm ShowSaveButton="false" ToolbarColor="Color.Surface" ShowCancelButton="false" DefaultGroupName="Other" StickyToolbar="true" StickyActionBar="true" Value="@Options">
-        <ToolBarContent>
-            <MudNumericField Class="mr-5 mt-5 mb-5" FullWidth="false" Min="0" Max="30" Variant="Variant.Outlined" Disabled="@(OpenDialogTask != null)" @bind-Value="seconds" Label="@($"Dialog opens in {seconds}s")"></MudNumericField>
-            <MudButton Disabled="@(OpenDialogTask != null)" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
-        </ToolBarContent>
-        <ActionContent>
-            <MudButton Variant="Variant.Filled" Color="Color.Warning" OnClick="@SetAsDefaultClick">Set as Default options for all Dialogs</MudButton>
-        </ActionContent>
-    </MudExObjectEditForm>
-
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <div>
+                <MudNumericField Style="max-width: 250px;" FullWidth="false" Min="0" Max="30" Variant="Variant.Text" Disabled="@(OpenDialogTask != null)" @bind-Value="seconds" Label="@($"Dialog opens in {seconds}s")"></MudNumericField>
+                <MudButton Disabled="@(OpenDialogTask != null)" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
+            </div>
+        </Left>
+        <Right>
+            <MudExObjectEditForm ShowSaveButton="false" ShowCancelButton="false" DefaultGroupName="Other" StickyActionBar="true" Value="@Options">
+                <ToolBarContent>
+                </ToolBarContent>
+                <ActionContent>
+                    <MudButton Variant="Variant.Filled" Color="Color.Warning" OnClick="@SetAsDefaultClick">Set as Default options for all Dialogs</MudButton>
+                </ActionContent>
+            </MudExObjectEditForm>
+        </Right>
+    </SplitContainer>
 </DemoComponent>
 
 @code {

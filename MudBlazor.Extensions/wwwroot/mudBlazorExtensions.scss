@@ -5,6 +5,7 @@
 @import '_object-edit.scss';
 @import '_upload-edit.scss';
 @import '_taskbar.scss';
+@import '_mudexsplitcontainer.scss';
 
 
 .mud-dialog-height-full {
@@ -243,4 +244,22 @@
 /* new div element is currently wraped before dialog-content div is avalable. This selector checks if the content element should have full-height and then also applies height 100% to this new extra div */
 .mud-dialog .outline-none div[tabindex="-1"]:has(div.full-height) {
     height: 100%;
+}
+
+.mud-ex-content-center {
+    display: flex;
+    padding:80px;
+    align-items: center;
+    place-content: center;
+}
+
+.mud-ex-empty-indicator-bg {
+    background: repeating-linear-gradient(135deg, #ccc, #ccc 10px, #aaa 10px, #aaa 20px);
+}
+
+.mud-ex-transparent-indicator-bg {
+    background-image: linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.2) 75%), linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.2) 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    background-color: #f1f1f1;
 }

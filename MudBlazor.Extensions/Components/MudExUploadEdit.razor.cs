@@ -130,12 +130,12 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         return base.OnInitializedAsync();
     }
 
-    protected override object[] GetJsArguments()
+    public override object[] GetJsArguments()
     {
         return new object[] { ElementReference, inputFile.Element, AllowFolderUpload };
     }
 
-    protected override Task ImportModuleAndCreateJsAsync()
+    public override Task ImportModuleAndCreateJsAsync()
     {
         if (AllowDrop && !ReadOnly && inputFile != null)
             return base.ImportModuleAndCreateJsAsync();

@@ -11,7 +11,7 @@ public abstract class ObjectEditMeta
     public abstract IList<ObjectEditPropertyMeta> AllProperties { get; }
     public BindingFlags BindingFlags { get; set; } = BindingFlags.Public | BindingFlags.Instance;
     public ObjectEditPropertyMeta Property(string name) => AllProperties.FirstOrDefault(m => m.PropertyName == name);
-    public IEnumerable<ObjectEditPropertyMeta> Properties(params string[] names) => names.Select(Property);
+    public IEnumerable<ObjectEditPropertyMeta> Properties(params string[] names) => names?.Select(Property) ?? Enumerable.Empty<ObjectEditPropertyMeta>();
     public ObjectEditPropertyMeta Property(params MemberInfo[] path) => Property(AllProperties, path);
     private ObjectEditPropertyMeta Property(IEnumerable<ObjectEditPropertyMeta> properties, IList<MemberInfo> member)
     {

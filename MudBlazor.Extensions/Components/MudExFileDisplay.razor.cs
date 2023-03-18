@@ -73,7 +73,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
     #endregion
 
-    protected override object[] GetJsArguments()
+    public override object[] GetJsArguments()
     {
         return base.GetJsArguments().Concat(new object[] { _id }).ToArray();
     }

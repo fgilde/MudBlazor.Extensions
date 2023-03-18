@@ -15,4 +15,5 @@ public class NavigationEntry : Hierarchical<NavigationEntry>
     public string Icon { get; set; }
     public string Href { get; set; }
     public string Target { get; set; }
+    internal DemoAttribute? Demo { get; set; }
 }

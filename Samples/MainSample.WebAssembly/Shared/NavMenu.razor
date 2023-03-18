@@ -3,28 +3,38 @@
 
 <div>
     <MudNavMenu>
+      @*  <MudNavLink Href="/api">Api</MudNavLink>
+        <MudNavGroup Title="...">
+            <MudNavGroup Title="Sub">
+                <MudNavLink>..</MudNavLink>
+            </MudNavGroup>
+
+        </MudNavGroup>*@
+    
+
         <MudTreeView Items="@Entries">
             <ItemTemplate>
                 <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.Children">
-                        <Content>
-                            @if (HasAction(context))
-                            {
-                                <MudNavLink Href="@context.Href" Match="@(context.Href == "/" ? NavLinkMatch.All : NavLinkMatch.Prefix)" Target="@context.Target" Icon="@context.Icon">
-                                    @context.Text
-                                </MudNavLink>
-                            }
-                            else
-                            {
+                    <Content>
+                        @if (HasAction(context))
+                        {
+                            <MudNavLink Href="@context.Href" Match="@(context.Href == "/" ? NavLinkMatch.All : NavLinkMatch.Prefix)" Target="@context.Target" Icon="@context.Icon">
+                                @context.Text
+                            </MudNavLink>
+                        }
+                        else
+                        {
                             @if (!context.Icon.IsNullOrWhiteSpace())
-                                {
-                                <MudIcon Icon="@context.Icon" Class="ml-0 mr-2" Color="@Color.Default" />
-                                }
-                                <MudListSubheader Class="@(CanExpand(context) ? "cursor-pointer" : "")" @onclick="() => OnExpandCollapseClick(context)">@context.Text</MudListSubheader>
-
-                                <div class="apply-right">
-                                    <MudTreeViewItemToggleButton Visible="CanExpand(context)" Expanded="context.IsExpanded" ExpandedChanged="() => OnExpandCollapseClick(context)" />
-                                </div>
+                            {
+                                <MudIcon Icon="@context.Icon" Class="ml-0 mr-2" Color="@Color.Default"/>
                             }
+                            
+                            <MudListSubheader Class="@(CanExpand(context) ? "cursor-pointer" : "")" @onclick="() => OnExpandCollapseClick(context)">@context.Text</MudListSubheader>
+
+                            <div class="apply-right">
+                                <MudTreeViewItemToggleButton Visible="CanExpand(context)" Expanded="context.IsExpanded" ExpandedChanged="() => OnExpandCollapseClick(context)"/>
+                            </div>
+                        }
                     </Content>
                 </MudTreeViewItem>
             </ItemTemplate>

@@ -26,6 +26,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExSplitter.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExSplitter.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExColorBubble.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExColorBubble.js"

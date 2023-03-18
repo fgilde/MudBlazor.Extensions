@@ -1,27 +1,33 @@
 ﻿@using Nextended.Core.Extensions
 @using System.Reflection.Metadata
+
+<PageTitle>@Title</PageTitle>
+
 <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+    <p style="top: 0; position: absolute; right: 0; margin-right: 22px; margin-top: -38px; font-size: 18pt; color: var(--mud-palette-primary); font-weight: bold;">
+        @Title
+    </p>
     <MudTabPanel Text="Demo">
         @ChildContent
     </MudTabPanel>
-	@if (!string.IsNullOrEmpty(CodeFile))
-	{
-	    <MudTabPanel Text="Code">
+    @if (!string.IsNullOrEmpty(CodeFile))
+    {
+        <MudTabPanel Text="Code">
             <MudCard>
-            @if (CodeFiles.Length > 1)
-            {
-                <MudSelect Label="File" @bind-Value="@SelectedCodeFile" Variant="Variant.Outlined" Color="Color.Primary">
-                    @foreach (var file in CodeFiles)
-                    {
-                        <MudSelectItem Value="@file">@System.IO.Path.GetFileName(file)</MudSelectItem>
-                    }
-                </MudSelect>
-            }
-            <MudLink Href="@SelectedCodeFilePath" Target="_blank" Color="Color.Primary">Show on github</MudLink>
+                @if (CodeFiles is {Length: > 1 })
+                {
+                    <MudSelect Label="File" @bind-Value="@SelectedCodeFile" Variant="Variant.Outlined" Color="Color.Primary">
+                        @foreach (var file in CodeFiles)
+                        {
+                            <MudSelectItem Value="@file">@System.IO.Path.GetFileName(file)</MudSelectItem>
+                        }
+                    </MudSelect>
+                }
+                <MudLink Href="@SelectedCodeFilePath" Target="_blank" Color="Color.Primary">Show on github</MudLink>
             </MudCard>
             <DynamicComponent Type="@RenderType" Parameters="@RenderParameters"/>
         </MudTabPanel>
-	}
+    }
     @foreach (var doc in _docFiles)
     {
         <MudTabPanel Text="@("Documentation " + System.IO.Path.GetFileNameWithoutExtension(doc.Key))">
@@ -31,27 +37,67 @@
 </MudTabs>
 
 @code {
+
+    #region private fields
+        
     private const string baseAddress = "https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions";
     private string baseAddressExtensions = $"{baseAddress}/main/MudBlazor.Extensions";
     private string baseAddressSampleApp = $"{baseAddress}/main/Samples/MainSample.WebAssembly";
     private string Path(string file) => $"{baseAddressSampleApp}{file.EnsureStartsWith("/")}";
     private Dictionary<string, string> _docFiles = new();
     private string _selectedCodeFile;
+    private Type RenderType = typeof(PrettyCode);
+    private Dictionary<string, object> RenderParameters;
+    private Type? _pageType;
+    private string? _title;
     [Inject] HttpClient http { get; set; }
+
+    #endregion
+    
+    #region Parameter
+
+    [Parameter]
+    public string? Title
+    {
+        get => _title ??= FallbackTitle();
+        set => _title = value;
+    }
 
     [Parameter]
     public string CodeFile
     {
-        get => CodeFiles.FirstOrDefault();
+        get => CodeFiles?.FirstOrDefault();
         set => CodeFiles = new[] { value };
     }
 
     public string SelectedCodeFilePath { get; set; }
-    [Parameter] public string[] CodeFiles { get; set; }
-    [Parameter] public string[] DocFiles { get; set; }
+
+    [Parameter]
+    public Type? PageType
+    {
+        get => _pageType;
+        set
+        {
+            _pageType = value;
+            if (_pageType != null && string.IsNullOrEmpty(CodeFile))
+            {
+                CodeFile = $"Pages/{_pageType.Name}.razor";
+            }
+        }
+    }
+
+    [Parameter] public string[]? CodeFiles { get; set; }
+    [Parameter] public string[]? DocFiles { get; set; }
     [Parameter] public RenderFragment ChildContent { get; set; }
-    private Type RenderType = typeof(PrettyCode);
-    private Dictionary<string, object> RenderParameters;
+
+    #endregion
+
+    private string FallbackTitle()
+    {
+        var res = _pageType != null ? _pageType.Name : CodeFile;
+        return string.IsNullOrEmpty(res) ? "Demo" : res.Split("/").LastOrDefault()?.Replace("Page_", "")?.Replace(".razor", "") ?? "Demo";
+    }
+
     private string SelectedCodeFile
     {
         get => _selectedCodeFile;
@@ -66,7 +112,7 @@
                 { "Severity", Severity.Info }
             };
             StateHasChanged();
-            
+
             RenderType = typeof(PrettyCode);
             RenderParameters = new Dictionary<string, object>
             {
@@ -90,7 +136,7 @@
                     _docFiles.Add(doc, v);
             }
         }
-        catch {}
+        catch { }
     }
 
     private async Task<string> Load(string url)
@@ -100,8 +146,9 @@
             var res = await http.GetStringAsync(url);
             return res;
         }
-        catch {
-            return null;
+        catch
+        {
+            return string.Empty;
         }
     }
 }

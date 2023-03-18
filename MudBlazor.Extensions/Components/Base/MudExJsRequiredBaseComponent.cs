@@ -4,13 +4,13 @@ using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components.Base;
 
-public class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, IAsyncDisposable
+public class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, IAsyncDisposable, IJsMudExComponent<T>
     where T : MudExBaseComponent<T>
 {
-    protected IJSObjectReference JsReference;
-    protected IJSObjectReference ModuleReference;
-    protected ElementReference ElementReference;
-    
+    public IJSObjectReference JsReference { get; set; }
+    public IJSObjectReference ModuleReference { get; set; }
+    public ElementReference ElementReference { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
@@ -19,18 +19,18 @@ public class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, IAsyncDisp
             await ImportModuleAndCreateJsAsync();
         }
     }
-    
-    protected virtual object[] GetJsArguments()
+
+    public virtual object[] GetJsArguments()
     {
         return new object[] {ElementReference, CreateDotNetObjectReference()};
     }
 
-    protected virtual DotNetObjectReference<MudExJsRequiredBaseComponent<T>> CreateDotNetObjectReference()
+    public virtual DotNetObjectReference<MudExJsRequiredBaseComponent<T>> CreateDotNetObjectReference()
     {
         return DotNetObjectReference.Create(this);
     }
 
-    protected virtual async Task ImportModuleAndCreateJsAsync()
+    public virtual async Task ImportModuleAndCreateJsAsync()
     {
         var references = await JsRuntime.ImportModuleAndCreateJsAsync<T>(GetJsArguments());
         JsReference = references.jsObjectReference;

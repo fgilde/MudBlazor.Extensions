@@ -1,4 +1,5 @@
 ﻿@page "/virtualized-object-edit"
+@attribute [Demo(Group = "ObjectEdit", ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 @inject IDialogService dialogService;
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Options
@@ -8,7 +9,7 @@
 <PageHeader>Object Edit Virtualize (BETA)</PageHeader>
 <MudAlert>This feature is still in progress and not finished yet. Currently reset all field not working correctly for example and it makes problen in flex layout like with MudGrid what is added if wrap in mud item is used. Please use this carefully and only if you have render performance issues</MudAlert>
 
-<DemoComponent DocFiles="@(new[] {"Docs/ObjectEdit.md"})" CodeFile="@($"Pages/{GetType().Name}.razor")">
+<DemoComponent DocFiles="@(new[] {"Docs/ObjectEdit.md"})" PageType="@GetType()">
     <MudGrid>
         <MudCheckBox @bind-Checked="@virtualize">Virtualize</MudCheckBox>
         <MudCheckBox @bind-Checked="@disableGrouping">Disable Grouping</MudCheckBox>

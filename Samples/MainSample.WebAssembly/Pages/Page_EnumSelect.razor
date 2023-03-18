@@ -1,8 +1,8 @@
 ﻿@page "/enum-select"
-
+@attribute [Demo(ForComponentType = typeof(MudExEnumSelect<>))]
 <PageHeader>MudExEnumSelect</PageHeader>
 
-<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
+<DemoComponent PageType="@GetType()">
 
     <MudCard Class="mb-10" Elevation="6">
         <MudCardHeader>

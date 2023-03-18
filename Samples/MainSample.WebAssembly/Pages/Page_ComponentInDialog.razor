@@ -1,15 +1,14 @@
 ﻿@page "/component-in-dialog"
-
+@attribute [Demo(Group = "Dialogs")]
 @inject IJSRuntime js;
 @inject IDialogService dialogService;
 
 <PageHeader>Render any component in Dialog</PageHeader>
 
-<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")">
+<DemoComponent PageType="@GetType()">
     <MudGrid>
         <MudButton Class="mt-3" Size="Size.Large" OnClick="@ShowComponentSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show a slider in a dialog</MudButton>
     </MudGrid>
-
 </DemoComponent>
 
 @code {

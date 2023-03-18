@@ -1,23 +1,16 @@
 ﻿@page "/upload-edit"
+@attribute [Demo(Group = "File Handling", Icon = Icons.Material.Outlined.Upload, ForComponentType = typeof(MudExUploadEdit<>))]
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
-<PageHeader>MudExUploadEdit</PageHeader>
-
-<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
-
-    <MudGrid>
-        <MudItem md="8" Class="d-flex justify-center">
-            <MudPaper Class="d-flex flex-column align-center justify-center mud-width-full py-8">
-                <MudExUploadEdit MimeTypes="@mimeTypes" T="UploadableFile" Style="max-height: 400px; width: 1000px" @ref="component"></MudExUploadEdit>
-            </MudPaper>
-        </MudItem>
-        <MudItem md="4">
-            <MudPaper Class="px-4 pt-2 pb-4" Style="height: 70vh; overflow: auto">
-                <MudExObjectEdit DefaultGroupName="Misc" MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
-            </MudPaper>
-        </MudItem>
-    </MudGrid>
-
+<DemoComponent Title="MudExUploadEdit" PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudExUploadEdit MimeTypes="@mimeTypes" T="UploadableFile" Style="max-height: 400px; width: 1000px" @ref="component"></MudExUploadEdit>
+        </Left>
+        <Right>
+            <MudExObjectEdit DefaultGroupName="Misc" MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
+        </Right>
+    </SplitContainer>
 </DemoComponent>
 
 

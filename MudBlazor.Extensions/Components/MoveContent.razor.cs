@@ -20,7 +20,7 @@ public partial class MoveContent
         ElementFound = await JsRuntime.InvokeAsync<object>("document.querySelector", ElementSelector) != null;
     }
 
-    protected override async Task ImportModuleAndCreateJsAsync()
+    public override async Task ImportModuleAndCreateJsAsync()
     {
         await base.ImportModuleAndCreateJsAsync();
         await JsReference.InvokeVoidAsync("move", ElementSelector, Mode.ToString(), Position.ToString());

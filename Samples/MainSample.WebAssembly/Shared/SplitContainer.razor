@@ -1,0 +1,26 @@
+﻿<MudGrid>
+    <div class="mud-ex-split-panel kacke" style="max-height: 80vh">
+        @if (Left != null)
+        {
+            <MudPaper Class="mud-width-full mud-ex-content-center mud-ex-transparent-indicator-bg" Style="min-width: 350px;">
+                @Left
+            </MudPaper>
+        }
+        @if (Left != null && Right != null)
+        {
+            <MudExSplitter Vertical="true" FlexItem="true"/>
+        }
+        @if (Right != null)
+        {
+            <MudPaper Class="px-4 pt-2 pb-4" Style="width: 50%; min-width: 350px; overflow: auto">
+                @Right
+            </MudPaper>
+        }
+    </div>
+
+</MudGrid>
+
+@code {
+    [Parameter] public RenderFragment? Left { get; set; }
+    [Parameter] public RenderFragment? Right { get; set; }
+}

@@ -43,7 +43,8 @@ public static class CssHelper
                 var formattedPropertyValue = propertyValue is string ? $"{propertyValue}" : propertyValue?.ToString();
 
                 // If the property is an integer and its name is in the list of properties that should have units added, add the specified unit
-                if (propertyValue is int && PropertiesToAddUnits.Contains(cssPropertyName))
+                //if (propertyValue is int && PropertiesToAddUnits.Contains(cssPropertyName))
+                if (int.TryParse(formattedPropertyValue, out _) && PropertiesToAddUnits.Contains(cssPropertyName))
                     formattedPropertyValue += unit;
 
                 cssBuilder.Append(cssPropertyName + ": " + formattedPropertyValue + ";");

@@ -1,24 +1,18 @@
 ﻿@page "/color-bubble"
+@attribute [Demo(ForComponentType = typeof(MudExColorBubble))]
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using MudBlazor.Utilities
 
-<PageHeader>MudExColorBubble</PageHeader>
 
-<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
-
-    <MudGrid>
-        <MudItem md="8" Class="d-flex justify-center">
-            <MudPaper Class="mud-width-full">
-                <MudExColorBubble Style="margin-left: 50%; margin-top:25%" @bind-Color="@color" @ref="component"></MudExColorBubble>
-            </MudPaper>
-        </MudItem>
-        <MudItem md="4">
-            <MudPaper Class="px-4 pt-2 pb-4" Style="height: 70vh; overflow: auto">
-                <MudExObjectEdit MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
-            </MudPaper>
-        </MudItem>
-    </MudGrid>
-
+<DemoComponent PageType="@GetType()" >
+    <SplitContainer>
+        <Left>
+            <MudExColorBubble @bind-Color="@color" @ref="component"></MudExColorBubble>
+        </Left>
+        <Right>
+            <MudExObjectEdit MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
+        </Right>
+    </SplitContainer>
 </DemoComponent>
 
 

@@ -1,11 +1,12 @@
 ﻿@page "/object-edit"
+@attribute [Demo(Group = "ObjectEdit", ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 @inject IDialogService dialogService;
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Options
 
 <PageHeader>Object Edit</PageHeader>
 
-<DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFile="@($"Pages/{GetType().Name}.razor")">
+<DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" PageType="@GetType()">
     <MudExObjectEditForm OnValidSubmit="@OnSubmit" Value="@User"></MudExObjectEditForm>
 </DemoComponent>
 

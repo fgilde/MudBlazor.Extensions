@@ -11,9 +11,9 @@ public static class Navigations
             {
                 Children = new()
                 {
-                    new NavigationEntry("Dialog Sample", Icons.Material.Outlined.Window, "/dialogs"),
-                    new NavigationEntry("Component in Dialog", Icons.Material.Outlined.Window, "/component-in-dialog"),
-                    new NavigationEntry("Simple Dialogs", Icons.Material.Outlined.Window, "/simple-dialogs")
+                    new NavigationEntry("Dialog Sample", Icons.Material.Outlined.DesktopWindows, "/dialogs"),
+                    new NavigationEntry("Component in Dialog", Icons.Material.Outlined.DesktopWindows, "/component-in-dialog"),
+                    new NavigationEntry("Simple Dialogs", Icons.Material.Outlined.DesktopWindows, "/simple-dialogs")
                 }
             },
             new NavigationEntry("File Handling")
@@ -29,8 +29,8 @@ public static class Navigations
             {
                 Children = new()
                 {
-                    new NavigationEntry("With default configuration", Icons.Material.Outlined.DataObject, "/object-edit"),
-                    new NavigationEntry("With custom configuration", Icons.Material.Outlined.DataObject, "/mudex-object-edit-with-configuration"),
+                    new NavigationEntry("With default configuration", Icons.Material.Outlined.Edit, "/object-edit"),
+                    new NavigationEntry("With custom configuration", Icons.Material.Outlined.TextSnippet, "/mudex-object-edit-with-configuration"),
                     new NavigationEntry("Rendered Virtualized", Icons.Material.Outlined.DataObject, "/virtualized-object-edit"),
                     new NavigationEntry("Edit with shared MetaConfig", Icons.Material.Outlined.Person, "/shared-config"),
                     new NavigationEntry("Conditional updates", Icons.Material.Outlined.DataArray, "/condition-object-edit"),
@@ -48,6 +48,27 @@ public static class Navigations
                     new NavigationEntry("MudExColorBubble", Icons.Material.Outlined.ColorLens, "/color-bubble"),
                     new NavigationEntry("MudExColorPicker", Icons.Material.Outlined.Colorize, "/mudexcolor-picker")
                 }
+            },
+
+            //new NavigationEntry("Demos")
+            //{
+            //    Children = DemoAttribute.AllEntries()
+            //},
+
+            new NavigationEntry("Dynamic component tests")
+            {
+                Children = ReflectMudExComponents()
             }
         };
+
+    private static HashSet<NavigationEntry> ReflectMudExComponents()
+    {
+        return ComponentTypes.AllMudExComponents().Select(type => new NavigationEntry($"{type.Name}", "", $"/c/{type.Name}")).ToHashSet();
+    }
+
+    private static HashSet<NavigationEntry> ReflectMudBlazorComponents()
+    {
+        return ComponentTypes.AllMudBlazorComponents().Select(type => new NavigationEntry($"{type.Name}", "", $"/c/{type.Name}")).ToHashSet();
+    }
+
 }

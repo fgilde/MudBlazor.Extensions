@@ -1,0 +1,74 @@
+﻿@page "/render/{TypeName?}"
+@page "/c/{TypeName?}"
+@using Nextended.Core.Extensions
+
+
+<PageHeader>@TypeName</PageHeader>
+@Documentation
+
+
+@if (AvailableDemo != null)
+{
+    <MudAlert Style="position: relative;top: -25px;" Severity="Severity.Info" Variant="Variant.Outlined" AlertTextPosition="AlertTextPosition.Center" ContentAlignment="HorizontalAlignment.Center">
+        <a href="@AvailableDemo.Href" target="@AvailableDemo.Target">Here is another Real demo available for @TypeName</a>
+    </MudAlert>
+}
+@if (Type != null)
+{
+    <DynamicComponent Type="ComponentRenderType"></DynamicComponent>
+}
+else
+{
+    <span> Not found</span>
+}
+
+@code {
+    private Type? type;
+    private string? _typeName;
+
+    [Parameter]
+    public string? TypeName
+    {
+        get => _typeName;
+        set
+        {
+            type = null;
+            _typeName = value;
+            StateHasChanged();
+        }
+    }
+
+    NavigationEntry? _availableDemo;
+    private string? _doc;
+
+    internal NavigationEntry? AvailableDemo
+    {
+        get
+        {
+            _availableDemo ??= DemoAttribute.AllEntries().Recursive(e => e?.Children ?? Enumerable.Empty<NavigationEntry>()).FirstOrDefault(entry => entry?.Demo?.RelatedComponents?.Any(IsMatchType) == true);
+            return _availableDemo;
+        }
+    }
+
+    private bool IsMatchType(Type other)
+    {
+        return other == Type || (other.IsGenericType && Type is {IsGenericType: true } && Type.GetGenericTypeDefinition() == other.GetGenericTypeDefinition());
+    }
+
+    public Type? Type => type ??= GetTypeByName();
+    public string? Documentation => _doc ??= (Type != null ? ComponentTypes.GetDocumentation(Type) : null);
+
+    private Type? ComponentRenderType => Type != null ? typeof(RenderComponent<>).MakeGenericType(Type) : null;
+
+    private Type? GetTypeByName()
+    {
+        if (string.IsNullOrWhiteSpace(TypeName))
+            return null;
+
+        Type? result = Type.GetType(TypeName) ?? Type.GetType($"MudBlazor.Extensions.Components.{TypeName}");
+
+        return result ?? AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes()).FirstOrDefault(t => t.Name == TypeName || t.FullName == TypeName);
+    }
+
+
+}

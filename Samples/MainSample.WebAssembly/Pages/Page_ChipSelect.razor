@@ -1,28 +1,19 @@
 ﻿@page "/chip-select"
+@attribute [Demo(ForComponentType = typeof(MudExChipSelect<>))]
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
-@using MudBlazor.Utilities
 @inject IDialogService dialogService;
 
-<PageHeader>MudExColorBubble</PageHeader>
-
-<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")" >
-
-    <MudGrid>
-        <MudItem md="8" Class="d-flex justify-center">
-            <MudPaper Class="d-flex flex-column mud-width-full pt-5 pl-5 pr-5">
-                <MudExChipSelect AvailableItems="@Available" @bind-Selected="Selected" @ref="component"></MudExChipSelect>
-                <MudButton Class="mt-5" OnClick="@OnShowClick">Show selected</MudButton>
-            </MudPaper>
-        </MudItem>
-        <MudItem md="4">
-            <MudPaper Class="px-4 pt-2 pb-4" Style="height: 70vh; overflow: auto">
-                <MudExObjectEdit MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
-            </MudPaper>
-        </MudItem>
-    </MudGrid>
-    
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudExChipSelect AvailableItems="@Available" @bind-Selected="Selected" @ref="component"></MudExChipSelect>
+            <MudButton Class="mt-5" OnClick="@OnShowClick">Show selected</MudButton>
+        </Left>
+        <Right>
+            <MudExObjectEdit MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
+        </Right>
+    </SplitContainer>
 </DemoComponent>
-
 
 @code {
     

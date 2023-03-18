@@ -1,17 +1,16 @@
 ﻿@page "/simple-dialogs"
-
+@attribute [Demo(Group = "Dialogs")]
 @inject IJSRuntime js;
 @inject IDialogService dialogService;
 
 <PageHeader>Simple dialog helping methods</PageHeader>
 
-<DemoComponent CodeFile="@($"Pages/{GetType().Name}.razor")">
+<DemoComponent PageType="@GetType()">
     <MudGrid>
         <MudButton Class="mt-3" Size="Size.Large" OnClick="@Prompt" Variant="Variant.Filled" Color="Color.Primary">Simple Prompt</MudButton>
         <MudButton Class="mt-3 ml-3" Size="Size.Large" OnClick="@MessageBox" Variant="Variant.Outlined" Color="Color.Primary">Simple Confirmation</MudButton>
         <MudButton Class="mt-3 ml-3" Size="Size.Large" OnClick="@ShowInfo" Variant="Variant.Outlined" Color="Color.Secondary">Show info</MudButton>
     </MudGrid>
-
 </DemoComponent>
 
 @code {

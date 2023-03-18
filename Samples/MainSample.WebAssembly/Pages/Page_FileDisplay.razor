@@ -1,5 +1,6 @@
 ﻿@page "/file-display"
-@using MudBlazor.Extensions.Core
+@attribute [Demo(Group = "File Handling", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
+
 @inject IDialogService dialogService
 @inject NavigationManager NavigationManager
 <PageHeader>File Display</PageHeader>
