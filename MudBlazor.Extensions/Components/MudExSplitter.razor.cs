@@ -17,7 +17,9 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
     public IJSObjectReference JsReference { get; set; }
     public IJSObjectReference ModuleReference { get; set; }
     public ElementReference ElementReference { get; set; }
-    
+
+    [Parameter] public bool UpdateSizesInPercentage { get; set; } = false;
+
     private IJsMudExComponent<MudExSplitter> AsJsComponent => this;
 
     
@@ -45,6 +47,7 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
         {
             Id = _dataId,
             Style = GetStyle(),
+            Percentage = UpdateSizesInPercentage,
             VerticalSplit = !Vertical // Splitter is vertical so container is horizontal
         };
     }

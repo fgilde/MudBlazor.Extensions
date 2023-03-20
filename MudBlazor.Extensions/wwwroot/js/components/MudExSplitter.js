@@ -1,81 +1,126 @@
 ﻿class MudExSplitter {
-    elementRef;
-    options;
-    dotnet;
-    splitter;
-    
+
     constructor(elementRef, dotNet, options) {
-        this.options = options;
         this.initialize(options);
     }
-
+    
+    
     initialize(options) {
         this.options = options;
-        this.splitter = document.querySelector(`.mud-ex-splitter[data-id="${options.id}"]`);
-        if (this.splitter) {
-            this.initSplitter(this.splitter);
+        const splitter = document.querySelector(`.mud-ex-splitter[data-id="${options.id}"]`);
+        if (splitter) {
+            this.initSplitter(splitter);
         }
     }
 
     initSplitter(splitter) {
-        const prevElem = splitter.previousElementSibling;
-        const nextElem = splitter.nextElementSibling;
-
-        if (this.options.verticalSplit) {
-            this.dragElement(splitter, "V", prevElem, nextElem);
-        } else {
-            this.dragElement(splitter, "H", prevElem, nextElem);
-        }
+        this.splitter = splitter;
+        this.prevElem = splitter.previousElementSibling;
+        this.nextElem = splitter.nextElementSibling;
+        this.direction = this.options.verticalSplit ? "V" : "H";
+        this.stretchOtherDirection();
+        this.dragElement();
     }
 
-    dragElement(splitter, direction, prevElem, nextElem) {
-        let md; // remember mouse down info
+    dragElement() {
+        let mouseDownInfo;
 
-        splitter.onmousedown = onMouseDown;
-
-        function onMouseDown(e) {
-            md = {
-                e,
-                offsetLeft: splitter.offsetLeft,
-                offsetTop: splitter.offsetTop,
-                prevWidth: prevElem.offsetWidth,
-                prevHeight: prevElem.offsetHeight,
-                nextWidth: nextElem.offsetWidth,
-                nextHeight: nextElem.offsetHeight
-            };
-
+        this.splitter.onmousedown = (event) => {
+            mouseDownInfo = this.getMouseDownInfo(event);
             document.onmousemove = onMouseMove;
             document.onmouseup = () => {
                 document.onmousemove = document.onmouseup = null;
+                this.apply();
+            };
+        };
+
+        const onMouseMove = (event) => {
+            const delta = this.getDelta(event, mouseDownInfo);
+            const { x, y } = this.getLimitedDelta(delta, mouseDownInfo);
+
+            if (this.direction === "H") { // Horizontal
+                this.updateHorizontalElements(x, mouseDownInfo);
+
+            } else if (this.direction === "V") { // Vertical
+                this.updateVerticalElements(y, mouseDownInfo);
             }
+        };
+    }
+
+    apply() {
+        if (this.options.percentage) {
+            this.updateElementsInPercentage();
         }
 
-        function onMouseMove(e) {
-            const delta = {
-                x: e.clientX - md.e.clientX,
-                y: e.clientY - md.e.clientY
-            };
+        this.stretchOtherDirection();
+    }
 
-            if (direction === "H") { // Horizontal
-                // Prevent negative-sized elements
-                delta.x = Math.min(Math.max(delta.x, -md.prevWidth), md.nextWidth);
-
-                splitter.style.left = md.offsetLeft + delta.x + "px";
-                prevElem.style.width = (md.prevWidth + delta.x) + "px";
-                nextElem.style.width = (md.nextWidth - delta.x) + "px";
-            } else if (direction === "V") { // Vertical
-                // Prevent negative-sized elements
-                delta.y = Math.min(Math.max(delta.y, -md.prevHeight), md.nextHeight);
-
-                splitter.style.top = md.offsetTop + delta.y + "px";
-                prevElem.style.height = (md.prevHeight + delta.y) + "px";
-                nextElem.style.height = (md.nextHeight - delta.y) + "px";
-            }
+    stretchOtherDirection() {
+        if (this.direction === "H") {
+            this.prevElem.style.height = "unset";
+            this.nextElem.style.height = "unset";
+        } else {
+            this.prevElem.style.width = "100%";
+            this.nextElem.style.width = "100%";
         }
     }
 
-    
+    getMouseDownInfo(event) {
+        return {
+            event,
+            offsetLeft: this.splitter.offsetLeft,
+            offsetTop: this.splitter.offsetTop,
+            prevWidth: this.prevElem.offsetWidth,
+            prevHeight: this.prevElem.offsetHeight,
+            nextWidth: this.nextElem.offsetWidth,
+            nextHeight: this.nextElem.offsetHeight
+        };
+    }
+
+    getDelta(event, mouseDownInfo) {
+        return {
+            x: event.clientX - mouseDownInfo.event.clientX,
+            y: event.clientY - mouseDownInfo.event.clientY
+        };
+    }
+
+    getLimitedDelta(delta, mouseDownInfo) {
+        if (this.direction === "H") { // Horizontal
+            delta.x = Math.min(Math.max(delta.x, -mouseDownInfo.prevWidth), mouseDownInfo.nextWidth);
+        } else if (this.direction === "V") { // Vertical
+            delta.y = Math.min(Math.max(delta.y, -mouseDownInfo.prevHeight), mouseDownInfo.nextHeight);
+        }
+
+        return delta;
+    }
+
+    updateHorizontalElements(deltaX, mouseDownInfo) {
+        this.splitter.style.left = mouseDownInfo.offsetLeft + deltaX + "px";
+        this.prevElem.style.width = (mouseDownInfo.prevWidth + deltaX) + "px";
+        this.nextElem.style.width = (mouseDownInfo.nextWidth - deltaX) + "px";
+    }
+
+    updateVerticalElements(deltaY, mouseDownInfo) {
+        this.splitter.style.top = mouseDownInfo.offsetTop + deltaY + "px";
+        this.prevElem.style.height = (mouseDownInfo.prevHeight + deltaY) + "px";
+        this.nextElem.style.height = (mouseDownInfo.nextHeight - deltaY) + "px";
+    }
+
+    updateElementsInPercentage() {
+        const parentWidth = this.prevElem.parentElement.clientWidth;
+        const parentHeight = this.prevElem.parentElement.clientHeight;
+        const prevElemWidthPercentage = (this.prevElem.offsetWidth / parentWidth) * 100;
+        const prevElemHeightPercentage = (this.prevElem.offsetHeight / parentHeight) * 100;
+        const nextElemWidthPercentage = (this.nextElem.offsetWidth / parentWidth) * 100;
+        const nextElemHeightPercentage = (this.nextElem.offsetHeight / parentHeight) * 100;
+
+        this.prevElem.style.width = `${prevElemWidthPercentage}%`;
+        this.prevElem.style.height = `${prevElemHeightPercentage}%`;
+        this.nextElem.style.width = `${nextElemWidthPercentage}%`;
+        this.nextElem.style.height = `${nextElemHeightPercentage}%`;
+    }
 }
+
 
 window.MudExSplitter = MudExSplitter;
 
