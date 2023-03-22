@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
-using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using Nextended.Core.Extensions;
 
-namespace MudBlazor.Extensions.Extensions;
+namespace MudBlazor.Extensions.Helper;
 
 internal static class MudPopoverExtensions
 {
@@ -17,8 +16,8 @@ internal static class MudPopoverExtensions
             o.ExcludedBlurSelectors = excludedElementSelectors;
         });
     }
-    
-    public static Task<MudPopover>ExtendWith(this MudPopover popover, Action<MudPopoverOptionsEx> options)
+
+    public static Task<MudPopover> ExtendWith(this MudPopover popover, Action<MudPopoverOptionsEx> options)
     {
         var optionsEx = new MudPopoverOptionsEx();
         options?.Invoke(optionsEx);
@@ -30,8 +29,8 @@ internal static class MudPopoverExtensions
         popover.Class = cssClass;
         var js = await JsImportHelper.GetInitializedJsRuntime(popover, options.JsRuntime);
         //if (options.AutoHideOnBlur)
-            //await new CustomEventInterop<PointerEventArgs>(js).OnBlur(args => Task.FromResult(popover.Open = false), options.ExcludedBlurSelectors.Concat(new []{ popover.Class }).ToArray());
-        
+        //await new CustomEventInterop<PointerEventArgs>(js).OnBlur(args => Task.FromResult(popover.Open = false), options.ExcludedBlurSelectors.Concat(new []{ popover.Class }).ToArray());
+
 
         return popover;
     }

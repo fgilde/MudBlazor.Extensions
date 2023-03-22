@@ -5,13 +5,13 @@ using Nextended.Blazor.Extensions;
 using Nextended.Core;
 using Nextended.Core.Extensions;
 
-namespace MudBlazor.Extensions.Extensions
+namespace MudBlazor.Extensions.Helper
 {
     public static class BrowserFileExt
     {
-        public static Task DownloadAsync(this IBrowserFile browserFile, IJSRuntime jsRuntime) 
+        public static Task DownloadAsync(this IBrowserFile browserFile, IJSRuntime jsRuntime)
             => browserFile.DownloadFileAsync(jsRuntime);
-       
+
         //public static async Task DownloadAsync(this IBrowserFile browserFile, IJSRuntime jsRuntime)
         //{
         //    var url = await DataUrl.GetDataUrlAsync(await browserFile.GetBytesAsync(), browserFile.ContentType);

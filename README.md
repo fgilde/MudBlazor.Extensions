@@ -221,6 +221,11 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log 
+ - 1.7.34 > New Components [MudExSplitPanel](/c/MudExSplitPanel) [MudExSplitter](/c/MudExSplitter) [MudExDivider](/c/MudExDivider)
+ - 1.7.34 > **_Breaking:_** Rename: SvgIconHelper is now MudExSvg
+ - 1.7.34 > **_Breaking:_** Rename: CssHelper is now MudExCss
+ - 1.7.34 > **_Breaking:_** Rename: MudExColorHelper is now MudExColor
+ - 1.7.34 > **_Breaking:_** Move: Namespace MudBlazor.Extensions.Extensions is now MudBlazor.Extensions.Helper
  - 1.7.33 Fix bug if no header is active on dialogs
  - 1.7.33 Load Modules manually for MAUI Apps
  - 1.7.31 Update BlazorJS to v 2.0.0 and MudBlazor to 6.1.8.

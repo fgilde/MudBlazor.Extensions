@@ -1,6 +1,6 @@
 ﻿@typeparam T
 
-<MudExSplitPanel ColumnLayout="false" Reverse="false">
+<MudExSplitPanel ColumnLayout="true" Reverse="false">
     <Left>
         <DynamicComponent Type="typeof(T)" @ref="dynamicReference"></DynamicComponent>
         @if (ChildContent != null && rendered && Component != null)

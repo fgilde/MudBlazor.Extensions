@@ -1,12 +1,13 @@
 ﻿using MudBlazor.Extensions.Core;
-using MudBlazor.Extensions.Extensions;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using MudBlazor.Extensions.Options;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Helper;
 
-public static class CssHelper
+public static class MudExCss
 {
     private static readonly string[] PropertiesToAddUnits = { "height", "width", "min-height", "min-width", "max-height", "max-width", 
         "padding", "padding-top", "padding-right", "padding-bottom", "padding-left", "margin", "margin-top", "margin-right", "margin-bottom",
@@ -14,6 +15,30 @@ public static class CssHelper
         "line-height", "word-spacing", "text-indent", "column-gap", "column-width", "top", "right", "bottom", "left", "transform", "translate", "translateX", 
         "translateY", "translateZ", "translate3d", "rotate", "rotateX", "rotateY", "rotateZ", "scale", "scaleX", "scaleY", "scaleZ", "scale3d", 
         "skew", "skewX", "skewY", "perspective"};
+
+    private static AnimationType[] typesWithoutPositionReplacement = { AnimationType.SlideIn };
+
+    public static string GetAnimationCssStyle(this AnimationType type, TimeSpan duration, AnimationDirection? direction = null, AnimationTimingFunction animationTimingFunction = null, DialogPosition? targetPosition = null)
+        => GetAnimationCssStyle(new[] {type}, duration, direction, animationTimingFunction, targetPosition);
+
+    public static string GetAnimationCssStyle(this AnimationType[] types, TimeSpan duration, AnimationDirection? direction = null, AnimationTimingFunction animationTimingFunction = null, DialogPosition? targetPosition = null)
+    {
+        animationTimingFunction ??= AnimationTimingFunction.EaseIn;
+        targetPosition ??= DialogPosition.TopCenter;
+        return string.Join(',', types.SelectMany(type => targetPosition.GetPositionNames(!typesWithoutPositionReplacement.Contains(type)).Select(n => $"{ReplaceAnimation(type.ToDescriptionString(), n, direction)} {duration.TotalMilliseconds}ms {animationTimingFunction} 1 alternate")).Distinct());
+    }
+
+    private static string ReplaceAnimation(string animationDesc, string position, AnimationDirection? direction)
+    { 
+        string fallBackPosition = string.IsNullOrWhiteSpace(position) ? "Down" : position;
+        animationDesc = animationDesc.Replace("{InOut?}", direction.HasValue ? Enum.GetName(direction.Value) ?? string.Empty : string.Empty);
+        animationDesc = animationDesc.Replace("{InOut}", Enum.GetName(direction ?? AnimationDirection.In));
+        animationDesc = animationDesc.Replace("{Pos?}", position?.ToUpper(true) ?? "");
+        animationDesc = animationDesc.Replace("{Pos}", fallBackPosition.ToUpper(true));
+        animationDesc = animationDesc.Replace("{pos?}", position?.ToLower(true) ?? "");
+        animationDesc = animationDesc.Replace("{pos}", fallBackPosition.ToLower(true));
+        return animationDesc;
+    }
 
     public static string GenerateCssString(object obj, string existingCss = "")
     {
@@ -138,6 +163,4 @@ public static class CssHelper
 
         return obj;
     }
-
-
 }

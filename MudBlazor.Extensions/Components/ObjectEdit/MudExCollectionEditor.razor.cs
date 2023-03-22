@@ -59,7 +59,7 @@ public partial class MudExCollectionEditor<T>
     private string GetMudGridStyle()
     {
         // Display block is required to have virtualization working
-        return !Virtualize ? string.Empty : CssHelper.GenerateCssString(new
+        return !Virtualize ? string.Empty : MudExCss.GenerateCssString(new
         {
             Display = "block"
         });
@@ -67,7 +67,7 @@ public partial class MudExCollectionEditor<T>
 
     private string GetToolbarStyle()
     {
-        return CssHelper.GenerateCssString(new
+        return MudExCss.GenerateCssString(new
         {
             ZIndex = 1,
             BackgroundColor = ToolbarColor,
@@ -79,7 +79,7 @@ public partial class MudExCollectionEditor<T>
 
     private string GetStyle()
     {
-        return CssHelper.GenerateCssString(new
+        return MudExCss.GenerateCssString(new
         {
             Height,
             MaxHeight,

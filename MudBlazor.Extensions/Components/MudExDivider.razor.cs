@@ -4,7 +4,6 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
-using MudBlazor.Extensions.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -36,12 +35,14 @@ public partial class MudExDivider : IMudExComponent
 
     protected virtual string GetStyle()
     {
-        return CssHelper.GenerateCssString(new
+        return MudExCss.GenerateCssString(new
         {
             BorderWidth = 0,
             BackgroundColor = Color == Color.Default ? "var(--mud-palette-divider)" : Color.CssVarDeclaration(),
             Width = Vertical ? Size.ToString() : "unset",
+            MaxWidth = Vertical ? Size.ToString() : "unset",
             Height = !Vertical ? Size.ToString() : "unset",
+            MaxHeight = !Vertical ? Size.ToString() : "unset",
         }, SizeUnit);
     }
 

@@ -2,7 +2,7 @@
 
 namespace MudBlazor.Extensions.Helper;
 
-public static class SvgIconHelper
+public static class MudExSvg
 {
     public static string CombineIconsHorizontal(string image, params string[] other)
     {

@@ -2,6 +2,8 @@
 
     constructor(elementRef, dotNet, options) {
         this.initialize(options);
+        this.documentMouseUp = document.onmouseup;
+        this.documentMouseMove = document.onmousemove;
     }
     
     
@@ -29,7 +31,7 @@
             mouseDownInfo = this.getMouseDownInfo(event);
             document.onmousemove = onMouseMove;
             document.onmouseup = () => {
-                document.onmousemove = document.onmouseup = null;
+                this.resetDocumentMouseEvents();
                 this.apply();
             };
         };
@@ -118,6 +120,18 @@
         this.prevElem.style.height = `${prevElemHeightPercentage}%`;
         this.nextElem.style.width = `${nextElemWidthPercentage}%`;
         this.nextElem.style.height = `${nextElemHeightPercentage}%`;
+    }
+
+    resetDocumentMouseEvents() {
+        document.onmousemove = this.documentMouseMove;
+        document.onmouseup = this.documentMouseUp; 
+    }
+
+    dispose() {
+        this.splitter.onmousedown = null;
+        this.resetDocumentMouseEvents();
+        this.documentMouseMove = this.documentMouseUp = null;
+        this.direction = this.splitter = this.prevElem = this.nextElem = null;
     }
 }
 

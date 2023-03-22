@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Core;
-using MudBlazor.Extensions.Extensions;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Utilities;
@@ -269,7 +268,7 @@ public partial class MudExObjectEdit<T>
 
     private string GetStyle()
     {
-        return CssHelper.GenerateCssString(new
+        return MudExCss.GenerateCssString(new
         {
             Height,
             MaxHeight,

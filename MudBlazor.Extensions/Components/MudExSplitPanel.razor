@@ -2,7 +2,7 @@
 
 <MudButton OnClick="@(() => ColumnLayout = !ColumnLayout)">Test</MudButton>
 
-<MudGrid>
+<MudGrid Class="@($"mud-ex-split-panel-grid {Class}")" Style="@($"{Style}")">
     <div class="mud-ex-split-panel" style="@GetStyle()">
         @if (Left != null)
         {
@@ -21,14 +21,16 @@
             </MudPaper>
         }
     </div>
-
 </MudGrid>
+
 
 @code {
     [Parameter] public RenderFragment? Left { get; set; }
     [Parameter] public RenderFragment? Right { get; set; }
     [Parameter] public bool ColumnLayout { get; set; } = true;
     [Parameter] public bool Reverse { get; set; } = false;
+    [Parameter] public string Class { get; set; }
+    [Parameter] public string Style { get; set; }
 
     public string GetStyle()
     {

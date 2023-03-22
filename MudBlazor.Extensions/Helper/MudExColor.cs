@@ -1,17 +1,17 @@
 ﻿using System.Drawing;
 using MudBlazor.Utilities;
 
-namespace MudBlazor.Extensions.Extensions;
+namespace MudBlazor.Extensions.Helper;
 
-public static class MudExColorHelper
+public static class MudExColor
 {
-    public static string CssVarName(this Color color) 
+    public static string CssVarName(this Color color)
         => $"--mud-palette-{color.ToDescriptionString()}";
 
-    public static string CssVarDeclaration(this Color color) 
+    public static string CssVarDeclaration(this Color color)
         => color == Color.Transparent ? "transparent" : $"var({color.CssVarName()})";
 
-    public static System.Drawing.Color ToDrawingColor(this MudColor color) 
+    public static System.Drawing.Color ToDrawingColor(this MudColor color)
         => System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
 
     public static MudColor ToMudColor(this System.Drawing.Color color)

@@ -5,6 +5,9 @@ namespace MainSample.WebAssembly;
 
 public static class Navigations
 {
+    // MudPopoverExtensions
+    // MudExCss
+    // ;udExSvg
     public static HashSet<NavigationEntry> Default() => new() {
         new NavigationEntry("Home", Icons.Material.Outlined.Home, "/"),
         new NavigationEntry("Dialog Samples")
