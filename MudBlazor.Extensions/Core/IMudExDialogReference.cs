@@ -1,11 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using MudBlazor.Extensions.Helper;
-using Nextended.Core.Extensions;
-using System.ComponentModel;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace MudBlazor.Extensions.Core;
 

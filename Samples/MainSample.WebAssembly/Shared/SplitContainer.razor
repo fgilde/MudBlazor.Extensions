@@ -1,26 +1,25 @@
-﻿<MudGrid>
-    <div class="mud-ex-split-panel kacke" style="max-height: 80vh">
+﻿<MudExSplitPanel Splittable="@Splittable" ColumnLayout="@ColumnLayout" Style="max-height: 80vh">
+    <Left>
         @if (Left != null)
         {
-            <MudPaper Class="mud-width-full mud-ex-content-center mud-ex-transparent-indicator-bg" Style="min-width: 350px;">
+            <MudExSplitPanelItem Class="mud-ex-content-center mud-ex-transparent-indicator-bg" Style="min-width: 350px; min-height: 150px;">
                 @Left
-            </MudPaper>
+            </MudExSplitPanelItem>
         }
-        @if (Left != null && Right != null)
-        {
-            <MudExSplitter Vertical="true" FlexItem="true"/>
-        }
-        @if (Right != null)
-        {
-            <MudPaper Class="px-4 pt-2 pb-4" Style="width: 50%; min-width: 350px; overflow: auto">
-                @Right
-            </MudPaper>
-        }
-    </div>
-
-</MudGrid>
+    </Left>
+    <Right>
+    @if (Right != null)
+    {
+        <MudExSplitPanelItem Class="px-4 pt-2 pb-4" Style="min-width: 350px; min-height: 150px; width: 50%;">
+            @Right
+        </MudExSplitPanelItem>
+    }
+    </Right>
+</MudExSplitPanel>
 
 @code {
     [Parameter] public RenderFragment? Left { get; set; }
     [Parameter] public RenderFragment? Right { get; set; }
+    [Parameter] public bool ColumnLayout { get; set; } = true;
+    [Parameter] public bool Splittable { get; set; } = true;
 }

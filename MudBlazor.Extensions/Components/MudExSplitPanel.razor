@@ -1,43 +1,22 @@
 ﻿@inherits MudExBaseComponent<MudExSplitPanel>
 
-<MudButton OnClick="@(() => ColumnLayout = !ColumnLayout)">Test</MudButton>
-
 <MudGrid Class="@($"mud-ex-split-panel-grid {Class}")" Style="@($"{Style}")">
     <div class="mud-ex-split-panel" style="@GetStyle()">
         @if (Left != null)
         {
-            <MudPaper Class="mud-width-full mud-ex-content-center mud-ex-transparent-indicator-bg" Style="min-width: 350px;">
+            <CascadingValue Value="this">
                 @Left
-            </MudPaper>
+            </CascadingValue>
         }
-        @if (Left != null && Right != null)
+        @if (Splittable && Left != null && Right != null)
         {
-            <MudExSplitter Vertical="@ColumnLayout" FlexItem="true" />
+            <MudExSplitter Reverse="@Reverse" UpdateSizesInPercentage="@UpdateSizesInPercentage" Vertical="@ColumnLayout" FlexItem="true" />
         }
         @if (Right != null)
         {
-            <MudPaper Class="px-4 pt-2 pb-4" Style="width: 50%; min-width: 350px; overflow: auto">
+            <CascadingValue Value="this">
                 @Right
-            </MudPaper>
+            </CascadingValue>
         }
     </div>
 </MudGrid>
-
-
-@code {
-    [Parameter] public RenderFragment? Left { get; set; }
-    [Parameter] public RenderFragment? Right { get; set; }
-    [Parameter] public bool ColumnLayout { get; set; } = true;
-    [Parameter] public bool Reverse { get; set; } = false;
-    [Parameter] public string Class { get; set; }
-    [Parameter] public string Style { get; set; }
-
-    public string GetStyle()
-    {
-        // Its not a bug. if columnLayout is true flex-direction is row
-        return $"flex-direction:{(ColumnLayout ? "row" : "column")}{(Reverse ? "-reverse" : "")};";
-    }
-
-}
-
-

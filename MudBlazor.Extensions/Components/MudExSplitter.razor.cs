@@ -19,6 +19,7 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
     public ElementReference ElementReference { get; set; }
 
     [Parameter] public bool UpdateSizesInPercentage { get; set; } = false;
+    [Parameter] public bool Reverse { get; set; } = false;
 
     private IJsMudExComponent<MudExSplitter> AsJsComponent => this;
 
@@ -46,6 +47,7 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
         return new
         {
             Id = _dataId,
+            Reverse,
             Style = GetStyle(),
             Percentage = UpdateSizesInPercentage,
             VerticalSplit = !Vertical // Splitter is vertical so container is horizontal

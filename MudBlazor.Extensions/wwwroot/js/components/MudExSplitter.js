@@ -5,8 +5,8 @@
         this.documentMouseUp = document.onmouseup;
         this.documentMouseMove = document.onmousemove;
     }
-    
-    
+
+
     initialize(options) {
         this.options = options;
         const splitter = document.querySelector(`.mud-ex-splitter[data-id="${options.id}"]`);
@@ -81,8 +81,8 @@
 
     getDelta(event, mouseDownInfo) {
         return {
-            x: event.clientX - mouseDownInfo.event.clientX,
-            y: event.clientY - mouseDownInfo.event.clientY
+            x: this.options.reverse ? mouseDownInfo.event.clientX - event.clientX : event.clientX - mouseDownInfo.event.clientX,
+            y: this.options.reverse ? mouseDownInfo.event.clientY - event.clientY : event.clientY - mouseDownInfo.event.clientY
         };
     }
 
@@ -124,7 +124,7 @@
 
     resetDocumentMouseEvents() {
         document.onmousemove = this.documentMouseMove;
-        document.onmouseup = this.documentMouseUp; 
+        document.onmouseup = this.documentMouseUp;
     }
 
     dispose() {

@@ -1,4 +1,5 @@
 ﻿@page "/simple-dialogs"
+@using MudBlazor.Extensions.Core
 @attribute [Demo(Group = "Dialogs")]
 @inject IJSRuntime js;
 @inject IDialogService dialogService;
@@ -41,7 +42,7 @@
     private async Task ShowInfo()
     {
         int seconds = 5;
-        var dlg = await dialogService.ShowInformationAsync("Information", $"This is a simple information dialog that closes after {seconds} seconds", Icons.Material.Filled.Info, false, true);
+        IMudExDialogReference<MudExMessageDialog>? dlg = await dialogService.ShowInformationAsync("Information", $"This is a simple information dialog that closes after {seconds} seconds", Icons.Material.Filled.Info, false, true);
         for (int i = 0; i < seconds; i++)
         {
             await Task.Delay(1000);

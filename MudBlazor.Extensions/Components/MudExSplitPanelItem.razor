@@ -1,0 +1,36 @@
+﻿@inherits MudExBaseComponent<MudExSplitPanelItem>
+
+@using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Core
+
+<MudPaper Class="@($"{Class} {GetClass()}")" Style="@GetStyle()">
+    @ChildContent
+</MudPaper>
+
+@code {
+    [CascadingParameter] public MudExSplitPanel Panel { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public string Class { get; set; }
+    [Parameter] public string Style { get; set; }
+
+    [Parameter] public int MinSize { get; set; }
+    [Parameter] public CssUnit SizeUnit { get; set; } = CssUnit.Pixels;
+
+
+    private string GetClass()
+    {
+        return $"{(Panel?.ColumnLayout == true ? "mud-width-full" : "mud-height-full")}";
+    }
+
+    protected virtual string GetStyle()
+    {
+        return MudExCss.GenerateCssString(new
+        {
+            //Flex = 1,
+            Overflow = "auto",
+            MinWidth = Panel?.ColumnLayout == true ? MinSize.ToString() : "unset",
+            MinHeight = !Panel?.ColumnLayout == true ? MinSize.ToString() : "unset",    
+        }, SizeUnit, Style);
+    }
+
+}

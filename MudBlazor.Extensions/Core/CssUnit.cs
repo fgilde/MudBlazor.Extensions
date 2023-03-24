@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Numerics;
 
 public enum CssUnit
 {
@@ -31,4 +32,19 @@ public enum CssUnit
     Points,
     [Description("pc")]
     Picas
+}
+
+public class MudExSize<T>
+{
+    public T Value { get; set; }
+    public CssUnit SizeUnit { get; set; }
+
+    public MudExSize(T value, CssUnit sizeUnit = CssUnit.Pixels)
+    {
+        Value = value;
+        SizeUnit = sizeUnit;
+    }
+
+    public static implicit operator T(MudExSize<T> size) => size.Value;
+    public static implicit operator MudExSize<T>(T s) => new(s);
 }

@@ -1,6 +1,6 @@
 ﻿@typeparam T
 
-<MudExSplitPanel ColumnLayout="true" Reverse="false">
+<SplitContainer>
     <Left>
         <DynamicComponent Type="typeof(T)" @ref="dynamicReference"></DynamicComponent>
         @if (ChildContent != null && rendered && Component != null)
@@ -14,4 +14,4 @@
             <MudExObjectEdit MetaConfiguration="@Configure()" Value="@Component"></MudExObjectEdit>
         }
     </Right>
-</MudExSplitPanel>
+</SplitContainer>
