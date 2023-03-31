@@ -1,0 +1,16 @@
+﻿@page "/card"
+@using MudBlazor.Extensions.Core
+@attribute [Demo(ForComponentType = typeof(MudExCardList<>))]
+@inject IJSRuntime js;
+@inject IDialogService dialogService;
+
+<DemoComponent PageType="@GetType()" Title="MudExCardList">
+    <MudExCardList T="object">
+
+    </MudExCardList>
+</DemoComponent>
+
+@code {
+
+
+}

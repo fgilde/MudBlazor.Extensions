@@ -12,6 +12,8 @@ namespace MudBlazor.Extensions.Options
         
         [Description("slide{InOut}{Pos}")] Slide,
         [Description("fade{InOut}{Pos?}")] Fade,
+        [Description("perspective3d{InOut}{Pos?}")] Perspective3d,
+        [Description("lightSpeed{InOut}{Pos?}")] LightSpeed,
 
         [Description("zoom{InOut}{Pos?}")] Zoom,
 
