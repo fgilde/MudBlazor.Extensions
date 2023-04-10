@@ -221,6 +221,7 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log 
+ - 1.7.34 > New Animations for dialogs Perspective3d and LightSpeed
  - 1.7.34 > New Components [MudExSplitPanel](/c/MudExSplitPanel) [MudExSplitter](/c/MudExSplitter) [MudExDivider](/c/MudExDivider)
  - 1.7.34 > **_Breaking:_** Rename: SvgIconHelper is now MudExSvg
  - 1.7.34 > **_Breaking:_** Rename: CssHelper is now MudExCss

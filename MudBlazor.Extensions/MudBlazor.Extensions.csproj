@@ -99,4 +99,11 @@
     <Folder Include="Components\Base\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\css\animations\_perspective.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -25,7 +25,8 @@ public static class MudExCss
     {
         animationTimingFunction ??= AnimationTimingFunction.EaseIn;
         targetPosition ??= DialogPosition.TopCenter;
-        return string.Join(',', types.SelectMany(type => targetPosition.GetPositionNames(!typesWithoutPositionReplacement.Contains(type)).Select(n => $"{ReplaceAnimation(type.ToDescriptionString(), n, direction)} {duration.TotalMilliseconds}ms {animationTimingFunction} 1 alternate")).Distinct());
+        var result = string.Join(',', types.SelectMany(type => targetPosition.GetPositionNames(!typesWithoutPositionReplacement.Contains(type)).Select(n => $"{ReplaceAnimation(type.ToDescriptionString(), n, direction)} {duration.TotalMilliseconds}ms {animationTimingFunction} 1 alternate")).Distinct());
+        return result;
     }
 
     private static string ReplaceAnimation(string animationDesc, string position, AnimationDirection? direction)

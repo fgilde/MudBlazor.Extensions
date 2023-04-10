@@ -256,3 +256,7 @@
     background-position: 0 0, 10px 10px;
     background-color: #f1f1f1;
 }
+
+.mud-dialog-container:has(.mud-ex-dialog-no-margin) {
+    padding: 0px !important;
+}

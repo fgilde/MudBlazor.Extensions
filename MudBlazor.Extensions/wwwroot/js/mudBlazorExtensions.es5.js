@@ -66,6 +66,7 @@ var MudBlazorExtensionHelper = (function () {
 
             if (this.options.disablePositionMargin) {
                 this.dialog.classList.add('mud-dialog-position-fixed');
+                this.dialog.classList.add('mud-ex-dialog-no-margin');
             }
 
             // Full height ext

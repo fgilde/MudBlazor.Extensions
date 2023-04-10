@@ -7,7 +7,7 @@
 <PageHeader>Sample Dialog</PageHeader>
 
 <DemoComponent PageType="@GetType()">
-    <SplitContainer>
+    <SplitContainer ColumnLayout="false" >
         <Left>
             <div>
                 <MudNumericField Style="max-width: 250px;" FullWidth="false" Min="0" Max="30" Variant="Variant.Text" Disabled="@(OpenDialogTask != null)" @bind-Value="seconds" Label="@($"Dialog opens in {seconds}s")"></MudNumericField>

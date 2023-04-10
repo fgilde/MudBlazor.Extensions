@@ -1,0 +1,138 @@
+﻿/* perspective3d */
+
+@keyframes perspective3dInRight {
+    0% {
+        transform: perspective(1000px) translate3d(100%, 0, 0) rotateY(90deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: perspective(1000px) translate3d(0, 0, 0) rotateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes perspective3dOutRight {
+    0% {
+        transform: perspective(1000px) translate3d(0, 0, 0) rotateY(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: perspective(1000px) translate3d(100%, 0, 0) rotateY(90deg);
+        opacity: 0;
+    }
+}
+
+@keyframes perspective3dInDown {
+    0% {
+        transform: perspective(1000px) translate3d(0, -100%, 0) rotateX(90deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: perspective(1000px) translate3d(0, 0, 0) rotateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes perspective3dOutDown {
+    0% {
+        transform: perspective(1000px) translate3d(0, 0, 0) rotateX(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: perspective(1000px) translate3d(0, -100%, 0) rotateX(90deg);
+        opacity: 0;
+    }
+}
+
+@keyframes perspective3dInUp {
+    0% {
+        transform: perspective(1000px) translate3d(0, 100%, 0) rotateX(-90deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: perspective(1000px) translate3d(0, 0, 0) rotateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes perspective3dOutUp {
+    0% {
+        transform: perspective(1000px) translate3d(0, 0, 0) rotateX(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: perspective(1000px) translate3d(0, 100%, 0) rotateX(-90deg);
+        opacity: 0;
+    }
+}
+
+@keyframes perspective3dInLeft {
+    0% {
+        transform: perspective(1000px) translate3d(-100%, 0, 0) rotateY(-90deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: perspective(1000px) translate3d(0, 0, 0) rotateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes perspective3dOutLeft {
+    0% {
+        transform: perspective(1000px) translate3d(0, 0, 0) rotateY(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: perspective(1000px) translate3d(-100%, 0, 0) rotateY(-90deg);
+        opacity: 0;
+    }
+}
+
+
+.animate__perspective3dInRight {
+    animation-name: perspective3dInRight;
+    animation-timing-function: ease-in;
+}
+
+.animate__perspective3dOutRight {
+    animation-name: perspective3dOutRight;
+    animation-timing-function: ease-out;
+}
+
+.animate__perspective3dInTop {
+    animation-name: perspective3dInTop;
+    animation-timing-function: ease-in;
+}
+
+.animate__perspective3dOutTop {
+    animation-name: perspective3dOutTop;
+    animation-timing-function: ease-out;
+}
+
+.animate__perspective3dInBottom {
+    animation-name: perspective3dInBottom;
+    animation-timing-function: ease-in;
+}
+
+.animate__perspective3dOutBottom {
+    animation-name: perspective3dOutBottom;
+    animation-timing-function: ease-out;
+}
+
+.animate__perspective3dInLeft {
+    animation-name: perspective3dInLeft;
+    animation-timing-function: ease-in;
+}
+
+.animate__perspective3dOutLeft {
+    animation-name: perspective3dOutLeft;
+    animation-timing-function: ease-out;
+}

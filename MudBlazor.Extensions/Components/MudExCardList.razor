@@ -1,4 +1,4 @@
-﻿@inherits MudExBaseComponent<MudExCardList<T>>
+﻿@*@inherits MudExBaseComponent<MudExCardList<T>>
 @using Microsoft.AspNetCore.Components.Rendering
 @using Nextended.Core.Extensions
 @typeparam T
@@ -8,12 +8,7 @@
         @RenderCards
     </MudGrid>
 </div>
-@*<div class="mud-ex-card-list">
-    <div class="mud-ex-cards">
-        @RenderCards
-    </div>
-</div>
-*@
+
 
 @code
 {
@@ -60,4 +55,4 @@
     //    return @<p>@name</p>;
     //}
 
-}
+}*@

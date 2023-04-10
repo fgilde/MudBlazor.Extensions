@@ -11,8 +11,8 @@ public class DialogOptionsExMetaConfig : IObjectMetaConfiguration<DialogOptionsE
     {
         meta.Properties(o => o.AnimationDuration,
             o => o.Buttons,
-            o => o.Animation,
             o => o.AnimationTimingFunction,
+            o => o.Animation,
             o => o.AnimationStyle,
             o => o.JsRuntime,
             o => o.CursorPositionOrigin,
@@ -30,7 +30,10 @@ public class DialogOptionsExMetaConfig : IObjectMetaConfiguration<DialogOptionsE
         });
         meta.WrapEachInMudItem(i =>
         {
+            //i.xl = 6;
+            //i.xs = 12;
             i.xl = 6;
+            i.lg = 6;
             i.xs = 12;
         });
         return Task.CompletedTask;
