@@ -278,7 +278,7 @@ There are some features planned like
 
  #
  
-If you like this package, please star it on [![GitHub](https://img.shields.io/badge/GitHub-Source-blue)](https://github.com/fgilde/GptInvoke) and share it with your friends
+If you like this package, please star it on [GitHub](https://github.com/fgilde/MudBlazor.Extensions) and share it with your friends
 If not, you can give a star anyway and let me know what I can improve to make it better for you. 
  
 ## Links
