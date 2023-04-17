@@ -22,6 +22,10 @@
     <PackageIconUrl />
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\js\components\MoveContent.min.js" />
+    <Content Remove="wwwroot\js\components\MudExColorBubble.min.js" />
+  </ItemGroup>
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -73,6 +77,8 @@
     </None>
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
+    <None Include="wwwroot\js\components\MoveContent.min.js" />
+    <None Include="wwwroot\js\components\MudExColorBubble.min.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -89,6 +95,8 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Components\MudExMessageDialog.razor" />
     <_ContentIncludedByDefault Remove="Components\MudExTaskBar.razor" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\components\MoveContent.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\components\MudExColorBubble.min.js" />
   </ItemGroup>
 
   <ItemGroup>
