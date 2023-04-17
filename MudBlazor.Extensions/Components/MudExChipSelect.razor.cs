@@ -24,6 +24,7 @@ public partial class MudExChipSelect<T>
     [Parameter] public virtual string Label { get; set; }
     [Parameter] public virtual string HelperText { get; set; }
     [Parameter] public virtual bool FilterEnabled { get; set; } = true;
+    [Parameter] public virtual bool Clearable { get; set; } = true;
     [Parameter] public virtual bool MultiSelect { get; set; } = true;
     [Parameter] public virtual bool UseCustomItemRenderInSelectionPopover { get; set; } = false;
     [Parameter] public RenderFragment<T>? ItemTemplate { get; set; }

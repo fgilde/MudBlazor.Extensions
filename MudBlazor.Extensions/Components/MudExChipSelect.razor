@@ -21,7 +21,7 @@
                        Variant="@(ViewMode != ViewMode.ChipsOnly ? Variant : Variant.Text)"
                        Label="@(!Label.IsNullOrWhiteSpace() ? TryLocalize(Label) : "")" 
                        HelperText="@(!HelperText.IsNullOrWhiteSpace() ? TryLocalize(HelperText) : "")"
-                       Clearable="@(!ReadOnly)"
+                       Clearable="@(!ReadOnly && Clearable)"
                        OnClose="@OnClose"
                        ReadOnly="@ReadOnly"
                        Adornment="@(ReadOnly ? Adornment.None : Adornment)"

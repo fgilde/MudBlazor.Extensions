@@ -20,7 +20,22 @@
 @import '_wobble.scss';
 @import '_zoom.scss';
 
+.mud-ex-gradient-text {
+    background: linear-gradient( 90deg,var(--mud-palette-primary),var(--mud-palette-secondary),#90ee90,#59aa73,#2a55b4,#fee654,#ec3771);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 
+    &.animate {
+        animation: reverse textclip 3.0s linear infinite;
+
+        @keyframes textclip {
+            to {
+                background-position: 200% center;
+            }
+        }
+    }
+}
 
 .mud-ex-animate-all-properties {
     transition-property: all !important;

@@ -15,7 +15,7 @@ Sure you need a MudBlazor project and the referenced package to MudBlazor for mo
 Add the nuget Package `MudBlazor.Extensions` to your blazor project
 
 ```
-<PackageReference Include="MudBlazor.Extensions" Version="1.7.33" />
+<PackageReference Include="MudBlazor.Extensions" Version="1.7.35" />
 ```
 
 For easier using the components should change your `_Imports.razor` and add this entries.

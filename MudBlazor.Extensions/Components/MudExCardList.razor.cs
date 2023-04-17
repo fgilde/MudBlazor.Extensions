@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace MudBlazor.Extensions.Components;
-
+// extend: MudBaseItemsControl<TChildComponent>
 //public partial class MudExCardList<T>
 //{
 //    [Parameter] public ICollection<T> Items { get; set; } = Enumerable.Repeat<T>(default, 10).ToList();
