@@ -4,6 +4,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using MudBlazor.Extensions.Options;
 using Nextended.Core.Extensions;
+using Microsoft.JSInterop;
+using MudBlazor.Utilities;
+using Nextended.Core;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -20,6 +23,8 @@ public static class MudExCss
 
     public static string GetAnimationCssStyle(this AnimationType type, TimeSpan duration, AnimationDirection? direction = null, AnimationTimingFunction animationTimingFunction = null, DialogPosition? targetPosition = null)
         => GetAnimationCssStyle(new[] {type}, duration, direction, animationTimingFunction, targetPosition);
+
+    
 
     public static string GetAnimationCssStyle(this AnimationType[] types, TimeSpan duration, AnimationDirection? direction = null, AnimationTimingFunction animationTimingFunction = null, DialogPosition? targetPosition = null)
     {
@@ -163,5 +168,47 @@ public static class MudExCss
         }
 
         return obj;
+    }
+
+    public static async Task<KeyValuePair<string, string>[]> GetCssVariablesAsync()
+    {
+        var js = await JsImportHelper.GetInitializedJsRuntime();
+        var res = await js.InvokeAsync<KeyValuePair<string, string>[]>("MudExCssHelper.getCssVariables");        
+        return res;
+    }
+
+    public static async Task<KeyValuePair<string, string>[]> FindCssVariablesByValueAsync(string value)
+    {
+        var js = await JsImportHelper.GetInitializedJsRuntime();
+        var res = await js.InvokeAsync<KeyValuePair<string, string>[]>("MudExCssHelper.findCssVariables", value);
+        return res;
+    }
+
+    public static async Task SetCssVariableValueAsync(KeyValuePair<string, string> pair)
+    {
+        await SetCssVariableValueAsync(pair.Key, pair.Value);
+    }
+
+    public static async Task SetCssVariableValueAsync(string key, MudColor color)
+    {
+        await SetCssVariableValueAsync(key, color.ToString(MudColorOutputFormats.Hex));
+    }
+    
+    public static async Task SetCssVariableValueAsync(string key, string value)
+    {
+        var js = await JsImportHelper.GetInitializedJsRuntime();
+        await js.InvokeVoidAsync("MudExCssHelper.setCssVariableValue", key, value);        
+    }
+
+    public static async Task<KeyValuePair<string, Utilities.MudColor>[]> GetCssColorVariablesAsync()
+    {
+        var all = await GetCssVariablesAsync();
+        var res = all.Select(k =>
+        {
+            var color = Check.TryCatch<MudColor, Exception>(() => new MudColor(k.Value));            
+            return new KeyValuePair<string, MudColor>(k.Key, color);
+        }).Where(k => k.Value != null)
+        .ToArray();
+        return res;
     }
 }

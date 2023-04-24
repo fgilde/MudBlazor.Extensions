@@ -25,6 +25,7 @@
   <ItemGroup>
     <Content Remove="wwwroot\js\components\MoveContent.min.js" />
     <Content Remove="wwwroot\js\components\MudExColorBubble.min.js" />
+    <Content Remove="wwwroot\js\components\MudExUploadEdit.min.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,7 +50,7 @@
   <ItemGroup>
     <PackageReference Include="Nextended.Blazor" Version="7.0.21" />
     <PackageReference Include="Nextended.Core" Version="7.0.21" />
-    <PackageReference Include="BlazorJS" Version="2.0.3" />
+    <PackageReference Include="BlazorJS" Version="2.0.4" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.0.3" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
@@ -79,6 +80,7 @@
     <None Include="compilerconfig.json" />
     <None Include="wwwroot\js\components\MoveContent.min.js" />
     <None Include="wwwroot\js\components\MudExColorBubble.min.js" />
+    <None Include="wwwroot\js\components\MudExUploadEdit.min.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -97,6 +99,7 @@
     <_ContentIncludedByDefault Remove="Components\MudExTaskBar.razor" />
     <_ContentIncludedByDefault Remove="wwwroot\js\components\MoveContent.min.js" />
     <_ContentIncludedByDefault Remove="wwwroot\js\components\MudExColorBubble.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\components\MudExUploadEdit.min.js" />
   </ItemGroup>
 
   <ItemGroup>

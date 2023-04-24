@@ -51,6 +51,7 @@ public static class Navigations
                     new NavigationEntry("MudExColorBubble", Icons.Material.Outlined.ColorLens, "/color-bubble"),
                     new NavigationEntry("MudExColorPicker", Icons.Material.Outlined.Colorize, "/mudexcolor-picker"),
                     new NavigationEntry("MudExSplitter", Icons.Material.Outlined.HorizontalSplit, "/splitter"),
+                    new NavigationEntry("MudExCardList", Icons.Material.Outlined.HorizontalSplit, "/card"),
 
                 }
             },

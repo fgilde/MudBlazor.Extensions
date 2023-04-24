@@ -155,7 +155,7 @@ public class ClientTheme : MudTheme
         Typography = DefaultTypography,
         LayoutProperties = DefaultLayoutProperties
     };
-
+    
     public static ClientTheme CurrentTheme = DefaultTheme;
 
     #endregion

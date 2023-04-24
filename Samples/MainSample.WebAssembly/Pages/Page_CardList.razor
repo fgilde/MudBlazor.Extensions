@@ -1,5 +1,6 @@
-﻿@*@page "/card"
+﻿@page "/card"
 @using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Helper;
 @attribute [Demo(ForComponentType = typeof(MudExCardList<>))]
 @inject IJSRuntime js;
 @inject IDialogService dialogService;
@@ -11,7 +12,8 @@
 </DemoComponent>
 
 @code {
-
-
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
 }
-*@

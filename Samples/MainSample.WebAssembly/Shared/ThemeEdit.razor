@@ -1,0 +1,100 @@
+﻿@using MudBlazor.Extensions.Helper;
+@using MudBlazor.Extensions.Options;
+@using Nextended.Core.Extensions;
+@using BlazorJS.JsInterop;
+
+<MudIconButton Class="mudex-demo-themeedit-toggle-button" Icon="@Icons.Material.Filled.Palette" Color="Color.Inherit" OnClick="@EditTheme" />
+<MudExPopover OnBlur="@(OnThemeBlur)" SelectorsForIgnoreBlur=".mudex-demo-themeedit-toggle-button" Open="@_themeEditOpen" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" MaxHeight="900">
+    <MudItem xs="12" Style="padding:4px;">
+        <MudCard @onclick="@(() => { _themeEditOpen = false; })" Style="border-width: 3px;" Class="cursor-pointer hover-border" Outlined="true">
+            <MudCardHeader>
+                <CardHeaderAvatar>
+                    
+                </CardHeaderAvatar>
+                <CardHeaderContent>
+                    <MudCheckBox UncheckedIcon="@Icons.Material.Outlined.LightMode" CheckedIcon="@Icons.Material.Outlined.DarkMode" T="bool" CheckedChanged="@(OnDarkChange)" Checked="@IsDark" Color="Color.Inherit" Label="Dark Mode" />
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => EditThemeFull())">Edit Theme...</MudButton>
+                </CardHeaderContent>
+            </MudCardHeader>
+        </MudCard>
+    </MudItem>
+
+</MudExPopover>
+
+@code {
+    bool _themeEditOpen = false;
+    private string aniStyle => new[] { AnimationType.LightSpeed }.GetAnimationCssStyle(TimeSpan.FromMilliseconds(300), AnimationDirection.In, null, DialogPosition.TopLeft );
+
+    [Inject] public IDialogService DialogService { get; set; }
+    [Inject] public IJSRuntime JS { get; set; }
+
+    [Parameter] public bool IsBusy { get; set; }
+    [Parameter] public EventCallback<bool> IsBusyChanged { get; set; }
+    [Parameter] public bool IsDark { get; set; }
+    [Parameter] public EventCallback<bool> IsDarkChanged { get; set; }
+
+
+    private async Task EditTheme()
+    {
+        _themeEditOpen = !_themeEditOpen;
+        StateHasChanged();
+    }
+
+    private void OnThemeBlur()
+    {
+       _themeEditOpen = false;
+    }
+
+    private async Task EditThemeFull()
+    {
+        _themeEditOpen = false;             
+        await IsBusyChanged.InvokeAsync(IsBusy = true);
+        StateHasChanged();
+        ClientTheme.CurrentTheme = await OpenThemeEdit();                
+        await IsBusyChanged.InvokeAsync(IsBusy = false);
+        StateHasChanged();
+    }
+
+    private void OnDarkChange(bool dark)
+    {        
+        IsDarkChanged.InvokeAsync(IsDark = dark);
+        StateHasChanged();
+    }
+
+    private Task<ClientTheme> OpenThemeEdit()
+    {
+        
+        return Task.Run(async () =>
+        {
+            var parameters = new DialogParameters
+                {
+                {nameof(MudExObjectEditDialog<ClientTheme>.ShowCancelButton), false},
+                {nameof(MudExObjectEditDialog<ClientTheme>.SaveButtonText), "Close"},
+                {nameof(MudExObjectEditDialog<ClientTheme>.DialogIcon), Icons.Material.Filled.Palette},
+                {nameof(MudExObjectEditDialog<ClientTheme>.ShowPathAsTitleForEachProperty), true}
+                };
+            var result = await DialogService.EditObject(ClientTheme.CurrentTheme, "Edit current Theme with MudExObjectEdit", new DialogOptionsEx()
+                {
+                    MaximizeButton = true,
+                    CloseButton = true,
+                    FullHeight = true,
+                    CloseOnEscapeKey = true,
+                    MaxWidth = MaxWidth.Medium,
+                    FullWidth = true,
+                    DragMode = MudDialogDragMode.Simple,
+                    Animations = new[] { AnimationType.SlideIn },
+                    Position = DialogPosition.CenterRight,
+                    DisableSizeMarginY = true,
+                    DisablePositionMargin = true
+                }, m => {
+                    if (IsDark) 
+                        m.Property(c => c.Palette).Children.Recursive(om => om.Children).Ignore();
+                    else
+                        m.Property(c => c.PaletteDark).Children.Recursive(om => om.Children).Ignore();
+                }, parameters);
+            return result.Result;
+        });
+    }
+
+    
+}

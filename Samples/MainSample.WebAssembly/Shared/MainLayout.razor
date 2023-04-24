@@ -3,21 +3,22 @@
 @inherits LayoutComponentBase
 @inject IJSRuntime JsRuntime
 
-<MudThemeProvider Theme="@ClientTheme.CurrentTheme" />
+<MudThemeProvider @bind-IsDarkMode="@IsDark" Theme="@ClientTheme.CurrentTheme" />
 <MudDialogProvider />
 <MudExTaskBar/>
 <MudSnackbarProvider />
 
 <MudOverlay @bind-Visible="IsOverlayVisible" DarkBackground="true" AutoClose="true">
-    @*<MudProgressCircular Color="Color.Secondary" Indeterminate="true" />*@
+    <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
 </MudOverlay>
 
 <MudLayout>
-
+    
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
         <MudSpacer/>
-        <MudIconButton Icon="@Icons.Material.Filled.Palette" Color="Color.Inherit" OnClick="@EditTheme"/>
+        <ThemeEdit @bind-IsDark="@IsDark" @bind-IsBusy="@IsOverlayVisible"/>
+
         <MudIconButton Icon="@Icons.Custom.Brands.Microsoft" Color="Color.Inherit" Link="https://www.nuget.org/packages/MudBlazor.Extensions" Target="_blank"/>
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank"/>
     </MudAppBar>
@@ -36,8 +37,10 @@
 
 @code {
     bool _drawerOpen = true;
-    [Inject] public IDialogService DialogService { get; set; }
+   
     public bool IsOverlayVisible { get; set; }
+    public bool IsDark { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -48,44 +51,6 @@
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
-    }
-
-    private async Task EditTheme()
-    {
-        IsOverlayVisible = true;
-        await Task.Delay(1);
-        ClientTheme.CurrentTheme = await OpenThemeEdit();
-        IsOverlayVisible = false;
-        StateHasChanged();
-    }
-
-    private Task<ClientTheme> OpenThemeEdit()
-    {
-        return Task.Run(async () =>
-        {
-            var parameters = new DialogParameters
-            {
-                {nameof(MudExObjectEditDialog<ClientTheme>.ShowCancelButton), false},
-                {nameof(MudExObjectEditDialog<ClientTheme>.SaveButtonText), "Close"},
-                {nameof(MudExObjectEditDialog<ClientTheme>.DialogIcon), Icons.Material.Filled.Palette},
-                {nameof(MudExObjectEditDialog<ClientTheme>.ShowPathAsTitleForEachProperty), true}
-            };
-            var result = await DialogService.EditObject(ClientTheme.CurrentTheme, "Edit current Theme with MudExObjectEdit", new DialogOptionsEx()
-            {
-                MaximizeButton = true,
-                CloseButton = true,
-                FullHeight = true,
-                CloseOnEscapeKey = true,
-                MaxWidth = MaxWidth.Medium,
-                FullWidth = true,
-                DragMode = MudDialogDragMode.Simple,
-                Animations = new[] { AnimationType.SlideIn },
-                Position = DialogPosition.CenterRight,
-                DisableSizeMarginY = true,
-                DisablePositionMargin = true
-            }, null, parameters);
-            return result.Result;
-        });
     }
 
 }
