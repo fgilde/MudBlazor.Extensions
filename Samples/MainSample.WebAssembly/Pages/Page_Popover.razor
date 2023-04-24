@@ -1,0 +1,47 @@
+﻿@page "/popover"
+@attribute [Demo(ForComponentType = typeof(MudExPopover))]
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+<PageHeader>MudExPopover</PageHeader>
+<MudAlert>Simple extended popover that adds Animations and an onblur event to close if click outside happens.</MudAlert>
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer >
+        <Left>
+            <MudPaper Outlined="true" Class="px-12 py-6">
+                <MudButton Class="toggle-sample-btn" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@ToggleOpen">@(_popoverOpen ? "Close" : "Open")</MudButton>
+                <MudExPopover Duration="800" @ref="component" OnBlur="@(OnBlur)" SelectorsForIgnoreBlur=".toggle-sample-btn" Open="_popoverOpen"
+                              OverflowBehavior="OverflowBehavior.FlipAlways" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Paper="false">
+                    <MudPaper Outlined="true" Class="px-4 py-8">
+                        <MudText>This is the sample Popover. In general it inherits the original MudPopover. </MudText>
+                        <MudLink Href="https://mudblazor.com/components/popover" Target="_blank">MudBlazor Popover</MudLink>
+                    </MudPaper>
+                </MudExPopover>
+            </MudPaper>
+
+        </Left>
+        <Right>
+            <MudExObjectEdit MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+@code {
+    private bool _popoverOpen;
+    MudExPopover component;
+
+    private void OnBlur() => _popoverOpen = false;
+
+    public void ToggleOpen()
+    {
+        _popoverOpen = !_popoverOpen;
+        StateHasChanged();
+    }
+
+    private Action<ObjectEditMeta<MudExPopover>> Configure() => meta =>
+    {
+        meta.AllProperties.WithGroup("General");
+        meta.Properties(p => p.Animation, p => p.AnimationPosition, p => p.Duration, p => p.AnimationTimingFunction).WithOrder(0).WithGroup("Animation");
+        meta.IgnoreAllReadOnlyFields();
+    };
+}

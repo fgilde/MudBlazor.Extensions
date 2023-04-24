@@ -52,7 +52,7 @@ public static class Navigations
                     new NavigationEntry("MudExColorPicker", Icons.Material.Outlined.Colorize, "/mudexcolor-picker"),
                     new NavigationEntry("MudExSplitter", Icons.Material.Outlined.HorizontalSplit, "/splitter"),
                     new NavigationEntry("MudExCardList", Icons.Material.Outlined.HorizontalSplit, "/card"),
-
+                    new NavigationEntry("MudExPopover", Icons.Material.Outlined.TipsAndUpdates, "/popover"),
                 }
             },
 

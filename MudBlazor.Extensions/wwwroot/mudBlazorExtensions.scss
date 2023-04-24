@@ -251,10 +251,10 @@
 }
 
 .mud-ex-transparent-indicator-bg {
-    background-image: linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.2) 75%), linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.2) 75%);
+    background-image: linear-gradient(45deg,var(--mud-palette-surface) 25%, transparent 25%, transparent 75%, var(--mud-palette-surface) 75%), linear-gradient(45deg, var(--mud-palette-surface) 25%, transparent 25%, transparent 75%, var(--mud-palette-surface) 75%);
     background-size: 20px 20px;
     background-position: 0 0, 10px 10px;
-    background-color: #f1f1f1;
+    background-color: var(--mud-palette-background-grey);
 }
 
 .mud-dialog-container:has(.mud-ex-dialog-no-margin) {

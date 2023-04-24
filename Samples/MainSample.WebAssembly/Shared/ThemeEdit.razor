@@ -4,21 +4,18 @@
 @using BlazorJS.JsInterop;
 
 <MudIconButton Class="mudex-demo-themeedit-toggle-button" Icon="@Icons.Material.Filled.Palette" Color="Color.Inherit" OnClick="@EditTheme" />
-<MudExPopover OnBlur="@(OnThemeBlur)" SelectorsForIgnoreBlur=".mudex-demo-themeedit-toggle-button" Open="@_themeEditOpen" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" MaxHeight="900">
+<MudExPopover OnBlur="@(OnThemeBlur)" Animation="AnimationType.LightSpeed" AnimationPosition="DialogPosition.TopRight"
+              SelectorsForIgnoreBlur=".mudex-demo-themeedit-toggle-button" Open="@_themeEditOpen" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" MaxHeight="900">
     <MudItem xs="12" Style="padding:4px;">
         <MudCard @onclick="@(() => { _themeEditOpen = false; })" Style="border-width: 3px;" Class="cursor-pointer hover-border" Outlined="true">
             <MudCardHeader>
-                <CardHeaderAvatar>
-                    
-                </CardHeaderAvatar>
                 <CardHeaderContent>
                     <MudCheckBox UncheckedIcon="@Icons.Material.Outlined.LightMode" CheckedIcon="@Icons.Material.Outlined.DarkMode" T="bool" CheckedChanged="@(OnDarkChange)" Checked="@IsDark" Color="Color.Inherit" Label="Dark Mode" />
-                    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => EditThemeFull())">Edit Theme...</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(EditThemeFull)">Edit Theme...</MudButton>
                 </CardHeaderContent>
             </MudCardHeader>
         </MudCard>
     </MudItem>
-
 </MudExPopover>
 
 @code {
@@ -26,18 +23,18 @@
     private string aniStyle => new[] { AnimationType.LightSpeed }.GetAnimationCssStyle(TimeSpan.FromMilliseconds(300), AnimationDirection.In, null, DialogPosition.TopLeft );
 
     [Inject] public IDialogService DialogService { get; set; }
-    [Inject] public IJSRuntime JS { get; set; }
-
+    
     [Parameter] public bool IsBusy { get; set; }
     [Parameter] public EventCallback<bool> IsBusyChanged { get; set; }
     [Parameter] public bool IsDark { get; set; }
     [Parameter] public EventCallback<bool> IsDarkChanged { get; set; }
 
 
-    private async Task EditTheme()
+    private Task EditTheme()
     {
         _themeEditOpen = !_themeEditOpen;
         StateHasChanged();
+        return Task.CompletedTask;
     }
 
     private void OnThemeBlur()

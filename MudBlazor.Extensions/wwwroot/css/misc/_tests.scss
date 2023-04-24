@@ -1,23 +1,44 @@
 ﻿:root {
-    --bg-color: var(--mud-palette-surface);
-    --card-color: var(--mud-palette-secondary);
-    --hover: var(--mud-palette-primary);
+    --mud-ex-card-list-bg-color: var(--mud-palette-surface);    
+    --mud-ex-card-list-hover-color: var(--mud-palette-primary);
+}
+
+
+.mud-ex-card-list-lightbulb {
+    .mud-ex-card::before {
+        background: radial-gradient( 800px circle at var(--mouse-x) var(--mouse-y), var(--mud-ex-card-list-hover-color), transparent 40% );
+        z-index: 3;
+    }
+
+    .mud-ex-card::after {
+        background: radial-gradient( 600px circle at var(--mouse-x) var(--mouse-y), var(--mud-ex-card-list-hover-color), transparent 40% );
+        z-index: 1;
+    }
+}
+
+.mud-ex-card-list-simple {
+    .mud-ex-card:hover {
+        background-color: var(--mud-ex-card-list-hover-color);
+    }
+}
+
+.mud-ex-card-list-zoom {
+    .mud-ex-card:hover {
+        transform: scale(1.05);
+    }
 }
 
 .mud-ex-card-list {
     align-items: center;
-    background-color: var(--bg-color);
+    background-color: var(--mud-ex-card-list-bg-color);
     display: flex;
-    /*height: 100vh;*/
-    /*justify-content: center;*/
     margin: 0px;
     overflow: auto;
-    padding: 0px;
+    padding: 7px;
 
     .mud-ex-cards {
         display: flex;
         flex-wrap: wrap;
-        /*gap: 8px;*/
         align-self: center;
         width: calc(100% - 20px);
     }
@@ -27,14 +48,11 @@
     }
 
     .mud-ex-card {
-        background-color: rgba(255, 255, 255, 0.1);
         border-radius: 10px;
         cursor: pointer;
         display: flex;
         flex-direction: column;
         position: relative;
-        /*height: 260px;
-        width: 300px;*/
     }
 
     .mud-ex-card:hover::before {
@@ -54,27 +72,6 @@
         width: 100%;
     }
 
-    .mud-ex-card::before {
-        background: radial-gradient( 800px circle at var(--mouse-x) var(--mouse-y), var(--hover), transparent 40% );
-        z-index: 3;
-    }
-
-    .mud-ex-card::after {
-        background: radial-gradient( 600px circle at var(--mouse-x) var(--mouse-y), var(--hover), transparent 40% );
-        z-index: 1;
-    }
-
-    .mud-ex-card > .card-content {
-        background-color: var(--card-color);
-        border-radius: inherit;
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        inset: 1px;
-        padding: 10px;
-        position: absolute;
-        z-index: 2;
-    }
 
     h1, h2, h3, h4, span {
         color: rgb(240, 240, 240);

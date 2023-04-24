@@ -189,6 +189,30 @@ public static class MudExCss
         await SetCssVariableValueAsync(pair.Key, pair.Value);
     }
 
+    public static async Task SetCssVariableValueAsync(string key, object value, params object[] fallbackValues)
+    {
+        var toSet = new[] {value}.Intersect(fallbackValues.EmptyIfNull()).FirstOrDefault(v => v != null);
+        if (toSet != null)
+            await SetCssVariableValueAsync(key, toSet);
+    }
+
+    public static async Task SetCssVariableValueAsync(string key, object value)
+    {
+        if (value is MudColor color)
+            await SetCssVariableValueAsync(key, color);
+        if (value is System.Drawing.Color dc)
+            await SetCssVariableValueAsync(key, dc.ToMudColor());
+        if (value is Color enumColor)
+            await SetCssVariableValueAsync(key, enumColor);
+        else
+            await SetCssVariableValueAsync(key, value.ToString());
+    }
+
+    public static async Task SetCssVariableValueAsync(string key, Color color)
+    {
+         await SetCssVariableValueAsync(key, color.CssVarDeclaration());
+    }
+
     public static async Task SetCssVariableValueAsync(string key, MudColor color)
     {
         await SetCssVariableValueAsync(key, color.ToString(MudColorOutputFormats.Hex));

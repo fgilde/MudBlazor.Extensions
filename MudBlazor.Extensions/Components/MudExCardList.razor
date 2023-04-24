@@ -1,14 +1,26 @@
-﻿@inherits MudExBaseComponent<MudExCardList<T>>
-@*  extend: MudBaseItemsControl<TChildComponent>*@
+﻿@inherits MudBaseBindableItemsControl<MudItem, TData>
 @using Microsoft.AspNetCore.Components.Rendering
 @using Nextended.Core.Extensions
-@typeparam T
+@typeparam TData
 
 <MudSlider @bind-Value="spacing" Min="0" Max="100" Color="Color.Info" Class="mb-6">Spacing: @spacing.ToString()</MudSlider>
 
-<div class="mud-ex-card-list" style="@($"justify-content:{Justify.ToDescriptionString()}")">
+<div class="@GetCss()" style="@($"justify-content:{Justify.ToDescriptionString()}")">
     <div style="@($"gap:{spacing}px")" class="mud-ex-cards">
-        @RenderCards
+        @if (ItemsSource == null)
+        {
+            @ChildContent
+        }
+        else
+        {
+            foreach (TData item in ItemsSource)
+            {
+                <div class="mud-ex-card">
+                    @ItemTemplate(item)
+                </div>
+            }
+        }
+        
     </div>
 </div>
 
@@ -17,35 +29,6 @@
 @code
 {
     public Justify Justify { get; set; } = Justify.Center;
-    public int spacing { get; set; } = 2;
-    private void RenderCards(RenderTreeBuilder builder)
-    {
-        foreach (var item in Items.EmptyIfNull())
-        {
-            RenderCard(builder, item);
-        }
-
-    }
-
-    private void RenderCard(RenderTreeBuilder __builder, T item)
-    {
-        <MudCard Class="mud-ex-card">
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText Typo="Typo.h6">The Story Book</MudText>
-                </CardHeaderContent>
-                <CardHeaderActions>
-                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
-                </CardHeaderActions>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText>This day everything happend.</MudText>
-                <MudText Typo="Typo.body2">The quick, brown fox jumps over a lazy dog.</MudText>
-            </MudCardContent>
-            <MudCardActions>
-                <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
-            </MudCardActions>
-        </MudCard>
-    }
+    public int spacing { get; set; } = 15;
 
 }
