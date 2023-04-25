@@ -1,7 +1,7 @@
 ﻿@using MudBlazor.Extensions.Helper
-@using MudBlazor.Extensions.Options
 @inherits LayoutComponentBase
 @inject IJSRuntime JsRuntime
+@inject NavigationManager Navi;
 
 <MudThemeProvider @bind-IsDarkMode="@IsDark" Theme="@ClientTheme.CurrentTheme" />
 <MudDialogProvider />
@@ -17,14 +17,14 @@
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
         <MudSpacer/>
-        <ThemeEdit @bind-IsDark="@IsDark" @bind-IsBusy="@IsOverlayVisible"/>
+        <ThemeEdit OnThemeChanged="@OnThemeChanged" @bind-IsDark="@IsDark" @bind-IsBusy="@IsOverlayVisible" />
 
         <MudIconButton Icon="@Icons.Custom.Brands.Microsoft" Color="Color.Inherit" Link="https://www.nuget.org/packages/MudBlazor.Extensions" Target="_blank"/>
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank"/>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>
-            <MudText Typo="Typo.h6">MudBlazor.Extensions</MudText>
+            <MudLink Class="mud-ex-gradient-text animate" Href="@GetHomeLink()" Typo="Typo.h6">MudBlazor.Extensions</MudLink>
         </MudDrawerHeader>
         <NavMenu/>
     </MudDrawer>
@@ -36,10 +36,18 @@
 </MudLayout>
 
 @code {
+    public static MainLayout Instance { get; private set; }
     bool _drawerOpen = true;
    
     public bool IsOverlayVisible { get; set; }
     public bool IsDark { get; set; }
+    public Action<bool, ClientTheme> OnThemeChanged { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Instance = this;
+        base.OnInitialized();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -51,6 +59,12 @@
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    private string GetHomeLink()
+    {
+        var u = Navi.ToBaseRelativePath(Navi.Uri);
+        return string.IsNullOrWhiteSpace(u) || u == "/" ? "/gradient-text" : "/";
     }
 
 }

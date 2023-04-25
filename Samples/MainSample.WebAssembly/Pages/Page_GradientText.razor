@@ -1,0 +1,46 @@
+﻿@page "/gradient-text"
+@attribute [Demo(ForComponentType = typeof(MudExGradientText))]
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudExGradientText Typo="Typo.h1" @ref="component">MudEx Sample Gradient Text</MudExGradientText>
+        </Left>
+        <Right>
+            <MudExObjectEdit MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+@code {
+    MudExGradientText component;
+    private Action<ObjectEditMeta<MudExGradientText>> Configure()
+    {
+        return meta =>
+        {
+            meta.GroupByCategoryAttribute();
+            meta.Property(m => m.TextFillColor).IgnoreIf(m => m.GradientForeground || m.Color != Color.Inherit);
+            meta.Properties(m => m.Radius)
+                .RenderWith<MudSlider<int>, int>(s => s.Value, s =>
+                {
+                    s.Min = 0;
+                    s.Max = 360;
+                    s.ValueLabel = true;
+                }).WithSeparateLabelComponent();
+            
+            meta.Property(m => m.AnimationDuration)
+                .RenderWith<MudNumericField<int>, TimeSpan, int>(s => s.Value, s => { }, span => (int)span.TotalMilliseconds, i => TimeSpan.FromMilliseconds(i)).WithLabel("AnimationDuration (in ms)");
+
+            meta.Property(p => p.Palette)
+                        .WithGroup("Palette");
+
+            meta.IgnoreAllReadOnlyFields()
+                .Properties(t => t.Tag, t => t.UserAttributes).Ignore();
+
+        };
+    }
+
+}

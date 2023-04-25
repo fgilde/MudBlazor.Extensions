@@ -28,7 +28,7 @@
     [Parameter] public EventCallback<bool> IsBusyChanged { get; set; }
     [Parameter] public bool IsDark { get; set; }
     [Parameter] public EventCallback<bool> IsDarkChanged { get; set; }
-
+    [Parameter] public Action<bool, ClientTheme> OnThemeChanged { get; set; }
 
     private Task EditTheme()
     {
@@ -49,12 +49,14 @@
         StateHasChanged();
         ClientTheme.CurrentTheme = await OpenThemeEdit();                
         await IsBusyChanged.InvokeAsync(IsBusy = false);
+        OnThemeChanged?.Invoke(IsDark, ClientTheme.CurrentTheme);
         StateHasChanged();
     }
 
     private void OnDarkChange(bool dark)
     {        
         IsDarkChanged.InvokeAsync(IsDark = dark);
+        OnThemeChanged?.Invoke(IsDark, ClientTheme.CurrentTheme);
         StateHasChanged();
     }
 

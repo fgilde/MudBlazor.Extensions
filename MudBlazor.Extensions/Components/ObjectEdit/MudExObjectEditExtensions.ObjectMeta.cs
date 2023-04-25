@@ -66,4 +66,15 @@ public static partial class MudExObjectEditExtensions
     public static ObjectEditMeta<T> WithPropertyResolverFunc<T>(this ObjectEditMeta<T> meta, Func<PropertyInfo, bool> shouldHandle)
         => meta?.SetProperties(m => m.PropertyResolverFunc = shouldHandle);
 
+    public static ObjectEditMeta<T> GroupBy<T>(this ObjectEditMeta<T> meta, Func<ObjectEditPropertyMeta, string> groupFunc)
+        => meta?.SetProperties(m => m.AllProperties.Apply(p => p.WithGroup(groupFunc(p))));
+    public static ObjectEditMeta<T> GroupBy<T>(this ObjectEditMeta<T> meta, Func<PropertyInfo, string> groupFunc)
+        => meta?.SetProperties(m => m.AllProperties.Apply(p => p.WithGroup(groupFunc(p.PropertyInfo))));
+
+    public static ObjectEditMeta<T> GroupByAttribute<T, TAttribute>(this ObjectEditMeta<T> meta, Func<TAttribute, string> groupFunc)
+        => meta?.SetProperties(m => m.AllProperties.Apply(p => p.WithGroup(groupFunc(p.PropertyInfo.GetAttributes<TAttribute>(true).FirstOrDefault()))));
+
+    public static ObjectEditMeta<T> GroupByCategoryAttribute<T>(this ObjectEditMeta<T> meta, string fallbackGroupName = "Default")
+        => meta.GroupByAttribute<T, CategoryAttribute>(attribute => attribute?.Name ?? fallbackGroupName);
+    
 }

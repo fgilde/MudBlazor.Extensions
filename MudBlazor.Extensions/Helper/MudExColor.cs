@@ -18,4 +18,10 @@ public static class MudExColor
         => new MudColor(color.R, color.G, color.B, color.A);
 
     public static string ToCssRgba(this MudColor c) => $"rgba({c.R},{c.G},{c.B},{c.A})";
+    
+    public static bool IsBlack(this MudColor color) 
+        => color.R == 0 && color.G == 0 && color.B == 0 && color.A == 255;
+
+    public static bool IsWhite(this MudColor color) 
+        => color.R == 255 && color.G == 255 && color.B == 255 && color.A == 255;
 }

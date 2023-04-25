@@ -3696,10 +3696,13 @@
 }
 
 .mud-ex-gradient-text {
-  background: linear-gradient(90deg, var(--mud-palette-primary), var(--mud-palette-secondary), #90ee90, #59aa73, #2a55b4, #fee654, #ec3771);
+  background: linear-gradient(90deg, var(--mud-palette-primary), var(--mud-palette-secondary), var(--mud-palette-info), var(--mud-palette-primary-hover), var(--mud-palette-secondary-lighten), var(--mud-palette-warning), var(--mud-palette-tertiary));
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+.mud-ex-gradient-text.simple {
+  background: linear-gradient(90deg, var(--mud-palette-primary), var(--mud-palette-secondary));
 }
 .mud-ex-gradient-text.animate {
   animation: reverse textclip 3s linear infinite;

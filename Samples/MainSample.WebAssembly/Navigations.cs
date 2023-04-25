@@ -5,9 +5,6 @@ namespace MainSample.WebAssembly;
 
 public static class Navigations
 {
-    // MudPopoverExtensions
-    // MudExCss
-    // ;udExSvg
     public static HashSet<NavigationEntry> Default() => new() {
         new NavigationEntry("Home", Icons.Material.Outlined.Home, "/"),
         new NavigationEntry("Dialog Samples")
@@ -53,6 +50,7 @@ public static class Navigations
                     new NavigationEntry("MudExSplitter", Icons.Material.Outlined.HorizontalSplit, "/splitter"),
                     new NavigationEntry("MudExCardList", Icons.Material.Outlined.HorizontalSplit, "/card"),
                     new NavigationEntry("MudExPopover", Icons.Material.Outlined.TipsAndUpdates, "/popover"),
+                    new NavigationEntry("MudExGradientText", Icons.Material.Outlined.TextFormat, "/gradient-text"),
                 }
             },
 

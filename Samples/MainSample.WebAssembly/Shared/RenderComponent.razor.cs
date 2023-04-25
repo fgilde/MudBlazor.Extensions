@@ -33,6 +33,7 @@ public partial class RenderComponent<T>
     {
         return meta =>
         {
+            meta.GroupByCategoryAttribute();
             meta.Properties(HiddenProperties).Ignore();
             MetaConfiguration?.Invoke(meta);
         };

@@ -23,6 +23,7 @@
     {
         return meta =>
         {
+            meta.GroupByCategoryAttribute();
             meta.Property(m => m.AllowSelectOnPreviewClick).IgnoreIf(m => !m.ShowColorPreview);
             meta.Property(m => m.Localizer).Ignore();
             meta.Properties(m => m.MinLuminance, m => m.MaxLuminance)

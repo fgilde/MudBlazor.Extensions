@@ -2,7 +2,20 @@
 @page "/"
 @using MudBlazor.Utilities
 
-<PageHeader>MudBlazor.Extensions</PageHeader>
+<style>
+    .mudexmarkdownpresenter h1,
+    .mudexmarkdownpresenter h2,
+    .mudexmarkdownpresenter h3,
+    .mudexmarkdownpresenter h4,
+    .mudexmarkdownpresenter h5,
+    .mudexmarkdownpresenter h6,
+    .mudexmarkdownpresenter img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+</style>
 
 <MudAlert ContentAlignment="HorizontalAlignment.Center" Severity="Severity.Warning" Icon="@Icons.Material.Filled.Star">
     <MudButton Size="Size.Small" EndIcon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank">
@@ -10,15 +23,31 @@
     </MudButton>
 </MudAlert>
 
-<MudMarkdown Value="@Value" />
 
+<div class="mudexmarkdownpresenter">
+    <MudMarkdown CodeBlockTheme="@(MainLayout.Instance?.IsDark == true ? CodeBlockTheme.Dark : CodeBlockTheme.Default)" OverrideHeaderTypo="TypoConvert()" Value="@Value"></MudMarkdown>
+</div>
 
 @code
 {
     private MudColor _color = new MudColor(255, 123, 0, 0.5);
     protected override async Task OnInitializedAsync()
     {
+        MainLayout.Instance.OnThemeChanged += (isDark, theme) =>
+        {
+            StateHasChanged();
+        };
         Value = await Http.GetStringAsync("https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/README.md");
     }
     private string Value { get; set; }
+
+    private static Func<Typo, Typo>? TypoConvert()
+    {
+        int factor = 2;
+        return typo =>
+        {
+            var r = (int)typo + factor;
+            return r < 0 ? Typo.h4 : (Typo)r;
+        };
+    }
 }
