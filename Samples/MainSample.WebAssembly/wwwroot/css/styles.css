@@ -1,0 +1,106 @@
+﻿:root {
+    --blazor-load-percentage: 0;
+    --loading-color: #ff4081;
+}
+
+*:not(input) {
+    -webkit-user-select: none; /* Chrome all / Safari all */
+    -moz-user-select: none; /* Firefox all */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none;
+}
+
+.loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    z-index: 99999;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.loading-progress {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle {
+    transform: rotate(-90deg);
+}
+
+.circle-bg,
+.circle-progress {
+    fill: none;
+    stroke-width: 10;
+}
+
+.circle-bg {
+    stroke: #e6e6e6;
+}
+
+.circle-progress {
+    stroke: var(--loading-color);
+    stroke-dasharray: 566; /* 2 * PI * R (90) */
+    /*stroke-dashoffset: calc(566 - (var(--blazor-load-percentage) * 5.66));*/
+    transition: stroke-dashoffset 0.15s linear;
+}
+
+.logo {
+    position: absolute;
+    max-width: 200px; /* Set a maximum width if needed */
+}
+
+.loading-percentage {
+    position: absolute;
+    margin-top: 250px;
+    font-size: 1.5rem;
+    color: var(--loading-color);
+}
+
+.loading-container.complete .loading-percentage {
+    display: none;
+}
+
+.loading-percentage.hidden {
+    display: none;
+}
+
+.loading-container.pixelated-out {
+    animation: pixelatedOut 1s forwards;
+}
+
+@keyframes pixelatedOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(3.5);
+    }
+}
+
+.circle-glowing {
+    animation: glowing 1.5s infinite;
+    stroke-opacity: 0;
+    border: 14px solid var(--loading-color);
+    border-radius: 50%;
+}
+
+@keyframes glowing {
+    0% {
+        box-shadow: 0 0 5px  var(--loading-color), 0 0 10px  var(--loading-color), 0 0 20px  var(--loading-color), 0 0 30px  var(--loading-color);
+    }
+
+    50% {
+        box-shadow: 0 0 10px  var(--loading-color), 0 0 20px  var(--loading-color), 0 0 30px  var(--loading-color), 0 0 40px  var(--loading-color);
+    }
+
+    100% {
+        box-shadow: 0 0 5px  var(--loading-color), 0 0 10px  var(--loading-color), 0 0 20px  var(--loading-color), 0 0 30px  var(--loading-color);
+    }
+}

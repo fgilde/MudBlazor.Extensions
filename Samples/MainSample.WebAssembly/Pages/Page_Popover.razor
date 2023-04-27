@@ -1,6 +1,8 @@
 ﻿@page "/popover"
-@attribute [Demo(ForComponentType = typeof(MudExPopover))]
+
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+@attribute [Demo(Name = "MudExPopover", Icon = Icons.Material.Outlined.TipsAndUpdates, ForComponentTypes = new[] { typeof(MudExPopover) })]
 
 <PageHeader>MudExPopover</PageHeader>
 <MudAlert>Simple extended popover that adds Animations and an onblur event to close if click outside happens.</MudAlert>

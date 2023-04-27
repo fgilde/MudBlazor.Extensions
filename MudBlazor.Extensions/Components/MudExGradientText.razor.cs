@@ -4,7 +4,6 @@ using MudBlazor.Extensions.Components.Base;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Utilities;
 using MudBlazor.Extensions.Helper;
-using static MudBlazor.CategoryTypes;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
@@ -61,6 +60,7 @@ public partial class MudExGradientText: IMudExComponent
 
     private async Task<IEnumerable<MudColor>> DefaultPaletteByTheme()
     {
+        await JsRuntime.InitializeMudBlazorExtensionsAsync();
         var themeColors = await MudExCss.GetCssColorVariablesAsync();
         return themeColors
             .Where(c => !c.Key.Contains("background", StringComparison.InvariantCultureIgnoreCase) && !c.Key.Contains("surface", StringComparison.InvariantCultureIgnoreCase) && !c.Value.IsBlack() && !c.Value.IsWhite() && c.Value.APercentage >= 1.0)

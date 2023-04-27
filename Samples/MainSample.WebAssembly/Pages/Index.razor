@@ -10,6 +10,9 @@
     }
 </style>
 
+
+<MudExGradientText Style="margin-top: -100px;margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h2">MudBlazor.Extensions</MudExGradientText>
+
 <Support />
 
 <MudExpansionPanels MultiExpansion="true">
@@ -21,22 +24,22 @@
                 <MudCard Style="width: 25%" @onclick="@(() => { Open(nav); })">
                     <MudCardHeader>
                         <CardHeaderContent>
-                            <MudText Typo="Typo.h6">@nav.Text</MudText>
+                            <MudText Typo="Typo.h6">@(nav.Demo?.RelatedComponents?.FirstOrDefault()?.Name?.Split('`')?.FirstOrDefault() ?? nav.Text)</MudText>
                         </CardHeaderContent>
                         <CardHeaderActions>
                             <MudIconButton Icon="@nav.Icon" Color="Color.Default" />
                         </CardHeaderActions>
                     </MudCardHeader>
                     <MudCardContent>
-                        <MudText>@nav.Demo.Name</MudText>
+                        <MudText>@nav.Text</MudText>
                     </MudCardContent>
                 </MudCard>
             }
         </MudExCardList>
     </MudExpansionPanel>
 
-    <MudExpansionPanel IsInitiallyExpanded="false" Class="@($"mt-3 {("mud-ex-object-edit-group-flat")}")" Text="ALL COMPONENTS">
-        <MudExCardList TData="object">
+    <MudExpansionPanel IsInitiallyExpanded="true" Class="@($"mt-3 {("mud-ex-object-edit-group-flat")}")" Text="ALL COMPONENTS">
+        <MudExCardList HoverColor="Color.Warning" TData="object">
 
             @foreach (var nav in Navigations.ReflectMudExComponents())
             {

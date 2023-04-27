@@ -1,7 +1,9 @@
 ﻿@page "/chip-select"
-@attribute [Demo(ForComponentType = typeof(MudExChipSelect<>))]
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @inject IDialogService dialogService;
+
+@attribute [Demo(Name = "MudExChipSelect", Icon = Icons.Material.Outlined.BubbleChart, ForComponentType = typeof(MudExChipSelect<>))]
+
 
 <DemoComponent PageType="@GetType()">
     <SplitContainer>

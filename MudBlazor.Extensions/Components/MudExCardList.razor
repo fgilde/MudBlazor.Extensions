@@ -4,7 +4,7 @@
 @typeparam TData
 
 
-<div class="@GetCss()" style="@($"{GetStyle()}")">
+<div @ref="ElementReference" class="@GetCss()" style="@($"{GetStyle()}")">
     <div style="@($"gap:{Spacing}px")" class="@($"mud-ex-cards mud-ex-cards-{_id}")">
         @if (ItemsSource == null)
         {

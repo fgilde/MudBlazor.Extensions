@@ -4518,11 +4518,11 @@
 }
 
 .mud-ex-card-list-lightbulb .mud-ex-card::before {
-  background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), var(--mud-ex-card-list-hover-color), transparent 40%);
+  background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), var(--mud-ex-card-list-hover-color), transparent var(--mud-ex-card-bulb-size));
   z-index: 3;
 }
 .mud-ex-card-list-lightbulb .mud-ex-card::after {
-  background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), var(--mud-ex-card-list-hover-color), transparent 40%);
+  background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), var(--mud-ex-card-list-hover-color), transparent var(--mud-ex-card-bulb-size));
   z-index: 1;
 }
 
