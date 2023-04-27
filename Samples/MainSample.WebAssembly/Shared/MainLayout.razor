@@ -16,15 +16,17 @@
     
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
+        <LogoTitle Hidden="@_drawerOpen" />
+        
         <MudSpacer/>
-        <ThemeEdit OnThemeChanged="@OnThemeChanged" @bind-IsDark="@IsDark" @bind-IsBusy="@IsOverlayVisible" />
+        <ThemeEdit OnThemeChanged="@HandleThemeChange" @bind-IsDark="@IsDark" @bind-IsBusy="@IsOverlayVisible" />
 
         <MudIconButton Icon="@Icons.Custom.Brands.Microsoft" Color="Color.Inherit" Link="https://www.nuget.org/packages/MudBlazor.Extensions" Target="_blank"/>
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank"/>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>
-            <MudLink Class="mud-ex-gradient-text animate" Href="@GetHomeLink()" Typo="Typo.h6">MudBlazor.Extensions</MudLink>
+            <LogoTitle />
         </MudDrawerHeader>
         <NavMenu/>
     </MudDrawer>
@@ -38,10 +40,10 @@
 @code {
     public static MainLayout Instance { get; private set; }
     bool _drawerOpen = true;
-   
-    public bool IsOverlayVisible { get; set; }
-    public bool IsDark { get; set; }
-    public Action<bool, ClientTheme> OnThemeChanged { get; set; }
+
+    public bool IsOverlayVisible { get; set;}
+    public bool IsDark { get; set; } = true;
+    public event EventHandler<ThemeChangedEventArgs> ThemeChanged;
 
     protected override void OnInitialized()
     {
@@ -65,6 +67,17 @@
     {
         var u = Navi.ToBaseRelativePath(Navi.Uri);
         return string.IsNullOrWhiteSpace(u) || u == "/" ? "/gradient-text" : "/";
+    }
+
+    private void HandleThemeChange(bool arg1, ClientTheme arg2)
+    {
+        ThemeChanged?.Invoke(this, new ThemeChangedEventArgs { IsDark = arg1, Theme = arg2 });
+    }
+
+    public class ThemeChangedEventArgs
+    {
+        public bool IsDark { get; set; }
+        public ClientTheme Theme { get; set; }
     }
 
 }

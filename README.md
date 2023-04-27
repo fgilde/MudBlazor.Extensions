@@ -220,6 +220,15 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log 
+ - 1.7.35 > MudExObjectEdit: Fix errors where in some cases a meta config expressions fails for the RenderWith extension
+ - 1.7.35 > New Possibility for ServerSideRendered Projects to use the IApplicationBuilder extension UseMudExtensions to bypass the need to register the JSRuntime 
+ - 1.7.35 > New Utils Methods for MudExCss 
+ - 1.7.35 > New Parameter DialogOptions for MudExObjectEdit if set DialogOptions will forwarded to all dynamic created Dialogs
+ - 1.7.35 > Setting DialogOptions as Default now also applys to dynamic dialogs for MudExCollectionEdit or MudExObjectEdit
+ - 1.7.35 > New Component [MudExGradientText](https://mudex.azurewebsites.net/gradient-text)
+ - 1.7.35 > New Component [MudExCardList](https://mudex.azurewebsites.net/card)
+ - 1.7.35 > New Component [MudExPopover](https://mudex.azurewebsites.net/popover)
+ - 1.7.35 > Fix small DialogOptions bugs
  - 1.7.34 > New Animations for dialogs Perspective3d and LightSpeed
  - 1.7.34 > New Components [MudExSplitPanel](/c/MudExSplitPanel) [MudExSplitter](/c/MudExSplitter) [MudExDivider](/c/MudExDivider)
  - 1.7.34 > **_Breaking:_** Rename: SvgIconHelper is now MudExSvg

@@ -1,4 +1,5 @@
 ﻿@using Nextended.Core.Extensions
+
 @inject NavigationManager _navigationManager;
 
 <div>
@@ -19,7 +20,7 @@
                         @if (HasAction(context))
                         {
                             <MudNavLink Href="@context.Href" Match="@(context.Href == "/" ? NavLinkMatch.All : NavLinkMatch.Prefix)" Target="@context.Target" Icon="@context.Icon">
-                                @context.Text
+                                <p style="@GetStyle(context, false)">@context.Text</p>
                             </MudNavLink>
                         }
                         else
@@ -29,7 +30,9 @@
                                 <MudIcon Icon="@context.Icon" Class="ml-0 mr-2" Color="@Color.Default"/>
                             }
                             
-                            <MudListSubheader Class="@(CanExpand(context) ? "cursor-pointer" : "")" @onclick="() => OnExpandCollapseClick(context)">@context.Text</MudListSubheader>
+                            <MudListSubheader Class="@(CanExpand(context) ? "cursor-pointer" : "")" @onclick="() => OnExpandCollapseClick(context)">
+                                <p style="@GetStyle(context, true)">@context.Text</p>
+                            </MudListSubheader>
 
                             <div class="apply-right">
                                 <MudTreeViewItemToggleButton Visible="CanExpand(context)" Expanded="context.IsExpanded" ExpandedChanged="() => OnExpandCollapseClick(context)"/>
@@ -42,3 +45,13 @@
     </MudNavMenu>
 
 </div>
+
+@code {
+    private string GetStyle(NavigationEntry context, bool withAction)
+    {
+        if (context.Bold == true || (!withAction && context.Demo == null && context.Parent == null) || (withAction && context.Demo == null && context.Parent == null && context.IsExpanded))
+            return "font-weight: bold;";
+        return "";
+    }
+
+}

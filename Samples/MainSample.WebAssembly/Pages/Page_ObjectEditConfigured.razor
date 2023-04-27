@@ -1,10 +1,11 @@
 ﻿@page "/mudex-object-edit-with-configuration"
-@attribute [Demo(Group = "ObjectEdit", ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>)})]
 @inject IDialogService dialogService;
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using System.ComponentModel.DataAnnotations
 @using MudBlazor.Extensions.Options
+
+@attribute [Demo(Group = "MudExObjectEdit", Name = "With custom configuration", Order = 1 , Icon = Icons.Material.Outlined.TextSnippet, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
 <PageHeader>Object Edit Custom config</PageHeader>
 

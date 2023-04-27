@@ -1,5 +1,4 @@
-﻿@charset "UTF-8";
-@-webkit-keyframes backInDown {
+﻿@-webkit-keyframes backInDown {
   0% {
     -webkit-transform: translateY(-1200px) scale(0.7);
     transform: translateY(-1200px) scale(0.7);
@@ -3977,158 +3976,6 @@
     opacity: 0;
   }
 }
-:root {
-  --mud-ex-card-list-bg-color: var(--mud-palette-surface);
-  --mud-ex-card-list-hover-color: var(--mud-palette-primary);
-}
-
-.mud-ex-card-list-lightbulb .mud-ex-card::before {
-  background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), var(--mud-ex-card-list-hover-color), transparent 40%);
-  z-index: 3;
-}
-.mud-ex-card-list-lightbulb .mud-ex-card::after {
-  background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), var(--mud-ex-card-list-hover-color), transparent 40%);
-  z-index: 1;
-}
-
-.mud-ex-card-list-simple .mud-ex-card:hover {
-  background-color: var(--mud-ex-card-list-hover-color);
-}
-
-.mud-ex-card-list-zoom .mud-ex-card:hover {
-  transform: scale(1.05);
-}
-
-.mud-ex-card-list {
-  align-items: center;
-  background-color: var(--mud-ex-card-list-bg-color);
-  display: flex;
-  margin: 0px;
-  overflow: auto;
-  padding: 7px;
-  /* -- ↓ ↓ ↓ some responsiveness ↓ ↓ ↓ -- */
-}
-.mud-ex-card-list .mud-ex-cards {
-  display: flex;
-  flex-wrap: wrap;
-  align-self: center;
-  width: calc(100% - 20px);
-}
-.mud-ex-card-list .mud-ex-cards:hover > .mud-ex-card::after {
-  opacity: 1;
-}
-.mud-ex-card-list .mud-ex-card {
-  border-radius: 10px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-.mud-ex-card-list .mud-ex-card:hover::before {
-  opacity: 1;
-}
-.mud-ex-card-list .mud-ex-card::before,
-.mud-ex-card-list .mud-ex-card::after {
-  border-radius: inherit;
-  content: "";
-  height: 100%;
-  left: 0px;
-  opacity: 0;
-  position: absolute;
-  top: 0px;
-  transition: opacity 500ms;
-  width: 100%;
-}
-.mud-ex-card-list h1, .mud-ex-card-list h2, .mud-ex-card-list h3, .mud-ex-card-list h4, .mud-ex-card-list span {
-  color: rgb(240, 240, 240);
-  font-family: "Rubik", sans-serif;
-  font-weight: 400;
-  margin: 0px;
-}
-.mud-ex-card-list i {
-  color: rgb(240, 240, 240);
-}
-.mud-ex-card-list .card-image {
-  align-items: center;
-  display: flex;
-  height: 140px;
-  justify-content: center;
-  overflow: hidden;
-}
-.mud-ex-card-list .card-image > i {
-  font-size: 6em;
-  opacity: 0.25;
-}
-.mud-ex-card-list .card-info-wrapper {
-  align-items: center;
-  display: flex;
-  flex-grow: 1;
-  justify-content: flex-start;
-  padding: 0px 20px;
-}
-.mud-ex-card-list .card-info {
-  align-items: flex-start;
-  display: flex;
-  gap: 10px;
-}
-.mud-ex-card-list .card-info > i {
-  font-size: 1em;
-  height: 20px;
-  line-height: 20px;
-}
-.mud-ex-card-list .card-info-title > h3 {
-  font-size: 1.1em;
-  line-height: 20px;
-}
-.mud-ex-card-list .card-info-title > h4 {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.85em;
-  margin-top: 8px;
-}
-@media (max-width: 1000px) {
-  .mud-ex-card-list .mud-ex-card-list {
-    align-items: flex-start;
-    overflow: auto;
-  }
-  .mud-ex-card-list .mud-ex-cards {
-    max-width: 1000px;
-    padding: 10px 0px;
-  }
-  .mud-ex-card-list .card {
-    flex-shrink: 1;
-    width: calc(50% - 4px);
-  }
-}
-@media (max-width: 500px) {
-  .mud-ex-card-list .mud-ex-card {
-    height: 180px;
-  }
-  .mud-ex-card-list .card-image {
-    height: 80px;
-  }
-  .mud-ex-card-list .card-image > i {
-    font-size: 3em;
-  }
-  .mud-ex-card-list .card-info-wrapper {
-    padding: 0px 10px;
-  }
-  .mud-ex-card-list .card-info > i {
-    font-size: 0.8em;
-  }
-  .mud-ex-card-list .card-info-title > h3 {
-    font-size: 0.9em;
-  }
-  .mud-ex-card-list .card-info-title > h4 {
-    font-size: 0.8em;
-    margin-top: 4px;
-  }
-}
-@media (max-width: 320px) {
-  .mud-ex-card-list .mud-ex-card {
-    width: 100%;
-  }
-}
-
 .mud-ex-file-display {
   padding: 10px;
   border: 1px dashed var(--mud-palette-primary);
@@ -4668,6 +4515,69 @@
 }
 .mud-ex-splitter.mud-ex-divider-vertical {
   cursor: col-resize;
+}
+
+.mud-ex-card-list-lightbulb .mud-ex-card::before {
+  background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), var(--mud-ex-card-list-hover-color), transparent 40%);
+  z-index: 3;
+}
+.mud-ex-card-list-lightbulb .mud-ex-card::after {
+  background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), var(--mud-ex-card-list-hover-color), transparent 40%);
+  z-index: 1;
+}
+
+.mud-ex-card-list-simple .mud-ex-card:hover {
+  background-color: var(--mud-ex-card-list-hover-color);
+}
+
+.mud-ex-card-list-zoom .mud-ex-card:hover {
+  transform: scale(1.05);
+}
+
+.mud-ex-card-list {
+  align-items: center;
+  background-color: var(--mud-ex-card-list-bg-color);
+  display: flex;
+  margin: 0px;
+  overflow: auto;
+  padding: 7px;
+}
+.mud-ex-card-list .mud-ex-cards {
+  display: flex;
+  flex-wrap: wrap;
+  align-self: center;
+  width: calc(100% - 0px);
+}
+.mud-ex-card-list .mud-ex-cards:hover > .mud-ex-card::after {
+  opacity: 1;
+}
+.mud-ex-card-list .mud-ex-card {
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.mud-ex-card-list .mud-ex-card:hover::before {
+  opacity: 1;
+}
+.mud-ex-card-list .mud-ex-card::before,
+.mud-ex-card-list .mud-ex-card::after {
+  border-radius: inherit;
+  content: "";
+  height: 100%;
+  left: 0px;
+  opacity: 0;
+  position: absolute;
+  top: 0px;
+  transition: opacity 500ms;
+  width: 100%;
+}
+.mud-ex-card-list h1, .mud-ex-card-list h2, .mud-ex-card-list h3, .mud-ex-card-list h4, .mud-ex-card-list span {
+  color: rgb(240, 240, 240);
+  font-family: "Rubik", sans-serif;
+  font-weight: 400;
+  margin: 0px;
 }
 
 .mud-dialog-height-full {

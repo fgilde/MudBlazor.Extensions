@@ -1,8 +1,9 @@
 ﻿@page "/file-display"
-@attribute [Demo(Group = "File Handling", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
-
 @inject IDialogService dialogService
 @inject NavigationManager NavigationManager
+
+@attribute [Demo(Group = "File Handling", Name = "File Display", Order = 0, Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
+
 <PageHeader>File Display</PageHeader>
 
 <DemoComponent CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "Shared/MySimpleJsonDisplay.razor"})">

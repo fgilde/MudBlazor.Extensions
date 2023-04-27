@@ -1,0 +1,47 @@
+﻿<style>
+    .mudexmarkdownpresenter h1,
+    .mudexmarkdownpresenter h2,
+    .mudexmarkdownpresenter h3,
+    .mudexmarkdownpresenter h4,
+    .mudexmarkdownpresenter h5,
+    .mudexmarkdownpresenter h6,
+    .mudexmarkdownpresenter img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+</style>
+
+
+<div class="@GetCls()">
+    <MudMarkdown CodeBlockTheme="@(MainLayout.Instance?.IsDark == true ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.Default)" OverrideHeaderTypo="TypoConvert()" Value="@Value"></MudMarkdown>
+</div>
+
+@code {
+    [Parameter]
+    public bool CenterImagesAndHeadlines { get; set; }
+
+    [Parameter]
+    public string Value { get; set; }
+    
+    protected override Task OnInitializedAsync()
+    {
+        MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
+        return base.OnInitializedAsync();
+    }
+
+    private string GetCls() => CenterImagesAndHeadlines ? "mudexmarkdownpresenter" : "";
+
+
+    private static Func<Typo, Typo>? TypoConvert()
+    {
+        int factor = 2;
+        return typo =>
+        {
+            var r = (int)typo + factor;
+            return r < 0 ? Typo.h4 : (Typo)r;
+        };
+    }
+
+}

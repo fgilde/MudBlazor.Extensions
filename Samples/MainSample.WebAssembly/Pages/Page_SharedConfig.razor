@@ -1,8 +1,10 @@
 ﻿@page "/shared-config"
-@attribute [Demo(Group = "ObjectEdit", ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 @inject IDialogService DialogService;
 @using MudBlazor.Extensions.Options
-@using MainSample.WebAssembly.Types
+
+
+@attribute [Demo(Group = "MudExObjectEdit", Name = "Edit with shared MetaConfig", Order = 3, Icon = Icons.Material.Outlined.Person, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+
 
 <PageHeader>User Edit</PageHeader>
 

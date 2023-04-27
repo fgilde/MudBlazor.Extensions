@@ -130,7 +130,7 @@ public static partial class MudExObjectEditExtensions
         => meta?.WithAdditionalAttributes(overwriteExisting, new KeyValuePair<string, object>(key, value));
     public static ObjectEditPropertyMeta WithAdditionalAttributes<TComponent>(this ObjectEditPropertyMeta meta, bool overwriteExisting, params Action<TComponent>[] options) where TComponent : new()
         => meta?.WithAdditionalAttributes(DictionaryHelper.GetValuesDictionary(true, options), overwriteExisting);
-    public static ObjectEditPropertyMeta WithAdditionalAttributes<TComponent>(this ObjectEditPropertyMeta meta, params Action<TComponent>[] options) where TComponent : new()
+    public static ObjectEditPropertyMeta WithAdditionalAttributes<TComponent>(this ObjectEditPropertyMeta meta, params Action<TComponent>[] options) where TComponent : new() 
         => meta?.WithAdditionalAttributes(DictionaryHelper.GetValuesDictionary(true, options));
     public static ObjectEditPropertyMeta WithAdditionalAttributes<TComponent>(this ObjectEditPropertyMeta meta, TComponent instanceForAttributes, bool overwriteExisting = false) where TComponent : new()
         => meta?.WithAdditionalAttributes(DictionaryHelper.GetValuesDictionary(instanceForAttributes, true), overwriteExisting);

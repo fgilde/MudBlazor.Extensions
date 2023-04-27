@@ -1,8 +1,9 @@
 ﻿@page "/object-edit"
-@attribute [Demo(Group = "ObjectEdit", ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 @inject IDialogService dialogService;
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Options
+
+@attribute [Demo(Group = "MudExObjectEdit", Name = "With default configuration", Order = 0, Icon = Icons.Material.Outlined.Edit, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
 <PageHeader>Object Edit</PageHeader>
 

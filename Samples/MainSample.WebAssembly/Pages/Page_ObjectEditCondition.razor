@@ -1,9 +1,11 @@
 ﻿@page "/condition-object-edit"
-@attribute [Demo(Group = "ObjectEdit", ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>)})]
 @inject IDialogService dialogService;
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Options
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+@attribute [Demo(Group = "MudExObjectEdit", Name = "Conditional updates", Order = 4, Icon = Icons.Material.Outlined.DataArray, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+
 
 <PageHeader>Object Edit</PageHeader>
 

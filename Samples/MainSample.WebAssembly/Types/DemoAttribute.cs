@@ -37,30 +37,33 @@ internal class DemoAttribute : Attribute
     public string? Name { get; set; }
     public string? Group { get; set; }
     public string? Icon { get; set; }
+    public int Order { get; set; } = 999;
     public string? Url { get; set; }
 
     public IEnumerable<Type> RelatedComponents => (ForComponentTypes ?? Array.Empty<Type>()).Union(ForComponentType != null ? new[] { ForComponentType } : Array.Empty<Type>());
 
 
-    public static HashSet<NavigationEntry> AllEntries(bool flat = false)
+    public static HashSet<NavigationEntry> AllEntries(bool flat = false, string ungrouppedName = "Other Components")
     {
         var attrType = typeof(DemoAttribute);
 
         if (!flat)
         {
             var grouped = attrType.Assembly.GetTypes()
-                .Select(t => new {Type = t, Attribute = t.GetCustomAttribute<DemoAttribute>()})
+                .Select(t => new { Type = t, Attribute = t.GetCustomAttribute<DemoAttribute>() })
                 .Where(r => r.Attribute != null)
                 .GroupBy(arg => arg?.Attribute?.Group);
 
             var navigationEntries = new HashSet<NavigationEntry>();
-            foreach (var g in grouped)
+            foreach (var g in grouped.OrderBy(g => g.Key == null ? 1 : 0).ThenBy(g => g.Key))
             {
                 var groupNavigationEntry = new NavigationEntry
                 {
-                    Text = g.Key ?? "Ungrouped", Children = new HashSet<NavigationEntry>(), IsExpanded = g.Key == null
+                    Text = g.Key ?? ungrouppedName,
+                    Children = new HashSet<NavigationEntry>(),
+                    // IsExpanded = g.Key == null
                 };
-                foreach (var r in g)
+                foreach (var r in g.OrderBy(r => r.Attribute.Order))
                 {
                     var navigationEntry = r.Attribute.ToNavigationEntry(r.Type);
                     groupNavigationEntry.Children.Add(navigationEntry);
@@ -75,6 +78,7 @@ internal class DemoAttribute : Attribute
         return attrType.Assembly.GetTypes()
             .Select(t => new { Type = t, Attribute = t.GetCustomAttribute<DemoAttribute>() })
             .Where(r => r.Attribute != null)
+            .OrderBy(r => r.Attribute.Order)
             .Select(r => r.Attribute.ToNavigationEntry(r.Type))
             .ToHashSet();
     }

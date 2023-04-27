@@ -3,10 +3,9 @@
 @using Nextended.Core.Extensions
 @typeparam TData
 
-<MudSlider @bind-Value="spacing" Min="0" Max="100" Color="Color.Info" Class="mb-6">Spacing: @spacing.ToString()</MudSlider>
 
-<div class="@GetCss()" style="@($"justify-content:{Justify.ToDescriptionString()}")">
-    <div style="@($"gap:{spacing}px")" class="mud-ex-cards">
+<div class="@GetCss()" style="@($"{GetStyle()}")">
+    <div style="@($"gap:{Spacing}px")" class="@($"mud-ex-cards mud-ex-cards-{_id}")">
         @if (ItemsSource == null)
         {
             @ChildContent
@@ -23,12 +22,3 @@
         
     </div>
 </div>
-
-
-
-@code
-{
-    public Justify Justify { get; set; } = Justify.Center;
-    public int spacing { get; set; } = 15;
-
-}

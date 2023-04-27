@@ -14,6 +14,7 @@ public static class ServiceCollectionExtensions
     {
         //services.AddSingleton<MudBlazorExtensionJsInterop>();
         services.RegisterAllImplementationsOf(new[] { typeof(IMudExFileDisplay) }, serviceImplementationAssemblies, ServiceLifetime.Scoped);
+        
         return services.AddMudExObjectEdit(serviceImplementationAssemblies);
     }
 

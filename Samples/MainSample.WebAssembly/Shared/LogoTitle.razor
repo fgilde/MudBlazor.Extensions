@@ -1,0 +1,24 @@
+﻿@inject NavigationManager Navi;
+
+<div class="mud-ex-animate-all-properties" style="@GetStyle()">
+    <img style="height: 25px;margin-right: 10px;margin-bottom: -5px;" src="https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudExtension.png" />
+    <MudLink Class="mud-ex-animate-all-properties mud-ex-gradient-text animate" Href="@GetHomeLink()" Typo="Typo.h6">MudBlazor.Extensions</MudLink>
+</div>
+@code{
+    
+    [Parameter]
+    public bool Hidden { get; set; }
+    
+    private string GetHomeLink()
+    {
+        var u = Navi.ToBaseRelativePath(Navi.Uri);
+        return string.IsNullOrWhiteSpace(u) || u == "/" ? "/gradient-text" : "/";
+    }
+
+    private string GetStyle()
+    {
+        //return Hidden ? "opacity: 0; transform: translateY(-100%);" : "opacity: 1; transform: translateY(0);";
+        return Hidden ? "opacity: 0; transform: translateX(-300px);" : "opacity: 1; transform: translateX(0);";
+    }
+
+}

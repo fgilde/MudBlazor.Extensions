@@ -179,7 +179,7 @@ public partial class MudExCollectionEditor<T>
 
     private DialogOptionsEx DefaultOptions()
     {
-        return new DialogOptionsEx
+        return DialogOptionsEx.DefaultDialogOptions ?? new DialogOptionsEx
         {
             CloseButton = true,
             Resizeable = true,

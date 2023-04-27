@@ -1,10 +1,11 @@
 ﻿@page "/virtualized-object-edit"
-@attribute [Demo(Group = "ObjectEdit", ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 @inject IDialogService dialogService;
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Options
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+@attribute [Demo(Group = "MudExObjectEdit", Name = "Rendered Virtualized", Order = 2, Icon = Icons.Material.Outlined.DataObject, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
 <PageHeader>Object Edit Virtualize (BETA)</PageHeader>
 <MudAlert>This feature is still in progress and not finished yet. Currently reset all field not working correctly for example and it makes problen in flex layout like with MudGrid what is added if wrap in mud item is used. Please use this carefully and only if you have render performance issues</MudAlert>

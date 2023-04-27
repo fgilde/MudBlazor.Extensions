@@ -15,5 +15,6 @@ public class NavigationEntry : Hierarchical<NavigationEntry>
     public string Icon { get; set; }
     public string Href { get; set; }
     public string Target { get; set; }
+    public bool? Bold { get; set; }
     internal DemoAttribute? Demo { get; set; }
 }

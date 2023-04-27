@@ -1,0 +1,78 @@
+﻿.mud-ex-card-list-lightbulb {
+    .mud-ex-card::before {
+        background: radial-gradient( 800px circle at var(--mouse-x) var(--mouse-y), var(--mud-ex-card-list-hover-color), transparent 40% );
+        z-index: 3;
+    }
+
+    .mud-ex-card::after {
+        background: radial-gradient( 600px circle at var(--mouse-x) var(--mouse-y), var(--mud-ex-card-list-hover-color), transparent 40% );
+        z-index: 1;
+    }
+}
+
+.mud-ex-card-list-simple {
+    .mud-ex-card:hover {
+        background-color: var(--mud-ex-card-list-hover-color);
+    }
+}
+
+.mud-ex-card-list-zoom {
+    .mud-ex-card:hover {
+        transform: scale(1.05);
+    }
+}
+
+.mud-ex-card-list {
+    align-items: center;
+    background-color: var(--mud-ex-card-list-bg-color);
+    display: flex;    
+    margin: 0px;
+    overflow: auto;
+    padding: 7px;
+
+    .mud-ex-cards {
+        display: flex;
+        flex-wrap: wrap;
+        align-self: center;
+        width: calc(100% - 0px);
+    }
+
+    .mud-ex-cards:hover > .mud-ex-card::after {
+        opacity: 1;
+    }
+
+    .mud-ex-card {
+        border-radius: 10px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .mud-ex-card:hover::before {
+        opacity: 1;
+    }
+
+    .mud-ex-card::before,
+    .mud-ex-card::after {
+        border-radius: inherit;
+        content: "";
+        height: 100%;
+        left: 0px;
+        opacity: 0;
+        position: absolute;
+        top: 0px;
+        transition: opacity 500ms;
+        width: 100%;
+    }
+
+
+    h1, h2, h3, h4, span {
+        color: rgb(240, 240, 240);
+        font-family: "Rubik", sans-serif;
+        font-weight: 400;
+        margin: 0px;
+    }
+
+
+}

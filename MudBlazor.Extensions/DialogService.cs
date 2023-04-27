@@ -133,6 +133,7 @@ namespace MudBlazor.Extensions
         private static async Task<IDialogReference> InjectOptionsAsync(this IDialogReference dialogReference, DialogOptionsEx options)
         {
             options ??= DefaultOptions();
+            options = options.CloneOptions();
             var dialogComponent = await new Func<ComponentBase>(() => dialogReference.Dialog as ComponentBase).WaitForResultAsync();
             DotNetObjectReference<ComponentBase> callbackReference = DotNetObjectReference.Create(dialogComponent);
             var js = await JsImportHelper.GetInitializedJsRuntime(dialogComponent, options.JsRuntime);

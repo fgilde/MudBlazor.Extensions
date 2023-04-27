@@ -1,9 +1,12 @@
 ﻿@page "/file-display-zip"
-@attribute [Demo(Group = "File Handling", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplayZip) })]
 @using MudBlazor.Extensions.Options
 @using Nextended.Blazor.Extensions
 @using Nextended.Blazor.Models
 @inject NavigationManager NavigationManager
+
+@attribute [Demo(Group = "File Handling", Name = "Explicit File Display Zip", Order = 1, Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplayZip) })]
+
+
 <PageHeader>File Display Zip with self made preview</PageHeader>
 
 <DemoComponent PageType="@GetType()">

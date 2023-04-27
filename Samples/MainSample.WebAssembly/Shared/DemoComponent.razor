@@ -25,13 +25,14 @@
                 }
                 <MudLink Href="@SelectedCodeFilePath" Target="_blank" Color="Color.Primary">Show on github</MudLink>
             </MudCard>
-            <DynamicComponent Type="@RenderType" Parameters="@RenderParameters"/>
+            <DemoMarkdown Value="@SelectedCodeValue"></DemoMarkdown>
+
         </MudTabPanel>
     }
     @foreach (var doc in _docFiles)
     {
         <MudTabPanel Text="@("Documentation " + System.IO.Path.GetFileNameWithoutExtension(doc.Key))">
-            <MudMarkdown Value="@doc.Value"></MudMarkdown>
+            <DemoMarkdown Value="@doc.Value"></DemoMarkdown>
         </MudTabPanel>
     }
 </MudTabs>
@@ -46,8 +47,6 @@
     private string Path(string file) => $"{baseAddressSampleApp}{file.EnsureStartsWith("/")}";
     private Dictionary<string, string> _docFiles = new();
     private string _selectedCodeFile;
-    private Type RenderType = typeof(PrettyCode);
-    private Dictionary<string, object> RenderParameters;
     private Type? _pageType;
     private string? _title;
     [Inject] HttpClient http { get; set; }
@@ -92,6 +91,8 @@
 
     #endregion
 
+    public string SelectedCodeValue { get; set; }
+    
     private string FallbackTitle()
     {
         var res = _pageType != null ? _pageType.Name : CodeFile;
@@ -105,21 +106,13 @@
         {
             _selectedCodeFile = value;
             SelectedCodeFilePath = Path(value);
-            RenderType = typeof(MudAlert);
-            RenderParameters = new Dictionary<string, object>
-            {
-                { "Text", "Loading..." },
-                { "Severity", Severity.Info }
-            };
+            SelectedCodeValue = "Loading...";
             StateHasChanged();
-
-            RenderType = typeof(PrettyCode);
-            RenderParameters = new Dictionary<string, object>
+            http.GetStringAsync(SelectedCodeFilePath).ContinueWith(task =>
             {
-                { "Title", SelectedCodeFile },
-                { "CodeFile", SelectedCodeFilePath }
-            };
-            StateHasChanged();
+                SelectedCodeValue = $"```c#{Environment.NewLine}{task.Result}{Environment.NewLine}```";
+                StateHasChanged();
+            });
         }
     }
 
@@ -127,6 +120,7 @@
     {
         SelectedCodeFile = CodeFiles.FirstOrDefault();
         await base.OnInitializedAsync();
+        
         try
         {
             foreach (var doc in DocFiles ?? Array.Empty<string>())
