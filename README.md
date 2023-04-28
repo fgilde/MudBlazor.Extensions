@@ -220,6 +220,7 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log 
+ - 1.7.37 > MudExAppLoader web component to add loading animation for application
  - 1.7.36 > MudExObjectEdit: Fix errors where in some cases a meta config expressions fails for the RenderWith extension
  - 1.7.36 > New Possibility for ServerSideRendered Projects to use the IApplicationBuilder extension UseMudExtensions to bypass the need to register the JSRuntime 
  - 1.7.36 > New Utils Methods for MudExCss  
