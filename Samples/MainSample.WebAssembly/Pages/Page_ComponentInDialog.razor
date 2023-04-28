@@ -24,7 +24,7 @@
                  dialog.Icon = Icons.Material.Filled.StarRate;
                 dialog.Buttons = MudExDialogResultAction.OkCancel();
             });
-        if (!res.DialogResult.Cancelled)
+        if (!res.DialogResult.Canceled)
         {
             await js.InvokeVoidAsync("alert", res.Component.Value.ToString());
         }

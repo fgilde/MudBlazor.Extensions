@@ -155,7 +155,7 @@ public partial class MudExColorBubble
                 CloseButton = true
             }
             );
-        if (!res.DialogResult.Cancelled)
+        if (!res.DialogResult.Canceled)
         {
             Color = res.Component.Value;
             await ColorChanged.InvokeAsync(Color);

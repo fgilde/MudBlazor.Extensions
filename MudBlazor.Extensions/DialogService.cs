@@ -106,8 +106,8 @@ namespace MudBlazor.Extensions
             
             string title = mboxOptions.Title;
             
-            DialogResult result = await (await dialogService.Show<MudMessageBox>(title, parameters, options).InjectOptionsAsync(options)).Result;
-            return result.Cancelled || !(result.Data is bool data) ? new bool?() : data;
+            var result = await (await dialogService.Show<MudMessageBox>(title, parameters, options).InjectOptionsAsync(options)).Result;
+            return result.Canceled || !(result.Data is bool data) ? new bool?() : data;
         }
 
         public static async Task<T> GetDialogAsync<T>(this IDialogReference dialogReference) where T : ComponentBase

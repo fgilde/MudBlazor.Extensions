@@ -1,6 +1,7 @@
 ﻿@page "/shared-config"
 @inject IDialogService DialogService;
 @using MudBlazor.Extensions.Options
+@using Nextended.Core.Extensions
 
 
 @attribute [Demo(Group = "MudExObjectEdit", Name = "Edit with shared MetaConfig", Order = 3, Documentation = "MudExObjectEdit and MudExCollectionEditor with a shared config", Icon = Icons.Material.Outlined.Person, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExCollectionEditor<>), typeof(MudExObjectEditForm<>) })]
@@ -18,7 +19,7 @@
     <br />
     
     <MudButton Variant="Variant.Outlined" Color="Color.Primary" EndIcon="@Icons.Material.Filled.PersonAdd" OnClick="@AddSome">Add 1000 random items</MudButton>
-    <MudExCollectionEditor MaxHeight="500" Items="@Users"></MudExCollectionEditor>
+    <MudExCollectionEditor DialogOptions="@Options" MaxHeight="500" Items="@Users"></MudExCollectionEditor>
 </DemoComponent>
 
 @code {
@@ -39,13 +40,13 @@
             MaxWidth = MaxWidth.Medium,
             FullWidth = true,
             DragMode = MudDialogDragMode.Simple,
-            Animations = new[] { AnimationType.FlipX },
-            Position = DialogPosition.Center
+            Animations = new[] { AnimationType.Perspective3d },
+            Position = DialogPosition.BottomCenter
         };
 
     private async Task AddUser()
     {
-        var res = await DialogService.EditObject<UserModel>(new UserModel(), "Add user", Options, null, new DialogParameters()
+        var res = await DialogService.EditObject<UserModel>(new UserModel(), "Add user", Options.SetProperties(o => o.Position = DialogPosition.TopCenter), null, new DialogParameters()
         {
             {nameof(MudExObjectEditDialog<UserModel>.CancelButtonText), "Annular"},
             {nameof(MudExObjectEditDialog<UserModel>.SaveButtonText), "Confirminger"},

@@ -22,7 +22,7 @@ public class SomeClassWithUserMetaConfiguration : IObjectMetaConfiguration<SomeC
                 FullWidth = true,
                 DragMode = MudDialogDragMode.Simple,
                 Animations = new[] { AnimationType.SlideIn },
-                Position = DialogPosition.CenterRight,
+                Position = DialogPosition.CenterLeft,
                 DisableSizeMarginY = true,
                 DisablePositionMargin = true
             });

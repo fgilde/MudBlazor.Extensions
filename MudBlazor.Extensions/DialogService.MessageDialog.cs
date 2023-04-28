@@ -287,7 +287,7 @@ public static partial class DialogServiceExt
         var res = await dialogService.ShowEx<MudExPromptDialog>(title, parameters, options);
         var dialogResult = (await res.Result);
 
-        if (!dialogResult.Cancelled && dialogResult.Data != null && canConfirm(dialogResult.Data.ToString()))
+        if (!dialogResult.Canceled && dialogResult.Data != null && canConfirm(dialogResult.Data.ToString()))
             return dialogResult.Data.ToString();
         return null;
     }

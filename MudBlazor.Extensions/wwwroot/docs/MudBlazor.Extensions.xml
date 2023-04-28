@@ -107,6 +107,11 @@
             MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide <MudExTaskBar/> somewhere in your Layout
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExToggleableSearch">
+            <summary>
+            Simple component to expand a Search field 
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExUploadEdit`1">
             <summary>
             A Component to edit and upload a list of files
@@ -136,7 +141,7 @@
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1">
             <summary>
-            Dailog for editing objects with the MudExObjectEditForm
+            Dialog for editing objects with the MudExObjectEditForm
             </summary>
             <typeparam name="T"></typeparam>
         </member>

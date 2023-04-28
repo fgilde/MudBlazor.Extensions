@@ -50,6 +50,6 @@ public static partial class DialogServiceExt
         var dialog = await dialogService.ShowEx<MudExObjectEditDialog<TModel>>(title, MergeParameters(dialogParameters, parameters), options);
 
         var res = await dialog.Result;
-        return (res.Cancelled, res.Cancelled ? value : (TModel)res.Data);
+        return (res.Canceled, res.Canceled ? value : (TModel)res.Data);
     }
 }

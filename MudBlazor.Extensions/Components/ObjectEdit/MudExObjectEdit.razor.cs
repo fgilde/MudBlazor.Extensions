@@ -415,7 +415,7 @@ public partial class MudExObjectEdit<T>
                     Result = DialogResult.Ok(true)
                 },
             } }
-        })).Result).Cancelled;
+        })).Result).Canceled;
         return cancelled;
     }
 

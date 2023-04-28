@@ -379,7 +379,7 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         var res = await DialogService.ShowEx<MudExPromptDialog>(TryLocalize(TextAddUrlTitle), parameters, options);
         var dialogResult = (await res.Result);
 
-        if (!dialogResult.Cancelled && dialogResult.Data != null && IsValidUrl(dialogResult.Data.ToString()))
+        if (!dialogResult.Canceled && dialogResult.Data != null && IsValidUrl(dialogResult.Data.ToString()))
             await Add(dialogResult.Data.ToString());
 
     }
