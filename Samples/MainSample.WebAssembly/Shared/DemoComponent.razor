@@ -40,11 +40,7 @@
 @code {
 
     #region private fields
-        
-    private const string baseAddress = "https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions";
-    private string baseAddressExtensions = $"{baseAddress}/main/MudBlazor.Extensions";
-    private string baseAddressSampleApp = $"{baseAddress}/main/Samples/MainSample.WebAssembly";
-    private string Path(string file) => $"{baseAddressSampleApp}{file.EnsureStartsWith("/")}";
+
     private Dictionary<string, string> _docFiles = new();
     private string _selectedCodeFile;
     private Type? _pageType;
@@ -105,7 +101,7 @@
         set
         {
             _selectedCodeFile = value;
-            SelectedCodeFilePath = Path(value);
+            SelectedCodeFilePath = GH.Path(value);
             SelectedCodeValue = "Loading...";
             StateHasChanged();
             http.GetStringAsync(SelectedCodeFilePath).ContinueWith(task =>
@@ -125,24 +121,11 @@
         {
             foreach (var doc in DocFiles ?? Array.Empty<string>())
             {
-                var v = await Load($"{baseAddressExtensions}{doc.EnsureStartsWith("/")}");
+                var v = await http.LoadDocumentation(doc);
                 if (!string.IsNullOrEmpty(v))
                     _docFiles.Add(doc, v);
             }
         }
         catch { }
-    }
-
-    private async Task<string> Load(string url)
-    {
-        try
-        {
-            var res = await http.GetStringAsync(url);
-            return res;
-        }
-        catch
-        {
-            return string.Empty;
-        }
     }
 }

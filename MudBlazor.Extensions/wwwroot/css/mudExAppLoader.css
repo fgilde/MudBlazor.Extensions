@@ -3,14 +3,7 @@
     --loading-color: #ff4081;
 }
 
-*:not(input) {
-    -webkit-user-select: none; /* Chrome all / Safari all */
-    -moz-user-select: none; /* Firefox all */
-    -ms-user-select: none; /* IE 10+ */
-    user-select: none;
-}
-
-.loading-container {
+.mud-ex-app-loader-loading-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,28 +14,28 @@
     background-color: rgba(0, 0, 0, 0.9);
 }
 
-.loading-progress {
+.mud-ex-app-loader-loading-progress {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.circle {
+.mud-ex-app-loader-circle {
     transform: rotate(-90deg);
 }
 
-.circle-bg,
-.circle-progress {
+.mud-ex-app-loader-circle-bg,
+.mud-ex-app-loader-circle-progress {
     fill: none;
     stroke-width: 10;
 }
 
-.circle-bg {
+.mud-ex-app-loader-circle-bg {
     stroke: #e6e6e6;
 }
 
-.circle-progress {
+.mud-ex-app-loader-circle-progress {
     stroke: var(--loading-color);
     stroke-dasharray: 566; /* 2 * PI * R (90) */
     /*stroke-dashoffset: calc(566 - (var(--blazor-load-percentage) * 5.66));*/
@@ -54,22 +47,22 @@
     max-width: 200px; /* Set a maximum width if needed */
 }
 
-.loading-percentage {
+.mud-ex-app-loader-loading-percentage {
     position: absolute;
     margin-top: 250px;
     font-size: 1.5rem;
     color: var(--loading-color);
 }
 
-.loading-container.complete .loading-percentage {
+.mud-ex-app-loader-loading-container.complete .loading-percentage {
     display: none;
 }
 
-.loading-percentage.hidden {
+.mud-ex-app-loader-loading-percentage.hidden {
     display: none;
 }
 
-.loading-container.pixelated-out {
+.mud-ex-app-loader-loading-container.pixelated-out {
     animation: pixelatedOut 1s forwards;
 }
 
@@ -84,7 +77,7 @@
     }
 }
 
-.circle-glowing {
+.mud-ex-app-loader-circle-glowing {
     animation: glowing 1.5s infinite;
     stroke-opacity: 0;
     border: 14px solid var(--loading-color);
@@ -93,14 +86,14 @@
 
 @keyframes glowing {
     0% {
-        box-shadow: 0 0 5px  var(--loading-color), 0 0 10px  var(--loading-color), 0 0 20px  var(--loading-color), 0 0 30px  var(--loading-color);
+        box-shadow: 0 0 5px var(--loading-color), 0 0 10px var(--loading-color), 0 0 20px var(--loading-color), 0 0 30px var(--loading-color);
     }
 
     50% {
-        box-shadow: 0 0 10px  var(--loading-color), 0 0 20px  var(--loading-color), 0 0 30px  var(--loading-color), 0 0 40px  var(--loading-color);
+        box-shadow: 0 0 10px var(--loading-color), 0 0 20px var(--loading-color), 0 0 30px var(--loading-color), 0 0 40px var(--loading-color);
     }
 
     100% {
-        box-shadow: 0 0 5px  var(--loading-color), 0 0 10px  var(--loading-color), 0 0 20px  var(--loading-color), 0 0 30px  var(--loading-color);
+        box-shadow: 0 0 5px var(--loading-color), 0 0 10px var(--loading-color), 0 0 20px var(--loading-color), 0 0 30px var(--loading-color);
     }
 }

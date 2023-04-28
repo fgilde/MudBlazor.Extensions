@@ -48,5 +48,11 @@
     "inputFiles": [
       "wwwroot/js/components/MudExCardList.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExAppLoader.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExAppLoader.js"
+    ]
   }
 ]

@@ -1,0 +1,21 @@
+﻿@inject HttpClient Http
+@page "/app-load"
+
+
+@attribute [Demo(Name = "MudExAppLoader", Icon = Icons.Material.Outlined.Circle, Documentation = "With this component you can have an animation while loading the main blazor app")]
+
+<HeaderForDemo Type="@GetType()" />
+<DemoMarkdown Value="@Value"></DemoMarkdown>
+
+@code
+{
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
+        Value = await Http.LoadDocumentation("MudExAppLoader.md");
+    }
+    private string Value { get; set; }
+
+}
