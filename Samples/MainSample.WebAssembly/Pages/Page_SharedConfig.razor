@@ -3,12 +3,11 @@
 @using MudBlazor.Extensions.Options
 
 
-@attribute [Demo(Group = "MudExObjectEdit", Name = "Edit with shared MetaConfig", Order = 3, Icon = Icons.Material.Outlined.Person, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+@attribute [Demo(Group = "MudExObjectEdit", Name = "Edit with shared MetaConfig", Order = 3, Documentation = "MudExObjectEdit and MudExCollectionEditor with a shared config", Icon = Icons.Material.Outlined.Person, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExCollectionEditor<>), typeof(MudExObjectEditForm<>) })]
 
 
-<PageHeader>User Edit</PageHeader>
 
-<DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "ObjectEditMetaConfig/SomeClassWithUserMetaConfiguration.cs", "ObjectEditMetaConfig/UserModelMetaConfiguration.cs"})">
+<DemoComponent PageType="@GetType()" DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "ObjectEditMetaConfig/SomeClassWithUserMetaConfiguration.cs", "ObjectEditMetaConfig/UserModelMetaConfiguration.cs"})">
     <MudButton Variant="Variant.Outlined" Color="Color.Primary" EndIcon="@Icons.Material.Filled.PersonAdd" OnClick="@AddUser">Add user to both lists</MudButton>
 
     <h2 style="text-decoration: underline">Edit a complex Model with included Collection of users</h2>

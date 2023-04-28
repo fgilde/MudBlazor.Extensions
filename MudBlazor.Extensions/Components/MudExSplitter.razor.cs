@@ -5,6 +5,9 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// A Splitter Component
+/// </summary>
 public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
 {
     private string _dataId = Guid.NewGuid().ToFormattedId();

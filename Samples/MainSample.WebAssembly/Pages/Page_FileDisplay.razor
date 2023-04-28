@@ -2,11 +2,9 @@
 @inject IDialogService dialogService
 @inject NavigationManager NavigationManager
 
-@attribute [Demo(Group = "File Handling", Name = "File Display", Order = 0, Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
+@attribute [Demo(Group = "File Handling", Name = "File Display", Order = 0, Documentation = "See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
 
-<PageHeader>File Display</PageHeader>
-
-<DemoComponent CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "Shared/MySimpleJsonDisplay.razor"})">
+<DemoComponent PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "Shared/MySimpleJsonDisplay.razor"})">
     <MudSelect Label="File" HelperText="Select sample file (See weather.json to check how own components for files can be created)" @bind-Value="@SampleFile" Variant="Variant.Outlined" Color="Color.Primary">
         <MudSelectItem Value="@(Sample("sample.zip", "application/zip"))">sample.zip</MudSelectItem>
         <MudSelectItem Value="@(Sample("sample.pdf", "application/pdf"))">sample.pdf</MudSelectItem>

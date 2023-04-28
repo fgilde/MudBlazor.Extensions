@@ -5,7 +5,9 @@ using MudBlazor.Utilities;
 
 namespace MudBlazor.Extensions.Components;
 
-
+/// <summary>
+/// A Component to quickly select a color
+/// </summary>
 public partial class MudExColorBubble
 {
     [Parameter] public string Style { get; set; }

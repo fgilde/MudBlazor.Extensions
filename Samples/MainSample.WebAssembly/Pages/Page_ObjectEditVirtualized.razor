@@ -5,10 +5,10 @@
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
-@attribute [Demo(Group = "MudExObjectEdit", Name = "Rendered Virtualized", Order = 2, Icon = Icons.Material.Outlined.DataObject, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+@attribute [Demo(Group = "MudExObjectEdit", Name = "Rendered Virtualized (BETA)", Order = 2, Documentation = "MudExObjectEdit with virtual property rendering", Icon = Icons.Material.Outlined.DataObject, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
-<PageHeader>Object Edit Virtualize (BETA)</PageHeader>
-<MudAlert>This feature is still in progress and not finished yet. Currently reset all field not working correctly for example and it makes problen in flex layout like with MudGrid what is added if wrap in mud item is used. Please use this carefully and only if you have render performance issues</MudAlert>
+@*<PageHeader>Object Edit Virtualize (BETA)</PageHeader>*@
+<MudAlert Style="margin-top: -7px;position: absolute;margin-right: 25px;" Severity="Severity.Warning">This feature is still in progress and not finished yet. Currently reset all field not working correctly for example and it makes problen in flex layout like with MudGrid what is added if wrap in mud item is used. Please use this carefully and only if you have render performance issues</MudAlert>
 
 <DemoComponent DocFiles="@(new[] {"Docs/ObjectEdit.md"})" PageType="@GetType()">
     <MudGrid>

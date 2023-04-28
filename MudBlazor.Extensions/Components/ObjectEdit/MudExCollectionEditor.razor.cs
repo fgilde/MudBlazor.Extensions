@@ -8,6 +8,10 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 
+/// <summary>
+/// Powerful component to edit a set of items and their properties.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public partial class MudExCollectionEditor<T>
 {
     [Parameter] public int? Height { get; set; }

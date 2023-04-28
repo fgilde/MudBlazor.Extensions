@@ -1,0 +1,29 @@
+﻿@using MudBlazor.Extensions.Helper
+
+<div class="doc-header">
+
+    <PageHeader>@(Type?.Name ?? Fallback)</PageHeader>
+
+    <MudAlert Style="margin-bottom: 40px; margin-left: -20px;">@Documentation</MudAlert>
+
+</div>
+
+
+@code {
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        Documentation ??= await MudExResource.GetDocumentationAsync(Type);
+        await base.OnInitializedAsync();
+    }
+
+    [Parameter]
+    public string? Documentation { get; set; } = null;
+    
+    [Parameter]
+    public Type Type { get; set; }
+
+    [Parameter]
+    public string Fallback { get; set; }
+}

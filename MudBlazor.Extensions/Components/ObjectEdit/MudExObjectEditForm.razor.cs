@@ -8,6 +8,10 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 
+/// <summary>
+/// Powerful component to edit an object and its properties.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public partial class MudExObjectEditForm<T>
 {
     public bool HasErrors => GetErrors().Any(s => !string.IsNullOrWhiteSpace(s));

@@ -10,6 +10,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace MudBlazor.Extensions.Components
 {
+    /// <summary>
+    /// A Popover can be used to display some content on top of another.
+    /// </summary>
     public partial class MudExPopover : IMudExComponent, IAsyncDisposable
     {
         [Inject] protected IServiceProvider ServiceProvider { get; set; }

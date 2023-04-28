@@ -32,6 +32,10 @@
                     </MudCardHeader>
                     <MudCardContent>
                         <MudText>@nav.Text</MudText>
+                        @if (!string.IsNullOrEmpty(nav.Documentation))
+                        {
+                            <MudText Typo="Typo.body2">@nav.Documentation</MudText>
+                        }
                     </MudCardContent>
                 </MudCard>
             }
@@ -54,6 +58,10 @@
                     </MudCardHeader>
                     <MudCardContent>
                         <MudText>@nav.Text</MudText>
+                        @if (!string.IsNullOrEmpty(nav.Documentation))
+                        {
+                            <MudText Typo="Typo.body2">@nav.Documentation</MudText>
+                        }
                     </MudCardContent>
                 </MudCard>
             }

@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MudBlazor.Extensions</name>
+    </assembly>
+    <members>
+        <member name="F:MudBlazor.Extensions.Components.MoveContentPosition.None">
+            Can be used if you don't want to move the content but use the found or not found content
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MoveContent">
+            <summary>
+            Component to move the ChildContent to a specific element that can defined by ElementSelector.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExCardList`1">
+            <summary>
+            Simple Card List with a hover effect.
+            </summary>
+            <typeparam name="TData"></typeparam>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExChipSelect`1">
+            <summary>
+            A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExColorBubble">
+            <summary>
+            A Component to quickly select a color
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExColorPicker">
+            <summary>
+            A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExCultureSelect">
+            <summary>
+            Simple Picker component for Cultures
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDivider">
+            <summary>
+            A divider to separate content
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplay">
+            <summary>
+            Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.FallBackInIframe">
+            Should be true if file is not a binary one
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ViewDependsOnContentType">
+            <summary>
+            Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.HandleContentErrorFunc">
+            A function to handle content error. Return true if you have handled the error and false if you want to show the error message
+            For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
+            If you reset Url or Data here you need also to reset ContentType
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayZip">
+            <summary>
+            A Component to display the content of a zip file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ViewDependsOnContentType">
+            <summary>
+            Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.HandleContentErrorFunc">
+            A function to handle content error. Return true if you have handled the error and false if you want to show the error message
+            For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
+            If you reset Url or Data here you need also to reset ContentType
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExGradientText">
+            <summary>
+            A Component to display text with a gradient foreground or background
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExPopover">
+            <summary>
+            A Popover can be used to display some content on top of another.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSlideBar">
+            <summary>
+            A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSplitPanel">
+            <summary>
+            A SplitPanel Component 
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSplitter">
+            <summary>
+            A Splitter Component
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExTaskBar">
+            <summary>
+            MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide <MudExTaskBar/> somewhere in your Layout
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExUploadEdit`1">
+            <summary>
+            A Component to edit and upload a list of files
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1">
+            <summary>
+            Powerful component to edit a set of items and their properties.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1">
+            <summary>
+            A powerful component to edit an object and its properties.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.BeforeExport">
+            Here you can change content of parameter to manipulate export data
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.BeforeImport">
+            Here you can change content of parameter to manipulate import data
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ConfigureMetaInformationAlways">
+            If this setting is true a manual passed MetaInformation will also re configured
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1">
+            <summary>
+            Dailog for editing objects with the MudExObjectEditForm
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.CustomSubmit">
+            <summary>
+            Can be used as custom submit function. Dialog will only closed if result of this function is empty or null otherwise result will displayed as error message.
+            This is usefull to keep dialog open until server save is succeeded
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1">
+            <summary>
+            Powerful component to edit an object and its properties.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit">
+            <summary>
+            Editor for a property of an object. Used internally inside the MudExObjectEdit
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.HandleContentErrorFunc">
+            A function to handle content error. Return true if you have handled the error and false if you want to show the error message
+            For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
+            If you reset Url or Data here you need also to reset ContentType
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.FallBackInIframe">
+            Should be true if file is not a binary one
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ViewDependsOnContentType">
+            <summary>
+            Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.MudPopoverOptionsEx.ExcludedBlurSelectors">
+            <summary>
+            Click on any of this selectors will not close the popover if AutoHideOnBlur is true
+            </summary>
+        </member>
+    </members>
+</doc>

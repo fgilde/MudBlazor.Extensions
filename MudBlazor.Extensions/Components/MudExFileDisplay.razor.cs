@@ -8,7 +8,9 @@ using PSC.Blazor.Components.BrowserDetect;
 
 namespace MudBlazor.Extensions.Components;
 
-
+/// <summary>
+/// Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay
+/// </summary>
 public partial class MudExFileDisplay : IMudExFileDisplayInfos
 {
 

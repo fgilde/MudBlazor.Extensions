@@ -29,12 +29,12 @@ public static class Navigations
 
     internal static HashSet<NavigationEntry> ReflectMudExComponents()
     {
-        return ComponentTypes.AllMudExComponents().Select(type => new NavigationEntry($"{type.Name}", "", $"/c/{type.Name}")).ToHashSet();
+        return ComponentTypes.AllMudExComponents().Select(type => new NavigationEntry($"{type.Name}", "", $"/c/{type.Name}") {Type = type}).ToHashSet();
     }
 
     private static HashSet<NavigationEntry> ReflectMudBlazorComponents()
     {
-        return ComponentTypes.AllMudBlazorComponents().Select(type => new NavigationEntry($"{type.Name}", "", $"/c/{type.Name}")).ToHashSet();
+        return ComponentTypes.AllMudBlazorComponents().Select(type => new NavigationEntry($"{type.Name}", "", $"/c/{type.Name}") { Type = type }).ToHashSet();
     }
 
 }

@@ -3,6 +3,9 @@ using Microsoft.JSInterop;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.
+/// </summary>
 public partial class MudExSlideBar
 {
     private bool _isOpen;

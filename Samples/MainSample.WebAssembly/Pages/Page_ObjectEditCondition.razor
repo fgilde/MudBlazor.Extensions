@@ -4,10 +4,8 @@
 @using MudBlazor.Extensions.Options
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
-@attribute [Demo(Group = "MudExObjectEdit", Name = "Conditional updates", Order = 4, Icon = Icons.Material.Outlined.DataArray, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+@attribute [Demo(Group = "MudExObjectEdit", Name = "Conditional updates", Order = 4, Documentation = "Demo for using MudExObjectEdit with a configuration for Conditional using 'WithAttributesIf'", Icon = Icons.Material.Outlined.DataArray, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
-
-<PageHeader>Object Edit</PageHeader>
 
 <DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" PageType="@GetType()">
     <MudExObjectEditForm MetaConfiguration="@Configure" OnValidSubmit="@OnSubmit" Value="@Test"></MudExObjectEditForm>

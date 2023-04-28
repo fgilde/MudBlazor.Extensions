@@ -9,6 +9,9 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 
+/// <summary>
+/// Editor for a property of an object. Used internally inside the MudExObjectEdit
+/// </summary>
 public partial class MudExPropertyEdit
 {
     [Parameter] public bool ShowPathAsTitle { get; set; }

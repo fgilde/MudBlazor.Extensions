@@ -4,6 +4,10 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public partial class MudExChipSelect<T>
 {
     [Parameter] public string LocalizerPattern { get; set; } = "{0}";

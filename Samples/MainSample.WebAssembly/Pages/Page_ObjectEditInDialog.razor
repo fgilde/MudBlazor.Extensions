@@ -5,10 +5,7 @@
 @inject IJSRuntime Js
 @inject IDialogService dialogService;
 
-@attribute [Demo(Group = "MudExObjectEdit", Name = "Object Edit in Dialog", Order = 5, Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>), typeof(MudExObjectEditDialog<>) })]
-
-
-<PageHeader>Object edit in Dialog</PageHeader>
+@attribute [Demo(Group = "MudExObjectEdit", Name = "Object Edit in Dialog", Order = 5, Documentation = "See how to use MudExObjectEdit in a dialog", Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>), typeof(MudExObjectEditDialog<>) })]
 
 <DemoComponent PageType="@GetType()">
     <MudButton OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Edit Test Object</MudButton>

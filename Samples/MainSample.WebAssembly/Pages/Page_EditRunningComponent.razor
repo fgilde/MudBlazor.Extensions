@@ -1,9 +1,7 @@
 ﻿@page "/edit-component"
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
-@attribute [Demo(Group = "MudExObjectEdit", Name = "Edit Running Component", Order = 6, Icon = Icons.Material.Outlined.SettingsInputComponent, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
-
-<PageHeader>Edit Running Component Display with MudExObjectEdit</PageHeader>
+@attribute [Demo(Group = "MudExObjectEdit", Name = "Edit Running Component", Order = 6, Documentation = "Here you can see how you can use the MudExObjectEdit to edit the properties of a running component", Icon = Icons.Material.Outlined.SettingsInputComponent, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
 <DemoComponent PageType="@GetType()">
     <SplitContainer>

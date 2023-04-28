@@ -40,7 +40,7 @@ namespace MudBlazor.Extensions.Helper
                 await runtime.ImportModuleBlazorJS(); // This is a workaround for using module in MAUI apps
                 await runtime.ImportModuleMudEx(); // This is a workaround for using module in MAUI apps
                 //await runtime.LoadJsAsync(MainJs());
-                await runtime.AddCss(await GetEmbeddedFileContentAsync($"wwwroot/mudBlazorExtensions{min}.css"));
+                await runtime.AddCss(await MudExResource.GetEmbeddedFileContentAsync($"wwwroot/mudBlazorExtensions{min}.css"));
                 initialized = true;
             }
             return runtime;
@@ -79,14 +79,6 @@ namespace MudBlazor.Extensions.Helper
         {
             return js.ImportModuleAndCreateJsAsync(ComponentJs<TComponent>(), $"initialize{GetJsComponentName<TComponent>()}", args);
         }
-        
-        private static async Task<string> GetEmbeddedFileContentAsync(string file)
-        {
-            var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
-            var fileInfo = embeddedProvider.GetFileInfo(file);
-            await using var stream = fileInfo.CreateReadStream();
-            using var reader = new StreamReader(stream, Encoding.UTF8);
-            return await reader.ReadToEndAsync();
-        }
+
     }
 }

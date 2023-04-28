@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 namespace MainSample.WebAssembly.Types;
 
 [AttributeUsage(AttributeTargets.Class)]
-internal class DemoAttribute : Attribute
+public class DemoAttribute : Attribute
 {
     public Type PageType { get; private set; }
 
@@ -26,12 +26,12 @@ internal class DemoAttribute : Attribute
     public NavigationEntry ToNavigationEntry(Type type)
     {
         UpdateType(type);
-        return new(Name, Icon, Url, Url?.ToLower()?.StartsWith("http") == true ? "_blank" : "") { Demo = this };
+        return new(Name, Icon, Url, Url?.ToLower()?.StartsWith("http") == true ? "_blank" : "") { Demo = this, Documentation = Documentation};
     }
 
     public NavigationEntry ToNavigationEntry() => ToNavigationEntry(PageType);
 
-
+    public string Documentation { get; set; }
     public Type? ForComponentType { get; set; }
     public Type[]? ForComponentTypes { get; set; }
     public string? Name { get; set; }

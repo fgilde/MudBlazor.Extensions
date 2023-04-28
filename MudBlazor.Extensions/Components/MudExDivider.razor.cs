@@ -7,6 +7,9 @@ using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// A divider to separate content
+/// </summary>
 public partial class MudExDivider : IMudExComponent
 {
     private RenderFragment Inherited() => builder =>

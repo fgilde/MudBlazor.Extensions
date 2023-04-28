@@ -4,7 +4,7 @@ using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components.Base;
 
-public class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, IAsyncDisposable, IJsMudExComponent<T>
+public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, IAsyncDisposable, IJsMudExComponent<T>
     where T : MudExBaseComponent<T>
 {
     public IJSObjectReference JsReference { get; set; }
@@ -42,12 +42,8 @@ public class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, IAsyncDisp
     {
         if (JsReference != null)
         {
-            try
-            {
-                await JsReference.InvokeVoidAsync("dispose");
-            }
-            catch
-            {}
+            try { await JsReference.InvokeVoidAsync("dispose"); }
+            catch {}
             await JsReference.DisposeAsync();
         }
 

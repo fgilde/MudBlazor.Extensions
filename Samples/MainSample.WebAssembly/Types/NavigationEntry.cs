@@ -1,9 +1,12 @@
-﻿using Nextended.Core.Types;
+﻿using MudBlazor.Extensions.Helper;
+using Nextended.Core.Types;
 
 namespace MainSample.WebAssembly.Types;
 
 public class NavigationEntry : Hierarchical<NavigationEntry>
 {
+    private Type _type;
+
     public NavigationEntry(string text = "", string icon = "", string href = "", string target = "")
     {
         Icon = icon;
@@ -11,6 +14,23 @@ public class NavigationEntry : Hierarchical<NavigationEntry>
         Href = href;
         Target = target;
     }
+
+    public Type Type
+    {
+        get => _type;
+        set
+        {
+            _type = value;
+            _=LoadDoc();
+        }
+    }
+
+    private async Task LoadDoc()
+    {
+        Documentation ??= await MudExResource.GetDocumentationAsync(Type);
+    }
+
+    public string? Documentation { get; set; }
     public string Text { get; set; }
     public string Icon { get; set; }
     public string Href { get; set; }

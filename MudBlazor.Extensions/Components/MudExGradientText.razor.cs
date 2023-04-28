@@ -8,6 +8,9 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// A Component to display text with a gradient foreground or background
+/// </summary>
 public partial class MudExGradientText: IMudExComponent
 {
     [Inject] protected IServiceProvider ServiceProvider { get; set; }

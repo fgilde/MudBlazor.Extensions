@@ -35,28 +35,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="wwwroot\docs\MudBlazor.Extensions.xml"/>
+    <EmbeddedResource Include="wwwroot\docs\MudBlazor.Extensions.xml" />
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.css" />
     <EmbeddedResource Include="wwwroot\js\mudBlazorExtensions.js" />
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.min.css" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="wwwroot\docs\MudBlazor.Extensions.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <PropertyGroup>
-      <DocumentationDestination>$(SolutionDir)MudBlazor.Extensions/wwwroot/docs/</DocumentationDestination>
-    </PropertyGroup>
-    <ItemGroup>
-      <DocumentationFile Include="$(TargetDir)$(TargetName).xml" />
-    </ItemGroup>
-    <Copy SourceFiles="@(DocumentationFile)" DestinationFolder="$(DocumentationDestination)" OverwriteReadOnlyFiles="true" SkipUnchangedFiles="false" />
-  </Target>
-
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="7.0.2" />

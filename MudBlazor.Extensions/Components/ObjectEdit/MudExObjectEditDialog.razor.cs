@@ -5,6 +5,10 @@ using MudBlazor.Extensions.Options;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 
+/// <summary>
+/// Dialog for editing objects with the MudExObjectEditForm
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public partial class MudExObjectEditDialog<T>
 {
     protected override bool OverwriteActionBar => true;

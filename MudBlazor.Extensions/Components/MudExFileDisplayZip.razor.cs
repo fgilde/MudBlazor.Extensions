@@ -14,6 +14,9 @@ using Nextended.Core.Extensions;
 namespace MudBlazor.Extensions.Components;
 
 
+/// <summary>
+/// A Component to display the content of a zip file
+/// </summary>
 public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDisplay
 {
     public string Name { get; } = nameof(MudExFileDisplayZip);

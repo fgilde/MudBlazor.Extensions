@@ -8,6 +8,10 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// Simple Card List with a hover effect.
+/// </summary>
+/// <typeparam name="TData"></typeparam>
 public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem, TData>, IJsMudExComponent<MudExCardList<TData>>
 {
     private string _id = Guid.NewGuid().ToFormattedId();

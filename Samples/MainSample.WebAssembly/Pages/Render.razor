@@ -1,10 +1,10 @@
 ﻿@page "/render/{TypeName?}"
 @page "/c/{TypeName?}"
 @using Nextended.Core.Extensions
+@using MudBlazor.Extensions.Helper
 
 
-<PageHeader>@TypeName</PageHeader>
-@Documentation
+<HeaderForType Type="@Type" Fallback="@TypeName"/>
 
 
 @if (AvailableDemo != null)
@@ -15,7 +15,20 @@
 }
 @if (Type != null)
 {
-    <DynamicComponent Type="ComponentRenderType"></DynamicComponent>
+    if (Type.IsGenericType)
+    {
+        //type = Type.MakeGenericType(typeof(object));
+        <MudAlert ContentAlignment="HorizontalAlignment.Center" Severity="Severity.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Error">
+            <MudText Color="Color.Error">
+                Can't render a generic type as dynamic currently
+            </MudText>
+        </MudAlert>
+        @*<DynamicComponent Type="ComponentRenderType"></DynamicComponent>*@
+    }
+    else
+    {
+        <DynamicComponent Type="ComponentRenderType"></DynamicComponent>
+    }
 }
 else
 {
@@ -41,6 +54,7 @@ else
     NavigationEntry? _availableDemo;
     private string? _doc;
 
+
     internal NavigationEntry? AvailableDemo
     {
         get
@@ -56,7 +70,6 @@ else
     }
 
     public Type? Type => type ??= GetTypeByName();
-    public string? Documentation => _doc ??= (Type != null ? ComponentTypes.GetDocumentation(Type) : null);
 
     private Type? ComponentRenderType => Type != null ? typeof(RenderComponent<>).MakeGenericType(Type) : null;
 

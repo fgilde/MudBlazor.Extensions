@@ -2,6 +2,9 @@
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// A SplitPanel Component 
+/// </summary>
 public partial class MudExSplitPanel
 {
     [Parameter] public RenderFragment Left { get; set; }

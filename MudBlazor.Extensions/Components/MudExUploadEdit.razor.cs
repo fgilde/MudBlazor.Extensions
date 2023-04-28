@@ -13,6 +13,10 @@ using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// A Component to edit and upload a list of files
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
 {
     [Parameter] public string TextDropZone { get; set; } = "Drop files here";

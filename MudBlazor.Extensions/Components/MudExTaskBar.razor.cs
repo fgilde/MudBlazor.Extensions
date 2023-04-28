@@ -3,6 +3,9 @@ using Microsoft.JSInterop;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide <MudExTaskBar/> somewhere in your Layout
+/// </summary>
 [Obsolete("Not finished yet. Will be implemented later")]
 public partial class MudExTaskBar: MudExSlideBar
 {

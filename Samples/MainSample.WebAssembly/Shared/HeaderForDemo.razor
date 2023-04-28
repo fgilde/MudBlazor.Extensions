@@ -1,0 +1,42 @@
+﻿@using System.Reflection;
+@using MudBlazor.Extensions.Helper
+
+<div class="doc-header">
+    
+    <PageHeader>@(DemoAttribute?.Name)</PageHeader>
+
+    <MudAlert Style="margin-bottom: 40px; margin-left: -20px;">@Documentation</MudAlert>
+
+</div>
+
+
+@code {
+
+    [Parameter]
+    public DemoAttribute? DemoAttribute { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(DemoAttribute?.Documentation))
+        {
+            doc = await MudExResource.GetDocumentationAsync(DemoAttribute?.RelatedComponents?.FirstOrDefault());
+        }
+        await base.OnInitializedAsync();
+    }
+
+    private string doc;
+    public string? Documentation => DemoAttribute?.Documentation ?? doc;
+
+    [Parameter]
+    public Type Type
+    {
+        get => _type;
+        set
+        {
+            _type = value;
+            DemoAttribute ??= value.GetCustomAttribute<DemoAttribute>();
+        }
+    }
+    
+    private Type _type;
+}

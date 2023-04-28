@@ -7,7 +7,7 @@ using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components.Base;
 
-public class MudExBaseComponent<T> : ComponentBase, IMudExComponent
+public abstract class MudExBaseComponent<T> : ComponentBase, IMudExComponent
     where T : MudExBaseComponent<T>
 {
     [Parameter] public IStringLocalizer Localizer { get; set; }

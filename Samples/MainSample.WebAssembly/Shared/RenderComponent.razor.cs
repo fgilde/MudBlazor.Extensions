@@ -38,4 +38,14 @@ public partial class RenderComponent<T>
             MetaConfiguration?.Invoke(meta);
         };
     }
+
+    bool IsGeneric => typeof(T).IsGenericType;
+
+    private Type GetRenderType()
+    {
+        var res = typeof(T);
+        if (res.IsGenericType && res.GetGenericTypeDefinition() == typeof(Nullable<>))
+            return res.MakeGenericType(typeof(object));
+        return res;
+    }
 }

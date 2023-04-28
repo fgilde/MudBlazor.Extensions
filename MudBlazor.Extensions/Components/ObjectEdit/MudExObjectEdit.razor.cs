@@ -19,6 +19,10 @@ using Nextended.Core.Helper;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 
+/// <summary>
+/// A powerful component to edit an object and its properties.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public partial class MudExObjectEdit<T>
 {
     private IObjectMetaConfiguration<T> _configService => Get<IObjectMetaConfiguration<T>>();

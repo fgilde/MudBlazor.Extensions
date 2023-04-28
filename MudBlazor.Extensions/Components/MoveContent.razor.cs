@@ -3,6 +3,9 @@ using Microsoft.JSInterop;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// Component to move the ChildContent to a specific element that can defined by ElementSelector.
+/// </summary>
 public partial class MoveContent
 {
     [Parameter] public RenderFragment ChildContent { get; set; }

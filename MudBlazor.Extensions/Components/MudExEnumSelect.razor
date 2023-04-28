@@ -7,6 +7,7 @@
 @Inherited()
 
 @code {
+    
     bool _isFlagsEnum;
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
@@ -71,7 +72,7 @@
     {
         Enum value = Value as Enum;
 
-        Type underlyingType = Enum.GetUnderlyingType(EnumOrUnderlyingType());
+        var underlyingType = Enum.GetUnderlyingType(EnumOrUnderlyingType());
 
         // note: AsInt mean: math integer vs enum (not the c# int type)
         dynamic valueAsInt = Convert.ChangeType(value, underlyingType);

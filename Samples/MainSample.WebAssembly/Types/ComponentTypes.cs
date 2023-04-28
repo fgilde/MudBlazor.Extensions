@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Extensions.Components.Base;
+using MudBlazor.Extensions.Helper;
 using Nextended.Core.Helper;
 using System.Reflection;
 using System.Xml;
@@ -13,7 +14,7 @@ internal static class ComponentTypes
     {
         var interfaceType = typeof(IMudExComponent);
         return interfaceType.Assembly.GetTypes().Where(
-                t => t.ImplementsInterface(interfaceType) && !t.IsInterface && !t.IsAbstract && !t.IsGenericType)
+                t => t.ImplementsInterface(interfaceType) && !t.IsInterface && !t.IsAbstract)
             .ToHashSet();
     }
 
@@ -24,26 +25,4 @@ internal static class ComponentTypes
             .ToHashSet();
     }
 
-    public static string GetDocumentation(Type type)
-    {
-        Assembly assembly = Assembly.GetAssembly(type);
-        string assemblyPath = assembly.Location;
-        string xmlPath = Path.ChangeExtension(assemblyPath, ".xml");
-        if (!File.Exists(xmlPath))
-        {
-            return null;
-        }
-
-        XmlDocument xmlDoc = new XmlDocument();
-        xmlDoc.Load(xmlPath);
-        string typeName = type.FullName;
-        string xpath = $"//member[@name='T:{typeName}']/summary";
-        XmlNode summaryNode = xmlDoc.SelectSingleNode(xpath);
-        if (summaryNode == null)
-        {
-            return null;
-        }
-
-        return summaryNode.InnerText.Trim();
-    }
 }
