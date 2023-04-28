@@ -25,9 +25,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="wwwroot\docs\MudBlazor.Extensions.xml" />
-    <Content Remove="wwwroot\js\components\MoveContent.min.js" />
-    <Content Remove="wwwroot\js\components\MudExColorBubble.min.js" />
-    <Content Remove="wwwroot\js\components\MudExUploadEdit.min.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -98,9 +95,6 @@
     </None>
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
-    <None Include="wwwroot\js\components\MoveContent.min.js" />
-    <None Include="wwwroot\js\components\MudExColorBubble.min.js" />
-    <None Include="wwwroot\js\components\MudExUploadEdit.min.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -112,14 +106,6 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Components\MudExTaskBar.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Components\MudExMessageDialog.razor" />
-    <_ContentIncludedByDefault Remove="Components\MudExTaskBar.razor" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\components\MoveContent.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\components\MudExColorBubble.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\components\MudExUploadEdit.min.js" />
   </ItemGroup>
 
   <ItemGroup>
