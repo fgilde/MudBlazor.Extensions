@@ -8,6 +8,12 @@
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = href;
+        link.onerror = () => {
+            const loadingContainer = this.querySelector('.mud-ex-app-loader-loading-container');
+            if (loadingContainer) {
+                loadingContainer.remove();
+            }
+        };
         document.head.appendChild(link);
     }
 

@@ -4,9 +4,11 @@
 <HeaderForDemo Type="@PageType" />
 
 <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
-    <p style="top: 0; position: absolute; right: 0; margin-right: 22px; margin-top: -38px; font-size: 18pt; color: var(--mud-palette-primary); font-weight: bold;">
-        @Title
-    </p>
+    <MudHidden Breakpoint="Breakpoint.MdAndDown">
+        <p style="top: 0; position: absolute; right: 0; margin-right: 22px; margin-top: -38px; font-size: 18pt; color: var(--mud-palette-primary); font-weight: bold;">
+            @Title
+        </p>
+    </MudHidden>
     <MudTabPanel Text="Demo">
         @ChildContent
     </MudTabPanel>
@@ -14,7 +16,7 @@
     {
         <MudTabPanel Text="Code">
             <MudCard>
-                @if (CodeFiles is {Length: > 1 })
+                @if (CodeFiles is { Length: > 1 })
                 {
                     <MudSelect Label="File" @bind-Value="@SelectedCodeFile" Variant="Variant.Outlined" Color="Color.Primary">
                         @foreach (var file in CodeFiles)
@@ -48,7 +50,7 @@
     [Inject] HttpClient http { get; set; }
 
     #endregion
-    
+
     #region Parameter
 
     [Parameter]
@@ -88,7 +90,7 @@
     #endregion
 
     public string SelectedCodeValue { get; set; }
-    
+
     private string FallbackTitle()
     {
         var res = _pageType != null ? _pageType.Name : CodeFile;
@@ -116,7 +118,7 @@
     {
         SelectedCodeFile = CodeFiles.FirstOrDefault();
         await base.OnInitializedAsync();
-        
+
         try
         {
             foreach (var doc in DocFiles ?? Array.Empty<string>())

@@ -32,7 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="wwwroot\docs\MudBlazor.Extensions.xml"/>
+    <EmbeddedResource Include="wwwroot\css\mudExAppLoader.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\docs\MudBlazor.Extensions.xml" />
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.css" />
     <EmbeddedResource Include="wwwroot\js\mudBlazorExtensions.js" />
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.min.css" />
@@ -116,12 +119,5 @@
     <Folder Include="Components\Base\" />
     <Folder Include="Middleware\" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="wwwroot\css\animations\_perspective.scss">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
+  
 </Project>

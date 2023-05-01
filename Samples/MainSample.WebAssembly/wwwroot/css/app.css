@@ -83,3 +83,42 @@ a, .btn-link {
 .blazor-error-boundary::after {
     content: "An error has occurred."
 }
+
+
+.index-card {
+    width: 100%;
+    max-width: 450px;
+}
+
+@media screen and (min-width: 768px) {
+    .index-card {
+        width: 450px;
+    }
+}
+
+@keyframes rotate-background {
+    0% {
+        transform: scale(1.5) rotate(0deg);
+    }
+
+    100% {
+        transform: scale(1.5) rotate(360deg);
+    }
+}
+
+.mud-ex-app-loader-loading-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.mud-ex-app-loader-loading-container::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: linear-gradient(-60deg, #433859 50%, #01052D 50%);
+    animation: rotate-background 30s linear infinite;
+    z-index: -1;
+}

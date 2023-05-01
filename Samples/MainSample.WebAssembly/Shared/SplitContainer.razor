@@ -1,21 +1,41 @@
-﻿<MudExSplitPanel Splittable="@Splittable" ColumnLayout="@ColumnLayout" Style="height: 80vh">
-    <Left>
-        @if (Left != null)
-        {
-            <MudExSplitPanelItem Class="mud-ex-content-center mud-ex-transparent-indicator-bg" Style="min-width: 350px; height:auto; min-height: 150px;">
-                @Left
-            </MudExSplitPanelItem>
-        }
-    </Left>
-    <Right>
+﻿<MudHidden Breakpoint="Breakpoint.MdAndDown">
+    <MudExSplitPanel Splittable="@Splittable" ColumnLayout="@ColumnLayout" Style="height: 80vh">
+        <Left>
+            @if (Left != null)
+            {
+                <MudExSplitPanelItem Class="mud-ex-content-center mud-ex-transparent-indicator-bg" Style="min-width: 350px; height:auto; min-height: 150px;">
+                    @Left
+                </MudExSplitPanelItem>
+            }
+        </Left>
+        <Right>
+            @if (Right != null)
+            {
+                <MudExSplitPanelItem Class="px-4 pt-2 pb-4" Style="min-width: 350px; min-height: 150px; width: 50%;">
+                    @Right
+                </MudExSplitPanelItem>
+            }
+        </Right>
+    </MudExSplitPanel>
+</MudHidden>
+
+<MudHidden Breakpoint="Breakpoint.MdAndDown" Invert="true">
+    @if (Left != null)
+    {
+        <MudExSplitPanelItem Class="mud-ex-content-center mud-ex-transparent-indicator-bg" Style="min-width: 350px; height:auto; min-height: 250px;">
+            @Left
+        </MudExSplitPanelItem>
+    }
+    
     @if (Right != null)
     {
-        <MudExSplitPanelItem Class="px-4 pt-2 pb-4" Style="min-width: 350px; min-height: 150px; width: 50%;">
+        <MudExSplitPanelItem Class="px-4 pt-2 pb-4" Style="width: 100%;">
             @Right
         </MudExSplitPanelItem>
     }
-    </Right>
-</MudExSplitPanel>
+    
+</MudHidden>
+
 
 @code {
     [Parameter] public RenderFragment? Left { get; set; }

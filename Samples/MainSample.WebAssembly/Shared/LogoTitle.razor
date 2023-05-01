@@ -1,7 +1,9 @@
 ﻿@inject NavigationManager Navi;
 
 <div class="mud-ex-animate-all-properties" style="@GetStyle()">
-    <img style="height: 25px;margin-right: 10px;margin-bottom: -5px;" src="https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudExtension.png" />
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <img style="height: 25px; margin-right: 10px; margin-bottom: -5px;" src="https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudExtension.png"/>
+    </MudHidden>
     <MudLink Class="mud-ex-animate-all-properties mud-ex-gradient-text animate" Href="@GetHomeLink()" Typo="Typo.h6">MudBlazor.Extensions</MudLink>
 </div>
 @code{

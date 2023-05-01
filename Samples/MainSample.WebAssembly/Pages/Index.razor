@@ -11,9 +11,17 @@
 </style>
 
 
-<MudExGradientText Style="margin-top: -100px;margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h2">MudBlazor.Extensions</MudExGradientText>
-
+<MudHidden Breakpoint="Breakpoint.SmAndDown">
+    <MudExGradientText
+        Animate="false"
+        Style="margin-top: -100px;margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h2">MudBlazor.Extensions</MudExGradientText>
+</MudHidden>
+<MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+    <MudExGradientText Animate="false"
+                       Style="margin-top: -100px;margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h4">MudBlazor.Extensions</MudExGradientText>
+</MudHidden>
 <Support />
+
 
 <MudExpansionPanels MultiExpansion="true">
     <MudExpansionPanel IsInitiallyExpanded="true" Class="@($"mt-3 {("mud-ex-object-edit-group-flat")}")" Text="DEMOS">
@@ -21,7 +29,7 @@
 
             @foreach (var nav in DemoAttribute.AllEntries(true))
             {
-                <MudCard Style="width: 25%" @onclick="@(() => { Open(nav); })">
+                <MudCard Class="index-card" @onclick="@(() => { Open(nav); })">
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Typo="Typo.h6">@(nav.Demo?.RelatedComponents?.FirstOrDefault()?.Name?.Split('`')?.FirstOrDefault() ?? nav.Text)</MudText>
@@ -47,7 +55,7 @@
 
             @foreach (var nav in Navigations.ReflectMudExComponents())
             {
-                <MudCard Style="width: 25%" @onclick="@(() => { Open(nav); })">
+                <MudCard Class="index-card" @onclick="@(() => { Open(nav); })">
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Typo="Typo.h6">@nav.Text</MudText>

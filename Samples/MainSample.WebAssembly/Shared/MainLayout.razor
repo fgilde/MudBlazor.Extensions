@@ -20,9 +20,17 @@
         
         <MudSpacer/>
         <ThemeEdit OnThemeChanged="@HandleThemeChange" @bind-IsDark="@IsDark" @bind-IsBusy="@IsOverlayVisible" />
-
-        <MudIconButton Icon="@Icons.Custom.Brands.Microsoft" Color="Color.Inherit" Link="https://www.nuget.org/packages/MudBlazor.Extensions" Target="_blank"/>
-        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank"/>
+        
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudIconButton Icon="@Icons.Custom.Brands.Microsoft" Color="Color.Inherit" Link="https://www.nuget.org/packages/MudBlazor.Extensions" Target="_blank"/>
+            <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank"/>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+            <MudMenu AnchorOrigin="Origin.BottomRight" Icon="@Icons.Material.Filled.MoreVert">
+                <MudMenuItem Icon="@Icons.Custom.Brands.Microsoft" Link="https://www.nuget.org/packages/MudBlazor.Extensions" Target="_blank">Nuget</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Custom.Brands.GitHub" Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank">GitHub</MudMenuItem>
+            </MudMenu>
+        </MudHidden>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>

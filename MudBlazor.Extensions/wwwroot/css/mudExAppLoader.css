@@ -3,13 +3,14 @@
     --loading-color: #ff4081;
 }
 
+
 .mud-ex-app-loader-loading-container {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
     width: 100vw;
-    position: absolute;
+    position: fixed;
     z-index: 99999;
     background-color: rgba(0, 0, 0, 0.9);
 }
@@ -38,8 +39,8 @@
 .mud-ex-app-loader-circle-progress {
     stroke: var(--loading-color);
     stroke-dasharray: 566; /* 2 * PI * R (90) */
-    /*stroke-dashoffset: calc(566 - (var(--blazor-load-percentage) * 5.66));*/
-    transition: stroke-dashoffset 0.15s linear;
+    stroke-dashoffset: calc(566 - (var(--blazor-load-percentage) * 5.66));
+    /*transition: stroke-dashoffset 0.15s linear;*/
 }
 
 .logo {
