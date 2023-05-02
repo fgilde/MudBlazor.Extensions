@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
@@ -43,6 +44,8 @@ public partial class MudExChipSelect<T>
     [Parameter] public EventCallback<IEnumerable<T>> SelectedChanged { get; set; }
     [Parameter] public EventCallback<T> ValueChanged { get; set; }
 
+    protected bool Rendered { get; set; }
+
     [Parameter]
     public IEnumerable<T> Selected
     {
@@ -64,8 +67,11 @@ public partial class MudExChipSelect<T>
 
     private void RaiseChanged()
     {
-        SelectedChanged.InvokeAsync(new HashSet<T>(Selected));
-        ValueChanged.InvokeAsync(Value);
+        if (Rendered)
+        {
+            SelectedChanged.InvokeAsync(new HashSet<T>(Selected));
+            ValueChanged.InvokeAsync(Value);
+        }
     }
 
     [Parameter]
@@ -85,6 +91,12 @@ public partial class MudExChipSelect<T>
     private IEnumerable<T> _selected;
     private string _filter;
     private string _cssName => $"chip-select-{Enum.GetName(ViewMode)?.ToLower() ?? "none"} {(Selected?.Any() == true ? "with-items" : "empty")}";
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        Rendered = true;
+    }
 
 
     protected override async Task OnParametersSetAsync()
