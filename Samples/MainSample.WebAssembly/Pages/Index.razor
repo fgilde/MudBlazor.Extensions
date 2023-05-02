@@ -51,7 +51,7 @@
     </MudExpansionPanel>
 
     <MudExpansionPanel IsInitiallyExpanded="true" Class="@($"mt-3 {("mud-ex-object-edit-group-flat")}")" Text="ALL COMPONENTS">
-        <MudExCardList HoverColor="Color.Warning" TData="object">
+        <MudExCardList HoverColor="Color.Info" TData="object">
 
             @foreach (var nav in Navigations.ReflectMudExComponents())
             {
