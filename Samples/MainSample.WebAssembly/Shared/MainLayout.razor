@@ -5,7 +5,7 @@
 
 <MudThemeProvider @bind-IsDarkMode="@IsDark" Theme="@ClientTheme.CurrentTheme" />
 <MudDialogProvider />
-<MudExTaskBar/>
+<MudExTaskBar BorderColor="Color.Warning" HideContentWhenCollapsed="false"/>
 <MudSnackbarProvider />
 
 <MudOverlay @bind-Visible="IsOverlayVisible" DarkBackground="true" AutoClose="true">

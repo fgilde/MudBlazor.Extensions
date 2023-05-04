@@ -1,0 +1,45 @@
+﻿@page "/slide-bar"
+
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+@attribute [Demo(Name = "MudExSlideBar", Icon = Icons.Material.Outlined.Slideshow, Documentation = "This bar can be positioned left, right, top or bottom, and expands automatically on mouseover. This is also the Base component for the MudExTaskBar that automatically displays all open dialogs", ForComponentTypes = new[] { typeof(MudExSlideBar) })]
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudPaper Height="400px" Width="500px" Class="mud-theme-primary" Style="overflow:hidden; position:relative;">
+                <MudDrawerContainer Class="mud-height-full">
+                    <MudExSlideBar RelativeToParent="true" @ref="component" Position="Position.Right">
+                        <MudNavMenu>
+                            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Store">Store</MudNavLink>
+                            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.LocalLibrary">Library</MudNavLink>
+                            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Forum">Community</MudNavLink>
+                        </MudNavMenu>
+                    </MudExSlideBar>
+                </MudDrawerContainer>
+            </MudPaper>
+        </Left>
+        <Right>
+            <MudExObjectEdit MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+@code
+{
+    private bool _popoverOpen;
+    MudExSlideBar component;
+
+    private void OnBlur() => _popoverOpen = false;
+
+    public void ToggleOpen()
+    {
+        _popoverOpen = !_popoverOpen;
+        StateHasChanged();
+    }
+
+    private Action<ObjectEditMeta<MudExSlideBar>> Configure() => meta =>
+    {
+        meta.GroupByCategoryAttribute();        
+        meta.IgnoreAllReadOnlyFields();
+    };
+}

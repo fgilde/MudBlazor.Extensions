@@ -1,0 +1,35 @@
+﻿@page "/no-modal"
+@using MudBlazor.Extensions.Options
+@inject IJSRuntime Js
+@inject IDialogService dialogService;
+
+@attribute [Demo(Group = "Dialog Samples", Name = "Not Modal Dialogs", Documentation = "Demo for MudExTaskBar and not Modal dialogs", Order = 0, Icon = Icons.Material.Outlined.LaptopWindows, ForComponentTypes = new[] { typeof(MudExTaskBar) })]
+
+<DemoComponent PageType="@GetType()">
+    <MudButton OnClick="@ShowSampleDialogs" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialogs</MudButton>
+</DemoComponent>
+
+@code {
+    
+    private async Task ShowSampleDialogs()
+    {
+        int count = 3;
+        var rnd = new Random();
+        foreach (var i in Enumerable.Range(1, count))
+        {
+            _= dialogService.ShowEx<SampleDialog>($"Simple Dialog {i}", dialog => { dialog.ContentMessage = $"Hello from dialog nr {i} sample page"; }, new DialogOptionsEx()
+            {
+                Position = (DialogPosition)rnd.Next(0, 9),
+                Animation = (AnimationType)rnd.Next(1, 25),
+                DragMode = MudDialogDragMode.Simple,
+                CloseButton = true,
+                MinimizeButton = true,
+                Resizeable = true,
+                Modal = false
+            });
+            await Task.Delay(1000);
+        }
+
+    }
+
+}

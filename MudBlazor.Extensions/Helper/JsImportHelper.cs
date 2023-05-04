@@ -9,7 +9,7 @@ namespace MudBlazor.Extensions.Helper
 {
     public static class JsImportHelper
     {
-        private static bool useMinified => true; //!Debugger.IsAttached;
+        private static bool useMinified => false; //!Debugger.IsAttached;
         
         private static string min => useMinified ? ".min" : string.Empty;
         private static bool initialized;
@@ -38,8 +38,8 @@ namespace MudBlazor.Extensions.Helper
             if (force || !initialized)
             {
                 await runtime.ImportModuleBlazorJS(); // This is a workaround for using module in MAUI apps
-                await runtime.ImportModuleMudEx(); // This is a workaround for using module in MAUI apps
-                //await runtime.LoadJsAsync(MainJs());
+                //await runtime.ImportModuleMudEx(); // This is a workaround for using module in MAUI apps
+                await runtime.LoadJsAsync(MainJs());
                 await runtime.AddCss(await MudExResource.GetEmbeddedFileContentAsync($"wwwroot/mudBlazorExtensions{min}.css"));
                 initialized = true;
             }

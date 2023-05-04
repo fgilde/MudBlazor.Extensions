@@ -142,6 +142,17 @@
     opacity: 0 !important; // initially hide overlay fur mud-ex dialog to ensure no flackering if dialog shouldnt be modal
 }*/
 
+.mud-dialog-container {
+    &.mudex-dialog-no-modal {
+        .mud-overlay-dialog {
+            display: none;
+        }
+
+        width: 2px;
+        height: 2px;
+    }
+}
+
 .mud-ex-dialog-header-progress {
     position: absolute;
     left: 0;

@@ -27,8 +27,66 @@ Make sure that the MainAppId attribute value matches the ID of the <div> element
 - `AccentColor`: (Optional) A string representing the accent color used for the progress circle. Default is `#ff0000`.
 - `MainAppId`: (Optional) A string representing the ID of the div element where your Blazor application will be rendered. Default is `app`.
 - `Logo`: (Optional) A string representing the URL of the logo to be displayed in the loader.
+- `LoadingTextColor`: (Optional) A string representing the loading text color. Default is the same as AccentColor.
+- `AppNameColor`: (Optional) A string representing the application name text color. Default is the same as AccentColor.
+- `Timeout`:  (Optional) An integer representing the timeout for the loader animation in milliseconds. Default is 2000.
+- `PreLoadText`: (Optional) A string representing the text to be displayed before the loader percentage is shown. Default is 'Loading...'.
+- `AppName`: (Optional) A string representing the application name to be displayed. Default is an empty string.
 
 
 ## Customization
 
 You can customize the appearance of the MudExAppLoader by modifying the CSS classes in the _content/MudBlazor.Extensions/css/MudExAppLoader.css file.
+
+###Overwriting CSS Example
+
+To overwrite some CSS, you can for example create a new CSS file and add the following content:
+
+```css
+:root {
+    --accent-color1: #a94553;
+    --accent-color2: #423859;
+    --accent-color3: #16868d;
+    --accent-color4: #d0a733;
+}
+
+.mud-ex-app-loader-loading-container .app-name {
+    background: linear-gradient( 90deg,var(--accent-color1),var(--accent-color2),var(--accent-color3),var(--accent-color4));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes rotate-background {
+    0% {
+        transform: scale(1.5) rotate(0deg);
+    }
+
+    100% {
+        transform: scale(1.5) rotate(360deg);
+    }
+}
+
+.mud-ex-app-loader-loading-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.mud-ex-app-loader-loading-container::before {
+    content: "";
+    opacity:.15;
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: linear-gradient(45deg, transparent 50%, var(--accent-color1) 50%), linear-gradient(135deg, transparent 50%, var(--accent-color2) 50%), linear-gradient(-135deg, transparent 50%, var(--accent-color3) 50%), linear-gradient(-45deg, transparent 50%, var(--accent-color4) 50%);
+    background-blend-mode: screen;
+
+    
+    animation: rotate-background 30s linear infinite;
+    z-index: -1;
+}
+```
+
+Include the new CSS file in your project's <head> section after the MudExAppLoader.css file.

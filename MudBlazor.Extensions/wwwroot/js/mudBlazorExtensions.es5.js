@@ -116,11 +116,107 @@ var MudBlazorExtensionHelper = (function () {
             }
 
             if (this.options.modal === false) {
-                this.dialog.parentElement.querySelector('.mud-overlay').style.display = 'none';
-                setTimeout(function () {
-                    _this2.makeDialogAbsolute();
-                    _this2.dialog.parentElement.style.height = '0';
-                }, this.options.animationDurationInMs + 50);
+                (function () {
+                    window.DLG = _this2.dialog;
+
+                    var dialogReferenceDiv = _this2.dialog.parentElement;
+
+                    _this2.dialog.classList.add('mudex-dialog-no-modal');
+                    dialogReferenceDiv.setAttribute('data-modal', false);
+                    dialogReferenceDiv.setAttribute('data-dialog-id', _this2.dialog.id);
+                    dialogReferenceDiv.querySelector('.mud-overlay').style.display = 'none';
+                    setTimeout(function () {
+                        _this2.dialog.style.animation = null;
+                        _this2.dialog.style['animation-duration'] = '0s';
+                        _this2.makeDialogAbsolute();
+                        dialogReferenceDiv.parentElement.insertBefore(_this2.dialog, dialogReferenceDiv.parentElement.firstChild);
+                        dialogReferenceDiv.classList.add('mudex-dialog-no-modal');
+                    }, _this2.options.animationDurationInMs + 150);
+
+                    _this2.dialog.onmousedown = function (e) {
+                        var allDialogs = Array.from(document.querySelectorAll('.mudex-dialog-no-modal'));
+                        var allDialogReferences = Array.from(document.querySelectorAll('.mud-dialog-container')).filter(function (c) {
+                            return c.getAttribute('data-modal') === 'false';
+                        });
+                        var targetDlg = allDialogs.filter(function (d) {
+                            return d.contains(e.target);
+                        })[0];
+                        var targetDlgReference = allDialogReferences.filter(function (d) {
+                            return d.getAttribute('data-dialog-id') === targetDlg.id;
+                        })[0];
+
+                        if (targetDlg) {
+                            // Find the parent element of the target dialog
+                            var parentElement = targetDlg.parentElement;
+
+                            // Find the last dialog element
+                            var lastDialog = allDialogs[allDialogs.length - 1];
+
+                            // If the target dialog is not already the last dialog, move it behind the last dialog
+                            if (targetDlg !== lastDialog) {
+                                parentElement.insertBefore(targetDlg, lastDialog.nextSibling);
+                            }
+                        }
+                    };
+
+                    var handleMutations = function handleMutations(mutationsList) {
+                        var _iteratorNormalCompletion = true;
+                        var _didIteratorError = false;
+                        var _iteratorError = undefined;
+
+                        try {
+                            for (var _iterator = mutationsList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                                var mutation = _step.value;
+
+                                if (mutation.type === 'childList') {
+                                    var _iteratorNormalCompletion2 = true;
+                                    var _didIteratorError2 = false;
+                                    var _iteratorError2 = undefined;
+
+                                    try {
+                                        for (var _iterator2 = mutation.removedNodes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                                            var removedNode = _step2.value;
+
+                                            if (removedNode === dialogReferenceDiv) {
+                                                _this2.dialog.remove();
+                                                observer.disconnect();
+                                            }
+                                        }
+                                    } catch (err) {
+                                        _didIteratorError2 = true;
+                                        _iteratorError2 = err;
+                                    } finally {
+                                        try {
+                                            if (!_iteratorNormalCompletion2 && _iterator2['return']) {
+                                                _iterator2['return']();
+                                            }
+                                        } finally {
+                                            if (_didIteratorError2) {
+                                                throw _iteratorError2;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (err) {
+                            _didIteratorError = true;
+                            _iteratorError = err;
+                        } finally {
+                            try {
+                                if (!_iteratorNormalCompletion && _iterator['return']) {
+                                    _iterator['return']();
+                                }
+                            } finally {
+                                if (_didIteratorError) {
+                                    throw _iteratorError;
+                                }
+                            }
+                        }
+                    };
+
+                    var observer = new MutationObserver(handleMutations);
+                    observer.observe(dialogReferenceDiv.parentElement, { childList: true });
+                })();
             }
 
             // Handle drag
@@ -192,7 +288,7 @@ var MudBlazorExtensionHelper = (function () {
             var rect = element.getBoundingClientRect();
             var rectIsEmpty = rect.width === 0 && rect.height === 0;
             if (rectIsEmpty) {
-                var _ret = (function () {
+                var _ret2 = (function () {
                     var ro = new ResizeObserver(function (entries) {
                         ro.disconnect();
                         _this3.ensureElementIsInScreenBounds(element);
@@ -204,7 +300,7 @@ var MudBlazorExtensionHelper = (function () {
                     };
                 })();
 
-                if (typeof _ret === 'object') return _ret.v;
+                if (typeof _ret2 === 'object') return _ret2.v;
             }
 
             var animationIsRunning = !!element.getAnimations().length;
@@ -402,7 +498,18 @@ window.MudBlazorExtensions = {
             var dialog = document.getElementById(dialogId);
             if (dialog) {
                 var titleCmp = dialog.querySelector('.mud-dialog-title');
-                var iconCmp = titleCmp ? titleCmp.querySelector('svg') : null;
+                var iconCmp = null;
+                if (titleCmp) {
+                    var svgElements = titleCmp.querySelectorAll('svg');
+                    var filteredSvgElements = Array.from(svgElements).filter(function (c) {
+                        return !c.parentElement.classList.contains('mud-ex-dialog-header-actions');
+                    });
+
+                    if (filteredSvgElements.length > 0) {
+                        iconCmp = filteredSvgElements[0];
+                    }
+                }
+
                 var res = {
                     title: titleCmp ? titleCmp.innerText : 'Unnamed window',
                     icon: iconCmp ? iconCmp.innerHTML : ''

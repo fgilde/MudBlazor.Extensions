@@ -513,11 +513,59 @@ class MudBlazorExtensionHelper {
 
         
         if (this.options.modal === false) {
-            this.dialog.parentElement.querySelector('.mud-overlay').style.display = 'none';
+            window.DLG = this.dialog;
+
+            const dialogReferenceDiv = this.dialog.parentElement;
+
+            this.dialog.classList.add('mudex-dialog-no-modal');
+            dialogReferenceDiv.setAttribute('data-modal', false);
+            dialogReferenceDiv.setAttribute('data-dialog-id', this.dialog.id);
+            dialogReferenceDiv.querySelector('.mud-overlay').style.display = 'none';
             setTimeout(() => {
+                this.dialog.style.animation = null;
+                this.dialog.style['animation-duration'] = '0s';
                 this.makeDialogAbsolute();
-                this.dialog.parentElement.style.height = '0';
-            }, this.options.animationDurationInMs + 50);
+                dialogReferenceDiv.parentElement.insertBefore(this.dialog, dialogReferenceDiv.parentElement.firstChild);
+                dialogReferenceDiv.classList.add('mudex-dialog-no-modal');
+            }, this.options.animationDurationInMs + 150);
+
+            this.dialog.onmousedown = (e) => {
+                var allDialogs = Array.from(document.querySelectorAll('.mudex-dialog-no-modal'));
+                var allDialogReferences = Array.from(document.querySelectorAll('.mud-dialog-container')).filter(c => c.getAttribute('data-modal') === 'false');
+                var targetDlg = allDialogs.filter(d => d.contains(e.target))[0];
+                var targetDlgReference = allDialogReferences.filter(d => d.getAttribute('data-dialog-id') === targetDlg.id)[0];
+
+
+                if (targetDlg) {
+                    // Find the parent element of the target dialog
+                    var parentElement = targetDlg.parentElement;
+
+                    // Find the last dialog element
+                    var lastDialog = allDialogs[allDialogs.length - 1];
+
+                    // If the target dialog is not already the last dialog, move it behind the last dialog
+                    if (targetDlg !== lastDialog) {
+                        parentElement.insertBefore(targetDlg, lastDialog.nextSibling);
+                    }
+                }
+
+            };
+
+            const handleMutations = (mutationsList) => {
+                for (const mutation of mutationsList) {
+                    if (mutation.type === 'childList') {
+                        for (const removedNode of mutation.removedNodes) {
+                            if (removedNode === dialogReferenceDiv) {
+                                this.dialog.remove();
+                                observer.disconnect();
+                            }
+                        }
+                    }
+                }
+            };
+
+            const observer = new MutationObserver(handleMutations);
+            observer.observe(dialogReferenceDiv.parentElement, { childList: true });
         }
 
         // Handle drag
@@ -778,7 +826,16 @@ window.MudBlazorExtensions = {
             let dialog = document.getElementById(dialogId);
             if (dialog) {
                 let titleCmp = dialog.querySelector('.mud-dialog-title');
-                let iconCmp = titleCmp ? titleCmp.querySelector('svg') : null;
+                let iconCmp = null;
+                if (titleCmp) {
+                    const svgElements = titleCmp.querySelectorAll('svg');
+                    const filteredSvgElements = Array.from(svgElements).filter(c => !c.parentElement.classList.contains('mud-ex-dialog-header-actions'));
+
+                    if (filteredSvgElements.length > 0) {
+                        iconCmp = filteredSvgElements[0];
+                    }
+                }
+
                 const res = {
                     title: titleCmp ? titleCmp.innerText : 'Unnamed window',
                     icon: iconCmp ? iconCmp.innerHTML : ''

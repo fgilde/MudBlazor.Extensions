@@ -59,6 +59,13 @@
   border: 14px solid var(--loading-color);
   border-radius: 50%;
 }
+.mud-ex-app-loader-loading-container .app-name {
+  position: absolute;
+  margin-top: 355px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--app-name-text-color);
+}
 
 @keyframes pixelatedOut {
   0% {

@@ -10,13 +10,20 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExTaskBar: MudExSlideBar
 {
     [Parameter] public bool OnlyVisibleWithWindows { get; set; } = true;
-    
+    public bool HasItems => _taskbarItems?.Any() == true;
+
     private List<DialogTaskBarInfo> _taskbarItems = new();
     protected override void OnInitialized()
     {
         DialogService.OnDialogInstanceAdded += DialogService_OnDialogInstanceAdded;
+        DialogService.OnDialogCloseRequested += DialogService_OnDialogCloseRequested;
     }
-    
+
+    private void DialogService_OnDialogCloseRequested(IDialogReference arg1, DialogResult arg2)
+    {
+        
+    }
+
     private async void DialogService_OnDialogInstanceAdded(IDialogReference obj)
     {
         await obj.GetDialogAsync<ComponentBase>(); // Wait until dialog is rendered

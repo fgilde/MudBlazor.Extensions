@@ -1,7 +1,12 @@
 ﻿.mud-ex-slidebar {
     margin: 0;
-    z-index: 1301;
+    z-index: calc(var(--mud-zindex-dialog) + 10);
     position: fixed;
+
+    &.relative-to-parent {
+        position: absolute;
+        z-index: unset;
+    }
 
     .mud-tab-slider {
         opacity: 0;
@@ -11,37 +16,67 @@
         transform: translateY(80%);
         width: 100%;
         bottom: 0;
+
+        &.open {
+            transform: translateY(0);
+        }
+
+        &:not(.open) {
+            transform: translateY(calc(100% - 20px)); // 20px ist die sichtbare Höhe der Komponente, wenn sie ausgeblendet ist
+        }
     }
 
     &.top {
-        transform: translateY(-80%);
         width: 100%;
+        height: auto;
         top: 0;
+
+        &.open {
+            transform: translateY(0);
+        }
+
+        &:not(.open) {
+            transform: translateY(calc(-100% + 20px)); // 20px ist die sichtbare Höhe der Komponente, wenn sie ausgeblendet ist
+        }
     }
 
     &.left {
-        transform: translateX(-90%);
+        width: auto;
         height: 100%;
         left: 0;
 
         .mud-tabs {
             height: 100%
         }
+
+        &.open {
+            transform: translateX(0);
+        }
+
+        &:not(.open) {
+            transform: translateX(calc(-100% + 20px)); // 20px ist die sichtbare Breite der Komponente, wenn sie ausgeblendet ist
+        }
     }
 
     &.right {
-        transform: translateX(90%);
+        width: auto;
         height: 100%;
         right: 0;
 
         .mud-tabs {
             height: 100%
         }
+
+        &.open {
+            transform: translateX(0);
+        }
+
+        &:not(.open) {
+            transform: translateX(calc(100% - 20px)); // 20px ist die sichtbare Breite der Komponente, wenn sie ausgeblendet ist
+        }
     }
 
     &.open {
-        transform: translateY(0);
-        transform: translateX(0);
         opacity: 1;
 
         .mud-tab-slider {

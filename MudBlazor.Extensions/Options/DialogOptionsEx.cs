@@ -28,7 +28,7 @@ namespace MudBlazor.Extensions.Options
         public IJSRuntime JsRuntime { get; set; }
         public bool Modal { get; set; } = true;
         public bool? MaximizeButton { get; set; }
-        internal bool? MinimizeButton { get; set; }
+        public bool? MinimizeButton { get; set; }
         public bool ShowAtCursor { get; set; }
         public Origin CursorPositionOrigin { get; set; } = Origin.CenterCenter;
         public bool Resizeable { get; set; }
