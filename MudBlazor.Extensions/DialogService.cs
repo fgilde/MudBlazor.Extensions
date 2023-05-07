@@ -84,13 +84,13 @@ namespace MudBlazor.Extensions
             => dialogService.Show<TDialog>(title, dialogParameters.ConvertToDialogParameters(), options ?? DefaultOptions()).AsMudExDialogReference<TDialog>();
 
         public static async Task<IMudExDialogReference<T>> ShowEx<T>(this IDialogService dialogService, string title, DialogParameters parameters, DialogOptionsEx options = null) where T : ComponentBase
-            => await dialogService.Show<T>(title, parameters, options).InjectOptionsAsync(options).AsMudExDialogReferenceAsync<T>();
+            => await dialogService.ShowAndInject<T>(title, options, parameters).AsMudExDialogReferenceAsync<T>();
 
         public static async Task<IMudExDialogReference<T>> ShowEx<T>(this IDialogService dialogService, string title, DialogOptionsEx options = null) where T : ComponentBase 
-            => await dialogService.Show<T>(title, options).InjectOptionsAsync(options).AsMudExDialogReferenceAsync<T>();
+            => await dialogService.ShowAndInject<T>(title, options).AsMudExDialogReferenceAsync<T>();
 
         public static async Task<IDialogReference> ShowEx(this IDialogService dialogService, Type type, string title, DialogParameters parameters, DialogOptionsEx options = null) 
-            => await dialogService.Show(type, title, parameters, options).InjectOptionsAsync(options);
+            => await dialogService.ShowAndInject(type, title, options, parameters); //dialogService.Show(type, title, parameters, options).InjectOptionsAsync(options);
 
         public static async Task<bool?> ShowMessageBoxEx(this IDialogService dialogService, MessageBoxOptions mboxOptions, DialogOptionsEx options = null)
         {
@@ -105,10 +105,11 @@ namespace MudBlazor.Extensions
             };
             
             string title = mboxOptions.Title;
-            
-            var result = await (await dialogService.Show<MudMessageBox>(title, parameters, options).InjectOptionsAsync(options)).Result;
+            //options.ClassBackground = $"mud-ex-mb-container {options.ClassBackground}";
+            var result = await (await dialogService.ShowAndInject<MudMessageBox>(title, options, parameters)).Result;
             return result.Canceled || !(result.Data is bool data) ? new bool?() : data;
         }
+
 
         public static async Task<T> GetDialogAsync<T>(this IDialogReference dialogReference) where T : ComponentBase
         {
@@ -122,7 +123,7 @@ namespace MudBlazor.Extensions
 
         public static async Task<IDialogReference> ShowEx(this IDialogService dialogService, Type type, string title, DialogOptionsEx options = null)
         {
-            return await dialogService.Show(type, title, options).InjectOptionsAsync(options);
+            return await ShowAndInject(dialogService, type, title, options);
         }
 
         public static string GetDialogId(this IDialogReference dialogReference)
@@ -130,14 +131,48 @@ namespace MudBlazor.Extensions
             return dialogReference != null && dialogReference.Id != Guid.Empty ? $"_{dialogReference.Id.ToString().Replace("-", "")}" : null;
         }
 
-        private static async Task<IDialogReference> InjectOptionsAsync(this IDialogReference dialogReference, DialogOptionsEx options)
+
+        internal static Task<IDialogReference> ShowAndInject<T>(this IDialogService dialogService, string title, DialogOptionsEx options, DialogParameters parameters = null) where T : ComponentBase 
+            => dialogService.ShowAndInject(typeof(T), title, options, parameters);
+
+        internal static Task<IDialogReference> ShowAndInject(this IDialogService dialogService, Type type, string title, DialogOptionsEx options, DialogParameters parameters = null)
+        {
+            if (!options.Modal)
+                options.ClassBackground = $"mud-dialog-container-no-modal {options.ClassBackground}";
+            return dialogService.Show(type, title, parameters, options).InjectOptionsAsync(options);
+        }
+
+        internal static async Task<IDialogReference> InjectOptionsAsync(this Task<IDialogReference> dialogReference,
+            DialogOptionsEx options)
+        {
+            return await (await dialogReference).InjectOptionsAsync(options);
+        }
+
+        internal static async Task<IDialogReference> InjectOptionsAsync(this IDialogReference dialogReference, DialogOptionsEx options)
+        {
+            var callbackReference = await WaitForCallbackReference(dialogReference);
+            var js = await JsImportHelper.GetInitializedJsRuntime(callbackReference.Value, options.JsRuntime);
+            await InjectOptionsAsync(callbackReference, js, options);
+            return dialogReference;
+        }
+
+        internal static async Task InjectOptionsAsync(DotNetObjectReference<ComponentBase> callbackReference, IJSRuntime js, DialogOptionsEx options)
+        {
+            options = PrepareOptions(options);
+            await js.InvokeVoidAsync("MudBlazorExtensions.setNextDialogOptions", options, callbackReference);
+        }
+
+        private static async Task<DotNetObjectReference<ComponentBase>> WaitForCallbackReference(IDialogReference dialogReference)
+        {
+            var dialogComponent = await new Func<ComponentBase>(() => dialogReference.Dialog as ComponentBase).WaitForResultAsync();
+            DotNetObjectReference<ComponentBase> callbackReference = DotNetObjectReference.Create(dialogComponent);
+            return callbackReference;
+        }
+
+        private static DialogOptionsEx PrepareOptions(DialogOptionsEx options)
         {
             options ??= DefaultOptions();
             options = options.CloneOptions();
-            var dialogComponent = await new Func<ComponentBase>(() => dialogReference.Dialog as ComponentBase).WaitForResultAsync();
-            DotNetObjectReference<ComponentBase> callbackReference = DotNetObjectReference.Create(dialogComponent);
-            var js = await JsImportHelper.GetInitializedJsRuntime(dialogComponent, options.JsRuntime);
-
             if (options.MinimizeButton == true)
             {
                 options.Buttons = InsertButton(options, new MudDialogButton(null, null)
@@ -157,8 +192,7 @@ namespace MudBlazor.Extensions
 
             options.Buttons ??= Array.Empty<MudDialogButton>();
             options.Buttons.Apply((i, button) => button.Html = button.GetHtml(i + (options.CloseButton == true ? 1 : 0)));
-            await js.InvokeVoidAsync("MudBlazorExtensions.setNextDialogOptions", options, callbackReference);
-            return dialogReference;
+            return options;
         }
 
         private static MudDialogButton[] InsertButton(DialogOptionsEx options, MudDialogButton btn)

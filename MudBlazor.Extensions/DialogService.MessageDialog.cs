@@ -160,7 +160,16 @@ public static partial class DialogServiceExt
         return !(await dialog.Result).Cancelled;
     }
 
-
+    public static Task<bool> ShowConfirmationDialogAsync(this IDialogService dialogService, MessageBoxOptions messageBoxOptions, DialogOptionsEx options = null)
+    {
+        return dialogService.ShowConfirmationDialogAsync(messageBoxOptions, null, options);
+    }
+    
+    public static Task<bool> ShowConfirmationDialogAsync(this IDialogService dialogService, MessageBoxOptions messageBoxOptions, string icon, DialogOptionsEx options = null)
+    {
+        return dialogService.ShowConfirmationDialogAsync(messageBoxOptions.Title, messageBoxOptions.Message, messageBoxOptions.YesText, messageBoxOptions.CancelText, icon, options);
+    }
+    
     public static Task<bool> ShowConfirmationDialogAsync(this IDialogService dialogService, string title,
         string message,
         string confirmText = "Confirm",

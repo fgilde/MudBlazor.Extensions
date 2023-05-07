@@ -96,6 +96,29 @@ a, .btn-link {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+.my-dialog-timer-field .mud-input-text {
+    margin-top: -8px;
+    max-width: 250px;
+}
+
+.my-dialog-timer-field input {
+    width: 0px !important;
+}
+
+
+
+
+
 :root {
     --accent-color1: #a94553;
     --accent-color2: #423859;

@@ -1,5 +1,9 @@
 ﻿using MainSample.WebAssembly.Types;
 using MudBlazor;
+using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Helper;
+using Nextended.Core.Extensions;
+using System.Reflection;
 
 namespace MainSample.WebAssembly;
 
@@ -15,6 +19,11 @@ public static class Navigations
 
         navigationEntries.UnionWith(DemoAttribute.AllEntries());
 
+        navigationEntries.Add(new NavigationEntry("Utilities")
+        {
+            Children = GetUtils()
+        });
+
         navigationEntries.Add(new NavigationEntry("Dynamic component tests")
         {
             Children = new()
@@ -25,6 +34,14 @@ public static class Navigations
         });
 
         return navigationEntries;
+    }
+
+    private static HashSet<NavigationEntry> GetUtils()
+    {
+        return typeof(MudExSvg).Assembly.GetTypes()
+            .Select(t => new { Type = t, Documentation = t.GetCustomAttribute<HasDocumentationAttribute>() })
+            .Where(d => d.Documentation != null)
+            .Select(d => new NavigationEntry(d.Type.Name)).ToHashSet();
     }
 
     internal static HashSet<NavigationEntry> ReflectMudExComponents()

@@ -1,27 +1,18 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Attribute;
 using Nextended.Blazor.Extensions;
 using Nextended.Core;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Helper
 {
+    [HasDocumentation("BrowserFileExt.md")]
     public static class BrowserFileExt
     {
         public static Task DownloadAsync(this IBrowserFile browserFile, IJSRuntime jsRuntime)
             => browserFile.DownloadFileAsync(jsRuntime);
-
-        //public static async Task DownloadAsync(this IBrowserFile browserFile, IJSRuntime jsRuntime)
-        //{
-        //    var url = await DataUrl.GetDataUrlAsync(await browserFile.GetBytesAsync(), browserFile.ContentType);
-        //    await jsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
-        //    {
-        //        Url = url,
-        //        FileName = $"{browserFile.Name}",
-        //        MimeType = browserFile.ContentType
-        //    });
-        //}
 
         public static string IconForFile(string contentType)
         {

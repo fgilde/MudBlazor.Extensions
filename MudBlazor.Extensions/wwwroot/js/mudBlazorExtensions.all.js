@@ -376,6 +376,49 @@ class MudExDomHelper {
         }
         return [round(x), round(y)];
     }
+
+
+    static toAbsolute(element) {
+        element.style.position = 'absolute';
+        var rect = element.getBoundingClientRect();
+        element.style.left = rect.left + "px";
+        element.style.top = rect.top + "px";
+        element.style.width = rect.width + "px";
+        element.style.height = rect.height + "px";
+    }
+
+    static ensureElementIsInScreenBounds(element) {
+        var rect = element.getBoundingClientRect();
+        var rectIsEmpty = rect.width === 0 && rect.height === 0;
+        if (rectIsEmpty) {
+            const ro = new ResizeObserver(entries => {
+                ro.disconnect();
+                this.ensureElementIsInScreenBounds(element);
+            });
+
+            ro.observe(element);
+            return;
+        }
+
+        var animationIsRunning = !!element.getAnimations().length;
+        if (animationIsRunning) {
+            element.addEventListener('animationend', (e) => this.ensureElementIsInScreenBounds(element), { once: true });
+            return;
+        }
+        if (rect.left < 0) {
+            element.style.left = '0px';
+        }
+        if (rect.top < 0) {
+            element.style.top = '0px';
+        }
+        if (rect.right > window.innerWidth) {
+            element.style.left = (window.innerWidth - element.offsetWidth) + 'px';
+        }
+        if (rect.bottom > window.innerHeight) {
+            element.style.top = (window.innerHeight - element.offsetHeight) + 'px';
+        }
+    }
+    
 }
 
 window.MudExDomHelper = MudExDomHelper;
@@ -408,56 +451,373 @@ class MudExNumber {
 }
 
 window.MudExNumber = MudExNumber;
-class MudBlazorExtensionHelper {
-    mudDialogSelector;
-    mudDialogHeaderSelector;
-    onDone;
-    observer;
-    options;
-    dialog;
-    dotnet;
-
+class MudExDialogHandlerBase {
     constructor(options, dotNet, onDone) {
-        this.dotnet = dotNet;
-        this.onDone = onDone;
         this.options = options;
+        this.dotNet = dotNet;
+        this.onDone = onDone;
+
         this.mudDialogSelector = options.mudDialogSelector || '.mud-dialog:not([data-mud-extended=true])';
         this.mudDialogHeaderSelector = options.mudDialogHeaderSelector || '.mud-dialog-title';
-        this.dialog = document.querySelector(this.mudDialogSelector);
-        this.dialogHeader = this.dialog.querySelector(this.mudDialogHeaderSelector);
+        this._updateDialog(document.querySelector(this.mudDialogSelector));
+        this.disposed = false;
+
+    }
+
+    order = 99;
+
+    getAnimationDuration() {
+        // TODO: 
+        return this.options.animationDurationInMs + 150;
+    }
+
+    awaitAnimation(callback) {
+        setTimeout(() => callback(this.dialog), this.getAnimationDuration());
+    }
+
+    handle(dialog) {
+        this._updateDialog(dialog);
+    }
+
+    handleAll(dialog) {
+        const handlers = this.getHandlers();
+        handlers.forEach(handlerInstance => {
+            handlerInstance.handle(dialog);
+            handlerInstance._handlersCache = this._handlersCache;
+        });
+    }
+
+    dispose() {
+        this.disposed = true;
+        this._handlersCache.forEach(handlerInstance => {
+            if (!handlerInstance.disposed) {
+                handlerInstance.dispose();
+            }
+        });
+        delete this._handlersCache;
+        delete this.dialog;
+        delete this.dialogHeader;
+        delete this.dotNet;
+        delete this.onDone;
+        delete this.options;
+        
+    }
+
+    getHandlers() {
+        if (this._handlersCache) {
+            return this._handlersCache;
+        }
+
+        const handlerInstances = [];
+
+        for (const key in window) {
+            if (window.hasOwnProperty(key) && typeof window[key] === 'function') {
+                try {
+                    const superClass = Object.getPrototypeOf(window[key].prototype);
+                    if (superClass && superClass.constructor === MudExDialogHandlerBase && window[key].prototype.constructor !== this.constructor) {
+                        const instance = new window[key](this.options, this.dotNet, this.onDone);
+                        handlerInstances.push(instance);
+                    }
+                } catch (error) {
+                    // Ignore errors caused by non-class objects
+                }
+            }
+        }
+
+        this._handlersCache = handlerInstances.sort((a, b) => a.order - b.order);
+        return handlerInstances;
+    }
+
+    getHandler(HandlerClass) {
+        return this.getHandlers().find(handlerInstance => handlerInstance instanceof HandlerClass);
+    }
+
+    _updateDialog(dialog) {
+        this.dialog = dialog || this.dialog;
+        if (this.dialog) {
+            this.dialogHeader = this.dialog.querySelector(this.mudDialogHeaderSelector);
+            this.dialogTitleEl = this.dialog.querySelector('.mud-dialog-title');
+            this.dialogTitle = this.dialogTitleEl.innerText.trim();
+            this.dialogId = this.dialog.id;
+            this.dialogContainerReference = this.dialog.parentElement;
+            this.dialogOverlay = this.dialogContainerReference.querySelector('.mud-overlay');
+        }
+    }
+}
+
+window.MudExDialogHandlerBase = MudExDialogHandlerBase;
+class MudExDialogAnimationHandler extends MudExDialogHandlerBase {
+   
+    handle(dialog) {
+        super.handle(dialog);
+        if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
+            this.animate(this.options.animationDescriptions);
+        }
+    }
+
+    animate(types) {
+        //var names = types.map(type => this.options.dialogPositionNames.map(n => `kf-mud-dialog-${type}-${n} ${this.options.animationDurationInMs}ms ${this.options.animationTimingFunctionString} 1 alternate`));
+        //this.dialog.style.animation = `${names.join(',')}`;
+        this.dialog.style.animation = `${this.options.animationStyle}`;
+    }
+}
+
+
+window.MudExDialogAnimationHandler = MudExDialogAnimationHandler;
+class MudExDialogButtonHandler extends MudExDialogHandlerBase {
+
+    handle(dialog) {
+        super.handle(dialog);
+        if (this.options.buttons && this.options.buttons.length) {
+            var dialogButtonWrapper = document.createElement('div');
+            dialogButtonWrapper.classList.add('mud-ex-dialog-header-actions');
+            if (!this.options.closeButton) {
+                dialogButtonWrapper.style.right = '8px'; // No close button, so we need to move the buttons to the right (48 - button width of 40)
+            }
+
+            if (this.dialogHeader) {
+                dialogButtonWrapper = this.dialogHeader.insertAdjacentElement('beforeend', dialogButtonWrapper);
+            }
+            this.options.buttons.reverse().forEach(b => {
+                if (dialogButtonWrapper) {
+                    dialogButtonWrapper.insertAdjacentHTML('beforeend', b.html);
+                    var btnEl = dialogButtonWrapper.querySelector('#' + b.id);
+                    btnEl.onclick = () => {
+                        if (b.id.indexOf('mud-button-maximize') >= 0) {
+                            this.getHandler(MudExDialogPositionHandler).maximize();
+                        }
+                        if (b.id.indexOf('mud-button-minimize') >= 0) {
+                            this.getHandler(MudExDialogPositionHandler).minimize();
+                            
+                        } else {
+                            b.callBackReference.invokeMethodAsync(b.callbackName);
+                        }
+                    }
+                }
+            });
+        }
+    }
+}
+
+
+window.MudExDialogButtonHandler = MudExDialogButtonHandler;
+class MudExDialogDragHandler extends MudExDialogHandlerBase  {
+    
+    handle(dialog) {
+        super.handle(dialog);
+        if (this.options.dragMode !== 0 && this.dialog) {
+            this.dragElement(this.dialog, this.dialogHeader, document.body, this.options.dragMode === 2);
+        }
+    }
+
+    dragElement(dialogEl, headerEl, container, disableBoundCheck) {
+        let startPos = { x: 0, y: 0 };
+        let cursorPos = { x: 0, y: 0 };
+        container = container || document.body;
+
+        if (headerEl) {
+            headerEl.style.cursor = 'move';
+            headerEl.onmousedown = dragMouseDown;
+        } else {
+            dialogEl.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            cursorPos = { x: e.clientX, y: e.clientY };
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+
+            startPos = {
+                x: cursorPos.x - e.clientX,
+                y: cursorPos.y - e.clientY,
+            };
+
+            cursorPos = { x: e.clientX, y: e.clientY };
+
+            const bounds = {
+                x: container.offsetWidth - dialogEl.offsetWidth,
+                y: container === document.body ? window.innerHeight - dialogEl.offsetHeight : container.offsetHeight - dialogEl.offsetHeight,
+            };
+
+            const newPosition = {
+                x: dialogEl.offsetLeft - startPos.x,
+                y: dialogEl.offsetTop - startPos.y,
+            };
+
+            dialogEl.style.position = 'absolute';
+
+            if (disableBoundCheck || isWithinBounds(newPosition.x, bounds.x)) {
+                dialogEl.style.left = newPosition.x + 'px';
+            } else if (isOutOfBounds(newPosition.x, bounds.x)) {
+                dialogEl.style.left = bounds.x + 'px';
+            }
+
+            if (disableBoundCheck || isWithinBounds(newPosition.y, bounds.y)) {
+                dialogEl.style.top = newPosition.y + 'px';
+            } else if (isOutOfBounds(newPosition.y, bounds.y)) {
+                dialogEl.style.top = bounds.y + 'px';
+            }
+        }
+
+        function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+
+        function isWithinBounds(value, maxValue) {
+            return value >= 0 && value <= maxValue;
+        }
+
+        function isOutOfBounds(value, maxValue) {
+            return value > maxValue;
+        }
+    }
+    
+}
+
+
+window.MudExDialogDragHandler = MudExDialogDragHandler;
+class MudExDialogFinder {
+    constructor(options) {
+        this.options = options;
+        this.mudDialogSelector = options.mudDialogSelector || '.mud-dialog:not([data-mud-extended=true])';
     }
 
     findDialog() {
-        return Array.from(document.querySelectorAll(this.mudDialogSelector)).filter(d => !d.__extended)[0];
+        return Array.from(document.querySelectorAll(this.mudDialogSelector)).find(d => !d.__extended);
     }
 
-    init() {
-        this.dialog = this.dialog || this.findDialog();
-        if (!this.dialog) {
-            this.observer = new MutationObserver((e) => {
-                var res = e.filter(x => x.addedNodes && x.addedNodes[0] === this.findDialog());
-                if (res.length) {
-                    this.dialog = res[0].addedNodes[0];
-                    this.observer.disconnect();
-                    this.handleExtensions();
+    observeDialog(callback) {
+        const observer = new MutationObserver((mutations) => {
+            const dialog = this.findDialog();
+            if (dialog) {
+                const addedDialogMutation = mutations.find(mutation => mutation.addedNodes[0] === dialog);
+
+                if (addedDialogMutation) {
+                    observer.disconnect();
+                    callback(dialog);
                 }
+            }
+        });
+
+        observer.observe(document, { characterData: true, childList: true, subtree: true });
+    }
+}
+
+window.MudExDialogFinder = MudExDialogFinder;
+class MudExDialogHandler extends MudExDialogHandlerBase {
+
+    handle(dialog) {
+        super.handle(dialog);
+        setTimeout(() => dialog.classList.remove('mud-ex-dialog-initial'), 50);
+        dialog.__extended = true;
+        dialog.setAttribute('data-mud-extended', true);
+        dialog.classList.add('mud-ex-dialog');
+        this.handleAll(dialog);
+        if (this.onDone) this.onDone();
+    }
+    
+}
+
+window.MudExDialogHandler = MudExDialogHandler;
+class MudExDialogNoModalHandler extends MudExDialogHandlerBase {
+
+    handle(dialog) {
+        super.handle(dialog);
+        if (this.options.modal === false) {
+            window.NOMODAL = this;
+            this.appOrBody = this.dialogContainerReference.parentElement;
+
+            this.changeCls();
+
+            this.awaitAnimation(() => {
+                this.dialog.style.animation = null;
+                this.dialog.style['animation-duration'] = '0s';
+                MudExDomHelper.toAbsolute(this.dialog);
+                this.appOrBody.insertBefore(this.dialog, this.appOrBody.firstChild);
+                this.dialogContainerReference.style.display = 'none';
             });
-            this.observer.observe(document, { characterData: true, childList: true, subtree: true });
-        } else {
-            this.handleExtensions();
+
+
+            this.dialog.onmousedown = (e) => {
+                this.bringToFront();
+            };
+
+            const handleMutations = (mutationsList) => {
+                for (const mutation of mutationsList) {
+                    if (mutation.type === 'childList') {
+                        for (const removedNode of mutation.removedNodes) {
+                            if (removedNode === this.dialogContainerReference) {
+                                console.log('close ' + this.dialogTitle);
+                                this.dialog.remove();
+                                /*observer.disconnect();*/
+                                //MudExDialogNoModalHandler.observers.forEach(o => o.disconnect());
+                                //setTimeout(() => { MudExDialogNoModalHandler.observers.forEach(o => o.observe(this.appOrBody, { childList: true })); }, 500);
+                            }
+                        }
+                    }
+                }
+            };
+
+            const observer = new MutationObserver(handleMutations);
+            //MudExDialogNoModalHandler.observers = MudExDialogNoModalHandler.observers || [];
+            //MudExDialogNoModalHandler.observers.push(observer);
+            observer.observe(this.appOrBody, { childList: true });
         }
     }
 
-    handleExtensions() {
-        this.dialog.__extended = true;
-        this.dialog.setAttribute('data-mud-extended', true);
-        if (this.options.showAtCursor) {
-            this.moveElementToMousePosition(this.dialog);
+    bringToFront(targetDlg) {
+        var allDialogs = this.getAllNonModalDialogs();
+        targetDlg = targetDlg || this.dialog;
+        if (targetDlg) {
+            // Find the parent element of the target dialog
+            var parentElement = targetDlg.parentElement; // Should be this.appOrBody;
+
+            // Find the last dialog element
+            var lastDialog = allDialogs[allDialogs.length - 1];
+
+            // If the target dialog is not already the last dialog, move it behind the last dialog
+            if (targetDlg !== lastDialog) {
+                parentElement.insertBefore(targetDlg, lastDialog.nextSibling);
+            }
         }
-        setTimeout(() => this.dialog.classList.remove('mud-ex-dialog-initial'), 50);
-        // For animations
-        if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
-            this.animate(this.options.animationDescriptions);
+    }
+
+    getAllDialogReferences() {
+        return Array.from(document.querySelectorAll('.mud-dialog-container')).filter(c => c.getAttribute('data-modal') === 'false');
+        //var targetDlgReference = allDialogReferences.filter(d => d.getAttribute('data-dialog-id') === targetDlg.id)[0];
+    }
+
+    getAllNonModalDialogs() {
+        return Array.from(document.querySelectorAll('.mudex-dialog-no-modal'));
+    }
+
+    changeCls() {
+        this.dialog.classList.add('mudex-dialog-no-modal');
+        this.dialogContainerReference.classList.add('mudex-dialog-no-modal');
+        this.dialogContainerReference.setAttribute('data-modal', false);
+        this.dialogContainerReference.setAttribute('data-dialog-id', this.dialog.id);
+        /*this.dialogOverlay.style.display = 'none';*/
+        this.dialogOverlay.remove();
+    }
+
+}
+
+window.MudExDialogNoModalHandler = MudExDialogNoModalHandler;
+class MudExDialogPositionHandler extends MudExDialogHandlerBase {
+
+    handle(dialog) {
+        super.handle(dialog);
+
+        if (this.options.showAtCursor) {
+            this.moveElementToMousePosition(dialog);
         }
 
         if (this.options.disablePositionMargin) {
@@ -465,7 +825,6 @@ class MudBlazorExtensionHelper {
             this.dialog.classList.add('mud-ex-dialog-no-margin');
         }
 
-        // Full height ext
         if (this.options.fullHeight) {
             var cls = this.options.disableSizeMarginY ? 'mud-dialog-height-full-no-margin' : 'mud-dialog-height-full';
             this.dialog.classList.add(cls);
@@ -481,106 +840,12 @@ class MudBlazorExtensionHelper {
                 this.dialog.classList.remove('mud-dialog-width-false');
             }
         }
-
-        // Inject buttons
-        if (this.options.buttons && this.options.buttons.length) {
-            var dialogButtonWrapper = document.createElement('div');
-            dialogButtonWrapper.classList.add('mud-ex-dialog-header-actions');
-            if (!this.options.closeButton) {
-                dialogButtonWrapper.style.right = '8px'; // No close button, so we need to move the buttons to the right (48 - button width of 40)
-            }
-            
-            if (this.dialogHeader) {
-                dialogButtonWrapper = this.dialogHeader.insertAdjacentElement('beforeend', dialogButtonWrapper);
-            }
-            this.options.buttons.reverse().forEach(b => {
-                if (dialogButtonWrapper) {
-                    dialogButtonWrapper.insertAdjacentHTML('beforeend', b.html);
-                    var btnEl = dialogButtonWrapper.querySelector('#' + b.id);
-                    btnEl.onclick = () => {
-                        if (b.id.indexOf('mud-button-maximize') >= 0) {
-                            this.maximize();
-                        }
-                        if (b.id.indexOf('mud-button-minimize') >= 0) {
-                            this.minimize();
-                        } else {
-                            b.callBackReference.invokeMethodAsync(b.callbackName);
-                        }
-                    }
-                }
-            });
-        }
-
-        
-        if (this.options.modal === false) {
-            window.DLG = this.dialog;
-
-            const dialogReferenceDiv = this.dialog.parentElement;
-
-            this.dialog.classList.add('mudex-dialog-no-modal');
-            dialogReferenceDiv.setAttribute('data-modal', false);
-            dialogReferenceDiv.setAttribute('data-dialog-id', this.dialog.id);
-            dialogReferenceDiv.querySelector('.mud-overlay').style.display = 'none';
-            setTimeout(() => {
-                this.dialog.style.animation = null;
-                this.dialog.style['animation-duration'] = '0s';
-                this.makeDialogAbsolute();
-                dialogReferenceDiv.parentElement.insertBefore(this.dialog, dialogReferenceDiv.parentElement.firstChild);
-                dialogReferenceDiv.classList.add('mudex-dialog-no-modal');
-            }, this.options.animationDurationInMs + 150);
-
-            this.dialog.onmousedown = (e) => {
-                var allDialogs = Array.from(document.querySelectorAll('.mudex-dialog-no-modal'));
-                var allDialogReferences = Array.from(document.querySelectorAll('.mud-dialog-container')).filter(c => c.getAttribute('data-modal') === 'false');
-                var targetDlg = allDialogs.filter(d => d.contains(e.target))[0];
-                var targetDlgReference = allDialogReferences.filter(d => d.getAttribute('data-dialog-id') === targetDlg.id)[0];
-
-
-                if (targetDlg) {
-                    // Find the parent element of the target dialog
-                    var parentElement = targetDlg.parentElement;
-
-                    // Find the last dialog element
-                    var lastDialog = allDialogs[allDialogs.length - 1];
-
-                    // If the target dialog is not already the last dialog, move it behind the last dialog
-                    if (targetDlg !== lastDialog) {
-                        parentElement.insertBefore(targetDlg, lastDialog.nextSibling);
-                    }
-                }
-
-            };
-
-            const handleMutations = (mutationsList) => {
-                for (const mutation of mutationsList) {
-                    if (mutation.type === 'childList') {
-                        for (const removedNode of mutation.removedNodes) {
-                            if (removedNode === dialogReferenceDiv) {
-                                this.dialog.remove();
-                                observer.disconnect();
-                            }
-                        }
-                    }
-                }
-            };
-
-            const observer = new MutationObserver(handleMutations);
-            observer.observe(dialogReferenceDiv.parentElement, { childList: true });
-        }
-
-        // Handle drag
-        if (this.options.dragMode !== 0 && this.dialog) {
-            this.dragElement(this.dialog, this.dialogHeader, document.body, this.options.dragMode === 2);
-            this.done();
-        }
-        
-        // Resize
-        this.checkResizeable();
     }
+    
 
     minimize() {
         let targetElement = document.querySelector(`.mud-ex-task-bar-item-for-${this.dialog.id}`);
-        this.moveToElement(targetElement);
+        this.moveToElement(targetElement); 
     }
 
     moveToElement(targetElement) {
@@ -591,19 +856,28 @@ class MudBlazorExtensionHelper {
         this.dialog.style.top = rect.top + "px";
     }
 
-    makeDialogAbsolute() {
-        this.dialog.style.position = 'absolute';
-        var rect = this.dialog.getBoundingClientRect();
-        this.dialog.style.left = rect.left + "px";
-        this.dialog.style.top = rect.top + "px";
-    }
+    maximize() {
+        if (this._oldStyle) {
+            this.dialog.style = this._oldStyle;
+            delete this._oldStyle;
+        } else {
+            this._oldStyle = this.dialog.style;
+            this.dialog.style.position = 'absolute';
+            this.dialog.style.left = "0";
+            this.dialog.style.top = "0";
 
+            this.dialog.style.maxWidth = this.dialog.style.width = window.innerWidth + 'px';
+            this.dialog.style.maxHeight = this.dialog.style.height = window.innerHeight + 'px';
+        }
+        this.getHandler(MudExDialogResizeHandler).checkResizeable();
+    }
+    
     moveElementToMousePosition(element) {
         var e = MudBlazorExtensions.getCurrentMousePosition();
         var x = e.clientX;
         var y = e.clientY;
         var origin = this.options.cursorPositionOriginName.split('-');
-        
+
         var maxWidthFalseOrLargest = this.options.maxWidth === 6 || this.options.maxWidth === 4; // 4=xxl 6=false
         if (!this.options.fullWidth || !maxWidthFalseOrLargest) {
             if (origin[1] === 'left') {
@@ -623,45 +897,22 @@ class MudBlazorExtensionHelper {
                 element.style.top = (y - element.offsetHeight / 2) + 'px';
             }
         }
-        this.ensureElementIsInScreenBounds(element);
+        MudExDomHelper.ensureElementIsInScreenBounds(element);
     }
+}
 
-    ensureElementIsInScreenBounds(element) {
-        var rect = element.getBoundingClientRect();
-        var rectIsEmpty = rect.width === 0 && rect.height === 0;
-        if (rectIsEmpty) {
-            const ro = new ResizeObserver(entries => {
-                ro.disconnect();
-                this.ensureElementIsInScreenBounds(element);
-            });
 
-            ro.observe(element);
-            return;
-        }
-        
-        var animationIsRunning = !!element.getAnimations().length;
-        if (animationIsRunning) {
-            element.addEventListener('animationend', (e) => this.ensureElementIsInScreenBounds(element), { once: true});
-            return;
-        }
-        if (rect.left < 0) {
-            element.style.left = '0px';
-        }
-        if (rect.top < 0) {
-            element.style.top = '0px';
-        }
-        if (rect.right > window.innerWidth) {
-            element.style.left = (window.innerWidth - element.offsetWidth) + 'px';
-        }
-        if (rect.bottom > window.innerHeight) {
-            element.style.top = (window.innerHeight - element.offsetHeight) + 'px';
-        }
+window.MudExDialogPositionHandler = MudExDialogPositionHandler;
+class MudExDialogResizeHandler extends MudExDialogHandlerBase {
+
+    handle(dialog) {
+        super.handle(dialog);
+        this.awaitAnimation(() => this.checkResizeable());
     }
 
     checkResizeable() {
-        this.dialog.style.position = 'absolute';
+        MudExDomHelper.toAbsolute(this.dialog);
         if (this.options.resizeable) {
-            //this.dialog.style.position = 'absolute';
             this.dialog.style['resize'] = 'both';
             this.dialog.style['overflow'] = 'auto';
             this.dialog.style.maxWidth = window.innerWidth + 'px';
@@ -670,99 +921,26 @@ class MudBlazorExtensionHelper {
             this.dialog.style.minHeight = '100px';
         }
     }
+}
 
-    maximize() {
-        if (this._oldStyle) {
-            this.dialog.style = this._oldStyle;
-            delete this._oldStyle;
+window.MudExDialogResizeHandler = MudExDialogResizeHandler;
+class MudBlazorExtensionHelper {
+    constructor(options, dotNet, onDone) {
+        this.dialogFinder = new MudExDialogFinder(options);
+        this.dialogHandler = new MudExDialogHandler(options, dotNet, onDone);
+    }
+
+    init() {
+        const dialog = this.dialogFinder.findDialog();
+        if (dialog) {
+            this.dialogHandler.handle(dialog);
         } else {
-            this._oldStyle = this.dialog.style;
-            this.dialog.style.position = 'absolute';
-            this.dialog.style.left = "0";
-            this.dialog.style.top = "0";
-
-            this.dialog.style.maxWidth = this.dialog.style.width = window.innerWidth + 'px';
-            this.dialog.style.maxHeight = this.dialog.style.height = window.innerHeight + 'px';
+            this.dialogFinder.observeDialog(dialog => this.dialogHandler.handle(dialog));
         }
-        this.checkResizeable();
-    }
-
-    done() {
-        if (this.observer)
-            this.observer.disconnect();
-        if (this.onDone)
-            this.onDone();
-    }
-
-    dragElement(dialogEl, headerEl, container, disableBoundCheck) {
-        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-        container = container || document.body;
-        if (headerEl) {
-            // if present, the header is where you move the DIV from:
-            headerEl.style.cursor = 'move';
-            headerEl.onmousedown = dragMouseDown;
-        } else {
-            // otherwise, move the DIV from anywhere inside the DIV:
-            dialogEl.onmousedown = dragMouseDown;
-        }
-
-        function dragMouseDown(e) {
-            e = e || window.event;
-            e.preventDefault();
-            // get the mouse cursor position at startup:
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            document.onmouseup = closeDragElement;
-            // call a function whenever the cursor moves:
-            document.onmousemove = elementDrag;
-        }
-
-        function elementDrag(e) {
-            e = e || window.event;
-            e.preventDefault();
-            // calculate the new cursor position:
-
-            pos1 = pos3 - e.clientX;
-            pos2 = pos4 - e.clientY;
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            var bounds = {
-                x: container.offsetWidth - dialogEl.offsetWidth,
-                y: (container === document.body ? window.innerHeight : container.offsetHeight) - dialogEl.offsetHeight
-            }
-
-            var aY = (dialogEl.offsetTop - pos2);
-            var aX = (dialogEl.offsetLeft - pos1);
-            dialogEl.style.position = 'absolute';
-
-            if (disableBoundCheck || (aX > 0) && (aX < bounds.x)) {
-                dialogEl.style.left = (aX) + "px";
-            }
-            if (disableBoundCheck || (aY > 0) && (aY < bounds.y)) {
-                dialogEl.style.top = (aY) + "px";
-            }
-
-
-            pos1 = pos3 - e.clientX;
-            pos2 = pos4 - e.clientY;
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-
-        }
-
-        function closeDragElement() {
-            // stop moving when mouse button is released:
-            document.onmouseup = null;
-            document.onmousemove = null;
-        }
-    }
-
-    animate(types) {
-        //var names = types.map(type => this.options.dialogPositionNames.map(n => `kf-mud-dialog-${type}-${n} ${this.options.animationDurationInMs}ms ${this.options.animationTimingFunctionString} 1 alternate`));
-        //this.dialog.style.animation = `${names.join(',')}`;
-        this.dialog.style.animation = `${this.options.animationStyle}`;
     }
 }
+
+
 
 window.MudBlazorExtensionHelper = MudBlazorExtensionHelper;
 

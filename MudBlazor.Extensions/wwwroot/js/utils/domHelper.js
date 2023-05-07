@@ -103,6 +103,49 @@
         }
         return [round(x), round(y)];
     }
+
+
+    static toAbsolute(element) {
+        element.style.position = 'absolute';
+        var rect = element.getBoundingClientRect();
+        element.style.left = rect.left + "px";
+        element.style.top = rect.top + "px";
+        element.style.width = rect.width + "px";
+        element.style.height = rect.height + "px";
+    }
+
+    static ensureElementIsInScreenBounds(element) {
+        var rect = element.getBoundingClientRect();
+        var rectIsEmpty = rect.width === 0 && rect.height === 0;
+        if (rectIsEmpty) {
+            const ro = new ResizeObserver(entries => {
+                ro.disconnect();
+                this.ensureElementIsInScreenBounds(element);
+            });
+
+            ro.observe(element);
+            return;
+        }
+
+        var animationIsRunning = !!element.getAnimations().length;
+        if (animationIsRunning) {
+            element.addEventListener('animationend', (e) => this.ensureElementIsInScreenBounds(element), { once: true });
+            return;
+        }
+        if (rect.left < 0) {
+            element.style.left = '0px';
+        }
+        if (rect.top < 0) {
+            element.style.top = '0px';
+        }
+        if (rect.right > window.innerWidth) {
+            element.style.left = (window.innerWidth - element.offsetWidth) + 'px';
+        }
+        if (rect.bottom > window.innerHeight) {
+            element.style.top = (window.innerHeight - element.offsetHeight) + 'px';
+        }
+    }
+    
 }
 
 window.MudExDomHelper = MudExDomHelper;

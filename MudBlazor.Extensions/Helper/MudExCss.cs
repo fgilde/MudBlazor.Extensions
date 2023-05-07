@@ -7,9 +7,11 @@ using Nextended.Core.Extensions;
 using Microsoft.JSInterop;
 using MudBlazor.Utilities;
 using Nextended.Core;
+using MudBlazor.Extensions.Attribute;
 
 namespace MudBlazor.Extensions.Helper;
 
+[HasDocumentation("MudExCss.md")]
 public static class MudExCss
 {
     private static readonly string[] PropertiesToAddUnits = { "height", "width", "min-height", "min-width", "max-height", "max-width", 

@@ -29,7 +29,7 @@ namespace MudBlazor.Extensions.Helper
         internal static Task<IJSObjectReference> ImportModuleMudEx(this IJSRuntime runtime)
         {
             //runtime.InvokeAsync<IJSObjectReference>("import", "./_content/BlazorJS/BlazorJS.lib.module.js").AsTask();
-            return runtime.InvokeAsync<IJSObjectReference>("import", "./_content/MudBlazor.Extensions/MudBlazor.Extensions.lib.module.js").AsTask();
+            return runtime.InvokeAsync<IJSObjectReference>("import", $"./_content/MudBlazor.Extensions/MudBlazor.Extensions.lib.module.js{CB()}").AsTask();
         }
 
         public static async Task<IJSRuntime> InitializeMudBlazorExtensionsAsync(this IJSRuntime runtime, bool force = false)
@@ -38,8 +38,10 @@ namespace MudBlazor.Extensions.Helper
             if (force || !initialized)
             {
                 await runtime.ImportModuleBlazorJS(); // This is a workaround for using module in MAUI apps
-                await runtime.ImportModuleMudEx(); // This is a workaround for using module in MAUI apps
-                //await runtime.LoadJsAsync(MainJs());
+                if (useMinified)
+                    await runtime.ImportModuleMudEx(); // This is a workaround for using module in MAUI apps
+                else
+                    await runtime.LoadJsAsync(MainJs());
                 await runtime.AddCss(await MudExResource.GetEmbeddedFileContentAsync($"wwwroot/mudBlazorExtensions{min}.css"));
                 initialized = true;
             }
@@ -61,13 +63,20 @@ namespace MudBlazor.Extensions.Helper
         {
             var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
             //return $"/_content/{assemblyName}/js/mudBlazorExtensions.js";
-            return $"/_content/{assemblyName}/js/mudBlazorExtensions.all{min}.js";
+            return $"/_content/{assemblyName}/js/mudBlazorExtensions.all{min}.js{CB()}";
         }
 
         internal static string ComponentJs(string componentName)
         {
             var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-            return $"/_content/{assemblyName}/js/components/{componentName}{min}.js";
+            return $"/_content/{assemblyName}/js/components/{componentName}{min}.js{CB()}";
+        }
+
+        private static string CB()
+        {
+            if (useMinified)
+                return string.Empty;
+            return $"?cb={DateTime.Now.Ticks}";
         }
 
         internal static Task<IJSObjectReference> ImportModuleAsync<TComponent>(this IJSRuntime js)

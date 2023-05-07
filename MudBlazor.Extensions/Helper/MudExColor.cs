@@ -1,8 +1,10 @@
 ﻿using System.Drawing;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Utilities;
 
 namespace MudBlazor.Extensions.Helper;
 
+[HasDocumentation("MudExColor.md")]
 public static class MudExColor
 {
     public static string CssVarName(this Color color)

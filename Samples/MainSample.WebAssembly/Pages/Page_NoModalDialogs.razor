@@ -3,7 +3,7 @@
 @inject IJSRuntime Js
 @inject IDialogService dialogService;
 
-@attribute [Demo(Group = "Dialog Samples", Name = "Not Modal Dialogs", Documentation = "Demo for MudExTaskBar and not Modal dialogs", Order = 0, Icon = Icons.Material.Outlined.LaptopWindows, ForComponentTypes = new[] { typeof(MudExTaskBar) })]
+@attribute [Demo(Group = "Dialog Samples", Name = "Not Modal Dialogs", Documentation = "Demo for MudExTaskBar and not Modal dialogs", Order = 0, Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExTaskBar) })]
 
 <DemoComponent PageType="@GetType()">
     <MudButton OnClick="@ShowSampleDialogs" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialogs</MudButton>
@@ -13,7 +13,7 @@
     
     private async Task ShowSampleDialogs()
     {
-        int count = 3;
+        int count = 1;
         var rnd = new Random();
         foreach (var i in Enumerable.Range(1, count))
         {
@@ -27,7 +27,6 @@
                 Resizeable = true,
                 Modal = false
             });
-            await Task.Delay(1000);
         }
 
     }

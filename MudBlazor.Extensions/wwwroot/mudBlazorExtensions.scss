@@ -138,19 +138,21 @@
     visibility: hidden;
 }
 
-/*.mud-dialog-container:has(.mud-dialog) .mud-overlay-dialog {
-    opacity: 0 !important; // initially hide overlay fur mud-ex dialog to ensure no flackering if dialog shouldnt be modal
+
+
+/*.mud-ex-mb-container ~ .mud-dialog {
+    opacity: 0;
+}
+.mud-ex-mb-container ~ .mud-dialog[data-mud-extended="true"] {
+    opacity: 1;
 }*/
 
-.mud-dialog-container {
-    &.mudex-dialog-no-modal {
-        .mud-overlay-dialog {
-            display: none;
-        }
+.mud-dialog-container-no-modal {
+    display: none !important;
+}
 
-        width: 2px;
-        height: 2px;
-    }
+.mud-ex-blur {
+    backdrop-filter: blur(10px);
 }
 
 .mud-ex-dialog-header-progress {

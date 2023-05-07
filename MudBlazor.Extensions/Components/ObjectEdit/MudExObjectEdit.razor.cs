@@ -261,7 +261,8 @@ public partial class MudExObjectEdit<T>
         {
             ShowAtCursor = true,
             CursorPositionOrigin = ToolBarActionAlignment == ActionAlignment.Right ? Origin.CenterRight : Origin.CenterLeft,
-            Animations = new[] { AnimationType.Pulse },
+            Animations = new[] { AnimationType.LightSpeed },
+            Position = DialogPosition.TopRight,
             DragMode = MudDialogDragMode.Simple,
             CloseButton = false
         };

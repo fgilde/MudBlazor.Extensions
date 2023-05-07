@@ -1,6 +1,5 @@
 ﻿.mud-ex-slidebar {
-    margin: 0;
-    z-index: calc(var(--mud-zindex-dialog) + 10);
+    margin: 0;    
     position: fixed;
 
     &.relative-to-parent {

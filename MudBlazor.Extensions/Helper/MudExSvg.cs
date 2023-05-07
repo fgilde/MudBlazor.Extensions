@@ -1,23 +1,35 @@
-﻿using System.Text;
+﻿using MudBlazor.Extensions.Attribute;
+using System.Reflection;
+using System.Text;
 
 namespace MudBlazor.Extensions.Helper;
 
+[HasDocumentation("MudExSvg.md")]
 public static class MudExSvg
 {
-    public static string CombineIconsHorizontal(string image, params string[] other)
+    public static T GetRandomMember<T>(Type type = null)
     {
-        return CombineIcons(14, 0, "0 0 24 24", image, other);
+        type = type ?? typeof(Icons.Material.Filled);
+        var random = new Random();
+        var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static)
+            .Where(field => field.IsLiteral && !field.IsInitOnly && field.FieldType == typeof(T))
+            .ToList();
+
+        if (fields.Count == 0)
+            return default;
+
+        int index = random.Next(fields.Count);
+        return (T)fields[index].GetValue(null);
     }
 
-    public static string CombineIconsVertical(string image, params string[] other)
-    {
-        return CombineIcons(0, 14, "0 0 24 24", image, other);
-    }
+    public static string CombineIconsHorizontal(string image, params string[] other) 
+        => CombineIcons(14, 0, "0 0 24 24", image, other);
 
-    public static string CombineIconsCentered(string image, params string[] other)
-    {
-        return CombineIcons(0, 0, null, image, other);
-    }
+    public static string CombineIconsVertical(string image, params string[] other) 
+        => CombineIcons(0, 14, "0 0 24 24", image, other);
+
+    public static string CombineIconsCentered(string image, params string[] other) 
+        => CombineIcons(0, 0, null, image, other);
 
     public static string CombineIcons(int marginLeftRight, int marginTopBottom, string originalViewBox, string image, params string[] other)
     {

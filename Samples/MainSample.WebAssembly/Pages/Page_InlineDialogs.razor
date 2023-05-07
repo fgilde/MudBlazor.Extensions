@@ -1,0 +1,78 @@
+﻿@page "/inline-dialog"
+@using MudBlazor.Extensions.Options
+@inject IJSRuntime Js
+@inject IDialogService dialogService;
+
+@attribute [Demo(Group = "Dialog Samples", Name = "Inline Dialog", Documentation = "Demo for MudExDialog as inline ", Order = 0, Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExDialog) })]
+
+<DemoComponent PageType="@GetType()">
+    
+    <SplitContainer >
+        <Left>
+            <div class="d-flex">
+                <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
+                    Edit rating
+                </MudButton>
+                <MudRating SelectedValue="rating" Disabled="true" Class="mt-1 ml-3"/>
+            </div>
+
+            <MudExDialog @bind-IsVisible="visible" OptionsEx="Options">
+                <TitleContent>
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3"/> Edit rating
+                    </MudText>
+                </TitleContent>
+                <DialogContent>
+                    <p>How awesome are inline dialogs?</p>
+                    <MudRating @bind-SelectedValue="rating" Class="mt-3"/>
+                </DialogContent>
+                <DialogActions>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Submit" Class="px-10">Close</MudButton>
+                </DialogActions>
+            </MudExDialog>
+        </Left>
+        <Right>
+            <MudExObjectEditForm T="DialogOptionsEx" AfterImport="@(OnSettingsImported)" AllowExport="true" AllowImport="true" ShowSaveButton="false" ShowCancelButton="false" DefaultGroupName="Other" StickyActionBar="true" Value="@Options">
+               
+            </MudExObjectEditForm>
+        </Right>
+    </SplitContainer> 
+    
+
+</DemoComponent>
+
+@code {
+    private bool visible;
+    private int rating;
+    private void OpenDialog() => visible = true;
+    void Submit() => visible = false;
+
+    public DialogOptionsEx Options { get; set; } = new()
+    {
+    //ClassBackground = "mud-ex-blur",
+        MaximizeButton = true,
+        CloseButton = true,
+        FullHeight = true,
+        CloseOnEscapeKey = true,
+        MaxWidth = MaxWidth.Medium,
+        FullWidth = true,
+        DragMode = MudDialogDragMode.Simple,
+        Animations = new[] { AnimationType.SlideIn },
+        Position = DialogPosition.CenterRight,
+        DisableSizeMarginY = true,
+        DisablePositionMargin = true
+    };
+
+    [JSInvokable]
+    public void ColorLensClick()
+    {
+        Js.InvokeVoidAsync("alert", "Color Lens Clicked");
+    }
+
+    private Task OnSettingsImported(ImportedData<DialogOptionsEx> data)
+    {
+        Options = Newtonsoft.Json.JsonConvert.DeserializeObject<DialogOptionsEx>(data.Json);
+        return Task.CompletedTask;
+    }
+
+}

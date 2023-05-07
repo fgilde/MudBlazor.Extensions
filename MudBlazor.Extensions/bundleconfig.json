@@ -3,6 +3,7 @@
     "outputFileName": "wwwroot/js/mudBlazorExtensions.all.js",
     "inputFiles": [
       "wwwroot/js/utils/*",
+      "wwwroot/js/utils/dialogExt/*",
       "wwwroot/js/mudBlazorExtensions.js"
     ]
   },

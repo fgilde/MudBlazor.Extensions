@@ -39,6 +39,12 @@
             Simple Picker component for Cultures
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDialog.Show(System.String,MudBlazor.DialogOptions)">
+            <summary>Show this inlined dialog</summary>
+            <param name="title"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDivider">
             <summary>
             A divider to separate content

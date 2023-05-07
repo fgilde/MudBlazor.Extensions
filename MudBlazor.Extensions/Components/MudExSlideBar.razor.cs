@@ -30,8 +30,6 @@ public partial class MudExSlideBar
 
     [Parameter] public Color BackgroundColor { get; set; } = Color.Transparent;
     [Parameter] public Color BorderColor { get; set; } = Color.Transparent;
-    //[Parameter] public int BorderThickness { get; set; } = 2;
-    //[Parameter] public CssUnit SizeUnit { get; set; } = CssUnit.Pixels;
     [Parameter] public MudExSize<int> BorderSize { get; set; } = new(2, CssUnit.Pixels);
     [Parameter] public EventCallback<bool> IsOpenChanged { get; set; }
     [Parameter] public virtual RenderFragment ChildContent { get; set; }
@@ -67,9 +65,12 @@ public partial class MudExSlideBar
 
     private string Style()
     {
+        //z-index: calc(var(--mud-zindex-dialog) + 10);
         return new StyleBuilder()
             .AddStyle("opacity", _isOpen ? "1" : OpacityNotFocused.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), !DisableOpacityChange)
             .AddStyle("background-color", BackgroundColor.CssVarDeclaration(), BackgroundColor != Color.Transparent)
+            .AddStyle("z-Index", "calc(var(--mud-zindex-dialog) + 10)", !RelativeToParent && (IsOpen || !AutoCollapse))
+            .AddStyle("z-Index", "calc(var(--mud-zindex-dialog) - 1)", !RelativeToParent && (!IsOpen && AutoCollapse))
             .AddStyle($"border-{BorderDirection}", $"{BorderSize} solid {BorderColor.CssVarDeclaration()}", BorderColor != Color.Transparent)
             .Build();
         // return $"opacity: {(_isOpen ? 1 : OpacityNotFocused.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture))};";

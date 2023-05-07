@@ -1,7 +1,14 @@
-﻿<MudDialog Class="mud-ex-dialog-initial">
+﻿@using MudBlazor.Extensions.Helper
+@using MainSample.WebAssembly.Utils
+<MudDialog Class="mud-ex-dialog-initial">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@icon" Class="mr-3"/> @title
+        </MudText>
+    </TitleContent>
     <DialogContent>
         Dialog Content
-        <br />
+        <br/>
         @ContentMessage
     </DialogContent>
     <DialogActions>
@@ -15,4 +22,15 @@
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
     void Cancel() => MudDialog.Cancel();
+    string icon;
+    string title; 
+    
+    protected override void OnInitialized()
+    {
+        icon = MudExSvg.GetRandomMember<string>(typeof(Icons.Material.Filled));
+        title = RandomTitleGenerator.GenerateRandomTitle();
+        base.OnInitialized();
+    }
+
+
 }

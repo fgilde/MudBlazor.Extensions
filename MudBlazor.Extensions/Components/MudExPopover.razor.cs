@@ -6,7 +6,6 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
-using System.Diagnostics.CodeAnalysis;
 
 namespace MudBlazor.Extensions.Components
 {
@@ -62,11 +61,11 @@ namespace MudBlazor.Extensions.Components
             await OpenChanged.InvokeAsync(newOpenValue);
         }
         
-        protected override void OnParametersSet()
+        protected override async Task OnParametersSetAsync()
         {
             EnsureClassId();
-            base.OnParametersSet();
-            Handler?.UpdateFragment(ChildContent ?? (_ => { }), this, $"{PopoverClass} {_classId}", $"{PopoverStyles}{AnimationStyle()}", Open);
+            await base.OnParametersSetAsync();
+            await Handler?.UpdateFragmentAsync(ChildContent ?? (_ => { }), this, $"{PopoverClass} {_classId}", $"{PopoverStyles}{AnimationStyle()}", Open);
         }
 
         private void EnsureClassId()
