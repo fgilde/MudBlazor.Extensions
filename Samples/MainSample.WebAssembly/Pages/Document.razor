@@ -4,7 +4,7 @@
 @using Nextended.Core.Extensions
 
 
-<PageHeader>MOIN</PageHeader>
+<PageHeader>@Path.GetFileNameWithoutExtension(File)</PageHeader>
 <DemoMarkdown Value="@Value"></DemoMarkdown>
 
 @code
@@ -13,9 +13,9 @@
     [Parameter]
     public string? File { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        await base.OnInitializedAsync();
+        await base.OnParametersSetAsync();
         MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
         Value = await Http.LoadDocumentation(File.EnsureEndsWith(".md"));
     }
