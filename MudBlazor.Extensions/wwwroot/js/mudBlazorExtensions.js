@@ -103,6 +103,7 @@ window.MudBlazorExtensions = {
             let dialog = document.getElementById(dialogId);
             if (dialog) {
                 dialog.style.visibility = 'visible';
+                MudExDialogNoModalHandler.bringToFront(dialog, true);
             }
         }
     }

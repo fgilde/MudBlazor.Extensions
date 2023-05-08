@@ -1,10 +1,18 @@
-﻿@using MudBlazor.Extensions.Helper
+﻿@using MudBlazor.Extensions.Attribute;
+@using MudBlazor.Extensions.Helper
+@using System.Reflection;
 
 <div class="doc-header">
 
     <PageHeader>@(Type?.Name ?? Fallback)</PageHeader>
 
     <MudAlert Style="margin-bottom: 40px; margin-left: -20px;">@Documentation</MudAlert>
+
+    @if (betaInfos?.Any() == true)
+    {
+        <MudAlert Severity="Severity.Warning">@($"{Type.Name} - {string.Join("<br/>", betaInfos.Select(b => b.Message))}")</MudAlert>
+    }
+    
 
 </div>
 
@@ -15,9 +23,12 @@
     protected override async Task OnInitializedAsync()
     {
         Documentation ??= await MudExResource.GetDocumentationAsync(Type);
+        betaInfos = Type.GetCustomAttributes<BetaAttribute>()?.ToList();
         await base.OnInitializedAsync();
     }
 
+    private IList<BetaAttribute> betaInfos;
+    
     [Parameter]
     public string? Documentation { get; set; } = null;
     

@@ -734,6 +734,10 @@ class MudExDialogNoModalHandler extends MudExDialogHandlerBase {
         if (this.options.modal === false) {
             window.NOMODAL = this;
             MudExDialogNoModalHandler.handled = MudExDialogNoModalHandler.handled || [];
+            var index = MudExDialogNoModalHandler.handled.findIndex(h => h.id === dialog.id);
+            if (index !== -1) {
+                MudExDialogNoModalHandler.handled.splice(index, 1);
+            }
             MudExDialogNoModalHandler.handled.push({
                 id: this.dialog.id,
                 dialog: this.dialog,
@@ -756,7 +760,7 @@ class MudExDialogNoModalHandler extends MudExDialogHandlerBase {
 
 
             this.dialog.onmousedown = (e) => {
-                this.bringToFront();
+                MudExDialogNoModalHandler.bringToFront(this.dialog);
             };
 
 
@@ -802,9 +806,17 @@ class MudExDialogNoModalHandler extends MudExDialogHandlerBase {
         }
     }
     
-    bringToFront(targetDlg) {
+    changeCls() {
+        this.dialog.classList.add('mudex-dialog-no-modal');
+        this.dialogContainerReference.classList.add('mudex-dialog-no-modal');
+        this.dialogContainerReference.setAttribute('data-modal', false);
+        this.dialogContainerReference.setAttribute('data-dialog-id', this.dialog.id);
+        /*this.dialogOverlay.style.display = 'none';*/
+        this.dialogOverlay.remove();
+    }
+
+    static bringToFront(targetDlg, animate) {
         var allDialogs = this.getAllNonModalDialogs();
-        targetDlg = targetDlg || this.dialog;
         if (targetDlg) {
             // Find the parent element of the target dialog
             var parentElement = targetDlg.parentElement; // Should be this.appOrBody;
@@ -819,22 +831,13 @@ class MudExDialogNoModalHandler extends MudExDialogHandlerBase {
         }
     }
 
-    getAllDialogReferences() {
+    static getAllDialogReferences() {
         return Array.from(document.querySelectorAll('.mud-dialog-container')).filter(c => c.getAttribute('data-modal') === 'false');
         //var targetDlgReference = allDialogReferences.filter(d => d.getAttribute('data-dialog-id') === targetDlg.id)[0];
     }
 
-    getAllNonModalDialogs() {
+    static getAllNonModalDialogs() {
         return Array.from(document.querySelectorAll('.mudex-dialog-no-modal'));
-    }
-
-    changeCls() {
-        this.dialog.classList.add('mudex-dialog-no-modal');
-        this.dialogContainerReference.classList.add('mudex-dialog-no-modal');
-        this.dialogContainerReference.setAttribute('data-modal', false);
-        this.dialogContainerReference.setAttribute('data-dialog-id', this.dialog.id);
-        /*this.dialogOverlay.style.display = 'none';*/
-        this.dialogOverlay.remove();
     }
 
 }
@@ -1088,6 +1091,7 @@ window.MudBlazorExtensions = {
             let dialog = document.getElementById(dialogId);
             if (dialog) {
                 dialog.style.visibility = 'visible';
+                MudExDialogNoModalHandler.bringToFront(dialog, true);
             }
         }
     }

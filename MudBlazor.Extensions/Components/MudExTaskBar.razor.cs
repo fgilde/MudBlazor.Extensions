@@ -7,7 +7,7 @@ namespace MudBlazor.Extensions.Components;
 /// <summary>
 /// MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide <MudExTaskBar/> somewhere in your Layout
 /// </summary>
-[Beta("This component is still in development and not ready for production use. Please report any issues you find on GitHub.")]
+[Beta("This component and the dialog no modal behaviour is still in development and not ready for production use. Please report any issues you find on GitHub.")]
 public partial class MudExTaskBar: MudExSlideBar
 {
     [Parameter] public bool OnlyVisibleWithWindows { get; set; } = true;
