@@ -41,7 +41,7 @@ public static class Navigations
         return typeof(MudExSvg).Assembly.GetTypes()
             .Select(t => new { Type = t, Documentation = t.GetCustomAttribute<HasDocumentationAttribute>() })
             .Where(d => d.Documentation != null)
-            .Select(d => new NavigationEntry(d.Type.Name)).ToHashSet();
+            .Select(d => new NavigationEntry(d.Type.Name, "", $"/d/{Path.GetFileNameWithoutExtension(d.Documentation.MarkdownFile)}")).ToHashSet();
     }
 
     internal static HashSet<NavigationEntry> ReflectMudExComponents()

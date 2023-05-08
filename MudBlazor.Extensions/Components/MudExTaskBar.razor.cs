@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorJS;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Security.Cryptography.X509Certificates;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -56,9 +58,9 @@ public partial class MudExTaskBar: MudExSlideBar
         }
     }
 
-    private Task ShowWindow(DialogTaskBarInfo taskBarItem)
+    private async Task ShowWindow(DialogTaskBarInfo taskBarItem)
     {
-        return Task.CompletedTask;
+        await JsRuntime.DInvokeVoidAsync((window, dialogId) => window.document.getElementById(dialogId).style.visibility = "visible", taskBarItem.DialogId);
     }
 }
 

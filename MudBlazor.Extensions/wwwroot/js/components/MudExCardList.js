@@ -11,8 +11,8 @@
         this._container = this.elementRef.querySelector(".mud-ex-cards");
         this._container.onmousemove = e => {
             //const cards = Array.from(cardsParent.children).filter(child => child.classList.contains('mud-ex-card'));
-            const cards = Array.from(this._container.children);
-            for (const card of cards) {
+            // const cards = Array.from(this._container.children);
+            for (const card of Array.from(this._container.children)) {
                 if (!card.classList.contains('mud-ex-card')) {
                     card.classList.add('mud-ex-card');
                     card.classList.add('mud-ex-animate-all-properties');

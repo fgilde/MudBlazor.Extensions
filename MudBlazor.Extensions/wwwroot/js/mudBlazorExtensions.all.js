@@ -733,16 +733,25 @@ class MudExDialogNoModalHandler extends MudExDialogHandlerBase {
         super.handle(dialog);
         if (this.options.modal === false) {
             window.NOMODAL = this;
+            MudExDialogNoModalHandler.handled = MudExDialogNoModalHandler.handled || [];
+            MudExDialogNoModalHandler.handled.push({
+                id: this.dialog.id,
+                dialog: this.dialog,
+                options: this.options,
+                dotNet: this.dotNet
+            });
+            
             this.appOrBody = this.dialogContainerReference.parentElement;
 
             this.changeCls();
 
             this.awaitAnimation(() => {
-                this.dialog.style.animation = null;
                 this.dialog.style['animation-duration'] = '0s';
                 MudExDomHelper.toAbsolute(this.dialog);
                 this.appOrBody.insertBefore(this.dialog, this.appOrBody.firstChild);
                 this.dialogContainerReference.style.display = 'none';
+                this.dialogContainerReference.style.height = '2px;';
+                this.dialogContainerReference.style.width = '2px;';
             });
 
 
@@ -750,26 +759,46 @@ class MudExDialogNoModalHandler extends MudExDialogHandlerBase {
                 this.bringToFront();
             };
 
-            const handleMutations = (mutationsList) => {
-                for (const mutation of mutationsList) {
-                    if (mutation.type === 'childList') {
-                        for (const removedNode of mutation.removedNodes) {
-                            if (removedNode === this.dialogContainerReference) {
-                                console.log('close ' + this.dialogTitle);
-                                this.dialog.remove();
-                                /*observer.disconnect();*/
-                                //MudExDialogNoModalHandler.observers.forEach(o => o.disconnect());
-                                //setTimeout(() => { MudExDialogNoModalHandler.observers.forEach(o => o.observe(this.appOrBody, { childList: true })); }, 500);
-                            }
+
+            this.observer = new MutationObserver(this.checkMutationsForRemove);
+            this.observer.observe(this.appOrBody, { childList: true });
+        }
+    }
+
+    reInitOtherDialogs() {
+        var needReInit = Array.from(document.querySelectorAll('.mud-ex-dialog-initial')).filter(d => d.getAttribute('data-mud-extended') !== 'true');
+        needReInit.forEach(d => {
+            var index = MudExDialogNoModalHandler.handled.findIndex(h => h.id === d.id);
+            if (index !== -1) {
+                var handleInfo = MudExDialogNoModalHandler.handled[index];
+                MudExDialogNoModalHandler.handled.splice(index, 1);
+                var handler = new MudExDialogHandler(handleInfo.options, handleInfo.dotNet, handleInfo.onDone);
+                d.style['animation-duration'] = '0s';
+                handler.handle(d);
+            }
+        });
+    }
+
+
+    checkMutationsForRemove = (mutationsList) => {
+        for (const mutation of mutationsList) {
+            if (mutation.type === 'childList') {
+                for (const removedNode of mutation.removedNodes) {
+                    if (removedNode === this.dialogContainerReference) {
+                        this.observer.disconnect();
+                        delete this.observer;
+
+                        var index = MudExDialogNoModalHandler.handled.findIndex(h => h.id === this.dialog.id);
+                        if (index !== -1) {
+                            MudExDialogNoModalHandler.handled.splice(index, 1);
                         }
+                        
+                        this.dialog.remove();
+                        this.reInitOtherDialogs();
+                        break;
                     }
                 }
-            };
-
-            const observer = new MutationObserver(handleMutations);
-            //MudExDialogNoModalHandler.observers = MudExDialogNoModalHandler.observers || [];
-            //MudExDialogNoModalHandler.observers.push(observer);
-            observer.observe(this.appOrBody, { childList: true });
+            }
         }
     }
 
@@ -845,15 +874,44 @@ class MudExDialogPositionHandler extends MudExDialogHandlerBase {
 
     minimize() {
         let targetElement = document.querySelector(`.mud-ex-task-bar-item-for-${this.dialog.id}`);
-        this.moveToElement(targetElement); 
+        this.moveToElement(this.dialog, targetElement, () => {
+            this.dialog.style.visibility = 'hidden';
+            window.RES = () => this.restore();
+        }); 
     }
 
-    moveToElement(targetElement) {
-        var rect = targetElement.getBoundingClientRect();
-        this.dialog.style.height = targetElement.style.height;
-        this.dialog.style.width = targetElement.style.width;
-        this.dialog.style.left = rect.left + "px";
-        this.dialog.style.top = rect.top + "px";
+
+    moveToElement(sourceElement, targetElement, callback) {
+        
+        // Get the bounding client rectangles of the target element and the dialog
+        const targetRect = targetElement.getBoundingClientRect();
+        const dialogRect = sourceElement.getBoundingClientRect();
+
+        // Calculate the scaling factors for width and height
+        const scaleX = targetRect.width / dialogRect.width;
+        const scaleY = targetRect.height / dialogRect.height;+
+
+        // Calculate the translation distances for X and Y
+        const translateX = targetRect.left - dialogRect.left;
+        const translateY = targetRect.top - dialogRect.top;
+
+        
+        sourceElement.style['animation-duration'] = '.3s';
+        // Apply the transformation using the calculated scaling factors and translation distances
+        sourceElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`;
+        sourceElement.style.transition = 'transform 0.3s ease-in-out';
+
+        // Remove the transition after the animation is done
+        setTimeout(() => {
+            sourceElement.style.removeProperty('transform');
+            sourceElement.style.removeProperty('transition');
+            if (callback) callback();
+        }, 300);
+
+    }
+
+    restore() {
+        this.dialog.style.visibility = 'visible';
     }
 
     maximize() {
@@ -1022,6 +1080,10 @@ window.MudBlazorExtensions = {
             }
         }
         return null;
+    },
+
+    showDialog(dialogId) {
+        sd
     }
 
 };

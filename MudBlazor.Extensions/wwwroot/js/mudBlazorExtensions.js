@@ -96,6 +96,10 @@ window.MudBlazorExtensions = {
             }
         }
         return null;
+    },
+
+    showDialog(dialogId) {
+        sd
     }
 
 };

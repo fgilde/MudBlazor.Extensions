@@ -32,15 +32,44 @@
 
     minimize() {
         let targetElement = document.querySelector(`.mud-ex-task-bar-item-for-${this.dialog.id}`);
-        this.moveToElement(targetElement); 
+        this.moveToElement(this.dialog, targetElement, () => {
+            this.dialog.style.visibility = 'hidden';
+            window.RES = () => this.restore();
+        }); 
     }
 
-    moveToElement(targetElement) {
-        var rect = targetElement.getBoundingClientRect();
-        this.dialog.style.height = targetElement.style.height;
-        this.dialog.style.width = targetElement.style.width;
-        this.dialog.style.left = rect.left + "px";
-        this.dialog.style.top = rect.top + "px";
+
+    moveToElement(sourceElement, targetElement, callback) {
+        
+        // Get the bounding client rectangles of the target element and the dialog
+        const targetRect = targetElement.getBoundingClientRect();
+        const dialogRect = sourceElement.getBoundingClientRect();
+
+        // Calculate the scaling factors for width and height
+        const scaleX = targetRect.width / dialogRect.width;
+        const scaleY = targetRect.height / dialogRect.height;+
+
+        // Calculate the translation distances for X and Y
+        const translateX = targetRect.left - dialogRect.left;
+        const translateY = targetRect.top - dialogRect.top;
+
+        
+        sourceElement.style['animation-duration'] = '.3s';
+        // Apply the transformation using the calculated scaling factors and translation distances
+        sourceElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`;
+        sourceElement.style.transition = 'transform 0.3s ease-in-out';
+
+        // Remove the transition after the animation is done
+        setTimeout(() => {
+            sourceElement.style.removeProperty('transform');
+            sourceElement.style.removeProperty('transition');
+            if (callback) callback();
+        }, 300);
+
+    }
+
+    restore() {
+        this.dialog.style.visibility = 'visible';
     }
 
     maximize() {

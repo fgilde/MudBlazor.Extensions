@@ -1,0 +1,24 @@
+﻿@inject HttpClient Http
+@page "/doc/{File?}"
+@page "/d/{File?}"
+@using Nextended.Core.Extensions
+
+
+<PageHeader>MOIN</PageHeader>
+<DemoMarkdown Value="@Value"></DemoMarkdown>
+
+@code
+{
+
+    [Parameter]
+    public string? File { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
+        Value = await Http.LoadDocumentation(File.EnsureEndsWith(".md"));
+    }
+    private string Value { get; set; }
+
+}
