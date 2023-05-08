@@ -72,7 +72,7 @@
             }
         }
     }
-
+    
     bringToFront(targetDlg) {
         var allDialogs = this.getAllNonModalDialogs();
         targetDlg = targetDlg || this.dialog;

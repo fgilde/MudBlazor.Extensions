@@ -801,7 +801,7 @@ class MudExDialogNoModalHandler extends MudExDialogHandlerBase {
             }
         }
     }
-
+    
     bringToFront(targetDlg) {
         var allDialogs = this.getAllNonModalDialogs();
         targetDlg = targetDlg || this.dialog;
@@ -884,18 +884,18 @@ class MudExDialogPositionHandler extends MudExDialogHandlerBase {
     moveToElement(sourceElement, targetElement, callback) {
         
         // Get the bounding client rectangles of the target element and the dialog
-        const targetRect = targetElement.getBoundingClientRect();
-        const dialogRect = sourceElement.getBoundingClientRect();
+        var targetRect = targetElement.getBoundingClientRect();
+        var dialogRect = sourceElement.getBoundingClientRect();
 
         // Calculate the scaling factors for width and height
-        const scaleX = targetRect.width / dialogRect.width;
-        const scaleY = targetRect.height / dialogRect.height;+
+        var scaleX = targetRect.width / dialogRect.width;
+        var scaleY = targetRect.height / dialogRect.height;
 
         // Calculate the translation distances for X and Y
-        const translateX = targetRect.left - dialogRect.left;
-        const translateY = targetRect.top - dialogRect.top;
+        var translateX = targetRect.left - dialogRect.left;
+        var translateY = targetRect.top - dialogRect.top;
 
-        
+        var lastDuration = sourceElement.style['animation-duration'];
         sourceElement.style['animation-duration'] = '.3s';
         // Apply the transformation using the calculated scaling factors and translation distances
         sourceElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`;
@@ -905,6 +905,7 @@ class MudExDialogPositionHandler extends MudExDialogHandlerBase {
         setTimeout(() => {
             sourceElement.style.removeProperty('transform');
             sourceElement.style.removeProperty('transition');
+            sourceElement.style['animation-duration'] = lastDuration;
             if (callback) callback();
         }, 300);
 
@@ -1083,7 +1084,12 @@ window.MudBlazorExtensions = {
     },
 
     showDialog(dialogId) {
-        sd
+        if (dialogId) { 
+            let dialog = document.getElementById(dialogId);
+            if (dialog) {
+                dialog.style.visibility = 'visible';
+            }
+        }
     }
 
 };

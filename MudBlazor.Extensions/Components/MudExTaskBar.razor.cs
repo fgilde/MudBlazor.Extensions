@@ -1,14 +1,13 @@
-﻿using BlazorJS;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Security.Cryptography.X509Certificates;
+using MudBlazor.Extensions.Attribute;
 
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
 /// MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide <MudExTaskBar/> somewhere in your Layout
 /// </summary>
-[Obsolete("Not finished yet. Will be implemented later")]
+[Beta("This component is still in development and not ready for production use. Please report any issues you find on GitHub.")]
 public partial class MudExTaskBar: MudExSlideBar
 {
     [Parameter] public bool OnlyVisibleWithWindows { get; set; } = true;
@@ -60,7 +59,7 @@ public partial class MudExTaskBar: MudExSlideBar
 
     private async Task ShowWindow(DialogTaskBarInfo taskBarItem)
     {
-        await JsRuntime.DInvokeVoidAsync((window, dialogId) => window.document.getElementById(dialogId).style.visibility = "visible", taskBarItem.DialogId);
+        await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.showDialog", taskBarItem.DialogId);
     }
 }
 

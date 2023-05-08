@@ -99,7 +99,12 @@ window.MudBlazorExtensions = {
     },
 
     showDialog(dialogId) {
-        sd
+        if (dialogId) { 
+            let dialog = document.getElementById(dialogId);
+            if (dialog) {
+                dialog.style.visibility = 'visible';
+            }
+        }
     }
 
 };
