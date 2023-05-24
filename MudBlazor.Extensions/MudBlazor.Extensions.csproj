@@ -118,6 +118,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="wwwroot\css\_backgrounds.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Update="wwwroot\css\mudExAppLoader.scss">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>

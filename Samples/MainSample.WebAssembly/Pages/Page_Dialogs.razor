@@ -1,5 +1,8 @@
 ﻿@page "/dialogs"
 @using MudBlazor.Extensions.Options
+@using MudBlazor.Extensions.Helper
+@using BlazorJS
+@using MudBlazor.Extensions.Core
 @inject IJSRuntime Js
 @inject IDialogService dialogService;
 
@@ -7,7 +10,7 @@
 
 
 <DemoComponent PageType="@GetType()">
-    <SplitContainer >
+    <SplitContainer>
         <Left>
             <div>
                 <MudNumericField Class="my-dialog-timer-field" Style="margin-top: -8px;max-width: 250px;" FullWidth="false" Min="0" Max="30" Variant="Variant.Text" Disabled="@(OpenDialogTask != null)" @bind-Value="seconds" Label="@($"Dialog opens in {seconds}s")"></MudNumericField>
@@ -16,8 +19,6 @@
         </Left>
         <Right>
             <MudExObjectEditForm T="DialogOptionsEx" AfterImport="@(OnSettingsImported)" AllowExport="true" AllowImport="true" ShowSaveButton="false" ShowCancelButton="false" DefaultGroupName="Other" StickyActionBar="true" Value="@Options">
-                <ToolBarContent>
-                </ToolBarContent>
                 <ActionContent>
                     <MudButton Variant="Variant.Filled" Color="Color.Warning" OnClick="@SetAsDefaultClick">Set as Default options for all Dialogs</MudButton>
                 </ActionContent>
@@ -60,7 +61,11 @@
             Animations = new[] { AnimationType.SlideIn },
             Position = DialogPosition.CenterRight,
             DisableSizeMarginY = true,
-            DisablePositionMargin = true
+            DisablePositionMargin = true,
+            DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.ColorfullGlass)
+                .WithStyle(new { Border = "7px solid green" }),
+            DialogBackgroundAppearance = MudExAppearance.FromCss(MudExCss.Classes.Backgrounds.MovingDots)
+                .WithStyle(new { Border = "7px solid green" })
         };
 
     private async Task WaitForDialog()
@@ -75,12 +80,21 @@
 
     private async Task ShowSampleDialog()
     {
+        // FOR TESTING
+
+        //string css = MudExCss.Get(MudExCssType.GradientBackground)
+        //    .WithAnimationTime(TimeSpan.FromSeconds(2))
+        //    .WithHeight(21, CssUnit.Centimeters)
+        //    .With("border-radius", "5px")
+        //    .Build();
+        //await Js.AlertAsync(css);
 
         var s = seconds;
         await (OpenDialogTask = WaitForDialog());
         seconds = s;
         OpenDialogTask = null;
         var options = Options.CloneOptions();
+        
         options.Buttons = GetButtons();
         IDialogReference dlgReference = await dialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, options);
     }

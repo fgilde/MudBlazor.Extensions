@@ -1,0 +1,25 @@
+﻿using MudBlazor.Extensions.Core;
+
+namespace MudBlazor.Extensions.Helper;
+
+public static partial class MudExCss
+{
+    public abstract partial class Classes: IMudExClassAppearance
+    {
+        public string Class { get; }
+
+        protected Classes(string @class)
+        {
+            Class = @class;
+        }
+
+        public override string ToString() => Class;
+        public static implicit operator string(Classes cssClasses) => cssClasses.ToString();
+    }
+
+    private class CssClasses : Classes
+    {
+        public CssClasses(string description, params string[] other) : base(string.Join(" ", new[] { description }.Concat(other))) { }
+    }
+
+}

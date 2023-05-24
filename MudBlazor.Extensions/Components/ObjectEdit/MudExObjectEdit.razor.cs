@@ -273,7 +273,7 @@ public partial class MudExObjectEdit<T>
 
     private string GetStyle()
     {
-        return MudExCss.GenerateCssString(new
+        return MudExStyleBuilder.GenerateStyleString(new
         {
             Height,
             MaxHeight,

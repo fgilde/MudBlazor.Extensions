@@ -135,11 +135,20 @@ namespace MudBlazor.Extensions
         internal static Task<IDialogReference> ShowAndInject<T>(this IDialogService dialogService, string title, DialogOptionsEx options, DialogParameters parameters = null) where T : ComponentBase 
             => dialogService.ShowAndInject(typeof(T), title, options, parameters);
 
-        internal static Task<IDialogReference> ShowAndInject(this IDialogService dialogService, Type type, string title, DialogOptionsEx options, DialogParameters parameters = null)
+        internal static async Task<IDialogReference> ShowAndInject(this IDialogService dialogService, Type type, string title, DialogOptionsEx options, DialogParameters parameters = null)
         {
             if (!options.Modal)
                 options.ClassBackground = $"mud-dialog-container-no-modal {options.ClassBackground}";
-            return dialogService.Show(type, title, parameters, options).InjectOptionsAsync(options);
+
+            await ApplyBackgroundAppearance(options);
+            return await dialogService.ShowAsync(type, title, parameters, options).InjectOptionsAsync(options);
+        }
+
+        private static async Task ApplyBackgroundAppearance(DialogOptionsEx options)
+        {
+            if (options.DialogBackgroundAppearance != null)
+                await options.DialogBackgroundAppearance.ApplyAsClassOnlyToAsync(options, (o, cls) => o.ClassBackground = $"{cls} {o.ClassBackground}");
+            
         }
 
         internal static async Task<IDialogReference> InjectOptionsAsync(this Task<IDialogReference> dialogReference,
@@ -152,6 +161,10 @@ namespace MudBlazor.Extensions
         {
             var callbackReference = await WaitForCallbackReference(dialogReference);
             var js = await JsImportHelper.GetInitializedJsRuntime(callbackReference.Value, options.JsRuntime);
+
+            if (options.DialogAppearance != null)
+                await options.DialogAppearance?.ApplyToAsync(dialogReference)!;
+
             await InjectOptionsAsync(callbackReference, js, options);
             return dialogReference;
         }

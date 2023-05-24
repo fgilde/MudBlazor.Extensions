@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Components.Rendering
+@using MudBlazor.Extensions.Helper
+@using MainSample.WebAssembly.Utils
+@inherits MudExObjectEdit<T>
+@typeparam T
+
+@Inherited()
+
+@code {
+
+    [Inject] IDialogService dialogService { get; set; }
+    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+
+    protected override Task OnInitializedAsync()
+    {
+        ToolBarContent = RenderShowCodeButton();
+        StickyToolbar = true;
+        ToolbarColor = Color.Surface;
+        StickyToolbarTop = "-8px";
+        
+        return base.OnInitializedAsync();
+    }
+    
+    RenderFragment RenderShowCodeButton()
+    {
+        return @<MudButton StartIcon="@Icons.Material.Filled.Code" OnClick="@ShowCode">Show Markup</MudButton>;
+    }
+
+    private async Task ShowCode()
+    {
+        await dialogService.ShowInformationAsync("Code", ComponentRenderHelper.GenerateBlazorMarkupFromInstance(Value));
+    }
+}

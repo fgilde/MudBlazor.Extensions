@@ -75,7 +75,7 @@ window.MudBlazorExtensions = {
 
     attachDialog(dialogId) {
         if (dialogId) {
-            let dialog = document.getElementById(dialogId);
+            let dialog = document.getElementById(dialogId);            
             if (dialog) {
                 let titleCmp = dialog.querySelector('.mud-dialog-title');
                 let iconCmp = null;
@@ -98,6 +98,10 @@ window.MudBlazorExtensions = {
         return null;
     },
 
+    getElement(selector) {
+        return document.querySelector(selector);
+    },
+
     showDialog(dialogId) {
         if (dialogId) { 
             let dialog = document.getElementById(dialogId);
@@ -107,6 +111,7 @@ window.MudBlazorExtensions = {
             }
         }
     }
+
 
 };
 

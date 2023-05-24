@@ -12,7 +12,7 @@
             <MudButton Class="mt-5" OnClick="@OnShowClick">Show selected</MudButton>
         </Left>
         <Right>
-            <MudExObjectEdit MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
+            <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
         </Right>
     </SplitContainer>
 </DemoComponent>

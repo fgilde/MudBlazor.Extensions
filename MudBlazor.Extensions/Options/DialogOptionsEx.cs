@@ -1,4 +1,5 @@
 ﻿using Microsoft.JSInterop;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Options
@@ -24,6 +25,9 @@ namespace MudBlazor.Extensions.Options
             DefaultDialogOptions = CloneOptions();
             return this;
         }
+
+        public MudExAppearance? DialogAppearance { get; set; }
+        public MudExAppearance DialogBackgroundAppearance { get; set; }
 
         public IJSRuntime JsRuntime { get; set; }
         public bool Modal { get; set; } = true;

@@ -4605,6 +4605,89 @@
   margin: 0px;
 }
 
+.mud-ex-blur {
+  backdrop-filter: blur(10px);
+}
+
+.mud-ex-bg-gradient {
+  position: relative;
+  display: flex;
+  /*justify-content: center;
+  align-items: center;*/
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mud-ex-bg-gradient::after {
+  content: "";
+  --size: 250px;
+  --speed: 50s;
+  --easing: cubic-bezier(0.8, 0.2, 0.2, 0.8);
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  filter: blur(calc(var(--size) / 5));
+  background-image: linear-gradient(hsla(158deg, 82%, 57%, 0.85), hsl(252deg, 82%, 57%));
+  animation: rotate var(--speed) var(--easing) alternate infinite;
+  border-radius: 30% 70% 70% 30%/30% 30% 70% 70%;
+}
+
+@media (min-width: 720px) {
+  .mud-ex-bg-gradient::after {
+    --size: 700px;
+  }
+}
+.mud-ex-bg-dot {
+  transition-property: opacity !important;
+  transition-duration: 0.3s;
+  opacity: 0.4;
+  font: 5vmin/1.3 Serif;
+  overflow: hidden;
+  background: #123;
+  display: block;
+  font-size: 52px;
+  color: transparent;
+}
+.mud-ex-bg-dot::before, .mud-ex-bg-dot::after {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 3em;
+  height: 3em;
+  content: ".";
+  mix-blend-mode: screen;
+  animation: 44s -27s move infinite ease-in-out alternate;
+}
+.mud-ex-bg-dot::before {
+  text-shadow: -0.2779014045em -0.3999394774em 7px hsla(272.0402750993deg, 100%, 50%, 0.9), 0.3103448928em 1.1831963229em 7px hsla(9.4935092056deg, 100%, 50%, 0.9), 1.6547616405em 0.9881889148em 7px hsla(187.9574617905deg, 100%, 50%, 0.9), 0.2970336964em 0.381046131em 7px hsla(36.6708648055deg, 100%, 50%, 0.9), 0.1269507617em 1.8794380041em 7px hsla(283.9772794332deg, 100%, 50%, 0.9), 1.7756110739em -0.2040976026em 7px hsla(233.1232092524deg, 100%, 50%, 0.9), 0.6216657951em -0.1200737291em 7px hsla(187.8687419822deg, 100%, 50%, 0.9), 0.5106931754em 1.9860200987em 7px hsla(313.64183079deg, 100%, 50%, 0.9), 1.7264232806em -0.0832908431em 7px hsla(149.8009424777deg, 100%, 50%, 0.9), 0.5269835424em 0.3658315383em 7px hsla(6.6723535011deg, 100%, 50%, 0.9), 1.0741669392em 0.1739177938em 7px hsla(300.3419386682deg, 100%, 50%, 0.9), 1.0058541621em -0.281981726em 7px hsla(137.0592477955deg, 100%, 50%, 0.9), 0.8350380687em -0.3960243124em 7px hsla(150.4426178716deg, 100%, 50%, 0.9), 0.9175153153em 1.2639982168em 7px hsla(107.0513234448deg, 100%, 50%, 0.9), 2.0509359879em 1.8154023813em 7px hsla(310.7328738128deg, 100%, 50%, 0.9), 0.115641062em 0.0816822045em 7px hsla(212.318494241deg, 100%, 50%, 0.9), 1.1646340471em 2.4817727448em 7px hsla(55.0925878033deg, 100%, 50%, 0.9), 0.8850311107em 0.0583849532em 7px hsla(238.1057856794deg, 100%, 50%, 0.9), 2.0930925697em 0.0736670264em 7px hsla(80.0884795094deg, 100%, 50%, 0.9), 2.4801133736em 0.619872188em 7px hsla(152.7669869436deg, 100%, 50%, 0.9), 1.7792049441em 1.6882062243em 7px hsla(79.9891913188deg, 100%, 50%, 0.9), 0.2585150342em 0.5122593095em 7px hsla(182.2790017995deg, 100%, 50%, 0.9), 0.4362342098em 1.8565162524em 7px hsla(168.6797021527deg, 100%, 50%, 0.9), 2.2382619409em 1.9157520465em 7px hsla(150.2132450112deg, 100%, 50%, 0.9), 1.9310649943em -0.1239315788em 7px hsla(338.8966422605deg, 100%, 50%, 0.9), -0.4049593756em 2.2758771464em 7px hsla(185.9590263848deg, 100%, 50%, 0.9), 1.2155258579em -0.2823687725em 7px hsla(88.359378264deg, 100%, 50%, 0.9), 1.1087798994em 0.0251749539em 7px hsla(15.8563048729deg, 100%, 50%, 0.9), 2.4158819457em 2.3957171504em 7px hsla(286.0537191051deg, 100%, 50%, 0.9), 0.1304392951em 1.4871189621em 7px hsla(157.4885395291deg, 100%, 50%, 0.9), 0.7046303609em 0.6655608708em 7px hsla(68.0752462986deg, 100%, 50%, 0.9), -0.1058513707em 1.8239187629em 7px hsla(138.9686187953deg, 100%, 50%, 0.9), 2.4812268098em 1.443326315em 7px hsla(63.5479458154deg, 100%, 50%, 0.9), 2.035765522em 0.9888354089em 7px hsla(169.0937035127deg, 100%, 50%, 0.9), -0.2826702291em 0.6396180553em 7px hsla(282.7916362893deg, 100%, 50%, 0.9), -0.3318356334em 1.5548830294em 7px hsla(297.0680142239deg, 100%, 50%, 0.9), -0.2640434239em 1.4443963957em 7px hsla(323.7152777053deg, 100%, 50%, 0.9), 0.7343741621em 0.0896002313em 7px hsla(119.7369456129deg, 100%, 50%, 0.9), 1.6536449725em 0.265018811em 7px hsla(9.7545692958deg, 100%, 50%, 0.9), 1.0254705328em -0.3608267692em 7px hsla(346.9568037083deg, 100%, 50%, 0.9), 0.3949450343em 2.4320543718em 7px hsla(273.9338545814deg, 100%, 50%, 0.9);
+  animation-duration: 44s;
+  animation-delay: -27s;
+}
+.mud-ex-bg-dot::after {
+  text-shadow: 1.3584323379em 1.8078593513em 7px hsla(52.5408051964deg, 100%, 50%, 0.9), 1.164567269em 1.8510890211em 7px hsla(185.0887629179deg, 100%, 50%, 0.9), 1.497758584em 1.1499246282em 7px hsla(194.2388680792deg, 100%, 50%, 0.9), -0.0778245438em 1.539931536em 7px hsla(359.6793562987deg, 100%, 50%, 0.9), 0.8603431514em -0.3080179901em 7px hsla(18.7504181672deg, 100%, 50%, 0.9), 0.4497227542em 0.5858669295em 7px hsla(40.9679774313deg, 100%, 50%, 0.9), 1.5474753146em 1.3341553869em 7px hsla(269.7163962895deg, 100%, 50%, 0.9), 2.4716035857em 1.2031858531em 7px hsla(276.9520135569deg, 100%, 50%, 0.9), 0.9744217961em 2.2941087512em 7px hsla(66.3693410339deg, 100%, 50%, 0.9), -0.1151001879em -0.1818256088em 7px hsla(264.2394948174deg, 100%, 50%, 0.9), 1.1637396252em 2.1661993865em 7px hsla(235.963402231deg, 100%, 50%, 0.9), 2.320954218em 2.1633300915em 7px hsla(348.0782844169deg, 100%, 50%, 0.9), 1.7017129722em 2.2247801939em 7px hsla(190.1686976692deg, 100%, 50%, 0.9), 2.4561847131em -0.1392488251em 7px hsla(47.8354061581deg, 100%, 50%, 0.9), 2.3821150492em 0.2866820984em 7px hsla(134.4537267781deg, 100%, 50%, 0.9), 1.4853663601em 0.2199945909em 7px hsla(266.6696046217deg, 100%, 50%, 0.9), 2.0414779224em 1.2828204326em 7px hsla(74.4981652753deg, 100%, 50%, 0.9), 1.8748351575em 0.7458376569em 7px hsla(321.132828786deg, 100%, 50%, 0.9), 0.0811662965em 1.0757542826em 7px hsla(259.0428569626deg, 100%, 50%, 0.9), 1.9622299397em 0.9939507544em 7px hsla(70.6395845533deg, 100%, 50%, 0.9), 0.6415053031em -0.2164127966em 7px hsla(308.7639127886deg, 100%, 50%, 0.9), 2.3345936047em 0.3966568954em 7px hsla(342.6483524783deg, 100%, 50%, 0.9), 2.2693687652em -0.3343084801em 7px hsla(320.6466304139deg, 100%, 50%, 0.9), 1.2344595764em -0.0778942126em 7px hsla(32.9022783491deg, 100%, 50%, 0.9), -0.2908759824em 1.5388764151em 7px hsla(169.3122668275deg, 100%, 50%, 0.9), 0.7122721788em 0.2609210163em 7px hsla(301.6706632431deg, 100%, 50%, 0.9), 0.6605295987em 0.6075123256em 7px hsla(178.7173144448deg, 100%, 50%, 0.9), 0.5582331957em 1.5773589296em 7px hsla(326.7853265757deg, 100%, 50%, 0.9), 1.9461580053em -0.1108690138em 7px hsla(128.2097482626deg, 100%, 50%, 0.9), 1.5248367211em 0.1971478937em 7px hsla(3.7631857deg, 100%, 50%, 0.9), 0.3968353719em 0.6263329436em 7px hsla(314.3954493738deg, 100%, 50%, 0.9), 0.1005310594em 1.840194524em 7px hsla(323.0338411602deg, 100%, 50%, 0.9), 2.0747482689em 1.9866072827em 7px hsla(72.1790272649deg, 100%, 50%, 0.9), -0.2973562616em 2.4709738041em 7px hsla(146.2773164206deg, 100%, 50%, 0.9), 1.4143237642em 2.4305415842em 7px hsla(169.4095285748deg, 100%, 50%, 0.9), 0.5742843809em -0.021195277em 7px hsla(277.4619789428deg, 100%, 50%, 0.9), 0.1370821685em 0.5699756113em 7px hsla(336.1938932928deg, 100%, 50%, 0.9), 1.1316332511em 2.096023819em 7px hsla(251.3545395805deg, 100%, 50%, 0.9), 0.0781788913em -0.2979296779em 7px hsla(341.8022986996deg, 100%, 50%, 0.9), 2.3155709763em 1.5100609038em 7px hsla(342.868909402deg, 100%, 50%, 0.9), 1.9212006053em 1.6911743391em 7px hsla(154.8496815261deg, 100%, 50%, 0.9);
+  animation-duration: 43s;
+  animation-delay: -32s;
+}
+
+@keyframes move {
+  from {
+    transform: rotate(0deg) scale(12) translateX(-20px);
+  }
+  to {
+    transform: rotate(360deg) scale(18) translateX(20px);
+  }
+}
+.mud-ex-glass-dialog {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
 .mud-dialog-height-full {
   height: calc(100vh - 64px);
   top: 0;
@@ -4751,10 +4834,6 @@
 
 .minimize-animation {
   transition: transform 0.5s ease-in-out;
-}
-
-.mud-ex-blur {
-  backdrop-filter: blur(10px);
 }
 
 .mud-ex-dialog-header-progress {
