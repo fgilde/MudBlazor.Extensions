@@ -47,6 +47,9 @@ public class MudExAppearance : IMudExClassAppearance, IMudExStyleAppearance, ICl
     
 
     public MudExAppearance WithCss(string cls, params string[] other) => WithCss(MudExCssBuilder.From(cls, other));
+    public MudExAppearance WithCss(string cls, bool when) => WithCss(MudExCssBuilder.Default.AddClass(cls, when));
+    public MudExAppearance WithCss(MudExCss.Classes cls, bool when) => WithCss(MudExCssBuilder.Default.AddClass(cls, when));
+    
     public MudExAppearance WithCss(MudExCss.Classes cls, params MudExCss.Classes[] other) => WithCss(MudExCssBuilder.From(cls, other));
 
     public MudExAppearance WithCss(IMudExClassAppearance css)

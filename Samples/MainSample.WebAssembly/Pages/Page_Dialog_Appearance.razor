@@ -27,14 +27,6 @@
                     </ToolBarContent>
                 </MudExObjectEdit>
             }
-            else
-            {
-                <MudExObjectEdit @ref="_edit" T="DialogOptionsEx" StickyToolbar="true" ToolbarColor="Color.Surface" StickyToolbarTop="-8px" DefaultGroupName="Other" Value="@Options">
-                    <ToolBarContent>
-                        <MudButton OnClick="@Show" Variant="Variant.Filled" Color="Color.Primary">Show With this Options</MudButton> 
-                    </ToolBarContent>
-                </MudExObjectEdit>
-            }
         </Right>
     </SplitContainer>
 </DemoComponent>
@@ -63,7 +55,7 @@
             FullWidth = true,
             DragMode = MudDialogDragMode.Simple,
             Animations = new[] {AnimationType.Pulse},
-            Position = DialogPosition.Center,
+            Position = DialogPosition.Center
         };
     }
 
@@ -109,7 +101,8 @@
             b.WithBackgroundColor(Color.Secondary);
             b.WithOpacity(0.6);
         });
-        Options.DialogBackgroundAppearance = MudExAppearance.FromCss(MudExCss.Classes.Backgrounds.Blur);
+        Options.DialogBackgroundAppearance = MudExAppearance.FromCss(MudExCss.Classes.Backgrounds.EmptyIndicator)
+            .WithStyle(b => b.WithOpacity(0.5));
         Show();
     }
     

@@ -65,8 +65,8 @@ public class MudExAppearanceService
 
     public async Task<TAppearance> ApplyToAsync<TAppearance>(TAppearance appearance, IDialogReference dialogReference, bool keepExisting = true) where TAppearance : IMudExAppearance
     {
-        if (dialogReference.Dialog is MudComponentBase componentBase)
-            return await ApplyToAsync(appearance, componentBase, keepExisting);
+        //if (dialogReference.Dialog is MudComponentBase componentBase)
+        //    return await ApplyToAsync(appearance, componentBase, keepExisting);
 
         await dialogReference.GetDialogAsync<ComponentBase>();
         var id = dialogReference?.GetDialogId();

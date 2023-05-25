@@ -137,21 +137,20 @@ namespace MudBlazor.Extensions
 
         internal static async Task<IDialogReference> ShowAndInject(this IDialogService dialogService, Type type, string title, DialogOptionsEx options, DialogParameters parameters = null)
         {
-            if (!options.Modal)
-                options.ClassBackground = $"mud-dialog-container-no-modal {options.ClassBackground}";
-
-            await ApplyBackgroundAppearance(options);
+            options = options?.CloneOptions();
+            await PrepareOptionsBeforeShow(options);
             return await dialogService.ShowAsync(type, title, parameters, options).InjectOptionsAsync(options);
         }
 
-        private static async Task ApplyBackgroundAppearance(DialogOptionsEx options)
+        internal static async Task PrepareOptionsBeforeShow(DialogOptionsEx options)
         {
-            if (options.DialogBackgroundAppearance != null)
+            if (!options.Modal)
+                options.ClassBackground = MudExCss.Classes.Backgrounds.NoModal;
+            else if (options.DialogBackgroundAppearance != null)
                 await options.DialogBackgroundAppearance.ApplyAsClassOnlyToAsync(options, (o, cls) => o.ClassBackground = $"{cls} {o.ClassBackground}");
-            
         }
 
-        internal static async Task<IDialogReference> InjectOptionsAsync(this Task<IDialogReference> dialogReference,
+        private static async Task<IDialogReference> InjectOptionsAsync(this Task<IDialogReference> dialogReference,
             DialogOptionsEx options)
         {
             return await (await dialogReference).InjectOptionsAsync(options);
@@ -159,9 +158,10 @@ namespace MudBlazor.Extensions
 
         internal static async Task<IDialogReference> InjectOptionsAsync(this IDialogReference dialogReference, DialogOptionsEx options)
         {
+            options = PrepareOptionsAfterShow(options);
             var callbackReference = await WaitForCallbackReference(dialogReference);
             var js = await JsImportHelper.GetInitializedJsRuntime(callbackReference.Value, options.JsRuntime);
-
+            
             if (options.DialogAppearance != null)
                 await options.DialogAppearance?.ApplyToAsync(dialogReference)!;
 
@@ -169,9 +169,8 @@ namespace MudBlazor.Extensions
             return dialogReference;
         }
 
-        internal static async Task InjectOptionsAsync(DotNetObjectReference<ComponentBase> callbackReference, IJSRuntime js, DialogOptionsEx options)
+        private static async Task InjectOptionsAsync(DotNetObjectReference<ComponentBase> callbackReference, IJSRuntime js, DialogOptionsEx options)
         {
-            options = PrepareOptions(options);
             await js.InvokeVoidAsync("MudBlazorExtensions.setNextDialogOptions", options, callbackReference);
         }
 
@@ -182,10 +181,15 @@ namespace MudBlazor.Extensions
             return callbackReference;
         }
 
-        private static DialogOptionsEx PrepareOptions(DialogOptionsEx options)
+        private static DialogOptionsEx PrepareOptionsAfterShow(DialogOptionsEx options)
         {
             options ??= DefaultOptions();
             options = options.CloneOptions();
+
+            (options.DialogAppearance ??= MudExAppearance.Empty).WithCss(options.DisableSizeMarginY ?? false ? MudExCss.Classes.Dialog.FullHeightWithoutMargin : MudExCss.Classes.Dialog.FullHeightWithMargin, options.FullHeight ?? false);
+            (options.DialogAppearance ??= MudExAppearance.Empty).WithCss(MudExCss.Classes.Dialog.PositionFixedNoMargin, options.DisablePositionMargin ?? false);
+
+
             if (options.MinimizeButton == true)
             {
                 options.Buttons = InsertButton(options, new MudDialogButton(null, null)

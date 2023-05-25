@@ -59,7 +59,13 @@ namespace MudBlazor.Extensions.Options
         public string CursorPositionOriginName => CursorPositionOrigin.ToDescriptionString();
         public string AnimationStyle => Animations?.Any() == true ? Animations.GetAnimationCssStyle(AnimationDuration, AnimationDirection.In, AnimationTimingFunction, Position) : string.Empty;
 
-        public DialogOptionsEx CloneOptions() => Clone() as DialogOptionsEx;
+        public DialogOptionsEx CloneOptions()
+        {
+            var res = Clone() as DialogOptionsEx;
+            res.DialogAppearance = DialogAppearance?.Clone() as MudExAppearance;
+            res.DialogBackgroundAppearance = DialogBackgroundAppearance?.Clone() as MudExAppearance;
+            return res;
+        }
 
         public object Clone() => MemberwiseClone();
     }
