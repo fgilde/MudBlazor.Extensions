@@ -27,7 +27,7 @@ namespace MudBlazor.Extensions.Options
         }
 
         public MudExAppearance? DialogAppearance { get; set; }
-        public MudExAppearance DialogBackgroundAppearance { get; set; }
+        public MudExAppearance? DialogBackgroundAppearance { get; set; }
 
         public IJSRuntime JsRuntime { get; set; }
         public bool Modal { get; set; } = true;

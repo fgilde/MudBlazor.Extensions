@@ -15,6 +15,7 @@ public static partial class MudExCss
 
         public override string ToString() => Class;
         public static implicit operator string(Classes cssClasses) => cssClasses.ToString();
+        public static implicit operator Classes(string name) => new CssClasses(name);
     }
 
     private class CssClasses : Classes

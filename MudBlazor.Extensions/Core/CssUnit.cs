@@ -4,6 +4,7 @@ namespace MudBlazor.Extensions.Core;
 
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Numerics;
 
 public enum CssUnit
@@ -77,7 +78,18 @@ public class MudExSize<T>
         SizeUnit = sizeUnit;
     }
 
-    public override string ToString() => $"{Value}{SizeUnit.ToDescriptionString()}";
+    //public override string ToString() => $"{Value}{SizeUnit.ToDescriptionString()}";
+    public override string ToString()
+    {
+        var stringValue = Value switch
+        {
+            float floatValue => floatValue.ToString(CultureInfo.InvariantCulture),
+            double doubleValue => doubleValue.ToString(CultureInfo.InvariantCulture),
+            _ => Value.ToString()
+        };
+
+        return $"{stringValue}{Nextended.Core.Helper.EnumExtensions.ToDescriptionString(SizeUnit)}";
+    }
 
     public static implicit operator T(MudExSize<T> size) => size.Value;
     public static implicit operator MudExSize<T>(T s) => new(s);

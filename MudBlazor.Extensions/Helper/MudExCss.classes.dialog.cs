@@ -10,6 +10,7 @@ public static partial class MudExCss
         {
             public static readonly Classes _Initial = new CssClasses("mud-ex-dialog-initial");
             public static readonly Classes Glass = new CssClasses("mud-ex-glass-dialog");
+            public static readonly Classes FullHeightContent = new CssClasses("dialog-content-full-height");
             public static readonly Classes ColorfullGlass = new CssClasses(Glass, Backgrounds.LightBulb);
         }
     }

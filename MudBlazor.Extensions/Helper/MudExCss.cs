@@ -17,6 +17,8 @@ public static partial class MudExCss
     public static string GetAnimationCssStyle(this AnimationType type, TimeSpan duration, AnimationDirection? direction = null, AnimationTimingFunction animationTimingFunction = null, DialogPosition? targetPosition = null)
         => GetAnimationCssStyle(new[] {type}, duration, direction, animationTimingFunction, targetPosition);
 
+    public static string Get(Classes cls, params Classes[] other) => MudExCssBuilder.From(cls, other).Class;
+
     public static MudExStyleBuilder CreateStyle(Action<MudExStyleBuilder> action = null)
     {
         var builder = new MudExStyleBuilder();
@@ -110,7 +112,7 @@ public static partial class MudExCss
         await js.InvokeVoidAsync("MudExCssHelper.setCssVariableValue", key, value);        
     }
 
-    public static async Task<KeyValuePair<string, Utilities.MudColor>[]> GetCssColorVariablesAsync()
+    public static async Task<KeyValuePair<string, MudColor>[]> GetCssColorVariablesAsync()
     {
         var all = await GetCssVariablesAsync();
         var res = all.Select(k =>

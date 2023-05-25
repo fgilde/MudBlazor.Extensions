@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Components.Rendering
 @using MudBlazor.Extensions.Helper
 @using MainSample.WebAssembly.Utils
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Options
 @inherits MudExObjectEdit<T>
 @typeparam T
 
@@ -8,7 +10,9 @@
 
 @code {
 
-    [Inject] IDialogService dialogService { get; set; }
+    [Inject]
+    IDialogService dialogService { get; set; }
+
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
     protected override Task OnInitializedAsync()
@@ -17,10 +21,10 @@
         StickyToolbar = true;
         ToolbarColor = Color.Surface;
         StickyToolbarTop = "-8px";
-        
+
         return base.OnInitializedAsync();
     }
-    
+
     RenderFragment RenderShowCodeButton()
     {
         return @<MudButton StartIcon="@Icons.Material.Filled.Code" OnClick="@ShowCode">Show Markup</MudButton>;
@@ -28,6 +32,24 @@
 
     private async Task ShowCode()
     {
-        await dialogService.ShowInformationAsync("Code", ComponentRenderHelper.GenerateBlazorMarkupFromInstance(Value));
+        //await dialogService.ShowInformationAsync("Code", ComponentRenderHelper.GenerateBlazorMarkupFromInstance(Value));
+        await dialogService.ShowComponentInDialogAsync<DemoMarkdown>("Markup Code for using " + typeof(T).Name.Split('`').First(), "Notice: This is generated and maybe not 100% correct",
+            md =>
+            {
+                md.Value = $"```c#{Environment.NewLine}{ComponentRenderHelper.GenerateBlazorMarkupFromInstance(Value)}{Environment.NewLine}```";
+            },
+            dialog =>
+            {
+                dialog.Icon = Icons.Material.Filled.Code;
+                dialog.Buttons = MudExDialogResultAction.Ok();
+
+            },new DialogOptionsEx()
+            {   
+                DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass),
+                DragMode =MudDialogDragMode.Simple,
+                CloseButton = true,
+                Resizeable = true,
+            });
     }
+
 }

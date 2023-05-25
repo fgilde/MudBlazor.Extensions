@@ -5,7 +5,7 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Core;
 
-public class MudExAppearance : IMudExClassAppearance, IMudExStyleAppearance
+public class MudExAppearance : IMudExClassAppearance, IMudExStyleAppearance, ICloneable
 {
     private MudExAppearanceService _appearanceService = new();
     public string Class { get; set; } = string.Empty;
@@ -26,7 +26,8 @@ public class MudExAppearance : IMudExClassAppearance, IMudExStyleAppearance
         return this;
     }
 
-    public MudExAppearance WithStyle(object styleObj) => WithStyle(MudExStyleBuilder.FromObject(styleObj));
+    public MudExAppearance WithStyle(object styleObj, CssUnit cssUnit = CssUnit.Pixels) => WithStyle(MudExStyleBuilder.FromObject(styleObj, "", cssUnit));
+    public MudExAppearance WithStyle(object styleObj, string existingStyleToKeep, CssUnit cssUnit = CssUnit.Pixels) => WithStyle(MudExStyleBuilder.FromObject(styleObj, existingStyleToKeep, cssUnit));
     public MudExAppearance WithStyle(string styleString) => WithStyle(MudExStyleBuilder.FromStyle(styleString));
 
     public MudExAppearance WithStyle(Action<MudExStyleBuilder> styleAction)
@@ -77,4 +78,5 @@ public class MudExAppearance : IMudExClassAppearance, IMudExStyleAppearance
     public Task<MudExAppearance> ApplyToAsync(ElementReference elementRef) => _appearanceService.ApplyToAsync(this, elementRef, KeepExisting);
     public Task<MudExAppearance> ApplyToAsync(IDialogReference dialogReference) => _appearanceService.ApplyToAsync(this, dialogReference, KeepExisting);
 
+    public object Clone() => MemberwiseClone();
 }

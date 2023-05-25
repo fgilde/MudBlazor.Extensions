@@ -298,3 +298,9 @@ If not, you can give a star anyway and let me know what I can improve to make it
 [![GitHub](https://img.shields.io/badge/GitHub-Source-blue)](https://github.com/fgilde/MudBlazor.Extensions) | 
 [![NuGet](https://img.shields.io/badge/NuGet-Package-blue)](https://www.nuget.org/packages/MudBlazor.Extensions)
 #
+
+
+    // TODO: Close Animation in Dialogs
+    // TODO: MudExSwitch 
+    // TODO: MudExTree
+    // TODO: MudExNavDrawer

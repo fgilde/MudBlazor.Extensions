@@ -6,6 +6,7 @@ using System.Text;
 using System.Reflection;
 using Microsoft.JSInterop;
 using System.Collections.Concurrent;
+using System.Globalization;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Helper;
@@ -22,11 +23,6 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     private readonly Dictionary<string, string> _additionalStyles = new();
     private readonly ConcurrentDictionary<string, byte> _temporaryCssClasses = new();
     
-    // TODO: Close Animation in Dialogs
-    // TODO: MudExSwitch from SABIO
-    // TODO: MudExTree
-    // TODO: MudExNavDrawer
-
 
     #region Static Methods
 
@@ -65,29 +61,15 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
         var cssProperties = new Dictionary<string, string>();
         var cssRegex = new Regex(@"([\w-]+)\s*:\s*([^;]+)");
         var cssProperties1 = cssRegex.Matches(cssString);
-        foreach (Match property in cssProperties1)
+        foreach (var property in cssProperties1.Cast<Match>())
         {
-            var key = property.Groups[1].Value.Trim();
-            var value = property.Groups[2].Value.Trim();
-            if (!cssProperties.ContainsKey(key))
-            {
-                cssProperties.Add(key, value);
-            }
+            cssProperties.TryAdd(property.Groups[1].Value.Trim(), property.Groups[2].Value.Trim());
         }
 
         var cssProperties2 = cssRegex.Matches(leadingCssString);
-        foreach (Match property in cssProperties2)
+        foreach (var property in cssProperties2.Cast<Match>())
         {
-            string key = property.Groups[1].Value.Trim();
-            string value = property.Groups[2].Value.Trim();
-            if (cssProperties.ContainsKey(key))
-            {
-                cssProperties[key] = value;
-            }
-            else
-            {
-                cssProperties.Add(key, value);
-            }
+            cssProperties[property.Groups[1].Value.Trim()] = property.Groups[2].Value.Trim();
         }
 
         return cssProperties.Aggregate("", (current, property) => current + (property.Key + ": " + property.Value + "; "));
@@ -223,7 +205,8 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
 
     public MudExStyleBuilder WithHeight(MudExSize<double> size, bool when = true) => WithHeight(size.ToString(), when);
 
-    public MudExStyleBuilder WithOpacity(double opacity, bool when = true) => With("opacity", opacity.ToString(), when);
+    public MudExStyleBuilder WithOpacity(double opacity, bool when = true) => WithOpacity(DoubleToString(opacity), when);
+    public MudExStyleBuilder WithOpacity(string opacity, bool when = true) => With("opacity", opacity, when);
 
     public MudExStyleBuilder WithMargin(string margin, bool when = true) => With("margin", margin, when);
 
@@ -302,7 +285,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithVerticalAlign(string verticalAlign, bool when = true) => With("vertical-align", verticalAlign, when);
     
 
-    public MudExStyleBuilder WithMinHeight(double minHeight, CssUnit unit, bool when = true) => WithMinHeight(new MudExSize<double>(minHeight, unit).ToString(), when);
+    public MudExStyleBuilder WithMinHeight(double minHeight, CssUnit unit, bool when = true) => WithMinHeight(new MudExSize<double>(minHeight, unit), when);
 
     public MudExStyleBuilder WithMinHeight(MudExSize<double> size, bool when = true) => WithMinHeight(size.ToString(), when);
     
@@ -629,6 +612,8 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public static explicit operator MudExStyleBuilder(string styles) => FromStyle(styles);
 
     public string Style => Build();
+
+    private string DoubleToString(double value) => value.ToString(CultureInfo.InvariantCulture);
 }
 
 

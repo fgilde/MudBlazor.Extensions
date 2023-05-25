@@ -1,8 +1,5 @@
 ﻿@page "/dialogs"
 @using MudBlazor.Extensions.Options
-@using MudBlazor.Extensions.Helper
-@using BlazorJS
-@using MudBlazor.Extensions.Core
 @inject IJSRuntime Js
 @inject IDialogService dialogService;
 
@@ -50,7 +47,6 @@
 
     public DialogOptionsEx Options { get; set; } = new()
         {
-            //ClassBackground = "mud-ex-blur",
             MaximizeButton = true,
             CloseButton = true,
             FullHeight = true,
@@ -61,11 +57,7 @@
             Animations = new[] { AnimationType.SlideIn },
             Position = DialogPosition.CenterRight,
             DisableSizeMarginY = true,
-            DisablePositionMargin = true,
-            DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.ColorfullGlass)
-                .WithStyle(new { Border = "7px solid green" }),
-            DialogBackgroundAppearance = MudExAppearance.FromCss(MudExCss.Classes.Backgrounds.MovingDots)
-                .WithStyle(new { Border = "7px solid green" })
+            DisablePositionMargin = true
         };
 
     private async Task WaitForDialog()
@@ -80,15 +72,6 @@
 
     private async Task ShowSampleDialog()
     {
-        // FOR TESTING
-
-        //string css = MudExCss.Get(MudExCssType.GradientBackground)
-        //    .WithAnimationTime(TimeSpan.FromSeconds(2))
-        //    .WithHeight(21, CssUnit.Centimeters)
-        //    .With("border-radius", "5px")
-        //    .Build();
-        //await Js.AlertAsync(css);
-
         var s = seconds;
         await (OpenDialogTask = WaitForDialog());
         seconds = s;

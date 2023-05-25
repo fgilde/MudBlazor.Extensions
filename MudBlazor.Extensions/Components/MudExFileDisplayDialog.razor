@@ -4,7 +4,6 @@
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 @using Microsoft.Extensions.DependencyInjection;
-@using MudBlazor.Extensions.Core
 
 @namespace MudBlazor.Extensions.Components
 <MudDialog Style="@Style" Class="@Class" ClassContent="@ClassContent">
@@ -47,7 +46,7 @@
     private IStringLocalizer<MudExFileDisplayDialog> localizer => _serviceProvider.GetService<IStringLocalizer<MudExFileDisplayDialog>>();
 
     [Parameter] public string Style { get; set; } = string.Empty;
-    [Parameter] public string Class { get; set; } = "dialog-content-full-height overflow-hidden mud-ex-dialog-initial";
+    [Parameter] public string Class { get; set; } = MudExCss.Get(MudExCss.Classes.Dialog.FullHeightContent, "overflow-hidden", MudExCss.Classes.Dialog._Initial);
     [Parameter] public string ClassContent { get; set; } = "full-height";
     [Parameter] public bool ShowContentError { get; set; } = true;
     [Parameter] public string Icon { get; set; }
@@ -62,7 +61,7 @@
      */
     [Parameter] public Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> HandleContentErrorFunc { get; set; }
     [Parameter] public string CustomContentErrorMessage { get; set; }
-    
+
     /**
      * Should be true if file is not a binary one
      */
@@ -82,12 +81,8 @@
     public static Task<IDialogReference> Show(IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(url, fileName, contentType, options);
     public static Task<IDialogReference> Show(IDialogService dialogService, IBrowserFile browserFile, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(browserFile, options);
     public static Task<IDialogReference> Show(IDialogService dialogService, Stream stream, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(stream, fileName, contentType, options);
-    
-    void Submit(DialogResult result)
-    {
-        MudDialog.Close(result);
-    }
 
+    void Submit(DialogResult result) => MudDialog.Close(result);
     void Cancel() => MudDialog.Cancel();
     
 }

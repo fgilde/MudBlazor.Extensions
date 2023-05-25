@@ -21,6 +21,7 @@ public class DialogOptionsExMetaConfig : IObjectMetaConfiguration<DialogOptionsE
         meta.Properties(
             o => o.Animations
         ).WrapInMudItem(i => i.xs = 12);
+        meta.Property(o => o.ClassBackground).Ignore();
         meta.Properties(o => o.DragMode, o => o.Position, o => o.MaxWidth, o => o.AnimationDurationInMs).WithOrder(0).WithGroup("Options");
         meta.Properties().Where(p => p.PropertyInfo.PropertyType == typeof(bool) || p.PropertyInfo.PropertyType.IsNullableBool()).WithGroup("Options").WrapInMudItem(i =>
         {

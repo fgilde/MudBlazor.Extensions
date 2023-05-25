@@ -16,6 +16,8 @@ public static class MudExColor
     public static System.Drawing.Color ToDrawingColor(this MudColor color)
         => System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
 
+    public static async Task<MudColor> ToMudColorAsync(this Color color) => (await MudExCss.GetCssColorVariablesAsync()).FirstOrDefault(k => k.Key == color.CssVarName()).Value;
+
     public static MudColor ToMudColor(this System.Drawing.Color color)
         => new MudColor(color.R, color.G, color.B, color.A);
 

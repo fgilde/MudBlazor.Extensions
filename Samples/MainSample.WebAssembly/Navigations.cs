@@ -2,7 +2,6 @@
 using MudBlazor;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
-using Nextended.Core.Extensions;
 using System.Reflection;
 
 namespace MainSample.WebAssembly;
