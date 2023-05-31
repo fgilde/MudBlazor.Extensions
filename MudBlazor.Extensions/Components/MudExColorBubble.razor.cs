@@ -189,7 +189,7 @@ public partial class MudExColorBubble
         };
     }
 
-    private async Task OnClick()
+    public async Task ShowSelectorAsync()
     {
         await JsReference.InvokeVoidAsync("showSelector");
     }

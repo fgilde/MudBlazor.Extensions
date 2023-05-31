@@ -10,20 +10,28 @@
 
 
 <DemoComponent PageType="@GetType()">
-    <SplitContainer>
+    <SplitContainer MinWidthLeft="1000px">
         <Left>
             <div>
                 <MudButton OnClick="@ShowSample1" Variant="Variant.Filled" Color="Color.Primary">Show Sample 1</MudButton>
                 <MudButton OnClick="@ShowSample2" Variant="Variant.Filled" Color="Color.Primary">Show Sample 2</MudButton>
                 <MudButton OnClick="@ShowSample3" Variant="Variant.Filled" Color="Color.Primary">Show Sample 3</MudButton>
             </div>
+            
+            @if (!string.IsNullOrEmpty(_code))
+            {
+                <div style="position: absolute;top: 45px;border-radius: 30px;border: 2px solid var(--mud-palette-primary);padding: 20px;overflow: auto;max-height: 400px;">
+                    <CodeView Code="@_code" />
+                </div>
+            }
+
         </Left>
         <Right>
             @if (_loaded)
             {
                 <MudExObjectEdit @ref="_edit" T="DialogOptionsEx" StickyToolbar="true" ToolbarColor="Color.Surface" StickyToolbarTop="-8px" DefaultGroupName="Other" Value="@Options">
                     <ToolBarContent>
-                        <MudButton OnClick="@Show" Variant="Variant.Filled" Color="Color.Primary">Show With this Options</MudButton> 
+                        <MudButton OnClick="@Show" Variant="Variant.Filled" Color="Color.Primary">Show With this Options</MudButton>
                     </ToolBarContent>
                 </MudExObjectEdit>
             }
@@ -33,6 +41,7 @@
 
 @code {
     private bool _loaded;
+    private string _code;
     private MudExObjectEdit<DialogOptionsEx> _edit;
     private MudColor _primaryColor;
     public DialogOptionsEx? Options { get; set; }
@@ -47,16 +56,16 @@
     private void CreateOptions()
     {
         Options = new DialogOptionsEx
-        {
-            MaximizeButton = true,
-            CloseButton = true,
-            FullHeight = false,
-            MaxWidth = MaxWidth.Medium,
-            FullWidth = true,
-            DragMode = MudDialogDragMode.Simple,
-            Animations = new[] {AnimationType.Pulse},
-            Position = DialogPosition.Center
-        };
+            {
+                MaximizeButton = true,
+                CloseButton = true,
+                FullHeight = false,
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true,
+                DragMode = MudDialogDragMode.Simple,
+                Animations = new[] { AnimationType.Pulse },
+                Position = DialogPosition.Center
+            };
     }
 
 
@@ -67,43 +76,54 @@
         _loaded = true;
         await r.Result;
         StateHasChanged();
-    
+
     }
 
     private void ShowSample1()
     {
-        Options.DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.ColorfullGlass)
-            .WithStyle(b => b
-                .WithHeight(50, CssUnit.Percentage)
-                .WithWidth(50, CssUnit.Percentage)
-                .WithBoxShadow($" 0 8px 32px 0 {_primaryColor.SetAlpha(0.4).ToString(MudColorOutputFormats.RGBA)}")
-                .WithBackgroundColor(_primaryColor.SetAlpha(0.2))
-            );
-        Options.DialogBackgroundAppearance = MudExAppearance.FromCss(MudExCss.Classes.Backgrounds.MovingDots)
-            .WithStyle(new {
-                Border = "4px solid", 
-                BorderColor = Color.Secondary,
-                BorderRadius = 8});
+        _code = CodeView.ExecuteAndReturnFuncAsString(() =>
+        {
+            Options.DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.ColorfullGlass)
+                .WithStyle(b => b
+                    .WithHeight(50, CssUnit.Percentage)
+                    .WithWidth(50, CssUnit.Percentage)
+                    .WithBoxShadow($" 0 8px 32px 0 {_primaryColor.SetAlpha(0.4).ToString(MudColorOutputFormats.RGBA)}")
+                    .WithBackgroundColor(_primaryColor.SetAlpha(0.2))
+                );
+            Options.DialogBackgroundAppearance = MudExAppearance.FromCss(MudExCss.Classes.Backgrounds.MovingDots)
+                .WithStyle(new
+                {
+                    Border = "4px solid",
+                    BorderColor = Color.Secondary,
+                    BorderRadius = 8
+                });
+        });
         Show();
     }
-    
+
     private void ShowSample2()
     {
-        Options.DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass);
-        Options.DialogBackgroundAppearance = MudExAppearance.FromCss(MudExCss.Classes.Backgrounds.LightBulb);
+        _code = CodeView.ExecuteAndReturnFuncAsString(() =>
+        {
+            Options.DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass);
+            Options.DialogBackgroundAppearance = MudExAppearance.FromCss(MudExCss.Classes.Backgrounds.LightBulb);
+        });
         Show();
     }
 
     private void ShowSample3()
     {
-        Options.DialogAppearance = MudExAppearance.Empty.WithStyle(b =>
+        _code = CodeView.ExecuteAndReturnFuncAsString(() =>
         {
-            b.WithBackgroundColor(Color.Secondary);
-            b.WithOpacity(0.6);
+            Options.DialogAppearance = MudExAppearance.Empty().WithStyle(b =>
+            {
+                b.WithBackgroundColor(Color.Secondary);
+                b.WithOpacity(0.6);
+            });
+            Options.DialogBackgroundAppearance = MudExAppearance.FromCss(MudExCss.Classes.Backgrounds.EmptyIndicator)
+                .WithStyle(b => b.WithOpacity(0.5));
         });
-        Options.DialogBackgroundAppearance = MudExAppearance.FromCss(MudExCss.Classes.Backgrounds.EmptyIndicator)
-            .WithStyle(b => b.WithOpacity(0.5));
         Show();
     }
-    
+
 }

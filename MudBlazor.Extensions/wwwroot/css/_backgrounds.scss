@@ -19,8 +19,10 @@
     --speed: 50s;
     --easing: cubic-bezier(0.8, 0.2, 0.2, 0.8);
     position: absolute;
-    width: var(--size);
-    height: var(--size);
+    /*    width: var(--size);
+    height: var(--size);*/
+    width: 50%;
+    height: 50%;
     filter: blur(calc(var(--size) / 5));
     background-image: linear-gradient(hsl(158, 82, 57, 85%), hsl(252, 82, 57));
     animation: rotate var(--speed) var(--easing) alternate infinite;

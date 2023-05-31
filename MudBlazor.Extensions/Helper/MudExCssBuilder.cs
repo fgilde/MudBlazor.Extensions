@@ -1,9 +1,14 @@
-﻿using MudBlazor.Extensions.Core;
+﻿using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Utilities;
 using System.Collections.Concurrent;
 
 namespace MudBlazor.Extensions.Helper;
 
+/// <summary>
+/// Simple Utility class to help with building css class strings
+/// </summary>
+[HasDocumentation("MudExCssBuilder.md")]
 public sealed class MudExCssBuilder: IAsyncDisposable, IMudExClassAppearance
 {
     private readonly ConcurrentDictionary<string, byte> _cssClasses = new();
@@ -18,7 +23,6 @@ public sealed class MudExCssBuilder: IAsyncDisposable, IMudExClassAppearance
     public static Task<MudExCssBuilder> FromStyleAsync(string style) => Default.AddClassFromStyleAsync(style);
     public static Task<MudExCssBuilder> FromStyleAsync(MudExStyleBuilder styleBuilder) => Default.AddClassFromStyleAsync(styleBuilder);
     
-
     public async Task<MudExCssBuilder> RemoveClassesAsync(params string[] values)
     {
         foreach (var value in values)

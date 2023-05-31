@@ -3,14 +3,18 @@ using MudBlazor.Utilities;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Text;
-using System.Reflection;
 using Microsoft.JSInterop;
 using System.Collections.Concurrent;
 using System.Globalization;
+using MudBlazor.Extensions.Attribute;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Helper;
 
+/// <summary>
+/// MudExStyleBuilder is useful to create style strings or convert any style to a class.
+/// </summary>
+[HasDocumentation("MudExStyleBuilder.md")]
 public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
 {
     private static readonly string[] PropertiesToAddUnits = { "height", "width", "min-height", "min-width", "max-height", "max-width",
@@ -22,16 +26,34 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
 
     private readonly Dictionary<string, string> _additionalStyles = new();
     private readonly ConcurrentDictionary<string, byte> _temporaryCssClasses = new();
-    
+    private Dictionary<string, MudExStyleBuilder> _pseudoElementsStyles = new();
 
     #region Static Methods
 
+    /// <summary>
+    /// Static factory method to create a <see cref="MudExStyleBuilder"/>
+    /// </summary>
+    public static MudExStyleBuilder Empty() => new();
+
+
+    /// <summary>
+    /// Static factory method to create a <see cref="MudExStyleBuilder"/> from an object.
+    /// </summary>
     public static MudExStyleBuilder FromObject(object obj, string existingCss = "", CssUnit cssUnit = CssUnit.Pixels) => FromStyle(GenerateStyleString(obj, cssUnit, existingCss));
 
+    /// <summary>
+    /// Static factory method to create a <see cref="MudExStyleBuilder"/> from an existing style string.
+    /// </summary>
     public static MudExStyleBuilder FromStyle(string style) => string.IsNullOrWhiteSpace(style) ? new MudExStyleBuilder() : new MudExStyleBuilder().WithStyle(style);
 
+    /// <summary>
+    /// Converts an object to a style string but only properties that are not passed in existingCss
+    /// </summary>
     public static string GenerateStyleString(object obj, string existingCss = "") => GenerateStyleString(obj, CssUnit.Pixels, existingCss);
 
+    /// <summary>
+    /// Converts an object to a style string but only properties that are not passed in existingCss.
+    /// </summary>
     public static string GenerateStyleString(object obj, CssUnit cssUnit, string existingCss = "")
     {
         string unit = cssUnit.ToDescriptionString();
@@ -56,44 +78,45 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
         return string.IsNullOrEmpty(existingCss) ? cssBuilder.ToString() : CombineStyleStrings(cssBuilder.ToString(), existingCss);
     }
 
+    /// <summary>
+    /// Combines two css style strings
+    /// </summary>
     public static string CombineStyleStrings(string cssString, string leadingCssString)
     {
         var cssProperties = new Dictionary<string, string>();
         var cssRegex = new Regex(@"([\w-]+)\s*:\s*([^;]+)");
         var cssProperties1 = cssRegex.Matches(cssString);
         foreach (var property in cssProperties1.Cast<Match>())
-        {
             cssProperties.TryAdd(property.Groups[1].Value.Trim(), property.Groups[2].Value.Trim());
-        }
+        
 
         var cssProperties2 = cssRegex.Matches(leadingCssString);
         foreach (var property in cssProperties2.Cast<Match>())
-        {
             cssProperties[property.Groups[1].Value.Trim()] = property.Groups[2].Value.Trim();
-        }
-
+        
         return cssProperties.Aggregate("", (current, property) => current + (property.Key + ": " + property.Value + "; "));
     }
 
+    /// <summary>
+    /// Converts a css style string to an object
+    /// </summary>
     public static T StyleStringToObject<T>(string css) where T : new()
     {
-        T obj = new T();
+        var obj = new T();
 
         // Split the CSS string into individual properties
-        string[] properties = css.Split(';');
+        var properties = css.Split(';');
 
         // Iterate through the properties and set the corresponding property values on the object
-        foreach (string property in properties)
+        foreach (var property in properties)
         {
             // Split the property into its name and value
-            string[] propertyParts = property.Split(':');
+            var propertyParts = property.Split(':');
             if (propertyParts.Length != 2)
-            {
                 continue;
-            }
-
-            string propertyName = propertyParts[0].Trim();
-            string propertyValue = propertyParts[1].Trim();
+            
+            var propertyName = propertyParts[0].Trim();
+            var propertyValue = propertyParts[1].Trim();
 
             // Convert the property name to camelCase
             propertyName = Regex.Replace(propertyName, "-([a-z])", m => m.Groups[1].Value.ToUpperInvariant());
@@ -101,11 +124,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
             // Try to set the property value on the object
             try
             {
-                PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
-                if (propertyInfo != null)
-                {
-                    propertyInfo.SetValue(obj, propertyValue);
-                }
+                obj.GetType().GetProperty(propertyName)?.SetValue(obj, propertyValue);
             }
             catch (Exception)
             {
@@ -178,9 +197,12 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
 
     public MudExStyleBuilder WithFontSize(string fontSize, bool when = true) => With("font-size", fontSize, when);
 
+    public MudExStyleBuilder WithFontWeight(FontWeight fontWeight, bool when = true) => WithFontWeight(Nextended.Core.Helper.EnumExtensions.ToDescriptionString(fontWeight), when);
     public MudExStyleBuilder WithFontWeight(string fontWeight, bool when = true) => With("font-weight", fontWeight, when);
 
     public MudExStyleBuilder WithTextAlign(string textAlign, bool when = true) => With("text-align", textAlign, when);
+
+    public MudExStyleBuilder WithTextDecoration(TextDecoration textDecoration, bool when = true) => WithTextDecoration(Nextended.Core.Helper.EnumExtensions.ToDescriptionString(textDecoration), when);
 
     public MudExStyleBuilder WithTextDecoration(string textDecoration, bool when = true) => With("text-decoration", textDecoration, when);
 
@@ -525,7 +547,8 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithPerspective(MudExSize<double> size, bool when = true) => WithPerspective(size.ToString(), when);
 
     public MudExStyleBuilder WithFontFamily(string fontFamily, bool when = true) => With("font-family", fontFamily, when);
-
+    
+    public MudExStyleBuilder WithFontStyle(FontStyle fontStyle, bool when = true) => WithFontStyle(Nextended.Core.Helper.EnumExtensions.ToDescriptionString(fontStyle), when);
     public MudExStyleBuilder WithFontStyle(string fontStyle, bool when = true) => With("font-style", fontStyle, when);
 
     public MudExStyleBuilder WithTextJustify(string textJustify, bool when = true) => With("text-justify", textJustify, when);
@@ -538,6 +561,8 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithBorderColor(MudColor color, bool when = true) => WithBorderColor(color.ToString(), when);
     public MudExStyleBuilder WithBorderColor(System.Drawing.Color color, bool when = true) => WithBorderColor(color.ToMudColor(), when);
     public MudExStyleBuilder WithBorderColor(Color color, bool when = true) => WithBorderColor(color.CssVarDeclaration(), when);
+
+    public MudExStyleBuilder WithBorderStyle(BorderStyle borderStyle, bool when = true) => WithBorderStyle(Nextended.Core.Helper.EnumExtensions.ToDescriptionString(borderStyle), when);
 
     public MudExStyleBuilder WithBorderStyle(string borderStyle, bool when = true) => With("border-style", borderStyle, when);
 
@@ -564,10 +589,30 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithGap(string gap, bool when = true) => With("gap", gap, when);
 
     #endregion
-    
 
+    #region Fluent With Pseudo Methods
+
+    //public MudExStyleBuilder WithPseudo(string pseudo, MudExStyleBuilder builder)
+    //{
+    //    _pseudoElementsStyles[pseudo] = builder;
+    //    return this;
+    //}
+
+    //public MudExStyleBuilder WithHoverColor(string color, bool when = true)
+    //{
+    //    return WithPseudo("hover", new MudExStyleBuilder().With("color", color, when));
+    //}
+
+    #endregion
+
+    /// <summary>
+    /// Adds a style to the builder if the condition is true.
+    /// </summary>
     public MudExStyleBuilder With(string key, string value, Func<bool> when) => With(key, value, when());
-    
+
+    /// <summary>
+    /// Adds a style to the builder if the condition is true.
+    /// </summary>
     public MudExStyleBuilder With(string key, string value, bool when = true)
     {
         if(when)
@@ -575,7 +620,14 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
         return this;
     }
 
+    /// <summary>
+    /// Creates a class for this style and returns a MudExCssBuilder with this class added
+    /// </summary>
     public Task<MudExCssBuilder> AsCssBuilderAsync() => new MudExCssBuilder().AddClassFromStyleAsync(this);
+
+    /// <summary>
+    /// Creates a class for this style and returns the name of the created class
+    /// </summary>
     public async ValueTask<string> BuildAsClassRuleAsync(string className = null, IJSRuntime jSRuntime = null)
     {
         jSRuntime ??= await JsImportHelper.GetInitializedJsRuntimeAsync();
@@ -584,6 +636,9 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
         return result;
     }
 
+    /// <summary>
+    /// Removes a class that is temporary created
+    /// </summary>
     public async ValueTask<string> RemoveClassRuleAsync(string className, IJSRuntime jSRuntime = null)
     {
         jSRuntime ??= await JsImportHelper.GetInitializedJsRuntimeAsync();
@@ -598,12 +653,20 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
             await RemoveClassRuleAsync(className);
     }
 
+    /// <summary>
+    /// Builds the css style string
+    /// </summary>
     public string Build()
     {
         var css = _additionalStyles.Select(style => $"{style.Key}: {style.Value};").ToList();
+      //  css.AddRange(_pseudoElementsStyles.Select(pseudo => $":{pseudo.Key} {{ {pseudo.Value.Build()} }}"));
+
         return string.Join(" ", css);
     }
 
+    /// <summary>
+    /// Converts this style to an object
+    /// </summary>
     public T ToObject<T>() where T : new() => StyleStringToObject<T>(ToString());
     
     public override string ToString() => Build();
@@ -611,15 +674,102 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public static explicit operator string(MudExStyleBuilder builder) => builder.ToString();
     public static explicit operator MudExStyleBuilder(string styles) => FromStyle(styles);
 
+    /// <summary>
+    /// The css style string
+    /// </summary>
     public string Style => Build();
 
     private string DoubleToString(double value) => value.ToString(CultureInfo.InvariantCulture);
+
 }
 
 
-public enum MudExCssType
+public enum FontStyle
 {
-    [Description("gradient-background")]
-    GradientBackground,
-    // Weitere Enum-Werte hinzufügen
+    [Description("normal")]
+    Normal,
+    [Description("italic")]
+    Italic,
+    [Description("oblique")]
+    Oblique,
+    [Description("initial")]
+    Initial,
+    [Description("inherit")]
+    Inherit
+}
+
+public enum FontWeight
+{
+    [Description("normal")]
+    Normal,
+    [Description("bold")]
+    Bold,
+    [Description("bolder")]
+    Bolder,
+    [Description("lighter")]
+    Lighter,
+    [Description("initial")]
+    Initial,
+    [Description("inherit")]
+    Inherit
+}
+
+public enum BorderStyle
+{
+    [Description("none")]
+    None,
+    [Description("hidden")]
+    Hidden,
+    [Description("dotted")]
+    Dotted,
+    [Description("dashed")]
+    Dashed,
+    [Description("solid")]
+    Solid,
+    [Description("double")]
+    Double,
+    [Description("groove")]
+    Groove,
+    [Description("ridge")]
+    Ridge,
+    [Description("inset")]
+    Inset,
+    [Description("outset")]
+    Outset,
+    [Description("initial")]
+    Initial,
+    [Description("inherit")]
+    Inherit,
+    [Description("revert")]
+    Revert,
+    [Description("unset")]
+    Unset
+}
+
+public enum FontVariant
+{
+    [Description("normal")]
+    Normal,
+    [Description("small-caps")]
+    SmallCaps,
+    [Description("initial")]
+    Initial,
+    [Description("inherit")]
+    Inherit
+}
+
+public enum TextDecoration
+{
+    [Description("none")]
+    None,
+    [Description("underline")]
+    Underline,
+    [Description("overline")]
+    Overline,
+    [Description("line-through")]
+    LineThrough,
+    [Description("initial")]
+    Initial,
+    [Description("inherit")]
+    Inherit
 }

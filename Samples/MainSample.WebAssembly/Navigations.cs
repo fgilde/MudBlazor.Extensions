@@ -3,6 +3,7 @@ using MudBlazor;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
 using System.Reflection;
+using MainSample.WebAssembly.Shared;
 
 namespace MainSample.WebAssembly;
 
@@ -40,17 +41,23 @@ public static class Navigations
         return typeof(MudExSvg).Assembly.GetTypes()
             .Select(t => new { Type = t, Documentation = t.GetCustomAttribute<HasDocumentationAttribute>() })
             .Where(d => d.Documentation != null)
-            .Select(d => new NavigationEntry(d.Type.Name, "", $"/d/{Path.GetFileNameWithoutExtension(d.Documentation.MarkdownFile)}")).ToHashSet();
+            .Where(d => !d.Type.Name.StartsWith("<") && !d.Type.Name.StartsWith("_"))
+            .Select(d => new NavigationEntry(Api.GetTypeName(d.Type) ?? d.Type.Name, "",
+                d.Documentation != null
+                 ? $"/d/{Path.GetFileNameWithoutExtension(d.Documentation.MarkdownFile)}/{d.Type.Name}"
+                 : $"/a/{d.Type.Name}"
+                ))
+            .ToHashSet();
     }
 
     internal static HashSet<NavigationEntry> ReflectMudExComponents()
     {
-        return ComponentTypes.AllMudExComponents().Select(type => new NavigationEntry($"{type.Name}", "", $"/c/{type.Name}") {Type = type}).ToHashSet();
+        return ComponentTypes.AllMudExComponents().Select(type => new NavigationEntry($"{Api.GetTypeName(type) ?? type.Name}", "", $"/c/{type.Name}") {Type = type}).ToHashSet();
     }
 
     private static HashSet<NavigationEntry> ReflectMudBlazorComponents()
     {
-        return ComponentTypes.AllMudBlazorComponents().Select(type => new NavigationEntry($"{type.Name}", "", $"/c/{type.Name}") { Type = type }).ToHashSet();
+        return ComponentTypes.AllMudBlazorComponents().Select(type => new NavigationEntry($"{Api.GetTypeName(type) ?? type.Name}", "", $"/c/{type.Name}") { Type = type }).ToHashSet();
     }
 
 }

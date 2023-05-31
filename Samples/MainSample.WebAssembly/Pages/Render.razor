@@ -1,7 +1,6 @@
 ﻿@page "/render/{TypeName?}"
 @page "/c/{TypeName?}"
 @using Nextended.Core.Extensions
-@using MudBlazor.Extensions.Helper
 
 
 <HeaderForType Type="@Type" Fallback="@TypeName"/>
@@ -10,25 +9,32 @@
 @if (AvailableDemo != null)
 {
     <MudAlert Style="position: relative;top: -25px;" Severity="Severity.Info" Variant="Variant.Outlined" AlertTextPosition="AlertTextPosition.Center" ContentAlignment="HorizontalAlignment.Center">
-        <a href="@AvailableDemo.Href" target="@AvailableDemo.Target">Here is another Real demo available for @TypeName</a>
+        <a href="@AvailableDemo.Href" target="@AvailableDemo.Target">Here is another Real demo available for @(Api.GetTypeName(Type) ?? TypeName )</a>
     </MudAlert>
 }
 @if (Type != null)
 {
-    if (Type.IsGenericType)
-    {
-        //type = Type.MakeGenericType(typeof(object));
-        <MudAlert ContentAlignment="HorizontalAlignment.Center" Severity="Severity.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Error">
-            <MudText Color="Color.Error">
-                Can't render a generic type as dynamic currently
-            </MudText>
-        </MudAlert>
-        @*<DynamicComponent Type="ComponentRenderType"></DynamicComponent>*@
-    }
-    else
-    {
-        <DynamicComponent Type="ComponentRenderType"></DynamicComponent>
-    }
+    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+        <MudTabPanel Text="Rendered">
+            @if (Type.IsGenericType)
+            {
+                //type = Type.MakeGenericType(typeof(object));
+                <MudAlert ContentAlignment="HorizontalAlignment.Center" Severity="Severity.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Error">
+                    <MudText Color="Color.Error">
+                        Can't render a generic type as dynamic currently
+                    </MudText>
+                </MudAlert>
+                @*<DynamicComponent Type="ComponentRenderType"></DynamicComponent>*@
+            }
+            else
+            {
+                 <DynamicComponent Type="ComponentRenderType"></DynamicComponent>
+            }
+        </MudTabPanel>
+        <MudTabPanel Text="API">
+            <Api Type="@Type"></Api>
+        </MudTabPanel>
+    </MudTabs>
 }
 else
 {
@@ -69,18 +75,33 @@ else
         return other == Type || (other.IsGenericType && Type is {IsGenericType: true } && Type.GetGenericTypeDefinition() == other.GetGenericTypeDefinition());
     }
 
-    public Type? Type => type ??= GetTypeByName();
+    public Type? Type => type ??= GetTypeByName(TypeName);
 
     private Type? ComponentRenderType => Type != null ? typeof(RenderComponent<>).MakeGenericType(Type) : null;
 
-    private Type? GetTypeByName()
+    internal static Type? GetTypeByName(string typeName)
     {
-        if (string.IsNullOrWhiteSpace(TypeName))
+        try
+        {
+            if (string.IsNullOrWhiteSpace(typeName))
+                return null;
+
+            Type? result = Type.GetType(typeName) ?? Type.GetType($"MudBlazor.Extensions.Components.{typeName}");
+            if (result != null)
+                return result;
+            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes()).ToArray();
+            result = types.FirstOrDefault(t => t.Name == typeName || t.FullName == typeName);
+            if (result != null)
+                return result;
+            result = types.FirstOrDefault(t => t.IsGenericType && t.Name.StartsWith($"{typeName}`"));
+            if (result != null)
+                return result;
+        }
+        catch (Exception)
+        {
             return null;
-
-        Type? result = Type.GetType(TypeName) ?? Type.GetType($"MudBlazor.Extensions.Components.{TypeName}");
-
-        return result ?? AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes()).FirstOrDefault(t => t.Name == TypeName || t.FullName == TypeName);
+        }
+        return null;
     }
 
 

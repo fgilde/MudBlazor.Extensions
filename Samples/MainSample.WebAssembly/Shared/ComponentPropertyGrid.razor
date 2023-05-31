@@ -36,7 +36,7 @@
         await dialogService.ShowComponentInDialogAsync<DemoMarkdown>("Markup Code for using " + typeof(T).Name.Split('`').First(), "Notice: This is generated and maybe not 100% correct",
             md =>
             {
-                md.Value = $"```c#{Environment.NewLine}{ComponentRenderHelper.GenerateBlazorMarkupFromInstance(Value)}{Environment.NewLine}```";
+                md.Value = CodeView.CodeAsMarkup(CodeView.GenerateBlazorMarkupFromInstance(Value));
             },
             dialog =>
             {

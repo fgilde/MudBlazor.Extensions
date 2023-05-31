@@ -13,7 +13,6 @@
     <PackageReference Include="MudBlazor" Version="6.2.3" />
     <PackageReference Include="MudBlazor.Markdown" Version="0.0.12" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.0" />
-    <PackageReference Include="BlazorPrettyCode" Version="1.6.0" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*" />
   </ItemGroup>
 

@@ -55,11 +55,11 @@ namespace MudBlazor.Extensions
             return dialogService.ShowEx<TDialog>(title, dialogParameters, options);
         }
 
-        public static async Task<IMudExDialogReference<TDialog>> ShowEx<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, DialogOptionsEx optionsEx = null) where TDialog : ComponentBase, new()
-            => await dialogService.ShowEx<TDialog>(title, dialogParameters.ConvertToDialogParameters(), optionsEx ?? DefaultOptions());
+        public static Task<IMudExDialogReference<TDialog>> ShowEx<TDialog>(this IDialogService dialogService, string title, TDialog dialogParameters, DialogOptionsEx optionsEx = null) where TDialog : ComponentBase, new()
+            => dialogService.ShowEx<TDialog>(title, dialogParameters.ConvertToDialogParameters(), optionsEx ?? DefaultOptions());
 
-        public static async Task<IMudExDialogReference<TDialog>> ShowEx<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, DialogOptionsEx optionsEx = null) where TDialog : ComponentBase, new()
-            => await dialogService.ShowEx<TDialog>(title, dialogParameters.ConvertToDialogParameters(), optionsEx ?? DefaultOptions());
+        public static Task<IMudExDialogReference<TDialog>> ShowEx<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, DialogOptionsEx optionsEx = null) where TDialog : ComponentBase, new()
+            => dialogService.ShowEx<TDialog>(title, dialogParameters.ConvertToDialogParameters(), optionsEx ?? DefaultOptions());
 
         public static IMudExDialogReference<TDialog> Show<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, Action<DialogOptions> options)
             where TDialog : ComponentBase, new()
@@ -83,14 +83,14 @@ namespace MudBlazor.Extensions
         public static IMudExDialogReference<TDialog> Show<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, DialogOptions options = null) where TDialog : ComponentBase, new()
             => dialogService.Show<TDialog>(title, dialogParameters.ConvertToDialogParameters(), options ?? DefaultOptions()).AsMudExDialogReference<TDialog>();
 
-        public static async Task<IMudExDialogReference<T>> ShowEx<T>(this IDialogService dialogService, string title, DialogParameters parameters, DialogOptionsEx options = null) where T : ComponentBase
-            => await dialogService.ShowAndInject<T>(title, options, parameters).AsMudExDialogReferenceAsync<T>();
+        public static Task<IMudExDialogReference<T>> ShowEx<T>(this IDialogService dialogService, string title, DialogParameters parameters, DialogOptionsEx options = null) where T : ComponentBase
+            => dialogService.ShowAndInject<T>(title, options, parameters).AsMudExDialogReferenceAsync<T>();
 
-        public static async Task<IMudExDialogReference<T>> ShowEx<T>(this IDialogService dialogService, string title, DialogOptionsEx options = null) where T : ComponentBase 
-            => await dialogService.ShowAndInject<T>(title, options).AsMudExDialogReferenceAsync<T>();
+        public static Task<IMudExDialogReference<T>> ShowEx<T>(this IDialogService dialogService, string title, DialogOptionsEx options = null) where T : ComponentBase 
+            => dialogService.ShowAndInject<T>(title, options).AsMudExDialogReferenceAsync<T>();
 
-        public static async Task<IDialogReference> ShowEx(this IDialogService dialogService, Type type, string title, DialogParameters parameters, DialogOptionsEx options = null) 
-            => await dialogService.ShowAndInject(type, title, options, parameters); //dialogService.Show(type, title, parameters, options).InjectOptionsAsync(options);
+        public static Task<IDialogReference> ShowEx(this IDialogService dialogService, Type type, string title, DialogParameters parameters, DialogOptionsEx options = null) 
+            => dialogService.ShowAndInject(type, title, options, parameters); //dialogService.Show(type, title, parameters, options).InjectOptionsAsync(options);
 
         public static async Task<bool?> ShowMessageBoxEx(this IDialogService dialogService, MessageBoxOptions mboxOptions, DialogOptionsEx options = null)
         {
@@ -121,9 +121,9 @@ namespace MudBlazor.Extensions
             return dialogReference.Dialog as T;
         }
 
-        public static async Task<IDialogReference> ShowEx(this IDialogService dialogService, Type type, string title, DialogOptionsEx options = null)
+        public static Task<IDialogReference> ShowEx(this IDialogService dialogService, Type type, string title, DialogOptionsEx options = null)
         {
-            return await ShowAndInject(dialogService, type, title, options);
+            return ShowAndInject(dialogService, type, title, options);
         }
 
         public static string GetDialogId(this IDialogReference dialogReference)
@@ -186,8 +186,8 @@ namespace MudBlazor.Extensions
             options ??= DefaultOptions();
             options = options.CloneOptions();
 
-            (options.DialogAppearance ??= MudExAppearance.Empty).WithCss(options.DisableSizeMarginY ?? false ? MudExCss.Classes.Dialog.FullHeightWithoutMargin : MudExCss.Classes.Dialog.FullHeightWithMargin, options.FullHeight ?? false);
-            (options.DialogAppearance ??= MudExAppearance.Empty).WithCss(MudExCss.Classes.Dialog.PositionFixedNoMargin, options.DisablePositionMargin ?? false);
+            (options.DialogAppearance ??= MudExAppearance.Empty()).WithCss(options.DisableSizeMarginY ?? false ? MudExCss.Classes.Dialog.FullHeightWithoutMargin : MudExCss.Classes.Dialog.FullHeightWithMargin, options.FullHeight ?? false);
+            (options.DialogAppearance ??= MudExAppearance.Empty()).WithCss(MudExCss.Classes.Dialog.PositionFixedNoMargin, (options.DisablePositionMargin ?? false) || options.ShowAtCursor );
 
 
             if (options.MinimizeButton == true)

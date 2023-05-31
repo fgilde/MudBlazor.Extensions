@@ -38,7 +38,7 @@ Make sure that the MainAppId attribute value matches the ID of the <div> element
 
 You can customize the appearance of the MudExAppLoader by modifying the CSS classes in the _content/MudBlazor.Extensions/css/MudExAppLoader.css file.
 
-###Overwriting CSS Example
+### Overwriting CSS Example
 
 To overwrite some CSS, you can for example create a new CSS file and add the following content:
 

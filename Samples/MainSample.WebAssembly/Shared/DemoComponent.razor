@@ -1,5 +1,6 @@
 ﻿@using Nextended.Core.Extensions
 @using System.Reflection.Metadata
+@using System.Reflection
 
 <HeaderForDemo Type="@PageType" />
 
@@ -12,6 +13,7 @@
     <MudTabPanel Text="Demo">
         @ChildContent
     </MudTabPanel>
+    
     @if (!string.IsNullOrEmpty(CodeFile))
     {
         <MudTabPanel Text="Code">
@@ -31,12 +33,47 @@
 
         </MudTabPanel>
     }
-    @foreach (var doc in _docFiles)
+    
+    @if (_docFiles?.Any() == true)
+    {       
+        <MudTabPanel Text="Documentation">
+                <MudCard>
+                @if (_docFiles.Count > 1)
+                    {
+                        <MudSelect Label="File" @bind-Value="@_selectedDoc" Variant="Variant.Outlined" Color="Color.Primary">
+                        @foreach (var doc in _docFiles)
+                            {
+                                <MudSelectItem Value="@doc.Value">@Path.GetFileNameWithoutExtension(doc.Key))</MudSelectItem>
+                            }
+                        </MudSelect>
+                    }
+                </MudCard>
+            <DemoMarkdown Value="@(_selectedDoc ?? _docFiles.First().Value)"></DemoMarkdown>
+
+            </MudTabPanel>
+
+    }
+
+    @if (DemoAttribute?.RelatedComponents?.Any() == true)
     {
-        <MudTabPanel Text="@("Documentation " + System.IO.Path.GetFileNameWithoutExtension(doc.Key))">
-            <DemoMarkdown Value="@doc.Value"></DemoMarkdown>
+        <MudTabPanel Text="Api">
+            <MudCard>
+                @if (DemoAttribute.RelatedComponents.Count() > 1)
+                {
+                    <MudSelect Label="Type" @bind-Value="@_selectedApiType" Variant="Variant.Outlined" Color="Color.Primary">
+                        @foreach (var type in DemoAttribute?.RelatedComponents ?? Array.Empty<Type>())
+                        {
+                            <MudSelectItem Value="@type">@Api.GetTypeName(type)</MudSelectItem>
+                        }
+                    </MudSelect>
+                }
+            </MudCard>
+
+            <Api Type="@(_selectedApiType ?? DemoAttribute?.RelatedComponents.First())"></Api>
+
         </MudTabPanel>
     }
+
 </MudTabs>
 
 @code {
@@ -44,8 +81,10 @@
     #region private fields
 
     private Dictionary<string, string> _docFiles = new();
+    private string? _selectedDoc;
     private string _selectedCodeFile;
     private Type? _pageType;
+    private Type? _selectedApiType;
     private string? _title;
     [Inject] HttpClient http { get; set; }
 
@@ -87,6 +126,8 @@
     [Parameter] public string[]? DocFiles { get; set; }
     [Parameter] public RenderFragment ChildContent { get; set; }
 
+    public DemoAttribute? DemoAttribute => PageType?.GetCustomAttribute<DemoAttribute>();
+
     #endregion
 
     public string SelectedCodeValue { get; set; }
@@ -108,7 +149,7 @@
             StateHasChanged();
             http.GetStringAsync(SelectedCodeFilePath).ContinueWith(task =>
             {
-                SelectedCodeValue = $"```c#{Environment.NewLine}{task.Result}{Environment.NewLine}```";
+                SelectedCodeValue = CodeView.CodeAsMarkup(task.Result);
                 StateHasChanged();
             });
         }

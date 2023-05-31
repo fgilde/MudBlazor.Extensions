@@ -37,13 +37,14 @@
 </DemoComponent>
 
 @code {
-    ComponentBase component;
+    MudExCardList<object> component;
     int itemCount = 5;
-    private Action<ObjectEditMeta<ComponentBase>> Configure()
+    private Action<ObjectEditMeta<MudExCardList<object>>> Configure()
     {
         return meta =>
         {
             meta.GroupByCategoryAttribute();
+            meta.Property(m => m.ZoomOnHover).Ignore();
         };
     }
 }

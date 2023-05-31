@@ -1,0 +1,35 @@
+﻿@page "/_api/{TypeName?}"
+@page "/_a/{TypeName?}"
+
+
+<HeaderForType Type="@Type" Fallback="@TypeName"/>
+
+@if (Type != null)
+{
+    <Api Type="@Type"></Api>
+}
+else
+{
+    <span> Not found</span>
+}
+
+@code {
+    private Type? type;
+    private string? _typeName;
+
+    [Parameter]
+    public string? TypeName
+    {
+        get => _typeName;
+        set
+        {
+            type = null;
+            _typeName = value;
+            StateHasChanged();
+        }
+    }
+
+   
+    public Type? Type => type ??= Render.GetTypeByName(TypeName);
+    
+}

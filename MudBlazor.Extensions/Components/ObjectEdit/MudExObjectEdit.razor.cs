@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.CompilerServices;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
@@ -23,6 +24,7 @@ namespace MudBlazor.Extensions.Components.ObjectEdit;
 /// A powerful component to edit an object and its properties.
 /// </summary>
 /// <typeparam name="T"></typeparam>
+//[HasDocumentation("ObjectEdit.md")]
 public partial class MudExObjectEdit<T>
 {
     private IObjectMetaConfiguration<T> _configService => Get<IObjectMetaConfiguration<T>>();

@@ -14,7 +14,6 @@ public static partial class DialogServiceExt
     public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title, string message,
         Action<TComponent> componentOptions) where TComponent : ComponentBase, new()
     {
-
         return dialogService.ShowComponentInDialogAsync(title, message, componentOptions, new DialogParameters(), _ => {});
     }
 
@@ -111,7 +110,7 @@ public static partial class DialogServiceExt
         return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, componentOptions, dialogParameters, optionsEx);
     }
 
-    public static async Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogOkCancelAsync<TComponent>(
+    public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogOkCancelAsync<TComponent>(
         this IDialogService dialogService, string title, string message, string confirmText, string cancelText,
         Dictionary<string, object> componentOptions,
         DialogParameters dialogParameters,
@@ -119,7 +118,7 @@ public static partial class DialogServiceExt
     {
         var parameters = dialogParameters ?? new DialogParameters();
         parameters.Add(nameof(MudExMessageDialog.Buttons), MudExDialogResultAction.OkCancel(confirmText, cancelText));
-        return await dialogService.ShowComponentInDialogAsync<TComponent>(title, message, componentOptions, parameters, options);
+        return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, componentOptions, parameters, options);
     }
 
     public static async Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title, string message,
@@ -258,19 +257,19 @@ public static partial class DialogServiceExt
     }
 
 
-    public static async Task<string> PromptAsync(this IDialogService dialogService, string title, string message, DialogOptionsEx options)
+    public static Task<string> PromptAsync(this IDialogService dialogService, string title, string message, DialogOptionsEx options)
     {
-        return await dialogService.PromptAsync(title, message, "", options: options);
+        return dialogService.PromptAsync(title, message, "", options: options);
     }
 
-    public static async Task<string> PromptAsync(this IDialogService dialogService, string title, string message, Func<string, bool> canConfirm, DialogOptionsEx options = null)
+    public static Task<string> PromptAsync(this IDialogService dialogService, string title, string message, Func<string, bool> canConfirm, DialogOptionsEx options = null)
     {
-        return await dialogService.PromptAsync(title, message, "", canConfirm: canConfirm, options: options);
+        return dialogService.PromptAsync(title, message, "", canConfirm: canConfirm, options: options);
     }
 
-    public static async Task<string> PromptAsync(this IDialogService dialogService, string title, string message, string icon, Func<string, bool> canConfirm, DialogOptionsEx options = null)
+    public static Task<string> PromptAsync(this IDialogService dialogService, string title, string message, string icon, Func<string, bool> canConfirm, DialogOptionsEx options = null)
     {
-        return await dialogService.PromptAsync(title, message, "", icon: icon, canConfirm: canConfirm, options: options);
+        return dialogService.PromptAsync(title, message, "", icon: icon, canConfirm: canConfirm, options: options);
     }
 
     public static async Task<string> PromptAsync(this IDialogService dialogService, string title, string message,
