@@ -1,11 +1,5 @@
 ﻿# MudExCssBuilder Class Documentation
 
-## Table of Contents
-
-1. [Class Description](#class-description)
-2. [Public Properties](#public-properties)
-3. [Public Methods](#public-methods)
-
 ---
 
 ## Class Description

@@ -1,10 +1,5 @@
 ﻿# MudExStyleBuilder
 
-## Table of Contents
-- [Introduction](#introduction)
-- [Methods](#methods)
-- [Usage](#usage)
-
 ## Introduction
 The `MudExStyleBuilder` is a C# class used to build style strings. It provides various methods to add or modify CSS properties. It also allows the construction of styles from objects and CSS strings.
 

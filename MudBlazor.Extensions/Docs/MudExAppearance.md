@@ -1,11 +1,5 @@
 ﻿# MudExAppearance
 
-## Table of Contents
-- [Introduction](#introduction)
-- [Properties](#properties)
-- [Methods](#methods)
-- [Usage](#usage)
-
 ## Introduction
 The `MudExAppearance` class is a powerful tool that helps to manage CSS and styles of MudBlazor components dynamically. 
 
