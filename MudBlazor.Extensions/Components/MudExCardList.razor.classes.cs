@@ -6,4 +6,5 @@ public enum MudExCardHoverMode
     LightBulb = 1,
     Simple = 2,
     Zoom = 4,
+    CardEffect3d = 8,
 }

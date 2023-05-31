@@ -28,7 +28,7 @@ public class NavigationEntry : Hierarchical<NavigationEntry>
 
     private async Task LoadDoc()
     {
-        Documentation ??= await MudExResource.GetDocumentationAsync(Type);
+        Documentation ??= await MudExResource.GetSummaryDocumentationAsync(Type);
     }
 
     public string? Documentation { get; set; }

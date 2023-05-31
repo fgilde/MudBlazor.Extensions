@@ -15,6 +15,7 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem, TData>, IJsMudExComponent<MudExCardList<TData>>
 {
     private string _id = Guid.NewGuid().ToFormattedId();
+    private MudExCardHoverMode? _hoverMode = MudExCardHoverMode.LightBulb | MudExCardHoverMode.Zoom;
 
     [Inject] public IJSRuntime JsRuntime { get; set; }
     public IJSObjectReference JsReference { get; set; }
@@ -37,7 +38,17 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
         }
     }
 
-    [Parameter] public MudExCardHoverMode? HoverMode { get; set; } = MudExCardHoverMode.LightBulb | MudExCardHoverMode.Zoom;
+    [Parameter]
+    public MudExCardHoverMode? HoverMode
+    {
+        get => _hoverMode;
+        set
+        {
+            _hoverMode = value;
+            _= UpdateJs();
+        }
+    }
+
     [Parameter] public Justify Justify { get; set; } = Justify.Center;
     [Parameter] public int Spacing { get; set; } = 15;
     [Parameter] public int LightBulbSize { get; set; } = 30;
@@ -73,6 +84,11 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
+        await UpdateJs();
+    }
+
+    private async Task UpdateJs()
+    {
         if (AsJsComponent.JsReference != null)
             await AsJsComponent.JsReference.InvokeVoidAsync("initialize", Options());
     }
@@ -88,7 +104,9 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
     {
         return new
         {
-            Id = _id
+            Id = _id,
+            Use3dEffect = HoverModeMatches(MudExCardHoverMode.CardEffect3d),
+            UseZoomEffect = HoverModeMatches(MudExCardHoverMode.Zoom)
         };
     }
 

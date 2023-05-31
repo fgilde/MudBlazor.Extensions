@@ -9,10 +9,10 @@ public static class MudExResource
 {
     private static readonly ConcurrentDictionary<Assembly, XmlDocument> xmlDocCache = new();
 
-    public static async Task<string> GetDocumentationAsync(Type type) 
-        => type == null ? null : await GetDocumentationAsync(type, $"T:{type.FullName}");
+    public static async Task<string> GetSummaryDocumentationAsync(Type type) 
+        => type == null ? null : await GetSummaryDocumentationAsync(type, $"T:{type.FullName}");
 
-    public static async Task<string> GetDocumentationAsync(MemberInfo member)
+    public static async Task<string> GetSummaryDocumentationAsync(MemberInfo member)
     {
         if (member == null)
             return null;
@@ -59,10 +59,10 @@ public static class MudExResource
                 throw new NotSupportedException();
         }
 
-        return await GetDocumentationAsync(member.DeclaringType, $"{prefixCode}:{memberName}");
+        return await GetSummaryDocumentationAsync(member.DeclaringType, $"{prefixCode}:{memberName}");
     }
 
-    private static async Task<string> GetDocumentationAsync(Type type, string xpathQuery)
+    private static async Task<string> GetSummaryDocumentationAsync(Type type, string xpathQuery)
     {
         try
         {

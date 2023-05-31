@@ -220,6 +220,7 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log 
+ - 1.7.42 > Add Dialog Appearance 
  - 1.7.41 > Add Documentation for some static utils
  - 1.7.41 > Continue work on Taskbar and No Modal feature (still in progress)
  - 1.7.41 > Support Inline Dialogs with new Component MudExDialog

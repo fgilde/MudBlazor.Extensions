@@ -46,7 +46,7 @@
             </ToolBarContent>
             <Columns>
                 @*<PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name" />*@
-                <PropertyColumn Property="x => x.Name">
+                <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
                     <CellTemplate>
                         @RenderFunction(context.Item.Name)
                     </CellTemplate>
@@ -82,17 +82,17 @@
 
     private void RenderFunctionRecursive(RenderTreeBuilder builder, string function, int level)
     {
-    // Split the function into tokens based on space, preserving other characters for processing
+        // Split the function into tokens based on space, preserving other characters for processing
         var tokens = function.Split(' ');
 
-    // Flag to control whether the next token is a method name
+        // Flag to control whether the next token is a method name
         bool isMethodName = false;
 
         for (int i = 0; i < tokens.Length; i++)
         {
             var token = tokens[i];
 
-    // If the token is a method name, add it as plain text and set the flag to false
+            // If the token is a method name, add it as plain text and set the flag to false
             if (isMethodName)
             {
                 builder.AddContent(level, token);
@@ -113,7 +113,7 @@
                 builder.AddContent(level, token);
             }
 
-    // Add a space after each token, except the last one and those ending with a comma or parenthesis
+            // Add a space after each token, except the last one and those ending with a comma or parenthesis
             if (i < tokens.Length - 1 && !token.EndsWith(",") && !token.EndsWith("(") && !token.EndsWith(")"))
             {
                 builder.AddContent(level++, " ");
@@ -157,7 +157,7 @@
                 builder.AddContent(level, mainType);
                 builder.CloseElement();
 
-    // The generic arguments (if any)
+                // The generic arguments (if any)
                 var genericArgs = match.Groups[3].Value;
                 var args = SplitTypes(genericArgs);
                 if (args.Count > 0)
@@ -168,19 +168,27 @@
                     if (args.IndexOf(arg) > 0)
                         builder.AddContent(level++, ", ");
 
-    // Recursive call to handle nested generic arguments
+                    // Recursive call to handle nested generic arguments
                     RenderLinksRecursive(builder, arg, level);
                 }
                 if (args.Count > 0)
                     builder.AddContent(level++, ">");
             }
+            else
+            {
+                builder.AddContent(level++, mainType);
+            }
         }
     }
-    
+
     private string GetLinkUriForType(string mainType)
     {
+        if (string.IsNullOrEmpty(mainType))
+            return null;
         if (mainType.StartsWith("("))
             mainType = mainType.TrimStart('(');
+        if (string.IsNullOrEmpty(mainType) || mainType == ")" ||  mainType == "(" || mainType == "T" || (mainType.Length > 1 && mainType.StartsWith("T") && char.IsUpper(mainType[1])))
+            return null;
         return $"/a/{mainType}";
     }
 
@@ -216,18 +224,12 @@
         return result;
     }
     
-    private string TypeLinkStyleFor(string mainType)
-    {
-        return MudExStyleBuilder.Empty()
-            .WithTextDecoration(TextDecoration.Underline)
-            .Build();
-    }
-
+ 
     private string CellStyleName()
     {
         return MudExStyleBuilder.Empty()
-            .WithColor(Color.Primary)
-            .WithFontStyle(FontStyle.Italic)
+            .WithColor(Color.Info)
+            .WithFontWeight(FontWeight.Bold)
             .Build();
     }
 

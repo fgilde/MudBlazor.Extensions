@@ -45,8 +45,8 @@ public partial class Api
     protected override async Task OnParametersSetAsync()
     {
         _loaded = false;
-        Properties = Type.GetProperties(_flags).OrderBy(x => x.Name).Select(i => new ApiMemberInfo<PropertyInfo>(i));
-        Methods = Type.GetMethods(_flags).OrderBy(x => x.Name).Select(i => new ApiMemberInfo<MethodInfo>(i));
+        Properties = Type.GetProperties(_flags).OrderBy(x => x.Name).Where(i => char.IsUpper(i.Name[0])).Select(i => new ApiMemberInfo<PropertyInfo>(i));
+        Methods = Type.GetMethods(_flags).OrderBy(x => x.Name).Where(i => char.IsUpper(i.Name[0])).Select(i => new ApiMemberInfo<MethodInfo>(i));
         await Task.WhenAll(Properties.Select(x => x.LoadTask).Concat(Methods.Select(x => x.LoadTask))).ContinueWith(_ => StateHasChanged());
         _loaded = true;
     }

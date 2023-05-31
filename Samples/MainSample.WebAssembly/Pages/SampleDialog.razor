@@ -1,5 +1,6 @@
 ﻿@using MudBlazor.Extensions.Helper
 @using MainSample.WebAssembly.Utils
+
 <MudDialog Class="mud-ex-dialog-initial">
     <TitleContent>
         <MudText Typo="Typo.h6">
@@ -10,6 +11,44 @@
         Dialog Content
         <br/>
         @ContentMessage
+        @*@if (!string.IsNullOrEmpty(ContentMessage))
+        {
+            @ContentMessage
+        }
+        else
+        {
+            <MudGrid Style="width:30px">
+                <MudItem xs="12">
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=12</MudPaper>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=6</MudPaper>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=6</MudPaper>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=3</MudPaper>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=3</MudPaper>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=3</MudPaper>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=3</MudPaper>
+                </MudItem>
+            </MudGrid>
+            <div style="width:30px">
+            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                <p>HELLO Big</p>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+                <p>HELLO Small</p>
+            </MudHidden>
+            </div>
+        }*@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>

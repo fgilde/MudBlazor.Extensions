@@ -2,7 +2,7 @@
 
 <SplitContainer>
     <Left>
-        <DynamicComponent Type="GetRenderType()" @ref="dynamicReference"></DynamicComponent>
+        <DynamicComponent Parameters="@GetParams()" Type="GetRenderType()" @ref="dynamicReference"></DynamicComponent>
         @if (ChildContent != null && rendered && Component != null)
         {
             @ChildContent(Component)

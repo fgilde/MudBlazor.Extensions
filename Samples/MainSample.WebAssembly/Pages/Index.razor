@@ -38,6 +38,12 @@
                                     <MudText Typo="Typo.subtitle1">@($"NEW {(nav.Demo?.RelatedComponents?.FirstOrDefault()?.Name?.Split('`')?.FirstOrDefault() ?? nav.Text)}")</MudText>
                                 </MudAlert>
                             }
+                            else if (nav.Demo is DemoUpdatedAttribute)
+                            {
+                            <MudAlert Icon="@Icons.Material.Filled.Update" Style="margin-top: -15px;padding: 0;background: transparent;" Variant="Variant.Text" Severity="Severity.Info">
+                                <MudText Typo="Typo.subtitle1">@($"UPDATE {(nav.Demo?.RelatedComponents?.FirstOrDefault()?.Name?.Split('`')?.FirstOrDefault() ?? nav.Text)}")</MudText>
+                            </MudAlert>
+                            }
                             else
                             {
                                 <MudText Typo="Typo.h6">@($"{(nav.Demo?.RelatedComponents?.FirstOrDefault()?.Name?.Split('`')?.FirstOrDefault() ?? nav.Text)}")</MudText>
@@ -73,6 +79,12 @@
                                 <MudAlert Icon="@Icons.Material.Filled.NewLabel" Style="margin-top: -15px;padding: 0;background: transparent;" Variant="Variant.Text" Severity="Severity.Warning">
                                     <MudText Typo="Typo.subtitle1">@($"NEW {(nav.Text)}")</MudText>
                                 </MudAlert>
+                            }
+                            else if (nav.Demo is DemoUpdatedAttribute)
+                            {
+                                <MudAlert Icon="@Icons.Material.Filled.Update" Style="margin-top: -15px;padding: 0;background: transparent;" Variant="Variant.Text" Severity="Severity.Info">
+                                    <MudText Typo="Typo.subtitle1">@($"UPDATE {(nav.Text)}")</MudText>
+                                    </MudAlert>
                             }
                             else
                             {

@@ -29,7 +29,7 @@ internal sealed class ApiMemberInfo<TMemberInfo> : IApiMemberInfo
         var attr = MemberInfo.GetCustomAttribute<DescriptionAttribute>();
         if (attr != null)
             Description = attr.Description;
-        Description = await MudExResource.GetDocumentationAsync(MemberInfo);
+        Description = await MudExResource.GetSummaryDocumentationAsync(MemberInfo);
     }
 
     private string GetTypeName(Type type)

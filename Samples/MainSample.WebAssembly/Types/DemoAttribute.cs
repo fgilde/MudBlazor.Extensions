@@ -27,6 +27,28 @@ public class DemoNewAttribute : DemoAttribute
     }
 }
 
+public class DemoUpdatedAttribute : DemoAttribute
+{
+    private string? _icon;
+
+    public override Color IconColor
+    {
+        get => Color.Info;
+        set { }
+    }
+
+    public override string? Icon
+    {
+        get
+        {
+            var newIcon = Icons.Material.Filled.Update;
+            var result = string.IsNullOrEmpty(_icon) ? newIcon : MudExSvg.CombineIconsHorizontal(_icon, newIcon);
+            return result;
+        }
+        set => _icon = value;
+    }
+}
+
 
 [AttributeUsage(AttributeTargets.Class)]
 public class DemoAttribute : Attribute
