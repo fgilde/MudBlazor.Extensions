@@ -27,12 +27,28 @@ Make sure that the MainAppId attribute value matches the ID of the <div> element
 - `AccentColor`: (Optional) A string representing the accent color used for the progress circle. Default is `#ff0000`.
 - `MainAppId`: (Optional) A string representing the ID of the div element where your Blazor application will be rendered. Default is `app`.
 - `Logo`: (Optional) A string representing the URL of the logo to be displayed in the loader.
+- `Size`: (Optional) A string representing the size and max size for the logo `app-name`. Default is 200.
 - `LoadingTextColor`: (Optional) A string representing the loading text color. Default is the same as AccentColor.
 - `AppNameColor`: (Optional) A string representing the application name text color. Default is the same as AccentColor.
 - `Timeout`:  (Optional) An integer representing the timeout for the loader animation in milliseconds. Default is 2000.
 - `PreLoadText`: (Optional) A string representing the text to be displayed before the loader percentage is shown. Default is 'Loading...'.
 - `AppName`: (Optional) A string representing the application name to be displayed. Default is an empty string.
+- `ContainerClass`: (Optional) A string representing the additional CSS class for the `mud-ex-app-loader-loading-container`.
+- `ProgressClass`: (Optional) A string representing the additional CSS class for the `mud-ex-app-loader-loading-progress`.
+- `CircleClass`: (Optional) A string representing the additional CSS class for the `mud-ex-app-loader-circle`.
+- `LogoClass`: (Optional) A string representing the additional CSS class for the `logo`.
+- `PercentageClass`: (Optional) A string representing the additional CSS class for the `mud-ex-app-loader-loading-percentage`.
+- `AppNameClass`: (Optional) A string representing the additional CSS class for the `app-name`.
+- `OnAppLoaded`: (Optional) A string representing the callback function that will be invoked when the application is fully loaded.
+- `OnAnimationFinished`: (Optional) A string representing the callback function that will be invoked when the application is fully loaded and the animation also finished.
 
+## Rendering Child Content
+
+If no `Logo` attribute is provided, the loader will render the child content of the `mud-ex-app-loader` element. For example:
+
+```html
+<mud-ex-app-loader AppName="MudBlazor.Extensions" AccentColor="#ff4081" MainAppId="app"><p>MyContent</p></mud-ex-app-loader>
+```
 
 ## Customization
 

@@ -41,6 +41,26 @@
     }
 }
 
+.mud-ex-simple-svg-animate path {
+    stroke: lightgray;
+    fill: transparent;
+    stroke-width: 1;
+    stroke-dasharray: 900 900;
+    animation: strokeAni 1s infinite linear;
+
+    @keyframes strokeAni {
+        0% {
+            fill: white;
+            stroke-dashoffset: 900;
+        }
+
+        100% {
+            fill: purple;
+            stroke-dashoffset: 0;
+        }
+    }
+}
+
 .mud-ex-animate-all-properties {
     transition-property: all !important;
     transition-duration: 0.3s;
@@ -118,6 +138,22 @@
     &-top {
         transform: translateY(0);
     }
+}
+
+.slide-kf-from-right {
+    animation: kf-mud-dialog-slide-right 900ms ease-in-out 1 alternate;
+}
+
+.slide-kf-from-left {
+    animation: kf-mud-dialog-slide-left 900ms ease-in-out 1 alternate;
+}
+
+.slide-kf-from-top {
+    animation: kf-mud-dialog-slide-top 900ms ease-in-out 1 alternate;
+}
+
+.slide-kf-from-bottom {
+    animation: kf-mud-dialog-slide-bottom 900ms ease-in-out 1 alternate;
 }
 
 @keyframes kf-mud-dialog-slide-right {
@@ -214,6 +250,37 @@
     }
 }
 
+@keyframes fade-in-animation {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes mud-ex-fade-in-animation {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.mud-ex-fade-out {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 2s, opacity 2s linear;
+}
+
+.mud-ex-fade-in {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 2s linear;
+}
 
 
 .mud-dialog-animate-ex {
@@ -226,13 +293,8 @@
 
 
 
-@charset "UTF-8"; /*!
- * animate.css - https://animate.style/
- * Version - 4.1.1
- * Licensed under the MIT license - http://opensource.org/licenses/MIT
- *
- * Copyright (c) 2020 Animate.css
- */
+@charset "UTF-8";
+
 :root {
     --animate-duration: 1s;
     --animate-delay: 1s;
@@ -351,4 +413,3 @@
         opacity: 0;
     }
 }
-
