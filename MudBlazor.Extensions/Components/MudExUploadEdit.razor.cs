@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
-using Nextended.Core.Extensions;
 using MudBlazor.Extensions.Options;
 using Nextended.Blazor.Extensions;
 using Nextended.Core;
 using BrowserFileExtensions = Nextended.Blazor.Extensions.BrowserFileExtensions;
 using Nextended.Blazor.Models;
 using MudBlazor.Extensions.Helper;
+using Nextended.Core.Contracts;
 
 namespace MudBlazor.Extensions.Components;
 
