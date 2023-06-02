@@ -67,6 +67,7 @@ public static class RenderDataDefaults
         RegisterDefault<IEnumerable<UploadableFile>, MudExUploadEdit<UploadableFile>>(edit => edit.UploadRequests);
         RegisterDefault<UploadableFile[], IList<UploadableFile>, MudExUploadEdit<UploadableFile>>(edit => edit.UploadRequests, requests => requests?.ToList() ?? new List<UploadableFile>(), requests => requests?.ToArray() ?? Array.Empty<UploadableFile>());
         RegisterDefault<IList<UploadableFile>, MudExUploadEdit<UploadableFile>>(edit => edit.UploadRequests);
+        RegisterDefault<UploadableFile, MudExUploadEdit<UploadableFile>>(edit => edit.UploadRequest, edit => edit.AllowMultiple = false);
     }
 
     private static Dictionary<string, object> ColorPickerOptions()

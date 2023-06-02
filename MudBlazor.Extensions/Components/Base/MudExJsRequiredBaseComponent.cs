@@ -20,15 +20,9 @@ public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, I
         }
     }
 
-    public virtual object[] GetJsArguments()
-    {
-        return new object[] {ElementReference, CreateDotNetObjectReference()};
-    }
+    public virtual object[] GetJsArguments() => new object[] {ElementReference, CreateDotNetObjectReference()};
 
-    public virtual DotNetObjectReference<MudExJsRequiredBaseComponent<T>> CreateDotNetObjectReference()
-    {
-        return DotNetObjectReference.Create(this);
-    }
+    public virtual DotNetObjectReference<MudExJsRequiredBaseComponent<T>> CreateDotNetObjectReference() => DotNetObjectReference.Create(this);
 
     public virtual async Task ImportModuleAndCreateJsAsync()
     {
