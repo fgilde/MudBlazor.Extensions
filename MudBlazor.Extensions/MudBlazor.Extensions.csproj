@@ -11,8 +11,8 @@
     <!--<VersionSuffix>preview.$([System.DateTime]::Now.ToString(`yyMMddHHmmss`))</VersionSuffix>-->
     <LangVersion>10</LangVersion>
     <Authors>Florian Gilde</Authors>
-    <Description>MudBlazor.Extensions is a small extension for MudBlazor from https://mudblazor.com/ </Description>
-    <PackageProjectUrl>https://github.com/fgilde/MudBlazor.Extensions</PackageProjectUrl>
+    <Description>MudBlazor.Extensions is a small extension library for MudBlazor from https://mudblazor.com/ </Description>
+    <PackageProjectUrl>https://www.mudex.org</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>

@@ -220,6 +220,8 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log 
+ - 1.7.46 > Ensure Min or Max sizes arn't overwritten when using Resizable
+ - 1.7.46 > More fluent overloads for [MudExStyleBuilder](https://www.mudex.org/d/MudExStyleBuilder/MudExStyleBuilder)
  - 1.7.42 > Add Dialog Appearance 
  - 1.7.41 > Add Documentation for some static utils
  - 1.7.41 > Continue work on Taskbar and No Modal feature (still in progress)
@@ -231,9 +233,9 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
  - 1.7.36 > New Possibility for ServerSideRendered Projects to use the IApplicationBuilder extension UseMudExtensions to bypass the need to register the JSRuntime 
  - 1.7.36 > New Utils Methods for MudExCss  
  - 1.7.36 > Setting DialogOptions as Default now also applys to dynamic dialogs for MudExCollectionEdit or MudExObjectEdit
- - 1.7.36 > New Component [MudExGradientText](https://mudex.azurewebsites.net/gradient-text)
- - 1.7.36 > New Component [MudExCardList](https://mudex.azurewebsites.net/card)
- - 1.7.36 > New Component [MudExPopover](https://mudex.azurewebsites.net/popover)
+ - 1.7.36 > New Component [MudExGradientText](https://www.mudex.org/gradient-text)
+ - 1.7.36 > New Component [MudExCardList](https://www.mudex.org/card)
+ - 1.7.36 > New Component [MudExPopover](https://www.mudex.org/popover)
  - 1.7.36 > Fix small DialogOptions bugs
  - 1.7.35 > New Animations for dialogs Perspective3d and LightSpeed
  - 1.7.34 > New Components [MudExSplitPanel](/c/MudExSplitPanel) [MudExSplitter](/c/MudExSplitter) [MudExDivider](/c/MudExDivider)
@@ -247,7 +249,7 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
  - 1.7.30 Fix broken layout in full-height dialogs with new css selector.
  - 1.7.29 Fix broken dialog header buttons positions based on MudBlazor css changes
  - 1.7.28 Update MudBlazor to 6.1.7 and implement missing members in IMudExDialogReference
- - 1.7.27 MudExObjectEdit and MudExCollectionEditor now supporting `Virtualize` on [MudExCollectionEditor](https://mudex.azurewebsites.net/shared-config) its default enabled. But you need to specify height of control. On [MudExObjectEdit](https://mudex.azurewebsites.net/virtualized-object-edit) is disabled and currently in Beta
+ - 1.7.27 MudExObjectEdit and MudExCollectionEditor now supporting `Virtualize` on [MudExCollectionEditor](https://www.mudex.org/shared-config) its default enabled. But you need to specify height of control. On [MudExObjectEdit](https://www.mudex.org/virtualized-object-edit) is disabled and currently in Beta
  - 1.7.27 MudExObjectEdit and MudExCollectionEditor now supporting Height, MaxHeight and custom Style as Parameter
  - 1.7.27 MudExCollectionEditor now supporting Item search
  - 1.7.27 MudExCollectionEditor now supporting top or bottom toolbar position by setting the Parameter `ToolbarPosition`
@@ -264,7 +266,7 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
  - 1.6.76 BugFix in MudExEnumSelect
  - 1.6.74 MudExEnumSelect select now supports nullable enums and flags
  - 1.6.73 Pass Class and ClassContent for MudExMessageDialog as Parameter
- - 1.6.72 Extension for DialogService to show any component in a dialog `dialogService.ShowComponentInDialogAsync<Component>(...)` [Sample](https://mudex.azurewebsites.net/component-in-dialog)
+ - 1.6.72 Extension for DialogService to show any component in a dialog `dialogService.ShowComponentInDialogAsync<Component>(...)` [Sample](https://www.mudex.org/component-in-dialog)
  - 1.6.70 MudExObjectEdit has now events for before import and beforeexport, that allows you to change imported or exported date before executed
  - 1.6.69 BugFix wrong js was loaded
  - 1.6.68 New small DialogComponent `MudExMessageDialog` with custom actions and result and with small dialogServiceExtension `dialogService.ShowConfirmationDialogAsync`

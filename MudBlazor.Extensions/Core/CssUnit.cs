@@ -37,6 +37,24 @@ public enum CssUnit
     Picas
 }
 
+public class MudExDimension
+{
+    public MudExDimension(MudExSize<double> widthAndHeight): this(widthAndHeight, widthAndHeight){}
+
+    public MudExDimension(MudExSize<double> width, MudExSize<double> height)
+    {
+        Width = width;
+        Height = height;
+    }
+
+    public MudExSize<double> Width { get; set; }
+    public MudExSize<double> Height { get; set; }
+
+    
+    public static implicit operator MudExDimension(double s) => new(s);
+
+}
+
 public class MudExSize<T>
 {
     public T Value { get; set; }

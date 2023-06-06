@@ -3,6 +3,7 @@
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Utilities
+@using Nextended.Core.Extensions
 
 @inject IDialogService dialogService;
 
@@ -45,12 +46,16 @@
     private MudExObjectEdit<DialogOptionsEx> _edit;
     private MudColor _primaryColor;
     public DialogOptionsEx? Options { get; set; }
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _primaryColor = await Color.Primary.ToMudColorAsync();
-        CreateOptions();
-        await base.OnInitializedAsync();
-        _loaded = true;
+        if (firstRender)
+        {
+            _primaryColor = await Color.Primary.ToMudColorAsync();
+            CreateOptions();
+            _loaded = true;
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private void CreateOptions()
@@ -85,8 +90,8 @@
         {
             Options.DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.ColorfullGlass)
                 .WithStyle(b => b
-                    .WithHeight(50, CssUnit.Percentage)
-                    .WithWidth(50, CssUnit.Percentage)
+                    .WithSize(50, CssUnit.Percentage)
+                    .WithMaxSize(90, 60, CssUnit.Percentage)
                     .WithBoxShadow($" 0 8px 32px 0 {_primaryColor.SetAlpha(0.4).ToString(MudColorOutputFormats.RGBA)}")
                     .WithBackgroundColor(_primaryColor.SetAlpha(0.2))
                 );
@@ -115,10 +120,13 @@
     {
         _code = CodeView.ExecuteAndReturnFuncAsString(() =>
         {
-            Options.DialogAppearance = MudExAppearance.Empty().WithStyle(b =>
+            Options.SetProperties(ex => ex.Resizeable = true);
+            Options.DialogAppearance = MudExAppearance.FromStyle(b =>
             {
-                b.WithBackgroundColor(Color.Secondary);
-                b.WithOpacity(0.6);
+                b.WithBackgroundColor(Color.Secondary)
+                .WithOpacity(0.6)
+                .WithSize(600)
+                .WithMinSize(400, 300);
             });
             Options.DialogBackgroundAppearance = MudExAppearance.FromCss(MudExCss.Classes.Backgrounds.EmptyIndicator)
                 .WithStyle(b => b.WithOpacity(0.5));

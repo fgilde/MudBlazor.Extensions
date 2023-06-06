@@ -40,6 +40,7 @@ public class MudExAppearance : IMudExClassAppearance, IMudExStyleAppearance, ICl
     public static MudExAppearance FromStyle(object styleObj) => FromStyle(MudExStyleBuilder.FromObject(styleObj));
     public static MudExAppearance FromStyle(string style) => FromStyle(MudExStyleBuilder.FromStyle(style));
     public static MudExAppearance FromStyle(MudExStyleBuilder styleBuilder) => Empty().WithStyle(styleBuilder);
+    public static MudExAppearance FromStyle(Action<MudExStyleBuilder> styleBuilderAction) => Empty().WithStyle(styleBuilderAction);
 
     /// <summary>
     /// Adds style to this appearance from given appearance

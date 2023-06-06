@@ -160,6 +160,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     
     public MudExStyleBuilder WithBorder(string border, bool when = true) => With("border", border, when);
     public MudExStyleBuilder WithBorderRadius(string borderRadius, bool when = true) => With("border-radius", borderRadius, when);
+    public MudExStyleBuilder WithBorderRadius(double radius, CssUnit unit, bool when = true) => WithBorderRadius(new MudExSize<double>(radius, unit).ToString(), when);
 
     public MudExStyleBuilder WithBackground(string background, bool when = true) => With("background", background, when);
     public MudExStyleBuilder WithBackground(MudColor color, bool when = true) => WithBackground(color.ToString(), when);
@@ -226,7 +227,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithHeight(double height, CssUnit unit, bool when = true) => WithHeight(new MudExSize<double>(height, unit).ToString(), when);
 
     public MudExStyleBuilder WithHeight(MudExSize<double> size, bool when = true) => WithHeight(size.ToString(), when);
-
+    
     public MudExStyleBuilder WithOpacity(double opacity, bool when = true) => WithOpacity(DoubleToString(opacity), when);
     public MudExStyleBuilder WithOpacity(string opacity, bool when = true) => With("opacity", opacity, when);
 
@@ -305,7 +306,27 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithTextOverflow(string textOverflow, bool when = true) => With("text-overflow", textOverflow, when);
 
     public MudExStyleBuilder WithVerticalAlign(string verticalAlign, bool when = true) => With("vertical-align", verticalAlign, when);
-    
+
+
+    public MudExStyleBuilder WithMinSize(string width, string height, bool when = true) => WithMinWidth(width, when).WithMinHeight(height, when);
+    public MudExStyleBuilder WithMinSize(double width, double height, CssUnit unit, bool when = true) => WithMinWidth(width, unit, when).WithMinHeight(height, unit, when);
+    public MudExStyleBuilder WithMinSize(double size, CssUnit unit, bool when = true) => WithMinWidth(size, unit, when).WithMinHeight(size, unit, when);
+    public MudExStyleBuilder WithMinSize(MudExSize<double> width, MudExSize<double> height, bool when = true) => WithMinWidth(width, when).WithMinHeight(height, when);
+    public MudExStyleBuilder WithMinSize(MudExDimension size, bool when = true) => WithMinSize(size.Width, size.Height, when);
+
+    public MudExStyleBuilder WithMaxSize(string width, string height, bool when = true) => WithMaxWidth(width, when).WithMaxHeight(height, when);
+    public MudExStyleBuilder WithMaxSize(double width, double height, CssUnit unit, bool when = true) => WithMaxWidth(width, unit, when).WithMaxHeight(height, unit, when);
+    public MudExStyleBuilder WithMaxSize(double size, CssUnit unit, bool when = true) => WithMaxWidth(size, unit, when).WithMaxHeight(size, unit, when);
+    public MudExStyleBuilder WithMaxSize(MudExSize<double> width, MudExSize<double> height, bool when = true) => WithMaxWidth(width, when).WithMaxHeight(height, when);
+    public MudExStyleBuilder WithMaxSize(MudExDimension size, bool when = true) => WithMaxSize(size.Width, size.Height, when);
+
+    public MudExStyleBuilder WithSize(string width, string height, bool when = true) => WithWidth(width, when).WithHeight(height, when);
+    public MudExStyleBuilder WithSize(double size, CssUnit unit, bool when = true) => WithWidth(size, unit, when).WithHeight(size, unit, when);
+    public MudExStyleBuilder WithSize(double width, double height, CssUnit unit, bool when = true) => WithWidth(width, unit, when).WithHeight(height, unit, when);
+    public MudExStyleBuilder WithSize(MudExSize<double> width, MudExSize<double> height, bool when = true) => WithWidth(width, when).WithHeight(height, when);
+    public MudExStyleBuilder WithSize(MudExDimension size, bool when = true) => WithWidth(size.Width, when).WithHeight(size.Height, when);
+    public MudExStyleBuilder WithDimension(MudExDimension size, bool when = true) => WithWidth(size.Width, when).WithHeight(size.Height, when);
+
 
     public MudExStyleBuilder WithMinHeight(double minHeight, CssUnit unit, bool when = true) => WithMinHeight(new MudExSize<double>(minHeight, unit), when);
 
