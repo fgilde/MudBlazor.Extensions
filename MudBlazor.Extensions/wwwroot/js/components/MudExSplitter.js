@@ -19,6 +19,10 @@
         this.splitter = splitter;
         this.prevElem = splitter.previousElementSibling;
         this.nextElem = splitter.nextElementSibling;
+        if(!this.prevElem || !this.nextElem) {
+            console.warn("MudExSplitter can only work between 2 elements!");
+            return;
+        }
         this.direction = this.options.verticalSplit ? "V" : "H";
         this.stretchOtherDirection();
         this.dragElement();

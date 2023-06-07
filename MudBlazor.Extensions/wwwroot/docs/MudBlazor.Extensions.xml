@@ -50,6 +50,11 @@
             A divider to separate content
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDivider.UseBorder">
+            <summary>
+            If this option is true border size is used instead of element size
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplay">
             <summary>
             Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay

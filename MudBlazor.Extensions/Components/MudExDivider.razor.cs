@@ -21,9 +21,13 @@ public partial class MudExDivider : IMudExComponent
     public IJSRuntime JsRuntime => ServiceProvider?.GetService<IJSRuntime>();
     
     [Parameter] public Color Color { get; set; } = Color.Default;
-    [Parameter] public int Size { get; set; } = 1;
-    [Parameter] public CssUnit SizeUnit { get; set; } = CssUnit.Pixels;
-
+    [Parameter] public MudExSize<double> Size { get; set; } = 1;
+    
+    /// <summary>
+    /// If this option is true border size is used instead of element size
+    /// </summary>
+    [Parameter] public bool UseBorder { get; set; } 
+    
     protected override async Task OnParametersSetAsync()
     {
         Class = GetClass();
@@ -31,22 +35,20 @@ public partial class MudExDivider : IMudExComponent
         await base.OnParametersSetAsync();
     }
 
-    private string GetClass()
-    {
-        return $"{(Vertical ? "mud-ex-divider-vertical" : "mud-ex-divider-horizontal")}";
-    }
+    private string GetClass() => $"{(Vertical ? "mud-ex-divider-vertical" : "mud-ex-divider-horizontal")}";
 
     protected virtual string GetStyle()
     {
-        return MudExStyleBuilder.GenerateStyleString(new
+       return MudExStyleBuilder.FromObject(new
         {
-            BorderWidth = 0,
+            BorderWidth = UseBorder ? Size : 0,
             BackgroundColor = Color == Color.Default ? "var(--mud-palette-divider)" : Color.CssVarDeclaration(),
-            Width = Vertical ? Size.ToString() : "unset",
-            MaxWidth = Vertical ? Size.ToString() : "unset",
-            Height = !Vertical ? Size.ToString() : "unset",
-            MaxHeight = !Vertical ? Size.ToString() : "unset",
-        }, SizeUnit);
+        }, Size.SizeUnit)
+            .WithWidth(Size, Vertical && !UseBorder)
+            .WithMaxWidth(Size, Vertical && !UseBorder)
+            .WithHeight(Size, !Vertical && !UseBorder)
+            .WithMaxHeight(Size, !Vertical && !UseBorder)
+            .Build();
     }
 
 }

@@ -40,6 +40,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     /// Static factory method to create a <see cref="MudExStyleBuilder"/> from an object.
     /// </summary>
     public static MudExStyleBuilder FromObject(object obj, string existingCss = "", CssUnit cssUnit = CssUnit.Pixels) => FromStyle(GenerateStyleString(obj, cssUnit, existingCss));
+    public static MudExStyleBuilder FromObject(object obj, CssUnit cssUnit) => FromStyle(GenerateStyleString(obj, cssUnit, string.Empty));
 
     /// <summary>
     /// Static factory method to create a <see cref="MudExStyleBuilder"/> from an existing style string.
