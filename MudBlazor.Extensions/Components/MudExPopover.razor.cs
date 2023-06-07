@@ -65,8 +65,10 @@ namespace MudBlazor.Extensions.Components
         {
             EnsureClassId();
             await base.OnParametersSetAsync();
-            await Handler?.UpdateFragmentAsync(ChildContent ?? (_ => { }), this, $"{PopoverClass} {_classId}", $"{PopoverStyles}{AnimationStyle()}", Open);
         }
+
+        protected override string PopoverClass => $"{base.PopoverClass} {_classId}";
+        protected override string PopoverStyles => $"{base.PopoverStyles}{AnimationStyle()}";
 
         private void EnsureClassId()
         {
