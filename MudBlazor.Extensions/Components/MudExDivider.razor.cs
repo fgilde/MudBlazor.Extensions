@@ -4,6 +4,7 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.ParamMagic;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -21,13 +22,27 @@ public partial class MudExDivider : IMudExComponent
     public IJSRuntime JsRuntime => ServiceProvider?.GetService<IJSRuntime>();
     
     [Parameter] public Color Color { get; set; } = Color.Default;
-    [Parameter] public MudExSize<double> Size { get; set; } = 1;
+
+    [Parameter]
+    [AllowMagic]
+    public MudExSize<double> Size { get; set; } = 1;
     
     /// <summary>
     /// If this option is true border size is used instead of element size
     /// </summary>
-    [Parameter] public bool UseBorder { get; set; } 
-    
+    [Parameter] public bool UseBorder { get; set; }
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        // if (parameters.TryGetValue<object>(nameof(Size), out var s))
+        // {
+        //     Size = s as MudExSize<double> ?? new MudExSize<double>(s.ToString());
+        //     parameters = ParameterView.FromDictionary(parameters.ToDictionary().Where(p => p.Key != nameof(Size)).ToDictionary(p => p.Key, p => p.Value));
+        // }
+            
+        return base.SetParametersAsync(parameters.Magic(this));
+    }
+
     protected override async Task OnParametersSetAsync()
     {
         Class = GetClass();
