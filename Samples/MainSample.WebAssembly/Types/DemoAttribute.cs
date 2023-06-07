@@ -1,13 +1,60 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
+using MudBlazor.Extensions.Helper;
 
 namespace MainSample.WebAssembly.Types;
+
+public class DemoNewAttribute : DemoAttribute
+{
+    private string? _icon;
+
+    public override Color IconColor
+    {
+        get => Color.Warning;
+        set { }
+    }
+
+    public override string? Icon
+    {
+        get
+        {
+            var newIcon = Icons.Material.Filled.Star;
+            var result = string.IsNullOrEmpty(_icon) ? newIcon : MudExSvg.CombineIconsHorizontal(_icon, newIcon);
+            return result;
+        }
+        set => _icon = value;
+    }
+}
+
+public class DemoUpdatedAttribute : DemoAttribute
+{
+    private string? _icon;
+
+    public override Color IconColor
+    {
+        get => Color.Info;
+        set { }
+    }
+
+    public override string? Icon
+    {
+        get
+        {
+            var newIcon = Icons.Material.Filled.Update;
+            var result = string.IsNullOrEmpty(_icon) ? newIcon : MudExSvg.CombineIconsHorizontal(_icon, newIcon);
+            return result;
+        }
+        set => _icon = value;
+    }
+}
+
 
 [AttributeUsage(AttributeTargets.Class)]
 public class DemoAttribute : Attribute
 {
     public Type PageType { get; private set; }
-
+    
     public DemoAttribute(Type pageType)
     {
         UpdateType(pageType);
@@ -26,7 +73,12 @@ public class DemoAttribute : Attribute
     public NavigationEntry ToNavigationEntry(Type type)
     {
         UpdateType(type);
-        return new(Name, Icon, Url, Url?.ToLower()?.StartsWith("http") == true ? "_blank" : "") { Demo = this, Documentation = Documentation};
+        return new(Name, Icon, Url, Url?.ToLower()?.StartsWith("http") == true ? "_blank" : "")
+        {
+            Demo = this,
+            //IconColor = IconColor,
+            Documentation = Documentation
+        };
     }
 
     public NavigationEntry ToNavigationEntry() => ToNavigationEntry(PageType);
@@ -36,7 +88,8 @@ public class DemoAttribute : Attribute
     public Type[]? ForComponentTypes { get; set; }
     public string? Name { get; set; }
     public string? Group { get; set; }
-    public string? Icon { get; set; }
+    public virtual string? Icon { get; set; }
+    public virtual Color IconColor { get; set; } = Color.Default;
     public int Order { get; set; } = 999;
     public string? Url { get; set; }
 

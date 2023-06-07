@@ -11,8 +11,8 @@
     <!--<VersionSuffix>preview.$([System.DateTime]::Now.ToString(`yyMMddHHmmss`))</VersionSuffix>-->
     <LangVersion>10</LangVersion>
     <Authors>Florian Gilde</Authors>
-    <Description>MudBlazor.Extensions is a small extension for MudBlazor from https://mudblazor.com/ </Description>
-    <PackageProjectUrl>https://github.com/fgilde/MudBlazor.Extensions</PackageProjectUrl>
+    <Description>MudBlazor.Extensions is a small extension library for MudBlazor from https://mudblazor.com/ </Description>
+    <PackageProjectUrl>https://www.mudex.org</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -65,8 +65,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nextended.Blazor" Version="7.0.21" />
-    <PackageReference Include="Nextended.Core" Version="7.0.22" />
+    <PackageReference Include="Nextended.Blazor" Version="7.0.23" />
+    <PackageReference Include="Nextended.Core" Version="7.0.23" />
     <PackageReference Include="BlazorJS" Version="2.0.4" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.0.3" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
@@ -118,6 +118,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="wwwroot\css\_backgrounds.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Update="wwwroot\css\mudExAppLoader.scss">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>

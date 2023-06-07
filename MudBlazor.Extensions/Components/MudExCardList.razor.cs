@@ -15,29 +15,59 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem, TData>, IJsMudExComponent<MudExCardList<TData>>
 {
     private string _id = Guid.NewGuid().ToFormattedId();
+    private MudExCardHoverMode? _hoverMode = MudExCardHoverMode.LightBulb | MudExCardHoverMode.Zoom;
 
     [Inject] public IJSRuntime JsRuntime { get; set; }
     public IJSObjectReference JsReference { get; set; }
     public IJSObjectReference ModuleReference { get; set; }
     public ElementReference ElementReference { get; set; }
     private IJsMudExComponent<MudExCardList<TData>> AsJsComponent => this;
-    
+
     [Parameter] public Color BackgroundColor { get; set; } = Color.Default;
     [Parameter] public MudColor BackgroundColorCustom { get; set; } = null;
     [Parameter] public Color HoverColor { get; set; } = Color.Primary;
     [Parameter] public MudColor HoverColorCustom { get; set; } = null;
-    [Parameter] public bool ZoomOnHover { get; set; } = true;
-    [Parameter] public MudExCardHoverMode HoverMode { get; set; } = MudExCardHoverMode.LightBulb;
+    
+    [Obsolete("Use HoverMode instead")]
+    [Parameter] public bool ZoomOnHover { get => HoverModeMatches(MudExCardHoverMode.Zoom);
+        set
+        {
+            if (value && HoverMode.HasValue)
+                HoverMode |= MudExCardHoverMode.Zoom;
+            else if (!value && HoverMode.HasValue) HoverMode &= ~MudExCardHoverMode.Zoom;
+        }
+    }
+
+    [Parameter]
+    public MudExCardHoverMode? HoverMode
+    {
+        get => _hoverMode;
+        set
+        {
+            _hoverMode = value;
+            _= UpdateJs();
+        }
+    }
+
     [Parameter] public Justify Justify { get; set; } = Justify.Center;
     [Parameter] public int Spacing { get; set; } = 15;
     [Parameter] public int LightBulbSize { get; set; } = 30;
     [Parameter] public CssUnit LightBulbSizeUnit { get; set; } = CssUnit.Percentage;
 
-    private string GetCss() => CssBuilder.Default("mud-ex-card-list")
-        .AddClass($"mud-ex-card-list-{_id}")
-        .AddClass($"mud-ex-card-list-{HoverMode.ToString().ToLower()}")
-        .AddClass($"mud-ex-card-list-zoom", ZoomOnHover)
-        .Build();
+    private bool HoverModeMatches(MudExCardHoverMode mode) => HoverMode.HasValue && HoverMode.Value.HasFlag(mode);
+
+    public List<MudExCardHoverMode> AllAppliedHoverModes => Enum.GetValues(typeof(MudExCardHoverMode)).Cast<MudExCardHoverMode>().Where(HoverModeMatches).ToList();
+
+    private string GetCss()
+    {
+        var res = CssBuilder.Default("mud-ex-card-list")
+            .AddClass($"mud-ex-card-list-{_id}");
+
+        foreach (var mode in AllAppliedHoverModes)
+            res.AddClass($"mud-ex-card-list-{mode.ToString().ToLower()}");
+
+        return res.Build();
+    }
 
     public string GetStyle()
     {
@@ -54,6 +84,11 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
+        await UpdateJs();
+    }
+
+    private async Task UpdateJs()
+    {
         if (AsJsComponent.JsReference != null)
             await AsJsComponent.JsReference.InvokeVoidAsync("initialize", Options());
     }
@@ -69,7 +104,9 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
     {
         return new
         {
-            Id = _id
+            Id = _id,
+            Use3dEffect = HoverModeMatches(MudExCardHoverMode.CardEffect3d),
+            UseZoomEffect = HoverModeMatches(MudExCardHoverMode.Zoom)
         };
     }
 

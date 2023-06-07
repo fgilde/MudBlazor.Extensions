@@ -1,17 +1,20 @@
-﻿<style>
-    .mudexmarkdownpresenter h1,
-    .mudexmarkdownpresenter h2,
-    .mudexmarkdownpresenter h3,
-    .mudexmarkdownpresenter h4,
-    .mudexmarkdownpresenter h5,
-    .mudexmarkdownpresenter h6,
-    .mudexmarkdownpresenter img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-    }
-</style>
+﻿@if (CenterImagesAndHeadlines)
+{
+    <style>
+        .mudexmarkdownpresenter h1,
+        .mudexmarkdownpresenter h2,
+        .mudexmarkdownpresenter h3,
+        .mudexmarkdownpresenter h4,
+        .mudexmarkdownpresenter h5,
+        .mudexmarkdownpresenter h6,
+        .mudexmarkdownpresenter img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+    </style>
+}
 
 
 <div class="@GetCls()">

@@ -170,3 +170,12 @@ a, .btn-link {
     animation: rotate-background 30s linear infinite;
     z-index: -1;
 }
+
+.api-link {
+    text-decoration: underline;
+}
+
+.api-link:hover {
+    color: var(--mud-palette-primary);
+    text-decoration: underline;
+}

@@ -1,4 +1,5 @@
 ﻿using Nextended.Core;
+using Nextended.Core.Contracts;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -18,15 +19,6 @@ public class UploadableFile: IUploadableFile
         FileName = Path.GetFileName(url),
         Url = url
     };
-}
-
-public interface IUploadableFile
-{
-    public string FileName { get; set; }
-    public string Extension { get; set; }
-    public string ContentType { get; set; }
-    public byte[] Data { get; set; }
-    public string Url { get; set; }
 }
 
 

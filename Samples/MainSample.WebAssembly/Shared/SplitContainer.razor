@@ -3,7 +3,7 @@
         <Left>
             @if (Left != null)
             {
-                <MudExSplitPanelItem Class="mud-ex-content-center mud-ex-transparent-indicator-bg" Style="min-width: 350px; height:auto; min-height: 150px;">
+                <MudExSplitPanelItem Class="mud-ex-content-center mud-ex-transparent-indicator-bg" Style="@($"min-width: {MinWidthLeft}; height:auto; min-height: {MinHeightLeft};")">
                     @Left
                 </MudExSplitPanelItem>
             }
@@ -11,7 +11,7 @@
         <Right>
             @if (Right != null)
             {
-                <MudExSplitPanelItem Class="px-4 pt-2 pb-4" Style="min-width: 350px; min-height: 150px; width: 50%;">
+                <MudExSplitPanelItem Class="px-4 pt-2 pb-4" Style="@($"min-width: {MinWidthRight}; min-height: {MinHeightRight}; width: 50%;")">
                     @Right
                 </MudExSplitPanelItem>
             }
@@ -42,4 +42,8 @@
     [Parameter] public RenderFragment? Right { get; set; }
     [Parameter] public bool ColumnLayout { get; set; } = true;
     [Parameter] public bool Splittable { get; set; } = true;
+    [Parameter] public string MinWidthLeft { get; set; } = "350px";
+    [Parameter] public string MinWidthRight { get; set; } = "350px;";
+    [Parameter] public string MinHeightLeft { get; set; } = "150px";
+    [Parameter] public string MinHeightRight { get; set; } = "150px;";
 }

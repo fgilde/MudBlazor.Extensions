@@ -1,7 +1,7 @@
 ﻿@page "/card"
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
-@attribute [Demo(Name = "MudExCardList", Icon = Icons.Material.Outlined.HorizontalSplit, Documentation = "This Demo demonstrate using for the MudExCardList", ForComponentType = typeof(MudExCardList<>))]
+@attribute [DemoUpdated(Name = "MudExCardList", Icon = Icons.Material.Outlined.HorizontalSplit, Documentation = "This Demo demonstrate using for the MudExCardList", ForComponentType = typeof(MudExCardList<>))]
 
 <DemoComponent PageType="@GetType()" Title="MudExCardList">
     <MudSlider @bind-Value="itemCount" Min="0" Max="40" Color="Color.Info" Class="mb-6">Items: @itemCount.ToString()</MudSlider>
@@ -31,19 +31,20 @@
             </MudExCardList>
         </Left>
         <Right>
-            <MudExObjectEdit MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
+            <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
         </Right>
     </SplitContainer>
 </DemoComponent>
 
 @code {
-    ComponentBase component;
+    MudExCardList<object> component;
     int itemCount = 5;
-    private Action<ObjectEditMeta<ComponentBase>> Configure()
+    private Action<ObjectEditMeta<MudExCardList<object>>> Configure()
     {
         return meta =>
         {
             meta.GroupByCategoryAttribute();
+            meta.Property(m => m.ZoomOnHover).Ignore();
         };
     }
 }

@@ -1,4 +1,5 @@
-﻿using MudBlazor.Extensions.Helper;
+﻿using MudBlazor;
+using MudBlazor.Extensions.Helper;
 using Nextended.Core.Types;
 
 namespace MainSample.WebAssembly.Types;
@@ -27,7 +28,7 @@ public class NavigationEntry : Hierarchical<NavigationEntry>
 
     private async Task LoadDoc()
     {
-        Documentation ??= await MudExResource.GetDocumentationAsync(Type);
+        Documentation ??= await MudExResource.GetSummaryDocumentationAsync(Type);
     }
 
     public string? Documentation { get; set; }
@@ -37,4 +38,5 @@ public class NavigationEntry : Hierarchical<NavigationEntry>
     public string Target { get; set; }
     public bool? Bold { get; set; }
     internal DemoAttribute? Demo { get; set; }
+    public Color GetIconColor() => Demo?.IconColor ?? Color.Default;
 }

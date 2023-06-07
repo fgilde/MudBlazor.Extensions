@@ -181,6 +181,176 @@
             Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.MudExAppearance">
+            <summary>
+            The `MudExAppearance` class is a powerful tool that helps to manage CSS and styles of MudBlazor components dynamically. 
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExAppearance.Class">
+            <summary>
+            Class to apply
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExAppearance.Style">
+            <summary>
+            CSS Style string to apply
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExAppearance.KeepExisting">
+            <summary>
+            Set to false to overwrite all existing classes and styles
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.Empty">
+            <summary>
+            Factory method for an empty instance
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.WithStyle(MudBlazor.Extensions.Core.IMudExStyleAppearance)">
+            <summary>
+            Adds style to this appearance from given appearance
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.WithStyle(System.Object,MudBlazor.Extensions.Core.CssUnit)">
+            <summary>
+            Adds style to this appearance from given styleObj
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.WithStyle(System.Object,System.String,MudBlazor.Extensions.Core.CssUnit)">
+            <summary>
+            Adds style to this appearance from given styleObj
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.WithStyle(System.String)">
+            <summary>
+            Adds style to this appearance from given styleString
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.WithStyle(System.Action{MudBlazor.Extensions.Helper.MudExStyleBuilder})">
+            <summary>
+            Adds style to this appearance with passing a fluent Action with a MudExStyleBuilder
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.WithStyle(System.Func{MudBlazor.Extensions.Helper.MudExStyleBuilder,System.Threading.Tasks.Task})">
+            <summary>
+            Adds style to this appearance with passing a async Func with a MudExStyleBuilder
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.WithCss(System.String,System.String[])">
+            <summary>
+            Adds class to this appearance
+            </summary>    
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExColor">
+            <summary>
+            MudExColor is a static utility class that provides a set of extension methods for working with Color and MudColor instances.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColor.CssVarName(MudBlazor.Color)">
+            <summary>
+            Returns the CSS variable name for the given color.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColor.CssVarDeclaration(MudBlazor.Color)">
+            <summary>
+            Returns the CSS variable declaration for the given color. For example var(--mud-color-primary) for Color.Primary
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColor.ToDrawingColor(MudBlazor.Utilities.MudColor)">
+            <summary>
+            Converts a MudColor to a system drawing color
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColor.ToMudColorAsync(MudBlazor.Color)">
+            <summary>
+            Converts a Color enum value of Color (like Color.Primary) to a MudColor with the correct values filled
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExCssBuilder">
+            <summary>
+            Simple Utility class to help with building css class strings
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExStyleBuilder">
+            <summary>
+            MudExStyleBuilder is useful to create style strings or convert any style to a class.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.Empty">
+            <summary>
+            Static factory method to create a <see cref="T:MudBlazor.Extensions.Helper.MudExStyleBuilder"/>
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.FromObject(System.Object,System.String,MudBlazor.Extensions.Core.CssUnit)">
+            <summary>
+            Static factory method to create a <see cref="T:MudBlazor.Extensions.Helper.MudExStyleBuilder"/> from an object.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.FromStyle(System.String)">
+            <summary>
+            Static factory method to create a <see cref="T:MudBlazor.Extensions.Helper.MudExStyleBuilder"/> from an existing style string.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.GenerateStyleString(System.Object,System.String)">
+            <summary>
+            Converts an object to a style string but only properties that are not passed in existingCss
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.GenerateStyleString(System.Object,MudBlazor.Extensions.Core.CssUnit,System.String)">
+            <summary>
+            Converts an object to a style string but only properties that are not passed in existingCss.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.CombineStyleStrings(System.String,System.String)">
+            <summary>
+            Combines two css style strings
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.StyleStringToObject``1(System.String)">
+            <summary>
+            Converts a css style string to an object
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.With(System.String,System.String,System.Func{System.Boolean})">
+            <summary>
+            Adds a style to the builder if the condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.With(System.String,System.String,System.Boolean)">
+            <summary>
+            Adds a style to the builder if the condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.AsCssBuilderAsync">
+            <summary>
+            Creates a class for this style and returns a MudExCssBuilder with this class added
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.BuildAsClassRuleAsync(System.String,Microsoft.JSInterop.IJSRuntime)">
+            <summary>
+            Creates a class for this style and returns the name of the created class
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.RemoveClassRuleAsync(System.String,Microsoft.JSInterop.IJSRuntime)">
+            <summary>
+            Removes a class that is temporary created
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.Build">
+            <summary>
+            Builds the css style string
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.ToObject``1">
+            <summary>
+            Converts this style to an object
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.MudExStyleBuilder.Style">
+            <summary>
+            The css style string
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Options.MudPopoverOptionsEx.ExcludedBlurSelectors">
             <summary>
             Click on any of this selectors will not close the popover if AutoHideOnBlur is true

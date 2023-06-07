@@ -1,0 +1,251 @@
+﻿@using System.Reflection
+@using System.Text.RegularExpressions
+@using Microsoft.AspNetCore.Components.Rendering
+@using MudBlazor.Extensions.Helper
+
+
+@if (ShowHeader)
+{
+    <MudText Typo="Typo.h6" Color="Color.Primary">@GetTypeName(Type)</MudText>
+}
+
+@if (Properties?.Any() == true)
+{
+    <MudExpansionPanel IsExpanded="true" Text="Properties">
+        <MudDataGrid T="ApiMemberInfo<PropertyInfo>" Items="@Properties" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+                     DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
+                 DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Container">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Properties</MudText>
+                <MudSpacer />
+                <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            <Columns>
+                <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name" />
+                <PropertyColumn Property="x => x.TypeName" Title="PropertyType">
+                    <CellTemplate>
+                        @RenderLinks(context.Item.TypeName)
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.IsStatic" />
+                <PropertyColumn Property="x => x.Default" />
+                <PropertyColumn Property="x => x.Description" />
+            </Columns>
+        </MudDataGrid>
+    </MudExpansionPanel>
+}
+
+@if (Methods?.Any() == true)
+{
+    <MudExpansionPanel IsExpanded="true" Text="Methods">
+        <MudDataGrid T="ApiMemberInfo<MethodInfo>" Items="@Methods" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+                     DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
+                     DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Container">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Methods</MudText>
+                <MudSpacer />
+                <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            <Columns>
+                @*<PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name" />*@
+                <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
+                    <CellTemplate>
+                        @RenderFunction(context.Item.Name)
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.TypeName" Title="ReturnType">
+                    <CellTemplate>
+                        @RenderLinks(context.Item.TypeName)
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.Description" />
+            </Columns>
+        </MudDataGrid>
+    </MudExpansionPanel>
+}
+
+@code {
+
+    private RenderFragment RenderLinks(string typeName)
+    {
+        return builder =>
+        {
+            RenderLinksRecursive(builder, typeName, 0);
+        };
+    }
+
+    private RenderFragment RenderFunction(string function)
+    {
+        return builder =>
+        {
+            RenderFunctionRecursive(builder, function, 0);
+        };
+    }
+
+    private void RenderFunctionRecursive(RenderTreeBuilder builder, string function, int level)
+    {
+        // Split the function into tokens based on space, preserving other characters for processing
+        var tokens = function.Split(' ');
+
+        // Flag to control whether the next token is a method name
+        bool isMethodName = false;
+
+        for (int i = 0; i < tokens.Length; i++)
+        {
+            var token = tokens[i];
+
+            // If the token is a method name, add it as plain text and set the flag to false
+            if (isMethodName)
+            {
+                builder.AddContent(level, token);
+                isMethodName = false;
+            }
+            else if (token.Contains("("))  // If the token contains a '(', this is the method name. Set the flag to true
+            {
+                builder.AddContent(level, token.Substring(0, token.IndexOf("(")));
+                RenderLinksRecursive(builder, token.Substring(token.IndexOf("(")), level);
+                isMethodName = true;
+            }
+            else if (Regex.IsMatch(token, @"^[A-Z]\w*$"))  // If the token looks like a type name, linkify it
+            {
+                RenderLinksRecursive(builder, token, level);
+            }
+            else  // Otherwise, add it as plain text
+            {
+                builder.AddContent(level, token);
+            }
+
+            // Add a space after each token, except the last one and those ending with a comma or parenthesis
+            if (i < tokens.Length - 1 && !token.EndsWith(",") && !token.EndsWith("(") && !token.EndsWith(")"))
+            {
+                builder.AddContent(level++, " ");
+            }
+        }
+    }
+
+    private void RenderLinksRecursive(RenderTreeBuilder builder, string typeName, int level)
+    {
+        if (string.IsNullOrWhiteSpace(typeName)) return;
+
+        // Special case: nullable type
+        if (typeName.EndsWith("?"))
+        {
+            RenderLinksRecursive(builder, typeName.Remove(typeName.Length - 1), level);
+            builder.AddContent(level++, "?");
+            return;
+        }
+
+        // Special case: array type
+        if (typeName.EndsWith("[]"))
+        {
+            RenderLinksRecursive(builder, typeName.Remove(typeName.Length - 2), level);
+            builder.AddContent(level++, "[]");
+            return;
+        }
+
+        // Use a regular expression to find generic types
+        var match = Regex.Match(typeName, @"(.*?)(<(.*)>)?$");
+        if (match.Success)
+        {
+            // The type without generics
+            var mainType = match.Groups[1].Value;
+            var linkUriForType = GetLinkUriForType(mainType);
+            if (!string.IsNullOrEmpty(linkUriForType))
+            {
+                builder.OpenElement(level++, "a");
+                builder.AddAttribute(level, "href", linkUriForType);
+                //builder.AddAttribute(level, "style", TypeLinkStyleFor(mainType));
+                builder.AddAttribute(level, "class", "api-link");
+                builder.AddContent(level, mainType);
+                builder.CloseElement();
+
+                // The generic arguments (if any)
+                var genericArgs = match.Groups[3].Value;
+                var args = SplitTypes(genericArgs);
+                if (args.Count > 0)
+                    builder.AddContent(level++, "<");
+
+                foreach (var arg in args)
+                {
+                    if (args.IndexOf(arg) > 0)
+                        builder.AddContent(level++, ", ");
+
+                    // Recursive call to handle nested generic arguments
+                    RenderLinksRecursive(builder, arg, level);
+                }
+                if (args.Count > 0)
+                    builder.AddContent(level++, ">");
+            }
+            else
+            {
+                builder.AddContent(level++, mainType);
+            }
+        }
+    }
+
+    private string GetLinkUriForType(string mainType)
+    {
+        if (string.IsNullOrEmpty(mainType))
+            return null;
+        if (mainType.StartsWith("("))
+            mainType = mainType.TrimStart('(');
+        if (string.IsNullOrEmpty(mainType) || mainType == ")" ||  mainType == "(" || mainType == "T" || (mainType.Length > 1 && mainType.StartsWith("T") && char.IsUpper(mainType[1])))
+            return null;
+        return $"/a/{mainType}";
+    }
+
+
+    private List<string> SplitTypes(string types)
+    {
+        var result = new List<string>();
+        var stack = new Stack<int>();
+        var lastIndex = 0;
+
+        for (var i = 0; i < types.Length; i++)
+        {
+            if (types[i] == '<')
+            {
+                stack.Push(i);
+            }
+            else if (types[i] == '>')
+            {
+                stack.Pop();
+            }
+            else if (stack.Count == 0 && types[i] == ',')
+            {
+                result.Add(types.Substring(lastIndex, i - lastIndex).Trim());
+                lastIndex = i + 1;
+            }
+        }
+
+        if (lastIndex < types.Length)
+        {
+            result.Add(types.Substring(lastIndex).Trim());
+        }
+
+        return result;
+    }
+    
+ 
+    private string CellStyleName()
+    {
+        return MudExStyleBuilder.Empty()
+            .WithColor(Color.Info)
+            .WithFontWeight(FontWeight.Bold)
+            .Build();
+    }
+
+    private string _searchString;
+    private Func<IApiMemberInfo, bool> _quickFilter => x =>
+    {
+        return string.IsNullOrWhiteSpace(_searchString)
+               || x == null
+               || x.Name?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true
+               || x.Description?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true
+               || x.TypeName?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true
+               || x.Default?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true;
+    };
+
+}

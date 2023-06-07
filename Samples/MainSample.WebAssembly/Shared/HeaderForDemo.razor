@@ -10,7 +10,7 @@
     
         @foreach (var info in DemoAttribute?.RelatedComponents?.Select(t => new {Type = t, BetaInfos = t.GetCustomAttributes<BetaAttribute>()}).Where(arg => arg?.BetaInfos?.Any() == true)!)
         {
-            <MudAlert Severity="Severity.Warning">@($"{info.Type.Name} - {string.Join("<br/>", info.BetaInfos.Select(b => b.Message))}")</MudAlert>
+        <MudAlert Severity="Severity.Warning">@($"{Api.GetTypeName(info.Type)} - {string.Join("<br/>", info.BetaInfos.Select(b => b.Message))}")</MudAlert>
         }
     
 </div>
@@ -25,7 +25,7 @@
     {
         if (string.IsNullOrEmpty(DemoAttribute?.Documentation))
         {
-            doc = await MudExResource.GetDocumentationAsync(DemoAttribute?.RelatedComponents?.FirstOrDefault());
+            doc = await MudExResource.GetSummaryDocumentationAsync(DemoAttribute?.RelatedComponents?.FirstOrDefault());
         }
         
         await base.OnInitializedAsync();

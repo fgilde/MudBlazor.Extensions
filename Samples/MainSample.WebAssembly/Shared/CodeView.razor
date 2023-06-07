@@ -1,0 +1,220 @@
+﻿@using Microsoft.AspNetCore.Components.Rendering
+@using Microsoft.AspNetCore.Components.RenderTree
+@using System.Text
+@using System.Runtime.CompilerServices
+@using System.Text.RegularExpressions
+@using System.Reflection
+
+@if (RenderChildContent && ChildContent != null)
+{
+    @ChildContent
+}
+
+@if (!string.IsNullOrEmpty(Code))
+{
+    @if (RenderChildContent && ChildContent != null)
+    {
+        <MudExpansionPanel @bind-IsExpanded="CodeIsExpanded" Text="@(CodeIsExpanded ? ExpandedText : CollapsedText)">
+            <MudMarkdown CodeBlockTheme="@(MainLayout.Instance?.IsDark == true ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.Default)" Value="@(_markdownCode)"></MudMarkdown>
+        </MudExpansionPanel>
+    }
+    else
+    {
+        <MudMarkdown CodeBlockTheme="@(MainLayout.Instance?.IsDark == true ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.Default)" Value="@(_markdownCode)"></MudMarkdown>
+    }
+}
+
+
+@code {
+    private string _markdownCode;
+    private string _code;
+
+    [Parameter] public string ExpandedText { get; set; } = "Hide code";
+    [Parameter] public string CollapsedText { get; set; } = "Show code";
+    [Parameter] public string Language { get; set; } = "c#";
+    [Parameter] public bool CodeIsExpanded { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public bool RenderChildContent { get; set; }
+    [Parameter] public string Code
+    {
+        get => _code;
+        set
+        {
+            _code = _markdownCode = "Loading...";
+            StateHasChanged();
+            Task.Delay(10).ContinueWith(task =>
+            {
+                _markdownCode = CodeAsMarkup(value, Language);
+                StateHasChanged();
+            });
+            _code = value;
+        }
+    }
+
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (ChildContent != null)
+            Code = FormatHtml(CodeFromFragment(ChildContent)) + Environment.NewLine + Code;
+    }
+
+
+    public static string CodeAsMarkup(string code, string lang = "c#") => $"```{lang}{Environment.NewLine}{code}{Environment.NewLine}```";
+
+    public static string ExecuteAndReturnFuncAsString(Action func, bool replaceLambda = true, [CallerArgumentExpression("func")] string caller = null)
+    {
+        func();
+        return replaceLambda ? ReplaceLambdaInFuncString(caller) : caller;
+    }
+
+    public static (string CodeStr, Action Func) FuncAsString(Action func, bool replaceLambda = true, [CallerArgumentExpression("func")] string caller = null)
+    {
+        return (replaceLambda ? ReplaceLambdaInFuncString(caller) : caller, func);
+    }
+
+    public static string ReplaceLambdaInFuncString(string caller)
+    {
+        caller = Regex.Replace(caller, @"^\s*\([^)]*\)\s*=>\s*{?", "", RegexOptions.Singleline);
+        caller = Regex.Replace(caller, @"\s*}\s*$", "", RegexOptions.Singleline);
+        return caller;
+    }
+
+    public static string GenerateBlazorMarkupFromInstance<TComponent>(TComponent componentInstance) 
+    {
+        var componentName = componentInstance.GetType().FullName.Replace(componentInstance.GetType().Namespace + ".", string.Empty);
+        var properties = componentInstance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+        var props = properties.ToDictionary(info => info.Name, info => info.GetValue(componentInstance)).Where(pair => Nextended.Blazor.Helper.ComponentRenderHelper.IsValidParameter(typeof(TComponent), pair.Key, pair.Value));
+        
+        var parameterString = string.Join("\n", props.Select(p => $"    {p.Key}=\"{p.Value}\""));
+
+        var markup = $"<{componentName}\n{parameterString}\n/>";
+
+        return markup;
+    }
+
+ 
+    public static string FormatHtml(string html)
+    {
+        string pattern = @"(\<[^/][^>]*\>)|(\<\/[^>]*\>)";
+        string replacement = "$1\r\n$2";
+
+        Regex rgx = new Regex(pattern);
+
+        string result = rgx.Replace(html, replacement);
+        result = Regex.Replace(result, @"[\r\n]+", "\r\n");
+        result = Regex.Replace(result, @"([^\r\n])<", "$1\r\n<");
+        result = Regex.Replace(result, @">([^\r\n])", ">\r\n$1");
+
+        int indentLevel = 0;
+        var lines = result.Split('\n');
+        for (int i = 0; i < lines.Length; i++)
+        {
+            if (lines[i].Contains("</"))
+                indentLevel--;
+            lines[i] = new string(' ', indentLevel * 4) + lines[i].Trim();
+            if (lines[i].Contains("<") && !lines[i].Contains("</"))
+                indentLevel++;
+        }
+
+        return string.Join("\n", lines);
+    }
+    
+    private static string CodeFromFragment(RenderFragment? fragment)
+    {
+        if (fragment == null)
+            return string.Empty;
+        var builder = new RenderTreeBuilder();
+        fragment(builder);
+
+        var framesRange = builder.GetFrames();
+
+        var frames = framesRange.Array.AsSpan(0, framesRange.Count);
+        var stringBuilder = new StringBuilder();
+        ProcessFrames(frames, stringBuilder);
+        return stringBuilder.ToString();
+    }
+
+    
+    private static void ProcessFrames(ReadOnlySpan<RenderTreeFrame> frames, StringBuilder stringBuilder)
+    {
+        for (var i = 0; i < frames.Length; i++)
+        {
+            var frame = frames[i];
+            switch (frame.FrameType)
+            {
+                case RenderTreeFrameType.Markup:
+                    stringBuilder.Append(frame.MarkupContent);
+                    break;
+                case RenderTreeFrameType.Text:
+                    stringBuilder.Append(frame.TextContent);
+                    break;
+                case RenderTreeFrameType.Element:
+                    stringBuilder.Append(BuildTag(frame.FrameType, frame.ElementName, frames.Slice(i, frame.ElementSubtreeLength)));
+                    i += frame.ElementSubtreeLength - 1;
+                    break;
+                case RenderTreeFrameType.Component:
+                    stringBuilder.Append(BuildTag(frame.FrameType, frame.ComponentType.Name, frames.Slice(i, frame.ComponentSubtreeLength)));
+                    i += frame.ComponentSubtreeLength - 1;
+                    break;
+                case RenderTreeFrameType.Attribute:
+                    if (frame.AttributeValue is not RenderFragment)
+                        stringBuilder.Append(BuildAttribute(frame));
+                    break;
+                case RenderTreeFrameType.Region:
+                case RenderTreeFrameType.ElementReferenceCapture:
+                case RenderTreeFrameType.None:
+                case RenderTreeFrameType.ComponentReferenceCapture:
+                    break;
+            }
+        }
+    }
+
+    private static string GetAttributeValueAsString(object? value)
+    {
+        if (value == null)
+            return string.Empty;
+    
+        var type = value.GetType();
+
+        if (type.IsEnum)
+            return $"{type.FullName}.{value}";
+
+        if (type == typeof(bool))
+            return value.ToString().ToLower();
+
+        return value.ToString();
+    }
+
+    private static string BuildAttribute(RenderTreeFrame frame)
+    {
+        var value = GetAttributeValueAsString(frame.AttributeValue);
+        return $" {frame.AttributeName}=\"{value}\"";
+    }
+
+    private static string BuildTag(RenderTreeFrameType frameType, string tagName, ReadOnlySpan<RenderTreeFrame> frames)
+    {
+        var frame = frames[0];
+        var stringBuilder = new StringBuilder().Append('<').Append(tagName);
+
+        ProcessFrames(frames.Slice(1, frame.ElementSubtreeLength - 1), stringBuilder);
+
+        // Handle child content
+        var childContentFrame = frames.Slice(1, frame.ElementSubtreeLength - 1).ToArray()
+            .FirstOrDefault(f => f is {FrameType: RenderTreeFrameType.Attribute, AttributeValue: RenderFragment});
+
+        if (childContentFrame.Sequence != 0)
+        {
+            stringBuilder.Append('>');
+            stringBuilder.Append(CodeFromFragment((RenderFragment)childContentFrame.AttributeValue));
+            stringBuilder.Append("</").Append(tagName).Append('>');
+        }
+        else
+        {
+            stringBuilder.Append("/>");
+        }
+
+        return stringBuilder.ToString();
+    }
+}

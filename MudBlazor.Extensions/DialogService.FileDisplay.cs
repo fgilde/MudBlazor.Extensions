@@ -66,6 +66,9 @@ public static partial class DialogServiceExt
             Position = DialogPosition.BottomCenter,
             Animations = new[] { AnimationType.FadeIn, AnimationType.SlideIn },
             AnimationDuration = TimeSpan.FromSeconds(1),
+            DisablePositionMargin = true,
+            DisableSizeMarginX = false,
+            DisableSizeMarginY = false,
             FullHeight = true,
             Resizeable = true
         };

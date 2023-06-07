@@ -44,7 +44,7 @@ public partial class MudExDialog : IMudExComponent
     public new async Task<IDialogReference> Show(string title = null, DialogOptions options = null)
     {
         OptionsEx.JsRuntime = js;
-        //await DialogServiceExt.InjectOptionsAsync(DotNetObjectReference.Create(this as ComponentBase), js, OptionsEx);
+        await DialogServiceExt.PrepareOptionsBeforeShow(OptionsEx);
         return await base.Show(title, options).InjectOptionsAsync(OptionsEx);
     }
 

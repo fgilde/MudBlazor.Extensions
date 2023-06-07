@@ -10,7 +10,7 @@
             <MudExUploadEdit MimeTypes="@mimeTypes" T="UploadableFile" Style="max-height: 400px; width: 1000px" @ref="component"></MudExUploadEdit>
         </Left>
         <Right>
-            <MudExObjectEdit DefaultGroupName="Misc" MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
+            <ComponentPropertyGrid DefaultGroupName="Misc" MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
         </Right>
     </SplitContainer>
 </DemoComponent>

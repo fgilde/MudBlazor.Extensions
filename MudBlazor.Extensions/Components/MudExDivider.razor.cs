@@ -38,7 +38,7 @@ public partial class MudExDivider : IMudExComponent
 
     protected virtual string GetStyle()
     {
-        return MudExCss.GenerateCssString(new
+        return MudExStyleBuilder.GenerateStyleString(new
         {
             BorderWidth = 0,
             BackgroundColor = Color == Color.Default ? "var(--mud-palette-divider)" : Color.CssVarDeclaration(),

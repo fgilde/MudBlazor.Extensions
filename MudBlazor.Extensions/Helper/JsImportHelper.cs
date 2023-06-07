@@ -15,10 +15,9 @@ namespace MudBlazor.Extensions.Helper
         private static bool initialized;
         internal static IJSRuntime _runtime;
 
-        internal static async Task<IJSRuntime> GetInitializedJsRuntime()
-        {
-            return _runtime;
-        }
+        internal static IJSRuntime GetInitializedJsRuntime() => _runtime;
+
+        internal static Task<IJSRuntime> GetInitializedJsRuntimeAsync() => Task.FromResult(_runtime);
 
         internal static async Task<IJSRuntime> GetInitializedJsRuntime(object field, IJSRuntime fallback)
         {

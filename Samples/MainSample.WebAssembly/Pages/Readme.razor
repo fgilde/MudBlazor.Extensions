@@ -1,7 +1,14 @@
 ﻿@inject HttpClient Http
 @page "/readme"
 
-<MudExGradientText Style="margin-top: -100px;margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h2">MudBlazor.Extensions</MudExGradientText>
+<MudHidden Breakpoint="Breakpoint.SmAndDown">
+    <MudExGradientText Animate="false"
+                       Style="margin-top: -100px;margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h2">MudBlazor.Extensions</MudExGradientText>
+</MudHidden>
+<MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+    <MudExGradientText Animate="false"
+                       Style="margin-top: -100px;margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h4">MudBlazor.Extensions</MudExGradientText>
+</MudHidden>
 <Support />
 <DemoMarkdown CenterImagesAndHeadlines="true" Value="@Value"></DemoMarkdown>
 

@@ -8,7 +8,7 @@
 <MudTextField ReadOnly="true" Value="@jsonValue" Variant="Variant.Outlined" T="string" Lines="16" Style="margin-top: 3px;"></MudTextField>
 
 @code {
-
+    [Inject] HttpClient http { get; set; }
     public string Name => "Most stupid json display"; // Name of your component. (Is displayed in menu if user wants to switch between multiple components for one file type)
 
     public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos) // Here you need to check if your component can handle the file. Please do this as accurate as possible to prevent using the wrong component for a file.
@@ -54,8 +54,10 @@
 
     private async Task ShowCode()
     {
-        await dialogService.ShowComponentInDialogAsync<PrettyCode>("Code for this component", "Like this you can implement your own components that is responsible for a File",
-            c => c.CodeFile = $"https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/Samples/MainSample.WebAssembly/Shared/{GetType().Name}.razor",
+        var file = GH.Path($"Shared/{GetType().Name}.razor");
+        string code = await http.GetStringAsync(file);
+        await dialogService.ShowComponentInDialogAsync<CodeView>("Code for this component", "Like this you can implement your own components that is responsible for a File",
+            c => c.Code = code,
             dialog =>
             {
                 dialog.Style = "overflow: scroll; height: 80%";

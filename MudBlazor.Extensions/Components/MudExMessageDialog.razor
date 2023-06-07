@@ -46,7 +46,7 @@
     private IStringLocalizer<MudExMessageDialog> localizer => _serviceProvider.GetService<IStringLocalizer<MudExMessageDialog>>();
 
     [Parameter] public string Style { get; set; } = string.Empty;
-    [Parameter] public string Class { get; set; } = "mud-ex-dialog-initial";
+    [Parameter] public string Class { get; set; } = MudExCss.Classes.Dialog._Initial;
     [Parameter] public string ClassContent { get; set; } = string.Empty;
 
     [Parameter] public string Message { get; set; }

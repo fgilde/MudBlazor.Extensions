@@ -1,24 +1,88 @@
 ﻿@inject HttpClient Http
+@inject NavigationManager Navi
 @page "/doc/{File?}"
 @page "/d/{File?}"
+@page "/doc/{File?}/{TypeName?}"
+@page "/d/{File?}/{TypeName?}"
+@page "/a/{TypeName?}"
+@page "/api/{TypeName?}"
 @using Nextended.Core.Extensions
+@using MudBlazor.Extensions.Attribute
+@using System.Reflection
 
+@if (_loaded)
+{
+    @if (type != null)
+    {
+        <HeaderForType Type="@type"></HeaderForType>
 
-<PageHeader>@Path.GetFileNameWithoutExtension(File)</PageHeader>
-<DemoMarkdown Value="@Value"></DemoMarkdown>
-
+        <MudTabs ActivePanelIndex="@GetActivePanel()" Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+            @if (DocumentationAvailable)
+            {
+                <MudTabPanel Text="Documentation">
+                    <DemoMarkdown Value="@DocumentationValue"></DemoMarkdown>
+                </MudTabPanel>
+            }
+            <MudTabPanel Text="API">
+                <Api Type="@type"></Api>
+            </MudTabPanel>
+        </MudTabs>
+    }
+    else if (DocumentationAvailable)
+    {
+        <PageHeader>@Path.GetFileNameWithoutExtension(File)</PageHeader>
+        <DemoMarkdown Value="@DocumentationValue"></DemoMarkdown>
+    }
+    else
+    {
+        <span> Not found</span>
+    }
+}
+else
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
 @code
 {
+    bool _loaded;
 
     [Parameter]
     public string? File { get; set; }
 
+    [Parameter]
+    public string? TypeName { get; set; }
+
+    private Type? type = null;
     protected override async Task OnParametersSetAsync()
     {
+        _loaded = false;
         await base.OnParametersSetAsync();
         MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
-        Value = await Http.LoadDocumentation(File.EnsureEndsWith(".md"));
+        DocumentationValue = await Http.LoadDocumentation(File.EnsureEndsWith(".md"));
+        if (string.IsNullOrEmpty(DocumentationValue))
+        {
+            TypeName ??= File;
+            File = null;
+        }
+        if (TypeName != null)
+        {
+            type = Render.GetTypeByName(TypeName);
+            if (File == null && type != null)
+            {
+                File = type.GetCustomAttribute<HasDocumentationAttribute>()?.MarkdownFile;
+                DocumentationValue = await Http.LoadDocumentation(File.EnsureEndsWith(".md"));
+            }
+        }
+        _loaded = true;
     }
-    private string Value { get; set; }
+    private string DocumentationValue { get; set; }
 
+    private int GetActivePanel()
+    {
+        var uri = Navi.ToBaseRelativePath(Navi.Uri);
+        var isApiLink = uri.StartsWith("/api") || uri.StartsWith("/a") || uri.StartsWith("api/") || uri.StartsWith("a/");
+        return isApiLink && DocumentationAvailable ? 1 : 0;
+    }
+
+    private bool DocumentationAvailable => !string.IsNullOrEmpty(DocumentationValue);
 }

@@ -10,6 +10,7 @@
     
     constructor(elementRef, canvasContainer, dotNet, options) {
         this.elementRef = elementRef;
+        // this.elementRef.onclick = this._onClick.bind(this);
         this._canvasContainer = canvasContainer;
         this.dotnet = dotNet;
         this.setOptions(options);

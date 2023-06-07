@@ -11,7 +11,7 @@ namespace MudBlazor.Extensions.Components;
 /// <summary>
 /// A Component to display text with a gradient foreground or background
 /// </summary>
-public partial class MudExGradientText: IMudExComponent
+public partial class MudExGradientText : IMudExComponent
 {
     [Inject] protected IServiceProvider ServiceProvider { get; set; }
     public IJSRuntime JsRuntime => ServiceProvider.GetService<IJSRuntime>();
@@ -46,19 +46,15 @@ public partial class MudExGradientText: IMudExComponent
         if (Palette == null || !Palette.Any())
             return string.Empty;
         var fillColorStr = TextFillColor == null ? "transparent" : TextFillColor.ToString(MudColorOutputFormats.HexA);
-        var res = MudExCss.GenerateCssString(new
-        {
-            Background = $"linear-gradient({Radius}deg, {string.Join(',', Palette.Select(c => c.ToString(MudColorOutputFormats.HexA)))})",
-            BackgroundSize = "200% auto",
-        });
-        if (GradientForeground)
-            res = res.EnsureEndsWith(";") + $"-webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-fill-color: {fillColorStr};";
-        else if (TextFillColor != null)
-            res = res.EnsureEndsWith(";") + $"color: {fillColorStr};";
-        if (Animate)
-            res = res.EnsureEndsWith(";") + "animation: reverse textclip "+ AnimationDuration.TotalMilliseconds + "ms linear infinite;@keyframes textclip { to { background-position: 200% center; }}";
-        
-        return res;
+
+        return MudExStyleBuilder.FromObject(new {
+                Background = $"linear-gradient({Radius}deg, {string.Join(',', Palette.Select(c => c.ToString(MudColorOutputFormats.HexA)))})",
+                BackgroundSize = "200% auto"
+            })
+            .WithStyle($"-webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-fill-color: {fillColorStr};", GradientForeground)
+            .WithColor(fillColorStr, !GradientForeground && TextFillColor != null)
+            .WithStyle("animation: reverse textclip " + AnimationDuration.TotalMilliseconds + "ms linear infinite;@keyframes textclip { to { background-position: 200% center; }}", Animate)
+            .Build();
     }
 
     private async Task<IEnumerable<MudColor>> DefaultPaletteByTheme()

@@ -6,20 +6,7 @@
         if (this.options.showAtCursor) {
             this.moveElementToMousePosition(dialog);
         }
-
-        if (this.options.disablePositionMargin) {
-            this.dialog.classList.add('mud-dialog-position-fixed');
-            this.dialog.classList.add('mud-ex-dialog-no-margin');
-        }
-
-        if (this.options.fullHeight) {
-            var cls = this.options.disableSizeMarginY ? 'mud-dialog-height-full-no-margin' : 'mud-dialog-height-full';
-            this.dialog.classList.add(cls);
-            var actions = this.dialog.querySelector('.mud-dialog-actions');
-            if (actions) {
-                actions.classList.add('mud-dialog-actions-fixed-bottom');
-            }
-        }
+                
         if (this.options.fullWidth && this.options.disableSizeMarginX) {
             this.dialog.classList.remove('mud-dialog-width-full');
             this.dialog.classList.add('mud-dialog-width-full-no-margin');
@@ -75,14 +62,13 @@
 
     maximize() {
         if (this._oldStyle) {
-            this.dialog.style = this._oldStyle;
+            this.dialog.style.cssText = this._oldStyle;
             delete this._oldStyle;
         } else {
-            this._oldStyle = this.dialog.style;
+            this._oldStyle = this.dialog.style.cssText;
             this.dialog.style.position = 'absolute';
             this.dialog.style.left = "0";
             this.dialog.style.top = "0";
-
             this.dialog.style.maxWidth = this.dialog.style.width = window.innerWidth + 'px';
             this.dialog.style.maxHeight = this.dialog.style.height = window.innerHeight + 'px';
         }

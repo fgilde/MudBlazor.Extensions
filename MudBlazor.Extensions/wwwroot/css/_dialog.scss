@@ -1,0 +1,49 @@
+﻿.mud-ex-glass-dialog {    
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;    
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+
+.mud-dialog-height-full {
+    height: calc(100vh - 64px);
+
+    .mud-dialog-actions {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+}
+
+.mud-dialog-height-full-no-margin {
+    height: 100vh;
+    max-height: unset;
+
+    .mud-dialog-actions {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+}
+
+.mud-dialog-width-full-no-margin {
+    width: 100%;
+}
+
+
+.mud-dialog-position-fixed {
+    position: fixed;
+}
+
+.mud-dialog-actions-fixed-bottom {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.mud-ex-dialog-initial {
+    display: none !important;
+}

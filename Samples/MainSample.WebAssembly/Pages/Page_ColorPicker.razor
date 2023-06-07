@@ -11,7 +11,7 @@
             <MudExColorPicker DisableToolbar="false" @bind-Value="@color" @ref="component"></MudExColorPicker>
         </Left>
         <Right>
-            <MudExObjectEdit MetaConfiguration="@Configure()" Value="@component"></MudExObjectEdit>
+            <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
         </Right>
     </SplitContainer>
 </DemoComponent>

@@ -4,28 +4,35 @@
 
 <div class="doc-header">
 
-    <PageHeader>@(Type?.Name ?? Fallback)</PageHeader>
+    <PageHeader>@(Api.GetTypeName(Type) ?? Fallback)</PageHeader>
 
-    <MudAlert Style="margin-bottom: 40px; margin-left: -20px;">@Documentation</MudAlert>
+    @if (!string.IsNullOrEmpty(Documentation))
+    {
+        <MudAlert Style="margin-bottom: 40px; margin-left: -20px;">@Documentation</MudAlert>
+    }
 
     @if (betaInfos?.Any() == true)
     {
-        <MudAlert Severity="Severity.Warning">@($"{Type.Name} - {string.Join("<br/>", betaInfos.Select(b => b.Message))}")</MudAlert>
+        <MudAlert Severity="Severity.Warning">@($"{Api.GetTypeName(Type)} - {string.Join("<br/>", betaInfos.Select(b => b.Message))}")</MudAlert>
     }
     
-
 </div>
 
 
 @code {
-    
 
-    protected override async Task OnInitializedAsync()
+    public override async Task SetParametersAsync(ParameterView parameters)
     {
-        Documentation ??= await MudExResource.GetDocumentationAsync(Type);
-        betaInfos = Type.GetCustomAttributes<BetaAttribute>()?.ToList();
-        await base.OnInitializedAsync();
+        if (parameters.TryGetValue<Type>(nameof(Type), out var type) && Type != type)
+        {
+            Documentation = await MudExResource.GetSummaryDocumentationAsync(type);
+            betaInfos = type.GetCustomAttributes<BetaAttribute>()?.ToList();
+        }
+
+        await base.SetParametersAsync(parameters);
+
     }
+
 
     private IList<BetaAttribute> betaInfos;
     

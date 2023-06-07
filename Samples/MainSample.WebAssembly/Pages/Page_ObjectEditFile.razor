@@ -1,0 +1,47 @@
+﻿@page "/objectedit-with-files"
+@inject IDialogService dialogService;
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Options
+@using Newtonsoft.Json
+
+@attribute [DemoNew(Group = "MudExObjectEdit", Name = "Model with File", Order = 4, Documentation = "Demo for using MudExObjectEdit with a model that contains file(s)", Icon = Icons.Material.Outlined.FileOpen, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+
+
+<DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" PageType="@GetType()">
+    <MudExObjectEditForm OnValidSubmit="@OnSubmit" MetaConfiguration="@Configure" Value="@Model"></MudExObjectEditForm>
+</DemoComponent>
+
+
+@code {
+
+    public class SampelModel
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public UploadableFile[] Files { get; set; }
+    }
+    
+    // Sample data for the form
+    public SampelModel Model { get; set; } = new();
+
+    private async Task OnSubmit(EditContext ctx)
+    {
+        await Task.Delay(1000); // Simulate server save or whatever
+        var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
+        await dialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
+        {
+            DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass),
+            Position = DialogPosition.TopCenter,
+            Animation = AnimationType.Slide,
+            MaxWidth = MaxWidth.Medium
+        });
+    }
+
+    private void Configure(ObjectEditMeta<SampelModel> meta)
+    {
+        meta.Property(m => m.Files).WithoutLabel();
+    }
+
+}

@@ -34,11 +34,9 @@ namespace MudBlazor.Extensions
         public Variant Variant { get; set; }
         public Color Color { get; set; }
 
-        public static MudExDialogResultAction[] Ok(string confirmText = "Ok")
-        {
-            return OkCancel(confirmText).Take(1).ToArray();
-        }
-        
+        public static MudExDialogResultAction[] Ok(string confirmText = "Ok") => new [] {OkCancel(confirmText).Last()};
+        public static MudExDialogResultAction[] Cancel(string confirmText = "Ok") => new [] {OkCancel(confirmText).First()};
+
         public static MudExDialogResultAction[] OkCancel(string confirmText = "Ok", string cancelText = "Cancel")
         {
             var actions = new[]

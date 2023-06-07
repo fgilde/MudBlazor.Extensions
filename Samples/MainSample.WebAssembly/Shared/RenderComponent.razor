@@ -2,7 +2,7 @@
 
 <SplitContainer>
     <Left>
-        <DynamicComponent Type="GetRenderType()" @ref="dynamicReference"></DynamicComponent>
+        <DynamicComponent Parameters="@GetParams()" Type="GetRenderType()" @ref="dynamicReference"></DynamicComponent>
         @if (ChildContent != null && rendered && Component != null)
         {
             @ChildContent(Component)
@@ -11,7 +11,11 @@
     <Right>
         @if (rendered && Component != null)
         {
-            <MudExObjectEdit MetaConfiguration="@Configure()" Value="@Component"></MudExObjectEdit>
+            <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@Component"></ComponentPropertyGrid>
+        }
+        else
+        {
+            <MudProgressCircular Style="margin-top: 70%; margin-left: 50%;" Color="Color.Primary" Indeterminate="true" />
         }
     </Right>
 </SplitContainer>
