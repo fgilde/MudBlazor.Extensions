@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Utilities;
+using OneOf;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -10,6 +11,14 @@ namespace MudBlazor.Extensions.Helper;
 [HasDocumentation("MudExColor.md")]
 public static class MudExColor
 {
+    public static bool Is(this OneOf<Color, MudColor, string> oneOf, Color c) => oneOf.Value.Equals(c);
+    
+    public static string ToCssStringValue(this OneOf<Color, MudColor, string> oneOf, MudColorOutputFormats format = MudColorOutputFormats.RGBA)
+        => oneOf.Match(color => color.CssVarDeclaration(), mudColor => mudColor.ToString(format), s => new MudColor(s).ToString(format));
+
+    public static Task<MudColor> ToMudColorAsync(this OneOf<Color, MudColor, string> oneOf)
+        => oneOf.Match(color => color.ToMudColorAsync(), Task.FromResult, s => Task.FromResult(new MudColor(s)));
+
     /// <summary>
     /// Returns the CSS variable name for the given color.
     /// </summary>

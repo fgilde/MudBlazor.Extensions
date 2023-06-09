@@ -4,7 +4,8 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
-using MudBlazor.Extensions.ParamMagic;
+using MudBlazor.Utilities;
+using OneOf;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -13,6 +14,8 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExDivider : IMudExComponent
 {
+    private string _existingStyle = string.Empty;
+
     private RenderFragment Inherited() => builder =>
     {
         base.BuildRenderTree(builder);
@@ -20,11 +23,12 @@ public partial class MudExDivider : IMudExComponent
 
     [Inject] protected IServiceProvider ServiceProvider { get; set; }
     public IJSRuntime JsRuntime => ServiceProvider?.GetService<IJSRuntime>();
+
+    //[Parameter] public Color Color { get; set; } = Color.Default;
     
-    [Parameter] public Color Color { get; set; } = Color.Default;
+    [Parameter] public OneOf<Color, MudColor, string> Color { get; set; } = MudBlazor.Color.Default;
 
     [Parameter]
-    [AllowMagic]
     public MudExSize<double> Size { get; set; } = 1;
     
     /// <summary>
@@ -32,19 +36,10 @@ public partial class MudExDivider : IMudExComponent
     /// </summary>
     [Parameter] public bool UseBorder { get; set; }
 
-    public override Task SetParametersAsync(ParameterView parameters)
-    {
-        // if (parameters.TryGetValue<object>(nameof(Size), out var s))
-        // {
-        //     Size = s as MudExSize<double> ?? new MudExSize<double>(s.ToString());
-        //     parameters = ParameterView.FromDictionary(parameters.ToDictionary().Where(p => p.Key != nameof(Size)).ToDictionary(p => p.Key, p => p.Value));
-        // }
-            
-        return base.SetParametersAsync(parameters.Magic(this));
-    }
-
     protected override async Task OnParametersSetAsync()
     {
+        if (string.IsNullOrEmpty(_existingStyle) && !string.IsNullOrEmpty(Style))
+            _existingStyle = Style;
         Class = GetClass();
         Style = GetStyle();
         await base.OnParametersSetAsync();
@@ -54,11 +49,11 @@ public partial class MudExDivider : IMudExComponent
 
     protected virtual string GetStyle()
     {
-       return MudExStyleBuilder.FromObject(new
+        return MudExStyleBuilder.FromObject(new
         {
             BorderWidth = UseBorder ? Size : 0,
-            BackgroundColor = Color == Color.Default ? "var(--mud-palette-divider)" : Color.CssVarDeclaration(),
-        }, Size.SizeUnit)
+            BackgroundColor = Color.Is(MudBlazor.Color.Default) ? "var(--mud-palette-divider)" : Color.ToCssStringValue(),
+        }, _existingStyle, Size.SizeUnit)
             .WithWidth(Size, Vertical && !UseBorder)
             .WithMaxWidth(Size, Vertical && !UseBorder)
             .WithHeight(Size, !Vertical && !UseBorder)

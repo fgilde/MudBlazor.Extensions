@@ -220,6 +220,9 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log 
+Update MudBlazor to 6.4.0 and adapt MudExPopover required changes.
+Update Microsoft.AspNetCore.Components.Web to 7.0.5 for .net 7 and 6.0.16 for .net 6
+
  - 1.7.46 > Ensure Min or Max sizes arn't overwritten when using Resizable
  - 1.7.46 > More fluent overloads for [MudExStyleBuilder](https://www.mudex.org/d/MudExStyleBuilder/MudExStyleBuilder)
  - 1.7.42 > Add Dialog Appearance 

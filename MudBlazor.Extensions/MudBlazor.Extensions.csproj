@@ -5,10 +5,8 @@
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
-    <!--<Nullable>enable</Nullable>-->
     <ImplicitUsings>enable</ImplicitUsings>
     <PackageVersion>0.0.0-dev</PackageVersion>
-    <!--<VersionSuffix>preview.$([System.DateTime]::Now.ToString(`yyMMddHHmmss`))</VersionSuffix>-->
     <LangVersion>10</LangVersion>
     <Authors>Florian Gilde</Authors>
     <Description>MudBlazor.Extensions is a small extension library for MudBlazor from https://mudblazor.com/ </Description>
@@ -23,9 +21,6 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Content Remove="wwwroot\docs\MudBlazor.Extensions.xml" />
-  </ItemGroup>
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -38,12 +33,13 @@
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.min.css" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <Content Include="wwwroot\docs\MudBlazor.Extensions.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-  </ItemGroup>
+  </ItemGroup>-->
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <PropertyGroup>
       <DocumentationDestination>$(SolutionDir)MudBlazor.Extensions/wwwroot/docs/</DocumentationDestination>
@@ -65,16 +61,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    
     <PackageReference Include="Nextended.Blazor" Version="7.0.23" />
     <PackageReference Include="Nextended.Core" Version="7.0.23" />
     <PackageReference Include="BlazorJS" Version="2.0.4" />
+    <PackageReference Include="OneOf" Version="3.0.243" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.0.3" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="MudBlazor" Version="6.4.0" />
-    <PackageReference Include="PSC.Blazor.Components.BrowserDetect" Version="1.0.6" />
+    <PackageReference Include="MudBlazor" Version="6.4.1" />
+    <PackageReference Include="PSC.Blazor.Components.BrowserDetect" Version="1.0.11" />
 
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.5.119">
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.6.133">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -95,6 +93,7 @@
     </None>
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
+    <None Include="wwwroot\js\mudBlazorExtensions.all.min.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -110,6 +109,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Components\MudExMessageDialog.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\mudBlazorExtensions.all.min.js" />
   </ItemGroup>
 
   <ItemGroup>

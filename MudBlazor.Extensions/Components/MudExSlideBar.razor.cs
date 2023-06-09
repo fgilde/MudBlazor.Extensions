@@ -2,7 +2,6 @@
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
-using MudBlazor.Utilities;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -12,6 +11,7 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExSlideBar
 {
     private bool _isOpen;
+    
     [Parameter] public Position Position { get; set; } = Position.Bottom;
     [Parameter] public bool AutoCollapse { get; set; } = true;
     [Parameter] public double OpacityNotFocused { get; set; } = .2;
@@ -27,15 +27,14 @@ public partial class MudExSlideBar
                 Hide();
         }
     }
-
     [Parameter] public Color BackgroundColor { get; set; } = Color.Transparent;
     [Parameter] public Color BorderColor { get; set; } = Color.Transparent;
-    [Parameter] public MudExSize<int> BorderSize { get; set; } = new(2, CssUnit.Pixels);
+    [Parameter] public MudExSize<double> BorderSize { get; set; } = new(2, CssUnit.Pixels);
     [Parameter] public EventCallback<bool> IsOpenChanged { get; set; }
     [Parameter] public virtual RenderFragment ChildContent { get; set; }
     [Parameter] public bool DisableOpacityChange { get; set; }
     [Parameter] public bool HideContentWhenCollapsed { get; set; } = true;
-
+    
     [JSInvokable]
     public void Show()
     {
@@ -65,15 +64,13 @@ public partial class MudExSlideBar
 
     private string Style()
     {
-        //z-index: calc(var(--mud-zindex-dialog) + 10);
-        return new StyleBuilder()
-            .AddStyle("opacity", _isOpen ? "1" : OpacityNotFocused.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), !DisableOpacityChange)
-            .AddStyle("background-color", BackgroundColor.CssVarDeclaration(), BackgroundColor != Color.Transparent)
-            .AddStyle("z-Index", "calc(var(--mud-zindex-dialog) + 10)", !RelativeToParent && (IsOpen || !AutoCollapse))
-            .AddStyle("z-Index", "calc(var(--mud-zindex-dialog) - 1)", !RelativeToParent && (!IsOpen && AutoCollapse))
-            .AddStyle($"border-{BorderDirection}", $"{BorderSize} solid {BorderColor.CssVarDeclaration()}", BorderColor != Color.Transparent)
+        return new MudExStyleBuilder()
+            .With("opacity", _isOpen ? "1" : OpacityNotFocused.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), !DisableOpacityChange)
+            .With("background-color", BackgroundColor.CssVarDeclaration(), BackgroundColor != Color.Transparent)
+            .With("z-Index", "calc(var(--mud-zindex-dialog) + 10)", !RelativeToParent && (IsOpen || !AutoCollapse))
+            .With("z-Index", "calc(var(--mud-zindex-dialog) - 1)", !RelativeToParent && (!IsOpen && AutoCollapse))
+            .With($"border-{BorderDirection}", $"{BorderSize} solid {BorderColor.CssVarDeclaration()}", BorderColor != Color.Transparent)
             .Build();
-        // return $"opacity: {(_isOpen ? 1 : OpacityNotFocused.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture))};";
     }
 
     private string BorderDirection => Position switch
@@ -87,12 +84,12 @@ public partial class MudExSlideBar
 
     private string CssClass()
     {
-        return CssBuilder.Default("mud-ex-slidebar")
+        return MudExCssBuilder.Default
+            .AddClass("mud-ex-slidebar")
             .AddClass($"{Position.ToDescriptionString()}")
             .AddClass($"open", _isOpen || !AutoCollapse)
             .AddClass($"relative-to-parent", RelativeToParent)
             .Build();
-        // return $"mud-ex-slidebar {Position.ToDescriptionString()} {(_isOpen || !AutoCollapse ? "open" : "")} {(RelativeToParent ? "relative-to-parent" : "")}";
     }
 
 }

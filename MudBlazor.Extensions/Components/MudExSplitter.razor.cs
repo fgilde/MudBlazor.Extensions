@@ -30,7 +30,7 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
     protected override Task OnInitializedAsync()
     {
         (UserAttributes ??= new Dictionary<string,object>()).AddOrUpdate("data-id", _dataId);
-        Color = Color.Primary;
+        Color = MudBlazor.Color.Primary;
         Size = 5;
         return base.OnInitializedAsync();
     }

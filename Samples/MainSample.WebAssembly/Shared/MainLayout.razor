@@ -1,5 +1,5 @@
 ﻿@using MudBlazor.Extensions.Helper
-@using MudBlazor.Extensions.Core
+@using MudBlazor.Utilities
 @inherits LayoutComponentBase
 @inject IJSRuntime JsRuntime
 @inject NavigationManager Navi;
@@ -21,8 +21,11 @@
         
         <MudSpacer/>
         <ThemeEdit OnThemeChanged="@HandleThemeChange" @bind-IsDark="@IsDark" @bind-IsBusy="@IsOverlayVisible" />
-        <MudExDivider Size="@("11px")" Vertical="true" />
         
+        <MudExDivider Color="Color.Warning" Size="2" Vertical="true" />
+        <MudExDivider Color="@("#00ff00")" Size="3" Vertical="true" />
+        <MudExDivider Color="@(new MudColor("#ff0000"))" Size="@("4rem")" Vertical="true" />
+
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
             <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Link="https://www.mudblazor.com" Title="Official MudBlazor website" Target="_blank"/>
             <MudIconButton Icon="@Icons.Custom.Brands.Microsoft" Color="Color.Inherit" Link="https://www.nuget.org/packages/MudBlazor.Extensions" Title="Nuget Package" Target="_blank"/>

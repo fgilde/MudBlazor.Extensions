@@ -1,4 +1,4 @@
-﻿namespace MudBlazor.Extensions.Helper;
+﻿namespace MudBlazor.Extensions.Helper.Internal;
 
 internal static class PropertyHelper
 {
