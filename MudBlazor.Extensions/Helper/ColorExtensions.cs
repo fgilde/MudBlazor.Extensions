@@ -1,23 +1,16 @@
-﻿using System.Drawing;
-using MudBlazor.Extensions.Attribute;
+﻿using MudBlazor.Extensions.Attribute;
 using MudBlazor.Utilities;
-using OneOf;
 
 namespace MudBlazor.Extensions.Helper;
 
 /// <summary>
 /// MudExColor is a static utility class that provides a set of extension methods for working with Color and MudColor instances.
 /// </summary>
-[HasDocumentation("MudExColor.md")]
-public static class MudExColor
+[HasDocumentation("ColorExtensions.md")]
+public static class ColorExtensions
 {
-    public static bool Is(this OneOf<Color, MudColor, string> oneOf, Color c) => oneOf.Value.Equals(c);
-    
-    public static string ToCssStringValue(this OneOf<Color, MudColor, string> oneOf, MudColorOutputFormats format = MudColorOutputFormats.RGBA)
-        => oneOf.Match(color => color.CssVarDeclaration(), mudColor => mudColor.ToString(format), s => new MudColor(s).ToString(format));
-
-    public static Task<MudColor> ToMudColorAsync(this OneOf<Color, MudColor, string> oneOf)
-        => oneOf.Match(color => color.ToMudColorAsync(), Task.FromResult, s => Task.FromResult(new MudColor(s)));
+    public static int ToInt(this MudColor color) 
+        => (color.A << 24) | (color.R << 16) | (color.G << 8) | color.B;
 
     /// <summary>
     /// Returns the CSS variable name for the given color.

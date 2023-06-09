@@ -61,8 +61,8 @@ public partial class MudExObjectEdit<T>
     [Parameter] public string ExpandCollapseIcon { get; set; } = Icons.Material.Filled.Expand;
     [Parameter] public string ExportIcon { get; set; } = Icons.Material.Filled.Save;
     [Parameter] public bool AutoSkeletonOnLoad { get; set; }
-    [Parameter] public Color ToolbarColor { get; set; } = Color.Default;
-    [Parameter] public Color GroupLineColor { get; set; } = Color.Secondary;
+    [Parameter] public MudExColor ToolbarColor { get; set; } = Color.Default;
+    [Parameter] public MudExColor GroupLineColor { get; set; } = Color.Secondary;
     [Parameter] public int? GroupElevation { get; set; }
     [Parameter] public int ToolBarElevation { get; set; }
     [Parameter] public string Class { get; set; }
@@ -304,8 +304,8 @@ public partial class MudExObjectEdit<T>
         var res = string.Empty;
         if (StickyToolbar && StickyToolbarTop != null)
             res += $"top: {GetToolbarStickyTop()};";
-        if (ToolbarColor != Color.Inherit)
-            res += $"background-color: {ToolbarColor.CssVarDeclaration()};";
+        if (!ToolbarColor.Is(Color.Inherit))
+            res += $"background-color: {ToolbarColor.ToCssStringValue()};";
         return res;
     }
 

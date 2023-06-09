@@ -16,9 +16,6 @@ public partial class MudExSplitPanel
     [Parameter] public bool UpdateSizesInPercentage { get; set; } = true;
     [Parameter] public bool Splittable { get; set; } = true;
 
-    public string GetStyle()
-    {
-        // Its not a bug. if columnLayout is true flex-direction is row
-        return $"flex-direction:{(ColumnLayout ? "row" : "column")}{(Reverse ? "-reverse" : "")};";
-    }
+    // Its not a bug. if columnLayout is true flex-direction is row
+    public string GetStyle() => $"flex-direction:{(ColumnLayout ? "row" : "column")}{(Reverse ? "-reverse" : "")};";
 }

@@ -42,7 +42,7 @@ public partial class MudExCollectionEditor<T>
     [Parameter] public bool AllowEditOrPreview { get; set; } = true;
     [Parameter] public bool AllowRemove { get; set; } = true;
     [Parameter] public DialogOptionsEx DialogOptions { get; set; }
-    [Parameter] public Color ToolbarColor { get; set; } = Color.Surface;
+    [Parameter] public MudExColor ToolbarColor { get; set; } = Color.Surface;
     [Parameter] public Position ToolbarPosition { get; set; } = Position.Bottom;
     [Parameter] public bool StickToolbar { get; set; } = true;
     [Parameter] public string StyleToolbar { get; set; }
@@ -74,7 +74,7 @@ public partial class MudExCollectionEditor<T>
         return MudExStyleBuilder.GenerateStyleString(new
         {
             ZIndex = 1,
-            BackgroundColor = ToolbarColor,
+            BackgroundColor = ToolbarColor.ToCssStringValue(),
             Position = StickToolbar ? "sticky" : null,
             Bottom = ToolbarPosition == Position.Bottom ? 0 as int? : null,
             Top = ToolbarPosition == Position.Top ? 0 as int? : null

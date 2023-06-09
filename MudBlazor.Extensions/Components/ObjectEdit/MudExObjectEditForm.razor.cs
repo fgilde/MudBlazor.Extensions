@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Blazored.FluentValidation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Extensions;
 
@@ -30,7 +31,7 @@ public partial class MudExObjectEditForm<T>
     [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
     [Parameter] public int Elevation { get; set; } = 0;
-    [Parameter] public Color ActionBarColor { get; set; } = Color.Default;
+    [Parameter] public MudExColor ActionBarColor { get; set; } = Color.Default;
     [Parameter] public bool StickyActionBar { get; set; }
     [Parameter] public string StickyStickyActionBarBottom { get; set; } = "0";
     [Parameter] public string ActionBarStyle { get; set; }
@@ -98,8 +99,8 @@ public partial class MudExObjectEditForm<T>
         var res = string.Empty;
         if (StickyActionBar && !string.IsNullOrWhiteSpace(StickyStickyActionBarBottom))
             res += $"bottom: {StickyStickyActionBarBottom};";
-        if (ActionBarColor != Color.Inherit)
-            res += $"background-color: {ActionBarColor.CssVarDeclaration()};";
+        if (!ActionBarColor.Is(Color.Inherit))
+            res += $"background-color: {ActionBarColor.ToCssStringValue()};";
         return $"{res} {ActionBarStyle}";
     }
 

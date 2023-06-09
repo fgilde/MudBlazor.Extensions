@@ -246,27 +246,27 @@
             Adds class to this appearance
             </summary>    
         </member>
-        <member name="T:MudBlazor.Extensions.Helper.MudExColor">
+        <member name="T:MudBlazor.Extensions.Helper.ColorExtensions">
             <summary>
             MudExColor is a static utility class that provides a set of extension methods for working with Color and MudColor instances.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExColor.CssVarName(MudBlazor.Color)">
+        <member name="M:MudBlazor.Extensions.Helper.ColorExtensions.CssVarName(MudBlazor.Color)">
             <summary>
             Returns the CSS variable name for the given color.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExColor.CssVarDeclaration(MudBlazor.Color)">
+        <member name="M:MudBlazor.Extensions.Helper.ColorExtensions.CssVarDeclaration(MudBlazor.Color)">
             <summary>
             Returns the CSS variable declaration for the given color. For example var(--mud-color-primary) for Color.Primary
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExColor.ToDrawingColor(MudBlazor.Utilities.MudColor)">
+        <member name="M:MudBlazor.Extensions.Helper.ColorExtensions.ToDrawingColor(MudBlazor.Utilities.MudColor)">
             <summary>
             Converts a MudColor to a system drawing color
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExColor.ToMudColorAsync(MudBlazor.Color)">
+        <member name="M:MudBlazor.Extensions.Helper.ColorExtensions.ToMudColorAsync(MudBlazor.Color)">
             <summary>
             Converts a Color enum value of Color (like Color.Primary) to a MudColor with the correct values filled
             </summary>

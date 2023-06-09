@@ -103,7 +103,7 @@ public partial class MudExColorBubble
     public int Width { get; set; } = 16;
 
     private ElementReference _canvasContainerReference;
-    private MudColor _color = new MudColor("#000000");
+    private MudColor _color = new("#000000");
     private int _selectorSize = 161;
     private bool _showColorPreview = true;
     private int _maxLuminance = 86;

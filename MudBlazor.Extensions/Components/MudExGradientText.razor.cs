@@ -2,9 +2,8 @@
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.Base;
 using Microsoft.Extensions.DependencyInjection;
-using MudBlazor.Utilities;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
-using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -23,7 +22,7 @@ public partial class MudExGradientText : IMudExComponent
     public bool GradientForeground { get; set; } = true;
 
     [Parameter]
-    public MudColor TextFillColor { get; set; } = null;
+    public MudExColor TextFillColor { get; set; } = Color.Transparent;
 
     [Parameter]
     public bool Animate { get; set; } = true;
@@ -33,41 +32,38 @@ public partial class MudExGradientText : IMudExComponent
 
     [Parameter]
     [Category("Behavior")]
-    public IEnumerable<MudColor> Palette { get; set; }
+    public IEnumerable<MudExColor> Palette { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
-        Palette ??= await DefaultPaletteByTheme();
+        Palette ??= new List<MudExColor>
+        {
+            Color.Primary,
+            Color.Secondary,
+            Color.Tertiary,
+            Color.Info,
+            Color.Success,
+            Color.Warning,
+        }; ;
     }
 
     private string GetStyle()
     {
         if (Palette == null || !Palette.Any())
             return string.Empty;
-        var fillColorStr = TextFillColor == null ? "transparent" : TextFillColor.ToString(MudColorOutputFormats.HexA);
+        var fillColorStr = TextFillColor.ToCssStringValue();
 
         return MudExStyleBuilder.FromObject(new {
-                Background = $"linear-gradient({Radius}deg, {string.Join(',', Palette.Select(c => c.ToString(MudColorOutputFormats.HexA)))})",
+                Background = $"linear-gradient({Radius}deg, {string.Join(',', Palette.Select(c => c.ToCssStringValue()))})",
                 BackgroundSize = "200% auto"
             })
             .WithStyle($"-webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-fill-color: {fillColorStr};", GradientForeground)
-            .WithColor(fillColorStr, !GradientForeground && TextFillColor != null)
+            .WithColor(fillColorStr, !GradientForeground && !TextFillColor.Is(Color.Transparent))
             .WithStyle("animation: reverse textclip " + AnimationDuration.TotalMilliseconds + "ms linear infinite;@keyframes textclip { to { background-position: 200% center; }}", Animate)
             .Build();
     }
-
-    private async Task<IEnumerable<MudColor>> DefaultPaletteByTheme()
-    {
-        await JsRuntime.InitializeMudBlazorExtensionsAsync();
-        var themeColors = await MudExCss.GetCssColorVariablesAsync();
-        return themeColors
-            .Where(c => !c.Key.Contains("background", StringComparison.InvariantCultureIgnoreCase) && !c.Key.Contains("surface", StringComparison.InvariantCultureIgnoreCase) && !c.Value.IsBlack() && !c.Value.IsWhite() && c.Value.APercentage >= 1.0)
-            .Select(x => x.Value)
-            .Distinct()
-            .Take(10);
-    }
-
+    
     private RenderFragment Inherited() => builder =>
     {
         base.BuildRenderTree(builder);

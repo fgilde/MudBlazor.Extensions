@@ -6,7 +6,7 @@
 
 <MudThemeProvider @bind-IsDarkMode="@IsDark" Theme="@ClientTheme.CurrentTheme" />
 <MudDialogProvider />
-<MudExTaskBar BorderColor="Color.Warning" HideContentWhenCollapsed="true"/>
+<MudExTaskBar HideContentWhenCollapsed="true"/>
 <MudSnackbarProvider />
 
 <MudOverlay @bind-Visible="IsOverlayVisible" DarkBackground="true" AutoClose="true">
@@ -22,9 +22,7 @@
         <MudSpacer/>
         <ThemeEdit OnThemeChanged="@HandleThemeChange" @bind-IsDark="@IsDark" @bind-IsBusy="@IsOverlayVisible" />
         
-        <MudExDivider Color="Color.Warning" Size="2" Vertical="true" />
-        <MudExDivider Color="@("#00ff00")" Size="3" Vertical="true" />
-        <MudExDivider Color="@(new MudColor("#ff0000"))" Size="@("4rem")" Vertical="true" />
+        <MudExDivider Size="2" Vertical="true" />
 
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
             <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Link="https://www.mudblazor.com" Title="Official MudBlazor website" Target="_blank"/>

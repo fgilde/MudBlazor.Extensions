@@ -220,7 +220,9 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log 
-Update MudBlazor to 6.4.0 and adapt MudExPopover required changes.
+new Type usefull for all color parameters called MudExColor // MudExDivider, MudExSlideBar, MudExTaskBar, MudExCardList, MudExGradientText, MudExObjectEdit, MudExCollectionEdit,
+static util class MudExColor is renamed to ColorExtensions
+Update MudBlazor to 6.4.1 and adapt MudExPopover required changes.
 Update Microsoft.AspNetCore.Components.Web to 7.0.5 for .net 7 and 6.0.16 for .net 6
 
  - 1.7.46 > Ensure Min or Max sizes arn't overwritten when using Resizable

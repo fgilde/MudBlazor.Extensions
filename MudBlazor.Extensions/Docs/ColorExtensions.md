@@ -1,6 +1,6 @@
-﻿# MudExColor
+﻿# ColorExtensions
 
-`MudExColor` is a static utility class that provides a set of extension methods for working with `Color` and `MudColor` instances. These methods include converting between `Color` and `MudColor`, creating CSS variable names and declarations, and checking if a `MudColor` is black or white.
+`ColorExtensions` is a static utility class that provides a set of extension methods for working with `Color` and `MudColor` instances. These methods include converting between `Color` and `MudColor`, creating CSS variable names and declarations, and checking if a `MudColor` is black or white.
 
 ## Methods
 

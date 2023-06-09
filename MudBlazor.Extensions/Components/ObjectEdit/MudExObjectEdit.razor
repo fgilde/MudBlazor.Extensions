@@ -6,7 +6,7 @@
 @inherits MudExBaseComponent<MudExObjectEdit<T>>
 <style>
     .mud-ex-object-edit-group-flat .mud-expand-panel-text:after {
-        background-color: var(@GroupLineColor.CssVarName());
+        background-color: @(GroupLineColor.ToCssStringValue());
     }
 </style>
 

@@ -4,8 +4,6 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
-using MudBlazor.Utilities;
-using OneOf;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -24,12 +22,9 @@ public partial class MudExDivider : IMudExComponent
     [Inject] protected IServiceProvider ServiceProvider { get; set; }
     public IJSRuntime JsRuntime => ServiceProvider?.GetService<IJSRuntime>();
 
-    //[Parameter] public Color Color { get; set; } = Color.Default;
-    
-    [Parameter] public OneOf<Color, MudColor, string> Color { get; set; } = MudBlazor.Color.Default;
+    [Parameter] public MudExColor Color { get; set; } = MudBlazor.Color.Default;
 
-    [Parameter]
-    public MudExSize<double> Size { get; set; } = 1;
+    [Parameter] public MudExSize<double> Size { get; set; } = 1;
     
     /// <summary>
     /// If this option is true border size is used instead of element size

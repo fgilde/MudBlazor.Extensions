@@ -2,7 +2,6 @@
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
-using MudBlazor.Extensions.Helper;
 using MudBlazor.Utilities;
 using Nextended.Core.Extensions;
 
@@ -23,11 +22,9 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
     public ElementReference ElementReference { get; set; }
     private IJsMudExComponent<MudExCardList<TData>> AsJsComponent => this;
 
-    [Parameter] public Color BackgroundColor { get; set; } = Color.Default;
-    [Parameter] public MudColor BackgroundColorCustom { get; set; } = null;
-    [Parameter] public Color HoverColor { get; set; } = Color.Primary;
-    [Parameter] public MudColor HoverColorCustom { get; set; } = null;
-    
+    [Parameter] public MudExColor BackgroundColor { get; set; } = Color.Default;
+    [Parameter] public MudExColor HoverColor { get; set; } = Color.Primary;
+
     [Obsolete("Use HoverMode instead")]
     [Parameter] public bool ZoomOnHover { get => HoverModeMatches(MudExCardHoverMode.Zoom);
         set
@@ -73,8 +70,8 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
     {
         return new StyleBuilder()
             .AddStyle($"--mud-ex-card-bulb-size", $"{GetBulbSize()}{LightBulbSizeUnit.ToDescriptionString()}")
-            .AddStyle($"--mud-ex-card-list-bg-color", $"{BackgroundColorCustom?.ToString(MudColorOutputFormats.HexA) ?? BackgroundColor.CssVarDeclaration()}")
-            .AddStyle($"--mud-ex-card-list-hover-color", $"{HoverColorCustom?.ToString(MudColorOutputFormats.HexA) ?? HoverColor.CssVarDeclaration()}")
+            .AddStyle($"--mud-ex-card-list-bg-color", $"{BackgroundColor.ToCssStringValue()}")
+            .AddStyle($"--mud-ex-card-list-hover-color", $"{HoverColor.ToCssStringValue()}")
             .AddStyle($"justify-content", Justify.ToDescriptionString())
             .Build();
     }
