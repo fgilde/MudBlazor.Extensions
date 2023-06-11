@@ -45,4 +45,22 @@ public static class ColorExtensions
 
     public static bool IsWhite(this MudColor color) 
         => color.R == 255 && color.G == 255 && color.B == 255 && color.A == 255;
+    
+    public static System.Drawing.Color? FromHtmlColorName(string htmlColorName) => System.Drawing.Color.FromName(htmlColorName);
+
+    public static string ToHex(this System.Drawing.Color color) => $"#{color.R:X2}{color.G:X2}{color.B:X2}";
+
+    public static bool TryParseFromHtmlColorName(string s, out System.Drawing.Color color)
+    {
+        color = default;
+        try
+        {
+            var value = FromHtmlColorName(s);
+            color = value ?? default;
+            return color is not {A: 0, R: 0, G: 0, B: 0} && value.HasValue;
+        }
+        catch
+        {}
+        return false;
+    }
 }

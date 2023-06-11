@@ -1,7 +1,5 @@
 ﻿using System.Reflection;
-using System.Text;
 using BlazorJS;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.JSInterop;
 using Nextended.Core.Extensions;
 

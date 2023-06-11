@@ -37,6 +37,12 @@
     z-index: 2;
 }
 
+.mud-ex-tab-bar-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
 .mud-ex-actionbar-sticky {
     position: sticky;
     z-index: 2;

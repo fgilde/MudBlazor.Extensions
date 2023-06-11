@@ -5,6 +5,7 @@ using Microsoft.JSInterop;
 using MudBlazor.Utilities;
 using Nextended.Core;
 using MudBlazor.Extensions.Attribute;
+using System.Drawing;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -115,11 +116,12 @@ public static partial class MudExCss
     public static async Task<KeyValuePair<string, MudColor>[]> GetCssColorVariablesAsync()
     {
         var all = await GetCssVariablesAsync();
-        var res = all.Select(k =>
+        var res = all.Where(v => v.Value.ToLower().StartsWith("#") || v.Value.ToLower().StartsWith("rgb") || v.Value.ToLower().StartsWith("hsl"))
+            .Select(k =>
         {
             var color = Check.TryCatch<MudColor, Exception>(() => new MudColor(k.Value));            
             return new KeyValuePair<string, MudColor>(k.Key, color);
-        }).Where(k => k.Value != null)
+        }).Where(k => k.Value != null && k.Value != default && k.Value is not { A: 0, R: 0, G: 0, B: 0 })
         .ToArray();
         return res;
     }

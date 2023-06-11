@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Linq.Expressions;
 using Microsoft.Extensions.DependencyInjection;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Utilities;
 using Nextended.Core.Extensions;
 
@@ -46,6 +47,7 @@ public static class RenderDataDefaults
 
         RegisterDefault<MudColor, MudColor, MudColorPicker>(f => f.Value, ColorPickerOptions(), c => c, c => c);
         RegisterDefault<System.Drawing.Color, MudColor, MudColorPicker>(f => f.Value, ColorPickerOptions(), c => new MudColor(c.R, c.G, c.B, c.A), mc => System.Drawing.Color.FromArgb(mc.A, mc.R, mc.G, mc.B));
+        RegisterDefault<MudExColor, MudExColor, MudExColorEdit>(f => f.Value);
 
         //RegisterDefault<bool, MudSwitch<bool>>(s => s.Checked, s => s.Color = MudBlazor.Color.Warning);
         RegisterDefault<bool, MudCheckBox<bool>>(s => s.Checked, box =>

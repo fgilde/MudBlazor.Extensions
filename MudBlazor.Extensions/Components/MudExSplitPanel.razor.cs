@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
@@ -17,5 +16,8 @@ public partial class MudExSplitPanel
     [Parameter] public bool Splittable { get; set; } = true;
 
     // Its not a bug. if columnLayout is true flex-direction is row
-    public string GetStyle() => $"flex-direction:{(ColumnLayout ? "row" : "column")}{(Reverse ? "-reverse" : "")};";
+    public string GetStyle()
+    {
+        return $"flex-direction:{(ColumnLayout ? "row" : "column")}{(Reverse ? "-reverse" : "")};";
+    }
 }

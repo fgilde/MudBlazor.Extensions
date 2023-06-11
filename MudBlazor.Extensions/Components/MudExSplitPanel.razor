@@ -10,6 +10,8 @@
         }
         @if (Splittable && Left != null && Right != null)
         {
+            @*<MudExDivider Size="5" Color="Color.Primary" Vertical="@ColumnLayout" />*@
+            <MudExSplitter Size="5" Color="Color.Primary" Vertical="@ColumnLayout" />
             <MudExSplitter Reverse="@Reverse" UpdateSizesInPercentage="@UpdateSizesInPercentage" Vertical="@ColumnLayout" FlexItem="true" />
         }
         @if (Right != null)

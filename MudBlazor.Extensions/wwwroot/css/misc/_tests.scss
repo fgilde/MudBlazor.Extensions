@@ -1,1 +1,39 @@
-﻿
+﻿/*.mud-ex-labeled-hr {
+    border: none;
+    height: 5px;
+    background: var(--mud-palette-primary);*/ /* Change this to your preferred color */
+/*position: relative;
+}
+
+.mud-ex-labeled-hr::before {*/
+/*content: attr(data-label);*/
+/*content: "HaLLo";
+    position: absolute;
+    left: 0;
+    top: -0.5em;
+    background: white;
+    padding-right: 0.5em;
+}*/
+
+.mud-ex-color-edit-picker {    
+    margin: 0;
+    padding: 0;
+
+    .mud-paper {        
+        overflow: auto;
+        max-height: 435px;
+        padding: 0;
+    }
+}
+
+.mud-ex-color-edit {
+    .mud-icon-root {
+        fill: inherit;
+    }
+}
+
+.mud-ex-color-edit-picker-html-list-item {
+    .mud-icon-root {
+        fill: attr(data-color);
+    }
+}

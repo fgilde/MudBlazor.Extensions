@@ -4,6 +4,7 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -22,6 +23,8 @@ public partial class MudExDivider : IMudExComponent
     [Inject] protected IServiceProvider ServiceProvider { get; set; }
     public IJSRuntime JsRuntime => ServiceProvider?.GetService<IJSRuntime>();
 
+    [Parameter] public string Label { get; set; }
+    
     [Parameter] public MudExColor Color { get; set; } = MudBlazor.Color.Default;
 
     [Parameter] public MudExSize<double> Size { get; set; } = 1;
@@ -37,10 +40,18 @@ public partial class MudExDivider : IMudExComponent
             _existingStyle = Style;
         Class = GetClass();
         Style = GetStyle();
+        UserAttributes.AddOrUpdate("data-label", Label);
         await base.OnParametersSetAsync();
     }
 
-    private string GetClass() => $"{(Vertical ? "mud-ex-divider-vertical" : "mud-ex-divider-horizontal")}";
+    private string GetClass()
+    {
+        return MudExCssBuilder.Default
+            .AddClass("mud-ex-divider-vertical", Vertical)
+            .AddClass("mud-ex-divider-horizontal", !Vertical)
+            .AddClass("mud-ex-labeled-hr", !string.IsNullOrEmpty(Label))
+            .Build();
+    }
 
     protected virtual string GetStyle()
     {

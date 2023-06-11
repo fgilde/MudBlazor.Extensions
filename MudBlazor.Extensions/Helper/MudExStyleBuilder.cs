@@ -24,7 +24,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
         "translateY", "translateZ", "translate3d", "rotate", "rotateX", "rotateY", "rotateZ", "scale", "scaleX", "scaleY", "scaleZ", "scale3d",
         "skew", "skewX", "skewY", "perspective"};
 
-    private readonly Dictionary<string, string> _additionalStyles = new();
+    private Dictionary<string, string> _additionalStyles = new();
     private readonly ConcurrentDictionary<string, byte> _temporaryCssClasses = new();
     private Dictionary<string, MudExStyleBuilder> _pseudoElementsStyles = new();
 
@@ -155,19 +155,28 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     }
     public MudExStyleBuilder With(object styleObj, CssUnit cssUnit = CssUnit.Pixels, bool when = true) => !when ? this : WithStyle(GenerateStyleString(styleObj, cssUnit));
     public MudExStyleBuilder WithColor(string color, bool when = true) => With("color", color, when);
+    public MudExStyleBuilder WithColor(MudExColor color, bool when = true) => WithColor(color.ToCssStringValue(), when);
     public MudExStyleBuilder WithColor(MudColor color, bool when = true) => WithColor(color.ToString(), when);
     public MudExStyleBuilder WithColor(System.Drawing.Color color, bool when = true) => WithColor(color.ToMudColor(), when);
     public MudExStyleBuilder WithColor(Color color, bool when = true) => WithColor(color.CssVarDeclaration(), when);
-    
+
+    public MudExStyleBuilder WithFill(string color, bool when = true) => With("fill", color, when);
+    public MudExStyleBuilder WithFill(MudExColor color, bool when = true) => WithFill(color.ToCssStringValue(), when);
+    public MudExStyleBuilder WithFill(MudColor color, bool when = true) => WithFill(color.ToString(), when);
+    public MudExStyleBuilder WithFill(System.Drawing.Color color, bool when = true) => WithFill(color.ToMudColor(), when);
+    public MudExStyleBuilder WithFill(Color color, bool when = true) => WithFill(color.CssVarDeclaration(), when);
+
     public MudExStyleBuilder WithBorder(string border, bool when = true) => With("border", border, when);
     public MudExStyleBuilder WithBorderRadius(string borderRadius, bool when = true) => With("border-radius", borderRadius, when);
     public MudExStyleBuilder WithBorderRadius(double radius, CssUnit unit, bool when = true) => WithBorderRadius(new MudExSize<double>(radius, unit).ToString(), when);
 
+    public MudExStyleBuilder WithBackground(MudExColor color, bool when = true) => WithBackground(color.ToCssStringValue(), when);
     public MudExStyleBuilder WithBackground(string background, bool when = true) => With("background", background, when);
     public MudExStyleBuilder WithBackground(MudColor color, bool when = true) => WithBackground(color.ToString(), when);
     public MudExStyleBuilder WithBackground(System.Drawing.Color color, bool when = true) => WithBackground(color.ToMudColor(), when);
     public MudExStyleBuilder WithBackground(Color color, bool when = true) => WithBackground(color.CssVarDeclaration(), when);
 
+    public MudExStyleBuilder WithBackgroundColor(MudExColor color, bool when = true) => WithBackgroundColor(color.ToCssStringValue(), when);
     public MudExStyleBuilder WithBackgroundColor(string background, bool when = true) => With("background-color", background, when);
     public MudExStyleBuilder WithBackgroundColor(MudColor color, bool when = true) => WithBackgroundColor(color.ToString(), when);
     public MudExStyleBuilder WithBackgroundColor(System.Drawing.Color color, bool when = true) => WithBackgroundColor(color.ToMudColor(), when);
@@ -607,6 +616,22 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithColumnRule(string columnRule, bool when = true) => With("column-rule", columnRule, when);
 
     public MudExStyleBuilder WithColumnSpan(string columnSpan, bool when = true) => With("column-span", columnSpan, when);
+
+    public MudExStyleBuilder AsImportant()
+    {
+        if (!_additionalStyles.Any())
+        {
+            throw new InvalidOperationException("There are no styles to modify.");
+        }
+
+        var l = _additionalStyles.Last();
+        var newValue = l.Value + " !important";
+
+        _additionalStyles = _additionalStyles.Take(_additionalStyles.Count - 1).ToDictionary(p => p.Key, p=> p.Value);
+        _additionalStyles.Add(l.Key, newValue);
+
+        return this;
+    }
 
     public MudExStyleBuilder WithGap(string gap, bool when = true) => With("gap", gap, when);
 

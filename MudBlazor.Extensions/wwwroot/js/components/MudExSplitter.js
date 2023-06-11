@@ -15,7 +15,7 @@
         }
     }
 
-    initSplitter(splitter) {
+    initSplitter(splitter) {        
         this.splitter = splitter;
         this.prevElem = splitter.previousElementSibling;
         this.nextElem = splitter.nextElementSibling;

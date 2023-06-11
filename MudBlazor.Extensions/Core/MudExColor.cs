@@ -1,5 +1,4 @@
-﻿using Microsoft.JSInterop;
-using MudBlazor.Extensions.Helper;
+﻿using MudBlazor.Extensions.Helper;
 using MudBlazor.Utilities;
 using OneOf;
 
@@ -11,7 +10,12 @@ public readonly struct MudExColor
 
     public MudExColor(OneOf<Color, MudColor, string, int> value)
     {
-        _value = value;
+        _value = value.IsT2 switch
+        {
+            true when Enum.TryParse(value.AsT2, out Color color) => color,
+            true when ColorExtensions.TryParseFromHtmlColorName(value.AsT2, out System.Drawing.Color dc) => dc.ToMudColor(),
+            _ => value
+        };
     }
 
     public object Value => _value.Value;
@@ -35,10 +39,12 @@ public readonly struct MudExColor
     public static implicit operator MudExColor(int i) => new MudExColor(i);
 
     public bool Is(Color c) => _value.Value.Equals(c);
+    public bool Is(string c) => _value.Value.Equals(c);
+    public bool Is(MudColor c) => _value.Value.Equals(c);
 
     public override string ToString()
         => Match(
-            color => color.CssVarDeclaration(),
+            color => color.ToString(),
             mudColor => mudColor.ToString(),
             s => s,
             i => i.ToString() // adjust this based on how you want to handle int
@@ -48,7 +54,8 @@ public readonly struct MudExColor
         => Match(
             color => color.CssVarDeclaration(),
             mudColor => mudColor.ToString(format),
-            s => new MudColor(s).ToString(format),
+            s => s.ToLower().StartsWith("var") ? s : new MudColor(s).ToString(format),
+            //s => new MudColor(s).ToString(format),
             i => FromInt(i).ToString(format)
         );
 
