@@ -4,6 +4,7 @@ using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
 using System.Reflection;
 using MainSample.WebAssembly.Shared;
+using System.Diagnostics;
 
 namespace MainSample.WebAssembly;
 
@@ -16,6 +17,11 @@ public static class Navigations
             new("Home", Icons.Material.Outlined.Home, "/"),
             new("Readme", Icons.Material.Outlined.ReadMore, "/readme"),
         };
+        
+        if (Debugger.IsAttached)
+        {
+            navigationEntries.Add(new NavigationEntry("TEST", Icons.Material.Outlined.BugReport, "/test"));
+        }
 
         navigationEntries.UnionWith(DemoAttribute.AllEntries());
 
