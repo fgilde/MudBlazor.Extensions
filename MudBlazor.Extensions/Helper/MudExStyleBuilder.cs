@@ -589,6 +589,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithBackgroundRepeat(string backgroundRepeat, bool when = true) => With("background-repeat", backgroundRepeat, when);
 
     public MudExStyleBuilder WithBorderColor(string borderColor, bool when = true) => With("border-color", borderColor, when);
+    public MudExStyleBuilder WithBorderColor(MudExColor color, bool when = true) => WithBorderColor(color.ToCssStringValue(), when);
     public MudExStyleBuilder WithBorderColor(MudColor color, bool when = true) => WithBorderColor(color.ToString(), when);
     public MudExStyleBuilder WithBorderColor(System.Drawing.Color color, bool when = true) => WithBorderColor(color.ToMudColor(), when);
     public MudExStyleBuilder WithBorderColor(Color color, bool when = true) => WithBorderColor(color.CssVarDeclaration(), when);

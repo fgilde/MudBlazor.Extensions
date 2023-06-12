@@ -9,6 +9,13 @@
 
     protected override RenderFragment PickerContent => GetPickerContent();
 
+    private RenderFragment DividerContent(string label)
+    {
+        return @<div style="margin:25px 0; position: sticky; top: 5px; z-index: 3;">
+                   <MudExDivider Label="@TryLocalize(label)" Size="2" Color="Color.Primary"/>
+               </div>;
+    }
+    
     private RenderFragment GetPickerContent()
     {
         return 
@@ -21,8 +28,8 @@
                         <MudList Class="m-0" Clickable="true">
                             @if (ShowThemeColors)
                             {
-                                <MudExDivider Label="@TryLocalize("Theme")" Size="2" Color="Color.Primary"/>
-                                @foreach (Color color in Enum.GetValues(typeof(Color)))
+                                @DividerContent("Theme")
+                            @foreach (Color color in Enum.GetValues(typeof(Color)))
                                 {
                                     @if (Matches(color.ToString()))
                                     {
@@ -32,7 +39,7 @@
                             }
                             @if (ShowHtmlColors)
                             {
-                                <MudExDivider Label="@TryLocalize("HTML Colors")" Size="2" Color="Color.Primary"/>
+                                @DividerContent("HTML Colors")
                                 @foreach (var color in typeof(System.Drawing.Color).GetProperties(BindingFlags.Static | BindingFlags.Public))
                                 {
                                     @if (Matches(color.Name))
@@ -51,8 +58,7 @@
                             }
                             @if (ShowCssColorVariables)
                             {
-                                <MudExDivider Label="@TryLocalize("CSS Variables")" Size="2" Color="Color.Primary"/>
-
+                                @DividerContent("CSS Color Variables")
                                 @foreach (var cssVar in _cssVars)
                                 {
                                     @if (Matches(cssVar.Key))

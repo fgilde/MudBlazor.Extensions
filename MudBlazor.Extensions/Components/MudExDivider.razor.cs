@@ -34,6 +34,8 @@ public partial class MudExDivider : IMudExComponent
     /// </summary>
     [Parameter] public bool UseBorder { get; set; }
 
+    private string Id = Guid.NewGuid().ToFormattedId();
+    
     protected override async Task OnParametersSetAsync()
     {
         if (string.IsNullOrEmpty(_existingStyle) && !string.IsNullOrEmpty(Style))
@@ -47,6 +49,7 @@ public partial class MudExDivider : IMudExComponent
     private string GetClass()
     {
         return MudExCssBuilder.Default
+            .AddClass($"mud-ex-divider-{Id}", !string.IsNullOrEmpty(Label))
             .AddClass("mud-ex-divider-vertical", Vertical)
             .AddClass("mud-ex-divider-horizontal", !Vertical)
             .AddClass("mud-ex-labeled-hr", !string.IsNullOrEmpty(Label))

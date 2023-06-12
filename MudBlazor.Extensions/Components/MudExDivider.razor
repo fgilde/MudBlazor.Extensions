@@ -1,3 +1,19 @@
 ﻿@inherits MudDivider
 
+@if (!string.IsNullOrEmpty(Label))
+{
+    <style>
+    .mud-ex-divider-@(Id).mud-ex-labeled-hr::before {
+        content: attr(data-label);
+        height: 14px;
+        position: absolute;
+        background: @Color.ToCssStringValue();
+        margin-top: -10px;
+        border: 1px solid;
+        padding: 2px 2px 6px 2px;
+    }
+    </style>
+}
+
+
 @Inherited()
