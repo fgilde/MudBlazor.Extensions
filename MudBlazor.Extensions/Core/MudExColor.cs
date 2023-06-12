@@ -33,6 +33,7 @@ public readonly struct MudExColor
 
     public Color AsColor => _value.AsT0;
     public MudColor AsMudColor => _value.AsT1;
+    public DC AsDrawingColor => _value.AsT2;
     public string AsString => _value.AsT3;
     public uint AsInt => _value.AsT4;
     public TResult Match<TResult>(Func<Color, TResult> f0, Func<MudColor, TResult> f1, Func<DC, TResult> f2, Func<string, TResult> f3, Func<uint, TResult> f4) => _value.Match(f0, f1, f2, f3, f4);
@@ -42,6 +43,7 @@ public readonly struct MudExColor
     // Implicit conversions
     public static implicit operator MudExColor(Color c) => new MudExColor(c);
     public static implicit operator MudExColor(MudColor c) => new MudExColor(c);
+    public static implicit operator MudExColor(DC s) => new MudExColor(s);
     public static implicit operator MudExColor(string s) => new MudExColor(s);
     public static implicit operator MudExColor(uint i) => new MudExColor(i);
 

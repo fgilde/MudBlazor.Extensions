@@ -109,7 +109,8 @@ public partial class MudExObjectEdit<T>
     [Parameter] public bool ConfigureMetaInformationAlways { get; set; }
     [Parameter] public string ErrorMessage { get; set; }
 
-    private static Type[] handleAsPrimitive = { typeof(string), typeof(decimal), typeof(MudColor), typeof(System.Drawing.Color), typeof(DateTime), typeof(DateTimeOffset), typeof(TimeSpan), typeof(TimeOnly), typeof(DateOnly), typeof(Guid) };
+    private static Type[] handleAsPrimitive = { typeof(string), typeof(decimal), typeof(MudExColor), typeof(MudColor), typeof(System.Drawing.Color), typeof(DateTime), typeof(DateTimeOffset), typeof(TimeSpan), typeof(TimeOnly), typeof(DateOnly), typeof(Guid) };
+    
     internal static bool IsPrimitive()
     {
         var type = typeof(T).IsNullable() ? Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T) : typeof(T);
