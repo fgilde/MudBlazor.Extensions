@@ -6,11 +6,13 @@ namespace MudBlazor.Extensions.Helper;
 /// <summary>
 /// MudExColor is a static utility class that provides a set of extension methods for working with Color and MudColor instances.
 /// </summary>
-[HasDocumentation("ColorExtensions.md")]
-public static class ColorExtensions
+[HasDocumentation("MudExColorUtils.md")]
+public static class MudExColorUtils
 {
     public static int ToInt(this MudColor color) 
         => (color.A << 24) | (color.R << 16) | (color.G << 8) | color.B;
+
+    public static uint ToUInt(this MudColor color) => (uint)((color.A << 24) | (color.R << 16) | (color.G << 8) | color.B);
 
     /// <summary>
     /// Returns the CSS variable name for the given color.

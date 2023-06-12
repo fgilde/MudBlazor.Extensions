@@ -218,13 +218,17 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
     await dialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello"; },options);
 ```
 
+#### Known Issues
+ Currently MudExSplitter wont work in MudExSplitPanel. I dont know why, It will not rendered at all. If you know why, please let me know.
+ But the component itself works fine. You can use it without MudExSplitPanel and put it inside your own flex grid.
 
 #### Change Log 
-new Type usefull for all color parameters called MudExColor // MudExDivider, MudExSlideBar, MudExTaskBar, MudExCardList, MudExGradientText, MudExObjectEdit, MudExCollectionEdit,
-static util class MudExColor is renamed to ColorExtensions
-Update MudBlazor to 6.4.1 and adapt MudExPopover required changes.
-Update Microsoft.AspNetCore.Components.Web to 7.0.5 for .net 7 and 6.0.16 for .net 6
 
+ - 1.7.47 > Update Microsoft.AspNetCore.Components.Web to 7.0.5 for .net 7 and 6.0.16 for .net 6
+ - 1.7.47 > Update MudBlazor to 6.4.1 and adapt MudExPopover required changes.
+ - 1.7.47 > **_Breaking:_** New Color Type [MudExColor](https://www.mudex.org/d/MudExColor) that can used with MudColor, MudBlazor.Color enum, string or it directly used for all color parameters.
+            Because of this change the static util class MudExColor is now MudExColorUtils and we have **_Breaking:_** changes for theese components. MudExDivider, MudExSlideBar, MudExTaskBar, MudExCardList, MudExGradientText, MudExObjectEdit, MudExCollectionEdit
+ - 1.7.47 > **_Breaking:_** Rename: Static util class MudExColor is now MudExColorUtils
  - 1.7.46 > Ensure Min or Max sizes arn't overwritten when using Resizable
  - 1.7.46 > More fluent overloads for [MudExStyleBuilder](https://www.mudex.org/d/MudExStyleBuilder/MudExStyleBuilder)
  - 1.7.42 > Add Dialog Appearance 
@@ -248,48 +252,48 @@ Update Microsoft.AspNetCore.Components.Web to 7.0.5 for .net 7 and 6.0.16 for .n
  - 1.7.34 > **_Breaking:_** Rename: CssHelper is now MudExCss
  - 1.7.34 > **_Breaking:_** Rename: MudExColorHelper is now MudExColor
  - 1.7.34 > **_Breaking:_** Move: Namespace MudBlazor.Extensions.Extensions is now MudBlazor.Extensions.Helper
- - 1.7.33 Fix bug if no header is active on dialogs
- - 1.7.33 Load Modules manually for MAUI Apps
- - 1.7.31 Update BlazorJS to v 2.0.0 and MudBlazor to 6.1.8.
- - 1.7.30 Fix broken layout in full-height dialogs with new css selector.
- - 1.7.29 Fix broken dialog header buttons positions based on MudBlazor css changes
- - 1.7.28 Update MudBlazor to 6.1.7 and implement missing members in IMudExDialogReference
- - 1.7.27 MudExObjectEdit and MudExCollectionEditor now supporting `Virtualize` on [MudExCollectionEditor](https://www.mudex.org/shared-config) its default enabled. But you need to specify height of control. On [MudExObjectEdit](https://www.mudex.org/virtualized-object-edit) is disabled and currently in Beta
- - 1.7.27 MudExObjectEdit and MudExCollectionEditor now supporting Height, MaxHeight and custom Style as Parameter
- - 1.7.27 MudExCollectionEditor now supporting Item search
- - 1.7.27 MudExCollectionEditor now supporting top or bottom toolbar position by setting the Parameter `ToolbarPosition`
- - 1.7.26 Improvements and extensibility for MudExFileDisplay
- - 1.7.25 DialogOptions can now set as Default for all dialogs where no explicit options are used
- - 1.7.24 Allow converting any IDialogReference to an `IMudExDialogReference<TComponent>` with Extension method AsMudExDialogReference. With this reference, the inner dialog component is type safe accessable
- - 1.7.23 New small dialogService extension method `ShowInformationAsync`
- - 1.7.22 New small dialogService extension method `PromptAsync`
- - 1.7.21 Correct initial color for colorpicker from MudExColorBubble
- - 1.7.20 .net6 and .net7 compatible. 
- - 1.7.20 New componments MudExColorPicker, MudExColorBubble, MudExUploadEdit
- - 1.7.20 Fixed Bug that localizer is not passed to MudExCollectionEdit 
- - 1.7.10 UPDATE TO .NET 7 and MudBlazor 6.1.2
- - 1.6.76 BugFix in MudExEnumSelect
- - 1.6.74 MudExEnumSelect select now supports nullable enums and flags
- - 1.6.73 Pass Class and ClassContent for MudExMessageDialog as Parameter
- - 1.6.72 Extension for DialogService to show any component in a dialog `dialogService.ShowComponentInDialogAsync<Component>(...)` [Sample](https://www.mudex.org/component-in-dialog)
- - 1.6.70 MudExObjectEdit has now events for before import and beforeexport, that allows you to change imported or exported date before executed
- - 1.6.69 BugFix wrong js was loaded
- - 1.6.68 New small DialogComponent `MudExMessageDialog` with custom actions and result and with small dialogServiceExtension `dialogService.ShowConfirmationDialogAsync`
- - 1.6.68 New parameter for MudExObjectEdit `ImportNeedsConfirmation` if this is true and `AllowImport` is true a file preview dialog appears on import and the user needs to confirm the import.
- - 1.6.68 Import and Export specifix properties only in MudExObjectEdit are now configurable with the MetaConfiguration
- - 1.6.68 Dialog DragMode without bound check. ScrollToTopPosition for MudExObjectEdit
- - 1.6.67 Add `MudExColorPicker` simple extended default MudColorPicker with one option `DelayValueChangeToPickerClose` (default true). If this is true ValueChanged is invoked after picker close
- - 1.5.0 Add `MudExObjectEdit` `MudExObjectEditForm` `MudExObjectEditDialog` and `MudExCollectionEditor`
- - 1.4.6 Registered Localizer is no longer a requirement
- - 1.4.0 Add New Component `MudExEnumSelect`
- - 1.2.8 Add New Component `MudExChipSelect`
- - 1.2.6 Add New Animationtypes for dialog or manual using
- - 1.2.4 Add Components `MudExFileDisplay` `MudExFileDisplayZip` and `MudExFileDisplayDialog`
- - 1.2.2 Animations can be combined
- - 1.2.2 Add animation fade
- - 1.2.2 Improved animations for dialogs
- - 1.2.0 Slide in animations for dialogs. 
- - 1.1.2 New option FullHeight for dialogs
+ - 1.7.33 > Fix bug if no header is active on dialogs
+ - 1.7.33 > Load Modules manually for MAUI Apps
+ - 1.7.31 > Update BlazorJS to v 2.0.0 and MudBlazor to 6.1.8.
+ - 1.7.30 > Fix broken layout in full-height dialogs with new css selector.
+ - 1.7.29 > Fix broken dialog header buttons positions based on MudBlazor css changes
+ - 1.7.28 > Update MudBlazor to 6.1.7 and implement missing members in IMudExDialogReference
+ - 1.7.27 > MudExObjectEdit and MudExCollectionEditor now supporting `Virtualize` on [MudExCollectionEditor](https://www.mudex.org/shared-config) its default enabled. But you need to specify height of control. On [MudExObjectEdit](https://www.mudex.org/virtualized-object-edit) is disabled and currently in Beta
+ - 1.7.27 > MudExObjectEdit and MudExCollectionEditor now supporting Height, MaxHeight and custom Style as Parameter
+ - 1.7.27 > MudExCollectionEditor now supporting Item search
+ - 1.7.27 > MudExCollectionEditor now supporting top or bottom toolbar position by setting the Parameter `ToolbarPosition`
+ - 1.7.26 > Improvements and extensibility for MudExFileDisplay
+ - 1.7.25 > DialogOptions can now set as Default for all dialogs where no explicit options are used
+ - 1.7.24 > Allow converting any IDialogReference to an `IMudExDialogReference<TComponent>` with Extension method AsMudExDialogReference. With this reference, the inner dialog component is type safe accessable
+ - 1.7.23 > New small dialogService extension method `ShowInformationAsync`
+ - 1.7.22 > New small dialogService extension method `PromptAsync`
+ - 1.7.21 > Correct initial color for colorpicker from MudExColorBubble
+ - 1.7.20 > .net6 and .net7 compatible. 
+ - 1.7.20 > New componments MudExColorPicker, MudExColorBubble, MudExUploadEdit
+ - 1.7.20 > Fixed Bug that localizer is not passed to MudExCollectionEdit 
+ - 1.7.10 > UPDATE TO .NET 7 and MudBlazor 6.1.2
+ - 1.6.76 > BugFix in MudExEnumSelect
+ - 1.6.74 > MudExEnumSelect select now supports nullable enums and flags
+ - 1.6.73 > Pass Class and ClassContent for MudExMessageDialog as Parameter
+ - 1.6.72 > Extension for DialogService to show any component in a dialog `dialogService.ShowComponentInDialogAsync<Component>(...)` [Sample](https://www.mudex.org/component-in-dialog)
+ - 1.6.70 > MudExObjectEdit has now events for before import and beforeexport, that allows you to change imported or exported date before executed
+ - 1.6.69 > BugFix wrong js was loaded
+ - 1.6.68 > New small DialogComponent `MudExMessageDialog` with custom actions and result and with small dialogServiceExtension `dialogService.ShowConfirmationDialogAsync`
+ - 1.6.68 > New parameter for MudExObjectEdit `ImportNeedsConfirmation` if this is true and `AllowImport` is true a file preview dialog appears on import and the user needs to confirm the import.
+ - 1.6.68 > Import and Export specifix properties only in MudExObjectEdit are now configurable with the MetaConfiguration
+ - 1.6.68 > Dialog DragMode without bound check. ScrollToTopPosition for MudExObjectEdit
+ - 1.6.67 > Add `MudExColorPicker` simple extended default MudColorPicker with one option `DelayValueChangeToPickerClose` (default true). If this is true ValueChanged is invoked after picker close
+ - 1.5.0 > Add `MudExObjectEdit` `MudExObjectEditForm` `MudExObjectEditDialog` and `MudExCollectionEditor`
+ - 1.4.6 > Registered Localizer is no longer a requirement
+ - 1.4.0 > Add New Component `MudExEnumSelect`
+ - 1.2.8 > Add New Component `MudExChipSelect`
+ - 1.2.6 > Add New Animationtypes for dialog or manual using
+ - 1.2.4 > Add Components `MudExFileDisplay` `MudExFileDisplayZip` and `MudExFileDisplayDialog`
+ - 1.2.2 > Animations can be combined
+ - 1.2.2 > Add animation fade
+ - 1.2.2 > Improved animations for dialogs
+ - 1.2.0 > Slide in animations for dialogs. 
+ - 1.1.2 > New option FullHeight for dialogs
 
 #### Planned Features
 Notice this is just a first preview version. 

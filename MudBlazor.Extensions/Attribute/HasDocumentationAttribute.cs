@@ -2,7 +2,7 @@
 
 namespace MudBlazor.Extensions.Attribute
 {
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
     public class HasDocumentationAttribute: System.Attribute
     {
         public HasDocumentationAttribute(string markdownFile)

@@ -3,7 +3,7 @@
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Options
 
-@attribute [Demo(Group = "MudExObjectEdit", Name = "With default configuration", Documentation = "Demo for using MudExObjectEdit only with bypassing an object", Order = 0, Icon = Icons.Material.Outlined.Edit, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+@attribute [DemoUpdated(Group = "MudExObjectEdit", Name = "With default configuration", Documentation = "Demo for using MudExObjectEdit only with bypassing an object", Order = 0, Icon = Icons.Material.Outlined.Edit, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
 <DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" PageType="@GetType()">
     <MudExObjectEditForm OnValidSubmit="@OnSubmit" Value="@User"></MudExObjectEditForm>

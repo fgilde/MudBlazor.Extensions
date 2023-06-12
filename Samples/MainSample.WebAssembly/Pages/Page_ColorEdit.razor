@@ -1,0 +1,31 @@
+﻿@page "/mud-ex-color-edit"
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+@attribute [DemoNew(Name = "MudExColorEdit", Icon = Icons.Material.Outlined.ColorLens, Documentation = "MudExColorEdit is in general a MudBlazor Picker component specially for the struct MudExColor. But because name MudExColorPicker is already used for an extended ColorPicker this Component is named MusExColorEdit", ForComponentType = typeof(MudExColorEdit))]
+
+<DemoComponent PageType="@GetType()" >
+    <SplitContainer>
+        <Left>
+            <MudExColorEdit Value="Color.Secondary" @ref="component"></MudExColorEdit>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+@code {
+    MudExColorEdit component;
+    private Action<ObjectEditMeta<MudExColorEdit>> Configure()
+    {
+        return meta =>
+        {
+            meta.GroupByCategoryAttribute();
+            meta.Property(m => m.Localizer).Ignore();
+            meta.Property(m => m.Color).WithAdditionalAttribute(nameof(MudColorPicker.DisableAlpha), true, true);
+            meta.IgnoreAllReadOnlyFields();
+        };
+    }
+
+}
