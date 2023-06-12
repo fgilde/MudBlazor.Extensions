@@ -218,12 +218,9 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
     await dialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello"; },options);
 ```
 
-#### Known Issues
- Currently MudExSplitter wont work in MudExSplitPanel. I dont know why, It will not rendered at all. If you know why, please let me know.
- But the component itself works fine. You can use it without MudExSplitPanel and put it inside your own flex grid.
 
 #### Change Log 
-
+ - 1.7.48 > BugFix
  - 1.7.47 > Update Microsoft.AspNetCore.Components.Web to 7.0.5 for .net 7 and 6.0.16 for .net 6
  - 1.7.47 > Update MudBlazor to 6.4.1 and adapt MudExPopover required changes.
  - 1.7.47 > **_Breaking:_** New Color Type [MudExColor](https://www.mudex.org/d/MudExColor) that can used with MudColor, MudBlazor.Color enum, string or it directly used for all color parameters.

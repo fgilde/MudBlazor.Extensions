@@ -44,9 +44,9 @@ internal interface IJsMudExComponent<T>: IMudExComponent, IAsyncDisposable
         return DotNetObjectReference.Create(this);
     }
 
-    public virtual async Task ImportModuleAndCreateJsAsync()
+    public virtual async Task ImportModuleAndCreateJsAsync(string name = null)
     {
-        var references = await JsRuntime.ImportModuleAndCreateJsAsync<T>(GetJsArguments());
+        var references = await JsRuntime.ImportModuleAndCreateJsAsync<T>(name, GetJsArguments());
         JsReference = references.jsObjectReference;
         ModuleReference = references.moduleReference;
     }

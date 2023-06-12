@@ -10,8 +10,15 @@
         }
         @if (Splittable && Left != null && Right != null)
         {
-            @*<MudExDivider Size="5" Color="Color.Primary" Vertical="@ColumnLayout" />*@
-            <MudExSplitter Size="5" Reverse="@Reverse" UpdateSizesInPercentage="@UpdateSizesInPercentage" Vertical="@ColumnLayout" FlexItem="true" />
+            @*Using MudExSplitter doesnt work nobody knows why so we go for DynamicComponent here*@
+            @*<MudExSplitter Vertical="@ColumnLayout" Reverse="@Reverse" FlexItem="true" UpdateSizesInPercentage="@UpdateSizesInPercentage" />*@
+            <DynamicComponent Type="@typeof(MudExSplitter)" Parameters="@(new Dictionary<string, object> {
+                                                                            {nameof(MudExSplitter.Vertical), ColumnLayout},
+                                                                            {nameof(MudExSplitter.Reverse), Reverse},
+                                                                            {nameof(MudExSplitter.FlexItem), true},
+                                                                            {nameof(MudExSplitter.UpdateSizesInPercentage), UpdateSizesInPercentage}
+                                                                        })">
+            </DynamicComponent>
         }
         @if (Right != null)
         {

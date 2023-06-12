@@ -1,4 +1,5 @@
-﻿using MudBlazor.Extensions.Components.ObjectEdit;
+﻿using MudBlazor;
+using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Options;
 using Nextended.Core.Extensions;
@@ -23,7 +24,10 @@ public class DialogOptionsExMetaConfig : IObjectMetaConfiguration<DialogOptionsE
         ).WrapInMudItem(i => i.xs = 12);
         meta.Property(o => o.ClassBackground).Ignore();
         meta.Properties(o => o.DragMode, o => o.Position, o => o.MaxWidth, o => o.AnimationDurationInMs).WithOrder(0).WithGroup("Options");
-        meta.Properties().Where(p => p.PropertyInfo.PropertyType == typeof(bool) || p.PropertyInfo.PropertyType.IsNullableBool()).WithGroup("Options").WrapInMudItem(i =>
+        meta.Properties().Where(p =>
+                (p.PropertyInfo.DeclaringType == typeof(DialogOptionsEx) || p.PropertyInfo.DeclaringType == typeof(DialogOptions))
+                && (p.PropertyInfo.PropertyType == typeof(bool) || p.PropertyInfo.PropertyType.IsNullableBool()))
+            .WithGroup("Options").WrapInMudItem(i =>
         {
             i.xl = 6;
             i.lg = 6;
@@ -31,8 +35,6 @@ public class DialogOptionsExMetaConfig : IObjectMetaConfiguration<DialogOptionsE
         });
         meta.WrapEachInMudItem(i =>
         {
-            //i.xl = 6;
-            //i.xs = 12;
             i.xl = 6;
             i.lg = 6;
             i.xs = 12;

@@ -45,15 +45,15 @@ namespace MudBlazor.Extensions.Helper
             return runtime;
         }
 
-        internal static string ComponentJs<TComponent>()
+        internal static string ComponentJs<TComponent>(string name = null)
         {
-            var componentName = GetJsComponentName<TComponent>();
+            var componentName = GetJsComponentName<TComponent>(name);
             return ComponentJs(componentName);
         }
 
-        private static string GetJsComponentName<TComponent>()
+        private static string GetJsComponentName<TComponent>(string name = null)
         {
-            return typeof(TComponent).Name.Split('`')[0];
+            return string.IsNullOrEmpty(name) ? typeof(TComponent).Name.Split('`')[0] : name;
         }
 
         internal static string MainJs()
@@ -76,9 +76,14 @@ namespace MudBlazor.Extensions.Helper
             return $"?cb={DateTime.Now.Ticks}";
         }
 
-        internal static Task<IJSObjectReference> ImportModuleAsync<TComponent>(this IJSRuntime js)
+        internal static Task<IJSObjectReference> ImportModuleAsync<TComponent>(this IJSRuntime js, string name=null)
         {
-            return js.ImportModuleAsync(ComponentJs<TComponent>());
+            return js.ImportModuleAsync(ComponentJs<TComponent>(name));
+        }
+
+        internal static Task<(IJSObjectReference moduleReference, IJSObjectReference jsObjectReference)> ImportModuleAndCreateJsAsync<TComponent>(this IJSRuntime js, string name, params object?[]? args)
+        {
+            return js.ImportModuleAndCreateJsAsync(ComponentJs<TComponent>(name), $"initialize{GetJsComponentName<TComponent>(name)}", args);
         }
 
         internal static Task<(IJSObjectReference moduleReference, IJSObjectReference jsObjectReference)> ImportModuleAndCreateJsAsync<TComponent>(this IJSRuntime js, params object?[]? args)
