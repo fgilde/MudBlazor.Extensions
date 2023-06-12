@@ -18,10 +18,10 @@ public static class Navigations
             new("Readme", Icons.Material.Outlined.ReadMore, "/readme"),
         };
         
-        if (Debugger.IsAttached)
-        {
-            navigationEntries.Add(new NavigationEntry("TEST", Icons.Material.Outlined.BugReport, "/test"));
-        }
+        //if (Debugger.IsAttached)
+        //{
+        //    navigationEntries.Add(new NavigationEntry("TEST", Icons.Material.Outlined.BugReport, "/test"));
+        //}
 
         navigationEntries.UnionWith(DemoAttribute.AllEntries());
 
