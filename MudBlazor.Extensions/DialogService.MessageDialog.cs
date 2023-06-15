@@ -51,7 +51,7 @@ public static partial class DialogServiceExt
 
 
     public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title, string message,
-        Dictionary<string, object> componentOptions,
+        IDictionary<string, object> componentOptions,
         Action<MudExMessageDialog> dialogParameters,
         DialogOptionsEx options = null) where TComponent : ComponentBase, new()
     {
@@ -122,7 +122,7 @@ public static partial class DialogServiceExt
     }
 
     public static async Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title, string message,
-        Dictionary<string, object> componentOptions,
+        IDictionary<string, object> componentOptions,
         DialogParameters dialogParameters,
         DialogOptionsEx options) where TComponent : ComponentBase, new()
     {

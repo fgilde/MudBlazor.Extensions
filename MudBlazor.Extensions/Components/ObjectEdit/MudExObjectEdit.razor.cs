@@ -39,6 +39,7 @@ public partial class MudExObjectEdit<T>
         set => SetValue(value);
     }
 
+    [Parameter] public bool UpdateConditionsInitial { get; set; } = true;
     [Parameter] public int? Height { get; set; }
     [Parameter] public int? MaxHeight { get; set; }
     [Parameter] public CssUnit SizeUnit { get; set; } = CssUnit.Pixels;
@@ -150,8 +151,16 @@ public partial class MudExObjectEdit<T>
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && AutoSaveRestoreState)
-            await RestoreState();
+        if (firstRender)
+        {
+            if (AutoSaveRestoreState)
+                await RestoreState();
+            if (UpdateConditionsInitial)
+            {
+                MetaInformation?.UpdateAllConditionalSettings(Value);
+            }
+        }
+
         await base.OnAfterRenderAsync(firstRender);
     }
 
@@ -198,16 +207,12 @@ public partial class MudExObjectEdit<T>
 
     protected virtual Task OnPropertyChange(ObjectEditPropertyMeta property)
     {
-        //return Task.WhenAll(Task.Run(() =>
-        //{
-        //    if (Value != null)
-        //        MetaInformation.AllProperties.Apply(p => p?.UpdateConditionalSettings(Value));
-        //}), ValueChanged.InvokeAsync(Value));
         if (AutoSaveRestoreState)
             _ = Task.Run(SaveState);
 
         if (Value != null)
-            MetaInformation.AllProperties.Apply(p => p?.UpdateConditionalSettings(Value));
+            MetaInformation.UpdateAllConditionalSettings(Value);
+        
         return ValueChanged.InvokeAsync(Value);
     }
 

@@ -12,13 +12,14 @@ namespace MudBlazor.Extensions.Components
     /// <summary>
     /// A Popover can be used to display some content on top of another.
     /// </summary>
-    public partial class MudExPopover : IMudExComponent, IAsyncDisposable
+    public partial class MudExPopover : IMudExComponent, IAsyncDisposable, IDisposable
     {
         [Inject] protected IServiceProvider ServiceProvider { get; set; }
         public IJSRuntime JsRuntime => ServiceProvider.GetService<IJSRuntime>();
 
         //[Parameter] public TimeSpan AnimationDuration { get; set; } = TimeSpan.FromMilliseconds(650);
         [Parameter] public string SelectorsForIgnoreBlur { get; set; }
+        [Parameter] public bool DisposeEvent { get; set; } = false;
 
         [Parameter] public AnimationType Animation { get; set; } = AnimationType.SlideIn;
         [Parameter] public AnimationTimingFunction AnimationTimingFunction { get; set; }
@@ -97,9 +98,22 @@ namespace MudBlazor.Extensions.Components
         public ValueTask DisposeAsync()
         {
             // TODO: Ask MudBlazor Author if they can make DisposeAsync virtual
-            _jsEvent.Dispose();
+            DisposeCore();
             return base.DisposeAsync();
         }
 
+        public void Dispose()
+        {
+            DisposeCore();
+        }
+
+        private void DisposeCore()
+        {
+            if (DisposeEvent && _jsEvent is not null)
+            {
+                _jsEvent.Dispose();
+                _jsEvent = null;
+            }
+        }
     }
 }

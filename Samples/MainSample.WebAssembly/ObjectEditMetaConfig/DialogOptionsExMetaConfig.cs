@@ -16,7 +16,7 @@ public class DialogOptionsExMetaConfig : IObjectMetaConfiguration<DialogOptionsE
             o => o.Animation,
             o => o.AnimationStyle,
             o => o.JsRuntime,
-            o => o.CursorPositionOrigin,
+            //o => o.CursorPositionOrigin,
             o => o.CursorPositionOriginName,
             o => o.AnimationStyle).Ignore();
         meta.Properties(

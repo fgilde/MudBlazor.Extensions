@@ -36,10 +36,31 @@ public static partial class DialogServiceExt
     {
         if (MudExObjectEdit<TModel>.IsPrimitive())
         {
+
+
+            #region Not important but here we change some options for primitives
+
+            var attributesForPrimitive = new Dictionary<string, object>
+            {
+                // All registered Primitive editors that are pickers we render PickerVariant.Static to avoid extra dialogs
+                {nameof(MudPicker<object>.PickerVariant), PickerVariant.Static}
+            };
+            
             var modelForPrimitive = new ModelForPrimitive<TModel>(value);
-            var r = await dialogService.EditObject(modelForPrimitive, title, options, null, dialogParameters);
+            options.Resizeable = true;
+
+            #endregion
+          
+
+
+            var r = await dialogService.EditObject(modelForPrimitive, title, options, meta =>
+            {
+                meta.Property(m => m.Value).WithAdditionalAttributes(attributesForPrimitive, true);
+            }, dialogParameters );
+            
             return (r.Cancelled, r.Result.Value);
         }
+        
         var parameters = new DialogParameters
             {
                 {nameof(MudExObjectEditDialog<TModel>.Value), value},

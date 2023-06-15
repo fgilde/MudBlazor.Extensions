@@ -2,6 +2,20 @@
 
 @attribute [Demo(Group = "MudExObjectEdit", Name = "Edit Current Theme", Order = 7, Documentation = "This demonstrate the MudExObjectEdit for an instance of a MudTheme ", Icon = Icons.Material.Outlined.Palette, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
-<DemoComponent PageType="@GetType()" DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "ObjectEditMetaConfig/ThemeEditConfig.cs"})">
-    <MudExObjectEdit @bind-Value="@ClientTheme.CurrentTheme"></MudExObjectEdit>
+<MudButton OnClick="@TestClick">
+    Test
+</MudButton>
+
+<DemoComponent PageType="@GetType()" DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor"})">
+    @*<MudExObjectEdit @bind-Value="@ClientTheme.CurrentTheme"></MudExObjectEdit>*@
+    <MudExThemeEdit IsDark="@MainLayout.Instance.IsDark" Theme="@ClientTheme.CurrentTheme"></MudExThemeEdit> 
 </DemoComponent>
+
+
+@code {
+    private Task TestClick()
+    {
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+}

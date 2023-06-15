@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Utilities;
 using Nextended.Core.Extensions;
 
@@ -45,9 +46,12 @@ public static class RenderDataDefaults
         RegisterDefault<TimeSpan, TimeSpan?, MudTimePicker>(f => f.Time, TimePickerOptions());
         RegisterDefault<TimeSpan?, MudTimePicker>(f => f.Time, TimePickerOptions());
 
-        RegisterDefault<MudColor, MudColor, MudColorPicker>(f => f.Value, ColorPickerOptions(), c => c, c => c);
-        RegisterDefault<System.Drawing.Color, MudColor, MudColorPicker>(f => f.Value, ColorPickerOptions(), c => new MudColor(c.R, c.G, c.B, c.A), mc => System.Drawing.Color.FromArgb(mc.A, mc.R, mc.G, mc.B));
+
+        RegisterMudExColorEditForColors();
+        
         RegisterDefault<MudExColor, MudExColor, MudExColorEdit>(f => f.Value);
+        RegisterDefault<MudExColor?, MudExColor, MudExColorEdit>(f => f.Value);
+
 
         //RegisterDefault<bool, MudSwitch<bool>>(s => s.Checked, s => s.Color = MudBlazor.Color.Warning);
         RegisterDefault<bool, MudCheckBox<bool>>(s => s.Checked, box =>
@@ -70,17 +74,32 @@ public static class RenderDataDefaults
         RegisterDefault<UploadableFile[], IList<UploadableFile>, MudExUploadEdit<UploadableFile>>(edit => edit.UploadRequests, requests => requests?.ToList() ?? new List<UploadableFile>(), requests => requests?.ToArray() ?? Array.Empty<UploadableFile>());
         RegisterDefault<IList<UploadableFile>, MudExUploadEdit<UploadableFile>>(edit => edit.UploadRequests);
         RegisterDefault<UploadableFile, MudExUploadEdit<UploadableFile>>(edit => edit.UploadRequest, edit => edit.AllowMultiple = false);
+
     }
 
-    private static Dictionary<string, object> ColorPickerOptions()
+    public static void RegisterMudExColorEditForColors()
+    {
+        RegisterDefault<MudColor, MudExColor, MudExColorEdit>(f => f.Value, ColorPickerOptions(), c => c, c => c.ToMudColor());
+        RegisterDefault<System.Drawing.Color, MudExColor, MudExColorEdit>(f => f.Value, ColorPickerOptions(), c => c, c => c.ToMudColor().ToDrawingColor());
+        RegisterDefault<System.Drawing.Color?, MudExColor, MudExColorEdit>(f => f.Value, ColorPickerOptions(), c => c ?? MudExColor.Default, c => c.ToMudColor().ToDrawingColor());
+    }
+
+    public static void RegisterMudColorPickerForColors()
+    {
+        RegisterDefault<MudColor, MudColor, MudColorPicker>(f => f.Value, ColorPickerOptions(), c => c, c => c);
+        RegisterDefault<System.Drawing.Color, MudColor, MudColorPicker>(f => f.Value, ColorPickerOptions(), c => new MudColor(c.R, c.G, c.B, c.A), mc => System.Drawing.Color.FromArgb(mc.A, mc.R, mc.G, mc.B));
+    }
+
+    internal static Dictionary<string, object> ColorPickerOptions()
     {
         return new Dictionary<string, object>
         {
-            {nameof(MudColorPicker.Editable), true},
-            {nameof(MudColorPicker.DisableToolbar), false},
-            {nameof(MudColorPicker.PickerVariant), PickerVariant.Inline},
-            //{nameof(MudExColorPicker.UseMudExColorBubble), true},
-            //{nameof(MudExColorPicker.UseColorPaletteInNativeBrowserControl), true},
+            {nameof(MudExColorEdit.Editable), true},
+            {nameof(MudExColorEdit.ForceSelectOfMudColor), true},
+            {nameof(MudExColorEdit.DisableToolbar), false},
+            {nameof(MudExColorEdit.DelayValueChangeToPickerClose), true},
+            {nameof(MudExColorEdit.PickerVariant), PickerVariant.Inline},
+            {nameof(MudExColorEdit.PreviewMode), ColorPreviewMode.Icon},
         };
     }
 
@@ -127,7 +146,7 @@ public static class RenderDataDefaults
     public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TFieldType, TComponent>(Expression<Func<TComponent, TFieldType>> valueField, Action<TComponent> options, Func<TPropertyType, TFieldType> toFieldTypeConverter = null, Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) where TComponent : new()
         => RegisterDefault(typeof(TPropertyType), RenderData.For(valueField, options, toFieldTypeConverter, toPropertyTypeConverter)) as RenderData<TPropertyType, TPropertyType>;
 
-    public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TFieldType, TComponent>(Expression<Func<TComponent, TFieldType>> valueField, Dictionary<string, object> options, Func<TPropertyType, TFieldType> toFieldTypeConverter = null, Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) where TComponent : new()
+    public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TFieldType, TComponent>(Expression<Func<TComponent, TFieldType>> valueField, IDictionary<string, object> options, Func<TPropertyType, TFieldType> toFieldTypeConverter = null, Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) where TComponent : new()
         => RegisterDefault(typeof(TPropertyType), RenderData.For(valueField, toFieldTypeConverter, toPropertyTypeConverter).AddAttributes(false, options?.ToArray())) as RenderData<TPropertyType, TPropertyType>;
 
     public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TComponent>(Expression<Func<TComponent, TPropertyType>> valueField) where TComponent : new()
@@ -136,7 +155,7 @@ public static class RenderDataDefaults
     public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TComponent>(Expression<Func<TComponent, TPropertyType>> valueField, Action<TComponent> options) where TComponent : new()
         => RegisterDefault(typeof(TPropertyType), RenderData.For(valueField, options)) as RenderData<TPropertyType, TPropertyType>;
 
-    public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TComponent>(Expression<Func<TComponent, TPropertyType>> valueField, Dictionary<string, object> options) where TComponent : new()
+    public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TComponent>(Expression<Func<TComponent, TPropertyType>> valueField, IDictionary<string, object> options) where TComponent : new()
         => RegisterDefault(typeof(TPropertyType), RenderData.For(valueField).AddAttributes(false, options?.ToArray())) as RenderData<TPropertyType, TPropertyType>;
 
     public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TComponent>(Expression<Func<TComponent, TPropertyType>> valueField, TComponent instanceForAttributes) where TComponent : new()

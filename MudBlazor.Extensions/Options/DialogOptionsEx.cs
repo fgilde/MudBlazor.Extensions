@@ -8,6 +8,7 @@ namespace MudBlazor.Extensions.Options
     {
         #region Statics
 
+        internal static bool OverriddenDefaultOptions { get; set; }
         public static DialogOptionsEx DefaultDialogOptions { get; set; } = new()
         {
             DragMode = MudDialogDragMode.Simple,
@@ -22,6 +23,7 @@ namespace MudBlazor.Extensions.Options
 
         public DialogOptionsEx SetAsDefaultDialogOptions()
         {
+            OverriddenDefaultOptions = true;
             DefaultDialogOptions = CloneOptions();
             return this;
         }

@@ -22,8 +22,19 @@ public readonly struct MudExColor
             true when MudExColorUtils.TryParseFromHtmlColorName(value.AsT3, out var dc) => dc.ToMudColor(),
             _ => value
         };
-    }
 
+        try
+        {
+            var str = ToString(value);
+            SuggestedFormat = GetSuggestedFormat(str);
+        }
+        catch
+        {
+            SuggestedFormat = MudColorOutputFormats.Hex;
+        }
+    }
+    
+    public MudColorOutputFormats SuggestedFormat { get; }
     public object Value => _value.Value;
     public bool IsColor => _value.IsT0;
     public bool IsMudColor => _value.IsT1;
@@ -41,36 +52,49 @@ public readonly struct MudExColor
 
 
     // Implicit conversions
-    public static implicit operator MudExColor(Color c) => new MudExColor(c);
-    public static implicit operator MudExColor(MudColor c) => new MudExColor(c);
-    public static implicit operator MudExColor(DC s) => new MudExColor(s);
-    public static implicit operator MudExColor(string s) => new MudExColor(s);
-    public static implicit operator MudExColor(uint i) => new MudExColor(i);
+    public static implicit operator MudExColor(Color c) => new (c);
+    public static implicit operator MudExColor(MudColor c) => c is null ? Default : new MudExColor(c);
+    public static implicit operator MudExColor(DC s) => new (s);
+    public static implicit operator MudExColor(string s) => string.IsNullOrEmpty(s) ? Default : new MudExColor(s);
+    public static implicit operator MudExColor(uint i) => new (i);
+
+    public static MudExColor Transparent => new(Color.Transparent);
+    public static MudExColor Default => Transparent;
+    public static MudExColor Info => new(Color.Info);
+    public static MudExColor Warning => new(Color.Warning);
+    public static MudExColor Error => new(Color.Error);
+    public static MudExColor Success => new(Color.Success);
+    public static MudExColor Inherit => new(Color.Inherit);
+    public static MudExColor Dark => new(Color.Dark);
+    public static MudExColor Primary => new(Color.Primary);
+    public static MudExColor Secondary => new(Color.Secondary);
+    public static MudExColor Tertiary => new(Color.Tertiary);
+    public static MudExColor Surface => new(Color.Surface);
+
 
     public bool Is(Color c) => _value.Value.Equals(c);
     public bool Is(string c) => _value.Value.Equals(c);
     public bool Is(MudColor c) => _value.Value.Equals(c);
     public bool Is(uint c) => _value.Value.Equals(c);
 
-    public override string ToString()
-        => Match(
-            color => color.ToString(),
-            mudColor => mudColor.ToString(),
-            dc => dc.ToString(),
-            s => s,
-            i => i.ToString()
-        );
+    public override string ToString() => ToString(_value);
+
+    public string ToCssStringValue() => ToCssStringValue(SuggestedFormat);
 
     /// <summary>
     /// Creates a css compatible string representation of the color.
     /// </summary>
-    public string ToCssStringValue(MudColorOutputFormats format = MudColorOutputFormats.RGBA)
+    public string ToCssStringValue(MudColorOutputFormats format)
         => Match(
             color => color.CssVarDeclaration(),
             mudColor => mudColor.ToString(format),
             dc => dc.ToMudColor().ToString(format),
-            s => s.ToLower().StartsWith("var") ? s : new MudColor(s).ToString(format),
-            //s => new MudColor(s).ToString(format),
+            s =>
+            {
+                if (s.StartsWith("--"))
+                    s = $"var({s})";
+                return s.ToLower().StartsWith("var") ? s : new MudColor(s).ToString(format);
+            },
             i => FromUInt(i).ToString(format)
         );
 
@@ -84,6 +108,18 @@ public readonly struct MudExColor
             dc => Task.FromResult(dc.ToMudColor()),
             s => Task.FromResult(new MudColor(s)),
             i => Task.FromResult(FromUInt(i))
+        );
+
+    /// <summary>
+    /// Creates a MudColor independent of what the underlying type is.
+    /// </summary>
+    public MudColor ToMudColor()
+        => Match(
+            color => default,
+            mc => mc,
+            dc => dc.ToMudColor(),
+            s => new MudColor(s),
+            i => FromUInt(i)
         );
 
     /// <summary>
@@ -112,6 +148,23 @@ public readonly struct MudExColor
             (byte)((value >> 8) & 0xFF), (byte)(value & 0xFF), (byte)((value >> 24) & 0xFF));
     }
 
-    
+    private static string ToString(OneOf<Color, MudColor, DC, string, uint> oneOf)
+        => oneOf.Match(
+            color => color.ToString(),
+            mudColor => mudColor.ToString(),
+            dc => dc.ToString(),
+            s => s,
+            i => i.ToString()
+        );
 
+    public static MudColorOutputFormats GetSuggestedFormat(string str)
+    {
+        if (str.ToLower().StartsWith("rgba"))
+            return MudColorOutputFormats.RGBA;
+        if (str.ToLower().StartsWith("rgb"))
+            return MudColorOutputFormats.RGB;
+        if (str.ToLower().StartsWith("#") && str.Length == 9)
+            return MudColorOutputFormats.HexA;
+        return MudColorOutputFormats.Hex;
+    }
 }

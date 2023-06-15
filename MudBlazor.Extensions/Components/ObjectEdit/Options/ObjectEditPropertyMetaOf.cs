@@ -6,6 +6,8 @@ public sealed class ObjectEditPropertyMetaOf<T> : ObjectEditPropertyMeta
 {
     public Type ModelType { get; }
 
+    public new ObjectEditMeta<T> MainEditMeta => base.MainEditMeta as ObjectEditMeta<T>;
+
 
     public ObjectEditPropertyMetaOf(PropertyInfo propertyInfo, object referenceHolder) : base(propertyInfo, referenceHolder)
     {

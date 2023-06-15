@@ -6,13 +6,15 @@
 }*/
 
 
-.mud-ex-color-edit-picker {    
+.mud-ex-color-edit-picker {
     margin: 0;
-    padding: 0;
-
-    .mud-paper {        
-        overflow: auto;
+    padding: 0;    
+        
+    .mud-paper {
+        overflow: auto;        
         max-height: 435px;
+        height: 100%;
+        margin: 0;        
         padding: 0;
     }
 }
@@ -23,8 +25,14 @@
     }
 }
 
-.mud-ex-color-edit-picker-html-list-item {
+.mud-ex-color-edit-picker-html-list-item:not(.mud-ex-default-list-item) {
     .mud-icon-root {
         fill: attr(data-color);
+    }
+}
+
+.mud-ex-default-list-item {
+    .mud-icon-root {
+        fill: currentColor;
     }
 }

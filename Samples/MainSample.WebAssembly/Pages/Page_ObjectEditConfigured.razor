@@ -66,7 +66,6 @@
         meta.Properties(m => m.Age, m => m.Gender).WithAdditionalAttribute("Variant", Variant.Text, true).WrapInMudItem(x => x.xs = 6);
         meta.Property(m => m.Gender)
             .WithDescription("This changes the Variant if Age is at least 18 and is enabled if Age is more than 1")
-            .AsReadOnly()
             .AsReadOnlyIf(m => m.Age < 1)
             .WithAttributesIf(model => model.Age >= 18, new Dictionary<string, object>
                 {

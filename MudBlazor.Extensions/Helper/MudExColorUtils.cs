@@ -52,6 +52,8 @@ public static class MudExColorUtils
 
     public static string ToHex(this System.Drawing.Color color) => $"#{color.R:X2}{color.G:X2}{color.B:X2}";
 
+    public static bool IsValid(this MudColor? color) =>  color is not null && color != default && color is not { A: 0, R: 0, G: 0, B: 0 };
+
     public static bool TryParseFromHtmlColorName(string s, out System.Drawing.Color color)
     {
         color = default;

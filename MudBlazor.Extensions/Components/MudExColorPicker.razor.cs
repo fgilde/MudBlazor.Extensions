@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Utilities;
+using Newtonsoft.Json.Linq;
 
 namespace MudBlazor.Extensions.Components
 {
@@ -37,9 +38,8 @@ namespace MudBlazor.Extensions.Components
             {
                 try
                 {
-                    var fieldInfo = typeof(MudColorPicker).GetField("_color", BindingFlags.NonPublic | BindingFlags.Instance);
-                    var c = fieldInfo?.GetValue(this) as MudColor;
-                    fieldInfo?.SetValue(this, InitialColor);
+                    var c = _value;
+                    _value = InitialColor;
                     typeof(MudColorPicker).GetMethod("UpdateBaseColor", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(this, new object[] { });
                     typeof(MudColorPicker).GetMethod("UpdateColorSelectorBasedOnRgb", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(this, new object[] { });
                     typeof(MudColorPicker).GetMethod("UpdateBaseColorSlider", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(this, new object[] { InitialColor.H });
@@ -47,7 +47,7 @@ namespace MudBlazor.Extensions.Components
                     SetTextAsync(InitialColor.ToString(!DisableAlpha ? MudColorOutputFormats.HexA : MudColorOutputFormats.Hex), false).AndForget();
                     FieldChanged(InitialColor);
                     StateHasChanged();
-                    fieldInfo?.SetValue(this, c);
+                    _value = c;
                 }
                 catch { /* ignore */ }
             }

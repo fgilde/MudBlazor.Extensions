@@ -40,7 +40,7 @@ public sealed class ObjectEditMeta<T> : ObjectEditMeta
     public IEnumerable<ObjectEditPropertyMetaOf<T>> Properties<TPropertyType>()
         => AllProperties.Where(m => m.PropertyInfo.PropertyType == typeof(TPropertyType)).Cast<ObjectEditPropertyMetaOf<T>>();
 
-    public ObjectEditPropertyMetaOf<T> Property(Expression<Func<T, object>> expression)
+    public ObjectEditPropertyMetaOf<T> Property(Expression<Func<T, object>> expression) // TODO: Expression<Func<T, TProperty>> returns ObjectEditPropertyMetaOf<TModel, TProperty>
     {
         //var infos = PropertyPath<T>.Get(expression).ToArray();
         var infos = expression.GetMemberInfosPaths().ToArray();
@@ -81,5 +81,15 @@ public sealed class ObjectEditMeta<T> : ObjectEditMeta
         => !t.IsValueType && !t.IsPrimitive && t != typeof(decimal) && t != typeof(string) && !t.IsEnumerableOrArray();
 
     private List<ObjectEditPropertyMeta> ReadProperties() => GetProperties(typeof(T), Value).ToList();
-    
+
+    public ObjectEditMeta<T> UpdateAllConditionalSettings(T value)
+    {
+        AllProperties.Apply(p => p?.UpdateConditionalSettings(value));
+        return this;
+    }
+
+    public ObjectEditMeta<T> UpdateAllConditionalSettings()
+    {
+        return UpdateAllConditionalSettings(Value);
+    }
 }

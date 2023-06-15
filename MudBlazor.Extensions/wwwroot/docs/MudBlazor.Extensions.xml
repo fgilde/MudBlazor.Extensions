@@ -34,6 +34,12 @@
             Component to Edit MudExColor
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.ForceSelectOfMudColor">
+            <summary>
+            Set to true to have always MudColor filled in MudExColor as the OneOf value.
+            With this setting turned on, you can use this edit control for all of your Color Properties
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExColorPicker">
             <summary>
             A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser
@@ -121,6 +127,11 @@
         <member name="T:MudBlazor.Extensions.Components.MudExTaskBar">
             <summary>
             MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide <MudExTaskBar/> somewhere in your Layout
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.IsDark">
+            <summary>
+            This bool represents a tri state. True to edit only dark color palette, false to edit only light color palette and null to edit both
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExToggleableSearch">
@@ -262,6 +273,11 @@
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Core.MudExColor.ToMudColorAsync">
+            <summary>
+            Creates a MudColor independent of what the underlying type is.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExColor.ToMudColor">
             <summary>
             Creates a MudColor independent of what the underlying type is.
             </summary>

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Utilities;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -134,30 +136,34 @@ public partial class MudExColorBubble
     [JSInvokable]
     public async Task OnColorPreviewClick()
     {
-        string title = TryLocalize(SelectColorText);
-        var res = await DialogService?.ShowComponentInDialogAsync<MudExColorPicker>(title, "",
-            new Dictionary<string, object>()
-            {
-                {nameof(MudColorPicker.PickerVariant), PickerVariant.Static },
-                {nameof(MudColorPicker.DisableAlpha), true },
-                {nameof(MudExColorPicker.InitialColor), new MudColor(Color.ToString(MudColorOutputFormats.Hex)) },
-                {nameof(MudColorPicker.DisableToolbar), false }
-            },
+        await SelectColorWithMudExColorEdit();
+    }
+
+
+    private async Task SelectColorWithMudExColorEdit()
+    {
+        var dialogOptionsEx = DialogOptionsEx.OverriddenDefaultOptions ? DialogOptionsEx.DefaultDialogOptions : new DialogOptionsEx
+        {
+            Animation = AnimationType.FlipY,
+            DragMode = MudDialogDragMode.Simple,
+            CursorPositionOrigin = Origin.BottomCenter,
+            ShowAtCursor = true,
+            CloseButton = true
+        };
+
+        var res = await DialogService?.ShowComponentInDialogAsync<MudExColorEdit>(TryLocalize(SelectColorText), "",
+            RenderDataDefaults.ColorPickerOptions()
+                .AddOrUpdate(nameof(MudExColorEdit.PickerVariant), PickerVariant.Static)
+                .AddOrUpdate(nameof(MudExColorEdit.Value), Color.ToString(MudColorOutputFormats.Hex)),
             dialog =>
             {
                 dialog.Icon = Icons.Material.Filled.ColorLens;
                 dialog.Buttons = MudExDialogResultAction.OkCancel();
-            }, new DialogOptionsEx
-            {
-                Animation = AnimationType.FlipY,
-                DragMode = MudDialogDragMode.Simple,
-                ShowAtCursor = true,
-                CloseButton = true
-            }
-            );
+            }, dialogOptionsEx);
+
         if (!res.DialogResult.Canceled)
         {
-            Color = res.Component.Value;
+            Color = await res.Component.Value.ToMudColorAsync();
             await ColorChanged.InvokeAsync(Color);
             StateHasChanged();
         }

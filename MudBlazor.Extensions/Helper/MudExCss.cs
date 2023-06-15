@@ -121,7 +121,7 @@ public static partial class MudExCss
         {
             var color = Check.TryCatch<MudColor, Exception>(() => new MudColor(k.Value));            
             return new KeyValuePair<string, MudColor>(k.Key, color);
-        }).Where(k => k.Value != null && k.Value != default && k.Value is not { A: 0, R: 0, G: 0, B: 0 })
+        }).Where(k => k.Value?.IsValid() == true)
         .ToArray();
         return res;
     }

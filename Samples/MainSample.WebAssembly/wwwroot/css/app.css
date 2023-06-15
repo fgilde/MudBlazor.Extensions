@@ -98,14 +98,6 @@ a, .btn-link {
 
 
 
-
-
-
-
-
-
-
-
 .my-dialog-timer-field .mud-input-text {
     margin-top: -8px;
     max-width: 250px;
@@ -117,9 +109,7 @@ a, .btn-link {
 
 
 
-
-
-:root {
+:root {    
     --accent-color1: #a94553;
     --accent-color2: #423859;
     --accent-color3: #16868d;
