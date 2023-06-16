@@ -30,6 +30,7 @@ public sealed class RenderData<TPropertyType, TFieldType> : RenderData
 
     public override IRenderData InitValueBinding(ObjectEditPropertyMeta propertyMeta, Func<Task> valueChanged)
     {
+        base.InitValueBinding(propertyMeta, valueChanged);
         ToFieldTypeConverterFn ??= v => v == null ? default : v.MapTo<TFieldType>();
         ToPropertyTypeConverterFn ??= v => v == null ? default : v.MapTo<TPropertyType>();
 

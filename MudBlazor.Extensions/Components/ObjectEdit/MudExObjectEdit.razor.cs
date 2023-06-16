@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Components;
@@ -39,7 +40,7 @@ public partial class MudExObjectEdit<T>
         set => SetValue(value);
     }
 
-    [Parameter] public bool UpdateConditionsInitial { get; set; } = true;
+    public bool IsRendered { get; private set; }
     [Parameter] public int? Height { get; set; }
     [Parameter] public int? MaxHeight { get; set; }
     [Parameter] public CssUnit SizeUnit { get; set; } = CssUnit.Pixels;
@@ -49,6 +50,7 @@ public partial class MudExObjectEdit<T>
     [Parameter] public string ImportCancelText { get; set; } = "Cancel";
     [Parameter] public bool Virtualize { get; set; } = false;
     [Parameter] public bool LightOverlayLoadingBackground { get; set; } = true;
+    [Parameter] public bool AutoOverlay { get; set; } = true;
     [Parameter] public Color ToolbarButtonColor { get; set; } = Color.Inherit;
     [Parameter] public bool AddScrollToTop { get; set; } = true;
     [Parameter] public DialogPosition ScrollToTopPosition { get; set; } = DialogPosition.BottomRight;
@@ -137,9 +139,6 @@ public partial class MudExObjectEdit<T>
     {
         _importButtonColor = ToolbarButtonColor;
         await base.OnParametersSetAsync();
-        await CreateMetaIfNotExists();
-        if (Value is IEditableObject editable)
-            editable.BeginEdit();
         ResetConfirmationMessageBoxOptions ??= new MessageBoxOptions
         {
             Message = TryLocalize("Reset all properties?"),
@@ -148,17 +147,26 @@ public partial class MudExObjectEdit<T>
             YesText = TryLocalize("Reset")
         };
     }
+    
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        bool valueUpdate = parameters.TryGetValue<T>(nameof(Value), out var value) && !Equals(Value, value);
+        await base.SetParametersAsync(parameters);
+        if (valueUpdate)
+        {
+            await CreateMetaIfNotExists();
+            if (Value is IEditableObject editable)
+                editable.BeginEdit();
+        }
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            IsRendered = true;
             if (AutoSaveRestoreState)
                 await RestoreState();
-            if (UpdateConditionsInitial)
-            {
-                MetaInformation?.UpdateAllConditionalSettings(Value);
-            }
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -199,20 +207,27 @@ public partial class MudExObjectEdit<T>
         {
             if (_configService != null && ConfigureBehaviourForRegisteredConfigurations == RegisteredConfigurationBehaviour.ExecutedBefore)
                 await _configService.ConfigureAsync(MetaInformation);
-            c?.Invoke(MetaInformation);
+            
+            //c?.Invoke(MetaInformation); 
+            await Task.Run(() => c?.Invoke(MetaInformation));
+
             if (_configService != null && ConfigureBehaviourForRegisteredConfigurations == RegisteredConfigurationBehaviour.ExecutedAfter)
                 await _configService.ConfigureAsync(MetaInformation);
+            MetaInformation?.UpdateAllConditionalSettings(Value);
         }
     }
 
     protected virtual Task OnPropertyChange(ObjectEditPropertyMeta property)
     {
+        if (!IsRendered) 
+            return Task.CompletedTask;
+        
         if (AutoSaveRestoreState)
             _ = Task.Run(SaveState);
 
         if (Value != null)
             MetaInformation.UpdateAllConditionalSettings(Value);
-        
+
         return ValueChanged.InvokeAsync(Value);
     }
 

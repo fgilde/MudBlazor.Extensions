@@ -2,19 +2,25 @@
 using Nextended.Blazor.Helper;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
+using System.Reflection;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 
 public partial class RenderData : IRenderData
 {
+    protected ObjectEditPropertyMeta PropertyMeta;
     public IRenderData Wrapper { get; set; }
     public IList<IRenderData> RenderDataBeforeComponent { get; set; } = new List<IRenderData>();
     public IList<IRenderData> RenderDataAfterComponent { get; set; } = new List<IRenderData>();
     public Type ComponentType { get; set; }
     public IDictionary<string, object> Attributes { get; set; } = new Dictionary<string, object>();
     public ICustomRenderer CustomRenderer { get; set; }
-    public virtual IRenderData InitValueBinding(ObjectEditPropertyMeta propertyMeta, Func<Task> valueChanged) => this;
-    
+    public virtual IRenderData InitValueBinding(ObjectEditPropertyMeta propertyMeta, Func<Task> valueChanged)
+    {
+        PropertyMeta = propertyMeta;
+        return this;
+    }
+
     //public bool IsValidParameterAttribute(string key, object value) => ComponentRenderHelper.IsValidProperty(ComponentType, key, value);
 
     public bool IsValidParameterAttribute(string key, object value) => ComponentRenderHelper.IsValidParameter(ComponentType, key, value);
@@ -102,6 +108,11 @@ public partial class RenderData : IRenderData
             var componentInstanceClone = Attributes.ToObject(ComponentType);
             (condition.condition(componentInstanceClone) ? condition.trueFn : condition.falseFn)(this);
         });
+        if (PropertyMeta != null) {
+            _conditions?.Where(c => c.modelType == typeof(ObjectEditPropertyMeta)).Apply(condition => (condition.condition(PropertyMeta) ? condition.trueFn : condition.falseFn)(this));
+            _conditions?.Where(c => c.modelType == typeof(PropertyInfo)).Apply(condition => (condition.condition(PropertyMeta.PropertyInfo) ? condition.trueFn : condition.falseFn)(this));
+        }
+        // Notice if you want to allow more types as condition you need to do it here, and in ObjectEditPropertyMetaSettings.cs as well
         Wrapper?.UpdateConditionalSettings(model);
     }
 

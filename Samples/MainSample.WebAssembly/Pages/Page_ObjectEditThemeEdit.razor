@@ -2,20 +2,26 @@
 
 @attribute [Demo(Group = "MudExObjectEdit", Name = "Edit Current Theme", Order = 7, Documentation = "This demonstrate the MudExObjectEdit for an instance of a MudTheme ", Icon = Icons.Material.Outlined.Palette, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
-<MudButton OnClick="@TestClick">
-    Test
-</MudButton>
 
-<DemoComponent PageType="@GetType()" DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor"})">
-    @*<MudExObjectEdit @bind-Value="@ClientTheme.CurrentTheme"></MudExObjectEdit>*@
-    <MudExThemeEdit IsDark="@MainLayout.Instance.IsDark" Theme="@ClientTheme.CurrentTheme"></MudExThemeEdit> 
+<DemoComponent PageType="@GetType()" DocFiles="@(new[] {"Docs/ObjectEdit.md"})" CodeFiles="@(new[] {$"Pages/{GetType().Name}.razor"})">
+    @*<MudExEnumSelect TEnum="ThemeEditMode" @bind-Value="@_editMode"></MudExEnumSelect>*@
+
+    <MudExThemeEdit AllowModeToggle="true" 
+                    IsDark="@MainLayout.Instance.IsDark" 
+                    @bind-EditMode="@_editMode"
+                    @bind-Theme="@ClientTheme.CurrentTheme"></MudExThemeEdit>
 </DemoComponent>
 
 
 @code {
-    private Task TestClick()
+
+    private ThemeEditMode _editMode { get; set; } = ThemeEditMode.Simple;
+    
+    protected override async Task OnInitializedAsync()
     {
-        StateHasChanged();
-        return Task.CompletedTask;
+        await base.OnInitializedAsync();
+        MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
     }
+
+
 }

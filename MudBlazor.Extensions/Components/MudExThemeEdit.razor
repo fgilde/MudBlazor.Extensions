@@ -3,5 +3,17 @@
 @typeparam TTheme where TTheme : MudTheme
 
 
-
-<MudExObjectEdit T="TTheme" MetaConfiguration="ThemeEditMetaConfiguration" Value="Theme" ValueChanged="OnThemeChanged" />
+<MudExObjectEditForm LightOverlayLoadingBackground="@(!IsDark ?? false)" 
+                     IsLoading="@_isLoading" 
+                     AutoSkeletonOnLoad="true" 
+                     T="TTheme" 
+                     MetaConfiguration="ThemeEditMetaConfiguration" 
+                     Value="Theme" 
+                     ValueChanged="OnThemeChanged" >
+    <ToolBarContent>
+        @if (AllowModeToggle)
+        {
+            <MudExEnumSelect Clearable="false" TEnum="ThemeEditMode" ValueChanged="@EditModeChangedInternally" Value="@EditMode"></MudExEnumSelect>
+        }
+    </ToolBarContent>
+</MudExObjectEditForm>

@@ -48,6 +48,7 @@ public static class RenderDataDefaults
 
 
         RegisterMudExColorEditForColors();
+        //RegisterMudColorPickerForColors();
         
         RegisterDefault<MudExColor, MudExColor, MudExColorEdit>(f => f.Value);
         RegisterDefault<MudExColor?, MudExColor, MudExColorEdit>(f => f.Value);
@@ -79,15 +80,17 @@ public static class RenderDataDefaults
 
     public static void RegisterMudExColorEditForColors()
     {
-        RegisterDefault<MudColor, MudExColor, MudExColorEdit>(f => f.Value, ColorPickerOptions(), c => c, c => c.ToMudColor());
+        //RegisterDefault<MudColor, MudExColor, MudExColorEdit>(f => f.Value, ColorPickerOptions(), c => c, c => c.ToMudColor());
+        RegisterDefault<MudColor, string, MudExColorEdit>(f => f.ValueString, ColorPickerOptions());
+
         RegisterDefault<System.Drawing.Color, MudExColor, MudExColorEdit>(f => f.Value, ColorPickerOptions(), c => c, c => c.ToMudColor().ToDrawingColor());
         RegisterDefault<System.Drawing.Color?, MudExColor, MudExColorEdit>(f => f.Value, ColorPickerOptions(), c => c ?? MudExColor.Default, c => c.ToMudColor().ToDrawingColor());
     }
 
     public static void RegisterMudColorPickerForColors()
     {
-        RegisterDefault<MudColor, MudColor, MudColorPicker>(f => f.Value, ColorPickerOptions(), c => c, c => c);
-        RegisterDefault<System.Drawing.Color, MudColor, MudColorPicker>(f => f.Value, ColorPickerOptions(), c => new MudColor(c.R, c.G, c.B, c.A), mc => System.Drawing.Color.FromArgb(mc.A, mc.R, mc.G, mc.B));
+        RegisterDefault<MudColor, MudColor, MudExColorPicker>(f => f.Value, ColorPickerOptions(), c => c, c => c);
+        RegisterDefault<System.Drawing.Color, MudColor, MudExColorPicker>(f => f.Value, ColorPickerOptions(), c => new MudColor(c.R, c.G, c.B, c.A), mc => System.Drawing.Color.FromArgb(mc.A, mc.R, mc.G, mc.B));
     }
 
     internal static Dictionary<string, object> ColorPickerOptions()

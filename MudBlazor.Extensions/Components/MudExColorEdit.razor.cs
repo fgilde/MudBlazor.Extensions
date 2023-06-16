@@ -23,6 +23,15 @@ public sealed partial class MudExColorEdit
     [Parameter] public IStringLocalizer Localizer { get; set; }
     [Parameter] public Variant FilterVariant { get; set; }
     [Parameter] public MudExColor Value { get => _value; set => _value = value; }
+    [Parameter] public EventCallback<MudExColor> ValueChanged { get; set; }
+
+    [Parameter]
+    public KeyValuePair<string, MudColor>[] CssVars
+    {
+        get => _cssVars;
+        set => _cssVars = value;
+    }
+
     [Parameter] public string ValueString
     {
         get
@@ -41,13 +50,15 @@ public sealed partial class MudExColorEdit
         }
         set => _value = value;
     }
+    
+    [Parameter] public EventCallback<string> ValueStringChanged { get; set; }
+
 
     [Parameter] public bool ShowThemeColors { get; set; } = true;
     [Parameter] public bool ShowHtmlColors { get; set; } = true;
     [Parameter] public bool ShowCssColorVariables { get; set; } = true;
     [Parameter] public string Filter { get; set; }
     [Parameter] public ColorPreviewMode PreviewMode { get; set; } = ColorPreviewMode.Both;
-    [Parameter] public EventCallback<MudExColor> ValueChanged { get; set; }
     [Parameter] public bool DelayValueChangeToPickerClose { get; set; }
     [Parameter] public AutoCloseBehaviour AutoCloseBehaviour { get; set; } = AutoCloseBehaviour.OnDefinedSelect;
     [Parameter] public MudColorOutputFormats? MudColorStringFormat { get => _suggestedFormat; set => _suggestedFormat = value; }
@@ -65,13 +76,16 @@ public sealed partial class MudExColorEdit
 
     public string TryLocalize(string text, params object[] args) => LocalizerToUse.TryLocalize(text, args);
 
-
-    protected override async Task OnInitializedAsync()
+    
+    private async Task EnsureCssVarsAsync()
     {
-        _cssVars = await MudExCss.GetCssColorVariablesAsync();
-        _palette = _cssVars.Select(x => x.Value).Distinct().ToArray();
-        await base.OnInitializedAsync();
+        if (_cssVars == null || _cssVars.Length == 0)
+        {
+            _cssVars = await MudExCss.GetCssColorVariablesAsync();
+            _palette = _cssVars.Select(x => x.Value).Distinct().ToArray();
+        }
     }
+
     protected override void OnInitialized()
     {
         AdornmentIcon = Icons.Material.Filled.ColorLens;
@@ -101,20 +115,27 @@ public sealed partial class MudExColorEdit
     protected override void OnPickerClosed()
     {
         if (DelayValueChangeToPickerClose)
-            ValueChanged.InvokeAsync(Value);
+            RaiseChanged();
+    }
+
+    private void RaiseChanged()
+    {
+        ValueChanged.InvokeAsync(Value);
+        ValueStringChanged.InvokeAsync(ValueString);
     }
 
     protected override void OnPickerOpened()
     {
         _ = UpdateInitialMudColor();
+        _ = EnsureCssVarsAsync();
         base.OnPickerOpened();
     }
     
     protected override async Task StringValueChanged(string value)
     {
-        if(!rendered)
-            return;
         SetSuggestedFormat();
+        if (!rendered)
+            return;
         Touched = true;
         Value = Converter.Get(value);
         if (ForceSelectOfMudColor)
@@ -147,7 +168,7 @@ public sealed partial class MudExColorEdit
     {
         if (DelayValueChangeToPickerClose && IsOpen)
             return;
-        ValueChanged.InvokeAsync(Value);
+        RaiseChanged();
     }
 
 

@@ -14,9 +14,10 @@
 {
     <InputFile accept="application/json" id="importInput" OnChange="Import" hidden/>
 }
-@if (IsLoading || IsInternalLoading)
+
+@if (AutoOverlay && (IsLoading || IsInternalLoading))
 {
-    <MudOverlay Class="mud-ex-loading-overlay" Visible="@(IsLoading || IsInternalLoading)" DarkBackground="@(!LightOverlayLoadingBackground)" LightBackground="@LightOverlayLoadingBackground" Absolute="true">
+    <MudOverlay Class="mud-ex-loading-overlay" Visible="@(AutoOverlay && (IsLoading || IsInternalLoading))" DarkBackground="@(!LightOverlayLoadingBackground)" LightBackground="@LightOverlayLoadingBackground" Absolute="true">
         <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
     </MudOverlay>
 }

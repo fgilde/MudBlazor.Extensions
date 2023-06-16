@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Management;
+using System.Reflection;
 using Microsoft.Extensions.Localization;
 using Nextended.Core.Extensions;
 
@@ -42,8 +43,12 @@ public class ObjectEditPropertyMetaSettings
         return localizerToUse != null ? localizerToUse[res] : res;
     }
 
-    internal void UpdateConditionalSettings<TModel>(TModel model) 
-        => _conditions.Where(c => c.modelType == typeof(TModel)).Apply(condition => (condition.condition(model) ? condition.trueFn : condition.falseFn)(this));
+    internal void UpdateConditionalSettings<TModel>(TModel model)
+    {
+        _conditions.Where(c => c.modelType == typeof(TModel)).Apply(condition => (condition.condition(model) ? condition.trueFn : condition.falseFn)(this));
+        _conditions.Where(c => c.modelType == typeof(ObjectEditPropertyMeta)).Apply(condition => (condition.condition(Owner) ? condition.trueFn : condition.falseFn)(this));
+        _conditions.Where(c => c.modelType == typeof(PropertyInfo)).Apply(condition => (condition.condition(Owner.PropertyInfo) ? condition.trueFn : condition.falseFn)(this));
+    }
 
     public void AddCondition<TModel>(Func<TModel, bool> condition, Action<ObjectEditPropertyMetaSettings> trueFn, Action<ObjectEditPropertyMetaSettings> falseFn) 
         => _conditions.Add((typeof(TModel), model => condition((TModel)model), trueFn, falseFn));
