@@ -1,8 +1,18 @@
-# MudBlazor.Extensions
-MudBlazor.Extensions is a small extension for MudBlazor from https://mudblazor.com/
+[![GitHub](https://img.shields.io/github/license/garderoben/mudblazor?color=594ae2&style=flat-square&logo=github)](https://github.com/fgilde/MudBlazor.Extensions/blob/master/LICENSE)
+[![Nuget version](https://img.shields.io/nuget/v/MudBlazor.Extensions?color=ff4081&label=nuget%20version&logo=nuget&style=flat-square)](https://www.nuget.org/packages/MudBlazor.Extensions/)
+[![Website](https://img.shields.io/website?label=mudex.org&url=http%3A%2F%2Fmudex.org)](https://mudex.org)
 
-[Running Sample Application (Azure)](https://mudex.azurewebsites.net/)\
-[Running Sample Application (Cloudflare)](https://mudblazor-extensions.pages.dev/)
+
+# MudBlazor.Extensions
+MudBlazor.Extensions is a extension library for MudBlazor Component library from https://mudblazor.com
+
+
+## Demos
+[![Azure](https://img.shields.io/badge/Azure-Demo-blue)](https://mudex.azurewebsites.net/) 
+[![Cloudflare](https://img.shields.io/badge/Cloudflare-Demo-blue)](https://mudblazor-extensions.pages.dev)
+#
+
+
 <!---
 [Running Sample Application (Github Pages)](https://fgilde.github.io/MudBlazor.Extensions/sample/wwwroot/)
 -->
