@@ -40,7 +40,8 @@ public sealed class MudExCssBuilder: IAsyncDisposable, IMudExClassAppearance
 
     public MudExCssBuilder AddClass(string value)
     {
-        _cssClasses.TryAdd(value, 0);
+        if (!string.IsNullOrEmpty(value))
+            _cssClasses.TryAdd(value, 0);
         return this;
     }
     

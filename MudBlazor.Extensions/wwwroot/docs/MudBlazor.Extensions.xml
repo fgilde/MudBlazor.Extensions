@@ -183,11 +183,276 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.IObjectMetaConfiguration`1">
+            <summary>
+            Interface for configuring the <see cref="T:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1"/> component for a meta of TModel.
+            </summary>
+            <typeparam name="TModel">Model type to configure</typeparam>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.IObjectMetaConfiguration`1.ConfigureAsync(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{`0})">
+            <summary>
+            Configure meta 
+            </summary>
+            <param name="meta"></param>
+            <returns></returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1">
             <summary>
             Powerful component to edit a set of items and their properties.
             </summary>
             <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Height">
+            <summary>
+            Gets or sets the height of the collection editor.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.MaxHeight">
+            <summary>
+            Gets or sets the maximum height of the collection editor.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.SizeUnit">
+            <summary>
+            Gets or sets the size unit for the collection editor.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Style">
+            <summary>
+            Gets or sets the style of the collection editor.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Items">
+            <summary>
+            Gets or sets the collection of items to be edited.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.ItemsChanged">
+            <summary>
+            Gets or sets the event callback for when items are changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.ItemToStringFunc">
+            <summary>
+            Gets or sets the function to convert an item to a string.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.TextAdd">
+            <summary>
+            Gets or sets the text for the add button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.TextRemoveAll">
+            <summary>
+            Gets or sets the text for the remove all button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.TextEdit">
+            <summary>
+            Gets or sets the text for the edit button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Label">
+            <summary>
+            Gets or sets the label of the collection editor.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Virtualize">
+            <summary>
+            Gets or sets a value indicating whether the collection should be virtualized.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.ReadOnly">
+            <summary>
+            Gets or sets a value indicating whether the collection is read-only.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.HelperText">
+            <summary>
+            Gets or sets the helper text for the collection editor.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.ItemIcon">
+            <summary>
+            Gets or sets the icon for each item in the collection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.RemoveIcon">
+            <summary>
+            Gets or sets the icon for the remove button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.RemoveAllIcon">
+            <summary>
+            Gets or sets the icon for the remove all button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.AddIcon">
+            <summary>
+            Gets or sets the icon for the add button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.EditIcon">
+            <summary>
+            Gets or sets the icon for the edit and preview button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.ViewIcon">
+            <summary>
+            Gets or sets the icon for the view button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Variant">
+            <summary>
+            Gets or sets the variant of the collection editor.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.ShowClearButton">
+            <summary>
+            Gets or sets a value indicating whether to show the clear button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.AllowAdd">
+            <summary>
+            Gets or sets a value indicating whether to allow adding items.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.AllowEditOrPreview">
+            <summary>
+            Gets or sets a value indicating whether to allow editing or previewing items.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.AllowRemove">
+            <summary>
+            Gets or sets a value indicating whether to allow removing items.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.DialogOptions">
+            <summary>
+            Gets or sets the options for the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.ToolbarColor">
+            <summary>
+            Gets or sets the color of the toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.ToolbarPosition">
+            <summary>
+            Gets or sets the position of the toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.StickToolbar">
+            <summary>
+            Gets or sets a value indicating whether the toolbar sticks.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.StyleToolbar">
+            <summary>
+            Gets or sets the style of the toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.ClassToolbar">
+            <summary>
+            Gets or sets the class of the toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Class">
+            <summary>
+            Gets or sets the class of the collection editor.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.ToolbarButtonColor">
+            <summary>
+            Gets or sets the color of the toolbar buttons.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.FilterMode">
+            <summary>
+            Gets or sets the filter mode.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Filter">
+            <summary>
+            Gets or sets the filter string.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.SearchIcon">
+            <summary>
+            Gets or sets the icon for the search button.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.GetMudGridStyle">
+            <summary>
+            Generates the style string for the MudGrid component.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.GetToolbarStyle">
+            <summary>
+            Generates the style string for the toolbar.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.GetStyle">
+            <summary>
+            Generates the style string for the collection editor.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.OnParametersSet">
+            <summary>
+            Called when the parameters are set.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Add(`0)">
+            <summary>
+            Adds an item to the collection.
+            </summary>
+            <param name="item">The item to add.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Remove(`0)">
+            <summary>
+            Removes an item from the collection.
+            </summary>
+            <param name="item">The item to remove.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.RaiseChanged">
+            <summary>
+            Raises the ItemsChanged event.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.RemoveAll">
+            <summary>
+            Removes all items from the collection.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Edit(`0)">
+            <summary>
+            Edits an item in the collection.
+            </summary>
+            <param name="item">The item to edit.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.SetValue(`0,`0)">
+            <summary>
+            Sets the value of an item in the collection.
+            </summary>
+            <param name="item">The item to set the value on.</param>
+            <param name="newValue">The new value for the item.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.View(`0)">
+            <summary>
+            Views an item in the collection.
+            </summary>
+            <param name="item">The item to view.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.ItemNameRender(`0)">
+            <summary>
+            Renders the item name
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Add">
+            <summary>
+            Opens the dialog to add an item to the collection.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1">
             <summary>
@@ -195,40 +460,733 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.IsLoading">
+            <summary>
+            Whether the component should show a loading indicator.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Value">
+            <summary>
+            The object to be edited by the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Height">
+            <summary>
+            The height of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.MaxHeight">
+            <summary>
+            The maximum height of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.SizeUnit">
+            <summary>
+            The size unit of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ImportNeedsConfirmation">
+            <summary>
+            Whether the import action needs confirmation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.StateKey">
+            <summary>
+            The state key for saving and restoring the component state.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ImportConfirmText">
+            <summary>
+            The text for confirming an import action.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ImportCancelText">
+            <summary>
+            The text for cancelling an import action.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Virtualize">
+            <summary>
+            Whether the component should be virtualized.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.LightOverlayLoadingBackground">
+            <summary>
+            Whether the component should have a light overlay loading background.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.AutoOverlay">
+            <summary>
+            Whether the component should automatically display an overlay when loading.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ToolbarButtonColor">
+            <summary>
+            The color of the toolbar buttons.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.AddScrollToTop">
+            <summary>
+            Whether the component should add a scroll to top button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ScrollToTopPosition">
+            <summary>
+            The position of the scroll to top button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.AllowExport">
+            <summary>
+            Whether export functionality is enabled.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.AllowImport">
+            <summary>
+            Whether import functionality is enabled.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.AutoSaveRestoreState">
+            <summary>
+            Whether the component should automatically save and restore its state.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.StateTargetStorage">
+            <summary>
+            The storage location for saving and restoring component state.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ExportFileName">
+            <summary>
+            The file name for exporting the component data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ImportIcon">
+            <summary>
+            The icon to display for the import action.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.SearchIcon">
+            <summary>
+            The icon to display for the search action.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ExpandCollapseIcon">
+            <summary>
+            The icon to display for expanding and collapsing.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ExportIcon">
+            <summary>
+            The icon to display for the export action.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.AutoSkeletonOnLoad">
+            <summary>
+            Whether to automatically display the skeleton loading state on component load.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ToolbarColor">
+            <summary>
+            The color of the toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.GroupLineColor">
+            <summary>
+            The color of the group lines in the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.GroupElevation">
+            <summary>
+            The elevation of the group.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ToolBarElevation">
+            <summary>
+            The elevation of the toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Class">
+            <summary>
+            A CSS class for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Style">
+            <summary>
+            The inline CSS style for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ToolBarClass">
+            <summary>
+            A CSS class for the component toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ToolBarPaperClass">
+            <summary>
+            A CSS class for the component toolbar paper.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.StickyToolbar">
+            <summary>
+            Whether the toolbar should be sticky to the top of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.StickyToolbarTop">
+            <summary>
+            The positioning CSS value for a sticky toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.AfterImport">
+            <summary>
+            Called after the component has imported data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.AfterExport">
+            <summary>
+            Called after the component has exported data.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.BeforeExport">
-            Here you can change content of parameter to manipulate export data
+            <summary>
+            Called before the component exports data. Provides the export data to be manipulated.
+            If you need to change content of parameter to manipulate export data you can do it here
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.BeforeImport">
+            <summary>
+            Called before the component imports data. Provides the import data to be manipulated.
             Here you can change content of parameter to manipulate import data
             For example you can remove some properties or change the values
             This is called before the import is executed
             importData.Json = "{\"FirstName\": \"Changed Test\"}";
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ValueChanged">
+            <summary>
+            Called when the edited value is changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.PropertyChanged">
+            <summary>
+            Called when a property of the edited object is changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.MetaInformation">
+            <summary>
+            The object edit metadata for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ShowPathAsTitleForEachProperty">
+            <summary>
+            Whether to show the property path as title for each property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.PathDisplayMode">
+            <summary>
+            The path display mode for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.GroupingStyle">
+            <summary>
+            The grouping style for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.FilterMode">
+            <summary>
+            The filter mode for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Filter">
+            <summary>
+            The filter value for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.AutoHideDisabledFields">
+            <summary>
+            Whether to automatically hide disabled fields.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.DisableGrouping">
+            <summary>
+            Whether to disable grouping.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.DefaultGroupName">
+            <summary>
+            The default group name for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.DisableFieldFallback">
+            <summary>
+            Whether to disable field fallback.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.WrapInMudGrid">
+            <summary>
+            Whether to wrap the component in a MudGrid component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.GroupsCollapsible">
+            <summary>
+            Whether groups are collapsible in the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.GlobalResetSettings">
+            <summary>
+            The global reset settings for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.DefaultPropertyResetSettings">
+            <summary>
+            The default property reset settings for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ResetConfirmationMessageBoxOptions">
+            <summary>
+            The message box options for reset confirmation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ResetConfirmationDialogOptions">
+            <summary>
+            The dialog options for reset confirmation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.MetaConfiguration">
+            <summary>
+            The action to perform for object metadata configuration.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.MetaConfigurationAsync">
+            <summary>
+            The async action to perform for object metadata configuration.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ToolBarActionAlignment">
+            <summary>
+            The alignment of actions in the component toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ToolBarContent">
+            <summary>
+            The content to display in the component toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ConfigureBehaviourForRegisteredConfigurations">
+            <summary>
+            The behaviour how registered Meta and configured meta should applied
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ConfigureMetaInformationAlways">
             If this setting is true a manual passed MetaInformation will also re configured
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ErrorMessage">
+            <summary>
+            Error message to display
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Editors">
+            <summary>
+            All rendered editors
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ExpansionPanel">
+            <summary>
+            ExpansionPanels
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Ref">
+            <summary>
+            References to editors
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.OnParametersSetAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.OnFinishedRenderAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.GetUpdatedValue">
+            <summary>
+            Returns the current value independent of disabled value bindings
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Reset">
+            <summary>
+            Resets all values
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Clear">
+            <summary>
+            Clears all input fields
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.RestoreState(System.Boolean)">
             <summary>
             Restore state if available and returns true if state was restored otherwise false.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.DeleteState">
+            <summary>
+            Deletes the current state
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.SaveState">
+            <summary>
+            Saves the current state
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.OnPropertyChange(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
+            <summary>
+            Called when a property value is changed
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1">
             <summary>
             Dialog for editing objects with the MudExObjectEditForm
             </summary>
-            <typeparam name="T"></typeparam>
+            <typeparam name="T">Type of object being edited</typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.OverwriteActionBar">
+            <summary>
+            If set to true, overwrite the standard action bar of the dialog with custom content.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.MudDialog">
+            <summary>
+            The MudDialog instance that represents the current dialog instance that is open.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.DisableSidePadding">
+            <summary>
+            If set to true, remove the side padding of the dialog content.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ClassDialog">
+            <summary>
+            The CSS class to apply to the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ClassContent">
+            <summary>
+            The CSS class to apply to the content area of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ClassDialogForm">
+            <summary>
+            The CSS class to apply to the form element of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ClassActions">
+            <summary>
+            The CSS class to apply to the action buttons of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ClassTitle">
+            <summary>
+            The CSS class to apply to the title of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ContentStyle">
+            <summary>
+            The CSS styles to apply to the content area of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.DialogStyle">
+            <summary>
+            The CSS styles to apply to the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.DefaultFocus">
+            <summary>
+            The default focus location for the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.DialogIcon">
+            <summary>
+            The name of the icon to display in the dialog header area.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ErrorAnimation">
+            <summary>
+            The type of animation to display when an error occurs.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.DialogIconColor">
+            <summary>
+            The color of the dialog icon for when the dialog is used in relation to a particular color theme.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.CustomSubmit">
             <summary>
-            Can be used as custom submit function. Dialog will only closed if result of this function is empty or null otherwise result will displayed as error message.
-            This is usefull to keep dialog open until server save is succeeded
+            An optional custom submit function.
+            If a string is returned that string will be treated as an error message and displayed in place of the default success message.
+            Dialog will only closed if result of this function is empty or null otherwise result will displayed as error message.
+            This can be useful to keep dialog open until server save is succeeded and not failed
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.OnPropertyChange(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
+            <summary>
+            Customize what happens when a property changes.
+            </summary>
+            <param name="property">The property that has been changed.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.OnSubmit(Microsoft.AspNetCore.Components.Forms.EditContext)">
+            <summary>
+            Called when the form is submitted.
+            </summary>
+            <param name="ctx">The edit context that represents the current state of the form's data.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.Cancel">
+            <summary>
+            Called when the Cancel button is clicked.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1">
             <summary>
             Powerful component to edit an object and its properties.
             </summary>
-            <typeparam name="T"></typeparam>
+            <typeparam name="T">Type of object being edited</typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.HasErrors">
+            <summary>
+            Returns true if there are any errors in the edit form fields
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.Validated">
+            <summary>
+            Returns true if both FluentValidation and DataAnnotation validation have been completed successfully
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.CancelButtonVariant">
+            <summary>
+            The variant of the cancel button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.SaveButtonVariant">
+            <summary>
+            The variant of the save button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.CancelButtonColor">
+            <summary>
+            The color of the cancel button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.SaveButtonColor">
+            <summary>
+            The color of the save button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.CancelButtonIcon">
+            <summary>
+            The icon of the cancel button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.SaveButtonIcon">
+            <summary>
+            The icon of the save button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.SaveButtonIconAlignment">
+            <summary>
+            The alignment of the icon for the save button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.CancelButtonIconAlignment">
+            <summary>
+            The alignment of the icon for the cancel button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.CancelButtonAsIconButton">
+            <summary>
+            If true, display the cancel button as an icon button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.SaveButtonAsIconButton">
+            <summary>
+            If true, display the save button as an icon button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.OnValidSubmit">
+            <summary>
+            An event callback for when the form is successfully submitted
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.OnCancel">
+            <summary>
+            An event callback for when the cancel button is pressed
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.Elevation">
+            <summary>
+            The elevation of the card containing the form
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.ActionBarColor">
+            <summary>
+            The color of the action bar
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.StickyActionBar">
+            <summary>
+            If true, the action bar is sticky
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.StickyStickyActionBarBottom">
+            <summary>
+            The distance from the bottom of the viewport to the bottom of the sticky action bar
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.ActionBarStyle">
+            <summary>
+            The style of the action bar
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.ActionBarClass">
+            <summary>
+            The class of the action bar
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.FormClass">
+            <summary>
+            The class of the form itself
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.CardClass">
+            <summary>
+            The class of the card containing the form
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.SaveButtonText">
+            <summary>
+            The text displayed on the save button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.CancelButtonText">
+            <summary>
+            The text displayed on the cancel button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.ShowSaveButton">
+            <summary>
+            If true, display the save button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.ShowCancelButton">
+            <summary>
+            If true, display the cancel button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.ActionBarActionAlignment">
+            <summary>
+            The alignment of the action bar buttons
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.ActionContent">
+            <summary>
+            RenderFragment of action content
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.RenderActionContentFirst">
+            <summary>
+            If true, render action content before the form
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.RenderFormActionsInToolBar">
+            <summary>
+            If true, renders form actions (submit, cancel) in a tool bar
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.Form">
+            <summary>
+            Reference to EditForm
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.OverwriteActionBar">
+            <summary>
+            Returns true if OverwriteActionBar is false, otherwise returns false
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.UseFormSubmit">
+            <summary>
+            If true, submit the form on button click. Otherwise, do not submit until validation is complete
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.SubmitButtonType">
+            <summary>
+            Returns the button type of the submit button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1._fluentValidated">
+            <summary>
+            Returns true if FluentValidation validation was completed successfully, otherwise returns false
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1._dataAnnotationsValidated">
+            <summary>
+            Returns true if DataAnnotation validation was completed successfully, otherwise returns false
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1._dataValidations">
+            <summary>
+            Returns a list of validation results produced by DataAnnotation validation
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.OnSubmitButtonClick">
+            <summary>
+            Handles form submission when UseFormSubmit is false
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.OnSubmit(Microsoft.AspNetCore.Components.Forms.EditContext)">
+            <summary>
+            Called when the form is submitted
+            </summary>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.Cancel">
+            <summary>
+            Resets the form
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.GetErrors">
+            <summary>
+            Returns a list of all errors in the form fields
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.GetFluentValidationErrors">
+            <summary>
+            Returns a list of validation errors produced by FluentValidation validation
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.GetDataAnnotationErrors">
+            <summary>
+            Returns a list of validation errors produced by DataAnnotation validation
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.GetActionBarStyle">
+            <summary>
+            Applies styles to the action bar based on properties
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.GetActionBarClass">
+            <summary>
+            Returns the class of the action bar based on properties
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit">
             <summary>

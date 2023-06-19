@@ -27,14 +27,26 @@ namespace MudBlazor.Extensions.Components.ObjectEdit;
 //[HasDocumentation("ObjectEdit.md")]
 public partial class MudExObjectEdit<T>
 {
-    private IObjectMetaConfiguration<T> _configService => Get<IObjectMetaConfiguration<T>>();
+    private IObjectMetaConfiguration<T> ConfigService => Get<IObjectMetaConfiguration<T>>();
     private Color _importButtonColor;
     private bool _restoreCalled;
+    private T _value;
+    private List<MudExpansionPanel> _groups = new();
 
-
-    [Parameter] public bool IsLoading { get; set; }
     protected bool IsInternalLoading;
+    protected virtual RenderFragment InternalToolBarContent => null;
+    protected bool Primitive => IsPrimitive();
 
+
+    #region Parameters
+    /// <summary>
+    /// Whether the component should show a loading indicator.
+    /// </summary>
+    [Parameter] public bool IsLoading { get; set; }
+
+    /// <summary>
+    /// The object to be edited by the component.
+    /// </summary>
     [Parameter]
     public T Value
     {
@@ -42,81 +54,341 @@ public partial class MudExObjectEdit<T>
         set => SetValue(value);
     }
 
+    /// <summary>
+    /// The height of the component.
+    /// </summary>
     [Parameter] public int? Height { get; set; }
+
+    /// <summary>
+    /// The maximum height of the component.
+    /// </summary>
     [Parameter] public int? MaxHeight { get; set; }
+
+    /// <summary>
+    /// The size unit of the component.
+    /// </summary>
     [Parameter] public CssUnit SizeUnit { get; set; } = CssUnit.Pixels;
-    
+
+    /// <summary>
+    /// Whether the import action needs confirmation.
+    /// </summary>
     [Parameter] public bool ImportNeedsConfirmation { get; set; }
+
+    /// <summary>
+    /// The state key for saving and restoring the component state.
+    /// </summary>
     [Parameter] public string StateKey { get; set; } = $"mud-ex-object-edit-{typeof(T).FullName}";
+
+    /// <summary>
+    /// The text for confirming an import action.
+    /// </summary>
     [Parameter] public string ImportConfirmText { get; set; } = "Import";
+
+    /// <summary>
+    /// The text for cancelling an import action.
+    /// </summary>
     [Parameter] public string ImportCancelText { get; set; } = "Cancel";
+
+    /// <summary>
+    /// Whether the component should be virtualized.
+    /// </summary>
     [Parameter] public bool Virtualize { get; set; } = false;
+
+    /// <summary>
+    /// Whether the component should have a light overlay loading background.
+    /// </summary>
     [Parameter] public bool LightOverlayLoadingBackground { get; set; } = true;
+
+    /// <summary>
+    /// Whether the component should automatically display an overlay when loading.
+    /// </summary>
     [Parameter] public bool AutoOverlay { get; set; } = true;
+
+    /// <summary>
+    /// The color of the toolbar buttons.
+    /// </summary>
     [Parameter] public Color ToolbarButtonColor { get; set; } = Color.Inherit;
+
+    /// <summary>
+    /// Whether the component should add a scroll to top button.
+    /// </summary>
     [Parameter] public bool AddScrollToTop { get; set; } = true;
+
+    /// <summary>
+    /// The position of the scroll to top button.
+    /// </summary>
     [Parameter] public DialogPosition ScrollToTopPosition { get; set; } = DialogPosition.BottomRight;
+
+    /// <summary>
+    /// Whether export functionality is enabled.
+    /// </summary>
     [Parameter] public bool AllowExport { get; set; }
+
+    /// <summary>
+    /// Whether import functionality is enabled.
+    /// </summary>
     [Parameter] public bool AllowImport { get; set; }
+
+    /// <summary>
+    /// Whether the component should automatically save and restore its state.
+    /// </summary>
     [Parameter] public bool AutoSaveRestoreState { get; set; }
+
+    /// <summary>
+    /// The storage location for saving and restoring component state.
+    /// </summary>
     [Parameter] public StateTarget StateTargetStorage { get; set; } = StateTarget.SessionStorage;
+
+    /// <summary>
+    /// The file name for exporting the component data.
+    /// </summary>
     [Parameter] public string ExportFileName { get; set; }
+
+    /// <summary>
+    /// The icon to display for the import action.
+    /// </summary>
     [Parameter] public string ImportIcon { get; set; } = Icons.Material.Outlined.FileOpen;
+
+    /// <summary>
+    /// The icon to display for the search action.
+    /// </summary>
     [Parameter] public string SearchIcon { get; set; } = Icons.Material.Outlined.Search;
+
+    /// <summary>
+    /// The icon to display for expanding and collapsing.
+    /// </summary>
     [Parameter] public string ExpandCollapseIcon { get; set; } = Icons.Material.Filled.Expand;
+
+    /// <summary>
+    /// The icon to display for the export action.
+    /// </summary>
     [Parameter] public string ExportIcon { get; set; } = Icons.Material.Filled.Save;
+
+    /// <summary>
+    /// Whether to automatically display the skeleton loading state on component load.
+    /// </summary>
     [Parameter] public bool AutoSkeletonOnLoad { get; set; }
+
+    /// <summary>
+    /// The color of the toolbar.
+    /// </summary>
     [Parameter] public MudExColor ToolbarColor { get; set; } = Color.Default;
+
+    /// <summary>
+    /// The color of the group lines in the component.
+    /// </summary>
     [Parameter] public MudExColor GroupLineColor { get; set; } = Color.Secondary;
+
+    /// <summary>
+    /// The elevation of the group.
+    /// </summary>
     [Parameter] public int? GroupElevation { get; set; }
+
+    /// <summary>
+    /// The elevation of the toolbar.
+    /// </summary>
     [Parameter] public int ToolBarElevation { get; set; }
+
+    /// <summary>
+    /// A CSS class for the component.
+    /// </summary>
     [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// The inline CSS style for the component.
+    /// </summary>
     [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// A CSS class for the component toolbar.
+    /// </summary>
     [Parameter] public string ToolBarClass { get; set; }
+
+    /// <summary>
+    /// A CSS class for the component toolbar paper.
+    /// </summary>
     [Parameter] public string ToolBarPaperClass { get; set; }
+
+    /// <summary>
+    /// Whether the toolbar should be sticky to the top of the component.
+    /// </summary>
     [Parameter] public bool StickyToolbar { get; set; }
+
+    /// <summary>
+    /// The positioning CSS value for a sticky toolbar.
+    /// </summary>
     [Parameter] public string StickyToolbarTop { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Called after the component has imported data.
+    /// </summary>
     [Parameter] public EventCallback<ImportedData<T>> AfterImport { get; set; }
+
+    /// <summary>
+    /// Called after the component has exported data.
+    /// </summary>
     [Parameter] public EventCallback<ExportedData<T>> AfterExport { get; set; }
-    /**
-     * Here you can change content of parameter to manipulate export data
-     */
+
+    /// <summary>
+    /// Called before the component exports data. Provides the export data to be manipulated.
+    /// If you need to change content of parameter to manipulate export data you can do it here
+    /// </summary>
     [Parameter] public EventCallback<ExportData<T>> BeforeExport { get; set; }
-    /**
-     * Here you can change content of parameter to manipulate import data
-     * For example you can remove some properties or change the values
-     * This is called before the import is executed
-     * importData.Json = "{\"FirstName\": \"Changed Test\"}";
-     */
+
+    /// <summary>
+    /// Called before the component imports data. Provides the import data to be manipulated.
+    /// Here you can change content of parameter to manipulate import data
+    /// For example you can remove some properties or change the values
+    /// This is called before the import is executed
+    /// importData.Json = "{\"FirstName\": \"Changed Test\"}";
+    /// </summary>
     [Parameter] public EventCallback<ImportData<T>> BeforeImport { get; set; }
+
+    /// <summary>
+    /// Called when the edited value is changed.
+    /// </summary>
     [Parameter] public EventCallback<T> ValueChanged { get; set; }
+
+    /// <summary>
+    /// Called when a property of the edited object is changed.
+    /// </summary>
     [Parameter] public EventCallback<ObjectEditPropertyMeta> PropertyChanged { get; set; }
+
+    /// <summary>
+    /// The object edit metadata for the component.
+    /// </summary>
     [Parameter] public ObjectEditMeta<T> MetaInformation { get; set; }
+
+    /// <summary>
+    /// Whether to show the property path as title for each property.
+    /// </summary>
     [Parameter] public bool ShowPathAsTitleForEachProperty { get; set; }
+
+    /// <summary>
+    /// The path display mode for the component.
+    /// </summary>
     [Parameter] public PathDisplayMode PathDisplayMode { get; set; }
+
+    /// <summary>
+    /// The grouping style for the component.
+    /// </summary>
     [Parameter] public GroupingStyle GroupingStyle { get; set; }
+
+    /// <summary>
+    /// The filter mode for the component.
+    /// </summary>
     [Parameter] public PropertyFilterMode FilterMode { get; set; } = PropertyFilterMode.Toggleable;
+
+    /// <summary>
+    /// The filter value for the component.
+    /// </summary>
     [Parameter] public string Filter { get; set; }
+
+    /// <summary>
+    /// Whether to automatically hide disabled fields.
+    /// </summary>
     [Parameter] public bool AutoHideDisabledFields { get; set; }
+
+    /// <summary>
+    /// Whether to disable grouping.
+    /// </summary>
     [Parameter] public bool DisableGrouping { get; set; }
+
+    /// <summary>
+    /// The default group name for the component.
+    /// </summary>
     [Parameter] public string DefaultGroupName { get; set; }
+
+    /// <summary>
+    /// Whether to disable field fallback.
+    /// </summary>
     [Parameter] public bool DisableFieldFallback { get; set; }
+
+    /// <summary>
+    /// Whether to wrap the component in a MudGrid component.
+    /// </summary>
     [Parameter] public bool? WrapInMudGrid { get; set; }
+
+    /// <summary>
+    /// Whether groups are collapsible in the component.
+    /// </summary>
     [Parameter] public bool GroupsCollapsible { get; set; } = true;
+
+    /// <summary>
+    /// The global reset settings for the component.
+    /// </summary>
     [Parameter] public GlobalResetSettings GlobalResetSettings { get; set; } = new();
+
+    /// <summary>
+    /// The default property reset settings for the component.
+    /// </summary>
     [Parameter] public PropertyResetSettings DefaultPropertyResetSettings { get; set; }
+
+    /// <summary>
+    /// The message box options for reset confirmation.
+    /// </summary>
     [Parameter] public MessageBoxOptions ResetConfirmationMessageBoxOptions { get; set; }
+
+    /// <summary>
+    /// The dialog options for reset confirmation.
+    /// </summary>
     [Parameter] public DialogOptionsEx ResetConfirmationDialogOptions { get; set; }
+
+    /// <summary>
+    /// The action to perform for object metadata configuration.
+    /// </summary>
     [Parameter] public Action<ObjectEditMeta<T>> MetaConfiguration { get; set; }
+
+    /// <summary>
+    /// The async action to perform for object metadata configuration.
+    /// </summary>
     [Parameter] public Task<Action<ObjectEditMeta<T>>> MetaConfigurationAsync { get; set; }
+
+    /// <summary>
+    /// The alignment of actions in the component toolbar.
+    /// </summary>
     [Parameter] public ActionAlignment ToolBarActionAlignment { get; set; } = ActionAlignment.Right;
+
+    /// <summary>
+    /// The content to display in the component toolbar.
+    /// </summary>
     [Parameter] public RenderFragment ToolBarContent { get; set; }
+
+    /// <summary>
+    /// The behaviour how registered Meta and configured meta should applied
+    /// </summary>
     [Parameter] public RegisteredConfigurationBehaviour ConfigureBehaviourForRegisteredConfigurations { get; set; } = RegisteredConfigurationBehaviour.ExecutedBefore;
+    
     /**
      * If this setting is true a manual passed MetaInformation will also re configured
      */
     [Parameter] public bool ConfigureMetaInformationAlways { get; set; }
+
+    /// <summary>
+    /// Error message to display
+    /// </summary>
     [Parameter] public string ErrorMessage { get; set; }
+
+    #endregion
+
+    
+    /// <summary>
+    /// All rendered editors
+    /// </summary>
+    public List<MudExPropertyEdit> Editors = new();
+
+    /// <summary>
+    /// ExpansionPanels
+    /// </summary>
+    public MudExpansionPanel ExpansionPanel { set => _groups.Add(value); }
+
+    /// <summary>
+    /// References to editors
+    /// </summary>
+    public MudExPropertyEdit Ref { set => Editors.Add(value); }
+
+
+    #region Statics
 
     private static Type[] handleAsPrimitive = { typeof(string), typeof(decimal), typeof(MudExColor), typeof(MudColor), typeof(System.Drawing.Color), typeof(DateTime), typeof(DateTimeOffset), typeof(TimeSpan), typeof(TimeOnly), typeof(DateOnly), typeof(Guid) };
     
@@ -126,20 +398,11 @@ public partial class MudExObjectEdit<T>
         return type.IsPrimitive || type.IsEnum || handleAsPrimitive.Contains(type);
     }
 
-    protected bool Primitive => IsPrimitive();
+    #endregion
 
-    protected virtual RenderFragment InternalToolBarContent => null;
+    #region Overrides
 
-    private bool ShouldAddGrid(IEnumerable<ObjectEditPropertyMeta> meta) => WrapInMudGrid ?? ContainsMudItemInWrapper(meta);
-    private string CssClassName => GroupingStyle == GroupingStyle.Flat ? $"mud-ex-object-edit-group-flat {(!GroupsCollapsible ? "mud-ex-hide-expand-btn" : "")}" : string.Empty;
-    private IEnumerable<IGrouping<string, ObjectEditPropertyMeta>> GroupedMetaPropertyInfos()
-        => MetaInformation?.AllProperties?.EmptyIfNull().Where(m => m.ShouldRender() && IsInFilter(m) && (!AutoHideDisabledFields || m.Settings.IsEditable)).GroupBy(m => !DisableGrouping ? m.GroupInfo?.Name : string.Empty);
-    private bool ContainsMudItemInWrapper(IEnumerable<ObjectEditPropertyMeta> meta)
-        => meta.Where(p => p.RenderData?.Wrapper != null)
-            .Select(p => p.RenderData.Wrapper)
-            .Recursive(w => w.Wrapper == null ? Enumerable.Empty<IRenderData>() : new[] { w.Wrapper })
-            .Any(d => d.ComponentType == typeof(MudItem));
-
+    /// <inheritdoc/>
     protected override async Task OnParametersSetAsync()
     {
         _importButtonColor = ToolbarButtonColor;
@@ -153,7 +416,8 @@ public partial class MudExObjectEdit<T>
         };
             
     }
-    
+
+    /// <inheritdoc/>
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         bool valueUpdate = parameters.TryGetValue<T>(nameof(Value), out var value) && !Equals(Value, value);
@@ -166,7 +430,7 @@ public partial class MudExObjectEdit<T>
         }
     }
 
-
+    /// <inheritdoc/>
     protected override async Task OnFinishedRenderAsync()
     {
         await base.OnFinishedRenderAsync();
@@ -177,6 +441,12 @@ public partial class MudExObjectEdit<T>
         }
     }
 
+    #endregion
+
+    /// <summary>
+    /// Returns the current value independent of disabled value bindings
+    /// </summary>
+    /// <returns></returns>
     public T GetUpdatedValue()
     {
         foreach (var meta in MetaInformation.AllProperties.Where(p => p?.RenderData?.DisableValueBinding == true))
@@ -188,78 +458,10 @@ public partial class MudExObjectEdit<T>
         return Value;
     }
 
-    private async void SetValue(T value)
-    {
-        _value = value;
-        MetaInformation?.SetValue(value);
-        await CreateMetaIfNotExists();
-        Invalidate();
-    }
-
-    public void Invalidate()
-    {
-        Refresh().Editors.Apply(e => e.Invalidate());
-    }
-
-    private async Task CreateMetaIfNotExists()
-    {
-        RenderDataDefaults.AddRenderDataProvider(ServiceProvider);
-        Action<ObjectEditMeta<T>> c = MetaConfigurationAsync != null ? await MetaConfigurationAsync : MetaConfiguration;
-        bool metaNeedsConfig = MetaInformation == null; // If not configured or not manually bypassed wer configure the Meta
-        MetaInformation ??= (Value ??= typeof(T).CreateInstance<T>()).ObjectEditMeta();
-        if (metaNeedsConfig || ConfigureMetaInformationAlways)
-        {
-            if (_configService != null && ConfigureBehaviourForRegisteredConfigurations == RegisteredConfigurationBehaviour.ExecutedBefore)
-                await _configService.ConfigureAsync(MetaInformation);
-            
-            //c?.Invoke(MetaInformation); 
-            await Task.Run(() => c?.Invoke(MetaInformation));
-
-            if (_configService != null && ConfigureBehaviourForRegisteredConfigurations == RegisteredConfigurationBehaviour.ExecutedAfter)
-                await _configService.ConfigureAsync(MetaInformation);
-            MetaInformation?.UpdateAllConditionalSettings(Value);
-        }
-    }
-
-    protected virtual async Task OnPropertyChange(ObjectEditPropertyMeta property)
-    {
-        if (!IsRendered)
-            return;
-        
-        if (AutoSaveRestoreState)
-            _ = Task.Run(SaveState);
-
-        if (Value != null)
-            MetaInformation.UpdateAllConditionalSettings(Value);
-        await PropertyChanged.InvokeAsync(property);
-        await ValueChanged.InvokeAsync(Value);
-    }
-
-    private bool IsInFilter(ObjectEditPropertyMeta propertyMeta)
-        => string.IsNullOrWhiteSpace(Filter)
-           || propertyMeta.Settings.LabelFor(LocalizerToUse).Contains(Filter, StringComparison.InvariantCultureIgnoreCase)
-           || propertyMeta.Settings.DescriptionFor(LocalizerToUse).Contains(Filter, StringComparison.InvariantCultureIgnoreCase)
-           || propertyMeta.PropertyInfo.Name.Contains(Filter, StringComparison.InvariantCultureIgnoreCase)
-           || propertyMeta.Value?.ToString()?.Contains(Filter, StringComparison.InvariantCultureIgnoreCase) == true
-           || propertyMeta.GroupInfo?.Name?.Contains(Filter, StringComparison.InvariantCultureIgnoreCase) == true
-           || propertyMeta.RenderData?.Attributes.Values.OfType<string>().Any(x => x.Contains(Filter, StringComparison.InvariantCultureIgnoreCase)) == true;
-
-  
-    public List<MudExPropertyEdit> Editors = new();
-    private T _value;
-    public MudExPropertyEdit Ref { set => Editors.Add(value); }
-
-    private List<MudExpansionPanel> _groups = new();
-    public MudExpansionPanel ExpansionPanel { set => _groups.Add(value); }
-
-    private async Task OnResetClick(MouseEventArgs arg)
-    {
-        if (GlobalResetSettings.RequiresConfirmation && DialogService != null && !(await ShowConfirmationBox() ?? false))
-            return;
-        await Reset();
-        StateHasChanged();
-    }
-
+    /// <summary>
+    /// Resets all values
+    /// </summary>
+    /// <returns></returns>
     public async Task Reset()
     {
         await Task.WhenAll(Editors.Select(e => e.ResetAsync()));
@@ -267,6 +469,10 @@ public partial class MudExObjectEdit<T>
             editable.CancelEdit();
     }
 
+    /// <summary>
+    /// Clears all input fields
+    /// </summary>
+    /// <returns></returns>
     public Task Clear() => Task.WhenAll(Editors.Select(e => e.ClearAsync()));
 
 
@@ -282,14 +488,14 @@ public partial class MudExObjectEdit<T>
             if (!string.IsNullOrWhiteSpace(json))
             {
                 var toImport = new ImportData<T>
-                    {Json = json, Value = Value, TriggerdFrom = DataChangeTrigger.StateSaveLoad};
+                { Json = json, Value = Value, TriggerdFrom = DataChangeTrigger.StateSaveLoad };
                 await BeforeImport.InvokeAsync(toImport);
                 if (toImport.Cancel)
                     return false;
 
                 await LoadFromJson(toImport.Json, false);
                 await DeleteState();
-                await AfterImport.InvokeAsync(new ImportedData<T> {Json = toImport.Json, Value = Value, TriggerdFrom = DataChangeTrigger.StateSaveLoad});
+                await AfterImport.InvokeAsync(new ImportedData<T> { Json = toImport.Json, Value = Value, TriggerdFrom = DataChangeTrigger.StateSaveLoad });
                 return true;
             }
         }
@@ -297,16 +503,24 @@ public partial class MudExObjectEdit<T>
         return false;
     }
 
+    /// <summary>
+    /// Deletes the current state
+    /// </summary>
+    /// <returns></returns>
     public virtual async Task DeleteState()
     {
         await JsRuntime.InvokeVoidAsync($"{StateTargetStorage.ToDescriptionString()}.setItem", StateKey, string.Empty);
     }
-    
+
+    /// <summary>
+    /// Saves the current state
+    /// </summary>
+    /// <returns></returns>
     public virtual async Task SaveState()
     {
         //string json = JsonConvert.SerializeObject(Value);
         string json = await ToJsonAsync();
-        var exportData = new ExportData<T> {Json = json, Value = Value, TriggerdFrom = DataChangeTrigger.StateSaveLoad };
+        var exportData = new ExportData<T> { Json = json, Value = Value, TriggerdFrom = DataChangeTrigger.StateSaveLoad };
         await BeforeExport.InvokeAsync(exportData);
         if (exportData.Cancel)
             return;
@@ -314,6 +528,85 @@ public partial class MudExObjectEdit<T>
         await AfterExport.InvokeAsync(exportData);
     }
 
+
+    public void Invalidate()
+    {
+        Refresh().Editors.Apply(e => e.Invalidate());
+    }
+    
+    /// <summary>
+    /// Called when a property value is changed
+    /// </summary>
+    protected virtual async Task OnPropertyChange(ObjectEditPropertyMeta property)
+    {
+        if (!IsRendered)
+            return;
+        
+        if (AutoSaveRestoreState)
+            _ = Task.Run(SaveState);
+
+        if (Value != null)
+            MetaInformation.UpdateAllConditionalSettings(Value);
+        await PropertyChanged.InvokeAsync(property);
+        await ValueChanged.InvokeAsync(Value);
+    }
+
+    private async void SetValue(T value)
+    {
+        _value = value;
+        MetaInformation?.SetValue(value);
+        await CreateMetaIfNotExists();
+        Invalidate();
+    }
+
+    private bool IsInFilter(ObjectEditPropertyMeta propertyMeta)
+        => string.IsNullOrWhiteSpace(Filter)
+           || propertyMeta.Settings.LabelFor(LocalizerToUse).Contains(Filter, StringComparison.InvariantCultureIgnoreCase)
+           || propertyMeta.Settings.DescriptionFor(LocalizerToUse).Contains(Filter, StringComparison.InvariantCultureIgnoreCase)
+           || propertyMeta.PropertyInfo.Name.Contains(Filter, StringComparison.InvariantCultureIgnoreCase)
+           || propertyMeta.Value?.ToString()?.Contains(Filter, StringComparison.InvariantCultureIgnoreCase) == true
+           || propertyMeta.GroupInfo?.Name?.Contains(Filter, StringComparison.InvariantCultureIgnoreCase) == true
+           || propertyMeta.RenderData?.Attributes.Values.OfType<string>().Any(x => x.Contains(Filter, StringComparison.InvariantCultureIgnoreCase)) == true;
+
+
+    private bool ShouldAddGrid(IEnumerable<ObjectEditPropertyMeta> meta) => WrapInMudGrid ?? ContainsMudItemInWrapper(meta);
+    private string CssClassName => GroupingStyle == GroupingStyle.Flat ? $"mud-ex-object-edit-group-flat {(!GroupsCollapsible ? "mud-ex-hide-expand-btn" : "")}" : string.Empty;
+    private IEnumerable<IGrouping<string, ObjectEditPropertyMeta>> GroupedMetaPropertyInfos()
+        => MetaInformation?.AllProperties?.EmptyIfNull().Where(m => m.ShouldRender() && IsInFilter(m) && (!AutoHideDisabledFields || m.Settings.IsEditable)).GroupBy(m => !DisableGrouping ? m.GroupInfo?.Name : string.Empty);
+    private bool ContainsMudItemInWrapper(IEnumerable<ObjectEditPropertyMeta> meta)
+        => meta.Where(p => p.RenderData?.Wrapper != null)
+            .Select(p => p.RenderData.Wrapper)
+            .Recursive(w => w.Wrapper == null ? Enumerable.Empty<IRenderData>() : new[] { w.Wrapper })
+            .Any(d => d.ComponentType == typeof(MudItem));
+
+    private async Task CreateMetaIfNotExists()
+    {
+        RenderDataDefaults.AddRenderDataProvider(ServiceProvider);
+        Action<ObjectEditMeta<T>> c = MetaConfigurationAsync != null ? await MetaConfigurationAsync : MetaConfiguration;
+        bool metaNeedsConfig = MetaInformation == null; // If not configured or not manually bypassed wer configure the Meta
+        MetaInformation ??= (Value ??= typeof(T).CreateInstance<T>()).ObjectEditMeta();
+        if (metaNeedsConfig || ConfigureMetaInformationAlways)
+        {
+            if (ConfigService != null && ConfigureBehaviourForRegisteredConfigurations == RegisteredConfigurationBehaviour.ExecutedBefore)
+                await ConfigService.ConfigureAsync(MetaInformation);
+
+            //c?.Invoke(MetaInformation); 
+            await Task.Run(() => c?.Invoke(MetaInformation));
+
+            if (ConfigService != null && ConfigureBehaviourForRegisteredConfigurations == RegisteredConfigurationBehaviour.ExecutedAfter)
+                await ConfigService.ConfigureAsync(MetaInformation);
+            MetaInformation?.UpdateAllConditionalSettings(Value);
+        }
+    }
+
+    private async Task OnResetClick(MouseEventArgs arg)
+    {
+        if (GlobalResetSettings.RequiresConfirmation && DialogService != null && !(await ShowConfirmationBox() ?? false))
+            return;
+        await Reset();
+        StateHasChanged();
+    }
+    
     private Task<bool?> ShowConfirmationBox()
     {
         ResetConfirmationDialogOptions ??= new DialogOptionsEx

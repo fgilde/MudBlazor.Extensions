@@ -25,10 +25,14 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
         "skew", "skewX", "skewY", "perspective"};
 
     private Dictionary<string, string> _additionalStyles = new();
+    private List<string> _raws = new();
+    
     private readonly ConcurrentDictionary<string, byte> _temporaryCssClasses = new();
     private Dictionary<string, MudExStyleBuilder> _pseudoElementsStyles = new();
 
     #region Static Methods
+
+    public static MudExStyleBuilder Default => new();
 
     /// <summary>
     /// Static factory method to create a <see cref="MudExStyleBuilder"/>
@@ -137,8 +141,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     }
 
     #endregion
-
-
+    
     #region Fluent WithProperty Methods
     
 
@@ -667,6 +670,13 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
             _additionalStyles[key] = value;
         return this;
     }
+    
+    public MudExStyleBuilder AddRaw(string styleStr, bool when = true)
+    {
+        if (!string.IsNullOrEmpty(styleStr) && when)
+            _raws.Add(styleStr);
+        return this;
+    }
 
     /// <summary>
     /// Creates a class for this style and returns a MudExCssBuilder with this class added
@@ -707,7 +717,10 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public string Build()
     {
         var css = _additionalStyles.Select(style => $"{style.Key}: {style.Value};").ToList();
-      //  css.AddRange(_pseudoElementsStyles.Select(pseudo => $":{pseudo.Key} {{ {pseudo.Value.Build()} }}"));
+        if (_raws?.Any() == true)
+            css.AddRange(_raws);
+        
+        //  css.AddRange(_pseudoElementsStyles.Select(pseudo => $":{pseudo.Key} {{ {pseudo.Value.Build()} }}"));
 
         return string.Join(" ", css);
     }

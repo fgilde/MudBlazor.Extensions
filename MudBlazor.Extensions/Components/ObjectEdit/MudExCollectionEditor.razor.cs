@@ -14,52 +14,232 @@ namespace MudBlazor.Extensions.Components.ObjectEdit;
 /// <typeparam name="T"></typeparam>
 public partial class MudExCollectionEditor<T>
 {
-    [Parameter] public int? Height { get; set; }
-    [Parameter] public int? MaxHeight { get; set; }
-    [Parameter] public CssUnit SizeUnit { get; set; } = CssUnit.Pixels;
-    [Parameter] public string Style { get; set; }
+    /// <summary>
+    /// Gets or sets the height of the collection editor.
+    /// </summary>
+    [Parameter]
+    public int? Height { get; set; }
 
-    [Parameter] public ICollection<T> Items { get; set; }
-    [Parameter] public EventCallback<ICollection<T>> ItemsChanged { get; set; }
-    [Parameter] public Func<T, string> ItemToStringFunc { get; set; } = (item => item?.ToString() ?? string.Empty);
-    [Parameter] public string TextAdd { get; set; } = "Add";
-    [Parameter] public string TextRemoveAll { get; set; } = "Remove All";
-    [Parameter] public string TextEdit { get; set; } = "Edit {0}";
+    /// <summary>
+    /// Gets or sets the maximum height of the collection editor.
+    /// </summary>
+    [Parameter]
+    public int? MaxHeight { get; set; }
 
-    [Parameter] public string Label { get; set; }
-    [Parameter] public bool Virtualize { get; set; } = true;
-    [Parameter] public bool ReadOnly { get; set; }
-    [Parameter] public string HelperText { get; set; }
-    [Parameter] public string ItemIcon { get; set; }
-    [Parameter] public string RemoveIcon { get; set; } = Icons.Filled.Delete;
-    [Parameter] public string RemoveAllIcon { get; set; } = Icons.Material.Filled.DeleteForever;
-    [Parameter] public string AddIcon { get; set; } = Icons.Filled.Add;
-    [Parameter] public string EditIcon { get; set; } = Icons.Material.Filled.Edit;
-    [Parameter] public string ViewIcon { get; set; } = Icons.Material.Filled.Pageview;
-    [Parameter] public Variant Variant { get; set; }
-    [Parameter] public bool ShowClearButton { get; set; } = true;
-    [Parameter] public bool AllowAdd { get; set; } = true;
-    [Parameter] public bool AllowEditOrPreview { get; set; } = true;
-    [Parameter] public bool AllowRemove { get; set; } = true;
-    [Parameter] public DialogOptionsEx DialogOptions { get; set; }
-    [Parameter] public MudExColor ToolbarColor { get; set; } = Color.Surface;
-    [Parameter] public Position ToolbarPosition { get; set; } = Position.Bottom;
-    [Parameter] public bool StickToolbar { get; set; } = true;
-    [Parameter] public string StyleToolbar { get; set; }
-    [Parameter] public string ClassToolbar { get; set; }
-    [Parameter] public string Class { get; set; }
-    [Parameter] public Color ToolbarButtonColor { get; set; } = Color.Inherit;
-    [Parameter] public PropertyFilterMode FilterMode { get; set; } = PropertyFilterMode.Toggleable;
-    [Parameter] public string Filter { get; set; }
-    [Parameter] public string SearchIcon { get; set; } = Icons.Material.Outlined.Search;
-    protected bool Primitive => MudExObjectEdit<T>.IsPrimitive();
+    /// <summary>
+    /// Gets or sets the size unit for the collection editor.
+    /// </summary>
+    [Parameter]
+    public CssUnit SizeUnit { get; set; } = CssUnit.Pixels;
+
+    /// <summary>
+    /// Gets or sets the style of the collection editor.
+    /// </summary>
+    [Parameter]
+    public string Style { get; set; }
+
+    /// <summary>
+    /// Gets or sets the collection of items to be edited.
+    /// </summary>
+    [Parameter]
+    public ICollection<T> Items { get; set; }
+
+    /// <summary>
+    /// Gets or sets the event callback for when items are changed.
+    /// </summary>
+    [Parameter]
+    public EventCallback<ICollection<T>> ItemsChanged { get; set; }
+
+    /// <summary>
+    /// Gets or sets the function to convert an item to a string.
+    /// </summary>
+    [Parameter]
+    public Func<T, string> ItemToStringFunc { get; set; } = (item => item?.ToString() ?? string.Empty);
+
+    /// <summary>
+    /// Gets or sets the text for the add button.
+    /// </summary>
+    [Parameter]
+    public string TextAdd { get; set; } = "Add";
+
+    /// <summary>
+    /// Gets or sets the text for the remove all button.
+    /// </summary>
+    [Parameter]
+    public string TextRemoveAll { get; set; } = "Remove All";
+
+    /// <summary>
+    /// Gets or sets the text for the edit button.
+    /// </summary>
+    [Parameter]
+    public string TextEdit { get; set; } = "Edit {0}";
+
+    /// <summary>
+    /// Gets or sets the label of the collection editor.
+    /// </summary>
+    [Parameter]
+    public string Label { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the collection should be virtualized.
+    /// </summary>
+    [Parameter]
+    public bool Virtualize { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the collection is read-only.
+    /// </summary>
+    [Parameter]
+    public bool ReadOnly { get; set; }
+
+    /// <summary>
+    /// Gets or sets the helper text for the collection editor.
+    /// </summary>
+    [Parameter]
+    public string HelperText { get; set; }
+
+    /// <summary>
+    /// Gets or sets the icon for each item in the collection.
+    /// </summary>
+    [Parameter]
+    public string ItemIcon { get; set; }
+
+    /// <summary>
+    /// Gets or sets the icon for the remove button.
+    /// </summary>
+    [Parameter]
+    public string RemoveIcon { get; set; } = Icons.Filled.Delete;
+
+    /// <summary>
+    /// Gets or sets the icon for the remove all button.
+    /// </summary>
+    [Parameter]
+    public string RemoveAllIcon { get; set; } = Icons.Material.Filled.DeleteForever;
+
+    /// <summary>
+    /// Gets or sets the icon for the add button.
+    /// </summary>
+    [Parameter]
+    public string AddIcon { get; set; } = Icons.Filled.Add;
+
+    /// <summary>
+    /// Gets or sets the icon for the edit and preview button.
+    /// </summary>
+    [Parameter]
+    public string EditIcon { get; set; } = Icons.Material.Filled.Edit;
+
+    /// <summary>
+    /// Gets or sets the icon for the view button.
+    /// </summary>
+    [Parameter]
+    public string ViewIcon { get; set; } = Icons.Material.Filled.Pageview;
+
+    /// <summary>
+    /// Gets or sets the variant of the collection editor.
+    /// </summary>
+    [Parameter]
+    public Variant Variant { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to show the clear button.
+    /// </summary>
+    [Parameter]
+    public bool ShowClearButton { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to allow adding items.
+    /// </summary>
+    [Parameter]
+    public bool AllowAdd { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to allow editing or previewing items.
+    /// </summary>
+    [Parameter]
+    public bool AllowEditOrPreview { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to allow removing items.
+    /// </summary>
+    [Parameter]
+    public bool AllowRemove { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the options for the dialog.
+    /// </summary>
+    [Parameter]
+    public DialogOptionsEx DialogOptions { get; set; }
+
+    /// <summary>
+    /// Gets or sets the color of the toolbar.
+    /// </summary>
+    [Parameter]
+    public MudExColor ToolbarColor { get; set; } = Color.Surface;
+
+    /// <summary>
+    /// Gets or sets the position of the toolbar.
+    /// </summary>
+    [Parameter]
+    public Position ToolbarPosition { get; set; } = Position.Bottom;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the toolbar sticks.
+    /// </summary>
+    [Parameter]
+    public bool StickToolbar { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the style of the toolbar.
+    /// </summary>
+    [Parameter]
+    public string StyleToolbar { get; set; }
+
+    /// <summary>
+    /// Gets or sets the class of the toolbar.
+    /// </summary>
+    [Parameter]
+    public string ClassToolbar { get; set; }
+
+    /// <summary>
+    /// Gets or sets the class of the collection editor.
+    /// </summary>
+    [Parameter]
+    public string Class { get; set; }
+
+    /// <summary>
+    /// Gets or sets the color of the toolbar buttons.
+    /// </summary>
+    [Parameter]
+    public Color ToolbarButtonColor { get; set; } = Color.Inherit;
+
+    /// <summary>
+    /// Gets or sets the filter mode.
+    /// </summary>
+    [Parameter]
+    public PropertyFilterMode FilterMode { get; set; } = PropertyFilterMode.Toggleable;
+
+    /// <summary>
+    /// Gets or sets the filter string.
+    /// </summary>
+    [Parameter]
+    public string Filter { get; set; }
+
+    /// <summary>
+    /// Gets or sets the icon for the search button.
+    /// </summary>
+    [Parameter]
+    public string SearchIcon { get; set; } = Icons.Material.Outlined.Search;
+
+    private bool Primitive => MudExObjectEdit<T>.IsPrimitive();
 
     private bool IsInFilter(T item)
         => string.IsNullOrWhiteSpace(Filter)
            || ItemNameRender(item).ToLower().Contains(Filter.ToLower())
            || item?.GetProperties().Any(p => p.GetValue(item)?.ToString()?.ToLower().Contains(Filter.ToLower()) ?? false) == true;
 
-
+    /// <summary>
+    /// Generates the style string for the MudGrid component.
+    /// </summary>
     private string GetMudGridStyle()
     {
         // Display block is required to have virtualization working
@@ -69,6 +249,9 @@ public partial class MudExCollectionEditor<T>
         });
     }
 
+    /// <summary>
+    /// Generates the style string for the toolbar.
+    /// </summary>
     private string GetToolbarStyle()
     {
         return MudExStyleBuilder.GenerateStyleString(new
@@ -81,6 +264,9 @@ public partial class MudExCollectionEditor<T>
         }, StyleToolbar);
     }
 
+    /// <summary>
+    /// Generates the style string for the collection editor.
+    /// </summary>
     private string GetStyle()
     {
         return MudExStyleBuilder.GenerateStyleString(new
@@ -90,6 +276,9 @@ public partial class MudExCollectionEditor<T>
         }, SizeUnit, Style);
     }
 
+    /// <summary>
+    /// Called when the parameters are set.
+    /// </summary>
     protected override void OnParametersSet()
     {
         if (ToolbarPosition != Position.Bottom && ToolbarPosition != Position.Top)
@@ -98,29 +287,47 @@ public partial class MudExCollectionEditor<T>
         Items ??= new List<T>();
     }
 
+    /// <summary>
+    /// Adds an item to the collection.
+    /// </summary>
+    /// <param name="item">The item to add.</param>
     public void Add(T item)
     {
         Items?.Add(item);
         RaiseChanged();
     }
 
+    /// <summary>
+    /// Removes an item from the collection.
+    /// </summary>
+    /// <param name="item">The item to remove.</param>
     public void Remove(T item)
     {
         Items?.Remove(item);
         RaiseChanged();
     }
 
+    /// <summary>
+    /// Raises the ItemsChanged event.
+    /// </summary>
     private void RaiseChanged()
     {
         ItemsChanged.InvokeAsync(Items);
     }
 
+    /// <summary>
+    /// Removes all items from the collection.
+    /// </summary>
     private void RemoveAll()
     {
         Items?.Clear();
         RaiseChanged();
     }
 
+    /// <summary>
+    /// Edits an item in the collection.
+    /// </summary>
+    /// <param name="item">The item to edit.</param>
     public async Task Edit(T item)
     {
         DialogParameters parameters = new DialogParameters
@@ -135,6 +342,11 @@ public partial class MudExCollectionEditor<T>
         }
     }
 
+    /// <summary>
+    /// Sets the value of an item in the collection.
+    /// </summary>
+    /// <param name="item">The item to set the value on.</param>
+    /// <param name="newValue">The new value for the item.</param>
     private void SetValue(T item, T newValue)
     {
         if (Primitive)
@@ -146,7 +358,11 @@ public partial class MudExCollectionEditor<T>
 
         RaiseChanged();
     }
-
+    
+    /// <summary>
+    /// Views an item in the collection.
+    /// </summary>
+    /// <param name="item">The item to view.</param>
     public async Task View(T item)
     {
         DialogParameters parameters = new DialogParameters
@@ -161,11 +377,18 @@ public partial class MudExCollectionEditor<T>
         await DialogService.ShowObject<T>(item, ItemNameRender(item), DialogOptions ?? DefaultOptions(), null, parameters);
     }
 
+    /// <summary>
+    /// Renders the item name
+    /// </summary>
     public virtual string ItemNameRender(T item)
     {
         return ItemToStringFunc(item);
     }
 
+    /// <summary>
+    /// Opens the dialog to add an item to the collection.
+    /// </summary>
+    /// <returns></returns>
     public async Task Add()
     {
         var item = typeof(T) == typeof(string) ? (T)(object)string.Empty : Primitive ? default : Activator.CreateInstance<T>();
