@@ -3,18 +3,27 @@
 @inherits MudExBaseComponent<MudExThemeEdit<TTheme>>
 @typeparam TTheme where TTheme : MudTheme
 
+@if (Presets?.Any() == true)
+{
+
+}
 
 @if (Theme is not null)
 {
-    <MudExObjectEditForm LightOverlayLoadingBackground="@(!IsDark ?? false)"
+    <MudExObjectEditForm T="TTheme"
+                         @ref="ObjectEditor"
+                         LightOverlayLoadingBackground="@(!IsDark ?? false)"
                          IsLoading="@_isLoading"
-                         AutoSkeletonOnLoad="true"
-                         T="TTheme"
                          MetaConfiguration="ThemeEditMetaConfiguration"
                          Value="Theme"
+                         AutoSkeletonOnLoad="true"
                          AllowImport="true"
                          AllowExport="true"
                          AutoSaveRestoreState="true"
+                         StickyActionBar="true"
+                         
+                         OnValidSubmit="OnValidSubmit"
+                         OnCancel="OnCancel"
                          BeforeImport="BeforeImport"
                          AfterImport="AfterImport"
                          BeforeExport="BeforeExport"

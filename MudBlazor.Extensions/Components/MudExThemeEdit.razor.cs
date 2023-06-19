@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Helper;
@@ -35,14 +36,14 @@ public partial class MudExThemeEdit<TTheme>
     };
 
     private KeyValuePair<string, MudColor>[] _cssVars;
-
+    [Inject] public IDialogService DialogService { get; set; }
     [Parameter] public TTheme Theme { get; set; }
+    public TTheme InitialTheme { get; private set; }
     [Parameter] public EventCallback<TTheme> ThemeChanged { get; set; }
     [Parameter] public IEnumerable<TTheme> Presets { get; set; }
     [Parameter] public ThemeEditMode EditMode { get; set; } = ThemeEditMode.Simple;
     [Parameter] public EventCallback<ThemeEditMode> EditModeChanged { get; set; }
     [Parameter] public bool AllowModeToggle { get; set; } = true;
-
 
     /// <summary>
     /// This bool represents a tri state. True to edit only dark color palette, false to edit only light color palette and null to edit both
@@ -50,6 +51,8 @@ public partial class MudExThemeEdit<TTheme>
     [Parameter] public bool? IsDark { get; set; }
 
     [Parameter] public ObjectEditMeta<TTheme> MetaInformation { get; set; }
+
+    public MudExObjectEditForm<TTheme> ObjectEditor { get; private set; }
 
     public override async Task SetParametersAsync(ParameterView parameters)
     {
@@ -59,6 +62,15 @@ public partial class MudExThemeEdit<TTheme>
         if (updateConditions)
         {
             await UpdateConditions();
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (Theme != null && InitialTheme == null)
+        {
+            InitialTheme = Theme.CloneTheme();
         }
     }
 
@@ -75,7 +87,6 @@ public partial class MudExThemeEdit<TTheme>
 
     protected override async Task OnInitializedAsync()
     {
-        
         await base.OnInitializedAsync();
     }
     
@@ -92,7 +103,7 @@ public partial class MudExThemeEdit<TTheme>
         Theme = null;
         Loading(true);
         Theme = theme;
-        await ThemeChanged.InvokeAsync(Theme);
+        await OnThemeChanged(Theme);
         StateHasChanged();
         await Task.Delay(extraDelay);
         Loading(false);
@@ -113,8 +124,8 @@ public partial class MudExThemeEdit<TTheme>
         await Task.Delay(extraDelay);
         Loading(false);
     }
-    
 
+    
     private Task OnThemeChanged(TTheme arg)
     {
         return ThemeChanged.InvokeAsync(arg);
@@ -140,6 +151,8 @@ public partial class MudExThemeEdit<TTheme>
         meta.Properties<MudColor>()
             .RenderWith<MudExColorEdit, MudColor, string>(edit => edit.ValueString)
             .WithAdditionalAttributes(OptionsForColorEdit());
+        
+
         meta.Properties<string>().Where(p => p?.Value?.ToString()?.StartsWith("rgb") == true || p?.Value?.ToString()?.StartsWith("#") == true)
             .RenderWith<MudExColorEdit, string, string>(edit => edit.ValueString)
             .WithAdditionalAttributes(OptionsForColorEdit());
@@ -150,7 +163,7 @@ public partial class MudExThemeEdit<TTheme>
         //meta.Properties(theme => theme.Typography.Default.FontFamily)
         meta.Properties().Where(p => p.PropertyInfo.Name == nameof(MudTheme.Typography.Default.FontFamily))
             .RenderWith<MudExFontSelect, string[], IEnumerable<string>>(edit => edit.Selected);
-
+        
         meta.AllProperties.IgnoreIf<ObjectEditPropertyMeta>(IsNotAllowed);
     }
 
@@ -162,7 +175,6 @@ public partial class MudExThemeEdit<TTheme>
         paletteProperty.Children.Recursive(om => om.Children)
             .OrderBy(p => p.PropertyName).Apply((i, p) => p.WithOrder(i))
             .WrapInMudItem(i => i.xs = 6);
-
     }
 
     private bool IsNotAllowed(ObjectEditPropertyMeta objectEditPropertyMeta) => !IsAllowed(objectEditPropertyMeta);
@@ -187,6 +199,16 @@ public partial class MudExThemeEdit<TTheme>
 
 
     private async Task AfterImport(ImportedData<TTheme> arg) => await SetTheme(arg.Value);
+
+    private async Task OnCancel()
+    {
+        await ObjectEditor.Reset();
+    }
+
+    private Task OnValidSubmit(EditContext arg)
+    {
+        return Task.CompletedTask;
+    }
 
 }
 

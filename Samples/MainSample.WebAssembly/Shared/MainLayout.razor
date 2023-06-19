@@ -91,4 +91,11 @@
         public ClientTheme Theme { get; set; }
     }
 
+    public void SetTheme(ClientTheme theme)
+    {
+        ClientTheme.CurrentTheme = theme;
+        StateHasChanged();
+        HandleThemeChange(IsDark, theme);
+    }
+
 }

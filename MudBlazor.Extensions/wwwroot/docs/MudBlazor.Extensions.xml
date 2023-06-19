@@ -783,6 +783,11 @@
             Error message to display
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.BulkActionRunning">
+            <summary>
+            Is true if currently is a internal Bulk running. Like reset or clear etc..
+            </summary>
+        </member>
         <member name="F:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Editors">
             <summary>
             All rendered editors
@@ -803,6 +808,11 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.UpdateAllConditions">
+            <summary>
+            Updates all conditions on meta settings
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.OnFinishedRenderAsync">
             <inheritdoc/>

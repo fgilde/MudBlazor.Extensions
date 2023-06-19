@@ -7,9 +7,11 @@
     @*<MudExEnumSelect TEnum="ThemeEditMode" @bind-Value="@_editMode"></MudExEnumSelect>*@
 
     <MudExThemeEdit AllowModeToggle="true" 
+                    TTheme="ClientTheme"
                     IsDark="@MainLayout.Instance.IsDark" 
                     @bind-EditMode="@_editMode"
-                    @bind-Theme="@ClientTheme.CurrentTheme"></MudExThemeEdit>
+                    ThemeChanged="@ThemeChanged"
+                    Theme="@ClientTheme.CurrentTheme"></MudExThemeEdit>
 </DemoComponent>
 
 
@@ -23,5 +25,11 @@
         MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
     }
 
+
+    private void ThemeChanged(ClientTheme? theme)
+    {
+        if (theme is not null)
+            MainLayout.Instance.SetTheme(theme);
+    }
 
 }

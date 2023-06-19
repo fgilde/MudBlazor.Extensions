@@ -1,11 +1,17 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Helper;
 
-internal static class JsonHelper
+public static class JsonHelper
 {
- 
+    public static TTheme CloneTheme<TTheme>(this TTheme theme) where TTheme : MudTheme
+    {
+        var json = JsonConvert.SerializeObject(theme);
+        return JsonConvert.DeserializeObject<TTheme>(SimplifyMudColorInJson(json));
+    }
+
     public static string SimplifyMudColorInJson(string json)
     {
         void SimplifyColorsJToken(JToken token)

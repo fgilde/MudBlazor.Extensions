@@ -39,7 +39,10 @@ public partial class MudExPropertyEdit
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
+        {
             valueBackup = await GetBackupAsync(PropertyMeta.Value);
+        }
+
         await base.OnAfterRenderAsync(firstRender);
     }
 
@@ -80,7 +83,9 @@ public partial class MudExPropertyEdit
                 return GetDefault(t);
             if (t.IsValueType || t.IsPrimitive || t == typeof(string))
                 return value;
-
+            if (t == typeof(MudColor))
+                return new MudColor(value.ToString());
+            
             return await value.MapToAsync(t);
         }
         catch
@@ -106,10 +111,16 @@ public partial class MudExPropertyEdit
         try
         {
             if (PropertyMeta.PropertyInfo.CanWrite)
-                PropertyMeta.Value = reset ? await GetBackupAsync(valueBackup) : PropertyMeta.RenderData.ConvertToPropertyValue(GetDefault(PropertyMeta.PropertyInfo.PropertyType));
+            {
+                PropertyMeta.Value = reset
+                    ? await GetBackupAsync(valueBackup)
+                    : PropertyMeta.RenderData.ConvertToPropertyValue(GetDefault(PropertyMeta.PropertyInfo.PropertyType));
+            }
         }
         catch
-        { }
+        {
+            Console.WriteLine(PropertyMeta.PropertyName);
+        }
         StateHasChanged();
     }
 
