@@ -26,8 +26,13 @@ public class SomeClassWithUserMetaConfiguration : IObjectMetaConfiguration<SomeC
                 DisableSizeMarginY = true,
                 DisablePositionMargin = true
             });
-        
-        meta.Property(m => m.MainUser).RenderWith<MudExObjectEditForm<UserModel>, UserModel>(mudExObjectEdit => mudExObjectEdit.Value);
+
+        meta.Property(m => m.MainUser).RenderWith<MudExObjectEdit<UserModel>, UserModel>(mudExObjectEdit => mudExObjectEdit.Value, edit =>
+            {
+                edit.FilterMode = PropertyFilterMode.Disabled;
+                edit.GlobalResetSettings = new GlobalResetSettings {AllowReset = false};
+            })
+            .WithGroup("Main User");
         return Task.CompletedTask;
     }
 }
