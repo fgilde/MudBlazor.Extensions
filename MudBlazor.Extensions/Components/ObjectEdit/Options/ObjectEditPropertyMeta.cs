@@ -52,11 +52,7 @@ public class ObjectEditPropertyMeta
         set => _renderData = value;
     }
     
-    public bool ShouldRender()
-    {
-        var res = !Settings.Ignored && (!HasChildren || RenderData != null) && Parent?.RenderData == null;
-        return res;
-    }
+    public bool ShouldRender() => !Settings.Ignored && (!HasChildren || RenderData != null) && Parent?.RenderData == null;
 
     public void UpdateConditionalSettings<TModel>(TModel model)
     {
