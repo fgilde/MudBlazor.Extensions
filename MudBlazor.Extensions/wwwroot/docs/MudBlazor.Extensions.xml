@@ -47,7 +47,7 @@
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExCultureSelect">
             <summary>
-            Simple Picker component for Cultures
+            Drop down component to select a culture
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDialog.Show(System.String,MudBlazor.DialogOptions)">
@@ -64,6 +64,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExDivider.UseBorder">
             <summary>
             If this option is true border size is used instead of element size
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExEnumSelect`1">
+            <summary>
+            Drop down component to select an enum value or multiple on flags enums
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplay">
@@ -84,6 +89,24 @@
             For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
             If you reset Url or Data here you need also to reset ContentType
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDialog">
+            <summary>
+            Dialog to display a file using <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.HandleContentErrorFunc">
+            A function to handle content error. Return true if you have handled the error and false if you want to show the error message
+            For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
+            If you reset Url or Data here you need also to reset ContentType
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.FallBackInIframe">
+            Should be true if file is not a binary one
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ViewDependsOnContentType">
+            <summary>
+            Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayZip">
             <summary>
             A Component to display the content of a zip file
@@ -99,9 +122,19 @@
             For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
             If you reset Url or Data here you need also to reset ContentType
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFontSelect">
+            <summary>
+            Dropdown list component to select one ore more fonts
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExGradientText">
             <summary>
             A Component to display text with a gradient foreground or background
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExMessageDialog">
+            <summary>
+            Simple MessageDialog
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExPopover">
@@ -117,6 +150,11 @@
         <member name="T:MudBlazor.Extensions.Components.MudExSplitPanel">
             <summary>
             A SplitPanel Component 
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSplitPanelItem">
+            <summary>
+            SplitPanelItem for MudExSplitPanel component
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSplitter">
@@ -162,9 +200,17 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.BeforeImport">
             Here you can change content of parameter to manipulate import data
+            For example you can remove some properties or change the values
+            This is called before the import is executed
+            importData.Json = "{\"FirstName\": \"Changed Test\"}";
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ConfigureMetaInformationAlways">
             If this setting is true a manual passed MetaInformation will also re configured
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.RestoreState(System.Boolean)">
+            <summary>
+            Restore state if available and returns true if state was restored otherwise false.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1">
             <summary>
@@ -187,19 +233,6 @@
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit">
             <summary>
             Editor for a property of an object. Used internally inside the MudExObjectEdit
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.HandleContentErrorFunc">
-            A function to handle content error. Return true if you have handled the error and false if you want to show the error message
-            For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
-            If you reset Url or Data here you need also to reset ContentType
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.FallBackInIframe">
-            Should be true if file is not a binary one
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ViewDependsOnContentType">
-            <summary>
-            Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.MudExAppearance">

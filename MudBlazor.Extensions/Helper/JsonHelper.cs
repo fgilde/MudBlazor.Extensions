@@ -1,9 +1,25 @@
 ﻿using Newtonsoft.Json.Linq;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Helper;
 
 internal static class JsonHelper
 {
+ 
+    public static string SimplifyMudColorInJson(string json)
+    {
+        void SimplifyColorsJToken(JToken token)
+        {
+            if (token is JProperty jProperty && jProperty.First is JObject && jProperty.First["Value"] != null) jProperty.Value = jProperty.Value["Value"];
+
+            if (token is not JContainer) return;
+            token.Children().Apply(SimplifyColorsJToken);
+        }
+        var jsonObj = JObject.Parse(json);
+        SimplifyColorsJToken(jsonObj);
+        return jsonObj.ToString();
+    }
+
     public static string MergeJson(string json, params string[] other)
     {
         var jObject = JObject.Parse(json);

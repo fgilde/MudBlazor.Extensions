@@ -58,6 +58,7 @@ public partial class MudExPropertyEdit
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.HelperText), () => PropertyMeta.Settings.DescriptionFor(LocalizerToUse))
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Class), () => Class)
             .TrySetAttributeIfAllowed(nameof(Localizer), Localizer)
+            .TrySetAttributeIfAllowed(nameof(RenderKey), RenderKey)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.ReadOnly), () => !PropertyMeta.Settings.IsEditable).Attributes;
     }
 
@@ -113,8 +114,8 @@ public partial class MudExPropertyEdit
     }
 
 
-    public void Invalidate() => StateHasChanged();
-
+    //public void Invalidate() => StateHasChanged();
+    public void Invalidate() => Refresh();
     public object GetCurrentValue()
         => editor.Instance?.GetType()?.GetProperty(PropertyMeta.RenderData.ValueField)?.GetValue(editor.Instance);
 

@@ -31,6 +31,7 @@
                        PopoverClass="@($"{_cssName}-over chip-select-over")"
                        MultiSelection="@MultiSelect" 
                        AnchorOrigin="Origin.BottomCenter"
+                       Style="@Style"
                        @bind-Value="Value" 
                        @bind-SelectedValues="Selected"
                        AdornmentIcon="@AdornmentIcon">
@@ -45,8 +46,7 @@
                     <MudSelectItem Style="height: 70px;" T="@T" Value="@item">
                         @if (UseCustomItemRenderInSelectionPopover)
                         {
-                           @* @((RenderTreeBuilder b) => RenderItem(b, item))*@
-                            @RenderItem(this.ExposeField<RenderTreeBuilder>("__builder"), item)
+                            @RenderItem(item)
                         }
                         else
                         {
@@ -84,16 +84,17 @@
     private void RenderChip(RenderTreeBuilder __builder, T item)
     {
     <MudChip Size="Size.Large" Variant="@ChipVariant" OnClose="@(( ReadOnly ? null : chip => Remove(chip, item)))" Color="@ChipColor" CloseIcon="@Icons.Material.Filled.Close">
-                @RenderItem(__builder, item)
+        @RenderItem(item)
     </MudChip>
     }
 
-    protected virtual RenderFragment RenderItem(RenderTreeBuilder __builder, T item)
+    protected virtual RenderFragment RenderItem(T item)
     {
         if (ItemTemplate != null)
             return ItemTemplate(item);
         string name = ItemNameRender(item);
         return @<p>@name</p>;
     }
+
 
 }

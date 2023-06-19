@@ -10,16 +10,60 @@ namespace MudBlazor.Extensions.Components.Base;
 public abstract class MudExBaseComponent<T> : ComponentBase, IMudExComponent
     where T : MudExBaseComponent<T>
 {
+    private object _previousKey;
+    private Timer _renderFinishTimer;
+    
     [Parameter] public IStringLocalizer Localizer { get; set; }
-
+    [Parameter] public object RenderKey { get; set; }
     [Inject] protected IServiceProvider ServiceProvider { get; set; }
     public IJSRuntime JsRuntime => Get<IJSRuntime>();
+    public bool IsRendered { get; private set; }
+    public bool IsFullyRendered { get; private set; }
     private IStringLocalizer<T> _fallbackLocalizer => Get<IStringLocalizer<T>>();
     protected IDialogService DialogService => Get<IDialogService>();
     protected IStringLocalizer LocalizerToUse => Localizer ?? _fallbackLocalizer;
     protected TService Get<TService>() => ServiceProvider.GetService<TService>();
     protected IEnumerable<TService> GetServices<TService>() => ServiceProvider.GetServices<TService>();
     public string TryLocalize(string text, params object[] args) => LocalizerToUse.TryLocalize(text, args);
+    
+    protected override bool ShouldRender()
+    {
+        if (base.ShouldRender() || !Equals(_previousKey, RenderKey))
+        {
+            _previousKey = RenderKey;
+            return true;
+        }
+
+        return false;
+    }
+
+    protected virtual Task OnFinishedRenderAsync()
+    {
+
+        return Task.CompletedTask;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        IsRendered = true;
+        _renderFinishTimer?.Dispose();
+        _renderFinishTimer = new Timer(async _ =>
+        {
+            _renderFinishTimer?.Dispose();
+            _renderFinishTimer = null;
+            IsFullyRendered = true;
+            await OnFinishedRenderAsync();
+        }, null, 300, Timeout.Infinite); 
+    }
+
+    public virtual T Refresh()
+    {
+        RenderKey = Guid.NewGuid();
+        StateHasChanged();
+        return (T) this;
+    }
+
 }
 
 public interface IMudExComponent

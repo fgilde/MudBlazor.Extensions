@@ -1,6 +1,4 @@
-﻿@using Microsoft.Extensions.DependencyInjection;
-@using Microsoft.Extensions.Localization
-@using MudBlazor.Extensions.Helper
+﻿@inherits MudExBaseComponent<MudExPromptDialog>
 
 <MudDialog Class="@Class">
     <TitleContent>
@@ -14,46 +12,7 @@
         <MudTextField OnKeyUp="@OnKeyUp" Immediate="@Immediate" @bind-Value="@Value"></MudTextField>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">@_localizer.TryLocalize(CancelText)</MudButton>
-        <MudButton Disabled="@(!IsValid())" Color="Color.Error" Variant="Variant.Filled" OnClick="@(Submit)">@_localizer.TryLocalize(OkText)</MudButton>
+        <MudButton OnClick="Cancel">@TryLocalize(CancelText)</MudButton>
+        <MudButton Disabled="@(!IsValid())" Color="Color.Error" Variant="Variant.Filled" OnClick="@(Submit)">@TryLocalize(OkText)</MudButton>
     </DialogActions>
 </MudDialog>
-@code {
-    [Inject] private IServiceProvider _serviceProvider { get; set; }
-
-    private IStringLocalizer _localizer => Localizer ?? _serviceProvider.GetService<IStringLocalizer<MudExPromptDialog>>() ?? _serviceProvider.GetService<IStringLocalizer>();
-
-    [Parameter]
-    public IStringLocalizer Localizer { get; set; }
-
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-
-    [Parameter] public bool Immediate { get; set; } = true;
-    [Parameter] public bool SubmitOnEnter { get; set; } = true;
-    [Parameter] public string OkText { get; set; } = "Ok";
-    [Parameter] public string CancelText { get; set; } = "Cancel";
-    [Parameter] public string Value { get; set; }
-    [Parameter] public string Class { get; set; } = "mud-ex-dialog-initial";
-    [Parameter] public string Message { get; set; }
-    [Parameter] public string Icon { get; set; }
-    [Parameter] public IEnumerable<string> Details { get; set; }
-    [Parameter] public Func<string, bool> CanConfirm { get; set; } = s => true;
-
-    void Submit()
-    {
-        MudDialog.Close(DialogResult.Ok(Value));
-    }
-
-    void Cancel() => MudDialog.Cancel();
-
-    private bool IsValid() => CanConfirm(Value);
-
-    private void OnKeyUp(KeyboardEventArgs arg)
-    {
-        if (arg.Key == "Enter" && SubmitOnEnter && IsValid())
-        {
-            Submit();
-        }
-    }
-
-}

@@ -1,19 +1,31 @@
 ﻿@using MudBlazor.Extensions.Components.ObjectEdit
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
+@inherits MudExBaseComponent<MudExThemeEdit<TTheme>>
 @typeparam TTheme where TTheme : MudTheme
 
 
-<MudExObjectEditForm LightOverlayLoadingBackground="@(!IsDark ?? false)" 
-                     IsLoading="@_isLoading" 
-                     AutoSkeletonOnLoad="true" 
-                     T="TTheme" 
-                     MetaConfiguration="ThemeEditMetaConfiguration" 
-                     Value="Theme" 
-                     ValueChanged="OnThemeChanged" >
-    <ToolBarContent>
-        @if (AllowModeToggle)
-        {
-            <MudExEnumSelect Clearable="false" TEnum="ThemeEditMode" ValueChanged="@EditModeChangedInternally" Value="@EditMode"></MudExEnumSelect>
-        }
-    </ToolBarContent>
-</MudExObjectEditForm>
+@if (Theme is not null)
+{
+    <MudExObjectEditForm LightOverlayLoadingBackground="@(!IsDark ?? false)"
+                         IsLoading="@_isLoading"
+                         AutoSkeletonOnLoad="true"
+                         T="TTheme"
+                         MetaConfiguration="ThemeEditMetaConfiguration"
+                         Value="Theme"
+                         AllowImport="true"
+                         AllowExport="true"
+                         AutoSaveRestoreState="true"
+                         BeforeImport="BeforeImport"
+                         AfterImport="AfterImport"
+                         BeforeExport="BeforeExport"
+                         PropertyChanged="OnPropertyChanged"
+                         ValueChanged="OnThemeChanged">
+        <ToolBarContent>
+            @if (AllowModeToggle)
+            {
+                <MudExEnumSelect Style="max-width:300px;" FilterEnabled="false" Clearable="false" TEnum="ThemeEditMode" ValueChanged="@EditModeChangedInternally" Value="@EditMode"></MudExEnumSelect>
+                <MudSpacer/>
+            }
+        </ToolBarContent>
+    </MudExObjectEditForm>
+}

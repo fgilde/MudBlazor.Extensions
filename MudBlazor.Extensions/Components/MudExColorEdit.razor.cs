@@ -68,11 +68,14 @@ public sealed partial class MudExColorEdit
     /// With this setting turned on, you can use this edit control for all of your Color Properties
     /// </summary>
     [Parameter] public bool ForceSelectOfMudColor { get; set; }
-
+    [Parameter] public string LabelCustomTab { get; set; } = "Custom";
+    [Parameter] public string LabelDefinedTab { get; set; } = "Defined";
+    
     private KeyValuePair<string, MudColor>[] _cssVars;
-    private MudColor[] _palette;
+    private MudColor[] _palette ;
 
     private bool HasDefinedColors => ShowThemeColors || ShowHtmlColors || ShowCssColorVariables;
+
 
     public string TryLocalize(string text, params object[] args) => LocalizerToUse.TryLocalize(text, args);
 

@@ -1,7 +1,5 @@
-﻿@using Microsoft.Extensions.Localization
-@using MudBlazor.Extensions.Helper
-@using Microsoft.Extensions.DependencyInjection;
-@namespace MudBlazor.Extensions.Components
+﻿@namespace MudBlazor.Extensions.Components
+@inherits MudExBaseComponent<MudExMessageDialog>
 
 <MudDialog Style="@Style" Class="@Class" ClassContent="@ClassContent">
     <TitleContent>
@@ -11,13 +9,13 @@
         }
         <MudText Typo="Typo.h6">
             <MudIcon Color="Color.Error" Icon="@Icon" Class="mr-3 mb-n1"/>
-            @localizer.TryLocalize(MudDialog.Title)
+            @TryLocalize(MudDialog.Title)
         </MudText>
     </TitleContent>
     <DialogContent>
         @if (!string.IsNullOrEmpty(Message))
         {
-            <MudText>@localizer.TryLocalize(Message)</MudText>
+            <MudText>@TryLocalize(Message)</MudText>
         }
         @if (Content != null)
         {
@@ -29,46 +27,12 @@
         {
             foreach (var action in Buttons)
             {
-                <MudButton Color="@action.Color" Variant="@action.Variant" OnClick="@(() => Submit(action.Result))">@localizer.TryLocalize(action.Label)</MudButton>
+                <MudButton Color="@action.Color" Variant="@action.Variant" OnClick="@(() => Submit(action.Result))">@TryLocalize(action.Label)</MudButton>
             }
         }
         else if (!AllowEmptyActions)
         {
-            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="Cancel">@localizer.TryLocalize("Close")</MudButton>
+            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="Cancel">@TryLocalize("Close")</MudButton>
         }
     </DialogActions>
 </MudDialog>
-@code {
-
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    [Inject] private IServiceProvider _serviceProvider { get; set; }
-
-    private IStringLocalizer<MudExMessageDialog> localizer => _serviceProvider.GetService<IStringLocalizer<MudExMessageDialog>>();
-
-    [Parameter] public string Style { get; set; } = string.Empty;
-    [Parameter] public string Class { get; set; } = MudExCss.Classes.Dialog._Initial;
-    [Parameter] public string ClassContent { get; set; } = string.Empty;
-
-    [Parameter] public string Message { get; set; }
-    [Parameter] public bool AllowEmptyActions { get; set; }
-    [Parameter] public string Icon { get; set; }
-    [Parameter] public IEnumerable<string> Details { get; set; }
-    [Parameter] public MudExDialogResultAction[] Buttons { get; set; }
-    [Parameter] public RenderFragment Content { get; set; }
-    
-    [Parameter] public bool ShowProgress { get; set; }
-    [Parameter] public int ProgressValue { get; set; }
-    [Parameter] public double ProgressMin { get; set; }
-    [Parameter] public double ProgressMax { get; set; } = 100.0;
-
-    internal ComponentBase Component { get; set; }
-
-    
-    void Submit(DialogResult result)
-    {
-        MudDialog.Close(result);
-    }
-
-    void Cancel() => MudDialog.Cancel();
-
-}

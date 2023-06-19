@@ -1,0 +1,16 @@
+﻿@using MudBlazor.Extensions.Helper
+
+@inherits MudExChipSelect<string>
+
+@Inherited()
+
+@code{
+    private RenderFragment<string> GetItemTemplate() => context =>
+        @<MudText title="@context" Style="@(MudExStyleBuilder.Empty().WithFontFamily(context).Build())">
+            @if (WithGoogleLatinFonts && MudExFonts.GoogleLatinFonts.Contains(context))
+            {
+                <style>@MudExFonts.ImportUriText(context)</style>
+            }
+            @context
+        </MudText>;
+}

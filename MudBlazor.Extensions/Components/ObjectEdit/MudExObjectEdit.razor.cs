@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Components;
@@ -30,6 +29,9 @@ public partial class MudExObjectEdit<T>
 {
     private IObjectMetaConfiguration<T> _configService => Get<IObjectMetaConfiguration<T>>();
     private Color _importButtonColor;
+    private bool _restoreCalled;
+
+
     [Parameter] public bool IsLoading { get; set; }
     protected bool IsInternalLoading;
 
@@ -40,12 +42,12 @@ public partial class MudExObjectEdit<T>
         set => SetValue(value);
     }
 
-    public bool IsRendered { get; private set; }
     [Parameter] public int? Height { get; set; }
     [Parameter] public int? MaxHeight { get; set; }
     [Parameter] public CssUnit SizeUnit { get; set; } = CssUnit.Pixels;
     
     [Parameter] public bool ImportNeedsConfirmation { get; set; }
+    [Parameter] public string StateKey { get; set; } = $"mud-ex-object-edit-{typeof(T).FullName}";
     [Parameter] public string ImportConfirmText { get; set; } = "Import";
     [Parameter] public string ImportCancelText { get; set; } = "Cancel";
     [Parameter] public bool Virtualize { get; set; } = false;
@@ -82,9 +84,13 @@ public partial class MudExObjectEdit<T>
     [Parameter] public EventCallback<ExportData<T>> BeforeExport { get; set; }
     /**
      * Here you can change content of parameter to manipulate import data
+     * For example you can remove some properties or change the values
+     * This is called before the import is executed
+     * importData.Json = "{\"FirstName\": \"Changed Test\"}";
      */
     [Parameter] public EventCallback<ImportData<T>> BeforeImport { get; set; }
     [Parameter] public EventCallback<T> ValueChanged { get; set; }
+    [Parameter] public EventCallback<ObjectEditPropertyMeta> PropertyChanged { get; set; }
     [Parameter] public ObjectEditMeta<T> MetaInformation { get; set; }
     [Parameter] public bool ShowPathAsTitleForEachProperty { get; set; }
     [Parameter] public PathDisplayMode PathDisplayMode { get; set; }
@@ -134,7 +140,6 @@ public partial class MudExObjectEdit<T>
             .Recursive(w => w.Wrapper == null ? Enumerable.Empty<IRenderData>() : new[] { w.Wrapper })
             .Any(d => d.ComponentType == typeof(MudItem));
 
-    private string stateKey => $"mud-ex-object-edit-{typeof(T).FullName}";
     protected override async Task OnParametersSetAsync()
     {
         _importButtonColor = ToolbarButtonColor;
@@ -146,6 +151,7 @@ public partial class MudExObjectEdit<T>
             CancelText = TryLocalize("Cancel"),
             YesText = TryLocalize("Reset")
         };
+            
     }
     
     public override async Task SetParametersAsync(ParameterView parameters)
@@ -160,16 +166,15 @@ public partial class MudExObjectEdit<T>
         }
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            IsRendered = true;
-            if (AutoSaveRestoreState)
-                await RestoreState();
-        }
 
-        await base.OnAfterRenderAsync(firstRender);
+    protected override async Task OnFinishedRenderAsync()
+    {
+        await base.OnFinishedRenderAsync();
+        if (await RestoreState())
+        {
+            MetaInformation?.UpdateAllConditionalSettings(Value);
+            StateHasChanged();
+        }
     }
 
     public T GetUpdatedValue()
@@ -193,8 +198,7 @@ public partial class MudExObjectEdit<T>
 
     public void Invalidate()
     {
-        StateHasChanged();
-        Editors.Apply(e => e.Invalidate());
+        Refresh().Editors.Apply(e => e.Invalidate());
     }
 
     private async Task CreateMetaIfNotExists()
@@ -217,18 +221,18 @@ public partial class MudExObjectEdit<T>
         }
     }
 
-    protected virtual Task OnPropertyChange(ObjectEditPropertyMeta property)
+    protected virtual async Task OnPropertyChange(ObjectEditPropertyMeta property)
     {
-        if (!IsRendered) 
-            return Task.CompletedTask;
+        if (!IsRendered)
+            return;
         
         if (AutoSaveRestoreState)
             _ = Task.Run(SaveState);
 
         if (Value != null)
             MetaInformation.UpdateAllConditionalSettings(Value);
-
-        return ValueChanged.InvokeAsync(Value);
+        await PropertyChanged.InvokeAsync(property);
+        await ValueChanged.InvokeAsync(Value);
     }
 
     private bool IsInFilter(ObjectEditPropertyMeta propertyMeta)
@@ -265,17 +269,49 @@ public partial class MudExObjectEdit<T>
 
     public Task Clear() => Task.WhenAll(Editors.Select(e => e.ClearAsync()));
 
-    public virtual async Task RestoreState()
+
+    /// <summary>
+    /// Restore state if available and returns true if state was restored otherwise false.
+    /// </summary>
+    public virtual async Task<bool> RestoreState(bool force = false)
     {
-        string json = await JsRuntime.InvokeAsync<string>($"{StateTargetStorage.ToDescriptionString()}.getItem", stateKey);
-        if (!string.IsNullOrWhiteSpace(json))
-            await LoadFromJson(json, false);
+        if (force || (AutoSaveRestoreState && !_restoreCalled))
+        {
+            _restoreCalled = true;
+            string json = await JsRuntime.InvokeAsync<string>($"{StateTargetStorage.ToDescriptionString()}.getItem", StateKey);
+            if (!string.IsNullOrWhiteSpace(json))
+            {
+                var toImport = new ImportData<T>
+                    {Json = json, Value = Value, TriggerdFrom = DataChangeTrigger.StateSaveLoad};
+                await BeforeImport.InvokeAsync(toImport);
+                if (toImport.Cancel)
+                    return false;
+
+                await LoadFromJson(toImport.Json, false);
+                await DeleteState();
+                await AfterImport.InvokeAsync(new ImportedData<T> {Json = toImport.Json, Value = Value, TriggerdFrom = DataChangeTrigger.StateSaveLoad});
+                return true;
+            }
+        }
+
+        return false;
     }
 
+    public virtual async Task DeleteState()
+    {
+        await JsRuntime.InvokeVoidAsync($"{StateTargetStorage.ToDescriptionString()}.setItem", StateKey, string.Empty);
+    }
+    
     public virtual async Task SaveState()
     {
-        string json = JsonConvert.SerializeObject(Value);
-        await JsRuntime.InvokeVoidAsync($"{StateTargetStorage.ToDescriptionString()}.setItem", stateKey, json);
+        //string json = JsonConvert.SerializeObject(Value);
+        string json = await ToJsonAsync();
+        var exportData = new ExportData<T> {Json = json, Value = Value, TriggerdFrom = DataChangeTrigger.StateSaveLoad };
+        await BeforeExport.InvokeAsync(exportData);
+        if (exportData.Cancel)
+            return;
+        await JsRuntime.InvokeVoidAsync($"{StateTargetStorage.ToDescriptionString()}.setItem", StateKey, exportData.Json);
+        await AfterExport.InvokeAsync(exportData);
     }
 
     private Task<bool?> ShowConfirmationBox()
@@ -373,8 +409,12 @@ public partial class MudExObjectEdit<T>
 
     private async Task Export()
     {
-        var exported = new ExportedData<T> { Value = Value, Json = await ToJsonAsync() };
+        var exported = new ExportData<T> { Value = Value, Json = await ToJsonAsync() };
         await BeforeExport.InvokeAsync(exported);
+        
+        if(exported.Cancel)
+            return;
+
         IsInternalLoading = true;
         try
         {
@@ -455,9 +495,9 @@ public partial class MudExObjectEdit<T>
             var buffer = new byte[e.File.Size];
             await e.File.OpenReadStream(e.File.Size).ReadAsync(buffer);
             
-            var toImport = new ImportedData<T> { Json = Encoding.UTF8.GetString(buffer), Value = Value };
+            var toImport = new ImportData<T> { Json = Encoding.UTF8.GetString(buffer), Value = Value };
             await BeforeImport.InvokeAsync(toImport);
-            if (await ShouldCancelImportAsync(toImport.Json, e.File.Name))
+            if (toImport.Cancel || await ShouldCancelImportAsync(toImport.Json, e.File.Name))
                 return;
 
             IsInternalLoading = true;
@@ -465,7 +505,7 @@ public partial class MudExObjectEdit<T>
 
             await LoadFromJson(toImport.Json, true);
             await ImportSuccessUI();
-            await AfterImport.InvokeAsync(toImport);
+            await AfterImport.InvokeAsync(new ImportedData<T> {Json = toImport.Json, Value = Value});
         }
         catch (Exception ex)
         {
@@ -493,6 +533,12 @@ public partial class MudExObjectEdit<T>
         return Task.Run(() =>
         {
             var ignored = removeIgnoredImports ? MetaInformation.Properties().Where(p => p.Settings.IgnoreOnImport).Select(m => m.PropertyName).ToHashSet() : new HashSet<string>();
+            if (ignored.Count <= 0)
+            {
+                Value = JsonConvert.DeserializeObject<T>(json);
+                return;
+            }
+            
             var obj = JsonConvert.DeserializeObject(json, Value.GetType());
             var notIgnored = obj.ToFlatDictionary().Where(kvp => !ignored.Contains(kvp.Key) && !ignored.Any(path => PropertyHelper.IsPropertyPathSubPropertyOf(kvp.Key, path))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 

@@ -42,6 +42,12 @@ public enum StateTarget
     SessionStorage
 }
 
+public enum DataChangeTrigger
+{
+    ExportImport,
+    StateSaveLoad
+}
+
 public class ModelForPrimitive<T>
 {
     public ModelForPrimitive()
@@ -55,12 +61,19 @@ public class ModelForPrimitive<T>
     public T Value { get; set; }
 }
 
-public class ExportData<T>
+public class ExportedData<T>
 {
     public T Value { get; set; }
     public string Json { get; set; }
+    public DataChangeTrigger TriggerdFrom { get; set; } = DataChangeTrigger.ExportImport;
 }
 
+public class ImportedData<T> : ExportedData<T> { }
+
 public class ImportData<T> : ExportData<T> { }
-public class ImportedData<T> : ImportData<T> { }
-public class ExportedData<T> : ExportData<T> { }
+
+
+public class ExportData<T> : ExportedData<T>
+{
+    public bool Cancel { get; set; }
+}

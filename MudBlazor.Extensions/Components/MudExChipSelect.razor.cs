@@ -22,6 +22,7 @@ public partial class MudExChipSelect<T>
     [Parameter] public bool DisableUnderLine { get; set; }
     [Parameter] public bool DisableUnderLineForValidationComponent { get; set; } = true;
     [Parameter] public string StyleForValidationComponent { get; set; } = "margin-top: -38px; pointer-events: none;";
+    [Parameter] public string Style { get; set; }
     [Parameter] public virtual Color ChipColor { get; set; } = Color.Primary;
     [Parameter] public virtual Variant ChipVariant { get; set; } = Variant.Filled;
     [Parameter] public virtual ViewMode ViewMode { get; set; } = ViewMode.ChipsOnly;

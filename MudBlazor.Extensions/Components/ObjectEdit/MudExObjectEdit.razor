@@ -135,6 +135,7 @@ else
     {
         return 
             @<MudExPropertyEdit @ref="@Ref" DisableFieldFallback="@DisableFieldFallback"
+                                   RenderKey="@RenderKey"
                                    ShowPathAsTitle="@ShowPathAsTitleForEachProperty"
                                    IsLoading="@(IsLoading || IsInternalLoading)"
                                    AutoSkeletonOnLoad="@AutoSkeletonOnLoad"
@@ -143,6 +144,6 @@ else
                                    Localizer="@LocalizerToUse"
                                    PropertyResetSettings="@DefaultPropertyResetSettings"
                                    PropertyMeta="@property">
-    </MudExPropertyEdit>;
+             </MudExPropertyEdit>;
     }
 }

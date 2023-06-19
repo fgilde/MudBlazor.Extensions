@@ -1,0 +1,85 @@
+﻿using Microsoft.AspNetCore.Components;
+using System.Reflection;
+using Nextended.Core.Extensions;
+
+namespace MudBlazor.Extensions.Components;
+
+/// <summary>
+/// Drop down component to select an enum value or multiple on flags enums
+/// </summary>
+public partial class MudExEnumSelect<TEnum>
+{
+    bool _isFlagsEnum;
+    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+
+    private static IList<TEnum> EnumValueList()
+        => EnumOrUnderlyingType().GetEnumValues().Cast<TEnum>().ToList();
+
+    private static Type EnumOrUnderlyingType()
+        => IsNullableEnum ? Nullable.GetUnderlyingType(typeof(TEnum)) : typeof(TEnum);
+
+    private static bool IsNullableEnum => typeof(TEnum).IsNullableEnum();
+
+    protected override void OnInitialized()
+    {
+        ViewMode = ViewMode.NoChips;
+        _isFlagsEnum = EnumOrUnderlyingType().GetCustomAttribute<FlagsAttribute>() != null;
+        MultiSelect = _isFlagsEnum;
+        AvailableItems = EnumValueList();
+        base.OnInitialized();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        if (_isFlagsEnum)
+        {
+            var valueEnum = Value as Enum;
+            var toSelect = AvailableItems.Where(e => valueEnum?.HasFlag((e as Enum)!) == true).ToList();
+            Selected = toSelect;
+        }
+        else if (Value != null)
+        {
+            Selected = new[] { Value };
+        }
+    }
+
+    protected override void OnBeforeSelectedChanged(IEnumerable<TEnum> selected)
+    {
+        if (_isFlagsEnum)
+        {
+            var selectedAsArray = selected as TEnum[] ?? selected?.ToArray() ?? Array.Empty<TEnum>();
+            if (IsNullableEnum && !selectedAsArray.Any())
+            {
+                Value = default;
+                return;
+            }
+            if (IsNullableEnum && Value == null)
+            {
+                Value = selectedAsArray.FirstOrDefault();
+            }
+            foreach (var e in AvailableItems)
+                Value = SetFlag(e, false);
+            foreach (var e in selectedAsArray)
+                Value = SetFlag(e, true);
+        }
+    }
+
+
+    private T SetFlag<T>(T flag, bool set)
+    {
+        Enum value = Value as Enum;
+
+        var underlyingType = Enum.GetUnderlyingType(EnumOrUnderlyingType());
+
+        // note: AsInt mean: math integer vs enum (not the c# int type)
+        dynamic valueAsInt = Convert.ChangeType(value, underlyingType);
+        dynamic flagAsInt = Convert.ChangeType(flag, underlyingType);
+        if (set)
+            valueAsInt |= flagAsInt;
+        else
+            valueAsInt &= ~flagAsInt;
+
+        return (T)valueAsInt;
+    }
+}

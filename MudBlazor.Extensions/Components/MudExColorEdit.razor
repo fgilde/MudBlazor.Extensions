@@ -22,7 +22,7 @@
         @<MudTabs Class="mud-ex-color-edit-picker" TabHeaderClass="mud-ex-tab-bar-sticky" Elevation="0" Rounded="true" ApplyEffectsToContainer="true">
             @if (HasDefinedColors && rendered && IsOpen)
             {
-                <MudTabPanel Text="Defined">
+                <MudTabPanel Text="@TryLocalize(LabelDefinedTab)">
                     <MudTextField Clearable="true" Variant="@FilterVariant" Immediate="true" Placeholder="@TryLocalize("Filter")" @bind-Value="@Filter" T="string"></MudTextField>
                     <MudPaper Elevation="0">
                         <MudList Dense="true" Class="m-0" Clickable="true">
@@ -81,12 +81,9 @@
                     </MudPaper>
                 </MudTabPanel>
             }
-            <MudTabPanel OnClick="@CustomTabClick" Text="Custom">
-                <MudExColorPicker Palette="@_palette" InitialColor="@_initialMudColorValue" ColorPickerMode="ColorPickerMode.HEX" DisableToolbar="@DisableToolbar" ValueChanged="@(Select)" PickerVariant="PickerVariant.Static" />
+            <MudTabPanel OnClick="@CustomTabClick" Text="@TryLocalize(@LabelCustomTab)">
+                <MudExColorPicker InitialColor="@_initialMudColorValue" ColorPickerMode="ColorPickerMode.HEX" DisableToolbar="@DisableToolbar" ValueChanged="@(Select)" PickerVariant="PickerVariant.Static" />
             </MudTabPanel>
         </MudTabs>;
     }
 }
-
-
-

@@ -4,7 +4,7 @@ using System.Globalization;
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
-/// Simple Picker component for Cultures
+/// Drop down component to select a culture
 /// </summary>
 public partial class MudExCultureSelect
 {
