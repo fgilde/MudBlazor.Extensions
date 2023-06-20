@@ -21,8 +21,6 @@ public partial class RenderData : IRenderData
         return this;
     }
 
-    //public bool IsValidParameterAttribute(string key, object value) => ComponentRenderHelper.IsValidProperty(ComponentType, key, value);
-
     public bool IsValidParameterAttribute(string key, object value) => ComponentRenderHelper.IsValidParameter(ComponentType, key, value);
 
     public IDictionary<string, object> ValidAttributes => Attributes.Where(kvp => IsValidParameterAttribute(kvp.Key, kvp.Value)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
