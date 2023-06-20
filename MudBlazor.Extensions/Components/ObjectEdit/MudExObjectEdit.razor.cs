@@ -476,8 +476,11 @@ public partial class MudExObjectEdit<T>
     protected override async Task OnFinishedRenderAsync()
     {
         await base.OnFinishedRenderAsync();
-        UpdateConditions();
-        StateHasChanged();
+        if (await RestoreState())
+        {
+            UpdateConditions();
+            StateHasChanged();
+        }
     }
 
     #endregion

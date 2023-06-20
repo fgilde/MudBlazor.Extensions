@@ -13,8 +13,8 @@ public partial class MudExThemeEdit<TTheme>
     private const int extraDelay = 500;
     private bool _isLoading = true;
     private const string fontFamilyEditPath = $"{nameof(Typography)}.{nameof(Typography.Default)}.{nameof(Typography.Default.FontFamily)}";
-    
-    private static readonly string[] _propertiesForSimpleMode = { 
+
+    private static readonly string[] _propertiesForSimpleMode = {
         nameof(MudTheme.Palette.AppbarBackground),
         nameof(MudTheme.Palette.Surface),
         nameof(MudTheme.Palette.DrawerBackground),
@@ -89,7 +89,7 @@ public partial class MudExThemeEdit<TTheme>
     {
         await base.OnInitializedAsync();
     }
-    
+
 
     private Task EditModeChangedInternally(ThemeEditMode arg)
     {
@@ -125,7 +125,7 @@ public partial class MudExThemeEdit<TTheme>
         Loading(false);
     }
 
-    
+
     private Task OnThemeChanged(TTheme arg)
     {
         return ThemeChanged.InvokeAsync(arg);
@@ -135,10 +135,10 @@ public partial class MudExThemeEdit<TTheme>
     {
         if (arg.PropertyName == fontFamilyEditPath && EditMode == ThemeEditMode.Simple)
         {
-            Theme.Typography.Body1.FontFamily = Theme.Typography.Body2.FontFamily = Theme.Typography.Caption.FontFamily = 
-            Theme.Typography.Button.FontFamily = Theme.Typography.H1.FontFamily = Theme.Typography.H2.FontFamily = 
-            Theme.Typography.H3.FontFamily = Theme.Typography.H4.FontFamily = Theme.Typography.H5.FontFamily = 
-            Theme.Typography.H6.FontFamily = Theme.Typography.Subtitle1.FontFamily = Theme.Typography.Subtitle2.FontFamily = 
+            Theme.Typography.Body1.FontFamily = Theme.Typography.Body2.FontFamily = Theme.Typography.Caption.FontFamily =
+            Theme.Typography.Button.FontFamily = Theme.Typography.H1.FontFamily = Theme.Typography.H2.FontFamily =
+            Theme.Typography.H3.FontFamily = Theme.Typography.H4.FontFamily = Theme.Typography.H5.FontFamily =
+            Theme.Typography.H6.FontFamily = Theme.Typography.Subtitle1.FontFamily = Theme.Typography.Subtitle2.FontFamily =
             Theme.Typography.Overline.FontFamily = arg.Value as string[];
         }
         return Task.CompletedTask;
@@ -151,7 +151,7 @@ public partial class MudExThemeEdit<TTheme>
         meta.Properties<MudColor>()
             .RenderWith<MudExColorEdit, MudColor, string>(edit => edit.ValueString)
             .WithAdditionalAttributes(OptionsForColorEdit());
-        
+
 
         meta.Properties<string>().Where(p => p?.Value?.ToString()?.StartsWith("rgb") == true || p?.Value?.ToString()?.StartsWith("#") == true)
             .RenderWith<MudExColorEdit, string, string>(edit => edit.ValueString)
@@ -162,14 +162,15 @@ public partial class MudExThemeEdit<TTheme>
 
         //meta.Properties(theme => theme.Typography.Default.FontFamily)
         meta.Properties().Where(p => p.PropertyInfo.Name == nameof(MudTheme.Typography.Default.FontFamily))
-            .RenderWith<MudExFontSelect, string[], IEnumerable<string>>(edit => edit.Selected);
-        
+            .RenderWith<MudExFontSelect, string[], IEnumerable<string>>(edit => edit.Selected)
+            .WithOrder(0);
+
         meta.AllProperties.IgnoreIf<ObjectEditPropertyMeta>(IsNotAllowed);
     }
 
     private IDictionary<string, object> OptionsForColorEdit() => RenderDataDefaults.ColorPickerOptions().AddOrUpdate(nameof(MudExColorEdit.CssVars), _cssVars);
 
-    
+
     private void ConfigurePalette(ObjectEditPropertyMetaOf<TTheme> paletteProperty)
     {
         paletteProperty.Children.Recursive(om => om.Children)
@@ -182,19 +183,19 @@ public partial class MudExThemeEdit<TTheme>
     {
         var isLightPalette = objectEditPropertyMeta.PropertyName.Contains($"{nameof(MudTheme.Palette)}.");
         var isDarkPalette = objectEditPropertyMeta.PropertyName.Contains(nameof(MudTheme.PaletteDark));
-            
-        if( (IsDark.HasValue && isDarkPalette && !IsDark.Value) || (IsDark.HasValue && isLightPalette && IsDark.Value) )
+
+        if ((IsDark.HasValue && isDarkPalette && !IsDark.Value) || (IsDark.HasValue && isLightPalette && IsDark.Value))
             return false;
-        
+
         return EditMode == ThemeEditMode.Full
                || _propertiesForSimpleMode.Contains(objectEditPropertyMeta.PropertyName)  // Full path like Object.Data.Id
                || _propertiesForSimpleMode.Contains(objectEditPropertyMeta.PropertyInfo.Name); // Name only.. like Id
 
     }
 
-    private Task BeforeImport(ImportData<TTheme> arg) 
+    private Task BeforeImport(ImportData<TTheme> arg)
         => Task.FromResult(arg.Json = JsonHelper.SimplifyMudColorInJson(arg.Json));
-    private void BeforeExport(ExportData<TTheme> obj) => 
+    private void BeforeExport(ExportData<TTheme> obj) =>
         obj.Json = JsonHelper.SimplifyMudColorInJson(obj.Json);
 
 
