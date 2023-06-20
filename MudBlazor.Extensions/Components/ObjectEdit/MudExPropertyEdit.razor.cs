@@ -115,18 +115,23 @@ public partial class MudExPropertyEdit
                 PropertyMeta.Value = reset
                     ? await GetBackupAsync(valueBackup)
                     : PropertyMeta.RenderData.ConvertToPropertyValue(GetDefault(PropertyMeta.PropertyInfo.PropertyType));
+                
+                StateHasChanged();
             }
         }
         catch
-        {
-            Console.WriteLine(PropertyMeta.PropertyName);
-        }
-        StateHasChanged();
+        {}
     }
 
 
-    //public void Invalidate() => StateHasChanged();
-    public void Invalidate() => Refresh();
+    public void Invalidate(bool useRefresh = false)
+    {
+        if (useRefresh) 
+            Refresh();
+        else 
+            StateHasChanged();
+    }
+
     public object GetCurrentValue()
         => editor.Instance?.GetType()?.GetProperty(PropertyMeta.RenderData.ValueField)?.GetValue(editor.Instance);
 

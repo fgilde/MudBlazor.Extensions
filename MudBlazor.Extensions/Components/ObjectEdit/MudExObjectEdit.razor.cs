@@ -40,6 +40,13 @@ public partial class MudExObjectEdit<T>
 
 
     #region Parameters
+    
+    /// <summary>
+    /// Set this to true, to use the old render behavior without references for ignored fields. 
+    /// </summary>
+    [Parameter] public bool UseLegacyRenderFilter { get; set; }
+
+
     /// <summary>
     /// Whether the component should show a loading indicator.
     /// </summary>
@@ -54,6 +61,13 @@ public partial class MudExObjectEdit<T>
         get => _value;
         set => SetValue(value);
     }
+
+    /// <summary>
+    /// Whether the component should automatically update all registered Conditions.
+    /// Otherwise you need to call UpdateAllConditions on your own.
+    /// </summary>
+    [Parameter]
+    public bool AutoUpdateConditions { get; set; } = true;
 
     /// <summary>
     /// The height of the component.
@@ -445,15 +459,25 @@ public partial class MudExObjectEdit<T>
         MetaInformation?.UpdateAllConditionalSettings(Value);
     }
 
+    /// <summary>
+    /// Updates all conditions on meta settings
+    /// </summary>
+    internal virtual bool UpdateConditions()
+    {
+        if (AutoUpdateConditions)
+        {
+            UpdateAllConditions();
+            return true;
+        }
+        return false;
+    }
+
     /// <inheritdoc/>
     protected override async Task OnFinishedRenderAsync()
     {
         await base.OnFinishedRenderAsync();
-        if (await RestoreState())
-        {
-            UpdateAllConditions();
-            StateHasChanged();
-        }
+        UpdateConditions();
+        StateHasChanged();
     }
 
     #endregion
@@ -486,7 +510,7 @@ public partial class MudExObjectEdit<T>
                 editable.CancelEdit();
         }
 
-        UpdateAllConditions();
+        UpdateConditions();
     }
 
     /// <summary>
@@ -499,7 +523,7 @@ public partial class MudExObjectEdit<T>
         {
             await Task.WhenAll(Editors.Select(e => e.ClearAsync()));
         }
-        UpdateAllConditions();
+        UpdateConditions();
     }
 
 
@@ -556,9 +580,13 @@ public partial class MudExObjectEdit<T>
     }
 
 
-    public void Invalidate()
+    public void Invalidate(bool useRefresh = false)
     {
-        Refresh().Editors.Apply(e => e.Invalidate());
+        if (useRefresh)
+            Refresh();
+        else
+            StateHasChanged();
+        Editors.Apply(e => e.Invalidate(useRefresh));
     }
     
     /// <summary>
@@ -573,7 +601,7 @@ public partial class MudExObjectEdit<T>
             _ = Task.Run(SaveState);
 
         if (Value != null)
-            UpdateAllConditions();
+            UpdateConditions();
         await PropertyChanged.InvokeAsync(property);
         await ValueChanged.InvokeAsync(Value);
     }
@@ -598,8 +626,25 @@ public partial class MudExObjectEdit<T>
 
     private bool ShouldAddGrid(IEnumerable<ObjectEditPropertyMeta> meta) => WrapInMudGrid ?? ContainsMudItemInWrapper(meta);
     private string CssClassName => GroupingStyle == GroupingStyle.Flat ? $"mud-ex-object-edit-group-flat {(!GroupsCollapsible ? "mud-ex-hide-expand-btn" : "")}" : string.Empty;
-    private IEnumerable<IGrouping<string, ObjectEditPropertyMeta>> GroupedMetaPropertyInfos()
-        => MetaInformation?.AllProperties?.EmptyIfNull().Where(m => m.ShouldRender() && IsInFilter(m) && (!AutoHideDisabledFields || m.Settings.IsEditable)).GroupBy(m => !DisableGrouping ? m.GroupInfo?.Name : string.Empty);
+
+    
+    private List<IGrouping<string, ObjectEditPropertyMeta>> LegacyGroupedMetaPropertyInfos() // Here we filter ignore directly
+        => MetaInformation?.AllProperties?.EmptyIfNull()
+            .Where(m => m.ShouldRender() && IsInFilter(m) && (!AutoHideDisabledFields || m.Settings.IsEditable))
+            .GroupBy(m => !DisableGrouping ? m.GroupInfo?.Name : string.Empty)
+            .ToList();
+
+    private List<IGrouping<string, ObjectEditPropertyMeta>> NewGroupedMetaPropertyInfos() // Here we don't filter ignores and give them to MudExPropertyEdit to keep reference
+        => MetaInformation?.AllProperties?.EmptyIfNull()
+            .Where(m => IsInFilter(m) && (!AutoHideDisabledFields || m.Settings.IsEditable))
+            .GroupBy(m => !DisableGrouping ? m.GroupInfo?.Name : string.Empty)
+            .ToList();
+
+    
+    private List<IGrouping<string, ObjectEditPropertyMeta>> GroupedMetaPropertyInfos() 
+        => UseLegacyRenderFilter ? LegacyGroupedMetaPropertyInfos() : NewGroupedMetaPropertyInfos();
+
+
     private bool ContainsMudItemInWrapper(IEnumerable<ObjectEditPropertyMeta> meta)
         => meta.Where(p => p.RenderData?.Wrapper != null)
             .Select(p => p.RenderData.Wrapper)
@@ -622,7 +667,8 @@ public partial class MudExObjectEdit<T>
 
             if (ConfigService != null && ConfigureBehaviourForRegisteredConfigurations == RegisteredConfigurationBehaviour.ExecutedAfter)
                 await ConfigService.ConfigureAsync(MetaInformation);
-            UpdateAllConditions();
+            
+            UpdateConditions(); 
         }
     }
 
