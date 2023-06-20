@@ -3,11 +3,10 @@
     
     <!--<TargetFramework>net7.0</TargetFramework>-->
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-    
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <ImplicitUsings>enable</ImplicitUsings>
-    <PackageVersion>0.0.0-dev</PackageVersion>
-    <LangVersion>10</LangVersion>
+
+    <LangVersion>11</LangVersion>
     <Authors>Florian Gilde</Authors>
     <Description>MudBlazor.Extensions is a small extension library for MudBlazor from https://mudblazor.com/ </Description>
     <PackageProjectUrl>https://www.mudex.org</PackageProjectUrl>
@@ -22,6 +21,23 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <!--Versioning-->
+  <PropertyGroup>
+    <MajorVersion>1</MajorVersion>
+    <MinorVersion>7</MinorVersion>
+    <PatchVersion>54</PatchVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <VersionSuffix>$([System.DateTime]::Now.ToString(`yyMMddHHm`))</VersionSuffix>
+    <PackageVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)-$(VersionSuffix)</PackageVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <PackageVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)</PackageVersion>
+  </PropertyGroup>
+
+
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
@@ -33,12 +49,6 @@
     <EmbeddedResource Include="wwwroot\mudBlazorExtensions.min.css" />
   </ItemGroup>
 
-  <!--<ItemGroup>
-    <Content Include="wwwroot\docs\MudBlazor.Extensions.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>-->
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <PropertyGroup>
@@ -72,10 +82,6 @@
     <PackageReference Include="MudBlazor" Version="6.4.1" />
     <PackageReference Include="PSC.Blazor.Components.BrowserDetect" Version="1.0.11" />
 
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.6.133">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
