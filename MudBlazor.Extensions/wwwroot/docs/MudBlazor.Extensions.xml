@@ -460,6 +460,11 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.UseLegacyRenderFilter">
+            <summary>
+            Set this to true, to use the old render behavior without references for ignored fields. 
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.IsLoading">
             <summary>
             Whether the component should show a loading indicator.
@@ -468,6 +473,12 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Value">
             <summary>
             The object to be edited by the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.AutoUpdateConditions">
+            <summary>
+            Whether the component should automatically update all registered Conditions.
+            Otherwise you need to call UpdateAllConditions on your own.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Height">
@@ -810,6 +821,11 @@
             <inheritdoc/>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.UpdateAllConditions">
+            <summary>
+            Updates all conditions on meta settings
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.UpdateConditions">
             <summary>
             Updates all conditions on meta settings
             </summary>
