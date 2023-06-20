@@ -17,15 +17,19 @@ public abstract class MudExBaseComponent<T> : ComponentBase, IMudExComponent
     [Parameter] public object RenderKey { get; set; }
     [Inject] protected IServiceProvider ServiceProvider { get; set; }
     public IJSRuntime JsRuntime => Get<IJSRuntime>();
-    public bool IsRendered { get; private set; }
-    public bool IsFullyRendered { get; private set; }
+
+    protected bool IsRendered { get; set; }
+    protected bool IsFullyRendered { get; set; }
+    
     private IStringLocalizer<T> _fallbackLocalizer => Get<IStringLocalizer<T>>();
     protected IDialogService DialogService => Get<IDialogService>();
     protected IStringLocalizer LocalizerToUse => Localizer ?? _fallbackLocalizer;
     protected TService Get<TService>() => ServiceProvider.GetService<TService>();
     protected IEnumerable<TService> GetServices<TService>() => ServiceProvider.GetServices<TService>();
     public string TryLocalize(string text, params object[] args) => LocalizerToUse.TryLocalize(text, args);
-    
+
+    public bool GetIsRendered() => IsRendered;
+
     protected override bool ShouldRender()
     {
         if (base.ShouldRender() || !Equals(_previousKey, RenderKey))
