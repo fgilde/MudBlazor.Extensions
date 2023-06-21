@@ -1,6 +1,9 @@
 ﻿<PageTitle>@ChildContent</PageTitle>
-<h1 style="margin-top: -100px;color: var(--mud-palette-primary);">@ChildContent</h1>
+<MudText Style="margin-top: auto; margin-bottom: auto; margin-right: 20px;" Typo="@(Typo ?? MudBlazor.Typo.h6)" Color="Color.Primary">@ChildContent</MudText>
 
 @code {
     [Parameter] public RenderFragment ChildContent { get; set; }
+    
+    [Parameter]
+    public Typo? Typo { get; set; } = null;
 }

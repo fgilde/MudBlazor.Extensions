@@ -16,14 +16,15 @@ internal sealed class ApiMemberInfo<TMemberInfo> : IApiMemberInfo
 
     public Task LoadTask { get; private set; }
     public bool DescriptionLoaded { get; private set; }
-    public bool IsStatic => MemberInfo is PropertyInfo info && info.GetAccessors().Any(p => p.IsStatic);
+    public bool IsStatic => (MemberInfo is PropertyInfo info && info.GetAccessors().Any(p => p.IsStatic)) || MemberInfo is MethodInfo {IsStatic: true};
     public TMemberInfo MemberInfo { get; }
     public string Name => MemberInfo is MethodInfo info ? MethodToString(info) : MemberInfo.Name;
     
     public string Description { get; set; }
     public string TypeName => GetTypeName(MemberInfo is PropertyInfo info ? info.PropertyType : (MemberInfo as MethodInfo)!.ReturnType);
-    public string Default => DefaultValue();
-
+    public string Default => _default ??= DefaultValue();
+    private string? _default;
+    
     private async Task LoadDescription()
     {
         var attr = MemberInfo.GetCustomAttribute<DescriptionAttribute>();
@@ -79,6 +80,23 @@ internal sealed class ApiMemberInfo<TMemberInfo> : IApiMemberInfo
         return sb.ToString();
     }
 
+    public static object CreateGenericTypeInstance(Type type)
+    {
+        if (type.IsGenericType)
+        {
+            var genericTypeDef = type.GetGenericTypeDefinition();
+            var typeArgs = new Type[genericTypeDef.GetGenericArguments().Length];
+            for (int i = 0; i < typeArgs.Length; i++)
+            {
+                typeArgs[i] = typeof(object);
+            }
+            var specificType = genericTypeDef.MakeGenericType(typeArgs);
+            return Activator.CreateInstance(specificType);
+        }
+
+        return Activator.CreateInstance(type);
+    }
+
 
     private string DefaultValue()
     {
@@ -87,11 +105,20 @@ internal sealed class ApiMemberInfo<TMemberInfo> : IApiMemberInfo
             return string.Empty;
         try
         {
-            var instance = Activator.CreateInstance(info.DeclaringType);
-            var res = info.GetValue(instance);
-            return res?.ToString() ?? "null";
+            if (info.PropertyType.Name.StartsWith("EventCallback"))
+                return "default";
+            var instance = CreateGenericTypeInstance(info.DeclaringType);
+            var res = instance?.GetType()?.GetProperty(info.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetField)?.GetValue(instance, null) ?? info.GetValue(instance, null);
+            
+            var sres = res?.ToString() ?? "null";
+            if (sres.StartsWith("<"))
+            {
+                string name = MudExSvg.SvgPropertyName(sres);
+                return name != null ? $"@{name}" : sres;
+            }
+            return sres;
         }
-        catch (Exception)
+        catch (Exception e)
         {
             return "Unknown";
         }

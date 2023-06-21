@@ -4,12 +4,26 @@ using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Helper;
 using System.Reflection;
-using System.Xml;
+using MudBlazor.Extensions.Attribute;
 
 namespace MainSample.WebAssembly.Types;
 
 internal static class ComponentTypes
 {
+    public static HashSet<(Type Type, HasDocumentationAttribute Documentation)> DocumentedUtils()
+    {
+        return typeof(MudExSvg).Assembly.GetTypes()
+            .Select(t => (t, t.GetCustomAttribute<HasDocumentationAttribute>()))
+            .Where(d => d.Item2 != null)
+            .Where(d => !d.Item1.Name.StartsWith("<") && !d.Item1.Name.StartsWith("_"))
+            .ToHashSet();
+    }
+
+    public static HashSet<Type> Api()
+    {
+        return AllMudExComponents().Concat(DocumentedUtils().Select(d => d.Type)).Distinct().ToHashSet();
+    }
+
     public static HashSet<Type> AllMudExComponents()
     {
         var interfaceType = typeof(IMudExComponent);

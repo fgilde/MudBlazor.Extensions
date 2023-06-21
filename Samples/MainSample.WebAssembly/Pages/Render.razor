@@ -8,7 +8,7 @@
 
 @if (AvailableDemo != null)
 {
-    <MudAlert Style="position: relative;top: -25px;" Severity="Severity.Info" Variant="Variant.Outlined" AlertTextPosition="AlertTextPosition.Center" ContentAlignment="HorizontalAlignment.Center">
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" AlertTextPosition="AlertTextPosition.Center" ContentAlignment="HorizontalAlignment.Center">
         <a href="@AvailableDemo.Href" target="@AvailableDemo.Target">Here is another Real demo available for @(Api.GetTypeName(Type) ?? TypeName )</a>
     </MudAlert>
 }

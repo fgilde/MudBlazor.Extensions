@@ -6,7 +6,7 @@
     
     <PageHeader>@(DemoAttribute?.Name ?? Type.Name)</PageHeader>
 
-    <MudAlert Style="margin-bottom: 40px; margin-left: -20px;">@Documentation</MudAlert>
+    <MudAlert>@Documentation</MudAlert>
     @if (DemoAttribute != null)
     {
         @foreach (var info in DemoAttribute?.RelatedComponents?.Select(t => new {Type = t, BetaInfos = t.GetCustomAttributes<BetaAttribute>()}).Where(arg => arg?.BetaInfos?.Any() == true)!)

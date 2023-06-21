@@ -2,13 +2,16 @@
 @using MudBlazor.Extensions.Helper
 @using System.Reflection;
 
-<div class="doc-header">
-
-    <PageHeader>@(Api.GetTypeName(Type) ?? Fallback)</PageHeader>
+<div style="@Style" class="doc-header">
+    
+    @if (!DocumentationOnly)
+    {
+        <PageHeader Typo="@Typo">@(Api.GetTypeName(Type) ?? Fallback)</PageHeader>
+    }
 
     @if (!string.IsNullOrEmpty(Documentation))
     {
-        <MudAlert Style="margin-bottom: 40px; margin-left: -20px;">@Documentation</MudAlert>
+        <MudAlert>@Documentation</MudAlert>
     }
 
     @if (betaInfos?.Any() == true)
@@ -35,9 +38,18 @@
 
 
     private IList<BetaAttribute> betaInfos;
+
+    [Parameter]
+    public bool DocumentationOnly { get; set; } = false;
     
     [Parameter]
     public string? Documentation { get; set; } = null;
+
+    [Parameter]
+    public string? Style { get; set; } = "";
+
+    [Parameter]
+    public Typo? Typo { get; set; } = null;
     
     [Parameter]
     public Type Type { get; set; }

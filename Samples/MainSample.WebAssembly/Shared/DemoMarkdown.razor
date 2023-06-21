@@ -1,4 +1,7 @@
-﻿@if (CenterImagesAndHeadlines)
+﻿@using Nextended.Core.Extensions
+@inject HttpClient Http
+
+@if (CenterImagesAndHeadlines)
 {
     <style>
         .mudexmarkdownpresenter h1,
@@ -27,7 +30,7 @@
 
     [Parameter]
     public string Value { get; set; }
-    
+
     protected override Task OnInitializedAsync()
     {
         MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
@@ -36,6 +39,20 @@
 
     private string GetCls() => CenterImagesAndHeadlines ? "mudexmarkdownpresenter" : "";
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await LoadDocumentIfValueIsFile();
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task LoadDocumentIfValueIsFile()
+    {
+        if (Value != null && (Value.StartsWith("http") || Value.EndsWith(".md") || Value.Split(' ').Length == 1))
+        {
+            Value = await Http.LoadDocumentation(Value.EnsureEndsWith(".md"));
+            StateHasChanged();
+        }
+    }
 
     private static Func<Typo, Typo>? TypoConvert()
     {

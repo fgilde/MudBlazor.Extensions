@@ -14,11 +14,9 @@ internal static class PropertyHelper
         var subPathParts = path.Split('.');
         return pathParts.Length >= subPathParts.Length && !subPathParts.Where((t, i) => pathParts[i] != t).Any();
     }
-
-
+    
     public static IDictionary<string, object> ValidValuesDictionary<T>(Action<T> componentOptions, bool removeDefaults) where T : new()
     {
-
         return ValuesDictionary(componentOptions, removeDefaults)
             .Where(kvp => ComponentRenderHelper.IsValidParameter(typeof(T), kvp.Key, kvp.Value))
             .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
@@ -48,5 +46,4 @@ internal static class PropertyHelper
     {
         return DictionaryHelper.GetValuesDictionary<T>(o, removeDefaults, flags);
     }
-
 }

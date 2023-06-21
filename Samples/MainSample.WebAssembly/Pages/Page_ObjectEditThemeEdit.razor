@@ -4,11 +4,10 @@
 
 
 <DemoComponent PageType="@GetType()" DocFiles="@(new[] {"Docs/ObjectEdit.md"})" CodeFiles="@(new[] {$"Pages/{GetType().Name}.razor"})">
-    @*<MudExEnumSelect TEnum="ThemeEditMode" @bind-Value="@_editMode"></MudExEnumSelect>*@
-
     <MudExThemeEdit AllowModeToggle="true" 
                     TTheme="ClientTheme"
                     IsDark="@MainLayout.Instance.IsDark" 
+                    Presets="@_themes"
                     @bind-EditMode="@_editMode"
                     ThemeChanged="@ThemeChanged"
                     Theme="@ClientTheme.CurrentTheme"></MudExThemeEdit>
@@ -18,6 +17,7 @@
 @code {
 
     private ThemeEditMode _editMode { get; set; } = ThemeEditMode.Simple;
+    private List<ClientTheme> _themes = new() { ClientTheme.CurrentTheme, ClientTheme.Another };
     
     protected override async Task OnInitializedAsync()
     {

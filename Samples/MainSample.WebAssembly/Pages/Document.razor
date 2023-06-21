@@ -12,21 +12,10 @@
 
 @if (_loaded)
 {
-    @if (type != null)
+    @if (type != null && !string.IsNullOrEmpty(TypeName))
     {
         <HeaderForType Type="@type"></HeaderForType>
-
-        <MudTabs ActivePanelIndex="@GetActivePanel()" Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
-            @if (DocumentationAvailable)
-            {
-                <MudTabPanel Text="Documentation">
-                    <DemoMarkdown Value="@DocumentationValue"></DemoMarkdown>
-                </MudTabPanel>
-            }
-            <MudTabPanel Text="API">
-                <Api Type="@type"></Api>
-            </MudTabPanel>
-        </MudTabs>
+        @RenderTypeApiDoc(type, GetActivePanel(), true, DocumentationValue)
     }
     else if (DocumentationAvailable)
     {
@@ -35,15 +24,46 @@
     }
     else
     {
-        <span> Not found</span>
+        <PageHeader>API</PageHeader>
+        <MudExpansionPanels MultiExpansion="true">
+            @foreach (var c in ComponentTypes.Api())
+            {
+                string docFile = GetDocFileFileForType(c);
+                int idx = string.IsNullOrEmpty(docFile) ? 0 : 1;
+                <MudExpansionPanel IsInitiallyExpanded="false" Text="@Api.GetTypeName(c)">
+                    <ChildContent>
+                        <HeaderForType DocumentationOnly="true" Typo="Typo.subtitle1" Type="@c"></HeaderForType>
+                        @RenderTypeApiDoc(c, idx, false, docFile)
+                    </ChildContent>
+                </MudExpansionPanel>
+            }
+        </MudExpansionPanels>
     }
 }
 else
 {
     <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
 }
+
 @code
 {
+    private RenderFragment RenderTypeApiDoc(Type type, int activePanel, bool forSingleType, string documentationValue)
+    {
+        //<MudTabs ActivePanelIndex="@activePanel" Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+        return @<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+                       @if (!string.IsNullOrEmpty(documentationValue))
+                       {
+                           <MudTabPanel Text="Documentation">
+                                <DemoMarkdown Value="@documentationValue"></DemoMarkdown>
+                           </MudTabPanel>
+                       }
+                       <MudTabPanel Text="API">
+                            <Api ShowHeader="false" IsInitiallyExpanded="@forSingleType" Type="@type"></Api>
+                       </MudTabPanel>
+            </MudTabs>
+    ;
+    }
+
     bool _loaded;
 
     [Parameter]
@@ -58,23 +78,40 @@ else
         _loaded = false;
         await base.OnParametersSetAsync();
         MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
+        await UpdateDocumentationOrTypeInfos();
+        _loaded = true;
+    }
+
+    private async Task UpdateDocumentationOrTypeInfos()
+    {
         DocumentationValue = await Http.LoadDocumentation(File.EnsureEndsWith(".md"));
         if (string.IsNullOrEmpty(DocumentationValue))
         {
             TypeName ??= File;
             File = null;
         }
+
         if (TypeName != null)
         {
             type = Render.GetTypeByName(TypeName);
             if (File == null && type != null)
             {
-                File = type.GetCustomAttribute<HasDocumentationAttribute>()?.MarkdownFile;
-                DocumentationValue = await Http.LoadDocumentation(File.EnsureEndsWith(".md"));
+                File = GetDocFileFileForType(type);
+                if (File != null)
+                    DocumentationValue = await Http.LoadDocumentation(File.EnsureEndsWith(".md"));
             }
         }
-        _loaded = true;
     }
+
+    private string? GetDocFileFileForType(Type t) => t?.GetCustomAttribute<HasDocumentationAttribute>()?.MarkdownFile;
+
+    private async Task<string> GetDocumentForType(Type t)
+    {
+        var file = GetDocFileFileForType(t);
+        return await Http.LoadDocumentation(file.EnsureEndsWith(".md"));
+    }
+
+
     private string DocumentationValue { get; set; }
 
     private int GetActivePanel()

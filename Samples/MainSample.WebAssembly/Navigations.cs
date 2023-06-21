@@ -1,10 +1,7 @@
 ﻿using MainSample.WebAssembly.Types;
 using MudBlazor;
-using MudBlazor.Extensions.Attribute;
-using MudBlazor.Extensions.Helper;
-using System.Reflection;
 using MainSample.WebAssembly.Shared;
-using System.Diagnostics;
+using Nextended.Core.Extensions;
 
 namespace MainSample.WebAssembly;
 
@@ -16,6 +13,8 @@ public static class Navigations
         {
             new("Home", Icons.Material.Outlined.Home, "/"),
             new("Readme", Icons.Material.Outlined.ReadMore, "/readme"),
+            new("API", Icons.Material.Outlined.Api, "/api"),
+            new("-")
         };
         
         //if (Debugger.IsAttached)
@@ -44,10 +43,7 @@ public static class Navigations
 
     private static HashSet<NavigationEntry> GetUtils()
     {
-        return typeof(MudExSvg).Assembly.GetTypes()
-            .Select(t => new { Type = t, Documentation = t.GetCustomAttribute<HasDocumentationAttribute>() })
-            .Where(d => d.Documentation != null)
-            .Where(d => !d.Type.Name.StartsWith("<") && !d.Type.Name.StartsWith("_"))
+        return ComponentTypes.DocumentedUtils()
             .Select(d => new NavigationEntry(Api.GetTypeName(d.Type) ?? d.Type.Name, "",
                 d.Documentation != null
                  ? $"/d/{Path.GetFileNameWithoutExtension(d.Documentation.MarkdownFile)}/{d.Type.Name}"

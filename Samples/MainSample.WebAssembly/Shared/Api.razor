@@ -6,68 +6,90 @@
 
 @if (ShowHeader)
 {
-    <MudText Typo="Typo.h6" Color="Color.Primary">@GetTypeName(Type)</MudText>
+    @*<MudText Typo="Typo.h6" Color="Color.Primary">@GetTypeName(Type)</MudText>*@
+    <HeaderForType Type="@Type"></HeaderForType>
 }
 
-@if (Properties?.Any() == true)
+@if (Type.IsEnum)
 {
-    <MudExpansionPanel IsExpanded="true" Text="Properties">
-        <MudDataGrid T="ApiMemberInfo<PropertyInfo>" Items="@Properties" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
-                     DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
-                 DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Container">
-            <ToolBarContent>
-                <MudText Typo="Typo.h6">Properties</MudText>
-                <MudSpacer />
-                <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-            </ToolBarContent>
-            <Columns>
-                <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name" />
-                <PropertyColumn Property="x => x.TypeName" Title="PropertyType">
-                    <CellTemplate>
-                        @RenderLinks(context.Item.TypeName)
-                    </CellTemplate>
-                </PropertyColumn>
-                <PropertyColumn Property="x => x.IsStatic" />
-                <PropertyColumn Property="x => x.Default" />
-                <PropertyColumn Property="x => x.Description" />
-            </Columns>
-        </MudDataGrid>
+    <p>Enum</p>
+    
+    var names = Enum.GetNames(Type);
+    <MudExpansionPanel IsInitiallyExpanded="@IsInitiallyExpanded" Text="Enum Member">
+        <MudTable Items="@names" Hover="true" Breakpoint="Breakpoint.Sm">
+            <HeaderContent>
+                <MudTh>Member</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Member">@context</MudTd>
+            </RowTemplate>
+        </MudTable>
     </MudExpansionPanel>
 }
 
-@if (Methods?.Any() == true)
-{
-    <MudExpansionPanel IsExpanded="true" Text="Methods">
-        <MudDataGrid T="ApiMemberInfo<MethodInfo>" Items="@Methods" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
-                     DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
-                     DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Container">
-            <ToolBarContent>
-                <MudText Typo="Typo.h6">Methods</MudText>
-                <MudSpacer />
-                <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-            </ToolBarContent>
-            <Columns>
-                @*<PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name" />*@
-                <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
-                    <CellTemplate>
-                        @RenderFunction(context.Item.Name)
-                    </CellTemplate>
-                </PropertyColumn>
-                <PropertyColumn Property="x => x.TypeName" Title="ReturnType">
-                    <CellTemplate>
-                        @RenderLinks(context.Item.TypeName)
-                    </CellTemplate>
-                </PropertyColumn>
-                <PropertyColumn Property="x => x.Description" />
-            </Columns>
-        </MudDataGrid>
-    </MudExpansionPanel>
-}
+<MudExpansionPanel IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@IsInitiallyExpanded" Text="Properties">
+    <MudDataGrid T="ApiMemberInfo<PropertyInfo>" Items="@Properties" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+                 DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true" 
+             DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Properties</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <Columns>
+            <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
+                <CellTemplate>
+                    @((MarkupString)(context.Item.IsStatic ? "static" : ""))
+                    @(context.Item.Name)
+                </CellTemplate>
+            </PropertyColumn>
+
+            <PropertyColumn Property="x => x.TypeName" Title="PropertyType">
+                <CellTemplate>
+                    @RenderLinks(context.Item.TypeName)
+                </CellTemplate>
+            </PropertyColumn>
+            <PropertyColumn Property="x => x.Default" />
+            <PropertyColumn Property="x => x.Description" />
+        </Columns>
+    </MudDataGrid>
+</MudExpansionPanel>
+
+
+<MudExpansionPanel IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@IsInitiallyExpanded" Text="Methods">
+    <MudDataGrid T="ApiMemberInfo<MethodInfo>" Items="@Methods" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+                 DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
+                 DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Methods</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <Columns>
+            @*<PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name" />*@
+            <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
+                <CellTemplate>
+                    @((MarkupString)(context.Item.IsStatic ? "static" : ""))
+                    @RenderFunction(context.Item.Name)
+                </CellTemplate>
+            </PropertyColumn>
+            <PropertyColumn Property="x => x.TypeName" Title="ReturnType">
+                <CellTemplate>
+                    @RenderLinks(context.Item.TypeName)
+                </CellTemplate>
+            </PropertyColumn>
+            <PropertyColumn Property="x => x.Description" />
+        </Columns>
+    </MudDataGrid>
+</MudExpansionPanel>
+
 
 @code {
-
+    [Parameter]
+    public bool IsInitiallyExpanded { get; set; } = true;
+    
     private RenderFragment RenderLinks(string typeName)
     {
         return builder =>

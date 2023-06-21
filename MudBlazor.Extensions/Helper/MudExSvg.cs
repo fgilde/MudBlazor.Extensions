@@ -61,4 +61,15 @@ public static class MudExSvg
         sb.AppendLine("</svg>");
         return sb.ToString();
     }
+
+    public static string SvgPropertyName(string value)
+    {
+        var types = typeof(Icons).Assembly.GetTypes()
+            .Where(t => t.Namespace == typeof(Icons).Namespace).ToList();
+
+        return types.Select(type => SearchTypeForValue(type, value)).FirstOrDefault(result => result != null);
+    }
+
+    private static string SearchTypeForValue(Type type, string value) 
+        => (from field in type.GetFields(BindingFlags.Public | BindingFlags.Static) where (field.IsLiteral || field.IsStatic) && field.FieldType == typeof(string) let fieldValue = field.GetValue(null) as string where fieldValue == value select $"{type.FullName.Replace('+', '.')}.{field.Name}").FirstOrDefault();
 }
