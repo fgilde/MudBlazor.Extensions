@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
-using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Options;
 using Nextended.Blazor.Helper;
-using Nextended.Core.Helper;
 
 namespace MudBlazor.Extensions;
 
@@ -36,7 +35,7 @@ public static partial class DialogServiceExt
         Action<DialogOptionsEx> options = null) where TComponent : ComponentBase, new()
     {
         
-        var componentAttributes = componentOptions != null ? DictionaryHelper.GetValuesDictionary(componentOptions, true).ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : new Dictionary<string, object>();
+        var componentAttributes = componentOptions != null ? PropertyHelper.ValidValuesDictionary(componentOptions, true).ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : new Dictionary<string, object>();
         return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, componentAttributes, dialogParameters, options);
     }
 
@@ -44,7 +43,7 @@ public static partial class DialogServiceExt
         Action<TComponent> componentOptions,
         DialogOptionsEx options) where TComponent : ComponentBase, new()
     {
-        var componentAttributes = componentOptions != null ? DictionaryHelper.GetValuesDictionary(componentOptions, true).ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : new Dictionary<string, object>();
+        var componentAttributes = componentOptions != null ? PropertyHelper.ValidValuesDictionary(componentOptions, true).ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : new Dictionary<string, object>();
         return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, componentAttributes, null as DialogParameters, options);
     }
 
@@ -55,7 +54,7 @@ public static partial class DialogServiceExt
         Action<MudExMessageDialog> dialogParameters,
         DialogOptionsEx options = null) where TComponent : ComponentBase, new()
     {
-        var parameters = dialogParameters != null ? DictionaryHelper.GetValuesDictionary(dialogParameters, true).ToDialogParameters() : new DialogParameters();
+        var parameters = dialogParameters != null ? PropertyHelper.ValidValuesDictionary(dialogParameters, true).ToDialogParameters() : new DialogParameters();
         return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, componentOptions, parameters, options);
     }
 
@@ -66,8 +65,8 @@ public static partial class DialogServiceExt
         Action<MudExMessageDialog> dialogParameters,
         DialogOptionsEx options) where TComponent : ComponentBase, new()
     {
-        var parameters = dialogParameters != null ? DictionaryHelper.GetValuesDictionary(dialogParameters, true).ToDialogParameters() : new DialogParameters();
-        var componentAttributes = componentOptions != null ? DictionaryHelper.GetValuesDictionary(componentOptions, true).ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : new Dictionary<string, object>();
+        var parameters = dialogParameters != null ? PropertyHelper.ValidValuesDictionary(dialogParameters, true).ToDialogParameters() : new DialogParameters();
+        var componentAttributes = componentOptions != null ? PropertyHelper.ValidValuesDictionary(componentOptions, true).ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : new Dictionary<string, object>();
         return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, componentAttributes, parameters, options);
     }
 
@@ -77,7 +76,7 @@ public static partial class DialogServiceExt
         Action<DialogOptionsEx> options = null) where TComponent : ComponentBase, new()
     {
 
-        var componentAttributes = componentOptions != null ? DictionaryHelper.GetValuesDictionary(componentOptions, true).ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : new Dictionary<string, object>();
+        var componentAttributes = componentOptions != null ? PropertyHelper.ValidValuesDictionary(componentOptions, true).ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : new Dictionary<string, object>();
         return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, componentAttributes, dialogParameters, options);
     }
 
@@ -87,7 +86,7 @@ public static partial class DialogServiceExt
         DialogOptionsEx options) where TComponent : ComponentBase, new()
     {
 
-        var componentAttributes = componentOptions != null ? DictionaryHelper.GetValuesDictionary(componentOptions, true).ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : new Dictionary<string, object>();
+        var componentAttributes = componentOptions != null ? PropertyHelper.ValidValuesDictionary(componentOptions, true).ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : new Dictionary<string, object>();
         return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, componentAttributes, dialogParameters, options);
     }
 
@@ -96,7 +95,7 @@ public static partial class DialogServiceExt
         Action<MudExMessageDialog> dialogParameters,
         Action<DialogOptionsEx> options = null) where TComponent : ComponentBase, new()
     {
-        var parameters = dialogParameters != null ? DictionaryHelper.GetValuesDictionary(dialogParameters, true).ToDialogParameters() : new DialogParameters();
+        var parameters = dialogParameters != null ? PropertyHelper.ValidValuesDictionary(dialogParameters, true).ToDialogParameters() : new DialogParameters();
         return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, componentOptions, parameters, options);
     }
 

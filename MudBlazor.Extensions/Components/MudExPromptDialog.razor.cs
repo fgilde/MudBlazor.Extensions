@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Localization;
 
 namespace MudBlazor.Extensions.Components;
 
 public partial class MudExPromptDialog
 {
-    [Parameter]
-    public IStringLocalizer Localizer { get; set; }
-
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
     [Parameter] public bool Immediate { get; set; } = true;

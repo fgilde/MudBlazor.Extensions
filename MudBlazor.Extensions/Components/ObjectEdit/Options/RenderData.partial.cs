@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using MudBlazor.Extensions.Helper.Internal;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 
@@ -12,7 +13,7 @@ public partial class RenderData
         Expression<Func<TComponent, TFieldType>> valueField, Action<TComponent> options,
         Func<TPropertyType, TFieldType> toFieldTypeConverter = null,
         Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) where TComponent : new()
-        => new(valueField.GetMemberName(), typeof(TComponent), DictionaryHelper.GetValuesDictionary(options, true))
+        => new(valueField.GetMemberName(), typeof(TComponent), PropertyHelper.ValuesDictionary(options, true))
         {
             ToFieldTypeConverterFn = toFieldTypeConverter,
             ToPropertyTypeConverterFn = toPropertyTypeConverter
@@ -23,7 +24,7 @@ public partial class RenderData
         Func<TPropertyType, TFieldType> toFieldTypeConverter = null,
         Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) where TComponent : new()
         => new(valueField.GetMemberName(), typeof(TComponent),
-            DictionaryHelper.GetValuesDictionary(instanceForAttributes, true))
+            PropertyHelper.ValuesDictionary(instanceForAttributes, true))
         {
             ToFieldTypeConverterFn = toFieldTypeConverter,
             ToPropertyTypeConverterFn = toPropertyTypeConverter
@@ -41,20 +42,20 @@ public partial class RenderData
 
     public static RenderData<TPropertyType, TPropertyType> For<TComponent, TPropertyType>(
         Expression<Func<TComponent, TPropertyType>> valueField, Action<TComponent> options) where TComponent : new()
-        => new(valueField.GetMemberName(), typeof(TComponent), DictionaryHelper.GetValuesDictionary(options, true));
+        => new(valueField.GetMemberName(), typeof(TComponent), PropertyHelper.ValuesDictionary(options, true));
 
     public static RenderData<TPropertyType, TPropertyType> For<TComponent, TPropertyType>(
         Expression<Func<TComponent, TPropertyType>> valueField, TComponent instanceForAttributes)
         where TComponent : new()
         => new(valueField.GetMemberName(), typeof(TComponent),
-            DictionaryHelper.GetValuesDictionary(instanceForAttributes, true));
+            PropertyHelper.ValuesDictionary(instanceForAttributes, true));
 
     public static RenderData<TPropertyType, TPropertyType> For<TComponent, TPropertyType>(
         Expression<Func<TComponent, TPropertyType>> valueField)
         => new(valueField.GetMemberName(), typeof(TComponent));
 
     public static RenderData For<TComponent>(Action<TComponent> options) where TComponent : new()
-        => For(typeof(TComponent), DictionaryHelper.GetValuesDictionary(options, true));
+        => For(typeof(TComponent), PropertyHelper.ValuesDictionary(options, true));
 
     public static RenderData For<TComponent>(IDictionary<string, object> attributes = null)
         => For(typeof(TComponent), attributes);

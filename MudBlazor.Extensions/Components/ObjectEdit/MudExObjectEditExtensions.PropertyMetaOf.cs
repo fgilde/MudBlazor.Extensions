@@ -2,6 +2,7 @@
 using System.Reflection;
 using Microsoft.Extensions.Localization;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
+using MudBlazor.Extensions.Helper.Internal;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 
@@ -22,7 +23,7 @@ public static partial class MudExObjectEditExtensions
     public static ObjectEditPropertyMetaOf<TModel> RenderWith<TModel, TComponent, TPropertyType>(this ObjectEditPropertyMetaOf<TModel> meta, Expression<Func<TComponent, TPropertyType>> valueField)
         => meta?.SetProperties(p => p.RenderData = RenderData.For(valueField));
     public static ObjectEditPropertyMetaOf<TModel> RenderWith<TModel, TComponent>(this ObjectEditPropertyMetaOf<TModel> meta, Action<TComponent> options) where TComponent : new()
-        => meta?.RenderWith<TModel>(typeof(TComponent), DictionaryHelper.GetValuesDictionary(options, true));
+        => meta?.RenderWith<TModel>(typeof(TComponent), PropertyHelper.ValuesDictionary(options, true));
     public static ObjectEditPropertyMetaOf<TModel> RenderWith<TModel, TComponent>(this ObjectEditPropertyMetaOf<TModel> meta, IDictionary<string, object> attributes = null)
         => meta?.RenderWith(typeof(TComponent), attributes);
     public static ObjectEditPropertyMetaOf<TModel> RenderWith<TModel>(this ObjectEditPropertyMetaOf<TModel> meta, Type componentType, IDictionary<string, object> attributes = null)
@@ -86,11 +87,11 @@ public static partial class MudExObjectEditExtensions
     public static ObjectEditPropertyMetaOf<TModel> WithAdditionalAttribute<TModel>(this ObjectEditPropertyMetaOf<TModel> meta, string key, object value, bool overwriteExisting = false)
         => meta?.WithAdditionalAttributes(overwriteExisting, new KeyValuePair<string, object>(key, value));
     public static ObjectEditPropertyMetaOf<TModel> WithAdditionalAttributes<TModel, TComponent>(this ObjectEditPropertyMetaOf<TModel> meta, bool overwriteExisting, params Action<TComponent>[] options) where TComponent : new()
-        => meta?.WithAdditionalAttributes(DictionaryHelper.GetValuesDictionary(true, options), overwriteExisting);
+        => meta?.WithAdditionalAttributes(PropertyHelper.ValuesDictionary(true, options), overwriteExisting);
     public static ObjectEditPropertyMetaOf<TModel> WithAdditionalAttributes<TModel, TComponent>(this ObjectEditPropertyMetaOf<TModel> meta, params Action<TComponent>[] options) where TComponent : new()
-        => meta?.WithAdditionalAttributes(DictionaryHelper.GetValuesDictionary(true, options));
+        => meta?.WithAdditionalAttributes(PropertyHelper.ValuesDictionary(true, options));
     public static ObjectEditPropertyMetaOf<TModel> WithAdditionalAttributes<TModel, TComponent>(this ObjectEditPropertyMetaOf<TModel> meta, TComponent instanceForAttributes, bool overwriteExisting = false) where TComponent : new()
-        => meta?.WithAdditionalAttributes(DictionaryHelper.GetValuesDictionary(instanceForAttributes, true), overwriteExisting);
+        => meta?.WithAdditionalAttributes(PropertyHelper.ValuesDictionary(instanceForAttributes, true), overwriteExisting);
     public static ObjectEditPropertyMetaOf<TModel> IgnoreIf<TModel>(this ObjectEditPropertyMetaOf<TModel> meta, Func<TModel, bool> condition)
         => meta?.WithSettings(settings => settings?.AddCondition(condition, s => s.Ignored = true, s => s.Ignored = false));
     public static ObjectEditPropertyMetaOf<TModel> AsReadOnlyIf<TModel>(this ObjectEditPropertyMetaOf<TModel> meta, Func<TModel, bool> condition)
@@ -98,7 +99,7 @@ public static partial class MudExObjectEditExtensions
     public static ObjectEditPropertyMetaOf<TModel> WithAttributesIf<TModel>(this ObjectEditPropertyMetaOf<TModel> meta, Func<TModel, bool> condition, params KeyValuePair<string, object>[] attributes)
         => meta?.SetProperties(p => p.RenderData?.AddAttributesIf(condition, true, attributes));
     public static ObjectEditPropertyMetaOf<TModel> WithAttributesIf<TModel, TComponent>(this ObjectEditPropertyMetaOf<TModel> meta, Func<TModel, bool> condition, params Action<TComponent>[] options) where TComponent : new()
-        => meta?.WithAttributesIf(condition, DictionaryHelper.GetValuesDictionary(true, options));
+        => meta?.WithAttributesIf(condition, PropertyHelper.ValuesDictionary(true, options));
     public static ObjectEditPropertyMetaOf<TModel> WithAttributesIf<TModel>(this ObjectEditPropertyMetaOf<TModel> meta, Func<TModel, bool> condition, IDictionary<string, object> attributes)
         => meta?.WithAttributesIf(condition, attributes.ToArray());
     public static ObjectEditPropertyMetaOf<TModel> WithAttributesIf<TModel>(this ObjectEditPropertyMetaOf<TModel> meta, Func<TModel, bool> condition, Dictionary<string, object> attributes)
@@ -115,5 +116,5 @@ public static partial class MudExObjectEditExtensions
             s.IgnoreOnExport = ignore;
         });
     //public static ObjectEditPropertyMetaOf<TModel> WithAttributesIf<TModel, TComponent>(this ObjectEditPropertyMetaOf<TModel> meta, Func<TModel, bool> condition, TComponent instanceForAttributes) where TComponent : new()
-    //    => meta?.WithAttributesIf(condition, DictionaryHelper.GetValuesDictionary(instanceForAttributes, true));
+    //    => meta?.WithAttributesIf(condition, PropertyHelper.ValuesDictionary(instanceForAttributes, true));
 }

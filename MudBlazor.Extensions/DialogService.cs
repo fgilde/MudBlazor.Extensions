@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Options;
 using Nextended.Core;
 using Nextended.Core.Extensions;
@@ -34,10 +35,10 @@ namespace MudBlazor.Extensions
         }
 
         public static DialogParameters ConvertToDialogParameters<TDialog>(this Action<TDialog> dialogParameters) where TDialog : new()
-            => DictionaryHelper.GetValuesDictionary(dialogParameters, true).Where(p => typeof(TDialog).GetProperty(p.Key, BindingFlags.Public | BindingFlags.Instance)?.CanWrite == true).ToDialogParameters();
+            => PropertyHelper.ValidValuesDictionary(dialogParameters, true).Where(p => typeof(TDialog).GetProperty(p.Key, BindingFlags.Public | BindingFlags.Instance)?.CanWrite == true).ToDialogParameters();
 
         public static DialogParameters ConvertToDialogParameters<TDialog>(this TDialog dialogParameters) where TDialog : new()
-            => DictionaryHelper.GetValuesDictionary(dialogParameters, true).Where(p => typeof(TDialog).GetProperty(p.Key, BindingFlags.Public | BindingFlags.Instance)?.CanWrite == true).ToDialogParameters();
+            => PropertyHelper.ValidValuesDictionary(dialogParameters, true).Where(p => typeof(TDialog).GetProperty(p.Key, BindingFlags.Public | BindingFlags.Instance)?.CanWrite == true).ToDialogParameters();
 
         public static Task<IMudExDialogReference<TDialog>> ShowEx<TDialog>(this IDialogService dialogService, string title, Action<TDialog> dialogParameters, Action<DialogOptionsEx> optionsEx)
             where TDialog : ComponentBase, new()
@@ -144,6 +145,8 @@ namespace MudBlazor.Extensions
 
         internal static async Task PrepareOptionsBeforeShow(DialogOptionsEx options)
         {
+            if (options == null)
+                return;
             if (!options.Modal)
                 options.ClassBackground = MudExCss.Classes.Backgrounds.NoModal;
             else if (options.DialogBackgroundAppearance != null)

@@ -18,8 +18,8 @@ public abstract class MudExBaseComponent<T> : ComponentBase, IMudExComponent
     [Inject] protected IServiceProvider ServiceProvider { get; set; }
     public IJSRuntime JsRuntime => Get<IJSRuntime>();
 
-    protected bool IsRendered { get; set; }
-    protected bool IsFullyRendered { get; set; }
+    public bool IsRendered { get; protected set; }
+    public bool IsFullyRendered { get; protected set; }
     
     private IStringLocalizer<T> _fallbackLocalizer => Get<IStringLocalizer<T>>();
     protected IDialogService DialogService => Get<IDialogService>();
@@ -27,9 +27,7 @@ public abstract class MudExBaseComponent<T> : ComponentBase, IMudExComponent
     protected TService Get<TService>() => ServiceProvider.GetService<TService>();
     protected IEnumerable<TService> GetServices<TService>() => ServiceProvider.GetServices<TService>();
     public string TryLocalize(string text, params object[] args) => LocalizerToUse.TryLocalize(text, args);
-
-    public bool GetIsRendered() => IsRendered;
-
+    
     protected override bool ShouldRender()
     {
         if (base.ShouldRender() || !Equals(_previousKey, RenderKey))

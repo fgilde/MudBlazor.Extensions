@@ -1,4 +1,5 @@
 ﻿using MudBlazor.Extensions.Components.ObjectEdit.Options;
+using MudBlazor.Extensions.Helper.Internal;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 
@@ -9,7 +10,7 @@ public static partial class MudExObjectEditExtensions
     public static IRenderData WrapIn<TWrapperComponent>(this IRenderData renderData, params Action<TWrapperComponent>[] options) where TWrapperComponent : new()
     {
         if (renderData != null)
-            renderData.Wrapper = RenderData.For(typeof(TWrapperComponent), DictionaryHelper.GetValuesDictionary(true, options));
+            renderData.Wrapper = RenderData.For(typeof(TWrapperComponent), PropertyHelper.ValuesDictionary(true, options));
         return renderData?.Wrapper;
     }
 
@@ -21,9 +22,9 @@ public static partial class MudExObjectEditExtensions
     }
 
     public static IRenderData AddComponentAfter<TComponent>(this IRenderData renderData, params Action<TComponent>[] options) where TComponent : new()
-        => renderData.WithAdditionalComponent(RenderData.For(typeof(TComponent), DictionaryHelper.GetValuesDictionary(true, options)), true);
+        => renderData.WithAdditionalComponent(RenderData.For(typeof(TComponent), PropertyHelper.ValuesDictionary(true, options)), true);
     public static IRenderData AddComponentBefore<TComponent>(this IRenderData renderData, params Action<TComponent>[] options) where TComponent : new()
-        => renderData.WithAdditionalComponent(RenderData.For(typeof(TComponent), DictionaryHelper.GetValuesDictionary(true, options)), false);
+        => renderData.WithAdditionalComponent(RenderData.For(typeof(TComponent), PropertyHelper.ValuesDictionary(true, options)), false);
     public static IRenderData AddComponentAfter(this IRenderData renderData, IRenderData afterRenderData) 
         => renderData.WithAdditionalComponent(afterRenderData, true);
     public static IRenderData AddComponentBefore(this IRenderData renderData, IRenderData afterRenderData)
