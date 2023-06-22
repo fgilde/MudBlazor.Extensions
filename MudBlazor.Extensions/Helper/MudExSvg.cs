@@ -194,9 +194,9 @@ public static class MudExSvg
 
         var fakeText = string.Join(" ", textColors.Select((color, i) => $"<line x1='25%' y1='{20 + i * 10}%' x2='75%' y2='{20 + i * 10}%' style='stroke:{color};stroke-width:2' />"));
         return $@"<svg xmlns='http://www.w3.org/2000/svg' width='{width}' height='{height}'>                
-                <rect width='100%' height='10%' style='fill:{appBarColor};' />                
-                <rect y='10%' width='20%' height='90%' style='fill:{drawerColor};' />                
-                <rect x='20%' y='10%' width='80%' height='90%' style='fill:{surfaceColor};' />                
+                <rect width='100%' height='25%' style='fill:{appBarColor};' />                
+                <rect y='10%' width='20%' height='75%' style='fill:{drawerColor};' />                
+                <rect x='20%' y='10%' width='80%' height='75%' style='fill:{surfaceColor};' />                
                 {fakeText}
             </svg>";
     }
