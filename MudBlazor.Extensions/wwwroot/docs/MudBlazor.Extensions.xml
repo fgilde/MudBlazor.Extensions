@@ -172,6 +172,132 @@
             This bool represents a tri state. True to edit only dark color palette, false to edit only light color palette and null to edit both
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.Presets">
+            <summary>
+            This collection of presets will be used to populate the dropdown for preset selection
+            If its allowed user can also add or delete from this collection
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.AllowPresetsEdit">
+            <summary>
+            If true you can add or delete themes
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.CanDelete">
+            <summary>
+            If function returns true user can delete theme from param
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExThemeSelect`1">
+            <summary>
+            Component to select a theme from a list of themes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.SelectVariant">
+            <summary>
+            Variant if SelectionMode is ThemeSelectionMode.Select
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.Label">
+            <summary>
+            Label
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.Style">
+            <summary>
+            Style for the select component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.Class">
+            <summary>
+            Class for the select component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.ItemStyle">
+            <summary>
+            Style for one theme item
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.ItemClass">
+            <summary>
+            Class for one theme item
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.SelectionMode">
+            <summary>
+            Gets or sets the selection mode of the component with a default value of <see cref="F:MudBlazor.Extensions.Components.ThemeSelectionMode.Select"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.PreviewMode">
+            <summary>
+            Gets or sets the preview mode of the component with a default value of <see cref="F:MudBlazor.Extensions.Components.ThemePreviewMode.BothDiagonal"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.Available">
+            <summary>
+            Gets or sets the available themes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.Selected">
+            <summary>
+            Gets or sets the currently selected theme.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.SelectedChanged">
+            <summary>
+            Event that is raised when the <see cref="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.Selected"/> property is changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.SelectedThemeChanged">
+            <summary>
+            Event that is raised when the <see cref="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.SelectedTheme"/> property is changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.SelectedValueChanged">
+            <summary>
+            Event that is raised when the <see cref="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.SelectedValue"/> property is changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.SelectedValue">
+            <summary>
+            Gets or sets the selected theme ads object to allow binding to non generic components
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.SelectedTheme">
+            <summary>
+            Gets or sets the selected theme from the available themes.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExThemeSelect`1.PreviewImage(MudBlazor.Extensions.Core.MudExDimension)">
+            <summary>
+            Returns a preview image of the theme with the specified dimensions.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExThemeSelect`1.PreviewImage(`0,MudBlazor.Extensions.Core.MudExDimension)">
+            <summary>
+            Returns a preview image of the specified theme with the specified dimensions.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExThemeSelect`1.IsOpen">
+            <summary>
+            Returns a boolean indicating whether the dropdown menu of the component is open or closed.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExThemeSelect`1.GetThemeNameContainerStyle">
+            <summary>
+            Returns the style of the container of the theme name label.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ThemePreviewMode">
+            <summary>
+            Enumeration representing the preview mode of a theme.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ThemeSelectionMode">
+            <summary>
+            Enumeration representing the selection mode of a theme.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExToggleableSearch">
             <summary>
             Simple component to expand a Search field 

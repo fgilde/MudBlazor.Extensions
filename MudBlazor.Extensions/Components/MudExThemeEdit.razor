@@ -1,17 +1,33 @@
 ﻿@using MudBlazor.Extensions.Components.ObjectEdit
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
+@using MudBlazor.Extensions.Helper
+@using MudBlazor
+@using MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Components.ObjectEdit
+@using MudBlazor.Extensions.Core
 @inherits MudExBaseComponent<MudExThemeEdit<TTheme>>
 @typeparam TTheme where TTheme : MudTheme
 
-@if (Presets?.Any() == true)
-{
 
+@if (Presets?.Any() == true || AllowPresetsEdit)
+{
+    <MudGrid Class="mb-5 mt-5">
+        <MudExThemeSelect Style="@MudExStyleBuilder.Default.WithOutline(1, BorderStyle.Solid, Color.Primary).Style" 
+                          PreviewMode="@GetPreviewMode()" TTheme="TTheme" Available="@Presets" SelectedChanged="@OnSelectedPresetChange" SelectedTheme="Theme" />
+        @if (AllowPresetsEdit)
+        {
+            <MudButtonGroup Color="Color.Primary" Style="margin-bottom: -1px; margin-top: 5px;" Class="mr-2" Size="Size.Small" Variant="Variant.Outlined">
+                <MudIconButton OnClick="@OnAddThemeClick" Icon="@Icons.Material.Filled.Add" Color="Color.Primary"/>
+                <MudIconButton OnClick="@OnDeleteThemeClick" Disabled="@(!CanDeletePreset(_selectedPreset))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+            </MudButtonGroup>
+        }
+    </MudGrid>
 }
 
 @if (Theme is not null)
 {
     <MudExObjectEditForm T="TTheme"
-                         @ref="ObjectEditor"
+    @ref="ObjectEditor"
                          LightOverlayLoadingBackground="@(!IsDark ?? false)"
                          IsLoading="@_isLoading"
                          MetaConfiguration="ThemeEditMetaConfiguration"
@@ -21,7 +37,6 @@
                          AllowExport="true"
                          AutoSaveRestoreState="true"
                          StickyActionBar="true"
-                         
                          OnValidSubmit="OnValidSubmit"
                          OnCancel="OnCancel"
                          BeforeImport="BeforeImport"
@@ -33,7 +48,7 @@
             @if (AllowModeToggle)
             {
                 <MudExEnumSelect Style="max-width:300px;" FilterEnabled="false" Clearable="false" TEnum="ThemeEditMode" ValueChanged="@EditModeChangedInternally" Value="@EditMode"></MudExEnumSelect>
-                <MudSpacer/>
+                <MudSpacer />
             }
         </ToolBarContent>
     </MudExObjectEditForm>

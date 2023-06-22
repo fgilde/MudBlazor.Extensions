@@ -144,7 +144,7 @@
         set
         {
             _selectedCodeFile = value;
-            SelectedCodeFilePath = GH.Path(value);
+            SelectedCodeFilePath = value.StartsWith("http") ? value : GH.Path(value);
             SelectedCodeValue = "Loading...";
             StateHasChanged();
             http.GetStringAsync(SelectedCodeFilePath).ContinueWith(task =>

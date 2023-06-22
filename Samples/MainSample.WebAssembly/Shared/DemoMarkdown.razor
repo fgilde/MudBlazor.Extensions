@@ -47,9 +47,9 @@
 
     private async Task LoadDocumentIfValueIsFile()
     {
-        if (Value != null && (Value.StartsWith("http") || Value.EndsWith(".md") || Value.Split(' ').Length == 1))
+        if (!string.IsNullOrEmpty(Value) && (Value.StartsWith("http") || Value.EndsWith(".md") || Value.Split(' ').Length == 1))
         {
-            Value = await Http.LoadDocumentation(Value.EnsureEndsWith(".md"));
+            Value = await Http.LoadDocumentation(string.IsNullOrEmpty(Path.GetExtension(Value)) ? Value.EnsureEndsWith(".md") : Value);
             StateHasChanged();
         }
     }

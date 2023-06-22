@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
@@ -40,7 +41,6 @@ public partial class MudExThemeEdit<TTheme>
     [Parameter] public TTheme Theme { get; set; }
     public TTheme InitialTheme { get; private set; }
     [Parameter] public EventCallback<TTheme> ThemeChanged { get; set; }
-    [Parameter] public IEnumerable<TTheme> Presets { get; set; }
     [Parameter] public ThemeEditMode EditMode { get; set; } = ThemeEditMode.Simple;
     [Parameter] public EventCallback<ThemeEditMode> EditModeChanged { get; set; }
     [Parameter] public bool AllowModeToggle { get; set; } = true;
@@ -52,6 +52,28 @@ public partial class MudExThemeEdit<TTheme>
 
     [Parameter] public ObjectEditMeta<TTheme> MetaInformation { get; set; }
 
+    /// <summary>
+    /// This collection of presets will be used to populate the dropdown for preset selection
+    /// If its allowed user can also add or delete from this collection
+    /// </summary>
+    [Parameter] public ICollection<ThemePreset<TTheme>> Presets { get; set; }
+
+    /// <summary>
+    /// If true you can add or delete themes
+    /// </summary>
+    [Parameter] public bool AllowPresetsEdit { get; set; } = true;
+
+    /// <summary>
+    /// If function returns true user can delete theme from param
+    /// </summary>
+    [Parameter] public Func<ThemePreset<TTheme>, bool> CanDelete { get; set; } = _ => true;
+    
+    [Parameter] public EventCallback<ThemePreset<TTheme>> ThemeCreated { get; set; }
+    [Parameter] public EventCallback<ThemePreset<TTheme>> ThemeDeleted { get; set; }
+
+
+    private ThemePreset<TTheme> _selectedPreset;
+    
     public MudExObjectEditForm<TTheme> ObjectEditor { get; private set; }
 
     public override async Task SetParametersAsync(ParameterView parameters)
@@ -84,12 +106,6 @@ public partial class MudExThemeEdit<TTheme>
         await Task.Delay(2000);
         _isLoading = false;
     }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-    }
-
 
     private Task EditModeChangedInternally(ThemeEditMode arg)
     {
@@ -181,6 +197,9 @@ public partial class MudExThemeEdit<TTheme>
     private bool IsNotAllowed(ObjectEditPropertyMeta objectEditPropertyMeta) => !IsAllowed(objectEditPropertyMeta);
     private bool IsAllowed(ObjectEditPropertyMeta objectEditPropertyMeta)
     {
+        if (typeof(TTheme) != typeof(MudTheme) && typeof(TTheme).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Contains(objectEditPropertyMeta.PropertyInfo))
+            return true;
+
         var isLightPalette = objectEditPropertyMeta.PropertyName.Contains($"{nameof(MudTheme.Palette)}.");
         var isDarkPalette = objectEditPropertyMeta.PropertyName.Contains(nameof(MudTheme.PaletteDark));
 
@@ -211,6 +230,38 @@ public partial class MudExThemeEdit<TTheme>
         return Task.CompletedTask;
     }
 
+    private async Task OnSelectedPresetChange(ThemePreset<TTheme> arg)
+    {
+        _selectedPreset = arg;
+        await SetTheme(arg.Theme);
+    }
+
+    private ThemePreviewMode GetPreviewMode() => IsDark switch {
+        true => ThemePreviewMode.DarkOnly,
+        false => ThemePreviewMode.LightOnly,
+        _ => ThemePreviewMode.BothDiagonal
+    };
+
+    private bool CanDeletePreset(ThemePreset<TTheme> preset)
+    {
+        return preset is not null && CanDelete(preset);
+    }
+
+    private async Task OnDeleteThemeClick()
+    {
+        if (CanDeletePreset(_selectedPreset))
+            await ThemeDeleted.InvokeAsync(_selectedPreset);
+    }
+
+    private async Task OnAddThemeClick()
+    {
+        var name = await DialogService.PromptAsync("Enter name", "Please enter name", Icons.Material.Filled.Add, s => !string.IsNullOrEmpty(s));
+        if (name != null)
+        {
+            var themePreset = new ThemePreset<TTheme>(name, Theme.CloneTheme());
+            await ThemeCreated.InvokeAsync(themePreset);
+        }
+    }
 }
 
 public enum ThemeEditMode

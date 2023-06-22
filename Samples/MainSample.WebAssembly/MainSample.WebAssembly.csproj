@@ -28,7 +28,7 @@
     <Content Update="Pages\Page_SimpleDialog.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Pages\Page_ObjectEditThemeEdit.razor">
+    <Content Update="Pages\Page_MudExThemeEdit.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>

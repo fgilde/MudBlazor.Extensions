@@ -1,8 +1,29 @@
 ﻿# MudExSvg
 
-`MudExSvg` is a static utility class that provides a set of methods for combining SVG icons. You can combine icons horizontally, vertically, or centered.
+`MudExSvg` is a static utility class that provides a set of methods for combining SVG icons. You can combine icons horizontally, vertically, or centered or for generating SVG representations of application layouts. You can adjust the color and size parameters for the main layout components such as the AppBar, Drawer and Surface.
 
 ## Methods
+
+
+### ApplicationImage
+
+Generates an SVG image string that represents an application layout.
+
+#### Overloads
+
+- ApplicationImage (string, string, string, string[], string, string)
+- ApplicationImage (string, string, string, string[], string)
+- ApplicationImage (string, string, string, string[], MudExSize<int>)
+- ApplicationImage (string, string, string, string, MudExDimension)
+- ApplicationImage (string, string, string, string[], MudExDimension)
+...and more
+
+#### Parameters
+
+Depending on the overload used, the parameters may include:
+
+- `appBarColor`, `drawerColor`, `surfaceColor`: The color parameters for the layout components.
+- `textColors`: The colors for the lines inside the layout.
 
 ### CombineIconsHorizontal (string, params string[])
 

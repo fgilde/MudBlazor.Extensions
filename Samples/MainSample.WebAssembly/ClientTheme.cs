@@ -1,9 +1,14 @@
 ﻿using MudBlazor;
+using MudBlazor.Extensions.Components;
+using MudBlazor.Extensions.Helper;
+using Nextended.Core.Extensions;
 
 namespace MainSample.WebAssembly;
 
 public class ClientTheme : MudTheme
 {
+    public bool ShowLogoInDrawer { get; set; } = true;
+
     #region Statics
 
     #region Default Typography and Layout
@@ -133,18 +138,33 @@ public class ClientTheme : MudTheme
 
     public static ClientTheme Another = new ClientTheme()
     {
+        ShowLogoInDrawer = false,
         Palette = new Palette
         {
             Primary = Colors.Pink.Default,
-            AppbarBackground = Colors.Amber.Accent1,
+            AppbarBackground = "#ff0000",
             Background = Colors.Grey.Lighten5,
             DrawerBackground = "#FFF",
             DrawerText = "rgba(0,0,0, 0.7)",
             Success = "#19635d"
         },
-    };
+    }.SetProperties(t => t.PaletteDark = t.Palette.ToPaletteDark());
     
     public static ClientTheme CurrentTheme = DefaultTheme;
+
+    public static ICollection<ThemePreset<ClientTheme>> All => ThemePreset.Create(() => DefaultTheme, () => Another);
+
+    public static async Task<ICollection<ThemePreset<ClientTheme>>> GetAllThemes(LocalStorageService storageService)
+    {
+        var result = All;
+        var fromStorage = await storageService.GetAllThemeItemsAsync<string>();
+        foreach (var item in fromStorage)
+        {
+            var theme = MudExThemeHelper.FromJson<ClientTheme>(item.Value);
+            result.Add(new ThemePreset<ClientTheme>(item.Key.Split("-").Last(), theme));
+        }
+        return result;
+    }
 
     #endregion
 }

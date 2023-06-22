@@ -36,9 +36,12 @@
         </MudHidden>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
-        <MudDrawerHeader>
-            <LogoTitle />
-        </MudDrawerHeader>
+        @if (ClientTheme.CurrentTheme.ShowLogoInDrawer)
+        {
+            <MudDrawerHeader>
+                <LogoTitle/>
+            </MudDrawerHeader>
+        }
         <NavMenu/>
     </MudDrawer>
     <MudMainContent>

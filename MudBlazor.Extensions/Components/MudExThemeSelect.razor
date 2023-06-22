@@ -1,0 +1,62 @@
+﻿@inherits MudExBaseComponent<MudExThemeEdit<TTheme>>
+@using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Core
+@typeparam TTheme where TTheme : MudTheme
+
+
+@if (Available?.Any() == true)
+{
+    @if (SelectionMode == ThemeSelectionMode.Select)
+    {
+        <MudSelect Class="@Class" Style="@Style" T="ThemePreset<TTheme>"
+                   @ref="_mudSelector"
+                   OpenIcon="@MudExSvg.CombineIconsCentered(PreviewImage(24), Icons.Material.Filled.ArrowDropDown)"
+                   Label="@TryLocalize(Label)"
+                   @bind-Value="Selected"
+                   Variant="@SelectVariant">
+            @foreach (var theme in Available)
+            {
+                <MudSelectItem Class="mt-2" Value="@(theme)">
+                    @RenderTheme(theme)
+                </MudSelectItem>
+
+            }
+        </MudSelect>
+    }
+    else if (SelectionMode == ThemeSelectionMode.ItemList)
+    {
+        <MudList Class="@Class" Style="@Style" Clickable="true" @bind-SelectedValue="SelectedValue">
+            @foreach (var theme in Available)
+            {
+                <MudListItem Class="mt-2" Value="@theme">
+                    @RenderTheme(theme)
+                </MudListItem>
+
+            }
+        </MudList>
+    }
+}
+
+@code {
+
+    private RenderFragment RenderTheme(ThemePreset<TTheme> theme)
+    {
+        if (theme?.Theme is null)
+            return null;
+        
+        return @<MudGrid Class="@ItemClass" Style="@ItemStyle" Spacing="5">
+                   @((MarkupString) PreviewImage(theme, new MudExDimension(140, 100)))
+                   <div style="@GetThemeNameContainerStyle()">
+                       @if (!string.IsNullOrEmpty(theme.Name))
+                       {
+                           <MudText Typo="Typo.h6">@theme.Name</MudText>
+                       }
+                       @if (!string.IsNullOrEmpty(theme.Description) && IsOpen())
+                       {
+                           <MudText Typo="Typo.subtitle1">@theme.Description</MudText>
+                       }
+                   </div>
+               </MudGrid>;
+    }
+
+}                    

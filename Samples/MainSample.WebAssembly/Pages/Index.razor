@@ -22,6 +22,16 @@
 </MudHidden>
 <Support />
 
+<MudExCardList HoverColor="Color.Warning" TData="object">
+    <MudCard Class="index-card" @onclick="@(() => { Navi.NavigateTo("/theme-edit"); })">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">Check out the new MudExThemeEdit Component</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+    </MudCard>
+</MudExCardList>
+
 
 <MudExpansionPanels MultiExpansion="true">
     <MudExpansionPanel IsInitiallyExpanded="true" Class="@($"mt-3 {("mud-ex-object-edit-group-flat")}")" Text="DEMOS">

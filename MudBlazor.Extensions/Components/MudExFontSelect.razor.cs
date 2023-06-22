@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Helper;
-using System.Linq;
 
 namespace MudBlazor.Extensions.Components;
 

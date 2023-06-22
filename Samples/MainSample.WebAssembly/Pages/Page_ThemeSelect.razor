@@ -1,0 +1,38 @@
+﻿@page "/theme-select"
+
+@attribute [DemoNew(Name = "MudExThemeSelect", Icon = Icons.Material.Outlined.Palette, Documentation = "Sample how to use Theme Select", ForComponentType = typeof(MudExThemeSelect<>))]
+
+<DemoComponent PageType="@GetType()" >
+    <SplitContainer>
+        <Left>
+            <MudExThemeSelect TTheme="ClientTheme" 
+                              Available="@_themes"
+                              SelectedTheme="@ClientTheme.CurrentTheme" 
+                              SelectedThemeChanged="@ThemeChanged" @ref="component"></MudExThemeSelect>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+@code {
+    MudExThemeSelect<ClientTheme> component;
+ 
+    private ICollection<ThemePreset<ClientTheme>> _themes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
+        _themes = ThemePreset.Create(("Default", "This is the MudEx Default theme", ClientTheme.DefaultTheme), ("Another", "Another Demo theme in Red",  ClientTheme.Another));
+    }
+
+    private void ThemeChanged(ClientTheme? theme)
+    {
+        if(theme is not null)
+            MainLayout.Instance.SetTheme(theme);
+    }
+
+}

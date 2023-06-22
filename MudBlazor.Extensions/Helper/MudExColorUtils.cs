@@ -1,5 +1,7 @@
-﻿using MudBlazor.Extensions.Attribute;
+﻿using System.Reflection;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Utilities;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -9,6 +11,10 @@ namespace MudBlazor.Extensions.Helper;
 [HasDocumentation("MudExColorUtils.md")]
 public static class MudExColorUtils
 {
+    public static MudColor[] AllColors(this Palette palette) => palette.AllOf<MudColor>();
+    public static MudColor[] AllColors(this PaletteLight palette) => palette.AllOf<MudColor>();
+    public static MudColor[] AllColors(this PaletteDark palette) => palette.AllOf<MudColor>();
+
     public static int ToInt(this MudColor color) 
         => (color.A << 24) | (color.R << 16) | (color.G << 8) | color.B;
 

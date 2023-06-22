@@ -8,6 +8,7 @@ using System.Collections.Concurrent;
 using System.Globalization;
 using MudBlazor.Extensions.Attribute;
 using Nextended.Core.Extensions;
+using static MudBlazor.CategoryTypes;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -169,9 +170,26 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithFill(System.Drawing.Color color, bool when = true) => WithFill(color.ToMudColor(), when);
     public MudExStyleBuilder WithFill(Color color, bool when = true) => WithFill(color.CssVarDeclaration(), when);
 
-    public MudExStyleBuilder WithBorder(string border, bool when = true) => With("border", border, when);
-    public MudExStyleBuilder WithBorderRadius(string borderRadius, bool when = true) => With("border-radius", borderRadius, when);
-    public MudExStyleBuilder WithBorderRadius(double radius, CssUnit unit, bool when = true) => WithBorderRadius(new MudExSize<double>(radius, unit).ToString(), when);
+    
+    public MudExStyleBuilder WithBackground(string[] color, int radius, bool when = true) 
+        => With("background", $"linear-gradient({radius}deg, {string.Join(',', color.Distinct())})", when && color?.Length > 1);
+
+    public MudExStyleBuilder WithBackground(Palette palette, bool when = true) => WithBackground(palette.AllColors(), 0, when);
+    public MudExStyleBuilder WithBackground(PaletteDark palette, bool when = true) => WithBackground(palette.AllColors(), 0, when);
+    public MudExStyleBuilder WithBackground(PaletteLight palette, bool when = true) => WithBackground(palette.AllColors(), 0, when);
+    public MudExStyleBuilder WithBackground(MudTheme theme, bool dark, bool when = true) => WithBackground(dark ? theme.PaletteDark : theme.Palette ,when);
+    //public MudExStyleBuilder WithBackground(MudTheme theme, bool when = true) => WithBackground(theme.Palette.AllColors().Concat(theme.PaletteDark.AllColors()).ToArray() ,when);
+    
+    public MudExStyleBuilder WithBackground(string[] color, bool when = true) => WithBackground(color, 0, when);
+    public MudExStyleBuilder WithBackground(MudExColor[] color, bool when = true) => WithBackground(color.Select(c => c.ToCssStringValue()).ToArray(), when);
+    public MudExStyleBuilder WithBackground(MudColor[] color, bool when = true) => WithBackground(color.Select(c => new MudExColor(c)).ToArray(), when);
+    public MudExStyleBuilder WithBackground(System.Drawing.Color[] color, bool when = true) => WithBackground(color.Select(c => new MudExColor(c)).ToArray(), when);
+    public MudExStyleBuilder WithBackground(Color[] color, bool when = true) => WithBackground(color.Select(c => new MudExColor(c)).ToArray(), when);
+
+    public MudExStyleBuilder WithBackground(MudExColor[] color, int radius, bool when = true) => WithBackground(color.Select(c => c.ToCssStringValue()).ToArray(), radius, when);
+    public MudExStyleBuilder WithBackground(MudColor[] color, int radius, bool when = true) => WithBackground(color.Select(c => new MudExColor(c)).ToArray(), radius, when);
+    public MudExStyleBuilder WithBackground(System.Drawing.Color[] color, int radius, bool when = true) => WithBackground(color.Select(c => new MudExColor(c)).ToArray(), radius, when);
+    public MudExStyleBuilder WithBackground(Color[] color, int radius, bool when = true) => WithBackground(color.Select(c => new MudExColor(c)).ToArray(), radius, when);
 
     public MudExStyleBuilder WithBackground(MudExColor color, bool when = true) => WithBackground(color.ToCssStringValue(), when);
     public MudExStyleBuilder WithBackground(string background, bool when = true) => With("background", background, when);
@@ -188,6 +206,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithBackgroundImage(string backgroundImage, bool when = true) => With("background-image", backgroundImage, when);
 
     public MudExStyleBuilder WithBackgroundSize(string backgroundSize, bool when = true) => With("background-size", backgroundSize, when);
+    
 
     public MudExStyleBuilder WithDisplay(string display, bool when = true) => With("display", display, when);
 
@@ -406,35 +425,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
 
     public MudExStyleBuilder WithMarginLeft(MudExSize<double> size, bool when = true) => WithMarginLeft(size.ToString(), when);
 
-    public MudExStyleBuilder WithBorderWidth(string borderWidth, bool when = true) => With("border-width", borderWidth, when);
-
-    public MudExStyleBuilder WithBorderWidth(double borderWidth, CssUnit unit, bool when = true) => WithBorderWidth(new MudExSize<double>(borderWidth, unit).ToString(), when);
-
-    public MudExStyleBuilder WithBorderWidth(MudExSize<double> size, bool when = true) => WithBorderWidth(size.ToString(), when);
-
-    public MudExStyleBuilder WithBorderTopWidth(string borderTopWidth, bool when = true) => With("border-top-width", borderTopWidth, when);
-
-    public MudExStyleBuilder WithBorderTopWidth(double borderTopWidth, CssUnit unit, bool when = true) => WithBorderTopWidth(new MudExSize<double>(borderTopWidth, unit).ToString(), when);
-
-    public MudExStyleBuilder WithBorderTopWidth(MudExSize<double> size, bool when = true) => WithBorderTopWidth(size.ToString(), when);
-
-    public MudExStyleBuilder WithBorderRightWidth(string borderRightWidth, bool when = true) => With("border-right-width", borderRightWidth, when);
-
-    public MudExStyleBuilder WithBorderRightWidth(double borderRightWidth, CssUnit unit, bool when = true) => WithBorderRightWidth(new MudExSize<double>(borderRightWidth, unit).ToString(), when);
-
-    public MudExStyleBuilder WithBorderRightWidth(MudExSize<double> size, bool when = true) => WithBorderRightWidth(size.ToString(), when);
-
-    public MudExStyleBuilder WithBorderBottomWidth(string borderBottomWidth, bool when = true) => With("border-bottom-width", borderBottomWidth, when);
-
-    public MudExStyleBuilder WithBorderBottomWidth(double borderBottomWidth, CssUnit unit, bool when = true) => WithBorderBottomWidth(new MudExSize<double>(borderBottomWidth, unit).ToString(), when);
-
-    public MudExStyleBuilder WithBorderBottomWidth(MudExSize<double> size, bool when = true) => WithBorderBottomWidth(size.ToString(), when);
-
-    public MudExStyleBuilder WithBorderLeftWidth(string borderLeftWidth, bool when = true) => With("border-left-width", borderLeftWidth, when);
-
-    public MudExStyleBuilder WithBorderLeftWidth(double borderLeftWidth, CssUnit unit, bool when = true) => WithBorderLeftWidth(new MudExSize<double>(borderLeftWidth, unit).ToString(), when);
-
-    public MudExStyleBuilder WithBorderLeftWidth(MudExSize<double> size, bool when = true) => WithBorderLeftWidth(size.ToString(), when);
+   
 
     public MudExStyleBuilder WithFontSize(double fontSize, CssUnit unit, bool when = true) => WithFontSize(new MudExSize<double>(fontSize, unit).ToString(), when);
 
@@ -591,6 +582,42 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
 
     public MudExStyleBuilder WithBackgroundRepeat(string backgroundRepeat, bool when = true) => With("background-repeat", backgroundRepeat, when);
 
+    public MudExStyleBuilder WithBorder(MudExSize<double> size, BorderStyle style, MudExColor color)
+       => WithBorderWidth(size).WithBorderStyle(style).WithBorderColor(color);
+
+    public MudExStyleBuilder WithBorder(string border, bool when = true) => With("border", border, when);
+    public MudExStyleBuilder WithBorderRadius(string borderRadius, bool when = true) => With("border-radius", borderRadius, when);
+    public MudExStyleBuilder WithBorderRadius(double radius, CssUnit unit, bool when = true) => WithBorderRadius(new MudExSize<double>(radius, unit).ToString(), when);
+
+    public MudExStyleBuilder WithBorderWidth(string borderWidth, bool when = true) => With("border-width", borderWidth, when);
+
+    public MudExStyleBuilder WithBorderWidth(double borderWidth, CssUnit unit, bool when = true) => WithBorderWidth(new MudExSize<double>(borderWidth, unit).ToString(), when);
+
+    public MudExStyleBuilder WithBorderWidth(MudExSize<double> size, bool when = true) => WithBorderWidth(size.ToString(), when);
+
+    public MudExStyleBuilder WithBorderTopWidth(string borderTopWidth, bool when = true) => With("border-top-width", borderTopWidth, when);
+
+    public MudExStyleBuilder WithBorderTopWidth(double borderTopWidth, CssUnit unit, bool when = true) => WithBorderTopWidth(new MudExSize<double>(borderTopWidth, unit).ToString(), when);
+
+    public MudExStyleBuilder WithBorderTopWidth(MudExSize<double> size, bool when = true) => WithBorderTopWidth(size.ToString(), when);
+
+    public MudExStyleBuilder WithBorderRightWidth(string borderRightWidth, bool when = true) => With("border-right-width", borderRightWidth, when);
+
+    public MudExStyleBuilder WithBorderRightWidth(double borderRightWidth, CssUnit unit, bool when = true) => WithBorderRightWidth(new MudExSize<double>(borderRightWidth, unit).ToString(), when);
+
+    public MudExStyleBuilder WithBorderRightWidth(MudExSize<double> size, bool when = true) => WithBorderRightWidth(size.ToString(), when);
+
+    public MudExStyleBuilder WithBorderBottomWidth(string borderBottomWidth, bool when = true) => With("border-bottom-width", borderBottomWidth, when);
+
+    public MudExStyleBuilder WithBorderBottomWidth(double borderBottomWidth, CssUnit unit, bool when = true) => WithBorderBottomWidth(new MudExSize<double>(borderBottomWidth, unit).ToString(), when);
+
+    public MudExStyleBuilder WithBorderBottomWidth(MudExSize<double> size, bool when = true) => WithBorderBottomWidth(size.ToString(), when);
+
+    public MudExStyleBuilder WithBorderLeftWidth(string borderLeftWidth, bool when = true) => With("border-left-width", borderLeftWidth, when);
+
+    public MudExStyleBuilder WithBorderLeftWidth(double borderLeftWidth, CssUnit unit, bool when = true) => WithBorderLeftWidth(new MudExSize<double>(borderLeftWidth, unit).ToString(), when);
+
+    public MudExStyleBuilder WithBorderLeftWidth(MudExSize<double> size, bool when = true) => WithBorderLeftWidth(size.ToString(), when);
     public MudExStyleBuilder WithBorderColor(string borderColor, bool when = true) => With("border-color", borderColor, when);
     public MudExStyleBuilder WithBorderColor(MudExColor color, bool when = true) => WithBorderColor(color.ToCssStringValue(), when);
     public MudExStyleBuilder WithBorderColor(MudColor color, bool when = true) => WithBorderColor(color.ToString(), when);
@@ -600,6 +627,53 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithBorderStyle(BorderStyle borderStyle, bool when = true) => WithBorderStyle(Nextended.Core.Helper.EnumExtensions.ToDescriptionString(borderStyle), when);
 
     public MudExStyleBuilder WithBorderStyle(string borderStyle, bool when = true) => With("border-style", borderStyle, when);
+
+    public MudExStyleBuilder WithOutline(MudExSize<double> size, BorderStyle style, MudExColor color)
+       => WithOutlineWidth(size).WithOutlineStyle(style).WithOutlineColor(color);
+
+    public MudExStyleBuilder WithOutlineRadius(string outlineRadius, bool when = true) => With("outline-radius", outlineRadius, when);
+    public MudExStyleBuilder WithOutlineRadius(double radius, CssUnit unit, bool when = true) => WithOutlineRadius(new MudExSize<double>(radius, unit).ToString(), when);
+
+    public MudExStyleBuilder WithOutlineWidth(string outlineWidth, bool when = true) => With("outline-width", outlineWidth, when);
+
+    public MudExStyleBuilder WithOutlineWidth(double outlineWidth, CssUnit unit, bool when = true) => WithOutlineWidth(new MudExSize<double>(outlineWidth, unit).ToString(), when);
+
+    public MudExStyleBuilder WithOutlineWidth(MudExSize<double> size, bool when = true) => WithOutlineWidth(size.ToString(), when);
+
+    public MudExStyleBuilder WithOutlineTopWidth(string outlineTopWidth, bool when = true) => With("outline-top-width", outlineTopWidth, when);
+
+    public MudExStyleBuilder WithOutlineTopWidth(double outlineTopWidth, CssUnit unit, bool when = true) => WithOutlineTopWidth(new MudExSize<double>(outlineTopWidth, unit).ToString(), when);
+
+    public MudExStyleBuilder WithOutlineTopWidth(MudExSize<double> size, bool when = true) => WithOutlineTopWidth(size.ToString(), when);
+
+    public MudExStyleBuilder WithOutlineRightWidth(string outlineRightWidth, bool when = true) => With("outline-right-width", outlineRightWidth, when);
+
+    public MudExStyleBuilder WithOutlineRightWidth(double outlineRightWidth, CssUnit unit, bool when = true) => WithOutlineRightWidth(new MudExSize<double>(outlineRightWidth, unit).ToString(), when);
+
+    public MudExStyleBuilder WithOutlineRightWidth(MudExSize<double> size, bool when = true) => WithOutlineRightWidth(size.ToString(), when);
+
+    public MudExStyleBuilder WithOutlineBottomWidth(string outlineBottomWidth, bool when = true) => With("outline-bottom-width", outlineBottomWidth, when);
+
+    public MudExStyleBuilder WithOutlineBottomWidth(double outlineBottomWidth, CssUnit unit, bool when = true) => WithOutlineBottomWidth(new MudExSize<double>(outlineBottomWidth, unit).ToString(), when);
+
+    public MudExStyleBuilder WithOutlineBottomWidth(MudExSize<double> size, bool when = true) => WithOutlineBottomWidth(size.ToString(), when);
+
+    public MudExStyleBuilder WithOutlineLeftWidth(string outlineLeftWidth, bool when = true) => With("outline-left-width", outlineLeftWidth, when);
+
+    public MudExStyleBuilder WithOutlineLeftWidth(double outlineLeftWidth, CssUnit unit, bool when = true) => WithOutlineLeftWidth(new MudExSize<double>(outlineLeftWidth, unit).ToString(), when);
+
+    public MudExStyleBuilder WithOutlineLeftWidth(MudExSize<double> size, bool when = true) => WithOutlineLeftWidth(size.ToString(), when);
+    public MudExStyleBuilder WithOutlineColor(string outlineColor, bool when = true) => With("outline-color", outlineColor, when);
+    public MudExStyleBuilder WithOutlineColor(MudExColor color, bool when = true) => WithOutlineColor(color.ToCssStringValue(), when);
+    public MudExStyleBuilder WithOutlineColor(MudColor color, bool when = true) => WithOutlineColor(color.ToString(), when);
+    public MudExStyleBuilder WithOutlineColor(System.Drawing.Color color, bool when = true) => WithOutlineColor(color.ToMudColor(), when);
+    public MudExStyleBuilder WithOutlineColor(Color color, bool when = true) => WithOutlineColor(color.CssVarDeclaration(), when);
+
+    public MudExStyleBuilder WithOutlineStyle(BorderStyle outlineStyle, bool when = true) => WithOutlineStyle(Nextended.Core.Helper.EnumExtensions.ToDescriptionString(outlineStyle), when);
+
+    public MudExStyleBuilder WithOutlineStyle(string outlineStyle, bool when = true) => With("outline-style", outlineStyle, when);
+
+
 
     public MudExStyleBuilder WithFloat(string floatOption, bool when = true) => With("float", floatOption, when);
 
@@ -741,7 +815,6 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public string Style => Build();
 
     private string DoubleToString(double value) => value.ToString(CultureInfo.InvariantCulture);
-
 }
 
 

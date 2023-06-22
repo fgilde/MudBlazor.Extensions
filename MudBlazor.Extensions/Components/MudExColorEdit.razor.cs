@@ -102,7 +102,10 @@ public sealed partial class MudExColorEdit
 
     protected override async Task OnParametersSetAsync()
     {
-        //await UpdateInitialMudColor();
+        if (PickerVariant == PickerVariant.Static || PickerVariant == PickerVariant.Dialog)
+        {
+            await EnsureCssVarsAsync();
+        }
         Text = ValueString;
         UpdatePreview();
         await base.OnParametersSetAsync();
@@ -280,6 +283,8 @@ public sealed partial class MudExColorEdit
     }
 
     private static bool IsCssVarStr(string s) => s.StartsWith("var(") || s.StartsWith("--");
+
+    private bool GetIsOpen() => IsOpen || PickerVariant == PickerVariant.Static || PickerVariant == PickerVariant.Dialog;
 }
 
 public enum ColorPreviewMode

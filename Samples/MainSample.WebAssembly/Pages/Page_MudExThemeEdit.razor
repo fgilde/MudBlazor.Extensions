@@ -1,0 +1,115 @@
+﻿@page "/theme-edit"
+@using MudBlazor.Extensions.Helper
+@inject IDialogService dialogService
+@inject LocalStorageService storage  
+
+@attribute [DemoNew(Group = "MudExObjectEdit", Name = "Edit Current Theme", Order = 7, Documentation = "This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing ", Icon = Icons.Material.Outlined.Palette, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExThemeEdit<>), typeof(MudExObjectEditForm<>) })]
+
+
+<DemoComponent PageType="@GetType()" CodeFiles="@(new[] {$"Pages/{GetType().Name}.razor", $"../../MudBlazor.Extensions/Components/MudExThemeEdit.razor", $"../../MudBlazor.Extensions/Components/MudExThemeEdit.razor.cs", $"/ClientTheme.cs"})">
+    <MudText Class="mb-5" Typo="Typo.subtitle1">The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.</MudText>
+    @if (_bindDarkMode)
+    {
+        string mode = MainLayout.Instance.IsDark ? "darkmode" : "lightmode";
+        <MudText Typo="Typo.subtitle2">@($"Currently ThemeEditor is bind to DarkMode from current theme and in {mode}. You can change DarMode in the Top right menu or disable binding by toggle the switch")</MudText>
+    }
+    else
+    {
+        <MudText Typo="Typo.subtitle2">@($"Currently ThemeEditor is not bind to DarkMode from current theme and works for Dark and light. You can enable binding by toggle the switch")</MudText>
+
+    }
+    <MudSwitch Color="Color.Primary" Label="Bind Dark Mode" @bind-Checked="_bindDarkMode"></MudSwitch>
+    
+    <MudExDivider Size="3"></MudExDivider>
+    <div class="mb-5"></div>
+    
+    <MudExThemeEdit AllowModeToggle="true"
+                    TTheme="ClientTheme"
+                    IsDark="@(_bindDarkMode ? MainLayout.Instance.IsDark : null)"
+                    Presets="@_themes"
+                    CanDelete="@CanDeletePreset"
+                    ThemeDeleted="@OnDeleteTheme"
+                    ThemeCreated="@OnThemeCreated"
+                    @bind-EditMode="@_editMode"
+                    ThemeChanged="@ThemeChanged"
+                    Theme="@ClientTheme.CurrentTheme"></MudExThemeEdit>
+</DemoComponent>
+
+
+@code {
+
+    private bool _bindDarkMode = true;
+    private ThemeEditMode _editMode { get; set; } = ThemeEditMode.Simple;
+    private ICollection<ThemePreset<ClientTheme>> _themes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
+        _themes = await GetThemes();
+    }
+
+    private async Task ThemeChanged(ClientTheme theme)
+    {
+        MainLayout.Instance.SetTheme(theme);
+        var preset = _themes.FirstOrDefault(p => p.Theme == theme);
+        if(preset != null && CanDeletePreset(preset))
+            await AddToStorageAsync(preset); // Save current theme changes to storage if preset comes from storage
+        StateHasChanged();
+    }
+
+    private bool CanDeletePreset(ThemePreset<ClientTheme> arg)
+    {
+        // Here you can define which themes can deleted, in this no default provided themes
+        return ClientTheme.All.All(p => p.Theme != arg.Theme);
+    }
+
+    private async Task OnThemeCreated(ThemePreset<ClientTheme> arg)
+    {
+        // Here you can implement your logic. For example add to server. Important: Update presets and selected and call StateHasChanged()
+        await AddToStorageAsync(arg);
+        await UpdatePresetsAsync();
+        await ThemeChanged(arg.Theme);
+    }
+    
+    private async Task OnDeleteTheme(ThemePreset<ClientTheme> arg)
+    {
+        // Here you can implement your logic. For example delete from server. Important: Update presets and call StateHasChanged()
+        var res = await dialogService.ShowConfirmationDialogAsync("Confirmation", $"Are you sure to delete {arg.Name}?", "Yes", "No");
+        if (res)
+        {
+            await DeleteFromStorageAsync(arg);
+            await UpdatePresetsAsync();
+        }
+    }
+    
+    private async Task UpdatePresetsAsync()
+    {
+        _themes = await GetThemes();
+        StateHasChanged();
+    }
+
+    private async Task<ICollection<ThemePreset<ClientTheme>>> GetThemes()
+    {
+        var result = ThemePreset.Create(("Default", "This is the MudEx Default theme", ClientTheme.DefaultTheme), ("Another", "Another Demo theme in Red", ClientTheme.Another));
+        var fromStorage = await storage.GetAllThemeItemsAsync<string>();
+        foreach (var item in fromStorage)
+        {
+            var theme = MudExThemeHelper.FromJson<ClientTheme>(item.Value);
+            result.Add(new ThemePreset<ClientTheme>(item.Key.Split("-").Last(), theme));
+        }
+        return result;
+    }
+
+    private async Task AddToStorageAsync(ThemePreset<ClientTheme> themePreset)
+    {
+        await storage.SetItemAsync($"theme-{themePreset.Name}", themePreset.Theme.AsJson());
+    }
+
+    private async Task DeleteFromStorageAsync(ThemePreset<ClientTheme> themePreset)
+    {
+        await storage.RemoveItemAsync($"theme-{themePreset.Name}");
+        ThemeChanged(ClientTheme.DefaultTheme);
+    }
+
+}

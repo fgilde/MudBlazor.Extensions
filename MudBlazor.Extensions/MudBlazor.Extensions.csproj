@@ -73,7 +73,7 @@
   <ItemGroup>
     
     <PackageReference Include="Nextended.Blazor" Version="7.0.23" />
-    <PackageReference Include="Nextended.Core" Version="7.0.23" />
+    <PackageReference Include="Nextended.Core" Version="7.0.24" />
     <PackageReference Include="BlazorJS" Version="2.0.4" />
     <PackageReference Include="OneOf" Version="3.0.243" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.0.3" />
