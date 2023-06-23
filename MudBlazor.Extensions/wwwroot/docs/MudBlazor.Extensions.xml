@@ -167,9 +167,76 @@
             MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide <MudExTaskBar/> somewhere in your Layout
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.ThemePreset`1">
+            <summary>
+            Theme preset
+            </summary>
+            <typeparam name="TTheme"></typeparam>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ThemeEditMode">
+            <summary>
+            Theme edit mode for MudExThemeEdit
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExThemeEdit`1">
+            <summary>
+            MudExThemeEdit is a powerful component to edit one ore more themes
+            </summary>
+            <typeparam name="TTheme"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.ShowCancelButton">
+            <summary>
+            if true user can click on cancel
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.ShowSaveButton">
+            <summary>
+            if true user can click on save
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.AllowImport">
+            <summary>
+            If true user can import json themes
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.AllowExport">
+            <summary>
+            If true user can export theme as json
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.AutoSaveRestoreState">
+            <summary>
+            If true the state of current theme and edit values are stored in storage and restored automatically
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.Theme">
+            <summary>
+            The theme to edit or current theme from preset
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.InitialTheme">
+            <summary>
+            The theme that will used for reset
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.EditMode">
+            <summary>
+            Edit mode (default simple)
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.AllowModeToggle">
+            <summary>
+            If true user can switch between simple and full edit mode
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.IsDark">
             <summary>
             This bool represents a tri state. True to edit only dark color palette, false to edit only light color palette and null to edit both
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.MetaInformation">
+            <summary>
+            Object edit Meta 
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.Presets">
@@ -186,6 +253,41 @@
         <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.CanDelete">
             <summary>
             If function returns true user can delete theme from param
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.ThemeCreated">
+            <summary>
+            Raised when new theme is created
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.ThemeDeleted">
+            <summary>
+            Raised when Theme is deleted
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.ThemeChanged">
+            <summary>
+            Raised when something in Theme or whole theme has changed
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.EditModeChanged">
+            <summary>
+            Raised when edit mode changed
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.ThemeSaved">
+            <summary>
+            Raised when user clicks on save
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.EditCanceled">
+            <summary>
+            Raised when user clicks on cancel
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.ObjectEditor">
+            <summary>
+            Reference to MudExObjectEdit
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExThemeSelect`1">
@@ -586,9 +688,9 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.UseLegacyRenderFilter">
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.RenderIgnoredReferences">
             <summary>
-            Set this to true, to use the old render behavior without references for ignored fields. 
+            If you need the reference for dynamic ignored fields for example because of Model Validation or resets you should set this to true
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.IsLoading">
@@ -918,6 +1020,11 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ErrorMessage">
             <summary>
             Error message to display
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.CustomResetFunction">
+            <summary>
+            Set this to handle Reset on your own
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.BulkActionRunning">

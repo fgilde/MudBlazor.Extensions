@@ -9,12 +9,19 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// MudExThemeEdit is a powerful component to edit one ore more themes
+/// </summary>
+/// <typeparam name="TTheme"></typeparam>
 public partial class MudExThemeEdit<TTheme>
 {
-    private const int extraDelay = 500;
-    private bool _isLoading = true;
-    private const string fontFamilyEditPath = $"{nameof(Typography)}.{nameof(Typography.Default)}.{nameof(Typography.Default.FontFamily)}";
+    private const string FontFamilyEditPath = $"{nameof(Typography)}.{nameof(Typography.Default)}.{nameof(Typography.Default.FontFamily)}";
+    private const int ExtraDelay = 500; // Currently needed because of timing issues in MudExObjectEdit. But will fixed later
 
+    private KeyValuePair<string, MudColor>[] _cssVars;
+    private bool _isLoading = true;
+    private ThemePreset<TTheme> _selectedPreset;
+    private TTheme _theme;
     private static readonly string[] _propertiesForSimpleMode = {
         nameof(MudTheme.Palette.AppbarBackground),
         nameof(MudTheme.Palette.Surface),
@@ -33,16 +40,65 @@ public partial class MudExThemeEdit<TTheme>
         nameof(MudTheme.LayoutProperties.DrawerWidthLeft),
         nameof(MudTheme.LayoutProperties.DrawerWidthRight),
         nameof(MudTheme.LayoutProperties.DrawerWidthRight),
-        fontFamilyEditPath,
+        FontFamilyEditPath,
     };
 
-    private KeyValuePair<string, MudColor>[] _cssVars;
-    [Inject] public IDialogService DialogService { get; set; }
-    [Parameter] public TTheme Theme { get; set; }
+    /// <summary>
+    /// if true user can click on cancel
+    /// </summary>
+    [Parameter] public bool ShowCancelButton { get; set; }
+
+    /// <summary>
+    /// if true user can click on save
+    /// </summary>
+    [Parameter] public bool ShowSaveButton { get; set; }
+
+    /// <summary>
+    /// If true user can import json themes
+    /// </summary>
+    [Parameter] public bool AllowImport { get; set; } = true;
+
+    /// <summary>
+    /// If true user can export theme as json
+    /// </summary>
+    [Parameter] public bool AllowExport { get; set; } = true;
+
+    /// <summary>
+    /// If true the state of current theme and edit values are stored in storage and restored automatically
+    /// </summary>
+    [Parameter] public bool AutoSaveRestoreState { get; set; } = true;
+
+    /// <summary>
+    /// The theme to edit or current theme from preset
+    /// </summary>
+    [Parameter]
+    public TTheme Theme
+    {
+        get => _theme;
+        set
+        {
+            if (_theme != value)
+            {
+                _theme = value;
+                UpdateInitialTheme();
+            }
+        }
+    }
+    
+    /// <summary>
+    /// The theme that will used for reset
+    /// </summary>
     public TTheme InitialTheme { get; private set; }
-    [Parameter] public EventCallback<TTheme> ThemeChanged { get; set; }
+
+    /// <summary>
+    /// Edit mode (default simple)
+    /// </summary>
     [Parameter] public ThemeEditMode EditMode { get; set; } = ThemeEditMode.Simple;
-    [Parameter] public EventCallback<ThemeEditMode> EditModeChanged { get; set; }
+    
+
+    /// <summary>
+    /// If true user can switch between simple and full edit mode
+    /// </summary>
     [Parameter] public bool AllowModeToggle { get; set; } = true;
 
     /// <summary>
@@ -50,6 +106,9 @@ public partial class MudExThemeEdit<TTheme>
     /// </summary>
     [Parameter] public bool? IsDark { get; set; }
 
+    /// <summary>
+    /// Object edit Meta 
+    /// </summary>
     [Parameter] public ObjectEditMeta<TTheme> MetaInformation { get; set; }
 
     /// <summary>
@@ -68,14 +127,43 @@ public partial class MudExThemeEdit<TTheme>
     /// </summary>
     [Parameter] public Func<ThemePreset<TTheme>, bool> CanDelete { get; set; } = _ => true;
     
+    /// <summary>
+    /// Raised when new theme is created
+    /// </summary>
     [Parameter] public EventCallback<ThemePreset<TTheme>> ThemeCreated { get; set; }
+
+    /// <summary>
+    /// Raised when Theme is deleted
+    /// </summary>
     [Parameter] public EventCallback<ThemePreset<TTheme>> ThemeDeleted { get; set; }
 
+    /// <summary>
+    /// Raised when something in Theme or whole theme has changed
+    /// </summary>
+    [Parameter] public EventCallback<TTheme> ThemeChanged { get; set; }
 
-    private ThemePreset<TTheme> _selectedPreset;
-    
+    /// <summary>
+    /// Raised when edit mode changed
+    /// </summary>
+    [Parameter] public EventCallback<ThemeEditMode> EditModeChanged { get; set; }
+
+    /// <summary>
+    /// Raised when user clicks on save
+    /// </summary>
+    [Parameter] public EventCallback<(TTheme Theme, ThemePreset<TTheme> Preset)> ThemeSaved { get; set; }
+
+    /// <summary>
+    /// Raised when user clicks on cancel
+    /// </summary>
+    [Parameter] public EventCallback<(TTheme Theme, ThemePreset<TTheme> Preset)> EditCanceled { get; set; }
+
+
+    /// <summary>
+    /// Reference to MudExObjectEdit
+    /// </summary>
     public MudExObjectEditForm<TTheme> ObjectEditor { get; private set; }
 
+    
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         bool updateConditions = (parameters.TryGetValue<bool?>(nameof(IsDark), out var isDark) && IsDark != isDark)
@@ -91,9 +179,7 @@ public partial class MudExThemeEdit<TTheme>
     {
         base.OnParametersSet();
         if (Theme != null && InitialTheme == null)
-        {
             InitialTheme = Theme.CloneTheme();
-        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -121,8 +207,14 @@ public partial class MudExThemeEdit<TTheme>
         Theme = theme;
         await OnThemeChanged(Theme);
         StateHasChanged();
-        await Task.Delay(extraDelay);
+        await Task.Delay(ExtraDelay);
         Loading(false);
+    }
+
+    private void UpdateInitialTheme()
+    {
+        if (Theme != null)
+            InitialTheme = Theme.CloneTheme();
     }
 
     private void Loading(bool isLoading)
@@ -137,7 +229,7 @@ public partial class MudExThemeEdit<TTheme>
             return;
         Loading(true);
         MetaInformation?.UpdateAllConditionalSettings();
-        await Task.Delay(extraDelay);
+        await Task.Delay(ExtraDelay);
         Loading(false);
     }
 
@@ -149,7 +241,7 @@ public partial class MudExThemeEdit<TTheme>
 
     private Task OnPropertyChanged(ObjectEditPropertyMeta arg)
     {
-        if (arg.PropertyName == fontFamilyEditPath && EditMode == ThemeEditMode.Simple)
+        if (arg.PropertyName == FontFamilyEditPath && EditMode == ThemeEditMode.Simple)
         {
             Theme.Typography.Body1.FontFamily = Theme.Typography.Body2.FontFamily = Theme.Typography.Caption.FontFamily =
             Theme.Typography.Button.FontFamily = Theme.Typography.H1.FontFamily = Theme.Typography.H2.FontFamily =
@@ -212,23 +304,26 @@ public partial class MudExThemeEdit<TTheme>
 
     }
 
-    private Task BeforeImport(ImportData<TTheme> arg)
-        => Task.FromResult(arg.Json = JsonHelper.SimplifyMudColorInJson(arg.Json));
-    private void BeforeExport(ExportData<TTheme> obj) =>
-        obj.Json = JsonHelper.SimplifyMudColorInJson(obj.Json);
-
-
+    private Task BeforeImport(ImportData<TTheme> arg) => Task.FromResult(arg.Json = JsonHelper.SimplifyMudColorInJson(arg.Json));
+    private void BeforeExport(ExportData<TTheme> obj) => obj.Json = JsonHelper.SimplifyMudColorInJson(obj.Json);
+    
     private async Task AfterImport(ImportedData<TTheme> arg) => await SetTheme(arg.Value);
+    private Task OnCancel() => EditCanceled.InvokeAsync((Theme, _selectedPreset));
+    private Task OnValidSubmit(EditContext arg) => ThemeSaved.InvokeAsync((Theme, _selectedPreset));
 
-    private async Task OnCancel()
+    private async Task Reset()
     {
-        await ObjectEditor.Reset();
+        if (InitialTheme is not null)
+        {
+            var cloneTheme = InitialTheme.CloneTheme();
+            Loading(true);
+            await ObjectEditor.DeleteState();
+            if (_selectedPreset is not null)
+                _selectedPreset.Theme = cloneTheme;
+            await SetTheme(cloneTheme);
+        }
     }
 
-    private Task OnValidSubmit(EditContext arg)
-    {
-        return Task.CompletedTask;
-    }
 
     private async Task OnSelectedPresetChange(ThemePreset<TTheme> arg)
     {
@@ -262,10 +357,4 @@ public partial class MudExThemeEdit<TTheme>
             await ThemeCreated.InvokeAsync(themePreset);
         }
     }
-}
-
-public enum ThemeEditMode
-{
-    Simple,
-    Full,
 }

@@ -1,7 +1,9 @@
 ﻿@page "/theme-edit"
 @using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Options
 @inject IDialogService dialogService
-@inject LocalStorageService storage  
+@inject LocalStorageService storage
+@inject NavigationManager nav
 
 @attribute [DemoNew(Group = "MudExObjectEdit", Name = "Edit Current Theme", Order = 7, Documentation = "This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing ", Icon = Icons.Material.Outlined.Palette, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExThemeEdit<>), typeof(MudExObjectEditForm<>) })]
 
@@ -19,19 +21,23 @@
 
     }
     <MudSwitch Color="Color.Primary" Label="Bind Dark Mode" @bind-Checked="_bindDarkMode"></MudSwitch>
-    
+
     <MudExDivider Size="3"></MudExDivider>
     <div class="mb-5"></div>
-    
+
     <MudExThemeEdit AllowModeToggle="true"
                     TTheme="ClientTheme"
+    @bind-EditMode="@_editMode"
                     IsDark="@(_bindDarkMode ? MainLayout.Instance.IsDark : null)"
                     Presets="@_themes"
+                    ShowCancelButton="true"
+                    ShowSaveButton="true"
                     CanDelete="@CanDeletePreset"
                     ThemeDeleted="@OnDeleteTheme"
                     ThemeCreated="@OnThemeCreated"
-                    @bind-EditMode="@_editMode"
+                    ThemeSaved="@OnThemeSaveClick"
                     ThemeChanged="@ThemeChanged"
+                    EditCanceled="@OnCancelEdit"
                     Theme="@ClientTheme.CurrentTheme"></MudExThemeEdit>
 </DemoComponent>
 
@@ -53,7 +59,7 @@
     {
         MainLayout.Instance.SetTheme(theme);
         var preset = _themes.FirstOrDefault(p => p.Theme == theme);
-        if(preset != null && CanDeletePreset(preset))
+        if (preset != null && CanDeletePreset(preset))
             await AddToStorageAsync(preset); // Save current theme changes to storage if preset comes from storage
         StateHasChanged();
     }
@@ -71,7 +77,7 @@
         await UpdatePresetsAsync();
         await ThemeChanged(arg.Theme);
     }
-    
+
     private async Task OnDeleteTheme(ThemePreset<ClientTheme> arg)
     {
         // Here you can implement your logic. For example delete from server. Important: Update presets and call StateHasChanged()
@@ -82,7 +88,7 @@
             await UpdatePresetsAsync();
         }
     }
-    
+
     private async Task UpdatePresetsAsync()
     {
         _themes = await GetThemes();
@@ -110,6 +116,20 @@
     {
         await storage.RemoveItemAsync($"theme-{themePreset.Name}");
         ThemeChanged(ClientTheme.DefaultTheme);
+    }
+
+    private async Task OnThemeSaveClick((ClientTheme Theme, ThemePreset<ClientTheme> Preset) data)
+    {
+        await dialogService.ShowInformationAsync($"Saved {data.Preset?.Name}", "We do nothing here in this Demo because we store theme on every change. However you can use ThemeSaved to do something if the user has save clicked", Icons.Material.Filled.Save, new DialogOptionsEx {
+            Animations = new[] { AnimationType.SlideIn },
+            Position = DialogPosition.TopCenter,
+            DisablePositionMargin = true
+        });
+    }
+
+    private void OnCancelEdit((ClientTheme Theme, ThemePreset<ClientTheme> Preset) data)
+    {
+        nav.NavigateTo("/");
     }
 
 }

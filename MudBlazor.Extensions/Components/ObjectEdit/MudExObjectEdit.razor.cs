@@ -40,11 +40,11 @@ public partial class MudExObjectEdit<T>
 
 
     #region Parameters
-    
+
     /// <summary>
-    /// Set this to true, to use the old render behavior without references for ignored fields. 
+    /// If you need the reference for dynamic ignored fields for example because of Model Validation or resets you should set this to true
     /// </summary>
-    [Parameter] public bool UseLegacyRenderFilter { get; set; }
+    [Parameter] public bool RenderIgnoredReferences { get; set; }
 
 
     /// <summary>
@@ -383,6 +383,11 @@ public partial class MudExObjectEdit<T>
     /// Error message to display
     /// </summary>
     [Parameter] public string ErrorMessage { get; set; }
+    
+    /// <summary>
+    /// Set this to handle Reset on your own
+    /// </summary>
+    [Parameter] public Func<Task> CustomResetFunction { get; set; }
 
     #endregion
 
@@ -506,11 +511,18 @@ public partial class MudExObjectEdit<T>
     /// <returns></returns>
     public async Task Reset()
     {
-        using (new ActionScope(() => BulkActionRunning = true, () => BulkActionRunning = false))
+        if (CustomResetFunction == null)
         {
-            await Task.WhenAll(Editors.Select(e => e.ResetAsync()));
-            if (Value is IEditableObject editable)
-                editable.CancelEdit();
+            using (new ActionScope(() => BulkActionRunning = true, () => BulkActionRunning = false))
+            {
+                await Task.WhenAll(Editors.Select(e => e.ResetAsync()));
+                if (Value is IEditableObject editable)
+                    editable.CancelEdit();
+            }
+        }
+        else
+        {
+            await CustomResetFunction();
         }
 
         UpdateConditions();
@@ -631,13 +643,13 @@ public partial class MudExObjectEdit<T>
     private string CssClassName => GroupingStyle == GroupingStyle.Flat ? $"mud-ex-object-edit-group-flat {(!GroupsCollapsible ? "mud-ex-hide-expand-btn" : "")}" : string.Empty;
 
     
-    private List<IGrouping<string, ObjectEditPropertyMeta>> LegacyGroupedMetaPropertyInfos() // Here we filter ignore directly
+    private List<IGrouping<string, ObjectEditPropertyMeta>> DefaultGroupedMetaPropertyInfos() // Here we filter ignore directly
         => MetaInformation?.AllProperties?.EmptyIfNull()
             .Where(m => m.ShouldRender() && IsInFilter(m) && (!AutoHideDisabledFields || m.Settings.IsEditable))
             .GroupBy(m => !DisableGrouping ? m.GroupInfo?.Name : string.Empty)
             .ToList();
 
-    private List<IGrouping<string, ObjectEditPropertyMeta>> NewGroupedMetaPropertyInfos() // Here we don't filter ignores and give them to MudExPropertyEdit to keep reference
+    private List<IGrouping<string, ObjectEditPropertyMeta>> AllGroupedMetaPropertyInfos() // Here we don't filter ignores and give them to MudExPropertyEdit to keep reference
         => MetaInformation?.AllProperties?.EmptyIfNull()
             .Where(m => IsInFilter(m) && (!AutoHideDisabledFields || m.Settings.IsEditable))
             .GroupBy(m => !DisableGrouping ? m.GroupInfo?.Name : string.Empty)
@@ -645,7 +657,7 @@ public partial class MudExObjectEdit<T>
 
     
     private List<IGrouping<string, ObjectEditPropertyMeta>> GroupedMetaPropertyInfos() 
-        => UseLegacyRenderFilter ? LegacyGroupedMetaPropertyInfos() : NewGroupedMetaPropertyInfos();
+        => !RenderIgnoredReferences ? DefaultGroupedMetaPropertyInfos() : AllGroupedMetaPropertyInfos();
 
 
     private bool ContainsMudItemInWrapper(IEnumerable<ObjectEditPropertyMeta> meta)

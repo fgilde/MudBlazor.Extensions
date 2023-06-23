@@ -3,9 +3,13 @@ using System.Linq.Expressions;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// Theme preset
+/// </summary>
+/// <typeparam name="TTheme"></typeparam>
 public class ThemePreset<TTheme> where TTheme : MudTheme
 {
-    public object Id { get; set; } = Guid.NewGuid();
+    public virtual object Id { get; set; } = Guid.NewGuid();
     
     public string Name { get; set; }
     public string? Description { get; set; }
@@ -51,6 +55,14 @@ public static class ThemePreset
 
     public static ICollection<ThemePreset<TTheme>> Create<TTheme>(params (string Name, string Description, TTheme Theme)[] sets) where TTheme : MudTheme
         => sets.Select(p => Create(p.Name, p.Description, p.Theme)).ToList();
+}
 
 
+/// <summary>
+/// Theme edit mode for MudExThemeEdit
+/// </summary>
+public enum ThemeEditMode
+{
+    Simple,
+    Full,
 }

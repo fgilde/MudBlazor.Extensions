@@ -192,14 +192,30 @@ public static class MudExSvg
         // If only one color provided, repeat it to ensure min 3 lines
         textColors = textColors.Length > 1 ? textColors : Enumerable.Repeat(textColors[0], 3).ToArray();
 
+        // wave lines
+        //var fakeText = string.Join(" ", textColors.Select((color, i) => $@"<path d='M20,{20 + i * 10} Q30,{10 + i * 10} 40,{20 + i * 10} T60,{20 + i * 10} T80,{20 + i * 10} T100,{20 + i * 10}' stroke='{color}' stroke-width='2' fill='none' />    "));
+
+        // straight lines
         var fakeText = string.Join(" ", textColors.Select((color, i) => $"<line x1='25%' y1='{20 + i * 10}%' x2='75%' y2='{20 + i * 10}%' style='stroke:{color};stroke-width:2' />"));
+
+        // random wave lines
+        //var random = new Random();
+        //var fakeText = string.Join(" ", textColors.Select((color, i) =>
+        //{
+        //    var yOffset = 20 + i * 10;
+        //    var randomAmplitude = random.Next(1, 5);
+        //    return $@"
+        //    <path d='M20,{yOffset} Q30,{yOffset - randomAmplitude} 40,{yOffset} T60,{yOffset} T80,{yOffset} T100,{yOffset}' stroke='{color}' stroke-width='2' fill='none' />";
+        //}));
+
         return $@"<svg xmlns='http://www.w3.org/2000/svg' width='{width}' height='{height}'>                
-                <rect width='100%' height='25%' style='fill:{appBarColor};' />                
-                <rect y='10%' width='20%' height='75%' style='fill:{drawerColor};' />                
-                <rect x='20%' y='10%' width='80%' height='75%' style='fill:{surfaceColor};' />                
-                {fakeText}
-            </svg>";
+            <rect width='100%' height='25%' style='fill:{appBarColor};' />                
+            <rect y='10%' width='20%' height='75%' style='fill:{drawerColor};' />                
+            <rect x='20%' y='10%' width='80%' height='75%' style='fill:{surfaceColor};' />                
+            {fakeText}
+        </svg>";
     }
+
 }
 
 
