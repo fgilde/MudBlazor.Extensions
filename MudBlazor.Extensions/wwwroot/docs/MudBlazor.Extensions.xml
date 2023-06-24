@@ -184,6 +184,18 @@
             </summary>
             <typeparam name="TTheme"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.PropertiesForSimpleMode">
+            <summary>
+            Here you can set Property names or full paths and only these properties are available when simple mode is used.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.PaletteColorsToSync">
+            <summary>
+            Here you can set Properties from Palette that should sync with the other palette.
+            If you are in dark only mode and change one of these properties this will applied to the light pallete then as well.
+            Default is Primary,Secondary, Tertiary, Info, Success, Warning and error
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExThemeEdit`1.ShowCancelButton">
             <summary>
             if true user can click on cancel

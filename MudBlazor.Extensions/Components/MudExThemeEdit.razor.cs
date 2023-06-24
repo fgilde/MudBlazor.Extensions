@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Linq.Expressions;
+using System.Management;
+using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor.Extensions.Components.ObjectEdit;
@@ -15,14 +17,18 @@ namespace MudBlazor.Extensions.Components;
 /// <typeparam name="TTheme"></typeparam>
 public partial class MudExThemeEdit<TTheme>
 {
-    private const string FontFamilyEditPath = $"{nameof(Typography)}.{nameof(Typography.Default)}.{nameof(Typography.Default.FontFamily)}";
     private const int ExtraDelay = 500; // Currently needed because of timing issues in MudExObjectEdit. But will fixed later
 
     private KeyValuePair<string, MudColor>[] _cssVars;
     private bool _isLoading = true;
     private ThemePreset<TTheme> _selectedPreset;
     private TTheme _theme;
-    private static readonly string[] _propertiesForSimpleMode = {
+
+    /// <summary>
+    /// Here you can set Property names or full paths and only these properties are available when simple mode is used.
+    /// </summary>
+    [Parameter]
+    public string[] PropertiesForSimpleMode { get; set; } = {
         nameof(MudTheme.Palette.AppbarBackground),
         nameof(MudTheme.Palette.Surface),
         nameof(MudTheme.Palette.DrawerBackground),
@@ -40,7 +46,24 @@ public partial class MudExThemeEdit<TTheme>
         nameof(MudTheme.LayoutProperties.DrawerWidthLeft),
         nameof(MudTheme.LayoutProperties.DrawerWidthRight),
         nameof(MudTheme.LayoutProperties.DrawerWidthRight),
-        FontFamilyEditPath,
+        $"{nameof(Typography)}.{nameof(Typography.Default)}.{nameof(Typography.Default.FontFamily)}"
+    };
+
+    /// <summary>
+    /// Here you can set Properties from Palette that should sync with the other palette.
+    /// If you are in dark only mode and change one of these properties this will applied to the light pallete then as well.
+    /// Default is Primary,Secondary, Tertiary, Info, Success, Warning and error
+    /// </summary>
+    [Parameter]
+    public string[] PaletteColorsToSync { get; set; } =
+    {
+        nameof(MudTheme.Palette.Primary),
+        nameof(MudTheme.Palette.Secondary),
+        nameof(MudTheme.Palette.Tertiary),
+        nameof(MudTheme.Palette.Info),
+        nameof(MudTheme.Palette.Success),
+        nameof(MudTheme.Palette.Warning),
+        nameof(MudTheme.Palette.Error),
     };
 
     /// <summary>
@@ -241,16 +264,43 @@ public partial class MudExThemeEdit<TTheme>
 
     private Task OnPropertyChanged(ObjectEditPropertyMeta arg)
     {
-        if (arg.PropertyName == FontFamilyEditPath && EditMode == ThemeEditMode.Simple)
-        {
-            Theme.Typography.Body1.FontFamily = Theme.Typography.Body2.FontFamily = Theme.Typography.Caption.FontFamily =
-            Theme.Typography.Button.FontFamily = Theme.Typography.H1.FontFamily = Theme.Typography.H2.FontFamily =
-            Theme.Typography.H3.FontFamily = Theme.Typography.H4.FontFamily = Theme.Typography.H5.FontFamily =
-            Theme.Typography.H6.FontFamily = Theme.Typography.Subtitle1.FontFamily = Theme.Typography.Subtitle2.FontFamily =
-            Theme.Typography.Overline.FontFamily = arg.Value as string[];
+        if(EditMode == ThemeEditMode.Simple && !arg.Settings.Ignored) {
+            if (arg.PropertyInfo.Name == nameof(Default.FontFamily)) {
+                SetIfIgnored(
+                    arg.Value as string[],
+                    theme => theme.Typography.Body1.FontFamily,
+                    theme => theme.Typography.Body2.FontFamily,
+                    theme => theme.Typography.Caption.FontFamily,
+                    theme => theme.Typography.Button.FontFamily,
+                    theme => theme.Typography.H1.FontFamily,
+                    theme => theme.Typography.H2.FontFamily,
+                    theme => theme.Typography.H3.FontFamily,
+                    theme => theme.Typography.H4.FontFamily,
+                    theme => theme.Typography.H5.FontFamily,
+                    theme => theme.Typography.H6.FontFamily,
+                    theme => theme.Typography.Subtitle1.FontFamily,
+                    theme => theme.Typography.Subtitle2.FontFamily,
+                    theme => theme.Typography.Overline.FontFamily
+                );
+            }
+
+            if (PaletteColorsToSync?.Contains(arg.PropertyInfo.Name) == true)
+            {
+                var toSet = MetaInformation.Property(arg.PropertyName.StartsWith(nameof(Theme.PaletteDark))
+                        ? t => t.Palette
+                        : t => t.PaletteDark)?
+                    .Children?.FirstOrDefault(m => m.PropertyInfo.Name == arg.PropertyInfo.Name);
+                if (toSet != null && toSet.Settings.Ignored)
+                    toSet.Value = arg.Value;
+            }
         }
         return Task.CompletedTask;
     }
+
+    private void SetIfIgnored(object value, params Expression<Func<TTheme, object>>[] expressions) 
+        => expressions.Select(MetaInformation.Property).Where(pm => pm.Settings.Ignored).Apply(pm => pm.Value = value);
+    private void SetIfIgnored(object value, params string[] names)
+        => names.Select(MetaInformation.Property).Where(pm => pm.Settings.Ignored).Apply(pm => pm.Value = value);
 
 
     private void ThemeEditMetaConfiguration(ObjectEditMeta<TTheme> meta)
@@ -299,8 +349,8 @@ public partial class MudExThemeEdit<TTheme>
             return false;
 
         return EditMode == ThemeEditMode.Full
-               || _propertiesForSimpleMode.Contains(objectEditPropertyMeta.PropertyName)  // Full path like Object.Data.Id
-               || _propertiesForSimpleMode.Contains(objectEditPropertyMeta.PropertyInfo.Name); // Name only.. like Id
+               || PropertiesForSimpleMode.Contains(objectEditPropertyMeta.PropertyName)  // Full path like Object.Data.Id
+               || PropertiesForSimpleMode.Contains(objectEditPropertyMeta.PropertyInfo.Name); // Name only.. like Id
 
     }
 

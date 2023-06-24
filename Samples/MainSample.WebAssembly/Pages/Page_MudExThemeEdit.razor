@@ -58,9 +58,7 @@
     private async Task ThemeChanged(ClientTheme theme)
     {
         MainLayout.Instance.SetTheme(theme);
-        var preset = _themes.FirstOrDefault(p => p.Theme == theme);
-        if (preset != null && CanDeletePreset(preset))
-            await AddToStorageAsync(preset); // Save current theme changes to storage if preset comes from storage
+        await AddToStorageAsync(_themes.FirstOrDefault(p => p.Theme == theme)); // Save current theme changes to storage if preset comes from storage
         StateHasChanged();
     }
 
@@ -107,8 +105,10 @@
         return result;
     }
 
-    private async Task AddToStorageAsync(ThemePreset<ClientTheme> themePreset)
+    private async Task AddToStorageAsync(ThemePreset<ClientTheme>? themePreset)
     {
+        if (themePreset == null || !CanDeletePreset(themePreset))
+            return;
         await storage.SetItemAsync($"theme-{themePreset.Name}", themePreset.Theme.AsJson());
     }
 
