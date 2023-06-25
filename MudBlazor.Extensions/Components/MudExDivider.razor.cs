@@ -15,18 +15,37 @@ public partial class MudExDivider : IMudExComponent
 {
     private string _existingStyle = string.Empty;
 
+    /// <summary>
+    /// Render base component
+    /// </summary>
     private RenderFragment Inherited() => builder =>
     {
         base.BuildRenderTree(builder);
     };
 
+    /// <summary>
+    /// Injected service provider
+    /// </summary>
     [Inject] protected IServiceProvider ServiceProvider { get; set; }
+    
+    /// <summary>
+    /// JsRuntime
+    /// </summary>
     public IJSRuntime JsRuntime => ServiceProvider?.GetService<IJSRuntime>();
 
+    /// <summary>
+    /// Label
+    /// </summary>
     [Parameter] public string Label { get; set; }
     
+    /// <summary>
+    /// Color
+    /// </summary>
     [Parameter] public MudExColor Color { get; set; } = MudBlazor.Color.Default;
 
+    /// <summary>
+    /// Size
+    /// </summary>
     [Parameter] public MudExSize<double> Size { get; set; } = 1;
     
     /// <summary>
@@ -35,7 +54,8 @@ public partial class MudExDivider : IMudExComponent
     [Parameter] public bool UseBorder { get; set; }
 
     private string Id = Guid.NewGuid().ToFormattedId();
-    
+
+    /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
         if (string.IsNullOrEmpty(_existingStyle) && !string.IsNullOrEmpty(Style))
@@ -56,6 +76,9 @@ public partial class MudExDivider : IMudExComponent
             .Build();
     }
 
+    /// <summary>
+    /// Style for divider
+    /// </summary>
     protected virtual string GetStyle()
     {
         return MudExStyleBuilder.FromObject(new

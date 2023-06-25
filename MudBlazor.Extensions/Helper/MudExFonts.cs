@@ -1,9 +1,15 @@
 ﻿namespace MudBlazor.Extensions.Helper;
 
+/// <summary>
+/// Static util MudExFonts
+/// </summary>
 public class MudExFonts
 {
     private const string GoogleFontUrl = "https://fonts.googleapis.com/css2?family=";
-    
+
+    /// <summary>
+    /// All known WebSafe Fonts
+    /// </summary>
     public static IList<string> WebSafeFonts = new List<string>()
     {
         "Montserrat", "Sans-serif",
@@ -91,6 +97,9 @@ public class MudExFonts
         "Wingdings", "Wingdings 2", "Wingdings 3"
     };
 
+    /// <summary>
+    /// List of Google fonts that support Latin Extended characters. But all need to be imported from google font api.
+    /// </summary>
     public static IList<string> GoogleLatinFonts = new List<string>()
     {
         "ABeeZee", 
@@ -1589,6 +1598,9 @@ public class MudExFonts
         "Zilla Slab Highlight"
     };
     
+    /// <summary>
+    /// Creates the css import statement for a font
+    /// </summary>
     public static string ImportUriText(string font, string fontBaseUri = GoogleFontUrl) 
         => $"@import url('{fontBaseUri}{font.Replace(" ", "+")}')";
 }

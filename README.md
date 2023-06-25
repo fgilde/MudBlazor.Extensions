@@ -231,6 +231,10 @@ Also you can call our extension method with an `Action<YourDialog>` instead of D
 
 
 #### Change Log 
+ - 1.7.55 > new Component [MudExThemeEdit](https://www.mudex.org/theme-edit) to edit theme(s) and presets of themes as easy as possible and supports all options from your inherited MudThemes.
+ - 1.7.54 > new Component [MudExThemeSelect](https://www.mudex.org/theme-select) to simple select a theme with an automatically generated preview image.
+ - 1.7.53 > Extend [MudExSvg](https://www.mudex.org/d/MudExSvg/MudExSvg) utils with new Methods to generate an SVG application image for the current theme.
+ - 1.7.50 > new Component [MudExColor](https://www.mudex.org/c/MudExColorEdit) for all color parameters as default renderer in MudExObjectEdit
  - 1.7.48 > BugFix
  - 1.7.47 > Update Microsoft.AspNetCore.Components.Web to 7.0.5 for .net 7 and 6.0.16 for .net 6
  - 1.7.47 > Update MudBlazor to 6.4.1 and adapt MudExPopover required changes.

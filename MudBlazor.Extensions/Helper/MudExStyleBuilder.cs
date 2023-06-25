@@ -8,7 +8,6 @@ using System.Collections.Concurrent;
 using System.Globalization;
 using MudBlazor.Extensions.Attribute;
 using Nextended.Core.Extensions;
-using static MudBlazor.CategoryTypes;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -33,6 +32,9 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
 
     #region Static Methods
 
+    /// <summary>
+    /// Static Property to access an instance <see cref="MudExStyleBuilder"/>
+    /// </summary>
     public static MudExStyleBuilder Default => new();
 
     /// <summary>
@@ -85,8 +87,11 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     }
 
     /// <summary>
-    /// Combines two css style strings
+    /// Combines two css style strings.
     /// </summary>
+    /// <param name="cssString">css style string to be combined.</param>
+    /// <param name="leadingCssString">css style string to be attached.</param>
+    /// <returns>the combined css style strings.</returns>
     public static string CombineStyleStrings(string cssString, string leadingCssString)
     {
         var cssProperties = new Dictionary<string, string>();
@@ -104,8 +109,11 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     }
 
     /// <summary>
-    /// Converts a css style string to an object
+    /// Converts a CSS style string to an object
     /// </summary>
+    /// <typeparam name="T">Type of object to create</typeparam>
+    /// <param name="css">CSS style string</param>
+    /// <returns>The created object</returns>
     public static T StyleStringToObject<T>(string css) where T : new()
     {
         var obj = new T();
@@ -142,10 +150,16 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     }
 
     #endregion
-    
+
     #region Fluent WithProperty Methods
     
 
+    /// <summary>
+    /// Adds all styles and values from given style string
+    /// </summary>
+    /// <param name="styleString">CSS style string to parse and add to the builder</param>
+    /// <param name="when">If false, no properties will be added to the builder</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder WithStyle(string styleString, bool when = true)
     {
         if (!when)
@@ -157,33 +171,180 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
             .Apply(property => With(property.Key, property.Value));
         return this;
     }
+
+    /// <summary>
+    /// Converts given object to a CSS style string and adds all properties and values to this builder
+    /// </summary>
+    /// <param name="styleObj">Object to convert to a CSS style string</param>
+    /// <param name="cssUnit">Unit to format CSS quantity-including properties. Default is CssUnit.Pixels.</param>
+    /// <param name="when">If false, no properties will be added to the builder</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder With(object styleObj, CssUnit cssUnit = CssUnit.Pixels, bool when = true) => !when ? this : WithStyle(GenerateStyleString(styleObj, cssUnit));
+
+    /// <summary>
+    /// Adds a color property to the builder
+    /// </summary>
+    /// <param name="color">Value of the color property</param>
+    /// <param name="when">If false, no property will be added to the builder</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder WithColor(string color, bool when = true) => With("color", color, when);
+
+    /// <summary>
+    /// Adds a color property to the builder.
+    /// </summary>
+    /// <param name="color">Value of the MudExColor property</param>
+    /// <param name="when">If false, no property will be added to the builder</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder WithColor(MudExColor color, bool when = true) => WithColor(color.ToCssStringValue(), when);
+
+    /// <summary>
+    /// Adds a color property to the builder.
+    /// </summary>
+    /// <param name="color">Value of the MudColor property</param>
+    /// <param name="when">If false, no property will be added to the builder</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder WithColor(MudColor color, bool when = true) => WithColor(color.ToString(), when);
+
+    /// <summary>
+    /// Adds a color property to the builder.
+    /// </summary>
+    /// <param name="color">Value of the System.Drawing.Color property</param>
+    /// <param name="when">If false, no property will be added to the builder</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder WithColor(System.Drawing.Color color, bool when = true) => WithColor(color.ToMudColor(), when);
+
+    /// <summary>
+    /// Adds a color property with a value of `var(--{color})` to the builder.
+    /// </summary>
+    /// <param name="color">Color variable name, without "--" prefix</param>
+    /// <param name="when">If false, no property will be added to the builder.</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder WithColor(Color color, bool when = true) => WithColor(color.CssVarDeclaration(), when);
 
+    /// <summary>
+    /// Adds a fill property to the builder
+    /// </summary>
+    /// <param name="color">Value of the fill property</param>
+    /// <param name="when">If false, no property will be added to the builder</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder WithFill(string color, bool when = true) => With("fill", color, when);
+
+    /// <summary>
+    /// Adds a fill property to the builder
+    /// </summary>
+    /// <param name="color">Value of the MudExColor property</param>
+    /// <param name="when">If false, no property will be added to the builder</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder WithFill(MudExColor color, bool when = true) => WithFill(color.ToCssStringValue(), when);
+
+    /// <summary>
+    /// Adds a fill property to the builder
+    /// </summary>
+    /// <param name="color">Value of the MudColor property</param>
+    /// <param name="when">If false, no property will be addd to the builder</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder WithFill(MudColor color, bool when = true) => WithFill(color.ToString(), when);
+
+    /// <summary>
+    /// Adds a fill property to the builder
+    /// </summary>
+    /// <param name="color">Value of the System.Drawing.Color property</param>
+    /// <param name="when">If false, no property will be added to the builder</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder WithFill(System.Drawing.Color color, bool when = true) => WithFill(color.ToMudColor(), when);
+
+    /// <summary>
+    /// Adds a fill property with a value of `var(--{color})` to the builder.
+    /// </summary>
+    /// <param name="color">Color variable name, without "--" prefix</param>
+    /// <param name="when">If false, no property will be added to the builder.</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder WithFill(Color color, bool when = true) => WithFill(color.CssVarDeclaration(), when);
 
-    
-    public MudExStyleBuilder WithBackground(string[] color, int radius, bool when = true) 
+    /// <summary>
+    /// Adds a background property to the builder. The background is a gradient of all entries in the color array.
+    /// </summary>
+    /// <param name="color">Array of the colors of the gradient stops. Multiple colors can be used for a smoother transition.</param>
+    /// <param name="radius">degree of the gradient. Default is 0.</param>
+    /// <param name="when">If false, no property will be added to the builder.</param>
+    /// <returns>This MudExStyleBuilder instance.</returns>
+    public MudExStyleBuilder WithBackground(string[] color, int radius, bool when = true)
         => With("background", $"linear-gradient({radius}deg, {string.Join(',', color.Distinct())})", when && color?.Length > 1);
 
+    /// <summary>
+    /// Adds a background property to the builder. The background is a gradient of a preset palette's colors.
+    /// </summary>
+    /// <param name="palette">Name of the palette whose colors should be used.</param>
+    /// <param name="when">If false, no property will be added to the builder.</param>
+    /// <returns>This MudExStyleBuilder instance.</returns>
     public MudExStyleBuilder WithBackground(Palette palette, bool when = true) => WithBackground(palette.AllColors(), 0, when);
+
+    /// <summary>
+    /// Adds a background property to the builder. The background is a gradient of a dark preset palette's colors.
+    /// </summary>
+    /// <param name="palette">Name of the palette whose colors should beta used.</param>
+    /// <param name="when">If false, no property will be added to the builder.</param>
+    /// <returns>This MudExStyleBuilder instance.</returns>
     public MudExStyleBuilder WithBackground(PaletteDark palette, bool when = true) => WithBackground(palette.AllColors(), 0, when);
+
+    /// <summary>
+    /// Adds a background property to the builder. The background is a gradient of a light preset palette's colors.
+    /// </summary>
+    /// <param name="palette">Name of the palette whose colors should beta used.</param>
+    /// <param name="when">If false, no property will be added to the builder.</param>
+    /// <returns>This MudExStyleBuilder instance.</returns>
     public MudExStyleBuilder WithBackground(PaletteLight palette, bool when = true) => WithBackground(palette.AllColors(), 0, when);
-    public MudExStyleBuilder WithBackground(MudTheme theme, bool dark, bool when = true) => WithBackground(dark ? theme.PaletteDark : theme.Palette ,when);
-    //public MudExStyleBuilder WithBackground(MudTheme theme, bool when = true) => WithBackground(theme.Palette.AllColors().Concat(theme.PaletteDark.AllColors()).ToArray() ,when);
-    
+
+    /// <summary>
+    /// Adds a background property to the builder. The background is a gradient of a theme's palette or dark palette.
+    /// </summary>
+    /// <param name="theme">Theme to use.</param>
+    /// <param name="dark">If true, the dark palette will be used.</param>
+    /// <param name="when">If false, no property will be added to the builder.</param>
+    /// <returns>This MudExStyleBuilder instance.</returns>
+    public MudExStyleBuilder WithBackground(MudTheme theme, bool dark, bool when = true) => WithBackground(dark ? theme.PaletteDark : theme.Palette, when);
+
+    /// <summary>
+    /// Adds a background property to the builder. The background is a gradient of a concatenated list of two palettes, default and dark.
+    /// </summary>
+    /// <param name="theme">The theme to use.</param>
+    /// <param name="when">If false, no property will be added to the builder.</param>
+    /// <returns>This MudExStyleBuilder instance.</returns>
+    public MudExStyleBuilder WithBackground(MudTheme theme, bool when = true) => WithBackground(theme.Palette.AllColors().Concat(theme.PaletteDark.AllColors()).ToArray(), when);
+
+    /// <summary>
+    /// Adds a background property to the builder. The background is a gradient of all entries in the color array.
+    /// </summary>
+    /// <param name="color">Array of the CSS values of the colors of the gradient stops. Multiple colors can be used for a smoother transition.</param>
+    /// <param name="when">If false, no property will be added to the builder.</param>
+    /// <returns>This MudExStyleBuilder instance.</returns>
     public MudExStyleBuilder WithBackground(string[] color, bool when = true) => WithBackground(color, 0, when);
+
+    /// <summary>
+    /// Adds a background property to the builder. The background is a gradient of all entries in the MudExColor array.
+    /// </summary>
+    /// <param name="color">Array of MudExColor objects representing the colors of the gradient stops. Multiple colors can be used for a smoother transition.</param>
+    /// <param name="when">If false, no property will be added to the builder.</param>
+    /// <returns>This MudExStyleBuilder instance.</returns>
     public MudExStyleBuilder WithBackground(MudExColor[] color, bool when = true) => WithBackground(color.Select(c => c.ToCssStringValue()).ToArray(), when);
+
+    /// <summary>
+    /// Adds a background property to the builder. The background is a gradient of all entries in the MudColor array.
+    /// </summary>
+    /// <param name="color">Array of MudColor objects representing the color of the gradient stops. Multiple colors can be used for a smoother transition.</param>
+    /// <param name="when">If false, no property will be added to the builder.</param>
+    /// <returns>This MudExStyleBuilder instance.</returns>
     public MudExStyleBuilder WithBackground(MudColor[] color, bool when = true) => WithBackground(color.Select(c => new MudExColor(c)).ToArray(), when);
+
+    /// <summary>
+    /// Adds a background property to the builder. The background is a gradient of all entries in the System.Drawing.Color array.
+    /// </summary>
+    /// <param name="color">Array of System.Drawing.Color objects representing the color of the gradient stops. Multiple colors can be used for a smoother transition.</param>
+    /// <param name="when">If false, no property will be added to the builder.</param>
+    /// <returns>This MudExStyleBuilder instance.</returns>
     public MudExStyleBuilder WithBackground(System.Drawing.Color[] color, bool when = true) => WithBackground(color.Select(c => new MudExColor(c)).ToArray(), when);
+
+    
     public MudExStyleBuilder WithBackground(Color[] color, bool when = true) => WithBackground(color.Select(c => new MudExColor(c)).ToArray(), when);
 
     public MudExStyleBuilder WithBackground(MudExColor[] color, int radius, bool when = true) => WithBackground(color.Select(c => c.ToCssStringValue()).ToArray(), radius, when);
@@ -695,6 +856,9 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
 
     public MudExStyleBuilder WithColumnSpan(string columnSpan, bool when = true) => With("column-span", columnSpan, when);
 
+    /// <summary>
+    /// Adds an !important to last added style
+    /// </summary>
     public MudExStyleBuilder AsImportant()
     {
         if (!_additionalStyles.Any())
@@ -745,6 +909,9 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
         return this;
     }
     
+    /// <summary>
+    /// Adds a ra style string is condition is true
+    /// </summary>
     public MudExStyleBuilder AddRaw(string styleStr, bool when = true)
     {
         if (!string.IsNullOrEmpty(styleStr) && when)
@@ -779,6 +946,9 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
         return result;
     }
 
+    /// <summary>
+    /// Disposes this instance
+    /// </summary>
     public async ValueTask DisposeAsync()
     {
         foreach (var className in _temporaryCssClasses.Keys)

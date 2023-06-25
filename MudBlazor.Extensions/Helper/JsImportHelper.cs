@@ -5,6 +5,9 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Helper
 {
+    /// <summary>
+    /// Helper class for importing JS modules
+    /// </summary>
     public static class JsImportHelper
     {
         private static bool useMinified => true; //!Debugger.IsAttached;
@@ -13,22 +16,9 @@ namespace MudBlazor.Extensions.Helper
         private static bool initialized;
         internal static IJSRuntime _runtime;
 
-        internal static IJSRuntime GetInitializedJsRuntime() => _runtime;
-
-        internal static Task<IJSRuntime> GetInitializedJsRuntimeAsync() => Task.FromResult(_runtime);
-
-        internal static async Task<IJSRuntime> GetInitializedJsRuntime(object field, IJSRuntime fallback)
-        {
-            var js = fallback ?? _runtime ?? field.ExposeField<IJSRuntime>("_jsRuntime") ?? field.ExposeField<IJSRuntime>("_jsInterop");
-            return await InitializeMudBlazorExtensionsAsync(js);
-        }
-
-        internal static Task<IJSObjectReference> ImportModuleMudEx(this IJSRuntime runtime)
-        {
-            //runtime.InvokeAsync<IJSObjectReference>("import", "./_content/BlazorJS/BlazorJS.lib.module.js").AsTask();
-            return runtime.InvokeAsync<IJSObjectReference>("import", $"./_content/MudBlazor.Extensions/MudBlazor.Extensions.lib.module.js{CB()}").AsTask();
-        }
-
+        /// <summary>
+        /// Imports requires JS module and required css styles for MudBlazor.Extensions
+        /// </summary>
         public static async Task<IJSRuntime> InitializeMudBlazorExtensionsAsync(this IJSRuntime runtime, bool force = false)
         {
             _runtime = runtime ?? _runtime;
@@ -45,6 +35,22 @@ namespace MudBlazor.Extensions.Helper
             return runtime;
         }
 
+        internal static IJSRuntime GetInitializedJsRuntime() => _runtime;
+
+        internal static Task<IJSRuntime> GetInitializedJsRuntimeAsync() => Task.FromResult(_runtime);
+
+        internal static async Task<IJSRuntime> GetInitializedJsRuntime(object field, IJSRuntime fallback)
+        {
+            var js = fallback ?? _runtime ?? field.ExposeField<IJSRuntime>("_jsRuntime") ?? field.ExposeField<IJSRuntime>("_jsInterop");
+            return await InitializeMudBlazorExtensionsAsync(js);
+        }
+
+        internal static Task<IJSObjectReference> ImportModuleMudEx(this IJSRuntime runtime)
+        {
+            //runtime.InvokeAsync<IJSObjectReference>("import", "./_content/BlazorJS/BlazorJS.lib.module.js").AsTask();
+            return runtime.InvokeAsync<IJSObjectReference>("import", $"./_content/MudBlazor.Extensions/MudBlazor.Extensions.lib.module.js{CB()}").AsTask();
+        }
+        
         internal static string ComponentJs<TComponent>(string name = null)
         {
             var componentName = GetJsComponentName<TComponent>(name);

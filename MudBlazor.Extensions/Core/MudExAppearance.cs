@@ -34,12 +34,39 @@ public class MudExAppearance : IMudExClassAppearance, IMudExStyleAppearance, ICl
     /// </summary>
     public static MudExAppearance Empty() => new();
 
+    /// <summary>
+    /// Factory method for an instance filled with some classes
+    /// </summary>
     public static MudExAppearance FromCss(string cls, params string[] other) => FromCss(MudExCssBuilder.From(cls, other));
+
+    /// <summary>
+    /// Factory method for an instance filled with some classes
+    /// </summary>
     public static MudExAppearance FromCss(MudExCss.Classes cls, params MudExCss.Classes[] other) => FromCss(MudExCssBuilder.From(cls, other));
+
+    /// <summary>
+    /// Factory method for an instance filled with some classes from a MudExCssBuilder
+    /// </summary>
     public static MudExAppearance FromCss(MudExCssBuilder builder) => Empty().WithCss(builder);
+
+    /// <summary>
+    /// Factory method for an instance filled with some styles
+    /// </summary>
     public static MudExAppearance FromStyle(object styleObj) => FromStyle(MudExStyleBuilder.FromObject(styleObj));
+
+    /// <summary>
+    /// Factory method for an instance filled with some styles
+    /// </summary>
     public static MudExAppearance FromStyle(string style) => FromStyle(MudExStyleBuilder.FromStyle(style));
+
+    /// <summary>
+    /// Factory method for an instance filled with some styles
+    /// </summary>
     public static MudExAppearance FromStyle(MudExStyleBuilder styleBuilder) => Empty().WithStyle(styleBuilder);
+
+    /// <summary>
+    /// Factory method for an instance filled with some styles
+    /// </summary>
     public static MudExAppearance FromStyle(Action<MudExStyleBuilder> styleBuilderAction) => Empty().WithStyle(styleBuilderAction);
 
     /// <summary>

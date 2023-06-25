@@ -2,6 +2,9 @@
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// Plugin information for a content type plugin
+/// </summary>
 public class BrowserContentTypePlugin
 {
     public static class BrowserNames
@@ -37,19 +40,56 @@ public class BrowserContentTypePlugin
     };
 }
 
+/// <summary>
+/// Interface to register an own file display component
+/// </summary>
 public interface IMudExFileDisplay
 {
+    /// <summary>
+    /// Name of component
+    /// </summary>
     public string Name { get; }
+
+    /// <summary>
+    /// If this is true the component will wrap the display inside a div
+    /// </summary>
     public bool WrapInMudExFileDisplayDiv => true;
+
+    /// <summary>
+    /// FileDisplayInfos for file. Will be dynamically set
+    /// Important. The property for FileDisplayInfos from interface IMudExFileDisplayInfos needs to have the [Parameter] attribute
+    /// </summary>
     public IMudExFileDisplayInfos FileDisplayInfos { get; set; }
+
+    /// <summary>
+    /// Should return true if this component can handle a file with thw given informations
+    /// </summary>
     bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos);
 }
 
+/// <summary>
+/// Interface containing infos for a file
+/// </summary>
 public interface IMudExFileDisplayInfos
 {
+    /// <summary>
+    /// Filename
+    /// </summary>
     public string FileName { get; }
+
+    /// <summary>
+    /// Url. (Can also be a data uri)
+    /// </summary>
     public string Url { get; }
+
+    /// <summary>
+    /// Content type of file
+    /// </summary>
     public string ContentType { get; }
+
+    /// <summary>
+    /// Stream of file if its already loaded or dynamically created on client
+    /// </summary>
     public Stream ContentStream { get; }
 }
 

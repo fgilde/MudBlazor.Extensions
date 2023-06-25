@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Utilities;
-using Newtonsoft.Json.Linq;
 
 namespace MudBlazor.Extensions.Components
 {
@@ -15,21 +9,85 @@ namespace MudBlazor.Extensions.Components
     /// </summary>
     public partial class MudExColorPicker
     {
-        [Parameter] public bool DelayValueChangeToPickerClose { get; set; } = true;
-        [Parameter] public bool UseNativeBrowserControl { get; set; }
-        [Parameter] public bool UseMudExColorBubble { get; set; }
-        [Parameter] public bool UseColorPaletteInNativeBrowserControl { get; set; }
-        [Parameter] public MudColor InitialColor { get; set; }
-
         private string presetId = $"preset-{Guid.NewGuid()}";
         private bool ShouldDelay => DelayValueChangeToPickerClose && PickerVariant != PickerVariant.Static;
-        protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
-        EventCallback<MudColor> _originalValueChanged;
+        private EventCallback<MudColor> _originalValueChanged;
 
+        /// <summary>
+        /// Set to true to delay value change event to picker close event
+        /// </summary>
+        [Parameter] public bool DelayValueChangeToPickerClose { get; set; } = true;
+
+        /// <summary>
+        /// Set to true to use the browser native control as picker element
+        /// </summary>
+        [Parameter] public bool UseNativeBrowserControl { get; set; }
+
+        /// <summary>
+        /// Set to true to use MudExColorBubble as picker element
+        /// </summary>
+        [Parameter] public bool UseMudExColorBubble { get; set; }
+
+        /// <summary>
+        /// Set to true to use the palette from picker for native browser element as well
+        /// </summary>
+        [Parameter] public bool UseColorPaletteInNativeBrowserControl { get; set; }
+
+        /// <summary>
+        /// The Initial color that should be selected
+        /// </summary>
+        [Parameter] public MudColor InitialColor { get; set; }
+        
+        /// <summary>
+        /// Render the base component
+        /// </summary>
+        /// <returns></returns>
+        protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+
+        /// <summary>
+        /// Converter for string and MudColor
+        /// </summary>
+        public MudBlazor.Converter<MudColor, string> ColorConverter { get; set; } = new()
+        {
+            GetFunc = s => new MudColor(s),
+            SetFunc = c => c.ToString(MudColorOutputFormats.Hex)
+        };
+
+        /// <inheritdoc />
         protected override void OnInitialized()
         {
             SetInitialColorOneTime();
             base.OnInitialized();
+        }
+        
+        /// <inheritdoc />
+        protected override void OnPickerOpened()
+        {
+
+            base.OnPickerOpened();
+            if (!ShouldDelay) return;
+
+            _originalValueChanged = ValueChanged;
+            ValueChanged = EventCallback.Factory.Create(this,
+                EventCallback.Factory.CreateInferred(this, x =>
+                    null,
+                    Value
+                    )
+                );
+        }
+
+        /// <inheritdoc />
+        protected override void OnPickerClosed()
+        {
+            if (ShouldDelay)
+                _originalValueChanged.InvokeAsync(Value);
+            base.OnPickerClosed();
+        }
+
+        private Task NativeColorChange(ChangeEventArgs arg)
+        {
+            Value = new MudColor(arg.Value.ToString());
+            return ValueChanged.InvokeAsync(Value);
         }
 
         private void SetInitialColorOneTime()
@@ -52,36 +110,7 @@ namespace MudBlazor.Extensions.Components
                 catch { /* ignore */ }
             }
         }
-
-        protected override void OnPickerOpened()
-        {
-
-            base.OnPickerOpened();
-            if (!ShouldDelay) return;
-
-            _originalValueChanged = ValueChanged;
-            ValueChanged = EventCallback.Factory.Create(this,
-                EventCallback.Factory.CreateInferred(this, x =>
-                    null,
-                    Value
-                    )
-                );
-        }
-
-        protected override void OnPickerClosed()
-        {
-            if (ShouldDelay)
-                _originalValueChanged.InvokeAsync(Value);
-            base.OnPickerClosed();
-        }
-
-        private Task NativeColorChange(ChangeEventArgs arg)
-        {
-            Value = new MudColor(arg.Value.ToString());
-            return ValueChanged.InvokeAsync(Value);
-        }
-
-
+        
         private Task NativeSelectionChange(EventArgs arg)
         {
             if (!DelayValueChangeToPickerClose)
@@ -92,12 +121,6 @@ namespace MudBlazor.Extensions.Components
             }
             return Task.CompletedTask;
         }
-
-        public MudBlazor.Converter<MudColor, string> ColorConverter { get; set; } = new()
-        {
-            GetFunc = s => new MudColor(s),
-            SetFunc = c => c.ToString(MudColorOutputFormats.Hex)
-        };
-
+        
     }
 }

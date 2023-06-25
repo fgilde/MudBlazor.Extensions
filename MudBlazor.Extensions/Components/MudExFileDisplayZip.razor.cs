@@ -19,9 +19,22 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDisplay
 {
+    private MudMenu _downloadMenu;
+    private IBrowserFile _innerPreview;
+    private string _innerPreviewUrl;
+    private Stream _innerPreviewStream;
+    private IList<ZipBrowserFile> _zipEntries;
+    private (string tag, Dictionary<string, object> attributes) renderInfos;
+    private HashSet<ZipStructure> _zipStructure;
+
+    /// <inheritdoc />
     public string Name { get; } = nameof(MudExFileDisplayZip);
+
+
+    /// <inheritdoc />
     public bool WrapInMudExFileDisplayDiv => false;
-    
+
+    /// <inheritdoc />
     [Parameter]
     public IMudExFileDisplayInfos FileDisplayInfos
     {
@@ -34,57 +47,144 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         }
     }
 
+    /// <summary>
+    /// ElementID
+    /// </summary>
     [Parameter] public string ElementId { get; set; } = Guid.NewGuid().ToFormattedId();
+
+    /// <summary>
+    /// SearchString for current filter
+    /// </summary>
     [Parameter] public string SearchString { get; set; }
+
+    /// <summary>
+    /// If true user is able to search
+    /// </summary>
     [Parameter] public bool AllowSearch { get; set; } = true;
+
+    /// <summary>
+    /// Name of root folder
+    /// </summary>
     [Parameter] public string RootFolderName { get; set; } = "ROOT";
+
+    /// <summary>
+    /// Url
+    /// </summary>
     [Parameter] public string Url { get; set; }
+
+    /// <summary>
+    /// Content Type 
+    /// </summary>
     public string ContentType => "application/zip";
+
+    /// <inheritdoc />
     [Parameter] public Stream ContentStream { get; set; }
+
+    /// <summary>
+    /// True to display structure as tree
+    /// </summary>
     [Parameter] public bool ShowAsTree { get; set; } = true;
+
+    /// <summary>
+    /// If true user can toggle between flat and tree view
+    /// </summary>
     [Parameter] public bool AllowToggleTree { get; set; } = true;
+
+    /// <summary>
+    /// If true user can download all or specific files from zip
+    /// </summary>
     [Parameter] public bool AllowDownload { get; set; } = true;
+
+    /// <summary>
+    /// If true user can preview containing files
+    /// </summary>
     [Parameter] public bool AllowPreview { get; set; } = true;
+
+    /// <summary>
+    /// Button Color for action icon button
+    /// </summary>
     [Parameter] public Color ActionButtonColor { get; set; }
+
+    /// <summary>
+    /// PropertyFilterMode
+    /// </summary>
     [Parameter] public PropertyFilterMode FilterMode { get; set; }
+
+    /// <summary>
+    /// Css Class for toolbar paper
+    /// </summary>
     [Parameter] public string ToolBarPaperClass { get; set; }
+
+    /// <summary>
+    /// True to have a sticky toolbar on top
+    /// </summary>
     [Parameter] public bool StickyToolbar { get; set; } = true;
+
+    /// <summary>
+    /// Top position if toolbar is sticky
+    /// </summary>
     [Parameter] public string StickyToolbarTop { get; set; } = "0";
+
+    /// <summary>
+    /// File Selection Mode
+    /// </summary>
     [Parameter] public ItemSelectionMode SelectionMode { get; set; } = ItemSelectionMode.None;
+
+    /// <summary>
+    /// Selected files
+    /// </summary>
     [Parameter] public IList<ZipBrowserFile> Selected { get; set; }
+
+    /// <summary>
+    /// Event on selection change
+    /// </summary>
     [Parameter] public EventCallback<IList<ZipBrowserFile>> SelectedChanged { get; set; }
+
+    /// <summary>
+    /// Returns true if given ZipFileentry is selected
+    /// </summary>
+    /// <param name="entry"></param>
+    /// <returns></returns>
     public bool IsSelected(ZipBrowserFile entry) => entry != null && Selected?.Contains(entry) == true;
+
+    /// <summary>
+    /// Show content error
+    /// </summary>
     [Parameter] public bool ShowContentError { get; set; } = true;
 
-    [Parameter]
-    public bool FallBackInIframe { get; set; }
+    /// <summary>
+    /// Set to true to render all failures in iframe fallback
+    /// </summary>
+    [Parameter] public bool FallBackInIframe { get; set; }
 
     /// <summary>
     /// Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
     /// </summary>
-    [Parameter]
-    public bool ViewDependsOnContentType { get; set; } = true;
+    [Parameter] public bool ViewDependsOnContentType { get; set; } = true;
 
+    /// <summary>
+    /// Render images as background image instead of img tag
+    /// </summary>
     [Parameter] public bool ImageAsBackgroundImage { get; set; } = false;
+
+    /// <summary>
+    /// Use sandbox mode for iframe
+    /// </summary>
     [Parameter] public bool SandBoxIframes { get; set; } = true;
 
-    /**
-     * A function to handle content error. Return true if you have handled the error and false if you want to show the error message
-     * For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
-     * If you reset Url or Data here you need also to reset ContentType
-     */
+    /// <summary>
+    /// A function to handle content error.
+    /// Return true if you have handled the error and false if you want to show the error message For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
+    /// If you reset Url or Data here you need also to reset ContentType
+    /// </summary>
     [Parameter] public Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> HandleContentErrorFunc { get; set; }
+    
+    /// <summary>
+    /// Custom error message for content error
+    /// </summary>
     [Parameter] public string CustomContentErrorMessage { get; set; }
 
-    private MudMenu _downloadMenu;
-    private IBrowserFile _innerPreview;
-    private string _innerPreviewUrl;
-    private Stream _innerPreviewStream;
-    private IList<ZipBrowserFile> _zipEntries;
-    private (string tag, Dictionary<string, object> attributes) renderInfos;
-    private HashSet<ZipStructure> _zipStructure;
-    
-
+    /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
         try
@@ -221,12 +321,14 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         }
     }
 
+    /// <inheritdoc />
     public string FileName
     {
         get => RootFolderName;
         set => RootFolderName = value;
     }
 
+    /// <inheritdoc />
     public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos)
     {
         return MimeType.IsZip(fileDisplayInfos.ContentType);

@@ -10,6 +10,10 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExEnumSelect<TEnum>
 {
     bool _isFlagsEnum;
+
+    /// <summary>
+    /// Render base component
+    /// </summary>
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
     private static IList<TEnum> EnumValueList()
@@ -20,6 +24,7 @@ public partial class MudExEnumSelect<TEnum>
 
     private static bool IsNullableEnum => typeof(TEnum).IsNullableEnum();
 
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         ViewMode = ViewMode.NoChips;
@@ -29,6 +34,7 @@ public partial class MudExEnumSelect<TEnum>
         base.OnInitialized();
     }
 
+    /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
@@ -44,6 +50,7 @@ public partial class MudExEnumSelect<TEnum>
         }
     }
 
+    /// <inheritdoc />
     protected override void OnBeforeSelectedChanged(IEnumerable<TEnum> selected)
     {
         if (_isFlagsEnum)

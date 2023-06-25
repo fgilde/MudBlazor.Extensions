@@ -13,13 +13,45 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExFileDisplay : IMudExFileDisplayInfos
 {
+    
+    #region private fields
 
+    private bool internalCall;
+    private bool _isNativeRendered;
+    private string _id = Guid.NewGuid().ToString();
+    private (string tag, Dictionary<string, object> attributes) renderInfos;
+    private BrowserInfo _info;
+    private bool internalOverwrite;
+    private List<IMudExFileDisplay> _possibleRenderControls;
+    private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) _componentForFile;
+
+    #endregion
+    
     #region Parameters and Properties
 
+    /// <summary>
+    /// Url to access file can also be a data Url
+    /// </summary>
     [Parameter] public string Url { get; set; }
+
+    /// <summary>
+    /// ContentType of loaded file
+    /// </summary>
     [Parameter] public string ContentType { get; set; }
+
+    /// <summary>
+    /// Canclose file
+    /// </summary>
     [Parameter] public bool CanClose { get; set; } 
+
+    /// <summary>
+    /// Event for on close click
+    /// </summary>
     [Parameter] public EventCallback OnCloseClick { get; set; }
+
+    /// <summary>
+    /// Element id
+    /// </summary>
     [Parameter] public string ElementId { get; set; } = Guid.NewGuid().ToFormattedId();
     /**
      * Should be true if file is not a binary one
@@ -33,22 +65,62 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     [Parameter]
     public bool ViewDependsOnContentType { get; set; } = true;
 
+    /// <summary>
+    /// Set to true to use image as background-url instead of img tag
+    /// </summary>
     [Parameter] public bool ImageAsBackgroundImage { get; set; } = false;
+
+    /// <summary>
+    /// Set to true to display content error is content can't displayed
+    /// </summary>
     [Parameter] public bool ShowContentError { get; set; } = true;
+
+    /// <summary>
+    /// Set to true to use sandbox mode on iframe to disallow some danger js invocation
+    /// </summary>
     [Parameter] public bool SandBoxIframes { get; set; } = true;
+
+    /// <summary>
+    /// Set to true to allow user to download the loaded file
+    /// </summary>
     [Parameter] public bool AllowDownload { get; set; } = true;
+
+    /// <summary>
+    /// Filename
+    /// </summary>
     [Parameter] public string FileName { get; set; }
+
+    /// <summary>
+    /// Content stream of file
+    /// </summary>
     [Parameter] public Stream ContentStream { get; set; }
 
-    /**
-     * A function to handle content error. Return true if you have handled the error and false if you want to show the error message
-     * For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
-     * If you reset Url or Data here you need also to reset ContentType
-     */
+    /// <summary>
+    /// A function to handle content error.
+    /// Return true if you have handled the error and false if you want to show the error message
+    /// For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
+    /// If you reset Url or Data here you need also to reset ContentType
+    /// </summary>
     [Parameter] public Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> HandleContentErrorFunc { get; set; }
+    
+    /// <summary>
+    /// Custom content error message to show
+    /// </summary>
     [Parameter] public string CustomContentErrorMessage { get; set; }
+    
+    /// <summary>
+    /// Media Type for current file
+    /// </summary>
     public string MediaType => ContentType?.Split("/")?.FirstOrDefault()?.ToLower();
+    
+    /// <summary>
+    /// Returns a plugin that is useful to show the content if the content cant displayed 
+    /// </summary>
     public BrowserContentTypePlugin PossiblePlugin { get; private set; }
+
+    /// <summary>
+    /// Current browser informations
+    /// </summary>
     public BrowserInfo Info
     {
         get => _info;
@@ -62,24 +134,31 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
     #endregion
 
-    #region private fields
-
-    private bool _isNativeRendered;
-    private string _id = Guid.NewGuid().ToString();
-    private (string tag, Dictionary<string, object> attributes) renderInfos;
-    private BrowserInfo _info;
-    private bool internalOverwrite;
-    private List<IMudExFileDisplay> _possibleRenderControls;
-    private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) _componentForFile;
-
-
-    #endregion
-
-    public override object[] GetJsArguments()
+    /// <summary>
+    /// Called if the js side has a content render error.
+    /// This function returns true if it's handled and false if not.
+    /// </summary>
+    [JSInvokable]
+    public async Task<bool> HandleContentError()
     {
-        return base.GetJsArguments().Concat(new object[] { _id }).ToArray();
+        if (internalCall)
+            return !(internalCall = false);
+        var result = HandleContentErrorFunc != null ? await HandleContentErrorFunc(this) : MudExFileDisplayContentErrorResult.Unhandled;
+        if (HandleContentErrorFunc != null && result != null)
+        {
+            internalCall = true;
+            internalOverwrite = true;
+            UpdateChangedFields(result);
+            StateHasChanged();
+        }
+
+        return result?.IsHandled ?? false;
     }
 
+    /// <inheritdoc/>
+    public override object[] GetJsArguments() => base.GetJsArguments().Concat(new object[] { _id }).ToArray();
+
+    /// <inheritdoc/>
     protected override Task OnParametersSetAsync()
     {
         _possibleRenderControls = GetServices<IMudExFileDisplay>().Where(c => c.GetType() != GetType() && c.CanHandleFile(this)).ToList();
@@ -194,25 +273,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
                 }}, 0)
             }}
         ";
-
-    private bool internalCall;
-    [JSInvokable]
-    public async Task<bool> HandleContentError()
-    {
-        if (internalCall)
-            return !(internalCall = false);
-        var result = HandleContentErrorFunc != null ? await HandleContentErrorFunc(this) : MudExFileDisplayContentErrorResult.Unhandled;
-        if (HandleContentErrorFunc != null && result != null)
-        {
-            internalCall = true;
-            internalOverwrite = true;
-            UpdateChangedFields(result);
-            StateHasChanged();
-        }
-
-        return result?.IsHandled ?? false;
-    }
-
+    
     private void UpdateChangedFields(MudExFileDisplayContentErrorResult result)
     {
         bool urlChanged = false;

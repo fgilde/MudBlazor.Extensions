@@ -4,19 +4,361 @@
         <name>MudBlazor.Extensions</name>
     </assembly>
     <members>
+        <member name="T:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1">
+            <summary>
+            Base component for the most of all MudExComponents
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.Localizer">
+            <summary>
+            Localizer for localize texts
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.RenderKey">
+            <summary>
+            Render key for refresh component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.ServiceProvider">
+            <summary>
+            Injected service provider
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.JsRuntime">
+            <summary>
+            JsRuntime
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.IsRendered">
+            <summary>
+            This is true if render has called already
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.IsFullyRendered">
+            <summary>
+            This is true if render has called already and finished all after render calls
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.DialogService">
+            <summary>
+            DialogService
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.LocalizerToUse">
+            <summary>
+            The localizer to use
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.Get``1">
+            <summary>
+            Returns the injected service for TService
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.GetServices``1">
+            <summary>
+            Returns the injected services for TService
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.TryLocalize(System.String,System.Object[])">
+            <summary>
+            Tries to localize given text if localizer and translation is available
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.ShouldRender">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.OnFinishedRenderAsync">
+            <summary>
+            Called when rendering is finished
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.OnAfterRender(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.Refresh">
+            <summary>
+            Refreshes this component and forces render
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1">
+            <summary>
+            Interface for components with js imports
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.JsRuntime">
+            <summary>
+            JsRuntime
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.JsReference">
+            <summary>
+            Reference to the js
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.ModuleReference">
+            <summary>
+            Reference to imported module
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.ElementReference">
+            <summary>
+            Reference to rendered element
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.GetJsArguments">
+            <summary>
+            Returns the object that is passed to js
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.CreateDotNetObjectReference">
+            <summary>
+            DotNetObjectReference for callbacks
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.ImportModuleAndCreateJsAsync(System.String)">
+            <summary>
+            Imports the required module and calls the initialize method 
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.DisposeModulesAsync">
+            <summary>
+            Disposes all modules and references
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseComponent`1">
+            <summary>
+            Base class for components that require a JS module to be imported and a JS object to be created.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseComponent`1.JsReference">
+            <summary>
+            The JS object reference.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseComponent`1.ModuleReference">
+            <summary>
+            The imported module reference
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseComponent`1.ElementReference">
+            <summary>
+            Reference to rendered element
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseComponent`1.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseComponent`1.GetJsArguments">
+            <summary>
+            Returns an object that is passed forward to the js initialize and constructor method
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseComponent`1.CreateDotNetObjectReference">
+            <summary>
+            The dotnet object reference for the js module
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseComponent`1.ImportModuleAndCreateJsAsync">
+            <summary>
+            Virtual base method to import the module
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseComponent`1.DisposeAsync">
+            <inheritdoc/>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MoveContentPosition">
+            <summary>
+            Position to move the ChildContent to a specific element that can defined by ElementSelector.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MoveContentPosition.BeforeBegin">
+            <summary>
+            Move content before the element
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MoveContentPosition.AfterBegin">
+            <summary>
+            Move content after begin of element
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MoveContentPosition.BeforeEnd">
+            <summary>
+            Move content before end of element
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MoveContentPosition.AfterEnd">
+            <summary>
+            Move content to last after end of element
+            </summary>
+        </member>
         <member name="F:MudBlazor.Extensions.Components.MoveContentPosition.None">
             Can be used if you don't want to move the content but use the found or not found content
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MoveContentMode">
+            <summary>
+            Mode to move content
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MoveContentMode.MoveToSelector">
+            <summary>
+            MoveContent to selector
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MoveContentMode.MoveFromSelector">
+            <summary>
+            Move content from selector
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MoveContent">
             <summary>
             Component to move the ChildContent to a specific element that can defined by ElementSelector.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MoveContent.ChildContent">
+            <summary>
+            ChildContent
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MoveContent.Found">
+            <summary>
+            Content to render only if <see cref="P:MudBlazor.Extensions.Components.MoveContent.ElementSelector"/> found
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MoveContent.NotFound">
+            <summary>
+            Content to render only if <see cref="P:MudBlazor.Extensions.Components.MoveContent.ElementSelector"/> not found
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MoveContent.ElementSelector">
+            <summary>
+            Element selector to move content to
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MoveContent.Mode">
+            <summary>
+            Mode how to move the content you can MoveToSelector or move from MoveFromSelector
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MoveContent.Position">
+            <summary>
+            Position to move the ChildContent to
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MoveContent.ElementFound">
+            <summary>
+            Returns true if element is found
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MoveContent.OnInitializedAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MoveContent.ImportModuleAndCreateJsAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExCardList`1">
             <summary>
             Simple Card List with a hover effect.
             </summary>
             <typeparam name="TData"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.JsRuntime">
+            <summary>
+            Dependency Injection for IJSRuntime Service.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.JsReference">
+            <summary>
+            Gets or Sets IJSObjectReference JsReference Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.ModuleReference">
+            <summary>
+            Gets or Sets IJSObjectReference ModuleReference Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.ElementReference">
+            <summary>
+            Gets or Sets ElementReference Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.BackgroundColor">
+            <summary>
+            Gets or Sets MudExColor BackgroundColor Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.HoverColor">
+            <summary>
+            Gets or Sets MudExColor HoverColor Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.ZoomOnHover">
+            <summary>
+            Gets or Sets bool ZoomOnHover Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.HoverMode">
+            <summary>
+            Gets or Sets MudExCardHoverMode HoverMode Property.
+            </summary>
+            <value>
+            MudExCardHoverMode
+            </value>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.Justify">
+            <summary>
+            Gets or Sets Justify Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.Spacing">
+            <summary>
+            Gets or Sets Spacing Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.LightBulbSize">
+            <summary>
+            Gets or Sets Light Bulb Size Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.LightBulbSizeUnit">
+            <summary>
+            Gets or Sets Light Bulb Size Unit Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.AllAppliedHoverModes">
+            <summary>
+            Methods returns List of MudExCardHoverMode, where hover modes are applied.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCardList`1.GetStyle">
+            <summary>
+            Style for outer element.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCardList`1.OnParametersSetAsync">
+            <summary>
+            Method gets called OnParametersSetAsync.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCardList`1.UpdateJs">
+            <summary>
+            Method gets called UpdateJs for fetching JSRuntime.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCardList`1.OnAfterRenderAsync(System.Boolean)">
+            <summary>
+            Method gets called OnAfterRenderAsync for rendering and Initializing Modules.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCardList`1.DisposeAsync">
+            <summary>
+            Method to dispose the module.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExChipSelect`1">
             <summary>
@@ -29,26 +371,291 @@
             A Component to quickly select a color
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.Style">
+            <summary>
+            Gets or sets the CSS style of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.Class">
+            <summary>
+            Gets or sets the CSS class of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.SelectColorText">
+            <summary>
+            Gets or sets the text for the select color button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.ShowColorPreview">
+            <summary>
+            Gets or sets a value indicating whether to show a preview of the selected color in the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.AllowSelectOnPreviewClick">
+            <summary>
+            Gets or sets a value indicating whether to allow selecting a color by clicking on the preview of the selected color.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.CloseAfterSelect">
+            <summary>
+            Gets or sets a value indicating whether to close the selector after selecting a color.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.MinLuminance">
+            <summary>
+            Gets or sets the minimum luminance of the selected color.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.MaxLuminance">
+            <summary>
+            Gets or sets the maximum luminance of the selected color.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.SelectorSize">
+            <summary>
+            Gets or sets the size of the color selector.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.ColorChanged">
+            <summary>
+            Gets or sets the event callback for when the user changes the selected color.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.Color">
+            <summary>
+            Gets or sets the currently selected color.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.Height">
+            <summary>
+            Gets or sets the height of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.Width">
+            <summary>
+            Gets or sets the width of the component.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorBubble.GetJsArguments">
+            <summary>
+            Gets the JavaScript arguments to pass to the component.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorBubble.OnAfterRenderAsync(System.Boolean)">
+            <summary>
+            Renders the component after a change has been made.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorBubble.OnColorChanged(System.String)">
+            <summary>
+            Event that is triggered when the user changes the color.
+            </summary>
+            <param name="color">The new color value.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorBubble.OnColorPreviewClick">
+            <summary>
+            Event that is triggered when the user clicks on the preview of the selected color.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorBubble.ShowSelectorAsync">
+            <summary>
+            Shows the color selector as an asynchronous operation.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExColorEdit">
             <summary>
             Component to Edit MudExColor
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.ServiceProvider">
+            <summary>
+            Gets or sets the <see cref="T:System.IServiceProvider"/> to be used for dependency injection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.LocalizerToUse">
+            <summary>
+            Gets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.Localizer">
+            <summary>
+            Gets or sets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.FilterVariant">
+            <summary>
+            Gets or sets the variant filter.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.Value">
+            <summary>
+            Gets or sets the value of the color picker.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.ValueChanged">
+            <summary>
+            Gets or sets the callback method when the value of the color picker is changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.CssVars">
+            <summary>
+            Gets or sets the Css Variables.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.ValueString">
+            <summary>
+            Gets or sets the string value of the color picker selected by the user.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.ValueStringChanged">
+            <summary>
+            Gets or sets the callback method when the string value of the color picker is changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.ShowThemeColors">
+            <summary>
+            Gets or sets a value indicating whether to show theme colors.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.ShowHtmlColors">
+            <summary>
+            Gets or sets a value indicating whether to show HTML colors.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.ShowCssColorVariables">
+            <summary>
+            Gets or sets a value indicating whether to show CSS color variables.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.Filter">
+            <summary>
+            Gets or sets the filter for the color picker.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.PreviewMode">
+            <summary>
+            Gets or sets the color preview mode.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.DelayValueChangeToPickerClose">
+            <summary>
+            Gets or sets a value indicating whether to delay the value change of the color picker until the picker is closed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.AutoCloseBehaviour">
+            <summary>
+            Gets or sets the auto close behavior.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.MudColorStringFormat">
+            <summary>
+            Gets or sets the <see cref="T:MudBlazor.Utilities.MudColorOutputFormats"/>.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.ForceSelectOfMudColor">
             <summary>
-            Set to true to have always MudColor filled in MudExColor as the OneOf value.
-            With this setting turned on, you can use this edit control for all of your Color Properties
+            Gets or sets a value indicating whether to have always <see cref="T:MudBlazor.Utilities.MudColor"/> filled in <see cref="T:MudBlazor.Extensions.Core.MudExColor"/> as the OneOf value.
+            With this setting turned on, you can use this edit control for all of your Color Properties.
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.LabelCustomTab">
+            <summary>
+            Gets or sets the label for the custom tab.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.LabelDefinedTab">
+            <summary>
+            Gets or sets the label for the defined tab.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnAfterRender(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnPickerClosed">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnPickerOpened">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.StringValueChanged(System.String)">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExColorPicker">
             <summary>
             A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorPicker.DelayValueChangeToPickerClose">
+            <summary>
+            Set to true to delay value change event to picker close event
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorPicker.UseNativeBrowserControl">
+            <summary>
+            Set to true to use the browser native control as picker element
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorPicker.UseMudExColorBubble">
+            <summary>
+            Set to true to use MudExColorBubble as picker element
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorPicker.UseColorPaletteInNativeBrowserControl">
+            <summary>
+            Set to true to use the palette from picker for native browser element as well
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorPicker.InitialColor">
+            <summary>
+            The Initial color that should be selected
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorPicker.Inherited">
+            <summary>
+            Render the base component
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorPicker.ColorConverter">
+            <summary>
+            Converter for string and MudColor
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorPicker.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorPicker.OnPickerOpened">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorPicker.OnPickerClosed">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExCultureSelect">
             <summary>
             Drop down component to select a culture
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDialog">
+            <summary>
+            MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDialog.Inherited">
+            <summary>
+            Render base component
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDialog.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDialog.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDialog.Show(System.String,MudBlazor.DialogOptions)">
             <summary>Show this inlined dialog</summary>
@@ -56,9 +663,44 @@
             <param name="options"></param>
             <returns></returns>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDialog.OptionsEx">
+            <summary>
+            DialogOptionsEx for this dialog
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDivider">
             <summary>
             A divider to separate content
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDivider.Inherited">
+            <summary>
+            Render base component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDivider.ServiceProvider">
+            <summary>
+            Injected service provider
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDivider.JsRuntime">
+            <summary>
+            JsRuntime
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDivider.Label">
+            <summary>
+            Label
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDivider.Color">
+            <summary>
+            Color
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDivider.Size">
+            <summary>
+            Size
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExDivider.UseBorder">
@@ -66,14 +708,117 @@
             If this option is true border size is used instead of element size
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDivider.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDivider.GetStyle">
+            <summary>
+            Style for divider
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExEnumSelect`1">
             <summary>
             Drop down component to select an enum value or multiple on flags enums
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExEnumSelect`1.Inherited">
+            <summary>
+            Render base component
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExEnumSelect`1.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExEnumSelect`1.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExEnumSelect`1.OnBeforeSelectedChanged(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.BrowserContentTypePlugin">
+            <summary>
+            Plugin information for a content type plugin
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.IMudExFileDisplay">
+            <summary>
+            Interface to register an own file display component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileDisplay.Name">
+            <summary>
+            Name of component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileDisplay.WrapInMudExFileDisplayDiv">
+            <summary>
+            If this is true the component will wrap the display inside a div
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileDisplay.FileDisplayInfos">
+            <summary>
+            FileDisplayInfos for file. Will be dynamically set
+            Important. The property for FileDisplayInfos from interface IMudExFileDisplayInfos needs to have the [Parameter] attribute
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.IMudExFileDisplay.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Should return true if this component can handle a file with thw given informations
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.IMudExFileDisplayInfos">
+            <summary>
+            Interface containing infos for a file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileDisplayInfos.FileName">
+            <summary>
+            Filename
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileDisplayInfos.Url">
+            <summary>
+            Url. (Can also be a data uri)
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileDisplayInfos.ContentType">
+            <summary>
+            Content type of file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.IMudExFileDisplayInfos.ContentStream">
+            <summary>
+            Stream of file if its already loaded or dynamically created on client
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplay">
             <summary>
             Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.Url">
+            <summary>
+            Url to access file can also be a data Url
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ContentType">
+            <summary>
+            ContentType of loaded file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.CanClose">
+            <summary>
+            Canclose file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.OnCloseClick">
+            <summary>
+            Event for on close click
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ElementId">
+            <summary>
+            Element id
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.FallBackInIframe">
@@ -84,10 +829,75 @@
             Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ImageAsBackgroundImage">
+            <summary>
+            Set to true to use image as background-url instead of img tag
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ShowContentError">
+            <summary>
+            Set to true to display content error is content can't displayed
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.SandBoxIframes">
+            <summary>
+            Set to true to use sandbox mode on iframe to disallow some danger js invocation
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.AllowDownload">
+            <summary>
+            Set to true to allow user to download the loaded file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.FileName">
+            <summary>
+            Filename
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ContentStream">
+            <summary>
+            Content stream of file
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.HandleContentErrorFunc">
-            A function to handle content error. Return true if you have handled the error and false if you want to show the error message
+            <summary>
+            A function to handle content error.
+            Return true if you have handled the error and false if you want to show the error message
             For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
             If you reset Url or Data here you need also to reset ContentType
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.CustomContentErrorMessage">
+            <summary>
+            Custom content error message to show
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.MediaType">
+            <summary>
+            Media Type for current file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.PossiblePlugin">
+            <summary>
+            Returns a plugin that is useful to show the content if the content cant displayed 
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.Info">
+            <summary>
+            Current browser informations
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.HandleContentError">
+            <summary>
+            Called if the js side has a content render error.
+            This function returns true if it's handled and false if not.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.GetJsArguments">
+            <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.OnParametersSetAsync">
+            <inheritdoc/>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDialog">
             <summary>
@@ -112,29 +922,310 @@
             A Component to display the content of a zip file
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.WrapInMudExFileDisplayDiv">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ElementId">
+            <summary>
+            ElementID
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.SearchString">
+            <summary>
+            SearchString for current filter
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.AllowSearch">
+            <summary>
+            If true user is able to search
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.RootFolderName">
+            <summary>
+            Name of root folder
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Url">
+            <summary>
+            Url
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ContentType">
+            <summary>
+            Content Type 
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ContentStream">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ShowAsTree">
+            <summary>
+            True to display structure as tree
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.AllowToggleTree">
+            <summary>
+            If true user can toggle between flat and tree view
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.AllowDownload">
+            <summary>
+            If true user can download all or specific files from zip
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.AllowPreview">
+            <summary>
+            If true user can preview containing files
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ActionButtonColor">
+            <summary>
+            Button Color for action icon button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FilterMode">
+            <summary>
+            PropertyFilterMode
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ToolBarPaperClass">
+            <summary>
+            Css Class for toolbar paper
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.StickyToolbar">
+            <summary>
+            True to have a sticky toolbar on top
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.StickyToolbarTop">
+            <summary>
+            Top position if toolbar is sticky
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.SelectionMode">
+            <summary>
+            File Selection Mode
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Selected">
+            <summary>
+            Selected files
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.SelectedChanged">
+            <summary>
+            Event on selection change
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.IsSelected(Nextended.Blazor.Models.ZipBrowserFile)">
+            <summary>
+            Returns true if given ZipFileentry is selected
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ShowContentError">
+            <summary>
+            Show content error
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FallBackInIframe">
+            <summary>
+            Set to true to render all failures in iframe fallback
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ViewDependsOnContentType">
             <summary>
             Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ImageAsBackgroundImage">
+            <summary>
+            Render images as background image instead of img tag
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.SandBoxIframes">
+            <summary>
+            Use sandbox mode for iframe
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.HandleContentErrorFunc">
-            A function to handle content error. Return true if you have handled the error and false if you want to show the error message
-            For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
+            <summary>
+            A function to handle content error.
+            Return true if you have handled the error and false if you want to show the error message For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
             If you reset Url or Data here you need also to reset ContentType
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.CustomContentErrorMessage">
+            <summary>
+            Custom error message for content error
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FileName">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFontSelect">
             <summary>
             Dropdown list component to select one ore more fonts
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFontSelect.Inherited">
+            <summary>
+            Render base component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFontSelect.FontFamily">
+            <summary>
+            FontFamily
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFontSelect.WithGoogleLatinFonts">
+            <summary>
+            Set to true to allow selection of google latin fonts
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFontSelect.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExGradientText">
             <summary>
             A Component to display text with a gradient foreground or background
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGradientText.ServiceProvider">
+            <summary>
+            Gets or sets the service provider to use when retrieving services.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGradientText.JsRuntime">
+            <summary>
+            Gets the JavaScript interop instance.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGradientText.Radius">
+            <summary>
+            Gets or sets the radius of the gradient.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGradientText.GradientForeground">
+            <summary>
+            Gets or sets a value indicating whether the gradient should be applied to the text foreground.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGradientText.TextFillColor">
+            <summary>
+            Gets or sets the fill color of the text.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGradientText.Animate">
+            <summary>
+            Gets or sets a value indicating whether to animate the gradient.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGradientText.AnimationDuration">
+            <summary>
+            Gets or sets the duration of the animation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGradientText.Palette">
+            <summary>
+            Gets or sets the collection of colors to use for the gradient.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGradientText.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExMessageDialog">
             <summary>
             Simple MessageDialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.Style">
+            <summary>
+            Gets or sets the style of the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.Class">
+            <summary>
+            Gets or sets the class of the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.ClassContent">
+            <summary>
+            Gets or sets the class for the content of the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.Message">
+            <summary>
+            Gets or sets the message of the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.AllowEmptyActions">
+            <summary>
+            Gets or sets whether empty actions are allowed in the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.Icon">
+            <summary>
+            Gets or sets the icon of the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.Details">
+            <summary>
+            Gets or sets the details of the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.Buttons">
+            <summary>
+            Gets or sets the buttons of the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.Content">
+            <summary>
+            Gets or sets the content of the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.ShowProgress">
+            <summary>
+            Gets or sets whether progress is shown in the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.ProgressValue">
+            <summary>
+            Gets or sets the value of the progress shown in the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.ProgressMin">
+            <summary>
+            Gets or sets the minimum value of the progress shown in the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.ProgressMax">
+            <summary>
+            Gets or sets the maximum value of the progress shown in the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.Component">
+            <summary>
+            Gets or sets the component associated with the dialog
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExMessageDialog.Cancel">
+            <summary>
+            Cancels the dialog
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExPopover">
@@ -142,9 +1233,270 @@
             A Popover can be used to display some content on top of another.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPopover.ServiceProvider">
+            <summary>
+            Injected service provider to use when retrieving services.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPopover.JsRuntime">
+            <summary>
+            Gets the JSRuntime.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPopover.SelectorsForIgnoreBlur">
+            <summary>
+            The selectors to ignore when handling blur events.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPopover.DisposeEvent">
+            <summary>
+            Indicates whether the event should be disposed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPopover.Animation">
+            <summary>
+            The animation type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPopover.AnimationTimingFunction">
+            <summary>
+            The animation timing function.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPopover.AnimationPosition">
+            <summary>
+            The dialog position.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPopover.OnBlur">
+            <summary>
+            Event delegate for handling blur events.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPopover.OpenChanged">
+            <summary>
+            Event delegate for handling open state changes.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnInitializedAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPopover.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <summary>
+            Sets the component's parameters asynchronously.
+            </summary>
+            <param name="parameters">The parameter view.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnOpenChanged(System.Boolean)">
+            <summary>
+            Handles open state change event.
+            </summary>
+            <param name="newOpenValue">The new open value.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPopover.PopoverClass">
+            <summary>
+            Gets the popover class.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPopover.PopoverStyles">
+            <summary>
+            Gets the popover styles.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnFocusLeft(Microsoft.AspNetCore.Components.Web.PointerEventArgs)">
+            <summary>
+            Handles focus left event.
+            </summary>
+            <param name="arg">The pointer event args.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPopover.Inherited">
+            <summary>
+            Gets the inherited render fragment.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPopover.DisposeAsync">
+            <summary>
+            Disposes of the object.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPopover.Dispose">
+            <summary>
+            Disposes of the object.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExPromptDialog">
+            <summary>
+            MudExPromptDialog Component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.MudDialog">
+            <summary>
+            Cascading parameter of the MudDialogInstance object, which is responsible for the dialog instance.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.Immediate">
+            <summary>
+            Boolean value indicating whether prompt should be submitted immediately.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.SubmitOnEnter">
+            <summary>
+            Boolean value indicating whether prompt should be submitted when Enter key is pressed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.OkText">
+            <summary>
+            The text of the "Ok" button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.CancelText">
+            <summary>
+            The text of the "Cancel" button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.Value">
+            <summary>
+            The initial value of the input field.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.Class">
+            <summary>
+            The CSS class of the component root element.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.Message">
+            <summary>
+            The message to be displayed in the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.Icon">
+            <summary>
+            The icon of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.Details">
+            <summary>
+            The list of strings with additional details of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.CanConfirm">
+            <summary>
+            The function that determines whether the prompt window can be confirmed or not.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPromptDialog.Submit">
+            <summary>
+            Method for submitting the prompt window.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPromptDialog.Cancel">
+            <summary>
+            Method for cancelling the prompt window.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPromptDialog.IsValid">
+            <summary>
+            Method that determines if the input value is a valid entry.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideBar">
             <summary>
             A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.Position">
+            <summary>
+            The position where the MudExSlideBar should start to slide from.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.AutoCollapse">
+            <summary>
+            If true, the MudExSlideBar will collapse automatically when the mouse leaves its bounds.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.OpacityNotFocused">
+            <summary>
+            Determines the opacity of the MudExSlideBar when it is not focused.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.RelativeToParent">
+            <summary>
+            If true, the position of the MudExSlideBar will be relative to the parent element.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.IsOpen">
+            <summary>
+            Gets or sets whether the MudExSlideBar is open.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.BackgroundColor">
+            <summary>
+            The background color of the MudExSlideBar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.BorderColor">
+            <summary>
+            The border color of the MudExSlideBar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.BorderSize">
+            <summary>
+            The border size of the MudExSlideBar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.IsOpenChanged">
+            <summary>
+            An event that is raised when the IsOpen property changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.ChildContent">
+            <summary>
+            The child content of the MudExSlideBar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.DisableOpacityChange">
+            <summary>
+            If true, changes in opacity of the MudExSlideBar are ignored.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.HideContentWhenCollapsed">
+            <summary>
+            If true, the child content of the MudExSlideBar will be hidden when the MudExSlideBar is collapsed.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideBar.Show">
+            <summary>
+            Shows the MudExSlideBar.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideBar.Hide">
+            <summary>
+            Hides the MudExSlideBar
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideBar.MouseEnter">
+            <summary>
+            Mouse enter event handling.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideBar.MouseLeave">
+            <summary>
+            Mouse leave event handling.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideBar.Style">
+            <summary>
+            Returns the inline styles of the MudExSlideBar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.BorderDirection">
+            <summary>
+            The direction where the border of the MudExSlideBar should be drawn.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSlideBar.CssClass">
+            <summary>
+            Returns the CSS classes of the MudExSlideBar.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSplitPanel">
@@ -152,15 +1504,140 @@
             A SplitPanel Component 
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.Left">
+            <summary>
+            The content that will be displayed on the left or top hand side of the SplitPanel
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.Right">
+            <summary>
+            The content that will be displayed on the right or bottom hand side of the SplitPanel
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.ColumnLayout">
+            <summary>
+            Sets whether the SplitPanel component should lay out horizontally
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.Reverse">
+            <summary>
+            Sets whether the SplitPanel component should reverse its flex direction
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.Class">
+            <summary>
+            Sets the CSS class(es) for the SplitPanel component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.Style">
+            <summary>
+            Sets the CSS style for the SplitPanel component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.UpdateSizesInPercentage">
+            <summary>
+            Sets whether the sizes of the panes should be updated in percentage values rather than pixels
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.Splittable">
+            <summary>
+            Sets whether the SplitPanel component should be splittable
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSplitPanel.GetStyle">
+            <summary>
+            Gets the style string for the SplitPanel component
+            </summary>
+            <returns>The style string containing the flex-direction property value</returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSplitPanelItem">
             <summary>
             SplitPanelItem for MudExSplitPanel component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanelItem.Panel">
+            <summary>
+            The parent MudExSplitPanel component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanelItem.ChildContent">
+            <summary>
+            The child content of MudExSplitPanelItem component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanelItem.Class">
+            <summary>
+            The CSS class of MudExSplitPanelItem component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanelItem.Style">
+            <summary>
+            The CSS style of MudExSplitPanelItem component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanelItem.MinSize">
+            <summary>
+            The min size of MudExSplitPanelItem component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanelItem.SizeUnit">
+            <summary>
+            The CSS unit of MudExSplitPanelItem component's size
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSplitPanelItem.GetClass">
+            <summary>
+            Get the CSS class of MudExSplitPanelItem component
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSplitPanelItem.GetStyle">
+            <summary>
+            Get the CSS style of MudExSplitPanelItem component
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSplitter">
             <summary>
             A Splitter Component
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitter.JsReference">
+            <inheritdoc/>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitter.ModuleReference">
+            <inheritdoc/>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitter.ElementReference">
+            <inheritdoc/>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitter.UpdateSizesInPercentage">
+            <summary>
+            Indicates whether to update sizes in percentage
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitter.Reverse">
+            <summary>
+            Indicates whether the Splitter is reversed
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSplitter.OnInitializedAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSplitter.OnParametersSetAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSplitter.GetJsArguments">
+            <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSplitter.Options">
+            <summary>
+            Returns options for setting up the Splitter.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSplitter.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSplitter.DisposeAsync">
+            <inheritdoc/>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExTaskBar">
             <summary>
@@ -1464,6 +2941,51 @@
             Editor for a property of an object. Used internally inside the MudExObjectEdit
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.CssUnit">
+            <summary>
+            Enum for all css units
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.MudExDimension">
+            <summary>
+            Holds two sizes one for height and one for width and their units
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExDimension.Width">
+            <summary>
+            Width
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExDimension.Height">
+            <summary>
+            Height
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.IMudExClassAppearance">
+            <summary>
+            IMudExClassAppearance holds an applicable class string
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.IMudExClassAppearance.Class">
+            <summary>
+            Class to apply
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.IMudExStyleAppearance">
+            <summary>
+            IMudExStyleAppearance holds an applicable style string
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.IMudExStyleAppearance.Style">
+            <summary>
+            CSS Style string to apply
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.IMudExAppearance">
+            <summary>
+            IMudExAppearance is used to know an applicable style or class holder
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.MudExAppearance">
             <summary>
             The `MudExAppearance` class is a powerful tool that helps to manage CSS and styles of MudBlazor components dynamically. 
@@ -1487,6 +3009,41 @@
         <member name="M:MudBlazor.Extensions.Core.MudExAppearance.Empty">
             <summary>
             Factory method for an empty instance
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.FromCss(System.String,System.String[])">
+            <summary>
+            Factory method for an instance filled with some classes
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.FromCss(MudBlazor.Extensions.Helper.MudExCss.Classes,MudBlazor.Extensions.Helper.MudExCss.Classes[])">
+            <summary>
+            Factory method for an instance filled with some classes
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.FromCss(MudBlazor.Extensions.Helper.MudExCssBuilder)">
+            <summary>
+            Factory method for an instance filled with some classes from a MudExCssBuilder
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.FromStyle(System.Object)">
+            <summary>
+            Factory method for an instance filled with some styles
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.FromStyle(System.String)">
+            <summary>
+            Factory method for an instance filled with some styles
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.FromStyle(MudBlazor.Extensions.Helper.MudExStyleBuilder)">
+            <summary>
+            Factory method for an instance filled with some styles
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.FromStyle(System.Action{MudBlazor.Extensions.Helper.MudExStyleBuilder})">
+            <summary>
+            Factory method for an instance filled with some styles
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Core.MudExAppearance.WithStyle(MudBlazor.Extensions.Core.IMudExStyleAppearance)">
@@ -1579,10 +3136,102 @@
             Returns the string representation that is fully compatible with all css sizes
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Helper.BrowserFileExt">
+            <summary>
+            Extensions for <see cref="T:Microsoft.AspNetCore.Components.Forms.IBrowserFile"/>
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.BrowserFileExt.DownloadAsync(Microsoft.AspNetCore.Components.Forms.IBrowserFile,Microsoft.JSInterop.IJSRuntime)">
+            <summary>
+            Downloads the file
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.BrowserFileExt.IconForFile(System.String)">
+            <summary>
+            Returns Icon for contentType
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.BrowserFileExt.GetIcon(Microsoft.AspNetCore.Components.Forms.IBrowserFile)">
+            <summary>
+            Returns Icon for IBrowserFile
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.BrowserFileExt.GetContentType(Microsoft.AspNetCore.Components.Forms.IBrowserFile)">
+            <summary>
+            Returns the content type for given file
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.BrowserFileExt.IconForFile(System.Net.Mime.ContentType)">
+            <summary>
+            Returns Icon for contentType
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.BrowserFileExt.IconForExtension(System.String)">
+            <summary>
+            Returns Icon for an extension
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.JsImportHelper">
+            <summary>
+            Helper class for importing JS modules
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsImportHelper.InitializeMudBlazorExtensionsAsync(Microsoft.JSInterop.IJSRuntime,System.Boolean)">
+            <summary>
+            Imports requires JS module and required css styles for MudBlazor.Extensions
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.JsonHelper">
+            <summary>
+            Simple JsonHelper
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsonHelper.SimplifyMudColorInJson(System.String)">
+            <summary>
+            Simplifies all MudColors in a given JSON
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsonHelper.MergeJson(System.String,System.String[])">
+            <summary>
+            Merges two json files
+            </summary>
+            <param name="json"></param>
+            <param name="other"></param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsonHelper.RemovePropertiesFromJson(System.String,System.String[])">
+            <summary>
+            Removes given properties from given json.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Helper.MudExColorUtils">
             <summary>
             MudExColor is a static utility class that provides a set of extension methods for working with Color and MudColor instances.
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.AllColors(MudBlazor.Palette)">
+            <summary>
+            Returns array with all colors in given palette.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.AllColors(MudBlazor.PaletteLight)">
+            <summary>
+            Returns array with all colors in given palette.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.AllColors(MudBlazor.PaletteDark)">
+            <summary>
+            Returns array with all colors in given palette.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.ToInt(MudBlazor.Utilities.MudColor)">
+            <summary>
+            Converts a MudColor to an int
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.ToUInt(MudBlazor.Utilities.MudColor)">
+            <summary>
+            Converts a MudColor to an unsigned int
+            </summary>    
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.CssVarName(MudBlazor.Color)">
             <summary>
@@ -1604,14 +3253,380 @@
             Converts a Color enum value of Color (like Color.Primary) to a MudColor with the correct values filled
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.ToMudColor(System.Drawing.Color)">
+            <summary>
+            Converts a sytsem drawing color to a MudColor
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.ToCssRgba(MudBlazor.Utilities.MudColor)">
+            <summary>
+            Converts a MudColor to a string in the format css rgba format
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.IsBlack(MudBlazor.Utilities.MudColor)">
+            <summary>
+            returns true is given color is black
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.IsWhite(MudBlazor.Utilities.MudColor)">
+            <summary>
+            returns true is given color is white
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.FromHtmlColorName(System.String)">
+            <summary>
+            Creates a drawing color from html known color name
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.ToHex(System.Drawing.Color)">
+            <summary>
+            Converts a system drawing color to hey
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.IsValid(MudBlazor.Utilities.MudColor)">
+            <summary>
+            returns true is given MudColor is not null and valid filled
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.TryParseFromHtmlColorName(System.String,System.Drawing.Color@)">
+            <summary>
+            Try's to parse string to system drawing color
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExCss">
+            <summary>
+            Static Util class with some small css helping methods or types
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExCss.Classes">
+            <summary>
+            MudExCss classes
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExCss.Classes.Backgrounds">
+            <summary>
+            Css classes for backgrounds
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Backgrounds.Blur">
+            <summary>
+            Blur background
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Backgrounds.LightBulb">
+            <summary>
+            Light bulb background
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Backgrounds.MovingDots">
+            <summary>
+            Background with animated moving color dots
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Backgrounds.TransparentIndicator">
+            <summary>
+            Background with Transparent indicator style
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Backgrounds.EmptyIndicator">
+            <summary>
+            Background used for Empty content
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Backgrounds.NoModal">
+            <summary>
+            Class used for Background if no modal dialogs appear
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.MudExCss.Classes.Class">
+            <summary>
+            Class to apply
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog">
+            <summary>
+            Css classes for dialogs
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog._Initial">
+            <summary>
+            The mud ex initial class should always applied to dialogs if you use dialogServiceExt
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.Glass">
+            <summary>
+            Glass dialog
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.FullHeightContent">
+            <summary>
+            Class for full height content
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.GetAnimationCssStyle(MudBlazor.Extensions.Options.AnimationType,System.TimeSpan,System.Nullable{MudBlazor.Extensions.Options.AnimationDirection},MudBlazor.Extensions.Options.AnimationTimingFunction,System.Nullable{MudBlazor.DialogPosition})">
+            <summary>
+            Returns an applicable style string as animation for given animations options
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.GetAnimationCssStyle(MudBlazor.Extensions.Options.AnimationType[],System.TimeSpan,System.Nullable{MudBlazor.Extensions.Options.AnimationDirection},MudBlazor.Extensions.Options.AnimationTimingFunction,System.Nullable{MudBlazor.DialogPosition})">
+            <summary>
+            Returns an applicable style string as animation for given animations options
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.Get(MudBlazor.Extensions.Helper.MudExCss.Classes,MudBlazor.Extensions.Helper.MudExCss.Classes[])">
+            <summary>
+            Can used jus to quickly access some classes.
+            MudExCss.Get(MudExCss.Classes.Dialog.FullHeightContent, "overflow-hidden", MudExCss.Classes.Dialog._Initial);
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.CreateStyle(System.Action{MudBlazor.Extensions.Helper.MudExStyleBuilder})">
+            <summary>
+            Creates a style builder with applied styles from given action
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.GetCssVariablesAsync">
+            <summary>
+            Returns all current CssVariables
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.FindCssVariablesByValueAsync(System.String)">
+            <summary>
+            Returns css variables by value
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.SetCssVariableValueAsync(System.Collections.Generic.KeyValuePair{System.String,System.String})">
+            <summary>
+            Updates or creates a new css variable
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.SetCssVariableValueAsync(System.String,System.Object,System.Object[])">
+            <summary>
+            Updates or creates a new css variable
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.SetCssVariableValueAsync(System.String,System.Object)">
+            <summary>
+            Updates or creates a new css variable
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.SetCssVariableValueAsync(System.String,MudBlazor.Color)">
+            <summary>
+            Updates or creates a new css variable
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.SetCssVariableValueAsync(System.String,MudBlazor.Utilities.MudColor)">
+            <summary>
+            Updates or creates a new css variable
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.SetCssVariableValueAsync(System.String,System.String)">
+            <summary>
+            Updates or creates a new css variable
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.GetCssColorVariablesAsync">
+            <summary>
+            Returns all CSS variables that containing color values
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Helper.MudExCssBuilder">
             <summary>
             Simple Utility class to help with building css class strings
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Helper.MudExCssBuilder.Default">
+            <summary>
+            Static Property to access an instance <see cref="T:MudBlazor.Extensions.Helper.MudExStyleBuilder"/>
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.From(System.String,System.String[])">
+            <summary>
+            Static method to create new MudExCssBuilder with existing classes
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.From(MudBlazor.Extensions.Helper.MudExCss.Classes,MudBlazor.Extensions.Helper.MudExCss.Classes[])">
+            <summary>
+            Static method to create new MudExCssBuilder with existing classes
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.From(MudBlazor.Extensions.Helper.MudExCssBuilder)">
+            <summary>
+            Static method to create new MudExCssBuilder with existing classes
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.FromStyleAsync(System.Object)">
+            <summary>
+            Static method to create new MudExCssBuilder with existing styles. All styles will stored in temporary css classes and added to the builder
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.FromStyleAsync(System.String)">
+            <summary>
+            Static method to create new MudExCssBuilder with existing styles. All styles will stored in temporary css classes and added to the builder
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.FromStyleAsync(MudBlazor.Extensions.Helper.MudExStyleBuilder)">
+            <summary>
+            Static method to create new MudExCssBuilder with existing styles. All styles will stored in temporary css classes and added to the builder
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.RemoveClassesAsync(System.String[])">
+            <summary>
+            Remove class from this builder
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(System.String)">
+            <summary>
+            Adds a css class to this builder
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(MudBlazor.Extensions.Helper.MudExCss.Classes,System.Boolean)">
+            <summary>
+            Adds one or more css classes to this builder if given condition is true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(MudBlazor.Extensions.Helper.MudExCss.Classes,MudBlazor.Extensions.Helper.MudExCss.Classes[])">
+            <summary>
+            Adds one or more css classes to this builder
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(System.String,System.String[])">
+            <summary>
+            Adds one or more css classes to this builder 
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(System.String,System.Boolean)">
+            <summary>
+            Adds one or more css classes to this builder if given condition is true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(System.String,System.Func{System.Boolean})">
+            <summary>
+            Adds one or more css classes to this builder if given condition is true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(System.Func{System.String},System.Boolean)">
+            <summary>
+            Adds one or more css classes to this builder if given condition is true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(System.Func{System.String},System.Func{System.Boolean})">
+            <summary>
+            Adds one or more css classes to this builder if given condition is true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(MudBlazor.Utilities.CssBuilder,System.Boolean)">
+            <summary>
+            Adds all classes from existing CssBuilder to this builder if given condition is true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(MudBlazor.Utilities.CssBuilder,System.Func{System.Boolean})">
+            <summary>
+            Adds all classes from existing CssBuilder to this builder if given condition is true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(MudBlazor.Extensions.Helper.MudExCssBuilder,System.Func{System.Boolean})">
+            <summary>
+            Adds all classes from existing CssBuilder to this builder if given condition is true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClass(MudBlazor.Extensions.Helper.MudExCssBuilder,System.Boolean)">
+            <summary>
+            Adds all classes from existing CssBuilder to this builder if given condition is true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClassFromStyleAsync(MudBlazor.Extensions.Helper.MudExStyleBuilder,System.Boolean)">
+            <summary>
+            Adds a temporary class with all styles from given styleBuilder to this cssBuilder
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClassFromStyleAsync(MudBlazor.Extensions.Helper.MudExStyleBuilder,System.Func{System.Boolean})">
+            <summary>
+            Adds a temporary class with all styles from given styleBuilder to this cssBuilder if given condition func returns true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClassFromStyleAsync(System.Object,System.Boolean)">
+            <summary>
+            Adds a temporary class with all styles from given object to this cssBuilder if given condition is true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClassFromStyleAsync(System.String,System.Boolean)">
+            <summary>
+            Adds a temporary class with all styles from given string to this cssBuilder if given condition is true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClassFromStyleAsync(System.Object,System.Func{System.Boolean})">
+            <summary>
+            Adds a temporary class with all styles from given object to this cssBuilder if given condition func returns true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClassFromStyleAsync(System.String,System.Func{System.Boolean})">
+            <summary>
+            Adds a temporary class with all styles from given object to this cssBuilder if given condition func returns true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.AddClassFromAttributes(System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
+            <summary>
+            Adds classes from Attributes containing classes
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.Build">
+            <summary>
+            Builds and returns an applicable css string
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.DisposeAsync">
+            <summary>
+            Disposes this instance
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.MudExCssBuilder.Class">
+            <summary>
+            Builds and returns an applicable css string
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExFonts">
+            <summary>
+            Static util MudExFonts
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExFonts.WebSafeFonts">
+            <summary>
+            All known WebSafe Fonts
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Helper.MudExFonts.GoogleLatinFonts">
+            <summary>
+            List of Google fonts that support Latin Extended characters. But all need to be imported from google font api.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExFonts.ImportUriText(System.String,System.String)">
+            <summary>
+            Creates the css import statement for a font
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExResource">
+            <summary>
+            Static util class to access the internal code documentation
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExResource.GetSummaryDocumentationAsync(System.Type)">
+            <summary>
+            returns the Summary documentation text for a type
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExResource.GetSummaryDocumentationAsync(System.Reflection.MemberInfo)">
+            <summary>
+            returns a summary documentation toxt for given member
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Helper.MudExStyleBuilder">
             <summary>
             MudExStyleBuilder is useful to create style strings or convert any style to a class.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Helper.MudExStyleBuilder.Default">
+            <summary>
+            Static Property to access an instance <see cref="T:MudBlazor.Extensions.Helper.MudExStyleBuilder"/>
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.Empty">
@@ -1641,12 +3656,202 @@
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.CombineStyleStrings(System.String,System.String)">
             <summary>
-            Combines two css style strings
+            Combines two css style strings.
             </summary>
+            <param name="cssString">css style string to be combined.</param>
+            <param name="leadingCssString">css style string to be attached.</param>
+            <returns>the combined css style strings.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.StyleStringToObject``1(System.String)">
             <summary>
-            Converts a css style string to an object
+            Converts a CSS style string to an object
+            </summary>
+            <typeparam name="T">Type of object to create</typeparam>
+            <param name="css">CSS style string</param>
+            <returns>The created object</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithStyle(System.String,System.Boolean)">
+            <summary>
+            Adds all styles and values from given style string
+            </summary>
+            <param name="styleString">CSS style string to parse and add to the builder</param>
+            <param name="when">If false, no properties will be added to the builder</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.With(System.Object,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Converts given object to a CSS style string and adds all properties and values to this builder
+            </summary>
+            <param name="styleObj">Object to convert to a CSS style string</param>
+            <param name="cssUnit">Unit to format CSS quantity-including properties. Default is CssUnit.Pixels.</param>
+            <param name="when">If false, no properties will be added to the builder</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColor(System.String,System.Boolean)">
+            <summary>
+            Adds a color property to the builder
+            </summary>
+            <param name="color">Value of the color property</param>
+            <param name="when">If false, no property will be added to the builder</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColor(MudBlazor.Extensions.Core.MudExColor,System.Boolean)">
+            <summary>
+            Adds a color property to the builder.
+            </summary>
+            <param name="color">Value of the MudExColor property</param>
+            <param name="when">If false, no property will be added to the builder</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColor(MudBlazor.Utilities.MudColor,System.Boolean)">
+            <summary>
+            Adds a color property to the builder.
+            </summary>
+            <param name="color">Value of the MudColor property</param>
+            <param name="when">If false, no property will be added to the builder</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColor(System.Drawing.Color,System.Boolean)">
+            <summary>
+            Adds a color property to the builder.
+            </summary>
+            <param name="color">Value of the System.Drawing.Color property</param>
+            <param name="when">If false, no property will be added to the builder</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColor(MudBlazor.Color,System.Boolean)">
+            <summary>
+            Adds a color property with a value of `var(--{color})` to the builder.
+            </summary>
+            <param name="color">Color variable name, without "--" prefix</param>
+            <param name="when">If false, no property will be added to the builder.</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFill(System.String,System.Boolean)">
+            <summary>
+            Adds a fill property to the builder
+            </summary>
+            <param name="color">Value of the fill property</param>
+            <param name="when">If false, no property will be added to the builder</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFill(MudBlazor.Extensions.Core.MudExColor,System.Boolean)">
+            <summary>
+            Adds a fill property to the builder
+            </summary>
+            <param name="color">Value of the MudExColor property</param>
+            <param name="when">If false, no property will be added to the builder</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFill(MudBlazor.Utilities.MudColor,System.Boolean)">
+            <summary>
+            Adds a fill property to the builder
+            </summary>
+            <param name="color">Value of the MudColor property</param>
+            <param name="when">If false, no property will be addd to the builder</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFill(System.Drawing.Color,System.Boolean)">
+            <summary>
+            Adds a fill property to the builder
+            </summary>
+            <param name="color">Value of the System.Drawing.Color property</param>
+            <param name="when">If false, no property will be added to the builder</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFill(MudBlazor.Color,System.Boolean)">
+            <summary>
+            Adds a fill property with a value of `var(--{color})` to the builder.
+            </summary>
+            <param name="color">Color variable name, without "--" prefix</param>
+            <param name="when">If false, no property will be added to the builder.</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(System.String[],System.Int32,System.Boolean)">
+            <summary>
+            Adds a background property to the builder. The background is a gradient of all entries in the color array.
+            </summary>
+            <param name="color">Array of the colors of the gradient stops. Multiple colors can be used for a smoother transition.</param>
+            <param name="radius">degree of the gradient. Default is 0.</param>
+            <param name="when">If false, no property will be added to the builder.</param>
+            <returns>This MudExStyleBuilder instance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(MudBlazor.Palette,System.Boolean)">
+            <summary>
+            Adds a background property to the builder. The background is a gradient of a preset palette's colors.
+            </summary>
+            <param name="palette">Name of the palette whose colors should be used.</param>
+            <param name="when">If false, no property will be added to the builder.</param>
+            <returns>This MudExStyleBuilder instance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(MudBlazor.PaletteDark,System.Boolean)">
+            <summary>
+            Adds a background property to the builder. The background is a gradient of a dark preset palette's colors.
+            </summary>
+            <param name="palette">Name of the palette whose colors should beta used.</param>
+            <param name="when">If false, no property will be added to the builder.</param>
+            <returns>This MudExStyleBuilder instance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(MudBlazor.PaletteLight,System.Boolean)">
+            <summary>
+            Adds a background property to the builder. The background is a gradient of a light preset palette's colors.
+            </summary>
+            <param name="palette">Name of the palette whose colors should beta used.</param>
+            <param name="when">If false, no property will be added to the builder.</param>
+            <returns>This MudExStyleBuilder instance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(MudBlazor.MudTheme,System.Boolean,System.Boolean)">
+            <summary>
+            Adds a background property to the builder. The background is a gradient of a theme's palette or dark palette.
+            </summary>
+            <param name="theme">Theme to use.</param>
+            <param name="dark">If true, the dark palette will be used.</param>
+            <param name="when">If false, no property will be added to the builder.</param>
+            <returns>This MudExStyleBuilder instance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(MudBlazor.MudTheme,System.Boolean)">
+            <summary>
+            Adds a background property to the builder. The background is a gradient of a concatenated list of two palettes, default and dark.
+            </summary>
+            <param name="theme">The theme to use.</param>
+            <param name="when">If false, no property will be added to the builder.</param>
+            <returns>This MudExStyleBuilder instance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(System.String[],System.Boolean)">
+            <summary>
+            Adds a background property to the builder. The background is a gradient of all entries in the color array.
+            </summary>
+            <param name="color">Array of the CSS values of the colors of the gradient stops. Multiple colors can be used for a smoother transition.</param>
+            <param name="when">If false, no property will be added to the builder.</param>
+            <returns>This MudExStyleBuilder instance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(MudBlazor.Extensions.Core.MudExColor[],System.Boolean)">
+            <summary>
+            Adds a background property to the builder. The background is a gradient of all entries in the MudExColor array.
+            </summary>
+            <param name="color">Array of MudExColor objects representing the colors of the gradient stops. Multiple colors can be used for a smoother transition.</param>
+            <param name="when">If false, no property will be added to the builder.</param>
+            <returns>This MudExStyleBuilder instance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(MudBlazor.Utilities.MudColor[],System.Boolean)">
+            <summary>
+            Adds a background property to the builder. The background is a gradient of all entries in the MudColor array.
+            </summary>
+            <param name="color">Array of MudColor objects representing the color of the gradient stops. Multiple colors can be used for a smoother transition.</param>
+            <param name="when">If false, no property will be added to the builder.</param>
+            <returns>This MudExStyleBuilder instance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(System.Drawing.Color[],System.Boolean)">
+            <summary>
+            Adds a background property to the builder. The background is a gradient of all entries in the System.Drawing.Color array.
+            </summary>
+            <param name="color">Array of System.Drawing.Color objects representing the color of the gradient stops. Multiple colors can be used for a smoother transition.</param>
+            <param name="when">If false, no property will be added to the builder.</param>
+            <returns>This MudExStyleBuilder instance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.AsImportant">
+            <summary>
+            Adds an !important to last added style
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.With(System.String,System.String,System.Func{System.Boolean})">
@@ -1657,6 +3862,11 @@
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.With(System.String,System.String,System.Boolean)">
             <summary>
             Adds a style to the builder if the condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.AddRaw(System.String,System.Boolean)">
+            <summary>
+            Adds a ra style string is condition is true
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.AsCssBuilderAsync">
@@ -1674,6 +3884,11 @@
             Removes a class that is temporary created
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.DisposeAsync">
+            <summary>
+            Disposes this instance
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.Build">
             <summary>
             Builds the css style string
@@ -1687,6 +3902,218 @@
         <member name="P:MudBlazor.Extensions.Helper.MudExStyleBuilder.Style">
             <summary>
             The css style string
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExSvg">
+            <summary>
+            Static Utility class for SVG
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.CombineIconsHorizontal(System.String,System.String[])">
+            <summary>
+            Combines SVG icons horizontally
+            </summary>
+            <param name="image">The first SVG image</param>
+            <param name="other">An array of other SVG images to combine with the first one</param>
+            <returns>A new SVG with the combined images aligned horizontally</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.CombineIconsVertical(System.String,System.String[])">
+            <summary>
+            Combines SVG icons vertically
+            </summary>
+            <param name="image">The first SVG image</param>
+            <param name="other">An array of other SVG images to combine with the first one</param>
+            <returns>A new SVG with the combined images aligned horizontally</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.CombineIconsCentered(System.String,System.String[])">
+            <summary>
+            Combines SVG icons centered overlapped
+            </summary>
+            <param name="image">The first SVG image</param>
+            <param name="other">An array of other SVG images to combine with the first one</param>
+            <returns>A new SVG with the combined images aligned horizontally</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.CombineIcons(System.Int32,System.Int32,System.String,System.String,System.String[])">
+            <summary>
+            Combines SVG icons.
+            </summary>
+            <param name="marginLeftRight">The margin applied to the left and right of the combined images.</param>
+            <param name="marginTopBottom">The margin applied to the top and bottom of the combined images.</param>
+            <param name="originalViewBox">The original viewBox of the SVG.</param>
+            <param name="image">The first SVG image.</param>
+            <param name="other">An array of other SVG images to combine with the first one.</param>
+            <returns>A new SVG with the combined images.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.SvgPropertyName(System.String)">
+            <summary>
+            Returns the fully-qualified name of the constant in <see cref="T:MudBlazor.Icons"/> that has the specified value.
+            </summary>
+            <param name="value">The value of the SVG constant for which to get a name.</param>
+            <returns>A string containing the fully-qualified name of the icon constant that matches the specified value.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.CombineSliced(System.String,System.String,System.Double,System.Double,MudBlazor.Extensions.Helper.SliceDirection)">
+            <summary>
+            Combines two SVGs sliced either horizontally, vertically, or diagonally.
+            </summary>
+            <param name="svg1">The first SVG to slice and combine.</param>
+            <param name="svg2">The second SVG to slice and combine.</param>
+            <param name="width">The width of the output SVG.</param>
+            <param name="height">The height of the output SVG.</param>
+            <param name="sliceDirection">The direction to slice the SVGs.</param>
+            <returns>A new SVG that contains both original SVGs sliced either horizontally, vertically, or diagonally.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(MudBlazor.MudTheme,MudBlazor.Extensions.Core.MudExDimension,MudBlazor.Extensions.Helper.SliceDirection)">
+            <summary>
+            Returns a sliced application image as preview for given Theme, with the specified dimensions and slice direction.
+            </summary>
+            <param name="theme">The color scheme to use for the image.</param>
+            <param name="size">The dimensions of the output image.</param>
+            <param name="sliceDirection">The direction to slice the image.</param>
+            <returns>A new SVG that displays an application image sliced either horizontally, vertically, or diagonally.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(MudBlazor.MudTheme,MudBlazor.Extensions.Core.MudExDimension)">
+            <summary>
+            Returns a default sliced application image as preview for given Theme.
+            </summary>
+            <param name="theme">The color scheme to use for the image.</param>
+            <param name="size">The dimensions of the output image.</param>
+            <returns>A new SVG that displays an application image sliced diagonally.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(MudBlazor.MudTheme,System.Boolean,MudBlazor.Extensions.Core.MudExDimension)">
+            <summary>
+            Returns a default application image as preview for given Theme in dark or light.
+            </summary>
+            <param name="theme">The color scheme to use for the image.</param>
+            <param name="dark">Whether to use the dark color scheme for the image.</param>
+            <param name="size">The dimensions of the output image.</param>
+            <returns>A new SVG that displays an application image sliced either horizontally, vertically, or diagonally.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(MudBlazor.MudTheme,System.Boolean,System.String,System.String)">
+            <summary>
+             Returns a default application image as preview for given Theme in dark or light.
+            </summary>
+            <param name="theme">The color scheme to use for the image.</param>
+            <param name="dark">Whether to use the dark color scheme for the image.</param>
+            <param name="width">The width of the output image.</param>
+            <param name="height">The height of the output image.</param>
+            <returns>A new SVG that displays an application image sliced diagonally.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(MudBlazor.Palette,MudBlazor.Extensions.Core.MudExDimension)">
+            <summary>
+             Returns a default application image as with given color palette.
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(MudBlazor.Palette,System.String,System.String)">
+            <summary>
+             Returns a default application image as with given color palette.
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(MudBlazor.PaletteLight,MudBlazor.Extensions.Core.MudExDimension)">
+            <summary>
+             Returns a default application image as with given color palette.
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(MudBlazor.PaletteDark,MudBlazor.Extensions.Core.MudExDimension)">
+            <summary>
+             Returns a default application image as with given color palette.
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(MudBlazor.Utilities.MudColor,MudBlazor.Utilities.MudColor,MudBlazor.Utilities.MudColor,MudBlazor.Utilities.MudColor,System.String)">
+            <summary>
+             Returns a default application image with given colors.
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(MudBlazor.Utilities.MudColor,MudBlazor.Utilities.MudColor,MudBlazor.Utilities.MudColor,MudBlazor.Utilities.MudColor[],System.String)">
+            <summary>
+             Returns a default application image with given colors.
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(MudBlazor.Utilities.MudColor,MudBlazor.Utilities.MudColor,MudBlazor.Utilities.MudColor,MudBlazor.Utilities.MudColor,MudBlazor.Extensions.Core.MudExDimension)">
+            <summary>
+             Returns a default application image with given colors.
+            </summary>        
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(MudBlazor.Utilities.MudColor,MudBlazor.Utilities.MudColor,MudBlazor.Utilities.MudColor,MudBlazor.Utilities.MudColor[],MudBlazor.Extensions.Core.MudExDimension)">
+            <summary>
+             Returns a default application image with given colors.
+            </summary>        
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(MudBlazor.Utilities.MudColor,MudBlazor.Utilities.MudColor,MudBlazor.Utilities.MudColor,MudBlazor.Utilities.MudColor[],System.String,System.String)">
+            <summary>
+             Returns a default application image with given colors.
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+             Returns a default application image with given colors.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(System.String,System.String,System.String,System.String[],System.String)">
+            <summary>
+             Returns a default application image with given colors.
+            </summary>        
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(System.String,System.String,System.String,System.String,MudBlazor.Extensions.Core.MudExDimension)">
+            <summary>
+             Returns a default application image with given colors.
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(System.String,System.String,System.String,System.String[],MudBlazor.Extensions.Core.MudExDimension)">
+            <summary>
+             Returns a default application image with given colors.
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.ApplicationImage(System.String,System.String,System.String,System.String[],System.String,System.String)">
+            <summary>
+             Returns a default application image with given colors.
+            </summary>    
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.SliceDirection">
+            <summary>
+            Enum to specify svg slice direction
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExThemeHelper">
+            <summary>
+            Static util MudExThemeHelper
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExThemeHelper.ToPaletteDark(MudBlazor.PaletteLight)">
+            <summary>
+            Convert PaletteLight to PaletteDark
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExThemeHelper.ToPaletteDark(MudBlazor.Palette)">
+            <summary>
+            Convert PaletteLight to PaletteDark
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExThemeHelper.ToPaletteLight(MudBlazor.PaletteDark)">
+            <summary>
+            Convert PaletteDark to PaletteLight
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExThemeHelper.CloneTheme``1(``0)">
+            <summary>
+            Clones the theme
+            </summary>
+            <typeparam name="TTheme"></typeparam>
+            <param name="theme"></param>
+            <returns>Cloned theme with same options</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExThemeHelper.FromJson``1(System.String)">
+            <summary>
+            Creates a new theme from json
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExThemeHelper.AsJson``1(``0)">
+            <summary>
+            Converts Theme to json
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Options.ItemSelectionMode">
+            <summary>
+            Item selection mode for multi or single select
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Options.MudPopoverOptionsEx.ExcludedBlurSelectors">

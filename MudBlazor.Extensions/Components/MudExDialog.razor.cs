@@ -5,6 +5,9 @@ using MudBlazor.Extensions.Options;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.
+/// </summary>
 public partial class MudExDialog : IMudExComponent
 {
     private DialogOptionsEx _options;
@@ -12,14 +15,19 @@ public partial class MudExDialog : IMudExComponent
 
     [Inject] private IJSRuntime js { get; set; }
 
+    /// <summary>
+    /// Render base component
+    /// </summary>
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
+    /// <inheritdoc />
     protected override void OnParametersSet()
     {
         EnsureInitialClass();
         base.OnParametersSet();
     }
-    
+
+    /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         if (parameters.TryGetValue<DialogOptions>(nameof(Options), out var options) && options is DialogOptionsEx)
@@ -48,7 +56,9 @@ public partial class MudExDialog : IMudExComponent
         return await base.Show(title, options).InjectOptionsAsync(OptionsEx);
     }
 
-    
+    /// <summary>
+    /// DialogOptionsEx for this dialog
+    /// </summary>
     [Parameter]
     public DialogOptionsEx OptionsEx
     {

@@ -17,14 +17,44 @@ public sealed partial class MudExColorEdit
     private IStringLocalizer<MudExColorEdit> _fallbackLocalizer => ServiceProvider.GetService<IStringLocalizer<MudExColorEdit>>();
     private bool rendered;
 
-    [Inject] protected IServiceProvider ServiceProvider { get; set; }
+    /// <summary>
+    /// Gets or sets the <see cref="IServiceProvider"/> to be used for dependency injection.
+    /// </summary>
+    [Inject]
+    protected IServiceProvider ServiceProvider { get; set; }
+
+    /// <summary>
+    /// Gets the <see cref="IStringLocalizer"/> to be used for localizing strings.
+    /// </summary>
     protected IStringLocalizer LocalizerToUse => Localizer ?? _fallbackLocalizer;
 
-    [Parameter] public IStringLocalizer Localizer { get; set; }
-    [Parameter] public Variant FilterVariant { get; set; }
-    [Parameter] public MudExColor Value { get => _value; set => _value = value; }
-    [Parameter] public EventCallback<MudExColor> ValueChanged { get; set; }
+    /// <summary>
+    /// Gets or sets the <see cref="IStringLocalizer"/> to be used for localizing strings.
+    /// </summary>
+    [Parameter]
+    public IStringLocalizer Localizer { get; set; }
 
+    /// <summary>
+    /// Gets or sets the variant filter.
+    /// </summary>
+    [Parameter]
+    public Variant FilterVariant { get; set; }
+
+    /// <summary>
+    /// Gets or sets the value of the color picker.
+    /// </summary>
+    [Parameter]
+    public MudExColor Value { get => _value; set => _value = value; }
+
+    /// <summary>
+    /// Gets or sets the callback method when the value of the color picker is changed.
+    /// </summary>
+    [Parameter]
+    public EventCallback<MudExColor> ValueChanged { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Css Variables.
+    /// </summary>
     [Parameter]
     public KeyValuePair<string, MudColor>[] CssVars
     {
@@ -32,7 +62,11 @@ public sealed partial class MudExColorEdit
         set => _cssVars = value;
     }
 
-    [Parameter] public string ValueString
+    /// <summary>
+    /// Gets or sets the string value of the color picker selected by the user.
+    /// </summary>
+    [Parameter]
+    public string ValueString
     {
         get
         {
@@ -42,35 +76,88 @@ public sealed partial class MudExColorEdit
                 if (IsCssVarStr(res)) // This can happen is editable and user writes the name of a variable. So wee need to ensure color again. Otherwise it happens on selection
                 {
                     res = FindFromCssVar(res)?.ToString(_suggestedFormat ?? _value.SuggestedFormat) ?? res;
-                } 
-                    
+                }
+
                 return res;
             }
             return _value.ToString();
         }
         set => _value = value;
     }
-    
-    [Parameter] public EventCallback<string> ValueStringChanged { get; set; }
-
-
-    [Parameter] public bool ShowThemeColors { get; set; } = true;
-    [Parameter] public bool ShowHtmlColors { get; set; } = true;
-    [Parameter] public bool ShowCssColorVariables { get; set; } = true;
-    [Parameter] public string Filter { get; set; }
-    [Parameter] public ColorPreviewMode PreviewMode { get; set; } = ColorPreviewMode.Both;
-    [Parameter] public bool DelayValueChangeToPickerClose { get; set; }
-    [Parameter] public AutoCloseBehaviour AutoCloseBehaviour { get; set; } = AutoCloseBehaviour.OnDefinedSelect;
-    [Parameter] public MudColorOutputFormats? MudColorStringFormat { get => _suggestedFormat; set => _suggestedFormat = value; }
 
     /// <summary>
-    /// Set to true to have always MudColor filled in MudExColor as the OneOf value.
-    /// With this setting turned on, you can use this edit control for all of your Color Properties
+    /// Gets or sets the callback method when the string value of the color picker is changed.
     /// </summary>
-    [Parameter] public bool ForceSelectOfMudColor { get; set; }
-    [Parameter] public string LabelCustomTab { get; set; } = "Custom";
-    [Parameter] public string LabelDefinedTab { get; set; } = "Defined";
-    
+    [Parameter]
+    public EventCallback<string> ValueStringChanged { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to show theme colors.
+    /// </summary>
+    [Parameter]
+    public bool ShowThemeColors { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to show HTML colors.
+    /// </summary>
+    [Parameter]
+    public bool ShowHtmlColors { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to show CSS color variables.
+    /// </summary>
+    [Parameter]
+    public bool ShowCssColorVariables { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the filter for the color picker.
+    /// </summary>
+    [Parameter]
+    public string Filter { get; set; }
+
+    /// <summary>
+    /// Gets or sets the color preview mode.
+    /// </summary>
+    [Parameter]
+    public ColorPreviewMode PreviewMode { get; set; } = ColorPreviewMode.Both;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to delay the value change of the color picker until the picker is closed.
+    /// </summary>
+    [Parameter]
+    public bool DelayValueChangeToPickerClose { get; set; }
+
+    /// <summary>
+    /// Gets or sets the auto close behavior.
+    /// </summary>
+    [Parameter]
+    public AutoCloseBehaviour AutoCloseBehaviour { get; set; } = AutoCloseBehaviour.OnDefinedSelect;
+
+    /// <summary>
+    /// Gets or sets the <see cref="MudColorOutputFormats"/>.
+    /// </summary>
+    [Parameter]
+    public MudColorOutputFormats? MudColorStringFormat { get => _suggestedFormat; set => _suggestedFormat = value; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to have always <see cref="MudColor"/> filled in <see cref="MudExColor"/> as the OneOf value.
+    /// With this setting turned on, you can use this edit control for all of your Color Properties.
+    /// </summary>
+    [Parameter]
+    public bool ForceSelectOfMudColor { get; set; }
+
+    /// <summary>
+    /// Gets or sets the label for the custom tab.
+    /// </summary>
+    [Parameter]
+    public string LabelCustomTab { get; set; } = "Custom";
+
+    /// <summary>
+    /// Gets or sets the label for the defined tab.
+    /// </summary>
+    [Parameter]
+    public string LabelDefinedTab { get; set; } = "Defined";
+
     private KeyValuePair<string, MudColor>[] _cssVars;
     private MudColor[] _palette ;
 
@@ -89,6 +176,8 @@ public sealed partial class MudExColorEdit
         }
     }
 
+
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         AdornmentIcon = Icons.Material.Filled.ColorLens;
@@ -100,6 +189,7 @@ public sealed partial class MudExColorEdit
         base.OnInitialized();
     }
 
+    /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
         if (PickerVariant == PickerVariant.Static || PickerVariant == PickerVariant.Dialog)
@@ -111,6 +201,7 @@ public sealed partial class MudExColorEdit
         await base.OnParametersSetAsync();
     }
 
+    /// <inheritdoc />
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender || !rendered)
@@ -118,25 +209,22 @@ public sealed partial class MudExColorEdit
         base.OnAfterRender(firstRender);
     }
 
+    /// <inheritdoc />
     protected override void OnPickerClosed()
     {
         if (DelayValueChangeToPickerClose)
             RaiseChanged();
     }
-
-    private void RaiseChanged()
-    {
-        ValueChanged.InvokeAsync(Value);
-        ValueStringChanged.InvokeAsync(ValueString);
-    }
-
+    
+    /// <inheritdoc />
     protected override void OnPickerOpened()
     {
         _ = UpdateInitialMudColor();
         _ = EnsureCssVarsAsync();
         base.OnPickerOpened();
     }
-    
+
+    /// <inheritdoc />
     protected override async Task StringValueChanged(string value)
     {
         SetSuggestedFormat();
@@ -149,6 +237,12 @@ public sealed partial class MudExColorEdit
 
         UpdatePreview();
         RaiseChangedIf();
+    }
+
+    private void RaiseChanged()
+    {
+        ValueChanged.InvokeAsync(Value);
+        ValueStringChanged.InvokeAsync(ValueString);
     }
 
     private void SetSuggestedFormat()

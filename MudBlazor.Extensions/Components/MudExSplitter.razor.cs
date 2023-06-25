@@ -17,16 +17,25 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
         base.BuildRenderTree(builder);
     };
 
+    /// <inheritdoc/>
     public IJSObjectReference JsReference { get; set; }
+    /// <inheritdoc/>
     public IJSObjectReference ModuleReference { get; set; }
+    /// <inheritdoc/>
     public ElementReference ElementReference { get; set; }
 
+    /// <summary>
+    /// Indicates whether to update sizes in percentage
+    /// </summary>
     [Parameter] public bool UpdateSizesInPercentage { get; set; } = false;
+    /// <summary>
+    /// Indicates whether the Splitter is reversed
+    /// </summary>
     [Parameter] public bool Reverse { get; set; } = false;
 
     private IJsMudExComponent<MudExSplitter> AsJsComponent => this;
 
-    
+    /// <inheritdoc/>
     protected override Task OnInitializedAsync()
     {
         (UserAttributes ??= new Dictionary<string,object>()).AddOrUpdate("data-id", _dataId);
@@ -35,6 +44,7 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
         return base.OnInitializedAsync();
     }
 
+    /// <inheritdoc/>
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
@@ -43,8 +53,12 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
             await AsJsComponent.JsReference.InvokeVoidAsync("initialize", Options());
     }
 
+    /// <inheritdoc/>
     public virtual object[] GetJsArguments() => new[] { AsJsComponent.ElementReference, AsJsComponent.CreateDotNetObjectReference(), Options() };
 
+    /// <summary>
+    /// Returns options for setting up the Splitter.
+    /// </summary>
     private object Options()
     {
         return new
@@ -57,6 +71,7 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
         };
     }
 
+    /// <inheritdoc/>
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
@@ -64,6 +79,7 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
             await AsJsComponent.ImportModuleAndCreateJsAsync();
     }
 
+    /// <inheritdoc/>
     public ValueTask DisposeAsync()
     {
         return AsJsComponent.DisposeModulesAsync();

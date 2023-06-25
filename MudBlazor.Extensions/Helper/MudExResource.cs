@@ -5,13 +5,23 @@ using System.Text;
 using System.Xml;
 
 namespace MudBlazor.Extensions.Helper;
+
+/// <summary>
+/// Static util class to access the internal code documentation
+/// </summary>
 public static class MudExResource
 {
     private static readonly ConcurrentDictionary<Assembly, XmlDocument> xmlDocCache = new();
 
+    /// <summary>
+    /// returns the Summary documentation text for a type
+    /// </summary>
     public static async Task<string> GetSummaryDocumentationAsync(Type type) 
         => type == null ? null : await GetSummaryDocumentationAsync(type, $"T:{type.FullName}");
 
+    /// <summary>
+    /// returns a summary documentation toxt for given member
+    /// </summary>
     public static async Task<string> GetSummaryDocumentationAsync(MemberInfo member)
     {
         if (member == null)

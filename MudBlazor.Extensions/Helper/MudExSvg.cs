@@ -6,33 +6,49 @@ using MudBlazor.Utilities;
 
 namespace MudBlazor.Extensions.Helper;
 
+/// <summary>
+/// Static Utility class for SVG
+/// </summary>
 [HasDocumentation("MudExSvg.md")]
 public static class MudExSvg
 {
-    public static T GetRandomMember<T>(Type type = null)
-    {
-        type = type ?? typeof(Icons.Material.Filled);
-        var random = new Random();
-        var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static)
-            .Where(field => field.IsLiteral && !field.IsInitOnly && field.FieldType == typeof(T))
-            .ToList();
-
-        if (fields.Count == 0)
-            return default;
-
-        int index = random.Next(fields.Count);
-        return (T)fields[index].GetValue(null);
-    }
-    
+    /// <summary>
+    /// Combines SVG icons horizontally
+    /// </summary>
+    /// <param name="image">The first SVG image</param>
+    /// <param name="other">An array of other SVG images to combine with the first one</param>
+    /// <returns>A new SVG with the combined images aligned horizontally</returns>
     public static string CombineIconsHorizontal(string image, params string[] other) 
         => CombineIcons(14, 0, "0 0 24 24", image, other);
 
+    /// <summary>
+    /// Combines SVG icons vertically
+    /// </summary>
+    /// <param name="image">The first SVG image</param>
+    /// <param name="other">An array of other SVG images to combine with the first one</param>
+    /// <returns>A new SVG with the combined images aligned horizontally</returns>
     public static string CombineIconsVertical(string image, params string[] other) 
         => CombineIcons(0, 14, "0 0 24 24", image, other);
 
+    /// <summary>
+    /// Combines SVG icons centered overlapped
+    /// </summary>
+    /// <param name="image">The first SVG image</param>
+    /// <param name="other">An array of other SVG images to combine with the first one</param>
+    /// <returns>A new SVG with the combined images aligned horizontally</returns>
     public static string CombineIconsCentered(string image, params string[] other) 
         => CombineIcons(0, 0, null, image, other);
 
+
+    /// <summary>
+    /// Combines SVG icons.
+    /// </summary>
+    /// <param name="marginLeftRight">The margin applied to the left and right of the combined images.</param>
+    /// <param name="marginTopBottom">The margin applied to the top and bottom of the combined images.</param>
+    /// <param name="originalViewBox">The original viewBox of the SVG.</param>
+    /// <param name="image">The first SVG image.</param>
+    /// <param name="other">An array of other SVG images to combine with the first one.</param>
+    /// <returns>A new SVG with the combined images.</returns>
     public static string CombineIcons(int marginLeftRight, int marginTopBottom, string originalViewBox, string image, params string[] other)
     {
         var svgImages = new[] { image }.Concat(other).ToArray();
@@ -64,6 +80,11 @@ public static class MudExSvg
         return sb.ToString();
     }
 
+    /// <summary>
+    /// Returns the fully-qualified name of the constant in <see cref="Icons"/> that has the specified value.
+    /// </summary>
+    /// <param name="value">The value of the SVG constant for which to get a name.</param>
+    /// <returns>A string containing the fully-qualified name of the icon constant that matches the specified value.</returns>
     public static string SvgPropertyName(string value)
     {
         var types = typeof(Icons).Assembly.GetTypes()
@@ -75,7 +96,16 @@ public static class MudExSvg
     private static string SearchTypeForValue(Type type, string value) 
         => (from field in type.GetFields(BindingFlags.Public | BindingFlags.Static) where (field.IsLiteral || field.IsStatic) && field.FieldType == typeof(string) let fieldValue = field.GetValue(null) as string where fieldValue == value select $"{type.FullName.Replace('+', '.')}.{field.Name}").FirstOrDefault();
 
-
+    
+    /// <summary>
+    /// Combines two SVGs sliced either horizontally, vertically, or diagonally.
+    /// </summary>
+    /// <param name="svg1">The first SVG to slice and combine.</param>
+    /// <param name="svg2">The second SVG to slice and combine.</param>
+    /// <param name="width">The width of the output SVG.</param>
+    /// <param name="height">The height of the output SVG.</param>
+    /// <param name="sliceDirection">The direction to slice the SVGs.</param>
+    /// <returns>A new SVG that contains both original SVGs sliced either horizontally, vertically, or diagonally.</returns>
     public static string CombineSliced(string svg1, string svg2, double width, double height, SliceDirection sliceDirection)
     {
         string svg1Content = svg1.Substring(svg1.IndexOf(">") + 1).TrimEnd('<', '/', 's', 'v', 'g', '>');
@@ -125,68 +155,130 @@ public static class MudExSvg
         </svg>";
     }
 
-    
+
+    /// <summary>
+    /// Returns a sliced application image as preview for given Theme, with the specified dimensions and slice direction.
+    /// </summary>
+    /// <param name="theme">The color scheme to use for the image.</param>
+    /// <param name="size">The dimensions of the output image.</param>
+    /// <param name="sliceDirection">The direction to slice the image.</param>
+    /// <returns>A new SVG that displays an application image sliced either horizontally, vertically, or diagonally.</returns>
 
     public static string ApplicationImage(MudTheme theme, MudExDimension size, SliceDirection sliceDirection)
         => CombineSliced(ApplicationImage(theme, true, size), ApplicationImage(theme, false, size), size.Width, size.Height, sliceDirection);
 
+    /// <summary>
+    /// Returns a default sliced application image as preview for given Theme.
+    /// </summary>
+    /// <param name="theme">The color scheme to use for the image.</param>
+    /// <param name="size">The dimensions of the output image.</param>
+    /// <returns>A new SVG that displays an application image sliced diagonally.</returns>
     public static string ApplicationImage(MudTheme theme, MudExDimension size)
         => ApplicationImage(theme, size, SliceDirection.Diagonal);
-    
+
+    /// <summary>
+    /// Returns a default application image as preview for given Theme in dark or light.
+    /// </summary>
+    /// <param name="theme">The color scheme to use for the image.</param>
+    /// <param name="dark">Whether to use the dark color scheme for the image.</param>
+    /// <param name="size">The dimensions of the output image.</param>
+    /// <returns>A new SVG that displays an application image sliced either horizontally, vertically, or diagonally.</returns>
     public static string ApplicationImage(MudTheme theme, bool dark, MudExDimension size)
         => ApplicationImage(theme, dark, size.Width, size.Height);
-    
+
+    /// <summary>
+    ///  Returns a default application image as preview for given Theme in dark or light.
+    /// </summary>
+    /// <param name="theme">The color scheme to use for the image.</param>
+    /// <param name="dark">Whether to use the dark color scheme for the image.</param>
+    /// <param name="width">The width of the output image.</param>
+    /// <param name="height">The height of the output image.</param>
+    /// <returns>A new SVG that displays an application image sliced diagonally.</returns>
     public static string ApplicationImage(MudTheme theme, bool dark, string width, string height)
         => ApplicationImage(dark ? theme.PaletteDark : theme.Palette, width, height);
 
+    /// <summary>
+    ///  Returns a default application image as with given color palette.
+    /// </summary>    
     public static string ApplicationImage(Palette palette, MudExDimension size)
         => ApplicationImage(palette, size.Width, size.Height);
+    
+    /// <summary>
+    ///  Returns a default application image as with given color palette.
+    /// </summary>    
     public static string ApplicationImage(Palette palette, string width, string height)
         => ApplicationImage(palette.AppbarBackground, palette.DrawerBackground, palette.Surface, new[] { palette.TextPrimary, palette.TextSecondary, palette.Primary, palette.Secondary, palette.Info, palette.Warning, palette.Error }, width, height);
 
+    /// <summary>
+    ///  Returns a default application image as with given color palette.
+    /// </summary>    
     public static string ApplicationImage(PaletteLight palette, MudExDimension size)
         => ApplicationImage(palette, size.Width, size.Height);
-    //public static string ApplicationImage(PaletteLight palette, string width, string height)
-    //    => ApplicationImage(palette.AppbarBackground, palette.DrawerBackground, palette.Surface, new[] { palette.TextPrimary, palette.TextSecondary, palette.Primary, palette.Secondary, palette.Info, palette.Warning, palette.Error }, width, height);
 
+    /// <summary>
+    ///  Returns a default application image as with given color palette.
+    /// </summary>    
     public static string ApplicationImage(PaletteDark palette, MudExDimension size)
         => ApplicationImage(palette, size.Width, size.Height);
-    //public static string ApplicationImage(PaletteDark palette, string width, string height)
-    //    => ApplicationImage(palette.AppbarBackground, palette.DrawerBackground, palette.Surface, new[] { palette.TextPrimary, palette.TextSecondary, palette.Primary, palette.Secondary, palette.Info, palette.Warning, palette.Error }, width, height);
 
-    
 
+    /// <summary>
+    ///  Returns a default application image with given colors.
+    /// </summary>    
     public static string ApplicationImage(MudColor appBarColor, MudColor drawerColor, MudColor surfaceColor, MudColor textColor, string size)
         => ApplicationImage(appBarColor, drawerColor, surfaceColor, new[] { textColor }, size, size);
 
-
+    /// <summary>
+    ///  Returns a default application image with given colors.
+    /// </summary>    
     public static string ApplicationImage(MudColor appBarColor, MudColor drawerColor, MudColor surfaceColor, MudColor[] textColors, string size)
         => ApplicationImage(appBarColor, drawerColor, surfaceColor, textColors, size, size);
 
+    /// <summary>
+    ///  Returns a default application image with given colors.
+    /// </summary>        
     public static string ApplicationImage(MudColor appBarColor, MudColor drawerColor, MudColor surfaceColor, MudColor textColor, MudExDimension dimension)
         => ApplicationImage(appBarColor, drawerColor, surfaceColor, new[] { textColor }, dimension.Width.ToString(), dimension.Height.ToString());
 
+    /// <summary>
+    ///  Returns a default application image with given colors.
+    /// </summary>        
     public static string ApplicationImage(MudColor appBarColor, MudColor drawerColor, MudColor surfaceColor, MudColor[] textColors, MudExDimension dimension)
         => ApplicationImage(appBarColor, drawerColor, surfaceColor, textColors, dimension.Width.ToString(), dimension.Height.ToString());
 
+    /// <summary>
+    ///  Returns a default application image with given colors.
+    /// </summary>    
     public static string ApplicationImage(MudColor appBarColor, MudColor drawerColor, MudColor surfaceColor, MudColor[] textColors, string width, string height)
         => ApplicationImage(appBarColor.ToString(), drawerColor.ToString(), surfaceColor.ToString(), textColors.Select(c => c.ToString()).ToArray(), width, height);
-    
-    
+
+    /// <summary>
+    ///  Returns a default application image with given colors.
+    /// </summary>
     public static string ApplicationImage(string appBarColor, string drawerColor, string surfaceColor, string textColor, string size)
         => ApplicationImage(appBarColor, drawerColor, surfaceColor, new[] { textColor }, size, size);
 
+    /// <summary>
+    ///  Returns a default application image with given colors.
+    /// </summary>        
     public static string ApplicationImage(string appBarColor, string drawerColor, string surfaceColor, string[] textColors, string size)
         => ApplicationImage(appBarColor, drawerColor, surfaceColor, textColors, size, size);
 
-
+    /// <summary>
+    ///  Returns a default application image with given colors.
+    /// </summary>    
     public static string ApplicationImage(string appBarColor, string drawerColor, string surfaceColor, string textColor, MudExDimension dimension)
         => ApplicationImage(appBarColor, drawerColor, surfaceColor, new[] { textColor }, dimension.Width.ToString(), dimension.Height.ToString());
 
+    /// <summary>
+    ///  Returns a default application image with given colors.
+    /// </summary>    
     public static string ApplicationImage(string appBarColor, string drawerColor, string surfaceColor, string[] textColors, MudExDimension dimension)
         => ApplicationImage(appBarColor, drawerColor, surfaceColor, textColors, dimension.Width.ToString(), dimension.Height.ToString());
 
-
+    /// <summary>
+    ///  Returns a default application image with given colors.
+    /// </summary>    
     public static string ApplicationImage(string appBarColor, string drawerColor, string surfaceColor, string[] textColors, string width, string height)
     {
         // If only one color provided, repeat it to ensure min 3 lines
@@ -218,7 +310,9 @@ public static class MudExSvg
 
 }
 
-
+/// <summary>
+/// Enum to specify svg slice direction
+/// </summary>
 public enum SliceDirection
 {
     Diagonal,

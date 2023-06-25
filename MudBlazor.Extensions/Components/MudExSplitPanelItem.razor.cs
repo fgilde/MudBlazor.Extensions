@@ -9,20 +9,53 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExSplitPanelItem
 {
-    [CascadingParameter] public MudExSplitPanel Panel { get; set; }
-    [Parameter] public RenderFragment ChildContent { get; set; }
-    [Parameter] public string Class { get; set; }
-    [Parameter] public string Style { get; set; }
+    /// <summary>
+    /// The parent MudExSplitPanel component
+    /// </summary>
+    [CascadingParameter]
+    public MudExSplitPanel Panel { get; set; }
 
-    [Parameter] public int MinSize { get; set; }
-    [Parameter] public CssUnit SizeUnit { get; set; } = CssUnit.Pixels;
+    /// <summary>
+    /// The child content of MudExSplitPanelItem component
+    /// </summary>
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
 
+    /// <summary>
+    /// The CSS class of MudExSplitPanelItem component
+    /// </summary>
+    [Parameter]
+    public string Class { get; set; }
 
-    private string GetClass()
+    /// <summary>
+    /// The CSS style of MudExSplitPanelItem component
+    /// </summary>
+    [Parameter]
+    public string Style { get; set; }
+
+    /// <summary>
+    /// The min size of MudExSplitPanelItem component
+    /// </summary>
+    [Parameter]
+    public int MinSize { get; set; }
+
+    /// <summary>
+    /// The CSS unit of MudExSplitPanelItem component's size
+    /// </summary>
+    [Parameter]
+    public CssUnit SizeUnit { get; set; } = CssUnit.Pixels;
+
+    /// <summary>
+    /// Get the CSS class of MudExSplitPanelItem component
+    /// </summary>
+    protected virtual string GetClass()
     {
         return $"{(Panel?.ColumnLayout == true ? "mud-width-full" : "mud-height-full")}";
     }
 
+    /// <summary>
+    /// Get the CSS style of MudExSplitPanelItem component
+    /// </summary>
     protected virtual string GetStyle()
     {
         return MudExStyleBuilder.GenerateStyleString(new

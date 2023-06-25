@@ -8,12 +8,21 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Helper
 {
+    /// <summary>
+    /// Extensions for <see cref="IBrowserFile"/>
+    /// </summary>
     [HasDocumentation("BrowserFileExt.md")]
     public static class BrowserFileExt
     {
+        /// <summary>
+        /// Downloads the file
+        /// </summary>
         public static Task DownloadAsync(this IBrowserFile browserFile, IJSRuntime jsRuntime)
             => browserFile.DownloadFileAsync(jsRuntime);
 
+        /// <summary>
+        /// Returns Icon for contentType
+        /// </summary>
         public static string IconForFile(string contentType)
         {
             if (string.IsNullOrWhiteSpace(contentType))
@@ -21,16 +30,21 @@ namespace MudBlazor.Extensions.Helper
             return IconForFile(new ContentType(contentType));
         }
 
-        public static string GetIcon(this IBrowserFile file)
-        {
-            return IconForFile(file.GetContentType());
-        }
+        /// <summary>
+        /// Returns Icon for IBrowserFile
+        /// </summary>
+        public static string GetIcon(this IBrowserFile file) 
+            => IconForFile(file.GetContentType());
 
+        /// <summary>
+        /// Returns the content type for given file
+        /// </summary>
         public static string GetContentType(this IBrowserFile file)
-        {
-            return string.IsNullOrWhiteSpace(file.ContentType) ? MimeType.GetMimeType(file.Name) : file.ContentType;
-        }
+            => string.IsNullOrWhiteSpace(file.ContentType) ? MimeType.GetMimeType(file.Name) : file.ContentType;
 
+        /// <summary>
+        /// Returns Icon for contentType
+        /// </summary>
         public static string IconForFile(ContentType contentType)
         {
             var mime = contentType.ToString().ToLower();
@@ -57,7 +71,9 @@ namespace MudBlazor.Extensions.Helper
             };
         }
 
-
+        /// <summary>
+        /// Returns Icon for an extension
+        /// </summary>
         public static string IconForExtension(string extension)
         {
             return IconForFile(MimeType.GetMimeType(extension = extension?.EnsureStartsWith(".")));

@@ -3,28 +3,82 @@ using Microsoft.AspNetCore.Components;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// MudExPromptDialog Component
+/// </summary>
 public partial class MudExPromptDialog
 {
+    /// <summary>
+    /// Cascading parameter of the MudDialogInstance object, which is responsible for the dialog instance.
+    /// </summary>
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
+    /// <summary>
+    /// Boolean value indicating whether prompt should be submitted immediately.
+    /// </summary>
     [Parameter] public bool Immediate { get; set; } = true;
+
+    /// <summary>
+    /// Boolean value indicating whether prompt should be submitted when Enter key is pressed.
+    /// </summary>
     [Parameter] public bool SubmitOnEnter { get; set; } = true;
+
+    /// <summary>
+    /// The text of the "Ok" button.
+    /// </summary>
     [Parameter] public string OkText { get; set; } = "Ok";
+
+    /// <summary>
+    /// The text of the "Cancel" button.
+    /// </summary>
     [Parameter] public string CancelText { get; set; } = "Cancel";
+
+    /// <summary>
+    /// The initial value of the input field.
+    /// </summary>
     [Parameter] public string Value { get; set; }
+
+    /// <summary>
+    /// The CSS class of the component root element.
+    /// </summary>
     [Parameter] public string Class { get; set; } = "mud-ex-dialog-initial";
+
+    /// <summary>
+    /// The message to be displayed in the component.
+    /// </summary>
     [Parameter] public string Message { get; set; }
+
+    /// <summary>
+    /// The icon of the component.
+    /// </summary>
     [Parameter] public string Icon { get; set; }
+
+    /// <summary>
+    /// The list of strings with additional details of the component.
+    /// </summary>
     [Parameter] public IEnumerable<string> Details { get; set; }
+
+    /// <summary>
+    /// The function that determines whether the prompt window can be confirmed or not.
+    /// </summary>
     [Parameter] public Func<string, bool> CanConfirm { get; set; } = s => true;
 
+    /// <summary>
+    /// Method for submitting the prompt window.
+    /// </summary>
     void Submit()
     {
         MudDialog.Close(DialogResult.Ok(Value));
     }
 
+    /// <summary>
+    /// Method for cancelling the prompt window.
+    /// </summary>
     void Cancel() => MudDialog.Cancel();
 
+    /// <summary>
+    /// Method that determines if the input value is a valid entry.
+    /// </summary>
     private bool IsValid() => CanConfirm(Value);
 
     private void OnKeyUp(KeyboardEventArgs arg)

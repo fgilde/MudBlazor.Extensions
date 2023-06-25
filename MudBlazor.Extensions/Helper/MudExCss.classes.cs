@@ -4,8 +4,14 @@ namespace MudBlazor.Extensions.Helper;
 
 public static partial class MudExCss
 {
+    /// <summary>
+    /// MudExCss classes
+    /// </summary>
     public abstract partial class Classes: IMudExClassAppearance
     {
+        /// <summary>
+        /// Class to apply
+        /// </summary>
         public string Class { get; }
 
         protected Classes(string @class)

@@ -3,8 +3,15 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Helper;
 
+/// <summary>
+/// Simple JsonHelper
+/// </summary>
 internal static class JsonHelper
 {
+
+    /// <summary>
+    /// Simplifies all MudColors in a given JSON
+    /// </summary>
     public static string SimplifyMudColorInJson(string json)
     {
         void SimplifyColorsJToken(JToken token)
@@ -19,6 +26,11 @@ internal static class JsonHelper
         return jsonObj.ToString();
     }
 
+    /// <summary>
+    /// Merges two json files
+    /// </summary>
+    /// <param name="json"></param>
+    /// <param name="other"></param>
     public static string MergeJson(string json, params string[] other)
     {
         var jObject = JObject.Parse(json);
@@ -34,6 +46,9 @@ internal static class JsonHelper
         return jObject.ToString();
     }
 
+    /// <summary>
+    /// Removes given properties from given json.
+    /// </summary>
     public static string RemovePropertiesFromJson(string json, string[] propertiesToRemove)
     {
         if (string.IsNullOrWhiteSpace(json) || propertiesToRemove == null || !propertiesToRemove.Any())

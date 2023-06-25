@@ -3,6 +3,7 @@
 @page "/"
 
 @using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Core
 
 <style>
     .mud-ex-object-edit-group-flat .mud-expand-panel-text:after {
@@ -22,10 +23,11 @@
 </MudHidden>
 <Support />
 
-<MudExCardList HoverColor="Color.Warning" TData="object">
+<MudExCardList HoverMode="@(MudExCardHoverMode.Zoom | MudExCardHoverMode.CardEffect3d | MudExCardHoverMode.Zoom | MudExCardHoverMode.LightBulb)" HoverColor="Color.Warning" TData="object">
     <MudCard Class="index-card" @onclick="@(() => { Navi.NavigateTo("/theme-edit"); })">
             <MudCardHeader>
                 <CardHeaderContent>
+                @((MarkupString)MudExSvg.ApplicationImage(ClientTheme.CurrentTheme, new MudExDimension(140, 100)))
                     <MudText Typo="Typo.h6">Check out the new MudExThemeEdit Component</MudText>
                 </CardHeaderContent>
             </MudCardHeader>

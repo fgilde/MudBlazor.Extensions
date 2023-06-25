@@ -12,28 +12,55 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExGradientText : IMudExComponent
 {
-    [Inject] protected IServiceProvider ServiceProvider { get; set; }
+    /// <summary>
+    /// Gets or sets the service provider to use when retrieving services.
+    /// </summary>
+    [Inject]
+    public IServiceProvider ServiceProvider { get; set; }
+
+    /// <summary>
+    /// Gets the JavaScript interop instance.
+    /// </summary>
     public IJSRuntime JsRuntime => ServiceProvider.GetService<IJSRuntime>();
 
+    /// <summary>
+    /// Gets or sets the radius of the gradient.
+    /// </summary>
     [Parameter]
     public int Radius { get; set; } = 90;
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the gradient should be applied to the text foreground.
+    /// </summary>
     [Parameter]
     public bool GradientForeground { get; set; } = true;
 
+    /// <summary>
+    /// Gets or sets the fill color of the text.
+    /// </summary>
     [Parameter]
     public MudExColor TextFillColor { get; set; } = Color.Transparent;
 
+    /// <summary>
+    /// Gets or sets a value indicating whether to animate the gradient.
+    /// </summary>
     [Parameter]
     public bool Animate { get; set; } = true;
 
+    /// <summary>
+    /// Gets or sets the duration of the animation.
+    /// </summary>
     [Parameter]
     public TimeSpan AnimationDuration { get; set; } = TimeSpan.FromSeconds(3);
 
+    /// <summary>
+    /// Gets or sets the collection of colors to use for the gradient.
+    /// </summary>
     [Parameter]
     [Category("Behavior")]
     public IEnumerable<MudExColor> Palette { get; set; }
 
+    /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();

@@ -2,9 +2,19 @@
 
 namespace MudBlazor.Extensions.Helper;
 
+/// <summary>
+/// Static util MudExThemeHelper
+/// </summary>
 public static class MudExThemeHelper
 {
+    /// <summary>
+    /// Convert PaletteLight to PaletteDark
+    /// </summary>
     public static PaletteDark ToPaletteDark(this PaletteLight other) => ((Palette)other).ToPaletteDark();
+    
+    /// <summary>
+    /// Convert PaletteLight to PaletteDark
+    /// </summary>    
     public static PaletteDark ToPaletteDark(this Palette other)
     {
         return new PaletteDark
@@ -18,6 +28,9 @@ public static class MudExThemeHelper
         };
     }
 
+    /// <summary>
+    /// Convert PaletteDark to PaletteLight
+    /// </summary>
     public static PaletteLight ToPaletteLight(this PaletteDark other)
     {
         return new PaletteLight
@@ -31,12 +44,24 @@ public static class MudExThemeHelper
         };
     }
 
+    /// <summary>
+    /// Clones the theme
+    /// </summary>
+    /// <typeparam name="TTheme"></typeparam>
+    /// <param name="theme"></param>
+    /// <returns>Cloned theme with same options</returns>
     public static TTheme CloneTheme<TTheme>(this TTheme theme) where TTheme : MudTheme 
         => FromJson<TTheme>(JsonConvert.SerializeObject(theme));
 
+    /// <summary>
+    /// Creates a new theme from json
+    /// </summary>
     public static TTheme FromJson<TTheme>(string json) where TTheme : MudTheme 
         => JsonConvert.DeserializeObject<TTheme>(JsonHelper.SimplifyMudColorInJson(json));
 
+    /// <summary>
+    /// Converts Theme to json
+    /// </summary>
     public static string AsJson<TTheme>(this TTheme theme) where TTheme : MudTheme
         => JsonHelper.SimplifyMudColorInJson(JsonConvert.SerializeObject(theme));
 

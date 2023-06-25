@@ -1,6 +1,7 @@
 ﻿@using System.Reflection
 @using System.Text.RegularExpressions
 @using Microsoft.AspNetCore.Components.Rendering
+@using Microsoft.AspNetCore.Http.Authentication
 @using MudBlazor.Extensions.Helper
 
 
@@ -28,61 +29,76 @@
 }
 
 <MudExpansionPanel IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@IsInitiallyExpanded" Text="Properties">
-    <MudDataGrid T="ApiMemberInfo<PropertyInfo>" Items="@Properties" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
-                 DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true" 
-             DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
-        <ToolBarContent>
-            <MudText Typo="Typo.h6">Properties</MudText>
-            <MudSpacer />
-            <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-        </ToolBarContent>
-        <Columns>
-            <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
-                <CellTemplate>
-                    @((MarkupString)(context.Item.IsStatic ? "static" : ""))
-                    @(context.Item.Name)
-                </CellTemplate>
-            </PropertyColumn>
+    @if (Properties?.Any() == true)
+    {
+        <MudDataGrid T="ApiMemberInfo<PropertyInfo>" Items="@Properties" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+                     DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
+                     DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Properties</MudText>
+                <MudSpacer/>
+                <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            <Columns>
+                <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
+                    <CellTemplate>
+                        @((MarkupString) (context.Item.IsStatic ? "static" : ""))
+                        @(context.Item.Name)
+                    </CellTemplate>
+                </PropertyColumn>
 
-            <PropertyColumn Property="x => x.TypeName" Title="PropertyType">
-                <CellTemplate>
-                    @RenderLinks(context.Item.TypeName)
-                </CellTemplate>
-            </PropertyColumn>
-            <PropertyColumn Property="x => x.Default" />
-            <PropertyColumn Property="x => x.Description" />
-        </Columns>
-    </MudDataGrid>
+                <PropertyColumn Property="x => x.TypeName" Title="PropertyType">
+                    <CellTemplate>
+                        @RenderLinks(context.Item.TypeName)
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.Default"/>
+                <PropertyColumn Property="x => x.Description"/>
+            </Columns>
+        </MudDataGrid>
+    }
+    else
+    {
+        <MudAlert Severity="Severity.Info">No properties found</MudAlert>
+    }
 </MudExpansionPanel>
 
 
 <MudExpansionPanel IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@IsInitiallyExpanded" Text="Methods">
-    <MudDataGrid T="ApiMemberInfo<MethodInfo>" Items="@Methods" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
-                 DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
-                 DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
-        <ToolBarContent>
-            <MudText Typo="Typo.h6">Methods</MudText>
-            <MudSpacer />
-            <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-        </ToolBarContent>
-        <Columns>
-            @*<PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name" />*@
-            <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
-                <CellTemplate>
-                    @((MarkupString)(context.Item.IsStatic ? "static" : ""))
-                    @RenderFunction(context.Item.Name)
-                </CellTemplate>
-            </PropertyColumn>
-            <PropertyColumn Property="x => x.TypeName" Title="ReturnType">
-                <CellTemplate>
-                    @RenderLinks(context.Item.TypeName)
-                </CellTemplate>
-            </PropertyColumn>
-            <PropertyColumn Property="x => x.Description" />
-        </Columns>
-    </MudDataGrid>
+    @if (Methods?.Any() == true)
+    {
+        <MudDataGrid T="ApiMemberInfo<MethodInfo>" Items="@Methods" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+                     DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
+                     DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Methods</MudText>
+                <MudSpacer/>
+                <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            <Columns>
+                @*<PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name" />*@
+                <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
+                    <CellTemplate>
+                        @((MarkupString) (context.Item.IsStatic ? "static" : ""))
+                        @RenderFunction(context.Item.Name)
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.TypeName" Title="ReturnType">
+                    <CellTemplate>
+                        @RenderLinks(context.Item.TypeName)
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.Description"/>
+            </Columns>
+        </MudDataGrid>
+    }
+    else
+    {
+        <MudAlert Severity="Severity.Info">No methods found</MudAlert>
+
+    }
 </MudExpansionPanel>
 
 

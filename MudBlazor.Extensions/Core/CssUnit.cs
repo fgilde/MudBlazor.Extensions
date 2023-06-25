@@ -1,12 +1,10 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.ComponentModel;
 
 namespace MudBlazor.Extensions.Core;
 
-using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Numerics;
-
+/// <summary>
+/// Enum for all css units
+/// </summary>
 public enum CssUnit
 {
     [Description("%")]
@@ -37,7 +35,10 @@ public enum CssUnit
     Picas
 }
 
-public class MudExDimension
+/// <summary>
+/// Holds two sizes one for height and one for width and their units
+/// </summary>
+public readonly struct MudExDimension
 {
     public MudExDimension(MudExSize<double> widthAndHeight): this(widthAndHeight, widthAndHeight){}
 
@@ -47,8 +48,15 @@ public class MudExDimension
         Height = height;
     }
 
-    public MudExSize<double> Width { get; set; }
-    public MudExSize<double> Height { get; set; }
+    /// <summary>
+    /// Width
+    /// </summary>
+    public MudExSize<double> Width { get; }
+
+    /// <summary>
+    /// Height
+    /// </summary>
+    public MudExSize<double> Height { get; }
 
     
     public static implicit operator MudExDimension(double s) => new(s);

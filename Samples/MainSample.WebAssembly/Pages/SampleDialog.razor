@@ -1,5 +1,6 @@
 ﻿@using MudBlazor.Extensions.Helper
 @using MainSample.WebAssembly.Utils
+@using System.Reflection
 
 <MudDialog Class="mud-ex-dialog-initial">
     <TitleContent>
@@ -66,11 +67,26 @@
     
     protected override void OnInitialized()
     {
-        icon = MudExSvg.GetRandomMember<string>(typeof(Icons.Material.Filled));
+        icon = GetRandomMember<string>(typeof(Icons.Material.Filled));
         title = RandomTitleGenerator.GenerateRandomTitle();
         if (string.IsNullOrEmpty(icon))
             icon = Icons.Material.Filled.People;
         base.OnInitialized();
+    }
+
+    public static T GetRandomMember<T>(Type type = null)
+    {
+        type = type ?? typeof(Icons.Material.Filled);
+        var random = new Random();
+        var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static)
+            .Where(field => field.IsLiteral && !field.IsInitOnly && field.FieldType == typeof(T))
+            .ToList();
+
+        if (fields.Count == 0)
+            return default;
+
+        int index = random.Next(fields.Count);
+        return (T)fields[index].GetValue(null);
     }
 
 
