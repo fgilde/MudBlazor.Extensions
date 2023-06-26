@@ -1,4 +1,20 @@
 ﻿# MudExObjectEdit
+<!-- OBJECTEDIT:START -->
+The `MudExObjectEdit` is a robust component that allows for object editing and automatically generates the corresponding UI. This component supports automatic validation for DataAnnotation Validations or fluent registered validations for your model.
+
+To use `MudExObjectEdit`, you can simply use the `MudExObjectEditForm` and pass your model to it as shown below:
+
+```
+<MudExObjectEditForm OnValidSubmit="@OnSubmit" Value="@MyModel"></MudExObjectEditForm>
+```
+
+You can also utilize the `MudExObjectEditDialog` to edit your model in a dialog. The easiest way to do this is by using the extension method `EditObject` on the `IDialogService`.
+
+```
+dialogService.EditObject(User, "Dialog Title", dialogOptionsEx);
+```
+<!-- OBJECTEDIT:END -->
+
 `MudExObjectEdit` is a powerfull component to edit objects. 
 You can also use the `MudExObjectEditForm` to have automatic validation and submit.
 Validation works automatically for DataAnnotation Validations or fluent registered validations for your model.

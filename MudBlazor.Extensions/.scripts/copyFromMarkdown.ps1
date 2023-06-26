@@ -24,8 +24,8 @@ $source = Get-Content -Path $sourceFilePath
 
 
 if ($SourceTag) {
-    $startTag = "<!-- TEST:START -->"
-    $endTag = "<!-- TEST:END -->"
+    $startTag = "<!-- "+$SourceTag+":START -->"
+    $endTag = "<!-- "+$SourceTag+":END -->"
     $record = $false
     $result = ""
 

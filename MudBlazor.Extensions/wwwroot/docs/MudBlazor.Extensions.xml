@@ -3136,6 +3136,518 @@
             Returns the string representation that is fully compatible with all css sizes
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.DialogServiceExt">
+            <summary>
+            Dialog service extension methods.
+            </summary>
+            <summary>
+            Contains extensions for the IDialogService for displaying a file in different formats.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.DefaultOptions">
+            <summary>
+            The default dialog options.
+            </summary>
+            <returns>The default dialog options.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.MergeParameters(MudBlazor.DialogParameters,MudBlazor.DialogParameters)">
+            <summary>
+            Merges the dialog parameters.
+            </summary>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <param name="parameters">The parameters.</param>
+            <returns>The merged dialog parameters.</returns>        
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ToDialogParameters(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Converts parameters to dialog parameters.
+            </summary>
+            <param name="parameters">The parameters.</param>
+            <returns>The dialog parameters.</returns>        
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ConvertToDialogParameters``1(System.Action{``0})">
+            <summary>
+            Converts dialog parameters to a dictionary.
+            </summary>
+            <typeparam name="TDialog">The dialog type.</typeparam>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <returns>The dictionary of dialog parameters.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ConvertToDialogParameters``1(``0)">
+            <summary>
+            Converts dialog parameters to a dictionary.
+            </summary>
+            <typeparam name="TDialog">The dialog type.</typeparam>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <returns>The dictionary of dialog parameters.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx``1(MudBlazor.IDialogService,System.String,System.Action{``0},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+            <summary>
+            Shows the dialog and injects dependencies asynchronously.
+            </summary>
+            <typeparam name="TDialog">The dialog type.</typeparam>
+            <param name="dialogService">The dialog service.</param>
+            <param name="title">The title.</param>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <param name="optionsEx">The options.</param>
+            <returns>An <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx``1(MudBlazor.IDialogService,System.String,``0,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+            <summary>
+            Shows the dialog and injects dependencies asynchronously.
+            </summary>
+            <typeparam name="TDialog">The dialog type.</typeparam>
+            <param name="dialogService">The dialog service.</param>
+            <param name="title">The title.</param>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <param name="optionsEx">The options.</param>
+            <returns>An <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx``1(MudBlazor.IDialogService,System.String,``0,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows the dialog and injects dependencies asynchronously.
+            </summary>
+            <typeparam name="TDialog">The dialog type.</typeparam>
+            <param name="dialogService">The dialog service.</param>
+            <param name="title">The title.</param>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <param name="optionsEx">The options.</param>
+            <returns>An <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx``1(MudBlazor.IDialogService,System.String,System.Action{``0},MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows the dialog and injects dependencies asynchronously.
+            </summary>
+            <typeparam name="TDialog">The dialog type.</typeparam>
+            <param name="dialogService">The dialog service.</param>
+            <param name="title">The title.</param>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <param name="optionsEx">The options.</param>
+            <returns>An <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.Show``1(MudBlazor.IDialogService,System.String,System.Action{``0},System.Action{MudBlazor.DialogOptions})">
+            <summary>
+            Shows the dialog and injects dependencies immediately.
+            </summary>
+            <typeparam name="TDialog">The dialog type.</typeparam>
+            <param name="dialogService">The dialog service.</param>
+            <param name="title">The title.</param>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <param name="options">The options.</param>
+            <returns>An <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.Show``1(MudBlazor.IDialogService,System.String,``0,System.Action{MudBlazor.DialogOptions})">
+            <summary>
+            Shows the dialog and injects dependencies immediately.
+            </summary>
+            <typeparam name="TDialog">The dialog type.</typeparam>
+            <param name="dialogService">The dialog service.</param>
+            <param name="title">The title.</param>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <param name="options">The options.</param>
+            <returns>An <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.Show``1(MudBlazor.IDialogService,System.String,``0,MudBlazor.DialogOptions)">
+            <summary>
+            Shows the dialog and injects dependencies immediately.
+            </summary>
+            <typeparam name="TDialog">The dialog type.</typeparam>
+            <param name="dialogService">The dialog service.</param>
+            <param name="title">The title.</param>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <param name="options">The options.</param>
+            <returns>An <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.Show``1(MudBlazor.IDialogService,System.String,System.Action{``0},MudBlazor.DialogOptions)">
+            <summary>
+            Shows the dialog and injects dependencies immediately.
+            </summary>
+            <typeparam name="TDialog">The dialog type.</typeparam>
+            <param name="dialogService">The dialog service.</param>
+            <param name="title">The title.</param>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <param name="options">The options.</param>
+            <returns>An <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx``1(MudBlazor.IDialogService,System.String,MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows the dialog and injects dependencies asynchronously.
+            </summary>
+            <typeparam name="T">The type.</typeparam>
+            <param name="dialogService">The dialog service.</param>
+            <param name="title">The title.</param>
+            <param name="parameters">The dialog parameters.</param>
+            <param name="options">The options.</param>
+            <returns>An <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx``1(MudBlazor.IDialogService,System.String,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows the dialog and injects dependencies asynchronously.
+            </summary>
+            <typeparam name="T">The type.</typeparam>
+            <param name="dialogService">The dialog service.</param>
+            <param name="title">The title.</param>
+            <param name="options">The options.</param>
+            <returns>An <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx(MudBlazor.IDialogService,System.Type,System.String,MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows the dialog and injects dependencies immediately.
+            </summary>
+            <param name="dialogService">The dialog service.</param>
+            <param name="type">The type.</param>
+            <param name="title">The title.</param>
+            <param name="parameters">The dialog parameters.</param>
+            <param name="options">The options.</param>
+            <returns>An <see cref="T:MudBlazor.IDialogReference"/>reference.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowMessageBoxEx(MudBlazor.IDialogService,MudBlazor.MessageBoxOptions,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows the message box asynchronously.
+            </summary>
+            <param name="dialogService">The dialog service.</param>
+            <param name="mboxOptions">The mbox options.</param>
+            <param name="options">The options.</param>
+            <returns>A <see cref="!:bool?"/> value.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.GetDialogAsync``1(MudBlazor.IDialogReference)">
+            <summary>
+            Gets the dialog component asynchronously.
+            </summary>
+            <typeparam name="T">The type.</typeparam>
+            <param name="dialogReference">The dialog reference.</param>
+            <returns>The dialog component.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.String,System.String,System.String,System.Func{MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.Tasks.Task{MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult}},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+            <summary>
+            Shows a dialog which displays a file at the specified url.
+            </summary>
+            <param name="dialogService">The dialog service instance.</param>
+            <param name="url">The url of the file.</param>
+            <param name="fileName">The name of the file.</param>
+            <param name="contentType">The content type of the file.</param>
+            <param name="handleContentErrorFunc">A function that is called if an error occurs while handling the file's content.</param>
+            <param name="options">Dialog options for the displayed file.</param>
+            <returns>An awaitable task with the dialog reference.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Func{MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.Tasks.Task{MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult}},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+            <summary>
+            Shows a dialog which displays a browser file.
+            </summary>
+            <param name="dialogService">The dialog service instance.</param>
+            <param name="browserFile">The browser file to display.</param>
+            <param name="handleContentErrorFunc">A function that is called if an error occurs while handling the file's content.</param>
+            <param name="options">Dialog options for the displayed file.</param>
+            <returns>An awaitable task with the dialog reference.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.IO.Stream,System.String,System.String,System.Func{MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.Tasks.Task{MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult}},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+            <summary>
+            Shows a dialog which displays a file from a given stream.
+            </summary>
+            <param name="dialogService">The dialog service instance.</param>
+            <param name="stream">The stream containing the file.</param>
+            <param name="fileName">The name of the file.</param>
+            <param name="contentType">The content type of the file.</param>
+            <param name="handleContentErrorFunc">A function that is called if an error occurs while handling the file's content.</param>
+            <param name="options">Dialog options for the displayed file.</param>
+            <returns>An awaitable task with the dialog reference.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.String,System.String,System.String,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx},MudBlazor.DialogParameters)">
+            <summary>
+            Shows a dialog which displays a file at the specified url.
+            </summary>
+            <param name="dialogService">The dialog service instance.</param>
+            <param name="url">The url of the file.</param>
+            <param name="fileName">The name of the file.</param>
+            <param name="contentType">The content type of the file.</param>
+            <param name="options">Dialog options for the displayed file.</param>
+            <param name="dialogParameters">Parameters to pass to the dialog.</param>
+            <returns>An awaitable task with the dialog reference.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx},MudBlazor.DialogParameters)">
+            <summary>
+            Shows a dialog which displays a browser file.
+            </summary>
+            <param name="dialogService">The dialog service instance.</param>
+            <param name="browserFile">The browser file to display.</param>
+            <param name="handleContentErrorFunc">A function that is called if an error occurs while handling the file's content.</param>
+            <param name="options">Dialog options for the displayed file.</param>
+            <param name="dialogParameters">Parameters to pass to the dialog.</param>
+            <returns>An awaitable task with the dialog reference.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.IO.Stream,System.String,System.String,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx},MudBlazor.DialogParameters)">
+            <summary>
+            Shows a dialog which displays a file from a given stream.
+            </summary>
+            <param name="dialogService">The dialog service instance.</param>
+            <param name="stream">The stream containing the file.</param>
+            <param name="fileName">The name of the file.</param>
+            <param name="contentType">The content type of the file.</param>
+            <param name="options">Dialog options for the displayed file.</param>
+            <param name="dialogParameters">Parameters to pass to the dialog.</param>
+            <returns>An awaitable task with the dialog reference.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Action{``0})">
+            <summary>
+            Shows a component in a dialog with a title and message. Dialog parameters are passed as a new DialogParameters object instance.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+            <param name="dialogService">The IDialogService instance.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="message">The message to be shown in the dialog.</param>
+            <param name="componentOptions">The action that configures the component.</param>
+            <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String,System.String,System.Action{``0})">
+            <summary>
+            Shows a component in a dialog with a title, message, and icon. Dialog parameters are passed as a new DialogParameters object instance.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+            <param name="dialogService">The IDialogService instance.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="message">The message to be shown in the dialog.</param>
+            <param name="icon">The icon to be shown in the dialog.</param>
+            <param name="componentOptions">The action that configures the component.</param>
+            <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.Action{``0})">
+            <summary>
+            Shows a component in a dialog with a title. Dialog parameters are passed as a new DialogParameters object instance.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+            <param name="dialogService">The IDialogService instance.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="componentOptions">The action that configures the component.</param>
+            <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Action{``0},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+            <summary>
+            Shows a component in a dialog with a title, message, component configuration action, dialog parameters action and dialog options.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+            <param name="dialogService">The IDialogService instance.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="message">The message to be shown in the dialog.</param>
+            <param name="componentOptions">The action that configures the component.</param>
+            <param name="dialogParameters">The action that configures the dialog parameters.</param>
+            <param name="options">The action that configures the dialog options.</param>
+            <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Action{``0},MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows a component in a dialog with a title, message, component configuration action and dialog options action.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+            <param name="dialogService">The IDialogService instance.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="message">The message to be shown in the dialog.</param>
+            <param name="componentOptions">The action that configures the component.</param>
+            <param name="options">The action that configures the dialog options.</param>
+            <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog},MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows a component in a dialog with a title, message, component configuration dictionary, dialog parameters action and dialog options action.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+            <param name="dialogService">The IDialogService instance.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="message">The message to be shown in the dialog.</param>
+            <param name="componentOptions">The dictionary that configures the component.</param>
+            <param name="dialogParameters">The action that configures the dialog parameters.</param>
+            <param name="options">The action that configures the dialog options.</param>
+            <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Action{``0},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog},MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows a component in a dialog with a title, message, component configuration action, dialog parameters object and dialog options action.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+            <param name="dialogService">The IDialogService instance.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="message">The message to be shown in the dialog.</param>
+            <param name="componentOptions">The action that configures the component.</param>
+            <param name="dialogParameters">The dialog parameters to be passed.</param>
+            <param name="options">The action that configures the dialog options.</param>
+            <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Action{``0},MudBlazor.DialogParameters,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+            <summary>
+            Shows a component in a dialog with a title, message, component configuration action, dialog parameters object, and dialog options object.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+            <param name="dialogService">The IDialogService instance.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="message">The message to be shown in the dialog.</param>
+            <param name="componentOptions">The action that configures the component.</param>
+            <param name="dialogParameters">The dialog parameters to be passed.</param>
+            <param name="options">The dialog options to be passed.</param>
+            <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Action{``0},MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows a dialog with a custom component asynchronously.
+            </summary>
+            <param name="dialogService">Instance of IDialogService</param>
+            <param name="title">Title of the dialog</param>
+            <param name="message">Message of the dialog</param>
+            <param name="componentOptions">Component-specific configuration parameters</param>
+            <param name="dialogParameters">Parameters for the dialog</param>
+            <param name="options">Options for the dialog</param>
+            <returns>A Task that returns a tuple consisting of a DialogResult and the component displayed in the dialog</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+            <summary>
+            Shows a dialog with a custom component asynchronously.
+            </summary>
+            <param name="dialogService">Instance of IDialogService</param>
+            <param name="title">Title of the dialog</param>
+            <param name="message">Message of the dialog</param>
+            <param name="componentOptions">Component-specific configuration parameters</param>
+            <param name="dialogParameters">Parameters for the dialog</param>
+            <param name="options">Options for the dialog</param>
+            <returns>A Task that returns a tuple consisting of a DialogResult and the component displayed in the dialog</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},MudBlazor.DialogParameters,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+            <summary>
+            Shows a dialog with a custom component asynchronously.
+            </summary>
+            <param name="dialogService">Instance of IDialogService</param>
+            <param name="title">Title of the dialog</param>
+            <param name="message">Message of the dialog</param>
+            <param name="componentOptions">Component-specific configuration parameters</param>
+            <param name="dialogParameters">Parameters for the dialog</param>
+            <param name="options">Options for the dialog</param>
+            <returns>A Task that returns a tuple consisting of a DialogResult and the component displayed in the dialog</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogOkCancelAsync``1(MudBlazor.IDialogService,System.String,System.String,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows a dialog with a custom component asynchronously.
+            </summary>
+            <param name="dialogService">Instance of IDialogService</param>
+            <param name="title">Title of the dialog</param>
+            <param name="message">Message of the dialog</param>
+            <param name="componentOptions">Component-specific configuration parameters</param>
+            <param name="dialogParameters">Parameters for the dialog</param>
+            <param name="options">Options for the dialog</param>
+            <returns>A Task that returns a tuple consisting of a DialogResult and the component displayed in the dialog</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows a dialog with a custom component asynchronously.
+            </summary>
+            <param name="dialogService">Instance of IDialogService</param>
+            <param name="title">Title of the dialog</param>
+            <param name="message">Message of the dialog</param>
+            <param name="componentOptions">Component-specific configuration parameters</param>
+            <param name="dialogParameters">Parameters for the dialog</param>
+            <param name="options">Options for the dialog</param>
+            <returns>A Task that returns a tuple consisting of a DialogResult and the component displayed in the dialog</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowConfirmationDialogAsync(MudBlazor.IDialogService,System.String,MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows a confirmation dialog asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowConfirmationDialogAsync(MudBlazor.IDialogService,MudBlazor.MessageBoxOptions,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows a confirmation dialog with custom MessageBoxOptions asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowConfirmationDialogAsync(MudBlazor.IDialogService,MudBlazor.MessageBoxOptions,System.String,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows a confirmation dialog with custom MessageBoxOptions and an icon asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowConfirmationDialogAsync(MudBlazor.IDialogService,System.String,System.String,System.String,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows a confirmation dialog with customizable title, message, confirm text, cancel text, and icon asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowInformationAsync(MudBlazor.IDialogService,System.String,System.Action{MudBlazor.Extensions.Components.MudExMessageDialog},MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows an information dialog with customizable parameters asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowInformationAsync(MudBlazor.IDialogService,System.String,MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows an information dialog with custom DialogParameters asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowInformationAsync(MudBlazor.IDialogService,System.String,System.String)">
+            <summary>
+            Shows an information dialog with a custom message asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowInformationAsync(MudBlazor.IDialogService,System.String,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows an information dialog with a custom message and icon asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowInformationAsync(MudBlazor.IDialogService,System.String,System.String,System.String,System.Boolean,System.Boolean,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows an information dialog with a custom message, icon, ability to close, and show progress asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.PromptAsync(MudBlazor.IDialogService,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Prompts the user for input with a default empty string asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.PromptAsync(MudBlazor.IDialogService,System.String,System.String,System.Func{System.String,System.Boolean},MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Prompts the user for input with a validation function asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.PromptAsync(MudBlazor.IDialogService,System.String,System.String,System.String,System.Func{System.String,System.Boolean},MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Prompts the user for input with a validation function and custom icon asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.PromptAsync(MudBlazor.IDialogService,System.String,System.String,System.String,System.String,System.String,System.String,System.Func{System.String,System.Boolean},MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Prompts the user for input with customizable title, message, initialValue, buttonOkText, buttonCancelText, icon, validation function, and dialog options asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowObject``1(MudBlazor.IDialogService,``0,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
+            <summary>
+            Shows an object edit dialog as readonly for given object.
+            </summary>
+            <typeparam name="TModel">The type of the object to edit.</typeparam>
+            <param name="dialogService">The dialog service to use.</param>
+            <param name="value">The object to edit.</param>
+            <param name="title">The dialog title.</param>
+            <param name="options">The dialog options.</param>
+            <param name="metaConfig">The configuration of meta information.</param>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <returns>A tuple indicating if edit was cancelled and the result. </returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditObject``1(MudBlazor.IDialogService,``0,System.String,System.Func{``0,MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog{``0},System.Threading.Tasks.Task{System.String}},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
+            <summary>
+            Shows an object edit dialog for the given object.
+            </summary>
+            <typeparam name="TModel">The type of the object to edit.</typeparam>
+            <param name="dialogService">The dialog service to use.</param>
+            <param name="value">The object to edit.</param>
+            <param name="title">The dialog title.</param>
+            <param name="options">The dialog options.</param>
+            <param name="metaConfig">The configuration of meta information.</param>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <returns>A tuple indicating if edit was cancelled and the result.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditObject``1(MudBlazor.IDialogService,``0,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
+            <summary>
+            Shows an object edit dialog for the given object.
+            </summary>
+            <typeparam name="TModel">The type of the object to edit.</typeparam>
+            <param name="dialogService">The dialog service to use.</param>
+            <param name="value">The object to edit.</param>
+            <param name="title">The dialog title.</param>
+            <param name="options">The dialog options.</param>
+            <param name="metaConfig">The configuration of meta information.</param>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <returns>A tuple indicating if edit was cancelled and the result.</returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Helper.BrowserFileExt">
             <summary>
             Extensions for <see cref="T:Microsoft.AspNetCore.Components.Forms.IBrowserFile"/>
@@ -4111,14 +4623,152 @@
             Converts Theme to json
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Options.DialogOptionsEx">
+            <summary>
+            Extended Dialog Options class, inheriting from DialogOptions and ICloneable.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.OverriddenDefaultOptions">
+            <summary>
+            A boolean value indicating whether the default options are overriden.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.DefaultDialogOptions">
+            <summary>
+            The default dialog options object.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.DialogOptionsEx.SetAsDefaultDialogOptions">
+            <summary>
+            Sets the current instance of DialogOptionsEx as the default option for dialogs.
+            </summary>
+            <returns>A reference to the current instance.</returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.DialogAppearance">
+            <summary>
+            The look and feel of the dialog component dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.DialogBackgroundAppearance">
+            <summary>
+            The look and feel of the dialog background.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.JsRuntime">
+            <summary>
+            The JavaScript Runtime used to interact with the browser's JavaScript host environment. 
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.Modal">
+            <summary>
+            A boolean value indicating whether the dialog is modal or not.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.MaximizeButton">
+            <summary>
+            A nullable boolean value indicating whether the maximize button is available or not.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.MinimizeButton">
+            <summary>
+            A nullable boolean value indicating whether the minimize button is available or not.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.ShowAtCursor">
+            <summary>
+            A boolean value indicating whether the dialog is shown at the cursor location or not.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.CursorPositionOrigin">
+            <summary>
+            The point on the dialog box where the cursor is placed on showing the dialog box.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.Resizeable">
+            <summary>
+            A boolean value indicating whether the dialog is resizable or not.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.Buttons">
+            <summary>
+            An array of MudDialogButton.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.DragMode">
+            <summary>
+            A MudDialogDragMode value indicating the drag mode of the dialog box.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.FullHeight">
+            <summary>
+            A nullable boolean value indicating whether the dialog full height mode is enabled or not.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.DisablePositionMargin">
+            <summary>
+            A nullable boolean value indicating whether the dialog position margin is disabled or not.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.DisableSizeMarginX">
+            <summary>
+            A nullable boolean value indicating whether the dialog size margin x-axis is disabled or not.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.DisableSizeMarginY">
+            <summary>
+            A nullable boolean value indicating whether the dialog size margin y-axis is disabled or not.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.Animation">
+            <summary>
+            An animation type value indicating the animation effect of the dialog box.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.Animations">
+            <summary>
+            An array of animation type values indicating the set of animation effects of the dialog box.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.AnimationTimingFunction">
+            <summary>
+            An animation timing function value indicating the easing function used for the dialog box animation transitions.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.AnimationDuration">
+            <summary>
+            A time span value indicating the duration of the dialog animation effect.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.AnimationDurationInMs">
+            <summary>
+            A double value indicating the dialog animation duration in milliseconds.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.CursorPositionOriginName">
+            <summary>
+            The description string of the cursor position.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.AnimationStyle">
+            <summary>
+            A css style string indicating the animation effects of the dialog box.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.DialogOptionsEx.CloneOptions">
+            <summary>
+            Method that returns a clone object of the current instance.
+            </summary>
+            <returns>A cloned instance of the current object.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.DialogOptionsEx.Clone">
+            <summary>       
+            Method that returns a cloned instance of the current object. 
+            </summary>
+            <returns>A cloned object instance of the current object.</returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Options.ItemSelectionMode">
             <summary>
             Item selection mode for multi or single select
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Options.MudPopoverOptionsEx.ExcludedBlurSelectors">
-            <summary>
-            Click on any of this selectors will not close the popover if AutoHideOnBlur is true
             </summary>
         </member>
     </members>

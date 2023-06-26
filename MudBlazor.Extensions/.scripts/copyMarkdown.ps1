@@ -2,5 +2,9 @@
 
 
 .\copyFromMarkdown.ps1 -SourceFile "CHANGELOG.md" -Tag "CHANGELOG" -Count 5 -AddLink 0
+.\copyFromMarkdown.ps1 -SourceFile "DialogExtensions.md" -Tag "DIALOG_EXT" -SourceTag "DIALOG_EXT"
+.\copyFromMarkdown.ps1 -SourceFile "MudExFileDisplay.md" -Tag "FILEDISPLAY" -SourceTag "FILEDISPLAY"
+.\copyFromMarkdown.ps1 -SourceFile "MudExUploadEdit.md" -Tag "UPLOADEDIT" -SourceTag "UPLOADEDIT"
+.\copyFromMarkdown.ps1 -SourceFile "ObjectEdit.md" -Tag "OBJECTEDIT" -SourceTag "OBJECTEDIT"
 
 # .\copyFromMarkdown.ps1 -SourceFile "ObjectEdit.md" -Tag "TEST" -SourceTag "TEST"

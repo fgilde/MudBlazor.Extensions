@@ -6,7 +6,17 @@ namespace MudBlazor.Extensions;
 
 public static partial class DialogServiceExt
 {
-
+    /// <summary>
+    /// Shows an object edit dialog as readonly for given object.
+    /// </summary>
+    /// <typeparam name="TModel">The type of the object to edit.</typeparam>
+    /// <param name="dialogService">The dialog service to use.</param>
+    /// <param name="value">The object to edit.</param>
+    /// <param name="title">The dialog title.</param>
+    /// <param name="options">The dialog options.</param>
+    /// <param name="metaConfig">The configuration of meta information.</param>
+    /// <param name="dialogParameters">The dialog parameters.</param>
+    /// <returns>A tuple indicating if edit was cancelled and the result. </returns>
     public static async Task<(bool Cancelled, TModel Result)> ShowObject<TModel>(this IDialogService dialogService, TModel value, string title, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null, DialogParameters dialogParameters = null)
     {
         var parameters = new DialogParameters
@@ -21,6 +31,17 @@ public static partial class DialogServiceExt
         }, MergeParameters(dialogParameters, parameters));
     }
 
+    /// <summary>
+    /// Shows an object edit dialog for the given object.
+    /// </summary>
+    /// <typeparam name="TModel">The type of the object to edit.</typeparam>
+    /// <param name="dialogService">The dialog service to use.</param>
+    /// <param name="value">The object to edit.</param>
+    /// <param name="title">The dialog title.</param>
+    /// <param name="options">The dialog options.</param>
+    /// <param name="metaConfig">The configuration of meta information.</param>
+    /// <param name="dialogParameters">The dialog parameters.</param>
+    /// <returns>A tuple indicating if edit was cancelled and the result.</returns>
     public static async Task<(bool Cancelled, TModel Result)> EditObject<TModel>(this IDialogService dialogService,
         TModel value, string title, Func<TModel, MudExObjectEditDialog<TModel>, Task<string>> customSubmit, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null,
         DialogParameters dialogParameters = null)
@@ -32,6 +53,17 @@ public static partial class DialogServiceExt
         return await dialogService.EditObject(value, title, options, metaConfig, MergeParameters(dialogParameters, parameters));
     }
 
+    /// <summary>
+    /// Shows an object edit dialog for the given object.
+    /// </summary>
+    /// <typeparam name="TModel">The type of the object to edit.</typeparam>
+    /// <param name="dialogService">The dialog service to use.</param>
+    /// <param name="value">The object to edit.</param>
+    /// <param name="title">The dialog title.</param>
+    /// <param name="options">The dialog options.</param>
+    /// <param name="metaConfig">The configuration of meta information.</param>
+    /// <param name="dialogParameters">The dialog parameters.</param>
+    /// <returns>A tuple indicating if edit was cancelled and the result.</returns>
     public static async Task<(bool Cancelled, TModel Result)> EditObject<TModel>(this IDialogService dialogService, TModel value, string title, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null, DialogParameters dialogParameters = null)
     {
         if (MudExObjectEdit<TModel>.IsPrimitive())
