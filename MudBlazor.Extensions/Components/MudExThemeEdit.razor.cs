@@ -405,6 +405,8 @@ public partial class MudExThemeEdit<TTheme>
         {
             var themePreset = new ThemePreset<TTheme>(name, Theme.CloneTheme());
             await ThemeCreated.InvokeAsync(themePreset);
+            _selectedPreset = themePreset;
+            await SetTheme(themePreset.Theme);
         }
     }
 }

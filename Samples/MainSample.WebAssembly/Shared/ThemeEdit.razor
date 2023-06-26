@@ -49,6 +49,16 @@
         _themeEditOpen = false;
     }
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        MainLayout.Instance.ThemeChanged += async (_, _) =>
+        {
+            _themes = await ClientTheme.GetAllThemes(StorageService);
+            StateHasChanged();
+        };
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

@@ -12,11 +12,11 @@
 @if (Presets?.Any() == true || AllowPresetsEdit)
 {
     <MudGrid Class="mb-5 mt-5">
-        <MudExThemeSelect Style="@MudExStyleBuilder.Default.WithOutline(1, BorderStyle.Solid, Color.Primary).Style" 
+        <MudExThemeSelect Style="@MudExStyleBuilder.Default.WithBorder(1, BorderStyle.Solid, Color.Primary).WithBorderRadius("var(--mud-default-borderradius)").Style"
                           PreviewMode="@GetPreviewMode()" TTheme="TTheme" Available="@Presets" SelectedChanged="@OnSelectedPresetChange" SelectedTheme="Theme" />
         @if (AllowPresetsEdit)
         {
-            <MudButtonGroup Color="Color.Primary" Style="margin-bottom: -1px; margin-top: 5px;" Class="mr-2" Size="Size.Small" Variant="Variant.Outlined">
+            <MudButtonGroup Color="Color.Primary" Style="margin-left: -1px; margin-top: 6px;" Class="mr-2" Size="Size.Small" Variant="Variant.Outlined">
                 <MudIconButton OnClick="@OnAddThemeClick" Icon="@Icons.Material.Filled.Add" Color="Color.Primary"/>
                 <MudIconButton OnClick="@OnDeleteThemeClick" Disabled="@(!CanDeletePreset(_selectedPreset))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
             </MudButtonGroup>
