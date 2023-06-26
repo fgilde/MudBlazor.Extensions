@@ -361,7 +361,7 @@ Latest Changes:
  - 1.7.47 > **_Breaking:_** Rename: Static util class MudExColor is now MudExColorUtils
  - 1.7.46 > Ensure Min or Max sizes arn't overwritten when using Resizable
 <!-- CHANGELOG:END -->
-[Full change log can be found here]https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/CHANGELOG.md) 
+Full change log can be found [here](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/CHANGELOG.md) 
 
  
 
