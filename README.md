@@ -1,11 +1,4 @@
 [![GitHub](https://img.shields.io/github/license/garderoben/mudblazor?color=594ae2&style=flat-square&logo=github)](https://github.com/fgilde/MudBlazor.Extensions/blob/master/LICENSE)
-#
- - 1.7.55 > new Component [MudExThemeEdit](https://www.mudex.org/theme-edit) to edit theme(s) and presets of themes as easy as possible and supports all options from your inherited MudThemes.
- - 1.7.54 > new Component [MudExThemeSelect](https://www.mudex.org/theme-select) to simple select a theme with an automatically generated preview image.
- - 1.7.53 > Extend [MudExSvg](https://www.mudex.org/d/MudExSvg/MudExSvg) utils with new Methods to generate an SVG application image for the current theme.
- - 1.7.50 > new Component [MudExColor](https://www.mudex.org/c/MudExColorEdit) for all color parameters as default renderer in MudExObjectEdit
- - 1.7.48 > BugFix
-#
 [![GitHub](https://img.shields.io/github/license/garderoben/mudblazor?color=594ae2&style=flat-square&logo=github)](https://github.com/fgilde/MudBlazor.Extensions/blob/master/LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/fgilde/MudBlazor.Extensions?color=594ae2&style=flat-square&logo=github)](https://github.com/fgilde/MudBlazor.Extensions)
 [![Nuget version](https://img.shields.io/nuget/v/MudBlazor.Extensions?color=ff4081&label=nuget%20version&logo=nuget&style=flat-square)](https://www.nuget.org/packages/MudBlazor.Extensions/)
@@ -25,7 +18,6 @@ MudBlazor.Extensions is a extension library for MudBlazor Component library from
 <!---
 [Running Sample Application (Github Pages)](https://fgilde.github.io/MudBlazor.Extensions/sample/wwwroot/)
 -->
-
 
 
 
