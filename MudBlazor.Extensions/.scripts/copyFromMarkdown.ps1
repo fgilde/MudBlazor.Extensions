@@ -12,43 +12,53 @@ param(
     [bool]$AddLink = $true,
     
     [Parameter(Mandatory=$false)]
-    [string]$SourceTag
+    [string]$SourceTag,
+
+    [Parameter(Mandatory=$false)]
+    [bool]$All = $false
 )
 
-# Define paths
-$sourceFilePath = Join-Path ".." (Join-Path "Docs" $SourceFile)
-$readmeFilePath = Join-Path ".." "..\README.md"
+# Check if the SourceFile is a URL or a local file path
+if ($SourceFile -match '^http(s)?://') {
+    # SourceFile is a URL, fetch content from the web
+    $response = Invoke-WebRequest -Uri $SourceFile
+    $source = $response.Content -split "`n"
+} else {
+    # SourceFile is a local file path, read content from the file
+    $sourceFilePath = Join-Path ".." (Join-Path "Docs" $SourceFile)
+    $source = Get-Content -Path $sourceFilePath
+}
 
-# Read the changelog
-$source = Get-Content -Path $sourceFilePath
 
+if ($SourceTag -or $All) {
+    if ($All) {
+		$changes = $source
+	} else {
+        $startTag = "<!-- "+$SourceTag+":START -->"
+        $endTag = "<!-- "+$SourceTag+":END -->"
+        $record = $false
+        $result = ""
 
-if ($SourceTag) {
-    $startTag = "<!-- "+$SourceTag+":START -->"
-    $endTag = "<!-- "+$SourceTag+":END -->"
-    $record = $false
-    $result = ""
-
-    foreach ($line in $source)
-    {
-        if ($line.Trim() -eq $endTag)
+        foreach ($line in $source)
         {
-            $record = $false
-        }
+            if ($line.Trim() -eq $endTag)
+            {
+                $record = $false
+            }
 
-        if ($record)
-        {
-            $result += $line + "`n"
-        }
+            if ($record)
+            {
+                $result += $line + "`n"
+            }
 
-        if ($line.Trim() -eq $startTag)
-        {
-            $record = $true
+            if ($line.Trim() -eq $startTag)
+            {
+                $record = $true
+            }
         }
-    }
         
-    $changes = $result
-
+        $changes = $result
+    }
 }
  else {
     $changes = $source | Where-Object { $_ -match ">\s" } | Select-Object -First $Count

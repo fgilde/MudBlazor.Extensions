@@ -15,7 +15,6 @@ MudBlazor.Extensions is a extension library for MudBlazor Component library from
 [![Cloudflare](https://img.shields.io/badge/Cloudflare-Demo-blue)](https://mudblazor-extensions.pages.dev)
 #
 
-
 <!---
 [Running Sample Application (Github Pages)](https://fgilde.github.io/MudBlazor.Extensions/sample/wwwroot/)
 -->
@@ -96,13 +95,63 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
 }
 ```
 
+
+<!-- WIKI:START -->
+<!-- Copied from https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md on 2023-06-26 20:16:26 -->
+## Showcase
+
+https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/39e06d88-a947-43cd-9151-a7cf96bcd849
+
+
+https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/3c77b8bf-6198-4385-b452-f25cc2852e0a
+
+
+https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/ce9bdf86-aaf9-4f04-b861-bd57698bb7f5
+
+
+https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/6b054bdc-a413-437c-8dbb-ded4e242d2a7
+
+
+https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/57f39cec-c3e9-43aa-8bfe-260d9aa05f63
+
+
+https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/c6a0e47d-2ed6-4a4e-b2b8-f4963274c9f8
+
+
+https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/3fc658d7-7fa2-487e-98d2-91860e00374a
+
+
+https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/aa266253-f1ac-450d-bd7b-510d2b99e3c0
+
+
+https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/cf4ff772-953e-4462-90fc-b32249083fb8
+
+
+https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/79bccec3-9e04-4901-a7d2-a08c9cef031c
+
+
+https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/8963eaaa-0f96-4c76-8e3c-c945920b2c23
+
+
+https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/cd5bab33-75cd-442d-a156-f43cc3a1c78c
+
+
+https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/8545a70c-1ce2-4683-8f1e-40a69efe462b
+
+
+https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/5c736020-94ba-431a-94f7-8e437530978e
+
+
+[More](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md)
+<!-- WIKI:END -->
+
 ## Components
 
 This section introduces you to the various components provided by the MudBlazor.Extensions.
 
 ### MudExObjectEdit
 <!-- OBJECTEDIT:START -->
-<!-- Copied from ObjectEdit.md on 2023-06-26 14:13:07 -->
+<!-- Copied from ObjectEdit.md on 2023-06-26 20:16:26 -->
 The `MudExObjectEdit` is a robust component that allows for object editing and automatically generates the corresponding UI. This component supports automatic validation for DataAnnotation Validations or fluent registered validations for your model.
 
 To use `MudExObjectEdit`, you can simply use the `MudExObjectEditForm` and pass your model to it as shown below:
@@ -122,7 +171,7 @@ dialogService.EditObject(User, "Dialog Title", dialogOptionsEx);
 
 ### MudExFileDisplay
 <!-- FILEDISPLAY:START -->
-<!-- Copied from MudExFileDisplay.md on 2023-06-26 14:13:07 -->
+<!-- Copied from MudExFileDisplay.md on 2023-06-26 20:16:26 -->
 The `MudExFileDisplay` component is designed to display file contents, such as a preview before uploading or for referenced files. This component can automatically handle URLs or streams and deliver the best possible display. Additionally, you can implement `IMudExFileDisplay` in your own component to register a custom file display.
 
 Example of using `MudExFileDisplay`:
@@ -176,7 +225,7 @@ await dialogService.ShowEx<MudExFileDisplayDialog>(title, parameters, optionsEx)
 
 ### MudExUploadEdit
 <!-- UPLOADEDIT:START -->
-<!-- Copied from MudExUploadEdit.md on 2023-06-26 14:13:07 -->
+<!-- Copied from MudExUploadEdit.md on 2023-06-26 20:16:26 -->
 
 This component provides multi-file upload functionality, with features like duplicate checks, max size, specific allowed content types, max items, zip auto-extract, and many more.
 
@@ -189,7 +238,7 @@ This component provides multi-file upload functionality, with features like dupl
 
 ## Extensions
 <!-- DIALOG_EXT:START -->
-<!-- Copied from DialogExtensions.md on 2023-06-26 14:13:07 -->
+<!-- Copied from DialogExtensions.md on 2023-06-26 20:16:26 -->
 ### Resizable or Draggable Dialogs
 
 You can make your dialogs resizable or draggable using the following code snippet:
@@ -300,7 +349,7 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 ## Change Log 
 Latest Changes: 
 <!-- CHANGELOG:START -->
-<!-- Copied from CHANGELOG.md on 2023-06-26 14:13:07 -->
+<!-- Copied from CHANGELOG.md on 2023-06-26 20:16:26 -->
  - 1.7.55 > new Component [MudExThemeEdit](https://www.mudex.org/theme-edit) to edit theme(s) and presets of themes as easy as possible and supports all options from your inherited MudThemes.
  - 1.7.54 > new Component [MudExThemeSelect](https://www.mudex.org/theme-select) to simple select a theme with an automatically generated preview image.
  - 1.7.53 > Extend [MudExSvg](https://www.mudex.org/d/MudExSvg/MudExSvg) utils with new Methods to generate an SVG application image for the current theme.

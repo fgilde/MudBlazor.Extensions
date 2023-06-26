@@ -6,5 +6,6 @@
 .\copyFromMarkdown.ps1 -SourceFile "MudExFileDisplay.md" -Tag "FILEDISPLAY" -SourceTag "FILEDISPLAY"
 .\copyFromMarkdown.ps1 -SourceFile "MudExUploadEdit.md" -Tag "UPLOADEDIT" -SourceTag "UPLOADEDIT"
 .\copyFromMarkdown.ps1 -SourceFile "ObjectEdit.md" -Tag "OBJECTEDIT" -SourceTag "OBJECTEDIT"
+.\copyFromMarkdown.ps1 -SourceFile "https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md" -Tag "WIKI" -All 1
 
 # .\copyFromMarkdown.ps1 -SourceFile "ObjectEdit.md" -Tag "TEST" -SourceTag "TEST"
