@@ -101,7 +101,7 @@ This section introduces you to the various components provided by the MudBlazor.
 
 ### MudExObjectEdit
 <!-- OBJECTEDIT:START -->
-<!-- Copied from ObjectEdit.md on 2023-06-26 14:09:35 -->
+<!-- Copied from ObjectEdit.md on 2023-06-26 14:13:07 -->
 The `MudExObjectEdit` is a robust component that allows for object editing and automatically generates the corresponding UI. This component supports automatic validation for DataAnnotation Validations or fluent registered validations for your model.
 
 To use `MudExObjectEdit`, you can simply use the `MudExObjectEditForm` and pass your model to it as shown below:
@@ -121,7 +121,7 @@ dialogService.EditObject(User, "Dialog Title", dialogOptionsEx);
 
 ### MudExFileDisplay
 <!-- FILEDISPLAY:START -->
-<!-- Copied from MudExFileDisplay.md on 2023-06-26 14:09:35 -->
+<!-- Copied from MudExFileDisplay.md on 2023-06-26 14:13:07 -->
 The `MudExFileDisplay` component is designed to display file contents, such as a preview before uploading or for referenced files. This component can automatically handle URLs or streams and deliver the best possible display. Additionally, you can implement `IMudExFileDisplay` in your own component to register a custom file display.
 
 Example of using `MudExFileDisplay`:
@@ -175,7 +175,7 @@ await dialogService.ShowEx<MudExFileDisplayDialog>(title, parameters, optionsEx)
 
 ### MudExUploadEdit
 <!-- UPLOADEDIT:START -->
-<!-- Copied from MudExUploadEdit.md on 2023-06-26 14:09:35 -->
+<!-- Copied from MudExUploadEdit.md on 2023-06-26 14:13:07 -->
 
 This component provides multi-file upload functionality, with features like duplicate checks, max size, specific allowed content types, max items, zip auto-extract, and many more.
 
@@ -188,7 +188,7 @@ This component provides multi-file upload functionality, with features like dupl
 
 ## Extensions
 <!-- DIALOG_EXT:START -->
-<!-- Copied from DialogExtensions.md on 2023-06-26 14:09:35 -->
+<!-- Copied from DialogExtensions.md on 2023-06-26 14:13:07 -->
 ### Resizable or Draggable Dialogs
 
 You can make your dialogs resizable or draggable using the following code snippet:
@@ -299,12 +299,17 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 ## Change Log 
 Latest Changes: 
 <!-- CHANGELOG:START -->
-<!-- Copied from CHANGELOG.md on 2023-06-26 14:09:35 -->
+<!-- Copied from CHANGELOG.md on 2023-06-26 14:13:07 -->
  - 1.7.55 > new Component [MudExThemeEdit](https://www.mudex.org/theme-edit) to edit theme(s) and presets of themes as easy as possible and supports all options from your inherited MudThemes.
  - 1.7.54 > new Component [MudExThemeSelect](https://www.mudex.org/theme-select) to simple select a theme with an automatically generated preview image.
  - 1.7.53 > Extend [MudExSvg](https://www.mudex.org/d/MudExSvg/MudExSvg) utils with new Methods to generate an SVG application image for the current theme.
  - 1.7.50 > new Component [MudExColor](https://www.mudex.org/c/MudExColorEdit) for all color parameters as default renderer in MudExObjectEdit
  - 1.7.48 > BugFix
+ - 1.7.47 > Update Microsoft.AspNetCore.Components.Web to 7.0.5 for .net 7 and 6.0.16 for .net 6
+ - 1.7.47 > Update MudBlazor to 6.4.1 and adapt MudExPopover required changes.
+ - 1.7.47 > **_Breaking:_** New Color Type [MudExColor](https://www.mudex.org/d/MudExColor) that can used with MudColor, MudBlazor.Color enum, string or it directly used for all color parameters.
+ - 1.7.47 > **_Breaking:_** Rename: Static util class MudExColor is now MudExColorUtils
+ - 1.7.46 > Ensure Min or Max sizes arn't overwritten when using Resizable
 <!-- CHANGELOG:END -->
 [Full change log can be found here]https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/CHANGELOG.md) 
 
