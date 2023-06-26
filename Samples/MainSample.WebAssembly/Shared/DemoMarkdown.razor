@@ -1,4 +1,5 @@
 ﻿@using Nextended.Core.Extensions
+@using Markdig.Syntax.Inlines
 @inject HttpClient Http
 
 @if (CenterImagesAndHeadlines)
@@ -21,7 +22,7 @@
 
 
 <div class="@GetCls()">
-    <MudMarkdown CodeBlockTheme="@(MainLayout.Instance?.IsDark == true ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.Default)" OverrideHeaderTypo="TypoConvert()" Value="@Value"></MudMarkdown>
+    <MudMarkdown OverrideLinkUrl="@LinkThat" CodeBlockTheme="@(MainLayout.Instance?.IsDark == true ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.Default)" OverrideHeaderTypo="TypoConvert()" Value="@Value"></MudMarkdown>
 </div>
 
 @code {
@@ -62,6 +63,16 @@
             var r = (int)typo + factor;
             return r < 0 ? Typo.h4 : (Typo)r;
         };
+    }
+
+    private string? LinkThat(LinkInline arg)
+    {
+        if (!arg.IsImage && arg.Url.EndsWith(".md"))
+        {
+            return $"/d/{Path.GetFileNameWithoutExtension(arg.Url)}";
+        }
+        
+        return arg.Url;
     }
 
 }
