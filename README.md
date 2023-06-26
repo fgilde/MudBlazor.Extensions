@@ -1,4 +1,12 @@
 [![GitHub](https://img.shields.io/github/license/garderoben/mudblazor?color=594ae2&style=flat-square&logo=github)](https://github.com/fgilde/MudBlazor.Extensions/blob/master/LICENSE)
+#
+ - 1.7.55 > new Component [MudExThemeEdit](https://www.mudex.org/theme-edit) to edit theme(s) and presets of themes as easy as possible and supports all options from your inherited MudThemes.
+ - 1.7.54 > new Component [MudExThemeSelect](https://www.mudex.org/theme-select) to simple select a theme with an automatically generated preview image.
+ - 1.7.53 > Extend [MudExSvg](https://www.mudex.org/d/MudExSvg/MudExSvg) utils with new Methods to generate an SVG application image for the current theme.
+ - 1.7.50 > new Component [MudExColor](https://www.mudex.org/c/MudExColorEdit) for all color parameters as default renderer in MudExObjectEdit
+ - 1.7.48 > BugFix
+#
+[![GitHub](https://img.shields.io/github/license/garderoben/mudblazor?color=594ae2&style=flat-square&logo=github)](https://github.com/fgilde/MudBlazor.Extensions/blob/master/LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/fgilde/MudBlazor.Extensions?color=594ae2&style=flat-square&logo=github)](https://github.com/fgilde/MudBlazor.Extensions)
 [![Nuget version](https://img.shields.io/nuget/v/MudBlazor.Extensions?color=ff4081&label=nuget%20version&logo=nuget&style=flat-square)](https://www.nuget.org/packages/MudBlazor.Extensions/)
 [![Website](https://img.shields.io/website?label=mudex.org&url=http%3A%2F%2Fmudex.org)](https://www.mudex.org/)
@@ -18,28 +26,55 @@ MudBlazor.Extensions is a extension library for MudBlazor Component library from
 [Running Sample Application (Github Pages)](https://fgilde.github.io/MudBlazor.Extensions/sample/wwwroot/)
 -->
 
-### Using / Prerequirements
-Using is as easy it can be
-Sure you need a MudBlazor project and the referenced package to MudBlazor for more informations and help see https://mudblazor.com/ and https://github.com/MudBlazor/Templates
 
-Add the nuget Package `MudBlazor.Extensions` to your blazor project
+
+
+
+# MudBlazor.Extensions
+
+The MudBlazor.Extensions is a convenient package that extends the capabilities of the MudBlazor component library. This guide will demonstrate the setup process for your project, along with detailed explanations of the components, extensions, and functionalities provided.
+
+It's important to note that this package requires a MudBlazor project and the referenced MudBlazor package. For further information and assistance, please visit the official MudBlazor documentation at [MudBlazor](https://mudblazor.com/) and [MudBlazor/Templates](https://github.com/MudBlazor/Templates).
+
+## Table of Contents
+- [Installation](#installation)
+- [Setting Up MudBlazor.Extensions](#setting-up-mudblazor-extensions)
+- [Components](#components)
+  - [MudExObjectEdit](#mudexobjectedit)
+  - [MudExFileDisplay](#mudexfiledisplay)
+  - [MudExFileDisplayZip](#mudexfiledisplayzip)
+  - [MudExFileDisplayDialog](#mudexfiledisplaydialog)
+  - [MudExUploadEdit](#mudexuploadedit)
+- [Extensions](#extensions)
+  - [Making Dialogs Resizable and Draggable](#making-dialogs-resizable-and-draggable)
+  - [Adding a Maximize Button](#adding-a-maximize-button)
+  - [Adding Custom Buttons](#adding-custom-buttons)
+  - [Animation for Showing Dialog](#animation-for-showing-dialog)
+  - [Removing Need of DialogParameters](#removing-need-of-dialogparameters)
+
+## Installation
+
+The installation process is straightforward. All you need to do is add the `MudBlazor.Extensions` NuGet package to your Blazor project. You can do this using the following code:
 
 ```
 <PackageReference Include="MudBlazor.Extensions" Version="*" />
 ```
 
-For easier using the components should change your `_Imports.razor` and add this entries.
+## Setting Up MudBlazor.Extensions
 
-```csharp
+Setting up MudBlazor.Extensions involves three steps:
+
+1. Update the `_Imports.razor` with the following lines:
+
+```
 @using MudBlazor.Extensions
 @using MudBlazor.Extensions.Components
 @using MudBlazor.Extensions.Components.ObjectEdit
 ```
 
-Register the MudBlazor.Extensions in your `Startup.cs` in the `ConfigureServices` method.
-> **_NOTICE:_** You can pass Assemblies params to search and add the possible service implementations for `IObjectMetaConfiguration` and `IDefaultRenderDataProvider` automaticly. If you don't pass any Assembly the MudBlazor.Extensions will search in the Entry and calling Assembly.
+2. Register MudBlazor.Extensions in your `Startup.cs` in the `ConfigureServices` method.
 
-```csharp
+```
 // use this to add MudServices and the MudBlazor.Extensions
 builder.Services.AddMudServicesWithExtensions();
 
@@ -47,8 +82,9 @@ builder.Services.AddMudServicesWithExtensions();
 builder.Services.AddMudExtensions();
 ```
 
-You can also provide default dialogOptions here
-```csharp
+3. (Optional) Define default dialogOptions.
+
+```
 builder.Services.AddMudServicesWithExtensions(c =>
 {
     c.WithDefaultDialogOptions(ex =>
@@ -58,11 +94,9 @@ builder.Services.AddMudServicesWithExtensions(c =>
 });
 ```
 
+Please note: The dialog extensions are static, hence, you need to set the IJSRuntime somewhere in your code, for example, in your `App.razor` or `MainLayout.razor` in the `OnAfterRenderAsync` method. This is not a requirement but it does save you from passing the IJSRuntime in every `DialogOptionsEx`.
 
-Because the dialog extensions are static you need to set the IJSRuntime somewhere in your code for example in your `App.razor` or `MainLayout.razor` in the `OnAfterRenderAsync` method.
-This is not required but otherwise you need to pass the IJSRuntime in every `DialogOptionsEx`
-If I find a better solution I will change this.
-```csharp
+```
 protected override async Task OnAfterRenderAsync(bool firstRender)
 {
     if (firstRender)
@@ -72,58 +106,63 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
 ```
 
 ## Components
-#### MudExObjectEdit
-`MudExObjectEdit` is a powerfull component to edit objects and automatically render the whole UI. 
-You can also use the `MudExObjectEditForm` to have automatic validation and submit.
-Validation works automatically for DataAnnotation Validations or fluent registered validations for your model.
-The easiest way to use it is to use the `MudExObjectEditForm` and pass your model to it.
-```csharp
+
+This section introduces you to the various components provided by the MudBlazor.Extensions.
+
+### MudExObjectEdit
+The `MudExObjectEdit` is a robust component that allows for object editing and automatically generates the corresponding UI. This component supports automatic validation for DataAnnotation Validations or fluent registered validations for your model.
+
+To use `MudExObjectEdit`, you can simply use the `MudExObjectEditForm` and pass your model to it as shown below:
+
+```
 <MudExObjectEditForm OnValidSubmit="@OnSubmit" Value="@MyModel"></MudExObjectEditForm>
 ```
 
-You can also use the `MudExObjectEditDialog` to edit you model in a dialog. The easieest way to do this is to use the extension method `EditObject` on the `IDialogService`.
-```csharp
+You can also utilize the `MudExObjectEditDialog` to edit your model in a dialog. The easiest way to do this is by using the extension method `EditObject` on the `IDialogService`.
+
+```
 dialogService.EditObject(User, "Dialog Title", dialogOptionsEx);
 ```
 
-[More Informations of MudExObjectEdit you can find here](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/ObjectEdit.md)
+For more information about MudExObjectEdit, you can check [here](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/ObjectEdit.md).
 
+### MudExFileDisplay
+The `MudExFileDisplay` component is designed to display file contents, such as a preview before uploading or for referenced files. This component can automatically handle URLs or streams and deliver the best possible display. Additionally, you can implement `IMudExFileDisplay` in your own component to register a custom file display.
 
+Example of using `MudExFileDisplay`:
 
-#### MudExFileDisplay
-A Component to display file contents for example as preview before uploading or for referenced files.
-This components automatically tries to display as best as possible and can handle urls or streams directly.
-Also you can easially implement `IMudExFileDisplay`in your own component to register a custom file display. For example if you want to build or use your own video player
-You can use it like this
-
-```xml
+```
  <MudExFileDisplay FileName="NameOfYourFile.pdf" ContentType="application/pdf" Url="@Url"></MudExFileDisplay>
 ```
+
 ![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/FileDisplayPdf.png)
 
-#### MudExFileDisplayZip 
- This component is also automatically used by `MudExFileDisplay` but can also used manually if you need to.
+### MudExFileDisplayZip 
+This component can be automatically utilized by `MudExFileDisplay`, but can also be used manually if necessary.
 
- ```xml
+```
  <MudExFileDisplayZip AllowDownload="@AllowDownload" RootFolderName="@FileName" ContentStream="@ContentStream" Url="@Url"></MudExFileDisplayZip>
 ```
+
 ![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/FileDisplayZip.png)
 
-#### MudExFileDisplayDialog
-A small dialog for the `MudExFileDisplay` Component. Can be used with static helpers to show like this
+### MudExFileDisplayDialog
+A small dialog for the `MudExFileDisplay` Component. It can be used with static helpers as shown below:
 
-```csharp
+```
  await MudExFileDisplayDialog.Show(_dialogService, dataUrl, request.FileName, request.ContentType, ex => ex.JsRuntime = _jsRuntime);
 ```
 
-Can be used directly with an IBrowserFile
-```csharp
+It can be used directly with an IBrowserFile:
+
+```
  IBrowserFile file = File;
  await MudExFileDisplayDialog.Show(_dialogService, file, ex => ex.JsRuntime = _jsRuntime);
 ```
 
-Can also be used completely manually with MudBlazor dialogService
-```csharp
+Or it can be used manually with the MudBlazor dialogService:
+
+```
 var parameters = new DialogParameters
 {
     {nameof(Icon), BrowserFileExtensions.IconForFile(contentType)},
@@ -135,177 +174,127 @@ await dialogService.ShowEx<MudExFileDisplayDialog>(title, parameters, optionsEx)
 
 ![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/FileDisplayDialog.gif)
 
-#### MudExUploadEdit
+### MudExUploadEdit
 
-This is a multi file upload component with Features like duplicate check, max size, specific allowed content types, max items, zip auto extract and many more. 
+This component provides multi-file upload functionality, with features like duplicate checks, max size, specific allowed content types, max items, zip auto-extract, and many more.
 
 ![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/UploadEdit.gif)
-<br>
-<a href="https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Screenshots/UploadEdit.mkv?raw=true" target="_blank">Download Video</a>
+[Download Video](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Screenshots/UploadEdit.mkv?raw=true)
 
 ## Extensions
 
-#### Make dialogs resizeable or draggable
+### Resizable or Draggable Dialogs
 
-```csharp
-       var options = new DialogOptionsEx { Resizeable = true, DragMode = MudDialogDragMode.Simple, CloseButton = true,  FullWidth = true };
-       var dialog = await _dialogService.ShowEx<YourMudDialog>("your dialog title", parameters, options);
+You can make your dialogs resizable or draggable using the following code snippet:
+
+```
+var options = new DialogOptionsEx { Resizeable = true, DragMode = MudDialogDragMode.Simple, CloseButton = true, FullWidth = true };
+var dialog = await _dialogService.ShowEx<YourMudDialog>("Your Dialog Title", parameters, options);
 ```
 
-#### Add Maximize Button
+### Adding a Maximize Button
 
-```csharp
-       var options = new DialogOptionsEx { MaximizeButton = true, CloseButton = true};
-       var dialog = await _dialogService.ShowEx<YourMudDialog>("your Dialog title", parameters, options);
+You can add a maximize button to your dialogs with the following code:
+
+```
+var options = new DialogOptionsEx { MaximizeButton = true, CloseButton = true };
+var dialog = await _dialogService.ShowEx<YourMudDialog>("Your Dialog Title", parameters, options);
 ```
 
-#### Add Custom Buttons
+### Adding Custom Buttons
 
-First in your component code you need to define the callback methods as `JSInvokable`
+To add custom buttons to your dialog, first define the callback methods as `JSInvokable` in your component code:
 
-```csharp
-        [JSInvokable]
-        public void AlarmClick()
-        {
-           // OnAlarmButton Click
-        }
+```
+[JSInvokable]
+public void AlarmClick()
+{
+   // OnAlarmButton Click
+}
 
-        [JSInvokable]
-        public void ColorLensClick()
-        {
-           // OnColorLensButton Click
-        }
+[JSInvokable]
+public void ColorLensClick()
+{
+   // OnColorLensButton Click
+}
 ```
 
-Then define your custom buttons
+Next, define your custom buttons:
 
-```csharp
-          var buttons = new[]
-            {
-                new MudDialogButton( DotNetObjectReference.Create(this as object), nameof(AlarmClick)) {Icon = Icons.Filled.Alarm},
-                new MudDialogButton( DotNetObjectReference.Create(this as object), nameof(ColorLensClick)) {Icon = Icons.Filled.ColorLens},
-            };
+```
+var buttons = new[]
+{
+    new MudDialogButton( DotNetObjectReference.Create(this as object), nameof(AlarmClick)) {Icon = Icons.Filled.Alarm},
+    new MudDialogButton( DotNetObjectReference.Create(this as object), nameof(ColorLensClick)) {Icon = Icons.Filled.ColorLens},
+};
 ```
 
-```csharp
-       var options = new DialogOptionsEx { MaximizeButton = true, CloseButton = true, Buttons = buttons};
-       var dialog = await _dialogService.ShowEx<YourMudDialog>("your dialog title", parameters, options);
+Finally, add your custom buttons to the dialog:
+
+```
+var options = new DialogOptionsEx { MaximizeButton = true, CloseButton = true, Buttons = buttons };
+var dialog = await _dialogService.ShowEx<YourMudDialog>("Your Dialog Title", parameters, options);
 ```
 
-Now a dialog can look like this
+Your dialog can now look like this:
 
 ![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/sampleDialogScreenshot.png)
 
-Use animation to show dialog
+### Using Animation to Show Dialog
 
-```csharp
-       var options = new DialogOptionsEx { 
-           MaximizeButton = true, 
-           CloseButton = true, 
-           Buttons = buttons, 
-           Position = DialogPosition.CenterRight, 
-           Animation = AnimationType.SlideIn, 
-           AnimationDuration = TimeSpan.FromMilliseconds(500),
-           FullHeight = true
-       };
-       var dialog = await _dialogService.ShowEx<YourMudDialog>("your dialog title", parameters, options);
+You can use animation to display your dialog. This is done by setting the `Animation` property of `DialogOptionsEx`.
+
 ```
-
+var options = new DialogOptionsEx { 
+    MaximizeButton = true, 
+    CloseButton = true, 
+    Buttons = buttons, 
+    Position = DialogPosition.CenterRight, 
+    Animation = AnimationType.SlideIn, 
+    AnimationDuration = TimeSpan.FromMilliseconds(500),
+    FullHeight = true
+};
+var dialog = await _dialogService.ShowEx<YourMudDialog>("Your Dialog Title", parameters, options);
+```
 
 ![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/slideIn.gif)
 
-If you animate a dialog with dialogServiceEx, you should add the class `mud-ex-dialog-initial` to your dialog to ensure no visibility before animation.
-Currently you can use following animations: `SlideIn,FadeIn,Scale,Slide,Fade,Zoom,Roll,JackInTheBox,Hinge,Rotate,Bounce,Back,Jello,Wobble,Tada,Swing,HeadShake,Shake,RubberBand,Pulse,Flip,FlipX,FlipY`
+When you animate a dialog with dialogServiceEx, it's recommended to add the class `mud-ex-dialog-initial` to your dialog to ensure no visibility before animation.
 
-```csharp
-    <MudDialog Class="mud-ex-dialog-initial">
 ```
-> **_BETA (Work still in progress):_** All animations can currently also used on other components for example in this popover. `<MudPopover Style="@(IsOpen $"animation: {new [] {AnimationType.FadeIn, AnimationType.SlideIn}.GetAnimationCssStyle(TimeSpan.FromSeconds(1))}" : "")">Popover content</MudPopover>`
-
-#### Remove need of DialogParameters
-Also you can call our extension method with an `Action<YourDialog>` instead of DialogParameters.
-
-```csharp
-    await dialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello"; },options);
+<MudDialog Class="mud-ex-dialog-initial">
 ```
 
+> **_NOTE:_** All animations can be used on other components as well. Currently, the following animations are supported: `SlideIn,FadeIn,Scale,Slide,Fade,Zoom,Roll,JackInTheBox,Hinge,Rotate,Bounce,Back,Jello,Wobble,Tada,Swing,HeadShake,Shake,RubberBand,Pulse,Flip,FlipX,FlipY`.
 
-#### Change Log 
- - 1.7.55 > new Component [MudExThemeEdit](https://www.mudex.org/theme-edit) to edit theme(s) and presets of themes as easy as possible and supports all options from your inherited MudThemes.
- - 1.7.54 > new Component [MudExThemeSelect](https://www.mudex.org/theme-select) to simple select a theme with an automatically generated preview image.
- - 1.7.53 > Extend [MudExSvg](https://www.mudex.org/d/MudExSvg/MudExSvg) utils with new Methods to generate an SVG application image for the current theme.
- - 1.7.50 > new Component [MudExColor](https://www.mudex.org/c/MudExColorEdit) for all color parameters as default renderer in MudExObjectEdit
- - 1.7.48 > BugFix
- - 1.7.47 > Update Microsoft.AspNetCore.Components.Web to 7.0.5 for .net 7 and 6.0.16 for .net 6
- - 1.7.47 > Update MudBlazor to 6.4.1 and adapt MudExPopover required changes.
- - 1.7.47 > **_Breaking:_** New Color Type [MudExColor](https://www.mudex.org/d/MudExColor) that can used with MudColor, MudBlazor.Color enum, string or it directly used for all color parameters.
-            Because of this change the static util class MudExColor is now MudExColorUtils and we have **_Breaking:_** changes for theese components. MudExDivider, MudExSlideBar, MudExTaskBar, MudExCardList, MudExGradientText, MudExObjectEdit, MudExCollectionEdit
- - 1.7.47 > **_Breaking:_** Rename: Static util class MudExColor is now MudExColorUtils
- - 1.7.46 > Ensure Min or Max sizes arn't overwritten when using Resizable
- - 1.7.46 > More fluent overloads for [MudExStyleBuilder](https://www.mudex.org/d/MudExStyleBuilder/MudExStyleBuilder)
- - 1.7.42 > Add Dialog Appearance 
- - 1.7.41 > Add Documentation for some static utils
- - 1.7.41 > Continue work on Taskbar and No Modal feature (still in progress)
- - 1.7.41 > Support Inline Dialogs with new Component MudExDialog
- - 1.7.41 > Bugfix on size when dialog resize is enabled
- - 1.7.40 > Event bugfix
- - 1.7.37 > MudExAppLoader web component to add loading animation for application
- - 1.7.36 > MudExObjectEdit: Fix errors where in some cases a meta config expressions fails for the RenderWith extension
- - 1.7.36 > New Possibility for ServerSideRendered Projects to use the IApplicationBuilder extension UseMudExtensions to bypass the need to register the JSRuntime 
- - 1.7.36 > New Utils Methods for MudExCss  
- - 1.7.36 > Setting DialogOptions as Default now also applys to dynamic dialogs for MudExCollectionEdit or MudExObjectEdit
- - 1.7.36 > New Component [MudExGradientText](https://www.mudex.org/gradient-text)
- - 1.7.36 > New Component [MudExCardList](https://www.mudex.org/card)
- - 1.7.36 > New Component [MudExPopover](https://www.mudex.org/popover)
- - 1.7.36 > Fix small DialogOptions bugs
- - 1.7.35 > New Animations for dialogs Perspective3d and LightSpeed
- - 1.7.34 > New Components [MudExSplitPanel](/c/MudExSplitPanel) [MudExSplitter](/c/MudExSplitter) [MudExDivider](/c/MudExDivider)
- - 1.7.34 > **_Breaking:_** Rename: SvgIconHelper is now MudExSvg
- - 1.7.34 > **_Breaking:_** Rename: CssHelper is now MudExCss
- - 1.7.34 > **_Breaking:_** Rename: MudExColorHelper is now MudExColor
- - 1.7.34 > **_Breaking:_** Move: Namespace MudBlazor.Extensions.Extensions is now MudBlazor.Extensions.Helper
- - 1.7.33 > Fix bug if no header is active on dialogs
- - 1.7.33 > Load Modules manually for MAUI Apps
- - 1.7.31 > Update BlazorJS to v 2.0.0 and MudBlazor to 6.1.8.
- - 1.7.30 > Fix broken layout in full-height dialogs with new css selector.
- - 1.7.29 > Fix broken dialog header buttons positions based on MudBlazor css changes
- - 1.7.28 > Update MudBlazor to 6.1.7 and implement missing members in IMudExDialogReference
- - 1.7.27 > MudExObjectEdit and MudExCollectionEditor now supporting `Virtualize` on [MudExCollectionEditor](https://www.mudex.org/shared-config) its default enabled. But you need to specify height of control. On [MudExObjectEdit](https://www.mudex.org/virtualized-object-edit) is disabled and currently in Beta
- - 1.7.27 > MudExObjectEdit and MudExCollectionEditor now supporting Height, MaxHeight and custom Style as Parameter
- - 1.7.27 > MudExCollectionEditor now supporting Item search
- - 1.7.27 > MudExCollectionEditor now supporting top or bottom toolbar position by setting the Parameter `ToolbarPosition`
- - 1.7.26 > Improvements and extensibility for MudExFileDisplay
- - 1.7.25 > DialogOptions can now set as Default for all dialogs where no explicit options are used
- - 1.7.24 > Allow converting any IDialogReference to an `IMudExDialogReference<TComponent>` with Extension method AsMudExDialogReference. With this reference, the inner dialog component is type safe accessable
- - 1.7.23 > New small dialogService extension method `ShowInformationAsync`
- - 1.7.22 > New small dialogService extension method `PromptAsync`
- - 1.7.21 > Correct initial color for colorpicker from MudExColorBubble
- - 1.7.20 > .net6 and .net7 compatible. 
- - 1.7.20 > New componments MudExColorPicker, MudExColorBubble, MudExUploadEdit
- - 1.7.20 > Fixed Bug that localizer is not passed to MudExCollectionEdit 
- - 1.7.10 > UPDATE TO .NET 7 and MudBlazor 6.1.2
- - 1.6.76 > BugFix in MudExEnumSelect
- - 1.6.74 > MudExEnumSelect select now supports nullable enums and flags
- - 1.6.73 > Pass Class and ClassContent for MudExMessageDialog as Parameter
- - 1.6.72 > Extension for DialogService to show any component in a dialog `dialogService.ShowComponentInDialogAsync<Component>(...)` [Sample](https://www.mudex.org/component-in-dialog)
- - 1.6.70 > MudExObjectEdit has now events for before import and beforeexport, that allows you to change imported or exported date before executed
- - 1.6.69 > BugFix wrong js was loaded
- - 1.6.68 > New small DialogComponent `MudExMessageDialog` with custom actions and result and with small dialogServiceExtension `dialogService.ShowConfirmationDialogAsync`
- - 1.6.68 > New parameter for MudExObjectEdit `ImportNeedsConfirmation` if this is true and `AllowImport` is true a file preview dialog appears on import and the user needs to confirm the import.
- - 1.6.68 > Import and Export specifix properties only in MudExObjectEdit are now configurable with the MetaConfiguration
- - 1.6.68 > Dialog DragMode without bound check. ScrollToTopPosition for MudExObjectEdit
- - 1.6.67 > Add `MudExColorPicker` simple extended default MudColorPicker with one option `DelayValueChangeToPickerClose` (default true). If this is true ValueChanged is invoked after picker close
- - 1.5.0 > Add `MudExObjectEdit` `MudExObjectEditForm` `MudExObjectEditDialog` and `MudExCollectionEditor`
- - 1.4.6 > Registered Localizer is no longer a requirement
- - 1.4.0 > Add New Component `MudExEnumSelect`
- - 1.2.8 > Add New Component `MudExChipSelect`
- - 1.2.6 > Add New Animationtypes for dialog or manual using
- - 1.2.4 > Add Components `MudExFileDisplay` `MudExFileDisplayZip` and `MudExFileDisplayDialog`
- - 1.2.2 > Animations can be combined
- - 1.2.2 > Add animation fade
- - 1.2.2 > Improved animations for dialogs
- - 1.2.0 > Slide in animations for dialogs. 
- - 1.1.2 > New option FullHeight for dialogs
+### Using Extension Method with an `Action<YourDialog>` 
+
+Instead of using `DialogParameters`, you can call the extension method with an `Action<YourDialog>`
+
+```
+await dialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello"; },options);
+```
+
+## Conclusion
+
+This README file provides an overview of the MudBlazor.Extensions library, which is designed to simplify and enhance the development process in Blazor using MudBlazor. The library contains a variety of components, extensions, and features that aim to reduce the time and effort required to build intricate UIs. For additional information or help, visit the official [MudBlazor website](https://mudblazor.com/) or [MudBlazor GitHub repository](https://github.com/MudBlazor/Templates).
+
+We hope you find this library helpful and encourage you to provide any feedback or contribute to its development.
+
+## License
+
+MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE file for details.
+
+
+
+## Change Log 
+Latest Changes: 
+<!-- CHANGELOG:START -->
+
+<!-- CHANGELOG:END -->
+
+ [Full change log can be found here]https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/CHANGELOG.md) 
+
 
 #### Planned Features
 Notice this is just a first preview version. 
@@ -319,6 +308,6 @@ If you like this package, please star it on [GitHub](https://github.com/fgilde/M
 If not, you can give a star anyway and let me know what I can improve to make it better for you. 
  
 ## Links
-[![GitHub](https://img.shields.io/badge/GitHub-Source-blue)](https://github.com/fgilde/MudBlazor.Extensions) | 
+[![GitHub](https://img.shields.io/badge/GitHub-Source-blue)](https://github.com/fgilde/MudBlazor.Extensions) 
 [![NuGet](https://img.shields.io/badge/NuGet-Package-blue)](https://www.nuget.org/packages/MudBlazor.Extensions)
 #

@@ -97,6 +97,7 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Include=".scripts\copyChangeLog.ps1" />
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
     <None Include="wwwroot\js\mudBlazorExtensions.all.min.js" />

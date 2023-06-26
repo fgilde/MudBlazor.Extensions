@@ -10,7 +10,13 @@
                        Style="margin-top: -100px;margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h4">MudBlazor.Extensions</MudExGradientText>
 </MudHidden>
 <Support />
-<DemoMarkdown CenterImagesAndHeadlines="true" Value="@Value"></DemoMarkdown>
+
+<MudGrid Spacing="2" Justify="Justify.Center">
+    <MudPaper MaxWidth="1200px" >
+        <DemoMarkdown Value="@Value"></DemoMarkdown>
+    </MudPaper>
+</MudGrid>
+
 
 @code
 {
