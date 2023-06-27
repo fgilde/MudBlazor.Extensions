@@ -5,10 +5,10 @@
 @inject LocalStorageService storage
 @inject NavigationManager nav
 
-@attribute [DemoNew(Group = "MudExObjectEdit", Name = "Edit Current Theme", Order = 7, Documentation = "This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing ", Icon = Icons.Material.Outlined.Palette, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExThemeEdit<>), typeof(MudExObjectEditForm<>) })]
+@attribute [DemoNew(Group = "MudExObjectEdit", Name = "Edit Current Theme", Order = 7, Documentation = "This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing ", Icon = Icons.Material.Outlined.Palette, ForComponentTypes = new[] { typeof(MudExThemeEdit<>) })]
 
 
-<DemoComponent PageType="@GetType()" CodeFiles="@(new[] {$"Pages/{GetType().Name}.razor", $"../../MudBlazor.Extensions/Components/MudExThemeEdit.razor", $"../../MudBlazor.Extensions/Components/MudExThemeEdit.razor.cs", $"/ClientTheme.cs"})">
+<DemoComponent PageType="@GetType()" CodeFiles="@(new[] {$"Pages/{GetType().Name}.razor", $"/ClientTheme.cs"})">
     <MudText Class="mb-5" Typo="Typo.subtitle1">The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.</MudText>
     @if (_bindDarkMode)
     {

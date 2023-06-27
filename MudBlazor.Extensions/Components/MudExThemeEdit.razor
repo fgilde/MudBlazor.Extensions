@@ -24,6 +24,7 @@
     </MudGrid>
 }
 
+
 @if (Theme is not null)
 {
     <MudExObjectEditForm T="TTheme"
@@ -53,6 +54,9 @@
                 <MudExEnumSelect Style="max-width:300px;" FilterEnabled="false" Clearable="false" TEnum="ThemeEditMode" ValueChanged="@EditModeChangedInternally" Value="@EditMode"></MudExEnumSelect>
                 <MudSpacer />
             }
+            <MudTooltip Text="@TryLocalize("Refresh")">
+                <MudIconButton Icon="@Icons.Material.Filled.Refresh" OnClick="@(OnRefreshClick)"/>
+            </MudTooltip>
         </ToolBarContent>
     </MudExObjectEditForm>
 }

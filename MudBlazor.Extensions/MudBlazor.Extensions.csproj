@@ -25,16 +25,20 @@
   <PropertyGroup>
     <MajorVersion>1</MajorVersion>
     <MinorVersion>7</MinorVersion>
-    <PatchVersion>57</PatchVersion>
+    <PatchVersion>58</PatchVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <VersionSuffix>$([System.DateTime]::Now.ToString(`yyMMddHHm`))</VersionSuffix>
     <PackageVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)-$(VersionSuffix)</PackageVersion>
+    <AssemblyVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)</AssemblyVersion>
+    <FileVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <PackageVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)</PackageVersion>
+    <AssemblyVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)</AssemblyVersion>
+    <FileVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)</FileVersion>
   </PropertyGroup>
 
 

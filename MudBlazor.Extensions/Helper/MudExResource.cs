@@ -13,6 +13,11 @@ public static class MudExResource
 {
     private static readonly ConcurrentDictionary<Assembly, XmlDocument> xmlDocCache = new();
 
+    public static Version MudBlazorVersion() => typeof(MudButton).Assembly.GetName().Version;
+
+    public static Version MudExVersion() => typeof(MudExResource).Assembly.GetName().Version;
+
+    
     /// <summary>
     /// returns the Summary documentation text for a type
     /// </summary>

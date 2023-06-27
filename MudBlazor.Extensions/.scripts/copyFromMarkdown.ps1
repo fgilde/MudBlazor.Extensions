@@ -85,4 +85,8 @@ $endIndex = $readme.IndexOf("<!-- "+$Tag+":END -->")
 $updatedReadme = $readme[0..($startIndex-1)] + $changes + $readme[$endIndex..($readme.Length-1)]
 
 # Write the new README back to the file
-$updatedReadme | Out-File -FilePath ..\..\README.md
+# $updatedReadme | Out-File -FilePath ..\..\README.md
+
+$updatedReadme | Out-File -FilePath ..\..\README.md -Encoding utf8
+#$updatedReadme | Out-File -FilePath ..\..\README.md -Encoding utf8NoBOM
+

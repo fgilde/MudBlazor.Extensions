@@ -282,7 +282,7 @@ namespace MudBlazor.Extensions
         {
             options = options?.CloneOptions();
             await PrepareOptionsBeforeShow(options);
-            return await dialogService.ShowAsync(type, title, parameters, options).InjectOptionsAsync(options);
+            return await dialogService.ShowAsync(type, title, parameters ?? new DialogParameters(), options).InjectOptionsAsync(options);
         }
 
         internal static async Task PrepareOptionsBeforeShow(DialogOptionsEx options)

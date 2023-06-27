@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using System.Management;
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -194,7 +193,7 @@ public partial class MudExThemeEdit<TTheme>
         await base.SetParametersAsync(parameters);
         if (updateConditions)
         {
-            await UpdateConditions();
+            UpdateConditions();
         }
     }
 
@@ -212,15 +211,15 @@ public partial class MudExThemeEdit<TTheme>
             _cssVars = await MudExCss.GetCssColorVariablesAsync();
         }
         await base.OnAfterRenderAsync(firstRender);
-        await Task.Delay(2000);
+        await Task.Delay(ExtraDelay);
         _isLoading = false;
     }
 
-    private Task EditModeChangedInternally(ThemeEditMode arg)
+    private async Task EditModeChangedInternally(ThemeEditMode arg)
     {
         EditMode = arg;
-        _ = UpdateConditions();
-        return EditModeChanged.InvokeAsync(EditMode);
+        UpdateConditions();
+        await EditModeChanged.InvokeAsync(EditMode);
     }
 
     private async Task SetTheme(TTheme theme)
@@ -246,14 +245,14 @@ public partial class MudExThemeEdit<TTheme>
         StateHasChanged();
     }
 
-    private async Task UpdateConditions()
+    private void UpdateConditions()
     {
         if (!IsRendered)
             return;
         Loading(true);
-        MetaInformation?.UpdateAllConditionalSettings();
-        await Task.Delay(ExtraDelay);
+        ObjectEditor?.UpdateAllConditions();
         Loading(false);
+        Refresh();
     }
 
 
@@ -408,5 +407,10 @@ public partial class MudExThemeEdit<TTheme>
             _selectedPreset = themePreset;
             await SetTheme(themePreset.Theme);
         }
+    }
+
+    private void OnRefreshClick()
+    {
+        UpdateConditions();
     }
 }

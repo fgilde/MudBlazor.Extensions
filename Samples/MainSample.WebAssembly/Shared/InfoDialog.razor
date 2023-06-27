@@ -1,0 +1,70 @@
+﻿@using MudBlazor.Extensions.Helper
+<MudDialog Class="mud-ex-dialog-initial" ClassContent="">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-3 mb-n1" />
+            Info
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <div class="d-flex justify-center mt-4 mb-4">
+            <MudExGradientText Animate="true"
+                               Align="Align.Center" Typo="Typo.h4">MudBlazor.Extensions</MudExGradientText>
+        </div>
+        <Support></Support>
+        
+        <MudCard Class="m-4">
+            <MudCardContent>
+                <MudText Align="Align.Center" Typo="Typo.body1"><b>Used MudBlazor.Extensions Version</b> @MudExResource.MudExVersion().ToString()</MudText>
+                <MudText Align="Align.Center" Typo="Typo.body1"><b>Used MudBlazor</b> @MudExResource.MudBlazorVersion().ToString()</MudText>
+            </MudCardContent>
+        </MudCard>
+        
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">Support project</MudText>
+                </CardHeaderContent>
+                <CardHeaderActions>
+                    <MudIconButton Icon="@Icons.Material.Filled.MonetizationOn" Color="Color.Default" />
+                </CardHeaderActions>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText>You don't need to but you can the project if you want.</MudText>
+                <MudText Typo="Typo.body2">1. If you're a developer feel free to contribute</MudText>
+                <MudText Typo="Typo.body2">2. Report Issues, bugs or feature ideas</MudText>
+                <MudText Typo="Typo.body2">3. Donate or become a sponsor</MudText>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Variant="Variant.Text" Href="https://www.paypal.com/paypalme/fgilde/" Target="_blank" Color="Color.Warning">Donate with PayPal</MudButton>
+                <MudButton Variant="Variant.Text" Href="https://github.com/sponsors/fgilde" Target="_blank" Color="Color.Primary">Sponsor at GitHub</MudButton>
+                <MudButton Variant="Variant.Text" Href="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank" Color="Color.Secondary">Star the repository</MudButton>
+            </MudCardActions>
+        </MudCard>
+
+    </DialogContent>
+    <DialogActions>
+        <span class="copyright">
+            Created by <a href="https://github.com/fgilde"> Florian Gilde </a>
+        </span>
+        <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="Close">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+@code{
+
+    
+
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
+
+
+    public void Close()
+    {
+        MudDialog.Close();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+}

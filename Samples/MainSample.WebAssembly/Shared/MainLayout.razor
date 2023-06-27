@@ -1,7 +1,12 @@
 ﻿@using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Options
+@using MudBlazor.Utilities
+@using MudBlazor.Extensions.Core
+@using Microsoft.Extensions.Options
 @inherits LayoutComponentBase
 @inject IJSRuntime JsRuntime
 @inject NavigationManager Navi;
+@inject IDialogService DialogService;
 
 <MudThemeProvider @bind-IsDarkMode="@IsDark" Theme="@ClientTheme.CurrentTheme" />
 <MudDialogProvider />
@@ -22,16 +27,19 @@
         <ThemeEdit OnThemeChanged="@HandleThemeChange" @bind-IsDark="@IsDark" @bind-IsBusy="@IsOverlayVisible" />
         
         <MudExDivider Size="2" Vertical="true" />
-
+        
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
             <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Link="https://www.mudblazor.com" Title="Official MudBlazor website" Target="_blank"/>
             <MudIconButton Icon="@Icons.Custom.Brands.Microsoft" Color="Color.Inherit" Link="https://www.nuget.org/packages/MudBlazor.Extensions" Title="Nuget Package" Target="_blank"/>
             <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/fgilde/MudBlazor.Extensions" Title="Project Repository" Target="_blank"/>
+            <MudIconButton Icon="@Icons.Material.Outlined.Info" Size="Size.Small" Color="Color.Inherit" OnClick="ShowAbout" />
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
             <MudMenu AnchorOrigin="Origin.BottomRight" Icon="@Icons.Material.Filled.MoreVert">
                 <MudMenuItem Icon="@Icons.Custom.Brands.Microsoft" Link="https://www.nuget.org/packages/MudBlazor.Extensions" Target="_blank">Nuget</MudMenuItem>
                 <MudMenuItem Icon="@Icons.Custom.Brands.GitHub" Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank">GitHub</MudMenuItem>
+                <MudExDivider Color="Color.Primary" />
+                <MudMenuItem Icon="@Icons.Material.Outlined.Info" Size="Size.Small" Color="Color.Inherit" OnClick="ShowAbout">Info</MudMenuItem>
             </MudMenu>
         </MudHidden>
     </MudAppBar>
@@ -58,6 +66,25 @@
     public bool IsOverlayVisible { get; set;}
     public bool IsDark { get; set; } = true;
     public event EventHandler<ThemeChangedEventArgs> ThemeChanged;
+
+    private async void ShowAbout()
+    {
+        var op = new DialogOptionsEx
+        {
+            MaxWidth = MaxWidth.ExtraSmall, 
+            FullWidth = true, 
+            FullHeight = true,
+            DisablePositionMargin = true,
+            DisableSizeMarginY = true,
+            Animation = AnimationType.SlideIn, 
+            Position = DialogPosition.CenterRight,
+            DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.ColorfullGlass),
+            DialogBackgroundAppearance = MudExAppearance.FromCss(MudExCss.Classes.Backgrounds.MovingDots)
+        };
+
+
+        await DialogService.ShowEx<InfoDialog>("Info", op);
+    }
 
     protected override void OnInitialized()
     {
