@@ -18,15 +18,18 @@ param(
     [bool]$All = $false
 )
 
+$linkTo = "";
 # Check if the SourceFile is a URL or a local file path
 if ($SourceFile -match '^http(s)?://') {
     # SourceFile is a URL, fetch content from the web
     $response = Invoke-WebRequest -Uri $SourceFile
     $source = $response.Content -split "`n"
+    $linkTo = $SourceFile
 } else {
     # SourceFile is a local file path, read content from the file
     $sourceFilePath = Join-Path ".." (Join-Path "Docs" $SourceFile)
     $source = Get-Content -Path $sourceFilePath
+    $linkTo = "https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/"+$SourceFile
 }
 
 
@@ -68,7 +71,7 @@ if ($SourceTag -or $All) {
 $changes = "<!-- Copied from $SourceFile on $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') -->`r`n$($changes -join "`r`n")"
 
 if($AddLink -eq $true) {
-    $changes = $changes + "`r`n[More](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/"+$SourceFile+")"
+    $changes = $changes + "`r`n[More]("+$linkTo+")"
 }
 
 # Read the README

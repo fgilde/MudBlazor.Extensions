@@ -1,5 +1,6 @@
 ﻿@using Nextended.Core.Extensions
 @using Markdig.Syntax.Inlines
+@using System.Text.RegularExpressions
 @inject HttpClient Http
 
 @if (CenterImagesAndHeadlines)
@@ -22,7 +23,10 @@
 
 
 <div class="@GetCls()">
-    <MudMarkdown OverrideLinkUrl="@LinkThat" CodeBlockTheme="@(MainLayout.Instance?.IsDark == true ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.Default)" OverrideHeaderTypo="TypoConvert()" Value="@Value"></MudMarkdown>
+    <MudMarkdown OverrideLinkUrl="@LinkThat"
+                 CodeBlockTheme="@(MainLayout.Instance?.IsDark == true ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.Default)"
+                 OverrideHeaderTypo="TypoConvert()" Value="@Value">
+    </MudMarkdown>
 </div>
 
 @code {
@@ -30,8 +34,33 @@
     public bool CenterImagesAndHeadlines { get; set; }
 
     [Parameter]
-    public string Value { get; set; }
+    public string Value 
+    {
+        get => _value;
+        set => _value = PrepareValue(value);
+    }
 
+    private string PrepareValue(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return value;
+
+        string pattern = @"(http[s]?:\/\/.*?\/MudBlazor\.Extensions\/assets\/.*|http[s]?:\/\/.*?\.(mp4|mkv))";
+        Regex regex = new Regex(pattern);
+
+        MatchEvaluator evaluator = ReplaceWithVideoTag;
+        string result = regex.Replace(value, evaluator);
+
+        return result;
+    }
+
+    private string ReplaceWithVideoTag(Match match)
+    {
+        string url = match.Value;
+        return $"<video controls src=\"{url}\"></video>";
+    }
+    
+    
     protected override Task OnInitializedAsync()
     {
         MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
@@ -75,4 +104,5 @@
         return arg.Url;
     }
 
+    private string _value;
 }
