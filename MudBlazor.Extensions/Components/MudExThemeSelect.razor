@@ -45,15 +45,15 @@
             return null;
         
         return @<MudGrid Class="@ItemClass" Style="@ItemStyle" Spacing="5">
-                   @((MarkupString) PreviewImage(theme, new MudExDimension(140, 100)))
+                   @((MarkupString)PreviewImage(theme, PreviewImageSize))
                    <div style="@GetThemeNameContainerStyle()">
                        @if (!string.IsNullOrEmpty(theme.Name))
                        {
-                           <MudText Typo="Typo.h6">@theme.Name</MudText>
+                           <MudText Typo="@TypoThemeName">@theme.Name</MudText>
                        }
                        @if (!string.IsNullOrEmpty(theme.Description) && IsOpen())
                        {
-                           <MudText Typo="Typo.subtitle1">@theme.Description</MudText>
+                           <MudText Typo="@TypoThemeDescription">@theme.Description</MudText>
                        }
                    </div>
                </MudGrid>;

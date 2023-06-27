@@ -12,6 +12,21 @@ public partial class MudExThemeSelect<TTheme>
 {
     private ThemePreset<TTheme> _selected;
     private MudSelect<ThemePreset<TTheme>> _mudSelector;
+    
+    /// <summary>
+    /// Typography for Name
+    /// </summary>
+    [Parameter] public Typo TypoThemeName { get; set; } = Typo.h6;
+
+    /// <summary>
+    /// Typography for description
+    /// </summary>
+    [Parameter] public Typo TypoThemeDescription { get; set; } = Typo.subtitle1;
+
+    /// <summary>
+    /// Size of preview image
+    /// </summary>
+    [Parameter] public MudExDimension PreviewImageSize { get; set; } = new MudExDimension(140, 100);
 
     /// <summary>
     /// Variant if SelectionMode is ThemeSelectionMode.Select
@@ -27,6 +42,11 @@ public partial class MudExThemeSelect<TTheme>
     /// Style for the select component.
     /// </summary>
     [Parameter] public string Style { get; set; } = "min-width: 350px";
+
+    /// <summary>
+    /// Style for theme name container
+    /// </summary>
+    [Parameter] public string NameContainerStyle { get; set; }
 
     /// <summary>
     /// Class for the select component.
@@ -157,6 +177,7 @@ public partial class MudExThemeSelect<TTheme>
         return MudExStyleBuilder.Default
             .WithMargin("auto auto auto 25px", IsOpen())
             .WithMargin("12px 0 0 18px", !IsOpen())
+            .WithStyle(NameContainerStyle, !string.IsNullOrEmpty(NameContainerStyle))
             .Build();
     }
 }

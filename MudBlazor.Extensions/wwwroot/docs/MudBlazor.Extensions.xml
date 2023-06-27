@@ -1784,6 +1784,21 @@
             Component to select a theme from a list of themes.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.TypoThemeName">
+            <summary>
+            Typography for Name
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.TypoThemeDescription">
+            <summary>
+            Typography for description
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.PreviewImageSize">
+            <summary>
+            Size of preview image
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.SelectVariant">
             <summary>
             Variant if SelectionMode is ThemeSelectionMode.Select
@@ -1797,6 +1812,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.Style">
             <summary>
             Style for the select component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.NameContainerStyle">
+            <summary>
+            Style for theme name container
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.Class">
