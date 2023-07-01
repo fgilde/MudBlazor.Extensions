@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Attribute;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
@@ -10,43 +11,190 @@ namespace MudBlazor.Extensions.Components;
 /// <typeparam name="T"></typeparam>
 public partial class MudExChipSelect<T>
 {
-    [Parameter] public string LocalizerPattern { get; set; } = "{0}";
-    [Parameter] public string Class { get; set; }
-    [Parameter] public Variant Variant { get; set; }
-    [Parameter] public bool AutoFocusFilter { get; set; }
-    [Parameter] public Adornment Adornment { get; set; } = Adornment.End;
-    [Parameter] public bool ReadOnly { get; set; }
-    //[Parameter] public Expression<Func<T>>? For { get; set; }
-    [Parameter] public bool RenderValidationComponent { get; set; } = true;
-    [Parameter] public Expression<Func<IEnumerable<T>>>? For { get; set; }
-    [Parameter] public bool DisableUnderLine { get; set; }
-    [Parameter] public bool DisableUnderLineForValidationComponent { get; set; } = true;
-    [Parameter] public string StyleForValidationComponent { get; set; } = "margin-top: -38px; pointer-events: none;";
-    [Parameter] public string Style { get; set; }
-    [Parameter] public virtual Color ChipColor { get; set; } = Color.Primary;
-    [Parameter] public virtual Variant ChipVariant { get; set; } = Variant.Filled;
-    [Parameter] public virtual ViewMode ViewMode { get; set; } = ViewMode.ChipsOnly;
-    [Parameter] public virtual string Label { get; set; }
-    [Parameter] public virtual string HelperText { get; set; }
-    [Parameter] public virtual bool FilterEnabled { get; set; } = true;
-    [Parameter] public virtual bool Clearable { get; set; } = true;
-    [Parameter] public virtual bool MultiSelect { get; set; } = true;
-    [Parameter] public virtual bool UseCustomItemRenderInSelectionPopover { get; set; } = false;
-    [Parameter] public RenderFragment<T>? ItemTemplate { get; set; }
+    /// <summary>
+    /// Gets or Sets the Localizer Pattern.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string LocalizerPattern { get; set; } = "{0}";
 
-    [Parameter] public IList<T> AvailableItems { get; set; }
-    [Parameter] public Func<CancellationToken, Task<IList<T>>> AvailableItemsLoadFunc { get; set; }
-    [Parameter] public Func<T, string> ItemToStringFunc { get; set; } = (item => item?.ToString() ?? string.Empty);  
-    [Parameter] public string AdornmentIcon { get; set; } = Icons.Material.Filled.ArrowDropDown;
-    [Parameter] public T Value { get; set; }
-    [Parameter] public bool UpdateItemsOnStateChange { get; set; }
+    /// <summary>
+    /// Gets or Sets the CSS class name(s) for the component.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public string Class { get; set; }
 
-    [Parameter] public EventCallback<IEnumerable<T>> SelectedChanged { get; set; }
-    [Parameter] public EventCallback<T> ValueChanged { get; set; }
+    /// <summary>
+    /// Gets or Sets the variant of the component.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public Variant Variant { get; set; }
 
-    protected bool Rendered { get; set; }
+    /// <summary>
+    /// Gets or Sets the AutoFocus for the filter input.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool AutoFocusFilter { get; set; }
 
-    [Parameter]
+    /// <summary>
+    /// Gets or Sets the adornment of the component.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public Adornment Adornment { get; set; } = Adornment.End;
+
+    /// <summary>
+    /// Gets or Sets the read-only status of the component.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool ReadOnly { get; set; }
+
+    /// <summary>
+    /// Gets or Sets whether to render the validation component.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool RenderValidationComponent { get; set; } = true;
+
+    /// <summary>
+    /// Gets or Sets the data For method
+    /// </summary>
+    [Parameter, SafeCategory("Validation")]
+    public Expression<Func<IEnumerable<T>>> For { get; set; }
+
+    /// <summary>
+    /// Gets or Sets the option to disable the underline in the component.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public bool DisableUnderLine { get; set; }
+
+    /// <summary>
+    /// Gets or Sets the option to disable the underline for the validation component.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public bool DisableUnderLineForValidationComponent { get; set; } = true;
+
+    /// <summary>
+    /// Gets or Sets the CSS style for the validation component.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public string StyleForValidationComponent { get; set; } = "margin-top: -38px; pointer-events: none;";
+
+    /// <summary>
+    /// Gets or Sets the CSS style for the component.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public string Style { get; set; }
+
+    /// <summary>
+    /// Gets or Sets the color of the chip in the component.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public virtual Color ChipColor { get; set; } = Color.Primary;
+
+    /// <summary>
+    /// Gets or Sets the variant of the chip in the component.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public virtual Variant ChipVariant { get; set; } = Variant.Filled;
+
+    /// <summary>
+    /// Gets or Sets the view mode for the component.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public virtual ViewMode ViewMode { get; set; } = ViewMode.ChipsOnly;
+
+    /// <summary>
+    /// Gets or Sets the label of the component.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public virtual string Label { get; set; }
+
+    /// <summary>
+    /// Gets or Sets the helper text of the component.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public virtual string HelperText { get; set; }
+
+    /// <summary>
+    /// Gets or Sets the option to enable filtering in the component.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public virtual bool FilterEnabled { get; set; } = true;
+
+    /// <summary>
+    /// Gets or Sets the option to enable clearing of selected items in the component.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public virtual bool Clearable { get; set; } = true;
+
+    /// <summary>
+    /// Gets or Sets the option to enable multi-select functionality in the component.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public virtual bool MultiSelect { get; set; } = true;
+
+    /// <summary>
+    /// Gets or Sets the option to use a custom item renderer in the selection popover.
+    /// </summary>
+    [Parameter, SafeCategory("Common")]
+    public virtual bool UseCustomItemRenderInSelectionPopover { get; set; } = false;
+
+    /// <summary>
+    /// Gets or Sets the RenderFragment for custom item template.
+    /// </summary>
+    [Parameter, SafeCategory("Common")]
+    public RenderFragment<T>? ItemTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or Sets the list of items that are available for selection.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public IList<T> AvailableItems { get; set; }
+
+    /// <summary>
+    /// Gets or Sets the function that is used to asynchronously load available items.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public Func<CancellationToken, Task<IList<T>>> AvailableItemsLoadFunc { get; set; }
+
+    /// <summary>
+    /// Gets or Sets the function that converts an item to a string. This is used for display purposes.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public Func<T, string> ItemToStringFunc { get; set; } = (item => item?.ToString() ?? string.Empty);
+
+    /// <summary>
+    /// Gets or Sets the icon for the adornment of the component.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public string AdornmentIcon { get; set; } = Icons.Material.Filled.ArrowDropDown;
+
+    /// <summary>
+    /// Gets or Sets the value of the component.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public T Value { get; set; }
+
+    /// <summary>
+    /// Gets or Sets a value indicating whether to update items on state change.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool UpdateItemsOnStateChange { get; set; }
+
+    /// <summary>
+    /// Event triggered when the selected items change.
+    /// </summary>
+    [Parameter, SafeCategory("Click action")]
+    public EventCallback<IEnumerable<T>> SelectedChanged { get; set; }
+
+    /// <summary>
+    /// Event triggered when the value of the component changes.
+    /// </summary>
+    [Parameter, SafeCategory("Click action")]
+    public EventCallback<T> ValueChanged { get; set; }
+
+    /// <summary>
+    /// Gets or sets the currently selected items in the component.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
     public IEnumerable<T> Selected
     {
         get => _selected ??= new HashSet<T>();
@@ -67,7 +215,7 @@ public partial class MudExChipSelect<T>
 
     private void RaiseChanged()
     {
-        if (Rendered)
+        if (IsRendered)
         {
             SelectedChanged.InvokeAsync(new HashSet<T>(Selected));
             ValueChanged.InvokeAsync(Value);
@@ -91,13 +239,6 @@ public partial class MudExChipSelect<T>
     private IEnumerable<T> _selected;
     private string _filter;
     private string _cssName => $"chip-select-{Enum.GetName(ViewMode)?.ToLower() ?? "none"} {(Selected?.Any() == true ? "with-items" : "empty")}";
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        base.OnAfterRender(firstRender);
-        Rendered = true;
-    }
-
 
     protected override async Task OnParametersSetAsync()
     {

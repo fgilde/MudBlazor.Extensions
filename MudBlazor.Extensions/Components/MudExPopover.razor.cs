@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
@@ -28,44 +29,45 @@ namespace MudBlazor.Extensions.Components
         /// <summary>
         /// The selectors to ignore when handling blur events.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Behavior")]
         public string SelectorsForIgnoreBlur { get; set; }
 
         /// <summary>
         /// Indicates whether the event should be disposed.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Behavior")]
         public bool DisposeEvent { get; set; } = false;
 
         /// <summary>
         /// The animation type.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Appearance")]
         public AnimationType Animation { get; set; } = AnimationType.SlideIn;
 
         /// <summary>
         /// The animation timing function.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Appearance")]
         public AnimationTimingFunction AnimationTimingFunction { get; set; }
 
         /// <summary>
         /// The dialog position.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Appearance")]
         public DialogPosition AnimationPosition { get; set; } = DialogPosition.TopCenter;
 
         /// <summary>
         /// Event delegate for handling blur events.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Behavior")]
         public EventCallback<PointerEventArgs> OnBlur { get; set; }
 
         /// <summary>
         /// Event delegate for handling open state changes.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Behavior")]
         public EventCallback<bool> OpenChanged { get; set; }
+
 
         private MudPopoverHandler Handler => Service.Handlers.FirstOrDefault(x => x.Fragment == ChildContent);
         private BlazorJSEventInterop<PointerEventArgs> _jsEvent;

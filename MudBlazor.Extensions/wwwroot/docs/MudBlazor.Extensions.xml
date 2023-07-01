@@ -4,6 +4,12 @@
         <name>MudBlazor.Extensions</name>
     </assembly>
     <members>
+        <member name="T:MudBlazor.Extensions.Attribute.SafeCategoryAttribute">
+            <summary>
+            Don't know why i need this but however why MudBlazor think its a good idea to throw an exception if the category is not valid
+            This is something I don't understand on a string name based param. So I created this attribute to prevent this exception.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1">
             <summary>
             Base component for the most of all MudExComponents
@@ -365,6 +371,161 @@
             A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.
             </summary>
             <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.LocalizerPattern">
+            <summary>
+            Gets or Sets the Localizer Pattern.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Class">
+            <summary>
+            Gets or Sets the CSS class name(s) for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Variant">
+            <summary>
+            Gets or Sets the variant of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.AutoFocusFilter">
+            <summary>
+            Gets or Sets the AutoFocus for the filter input.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Adornment">
+            <summary>
+            Gets or Sets the adornment of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.ReadOnly">
+            <summary>
+            Gets or Sets the read-only status of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.RenderValidationComponent">
+            <summary>
+            Gets or Sets whether to render the validation component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.For">
+            <summary>
+            Gets or Sets the data For method
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.DisableUnderLine">
+            <summary>
+            Gets or Sets the option to disable the underline in the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.DisableUnderLineForValidationComponent">
+            <summary>
+            Gets or Sets the option to disable the underline for the validation component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.StyleForValidationComponent">
+            <summary>
+            Gets or Sets the CSS style for the validation component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Style">
+            <summary>
+            Gets or Sets the CSS style for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.ChipColor">
+            <summary>
+            Gets or Sets the color of the chip in the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.ChipVariant">
+            <summary>
+            Gets or Sets the variant of the chip in the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.ViewMode">
+            <summary>
+            Gets or Sets the view mode for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Label">
+            <summary>
+            Gets or Sets the label of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.HelperText">
+            <summary>
+            Gets or Sets the helper text of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.FilterEnabled">
+            <summary>
+            Gets or Sets the option to enable filtering in the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Clearable">
+            <summary>
+            Gets or Sets the option to enable clearing of selected items in the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.MultiSelect">
+            <summary>
+            Gets or Sets the option to enable multi-select functionality in the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.UseCustomItemRenderInSelectionPopover">
+            <summary>
+            Gets or Sets the option to use a custom item renderer in the selection popover.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.ItemTemplate">
+            <summary>
+            Gets or Sets the RenderFragment for custom item template.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.AvailableItems">
+            <summary>
+            Gets or Sets the list of items that are available for selection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.AvailableItemsLoadFunc">
+            <summary>
+            Gets or Sets the function that is used to asynchronously load available items.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.ItemToStringFunc">
+            <summary>
+            Gets or Sets the function that converts an item to a string. This is used for display purposes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.AdornmentIcon">
+            <summary>
+            Gets or Sets the icon for the adornment of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Value">
+            <summary>
+            Gets or Sets the value of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.UpdateItemsOnStateChange">
+            <summary>
+            Gets or Sets a value indicating whether to update items on state change.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.SelectedChanged">
+            <summary>
+            Event triggered when the selected items change.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.ValueChanged">
+            <summary>
+            Event triggered when the value of the component changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Selected">
+            <summary>
+            Gets or sets the currently selected items in the component.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExColorBubble">
             <summary>
@@ -808,7 +969,7 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.CanClose">
             <summary>
-            Canclose file
+            Can close file
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.OnCloseClick">
@@ -904,17 +1065,89 @@
             Dialog to display a file using <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> component.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.MudDialog">
+            <summary>
+            The MudDialog instance
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Style">
+            <summary>
+            CSS styles applied to the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Class">
+            <summary>
+            CSS classes applied to the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ClassContent">
+            <summary>
+            CSS classes applied to the content of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ShowContentError">
+            <summary>
+            Whether to show content error if content cannot be displayed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Icon">
+            <summary>
+            Icon to display in the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Url">
+            <summary>
+            URL to access the file or resource.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ContentType">
+            <summary>
+            Content type of the loaded file or resource.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ContentStream">
+            <summary>
+            Stream of the file or resource content.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Buttons">
+            <summary>
+            Action buttons to display in the dialog.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.HandleContentErrorFunc">
-            A function to handle content error. Return true if you have handled the error and false if you want to show the error message
-            For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
-            If you reset Url or Data here you need also to reset ContentType
+            <summary>
+            Function to handle content error. Return true if the error is handled, false to show the error message.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.CustomContentErrorMessage">
+            <summary>
+            Custom message to show in case of content error.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.FallBackInIframe">
-            Should be true if file is not a binary one
+            <summary>
+            Whether to use fallback to iframe if file is not binary.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ViewDependsOnContentType">
             <summary>
-            Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
+            Whether to use specific tags for certain content types or to always use iframe/object tag.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ImageAsBackgroundImage">
+            <summary>
+            Whether to use the image as background image instead of img tag.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.SandBoxIframes">
+            <summary>
+            Whether to use sandbox mode on iframes to disallow dangerous JS invocation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.AllowDownload">
+            <summary>
+            Whether to allow user to download the loaded file.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayZip">
@@ -1643,6 +1876,19 @@
             <summary>
             MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide <MudExTaskBar/> somewhere in your Layout
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTaskBar.OnlyVisibleWithWindows">
+            <summary>
+            When true the taskbar is only visible if a window is open
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTaskBar.HasItems">
+            <summary>
+            Is true if the taskbar contains items
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTaskBar.OnInitialized">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.ThemePreset`1">
             <summary>

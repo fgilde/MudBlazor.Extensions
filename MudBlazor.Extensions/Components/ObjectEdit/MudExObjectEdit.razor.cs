@@ -411,19 +411,8 @@ public partial class MudExObjectEdit<T>
     /// </summary>
     public MudExPropertyEdit Ref { set => Editors.Add(value); }
 
-
-    #region Statics
-
-    private static Type[] handleAsPrimitive = { typeof(string), typeof(decimal), typeof(MudExColor), typeof(MudColor), typeof(System.Drawing.Color), typeof(DateTime), typeof(DateTimeOffset), typeof(TimeSpan), typeof(TimeOnly), typeof(DateOnly), typeof(Guid) };
+    internal static bool IsPrimitive() => MudExObjectEditHelper.HandleAsPrimitive(typeof(T));
     
-    internal static bool IsPrimitive()
-    {
-        var type = typeof(T).IsNullable() ? Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T) : typeof(T);
-        return type.IsPrimitive || type.IsEnum || handleAsPrimitive.Contains(type);
-    }
-
-    #endregion
-
     #region Overrides
 
     /// <inheritdoc/>
@@ -686,7 +675,7 @@ public partial class MudExObjectEdit<T>
             UpdateConditions(); 
         }
     }
-
+    
     private async Task OnResetClick(MouseEventArgs arg)
     {
         if (GlobalResetSettings.RequiresConfirmation && DialogService != null && !(await ShowConfirmationBox() ?? false))

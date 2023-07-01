@@ -10,10 +10,21 @@ namespace MudBlazor.Extensions.Components;
 [Beta("This component and the dialog no modal behaviour is still in development and not ready for production use. Please report any issues you find on GitHub.")]
 public partial class MudExTaskBar: MudExSlideBar
 {
-    [Parameter] public bool OnlyVisibleWithWindows { get; set; } = true;
+    private List<DialogTaskBarInfo> _taskbarItems = new();
+
+    /// <summary>
+    /// When true the taskbar is only visible if a window is open
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")] 
+    public bool OnlyVisibleWithWindows { get; set; } = true;
+    
+    /// <summary>
+    /// Is true if the taskbar contains items
+    /// </summary>
     public bool HasItems => _taskbarItems?.Any() == true;
 
-    private List<DialogTaskBarInfo> _taskbarItems = new();
+
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         DialogService.OnDialogInstanceAdded += DialogService_OnDialogInstanceAdded;

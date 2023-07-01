@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Utilities;
@@ -42,12 +43,14 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
     /// Gets or Sets MudExColor BackgroundColor Property.
     /// </summary>
     [Parameter]
+    [SafeCategory("Appearance")]
     public MudExColor BackgroundColor { get; set; } = Color.Default;
 
     /// <summary>
     /// Gets or Sets MudExColor HoverColor Property.
     /// </summary>
     [Parameter]
+    [SafeCategory("Appearance")]
     public MudExColor HoverColor { get; set; } = Color.Primary;
 
     /// <summary>
@@ -55,6 +58,7 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
     /// </summary>
     [Obsolete("Use HoverMode instead")]
     [Parameter]
+    [SafeCategory("Behavior")]
     public bool ZoomOnHover
     {
         get => HoverModeMatches(MudExCardHoverMode.Zoom);
@@ -73,6 +77,7 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
     /// MudExCardHoverMode
     /// </value>
     [Parameter]
+    [SafeCategory("Behavior")]
     public MudExCardHoverMode? HoverMode
     {
         get => _hoverMode;
@@ -87,25 +92,30 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
     /// Gets or Sets Justify Property.
     /// </summary>
     [Parameter]
+    [SafeCategory("Appearance")]
     public Justify Justify { get; set; } = Justify.Center;
 
     /// <summary>
     /// Gets or Sets Spacing Property.
     /// </summary>
     [Parameter]
+    [SafeCategory("Appearance")]
     public int Spacing { get; set; } = 15;
 
     /// <summary>
     /// Gets or Sets Light Bulb Size Property.
     /// </summary>
     [Parameter]
+    [SafeCategory("Appearance")]
     public int LightBulbSize { get; set; } = 30;
 
     /// <summary>
     /// Gets or Sets Light Bulb Size Unit Property.
     /// </summary>
     [Parameter]
+    [SafeCategory("Appearance")]
     public CssUnit LightBulbSizeUnit { get; set; } = CssUnit.Percentage;
+
 
     private bool HoverModeMatches(MudExCardHoverMode mode) => HoverMode.HasValue && HoverMode.Value.HasFlag(mode);
 

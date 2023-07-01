@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Attribute;
 using Nextended.Blazor.Helper;
 using Nextended.Blazor.Models;
 using Nextended.Core.Extensions;
@@ -26,74 +27,99 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) _componentForFile;
 
     #endregion
-    
+
     #region Parameters and Properties
 
     /// <summary>
     /// Url to access file can also be a data Url
     /// </summary>
-    [Parameter] public string Url { get; set; }
+    [Parameter]
+    [SafeCategory("Data")]
+    public string Url { get; set; }
 
     /// <summary>
     /// ContentType of loaded file
     /// </summary>
-    [Parameter] public string ContentType { get; set; }
+    [Parameter]
+    [SafeCategory("Data")]
+    public string ContentType { get; set; }
 
     /// <summary>
-    /// Canclose file
+    /// Can close file
     /// </summary>
-    [Parameter] public bool CanClose { get; set; } 
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool CanClose { get; set; }
 
     /// <summary>
     /// Event for on close click
     /// </summary>
-    [Parameter] public EventCallback OnCloseClick { get; set; }
+    [Parameter]
+    [SafeCategory("Click action")]
+    public EventCallback OnCloseClick { get; set; }
 
     /// <summary>
     /// Element id
     /// </summary>
-    [Parameter] public string ElementId { get; set; } = Guid.NewGuid().ToFormattedId();
+    [Parameter]
+    [SafeCategory("Common")]
+    public string ElementId { get; set; } = Guid.NewGuid().ToFormattedId();
+
     /**
      * Should be true if file is not a binary one
      */
     [Parameter]
+    [SafeCategory("Validation")]
     public bool FallBackInIframe { get; set; }
 
     /// <summary>
     /// Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
     /// </summary>
     [Parameter]
+    [SafeCategory("Behavior")]
     public bool ViewDependsOnContentType { get; set; } = true;
 
     /// <summary>
     /// Set to true to use image as background-url instead of img tag
     /// </summary>
-    [Parameter] public bool ImageAsBackgroundImage { get; set; } = false;
+    [Parameter]
+    [SafeCategory("Appearance")]
+    public bool ImageAsBackgroundImage { get; set; } = false;
 
     /// <summary>
     /// Set to true to display content error is content can't displayed
     /// </summary>
-    [Parameter] public bool ShowContentError { get; set; } = true;
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool ShowContentError { get; set; } = true;
 
     /// <summary>
     /// Set to true to use sandbox mode on iframe to disallow some danger js invocation
     /// </summary>
-    [Parameter] public bool SandBoxIframes { get; set; } = true;
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool SandBoxIframes { get; set; } = true;
 
     /// <summary>
     /// Set to true to allow user to download the loaded file
     /// </summary>
-    [Parameter] public bool AllowDownload { get; set; } = true;
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool AllowDownload { get; set; } = true;
 
     /// <summary>
     /// Filename
     /// </summary>
-    [Parameter] public string FileName { get; set; }
+    [Parameter]
+    [SafeCategory("Common")]
+    public string FileName { get; set; }
 
     /// <summary>
     /// Content stream of file
     /// </summary>
-    [Parameter] public Stream ContentStream { get; set; }
+    [Parameter]
+    [SafeCategory("Data")]
+    public Stream ContentStream { get; set; }
 
     /// <summary>
     /// A function to handle content error.
@@ -101,12 +127,15 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     /// For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
     /// If you reset Url or Data here you need also to reset ContentType
     /// </summary>
-    [Parameter] public Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> HandleContentErrorFunc { get; set; }
-    
+    [Parameter]
+    [SafeCategory("Validation")]
+    public Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> HandleContentErrorFunc { get; set; }
+
     /// <summary>
     /// Custom content error message to show
     /// </summary>
-    [Parameter] public string CustomContentErrorMessage { get; set; }
+    [Parameter]
+    [SafeCategory("Behavior")] public string CustomContentErrorMessage { get; set; }
     
     /// <summary>
     /// Media Type for current file

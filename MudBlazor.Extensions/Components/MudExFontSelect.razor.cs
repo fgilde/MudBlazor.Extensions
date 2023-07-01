@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components;
@@ -16,7 +17,7 @@ public partial class MudExFontSelect
     /// <summary>
     /// FontFamily
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Data")]
     public string FontFamily {
         get => Selected?.Any() == true ? string.Join(",", Selected) : string.Empty;
         set => Selected = value?.Split(',').Select(x => x.Trim()).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
@@ -25,7 +26,8 @@ public partial class MudExFontSelect
     /// <summary>
     /// Set to true to allow selection of google latin fonts
     /// </summary>
-    [Parameter] public bool WithGoogleLatinFonts { get; set; }
+    [Parameter, SafeCategory("Behavior")] 
+    public bool WithGoogleLatinFonts { get; set; }
 
     protected override Task<IList<string>> GetAvailableItemsAsync(CancellationToken cancellation = default)
         => Task.FromResult(GetAvailable());

@@ -24,7 +24,6 @@
     {
         return meta =>
         {
-            meta.GroupByCategoryAttribute();
             meta.Property(m => m.UseColorPaletteInNativeBrowserControl).IgnoreIf(m => !m.UseNativeBrowserControl);
             meta.Property(m => m.UseMudExColorBubble).IgnoreIf(m => m.UseNativeBrowserControl);
             meta.Property(m => m.UseNativeBrowserControl).IgnoreIf(m => m.UseMudExColorBubble);

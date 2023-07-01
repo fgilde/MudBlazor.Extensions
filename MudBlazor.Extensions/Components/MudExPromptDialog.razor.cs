@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Attribute;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -16,52 +17,63 @@ public partial class MudExPromptDialog
     /// <summary>
     /// Boolean value indicating whether prompt should be submitted immediately.
     /// </summary>
-    [Parameter] public bool Immediate { get; set; } = true;
+    [Parameter, SafeCategory("Behavior")]
+    public bool Immediate { get; set; } = true;
 
     /// <summary>
     /// Boolean value indicating whether prompt should be submitted when Enter key is pressed.
     /// </summary>
-    [Parameter] public bool SubmitOnEnter { get; set; } = true;
+    [Parameter, SafeCategory("Behavior")]
+    public bool SubmitOnEnter { get; set; } = true;
 
     /// <summary>
     /// The text of the "Ok" button.
     /// </summary>
-    [Parameter] public string OkText { get; set; } = "Ok";
+    [Parameter, SafeCategory("Content")]
+    public string OkText { get; set; } = "Ok";
 
     /// <summary>
     /// The text of the "Cancel" button.
     /// </summary>
-    [Parameter] public string CancelText { get; set; } = "Cancel";
+    [Parameter, SafeCategory("Content")]
+    public string CancelText { get; set; } = "Cancel";
 
     /// <summary>
     /// The initial value of the input field.
     /// </summary>
-    [Parameter] public string Value { get; set; }
+    [Parameter, SafeCategory("Behavior")]
+    public string Value { get; set; }
 
     /// <summary>
     /// The CSS class of the component root element.
     /// </summary>
-    [Parameter] public string Class { get; set; } = "mud-ex-dialog-initial";
+    [Parameter, SafeCategory("Common")]
+    public string Class { get; set; } = "mud-ex-dialog-initial";
 
     /// <summary>
     /// The message to be displayed in the component.
     /// </summary>
-    [Parameter] public string Message { get; set; }
+    [Parameter, SafeCategory("Content")]
+    public string Message { get; set; }
 
     /// <summary>
     /// The icon of the component.
     /// </summary>
-    [Parameter] public string Icon { get; set; }
+    [Parameter, SafeCategory("Appearance")]
+    public string Icon { get; set; }
 
     /// <summary>
     /// The list of strings with additional details of the component.
     /// </summary>
-    [Parameter] public IEnumerable<string> Details { get; set; }
+    [Parameter, SafeCategory("Content")]
+    public IEnumerable<string> Details { get; set; }
 
     /// <summary>
     /// The function that determines whether the prompt window can be confirmed or not.
     /// </summary>
-    [Parameter] public Func<string, bool> CanConfirm { get; set; } = s => true;
+    [Parameter, SafeCategory("Behavior")]
+    public Func<string, bool> CanConfirm { get; set; } = s => true;
+
 
     /// <summary>
     /// Method for submitting the prompt window.

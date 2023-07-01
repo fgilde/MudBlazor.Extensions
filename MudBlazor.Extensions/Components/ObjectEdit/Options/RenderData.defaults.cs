@@ -179,8 +179,8 @@ public static class RenderDataDefaults
             var renderDataType = typeof(RenderData<,>).MakeGenericType(propertyType, propertyType);
             return renderDataType.CreateInstance<IRenderData>(nameof(MudExEnumSelect<object>.Value), controlType, null);
         }
-
-        if (IsCollection(propertyMeta.PropertyInfo.PropertyType) || IsEnumerable(propertyMeta.PropertyInfo.PropertyType)) // Collection support
+        
+        if (propertyMeta.PropertyInfo.PropertyType.IsCollection() || propertyMeta.PropertyInfo.PropertyType.IsEnumerable()) // Collection support
         { // TODO: When IEnumerable maybe disable add button
             try
             {
@@ -199,13 +199,13 @@ public static class RenderDataDefaults
             }
         }
 
+        if (propertyType.IsKeyValuePair())
+        {
+            // TODO: Implement KeyValuePair support
+        }
+
         return null;
     }
-
-    private static bool IsCollection(Type type)
-        => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ICollection<>) || type.GetInterfaces().Any(IsCollection);
-    private static bool IsEnumerable(Type type)
-        => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>) || type.GetInterfaces().Any(IsCollection);
 
     private static IRenderData FindFromProvider(ObjectEditPropertyMeta propertyMeta)
         => _providers.Select(provider => provider.GetRenderData(propertyMeta)).FirstOrDefault(renderData => renderData != null);

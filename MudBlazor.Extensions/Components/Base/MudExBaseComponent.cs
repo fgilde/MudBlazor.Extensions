@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
 
 
@@ -26,6 +27,7 @@ public abstract class MudExBaseComponent<T> : ComponentBase, IMudExComponent
     /// <summary>
     /// Render key for refresh component
     /// </summary>
+    [IgnoreOnObjectEdit]
     [Parameter] public object RenderKey { get; set; }
 
     /// <summary>

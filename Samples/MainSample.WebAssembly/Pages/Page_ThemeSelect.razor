@@ -1,4 +1,6 @@
 ﻿@page "/theme-select"
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+@using Nextended.Core.Extensions
 
 @attribute [DemoNew(Name = "MudExThemeSelect", Icon = Icons.Material.Outlined.Palette, Documentation = "Sample how to use Theme Select", ForComponentType = typeof(MudExThemeSelect<>))]
 
@@ -11,7 +13,7 @@
                               SelectedThemeChanged="@ThemeChanged" @ref="component"></MudExThemeSelect>
         </Left>
         <Right>
-            <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>
+            <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
         </Right>
     </SplitContainer>
 </DemoComponent>
@@ -34,5 +36,10 @@
         if(theme is not null)
             MainLayout.Instance.SetTheme(theme);
     }
+    
+    private Action<ObjectEditMeta<MudExThemeSelect<ClientTheme>>> Configure() => meta =>
+    {
+        meta.GroupByCategoryAttribute();
+    };
 
 }

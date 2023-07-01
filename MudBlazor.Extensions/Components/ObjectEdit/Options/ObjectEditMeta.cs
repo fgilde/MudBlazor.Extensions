@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
+using Nextended.Core;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 
@@ -8,8 +9,8 @@ namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 public sealed class ObjectEditMeta<T> : ObjectEditMeta
 {
     public T Value { get; set; }
-    public Func<PropertyInfo, bool> PropertyResolverFunc { get; set; }
-    
+    public List<Func<PropertyInfo, bool>> PropertyResolverFunctions { get; set; } = new();
+
     private List<ObjectEditPropertyMeta> _properties;
     internal Func<ObjectEditPropertyMeta, object> OrderFn { get; set; } = meta => meta.Settings.Order;
     internal bool OrderAscending { get; set; } = true;
@@ -55,30 +56,50 @@ public sealed class ObjectEditMeta<T> : ObjectEditMeta
         var res = new List<ObjectEditPropertyMeta>();
         foreach (var propertyInfo in (value?.GetType() ?? type).GetProperties(BindingFlags).Where(ShouldResolve))
         {
-            var t = propertyInfo.PropertyType;
-            var editPropertyMeta = new ObjectEditPropertyMetaOf<T>(owner ?? this, propertyInfo, value);
-            if (IsEditableSubObject(t)) // object in object
+            try
             {
-                var reference = propertyInfo.GetValue(value);
-                if (reference == null)
+                var t = propertyInfo.PropertyType;
+                var editPropertyMeta = new ObjectEditPropertyMetaOf<T>(owner ?? this, propertyInfo, value);
+                if (IsEditableSubObject(t)) // object in object
                 {
-                    propertyInfo.SetValue(value, ReflectionHelper.CreateInstance(propertyInfo.PropertyType));
-                    reference = propertyInfo.GetValue(value);
+                    var reference = Check.TryCatch<object, Exception>(() => propertyInfo.GetValue(value));
+                    reference ??= Check.TryCatch<object, Exception>(() =>
+                    {
+                        propertyInfo.SetValue(value, ReflectionHelper.CreateInstance(propertyInfo.PropertyType));
+                        return propertyInfo.GetValue(value);
+                    });
+                    
+                    if(reference != null) {
+                        var instance = ((ObjectEditMeta)Activator.CreateInstance(typeof(ObjectEditMeta<>).MakeGenericType(t), reference)).SetProperties(m => m.Parent = owner ?? this);
+                        var groupName = editPropertyMeta.Settings.LabelFor(null);
+                        editPropertyMeta.Children.AddRange(GetProperties(t, reference, instance).Apply(meta => meta.WithGroup(groupName).Parent = editPropertyMeta));
+                    }
                 }
-                var instance = ((ObjectEditMeta)Activator.CreateInstance(typeof(ObjectEditMeta<>).MakeGenericType(t), reference)).SetProperties(m => m.Parent = owner ?? this);
-                var groupName = editPropertyMeta.Settings.LabelFor(null);
-                editPropertyMeta.Children.AddRange(GetProperties(t, reference, instance).Apply(meta => meta.WithGroup(groupName).Parent = editPropertyMeta));
+                res.Add(editPropertyMeta);
             }
-            res.Add(editPropertyMeta);
+            catch (Exception e)
+            {
+                var format = $"Error '{e.Message}' while reading property {propertyInfo.Name} of type {propertyInfo.PropertyType.Name} declared on {propertyInfo.DeclaringType.Name}.";
+                Console.WriteLine(format);
+                throw;
+            }
         }
         return res;
     }
 
-    private bool ShouldResolve(PropertyInfo arg) 
-        => PropertyResolverFunc?.Invoke(arg) ?? true;
+    private bool ShouldResolve(PropertyInfo arg) =>
+        PropertyResolverFunctions is not {Count: > 0} 
+        || PropertyResolverFunctions.All(func => func?.Invoke(arg) ?? true);
 
-    private bool IsEditableSubObject(Type t) 
-        => !t.IsValueType && !t.IsPrimitive && t != typeof(decimal) && t != typeof(string) && !t.IsEnumerableOrArray();
+    private bool IsEditableSubObject(Type t)
+    {
+        if (t.IsKeyValuePair())
+        {
+            // TODO: Implement KeyValuePair support
+        }
+        return !t.IsValueType && !t.IsPrimitive && t != typeof(decimal) && t != typeof(string) &&
+               !t.IsEnumerableOrArray();
+    }
 
     private List<ObjectEditPropertyMeta> ReadProperties() => GetProperties(typeof(T), Value).ToList();
 

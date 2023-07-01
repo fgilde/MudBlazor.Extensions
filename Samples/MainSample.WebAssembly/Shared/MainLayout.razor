@@ -1,8 +1,6 @@
 ﻿@using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
-@using MudBlazor.Utilities
 @using MudBlazor.Extensions.Core
-@using Microsoft.Extensions.Options
 @inherits LayoutComponentBase
 @inject IJSRuntime JsRuntime
 @inject NavigationManager Navi;
@@ -10,7 +8,7 @@
 
 <MudThemeProvider @bind-IsDarkMode="@IsDark" Theme="@ClientTheme.CurrentTheme" />
 <MudDialogProvider />
-<MudExTaskBar HideContentWhenCollapsed="true"/>
+<MudExTaskBar BorderColor="MudExColor.Warning" HideContentWhenCollapsed="true"/>
 <MudSnackbarProvider />
 
 <MudOverlay @bind-Visible="IsOverlayVisible" DarkBackground="true" AutoClose="true">
@@ -71,6 +69,8 @@
     {
         var op = new DialogOptionsEx
         {
+            DragMode = MudDialogDragMode.Simple,
+            CloseButton = true,
             MaxWidth = MaxWidth.ExtraSmall, 
             FullWidth = true, 
             FullHeight = true,

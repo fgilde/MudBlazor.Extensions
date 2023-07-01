@@ -1,4 +1,5 @@
-## Change Log 
+## Change Log  
+ - 1.7.60 > Better component support for MudExObjectEdit
  - 1.7.59 > Add Parameters for Typo and preview size in ThemeSelect
  - 1.7.56 > Support default border radius in [MudExThemeSelect](https://www.mudex.org/theme-edit) 
  - 1.7.55 > new Component [MudExThemeEdit](https://www.mudex.org/theme-edit) to edit theme(s) and presets of themes as easy as possible and supports all options from your inherited MudThemes.

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 
@@ -18,32 +19,33 @@ public partial class MudExSplitPanelItem
     /// <summary>
     /// The child content of MudExSplitPanelItem component
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Content")]
     public RenderFragment ChildContent { get; set; }
 
     /// <summary>
     /// The CSS class of MudExSplitPanelItem component
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Appearance")]
     public string Class { get; set; }
 
     /// <summary>
     /// The CSS style of MudExSplitPanelItem component
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Appearance")]
     public string Style { get; set; }
 
     /// <summary>
     /// The min size of MudExSplitPanelItem component
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Common")]
     public int MinSize { get; set; }
 
     /// <summary>
     /// The CSS unit of MudExSplitPanelItem component's size
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Common")]
     public CssUnit SizeUnit { get; set; } = CssUnit.Pixels;
+
 
     /// <summary>
     /// Get the CSS class of MudExSplitPanelItem component

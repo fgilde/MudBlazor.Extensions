@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Utilities;
@@ -31,31 +32,31 @@ public sealed partial class MudExColorEdit
     /// <summary>
     /// Gets or sets the <see cref="IStringLocalizer"/> to be used for localizing strings.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Common")]
     public IStringLocalizer Localizer { get; set; }
 
     /// <summary>
     /// Gets or sets the variant filter.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Filtering")]
     public Variant FilterVariant { get; set; }
 
     /// <summary>
     /// Gets or sets the value of the color picker.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Data")]
     public MudExColor Value { get => _value; set => _value = value; }
 
     /// <summary>
     /// Gets or sets the callback method when the value of the color picker is changed.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Behavior")]
     public EventCallback<MudExColor> ValueChanged { get; set; }
 
     /// <summary>
     /// Gets or sets the Css Variables.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Appearance")]
     public KeyValuePair<string, MudColor>[] CssVars
     {
         get => _cssVars;
@@ -65,7 +66,7 @@ public sealed partial class MudExColorEdit
     /// <summary>
     /// Gets or sets the string value of the color picker selected by the user.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Data")]
     public string ValueString
     {
         get
@@ -88,75 +89,76 @@ public sealed partial class MudExColorEdit
     /// <summary>
     /// Gets or sets the callback method when the string value of the color picker is changed.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Behavior")]
     public EventCallback<string> ValueStringChanged { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether to show theme colors.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Appearance")]
     public bool ShowThemeColors { get; set; } = true;
 
     /// <summary>
     /// Gets or sets a value indicating whether to show HTML colors.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Appearance")]
     public bool ShowHtmlColors { get; set; } = true;
 
     /// <summary>
     /// Gets or sets a value indicating whether to show CSS color variables.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Appearance")]
     public bool ShowCssColorVariables { get; set; } = true;
 
     /// <summary>
     /// Gets or sets the filter for the color picker.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Filtering")]
     public string Filter { get; set; }
 
     /// <summary>
     /// Gets or sets the color preview mode.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Appearance")]
     public ColorPreviewMode PreviewMode { get; set; } = ColorPreviewMode.Both;
 
     /// <summary>
     /// Gets or sets a value indicating whether to delay the value change of the color picker until the picker is closed.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Behavior")]
     public bool DelayValueChangeToPickerClose { get; set; }
 
     /// <summary>
     /// Gets or sets the auto close behavior.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Behavior")]
     public AutoCloseBehaviour AutoCloseBehaviour { get; set; } = AutoCloseBehaviour.OnDefinedSelect;
 
     /// <summary>
     /// Gets or sets the <see cref="MudColorOutputFormats"/>.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Misc")]
     public MudColorOutputFormats? MudColorStringFormat { get => _suggestedFormat; set => _suggestedFormat = value; }
 
     /// <summary>
     /// Gets or sets a value indicating whether to have always <see cref="MudColor"/> filled in <see cref="MudExColor"/> as the OneOf value.
     /// With this setting turned on, you can use this edit control for all of your Color Properties.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Behavior")]
     public bool ForceSelectOfMudColor { get; set; }
 
     /// <summary>
     /// Gets or sets the label for the custom tab.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Appearance")]
     public string LabelCustomTab { get; set; } = "Custom";
 
     /// <summary>
     /// Gets or sets the label for the defined tab.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Appearance")]
     public string LabelDefinedTab { get; set; } = "Defined";
+    
 
     private KeyValuePair<string, MudColor>[] _cssVars;
     private MudColor[] _palette ;

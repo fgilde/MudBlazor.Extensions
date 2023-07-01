@@ -35,7 +35,7 @@ internal static class ComponentTypes
     public static HashSet<Type> AllMudBlazorComponents()
     {
         return typeof(MudButton).Assembly.GetTypes().Where(
-                t => t.IsAssignableTo(typeof(ComponentBase)) && !t.IsInterface && !t.IsAbstract && !t.IsGenericType)
+                t => !t.Name.StartsWith("_") && t.IsAssignableTo(typeof(ComponentBase)) && t is {IsInterface: false, IsAbstract: false, IsGenericType: false})
             .ToHashSet();
     }
 

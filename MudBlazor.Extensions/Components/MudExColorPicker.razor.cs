@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Utilities;
 
 namespace MudBlazor.Extensions.Components
@@ -16,28 +17,33 @@ namespace MudBlazor.Extensions.Components
         /// <summary>
         /// Set to true to delay value change event to picker close event
         /// </summary>
-        [Parameter] public bool DelayValueChangeToPickerClose { get; set; } = true;
+        [Parameter, SafeCategory("Behavior")]
+        public bool DelayValueChangeToPickerClose { get; set; } = true;
 
         /// <summary>
         /// Set to true to use the browser native control as picker element
         /// </summary>
-        [Parameter] public bool UseNativeBrowserControl { get; set; }
+        [Parameter, SafeCategory("Behavior")]
+        public bool UseNativeBrowserControl { get; set; }
 
         /// <summary>
         /// Set to true to use MudExColorBubble as picker element
         /// </summary>
-        [Parameter] public bool UseMudExColorBubble { get; set; }
+        [Parameter, SafeCategory("Behavior")]
+        public bool UseMudExColorBubble { get; set; }
 
         /// <summary>
         /// Set to true to use the palette from picker for native browser element as well
         /// </summary>
-        [Parameter] public bool UseColorPaletteInNativeBrowserControl { get; set; }
+        [Parameter, SafeCategory("Behavior")]
+        public bool UseColorPaletteInNativeBrowserControl { get; set; }
 
         /// <summary>
         /// The Initial color that should be selected
         /// </summary>
-        [Parameter] public MudColor InitialColor { get; set; }
-        
+        [Parameter, SafeCategory("Data")]
+        public MudColor InitialColor { get; set; }
+
         /// <summary>
         /// Render the base component
         /// </summary>

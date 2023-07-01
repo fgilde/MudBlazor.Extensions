@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
@@ -35,7 +36,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     public bool WrapInMudExFileDisplayDiv => false;
 
     /// <inheritdoc />
-    [Parameter]
+    [Parameter, SafeCategory("Data")]
     public IMudExFileDisplayInfos FileDisplayInfos
     {
         get => this;
@@ -46,99 +47,118 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
             ContentStream = value.ContentStream;
         }
     }
-
     /// <summary>
     /// ElementID
     /// </summary>
-    [Parameter] public string ElementId { get; set; } = Guid.NewGuid().ToFormattedId();
+    [Parameter, SafeCategory("Misc")]
+    public string ElementId { get; set; } = Guid.NewGuid().ToFormattedId();
 
     /// <summary>
     /// SearchString for current filter
     /// </summary>
-    [Parameter] public string SearchString { get; set; }
+    [Parameter, SafeCategory("Filtering")]
+    public string SearchString { get; set; }
 
     /// <summary>
     /// If true user is able to search
     /// </summary>
-    [Parameter] public bool AllowSearch { get; set; } = true;
+    [Parameter, SafeCategory("Filtering")]
+    public bool AllowSearch { get; set; } = true;
 
     /// <summary>
     /// Name of root folder
     /// </summary>
-    [Parameter] public string RootFolderName { get; set; } = "ROOT";
+    [Parameter, SafeCategory("Data")]
+    public string RootFolderName { get; set; } = "ROOT";
 
     /// <summary>
     /// Url
     /// </summary>
-    [Parameter] public string Url { get; set; }
+    [Parameter, SafeCategory("Data")]
+    public string Url { get; set; }
 
     /// <summary>
     /// Content Type 
     /// </summary>
+    [SafeCategory("Data")]
     public string ContentType => "application/zip";
 
     /// <inheritdoc />
-    [Parameter] public Stream ContentStream { get; set; }
+    [Parameter, SafeCategory("Data")]
+    public Stream ContentStream { get; set; }
 
     /// <summary>
     /// True to display structure as tree
     /// </summary>
-    [Parameter] public bool ShowAsTree { get; set; } = true;
+    [Parameter, SafeCategory("Behavior")]
+    public bool ShowAsTree { get; set; } = true;
 
     /// <summary>
     /// If true user can toggle between flat and tree view
     /// </summary>
-    [Parameter] public bool AllowToggleTree { get; set; } = true;
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowToggleTree { get; set; } = true;
 
     /// <summary>
     /// If true user can download all or specific files from zip
     /// </summary>
-    [Parameter] public bool AllowDownload { get; set; } = true;
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowDownload { get; set; } = true;
 
     /// <summary>
     /// If true user can preview containing files
     /// </summary>
-    [Parameter] public bool AllowPreview { get; set; } = true;
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowPreview { get; set; } = true;
 
     /// <summary>
     /// Button Color for action icon button
     /// </summary>
-    [Parameter] public Color ActionButtonColor { get; set; }
+    [Parameter, SafeCategory("Appearance")]
+    public Color ActionButtonColor { get; set; }
 
     /// <summary>
     /// PropertyFilterMode
     /// </summary>
-    [Parameter] public PropertyFilterMode FilterMode { get; set; }
+    [Parameter, SafeCategory("Filtering")]
+    public PropertyFilterMode FilterMode { get; set; }
 
     /// <summary>
     /// Css Class for toolbar paper
     /// </summary>
-    [Parameter] public string ToolBarPaperClass { get; set; }
+    [Parameter, SafeCategory("Appearance")]
+    public string ToolBarPaperClass { get; set; }
 
     /// <summary>
     /// True to have a sticky toolbar on top
     /// </summary>
-    [Parameter] public bool StickyToolbar { get; set; } = true;
+    [Parameter, SafeCategory("Appearance")]
+    public bool StickyToolbar { get; set; } = true;
 
     /// <summary>
     /// Top position if toolbar is sticky
     /// </summary>
-    [Parameter] public string StickyToolbarTop { get; set; } = "0";
+    [Parameter, SafeCategory("Appearance")]
+    public string StickyToolbarTop { get; set; } = "0";
 
     /// <summary>
     /// File Selection Mode
     /// </summary>
-    [Parameter] public ItemSelectionMode SelectionMode { get; set; } = ItemSelectionMode.None;
+    [Parameter, SafeCategory("Selecting")]
+    public ItemSelectionMode SelectionMode { get; set; } = ItemSelectionMode.None;
+
 
     /// <summary>
     /// Selected files
     /// </summary>
-    [Parameter] public IList<ZipBrowserFile> Selected { get; set; }
+    [Parameter, SafeCategory("Selecting")] 
+    public IList<ZipBrowserFile> Selected { get; set; }
 
     /// <summary>
     /// Event on selection change
     /// </summary>
-    [Parameter] public EventCallback<IList<ZipBrowserFile>> SelectedChanged { get; set; }
+    [Parameter, SafeCategory("Selecting")] 
+    public EventCallback<IList<ZipBrowserFile>> SelectedChanged { get; set; }
 
     /// <summary>
     /// Returns true if given ZipFileentry is selected

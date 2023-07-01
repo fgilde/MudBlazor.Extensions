@@ -2,6 +2,7 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Utilities;
 using Nextended.Core;
@@ -20,7 +21,7 @@ public partial class MudExPropertyEdit
     [Parameter] public string Class { get; set; }
     [Parameter] public string ActiveFilterTerm { get; set; }
     [Parameter] public PropertyResetSettings PropertyResetSettings { get; set; }
-    [Parameter] public ObjectEditPropertyMeta PropertyMeta { get; set; }
+    [Parameter][IgnoreOnObjectEdit] public ObjectEditPropertyMeta PropertyMeta { get; set; }
     [Parameter] public EventCallback<ObjectEditPropertyMeta> PropertyValueChanged { get; set; }
     [Parameter] public bool DisableFieldFallback { get; set; }
 
@@ -38,7 +39,7 @@ public partial class MudExPropertyEdit
     private object valueBackup;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (firstRender && PropertyMeta != null)
         {
             valueBackup = await GetBackupAsync(PropertyMeta.Value);
         }

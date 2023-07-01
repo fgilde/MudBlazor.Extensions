@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.Base;
 using Microsoft.Extensions.DependencyInjection;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 
@@ -15,8 +16,7 @@ public partial class MudExGradientText : IMudExComponent
     /// <summary>
     /// Gets or sets the service provider to use when retrieving services.
     /// </summary>
-    [Inject]
-    public IServiceProvider ServiceProvider { get; set; }
+    [Inject] public IServiceProvider ServiceProvider { get; set; }
 
     /// <summary>
     /// Gets the JavaScript interop instance.
@@ -27,37 +27,40 @@ public partial class MudExGradientText : IMudExComponent
     /// Gets or sets the radius of the gradient.
     /// </summary>
     [Parameter]
+    [SafeCategory("Appearance")]
     public int Radius { get; set; } = 90;
 
     /// <summary>
     /// Gets or sets a value indicating whether the gradient should be applied to the text foreground.
     /// </summary>
     [Parameter]
+    [SafeCategory("Appearance")]
     public bool GradientForeground { get; set; } = true;
 
     /// <summary>
     /// Gets or sets the fill color of the text.
     /// </summary>
     [Parameter]
+    [SafeCategory("Appearance")]
     public MudExColor TextFillColor { get; set; } = Color.Transparent;
 
     /// <summary>
     /// Gets or sets a value indicating whether to animate the gradient.
     /// </summary>
     [Parameter]
+    [SafeCategory("Behavior")]
     public bool Animate { get; set; } = true;
 
     /// <summary>
     /// Gets or sets the duration of the animation.
     /// </summary>
-    [Parameter]
+    [Parameter] [SafeCategory("Behavior")]
     public TimeSpan AnimationDuration { get; set; } = TimeSpan.FromSeconds(3);
 
     /// <summary>
     /// Gets or sets the collection of colors to use for the gradient.
     /// </summary>
-    [Parameter]
-    [Category("Behavior")]
+    [Parameter] [SafeCategory("Behavior")]
     public IEnumerable<MudExColor> Palette { get; set; }
 
     /// <inheritdoc />

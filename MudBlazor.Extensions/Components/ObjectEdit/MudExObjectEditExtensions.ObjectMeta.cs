@@ -56,15 +56,15 @@ public static partial class MudExObjectEditExtensions
     public static ObjectEditMeta<T> GroupByTypes<T>(this ObjectEditMeta<T> meta, params (Type type, string name)[] types)
         => meta?.SetProperties(m => m.AllProperties.Where(p => types.Select(t => t.type).Contains(p.PropertyInfo.PropertyType)).Apply(p => p.WithGroup(types.FirstOrDefault(t => t.type == p.PropertyInfo.PropertyType).name ?? p.PropertyInfo.PropertyType.Name)));
 
-    //public static ObjectEditMeta<T> IgnoreAllDerivedFields<T>(this ObjectEditMeta<T> meta)
-    //    => meta?.SetProperties(m => m.AllProperties.Where(p => p.PropertyInfo.DeclaringType == typeof(T)).Apply(p => p.Ignore()));
+    public static ObjectEditMeta<T> IgnoreAllNotInheritedFields<T>(this ObjectEditMeta<T> meta)
+        => meta?.SetProperties(m => m.AllProperties.Where(p => p.PropertyInfo.DeclaringType == typeof(T)).Apply(p => p.Ignore()));
 
     public static ObjectEditMeta<T> IgnoreFields<T>(this ObjectEditMeta<T> meta, params string[] fieldNames)
         => meta?.SetProperties(m => fieldNames.Apply(f => m.Property(f)?.Ignore()));
     public static ObjectEditMeta<T> IgnoreFields<T>(this ObjectEditMeta<T> meta, params Expression<Func<T, object>>[] fields)
         => meta?.SetProperties(m => fields.Apply(f => m.Property(f)?.Ignore()));
     public static ObjectEditMeta<T> WithPropertyResolverFunc<T>(this ObjectEditMeta<T> meta, Func<PropertyInfo, bool> shouldHandle)
-        => meta?.SetProperties(m => m.PropertyResolverFunc = shouldHandle);
+        => meta?.SetProperties(m => m.PropertyResolverFunctions.Add(shouldHandle));
 
     public static ObjectEditMeta<T> GroupBy<T>(this ObjectEditMeta<T> meta, Func<ObjectEditPropertyMeta, string> groupFunc)
         => meta?.SetProperties(m => m.AllProperties.Apply(p => p.WithGroup(groupFunc(p))));

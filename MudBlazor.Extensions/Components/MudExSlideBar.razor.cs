@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 
@@ -15,27 +16,27 @@ public partial class MudExSlideBar
     /// <summary>
     /// The position where the MudExSlideBar should start to slide from.
     /// </summary>
-    [Parameter] public Position Position { get; set; } = Position.Bottom;
+    [Parameter, SafeCategory("Behavior")] public Position Position { get; set; } = Position.Bottom;
 
     /// <summary>
     /// If true, the MudExSlideBar will collapse automatically when the mouse leaves its bounds.
     /// </summary>
-    [Parameter] public bool AutoCollapse { get; set; } = true;
+    [Parameter, SafeCategory("Behavior")] public bool AutoCollapse { get; set; } = true;
 
     /// <summary>
     /// Determines the opacity of the MudExSlideBar when it is not focused.
     /// </summary>
-    [Parameter] public double OpacityNotFocused { get; set; } = .2;
+    [Parameter, SafeCategory("Appearance")] public double OpacityNotFocused { get; set; } = .2;
 
     /// <summary>
     /// If true, the position of the MudExSlideBar will be relative to the parent element.
     /// </summary>
-    [Parameter] public bool RelativeToParent { get; set; } = false;
+    [Parameter, SafeCategory("Behavior")] public bool RelativeToParent { get; set; } = false;
 
     /// <summary>
     /// Gets or sets whether the MudExSlideBar is open.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Behavior")]
     public bool IsOpen
     {
         get => _isOpen;
@@ -51,37 +52,37 @@ public partial class MudExSlideBar
     /// <summary>
     /// The background color of the MudExSlideBar.
     /// </summary>
-    [Parameter] public MudExColor BackgroundColor { get; set; } = Color.Transparent;
+    [Parameter, SafeCategory("Appearance")] public MudExColor BackgroundColor { get; set; } = Color.Transparent;
 
     /// <summary>
     /// The border color of the MudExSlideBar.
     /// </summary>
-    [Parameter] public MudExColor BorderColor { get; set; } = Color.Transparent;
+    [Parameter, SafeCategory("Appearance")] public MudExColor BorderColor { get; set; } = Color.Transparent;
 
     /// <summary>
     /// The border size of the MudExSlideBar.
     /// </summary>
-    [Parameter] public MudExSize<double> BorderSize { get; set; } = new(2, CssUnit.Pixels);
+    [Parameter, SafeCategory("Appearance")] public MudExSize<double> BorderSize { get; set; } = new(2, CssUnit.Pixels);
 
     /// <summary>
     /// An event that is raised when the IsOpen property changes.
     /// </summary>
-    [Parameter] public EventCallback<bool> IsOpenChanged { get; set; }
+    [Parameter, SafeCategory("Misc")] public EventCallback<bool> IsOpenChanged { get; set; }
 
     /// <summary>
     /// The child content of the MudExSlideBar.
     /// </summary>
-    [Parameter] public virtual RenderFragment ChildContent { get; set; }
+    [Parameter, SafeCategory("Content")] public virtual RenderFragment ChildContent { get; set; }
 
     /// <summary>
     /// If true, changes in opacity of the MudExSlideBar are ignored.
     /// </summary>
-    [Parameter] public bool DisableOpacityChange { get; set; }
+    [Parameter, SafeCategory("Behavior")] public bool DisableOpacityChange { get; set; }
 
     /// <summary>
     /// If true, the child content of the MudExSlideBar will be hidden when the MudExSlideBar is collapsed.
     /// </summary>
-    [Parameter] public bool HideContentWhenCollapsed { get; set; } = true;
+    [Parameter, SafeCategory("Behavior")] public bool HideContentWhenCollapsed { get; set; } = true;
 
     /// <summary>
     /// Shows the MudExSlideBar.

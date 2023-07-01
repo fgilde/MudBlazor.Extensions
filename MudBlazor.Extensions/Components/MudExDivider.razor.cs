@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
@@ -36,22 +37,27 @@ public partial class MudExDivider : IMudExComponent
     /// <summary>
     /// Label
     /// </summary>
-    [Parameter] public string Label { get; set; }
-    
+    [Parameter, SafeCategory("Data")]
+    public string Label { get; set; }
+
     /// <summary>
     /// Color
     /// </summary>
-    [Parameter] public MudExColor Color { get; set; } = MudBlazor.Color.Default;
+    [Parameter, SafeCategory("Appearance")]
+    public MudExColor Color { get; set; } = MudBlazor.Color.Default;
 
     /// <summary>
     /// Size
     /// </summary>
-    [Parameter] public MudExSize<double> Size { get; set; } = 1;
-    
+    [Parameter, SafeCategory("Appearance")]
+    public MudExSize<double> Size { get; set; } = 1;
+
     /// <summary>
     /// If this option is true border size is used instead of element size
     /// </summary>
-    [Parameter] public bool UseBorder { get; set; }
+    [Parameter, SafeCategory("Appearance")]
+    public bool UseBorder { get; set; }
+
 
     private string Id = Guid.NewGuid().ToFormattedId();
 

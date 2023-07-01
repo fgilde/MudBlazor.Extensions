@@ -1,19 +1,19 @@
 ﻿@page "/render/{TypeName?}"
 @page "/c/{TypeName?}"
 @using Nextended.Core.Extensions
+@inject NavigationManager Navi;
 
 
-<HeaderForType Type="@Type" Fallback="@TypeName"/>
-
-
-@if (AvailableDemo != null)
+@if (!string.IsNullOrEmpty(TypeName) && Type != null)
 {
-    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" AlertTextPosition="AlertTextPosition.Center" ContentAlignment="HorizontalAlignment.Center">
-        <a href="@AvailableDemo.Href" target="@AvailableDemo.Target">Here is another Real demo available for @(Api.GetTypeName(Type) ?? TypeName )</a>
-    </MudAlert>
-}
-@if (Type != null)
-{
+    <HeaderForType Type="@Type" Fallback="@TypeName" />
+
+    @if (AvailableDemo != null)
+    {
+        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" AlertTextPosition="AlertTextPosition.Center" ContentAlignment="HorizontalAlignment.Center">
+            <a href="@AvailableDemo.Href" target="@AvailableDemo.Target">Here is another Real demo available for @(Api.GetTypeName(Type) ?? TypeName)</a>
+        </MudAlert>
+    }
     <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
         <MudTabPanel Text="Rendered">
             @if (Type.IsGenericType)
@@ -28,7 +28,7 @@
             }
             else
             {
-                 <DynamicComponent Type="ComponentRenderType"></DynamicComponent>
+                <DynamicComponent Type="ComponentRenderType"></DynamicComponent>
             }
         </MudTabPanel>
         <MudTabPanel Text="API">
@@ -38,7 +38,47 @@
 }
 else
 {
-    <span> Not found</span>
+    <MudExCardList HoverColor="Color.Info" TData="object">
+
+        @foreach (var nav in Navigations.ReflectMudExComponents().Concat(Navigations.ReflectMudBlazorComponents()))
+        {
+            <MudCard Class="index-card" @onclick="@(() => { Open(nav); })">
+                <MudCardHeader>
+                    <CardHeaderContent>
+
+                        @if (nav.Demo is DemoNewAttribute)
+                        {
+                            <MudAlert Icon="@Icons.Material.Filled.NewLabel" Style="margin-top: -15px;padding: 0;background: transparent;" Variant="Variant.Text" Severity="Severity.Warning">
+                                <MudText Typo="Typo.subtitle1">@($"NEW {(nav.Text)}")</MudText>
+                                </MudAlert>
+                        }
+                        else if (nav.Demo is DemoUpdatedAttribute)
+                        {
+                            <MudAlert Icon="@Icons.Material.Filled.Update" Style="margin-top: -15px;padding: 0;background: transparent;" Variant="Variant.Text" Severity="Severity.Info">
+                                <MudText Typo="Typo.subtitle1">@($"UPDATE {(nav.Text)}")</MudText>
+                                </MudAlert>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.h6">@nav.Text</MudText>
+                        }
+
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        @*<MudIconButton Icon="@nav.Icon" Color="Color.Default" />*@
+                        <MudIcon Color="@nav.GetIconColor()" Icon="@nav.Icon" />
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText>@nav.Text</MudText>
+                    @if (!string.IsNullOrEmpty(nav.Documentation))
+                    {
+                        <MudText Typo="Typo.body2">@nav.Documentation</MudText>
+                    }
+                </MudCardContent>
+            </MudCard>
+        }
+    </MudExCardList>
 }
 
 @code {
@@ -60,7 +100,11 @@ else
     NavigationEntry? _availableDemo;
     private string? _doc;
 
+    private void Open(NavigationEntry nav)
+    {
+        Navi.NavigateTo(nav.Href);
 
+    }
     internal NavigationEntry? AvailableDemo
     {
         get
@@ -72,7 +116,7 @@ else
 
     private bool IsMatchType(Type other)
     {
-        return other == Type || (other.IsGenericType && Type is {IsGenericType: true } && Type.GetGenericTypeDefinition() == other.GetGenericTypeDefinition());
+        return other == Type || (other.IsGenericType && Type is { IsGenericType: true } && Type.GetGenericTypeDefinition() == other.GetGenericTypeDefinition());
     }
 
     public Type? Type => type ??= GetTypeByName(TypeName);

@@ -9,14 +9,14 @@
     <DialogContent>
         <div class="d-flex justify-center mt-4 mb-4">
             <MudExGradientText Animate="true"
-                               Align="Align.Center" Typo="Typo.h4">MudBlazor.Extensions</MudExGradientText>
+                               Align="Align.Center" Typo="Typo.h4">MudBlazor.Extensions @MudExResource.MudExVersion().ToString()</MudExGradientText>
         </div>
         <Support></Support>
         
         <MudCard Class="m-4">
             <MudCardContent>
-                <MudText Align="Align.Center" Typo="Typo.body1"><b>Used MudBlazor.Extensions Version</b> @MudExResource.MudExVersion().ToString()</MudText>
-                <MudText Align="Align.Center" Typo="Typo.body1"><b>Used MudBlazor</b> @MudExResource.MudBlazorVersion().ToString()</MudText>
+                <MudText Align="Align.Center" Typo="Typo.body1"><b>MudBlazor.Extensions</b> @MudExResource.MudExVersion().ToString()</MudText>
+                <MudText Align="Align.Center" Typo="Typo.body1"><b>for MudBlazor</b> @MudExResource.MudBlazorVersion().ToString()</MudText>
             </MudCardContent>
         </MudCard>
         
@@ -26,7 +26,7 @@
                     <MudText Typo="Typo.h6">Support project</MudText>
                 </CardHeaderContent>
                 <CardHeaderActions>
-                    <MudIconButton Icon="@Icons.Material.Filled.MonetizationOn" Color="Color.Default" />
+                    <MudIconButton Href="https://www.paypal.com/paypalme/fgilde/" Target="_blank" Icon="@Icons.Material.Filled.MonetizationOn" Color="Color.Default" />
                 </CardHeaderActions>
             </MudCardHeader>
             <MudCardContent>
@@ -34,6 +34,7 @@
                 <MudText Typo="Typo.body2">1. If you're a developer feel free to contribute</MudText>
                 <MudText Typo="Typo.body2">2. Report Issues, bugs or feature ideas</MudText>
                 <MudText Typo="Typo.body2">3. Donate or become a sponsor</MudText>
+                <MudText Typo="Typo.body2">4. Give a star on github</MudText>
             </MudCardContent>
             <MudCardActions>
                 <MudButton Variant="Variant.Text" Href="https://www.paypal.com/paypalme/fgilde/" Target="_blank" Color="Color.Warning">Donate with PayPal</MudButton>

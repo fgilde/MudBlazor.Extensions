@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Extensions;
@@ -12,76 +13,89 @@ public partial class MudExThemeSelect<TTheme>
 {
     private ThemePreset<TTheme> _selected;
     private MudSelect<ThemePreset<TTheme>> _mudSelector;
-    
+
     /// <summary>
     /// Typography for Name
     /// </summary>
-    [Parameter] public Typo TypoThemeName { get; set; } = Typo.h6;
+    [Parameter, SafeCategory("Appearance")]
+    public Typo TypoThemeName { get; set; } = Typo.h6;
 
     /// <summary>
     /// Typography for description
     /// </summary>
-    [Parameter] public Typo TypoThemeDescription { get; set; } = Typo.subtitle1;
+    [Parameter, SafeCategory("Appearance")]
+    public Typo TypoThemeDescription { get; set; } = Typo.subtitle1;
 
     /// <summary>
     /// Size of preview image
     /// </summary>
-    [Parameter] public MudExDimension PreviewImageSize { get; set; } = new MudExDimension(140, 100);
+    [Parameter, SafeCategory("Appearance")]
+    public MudExDimension PreviewImageSize { get; set; } = new MudExDimension(140, 100);
 
     /// <summary>
     /// Variant if SelectionMode is ThemeSelectionMode.Select
     /// </summary>
-    [Parameter] public Variant SelectVariant { get; set; } = Variant.Outlined;
+    [Parameter, SafeCategory("Appearance")]
+    public Variant SelectVariant { get; set; } = Variant.Outlined;
 
     /// <summary>
     /// Label
     /// </summary>
-    [Parameter] public string Label { get; set; } = "Themes";
+    [Parameter, SafeCategory("Appearance")]
+    public string Label { get; set; } = "Themes";
 
     /// <summary>
     /// Style for the select component.
     /// </summary>
-    [Parameter] public string Style { get; set; } = "min-width: 350px";
+    [Parameter, SafeCategory("Style")]
+    public string Style { get; set; } = "min-width: 350px";
 
     /// <summary>
     /// Style for theme name container
     /// </summary>
-    [Parameter] public string NameContainerStyle { get; set; }
+    [Parameter, SafeCategory("Common")]
+    public string NameContainerStyle { get; set; }
 
     /// <summary>
     /// Class for the select component.
     /// </summary>
-    [Parameter] public string Class { get; set; }
+    [Parameter, SafeCategory("Common")]
+    public string Class { get; set; }
 
     /// <summary>
     /// Style for one theme item
     /// </summary>
-    [Parameter] public string ItemStyle { get; set; }
+    [Parameter, SafeCategory("Common")]
+    public string ItemStyle { get; set; }
 
     /// <summary>
     /// Class for one theme item
     /// </summary>
-    [Parameter] public string ItemClass { get; set; }
+    [Parameter, SafeCategory("Common")]
+    public string ItemClass { get; set; }
 
     /// <summary>
     /// Gets or sets the selection mode of the component with a default value of <see cref="ThemeSelectionMode.Select"/>.
     /// </summary>
-    [Parameter] public ThemeSelectionMode SelectionMode { get; set; } = ThemeSelectionMode.Select;
+    [Parameter, SafeCategory("Behavior")]
+    public ThemeSelectionMode SelectionMode { get; set; } = ThemeSelectionMode.Select;
 
     /// <summary>
     /// Gets or sets the preview mode of the component with a default value of <see cref="ThemePreviewMode.BothDiagonal"/>.
     /// </summary>
-    [Parameter] public ThemePreviewMode PreviewMode { get; set; } = ThemePreviewMode.BothDiagonal;
+    [Parameter, SafeCategory("Behavior")]
+    public ThemePreviewMode PreviewMode { get; set; } = ThemePreviewMode.BothDiagonal;
 
     /// <summary>
     /// Gets or sets the available themes.
     /// </summary>
-    [Parameter] public ICollection<ThemePreset<TTheme>> Available { get; set; }
+    [Parameter, SafeCategory("Data")]
+    public ICollection<ThemePreset<TTheme>> Available { get; set; }
 
     /// <summary>
     /// Gets or sets the currently selected theme.
     /// </summary>
-    [Parameter]
+    [Parameter] [IgnoreOnObjectEdit]
     public ThemePreset<TTheme> Selected
     {
         get => _selected;
@@ -120,7 +134,7 @@ public partial class MudExThemeSelect<TTheme>
     /// <summary>
     /// Gets or sets the selected theme ads object to allow binding to non generic components
     /// </summary>
-    [Parameter]
+    [Parameter] [IgnoreOnObjectEdit]
     public object SelectedValue
     {
         get => Selected;
@@ -130,7 +144,7 @@ public partial class MudExThemeSelect<TTheme>
     /// <summary>
     /// Gets or sets the selected theme from the available themes.
     /// </summary>
-    [Parameter]
+    [Parameter] [IgnoreOnObjectEdit]
     public TTheme SelectedTheme
     {
         get => Selected?.Theme;

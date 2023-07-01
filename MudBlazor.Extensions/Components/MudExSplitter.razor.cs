@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.Base;
 using Nextended.Core.Extensions;
 
@@ -27,11 +28,13 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
     /// <summary>
     /// Indicates whether to update sizes in percentage
     /// </summary>
-    [Parameter] public bool UpdateSizesInPercentage { get; set; } = false;
+    [Parameter, SafeCategory("Behavior")] 
+    public bool UpdateSizesInPercentage { get; set; } = false;
     /// <summary>
     /// Indicates whether the Splitter is reversed
     /// </summary>
-    [Parameter] public bool Reverse { get; set; } = false;
+    [Parameter, SafeCategory("Behavior")] 
+    public bool Reverse { get; set; } = false;
 
     private IJsMudExComponent<MudExSplitter> AsJsComponent => this;
 

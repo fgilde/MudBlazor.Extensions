@@ -2,6 +2,7 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Helper;
@@ -26,7 +27,7 @@ public partial class MudExThemeEdit<TTheme>
     /// <summary>
     /// Here you can set Property names or full paths and only these properties are available when simple mode is used.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Data")]
     public string[] PropertiesForSimpleMode { get; set; } = {
         nameof(MudTheme.Palette.AppbarBackground),
         nameof(MudTheme.Palette.Surface),
@@ -53,7 +54,7 @@ public partial class MudExThemeEdit<TTheme>
     /// If you are in dark only mode and change one of these properties this will applied to the light pallete then as well.
     /// Default is Primary,Secondary, Tertiary, Info, Success, Warning and error
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Data")]
     public string[] PaletteColorsToSync { get; set; } =
     {
         nameof(MudTheme.Palette.Primary),
@@ -68,32 +69,37 @@ public partial class MudExThemeEdit<TTheme>
     /// <summary>
     /// if true user can click on cancel
     /// </summary>
-    [Parameter] public bool ShowCancelButton { get; set; }
+    [Parameter, SafeCategory("Behavior")] 
+    public bool ShowCancelButton { get; set; }
 
     /// <summary>
     /// if true user can click on save
     /// </summary>
-    [Parameter] public bool ShowSaveButton { get; set; }
+    [Parameter, SafeCategory("Behavior")]
+    public bool ShowSaveButton { get; set; }
 
     /// <summary>
     /// If true user can import json themes
     /// </summary>
-    [Parameter] public bool AllowImport { get; set; } = true;
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowImport { get; set; } = true;
 
     /// <summary>
     /// If true user can export theme as json
     /// </summary>
-    [Parameter] public bool AllowExport { get; set; } = true;
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowExport { get; set; } = true;
 
     /// <summary>
     /// If true the state of current theme and edit values are stored in storage and restored automatically
     /// </summary>
-    [Parameter] public bool AutoSaveRestoreState { get; set; } = true;
+    [Parameter, SafeCategory("Behavior")]
+    public bool AutoSaveRestoreState { get; set; } = true;
 
     /// <summary>
     /// The theme to edit or current theme from preset
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Data")]
     public TTheme Theme
     {
         get => _theme;
@@ -115,39 +121,46 @@ public partial class MudExThemeEdit<TTheme>
     /// <summary>
     /// Edit mode (default simple)
     /// </summary>
-    [Parameter] public ThemeEditMode EditMode { get; set; } = ThemeEditMode.Simple;
-    
+    [Parameter, SafeCategory("Behavior")] 
+    public ThemeEditMode EditMode { get; set; } = ThemeEditMode.Simple;
+
 
     /// <summary>
     /// If true user can switch between simple and full edit mode
     /// </summary>
-    [Parameter] public bool AllowModeToggle { get; set; } = true;
+    [Parameter, SafeCategory("Behavior")] 
+    public bool AllowModeToggle { get; set; } = true;
 
     /// <summary>
     /// This bool represents a tri state. True to edit only dark color palette, false to edit only light color palette and null to edit both
     /// </summary>
-    [Parameter] public bool? IsDark { get; set; }
+    [Parameter, SafeCategory("Data")] 
+    public bool? IsDark { get; set; }
 
     /// <summary>
     /// Object edit Meta 
     /// </summary>
-    [Parameter] public ObjectEditMeta<TTheme> MetaInformation { get; set; }
+    [Parameter, SafeCategory("Data")] 
+    public ObjectEditMeta<TTheme> MetaInformation { get; set; }
 
     /// <summary>
     /// This collection of presets will be used to populate the dropdown for preset selection
     /// If its allowed user can also add or delete from this collection
     /// </summary>
-    [Parameter] public ICollection<ThemePreset<TTheme>> Presets { get; set; }
+    [Parameter, SafeCategory("Data")] 
+    public ICollection<ThemePreset<TTheme>> Presets { get; set; }
 
     /// <summary>
     /// If true you can add or delete themes
     /// </summary>
-    [Parameter] public bool AllowPresetsEdit { get; set; } = true;
+    [Parameter, SafeCategory("Behavior")] 
+    public bool AllowPresetsEdit { get; set; } = true;
 
     /// <summary>
     /// If function returns true user can delete theme from param
     /// </summary>
-    [Parameter] public Func<ThemePreset<TTheme>, bool> CanDelete { get; set; } = _ => true;
+    [Parameter, SafeCategory("Behavior")] 
+    public Func<ThemePreset<TTheme>, bool> CanDelete { get; set; } = _ => true;
     
     /// <summary>
     /// Raised when new theme is created

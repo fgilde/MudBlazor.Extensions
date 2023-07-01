@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Utilities;
 using Nextended.Core.Extensions;
@@ -15,23 +17,25 @@ namespace MudBlazor.Extensions.Components
         /// <summary>
         /// Gets or sets the CSS style of the component.
         /// </summary>
-        [Parameter] public string Style { get; set; }
+        [Parameter, SafeCategory("Appearance")]
+        public string Style { get; set; }
 
         /// <summary>
         /// Gets or sets the CSS class of the component.
         /// </summary>
-        [Parameter] public string Class { get; set; }
+        [Parameter, SafeCategory("Appearance")]
+        public string Class { get; set; }
 
         /// <summary>
         /// Gets or sets the text for the select color button.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Data")]
         public string SelectColorText { get; set; } = "Select color";
 
         /// <summary>
         /// Gets or sets a value indicating whether to show a preview of the selected color in the component.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Behavior")]
         public bool ShowColorPreview
         {
             get => _showColorPreview;
@@ -45,7 +49,7 @@ namespace MudBlazor.Extensions.Components
         /// <summary>
         /// Gets or sets a value indicating whether to allow selecting a color by clicking on the preview of the selected color.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Behavior")]
         public bool AllowSelectOnPreviewClick
         {
             get => _allowSelectOnPreviewClick;
@@ -59,7 +63,7 @@ namespace MudBlazor.Extensions.Components
         /// <summary>
         /// Gets or sets a value indicating whether to close the selector after selecting a color.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Behavior")]
         public bool CloseAfterSelect
         {
             get => _closeAfterSelect;
@@ -73,7 +77,7 @@ namespace MudBlazor.Extensions.Components
         /// <summary>
         /// Gets or sets the minimum luminance of the selected color.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Data")]
         public int MinLuminance
         {
             get => _minLuminance;
@@ -87,7 +91,7 @@ namespace MudBlazor.Extensions.Components
         /// <summary>
         /// Gets or sets the maximum luminance of the selected color.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Data")]
         public int MaxLuminance
         {
             get => _maxLuminance;
@@ -101,7 +105,7 @@ namespace MudBlazor.Extensions.Components
         /// <summary>
         /// Gets or sets the size of the color selector.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Appearance")]
         public int SelectorSize
         {
             get => _selectorSize;
@@ -115,13 +119,13 @@ namespace MudBlazor.Extensions.Components
         /// <summary>
         /// Gets or sets the event callback for when the user changes the selected color.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Click action")]
         public EventCallback<MudColor> ColorChanged { get; set; }
 
         /// <summary>
         /// Gets or sets the currently selected color.
         /// </summary>
-        [Parameter]
+        [Parameter, SafeCategory("Data")]
         public MudColor Color
         {
             get => _color;
@@ -135,14 +139,14 @@ namespace MudBlazor.Extensions.Components
         /// <summary>
         /// Gets or sets the height of the component.
         /// </summary>
-        [Parameter]
-        public int Height { get; set; } = 16;
+        [Parameter, SafeCategory("Appearance")]
+        public MudExSize<double> Height { get; set; } = 16;
 
         /// <summary>
         /// Gets or sets the width of the component.
         /// </summary>
-        [Parameter]
-        public int Width { get; set; } = 16;
+        [Parameter, SafeCategory("Appearance")]
+        public MudExSize<double> Width { get; set; } = 16;
 
         private ElementReference _canvasContainerReference;
         private MudColor _color = new("#000000");
@@ -221,7 +225,7 @@ namespace MudBlazor.Extensions.Components
             }
         }
 
-        private string StyleStr() => $"background-color: {Color}; height: {Height}px; width: {Width}px; {Style}";
+        private string StyleStr() => $"background-color: {Color}; height: {Height}; width: {Width}; {Style}";
 
         private string CanvasContainerStyle() => $"border-radius: {(ShowColorPreview ? "0" : "100%")}; width: {SelectorSize}px; height: {SelectorSize}px";
 

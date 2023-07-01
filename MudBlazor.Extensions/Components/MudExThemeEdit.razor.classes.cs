@@ -15,6 +15,9 @@ public class ThemePreset<TTheme> where TTheme : MudTheme
     public string? Description { get; set; }
     public TTheme Theme { get; set; }
 
+    public ThemePreset()
+    {}
+
     public ThemePreset(string name, TTheme theme)
     {
         Name = name;

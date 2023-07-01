@@ -1,0 +1,47 @@
+﻿@page "/oe-list"
+@inject IDialogService dialogService;
+@using Newtonsoft.Json
+@using MudBlazor.Extensions.Options
+
+@*
+@attribute [DemoNew(Group = "MudExObjectEdit", Name = "Dictionary and tuples", Documentation = "MudExObjectEdit and MudExCollectionEdit now supporting Tuples, Dictionaries and Key value pairs", Order = 3, Icon = Icons.Material.Outlined.Edit, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+*@
+
+<DemoComponent DocFiles="@(new [] {"Docs/ObjectEdit.md"})" PageType="@GetType()">
+    <MudExObjectEditForm OnValidSubmit="@OnSubmit" Value="@Model"></MudExObjectEditForm>
+</DemoComponent>
+
+
+@code {
+
+    public Data Model { get; set; } = new();
+
+
+
+    public class Data
+    {
+
+        public KeyValuePair<string, string> OnePair { get; set; } = new("8", "Eight");
+       // public KeyValuePair<string, string>[] Items { get; set; } = new List<KeyValuePair<string, string>> {new("1", "One"), new("2", "Two")}.ToArray();
+
+        //public Dictionary<string, string> Dict { get; set; } = new() {{"1", "One"}, {"2", "Two"}};
+        //public Tuple<string, string> SimpleTuple { get; set; } = new("1", "One");
+        //public Tuple<string, string>[] SimpleTuples { get; set; } = {new("1", "One"), new("2", "Two")};
+
+        //public (string Key, string Value) ValueTuple { get; set; } = ("1", "One");
+        //public (string Key, string Value)[] ValueTuples{ get; set; } = {("1", "One"), ("2", "Two")};
+    }
+
+    
+    private async Task OnSubmit(EditContext ctx)
+    {
+        var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
+        await dialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
+        {
+            Position = DialogPosition.TopCenter,
+            Animation = AnimationType.Slide,
+            MaxWidth = MaxWidth.Medium
+        });
+    }
+    
+}

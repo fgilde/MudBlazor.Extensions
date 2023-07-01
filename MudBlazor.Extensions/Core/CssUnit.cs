@@ -38,7 +38,7 @@ public enum CssUnit
 /// <summary>
 /// Holds two sizes one for height and one for width and their units
 /// </summary>
-public readonly struct MudExDimension
+public struct MudExDimension
 {
     public MudExDimension(MudExSize<double> widthAndHeight): this(widthAndHeight, widthAndHeight){}
 
@@ -51,12 +51,12 @@ public readonly struct MudExDimension
     /// <summary>
     /// Width
     /// </summary>
-    public MudExSize<double> Width { get; }
+    public MudExSize<double> Width { get; set; }
 
     /// <summary>
     /// Height
     /// </summary>
-    public MudExSize<double> Height { get; }
+    public MudExSize<double> Height { get; set; }
 
     
     public static implicit operator MudExDimension(double s) => new(s);

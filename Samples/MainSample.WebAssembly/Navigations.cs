@@ -1,7 +1,6 @@
 ﻿using MainSample.WebAssembly.Types;
 using MudBlazor;
 using MainSample.WebAssembly.Shared;
-using Nextended.Core.Extensions;
 
 namespace MainSample.WebAssembly;
 
@@ -57,7 +56,7 @@ public static class Navigations
         return ComponentTypes.AllMudExComponents().Select(type => new NavigationEntry($"{Api.GetTypeName(type) ?? type.Name}", "", $"/c/{type.Name}") {Type = type}).ToHashSet();
     }
 
-    private static HashSet<NavigationEntry> ReflectMudBlazorComponents()
+    internal static HashSet<NavigationEntry> ReflectMudBlazorComponents()
     {
         return ComponentTypes.AllMudBlazorComponents().Select(type => new NavigationEntry($"{Api.GetTypeName(type) ?? type.Name}", "", $"/c/{type.Name}") { Type = type }).ToHashSet();
     }
