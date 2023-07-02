@@ -1,9 +1,9 @@
-name: Publish Preview Package
+name: Publish Release Package
 
 on:
-  push:
-    branches:
-      - '**'
+  release:
+    types:
+      - created
 
 jobs:
   build_and_deploy:
@@ -22,7 +22,7 @@ jobs:
       run: dotnet restore
 
     - name: Build
-      run: dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj --configuration Debug --no-restore
+      run: dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj --configuration Release --no-restore
 
     - name: Publish Package
       env:
@@ -31,5 +31,4 @@ jobs:
       run: |
         Get-ChildItem -Path out -Filter *.nupkg | ForEach-Object {
           dotnet nuget push $_.FullName -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json
-        }
-        
+        }      
