@@ -19,7 +19,7 @@ jobs:
         dotnet-version: '7.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./MudBlazor.Extensions/MudBlazor.Extensions.csproj
 
     - name: Build
       run: dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj --configuration Debug --no-restore
