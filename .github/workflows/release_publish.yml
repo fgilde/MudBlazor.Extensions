@@ -9,9 +9,29 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
 
-    steps:
+    steps:        
+     
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}      
+        
+    - name: Increment patch version
+      shell: bash
+      run: |
+        FILE=./MudBlazor.Extensions/MudBlazor.Extensions.csproj
+        CURRENT_VERSION=$(grep -oPm1 "(?<=<PatchVersion>)[^<]+" $FILE)
+        NEW_VERSION=$((CURRENT_VERSION + 1))
+        sed -i "s/<PatchVersion>$CURRENT_VERSION<\/PatchVersion>/<PatchVersion>$NEW_VERSION<\/PatchVersion>/g" $FILE
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "Increment version number" -a           
+        
+    - name: Push changes
+      run: git push        
+      
+    - name: Checkout code
+      uses: actions/checkout@v2      
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
@@ -33,6 +53,6 @@ jobs:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
       shell: pwsh
       run: |
-        Get-ChildItem -Path bin/Release -Filter *.nupkg | ForEach-Object {
+        Get-ChildItem -Path MudBlazor.Extensions/bin/Release -Filter *.nupkg | ForEach-Object {
           dotnet nuget push $_.FullName -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json
         }      
