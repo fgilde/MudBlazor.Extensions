@@ -33,6 +33,6 @@ jobs:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
       shell: pwsh
       run: |
-        Get-ChildItem -Path bin/Debug -Filter *.nupkg | ForEach-Object {
+        Get-ChildItem -Path ../bin/Debug -Filter *.nupkg | ForEach-Object {
           dotnet nuget push $_.FullName -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json
         }
