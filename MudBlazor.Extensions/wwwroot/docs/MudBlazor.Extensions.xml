@@ -2166,6 +2166,342 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextDropZone">
+            <summary>
+            The text displayed in the drop zone. 
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextUploadFiles">
+            <summary>
+            The text for the upload files button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextUploadFile">
+            <summary>
+            The text for the upload file button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextUploadFolder">
+            <summary>
+            The text for the upload folder button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextAddUrl">
+            <summary>
+            The text for the add URL button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextRemoveAll">
+            <summary>
+            The text for the remove all button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextErrorDuplicateFile">
+            <summary>
+            The error text displayed when a file is duplicated.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextErrorMaxFileSize">
+            <summary>
+            The error text displayed when a file exceeds the maximum size.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextErrorMaxFileCount">
+            <summary>
+            The error text displayed when the maximum number of files is exceeded.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextErrorMimeTypeNotAllowed">
+            <summary>
+            The error text displayed when a file's MIME type is not allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextErrorMimeTypeNotForbidden">
+            <summary>
+            The error text displayed when a file's MIME type is forbidden.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextAddUrlTitle">
+            <summary>
+            The title text displayed in the add URL dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextAddUrlMessage">
+            <summary>
+            The message text displayed in the add URL dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ErrorAnimation">
+            <summary>
+            The animation type for errors.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.Label">
+            <summary>
+            The label displayed in the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ReadOnly">
+            <summary>
+            Defines whether the component is read only.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.HelperText">
+            <summary>
+            The helper text displayed in the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.Variant">
+            <summary>
+            The variant of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowRename">
+            <summary>
+            Defines whether renaming of files is allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowExternalUrl">
+            <summary>
+            Defines whether adding of external URL is allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.UploadFieldId">
+            <summary>
+            The ID of the upload field.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MimeTypes">
+            <summary>
+            Mime types for MimeRestrictions based on the <see cref="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MimeRestrictionType"/> this types are allowed or forbidden.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MimeRestrictionType">
+            <summary>
+            The type of the MIME restriction.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MaxFileSize">
+            <summary>
+            The maximum file size allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MaxHeight">
+            <summary>
+            The maximum height allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MinHeight">
+            <summary>
+            The minimum height allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.Class">
+            <summary>
+            The CSS class of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.Style">
+            <summary>
+            The CSS style of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MaxMultipleFiles">
+            <summary>
+            The maximum number of multiple files allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.UploadRequests">
+            <summary>
+            The upload requests.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowMultiple">
+            <summary>
+            Defines whether multiple files can be uploaded.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowFolderUpload">
+            <summary>
+            Defines whether folder upload is allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowPreview">
+            <summary>
+            Defines whether preview of the files is allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ShowFileUploadButton">
+            <summary>
+            Defines whether the file upload button is displayed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ShowFolderUploadButton">
+            <summary>
+            Defines whether the folder upload button is displayed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ShowClearButton">
+            <summary>
+            Defines whether the clear button is displayed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowRemovingItems">
+            <summary>
+            Defines whether removing of items is allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.SelectItemsMode">
+            <summary>
+            The mode of selecting items.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AutoExtractZip">
+            <summary>
+            Defines whether zip files should be automatically extracted.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.UploadRequest">
+            <summary>
+            The current upload request.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowDuplicates">
+            <summary>
+            Defines whether duplicates are allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.DisplayErrors">
+            <summary>
+            Defines whether errors should be displayed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.SelectedRequests">
+            <summary>
+            The selected requests.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.RemoveErrorAfter">
+            <summary>
+            The time to remove an error after it has been displayed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AutoRemoveError">
+            <summary>
+            Defines whether errors should be automatically removed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.RemoveErrorOnChange">
+            <summary>
+            Defines whether errors should be removed when there are changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowDrop">
+            <summary>
+            Defines whether file drop is allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.OnError">
+            <summary>
+            The callback that will be invoked when an error occurs.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.UploadRequestsChanged">
+            <summary>
+            The callback that will be invoked when upload requests change.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.UploadRequestRemoved">
+            <summary>
+            The callback that will be invoked when an upload request is removed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.UploadRequestChanged">
+            <summary>
+            The callback that will be invoked when an upload request changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.SelectedRequestsChanged">
+            <summary>
+            The callback that will be invoked when selected requests change.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.HandlePreviewContentErrorFunc">
+            <summary>
+            The function that will be invoked to handle preview content errors.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ResolvePreviewDataUrlFunc">
+            <summary>
+            The function that will be invoked to resolve preview data URLs.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ResolveContentTypeFromUrlFunc">
+            <summary>
+            The function that will be invoked to resolve content types from URLs.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.HasData">
+            <summary>
+            Returns whether the component has data.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.OnInitializedAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.GetJsArguments">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.ImportModuleAndCreateJsAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Remove(`0)">
+            <summary>
+            Removes the given request from the list of requests.
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.RemoveAll">
+            <summary>
+            Removes all requests from the list of requests.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Upload(Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
+            <summary>
+            Display Upload File
+            </summary>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.UploadFolder(Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
+            <summary>
+            Display Upload folder
+            </summary>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.IsSelected(`0)">
+            <summary>
+            Returns true if the given request is selected
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.ResolvePreviewUrlAsync(`0)">
+            <summary>
+            resolves the preview data url
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.ResolveContentTypeFromUrlAsync(System.String)">
+            <summary>
+            Resolve content type
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.IObjectMetaConfiguration`1">
             <summary>
             Interface for configuring the <see cref="T:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1"/> component for a meta of TModel.

@@ -29,11 +29,11 @@
             {
                 @if (AllowMultiple)
                 {
-                    <InputFile @ref="inputFile" id="@(UploadFieldId)" hidden multiple OnChange="UploadFiles" accept="@($"{GetAccept()}")" />
+                    <InputFile @ref="_inputFile" id="@(UploadFieldId)" hidden multiple OnChange="UploadFiles" accept="@($"{GetAccept()}")" />
                 }
                 else
                 {
-                    <InputFile @ref="inputFile" id="@(UploadFieldId)" hidden OnChange="UploadFiles" accept="@($"{GetAccept()}")" />
+                    <InputFile @ref="_inputFile" id="@(UploadFieldId)" hidden OnChange="UploadFiles" accept="@($"{GetAccept()}")" />
                 }
             }
 

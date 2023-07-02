@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Options;
 using Nextended.Blazor.Extensions;
 using Nextended.Core;
@@ -19,29 +20,136 @@ namespace MudBlazor.Extensions.Components;
 /// <typeparam name="T"></typeparam>
 public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
 {
-    [Parameter] public string TextDropZone { get; set; } = "Drop files here";
-    [Parameter] public string TextUploadFiles { get; set; } = "Upload Files";
-    [Parameter] public string TextUploadFile { get; set; } = "Upload File";
-    [Parameter] public string TextUploadFolder { get; set; } = "Upload Folder";
-    [Parameter] public string TextAddUrl { get; set; } = "Add Url";
-    [Parameter] public string TextRemoveAll { get; set; } = "Remove All";
-    [Parameter] public string TextErrorDuplicateFile { get; set; } = "The file ({0}) has already been added";
-    [Parameter] public string TextErrorMaxFileSize { get; set; } = "The file has exceeded the maximum size of {0} with {1}. File size is {2}";
-    [Parameter] public string TextErrorMaxFileCount { get; set; } = "A maximum of {0} files are allowed";
-    [Parameter] public string TextErrorMimeTypeNotAllowed { get; set; } = "Files of this type ({0}) are not allowed. Only following types are allowed '{1}'. Try one of these extensions ({2})";
-    [Parameter] public string TextErrorMimeTypeNotForbidden { get; set; } = "Files of this type ({0}) are not allowed. Following types are forbidden '{1}' ({2})";
-    [Parameter] public string TextAddUrlTitle { get; set; } = "Add external Url";
-    [Parameter] public string TextAddUrlMessage { get; set; } = "Enter the URL to existing file";
-    [Parameter] public AnimationType ErrorAnimation { get; set; } = AnimationType.Pulse;
-    [Parameter] public string Label { get; set; }
-    [Parameter] public bool ReadOnly { get; set; }
-    [Parameter] public string HelperText { get; set; }
-    [Parameter] public Variant Variant { get; set; }
-    [Parameter] public bool AllowRename { get; set; } = true;
-    [Parameter] public bool AllowExternalUrl { get; set; } = true;
-    [Parameter] public string UploadFieldId { get; set; }
+    /// <summary>
+    /// The text displayed in the drop zone. 
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextDropZone { get; set; } = "Drop files here";
 
-    [Parameter]
+    /// <summary>
+    /// The text for the upload files button.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextUploadFiles { get; set; } = "Upload Files";
+
+    /// <summary>
+    /// The text for the upload file button.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextUploadFile { get; set; } = "Upload File";
+
+    /// <summary>
+    /// The text for the upload folder button.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextUploadFolder { get; set; } = "Upload Folder";
+
+    /// <summary>
+    /// The text for the add URL button.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextAddUrl { get; set; } = "Add Url";
+
+    /// <summary>
+    /// The text for the remove all button.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextRemoveAll { get; set; } = "Remove All";
+
+    /// <summary>
+    /// The error text displayed when a file is duplicated.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextErrorDuplicateFile { get; set; } = "The file ({0}) has already been added";
+
+    /// <summary>
+    /// The error text displayed when a file exceeds the maximum size.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextErrorMaxFileSize { get; set; } = "The file has exceeded the maximum size of {0} with {1}. File size is {2}";
+
+    /// <summary>
+    /// The error text displayed when the maximum number of files is exceeded.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextErrorMaxFileCount { get; set; } = "A maximum of {0} files are allowed";
+
+    /// <summary>
+    /// The error text displayed when a file's MIME type is not allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextErrorMimeTypeNotAllowed { get; set; } = "Files of this type ({0}) are not allowed. Only following types are allowed '{1}'. Try one of these extensions ({2})";
+
+    /// <summary>
+    /// The error text displayed when a file's MIME type is forbidden.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextErrorMimeTypeNotForbidden { get; set; } = "Files of this type ({0}) are not allowed. Following types are forbidden '{1}' ({2})";
+
+    /// <summary>
+    /// The title text displayed in the add URL dialog.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextAddUrlTitle { get; set; } = "Add external Url";
+
+    /// <summary>
+    /// The message text displayed in the add URL dialog.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextAddUrlMessage { get; set; } = "Enter the URL to existing file";
+    
+    /// <summary>
+    /// The animation type for errors.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public AnimationType ErrorAnimation { get; set; } = AnimationType.Pulse;
+
+    /// <summary>
+    /// The label displayed in the component.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string Label { get; set; }
+
+    /// <summary>
+    /// Defines whether the component is read only.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool ReadOnly { get; set; }
+
+    /// <summary>
+    /// The helper text displayed in the component.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string HelperText { get; set; }
+
+    /// <summary>
+    /// The variant of the component.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public Variant Variant { get; set; }
+
+    /// <summary>
+    /// Defines whether renaming of files is allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowRename { get; set; } = true;
+
+    /// <summary>
+    /// Defines whether adding of external URL is allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowExternalUrl { get; set; } = true;
+
+    /// <summary>
+    /// The ID of the upload field.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string UploadFieldId { get; set; }
+
+    /// <summary>
+    /// Mime types for MimeRestrictions based on the <see cref="MimeRestrictionType"/> this types are allowed or forbidden.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
     public string[] MimeTypes
     {
         get => _mimeTypes;
@@ -52,27 +160,112 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         }
     }
 
-    [Parameter] public MimeTypeRestrictionType MimeRestrictionType { get; set; } = MimeTypeRestrictionType.WhiteList;
-    [Parameter] public long? MaxFileSize { get; set; } = null;
-    [Parameter] public int MaxHeight { get; set; }
-    [Parameter] public int MinHeight { get; set; }
+    /// <summary>
+    /// The type of the MIME restriction.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public MimeTypeRestrictionType MimeRestrictionType { get; set; } = MimeTypeRestrictionType.WhiteList;
 
-    [Parameter] public string Class { get; set; }
-    [Parameter] public string Style { get; set; }
+    /// <summary>
+    /// The maximum file size allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Validation")]
+    public long? MaxFileSize { get; set; } = null;
 
-    [Parameter] public int MaxMultipleFiles { get; set; } = 100;
-    [Parameter] public IList<T> UploadRequests { get; set; }
-    [Parameter] public bool AllowMultiple { get; set; } = true;
-    [Parameter] public bool AllowFolderUpload { get; set; } = true;
-    [Parameter] public bool AllowPreview { get; set; } = true;
-    [Parameter] public bool ShowFileUploadButton { get; set; } = true;
-    [Parameter] public bool ShowFolderUploadButton { get; set; } = true;
-    [Parameter] public bool ShowClearButton { get; set; } = true;
-    [Parameter] public bool AllowRemovingItems { get; set; } = true;
-    [Parameter] public SelectItemsMode SelectItemsMode { get; set; } = SelectItemsMode.None;
-    [Parameter] public bool AutoExtractZip { get; set; } = false;
+    /// <summary>
+    /// The maximum height allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Validation")]
+    public int MaxHeight { get; set; }
 
-    [Parameter]
+    /// <summary>
+    /// The minimum height allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Validation")]
+    public int MinHeight { get; set; }
+
+    /// <summary>
+    /// The CSS class of the component.
+    /// </summary>
+    [Parameter, SafeCategory("Common")]
+    public string Class { get; set; }
+
+    /// <summary>
+    /// The CSS style of the component.
+    /// </summary>
+    [Parameter, SafeCategory("Common")]
+    public string Style { get; set; }
+
+    /// <summary>
+    /// The maximum number of multiple files allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Validation")]
+    public int MaxMultipleFiles { get; set; } = 100;
+
+    /// <summary>
+    /// The upload requests.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public IList<T> UploadRequests { get; set; }
+
+    /// <summary>
+    /// Defines whether multiple files can be uploaded.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowMultiple { get; set; } = true;
+
+    /// <summary>
+    /// Defines whether folder upload is allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowFolderUpload { get; set; } = true;
+
+    /// <summary>
+    /// Defines whether preview of the files is allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowPreview { get; set; } = true;
+
+    /// <summary>
+    /// Defines whether the file upload button is displayed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool ShowFileUploadButton { get; set; } = true;
+
+    /// <summary>
+    /// Defines whether the folder upload button is displayed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool ShowFolderUploadButton { get; set; } = true;
+
+    /// <summary>
+    /// Defines whether the clear button is displayed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool ShowClearButton { get; set; } = true;
+
+    /// <summary>
+    /// Defines whether removing of items is allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowRemovingItems { get; set; } = true;
+
+    /// <summary>
+    /// The mode of selecting items.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public SelectItemsMode SelectItemsMode { get; set; } = SelectItemsMode.None;
+
+    /// <summary>
+    /// Defines whether zip files should be automatically extracted.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool AutoExtractZip { get; set; } = false;
+
+    /// <summary>
+    /// The current upload request.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
     public T UploadRequest
     {
         get
@@ -91,28 +284,100 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         }
     }
 
-    [Parameter] public bool AllowDuplicates { get; set; }
-    [Parameter] public bool DisplayErrors { get; set; } = true;
-    [Parameter] public IList<T> SelectedRequests { get; set; }
-    [Parameter] public TimeSpan RemoveErrorAfter { get; set; } = TimeSpan.FromSeconds(5);
-    [Parameter] public bool AutoRemoveError { get; set; }
-    [Parameter] public bool RemoveErrorOnChange { get; set; } = true;
-    [Parameter] public bool AllowDrop { get; set; } = true;
+    /// <summary>
+    /// Defines whether duplicates are allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowDuplicates { get; set; }
 
-    [Parameter] public EventCallback<string> OnError { get; set; }
-    [Parameter] public EventCallback<IList<T>> UploadRequestsChanged { get; set; }
-    [Parameter] public EventCallback<T> UploadRequestRemoved { get; set; }
-    [Parameter] public EventCallback<T> UploadRequestChanged { get; set; }
-    [Parameter] public EventCallback<IList<T>> SelectedRequestsChanged { get; set; }
-    
-    [Parameter] public Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> HandlePreviewContentErrorFunc { get; set; }
+    /// <summary>
+    /// Defines whether errors should be displayed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool DisplayErrors { get; set; } = true;
 
-    [Parameter]
+    /// <summary>
+    /// The selected requests.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public IList<T> SelectedRequests { get; set; }
+
+    /// <summary>
+    /// The time to remove an error after it has been displayed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public TimeSpan RemoveErrorAfter { get; set; } = TimeSpan.FromSeconds(5);
+
+    /// <summary>
+    /// Defines whether errors should be automatically removed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool AutoRemoveError { get; set; }
+
+    /// <summary>
+    /// Defines whether errors should be removed when there are changes.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool RemoveErrorOnChange { get; set; } = true;
+
+    /// <summary>
+    /// Defines whether file drop is allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowDrop { get; set; } = true;
+
+    /// <summary>
+    /// The callback that will be invoked when an error occurs.
+    /// </summary>
+    [Parameter, SafeCategory("Event")]
+    public EventCallback<string> OnError { get; set; }
+
+    /// <summary>
+    /// The callback that will be invoked when upload requests change.
+    /// </summary>
+    [Parameter, SafeCategory("Event")]
+    public EventCallback<IList<T>> UploadRequestsChanged { get; set; }
+
+    /// <summary>
+    /// The callback that will be invoked when an upload request is removed.
+    /// </summary>
+    [Parameter, SafeCategory("Event")]
+    public EventCallback<T> UploadRequestRemoved { get; set; }
+
+    /// <summary>
+    /// The callback that will be invoked when an upload request changes.
+    /// </summary>
+    [Parameter, SafeCategory("Event")]
+    public EventCallback<T> UploadRequestChanged { get; set; }
+
+    /// <summary>
+    /// The callback that will be invoked when selected requests change.
+    /// </summary>
+    [Parameter, SafeCategory("Event")]
+    public EventCallback<IList<T>> SelectedRequestsChanged { get; set; }
+
+    /// <summary>
+    /// The function that will be invoked to handle preview content errors.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> HandlePreviewContentErrorFunc { get; set; }
+
+    /// <summary>
+    /// The function that will be invoked to resolve preview data URLs.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
     public Func<T, Task<string>> ResolvePreviewDataUrlFunc { get; set; }
 
-    [Parameter]
+    /// <summary>
+    /// The function that will be invoked to resolve content types from URLs.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
     public Func<string, Task<string>> ResolveContentTypeFromUrlFunc { get; set; }
 
+    /// <summary>
+    /// Returns whether the component has data.
+    /// </summary>
+    /// <returns></returns>
     public bool HasData()
     {
         return UploadRequests is { Count: > 0 } && UploadRequests.Any(x => (x.Data != null && x.Data.Any() || !string.IsNullOrWhiteSpace(x.Url)));
@@ -121,12 +386,14 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     private string _errorMessage = string.Empty;
     private CancellationTokenSource _tokenSource;
     
-    private InputFile inputFile;
+    private InputFile _inputFile;
     private List<T> _withErrors = new();
     private string _accept;
     private string _acceptExtensions;
     private string[] _mimeTypes;
 
+
+    /// <inheritdoc />
     protected override Task OnInitializedAsync()
     {
         UploadFieldId ??= $"{nameof(MudExUploadEdit<T>)}-FileInput-{Guid.NewGuid()}";
@@ -134,14 +401,16 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         return base.OnInitializedAsync();
     }
 
+    /// <inheritdoc />
     public override object[] GetJsArguments()
     {
-        return new object[] { ElementReference, inputFile.Element, AllowFolderUpload };
+        return new object[] { ElementReference, _inputFile.Element, AllowFolderUpload };
     }
 
+    /// <inheritdoc />
     public override Task ImportModuleAndCreateJsAsync()
     {
-        if (AllowDrop && !ReadOnly && inputFile != null)
+        if (AllowDrop && !ReadOnly && _inputFile != null)
             return base.ImportModuleAndCreateJsAsync();
         return Task.CompletedTask;
     }
@@ -269,7 +538,11 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
             ? UploadRequestsChanged.InvokeAsync(UploadRequests)
             : UploadRequestChanged.InvokeAsync(UploadRequest);
     }
-    
+
+    /// <summary>
+    /// Removes the given request from the list of requests.
+    /// </summary>
+    /// <param name="request"></param>
     public void Remove(T request)
     {
         UploadRequests.Remove(request);
@@ -280,6 +553,9 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         StateHasChanged();
     }
 
+    /// <summary>
+    /// Removes all requests from the list of requests.
+    /// </summary>
     public void RemoveAll()
     {
         var array = UploadRequests?.ToArray() ?? Array.Empty<T>();
@@ -292,17 +568,32 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         StateHasChanged();
     }
 
+    /// <summary>
+    /// Display Upload File
+    /// </summary>
+    /// <param name="arg"></param>
+    /// <returns></returns>
     public Task Upload(MouseEventArgs arg = null)
     {
         //return _jsRuntime.InvokeVoidAsync("MudExBrowserHelper.clickOnElement", "#" + UploadFieldId).AsTask();
         return JsRuntime.InvokeVoidAsync($"(document.querySelector('#{UploadFieldId}'))?.click()").AsTask();
     }
 
+    /// <summary>
+    /// Display Upload folder
+    /// </summary>
+    /// <param name="arg"></param>
+    /// <returns></returns>
     public async Task UploadFolder(MouseEventArgs arg)
     {
         await JsReference.InvokeVoidAsync("selectFolder");
     }
 
+    /// <summary>
+    /// Returns true if the given request is selected
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     public bool IsSelected(T request)
     {
         return SelectedRequests?.Contains(request) == true;
@@ -354,6 +645,11 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         }
     }
 
+    /// <summary>
+    /// resolves the preview data url
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     protected virtual async Task<string> ResolvePreviewUrlAsync(T request)
     {
         if(ResolvePreviewDataUrlFunc != null)
@@ -384,6 +680,11 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
 
     }
 
+    /// <summary>
+    /// Resolve content type
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
     protected virtual Task<string> ResolveContentTypeFromUrlAsync(string url)
     {
         if (ResolveContentTypeFromUrlFunc != null)
