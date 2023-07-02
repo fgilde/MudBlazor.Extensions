@@ -1,40 +1,28 @@
-name: Build and deploy .NET Core app to Windows WebApp MudEx
+name: Publish Preview Package
+
 on:
   push:
     branches:
-    - main
-env:
-  AZURE_WEBAPP_NAME: MudEx
-  AZURE_WEBAPP_PACKAGE_PATH: SampleApplication/publish
-  AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.MudEx_016e }}
-  CONFIGURATION: Release
-  DOTNET_CORE_VERSION: 7.0.x
-  WORKING_DIRECTORY: Samples/MainSample.WebAssembly
+      - '**'
+
 jobs:
-  build-and-deploy:
-    runs-on: windows-latest
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
-    - name: Restore
-      run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
+        dotnet-version: '7.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
     - name: Build
-      run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
-    - name: Test
-      run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
-    - name: Publish
-      run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
-    - name: Deploy to Azure WebApp
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-        publish-profile: ${{ env.AZURE_WEBAPP_PUBLISH_PROFILE }}
-    - name: Publish Artifacts
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: webapp
-        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      run: dotnet build --configuration Debug --no-restore
+
+    - name: Publish Package
+      run: dotnet nuget push "${{ env.PROJECT_NAME }}.${{ env.VERSION_SUFFIX }}.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
