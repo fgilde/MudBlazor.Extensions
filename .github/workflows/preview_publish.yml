@@ -21,7 +21,11 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore ./MudBlazor.Extensions/MudBlazor.Extensions.csproj
 
-    - name: Build
+    - name: First Build (ignore errors)
+      continue-on-error: true
+      run: dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj --configuration Debug --no-restore
+
+    - name: Second Build
       run: dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj --configuration Debug --no-restore
 
     - name: Publish Package
@@ -32,4 +36,3 @@ jobs:
         Get-ChildItem -Path out -Filter *.nupkg | ForEach-Object {
           dotnet nuget push $_.FullName -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json
         }
-        

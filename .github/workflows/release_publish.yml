@@ -19,10 +19,14 @@ jobs:
         dotnet-version: '7.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
-
-    - name: Build
+      run: dotnet restore ./MudBlazor.Extensions/MudBlazor.Extensions.csproj
+      
+    - name: First Build (ignore errors)
+      continue-on-error: true
       run: dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj --configuration Release --no-restore
+
+    - name: Second Build
+      run: dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj --configuration Release --no-restore      
 
     - name: Publish Package
       env:
