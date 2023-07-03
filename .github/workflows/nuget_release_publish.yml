@@ -36,8 +36,8 @@ jobs:
     - name: Push changes
       run: |
         git tag -fa ${{ steps.extract_branch.outputs.branch }} -m "Force updated tag"
-        git push origin :refs/tags/${{ steps.extract_branch.outputs.branch }}
-        git push origin HEAD:refs/tags/${{ steps.extract_branch.outputs.branch }}
+        git push origin :${{ steps.extract_branch.outputs.branch }}
+        git push origin HEAD:${{ steps.extract_branch.outputs.branch }}
       
     - name: Checkout code
       uses: actions/checkout@v2      
