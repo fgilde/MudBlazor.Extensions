@@ -1,4 +1,4 @@
-name: Publish Release Package
+name: Publish Nuget Release Package
 
 on:
   release:
@@ -32,9 +32,12 @@ jobs:
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
-  
+
     - name: Push changes
-      run: git push origin HEAD:${{ steps.extract_branch.outputs.branch }}
+      run: |
+        git tag -fa ${{ steps.extract_branch.outputs.branch }}
+        git push origin :refs/tags/${{ steps.extract_branch.outputs.branch }}
+        git push origin HEAD:refs/tags/${{ steps.extract_branch.outputs.branch }}
       
     - name: Checkout code
       uses: actions/checkout@v2      
