@@ -16,7 +16,7 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}      
 
-        
+    #Maybe later we should use the tag name as version number
     - name: Increment patch version
       shell: bash
       run: |
@@ -35,7 +35,7 @@ jobs:
 
     - name: Push changes
       run: |
-        git tag -fa ${{ steps.extract_branch.outputs.branch }}
+        git tag -fa ${{ steps.extract_branch.outputs.branch }} -m "Force updated tag"
         git push origin :refs/tags/${{ steps.extract_branch.outputs.branch }}
         git push origin HEAD:refs/tags/${{ steps.extract_branch.outputs.branch }}
       
