@@ -1,4 +1,4 @@
-name: Build and deploy .NET Core app to Windows WebApp MudEx
+name: Azure deploy to mudex.azurewebsites.net
 on:
   push:
     branches:
