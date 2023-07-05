@@ -242,7 +242,7 @@ This component provides multi-file upload functionality, with features like dupl
 ## Extensions
 <!-- DIALOG_EXT:START -->
 <!-- Copied from DialogExtensions.md on 2023-07-02 21:50:33 -->
-### Resizable or Draggable Dialogs
+### Making Dialogs Resizable and Draggable
 
 You can make your dialogs resizable or draggable using the following code snippet:
 
@@ -299,7 +299,7 @@ Your dialog can now look like this:
 
 ![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/sampleDialogScreenshot.png)
 
-### Using Animation to Show Dialog
+### Animation for Showing Dialog
 
 You can use animation to display your dialog. This is done by setting the `Animation` property of `DialogOptionsEx`.
 
@@ -326,7 +326,7 @@ When you animate a dialog with dialogServiceEx, it's recommended to add the clas
 
 > **_NOTE:_** All animations can be used on other components as well. Currently, the following animations are supported: `SlideIn,FadeIn,Scale,Slide,Fade,Zoom,Roll,JackInTheBox,Hinge,Rotate,Bounce,Back,Jello,Wobble,Tada,Swing,HeadShake,Shake,RubberBand,Pulse,Flip,FlipX,FlipY`.
 
-### Using Extension Method with an `Action<YourDialog>` 
+### Removing Need of DialogParameters
 
 Instead of using `DialogParameters`, you can call the extension method with an `Action<YourDialog>`
 
