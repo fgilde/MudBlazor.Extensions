@@ -1,0 +1,36 @@
+.mud-ex-icon-picker-value-preview {
+    transform: scale(2);
+    outline: 1px solid;
+    margin-bottom: 25px;
+    margin-top: 5px;
+    width: 50%; /*100 / scale*/
+    margin-left: 25%;
+}
+
+.mud-ex-icon-picker-icon-pane {
+    height: 128px;
+    width: 100%;
+    max-width: 112px;
+    padding: 0 6px;
+    /* margin: 16px 12px;*/
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    border-radius: var(--mud-default-borderradius);
+    transition: background-color 250ms cubic-bezier(.4,0,.2,1) 0ms,box-shadow 250ms cubic-bezier(.4,0,.2,1) 0ms,border 250ms cubic-bezier(.4,0,.2,1);
+    user-select: none;
+}
+
+.mud-ex-icon-picker-icon-pane .mud-typography {
+    margin-bottom: 4px;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.mud-ex-icon-picker-icon-pane .mud-svg-icon {
+    font-size: 40px;
+    margin-top: 12px;
+}

@@ -1,0 +1,56 @@
+﻿@inherits MudPicker<string>
+@implements IMudExComponent
+@using MudBlazor.Extensions.Core
+@using System.Reflection;
+@using MudBlazor.Extensions.Helper
+
+@Render
+
+
+@code {
+    private ElementReference killZone;
+    protected override RenderFragment PickerContent => GetPickerContent();
+
+    
+
+    private RenderFragment GetPickerContent()
+    {
+        return @<div style="@(MudExStyleBuilder.Default.WithOverflow("hidden").WithPadding(30).WithWidth(PickerWidth).WithHeight(PickerHeight))">
+        <MudGrid Style="margin-bottom:25px;">
+            <MudItem Style="width: 100%" >
+                <MudIcon Class="mud-ex-icon-picker-value-preview" Icon="@Value" Size="Size.Large" />
+                <MudTextField ReadOnly="@ReadOnly" @bind-Value="Value" Variant="Variant.Outlined" Placeholder="@TryLocalize("Value")" Adornment="Adornment.Start"/>
+            </MudItem>
+            
+        @if (!DisableList)
+        {
+            <MudTextField Immediate="true" Variant="FilterVariant" Clearable="true" Placeholder="Search" @bind-Value="Filter" AdornmentIcon="@Icons.Material.Filled.Search"/>
+        }   
+        </MudGrid>
+        
+        @if (!DisableList)
+        {
+            <MudGrid Style="overflow: auto;max-height: 60%;">
+                <div style="position: relative;">
+                    <div style="position: absolute; top:0px;width:100%;">
+                        <div @ref="killZone" style="@GetKillZoneStyle()"></div>
+                    </div>
+                    <Virtualize Items="@SelectedIcons" ItemSize="@_iconCardHeight">
+                        <div class="d-flex mud-width-full">
+                            @foreach (var icon in context)
+                            {
+                                <button style="@MudExStyleBuilder.Default.WithOutline(2, BorderStyle.Solid, Color.Primary, icon.Value == Value)" class="mud-ex-icon-picker-icon-pane" @onclick="@(() => Select(icon.Value))">
+                                    <MudIcon Icon="@icon.Value" Size="Size.Large" Title="@icon.Key"/>
+                                    <MudText Typo="Typo.caption" Title="@icon.Key">
+                                        @icon.Key
+                                    </MudText>
+                                </button>
+                            }
+                        </div>
+                    </Virtualize>
+                </div>
+            </MudGrid>
+        }
+    </div>;
+    }
+}
