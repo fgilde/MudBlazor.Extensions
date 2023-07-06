@@ -179,31 +179,8 @@ public static class MudExSvg
             Console.WriteLine($"Searching in {ot.FullName}");
             try
             {
-                // Create a queue to hold the types to process
-                var typesToProcess = new Queue<Type>();
-                typesToProcess.Enqueue(ot);
-
-                // While there are still types to process
-                while (typesToProcess.Count > 0)
-                {
-                    Console.WriteLine($"Queue size is {typesToProcess.Count} and we are processing {typesToProcess.Peek().FullName}");
-                    var type = typesToProcess.Dequeue();
-
-                    foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
-                    {
-                        Console.WriteLine($"Processing {type.FullName} and field is {field.Name}");
-                        if (type.FullName == null || (!field.IsLiteral && !field.IsStatic) || field.FieldType != typeof(string) || field.GetValue(null) is not string fieldValue)
-                            continue;
-                        var propertyName = $"{type.FullName.Replace('+', '.')}.{field.Name}";
-                        result[propertyName] = fieldValue;
-                    }
-
-                    // Enqueue any nested types
-                    foreach (var nestedType in type.GetNestedTypes())
-                    {
-                        typesToProcess.Enqueue(nestedType);
-                    }
-                }
+                // Directly process types instead of using queue
+                ProcessType(ot, result);
             }
             catch (Exception ex)
             {
@@ -215,6 +192,27 @@ public static class MudExSvg
         Console.WriteLine($"Found {result.Count} properties");
         return result;
     }
+
+    private static void ProcessType(Type type, Dictionary<string, string> result)
+    {
+        Console.WriteLine($"Processing {type.FullName}");
+
+        foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
+        {
+            Console.WriteLine($"Processing {type.FullName} and field is {field.Name}");
+            if ((!field.IsLiteral && !field.IsStatic) || field.FieldType != typeof(string) || field.GetValue(null) is not string fieldValue)
+                continue;
+            var propertyName = $"{type.FullName.Replace('+', '.')}.{field.Name}";
+            result[propertyName] = fieldValue;
+        }
+
+        // Process nested types
+        foreach (var nestedType in type.GetNestedTypes())
+        {
+            ProcessType(nestedType, result);
+        }
+    }
+
 
 
 
