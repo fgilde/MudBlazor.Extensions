@@ -106,7 +106,7 @@ public sealed partial class MudExIconPicker
     /// </summary>
     [IgnoreOnObjectEdit]
     [Parameter, SafeCategory("Appearance")]
-    public Type[] IconTypes { get; set; } = { typeof(Icons) };
+    public Type[] IconTypes { get; set; } = { typeof(MudBlazor.Icons) };
 
 
     /// <summary>

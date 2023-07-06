@@ -85,12 +85,14 @@ public static class MudExSvg
     /// Returns the fully-qualified name of the constant in <see cref="Icons"/> or whatever owner type that has the specified value.
     /// </summary>
     /// <param name="value">The value of the SVG constant for which to get a name.</param>
-    /// <param name="ownerTypes">Types for search in</param>
+    /// <param name="ownerType">Type for search in</param>
+    /// <param name="ownerTypes">Other types for search in</param>
     /// <returns>A string containing the fully-qualified name of the icon constant that matches the specified value.</returns>    
-    public static string SvgPropertyNameForValue(string value, params Type[] ownerTypes)
+    public static string SvgPropertyNameForValue(string value, Type ownerType, params Type[] ownerTypes)
     {
-        return ownerTypes.Select(ownerType => ownerType.Assembly.GetTypes()
-                .Where(t => t.Namespace == ownerType.Namespace)
+        var allOwnerTypes = new[] { ownerType }.Concat(ownerTypes).ToArray();
+        return allOwnerTypes.Select(ot => ot.Assembly.GetTypes()
+                .Where(t => t.Namespace == ot.Namespace)
                 .ToList())
             .Select(types => types.Select(type => SearchTypeForValue(type, value))
                 .FirstOrDefault(res => res != null))
@@ -113,26 +115,28 @@ public static class MudExSvg
     /// </summary>
     /// <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
     /// <returns>The value</returns>
-    public static string SvgPropertyValueForName(string fullName) => SvgPropertyValueForName(fullName, typeof(Icons));
+    public static string SvgPropertyValueForName(string fullName) => SvgPropertyValueForName(fullName, typeof(MudBlazor.Icons));
 
     /// <summary>
     /// Returns the value of the constant in <see cref="Icons"/> that has the specified name.
     /// </summary>
     /// <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
-    /// <param name="ownerTypes">Types where to search in</param>
+    /// <param name="ownerType">Owner type to search in</param>
+    /// <param name="ownerTypes">Other types where to search in</param>
     /// <returns>The value</returns>
-    public static string SvgPropertyValueForName(string fullName, params Type[] ownerTypes)
+    public static string SvgPropertyValueForName(string fullName, Type ownerType, params Type[] ownerTypes)
     {
         if (fullName.StartsWith("@"))
             fullName = fullName[1..];
 
+        var allOwnerTypes = new[] { ownerType }.Concat(ownerTypes).ToArray();
         // Split the fullName into namespace + type and field parts
         var lastDotIndex = fullName.LastIndexOf('.');
         var typeFullName = fullName[..lastDotIndex];
         var fieldName = fullName[(lastDotIndex + 1)..];
 
-        return (from ownerType in ownerTypes
-                from type in ownerType.Assembly
+        return (from ot in allOwnerTypes
+                from type in ot.Assembly
             .GetTypes().Where(t => t.FullName != null && t.FullName.Replace('+', '.') == typeFullName)
                 select type.GetField(fieldName, BindingFlags.Public | BindingFlags.Static)
             into field
@@ -142,15 +146,19 @@ public static class MudExSvg
     }
 
 
-    public static IDictionary<string, string> GetAllSvgProperties(params Type[] ownerTypes)
+    public static IDictionary<string, string> GetAllSvgProperties() => GetAllSvgProperties(typeof(MudBlazor.Icons));
+    
+    public static IDictionary<string, string> GetAllSvgProperties(Type ownerType, params Type[] ownerTypes)
     {
+        var allOwnerTypes = new[] { ownerType }.Concat(ownerTypes).ToArray();
+
         var result = new Dictionary<string, string>();
 
-        foreach (var ownerType in ownerTypes)
+        foreach (var ot in allOwnerTypes)
         {
             // Create a queue to hold the types to process
             var typesToProcess = new Queue<Type>();
-            typesToProcess.Enqueue(ownerType);
+            typesToProcess.Enqueue(ot);
 
             // While there are still types to process
             while (typesToProcess.Count > 0)
