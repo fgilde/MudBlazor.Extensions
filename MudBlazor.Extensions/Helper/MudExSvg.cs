@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Utilities;
+using MudBlazor.Extensions.Helper.Internal;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -81,22 +82,105 @@ public static class MudExSvg
     }
 
     /// <summary>
+    /// Returns the fully-qualified name of the constant in <see cref="Icons"/> or whatever owner type that has the specified value.
+    /// </summary>
+    /// <param name="value">The value of the SVG constant for which to get a name.</param>
+    /// <param name="ownerTypes">Types for search in</param>
+    /// <returns>A string containing the fully-qualified name of the icon constant that matches the specified value.</returns>    
+    public static string SvgPropertyNameForValue(string value, params Type[] ownerTypes)
+    {
+        return ownerTypes.Select(ownerType => ownerType.Assembly.GetTypes()
+                .Where(t => t.Namespace == ownerType.Namespace)
+                .ToList())
+            .Select(types => types.Select(type => SearchTypeForValue(type, value))
+                .FirstOrDefault(res => res != null))
+            .FirstOrDefault(result => result != null);
+    }
+    
+    /// <summary>
     /// Returns the fully-qualified name of the constant in <see cref="Icons"/> that has the specified value.
     /// </summary>
     /// <param name="value">The value of the SVG constant for which to get a name.</param>
     /// <returns>A string containing the fully-qualified name of the icon constant that matches the specified value.</returns>
-    public static string SvgPropertyName(string value)
-    {
-        var types = typeof(Icons).Assembly.GetTypes()
-            .Where(t => t.Namespace == typeof(Icons).Namespace).ToList();
-
-        return types.Select(type => SearchTypeForValue(type, value)).FirstOrDefault(result => result != null);
-    }
+    public static string SvgPropertyNameForValue(string value) => SvgPropertyNameForValue(value, typeof(Icons));
 
     private static string SearchTypeForValue(Type type, string value) 
         => (from field in type.GetFields(BindingFlags.Public | BindingFlags.Static) where (field.IsLiteral || field.IsStatic) && field.FieldType == typeof(string) let fieldValue = field.GetValue(null) as string where fieldValue == value select $"{type.FullName.Replace('+', '.')}.{field.Name}").FirstOrDefault();
 
-    
+
+    /// <summary>
+    /// Returns the value of the constant in <see cref="Icons"/> that has the specified name.
+    /// </summary>
+    /// <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+    /// <returns>The value</returns>
+    public static string SvgPropertyValueForName(string fullName) => SvgPropertyValueForName(fullName, typeof(Icons));
+
+    /// <summary>
+    /// Returns the value of the constant in <see cref="Icons"/> that has the specified name.
+    /// </summary>
+    /// <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+    /// <param name="ownerTypes">Types where to search in</param>
+    /// <returns>The value</returns>
+    public static string SvgPropertyValueForName(string fullName, params Type[] ownerTypes)
+    {
+        if (fullName.StartsWith("@"))
+            fullName = fullName[1..];
+
+        // Split the fullName into namespace + type and field parts
+        var lastDotIndex = fullName.LastIndexOf('.');
+        var typeFullName = fullName[..lastDotIndex];
+        var fieldName = fullName[(lastDotIndex + 1)..];
+
+        return (from ownerType in ownerTypes
+                from type in ownerType.Assembly
+            .GetTypes().Where(t => t.FullName != null && t.FullName.Replace('+', '.') == typeFullName)
+                select type.GetField(fieldName, BindingFlags.Public | BindingFlags.Static)
+            into field
+                where field != null && (field.IsLiteral || field.IsStatic) && field.FieldType == typeof(string)
+                select field.GetValue(null)).OfType<string>()
+            .FirstOrDefault();
+    }
+
+
+    public static IDictionary<string, string> GetAllSvgProperties(params Type[] ownerTypes)
+    {
+        var result = new Dictionary<string, string>();
+
+        foreach (var ownerType in ownerTypes)
+        {
+            // Create a queue to hold the types to process
+            var typesToProcess = new Queue<Type>();
+            typesToProcess.Enqueue(ownerType);
+
+            // While there are still types to process
+            while (typesToProcess.Count > 0)
+            {
+                var type = typesToProcess.Dequeue();
+
+                foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
+                {
+                    if (type.FullName == null || (!field.IsLiteral && !field.IsStatic) || field.FieldType != typeof(string) || field.GetValue(null) is not string fieldValue) 
+                        continue;
+                    var propertyName = $"{type.FullName.Replace('+', '.')}.{field.Name}";
+                    result[propertyName] = fieldValue;
+                }
+
+                // Enqueue any nested types
+                foreach (var nestedType in type.GetNestedTypes())
+                {
+                    typesToProcess.Enqueue(nestedType);
+                }
+            }
+        }
+
+        return result;
+    }
+
+
+
+
+
+
     /// <summary>
     /// Combines two SVGs sliced either horizontally, vertically, or diagonally.
     /// </summary>

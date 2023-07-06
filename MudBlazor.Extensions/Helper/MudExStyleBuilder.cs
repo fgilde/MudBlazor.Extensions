@@ -743,6 +743,8 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
 
     public MudExStyleBuilder WithBackgroundRepeat(string backgroundRepeat, bool when = true) => With("background-repeat", backgroundRepeat, when);
 
+    public MudExStyleBuilder WithBorder(MudExSize<double> size, BorderStyle style, MudExColor color, bool when)
+        => WithBorderWidth(size, when).WithBorderStyle(style, when).WithBorderColor(color, when);
     public MudExStyleBuilder WithBorder(MudExSize<double> size, BorderStyle style, MudExColor color)
        => WithBorderWidth(size).WithBorderStyle(style).WithBorderColor(color);
 
@@ -789,6 +791,9 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
 
     public MudExStyleBuilder WithBorderStyle(string borderStyle, bool when = true) => With("border-style", borderStyle, when);
 
+    public MudExStyleBuilder WithOutline(MudExSize<double> size, BorderStyle style, MudExColor color, bool when)
+        => WithOutlineWidth(size, when).WithOutlineStyle(style, when).WithOutlineColor(color, when);
+    
     public MudExStyleBuilder WithOutline(MudExSize<double> size, BorderStyle style, MudExColor color)
        => WithOutlineWidth(size).WithOutlineStyle(style).WithOutlineColor(color);
 
