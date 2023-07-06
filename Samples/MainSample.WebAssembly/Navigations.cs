@@ -1,4 +1,5 @@
-﻿using MainSample.WebAssembly.Types;
+﻿using System.Diagnostics;
+using MainSample.WebAssembly.Types;
 using MudBlazor;
 using MainSample.WebAssembly.Shared;
 
@@ -15,7 +16,6 @@ public static class Navigations
             new("API", Icons.Material.Outlined.Api, "/api"),
             new("-")
         };
-        
         //if (Debugger.IsAttached)
         //{
         //    navigationEntries.Add(new NavigationEntry("TEST", Icons.Material.Outlined.BugReport, "/test"));

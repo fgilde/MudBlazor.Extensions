@@ -22,7 +22,7 @@
     {
         return meta =>
         {
-            meta.GroupByCategoryAttribute();
+    //        meta.GroupByCategoryAttribute();
             meta.Property(m => m.TextFillColor).IgnoreIf(m => m.GradientForeground || m.Color != Color.Inherit);
             meta.Properties(m => m.Radius)
                 .RenderWith<MudSlider<int>, int>(s => s.Value, s =>

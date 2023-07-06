@@ -1,0 +1,31 @@
+﻿@page "/mud-ex-icon-picker"
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+@attribute [DemoNew(Name = "MudExIconPicker", Icon = Icons.Material.Outlined.Info, Documentation = "MudExIconPicker is in general a MudBlazor Picker component specially for selecting an icon.", ForComponentType = typeof(MudExIconPicker))]
+
+<DemoComponent PageType="@GetType()" >
+    <SplitContainer>
+        <Left>
+            <MudExIconPicker @ref="component" PickerVariant="PickerVariant.Inline" Value="@Icons.Material.Filled.ScreenShare" Label="Icon" />
+        </Left>
+        <Right>
+            <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+@code {
+    MudExIconPicker component;
+    private Action<ObjectEditMeta<MudExIconPicker>> Configure()
+    {
+        return meta =>
+        {
+            meta.GroupByCategoryAttribute();
+            meta.Property(m => m.Localizer).Ignore();
+            meta.Property(m => m.Color).WithAdditionalAttribute(nameof(MudColorPicker.DisableAlpha), true, true);
+            meta.IgnoreAllReadOnlyFields();
+        };
+    }
+
+}
