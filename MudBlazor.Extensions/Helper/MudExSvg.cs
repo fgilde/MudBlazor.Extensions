@@ -176,31 +176,41 @@ public static class MudExSvg
 
         foreach (var ot in ownerTypes)
         {
-            // Create a queue to hold the types to process
-            var typesToProcess = new Queue<Type>();
-            typesToProcess.Enqueue(ot);
-
-            // While there are still types to process
-            while (typesToProcess.Count > 0)
+            Console.WriteLine($"Searching in {ot.FullName}");
+            try
             {
-                var type = typesToProcess.Dequeue();
+                // Create a queue to hold the types to process
+                var typesToProcess = new Queue<Type>();
+                typesToProcess.Enqueue(ot);
 
-                foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
+                // While there are still types to process
+                while (typesToProcess.Count > 0)
                 {
-                    if (type.FullName == null || (!field.IsLiteral && !field.IsStatic) || field.FieldType != typeof(string) || field.GetValue(null) is not string fieldValue)
-                        continue;
-                    var propertyName = $"{type.FullName.Replace('+', '.')}.{field.Name}";
-                    result[propertyName] = fieldValue;
-                }
+                    var type = typesToProcess.Dequeue();
 
-                // Enqueue any nested types
-                foreach (var nestedType in type.GetNestedTypes())
-                {
-                    typesToProcess.Enqueue(nestedType);
+                    foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
+                    {
+                        if (type.FullName == null || (!field.IsLiteral && !field.IsStatic) || field.FieldType != typeof(string) || field.GetValue(null) is not string fieldValue)
+                            continue;
+                        var propertyName = $"{type.FullName.Replace('+', '.')}.{field.Name}";
+                        result[propertyName] = fieldValue;
+                    }
+
+                    // Enqueue any nested types
+                    foreach (var nestedType in type.GetNestedTypes())
+                    {
+                        typesToProcess.Enqueue(nestedType);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                // replace this with your actual logging method
+                Console.WriteLine($"Error while processing type {ot.FullName}: {ex}");
             }
         }
 
+        Console.WriteLine($"Found {result.Count} properties");
         return result;
     }
 
