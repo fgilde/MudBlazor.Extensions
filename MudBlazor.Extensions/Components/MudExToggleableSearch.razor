@@ -8,6 +8,7 @@
     <MudTextField @ref="_searchBox"
               OnBlur="@(FilterBoxBlur)"
               OnKeyDown="@(FilterKeyPress)"
+              OnKeyUp="@OnKeyUp"
               Class="@($"mud-ex-hide-inputlabel mud-ex-animate-all-properties mud-ex-property-filter {(_searchActive || FilterMode == PropertyFilterMode.AlwaysVisible ? "active" : "")}")"
               Immediate="@Immediate"
               Clearable="@Clearable"

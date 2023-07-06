@@ -194,7 +194,7 @@ public sealed partial class MudExColorEdit
     /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
-        if (PickerVariant == PickerVariant.Static || PickerVariant == PickerVariant.Dialog)
+        if (PickerVariant is PickerVariant.Static)
         {
             await EnsureCssVarsAsync();
         }
@@ -380,7 +380,7 @@ public sealed partial class MudExColorEdit
 
     private static bool IsCssVarStr(string s) => s.StartsWith("var(") || s.StartsWith("--");
 
-    private bool GetIsOpen() => IsOpen || PickerVariant == PickerVariant.Static || PickerVariant == PickerVariant.Dialog;
+    private bool GetIsOpen() => IsOpen || PickerVariant == PickerVariant.Static;
 }
 
 public enum ColorPreviewMode

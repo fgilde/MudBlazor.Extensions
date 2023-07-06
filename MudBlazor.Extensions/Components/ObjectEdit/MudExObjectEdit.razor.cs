@@ -655,6 +655,11 @@ public partial class MudExObjectEdit<T>
             .Recursive(w => w.Wrapper == null ? Enumerable.Empty<IRenderData>() : new[] { w.Wrapper })
             .Any(d => d.ComponentType == typeof(MudItem));
 
+    protected virtual ObjectEditMeta<T> ConfigureMetaBase(ObjectEditMeta<T> meta)
+    {
+        return meta;
+    }
+
     private async Task CreateMetaIfNotExists()
     {
         RenderDataDefaults.AddRenderDataProvider(ServiceProvider);
@@ -667,7 +672,7 @@ public partial class MudExObjectEdit<T>
                 await ConfigService.ConfigureAsync(MetaInformation);
 
             //c?.Invoke(MetaInformation); 
-            await Task.Run(() => c?.Invoke(MetaInformation));
+            await Task.Run(() => c?.Invoke(ConfigureMetaBase(MetaInformation)));
 
             if (ConfigService != null && ConfigureBehaviourForRegisteredConfigurations == RegisteredConfigurationBehaviour.ExecutedAfter)
                 await ConfigService.ConfigureAsync(MetaInformation);

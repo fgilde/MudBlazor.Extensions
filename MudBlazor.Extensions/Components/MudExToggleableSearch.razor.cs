@@ -9,16 +9,52 @@ namespace MudBlazor.Extensions.Components
     /// </summary>
     public partial class MudExToggleableSearch
     {
+        /// <summary>
+        /// The Toggle mode
+        /// </summary>
         [Parameter] public PropertyFilterMode FilterMode { get; set; } = PropertyFilterMode.Toggleable;
 
-        [Parameter]
-        public string Filter { get; set; }
+        /// <summary>
+        /// The filter value itself
+        /// </summary>
+        [Parameter] public string Filter { get; set; }
 
+        /// <summary>
+        /// If true, the input will update the Value immediately on typing.
+        /// If false, the Value is updated only on Enter.
+        /// </summary>
         [Parameter] public bool Immediate { get; set; } = true;
+        
+        /// <summary>
+        /// Show clear button
+        /// </summary>
         [Parameter] public bool Clearable { get; set; } = true;
+        
+        /// <summary>
+        /// Icon 
+        /// </summary>
         [Parameter] public string SearchIcon { get; set; } = Icons.Material.Outlined.Search;
+        
+        /// <summary>
+        /// Color for toggle button
+        /// </summary>
         [Parameter] public Color SearchButtonColor { get; set; } = Color.Inherit;
+        
+        /// <summary>
+        /// Event callback if filter changed
+        /// </summary>
         [Parameter] public EventCallback<string> FilterChanged { get; set; }
+        
+        /// <summary>
+        ///  If true and search toggleable and open, search with closed on blur
+        /// </summary>
+        [Parameter] public bool AutoCloseOnBlur { get; set; } = true;
+        
+        /// <summary>
+        /// Fired on the KeyUp event.
+        /// </summary>
+        [Parameter]
+        public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
 
         private bool _searchBoxBlur;
         private bool _searchActive;
@@ -45,9 +81,12 @@ namespace MudBlazor.Extensions.Components
 
         private Task FilterBoxBlur(FocusEventArgs arg)
         {
-            _searchBoxBlur = true;
-            _searchActive = false;
-            Task.Delay(300).ContinueWith(t => _searchBoxBlur = false);
+            if (AutoCloseOnBlur)
+            {
+                _searchBoxBlur = true;
+                _searchActive = false;
+                Task.Delay(300).ContinueWith(t => _searchBoxBlur = false);
+            }
             return Task.CompletedTask;
         }
 
