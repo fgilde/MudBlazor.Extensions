@@ -5213,12 +5213,21 @@
             <param name="other">An array of other SVG images to combine with the first one.</param>
             <returns>A new SVG with the combined images.</returns>
         </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.SvgPropertyNameForValue(System.String,System.Type,System.Type[])">
+            <summary>
+            Returns the fully-qualified name of the constant in <see cref="T:MudBlazor.Icons"/> or whatever owner type that has the specified value.
+            </summary>
+            <param name="value">The value of the SVG constant for which to get a name.</param>
+            <param name="ownerType">Type for search in</param>
+            <param name="ownerTypes">Other types for search in</param>
+            <returns>A string containing the fully-qualified name of the icon constant that matches the specified value.</returns>    
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExSvg.SvgPropertyNameForValue(System.String,System.Type[])">
             <summary>
             Returns the fully-qualified name of the constant in <see cref="T:MudBlazor.Icons"/> or whatever owner type that has the specified value.
             </summary>
             <param name="value">The value of the SVG constant for which to get a name.</param>
-            <param name="ownerTypes">Types for search in</param>
+            <param name="allOwnerTypes">Owner types for search in</param>
             <returns>A string containing the fully-qualified name of the icon constant that matches the specified value.</returns>    
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExSvg.SvgPropertyNameForValue(System.String)">
@@ -5240,7 +5249,16 @@
             Returns the value of the constant in <see cref="T:MudBlazor.Icons"/> that has the specified name.
             </summary>
             <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
-            <param name="ownerTypes">Types where to search in</param>
+            <param name="allOwnerTypes">Owner types where to search in</param>
+            <returns>The value</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.SvgPropertyValueForName(System.String,System.Type,System.Type[])">
+            <summary>
+            Returns the value of the constant in <see cref="T:MudBlazor.Icons"/> that has the specified name.
+            </summary>
+            <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+            <param name="ownerType">Owner type to search in</param>
+            <param name="ownerTypes">Other types where to search in</param>
             <returns>The value</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExSvg.CombineSliced(System.String,System.String,System.Double,System.Double,MudBlazor.Extensions.Helper.SliceDirection)">

@@ -88,9 +88,17 @@ public static class MudExSvg
     /// <param name="ownerType">Type for search in</param>
     /// <param name="ownerTypes">Other types for search in</param>
     /// <returns>A string containing the fully-qualified name of the icon constant that matches the specified value.</returns>    
-    public static string SvgPropertyNameForValue(string value, Type ownerType, params Type[] ownerTypes)
+    public static string SvgPropertyNameForValue(string value, Type ownerType, params Type[] ownerTypes) 
+        => SvgPropertyNameForValue(value, new[] { ownerType }.Concat(ownerTypes).ToArray());
+
+    /// <summary>
+    /// Returns the fully-qualified name of the constant in <see cref="Icons"/> or whatever owner type that has the specified value.
+    /// </summary>
+    /// <param name="value">The value of the SVG constant for which to get a name.</param>
+    /// <param name="allOwnerTypes">Owner types for search in</param>
+    /// <returns>A string containing the fully-qualified name of the icon constant that matches the specified value.</returns>    
+    public static string SvgPropertyNameForValue(string value, Type[] allOwnerTypes)
     {
-        var allOwnerTypes = new[] { ownerType }.Concat(ownerTypes).ToArray();
         return allOwnerTypes.Select(ot => ot.Assembly.GetTypes()
                 .Where(t => t.Namespace == ot.Namespace)
                 .ToList())
@@ -98,7 +106,7 @@ public static class MudExSvg
                 .FirstOrDefault(res => res != null))
             .FirstOrDefault(result => result != null);
     }
-    
+
     /// <summary>
     /// Returns the fully-qualified name of the constant in <see cref="Icons"/> that has the specified value.
     /// </summary>
@@ -121,15 +129,13 @@ public static class MudExSvg
     /// Returns the value of the constant in <see cref="Icons"/> that has the specified name.
     /// </summary>
     /// <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
-    /// <param name="ownerType">Owner type to search in</param>
-    /// <param name="ownerTypes">Other types where to search in</param>
+    /// <param name="allOwnerTypes">Owner types where to search in</param>
     /// <returns>The value</returns>
-    public static string SvgPropertyValueForName(string fullName, Type ownerType, params Type[] ownerTypes)
+    public static string SvgPropertyValueForName(string fullName, Type[] allOwnerTypes)
     {
         if (fullName.StartsWith("@"))
             fullName = fullName[1..];
 
-        var allOwnerTypes = new[] { ownerType }.Concat(ownerTypes).ToArray();
         // Split the fullName into namespace + type and field parts
         var lastDotIndex = fullName.LastIndexOf('.');
         var typeFullName = fullName[..lastDotIndex];
@@ -137,24 +143,38 @@ public static class MudExSvg
 
         return (from ot in allOwnerTypes
                 from type in ot.Assembly
-            .GetTypes().Where(t => t.FullName != null && t.FullName.Replace('+', '.') == typeFullName)
+                    .GetTypes().Where(t => t.FullName != null && t.FullName.Replace('+', '.') == typeFullName)
                 select type.GetField(fieldName, BindingFlags.Public | BindingFlags.Static)
-            into field
+                into field
                 where field != null && (field.IsLiteral || field.IsStatic) && field.FieldType == typeof(string)
                 select field.GetValue(null)).OfType<string>()
             .FirstOrDefault();
     }
 
 
-    public static IDictionary<string, string> GetAllSvgProperties() => GetAllSvgProperties(typeof(MudBlazor.Icons));
-    
-    public static IDictionary<string, string> GetAllSvgProperties(Type ownerType, params Type[] ownerTypes)
-    {
-        var allOwnerTypes = new[] { ownerType }.Concat(ownerTypes).ToArray();
+    /// <summary>
+    /// Returns the value of the constant in <see cref="Icons"/> that has the specified name.
+    /// </summary>
+    /// <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+    /// <param name="ownerType">Owner type to search in</param>
+    /// <param name="ownerTypes">Other types where to search in</param>
+    /// <returns>The value</returns>
+    public static string SvgPropertyValueForName(string fullName, Type ownerType, params Type[] ownerTypes) 
+        => SvgPropertyValueForName(fullName, new[] { ownerType }.Concat(ownerTypes).ToArray());
 
+
+    public static IDictionary<string, string> GetAllSvgProperties() 
+        => GetAllSvgProperties(typeof(MudBlazor.Icons));
+
+
+    public static IDictionary<string, string> GetAllSvgProperties(Type ownerType, params Type[] ownerTypes) 
+        => GetAllSvgProperties(new[] { ownerType }.Concat(ownerTypes).ToArray());
+
+    public static IDictionary<string, string> GetAllSvgProperties(Type[] ownerTypes)
+    {
         var result = new Dictionary<string, string>();
 
-        foreach (var ot in allOwnerTypes)
+        foreach (var ot in ownerTypes)
         {
             // Create a queue to hold the types to process
             var typesToProcess = new Queue<Type>();
@@ -167,7 +187,7 @@ public static class MudExSvg
 
                 foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
                 {
-                    if (type.FullName == null || (!field.IsLiteral && !field.IsStatic) || field.FieldType != typeof(string) || field.GetValue(null) is not string fieldValue) 
+                    if (type.FullName == null || (!field.IsLiteral && !field.IsStatic) || field.FieldType != typeof(string) || field.GetValue(null) is not string fieldValue)
                         continue;
                     var propertyName = $"{type.FullName.Replace('+', '.')}.{field.Name}";
                     result[propertyName] = fieldValue;
@@ -183,9 +203,6 @@ public static class MudExSvg
 
         return result;
     }
-
-
-
 
 
 
