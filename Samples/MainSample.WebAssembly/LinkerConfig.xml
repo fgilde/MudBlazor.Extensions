@@ -1,0 +1,5 @@
+﻿<linker>
+  <assembly fullname="MudBlazor">
+    <type fullname="MudBlazor.Icons" preserve="all" />
+  </assembly>
+</linker>
