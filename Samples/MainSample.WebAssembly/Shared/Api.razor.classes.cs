@@ -8,12 +8,17 @@ namespace MainSample.WebAssembly.Shared;
 internal sealed class ApiMemberInfo<TMemberInfo> : IApiMemberInfo
     where TMemberInfo : MemberInfo
 {
-    public ApiMemberInfo(TMemberInfo memberInfo)
+
+    private readonly Type _initialType;
+    
+    public ApiMemberInfo(TMemberInfo memberInfo, Type initialType)
     {
+        _initialType = initialType;
         MemberInfo = memberInfo;
         (LoadTask = LoadDescription()).ContinueWith(_ => DescriptionLoaded = true);
     }
-
+    
+    public bool IsInherited => _initialType != MemberInfo.DeclaringType;
     public Task LoadTask { get; private set; }
     public bool DescriptionLoaded { get; private set; }
     public bool IsStatic => (MemberInfo is PropertyInfo info && info.GetAccessors().Any(p => p.IsStatic)) || MemberInfo is MethodInfo {IsStatic: true};
@@ -113,7 +118,7 @@ internal sealed class ApiMemberInfo<TMemberInfo> : IApiMemberInfo
             var sres = res?.ToString() ?? "null";
             if (sres.StartsWith("<"))
             {
-                string name = MudExSvg.SvgPropertyName(sres);
+                string name = MudExSvg.SvgPropertyNameForValue(sres);
                 return name != null ? $"@{name}" : sres;
             }
             return sres;
@@ -133,4 +138,5 @@ internal interface IApiMemberInfo
     string TypeName { get; }
     string Default { get; }
     bool IsStatic { get; }
+    bool IsInherited { get;  }
 }

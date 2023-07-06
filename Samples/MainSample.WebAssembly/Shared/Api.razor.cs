@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using System.Reflection;
 
 namespace MainSample.WebAssembly.Shared;
@@ -6,6 +7,8 @@ namespace MainSample.WebAssembly.Shared;
 public partial class Api
 {
     private BindingFlags _flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
+    private bool _loaded;
+
     [Parameter]
     public Type Type { get; set; }
 
@@ -13,7 +16,20 @@ public partial class Api
 
     private IEnumerable<ApiMemberInfo<PropertyInfo>>? Properties;
     private IEnumerable<ApiMemberInfo<MethodInfo>>? Methods;
-    private bool _loaded;
+    private Lazy<List<BreadcrumbItem>> _inheritance => new(GetInheritancePath(Type));
+
+    private List<BreadcrumbItem> GetInheritancePath(Type type)
+    {
+        var breadcrumbItems = new List<BreadcrumbItem>();
+        while (type != null)
+        {
+            breadcrumbItems.Insert(0, new BreadcrumbItem(GetTypeName(type), href: $"/a/{type.Name}", Type == type));
+            type = type.BaseType;
+        }
+        breadcrumbItems.Reverse();
+        return breadcrumbItems;
+    }
+
 
     private string DefaultValue(PropertyInfo info)
     {
@@ -62,8 +78,8 @@ public partial class Api
     private async Task LoadInfos()
     {
         _loaded = false;
-        Properties ??= Type.GetProperties(_flags).OrderBy(x => x.Name).Where(i => char.IsUpper(i.Name[0])).Select(i => new ApiMemberInfo<PropertyInfo>(i));
-        Methods ??= Type.GetMethods(_flags).OrderBy(x => x.Name).Where(i => char.IsUpper(i.Name[0])).Select(i => new ApiMemberInfo<MethodInfo>(i));
+        Properties ??= Type.GetProperties(_flags).OrderBy(x => x.Name).Where(i => char.IsUpper(i.Name[0])).Select(i => new ApiMemberInfo<PropertyInfo>(i, Type));
+        Methods ??= Type.GetMethods(_flags).OrderBy(x => x.Name).Where(i => char.IsUpper(i.Name[0])).Select(i => new ApiMemberInfo<MethodInfo>(i, Type));
         await Task.WhenAll(Properties.Select(x => x.LoadTask).Concat(Methods.Select(x => x.LoadTask))).ContinueWith(_ => StateHasChanged());
         _loaded = true;
     }

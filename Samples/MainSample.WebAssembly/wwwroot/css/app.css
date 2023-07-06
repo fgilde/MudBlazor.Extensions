@@ -162,15 +162,12 @@ a, .btn-link {
 }
 
 .api-link {
-    text-decoration: underline;
+    color: var(--mud-palette-primary);
 }
 
 .api-link:hover {
-    color: var(--mud-palette-primary);
     text-decoration: underline;
 }
-
-
 
 
 .loading-progress {

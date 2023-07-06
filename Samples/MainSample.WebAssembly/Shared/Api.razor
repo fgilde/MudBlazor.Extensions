@@ -3,24 +3,45 @@
 @using Microsoft.AspNetCore.Components.Rendering
 @using Microsoft.AspNetCore.Http.Authentication
 @using MudBlazor.Extensions.Helper
-
+@using MudBlazor.Extensions.Options
+@using MudBlazor.Utilities
+@using Nextended.Core.Extensions
+@inject IDialogService DialogService;
 
 @if (ShowHeader)
 {
-    @*<MudText Typo="Typo.h6" Color="Color.Primary">@GetTypeName(Type)</MudText>*@
     <HeaderForType Type="@Type"></HeaderForType>
 }
+
+
+<MudBreadcrumbs Items="_inheritance.Value" Separator="<">
+    <ItemTemplate Context="item">
+        @if (item.Disabled)
+        {
+            <MudText Typo="Typo.subtitle2" Color="Color.Warning">@item.Text</MudText>
+        }
+        else
+        {
+            <MudLink Typo="Typo.subtitle2" Disabled="@item.Disabled" Href="@item.Href">@item.Text</MudLink>
+        }
+    </ItemTemplate>
+</MudBreadcrumbs>
+
+<MudToolBar>
+    <MudSwitch Color="Color.Primary" @bind-Checked="_showInherited">Show inherited</MudSwitch>
+    <MudSpacer/>
+    <MudExToggleableSearch AutoCloseOnBlur="false"
+                            OnKeyUp="@(() => { _methodPanel.Expand(); _propertyPanel.Expand(); })" 
+                           @bind-Filter="_searchString"></MudExToggleableSearch>
+</MudToolBar>
 
 @if (Type.IsEnum)
 {
     <p>Enum</p>
-    
+
     var names = Enum.GetNames(Type);
     <MudExpansionPanel IsInitiallyExpanded="@IsInitiallyExpanded" Text="Enum Member">
         <MudTable Items="@names" Hover="true" Breakpoint="Breakpoint.Sm">
-            <HeaderContent>
-                <MudTh>Member</MudTh>
-            </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel="Member">@context</MudTd>
             </RowTemplate>
@@ -28,23 +49,20 @@
     </MudExpansionPanel>
 }
 
-<MudExpansionPanel IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@IsInitiallyExpanded" Text="Properties">
+<MudExpansionPanel @ref="_propertyPanel" IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@(IsInitiallyExpanded)" Text="Properties">
     @if (Properties?.Any() == true)
     {
-        <MudDataGrid T="ApiMemberInfo<PropertyInfo>" Items="@Properties" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+        <MudDataGrid T="ApiMemberInfo<PropertyInfo>" Items="@Properties.Where(p => _showInherited || !p.IsInherited)" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
                      DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
                      DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
             <ToolBarContent>
                 <MudText Typo="Typo.h6">Properties</MudText>
-                <MudSpacer/>
-                <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
             </ToolBarContent>
             <Columns>
                 <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
                     <CellTemplate>
                         @((MarkupString) (context.Item.IsStatic ? "static" : ""))
-                        @(context.Item.Name)
+                        <MudHighlighter Text="@(context.Item.Name)" HighlightedText="@_searchString"></MudHighlighter>
                     </CellTemplate>
                 </PropertyColumn>
 
@@ -53,7 +71,25 @@
                         @RenderLinks(context.Item.TypeName)
                     </CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="x => x.Default"/>
+                <PropertyColumn Property="x => x.Default">
+                    <CellTemplate>
+                        @if (context?.Item?.Default?.StartsWith("@") == true)
+                        {
+                            <MudLink Typo="Typo.subtitle2" OnClick="@(() => ShowValueForIcon(context.Item.Default))">@(context.Item.Default)</MudLink>
+                        }
+                        else
+                        {
+                            <p>@(context?.Item.Default)</p>
+                        }
+                    </CellTemplate>
+                </PropertyColumn>
+     
+                <PropertyColumn Hidden="@(!_showInherited)" Property="x => x.MemberInfo" Title="Declared on">
+                    <CellTemplate>
+                        <MudLink Typo="Typo.subtitle2" Href="@($"/a/{context.Item.MemberInfo.DeclaringType.Name}")">@GetTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
+                    </CellTemplate>
+                </PropertyColumn>
+                
                 <PropertyColumn Property="x => x.Description"/>
             </Columns>
         </MudDataGrid>
@@ -65,17 +101,14 @@
 </MudExpansionPanel>
 
 
-<MudExpansionPanel IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@IsInitiallyExpanded" Text="Methods">
+<MudExpansionPanel @ref="_methodPanel" IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@IsInitiallyExpanded" Text="Methods">
     @if (Methods?.Any() == true)
     {
-        <MudDataGrid T="ApiMemberInfo<MethodInfo>" Items="@Methods" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+        <MudDataGrid T="ApiMemberInfo<MethodInfo>" Items="@Methods.Where(p => _showInherited || !p.IsInherited)" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
                      DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
                      DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
             <ToolBarContent>
                 <MudText Typo="Typo.h6">Methods</MudText>
-                <MudSpacer/>
-                <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
             </ToolBarContent>
             <Columns>
                 @*<PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name" />*@
@@ -90,6 +123,12 @@
                         @RenderLinks(context.Item.TypeName)
                     </CellTemplate>
                 </PropertyColumn>
+               
+                <PropertyColumn Hidden="@(!_showInherited)" Property="x => x.MemberInfo" Title="Declared on">
+                    <CellTemplate>
+                        <MudLink Typo="Typo.subtitle2" Href="@($"/a/{context.Item.MemberInfo.DeclaringType.Name}")">@GetTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
+                    </CellTemplate>
+                </PropertyColumn>
                 <PropertyColumn Property="x => x.Description"/>
             </Columns>
         </MudDataGrid>
@@ -97,65 +136,89 @@
     else
     {
         <MudAlert Severity="Severity.Info">No methods found</MudAlert>
-
     }
 </MudExpansionPanel>
 
 
 @code {
+
+    private bool _showInherited;
+    private string _searchString;
+
+    MudExpansionPanel _methodPanel;
+    MudExpansionPanel _propertyPanel;
+
     [Parameter]
     public bool IsInitiallyExpanded { get; set; } = true;
-    
+
+    private async Task ShowValueForIcon(string iconName)
+    {
+        var value = MudExSvg.SvgPropertyValueForName(iconName);
+
+        await DialogService?.ShowComponentInDialogAsync<MudExIconPicker>(iconName, "",
+            new Dictionary<string, object>()
+                .AddOrUpdate(nameof(MudExIconPicker.PickerVariant), PickerVariant.Static)
+                .AddOrUpdate(nameof(MudExIconPicker.DisableList), true)
+                .AddOrUpdate(nameof(MudExIconPicker.ReadOnly), true)
+                .AddOrUpdate(nameof(MudExIconPicker.PickerHeight), 230)
+                .AddOrUpdate(nameof(MudExIconPicker.PickerWidth), 400)
+                .AddOrUpdate(nameof(MudExIconPicker.Value), value),
+            dialog =>
+            {
+                dialog.Icon = value;
+                dialog.Buttons = MudExDialogResultAction.Ok();
+            }, (DialogOptionsEx.DefaultDialogOptions ?? new DialogOptionsEx()).SetProperties(d =>
+            {
+                d.Resizeable = true;
+                d.DragMode = MudDialogDragMode.Simple;
+            })
+            );
+    }
+
     private RenderFragment RenderLinks(string typeName)
     {
-        return builder =>
-        {
-            RenderLinksRecursive(builder, typeName, 0);
-        };
+        return builder => { RenderLinksRecursive(builder, typeName, 0); };
     }
 
     private RenderFragment RenderFunction(string function)
     {
-        return builder =>
-        {
-            RenderFunctionRecursive(builder, function, 0);
-        };
+        return builder => { RenderFunctionRecursive(builder, function, 0); };
     }
 
     private void RenderFunctionRecursive(RenderTreeBuilder builder, string function, int level)
     {
-        // Split the function into tokens based on space, preserving other characters for processing
+    // Split the function into tokens based on space, preserving other characters for processing
         var tokens = function.Split(' ');
 
-        // Flag to control whether the next token is a method name
+    // Flag to control whether the next token is a method name
         bool isMethodName = false;
 
         for (int i = 0; i < tokens.Length; i++)
         {
             var token = tokens[i];
 
-            // If the token is a method name, add it as plain text and set the flag to false
+    // If the token is a method name, add it as plain text and set the flag to false
             if (isMethodName)
             {
                 builder.AddContent(level, token);
                 isMethodName = false;
             }
-            else if (token.Contains("("))  // If the token contains a '(', this is the method name. Set the flag to true
+            else if (token.Contains("(")) // If the token contains a '(', this is the method name. Set the flag to true
             {
                 builder.AddContent(level, token.Substring(0, token.IndexOf("(")));
                 RenderLinksRecursive(builder, token.Substring(token.IndexOf("(")), level);
                 isMethodName = true;
             }
-            else if (Regex.IsMatch(token, @"^[A-Z]\w*$"))  // If the token looks like a type name, linkify it
+            else if (Regex.IsMatch(token, @"^[A-Z]\w*$")) // If the token looks like a type name, linkify it
             {
                 RenderLinksRecursive(builder, token, level);
             }
-            else  // Otherwise, add it as plain text
+            else // Otherwise, add it as plain text
             {
                 builder.AddContent(level, token);
             }
 
-            // Add a space after each token, except the last one and those ending with a comma or parenthesis
+    // Add a space after each token, except the last one and those ending with a comma or parenthesis
             if (i < tokens.Length - 1 && !token.EndsWith(",") && !token.EndsWith("(") && !token.EndsWith(")"))
             {
                 builder.AddContent(level++, " ");
@@ -167,7 +230,7 @@
     {
         if (string.IsNullOrWhiteSpace(typeName)) return;
 
-        // Special case: nullable type
+    // Special case: nullable type
         if (typeName.EndsWith("?"))
         {
             RenderLinksRecursive(builder, typeName.Remove(typeName.Length - 1), level);
@@ -175,7 +238,7 @@
             return;
         }
 
-        // Special case: array type
+    // Special case: array type
         if (typeName.EndsWith("[]"))
         {
             RenderLinksRecursive(builder, typeName.Remove(typeName.Length - 2), level);
@@ -183,23 +246,23 @@
             return;
         }
 
-        // Use a regular expression to find generic types
+    // Use a regular expression to find generic types
         var match = Regex.Match(typeName, @"(.*?)(<(.*)>)?$");
         if (match.Success)
         {
-            // The type without generics
+    // The type without generics
             var mainType = match.Groups[1].Value;
             var linkUriForType = GetLinkUriForType(mainType);
             if (!string.IsNullOrEmpty(linkUriForType))
             {
                 builder.OpenElement(level++, "a");
                 builder.AddAttribute(level, "href", linkUriForType);
-                //builder.AddAttribute(level, "style", TypeLinkStyleFor(mainType));
+    //builder.AddAttribute(level, "style", TypeLinkStyleFor(mainType));
                 builder.AddAttribute(level, "class", "api-link");
                 builder.AddContent(level, mainType);
                 builder.CloseElement();
 
-                // The generic arguments (if any)
+    // The generic arguments (if any)
                 var genericArgs = match.Groups[3].Value;
                 var args = SplitTypes(genericArgs);
                 if (args.Count > 0)
@@ -210,7 +273,7 @@
                     if (args.IndexOf(arg) > 0)
                         builder.AddContent(level++, ", ");
 
-                    // Recursive call to handle nested generic arguments
+    // Recursive call to handle nested generic arguments
                     RenderLinksRecursive(builder, arg, level);
                 }
                 if (args.Count > 0)
@@ -229,7 +292,7 @@
             return null;
         if (mainType.StartsWith("("))
             mainType = mainType.TrimStart('(');
-        if (string.IsNullOrEmpty(mainType) || mainType == ")" ||  mainType == "(" || mainType == "T" || (mainType.Length > 1 && mainType.StartsWith("T") && char.IsUpper(mainType[1])))
+        if (string.IsNullOrEmpty(mainType) || mainType == ")" || mainType == "(" || mainType == "T" || (mainType.Length > 1 && mainType.StartsWith("T") && char.IsUpper(mainType[1])))
             return null;
         return $"/a/{mainType}";
     }
@@ -265,8 +328,8 @@
 
         return result;
     }
-    
- 
+
+
     private string CellStyleName()
     {
         return MudExStyleBuilder.Empty()
@@ -275,7 +338,6 @@
             .Build();
     }
 
-    private string _searchString;
     private Func<IApiMemberInfo, bool> _quickFilter => x =>
     {
         return string.IsNullOrWhiteSpace(_searchString)
@@ -286,4 +348,6 @@
                || x.Default?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true;
     };
 
+
 }
+
