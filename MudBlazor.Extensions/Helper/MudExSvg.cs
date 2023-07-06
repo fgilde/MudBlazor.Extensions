@@ -80,7 +80,7 @@ public static class MudExSvg
         sb.AppendLine("</svg>");
         return sb.ToString();
     }
-
+    
     /// <summary>
     /// Returns the fully-qualified name of the constant in <see cref="Icons"/> or whatever owner type that has the specified value.
     /// </summary>
@@ -97,15 +97,8 @@ public static class MudExSvg
     /// <param name="value">The value of the SVG constant for which to get a name.</param>
     /// <param name="allOwnerTypes">Owner types for search in</param>
     /// <returns>A string containing the fully-qualified name of the icon constant that matches the specified value.</returns>    
-    public static string SvgPropertyNameForValue(string value, Type[] allOwnerTypes)
-    {
-        return allOwnerTypes.Select(ot => ot.Assembly.GetTypes()
-                .Where(t => t.Namespace == ot.Namespace)
-                .ToList())
-            .Select(types => types.Select(type => SearchTypeForValue(type, value))
-                .FirstOrDefault(res => res != null))
-            .FirstOrDefault(result => result != null);
-    }
+    public static string SvgPropertyNameForValue(string value, Type[] allOwnerTypes) 
+        => GetAllProperties(allOwnerTypes).FirstOrDefault(kv => kv.Value == value).Key;
 
     /// <summary>
     /// Returns the fully-qualified name of the constant in <see cref="Icons"/> that has the specified value.
@@ -136,19 +129,7 @@ public static class MudExSvg
         if (fullName.StartsWith("@"))
             fullName = fullName[1..];
 
-        // Split the fullName into namespace + type and field parts
-        var lastDotIndex = fullName.LastIndexOf('.');
-        var typeFullName = fullName[..lastDotIndex];
-        var fieldName = fullName[(lastDotIndex + 1)..];
-
-        return (from ot in allOwnerTypes
-                from type in ot.Assembly
-                    .GetTypes().Where(t => t.FullName != null && t.FullName.Replace('+', '.') == typeFullName)
-                select type.GetField(fieldName, BindingFlags.Public | BindingFlags.Static)
-                into field
-                where field != null && (field.IsLiteral || field.IsStatic) && field.FieldType == typeof(string)
-                select field.GetValue(null)).OfType<string>()
-            .FirstOrDefault();
+        return GetAllProperties(allOwnerTypes).FirstOrDefault(kv => kv.Key == fullName).Value;
     }
 
 
@@ -170,57 +151,36 @@ public static class MudExSvg
     public static IDictionary<string, string> GetAllSvgProperties(Type ownerType, params Type[] ownerTypes) 
         => GetAllSvgProperties(new[] { ownerType }.Concat(ownerTypes).ToArray());
 
-    public static IDictionary<string, string> GetAllSvgProperties(Type[] ownerTypes)
-    {
-        var result = new Dictionary<string, string>();
+    public static IDictionary<string, string> GetAllSvgProperties(Type[] ownerTypes) 
+        => GetAllProperties(ownerTypes).ToDictionary(kv => kv.Key, kv => kv.Value);
 
+
+    private static IEnumerable<KeyValuePair<string, string>> GetAllProperties(IEnumerable<Type> ownerTypes)
+    {
         foreach (var ot in ownerTypes)
         {
-            Console.WriteLine($"Searching in {ot.FullName}");
-            try
+            var typesToProcess = new Queue<Type>();
+            typesToProcess.Enqueue(ot);
+
+            while (typesToProcess.Count > 0)
             {
-                // Directly process types instead of using queue
-                ProcessType(ot, result);
+                var type = typesToProcess.Dequeue();
+
+                foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.IgnoreCase | BindingFlags.GetField))
+                {
+                    if (field.IsLiteral && field.IsStatic && field.FieldType == typeof(string) && field.GetValue(null) is string fieldValue)
+                    {
+                        yield return new KeyValuePair<string, string>($"{type.FullName.Replace('+', '.')}.{field.Name}", fieldValue);
+                    }
+                }
+
+                foreach (var nestedType in type.GetNestedTypes())
+                {
+                    typesToProcess.Enqueue(nestedType);
+                }
             }
-            catch (Exception ex)
-            {
-                // replace this with your actual logging method
-                Console.WriteLine($"Error while processing type {ot.FullName}: {ex}");
-            }
-        }
-
-        Console.WriteLine($"Found {result.Count} properties");
-        return result;
-    }
-
-    private static void ProcessType(Type type, Dictionary<string, string> result)
-    {
-        Console.WriteLine($"Processing {type.FullName}");
-
-        foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
-        {
-            Console.WriteLine($"Processing {type.FullName} and field is {field.Name}");
-            var fieldValue = field.GetValue(null) as string;
-            Console.WriteLine($"Field value: {fieldValue}");
-            Console.WriteLine($"IsLiteral: {field.IsLiteral}");
-            Console.WriteLine($"IsStatic: {field.IsStatic}");
-            Console.WriteLine($"FieldType: {field.FieldType}");
-
-            if (!field.IsLiteral || !field.IsStatic || field.FieldType != typeof(string) || fieldValue == null)
-                continue;
-            var propertyName = $"{type.FullName.Replace('+', '.')}.{field.Name}";
-            result[propertyName] = fieldValue;
-        }
-
-        // Process nested types
-        foreach (var nestedType in type.GetNestedTypes())
-        {
-            ProcessType(nestedType, result);
         }
     }
-
-
-
 
     /// <summary>
     /// Combines two SVGs sliced either horizontally, vertically, or diagonally.
