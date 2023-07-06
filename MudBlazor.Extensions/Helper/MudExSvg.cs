@@ -200,7 +200,13 @@ public static class MudExSvg
         foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
         {
             Console.WriteLine($"Processing {type.FullName} and field is {field.Name}");
-            if ((!field.IsLiteral && !field.IsStatic) || field.FieldType != typeof(string) || field.GetValue(null) is not string fieldValue)
+            var fieldValue = field.GetValue(null) as string;
+            Console.WriteLine($"Field value: {fieldValue}");
+            Console.WriteLine($"IsLiteral: {field.IsLiteral}");
+            Console.WriteLine($"IsStatic: {field.IsStatic}");
+            Console.WriteLine($"FieldType: {field.FieldType}");
+
+            if (!field.IsLiteral || !field.IsStatic || field.FieldType != typeof(string) || fieldValue == null)
                 continue;
             var propertyName = $"{type.FullName.Replace('+', '.')}.{field.Name}";
             result[propertyName] = fieldValue;
