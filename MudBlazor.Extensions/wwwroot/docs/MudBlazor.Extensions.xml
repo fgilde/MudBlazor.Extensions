@@ -1381,6 +1381,115 @@
         <member name="M:MudBlazor.Extensions.Components.MudExGradientText.OnParametersSetAsync">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExIconPicker">
+            <summary>
+            Component to Edit Icon values
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.ServiceProvider">
+            <summary>
+            Gets or sets the <see cref="T:System.IServiceProvider"/> to be used for dependency injection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.LocalizerToUse">
+            <summary>
+            Gets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.Localizer">
+            <summary>
+            Gets or sets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.PickerWidth">
+            <summary>
+            The width of the picker in pixels.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.DisableList">
+            <summary>
+            Set this to true to disable the list view
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.PickerHeight">
+            <summary>
+            The height of the picker in pixels.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.FilterVariant">
+            <summary>
+            Gets or sets the variant filter.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.Value">
+            <summary>
+            Gets or sets the value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.ValueChanged">
+            <summary>
+            Gets or sets the callback method when the value of the picker is changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.PropertyNameChanged">
+            <summary>
+            Gets or sets the callback method when the property name for the value of the is changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.Available">
+            <summary>
+            Gets or sets the Css Variables.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.IconTypes">
+            <summary>
+            Here you can specify the class of icons you want to show. Default is MudBlazor.Icons
+            But if you have for example installed MudBlazor.MaterialDesignIcons you can also pass typeof(MaterialDesignIcons) 
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.Filter">
+            <summary>
+            Gets or sets the filter for the icons.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.DelayValueChangeToPickerClose">
+            <summary>
+            Gets or sets a value indicating whether to delay the value change of the picker until the picker is closed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.AutoCloseOnSelect">
+            <summary>
+            Gets or sets the auto close behavior.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.AlwaysShowValue">
+            <summary>
+            The visible text value is by default the property path if possible set this to true to show always the value
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.PropertyName">
+            <summary>
+            Gets or sets the string name of the property for the value.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnPickerClosed">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnPickerOpened">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.StringValueChanged(System.String)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExMessageDialog">
             <summary>
             Simple MessageDialog
@@ -2158,6 +2267,52 @@
         <member name="T:MudBlazor.Extensions.Components.MudExToggleableSearch">
             <summary>
             Simple component to expand a Search field 
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.FilterMode">
+            <summary>
+            The Toggle mode
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.Filter">
+            <summary>
+            The filter value itself
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.Immediate">
+            <summary>
+            If true, the input will update the Value immediately on typing.
+            If false, the Value is updated only on Enter.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.Clearable">
+            <summary>
+            Show clear button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.SearchIcon">
+            <summary>
+            Icon 
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.SearchButtonColor">
+            <summary>
+            Color for toggle button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.FilterChanged">
+            <summary>
+            Event callback if filter changed
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.AutoCloseOnBlur">
+            <summary>
+             If true and search toggleable and open, search with closed on blur
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.OnKeyUp">
+            <summary>
+            Fired on the KeyUp event.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExUploadEdit`1">
@@ -5058,12 +5213,35 @@
             <param name="other">An array of other SVG images to combine with the first one.</param>
             <returns>A new SVG with the combined images.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.SvgPropertyName(System.String)">
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.SvgPropertyNameForValue(System.String,System.Type[])">
+            <summary>
+            Returns the fully-qualified name of the constant in <see cref="T:MudBlazor.Icons"/> or whatever owner type that has the specified value.
+            </summary>
+            <param name="value">The value of the SVG constant for which to get a name.</param>
+            <param name="ownerTypes">Types for search in</param>
+            <returns>A string containing the fully-qualified name of the icon constant that matches the specified value.</returns>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.SvgPropertyNameForValue(System.String)">
             <summary>
             Returns the fully-qualified name of the constant in <see cref="T:MudBlazor.Icons"/> that has the specified value.
             </summary>
             <param name="value">The value of the SVG constant for which to get a name.</param>
             <returns>A string containing the fully-qualified name of the icon constant that matches the specified value.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.SvgPropertyValueForName(System.String)">
+            <summary>
+            Returns the value of the constant in <see cref="T:MudBlazor.Icons"/> that has the specified name.
+            </summary>
+            <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+            <returns>The value</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.SvgPropertyValueForName(System.String,System.Type[])">
+            <summary>
+            Returns the value of the constant in <see cref="T:MudBlazor.Icons"/> that has the specified name.
+            </summary>
+            <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+            <param name="ownerTypes">Types where to search in</param>
+            <returns>The value</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExSvg.CombineSliced(System.String,System.String,System.Double,System.Double,MudBlazor.Extensions.Helper.SliceDirection)">
             <summary>
