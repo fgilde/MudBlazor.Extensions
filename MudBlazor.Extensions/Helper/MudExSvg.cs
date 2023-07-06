@@ -186,10 +186,12 @@ public static class MudExSvg
                 // While there are still types to process
                 while (typesToProcess.Count > 0)
                 {
+                    Console.WriteLine($"Queue size is {typesToProcess.Count} and we are processing {typesToProcess.Peek().FullName}");
                     var type = typesToProcess.Dequeue();
 
                     foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
                     {
+                        Console.WriteLine($"Processing {type.FullName} and field is {field.Name}");
                         if (type.FullName == null || (!field.IsLiteral && !field.IsStatic) || field.FieldType != typeof(string) || field.GetValue(null) is not string fieldValue)
                             continue;
                         var propertyName = $"{type.FullName.Replace('+', '.')}.{field.Name}";
