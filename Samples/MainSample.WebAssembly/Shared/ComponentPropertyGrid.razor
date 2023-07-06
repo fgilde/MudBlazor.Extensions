@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Components.Rendering
 @using MudBlazor.Extensions.Helper
 @using MainSample.WebAssembly.Utils
+@using MudBlazor.Extensions.Attribute
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Options
 @inherits MudExObjectEdit<T>
@@ -25,6 +27,16 @@
         return base.OnInitializedAsync();
     }
 
+
+    protected override ObjectEditMeta<T> ConfigureMetaBase(ObjectEditMeta<T> meta)
+    {
+        meta.GroupByCategoryAttribute();
+        meta.Properties<string>().Where(p => p?.Value?.ToString()?.StartsWith("<g") == true || p?.Value?.ToString()?.StartsWith("<path") == true)
+            .RenderWith<MudExIconPicker, string, string>(edit => edit.Value);
+        return base.ConfigureMetaBase(meta);
+    }
+
+    
     RenderFragment RenderShowCodeButton()
     {
         return @<MudButton StartIcon="@Icons.Material.Filled.Code" OnClick="@ShowCode">Show Markup</MudButton>;
@@ -52,4 +64,7 @@
             });
     }
 
+}
+@code {
+    private Action<ObjectEditMeta<T>> _metaConfiguration;
 }
