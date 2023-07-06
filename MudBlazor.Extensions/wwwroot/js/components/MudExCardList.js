@@ -7,11 +7,16 @@
 
 
     initialize(options) {
+        var me = this;
         this.options = options;
-        this._container = this.elementRef.querySelector(".mud-ex-cards");
-
+        this._container = this.elementRef.querySelector(".mud-ex-cards");        
+        this._container.onmousemove = null;
+        for (const card of Array.from(this._container.children)) {
+            card._isMouseOver = false;
+        }
+        
         this._container.onmousemove = e => {
-            for (const card of Array.from(this._container.children)) {
+            for (const card of Array.from(this._container.children)) {                    
                 if (!card.classList.contains('mud-ex-card')) {
                     card.classList.add('mud-ex-card');
                     card.classList.add('mud-ex-animate-all-properties');
@@ -23,24 +28,30 @@
                 card.style.setProperty('--mouse-x', `${x}px`);
                 card.style.setProperty('--mouse-y', `${y}px`);
 
+                if (card._isMouseOver)
+                    continue;
+
+                var fn = (e) => me.cardMouseMove(card, options, e); 
+                
                 card.addEventListener('mouseenter', () => {
-                    card.addEventListener('mousemove', this.cardMouseMove.bind(this, card));
+                    card.addEventListener('mousemove', fn);
                 });
 
                 card.addEventListener('mouseleave', () => {
-                    card.removeEventListener('mousemove', this.cardMouseMove.bind(this, card));
+                    card.removeEventListener('mousemove', fn);
                     card.style.removeProperty('--transform');
                     card.style.removeProperty('--shadow');
                     card.style.boxShadow = '';
                     card.style.transform = '';
                 });
+                card._isMouseOver = true;
             };
         };
 
     }
 
-    cardMouseMove(card, e) {
-        if (this.options && this.options.use3dEffect) {
+    cardMouseMove(card, options, e) {
+        if (options && options.use3dEffect) {
             const rect = card.getBoundingClientRect(),
                 x = e.clientX - rect.left,
                 y = e.clientY - rect.top,
@@ -77,6 +88,6 @@
 
 window.MudExCardList = MudExCardList;
 
-export function initializeMudExCardList(elementRef, dotnet, options) {
+export function initializeMudExCardList(elementRef, dotnet, options) {    
     return new MudExCardList(elementRef, dotnet, options);
 }

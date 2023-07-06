@@ -166,7 +166,10 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
     private async Task UpdateJs()
     {
         if (AsJsComponent.JsReference != null)
-            await AsJsComponent.JsReference.InvokeVoidAsync("initialize", Options());
+        {
+            var options = Options();
+            await AsJsComponent.JsReference.InvokeVoidAsync("initialize", options);
+        }
     }
 
     /// <summary>
@@ -188,6 +191,8 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
             UseZoomEffect = HoverModeMatches(MudExCardHoverMode.Zoom)
         };
     }
+
+    public virtual object[] GetJsArguments() => new[] { AsJsComponent.ElementReference, AsJsComponent.CreateDotNetObjectReference(), Options() };
 
     /// <summary>
     /// Method to dispose the module.
