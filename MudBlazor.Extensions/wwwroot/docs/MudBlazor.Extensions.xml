@@ -3755,6 +3755,261 @@
             Editor for a property of an object. Used internally inside the MudExObjectEdit
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.AlignItems">
+            <summary>
+            Enum representing CSS 'align-items' property values.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.BorderStyle">
+            <summary>
+            Specifies various styles for the border of an element in CSS.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BorderStyle.None">
+            <summary>
+            No border; the computed border width is zero.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BorderStyle.Hidden">
+            <summary>
+            Same as `None`, except in border conflict resolution for table elements.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BorderStyle.Dotted">
+            <summary>
+            The border is a series of dots.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BorderStyle.Dashed">
+            <summary>
+            The border is a series of short lines.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BorderStyle.Solid">
+            <summary>
+            The border is a single, solid line.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BorderStyle.Double">
+            <summary>
+            The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BorderStyle.Groove">
+            <summary>
+            The border looks as though it were carved into the canvas.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BorderStyle.Ridge">
+            <summary>
+            The opposite of 'groove': the border looks as though it were coming out of the canvas.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BorderStyle.Inset">
+            <summary>
+            The border makes the box look as though it were embedded in the canvas.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BorderStyle.Outset">
+            <summary>
+            The opposite of 'inset': the border makes the box look as though it were coming out of the canvas.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BorderStyle.Initial">
+            <summary>
+            Sets this property to its default value.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BorderStyle.Inherit">
+            <summary>
+            Inherits this property from its parent element.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BorderStyle.Revert">
+            <summary>
+            Resets the property to its inherited value if it inherits from its parent, and to its initial value if not.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.BorderStyle.Unset">
+            <summary>
+            Can be used on any CSS property, including 'border-style', and takes the same values as inherit. It acts like inherit if the property is inherited and like initial if not.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.Clear">
+            <summary>
+            Enum representing CSS 'clear' property values.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.Cursor">
+            <summary>
+            Enum representing CSS 'cursor' property values.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.Direction">
+            <summary>
+            Enum representing CSS 'direction' property values.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.Display">
+            <summary>
+            Enum representing CSS 'display' property values.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.Float">
+            <summary>
+            Enum representing CSS 'float' property values.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.FontStyle">
+            <summary>
+            Specifies the font style for a text.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FontStyle.Normal">
+            <summary>
+            The text is shown in a normal font style. This is default.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FontStyle.Italic">
+            <summary>
+            The text is shown in an italic font style.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FontStyle.Oblique">
+            <summary>
+            The text is shown in an oblique font style.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FontStyle.Initial">
+            <summary>
+            Sets this property to its default value (i.e., 'normal').
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FontStyle.Inherit">
+            <summary>
+            Inherits this property from its parent element.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.FontVariant">
+            <summary>
+            Specifies the font variant for a text.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FontVariant.Normal">
+            <summary>
+            The text is shown in a normal font variant. This is default.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FontVariant.SmallCaps">
+            <summary>
+            The text is transformed to use small capitals for lower case letters.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FontVariant.Initial">
+            <summary>
+            Sets this property to its default value (i.e., 'normal').
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FontVariant.Inherit">
+            <summary>
+            Inherits this property from its parent element.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.FontWeight">
+            <summary>
+            Specifies the weight or thickness of the font.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FontWeight.Normal">
+            <summary>
+            Defines normal characters. This is default.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FontWeight.Bold">
+            <summary>
+            Defines thick characters.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FontWeight.Bolder">
+            <summary>
+            Defines thicker characters.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FontWeight.Lighter">
+            <summary>
+            Defines lighter characters.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FontWeight.Initial">
+            <summary>
+            Sets this property to its default value (i.e., 'normal').
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FontWeight.Inherit">
+            <summary>
+            Inherits this property from its parent element.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.Overflow">
+            <summary>
+            Enum representing CSS 'overflow' property values.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.Position">
+            <summary>
+            Enum representing CSS 'position' property values.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.TextDecoration">
+            <summary>
+            Specifies the type of text decoration to use.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.TextDecoration.None">
+            <summary>
+            Default value. Specifies that text should not have a decoration.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.TextDecoration.Underline">
+            <summary>
+            Specifies that text should be underlined.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.TextDecoration.Overline">
+            <summary>
+            Specifies that text should be overlined.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.TextDecoration.LineThrough">
+            <summary>
+            Specifies that text should have a line through the middle.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.TextDecoration.Initial">
+            <summary>
+            Sets this property to its default value (i.e., 'none').
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.TextDecoration.Inherit">
+            <summary>
+            Inherits this property from its parent element.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.TextTransform">
+            <summary>
+            Enum representing CSS 'text-transform' property values.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.Visibility">
+            <summary>
+            Enum representing CSS 'visibility' property values.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.WhiteSpace">
+            <summary>
+            Enum representing CSS 'white-space' property values.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.CssUnit">
             <summary>
             Represents units of measure in CSS.
@@ -5405,6 +5660,11 @@
             Static factory method to create a <see cref="T:MudBlazor.Extensions.Helper.MudExStyleBuilder"/> from an object.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.FromObject(System.Object,MudBlazor.Extensions.Core.CssUnit)">
+            <summary>
+            Static factory method to create a <see cref="T:MudBlazor.Extensions.Helper.MudExStyleBuilder"/> from an object.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.FromStyle(System.String)">
             <summary>
             Static factory method to create a <see cref="T:MudBlazor.Extensions.Helper.MudExStyleBuilder"/> from an existing style string.
@@ -5514,7 +5774,7 @@
             Adds a fill property to the builder
             </summary>
             <param name="color">Value of the MudColor property</param>
-            <param name="when">If false, no property will be addd to the builder</param>
+            <param name="when">If false, no property will be add to the builder</param>
             <returns>This MudExStyleBuilder instance</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFill(System.Drawing.Color,System.Boolean)">
@@ -5615,7 +5875,1440 @@
             <param name="when">If false, no property will be added to the builder.</param>
             <returns>This MudExStyleBuilder instance.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.AsImportant">
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(MudBlazor.Color[],System.Boolean)">
+            <summary>
+            Adds a background property to the builder. The background is a gradient of all entries in the Color array.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(MudBlazor.Extensions.Core.MudExColor[],System.Int32,System.Boolean)">
+            <summary>
+            Adds a background property to the builder. The background is a gradient of all entries in the Color array.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(MudBlazor.Utilities.MudColor[],System.Int32,System.Boolean)">
+            <summary>
+            Adds a background property to the builder. The background is a gradient of all entries in the Color array.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(System.Drawing.Color[],System.Int32,System.Boolean)">
+            <summary>
+            Adds a background property to the builder. The background is a gradient of all entries in the Color array.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(MudBlazor.Color[],System.Int32,System.Boolean)">
+            <summary>
+            Adds a background property to the builder. The background is a gradient of all entries in the Color array.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(MudBlazor.Extensions.Core.MudExColor,System.Boolean)">
+            <summary>
+            Adds a background property to the builder.
+            </summary>
+            <summary>
+            Specifies a background color using a MudExColor object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(System.String,System.Boolean)">
+            <summary>
+            Specifies a background color using a CSS color string, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(MudBlazor.Utilities.MudColor,System.Boolean)">
+            <summary>
+            Specifies a background color using a MudColor object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(System.Drawing.Color,System.Boolean)">
+            <summary>
+            Specifies a background color using a System.Drawing.Color object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackground(MudBlazor.Color,System.Boolean)">
+            <summary>
+            Specifies a background color using a Color object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackgroundColor(MudBlazor.Extensions.Core.MudExColor,System.Boolean)">
+            <summary>
+            Specifies a background color using a MudExColor object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackgroundColor(System.String,System.Boolean)">
+            <summary>
+            Specifies a background color using a CSS color string, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackgroundColor(MudBlazor.Utilities.MudColor,System.Boolean)">
+            <summary>
+            Specifies a background color using a MudColor object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackgroundColor(System.Drawing.Color,System.Boolean)">
+            <summary>
+            Specifies a background color using a System.Drawing.Color object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackgroundColor(MudBlazor.Color,System.Boolean)">
+            <summary>
+            Specifies a background color using a Color object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackgroundImage(System.String,System.Boolean)">
+            <summary>
+            Specifies a background image using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackgroundSize(System.String,System.Boolean)">
+            <summary>
+            Specifies the background size using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithDisplay(System.String,System.Boolean)">
+            <summary>
+            Specifies the display property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithDisplay(MudBlazor.Extensions.Core.Css.Display,System.Boolean)">
+            <summary>
+            Specifies the display property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFlex(System.String,System.Boolean)">
+            <summary>
+            Specifies the flex property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithJustifyContent(System.String,System.Boolean)">
+            <summary>
+            Specifies the justify-content property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAlignItems(System.String,System.Boolean)">
+            <summary>
+            Specifies the align-items property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAlignItems(MudBlazor.AlignItems,System.Boolean)">
+            <summary>
+            Specifies the align-items property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPosition(System.String,System.Boolean)">
+            <summary>
+            Specifies the position property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPosition(MudBlazor.Position,System.Boolean)">
+            <summary>
+            Specifies the position property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTop(System.String,System.Boolean)">
+            <summary>
+            Specifies the top property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBottom(System.String,System.Boolean)">
+            <summary>
+            Specifies the bottom property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithLeft(System.String,System.Boolean)">
+            <summary>
+            Specifies the left property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithRight(System.String,System.Boolean)">
+            <summary>
+            Specifies the right property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithZIndex(System.Int32,System.Boolean)">
+            <summary>
+            Specifies the z-index property using an integer value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFontSize(System.String,System.Boolean)">
+            <summary>
+            Specifies the font-size property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFontWeight(MudBlazor.Extensions.Core.Css.FontWeight,System.Boolean)">
+            <summary>
+            Specifies the font-weight property using a FontWeight enumeration value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFontWeight(System.String,System.Boolean)">
+            <summary>
+            Specifies the font-weight property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTextAlign(System.String,System.Boolean)">
+            <summary>
+            Specifies the text-align property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTextDecoration(MudBlazor.Extensions.Core.Css.TextDecoration,System.Boolean)">
+            <summary>
+            Specifies the text-decoration property using a TextDecoration enumeration value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTextDecoration(System.String,System.Boolean)">
+            <summary>
+            Specifies the text-decoration property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithLetterSpacing(System.String,System.Boolean)">
+            <summary>
+            Specifies the letter-spacing property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithLineHeight(System.String,System.Boolean)">
+            <summary>
+            Specifies the line-height property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTextTransform(System.String,System.Boolean)">
+            <summary>
+            Specifies the text-transform property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTextTransform(MudBlazor.Extensions.Core.Css.TextTransform,System.Boolean)">
+            <summary>
+            Specifies the text-transform property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithWhiteSpace(System.String,System.Boolean)">
+            <summary>
+            Specifies the white-space property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithWhiteSpace(MudBlazor.Extensions.Core.Css.WhiteSpace,System.Boolean)">
+            <summary>
+            Specifies the white-space property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithWidth(System.String,System.Boolean)">
+            <summary>
+            Specifies the width property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithWidth(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the width property using a numeric value and CSS unit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithWidth(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the width property using a MudExSize value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithHeight(System.String,System.Boolean)">
+            <summary>
+            Specifies the height property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithHeight(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the height property using a numeric value and CSS unit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithHeight(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the height property using a MudExSize value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOpacity(System.Double,System.Boolean)">
+            <summary>
+            Specifies the opacity property using a double value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOpacity(System.String,System.Boolean)">
+            <summary>
+            Specifies the opacity property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMargin(System.String,System.Boolean)">
+            <summary>
+            Specifies the margin property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMargin(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the margin property using a numeric value and CSS unit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMargin(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the margin property using a MudExSize value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPadding(System.String,System.Boolean)">
+            <summary>
+            Specifies the padding property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPadding(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the padding property using a numeric value and CSS unit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPadding(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the padding property using a MudExSize value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOverflow(System.String,System.Boolean)">
+            <summary>
+            Specifies the overflow property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOverflow(MudBlazor.Extensions.Core.Css.Overflow,System.Boolean)">
+            <summary>
+            Specifies the overflow property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithCursor(System.String,System.Boolean)">
+            <summary>
+            Specifies the cursor property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithCursor(MudBlazor.Extensions.Core.Css.Cursor,System.Boolean)">
+            <summary>
+            Specifies the cursor property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithListStyleType(System.String,System.Boolean)">
+            <summary>
+            Specifies the list-style-type property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTransition(System.String,System.Boolean)">
+            <summary>
+            Specifies the transition property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTransform(System.String,System.Boolean)">
+            <summary>
+            Specifies the transform property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFlexDirection(System.String,System.Boolean)">
+            <summary>
+            Specifies the flex-direction property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFlexWrap(System.String,System.Boolean)">
+            <summary>
+            Specifies the flex-wrap property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBoxShadow(System.String,System.Boolean)">
+            <summary>
+            Specifies the box-shadow property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTextShadow(System.String,System.Boolean)">
+            <summary>
+            Specifies the text-shadow property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithWordBreak(System.String,System.Boolean)">
+            <summary>
+            Specifies the word-break property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithWordSpacing(System.String,System.Boolean)">
+            <summary>
+            Specifies the word-spacing property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackfaceVisibility(System.String,System.Boolean)">
+            <summary>
+            Specifies the backface-visibility property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutline(System.String,System.Boolean)">
+            <summary>
+            Specifies the outline property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMaxWidth(System.String,System.Boolean)">
+            <summary>
+            Specifies the max-width property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMinWidth(System.String,System.Boolean)">
+            <summary>
+            Specifies the min-width property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMaxHeight(System.String,System.Boolean)">
+            <summary>
+            Specifies the max-height property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMinHeight(System.String,System.Boolean)">
+            <summary>
+            Specifies the min-height property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithResize(System.String,System.Boolean)">
+            <summary>
+            Specifies the resize property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithVisibility(System.String,System.Boolean)">
+            <summary>
+            Specifies the visibility property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithVisibility(MudBlazor.Extensions.Core.Css.Visibility,System.Boolean)">
+            <summary>
+            Specifies the visibility property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFlexBasis(System.String,System.Boolean)">
+            <summary>
+            Specifies the flex-basis property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFlexGrow(System.String,System.Boolean)">
+            <summary>
+            Specifies the flex-grow property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFlexShrink(System.String,System.Boolean)">
+            <summary>
+            Specifies the flex-shrink property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOrder(System.String,System.Boolean)">
+            <summary>
+            Specifies the order property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithGridGap(System.String,System.Boolean)">
+            <summary>
+            Specifies the grid-gap property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithGridColumn(System.String,System.Boolean)">
+            <summary>
+            Specifies the grid-column property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithGridRow(System.String,System.Boolean)">
+            <summary>
+            Specifies the grid-row property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithGridTemplateColumns(System.String,System.Boolean)">
+            <summary>
+            Specifies the grid-template-columns property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithGridTemplateRows(System.String,System.Boolean)">
+            <summary>
+            Specifies the grid-template-rows property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithObjectFit(System.String,System.Boolean)">
+            <summary>
+            Specifies the object-fit property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithObjectPosition(System.String,System.Boolean)">
+            <summary>
+            Specifies the object-position property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTextOverflow(System.String,System.Boolean)">
+            <summary>
+            Specifies the text-overflow property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithVerticalAlign(System.String,System.Boolean)">
+            <summary>
+            Specifies the vertical-align property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMinSize(System.String,System.String,System.Boolean)">
+            <summary>
+            Specifies both the min-width and min-height properties, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMinSize(System.Double,System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies both the min-width and min-height properties using a numerical value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMinSize(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies both the min-width and min-height properties using the same numerical value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMinSize(MudBlazor.Extensions.Core.MudExSize{System.Double},MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies both the min-width and min-height properties using MudExSize objects, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMinSize(MudBlazor.Extensions.Core.MudExDimension,System.Boolean)">
+            <summary>
+            Specifies both the min-width and min-height properties using a MudExDimension object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMaxSize(System.String,System.String,System.Boolean)">
+            <summary>
+            Specifies both the max-width and max-height properties using string values, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMaxSize(System.Double,System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies both the max-width and max-height properties using double values and a CssUnit for the values, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMaxSize(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies both the max-width and max-height properties using the same double value and a CssUnit for the values, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMaxSize(MudBlazor.Extensions.Core.MudExSize{System.Double},MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies both the max-width and max-height properties using MudExSize objects, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMaxSize(MudBlazor.Extensions.Core.MudExDimension,System.Boolean)">
+            <summary>
+            Specifies both the max-width and max-height properties using a MudExDimension object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithSize(System.String,System.String,System.Boolean)">
+            <summary>
+            Specifies both the width and height properties using string values, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithSize(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies both the width and height properties using the same double value and a CssUnit for the values, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithSize(System.Double,System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies both the width and height properties using different double values and a CssUnit for the values, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithSize(MudBlazor.Extensions.Core.MudExSize{System.Double},MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies both the width and height properties using MudExSize objects, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithSize(MudBlazor.Extensions.Core.MudExDimension,System.Boolean)">
+            <summary>
+            Specifies both the width and height properties using a MudExDimension object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithDimension(MudBlazor.Extensions.Core.MudExDimension,System.Boolean)">
+            <summary>
+            Specifies both the width and height properties using a MudExDimension object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMinHeight(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the min-height property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMinHeight(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the min-height property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMinWidth(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the min-width property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMinWidth(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the min-width property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMaxHeight(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the max-height property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMaxHeight(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the max-height property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMaxWidth(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the max-width property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMaxWidth(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the max-width property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPaddingTop(System.String,System.Boolean)">
+            <summary>
+            Specifies the padding-top property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPaddingTop(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the padding-top property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPaddingTop(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the padding-top property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPaddingRight(System.String,System.Boolean)">
+            <summary>
+            Specifies the padding-right property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPaddingRight(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the padding-right property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPaddingRight(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the padding-right property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPaddingBottom(System.String,System.Boolean)">
+            <summary>
+            Specifies the padding-bottom property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPaddingBottom(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the padding-bottom property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPaddingBottom(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the padding-bottom property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPaddingLeft(System.String,System.Boolean)">
+            <summary>
+            Specifies the padding-left property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPaddingLeft(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the padding-left property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPaddingLeft(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the padding-left property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMarginTop(System.String,System.Boolean)">
+            <summary>
+            Specifies the margin-top property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMarginTop(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the margin-top property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMarginTop(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the margin-top property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMarginRight(System.String,System.Boolean)">
+            <summary>
+            Specifies the margin-right property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMarginRight(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the margin-right property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMarginRight(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the margin-right property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMarginBottom(System.String,System.Boolean)">
+            <summary>
+            Specifies the margin-bottom property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMarginBottom(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the margin-bottom property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMarginBottom(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the margin-bottom property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMarginLeft(System.String,System.Boolean)">
+            <summary>
+            Specifies the margin-left property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMarginLeft(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the margin-left property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithMarginLeft(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the margin-left property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFontSize(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the font-size property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFontSize(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the font-size property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithLetterSpacing(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the letter-spacing property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithLetterSpacing(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the letter-spacing property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithLineHeight(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the line-height property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithLineHeight(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the line-height property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithWordSpacing(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the word-spacing property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithWordSpacing(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the word-spacing property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTextIndent(System.String,System.Boolean)">
+            <summary>
+            Specifies the text-indent property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTextIndent(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the text-indent property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTextIndent(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the text-indent property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColumnGap(System.String,System.Boolean)">
+            <summary>
+            Specifies the column-gap property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColumnGap(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the column-gap property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColumnGap(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the column-gap property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColumnWidth(System.String,System.Boolean)">
+            <summary>
+            Specifies the column-width property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColumnWidth(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the column-width property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColumnWidth(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the column-width property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTop(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the top property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTop(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the top property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithRight(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the right property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithRight(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the right property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBottom(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the bottom property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBottom(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the bottom property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithLeft(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the left property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithLeft(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the left property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTranslate(System.String,System.Boolean)">
+            <summary>
+            Specifies the translate property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTranslate(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the translate property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTranslate(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the translate property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTranslateX(System.String,System.Boolean)">
+            <summary>
+            Specifies the translateX property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTranslateX(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the translateX property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTranslateX(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the translateX property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTranslateY(System.String,System.Boolean)">
+            <summary>
+            Specifies the translateY property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTranslateY(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the translateY property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTranslateY(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the translateY property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTranslateZ(System.String,System.Boolean)">
+            <summary>
+            Specifies the translateZ property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTranslateZ(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the translateZ property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTranslateZ(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the translateZ property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTranslate3d(System.String,System.Boolean)">
+            <summary>
+            Specifies the translate3d property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithRotate(System.String,System.Boolean)">
+            <summary>
+            Specifies the rotate property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithRotate(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the rotate property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithRotate(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the rotate property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithRotateX(System.String,System.Boolean)">
+            <summary>
+            Specifies the rotateX property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithRotateX(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the rotateX property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithRotateX(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the rotateX property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithRotateY(System.String,System.Boolean)">
+            <summary>
+            Specifies the rotateY property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithRotateY(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the rotateY property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithRotateY(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the rotateY property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithRotateZ(System.String,System.Boolean)">
+            <summary>
+            Specifies the rotateZ property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithRotateZ(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the rotateZ property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithRotateZ(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the rotateZ property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithScale(System.String,System.Boolean)">
+            <summary>
+            Specifies the scale property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithScale(System.Double,System.Boolean)">
+            <summary>
+            Specifies the scale property using a double value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithScaleX(System.String,System.Boolean)">
+            <summary>
+            Specifies the scaleX property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithScaleX(System.Double,System.Boolean)">
+            <summary>
+            Specifies the scaleX property using a double value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithScaleY(System.String,System.Boolean)">
+            <summary>
+            Specifies the scaleY property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithScaleY(System.Double,System.Boolean)">
+            <summary>
+            Specifies the scaleY property using a double value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithScaleZ(System.String,System.Boolean)">
+            <summary>
+            Specifies the scaleZ property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithScaleZ(System.Double,System.Boolean)">
+            <summary>
+            Specifies the scaleZ property using a double value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithScale3d(System.String,System.Boolean)">
+            <summary>
+            Specifies the scale3d property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithScale3d(System.Double,System.Boolean)">
+            <summary>
+            Specifies the scale3d property using a double value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithSkew(System.String,System.Boolean)">
+            <summary>
+            Specifies the skew property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithSkew(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the skew property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithSkew(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the skew property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithSkewX(System.String,System.Boolean)">
+            <summary>
+            Specifies the skewX property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithSkewX(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the skewX property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithSkewX(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the skewX property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithSkewY(System.String,System.Boolean)">
+            <summary>
+            Specifies the skewY property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithSkewY(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the skewY property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithSkewY(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the skewY property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPerspective(System.String,System.Boolean)">
+            <summary>
+            Specifies the perspective property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPerspective(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the perspective property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPerspective(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the perspective property using a MudExSize object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFontFamily(System.String,System.Boolean)">
+            <summary>
+            Specifies the font-family property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFontStyle(MudBlazor.Extensions.Core.Css.FontStyle,System.Boolean)">
+            <summary>
+            Specifies the font-style property using a FontStyle enum value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFontStyle(System.String,System.Boolean)">
+            <summary>
+            Specifies the font-style property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTextJustify(System.String,System.Boolean)">
+            <summary>
+            Specifies the text-justify property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackgroundPosition(System.String,System.Boolean)">
+            <summary>
+            Specifies the background-position property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBackgroundRepeat(System.String,System.Boolean)">
+            <summary>
+            Specifies the background-repeat property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorder(MudBlazor.Extensions.Core.MudExSize{System.Double},MudBlazor.Extensions.Core.Css.BorderStyle,MudBlazor.Extensions.Core.MudExColor,System.Boolean)">
+            <summary>
+            Specifies the border-width, border-style and border-color properties using a MudExSize object, BorderStyle enum value and MudExColor object, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorder(MudBlazor.Extensions.Core.MudExSize{System.Double},MudBlazor.Extensions.Core.Css.BorderStyle,MudBlazor.Extensions.Core.MudExColor)">
+            <summary>
+            Specifies the border-width, border-style and border-color properties using a MudExSize object, BorderStyle enum value and MudExColor object.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorder(System.String,System.Boolean)">
+            <summary>
+            Specifies the border property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderRadius(System.String,System.Boolean)">
+            <summary>
+            Specifies the border-radius property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderRadius(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the border-radius property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderWidth(System.String,System.Boolean)">
+            <summary>
+            Specifies the border-width property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderWidth(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the border-width property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderWidth(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the border-width property using a MudExSize value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderTopWidth(System.String,System.Boolean)">
+            <summary>
+            Specifies the border-top-width property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderTopWidth(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the border-top-width property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderTopWidth(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the border-top-width property using a MudExSize value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderRightWidth(System.String,System.Boolean)">
+            <summary>
+            Specifies the border-right-width property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderRightWidth(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the border-right-width property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderRightWidth(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the border-right-width property using a MudExSize value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderBottomWidth(System.String,System.Boolean)">
+            <summary>
+            Specifies the border-bottom-width property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderBottomWidth(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the border-bottom-width property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderBottomWidth(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the border-bottom-width property using a MudExSize value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderLeftWidth(System.String,System.Boolean)">
+            <summary>
+            Specifies the border-left-width property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderLeftWidth(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the border-left-width property using a double value and a CssUnit, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderLeftWidth(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the border-left-width property using a MudExSize value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderColor(System.String,System.Boolean)">
+            <summary>
+            Specifies the border-color property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderColor(MudBlazor.Extensions.Core.MudExColor,System.Boolean)">
+            <summary>
+            Specifies the border-color property using a MudExColor value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderColor(MudBlazor.Utilities.MudColor,System.Boolean)">
+            <summary>
+            Specifies the border-color property using a MudColor value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderColor(System.Drawing.Color,System.Boolean)">
+            <summary>
+            Specifies the border-color property using a System.Drawing.Color value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderColor(MudBlazor.Color,System.Boolean)">
+            <summary>
+            Specifies the border-color property using a Color value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderStyle(MudBlazor.Extensions.Core.Css.BorderStyle,System.Boolean)">
+            <summary>
+            Specifies the border-style property using a BorderStyle enum value, if the 'when' condition is true. Converts the enum to a string.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderStyle(System.String,System.Boolean)">
+            <summary>
+            Specifies the border-style property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutline(MudBlazor.Extensions.Core.MudExSize{System.Double},MudBlazor.Extensions.Core.Css.BorderStyle,MudBlazor.Extensions.Core.MudExColor,System.Boolean)">
+            <summary>
+            Specifies the outline property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutline(MudBlazor.Extensions.Core.MudExSize{System.Double},MudBlazor.Extensions.Core.Css.BorderStyle,MudBlazor.Extensions.Core.MudExColor)">
+            <summary>
+            Specifies the outline property using a string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineRadius(System.String,System.Boolean)">
+            <summary>
+            Specifies the outline radius of an element.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineWidth(System.String,System.Boolean)">
+            <summary>
+            Specifies the outline width of an element.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineTopWidth(System.String,System.Boolean)">
+            <summary>
+            Specifies the width of the top outline of an element.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineRightWidth(System.String,System.Boolean)">
+            <summary>
+            Specifies the width of the right outline of an element.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineBottomWidth(System.String,System.Boolean)">
+            <summary>
+            Specifies the width of the bottom outline of an element.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineLeftWidth(System.String,System.Boolean)">
+            <summary>
+            Specifies the width of the left outline of an element.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineColor(System.String,System.Boolean)">
+            <summary>
+            Specifies the color of the outline of an element.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineStyle(System.String,System.Boolean)">
+            <summary>
+            Specifies the style of the outline of an element.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFloat(System.String,System.Boolean)">
+            <summary>
+            Specifies how an element should float.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFloat(MudBlazor.Extensions.Core.Css.Float,System.Boolean)">
+            <summary>
+            Specifies how an element should float.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithClear(System.String,System.Boolean)">
+            <summary>
+            Specifies which sides of an element other floating elements are not allowed.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithClear(MudBlazor.Extensions.Core.Css.Clear,System.Boolean)">
+            <summary>
+            Specifies which sides of an element other floating elements are not allowed.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOverflowX(System.String,System.Boolean)">
+            <summary>
+            Specifies whether to clip content, render scrollbars or just display overflow content of an element, for x-axis.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOverflowX(MudBlazor.Extensions.Core.Css.Overflow,System.Boolean)">
+            <summary>
+            Specifies whether to clip content, render scrollbars or just display overflow content of an element, for x-axis.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOverflowY(System.String,System.Boolean)">
+            <summary>
+            Specifies whether to clip content, render scrollbars or just display overflow content of an element, for y-axis.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOverflowY(MudBlazor.Extensions.Core.Css.Overflow,System.Boolean)">
+            <summary>
+            Specifies whether to clip content, render scrollbars or just display overflow content of an element, for y-axis.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithDirection(System.String,System.Boolean)">
+            <summary>
+            Specifies the text direction/writing direction within a block-level element.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithDirection(MudBlazor.Direction,System.Boolean)">
+            <summary>
+            Specifies the text direction/writing direction within a block-level element.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColumns(System.String,System.Boolean)">
+            <summary>
+            Specifies the column width and column count of an element.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColumnCount(System.Int32,System.Boolean)">
+            <summary>
+            Specifies the number of columns an element should be divided into.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColumnFill(System.String,System.Boolean)">
+            <summary>
+            Specifies how to fill columns.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColumnRule(System.String,System.Boolean)">
+            <summary>
+            Specifies the width, style, and color of the rule between columns.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColumnSpan(System.String,System.Boolean)">
+            <summary>
+            Specifies how many columns an element should span across.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithGap(System.String,System.Boolean)">
+            <summary>
+            Specifies the size of the gap between columns.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineRadius(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the 'outline-radius' CSS property with a double value and CSS unit.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineWidth(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the 'outline-width' CSS property with a double value and CSS unit.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineWidth(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the 'outline-width' CSS property with a size.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineStyle(MudBlazor.Extensions.Core.Css.BorderStyle,System.Boolean)">
+            <summary>
+            Specifies the 'outline-style' CSS property using a BorderStyle enum.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineTopWidth(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the 'outline-top-width' CSS property with a double value and CSS unit.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineTopWidth(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the 'outline-top-width' CSS property with a size.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineColor(MudBlazor.Extensions.Core.MudExColor,System.Boolean)">
+            <summary>
+            Specifies the 'outline-color' CSS property with MudExColor.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineColor(MudBlazor.Utilities.MudColor,System.Boolean)">
+            <summary>
+            Specifies the 'outline-color' CSS property with MudColor.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineColor(System.Drawing.Color,System.Boolean)">
+            <summary>
+            Specifies the 'outline-color' CSS property with System.Drawing.Color.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineColor(MudBlazor.Color,System.Boolean)">
+            <summary>
+            Specifies the 'outline-color' CSS property with Color.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineRightWidth(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the 'outline-right-width' CSS property with a double value and CSS unit.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineRightWidth(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the 'outline-right-width' CSS property with a size.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineBottomWidth(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the 'outline-bottom-width' CSS property with a double value and CSS unit.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineBottomWidth(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the 'outline-bottom-width' CSS property with a size.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineLeftWidth(System.Double,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
+            <summary>
+            Specifies the 'outline-left-width' CSS property with a double value and CSS unit.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineLeftWidth(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
+            <summary>
+            Specifies the 'outline-left-width' CSS property with a size.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.AsImportant(System.Boolean)">
             <summary>
             Adds an !important to last added style
             </summary>
@@ -5664,6 +7357,24 @@
             <summary>
             Converts this style to an object
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.ToString">
+            <summary>
+            Returns the css style string
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.op_Explicit(MudBlazor.Extensions.Helper.MudExStyleBuilder)~System.String">
+            <summary>
+            Explicit conversion to string
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.op_Explicit(System.String)~MudBlazor.Extensions.Helper.MudExStyleBuilder">
+            <summary>
+            Explicit conversion from string
+            </summary>
+            <param name="styles"></param>
         </member>
         <member name="P:MudBlazor.Extensions.Helper.MudExStyleBuilder.Style">
             <summary>

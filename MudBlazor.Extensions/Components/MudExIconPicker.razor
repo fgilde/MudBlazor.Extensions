@@ -2,6 +2,7 @@
 @implements IMudExComponent
 @using MudBlazor.Extensions.Core
 @using System.Reflection;
+@using MudBlazor.Extensions.Core.Css
 @using MudBlazor.Extensions.Helper
 
 @Render
@@ -17,8 +18,9 @@
     {
         return @<div style="@(MudExStyleBuilder.Default.WithOverflow("hidden").WithPadding(30).WithWidth(PickerWidth).WithHeight(PickerHeight))">
         <MudGrid Style="margin-bottom:25px;">
-            <MudItem Style="width: 100%" >
-                <MudIcon Class="mud-ex-icon-picker-value-preview" Icon="@Value" Size="Size.Large" />
+            <MudItem Style="width: 100%">
+                <MudText Style="margin-bottom: 15px; text-align: center;">@PropertyNameLabel</MudText>
+                <MudIcon Class="mud-ex-icon-picker-value-preview" Icon="@Value" Size="Size.Large"/>
                 <MudTextField ReadOnly="@ReadOnly" @bind-Value="Value" Variant="Variant.Outlined" Placeholder="@TryLocalize("Value")" Adornment="Adornment.Start"/>
             </MudItem>
             
@@ -31,7 +33,7 @@
         @if (!DisableList)
         {
             <MudGrid Style="overflow: auto;max-height: 60%;">
-                <div style="position: relative;">
+                <div style="position: relative; margin: 2px;">
                     <div style="position: absolute; top:0px;width:100%;">
                         <div @ref="killZone" style="@GetKillZoneStyle()"></div>
                     </div>

@@ -2,6 +2,7 @@
 @using System.Text.RegularExpressions
 @using Microsoft.AspNetCore.Components.Rendering
 @using Microsoft.AspNetCore.Http.Authentication
+@using MudBlazor.Extensions.Core.Css
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 @using MudBlazor.Utilities
@@ -39,7 +40,7 @@
 {
     <p>Enum</p>
 
-    var names = Enum.GetNames(Type);
+    var names = Enum.GetNames(Type).Where(s => string.IsNullOrEmpty(_searchString) || s.Contains(_searchString, StringComparison.OrdinalIgnoreCase));
     <MudExpansionPanel IsInitiallyExpanded="@IsInitiallyExpanded" Text="Enum Member">
         <MudTable Items="@names" Hover="true" Breakpoint="Breakpoint.Sm">
             <RowTemplate>

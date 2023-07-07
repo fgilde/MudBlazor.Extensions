@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using MudBlazor.Extensions.Attribute;
@@ -159,6 +160,8 @@ public partial class MudExIconPicker
 
     private string OnGetValueFromName(string name) => Value = MudExSvg.SvgPropertyValueForName(name, IconTypes);
 
+    private string PropertyNameLabel => !string.IsNullOrEmpty(PropertyName) && IsValueName(PropertyName) ? PropertyName : TryLocalize("Custom");
+
     private string OnSet(string value)
     {
         RaiseChangedIf();
@@ -291,7 +294,7 @@ public partial class MudExIconPicker
         RaiseChangedIf();
         CloseIf();
     }
-    
+
 
     private static bool IsValueName(string s) => !s.StartsWith("<");
 
