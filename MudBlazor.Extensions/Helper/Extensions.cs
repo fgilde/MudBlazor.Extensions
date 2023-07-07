@@ -1,6 +1,5 @@
 ﻿
 using Microsoft.Extensions.Localization;
-using MudBlazor.Extensions.Options;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 

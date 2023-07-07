@@ -49,7 +49,7 @@ namespace MudBlazor.Extensions.Helper
         {
             var mime = contentType.ToString().ToLower();
             if (MimeType.IsZip(mime))
-                return Icons.Filled.Archive;
+                return Icons.Material.Filled.Archive;
             if (MimeType.Matches(mime, "application/x-dotnet*"))
                 return Icons.Custom.Brands.MicrosoftVisualStudio;
             if (MimeType.Matches(mime, "application/vnd.ms-excel", "text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml*", "application/vnd.ms-excel*"))

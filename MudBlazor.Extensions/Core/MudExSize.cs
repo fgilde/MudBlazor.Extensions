@@ -54,8 +54,24 @@ public readonly struct MudExSize<T>
         return $"{stringValue}{Nextended.Core.Helper.EnumExtensions.ToDescriptionString(SizeUnit)}";
     }
 
+    /// <summary>
+    /// Implicit conversion from MudExSize type to Generic Type T.
+    /// </summary>
     public static implicit operator T(MudExSize<T> size) => size.Value;
+
+    /// <summary>
+    /// Implicit conversion from Generic Type T to MudExSize.
+    /// </summary>
     public static implicit operator MudExSize<T>(T s) => new(s);
+
+    /// <summary>
+    /// Implicit conversion from MudExSize type to String.
+    /// </summary>
     public static implicit operator string(MudExSize<T> size) => size.ToString();
+
+    /// <summary>
+    /// Implicit conversion from String to MudExSize type.
+    /// </summary>
     public static implicit operator MudExSize<T>(string s) => new(s);
+
 }

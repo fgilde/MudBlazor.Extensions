@@ -5,6 +5,7 @@ using Microsoft.JSInterop;
 using MudBlazor.Utilities;
 using Nextended.Core;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Helper.Internal;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -16,7 +17,7 @@ namespace MudBlazor.Extensions.Helper;
 public static partial class MudExCss
 {
 
-    private static AnimationType[] typesWithoutPositionReplacement = { AnimationType.SlideIn };
+    private static readonly AnimationType[] TypesWithoutPositionReplacement = { AnimationType.SlideIn };
 
     /// <summary>
     /// Returns an applicable style string as animation for given animations options
@@ -31,7 +32,7 @@ public static partial class MudExCss
     {
         animationTimingFunction ??= AnimationTimingFunction.EaseIn;
         targetPosition ??= DialogPosition.TopCenter;
-        var result = string.Join(',', types.SelectMany(type => targetPosition.GetPositionNames(!typesWithoutPositionReplacement.Contains(type)).Select(n => $"{ReplaceAnimation(type.ToDescriptionString(), n, direction)} {duration.TotalMilliseconds}ms {animationTimingFunction} 1 alternate")).Distinct());
+        var result = string.Join(',', types.SelectMany(type => targetPosition.GetPositionNames(!TypesWithoutPositionReplacement.Contains(type)).Select(n => $"{ReplaceAnimation(type.GetDescription(), n, direction)} {duration.TotalMilliseconds}ms {animationTimingFunction} 1 alternate")).Distinct());
         return result;
     }
 

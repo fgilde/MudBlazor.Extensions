@@ -7,6 +7,13 @@ namespace MudBlazor.Extensions.Helper.Internal;
 
 internal static class SizeParser
 {
+    /// <summary>
+    /// Parses a string to a tuple of value and unit.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public static (T Value, CssUnit Unit) ParseMudExSize<T>(string value)
     {
         if (string.IsNullOrWhiteSpace(value))

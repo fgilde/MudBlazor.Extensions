@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using MudBlazor.Extensions.Attribute;
+﻿using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Utilities;
 using Nextended.Core.Extensions;
 
@@ -11,7 +11,6 @@ namespace MudBlazor.Extensions.Helper;
 [HasDocumentation("MudExColorUtils.md")]
 public static class MudExColorUtils
 {
-
     /// <summary>
     /// Returns array with all colors in given palette.
     /// </summary>
@@ -42,7 +41,7 @@ public static class MudExColorUtils
     /// Returns the CSS variable name for the given color.
     /// </summary>
     public static string CssVarName(this Color color)
-        => $"--mud-palette-{color.ToDescriptionString()}";
+        => $"--mud-palette-{color.GetDescription()}";
 
     /// <summary>
     /// Returns the CSS variable declaration for the given color. For example var(--mud-color-primary) for Color.Primary
@@ -62,10 +61,10 @@ public static class MudExColorUtils
     public static async Task<MudColor> ToMudColorAsync(this Color color) => (await MudExCss.GetCssColorVariablesAsync()).FirstOrDefault(k => k.Key == color.CssVarName()).Value;
 
     /// <summary>
-    /// Converts a sytsem drawing color to a MudColor
+    /// Converts a system drawing color to a MudColor
     /// </summary>
     public static MudColor ToMudColor(this System.Drawing.Color color)
-        => new MudColor(color.R, color.G, color.B, color.A);
+        => new(color.R, color.G, color.B, color.A);
 
     /// <summary>
     /// Converts a MudColor to a string in the format css rgba format

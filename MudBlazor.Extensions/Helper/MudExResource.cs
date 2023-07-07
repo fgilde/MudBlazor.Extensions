@@ -13,7 +13,16 @@ public static class MudExResource
 {
     private static readonly ConcurrentDictionary<Assembly, XmlDocument> xmlDocCache = new();
 
+    /// <summary>
+    /// Returns the version of used MudBlazor package
+    /// </summary>
+    /// <returns></returns>
     public static Version MudBlazorVersion() => typeof(MudButton).Assembly.GetName().Version;
+
+    /// <summary>
+    /// Returns the version of MudBlazor extensions
+    /// </summary>
+    /// <returns></returns>
 
     public static Version MudExVersion() => typeof(MudExResource).Assembly.GetName().Version;
 

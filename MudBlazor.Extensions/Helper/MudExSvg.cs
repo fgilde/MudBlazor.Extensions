@@ -3,11 +3,7 @@ using System.Reflection;
 using System.Text;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Utilities;
-using MudBlazor.Extensions.Helper.Internal;
-using MudBlazor.Extensions.Options;
-using Nextended.Core.Extensions;
 using System.Diagnostics.CodeAnalysis;
-using OneOf.Types;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -111,10 +107,6 @@ public static class MudExSvg
     /// <returns>A string containing the fully-qualified name of the icon constant that matches the specified value.</returns>
     public static string SvgPropertyNameForValue(string value) => SvgPropertyNameForValue(value, typeof(Icons));
 
-    private static string SearchTypeForValue(Type type, string value) 
-        => (from field in type.GetFields(BindingFlags.Public | BindingFlags.Static) where (field.IsLiteral || field.IsStatic) && field.FieldType == typeof(string) let fieldValue = field.GetValue(null) as string where fieldValue == value select $"{type.FullName.Replace('+', '.')}.{field.Name}").FirstOrDefault();
-
-
     /// <summary>
     /// Returns the value of the constant in <see cref="Icons"/> that has the specified name.
     /// </summary>
@@ -147,14 +139,28 @@ public static class MudExSvg
     public static string SvgPropertyValueForName(string fullName, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type ownerType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] params Type[] ownerTypes) 
         => SvgPropertyValueForName(fullName, new[] { ownerType }.Concat(ownerTypes).ToArray());
 
-
+    /// <summary>
+    /// Returns all properties of <see cref="Icons"/> or whatever owner type.
+    /// </summary>
+    /// <returns></returns>
     public static IDictionary<string, string> GetAllSvgProperties() 
         => GetAllSvgProperties(typeof(Icons));
 
 
+    /// <summary>
+    /// Returns all properties of <see cref="Icons"/> or whatever owner type.
+    /// </summary>
+    /// <param name="ownerType"></param>
+    /// <param name="ownerTypes"></param>
+    /// <returns></returns>
     public static IDictionary<string, string> GetAllSvgProperties([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type ownerType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] params Type[] ownerTypes) 
         => GetAllSvgProperties(new[] { ownerType }.Concat(ownerTypes).ToArray());
 
+    /// <summary>
+    /// Returns all properties of <see cref="Icons"/> or whatever owner type.
+    /// </summary>
+    /// <param name="ownerTypes"></param>
+    /// <returns></returns>
     public static IDictionary<string, string> GetAllSvgProperties([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type[] ownerTypes) 
         => GetAllProperties(ownerTypes).Distinct().ToDictionary(kv => kv.Key, kv => kv.Value);
 
@@ -174,14 +180,14 @@ public static class MudExSvg
                 var iconsInstance = Activator.CreateInstance(type);
                 foreach (var prop in type.GetProperties(flags))
                 {
-                    yield return new KeyValuePair<string, string>($"{type.FullName.Replace('+', '.')}.{prop.Name}", prop?.GetValue(iconsInstance)?.ToString());
+                    yield return new KeyValuePair<string, string>($"{type?.FullName?.Replace('+', '.')}.{prop.Name}", prop.GetValue(iconsInstance)?.ToString());
                 }
 
                 foreach (var field in type.GetFields(flags))
                 {
                     //if (field.IsLiteral && field.IsStatic && field.FieldType == typeof(string) && field.GetValue(null) is string fieldValue)
                     //{
-                        yield return new KeyValuePair<string, string>($"{type.FullName.Replace('+', '.')}.{field.Name}", field.GetRawConstantValue().ToString());
+                        yield return new KeyValuePair<string, string>($"{type.FullName?.Replace('+', '.')}.{field.Name}", field.GetRawConstantValue()?.ToString());
                     //}
                 }
 
@@ -204,8 +210,8 @@ public static class MudExSvg
     /// <returns>A new SVG that contains both original SVGs sliced either horizontally, vertically, or diagonally.</returns>
     public static string CombineSliced(string svg1, string svg2, double width, double height, SliceDirection sliceDirection)
     {
-        string svg1Content = svg1.Substring(svg1.IndexOf(">") + 1).TrimEnd('<', '/', 's', 'v', 'g', '>');
-        string svg2Content = svg2.Substring(svg2.IndexOf(">") + 1).TrimEnd('<', '/', 's', 'v', 'g', '>');
+        var svg1Content = svg1.Substring(svg1.IndexOf(">") + 1).TrimEnd('<', '/', 's', 'v', 'g', '>');
+        var svg2Content = svg2.Substring(svg2.IndexOf(">") + 1).TrimEnd('<', '/', 's', 'v', 'g', '>');
 
         string clipPath1, clipPath2;
 

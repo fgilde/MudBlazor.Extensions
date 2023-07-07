@@ -6,6 +6,9 @@
 /// </summary>
 public class SafeCategoryAttribute : CategoryAttribute
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
     public SafeCategoryAttribute(string name) : base(GetValidCategory(name)) { }
 
     private static string GetValidCategory(string name)

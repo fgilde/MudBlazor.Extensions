@@ -14,6 +14,9 @@ public readonly struct MudExColor
 {
     private readonly OneOf<Color, MudColor, DC, string, uint> _value;
 
+    /// <summary>
+    /// MudExColor constructor, builds the color from various potential inputs.
+    /// </summary>
     public MudExColor(OneOf<Color, MudColor, DC, string, uint> value)
     {
         _value = value.IsT3 switch
@@ -33,31 +36,105 @@ public readonly struct MudExColor
             SuggestedFormat = MudColorOutputFormats.Hex;
         }
     }
-    
+
+    /// <summary>
+    /// The suggested output format for the color.
+    /// </summary>
     public MudColorOutputFormats SuggestedFormat { get; }
+
+    /// <summary>
+    /// The color value.
+    /// </summary>
     public object Value => _value.Value;
+
+    /// <summary>
+    /// Determines if the value is of type Color.
+    /// </summary>
     public bool IsColor => _value.IsT0;
+
+    /// <summary>
+    /// Determines if the value is of type MudColor.
+    /// </summary>
     public bool IsMudColor => _value.IsT1;
+    
+    /// <summary>
+    /// Determines if the value is of type DrawingColor.
+    /// </summary>
     public bool IsDrawingColor => _value.IsT2;
+
+    /// <summary>
+    /// Determines if the value is of type String.
+    /// </summary>
     public bool IsString => _value.IsT3;
+
+    /// <summary>
+    /// Determines if the value is of type Integer.
+    /// </summary>
     public bool IsInt => _value.IsT4;
 
+    /// <summary>
+    /// Returns the value as Color type.
+    /// </summary>
     public Color AsColor => _value.AsT0;
+
+    /// <summary>
+    /// Returns the value as MudColor type.
+    /// </summary>
     public MudColor AsMudColor => _value.AsT1;
+
+    /// <summary>
+    /// Returns the value as DrawingColor type.
+    /// </summary>
     public DC AsDrawingColor => _value.AsT2;
+
+    /// <summary>
+    /// Returns the value as String type.
+    /// </summary>
     public string AsString => _value.AsT3;
+
+    /// <summary>
+    /// Returns the value as Integer type.
+    /// </summary>
     public uint AsInt => _value.AsT4;
+
+    /// <summary>
+    /// Executes a function depending on the type of the value.
+    /// </summary>
     public TResult Match<TResult>(Func<Color, TResult> f0, Func<MudColor, TResult> f1, Func<DC, TResult> f2, Func<string, TResult> f3, Func<uint, TResult> f4) => _value.Match(f0, f1, f2, f3, f4);
+
+    /// <summary>
+    /// Executes an action depending on the type of the value.
+    /// </summary>
     public void Switch(Action<Color> f0, Action<MudColor> f1, Action<DC> f2, Action<string> f3, Action<uint> f4) => _value.Switch(f0, f1, f2, f3, f4);
 
 
     // Implicit conversions
-    public static implicit operator MudExColor(Color c) => new (c);
-    public static implicit operator MudExColor(MudColor c) => c is null ? Default : new MudExColor(c);
-    public static implicit operator MudExColor(DC s) => new (s);
-    public static implicit operator MudExColor(string s) => string.IsNullOrEmpty(s) ? Default : new MudExColor(s);
-    public static implicit operator MudExColor(uint i) => new (i);
+    /// <summary>
+    /// Implicit conversion from Color type to MudExColor.
+    /// </summary>
+    public static implicit operator MudExColor(Color c) => new(c);
 
+    /// <summary>
+    /// Implicit conversion from MudColor type to MudExColor.
+    /// </summary>
+    public static implicit operator MudExColor(MudColor c) => c is null ? Default : new MudExColor(c);
+
+    /// <summary>
+    /// Implicit conversion from DC type to MudExColor.
+    /// </summary>
+    public static implicit operator MudExColor(DC s) => new(s);
+
+    /// <summary>
+    /// Implicit conversion from String type to MudExColor.
+    /// </summary>
+    public static implicit operator MudExColor(string s) => string.IsNullOrEmpty(s) ? Default : new MudExColor(s);
+
+    /// <summary>
+    /// Implicit conversion from Integer type to MudExColor.
+    /// </summary>
+    public static implicit operator MudExColor(uint i) => new(i);
+
+    // Constants representing common colors
     public static MudExColor Transparent => new(Color.Transparent);
     public static MudExColor Default => Transparent;
     public static MudExColor Info => new(Color.Info);
@@ -71,14 +148,36 @@ public readonly struct MudExColor
     public static MudExColor Tertiary => new(Color.Tertiary);
     public static MudExColor Surface => new(Color.Surface);
 
-
+    /// <summary>
+    /// Determines if the value equals the provided Color.
+    /// </summary>
     public bool Is(Color c) => _value.Value.Equals(c);
+
+    /// <summary>
+    /// Determines if the value equals the provided String.
+    /// </summary>
     public bool Is(string c) => _value.Value.Equals(c);
+
+    /// <summary>
+    /// Determines if the value equals the provided MudColor.
+    /// </summary>
     public bool Is(MudColor c) => _value.Value.Equals(c);
+
+    /// <summary>
+    /// Determines if the value equals the provided Integer.
+    /// </summary>
     public bool Is(uint c) => _value.Value.Equals(c);
 
+    /// <summary>
+    /// Converts this MudExColor object to its string representation.
+    /// </summary>
+    /// <returns>A string that represents this MudExColor object.</returns>
     public override string ToString() => ToString(_value);
 
+    /// <summary>
+    /// Converts this MudExColor object to a CSS string.
+    /// </summary>
+    /// <returns>A CSS string that represents this MudExColor object.</returns>
     public string ToCssStringValue() => ToCssStringValue(SuggestedFormat);
 
     /// <summary>
@@ -157,6 +256,11 @@ public readonly struct MudExColor
             i => i.ToString()
         );
 
+    /// <summary>
+    /// returns the suggested format for a color string
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
     public static MudColorOutputFormats GetSuggestedFormat(string str)
     {
         if (str.ToLower().StartsWith("rgba"))
