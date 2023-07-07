@@ -7,7 +7,7 @@ env:
   AZURE_WEBAPP_NAME: MudEx
   AZURE_WEBAPP_PACKAGE_PATH: SampleApplication/publish
   AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.MudEx_016e }}
-  CONFIGURATION: Debug
+  CONFIGURATION: Release
   DOTNET_CORE_VERSION: 7.0.x
   WORKING_DIRECTORY: Samples/MainSample.WebAssembly
 jobs:

@@ -13,13 +13,12 @@
     <PackageReference Include="MudBlazor" Version="6.4.1" />
     <PackageReference Include="MudBlazor.Markdown" Version="0.1.1" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.5" />
-    <!--<PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*-*" />-->
-    <PackageReference Include="MudBlazor.Extensions" Version="*-*" />
+    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*-*" />
   </ItemGroup>
 
-  <!--<ItemGroup Condition="'$(Configuration)' != 'Release'">
+  <ItemGroup Condition="'$(Configuration)' != 'Release'">
     <ProjectReference Include="..\..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
-  </ItemGroup>-->
+  </ItemGroup>
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />

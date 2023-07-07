@@ -6,6 +6,9 @@ namespace MudBlazor.Extensions.Helper.Internal;
 
 internal static class PropertyHelper
 {
+    public static string GetDescription(this Enum value)
+        => Nextended.Core.Helper.EnumExtensions.ToDescriptionString(value);
+
     public static bool IsPropertyPathSubPropertyOf(string propertyPath, string path)
     {
         if (string.IsNullOrWhiteSpace(propertyPath) || string.IsNullOrWhiteSpace(path))

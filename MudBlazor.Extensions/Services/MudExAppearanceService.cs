@@ -5,11 +5,23 @@ using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Services;
 
+/// <summary>
+/// Service class to manage and apply appearances to components.
+/// </summary>
 public class MudExAppearanceService
 {
     private string GetClass(IMudExAppearance appearance) => appearance switch { IMudExClassAppearance classAppearance => classAppearance.Class, _ => string.Empty };
     private string GetStyle(IMudExAppearance appearance) => appearance switch { IMudExStyleAppearance styleAppearance => styleAppearance.Style, _ => string.Empty };
+    private IJSRuntime GetRuntime() => JsImportHelper.GetInitializedJsRuntime();
 
+
+    /// <summary>
+    /// Applies the specified appearance to a component, updating only its class attribute.
+    /// </summary>
+    /// <param name="appearance">The appearance to apply.</param>
+    /// <param name="component">The component to which the appearance will be applied.</param>
+    /// <param name="updateFunc">Function to update the class of the component.</param>
+    /// <returns>The applied appearance.</returns>
     public async Task<TAppearance> ApplyAsClassOnlyToAsync<TAppearance, TComponent>(TAppearance appearance, TComponent component, Action<TComponent, string> updateFunc)
         where TAppearance : IMudExAppearance
     {
@@ -29,6 +41,13 @@ public class MudExAppearanceService
         return appearance;
     }
 
+    /// <summary>
+    /// Applies the specified appearance to a MudBlazor component.
+    /// </summary>
+    /// <param name="appearance">The appearance to apply.</param>
+    /// <param name="component">The component to which the appearance will be applied.</param>
+    /// <param name="keepExisting">Flag indicating whether to keep existing class and style attributes.</param>
+    /// <returns>The applied appearance.</returns>
     public Task<TAppearance> ApplyToAsync<TAppearance>(TAppearance appearance, MudComponentBase component, bool keepExisting = true) 
         where TAppearance : IMudExAppearance
     {
@@ -45,6 +64,13 @@ public class MudExAppearanceService
         return Task.FromResult(appearance);
     }
 
+    /// <summary>
+    /// Applies the specified appearance to an HTML element using its selector.
+    /// </summary>
+    /// <param name="appearance">The appearance to apply.</param>
+    /// <param name="elementSelector">The selector of the element to which the appearance will be applied.</param>
+    /// <param name="keepExisting">Flag indicating whether to keep existing class and style attributes.</param>
+    /// <returns>The applied appearance.</returns>
     public async Task<TAppearance> ApplyToAsync<TAppearance>(TAppearance appearance, string elementSelector, bool keepExisting = true) where TAppearance : IMudExAppearance
     {
         if (string.IsNullOrEmpty(elementSelector))
@@ -54,8 +80,13 @@ public class MudExAppearanceService
         return appearance;
     }
 
-    private IJSRuntime GetRuntime() => JsImportHelper.GetInitializedJsRuntime();
-
+    /// <summary>
+    /// Applies the specified appearance to an HTML element using its reference.
+    /// </summary>
+    /// <param name="appearance">The appearance to apply.</param>
+    /// <param name="elementRef">Reference to element</param>
+    /// <param name="keepExisting">Flag indicating whether to keep existing class and style attributes.</param>
+    /// <returns>The applied appearance.</returns>    
     public async Task<TAppearance> ApplyToAsync<TAppearance>(TAppearance appearance, ElementReference elementRef, bool keepExisting = true) where TAppearance : IMudExAppearance
     {
         await GetRuntime().InvokeVoidAsync("MudExCssHelper.setElementAppearanceOnElement", elementRef, GetClass(appearance), GetStyle(appearance), keepExisting);
@@ -63,6 +94,9 @@ public class MudExAppearanceService
     }
 
 
+    /// <summary>
+    ///  Applies the specified appearance to a dialog
+    /// </summary>
     public async Task<TAppearance> ApplyToAsync<TAppearance>(TAppearance appearance, IDialogReference dialogReference, bool keepExisting = true) where TAppearance : IMudExAppearance
     {
         //if (dialogReference.Dialog is MudComponentBase componentBase)
@@ -73,6 +107,12 @@ public class MudExAppearanceService
         return await ApplyToAsync(appearance, $"#{id}", keepExisting);
     }
 
+    /// <summary>
+    /// Removes the specified appearance from a MudBlazor component.
+    /// </summary>
+    /// <param name="appearance">The appearance to remove.</param>
+    /// <param name="component">The component from which the appearance will be removed.</param>
+    /// <returns>The removed appearance.</returns>
     public Task<TAppearance> RemoveFromAsync<TAppearance>(TAppearance appearance, MudComponentBase component) where TAppearance : IMudExAppearance
     {
         if (component != null)
@@ -88,6 +128,12 @@ public class MudExAppearanceService
         return Task.FromResult(appearance);
     }
 
+    /// <summary>
+    /// Removes the specified appearance from an HTML element using its selector.
+    /// </summary>
+    /// <param name="appearance">The appearance to remove.</param>
+    /// <param name="elementSelector">The selector of the element from which the appearance will be removed.</param>
+    /// <returns>The removed appearance.</returns>
     public async Task<TAppearance> RemoveFromAsync<TAppearance>(TAppearance appearance, string elementSelector) where TAppearance : IMudExAppearance
     {
         if (string.IsNullOrEmpty(elementSelector))
@@ -97,12 +143,24 @@ public class MudExAppearanceService
         return appearance;
     }
 
+    /// <summary>
+    /// Removes the specified appearance from an HTML element using its ElementReference.
+    /// </summary>
+    /// <param name="appearance">The appearance to remove.</param>
+    /// <param name="elementRef">The ElementReference of the HTML element from which the appearance will be removed.</param>
+    /// <returns>The removed appearance.</returns>
     public async Task<TAppearance> RemoveFromAsync<TAppearance>(TAppearance appearance, ElementReference elementRef) where TAppearance : IMudExAppearance
     {
         await GetRuntime().InvokeVoidAsync("MudExCssHelper.removeElementAppearanceOnElement", elementRef, GetClass(appearance), GetStyle(appearance));
         return appearance;
     }
-
+    
+    /// <summary>
+    /// Removes the specified appearance from a dialog.
+    /// </summary>
+    /// <param name="appearance">The appearance to remove.</param>
+    /// <param name="dialogReference">The reference to the dialog from which the appearance will be removed.</param>
+    /// <returns>The removed appearance.</returns>
     public async Task<TAppearance> RemoveFromAsync<TAppearance>(TAppearance appearance, IDialogReference dialogReference) where TAppearance : IMudExAppearance
     {
         if (dialogReference.Dialog is MudComponentBase componentBase)

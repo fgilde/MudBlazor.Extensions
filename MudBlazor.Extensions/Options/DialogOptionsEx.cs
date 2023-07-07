@@ -1,6 +1,7 @@
 ﻿using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
 
 namespace MudBlazor.Extensions.Options
 {
@@ -45,12 +46,12 @@ namespace MudBlazor.Extensions.Options
         /// <summary>
         /// The look and feel of the dialog component dialog.
         /// </summary>
-        public MudExAppearance? DialogAppearance { get; set; }
+        public MudExAppearance DialogAppearance { get; set; }
 
         /// <summary>
         /// The look and feel of the dialog background.
         /// </summary>
-        public MudExAppearance? DialogBackgroundAppearance { get; set; }
+        public MudExAppearance DialogBackgroundAppearance { get; set; }
 
         /// <summary>
         /// The JavaScript Runtime used to interact with the browser's JavaScript host environment. 
@@ -154,7 +155,7 @@ namespace MudBlazor.Extensions.Options
         /// <summary>
         /// The description string of the cursor position.
         /// </summary>
-        public string CursorPositionOriginName => CursorPositionOrigin.ToDescriptionString();
+        public string CursorPositionOriginName => CursorPositionOrigin.GetDescription();
 
         /// <summary>
         /// A css style string indicating the animation effects of the dialog box.
@@ -171,6 +172,8 @@ namespace MudBlazor.Extensions.Options
         public DialogOptionsEx CloneOptions()
         {
             var res = Clone() as DialogOptionsEx;
+            if (res == null) 
+                return null;
             res.DialogAppearance = DialogAppearance?.Clone() as MudExAppearance;
             res.DialogBackgroundAppearance = DialogBackgroundAppearance?.Clone() as MudExAppearance;
             return res;

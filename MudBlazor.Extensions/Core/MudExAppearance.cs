@@ -118,17 +118,34 @@ public class MudExAppearance : IMudExClassAppearance, IMudExStyleAppearance, ICl
     /// Adds class to this appearance
     /// </summary>    
     public MudExAppearance WithCss(string cls, params string[] other) => WithCss(MudExCssBuilder.From(cls, other));
-    public MudExAppearance WithCss(string cls, bool when) => WithCss(MudExCssBuilder.Default.AddClass(cls, when));
-    public MudExAppearance WithCss(MudExCss.Classes cls, bool when) => WithCss(MudExCssBuilder.Default.AddClass(cls, when));
     
+    /// <summary>
+    /// Adds class to this appearance
+    /// </summary>    
+    public MudExAppearance WithCss(string cls, bool when) => WithCss(MudExCssBuilder.Default.AddClass(cls, when));
+
+    /// <summary>
+    /// Adds class to this appearance
+    /// </summary>    
+    public MudExAppearance WithCss(MudExCss.Classes cls, bool when) => WithCss(MudExCssBuilder.Default.AddClass(cls, when));
+
+    /// <summary>
+    /// Adds class to this appearance
+    /// </summary>    
     public MudExAppearance WithCss(MudExCss.Classes cls, params MudExCss.Classes[] other) => WithCss(MudExCssBuilder.From(cls, other));
 
+    /// <summary>
+    /// Adds class to this appearance
+    /// </summary>    
     public MudExAppearance WithCss(IMudExClassAppearance css)
     {
         Class += $" {css.Class}";
         return this;
     }
 
+    /// <summary>
+    /// Adds class to this appearance
+    /// </summary>    
     public MudExAppearance WithCss(Action<MudExCssBuilder> cssAction)
     {
         var builder = new MudExCssBuilder();
@@ -136,6 +153,9 @@ public class MudExAppearance : IMudExClassAppearance, IMudExStyleAppearance, ICl
         return WithCss(builder);
     }
 
+    /// <summary>
+    /// Adds class to this appearance
+    /// </summary>    
     public async Task<MudExAppearance> WithCss(Func<MudExCssBuilder, Task> cssAction)
     {
         var builder = new MudExCssBuilder();
@@ -143,14 +163,35 @@ public class MudExAppearance : IMudExClassAppearance, IMudExStyleAppearance, ICl
         return WithCss(builder);
     }
 
-
+    /// <summary>
+    /// Applies the class from this appearance to the given component
+    /// </summary>    
     public Task<MudExAppearance> ApplyAsClassOnlyToAsync<TComponent>(TComponent component, Action<TComponent, string> updateFunc)
         => _appearanceService.ApplyAsClassOnlyToAsync(this, component, updateFunc);
 
+    /// <summary>
+    /// Applies the appearance to the given component
+    /// </summary>   
     public Task<MudExAppearance> ApplyToAsync(MudComponentBase component) => _appearanceService.ApplyToAsync(this, component, KeepExisting);
+    
+    /// <summary>
+    /// Applies the appearance to the given component
+    /// </summary>   
     public Task<MudExAppearance> ApplyToAsync(string elementSelector) => _appearanceService.ApplyToAsync(this, elementSelector, KeepExisting);
+    
+    /// <summary>
+    /// Applies the appearance to the given component
+    /// </summary>   
     public Task<MudExAppearance> ApplyToAsync(ElementReference elementRef) => _appearanceService.ApplyToAsync(this, elementRef, KeepExisting);
+    
+    /// <summary>
+    /// Applies the appearance to the given component
+    /// </summary>   
     public Task<MudExAppearance> ApplyToAsync(IDialogReference dialogReference) => _appearanceService.ApplyToAsync(this, dialogReference, KeepExisting);
 
+    /// <summary>
+    /// Clone this instance
+    /// </summary>
+    /// <returns></returns>
     public object Clone() => MemberwiseClone();
 }

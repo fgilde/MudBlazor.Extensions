@@ -1,6 +1,4 @@
 using Microsoft.JSInterop;
-using System;
-using System.Threading.Tasks;
 using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions

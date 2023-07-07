@@ -11,14 +11,14 @@ namespace MudBlazor.Extensions.Components;
 /// <summary>
 /// Component to Edit Icon values
 /// </summary>
-public sealed partial class MudExIconPicker
+public partial class MudExIconPicker
 {
     private double _iconCardWidth = 136.88; // single icon card width including margins
     private float _iconCardHeight = 144; // single icon card height including margins
-    private IStringLocalizer<MudExIconPicker> _fallbackLocalizer => ServiceProvider.GetService<IStringLocalizer<MudExIconPicker>>();
-    private bool rendered;
+    private IStringLocalizer<MudExIconPicker> FallbackLocalizer => ServiceProvider.GetService<IStringLocalizer<MudExIconPicker>>();
+    private bool _rendered;
     private string _propertyName;
-    private int CardsPerRow = 3;
+    private int _cardsPerRow = 3;
 
     [Inject] IResizeObserver ResizeObserver { get; set; }
 
@@ -31,7 +31,7 @@ public sealed partial class MudExIconPicker
     /// <summary>
     /// Gets the <see cref="IStringLocalizer"/> to be used for localizing strings.
     /// </summary>
-    protected IStringLocalizer LocalizerToUse => Localizer ?? _fallbackLocalizer;
+    protected IStringLocalizer LocalizerToUse => Localizer ?? FallbackLocalizer;
 
     /// <summary>
     /// Gets or sets the <see cref="IStringLocalizer"/> to be used for localizing strings.
@@ -106,7 +106,7 @@ public sealed partial class MudExIconPicker
     /// </summary>
     [IgnoreOnObjectEdit]
     [Parameter, SafeCategory("Appearance")]
-    public Type[] IconTypes { get; set; } = { typeof(MudBlazor.Icons) };
+    public Type[] IconTypes { get; set; } = { typeof(Icons) };
 
 
     /// <summary>
@@ -152,6 +152,9 @@ public sealed partial class MudExIconPicker
         }
     }
 
+    /// <summary>
+    /// Localizes a text
+    /// </summary>
     public string TryLocalize(string text, params object[] args) => LocalizerToUse.TryLocalize(text, args);
 
     private string OnGetValueFromName(string name) => Value = MudExSvg.SvgPropertyValueForName(name, IconTypes);
@@ -189,9 +192,9 @@ public sealed partial class MudExIconPicker
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender || !rendered)
+        if (firstRender || !_rendered)
         {
-            rendered = true;
+            _rendered = true;
             await ResizeObserver.Observe(killZone);
             ResizeObserver.OnResized += OnResized;
         }
@@ -203,17 +206,18 @@ public sealed partial class MudExIconPicker
     {
         if (Available is not { Count: not 0 })
         {
-            Available = MudExSvg.GetAllSvgProperties(IconTypes);
+            //Available = MudExSvg.GetAllSvgProperties(IconTypes);
+            Available = MudExSvg.GetAllSvgProperties();
         }
     }
     private List<Dictionary<string, string>> SelectedIcons => string.IsNullOrWhiteSpace(Filter)
         ? GetVirtualizedIcons(Available)
         : GetVirtualizedIcons(Available.Where(m => m.Key.Contains(Filter, StringComparison.OrdinalIgnoreCase)));
 
-    private List<Dictionary<string, string>> GetVirtualizedIcons(IEnumerable<KeyValuePair<string, string>> iconlist)
-        => iconlist.Chunk(Math.Max(CardsPerRow, 1)).Select(row => row.ToDictionary(pair => pair.Key, pair => pair.Value)).ToList();
+    private List<Dictionary<string, string>> GetVirtualizedIcons(IEnumerable<KeyValuePair<string, string>> iconList)
+        => iconList.Chunk(Math.Max(_cardsPerRow, 1)).Select(row => row.ToDictionary(pair => pair.Key, pair => pair.Value)).ToList();
 
-    private string GetKillZoneStyle() => $"height:65vh;width:100%;position:sticky;top:0px;";
+    private string GetKillZoneStyle() => "height:65vh;width:100%;position:sticky;top:0px;";
 
     private async void OnResized(IDictionary<ElementReference, BoundingClientRect> changes)
     {
@@ -225,7 +229,7 @@ public sealed partial class MudExIconPicker
         var width = ResizeObserver.GetWidth(killZone);
         if (width <= 0)
             width = PickerWidth;
-        CardsPerRow = Convert.ToInt32(width / _iconCardWidth);
+        _cardsPerRow = Convert.ToInt32(width / _iconCardWidth);
         StateHasChanged();
     }
 
@@ -247,7 +251,7 @@ public sealed partial class MudExIconPicker
     /// <inheritdoc />
     protected override async Task StringValueChanged(string value)
     {
-        if (!rendered)
+        if (!_rendered)
             return;
         Touched = true;
         Value = IsValueName(value) ? Converter.Get(value) : value;

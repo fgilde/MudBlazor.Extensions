@@ -1472,6 +1472,11 @@
             Gets or sets the string name of the property for the value.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.TryLocalize(System.String,System.Object[])">
+            <summary>
+            Localizes a text
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnInitialized">
             <inheritdoc />
         </member>
@@ -3838,6 +3843,67 @@
             Adds class to this appearance
             </summary>    
         </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.WithCss(System.String,System.Boolean)">
+            <summary>
+            Adds class to this appearance
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.WithCss(MudBlazor.Extensions.Helper.MudExCss.Classes,System.Boolean)">
+            <summary>
+            Adds class to this appearance
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.WithCss(MudBlazor.Extensions.Helper.MudExCss.Classes,MudBlazor.Extensions.Helper.MudExCss.Classes[])">
+            <summary>
+            Adds class to this appearance
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.WithCss(MudBlazor.Extensions.Core.IMudExClassAppearance)">
+            <summary>
+            Adds class to this appearance
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.WithCss(System.Action{MudBlazor.Extensions.Helper.MudExCssBuilder})">
+            <summary>
+            Adds class to this appearance
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.WithCss(System.Func{MudBlazor.Extensions.Helper.MudExCssBuilder,System.Threading.Tasks.Task})">
+            <summary>
+            Adds class to this appearance
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.ApplyAsClassOnlyToAsync``1(``0,System.Action{``0,System.String})">
+            <summary>
+            Applies the class from this appearance to the given component
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.ApplyToAsync(MudBlazor.MudComponentBase)">
+            <summary>
+            Applies the appearance to the given component
+            </summary>   
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.ApplyToAsync(System.String)">
+            <summary>
+            Applies the appearance to the given component
+            </summary>   
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.ApplyToAsync(Microsoft.AspNetCore.Components.ElementReference)">
+            <summary>
+            Applies the appearance to the given component
+            </summary>   
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.ApplyToAsync(MudBlazor.IDialogReference)">
+            <summary>
+            Applies the appearance to the given component
+            </summary>   
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.Clone">
+            <summary>
+            Clone this instance
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.MudExColor">
             <summary>
             MudExColor is a readonly struct that provides a convenient and type-safe way to deal with color values in the context of MudBlazor.Extensions components.
@@ -5421,6 +5487,266 @@
             Converts Theme to json
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Middleware.MudBlazorExtensionsMiddleware">
+            <summary>
+            Middleware for MudBlazor extensions that allows to inject IJSRuntime.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Middleware.MudBlazorExtensionsMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MudBlazor.Extensions.Middleware.MudBlazorExtensionsMiddleware"/> class.
+            </summary>
+            <param name="next">The next middleware in the pipeline.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Middleware.MudBlazorExtensionsMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,Microsoft.JSInterop.IJSRuntime)">
+            <summary>
+            Method invoked by the pipeline. Injects IJSRuntime into JsImportHelper and then passes control to the next middleware in the pipeline.
+            </summary>
+            <param name="context">The HttpContext for the current request.</param>
+            <param name="jsRuntime">The IJSRuntime instance for the current request.</param>
+        </member>
+        <member name="T:MudBlazor.Extensions.MudBlazorExtensionsMiddlewareExtensions">
+            <summary>
+            MudBlazorExtensionsMiddlewareExtensions
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.MudBlazorExtensionsMiddlewareExtensions.UseMudExtensions(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Adds the MudBlazorExtensionsMiddleware
+            </summary>
+            <param name="builder"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Options.AnimationTimingFunction">
+            <summary>
+            Represents the animation timing function.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.AnimationTimingFunction.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MudBlazor.Extensions.Options.AnimationTimingFunction"/> class.
+            </summary>
+            <param name="timingFn">The timing function string.</param>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationTimingFunction.EaseInOut">
+            <summary>
+            Gets the 'ease-in-out' timing function.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationTimingFunction.Ease">
+            <summary>
+            Gets the 'ease' timing function.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationTimingFunction.EaseIn">
+            <summary>
+            Gets the 'ease-in' timing function.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationTimingFunction.EaseOut">
+            <summary>
+            Gets the 'ease-out' timing function.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationTimingFunction.Inherit">
+            <summary>
+            Gets the 'inherit' timing function.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationTimingFunction.Initial">
+            <summary>
+            Gets the 'initial' timing function.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationTimingFunction.Linear">
+            <summary>
+            Gets the 'linear' timing function.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationTimingFunction.StepEnd">
+            <summary>
+            Gets the 'step-end' timing function.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationTimingFunction.StepStart">
+            <summary>
+            Gets the 'step-start' timing function.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.AnimationTimingFunction.CubicBezier(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Creates a 'cubic-bezier' timing function.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.AnimationTimingFunction.Steps(System.Int32,System.String)">
+            <summary>
+            Creates a 'steps' timing function.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.AnimationTimingFunction.op_Implicit(MudBlazor.Extensions.Options.AnimationTimingFunction)~System.String">
+            <summary>
+            Converts the value of the current AnimationTimingFunction object to its equivalent string representation.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.AnimationTimingFunction.op_Implicit(System.String)~MudBlazor.Extensions.Options.AnimationTimingFunction">
+            <summary>
+            Converts the specified string to its equivalent AnimationTimingFunction representation.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.AnimationTimingFunction.ToString">
+            <summary>
+            Returns a string that represents the current timing function.
+            </summary>
+            <returns>A string that represents the current timing function.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Options.AnimationType">
+            <summary>
+            Animation Type enum specifies all supported animations
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Default">
+            <summary>
+            Default animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.SlideIn">
+            <summary>
+            Slide in animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.FadeIn">
+            <summary>
+            Fade in animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Scale">
+            <summary>
+            Scale animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Slide">
+            <summary>
+            Slide animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Fade">
+            <summary>
+            Fade animation
+            </summary>        
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Perspective3d">
+            <summary>
+            3D Perspective animation
+            </summary>        
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.LightSpeed">
+            <summary>
+            Light speed animation
+            </summary>        
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Zoom">
+            <summary>
+            Zoom animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.JackInTheBox">
+            <summary>
+            Roll animation
+            </summary>        
+            <summary>
+            Jack in the box animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Hinge">
+            <summary>
+            Hinge animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Rotate">
+            <summary>
+            Rotate animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Bounce">
+            <summary>
+            Bounce animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Back">
+            <summary>
+            Back animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Jello">
+            <summary>
+            Jello animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Wobble">
+            <summary>
+            Wobble animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Tada">
+            <summary>
+            Tada animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Swing">
+            <summary>
+            Swing animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.HeadShake">
+            <summary>
+            Head shake animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Shake">
+            <summary>
+            Shake animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.RubberBand">
+            <summary>
+            Rubber band animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Pulse">
+            <summary>
+            Pulse animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.Flip">
+            <summary>
+            Flip animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.FlipX">
+            <summary>
+            Flip in X axis animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationType.FlipY">
+            <summary>
+            Flip in Y axis animation
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Options.AnimationDirection">
+            <summary>
+            Direction of animation
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationDirection.In">
+            <summary>
+            Animation direction inwards
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationDirection.Out">
+            <summary>
+            Animation direction outwards
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Options.DialogOptionsEx">
             <summary>
             Extended Dialog Options class, inheriting from DialogOptions and ICloneable.
@@ -5568,6 +5894,153 @@
             <summary>
             Item selection mode for multi or single select
             </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.ItemSelectionMode.None">
+            <summary>
+            No selection is allowed.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.ItemSelectionMode.Single">
+            <summary>
+            Only a single item can be selected at a time.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.ItemSelectionMode.MultiSelect">
+            <summary>
+            Multiple items can be selected without requiring any modifier key.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.ItemSelectionMode.MultiSelectWithCtrlKey">
+            <summary>
+            Multiple items can be selected, but requires the Ctrl key to be pressed during selection.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Options.MudExConfiguration">
+            <summary>
+            Represents the configuration options for MudBlazor Extended.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MudBlazor.Extensions.Options.MudExConfiguration"/> class.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.WithDefaultDialogOptions(System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+            <summary>
+            Configures the default dialog options using the provided action.
+            </summary>
+            <param name="options">The action to configure the default dialog options.</param>
+            <returns>The current configuration instance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.WithDefaultDialogOptions(MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Sets the provided dialog options as the default dialog options.
+            </summary>
+            <param name="options">The options to set as the default dialog options.</param>
+            <returns>The current configuration instance.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.MudDialogDragMode">
+            <summary>
+            Defines the dragging modes for a Mud Dialog.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.MudDialogDragMode.None">
+            <summary>
+            No dragging is allowed.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.MudDialogDragMode.Simple">
+            <summary>
+            Simple dragging mode, allowing basic move operations.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.MudDialogDragMode.WithoutBounds">
+            <summary>
+            Dragging mode allowing movement without restricting to certain bounds.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.MudDialogDragMode.SnapDrag">
+            <summary>
+            Snap dragging mode (not currently implemented).
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Services.MudExAppearanceService">
+            <summary>
+            Service class to manage and apply appearances to components.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyAsClassOnlyToAsync``2(``0,``1,System.Action{``1,System.String})">
+            <summary>
+            Applies the specified appearance to a component, updating only its class attribute.
+            </summary>
+            <param name="appearance">The appearance to apply.</param>
+            <param name="component">The component to which the appearance will be applied.</param>
+            <param name="updateFunc">Function to update the class of the component.</param>
+            <returns>The applied appearance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,MudBlazor.MudComponentBase,System.Boolean)">
+            <summary>
+            Applies the specified appearance to a MudBlazor component.
+            </summary>
+            <param name="appearance">The appearance to apply.</param>
+            <param name="component">The component to which the appearance will be applied.</param>
+            <param name="keepExisting">Flag indicating whether to keep existing class and style attributes.</param>
+            <returns>The applied appearance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,System.String,System.Boolean)">
+            <summary>
+            Applies the specified appearance to an HTML element using its selector.
+            </summary>
+            <param name="appearance">The appearance to apply.</param>
+            <param name="elementSelector">The selector of the element to which the appearance will be applied.</param>
+            <param name="keepExisting">Flag indicating whether to keep existing class and style attributes.</param>
+            <returns>The applied appearance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Boolean)">
+            <summary>
+            Applies the specified appearance to an HTML element using its reference.
+            </summary>
+            <param name="appearance">The appearance to apply.</param>
+            <param name="elementRef">Reference to element</param>
+            <param name="keepExisting">Flag indicating whether to keep existing class and style attributes.</param>
+            <returns>The applied appearance.</returns>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyToAsync``1(``0,MudBlazor.IDialogReference,System.Boolean)">
+            <summary>
+             Applies the specified appearance to a dialog
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,MudBlazor.MudComponentBase)">
+            <summary>
+            Removes the specified appearance from a MudBlazor component.
+            </summary>
+            <param name="appearance">The appearance to remove.</param>
+            <param name="component">The component from which the appearance will be removed.</param>
+            <returns>The removed appearance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,System.String)">
+            <summary>
+            Removes the specified appearance from an HTML element using its selector.
+            </summary>
+            <param name="appearance">The appearance to remove.</param>
+            <param name="elementSelector">The selector of the element from which the appearance will be removed.</param>
+            <returns>The removed appearance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference)">
+            <summary>
+            Removes the specified appearance from an HTML element using its ElementReference.
+            </summary>
+            <param name="appearance">The appearance to remove.</param>
+            <param name="elementRef">The ElementReference of the HTML element from which the appearance will be removed.</param>
+            <returns>The removed appearance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.RemoveFromAsync``1(``0,MudBlazor.IDialogReference)">
+            <summary>
+            Removes the specified appearance from a dialog.
+            </summary>
+            <param name="appearance">The appearance to remove.</param>
+            <param name="dialogReference">The reference to the dialog from which the appearance will be removed.</param>
+            <returns>The removed appearance.</returns>
         </member>
     </members>
 </doc>
