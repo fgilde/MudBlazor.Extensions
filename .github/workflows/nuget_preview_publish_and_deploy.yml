@@ -1,4 +1,4 @@
-name: Publish Nuget Preview Package and deploy to Test App as Azure WebApp
+name: Publish Nuget Preview Package and deploy Test App
 
 on:
   push:

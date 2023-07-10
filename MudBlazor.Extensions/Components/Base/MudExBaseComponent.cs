@@ -187,18 +187,12 @@ internal interface IJsMudExComponent<T>: IMudExComponent, IAsyncDisposable
     {
         if (JsReference != null)
         {
-            try
-            {
-                await JsReference.InvokeVoidAsync("dispose");
-            }
-            catch
-            { }
-            await JsReference.DisposeAsync();
+            try { await JsReference.InvokeVoidAsync("dispose"); }catch { }
+            try { await JsReference.DisposeAsync(); } catch { }
         }
 
         if (ModuleReference != null)
-            await ModuleReference.DisposeAsync();
-
+            try { await ModuleReference.DisposeAsync(); } catch { }
     }
 
 }
