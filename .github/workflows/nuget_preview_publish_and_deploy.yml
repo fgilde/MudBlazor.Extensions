@@ -1,0 +1,82 @@
+name: Build, Publish and Deploy
+
+on:
+  push:
+    branches:
+      - '**'
+
+env:
+  AZURE_WEBAPP_NAME: MudEx
+  AZURE_WEBAPP_PACKAGE_PATH: SampleApplication/publish
+  AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.MudEx_016e }}
+  CONFIGURATION: Release
+  DOTNET_CORE_VERSION: 7.0.x
+  WORKING_DIRECTORY: Samples/MainSample.WebAssembly
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '7.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore ./MudBlazor.Extensions/MudBlazor.Extensions.csproj
+
+    - name: First Build (ignore errors)
+      continue-on-error: true
+      run: dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj --configuration Debug --no-restore
+
+    - name: Second Build
+      run: dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj --configuration Debug --no-restore
+
+    - name: Run Tests
+      run: dotnet test ./MudBlazor.Extensions.Tests/MudBlazor.Extensions.Tests.csproj --no-restore --verbosity normal
+
+    - name: Publish Package
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      shell: pwsh
+      run: |
+        Get-ChildItem -Path MudBlazor.Extensions/bin/Debug -Filter *.nupkg | ForEach-Object {
+          dotnet nuget push $_.FullName -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json
+        }
+
+  deploy:
+    needs: build_and_deploy
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+    
+    # Delay to ensure the Nuget package is indexed before Azure deployment
+    - name: Delay
+      run: sleep 5m
+      
+    - name: Restore
+      run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
+    - name: Build
+      run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
+    - name: Test
+      run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
+    - name: Publish
+      run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+    - name: Deploy to Azure WebApp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        publish-profile: ${{ env.AZURE_WEBAPP_PUBLISH_PROFILE }}
+    - name: Publish Artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: webapp
+        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
