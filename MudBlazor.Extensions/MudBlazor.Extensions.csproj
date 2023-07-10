@@ -61,7 +61,7 @@
     <ItemGroup>
       <DocumentationFile Include="$(TargetDir)$(TargetName).xml" />
     </ItemGroup>
-    <Copy SourceFiles="@(DocumentationFile)" DestinationFolder="$(DocumentationDestination)" OverwriteReadOnlyFiles="true" SkipUnchangedFiles="false" />
+    <Copy ContinueOnError="true" SourceFiles="@(DocumentationFile)" DestinationFolder="$(DocumentationDestination)" OverwriteReadOnlyFiles="true" SkipUnchangedFiles="false" />
   </Target>
 
 

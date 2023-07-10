@@ -36,7 +36,7 @@ jobs:
       run: dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj --configuration Debug --no-restore
 
     - name: Run Tests
-      run: dotnet test ./MudBlazor.Extensions.Tests/MudBlazor.Extensions.Tests.csproj --verbosity normal
+      run: dotnet test ./MudBlazor.Extensions.Tests/MudBlazor.Extensions.Tests.csproj
 
     - name: Publish Package
       env:
