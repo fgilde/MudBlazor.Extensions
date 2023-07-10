@@ -11,8 +11,8 @@ namespace MudBlazor.Extensions.Tests.UITests.Tests;
 public class BaseUITest
 {
     // null means all
-    //protected virtual Browser? TargetBrowser => null;
-    protected virtual Browser? TargetBrowser => Browser.Chromium;
+    protected virtual Browser? TargetBrowser => null;
+    //protected virtual Browser? TargetBrowser => Browser.Chromium;
 
     protected readonly PlaywrightFixture playwrightFixture;
     protected WebTestingHostFactory<ServerApplicationClassLocator> factory;
