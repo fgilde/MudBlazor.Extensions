@@ -59,7 +59,7 @@ jobs:
     
     # Delay to ensure the Nuget package is indexed before Azure deployment
     - name: Delay
-      run: sleep 5m
+      run: sleep 300
       
     - name: Restore
       run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
