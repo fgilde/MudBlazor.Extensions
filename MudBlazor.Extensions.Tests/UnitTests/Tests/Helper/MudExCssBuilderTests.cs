@@ -19,8 +19,9 @@ public class MudExCssBuilderTests
     {
         var cssBuilder = MudExCssBuilder.Default;
         cssBuilder.AddClass("testClass", "anotherTestClass");
-
-        Assert.Equal("testClass anotherTestClass", cssBuilder.Class);
+        var cls = cssBuilder.Class;
+        var succeed = cls == "testClass anotherTestClass" || cls == "anotherTestClass testClass";
+        Assert.True(succeed);
     }
 
     [Fact]

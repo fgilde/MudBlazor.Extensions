@@ -15,7 +15,7 @@ public class BaseUITest
 
     protected readonly PlaywrightFixture playwrightFixture;
     protected WebTestingHostFactory<ServerApplicationClassLocator> factory;
-    protected const string Url = "https://localhost:5001";
+    protected const string Url = "http://localhost:5000";
 
 
     public BaseUITest(PlaywrightFixture playwrightFixture)
