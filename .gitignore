@@ -9,6 +9,8 @@
 /Samples/MainSample.MAUI.Moana/obj/
 /Samples/MainSample.WebAssembly/bin/
 /Samples/MainSample.WebAssembly/obj/
+/Samples/MainSample.ServerSide/bin/
+/Samples/MainSample.ServerSide/obj/
 /MudBlazor.Extensions.CodeGator.Adapter/obj
 /MudBlazor.Extensions.CodeGator.Adapter/bin/
 *.user

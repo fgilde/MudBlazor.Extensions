@@ -28,9 +28,9 @@ public class PlaywrightFixture : IAsyncLifetime
     public Lazy<Task<IBrowser>> WebkitBrowser { get; private set; }
 
     public BrowserTypeLaunchOptions LaunchOptions { get; private set; } =
-        new BrowserTypeLaunchOptions
+        new()
         {
-            Headless = false
+            Headless = true,
         };
 
     /// <summary>
@@ -42,12 +42,9 @@ public class PlaywrightFixture : IAsyncLifetime
         InstallPlaywright();
         // Create Playwright module.
         Playwright = await Microsoft.Playwright.Playwright.CreateAsync();
-        ChromiumBrowser = new Lazy<Task<IBrowser>>(
-            Playwright.Chromium.LaunchAsync(LaunchOptions));
-        FirefoxBrowser = new Lazy<Task<IBrowser>>(
-            Playwright.Firefox.LaunchAsync(LaunchOptions));
-        WebkitBrowser = new Lazy<Task<IBrowser>>(
-            Playwright.Webkit.LaunchAsync(LaunchOptions));
+        ChromiumBrowser = new Lazy<Task<IBrowser>>(Playwright.Chromium.LaunchAsync(LaunchOptions));
+        FirefoxBrowser = new Lazy<Task<IBrowser>>(Playwright.Firefox.LaunchAsync(LaunchOptions));
+        WebkitBrowser = new Lazy<Task<IBrowser>>(Playwright.Webkit.LaunchAsync(LaunchOptions));
     }
     /// <summary>
     /// Dispose all Playwright module resources.

@@ -3,7 +3,5 @@
   &lt;Assembly Path="C:\Users\fgild\.nuget\packages\microsoft.jsinterop\7.0.0\lib\net7.0\Microsoft.JSInterop.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4143c268_002Dee56_002D489e_002D9e6d_002D0b45637b6d61/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="MudExCssBuilderTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::FA8AC591-92E8-4BCA-BD04-CAA07AD98C5A::net7.0::MudBlazor.Extensions.Tests.UITests.Tests.BaseUITest.MyFirstTest&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+  &lt;Project Location="C:\dev\privat\github\MudBlazor.Extensions\MudBlazor.Extensions.Tests" Presentation="&amp;lt;MudBlazor.Extensions.Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

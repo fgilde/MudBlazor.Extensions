@@ -82,9 +82,18 @@ namespace MudBlazor.Extensions.Components
         protected override async Task OnInitializedAsync()
         {
             EnsureClassId();
-            _jsEvent = new BlazorJSEventInterop<PointerEventArgs>(JsRuntime);
-            await _jsEvent.OnBlur(OnFocusLeft, $".{_classId}", SelectorsForIgnoreBlur);
             await base.OnInitializedAsync();
+        }
+
+        /// <inheritdoc />
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                _jsEvent = new BlazorJSEventInterop<PointerEventArgs>(JsRuntime);
+                await _jsEvent.OnBlur(OnFocusLeft, $".{_classId}", SelectorsForIgnoreBlur);
+            }
+            await base.OnAfterRenderAsync(firstRender);
         }
 
         /// <summary>

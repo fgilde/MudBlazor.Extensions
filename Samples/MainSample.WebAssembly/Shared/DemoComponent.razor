@@ -147,10 +147,13 @@
             SelectedCodeFilePath = value.StartsWith("http") ? value : GH.Path(value);
             SelectedCodeValue = "Loading...";
             StateHasChanged();
-            http.GetStringAsync(SelectedCodeFilePath).ContinueWith(task =>
+            http.GetStringAsync(SelectedCodeFilePath).ContinueWith(async task =>
             {
                 SelectedCodeValue = CodeView.CodeAsMarkup(task.Result);
-                StateHasChanged();
+                await InvokeAsync(() =>
+                {
+                    StateHasChanged();
+                });
             });
         }
     }

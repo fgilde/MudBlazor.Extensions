@@ -1670,6 +1670,9 @@
         <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnInitializedAsync">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExPopover.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <summary>
             Sets the component's parameters asynchronously.

@@ -1,6 +1,6 @@
-﻿using MainSample.WebAssembly;
+﻿using MainSample.ServerSide;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Playwright;
 
 namespace MudBlazor.Extensions.Tests.UITests.Tests;
 
@@ -8,64 +8,58 @@ namespace MudBlazor.Extensions.Tests.UITests.Tests;
 /// The test class that is using the PlaywrightFixture
 /// </summary>
 [Collection(PlaywrightFixture.PlaywrightCollection)]
-public class BaseUITest : IClassFixture<WebApplicationFactory<AssemblyClassLocator>>
+public class BaseUITest
 {
-    private readonly PlaywrightFixture playwrightFixture;
-    private readonly WebApplicationFactory<AssemblyClassLocator> factory;
-    protected const string url = "https://localhost:5001";
+    // null means all
+    protected virtual Browser? TargetBrowser => null;
 
-    /// <summary>
-    /// Setup test class injecting a playwrightFixture instance.
-    /// </summary>
-    /// <param name="playwrightFixture">The playwrightFixture
-    /// instance.</param>
-    public BaseUITest(PlaywrightFixture playwrightFixture, WebApplicationFactory<AssemblyClassLocator> factory)
+    protected readonly PlaywrightFixture playwrightFixture;
+    protected WebTestingHostFactory<ServerApplicationClassLocator> factory;
+    protected const string Url = "https://localhost:5001";
+
+
+    public BaseUITest(PlaywrightFixture playwrightFixture)
     {
         this.playwrightFixture = playwrightFixture;
-        this.factory = factory.WithWebHostBuilder(builder =>
-        {
-            builder.UseUrls(url)
-            .ConfigureServices(services =>
-            {
-            })
-            .ConfigureAppConfiguration((app, conf) =>
-            {
-            });
-        });
+        StartApp();
     }
 
-    [Fact]
-    public async Task MyFirstTest()
+    protected void StartApp()
     {
-     //   var url = "https://www.mudex.org";
-        // Open a page and run test logic.
-        await this.playwrightFixture.GotoPageAsync(
-          url,
-          async (page) =>
-          {
-              // Apply the test logic on the given page.
-
-              // Click text=Home
-              await page.Locator("text=Home").ClickAsync();
-              await page.WaitForURLAsync($"{url}/");
-              // Click text=Hello, world!
-              await page.Locator("text=Hello, world!").IsVisibleAsync();
-
-              // Click text=Counter
-              await page.Locator("text=Counter").ClickAsync();
-              await page.WaitForURLAsync($"{url}/counter");
-              // Click h1:has-text("Counter")
-              await page.Locator("h1:has-text(\"Counter\")").IsVisibleAsync();
-              // Click text=Click me
-              await page.Locator("text=Click me").ClickAsync();
-              // Click text=Current count: 1
-              await page.Locator("text=Current count: 1").IsVisibleAsync();
-              // Click text=Click me
-              await page.Locator("text=Click me").ClickAsync();
-              // Click text=Current count: 2
-              await page.Locator("text=Current count: 2").IsVisibleAsync();
-
-          },
-          Browser.Chromium);
+        factory = new WebTestingHostFactory<ServerApplicationClassLocator>();
+        factory.WithWebHostBuilder(builder =>
+        {
+            // Setup the url to use.
+            builder.UseUrls(Url);
+            // Replace or add services if needed.
+            builder.ConfigureServices(services =>
+            {
+                // services.AddTransient<....>();
+            });
+            // Replace or add configuration if needed.
+            builder.ConfigureAppConfiguration((app, conf) =>
+            {
+                // conf.AddJsonFile("appsettings.Test.json");
+            });
+        })
+        // Create the host using the CreateDefaultClient method.
+        .CreateDefaultClient();
     }
+
+    protected async Task Test(Func<IPage, Task> testHandler) => await ExecuteTestAsync(Url, testHandler);
+    protected async Task Test(Func<IPage, Task> testHandler, Browser? targetBrowser) => await ExecuteTestAsync(Url, testHandler, targetBrowser);
+    protected async Task Test(string url, Func<IPage, Task> testHandler) => await ExecuteTestAsync(url, testHandler);
+    protected async Task Test(string url, Func<IPage, Task> testHandler, Browser? targetBrowser) => await ExecuteTestAsync(url, testHandler, targetBrowser);
+
+    private Task ExecuteTestAsync(string url, Func<IPage, Task> testHandler, Browser? targetBrowser = null)
+    {
+        targetBrowser ??= TargetBrowser;
+        return targetBrowser.HasValue 
+            // If TargetBrowser has a value, only run for that browser.
+            ? playwrightFixture.GotoPageAsync(url, testHandler, targetBrowser.Value) 
+            : Task.WhenAll(Enum.GetValues(typeof(Browser))
+                .Cast<Browser>()
+                .Select(browser => playwrightFixture.GotoPageAsync(url, testHandler, browser)).ToList());
+    }
+
 }

@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
+    <ProjectReference Include="..\Samples\MainSample.ServerSide\MainSample.ServerSide.csproj" />
     <ProjectReference Include="..\Samples\MainSample.WebAssembly\MainSample.WebAssembly.csproj" />
   </ItemGroup>
 
