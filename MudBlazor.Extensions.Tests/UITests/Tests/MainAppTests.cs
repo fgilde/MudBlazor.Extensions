@@ -30,7 +30,7 @@ public class MainAppTests: BaseUITest
             await page.GetByRole(AriaRole.Link, new() { Name = "API" }).ClickAsync();
             await page.WaitForURLAsync($"{Url}/api");
             await page.WaitForRequestFinishedAsync();
-            await Task.Delay(1000);
+            await Task.Delay(2000);
             var isVis = await page.GetByRole(AriaRole.Heading, new() { Name = "API" }).IsVisibleAsync();
             isVis.Should().BeTrue();
         });
