@@ -1,7 +1,7 @@
 ﻿using MudBlazor.Extensions.Helper;
 using MudBlazor.Utilities;
 
-namespace MudBlazor.Extensions.Tests.Tests.Helper;
+namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Helper;
 
 public class MudExColorUtilsTests
 {

@@ -139,7 +139,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
             var propertyValue = propertyParts[1].Trim();
 
             // Convert the property name to camelCase
-            propertyName = Regex.Replace(propertyName, "-([a-z])", m => m.Groups[1].Value.ToUpperInvariant());
+            propertyName = Regex.Replace(propertyName, "-([a-z])", m => m.Groups[1].Value.ToUpperInvariant()).ToUpper(true);
 
             // Try to set the property value on the object
             try

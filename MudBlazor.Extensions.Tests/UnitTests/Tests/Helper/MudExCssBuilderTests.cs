@@ -2,7 +2,7 @@
 using MudBlazor.Extensions.Helper;
 using System.Collections.Generic;
 
-namespace MudBlazor.Extensions.Tests.Tests.Helper;
+namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Helper;
 public class MudExCssBuilderTests
 {
     [Fact]

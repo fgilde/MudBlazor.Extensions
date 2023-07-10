@@ -4558,6 +4558,11 @@
             <param name="width"></param>
             <param name="height"></param>
         </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExDimension.#ctor(System.String)">
+            <summary>
+            Creates a new size dimension by parsing an string like 3px or 10% etc
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Core.MudExDimension.Width">
             <summary>
             Width
@@ -4573,6 +4578,14 @@
             Implicit conversion from double to <see cref="T:MudBlazor.Extensions.Core.MudExDimension"/>
             </summary>
             <param name="s"></param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExDimension.op_Implicit(System.String)~MudBlazor.Extensions.Core.MudExDimension">
+            <summary>
+            Implicit conversion from String to MudExDimension type.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExDimension.ToString">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Core.MudExSize`1">
             <summary>

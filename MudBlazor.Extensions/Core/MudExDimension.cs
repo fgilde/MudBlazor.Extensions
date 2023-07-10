@@ -1,4 +1,6 @@
-﻿namespace MudBlazor.Extensions.Core;
+﻿using MudBlazor.Extensions.Helper.Internal;
+
+namespace MudBlazor.Extensions.Core;
 
 
 /// <summary>
@@ -24,6 +26,18 @@ public struct MudExDimension
     }
 
     /// <summary>
+    /// Creates a new size dimension by parsing an string like 3px or 10% etc
+    /// </summary>
+    public MudExDimension(string value)
+    {
+        var parts = value.Split("x");
+        var width = new MudExSize<double>(parts.FirstOrDefault());
+        var height = new MudExSize<double>(parts.LastOrDefault());
+        Width = width;
+        Height = height;
+    }
+
+    /// <summary>
     /// Width
     /// </summary>
     public MudExSize<double> Width { get; set; }
@@ -38,4 +52,12 @@ public struct MudExDimension
     /// </summary>
     /// <param name="s"></param>
     public static implicit operator MudExDimension(double s) => new(s);
+
+    /// <summary>
+    /// Implicit conversion from String to MudExDimension type.
+    /// </summary>
+    public static implicit operator MudExDimension(string s) => new(s);
+
+    /// <inheritdoc />
+    public override string ToString() => $"{Width}x{Height}";
 }
