@@ -30,15 +30,13 @@
 
                 if (card._isMouseOver)
                     continue;
-
-                var fn = (e) => me.cardMouseMove(card, options, e); 
-                
-                card.addEventListener('mouseenter', () => {
-                    card.addEventListener('mousemove', fn);
+                                    
+                card.addEventListener('mouseenter', () => {                    
+                    card.addEventListener('mousemove', this.cardMouseMove.bind(this, card));
                 });
 
                 card.addEventListener('mouseleave', () => {
-                    card.removeEventListener('mousemove', fn);
+                    card.removeEventListener('mousemove', this.cardMouseMove.bind(this, card));
                     card.style.removeProperty('--transform');
                     card.style.removeProperty('--shadow');
                     card.style.boxShadow = '';
@@ -50,7 +48,8 @@
 
     }
 
-    cardMouseMove(card, options, e) {
+    cardMouseMove(card, e) {
+        var options = this.options;
         if (options && options.use3dEffect) {
             const rect = card.getBoundingClientRect(),
                 x = e.clientX - rect.left,
