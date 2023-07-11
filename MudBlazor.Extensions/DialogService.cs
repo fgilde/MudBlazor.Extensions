@@ -225,10 +225,6 @@ namespace MudBlazor.Extensions
         /// <summary>
         /// Shows the message box asynchronously.
         /// </summary>
-        /// <param name="dialogService">The dialog service.</param>
-        /// <param name="mboxOptions">The mbox options.</param>
-        /// <param name="options">The options.</param>
-        /// <returns>A <see cref="bool?"/> value.</returns>
         public static async Task<bool?> ShowMessageBoxEx(this IDialogService dialogService, MessageBoxOptions mboxOptions, DialogOptionsEx options = null)
         {
             DialogParameters parameters = new DialogParameters()

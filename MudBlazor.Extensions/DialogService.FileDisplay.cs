@@ -76,7 +76,6 @@ public static partial class DialogServiceExt
     /// </summary>
     /// <param name="dialogService">The dialog service instance.</param>
     /// <param name="browserFile">The browser file to display.</param>
-    /// <param name="handleContentErrorFunc">A function that is called if an error occurs while handling the file's content.</param>
     /// <param name="options">Dialog options for the displayed file.</param>
     /// <param name="dialogParameters">Parameters to pass to the dialog.</param>
     /// <returns>An awaitable task with the dialog reference.</returns>

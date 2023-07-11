@@ -1480,7 +1480,7 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.Available">
             <summary>
-            Gets or sets the Css Variables.
+            Available Icons in this Picker. If not set they will be filled automatically from <see cref="P:MudBlazor.Extensions.Components.MudExIconPicker.IconTypes"/>
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.IconTypes">
@@ -4809,10 +4809,6 @@
             <summary>
             Shows the message box asynchronously.
             </summary>
-            <param name="dialogService">The dialog service.</param>
-            <param name="mboxOptions">The mbox options.</param>
-            <param name="options">The options.</param>
-            <returns>A <see cref="!:bool?"/> value.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.GetDialogAsync``1(MudBlazor.IDialogReference)">
             <summary>
@@ -4874,7 +4870,6 @@
             </summary>
             <param name="dialogService">The dialog service instance.</param>
             <param name="browserFile">The browser file to display.</param>
-            <param name="handleContentErrorFunc">A function that is called if an error occurs while handling the file's content.</param>
             <param name="options">Dialog options for the displayed file.</param>
             <param name="dialogParameters">Parameters to pass to the dialog.</param>
             <returns>An awaitable task with the dialog reference.</returns>

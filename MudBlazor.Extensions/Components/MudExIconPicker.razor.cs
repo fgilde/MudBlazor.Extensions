@@ -95,7 +95,7 @@ public partial class MudExIconPicker
     public EventCallback<string> PropertyNameChanged { get; set; }
 
     /// <summary>
-    /// Gets or sets the Css Variables.
+    /// Available Icons in this Picker. If not set they will be filled automatically from <see cref="IconTypes"/>
     /// </summary>
     [IgnoreOnObjectEdit]
     [Parameter, SafeCategory("Appearance")]
@@ -209,8 +209,7 @@ public partial class MudExIconPicker
     {
         if (Available is not { Count: not 0 })
         {
-            //Available = MudExSvg.GetAllSvgProperties(IconTypes);
-            Available = MudExSvg.GetAllSvgProperties();
+            Available = MudExSvg.GetAllSvgProperties(IconTypes);
         }
     }
     private List<Dictionary<string, string>> SelectedIcons => string.IsNullOrWhiteSpace(Filter)
