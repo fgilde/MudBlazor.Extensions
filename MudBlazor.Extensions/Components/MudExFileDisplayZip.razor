@@ -58,11 +58,11 @@ else
                 <ItemTemplate>
                     @if (IsInSearch(context))
                     {
-                        <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.Children" Icon="@(context.BrowserFile?.GetIcon() ?? Icons.Filled.Folder)" Text="@context.Name" EndText="2" EndTextTypo="@Typo.caption">
+                        <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.Children" Icon="@(context.BrowserFile?.GetIcon() ?? Icons.Material.Filled.Folder)" Text="@context.Name" EndText="2" EndTextTypo="@Typo.caption">
                             <Content>
                                 <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChildren"/>
 
-                                <MudAlert Icon="@(context.IsDirectory ? Icons.Filled.Folder : context.BrowserFile?.GetIcon())"
+                                <MudAlert Icon="@(context.IsDirectory ? Icons.Material.Filled.Folder : context.BrowserFile?.GetIcon())"
                                           OnClick="(a) => Select(context, a)"
                                           Severity="@((IsSelected(context.BrowserFile) ? Severity.Warning : Severity.Normal))"
                                           Square="true"

@@ -69,7 +69,7 @@ namespace MudBlazor.Extensions.Components
         public EventCallback<bool> OpenChanged { get; set; }
 
 
-        private MudPopoverHandler Handler => Service.Handlers.FirstOrDefault(x => x.Fragment == ChildContent);
+        //private MudPopoverHandler Handler => Service.Handlers.FirstOrDefault(x => x.Fragment == ChildContent);
         private BlazorJSEventInterop<PointerEventArgs> _jsEvent;
         private string _classId = $"mud-ex-popover-{Guid.NewGuid()}";
 
@@ -122,6 +122,7 @@ namespace MudBlazor.Extensions.Components
             await OpenChanged.InvokeAsync(newOpenValue);
         }
 
+        /// <inheritdoc />
         protected override async Task OnParametersSetAsync()
         {
             EnsureClassId();
@@ -171,7 +172,7 @@ namespace MudBlazor.Extensions.Components
         /// <summary>
         /// Disposes of the object.
         /// </summary>
-        public ValueTask DisposeAsync()
+        public new ValueTask DisposeAsync()
         {
             // TODO: Ask MudBlazor Author if they can make DisposeAsync virtual
             DisposeCore();

@@ -25,7 +25,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private string _innerPreviewUrl;
     private Stream _innerPreviewStream;
     private IList<ZipBrowserFile> _zipEntries;
-    private (string tag, Dictionary<string, object> attributes) renderInfos;
+    //private (string tag, Dictionary<string, object> attributes) renderInfos;
     private HashSet<ZipStructure> _zipStructure;
 
     /// <inheritdoc />
@@ -161,10 +161,8 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     public EventCallback<IList<ZipBrowserFile>> SelectedChanged { get; set; }
 
     /// <summary>
-    /// Returns true if given ZipFileentry is selected
+    /// Returns true if given ZipFile entry is selected
     /// </summary>
-    /// <param name="entry"></param>
-    /// <returns></returns>
     public bool IsSelected(ZipBrowserFile entry) => entry != null && Selected?.Contains(entry) == true;
 
     /// <summary>
@@ -212,11 +210,15 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
             if (!string.IsNullOrEmpty(Url) || ContentStream != null)
             {
 
-                _zipEntries = (await GetZipEntriesAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url))).ToList();
+                _zipEntries = (await GetZipEntriesAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url)))
+                    .ToList();
                 _zipStructure = ZipStructure.CreateStructure(_zipEntries, RootFolderName).ToHashSet();
             }
         }
-        catch {}
+        catch
+        {
+            //ignored
+        }
         await base.OnParametersSetAsync();
     }
 
@@ -296,7 +298,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     {
         if (string.IsNullOrEmpty(SearchString))
             return true;
-        return context.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase) || context?.Children?.Any(IsInSearch) == true;
+        return context.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase) || context.Children?.Any(IsInSearch) == true;
     }
 
     private Task ExpandCollapse()

@@ -8,8 +8,12 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExCultureSelect
 {
+    /// <summary>
+    /// The inherited render
+    /// </summary>
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
+    /// <inheritdoc />
     protected override Task<IList<CultureInfo>> GetAvailableItemsAsync(CancellationToken cancellation = default)
     {
         return Task.Run(() =>
@@ -21,6 +25,7 @@ public partial class MudExCultureSelect
         }, cancellation);
     }
 
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         ViewMode = ViewMode.NoChips;

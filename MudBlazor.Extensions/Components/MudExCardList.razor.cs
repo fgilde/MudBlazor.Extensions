@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Utilities;
 using Nextended.Core.Extensions;
 
@@ -142,10 +143,10 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
     public string GetStyle()
     {
         return new StyleBuilder()
-            .AddStyle($"--mud-ex-card-bulb-size", $"{GetBulbSize()}{LightBulbSizeUnit.ToDescriptionString()}")
+            .AddStyle($"--mud-ex-card-bulb-size", $"{GetBulbSize()}{LightBulbSizeUnit.GetDescription()}")
             .AddStyle($"--mud-ex-card-list-bg-color", $"{BackgroundColor.ToCssStringValue()}")
             .AddStyle($"--mud-ex-card-list-hover-color", $"{HoverColor.ToCssStringValue()}")
-            .AddStyle($"justify-content", Justify.ToDescriptionString())
+            .AddStyle($"justify-content", Justify.GetDescription())
             .Build();
     }
 
@@ -192,6 +193,9 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
         };
     }
 
+    /// <summary>
+    /// Returns arguments for passed to JS code
+    /// </summary>
     public virtual object[] GetJsArguments() => new[] { AsJsComponent.ElementReference, AsJsComponent.CreateDotNetObjectReference(), Options() };
 
     /// <summary>

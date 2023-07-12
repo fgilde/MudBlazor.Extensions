@@ -29,6 +29,7 @@ public partial class MudExFontSelect
     [Parameter, SafeCategory("Behavior")] 
     public bool WithGoogleLatinFonts { get; set; }
 
+    /// <inheritdoc />
     protected override Task<IList<string>> GetAvailableItemsAsync(CancellationToken cancellation = default)
         => Task.FromResult(GetAvailable());
 

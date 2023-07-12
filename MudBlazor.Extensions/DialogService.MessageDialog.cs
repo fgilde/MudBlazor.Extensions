@@ -323,7 +323,7 @@ public static partial class DialogServiceExt
             {
                 nameof(MudExMessageDialog.Message), message
             },
-            {nameof(MudExMessageDialog.Icon), icon ?? Icons.Filled.Check},
+            {nameof(MudExMessageDialog.Icon), icon ?? Icons.Material.Filled.Check},
             {nameof(MudExMessageDialog.Buttons), actions}
         };
         return ShowConfirmationDialogAsync(dialogService, title, parameters, options);
@@ -376,7 +376,7 @@ public static partial class DialogServiceExt
                 nameof(MudExMessageDialog.Message), message
             },
             {nameof(MudExMessageDialog.AllowEmptyActions), true},
-            {nameof(MudExMessageDialog.Icon), icon ?? Icons.Filled.Check},
+            {nameof(MudExMessageDialog.Icon), icon ?? Icons.Material.Filled.Check},
             {nameof(MudExMessageDialog.Buttons), actions}
         };
         options ??= DefaultOptions();
@@ -400,7 +400,7 @@ public static partial class DialogServiceExt
                 nameof(MudExMessageDialog.Message), message
             },
             {nameof(MudExMessageDialog.AllowEmptyActions), true},
-            {nameof(MudExMessageDialog.Icon), icon ?? Icons.Filled.Check},
+            {nameof(MudExMessageDialog.Icon), icon ?? Icons.Material.Filled.Check},
             {nameof(MudExMessageDialog.Buttons), actions},
             {nameof(MudExMessageDialog.ShowProgress), showProgress}
         };

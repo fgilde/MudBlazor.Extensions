@@ -22,12 +22,12 @@ public sealed partial class MudExColorEdit
     /// Gets or sets the <see cref="IServiceProvider"/> to be used for dependency injection.
     /// </summary>
     [Inject]
-    protected IServiceProvider ServiceProvider { get; set; }
+    private IServiceProvider ServiceProvider { get; set; }
 
     /// <summary>
     /// Gets the <see cref="IStringLocalizer"/> to be used for localizing strings.
     /// </summary>
-    protected IStringLocalizer LocalizerToUse => Localizer ?? _fallbackLocalizer;
+    private IStringLocalizer LocalizerToUse => Localizer ?? _fallbackLocalizer;
 
     /// <summary>
     /// Gets or sets the <see cref="IStringLocalizer"/> to be used for localizing strings.
@@ -165,7 +165,9 @@ public sealed partial class MudExColorEdit
 
     private bool HasDefinedColors => ShowThemeColors || ShowHtmlColors || ShowCssColorVariables;
 
-
+    /// <summary>
+    /// tries to localize given string
+    /// </summary>
     public string TryLocalize(string text, params object[] args) => LocalizerToUse.TryLocalize(text, args);
 
     
@@ -347,7 +349,7 @@ public sealed partial class MudExColorEdit
         }
     }
 
-    private MudColor? FindFromCssVar(string var) => _cssVars?.FirstOrDefault(p => string.Equals($"var({p.Key})", var, StringComparison.CurrentCultureIgnoreCase) || string.Equals(p.Key, var, StringComparison.CurrentCultureIgnoreCase)).Value;
+    private MudColor FindFromCssVar(string var) => _cssVars?.FirstOrDefault(p => string.Equals($"var({p.Key})", var, StringComparison.CurrentCultureIgnoreCase) || string.Equals(p.Key, var, StringComparison.CurrentCultureIgnoreCase)).Value;
 
     private void SelectCssVar(KeyValuePair<string, MudColor> cssVar)
     {

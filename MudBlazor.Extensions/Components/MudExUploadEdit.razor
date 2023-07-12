@@ -46,7 +46,7 @@
                               Severity="@(IsSelected(request) ? Severity.Warning : (_withErrors.Contains(request) ? Severity.Error : Severity.Normal))"
                               OnClick="(a) => Select(request, a)"
                               ShowCloseIcon="@(AllowRemovingItems && !ReadOnly)"
-                              CloseIcon="@Icons.Filled.Delete"
+                              CloseIcon="@Icons.Material.Filled.Delete"
                               CloseIconClicked="(() => Remove(request))">
                             @if (AllowRename && !ReadOnly)
                             {
@@ -75,7 +75,7 @@
                    Variant="Variant.Text"
                    Color="Color.Primary"
                    Size="Size.Small"
-                   StartIcon="@(AllowMultiple ? Icons.Filled.FileUpload : Icons.Filled.UploadFile)"
+                   StartIcon="@(AllowMultiple ? Icons.Material.Filled.FileUpload : Icons.Material.Filled.UploadFile)"
                    for="@UploadFieldId">
                 @(AllowMultiple ? TryLocalize(TextUploadFiles) : TryLocalize(TextUploadFile))
             </MudButton>
@@ -90,7 +90,7 @@
                    Variant="Variant.Text"
                    Color="Color.Primary"
                    Size="Size.Small"
-                   StartIcon="@Icons.Filled.DriveFolderUpload">
+                   StartIcon="@Icons.Material.Filled.DriveFolderUpload">
                 @TryLocalize(TextUploadFolder)
             </MudButton>
         }
@@ -103,7 +103,7 @@
                    Variant="Variant.Text"
                    Color="Color.Primary"
                    Size="Size.Small"
-                   StartIcon="@Icons.Filled.MoreHoriz">
+                   StartIcon="@Icons.Material.Filled.MoreHoriz">
                 @TryLocalize(TextAddUrl)
             </MudButton>
         }

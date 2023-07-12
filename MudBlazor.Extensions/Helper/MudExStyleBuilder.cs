@@ -9,7 +9,6 @@ using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core.Css;
 using Nextended.Core.Extensions;
 using MudBlazor.Extensions.Helper.Internal;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace MudBlazor.Extensions.Helper;
 

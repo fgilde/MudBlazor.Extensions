@@ -130,6 +130,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.Base.IMudExComponent">
+            <summary>
+            Interface for all MudExComponents
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1">
             <summary>
             Interface for components with js imports
@@ -308,6 +313,26 @@
         <member name="M:MudBlazor.Extensions.Components.MoveContent.ImportModuleAndCreateJsAsync">
             <inheritdoc />
         </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExCardHoverMode.LightBulb">
+            <summary>
+            A LightBulb follows the mouse
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExCardHoverMode.Simple">
+            <summary>
+            Simple just change background
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExCardHoverMode.Zoom">
+            <summary>
+            Card zooms in
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExCardHoverMode.CardEffect3d">
+            <summary>
+            Card has a 3D effect
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExCardList`1">
             <summary>
             Simple Card List with a hover effect.
@@ -401,6 +426,11 @@
         <member name="M:MudBlazor.Extensions.Components.MudExCardList`1.OnAfterRenderAsync(System.Boolean)">
             <summary>
             Method gets called OnAfterRenderAsync for rendering and Initializing Modules.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCardList`1.GetJsArguments">
+            <summary>
+            Returns arguments for passed to JS code
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExCardList`1.DisposeAsync">
@@ -567,6 +597,59 @@
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Selected">
             <summary>
             Gets or sets the currently selected items in the component.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExChipSelect`1.OnBeforeSelectedChanged(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            is called before the selected items change.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Filter">
+            <summary>
+            Search filter
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExChipSelect`1.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExChipSelect`1.ItemNameRender(`0)">
+            <summary>
+            Render function for an item.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExChipSelect`1.MultiSelectionTextFunc(System.Collections.Generic.List{System.String})">
+            <summary>
+            returns the string for more selected items
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExChipSelect`1.GetAvailableItemsAsync(System.Threading.CancellationToken)">
+            <summary>
+            returns all available items
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ViewMode">
+            <summary>
+            ViewMode for the ChipSelect
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ViewMode.ChipsOnly">
+            <summary>
+            Only Chips
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ViewMode.ChipsAdditionalAbove">
+            <summary>
+            Chips above the filed
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ViewMode.ChipsAdditionalBelow">
+            <summary>
+            Chips below the field
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ViewMode.NoChips">
+            <summary>
+            No chips, just work as listbox
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExColorBubble">
@@ -771,6 +854,11 @@
             Gets or sets the label for the defined tab.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.TryLocalize(System.String,System.Object[])">
+            <summary>
+            tries to localize given string
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnInitialized">
             <inheritdoc />
         </member>
@@ -843,6 +931,17 @@
             <summary>
             Drop down component to select a culture
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCultureSelect.Inherited">
+            <summary>
+            The inherited render
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCultureSelect.GetAvailableItemsAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCultureSelect.OnInitialized">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDialog">
             <summary>
@@ -943,6 +1042,66 @@
             Plugin information for a content type plugin
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.BrowserContentTypePlugin.BrowserNames">
+            <summary>
+            Names of browsers
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.BrowserContentTypePlugin.BrowserNames.Chrome">
+            <summary>
+            Chrome
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.BrowserContentTypePlugin.BrowserNames.Opera">
+            <summary>
+            Opera
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.BrowserContentTypePlugin.BrowserNames.Edge">
+            <summary>
+            Edge
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.BrowserContentTypePlugin.BrowserNames.Safari">
+            <summary>
+            Safari
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.BrowserContentTypePlugin.BrowserNames.Firefox">
+            <summary>
+            Firefox
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.BrowserContentTypePlugin.Name">
+            <summary>
+            Name of content type plugin
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.BrowserContentTypePlugin.SupportedBrowsers">
+            <summary>
+            By plugin supported browsers
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.BrowserContentTypePlugin.SupportedContentTypes">
+            <summary>
+            Supported content types
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.BrowserContentTypePlugin.Url">
+            <summary>
+            Url to get the plugin
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.BrowserContentTypePlugin.Find(System.String,System.String)">
+            <summary>
+            Tries to find a plugin for given browser and content type
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.BrowserContentTypePlugin.Available">
+            <summary>
+            Known available plugins
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.IMudExFileDisplay">
             <summary>
             Interface to register an own file display component
@@ -992,6 +1151,89 @@
         <member name="P:MudBlazor.Extensions.Components.IMudExFileDisplayInfos.ContentStream">
             <summary>
             Stream of file if its already loaded or dynamically created on client
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult">
+            <summary>
+            Represents a result of a file display error in the MudEx framework.
+            This class provides several static methods to create different types of error results.
+            Implements the <see cref="T:MudBlazor.Extensions.Components.IMudExFileDisplayInfos"/> interface.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.Unhandled">
+            <summary>
+            Returns a new instance of MudExFileDisplayContentErrorResult with IsHandled set to false.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.Handled">
+            <summary>
+            Returns a new instance of MudExFileDisplayContentErrorResult with IsHandled set to true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.DisplayMessage(System.String)">
+            <summary>
+            Returns a new instance of MudExFileDisplayContentErrorResult with a specified message.
+            </summary>
+            <param name="message">The error message.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.RedirectTo(System.String,System.String)">
+            <summary>
+            Returns a new instance of MudExFileDisplayContentErrorResult with a redirection to a specific URL and content type.
+            </summary>
+            <param name="url">The redirection URL.</param>
+            <param name="contentType">The content type of the redirection.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.RedirectTo(System.IO.Stream,System.String)">
+            <summary>
+            Returns a new instance of MudExFileDisplayContentErrorResult with a redirection to a stream and content type.
+            </summary>
+            <param name="stream">The stream to redirect to.</param>
+            <param name="contentType">The content type of the stream.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.WithMessage(System.String)">
+            <summary>
+            Sets the Message property and returns the current MudExFileDisplayContentErrorResult instance.
+            </summary>
+            <param name="message">The error message.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.IsHandled">
+            <summary>
+            Gets or sets a value indicating whether the error is handled.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.FileName">
+            <summary>
+            Gets or sets the name of the file.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.Url">
+            <summary>
+            Gets or sets the redirection URL.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.ContentType">
+            <summary>
+            Gets or sets the content type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.Message">
+            <summary>
+            Gets or sets the error message.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.ContentStream">
+            <summary>
+            Gets or sets the content stream for redirection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.FallBackInIframe">
+            <summary>
+            Gets or sets a value indicating whether to fall back in iframe.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.SandBoxIframes">
+            <summary>
+            Gets or sets a value indicating whether to sandbox iframes.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplay">
@@ -1301,10 +1543,8 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.IsSelected(Nextended.Blazor.Models.ZipBrowserFile)">
             <summary>
-            Returns true if given ZipFileentry is selected
+            Returns true if given ZipFile entry is selected
             </summary>
-            <param name="entry"></param>
-            <returns></returns>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ShowContentError">
             <summary>
@@ -1371,6 +1611,9 @@
             <summary>
             Set to true to allow selection of google latin fonts
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFontSelect.GetAvailableItemsAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFontSelect.OnInitialized">
             <inheritdoc />
@@ -1684,6 +1927,9 @@
             Handles open state change event.
             </summary>
             <param name="newOpenValue">The new open value.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnParametersSetAsync">
+            <inheritdoc />
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExPopover.PopoverClass">
             <summary>
@@ -2049,11 +2295,141 @@
         <member name="M:MudBlazor.Extensions.Components.MudExTaskBar.OnInitialized">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.DialogData">
+            <summary>
+            Data for a dialog. This data is provided by the dialog itself and used in DialogTaskBarInfo
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.DialogData.Title">
+            <summary>
+            The title of the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.DialogData.Icon">
+            <summary>
+            Icon for dialog
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.DialogTaskBarInfo">
+            <summary>
+            DialogTaskBarInfo an item in the task bar
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.DialogTaskBarInfo.#ctor(MudBlazor.IDialogReference,MudBlazor.Extensions.Components.DialogData)">
+            <summary>
+            Creates a new DialogTaskBarInfo for given dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.DialogTaskBarInfo.DialogData">
+            <summary>
+            Data for the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.DialogTaskBarInfo.DialogId">
+            <summary>
+            Id of the dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.DialogTaskBarInfo.DialogReference">
+            <summary>
+            Reference to dialog
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ThemePreset`1">
             <summary>
-            Theme preset
+            Theme preset is just a wrapper class for a name and a theme
             </summary>
             <typeparam name="TTheme"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ThemePreset`1.Id">
+            <summary>
+            Id of the preset can used if item is stored or loaded from database
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ThemePreset`1.Name">
+            <summary>
+            Name of the theme
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ThemePreset`1.Description">
+            <summary>
+            Optional description for the theme
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ThemePreset`1.Theme">
+            <summary>
+            The Theme itself. 
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ThemePreset`1.#ctor">
+            <summary>
+            Creates an instance
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ThemePreset`1.#ctor(System.String,`0)">
+            <summary>
+            Creates an instance with name and theme
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ThemePreset`1.#ctor(System.String,System.String,`0)">
+            <summary>
+            Creates an instance with name, theme and description
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ThemePreset`1.op_Implicit(MudBlazor.Extensions.Components.ThemePreset{`0})~`0">
+            <summary>
+            Implicit assignable as TTheme
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ThemePreset">
+            <summary>
+            Static helper class for creating instances of ThemePresets.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ThemePreset.Create``1(System.String,``0)">
+            <summary>
+            Creates a new theme preset with a given name and theme.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ThemePreset.Create``1(System.String,System.String,``0)">
+            <summary>
+            Creates a new theme preset with a given name, description, and theme.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ThemePreset.Create``1(System.Collections.Generic.KeyValuePair{System.String,``0}[])">
+            <summary>
+            Creates a collection of theme presets from an array of key-value pairs.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ThemePreset.Create``1(System.Tuple{System.String,``0}[])">
+            <summary>
+            Creates a collection of theme presets from an array of tuples.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ThemePreset.Create``1(System.Tuple{System.String,System.String,``0}[])">
+            <summary>
+            Creates a collection of theme presets from an array of tuples with descriptions.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ThemePreset.Create``1(System.Collections.Generic.IDictionary{System.String,``0})">
+            <summary>
+            Creates a collection of theme presets from a dictionary.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ThemePreset.Create``1(System.ValueTuple{System.String,``0}[])">
+            <summary>
+            Creates a collection of theme presets from an array of tuples.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ThemePreset.Create``1(System.Linq.Expressions.Expression{System.Func{``0}}[])">
+            <summary>
+            Creates a collection of theme presets from an array of expressions.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ThemePreset.Create``1(System.ValueTuple{System.String,System.String,``0}[])">
+            <summary>
+            Creates a collection of theme presets from an array of tuples with descriptions.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ThemeEditMode">
             <summary>
@@ -2184,6 +2560,15 @@
             Reference to MudExObjectEdit
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExThemeEdit`1.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExThemeEdit`1.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExThemeEdit`1.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExThemeSelect`1">
             <summary>
             Component to select a theme from a list of themes.
@@ -2309,9 +2694,44 @@
             Enumeration representing the preview mode of a theme.
             </summary>
         </member>
+        <member name="F:MudBlazor.Extensions.Components.ThemePreviewMode.DarkOnly">
+            <summary>
+            Only the dark theme is shown in preview.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ThemePreviewMode.LightOnly">
+            <summary>
+            Only the light theme is shown in preview.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ThemePreviewMode.BothDiagonal">
+            <summary>
+            Both the dark and light theme are shown in preview as one image sliced diagonal.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ThemePreviewMode.BothHorizontal">
+            <summary>
+             Both the dark and light theme are shown in preview as one image sliced horizontal.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ThemePreviewMode.BothVertical">
+            <summary>
+             Both the dark and light theme are shown in preview as one image sliced vertical.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ThemeSelectionMode">
             <summary>
             Enumeration representing the selection mode of a theme.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ThemeSelectionMode.Select">
+            <summary>
+            Selection Dropdown
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ThemeSelectionMode.ItemList">
+            <summary>
+            ItemList
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExToggleableSearch">
@@ -2363,6 +2783,81 @@
         <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.OnKeyUp">
             <summary>
             Fired on the KeyUp event.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.UploadableFile">
+            <summary>
+            Represents a file that can be uploaded. Implements the IUploadableFile interface.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.UploadableFile.FileName">
+            <summary>
+            Gets or sets the name of the file.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.UploadableFile.Extension">
+            <summary>
+            Gets or sets the file extension.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.UploadableFile.ContentType">
+            <summary>
+            Gets or sets the content type of the file.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.UploadableFile.Data">
+            <summary>
+            Gets or sets the data of the file.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.UploadableFile.Url">
+            <summary>
+            Gets or sets the URL of the file.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.UploadableFile.FromUrlAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Creates an instance of UploadableFile from a given URL.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.SelectItemsMode">
+            <summary>
+            Specifies the mode of selecting items.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SelectItemsMode.None">
+            <summary>
+            No selection allowed.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SelectItemsMode.Single">
+            <summary>
+            Allows single item selection.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SelectItemsMode.MultiSelect">
+            <summary>
+            Allows multi item selection.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.SelectItemsMode.MultiSelectWithCtrlKey">
+            <summary>
+            Allows multi item selection with Ctrl key.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MimeTypeRestrictionType">
+            <summary>
+            Specifies the type of MIME type restriction.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MimeTypeRestrictionType.WhiteList">
+            <summary>
+            Only MIME types in the list are allowed.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MimeTypeRestrictionType.BlackList">
+            <summary>
+            MIME types in the list are not allowed.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExUploadEdit`1">
@@ -2707,6 +3202,16 @@
             <param name="url"></param>
             <returns></returns>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.IDefaultRenderDataProvider">
+            <summary>
+            Interface for providing default render data for mudex object edit property
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.IDefaultRenderDataProvider.GetRenderData(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
+            <summary>
+            Returns the render data 
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.IObjectMetaConfiguration`1">
             <summary>
             Interface for configuring the <see cref="T:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1"/> component for a meta of TModel.
@@ -2977,6 +3482,186 @@
             Opens the dialog to add an item to the collection.
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.GroupingStyle">
+            <summary>
+            Specifies the grouping style.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.GroupingStyle.Flat">
+            <summary>
+            Grouped flat with s line
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.GroupingStyle.DefaultExpansionPanel">
+            <summary>
+            Use MudBlazor expansion panel
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.PropertyFilterMode">
+            <summary>
+            Specifies the property filter mode.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.PropertyFilterMode.Toggleable">
+            <summary>
+            Filter is toggable
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.PropertyFilterMode.AlwaysVisible">
+            <summary>
+            Filter is always visible
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.PropertyFilterMode.Disabled">
+            <summary>
+            No filter at all
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.ActionAlignment">
+            <summary>
+            Specifies the alignment of an action.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.ActionAlignment.Right">
+            <summary>
+            Right
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.ActionAlignment.Left">
+            <summary>
+            Left
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.RegisteredConfigurationBehaviour">
+            <summary>
+            Specifies when the registered configurations will applied.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.RegisteredConfigurationBehaviour.ExecutedBefore">
+            <summary>
+            Registered configurations will applied first
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.RegisteredConfigurationBehaviour.ExecutedAfter">
+            <summary>
+            Registered configurations will applied after component property configurations
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.RegisteredConfigurationBehaviour.IgnoreRegisteredConfigurations">
+            <summary>
+            Registered configurations will ignored
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.PathDisplayMode">
+            <summary>
+            Specifies the mode of path display.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.PathDisplayMode.DisplaySeparate">
+            <summary>
+            Display path as separate label
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.PathDisplayMode.DisplayAsGroupName">
+            <summary>
+            Display path as group
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.PathDisplayMode.None">
+            <summary>
+            Do not display the path
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.StateTarget">
+            <summary>
+            Specifies the target for state storage.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.StateTarget.LocalStorage">
+            <summary>
+            Local storage
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.StateTarget.SessionStorage">
+            <summary>
+            Session storage
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.DataChangeTrigger">
+            <summary>
+            Specifies the trigger for data change.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.DataChangeTrigger.ExportImport">
+            <summary>
+            Import or export
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.DataChangeTrigger.StateSaveLoad">
+            <summary>
+            State restored
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.ModelForPrimitive`1">
+            <summary>
+            Represents a model for primitive types.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.ModelForPrimitive`1.#ctor">
+            <summary>
+            Creates a new instance
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.ModelForPrimitive`1.#ctor(`0)">
+            <summary>
+            Creates a new instance
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.ModelForPrimitive`1.Value">
+            <summary>
+            Gets or sets the value of the model.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.ExportedData`1">
+            <summary>
+            Represents exported data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.ExportedData`1.Value">
+            <summary>
+            Gets or sets the value of the exported data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.ExportedData`1.Json">
+            <summary>
+            Gets or sets the JSON representation of the exported data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.ExportedData`1.TriggerdFrom">
+            <summary>
+            Gets or sets the data change trigger.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.ImportedData`1">
+            <summary>
+            Represents imported data.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.ImportData`1">
+            <summary>
+            Represents data to be imported.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.ExportData`1">
+            <summary>
+            Represents data to be exported.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.ExportData`1.Cancel">
+            <summary>
+            Gets or sets a value indicating whether the export operation should be cancelled.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1">
             <summary>
@@ -5648,7 +6333,7 @@
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExResource.GetSummaryDocumentationAsync(System.Reflection.MemberInfo)">
             <summary>
-            returns a summary documentation toxt for given member
+            returns a summary documentation text for given member
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Helper.MudExStyleBuilder">

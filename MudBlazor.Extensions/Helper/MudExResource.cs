@@ -11,7 +11,7 @@ namespace MudBlazor.Extensions.Helper;
 /// </summary>
 public static class MudExResource
 {
-    private static readonly ConcurrentDictionary<Assembly, XmlDocument> xmlDocCache = new();
+    private static readonly ConcurrentDictionary<Assembly, XmlDocument> XmlDocCache = new();
 
     /// <summary>
     /// Returns the version of used MudBlazor package
@@ -34,7 +34,7 @@ public static class MudExResource
         => type == null ? null : await GetSummaryDocumentationAsync(type, $"T:{type.FullName}");
 
     /// <summary>
-    /// returns a summary documentation toxt for given member
+    /// returns a summary documentation text for given member
     /// </summary>
     public static async Task<string> GetSummaryDocumentationAsync(MemberInfo member)
     {
@@ -47,34 +47,34 @@ public static class MudExResource
         {
             case MemberTypes.Field:
                 prefixCode = "F";
-                memberName = $"{member.DeclaringType.FullName}.{member.Name}";
+                memberName = $"{member.DeclaringType?.FullName}.{member.Name}";
                 break;
             case MemberTypes.Property:
                 prefixCode = "P";
-                memberName = $"{member.DeclaringType.FullName}.{member.Name}";
+                memberName = $"{member.DeclaringType?.FullName}.{member.Name}";
                 break;
             case MemberTypes.Method:
                 prefixCode = "M";
                 var method = member as MethodInfo;
-                if (method.GetParameters().Length > 0)
+                if (method?.GetParameters().Length > 0)
                 {
                     var parameters = string.Join(",", method.GetParameters().Select(p => p.ParameterType.FullName));
-                    memberName = $"{member.DeclaringType.FullName}.{member.Name}({parameters})";
+                    memberName = $"{member.DeclaringType?.FullName}.{member.Name}({parameters})";
                 }
                 else
                 {
-                    memberName = $"{member.DeclaringType.FullName}.{member.Name}";
+                    memberName = $"{member.DeclaringType?.FullName}.{member.Name}";
                 }
                 break;
             case MemberTypes.Event:
                 prefixCode = "E";
-                memberName = $"{member.DeclaringType.FullName}.{member.Name}";
+                memberName = $"{member.DeclaringType?.FullName}.{member.Name}";
                 break;
             case MemberTypes.TypeInfo:
             case MemberTypes.NestedType:
                 prefixCode = "T";
-                memberName = member.DeclaringType.FullName;
-                if (member is TypeInfo typeInfo && typeInfo.IsGenericType)
+                memberName = member.DeclaringType?.FullName;
+                if (member is TypeInfo {IsGenericType: true} typeInfo)
                 {
                     memberName = $"{memberName}`{typeInfo.GenericTypeParameters.Length}";
                 }
@@ -91,6 +91,8 @@ public static class MudExResource
         try
         {
             var xmlDoc = await LoadXmlDocAsync(type);
+            if (xmlDoc == null)
+                return null;
             var xpath = $"//member[@name='{xpathQuery}']/summary";
             var summaryNode = xmlDoc.SelectSingleNode(xpath);
             return summaryNode?.InnerText.Trim();
@@ -104,9 +106,11 @@ public static class MudExResource
     private static async Task<XmlDocument> LoadXmlDocAsync(Type type)
     {
         var assembly = Assembly.GetAssembly(type);
+        if (assembly == null)
+            return null;
 
         // Check if we already loaded and parsed this assembly's XML doc
-        if (xmlDocCache.TryGetValue(assembly, out var xmlDoc))
+        if (XmlDocCache.TryGetValue(assembly, out var xmlDoc))
             return xmlDoc;
 
         var resourceName = $"{assembly.GetName().Name}.xml";
@@ -120,7 +124,7 @@ public static class MudExResource
         xmlDoc.Load(resourceStream);
 
         // Store the loaded and parsed XML doc in the cache
-        xmlDocCache[assembly] = xmlDoc;
+        XmlDocCache[assembly] = xmlDoc;
 
         return xmlDoc;
     }

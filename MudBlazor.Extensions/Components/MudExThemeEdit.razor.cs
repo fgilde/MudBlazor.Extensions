@@ -198,7 +198,8 @@ public partial class MudExThemeEdit<TTheme>
     /// </summary>
     public MudExObjectEditForm<TTheme> ObjectEditor { get; private set; }
 
-    
+
+    /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         bool updateConditions = (parameters.TryGetValue<bool?>(nameof(IsDark), out var isDark) && IsDark != isDark)
@@ -210,6 +211,7 @@ public partial class MudExThemeEdit<TTheme>
         }
     }
 
+    /// <inheritdoc />
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
@@ -217,6 +219,7 @@ public partial class MudExThemeEdit<TTheme>
             InitialTheme = Theme.CloneTheme();
     }
 
+    /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

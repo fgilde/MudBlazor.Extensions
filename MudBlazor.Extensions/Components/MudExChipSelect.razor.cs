@@ -141,7 +141,7 @@ public partial class MudExChipSelect<T>
     /// Gets or Sets the RenderFragment for custom item template.
     /// </summary>
     [Parameter, SafeCategory("Common")]
-    public RenderFragment<T>? ItemTemplate { get; set; }
+    public RenderFragment<T> ItemTemplate { get; set; }
 
     /// <summary>
     /// Gets or Sets the list of items that are available for selection.
@@ -210,6 +210,9 @@ public partial class MudExChipSelect<T>
         }
     }
 
+    /// <summary>
+    /// is called before the selected items change.
+    /// </summary>
     protected virtual void OnBeforeSelectedChanged(IEnumerable<T> selected)
     {}
 
@@ -222,6 +225,9 @@ public partial class MudExChipSelect<T>
         }
     }
 
+    /// <summary>
+    /// Search filter
+    /// </summary>
     [Parameter]
     public string Filter
     {
@@ -238,8 +244,9 @@ public partial class MudExChipSelect<T>
 
     private IEnumerable<T> _selected;
     private string _filter;
-    private string _cssName => $"chip-select-{Enum.GetName(ViewMode)?.ToLower() ?? "none"} {(Selected?.Any() == true ? "with-items" : "empty")}";
+    private string CssName => $"chip-select-{Enum.GetName(ViewMode)?.ToLower() ?? "none"} {(Selected?.Any() == true ? "with-items" : "empty")}";
 
+    /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
         if (AvailableItems == null || !AvailableItems.Any() || UpdateItemsOnStateChange)
@@ -253,6 +260,9 @@ public partial class MudExChipSelect<T>
         RaiseChanged();
     }
 
+    /// <summary>
+    /// Render function for an item.
+    /// </summary>
     public virtual string ItemNameRender(T item)
     {
         var res = ItemToStringFunc(item);
@@ -264,9 +274,15 @@ public partial class MudExChipSelect<T>
         return res;
     }
 
+    /// <summary>
+    /// returns the string for more selected items
+    /// </summary>
     protected virtual string MultiSelectionTextFunc(List<string> arg) 
         => string.Join(", ", Selected.Where(a => a != null).Select(r => ItemNameRender(r)?.ToUpper(true)));
-    
+
+    /// <summary>
+    /// returns all available items
+    /// </summary>
     protected virtual Task<IList<T>> GetAvailableItemsAsync(CancellationToken cancellation = default) 
         => AvailableItemsLoadFunc != null ? AvailableItemsLoadFunc(cancellation) : Task.FromResult(new List<T>(0) as IList<T>);
 
@@ -276,10 +292,28 @@ public partial class MudExChipSelect<T>
     }
 }
 
+/// <summary>
+/// ViewMode for the ChipSelect
+/// </summary>
 public enum ViewMode
 {
+    /// <summary>
+    /// Only Chips
+    /// </summary>
     ChipsOnly,
+
+    /// <summary>
+    /// Chips above the filed
+    /// </summary>
     ChipsAdditionalAbove,
+
+    /// <summary>
+    /// Chips below the field
+    /// </summary>
     ChipsAdditionalBelow,
+
+    /// <summary>
+    /// No chips, just work as listbox
+    /// </summary>
     NoChips
 }

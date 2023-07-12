@@ -661,6 +661,7 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
 
     private async Task AddUrl()
     {
+        #pragma warning disable CS8974 // Converting method group to non-delegate type
         var parameters = new DialogParameters
         {
             {nameof(MudExPromptDialog.Message), TryLocalize(TextAddUrlMessage)},
@@ -669,6 +670,7 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
             {nameof(MudExPromptDialog.CanConfirm), IsValidUrl},
             {nameof(MudExPromptDialog.Value), string.Empty},
         };
+        #pragma warning restore CS8974 // Converting method group to non-delegate type
 
         var options = new DialogOptionsEx { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true, Animations = new[] { AnimationType.FlipX } };
 

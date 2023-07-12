@@ -123,6 +123,9 @@ public abstract class MudExBaseComponent<T> : ComponentBase, IMudExComponent
 
 }
 
+/// <summary>
+/// Interface for all MudExComponents
+/// </summary>
 public interface IMudExComponent
 {
 }

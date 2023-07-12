@@ -336,7 +336,7 @@ namespace MudBlazor.Extensions
                 options.Buttons = InsertButton(options, new MudDialogButton(null, null)
                 {
                     Id = $"mud-button-minimize-{Guid.NewGuid()}",
-                    Icon = Icons.Filled.Minimize
+                    Icon = Icons.Material.Filled.Minimize
                 });
             }
             if (options.MaximizeButton == true)
@@ -344,7 +344,7 @@ namespace MudBlazor.Extensions
                 options.Buttons = InsertButton(options, new MudDialogButton(null, null)
                 {
                     Id = $"mud-button-maximize-{Guid.NewGuid()}",
-                    Icon = Icons.Filled.AspectRatio
+                    Icon = Icons.Material.Filled.AspectRatio
                 });
             }
 

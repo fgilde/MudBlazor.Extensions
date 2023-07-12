@@ -74,21 +74,49 @@ public partial class MudExTaskBar: MudExSlideBar
     }
 }
 
+/// <summary>
+/// Data for a dialog. This data is provided by the dialog itself and used in DialogTaskBarInfo
+/// </summary>
 public class DialogData
 {
+    /// <summary>
+    /// The title of the dialog
+    /// </summary>
     public string Title { get; set; }
+
+    /// <summary>
+    /// Icon for dialog
+    /// </summary>
     public string Icon { get; set; }
 }
 
+/// <summary>
+/// DialogTaskBarInfo an item in the task bar
+/// </summary>
 public class DialogTaskBarInfo
 {
+    /// <summary>
+    /// Creates a new DialogTaskBarInfo for given dialog
+    /// </summary>
     public DialogTaskBarInfo(IDialogReference dialogReference, DialogData data)
     {
         DialogData = data;
         DialogId = dialogReference.GetDialogId();
         DialogReference = dialogReference;
     }
+
+    /// <summary>
+    /// Data for the dialog
+    /// </summary>
     public DialogData DialogData { get; set; }
+
+    /// <summary>
+    /// Id of the dialog
+    /// </summary>
     public string DialogId { get; set; }
+
+    /// <summary>
+    /// Reference to dialog
+    /// </summary>
     public IDialogReference DialogReference { get; set; }
 }

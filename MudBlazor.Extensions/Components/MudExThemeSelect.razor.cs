@@ -201,10 +201,29 @@ public partial class MudExThemeSelect<TTheme>
 /// </summary>
 public enum ThemePreviewMode
 {
+    /// <summary>
+    /// Only the dark theme is shown in preview.
+    /// </summary>
     DarkOnly,
+
+    /// <summary>
+    /// Only the light theme is shown in preview.
+    /// </summary>
     LightOnly,
+
+    /// <summary>
+    /// Both the dark and light theme are shown in preview as one image sliced diagonal.
+    /// </summary>
     BothDiagonal,
+
+    /// <summary>
+    ///  Both the dark and light theme are shown in preview as one image sliced horizontal.
+    /// </summary>
     BothHorizontal,
+
+    /// <summary>
+    ///  Both the dark and light theme are shown in preview as one image sliced vertical.
+    /// </summary>
     BothVertical,
 }
 
@@ -213,6 +232,13 @@ public enum ThemePreviewMode
 /// </summary>
 public enum ThemeSelectionMode
 {
+    /// <summary>
+    /// Selection Dropdown
+    /// </summary>
     Select,
+
+    /// <summary>
+    /// ItemList
+    /// </summary>
     ItemList
 }

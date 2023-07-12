@@ -11,9 +11,9 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExDialog : IMudExComponent
 {
     private DialogOptionsEx _options;
-    private IDialogReference _reference;
+    //private IDialogReference _reference;
 
-    [Inject] private IJSRuntime js { get; set; }
+    [Inject] private IJSRuntime Js { get; set; }
 
     /// <summary>
     /// Render base component
@@ -51,7 +51,7 @@ public partial class MudExDialog : IMudExComponent
     /// <returns></returns>
     public new async Task<IDialogReference> Show(string title = null, DialogOptions options = null)
     {
-        OptionsEx.JsRuntime = js;
+        OptionsEx.JsRuntime = Js;
         await DialogServiceExt.PrepareOptionsBeforeShow(OptionsEx);
         return await base.Show(title, options).InjectOptionsAsync(OptionsEx);
     }

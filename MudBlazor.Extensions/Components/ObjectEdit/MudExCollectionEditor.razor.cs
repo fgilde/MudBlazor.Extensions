@@ -108,7 +108,7 @@ public partial class MudExCollectionEditor<T>
     /// Gets or sets the icon for the remove button.
     /// </summary>
     [Parameter]
-    public string RemoveIcon { get; set; } = Icons.Filled.Delete;
+    public string RemoveIcon { get; set; } = Icons.Material.Filled.Delete;
 
     /// <summary>
     /// Gets or sets the icon for the remove all button.
@@ -120,7 +120,7 @@ public partial class MudExCollectionEditor<T>
     /// Gets or sets the icon for the add button.
     /// </summary>
     [Parameter]
-    public string AddIcon { get; set; } = Icons.Filled.Add;
+    public string AddIcon { get; set; } = Icons.Material.Filled.Add;
 
     /// <summary>
     /// Gets or sets the icon for the edit and preview button.
@@ -335,7 +335,7 @@ public partial class MudExCollectionEditor<T>
             { nameof(MudExObjectEditDialog<T>.DialogIcon), EditIcon },
             { nameof(MudExObjectEditDialog<T>.Localizer), Localizer }
         };
-        var res = await DialogService.EditObject<T>(item, TryLocalize(TextEdit, ItemNameRender(item)), DialogOptions ?? DefaultOptions(), null, parameters);
+        var res = await DialogService.EditObject(item, TryLocalize(TextEdit, ItemNameRender(item)), DialogOptions ?? DefaultOptions(), null, parameters);
         if (!res.Cancelled)
         {
             SetValue(item, res.Result);
@@ -374,7 +374,7 @@ public partial class MudExCollectionEditor<T>
             {nameof(MudExObjectEditDialog<T>.GlobalResetSettings), new GlobalResetSettings {AllowReset = false}},
             {nameof(MudExObjectEditDialog<T>.CancelButtonText), "Close"}
         };
-        await DialogService.ShowObject<T>(item, ItemNameRender(item), DialogOptions ?? DefaultOptions(), null, parameters);
+        await DialogService.ShowObject(item, ItemNameRender(item), DialogOptions ?? DefaultOptions(), null, parameters);
     }
 
     /// <summary>
@@ -397,7 +397,7 @@ public partial class MudExCollectionEditor<T>
             { nameof(MudExObjectEditDialog<T>.DialogIcon), AddIcon },
             { nameof(MudExObjectEditDialog<T>.Localizer), Localizer }
         };
-        var res = await DialogService.EditObject<T>(item, TryLocalize(TextAdd), DialogOptions ?? DefaultOptions(), null, parameters);
+        var res = await DialogService.EditObject(item, TryLocalize(TextAdd), DialogOptions ?? DefaultOptions(), null, parameters);
         if (!res.Cancelled)
         {
             Add(res.Result);

@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -157,7 +158,7 @@ public partial class MudExSlideBar
     {
         return MudExCssBuilder.Default
             .AddClass("mud-ex-slidebar")
-            .AddClass($"{Position.ToDescriptionString()}")
+            .AddClass($"{Position.GetDescription()}")
             .AddClass($"open", _isOpen || !AutoCollapse)
             .AddClass($"relative-to-parent", RelativeToParent)
             .Build();
