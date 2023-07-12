@@ -1,4 +1,5 @@
 ## Change Log  
+ - 1.7.62 > Update all nuget packages to latest versions. Now using MudBlazor 6.7.0
  - 1.7.61 > **_Breaking:_** Rename: Move namespace for Css enums like CssUnit, BorderStyle etc from MudBlazor.Extensions.Core to MudBlazor.Extensions.Core.Css
  - 1.7.61 > new Component [MudExIconPicker](https://www.mudex.org/mud-ex-icon-picker) to select icons. Used in [API]((https://www.mudex.org/api)) overview and in ComponentGrid as MudExObjectedit config.
  - 1.7.60 > Better component support for MudExObjectEdit

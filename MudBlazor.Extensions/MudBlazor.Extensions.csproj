@@ -66,8 +66,8 @@
 
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="7.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.5" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="7.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.8" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.16" />
@@ -77,13 +77,13 @@
   <ItemGroup>
     
     <PackageReference Include="Nextended.Blazor" Version="7.0.27" />
-    <PackageReference Include="Nextended.Core" Version="7.0.27" />
-    <PackageReference Include="BlazorJS" Version="2.0.4" />
-    <PackageReference Include="OneOf" Version="3.0.243" />
-    <PackageReference Include="Blazored.FluentValidation" Version="2.0.3" />
+    <PackageReference Include="Nextended.Core" Version="7.0.28" />
+    <PackageReference Include="BlazorJS" Version="2.0.5" />
+    <PackageReference Include="OneOf" Version="3.0.255" />
+    <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="MudBlazor" Version="6.4.1" />
+    <PackageReference Include="MudBlazor" Version="6.7.0" />
     <PackageReference Include="PSC.Blazor.Components.BrowserDetect" Version="1.0.11" />
 
   </ItemGroup>
