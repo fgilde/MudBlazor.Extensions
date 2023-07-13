@@ -228,7 +228,7 @@ public partial class MudExThemeEdit<TTheme>
         }
         await base.OnAfterRenderAsync(firstRender);
         await Task.Delay(ExtraDelay);
-        _isLoading = false;
+        Loading(false);
     }
 
     private async Task EditModeChangedInternally(ThemeEditMode arg)

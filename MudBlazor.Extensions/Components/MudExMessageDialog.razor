@@ -1,7 +1,10 @@
 ﻿@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Helper
 @inherits MudExBaseComponent<MudExMessageDialog>
 
-<MudDialog Style="@Style" Class="@Class" ClassContent="@ClassContent">
+<MudDialog Style="@Style" Class="@($"{MudExCss.Classes.Dialog._Initial} {Class}")" ClassContent="@ClassContent"
+    ClassActions="@ClassActions"
+    ContentStyle="@ContentStyle">
     <TitleContent>
         @if (ShowProgress)
         {

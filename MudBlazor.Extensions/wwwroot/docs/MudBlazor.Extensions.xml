@@ -1800,6 +1800,16 @@
             Gets or sets the class for the content of the dialog
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.ClassActions">
+            <summary>
+            The CSS class to apply to the action buttons of the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.ContentStyle">
+            <summary>
+            The CSS styles to apply to the content area of the dialog.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.Message">
             <summary>
             Gets or sets the message of the dialog

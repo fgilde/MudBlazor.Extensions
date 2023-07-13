@@ -47,3 +47,15 @@
 .mud-ex-dialog-initial {
     display: none !important;
 }
+
+.mud-ex-dialog-actions-sticky {
+    position: sticky !important;
+    bottom: 0;
+    right: 0;
+}
+
+.mud-ex-dialog-actions-absolute {
+    position: absolute !important;
+    bottom: 0;
+    right: 0;
+}

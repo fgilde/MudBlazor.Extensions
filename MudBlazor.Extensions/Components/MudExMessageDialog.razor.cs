@@ -21,13 +21,25 @@ public partial class MudExMessageDialog
     /// Gets or sets the class of the dialog
     /// </summary>
     [Parameter, SafeCategory("Common")]
-    public string Class { get; set; } = MudExCss.Classes.Dialog._Initial;
+    public string Class { get; set; }
 
     /// <summary>
     /// Gets or sets the class for the content of the dialog
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
     public string ClassContent { get; set; } = string.Empty;
+
+    /// <summary>
+    /// The CSS class to apply to the action buttons of the dialog.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public string ClassActions { get; set; }
+
+    /// <summary>
+    /// The CSS styles to apply to the content area of the dialog.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public string ContentStyle { get; set; }
 
     /// <summary>
     /// Gets or sets the message of the dialog

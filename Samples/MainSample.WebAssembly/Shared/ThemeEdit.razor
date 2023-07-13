@@ -11,8 +11,8 @@
             <MudCardHeader>
                 <CardHeaderContent>
                     <MudCheckBox UncheckedIcon="@Icons.Material.Outlined.LightMode" CheckedIcon="@Icons.Material.Outlined.DarkMode" T="bool" CheckedChanged="@(OnDarkChange)" Checked="@IsDark" Color="Color.Inherit" Label="Dark Mode" />
-                    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(EditThemeFull)">Edit current...</MudButton>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(EditAllThemes)">Edit all</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(EditThemeFull)">Customize current</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(EditAllThemes)">Create, Delete or Edit Themes</MudButton>
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent>
@@ -84,37 +84,38 @@
         StateHasChanged();
     }
 
-    private Task<ClientTheme> OpenThemeEdit()
+    private async Task<ClientTheme> OpenThemeEdit()
     {
-        return Task.Run(async () =>{
-            var parameters = new DialogParameters
-                    {
-                    {nameof(MudExObjectEditDialog<ClientTheme>.ShowCancelButton), false},
-                    {nameof(MudExObjectEditDialog<ClientTheme>.SaveButtonText), "Close"},
-                    {nameof(MudExObjectEditDialog<ClientTheme>.DialogIcon), Icons.Material.Filled.Palette},
-                    {nameof(MudExObjectEditDialog<ClientTheme>.ShowPathAsTitleForEachProperty), true}
-                    };
-            var result = await DialogService.EditObject(ClientTheme.CurrentTheme, "Edit current Theme with MudExObjectEdit", new DialogOptionsEx()
-                    {
-                        MaximizeButton = true,
-                        CloseButton = true,
-                        FullHeight = true,
-                        CloseOnEscapeKey = true,
-                        MaxWidth = MaxWidth.Medium,
-                        FullWidth = true,
-                        DragMode = MudDialogDragMode.Simple,
-                        Animations = new[] { AnimationType.SlideIn },
-                        Position = DialogPosition.CenterRight,
-                        DisableSizeMarginY = true,
-                        DisablePositionMargin = true
-                    }, m => {
-                if (IsDark)
-                    m.Property(c => c.Palette).Children.Recursive(om => om.Children).Ignore();
-                else
-                    m.Property(c => c.PaletteDark).Children.Recursive(om => om.Children).Ignore();
-            }, parameters);
-            return result.Result;
-        });
+        var defaultDialogOptionsEx = new DialogOptionsEx()
+        {
+            MaximizeButton = true,
+            CloseButton = true,
+            FullHeight = true,
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+            DragMode = MudDialogDragMode.Simple,
+            Animations = new[] {AnimationType.SlideIn},
+            Position = DialogPosition.CenterRight,
+            DisableSizeMarginY = true,
+            DisablePositionMargin = true
+        };
+
+        var res = await DialogService.ShowComponentInDialogAsync<MudExThemeEdit<ClientTheme>>("Edit Theme", "", 
+            themeEdit =>
+            {
+                themeEdit.AllowPresetsEdit = false;
+                themeEdit.Theme = ClientTheme.CurrentTheme.CloneTheme();
+            },  
+            dialog =>
+            {
+                dialog.ClassActions = MudExCss.Classes.Dialog.DialogActionsSticky;
+                dialog.Icon = Icons.Material.Filled.Palette;
+                dialog.Buttons = MudExDialogResultAction.OkCancel();
+            }, defaultDialogOptionsEx);
+        
+        return res.DialogResult.Canceled ? ClientTheme.CurrentTheme : res.Component.Theme;
+
     }
 
     private void OnThemeSelected(ClientTheme obj)
