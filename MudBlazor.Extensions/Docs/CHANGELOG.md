@@ -1,4 +1,7 @@
 ## Change Log  
+ - 1.7.63 > Use MudMarkdown as IMudExFileDisplay to support markdown files in [MudExFileDisplay](https://www.mudex.org/file-display)
+ - 1.7.63 > Add new option to allow copy url to clipboard in [MudExFileDisplay](https://www.mudex.org/file-display)
+ - 1.7.63 > Fix bug in [MudExThemeEdit](https://www.mudex.org/theme-ed  it) where component wasnt loaded if its rendered in a dialog.
  - 1.7.62 > Update all nuget packages to latest versions. Now using MudBlazor 6.7.0
  - 1.7.61 > **_Breaking:_** Rename: Move namespace for Css enums like CssUnit, BorderStyle etc from MudBlazor.Extensions.Core to MudBlazor.Extensions.Core.Css
  - 1.7.61 > new Component [MudExIconPicker](https://www.mudex.org/mud-ex-icon-picker) to select icons. Used in [API]((https://www.mudex.org/api)) overview and in ComponentGrid as MudExObjectedit config.

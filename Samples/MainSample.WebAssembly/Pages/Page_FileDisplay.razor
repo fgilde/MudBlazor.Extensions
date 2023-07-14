@@ -10,11 +10,12 @@
         <MudSelectItem Value="@(Sample("sample.pdf", "application/pdf"))">sample.pdf</MudSelectItem>
         <MudSelectItem Value="@(Sample("weather.json", "text/plain"))">weather.json</MudSelectItem>
         <MudSelectItem Value="@(Sample("logo.png", "image/png"))">logo.png</MudSelectItem>
+        <MudSelectItem Value="@(Sample("readme.md", "text/markdown"))">readme.md</MudSelectItem>
     </MudSelect>
 
     @if (SampleFile.url != null)
     {
-        <div style="width: 700px; height: 500px; margin-top: 20px">
+        <div style="width: 100%; height: 800px; margin-top: 20px">
             <MudExFileDisplay HandleContentErrorFunc="@HandleContentError"
                           FileName="@SampleFile.name" Url="@SampleFile.url" ContentType="@SampleFile.contentType"></MudExFileDisplay>
         </div>

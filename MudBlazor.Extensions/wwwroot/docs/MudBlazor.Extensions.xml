@@ -1294,6 +1294,11 @@
             Set to true to allow user to download the loaded file
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.AllowCopyUrl">
+            <summary>
+            Set to true to allow user to copy the file url to clipboard
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.FileName">
             <summary>
             Filename
@@ -1433,6 +1438,64 @@
             <summary>
             Whether to allow user to download the loaded file.
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown">
+            <summary>
+            Simple component to display markdown files with MudExFileDisplay
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.Name">
+            <summary>
+            The name of the component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.Value">
+            <summary>
+            The Current markdown string provided from file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.CodeBlockTheme">
+            <summary>
+            The theme of the code block
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.LinkCommand">
+            <summary>
+            LinkCommand
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.TableCellMinWidth">
+            <summary>
+            TableCellMinWidth
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.Styling">
+            <summary>
+            Styling
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.OverrideLinkUrl">
+            <summary>
+            OverrideLinkUrl
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.OverrideHeaderTypo">
+            <summary>
+            OverrideHeaderTypo
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.FileDisplayInfos">
+            <summary>
+            The file display infos
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Returns true if its a markdown file and we can handle it
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayZip">
             <summary>

@@ -1,10 +1,10 @@
-# MudExFileDisplay
+﻿# MudExFileDisplay
 
 <!-- FILEDISPLAY:START -->
 The `MudExFileDisplay` component is designed to display file contents, such as a preview before uploading or for referenced files. 
 This component can automatically handle URLs or streams and deliver the best possible display. 
 Additionally, you can implement `IMudExFileDisplay` in your own component to register a custom file display.
-This is excacly what `MudExFileDisplayZip` does, which is used by `MudExFileDisplay` to display zip files or what `MudExFileDisplayMarkdown` does to display markdown files.
+This is excacly what `MudExFileDisplayZip` does, which is used by `MudExFileDisplay` to display zip files or what `MudExFileDisplayMarkdown` does to display markdown files like this here.
 
 
 Example of using `MudExFileDisplay`:
@@ -23,7 +23,7 @@ This component can be automatically utilized by `MudExFileDisplay`, but can also
 ```
 
 ![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/FileDisplayZip.png)
-
+ 
 ### MudExFileDisplayDialog
 A small dialog for the `MudExFileDisplay` Component. It can be used with static helpers as shown below:
 

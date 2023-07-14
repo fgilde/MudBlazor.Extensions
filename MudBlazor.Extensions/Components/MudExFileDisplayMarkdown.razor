@@ -1,0 +1,17 @@
+﻿@inherits MudExBaseComponent<MudExFileDisplayMarkdown>
+
+<Scripts SourceLoaded="@OnSourceLoaded" 
+         UnloadOnDispose="false" 
+         SourceLoadBehaviour="LoadBehaviour.OnInitializedAsync" 
+         Src="_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js,_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css" />
+
+@if (!string.IsNullOrEmpty(Value) && _requiredJsLoaded)
+{
+    @*TODO: Ask author of MudMarkdown if he can remove the sealed and then inherit from it*@
+    <MudMarkdown TableCellMinWidth="@TableCellMinWidth" 
+                 Styling="@Styling" 
+                 OverrideLinkUrl="@OverrideLinkUrl" 
+                 OverrideHeaderTypo="@OverrideHeaderTypo" 
+                 LinkCommand="@LinkCommand" 
+                 CodeBlockTheme="@CodeBlockTheme" Value="@(Value)"></MudMarkdown>
+}

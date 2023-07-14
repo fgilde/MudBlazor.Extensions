@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorJS;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
@@ -25,6 +26,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private bool internalOverwrite;
     private List<IMudExFileDisplay> _possibleRenderControls;
     private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) _componentForFile;
+    [Inject] private IJsApiService JsApiService { get; set; }
 
     #endregion
 
@@ -106,6 +108,13 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     [Parameter]
     [SafeCategory("Behavior")]
     public bool AllowDownload { get; set; } = true;
+
+    /// <summary>
+    /// Set to true to allow user to copy the file url to clipboard
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool AllowCopyUrl { get; set; } = true;
 
     /// <summary>
     /// Filename
@@ -341,6 +350,12 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             FileName = $"{FileName}",
             MimeType = ContentType
         });
+    }
+
+    private async Task CopyUrl(MouseEventArgs arg)
+    {
+        await JsApiService.CopyToClipboardAsync(Url);
+        //await JsRuntime.DInvokeVoidAsync(window => {});
     }
 
     private void CloseContentError()
