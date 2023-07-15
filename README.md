@@ -6,7 +6,7 @@
 [![Website](https://img.shields.io/website?label=mudex.org&url=http%3A%2F%2Fmudex.org)](https://www.mudex.org/)
 
 #### CI Stats
-[![Publish Nuget Preview Package and deploy Test App](https://github.com/fgilde/MudBlazor.Extensions/actions/workflows/nuget_preview_publish_and_deploy.yml/badge.svg)](https://github.com/fgilde/MudBlazor.Extensions/actions/workflows/nuget_preview_publish_and_deploy.yml)
+[![Publish Nuget Preview Package and deploy Test App](https://github.com/fgilde/MudBlazor.Extensions/actions/workflows/nuget_preview_publish_and_app_deploy.yml/badge.svg)](https://github.com/fgilde/MudBlazor.Extensions/actions/workflows/nuget_preview_publish_and_app_deploy.yml)
 [![Publish Nuget Release Package](https://github.com/fgilde/MudBlazor.Extensions/actions/workflows/nuget_release_publish.yml/badge.svg)](https://github.com/fgilde/MudBlazor.Extensions/actions/workflows/nuget_release_publish.yml)
 
 # MudBlazor.Extensions
