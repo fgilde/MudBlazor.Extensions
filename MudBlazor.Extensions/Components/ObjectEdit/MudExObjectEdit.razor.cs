@@ -41,6 +41,7 @@ public partial class MudExObjectEdit<T>
 
     #region Parameters
 
+
     /// <summary>
     /// If you need the reference for dynamic ignored fields for example because of Model Validation or resets you should set this to true
     /// </summary>
@@ -148,6 +149,11 @@ public partial class MudExObjectEdit<T>
     /// Whether the component should automatically save and restore its state.
     /// </summary>
     [Parameter] public bool AutoSaveRestoreState { get; set; }
+
+    /// <summary>
+    /// If this is true, the component adds the value if possible to url and reads it automatically if its present in Url
+    /// </summary>
+    [Parameter] public bool StoreAndReadValueFromUrl { get; set; }
 
     /// <summary>
     /// The storage location for saving and restoring component state.
@@ -782,7 +788,10 @@ public partial class MudExObjectEdit<T>
         return res;
     }
 
-    private async Task Export()
+    /// <summary>
+    /// Exports the current value as json
+    /// </summary>
+    protected async Task Export()
     {
         var exported = new ExportData<T> { Value = Value, Json = await ToJsonAsync() };
         await BeforeExport.InvokeAsync(exported);
@@ -809,18 +818,28 @@ public partial class MudExObjectEdit<T>
         }
     }
 
-    private Task<string> ToJsonAsync()
+    /// <summary>
+    /// Returns the current value as json
+    /// </summary>
+    public Task<string> ToJsonAsync()
     {
-        return Task.Run(() =>
+        return Task.Run(ToJson);
+    }
+
+    /// <summary>
+    /// Returns the json
+    /// </summary>
+    /// <returns></returns>
+    public string ToJson()
+    {
+        var ignored = MetaInformation.Properties().Where(p => p.Settings.IgnoreOnExport).Select(m => m.PropertyName).ToArray();
+        
+        var json = JsonConvert.SerializeObject(Value, new JsonSerializerSettings
         {
-            var ignored = MetaInformation.Properties().Where(p => p.Settings.IgnoreOnExport).Select(m => m.PropertyName).ToArray();
-            var json = JsonConvert.SerializeObject(Value, new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                Formatting = Formatting.Indented
-            });
-            return ignored.Any() ? JsonHelper.RemovePropertiesFromJson(json, ignored) : json;
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            Formatting = Formatting.Indented
         });
+        return ignored.Any() ? JsonHelper.RemovePropertiesFromJson(json, ignored) : json;
     }
 
     private async Task<bool> ShouldCancelImportAsync(string json, string fileName)
@@ -903,7 +922,13 @@ public partial class MudExObjectEdit<T>
         ImportIcon = icon;
     }
 
-    private Task LoadFromJson(string json, bool removeIgnoredImports)
+    /// <summary>
+    /// Imports a Json value
+    /// </summary>
+    /// <param name="json"></param>
+    /// <param name="removeIgnoredImports"></param>
+    /// <returns></returns>
+    public Task LoadFromJson(string json, bool removeIgnoredImports)
     {
         return Task.Run(() =>
         {

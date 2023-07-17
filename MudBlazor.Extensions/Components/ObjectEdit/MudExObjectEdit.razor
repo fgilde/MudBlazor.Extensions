@@ -150,7 +150,8 @@ else
     {
         return 
             @<MudExPropertyEdit @ref="@Ref" DisableFieldFallback="@DisableFieldFallback"
-                                   RenderKey="@RenderKey"
+                                RenderKey="@RenderKey"
+                                    StoreAndReadValueFromUrl="@StoreAndReadValueFromUrl"
                                    ShowPathAsTitle="@ShowPathAsTitleForEachProperty"
                                    IsLoading="@(IsLoading || IsInternalLoading)"
                                    AutoSkeletonOnLoad="@AutoSkeletonOnLoad"

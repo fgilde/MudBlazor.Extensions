@@ -1,12 +1,16 @@
 ﻿using System.Linq.Expressions;
+using System.Management;
 using System.Reflection;
+using System.Web;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Utilities;
+using Newtonsoft.Json;
 using Nextended.Core;
 using Nextended.Core.Extensions;
+using Nextended.Core.Scopes;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 
@@ -15,17 +19,64 @@ namespace MudBlazor.Extensions.Components.ObjectEdit;
 /// </summary>
 public partial class MudExPropertyEdit
 {
+    /// <summary>
+    /// If this is true, the component adds the value if possible to url and reads it automatically if its present in Url
+    /// </summary>
+    [Parameter] public bool StoreAndReadValueFromUrl { get; set; }
+
+    /// <summary>
+    /// A prefix that is used for the key in the url
+    /// </summary>
+    [Parameter]
+    public string UriPrefixForKey { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Set this to true to display whole property path as title
+    /// </summary>
     [Parameter] public bool ShowPathAsTitle { get; set; }
+
+    /// <summary>
+    /// Gets or sets the IsLoading state
+    /// </summary>
     [Parameter] public bool IsLoading { get; set; }
+
+    /// <summary>
+    /// Creates a skeleton while loading if this is true
+    /// </summary>
     [Parameter] public bool AutoSkeletonOnLoad { get; set; }
+
+    /// <summary>
+    /// Class
+    /// </summary>
     [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// ActiveFiler string
+    /// </summary>
     [Parameter] public string ActiveFilterTerm { get; set; }
+
+    /// <summary>
+    /// Settings for the property reset behavior
+    /// </summary>
     [Parameter] public PropertyResetSettings PropertyResetSettings { get; set; }
+
+    /// <summary>
+    /// PropertyMeta from ObjectEdit where Value is present in
+    /// </summary>
     [Parameter][IgnoreOnObjectEdit] public ObjectEditPropertyMeta PropertyMeta { get; set; }
+
+    /// <summary>
+    /// EventCallback if value changed
+    /// </summary>
     [Parameter] public EventCallback<ObjectEditPropertyMeta> PropertyValueChanged { get; set; }
+
+    /// <summary>
+    /// If this setting is true and no RenderData is available there will no fallback in a textedit rendered
+    /// </summary>
     [Parameter] public bool DisableFieldFallback { get; set; }
 
-    private DynamicComponent editor;
+    private object _valueBackup;
+    private DynamicComponent _editor;
     private Expression<Func<TPropertyType>> CreateFieldForExpression<TPropertyType>()
         => Check.TryCatch<Expression<Func<TPropertyType>>, Exception>(() => Expression.Lambda<Func<TPropertyType>>(Expression.Property(Expression.Constant(PropertyMeta.ReferenceHolder, PropertyMeta.ReferenceHolder.GetType()), PropertyMeta.PropertyInfo)));
 
@@ -36,17 +87,27 @@ public partial class MudExPropertyEdit
         return genericMethod?.Invoke(this, Array.Empty<object>()) ?? CreateFieldForExpression<string>();
     }
 
-    private object valueBackup;
+
+    /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender && PropertyMeta != null)
         {
-            valueBackup = await GetBackupAsync(PropertyMeta.Value);
+            _valueBackup = await GetBackupAsync(PropertyMeta.Value);
         }
 
         await base.OnAfterRenderAsync(firstRender);
     }
 
+    /// <inheritdoc />
+    protected override Task OnFinishedRenderAsync()
+    {
+        SetValueFromUrlIf();
+        return base.OnFinishedRenderAsync();
+    }
+
+
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         RenderDataDefaults.AddRenderDataProvider(ServiceProvider);
@@ -56,9 +117,9 @@ public partial class MudExPropertyEdit
     private IDictionary<string, object> GetPreparedAttributes()
     {
         return PropertyMeta.RenderData
-            .InitValueBinding(PropertyMeta, RaisePropertyValueChanged)
+            .InitValueBinding(PropertyMeta, OnPropertyValueChanged)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.For), CreateFieldForExpressionPropertyType())
-            .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Label), () => PropertyMeta.Settings.LabelFor(LocalizerToUse), PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.Both || PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.DefaultComponentLabeling)
+            .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Label), () => PropertyMeta.Settings.LabelFor(LocalizerToUse), PropertyMeta.Settings.LabelBehaviour is LabelBehaviour.Both or LabelBehaviour.DefaultComponentLabeling)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.HelperText), () => PropertyMeta.Settings.DescriptionFor(LocalizerToUse))
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Class), () => Class)
             .TrySetAttributeIfAllowed(nameof(Localizer), Localizer)
@@ -66,12 +127,70 @@ public partial class MudExPropertyEdit
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.ReadOnly), () => !PropertyMeta.Settings.IsEditable).Attributes;
     }
 
-    private Task RaisePropertyValueChanged()
-        => PropertyValueChanged.InvokeAsync(PropertyMeta);
+    private Task OnPropertyValueChanged()
+    {
+        AddValueToUrlIf();
+        return PropertyValueChanged.InvokeAsync(PropertyMeta);
+    }
+
+    private void SetValueFromUrlIf()
+    {
+        var navigation = Get<NavigationManager>();
+        if (!StoreAndReadValueFromUrl || navigation is null)
+            return;
+
+        try
+        {
+            var uriBuilder = new UriBuilder(navigation.Uri);
+            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+            var key = UriPrefixForKey + PropertyMeta.PropertyName;
+            if (query.AllKeys.Contains(key))
+            {
+                var value = query[key];
+                if (value != null)
+                {
+                    var deserializeObject = JsonConvert.DeserializeObject(value, PropertyMeta.PropertyInfo.PropertyType);
+                    var propertyMetaValue = deserializeObject.MapTo(PropertyMeta.PropertyInfo.PropertyType);
+                    PropertyMeta.Value = propertyMetaValue;
+                    Invalidate();
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    private void AddValueToUrlIf()
+    {
+        var navigation = Get<NavigationManager>();
+        if (!StoreAndReadValueFromUrl || !IsFullyRendered || navigation is null)
+            return;
+
+        try
+        {
+            var uriBuilder = new UriBuilder(navigation.Uri);
+            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+            var valueForUrl = JsonConvert.SerializeObject(PropertyMeta.Value);
+            var key = UriPrefixForKey + PropertyMeta.PropertyName;
+            query[key] = valueForUrl;
+            uriBuilder.Query = query.ToString() ?? string.Empty;
+
+            navigation.NavigateTo(uriBuilder.ToString(), false);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
 
     private PropertyResetSettings GetResetSettings()
         => PropertyMeta.Settings?.ResetSettings ?? (PropertyResetSettings ??= new PropertyResetSettings());
 
+    /// <summary>
+    /// Renders the editor with a CustomRenderer
+    /// </summary>
     protected void RenderAs(RenderTreeBuilder renderTreeBuilder, ObjectEditPropertyMeta meta)
         => meta.RenderData.CustomRenderer.Render(renderTreeBuilder, this, meta);
 
@@ -104,7 +223,14 @@ public partial class MudExPropertyEdit
         return type.CreateInstance();
     }
 
+    /// <summary>
+    /// Resets the Editor
+    /// </summary>
     public Task ResetAsync() => ClearOrResetAsync(true);
+
+    /// <summary>
+    /// Clears the Editor
+    /// </summary>
     public Task ClearAsync() => ClearOrResetAsync(false);
 
     private async Task ClearOrResetAsync(bool reset)
@@ -114,17 +240,22 @@ public partial class MudExPropertyEdit
             if (PropertyMeta.PropertyInfo.CanWrite)
             {
                 PropertyMeta.Value = reset
-                    ? await GetBackupAsync(valueBackup)
-                    : PropertyMeta.RenderData.ConvertToPropertyValue(GetDefault(PropertyMeta.PropertyInfo.PropertyType));
-                
+                    ? await GetBackupAsync(_valueBackup)
+                    : PropertyMeta.RenderData.ConvertToPropertyValue(
+                        GetDefault(PropertyMeta.PropertyInfo.PropertyType));
+
                 StateHasChanged();
             }
         }
         catch
-        {}
+        {
+            // ignored
+        }
     }
 
-
+    /// <summary>
+    /// Refreshes the UI
+    /// </summary>
     public void Invalidate(bool useRefresh = false)
     {
         if (useRefresh) 
@@ -133,8 +264,11 @@ public partial class MudExPropertyEdit
             StateHasChanged();
     }
 
+    /// <summary>
+    /// Returns the current Value independent of the PropertyMeta for example if binding is disabled
+    /// </summary>
     public object GetCurrentValue()
-        => editor.Instance?.GetType()?.GetProperty(PropertyMeta.RenderData.ValueField)?.GetValue(editor.Instance);
+        => _editor.Instance?.GetType().GetProperty(PropertyMeta.RenderData.ValueField)?.GetValue(_editor.Instance);
 
     private string Title()
         => ShowPathAsTitle ? PropertyMeta.PropertyName.Replace(".", " > ") : null;

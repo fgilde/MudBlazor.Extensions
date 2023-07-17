@@ -67,7 +67,7 @@
         }
         else if (PropertyMeta.RenderData != null)
         {
-            result = @<DynamicComponent @ref="editor" Type="@PropertyMeta.RenderData.ComponentType" Parameters="GetPreparedAttributes()"></DynamicComponent>;
+            result = @<DynamicComponent @ref="_editor" Type="@PropertyMeta.RenderData.ComponentType" Parameters="GetPreparedAttributes()"></DynamicComponent>;
         }
         else if (DisableFieldFallback)
         {
@@ -75,6 +75,7 @@
         }
         else
         {
+            //Todo we need to have value changed or something to raise also this PropertyValueChanged
             result = @<MudTextField ReadOnly="@(!PropertyMeta.Settings.IsEditable)"
                                     For="@(CreateFieldForExpression<string>())"
                                     HelperText="@(PropertyMeta.Settings.DescriptionFor(Localizer))"

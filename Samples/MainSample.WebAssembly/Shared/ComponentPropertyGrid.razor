@@ -15,6 +15,9 @@
     [Inject]
     IDialogService dialogService { get; set; }
 
+    [Inject] private IJsApiService JsApiService { get; set; }
+
+
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
     protected override Task OnInitializedAsync()
@@ -23,9 +26,11 @@
         StickyToolbar = true;
         ToolbarColor = Color.Surface;
         StickyToolbarTop = "-8px";
+        StoreAndReadValueFromUrl = true;
 
         return base.OnInitializedAsync();
     }
+
 
 
     protected override ObjectEditMeta<T> ConfigureMetaBase(ObjectEditMeta<T> meta)
@@ -39,7 +44,9 @@
     
     RenderFragment RenderShowCodeButton()
     {
-        return @<MudButton StartIcon="@Icons.Material.Filled.Code" OnClick="@ShowCode">Show Markup</MudButton>;
+        return @<div>
+                    <MudButton StartIcon="@Icons.Material.Filled.Code" OnClick="@ShowCode">Show Markup</MudButton>
+               </div>;
     }
 
     private async Task ShowCode()
@@ -58,7 +65,7 @@
             },new DialogOptionsEx()
             {   
                 DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass),
-                DragMode =MudDialogDragMode.Simple,
+                DragMode = MudDialogDragMode.Simple,
                 CloseButton = true,
                 Resizeable = true,
             });

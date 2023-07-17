@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorJS.JsInterop;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Interop;
@@ -20,8 +22,15 @@ public partial class MudExIconPicker
     private bool _rendered;
     private string _propertyName;
     private int _cardsPerRow = 3;
-
+    private string _elementId = "picker" + Guid.NewGuid().ToString()[..8];
+    
+    private BlazorJSEventInterop<PointerEventArgs> _jsEvent;
     [Inject] IResizeObserver ResizeObserver { get; set; }
+    
+    //[Inject] private IKeyInterceptorFactory KeyInterceptorFactory { get; set; }
+    //private IEventListener _throttledEventManager;
+    //[Inject] IEventListenerFactory ThrottledEventManagerFactory { get; set; }
+
 
     /// <summary>
     /// Gets or sets the <see cref="IServiceProvider"/> to be used for dependency injection.
@@ -165,7 +174,7 @@ public partial class MudExIconPicker
     private string OnSet(string value)
     {
         RaiseChangedIf();
-        return Text = AlwaysShowValue ? value : MudExSvg.SvgPropertyNameForValue(_value); 
+        return Text = AlwaysShowValue ? value : MudExSvg.SvgPropertyNameForValue(_value, IconTypes); 
     }
 
     /// <inheritdoc />
@@ -178,18 +187,18 @@ public partial class MudExIconPicker
         Class = string.IsNullOrEmpty(Class) || !Class.Contains("mud-ex-icon-picker") ? $"{Class} mud-ex-icon-picker" : Class;
         base.OnInitialized();
     }
-    
+
 
     /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
+        await base.OnParametersSetAsync();
         if (PickerVariant is PickerVariant.Static)
         {
             EnsureAvailable();
             SetCardsPerRow();
         }
-        Text = AlwaysShowValue ? _value : MudExSvg.SvgPropertyNameForValue(_value);
-        await base.OnParametersSetAsync();
+        Text = AlwaysShowValue ? _value : MudExSvg.SvgPropertyNameForValue(_value, IconTypes);
     }
 
     /// <inheritdoc />
@@ -200,11 +209,18 @@ public partial class MudExIconPicker
             _rendered = true;
             await ResizeObserver.Observe(killZone);
             ResizeObserver.OnResized += OnResized;
+          //  _jsEvent = await new BlazorJSEventInterop<PointerEventArgs>(ServiceProvider.GetService<IJSRuntime>()).OnBlur(LostFocusAsync, $".{_elementId}");
         }
 
         await base.OnAfterRenderAsync(firstRender);
     }
-    
+
+    private string GetClass()
+    {
+        return MudExCssBuilder.Default.AddClass(_elementId).Build();
+    }
+
+
     private void EnsureAvailable()
     {
         if (Available is not { Count: not 0 })
@@ -212,11 +228,18 @@ public partial class MudExIconPicker
             Available = MudExSvg.GetAllSvgProperties(IconTypes);
         }
     }
-    private List<Dictionary<string, string>> SelectedIcons => string.IsNullOrWhiteSpace(Filter)
-        ? GetVirtualizedIcons(Available)
-        : GetVirtualizedIcons(Available.Where(m => m.Key.Contains(Filter, StringComparison.OrdinalIgnoreCase)));
+    private List<Dictionary<string, string>> SelectedIcons
+    {
+        get
+        {
+            EnsureAvailable();
+            return string.IsNullOrWhiteSpace(Filter)
+                ? GetVirtualizedIcons(Available)
+                : GetVirtualizedIcons(Available.Where(m => m.Key.Contains(Filter, StringComparison.OrdinalIgnoreCase)));
+        }
+    }
 
-    private List<Dictionary<string, string>> GetVirtualizedIcons(IEnumerable<KeyValuePair<string, string>> iconList)
+    private List<Dictionary<string, string>> GetVirtualizedIcons(IEnumerable<KeyValuePair<string, string>> iconList) 
         => iconList.Chunk(Math.Max(_cardsPerRow, 1)).Select(row => row.ToDictionary(pair => pair.Key, pair => pair.Value)).ToList();
 
     private string GetKillZoneStyle() => "height:65vh;width:100%;position:sticky;top:0px;";
@@ -263,6 +286,38 @@ public partial class MudExIconPicker
         RaiseChangedIf();
     }
 
+
+    //private bool canClose = true;
+    
+    //protected override void OnClosed()
+    //{
+    //    if (!canClose && PickerVariant == PickerVariant.Dialog)
+    //    {
+    //        IsOpen = true;
+    //        return;
+    //    }
+    //    base.OnClosed();
+    //}
+
+
+
+    //public override ValueTask FocusAsync()
+    //{
+    //    if (PickerVariant == PickerVariant.Dialog)
+    //        canClose = false;
+    //    return base.FocusAsync();
+    //}
+
+    //private ElementReference element;
+    //private async Task LostFocusAsync(PointerEventArgs arg)
+    //{
+    //    var js = ServiceProvider.GetService<IJSRuntime>();
+    //    if (PickerVariant == PickerVariant.Dialog && IsOpen && !(await js.IsWithin(arg, element)))
+    //    {
+    //        canClose = true;
+    //    }
+    //}
+
     private void RaiseChanged()
     {
         ValueChanged.InvokeAsync(Value);
@@ -282,7 +337,10 @@ public partial class MudExIconPicker
     private void CloseIf()
     {
         if (AutoCloseOnSelect)
+        {
+           // canClose = true;
             Close();
+        }
     }
 
     private async Task Select(string value)
@@ -297,4 +355,10 @@ public partial class MudExIconPicker
 
     private static bool IsValueName(string s) => !s.StartsWith("<");
 
+
+    private Task OnMouseDown(MouseEventArgs arg)
+    {
+        
+        return Task.CompletedTask;
+    }
 }

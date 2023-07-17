@@ -3843,6 +3843,11 @@
             Whether the component should automatically save and restore its state.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.StoreAndReadValueFromUrl">
+            <summary>
+            If this is true, the component adds the value if possible to url and reads it automatically if its present in Url
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.StateTargetStorage">
             <summary>
             The storage location for saving and restoring component state.
@@ -4159,6 +4164,30 @@
             <summary>
             Called when a property value is changed
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Export">
+            <summary>
+            Exports the current value as json
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ToJsonAsync">
+            <summary>
+            Returns the current value as json
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ToJson">
+            <summary>
+            Returns the json
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.LoadFromJson(System.String,System.Boolean)">
+            <summary>
+            Imports a Json value
+            </summary>
+            <param name="json"></param>
+            <param name="removeIgnoredImports"></param>
+            <returns></returns>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1">
             <summary>
@@ -4514,6 +4543,95 @@
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit">
             <summary>
             Editor for a property of an object. Used internally inside the MudExObjectEdit
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.StoreAndReadValueFromUrl">
+            <summary>
+            If this is true, the component adds the value if possible to url and reads it automatically if its present in Url
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.UriPrefixForKey">
+            <summary>
+            A prefix that is used for the key in the url
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.ShowPathAsTitle">
+            <summary>
+            Set this to true to display whole property path as title
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.IsLoading">
+            <summary>
+            Gets or sets the IsLoading state
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.AutoSkeletonOnLoad">
+            <summary>
+            Creates a skeleton while loading if this is true
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.Class">
+            <summary>
+            Class
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.ActiveFilterTerm">
+            <summary>
+            ActiveFiler string
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.PropertyResetSettings">
+            <summary>
+            Settings for the property reset behavior
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.PropertyMeta">
+            <summary>
+            PropertyMeta from ObjectEdit where Value is present in
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.PropertyValueChanged">
+            <summary>
+            EventCallback if value changed
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.DisableFieldFallback">
+            <summary>
+            If this setting is true and no RenderData is available there will no fallback in a textedit rendered
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.OnFinishedRenderAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.RenderAs(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder,MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
+            <summary>
+            Renders the editor with a CustomRenderer
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.ResetAsync">
+            <summary>
+            Resets the Editor
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.ClearAsync">
+            <summary>
+            Clears the Editor
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.Invalidate(System.Boolean)">
+            <summary>
+            Refreshes the UI
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.GetCurrentValue">
+            <summary>
+            Returns the current Value independent of the PropertyMeta for example if binding is disabled
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.Css.AlignItems">

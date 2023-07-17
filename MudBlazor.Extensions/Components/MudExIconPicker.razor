@@ -16,7 +16,7 @@
 
     private RenderFragment GetPickerContent()
     {
-        return @<div style="@(MudExStyleBuilder.Default.WithOverflow("hidden").WithPadding(30).WithWidth(PickerWidth).WithHeight(PickerHeight))">
+        return @<div class="@GetClass()" style="@(MudExStyleBuilder.Default.WithOverflow("hidden").WithPadding(30).WithWidth(PickerWidth).WithHeight(PickerHeight))">
         <MudGrid Style="margin-bottom:25px;">
             <MudItem Style="width: 100%">
                 <MudText Style="margin-bottom: 15px; text-align: center;">@PropertyNameLabel</MudText>
@@ -26,7 +26,7 @@
             
         @if (!DisableList)
         {
-            <MudTextField Immediate="true" Variant="FilterVariant" Clearable="true" Placeholder="Search" @bind-Value="Filter" AdornmentIcon="@Icons.Material.Filled.Search"/>
+            <MudTextField @onmousedown="@OnMouseDown" Immediate="true" Variant="FilterVariant" Clearable="true" Placeholder="Search" @bind-Value="Filter" AdornmentIcon="@Icons.Material.Filled.Search"/>
         }   
         </MudGrid>
         

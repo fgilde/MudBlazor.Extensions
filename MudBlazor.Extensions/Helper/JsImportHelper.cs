@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using BlazorJS;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using Nextended.Core.Extensions;
 
@@ -15,6 +17,12 @@ namespace MudBlazor.Extensions.Helper
         private static string min => useMinified ? ".min" : string.Empty;
         private static bool initialized;
         internal static IJSRuntime _runtime;
+
+        public static Task<bool> IsWithin(this IJSRuntime runtime, MouseEventArgs args, ElementReference element)
+        {
+            return runtime.InvokeAsync<bool>("MudExEventHelper.isWithin", args, element).AsTask();
+        }
+
 
         /// <summary>
         /// Imports requires JS module and required css styles for MudBlazor.Extensions
