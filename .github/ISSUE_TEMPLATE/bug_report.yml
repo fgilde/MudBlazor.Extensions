@@ -62,6 +62,14 @@ body:
     id: pull-request
     attributes:
       label: Pull Request
-      description: If you've already submitted a pull request that fixes this bug, please provide the link.
+      description: If you've already submitted a pull request that fixes this bug, or have a link to a fork please provide the link.
     validations:
       required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/fgilde/MudBlazor.Extensions/blob/main/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
