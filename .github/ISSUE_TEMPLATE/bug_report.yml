@@ -40,13 +40,28 @@ body:
     validations:
       required: false
   - type: dropdown
-    id: os
+    id: browser
     attributes:
-      label: What operating system are you using?
+      label: What browser are you using?
       options:
-        - Windows
-        - MacOS
-        - Linux
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
         - Other
     validations:
       required: true
+  - type: textarea
+    id: sample-solution
+    attributes:
+      label: Sample Solution
+      description: If applicable, please provide a link to a sample solution or upload a project.
+    validations:
+      required: false
+  - type: input
+    id: pull-request
+    attributes:
+      label: Pull Request
+      description: If you've already submitted a pull request that fixes this bug, please provide the link.
+    validations:
+      required: false
