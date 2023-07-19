@@ -8,6 +8,7 @@ using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Utilities;
 using Nextended.Core.Extensions;
+using Nextended.Core.Scopes;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -17,7 +18,7 @@ namespace MudBlazor.Extensions.Components;
 /// <typeparam name="TTheme"></typeparam>
 public partial class MudExThemeEdit<TTheme>
 {
-    private const int ExtraDelay = 500; // Currently needed because of timing issues in MudExObjectEdit. But will fixed later
+    private const int ExtraDelay = 200; // Currently needed because of timing issues in MudExObjectEdit. But will fixed later
 
     private KeyValuePair<string, MudColor>[] _cssVars;
     private bool _isLoading = true;
@@ -241,12 +242,11 @@ public partial class MudExThemeEdit<TTheme>
     private async Task SetTheme(TTheme theme)
     {
         Theme = null;
-        Loading(true);
+        using var _ = Loading();
         Theme = theme;
         await OnThemeChanged(Theme);
         StateHasChanged();
         await Task.Delay(ExtraDelay);
-        Loading(false);
     }
 
     private void UpdateInitialTheme()
@@ -254,6 +254,8 @@ public partial class MudExThemeEdit<TTheme>
         if (Theme != null)
             InitialTheme = Theme.CloneTheme();
     }
+
+    private IDisposable Loading() => new ActionScope(() => Loading(true), () => Loading(false));
 
     private void Loading(bool isLoading)
     {
@@ -269,9 +271,10 @@ public partial class MudExThemeEdit<TTheme>
     {
         if (!IsRendered)
             return;
-        Loading(true);
-        ObjectEditor?.UpdateAllConditions();
-        Loading(false);
+        using (var _ = Loading())
+        {            
+            ObjectEditor?.UpdateAllConditions();
+        }        
         Refresh();
     }
 
