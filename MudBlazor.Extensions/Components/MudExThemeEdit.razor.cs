@@ -185,12 +185,12 @@ public partial class MudExThemeEdit<TTheme>
     /// <summary>
     /// Raised when user clicks on save
     /// </summary>
-    [Parameter] public EventCallback<(TTheme Theme, ThemePreset<TTheme> Preset)> ThemeSaved { get; set; }
+    [Parameter] public EventCallback<ThemeChangedArgs<TTheme>> ThemeSaved { get; set; }
 
     /// <summary>
     /// Raised when user clicks on cancel
     /// </summary>
-    [Parameter] public EventCallback<(TTheme Theme, ThemePreset<TTheme> Preset)> EditCanceled { get; set; }
+    [Parameter] public EventCallback<ThemeChangedArgs<TTheme>> EditCanceled { get; set; }
 
 
     /// <summary>
@@ -225,10 +225,10 @@ public partial class MudExThemeEdit<TTheme>
         if (firstRender)
         {
             _cssVars = await MudExCss.GetCssColorVariablesAsync();
+            await Task.Delay(ExtraDelay);
+            Loading(false);
         }
         await base.OnAfterRenderAsync(firstRender);
-        await Task.Delay(ExtraDelay);
-        Loading(false);
     }
 
     private async Task EditModeChangedInternally(ThemeEditMode arg)
@@ -257,8 +257,12 @@ public partial class MudExThemeEdit<TTheme>
 
     private void Loading(bool isLoading)
     {
-        _isLoading = isLoading;
-        StateHasChanged();
+        if(_isLoading != isLoading)
+        {
+            _isLoading = isLoading;
+            if (IsRendered)
+                StateHasChanged();
+        }
     }
 
     private void UpdateConditions()

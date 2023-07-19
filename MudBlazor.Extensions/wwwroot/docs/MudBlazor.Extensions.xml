@@ -1013,6 +1013,9 @@
         <member name="M:MudBlazor.Extensions.Components.MudExDivider.OnParametersSetAsync">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDivider.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDivider.GetStyle">
             <summary>
             Style for divider
@@ -2454,6 +2457,31 @@
             Implicit assignable as TTheme
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.ThemeChangedArgs`1">
+            <summary>
+            Arguments for theme saved, deleted etc
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ThemeChangedArgs`1.#ctor(MudBlazor.Extensions.Components.ThemePreset{`0},`0)">
+            <summary>
+            Creates new instance of ThemeChangedArgs
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ThemeChangedArgs`1.Preset">
+            <summary>
+            The used original Preset
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ThemeChangedArgs`1.Theme">
+            <summary>
+            The current theme with all changes applied
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ThemeChangedArgs`1.op_Implicit(System.ValueTuple{`0,MudBlazor.Extensions.Components.ThemePreset{`0}})~MudBlazor.Extensions.Components.ThemeChangedArgs{`0}">
+            <summary>
+            Implicit cast from data tuple
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ThemePreset">
             <summary>
             Static helper class for creating instances of ThemePresets.
@@ -2507,6 +2535,16 @@
         <member name="T:MudBlazor.Extensions.Components.ThemeEditMode">
             <summary>
             Theme edit mode for MudExThemeEdit
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ThemeEditMode.Simple">
+            <summary>
+            Edit mode simple with auto sync for multiple targets
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ThemeEditMode.Full">
+            <summary>
+            Every property can be edited manually 
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExThemeEdit`1">

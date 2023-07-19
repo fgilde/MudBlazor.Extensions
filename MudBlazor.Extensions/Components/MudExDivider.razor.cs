@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorParameterCastingMagic;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
@@ -50,6 +51,7 @@ public partial class MudExDivider : IMudExComponent
     /// Size
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
+    [AllowMagicCasting]
     public MudExSize<double> Size { get; set; } = 1;
 
     /// <summary>
@@ -71,6 +73,10 @@ public partial class MudExDivider : IMudExComponent
         UserAttributes.AddOrUpdate("data-label", Label);
         await base.OnParametersSetAsync();
     }
+
+    /// <inheritdoc />
+    public override Task SetParametersAsync(ParameterView parameters) 
+        => base.SetParametersAsync(parameters.ApplyMagicCasting(this));
 
     private string GetClass()
     {

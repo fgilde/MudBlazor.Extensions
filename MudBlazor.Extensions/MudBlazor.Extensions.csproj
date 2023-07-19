@@ -86,7 +86,7 @@
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="MudBlazor" Version="6.7.0" />
     <PackageReference Include="PSC.Blazor.Components.BrowserDetect" Version="1.0.11" />
-
+    <PackageReference Include="BlazorParameterCastingMagic" Version="1.2.23060811" />
   </ItemGroup>
 
   <ItemGroup>

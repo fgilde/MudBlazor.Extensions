@@ -1,9 +1,9 @@
 ﻿@page "/theme-edit"
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
-@inject IDialogService dialogService
-@inject LocalStorageService storage
-@inject NavigationManager nav
+@inject IDialogService DialogService
+@inject LocalStorageService Storage
+@inject NavigationManager Nav
 
 @attribute [DemoNew(Group = "MudExObjectEdit", Name = "Edit Current Theme", Order = 7, Documentation = "This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing ", Icon = Icons.Material.Outlined.Palette, ForComponentTypes = new[] { typeof(MudExThemeEdit<>) })]
 
@@ -27,7 +27,7 @@
 
     <MudExThemeEdit AllowModeToggle="true"
                     TTheme="ClientTheme"
-    @bind-EditMode="@_editMode"
+                    @bind-EditMode="@EditMode"
                     IsDark="@(_bindDarkMode ? MainLayout.Instance.IsDark : null)"
                     Presets="@_themes"
                     ShowCancelButton="true"
@@ -45,7 +45,7 @@
 @code {
 
     private bool _bindDarkMode = true;
-    private ThemeEditMode _editMode { get; set; } = ThemeEditMode.Simple;
+    private ThemeEditMode EditMode { get; set; } = ThemeEditMode.Simple;
     private ICollection<ThemePreset<ClientTheme>> _themes;
 
     protected override async Task OnInitializedAsync()
@@ -79,7 +79,7 @@
     private async Task OnDeleteTheme(ThemePreset<ClientTheme> arg)
     {
         // Here you can implement your logic. For example delete from server. Important: Update presets and call StateHasChanged()
-        var res = await dialogService.ShowConfirmationDialogAsync("Confirmation", $"Are you sure to delete {arg.Name}?", "Yes", "No");
+        var res = await DialogService.ShowConfirmationDialogAsync("Confirmation", $"Are you sure to delete {arg.Name}?", "Yes", "No");
         if (res)
         {
             await DeleteFromStorageAsync(arg);
@@ -96,7 +96,7 @@
     private async Task<ICollection<ThemePreset<ClientTheme>>> GetThemes()
     {
         var result = ThemePreset.Create(("Default", "This is the MudEx Default theme", ClientTheme.DefaultTheme), ("Another", "Another Demo theme in Red", ClientTheme.Another));
-        var fromStorage = await storage.GetAllThemeItemsAsync<string>();
+        var fromStorage = await Storage.GetAllThemeItemsAsync<string>();
         foreach (var item in fromStorage)
         {
             var theme = MudExThemeHelper.FromJson<ClientTheme>(item.Value);
@@ -109,27 +109,27 @@
     {
         if (themePreset == null || !CanDeletePreset(themePreset))
             return;
-        await storage.SetItemAsync($"theme-{themePreset.Name}", themePreset.Theme.AsJson());
+        await Storage.SetItemAsync($"theme-{themePreset.Name}", themePreset.Theme.AsJson());
     }
 
     private async Task DeleteFromStorageAsync(ThemePreset<ClientTheme> themePreset)
     {
-        await storage.RemoveItemAsync($"theme-{themePreset.Name}");
+        await Storage.RemoveItemAsync($"theme-{themePreset.Name}");
         ThemeChanged(ClientTheme.DefaultTheme);
     }
 
-    private async Task OnThemeSaveClick((ClientTheme Theme, ThemePreset<ClientTheme> Preset) data)
+    private async Task OnThemeSaveClick(ThemeChangedArgs<ClientTheme> args)
     {
-        await dialogService.ShowInformationAsync($"Saved {data.Preset?.Name}", "We do nothing here in this Demo because we store theme on every change. However you can use ThemeSaved to do something if the user has save clicked", Icons.Material.Filled.Save, new DialogOptionsEx {
+        await DialogService.ShowInformationAsync($"Saved {args.Preset?.Name}", "We do nothing here in this Demo because we store theme on every change. However you can use ThemeSaved to do something if the user has save clicked", Icons.Material.Filled.Save, new DialogOptionsEx {
             Animations = new[] { AnimationType.SlideIn },
             Position = DialogPosition.TopCenter,
             DisablePositionMargin = true
         });
     }
 
-    private void OnCancelEdit((ClientTheme Theme, ThemePreset<ClientTheme> Preset) data)
+    private void OnCancelEdit(ThemeChangedArgs<ClientTheme> args)
     {
-        nav.NavigateTo("/");
+        Nav.NavigateTo("/");
     }
 
 }

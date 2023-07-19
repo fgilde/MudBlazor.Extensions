@@ -61,6 +61,37 @@ public class ThemePreset<TTheme> where TTheme : MudTheme
 }
 
 /// <summary>
+/// Arguments for theme saved, deleted etc
+/// </summary>
+public class ThemeChangedArgs<TTheme> where TTheme : MudTheme
+{
+    /// <summary>
+    /// Creates new instance of ThemeChangedArgs
+    /// </summary>
+    public ThemeChangedArgs(ThemePreset<TTheme> preset, TTheme theme = null)
+    {
+        Preset = preset;
+        Theme = theme ?? preset.Theme;
+    }
+
+    /// <summary>
+    /// The used original Preset
+    /// </summary>
+    public ThemePreset<TTheme> Preset { get; private set; }
+    
+    /// <summary>
+    /// The current theme with all changes applied
+    /// </summary>
+    public TTheme Theme { get; private set; }
+
+    /// <summary>
+    /// Implicit cast from data tuple
+    /// </summary>
+    public static implicit operator ThemeChangedArgs<TTheme>((TTheme Theme, ThemePreset<TTheme> Preset) data) => new(data.Preset, data.Theme);
+
+}
+
+/// <summary>
 /// Static helper class for creating instances of ThemePresets.
 /// </summary>
 public static class ThemePreset
@@ -124,6 +155,13 @@ public static class ThemePreset
 /// </summary>
 public enum ThemeEditMode
 {
+    /// <summary>
+    /// Edit mode simple with auto sync for multiple targets
+    /// </summary>
     Simple,
+    
+    /// <summary>
+    /// Every property can be edited manually 
+    /// </summary>
     Full,
 }
