@@ -18,7 +18,10 @@
     initSplitter(splitter) {        
         this.splitter = splitter;
         this.prevElem = splitter.previousElementSibling;
-        this.nextElem = splitter.nextElementSibling;
+
+        this.prevElem = this.findSiblingElement(splitter, el => el.previousElementSibling, ['mud-ex-splitter-internal']);
+        this.nextElem = this.findSiblingElement(splitter, el => el.nextElementSibling, ['mud-ex-splitter-internal']);
+
         if(!this.prevElem || !this.nextElem) {
             console.warn("MudExSplitter can only work between 2 elements!");
             return;
@@ -26,6 +29,20 @@
         this.direction = this.options.verticalSplit ? "V" : "H";
         this.stretchOtherDirection();
         this.dragElement();
+    }
+
+    findSiblingElement(elem, directionFunc, ignoredClasses) {
+        ignoredClasses = Array.isArray(ignoredClasses) ? ignoredClasses : [ignoredClasses];
+        let sibling = directionFunc(elem);
+
+        while (sibling) {
+            if (!ignoredClasses.some(className => sibling.classList.contains(className))) {
+                return sibling;
+            }
+            sibling = directionFunc(sibling);
+        }
+
+        return null;
     }
 
     dragElement() {

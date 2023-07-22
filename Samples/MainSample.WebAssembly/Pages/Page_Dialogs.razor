@@ -15,7 +15,7 @@
             </div>
         </Left>
         <Right>
-            <MudExObjectEditForm T="DialogOptionsEx" AfterImport="@(OnSettingsImported)" AllowExport="true" AllowImport="true" ShowSaveButton="false" ShowCancelButton="false" DefaultGroupName="Other" StickyActionBar="true" Value="@Options">
+            <MudExObjectEditForm StoreAndReadValueFromUrl="true" T="DialogOptionsEx" AfterImport="@(OnSettingsImported)" AllowExport="true" AllowImport="true" ShowSaveButton="false" ShowCancelButton="false" DefaultGroupName="Other" StickyActionBar="true" Value="@Options">
                 <ActionContent>
                     <MudButton Variant="Variant.Filled" Color="Color.Warning" OnClick="@SetAsDefaultClick">Set as Default options for all Dialogs</MudButton>
                 </ActionContent>

@@ -616,7 +616,9 @@ class MudExDialogHandlerBase {
             this.dialogTitle = this.dialogTitleEl ? this.dialogTitleEl.innerText.trim() : '';
             this.dialogId = this.dialog.id;
             this.dialogContainerReference = this.dialog.parentElement;
-            this.dialogOverlay = this.dialogContainerReference.querySelector('.mud-overlay');
+            if (dialogContainerReference) { }
+                this.dialogOverlay = this.dialogContainerReference.querySelector('.mud-overlay');
+            }
         }
     }
 }

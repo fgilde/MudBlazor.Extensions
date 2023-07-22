@@ -9,6 +9,9 @@
     initialize(options) {
         var me = this;
         this.options = options;
+        if (!this.elementRef) {
+            return;
+        }
         this._container = this.elementRef.querySelector(".mud-ex-cards");        
         this._container.onmousemove = null;
         for (const card of Array.from(this._container.children)) {

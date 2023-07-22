@@ -27,7 +27,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMudExtensions();
 app.UseStaticFiles();
 
 app.UseRouting();

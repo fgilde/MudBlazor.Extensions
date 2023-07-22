@@ -27,7 +27,7 @@ public class MudBlazorExtensionsMiddleware
     /// <param name="jsRuntime">The IJSRuntime instance for the current request.</param>
     public async Task InvokeAsync(HttpContext context, IJSRuntime jsRuntime)
     {
-        JsImportHelper._runtime ??= jsRuntime;
+        JsImportHelper._runtime = jsRuntime;
         await _next(context);
     }
 }

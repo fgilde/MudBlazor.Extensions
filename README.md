@@ -86,7 +86,8 @@ builder.Services.AddMudServicesWithExtensions(c =>
 });
 ```
 
-Please note: The dialog extensions are static, hence, you need to set the IJSRuntime somewhere in your code, for example, in your `App.razor` or `MainLayout.razor` in the `OnAfterRenderAsync` method. This is not a requirement but it does save you from passing the IJSRuntime in every `DialogOptionsEx`.
+Please note: The dialog extensions are static required for webassembly, hence, you need to set the IJSRuntime somewhere in your code if you run MudBlazor.Extensions iside a WebAssembly client application,
+for example, in your `App.razor` or `MainLayout.razor` in the `OnAfterRenderAsync` method. This is not a requirement but it does save you from passing the IJSRuntime in every `DialogOptionsEx`.
 
 ```
 protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -95,6 +96,12 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
         await JsRuntime.InitializeMudBlazorExtensionsAsync();
     await base.OnAfterRenderAsync(firstRender);
 }
+```
+
+if your are running on Blazor Server side, you don't need to do this. But instead you need to use the `MudBlazorExtensionMiddleware` you can do this in your startup or program.cs by adding the following line on your WebApplication:
+
+```
+    app.UseMudExtensions();
 ```
 
 
