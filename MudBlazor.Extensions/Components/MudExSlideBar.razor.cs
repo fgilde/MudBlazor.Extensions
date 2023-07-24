@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Core.Css;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
 
@@ -85,6 +86,9 @@ public partial class MudExSlideBar
     /// </summary>
     [Parameter, SafeCategory("Behavior")] public bool HideContentWhenCollapsed { get; set; } = true;
 
+    [Parameter] public MudExSize<double>? Width { get; set; }
+
+
     /// <summary>
     /// Shows the MudExSlideBar.
     /// </summary>
@@ -136,6 +140,7 @@ public partial class MudExSlideBar
             .With("z-Index", "calc(var(--mud-zindex-dialog) + 10)", !RelativeToParent && (IsOpen || !AutoCollapse))
             .With("z-Index", "calc(var(--mud-zindex-dialog) - 1)", !RelativeToParent && (!IsOpen && AutoCollapse))
             .With($"border-{BorderDirection}", $"{BorderSize} solid {BorderColor.ToCssStringValue()}", !BorderColor.Is(Color.Transparent))
+            .WithWidth(Width, Width.HasValue) // TODO: TESTING
             .Build();
     }
 
@@ -164,4 +169,12 @@ public partial class MudExSlideBar
             .Build();
     }
 
+    private string ContentStyle()
+    {
+        return MudExStyleBuilder.Default
+            .WithOpacity(IsOpen || !AutoCollapse || !HideContentWhenCollapsed ? 1 : 0)
+            .WithSize(100, CssUnit.Percentage)
+            .WithOverflow(Overflow.Auto)            
+            .Build();        
+    }
 }

@@ -1,6 +1,6 @@
 ﻿@inherits MudExBaseComponent<MudExSlideBar>
 <div @onmouseenter="MouseEnter" @onmouseleave="MouseLeave" style="@($"{Style()}")" class="@($"{CssClass()} mud-ex-animate-all-properties")">
-    <div class="mud-ex-animate-all-properties" style="@($"opacity: {(IsOpen || !AutoCollapse || !HideContentWhenCollapsed ? 1: 0)}")">
+    <div class="mud-ex-animate-all-properties" style="@ContentStyle()">
         @ChildContent
     </div>
 </div>

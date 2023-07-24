@@ -7,24 +7,34 @@
             <CascadingValue Value="this">
                 @Left
             </CascadingValue>
+            
+            @*
+            <MudToggleIconButton 
+                @bind-Toggled="_isRightCollapsed"
+                Class="mud-ex-splitter-internal" Icon="@Icons.Material.Filled.ArrowForward" ToggledIcon="@Icons.Material.Filled.ArrowBack"></MudToggleIconButton>*@
+
         }
-        @if (Splittable && Left != null && Right != null)
-        {
-            @*Using MudExSplitter doesnt work nobody knows why so we go for DynamicComponent here*@
-            @*<MudExSplitter Vertical="@ColumnLayout" Reverse="@Reverse" FlexItem="true" UpdateSizesInPercentage="@UpdateSizesInPercentage" />*@
-            <DynamicComponent Type="@typeof(MudExSplitter)" Parameters="@(new Dictionary<string, object> {
-                                                                            {nameof(MudExSplitter.Vertical), ColumnLayout},
-                                                                            {nameof(MudExSplitter.Reverse), Reverse},
-                                                                            {nameof(MudExSplitter.FlexItem), true},
-                                                                            {nameof(MudExSplitter.UpdateSizesInPercentage), UpdateSizesInPercentage}
-                                                                        })">
-            </DynamicComponent>
+        @if (Splittable && Left != null && Right != null && !AnythingCollapsed())
+        {            
+            <MudExSplitter Vertical="@ColumnLayout" Reverse="@Reverse" FlexItem="true" UpdateSizesInPercentage="@UpdateSizesInPercentage" />
+            @*<DynamicComponent Type="@typeof(MudExSplitter)" Parameters="@(new Dictionary<string, object> {{nameof(MudExSplitter.Vertical), ColumnLayout},{nameof(MudExSplitter.Reverse), Reverse}, {nameof(MudExSplitter.FlexItem), true}, {nameof(MudExSplitter.UpdateSizesInPercentage), UpdateSizesInPercentage} })"></DynamicComponent>*@
         }
         @if (Right != null)
-        {
+        {            
             <CascadingValue Value="this">
-                @Right
+                @if(_isRightCollapsed)
+                {
+                    <MudExSlideBar Width="777" DisableOpacityChange="true" BorderSize="5" BorderColor="Color.Primary" RelativeToParent="true" Position="Position.Right">@Right</MudExSlideBar>
+                }else {
+                    @Right
+                }
             </CascadingValue>
         }
     </div>
 </MudGrid>
+
+@code {
+    private bool _isRightCollapsed;
+
+    private bool AnythingCollapsed() => _isRightCollapsed;    
+}

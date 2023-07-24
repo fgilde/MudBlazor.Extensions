@@ -11,7 +11,7 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
 {
-    private string _dataId = Guid.NewGuid().ToFormattedId();
+    private readonly string _dataId = Guid.NewGuid().ToFormattedId();
     private const string ClassName = "mud-ex-splitter";
     private RenderFragment Inherited() => builder =>
     {
@@ -41,6 +41,7 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
     /// <inheritdoc/>
     protected override Task OnInitializedAsync()
     {
+        // ReSharper disable once ConstantNullCoalescingCondition
         (UserAttributes ??= new Dictionary<string,object>()).AddOrUpdate("data-id", _dataId);
         Color = MudBlazor.Color.Primary;
         Size = 5;
