@@ -30,7 +30,7 @@ public class PlaywrightFixture : IAsyncLifetime
     public BrowserTypeLaunchOptions LaunchOptions { get; private set; } =
         new()
         {
-            Headless = true,
+            Headless = false,
         };
 
     /// <summary>

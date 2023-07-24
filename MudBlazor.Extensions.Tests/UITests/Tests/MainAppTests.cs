@@ -35,6 +35,20 @@ public class MainAppTests: BaseUITest
             isVis.Should().BeTrue();
         });
     }
+    
+    [Fact]
+    public async Task About()
+    {
+        await Test(async page =>
+        {
+            await page.GetByRole(AriaRole.Banner).GetByRole(AriaRole.Button).Nth(2).ClickAsync();
 
+            var head = await page.GetByRole(AriaRole.Heading, new() { Name = "MudBlazor.Extensions 1.7.64.0" }).TextContentAsync();
+            head.Should().Be("MudBlazor.Extensions 1.7.64.0");
 
+            await page.GetByRole(AriaRole.Button, new() { Name = "Close", Exact = true }).ClickAsync();
+        });
+
+    }
+    
 }
