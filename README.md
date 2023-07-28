@@ -70,7 +70,7 @@ Setting up MudBlazor.Extensions involves three steps:
 // use this to add MudServices and the MudBlazor.Extensions
 builder.Services.AddMudServicesWithExtensions();
 
-// or this to add only the MudBlazor.Extensions
+// or this to add only the MudBlazor.Extensions but please ensure that this is added after mud servicdes are added. That means after `AddMudServices`
 builder.Services.AddMudExtensions();
 ```
 

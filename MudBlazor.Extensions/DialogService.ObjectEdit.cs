@@ -1,6 +1,7 @@
 ﻿using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Options;
+using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions;
 
@@ -28,7 +29,7 @@ public static partial class DialogServiceExt
         {
             metaConfig?.Invoke(meta);
             meta.Properties().AsReadOnly();
-        }, MergeParameters(dialogParameters, parameters));
+        }, dialogParameters.MergeWith(parameters));
     }
 
     /// <summary>
@@ -50,7 +51,7 @@ public static partial class DialogServiceExt
             {
                 {nameof(MudExObjectEditDialog<TModel>.CustomSubmit), customSubmit}
             };
-        return await dialogService.EditObject(value, title, options, metaConfig, MergeParameters(dialogParameters, parameters));
+        return await dialogService.EditObject(value, title, options, metaConfig, dialogParameters.MergeWith(parameters));
     }
 
     /// <summary>
@@ -100,7 +101,7 @@ public static partial class DialogServiceExt
                 {nameof(MudExObjectEditDialog<TModel>.MetaInformation), value.ObjectEditMeta(metaConfig)}
             };
 
-        var dialog = await dialogService.ShowEx<MudExObjectEditDialog<TModel>>(title, MergeParameters(dialogParameters, parameters), options);
+        var dialog = await dialogService.ShowEx<MudExObjectEditDialog<TModel>>(title, dialogParameters.MergeWith(parameters), options);
 
         var res = await dialog.Result;
         return (res.Canceled, res.Canceled ? value : (TModel)res.Data);

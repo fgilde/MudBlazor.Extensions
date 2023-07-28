@@ -1,9 +1,7 @@
 ﻿using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Options;
 using Nextended.Core.Extensions;
-using Microsoft.JSInterop;
 using MudBlazor.Utilities;
-using Nextended.Core;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper.Internal;
 
@@ -65,100 +63,34 @@ public static partial class MudExCss
     [Obsolete("Use MudExStyleBuilder instead")]
     public static T CssStringToObject<T>(string css) where T : new() => MudExStyleBuilder.StyleStringToObject<T>(css);
 
-    /// <summary>
-    /// Returns all current CssVariables
-    /// </summary>
-    public static async Task<KeyValuePair<string, string>[]> GetCssVariablesAsync()
-    {
-        var js = await JsImportHelper.GetInitializedJsRuntimeAsync();
-        var res = await js.InvokeAsync<KeyValuePair<string, string>[]>("MudExCssHelper.getCssVariables");        
-        return res;
-    }
+    [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
+    public static Task<KeyValuePair<string, string>[]> GetCssVariablesAsync() => JsImportHelper.GetInitializedJsRuntime().GetCssVariablesAsync();
 
-    /// <summary>
-    /// Returns css variables by value
-    /// </summary>
-    public static async Task<KeyValuePair<string, string>[]> FindCssVariablesByValueAsync(string value)
-    {
-        var js = await JsImportHelper.GetInitializedJsRuntimeAsync();
-        var res = await js.InvokeAsync<KeyValuePair<string, string>[]>("MudExCssHelper.findCssVariables", value);
-        return res;
-    }
+    [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
+    public static Task<KeyValuePair<string, string>[]> FindCssVariablesByValueAsync(string value) => JsImportHelper.GetInitializedJsRuntime().FindCssVariablesByValueAsync(value);
 
-    /// <summary>
-    /// Updates or creates a new css variable
-    /// </summary>
-    public static async Task SetCssVariableValueAsync(KeyValuePair<string, string> pair)
-    {
-        await SetCssVariableValueAsync(pair.Key, pair.Value);
-    }
+    [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
+    public static Task SetCssVariableValueAsync(KeyValuePair<string, string> pair) => JsImportHelper.GetInitializedJsRuntime().SetCssVariableValueAsync(pair);
 
-    /// <summary>
-    /// Updates or creates a new css variable
-    /// </summary>
-    public static async Task SetCssVariableValueAsync(string key, object value, params object[] fallbackValues)
-    {
-        var toSet = new[] {value}.Intersect(fallbackValues.EmptyIfNull()).FirstOrDefault(v => v != null);
-        if (toSet != null)
-            await SetCssVariableValueAsync(key, toSet);
-    }
+    [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
+    public static Task SetCssVariableValueAsync(string key, object value, params object[] fallbackValues) => JsImportHelper.GetInitializedJsRuntime().SetCssVariableValueAsync(key, value, fallbackValues);
 
-    /// <summary>
-    /// Updates or creates a new css variable
-    /// </summary>
-    public static async Task SetCssVariableValueAsync(string key, object value)
-    {
-        if (value is MudColor color)
-            await SetCssVariableValueAsync(key, color);
-        if (value is System.Drawing.Color dc)
-            await SetCssVariableValueAsync(key, dc.ToMudColor());
-        if (value is Color enumColor)
-            await SetCssVariableValueAsync(key, enumColor);
-        else
-            await SetCssVariableValueAsync(key, value.ToString());
-    }
+    [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
+    public static Task SetCssVariableValueAsync(string key, object value) => JsImportHelper.GetInitializedJsRuntime().SetCssVariableValueAsync(key, value);
 
-    /// <summary>
-    /// Updates or creates a new css variable
-    /// </summary>
-    public static async Task SetCssVariableValueAsync(string key, Color color)
-    {
-         await SetCssVariableValueAsync(key, color.CssVarDeclaration());
-    }
+    [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
+    public static Task SetCssVariableValueAsync(string key, Color color) => JsImportHelper.GetInitializedJsRuntime().SetCssVariableValueAsync(key, color);
 
-    /// <summary>
-    /// Updates or creates a new css variable
-    /// </summary>
-    public static async Task SetCssVariableValueAsync(string key, MudColor color)
-    {
-        await SetCssVariableValueAsync(key, color.ToString(MudColorOutputFormats.Hex));
-    }
+    [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
+    public static Task SetCssVariableValueAsync(string key, MudColor color) => JsImportHelper.GetInitializedJsRuntime().SetCssVariableValueAsync(key, color);
 
-    /// <summary>
-    /// Updates or creates a new css variable
-    /// </summary>
-    public static async Task SetCssVariableValueAsync(string key, string value)
-    {
-        var js = await JsImportHelper.GetInitializedJsRuntimeAsync();
-        await js.InvokeVoidAsync("MudExCssHelper.setCssVariableValue", key, value);        
-    }
+    [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
+    public static Task SetCssVariableValueAsync(string key, string value) => JsImportHelper.GetInitializedJsRuntime().SetCssVariableValueAsync(key, value);
 
-    /// <summary>
-    /// Returns all CSS variables that containing color values
-    /// </summary>
-    public static async Task<KeyValuePair<string, MudColor>[]> GetCssColorVariablesAsync()
-    {
-        var all = await GetCssVariablesAsync();
-        var res = all.Where(v => v.Value.ToLower().StartsWith("#") || v.Value.ToLower().StartsWith("rgb") || v.Value.ToLower().StartsWith("hsl"))
-            .Select(k =>
-        {
-            var color = Check.TryCatch<MudColor, Exception>(() => new MudColor(k.Value));            
-            return new KeyValuePair<string, MudColor>(k.Key, color);
-        }).Where(k => k.Value?.IsValid() == true)
-        .ToArray();
-        return res;
-    }
+    [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
+    public static Task<KeyValuePair<string, MudColor>[]> GetCssColorVariablesAsync() => JsImportHelper.GetInitializedJsRuntime().GetCssColorVariablesAsync();
 
+    
     private static string ReplaceAnimation(string animationDesc, string position, AnimationDirection? direction)
     {
         string fallBackPosition = string.IsNullOrWhiteSpace(position) ? "Down" : position;

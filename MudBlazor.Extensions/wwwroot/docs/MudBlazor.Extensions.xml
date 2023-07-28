@@ -758,6 +758,11 @@
             Gets or sets the <see cref="T:System.IServiceProvider"/> to be used for dependency injection.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.JsRuntime">
+            <summary>
+            Gets or sets the <see cref="T:Microsoft.JSInterop.IJSRuntime"/> to be used.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.LocalizerToUse">
             <summary>
             Gets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
@@ -5262,31 +5267,6 @@
             Adds class to this appearance
             </summary>    
         </member>
-        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.ApplyAsClassOnlyToAsync``1(``0,System.Action{``0,System.String})">
-            <summary>
-            Applies the class from this appearance to the given component
-            </summary>    
-        </member>
-        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.ApplyToAsync(MudBlazor.MudComponentBase)">
-            <summary>
-            Applies the appearance to the given component
-            </summary>   
-        </member>
-        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.ApplyToAsync(System.String)">
-            <summary>
-            Applies the appearance to the given component
-            </summary>   
-        </member>
-        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.ApplyToAsync(Microsoft.AspNetCore.Components.ElementReference)">
-            <summary>
-            Applies the appearance to the given component
-            </summary>   
-        </member>
-        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.ApplyToAsync(MudBlazor.IDialogReference)">
-            <summary>
-            Applies the appearance to the given component
-            </summary>   
-        </member>
         <member name="M:MudBlazor.Extensions.Core.MudExAppearance.Clone">
             <summary>
             Clone this instance
@@ -5435,7 +5415,7 @@
             Creates a css compatible string representation of the color.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.MudExColor.ToMudColorAsync">
+        <member name="M:MudBlazor.Extensions.Core.MudExColor.ToMudColorAsync(Microsoft.JSInterop.IJSRuntime)">
             <summary>
             Creates a MudColor independent of what the underlying type is.
             </summary>
@@ -5445,7 +5425,7 @@
             Creates a MudColor independent of what the underlying type is.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.MudExColor.GetColorsFromThemeAsync(System.Int32)">
+        <member name="M:MudBlazor.Extensions.Core.MudExColor.GetColorsFromThemeAsync(Microsoft.JSInterop.IJSRuntime,System.Int32)">
             <summary>
             Static helper method to list colors from current Theme
             </summary>
@@ -5567,37 +5547,6 @@
             The default dialog options.
             </summary>
             <returns>The default dialog options.</returns>
-        </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.MergeParameters(MudBlazor.DialogParameters,MudBlazor.DialogParameters)">
-            <summary>
-            Merges the dialog parameters.
-            </summary>
-            <param name="dialogParameters">The dialog parameters.</param>
-            <param name="parameters">The parameters.</param>
-            <returns>The merged dialog parameters.</returns>        
-        </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ToDialogParameters(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
-            <summary>
-            Converts parameters to dialog parameters.
-            </summary>
-            <param name="parameters">The parameters.</param>
-            <returns>The dialog parameters.</returns>        
-        </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ConvertToDialogParameters``1(System.Action{``0})">
-            <summary>
-            Converts dialog parameters to a dictionary.
-            </summary>
-            <typeparam name="TDialog">The dialog type.</typeparam>
-            <param name="dialogParameters">The dialog parameters.</param>
-            <returns>The dictionary of dialog parameters.</returns>
-        </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ConvertToDialogParameters``1(``0)">
-            <summary>
-            Converts dialog parameters to a dictionary.
-            </summary>
-            <typeparam name="TDialog">The dialog type.</typeparam>
-            <param name="dialogParameters">The dialog parameters.</param>
-            <returns>The dictionary of dialog parameters.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx``1(MudBlazor.IDialogService,System.String,System.Action{``0},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
             <summary>
@@ -6096,6 +6045,54 @@
             Returns Icon for an extension
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Helper.DialogParametersExtensions">
+            <summary>
+            Static extensions for DialogParameters and relevant types.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.DialogParametersExtensions.MergeWith(MudBlazor.DialogParameters,MudBlazor.DialogParameters)">
+            <summary>
+            Merges the dialog parameters.
+            </summary>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <param name="parameters">The parameters.</param>
+            <returns>The merged dialog parameters.</returns>        
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.DialogParametersExtensions.ToDialogParameters(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Converts parameters to dialog parameters.
+            </summary>
+            <param name="parameters">The parameters.</param>
+            <returns>The dialog parameters.</returns>        
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.DialogParametersExtensions.ConvertToDialogParameters``1(System.Action{``0})">
+            <summary>
+            Converts dialog parameters to a dictionary.
+            </summary>
+            <typeparam name="TDialog">The dialog type.</typeparam>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <returns>The dictionary of dialog parameters.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.DialogParametersExtensions.ConvertToDialogParameters``1(``0)">
+            <summary>
+            Converts dialog parameters to a dictionary.
+            </summary>
+            <typeparam name="TDialog">The dialog type.</typeparam>
+            <param name="dialogParameters">The dialog parameters.</param>
+            <returns>The dictionary of dialog parameters.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.DialogReferenceExtensions">
+            <summary>
+            Extensions for dialog reference
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.DialogReferenceExtensions.GetDialogId(MudBlazor.IDialogReference)">
+            <summary>
+            returns the Id for a rendered dialogReference 
+            </summary>
+            <param name="dialogReference"></param>
+            <returns></returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.Internal.SizeParser.ParseMudExSize``1(System.String)">
             <summary>
             Parses a string to a tuple of value and unit.
@@ -6135,6 +6132,66 @@
         <member name="M:MudBlazor.Extensions.Helper.JsonHelper.RemovePropertiesFromJson(System.String,System.String[])">
             <summary>
             Removes given properties from given json.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.JsRuntimeExtensions">
+            <summary>
+            Contains extension methods for IJSRuntime to call MudBlazor extensions JavaScript functions.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.IsNamespaceAvailableAsync(Microsoft.JSInterop.IJSRuntime,System.String)">
+            <summary>
+            Checks if a namespace exists
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.IsWithin(Microsoft.JSInterop.IJSRuntime,Microsoft.AspNetCore.Components.Web.MouseEventArgs,Microsoft.AspNetCore.Components.ElementReference)">
+            <summary>
+            Checks if given mouse args are within given element.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.GetCssVariablesAsync(Microsoft.JSInterop.IJSRuntime)">
+            <summary>
+            Returns all current CssVariables
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.FindCssVariablesByValueAsync(Microsoft.JSInterop.IJSRuntime,System.String)">
+            <summary>
+            Returns css variables by value
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.Collections.Generic.KeyValuePair{System.String,System.String})">
+            <summary>
+            Updates or creates a new css variable
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,System.Object,System.Object[])">
+            <summary>
+            Updates or creates a new css variable
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,System.Object)">
+            <summary>
+            Updates or creates a new css variable
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,MudBlazor.Color)">
+            <summary>
+            Updates or creates a new css variable
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,MudBlazor.Utilities.MudColor)">
+            <summary>
+            Updates or creates a new css variable
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.String,System.String)">
+            <summary>
+            Updates or creates a new css variable
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.GetCssColorVariablesAsync(Microsoft.JSInterop.IJSRuntime)">
+            <summary>
+            Returns all CSS variables that containing color values
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Helper.MudExColorUtils">
@@ -6182,7 +6239,7 @@
             Converts a MudColor to a system drawing color
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.ToMudColorAsync(MudBlazor.Color)">
+        <member name="M:MudBlazor.Extensions.Helper.MudExColorUtils.ToMudColorAsync(MudBlazor.Color,Microsoft.JSInterop.IJSRuntime)">
             <summary>
             Converts a Color enum value of Color (like Color.Primary) to a MudColor with the correct values filled
             </summary>
@@ -6316,51 +6373,6 @@
         <member name="M:MudBlazor.Extensions.Helper.MudExCss.CreateStyle(System.Action{MudBlazor.Extensions.Helper.MudExStyleBuilder})">
             <summary>
             Creates a style builder with applied styles from given action
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExCss.GetCssVariablesAsync">
-            <summary>
-            Returns all current CssVariables
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExCss.FindCssVariablesByValueAsync(System.String)">
-            <summary>
-            Returns css variables by value
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExCss.SetCssVariableValueAsync(System.Collections.Generic.KeyValuePair{System.String,System.String})">
-            <summary>
-            Updates or creates a new css variable
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExCss.SetCssVariableValueAsync(System.String,System.Object,System.Object[])">
-            <summary>
-            Updates or creates a new css variable
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExCss.SetCssVariableValueAsync(System.String,System.Object)">
-            <summary>
-            Updates or creates a new css variable
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExCss.SetCssVariableValueAsync(System.String,MudBlazor.Color)">
-            <summary>
-            Updates or creates a new css variable
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExCss.SetCssVariableValueAsync(System.String,MudBlazor.Utilities.MudColor)">
-            <summary>
-            Updates or creates a new css variable
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExCss.SetCssVariableValueAsync(System.String,System.String)">
-            <summary>
-            Updates or creates a new css variable
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExCss.GetCssColorVariablesAsync">
-            <summary>
-            Returns all CSS variables that containing color values
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Helper.MudExCssBuilder">

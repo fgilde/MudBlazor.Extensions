@@ -219,7 +219,7 @@ namespace MudBlazor.Extensions.Components
 
             if (!res.DialogResult.Canceled)
             {
-                Color = await res.Component.Value.ToMudColorAsync();
+                Color = await res.Component.Value.ToMudColorAsync(JsRuntime);
                 await ColorChanged.InvokeAsync(Color);
                 StateHasChanged();
             }
