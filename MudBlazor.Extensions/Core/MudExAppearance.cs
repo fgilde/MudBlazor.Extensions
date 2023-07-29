@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
-using MudBlazor.Extensions.Services;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Core;
@@ -12,8 +11,6 @@ namespace MudBlazor.Extensions.Core;
 [HasDocumentation("MudExAppearance.md")]
 public class MudExAppearance : IMudExClassAppearance, IMudExStyleAppearance, ICloneable
 {
-    private MudExAppearanceService _appearanceService = new();
-
     /// <summary>
     /// Class to apply
     /// </summary>
@@ -163,31 +160,6 @@ public class MudExAppearance : IMudExClassAppearance, IMudExStyleAppearance, ICl
         return WithCss(builder);
     }
 
-    /// <summary>
-    /// Applies the class from this appearance to the given component
-    /// </summary>    
-    public Task<MudExAppearance> ApplyAsClassOnlyToAsync<TComponent>(TComponent component, Action<TComponent, string> updateFunc)
-        => _appearanceService.ApplyAsClassOnlyToAsync(this, component, updateFunc);
-
-    /// <summary>
-    /// Applies the appearance to the given component
-    /// </summary>   
-    public Task<MudExAppearance> ApplyToAsync(MudComponentBase component) => _appearanceService.ApplyToAsync(this, component, KeepExisting);
-    
-    /// <summary>
-    /// Applies the appearance to the given component
-    /// </summary>   
-    public Task<MudExAppearance> ApplyToAsync(string elementSelector) => _appearanceService.ApplyToAsync(this, elementSelector, KeepExisting);
-    
-    /// <summary>
-    /// Applies the appearance to the given component
-    /// </summary>   
-    public Task<MudExAppearance> ApplyToAsync(ElementReference elementRef) => _appearanceService.ApplyToAsync(this, elementRef, KeepExisting);
-    
-    /// <summary>
-    /// Applies the appearance to the given component
-    /// </summary>   
-    public Task<MudExAppearance> ApplyToAsync(IDialogReference dialogReference) => _appearanceService.ApplyToAsync(this, dialogReference, KeepExisting);
 
     /// <summary>
     /// Clone this instance

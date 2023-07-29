@@ -1,4 +1,5 @@
-﻿using MudBlazor.Extensions.Attribute;
+﻿using Microsoft.JSInterop;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Utilities;
 using OneOf;
@@ -200,9 +201,9 @@ public readonly struct MudExColor
     /// <summary>
     /// Creates a MudColor independent of what the underlying type is.
     /// </summary>
-    public Task<MudColor> ToMudColorAsync()
+    public Task<MudColor> ToMudColorAsync(IJSRuntime jSRuntime)
         => Match(
-            color => color.ToMudColorAsync(),
+            color => color.ToMudColorAsync(jSRuntime),
             Task.FromResult,
             dc => Task.FromResult(dc.ToMudColor()),
             s => Task.FromResult(new MudColor(s)),
@@ -224,9 +225,9 @@ public readonly struct MudExColor
     /// <summary>
     /// Static helper method to list colors from current Theme
     /// </summary>
-    public static async Task<IEnumerable<(string Name, MudColor Color)>> GetColorsFromThemeAsync(int count = 10)
+    public static async Task<IEnumerable<(string Name, MudColor Color)>> GetColorsFromThemeAsync(IJSRuntime jSRuntime, int count = 10)
     {
-        var themeColors = await MudExCss.GetCssColorVariablesAsync();
+        var themeColors = await jSRuntime.GetCssColorVariablesAsync();
         return themeColors
             //.Where(c => !c.Key.Contains("background", StringComparison.InvariantCultureIgnoreCase) && !c.Key.Contains("surface", StringComparison.InvariantCultureIgnoreCase) && !c.Value.IsBlack() && !c.Value.IsWhite() && c.Value.APercentage >= 1.0)
             .Select(x => (x.Key, x.Value))

@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.Playwright;
+using MudBlazor.Extensions.Helper;
 using System;
 
 namespace MudBlazor.Extensions.Tests.UITests.Tests;
@@ -41,10 +42,11 @@ public class MainAppTests: BaseUITest
     {
         await Test(async page =>
         {
+            var version = MudExResource.MudExVersion().ToString();
             await page.GetByRole(AriaRole.Banner).GetByRole(AriaRole.Button).Nth(2).ClickAsync();
 
-            var head = await page.GetByRole(AriaRole.Heading, new() { Name = "MudBlazor.Extensions 1.7.64.0" }).TextContentAsync();
-            head.Should().Be("MudBlazor.Extensions 1.7.64.0");
+            var head = await page.GetByRole(AriaRole.Heading, new() { Name = $"MudBlazor.Extensions {version}" }).TextContentAsync();
+            head.Should().Be($"MudBlazor.Extensions {version}");
 
             await page.GetByRole(AriaRole.Button, new() { Name = "Close", Exact = true }).ClickAsync();
         });

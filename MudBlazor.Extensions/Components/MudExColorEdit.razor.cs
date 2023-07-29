@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
@@ -23,6 +24,12 @@ public sealed partial class MudExColorEdit
     /// </summary>
     [Inject]
     private IServiceProvider ServiceProvider { get; set; }
+
+    /// <summary>
+    /// Gets or sets the <see cref="IJSRuntime"/> to be used.
+    /// </summary>
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; }
 
     /// <summary>
     /// Gets the <see cref="IStringLocalizer"/> to be used for localizing strings.
@@ -174,8 +181,8 @@ public sealed partial class MudExColorEdit
     private async Task EnsureCssVarsAsync()
     {
         if (_cssVars == null || _cssVars.Length == 0)
-        {
-            _cssVars = await MudExCss.GetCssColorVariablesAsync();
+        {            
+            _cssVars = await JsRuntime.GetCssColorVariablesAsync();
             _palette = _cssVars.Select(x => x.Value).Distinct().ToArray();
         }
     }
@@ -376,7 +383,7 @@ public sealed partial class MudExColorEdit
         else if (Value.IsColor && TryFindMudColorFor(Value.AsColor, out var color))
             _initialMudColorValue = color;
         else 
-            _initialMudColorValue = (await Value.ToMudColorAsync() ?? new MudColor(0,0,0,255));
+            _initialMudColorValue = (await Value.ToMudColorAsync(JsRuntime) ?? new MudColor(0,0,0,255));
         _initialMudColorValue = _initialMudColorValue.IsValid() ? _initialMudColorValue : new MudColor(0, 0, 0, 255);
     }
 

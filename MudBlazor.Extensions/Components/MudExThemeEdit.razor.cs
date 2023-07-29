@@ -224,8 +224,8 @@ public partial class MudExThemeEdit<TTheme>
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-        {
-            _cssVars = await MudExCss.GetCssColorVariablesAsync();
+        {            
+            _cssVars = await JsRuntime.GetCssColorVariablesAsync();
             await Task.Delay(ExtraDelay);
             Loading(false);
         }

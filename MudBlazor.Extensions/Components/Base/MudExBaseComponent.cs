@@ -38,7 +38,7 @@ public abstract class MudExBaseComponent<T> : ComponentBase, IMudExComponent
     /// <summary>
     /// JsRuntime
     /// </summary>
-    public IJSRuntime JsRuntime => Get<IJSRuntime>();
+    [Inject] public IJSRuntime JsRuntime { get; set; }
 
     /// <summary>
     /// This is true if render has called already
@@ -177,6 +177,7 @@ internal interface IJsMudExComponent<T>: IMudExComponent, IAsyncDisposable
     /// </summary>
     public virtual async Task ImportModuleAndCreateJsAsync(string name = null)
     {
+        await JsRuntime.InitializeMudBlazorExtensionsCoreAsync();
         var references = await JsRuntime.ImportModuleAndCreateJsAsync<T>(name, GetJsArguments());
         JsReference = references.jsObjectReference;
         ModuleReference = references.moduleReference;

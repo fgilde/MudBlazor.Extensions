@@ -64,7 +64,7 @@ public class MudExStyleBuilderTests
     public void TestWithStyleMethod()
     {
         // Arrange
-        var builder = new MudExStyleBuilder();
+        var builder = MudExStyleBuilder.Empty();
         var css = "height: 100px; width: 50px; color: red;";
 
         // Act
