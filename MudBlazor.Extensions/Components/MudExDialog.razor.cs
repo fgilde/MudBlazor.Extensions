@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Options;
+using MudBlazor.Extensions.Services;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -14,6 +15,7 @@ public partial class MudExDialog : IMudExComponent
     //private IDialogReference _reference;
 
     [Inject] private IJSRuntime Js { get; set; }
+    [Inject] private MudExAppearanceService AppearanceService { get; set; }
 
     /// <summary>
     /// Render base component
@@ -52,6 +54,7 @@ public partial class MudExDialog : IMudExComponent
     public new async Task<IDialogReference> Show(string title = null, DialogOptions options = null)
     {
         OptionsEx.JsRuntime = Js;
+        OptionsEx.AppearanceService = AppearanceService;
         await DialogServiceExt.PrepareOptionsBeforeShow(OptionsEx);
         return await base.Show(title, options).InjectOptionsAsync(OptionsEx);
     }

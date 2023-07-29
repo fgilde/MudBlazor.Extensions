@@ -27,10 +27,10 @@ public class PlaywrightFixture : IAsyncLifetime
     /// </summary>
     public Lazy<Task<IBrowser>> WebkitBrowser { get; private set; }
 
-    public BrowserTypeLaunchOptions LaunchOptions { get; private set; } =
+    public BrowserTypeLaunchOptions LaunchOptions { get; } =
         new()
         {
-            Headless = false,
+            Headless = true,
         };
 
     /// <summary>

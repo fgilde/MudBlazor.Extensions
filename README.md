@@ -70,7 +70,7 @@ Setting up MudBlazor.Extensions involves three steps:
 // use this to add MudServices and the MudBlazor.Extensions
 builder.Services.AddMudServicesWithExtensions();
 
-// or this to add only the MudBlazor.Extensions
+// or this to add only the MudBlazor.Extensions but please ensure that this is added after mud servicdes are added. That means after `AddMudServices`
 builder.Services.AddMudExtensions();
 ```
 
@@ -86,19 +86,8 @@ builder.Services.AddMudServicesWithExtensions(c =>
 });
 ```
 
-Please note: The dialog extensions are static required for webassembly, hence, you need to set the IJSRuntime somewhere in your code if you run MudBlazor.Extensions iside a WebAssembly client application,
-for example, in your `App.razor` or `MainLayout.razor` in the `OnAfterRenderAsync` method. This is not a requirement but it does save you from passing the IJSRuntime in every `DialogOptionsEx`.
 
-```
-protected override async Task OnAfterRenderAsync(bool firstRender)
-{
-    if (firstRender)
-        await JsRuntime.InitializeMudBlazorExtensionsAsync();
-    await base.OnAfterRenderAsync(firstRender);
-}
-```
-
-if your are running on Blazor Server side, you don't need to do this. But instead you need to use the `MudBlazorExtensionMiddleware` you can do this in your startup or program.cs by adding the following line on your WebApplication:
+if your are running on Blazor Server side, you should also use the `MudBlazorExtensionMiddleware` you can do this in your startup or program.cs by adding the following line on your WebApplication:
 
 ```
     app.UseMudExtensions();
@@ -106,7 +95,7 @@ if your are running on Blazor Server side, you don't need to do this. But instea
 
 
 <!-- WIKI:START -->
-<!-- Copied from https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md on 2023-07-14 13:27:56 -->
+<!-- Copied from https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md on 2023-07-29 15:35:52 -->
 ## Showcase
 
 https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/39e06d88-a947-43cd-9151-a7cf96bcd849
@@ -159,7 +148,7 @@ This section introduces you to the various components provided by the MudBlazor.
 
 ### MudExObjectEdit
 <!-- OBJECTEDIT:START -->
-<!-- Copied from ObjectEdit.md on 2023-07-14 13:27:56 -->
+<!-- Copied from ObjectEdit.md on 2023-07-29 15:35:52 -->
 The `MudExObjectEdit` is a robust component that allows for object editing and automatically generates the corresponding UI. This component supports automatic validation for DataAnnotation Validations or fluent registered validations for your model.
 
 To use `MudExObjectEdit`, you can simply use the `MudExObjectEditForm` and pass your model to it as shown below:
@@ -179,7 +168,7 @@ dialogService.EditObject(User, "Dialog Title", dialogOptionsEx);
 
 ### MudExFileDisplay
 <!-- FILEDISPLAY:START -->
-<!-- Copied from MudExFileDisplay.md on 2023-07-14 13:27:55 -->
+<!-- Copied from MudExFileDisplay.md on 2023-07-29 15:35:52 -->
 The `MudExFileDisplay` component is designed to display file contents, such as a preview before uploading or for referenced files. 
 This component can automatically handle URLs or streams and deliver the best possible display. 
 Additionally, you can implement `IMudExFileDisplay` in your own component to register a custom file display.
@@ -237,7 +226,7 @@ await dialogService.ShowEx<MudExFileDisplayDialog>(title, parameters, optionsEx)
 
 ### MudExUploadEdit
 <!-- UPLOADEDIT:START -->
-<!-- Copied from MudExUploadEdit.md on 2023-07-14 13:27:56 -->
+<!-- Copied from MudExUploadEdit.md on 2023-07-29 15:35:52 -->
 
 This component provides multi-file upload functionality, with features like duplicate checks, max size, specific allowed content types, max items, zip auto-extract, and many more.
 
@@ -250,7 +239,7 @@ This component provides multi-file upload functionality, with features like dupl
 
 ## Extensions
 <!-- DIALOG_EXT:START -->
-<!-- Copied from DialogExtensions.md on 2023-07-14 13:27:55 -->
+<!-- Copied from DialogExtensions.md on 2023-07-29 15:35:52 -->
 ### Resizable or Draggable Dialogs
 
 You can make your dialogs resizable or draggable using the following code snippet:
@@ -361,7 +350,9 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 ## Change Log 
 Latest Changes: 
 <!-- CHANGELOG:START -->
-<!-- Copied from CHANGELOG.md on 2023-07-14 13:27:55 -->
+<!-- Copied from CHANGELOG.md on 2023-07-29 15:35:52 -->
+ - 1.7.64 > Fix error on server side rendered projects
+ - 1.7.64 > Remove need for `jsRuntime.InitializeMudBlazorExtensionsAsync()`
  - 1.7.63 > Use MudMarkdown as IMudExFileDisplay to support markdown files in [MudExFileDisplay](https://www.mudex.org/file-display)
  - 1.7.63 > Add new option to allow copy url to clipboard in [MudExFileDisplay](https://www.mudex.org/file-display)
  - 1.7.63 > Fix bug in [MudExThemeEdit](https://www.mudex.org/theme-ed  it) where component wasnt loaded if its rendered in a dialog.
@@ -370,8 +361,6 @@ Latest Changes:
  - 1.7.61 > new Component [MudExIconPicker](https://www.mudex.org/mud-ex-icon-picker) to select icons. Used in [API]((https://www.mudex.org/api)) overview and in ComponentGrid as MudExObjectedit config.
  - 1.7.60 > Better component support for MudExObjectEdit
  - 1.7.59 > Add Parameters for Typo and preview size in ThemeSelect
- - 1.7.56 > Support default border radius in [MudExThemeSelect](https://www.mudex.org/theme-edit) 
- - 1.7.55 > new Component [MudExThemeEdit](https://www.mudex.org/theme-edit) to edit theme(s) and presets of themes as easy as possible and supports all options from your inherited MudThemes.
 <!-- CHANGELOG:END -->
 Full change log can be found [here](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/CHANGELOG.md) 
 

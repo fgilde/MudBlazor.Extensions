@@ -6,6 +6,7 @@
 @using Nextended.Core.Extensions
 
 @inject IDialogService dialogService;
+@inject IJSRuntime js;
 
 @attribute [DemoUpdated(Group = "Dialog Samples", Name = "Dialog Appearance", Documentation = "Demo for using Dialog and DialogBackground Appearance in DialogOptionsEx", Order = 0, Icon = Icons.Material.Outlined.DesktopWindows)]
 
@@ -51,7 +52,7 @@
     {
         if (firstRender)
         {
-            _primaryColor = await Color.Primary.ToMudColorAsync();
+            _primaryColor = await Color.Primary.ToMudColorAsync(js);
             CreateOptions();
             _loaded = true;
         }

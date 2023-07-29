@@ -1,8 +1,12 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Components.ObjectEdit;
+using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
+using MudBlazor.Extensions.Services;
 using MudBlazor.Services;
 using Nextended.Core.Extensions;
 
@@ -20,7 +24,30 @@ public static class ServiceCollectionExtensions
     {
         //services.AddSingleton<MudBlazorExtensionJsInterop>();
         services.RegisterAllImplementationsOf(new[] { typeof(IMudExFileDisplay) }, serviceImplementationAssemblies, ServiceLifetime.Scoped);
+        services.AddScoped<MudExStyleBuilder>();
+        services.AddScoped<MudExCssBuilder>();
+        services.AddScoped<MudExAppearanceService>();
 
+        // TODO: Find maybe a better solution. For example if the MudBlazor.DialogService has a reference to injected JsRuntime, we can remove this section and the class and interface for  MudExDialogService : IMudExDialogService
+        #region Replace IDialogService with MudExDialogService
+
+        services.AddScoped<DialogService>();    
+        // Get the original service descriptor
+        var originalDescriptor = services.FirstOrDefault(d => d.ServiceType == typeof(IDialogService));
+        services.Remove(originalDescriptor);
+        
+        services.AddScoped<IDialogService>(provider =>
+        {
+            var originalDialogService = provider.GetRequiredService<DialogService>();
+            var jsRuntime = provider.GetRequiredService<IJSRuntime>();
+            return new MudExDialogService(originalDialogService, jsRuntime, provider, provider.GetRequiredService<MudExAppearanceService>());
+        });
+
+        services.AddScoped<IMudExDialogService>(sp => (MudExDialogService)sp.GetRequiredService<IDialogService>());
+
+        #endregion
+       
+        
         return services.AddMudExObjectEdit(serviceImplementationAssemblies);
     }
 

@@ -16,7 +16,7 @@ namespace MudBlazor.Extensions
 
         public MudBlazorExtensionJsInterop(IJSRuntime jsRuntime)
         {
-            _ = jsRuntime.InitializeMudBlazorExtensionsAsync();
+            _ = jsRuntime.InitializeMudBlazorExtensionsCoreAsync();
             moduleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
                "import", "./_content/MudBlazor.Extensions/mudBlazorExtensions.js").AsTask());
         }

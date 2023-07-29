@@ -1,11 +1,10 @@
-﻿using System.Reflection;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
-using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Options;
+using MudBlazor.Extensions.Services;
 using Nextended.Core;
 using Nextended.Core.Extensions;
 
@@ -23,54 +22,7 @@ namespace MudBlazor.Extensions
         /// <returns>The default dialog options.</returns>
         private static DialogOptionsEx DefaultOptions() => DialogOptionsEx.DefaultDialogOptions?.CloneOptions() ?? new();
 
-        /// <summary>
-        /// Merges the dialog parameters.
-        /// </summary>
-        /// <param name="dialogParameters">The dialog parameters.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns>The merged dialog parameters.</returns>        
-        private static DialogParameters MergeParameters(DialogParameters dialogParameters, DialogParameters parameters)
-        {
-            if (dialogParameters != null)
-            {
-                foreach (var param in dialogParameters)
-                    parameters.Add(param.Key, param.Value);
-            }
-
-            return parameters;
-        }
-
-        /// <summary>
-        /// Converts parameters to dialog parameters.
-        /// </summary>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns>The dialog parameters.</returns>        
-        public static DialogParameters ToDialogParameters(this IEnumerable<KeyValuePair<string, object>> parameters)
-        {
-            var dialogParameters = new DialogParameters();
-            foreach (var parameter in parameters)
-                dialogParameters.Add(parameter.Key, parameter.Value);
-            return dialogParameters;
-        }
-
-        /// <summary>
-        /// Converts dialog parameters to a dictionary.
-        /// </summary>
-        /// <typeparam name="TDialog">The dialog type.</typeparam>
-        /// <param name="dialogParameters">The dialog parameters.</param>
-        /// <returns>The dictionary of dialog parameters.</returns>
-        public static DialogParameters ConvertToDialogParameters<TDialog>(this Action<TDialog> dialogParameters) where TDialog : new()
-            => PropertyHelper.ValidValuesDictionary(dialogParameters, true).Where(p => typeof(TDialog).GetProperty(p.Key, BindingFlags.Public | BindingFlags.Instance)?.CanWrite == true).ToDialogParameters();
-
-        /// <summary>
-        /// Converts dialog parameters to a dictionary.
-        /// </summary>
-        /// <typeparam name="TDialog">The dialog type.</typeparam>
-        /// <param name="dialogParameters">The dialog parameters.</param>
-        /// <returns>The dictionary of dialog parameters.</returns>
-        public static DialogParameters ConvertToDialogParameters<TDialog>(this TDialog dialogParameters) where TDialog : new()
-            => PropertyHelper.ValidValuesDictionary(dialogParameters, true).Where(p => typeof(TDialog).GetProperty(p.Key, BindingFlags.Public | BindingFlags.Instance)?.CanWrite == true).ToDialogParameters();
-
+ 
         /// <summary>
         /// Shows the dialog and injects dependencies asynchronously.
         /// </summary>
@@ -265,11 +217,6 @@ namespace MudBlazor.Extensions
             return ShowAndInject(dialogService, type, title, options);
         }
 
-        public static string GetDialogId(this IDialogReference dialogReference)
-        {
-            return dialogReference != null && dialogReference.Id != Guid.Empty ? $"_{dialogReference.Id.ToString().Replace("-", "")}" : null;
-        }
-
 
         internal static Task<IDialogReference> ShowAndInject<T>(this IDialogService dialogService, string title, DialogOptionsEx options, DialogParameters parameters = null) where T : ComponentBase 
             => dialogService.ShowAndInject(typeof(T), title, options, parameters);
@@ -278,6 +225,11 @@ namespace MudBlazor.Extensions
         {
             options = options?.CloneOptions();
             await PrepareOptionsBeforeShow(options);
+            if (dialogService is IMudExDialogService service && options != null)
+            {
+                options.JsRuntime = service.JSRuntime;
+                options.AppearanceService = service.AppearanceService;
+            }
             return await dialogService.ShowAsync(type, title, parameters ?? new DialogParameters(), options).InjectOptionsAsync(options);
         }
 
@@ -288,7 +240,7 @@ namespace MudBlazor.Extensions
             if (!options.Modal)
                 options.ClassBackground = MudExCss.Classes.Backgrounds.NoModal;
             else if (options.DialogBackgroundAppearance != null)
-                await options.DialogBackgroundAppearance.ApplyAsClassOnlyToAsync(options, (o, cls) => o.ClassBackground = $"{cls} {o.ClassBackground}");
+                await options.GetAppearanceService().ApplyAsClassOnlyToAsync(options.DialogBackgroundAppearance, options, (o, cls) => o.ClassBackground = $"{cls} {o.ClassBackground}");
         }
 
         private static async Task<IDialogReference> InjectOptionsAsync(this Task<IDialogReference> dialogReference,
@@ -304,7 +256,7 @@ namespace MudBlazor.Extensions
             var js = await JsImportHelper.GetInitializedJsRuntime(callbackReference.Value, options.JsRuntime);
             
             if (options.DialogAppearance != null)
-                await options.DialogAppearance?.ApplyToAsync(dialogReference)!;
+                await options.GetAppearanceService().ApplyToAsync(options.DialogAppearance, dialogReference)!;
 
             await InjectOptionsAsync(callbackReference, js, options);
             return dialogReference;
@@ -359,6 +311,5 @@ namespace MudBlazor.Extensions
             buttons.Insert(0, btn);
             return buttons.ToArray();
         }
-
     }
 }

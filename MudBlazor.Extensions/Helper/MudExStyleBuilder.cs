@@ -31,6 +31,17 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     private readonly ConcurrentDictionary<string, byte> _temporaryCssClasses = new();
     //private Dictionary<string, MudExStyleBuilder> _pseudoElementsStyles = new();
 
+    private IJSRuntime JsRuntime { get; }
+
+    public MudExStyleBuilder(IJSRuntime jsRuntime)
+    {
+        JsRuntime = jsRuntime;
+    }
+
+    internal MudExStyleBuilder(): this(null)
+    {}
+
+
     #region Static Methods
 
     /// <summary>
@@ -1868,7 +1879,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     /// </summary>
     public async ValueTask<string> BuildAsClassRuleAsync(string className = null, IJSRuntime jSRuntime = null)
     {
-        jSRuntime ??= await JsImportHelper.GetInitializedJsRuntimeAsync();
+        jSRuntime ??= JsRuntime ?? JsImportHelper.GetInitializedJsRuntime();
         var result = await jSRuntime.InvokeAsync<string>("MudExCssHelper.createTemporaryClass", Build(), className);
         _temporaryCssClasses.TryAdd(result, 0);
         return result;
@@ -1879,7 +1890,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     /// </summary>
     public async ValueTask<string> RemoveClassRuleAsync(string className, IJSRuntime jSRuntime = null)
     {
-        jSRuntime ??= await JsImportHelper.GetInitializedJsRuntimeAsync();
+        jSRuntime ??= JsRuntime ?? JsImportHelper.GetInitializedJsRuntime();
         var result = await jSRuntime.InvokeAsync<string>("MudExCssHelper.deleteClassRule", className);
         _temporaryCssClasses.TryRemove(className, out _);
         return result;

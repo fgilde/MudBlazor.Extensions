@@ -1,4 +1,5 @@
-﻿using MudBlazor.Extensions.Attribute;
+﻿using Microsoft.JSInterop;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Utilities;
 using Nextended.Core.Extensions;
@@ -58,7 +59,7 @@ public static class MudExColorUtils
     /// <summary>
     /// Converts a Color enum value of Color (like Color.Primary) to a MudColor with the correct values filled
     /// </summary>
-    public static async Task<MudColor> ToMudColorAsync(this Color color) => (await MudExCss.GetCssColorVariablesAsync()).FirstOrDefault(k => k.Key == color.CssVarName()).Value;
+    public static async Task<MudColor> ToMudColorAsync(this Color color, IJSRuntime js) => (await js.GetCssColorVariablesAsync()).FirstOrDefault(k => k.Key == color.CssVarName()).Value;
 
     /// <summary>
     /// Converts a system drawing color to a MudColor

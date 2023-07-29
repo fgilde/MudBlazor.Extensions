@@ -68,7 +68,7 @@ public static partial class DialogServiceExt
             {nameof(MudExFileDisplayDialog.ContentType), contentType}
         };
 
-        return await dialogService.ShowFileDisplayDialog(fileName, MergeParameters(dialogParameters, parameters), options);
+        return await dialogService.ShowFileDisplayDialog(fileName, dialogParameters.MergeWith(parameters), options);
     }
 
     /// <summary>
@@ -108,7 +108,7 @@ public static partial class DialogServiceExt
             {nameof(MudExFileDisplayDialog.ContentType), contentType}
         };
 
-        return await dialogService.ShowFileDisplayDialog(fileName, MergeParameters(dialogParameters, parameters), options);
+        return await dialogService.ShowFileDisplayDialog(fileName, dialogParameters.MergeWith(parameters), options);
     }
 
     private static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string fileName, DialogParameters parameters, Action<DialogOptionsEx> options = null)

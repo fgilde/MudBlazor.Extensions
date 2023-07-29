@@ -2,6 +2,7 @@
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
+using MudBlazor.Extensions.Services;
 
 namespace MudBlazor.Extensions.Options
 {
@@ -10,6 +11,9 @@ namespace MudBlazor.Extensions.Options
     /// </summary>
     public class DialogOptionsEx : DialogOptions, ICloneable
     {
+        internal MudExAppearanceService AppearanceService { get; set; }
+        internal MudExAppearanceService GetAppearanceService() => AppearanceService ?? new MudExAppearanceService();
+
         #region Statics
 
         /// <summary>
@@ -32,6 +36,7 @@ namespace MudBlazor.Extensions.Options
 
         #endregion
 
+        
         /// <summary>
         /// Sets the current instance of DialogOptionsEx as the default option for dialogs.
         /// </summary>

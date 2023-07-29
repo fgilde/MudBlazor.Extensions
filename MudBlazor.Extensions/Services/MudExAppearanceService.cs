@@ -12,7 +12,17 @@ public class MudExAppearanceService
 {
     private string GetClass(IMudExAppearance appearance) => appearance switch { IMudExClassAppearance classAppearance => classAppearance.Class, _ => string.Empty };
     private string GetStyle(IMudExAppearance appearance) => appearance switch { IMudExStyleAppearance styleAppearance => styleAppearance.Style, _ => string.Empty };
-    private IJSRuntime GetRuntime() => JsImportHelper.GetInitializedJsRuntime();
+    private IJSRuntime GetRuntime() => JSRuntime ?? JsImportHelper.GetInitializedJsRuntime();
+
+    private IJSRuntime JSRuntime { get; set; }
+
+    public MudExAppearanceService(IJSRuntime jsRuntime)
+    {
+        JSRuntime = jsRuntime;
+    }
+
+    internal MudExAppearanceService(): this(null)
+    {}
 
 
     /// <summary>
