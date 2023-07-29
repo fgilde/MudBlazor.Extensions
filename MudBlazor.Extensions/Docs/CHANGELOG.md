@@ -1,4 +1,6 @@
 ## Change Log  
+ - 1.7.64 > Fix error on server side rendered projects
+ - 1.7.64 > Remove need for `jsRuntime.InitializeMudBlazorExtensionsAsync()`
  - 1.7.63 > Use MudMarkdown as IMudExFileDisplay to support markdown files in [MudExFileDisplay](https://www.mudex.org/file-display)
  - 1.7.63 > Add new option to allow copy url to clipboard in [MudExFileDisplay](https://www.mudex.org/file-display)
  - 1.7.63 > Fix bug in [MudExThemeEdit](https://www.mudex.org/theme-ed  it) where component wasnt loaded if its rendered in a dialog.

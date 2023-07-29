@@ -6112,6 +6112,11 @@
             Imports requires JS module and required css styles for MudBlazor.Extensions
             </summary>        
         </member>
+        <member name="M:MudBlazor.Extensions.Helper.JsImportHelper.InitializeMudBlazorExtensionsCoreAsync(Microsoft.JSInterop.IJSRuntime,System.Boolean)">
+            <summary>
+            Imports requires JS module and required css styles for MudBlazor.Extensions
+            </summary>        
+        </member>
         <member name="T:MudBlazor.Extensions.Helper.JsonHelper">
             <summary>
             Simple JsonHelper

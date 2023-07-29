@@ -10,40 +10,43 @@ namespace MudBlazor.Extensions.Helper
     /// </summary>
     public static class JsImportHelper
     {
-        private static bool useMinified => true; //!Debugger.IsAttached;
+        private static bool useMinified => true;
         private static string min => useMinified ? ".min" : string.Empty;        
         
-        internal static IJSRuntime _runtime;
+        internal static IJSRuntime LegacyRuntimeReference;
 
-        
+
         /// <summary>
         /// Imports requires JS module and required css styles for MudBlazor.Extensions
         /// </summary>        
-        public static async Task<IJSRuntime> InitializeMudBlazorExtensionsAsync(this IJSRuntime runtime, bool force = false)
+        [Obsolete("This method is not needed anymore. If you have problems without this method, please report an issue.")]
+        public static Task<IJSRuntime> InitializeMudBlazorExtensionsAsync(this IJSRuntime runtime, bool force = false) 
+            => runtime.InitializeMudBlazorExtensionsCoreAsync(force);
+
+        /// <summary>
+        /// Imports requires JS module and required css styles for MudBlazor.Extensions
+        /// </summary>        
+        internal static async Task<IJSRuntime> InitializeMudBlazorExtensionsCoreAsync(this IJSRuntime runtime, bool force = false)
         {
-            _runtime = runtime ?? _runtime; // This is a workaround for using module in MAUI apps
+            LegacyRuntimeReference = runtime ?? LegacyRuntimeReference;
             if (force || !await runtime.IsNamespaceAvailableAsync("MudBlazorExtensions"))
             {
                 await runtime.ImportModuleBlazorJS(); // This is a workaround for using module in MAUI apps
-                if (useMinified)
-                    await runtime.ImportModuleMudEx(); // This is a workaround for using module in MAUI apps
-                else
-                    await runtime.LoadJsAsync(MainJs());                                
+                await ImportMainMudEx(runtime); // This is a workaround for using module in MAUI apps
             }
-            if (force || !await runtime.IsElementAvailableAsync("mudex-styles"))
-            {
-                await runtime.RemoveElementAsync("mudex-styles");
-                await runtime.AddCss(await MudExResource.GetEmbeddedFileContentAsync($"wwwroot/mudBlazorExtensions{min}.css"), "mudex-styles");
-            }
+            await runtime.AddCss(await MudExResource.GetEmbeddedFileContentAsync($"wwwroot/mudBlazorExtensions{min}.css"), "mudex-styles", !force);
             return runtime;
         }
 
-        internal static IJSRuntime GetInitializedJsRuntime() => _runtime;
+        private static Task ImportMainMudEx(IJSRuntime runtime) 
+            => useMinified ? runtime.ImportModuleMudEx() : runtime.LoadFilesAsync(MainJs());
+
+        internal static IJSRuntime GetInitializedJsRuntime() => LegacyRuntimeReference;
 
         internal static async Task<IJSRuntime> GetInitializedJsRuntime(object field, IJSRuntime fallback)
         {
-            var js = fallback ?? _runtime ?? field.ExposeField<IJSRuntime>("_jsRuntime") ?? field.ExposeField<IJSRuntime>("_jsInterop");
-            return await InitializeMudBlazorExtensionsAsync(js);
+            var js = fallback ?? LegacyRuntimeReference ?? field.ExposeField<IJSRuntime>("_jsRuntime") ?? field.ExposeField<IJSRuntime>("_jsInterop");
+            return await InitializeMudBlazorExtensionsCoreAsync(js);
         }
 
         internal static Task<IJSObjectReference> ImportModuleMudEx(this IJSRuntime runtime) 

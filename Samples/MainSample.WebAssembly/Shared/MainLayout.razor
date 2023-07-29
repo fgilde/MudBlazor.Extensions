@@ -2,7 +2,6 @@
 @using MudBlazor.Extensions.Options
 @using MudBlazor.Extensions.Core
 @inherits LayoutComponentBase
-@inject IJSRuntime JsRuntime
 @inject NavigationManager Navi;
 @inject IDialogService DialogService;
 
@@ -90,11 +89,6 @@
     {
         Instance = this;
         base.OnInitialized();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
     }
 
     void DrawerToggle()

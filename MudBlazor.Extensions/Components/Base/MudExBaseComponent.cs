@@ -177,7 +177,7 @@ internal interface IJsMudExComponent<T>: IMudExComponent, IAsyncDisposable
     /// </summary>
     public virtual async Task ImportModuleAndCreateJsAsync(string name = null)
     {
-        await JsRuntime.InitializeMudBlazorExtensionsAsync();
+        await JsRuntime.InitializeMudBlazorExtensionsCoreAsync();
         var references = await JsRuntime.ImportModuleAndCreateJsAsync<T>(name, GetJsArguments());
         JsReference = references.jsObjectReference;
         ModuleReference = references.moduleReference;

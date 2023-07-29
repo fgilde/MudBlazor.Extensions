@@ -1,12 +1,12 @@
 ﻿# MudExCss
 
-MudExCss is a static utility class that provides a set of methods to work with CSS animations, generate CSS strings, manipulate CSS variables, and more.
+MudExCss is a static utility class that provides a set of methods to work with CSS animations, generate CSS strings, manipulate CSS variables, and more. It is now also equipped with extension methods to use with IJSRuntime.
 
 ## Methods
 
 ### GetAnimationCssStyle (AnimationType, TimeSpan, AnimationDirection?, AnimationTimingFunction, DialogPosition?)
 
-Generates a CSS animation string for a single animation type.
+Generates a CSS animation string for a single animation type. Now available as an extension method to IJSRuntime.
 
 #### Parameters
 
@@ -19,12 +19,12 @@ Generates a CSS animation string for a single animation type.
 #### Example
 
 ```csharp
-var animationCss = MudExCss.GetAnimationCssStyle(AnimationType.SlideIn, TimeSpan.FromSeconds(1), AnimationDirection.In);
+var animationCss = AnimationType.SlideIn.GetAnimationCssStyle(TimeSpan.FromSeconds(1), AnimationDirection.In);
 ```
 
 ### GetAnimationCssStyle (AnimationType[], TimeSpan, AnimationDirection?, AnimationTimingFunction, DialogPosition?)
 
-Generates a CSS animation string for an array of animation types.
+Generates a CSS animation string for an array of animation types. Now available as an extension method to IJSRuntime.
 
 #### Parameters
 
@@ -38,38 +38,70 @@ Generates a CSS animation string for an array of animation types.
 
 ```csharp
 var animationTypes = new AnimationType[] { AnimationType.SlideIn, AnimationType.FadeIn };
-var animationCss = MudExCss.GetAnimationCssStyle(animationTypes, TimeSpan.FromSeconds(1));
+var animationCss = animationTypes.GetAnimationCssStyle(TimeSpan.FromSeconds(1));
 ```
 
-### GenerateCssString (object, string)
+### Get (Classes, Classes[])
 
-Generates a CSS string from an object's properties.
+Quickly accesses classes.
 
 #### Parameters
 
-- `obj`: The object to generate the CSS string from.
-- `existingCss` (optional): An existing CSS string to be combined with the generated CSS string. Default is an empty string.
+- `cls`: A class of type `Classes`.
+- `other` (optional): Other classes to be accessed. Default is `null`.
 
 #### Example
 
 ```csharp
-var cssObj = new { width = 100, height = 200, backgroundColor = "red" };
-var cssString = MudExCss.GenerateCssString(cssObj);
+var classString = MudExCss.Get(MudExCss.Classes.Dialog.FullHeightContent, "overflow-hidden", MudExCss.Classes.Dialog._Initial);
 ```
 
-### GenerateCssString (object, CssUnit, string)
+### CreateStyle (Action<MudExStyleBuilder>)
 
-Generates a CSS string from an object's properties with a specified CSS unit.
+Creates a style builder with applied styles from given action.
 
 #### Parameters
 
-- `obj`: The object to generate the CSS string from.
-- `cssUnit`: The `CssUnit` to be used for the properties that require units.
-- `existingCss` (optional): An existing CSS string to be combined with the generated CSS string. Default is an empty string.
+- `action` (optional): An action to be performed on the `MudExStyleBuilder`. Default is `null`.
 
 #### Example
 
 ```csharp
-var cssObj = new { width = 100, height = 200, backgroundColor = "red" };
-var cssString = MudExCss.GenerateCssString(cssObj, CssUnit.Pixels);
+var styleBuilder = MudExCss.CreateStyle(builder => builder.Add("color", "red"));
 ```
+
+### Obsolete Methods
+
+Following methods are now obsolete and should be used as `MudExStyleBuilder` or `IJSRuntime` extension methods instead.
+
+- `GenerateCssString(object, string)`
+- `GenerateCssString(object, CssUnit, string)`
+- `CombineCSSStrings(string, string)`
+- `CssStringToObject<T>(string)`
+- `GetCssVariablesAsync()`
+- `FindCssVariablesByValueAsync(string)`
+- `SetCssVariableValueAsync(KeyValuePair<string, string>)`
+- `SetCssVariableValueAsync(string, object, object[])`
+- `SetCssVariableValueAsync(string, object)`
+- `SetCssVariableValueAsync(string, Color)`
+- `SetCssVariableValueAsync(string, MudColor)`
+- `SetCssVariableValueAsync(string, string)`
+- `GetCssColorVariablesAsync()`
+```
+
+### Deprecated Examples
+
+#### GenerateCssString
+
+```csharp
+var cssObj = new { width = 100, height = 200, backgroundColor = "red" };
+var cssString = MudExCss.GenerateCssString(cssObj); // Deprecated
+```
+
+#### SetCssVariableValueAsync
+
+```csharp
+var task = MudExCss.SetCssVariableValueAsync("color", "red"); // Deprecated
+```
+
+These deprecated methods are replaced by the use of `MudExStyleBuilder` or `IJSRuntime` extension methods. For more details, refer to the documentation of these new methods.
