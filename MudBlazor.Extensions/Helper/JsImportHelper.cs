@@ -27,8 +27,7 @@ namespace MudBlazor.Extensions.Helper
         /// Imports requires JS module and required css styles for MudBlazor.Extensions
         /// </summary>        
         internal static async Task<IJSRuntime> InitializeMudBlazorExtensionsCoreAsync(this IJSRuntime runtime, bool force = false)
-        {
-            LegacyRuntimeReference = runtime ?? LegacyRuntimeReference;
+        {    
             if (force || !await runtime.IsNamespaceAvailableAsync("MudBlazorExtensions"))
             {
                 await runtime.ImportModuleBlazorJS(); // This is a workaround for using module in MAUI apps

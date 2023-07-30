@@ -19,3 +19,18 @@
     background-position: center;*/
 }
 
+.mud-ex-splitter-collapsed-slide-bar-content-v {
+    width: 100%;
+    height: 100%;
+}
+
+.mud-ex-splitter-collapsed-slide-bar-content-v > * {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.mud-ex-centered-content {
+    display: flex;
+    justify-content: center; /* For horizontal centering */
+    align-items: center; /* For vertical centering */
+}

@@ -1,5 +1,5 @@
 ﻿<MudHidden Breakpoint="Breakpoint.MdAndDown">
-    <MudExSplitPanel Splittable="@Splittable" ColumnLayout="@ColumnLayout" Style="height: 80vh">
+    <MudExSplitPanel IsCollapsed="@IsCollapsed" IsCollapsible="true" Splittable="@Splittable" ColumnLayout="@ColumnLayout" Style="height: 80vh">
         <Left>
             @if (Left != null)
             {
@@ -40,6 +40,7 @@
 @code {
     [Parameter] public RenderFragment? Left { get; set; }
     [Parameter] public RenderFragment? Right { get; set; }
+    [Parameter] public bool IsCollapsed { get; set; }
     [Parameter] public bool ColumnLayout { get; set; } = true;
     [Parameter] public bool Splittable { get; set; } = true;
     [Parameter] public string MinWidthLeft { get; set; } = "350px";

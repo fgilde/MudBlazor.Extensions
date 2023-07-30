@@ -12,7 +12,33 @@
         const splitter = document.querySelector(`.mud-ex-splitter[data-id="${options.id}"]`);
         if (splitter) {
             this.initSplitter(splitter);
+            this.saveInitialState();
         }
+    }
+
+    // Save initial state
+    saveInitialState() {
+        this.initialState = {
+            splitterStyle: { ...this.splitter.style },
+            prevElemStyle: { ...this.prevElem.style },
+            nextElemStyle: { ...this.nextElem.style }
+        };
+    }
+
+    // Reset the splitter
+    reset() {
+        this.splitter.style = this.initialState.splitterStyle;
+        this.prevElem.style = this.initialState.prevElemStyle;
+        this.nextElem.style = this.initialState.nextElemStyle;
+        // May need to remove/reset event listeners or any other added state as well
+    }
+
+    // Restore the splitter
+    restore() {
+        // For restore, you need to store the current state before reset
+        this.splitter.style = this.currentState.splitterStyle;
+        this.prevElem.style = this.currentState.prevElemStyle;
+        this.nextElem.style = this.currentState.nextElemStyle;
     }
 
     initSplitter(splitter) {        
@@ -71,6 +97,13 @@
     }
 
     apply() {
+
+        this.currentState = {
+            splitterStyle: { ...this.splitter.style },
+            prevElemStyle: { ...this.prevElem.style },
+            nextElemStyle: { ...this.nextElem.style }
+        };
+        
         if (this.options.percentage) {
             this.updateElementsInPercentage();
         }
@@ -146,6 +179,25 @@
     resetDocumentMouseEvents() {
         document.onmousemove = this.documentMouseMove;
         document.onmouseup = this.documentMouseUp;
+    }
+
+    getSize() {        
+        var prevSize = this.prevElem.getBoundingClientRect();
+        var nextSize = this.nextElem.getBoundingClientRect();
+        
+        return {
+            prev: {
+                width: this.prevElem.style.width,
+                height: this.prevElem.style.height,
+                bounds: prevSize
+            }
+,
+            next: {
+                width: this.nextElem.style.width,
+                height: this.nextElem.style.height,
+                bounds: nextSize
+            }
+        };        
     }
 
     dispose() {

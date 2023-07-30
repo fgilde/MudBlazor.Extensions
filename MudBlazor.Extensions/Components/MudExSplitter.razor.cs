@@ -11,7 +11,7 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
 {
-    private string _dataId = Guid.NewGuid().ToFormattedId();
+    private readonly string _dataId = Guid.NewGuid().ToFormattedId();
     private const string ClassName = "mud-ex-splitter";
     private RenderFragment Inherited() => builder =>
     {
@@ -41,6 +41,7 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
     /// <inheritdoc/>
     protected override Task OnInitializedAsync()
     {
+        // ReSharper disable once ConstantNullCoalescingCondition
         (UserAttributes ??= new Dictionary<string,object>()).AddOrUpdate("data-id", _dataId);
         Color = MudBlazor.Color.Primary;
         Size = 5;
@@ -58,6 +59,35 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
 
     /// <inheritdoc/>
     public virtual object[] GetJsArguments() => new[] { AsJsComponent.ElementReference, AsJsComponent.CreateDotNetObjectReference(), Options() };
+
+    /// <summary>
+    /// Returns current size information for next and preview element
+    /// </summary>
+    /// <returns></returns>
+    public async Task<SizeResponse> GetElementSizes()
+    {
+        return AsJsComponent.JsReference != null
+            ? await AsJsComponent.JsReference.InvokeAsync<SizeResponse>("getSize")
+            : null;
+    }
+
+    /// <summary>
+    /// Resets to initial
+    /// </summary>
+    public async Task Reset()
+    {
+        if (AsJsComponent.JsReference != null)
+            await AsJsComponent.JsReference.InvokeVoidAsync("reset");            
+    }
+
+    /// <summary>
+    /// Restores the state to last sizes
+    /// </summary>    
+    public async Task Restore()
+    {
+        if (AsJsComponent.JsReference != null)
+            await AsJsComponent.JsReference.InvokeVoidAsync("restore");
+    }
 
     /// <summary>
     /// Returns options for setting up the Splitter.

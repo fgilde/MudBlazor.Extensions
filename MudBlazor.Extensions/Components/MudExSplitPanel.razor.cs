@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Core;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -8,6 +9,10 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExSplitPanel
 {
+    private MudExSplitter _splitter;
+    private string _rightSize;
+    private bool AnythingCollapsed() => IsCollapsed;
+    
     /// <summary>
     /// The content that will be displayed on the left or top hand side of the SplitPanel
     /// </summary>
@@ -56,6 +61,55 @@ public partial class MudExSplitPanel
     [Parameter, SafeCategory("Behavior")]
     public bool Splittable { get; set; } = true;
 
+    /// <summary>
+    /// Size of splitter
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public MudExSize<double> SplitterSize { get; set; } = 5;
+
+
+    /// <summary>
+    /// Color of splitter
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public MudExColor SplitterColor { get; set; } = Color.Primary;
+
+    /// <summary>
+    /// Specifies the icon for the right direction.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public string IconRight { get; set; } = Icons.Material.Filled.ArrowForward;
+
+    /// <summary>
+    /// Specifies the icon for the left direction.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public string IconLeft { get; set; } = Icons.Material.Filled.ArrowBack;
+
+    /// <summary>
+    /// Specifies the icon for the upward direction.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public string IconUp { get; set; } = Icons.Material.Filled.ArrowUpward;
+
+    /// <summary>
+    /// Specifies the icon for the downward direction.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public string IconDown { get; set; } = Icons.Material.Filled.ArrowDownward;
+
+    /// <summary>
+    /// Indicates if the component is collapsed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool IsCollapsed { get; set; }
+
+    /// <summary>
+    /// Indicates if the component can be collapsed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool IsCollapsible { get; set; } = true;
+
 
     // Its not a bug. if columnLayout is true flex-direction is row
     /// <summary>
@@ -66,4 +120,18 @@ public partial class MudExSplitPanel
     {
         return $"flex-direction:{(ColumnLayout ? "row" : "column")}{(Reverse ? "-reverse" : "")};";
     }
+
+    private async Task ToggleCollapsed(bool isCollapsed)
+    {
+        if (isCollapsed)
+        {
+            var sizes = await _splitter.GetElementSizes();
+            _rightSize = ColumnLayout ? sizes?.Next?.Width : sizes?.Next?.Height ?? string.Empty;
+            await _splitter.Reset();
+        }
+
+        IsCollapsed = isCollapsed;
+        StateHasChanged();
+    }
+
 }

@@ -2123,6 +2123,11 @@
             A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.SelectorsToKeepOpenOnMouseLeave">
+            <summary>
+            Here you can specify some selectors if any of them available in dom element will not collapse on mouse leave
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.Position">
             <summary>
             The position where the MudExSlideBar should start to slide from.
@@ -2181,6 +2186,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.HideContentWhenCollapsed">
             <summary>
             If true, the child content of the MudExSlideBar will be hidden when the MudExSlideBar is collapsed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSlideBar.Size">
+            <summary>
+            Size depends on position if its set as height or width
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSlideBar.Show">
@@ -2261,6 +2271,46 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.Splittable">
             <summary>
             Sets whether the SplitPanel component should be splittable
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.SplitterSize">
+            <summary>
+            Size of splitter
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.SplitterColor">
+            <summary>
+            Color of splitter
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.IconRight">
+            <summary>
+            Specifies the icon for the right direction.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.IconLeft">
+            <summary>
+            Specifies the icon for the left direction.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.IconUp">
+            <summary>
+            Specifies the icon for the upward direction.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.IconDown">
+            <summary>
+            Specifies the icon for the downward direction.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.IsCollapsed">
+            <summary>
+            Indicates if the component is collapsed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.IsCollapsible">
+            <summary>
+            Indicates if the component can be collapsed.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSplitPanel.GetStyle">
@@ -2346,6 +2396,22 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSplitter.GetJsArguments">
             <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSplitter.GetElementSizes">
+            <summary>
+            Returns current size information for next and preview element
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSplitter.Reset">
+            <summary>
+            Resets to initial
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSplitter.Restore">
+            <summary>
+            Restores the state to last sizes
+            </summary>    
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSplitter.Options">
             <summary>
@@ -5396,6 +5462,11 @@
         <member name="M:MudBlazor.Extensions.Core.MudExColor.Is(System.UInt32)">
             <summary>
             Determines if the value equals the provided Integer.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExColor.Is(System.Drawing.Color)">
+            <summary>
+            Determines if the value equals the provided MudColor.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Core.MudExColor.ToString">
