@@ -5,7 +5,7 @@
 @using System.ComponentModel.DataAnnotations
 @using MudBlazor.Extensions.Options
 
-@attribute [DemoUpdated(Group = "MudExObjectEdit", Name = "With custom configuration", Order = 1, Documentation = "Demo for using MudExObjectEdit for the same model with the default Demo but with some Meta configuration", Icon = Icons.Material.Outlined.TextSnippet, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+@attribute [Demo(Group = "MudExObjectEdit", Name = "With custom configuration", Order = 1, Documentation = "Demo for using MudExObjectEdit for the same model with the default Demo but with some Meta configuration", Icon = Icons.Material.Outlined.TextSnippet, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
 <DemoComponent PageType="@GetType()" DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "ObjectEditMetaConfig/MySimpleTypeRegistrations.cs", "Shared/ProgrammingSkillSelect.razor"})">
     <MudButton Variant="Variant.Outlined" Color="Color.Warning" OnClick="@(() => _isLoading = !_isLoading)">Toggle loading</MudButton>

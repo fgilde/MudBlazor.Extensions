@@ -170,6 +170,11 @@ public readonly struct MudExColor
     public bool Is(uint c) => _value.Value.Equals(c);
 
     /// <summary>
+    /// Determines if the value equals the provided MudColor.
+    /// </summary>
+    public bool Is(DC c) => _value.Value.Equals(c);
+
+    /// <summary>
     /// Converts this MudExColor object to its string representation.
     /// </summary>
     /// <returns>A string that represents this MudExColor object.</returns>

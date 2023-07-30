@@ -7,34 +7,40 @@
             <CascadingValue Value="this">
                 @Left
             </CascadingValue>
-            
-            @*
-            <MudToggleIconButton 
-                @bind-Toggled="_isRightCollapsed"
-                Class="mud-ex-splitter-internal" Icon="@Icons.Material.Filled.ArrowForward" ToggledIcon="@Icons.Material.Filled.ArrowBack"></MudToggleIconButton>*@
+
+            @if (IsCollapsible)
+            {
+                <div class="mud-ex-splitter-internal mud-ex-centered-content">
+                    <MudToggleIconButton Toggled="@IsCollapsed"
+                                         ToggledChanged="@ToggleCollapsed"
+                                         Class="mud-ex-splitter-internal" Icon="@(ColumnLayout ? (Reverse ? IconLeft: IconRight) : (Reverse ? IconUp : IconDown))" ToggledIcon="@(ColumnLayout ? (Reverse ? IconRight: IconLeft) : (Reverse ? IconDown : IconUp))"></MudToggleIconButton>
+                </div>
+            }
 
         }
         @if (Splittable && Left != null && Right != null && !AnythingCollapsed())
-        {            
-            <MudExSplitter Vertical="@ColumnLayout" Reverse="@Reverse" FlexItem="true" UpdateSizesInPercentage="@UpdateSizesInPercentage" />
+        {
+            <MudExSplitter @ref="_splitter" Vertical="@ColumnLayout" Reverse="@Reverse" Color="@SplitterColor" Size="@SplitterSize" FlexItem="true" UpdateSizesInPercentage="@UpdateSizesInPercentage" />
             @*<DynamicComponent Type="@typeof(MudExSplitter)" Parameters="@(new Dictionary<string, object> {{nameof(MudExSplitter.Vertical), ColumnLayout},{nameof(MudExSplitter.Reverse), Reverse}, {nameof(MudExSplitter.FlexItem), true}, {nameof(MudExSplitter.UpdateSizesInPercentage), UpdateSizesInPercentage} })"></DynamicComponent>*@
         }
         @if (Right != null)
-        {            
+        {
             <CascadingValue Value="this">
-                @if(_isRightCollapsed)
+                @if (IsCollapsed)
                 {
-                    <MudExSlideBar Width="777" DisableOpacityChange="true" BorderSize="5" BorderColor="Color.Primary" RelativeToParent="true" Position="Position.Right">@Right</MudExSlideBar>
-                }else {
+                    <MudExSlideBar Size="@_rightSize" DisableOpacityChange="true" BorderSize="@SplitterSize" BorderColor="@SplitterColor" RelativeToParent="true"
+                                   SelectorsToKeepOpenOnMouseLeave="@(new[] {".mud-popover-open", ".mud-dialog", ".mud-picker-open"})"
+                                   Position="@(ColumnLayout ? (Reverse ? Position.Left : Position.Right) : (Reverse ? Position.Top : Position.Bottom))">
+                        <div class="mud-ex-splitter-collapsed-slide-bar-content-v">
+                            @Right
+                        </div>
+                    </MudExSlideBar>
+                }
+                else
+                {
                     @Right
                 }
             </CascadingValue>
         }
     </div>
 </MudGrid>
-
-@code {
-    private bool _isRightCollapsed;
-
-    private bool AnythingCollapsed() => _isRightCollapsed;    
-}

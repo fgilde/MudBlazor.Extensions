@@ -1,6 +1,7 @@
 ﻿.mud-ex-slidebar {
-    margin: 0;    
+    margin: 0;
     position: fixed;
+    --mud-ex-slide-bar-collapsed-size: 20px;
 
     &.relative-to-parent {
         position: absolute;
@@ -21,7 +22,8 @@
         }
 
         &:not(.open) {
-            transform: translateY(calc(100% - 20px)); // 20px ist die sichtbare Höhe der Komponente, wenn sie ausgeblendet ist
+            transform: translateY(calc(100% - var(--mud-ex-slide-bar-collapsed-size))); // 20px ist die sichtbare Höhe der Komponente, wenn sie ausgeblendet ist
+            height: var(--mud-ex-slide-bar-collapsed-size);
         }
     }
 
@@ -35,7 +37,8 @@
         }
 
         &:not(.open) {
-            transform: translateY(calc(-100% + 20px)); // 20px ist die sichtbare Höhe der Komponente, wenn sie ausgeblendet ist
+            transform: translateY(calc(-100% + var(--mud-ex-slide-bar-collapsed-size))); // 20px ist die sichtbare Höhe der Komponente, wenn sie ausgeblendet ist
+            height: var(--mud-ex-slide-bar-collapsed-size);
         }
     }
 
@@ -53,7 +56,8 @@
         }
 
         &:not(.open) {
-            transform: translateX(calc(-100% + 20px)); // 20px ist die sichtbare Breite der Komponente, wenn sie ausgeblendet ist
+            transform: translateX(calc(-100% + var(--mud-ex-slide-bar-collapsed-size))); // 20px ist die sichtbare Breite der Komponente, wenn sie ausgeblendet ist
+            width: var(--mud-ex-slide-bar-collapsed-size);
         }
     }
 
@@ -71,7 +75,8 @@
         }
 
         &:not(.open) {
-            transform: translateX(calc(100% - 20px)); // 20px ist die sichtbare Breite der Komponente, wenn sie ausgeblendet ist
+            transform: translateX(calc(100% - var(--mud-ex-slide-bar-collapsed-size))); // 20px ist die sichtbare Breite der Komponente, wenn sie ausgeblendet ist
+            width: var(--mud-ex-slide-bar-collapsed-size);
         }
     }
 
