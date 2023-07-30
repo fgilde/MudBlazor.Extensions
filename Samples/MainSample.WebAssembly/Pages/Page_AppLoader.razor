@@ -1,15 +1,30 @@
 ﻿@inject HttpClient Http
+@inject IJSRuntime js
 @page "/app-load"
+@using MudBlazor.Extensions.Helper
 
 
 @attribute [Demo(Name = "MudExAppLoader", Icon = Icons.Material.Outlined.Circle, Documentation = "With this component you can have an animation while loading the main blazor app")]
+
+<MudButton Disabled="@_demoHiding" Variant="Variant.Outlined" Color="Color.Primary" OnClick="@(() => _demo = !_demo)">@(_demo ? "Hide Demo": "Show Demo")</MudButton>
+
+@if (_demo)
+{
+    @if (!_demoHiding)
+    {
+        <MudSlider T="int" Max="100" Min="0" Step="1" ValueChanged="@ProgressChange" />
+    }
+    <mud-ex-app-loader AppName="Your App" AccentColor="#00ff00" MainAppId="demoapp" Logo="/sample-data/logo.png">
+    </mud-ex-app-loader>
+}
 
 <HeaderForDemo Type="@GetType()" />
 <DemoMarkdown Value="@Value"></DemoMarkdown>
 
 @code
 {
-    
+    private bool _demo;
+    private bool _demoHiding;
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -18,4 +33,16 @@
     }
     private string Value { get; set; }
 
+    private async Task ProgressChange(int arg)
+    {        
+        await js.SetCssVariableValueAsync("blazor-load-percentage", arg);
+        if (arg == 100)
+        {
+            _demoHiding = true;
+            StateHasChanged();
+            await Task.Delay(2000);
+            _demo = _demoHiding = false;
+            StateHasChanged();
+        }
+    }
 }
