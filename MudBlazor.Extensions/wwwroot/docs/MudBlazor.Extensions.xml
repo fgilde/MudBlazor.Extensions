@@ -2303,7 +2303,7 @@
             Specifies the icon for the downward direction.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.IsCollapsed">
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.IsInitiallyCollapsed">
             <summary>
             Indicates if the component is collapsed.
             </summary>

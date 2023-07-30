@@ -11,8 +11,9 @@ public partial class MudExSplitPanel
 {
     private MudExSplitter _splitter;
     private string _rightSize;
-    private bool AnythingCollapsed() => IsCollapsed;
-    
+    private bool AnythingCollapsed() => _isCollapsed;
+    private bool _isCollapsed;
+
     /// <summary>
     /// The content that will be displayed on the left or top hand side of the SplitPanel
     /// </summary>
@@ -102,15 +103,14 @@ public partial class MudExSplitPanel
     /// Indicates if the component is collapsed.
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
-    public bool IsCollapsed { get; set; }
+    public bool IsInitiallyCollapsed { get; set; }
 
     /// <summary>
     /// Indicates if the component can be collapsed.
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
-    public bool IsCollapsible { get; set; } = true;
-
-
+    public bool IsCollapsible { get; set; }
+        
     // Its not a bug. if columnLayout is true flex-direction is row
     /// <summary>
     /// Gets the style string for the SplitPanel component
@@ -119,6 +119,13 @@ public partial class MudExSplitPanel
     public string GetStyle()
     {
         return $"flex-direction:{(ColumnLayout ? "row" : "column")}{(Reverse ? "-reverse" : "")};";
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+            _isCollapsed = IsInitiallyCollapsed;
+        base.OnAfterRender(firstRender);
     }
 
     private async Task ToggleCollapsed(bool isCollapsed)
@@ -130,7 +137,7 @@ public partial class MudExSplitPanel
             await _splitter.Reset();
         }
 
-        IsCollapsed = isCollapsed;
+        _isCollapsed = isCollapsed;
         StateHasChanged();
     }
 

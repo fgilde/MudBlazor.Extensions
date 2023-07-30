@@ -11,7 +11,7 @@
             @if (IsCollapsible)
             {
                 <div class="mud-ex-splitter-internal mud-ex-centered-content">
-                    <MudToggleIconButton Toggled="@IsCollapsed"
+                    <MudToggleIconButton Toggled="@_isCollapsed"
                                          ToggledChanged="@ToggleCollapsed"
                                          Class="mud-ex-splitter-internal" Icon="@(ColumnLayout ? (Reverse ? IconLeft: IconRight) : (Reverse ? IconUp : IconDown))" ToggledIcon="@(ColumnLayout ? (Reverse ? IconRight: IconLeft) : (Reverse ? IconDown : IconUp))"></MudToggleIconButton>
                 </div>
@@ -26,7 +26,7 @@
         @if (Right != null)
         {
             <CascadingValue Value="this">
-                @if (IsCollapsed)
+                @if (_isCollapsed)
                 {
                     <MudExSlideBar Size="@_rightSize" DisableOpacityChange="true" BorderSize="@SplitterSize" BorderColor="@SplitterColor" RelativeToParent="true"
                                    SelectorsToKeepOpenOnMouseLeave="@(new[] {".mud-popover-open", ".mud-dialog", ".mud-picker-open"})"
