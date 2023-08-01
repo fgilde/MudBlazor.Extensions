@@ -313,6 +313,238 @@
         <member name="M:MudBlazor.Extensions.Components.MoveContent.ImportModuleAndCreateJsAsync">
             <inheritdoc />
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.ReadOnly">
+            <summary>
+            If true, the input will be read-only.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.FullWidth">
+            <summary>
+            If true, the input will take up the full width of its container.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.Immediate">
+            <summary>
+            If true, the input will update the Value immediately on typing.
+            If false, the Value is updated only on Enter.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.DisableUnderLine">
+            <summary>
+            If true, the input will not have an underline.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.HelperText">
+            <summary>
+            The HelperText will be displayed below the text field.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.HelperTextOnFocus">
+            <summary>
+            If true, the helper text will only be visible on focus.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.AdornmentIcon">
+            <summary>
+            Icon that will be used if Adornment is set to Start or End.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.AdornmentText">
+            <summary>
+            Text that will be used if Adornment is set to Start or End, the Text overrides Icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.Adornment">
+            <summary>
+            The Adornment if used. By default, it is set to None.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.AdornmentStart">
+            <summary>
+            The Adornment if used. By default, it is set to None.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.AdornmentEnd">
+            <summary>
+            The Adornment if used. By default, it is set to None.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.OnlyValidateIfDirty">
+            <summary>
+            The validation is only triggered if the user has changed the input value at least once. By default, it is false
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.AdornmentColor">
+            <summary>
+            The color of the adornment if used. It supports the theme colors.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.AdornmentAriaLabel">
+            <summary>
+            The aria-label of the adornment.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.IconSize">
+            <summary>
+            The Icon Size.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.OnAdornmentClick">
+            <summary>
+            Button click event if set and Adornment used.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.Variant">
+            <summary>
+            Variant to use.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.Margin">
+            <summary>
+             Will adjust vertical spacing.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.Placeholder">
+            <summary>
+            The short hint displayed in the input before the user enters a value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.Counter">
+            <summary>
+            If set, will display the counter, value 0 will display current count but no stop count.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.MaxLength">
+            <summary>
+            Maximum number of characters that the input will accept
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.Label">
+            <summary>
+            If string has value the label text will be displayed in the input, and scaled down at the top if the input has value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.AutoFocus">
+            <summary>
+            If true the input will focus automatically.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.Lines">
+            <summary>
+             A multiline input (textarea) will be shown, if set to more than one line.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.Text">
+            <summary>
+             The text to be displayed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.TextUpdateSuppression">
+            <summary>
+            When TextUpdateSuppression is true (which is default) the text can not be updated by bindings while the component is focused in BSS (not WASM).
+            This solves issue #1012: Textfield swallowing chars when typing rapidly
+            If you need to update the input's text while it is focused you can set this parameter to false.
+            Note: on WASM text update suppression is not active, so this parameter has no effect.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.InputMode">
+            <summary>
+             Hints at the type of data that might be entered by the user while editing the input
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.Pattern">
+            <summary>
+            The pattern attribute, when specified, is a regular expression which the input's value must match in order for the value to pass constraint validation. It must be a valid JavaScript regular expression
+            Not Supported in multline input
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExBaseInput`1.ForceUpdate">
+            <summary>
+            Sync the value, values and text, calls validation manually. Useful to call after user changes value or text programmatically.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExBaseInput`1.GetInputType">
+            <summary>
+            Derived classes need to override this if they can be something other than text
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExBaseInput`1.UpdateTextPropertyAsync(System.Boolean)">
+            <summary>
+            Text change hook for descendants. Called when Text needs to be refreshed from current Value property.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExBaseInput`1.FocusAsync">
+            <summary>
+            Focuses the element
+            </summary>
+            <returns>The ValueTask</returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.TextChanged">
+            <summary>
+            Fired when the text value changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.OnBlur">
+            <summary>
+            Fired when the element loses focus.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.OnInternalInputChanged">
+            <summary>
+            Fired when the element changes internally its text value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.OnKeyDown">
+            <summary>
+            Fired on the KeyDown event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.KeyDownPreventDefault">
+            <summary>
+            Prevent the default action for the KeyDown event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.OnKeyPress">
+            <summary>
+            Fired on the KeyPress event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.KeyPressPreventDefault">
+            <summary>
+            Prevent the default action for the KeyPress event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.OnKeyUp">
+            <summary>
+            Fired on the KeyUp event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.KeyUpPreventDefault">
+            <summary>
+            Prevent the default action for the KeyUp event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.ValueChanged">
+            <summary>
+            Fired when the Value property changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.Value">
+            <summary>
+            The value of this input element.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExBaseInput`1.UpdateValuePropertyAsync(System.Boolean)">
+            <summary>
+            Value change hook for descendants. Called when Value needs to be refreshed from current Text property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.Format">
+            <summary>
+            Conversion format parameter for ToString(), can be used for formatting primitive types, DateTimes and TimeSpans
+            </summary>
+        </member>
         <member name="F:MudBlazor.Extensions.Components.MudExCardHoverMode.LightBulb">
             <summary>
             A LightBulb follows the mouse
@@ -1851,6 +2083,510 @@
         <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.StringValueChanged(System.String)">
             <inheritdoc />
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExInput`1.InputType">
+            <summary>
+            Type of the input element. It should be a valid HTML5 input type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExInput`1.AutoSize">
+            <summary>
+            If true, automatically resize the height regard to the text. Needs Lines parameter to set more than 1.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExInput`1.OnInput">
+            <summary>
+            Fires on input.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExInput`1.OnChange">
+            <summary>
+            Fires on change.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExInput`1.OnPaste(Microsoft.AspNetCore.Components.Web.ClipboardEventArgs)">
+            <summary>
+            Paste hook for descendants.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExInput`1.ChildContent">
+            <summary>
+            ChildContent of the MudInput will only be displayed if InputType.Hidden and if its not null.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExInput`1.OnIncrement">
+            <summary>
+            Invokes the callback when the Up arrow button is clicked when the input is set to <see cref="F:MudBlazor.InputType.Number"/>.
+            Note: use the optimized control <see cref="T:MudBlazor.MudNumericField`1"/> if you need to deal with numbers.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExInput`1.OnDecrement">
+            <summary>
+            Invokes the callback when the Down arrow button is clicked when the input is set to <see cref="F:MudBlazor.InputType.Number"/>.
+            Note: use the optimized control <see cref="T:MudBlazor.MudNumericField`1"/> if you need to deal with numbers.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExInput`1.HideSpinButtons">
+            <summary>
+            Hides the spin buttons for <see cref="T:MudBlazor.MudNumericField`1"/>
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExInput`1.Clearable">
+            <summary>
+            Show clear button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExInput`1.OnClearButtonClick">
+            <summary>
+            Button click event for clear button. Called after text and value has been cleared.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExInput`1.OnMouseWheel">
+            <summary>
+            Mouse wheel event for input.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExInput`1.ClearIcon">
+            <summary>
+            Custom clear icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExInput`1.NumericUpIcon">
+            <summary>
+            Custom numeric up icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExInput`1.NumericDownIcon">
+            <summary>
+            Custom numeric down icon.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExInput`1.SetText(System.String)">
+            <summary>
+            Sets the input text from outside programmatically
+            </summary>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.Color">
+            <summary>
+            The color of the selected List Item.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.ChildContent">
+            <summary>
+            Child content of component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.ItemTemplate">
+            <summary>
+            Optional presentation template for items
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.ItemSelectedTemplate">
+            <summary>
+            Optional presentation template for selected items
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.ItemDisabledTemplate">
+            <summary>
+            Optional presentation template for disabled items
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SelectAllTemplate">
+            <summary>
+            Optional presentation template for select all item
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.ToStringFunc">
+            <summary>
+            Defines how values are displayed in the drop-down list
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.ItemCollection">
+            <summary>
+            Predefined enumerable items. If its not null, creates list items automatically.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SearchFunc">
+            <summary>
+            Custom search func for searchbox. If doesn't set, it search with "Contains" logic by default. Passed value and searchString values.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SearchBox">
+            <summary>
+            If true, shows a searchbox for filtering items. Only works with ItemCollection approach.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SearchBoxVariant">
+            <summary>
+            Search box text field variant.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SearchBoxAdornment">
+            <summary>
+            Search box icon position.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SearchBoxAutoFocus">
+            <summary>
+            If true, the search-box will be focused when the dropdown is opened.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SearchBoxClearable">
+            <summary>
+            If true, the search-box has a clear icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.ClassSearchBox">
+            <summary>
+            SearchBox's CSS classes, seperated by space.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.Virtualize">
+            <summary>
+            Allows virtualization. Only work if ItemCollection parameter is not null.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.MaxItems">
+            <summary>
+            Set max items to show in list. Other items can be scrolled. Works if list items populated with ItemCollection parameter.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.OverscanCount">
+            <summary>
+            Overscan value for Virtualized list. Default is 2.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.MultiSelection">
+            <summary>
+            Allows multi selection and adds MultiSelectionComponent for each list item.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.MultiSelectionAlign">
+            <summary>
+            The MultiSelectionComponent's placement. Accepts Align.Start and Align.End
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.MultiSelectionComponent">
+            <summary>
+            The component which shows as a MultiSelection check.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.Clickable">
+            <summary>
+            Set true to make the list items clickable. This is also the precondition for list selection to work.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SelectValueOnTab">
+            <summary>
+            If true the active (hilighted) item select on tab key. Designed for only single selection. Default is true.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.DisablePadding">
+            <summary>
+            If true, vertical padding will be removed from the list.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.DisableSelectedItemStyle">
+            <summary>
+            If true, selected items doesn't have a selected background color.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.Dense">
+            <summary>
+            If true, compact vertical padding will be applied to all list items.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.DisableGutters">
+            <summary>
+            If true, the left and right padding is removed on all list items.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.Disabled">
+            <summary>
+            If true, will disable the list item if it has onclick.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SelectAll">
+            <summary>
+            If set to true and the MultiSelection option is set to true, a "select all" checkbox is added at the top of the list of items.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SelectAllPosition">
+            <summary>
+            Sets position of the Select All checkbox
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SelectAllText">
+            <summary>
+            Define the text of the Select All option.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SecondaryBackgroundForNestedItemHeader">
+            <summary>
+            If true, change background color to secondary for all nested item headers.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.OnKeyDown">
+            <summary>
+            Fired on the KeyDown event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.OnFocusOut">
+            <summary>
+            Fired on the OnFocusOut event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.OnDoubleClick">
+            <summary>
+            Fired on the OnDoubleClick event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SelectedValue">
+            <summary>
+            The current selected value.
+            Note: Make the list Clickable or set MultiSelection true for item selection to work.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SelectedValues">
+            <summary>
+            The current selected values. Holds single value (SelectedValue) if MultiSelection is false.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SelectedItem">
+            <summary>
+            The current selected list item.
+            Note: make the list Clickable or MultiSelection or both for item selection to work.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SelectedItems">
+            <summary>
+            The current selected listitems.
+            Note: make the list Clickable for item selection to work.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SelectedValueChanged">
+            <summary>
+            Called whenever the selection changed. Can also be called even MultiSelection is true.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SelectedValuesChanged">
+            <summary>
+            Called whenever selected values changes. Can also be called even MultiSelection is false.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SelectedItemChanged">
+            <summary>
+            Called whenever the selected item changed. Can also be called even MultiSelection is true.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SelectedItemsChanged">
+            <summary>
+            Called whenever the selected items changed. Can also be called even MultiSelection is false.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExList`1.GetAllItems">
+            <summary>
+            Get all MudListItems in the list.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExList`1.GetItems">
+            <summary>
+            Get all items that holds value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.CheckedIcon">
+            <summary>
+            Custom checked icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.UncheckedIcon">
+            <summary>
+            Custom unchecked icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.IndeterminateIcon">
+            <summary>
+            Custom indeterminate icon.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExList`1.Clear">
+            <summary>
+            Clears value(s) and item(s) and deactive all items.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.IsFunctional">
+            <summary>
+            Functional items does not hold values. If a value set on Functional item, it ignores by the MudList. They can not count on Items list (they count on AllItems), cannot be subject of keyboard navigation and selection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.Text">
+            <summary>
+            The text to display
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.SecondaryText">
+            <summary>
+            The secondary text to display
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.Avatar">
+            <summary>
+            Avatar to use if set.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.AvatarClass">
+            <summary>
+            Avatar CSS Class to apply if Avatar is set.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.Href">
+            <summary>
+            Link to a URL when clicked.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.ForceLoad">
+            <summary>
+            If true, force browser to redirect outside component router-space.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.Disabled">
+            <summary>
+            If true, will disable the list item if it has onclick.
+            The value can be overridden by the parent list.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.DisableGutters">
+            <summary>
+            If true, the left and right padding is removed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.DisableRipple">
+            <summary>
+            If true, disables ripple effect.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.OverrideMultiSelectionComponent">
+            <summary>
+            Overrided component for multiselection. Keep it null to have default one that MudList has.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.Icon">
+            <summary>
+            Icon to use if set.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.IconColor">
+            <summary>
+            The color of the icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.IconSize">
+            <summary>
+            Sets the Icon Size.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.AdornmentColor">
+            <summary>
+            The color of the adornment if used. It supports the theme colors.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.ExpandLessIcon">
+            <summary>
+            Custom expand less icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.ExpandMoreIcon">
+            <summary>
+            Custom expand more icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.Inset">
+            <summary>
+            If true, the List Subheader will be indented.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.OnClickStopPropagation">
+            <summary>
+            If true, stop propagation on click. Default is true.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.Dense">
+            <summary>
+            If true, compact vertical padding will be used.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.CommandParameter">
+            <summary>
+            Command parameter.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.Command">
+            <summary>
+            Command executed when the user clicks on an element.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.OnClickHandlerPreventDefault">
+            <summary>
+            Prevent default behavior when click on MudSelectItem. Default behavior is selecting the item and style adjustments.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.ChildContent">
+            <summary>
+            Display content of this list item. If set, overrides Text.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.NestedList">
+            <summary>
+            Add child list items here to create a nested list.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.OnClick">
+            <summary>
+            List click event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.InitiallyExpanded">
+            <summary>
+            If true, expands the nested list on first display.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.Expanded">
+            <summary>
+            Expand or collapse nested list. Two-way bindable. Note: if you directly set this to
+            true or false (instead of using two-way binding) it will force the nested list's expansion state.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.ExpandedChanged">
+            <summary>
+            Called when expanded state change.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.IsSelected">
+            <summary>
+            Selected state of the option. Readonly. Use SetSelected for selecting.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.ChildContent">
+            <summary>
+            The child render fragment.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.DisableGutters">
+            <summary>
+            Disables the left and right spaces.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.Sticky">
+            <summary>
+            If true, subheader behaves sticky and remains on top until other subheader comes to top.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.SecondaryBackground">
+            <summary>
+            If true, subheader has darken background.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExMessageDialog">
             <summary>
             Simple MessageDialog
@@ -2116,6 +2852,374 @@
         <member name="M:MudBlazor.Extensions.Components.MudExPromptDialog.IsValid">
             <summary>
             Method that determines if the input value is a valid entry.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.Items">
+            <summary>
+            The collection of items within this select
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.InputClass">
+            <summary>
+            User class names for the input, separated by space
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.InputStyle">
+            <summary>
+            User style names for the input, separated by space
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.OnOpen">
+            <summary>
+            Fired when dropdown opens.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.OnClose">
+            <summary>
+            Fired when dropdown closes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.ChildContent">
+            <summary>
+            Add the MudSelectItems here
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.ItemTemplate">
+            <summary>
+            Optional presentation template for items
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.ItemSelectedTemplate">
+            <summary>
+            Optional presentation template for selected items
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.ItemDisabledTemplate">
+            <summary>
+            Optional presentation template for disabled items
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.ItemDisabledFunc">
+            <summary>
+            Function to be invoked when checking whether an item should be disabled or not. Works both with renderfragment and ItemCollection approach.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.TemplateClass">
+            <summary>
+            Classname for item template or chips.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SelectValueOnTab">
+            <summary>
+            If true the active (hilighted) item select on tab key. Designed for only single selection. Default is true.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.NoWrap">
+            <summary>
+            If false multiline text show. Default is false.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.PopoverClass">
+            <summary>
+            User class names for the popover, separated by space
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.DisablePopoverPadding">
+            <summary>
+            User class names for the popover, separated by space
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.DisableSelectedItemStyle">
+            <summary>
+            If true, selected items doesn't have a selected background color.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.Dense">
+            <summary>
+            If true, compact vertical padding will be applied to all Select items.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.OpenIcon">
+            <summary>
+            The Open Select Icon
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.Color">
+            <summary>
+            Dropdown color of select. Supports theme colors.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.CloseIcon">
+            <summary>
+            The Close Select Icon
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.ValuePresenter">
+            <summary>
+            The value presenter.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SelectAll">
+            <summary>
+            If set to true and the MultiSelection option is set to true, a "select all" checkbox is added at the top of the list of items.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SelectAllPosition">
+            <summary>
+            Sets position of the Select All checkbox
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SelectAllText">
+            <summary>
+            Define the text of the Select All option.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.MultiSelectionTextFunc">
+            <summary>
+            Function to define a customized multiselection text.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SearchFunc">
+            <summary>
+            Custom search func for searchbox. If doesn't set, it search with "Contains" logic by default. Passed value and searchString values.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.ItemCollection">
+            <summary>
+            If not null, select items will automatically created regard to the collection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.Virtualize">
+            <summary>
+            Allows virtualization. Only work is ItemCollection parameter is not null.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.ChipCloseable">
+            <summary>
+            If true, chips has close button and remove from SelectedValues when pressed the close button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.Delimiter">
+            <summary>
+            Parameter to define the delimited string separator.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.RelativeWidth">
+            <summary>
+            If true popover width will be the same as the select component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.MaxHeight">
+            <summary>
+            Sets the maxheight the Select can have when open.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.AnchorOrigin">
+            <summary>
+            Set the anchor origin point to determen where the popover will open from.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.TransformOrigin">
+            <summary>
+            Sets the transform origin point for the popover.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.Direction">
+            <summary>
+            Sets the direction the Select menu should open.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.OffsetX">
+            <summary>
+            If true, the Select menu will open either before or after the input (left/right).
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.OffsetY">
+            <summary>
+            If true, the Select menu will open either before or after the input (top/bottom).
+            </summary>
+            [ExcludeFromCodeCoverage]
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.Strict">
+            <summary>
+            If true, the Select's input will not show any values that are not defined in the dropdown.
+            This can be useful if Value is bound to a variable which is initialized to a value which is not in the list
+            and you want the Select to show the label / placeholder instead.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.Clearable">
+            <summary>
+            Show clear button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SearchBox">
+            <summary>
+            If true, shows a searchbox for filtering items. Only works with ItemCollection approach.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SearchBoxAutoFocus">
+            <summary>
+            If true, the search-box will be focused when the dropdown is opened.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SearchBoxClearable">
+            <summary>
+            If true, the search-box has a clear icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SearchBoxVariant">
+            <summary>
+            Search box text field variant.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SearchBoxAdornment">
+            <summary>
+            Search box icon position.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.LockScroll">
+            <summary>
+            If true, prevent scrolling while dropdown is open.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.OnClearButtonClick">
+            <summary>
+            Button click event for clear button. Called after text and value has been cleared.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.CheckedIcon">
+            <summary>
+            Custom checked icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.UncheckedIcon">
+            <summary>
+            Custom unchecked icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.IndeterminateIcon">
+            <summary>
+            Custom indeterminate icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.MultiSelection">
+            <summary>
+            If true, multiple values can be selected via checkboxes which are automatically shown in the dropdown
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.MultiSelectionAlign">
+            <summary>
+            The MultiSelectionComponent's placement. Accepts Align.Start and Align.End
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.MultiSelectionComponent">
+            <summary>
+            The component which shows as a MultiSelection check.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.Comparer">
+            <summary>
+            The Comparer to use for comparing selected values internally.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.ToStringFunc">
+            <summary>
+            Defines how values are displayed in the drop-down list
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SelectedValues">
+            <summary>
+            Set of selected values. If MultiSelection is false it will only ever contain a single value. This property is two-way bindable.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SelectedValuesChanged">
+            <summary>
+            Fires when SelectedValues changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SelectedListItemsChanged">
+            <summary>
+            Should only be used for debugging and development purposes.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.SelectClearButtonClickHandlerAsync(Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
+            <summary>
+            Extra handler for clearing selection.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.Clear">
+            <summary>
+            Clear the selection
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.HasValue(`0)">
+            <summary>
+            Fixes issue #4328
+            Returns true when MultiSelection is true and it has selected values(Since Value property is not used when MultiSelection=true
+            </summary>
+            <param name="value"></param>
+            <returns>True when component has a value</returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.IMudExSelect">
+            <summary>
+            The parent select component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.IsFunctional">
+            <summary>
+            Functional items does not hold values. If a value set on Functional item, it ignores by the MudSelect. They cannot be subject of keyboard navigation and selection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.Text">
+            <summary>
+            The text to display
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.HideContent">
+            <summary>
+            Select items with HideContent==true are only there to register their RenderFragment with the select but
+            wont render and have no other purpose!
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.Value">
+            <summary>
+            A user-defined option that can be selected
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.MultiSelection">
+            <summary>
+            Mirrors the MultiSelection status of the parent select
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.Value">
+            <summary>
+            A user-defined option that can be selected
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.Text">
+            <summary>
+            A user-defined option that can be selected
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.Nested">
+            <summary>
+            A user-defined option that can be selected
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.InitiallyExpanded">
+            <summary>
+            Sets the group's expanded state on popover opening. Works only if nested is true.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.Sticky">
+            <summary>
+            Sticky header for item group. Works only with nested is false.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.HideContent">
+            <summary>
+            Select items with HideContent==true are only there to register their RenderFragment with the select but
+            wont render and have no other purpose!
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSlideBar">

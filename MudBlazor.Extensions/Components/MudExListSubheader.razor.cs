@@ -1,0 +1,57 @@
+﻿using Microsoft.AspNetCore.Components;
+using MudBlazor.Utilities;
+
+namespace MudBlazor.Extensions.Components;
+
+public partial class MudExListSubheader<T>
+{
+    [Parameter] public string Class { get; set; }
+    [Parameter] public string Style { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]    
+    public Dictionary<string, object?> UserAttributes { get; set; } = new Dictionary<string, object?>();
+
+
+    protected string Classname =>
+        new CssBuilder("mud-list-subheader-extended")
+            .AddClass("mud-list-subheader-gutters-extended", !DisableGutters)
+            .AddClass("mud-list-subheader-inset-extended", Inset)
+            .AddClass("mud-list-subheader-secondary-background-extended", SecondaryBackground)
+            .AddClass("mud-list-subheader-sticky-extended", Sticky)
+            .AddClass("mud-list-subheader-sticky-dense-extended", Sticky && (MudListExtended != null && MudListExtended.DisablePadding))
+            .AddClass(Class)
+            .Build();
+
+    [CascadingParameter] protected MudExList<T> MudListExtended { get; set; }
+
+    /// <summary>
+    /// The child render fragment.
+    /// </summary>
+    [Parameter]
+    [Category(CategoryTypes.List.Behavior)]
+    public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
+    /// Disables the left and right spaces.
+    /// </summary>
+    [Parameter]
+    [Category(CategoryTypes.List.Appearance)]
+    public bool DisableGutters { get; set; }
+
+    [Parameter]
+    [Category(CategoryTypes.List.Appearance)]
+    public bool Inset { get; set; }
+
+    /// <summary>
+    /// If true, subheader behaves sticky and remains on top until other subheader comes to top.
+    /// </summary>
+    [Parameter]
+    [Category(CategoryTypes.List.Appearance)]
+    public bool Sticky { get; set; }
+
+    /// <summary>
+    /// If true, subheader has darken background.
+    /// </summary>
+    [Parameter]
+    [Category(CategoryTypes.List.Appearance)]
+    public bool SecondaryBackground { get; set; }
+}
