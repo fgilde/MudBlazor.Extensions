@@ -39,18 +39,6 @@ public partial class MudExSplitPanel
     public bool Reverse { get; set; } = false;
 
     /// <summary>
-    /// Sets the CSS class(es) for the SplitPanel component
-    /// </summary>
-    [Parameter, SafeCategory("Appearance")]
-    public string Class { get; set; }
-
-    /// <summary>
-    /// Sets the CSS style for the SplitPanel component
-    /// </summary>
-    [Parameter, SafeCategory("Appearance")]
-    public string Style { get; set; }
-
-    /// <summary>
     /// Sets whether the sizes of the panes should be updated in percentage values rather than pixels
     /// </summary>
     [Parameter, SafeCategory("Behavior")]

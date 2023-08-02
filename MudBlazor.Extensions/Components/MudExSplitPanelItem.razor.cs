@@ -23,18 +23,6 @@ public partial class MudExSplitPanelItem
     public RenderFragment ChildContent { get; set; }
 
     /// <summary>
-    /// The CSS class of MudExSplitPanelItem component
-    /// </summary>
-    [Parameter, SafeCategory("Appearance")]
-    public string Class { get; set; }
-
-    /// <summary>
-    /// The CSS style of MudExSplitPanelItem component
-    /// </summary>
-    [Parameter, SafeCategory("Appearance")]
-    public string Style { get; set; }
-
-    /// <summary>
     /// The min size of MudExSplitPanelItem component
     /// </summary>
     [Parameter, SafeCategory("Common")]

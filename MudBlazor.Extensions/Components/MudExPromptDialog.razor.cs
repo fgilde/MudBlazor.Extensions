@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -45,12 +46,6 @@ public partial class MudExPromptDialog
     public string Value { get; set; }
 
     /// <summary>
-    /// The CSS class of the component root element.
-    /// </summary>
-    [Parameter, SafeCategory("Common")]
-    public string Class { get; set; } = "mud-ex-dialog-initial";
-
-    /// <summary>
     /// The message to be displayed in the component.
     /// </summary>
     [Parameter, SafeCategory("Content")]
@@ -74,6 +69,13 @@ public partial class MudExPromptDialog
     [Parameter, SafeCategory("Behavior")]
     public Func<string, bool> CanConfirm { get; set; } = s => true;
 
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Class ??= MudExCss.Classes.Dialog._Initial;
+    }
 
     /// <summary>
     /// Method for submitting the prompt window.

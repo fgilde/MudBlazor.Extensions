@@ -185,18 +185,6 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     public int MinHeight { get; set; }
 
     /// <summary>
-    /// The CSS class of the component.
-    /// </summary>
-    [Parameter, SafeCategory("Common")]
-    public string Class { get; set; }
-
-    /// <summary>
-    /// The CSS style of the component.
-    /// </summary>
-    [Parameter, SafeCategory("Common")]
-    public string Style { get; set; }
-
-    /// <summary>
     /// The maximum number of multiple files allowed.
     /// </summary>
     [Parameter, SafeCategory("Validation")]

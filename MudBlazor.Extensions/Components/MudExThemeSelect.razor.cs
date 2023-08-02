@@ -45,22 +45,10 @@ public partial class MudExThemeSelect<TTheme>
     public string Label { get; set; } = "Themes";
 
     /// <summary>
-    /// Style for the select component.
-    /// </summary>
-    [Parameter, SafeCategory("Style")]
-    public string Style { get; set; } = "min-width: 350px";
-
-    /// <summary>
     /// Style for theme name container
     /// </summary>
     [Parameter, SafeCategory("Common")]
     public string NameContainerStyle { get; set; }
-
-    /// <summary>
-    /// Class for the select component.
-    /// </summary>
-    [Parameter, SafeCategory("Common")]
-    public string Class { get; set; }
 
     /// <summary>
     /// Style for one theme item
@@ -109,13 +97,6 @@ public partial class MudExThemeSelect<TTheme>
         }
     }
 
-    private void RaiseChanged()
-    {
-        SelectedChanged.InvokeAsync(Selected);
-        SelectedThemeChanged.InvokeAsync(SelectedTheme);
-        SelectedValueChanged.InvokeAsync(SelectedValue);
-    }
-
     /// <summary>
     /// Event that is raised when the <see cref="Selected"/> property is changed.
     /// </summary>
@@ -149,6 +130,20 @@ public partial class MudExThemeSelect<TTheme>
     {
         get => Selected?.Theme;
         set => Selected = Available?.FirstOrDefault(x => x?.Theme == value);
+    }
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Style ??= "min-width: 350px";
+    }
+
+    private void RaiseChanged()
+    {
+        SelectedChanged.InvokeAsync(Selected);
+        SelectedThemeChanged.InvokeAsync(SelectedTheme);
+        SelectedValueChanged.InvokeAsync(SelectedValue);
     }
 
     /// <summary>

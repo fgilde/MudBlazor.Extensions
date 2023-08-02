@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using Nextended.Core.Extensions;
 
@@ -16,12 +17,6 @@ public partial class MudExChipSelect<T>
     /// </summary>
     [Parameter, SafeCategory("Data")]
     public string LocalizerPattern { get; set; } = "{0}";
-
-    /// <summary>
-    /// Gets or Sets the CSS class name(s) for the component.
-    /// </summary>
-    [Parameter, SafeCategory("Appearance")]
-    public string Class { get; set; }
 
     /// <summary>
     /// Gets or Sets the variant of the component.
@@ -76,12 +71,6 @@ public partial class MudExChipSelect<T>
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
     public string StyleForValidationComponent { get; set; } = "margin-top: -38px; pointer-events: none;";
-
-    /// <summary>
-    /// Gets or Sets the CSS style for the component.
-    /// </summary>
-    [Parameter, SafeCategory("Appearance")]
-    public string Style { get; set; }
 
     /// <summary>
     /// Gets or Sets the color of the chip in the component.
@@ -289,6 +278,22 @@ public partial class MudExChipSelect<T>
     private void OnClose()
     {
         Filter = string.Empty;
+    }
+
+    private async Task OnFilterItemClick()
+    {
+        await FocusFilterInput();
+    }
+
+    private async Task OnOpen()
+    {
+        await FocusFilterInput();
+       // await JsRuntime.InvokeVoidAsync("eval", $"document.querySelector('.mud-input-slot').classList.remove('mud-ex-no-events')");
+    }
+
+    private async Task FocusFilterInput()
+    {        
+        await JsRuntime.InvokeVoidAsync("MudExDomHelper.focusElementDelayed", ".mud-input-slot");
     }
 }
 

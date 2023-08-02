@@ -33,12 +33,6 @@ public partial class MudExCollectionEditor<T>
     public CssUnit SizeUnit { get; set; } = CssUnit.Pixels;
 
     /// <summary>
-    /// Gets or sets the style of the collection editor.
-    /// </summary>
-    [Parameter]
-    public string Style { get; set; }
-
-    /// <summary>
     /// Gets or sets the collection of items to be edited.
     /// </summary>
     [Parameter]
@@ -199,12 +193,6 @@ public partial class MudExCollectionEditor<T>
     /// </summary>
     [Parameter]
     public string ClassToolbar { get; set; }
-
-    /// <summary>
-    /// Gets or sets the class of the collection editor.
-    /// </summary>
-    [Parameter]
-    public string Class { get; set; }
 
     /// <summary>
     /// Gets or sets the color of the toolbar buttons.

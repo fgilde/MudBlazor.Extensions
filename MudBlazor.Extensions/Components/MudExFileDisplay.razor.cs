@@ -60,13 +60,6 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     [SafeCategory("Click action")]
     public EventCallback OnCloseClick { get; set; }
 
-    /// <summary>
-    /// Element id
-    /// </summary>
-    [Parameter]
-    [SafeCategory("Common")]
-    public string ElementId { get; set; } = Guid.NewGuid().ToFormattedId();
-
     /**
      * Should be true if file is not a binary one
      */

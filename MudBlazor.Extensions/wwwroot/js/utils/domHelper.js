@@ -104,6 +104,34 @@
         return [round(x), round(y)];
     }
 
+    forcefocus() {
+        this.dom.focus({ focusVisible: true });        
+    }
+
+    focusDelayed(delay) {
+        this.forcefocus();
+        setTimeout(() => this.forcefocus(), delay || 50);        
+        return this;
+    }
+    
+    static focusElementDelayed(selectorOrElement, delay, eventToStop) {
+        let result = this.create(selectorOrElement);
+        if (eventToStop) {
+            eventToStop.stopPropagation();
+            eventToStop.preventDefault();
+        }
+        return result ? result.focusDelayed(delay) : null;
+    }
+
+    static ensureElement(selectorOrElement) {
+        return typeof selectorOrElement === 'string' ?
+            document.querySelector(selectorOrElement) : selectorOrElement;
+    }
+
+    static create(selectorOrElement) {
+        let el = this.ensureElement(selectorOrElement);
+        return el ? new MudExDomHelper(el) : null;
+    }
 
     static toAbsolute(element) {
         element.style.position = 'absolute';

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
+using Nextended.Core.Extensions;
 
 
 namespace MudBlazor.Extensions.Components.Base;
@@ -12,12 +13,18 @@ namespace MudBlazor.Extensions.Components.Base;
 /// Base component for the most of all MudExComponents
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public abstract class MudExBaseComponent<T> : ComponentBase, IMudExComponent
+public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent
     where T : MudExBaseComponent<T>
 {
     private object _previousKey;
     private Timer _renderFinishTimer;
     private IStringLocalizer<T> _fallbackLocalizer => Get<IStringLocalizer<T>>();
+
+    /// <summary>
+    /// Element id
+    /// </summary>
+    [Parameter, IgnoreOnObjectEdit, SafeCategory("Common")]
+    public string ElementId { get; set; } = Guid.NewGuid().ToFormattedId();
 
     /// <summary>
     /// Localizer for localize texts
@@ -26,9 +33,8 @@ public abstract class MudExBaseComponent<T> : ComponentBase, IMudExComponent
 
     /// <summary>
     /// Render key for refresh component
-    /// </summary>
-    [IgnoreOnObjectEdit]
-    [Parameter] public object RenderKey { get; set; }
+    /// </summary>    
+    [Parameter, IgnoreOnObjectEdit] public object RenderKey { get; set; }
 
     /// <summary>
     /// Injected service provider
@@ -49,7 +55,7 @@ public abstract class MudExBaseComponent<T> : ComponentBase, IMudExComponent
     /// This is true if render has called already and finished all after render calls
     /// </summary>
     public bool IsFullyRendered { get; protected set; }
-    
+
     /// <summary>
     /// DialogService
     /// </summary>
@@ -107,7 +113,7 @@ public abstract class MudExBaseComponent<T> : ComponentBase, IMudExComponent
             _renderFinishTimer = null;
             IsFullyRendered = true;
             await OnFinishedRenderAsync();
-        }, null, 300, Timeout.Infinite); 
+        }, null, 300, Timeout.Infinite);
     }
 
     /// <summary>
@@ -118,7 +124,7 @@ public abstract class MudExBaseComponent<T> : ComponentBase, IMudExComponent
     {
         RenderKey = Guid.NewGuid();
         StateHasChanged();
-        return (T) this;
+        return (T)this;
     }
 
 }
@@ -134,7 +140,7 @@ public interface IMudExComponent
 /// Interface for components with js imports
 /// </summary>
 /// <typeparam name="T"></typeparam>
-internal interface IJsMudExComponent<T>: IMudExComponent, IAsyncDisposable
+internal interface IJsMudExComponent<T> : IMudExComponent, IAsyncDisposable
 {
     /// <summary>
     /// JsRuntime
@@ -191,7 +197,7 @@ internal interface IJsMudExComponent<T>: IMudExComponent, IAsyncDisposable
     {
         if (JsReference != null)
         {
-            try { await JsReference.InvokeVoidAsync("dispose"); }catch { }
+            try { await JsReference.InvokeVoidAsync("dispose"); } catch { }
             try { await JsReference.DisposeAsync(); } catch { }
         }
 

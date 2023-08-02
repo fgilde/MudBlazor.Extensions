@@ -211,16 +211,6 @@ public partial class MudExObjectEdit<T>
     [Parameter] public int ToolBarElevation { get; set; }
 
     /// <summary>
-    /// A CSS class for the component.
-    /// </summary>
-    [Parameter] public string Class { get; set; }
-
-    /// <summary>
-    /// The inline CSS style for the component.
-    /// </summary>
-    [Parameter] public string Style { get; set; }
-
-    /// <summary>
     /// A CSS class for the component toolbar.
     /// </summary>
     [Parameter] public string ToolBarClass { get; set; }

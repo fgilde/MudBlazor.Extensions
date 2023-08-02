@@ -47,11 +47,6 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
             ContentStream = value.ContentStream;
         }
     }
-    /// <summary>
-    /// ElementID
-    /// </summary>
-    [Parameter, SafeCategory("Misc")]
-    public string ElementId { get; set; } = Guid.NewGuid().ToFormattedId();
 
     /// <summary>
     /// SearchString for current filter

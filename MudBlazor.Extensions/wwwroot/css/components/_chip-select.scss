@@ -1,0 +1,19 @@
+﻿.mud-ex-filter-select {
+    position: sticky;
+    top: 0;
+    background: var(--mud-palette-surface) !important;
+    z-index: 1;
+    /*pointer-events: none;*/
+}
+
+.mud-ex-filter-select input {
+  /*  pointer-events: auto;*/
+}
+
+.mud-ex-filter-select .mud-list-item-icon {
+    display: none;
+}
+
+.mud-ex-no-events {
+    pointer-events: none;
+}

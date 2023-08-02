@@ -16,7 +16,7 @@
     // Sample data for the form
     public UserInformation User { get; set; } = new()
     {
-     //   Id = Guid.NewGuid().ToString(),
+        Id = Guid.NewGuid().ToString(),
         FirstName = "Florian",
         LastName = "Gilde",
         SomeUnimportantTestModel = new TestModel
@@ -56,7 +56,7 @@
 
     public class UserInformation
     {
-        public MudExDimension Id { get; set; }
+        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int Age { get; set; }
