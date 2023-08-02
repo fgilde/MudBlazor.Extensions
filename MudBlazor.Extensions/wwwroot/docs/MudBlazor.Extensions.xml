@@ -454,11 +454,6 @@
             Gets or Sets the Localizer Pattern.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Class">
-            <summary>
-            Gets or Sets the CSS class name(s) for the component.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Variant">
             <summary>
             Gets or Sets the variant of the component.
@@ -502,11 +497,6 @@
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.StyleForValidationComponent">
             <summary>
             Gets or Sets the CSS style for the validation component.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Style">
-            <summary>
-            Gets or Sets the CSS style for the component.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.ChipColor">
@@ -660,16 +650,6 @@
         <member name="T:MudBlazor.Extensions.Components.MudExColorBubble">
             <summary>
             A Component to quickly select a color
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.Style">
-            <summary>
-            Gets or sets the CSS style of the component.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.Class">
-            <summary>
-            Gets or sets the CSS class of the component.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExColorBubble.SelectColorText">
@@ -1367,16 +1347,6 @@
             The MudDialog instance
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Style">
-            <summary>
-            CSS styles applied to the dialog.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Class">
-            <summary>
-            CSS classes applied to the dialog.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ClassContent">
             <summary>
             CSS classes applied to the content of the dialog.
@@ -1446,6 +1416,9 @@
             <summary>
             Whether to allow user to download the loaded file.
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDialog.OnInitialized">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown">
             <summary>
@@ -1851,16 +1824,6 @@
             Simple MessageDialog
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.Style">
-            <summary>
-            Gets or sets the style of the dialog
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.Class">
-            <summary>
-            Gets or sets the class of the dialog
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.ClassContent">
             <summary>
             Gets or sets the class for the content of the dialog
@@ -2073,11 +2036,6 @@
             The initial value of the input field.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.Class">
-            <summary>
-            The CSS class of the component root element.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.Message">
             <summary>
             The message to be displayed in the component.
@@ -2097,6 +2055,9 @@
             <summary>
             The function that determines whether the prompt window can be confirmed or not.
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPromptDialog.OnInitialized">
+            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExPromptDialog.Submit">
             <summary>
@@ -2248,16 +2209,6 @@
             Sets whether the SplitPanel component should reverse its flex direction
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.Class">
-            <summary>
-            Sets the CSS class(es) for the SplitPanel component
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.Style">
-            <summary>
-            Sets the CSS style for the SplitPanel component
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSplitPanel.UpdateSizesInPercentage">
             <summary>
             Sets whether the sizes of the panes should be updated in percentage values rather than pixels
@@ -2327,16 +2278,6 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSplitPanelItem.ChildContent">
             <summary>
             The child content of MudExSplitPanelItem component
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanelItem.Class">
-            <summary>
-            The CSS class of MudExSplitPanelItem component
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSplitPanelItem.Style">
-            <summary>
-            The CSS style of MudExSplitPanelItem component
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSplitPanelItem.MinSize">
@@ -2776,19 +2717,9 @@
             Label
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.Style">
-            <summary>
-            Style for the select component.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.NameContainerStyle">
             <summary>
             Style for theme name container
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.Class">
-            <summary>
-            Class for the select component.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExThemeSelect`1.ItemStyle">
@@ -2845,6 +2776,9 @@
             <summary>
             Gets or sets the selected theme from the available themes.
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExThemeSelect`1.OnInitialized">
+            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExThemeSelect`1.PreviewImage(MudBlazor.Extensions.Core.MudExDimension)">
             <summary>
@@ -3173,16 +3107,6 @@
             The minimum height allowed.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.Class">
-            <summary>
-            The CSS class of the component.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.Style">
-            <summary>
-            The CSS style of the component.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MaxMultipleFiles">
             <summary>
             The maximum number of multiple files allowed.
@@ -3423,11 +3347,6 @@
             Gets or sets the size unit for the collection editor.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Style">
-            <summary>
-            Gets or sets the style of the collection editor.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Items">
             <summary>
             Gets or sets the collection of items to be edited.
@@ -3561,11 +3480,6 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.ClassToolbar">
             <summary>
             Gets or sets the class of the toolbar.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Class">
-            <summary>
-            Gets or sets the class of the collection editor.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.ToolbarButtonColor">
@@ -4005,16 +3919,6 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ToolBarElevation">
             <summary>
             The elevation of the toolbar.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Class">
-            <summary>
-            A CSS class for the component.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Style">
-            <summary>
-            The inline CSS style for the component.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ToolBarClass">
@@ -4672,11 +4576,6 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.AutoSkeletonOnLoad">
             <summary>
             Creates a skeleton while loading if this is true
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.Class">
-            <summary>
-            Class
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.ActiveFilterTerm">

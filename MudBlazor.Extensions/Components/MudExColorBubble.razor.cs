@@ -15,18 +15,6 @@ namespace MudBlazor.Extensions.Components
     public partial class MudExColorBubble
     {
         /// <summary>
-        /// Gets or sets the CSS style of the component.
-        /// </summary>
-        [Parameter, SafeCategory("Appearance")]
-        public string Style { get; set; }
-
-        /// <summary>
-        /// Gets or sets the CSS class of the component.
-        /// </summary>
-        [Parameter, SafeCategory("Appearance")]
-        public string Class { get; set; }
-
-        /// <summary>
         /// Gets or sets the text for the select color button.
         /// </summary>
         [Parameter, SafeCategory("Data")]

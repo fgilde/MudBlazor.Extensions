@@ -12,18 +12,6 @@ public partial class MudExMessageDialog
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
     /// <summary>
-    /// Gets or sets the style of the dialog
-    /// </summary>
-    [Parameter, SafeCategory("Common")]
-    public string Style { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Gets or sets the class of the dialog
-    /// </summary>
-    [Parameter, SafeCategory("Common")]
-    public string Class { get; set; }
-
-    /// <summary>
     /// Gets or sets the class for the content of the dialog
     /// </summary>
     [Parameter, SafeCategory("Appearance")]

@@ -114,8 +114,12 @@
         return this;
     }
     
-    static focusElementDelayed(selectorOrElement, delay) {
+    static focusElementDelayed(selectorOrElement, delay, eventToStop) {
         let result = this.create(selectorOrElement);
+        if (eventToStop) {
+            eventToStop.stopPropagation();
+            eventToStop.preventDefault();
+        }
         return result ? result.focusDelayed(delay) : null;
     }
 

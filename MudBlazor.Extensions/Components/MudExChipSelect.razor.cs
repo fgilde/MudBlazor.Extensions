@@ -19,12 +19,6 @@ public partial class MudExChipSelect<T>
     public string LocalizerPattern { get; set; } = "{0}";
 
     /// <summary>
-    /// Gets or Sets the CSS class name(s) for the component.
-    /// </summary>
-    [Parameter, SafeCategory("Appearance")]
-    public string Class { get; set; }
-
-    /// <summary>
     /// Gets or Sets the variant of the component.
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
@@ -77,12 +71,6 @@ public partial class MudExChipSelect<T>
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
     public string StyleForValidationComponent { get; set; } = "margin-top: -38px; pointer-events: none;";
-
-    /// <summary>
-    /// Gets or Sets the CSS style for the component.
-    /// </summary>
-    [Parameter, SafeCategory("Appearance")]
-    public string Style { get; set; }
 
     /// <summary>
     /// Gets or Sets the color of the chip in the component.

@@ -13,7 +13,7 @@ namespace MudBlazor.Extensions.Components.Base;
 /// Base component for the most of all MudExComponents
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public abstract class MudExBaseComponent<T> : ComponentBase, IMudExComponent
+public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent
     where T : MudExBaseComponent<T>
 {
     private object _previousKey;

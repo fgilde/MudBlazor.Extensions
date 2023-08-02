@@ -10,7 +10,7 @@ namespace MudBlazor.Extensions.Helper
     /// </summary>
     public static class JsImportHelper
     {
-        private static bool useMinified => true;
+        private static bool useMinified => false;
         private static string min => useMinified ? ".min" : string.Empty;        
         
         internal static IJSRuntime LegacyRuntimeReference;

@@ -17,20 +17,6 @@ public partial class MudExFileDisplayDialog
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     
     /// <summary>
-    /// CSS styles applied to the dialog.
-    /// </summary>
-    [Parameter]
-    [SafeCategory("Appearance")]
-    public string Style { get; set; } = string.Empty;
-
-    /// <summary>
-    /// CSS classes applied to the dialog.
-    /// </summary>
-    [Parameter]
-    [SafeCategory("Appearance")]
-    public string Class { get; set; } = MudExCss.Get(MudExCss.Classes.Dialog.FullHeightContent, "overflow-hidden", MudExCss.Classes.Dialog._Initial);
-
-    /// <summary>
     /// CSS classes applied to the content of the dialog.
     /// </summary>
     [Parameter]
@@ -127,6 +113,14 @@ public partial class MudExFileDisplayDialog
     [Parameter]
     [SafeCategory("Behavior")]
     public bool AllowDownload { get; set; } = true;
+
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Class ??= MudExCss.Get(MudExCss.Classes.Dialog.FullHeightContent, "overflow-hidden", MudExCss.Classes.Dialog._Initial);
+    }
 
     public static Task<IDialogReference> Show(IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(url, fileName, contentType, options);
     public static Task<IDialogReference> Show(IDialogService dialogService, IBrowserFile browserFile, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(browserFile, options);

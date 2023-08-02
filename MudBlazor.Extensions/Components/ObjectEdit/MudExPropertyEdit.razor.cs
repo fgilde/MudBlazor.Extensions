@@ -10,7 +10,6 @@ using MudBlazor.Utilities;
 using Newtonsoft.Json;
 using Nextended.Core;
 using Nextended.Core.Extensions;
-using Nextended.Core.Scopes;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 
@@ -44,11 +43,6 @@ public partial class MudExPropertyEdit
     /// Creates a skeleton while loading if this is true
     /// </summary>
     [Parameter] public bool AutoSkeletonOnLoad { get; set; }
-
-    /// <summary>
-    /// Class
-    /// </summary>
-    [Parameter] public string Class { get; set; }
 
     /// <summary>
     /// ActiveFiler string
@@ -121,7 +115,8 @@ public partial class MudExPropertyEdit
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.For), CreateFieldForExpressionPropertyType())
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Label), () => PropertyMeta.Settings.LabelFor(LocalizerToUse), PropertyMeta.Settings.LabelBehaviour is LabelBehaviour.Both or LabelBehaviour.DefaultComponentLabeling)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.HelperText), () => PropertyMeta.Settings.DescriptionFor(LocalizerToUse))
-            .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Class), () => Class)
+            .TrySetAttributeIfAllowed(nameof(Class), () => Class)
+            .TrySetAttributeIfAllowed(nameof(Style), () => Style)
             .TrySetAttributeIfAllowed(nameof(Localizer), Localizer)
             .TrySetAttributeIfAllowed(nameof(RenderKey), RenderKey)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.ReadOnly), () => !PropertyMeta.Settings.IsEditable).Attributes;
