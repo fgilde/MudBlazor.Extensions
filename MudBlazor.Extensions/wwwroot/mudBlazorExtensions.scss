@@ -32,17 +32,6 @@
     padding-top: 0 !important;
 }
 
-.filter-select {
-    position: sticky;
-    top: 0;
-    background: var(--mud-palette-surface) !important;
-    z-index: 1;
-}
-
-.filter-select .mud-list-item-icon {
-    display: none;
-}
-
 .chip-select-chipsonly.with-items .mud-input-helper-text {
     top: 25px;
     position: absolute;

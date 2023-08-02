@@ -58,6 +58,11 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.ElementId">
+            <summary>
+            Element id
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.Localizer">
             <summary>
             Localizer for localize texts
@@ -66,7 +71,7 @@
         <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.RenderKey">
             <summary>
             Render key for refresh component
-            </summary>
+            </summary>    
         </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.ServiceProvider">
             <summary>
@@ -1269,11 +1274,6 @@
             Event for on close click
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ElementId">
-            <summary>
-            Element id
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.FallBackInIframe">
             Should be true if file is not a binary one
         </member>
@@ -1518,11 +1518,6 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FileDisplayInfos">
             <inheritdoc />
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ElementId">
-            <summary>
-            ElementID
-            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.SearchString">
             <summary>

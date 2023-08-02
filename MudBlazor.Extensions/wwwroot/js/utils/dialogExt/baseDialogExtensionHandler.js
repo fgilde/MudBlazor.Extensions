@@ -87,7 +87,7 @@
             this.dialogTitle = this.dialogTitleEl ? this.dialogTitleEl.innerText.trim() : '';
             this.dialogId = this.dialog.id;
             this.dialogContainerReference = this.dialog.parentElement;
-            if (dialogContainerReference) { }
+            if (this.dialogContainerReference) { 
                 this.dialogOverlay = this.dialogContainerReference.querySelector('.mud-overlay');
             }
         }

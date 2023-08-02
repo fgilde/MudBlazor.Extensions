@@ -453,6 +453,30 @@ class MudExDomHelper {
         return [round(x), round(y)];
     }
 
+    forcefocus() {
+        this.dom.focus({ focusVisible: true });        
+    }
+
+    focusDelayed(delay) {
+        this.forcefocus();
+        setTimeout(() => this.forcefocus(), delay || 50);        
+        return this;
+    }
+    
+    static focusElementDelayed(selectorOrElement, delay) {
+        let result = this.create(selectorOrElement);
+        return result ? result.focusDelayed(delay) : null;
+    }
+
+    static ensureElement(selectorOrElement) {
+        return typeof selectorOrElement === 'string' ?
+            document.querySelector(selectorOrElement) : selectorOrElement;
+    }
+
+    static create(selectorOrElement) {
+        let el = this.ensureElement(selectorOrElement);
+        return el ? new MudExDomHelper(el) : null;
+    }
 
     static toAbsolute(element) {
         element.style.position = 'absolute';
@@ -616,7 +640,7 @@ class MudExDialogHandlerBase {
             this.dialogTitle = this.dialogTitleEl ? this.dialogTitleEl.innerText.trim() : '';
             this.dialogId = this.dialog.id;
             this.dialogContainerReference = this.dialog.parentElement;
-            if (dialogContainerReference) { }
+            if (this.dialogContainerReference) { 
                 this.dialogOverlay = this.dialogContainerReference.querySelector('.mud-overlay');
             }
         }

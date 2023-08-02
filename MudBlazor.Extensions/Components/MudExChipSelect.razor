@@ -23,6 +23,7 @@
                        HelperText="@(!HelperText.IsNullOrWhiteSpace() ? TryLocalize(HelperText) : "")"
                        Clearable="@(!ReadOnly && Clearable)"
                        OnClose="@OnClose"
+                       OnOpen="@OnOpen"
                        ReadOnly="@ReadOnly"
                        Adornment="@(ReadOnly ? Adornment.None : Adornment)"
                        SelectAll="false"
@@ -36,9 +37,9 @@
                        @bind-SelectedValues="Selected"
                        AdornmentIcon="@AdornmentIcon">
                 @if (FilterEnabled)
-                {
-                    <MudSelectItem Class="filter-select" T="@T" Value="default">
-                        <MudTextField onclick="event.stopPropagation();" Immediate="true" Clearable="true" @bind-Value="Filter" AutoFocus="@(AutoFocusFilter && FilterEnabled)" T="string" Placeholder="@TryLocalize("Filter")" Label="@TryLocalize("Filter")"/>
+                {                    
+                    <MudSelectItem DisableRipple="true" OnClick="@OnFilterItemClick" Class="mud-ex-filter-select" T="@T" Value="default">
+                        <MudTextField onclick="MudExDomHelper.focusElementDelayed(this)" Immediate="true" Clearable="true" @bind-Value="Filter" AutoFocus="@(AutoFocusFilter && FilterEnabled)" T="string" Placeholder="@TryLocalize("Filter")" Label="@TryLocalize("Filter")" />
                     </MudSelectItem>
                 }
                 @foreach (var item in AvailableItems.EmptyIfNull().Where(arg => arg != null && (Filter.IsNullOrWhiteSpace() || ItemNameRender(arg)?.Contains(Filter, StringComparison.CurrentCultureIgnoreCase) == true)))

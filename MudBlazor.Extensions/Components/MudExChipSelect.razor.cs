@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using Nextended.Core.Extensions;
 
@@ -289,6 +290,22 @@ public partial class MudExChipSelect<T>
     private void OnClose()
     {
         Filter = string.Empty;
+    }
+
+    private async Task OnFilterItemClick()
+    {
+        await FocusFilterInput();
+    }
+
+    private async Task OnOpen()
+    {
+        await FocusFilterInput();
+       // await JsRuntime.InvokeVoidAsync("eval", $"document.querySelector('.mud-input-slot').classList.remove('mud-ex-no-events')");
+    }
+
+    private async Task FocusFilterInput()
+    {        
+        await JsRuntime.InvokeVoidAsync("MudExDomHelper.focusElementDelayed", ".mud-input-slot");
     }
 }
 

@@ -10,7 +10,7 @@ namespace MudBlazor.Extensions.Helper
     /// </summary>
     public static class JsImportHelper
     {
-        private static bool useMinified => true;
+        private static bool useMinified => false;
         private static string min => useMinified ? ".min" : string.Empty;        
         
         internal static IJSRuntime LegacyRuntimeReference;
@@ -29,7 +29,7 @@ namespace MudBlazor.Extensions.Helper
         internal static async Task<IJSRuntime> InitializeMudBlazorExtensionsCoreAsync(this IJSRuntime runtime, bool force = false)
         {
             LegacyRuntimeReference ??= runtime;
-            if (force || !await runtime.IsNamespaceAvailableAsync("MudBlazorExtensions"))
+            if (force || !useMinified || !await runtime.IsNamespaceAvailableAsync("MudBlazorExtensions"))
             {
                 await runtime.ImportModuleBlazorJS(); // This is a workaround for using module in MAUI apps
                 await ImportMainMudEx(runtime); // This is a workaround for using module in MAUI apps
