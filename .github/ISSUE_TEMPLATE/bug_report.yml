@@ -40,6 +40,39 @@ body:
     validations:
       required: false
   - type: dropdown
+    id: application-type
+    attributes:
+      label: What application type are you referring to?
+      options:
+        - ServerRendered
+        - WebAssembly
+        - MAUI
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: custom-application-type
+    attributes:
+      label: Custom Application Type
+      description: If "Other" was selected above, please specify your application type here.
+      placeholder: Specify your application type
+    validations:
+      required: false  # Only required if "Other" was selected above, but GitHub doesn't support such conditions yet.
+  - type: input
+    id: mudblazor-extension-version
+    attributes:
+      label: MudBlazor.Extension Version
+      placeholder: Enter the version
+    validations:
+      required: true
+  - type: input
+    id: mudblazor-version
+    attributes:
+      label: MudBlazor Version
+      placeholder: Enter the version
+    validations:
+      required: true
+  - type: dropdown
     id: browser
     attributes:
       label: What browser are you using?
