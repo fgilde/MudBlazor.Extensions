@@ -56,7 +56,7 @@ jobs:
       shell: pwsh
       run: |
         Get-ChildItem -Path MudBlazor.Extensions/bin/Debug -Filter *.nupkg | ForEach-Object {
-          dotnet nuget push $_.FullName -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json --skip-duplicate --no-list
+          dotnet nuget push $_.FullName -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json
         }
 
   deploy_application_to_azure:
