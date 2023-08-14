@@ -93,6 +93,12 @@ if your are running on Blazor Server side, you should also use the `MudBlazorExt
     app.UseMudExtensions();
 ```
 
+(Optional) if you have problems with automatic loaded styles you can also load the styles manually by adding the following line to your `index.html` or `_Host.cshtml`
+
+```
+<link href="_content/MudBlazor.Extensions/mudBlazorExtensions.min.css" rel="stylesheet">
+```
+
 
 <!-- WIKI:START -->
 <!-- Copied from https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md on 2023-07-29 15:35:52 -->
@@ -185,6 +191,7 @@ Example of using `MudExFileDisplay`:
 
 ### MudExFileDisplayZip 
 This component can be automatically utilized by `MudExFileDisplay`, but can also be used manually if necessary.
+Note: If you're using the ContentStream it should not be closed or disposed.
 
 ```
  <MudExFileDisplayZip AllowDownload="@AllowDownload" RootFolderName="@FileName" ContentStream="@ContentStream" Url="@Url"></MudExFileDisplayZip>

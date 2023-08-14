@@ -126,6 +126,9 @@
             Called when rendering is finished
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.OnAfterRender(System.Boolean)">
             <inheritdoc />
         </member>
@@ -1144,6 +1147,7 @@
         <member name="P:MudBlazor.Extensions.Components.IMudExFileDisplayInfos.ContentStream">
             <summary>
             Stream of file if its already loaded or dynamically created on client
+            Note: This stream should not be closed or disposed.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult">
@@ -1217,6 +1221,7 @@
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.ContentStream">
             <summary>
             Gets or sets the content stream for redirection.
+            Note: This stream should not be closed or disposed.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult.FallBackInIframe">
@@ -1294,7 +1299,8 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ContentStream">
             <summary>
-            Content stream of file
+            Content stream of the file.
+            Note: This stream should not be closed or disposed.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.HandleContentErrorFunc">
@@ -1375,6 +1381,7 @@
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ContentStream">
             <summary>
             Stream of the file or resource content.
+            Note: This stream should not be closed or disposed.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Buttons">

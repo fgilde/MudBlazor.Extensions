@@ -53,9 +53,9 @@ public partial class MudExFileDisplayDialog
 
     /// <summary>
     /// Stream of the file or resource content.
+    /// Note: This stream should not be closed or disposed.
     /// </summary>
-    [Parameter]
-    [SafeCategory("Data")]
+    [Parameter, SafeCategory("Data")]
     public Stream ContentStream { get; set; }
 
     /// <summary>

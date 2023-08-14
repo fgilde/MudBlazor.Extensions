@@ -34,9 +34,12 @@ namespace MudBlazor.Extensions.Helper
                 await runtime.ImportModuleBlazorJS(); // This is a workaround for using module in MAUI apps
                 await ImportMainMudEx(runtime); // This is a workaround for using module in MAUI apps
             }
-            await runtime.AddCss(await MudExResource.GetEmbeddedFileContentAsync($"wwwroot/mudBlazorExtensions{min}.css"), "mudex-styles", !force);
+            await LoadCssAsync(runtime, force);
             return runtime;
         }
+
+        internal static async Task LoadCssAsync(this IJSRuntime runtime, bool force = false) 
+            => await runtime.AddCss(await MudExResource.GetEmbeddedFileContentAsync($"wwwroot/mudBlazorExtensions{min}.css"), "mudex-styles", !force);
 
         private static Task ImportMainMudEx(IJSRuntime runtime) 
             => useMinified ? runtime.ImportModuleMudEx() : runtime.LoadFilesAsync(MainJs());

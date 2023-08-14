@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorJS;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
@@ -99,6 +100,14 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent
     protected virtual Task OnFinishedRenderAsync()
     {
         return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+            await JsRuntime.LoadCssAsync();
     }
 
     /// <inheritdoc />
