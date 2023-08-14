@@ -99,6 +99,8 @@ if your are running on Blazor Server side, you should also use the `MudBlazorExt
 <link id="mudex-styles" href="_content/MudBlazor.Extensions/mudBlazorExtensions.min.css" rel="stylesheet">
 ```
 
+## Showcase Videos
+
 <details>
   <summary>Expand videos</summary>
 
