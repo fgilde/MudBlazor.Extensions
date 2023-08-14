@@ -21,6 +21,7 @@
         
         <MudCard Class="m-4">
             <MudCardContent>
+                <MudText Align="Align.Center" Typo="Typo.body1"><b>App Type</b> @($"{(MudExResource.IsClientSide ? "WebAssembly WASM" : "Server Side Rendered")}")</MudText>
                 <MudText Align="Align.Center" Typo="Typo.body1"><b>MudBlazor.Extensions</b> @MudExResource.MudExVersion().ToString()</MudText>
                 <MudText Align="Align.Center" Typo="Typo.body1"><b>for MudBlazor</b> @MudExResource.MudBlazorVersion().ToString()</MudText>
             </MudCardContent>
