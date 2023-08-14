@@ -5,14 +5,33 @@
 
 <DemoComponent Title="MudExSplitPanel" PageType="@GetType()">
    
-    <MudExIconPicker PickerVariant="PickerVariant.Inline" Value="@Icons.Material.Filled.ScreenShare" Label="Icon" />
-    @*<MudExObjectEdit Value="@Dimension" ></MudExObjectEdit>*@
+    <MudExUploadEdit @bind-UploadRequests="files" AllowFolderUpload="false" MimeTypes="@mimeTypes" T="UploadableFile" Style="height: 400px; max-height: 400px; width: 800px" AllowMultiple="true" />
+    <MudButton OnClick="@UploadFiles">upload</MudButton>
 
 </DemoComponent>
 
 @code{
-    
+
     public MudExDimension Dimension { get; set; } = new MudExDimension(32,88);
 
+    private string[] mimeTypes =
+    {
+        "image/*"
+    };
+    IList<UploadableFile> files;
+    private async Task UploadFiles()
+    {
+        string fileStorage = "TEST_UPLOADS";
+        foreach (var file in files)
+        {
+            Directory.CreateDirectory(Path.Combine(fileStorage, "CARD"));
+            string newName = Path.GetRandomFileName(); 
+            string newFileName = Path.ChangeExtension(newName, Path.GetExtension(file.FileName));
+            string path = Path.Combine(fileStorage, "CARD", newFileName);
+            await File.WriteAllBytesAsync(path, file.Data);
+            
+        }
+        files.Clear();
+    }
 }
 

@@ -58,6 +58,11 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.IsDisposed">
+            <summary>
+            Is true if dispose was called
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.ElementId">
             <summary>
             Element id
@@ -143,57 +148,8 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:MudBlazor.Extensions.Components.Base.IMudExComponent">
-            <summary>
-            Interface for all MudExComponents
-            </summary>
-        </member>
-        <member name="T:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1">
-            <summary>
-            Interface for components with js imports
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.JsRuntime">
-            <summary>
-            JsRuntime
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.JsReference">
-            <summary>
-            Reference to the js
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.ModuleReference">
-            <summary>
-            Reference to imported module
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.ElementReference">
-            <summary>
-            Reference to rendered element
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.GetJsArguments">
-            <summary>
-            Returns the object that is passed to js
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.CreateDotNetObjectReference">
-            <summary>
-            DotNetObjectReference for callbacks
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.ImportModuleAndCreateJsAsync(System.String)">
-            <summary>
-            Imports the required module and calls the initialize method 
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.Base.IJsMudExComponent`1.DisposeModulesAsync">
-            <summary>
-            Disposes all modules and references
-            </summary>
-            <returns></returns>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.DisposeAsync">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseComponent`1">
             <summary>
@@ -4983,6 +4939,58 @@
             <summary>
             Class to apply
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.IMudExComponent">
+            <summary>
+            Interface for all MudExComponents
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.IJsMudExComponent`1">
+            <summary>
+            Interface for components with js imports
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.IJsMudExComponent`1.JsRuntime">
+            <summary>
+            JsRuntime
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.IJsMudExComponent`1.JsReference">
+            <summary>
+            Reference to the js
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.IJsMudExComponent`1.ModuleReference">
+            <summary>
+            Reference to imported module
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.IJsMudExComponent`1.ElementReference">
+            <summary>
+            Reference to rendered element
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IJsMudExComponent`1.GetJsArguments">
+            <summary>
+            Returns the object that is passed to js
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IJsMudExComponent`1.CreateDotNetObjectReference">
+            <summary>
+            DotNetObjectReference for callbacks
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IJsMudExComponent`1.ImportModuleAndCreateJsAsync(System.String)">
+            <summary>
+            Imports the required module and calls the initialize method 
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IJsMudExComponent`1.DisposeModulesAsync">
+            <summary>
+            Disposes all modules and references
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:MudBlazor.Extensions.Core.IMudExDialogReference`1">
             <summary>

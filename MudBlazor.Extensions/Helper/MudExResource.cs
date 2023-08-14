@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.FileProviders;
 using System.Collections.Concurrent;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml;
 
@@ -13,6 +16,22 @@ public static class MudExResource
 {
     private static readonly ConcurrentDictionary<Assembly, XmlDocument> XmlDocCache = new();
     private static readonly ConcurrentDictionary<string, string> EmbeddedFileContentCache = new();
+
+    public static bool IsClientSide => RuntimeInformation.OSDescription == "Browser"; // WASM
+    public static bool IsServerSide => !IsClientSide;
+
+    public static bool IsDebug => Assembly.GetEntryAssembly()?.GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled ?? false;
+    public static bool IsDebugOrPreviewBuild
+    {
+        get
+        {
+            #if DEBUG
+                        return true;
+            #else
+                return false;
+            #endif   
+        }
+    }
 
     /// <summary>
     /// Returns the version of used MudBlazor package

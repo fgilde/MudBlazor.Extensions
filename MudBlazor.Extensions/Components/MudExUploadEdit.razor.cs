@@ -1,4 +1,5 @@
-﻿using System.IO.Compression;
+﻿using BlazorJS;
+using System.IO.Compression;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
@@ -438,6 +439,8 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
 
     private async Task Add(IBrowserFile file)
     {
+        if (IsDisposed) return;
+
         if (IsAllowed(file))
         {
             if (AutoExtractZip && file.IsZipFile())
@@ -446,12 +449,41 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
                 return;
             }
 
-            var buffer = new byte[file.Size];
+            byte[] buffer;
+            using (var stream = file.OpenReadStream(file.Size))
+            {
+                buffer = new byte[file.Size];
+                await ReadStreamInChunksAsync(stream, buffer);
+            }
+
+            if (IsDisposed) return;
+
             var extension = Path.GetExtension(file.Name);
-            await file.OpenReadStream(file.Size).ReadAsync(buffer);
-            var request = new T { Data = buffer, FileName = file.Name, ContentType = file.ContentType, Extension = extension };
+            var request = new T
+            {
+                Data = buffer,
+                FileName = file.Name,
+                ContentType = file.ContentType,
+                Extension = extension
+            };
             Add(request);
         }
+    }
+
+    private async Task ReadStreamInChunksAsync(Stream stream, byte[] buffer)
+    {
+        const int chunkSize = 4096;
+        int bytesRead;
+        int totalBytesRead = 0;
+
+        do
+        {
+            if (IsDisposed) return;
+
+            bytesRead = await stream.ReadAsync(buffer, totalBytesRead, Math.Min(chunkSize, buffer.Length - totalBytesRead));
+            totalBytesRead += bytesRead;
+        }
+        while (bytesRead > 0 && totalBytesRead < buffer.Length);
     }
 
     private async Task<IList<ZipBrowserFile>> GetZipEntriesAsync(IBrowserFile file)
@@ -561,10 +593,10 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     /// </summary>
     /// <param name="arg"></param>
     /// <returns></returns>
-    public Task Upload(MouseEventArgs arg = null)
+    public async Task Upload(MouseEventArgs arg = null)
     {
         //return _jsRuntime.InvokeVoidAsync("MudExBrowserHelper.clickOnElement", "#" + UploadFieldId).AsTask();
-        return JsRuntime.InvokeVoidAsync($"(document.querySelector('#{UploadFieldId}'))?.click()").AsTask();
+        await JsRuntime.InvokeVoidAsync($"(document.querySelector('#{UploadFieldId}'))?.click()").AsTask();        
     }
 
     /// <summary>

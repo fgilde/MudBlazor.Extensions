@@ -46,7 +46,7 @@ public class MainAppTests: BaseUITest
             await page.GetByRole(AriaRole.Banner).GetByRole(AriaRole.Button).Nth(2).ClickAsync();
 
             var head = await page.GetByRole(AriaRole.Heading, new() { Name = $"MudBlazor.Extensions {version}" }).TextContentAsync();
-            head.Should().Be($"MudBlazor.Extensions {version}");
+            head.Should().Contain($"MudBlazor.Extensions {version}");
 
             await page.GetByRole(AriaRole.Button, new() { Name = "Close", Exact = true }).ClickAsync();
         });

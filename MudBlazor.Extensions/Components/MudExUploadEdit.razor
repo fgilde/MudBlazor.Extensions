@@ -16,7 +16,7 @@
             <MudAlert Style="@($"animation: {ErrorAnimation.GetAnimationCssStyle(TimeSpan.FromMilliseconds(300))};")"  Severity="Severity.Error" Class="upload-request-alert" ShowCloseIcon="true" CloseIconClicked="@(() => SetError())">
                 <span class="upload-request-alert-text">@_errorMessage</span>
             </MudAlert>
-        @*<p class="error-message">@_errorMessage</p>*@
+        
         }
         else if (AllowDrop && !string.IsNullOrEmpty(TextDropZone) && !HasData())
         {
