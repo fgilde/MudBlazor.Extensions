@@ -5,19 +5,6 @@ labels: [bug, triage]
 assignees:
   - octocat
 body:
-  - type: textarea
-    id: repro
-    attributes:
-      label: Reproduction steps
-      description: "How do you trigger this bug? Please walk us through it step by step."
-      value: |
-        1.
-        2.
-        3.
-        ...
-      render: bash
-    validations:
-      required: true
   - type: markdown
     attributes:
       value: Thanks for taking the time to fill out this bug report!
@@ -90,6 +77,7 @@ body:
     id: browser
     attributes:
       label: What browser are you using?
+      multiple: true
       options:
         - Chrome
         - Firefox
