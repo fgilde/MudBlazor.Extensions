@@ -5,6 +5,19 @@ labels: [bug, triage]
 assignees:
   - octocat
 body:
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      description: "How do you trigger this bug? Please walk us through it step by step."
+      value: |
+        1.
+        2.
+        3.
+        ...
+      render: bash
+    validations:
+      required: true
   - type: markdown
     attributes:
       value: Thanks for taking the time to fill out this bug report!
@@ -42,12 +55,13 @@ body:
   - type: dropdown
     id: application-type
     attributes:
-      label: What application type are you referring to?
-      options:
-        - ServerRendered
-        - WebAssembly
-        - MAUI
-        - Other
+        label: What application type are you referring to?
+        options:
+          - Please select an application type...
+          - ServerRendered
+          - WebAssembly
+          - MAUI
+          - Other
     validations:
       required: true
   - type: input
