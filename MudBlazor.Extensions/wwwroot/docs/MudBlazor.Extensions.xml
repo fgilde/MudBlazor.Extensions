@@ -83,6 +83,11 @@
             JsRuntime
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.MudExConfiguration">
+            <summary>
+            MudExConfiguration
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.IsRendered">
             <summary>
             This is true if render has called already
@@ -9096,6 +9101,26 @@
         <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:MudBlazor.Extensions.Options.MudExConfiguration"/> class.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.MudExConfiguration.DisableAutomaticCssLoading">
+            <summary>
+            Set this to true to disable all automatic css loadings
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.WithoutAutomaticCssLoading">
+            <summary>
+            Disables automatic Css loading. Then you need to ensure you have added the mud-ex styles in your index.html or _Host.cshtml
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.WithAutomaticCssLoading">
+            <summary>
+            Enables automatic Css loading.
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.With(System.Action{MudBlazor.Extensions.Options.MudExConfiguration}[])">
+            <summary>
+            Set specific options
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.WithDefaultDialogOptions(System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">

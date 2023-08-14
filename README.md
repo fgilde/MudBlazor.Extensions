@@ -96,9 +96,11 @@ if your are running on Blazor Server side, you should also use the `MudBlazorExt
 (Optional) if you have problems with automatic loaded styles you can also load the styles manually by adding the following line to your `index.html` or `_Host.cshtml`
 
 ```
-<link href="_content/MudBlazor.Extensions/mudBlazorExtensions.min.css" rel="stylesheet">
+<link id="mudex-styles" href="_content/MudBlazor.Extensions/mudBlazorExtensions.min.css" rel="stylesheet">
 ```
 
+<details>
+  <summary>Expand videos</summary>
 
 <!-- WIKI:START -->
 <!-- Copied from https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md on 2023-07-29 15:35:52 -->
@@ -147,6 +149,8 @@ https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/5c736020-94ba-431
 
 
 <!-- WIKI:END -->
+
+</details>
 
 ## Components
 

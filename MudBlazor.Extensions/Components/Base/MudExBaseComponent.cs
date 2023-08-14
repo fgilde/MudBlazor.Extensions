@@ -5,6 +5,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Options;
 using Nextended.Core.Extensions;
 
 
@@ -40,12 +41,17 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent
     /// <summary>
     /// Injected service provider
     /// </summary>
-    [Inject] protected IServiceProvider ServiceProvider { get; set; }
+    [Inject] protected IServiceProvider ServiceProvider { get; set; }  
 
     /// <summary>
     /// JsRuntime
     /// </summary>
     [Inject] public IJSRuntime JsRuntime { get; set; }
+
+    /// <summary>
+    /// MudExConfiguration
+    /// </summary>
+    [Inject] protected MudExConfiguration MudExConfiguration { get; set; }
 
     /// <summary>
     /// This is true if render has called already
@@ -106,7 +112,7 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
+        if (firstRender && !MudExConfiguration.DisableAutomaticCssLoading)
             await JsRuntime.LoadCssAsync();
     }
 

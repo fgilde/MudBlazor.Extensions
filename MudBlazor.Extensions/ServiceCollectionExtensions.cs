@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components;
@@ -21,9 +22,12 @@ public static class ServiceCollectionExtensions
     /// Adds MudBlazor extensions to the service collection.
     /// </summary>
     public static IServiceCollection AddMudExtensions(this IServiceCollection services, params Assembly[] serviceImplementationAssemblies)
-    {
-        //services.AddSingleton<MudBlazorExtensionJsInterop>();
+    {        
+        if (services.All(x => x.ServiceType != typeof(MudExConfiguration)))        
+            services.AddSingleton(new MudExConfiguration());  // Default configuration
+        
         services.RegisterAllImplementationsOf(new[] { typeof(IMudExFileDisplay) }, serviceImplementationAssemblies, ServiceLifetime.Scoped);
+        services.AddScoped<MudBlazorExtensionJsInterop>();
         services.AddScoped<MudExStyleBuilder>();
         services.AddScoped<MudExCssBuilder>();
         services.AddScoped<MudExAppearanceService>();
@@ -56,7 +60,9 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddMudExtensions(this IServiceCollection services, Action<MudExConfiguration> config, params Assembly[] serviceImplementationAssemblies)
     {
-        config?.Invoke(new MudExConfiguration());
+        var configuration = new MudExConfiguration();
+        config?.Invoke(configuration);
+        services.AddSingleton(configuration);
         return services.AddMudExtensions(serviceImplementationAssemblies);
     }
 
