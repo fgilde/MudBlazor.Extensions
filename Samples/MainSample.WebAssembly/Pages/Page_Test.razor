@@ -1,52 +1,103 @@
 ﻿@page "/test"
 @using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Enums
 
 
+<MudGrid>
+    <MudItem xs="12" sm="6">
+        <MudExSelect Label="Select Player" ToStringFunc="@(new Func<Tuple<string, string, bool>, string>(StringFunc))" Placeholder="Standard" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+            @foreach (var item in _players)
+            {
+                <MudExSelectItem Value="item">@(item.Item1 + " - Total Score: " + item.Item2)</MudExSelectItem>
+            }
+        </MudExSelect>
+    </MudItem>
 
-<DemoComponent Title="MudExSplitPanel" PageType="@GetType()">
-   
-    <MudGrid>
-        <MudItem xs="12" sm="8" Class="d-flex gap-8 align-top justify-center" Style="height: 500px">
-            <MudPaper Width="300px" Elevation="0">
-                <MudText Class="ma-4">Array List</MudText>
-                <MudExList ItemCollection="_states" Clickable="true" MaxItems="_maxItems" SearchBox="_searchBox" SearchFunc="@(new Func<string, string, bool>(SearchItems))" @bind-SelectedValue="_selectedState" />
-            </MudPaper>
-
-            <MudPaper Width="300px" Elevation="0">
-                <MudText Class="ma-4">Enum List</MudText>
-                <MudExList T="Continent" ItemCollection="(ICollection<Continent>)Enum.GetValues<Continent>()" Clickable="true" MaxItems="_maxItems" SearchBox="_searchBox" />
-            </MudPaper>
-
-            <MudPaper Width="300px" Elevation="0">
-                <MudText Class="ma-4">Complex Type List</MudText>
-                <MudExList T="ComplexTypes" ItemCollection="_complexTypeCollection" Clickable="true" MaxItems="_maxItems" SearchBox="_searchBox"
-                                 ToStringFunc="@(e => e?.Name + " " + e?.SurName)" />
-            </MudPaper>
+    <MudItem xs="12" sm="6">
+        <MudExSelect ItemCollection="_players" ValuePresenter="ValuePresenter.ItemContent" Placeholder="Template & ItemContent" Label="Select Player" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+            <ItemTemplate>
+                <MudStack Class="mud-width-full" Justify="Justify.SpaceBetween">
+                    <MudText><b>@context.Value.Item1</b></MudText>
+                    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                        <MudStack Row="true">
+                            <MudIcon Icon="@Icons.Material.Outlined.Person" />
+                            <MudText>@(context.Value.Item3 == true ? "Retired" : "Active")</MudText>
+                            </MudStack>
+                            <MudChip Color="Color.Info" Variant="Variant.Outlined">Total Score: @context.Value.Item2</MudChip>
+                        </MudStack>
+                    </MudStack>
+                </ItemTemplate>
+            </MudExSelect>
         </MudItem>
 
-        <MudItem xs="12" sm="4">
-            <MudStack>
-                <MudText>Selected State: @_selectedState</MudText>
-                <MudNumericField @bind-Value="_maxItems" Label="Max Items" Min="0" Max="16" HelperText="Between 0 - 16" HelperTextOnFocus="true" />
-                <MudSwitch @bind-Checked="_searchBox" Color="Color.Primary" Label="SearchBox" />
-            </MudStack>
+        <MudItem xs="12" sm="6">
+            <MudExSelect ItemCollection="_players" DisableSelectedBackground="true" ValuePresenter="ValuePresenter.Chip" MultiSelection="true" Placeholder="Both Templates & MultiSelection" Label="Select Player" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+                <ItemTemplate>
+                    <MudStack Class="mud-width-full" Justify="Justify.SpaceBetween">
+                        <MudText><b>@context.Value.Item1</b></MudText>
+                        <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                            <MudStack Row="true">
+                                <MudIcon Icon="@Icons.Material.Outlined.Person" />
+                                <MudText>@(context.Value.Item3 == true ? "Retired" : "Active")</MudText>
+                            </MudStack>
+                            <MudChip Color="Color.Info" Variant="Variant.Outlined">Total Score: @context.Value.Item2</MudChip>
+                        </MudStack>
+                    </MudStack>
+                </ItemTemplate>
+
+                <ItemSelectedTemplate>
+                    <MudStack Class="mud-width-full" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                        <MudText><b>@context.Value.Item1</b></MudText>
+                        <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                            <MudStack Row="true">
+                                <MudIcon Icon="@Icons.Material.Outlined.Person" />
+                                @*<MudText>@(context.Value.Item3 == true ? "Retired" : "Active")</MudText>*@
+                            </MudStack>
+                            <MudChip Color="Color.Info" Variant="Variant.Outlined">Total Score: @context.Value.Item2</MudChip>
+                        </MudStack>
+                    </MudStack>
+                </ItemSelectedTemplate>
+            </MudExSelect>
         </MudItem>
-    </MudGrid>
 
-</DemoComponent>
+        <MudItem xs="12" sm="6">
+            <MudExSelect Label="Select Player" ToStringFunc="@(new Func<Tuple<string, string, bool>, string>(StringFunc))" Placeholder="Disabled Template" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+                <ChildContent>
+                @foreach (var item in _players)
+                {
+                    <MudExSelectItem Value="item" Disabled="@(item.Item1.Contains("LeBron") ? false : true)">@(item.Item1 + " - Total Score: " + item.Item2)</MudExSelectItem>
+                }
+            </ChildContent>
 
-@code{
-    
-    int _maxItems = 8;
-    bool _searchBox = false;
-    string _selectedState;
-    ICollection<ComplexTypes> _complexTypeCollection = new List<ComplexTypes>()
-    {
-        new ComplexTypes() { Name = "John", SurName = "Star" },
-        new ComplexTypes() { Name = "David", SurName = "Codewriter" },
-        new ComplexTypes() { Name = "Mary", SurName = "Hardcoded" },
-        new ComplexTypes() { Name = "Jessica", SurName = "Fastfinger" },
-    };
+            <ItemDisabledTemplate>
+                <MudStack Row="true">
+                    <MudText>@context.Value.Item1</MudText>
+                    <MudText>Player is unavailable</MudText>
+                </MudStack>
+            </ItemDisabledTemplate>
+        </MudExSelect>
+    </MudItem>
+</MudGrid>
+
+<MudGrid>
+    <MudItem xs="12" sm="8" Class="d-flex gap-4">
+        <MudExSelect MultiSelection="@_multiselection" ItemCollection="_states" SearchBox="true" SearchBoxAutoFocus="@_searchBoxAutoFocus" T="string" Label="Standard Search" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" HelperText="Search with 'Contains' logic" SearchBoxClearable="_searchBoxClearable" />
+        <MudExSelect MultiSelection="@_multiselection" ItemCollection="_states" SearchBox="true" SearchBoxAutoFocus="@_searchBoxAutoFocus" SearchFunc="@(new Func<string, string, bool>(SearchItems))" T="string" Label="Custom Search Func" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" SearchBoxPlaceholder="Some Placeholder" HelperText="Search with 'StartsWith' logic" SearchBoxClearable="_searchBoxClearable" />
+    </MudItem>
+
+    <MudItem xs="12" sm="4">
+        <MudStack>
+            <MudSwitch @bind-Checked="_multiselection" Color="Color.Primary" Label="MultiSelection" />
+            <MudSwitch @bind-Checked="_searchBoxAutoFocus" Color="Color.Primary" Label="AutoFocus (SearchBox)" />
+            <MudSwitch @bind-Checked="_searchBoxClearable" Color="Color.Primary" Label="Clearable (SearchBox)" />
+        </MudStack>
+    </MudItem>
+</MudGrid>
+
+@code {
+    bool _multiselection;
+    bool _searchBoxAutoFocus;
+    bool _searchBoxClearable;
 
     private string[] _states =
     {
@@ -80,22 +131,22 @@
 
         return false;
     }
-
-    public enum Continent
+    Tuple<string, string, bool>[] _players = new Tuple<string, string, bool>[]
     {
-        Europe,
-        Asia,
-        America,
-        Africa,
-        Australia,
-        Antarctica
-    }
+       new Tuple<string, string, bool>("Kareem Abdul-Jabbar", "38.387", true),
+       new Tuple<string, string, bool>("LeBron James", "37.062", false),
+       new Tuple<string, string, bool>("Karl Malone", "36.928", true),
+       new Tuple<string, string, bool>("Kobe Bryant", "33.643", true),
+       new Tuple<string, string, bool>("Michael Jordan", "32.292", true),
+    };
 
-    public class ComplexTypes
+    private string StringFunc(Tuple<string, string, bool> tuple)
     {
-        public string Name { get; set; }
-        public string SurName { get; set; }
+        if (tuple == null)
+        {
+            return null;
+        }
+        return tuple.Item1 + " - Total Score: " + tuple.Item2;
     }
-
 }
 

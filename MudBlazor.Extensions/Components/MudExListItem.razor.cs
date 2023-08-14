@@ -9,11 +9,6 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExListItem<T>
 {
 
-    [Parameter] public string Class { get; set; }
-    [Parameter] public string Style { get; set; }
-    [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object?> UserAttributes { get; set; } = new Dictionary<string, object?>();
-
     #region Parameters, Fields, Injected Services
 
     [Inject] protected NavigationManager UriHelper { get; set; }

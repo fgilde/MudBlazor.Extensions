@@ -5,12 +5,6 @@ namespace MudBlazor.Extensions.Components;
 
 public partial class MudExListSubheader<T>
 {
-    [Parameter] public string Class { get; set; }
-    [Parameter] public string Style { get; set; }
-    [Parameter(CaptureUnmatchedValues = true)]    
-    public Dictionary<string, object?> UserAttributes { get; set; } = new Dictionary<string, object?>();
-
-
     protected string Classname =>
         new CssBuilder("mud-list-subheader-extended")
             .AddClass("mud-list-subheader-gutters-extended", !DisableGutters)

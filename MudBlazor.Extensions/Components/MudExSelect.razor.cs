@@ -11,12 +11,6 @@ namespace MudBlazor.Extensions.Components;
 
 public partial class MudExSelect<T>: IMudExSelect, IMudShadowSelectExtended
 {
-    [Parameter(CaptureUnmatchedValues = true)]
-    [Category(CategoryTypes.ComponentBase.Common)]
-    public Dictionary<string, object?> UserAttributes { get; set; } = new Dictionary<string, object?>();
-
-    [Parameter] public string Class { get; set; }
-    [Parameter] public string Style { get; set; }
 
 
     #region Constructor, Injected Services, Parameters, Fields
