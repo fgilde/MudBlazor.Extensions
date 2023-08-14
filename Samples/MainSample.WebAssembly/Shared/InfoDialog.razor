@@ -9,7 +9,13 @@
     <DialogContent>
         <div class="d-flex justify-center mt-4 mb-4">
             <MudExGradientText Animate="true"
-                               Align="Align.Center" Typo="Typo.h4">MudBlazor.Extensions @MudExResource.MudExVersion().ToString()</MudExGradientText>
+                               Align="Align.Center" Typo="Typo.h4">
+                               MudBlazor.Extensions @MudExResource.MudExVersion().ToString()
+                               @if (MudExResource.IsDebugOrPreviewBuild)
+                               {
+                                    @((MarkupString)" (Preview)")
+                               }                
+            </MudExGradientText>
         </div>
         <Support></Support>
         

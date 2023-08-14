@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components.Base;
@@ -25,6 +26,8 @@ public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, I
     /// Reference to rendered element
     /// </summary>
     public ElementReference ElementReference { get; set; }
+
+    internal IJsMudExComponent<T> AsJsComponent => this;
 
     /// <inheritdoc/>
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -58,17 +61,9 @@ public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, I
     }
 
     /// <inheritdoc/>
-    public virtual async ValueTask DisposeAsync()
-    {
-        if (JsReference != null)
-        {
-            try { await JsReference.InvokeVoidAsync("dispose"); }
-            catch {}
-            await JsReference.DisposeAsync();
-        }
-
-        if (ModuleReference != null)
-            await ModuleReference.DisposeAsync();
-
+    public override ValueTask DisposeAsync()
+    {                
+        AsJsComponent?.DisposeModulesAsync();
+        return base.DisposeAsync();
     }
 }

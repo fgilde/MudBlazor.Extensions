@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Helper;
 using System.Reflection;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Core;
 
 namespace MainSample.WebAssembly.Types;
 

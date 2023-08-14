@@ -9,6 +9,8 @@ public partial class NavMenu
 {
     private ExpandMode _expandMode;
 
+    [Inject] public NavigationManager NavigationManager { get; set; }
+
     [Parameter] public bool ShowUserCard { get; set; } = true;
 
     [Parameter] public bool ShowApplicationLogo { get; set; } = false;
@@ -27,7 +29,7 @@ public partial class NavMenu
         }
     }
 
-    [Parameter] public HashSet<NavigationEntry> Entries { get; set; } = Navigations.Default();
+    [Parameter] public HashSet<NavigationEntry>? Entries { get; set; } = null;
 
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
@@ -38,6 +40,7 @@ public partial class NavMenu
 
     protected override Task OnParametersSetAsync()
     {
+        Entries ??= Navigations.Default(NavigationManager);
         ExpandToCurrentUrl();
         return base.OnParametersSetAsync();
     }
