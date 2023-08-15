@@ -43,10 +43,9 @@ jobs:
       run: dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj --configuration Debug --no-restore
 
     - name: Build with Branch Name Suffix
+      shell: pwsh
       run: |
-        DATE_SUFFIX=$(date +"%y%m%d%H%M")
-        dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj -p:VersionSuffix=$DATE_SUFFIX-prev-$SAFE_BRANCH_NAME --configuration Debug --no-restore
-
+        dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj -p:VersionSuffix=d$([System.DateTime]::Now.ToString('yyMMddHHm'))-$SAFE_BRANCH_NAME --configuration Debug --no-restore
         
     #- name: Run Tests
     #  run: dotnet test ./MudBlazor.Extensions.Tests/MudBlazor.Extensions.Tests.csproj
