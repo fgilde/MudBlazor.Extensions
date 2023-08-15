@@ -2,12 +2,14 @@
 using MainSample.WebAssembly.Types;
 using MudBlazor;
 using MainSample.WebAssembly.Shared;
+using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Helper;
 
 namespace MainSample.WebAssembly;
 
 public static class Navigations
 {
-    public static HashSet<NavigationEntry> Default()
+    public static HashSet<NavigationEntry> Default(NavigationManager navigation)
     {
         var navigationEntries = new HashSet<NavigationEntry>
         {
@@ -16,10 +18,12 @@ public static class Navigations
             new("API", Icons.Material.Outlined.Api, "/api"),
             new("-")
         };
-        //if (Debugger.IsAttached)
-        //{
-        //    navigationEntries.Add(new NavigationEntry("TEST", Icons.Material.Outlined.BugReport, "/test"));
-        //}
+
+        var host = navigation.ToAbsoluteUri(navigation.Uri).Host.ToLower();
+        if (MudExResource.IsDebug && host is "localhost" or "127.0.0.1" )
+        {
+            navigationEntries.Add(new NavigationEntry("TEST", Icons.Material.Outlined.BugReport, "/test"));
+        }
 
         navigationEntries.UnionWith(DemoAttribute.AllEntries());
 

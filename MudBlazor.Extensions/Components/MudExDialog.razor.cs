@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using MudBlazor.Extensions.Components.Base;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
 

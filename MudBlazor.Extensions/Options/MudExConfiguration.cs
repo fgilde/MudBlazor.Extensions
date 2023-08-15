@@ -1,4 +1,6 @@
-﻿namespace MudBlazor.Extensions.Options;
+﻿using Nextended.Core.Extensions;
+
+namespace MudBlazor.Extensions.Options;
 
 /// <summary>
 /// Represents the configuration options for MudBlazor Extended.
@@ -10,6 +12,26 @@ public class MudExConfiguration
     /// </summary>
     internal MudExConfiguration()
     { }
+
+    /// <summary>
+    /// Set this to true to disable all automatic css loadings
+    /// </summary>
+    internal bool DisableAutomaticCssLoading { get; set; }
+
+    /// <summary>
+    /// Disables automatic Css loading. Then you need to ensure you have added the mud-ex styles in your index.html or _Host.cshtml
+    /// </summary>    
+    public MudExConfiguration WithoutAutomaticCssLoading() => With(c => c.DisableAutomaticCssLoading = true);
+
+    /// <summary>
+    /// Enables automatic Css loading.
+    /// </summary>    
+    public MudExConfiguration WithAutomaticCssLoading() => With(c => c.DisableAutomaticCssLoading = false);
+
+    /// <summary>
+    /// Set specific options
+    /// </summary>
+    internal MudExConfiguration With(params Action<MudExConfiguration>[] actions) => this.SetProperties(actions);
 
     /// <summary>
     /// Configures the default dialog options using the provided action.

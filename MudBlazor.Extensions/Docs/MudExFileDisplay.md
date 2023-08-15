@@ -17,6 +17,7 @@ Example of using `MudExFileDisplay`:
 
 ### MudExFileDisplayZip 
 This component can be automatically utilized by `MudExFileDisplay`, but can also be used manually if necessary.
+Note: If you're using the ContentStream it should not be closed or disposed.
 
 ```
  <MudExFileDisplayZip AllowDownload="@AllowDownload" RootFolderName="@FileName" ContentStream="@ContentStream" Url="@Url"></MudExFileDisplayZip>

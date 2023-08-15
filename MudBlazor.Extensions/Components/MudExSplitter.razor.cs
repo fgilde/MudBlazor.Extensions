@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
-using MudBlazor.Extensions.Components.Base;
+using MudBlazor.Extensions.Core;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;

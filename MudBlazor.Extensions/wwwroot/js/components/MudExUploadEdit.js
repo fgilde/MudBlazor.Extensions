@@ -62,13 +62,9 @@
         e.stopPropagation();
         dropZoneElement.classList.remove("hover");
         if (allowFolderUpload) {
-            console.log('DROP WITH FOLDER UPLOAD ');
-            console.log(e);
             setFiles(await readFromDataTransfer(e));
         }
         else {
-            console.log('DROP WITHOUT FOLDER UPLOAD ');
-            console.log(e);
             setFiles(e.dataTransfer.files);
         }
     }
@@ -88,6 +84,7 @@
         dropZoneElement.ondrop = onDrop;
         dropZoneElement.onpaste = onPaste;
     }
+    
     // The returned object allows to unregister the events when the Blazor component is destroyed
     return {
         selectFolder: () => {

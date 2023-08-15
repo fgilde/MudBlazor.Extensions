@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.FileProviders;
 using System.Collections.Concurrent;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml;
 
@@ -12,6 +15,23 @@ namespace MudBlazor.Extensions.Helper;
 public static class MudExResource
 {
     private static readonly ConcurrentDictionary<Assembly, XmlDocument> XmlDocCache = new();
+    private static readonly ConcurrentDictionary<string, string> EmbeddedFileContentCache = new();
+
+    public static bool IsClientSide => RuntimeInformation.OSDescription == "Browser"; // WASM
+    public static bool IsServerSide => !IsClientSide;
+
+    public static bool IsDebug => Assembly.GetEntryAssembly()?.GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled ?? false;
+    public static bool IsDebugOrPreviewBuild
+    {
+        get
+        {
+            #if DEBUG
+                        return true;
+            #else
+                return false;
+            #endif   
+        }
+    }
 
     /// <summary>
     /// Returns the version of used MudBlazor package
@@ -131,11 +151,16 @@ public static class MudExResource
 
     internal static async Task<string> GetEmbeddedFileContentAsync(string file, Assembly assembly = null)
     {
+        if (EmbeddedFileContentCache.TryGetValue(file, out var content))
+            return content;
+        
         var embeddedProvider = new EmbeddedFileProvider(assembly ?? Assembly.GetExecutingAssembly());
         var fileInfo = embeddedProvider.GetFileInfo(file);
 
         await using var stream = fileInfo.CreateReadStream();
         using var reader = new StreamReader(stream, Encoding.UTF8);
-        return await reader.ReadToEndAsync();
+        var result = await reader.ReadToEndAsync();
+        EmbeddedFileContentCache[file] = result;
+        return result;    
     }
 }

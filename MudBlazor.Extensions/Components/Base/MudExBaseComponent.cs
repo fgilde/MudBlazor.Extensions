@@ -4,7 +4,10 @@ using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Options;
 using Nextended.Core.Extensions;
+using System.Timers;
+using MudBlazor.Extensions.Core;
 
 
 namespace MudBlazor.Extensions.Components.Base;
@@ -13,12 +16,17 @@ namespace MudBlazor.Extensions.Components.Base;
 /// Base component for the most of all MudExComponents
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent
+public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent, IAsyncDisposable
     where T : MudExBaseComponent<T>
 {
     private object _previousKey;
-    private Timer _renderFinishTimer;
+    private System.Timers.Timer _renderFinishTimer;
     private IStringLocalizer<T> _fallbackLocalizer => Get<IStringLocalizer<T>>();
+
+    /// <summary>
+    /// Is true if dispose was called
+    /// </summary>
+    protected bool IsDisposed { get; private set; }
 
     /// <summary>
     /// Element id
@@ -39,12 +47,17 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent
     /// <summary>
     /// Injected service provider
     /// </summary>
-    [Inject] protected IServiceProvider ServiceProvider { get; set; }
+    [Inject] protected IServiceProvider ServiceProvider { get; set; }  
 
     /// <summary>
     /// JsRuntime
     /// </summary>
     [Inject] public IJSRuntime JsRuntime { get; set; }
+
+    /// <summary>
+    /// MudExConfiguration
+    /// </summary>
+    [Inject] protected MudExConfiguration MudExConfiguration { get; set; }
 
     /// <summary>
     /// This is true if render has called already
@@ -102,18 +115,41 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent
     }
 
     /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender && !MudExConfiguration.DisableAutomaticCssLoading)
+            await JsRuntime.LoadCssAsync();
+    }
+
+    /// <inheritdoc />
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
         IsRendered = true;
-        _renderFinishTimer?.Dispose();
-        _renderFinishTimer = new Timer(async _ =>
+
+        if (_renderFinishTimer != null)
+        {
+            _renderFinishTimer.Stop();
+            _renderFinishTimer.Elapsed -= OnRenderFinishTimerElapsed;  // Unhook the event
+            _renderFinishTimer.Dispose();
+        }
+
+        _renderFinishTimer = new System.Timers.Timer(300); // 300 milliseconds
+        _renderFinishTimer.AutoReset = false;  // Make sure it ticks only once
+        _renderFinishTimer.Elapsed += OnRenderFinishTimerElapsed;
+        _renderFinishTimer.Start();
+    }
+
+    private void OnRenderFinishTimerElapsed(object sender, ElapsedEventArgs e)
+    {
+        InvokeAsync(async () =>
         {
             _renderFinishTimer?.Dispose();
             _renderFinishTimer = null;
             IsFullyRendered = true;
             await OnFinishedRenderAsync();
-        }, null, 300, Timeout.Infinite);
+        });
     }
 
     /// <summary>
@@ -127,82 +163,15 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent
         return (T)this;
     }
 
-}
 
-/// <summary>
-/// Interface for all MudExComponents
-/// </summary>
-public interface IMudExComponent
-{
-}
-
-/// <summary>
-/// Interface for components with js imports
-/// </summary>
-/// <typeparam name="T"></typeparam>
-internal interface IJsMudExComponent<T> : IMudExComponent, IAsyncDisposable
-{
-    /// <summary>
-    /// JsRuntime
-    /// </summary>
-    public IJSRuntime JsRuntime { get; }
-
-    /// <summary>
-    /// Reference to the js
-    /// </summary>
-    public IJSObjectReference JsReference { get; set; }
-
-    /// <summary>
-    /// Reference to imported module
-    /// </summary>
-    public IJSObjectReference ModuleReference { get; set; }
-
-    /// <summary>
-    /// Reference to rendered element
-    /// </summary>
-    public ElementReference ElementReference { get; set; }
-
-    /// <summary>
-    /// Returns the object that is passed to js
-    /// </summary>
-    public virtual object[] GetJsArguments()
+    /// <inheritdoc />
+    public virtual async ValueTask DisposeAsync()
     {
-        return new object[] { ElementReference, CreateDotNetObjectReference() };
+        IsDisposed = true;
+        _renderFinishTimer?.Stop();
+        if (_renderFinishTimer is IAsyncDisposable renderFinishTimerAsyncDisposable)
+            await renderFinishTimerAsyncDisposable.DisposeAsync();
+        else        
+            _renderFinishTimer?.Dispose();        
     }
-
-    /// <summary>
-    /// DotNetObjectReference for callbacks
-    /// </summary>
-    public virtual DotNetObjectReference<IJsMudExComponent<T>> CreateDotNetObjectReference()
-    {
-        return DotNetObjectReference.Create(this);
-    }
-
-    /// <summary>
-    /// Imports the required module and calls the initialize method 
-    /// </summary>
-    public virtual async Task ImportModuleAndCreateJsAsync(string name = null)
-    {
-        await JsRuntime.InitializeMudBlazorExtensionsCoreAsync();
-        var references = await JsRuntime.ImportModuleAndCreateJsAsync<T>(name, GetJsArguments());
-        JsReference = references.jsObjectReference;
-        ModuleReference = references.moduleReference;
-    }
-
-    /// <summary>
-    /// Disposes all modules and references
-    /// </summary>
-    /// <returns></returns>
-    public virtual async ValueTask DisposeModulesAsync()
-    {
-        if (JsReference != null)
-        {
-            try { await JsReference.InvokeVoidAsync("dispose"); } catch { }
-            try { await JsReference.DisposeAsync(); } catch { }
-        }
-
-        if (ModuleReference != null)
-            try { await ModuleReference.DisposeAsync(); } catch { }
-    }
-
 }

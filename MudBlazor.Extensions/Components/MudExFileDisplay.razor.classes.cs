@@ -132,6 +132,7 @@ public interface IMudExFileDisplayInfos
 
     /// <summary>
     /// Stream of file if its already loaded or dynamically created on client
+    /// Note: This stream should not be closed or disposed.
     /// </summary>
     public Stream ContentStream { get; }
 }
@@ -211,6 +212,7 @@ public sealed class MudExFileDisplayContentErrorResult : IMudExFileDisplayInfos
 
     /// <summary>
     /// Gets or sets the content stream for redirection.
+    /// Note: This stream should not be closed or disposed.
     /// </summary>
     public Stream ContentStream { get; set; }
 
