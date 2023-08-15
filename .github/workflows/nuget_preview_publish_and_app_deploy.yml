@@ -46,7 +46,7 @@ jobs:
     - name: Build with Branch Name Suffix
       shell: pwsh
       run: |
-        dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj -p:VersionSuffix=$([System.DateTime]::Now.ToString('yyMMddHHm'))-prev-$env:SAFE_BRANCH_NAME --configuration Debug --no-restore
+        dotnet build ./MudBlazor.Extensions/MudBlazor.Extensions.csproj -p:VersionSuffix=prev-$([System.DateTime]::Now.ToString('yyMMddHHm'))-$env:SAFE_BRANCH_NAME --configuration Debug --no-restore
         
     #- name: Run Tests
     #  run: dotnet test ./MudBlazor.Extensions.Tests/MudBlazor.Extensions.Tests.csproj
@@ -57,7 +57,7 @@ jobs:
       shell: pwsh
       run: |
         Get-ChildItem -Path MudBlazor.Extensions/bin/Debug -Filter *.nupkg | ForEach-Object {
-          dotnet nuget push $_.FullName -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json
+          dotnet nuget push $_.FullName -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json --skip-duplicate
         }
 
   deploy_application_to_azure:

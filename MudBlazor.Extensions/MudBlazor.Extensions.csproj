@@ -29,7 +29,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <VersionSuffix>$([System.DateTime]::Now.ToString(`yyMMddHHm`))-prev</VersionSuffix>
+    <VersionSuffix>prev-$([System.DateTime]::Now.ToString(`yyMMddHHm`))</VersionSuffix>
     <PackageVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)-$(VersionSuffix)</PackageVersion>
     <AssemblyVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)</AssemblyVersion>
     <FileVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)</FileVersion>
