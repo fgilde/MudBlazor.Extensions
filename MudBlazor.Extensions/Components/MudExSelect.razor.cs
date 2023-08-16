@@ -364,7 +364,7 @@ public partial class MudExSelect<T>: IMudExSelect, IMudShadowSelectExtended
     /// </summary>
     [Parameter]
     [Category(CategoryTypes.List.Behavior)]
-    public Variant SearchBoxVariant { get; set; } = Variant.Outlined;
+    public Variant SearchBoxVariant { get; set; } = Variant.Text;
 
     /// <summary>
     /// Search box icon position.

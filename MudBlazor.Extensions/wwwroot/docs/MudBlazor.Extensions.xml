@@ -609,7 +609,7 @@
             Render function for an item.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExChipSelect`1.MultiSelectionTextFunc(System.Collections.Generic.List{System.String})">
+        <member name="M:MudBlazor.Extensions.Components.MudExChipSelect`1.MultiSelectionTextFunc(System.Collections.Generic.List{`0})">
             <summary>
             returns the string for more selected items
             </summary>
@@ -2884,37 +2884,6 @@
             </summary>
             <param name="value"></param>
             <returns>True when component has a value</returns>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.IMudExSelect">
-            <summary>
-            The parent select component
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.IsFunctional">
-            <summary>
-            Functional items does not hold values. If a value set on Functional item, it ignores by the MudSelect. They cannot be subject of keyboard navigation and selection.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.Text">
-            <summary>
-            The text to display
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.HideContent">
-            <summary>
-            Select items with HideContent==true are only there to register their RenderFragment with the select but
-            wont render and have no other purpose!
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.Value">
-            <summary>
-            A user-defined option that can be selected
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.MultiSelection">
-            <summary>
-            Mirrors the MultiSelection status of the parent select
-            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.Value">
             <summary>

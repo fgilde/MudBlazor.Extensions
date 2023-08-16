@@ -154,7 +154,7 @@ public partial class MudExList<T> : IDisposable
     /// </summary>
     [Parameter]
     [Category(CategoryTypes.List.Behavior)]
-    public Variant SearchBoxVariant { get; set; } = Variant.Outlined;
+    public Variant SearchBoxVariant { get; set; } = Variant.Text;
 
     /// <summary>
     /// Search box icon position.

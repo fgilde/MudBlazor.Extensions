@@ -1,121 +1,53 @@
 ﻿using Microsoft.AspNetCore.Components;
-using MudBlazor;
-using MudBlazor.Utilities;
+
 namespace MudBlazor.Extensions.Components;
 
-public partial class MudExSelectItem<T>: IDisposable
+public partial class MudExSelectItem<T> : IDisposable
 {
-    private String GetCssClasses() => new CssBuilder()
-       .AddClass(Class)
-       .Build();
-
+    // Fields
     private IMudExSelect _parent;
-    internal MudExSelect<T> MudExSelect => (MudExSelect<T>)IMudExSelect;
-    public MudExListItem<T> ListItem { get; set; }
-    internal string ItemId { get; } = "selectItem_" + Guid.NewGuid().ToString().Substring(0, 8);
+    private IMudShadowSelectExtended _shadowParent;
 
-    /// <summary>
-    /// The parent select component
-    /// </summary>
+    // Constants
+    internal readonly string ItemId = "selectItem_" + Guid.NewGuid().ToString().Substring(0, 8);
+
+    // Properties with CascadingParameter
     [CascadingParameter]
     internal IMudExSelect IMudExSelect
     {
         get => _parent;
-        set
-        {
-            _parent = value;
-            if (_parent == null)
-                return;
-            _parent.CheckGenericTypeMatch(this);
-            if (MudExSelect == null)
-                return;
-            bool isSelected = MudExSelect.Add(this);
-            if (_parent.MultiSelection)
-            {
-                MudExSelect.SelectionChangedFromOutside += OnUpdateSelectionStateFromOutside;
-                InvokeAsync(() => OnUpdateSelectionStateFromOutside(MudExSelect.SelectedValues));
-            }
-            else
-            {
-                IsSelected = isSelected;
-            }
-        }
+        set => SetParent(value);
     }
 
-    /// <summary>
-    /// Functional items does not hold values. If a value set on Functional item, it ignores by the MudSelect. They cannot be subject of keyboard navigation and selection.
-    /// </summary>
-    [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
-    public bool IsFunctional { get; set; }
-
-    /// <summary>
-    /// The text to display
-    /// </summary>
-    [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
-    public string Text { get; set; }
-
-    private IMudShadowSelectExtended _shadowParent;
     [CascadingParameter]
     internal IMudShadowSelectExtended IMudShadowSelectExtended
     {
         get => _shadowParent;
-        set
-        {
-            _shadowParent = value;
-            ((MudExSelect<T>)_shadowParent)?.RegisterShadowItem(this);
-        }
+        set => SetShadowParent(value);
     }
 
-    /// <summary>
-    /// Select items with HideContent==true are only there to register their RenderFragment with the select but
-    /// wont render and have no other purpose!
-    /// </summary>
     [CascadingParameter(Name = "HideContent")]
     internal bool HideContent { get; set; }
 
-    private void OnUpdateSelectionStateFromOutside(IEnumerable<T> selection)
-    {
-        if (selection == null)
-            return;
-        var old_is_selected = IsSelected;
-        IsSelected = selection.Contains(Value);
-        if (old_is_selected != IsSelected)
-            InvokeAsync(StateHasChanged);
-    }
+    // Other properties
+    internal MudExSelect<T> MudExSelect => _parent as MudExSelect<T>;
+    public MudExListItem<T> ListItem { get; set; }
 
-    /// <summary>
-    /// A user-defined option that can be selected
-    /// </summary>
+    [Parameter]
+    [Category(CategoryTypes.List.Behavior)]
+    public bool IsFunctional { get; set; }
+
+    [Parameter]
+    [Category(CategoryTypes.List.Behavior)]
+    public string Text { get; set; }
+
     [Parameter]
     [Category(CategoryTypes.FormComponent.Behavior)]
     public T Value { get; set; }
 
-    /// <summary>
-    /// Mirrors the MultiSelection status of the parent select
-    /// </summary>
-    protected bool MultiSelection
-    {
-        get
-        {
-            if (MudExSelect == null)
-                return false;
-            return MudExSelect.MultiSelection;
-        }
-    }
+    protected bool MultiSelection => MudExSelect?.MultiSelection ?? false;
 
-    private bool _isSelected;
-    internal bool IsSelected
-    {
-        get => _isSelected;
-        set
-        {
-            if (_isSelected == value)
-                return;
-            _isSelected = value;
-        }
-    }
+    internal bool IsSelected { get; set; }
 
     protected string DisplayString
     {
@@ -123,48 +55,74 @@ public partial class MudExSelectItem<T>: IDisposable
         {
             var converter = MudExSelect?.Converter;
             if (converter == null)
-                return $"{(string.IsNullOrEmpty(Text) ? Value : Text)}";
+                return string.IsNullOrEmpty(Text) ? Value?.ToString() : Text;
             return !string.IsNullOrEmpty(Text) ? Text : converter.Set(Value);
         }
     }
 
-    protected async void HandleOnClick()
+    // Methods
+    private void SetParent(IMudExSelect value)
     {
-        // Selection works on list. We arrange only popover state and some minor arrangements on click.
-        await MudExSelect?.SelectOption(Value);
-        
-        await InvokeAsync(StateHasChanged);
-        if (MudExSelect != null)
+        _parent = value;
+        if (_parent == null) return;
+
+        _parent.CheckGenericTypeMatch(this);
+
+        var isSelected = MudExSelect?.Add(this) ?? false;
+
+        if (_parent.MultiSelection && MudExSelect is not null)
         {
-            if (!MultiSelection)
-            {
-                await MudExSelect.CloseMenu();
-            }
-            else
-            {
-                await MudExSelect.FocusAsync();
-            }
+            MudExSelect.SelectionChangedFromOutside += OnUpdateSelectionStateFromOutside;
+            InvokeAsync(() => OnUpdateSelectionStateFromOutside(MudExSelect.SelectedValues));
         }
-        await OnClick.InvokeAsync();
+        else
+        {
+            IsSelected = isSelected;
+        }
     }
 
-    protected bool GetDisabledStatus()
+    private void SetShadowParent(IMudShadowSelectExtended value)
     {
-        if (MudExSelect?.ItemDisabledFunc != null)
-        {
-            return MudExSelect.ItemDisabledFunc(Value);
-        }
-        return Disabled;
+        _shadowParent = value;
+        (_shadowParent as MudExSelect<T>)?.RegisterShadowItem(this);
     }
+
+    private void OnUpdateSelectionStateFromOutside(IEnumerable<T> selection)
+    {
+        if (selection == null) return;
+
+        var oldIsSelected = IsSelected;
+        IsSelected = selection.Contains(Value);
+        if (oldIsSelected != IsSelected)
+            InvokeAsync(StateHasChanged);
+    }
+
+    protected async void HandleOnClick()
+    {        
+        await MudExSelect?.SelectOption(Value);
+
+        await InvokeAsync(StateHasChanged);
+
+        if (MudExSelect == null) return;
+
+        if (!MultiSelection)
+            await MudExSelect.CloseMenu();
+        else
+            await MudExSelect.FocusAsync();
+    }
+
+    protected bool GetDisabledStatus() => MudExSelect?.ItemDisabledFunc?.Invoke(Value) ?? Disabled;
 
     public void Dispose()
     {
         try
         {
             MudExSelect?.Remove(this);
-            ((MudExSelect<T>)_shadowParent)?.UnregisterShadowItem(this);
+            (_shadowParent as MudExSelect<T>)?.UnregisterShadowItem(this);
         }
-        catch (Exception) { }
+        catch
+        {
+            /* Gracefully handle exceptions during disposal */
+        }
     }
-
 }
