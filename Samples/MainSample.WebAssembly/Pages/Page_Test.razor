@@ -5,7 +5,12 @@
 <DemoComponent PageType="@GetType()">
     <SplitContainer>
         <Left>
-            <MudExSelect @ref="component" ItemCollection="_states" SearchBox="true" T="string" Label="Standard Search" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" HelperText="Search with 'Contains' logic" />
+            <MudExSelect @ref="component"
+                @bind-SelectedValues="@_selected"
+                         ValuePresenter="ValuePresenter.Chip"
+                MultiSelection="true"
+                         Clearable="true"
+                ItemCollection="_states" SearchBox="true" T="string" Label="Standard Search" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" HelperText="Search with 'Contains' logic" />
         </Left>
         <Right>
             <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>
@@ -60,6 +65,7 @@
     bool _initiallyExpanded = false;
     string _selectedValue;
     IEnumerable<string> _selectedValues;
+    private IEnumerable<string> _selected = new string[] { "Alabama", "Alaska" };
     private string[] _states =
     {
         "Alabama", "Alaska", "American Samoa", "Arizona",

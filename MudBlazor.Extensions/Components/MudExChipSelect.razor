@@ -1,8 +1,11 @@
 ﻿@using Nextended.Core.Extensions
 @using Microsoft.AspNetCore.Components.Rendering
-@inherits MudExBaseComponent<MudExChipSelect<T>>
+@inherits MudExSelect<T>
 @typeparam T
 
+@Inherited()
+
+@*
 <MudGrid>
     @if (ViewMode == ViewMode.ChipsAdditionalAbove)
     {
@@ -12,12 +15,9 @@
     }
 
     <MudItem xs="12" md="12">
-        @if (ViewMode == ViewMode.ChipsOnly)
-        {
-            @RenderChips
-        }
+ 
         <div class="select-container">
-            <MudSelect T="@T" MultiSelectionTextFunc="MultiSelectionTextFunc"
+            <MudExSelect T="@T" MultiSelectionTextFunc="MultiSelectionTextFunc"
                        Variant="@(ViewMode != ViewMode.ChipsOnly ? Variant : Variant.Text)"
                        Label="@(!Label.IsNullOrWhiteSpace() ? TryLocalize(Label) : "")" 
                        HelperText="@(!HelperText.IsNullOrWhiteSpace() ? TryLocalize(HelperText) : "")"
@@ -33,29 +33,17 @@
                        MultiSelection="@MultiSelect" 
                        AnchorOrigin="Origin.BottomCenter"
                        Style="@Style"
+                       SearchBox="@FilterEnabled"
+                       ChipCloseable="true"
+                         SearchBoxVariant="Variant.Text"
+                         SearchBoxPlaceholder="Filter"
+                       ValuePresenter="@(ViewMode == ViewMode.ChipsOnly ? Enums.ValuePresenter.Chip : Enums.ValuePresenter.Text)"
                        @bind-Value="Value" 
                        @bind-SelectedValues="Selected"
+                       ItemCollection="@AvailableItems"                       
                        AdornmentIcon="@AdornmentIcon">
-                @if (FilterEnabled)
-                {                    
-                    <MudSelectItem DisableRipple="true" OnClick="@OnFilterItemClick" Class="mud-ex-filter-select" T="@T" Value="default">
-                        <MudTextField onclick="MudExDomHelper.focusElementDelayed(this, 100, event)" Immediate="true" Clearable="true" @bind-Value="Filter" AutoFocus="@(AutoFocusFilter && FilterEnabled)" T="string" Placeholder="@TryLocalize("Filter")" Label="@TryLocalize("Filter")" />
-                    </MudSelectItem>
-                }
-                @foreach (var item in AvailableItems.EmptyIfNull().Where(arg => arg != null && (Filter.IsNullOrWhiteSpace() || ItemNameRender(arg)?.Contains(Filter, StringComparison.CurrentCultureIgnoreCase) == true)))
-                {
-                    <MudSelectItem Style="height: 70px;" T="@T" Value="@item">
-                        @if (UseCustomItemRenderInSelectionPopover)
-                        {
-                            @RenderItem(item)
-                        }
-                        else
-                        {
-                            <MudHighlighter Text="@ItemNameRender(item)" HighlightedText="@Filter"/>
-                        }
-                    </MudSelectItem>
-                }
-            </MudSelect>
+          
+            </MudExSelect>
             @if (RenderValidationComponent && For != null)
             {
                 <MudTextField Class="mt-5" Style="@StyleForValidationComponent" DisableUnderLine="@DisableUnderLineForValidationComponent" For="@For" ReadOnly="true"/>
@@ -99,3 +87,4 @@
 
 
 }
+*@

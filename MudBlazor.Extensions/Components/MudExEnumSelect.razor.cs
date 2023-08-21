@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using System.Reflection;
+﻿using System.Reflection;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
@@ -10,11 +9,6 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExEnumSelect<TEnum>
 {
     bool _isFlagsEnum;
-
-    /// <summary>
-    /// Render base component
-    /// </summary>
-    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
     private static IList<TEnum> EnumValueList()
         => EnumOrUnderlyingType().GetEnumValues().Cast<TEnum>().ToList();
@@ -27,11 +21,11 @@ public partial class MudExEnumSelect<TEnum>
     /// <inheritdoc />
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         ViewMode = ViewMode.NoChips;
         _isFlagsEnum = EnumOrUnderlyingType().GetCustomAttribute<FlagsAttribute>() != null;
-        MultiSelect = _isFlagsEnum;
-        AvailableItems = EnumValueList();
-        base.OnInitialized();
+        MultiSelection = _isFlagsEnum;
+        ItemCollection = EnumValueList();
     }
 
     /// <inheritdoc />
@@ -41,12 +35,12 @@ public partial class MudExEnumSelect<TEnum>
         if (_isFlagsEnum)
         {
             var valueEnum = Value as Enum;
-            var toSelect = AvailableItems.Where(e => valueEnum?.HasFlag((e as Enum)!) == true).ToList();
-            Selected = toSelect;
+            var toSelect = ItemCollection.Where(e => valueEnum?.HasFlag((e as Enum)!) == true).ToList();
+            SelectedValues = toSelect;
         }
         else if (Value != null)
         {
-            Selected = new[] { Value };
+            SelectedValues = new[] { Value };
         }
     }
 
@@ -58,17 +52,20 @@ public partial class MudExEnumSelect<TEnum>
             var selectedAsArray = selected as TEnum[] ?? selected?.ToArray() ?? Array.Empty<TEnum>();
             if (IsNullableEnum && !selectedAsArray.Any())
             {
-                Value = default;
+                Value = default;              
+                ValueChanged.InvokeAsync(Value);
                 return;
             }
             if (IsNullableEnum && Value == null)
             {
                 Value = selectedAsArray.FirstOrDefault();
             }
-            foreach (var e in AvailableItems)
+            foreach (var e in ItemCollection)
                 Value = SetFlag(e, false);
             foreach (var e in selectedAsArray)
                 Value = SetFlag(e, true);
+            
+            ValueChanged.InvokeAsync(Value);
         }
     }
 

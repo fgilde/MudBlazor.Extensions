@@ -287,6 +287,46 @@
             MudExBaseInput
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.Localizer">
+            <summary>
+            Localizer for localize texts
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.ServiceProvider">
+            <summary>
+            Injected service provider
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.JsRuntime">
+            <summary>
+            JsRuntime
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.MudExConfiguration">
+            <summary>
+            MudExConfiguration
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.LocalizerToUse">
+            <summary>
+            The localizer to use
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExBaseInput`1.Get``1">
+            <summary>
+            Returns the injected service for TService
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExBaseInput`1.GetServices``1">
+            <summary>
+            Returns the injected services for TService
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExBaseInput`1.TryLocalize(System.String,System.Object[])">
+            <summary>
+            Tries to localize given text if localizer and translation is available
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.AdornmentStart">
             <summary>
             The Adornment if used. By default, it is set to None.
@@ -451,39 +491,14 @@
             Gets or Sets the Localizer Pattern.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Variant">
-            <summary>
-            Gets or Sets the variant of the component.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.AutoFocusFilter">
             <summary>
             Gets or Sets the AutoFocus for the filter input.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Adornment">
-            <summary>
-            Gets or Sets the adornment of the component.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.ReadOnly">
-            <summary>
-            Gets or Sets the read-only status of the component.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.RenderValidationComponent">
             <summary>
             Gets or Sets whether to render the validation component.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.For">
-            <summary>
-            Gets or Sets the data For method
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.DisableUnderLine">
-            <summary>
-            Gets or Sets the option to disable the underline in the component.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.DisableUnderLineForValidationComponent">
@@ -501,34 +516,14 @@
             Gets or Sets the color of the chip in the component.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.ChipVariant">
-            <summary>
-            Gets or Sets the variant of the chip in the component.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.ViewMode">
             <summary>
             Gets or Sets the view mode for the component.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Label">
-            <summary>
-            Gets or Sets the label of the component.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.HelperText">
-            <summary>
-            Gets or Sets the helper text of the component.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.FilterEnabled">
             <summary>
             Gets or Sets the option to enable filtering in the component.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Clearable">
-            <summary>
-            Gets or Sets the option to enable clearing of selected items in the component.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.MultiSelect">
@@ -539,11 +534,6 @@
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.UseCustomItemRenderInSelectionPopover">
             <summary>
             Gets or Sets the option to use a custom item renderer in the selection popover.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.ItemTemplate">
-            <summary>
-            Gets or Sets the RenderFragment for custom item template.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.AvailableItems">
@@ -561,16 +551,6 @@
             Gets or Sets the function that converts an item to a string. This is used for display purposes.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.AdornmentIcon">
-            <summary>
-            Gets or Sets the icon for the adornment of the component.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Value">
-            <summary>
-            Gets or Sets the value of the component.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.UpdateItemsOnStateChange">
             <summary>
             Gets or Sets a value indicating whether to update items on state change.
@@ -581,19 +561,9 @@
             Event triggered when the selected items change.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.ValueChanged">
-            <summary>
-            Event triggered when the value of the component changes.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Selected">
             <summary>
             Gets or sets the currently selected items in the component.
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExChipSelect`1.OnBeforeSelectedChanged(System.Collections.Generic.IEnumerable{`0})">
-            <summary>
-            is called before the selected items change.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.Filter">
@@ -1011,11 +981,6 @@
         <member name="T:MudBlazor.Extensions.Components.MudExEnumSelect`1">
             <summary>
             Drop down component to select an enum value or multiple on flags enums
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExEnumSelect`1.Inherited">
-            <summary>
-            Render base component
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExEnumSelect`1.OnInitialized">
@@ -2584,6 +2549,21 @@
             The collection of items within this select
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.PopoverAnimation">
+            <summary>
+            The animation type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.PopoverAnimationTimingFunction">
+            <summary>
+            The animation timing function.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.PopoverAnimationPosition">
+            <summary>
+            The dialog position.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.InputClass">
             <summary>
             User class names for the input, separated by space
@@ -2855,6 +2835,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SelectedValues">
             <summary>
             Set of selected values. If MultiSelection is false it will only ever contain a single value. This property is two-way bindable.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.OnBeforeSelectedChanged(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            is called before the selected items change.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SelectedValuesChanged">

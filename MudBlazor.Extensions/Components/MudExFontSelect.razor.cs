@@ -39,9 +39,9 @@ public partial class MudExFontSelect
     /// <inheritdoc />
     protected override void OnInitialized()
     {
+        base.OnInitialized();        
         ItemTemplate = GetItemTemplate();
         UseCustomItemRenderInSelectionPopover = true;
         ViewMode = ViewMode.NoChips;
-        base.OnInitialized();
     }
 }

@@ -12,17 +12,26 @@ namespace MudBlazor.Extensions.Components;
 /// <typeparam name="T"></typeparam>
 public partial class MudExChipSelect<T>
 {
+
+    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        MultiSelection = true;
+        SearchBox = true;
+        ValuePresenter = ViewMode == ViewMode.ChipsOnly ? Enums.ValuePresenter.Chip : Enums.ValuePresenter.Text;
+        ChipCloseable = true;
+        Clearable = true;        
+    }
+
     /// <summary>
     /// Gets or Sets the Localizer Pattern.
     /// </summary>
     [Parameter, SafeCategory("Data")]
     public string LocalizerPattern { get; set; } = "{0}";
 
-    /// <summary>
-    /// Gets or Sets the variant of the component.
-    /// </summary>
-    [Parameter, SafeCategory("Appearance")]
-    public Variant Variant { get; set; }
+
 
     /// <summary>
     /// Gets or Sets the AutoFocus for the filter input.
@@ -30,17 +39,9 @@ public partial class MudExChipSelect<T>
     [Parameter, SafeCategory("Behavior")]
     public bool AutoFocusFilter { get; set; }
 
-    /// <summary>
-    /// Gets or Sets the adornment of the component.
-    /// </summary>
-    [Parameter, SafeCategory("Appearance")]
-    public Adornment Adornment { get; set; } = Adornment.End;
 
-    /// <summary>
-    /// Gets or Sets the read-only status of the component.
-    /// </summary>
-    [Parameter, SafeCategory("Behavior")]
-    public bool ReadOnly { get; set; }
+
+
 
     /// <summary>
     /// Gets or Sets whether to render the validation component.
@@ -48,17 +49,7 @@ public partial class MudExChipSelect<T>
     [Parameter, SafeCategory("Behavior")]
     public bool RenderValidationComponent { get; set; } = true;
 
-    /// <summary>
-    /// Gets or Sets the data For method
-    /// </summary>
-    [Parameter, SafeCategory("Validation")]
-    public Expression<Func<IEnumerable<T>>> For { get; set; }
-
-    /// <summary>
-    /// Gets or Sets the option to disable the underline in the component.
-    /// </summary>
-    [Parameter, SafeCategory("Appearance")]
-    public bool DisableUnderLine { get; set; }
+  
 
     /// <summary>
     /// Gets or Sets the option to disable the underline for the validation component.
@@ -78,29 +69,21 @@ public partial class MudExChipSelect<T>
     [Parameter, SafeCategory("Appearance")]
     public virtual Color ChipColor { get; set; } = Color.Primary;
 
-    /// <summary>
-    /// Gets or Sets the variant of the chip in the component.
-    /// </summary>
-    [Parameter, SafeCategory("Appearance")]
-    public virtual Variant ChipVariant { get; set; } = Variant.Filled;
 
     /// <summary>
     /// Gets or Sets the view mode for the component.
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
-    public virtual ViewMode ViewMode { get; set; } = ViewMode.ChipsOnly;
+    public virtual ViewMode ViewMode
+    {
+        get => _viewMode;
+        set
+        {
+            _viewMode = value;
+            ValuePresenter = ViewMode == ViewMode.ChipsOnly ? Enums.ValuePresenter.Chip : Enums.ValuePresenter.Text;
+        }
+    }
 
-    /// <summary>
-    /// Gets or Sets the label of the component.
-    /// </summary>
-    [Parameter, SafeCategory("Appearance")]
-    public virtual string Label { get; set; }
-
-    /// <summary>
-    /// Gets or Sets the helper text of the component.
-    /// </summary>
-    [Parameter, SafeCategory("Appearance")]
-    public virtual string HelperText { get; set; }
 
     /// <summary>
     /// Gets or Sets the option to enable filtering in the component.
@@ -108,17 +91,16 @@ public partial class MudExChipSelect<T>
     [Parameter, SafeCategory("Behavior")]
     public virtual bool FilterEnabled { get; set; } = true;
 
-    /// <summary>
-    /// Gets or Sets the option to enable clearing of selected items in the component.
-    /// </summary>
-    [Parameter, SafeCategory("Behavior")]
-    public virtual bool Clearable { get; set; } = true;
 
     /// <summary>
     /// Gets or Sets the option to enable multi-select functionality in the component.
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
-    public virtual bool MultiSelect { get; set; } = true;
+    [Obsolete("Use MultiSelection instead.")]
+    public virtual bool MultiSelect { 
+        get => MultiSelection;
+        set => MultiSelection = value;
+    }
 
     /// <summary>
     /// Gets or Sets the option to use a custom item renderer in the selection popover.
@@ -126,17 +108,17 @@ public partial class MudExChipSelect<T>
     [Parameter, SafeCategory("Common")]
     public virtual bool UseCustomItemRenderInSelectionPopover { get; set; } = false;
 
-    /// <summary>
-    /// Gets or Sets the RenderFragment for custom item template.
-    /// </summary>
-    [Parameter, SafeCategory("Common")]
-    public RenderFragment<T> ItemTemplate { get; set; }
 
     /// <summary>
     /// Gets or Sets the list of items that are available for selection.
     /// </summary>
     [Parameter, SafeCategory("Data")]
-    public IList<T> AvailableItems { get; set; }
+    [Obsolete("Use ItemCollection instead.")]
+    public IList<T> AvailableItems
+    {
+        get => ItemCollection?.ToList();
+        set => ItemCollection = value;
+    }
 
     /// <summary>
     /// Gets or Sets the function that is used to asynchronously load available items.
@@ -150,17 +132,7 @@ public partial class MudExChipSelect<T>
     [Parameter, SafeCategory("Data")]
     public Func<T, string> ItemToStringFunc { get; set; } = (item => item?.ToString() ?? string.Empty);
 
-    /// <summary>
-    /// Gets or Sets the icon for the adornment of the component.
-    /// </summary>
-    [Parameter, SafeCategory("Appearance")]
-    public string AdornmentIcon { get; set; } = Icons.Material.Filled.ArrowDropDown;
 
-    /// <summary>
-    /// Gets or Sets the value of the component.
-    /// </summary>
-    [Parameter, SafeCategory("Data")]
-    public T Value { get; set; }
 
     /// <summary>
     /// Gets or Sets a value indicating whether to update items on state change.
@@ -174,40 +146,22 @@ public partial class MudExChipSelect<T>
     [Parameter, SafeCategory("Click action")]
     public EventCallback<IEnumerable<T>> SelectedChanged { get; set; }
 
-    /// <summary>
-    /// Event triggered when the value of the component changes.
-    /// </summary>
-    [Parameter, SafeCategory("Click action")]
-    public EventCallback<T> ValueChanged { get; set; }
+
 
     /// <summary>
     /// Gets or sets the currently selected items in the component.
     /// </summary>
     [Parameter, SafeCategory("Data")]
-    public IEnumerable<T> Selected
-    {
-        get => _selected ??= new HashSet<T>();
-        set
-        {
-            var set = (value ?? new HashSet<T>()).ToList();
-            if (Selected.Count() != set.Count || !_selected.All(x => set.Contains(x)))
-            {
-                _selected = new HashSet<T>(set);
-                OnBeforeSelectedChanged(_selected);
-                RaiseChanged();
-            }
-        }
-    }
+    [Obsolete("Use SelectedValues instead")]
+    public IEnumerable<T> Selected {
+        get => SelectedValues;
+        set => SelectedValues = value;
+      }
 
-    /// <summary>
-    /// is called before the selected items change.
-    /// </summary>
-    protected virtual void OnBeforeSelectedChanged(IEnumerable<T> selected)
-    {}
 
     private void RaiseChanged()
     {
-        if (IsRendered)
+        if (true)
         {
             SelectedChanged.InvokeAsync(new HashSet<T>(Selected));
             ValueChanged.InvokeAsync(Value);
@@ -233,6 +187,7 @@ public partial class MudExChipSelect<T>
 
     private IEnumerable<T> _selected;
     private string _filter;
+    private ViewMode _viewMode = ViewMode.ChipsOnly;
     private string CssName => $"chip-select-{Enum.GetName(ViewMode)?.ToLower() ?? "none"} {(Selected?.Any() == true ? "with-items" : "empty")}";
 
     /// <inheritdoc />
@@ -266,7 +221,7 @@ public partial class MudExChipSelect<T>
     /// <summary>
     /// returns the string for more selected items
     /// </summary>
-    protected virtual string MultiSelectionTextFunc(List<string> arg) 
+    protected virtual string MultiSelectionTextFunc(List<T> arg) 
         => string.Join(", ", Selected.Where(a => a != null).Select(r => ItemNameRender(r)?.ToUpper(true)));
 
     /// <summary>

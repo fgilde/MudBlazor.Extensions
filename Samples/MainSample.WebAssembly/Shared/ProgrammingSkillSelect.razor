@@ -4,8 +4,9 @@
 @Inherited()
 
 @code {
-    public override string Label { get; set; } = "Programming skills";
-    public override string HelperText { get; set; } = null;
+    //public override string Label { get; set; } = "Programming skills";
+    //public override string HelperText { get; set; } = null;
+    
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
     
     protected override Task<IList<Page_ObjectEditConfigured.ProgramingSkill>> GetAvailableItemsAsync(CancellationToken cancellation = default)
@@ -24,5 +25,5 @@
         });
     }
 
-    public override string ItemNameRender(Page_ObjectEditConfigured.ProgramingSkill item) => item?.Name;
+    public override string ItemNameRender(Page_ObjectEditConfigured.ProgramingSkill item) => "d";
 }

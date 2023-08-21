@@ -59,21 +59,21 @@ public partial class MudExList<T> : IDisposable
     /// </summary>
     [Parameter]
     [Category(CategoryTypes.FormComponent.ListBehavior)]
-    public RenderFragment<MudExListItem<T>> ItemTemplate { get; set; }
+    public RenderFragment<T> ItemTemplate { get; set; }
 
     /// <summary>
     /// Optional presentation template for selected items
     /// </summary>
     [Parameter]
     [Category(CategoryTypes.FormComponent.ListBehavior)]
-    public RenderFragment<MudExListItem<T>> ItemSelectedTemplate { get; set; }
+    public RenderFragment<T> ItemSelectedTemplate { get; set; }
 
     /// <summary>
     /// Optional presentation template for disabled items
     /// </summary>
     [Parameter]
     [Category(CategoryTypes.FormComponent.ListBehavior)]
-    public RenderFragment<MudExListItem<T>> ItemDisabledTemplate { get; set; }
+    public RenderFragment<T> ItemDisabledTemplate { get; set; }
 
     /// <summary>
     /// Optional presentation template for select all item
@@ -839,6 +839,9 @@ public partial class MudExList<T> : IDisposable
     }
 
     MudTextField<string> _searchField;
+
+    public MudTextField<string> SearchField => _searchField;
+
     protected internal async Task HandleKeyDown(KeyboardEventArgs obj)
     {
         if (Disabled || (!Clickable && !MultiSelection))

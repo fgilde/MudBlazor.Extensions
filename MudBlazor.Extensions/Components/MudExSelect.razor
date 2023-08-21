@@ -1,4 +1,5 @@
 ﻿@typeparam T
+@using MudBlazor.Extensions.Options
 @inherits MudExBaseInput<T>
 
 <CascadingValue Name="Standalone" Value="false" IsFixed="true">
@@ -71,7 +72,7 @@
                                     {
                                         if (SelectedListItem != null && SelectedListItem.Value != null)
                                         {
-                                            @ItemTemplate(SelectedListItem)
+                                            @ItemTemplate(SelectedListItem.Value)
                                         }
                                         else if (!string.IsNullOrEmpty(Placeholder))
                                         {
@@ -101,7 +102,7 @@
                         </ChildContent>
                     </MudExInput>
 
-				<MudPopover Open="@_isOpen" MaxHeight="@MaxHeight" AnchorOrigin="@AnchorOrigin" TransformOrigin="@TransformOrigin" Class="@PopoverClass" RelativeWidth="@RelativeWidth">
+                    <MudExPopover Animation="@PopoverAnimation" AnimationPosition="@PopoverAnimationPosition" AnimationTimingFunction="@PopoverAnimationTimingFunction" Open="@_isOpen" MaxHeight="@MaxHeight" AnchorOrigin="@AnchorOrigin" TransformOrigin="@TransformOrigin" Class="@PopoverClass" RelativeWidth="@RelativeWidth">
                         <CascadingValue Value="@this" IsFixed="true">
                             <MudExList @ref="@_list" T="T" @bind-SelectedValue="@Value" Style="@($"overflow-y:auto; max-height: {MaxHeight}px")" @bind-SelectedValues="@SelectedValues" @bind-SelectedItem="@SelectedListItem" @bind-SelectedItems="@SelectedListItems"
                                              Clickable="true" Color="@Color" Dense="@Dense" ItemCollection="@ItemCollection" Virtualize="@Virtualize" DisablePadding="@DisablePopoverPadding" DisableSelectedItemStyle="@DisableSelectedItemStyle"
@@ -111,7 +112,7 @@
                                 @ChildContent
                             </MudExList>
                         </CascadingValue>
-                    </MudPopover>
+                    </MudExPopover>
                 </InputContent>
             </MudInputControl>
         </div>

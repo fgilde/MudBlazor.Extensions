@@ -8,7 +8,7 @@
 <DemoComponent PageType="@GetType()">
     <SplitContainer>
         <Left>
-            <MudExChipSelect AvailableItems="@Available" @bind-Selected="Selected" @ref="component"></MudExChipSelect>
+            <MudExChipSelect AvailableItems="@Available" @bind-SelectedValues="Selected" @ref="component"></MudExChipSelect>
             <MudButton Class="mt-5" OnClick="@OnShowClick">Show selected</MudButton>
         </Left>
         <Right>

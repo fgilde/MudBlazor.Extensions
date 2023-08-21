@@ -4,12 +4,13 @@ using MudBlazor.Services;
 using MudBlazor.Utilities.Exceptions;
 using MudBlazor.Utilities;
 using System.Diagnostics.CodeAnalysis;
-using System;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Enums;
+using MudBlazor.Extensions.Options;
 
 namespace MudBlazor.Extensions.Components;
 
-public partial class MudExSelect<T>: IMudExSelect, IMudShadowSelectExtended
+public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended
 {
 
 
@@ -24,6 +25,9 @@ public partial class MudExSelect<T>: IMudExSelect, IMudShadowSelectExtended
     [Inject] private IKeyInterceptorFactory KeyInterceptorFactory { get; set; }
 
     private MudExList<T> _list;
+    
+    public MudExList<T> MudExList { get => _list; }
+
     private bool _dense;
     private string multiSelectionText;
     private IKeyInterceptor _keyInterceptor;
@@ -53,6 +57,25 @@ public partial class MudExSelect<T>: IMudExSelect, IMudShadowSelectExtended
 
     private string _elementId = "select_" + Guid.NewGuid().ToString().Substring(0, 8);
     private string _popoverId = "selectpopover_" + Guid.NewGuid().ToString().Substring(0, 8);
+
+
+    /// <summary>
+    /// The animation type.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public AnimationType PopoverAnimation { get; set; } = AnimationType.Default;
+
+    /// <summary>
+    /// The animation timing function.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public AnimationTimingFunction PopoverAnimationTimingFunction { get; set; }
+
+    /// <summary>
+    /// The dialog position.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public DialogPosition PopoverAnimationPosition { get; set; } = DialogPosition.TopCenter;
 
     /// <summary>
     /// User class names for the input, separated by space
@@ -90,21 +113,21 @@ public partial class MudExSelect<T>: IMudExSelect, IMudShadowSelectExtended
     /// </summary>
     [Parameter]
     [Category(CategoryTypes.FormComponent.Appearance)]
-    public RenderFragment<MudExListItem<T>> ItemTemplate { get; set; }
+    public RenderFragment<T> ItemTemplate { get; set; }
 
     /// <summary>
     /// Optional presentation template for selected items
     /// </summary>
     [Parameter]
     [Category(CategoryTypes.FormComponent.ListAppearance)]
-    public RenderFragment<MudExListItem<T>> ItemSelectedTemplate { get; set; }
+    public RenderFragment<T> ItemSelectedTemplate { get; set; }
 
     /// <summary>
     /// Optional presentation template for disabled items
     /// </summary>
     [Parameter]
     [Category(CategoryTypes.FormComponent.ListAppearance)]
-    public RenderFragment<MudExListItem<T>> ItemDisabledTemplate { get; set; }
+    public RenderFragment<T> ItemDisabledTemplate { get; set; }
 
     /// <summary>
     /// Function to be invoked when checking whether an item should be disabled or not. Works both with renderfragment and ItemCollection approach.
@@ -343,7 +366,7 @@ public partial class MudExSelect<T>: IMudExSelect, IMudShadowSelectExtended
     /// </summary>
     [Parameter]
     [Category(CategoryTypes.List.Behavior)]
-    public bool SearchBox { get; set; }
+    public bool SearchBox { get; set; } = true;
 
     /// <summary>
     /// If true, the search-box will be focused when the dropdown is opened.
@@ -531,12 +554,18 @@ public partial class MudExSelect<T>: IMudExSelect, IMudShadowSelectExtended
                 SetValueAsync(_selectedValues.LastOrDefault(), false).AndForget();
                 UpdateTextPropertyAsync(false).AndForget();
             }
-
+            OnBeforeSelectedChanged(SelectedValues);
             SelectedValuesChanged.InvokeAsync(new HashSet<T>(SelectedValues, _comparer)).AndForget();
             _selectedValuesSetterStarted = false;
             //Console.WriteLine("SelectedValues setter ended");
         }
     }
+
+    /// <summary>
+    /// is called before the selected items change.
+    /// </summary>
+    protected virtual void OnBeforeSelectedChanged(IEnumerable<T> selected)
+    { }
 
     private MudExListItem<T> _selectedListItem;
     private HashSet<MudExListItem<T>> _selectedListItems;

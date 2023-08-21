@@ -10,7 +10,14 @@
         }
         else
         {
-            @DisplayString
+            @if (!string.IsNullOrWhiteSpace(MudExSelect?.MudExList?.SearchField?.Text))
+            {
+                <MudHighlighter Text="@DisplayString" HighlightedText="@MudExSelect?.MudExList?.SearchField?.Text" />
+            }
+            else
+            {
+                @DisplayString
+            }
         }
     </MudExListItem>
 }
