@@ -21,7 +21,6 @@ public partial class MudExList<T> : IDisposable
     private List<MudExList<T>> _childLists = new();
     internal MudExListItem<T> _lastActivatedItem;
     internal bool? _allSelected = false;
-    private string _searchString;
 
     protected string Classname =>
     new CssBuilder("mud-list-extended")
@@ -35,6 +34,8 @@ public partial class MudExList<T> : IDisposable
         .AddStyle("overflow-y", "auto", MaxItems != null)
         .AddStyle(Style)
         .Build();
+
+    [Parameter] public string SearchString { get; set; }
 
     [CascadingParameter] protected MudExSelect<T> MudExSelect { get; set; }
     [CascadingParameter] protected MudAutocomplete<T> MudAutocomplete { get; set; }
@@ -805,7 +806,7 @@ public partial class MudExList<T> : IDisposable
         switch (obj.Key)
         {
             case " ":
-                _searchString = _searchString + " ";
+                SearchString = SearchString + " ";
                 await _searchField.BlurAsync();
                 await _searchField.FocusAsync();
                 StateHasChanged();
@@ -1413,17 +1414,17 @@ public partial class MudExList<T> : IDisposable
 
     protected ICollection<T> GetSearchedItems()
     {
-        if (!SearchBox || ItemCollection == null || _searchString == null)
+        if (!SearchBox || ItemCollection == null || SearchString == null)
         {
             return ItemCollection;
         }
 
         if (SearchFunc != null)
         {
-            return ItemCollection.Where(x => SearchFunc.Invoke(x, _searchString)).ToList();
+            return ItemCollection.Where(x => SearchFunc.Invoke(x, SearchString)).ToList();
         }
 
-        return ItemCollection.Where(x => Converter.Set(x).Contains(_searchString, StringComparison.InvariantCultureIgnoreCase)).ToList();
+        return ItemCollection.Where(x => Converter.Set(x).Contains(SearchString, StringComparison.InvariantCultureIgnoreCase)).ToList();
     }
 
     public async Task ForceUpdate()

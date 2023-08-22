@@ -342,7 +342,7 @@ public partial class MudExThemeEdit<TTheme>
 
         //meta.Properties(theme => theme.Typography.Default.FontFamily)
         meta.Properties().Where(p => p.PropertyInfo.Name == nameof(MudTheme.Typography.Default.FontFamily))
-            .RenderWith<MudExFontSelect, string[], IEnumerable<string>>(edit => edit.Selected)
+            .RenderWith<MudExFontSelect, string[], IEnumerable<string>>(edit => edit.SelectedValues)
             .WithOrder(0);
 
         meta.AllProperties.IgnoreIf<ObjectEditPropertyMeta>(IsNotAllowed);

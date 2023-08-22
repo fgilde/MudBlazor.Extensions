@@ -172,10 +172,36 @@
 
     public class ProgramingSkill : IEquatable<ProgramingSkill>
     {
-        public bool Equals(ProgramingSkill? other) => Name == other?.Name;
-        public override int GetHashCode() => Name.GetHashCode();
-        public static bool operator ==(ProgramingSkill? left, ProgramingSkill? right) => Equals(left, right);
-        public static bool operator !=(ProgramingSkill? left, ProgramingSkill? right) => !Equals(left, right);
+        public bool Equals(ProgramingSkill? other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Name == other.Name;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((ProgramingSkill) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
+
+        public static bool operator ==(ProgramingSkill? left, ProgramingSkill? right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(ProgramingSkill? left, ProgramingSkill? right)
+        {
+            return !Equals(left, right);
+        }
+
 
         public string Name { get; set; }
         public override string ToString() => Name;

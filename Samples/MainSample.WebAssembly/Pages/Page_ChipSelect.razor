@@ -34,8 +34,7 @@
     {
         return meta =>
         {
-            meta.Properties(m => m.AvailableItemsLoadFunc, m => m.ItemToStringFunc, m => m.Selected, m => m.Value, m => m.ItemTemplate, m => m.Localizer, m => m.StyleForValidationComponent).Ignore();
-            meta.GroupByTypes();
+            meta.Properties(m => m.AvailableItemsLoadFunc, m => m.SelectedValues, m => m.Value, m => m.ItemTemplate, m => m.Localizer).Ignore();
             meta.IgnoreAllReadOnlyFields();
         };
     }

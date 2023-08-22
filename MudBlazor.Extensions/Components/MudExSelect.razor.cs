@@ -60,6 +60,46 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended
 
 
     /// <summary>
+    /// Search string for filtering items
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string SearchString { get; set; }
+
+    /// <summary>
+    /// Set to true to highlight matched text in the dropdown list
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool HighlightSearch { get; set; } = true;
+
+
+    /// <summary>
+    /// Gets or Sets the function that is used to asynchronously load available items.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public Func<CancellationToken, Task<IList<T>>> AvailableItemsLoadFunc { get; set; }
+
+    /// <summary>
+    /// Gets or Sets a value indicating whether to update items on state change. That means if true the items load func will executed then
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool UpdateItemsOnStateChange { get; set; }
+    /// <inheritdoc />
+    protected override async Task OnParametersSetAsync()
+    {
+        if (ChildContent == null && (ItemCollection == null || !ItemCollection.Any() || UpdateItemsOnStateChange))
+            ItemCollection = await GetAvailableItemsAsync();
+        await base.OnParametersSetAsync();
+    }
+    /// <summary>
+    /// returns all available items
+    /// </summary>
+    protected virtual Task<IList<T>> GetAvailableItemsAsync(CancellationToken cancellation = default)
+        => AvailableItemsLoadFunc != null ? AvailableItemsLoadFunc(cancellation) : Task.FromResult(new List<T>(0) as IList<T>);
+
+
+
+
+    /// <summary>
     /// The animation type.
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
@@ -488,7 +528,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended
     /// </summary>
     [Parameter]
     [Category(CategoryTypes.FormComponent.ListBehavior)]
-    public Func<T, string> ToStringFunc
+    public virtual Func<T, string> ToStringFunc
     {
         get => _toStringFunc;
         set

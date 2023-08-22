@@ -46,7 +46,7 @@
     private RenderFragment SearchBoxRender => @<MudExListSubheader T="T" Style="position: sticky; top: -8px; padding-top: 8px; margin-top: -8px; background-color: var(--mud-palette-background); z-index: 10">
                                                   <div @onkeydown:stopPropagation class="mud-list-item-extended">
                                                       @SelectAllRender(Enums.SelectAllPosition.NextToSearchBox)
-                                                      <MudTextField @ref="_searchField" @bind-Value="@_searchString" Class="@ClassSearchBox" Placeholder="@SearchBoxPlaceholder" OnKeyDown="SearchBoxHandleKeyDown" OnKeyUp="@(() => UpdateSelectedStyles())" OnClearButtonClick="@(() => UpdateSelectedStyles())" Immediate="true" Variant="SearchBoxVariant" Margin="Margin.Dense"
+                                                      <MudTextField @ref="_searchField" @bind-Value="@SearchString" Class="@ClassSearchBox" Placeholder="@SearchBoxPlaceholder" OnKeyDown="SearchBoxHandleKeyDown" OnKeyUp="@(() => UpdateSelectedStyles())" OnClearButtonClick="@(() => UpdateSelectedStyles())" Immediate="true" Variant="SearchBoxVariant" Margin="Margin.Dense"
                                                                     Adornment="SearchBoxAdornment" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color" AutoFocus="@SearchBoxAutoFocus" Clearable="@SearchBoxClearable" />
                                                   </div>
                                                   @SelectAllRender(Enums.SelectAllPosition.AfterSearchBox)

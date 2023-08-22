@@ -1,16 +1,19 @@
 ﻿@page "/test"
-@using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Enums
 
 <DemoComponent PageType="@GetType()">
     <SplitContainer>
         <Left>
+            <MudGrid>
+            <MudItem xs="12" sm="8" Class="d-flex align-start justify-center">
             <MudExSelect @ref="component"
                 @bind-SelectedValues="@_selected"
-                         ValuePresenter="ValuePresenter.Chip"
+                        
                 MultiSelection="true"
                          Clearable="true"
                 ItemCollection="_states" SearchBox="true" T="string" Label="Standard Search" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" HelperText="Search with 'Contains' logic" />
+            </MudItem>
+            </MudGrid>
         </Left>
         <Right>
             <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>

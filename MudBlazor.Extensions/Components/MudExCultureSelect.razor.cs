@@ -29,7 +29,7 @@ public partial class MudExCultureSelect
     protected override void OnInitialized()
     {
         ViewMode = ViewMode.NoChips;
-        MultiSelect = false;
+        MultiSelection = false;
         base.OnInitialized();
     }
 }
