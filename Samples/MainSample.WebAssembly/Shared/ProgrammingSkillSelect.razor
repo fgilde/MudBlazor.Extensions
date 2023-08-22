@@ -4,8 +4,8 @@
 @Inherited()
 
 @code {
-    //public override string Label { get; set; } = "Programming skills";
-    //public override string HelperText { get; set; } = null;
+
+    public override Func<MainSample.WebAssembly.Pages.Page_ObjectEditConfigured.ProgramingSkill, string> ToStringFunc { get; set; } = ItemNameRender;
     
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
     
@@ -25,5 +25,5 @@
         });
     }
 
-    public override string ItemNameRender(Page_ObjectEditConfigured.ProgramingSkill item) => "d";
+    private static string ItemNameRender(Page_ObjectEditConfigured.ProgramingSkill item) => $"XX-{item.Name}";
 }
