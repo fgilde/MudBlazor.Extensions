@@ -24,8 +24,6 @@ public partial class MudExChipSelect<T>
         ValuePresenter = ViewMode == ViewMode.ChipsOnly ? Enums.ValuePresenter.Chip : Enums.ValuePresenter.Text;
         ChipCloseable = true;
         Clearable = true;
-        //if(ToStringFunc == null)
-        //    ToStringFunc = ItemNameRender;
         AnchorOrigin = Origin.BottomCenter;
     }
      

@@ -558,46 +558,23 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended
     [Category(CategoryTypes.FormComponent.Data)]
     public IEnumerable<T> SelectedValues
     {
-        get
-        {
-            if (_selectedValues == null)
-                _selectedValues = new HashSet<T>(_comparer);
-            return _selectedValues;
-        }
+        get => _selectedValues ??= new HashSet<T>();
         set
         {
-            var set = value ?? new HashSet<T>(_comparer);
-            if (value == null && _selectedValues == null)
-            {
+            if (_selectedValuesSetterStarted || (value is null && _selectedValues is null))            
                 return;
-            }
-            if (value != null && _selectedValues != null && _selectedValues.SetEquals(value))
+            
+            var set = (value ?? new HashSet<T>(_comparer)).ToList();
+            if (SelectedValues.Count() != set.Count || !SelectedValues.All(x => set.Contains(x, _comparer)))
             {
-                return;
+                _selectedValuesSetterStarted = true;
+                SelectionChangedFromOutside?.Invoke(new HashSet<T>(_selectedValues, _comparer));
+                _selectedValues = new HashSet<T>(set);
+                OnBeforeSelectedChanged(_selectedValues);
+                SelectedValuesChanged.InvokeAsync(new HashSet<T>(SelectedValues));
+                ValueChanged.InvokeAsync(Value);
+                _selectedValuesSetterStarted = false;
             }
-            if (SelectedValues.Count() == set.Count() && _selectedValues.All(x => set.Contains(x, _comparer)))
-                return;
-
-            if (_selectedValuesSetterStarted)
-            {
-                return;
-            }
-            _selectedValuesSetterStarted = true;
-            _selectedValues = new HashSet<T>(set, _comparer);
-            SelectionChangedFromOutside?.Invoke(new HashSet<T>(_selectedValues, _comparer));
-            if (!MultiSelection)
-            {
-                SetValueAsync(_selectedValues.FirstOrDefault()).AndForget();
-            }
-            else
-            {
-                SetValueAsync(_selectedValues.LastOrDefault(), false).AndForget();
-                UpdateTextPropertyAsync(false).AndForget();
-            }
-            OnBeforeSelectedChanged(SelectedValues);
-            SelectedValuesChanged.InvokeAsync(new HashSet<T>(SelectedValues, _comparer)).AndForget();
-            _selectedValuesSetterStarted = false;
-            //Console.WriteLine("SelectedValues setter ended");
         }
     }
 

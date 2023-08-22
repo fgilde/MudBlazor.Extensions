@@ -8,7 +8,15 @@
 @inherits MudExObjectEdit<T>
 @typeparam T
 
-@Inherited()
+@if (rendered)
+{
+    @Inherited()
+}
+else
+{
+    <MudProgressCircular Style="margin-top: 70%; margin-left: 50%;" Color="Color.Primary" Indeterminate="true" />
+}
+
 
 @code {
 
@@ -17,7 +25,7 @@
 
     [Inject] private IJsApiService JsApiService { get; set; }
 
-
+    private bool rendered;
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
     protected override Task OnInitializedAsync()
@@ -31,6 +39,15 @@
         return base.OnInitializedAsync();
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (!rendered)
+        {
+            rendered = true;
+            Task.Delay(500).ContinueWith(_ => InvokeAsync(StateHasChanged));
+        }
+    }
 
 
     protected override ObjectEditMeta<T> ConfigureMetaBase(ObjectEditMeta<T> meta)
@@ -38,17 +55,17 @@
         meta.IgnoreAllObsoleteFields();
         meta.GroupByCategoryAttribute();
         meta.Properties<string>().Where(p => p?.Value?.ToString()?.StartsWith("<g") == true || p?.Value?.ToString()?.StartsWith("<path") == true)
-            .RenderWith<MudExIconPicker, string, string>(edit => edit.Value);
+        .RenderWith<MudExIconPicker, string, string>(edit => edit.Value);
         return base.ConfigureMetaBase(meta);
     }
 
-    
+
     RenderFragment RenderShowCodeButton()
     {
-        return 
+        return
     @<div>
-                    <MudButton StartIcon="@Icons.Material.Filled.Code" OnClick="@ShowCode">Show Markup</MudButton>
-               </div>;
+        <MudButton StartIcon="@Icons.Material.Filled.Code" OnClick="@ShowCode">Show Markup</MudButton>
+    </div>;
     }
 
     private async Task ShowCode()
@@ -64,13 +81,13 @@
                 dialog.Icon = Icons.Material.Filled.Code;
                 dialog.Buttons = MudExDialogResultAction.Ok();
 
-            },new DialogOptionsEx()
-            {   
-                DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass),
-                DragMode = MudDialogDragMode.Simple,
-                CloseButton = true,
-                Resizeable = true,
-            });
+            }, new DialogOptionsEx()
+                {
+                    DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass),
+                    DragMode = MudDialogDragMode.Simple,
+                    CloseButton = true,
+                    Resizeable = true,
+                });
     }
 
 }

@@ -8,7 +8,7 @@
             <MudItem xs="12" sm="8" Class="d-flex align-start justify-center">
             <MudExSelect @ref="component"
                 @bind-SelectedValues="@_selected"
-                        
+                                 ValuePresenter="ValuePresenter.Chip"
                 MultiSelection="true"
                          Clearable="true"
                 ItemCollection="_states" SearchBox="true" T="string" Label="Standard Search" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" HelperText="Search with 'Contains' logic" />
@@ -68,7 +68,7 @@
     bool _initiallyExpanded = false;
     string _selectedValue;
     IEnumerable<string> _selectedValues;
-    private IEnumerable<string> _selected = new string[] { "Alabama", "Alaska" };
+    private IEnumerable<string> _selected = new[] { "Alabama", "Alaska", "North Dakota", "Puerto-Rico" };
     private string[] _states =
     {
         "Alabama", "Alaska", "American Samoa", "Arizona",
@@ -81,7 +81,7 @@
         "Missouri", "Montana", "Nebraska", "Nevada",
         "New Hampshire", "New Jersey", "New Mexico", "New York",
         "North Carolina", "North Dakota", "Northern Mariana Islands", "Ohio",
-        "Oklahoma", "Oregon", "Palau", "Pennsylvania", "Puerto Rico",
+        "Oklahoma", "Oregon", "Palau", "Pennsylvania", "Puerto-Rico",
         "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
         "Texas", "Utah", "Vermont", "Virgin Island", "Virginia",
         "Washington", "West Virginia", "Wisconsin", "Wyoming",
