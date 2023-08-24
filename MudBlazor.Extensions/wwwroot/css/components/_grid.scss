@@ -1,0 +1,46 @@
+.mud-page {
+    display: grid;
+    box-sizing: border-box;
+    width: 100%;
+
+    &.mud-page-height-full {
+        min-height: 100vh;
+    }
+
+    &.mud-page-height-full-without-appbar {
+        min-height: calc(100vh - var(--mud-appbar-height));
+    }
+
+    @for $i from 2 through 12 {
+        &.mud-page-column-#{$i} {
+            grid-template-columns: repeat($i, 100% / $i);
+        }
+
+        &.mud-page-row-#{$i} {
+            grid-template-rows: repeat($i, 100% / $i);
+        }
+    }
+}
+
+.mud-section {
+    display: inline-grid;
+    overflow: auto;
+
+    @for $i from 1 through 12 {
+        &.mud-section-col-start-#{$i} {
+            grid-column-start: $i;
+        }
+
+        &.mud-section-col-end-#{$i} {
+            grid-column-end: $i;
+        }
+
+        &.mud-section-row-start-#{$i} {
+            grid-row-start: $i;
+        }
+
+        &.mud-section-row-end-#{$i} {
+            grid-row-end: $i;
+        }
+    }
+}

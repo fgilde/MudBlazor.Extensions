@@ -6,12 +6,12 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExListSubheader<T>
 {
     protected string Classname =>
-        new CssBuilder("mud-list-subheader-extended")
-            .AddClass("mud-list-subheader-gutters-extended", !DisableGutters)
-            .AddClass("mud-list-subheader-inset-extended", Inset)
-            .AddClass("mud-list-subheader-secondary-background-extended", SecondaryBackground)
-            .AddClass("mud-list-subheader-sticky-extended", Sticky)
-            .AddClass("mud-list-subheader-sticky-dense-extended", Sticky && (MudListExtended != null && MudListExtended.DisablePadding))
+        new CssBuilder("mud-ex-list-subheader")
+            .AddClass("mud-ex-list-subheader-gutters", !DisableGutters)
+            .AddClass("mud-ex-list-subheader-inset", Inset)
+            .AddClass("mud-ex-list-subheader-secondary-background", SecondaryBackground)
+            .AddClass("mud-ex-list-subheader-sticky", Sticky)
+            .AddClass("mud-ex-list-subheader-sticky-dense", Sticky && (MudListExtended != null && MudListExtended.DisablePadding))
             .AddClass(Class)
             .Build();
 

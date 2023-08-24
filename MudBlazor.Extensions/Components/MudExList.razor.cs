@@ -23,8 +23,8 @@ public partial class MudExList<T> : IDisposable
     internal bool? _allSelected = false;
 
     protected string Classname =>
-    new CssBuilder("mud-list-extended")
-       .AddClass("mud-list-padding-extended", !DisablePadding)
+    new CssBuilder("mud-ex-list")
+       .AddClass("mud-ex-list-padding", !DisablePadding)
       .AddClass(Class)
     .Build();
 
@@ -691,7 +691,7 @@ public partial class MudExList<T> : IDisposable
             await _keyInterceptor.Connect(_elementId, new KeyInterceptorOptions()
             {
                 //EnableLogging = true,
-                TargetClass = "mud-list-item-extended",
+                TargetClass = "mud-ex-list-item",
                 Keys = {
                         new KeyOptions { Key=" ", PreventDown = "key+none" }, //prevent scrolling page, toggle open/close
                         new KeyOptions { Key="ArrowUp", PreventDown = "key+none" }, // prevent scrolling page, instead hilight previous item

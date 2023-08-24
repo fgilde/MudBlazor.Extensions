@@ -45,13 +45,13 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended
     internal event Action<ICollection<T>> SelectionChangedFromOutside;
 
     protected string Classname =>
-        new CssBuilder("mud-select-extended")
+        new CssBuilder("mud-ex-select")
         .AddClass(Class)
         .Build();
 
     protected string InputClassname =>
-        new CssBuilder("mud-select-input-extended")
-        .AddClass("mud-select-extended-nowrap", NoWrap)
+        new CssBuilder("mud-ex-select-input")
+        .AddClass("mud-ex-select-nowrap", NoWrap)
         .AddClass(InputClass)
         .Build();
 

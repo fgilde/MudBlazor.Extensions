@@ -18,14 +18,14 @@ namespace MudBlazor.Extensions.Components
         protected string AdornmentClassname => MudExCss.GetAdornmentClassname(this);
 
         protected string AdornmentStartClassname =>
-            new CssBuilder("mud-input-adornment mud-input-adornment-start-extended")
+            new CssBuilder("mud-input-adornment mud-ex-input-adornment-start")
                 .AddClass($"mud-input-{Variant.ToDescriptionString()}-extended")
                 .AddClass($"mud-text", !string.IsNullOrEmpty(AdornmentText))
                 .AddClass($"mud-input-root-filled-shrink", Variant == Variant.Filled)
                 .Build();
 
         protected string AdornmentEndClassname =>
-            new CssBuilder("mud-input-adornment mud-input-adornment-end-extended")
+            new CssBuilder("mud-input-adornment mud-ex-input-adornment-end")
                 .AddClass($"mud-input-{Variant.ToDescriptionString()}-extended")
                 .AddClass($"mud-text", !string.IsNullOrEmpty(AdornmentText))
                 .AddClass($"mud-input-root-filled-shrink", Variant == Variant.Filled)

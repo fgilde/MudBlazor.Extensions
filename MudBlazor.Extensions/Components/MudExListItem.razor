@@ -63,7 +63,7 @@
         
         @if (!string.IsNullOrWhiteSpace(Avatar))
         {
-        <div class="mud-list-item-avatar-extended">
+        <div class="mud-ex-list-item-avatar">
             <MudAvatar Class="@AvatarClass">
                 <MudIcon Icon="@Avatar" Color="@IconColor" Size="@IconSize" />
             </MudAvatar>
@@ -71,14 +71,14 @@
         }
         else if (!string.IsNullOrWhiteSpace(Icon))
         {
-        <div class="mud-list-item-icon-extended">
+        <div class="mud-ex-list-item-icon">
             <MudIcon Icon="@Icon" Color="@IconColor" Size="@IconSize" />
         </div>
         }
         
     </div>;
 
-    RenderFragment RenderListItemText => @<div class="mud-list-item-text-extended @(Inset ? "mud-list-item-text-inset-extended" : "")">
+    RenderFragment RenderListItemText => @<div class="mud-ex-list-item-text @(Inset ? "mud-ex-list-item-text-inset" : "")">
             <MudText Typo="@_textTypo">
                 @if (ChildContent != null)
                 {

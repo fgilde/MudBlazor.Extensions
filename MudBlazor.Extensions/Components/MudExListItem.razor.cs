@@ -17,23 +17,23 @@ public partial class MudExListItem<T>
     [CascadingParameter] protected internal MudExListItem<T> ParentListItem { get; set; }
 
     protected string Classname =>
-    new CssBuilder("mud-list-item-extended")
-      .AddClass("mud-list-item-dense-extended", Dense == true || MudExList?.Dense == true)
-      .AddClass("mud-list-item-gutters-extended", !DisableGutters && !(MudExList?.DisableGutters == true))
-      .AddClass("mud-list-item-clickable-extended", MudExList?.Clickable)
+    new CssBuilder("mud-ex-list-item")
+      .AddClass("mud-ex-list-item-dense", Dense == true || MudExList?.Dense == true)
+      .AddClass("mud-ex-list-item-gutters", !DisableGutters && !(MudExList?.DisableGutters == true))
+      .AddClass("mud-ex-list-item-clickable", MudExList?.Clickable)
       .AddClass("mud-ripple", MudExList?.Clickable == true && !DisableRipple && !Disabled && !IsFunctional)
       .AddClass($"mud-selected-item mud-{MudExList?.Color.ToDescriptionString()}-text mud-{MudExList?.Color.ToDescriptionString()}-hover", _selected && !Disabled && NestedList == null && !MudExList.DisableSelectedItemStyle)
-      .AddClass("mud-list-item-hilight-extended", _active && !Disabled && NestedList == null && !IsFunctional)
-      .AddClass("mud-list-item-disabled-extended", Disabled)
-      .AddClass("mud-list-item-nested-background-extended", MudExList != null && MudExList.SecondaryBackgroundForNestedItemHeader && NestedList != null)
+      .AddClass("mud-ex-list-item-hilight", _active && !Disabled && NestedList == null && !IsFunctional)
+      .AddClass("mud-ex-list-item-disabled", Disabled)
+      .AddClass("mud-ex-list-item-nested-background", MudExList != null && MudExList.SecondaryBackgroundForNestedItemHeader && NestedList != null)
       .AddClass("mud-list-item-functional", IsFunctional)
       .AddClass(Class)
     .Build();
 
     protected string MultiSelectClassName =>
     new CssBuilder()
-        .AddClass("mud-list-item-multiselect-extended")
-        .AddClass("mud-list-item-multiselect-checkbox-extended", MudExList?.MultiSelectionComponent == MultiSelectionComponent.CheckBox || OverrideMultiSelectionComponent == MultiSelectionComponent.CheckBox)
+        .AddClass("mud-ex-list-item-multiselect")
+        .AddClass("mud-ex-list-item-multiselect-checkbox", MudExList?.MultiSelectionComponent == MultiSelectionComponent.CheckBox || OverrideMultiSelectionComponent == MultiSelectionComponent.CheckBox)
         .Build();
 
     protected internal string ItemId { get; } = "listitem_" + Guid.NewGuid().ToString().Substring(0, 8);
