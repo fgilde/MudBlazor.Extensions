@@ -4061,230 +4061,230 @@
   fill: currentColor;
 }
 
-.mud-page {
+.mud-ex-grid {
   display: grid;
   box-sizing: border-box;
   width: 100%;
 }
-.mud-page.mud-page-height-full {
+.mud-ex-grid.mud-ex-grid-height-full {
   min-height: 100vh;
 }
-.mud-page.mud-page-height-full-without-appbar {
+.mud-ex-grid.mud-ex-grid-height-full-without-appbar {
   min-height: calc(100vh - var(--mud-appbar-height));
 }
-.mud-page.mud-page-column-2 {
+.mud-ex-grid.mud-ex-grid-column-2 {
   grid-template-columns: repeat(2, 50%);
 }
-.mud-page.mud-page-row-2 {
+.mud-ex-grid.mud-ex-grid-row-2 {
   grid-template-rows: repeat(2, 50%);
 }
-.mud-page.mud-page-column-3 {
+.mud-ex-grid.mud-ex-grid-column-3 {
   grid-template-columns: repeat(3, 33.3333333333%);
 }
-.mud-page.mud-page-row-3 {
+.mud-ex-grid.mud-ex-grid-row-3 {
   grid-template-rows: repeat(3, 33.3333333333%);
 }
-.mud-page.mud-page-column-4 {
+.mud-ex-grid.mud-ex-grid-column-4 {
   grid-template-columns: repeat(4, 25%);
 }
-.mud-page.mud-page-row-4 {
+.mud-ex-grid.mud-ex-grid-row-4 {
   grid-template-rows: repeat(4, 25%);
 }
-.mud-page.mud-page-column-5 {
+.mud-ex-grid.mud-ex-grid-column-5 {
   grid-template-columns: repeat(5, 20%);
 }
-.mud-page.mud-page-row-5 {
+.mud-ex-grid.mud-ex-grid-row-5 {
   grid-template-rows: repeat(5, 20%);
 }
-.mud-page.mud-page-column-6 {
+.mud-ex-grid.mud-ex-grid-column-6 {
   grid-template-columns: repeat(6, 16.6666666667%);
 }
-.mud-page.mud-page-row-6 {
+.mud-ex-grid.mud-ex-grid-row-6 {
   grid-template-rows: repeat(6, 16.6666666667%);
 }
-.mud-page.mud-page-column-7 {
+.mud-ex-grid.mud-ex-grid-column-7 {
   grid-template-columns: repeat(7, 14.2857142857%);
 }
-.mud-page.mud-page-row-7 {
+.mud-ex-grid.mud-ex-grid-row-7 {
   grid-template-rows: repeat(7, 14.2857142857%);
 }
-.mud-page.mud-page-column-8 {
+.mud-ex-grid.mud-ex-grid-column-8 {
   grid-template-columns: repeat(8, 12.5%);
 }
-.mud-page.mud-page-row-8 {
+.mud-ex-grid.mud-ex-grid-row-8 {
   grid-template-rows: repeat(8, 12.5%);
 }
-.mud-page.mud-page-column-9 {
+.mud-ex-grid.mud-ex-grid-column-9 {
   grid-template-columns: repeat(9, 11.1111111111%);
 }
-.mud-page.mud-page-row-9 {
+.mud-ex-grid.mud-ex-grid-row-9 {
   grid-template-rows: repeat(9, 11.1111111111%);
 }
-.mud-page.mud-page-column-10 {
+.mud-ex-grid.mud-ex-grid-column-10 {
   grid-template-columns: repeat(10, 10%);
 }
-.mud-page.mud-page-row-10 {
+.mud-ex-grid.mud-ex-grid-row-10 {
   grid-template-rows: repeat(10, 10%);
 }
-.mud-page.mud-page-column-11 {
+.mud-ex-grid.mud-ex-grid-column-11 {
   grid-template-columns: repeat(11, 9.0909090909%);
 }
-.mud-page.mud-page-row-11 {
+.mud-ex-grid.mud-ex-grid-row-11 {
   grid-template-rows: repeat(11, 9.0909090909%);
 }
-.mud-page.mud-page-column-12 {
+.mud-ex-grid.mud-ex-grid-column-12 {
   grid-template-columns: repeat(12, 8.3333333333%);
 }
-.mud-page.mud-page-row-12 {
+.mud-ex-grid.mud-ex-grid-row-12 {
   grid-template-rows: repeat(12, 8.3333333333%);
 }
 
-.mud-section {
+.mud-ex-grid-section {
   display: inline-grid;
   overflow: auto;
 }
-.mud-section.mud-section-col-start-1 {
+.mud-ex-grid-section.mud-ex-grid-section-col-start-1 {
   grid-column-start: 1;
 }
-.mud-section.mud-section-col-end-1 {
+.mud-ex-grid-section.mud-ex-grid-section-col-end-1 {
   grid-column-end: 1;
 }
-.mud-section.mud-section-row-start-1 {
+.mud-ex-grid-section.mud-ex-grid-section-row-start-1 {
   grid-row-start: 1;
 }
-.mud-section.mud-section-row-end-1 {
+.mud-ex-grid-section.mud-ex-grid-section-row-end-1 {
   grid-row-end: 1;
 }
-.mud-section.mud-section-col-start-2 {
+.mud-ex-grid-section.mud-ex-grid-section-col-start-2 {
   grid-column-start: 2;
 }
-.mud-section.mud-section-col-end-2 {
+.mud-ex-grid-section.mud-ex-grid-section-col-end-2 {
   grid-column-end: 2;
 }
-.mud-section.mud-section-row-start-2 {
+.mud-ex-grid-section.mud-ex-grid-section-row-start-2 {
   grid-row-start: 2;
 }
-.mud-section.mud-section-row-end-2 {
+.mud-ex-grid-section.mud-ex-grid-section-row-end-2 {
   grid-row-end: 2;
 }
-.mud-section.mud-section-col-start-3 {
+.mud-ex-grid-section.mud-ex-grid-section-col-start-3 {
   grid-column-start: 3;
 }
-.mud-section.mud-section-col-end-3 {
+.mud-ex-grid-section.mud-ex-grid-section-col-end-3 {
   grid-column-end: 3;
 }
-.mud-section.mud-section-row-start-3 {
+.mud-ex-grid-section.mud-ex-grid-section-row-start-3 {
   grid-row-start: 3;
 }
-.mud-section.mud-section-row-end-3 {
+.mud-ex-grid-section.mud-ex-grid-section-row-end-3 {
   grid-row-end: 3;
 }
-.mud-section.mud-section-col-start-4 {
+.mud-ex-grid-section.mud-ex-grid-section-col-start-4 {
   grid-column-start: 4;
 }
-.mud-section.mud-section-col-end-4 {
+.mud-ex-grid-section.mud-ex-grid-section-col-end-4 {
   grid-column-end: 4;
 }
-.mud-section.mud-section-row-start-4 {
+.mud-ex-grid-section.mud-ex-grid-section-row-start-4 {
   grid-row-start: 4;
 }
-.mud-section.mud-section-row-end-4 {
+.mud-ex-grid-section.mud-ex-grid-section-row-end-4 {
   grid-row-end: 4;
 }
-.mud-section.mud-section-col-start-5 {
+.mud-ex-grid-section.mud-ex-grid-section-col-start-5 {
   grid-column-start: 5;
 }
-.mud-section.mud-section-col-end-5 {
+.mud-ex-grid-section.mud-ex-grid-section-col-end-5 {
   grid-column-end: 5;
 }
-.mud-section.mud-section-row-start-5 {
+.mud-ex-grid-section.mud-ex-grid-section-row-start-5 {
   grid-row-start: 5;
 }
-.mud-section.mud-section-row-end-5 {
+.mud-ex-grid-section.mud-ex-grid-section-row-end-5 {
   grid-row-end: 5;
 }
-.mud-section.mud-section-col-start-6 {
+.mud-ex-grid-section.mud-ex-grid-section-col-start-6 {
   grid-column-start: 6;
 }
-.mud-section.mud-section-col-end-6 {
+.mud-ex-grid-section.mud-ex-grid-section-col-end-6 {
   grid-column-end: 6;
 }
-.mud-section.mud-section-row-start-6 {
+.mud-ex-grid-section.mud-ex-grid-section-row-start-6 {
   grid-row-start: 6;
 }
-.mud-section.mud-section-row-end-6 {
+.mud-ex-grid-section.mud-ex-grid-section-row-end-6 {
   grid-row-end: 6;
 }
-.mud-section.mud-section-col-start-7 {
+.mud-ex-grid-section.mud-ex-grid-section-col-start-7 {
   grid-column-start: 7;
 }
-.mud-section.mud-section-col-end-7 {
+.mud-ex-grid-section.mud-ex-grid-section-col-end-7 {
   grid-column-end: 7;
 }
-.mud-section.mud-section-row-start-7 {
+.mud-ex-grid-section.mud-ex-grid-section-row-start-7 {
   grid-row-start: 7;
 }
-.mud-section.mud-section-row-end-7 {
+.mud-ex-grid-section.mud-ex-grid-section-row-end-7 {
   grid-row-end: 7;
 }
-.mud-section.mud-section-col-start-8 {
+.mud-ex-grid-section.mud-ex-grid-section-col-start-8 {
   grid-column-start: 8;
 }
-.mud-section.mud-section-col-end-8 {
+.mud-ex-grid-section.mud-ex-grid-section-col-end-8 {
   grid-column-end: 8;
 }
-.mud-section.mud-section-row-start-8 {
+.mud-ex-grid-section.mud-ex-grid-section-row-start-8 {
   grid-row-start: 8;
 }
-.mud-section.mud-section-row-end-8 {
+.mud-ex-grid-section.mud-ex-grid-section-row-end-8 {
   grid-row-end: 8;
 }
-.mud-section.mud-section-col-start-9 {
+.mud-ex-grid-section.mud-ex-grid-section-col-start-9 {
   grid-column-start: 9;
 }
-.mud-section.mud-section-col-end-9 {
+.mud-ex-grid-section.mud-ex-grid-section-col-end-9 {
   grid-column-end: 9;
 }
-.mud-section.mud-section-row-start-9 {
+.mud-ex-grid-section.mud-ex-grid-section-row-start-9 {
   grid-row-start: 9;
 }
-.mud-section.mud-section-row-end-9 {
+.mud-ex-grid-section.mud-ex-grid-section-row-end-9 {
   grid-row-end: 9;
 }
-.mud-section.mud-section-col-start-10 {
+.mud-ex-grid-section.mud-ex-grid-section-col-start-10 {
   grid-column-start: 10;
 }
-.mud-section.mud-section-col-end-10 {
+.mud-ex-grid-section.mud-ex-grid-section-col-end-10 {
   grid-column-end: 10;
 }
-.mud-section.mud-section-row-start-10 {
+.mud-ex-grid-section.mud-ex-grid-section-row-start-10 {
   grid-row-start: 10;
 }
-.mud-section.mud-section-row-end-10 {
+.mud-ex-grid-section.mud-ex-grid-section-row-end-10 {
   grid-row-end: 10;
 }
-.mud-section.mud-section-col-start-11 {
+.mud-ex-grid-section.mud-ex-grid-section-col-start-11 {
   grid-column-start: 11;
 }
-.mud-section.mud-section-col-end-11 {
+.mud-ex-grid-section.mud-ex-grid-section-col-end-11 {
   grid-column-end: 11;
 }
-.mud-section.mud-section-row-start-11 {
+.mud-ex-grid-section.mud-ex-grid-section-row-start-11 {
   grid-row-start: 11;
 }
-.mud-section.mud-section-row-end-11 {
+.mud-ex-grid-section.mud-ex-grid-section-row-end-11 {
   grid-row-end: 11;
 }
-.mud-section.mud-section-col-start-12 {
+.mud-ex-grid-section.mud-ex-grid-section-col-start-12 {
   grid-column-start: 12;
 }
-.mud-section.mud-section-col-end-12 {
+.mud-ex-grid-section.mud-ex-grid-section-col-end-12 {
   grid-column-end: 12;
 }
-.mud-section.mud-section-row-start-12 {
+.mud-ex-grid-section.mud-ex-grid-section-row-start-12 {
   grid-row-start: 12;
 }
-.mud-section.mud-section-row-end-12 {
+.mud-ex-grid-section.mud-ex-grid-section-row-end-12 {
   grid-row-end: 12;
 }
 
@@ -5326,12 +5326,12 @@
   animation: 44s -27s move infinite ease-in-out alternate;
 }
 .mud-ex-bg-dot::before {
-  text-shadow: 1.3132070627em 1.6051182366em 7px hsla(116.7631020136deg, 100%, 50%, 0.9), 0.7168633446em 1.8338911003em 7px hsla(101.0778703599deg, 100%, 50%, 0.9), 0.6737889865em 1.6017255418em 7px hsla(171.4352852739deg, 100%, 50%, 0.9), 2.2040107866em 1.8556627049em 7px hsla(261.4766086753deg, 100%, 50%, 0.9), 1.7755870933em 0.9265375171em 7px hsla(285.952725247deg, 100%, 50%, 0.9), 2.2553937497em 2.0802253434em 7px hsla(120.3078196669deg, 100%, 50%, 0.9), 0.3318770444em -0.4914687595em 7px hsla(356.2894419567deg, 100%, 50%, 0.9), 0.0207354373em 1.9678129009em 7px hsla(32.321301253deg, 100%, 50%, 0.9), 1.1938630336em 0.0751881777em 7px hsla(126.1266504535deg, 100%, 50%, 0.9), 1.7693865276em 0.4298828272em 7px hsla(202.1361639235deg, 100%, 50%, 0.9), 1.207175726em -0.1877958709em 7px hsla(2.8835049493deg, 100%, 50%, 0.9), 0.2551256466em -0.0070785017em 7px hsla(37.7298162509deg, 100%, 50%, 0.9), 0.4150547369em 2.0830833437em 7px hsla(355.6338972506deg, 100%, 50%, 0.9), 0.736026748em 1.5479360456em 7px hsla(177.0267703604deg, 100%, 50%, 0.9), 1.294662579em 1.4059173852em 7px hsla(124.4465757114deg, 100%, 50%, 0.9), 2.410329107em 2.3496315447em 7px hsla(209.8415973896deg, 100%, 50%, 0.9), -0.0135265669em -0.1643642334em 7px hsla(223.2939722273deg, 100%, 50%, 0.9), 0.5496988986em -0.3234263245em 7px hsla(208.0683419334deg, 100%, 50%, 0.9), 1.8684468293em 2.0275383791em 7px hsla(281.2509370479deg, 100%, 50%, 0.9), 0.5363069583em 1.5854765646em 7px hsla(339.6702759079deg, 100%, 50%, 0.9), 1.6273150304em -0.1856034861em 7px hsla(32.4090122265deg, 100%, 50%, 0.9), -0.3508133869em 1.7207062182em 7px hsla(256.7188609649deg, 100%, 50%, 0.9), 1.4186072322em 1.4306428528em 7px hsla(83.490285161deg, 100%, 50%, 0.9), 1.9000745724em 0.5772758748em 7px hsla(155.7743300703deg, 100%, 50%, 0.9), 0.2744265076em 1.1365439847em 7px hsla(356.7139808265deg, 100%, 50%, 0.9), 2.3973906653em 2.2613802718em 7px hsla(343.1695422017deg, 100%, 50%, 0.9), 0.9982577718em -0.4265090633em 7px hsla(316.1421317594deg, 100%, 50%, 0.9), 1.1244128068em 1.0834109522em 7px hsla(286.6032074527deg, 100%, 50%, 0.9), 0.0472362224em -0.1579046357em 7px hsla(200.6417973082deg, 100%, 50%, 0.9), 1.2470618578em 1.064003451em 7px hsla(74.7442880171deg, 100%, 50%, 0.9), 1.5773894802em 0.4543460008em 7px hsla(235.0643897061deg, 100%, 50%, 0.9), -0.1914762537em 0.4655369284em 7px hsla(37.9989763491deg, 100%, 50%, 0.9), -0.0710384501em 1.5792035669em 7px hsla(262.2113450527deg, 100%, 50%, 0.9), 0.3732669078em 0.0183178887em 7px hsla(15.3761568451deg, 100%, 50%, 0.9), 1.3354813081em 1.0394356545em 7px hsla(179.477993907deg, 100%, 50%, 0.9), -0.042299321em 1.7300099976em 7px hsla(39.56402154deg, 100%, 50%, 0.9), 1.9686835195em 2.0168898445em 7px hsla(28.0697289935deg, 100%, 50%, 0.9), 2.4329141073em 1.4136668299em 7px hsla(284.5503004992deg, 100%, 50%, 0.9), 2.150381402em 2.1235694767em 7px hsla(110.2774337062deg, 100%, 50%, 0.9), 0.9911844489em 1.9527928384em 7px hsla(22.1681198344deg, 100%, 50%, 0.9), 1.5352782427em -0.0181774337em 7px hsla(167.5861767029deg, 100%, 50%, 0.9);
+  text-shadow: 0.6284920714em 1.7488030611em 7px hsla(150.5072324379deg, 100%, 50%, 0.9), 2.1320768136em 2.2554782612em 7px hsla(349.9501124432deg, 100%, 50%, 0.9), 0.3264727595em 2.0989723405em 7px hsla(70.5846975175deg, 100%, 50%, 0.9), -0.2959575672em 0.1581093456em 7px hsla(191.7020972388deg, 100%, 50%, 0.9), -0.0279488822em 2.0988990635em 7px hsla(94.9920291836deg, 100%, 50%, 0.9), 1.1330619153em 0.5632053275em 7px hsla(101.035148054deg, 100%, 50%, 0.9), -0.4046989382em 0.2468716282em 7px hsla(146.943270546deg, 100%, 50%, 0.9), 2.2333275364em 1.4036328092em 7px hsla(187.0290103036deg, 100%, 50%, 0.9), 2.336321174em 2.2556674301em 7px hsla(302.2282996387deg, 100%, 50%, 0.9), 1.5768975797em 1.5814964189em 7px hsla(172.4015154715deg, 100%, 50%, 0.9), 1.4275828965em 0.4129626421em 7px hsla(17.3996786013deg, 100%, 50%, 0.9), 0.8103031568em 0.3991058532em 7px hsla(65.6912493123deg, 100%, 50%, 0.9), 1.0198018156em 1.8294339465em 7px hsla(319.0724364325deg, 100%, 50%, 0.9), 1.6537596862em 2.1679417061em 7px hsla(237.7831931618deg, 100%, 50%, 0.9), 0.669262944em 1.4049264458em 7px hsla(359.6523961968deg, 100%, 50%, 0.9), 0.6605529463em 1.640560567em 7px hsla(20.7750974322deg, 100%, 50%, 0.9), 1.990396175em 0.9402681449em 7px hsla(112.5722262584deg, 100%, 50%, 0.9), 0.0683082713em 0.7942688661em 7px hsla(225.9664962374deg, 100%, 50%, 0.9), 2.0485402676em 0.4558252659em 7px hsla(236.0637553215deg, 100%, 50%, 0.9), 0.9688096798em 1.4434666029em 7px hsla(184.5792113577deg, 100%, 50%, 0.9), 2.2995391308em 0.5903294767em 7px hsla(288.2818291777deg, 100%, 50%, 0.9), 1.3704931954em -0.4633823687em 7px hsla(126.1765524576deg, 100%, 50%, 0.9), -0.1274575217em 0.4187638873em 7px hsla(257.2783236808deg, 100%, 50%, 0.9), 1.0659317663em -0.0569430274em 7px hsla(37.4186066283deg, 100%, 50%, 0.9), 0.6025003361em 1.39901253em 7px hsla(342.3016717104deg, 100%, 50%, 0.9), -0.1499040247em 0.5265714133em 7px hsla(221.0809210494deg, 100%, 50%, 0.9), 1.4617048844em -0.2871527106em 7px hsla(201.5513231421deg, 100%, 50%, 0.9), 0.8513862838em 1.6310266096em 7px hsla(337.8860327098deg, 100%, 50%, 0.9), 0.2252244248em 2.3598818393em 7px hsla(319.4517016576deg, 100%, 50%, 0.9), 1.2581992762em 1.2555493874em 7px hsla(217.8163403686deg, 100%, 50%, 0.9), 1.7347227432em 1.1032019881em 7px hsla(94.65418873deg, 100%, 50%, 0.9), 1.5858872456em 1.8000690513em 7px hsla(113.7036529253deg, 100%, 50%, 0.9), 0.5395111314em -0.4525073594em 7px hsla(343.7967392592deg, 100%, 50%, 0.9), 1.1676289414em 1.2515550618em 7px hsla(236.7035594334deg, 100%, 50%, 0.9), 0.672857886em 2.0470700559em 7px hsla(194.1016909789deg, 100%, 50%, 0.9), 0.7674243145em -0.3998323921em 7px hsla(267.8838810605deg, 100%, 50%, 0.9), 2.3830926134em 0.8373123031em 7px hsla(269.903407612deg, 100%, 50%, 0.9), 0.840559035em 1.8691723453em 7px hsla(117.6324143114deg, 100%, 50%, 0.9), 1.8999534845em 2.313358105em 7px hsla(214.0045585612deg, 100%, 50%, 0.9), 1.0007055665em 0.9385907839em 7px hsla(221.0217220915deg, 100%, 50%, 0.9), 0.1095076184em 0.4551392691em 7px hsla(45.9105893661deg, 100%, 50%, 0.9);
   animation-duration: 44s;
   animation-delay: -27s;
 }
 .mud-ex-bg-dot::after {
-  text-shadow: 1.4734571916em 0.1574865635em 7px hsla(137.4869418053deg, 100%, 50%, 0.9), 0.2222389195em 1.2308533711em 7px hsla(300.7680480848deg, 100%, 50%, 0.9), 1.2634676027em 0.6464607869em 7px hsla(254.3226738055deg, 100%, 50%, 0.9), 1.4917227584em 1.8596786844em 7px hsla(138.9780382495deg, 100%, 50%, 0.9), 1.4102367282em 2.1198612876em 7px hsla(123.9456572032deg, 100%, 50%, 0.9), 0.9616887501em 0.3039207608em 7px hsla(168.6871853199deg, 100%, 50%, 0.9), -0.1442124212em 0.6370846154em 7px hsla(138.5387184632deg, 100%, 50%, 0.9), 0.0202195122em 2.4291463072em 7px hsla(355.7762787659deg, 100%, 50%, 0.9), 0.9443740225em 2.1700290652em 7px hsla(354.5648743657deg, 100%, 50%, 0.9), 2.1349377621em 2.0353683596em 7px hsla(20.8100028465deg, 100%, 50%, 0.9), 2.0862270735em 1.9663766623em 7px hsla(24.2689328575deg, 100%, 50%, 0.9), 0.4858593667em -0.2500673604em 7px hsla(188.3093448255deg, 100%, 50%, 0.9), 2.1680556951em 0.7204355202em 7px hsla(103.9506093693deg, 100%, 50%, 0.9), 0.465123338em 0.1309321575em 7px hsla(244.9830488764deg, 100%, 50%, 0.9), 2.3195729565em 1.6371254599em 7px hsla(214.1385499123deg, 100%, 50%, 0.9), 2.1816667767em 1.6788452046em 7px hsla(255.1124914525deg, 100%, 50%, 0.9), -0.2046508486em 1.3622688763em 7px hsla(127.0271815699deg, 100%, 50%, 0.9), 0.9720616543em 0.455575393em 7px hsla(221.7086374711deg, 100%, 50%, 0.9), 1.1426442564em 2.3597880232em 7px hsla(355.0447161358deg, 100%, 50%, 0.9), -0.2992859725em 1.2275215958em 7px hsla(292.3786055062deg, 100%, 50%, 0.9), 1.0194899549em 0.154371193em 7px hsla(40.7845403161deg, 100%, 50%, 0.9), -0.2957067847em 1.6224465577em 7px hsla(268.5311409602deg, 100%, 50%, 0.9), 2.1181080926em 0.6991148104em 7px hsla(97.8456110157deg, 100%, 50%, 0.9), 1.0210430502em -0.1601684644em 7px hsla(103.1507162903deg, 100%, 50%, 0.9), -0.2361493443em 0.1886508685em 7px hsla(75.335273303deg, 100%, 50%, 0.9), 2.0545586962em 1.7740948848em 7px hsla(112.2794292362deg, 100%, 50%, 0.9), 2.04173398em 1.3264191331em 7px hsla(313.6769032052deg, 100%, 50%, 0.9), 1.3720402207em -0.3007096103em 7px hsla(80.3639481302deg, 100%, 50%, 0.9), 1.0960984082em 0.0831614148em 7px hsla(139.1311106646deg, 100%, 50%, 0.9), 2.1764965234em 2.001129983em 7px hsla(94.7969676089deg, 100%, 50%, 0.9), 0.5012270559em 1.9144840875em 7px hsla(244.8063415444deg, 100%, 50%, 0.9), 0.4456271613em 0.7228185856em 7px hsla(8.2958896deg, 100%, 50%, 0.9), 1.1865136209em -0.2185116158em 7px hsla(207.6706130492deg, 100%, 50%, 0.9), 1.6837430698em 1.7665306003em 7px hsla(11.3276960931deg, 100%, 50%, 0.9), 0.4379458187em -0.1036540952em 7px hsla(115.3554213557deg, 100%, 50%, 0.9), 1.603318126em 2.136489155em 7px hsla(82.2683891853deg, 100%, 50%, 0.9), 1.1538859634em 0.6446447978em 7px hsla(80.2496266829deg, 100%, 50%, 0.9), -0.3083832438em 0.5443125148em 7px hsla(346.3072047993deg, 100%, 50%, 0.9), 1.3351474532em 0.5427335009em 7px hsla(266.2900746471deg, 100%, 50%, 0.9), 2.1556805473em 1.1239040494em 7px hsla(94.1567874462deg, 100%, 50%, 0.9), 1.2567150708em 2.4158817005em 7px hsla(9.8360862195deg, 100%, 50%, 0.9);
+  text-shadow: 0.1260648992em 0.1385136254em 7px hsla(300.9850000938deg, 100%, 50%, 0.9), 1.2771696334em 0.569237627em 7px hsla(343.3940457931deg, 100%, 50%, 0.9), 1.6377359984em 0.8059967053em 7px hsla(200.3078671949deg, 100%, 50%, 0.9), 0.6407501106em 1.1798579848em 7px hsla(217.0010714003deg, 100%, 50%, 0.9), 0.0656900927em 0.9897324439em 7px hsla(158.6076556926deg, 100%, 50%, 0.9), -0.3855626498em 0.3740325695em 7px hsla(45.9613204703deg, 100%, 50%, 0.9), 1.8507439978em 0.0959624726em 7px hsla(80.2143901132deg, 100%, 50%, 0.9), 0.2081068341em 1.4203946535em 7px hsla(313.7771380906deg, 100%, 50%, 0.9), 0.054581163em 2.4573182038em 7px hsla(331.5795373702deg, 100%, 50%, 0.9), 0.9883046419em 1.0980977219em 7px hsla(204.2242698679deg, 100%, 50%, 0.9), 1.0686569019em 0.5247741689em 7px hsla(351.9150564111deg, 100%, 50%, 0.9), 1.2559014161em -0.302221597em 7px hsla(205.2657686699deg, 100%, 50%, 0.9), 1.7765564667em 0.9403534513em 7px hsla(185.970221184deg, 100%, 50%, 0.9), -0.2090812092em 1.3718757676em 7px hsla(88.226640383deg, 100%, 50%, 0.9), 1.3809334061em 2.2461533981em 7px hsla(105.6534150553deg, 100%, 50%, 0.9), 1.4110860858em 1.5079700697em 7px hsla(199.2159686445deg, 100%, 50%, 0.9), 1.4563809037em 1.0489637919em 7px hsla(10.4283062257deg, 100%, 50%, 0.9), 0.3700795604em 0.0510864439em 7px hsla(90.4544797682deg, 100%, 50%, 0.9), 1.4714382097em 0.2814257146em 7px hsla(42.3211793774deg, 100%, 50%, 0.9), -0.3536928956em -0.433984008em 7px hsla(178.2648238524deg, 100%, 50%, 0.9), 2.2944228348em 0.4390116044em 7px hsla(261.0767425517deg, 100%, 50%, 0.9), 2.0910830041em 2.3788162112em 7px hsla(150.0092235789deg, 100%, 50%, 0.9), 1.2674048084em -0.0456814095em 7px hsla(191.9416331439deg, 100%, 50%, 0.9), 0.693059371em 1.4683402622em 7px hsla(231.2359423132deg, 100%, 50%, 0.9), 1.3100737239em 2.4029128985em 7px hsla(17.0061656926deg, 100%, 50%, 0.9), 1.4482376691em 2.1967763773em 7px hsla(100.0499594063deg, 100%, 50%, 0.9), 1.6548323951em 2.0656105869em 7px hsla(352.3908773883deg, 100%, 50%, 0.9), 1.3494706419em 1.0427289822em 7px hsla(53.6433314326deg, 100%, 50%, 0.9), 0.6682467845em 0.2918435419em 7px hsla(120.7566316038deg, 100%, 50%, 0.9), 0.8842545901em -0.0220546568em 7px hsla(14.3567847456deg, 100%, 50%, 0.9), 2.4485644755em 0.6569581894em 7px hsla(41.5535767749deg, 100%, 50%, 0.9), 1.7144670837em 2.2639474719em 7px hsla(70.8708885232deg, 100%, 50%, 0.9), -0.3413155691em -0.0474637391em 7px hsla(29.4076645367deg, 100%, 50%, 0.9), 1.5208819928em 2.1294862083em 7px hsla(280.4086251399deg, 100%, 50%, 0.9), 0.8982031275em -0.260748872em 7px hsla(46.2744254321deg, 100%, 50%, 0.9), 0.122112634em 0.7458387013em 7px hsla(25.4007898195deg, 100%, 50%, 0.9), -0.3773402765em 2.1045575526em 7px hsla(184.8061469616deg, 100%, 50%, 0.9), 1.2783803198em 2.0006630744em 7px hsla(290.4744192514deg, 100%, 50%, 0.9), 0.0722114452em 2.308288957em 7px hsla(151.8974748084deg, 100%, 50%, 0.9), -0.1831039442em 2.4870122214em 7px hsla(28.0112726652deg, 100%, 50%, 0.9), -0.1315070579em 1.5741646537em 7px hsla(233.5212294294deg, 100%, 50%, 0.9);
   animation-duration: 43s;
   animation-delay: -32s;
 }

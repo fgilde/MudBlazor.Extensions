@@ -1608,6 +1608,121 @@
         <member name="M:MudBlazor.Extensions.Components.MudExGradientText.OnParametersSetAsync">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExGrid">
+            <summary>
+            A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGrid.ChildContent">
+            <summary>
+            Gets or sets the child content of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGrid.Column">
+            <summary>
+            Gets or sets the column size for the component. Default is 4.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGrid.Row">
+            <summary>
+            Gets or sets the row size for the component. Default is 4.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGrid.Height">
+            <summary>
+            Gets or sets the height of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGrid.OnClick">
+            <summary>
+            Event callback for the click event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGrid.OnClickStopPropagation">
+            <summary>
+            Gets or sets a value indicating whether the click event should stop propagation. Default is false.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGrid.OnContextMenu">
+            <summary>
+            Event callback for the context menu event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGrid.OnContextMenuPreventDefault">
+            <summary>
+            Gets or sets a value indicating whether the context menu event should prevent its default action. Default is false.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGrid.OnContextMenuStopPropagation">
+            <summary>
+            Gets or sets a value indicating whether the context menu event should stop propagation. Default is false.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGrid.OnClickHandler(Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
+            <summary>
+            The on click handler
+            </summary>    
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExGridSection">
+            <summary>
+            This section can placed inside a MudExGrid component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.ChildContent">
+            <summary>
+            Gets or sets the child content of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.Column">
+            <summary>
+            Gets or sets the column position for the component. Default is 1.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.ColSpan">
+            <summary>
+            Gets or sets the column span of the component. Default is 1.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.Row">
+            <summary>
+            Gets or sets the row position for the component. Default is 1.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.RowSpan">
+            <summary>
+            Gets or sets the row span of the component. Default is 1.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.OnClick">
+            <summary>
+            Event callback for the click event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.OnClickStopPropagation">
+            <summary>
+            Gets or sets a value indicating whether the click event should stop propagation. Default is false.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.OnContextMenu">
+            <summary>
+            Event callback for the context menu event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.OnContextMenuPreventDefault">
+            <summary>
+            Gets or sets a value indicating whether the context menu event should prevent its default action. Default is false.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.OnContextMenuStopPropagation">
+            <summary>
+            Gets or sets a value indicating whether the context menu event should stop propagation. Default is false.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGridSection.OnClickHandler(Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
+            <summary>
+            The on click handler
+            </summary>    
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExIconPicker">
             <summary>
             Component to Edit Icon values

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Core;
 
 namespace MudBlazor.Extensions.Components;
 
-public partial class MudExSelectItem<T> : IDisposable
+public partial class MudExSelectItem<T> : IDisposable, IMudExComponent
 {
     // Fields
     private IMudExSelect _parent;
@@ -34,15 +36,15 @@ public partial class MudExSelectItem<T> : IDisposable
     public MudExListItem<T> ListItem { get; set; }
 
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public bool IsFunctional { get; set; }
 
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public string Text { get; set; }
 
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public T Value { get; set; }
 
     protected bool MultiSelection => MudExSelect?.MultiSelection ?? false;

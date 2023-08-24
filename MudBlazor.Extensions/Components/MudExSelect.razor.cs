@@ -120,113 +120,113 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended
     /// <summary>
     /// User class names for the input, separated by space
     /// </summary>
-    [Category(CategoryTypes.FormComponent.Appearance)]
+    [SafeCategory(CategoryTypes.FormComponent.Appearance)]
     [Parameter] public string InputClass { get; set; }
 
     /// <summary>
     /// User style names for the input, separated by space
     /// </summary>
-    [Category(CategoryTypes.FormComponent.Appearance)]
+    [SafeCategory(CategoryTypes.FormComponent.Appearance)]
     [Parameter] public string InputStyle { get; set; }
 
     /// <summary>
     /// Fired when dropdown opens.
     /// </summary>
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     [Parameter] public EventCallback OnOpen { get; set; }
 
     /// <summary>
     /// Fired when dropdown closes.
     /// </summary>
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     [Parameter] public EventCallback OnClose { get; set; }
 
     /// <summary>
     /// Add the MudSelectItems here
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListBehavior)]
+    [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public RenderFragment ChildContent { get; set; }
 
     /// <summary>
     /// Optional presentation template for items
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Appearance)]
+    [SafeCategory(CategoryTypes.FormComponent.Appearance)]
     public RenderFragment<T> ItemTemplate { get; set; }
 
     /// <summary>
     /// Optional presentation template for selected items
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public RenderFragment<T> ItemSelectedTemplate { get; set; }
 
     /// <summary>
     /// Optional presentation template for disabled items
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public RenderFragment<T> ItemDisabledTemplate { get; set; }
 
     /// <summary>
     /// Function to be invoked when checking whether an item should be disabled or not. Works both with renderfragment and ItemCollection approach.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListBehavior)]
+    [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public Func<T, bool> ItemDisabledFunc { get; set; }
 
     /// <summary>
     /// Classname for item template or chips.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListBehavior)]
+    [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public string TemplateClass { get; set; }
 
     /// <summary>
     /// If true the active (hilighted) item select on tab key. Designed for only single selection. Default is true.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Selecting)]
+    [SafeCategory(CategoryTypes.List.Selecting)]
     public bool SelectValueOnTab { get; set; } = true;
 
     /// <summary>
     /// If false multiline text show. Default is false.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Selecting)]
+    [SafeCategory(CategoryTypes.List.Selecting)]
     public bool NoWrap { get; set; }
 
     /// <summary>
     /// User class names for the popover, separated by space
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public string PopoverClass { get; set; }
 
     /// <summary>
     /// User class names for the popover, separated by space
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public bool DisablePopoverPadding { get; set; }
 
     /// <summary>
     /// If true, selected items doesn't have a selected background color.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public bool DisableSelectedItemStyle { get; set; }
 
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public string SearchBoxPlaceholder { get; set; }
 
     /// <summary>
     /// If true, compact vertical padding will be applied to all Select items.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public bool Dense
     {
         get { return _dense; }
@@ -237,131 +237,131 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended
     /// The Open Select Icon
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Appearance)]
+    [SafeCategory(CategoryTypes.FormComponent.Appearance)]
     public string OpenIcon { get; set; } = Icons.Material.Filled.ArrowDropDown;
 
     /// <summary>
     /// Dropdown color of select. Supports theme colors.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Appearance)]
+    [SafeCategory(CategoryTypes.FormComponent.Appearance)]
     public Color Color { get; set; } = Color.Primary;
 
     /// <summary>
     /// The Close Select Icon
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Appearance)]
+    [SafeCategory(CategoryTypes.FormComponent.Appearance)]
     public string CloseIcon { get; set; } = Icons.Material.Filled.ArrowDropUp;
 
     /// <summary>
     /// The value presenter.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Appearance)]
+    [SafeCategory(CategoryTypes.FormComponent.Appearance)]
     public ValuePresenter ValuePresenter { get; set; } = ValuePresenter.Text;
 
     /// <summary>
     /// If set to true and the MultiSelection option is set to true, a "select all" checkbox is added at the top of the list of items.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListBehavior)]
+    [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public bool SelectAll { get; set; }
 
     /// <summary>
     /// Sets position of the Select All checkbox
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public SelectAllPosition SelectAllPosition { get; set; } = SelectAllPosition.BeforeSearchBox;
 
     /// <summary>
     /// Define the text of the Select All option.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public string SelectAllText { get; set; } = "Select All";
 
     /// <summary>
     /// Function to define a customized multiselection text.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public Func<List<T>, string> MultiSelectionTextFunc { get; set; }
 
     /// <summary>
     /// Custom search func for searchbox. If doesn't set, it search with "Contains" logic by default. Passed value and searchString values.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListBehavior)]
+    [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public Func<T, string, bool> SearchFunc { get; set; }
 
     /// <summary>
     /// If not null, select items will automatically created regard to the collection.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public ICollection<T> ItemCollection { get; set; } = null;
 
     /// <summary>
     /// Allows virtualization. Only work is ItemCollection parameter is not null.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public bool Virtualize { get; set; }
 
     /// <summary>
     /// If true, chips has close button and remove from SelectedValues when pressed the close button.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public bool ChipCloseable { get; set; }
 
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public string ChipClass { get; set; }
 
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public Variant ChipVariant { get; set; } = Variant.Filled;
 
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public Size ChipSize { get; set; } = Size.Small;
 
     /// <summary>
     /// Parameter to define the delimited string separator.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public string Delimiter { get; set; } = ", ";
 
     /// <summary>
     /// If true popover width will be the same as the select component.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public bool RelativeWidth { get; set; } = true;
 
     /// <summary>
     /// Sets the maxheight the Select can have when open.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public int MaxHeight { get; set; } = 300;
 
     /// <summary>
     /// Set the anchor origin point to determen where the popover will open from.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public Origin AnchorOrigin { get; set; } = Origin.TopCenter;
 
     /// <summary>
     /// Sets the transform origin point for the popover.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public Origin TransformOrigin { get; set; } = Origin.TopCenter;
 
     /// <summary>
@@ -391,56 +391,56 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended
     /// and you want the Select to show the label / placeholder instead.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public bool Strict { get; set; }
 
     /// <summary>
     /// Show clear button.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public bool Clearable { get; set; } = false;
 
     /// <summary>
     /// If true, shows a searchbox for filtering items. Only works with ItemCollection approach.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public bool SearchBox { get; set; } = true;
 
     /// <summary>
     /// If true, the search-box will be focused when the dropdown is opened.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public bool SearchBoxAutoFocus { get; set; }
 
     /// <summary>
     /// If true, the search-box has a clear icon.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public bool SearchBoxClearable { get; set; }
 
     /// <summary>
     /// Search box text field variant.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public Variant SearchBoxVariant { get; set; } = Variant.Text;
 
     /// <summary>
     /// Search box icon position.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public Adornment SearchBoxAdornment { get; set; } = Adornment.End;
 
     /// <summary>
     /// If true, prevent scrolling while dropdown is open.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListBehavior)]
+    [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public bool LockScroll { get; set; } = false;
 
     /// <summary>
@@ -452,21 +452,21 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended
     /// Custom checked icon.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public string CheckedIcon { get; set; } = Icons.Material.Filled.CheckBox;
 
     /// <summary>
     /// Custom unchecked icon.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public string UncheckedIcon { get; set; } = Icons.Material.Filled.CheckBoxOutlineBlank;
 
     /// <summary>
     /// Custom indeterminate icon.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public string IndeterminateIcon { get; set; } = Icons.Material.Filled.IndeterminateCheckBox;
 
     private bool _multiSelection = false;
@@ -474,7 +474,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended
     /// If true, multiple values can be selected via checkboxes which are automatically shown in the dropdown
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListBehavior)]
+    [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public bool MultiSelection
     {
         get => _multiSelection;
@@ -492,14 +492,14 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended
     /// The MultiSelectionComponent's placement. Accepts Align.Start and Align.End
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public Align MultiSelectionAlign { get; set; } = Align.Start;
 
     /// <summary>
     /// The component which shows as a MultiSelection check.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public MultiSelectionComponent MultiSelectionComponent { get; set; } = MultiSelectionComponent.CheckBox;
 
     private IEqualityComparer<T> _comparer;
@@ -507,7 +507,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended
     /// The Comparer to use for comparing selected values internally.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public IEqualityComparer<T> Comparer
     {
         get => _comparer;
@@ -527,7 +527,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended
     /// Defines how values are displayed in the drop-down list
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListBehavior)]
+    [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public virtual Func<T, string> ToStringFunc
     {
         get => _toStringFunc;
@@ -555,7 +555,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended
     /// Set of selected values. If MultiSelection is false it will only ever contain a single value. This property is two-way bindable.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Data)]
+    [SafeCategory(CategoryTypes.FormComponent.Data)]
     public IEnumerable<T> SelectedValues
     {
         get => _selectedValues ??= new HashSet<T>();

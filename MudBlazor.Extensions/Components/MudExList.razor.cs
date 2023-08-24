@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Enums;
 using MudBlazor.Services;
 using MudBlazor.Utilities;
@@ -45,51 +46,51 @@ public partial class MudExList<T> : IDisposable
     /// The color of the selected List Item.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public Color Color { get; set; } = Color.Primary;
 
     /// <summary>
     /// Child content of component.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public RenderFragment ChildContent { get; set; }
 
     /// <summary>
     /// Optional presentation template for items
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListBehavior)]
+    [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public RenderFragment<T> ItemTemplate { get; set; }
 
     /// <summary>
     /// Optional presentation template for selected items
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListBehavior)]
+    [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public RenderFragment<T> ItemSelectedTemplate { get; set; }
 
     /// <summary>
     /// Optional presentation template for disabled items
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListBehavior)]
+    [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public RenderFragment<T> ItemDisabledTemplate { get; set; }
 
     /// <summary>
     /// Optional presentation template for select all item
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListBehavior)]
+    [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public RenderFragment SelectAllTemplate { get; set; }
 
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public DefaultConverter<T> Converter { get; set; } = new DefaultConverter<T>();
 
     private IEqualityComparer<T> _comparer;
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public IEqualityComparer<T> Comparer
     {
         get => _comparer;
@@ -113,7 +114,7 @@ public partial class MudExList<T> : IDisposable
     /// Defines how values are displayed in the drop-down list
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListBehavior)]
+    [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public Func<T, string> ToStringFunc
     {
         get => _toStringFunc;
@@ -133,81 +134,81 @@ public partial class MudExList<T> : IDisposable
     /// Predefined enumerable items. If its not null, creates list items automatically.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public ICollection<T> ItemCollection { get; set; } = null;
 
     /// <summary>
     /// Custom search func for searchbox. If doesn't set, it search with "Contains" logic by default. Passed value and searchString values.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListBehavior)]
+    [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public Func<T, string, bool> SearchFunc { get; set; }
 
     /// <summary>
     /// If true, shows a searchbox for filtering items. Only works with ItemCollection approach.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public bool SearchBox { get; set; }
 
     /// <summary>
     /// Search box text field variant.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public Variant SearchBoxVariant { get; set; } = Variant.Text;
 
     /// <summary>
     /// Search box icon position.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public Adornment SearchBoxAdornment { get; set; } = Adornment.End;
 
     /// <summary>
     /// If true, the search-box will be focused when the dropdown is opened.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public bool SearchBoxAutoFocus { get; set; }
 
     /// <summary>
     /// If true, the search-box has a clear icon.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public bool SearchBoxClearable { get; set; }
 
     /// <summary>
     /// SearchBox's CSS classes, seperated by space.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public string ClassSearchBox { get; set; }
 
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public string SearchBoxPlaceholder { get; set; }
 
     /// <summary>
     /// Allows virtualization. Only work if ItemCollection parameter is not null.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public bool Virtualize { get; set; }
 
     /// <summary>
     /// Set max items to show in list. Other items can be scrolled. Works if list items populated with ItemCollection parameter.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public int? MaxItems { get; set; } = null;
 
     /// <summary>
     /// Overscan value for Virtualized list. Default is 2.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public int OverscanCount { get; set; } = 2;
 
     private bool _multiSelection = false;
@@ -215,7 +216,7 @@ public partial class MudExList<T> : IDisposable
     /// Allows multi selection and adds MultiSelectionComponent for each list item.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public bool MultiSelection
     {
         get => _multiSelection;
@@ -252,91 +253,91 @@ public partial class MudExList<T> : IDisposable
     /// The MultiSelectionComponent's placement. Accepts Align.Start and Align.End
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public Align MultiSelectionAlign { get; set; } = Align.Start;
 
     /// <summary>
     /// The component which shows as a MultiSelection check.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public MultiSelectionComponent MultiSelectionComponent { get; set; } = MultiSelectionComponent.CheckBox;
 
     /// <summary>
     /// Set true to make the list items clickable. This is also the precondition for list selection to work.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Selecting)]
+    [SafeCategory(CategoryTypes.List.Selecting)]
     public bool Clickable { get; set; }
 
     /// <summary>
     /// If true the active (hilighted) item select on tab key. Designed for only single selection. Default is true.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Selecting)]
+    [SafeCategory(CategoryTypes.List.Selecting)]
     public bool SelectValueOnTab { get; set; } = true;
 
     /// <summary>
     /// If true, vertical padding will be removed from the list.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public bool DisablePadding { get; set; }
 
     /// <summary>
     /// If true, selected items doesn't have a selected background color.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public bool DisableSelectedItemStyle { get; set; }
 
     /// <summary>
     /// If true, compact vertical padding will be applied to all list items.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public bool Dense { get; set; }
 
     /// <summary>
     /// If true, the left and right padding is removed on all list items.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public bool DisableGutters { get; set; }
 
     /// <summary>
     /// If true, will disable the list item if it has onclick.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public bool Disabled { get; set; }
 
     /// <summary>
     /// If set to true and the MultiSelection option is set to true, a "select all" checkbox is added at the top of the list of items.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListBehavior)]
+    [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public bool SelectAll { get; set; }
 
     /// <summary>
     /// Sets position of the Select All checkbox
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public SelectAllPosition SelectAllPosition { get; set; } = SelectAllPosition.BeforeSearchBox;
 
     /// <summary>
     /// Define the text of the Select All option.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public string SelectAllText { get; set; } = "Select All";
 
     /// <summary>
     /// If true, change background color to secondary for all nested item headers.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public bool SecondaryBackgroundForNestedItemHeader { get; set; }
 
     /// <summary>
@@ -457,7 +458,7 @@ public partial class MudExList<T> : IDisposable
     /// Note: Make the list Clickable or set MultiSelection true for item selection to work.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Selecting)]
+    [SafeCategory(CategoryTypes.List.Selecting)]
     public T SelectedValue
     {
         get => _selectedValue;
@@ -491,7 +492,7 @@ public partial class MudExList<T> : IDisposable
     /// The current selected values. Holds single value (SelectedValue) if MultiSelection is false.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Selecting)]
+    [SafeCategory(CategoryTypes.List.Selecting)]
     public IEnumerable<T> SelectedValues
     {
         get
@@ -545,7 +546,7 @@ public partial class MudExList<T> : IDisposable
     /// Note: make the list Clickable or MultiSelection or both for item selection to work.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Selecting)]
+    [SafeCategory(CategoryTypes.List.Selecting)]
     public MudExListItem<T> SelectedItem
     {
         get => _selectedItem;
@@ -574,7 +575,7 @@ public partial class MudExList<T> : IDisposable
     /// Note: make the list Clickable for item selection to work.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Selecting)]
+    [SafeCategory(CategoryTypes.List.Selecting)]
     public IEnumerable<MudExListItem<T>> SelectedItems
     {
         get => _selectedItems;
@@ -1113,21 +1114,21 @@ public partial class MudExList<T> : IDisposable
     /// Custom checked icon.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public string CheckedIcon { get; set; } = Icons.Material.Filled.CheckBox;
 
     /// <summary>
     /// Custom unchecked icon.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public string UncheckedIcon { get; set; } = Icons.Material.Filled.CheckBoxOutlineBlank;
 
     /// <summary>
     /// Custom indeterminate icon.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.ListAppearance)]
+    [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public string IndeterminateIcon { get; set; } = Icons.Material.Filled.IndeterminateCheckBox;
 
     protected void SelectAllItems(bool? deselect = false)

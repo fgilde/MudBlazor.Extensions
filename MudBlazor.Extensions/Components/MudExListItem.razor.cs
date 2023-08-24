@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Utilities;
 using System.Windows.Input;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Enums;
 
 namespace MudBlazor.Extensions.Components;
@@ -42,53 +43,53 @@ public partial class MudExListItem<T>
     /// Functional items does not hold values. If a value set on Functional item, it ignores by the MudList. They can not count on Items list (they count on AllItems), cannot be subject of keyboard navigation and selection.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public bool IsFunctional { get; set; }
 
     /// <summary>
     /// The text to display
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public string Text { get; set; }
 
     /// <summary>
     /// The secondary text to display
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public string SecondaryText { get; set; }
 
     [Parameter]
-    [Category(CategoryTypes.List.Selecting)]
+    [SafeCategory(CategoryTypes.List.Selecting)]
     public T Value { get; set; }
 
     /// <summary>
     /// Avatar to use if set.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public string Avatar { get; set; }
 
     /// <summary>
     /// Avatar CSS Class to apply if Avatar is set.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public string AvatarClass { get; set; }
 
     /// <summary>
     /// Link to a URL when clicked.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.ClickAction)]
+    [SafeCategory(CategoryTypes.List.ClickAction)]
     public string Href { get; set; }
 
     /// <summary>
     /// If true, force browser to redirect outside component router-space.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.ClickAction)]
+    [SafeCategory(CategoryTypes.List.ClickAction)]
     public bool ForceLoad { get; set; }
 
     private bool _disabled;
@@ -97,7 +98,7 @@ public partial class MudExListItem<T>
     /// The value can be overridden by the parent list.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public bool Disabled
     {
         get => _disabled || (MudExList?.Disabled ?? false);
@@ -108,77 +109,77 @@ public partial class MudExListItem<T>
     /// If true, the left and right padding is removed.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public bool DisableGutters { get; set; }
 
     /// <summary>
     /// If true, disables ripple effect.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public bool DisableRipple { get; set; }
 
     /// <summary>
     /// Overrided component for multiselection. Keep it null to have default one that MudList has.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.ClickAction)]
+    [SafeCategory(CategoryTypes.List.ClickAction)]
     public MultiSelectionComponent? OverrideMultiSelectionComponent { get; set; } = null;
 
     /// <summary>
     /// Icon to use if set.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public string Icon { get; set; }
 
     /// <summary>
     /// The color of the icon.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public Color IconColor { get; set; } = Color.Inherit;
 
     /// <summary>
     /// Sets the Icon Size.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public Size IconSize { get; set; } = Size.Medium;
 
     /// <summary>
     /// The color of the adornment if used. It supports the theme colors.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Expanding)]
+    [SafeCategory(CategoryTypes.List.Expanding)]
     public Color AdornmentColor { get; set; } = Color.Default;
 
     /// <summary>
     /// Custom expand less icon.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Expanding)]
+    [SafeCategory(CategoryTypes.List.Expanding)]
     public string ExpandLessIcon { get; set; } = Icons.Material.Filled.ExpandLess;
 
     /// <summary>
     /// Custom expand more icon.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Expanding)]
+    [SafeCategory(CategoryTypes.List.Expanding)]
     public string ExpandMoreIcon { get; set; } = Icons.Material.Filled.ExpandMore;
 
     /// <summary>
     /// If true, the List Subheader will be indented.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public bool Inset { get; set; }
 
     /// <summary>
     /// If true, stop propagation on click. Default is true.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public bool OnClickStopPropagation { get; set; } = true;
 
     private bool? _dense;
@@ -186,7 +187,7 @@ public partial class MudExListItem<T>
     /// If true, compact vertical padding will be used.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Appearance)]
+    [SafeCategory(CategoryTypes.List.Appearance)]
     public bool? Dense
     {
         get => _dense;
@@ -205,35 +206,35 @@ public partial class MudExListItem<T>
     /// Command parameter.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.ClickAction)]
+    [SafeCategory(CategoryTypes.List.ClickAction)]
     public object CommandParameter { get; set; }
 
     /// <summary>
     /// Command executed when the user clicks on an element.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.ClickAction)]
+    [SafeCategory(CategoryTypes.List.ClickAction)]
     public ICommand Command { get; set; }
 
     /// <summary>
     /// Prevent default behavior when click on MudSelectItem. Default behavior is selecting the item and style adjustments.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public bool OnClickHandlerPreventDefault { get; set; }
 
     /// <summary>
     /// Display content of this list item. If set, overrides Text.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public RenderFragment ChildContent { get; set; }
 
     /// <summary>
     /// Add child list items here to create a nested list.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Behavior)]
+    [SafeCategory(CategoryTypes.List.Behavior)]
     public RenderFragment NestedList { get; set; }
 
     /// <summary>
@@ -246,7 +247,7 @@ public partial class MudExListItem<T>
     /// If true, expands the nested list on first display.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Expanding)]
+    [SafeCategory(CategoryTypes.List.Expanding)]
     public bool InitiallyExpanded { get; set; }
 
     private bool _expanded;
@@ -255,7 +256,7 @@ public partial class MudExListItem<T>
     /// true or false (instead of using two-way binding) it will force the nested list's expansion state.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.List.Expanding)]
+    [SafeCategory(CategoryTypes.List.Expanding)]
     public bool Expanded
     {
         get => _expanded;

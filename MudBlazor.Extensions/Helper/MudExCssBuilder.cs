@@ -15,6 +15,14 @@ public sealed class MudExCssBuilder: IAsyncDisposable, IMudExClassAppearance
     private readonly ConcurrentDictionary<string, byte> _temporaryCssClasses = new();
     private readonly List<IAsyncDisposable> _disposables = new();
 
+    public MudExCssBuilder()
+    {}
+
+    public MudExCssBuilder(string cls, params string[] other)
+    {
+        AddClass(cls, other);
+    }    
+
     /// <summary>
     /// Static Property to access an instance <see cref="MudExStyleBuilder"/>
     /// </summary>

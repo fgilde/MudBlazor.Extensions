@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 
@@ -61,21 +62,21 @@ public abstract class MudExBaseInput<T> : MudBaseInput<T>
     /// The Adornment if used. By default, it is set to None.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public RenderFragment AdornmentStart { get; set; }
 
     /// <summary>
     /// The Adornment if used. By default, it is set to None.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public RenderFragment AdornmentEnd { get; set; }
 
     /// <summary>
     /// ForceShrink
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public bool ForceShrink { get; set; }
 
 

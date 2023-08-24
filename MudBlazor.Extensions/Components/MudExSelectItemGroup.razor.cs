@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Xml.Linq;
+using MudBlazor.Extensions.Attribute;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -13,35 +14,35 @@ public partial class MudExSelectItemGroup<T>
     /// A user-defined option that can be selected
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public T Value { get; set; }
 
     /// <summary>
     /// A user-defined option that can be selected
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public string Text { get; set; }
 
     /// <summary>
     /// A user-defined option that can be selected
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public bool Nested { get; set; }
 
     /// <summary>
     /// Sets the group's expanded state on popover opening. Works only if nested is true.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public bool InitiallyExpanded { get; set; }
 
     /// <summary>
     /// Sticky header for item group. Works only with nested is false.
     /// </summary>
     [Parameter]
-    [Category(CategoryTypes.FormComponent.Behavior)]
+    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public bool Sticky { get; set; }
 
     [CascadingParameter]
