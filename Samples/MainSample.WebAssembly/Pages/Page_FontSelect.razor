@@ -1,0 +1,31 @@
+﻿@page "/font-select"
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+@inject IDialogService dialogService;
+
+@attribute [Demo(Name = "MudExFontSelect", Icon = Icons.Material.Outlined.FontDownload, Documentation = "MudExFontSelect can used to select one ore more fonts", ForComponentType = typeof(MudExFontSelect))]
+
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudExFontSelect @ref="component"></MudExFontSelect>            
+        </Left>
+        <Right>
+            <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+@code {    
+
+    MudExFontSelect component;
+    private Action<ObjectEditMeta<MudExFontSelect>> Configure()
+    {
+        return meta =>
+        {
+            meta.Properties(m => m.AvailableItemsLoadFunc, m => m.SelectedValues, m => m.Value, m => m.ItemTemplate, m => m.Localizer).Ignore();
+            meta.IgnoreAllReadOnlyFields();
+        };
+    }  
+
+}

@@ -25,11 +25,4 @@ public partial class MudExCultureSelect
         }, cancellation);
     }
 
-    /// <inheritdoc />
-    protected override void OnInitialized()
-    {
-        ViewMode = ViewMode.NoChips;
-        MultiSelect = false;
-        base.OnInitialized();
-    }
 }

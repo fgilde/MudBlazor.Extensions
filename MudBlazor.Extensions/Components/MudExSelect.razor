@@ -1,0 +1,194 @@
+﻿@typeparam T
+@using MudBlazor.Extensions.Options
+@using Microsoft.AspNetCore.Components.Rendering
+@inherits MudExBaseInput<T>
+
+<CascadingValue Name="Standalone" Value="false" IsFixed="true">
+    <CascadingValue Value="@this" IsFixed="true">
+        <div class="mud-ex-select" id="@_elementId">
+            @RenderChips(RenderChipsAdditional == Adornment.Start)
+            
+            @* Hidden validation component to have validation for IEnumerable<T> as well *@
+            <MudExInput T="IEnumerable<T>" @bind-Value="@SelectedValues" @ref="_validationComponent" @bind-Error="Error" ErrorStateChanged="@OnValidationStateChanged"
+                        Style="display:none !important;"
+                        For="@ForMultiple" ReadOnly="true" />
+                        
+            <MudInputControl Label="@Label" Variant="@Variant" HelperText="@HelperText" HelperTextOnFocus="@HelperTextOnFocus" FullWidth="@FullWidth" Margin="@Margin" Class="@Classname" Style="@Style"
+                             Error="@Error" ErrorText="@ErrorText" ErrorId="@ErrorId" Disabled="@Disabled" @onclick="@ToggleMenu" Required="@Required" ForId="@FieldId">
+                <InputContent>                   
+                    <MudExInput @ref="_elementReference" InputType="InputType.Hidden"
+                                      Class="@InputClassname" Style="@InputStyle" Margin="@Margin" Placeholder="@TryLocalize(Placeholder)"
+                                      Variant="@Variant"
+                                      TextUpdateSuppression="false"
+                                      Value="@(Strict && !IsValueInList ? null : Text)" DisableUnderLine="@DisableUnderLine"
+                                      Disabled="@Disabled" ReadOnly="true" Error="@Error" ErrorId="@ErrorId"
+                                      Clearable="@Clearable" OnClearButtonClick="(async (e) => await SelectClearButtonClickHandlerAsync(e))"
+                                      @attributes="UserAttributes" OnBlur="@OnLostFocus" ForceShrink="@ForceShrink"
+                                      ShowVisualiser="true" DataVisualiserStyle="min-height: 1.1876em">
+
+                        <AdornmentEnd>
+                            <MudIcon Icon="@_currentIcon" Color="@AdornmentColor" Size="@IconSize" @onclick="OnAdornmentClick" />
+                        </AdornmentEnd>
+
+                        <DataVisualiser>
+                            <div class="@TemplateClass">
+                                @if (Strict && !IsValueInList)
+                                {
+                                    //Show nothing
+                                    <MudText Typo="Typo.body1" Class="mud-text-secondary">@Placeholder</MudText>
+                                }
+                                @if (ValuePresenter == Enums.ValuePresenter.Text)
+                                {
+                                    if (string.IsNullOrEmpty(Text))
+                                    {
+                                        <MudText Typo="Typo.body1" Class="mud-text-secondary">@Placeholder</MudText>
+                                    }
+
+                                    <MudRender>@GetSelectTextPresenter()</MudRender>
+                                }
+                                else if (ValuePresenter == Enums.ValuePresenter.Chip)
+                                {
+                                    if (SelectedValues == null || !SelectedValues.Any())
+                                    {
+                                        <MudText Typo="Typo.body1" Class="mud-text-secondary">@Placeholder</MudText>
+                                    }
+                                    @RenderChips(true)
+                                }
+                                else if (ValuePresenter == Enums.ValuePresenter.ItemContent)
+                                {
+                                    if (SelectedListItem == null)
+                                    {
+                                        <MudText Typo="Typo.body1" Class="mud-text-secondary">@Placeholder</MudText>
+
+                                    }
+                                    else if (ItemTemplate != null)
+                                    {
+                                        if (SelectedListItem != null && SelectedListItem.Value != null)
+                                        {
+                                            @ItemTemplate(SelectedListItem.Value)
+                                        }
+                                        else if (!string.IsNullOrEmpty(Placeholder))
+                                        {
+                                            <MudText Typo="Typo.body1" Class="mud-text-secondary">@Placeholder</MudText>
+                                        }
+                                    }
+                                    else if (SelectedListItem.ChildContent != null)
+                                    {
+                                        <MudRender>@SelectedListItem.ChildContent</MudRender>
+                                    }
+                                    else
+                                    {
+                                        @if (string.IsNullOrEmpty(Text))
+                                        {
+                                            <MudText Typo="Typo.body1" Class="mud-text-secondary">@Placeholder</MudText>
+                                        }
+
+                                        <MudRender>@GetSelectTextPresenter()</MudRender>
+                                    }
+                                }
+                            </div>
+                            
+                        </DataVisualiser>
+
+                        <ChildContent>
+                            
+                        </ChildContent>
+                    </MudExInput>
+
+                    <MudExPopover Animation="@PopoverAnimation" AnimationPosition="@PopoverAnimationPosition" AnimationTimingFunction="@PopoverAnimationTimingFunction" Open="@_isOpen" MaxHeight="@MaxHeight" AnchorOrigin="@AnchorOrigin" TransformOrigin="@TransformOrigin" Class="@PopoverClass" RelativeWidth="@RelativeWidth">
+                        <CascadingValue Value="@this" IsFixed="true">
+                            <MudExList @ref="@_list" T="T" @bind-SelectedValue="@Value" Style="@($"overflow-y:auto; max-height: {MaxHeight}px")" @bind-SelectedValues="@SelectedValues" @bind-SelectedItem="@SelectedListItem" @bind-SelectedItems="@SelectedListItems"
+                                             Clickable="true" Color="@Color" Dense="@Dense" ItemCollection="@ItemCollection" Virtualize="@Virtualize" DisablePadding="@DisablePopoverPadding" DisableSelectedItemStyle="@DisableSelectedItemStyle"
+                                             MultiSelection="@MultiSelection" MultiSelectionComponent="@MultiSelectionComponent" MultiSelectionAlign="@MultiSelectionAlign" SelectAll="@SelectAll" SelectAllPosition="@SelectAllPosition" SelectAllText="@TryLocalize(SelectAllText)"
+                                             CheckedIcon="@CheckedIcon" UncheckedIcon="@UncheckedIcon" IndeterminateIcon="@IndeterminateIcon" SelectValueOnTab="@SelectValueOnTab" Comparer="@Comparer"
+                                       ItemTemplate="@ItemTemplate" SearchString="@SearchString" ItemSelectedTemplate="@ItemSelectedTemplate" ItemDisabledTemplate="@ItemDisabledTemplate" SearchBox="@SearchBox" SearchBoxAutoFocus="@SearchBoxAutoFocus" SearchFunc="@SearchFunc" SearchBoxPlaceholder="@SearchBoxPlaceholder" SearchBoxClearable="@SearchBoxClearable" SearchBoxVariant="@SearchBoxVariant" SearchBoxAdornment="SearchBoxAdornment" ToStringFunc="@ToStringFunc">
+                                @ChildContent
+                            </MudExList>
+                        </CascadingValue>
+                    </MudExPopover>
+                </InputContent>
+            </MudInputControl>            
+            @RenderChips(RenderChipsAdditional == Adornment.End)
+        </div>
+        
+        <div style="display: none">
+            <CascadingValue Value="@this" IsFixed="true">
+                <MudExList T="T" @bind-SelectedValue="@Value" @bind-SelectedValues="@SelectedValues" @bind-SelectedItem="@SelectedListItem" @bind-SelectedItems="@SelectedListItems"
+                                 Clickable="true" Color="@Color" Dense="@Dense" ItemCollection="@ItemCollection" Virtualize="@Virtualize" DisablePadding="@DisablePopoverPadding" DisableSelectedItemStyle="@DisableSelectedItemStyle"
+                                 MultiSelection="@MultiSelection" MultiSelectionComponent="@MultiSelectionComponent" MultiSelectionAlign="@MultiSelectionAlign" SelectAll="@SelectAll" SelectAllPosition="@SelectAllPosition" SelectAllText="@TryLocalize(SelectAllText)"
+                                 CheckedIcon="@CheckedIcon" UncheckedIcon="@UncheckedIcon" IndeterminateIcon="@IndeterminateIcon" SelectValueOnTab="@SelectValueOnTab" Comparer="@Comparer"
+                           ItemTemplate="@ItemTemplate" SearchString="@SearchString" ItemSelectedTemplate="@ItemSelectedTemplate" ItemDisabledTemplate="@ItemDisabledTemplate" SearchBox="@SearchBox" SearchBoxAutoFocus="@SearchBoxAutoFocus" SearchFunc="@SearchFunc" SearchBoxPlaceholder="@SearchBoxPlaceholder" SearchBoxClearable="@SearchBoxClearable" SearchBoxVariant="@SearchBoxVariant" SearchBoxAdornment="SearchBoxAdornment" ToStringFunc="@ToStringFunc">
+                    @ChildContent
+                </MudExList>
+            </CascadingValue>
+        </div>
+    </CascadingValue>
+    
+    <CascadingValue Value="@((IMudShadowSelectExtended)this)" IsFixed="true">
+        <CascadingValue Name="HideContent" Value="true">
+            @ChildContent
+        </CascadingValue>
+    </CascadingValue>
+
+</CascadingValue>
+
+
+<MudOverlay Visible="_isOpen" @onmousedown="@(CloseMenu)" LockScroll="@LockScroll" />
+
+@code{
+    MudExInput<IEnumerable<T>> _validationComponent;
+
+    private void OnValidationStateChanged()
+    {
+        ErrorText ??= _validationComponent.GetErrorText();
+        Error = HasErrors || _validationComponent.HasErrors;
+        StateHasChanged();        
+    }
+
+    /// <inheritdoc />
+    protected override async Task ValidateValue()
+    {
+        await base.ValidateValue();
+        if (_validationComponent is not null) {
+            await _validationComponent.Validate();            
+        }
+    }
+
+    protected RenderFragment RenderChips(bool condition)
+    {                
+        if (!condition)
+        {
+            return @<span></span>;
+        }
+        return 
+        @<MudChipSet Class="d-flex flex-wrap mud-width-full" Style="row-gap: 4px" AllClosable="ChipCloseable" OnClose="ChipClosed">
+            @if (ItemCollection != null)
+            {
+                foreach (var item in SelectedValues.Distinct())
+                {
+                    <MudChip Class="@ChipClass" Value="@item" Color="@Color" Size="@ChipSize" Variant="@ChipVariant" >
+                        @RenderItem(item, ToStringFunc != null ? ToStringFunc(item) : Converter.Set(item))
+                    </MudChip>
+                }
+            }
+            else
+            {
+                foreach (var item in Items?.Where(x => SelectedValues.Contains(x.Value)) ?? new List<MudExSelectItem<T>>())
+                {
+                    <MudChip Class="@ChipClass" Value="item.Value" Color="@Color" Size="@ChipSize" Variant="@ChipVariant" >
+                        @RenderItem(item.Value, (string.IsNullOrEmpty(item.Text) ? ( ToStringFunc != null ? ToStringFunc(item.Value) : Converter.Set(item.Value)) : item.Text))
+                    </MudChip>
+                }
+            }
+        </MudChipSet>;
+    }
+
+    protected virtual RenderFragment RenderItem(T item, string text)
+    {
+        if (ItemTemplate != null)
+            return ItemTemplate(item);
+        return @<p>@text</p>;
+    }
+
+}
+

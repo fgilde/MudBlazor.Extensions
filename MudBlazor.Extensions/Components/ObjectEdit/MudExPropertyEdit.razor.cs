@@ -113,6 +113,7 @@ public partial class MudExPropertyEdit
         return PropertyMeta.RenderData
             .InitValueBinding(PropertyMeta, OnPropertyValueChanged)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.For), CreateFieldForExpressionPropertyType())
+            .TrySetAttributeIfAllowed(nameof(MudExSelect<string>.ForMultiple), CreateFieldForExpressionPropertyType())
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Label), () => PropertyMeta.Settings.LabelFor(LocalizerToUse), PropertyMeta.Settings.LabelBehaviour is LabelBehaviour.Both or LabelBehaviour.DefaultComponentLabeling)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.HelperText), () => PropertyMeta.Settings.DescriptionFor(LocalizerToUse))
             .TrySetAttributeIfAllowed(nameof(Class), () => Class)

@@ -19,8 +19,8 @@ public partial class MudExFontSelect
     /// </summary>
     [Parameter, SafeCategory("Data")]
     public string FontFamily {
-        get => Selected?.Any() == true ? string.Join(",", Selected) : string.Empty;
-        set => Selected = value?.Split(',').Select(x => x.Trim()).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+        get => SelectedValues?.Any() == true ? string.Join(",", SelectedValues) : string.Empty;
+        set => SelectedValues = value?.Split(',').Select(x => x.Trim()).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
     }
 
     /// <summary>
@@ -39,9 +39,9 @@ public partial class MudExFontSelect
     /// <inheritdoc />
     protected override void OnInitialized()
     {
+        base.OnInitialized();        
         ItemTemplate = GetItemTemplate();
-        UseCustomItemRenderInSelectionPopover = true;
-        ViewMode = ViewMode.NoChips;
-        base.OnInitialized();
+        MultiSelection = true;
+        ValuePresenter = Enums.ValuePresenter.Chip;
     }
 }

@@ -1,0 +1,23 @@
+﻿@typeparam T
+@inherits MudBaseSelectItem
+
+@if (HideContent == false)
+{
+    <MudExListItem @ref="@ListItem" @attributes="UserAttributes" T="T" Value="@Value" Text="@Text" id="@ItemId" OnClick="@HandleOnClick" IsFunctional="@IsFunctional" Href="@Href" Disabled="@GetDisabledStatus()" Class="@Class" Style="@Style">
+        @if (ChildContent != null && MudExSelect?.ItemCollection == null)
+        {
+            @ChildContent
+        }
+        else
+        {            
+            @if (MudExSelect?.HighlightSearch == true && !string.IsNullOrWhiteSpace(MudExSelect?.MudExList?.SearchField?.Text))
+            {
+                <MudHighlighter Text="@DisplayString" HighlightedText="@MudExSelect?.MudExList?.SearchField?.Text" />
+            }
+            else
+            {
+                @DisplayString
+            }
+        }
+    </MudExListItem>
+}

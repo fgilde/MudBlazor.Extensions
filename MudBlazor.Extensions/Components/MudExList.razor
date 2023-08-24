@@ -1,0 +1,68 @@
+﻿@typeparam T
+@inherits MudExBaseComponent<MudExList<T>>
+@using MudBlazor
+
+<div @attributes="UserAttributes" id="@_elementId" class="@Classname" style="@Stylename" tabindex="-1" @onkeydown="HandleKeyDown" @onfocusout="HandleOnFocusOut" @onscroll="HandleOnScroll">
+    <CascadingValue Value="@this" IsFixed="true">
+        @SelectAllRender(Enums.SelectAllPosition.BeforeSearchBox)
+
+        @if (ItemCollection != null)
+        {
+            @if (SearchBox)
+            {
+                @SearchBoxRender
+            }
+            <MudVirtualize IsEnabled="@Virtualize" Items="GetSearchedItems()" Context="item" OverscanCount="@OverscanCount">
+                @ItemRender(item)
+            </MudVirtualize>
+        }
+        else
+        {
+            @ChildContent
+        }
+    </CascadingValue>
+</div>
+
+@code {
+    private RenderFragment SelectAllRender(Enums.SelectAllPosition position) => @<div>
+        @{
+            if (MultiSelection && SelectAll && SelectAllPosition == position && ParentList == null)
+            {
+                if (SelectAllTemplate != null)
+                {
+                    <div class="mud-ripple" @onclick="@(() => SelectAllItems(_allSelected))" tabindex="-1">
+                        @SelectAllTemplate
+                    </div>
+                }
+                else
+                {
+                    <MudExListItem T="T" IsFunctional="true" Icon="@SelectAllCheckBoxIcon" IconColor="@Color" Text="@SelectAllText" OverrideMultiSelectionComponent="Enums.MultiSelectionComponent.None" OnClick="@(() => SelectAllItems(_allSelected))" OnClickHandlerPreventDefault="true" Dense="@Dense" Class="mb-2" />
+                    <MudDivider />
+                }
+            }
+        }
+    </div>;
+
+    private RenderFragment SearchBoxRender => @<MudExListSubheader T="T" Style="position: sticky; top: -8px; padding-top: 8px; margin-top: -8px; background-color: var(--mud-palette-background); z-index: 10">
+                                                  <div @onkeydown:stopPropagation class="mud-ex-list-item">
+                                                      @SelectAllRender(Enums.SelectAllPosition.NextToSearchBox)
+                                                      <MudTextField @ref="_searchField" @bind-Value="@SearchString" Class="@ClassSearchBox" Placeholder="@SearchBoxPlaceholder" OnKeyDown="SearchBoxHandleKeyDown" OnKeyUp="@(() => UpdateSelectedStyles())" OnClearButtonClick="@(() => UpdateSelectedStyles())" Immediate="true" Variant="SearchBoxVariant" Margin="Margin.Dense"
+                                                                    Adornment="SearchBoxAdornment" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color" AutoFocus="@SearchBoxAutoFocus" Clearable="@SearchBoxClearable" />
+                                                  </div>
+                                                  @SelectAllRender(Enums.SelectAllPosition.AfterSearchBox)
+                                              </MudExListSubheader>;
+
+    
+    private RenderFragment ItemRender(T item) => @<div>
+        @{
+            if (MudExSelect != null)
+            {
+                <MudExSelectItem Value="@item" Text="@(ToStringFunc == null ? item.ToString() : ToStringFunc(item))" />
+            }
+            else
+            {
+                <MudExListItem Value="@item" @ondblclick="@(() => OnDoubleClickHandler(new MouseEventArgs(), item))" Text="@(ToStringFunc == null ? item.ToString() : ToStringFunc(item))" />
+            }
+        }
+    </div>;
+}

@@ -1,0 +1,143 @@
+﻿@typeparam T
+@inherits MudExBaseInput<T>
+
+<div class="@Classname" style="@Style">
+    
+    @if (AdornmentStart != null)
+    {
+        <div class="@AdornmentStartClassname">
+            @AdornmentStart
+        </div>
+    }
+    
+    @if (Lines > 1)
+    {
+        <textarea class="@InputClassname"
+              @ref="ElementReference"
+              rows="@Lines"
+              @attributes="UserAttributes"
+              type="@InputTypeString"
+              placeholder="@Placeholder"
+              disabled=@Disabled
+              readonly="@ReadOnly"
+              inputmode="@InputMode.ToString()"
+              @oninput="OnInputHandler"
+              @onchange="OnChangeHandler"
+              @onblur="@OnBlurredAsync"
+              @onkeydown="@InvokeKeyDown"
+              @onkeypress="@InvokeKeyPress"
+              @onkeyup="@InvokeKeyUp"
+              @onpaste="@OnPaste"
+              value="@_internalText"
+              maxlength="@MaxLength"
+              @onkeydown:preventDefault="@KeyDownPreventDefault"
+              @onkeypress:preventDefault="@KeyPressPreventDefault"
+              @onkeyup:preventDefault="@KeyUpPreventDefault"
+              @onmousewheel="@OnMouseWheel"
+              @onwheel="@OnMouseWheel"
+              aria-invalid="@Error.ToString().ToLower()"
+              aria-describedby="@ErrorId"> 
+            @Text
+            </textarea>
+        @*Note: double mouse wheel handlers needed for Firefox because it doesn't know onmousewheel*@
+        @*note: the value="@_internalText" is absolutely essential here. the inner html @Text is needed by tests checking it*@
+    }
+    else
+    {
+        <div class="d-flex flex-wrap align-center mud-width-full">
+
+            @if (ShowVisualiser == true)
+            {
+                <div class="@InputClassname" style="height: auto; @DataVisualiserStyle" tabindex="0" @ref="@_elementReference1">
+                    @DataVisualiser
+                </div>
+            }
+
+            <div class="mud-input" style="flex-basis: 20px; flex-grow: 1">
+                <input class="@InputClassname"
+                   @ref="ElementReference"
+                   @attributes="UserAttributes"
+                       type="@InputTypeString"
+                       value="@_internalText"
+                   @oninput="OnInputHandler"
+                   @onchange="OnChangeHandler"
+                       placeholder="@Placeholder"
+                       disabled=@Disabled
+                       readonly="@ReadOnly"
+                   @onblur="@OnBlurredAsync"
+                       inputmode="@InputMode.ToString()"
+                       pattern="@Pattern"
+                   @onkeydown="@InvokeKeyDown"
+                   @onkeypress="@InvokeKeyPress"
+                   @onkeyup="@InvokeKeyUp"
+                       maxlength="@MaxLength"
+                   @onkeydown:preventDefault="KeyDownPreventDefault"
+                   @onkeypress:preventDefault="@KeyPressPreventDefault"
+                   @onkeyup:preventDefault="@KeyUpPreventDefault"
+                   @onmousewheel="@OnMouseWheel"
+                   @onwheel="@OnMouseWheel"
+                       aria-invalid="@Error.ToString().ToLower()"
+                       aria-describedby="@ErrorId" />
+            </div>
+
+        @*Note: double mouse wheel handlers needed for Firefox because it doesn't know onmousewheel*@
+
+            @if (ShowVisualiser == false)
+            {
+                if (Disabled)
+                {
+                    <div class="@InputClassname @ChildContentClassname" style="@ChildContentStyle"
+             @onblur="@OnBlurredAsync" @ref="@_elementReference1">
+                        @ChildContent
+                    </div>
+                }
+                else
+                {
+                    <div class="@InputClassname @ChildContentClassname" style="@ChildContentStyle"
+                         tabindex="@(InputType == InputType.Hidden && ChildContent != null ? 0 : -1)"
+             @onblur="@OnBlurredAsync" @ref="@_elementReference1">
+                        @ChildContent
+                    </div>
+                }
+            }
+
+        </div>
+    }
+
+    @if (GetClearable() && !GetDisabledState() || ForceClearable)
+    {
+        <div @onmousedown:stopPropagation>
+            <MudIconButton Class="@ClearButtonClassname"
+                       Color="@Color.Default"
+                       Icon="@ClearIcon"
+                       Size="@Size.Small"
+                       @onmousedown="@ClearButtonClickHandlerAsync"
+                           tabindex="-1" />
+        </div>
+    }
+
+    @if (AdornmentEnd != null)
+    {
+        <div class="@AdornmentEndClassname">
+            @AdornmentEnd
+        </div>
+
+    }
+
+    @if (Variant == Variant.Outlined)
+    {
+        <div class="mud-input-outlined-border"></div>
+    }
+
+    @if (!HideSpinButtons)
+    {
+        <div class="mud-input-numeric-spin">
+            <MudButton Variant="Variant.Text" @onclick="OnIncrement" Disabled="@(Disabled || ReadOnly)" tabindex="-1">
+                <MudIcon Icon="@NumericUpIcon" Size="@GetButtonSize()" />
+            </MudButton>
+            <MudButton Variant="Variant.Text" @onclick="OnDecrement" Disabled="@(Disabled || ReadOnly)" tabindex="-1">
+                <MudIcon Icon="@NumericDownIcon" Size="@GetButtonSize()" />
+            </MudButton>
+        </div>
+    }
+</div>

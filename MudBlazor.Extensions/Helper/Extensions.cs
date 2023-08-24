@@ -27,6 +27,8 @@ namespace MudBlazor.Extensions.Helper
         public static string TryLocalize(this IStringLocalizer localizer, string text, params object[] args)
         {
             bool hasArgs = args is {Length: > 0};
+            if (text is null)
+                return null;
             return localizer != null ? (hasArgs ? localizer[text, args.Where(a => a != null).ToArray()] : localizer[text]) : string.Format(text, args);
         }
         

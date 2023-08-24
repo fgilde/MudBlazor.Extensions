@@ -1,0 +1,46 @@
+.mud-ex-grid {
+    display: grid;
+    box-sizing: border-box;
+    width: 100%;
+
+    &.mud-ex-grid-height-full {
+        min-height: 100vh;
+    }
+
+    &.mud-ex-grid-height-full-without-appbar {
+        min-height: calc(100vh - var(--mud-appbar-height));
+    }
+
+    @for $i from 2 through 12 {
+        &.mud-ex-grid-column-#{$i} {
+            grid-template-columns: repeat($i, 100% / $i);
+        }
+
+        &.mud-ex-grid-row-#{$i} {
+            grid-template-rows: repeat($i, 100% / $i);
+        }
+    }
+}
+
+.mud-ex-grid-section {
+    display: inline-grid;
+    overflow: auto;
+
+    @for $i from 1 through 12 {
+        &.mud-ex-grid-section-col-start-#{$i} {
+            grid-column-start: $i;
+        }
+
+        &.mud-ex-grid-section-col-end-#{$i} {
+            grid-column-end: $i;
+        }
+
+        &.mud-ex-grid-section-row-start-#{$i} {
+            grid-row-start: $i;
+        }
+
+        &.mud-ex-grid-section-row-end-#{$i} {
+            grid-row-end: $i;
+        }
+    }
+}

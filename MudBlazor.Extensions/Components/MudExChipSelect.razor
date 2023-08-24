@@ -1,101 +1,12 @@
 ﻿@using Nextended.Core.Extensions
 @using Microsoft.AspNetCore.Components.Rendering
-@inherits MudExBaseComponent<MudExChipSelect<T>>
+@using MudBlazor.Extensions.Attribute
+@using System.Linq.Expressions
+@inherits MudExSelect<T>
 @typeparam T
 
-<MudGrid>
-    @if (ViewMode == ViewMode.ChipsAdditionalAbove)
-    {
-        <MudItem xs="12" md="12">
-            @RenderChips
-        </MudItem>
-    }
+@Inherited()
 
-    <MudItem xs="12" md="12">
-        @if (ViewMode == ViewMode.ChipsOnly)
-        {
-            @RenderChips
-        }
-        <div class="select-container">
-            <MudSelect T="@T" MultiSelectionTextFunc="MultiSelectionTextFunc"
-                       Variant="@(ViewMode != ViewMode.ChipsOnly ? Variant : Variant.Text)"
-                       Label="@(!Label.IsNullOrWhiteSpace() ? TryLocalize(Label) : "")" 
-                       HelperText="@(!HelperText.IsNullOrWhiteSpace() ? TryLocalize(HelperText) : "")"
-                       Clearable="@(!ReadOnly && Clearable)"
-                       OnClose="@OnClose"
-                       OnOpen="@OnOpen"
-                       ReadOnly="@ReadOnly"
-                       Adornment="@(ReadOnly ? Adornment.None : Adornment)"
-                       SelectAll="false"
-                       DisableUnderLine="@DisableUnderLine"
-                       Class="@($"{CssName} {Class}")"
-                       PopoverClass="@($"{CssName}-over chip-select-over")"
-                       MultiSelection="@MultiSelect" 
-                       AnchorOrigin="Origin.BottomCenter"
-                       Style="@Style"
-                       @bind-Value="Value" 
-                       @bind-SelectedValues="Selected"
-                       AdornmentIcon="@AdornmentIcon">
-                @if (FilterEnabled)
-                {                    
-                    <MudSelectItem DisableRipple="true" OnClick="@OnFilterItemClick" Class="mud-ex-filter-select" T="@T" Value="default">
-                        <MudTextField onclick="MudExDomHelper.focusElementDelayed(this, 100, event)" Immediate="true" Clearable="true" @bind-Value="Filter" AutoFocus="@(AutoFocusFilter && FilterEnabled)" T="string" Placeholder="@TryLocalize("Filter")" Label="@TryLocalize("Filter")" />
-                    </MudSelectItem>
-                }
-                @foreach (var item in AvailableItems.EmptyIfNull().Where(arg => arg != null && (Filter.IsNullOrWhiteSpace() || ItemNameRender(arg)?.Contains(Filter, StringComparison.CurrentCultureIgnoreCase) == true)))
-                {
-                    <MudSelectItem Style="height: 70px;" T="@T" Value="@item">
-                        @if (UseCustomItemRenderInSelectionPopover)
-                        {
-                            @RenderItem(item)
-                        }
-                        else
-                        {
-                            <MudHighlighter Text="@ItemNameRender(item)" HighlightedText="@Filter"/>
-                        }
-                    </MudSelectItem>
-                }
-            </MudSelect>
-            @if (RenderValidationComponent && For != null)
-            {
-                <MudTextField Class="mt-5" Style="@StyleForValidationComponent" DisableUnderLine="@DisableUnderLineForValidationComponent" For="@For" ReadOnly="true"/>
-            }
-        </div>
-    </MudItem>
-    
-    @if (ViewMode == ViewMode.ChipsAdditionalBelow)
-    {
-        <MudItem xs="12" md="12">
-            @RenderChips
-        </MudItem>
-    }
-
-</MudGrid>
-
-@code
-{
-    private void RenderChips(RenderTreeBuilder builder)
-    {
-        foreach (var item in Selected.Where(arg => arg != null))
-        {
-            RenderChip(builder, item);
-        }
-    }
-
-    private void RenderChip(RenderTreeBuilder __builder, T item)
-    {
-    <MudChip Size="Size.Large" Variant="@ChipVariant" OnClose="@(( ReadOnly ? null : chip => Remove(chip, item)))" Color="@ChipColor" CloseIcon="@Icons.Material.Filled.Close">
-        @RenderItem(item)
-    </MudChip>
-    }
-
-    protected virtual RenderFragment RenderItem(T item)
-    {
-        if (ItemTemplate != null)
-            return ItemTemplate(item);
-        string name = ItemNameRender(item);
-        return @<p>@name</p>;
-    }
-
+@code{
 
 }

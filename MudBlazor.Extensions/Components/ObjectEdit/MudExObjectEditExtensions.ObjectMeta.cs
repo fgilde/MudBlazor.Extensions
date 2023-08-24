@@ -48,6 +48,9 @@ public static partial class MudExObjectEditExtensions
     public static ObjectEditMeta<T> IgnoreAllInheritedFields<T>(this ObjectEditMeta<T> meta, params Expression<Func<T, object>>[] except)
         => meta?.SetProperties(m => m.AllProperties.Where(p => !(except ?? Enumerable.Empty<Expression<Func<T, object>>>() ).Select(m.Property).Contains(p) && p.PropertyInfo.DeclaringType != typeof(T)).Apply(p => p.Ignore()));
 
+    public static ObjectEditMeta<T> IgnoreAllObsoleteFields<T>(this ObjectEditMeta<T> meta)
+        => meta?.SetProperties(m => m.AllProperties.Where(p => p.PropertyInfo.GetCustomAttribute<ObsoleteAttribute>() != null).Apply(p => p.Ignore()));
+
     public static ObjectEditMeta<T> GroupByTypes<T>(this ObjectEditMeta<T> meta)
         => meta?.SetProperties(m => m.AllProperties.Apply(p => p.WithGroup(p.PropertyInfo.PropertyType.Name)));
     public static ObjectEditMeta<T> GroupByTypes<T>(this ObjectEditMeta<T> meta, params Type[] types)

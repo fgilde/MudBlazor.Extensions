@@ -124,6 +124,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\MudExListItem.razor" />
+    <_ContentIncludedByDefault Remove="Components\MudExSelectItem.razor" />
     <_ContentIncludedByDefault Remove="wwwroot\js\mudBlazorExtensions.all.min.js" />
   </ItemGroup>
 
@@ -140,6 +142,14 @@
     <Content Update="wwwroot\css\mudExAppLoader.scss">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\MudExListItem.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\MudExSelectItem.razor" />
   </ItemGroup>
 
   <!--<Target Name="PreBuild" BeforeTargets="PreBuildEvent">

@@ -1,37 +1,242 @@
 ﻿@page "/test"
-@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Enums
 
-
-
-<DemoComponent Title="MudExSplitPanel" PageType="@GetType()">
-   
-    <MudExUploadEdit @bind-UploadRequests="files" AllowFolderUpload="false" MimeTypes="@mimeTypes" T="UploadableFile" Style="height: 400px; max-height: 400px; width: 800px" AllowMultiple="true" />
-    <MudButton OnClick="@UploadFiles">upload</MudButton>
-
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudGrid>
+            <MudItem xs="12" sm="8" Class="d-flex align-start justify-center">
+            <MudExSelect @ref="component"
+                @bind-SelectedValues="@_selected"
+                                 ValuePresenter="ValuePresenter.Chip"
+                MultiSelection="true"
+                         Clearable="true"
+                ItemCollection="_states" SearchBox="true" T="string" Label="Standard Search" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" HelperText="Search with 'Contains' logic" />
+            </MudItem>
+            </MudGrid>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
 </DemoComponent>
 
-@code{
 
-    public MudExDimension Dimension { get; set; } = new MudExDimension(32,88);
+<MudGrid>
+    <MudItem xs="12" sm="8" Class="d-flex align-start justify-center">
+        <MudExSelect T="string" Label="Groups & Items" AnchorOrigin="Origin.BottomCenter" @bind-Value="_selectedValue" @bind-SelectedValues="_selectedValues" MultiSelection="_multiSelection">
+            <MudExSelectItemGroup T="string" Text="Group 1" Sticky="_sticky" Nested="_nested" InitiallyExpanded="_initiallyExpanded">
+                <MudExSelectItem Value="@("Item 1")" />
+                <MudExSelectItem Value="@("Item 2")" />
+                <MudExSelectItem Value="@("Item 3")" />
+            </MudExSelectItemGroup>
 
-    private string[] mimeTypes =
+            <MudExSelectItemGroup T="string" Text="Group 2" Sticky="_sticky" Nested="_nested" InitiallyExpanded="_initiallyExpanded">
+                <MudExSelectItem Value="@("Item 4")" />
+                <MudExSelectItem Value="@("Item 5")" />
+                <MudExSelectItem Value="@("Item 6")" />
+            </MudExSelectItemGroup>
+
+            <MudExSelectItemGroup T="string" Text="Group 3" Sticky="_sticky" Nested="_nested" InitiallyExpanded="_initiallyExpanded">
+                <MudExSelectItem Value="@("Item 7")" />
+                <MudExSelectItem Value="@("Item 8")" />
+                <MudExSelectItem Value="@("Item 9")" />
+            </MudExSelectItemGroup>
+        </MudExSelect>
+        
+    </MudItem>
+
+    <MudItem xs="12" sm="4">
+        <MudCheckBox @bind-Checked="_multiSelection" Label="MultiSelection" Color="Color.Primary" />
+        <MudCheckBox @bind-Checked="_sticky" Label="Sticky" Color="Color.Primary" />
+        <MudCheckBox @bind-Checked="_nested" Label="Nested" Color="Color.Primary" />
+        <MudCheckBox @bind-Checked="_initiallyExpanded" Label="Initially Expanded" Color="Color.Primary" />
+        <MudDivider />
+        <MudText Class="ma-4">Selected Value: @_selectedValue</MudText>
+        <MudText Class="ma-4">Selected Values: @(_selectedValues == null ? null : string.Join(", ", _selectedValues))</MudText>
+    </MudItem>
+</MudGrid>
+
+
+<MudExGrid Class="mud-border-info border-2 border-solid" Column="_pageColumn" Row="_pageRow" Height="300">
+     <MudExGridSection Column="_section1Column" ColSpan="_section1ColSpan" Row="_section1Row" RowSpan="_section1RowSpan"
+                OnClick="IncreaseCol1" OnContextMenu="IncreaseRow1" OnContextMenuPreventDefault>
+        <MudPaper Class="d-flex align-center justify-center mud-theme-primary">Section 1</MudPaper>
+    </MudExGridSection>
+
+    <MudExGridSection Column="_section2Column" ColSpan="_section2ColSpan" Row="_section2Row" RowSpan="_section2RowSpan"
+                OnClick="IncreaseCol2" OnContextMenu="IncreaseRow2" OnContextMenuPreventDefault>
+        <MudPaper Class="d-flex align-center justify-center mud-theme-secondary">Section 2</MudPaper>
+    </MudExGridSection>
+</MudExGrid>
+
+<MudStack Row="true">
+    <MudStack>
+        <MudNumericField @bind-Value="_pageColumn" Label="Page Column" Min="2" Max="12" />
+        <MudNumericField @bind-Value="_pageRow" Label="Page Row" Min="2" Max="12" />
+        <MudCheckBox @bind-Checked="_allowMouseEvents" Label="Allow Mouse Events" Color="Color.Primary" />
+        <MudText Typo="Typo.subtitle2">If true, left click increases the column and right click increases the row.</MudText>
+    </MudStack>
+    <MudStack>
+        <MudNumericField @bind-Value="_section1Column" Label="Section 1 Column" Min="1" Max="_pageColumn" />
+        <MudNumericField @bind-Value="_section1ColSpan" Label="Section 1 ColSpan" Min="1" Max="_pageColumn" />
+        <MudNumericField @bind-Value="_section1Row" Label="Section 1 Row" Min="1" Max="_pageRow" />
+        <MudNumericField @bind-Value="_section1RowSpan" Label="Section 1 RowSpan" Min="1" Max="_pageRow" />
+    </MudStack>
+    <MudStack>
+        <MudNumericField @bind-Value="_section2Column" Label="Section 2 Column" Min="1" Max="_pageColumn" />
+        <MudNumericField @bind-Value="_section2ColSpan" Label="Section 2 ColSpan" Min="1" Max="_pageColumn" />
+        <MudNumericField @bind-Value="_section2Row" Label="Section 2 Row" Min="1" Max="_pageRow" />
+        <MudNumericField @bind-Value="_section2RowSpan" Label="Section 2 RowSpan" Min="1" Max="_pageRow" />
+    </MudStack>
+</MudStack>
+
+@code {
+
+    
+    int _pageColumn = 5;
+    int _pageRow = 5;
+    int _section1Column = 2;
+    int _section1ColSpan = 1;
+    int _section1Row = 2;
+    int _section1RowSpan = 1;
+    int _section2Column = 4;
+    int _section2ColSpan = 1;
+    int _section2Row = 4;
+    int _section2RowSpan = 1;
+    bool _allowMouseEvents = false;
+
+    private void IncreaseCol1()
     {
-        "image/*"
-    };
-    IList<UploadableFile> files;
-    private async Task UploadFiles()
-    {
-        string fileStorage = "TEST_UPLOADS";
-        foreach (var file in files)
+        if (_allowMouseEvents == false)
+            return;
+
+        if (_pageColumn > _section1Column)
         {
-            Directory.CreateDirectory(Path.Combine(fileStorage, "CARD"));
-            string newName = Path.GetRandomFileName(); 
-            string newFileName = Path.ChangeExtension(newName, Path.GetExtension(file.FileName));
-            string path = Path.Combine(fileStorage, "CARD", newFileName);
-            await File.WriteAllBytesAsync(path, file.Data);
-            
+            _section1Column++;
         }
-        files.Clear();
+        else
+        {
+            _section1Column = 1;
+        }
+    }
+
+    private void IncreaseRow1()
+    {
+        if (_allowMouseEvents == false)
+            return;
+
+
+        if (_pageRow > _section1Row)
+        {
+            _section1Row++;
+        }
+        else
+        {
+            _section1Row = 1;
+        }
+    }
+
+    private void IncreaseCol2()
+    {
+        if (_allowMouseEvents == false)
+            return;
+
+
+        if (_pageColumn > _section2Column)
+        {
+            _section2Column++;
+        }
+        else
+        {
+            _section2Column = 1;
+        }
+    }
+
+    private void IncreaseRow2()
+    {
+        if (_allowMouseEvents == false)
+            return;
+
+
+        if (_pageRow > _section2Row)
+        {
+            _section2Row++;
+        }
+        else
+        {
+            _section2Row = 1;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    MudExSelect<string> component;
+
+    bool _multiSelection = false;
+    bool _sticky = true;
+    bool _nested = false;
+    bool _initiallyExpanded = false;
+    string _selectedValue;
+    IEnumerable<string> _selectedValues;
+    private IEnumerable<string> _selected = new[] { "Alabama", "Alaska", "North Dakota", "Puerto-Rico" };
+    private string[] _states =
+    {
+        "Alabama", "Alaska", "American Samoa", "Arizona",
+        "Arkansas", "California", "Colorado", "Connecticut",
+        "Delaware", "District of Columbia", "Federated States of Micronesia",
+        "Florida", "Georgia", "Guam", "Hawaii", "Idaho",
+        "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky",
+        "Louisiana", "Maine", "Marshall Islands", "Maryland",
+        "Massachusetts", "Michigan", "Minnesota", "Mississippi",
+        "Missouri", "Montana", "Nebraska", "Nevada",
+        "New Hampshire", "New Jersey", "New Mexico", "New York",
+        "North Carolina", "North Dakota", "Northern Mariana Islands", "Ohio",
+        "Oklahoma", "Oregon", "Palau", "Pennsylvania", "Puerto-Rico",
+        "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
+        "Texas", "Utah", "Vermont", "Virgin Island", "Virginia",
+        "Washington", "West Virginia", "Wisconsin", "Wyoming",
+    };
+
+    private bool SearchItems(string value, string searchString)
+    {
+        if (searchString == "")
+        {
+            return true;
+        }
+
+        if (value.StartsWith(searchString, StringComparison.CurrentCultureIgnoreCase))
+        {
+            return true;
+        }
+
+        return false;
+    }
+    Tuple<string, string, bool>[] _players = new Tuple<string, string, bool>[]
+    {
+       new Tuple<string, string, bool>("Kareem Abdul-Jabbar", "38.387", true),
+       new Tuple<string, string, bool>("LeBron James", "37.062", false),
+       new Tuple<string, string, bool>("Karl Malone", "36.928", true),
+       new Tuple<string, string, bool>("Kobe Bryant", "33.643", true),
+       new Tuple<string, string, bool>("Michael Jordan", "32.292", true),
+    };
+
+    private string StringFunc(Tuple<string, string, bool> tuple)
+    {
+        if (tuple == null)
+        {
+            return null;
+        }
+        return tuple.Item1 + " - Total Score: " + tuple.Item2;
     }
 }
 
