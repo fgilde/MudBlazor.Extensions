@@ -823,6 +823,19 @@ public partial class MudExList<T> : IDisposable
             case "ArrowDown":
                 await HandleKeyDown(obj);
                 break;
+            case "Escape":
+                if (string.IsNullOrEmpty(SearchString))
+                {
+                    if (MudExSelect != null)
+                    {
+                        await _searchField.BlurAsync();
+                        MudExSelect.HandleKeyDown(obj);                        
+                    }
+                }else
+                {
+                    SearchString = string.Empty;                    
+                }
+                break;
             case "Enter":
             case "NumpadEnter":
                 await HandleKeyDown(obj);

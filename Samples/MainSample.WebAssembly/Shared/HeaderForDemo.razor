@@ -13,6 +13,10 @@
         {
             <MudAlert Severity="Severity.Warning">@($"{Api.GetTypeName(info.Type)} - {string.Join("<br/>", info.BetaInfos.Select(b => b.Message))}")</MudAlert>
         }
+@*        @foreach (var info in DemoAttribute?.RelatedComponents?.Select(t => new { Type = t, ObsoleteAttributes = t.GetCustomAttributes<ObsoleteAttribute>() }).Where(arg => arg?.ObsoleteAttributes?.Any() == true)!)
+        {
+            <MudAlert Severity="Severity.Warning">@($"{Api.GetTypeName(info.Type)} is obsolete - {string.Join("<br/>", info.ObsoleteAttributes.Select(b => b.Message))}")</MudAlert>
+        }*@
     }
 </div>
 

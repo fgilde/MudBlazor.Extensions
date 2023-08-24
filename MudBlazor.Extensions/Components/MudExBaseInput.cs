@@ -86,12 +86,50 @@ public abstract class MudExBaseInput<T> : MudBaseInput<T>
     [Parameter]
     public string ChildContentStyle { get; set; }
 
+
+    [SafeCategory(CategoryTypes.FormComponent.Validation)]
+    [Parameter] public EventCallback ErrorStateChanged { get; set; }
+
+
+    [SafeCategory(CategoryTypes.FormComponent.Validation)]
+    [Parameter] public EventCallback<bool> ErrorChanged { get; set; }
+
+    [SafeCategory(CategoryTypes.FormComponent.Validation)]
+    [Parameter] public EventCallback<string> ErrorTextChanged { get; set; }
+
+    [SafeCategory(CategoryTypes.FormComponent.Validation)]
+    [Parameter] public EventCallback<List<string>> ValidationErrorsChanged { get; set; }
+
+
     internal virtual InputType GetInputType() => InputType.Text;
 
     /// <summary>
     /// SkipUpdateProcessOnSetParameters
     /// </summary>
     protected virtual bool SkipUpdateProcessOnSetParameters { get; set; }
+
+    /// <inheritdoc />
+    protected override async Task ValidateValue()
+    {
+        string c = Class;
+        var b = c;
+        if(Class?.Contains("SAMPLE") == true)
+        {
+
+        }
+        var error = Error;
+        var validationErrors = ValidationErrors;
+        var errorText = ErrorText;
+        await base.ValidateValue();
+        if (error != Error || validationErrors != ValidationErrors || errorText != ErrorText)
+            await ErrorStateChanged.InvokeAsync(null);
+        if (error != Error)
+            await ErrorChanged.InvokeAsync(Error);
+        if (errorText != ErrorText)
+            await ErrorTextChanged.InvokeAsync(ErrorText);
+        if (validationErrors?.SequenceEqual(ValidationErrors) == false)
+            await ValidationErrorsChanged.InvokeAsync(ValidationErrors);
+    }
 
 
     /// <inheritdoc />

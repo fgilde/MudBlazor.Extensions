@@ -19,8 +19,7 @@ public partial class MudExChipSelect<T>
     {
         base.OnInitialized();
         MultiSelection = true;        
-        ValuePresenter = ViewMode == ViewMode.ChipsOnly ? Enums.ValuePresenter.Chip : Enums.ValuePresenter.Text;        
-        Clearable = true;        
+        ValuePresenter = ViewMode == ViewMode.ChipsOnly ? Enums.ValuePresenter.Chip : Enums.ValuePresenter.Text;                
     }
 
     #region Obsolete

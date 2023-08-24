@@ -18,21 +18,21 @@ namespace MudBlazor.Extensions.Components
         protected string AdornmentClassname => MudExCss.GetAdornmentClassname(this);
 
         protected string AdornmentStartClassname =>
-            new CssBuilder("mud-input-adornment mud-ex-input-adornment-start")
+            new MudExCssBuilder("mud-input-adornment mud-ex-input-adornment-start")
                 .AddClass($"mud-input-{Variant.ToDescriptionString()}-extended")
                 .AddClass($"mud-text", !string.IsNullOrEmpty(AdornmentText))
                 .AddClass($"mud-input-root-filled-shrink", Variant == Variant.Filled)
                 .Build();
 
         protected string AdornmentEndClassname =>
-            new CssBuilder("mud-input-adornment mud-ex-input-adornment-end")
+            new MudExCssBuilder("mud-input-adornment mud-ex-input-adornment-end")
                 .AddClass($"mud-input-{Variant.ToDescriptionString()}-extended")
                 .AddClass($"mud-text", !string.IsNullOrEmpty(AdornmentText))
                 .AddClass($"mud-input-root-filled-shrink", Variant == Variant.Filled)
                 .Build();
 
         protected string ClearButtonClassname =>
-                    new CssBuilder()
+                    new MudExCssBuilder()
                     .AddClass("me-n1", Adornment == Adornment.End && !HideSpinButtons)
                     .AddClass("mud-icon-button-edge-end", Adornment == Adornment.End && HideSpinButtons)
                     .AddClass("me-6", Adornment != Adornment.End && !HideSpinButtons)
@@ -40,7 +40,7 @@ namespace MudBlazor.Extensions.Components
                     .Build();
 
         protected string ChildContentClassname =>
-                    new CssBuilder()
+                    new MudExCssBuilder()
                     .AddClass("d-inline", InputType == InputType.Hidden && ChildContent != null && ShowVisualiser == false)
                     .AddClass("d-none", !(InputType == InputType.Hidden && ChildContent != null && ShowVisualiser == false))
                     .Build();
@@ -87,6 +87,8 @@ namespace MudBlazor.Extensions.Components
         {
             _internalText = args?.Value as string;
             await OnInternalInputChanged.InvokeAsync(args);
+            await Validate();
+
             if (!Immediate)
             {
                 await SetTextAsync(args?.Value as string);

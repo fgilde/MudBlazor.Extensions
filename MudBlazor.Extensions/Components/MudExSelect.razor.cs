@@ -8,6 +8,7 @@ using MudBlazor.Extensions.Enums;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using System.Linq.Expressions;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -17,6 +18,7 @@ namespace MudBlazor.Extensions.Components;
 /// <typeparam name="T"></typeparam>
 public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IMudExComponent
 {
+
 
     #region Constructor, Injected Services, Parameters, Fields
 
@@ -81,6 +83,11 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     [Parameter, SafeCategory("Behavior")]
     public virtual bool HighlightSearch { get; set; } = true;
 
+    /// <summary>
+    /// Specify an expression which returns the model's field for which validation messages should be displayed when multiple items are selected.
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.FormComponent.Validation)]
+    public Expression<Func<IEnumerable<T>>>? ForMultiple { get; set; }
 
     /// <summary>
     /// Gets or Sets the function that is used to asynchronously load available items.
@@ -355,7 +362,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
-    public virtual MudExSize<int>? MaxHeight { get; set; } = 300;
+    public virtual int MaxHeight { get; set; } = 300;
 
     /// <summary>
     /// Set the anchor origin point to determen where the popover will open from.
@@ -406,7 +413,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.FormComponent.Behavior)]
-    public virtual bool Clearable { get; set; } = false;
+    public virtual bool Clearable { get; set; } = true;
 
     /// <summary>
     /// If true, shows a searchbox for filtering items. Only works with ItemCollection approach.
@@ -581,9 +588,9 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
                 SelectedValuesChanged.InvokeAsync(new HashSet<T>(SelectedValues));
                 ValueChanged.InvokeAsync(Value);
                 if (MultiSelection)
-                    UpdateTextPropertyAsync(false).AndForget();
-                
-                _selectedValuesSetterStarted = false;
+                    UpdateTextPropertyAsync(false).AndForget();              
+                _selectedValuesSetterStarted = false;                
+                Task.Delay(30).ContinueWith(_ => BeginValidateAsync());
             }
         }
     }
@@ -809,7 +816,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
 
     #region Events (Key, Focus)
 
-    protected internal async void HandleKeyDown(KeyboardEventArgs obj)
+    internal async void HandleKeyDown(KeyboardEventArgs obj)
     {
         if (Disabled || ReadOnly)
             return;
@@ -990,7 +997,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         {
             await UpdateTextPropertyAsync(false);
             //UpdateSelectAllChecked();
-            BeginValidate();
+            await BeginValidateAsync();
         }
         else
         {
@@ -1090,13 +1097,13 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     /// Extra handler for clearing selection.
     /// </summary>
     protected async ValueTask SelectClearButtonClickHandlerAsync(MouseEventArgs e)
-    {
+    {        
         await SetValueAsync(default, false);
         await SetTextAsync(default, false);
         _selectedValues.Clear();
         SelectedListItem = null;
         SelectedListItems = null;
-        BeginValidate();
+        await BeginValidateAsync();
         StateHasChanged();
         await SelectedValuesChanged.InvokeAsync(new HashSet<T>(SelectedValues, _comparer));
         await OnClearButtonClick.InvokeAsync(e);
@@ -1114,7 +1121,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         await SetValueAsync(default, false);
         await SetTextAsync(default, false);
         _selectedValues.Clear();
-        BeginValidate();
+        await BeginValidateAsync();
         StateHasChanged();
         await SelectedValuesChanged.InvokeAsync(new HashSet<T>(SelectedValues, _comparer));
     }

@@ -352,6 +352,9 @@
             SkipUpdateProcessOnSetParameters
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExBaseInput`1.ValidateValue">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExBaseInput`1.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
@@ -2614,6 +2617,11 @@
             Set to true to highlight matched text in the dropdown list
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.ForMultiple">
+            <summary>
+            Specify an expression which returns the model's field for which validation messages should be displayed when multiple items are selected.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.AvailableItemsLoadFunc">
             <summary>
             Gets or Sets the function that is used to asynchronously load available items.
@@ -2952,6 +2960,9 @@
             </summary>
             <param name="value"></param>
             <returns>True when component has a value</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.ValidateValue">
+            <inheritdoc />
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.Value">
             <summary>
