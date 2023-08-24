@@ -170,14 +170,14 @@ public partial class MudExList<T> : IDisposable
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Behavior)]
-    public bool SearchBoxAutoFocus { get; set; }
+    public bool SearchBoxAutoFocus { get; set; } = true;
 
     /// <summary>
     /// If true, the search-box has a clear icon.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Behavior)]
-    public bool SearchBoxClearable { get; set; }
+    public bool SearchBoxClearable { get; set; } = true;
 
     /// <summary>
     /// SearchBox's CSS classes, seperated by space.

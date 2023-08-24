@@ -6,7 +6,7 @@
 <CascadingValue Name="Standalone" Value="false" IsFixed="true">
     <CascadingValue Value="@this" IsFixed="true">
         <div class="mud-ex-select" id="@_elementId">
-            @*@RenderChips(true)*@
+            @RenderChips(RenderChipsAdditional == Adornment.Start)
             <MudInputControl Label="@Label" Variant="@Variant" HelperText="@HelperText" HelperTextOnFocus="@HelperTextOnFocus" FullWidth="@FullWidth" Margin="@Margin" Class="@Classname" Style="@Style"
                              Error="@Error" ErrorText="@ErrorText" ErrorId="@ErrorId" Disabled="@Disabled" @onclick="@ToggleMenu" Required="@Required" ForId="@FieldId">
                 <InputContent>
@@ -91,7 +91,7 @@
 
                     <MudExPopover Animation="@PopoverAnimation" AnimationPosition="@PopoverAnimationPosition" AnimationTimingFunction="@PopoverAnimationTimingFunction" Open="@_isOpen" MaxHeight="@MaxHeight" AnchorOrigin="@AnchorOrigin" TransformOrigin="@TransformOrigin" Class="@PopoverClass" RelativeWidth="@RelativeWidth">
                         <CascadingValue Value="@this" IsFixed="true">
-                            <MudExList @ref="@_list" T="T" @bind-SelectedValue="@Value" Style="@($"overflow-y:auto; max-height: {MaxHeight}px")" @bind-SelectedValues="@SelectedValues" @bind-SelectedItem="@SelectedListItem" @bind-SelectedItems="@SelectedListItems"
+                            <MudExList @ref="@_list" T="T" @bind-SelectedValue="@Value" Style="@($"overflow-y:auto; {(MaxHeight is not null ? $"max-height: {MaxHeight}" : "")}")" @bind-SelectedValues="@SelectedValues" @bind-SelectedItem="@SelectedListItem" @bind-SelectedItems="@SelectedListItems"
                                              Clickable="true" Color="@Color" Dense="@Dense" ItemCollection="@ItemCollection" Virtualize="@Virtualize" DisablePadding="@DisablePopoverPadding" DisableSelectedItemStyle="@DisableSelectedItemStyle"
                                              MultiSelection="@MultiSelection" MultiSelectionComponent="@MultiSelectionComponent" MultiSelectionAlign="@MultiSelectionAlign" SelectAll="@SelectAll" SelectAllPosition="@SelectAllPosition" SelectAllText="@SelectAllText"
                                              CheckedIcon="@CheckedIcon" UncheckedIcon="@UncheckedIcon" IndeterminateIcon="@IndeterminateIcon" SelectValueOnTab="@SelectValueOnTab" Comparer="@Comparer"
@@ -101,8 +101,8 @@
                         </CascadingValue>
                     </MudExPopover>
                 </InputContent>
-            </MudInputControl>
-            @*@RenderChips(true)*@
+            </MudInputControl>            
+            @RenderChips(RenderChipsAdditional == Adornment.End)
         </div>
         
         <div style="display: none">

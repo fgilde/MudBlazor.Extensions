@@ -486,11 +486,6 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.LocalizerPattern">
-            <summary>
-            Gets or Sets the Localizer Pattern.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExChipSelect`1.AutoFocusFilter">
             <summary>
             Gets or Sets the AutoFocus for the filter input.
@@ -832,9 +827,6 @@
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExCultureSelect.GetAvailableItemsAsync(System.Threading.CancellationToken)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExCultureSelect.OnInitialized">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDialog">
@@ -2596,9 +2588,20 @@
             Method that determines if the input value is a valid entry.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSelect`1">
+            <summary>
+            An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used and you can specify animations as well
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.Items">
             <summary>
             The collection of items within this select
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.RenderChipsAdditional">
+            <summary>
+            Render chips additional to item content above or below the select box
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SearchString">

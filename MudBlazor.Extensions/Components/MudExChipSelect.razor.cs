@@ -1,8 +1,6 @@
-﻿using System.Linq.Expressions;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
-using Nextended.Core.Extensions;
+
 
 namespace MudBlazor.Extensions.Components;
 
@@ -10,6 +8,7 @@ namespace MudBlazor.Extensions.Components;
 /// A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.
 /// </summary>
 /// <typeparam name="T"></typeparam>
+[Obsolete($"Use {nameof(MudExSelect<T>)} instead and set {nameof(MultiSelection)} to true and {nameof(ValuePresenter)} to {nameof(Enums.ValuePresenter.Chip)}.")]
 public partial class MudExChipSelect<T>
 {
 
@@ -19,21 +18,14 @@ public partial class MudExChipSelect<T>
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        MultiSelection = true;
-        SearchBox = true;
-        ValuePresenter = ViewMode == ViewMode.ChipsOnly ? Enums.ValuePresenter.Chip : Enums.ValuePresenter.Text;
-        ChipCloseable = true;
-        Clearable = true;
-        AnchorOrigin = Origin.BottomCenter;
+        MultiSelection = true;        
+        ValuePresenter = ViewMode == ViewMode.ChipsOnly ? Enums.ValuePresenter.Chip : Enums.ValuePresenter.Text;        
+        Clearable = true;        
     }
-     
-    /// <summary>
-    /// Gets or Sets the Localizer Pattern.
-    /// </summary>
-    [Parameter, SafeCategory("Data")]
-    public string LocalizerPattern { get; set; } = "{0}";
 
     #region Obsolete
+
+    private ViewMode _viewMode = ViewMode.ChipsOnly;
 
     /// <summary>
     /// Gets or Sets the AutoFocus for the filter input.
@@ -101,13 +93,11 @@ public partial class MudExChipSelect<T>
         set => SearchString = value;
     }
 
-    #endregion
-    
-
     /// <summary>
     /// Gets or Sets the view mode for the component.
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
+    [Obsolete($"Use {nameof(RenderChipsAdditional)} in combination with {nameof(ValuePresenter)} instead.")]
     public virtual ViewMode ViewMode
     {
         get => _viewMode;
@@ -115,14 +105,17 @@ public partial class MudExChipSelect<T>
         {
             _viewMode = value;
             ValuePresenter = ViewMode == ViewMode.ChipsOnly ? Enums.ValuePresenter.Chip : Enums.ValuePresenter.Text;
+            RenderChipsAdditional = ViewMode switch
+            {
+                ViewMode.ChipsAdditionalAbove => Adornment.Start,
+                ViewMode.ChipsAdditionalBelow => Adornment.End,
+                _ => Adornment.None
+            };
             StateHasChanged();
         }
     }
 
-
-    private ViewMode _viewMode = ViewMode.ChipsOnly;
-    private string CssName => $"chip-select-{Enum.GetName(ViewMode)?.ToLower() ?? "none"} {(SelectedValues?.Any() == true ? "with-items" : "empty")}";
-
+    #endregion
 
 }
 

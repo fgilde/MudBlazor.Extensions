@@ -13,4 +13,11 @@ namespace MudBlazor.Extensions.Enums
         [Description("itemcontent")]
         ItemContent,
     }
+
+    public enum ChipsAdditional
+    {
+        None,
+        Above,
+        Below
+    }
 }

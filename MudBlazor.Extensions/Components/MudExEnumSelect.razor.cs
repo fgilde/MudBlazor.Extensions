@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Microsoft.AspNetCore.Components;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
@@ -9,6 +10,9 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExEnumSelect<TEnum>
 {
     bool _isFlagsEnum;
+
+    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+
 
     private static IList<TEnum> EnumValueList()
         => EnumOrUnderlyingType().GetEnumValues().Cast<TEnum>().ToList();
@@ -21,11 +25,11 @@ public partial class MudExEnumSelect<TEnum>
     /// <inheritdoc />
     protected override void OnInitialized()
     {
-        base.OnInitialized();
-        ViewMode = ViewMode.NoChips;
+        base.OnInitialized();        
         _isFlagsEnum = EnumOrUnderlyingType().GetCustomAttribute<FlagsAttribute>() != null;
         MultiSelection = _isFlagsEnum;
         ItemCollection = EnumValueList();
+        Clearable = true;
     }
 
     /// <inheritdoc />
