@@ -99,6 +99,11 @@ if your are running on Blazor Server side, you should also use the `MudBlazorExt
 <link id="mudex-styles" href="_content/MudBlazor.Extensions/mudBlazorExtensions.min.css" rel="stylesheet">
 ```
 
+If you have loaded styles manually you should disable the automatic loading of the styles in the `AddMudExtensions` or `AddMudServicesWithExtensions` method. You can do this by adding the following line to your `Startup.cs` in the `ConfigureServices` method.
+```c#
+builder.Services.AddMudServicesWithExtensions(c => c.WithoutAutomaticCssLoading());
+```
+
 ## Showcase Videos
 
 <details>
