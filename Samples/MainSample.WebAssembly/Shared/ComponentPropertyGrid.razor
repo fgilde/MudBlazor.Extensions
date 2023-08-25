@@ -58,7 +58,6 @@ else
 
     protected override ObjectEditMeta<T> ConfigureMetaBase(ObjectEditMeta<T> meta)
     {
-        meta.Properties(nameof(MudBaseInput<string>.Converter)).Ignore();
         meta.IgnoreAllObsoleteFields();
         meta.IgnoreAllInheritedFieldsIf(b => !_showInherited);        
         meta.GroupByCategoryAttribute();

@@ -38,9 +38,9 @@ public partial class MudExList<T> : IDisposable
 
     [Parameter] public string SearchString { get; set; }
 
-    [CascadingParameter] protected MudExSelect<T> MudExSelect { get; set; }
-    [CascadingParameter] protected MudAutocomplete<T> MudAutocomplete { get; set; }
-    [CascadingParameter] protected MudExList<T> ParentList { get; set; }
+    [CascadingParameter, IgnoreOnObjectEdit] protected MudExSelect<T> MudExSelect { get; set; }
+    [CascadingParameter, IgnoreOnObjectEdit] protected MudAutocomplete<T> MudAutocomplete { get; set; }
+    [CascadingParameter, IgnoreOnObjectEdit] protected MudExList<T> ParentList { get; set; }
 
     /// <summary>
     /// The color of the selected List Item.
@@ -84,12 +84,13 @@ public partial class MudExList<T> : IDisposable
     [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public RenderFragment SelectAllTemplate { get; set; }
 
-    [Parameter]
+    [Parameter, IgnoreOnObjectEdit]
     [SafeCategory(CategoryTypes.List.Behavior)]
     public DefaultConverter<T> Converter { get; set; } = new DefaultConverter<T>();
 
     private IEqualityComparer<T> _comparer;
-    [Parameter]
+    
+    [Parameter, IgnoreOnObjectEdit]
     [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public IEqualityComparer<T> Comparer
     {
@@ -113,7 +114,7 @@ public partial class MudExList<T> : IDisposable
     /// <summary>
     /// Defines how values are displayed in the drop-down list
     /// </summary>
-    [Parameter]
+    [Parameter, IgnoreOnObjectEdit]
     [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public Func<T, string> ToStringFunc
     {
@@ -457,7 +458,7 @@ public partial class MudExList<T> : IDisposable
     /// The current selected value.
     /// Note: Make the list Clickable or set MultiSelection true for item selection to work.
     /// </summary>
-    [Parameter]
+    [Parameter, IgnoreOnObjectEdit]
     [SafeCategory(CategoryTypes.List.Selecting)]
     public T SelectedValue
     {
@@ -491,7 +492,7 @@ public partial class MudExList<T> : IDisposable
     /// <summary>
     /// The current selected values. Holds single value (SelectedValue) if MultiSelection is false.
     /// </summary>
-    [Parameter]
+    [Parameter, IgnoreOnObjectEdit]
     [SafeCategory(CategoryTypes.List.Selecting)]
     public IEnumerable<T> SelectedValues
     {
@@ -545,7 +546,7 @@ public partial class MudExList<T> : IDisposable
     /// The current selected list item.
     /// Note: make the list Clickable or MultiSelection or both for item selection to work.
     /// </summary>
-    [Parameter]
+    [Parameter, IgnoreOnObjectEdit]
     [SafeCategory(CategoryTypes.List.Selecting)]
     public MudExListItem<T> SelectedItem
     {
@@ -574,7 +575,7 @@ public partial class MudExList<T> : IDisposable
     /// The current selected listitems.
     /// Note: make the list Clickable for item selection to work.
     /// </summary>
-    [Parameter]
+    [Parameter, IgnoreOnObjectEdit]
     [SafeCategory(CategoryTypes.List.Selecting)]
     public IEnumerable<MudExListItem<T>> SelectedItems
     {
