@@ -105,7 +105,7 @@ if your are running on Blazor Server side, you should also use the `MudBlazorExt
   <summary>Expand videos</summary>
 
 <!-- WIKI:START -->
-<!-- Copied from https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md on 2023-07-29 15:35:52 -->
+<!-- Copied from https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md on 2023-08-25 14:27:01 -->
 ## Showcase
 
 https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/39e06d88-a947-43cd-9151-a7cf96bcd849
@@ -160,7 +160,7 @@ This section introduces you to the various components provided by the MudBlazor.
 
 ### MudExObjectEdit
 <!-- OBJECTEDIT:START -->
-<!-- Copied from ObjectEdit.md on 2023-07-29 15:35:52 -->
+<!-- Copied from ObjectEdit.md on 2023-08-25 14:27:01 -->
 The `MudExObjectEdit` is a robust component that allows for object editing and automatically generates the corresponding UI. This component supports automatic validation for DataAnnotation Validations or fluent registered validations for your model.
 
 To use `MudExObjectEdit`, you can simply use the `MudExObjectEditForm` and pass your model to it as shown below:
@@ -180,7 +180,7 @@ dialogService.EditObject(User, "Dialog Title", dialogOptionsEx);
 
 ### MudExFileDisplay
 <!-- FILEDISPLAY:START -->
-<!-- Copied from MudExFileDisplay.md on 2023-07-29 15:35:52 -->
+<!-- Copied from MudExFileDisplay.md on 2023-08-25 14:27:01 -->
 The `MudExFileDisplay` component is designed to display file contents, such as a preview before uploading or for referenced files. 
 This component can automatically handle URLs or streams and deliver the best possible display. 
 Additionally, you can implement `IMudExFileDisplay` in your own component to register a custom file display.
@@ -239,7 +239,7 @@ await dialogService.ShowEx<MudExFileDisplayDialog>(title, parameters, optionsEx)
 
 ### MudExUploadEdit
 <!-- UPLOADEDIT:START -->
-<!-- Copied from MudExUploadEdit.md on 2023-07-29 15:35:52 -->
+<!-- Copied from MudExUploadEdit.md on 2023-08-25 14:27:01 -->
 
 This component provides multi-file upload functionality, with features like duplicate checks, max size, specific allowed content types, max items, zip auto-extract, and many more.
 
@@ -252,7 +252,7 @@ This component provides multi-file upload functionality, with features like dupl
 
 ## Extensions
 <!-- DIALOG_EXT:START -->
-<!-- Copied from DialogExtensions.md on 2023-07-29 15:35:52 -->
+<!-- Copied from DialogExtensions.md on 2023-08-25 14:27:01 -->
 ### Resizable or Draggable Dialogs
 
 You can make your dialogs resizable or draggable using the following code snippet:
@@ -363,17 +363,17 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 ## Change Log 
 Latest Changes: 
 <!-- CHANGELOG:START -->
-<!-- Copied from CHANGELOG.md on 2023-07-29 15:35:52 -->
+<!-- Copied from CHANGELOG.md on 2023-08-25 14:27:01 -->
+ - 1.7.65 > Create new [MudExGrid](https://www.mudex.org/mud-ex-grid)
+ - 1.7.65 > Ensure FileUpload works on ServerSide rendered projects as well
+ - 1.7.65 > Add possibility to disable auto load of styles if you prefer to add them manually
+ - 1.7.65 > Make MudExChipSelect Obsolete and create new [MudExSelect](https://www.mudex.org/mud-ex-select)
  - 1.7.64 > Fix error on server side rendered projects
  - 1.7.64 > Remove need for `jsRuntime.InitializeMudBlazorExtensionsAsync()`
  - 1.7.63 > Use MudMarkdown as IMudExFileDisplay to support markdown files in [MudExFileDisplay](https://www.mudex.org/file-display)
  - 1.7.63 > Add new option to allow copy url to clipboard in [MudExFileDisplay](https://www.mudex.org/file-display)
  - 1.7.63 > Fix bug in [MudExThemeEdit](https://www.mudex.org/theme-ed  it) where component wasnt loaded if its rendered in a dialog.
  - 1.7.62 > Update all nuget packages to latest versions. Now using MudBlazor 6.7.0
- - 1.7.61 > **_Breaking:_** Rename: Move namespace for Css enums like CssUnit, BorderStyle etc from MudBlazor.Extensions.Core to MudBlazor.Extensions.Core.Css
- - 1.7.61 > new Component [MudExIconPicker](https://www.mudex.org/mud-ex-icon-picker) to select icons. Used in [API]((https://www.mudex.org/api)) overview and in ComponentGrid as MudExObjectedit config.
- - 1.7.60 > Better component support for MudExObjectEdit
- - 1.7.59 > Add Parameters for Typo and preview size in ThemeSelect
 <!-- CHANGELOG:END -->
 Full change log can be found [here](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/CHANGELOG.md) 
 
