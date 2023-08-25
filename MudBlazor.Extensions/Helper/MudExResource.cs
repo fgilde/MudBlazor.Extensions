@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.FileProviders;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -50,28 +49,29 @@ public static class MudExResource
     /// <summary>
     /// returns the Summary documentation text for a type
     /// </summary>
-    public static async Task<string> GetSummaryDocumentationAsync(Type type) 
-        => type == null ? null : await GetSummaryDocumentationAsync(type, $"T:{type.FullName}");
+    public static async Task<string> GetSummaryDocumentationAsync(Type type, bool allowCache = true) 
+        => type == null ? null : await GetSummaryDocumentationAsync(type, $"T:{type.FullName}", allowCache);
 
     /// <summary>
     /// returns a summary documentation text for given member
     /// </summary>
-    public static async Task<string> GetSummaryDocumentationAsync(MemberInfo member)
+    public static async Task<string> GetSummaryDocumentationAsync(MemberInfo member, bool allowCache = true)
     {
         if (member == null)
             return null;
 
         string prefixCode;
         string memberName;
+        var memberDeclaringType = member.DeclaringType;
         switch (member.MemberType)
         {
             case MemberTypes.Field:
                 prefixCode = "F";
-                memberName = $"{member.DeclaringType?.FullName}.{member.Name}";
+                memberName = $"{memberDeclaringType?.FullName}.{member.Name}";
                 break;
             case MemberTypes.Property:
                 prefixCode = "P";
-                memberName = $"{member.DeclaringType?.FullName}.{member.Name}";
+                memberName = $"{memberDeclaringType?.FullName}.{member.Name}";
                 break;
             case MemberTypes.Method:
                 prefixCode = "M";
@@ -79,21 +79,21 @@ public static class MudExResource
                 if (method?.GetParameters().Length > 0)
                 {
                     var parameters = string.Join(",", method.GetParameters().Select(p => p.ParameterType.FullName));
-                    memberName = $"{member.DeclaringType?.FullName}.{member.Name}({parameters})";
+                    memberName = $"{memberDeclaringType?.FullName}.{member.Name}({parameters})";
                 }
                 else
                 {
-                    memberName = $"{member.DeclaringType?.FullName}.{member.Name}";
+                    memberName = $"{memberDeclaringType?.FullName}.{member.Name}";
                 }
                 break;
             case MemberTypes.Event:
                 prefixCode = "E";
-                memberName = $"{member.DeclaringType?.FullName}.{member.Name}";
+                memberName = $"{memberDeclaringType?.FullName}.{member.Name}";
                 break;
             case MemberTypes.TypeInfo:
             case MemberTypes.NestedType:
                 prefixCode = "T";
-                memberName = member.DeclaringType?.FullName;
+                memberName = memberDeclaringType?.FullName;
                 if (member is TypeInfo {IsGenericType: true} typeInfo)
                 {
                     memberName = $"{memberName}`{typeInfo.GenericTypeParameters.Length}";
@@ -103,14 +103,14 @@ public static class MudExResource
                 throw new NotSupportedException();
         }
 
-        return await GetSummaryDocumentationAsync(member.DeclaringType, $"{prefixCode}:{memberName}");
+        return await GetSummaryDocumentationAsync(memberDeclaringType, $"{prefixCode}:{memberName}", allowCache);
     }
 
-    private static async Task<string> GetSummaryDocumentationAsync(Type type, string xpathQuery)
+    private static async Task<string> GetSummaryDocumentationAsync(Type type, string xpathQuery, bool allowCache = true)
     {
         try
         {
-            var xmlDoc = await LoadXmlDocAsync(type);
+            var xmlDoc = await LoadXmlDocAsync(type, allowCache);
             if (xmlDoc == null)
                 return null;
             var xpath = $"//member[@name='{xpathQuery}']/summary";
@@ -123,14 +123,14 @@ public static class MudExResource
         }
     }
 
-    private static async Task<XmlDocument> LoadXmlDocAsync(Type type)
+    private static async Task<XmlDocument> LoadXmlDocAsync(Type type, bool allowCache = true)
     {
         var assembly = Assembly.GetAssembly(type);
         if (assembly == null)
             return null;
 
         // Check if we already loaded and parsed this assembly's XML doc
-        if (XmlDocCache.TryGetValue(assembly, out var xmlDoc))
+        if (allowCache && XmlDocCache.TryGetValue(assembly, out var xmlDoc))
             return xmlDoc;
 
         var resourceName = $"{assembly.GetName().Name}.xml";

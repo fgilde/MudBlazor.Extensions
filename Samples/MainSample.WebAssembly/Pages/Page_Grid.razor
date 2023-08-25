@@ -1,0 +1,51 @@
+﻿@page "/mud-ex-grid"
+
+@attribute [DemoNew(Name = "MudExGrid", Icon = Icons.Material.Outlined.Grid4x4, ForComponentTypes = new[] { typeof(MudExGrid), typeof(MudExGridSection) })]
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+             <MudExGrid @ref="component" Class="mud-border-info border-2 border-solid" Column="8" Row="8" Height="800">
+                <MudExGridSection @ref="section1"  Column="1" ColSpan="1" Row="1" RowSpan="1">
+                    <MudPaper Class="d-flex align-center justify-center mud-theme-primary">Section 1</MudPaper>
+                </MudExGridSection>
+
+                <MudExGridSection @ref="section2" Column="2" ColSpan="1" Row="1" RowSpan="1">
+                    <MudPaper Class="d-flex align-center justify-center mud-theme-secondary">Section 2</MudPaper>
+                </MudExGridSection>
+            </MudExGrid>
+        </Left>
+        <Right>
+            
+            <MudExpansionPanels MultiExpansion="true">
+                <MudExpansionPanel IsInitiallyExpanded="true" Text="MudExGrid">
+                    <ChildContent>
+                        <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>
+                    </ChildContent>
+                </MudExpansionPanel>
+                <MudExpansionPanel IsInitiallyExpanded="false" Text="Section 1">
+                    <ChildContent>
+                        <ComponentPropertyGrid Value="@section1"></ComponentPropertyGrid>
+                    </ChildContent>
+                </MudExpansionPanel>
+                <MudExpansionPanel IsInitiallyExpanded="false" Text="Section 2">
+                    <ChildContent>
+                        <ComponentPropertyGrid Value="@section2"></ComponentPropertyGrid>
+                    </ChildContent>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+
+
+@code {
+
+    MudExGrid component;
+    MudExGridSection section1;
+    MudExGridSection section2;
+    
+}
+

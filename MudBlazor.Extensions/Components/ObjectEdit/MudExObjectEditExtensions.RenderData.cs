@@ -1,7 +1,6 @@
 ﻿using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Helper.Internal;
 using Nextended.Core.Extensions;
-using Nextended.Core.Helper;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 

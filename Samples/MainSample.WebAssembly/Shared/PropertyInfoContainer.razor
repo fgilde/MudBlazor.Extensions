@@ -1,0 +1,51 @@
+﻿@using System.Reflection
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Options
+@typeparam T;
+
+<div style="display: flex; width: 100%;">
+    <div style="flex: 1;">
+        @ChildContent
+    </div>
+
+    @if (!string.IsNullOrEmpty(info.Description))
+    {
+        <div style="text-align: right; align-self: flex-start;">            
+            <MudIconButton Color="Color.Info" OnClick="@(ShowInfoAsync)" Title="@($"Show info for {Property.Name}")" Icon="@Icons.Material.Outlined.Info" Size="Size.Small"> </MudIconButton>
+        </div>
+    }
+</div>
+
+
+@code {
+    
+    [Inject] IDialogService dialogService { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public PropertyInfo Property { get; set; }
+
+    private ApiMemberInfo<PropertyInfo> info;
+
+    protected override void OnInitialized()
+    {
+        info = new ApiMemberInfo<PropertyInfo>(Property, typeof(T));
+    }
+
+    private async Task ShowInfoAsync()
+    {
+        await info.LoadTask;        
+        await dialogService.ShowInformationAsync(Property.Name, info.Description, Icons.Material.Filled.Info, new DialogOptionsEx()
+        {
+            DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass),
+            DragMode = MudDialogDragMode.Simple,
+            CloseButton = true,
+            Resizeable = true,
+        });
+  
+    }
+
+}

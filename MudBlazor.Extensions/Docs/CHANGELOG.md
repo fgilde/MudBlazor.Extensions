@@ -1,4 +1,8 @@
 ## Change Log  
+ - 1.7.65 > Create new [MudExGrid](https://www.mudex.org/mud-ex-grid)
+ - 1.7.65 > Ensure FileUpload works on ServerSide rendered projects as well
+ - 1.7.65 > Add possibility to disable auto load of styles if you prefer to add them manually
+ - 1.7.65 > Make MudExChipSelect Obsolete and create new [MudExSelect](https://www.mudex.org/mud-ex-select)
  - 1.7.64 > Fix error on server side rendered projects
  - 1.7.64 > Remove need for `jsRuntime.InitializeMudBlazorExtensionsAsync()`
  - 1.7.63 > Use MudMarkdown as IMudExFileDisplay to support markdown files in [MudExFileDisplay](https://www.mudex.org/file-display)

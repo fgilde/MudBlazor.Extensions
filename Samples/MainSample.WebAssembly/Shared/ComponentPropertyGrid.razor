@@ -5,6 +5,7 @@
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Options
+@using Nextended.Core.Extensions
 @inherits MudExObjectEdit<T>
 @typeparam T
 
@@ -19,7 +20,7 @@ else
 
 
 @code {
-    
+
     [Parameter] public bool ShowInherited { get; set; }
 
     [Inject]
@@ -62,12 +63,18 @@ else
         meta.GroupByCategoryAttribute();
         meta.Properties<string>().Where(p => p?.Value?.ToString()?.StartsWith("<g") == true || p?.Value?.ToString()?.StartsWith("<path") == true)
         .RenderWith<MudExIconPicker, string, string>(edit => edit.Value);
-        return base.ConfigureMetaBase(meta);
+        
+        meta.AllProperties.WrapIn<PropertyInfoContainer<T>>((p, cmp) => { 
+            cmp.Property = p.PropertyInfo; 
+        });
+
+    return base.ConfigureMetaBase(meta);
     }
 
     RenderFragment RenderToolbarExtraContent()
     {
-        return @<div>
+        return 
+    @<div>
             <MudTooltip Text="Show Markup">
                 <MudIconButton Icon="@Icons.Material.Filled.Code" OnClick="@ShowCode" />
             </MudTooltip>

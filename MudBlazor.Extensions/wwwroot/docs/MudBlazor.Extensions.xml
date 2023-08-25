@@ -7510,12 +7510,12 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExResource.GetSummaryDocumentationAsync(System.Type)">
+        <member name="M:MudBlazor.Extensions.Helper.MudExResource.GetSummaryDocumentationAsync(System.Type,System.Boolean)">
             <summary>
             returns the Summary documentation text for a type
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExResource.GetSummaryDocumentationAsync(System.Reflection.MemberInfo)">
+        <member name="M:MudBlazor.Extensions.Helper.MudExResource.GetSummaryDocumentationAsync(System.Reflection.MemberInfo,System.Boolean)">
             <summary>
             returns a summary documentation text for given member
             </summary>

@@ -79,6 +79,22 @@ public static partial class MudExObjectEditExtensions
         => renderDatas.Apply(rd => rd.WrapIn<TWrapperComponent>(options));
     public static IEnumerable<IRenderData> WrapIn<TWrapperComponent>(this IEnumerable<ObjectEditPropertyMeta> metas, params Action<TWrapperComponent>[] options) where TWrapperComponent : new()
         => metas.Select(m => m.WrapIn<TWrapperComponent>(options)).ToList();
+    
+    public static IEnumerable<IRenderData> WrapIn<TWrapperComponent>(this IEnumerable<ObjectEditPropertyMeta> metas, params Action<ObjectEditPropertyMeta, TWrapperComponent>[] options) where TWrapperComponent : new()
+    {
+        return metas.Select(meta =>
+        {
+            return meta.WrapIn<TWrapperComponent>(cmp =>
+            {
+                foreach (var option in options)
+                {
+                    option(meta, cmp);
+                }
+            });
+        }).ToList();
+    }
+    
+
     public static IEnumerable<IRenderData> WrapInMudItem(this IEnumerable<ObjectEditPropertyMeta> metas, params Action<MudItem>[] options)
         => metas.Select(m => m.WrapInMudItem(options)).ToList();
     public static IEnumerable<ObjectEditPropertyMeta> WithAdditionalAttributes(this IEnumerable<ObjectEditPropertyMeta> metas, params KeyValuePair<string, object>[] attributes)
