@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor.Utilities;
 using System.Windows.Input;
 using MudBlazor.Extensions.Attribute;
-using MudBlazor.Extensions.Enums;
+using MudBlazor.Extensions.Options;
 
 namespace MudBlazor.Extensions.Components;
 

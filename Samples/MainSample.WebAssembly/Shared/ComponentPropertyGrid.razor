@@ -19,6 +19,8 @@ else
 
 
 @code {
+    
+    [Parameter] public bool ShowInherited { get; set; }
 
     [Inject]
     IDialogService dialogService { get; set; }
@@ -27,10 +29,11 @@ else
 
     private bool rendered;
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+    bool _showInherited;
 
     protected override Task OnInitializedAsync()
     {
-        ToolBarContent = RenderShowCodeButton();
+        ToolBarContent = RenderToolbarExtraContent();
         StickyToolbar = true;
         ToolbarColor = Color.Surface;
         StickyToolbarTop = "-8px";
@@ -41,6 +44,8 @@ else
 
     protected override void OnAfterRender(bool firstRender)
     {
+        if(firstRender)
+            _showInherited = ShowInherited;
         base.OnAfterRender(firstRender);
         if (!rendered)
         {
@@ -53,19 +58,32 @@ else
     protected override ObjectEditMeta<T> ConfigureMetaBase(ObjectEditMeta<T> meta)
     {
         meta.IgnoreAllObsoleteFields();
+        meta.IgnoreAllInheritedFieldsIf(b => !_showInherited);        
         meta.GroupByCategoryAttribute();
         meta.Properties<string>().Where(p => p?.Value?.ToString()?.StartsWith("<g") == true || p?.Value?.ToString()?.StartsWith("<path") == true)
         .RenderWith<MudExIconPicker, string, string>(edit => edit.Value);
         return base.ConfigureMetaBase(meta);
     }
 
-
-    RenderFragment RenderShowCodeButton()
+    RenderFragment RenderToolbarExtraContent()
     {
-        return
-    @<div>
-        <MudButton StartIcon="@Icons.Material.Filled.Code" OnClick="@ShowCode">Show Markup</MudButton>
-    </div>;
+        return @<div>
+            <MudTooltip Text="Show Markup">
+                <MudIconButton Icon="@Icons.Material.Filled.Code" OnClick="@ShowCode" />
+            </MudTooltip>
+            <MudTooltip Text="Show or hide inherited fields from base class">                
+                <MudSwitch T="bool" CheckedChanged="@OnChangeInherit" Size="Size.Small" Color="Color.Primary" Checked="_showInherited">Inherited</MudSwitch>
+            </MudTooltip>
+        </div>
+    ;
+    }
+
+    private Task OnChangeInherit(bool b)
+    {
+        _showInherited = !_showInherited;
+        UpdateAllConditions();
+        Refresh();
+        return Task.CompletedTask;
     }
 
     private async Task ShowCode()
@@ -90,7 +108,4 @@ else
                 });
     }
 
-}
-@code {
-    private Action<ObjectEditMeta<T>> _metaConfiguration;
 }

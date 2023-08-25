@@ -8,7 +8,7 @@ namespace MudBlazor.Extensions.Components;
 /// A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-[Obsolete($"Use {nameof(MudExSelect<T>)} instead and set {nameof(MultiSelection)} to true and {nameof(ValuePresenter)} to {nameof(Enums.ValuePresenter.Chip)}.")]
+[Obsolete($"Use {nameof(MudExSelect<T>)} instead and set {nameof(MultiSelection)} to true and {nameof(ValuePresenter)} to {nameof(Options.ValuePresenter.Chip)}.")]
 public partial class MudExChipSelect<T>
 {
 
@@ -19,7 +19,7 @@ public partial class MudExChipSelect<T>
     {
         base.OnInitialized();
         MultiSelection = true;        
-        ValuePresenter = ViewMode == ViewMode.ChipsOnly ? Enums.ValuePresenter.Chip : Enums.ValuePresenter.Text;                
+        ValuePresenter = ViewMode == ViewMode.ChipsOnly ? Options.ValuePresenter.Chip : Options.ValuePresenter.Text;                
     }
 
     #region Obsolete
@@ -103,7 +103,7 @@ public partial class MudExChipSelect<T>
         set
         {
             _viewMode = value;
-            ValuePresenter = ViewMode == ViewMode.ChipsOnly ? Enums.ValuePresenter.Chip : Enums.ValuePresenter.Text;
+            ValuePresenter = ViewMode == ViewMode.ChipsOnly ? Options.ValuePresenter.Chip : Options.ValuePresenter.Text;
             RenderChipsAdditional = ViewMode switch
             {
                 ViewMode.ChipsAdditionalAbove => Adornment.Start,

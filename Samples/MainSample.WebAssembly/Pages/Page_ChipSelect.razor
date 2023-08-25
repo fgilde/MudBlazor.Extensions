@@ -12,7 +12,7 @@
             <MudButton Class="mt-5" OnClick="@OnShowClick">Show selected</MudButton>
         </Left>
         <Right>
-            <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
+            <ComponentPropertyGrid ShowInherited="true" MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
         </Right>
     </SplitContainer>
 </DemoComponent>

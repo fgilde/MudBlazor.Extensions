@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
-using MudBlazor.Extensions.Enums;
+using MudBlazor.Extensions.Options;
 using MudBlazor.Services;
 using MudBlazor.Utilities;
 

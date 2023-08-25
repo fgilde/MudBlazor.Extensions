@@ -42,6 +42,6 @@ public partial class MudExFontSelect
         base.OnInitialized();        
         ItemTemplate = GetItemTemplate();
         MultiSelection = true;
-        ValuePresenter = Enums.ValuePresenter.Chip;
+        ValuePresenter = Options.ValuePresenter.Chip;
     }
 }

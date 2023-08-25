@@ -1,0 +1,78 @@
+﻿@page "/mud-ex-select"
+@using System.ComponentModel.DataAnnotations
+@using MudBlazor.Extensions.Options
+
+@attribute [DemoNew(Name = "MudExSelect", Icon = Icons.Material.Outlined.ArrowDropDownCircle, Documentation = "MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.", ForComponentType = typeof(MudExSelect<>))]
+
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudGrid>
+                <MudItem xs="12" sm="8" Class="d-flex align-start justify-center">
+                    <MudExSelect @ref="component" 
+                                 @bind-SelectedValues="@_selected"                                 
+                                 MultiSelection="true"
+                                 SelectAll="true"
+                                 PopoverAnimation="AnimationType.Pulse"                       
+                                 ToStringFunc="@(x => x.Name + " - " + x.PostalCode)"
+                                 ItemCollection="_samples" SearchBox="true" T="City" Label="Cities you want to live" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" />
+                </MudItem>
+            </MudGrid>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+@code {
+    MudExSelect<City> component;
+    
+    private IEnumerable<City> _selected;
+
+    protected override void OnInitialized()
+    {
+        _selected = new[] { _samples[2], _samples[4], _samples[6] };
+    }
+    
+    public class City
+    {
+        public string Name { get; set; }
+        public string PostalCode { get; set; }
+        public string State { get; set; }
+        public override string ToString() => $"{Name}";
+    }
+
+    private City[] _samples = {
+        new () { Name = "New York", PostalCode = "10001", State = "New York" },
+        new () { Name = "Los Angeles", PostalCode = "90001", State = "California" },
+        new () { Name = "Chicago", PostalCode = "60601", State = "Illinois" },
+        new () { Name = "Houston", PostalCode = "77001", State = "Texas" },
+        new () { Name = "Phoenix", PostalCode = "85001", State = "Arizona" },
+        new () { Name = "Philadelphia", PostalCode = "19019", State = "Pennsylvania" },
+        new () { Name = "San Antonio", PostalCode = "78201", State = "Texas" },
+        new () { Name = "San Diego", PostalCode = "92101", State = "California" },
+        new () { Name = "Dallas", PostalCode = "75201", State = "Texas" },
+        new () { Name = "San Jose", PostalCode = "95101", State = "California" },
+        new () { Name = "Austin", PostalCode = "73301", State = "Texas" },
+        new () { Name = "Toronto", PostalCode = "M1B 1A1", State = "Ontario" },
+        new () { Name = "Montreal", PostalCode = "H1A 0A1", State = "Quebec" },
+        new () { Name = "Vancouver", PostalCode = "V5K 0A1", State = "British Columbia" },
+        new () { Name = "Calgary", PostalCode = "T1X 0L3", State = "Alberta" },
+        new () { Name = "Ottawa", PostalCode = "K1A 0A1", State = "Ontario" },
+        new () { Name = "Edmonton", PostalCode = "T5A 0A1", State = "Alberta" },
+        new () { Name = "London", PostalCode = "SW1A 1AA", State = "England" }, 
+        new () { Name = "Manchester", PostalCode = "M1 1AE", State = "England" },
+        new () { Name = "Birmingham", PostalCode = "B1 1BD", State = "England" },
+        new () { Name = "Paris", PostalCode = "75001", State = "Île-de-France" },
+        new () { Name = "Marseille", PostalCode = "13001", State = "Provence-Alpes-Côte d'Azur" },
+        new () { Name = "Lyon", PostalCode = "69001", State = "Auvergne-Rhône-Alpes" },
+        new () { Name = "Tokyo", PostalCode = "100-0001", State = "Tokyo" },
+        new () { Name = "Yokohama", PostalCode = "220-0001", State = "Kanagawa" },
+        new () { Name = "Osaka", PostalCode = "530-0001", State = "Osaka" }                
+};
+
+}
+

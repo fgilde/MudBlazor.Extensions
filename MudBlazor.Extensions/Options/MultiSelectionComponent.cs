@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace MudBlazor.Extensions.Enums
+namespace MudBlazor.Extensions.Options
 {
     public enum MultiSelectionComponent
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace MudBlazor.Extensions.Enums
+namespace MudBlazor.Extensions.Options
 {
     public enum ValuePresenter
     {
@@ -14,10 +14,4 @@ namespace MudBlazor.Extensions.Enums
         ItemContent,
     }
 
-    public enum ChipsAdditional
-    {
-        None,
-        Above,
-        Below
-    }
 }

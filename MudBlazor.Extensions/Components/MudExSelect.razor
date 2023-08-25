@@ -37,7 +37,7 @@
                                     //Show nothing
                                     <MudText Typo="Typo.body1" Class="mud-text-secondary">@Placeholder</MudText>
                                 }
-                                @if (ValuePresenter == Enums.ValuePresenter.Text)
+                                @if (ValuePresenter == Options.ValuePresenter.Text)
                                 {
                                     if (string.IsNullOrEmpty(Text))
                                     {
@@ -46,7 +46,7 @@
 
                                     <MudRender>@GetSelectTextPresenter()</MudRender>
                                 }
-                                else if (ValuePresenter == Enums.ValuePresenter.Chip)
+                                else if (ValuePresenter == Options.ValuePresenter.Chip)
                                 {
                                     if (SelectedValues == null || !SelectedValues.Any())
                                     {
@@ -54,7 +54,7 @@
                                     }
                                     @RenderChips(true)
                                 }
-                                else if (ValuePresenter == Enums.ValuePresenter.ItemContent)
+                                else if (ValuePresenter == Options.ValuePresenter.ItemContent)
                                 {
                                     if (SelectedListItem == null)
                                     {
