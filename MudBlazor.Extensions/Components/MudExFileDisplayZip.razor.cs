@@ -125,6 +125,12 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     public string ToolBarPaperClass { get; set; }
 
     /// <summary>
+    /// True to Reload zip content on parameter set
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool ReloadZipContentOnParameterSet { get; set; }
+
+    /// <summary>
     /// True to have a sticky toolbar on top
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
@@ -204,10 +210,11 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         {
             if (!string.IsNullOrEmpty(Url) || ContentStream != null)
             {
-
-                _zipEntries = (await GetZipEntriesAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url)))
-                    .ToList();
-                _zipStructure = ZipStructure.CreateStructure(_zipEntries, RootFolderName).ToHashSet();
+                if (_zipEntries == null || ReloadZipContentOnParameterSet) {
+                    _zipEntries = (await GetZipEntriesAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url)))
+                        .ToList();
+                    _zipStructure = ZipStructure.CreateStructure(_zipEntries, RootFolderName).ToHashSet();
+                }
             }
         }
         catch

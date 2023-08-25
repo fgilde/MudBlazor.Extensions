@@ -1453,6 +1453,11 @@
             Css Class for toolbar paper
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ReloadZipContentOnParameterSet">
+            <summary>
+            True to Reload zip content on parameter set
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.StickyToolbar">
             <summary>
             True to have a sticky toolbar on top
