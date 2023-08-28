@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Utilities;
 
 namespace MudBlazor.Extensions.Components
@@ -19,14 +20,14 @@ namespace MudBlazor.Extensions.Components
 
         protected string AdornmentStartClassname =>
             new MudExCssBuilder("mud-input-adornment mud-ex-input-adornment-start")
-                .AddClass($"mud-input-{Variant.ToDescriptionString()}-extended")
+                .AddClass($"mud-ex-input-{Variant.GetDescription()}")
                 .AddClass($"mud-text", !string.IsNullOrEmpty(AdornmentText))
                 .AddClass($"mud-input-root-filled-shrink", Variant == Variant.Filled)
                 .Build();
 
         protected string AdornmentEndClassname =>
             new MudExCssBuilder("mud-input-adornment mud-ex-input-adornment-end")
-                .AddClass($"mud-input-{Variant.ToDescriptionString()}-extended")
+                .AddClass($"mud-ex-input-{Variant.GetDescription()}")
                 .AddClass($"mud-text", !string.IsNullOrEmpty(AdornmentText))
                 .AddClass($"mud-input-root-filled-shrink", Variant == Variant.Filled)
                 .Build();

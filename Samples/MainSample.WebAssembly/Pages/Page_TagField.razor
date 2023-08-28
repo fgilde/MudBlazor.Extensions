@@ -1,0 +1,25 @@
+﻿@page "/tag-field"
+
+@attribute [DemoNew(Name = "MudExTagField", Icon = Icons.Material.Outlined.Tag, Documentation = "MudExTagField creates chips when user press on of the specified delimiter or presses enter.", ForComponentType = typeof(MudExTagField<>))]
+
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudExTagField @ref="component" T="string" Delimiters="@(new []{ ',', ';', ' ', '+' })" FullWidth="true"
+                            SetChipsOnEnter="true"
+                            ChipColor="Color.Primary"
+                            Variant="Variant.Outlined"
+                            ChipVariant="Variant.Filled"
+                            Label="Tags" />
+
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+@code {    
+    MudExTagField<string> component;
+}

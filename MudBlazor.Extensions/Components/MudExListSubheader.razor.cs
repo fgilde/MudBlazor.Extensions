@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components;
@@ -14,6 +15,12 @@ public partial class MudExListSubheader<T>
             .AddClass("mud-ex-list-subheader-sticky", Sticky)
             .AddClass("mud-ex-list-subheader-sticky-dense", Sticky && (MudListExtended != null && MudListExtended.DisablePadding))
             .AddClass(Class)
+            .Build();
+
+    protected string Stylename =>
+        new MudExStyleBuilder()
+            .AddRaw(Style)
+            .WithTop(StickyTop, Sticky)            
             .Build();
 
     [CascadingParameter] protected MudExList<T> MudListExtended { get; set; }
@@ -42,6 +49,13 @@ public partial class MudExListSubheader<T>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Appearance)]
     public bool Sticky { get; set; }
+
+    /// <summary>
+    /// The top position of sticky header
+    /// </summary>
+    [Parameter]
+    [SafeCategory(CategoryTypes.List.Appearance)]
+    public MudExSize<double> StickyTop { get; set; } = -8;
 
     /// <summary>
     /// If true, subheader has darken background.

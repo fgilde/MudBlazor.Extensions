@@ -1921,6 +1921,31 @@
             <param name="text"></param>
             <returns></returns>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.GroupBy">
+            <summary>
+            Func to group by items collection
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.GroupingEnabled">
+            <summary>
+            Set to true to enable grouping with the GroupBy func
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.GroupsSticky">
+            <summary>
+            Sticky header for item group.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.GroupsNested">
+            <summary>
+            Set to true to use a expansion panel to nest items.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.GroupsInitiallyExpanded">
+            <summary>
+            Sets the group's expanded state on popover opening. Works only if GroupsNested is true.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExList`1.Color">
             <summary>
             The color of the selected List Item.
@@ -2336,6 +2361,11 @@
             If true, subheader behaves sticky and remains on top until other subheader comes to top.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.StickyTop">
+            <summary>
+            The top position of sticky header
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.SecondaryBackground">
             <summary>
             If true, subheader has darken background.
@@ -2605,6 +2635,31 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.Items">
             <summary>
             The collection of items within this select
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.GroupBy">
+            <summary>
+             Func to group by items collection
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.GroupingEnabled">
+            <summary>
+            Set to true to enable grouping with the GroupBy func
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.GroupsSticky">
+            <summary>
+            Sticky header for item group.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.GroupsNested">
+            <summary>
+            Set to true to use a expansion panel to nest items.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.GroupsInitiallyExpanded">
+            <summary>
+            Sets the group's expanded state on popover opening. Works only if GroupsNested is true.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.RenderChipsAdditional">
@@ -2981,7 +3036,7 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.Nested">
             <summary>
-            A user-defined option that can be selected
+            Set to true to use a expansion panel to nest items
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.InitiallyExpanded">
@@ -2992,6 +3047,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.Sticky">
             <summary>
             Sticky header for item group. Works only with nested is false.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.StickyTop">
+            <summary>
+            The top position of sticky header
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.HideContent">
@@ -3286,6 +3346,26 @@
         <member name="M:MudBlazor.Extensions.Components.MudExSplitter.DisposeAsync">
             <inheritdoc/>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.Values">
+            <summary>
+            /The list of values.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.ValuesChanged">
+            <summary>
+            Fires when values changed
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.Delimiters">
+            <summary>
+            The char that created a new chip with current value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.Closeable">
+            <summary>
+            Determines that chips have close button. Default is true.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExTaskBar">
             <summary>
             MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide <MudExTaskBar/> somewhere in your Layout
@@ -3343,6 +3423,71 @@
             <summary>
             Reference to dialog
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTextField`1.AutoSize">
+            <summary>
+            If true, automatically resize the height regard to the text. Needs Lines parameter to set more than 1.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTextField`1.DataVisualiser">
+            <summary>
+            The render fragment for child content.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTextField`1.InputType">
+            <summary>
+            Type of the input element. It should be a valid HTML5 input type.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTextField`1.Clearable">
+            <summary>
+            Show clear button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTextField`1.OnClearButtonClick">
+            <summary>
+            Button click event for clear button. Called after text and value has been cleared.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.FocusAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.BlurAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.SelectAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.SelectRangeAsync(System.Int32,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.ResetValue">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.Clear">
+            <summary>
+            Clear the text field, set Value to default(T) and Text to null
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.SetText(System.String)">
+            <summary>
+            Sets the input text from outside programmatically
+            </summary>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTextField`1.Mask">
+            <summary>
+            Provide a masking object. Built-in masks are PatternMask, MultiMask, RegexMask and BlockMask
+            Note: when Mask is set, TextField will ignore some properties such as Lines, Pattern or HideSpinButtons, OnKeyDown and OnKeyUp, etc.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.SetValueAsync(`0,System.Boolean,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.SetTextAsync(System.String,System.Boolean)">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.ThemePreset`1">
             <summary>
@@ -7873,7 +8018,7 @@
             Specifies the align-items property using a CSS string value, if the 'when' condition is true.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAlignItems(MudBlazor.AlignItems,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAlignItems(MudBlazor.Extensions.Core.Css.AlignItems,System.Boolean)">
             <summary>
             Specifies the align-items property using a CSS string value, if the 'when' condition is true.
             </summary>
@@ -7883,7 +8028,7 @@
             Specifies the position property using a CSS string value, if the 'when' condition is true.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPosition(MudBlazor.Position,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPosition(MudBlazor.Extensions.Core.Css.Position,System.Boolean)">
             <summary>
             Specifies the position property using a CSS string value, if the 'when' condition is true.
             </summary>
@@ -9191,6 +9336,11 @@
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithOutlineLeftWidth(MudBlazor.Extensions.Core.MudExSize{System.Double},System.Boolean)">
             <summary>
             Specifies the 'outline-left-width' CSS property with a size.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithColorForVariant(MudBlazor.Variant,MudBlazor.Extensions.Core.MudExColor,System.Boolean)">
+            <summary>
+            Sets color or background color based on variant
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.AsImportant(System.Boolean)">

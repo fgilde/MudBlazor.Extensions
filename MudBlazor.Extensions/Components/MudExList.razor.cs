@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Services;
 using MudBlazor.Utilities;
@@ -41,6 +42,37 @@ public partial class MudExList<T> : IDisposable
     [CascadingParameter, IgnoreOnObjectEdit] protected MudExSelect<T> MudExSelect { get; set; }
     [CascadingParameter, IgnoreOnObjectEdit] protected MudAutocomplete<T> MudAutocomplete { get; set; }
     [CascadingParameter, IgnoreOnObjectEdit] protected MudExList<T> ParentList { get; set; }
+
+    /// <summary>
+    /// Func to group by items collection
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.List.Behavior)]
+    public Func<T, object> GroupBy { get; set; }
+
+    /// <summary>
+    /// Set to true to enable grouping with the GroupBy func
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.List.Behavior)]
+    public bool GroupingEnabled { get; set; }
+
+    /// <summary>
+    /// Sticky header for item group.
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.List.Behavior)]
+    public bool GroupsSticky { get; set; } = true;
+
+    /// <summary>
+    /// Set to true to use a expansion panel to nest items.
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.List.Behavior)]
+    public bool GroupsNested { get; set; }
+
+    /// <summary>
+    /// Sets the group's expanded state on popover opening. Works only if GroupsNested is true.
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.List.Behavior)]
+    public bool GroupsInitiallyExpanded { get; set; } = true;
+
 
     /// <summary>
     /// The color of the selected List Item.
@@ -1461,6 +1493,20 @@ public partial class MudExList<T> : IDisposable
     }
 
     #endregion
+
+    private MudExSize<double> GetStickyTop()
+    {
+        var result = -8;
+        if(SearchBox) {
+            result += 90;
+            if (SelectAll && SelectAllPosition == SelectAllPosition.AfterSearchBox)                            
+                result += 50;
+            
+        }
+        if(Dense)        
+            result -= 4;        
+        return result;
+    }
 }
 
 public class ListItemClickEventArgs<T>

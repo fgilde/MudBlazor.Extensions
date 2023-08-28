@@ -477,7 +477,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     /// <summary>
     /// Specifies the align-items property using a CSS string value, if the 'when' condition is true.
     /// </summary>
-    public MudExStyleBuilder WithAlignItems(AlignItems alignItems, bool when = true) => With("align-items", alignItems.GetDescription(), when);
+    public MudExStyleBuilder WithAlignItems(MudBlazor.Extensions.Core.Css.AlignItems alignItems, bool when = true) => With("align-items", alignItems.GetDescription(), when);
 
     /// <summary>
     /// Specifies the position property using a CSS string value, if the 'when' condition is true.
@@ -487,7 +487,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     /// <summary>
     /// Specifies the position property using a CSS string value, if the 'when' condition is true.
     /// </summary>
-    public MudExStyleBuilder WithPosition(Position position, bool when = true) => WithPosition(position.GetDescription(), when);
+    public MudExStyleBuilder WithPosition(MudBlazor.Extensions.Core.Css.Position position, bool when = true) => WithPosition(position.GetDescription(), when);
 
     /// <summary>
     /// Specifies the top property using a CSS string value, if the 'when' condition is true.
@@ -1804,7 +1804,15 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     /// </summary>
     public MudExStyleBuilder WithOutlineLeftWidth(MudExSize<double> size, bool when = true) => WithOutlineLeftWidth(size.ToString(), when);
 
-    
+    /// <summary>
+    /// Sets color or background color based on variant
+    /// </summary>
+    public MudExStyleBuilder WithColorForVariant(Variant variant, MudExColor color, bool when = true) =>
+        WithBackgroundColor(color, variant == Variant.Filled && when)
+            .WithColor(color, (variant == Variant.Text || variant == Variant.Outlined) && when)
+            .WithBorderColor(color, variant == Variant.Outlined && when);
+
+
     /// <summary>
     /// Adds an !important to last added style
     /// </summary>
@@ -1948,4 +1956,5 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public string Style => Build();
 
     private string DoubleToString(double value) => value.ToString(CultureInfo.InvariantCulture);
+    
 }

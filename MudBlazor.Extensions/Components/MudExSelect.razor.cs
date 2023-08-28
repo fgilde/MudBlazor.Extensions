@@ -18,7 +18,6 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IMudExComponent
 {
 
-
     #region Constructor, Injected Services, Parameters, Fields
 
     public MudExSelect()
@@ -63,6 +62,35 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     private string _elementId = "select_" + Guid.NewGuid().ToString().Substring(0, 8);
     private string _popoverId = "selectpopover_" + Guid.NewGuid().ToString().Substring(0, 8);
 
+    /// <summary>
+    ///  Func to group by items collection
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.List.Appearance)]
+    public Func<T, object> GroupBy { get; set; }
+
+    /// <summary>
+    /// Set to true to enable grouping with the GroupBy func
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.List.Behavior)]
+    public bool GroupingEnabled { get; set; }
+
+    /// <summary>
+    /// Sticky header for item group.
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.List.Behavior)]
+    public bool GroupsSticky { get; set; } = true;
+
+    /// <summary>
+    /// Set to true to use a expansion panel to nest items.
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.List.Behavior)]
+    public bool GroupsNested { get; set; }
+
+    /// <summary>
+    /// Sets the group's expanded state on popover opening. Works only if GroupsNested is true.
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.List.Behavior)]
+    public bool GroupsInitiallyExpanded { get; set; } = true;
 
     /// <summary>
     /// Render chips additional to item content above or below the select box

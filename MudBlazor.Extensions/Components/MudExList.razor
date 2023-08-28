@@ -13,9 +13,29 @@
             {
                 @SearchBoxRender
             }
-            <MudVirtualize IsEnabled="@Virtualize" Items="GetSearchedItems()" Context="item" OverscanCount="@OverscanCount">
-                @ItemRender(item)
-            </MudVirtualize>
+
+            if (GroupingEnabled && GroupBy != null)
+            {
+                var gr = GetSearchedItems().GroupBy(GroupBy);
+                @foreach (var group in gr)
+                {
+                    <MudExSelectItemGroup T="string" Text="@group.Key.ToString()" StickyTop="GetStickyTop()" Sticky="@GroupsSticky" Nested="@GroupsNested" InitiallyExpanded="@GroupsInitiallyExpanded">
+                        @{
+                            var groupList = group.ToList();
+                        }
+                        <MudVirtualize IsEnabled="@Virtualize" Items="groupList" Context="item" OverscanCount="@OverscanCount">
+                            @ItemRender(item)
+                        </MudVirtualize>
+                    </MudExSelectItemGroup>
+                }
+
+            } 
+            else {
+
+                <MudVirtualize IsEnabled="@Virtualize" Items="GetSearchedItems()" Context="item" OverscanCount="@OverscanCount">
+                    @ItemRender(item)
+                </MudVirtualize>
+            }
         }
         else
         {

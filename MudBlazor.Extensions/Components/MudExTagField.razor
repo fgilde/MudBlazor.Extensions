@@ -1,0 +1,84 @@
+﻿@inherits MudExTextField<T>
+@typeparam T
+
+<MudExTextField @ref="_textFieldExtendedReference"
+                      T="T"
+                      Immediate="true"
+                      OnKeyDown="HandleKeyDown"
+                      OnKeyUp="HandleKeyUp"
+                      OnKeyPress="@(async() => await OnKeyPress.InvokeAsync())"
+                      OnBlur="@(async() => await OnBlur.InvokeAsync())"
+                      OnClearButtonClick="@(async() => await OnClearButtonClick.InvokeAsync())"                      
+                      OnInternalInputChanged="@(async() => await OnInternalInputChanged.InvokeAsync())"
+                      ForceShrink="@(Values?.Any() ?? false)"
+                      Clearable="@Clearable"
+                      AutoFocus="@AutoFocus"
+                      Class="@Class"
+                      Style="@Style"
+                      Converter="@Converter"                      
+                      Counter="@Counter"
+                      Culture="@Culture"                      
+                      Disabled="@Disabled"
+                      DisableUnderLine="@DisableUnderLine"
+                      Error="@Error"
+                      ErrorId="@ErrorId"
+                      ErrorText="@ErrorText"
+                      For="@For"
+                      Format="@Format"
+                      FullWidth="@FullWidth"
+                      HelperText="@HelperText"
+                      HelperTextOnFocus="@HelperTextOnFocus"
+                      Label="@Label"
+                      Margin="@Margin"
+                      MaxLength="@MaxLength"
+                      OnlyValidateIfDirty="@OnlyValidateIfDirty"
+                      ReadOnly="@ReadOnly"
+                      Placeholder="@Placeholder"
+                      Required="@Required"
+                      RequiredError="@RequiredError"
+                      Validation="@Validation"
+                      Variant="@Variant"
+                      @bind-Value="@_internalValue"
+                      TextChanged="@(async() => await TextChanged.InvokeAsync())"
+                      ShowVisualiser="@(Values?.Any() ?? false)">
+
+    <DataVisualiser>
+        <MudChipSet Class="@ChipClassname" Style="@($"max-width: {ChipsMaxWidth}")" AllClosable="@Closeable" OnClose="Closed">
+            @for (int i = 0; i < Math.Min(Values?.Count ?? 0, MaxChips == 0 ? int.MaxValue : MaxChips); i++)
+            {
+                <MudChip 
+                    Class="@ClassChip"
+                    Style="@ChipStyleName"
+                    Color="@(ChipColor.IsColor ? ChipColor.AsColor : Color.Default)"
+                    DisableRipple="true" 
+                    Text="@Values[i]"                     
+                    Variant="@ChipVariant" 
+                    Size="@ChipSize" 
+                    Disabled="@Disabled" />
+            }
+        </MudChipSet>
+
+        @if (Values != null && MaxChips != 0 && MaxChips < Values.Count)
+        {
+            var chipsNotShown = Values.Skip(MaxChips).ToList();
+            var tooltipText = string.Join(", ", chipsNotShown);
+
+            <MudTooltip Text="@tooltipText">
+                <MudChip 
+                    DisableRipple="true" 
+                    Text="@($" +{chipsNotShown.Count}")"
+                    Style="@ChipStyleName"
+                    Color="@(ChipColor.IsColor ? ChipColor.AsColor : Color.Default)"
+                    Variant="@ChipVariant" 
+                    Size="@ChipSize" 
+                    Disabled="@Disabled" />
+            </MudTooltip>
+        }
+
+    </DataVisualiser>
+
+    <AdornmentEnd>
+        @AdornmentEnd
+    </AdornmentEnd>
+
+</MudExTextField>

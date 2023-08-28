@@ -18,10 +18,10 @@
     }
     else
     {
-        @RenderMultiSelectComponent(MudExList.MultiSelectionAlign != Align.End)
+        @RenderMultiSelectComponent(MudExList != null && MudExList.MultiSelectionAlign != Align.End)
         @RenderAvatarOrIcon
         @RenderListItemText
-        @RenderMultiSelectComponent(MudExList.MultiSelectionAlign == Align.End)
+        @RenderMultiSelectComponent(MudExList != null && MudExList.MultiSelectionAlign == Align.End)
         @RenderExpandIconIfNested
     }
 </div>
@@ -42,7 +42,7 @@
 @code {
     RenderFragment RenderMultiSelectComponent(bool alignmentCondition) => @<div>
        
-        @if (MudExList != null && NestedList == null && MudExList.MultiSelection == true && alignmentCondition && IsFunctional == false &&
+        @if (MudExList != null && NestedList == null && MudExList.MultiSelection && alignmentCondition && !IsFunctional &&
         (OverrideMultiSelectionComponent != MultiSelectionComponent.None || (MudExList.MultiSelectionComponent == MultiSelectionComponent.None && (OverrideMultiSelectionComponent != null || OverrideMultiSelectionComponent != MultiSelectionComponent.None))))
         {
         <div class="@MultiSelectClassName">
@@ -52,7 +52,7 @@
             }
             else if (OverrideMultiSelectionComponent == null ? MudExList?.MultiSelectionComponent == MultiSelectionComponent.Switch : OverrideMultiSelectionComponent.Value == MultiSelectionComponent.Switch)
             {
-                <MudSwitch Color="@MudExList.Color" Disabled="@Disabled" @bind-Checked="_selected" @onclick="OnClickHandler" OnClickStopPropagation="true" />
+                <MudSwitch Color="@MudExList.Color" Disabled="@Disabled" @bind-Checked="_selected"  @onclick:stopPropagation="true" />
             }
         </div>
         }
