@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
+using MudBlazor.Internal;
 using MudBlazor.Utilities;
 
 namespace MudBlazor.Extensions.Components
@@ -47,7 +48,7 @@ namespace MudBlazor.Extensions.Components
                     .Build();
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
+        {            
             await base.OnAfterRenderAsync(firstRender);
             if (firstRender)
             {

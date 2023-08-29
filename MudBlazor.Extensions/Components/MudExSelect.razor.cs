@@ -59,9 +59,18 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         .AddClass(InputClass)
         .Build();
 
+    protected string ChipStyleName =>
+        new MudExStyleBuilder()
+            .AddRaw(StyleChip)
+            .WithColorForVariant(ChipVariant, Color, !Color.IsColor)
+            .Build();
+
     private string _elementId = "select_" + Guid.NewGuid().ToString().Substring(0, 8);
     private string _popoverId = "selectpopover_" + Guid.NewGuid().ToString().Substring(0, 8);
 
+    [Parameter]
+    public string StyleChip { get; set; }
+    
     /// <summary>
     ///  Func to group by items collection
     /// </summary>
@@ -281,12 +290,6 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     [SafeCategory(CategoryTypes.FormComponent.Appearance)]
     public virtual string OpenIcon { get; set; } = Icons.Material.Filled.ArrowDropDown;
 
-    /// <summary>
-    /// Dropdown color of select. Supports theme colors.
-    /// </summary>
-    [Parameter]
-    [SafeCategory(CategoryTypes.FormComponent.Appearance)]
-    public virtual Color Color { get; set; } = Color.Primary;
 
     /// <summary>
     /// The Close Select Icon

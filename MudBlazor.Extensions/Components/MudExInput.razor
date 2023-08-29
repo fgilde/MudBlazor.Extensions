@@ -1,4 +1,5 @@
-﻿@typeparam T
+﻿@using MudBlazor.Internal
+@typeparam T
 @inherits MudExBaseInput<T>
 
 <div class="@Classname" style="@Style">
@@ -8,6 +9,19 @@
         <div class="@AdornmentStartClassname">
             @AdornmentStart
         </div>
+    }
+    
+    @if (Adornment == Adornment.Start && !string.IsNullOrEmpty(AdornmentIcon))
+    {
+        <MudInputAdornment Class="@AdornmentClassname" 
+                           Icon="@AdornmentIcon" 
+                           Color="@AdornmentColor" 
+                           Size="@IconSize" 
+                           Text="@AdornmentText" 
+                           Edge="@Edge.Start" 
+                           AdornmentClick="@OnAdornmentClick" 
+                           AriaLabel="@AdornmentAriaLabel"
+        />
     }
     
     @if (Lines > 1)
@@ -103,12 +117,12 @@
 
         </div>
     }
-
+    
     @if (GetClearable() && !GetDisabledState() || ForceClearable)
     {
         <div @onmousedown:stopPropagation>
             <MudIconButton Class="@ClearButtonClassname"
-                       Color="@Color.Default"
+                       Color="@AdornmentColor"                       
                        Icon="@ClearIcon"
                        Size="@Size.Small"
                        @onmousedown="@ClearButtonClickHandlerAsync"
@@ -122,6 +136,18 @@
             @AdornmentEnd
         </div>
 
+    }
+    
+    @if (!string.IsNullOrEmpty(AdornmentIcon) && Adornment == Adornment.End)
+    {
+        <MudInputAdornment Class="@AdornmentClassname" 
+                           Icon="@AdornmentIcon" 
+                           Color="@AdornmentColor" 
+                           Size="@IconSize" 
+                           Text="@AdornmentText" 
+                           Edge="@Edge.Start" 
+                           AdornmentClick="@OnAdornmentClick" 
+                           AriaLabel="@AdornmentAriaLabel"/>
     }
 
     @if (Variant == Variant.Outlined)

@@ -77,9 +77,8 @@ public partial class MudExList<T> : IDisposable
     /// <summary>
     /// The color of the selected List Item.
     /// </summary>
-    [Parameter]
-    [SafeCategory(CategoryTypes.List.Appearance)]
-    public Color Color { get; set; } = Color.Primary;
+    [Parameter, SafeCategory(CategoryTypes.List.Appearance)]
+    public MudExColor Color { get; set; } = MudBlazor.Color.Primary;
 
     /// <summary>
     /// Child content of component.
@@ -886,9 +885,9 @@ public partial class MudExList<T> : IDisposable
         }
     }
 
-    MudTextField<string> _searchField;
+    MudBaseInput<string> _searchField;
 
-    public MudTextField<string> SearchField => _searchField;
+    public MudBaseInput<string> SearchField => _searchField;
 
     protected internal async Task HandleKeyDown(KeyboardEventArgs obj)
     {
@@ -1499,6 +1498,9 @@ public partial class MudExList<T> : IDisposable
         var result = -8;
         if(SearchBox) {
             result += 90;
+            if(SearchBoxVariant == Variant.Outlined)            
+                result -= 6;
+            
             if (SelectAll && SelectAllPosition == SelectAllPosition.AfterSearchBox)                            
                 result += 50;
             

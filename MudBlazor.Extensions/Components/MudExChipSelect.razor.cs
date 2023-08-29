@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Core;
 
 
 namespace MudBlazor.Extensions.Components;
@@ -43,7 +44,7 @@ public partial class MudExChipSelect<T>
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
     [Obsolete($"Use {nameof(Color)} instead.")]
-    public virtual Color ChipColor
+    public virtual MudExColor ChipColor
     {
         get => Color;
         set => Color = value;

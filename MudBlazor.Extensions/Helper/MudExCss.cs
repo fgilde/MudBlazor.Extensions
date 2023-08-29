@@ -19,10 +19,11 @@ public static partial class MudExCss
     private static readonly AnimationType[] TypesWithoutPositionReplacement = { AnimationType.SlideIn };
 
 
-    public static string GetClassname<T>(MudExBaseInput<T> baseInput, Func<bool> shrinkWhen) =>
+    internal static string GetClassname<T>(MudExBaseInput<T> baseInput, Func<bool> shrinkWhen) =>
     new CssBuilder("mud-input")
-        .AddClass($"mud-input-{baseInput.Variant.ToDescriptionString()}")
-        .AddClass($"mud-input-margin-{baseInput.Margin.ToDescriptionString()}", when: () => baseInput.Margin != Margin.None)
+        .AddClass($"mud-ex-base-input")
+        .AddClass($"mud-input-{baseInput.Variant.GetDescription()}")
+        .AddClass($"mud-input-margin-{baseInput.Margin.GetDescription()}", when: () => baseInput.Margin != Margin.None)
         .AddClass("mud-input-underline", when: () => !baseInput.DisableUnderLine && baseInput.Variant != Variant.Outlined)
         .AddClass("mud-shrink", when: shrinkWhen)
         .AddClass("mud-disabled", baseInput.Disabled)
@@ -31,19 +32,20 @@ public static partial class MudExCss
         .AddClass(baseInput.Class)
         .Build();
 
-    public static string GetInputClassname<T>(MudExBaseInput<T> baseInput) =>
+    internal static string GetInputClassname<T>(MudExBaseInput<T> baseInput) =>
         new CssBuilder("mud-input-slot")
+            .AddClass($"mud-ex-base-input")
             .AddClass("mud-input-root")
-            .AddClass($"mud-input-root-{baseInput.Variant.ToDescriptionString()}")
-            .AddClass($"mud-input-root-margin-{baseInput.Margin.ToDescriptionString()}", when: () => baseInput.Margin != Margin.None)
+            .AddClass($"mud-input-root-{baseInput.Variant.GetDescription()}")
+            .AddClass($"mud-input-root-margin-{baseInput.Margin.GetDescription()}", when: () => baseInput.Margin != Margin.None)
             .AddClass("ms-4", baseInput.AdornmentStart != null && baseInput.Variant == Variant.Text)
             .AddClass(baseInput.Class)
             .Build();
 
-    public static string GetAdornmentClassname<T>(MudExBaseInput<T> baseInput) =>
+    internal static string GetAdornmentClassname<T>(MudExBaseInput<T> baseInput) =>
         new CssBuilder("mud-input-adornment")
-            .AddClass($"mud-input-adornment-start", baseInput.AdornmentStart != null)
-            .AddClass($"mud-input-adornment-end", baseInput.AdornmentEnd != null)
+            .AddClass($"mud-input-adornment-start", baseInput.AdornmentStart != null || ((!string.IsNullOrEmpty(baseInput.AdornmentText) || !string.IsNullOrEmpty(baseInput.AdornmentIcon)) && baseInput.Adornment == Adornment.Start))
+            .AddClass($"mud-input-adornment-end", baseInput.AdornmentEnd != null || ((!string.IsNullOrEmpty(baseInput.AdornmentText) || !string.IsNullOrEmpty(baseInput.AdornmentIcon)) && baseInput.Adornment == Adornment.End))
             .AddClass($"mud-text", !string.IsNullOrEmpty(baseInput.AdornmentText))
             .AddClass($"mud-input-root-filled-shrink", baseInput.Variant == Variant.Filled)
             .AddClass(baseInput.Class)

@@ -1,6 +1,7 @@
 ﻿@typeparam T
 @inherits MudExBaseComponent<MudExListItem<T>>
 @using MudBlazor
+@using MudBlazor.Extensions.Helper.Internal
 @using MudBlazor.Extensions.Options
 
 <div tabindex="0" @attributes="UserAttributes" id="@ItemId" class="@Classname" @onclick="@(((MudExList?.Clickable == true || NestedList != null) && IsFunctional == false) ? OnClickHandler : OnlyOnClick)" @onclick:stopPropagation="@OnClickStopPropagation" style="@Style">
@@ -48,32 +49,38 @@
         <div class="@MultiSelectClassName">
             @if (OverrideMultiSelectionComponent == null ? MudExList?.MultiSelectionComponent == MultiSelectionComponent.CheckBox : OverrideMultiSelectionComponent.Value == MultiSelectionComponent.CheckBox)
             {
-                <MudCheckBox Color="@MudExList.Color" Disabled="@Disabled" @bind-Checked="_selected" @onclick="OnClickHandler" Dense="true" />
+                @if(Features.SelectColorFeature)
+                {
+                    <MudExListItem Style="width: 36px; margin-left: -15px; margin-top: 0px;" T="T" IsFunctional="true" Icon="@(_selected ? Icons.Material.Filled.CheckBox : Icons.Material.Filled.CheckBoxOutlineBlank)" IconColor="@MudExList.Color" OverrideMultiSelectionComponent="MultiSelectionComponent.None" OnClick="@((a) => {OnClickHandler(a);})" OnClickHandlerPreventDefault="true" Dense="true" Class="mb-2" />   
+                }else {
+                    <MudCheckBox Color="@(MudExList.Color.IsColor ? MudExList.Color.AsColor : Color.Default)" Disabled="@Disabled" @bind-Checked="_selected" @onclick="OnClickHandler" Dense="true" />
+                }                                        
+
             }
             else if (OverrideMultiSelectionComponent == null ? MudExList?.MultiSelectionComponent == MultiSelectionComponent.Switch : OverrideMultiSelectionComponent.Value == MultiSelectionComponent.Switch)
             {
-                <MudSwitch Color="@MudExList.Color" Disabled="@Disabled" @bind-Checked="_selected"  @onclick:stopPropagation="true" />
+                <MudSwitch Color="@(MudExList.Color.IsColor ? MudExList.Color.AsColor : Color.Default)" Disabled="@Disabled" @bind-Checked="_selected"  @onclick:stopPropagation="true" />
             }
         </div>
         }
         
     </div>;
-
+    
     RenderFragment RenderAvatarOrIcon => @<div>
         
         @if (!string.IsNullOrWhiteSpace(Avatar))
         {
         <div class="mud-ex-list-item-avatar">
             <MudAvatar Class="@AvatarClass">
-                <MudIcon Icon="@Avatar" Color="@IconColor" Size="@IconSize" />
+                    <MudIcon Icon="@Avatar" Style="@IconStyleName" Color="@(IconColor.IsColor ? IconColor.AsColor : Color.Default)" Size="@IconSize" />
             </MudAvatar>
         </div>
         }
         else if (!string.IsNullOrWhiteSpace(Icon))
         {
-        <div class="mud-ex-list-item-icon">
-            <MudIcon Icon="@Icon" Color="@IconColor" Size="@IconSize" />
-        </div>
+            <div class="mud-ex-list-item-icon">
+                    <MudIcon Icon="@Icon" Style="@IconStyleName" Color="@(IconColor.IsColor ? IconColor.AsColor : Color.Default)" Size="@IconSize" />
+            </div>
         }
         
     </div>;

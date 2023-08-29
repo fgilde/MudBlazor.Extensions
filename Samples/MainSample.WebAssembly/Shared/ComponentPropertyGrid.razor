@@ -39,7 +39,7 @@ else
         ToolbarColor = Color.Surface;
         StickyToolbarTop = "-8px";
         StoreAndReadValueFromUrl = true;
-
+        MultiSearch = true;        
         return base.OnInitializedAsync();
     }
 
@@ -55,11 +55,11 @@ else
         }
     }
 
-
+    
     protected override ObjectEditMeta<T> ConfigureMetaBase(ObjectEditMeta<T> meta)
-    {
+    {        
         meta.IgnoreAllObsoleteFields();
-        meta.IgnoreAllInheritedFieldsIf(b => !_showInherited);        
+        meta.IgnoreAllInheritedFieldsIf(_ => !_showInherited, new[] { nameof(MudExBaseInput<T>.Color)});
         meta.GroupByCategoryAttribute();
         meta.Properties<string>().Where(p => p?.Value?.ToString()?.StartsWith("<g") == true || p?.Value?.ToString()?.StartsWith("<path") == true)
         .RenderWith<MudExIconPicker, string, string>(edit => edit.Value);

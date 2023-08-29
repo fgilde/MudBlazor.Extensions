@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 
@@ -56,8 +57,13 @@ public abstract class MudExBaseInput<T> : MudBaseInput<T>
     /// </summary>
     public string TryLocalize(string text, params object[] args) => LocalizerToUse.TryLocalize(text, args);
 
-    
-    
+    /// <summary>
+    /// Color
+    /// </summary>
+    [Parameter]
+    [SafeCategory(CategoryTypes.FormComponent.Appearance)]
+    public MudExColor Color { get; set; } = MudBlazor.Color.Primary;
+
     /// <summary>
     /// The Adornment if used. By default, it is set to None.
     /// </summary>

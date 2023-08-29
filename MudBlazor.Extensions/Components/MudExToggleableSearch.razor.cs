@@ -9,6 +9,12 @@ namespace MudBlazor.Extensions.Components
     /// </summary>
     public partial class MudExToggleableSearch
     {
+
+        /// <summary>
+        /// Set to true to allow multiple values
+        /// </summary>
+        [Parameter] public bool MultiSearch { get; set; }
+        
         /// <summary>
         /// The Toggle mode
         /// </summary>
@@ -18,6 +24,11 @@ namespace MudBlazor.Extensions.Components
         /// The filter value itself
         /// </summary>
         [Parameter] public string Filter { get; set; }
+
+        /// <summary>
+        /// The filter value itself
+        /// </summary>
+        [Parameter] public List<string> Filters { get; set; }
 
         /// <summary>
         /// If true, the input will update the Value immediately on typing.
@@ -44,7 +55,12 @@ namespace MudBlazor.Extensions.Components
         /// Event callback if filter changed
         /// </summary>
         [Parameter] public EventCallback<string> FilterChanged { get; set; }
-        
+
+        /// <summary>
+        /// Event callback if filter changed
+        /// </summary>
+        [Parameter] public EventCallback<List<string>> FiltersChanged { get; set; }
+
         /// <summary>
         ///  If true and search toggleable and open, search with closed on blur
         /// </summary>
@@ -56,16 +72,17 @@ namespace MudBlazor.Extensions.Components
         [Parameter]
         public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
 
+        public bool HasSearchActive => MultiSearch ? Filters?.Count > 0 || !string.IsNullOrWhiteSpace(Filter) : !string.IsNullOrWhiteSpace(Filter);
+
         private bool _searchBoxBlur;
         private bool _searchActive;
         private MudTextField<string> _searchBox;
-
+        
         private void ToggleSearchBox()
         {
             if (_searchBoxBlur)
                 return;
             _searchActive = !_searchActive;
-            _searchBox.FocusAsync();
         }
 
         private Task FilterKeyPress(KeyboardEventArgs arg)
@@ -82,7 +99,7 @@ namespace MudBlazor.Extensions.Components
         private Task FilterBoxBlur(FocusEventArgs arg)
         {
             if (AutoCloseOnBlur)
-            {
+            {                
                 _searchBoxBlur = true;
                 _searchActive = false;
                 Task.Delay(300).ContinueWith(t => _searchBoxBlur = false);
@@ -94,6 +111,12 @@ namespace MudBlazor.Extensions.Components
         {
             Filter = arg;
             return FilterChanged.InvokeAsync(arg);
+        }
+
+        private Task OnFiltersChanged(List<string> arg)
+        {
+            Filters = arg;
+            return FiltersChanged.InvokeAsync(arg);
         }
 
     }

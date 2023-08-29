@@ -41,6 +41,10 @@ public partial class MudExObjectEdit<T>
 
     #region Parameters
 
+    /// <summary>
+    /// Set to true to allow multiple values
+    /// </summary>
+    [Parameter] public bool MultiSearch { get; set; }
 
     /// <summary>
     /// If you need the reference for dynamic ignored fields for example because of Model Validation or resets you should set this to true
@@ -294,6 +298,12 @@ public partial class MudExObjectEdit<T>
     /// The filter value for the component.
     /// </summary>
     [Parameter] public string Filter { get; set; }
+
+
+    /// <summary>
+    /// The filter values for the component.
+    /// </summary>
+    [Parameter] public List<string> Filters { get; set; }
 
     /// <summary>
     /// Whether to automatically hide disabled fields.
@@ -615,13 +625,22 @@ public partial class MudExObjectEdit<T>
     }
 
     private bool IsInFilter(ObjectEditPropertyMeta propertyMeta)
-        => string.IsNullOrWhiteSpace(Filter)
-           || propertyMeta.Settings.LabelFor(LocalizerToUse).Contains(Filter, StringComparison.InvariantCultureIgnoreCase)
-           || propertyMeta.Settings.DescriptionFor(LocalizerToUse).Contains(Filter, StringComparison.InvariantCultureIgnoreCase)
-           || propertyMeta.PropertyInfo.Name.Contains(Filter, StringComparison.InvariantCultureIgnoreCase)
-           || propertyMeta.Value?.ToString()?.Contains(Filter, StringComparison.InvariantCultureIgnoreCase) == true
-           || propertyMeta.GroupInfo?.Name?.Contains(Filter, StringComparison.InvariantCultureIgnoreCase) == true
-           || propertyMeta.RenderData?.Attributes.Values.OfType<string>().Any(x => x.Contains(Filter, StringComparison.InvariantCultureIgnoreCase)) == true;
+    {
+        var allFilters = (!string.IsNullOrEmpty(Filter) ? new[] { Filter } : Enumerable.Empty<string>()).Concat(Filters ?? Enumerable.Empty<string>()).Distinct().ToList();
+
+        // No filters, nothing to filter against, so return true
+        return !allFilters.Any() ||
+               // Loop through each filter in allFilters
+               (from filter in allFilters where !string.IsNullOrWhiteSpace(filter) 
+                select propertyMeta.Settings.LabelFor(LocalizerToUse).Contains(filter, StringComparison.InvariantCultureIgnoreCase) 
+                || propertyMeta.Settings.DescriptionFor(LocalizerToUse).Contains(filter, StringComparison.InvariantCultureIgnoreCase) 
+                || propertyMeta.PropertyInfo.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase) 
+                || (propertyMeta.Value?.ToString()?.Contains(filter, StringComparison.InvariantCultureIgnoreCase) == true) 
+                || (propertyMeta.GroupInfo?.Name?.Contains(filter, StringComparison.InvariantCultureIgnoreCase) == true) 
+                || (propertyMeta.RenderData?.Attributes.Values.OfType<string>().Any(x => x.Contains(filter, StringComparison.InvariantCultureIgnoreCase)) == true))
+                .Any(matchesCurrentFilter => matchesCurrentFilter);
+    }
+
 
 
     private bool ShouldAddGrid(IEnumerable<ObjectEditPropertyMeta> meta) => WrapInMudGrid ?? ContainsMudItemInWrapper(meta);

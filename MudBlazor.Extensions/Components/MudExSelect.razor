@@ -10,7 +10,7 @@
             
             @* Hidden validation component to have validation for IEnumerable<T> as well *@
             <MudExInput T="IEnumerable<T>" @bind-Value="@SelectedValues" @ref="_validationComponent" @bind-Error="Error" ErrorStateChanged="@OnValidationStateChanged"
-                        Style="display:none !important;"
+                        Style="display:none !important;"                        
                         For="@ForMultiple" ReadOnly="true" />
                         
             <MudInputControl Label="@Label" Variant="@Variant" HelperText="@HelperText" HelperTextOnFocus="@HelperTextOnFocus" FullWidth="@FullWidth" Margin="@Margin" Class="@Classname" Style="@Style"
@@ -19,6 +19,8 @@
                     <MudExInput @ref="_elementReference" InputType="InputType.Hidden"
                                       Class="@InputClassname" Style="@InputStyle" Margin="@Margin" Placeholder="@TryLocalize(Placeholder)"
                                       Variant="@Variant"
+                                      AdornmentColor="@AdornmentColor"
+                                      Color="@Color"
                                       TextUpdateSuppression="false"
                                       Value="@(Strict && !IsValueInList ? null : Text)" DisableUnderLine="@DisableUnderLine"
                                       Disabled="@Disabled" ReadOnly="true" Error="@Error" ErrorId="@ErrorId"
@@ -169,7 +171,7 @@
             {
                 foreach (var item in SelectedValues.Distinct())
                 {
-                    <MudChip Class="@ChipClass" Value="@item" Color="@Color" Size="@ChipSize" Variant="@ChipVariant" >
+                    <MudChip Class="@ChipClass" Value="@item" Color="@(Color.IsColor ? Color.AsColor : MudBlazor.Color.Default)" Style="@ChipStyleName" Size="@ChipSize" Variant="@ChipVariant">
                         @RenderItem(item, ToStringFunc != null ? ToStringFunc(item) : Converter.Set(item))
                     </MudChip>
                 }
@@ -178,7 +180,7 @@
             {
                 foreach (var item in Items?.Where(x => SelectedValues.Contains(x.Value)) ?? new List<MudExSelectItem<T>>())
                 {
-                    <MudChip Class="@ChipClass" Value="item.Value" Color="@Color" Size="@ChipSize" Variant="@ChipVariant" >
+                <MudChip Class="@ChipClass" Value="item.Value" Color="@(Color.IsColor ? Color.AsColor : MudBlazor.Color.Default)" Style="@ChipStyleName" Size="@ChipSize" Variant="@ChipVariant">
                         @RenderItem(item.Value, (string.IsNullOrEmpty(item.Text) ? ( ToStringFunc != null ? ToStringFunc(item.Value) : Converter.Set(item.Value)) : item.Text))
                     </MudChip>
                 }

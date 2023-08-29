@@ -5,19 +5,45 @@
 
 @if (FilterMode != PropertyFilterMode.Disabled)
 {
-    <MudTextField @ref="_searchBox"
-              OnBlur="@(FilterBoxBlur)"
-              OnKeyDown="@(FilterKeyPress)"
-              OnKeyUp="@OnKeyUp"
-              Class="@($"mud-ex-hide-inputlabel mud-ex-animate-all-properties mud-ex-property-filter {(_searchActive || FilterMode == PropertyFilterMode.AlwaysVisible ? "active" : "")}")"
-              Immediate="@Immediate"
-              Clearable="@Clearable"
-              Value="Filter" T="string"
-              ValueChanged="@OnFilterChanged"
-              Placeholder="@TryLocalize("Filter")"
-              Label="@TryLocalize("Filter")" />
+    @if (!MultiSearch)
+    {
+        <MudTextField @ref="_searchBox"
+                      OnBlur="@(FilterBoxBlur)"
+                      OnKeyDown="@(FilterKeyPress)"
+                      OnKeyUp="@OnKeyUp"
+                      Class="@($"mud-ex-hide-inputlabel mud-ex-animate-all-properties mud-ex-property-filter {(_searchActive || FilterMode == PropertyFilterMode.AlwaysVisible ? "active" : "")}")"
+                      Immediate="@Immediate"
+                      Clearable="@Clearable"
+                      Value="Filter" T="string"
+                      ValueChanged="@OnFilterChanged"
+                      Placeholder="@TryLocalize("Filter")"
+                      Label="@TryLocalize("Filter")" />
+    }
+    else
+    {
+        <MudExTagField T="string"                       
+                       AutoFocus="_searchActive"
+                       OnBlur="@(FilterBoxBlur)"
+                       OnKeyDown="@(FilterKeyPress)"
+                       OnKeyUp="@OnKeyUp"
+                       SetChipsOnEnter="true"
+                       Clearable="@Clearable"
+                       ChipColor="Color.Primary"
+                       ChipSize="Size.Small"
+                       StyleChip="margin-top:33px;"
+                       Class="@($"mud-ex-hide-inputlabel mud-ex-animate-all-properties mud-ex-property-filter {(_searchActive || FilterMode == PropertyFilterMode.AlwaysVisible ? "active" : "")}")"
+                       Variant="Variant.Text"
+                       ChipVariant="Variant.Filled"
+                       Immediate="@Immediate"
+                       Value="Filter"
+                       Values="Filters"
+                       ValueChanged="@OnFilterChanged"
+                       ValuesChanged="@OnFiltersChanged"
+                       Placeholder="@TryLocalize("Filter")"
+                       Label="@TryLocalize("Filter")" />
+    }
 }
 @if (FilterMode == PropertyFilterMode.Toggleable)
 {
-    <MudIconButton Icon="@SearchIcon" Color="@(string.IsNullOrWhiteSpace(Filter) ? SearchButtonColor : Color.Warning)" OnClick="@(ToggleSearchBox)" />
+    <MudIconButton Icon="@SearchIcon" Color="@(!HasSearchActive ? SearchButtonColor : Color.Warning)" OnClick="@(ToggleSearchBox)" />
 }

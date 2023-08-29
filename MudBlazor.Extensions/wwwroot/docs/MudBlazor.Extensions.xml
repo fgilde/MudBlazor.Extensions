@@ -327,6 +327,11 @@
             Tries to localize given text if localizer and translation is available
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.Color">
+            <summary>
+            Color
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.AdornmentStart">
             <summary>
             The Adornment if used. By default, it is set to None.
@@ -2800,11 +2805,6 @@
             The Open Select Icon
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.Color">
-            <summary>
-            Dropdown color of select. Supports theme colors.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.CloseIcon">
             <summary>
             The Close Select Icon
@@ -3921,12 +3921,22 @@
             Simple component to expand a Search field 
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.MultiSearch">
+            <summary>
+            Set to true to allow multiple values
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.FilterMode">
             <summary>
             The Toggle mode
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.Filter">
+            <summary>
+            The filter value itself
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.Filters">
             <summary>
             The filter value itself
             </summary>
@@ -3953,6 +3963,11 @@
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.FilterChanged">
+            <summary>
+            Event callback if filter changed
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.FiltersChanged">
             <summary>
             Event callback if filter changed
             </summary>
@@ -4831,6 +4846,11 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.MultiSearch">
+            <summary>
+            Set to true to allow multiple values
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.RenderIgnoredReferences">
             <summary>
             If you need the reference for dynamic ignored fields for example because of Model Validation or resets you should set this to true
@@ -5075,6 +5095,11 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Filter">
             <summary>
             The filter value for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Filters">
+            <summary>
+            The filter values for the component.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.AutoHideDisabledFields">
@@ -7180,6 +7205,11 @@
             </summary>
             <param name="dialogReference"></param>
             <returns></returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.Internal.Features">
+            <summary>
+            Feature toggles
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.Internal.SizeParser.ParseMudExSize``1(System.String)">
             <summary>

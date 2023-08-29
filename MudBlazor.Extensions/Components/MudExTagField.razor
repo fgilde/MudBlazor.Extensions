@@ -49,7 +49,7 @@
                 <MudChip 
                     Class="@ClassChip"
                     Style="@ChipStyleName"
-                    Color="@(ChipColor.IsColor ? ChipColor.AsColor : Color.Default)"
+                    Color="@(ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"
                     DisableRipple="true" 
                     Text="@Values[i]"                     
                     Variant="@ChipVariant" 
@@ -68,7 +68,7 @@
                     DisableRipple="true" 
                     Text="@($" +{chipsNotShown.Count}")"
                     Style="@ChipStyleName"
-                    Color="@(ChipColor.IsColor ? ChipColor.AsColor : Color.Default)"
+                         Color="@(ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"
                     Variant="@ChipVariant" 
                     Size="@ChipSize" 
                     Disabled="@Disabled" />

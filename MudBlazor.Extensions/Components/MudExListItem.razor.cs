@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor.Utilities;
 using System.Windows.Input;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
+using MudBlazor.Extensions.Helper.Internal;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -17,25 +20,39 @@ public partial class MudExListItem<T>
     [CascadingParameter] protected MudExList<T> MudExList { get; set; }
     [CascadingParameter] protected internal MudExListItem<T> ParentListItem { get; set; }
 
-    protected string Classname =>
-    new CssBuilder("mud-ex-list-item")
-      .AddClass("mud-ex-list-item-dense", Dense == true || MudExList?.Dense == true)
-      .AddClass("mud-ex-list-item-gutters", !DisableGutters && !(MudExList?.DisableGutters == true))
-      .AddClass("mud-ex-list-item-clickable", MudExList?.Clickable)
-      .AddClass("mud-ripple", MudExList?.Clickable == true && !DisableRipple && !Disabled && !IsFunctional)
-      .AddClass($"mud-selected-item mud-{MudExList?.Color.ToDescriptionString()}-text mud-{MudExList?.Color.ToDescriptionString()}-hover", _selected && !Disabled && NestedList == null && !MudExList.DisableSelectedItemStyle)
-      .AddClass("mud-ex-list-item-hilight", _active && !Disabled && NestedList == null && !IsFunctional)
-      .AddClass("mud-ex-list-item-disabled", Disabled)
-      .AddClass("mud-ex-list-item-nested-background", MudExList != null && MudExList.SecondaryBackgroundForNestedItemHeader && NestedList != null)
-      .AddClass("mud-list-item-functional", IsFunctional)
-      .AddClass(Class)
-    .Build();
+    protected string Classname => GetCls();
+
+    private string GetCls()
+    {
+        var builder = new MudExCssBuilder("mud-ex-list-item")
+            .AddClass("mud-ex-list-item-dense", Dense == true || MudExList?.Dense == true)
+            .AddClass("mud-ex-list-item-gutters", !DisableGutters && !(MudExList?.DisableGutters == true))
+            .AddClass("mud-ex-list-item-clickable", MudExList?.Clickable == true)
+            .AddClass("mud-ripple", MudExList?.Clickable == true && !DisableRipple && !Disabled && !IsFunctional);
+        if (MudExList?.Color.IsColor == true) 
+        {             
+            builder.AddClass($"mud-selected-item mud-{MudExList?.Color.AsColor.GetDescription()}-text mud-{MudExList?.Color.AsColor.GetDescription()}-hover", MudExList != null && _selected && !Disabled && NestedList == null && !MudExList.DisableSelectedItemStyle);
+        }
+        builder.AddClass("mud-ex-list-item-hilight", _active && !Disabled && NestedList == null && !IsFunctional)
+        .AddClass("mud-ex-list-item-disabled", Disabled)
+        .AddClass("mud-ex-list-item-nested-background", MudExList != null && MudExList.SecondaryBackgroundForNestedItemHeader && NestedList != null)
+        .AddClass("mud-list-item-functional", IsFunctional)
+        .AddClass(Class);
+        
+        return builder.Build();
+    }
 
     protected string MultiSelectClassName =>
     new CssBuilder()
         .AddClass("mud-ex-list-item-multiselect")
         .AddClass("mud-ex-list-item-multiselect-checkbox", MudExList?.MultiSelectionComponent == MultiSelectionComponent.CheckBox || OverrideMultiSelectionComponent == MultiSelectionComponent.CheckBox)
         .Build();
+
+    protected string IconStyleName =>
+        new MudExStyleBuilder()
+            .WithColor(IconColor, !IconColor.IsColor)
+            .Build();
+
 
     protected internal string ItemId { get; } = "listitem_" + Guid.NewGuid().ToString().Substring(0, 8);
 
@@ -138,7 +155,7 @@ public partial class MudExListItem<T>
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Appearance)]
-    public Color IconColor { get; set; } = Color.Inherit;
+    public MudExColor IconColor { get; set; } = MudBlazor.Color.Inherit;
 
     /// <summary>
     /// Sets the Icon Size.
@@ -326,7 +343,7 @@ public partial class MudExListItem<T>
 
     public void SetSelected(bool selected, bool forceRender = true, bool returnIfDisabled = false)
     {
-        if (returnIfDisabled == true && Disabled)
+        if (returnIfDisabled && Disabled)
         {
             return;
         }

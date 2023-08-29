@@ -19,12 +19,17 @@
             <InputContent>
                 <CascadingValue Name="SubscribeToParentForm2" Value="false" IsFixed="true">
                     @if (_mask == null)
-                    {
+                    {                     
                         <MudExInput T="string"
                                       @ref="InputReference"
                                       @attributes="UserAttributes"
                                       InputType="@InputType"
                                       Lines="@Lines"
+                                      Color="@Color"
+                                      AdornmentColor="@AdornmentColor"
+                                      AdornmentIcon="@AdornmentIcon"
+                                      AdornmentText="@AdornmentText"
+                                      Adornment="@Adornment"                                      
                                       Style="@Style"
                                       Variant="@Variant"
                                       TextUpdateSuppression="@TextUpdateSuppression"
