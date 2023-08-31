@@ -10,6 +10,7 @@
                     <MudPaper Width="300px" Elevation="0">
                         <MudExList @ref="component"
                                    @bind-SelectedValues="@_selected"         
+                                   GroupBy="@(x => x.State)"
                                    Style="height: 500px"
                                    MultiSelection="true"
                                    SelectAll="true"

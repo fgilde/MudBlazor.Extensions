@@ -3346,25 +3346,85 @@
         <member name="M:MudBlazor.Extensions.Components.MudExSplitter.DisposeAsync">
             <inheritdoc/>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.DuplicateErrorText">
+            <summary>
+            Set to true to allow duplicates
+            </summary>    
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.AllowDuplicates">
+            <summary>
+            Set to true to allow duplicates
+            </summary>    
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.Values">
             <summary>
-            /The list of values.
+            Holds a list of values to be displayed as chips.
             </summary>
+            <remarks>Used to store the data of each chip.</remarks>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.ValuesChanged">
             <summary>
-            Fires when values changed
+            Triggered when the list of values changes.
+            </summary>
+            <remarks>Emits the updated list of values.</remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.ChipSize">
+            <summary>
+            Sets the size of the chips.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.SetChipsOnEnter">
+            <summary>
+            Determines whether chips are set upon pressing the enter key. Default is true.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.RenderChipsAdditional">
+            <summary>
+            Determines where the chips should be rendered relative to the select box.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.Delimiters">
             <summary>
-            The char that created a new chip with current value.
+            Sets the delimiter characters that will create a new chip.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.ClassChip">
+            <summary>
+            Sets the CSS class for the chip elements.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.StyleChip">
+            <summary>
+            Sets the CSS style for the chip elements.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.ChipColor">
+            <summary>
+            Sets the color of the chips.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.ChipVariant">
+            <summary>
+            Sets the visual variant of the chips.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.WrapChips">
+            <summary>
+            Determines whether the chips should wrap to the next line.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.Closeable">
             <summary>
-            Determines that chips have close button. Default is true.
+            Determines whether the chips have a close button. Default is true.
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTagField`1.MaxChips">
+            <summary>
+            Sets the maximum number of chips allowed.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTagField`1.InvokeKeyDownAsync(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs)">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExTaskBar">
             <summary>
@@ -7477,7 +7537,7 @@
             Class for full height content
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExCss.GetAnimationCssStyle(MudBlazor.Extensions.Options.AnimationType,System.TimeSpan,System.Nullable{MudBlazor.Extensions.Options.AnimationDirection},MudBlazor.Extensions.Options.AnimationTimingFunction,System.Nullable{MudBlazor.DialogPosition})">
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.GetAnimationCssStyle(MudBlazor.Extensions.Options.AnimationType,System.Nullable{System.TimeSpan},System.Nullable{MudBlazor.Extensions.Options.AnimationDirection},MudBlazor.Extensions.Options.AnimationTimingFunction,System.Nullable{MudBlazor.DialogPosition})">
             <summary>
             Returns an applicable style string as animation for given animations options
             </summary>

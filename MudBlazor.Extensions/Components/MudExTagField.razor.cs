@@ -1,70 +1,116 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components;
-using MudBlazor.Utilities;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Options;
 
 namespace MudBlazor.Extensions.Components;
 
 public partial class MudExTagField<T> : IMudExComponent
 {
-    protected string ChipClassname =>
-          new MudExCssBuilder("d-flex")
-           .AddClass("flex-wrap", WrapChips)
-           .AddClass("mt-5", Variant == Variant.Filled)
-           .Build();
-
-
-    MudExTextField<T> _textFieldExtendedReference;
-    T _internalValue;
+    private Adornment _renderChipsAdditional = Adornment.None;
 
     /// <summary>
-    /// /The list of values.
-    /// </summary>
-    [Parameter]
-    public List<string> Values { get; set; }
+    /// Set to true to allow duplicates
+    /// </summary>    
+    [Parameter, SafeCategory("Behavior")]
+    public string DuplicateErrorText { get; set; } = "Duplicate values";
 
     /// <summary>
-    /// Fires when values changed
-    /// </summary>
-    [Parameter]
-    public EventCallback<List<string>> ValuesChanged { get; set; }
+    /// Set to true to allow duplicates
+    /// </summary>    
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowDuplicates { get; set; }
 
-    [Parameter]
+    /// <summary>
+    /// Holds a list of values to be displayed as chips.
+    /// </summary>
+    /// <remarks>Used to store the data of each chip.</remarks>
+    [Parameter, SafeCategory("Data")]
+    public List<T> Values { get; set; }
+
+    /// <summary>
+    /// Triggered when the list of values changes.
+    /// </summary>
+    /// <remarks>Emits the updated list of values.</remarks>
+    [Parameter, SafeCategory("Behavior")]
+    public EventCallback<List<T>> ValuesChanged { get; set; }
+
+    /// <summary>
+    /// Sets the size of the chips.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
     public Size ChipSize { get; set; }
 
-    [Parameter]
+    /// <summary>
+    /// Determines whether chips are set upon pressing the enter key. Default is true.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
     public bool SetChipsOnEnter { get; set; } = true;
 
     /// <summary>
-    /// The char that created a new chip with current value.
+    /// Determines where the chips should be rendered relative to the select box.
     /// </summary>
-    [Parameter]
-    public char[] Delimiters { get; set; }
-
-    [Parameter]
-    public string ClassChip { get; set; }
-
-    [Parameter]
-    public string StyleChip { get; set; }
-
-    [Parameter]
-    public MudExColor ChipColor { get; set; }
-
-    [Parameter]
-    public Variant ChipVariant { get; set; }
-
-    [Parameter]
-    public bool WrapChips { get; set; }
+    [Parameter, SafeCategory("Behavior")]
+    public virtual Adornment RenderChipsAdditional
+    {
+        get => _renderChipsAdditional;
+        set
+        {
+            _renderChipsAdditional = value;
+            ShowVisualiser = ShouldShowVisualiser();
+        }
+    }
 
     /// <summary>
-    /// Determines that chips have close button. Default is true.
+    /// Sets the delimiter characters that will create a new chip.
     /// </summary>
-    [Parameter]
+    [Parameter, SafeCategory("Validation")]
+    public char[] Delimiters { get; set; }
+
+    /// <summary>
+    /// Sets the CSS class for the chip elements.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public string ClassChip { get; set; }
+
+    /// <summary>
+    /// Sets the CSS style for the chip elements.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public string StyleChip { get; set; }
+
+    /// <summary>
+    /// Sets the color of the chips.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public MudExColor ChipColor { get; set; }
+
+    /// <summary>
+    /// Sets the visual variant of the chips.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public Variant ChipVariant { get; set; }
+
+    /// <summary>
+    /// Determines whether the chips should wrap to the next line.
+    /// </summary>
+    [Parameter, SafeCategory("Misc")]
+    public bool WrapChips { get; set; } = true;
+
+    /// <summary>
+    /// Determines whether the chips have a close button. Default is true.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
     public bool Closeable { get; set; } = true;
 
-    [Parameter]
+    /// <summary>
+    /// Sets the maximum number of chips allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Validation")]
     public int MaxChips { get; set; }
+
 
     [Parameter]
     public MudExSize<double> ChipsMaxWidth { get; set; } = new(80, CssUnit.Percentage);
@@ -75,56 +121,77 @@ public partial class MudExTagField<T> : IMudExComponent
             .WithColorForVariant(ChipVariant, ChipColor, !ChipColor.IsColor)    
             .Build();
 
-    protected async Task HandleKeyDown(KeyboardEventArgs args)
+    protected string ChipClassname =>
+        new MudExCssBuilder("d-flex")
+            .AddClass("flex-wrap", WrapChips)
+            .AddClass("mt-5", Variant == Variant.Filled)
+            .Build();
+
+    protected override void OnInitialized()
     {
+        Immediate = true;
+        DataVisualiser = RenderDataVisualizer;
+        base.OnInitialized();
+    }
 
-        if (((Delimiters?.Contains(args.Key[0]) == true && args.Key.Length == 1 ) || (SetChipsOnEnter && args.Key == "Enter") ) && _internalValue != null)
-        {
-            await SetChips();
-            StateHasChanged();
-        }
+    private bool ShouldShowVisualiser() => Values?.Any() == true && RenderChipsAdditional == Adornment.None;
 
-        if (args.Key == "Backspace" && string.IsNullOrEmpty(Converter.Set(_internalValue)) && Values.Any())
+    /// <inheritdoc />
+    protected override async Task InvokeKeyDownAsync(KeyboardEventArgs args)
+    {
+        await base.InvokeKeyDownAsync(args);
+        if (((Delimiters?.Contains(args.Key[0]) == true && args.Key.Length == 1) || (SetChipsOnEnter && args.Key == "Enter")) && Value != null)        
+            await ApplyChips();        
+
+        if (args.Key == "Backspace" && string.IsNullOrEmpty(Converter.Set(Value)) && Values.Any())
         {
             Values.RemoveAt(Values.Count - 1);
-            await ValuesChanged.InvokeAsync(Values);
+            await InvokeValuesChanged();
         }
-        await Task.Delay(10);
-        await SetValueAsync(_internalValue);
-        await OnKeyDown.InvokeAsync(args);
     }
 
-    protected async Task HandleKeyUp(KeyboardEventArgs args)
-    {
-        await OnKeyUp.InvokeAsync(args);
-    }
-
-    protected async Task SetChips()
+    private async Task ApplyChips()
     {
         Values ??= new();
-        Values.Add(Converter.Set(_internalValue));
-        await ValuesChanged.InvokeAsync(Values);
-        if (RuntimeLocation.IsServerSide)
+        if (Value == null || (Values.Contains(Value) && !AllowDuplicates))
         {
-            await _textFieldExtendedReference.BlurAsync();
+            await SetErrorWithStyle(DuplicateErrorText);
+            return;
         }
-        else
-        {
-            await Task.Delay(10);
-        }
-        await _textFieldExtendedReference.Clear();
-        if (RuntimeLocation.IsServerSide)
-        {
-            await _textFieldExtendedReference.FocusAsync();
-        }
+        SetError();
+        Values.Add(Value);
+        await InvokeValuesChanged();        
+        await Clear();
+        StateHasChanged();
+
     }
 
-    public async Task Closed(MudChip chip)
+    private async Task SetErrorWithStyle(string text)
     {
+        string s = Style;
+        Style += "animation:" + AnimationType.HeadShake.GetAnimationCssStyle();
+        SetError(text);
+        StateHasChanged();
+        await Task.Delay(500);
+        Style = s;
+        StateHasChanged();        
+    }
+
+    private void SetError(string error = null) => Error = !string.IsNullOrEmpty(ErrorText = TryLocalize(error));
+
+    private async Task Remove(MudChip chip)
+    {        
         if (Disabled || ReadOnly)        
             return;        
-        Values.Remove(chip.Text);
-        await ValuesChanged.InvokeAsync(Values);
-        await _textFieldExtendedReference.FocusAsync();
+        Values.Remove((T)chip.Value);
+        await InvokeValuesChanged();
+        await FocusAsync();
+    }
+
+    private async Task InvokeValuesChanged()
+    {
+        ShowVisualiser = ShouldShowVisualiser();
+        ForceShrink = ShowVisualiser;
+        await ValuesChanged.InvokeAsync(Values);        
     }
 }

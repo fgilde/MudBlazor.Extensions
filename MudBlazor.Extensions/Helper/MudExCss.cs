@@ -55,8 +55,8 @@ public static partial class MudExCss
     /// <summary>
     /// Returns an applicable style string as animation for given animations options
     /// </summary>
-    public static string GetAnimationCssStyle(this AnimationType type, TimeSpan duration, AnimationDirection? direction = null, AnimationTimingFunction animationTimingFunction = null, DialogPosition? targetPosition = null)
-        => GetAnimationCssStyle(new[] {type}, duration, direction, animationTimingFunction, targetPosition);
+    public static string GetAnimationCssStyle(this AnimationType type, TimeSpan? duration = null, AnimationDirection? direction = null, AnimationTimingFunction animationTimingFunction = null, DialogPosition? targetPosition = null)
+        => GetAnimationCssStyle(new[] {type}, duration ?? TimeSpan.FromMilliseconds(500), direction, animationTimingFunction, targetPosition);
 
     /// <summary>
     /// Returns an applicable style string as animation for given animations options

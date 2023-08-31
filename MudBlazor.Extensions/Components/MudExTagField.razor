@@ -1,57 +1,40 @@
 ﻿@inherits MudExTextField<T>
+@using Microsoft.AspNetCore.Components.Rendering
 @typeparam T
 
-<MudExTextField @ref="_textFieldExtendedReference"
-                      T="T"
-                      Immediate="true"
-                      OnKeyDown="HandleKeyDown"
-                      OnKeyUp="HandleKeyUp"
-                      OnKeyPress="@(async() => await OnKeyPress.InvokeAsync())"
-                      OnBlur="@(async() => await OnBlur.InvokeAsync())"
-                OnClearButtonClick="@(async() => {await OnClearButtonClick.InvokeAsync(); _internalValue=default; await ValueChanged.InvokeAsync(); })"
-                OnInternalInputChanged="@(async() => await OnInternalInputChanged.InvokeAsync())"
-                      ForceShrink="@(Values?.Any() ?? false)"
-                      Clearable="@Clearable"
-                      AutoFocus="@AutoFocus"
-                      Class="@Class"
-                      Style="@Style"
-                      Converter="@Converter"                      
-                      Counter="@Counter"
-                      Culture="@Culture"                      
-                      Disabled="@Disabled"
-                      DisableUnderLine="@DisableUnderLine"
-                      Error="@Error"
-                      ErrorId="@ErrorId"
-                      ErrorText="@ErrorText"
-                      For="@For"
-                      Format="@Format"
-                      FullWidth="@FullWidth"
-                      HelperText="@HelperText"
-                      HelperTextOnFocus="@HelperTextOnFocus"
-                      Label="@Label"
-                      Margin="@Margin"
-                      MaxLength="@MaxLength"
-                      OnlyValidateIfDirty="@OnlyValidateIfDirty"
-                      ReadOnly="@ReadOnly"
-                      Placeholder="@Placeholder"
-                      Required="@Required"
-                      RequiredError="@RequiredError"
-                      Validation="@Validation"
-                      Variant="@Variant"
-                      @bind-Value="@_internalValue"
-                      TextChanged="@(async() => await TextChanged.InvokeAsync())"
-                      ShowVisualiser="@(Values?.Any() ?? false)">
 
-    <DataVisualiser>
-        <MudChipSet Class="@ChipClassname" Style="@($"max-width: {ChipsMaxWidth}")" AllClosable="@Closeable" OnClose="Closed">
+@if (RenderChipsAdditional == Adornment.Start)
+{
+    <div class="mud-ex-additional-chip-container-start">
+        @RenderDataVisualizer
+    </div>
+}
+
+@Inherited()
+
+@if (RenderChipsAdditional == Adornment.End)
+{
+    <div class="mud-ex-additional-chip-container-end">
+        @RenderDataVisualizer
+    </div>
+}
+
+@code {
+
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+
+    private void RenderDataVisualizer(RenderTreeBuilder __builder)
+    {
+        <MudChipSet Class="@ChipClassname" Style="@($"max-width: {ChipsMaxWidth}")" AllClosable="@Closeable" OnClose="Remove">
             @for (int i = 0; i < Math.Min(Values?.Count ?? 0, MaxChips == 0 ? int.MaxValue : MaxChips); i++)
             {
                 <MudChip 
                     Class="@ClassChip"
                     Style="@ChipStyleName"
                     Color="@(ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"
-                    DisableRipple="true" 
-                    Text="@Values[i]"                     
+                    DisableRipple="true"
+                    Text="@Converter.Set(Values[i])"
+                    Value="@Values[i]"
                     Variant="@ChipVariant" 
                     Size="@ChipSize" 
                     Disabled="@Disabled" />
@@ -68,17 +51,12 @@
                     DisableRipple="true" 
                     Text="@($" +{chipsNotShown.Count}")"
                     Style="@ChipStyleName"
-                         Color="@(ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"
+                    Color="@(ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"
                     Variant="@ChipVariant" 
                     Size="@ChipSize" 
                     Disabled="@Disabled" />
             </MudTooltip>
         }
 
-    </DataVisualiser>
-
-    <AdornmentEnd>
-        @AdornmentEnd
-    </AdornmentEnd>
-
-</MudExTextField>
+    }
+}
