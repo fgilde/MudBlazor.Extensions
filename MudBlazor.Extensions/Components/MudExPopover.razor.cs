@@ -73,9 +73,9 @@ namespace MudBlazor.Extensions.Components
         private BlazorJSEventInterop<PointerEventArgs> _jsEvent;
         private string _classId = $"mud-ex-popover-{Guid.NewGuid()}";
 
-        private string AnimationStyle() => Open && Animation != AnimationType.Default
-            ? $"animation: {new[] { Animation }.GetAnimationCssStyle(TimeSpan.FromMilliseconds(Duration), AnimationDirection.In, AnimationTimingFunction, AnimationPosition)}"
-            : $"";
+        private string AnimationStyle() => Open && Animation != AnimationType.Default            
+            ? MudExStyleBuilder.Default.WithAnimation(Animation, TimeSpan.FromMilliseconds(Duration), AnimationDirection.In, AnimationTimingFunction, AnimationPosition).Build()
+            : string.Empty;
 
 
         /// <inheritdoc />

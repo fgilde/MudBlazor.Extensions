@@ -1877,19 +1877,6 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan duration, AnimationDirection direction, AnimationTimingFunction animationTimingFunction, bool when = true)
         => WithAnimation(type, duration, direction, animationTimingFunction, null, when);
 
-    /// <summary>
-    /// Sets the animation style using all available parameters.
-    /// </summary>
-    /// <param name="type">The type of the animation.</param>
-    /// <param name="duration">The duration of the animation.</param>
-    /// <param name="direction">The direction of the animation.</param>
-    /// <param name="animationTimingFunction">The timing function for the animation.</param>
-    /// <param name="targetPosition">The target position for the dialog.</param>
-    /// <param name="when">Condition for applying the animation.</param>
-    /// <returns>The modified MudExStyleBuilder object.</returns>
-    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan duration, AnimationDirection direction, AnimationTimingFunction animationTimingFunction, DialogPosition targetPosition, bool when = true)
-        => WithAnimation(type, duration, direction, animationTimingFunction, targetPosition, when);
-
 
     /// <summary>
     /// Adds an !important to last added style
