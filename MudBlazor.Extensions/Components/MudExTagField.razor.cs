@@ -4,6 +4,7 @@ using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
+using MudBlazor.Extensions.Services;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -111,6 +112,14 @@ public partial class MudExTagField<T> : IMudExComponent
     [Parameter, SafeCategory("Validation")]
     public int MaxChips { get; set; }
 
+    /// <summary>
+    /// The animation type for errors.
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public AnimationType ErrorAnimation { get; set; } = AnimationType.HeadShake;
+
+    [Inject] protected MudExAppearanceService appearanceService { get; set; }
+    [Inject] protected MudExStyleBuilder styleBuilder { get; set; }
 
     [Parameter]
     public MudExSize<double> ChipsMaxWidth { get; set; } = new(80, CssUnit.Percentage);
@@ -168,13 +177,8 @@ public partial class MudExTagField<T> : IMudExComponent
 
     private async Task SetErrorWithStyle(string text)
     {
-        string s = Style;
-        Style += "animation:" + AnimationType.HeadShake.GetAnimationCssStyle();
-        SetError(text);
-        StateHasChanged();
-        await Task.Delay(500);
-        Style = s;
-        StateHasChanged();        
+        SetError(text);        
+        await appearanceService.ApplyTemporarilyToAsync(styleBuilder.Clear().WithAnimation(ErrorAnimation), this);    
     }
 
     private void SetError(string error = null) => Error = !string.IsNullOrEmpty(ErrorText = TryLocalize(error));

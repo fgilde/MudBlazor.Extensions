@@ -9,6 +9,7 @@ using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core.Css;
 using Nextended.Core.Extensions;
 using MudBlazor.Extensions.Helper.Internal;
+using MudBlazor.Extensions.Options;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -16,7 +17,7 @@ namespace MudBlazor.Extensions.Helper;
 /// MudExStyleBuilder is useful to create style strings or convert any style to a class.
 /// </summary>
 [HasDocumentation("MudExStyleBuilder.md")]
-public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
+public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
 {
     private static readonly string[] PropertiesToAddUnits = { "height", "width", "min-height", "min-width", "max-height", "max-width",
         "padding", "padding-top", "padding-right", "padding-bottom", "padding-left", "margin", "margin-top", "margin-right", "margin-bottom",
@@ -27,7 +28,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
 
     private Dictionary<string, string> _additionalStyles = new();
     private readonly List<string> _rawStyles = new();
-    
+
     private readonly ConcurrentDictionary<string, byte> _temporaryCssClasses = new();
     //private Dictionary<string, MudExStyleBuilder> _pseudoElementsStyles = new();
 
@@ -38,8 +39,8 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
         JsRuntime = jsRuntime;
     }
 
-    internal MudExStyleBuilder(): this(null)
-    {}
+    internal MudExStyleBuilder() : this(null)
+    { }
 
 
     #region Static Methods
@@ -59,7 +60,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     /// Static factory method to create a <see cref="MudExStyleBuilder"/> from an object.
     /// </summary>
     public static MudExStyleBuilder FromObject(object obj, string existingCss = "", CssUnit cssUnit = CssUnit.Pixels) => FromStyle(GenerateStyleString(obj, cssUnit, existingCss));
-    
+
     /// <summary>
     /// Static factory method to create a <see cref="MudExStyleBuilder"/> from an object.
     /// </summary>
@@ -115,12 +116,12 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
         var cssProperties1 = cssRegex.Matches(cssString);
         foreach (var property in cssProperties1.Cast<Match>())
             cssProperties.TryAdd(property.Groups[1].Value.Trim(), property.Groups[2].Value.Trim());
-        
+
 
         var cssProperties2 = cssRegex.Matches(leadingCssString);
         foreach (var property in cssProperties2.Cast<Match>())
             cssProperties[property.Groups[1].Value.Trim()] = property.Groups[2].Value.Trim();
-        
+
         return cssProperties.Aggregate("", (current, property) => current + (property.Key + ": " + property.Value + "; "));
     }
 
@@ -144,7 +145,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
             var propertyParts = property.Split(':');
             if (propertyParts.Length != 2)
                 continue;
-            
+
             var propertyName = propertyParts[0].Trim();
             var propertyValue = propertyParts[1].Trim();
 
@@ -168,7 +169,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     #endregion
 
     #region Fluent WithProperty Methods
-    
+
 
     /// <summary>
     /// Adds all styles and values from given style string
@@ -369,7 +370,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     /// Adds a background property to the builder. The background is a gradient of all entries in the Color array.
     /// </summary>
     public MudExStyleBuilder WithBackground(MudExColor[] color, int radius, bool when = true) => WithBackground(color.Select(c => c.ToCssStringValue()).ToArray(), radius, when);
-    
+
     /// <summary>
     /// Adds a background property to the builder. The background is a gradient of all entries in the Color array.
     /// </summary>
@@ -523,7 +524,7 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     /// Specifies the font-weight property using a FontWeight enumeration value, if the 'when' condition is true.
     /// </summary>
     public MudExStyleBuilder WithFontWeight(FontWeight fontWeight, bool when = true) => WithFontWeight(Nextended.Core.Helper.EnumExtensions.ToDescriptionString(fontWeight), when);
-    
+
     /// <summary>
     /// Specifies the font-weight property using a CSS string value, if the 'when' condition is true.
     /// </summary>
@@ -1814,13 +1815,90 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
 
 
     /// <summary>
+    /// Sets the animation style using a custom string.
+    /// </summary>
+    /// <param name="animationStyle">The custom animation style as a string.</param>
+    /// <param name="when">Condition for applying the animation.</param>
+    /// <returns>The modified MudExStyleBuilder object.</returns>
+    public MudExStyleBuilder WithAnimation(string animationStyle, bool when = true) => With("animation", animationStyle, when);
+
+    /// <summary>
+    /// Sets the animation style using multiple optional parameters.
+    /// </summary>
+    /// <param name="type">The type of the animation.</param>
+    /// <param name="duration">The duration of the animation.</param>
+    /// <param name="direction">The direction of the animation.</param>
+    /// <param name="animationTimingFunction">The timing function for the animation.</param>
+    /// <param name="targetPosition">The target position for the dialog.</param>
+    /// <param name="when">Condition for applying the animation.</param>
+    /// <returns>The modified MudExStyleBuilder object.</returns>
+    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan? duration, AnimationDirection? direction, AnimationTimingFunction animationTimingFunction, DialogPosition? targetPosition, bool when = true)
+        => WithAnimation(type.GetAnimationCssStyle(duration, direction, animationTimingFunction, targetPosition), when);
+
+    /// <summary>
+    /// Sets the animation style using just the type of the animation.
+    /// </summary>
+    /// <param name="type">The type of the animation.</param>
+    /// <param name="when">Condition for applying the animation.</param>
+    /// <returns>The modified MudExStyleBuilder object.</returns>
+    public MudExStyleBuilder WithAnimation(AnimationType type, bool when = true)
+        => WithAnimation(type, null, null, null, null, when);
+
+    /// <summary>
+    /// Sets the animation style using the type and duration of the animation.
+    /// </summary>
+    /// <param name="type">The type of the animation.</param>
+    /// <param name="duration">The duration of the animation.</param>
+    /// <param name="when">Condition for applying the animation.</param>
+    /// <returns>The modified MudExStyleBuilder object.</returns>
+    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan duration, bool when = true)
+        => WithAnimation(type, duration, null, null, null, when);
+
+    /// <summary>
+    /// Sets the animation style using the type, duration, and direction of the animation.
+    /// </summary>
+    /// <param name="type">The type of the animation.</param>
+    /// <param name="duration">The duration of the animation.</param>
+    /// <param name="direction">The direction of the animation.</param>
+    /// <param name="when">Condition for applying the animation.</param>
+    /// <returns>The modified MudExStyleBuilder object.</returns>
+    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan duration, AnimationDirection direction, bool when = true)
+        => WithAnimation(type, duration, direction, null, null, when);
+
+    /// <summary>
+    /// Sets the animation style using the type, duration, direction, and timing function of the animation.
+    /// </summary>
+    /// <param name="type">The type of the animation.</param>
+    /// <param name="duration">The duration of the animation.</param>
+    /// <param name="direction">The direction of the animation.</param>
+    /// <param name="animationTimingFunction">The timing function for the animation.</param>
+    /// <param name="when">Condition for applying the animation.</param>
+    /// <returns>The modified MudExStyleBuilder object.</returns>
+    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan duration, AnimationDirection direction, AnimationTimingFunction animationTimingFunction, bool when = true)
+        => WithAnimation(type, duration, direction, animationTimingFunction, null, when);
+
+    /// <summary>
+    /// Sets the animation style using all available parameters.
+    /// </summary>
+    /// <param name="type">The type of the animation.</param>
+    /// <param name="duration">The duration of the animation.</param>
+    /// <param name="direction">The direction of the animation.</param>
+    /// <param name="animationTimingFunction">The timing function for the animation.</param>
+    /// <param name="targetPosition">The target position for the dialog.</param>
+    /// <param name="when">Condition for applying the animation.</param>
+    /// <returns>The modified MudExStyleBuilder object.</returns>
+    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan duration, AnimationDirection direction, AnimationTimingFunction animationTimingFunction, DialogPosition targetPosition, bool when = true)
+        => WithAnimation(type, duration, direction, animationTimingFunction, targetPosition, when);
+
+
+    /// <summary>
     /// Adds an !important to last added style
     /// </summary>
     public MudExStyleBuilder AsImportant(bool when = true)
     {
         if (!when)
             return this;
-        
+
         if (!_additionalStyles.Any())
         {
             throw new InvalidOperationException("There are no styles to modify.");
@@ -1862,11 +1940,11 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     /// </summary>
     public MudExStyleBuilder With(string key, string value, bool when = true)
     {
-        if(when)
+        if (when)
             _additionalStyles[key] = value;
         return this;
     }
-    
+
     /// <summary>
     /// Adds a ra style string is condition is true
     /// </summary>
@@ -1921,29 +1999,39 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
         var css = _additionalStyles.Select(style => $"{style.Key}: {style.Value};").ToList();
         if (_rawStyles?.Any() == true)
             css.AddRange(_rawStyles);
-        
+
         //  css.AddRange(_pseudoElementsStyles.Select(pseudo => $":{pseudo.Key} {{ {pseudo.Value.Build()} }}"));
 
         return string.Join(" ", css);
     }
 
     /// <summary>
+    /// Removes all styles
+    /// </summary>    
+    public MudExStyleBuilder Clear()
+    {
+        _additionalStyles?.Clear();
+        _rawStyles?.Clear();
+        return this;
+    }
+
+    /// <summary>
     /// Converts this style to an object
     /// </summary>
     public T ToObject<T>() where T : new() => StyleStringToObject<T>(ToString());
-    
+
     /// <summary>
     /// Returns the css style string
     /// </summary>
     /// <returns></returns>
     public override string ToString() => Build();
-    
+
     /// <summary>
     /// Explicit conversion to string
     /// </summary>
     /// <param name="builder"></param>
     public static explicit operator string(MudExStyleBuilder builder) => builder.ToString();
-    
+
     /// <summary>
     /// Explicit conversion from string
     /// </summary>
@@ -1956,5 +2044,5 @@ public sealed class MudExStyleBuilder: IAsyncDisposable, IMudExStyleAppearance
     public string Style => Build();
 
     private string DoubleToString(double value) => value.ToString(CultureInfo.InvariantCulture);
-    
+
 }

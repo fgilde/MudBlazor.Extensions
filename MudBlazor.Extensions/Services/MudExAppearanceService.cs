@@ -9,20 +9,76 @@ namespace MudBlazor.Extensions.Services;
 /// Service class to manage and apply appearances to components.
 /// </summary>
 public class MudExAppearanceService
-{
+{    
     private string GetClass(IMudExAppearance appearance) => appearance switch { IMudExClassAppearance classAppearance => classAppearance.Class, _ => string.Empty };
     private string GetStyle(IMudExAppearance appearance) => appearance switch { IMudExStyleAppearance styleAppearance => styleAppearance.Style, _ => string.Empty };
     private IJSRuntime GetRuntime() => JSRuntime ?? JsImportHelper.GetInitializedJsRuntime();
 
-    private IJSRuntime JSRuntime { get; set; }
+    private IJSRuntime JSRuntime { get; }
 
     public MudExAppearanceService(IJSRuntime jsRuntime)
-    {
+    {        
         JSRuntime = jsRuntime;
     }
 
     internal MudExAppearanceService(): this(null)
     {}
+
+    /// <summary>
+    /// Applies the specified appearance to a MudBlazor component temporarily.
+    /// </summary>
+    /// <returns>The applied appearance.</returns>
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, MudComponentBase component, TimeSpan? duration = null, bool keepExisting = true)
+        where TAppearance : IMudExAppearance
+    {        
+        await ApplyToAsync(appearance, component, keepExisting);        
+        await Task.Delay(duration ?? TimeSpan.FromSeconds(1));        
+        await RemoveFromAsync(appearance, component);
+
+        return appearance;
+    }
+
+    /// <summary>
+    /// Applies the specified appearance to a ElementReference temporarily.
+    /// </summary>
+    /// <returns>The applied appearance.</returns>    
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, ElementReference elementRef, TimeSpan? duration = null, bool keepExisting = true)
+        where TAppearance : IMudExAppearance
+    {
+        await ApplyToAsync(appearance, elementRef, keepExisting);
+        await Task.Delay(duration ?? TimeSpan.FromSeconds(1));
+        await RemoveFromAsync(appearance, elementRef);
+
+        return appearance;
+    }
+
+    /// <summary>
+    /// Applies the specified appearance to a element that will searched by a selector temporarily.
+    /// </summary>
+    /// <returns>The applied appearance.</returns>  
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, string elementSelector, TimeSpan? duration = null, bool keepExisting = true)
+        where TAppearance : IMudExAppearance
+    {
+        await ApplyToAsync(appearance, elementSelector, keepExisting);
+        await Task.Delay(duration ?? TimeSpan.FromSeconds(1));
+        await RemoveFromAsync(appearance, elementSelector);
+
+        return appearance;
+    }
+
+    /// <summary>
+    /// Applies the specified appearance to a dialog reference temporarily.
+    /// </summary>
+    /// <returns>The applied appearance.</returns>  
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, IDialogReference dlg, TimeSpan? duration = null, bool keepExisting = true)
+        where TAppearance : IMudExAppearance
+    {
+        await ApplyToAsync(appearance, dlg, keepExisting);
+        await Task.Delay(duration ?? TimeSpan.FromSeconds(1));
+        await RemoveFromAsync(appearance, dlg);
+
+        return appearance;
+    }
 
 
     /// <summary>
@@ -40,8 +96,8 @@ public class MudExAppearanceService
             var cls = GetClass(appearance);
             var style = GetStyle(appearance);
             if (!string.IsNullOrEmpty(style))
-            {
-                var className = await MudExStyleBuilder.FromStyle(style).BuildAsClassRuleAsync();
+            {                
+                var className = await MudExStyleBuilder.FromStyle(style).BuildAsClassRuleAsync(null, GetRuntime());
                 cls = $"{cls} {className}";
             }
 
