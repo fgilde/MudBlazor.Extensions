@@ -1,11 +1,12 @@
 ## Change Log  
+ - 1.7.67 > Add Rar file support for [MudExUploadEdit](https://www.mudex.org/upload-edit) and [MudExFileDisplay](https://www.mudex.org/file-display)
  - 1.7.67 > Setting to allow or disallow duplicates in [MudExTagField](https://www.mudex.org/tag-field) with ErrorAnimation and ErrorText support
  - 1.7.66 > Support [MudExColor](https://www.mudex.org/d/MudExColor/MudExColor) with Theme Color or drawing color or html color or css variables for [MudExTagField](https://www.mudex.org/tag-field) and [MudExSelect](https://www.mudex.org/mud-ex-select)
  - 1.7.66 > Support Nested and Sticky groups for [MudExSelect](https://www.mudex.org/mud-ex-select)
  - 1.7.66 > Support Grouping by Function in [MudExSelect](https://www.mudex.org/mud-ex-select)
  - 1.7.66 > Support MultiSearch with more tags in [MudExToggleableSearch](https://www.mudex.org/c/MudExToggleableSearch)
  - 1.7.66 > Allow MultiSearch with more tags in [MudExObjectEdit](https://www.mudex.org/mudex-object-edit-with-configuration)
- - 1.7.66 > Create new [MudExTagField](https://www.mudex.org/tag-field)s
+ - 1.7.66 > Create new [MudExTagField](https://www.mudex.org/tag-field)
  - 1.7.65 > Create new [MudExGrid](https://www.mudex.org/mud-ex-grid)
  - 1.7.65 > Ensure FileUpload works on ServerSide rendered projects as well
  - 1.7.65 > Add possibility to disable auto load of styles if you prefer to add them manually

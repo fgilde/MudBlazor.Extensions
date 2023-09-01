@@ -48,7 +48,7 @@ namespace MudBlazor.Extensions.Helper
         public static string IconForFile(ContentType contentType)
         {
             var mime = contentType.ToString().ToLower();
-            if (MimeType.IsZip(mime))
+            if (MimeType.IsZip(mime) || MimeType.IsRar(mime))
                 return Icons.Material.Filled.Archive;
             if (MimeType.Matches(mime, "application/x-dotnet*"))
                 return Icons.Custom.Brands.MicrosoftVisualStudio;

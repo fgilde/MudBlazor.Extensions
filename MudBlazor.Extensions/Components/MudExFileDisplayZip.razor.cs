@@ -27,6 +27,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private IList<ZipBrowserFile> _zipEntries;
     //private (string tag, Dictionary<string, object> attributes) renderInfos;
     private HashSet<ZipStructure> _zipStructure;
+    private string _contentType;
 
     /// <inheritdoc />
     public string Name { get; } = nameof(MudExFileDisplayZip);
@@ -45,6 +46,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
             RootFolderName = value.FileName;
             Url = value.Url;
             ContentStream = value.ContentStream;
+            ContentType = value.ContentType;
         }
     }
 
@@ -76,7 +78,11 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     /// Content Type 
     /// </summary>
     [SafeCategory("Data")]
-    public string ContentType => "application/zip";
+    public string ContentType
+    {
+        get => _contentType ?? "application/zip";
+        set => _contentType = value;
+    }
 
     /// <inheritdoc />
     [Parameter, SafeCategory("Data")]
@@ -206,22 +212,31 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
+        await CreateStructure();
+        await base.OnParametersSetAsync();
+    }
+
+    private async Task CreateStructure()
+    {
         try
         {
             if (!string.IsNullOrEmpty(Url) || ContentStream != null)
             {
-                if (_zipEntries == null || ReloadZipContentOnParameterSet) {
-                    _zipEntries = (await GetZipEntriesAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url)))
-                        .ToList();
+                if (_zipEntries == null || ReloadZipContentOnParameterSet)
+                {
+                    Stream contentStream = ContentStream ?? await new HttpClient().GetStreamAsync(Url);
+                    if (MimeType.IsRar(ContentType))                    
+                        contentStream = ArchiveConverter.ConvertRarToZip(contentStream);
+                    
+                    _zipEntries = (await GetZipEntriesAsync(contentStream)).ToList();
                     _zipStructure = ZipStructure.CreateStructure(_zipEntries, RootFolderName).ToHashSet();
                 }
             }
         }
-        catch
+        catch (Exception e)
         {
-            //ignored
+            Console.Write(e.Message);
         }
-        await base.OnParametersSetAsync();
     }
 
     private async Task<IList<ZipBrowserFile>> GetZipEntriesAsync(Stream stream)
@@ -353,8 +368,10 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     }
 
     /// <inheritdoc />
-    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos)
-    {
-        return MimeType.IsZip(fileDisplayInfos.ContentType);
-    }
+    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos) => CanHandleFileAsArchive(fileDisplayInfos.ContentType);
+
+    /// <summary>
+    /// Returns true if the MudExFileDisplay Component can handle the file as an archive.
+    /// </summary>
+    public static bool CanHandleFileAsArchive(string contentType) => MimeType.IsZip(contentType) || MimeType.IsRar(contentType);
 }

@@ -81,7 +81,7 @@ public static partial class DialogServiceExt
     /// <returns>An awaitable task with the dialog reference.</returns>
     public static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, IBrowserFile browserFile, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
     {
-        if (MimeType.IsZip(browserFile.ContentType))
+        if (MudExFileDisplayZip.CanHandleFileAsArchive(browserFile.ContentType))
         {
             var ms = new MemoryStream(await browserFile.GetBytesAsync());
             return await dialogService.ShowFileDisplayDialog(ms, browserFile.Name, browserFile.ContentType, options);

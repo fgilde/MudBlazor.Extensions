@@ -1539,6 +1539,11 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.CanHandleFileAsArchive(System.String)">
+            <summary>
+            Returns true if the MudExFileDisplay Component can handle the file as an archive.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFontSelect">
             <summary>
             Dropdown list component to select one ore more fonts
@@ -7187,6 +7192,11 @@
             <param name="metaConfig">The configuration of meta information.</param>
             <param name="dialogParameters">The dialog parameters.</param>
             <returns>A tuple indicating if edit was cancelled and the result.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.ArchiveConverter.ConvertRarToZip(System.IO.Stream)">
+            <summary>
+            Converts a rar to a zip
+            </summary>    
         </member>
         <member name="T:MudBlazor.Extensions.Helper.BrowserFileExt">
             <summary>

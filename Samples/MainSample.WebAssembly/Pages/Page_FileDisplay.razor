@@ -6,6 +6,7 @@
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "Shared/MySimpleJsonDisplay.razor"})">
     <MudSelect Label="File" HelperText="Select sample file (See weather.json to check how own components for files can be created)" @bind-Value="@SampleFile" Variant="Variant.Outlined" Color="Color.Primary">
+        <MudSelectItem Value="@(Sample("ARar.rar", "application/x-rar-compressed"))">ARar.rar</MudSelectItem>
         <MudSelectItem Value="@(Sample("sample.zip", "application/zip"))">sample.zip</MudSelectItem>
         <MudSelectItem Value="@(Sample("sample.pdf", "application/pdf"))">sample.pdf</MudSelectItem>
         <MudSelectItem Value="@(Sample("weather.json", "text/plain"))">weather.json</MudSelectItem>

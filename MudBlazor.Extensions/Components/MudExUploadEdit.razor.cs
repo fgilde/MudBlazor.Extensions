@@ -410,6 +410,8 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         var extensions = (MimeTypes?.Select(MimeType.GetExtension) ?? Array.Empty<string>()).ToList();
         if (MimeTypes?.Any(MimeType.IsZip) == true)
             extensions.Add(".zip");
+        if (MimeTypes?.Any(MimeType.IsRar) == true)
+            extensions.Add(".rar");
         _acceptExtensions = string.Join(",", extensions.Distinct());
     }
 
@@ -651,7 +653,7 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
 
     private async Task Preview(T request)
     {
-        if (MimeType.IsZip(request.ContentType) && request.Data != null)
+        if (MudExFileDisplayZip.CanHandleFileAsArchive(request.ContentType) && request.Data != null)
         {
             var ms = new MemoryStream(request.Data);
             await DialogService.ShowFileDisplayDialog(ms, request.FileName, request.ContentType);
