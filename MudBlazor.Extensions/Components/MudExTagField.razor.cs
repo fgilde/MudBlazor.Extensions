@@ -112,6 +112,20 @@ public partial class MudExTagField<T> : IMudExComponent
     [Parameter, SafeCategory("Validation")]
     public int MaxChips { get; set; }
 
+
+    [Parameter]
+    public bool IsMouseOverChip { get; set; }
+
+    [Parameter] 
+    public EventCallback<bool> IsMouseOverChipChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnChipMouseOver { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnChipMouseOut { get; set; }
+
+
     /// <summary>
     /// The animation type for errors.
     /// </summary>
@@ -188,6 +202,8 @@ public partial class MudExTagField<T> : IMudExComponent
         if (Disabled || ReadOnly)        
             return;        
         Values.Remove((T)chip.Value);
+        IsMouseOverChip = false;
+        await IsMouseOverChipChanged.InvokeAsync(IsMouseOverChip);
         await InvokeValuesChanged();
         await FocusAsync();
     }
@@ -197,5 +213,19 @@ public partial class MudExTagField<T> : IMudExComponent
         ShowVisualiser = ShouldShowVisualiser();
         ForceShrink = ShowVisualiser;
         await ValuesChanged.InvokeAsync(Values);        
+    }
+
+    private async Task HandleOnChipMouseOver(MouseEventArgs arg)
+    {
+        IsMouseOverChip = true;
+        await IsMouseOverChipChanged.InvokeAsync(IsMouseOverChip);
+        await OnChipMouseOver.InvokeAsync(arg);
+    }
+
+    private async Task HandleOnChipMouseOut(MouseEventArgs arg)
+    {
+        IsMouseOverChip = false;
+        await IsMouseOverChipChanged.InvokeAsync(IsMouseOverChip);
+        await OnChipMouseOut.InvokeAsync(arg);
     }
 }

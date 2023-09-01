@@ -31,6 +31,8 @@
                 <MudChip 
                     Class="@ClassChip"
                     Style="@ChipStyleName"
+                    @onmouseover="HandleOnChipMouseOver"
+                    @onmouseout="HandleOnChipMouseOut"
                     Color="@(ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"
                     DisableRipple="true"
                     Text="@Converter.Set(Values[i])"

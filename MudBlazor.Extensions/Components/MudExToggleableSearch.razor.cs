@@ -14,7 +14,7 @@ namespace MudBlazor.Extensions.Components
         /// Set to true to allow multiple values
         /// </summary>
         [Parameter] public bool MultiSearch { get; set; }
-        
+
         /// <summary>
         /// The Toggle mode
         /// </summary>
@@ -35,22 +35,22 @@ namespace MudBlazor.Extensions.Components
         /// If false, the Value is updated only on Enter.
         /// </summary>
         [Parameter] public bool Immediate { get; set; } = true;
-        
+
         /// <summary>
         /// Show clear button
         /// </summary>
         [Parameter] public bool Clearable { get; set; } = true;
-        
+
         /// <summary>
         /// Icon 
         /// </summary>
         [Parameter] public string SearchIcon { get; set; } = Icons.Material.Outlined.Search;
-        
+
         /// <summary>
         /// Color for toggle button
         /// </summary>
         [Parameter] public Color SearchButtonColor { get; set; } = Color.Inherit;
-        
+
         /// <summary>
         /// Event callback if filter changed
         /// </summary>
@@ -65,7 +65,7 @@ namespace MudBlazor.Extensions.Components
         ///  If true and search toggleable and open, search with closed on blur
         /// </summary>
         [Parameter] public bool AutoCloseOnBlur { get; set; } = true;
-        
+
         /// <summary>
         /// Fired on the KeyUp event.
         /// </summary>
@@ -77,12 +77,22 @@ namespace MudBlazor.Extensions.Components
         private bool _searchBoxBlur;
         private bool _searchActive;
         private MudTextField<string> _searchBox;
+        private MudExTagField<string> _searchTagBox;
+        private bool _isMouseOverChip;
         
         private void ToggleSearchBox()
         {
             if (_searchBoxBlur)
                 return;
             _searchActive = !_searchActive;
+            if (_searchActive)            
+                FocusAsync();           
+        }
+
+        private void FocusAsync()
+        {
+            _searchBox?.FocusAsync();
+            _searchTagBox?.FocusAsync();
         }
 
         private Task FilterKeyPress(KeyboardEventArgs arg)
@@ -98,8 +108,8 @@ namespace MudBlazor.Extensions.Components
 
         private Task FilterBoxBlur(FocusEventArgs arg)
         {
-            if (AutoCloseOnBlur)
-            {                
+            if (AutoCloseOnBlur && !_isMouseOverChip)
+            {
                 _searchBoxBlur = true;
                 _searchActive = false;
                 Task.Delay(300).ContinueWith(t => _searchBoxBlur = false);
@@ -116,6 +126,7 @@ namespace MudBlazor.Extensions.Components
         private Task OnFiltersChanged(List<string> arg)
         {
             Filters = arg;
+            FocusAsync();
             return FiltersChanged.InvokeAsync(arg);
         }
 
