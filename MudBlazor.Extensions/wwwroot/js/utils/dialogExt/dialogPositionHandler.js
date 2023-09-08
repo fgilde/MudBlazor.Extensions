@@ -20,8 +20,7 @@
     minimize() {
         let targetElement = document.querySelector(`.mud-ex-task-bar-item-for-${this.dialog.id}`);
         this.moveToElement(this.dialog, targetElement, () => {
-            this.dialog.style.visibility = 'hidden';
-            window.RES = () => this.restore();
+            this.dialog.style.visibility = 'hidden';            
         }); 
     }
 

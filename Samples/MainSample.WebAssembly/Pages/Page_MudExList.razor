@@ -1,17 +1,17 @@
 ﻿@page "/mud-ex-list"
 
-@attribute [DemoNew(Name = "MudExList", Icon = Icons.Material.Outlined.List, Documentation = "MudExList can used to select one ore more items from a bindeable collection.", ForComponentType = typeof(MudExSelect<>))]
+@attribute [DemoNew(Name = "MudExList", Icon = Icons.Material.Outlined.List, Documentation = "MudExList can used to select one ore more items from a bindeable collection.", ForComponentType = typeof(MudExList<>))]
 
 <DemoComponent PageType="@GetType()">
     <SplitContainer>
         <Left>
             <MudGrid>
                 <MudItem xs="12" sm="8" Class="d-flex align-start justify-center">
-                    <MudPaper Width="300px" Elevation="0">
+                    <MudPaper Width="500px" Elevation="0">
                         <MudExList @ref="component"
                                    @bind-SelectedValues="@_selected"         
                                    GroupBy="@(x => x.State)"
-                                   Style="height: 500px"
+                                   Style="height: 700px"
                                    MultiSelection="true"
                                    SelectAll="true"
                                    ToStringFunc="@(x => x.Name + " - " + x.PostalCode)"
