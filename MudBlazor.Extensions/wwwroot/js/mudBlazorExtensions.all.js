@@ -954,17 +954,19 @@ class MudExDialogNoModalHandler extends MudExDialogHandlerBase {
     static bringToFront(targetDlg, animate) {
         const allDialogs = this.getAllNonModalDialogs();
         if (targetDlg) {
-            const dialogContainerReference = targetDlg.parentElement;
-            const appOrBody = dialogContainerReference.parentElement;
+            const app = targetDlg.parentElement;            
+            //const targetRef = MudExDialogNoModalHandler.getDialogReference(targetDlg);
             const lastDialog = allDialogs[allDialogs.length - 1];
             if (targetDlg !== lastDialog) {
-                dialogContainerReference.insertBefore(targetDlg, lastDialog.nextSibling);
-                appOrBody.insertBefore(dialogContainerReference, lastDialog.parentElement);
+                //const lastDialogRef = MudExDialogNoModalHandler.getDialogReference(lastDialog);
+                app.insertBefore(targetDlg, lastDialog.nextSibling);                
             }
         }
     }
 
-
+    static getDialogReference(dialog) {
+        return MudExDialogNoModalHandler.getAllDialogReferences().filter(r => r && r.getAttribute('data-dialog-id') === dialog.id)[0] || dialog.parentElement;
+    }
 
     static getAllDialogReferences() {
         return Array.from(document.querySelectorAll('.mud-dialog-container')).filter(c => c.getAttribute('data-modal') === 'false');
