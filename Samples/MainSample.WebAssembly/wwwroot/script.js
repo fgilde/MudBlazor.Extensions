@@ -21,17 +21,17 @@ window.localStorageFunctions = {
     }
 };
 
-function checkURLForParameters() {
-    // Check for path and query params    
-    if ((!window.location.pathname || window.location.pathname === "/") && window.location.search === "") {
-        document.getElementById('overlay').style.display = 'flex';
-    } else {
-        closeOverlay();
-    }
-}
+//function checkURLForParameters() {
+//    // Check for path and query params    
+//    if ((!window.location.pathname || window.location.pathname === "/") && window.location.search === "") {
+//        document.getElementById('overlay').style.display = 'flex';
+//    } else {
+//        closeOverlay();
+//    }
+//}
 
-function closeOverlay() {
-    document.getElementById('overlay').style.display = 'none';
-}
+//function closeOverlay() {
+//    document.getElementById('overlay').style.display = 'none';
+//}
 
-document.addEventListener('DOMContentLoaded', checkURLForParameters);
+//document.addEventListener('DOMContentLoaded', checkURLForParameters);
