@@ -1,7 +1,10 @@
-﻿using MudBlazor.Extensions.Components.ObjectEdit.Options;
+﻿using MudBlazor.Extensions.Components;
+using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
+using Nextended.Core.Helper;
 
 namespace MudBlazor.Extensions;
 
@@ -31,6 +34,99 @@ public static partial class DialogServiceExt
             meta.Properties().AsReadOnly();
         }, dialogParameters.MergeWith(parameters));
     }
+
+    /// <summary>
+    /// Shows an object edit dialog as readonly for given data string as object edit.
+    /// </summary>
+    public static Task<(bool Cancelled, IStructuredDataObject Result)> ShowStructuredDataString(
+        this IDialogService dialogService, 
+        string value, string title, 
+        DialogOptionsEx options, 
+        Action<ObjectEditMeta<IStructuredDataObject>> metaConfig = null, 
+        DialogParameters dialogParameters = null)
+    {
+        var model = ReflectionHelper.CreateTypeAndDeserialize(value);
+        metaConfig = (metaConfig ?? (_ => { })).CombineWith(RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>());
+        return dialogService.ShowObject(model, title, options, metaConfig, dialogParameters);
+    }
+    
+    /// <summary>
+    /// Shows an object edit dialog as readonly for given data string as object edit.
+    /// </summary>
+    public static Task<(bool Cancelled, IStructuredDataObject Result)> ShowStructuredDataString(
+        this IDialogService dialogService, StructuredDataType dataType,
+        string value, string title,
+        DialogOptionsEx options,
+        Action<ObjectEditMeta<IStructuredDataObject>> metaConfig = null,
+        DialogParameters dialogParameters = null)
+    {
+        var model = ReflectionHelper.CreateTypeAndDeserialize(value, dataType);
+        metaConfig = (metaConfig ?? (_ => { })).CombineWith(RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>());
+        return dialogService.ShowObject(model, title, options, metaConfig, dialogParameters);
+    }
+
+    /// <summary>
+    /// Shows an object edit dialog for given data string as object edit.
+    /// </summary>
+    public static Task<(bool Cancelled, IStructuredDataObject Result)> EditStructuredDataString(
+        this IDialogService dialogService,
+        string value, string title, 
+        Func<IStructuredDataObject, MudExObjectEditDialog<IStructuredDataObject>, Task<string>> customSubmit,
+        DialogOptionsEx options, Action<ObjectEditMeta<IStructuredDataObject>> metaConfig = null,
+        DialogParameters dialogParameters = null)
+    {
+        var model = ReflectionHelper.CreateTypeAndDeserialize(value);
+        metaConfig = (metaConfig ?? (_ => { })).CombineWith(RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>());
+        return dialogService.EditObject(model, title, customSubmit, options, metaConfig, dialogParameters);
+    }
+    
+    /// <summary>
+    /// Shows an object edit dialog for given data string as object edit.
+    /// </summary>
+    public static Task<(bool Cancelled, IStructuredDataObject Result)> EditStructuredDataString(
+        this IDialogService dialogService,
+        string value, string title, 
+        DialogOptionsEx options, 
+        Action<ObjectEditMeta<IStructuredDataObject>> 
+        metaConfig = null, 
+        DialogParameters dialogParameters = null)
+    {
+        var model = ReflectionHelper.CreateTypeAndDeserialize(value);
+        metaConfig = (metaConfig ?? (_ => { })).CombineWith(RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>());
+        return dialogService.EditObject(model, title, options, metaConfig, dialogParameters);
+    }
+
+    /// <summary>
+    /// Shows an object edit dialog for given data string as object edit.
+    /// </summary>
+    public static Task<(bool Cancelled, IStructuredDataObject Result)> EditStructuredDataString(
+        this IDialogService dialogService, StructuredDataType dataType,
+        string value, string title,
+        Func<IStructuredDataObject, MudExObjectEditDialog<IStructuredDataObject>, Task<string>> customSubmit,
+        DialogOptionsEx options, Action<ObjectEditMeta<IStructuredDataObject>> metaConfig = null,
+        DialogParameters dialogParameters = null)
+    {
+        var model = ReflectionHelper.CreateTypeAndDeserialize(value, dataType);
+        metaConfig = (metaConfig ?? (_ => { })).CombineWith(RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>());
+        return dialogService.EditObject(model, title, customSubmit, options, metaConfig, dialogParameters);
+    }
+
+    /// <summary>
+    /// Shows an object edit dialog for given data string as object edit.
+    /// </summary>
+    public static Task<(bool Cancelled, IStructuredDataObject Result)> EditStructuredDataString(
+        this IDialogService dialogService, StructuredDataType dataType,
+        string value, string title,
+        DialogOptionsEx options,
+        Action<ObjectEditMeta<IStructuredDataObject>>
+            metaConfig = null,
+        DialogParameters dialogParameters = null)
+    {
+        var model = ReflectionHelper.CreateTypeAndDeserialize(value, dataType);
+        metaConfig = (metaConfig ?? (_ => { })).CombineWith(RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>());
+        return dialogService.EditObject(model, title, options, metaConfig, dialogParameters);
+    }
+
 
     /// <summary>
     /// Shows an object edit dialog for the given object.

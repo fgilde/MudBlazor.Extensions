@@ -57,12 +57,12 @@ public static class MudExThemeHelper
     /// Creates a new theme from json
     /// </summary>
     public static TTheme FromJson<TTheme>(string json) where TTheme : MudTheme 
-        => JsonConvert.DeserializeObject<TTheme>(JsonHelper.SimplifyMudColorInJson(json));
+        => JsonConvert.DeserializeObject<TTheme>(MudExJsonHelper.SimplifyMudColorInJson(json));
 
     /// <summary>
     /// Converts Theme to json
     /// </summary>
     public static string AsJson<TTheme>(this TTheme theme) where TTheme : MudTheme
-        => JsonHelper.SimplifyMudColorInJson(JsonConvert.SerializeObject(theme));
+        => MudExJsonHelper.SimplifyMudColorInJson(JsonConvert.SerializeObject(theme));
 
 }

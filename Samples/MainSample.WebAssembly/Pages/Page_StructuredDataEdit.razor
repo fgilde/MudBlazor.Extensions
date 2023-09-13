@@ -1,0 +1,77 @@
+﻿@page "/structured-data-edit"
+@using Nextended.Core.Helper
+@using BlazorJS
+@using MudBlazor.Extensions.Helper
+@inject IJSRuntime Js
+@inject IDialogService dialogService;
+
+@attribute [DemoNew(Group = "MudExObjectEdit", Name = "Structured Data Edit", Order = 2, Documentation = "New MudExStructureDataEditor can used to edit jason, xml or yaml string in a MudExObjectEdit", Icon = Icons.Custom.FileFormats.FileCode, ForComponentTypes = new[] { typeof(MudExStructuredDataEditor)})]
+
+<DemoComponent PageType="@GetType()" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "SampleDialogOptions.cs"})">
+    <SplitContainer Splittable="false" IsCollapsible="false">
+        <Left>
+            <MudExStructuredDataEditor FormatJson="true" DataChanged="@OnDataStringChanged" OnValidSubmit="@OnSaveClick" ShowCancelButton="false" ShowSaveButton="true" DataType="@_dataType" Data="@_dataString"></MudExStructuredDataEditor>
+        </Left>
+        <Right>            
+            <MudToolBar>
+                <MudTooltip Text="Reset to initial data">
+                    <MudIconButton OnClick="@ResetDataString" Icon="@Icons.Material.Outlined.Undo" Color="Color.Inherit" />
+                </MudTooltip>
+                <MudDivider Vertical="true"/>
+                <MudText Class="ml-5" Typo="Typo.caption" Color="Color.Info">Leave editor focus to update MudExStructuredDataEditor</MudText>                
+                <MudSpacer />
+                <MudExEnumSelect Class="mt-5 mb-7" Clearable="false" SearchBox="false" Variant="Variant.Filled" ValueChanged="@OnDataTypeChange" TEnum="StructuredDataType" Value="@_dataType" />
+                <MudTooltip Text="Edit data in dialog">
+                    <MudIconButton OnClick="@ShowSampleJsonEditDialog" Icon="@Icons.Material.Outlined.DesktopWindows" Color="Color.Inherit" Class="ml-5" />
+                </MudTooltip>
+            </MudToolBar>
+            <StandaloneCodeEditor OnDidBlurEditorText="@OnEditorBlur" @ref="_editor" Id="sample-data-editor" ConstructionOptions="EditorConstructionOptions" />                    
+        </Right>
+    </SplitContainer>
+
+</DemoComponent>
+
+
+@code {
+    const string InitialDataString = "{\r\n\t\"id\": 1,\r\n\t\"date\": \"2013-10-08T00:00:00\",\r\n\t\"color\": \"#ff0022\",\r\n\t\"name\": \"test\",\r\n\t\"whatever\": [\"x\", \"y\"]\r\n}";
+
+    private StandaloneCodeEditor _editor = null!;
+    private StructuredDataType _dataType = StructuredDataType.Json;
+    string _dataString = InitialDataString;
+    string CodeLanguage => Enum.GetName(typeof(StructuredDataType), _dataType).ToLower();
+
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor) => new()
+    {
+        Language = CodeLanguage,
+        GlyphMargin = true,
+        Value = _dataString
+    };
+
+    private async Task ShowSampleJsonEditDialog()
+    {                       
+        var res = await dialogService.EditStructuredDataString(_dataType, _dataString, $"Auto Generated Editor for {_dataType}", ((_,_) => Task.FromResult("")), SampleDialogOptions.FullSlideFromRight, meta => meta.WrapEachInMudItem(i => i.xs = 6));
+        if (!res.Cancelled)
+            await OnDataStringChanged(MudExJsonHelper.FormatDataStringIfJson(res.Result.ToString(), _dataType));
+    }
+
+    private async Task OnEditorBlur() => _dataString = await _editor.GetValue();
+
+    private async Task OnDataTypeChange(StructuredDataType newDataType)
+    {
+        _dataString = SimpleConvert.ConvertDataStringTo(_dataString, _dataType, newDataType);
+        _dataType = newDataType;        
+        await _editor.SetValue(_dataString);        
+        await BlazorMonaco.Editor.Global.SetModelLanguage(Js ,await _editor.GetModel(), CodeLanguage);
+    }
+
+    private async Task OnSaveClick(EditContext arg) => await Js.AlertAsync(arg.Model.ToString());
+
+    private async Task OnDataStringChanged(string arg) => await _editor.SetValue(_dataString = arg);
+
+    private async Task ResetDataString()
+    {
+        _dataType = StructuredDataType.Json;        
+        await _editor.SetValue(_dataString = InitialDataString);        
+        await BlazorMonaco.Editor.Global.SetModelLanguage(Js ,await _editor.GetModel(), CodeLanguage);
+    }
+}

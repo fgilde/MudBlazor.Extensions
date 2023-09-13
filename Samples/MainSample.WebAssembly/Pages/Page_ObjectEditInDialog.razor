@@ -1,5 +1,4 @@
 ﻿@page "/dialog-object-edit"
-@using MudBlazor.Extensions.Options
 @using System.ComponentModel.DataAnnotations
 @using Newtonsoft.Json
 @inject IJSRuntime Js
@@ -7,7 +6,7 @@
 
 @attribute [Demo(Group = "MudExObjectEdit", Name = "Object Edit in Dialog", Order = 5, Documentation = "See how to use MudExObjectEdit in a dialog", Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>), typeof(MudExObjectEditDialog<>) })]
 
-<DemoComponent PageType="@GetType()">
+<DemoComponent PageType="@GetType()" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "SampleDialogOptions.cs"})">
     <MudButton OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Edit Test Object</MudButton>
 </DemoComponent>
 
@@ -22,24 +21,10 @@
         public LogLevel logLevel { get; set; }
     }
 
-    public DialogOptionsEx Options => new()
-    {
-            MaximizeButton = true,
-            CloseButton = true,
-            FullHeight = true,
-            CloseOnEscapeKey = true,
-            MaxWidth = MaxWidth.Medium,
-            FullWidth = true,
-            DragMode = MudDialogDragMode.Simple,
-            Animations = new[] { AnimationType.SlideIn },
-            Position = DialogPosition.CenterRight,
-            DisableSizeMarginY = true,
-            DisablePositionMargin = true
-        };
 
     private async Task ShowSampleDialog()
     {
-        var res = await dialogService.EditObject(new TestObject(), "Auto Generated Editor for TestObject", OnSubmit, Options, meta => meta.WrapEachInMudItem(i => i.xs = 6));
+        var res = await dialogService.EditObject(new TestObject(), "Auto Generated Editor for TestObject", OnSubmit, SampleDialogOptions.FullSlideFromRight, meta => meta.WrapEachInMudItem(i => i.xs = 6));
         if (!res.Cancelled)
             await Js.InvokeVoidAsync("alert", JsonConvert.SerializeObject(res.Result));
     }

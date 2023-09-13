@@ -1,13 +1,28 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Nextended.Core.Extensions;
+using Nextended.Core.Helper;
 
 namespace MudBlazor.Extensions.Helper;
 
 /// <summary>
 /// Simple JsonHelper
 /// </summary>
-internal static class JsonHelper
+public static class MudExJsonHelper
 {
+    /// <summary>
+    /// Formats data string if it is json
+    /// </summary>    
+    public static string FormatDataStringIfJson(string dataStr, StructuredDataType? dataType = null)
+    {
+        dataType ??= StructuredDataTypeValidator.DetectInputType(dataStr);
+        return dataType == StructuredDataType.Json ? FormatJson(dataStr) : dataStr;
+    }
+
+    /// <summary>
+    /// Formats given json
+    /// </summary>    
+    public static string FormatJson(string json) => JsonConvert.SerializeObject(JsonConvert.DeserializeObject(json), Formatting.Indented);
 
     /// <summary>
     /// Simplifies all MudColors in a given JSON

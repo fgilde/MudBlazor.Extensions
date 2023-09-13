@@ -1,4 +1,5 @@
 ## Change Log  
+ - 1.7.68 > NEW COMPONENT! [MudExStructuredDataEditor](https://www.mudex.org/structured-data-edit) is a Json editor a Xml editor and a Yaml editor in one component
  - 1.7.67 > Add Rar file support for [MudExUploadEdit](https://www.mudex.org/upload-edit) and [MudExFileDisplay](https://www.mudex.org/file-display)
  - 1.7.67 > Setting to allow or disallow duplicates in [MudExTagField](https://www.mudex.org/tag-field) with ErrorAnimation and ErrorText support
  - 1.7.66 > Support [MudExColor](https://www.mudex.org/d/MudExColor/MudExColor) with Theme Color or drawing color or html color or css variables for [MudExTagField](https://www.mudex.org/tag-field) and [MudExSelect](https://www.mudex.org/mud-ex-select)

@@ -5803,6 +5803,45 @@
             Returns the current Value independent of the PropertyMeta for example if binding is disabled
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor">
+            <summary>
+            A powerful editor that can handle json, xml or yaml content
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor.DataType">
+            <summary>
+            Input type of your data string
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor.FormatJson">
+            <summary>
+            If true and type for data is json, the editor will format the json string
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor.InvalidDataMessage">
+            <summary>
+            Error Message that is shown when data is invalid for the given DataType
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor.Data">
+            <summary>
+            The data string to edit
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor.DataChanged">
+            <summary>
+            Event when data changed
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor.OnPropertyChange(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Core.Css.AlignItems">
             <summary>
             Enum representing CSS 'align-items' property values.
@@ -7167,6 +7206,36 @@
             <param name="dialogParameters">The dialog parameters.</param>
             <returns>A tuple indicating if edit was cancelled and the result. </returns>
         </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowStructuredDataString(MudBlazor.IDialogService,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
+            <summary>
+            Shows an object edit dialog as readonly for given data string as object edit.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowStructuredDataString(MudBlazor.IDialogService,Nextended.Core.Helper.StructuredDataType,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
+            <summary>
+            Shows an object edit dialog as readonly for given data string as object edit.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditStructuredDataString(MudBlazor.IDialogService,System.String,System.String,System.Func{Nextended.Core.Helper.IStructuredDataObject,MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog{Nextended.Core.Helper.IStructuredDataObject},System.Threading.Tasks.Task{System.String}},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
+            <summary>
+            Shows an object edit dialog for given data string as object edit.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditStructuredDataString(MudBlazor.IDialogService,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
+            <summary>
+            Shows an object edit dialog for given data string as object edit.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditStructuredDataString(MudBlazor.IDialogService,Nextended.Core.Helper.StructuredDataType,System.String,System.String,System.Func{Nextended.Core.Helper.IStructuredDataObject,MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog{Nextended.Core.Helper.IStructuredDataObject},System.Threading.Tasks.Task{System.String}},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
+            <summary>
+            Shows an object edit dialog for given data string as object edit.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditStructuredDataString(MudBlazor.IDialogService,Nextended.Core.Helper.StructuredDataType,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
+            <summary>
+            Shows an object edit dialog for given data string as object edit.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.EditObject``1(MudBlazor.IDialogService,``0,System.String,System.Func{``0,MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog{``0},System.Threading.Tasks.Task{System.String}},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
             <summary>
             Shows an object edit dialog for the given object.
@@ -7309,28 +7378,6 @@
             <summary>
             Imports requires JS module and required css styles for MudBlazor.Extensions
             </summary>        
-        </member>
-        <member name="T:MudBlazor.Extensions.Helper.JsonHelper">
-            <summary>
-            Simple JsonHelper
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsonHelper.SimplifyMudColorInJson(System.String)">
-            <summary>
-            Simplifies all MudColors in a given JSON
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsonHelper.MergeJson(System.String,System.String[])">
-            <summary>
-            Merges two json files
-            </summary>
-            <param name="json"></param>
-            <param name="other"></param>
-        </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsonHelper.RemovePropertiesFromJson(System.String,System.String[])">
-            <summary>
-            Removes given properties from given json.
-            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Helper.JsRuntimeExtensions">
             <summary>
@@ -7746,6 +7793,38 @@
         <member name="M:MudBlazor.Extensions.Helper.MudExFonts.ImportUriText(System.String,System.String)">
             <summary>
             Creates the css import statement for a font
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExJsonHelper">
+            <summary>
+            Simple JsonHelper
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExJsonHelper.FormatDataStringIfJson(System.String,System.Nullable{Nextended.Core.Helper.StructuredDataType})">
+            <summary>
+            Formats data string if it is json
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExJsonHelper.FormatJson(System.String)">
+            <summary>
+            Formats given json
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExJsonHelper.SimplifyMudColorInJson(System.String)">
+            <summary>
+            Simplifies all MudColors in a given JSON
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExJsonHelper.MergeJson(System.String,System.String[])">
+            <summary>
+            Merges two json files
+            </summary>
+            <param name="json"></param>
+            <param name="other"></param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExJsonHelper.RemovePropertiesFromJson(System.String,System.String[])">
+            <summary>
+            Removes given properties from given json.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Helper.MudExResource">

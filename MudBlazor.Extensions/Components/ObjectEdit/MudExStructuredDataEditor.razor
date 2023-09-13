@@ -1,0 +1,7 @@
+﻿@inherits MudExObjectEditForm<Nextended.Core.Helper.IStructuredDataObject>
+
+@Inherited()
+
+@code {
+    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+}

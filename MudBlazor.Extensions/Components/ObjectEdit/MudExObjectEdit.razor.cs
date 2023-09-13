@@ -851,7 +851,7 @@ public partial class MudExObjectEdit<T>
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             Formatting = Formatting.Indented
         });
-        return ignored.Any() ? JsonHelper.RemovePropertiesFromJson(json, ignored) : json;
+        return ignored.Any() ? MudExJsonHelper.RemovePropertiesFromJson(json, ignored) : json;
     }
 
     private async Task<bool> ShouldCancelImportAsync(string json, string fileName)

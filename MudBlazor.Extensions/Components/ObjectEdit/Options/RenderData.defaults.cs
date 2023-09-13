@@ -5,6 +5,7 @@ using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Utilities;
 using Nextended.Core.Extensions;
+using Nextended.Core.Helper;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 
@@ -91,6 +92,19 @@ public static class RenderDataDefaults
     {
         RegisterDefault<MudColor, MudColor, MudExColorPicker>(f => f.Value, ColorPickerOptions(), c => c, c => c);
         RegisterDefault<System.Drawing.Color, MudColor, MudExColorPicker>(f => f.Value, ColorPickerOptions(), c => new MudColor(c.R, c.G, c.B, c.A), mc => System.Drawing.Color.FromArgb(mc.A, mc.R, mc.G, mc.B));
+    }
+
+    public static Action<ObjectEditMeta<T>> ColorFromStringOptions<T>(KeyValuePair<string, MudColor>[] cssVars = null)
+    {
+        return meta =>
+        {
+            var attributes = ColorPickerOptions();
+            if (cssVars != null)            
+                attributes.AddOrUpdate(nameof(MudExColorEdit.CssVars), cssVars);            
+            meta.Properties<string>().Where(p => p?.Value?.ToString()?.StartsWith("rgb") == true || p?.Value?.ToString()?.StartsWith("#") == true)
+                .RenderWith<MudExColorEdit, string, string>(edit => edit.ValueString)
+                .WithAdditionalAttributes(attributes);
+        };
     }
 
     internal static Dictionary<string, object> ColorPickerOptions()

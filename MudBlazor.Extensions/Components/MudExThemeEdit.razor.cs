@@ -376,8 +376,8 @@ public partial class MudExThemeEdit<TTheme>
 
     }
 
-    private Task BeforeImport(ImportData<TTheme> arg) => Task.FromResult(arg.Json = JsonHelper.SimplifyMudColorInJson(arg.Json));
-    private void BeforeExport(ExportData<TTheme> obj) => obj.Json = JsonHelper.SimplifyMudColorInJson(obj.Json);
+    private Task BeforeImport(ImportData<TTheme> arg) => Task.FromResult(arg.Json = MudExJsonHelper.SimplifyMudColorInJson(arg.Json));
+    private void BeforeExport(ExportData<TTheme> obj) => obj.Json = MudExJsonHelper.SimplifyMudColorInJson(obj.Json);
     
     private async Task AfterImport(ImportedData<TTheme> arg) => await SetTheme(arg.Value);
     private Task OnCancel() => EditCanceled.InvokeAsync((Theme, _selectedPreset));

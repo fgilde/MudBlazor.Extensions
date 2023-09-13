@@ -3,6 +3,7 @@
 @using MudBlazor.Extensions.Core
 @inherits LayoutComponentBase
 @inject NavigationManager Navi;
+@inject IJSRuntime Js;
 @inject IDialogService DialogService;
 
 <MudThemeProvider @bind-IsDarkMode="@IsDark" Theme="@ClientTheme.CurrentTheme" />
@@ -85,11 +86,13 @@
         await DialogService.ShowEx<InfoDialog>("Info", op);
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         Instance = this;
-        base.OnInitialized();
+        await BlazorMonaco.Editor.Global.SetTheme(Js,"vs-dark");
+        await base.OnInitializedAsync();
     }
+       
 
     void DrawerToggle()
     {
@@ -102,8 +105,9 @@
         return string.IsNullOrWhiteSpace(u) || u == "/" ? "/gradient-text" : "/";
     }
 
-    private void HandleThemeChange(bool arg1, ClientTheme arg2)
-    {
+    private async void HandleThemeChange(bool arg1, ClientTheme arg2)
+    {        
+        await BlazorMonaco.Editor.Global.SetTheme(Js, arg1 ? "vs-dark" : "vs");
         ThemeChanged?.Invoke(this, new ThemeChangedEventArgs { IsDark = arg1, Theme = arg2 });
     }
 

@@ -24,11 +24,24 @@
 <Support />
 
 <MudExCardList HoverMode="@(MudExCardHoverMode.Zoom | MudExCardHoverMode.CardEffect3d | MudExCardHoverMode.LightBulb)" HoverColor="Color.Warning" TData="object">
+    <MudCard Class="index-card" @onclick="@(() => { Navi.NavigateTo("/structured-data-edit"); })">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@Icons.Custom.FileFormats.FileCode" />
+                <MudText Typo="Typo.h6">Brand new Component MudExStructuredDataEditor</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudText>You don't need an extra JsonEditor anymore</MudText>
+            <MudText Typo="Typo.body2">Powerful UI Editor for json, xml or yaml content</MudText>
+        </MudCardContent>
+    </MudCard>
+    
     <MudCard Class="index-card" @onclick="@(() => { Navi.NavigateTo("/theme-edit"); })">
             <MudCardHeader>
                 <CardHeaderContent>
                 @((MarkupString)MudExSvg.ApplicationImage(ClientTheme.CurrentTheme, new MudExDimension(140, 100)))
-                    <MudText Typo="Typo.h6">Check out the new MudExThemeEdit Component</MudText>
+                    <MudText Typo="Typo.h6">Check out the MudExThemeEdit Component</MudText>
                 </CardHeaderContent>
             </MudCardHeader>
     </MudCard>
