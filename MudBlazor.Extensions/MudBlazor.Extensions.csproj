@@ -78,13 +78,12 @@
     <PackageReference Include="MudBlazor.Markdown" Version="0.1.2" />
     <PackageReference Include="Nextended.Blazor" Version="7.0.33" />
     <PackageReference Include="Nextended.Core" Version="7.0.33" /> 
-    <PackageReference Include="BlazorJS" Version="2.0.8" />
+    <PackageReference Include="BlazorJS" Version="2.0.9" />
     <PackageReference Include="OneOf" Version="3.0.255" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="MudBlazor" Version="6.9.0" />
-    <PackageReference Include="PSC.Blazor.Components.BrowserDetect" Version="1.0.11" />
+    <PackageReference Include="MudBlazor" Version="6.9.0" />    
     <PackageReference Include="BlazorParameterCastingMagic" Version="1.2.23060811" />
     <PackageReference Include="SharpCompress" Version="0.33.0" />
   </ItemGroup>

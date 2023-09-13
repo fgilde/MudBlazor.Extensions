@@ -6,8 +6,7 @@ using MudBlazor.Extensions.Attribute;
 using Nextended.Blazor.Helper;
 using Nextended.Blazor.Models;
 using Nextended.Core.Extensions;
-using PSC.Blazor.Components.BrowserDetect;
-
+using BlazorJS;
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
