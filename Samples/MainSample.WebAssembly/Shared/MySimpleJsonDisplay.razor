@@ -28,12 +28,15 @@
         get => _fileDisplayInfos;
         set
         {
-            _fileDisplayInfos = value;
-            fileService.ReadFromFileDisplayInfosAsync(FileDisplayInfos).ContinueWith(jsonTask =>
+            if (_fileDisplayInfos != value || string.IsNullOrEmpty(jsonValue))
             {
-                jsonValue = jsonTask.Result;
-                StateHasChanged();
-            }); // Here we load the json string for given file
+                _fileDisplayInfos = value;
+                fileService.ReadFromFileDisplayInfosAsync(FileDisplayInfos).ContinueWith(jsonTask =>
+                {
+                    jsonValue = jsonTask.Result;
+                    StateHasChanged();
+                }); // Here we load the json string for given file
+            }
         }
     }
 

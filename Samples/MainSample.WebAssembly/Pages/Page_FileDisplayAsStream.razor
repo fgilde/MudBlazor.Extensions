@@ -1,22 +1,24 @@
-﻿@page "/file-display"
+﻿@page "/handle-file-as-streams"
+@using MudBlazor.Extensions.Services
 @inject IDialogService dialogService
 @inject SampleDataService sampleDataService
 
-@attribute [Demo(Group = "File Handling", Name = "File Display", Order = 0, Documentation = "See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
+@attribute [Demo(Group = "File Handling", Name = "File Display with Stream", Order = 0, Documentation = "See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "Shared/MySimpleJsonDisplay.razor", "SampleDataService.cs"})">
     <MudSelect Label="File" HelperText="Select sample file (See weather.json to check how own components for files can be created)" @bind-Value="@SampleFile" Variant="Variant.Outlined" Color="Color.Primary">
-        @foreach (var file in _samples)
+        @foreach (var sample in _samples)
         {
-            <MudSelectItem Value="@file">@file.name</MudSelectItem>
+            <MudSelectItem Value="@sample">@sample.name</MudSelectItem>
+
         }
     </MudSelect>
 
-    @if (SampleFile.url != null)
+    @if (SampleFile.stream != null)
     {
         <div style="width: 100%; height: 800px; margin-top: 20px">
             <MudExFileDisplay HandleContentErrorFunc="@HandleContentError"
-                          FileName="@SampleFile.name" Url="@SampleFile.url" ContentType="@SampleFile.contentType"></MudExFileDisplay>
+                          FileName="@SampleFile.name" ContentStream="@SampleFile.stream" ContentType="@SampleFile.contentType"></MudExFileDisplay>
         </div>
         <MudButton OnClick="@OpenAsDialog" Variant="Variant.Filled" Color="Color.Primary">Show As Dialog</MudButton>
     }
@@ -24,18 +26,19 @@
 
 
 @code {
-    private string url;
-    private List<(string url, string contentType, string name)> _samples = new ();
 
-    protected override Task OnInitializedAsync()
+    [Inject] private MudExFileService fileService { get; set; }
+    private List<(Stream stream, string contentType, string name)> _samples = new ();
+
+    protected override async Task OnInitializedAsync()
     {
-        _samples.AddRange(sampleDataService.GetSampleFiles());
-        return Task.CompletedTask;
+        _samples.AddRange(await sampleDataService.GetSampleFilesWithStreamAsync());        
     }
-    
+
+    private string url;
     private async Task OpenAsDialog()
     {
-        await dialogService.ShowFileDisplayDialog(SampleFile.url, SampleFile.name, SampleFile.contentType, HandleContentError);
+        await dialogService.ShowFileDisplayDialog(SampleFile.stream, SampleFile.name, SampleFile.contentType, HandleContentError);
     }
 
     private Task<MudExFileDisplayContentErrorResult> HandleContentError(IMudExFileDisplayInfos arg)
@@ -49,7 +52,5 @@
         return Task.FromResult(MudExFileDisplayContentErrorResult.Unhandled);
     }
 
-
-    public (string? url, string contentType, string name) SampleFile { get; set; }
-
+    public (Stream stream, string contentType, string name) SampleFile { get; set; }
 }

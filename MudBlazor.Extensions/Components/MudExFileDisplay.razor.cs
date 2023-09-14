@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using Nextended.Blazor.Helper;
-using Nextended.Blazor.Models;
-using Nextended.Core.Extensions;
-using BlazorJS;
+using MudBlazor.Extensions.Services;
+
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
@@ -14,18 +13,20 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExFileDisplay : IMudExFileDisplayInfos
 {
-    
+
     #region private fields
 
     private bool internalCall;
     private bool _isNativeRendered;
     private string _id = Guid.NewGuid().ToString();
-    private (string tag, Dictionary<string, object> attributes) renderInfos;
+    private (string tag, Dictionary<string, object> attributes)? renderInfos;
     private BrowserInfo _info;
     private bool internalOverwrite;
     private List<IMudExFileDisplay> _possibleRenderControls;
     private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) _componentForFile;
+    private Stream _contentStream;
     [Inject] private IJsApiService JsApiService { get; set; }
+    [Inject] private MudExFileService FileService { get; set; }
 
     #endregion
 
@@ -120,7 +121,16 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     /// Note: This stream should not be closed or disposed.
     /// </summary>
     [Parameter, SafeCategory("Data")]
-    public Stream ContentStream { get; set; }
+    public Stream ContentStream
+    {
+        get => _contentStream;
+        set
+        {
+            if (_contentStream == value) return;
+            _contentStream = value;
+            Url = _contentStream != null ? null : Url;
+        }
+    }
 
     /// <summary>
     /// A function to handle content error.
@@ -137,12 +147,12 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     /// </summary>
     [Parameter]
     [SafeCategory("Behavior")] public string CustomContentErrorMessage { get; set; }
-    
+
     /// <summary>
     /// Media Type for current file
     /// </summary>
     public string MediaType => ContentType?.Split("/")?.FirstOrDefault()?.ToLower();
-    
+
     /// <summary>
     /// Returns a plugin that is useful to show the content if the content cant displayed 
     /// </summary>
@@ -188,13 +198,40 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     /// <inheritdoc/>
     public override object[] GetJsArguments() => base.GetJsArguments().Concat(new object[] { _id }).ToArray();
 
+    private void UpdateRenderInfos()
+    {
+        if (_componentForFile.ControlType != null) return;
+        renderInfos = null;
+        StateHasChanged();
+
+        renderInfos = GetRenderInfos();
+        StateHasChanged();
+    }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var updateRequired = (parameters.TryGetValue<Stream>(nameof(ContentStream), out var stream) && ContentStream != stream)
+                             || (parameters.TryGetValue<string>(nameof(Url), out var url) && Url != url);
+
+        await base.SetParametersAsync(parameters);
+
+        if (!updateRequired)
+            return;
+
+        await EnsureUrlAsync();
+
+        if (internalOverwrite)
+            return;
+        
+        UpdateRenderInfos();
+    }
+
     /// <inheritdoc/>
     protected override Task OnParametersSetAsync()
     {
         _possibleRenderControls = GetServices<IMudExFileDisplay>().Where(c => c.GetType() != GetType() && c.CanHandleFile(this)).ToList();
         if (ViewDependsOnContentType)
             _componentForFile = GetComponentForFile(_possibleRenderControls.FirstOrDefault(c => c.StartsActive));
-
         if (!internalOverwrite)
             renderInfos = GetRenderInfos();
         return base.OnParametersSetAsync();
@@ -203,14 +240,12 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) GetComponentForFile(IMudExFileDisplay fileComponent)
     {
         var type = fileComponent?.GetType();
-        if (type != null)
-        {
-            var parameters = ComponentRenderHelper.GetCompatibleParameters(this, type);
-            parameters.Add(nameof(IMudExFileDisplay.FileDisplayInfos), this);
-            
-            return (type, fileComponent.WrapInMudExFileDisplayDiv, parameters);
-        }
-        return default;
+        if (type == null) 
+            return default;
+        var parameters = ComponentRenderHelper.GetCompatibleParameters(this, type);
+        parameters.Add(nameof(IMudExFileDisplay.FileDisplayInfos), this);
+
+        return (type, fileComponent.WrapInMudExFileDisplayDiv, parameters);
     }
 
     private (string tag, Dictionary<string, object> attributes) GetRenderInfos()
@@ -283,7 +318,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             {"sandbox", SandBoxIframes}
         });
     }
-    
+
     private string GetJsOnError() =>
         @$"
             var displayMessage = !window.__mudExFileDisplay || !window.__mudExFileDisplay['{_id}'];
@@ -303,7 +338,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
                 }}, 0)
             }}
         ";
-    
+
     private void UpdateChangedFields(MudExFileDisplayContentErrorResult result)
     {
         bool urlChanged = false;
@@ -324,17 +359,13 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         }
 
         renderInfos = GetRenderInfos();
-        if (renderInfos.tag == "object" && JsRuntime != null && urlChanged)
+        if (renderInfos.Value.tag == "object" && JsRuntime != null && urlChanged)
             JsRuntime.InvokeVoidAsync("eval", $"document.querySelector('object[data-id=\"{_id}\"]').data += ' ';");
     }
 
     private async Task Download(MouseEventArgs arg)
     {
-        if (string.IsNullOrWhiteSpace(Url) && ContentStream != null)
-        {
-            ContentStream.Position = 0;
-            Url = await DataUrl.GetDataUrlAsync(ContentStream.ToByteArray(), ContentType);
-        }
+        await EnsureUrlAsync();
 
         await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
         {
@@ -344,21 +375,24 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         });
     }
 
-    private async Task CopyUrl(MouseEventArgs arg)
+    private async Task EnsureUrlAsync()
     {
-        await JsApiService.CopyToClipboardAsync(Url);
-        //await JsRuntime.DInvokeVoidAsync(window => {});
+        if (string.IsNullOrWhiteSpace(Url) && ContentStream != null)
+            Url = await FileService.ReadDataUrlForStreamAsync(ContentStream, ContentType);
     }
+
+    private async Task CopyUrl(MouseEventArgs arg) => await JsApiService.CopyToClipboardAsync(Url);
 
     private void CloseContentError()
     {
         JsRuntime.InvokeVoidAsync("eval",
             "document.getElementById('content-type-display-error').classList.remove('visible')");
     }
-    
+
     private void RenderWith(IMudExFileDisplay fileComponent)
     {
         CloseContentError();
-        _componentForFile = GetComponentForFile(fileComponent); 
+        _componentForFile = GetComponentForFile(fileComponent);
+        UpdateRenderInfos();
     }
 }

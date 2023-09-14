@@ -70,7 +70,7 @@ public partial class MudExFileDisplayMarkdown: IMudExFileDisplay
     {
         var updateRequired = (parameters.TryGetValue<IMudExFileDisplayInfos>(nameof(FileDisplayInfos), out var fileDisplayInfos) && FileDisplayInfos != fileDisplayInfos);
         await base.SetParametersAsync(parameters);
-        if (updateRequired)
+        if (updateRequired || Value == null)
         {
             Value = await fileService.ReadFromFileDisplayInfosAsync(FileDisplayInfos);
             StateHasChanged();

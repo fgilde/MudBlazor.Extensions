@@ -1,5 +1,4 @@
-﻿using System.IO.Compression;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
@@ -7,6 +6,7 @@ using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
+using MudBlazor.Extensions.Services;
 using Nextended.Blazor.Extensions;
 using Nextended.Blazor.Models;
 using Nextended.Core;
@@ -28,6 +28,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     //private (string tag, Dictionary<string, object> attributes) renderInfos;
     private HashSet<ZipStructure> _zipStructure;
     private string _contentType;
+    [Inject] private MudExFileService fileService { get; set; }
 
     /// <inheritdoc />
     public string Name { get; } = nameof(MudExFileDisplayZip);
@@ -35,6 +36,8 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
 
     /// <inheritdoc />
     public bool WrapInMudExFileDisplayDiv => false;
+
+    #region Parameters
 
     /// <inheritdoc />
     [Parameter, SafeCategory("Data")]
@@ -209,45 +212,31 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     /// </summary>
     [Parameter] public string CustomContentErrorMessage { get; set; }
 
+    #endregion
+
     /// <inheritdoc />
-    protected override async Task OnParametersSetAsync()
+    public override async Task SetParametersAsync(ParameterView parameters)
     {
+        var updateRequired = (parameters.TryGetValue<Stream>(nameof(ContentStream), out var stream) && ContentStream != stream)
+                             || (parameters.TryGetValue<string>(nameof(Url), out var url) && Url != url);
+
+        await base.SetParametersAsync(parameters);
+
+        if (!updateRequired || (string.IsNullOrEmpty(Url) && ContentStream == null))
+            return;
+
         await CreateStructure();
-        await base.OnParametersSetAsync();
+
     }
 
     private async Task CreateStructure()
     {
-        try
-        {
-            if (!string.IsNullOrEmpty(Url) || ContentStream != null)
-            {
-                if (_zipEntries == null || ReloadZipContentOnParameterSet)
-                {
-                    Stream contentStream = ContentStream ?? await new HttpClient().GetStreamAsync(Url);
-                    if (MimeType.IsRar(ContentType))                    
-                        contentStream = ArchiveConverter.ConvertRarToZip(contentStream);
-                    
-                    _zipEntries = (await GetZipEntriesAsync(contentStream)).ToList();
-                    _zipStructure = ZipStructure.CreateStructure(_zipEntries, RootFolderName).ToHashSet();
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Console.Write(e.Message);
-        }
+        var archive = await fileService.ReadArchiveAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url), RootFolderName, ContentType);
+        _zipEntries = archive?.Entries;
+        _zipStructure = archive?.Structure;
+        StateHasChanged();
     }
-
-    private async Task<IList<ZipBrowserFile>> GetZipEntriesAsync(Stream stream)
-    {
-        await using var ms = new MemoryStream();
-        await stream.CopyToAsync(ms);
-
-        return new ZipArchive(ms).Entries.Select(entry => new ZipBrowserFile(entry)).ToList();
-    }
-
-
+    
     private async Task Preview(ZipBrowserFile file)
     {
         _innerPreview = file;
@@ -278,27 +267,25 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
 
     private async void DownloadAsync(ZipStructure zip, bool asZip = false)
     {
-        if (!zip.IsDownloading)
+        if (zip.IsDownloading) return;
+        _downloadMenu?.CloseMenu();
+        SetDownloadStatus(zip, true);
+
+        if (asZip)
         {
-            _downloadMenu?.CloseMenu();
-            SetDownloadStatus(zip, true);
-
-            if (asZip)
+            await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
             {
-                await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
-                {
-                    Url = await DataUrl.GetDataUrlAsync(await zip.ToArchiveBytesAsync(), "application/zip"),
-                    FileName = $"{Path.ChangeExtension(zip.Name, "zip")}",
-                    MimeType = "application/zip"
-                });
-            }
-            else
-            {
-                await (zip.IsDirectory ? Task.WhenAll(zip.ContainingFiles.Where(file => !file.IsDirectory).Select(DownloadAsync)) : DownloadAsync(zip.BrowserFile));
-            }
-
-            SetDownloadStatus(zip, false);
+                Url = await DataUrl.GetDataUrlAsync(await zip.ToArchiveBytesAsync(), "application/zip"),
+                FileName = $"{Path.ChangeExtension(zip.Name, "zip")}",
+                MimeType = "application/zip"
+            });
         }
+        else
+        {
+            await (zip.IsDirectory ? Task.WhenAll(zip.ContainingFiles.Where(file => !file.IsDirectory).Select(DownloadAsync)) : DownloadAsync(zip.BrowserFile));
+        }
+
+        SetDownloadStatus(zip, false);
     }
 
     private void SetDownloadStatus(ZipStructure structure, bool isDownloading)
@@ -331,10 +318,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         return res;
     }
 
-    private Task Select(ZipStructure structure, MouseEventArgs args)
-    {
-        return structure.IsDirectory ? Task.CompletedTask : Select(structure.BrowserFile, args);
-    }
+    private Task Select(ZipStructure structure, MouseEventArgs args) => structure.IsDirectory ? Task.CompletedTask : Select(structure.BrowserFile, args);
 
     private async Task Select(ZipBrowserFile entry, MouseEventArgs args)
     {

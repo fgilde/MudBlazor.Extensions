@@ -39,7 +39,10 @@
     {
         _isNativeRendered = true;
         <div class="mud-ex-file-display">
-            <MudElement UserAttributes="@renderInfos.attributes" HtmlTag="@renderInfos.tag" />
+            @if (renderInfos != null)
+            {
+                <MudElement UserAttributes="@renderInfos.Value.attributes" HtmlTag="@renderInfos.Value.tag" />
+            }
         </div>
     }
 

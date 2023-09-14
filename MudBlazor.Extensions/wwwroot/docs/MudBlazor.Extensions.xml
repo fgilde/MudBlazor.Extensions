@@ -1536,7 +1536,7 @@
             Custom error message for content error
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.OnParametersSetAsync">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FileName">
