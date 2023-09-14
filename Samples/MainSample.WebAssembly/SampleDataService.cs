@@ -29,8 +29,7 @@ public class SampleDataService
 
     public async Task<IEnumerable<(Stream stream, string contentType, string name)>>GetSampleFilesWithStreamAsync()
     {
-        var tasks = GetSampleFiles().Select(Sample);
-        return await Task.WhenAll(tasks);
+        return (await Task.WhenAll(GetSampleFiles().Select(Sample))).Where(s => s != null).Select(s => s.Value);
     }
 
     private Task<MudExFileDisplayContentErrorResult> HandleContentError(IMudExFileDisplayInfos arg)
@@ -44,10 +43,17 @@ public class SampleDataService
         return Task.FromResult(MudExFileDisplayContentErrorResult.Unhandled);
     }
 
-    private async Task<(Stream stream, string contentType, string name)> Sample((string url, string contentType, string name) sampleFile)
+    private async Task<(Stream stream, string contentType, string name)?> Sample((string url, string contentType, string name) sampleFile)
     {
-        var stream = await _fileService.ReadStreamAsync(sampleFile.url);
-        return (stream, sampleFile.contentType, sampleFile.name);
+        try
+        {
+            var stream = await _fileService.ReadStreamAsync(sampleFile.url);
+            return (stream, sampleFile.contentType, sampleFile.name);
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
     private (string url, string contentType, string name) SampleFile(string filename, string contentType)
