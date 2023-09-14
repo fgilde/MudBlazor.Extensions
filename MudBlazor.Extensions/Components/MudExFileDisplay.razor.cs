@@ -193,7 +193,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     {
         _possibleRenderControls = GetServices<IMudExFileDisplay>().Where(c => c.GetType() != GetType() && c.CanHandleFile(this)).ToList();
         if (ViewDependsOnContentType)
-            _componentForFile = GetComponentForFile(_possibleRenderControls.FirstOrDefault());
+            _componentForFile = GetComponentForFile(_possibleRenderControls.FirstOrDefault(c => c.StartsActive));
 
         if (!internalOverwrite)
             renderInfos = GetRenderInfos();

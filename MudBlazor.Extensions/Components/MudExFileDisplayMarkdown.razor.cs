@@ -1,7 +1,7 @@
 ﻿using System.Windows.Input;
 using Markdig.Syntax.Inlines;
 using Microsoft.AspNetCore.Components;
-using Nextended.Blazor.Models;
+using MudBlazor.Extensions.Services;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -12,6 +12,7 @@ public partial class MudExFileDisplayMarkdown: IMudExFileDisplay
 {
     private bool _requiredJsLoaded;
 
+    [Inject] private MudExFileService fileService { get; set; }
     /// <summary>
     /// The name of the component
     /// </summary>
@@ -71,26 +72,9 @@ public partial class MudExFileDisplayMarkdown: IMudExFileDisplay
         await base.SetParametersAsync(parameters);
         if (updateRequired)
         {
-            UpdateValue();
+            Value = await fileService.ReadFromFileDisplayInfosAsync(FileDisplayInfos);
+            StateHasChanged();
         }
-    }
-
-    private void ReadJsonFromStream(Stream t)
-    {
-        using var reader = new StreamReader(t);
-        Value = reader.ReadToEnd();
-        StateHasChanged();
-    }
-
-    private void UpdateValue()
-    {
-        // Here we load the json string for given file
-        if (FileDisplayInfos.ContentStream?.Length > 0)
-            ReadJsonFromStream(FileDisplayInfos.ContentStream); // If we have already a valid stream we can use it
-        else if (DataUrl.TryParse(FileDisplayInfos.Url, out var data)) // If not but given url is a data url we can use the bytes from it
-            ReadJsonFromStream(new MemoryStream(data.Bytes));
-        else if (!string.IsNullOrEmpty(FileDisplayInfos.Url)) // Otherwise we load the file
-            (Get<HttpClient>() ?? new HttpClient()).GetStreamAsync(FileDisplayInfos.Url).ContinueWith(t => ReadJsonFromStream(t.Result));
     }
 
     private void OnSourceLoaded(string file)

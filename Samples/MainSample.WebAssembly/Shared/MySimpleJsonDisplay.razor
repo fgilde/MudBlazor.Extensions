@@ -1,8 +1,9 @@
 ﻿@using MudBlazor.Extensions.Options
-@using Nextended.Blazor.Models
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Services
 @inject IDialogService dialogService;
+@inject MudExFileService fileService;
 @implements IMudExFileDisplay
 
 <span @onclick="@ShowCode" style="cursor: pointer; font-size: 10pt;text-decoration: underline; position: absolute; margin-top: -10px;">This is a self registered control for json files. Just implement IMudExFileDisplay. Click to see code</span>
@@ -10,6 +11,8 @@
 <MudTextField ReadOnly="true" Value="@jsonValue" Variant="Variant.Outlined" T="string" Lines="16" Style="margin-top: 3px;"></MudTextField>
 
 @code {
+    private string jsonValue;
+
     [Inject] HttpClient http { get; set; }
     public string Name => "Most stupid json display"; // Name of your component. (Is displayed in menu if user wants to switch between multiple components for one file type)
 
@@ -26,33 +29,15 @@
         set
         {
             _fileDisplayInfos = value;
-            UpdateJsonValue();
+            fileService.ReadFromFileDisplayInfosAsync(FileDisplayInfos).ContinueWith(jsonTask =>
+            {
+                jsonValue = jsonTask.Result;
+                StateHasChanged();
+            }); // Here we load the json string for given file
         }
     }
 
     // That's all you need to implement from Interface. All other code depends on your component and on what you want to archive
-
-    
-    private string jsonValue;
-
-    private void UpdateJsonValue()
-    {
-        // Here we load the json string for given file
-        if (FileDisplayInfos.ContentStream?.Length > 0)
-            ReadJsonFromStream(FileDisplayInfos.ContentStream); // If we have already a valid stream we can use it
-        else if (DataUrl.TryParse(FileDisplayInfos.Url, out var data)) // If not but given url is a data url we can use the bytes from it
-            ReadJsonFromStream(new MemoryStream(data.Bytes));
-        else if (!string.IsNullOrEmpty(FileDisplayInfos.Url)) // Otherwise we load the file
-            new HttpClient().GetStreamAsync(FileDisplayInfos.Url).ContinueWith(t => ReadJsonFromStream(t.Result));
-    }
-
-    private void ReadJsonFromStream(Stream t)
-    {
-        using var reader = new StreamReader(t);
-        jsonValue = reader.ReadToEnd();
-        StateHasChanged();
-    }
-
 
     private async Task ShowCode()
     {
@@ -61,7 +46,7 @@
         await dialogService.ShowComponentInDialogAsync<DemoMarkdown>("Code for this component", "Like this you can implement your own components that is responsible for a File",
             md =>
             {
-                md.Value = CodeView.CodeAsMarkup(code);
+                md.Value = CodeView.CodeAsMarkup(code);                
             },
             dialog =>
             {
@@ -72,6 +57,8 @@
             {   
                 DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass),
                 DragMode =MudDialogDragMode.Simple,
+                MaxWidth = MaxWidth.Large,
+                FullWidth = true,
                 CloseButton = true,
                 Resizeable = true,
             });

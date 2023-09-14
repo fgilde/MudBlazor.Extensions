@@ -108,6 +108,12 @@ public interface IMudExFileDisplay
     /// Should return true if this component can handle a file with thw given informations
     /// </summary>
     bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos);
+
+    /// <summary>
+    /// Determines if the control is active by default upon initialization. 
+    /// If true, the control will be used initially; otherwise, it can be selected afterwards.
+    /// </summary>
+    bool StartsActive => true;
 }
 
 /// <summary>
