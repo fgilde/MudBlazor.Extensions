@@ -1,5 +1,5 @@
 @using BrowserFileExtensions = MudBlazor.Extensions.Helper.BrowserFileExt
-@inherits MudExBaseComponent<MudExFileDisplayDialog>
+@inherits MudExFileDisplay
 
 @namespace MudBlazor.Extensions.Components
 <MudDialog Style="@Style" Class="@Class" ClassContent="@ClassContent">
@@ -10,20 +10,7 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudExFileDisplay 
-            ShowContentError="@ShowContentError"
-            Dense="@Dense"
-            AllowDownload="@AllowDownload"
-            FallBackInIframe="@FallBackInIframe" 
-            SandBoxIframes="@SandBoxIframes"
-            ImageAsBackgroundImage="@ImageAsBackgroundImage"
-            ViewDependsOnContentType="@ViewDependsOnContentType"
-            HandleContentErrorFunc="@HandleContentErrorFunc" 
-            CustomContentErrorMessage="@CustomContentErrorMessage" 
-            FileName="@MudDialog?.Title" 
-            ContentStream="@ContentStream" 
-            ContentType="@ContentType" 
-            Url="@Url"></MudExFileDisplay>
+        @Inherited()
     </DialogContent>
     <DialogActions>
         @if (Buttons?.Any() == true)
@@ -36,3 +23,7 @@
     </DialogActions>
 
 </MudDialog>
+
+@code {
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+}

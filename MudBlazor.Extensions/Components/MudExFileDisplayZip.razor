@@ -110,8 +110,7 @@ else
         }
         else
         {
-            @foreach (var entry in _zipEntries.Where(file => !file.IsDirectory))
-            {
+            <MudVirtualize IsEnabled="@Virtualize" Context="entry" Items="@_zipEntries">
                 @if (IsInSearch(entry))
                 {
                     <MudItem xs="12">
@@ -123,19 +122,19 @@ else
                                       Dense="@Dense"
                                       Variant="Variant.Outlined"
                                       Class="mud-ex-file-display-flat mt-1 mr-1 ml-1 mud-alert-message-w-100 mud-alert-message-mt-5">
-                                <MudHighlighter Text="@entry.FullName" HighlightedText="@SearchString"/>
+                                <MudHighlighter Text="@entry.FullName" HighlightedText="@SearchString" />
                                 <p class="mud-ex-fd-size-display" style="width: 300px;">@entry.GetReadableFileSize(LocalizerToUse, true)</p>
                                 <span style="float: right; margin-top: -35px;">
                                     @if (AllowPreview)
                                     {
                                         <MudTooltip Placement="Placement.Left" Delay="600" Color="Color.Primary" Text="@($"{TryLocalize("Preview")} ({entry.Name})")">
-                                            <MudIconButton OnClick="@(() => Preview(entry))" Icon="@Icons.Material.Filled.ZoomIn" Color="@ActionButtonColor" Size="Size.Medium"/>
+                                            <MudIconButton OnClick="@(() => Preview(entry))" Icon="@Icons.Material.Filled.ZoomIn" Color="@ActionButtonColor" Size="Size.Medium" />
                                         </MudTooltip>
                                     }
                                     @if (AllowDownload)
                                     {
                                         <MudTooltip Placement="Placement.Left" Delay="600" Color="Color.Primary" Text="@($"{TryLocalize("Download")} ({entry.Name})")">
-                                            <MudIconButton OnClick="@(() => DownloadAsync(entry))" Icon="@(Icons.Material.Filled.Download)" Color="@ActionButtonColor" Size="Size.Medium"/>
+                                            <MudIconButton OnClick="@(() => DownloadAsync(entry))" Icon="@(Icons.Material.Filled.Download)" Color="@ActionButtonColor" Size="Size.Medium" />
                                         </MudTooltip>
                                     }
                                 </span>
@@ -143,7 +142,7 @@ else
                         </MudItem>
                     </MudItem>
                 }
-            }
+            </MudVirtualize>           
         }
     </div>
 }

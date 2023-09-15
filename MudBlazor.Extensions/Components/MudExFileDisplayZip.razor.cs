@@ -225,6 +225,12 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     /// </summary>
     [Parameter] public string CustomContentErrorMessage { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the collection should be virtualized.
+    /// </summary>
+    [Parameter]
+    public bool Virtualize { get; set; } = true;
+
     #endregion
 
     /// <inheritdoc />
@@ -244,9 +250,8 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
 
     private async Task CreateStructure()
     {
-        var archive = await fileService.ReadArchiveAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url), RootFolderName, ContentType);
-        _zipEntries = archive?.Entries;
-        _zipStructure = archive?.Structure;
+        _zipStructure = await fileService.ReadArchiveAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url), RootFolderName, ContentType);
+        _zipEntries = _zipStructure.Recursive(z => z.Children ?? Enumerable.Empty<ZipStructure>()).Where(c => c is { IsDirectory: false }).Select(c => c.BrowserFile).ToList();     
         StateHasChanged();
     }
     

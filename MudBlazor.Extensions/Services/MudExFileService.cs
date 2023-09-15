@@ -47,17 +47,15 @@ public class MudExFileService
         => await DataUrl.GetDataUrlAsync((await CopyStreamAsync(stream)).ToByteArray(), mimeType);
 
 
-    public async Task<(IList<ZipBrowserFile> Entries, HashSet<ZipStructure> Structure)?> ReadArchiveAsync(Stream stream, string rootFolderName, string contentType)
+    public async Task<HashSet<ZipStructure>> ReadArchiveAsync(Stream stream, string rootFolderName, string contentType)
     {
         try
         {
-            Stream contentStream = await CopyStreamAsync(stream);
+            var contentStream = await CopyStreamAsync(stream);
             if (MimeType.IsRar(contentType))
                 contentStream = ArchiveConverter.ConvertRarToZip(contentStream);
-
-            var zipEntries = GetZipEntriesAsync(contentStream);
-            var zipStructure = ZipStructure.CreateStructure(zipEntries, rootFolderName).ToHashSet();
-            return (zipEntries, zipStructure);    
+            
+            return ZipStructure.CreateStructure(GetZipEntriesAsync(contentStream), rootFolderName).ToHashSet();            
             
         }
         catch (Exception e)

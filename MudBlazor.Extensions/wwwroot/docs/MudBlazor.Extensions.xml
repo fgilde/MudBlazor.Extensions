@@ -1255,11 +1255,6 @@
             Dialog to display a file using <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> component.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Dense">
-            <summary>
-            If true, compact vertical padding will be applied to items.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.MudDialog">
             <summary>
             The MudDialog instance
@@ -1270,30 +1265,9 @@
             CSS classes applied to the content of the dialog.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ShowContentError">
-            <summary>
-            Whether to show content error if content cannot be displayed.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Icon">
             <summary>
             Icon to display in the dialog.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Url">
-            <summary>
-            URL to access the file or resource.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ContentType">
-            <summary>
-            Content type of the loaded file or resource.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ContentStream">
-            <summary>
-            Stream of the file or resource content.
-            Note: This stream should not be closed or disposed.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Buttons">
@@ -1301,40 +1275,8 @@
             Action buttons to display in the dialog.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.HandleContentErrorFunc">
-            <summary>
-            Function to handle content error. Return true if the error is handled, false to show the error message.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.CustomContentErrorMessage">
-            <summary>
-            Custom message to show in case of content error.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.FallBackInIframe">
-            <summary>
-            Whether to use fallback to iframe if file is not binary.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ViewDependsOnContentType">
-            <summary>
-            Whether to use specific tags for certain content types or to always use iframe/object tag.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ImageAsBackgroundImage">
-            <summary>
-            Whether to use the image as background image instead of img tag.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.SandBoxIframes">
-            <summary>
-            Whether to use sandbox mode on iframes to disallow dangerous JS invocation.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.AllowDownload">
-            <summary>
-            Whether to allow user to download the loaded file.
-            </summary>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDialog.OnParametersSet">
+            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDialog.OnInitialized">
             <inheritdoc />
@@ -1554,6 +1496,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.CustomContentErrorMessage">
             <summary>
             Custom error message for content error
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Virtualize">
+            <summary>
+            Gets or sets a value indicating whether the collection should be virtualized.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
