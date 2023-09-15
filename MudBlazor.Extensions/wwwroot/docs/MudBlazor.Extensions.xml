@@ -1141,6 +1141,11 @@
             Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.Dense">
+            <summary>
+            If true, compact vertical padding will be applied to items.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.Url">
             <summary>
             Url to access file can also be a data Url
@@ -1248,6 +1253,11 @@
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDialog">
             <summary>
             Dialog to display a file using <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Dense">
+            <summary>
+            If true, compact vertical padding will be applied to items.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.MudDialog">
@@ -1398,12 +1408,22 @@
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.WrapInMudExFileDisplayDiv">
             <inheritdoc />
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Dense">
+            <summary>
+            If true, compact vertical padding will be applied to items.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FileDisplayInfos">
             <inheritdoc />
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.SearchString">
             <summary>
             SearchString for current filter
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Filters">
+            <summary>
+            The filter values for the component.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.AllowSearch">

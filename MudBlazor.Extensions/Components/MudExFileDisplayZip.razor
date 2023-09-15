@@ -23,7 +23,8 @@
                       CustomContentErrorMessage="@CustomContentErrorMessage" 
                       FileName="@_innerPreview.Name" 
                       ContentStream="@_innerPreviewStream" 
-                      ContentType="@_innerPreview.ContentType" 
+                      ContentType="@_innerPreview.ContentType"
+                      Dense="@Dense"
                       Url="@_innerPreviewUrl"></MudExFileDisplay>
 }
 
@@ -31,7 +32,7 @@ else
 {
     <div class="mud-ex-file-display-zip">
         <MudPaper Class="@($"{ToolBarPaperClass} {(StickyToolbar ? "mud-ex-toolbar-sticky" : "")}")" Style="@ToolbarStyle()">
-            <MudToolBar Class="@($"mb-2")">
+            <MudToolBar Dense="@Dense" Class="@($"mb-2")">
                 @if (AllowToggleTree)
                 {
                     <MudToggleIconButton @bind-Toggled="@ShowAsTree"
@@ -40,8 +41,8 @@ else
                     <span>@(ShowAsTree ? TryLocalize("Show flat") : TryLocalize("Show as Tree"))</span>
                 }
                 <MudSpacer/>
-               
-                <MudExToggleableSearch @bind-Filter="@SearchString" SearchButtonColor="@(string.IsNullOrWhiteSpace(SearchString) ? Color.Default : Color.Warning)" FilterMode="@FilterMode" />
+
+                <MudExToggleableSearch MultiSearch="true" @bind-Filters="@Filters" @bind-Filter="@SearchString" SearchButtonColor="@(string.IsNullOrWhiteSpace(SearchString) ? Color.Default : Color.Warning)" FilterMode="@FilterMode" />
                 
                 @if (ShowAsTree)
                 {
@@ -54,7 +55,7 @@ else
         
         @if (ShowAsTree)
         {
-            <MudTreeView Style="width: 100%" T="ZipStructure" Items="@_zipStructure">
+            <MudTreeView Dense="@Dense" Style="width: 100%" T="ZipStructure" Items="@_zipStructure">
                 <ItemTemplate>
                     @if (IsInSearch(context))
                     {
@@ -66,6 +67,7 @@ else
                                           OnClick="(a) => Select(context, a)"
                                           Severity="@((IsSelected(context.BrowserFile) ? Severity.Warning : Severity.Normal))"
                                           Square="true"
+                                          Dense="@Dense"
                                           Variant="Variant.Text"
                                           Style="width: 100%"
                                           Class="mud-ex-file-display-tree p-0 mr-1 ml-1 mud-alert-message-w-100 mud-alert-message-mt-5">
@@ -91,7 +93,7 @@ else
                                         @if (AllowDownload)
                                         {
                                             <MudTooltip Placement="Placement.Right" Delay="600" Color="Color.Primary" Text="@($"{TryLocalize("Download")} ({context.Name})")">
-                                                <MudMenu @ref="_downloadMenu" Style="margin-left: 10px;" Disabled="@context.IsDownloading" Icon="@(context.IsDownloading ? Icons.Material.Filled.Downloading : Icons.Material.Filled.Download)" Color="@ActionButtonColor" Size="Size.Medium" Dense="true" OffsetY="true">
+                                                <MudMenu @ref="_downloadMenu" Style="margin-left: 10px;" Disabled="@context.IsDownloading" Icon="@(context.IsDownloading ? Icons.Material.Filled.Downloading : Icons.Material.Filled.Download)" Color="@ActionButtonColor" Size="Size.Medium" Dense="true">
                                                     <MudListItem Text="@DownloadText(context, false)" Icon="@Icons.Material.Filled.FileDownload" OnClick="@(() => DownloadAsync(context, false))"/>
                                                     <MudListItem Text="@DownloadText(context, true)" Icon="@Icons.Material.Filled.Archive" OnClick="@(() => DownloadAsync(context, true))"/>
                                                 </MudMenu>
@@ -118,6 +120,7 @@ else
                                       OnClick="(a) => Select(entry, a)"
                                       Severity="@((IsSelected(entry) ? Severity.Warning : Severity.Normal))"
                                       Square="true"
+                                      Dense="@Dense"
                                       Variant="Variant.Outlined"
                                       Class="mud-ex-file-display-flat mt-1 mr-1 ml-1 mud-alert-message-w-100 mud-alert-message-mt-5">
                                 <MudHighlighter Text="@entry.FullName" HighlightedText="@SearchString"/>

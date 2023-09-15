@@ -12,6 +12,13 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExFileDisplayDialog
 {
     /// <summary>
+    /// If true, compact vertical padding will be applied to items.
+    /// </summary>
+    [Parameter]
+    [SafeCategory(CategoryTypes.List.Appearance)]
+    public bool Dense { get; set; }
+    
+    /// <summary>
     /// The MudDialog instance
     /// </summary>
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }

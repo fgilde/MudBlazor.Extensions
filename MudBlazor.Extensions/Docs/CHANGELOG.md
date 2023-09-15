@@ -1,4 +1,8 @@
 ## Change Log  
+ - 1.7.68 > Update MudBlazor to 6.10.0
+ - 1.7.68 > Add Dense Parameter to [MudExFileDisplay](https://www.mudex.org/file-display)
+ - 1.7.68 > Add multi tag search in [MudExFileDisplay](https://www.mudex.org/file-display)
+ - 1.7.68 > Bugfix handle streams in [MudExFileDisplay](https://www.mudex.org/handle-file-as-streams)
  - 1.7.68 > NEW COMPONENT! [MudExStructuredDataEditor](https://www.mudex.org/structured-data-edit) is a Json editor a Xml editor and a Yaml editor in one component
  - 1.7.67 > Add Rar file support for [MudExUploadEdit](https://www.mudex.org/upload-edit) and [MudExFileDisplay](https://www.mudex.org/file-display)
  - 1.7.67 > Setting to allow or disallow duplicates in [MudExTagField](https://www.mudex.org/tag-field) with ErrorAnimation and ErrorText support

@@ -39,6 +39,13 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
 
     #region Parameters
 
+    /// <summary>
+    /// If true, compact vertical padding will be applied to items.
+    /// </summary>
+    [Parameter]
+    [SafeCategory(CategoryTypes.List.Appearance)]
+    public bool Dense { get; set; }
+
     /// <inheritdoc />
     [Parameter, SafeCategory("Data")]
     public IMudExFileDisplayInfos FileDisplayInfos
@@ -58,6 +65,12 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     /// </summary>
     [Parameter, SafeCategory("Filtering")]
     public string SearchString { get; set; }
+
+    /// <summary>
+    /// The filter values for the component.
+    /// </summary>
+    [Parameter, SafeCategory("Filtering")] 
+    public List<string> Filters { get; set; }
 
     /// <summary>
     /// If true user is able to search
@@ -300,10 +313,13 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
 
     private bool IsInSearch(ZipStructure context)
     {
-        if (string.IsNullOrEmpty(SearchString))
+        var allFilters = (!string.IsNullOrEmpty(SearchString) ? new[] { SearchString } : Enumerable.Empty<string>()).Concat(Filters ?? Enumerable.Empty<string>()).Distinct().ToList();
+        if (allFilters.Count == 0 || allFilters.All(string.IsNullOrEmpty))
             return true;
-        return context.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase) || context.Children?.Any(IsInSearch) == true;
+        return allFilters.Any(filter => string.IsNullOrEmpty(filter) || context.Name.Contains(filter, StringComparison.OrdinalIgnoreCase))
+               || context.Children?.Any(IsInSearch) == true;
     }
+
 
     private Task ExpandCollapse()
     {

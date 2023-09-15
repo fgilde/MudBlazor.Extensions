@@ -33,6 +33,13 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     #region Parameters and Properties
 
     /// <summary>
+    /// If true, compact vertical padding will be applied to items.
+    /// </summary>
+    [Parameter]
+    [SafeCategory(CategoryTypes.List.Appearance)]
+    public bool Dense { get; set; }
+
+    /// <summary>
     /// Url to access file can also be a data Url
     /// </summary>
     [Parameter]

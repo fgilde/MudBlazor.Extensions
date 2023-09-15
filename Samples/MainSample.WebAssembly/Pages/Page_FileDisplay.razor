@@ -2,20 +2,17 @@
 @inject IDialogService dialogService
 @inject SampleDataService sampleDataService
 
-@attribute [Demo(Group = "File Handling", Name = "File Display", Order = 0, Documentation = "See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
+@attribute [DemoUpdated(Group = "File Handling", Name = "File Display", Order = 0, Documentation = "See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "Shared/MySimpleJsonDisplay.razor", "SampleDataService.cs"})">
-    <MudSelect Label="File" HelperText="Select sample file (See weather.json to check how own components for files can be created)" @bind-Value="@SampleFile" Variant="Variant.Outlined" Color="Color.Primary">
-        @foreach (var file in _samples)
-        {
-            <MudSelectItem Value="@file">@file.name</MudSelectItem>
-        }
-    </MudSelect>
+
+    <MudExSelect HelperText="Select sample file (See weather.json to check how own components for files can be created)" ItemCollection="@_samples" Variant="Variant.Outlined" ToStringFunc="@(f => f.name)" @bind-Value="SampleFile"></MudExSelect>
 
     @if (SampleFile.url != null)
     {
         <div style="width: 100%; height: 800px; margin-top: 20px">
             <MudExFileDisplay HandleContentErrorFunc="@HandleContentError"
+                          Dense="true"
                           FileName="@SampleFile.name" Url="@SampleFile.url" ContentType="@SampleFile.contentType"></MudExFileDisplay>
         </div>
         <MudButton OnClick="@OpenAsDialog" Variant="Variant.Filled" Color="Color.Primary">Show As Dialog</MudButton>
