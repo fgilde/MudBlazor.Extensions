@@ -412,6 +412,8 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
             extensions.Add(".zip");
         if (MimeTypes?.Any(MimeType.IsRar) == true)
             extensions.Add(".rar");
+        if (MimeTypes?.Any(MimeType.IsTar) == true)
+            extensions.Add(".tar");
         _acceptExtensions = string.Join(",", extensions.Distinct());
     }
 

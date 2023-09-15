@@ -51,9 +51,8 @@ public class MudExFileService
     {
         try
         {
-            var contentStream = await CopyStreamAsync(stream);
-            if (MimeType.IsRar(contentType))
-                contentStream = ArchiveConverter.ConvertRarToZip(contentStream);
+            var contentStream = await CopyStreamAsync(stream);            
+                contentStream = ArchiveConverter.ConvertToSystemCompressionZip(contentStream);
             
             return ZipStructure.CreateStructure(GetZipEntriesAsync(contentStream), rootFolderName).ToHashSet();            
             

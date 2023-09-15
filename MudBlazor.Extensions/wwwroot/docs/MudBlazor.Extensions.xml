@@ -7235,11 +7235,6 @@
             <param name="dialogParameters">The dialog parameters.</param>
             <returns>A tuple indicating if edit was cancelled and the result.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.ArchiveConverter.ConvertRarToZip(System.IO.Stream)">
-            <summary>
-            Converts a rar to a zip
-            </summary>    
-        </member>
         <member name="T:MudBlazor.Extensions.Helper.BrowserFileExt">
             <summary>
             Extensions for <see cref="T:Microsoft.AspNetCore.Components.Forms.IBrowserFile"/>

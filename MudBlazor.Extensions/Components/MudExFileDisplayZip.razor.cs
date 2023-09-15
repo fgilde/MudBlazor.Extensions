@@ -258,7 +258,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private async Task Preview(ZipBrowserFile file)
     {
         _innerPreview = file;
-        if (file.IsZipFile())
+        if (MimeType.IsArchive(file.ContentType))
             _innerPreviewStream = new MemoryStream(await file.GetBytesAsync());
         else
             _innerPreviewUrl = await file.GetDataUrlAsync();
@@ -378,5 +378,5 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     /// <summary>
     /// Returns true if the MudExFileDisplay Component can handle the file as an archive.
     /// </summary>
-    public static bool CanHandleFileAsArchive(string contentType) => MimeType.IsZip(contentType) || MimeType.IsRar(contentType);
+    public static bool CanHandleFileAsArchive(string contentType) => MimeType.IsArchive(contentType);
 }

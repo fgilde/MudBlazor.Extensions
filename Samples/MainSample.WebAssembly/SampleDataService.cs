@@ -20,6 +20,10 @@ public class SampleDataService
     public IEnumerable<(string url, string contentType, string name)> GetSampleFiles()
     {
         yield return (SampleFile("ARar.rar", "application/x-rar-compressed"));
+        yield return (SampleFile("Archive.rar", "application/x-rar-compressed"));
+        yield return (SampleFile("Archive.tar", "application/x-tar"));
+        yield return (SampleFile("Archive.7z", "application/x-7z-compressed"));        
+        yield return (SampleFile("Archive.zip", "application/zip"));
         yield return (SampleFile("sample.zip", "application/zip"));
         yield return (SampleFile("sample.pdf", "application/pdf"));
         yield return (SampleFile("weather.json", "text/plain"));

@@ -384,7 +384,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
     private async Task EnsureUrlAsync()
     {
-        if (string.IsNullOrWhiteSpace(Url) && ContentStream != null)
+        if (_componentForFile.ControlType == null && string.IsNullOrWhiteSpace(Url) && ContentStream != null)
             Url = await FileService.ReadDataUrlForStreamAsync(ContentStream, ContentType);
     }
 
@@ -400,6 +400,13 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     {
         CloseContentError();
         _componentForFile = GetComponentForFile(fileComponent);
-        UpdateRenderInfos();
+        if (fileComponent == null)
+        {
+            EnsureUrlAsync().ContinueWith(_ => UpdateRenderInfos());
+        }
+        else
+        {
+            UpdateRenderInfos();
+        }
     }
 }
