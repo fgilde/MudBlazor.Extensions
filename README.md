@@ -33,6 +33,7 @@ It's important to note that this package requires a MudBlazor project and the re
 - [Setting Up MudBlazor.Extensions](#setting-up-mudblazor-extensions)
 - [Components](#components)
   - [MudExObjectEdit](#mudexobjectedit)
+  - [MudExStructuredDataEditor](#mudexstructureddataeditor)
   - [MudExFileDisplay](#mudexfiledisplay)
   - [MudExFileDisplayZip](#mudexfiledisplayzip)
   - [MudExFileDisplayDialog](#mudexfiledisplaydialog)
@@ -181,7 +182,25 @@ dialogService.EditObject(User, "Dialog Title", dialogOptionsEx);
 ```
 
 [More](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/ObjectEdit.md)
-<!-- OBJECTEDIT:END -->
+
+### MudExStructuredDataEditor
+
+The `MudExStructuredDataEditor` is a component that allows object editing and automatically generates the corresponding UI based on structured data like json, xml or yaml. 
+This component supports all the same as MudExObjectEditForm.
+
+To use `MudExStructuredDataEditor`, you can simply bind your data string shown as bellow:
+
+```
+    <MudExStructuredDataEditor @bind-Data="_dataString"></MudExStructuredDataEditor>
+```
+
+You can also utilize the `MudExStructuredDataEditor` to edit your data in a dialog. The easiest way to do this is by using the extension method `EditStructuredDataString` on the `IDialogService`.
+
+```
+dialogService.EditStructuredDataString(_dataType, _dataString, $"Auto Generated Editor for {_dataType}", ((_,_) => Task.FromResult("")));
+```
+
+You can find a running [Sample here](https://www.mudex.org/structured-data-edit)
 
 ### MudExFileDisplay
 <!-- FILEDISPLAY:START -->
