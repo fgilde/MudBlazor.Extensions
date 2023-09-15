@@ -2,6 +2,7 @@
 @using MudBlazor.Extensions.Options
 @using Nextended.Blazor.Extensions
 @using Nextended.Blazor.Models
+@using MudBlazor.Extensions.Core.ArchiveHandling
 @inject NavigationManager NavigationManager
 
 @attribute [Demo(Group = "File Handling", Name = "Explicit File Display Zip", Documentation = "Demo of using explicit the MudExFileDisplayZip to show and select content inside of a zip file", Order = 1, Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplayZip) })]
@@ -28,11 +29,11 @@
 
 @code {
 
-    private ZipBrowserFile _selected => Selected?.FirstOrDefault();
+    private ArchiveBrowserFile _selected => Selected?.FirstOrDefault();
     private string _selectedUrl;
-    private IList<ZipBrowserFile> _selectedList;
+    private IList<ArchiveBrowserFile> _selectedList;
 
-    public IList<ZipBrowserFile> Selected
+    public IList<ArchiveBrowserFile> Selected
     {
         get => _selectedList;
         set

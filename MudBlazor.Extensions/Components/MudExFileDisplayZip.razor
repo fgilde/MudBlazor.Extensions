@@ -5,6 +5,7 @@
 @using MudBlazor.Extensions.Components.ObjectEdit
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using Microsoft.AspNetCore.Components
+@using MudBlazor.Extensions.Core.ArchiveHandling
 @using Nextended.Blazor.Models
 @namespace MudBlazor.Extensions.Components
 @inherits MudExBaseComponent<MudExFileDisplayZip>
@@ -55,7 +56,7 @@ else
         
         @if (ShowAsTree)
         {
-            <MudTreeView Dense="@Dense" Style="width: 100%" T="ZipStructure" Items="@_zipStructure">
+            <MudTreeView Dense="@Dense" Style="width: 100%" T="ArchiveStructure" Items="@_zipStructure">
                 <ItemTemplate>
                     @if (IsInSearch(context))
                     {

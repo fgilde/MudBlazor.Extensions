@@ -1456,7 +1456,7 @@
             Event on selection change
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.IsSelected(Nextended.Blazor.Models.ZipBrowserFile)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.IsSelected(MudBlazor.Extensions.Core.ArchiveHandling.ArchiveBrowserFile)">
             <summary>
             Returns true if given ZipFile entry is selected
             </summary>
@@ -5814,6 +5814,9 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.ArchiveHandling.ArchiveBrowserFile">
+            Represents a Zip file entry compatiable as BrowserFile
         </member>
         <member name="T:MudBlazor.Extensions.Core.Css.AlignItems">
             <summary>

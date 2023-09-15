@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit;
+using MudBlazor.Extensions.Core.ArchiveHandling;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
@@ -24,9 +25,10 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private IBrowserFile _innerPreview;
     private string _innerPreviewUrl;
     private Stream _innerPreviewStream;
-    private IList<ZipBrowserFile> _zipEntries;
-    //private (string tag, Dictionary<string, object> attributes) renderInfos;
-    private HashSet<ZipStructure> _zipStructure;
+    
+    private IList<ArchiveBrowserFile> _zipEntries;    
+    private HashSet<ArchiveStructure> _zipStructure;
+    
     private string _contentType;
     [Inject] private MudExFileService fileService { get; set; }
 
@@ -175,18 +177,18 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     /// Selected files
     /// </summary>
     [Parameter, SafeCategory("Selecting")] 
-    public IList<ZipBrowserFile> Selected { get; set; }
+    public IList<ArchiveBrowserFile> Selected { get; set; }
 
     /// <summary>
     /// Event on selection change
     /// </summary>
     [Parameter, SafeCategory("Selecting")] 
-    public EventCallback<IList<ZipBrowserFile>> SelectedChanged { get; set; }
+    public EventCallback<IList<ArchiveBrowserFile>> SelectedChanged { get; set; }
 
     /// <summary>
     /// Returns true if given ZipFile entry is selected
     /// </summary>
-    public bool IsSelected(ZipBrowserFile entry) => entry != null && Selected?.Contains(entry) == true;
+    public bool IsSelected(ArchiveBrowserFile entry) => entry != null && Selected?.Contains(entry) == true;
 
     /// <summary>
     /// Show content error
@@ -251,11 +253,11 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private async Task CreateStructure()
     {
         _zipStructure = await fileService.ReadArchiveAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url), RootFolderName, ContentType);
-        _zipEntries = _zipStructure.Recursive(z => z.Children ?? Enumerable.Empty<ZipStructure>()).Where(c => c is { IsDirectory: false }).Select(c => c.BrowserFile).ToList();     
+        _zipEntries = _zipStructure.Recursive(z => z?.Children ?? Enumerable.Empty<ArchiveStructure>()).Where(c => c is { IsDirectory: false, BrowserFile: not null}).Select(c => c.BrowserFile).ToList();     
         StateHasChanged();
     }
     
-    private async Task Preview(ZipBrowserFile file)
+    private async Task Preview(ArchiveBrowserFile file)
     {
         _innerPreview = file;
         if (MimeType.IsArchive(file.ContentType))
@@ -271,19 +273,19 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         _innerPreviewUrl = null;
     }
 
-    private string DownloadText(ZipStructure structure, bool asZip)
+    private string DownloadText(ArchiveStructure structure, bool asZip)
     {
         if (structure.IsDirectory)
             return asZip ? TryLocalize("Download {0} with {1} files as zip", structure.Name, structure.ContainingFiles.Count()) : TryLocalize("Download {0} files separately", structure.ContainingFiles.Count());
         return asZip ? TryLocalize("Download file {0} as zip", structure.Name) : TryLocalize("Download file {0}", structure.Name);
     }
 
-    private Task DownloadAsync(ZipBrowserFile file)
+    private Task DownloadAsync(ArchiveBrowserFile file)
     {
         return file.DownloadAsync(JsRuntime);
     }
 
-    private async void DownloadAsync(ZipStructure zip, bool asZip = false)
+    private async void DownloadAsync(ArchiveStructure zip, bool asZip = false)
     {
         if (zip.IsDownloading) return;
         _downloadMenu?.CloseMenu();
@@ -306,17 +308,17 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         SetDownloadStatus(zip, false);
     }
 
-    private void SetDownloadStatus(ZipStructure structure, bool isDownloading)
+    private void SetDownloadStatus(ArchiveStructure structure, bool isDownloading)
     {
-        structure.Children?.Recursive(s => s.Children ?? Enumerable.Empty<ZipStructure>()).Where(s => s != null).Apply(s => s.IsDownloading = isDownloading);
+        structure.Children?.Recursive(s => s.Children ?? Enumerable.Empty<ArchiveStructure>()).Where(s => s != null).Apply(s => s.IsDownloading = isDownloading);
         structure.IsDownloading = isDownloading;
         StateHasChanged();
     }
 
-    private bool IsInSearch(ZipBrowserFile entry)
+    private bool IsInSearch(ArchiveBrowserFile entry)
         => string.IsNullOrEmpty(SearchString) || entry.FullName.Contains(SearchString, StringComparison.OrdinalIgnoreCase);
 
-    private bool IsInSearch(ZipStructure context)
+    private bool IsInSearch(ArchiveStructure context)
     {
         var allFilters = (!string.IsNullOrEmpty(SearchString) ? new[] { SearchString } : Enumerable.Empty<string>()).Concat(Filters ?? Enumerable.Empty<string>()).Distinct().ToList();
         if (allFilters.Count == 0 || allFilters.All(string.IsNullOrEmpty))
@@ -328,7 +330,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
 
     private Task ExpandCollapse()
     {
-        _zipStructure.Recursive(s => s.Children ?? Enumerable.Empty<ZipStructure>()).Where(s => s != null).Apply(s => s.IsExpanded = !s.IsExpanded);
+        _zipStructure.Recursive(s => s.Children ?? Enumerable.Empty<ArchiveStructure>()).Where(s => s != null).Apply(s => s.IsExpanded = !s.IsExpanded);
         return Task.CompletedTask;
     }
     private string ToolbarStyle()
@@ -339,13 +341,13 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         return res;
     }
 
-    private Task Select(ZipStructure structure, MouseEventArgs args) => structure.IsDirectory ? Task.CompletedTask : Select(structure.BrowserFile, args);
+    private Task Select(ArchiveStructure structure, MouseEventArgs args) => structure.IsDirectory ? Task.CompletedTask : Select(structure.BrowserFile, args);
 
-    private async Task Select(ZipBrowserFile entry, MouseEventArgs args)
+    private async Task Select(ArchiveBrowserFile entry, MouseEventArgs args)
     {
         if (SelectionMode != ItemSelectionMode.None)
         {
-            Selected ??= new List<ZipBrowserFile>();
+            Selected ??= new List<ArchiveBrowserFile>();
 
             if (Selected.Contains(entry) && SelectionMode == ItemSelectionMode.Single)
             {

@@ -1,9 +1,11 @@
 ﻿using System.IO.Compression;
 using MudBlazor.Extensions.Components;
+using MudBlazor.Extensions.Core.ArchiveHandling;
 using MudBlazor.Extensions.Helper;
 using Nextended.Blazor.Models;
 using Nextended.Core;
 using Nextended.Core.Extensions;
+using SharpCompress.Archives;
 
 namespace MudBlazor.Extensions.Services;
 
@@ -47,15 +49,14 @@ public class MudExFileService
         => await DataUrl.GetDataUrlAsync((await CopyStreamAsync(stream)).ToByteArray(), mimeType);
 
 
-    public async Task<HashSet<ZipStructure>> ReadArchiveAsync(Stream stream, string rootFolderName, string contentType)
+    public async Task<HashSet<ArchiveStructure>> ReadArchiveAsync(Stream stream, string rootFolderName, string contentType)
     {
         try
         {
             var contentStream = await CopyStreamAsync(stream);            
-                contentStream = ArchiveConverter.ConvertToSystemCompressionZip(contentStream);
-            
-            return ZipStructure.CreateStructure(GetZipEntriesAsync(contentStream), rootFolderName).ToHashSet();            
-            
+            var entries = ArchiveFactory.Open(contentStream).Entries.Select(entry => new ArchiveBrowserFile(entry)).ToList();
+            return ArchiveStructure.CreateStructure(entries, rootFolderName).ToHashSet();
+
         }
         catch (Exception e)
         {
@@ -63,6 +64,23 @@ public class MudExFileService
         }
         return null;
     }
+
+    //public async Task<HashSet<ZipStructure>> ReadArchiveAsync(Stream stream, string rootFolderName, string contentType)
+    //{
+    //    try
+    //    {
+    //        var contentStream = await CopyStreamAsync(stream);            
+    //            contentStream = ArchiveConverter.ConvertToSystemCompressionZip(contentStream);
+
+    //        return ZipStructure.CreateStructure(GetZipEntriesAsync(contentStream), rootFolderName).ToHashSet();            
+
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        Console.Write(e.Message);
+    //    }
+    //    return null;
+    //}
 
     private List<ZipBrowserFile> GetZipEntriesAsync(Stream stream)
     {
