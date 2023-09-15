@@ -6,26 +6,28 @@ namespace MudBlazor.Extensions.Core.ArchiveHandling;
 /**
  * Represents a Zip file entry compatiable as BrowserFile
  */
-public record ArchiveBrowserFile : IArchiveBrowserFile<IArchiveEntry>
+public record ArchiveBrowserFile : IArchiveBrowserFile
 {
-    public IArchiveEntry Entry { get; }
-    public byte[] FileBytes { get; private set; }
+    private readonly IArchiveEntry _entry; 
+    
+    private readonly Lazy<byte[]> _lazyFileBytes;
+    public byte[] FileBytes => _lazyFileBytes.Value;
 
-    public ArchiveBrowserFile(IArchiveEntry entry, bool load = true)
+    public ArchiveBrowserFile(IArchiveEntry entry)
     {
-        Entry = entry;
+        _entry = entry;
 
-        if (load && !entry.IsDirectory)
+        _lazyFileBytes = new Lazy<byte[]>(() =>
         {
             using var memoryStream = new MemoryStream();
             entry.WriteTo(memoryStream);
-            FileBytes = memoryStream.ToArray();
-        }
+            return memoryStream.ToArray();
+        });
 
-        Name = Entry.Key.Split('/').LastOrDefault() ?? "";
-        Size = Entry.Size;
-        LastModified = Entry.LastModifiedTime ?? default;
-        FullName = Entry.Key; // Assuming the Key is the full name/path within the archive.
+        Name = _entry.Key.Split('/').LastOrDefault() ?? "";
+        Size = _entry.Size;
+        LastModified = _entry.LastModifiedTime ?? default;
+        FullName = _entry.Key; // Assuming the Key is the full name/path within the archive.
         ContentType = MimeType.GetMimeType(entry.Key);
 
         if (string.IsNullOrWhiteSpace(FullName))
@@ -36,14 +38,8 @@ public record ArchiveBrowserFile : IArchiveBrowserFile<IArchiveEntry>
 
     public Stream OpenReadStream(long maxAllowedSize = 512000, CancellationToken cancellationToken = default)
     {
-        if (!FileBytes?.Any() == true)
-        {
-            return Entry.OpenEntryStream();
-            //using var memoryStream = new MemoryStream();
-            //Entry.WriteTo(memoryStream);
-            //FileBytes = memoryStream.ToArray();
-        }
         return new MemoryStream(FileBytes);
+        //return Entry.OpenEntryStream();
     }
 
     public string Name { get; init; }
@@ -52,7 +48,7 @@ public record ArchiveBrowserFile : IArchiveBrowserFile<IArchiveEntry>
     public string ContentType { get; }
     public string FullName { get; }
     public string Path => FullName.TrimEnd(Name.ToCharArray());
-    public bool IsDirectory => Entry.IsDirectory;
+    public bool IsDirectory => _entry.IsDirectory;
     public string[] PathArray => Path.Split('/').Where(s => !string.IsNullOrEmpty(s)).ToArray();
     public string ParentDirectoryName => PathArray?.Any() == true ? !IsDirectory ? PathArray.Last(s => !string.IsNullOrEmpty(s)) : PathArray[^2] : string.Empty;
 }

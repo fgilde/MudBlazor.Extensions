@@ -54,9 +54,9 @@ public class MudExFileService
         try
         {
             var contentStream = await CopyStreamAsync(stream);            
-            var entries = ArchiveFactory.Open(contentStream).Entries.Select(entry => new ArchiveBrowserFile(entry)).ToList();
-            return ArchiveStructure.CreateStructure(entries, rootFolderName).ToHashSet();
-
+            var entries = ArchiveFactory.Open(contentStream).Entries.Select(entry => new ArchiveBrowserFile(entry) as IArchiveBrowserFile).ToList();
+            var res = ArchiveStructure.CreateStructure(entries, rootFolderName);
+            return new[] { res }.ToHashSet();
         }
         catch (Exception e)
         {

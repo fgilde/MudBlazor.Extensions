@@ -1,7 +1,6 @@
 ﻿@page "/file-display-zip"
 @using MudBlazor.Extensions.Options
 @using Nextended.Blazor.Extensions
-@using Nextended.Blazor.Models
 @using MudBlazor.Extensions.Core.ArchiveHandling
 @inject NavigationManager NavigationManager
 
@@ -29,11 +28,11 @@
 
 @code {
 
-    private ArchiveBrowserFile _selected => Selected?.FirstOrDefault();
+    private IArchiveBrowserFile _selected => Selected?.FirstOrDefault();
     private string _selectedUrl;
-    private IList<ArchiveBrowserFile> _selectedList;
+    private IList<IArchiveBrowserFile> _selectedList;
 
-    public IList<ArchiveBrowserFile> Selected
+    public IList<IArchiveBrowserFile> Selected
     {
         get => _selectedList;
         set

@@ -1456,7 +1456,7 @@
             Event on selection change
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.IsSelected(MudBlazor.Extensions.Core.ArchiveHandling.ArchiveBrowserFile)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.IsSelected(MudBlazor.Extensions.Core.ArchiveHandling.IArchiveBrowserFile)">
             <summary>
             Returns true if given ZipFile entry is selected
             </summary>

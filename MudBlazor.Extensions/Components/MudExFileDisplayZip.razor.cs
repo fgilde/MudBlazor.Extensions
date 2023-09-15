@@ -25,8 +25,9 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private IBrowserFile _innerPreview;
     private string _innerPreviewUrl;
     private Stream _innerPreviewStream;
-    
-    private IList<ArchiveBrowserFile> _zipEntries;    
+        
+    private IList<IArchiveBrowserFile> _zipEntries;    
+    //private HashSet<ArchiveStructure> _zipStructure;
     private HashSet<ArchiveStructure> _zipStructure;
     
     private string _contentType;
@@ -177,18 +178,18 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     /// Selected files
     /// </summary>
     [Parameter, SafeCategory("Selecting")] 
-    public IList<ArchiveBrowserFile> Selected { get; set; }
+    public IList<IArchiveBrowserFile> Selected { get; set; }
 
     /// <summary>
     /// Event on selection change
     /// </summary>
     [Parameter, SafeCategory("Selecting")] 
-    public EventCallback<IList<ArchiveBrowserFile>> SelectedChanged { get; set; }
+    public EventCallback<IList<IArchiveBrowserFile>> SelectedChanged { get; set; }
 
     /// <summary>
     /// Returns true if given ZipFile entry is selected
     /// </summary>
-    public bool IsSelected(ArchiveBrowserFile entry) => entry != null && Selected?.Contains(entry) == true;
+    public bool IsSelected(IArchiveBrowserFile entry) => entry != null && Selected?.Contains(entry) == true;
 
     /// <summary>
     /// Show content error
@@ -257,7 +258,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         StateHasChanged();
     }
     
-    private async Task Preview(ArchiveBrowserFile file)
+    private async Task Preview(IArchiveBrowserFile file)
     {
         _innerPreview = file;
         if (MimeType.IsArchive(file.ContentType))
@@ -280,7 +281,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         return asZip ? TryLocalize("Download file {0} as zip", structure.Name) : TryLocalize("Download file {0}", structure.Name);
     }
 
-    private Task DownloadAsync(ArchiveBrowserFile file)
+    private Task DownloadAsync(IArchiveBrowserFile file)
     {
         return file.DownloadAsync(JsRuntime);
     }
@@ -315,7 +316,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         StateHasChanged();
     }
 
-    private bool IsInSearch(ArchiveBrowserFile entry)
+    private bool IsInSearch(IArchiveBrowserFile entry)
         => string.IsNullOrEmpty(SearchString) || entry.FullName.Contains(SearchString, StringComparison.OrdinalIgnoreCase);
 
     private bool IsInSearch(ArchiveStructure context)
@@ -343,11 +344,11 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
 
     private Task Select(ArchiveStructure structure, MouseEventArgs args) => structure.IsDirectory ? Task.CompletedTask : Select(structure.BrowserFile, args);
 
-    private async Task Select(ArchiveBrowserFile entry, MouseEventArgs args)
+    private async Task Select(IArchiveBrowserFile entry, MouseEventArgs args)
     {
         if (SelectionMode != ItemSelectionMode.None)
         {
-            Selected ??= new List<ArchiveBrowserFile>();
+            Selected ??= new List<IArchiveBrowserFile>();
 
             if (Selected.Contains(entry) && SelectionMode == ItemSelectionMode.Single)
             {

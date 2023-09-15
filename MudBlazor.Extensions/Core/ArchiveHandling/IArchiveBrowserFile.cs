@@ -3,10 +3,10 @@ using SharpCompress.Common;
 
 namespace MudBlazor.Extensions.Core.ArchiveHandling;
 
-public interface IArchiveBrowserFile<TArchiveEntry> : IArchiveBrowserFile
-{    
-    TArchiveEntry Entry { get; }    
-}
+//public interface IArchiveBrowserFile<TArchiveEntry> : IArchiveBrowserFile
+//{    
+//    TArchiveEntry Entry { get; }    
+//}
 
 public interface IArchiveBrowserFile: IBrowserFile
 {
