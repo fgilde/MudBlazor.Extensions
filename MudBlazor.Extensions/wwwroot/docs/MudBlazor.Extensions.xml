@@ -1456,7 +1456,7 @@
             Event on selection change
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.IsSelected(MudBlazor.Extensions.Core.ArchiveHandling.IArchiveBrowserFile)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.IsSelected(Nextended.Blazor.Models.IArchivedBrowserFile)">
             <summary>
             Returns true if given ZipFile entry is selected
             </summary>
@@ -5815,9 +5815,6 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
-        <member name="T:MudBlazor.Extensions.Core.ArchiveHandling.ArchiveBrowserFile">
-            Represents a Zip file entry compatiable as BrowserFile
-        </member>
         <member name="T:MudBlazor.Extensions.Core.Css.AlignItems">
             <summary>
             Enum representing CSS 'align-items' property values.
@@ -6465,6 +6462,9 @@
             Clone this instance
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.MudExArchivedBrowserFile">
+            Represents a file entry inside of an archive as BrowserFile
         </member>
         <member name="T:MudBlazor.Extensions.Core.MudExColor">
             <summary>

@@ -72,7 +72,7 @@ public partial class MudExFileDisplayMarkdown: IMudExFileDisplay
         await base.SetParametersAsync(parameters);
         if (updateRequired || Value == null)
         {
-            Value = await fileService.ReadFromFileDisplayInfosAsync(FileDisplayInfos);
+            Value = await fileService.ReadAsStringFromFileDisplayInfosAsync(FileDisplayInfos);
             StateHasChanged();
         }
     }

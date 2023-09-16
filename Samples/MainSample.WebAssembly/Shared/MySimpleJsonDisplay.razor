@@ -31,7 +31,7 @@
             if (_fileDisplayInfos != value || string.IsNullOrEmpty(jsonValue))
             {
                 _fileDisplayInfos = value;
-                fileService.ReadFromFileDisplayInfosAsync(FileDisplayInfos).ContinueWith(jsonTask =>
+                fileService.ReadAsStringFromFileDisplayInfosAsync(FileDisplayInfos).ContinueWith(jsonTask =>
                 {
                     jsonValue = jsonTask.Result;
                     StateHasChanged();

@@ -26,7 +26,7 @@ public static class ServiceCollectionExtensions
             services.AddSingleton(new MudExConfiguration());  // Default configuration
         
         services.RegisterAllImplementationsOf(new[] { typeof(IMudExFileDisplay) }, serviceImplementationAssemblies, ServiceLifetime.Scoped);
-        services.AddScoped<MudExFileService>();
+        services.AddScoped<MudExFileService>();        
         services.AddScoped<MudBlazorExtensionJsInterop>();
         services.AddScoped<MudExStyleBuilder>();
         services.AddScoped<MudExCssBuilder>();

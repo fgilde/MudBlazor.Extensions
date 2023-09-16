@@ -86,7 +86,7 @@
         @if (!string.IsNullOrEmpty(FileName))
         {
             <MudSpacer />
-            <MudMenu AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.TopRight" Dense="true" Size="Size.Medium" Icon="@MudExSvg.CombineIconsHorizontal(Icons.Material.Filled.MoreVert, BrowserFileExt.IconForFile(ContentType))">
+            <MudMenu Style="margin-bottom:2px;" AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.TopRight" Dense="@Dense" Size="Size.Medium" Icon="@MudExSvg.CombineIconsHorizontal(Icons.Material.Filled.MoreVert, BrowserFileExt.IconForFile(ContentType))">
                 <div class="mud-ex-file-display-menu-header">
                     <MudIcon Icon="@BrowserFileExt.IconForFile(ContentType)"></MudIcon>
                     <MudText Class="mud-ex-file-display-toolbar-text">@FileName</MudText>

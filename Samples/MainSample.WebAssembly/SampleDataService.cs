@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using Microsoft.AspNetCore.Components;
-using MudBlazor.Extensions.Components;
+﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Services;
 
 namespace MainSample.WebAssembly;
@@ -19,12 +17,13 @@ public class SampleDataService
 
     public IEnumerable<(string url, string contentType, string name)> GetSampleFiles()
     {
-        yield return (SampleFile("ARar.rar", "application/x-rar-compressed"));
-        yield return (SampleFile("Archive.rar", "application/x-rar-compressed"));
-        yield return (SampleFile("Archive.tar", "application/x-tar"));
-        yield return (SampleFile("Archive.7z", "application/x-7z-compressed"));        
         yield return (SampleFile("Archive.zip", "application/zip"));
-        yield return (SampleFile("sample.zip", "application/zip"));
+        yield return (SampleFile("AnotherRar.rar", "application/x-rar-compressed"));
+        yield return (SampleFile("npm-example-0.0.20.tgz", "application/tar+gzip"));
+        yield return (SampleFile("RarArchive.rar", "application/x-rar-compressed"));
+        yield return (SampleFile("TarArchive.tar", "application/x-tar"));
+        yield return (SampleFile("SevenZipArchive.7z", "application/x-7z-compressed"));        
+        yield return (SampleFile("LargeZipArchive.zip", "application/zip"));
         yield return (SampleFile("sample.pdf", "application/pdf"));
         yield return (SampleFile("weather.json", "text/plain"));
         yield return (SampleFile("logo.png", "image/png"));
@@ -34,17 +33,6 @@ public class SampleDataService
     public async Task<IEnumerable<(Stream stream, string contentType, string name)>>GetSampleFilesWithStreamAsync()
     {
         return (await Task.WhenAll(GetSampleFiles().Select(Sample))).Where(s => s != null).Select(s => s.Value);
-    }
-
-    private Task<MudExFileDisplayContentErrorResult> HandleContentError(IMudExFileDisplayInfos arg)
-    {
-        if (arg.ContentType.Contains("word"))
-        {
-            return Task.FromResult(MudExFileDisplayContentErrorResult
-                .RedirectTo("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiZiqnBKWS8NHcKbRH04UkYjrCgxUMz6sVNw&usqp=CAU", "image/png")
-                .WithMessage("No word plugin found we display a sheep"));
-        }
-        return Task.FromResult(MudExFileDisplayContentErrorResult.Unhandled);
     }
 
     private async Task<(Stream stream, string contentType, string name)?> Sample((string url, string contentType, string name) sampleFile)

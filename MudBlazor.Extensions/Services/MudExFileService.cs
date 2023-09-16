@@ -1,9 +1,7 @@
-﻿using System.IO.Compression;
-using MudBlazor.Extensions.Components;
-using MudBlazor.Extensions.Core.ArchiveHandling;
-using MudBlazor.Extensions.Helper;
+﻿using MudBlazor.Extensions.Components;
+using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper.Internal;
 using Nextended.Blazor.Models;
-using Nextended.Core;
 using Nextended.Core.Extensions;
 using SharpCompress.Archives;
 
@@ -18,93 +16,54 @@ public class MudExFileService
         _httpClient = httpClient;
     }
 
-    public string ReadFromStream(Stream stream)
+    public string ReadAsStringFromStream(Stream stream)
     {
         using var reader = new StreamReader(stream);
         return reader.ReadToEnd();        
     }
 
-    public async Task<string> ReadFromFileDisplayInfosAsync(IMudExFileDisplayInfos fileDisplayInfos)
+    public async Task<string> ReadAsStringFromFileDisplayInfosAsync(IMudExFileDisplayInfos fileDisplayInfos)
     {
         // Here we load the json string for given file
         if (fileDisplayInfos.ContentStream is {Length: > 0, CanRead: true})
-            return ReadFromStream(await CopyStreamAsync(fileDisplayInfos.ContentStream)); // If we have already a valid stream we can use it
+            return ReadAsStringFromStream(await fileDisplayInfos.ContentStream.CopyStreamAsync()); // If we have already a valid stream we can use it
         if (DataUrl.TryParse(fileDisplayInfos.Url, out var data)) // If not but given url is a data url we can use the bytes from it
-            return ReadFromStream(new MemoryStream(data.Bytes));
+            return ReadAsStringFromStream(new MemoryStream(data.Bytes));
         if (!string.IsNullOrEmpty(fileDisplayInfos.Url)) // Otherwise we load the file        
-            return await ReadFromUrlAsync(fileDisplayInfos.Url);
+            return await ReadAsStringFromUrlAsync(fileDisplayInfos.Url);
         
         return null;
     }
 
-    public async Task<string> ReadFromUrlAsync(string url)
-    {
-        var stream = await ReadStreamAsync(url);
-        return ReadFromStream(stream);
-    }
+    public async Task<string> ReadAsStringFromUrlAsync(string url) => ReadAsStringFromStream(await ReadStreamAsync(url));
 
     public Task<Stream> ReadStreamAsync(string url) => (_httpClient ?? new HttpClient()).GetStreamAsync(url);
 
     public async Task<string> ReadDataUrlForStreamAsync(Stream stream, string mimeType = "application/octet-stream") 
-        => await DataUrl.GetDataUrlAsync((await CopyStreamAsync(stream)).ToByteArray(), mimeType);
-
-
+        => await DataUrl.GetDataUrlAsync((await stream.CopyStreamAsync()).ToByteArray(), mimeType);
+    
     public async Task<HashSet<ArchiveStructure>> ReadArchiveAsync(Stream stream, string rootFolderName, string contentType)
     {
-        try
+        var contentStream = await stream.CopyStreamAsync();
+        var archive = ArchiveFactory.Open(contentStream);
+        if (archive.Entries.Count() == 1 && archive.Entries.First().CompressionType == SharpCompress.Common.CompressionType.GZip)
         {
-            var contentStream = await CopyStreamAsync(stream);            
-            var entries = ArchiveFactory.Open(contentStream).Entries.Select(entry => new ArchiveBrowserFile(entry) as IArchiveBrowserFile).ToList();
-            var res = ArchiveStructure.CreateStructure(entries, rootFolderName);
-            return new[] { res }.ToHashSet();
+            using var memoryStream = new MemoryStream();
+            archive.Entries.First().WriteTo(memoryStream);
+            return await ReadArchiveAsync(memoryStream, rootFolderName, contentType);
         }
-        catch (Exception e)
-        {
-            Console.Write(e.Message);
-        }
-        return null;
+
+        var validEntries = archive.Entries.Select(entry => new MudExArchivedBrowserFile(entry) as IArchivedBrowserFile).ToList();
+        var res = ArchiveStructure.CreateStructure(validEntries, rootFolderName);
+        return new[] { res }.ToHashSet();
     }
 
-    //public async Task<HashSet<ZipStructure>> ReadArchiveAsync(Stream stream, string rootFolderName, string contentType)
+    //public async Task<HashSet<ArchiveStructure>> ReadArchiveWithSystemCompressionAsync(Stream stream, string rootFolderName, string contentType)
     //{
-    //    try
-    //    {
-    //        var contentStream = await CopyStreamAsync(stream);            
-    //            contentStream = ArchiveConverter.ConvertToSystemCompressionZip(contentStream);
-
-    //        return ZipStructure.CreateStructure(GetZipEntriesAsync(contentStream), rootFolderName).ToHashSet();            
-
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        Console.Write(e.Message);
-    //    }
-    //    return null;
+    //    var contentStream = await stream.CopyStreamAsync();
+    //    contentStream = ArchiveConverter.ConvertToSystemCompressionZip(contentStream); // Converts archive to zip otherwise system compression cant read
+    //    var entries = new ZipArchive(contentStream).Entries.Select(entry => new ZipBrowserFile(entry) as IArchivedBrowserFile).ToList();
+    //    var res = ArchiveStructure.CreateStructure(entries, rootFolderName);
+    //    return new[] { res }.ToHashSet();
     //}
-
-    private List<ZipBrowserFile> GetZipEntriesAsync(Stream stream)
-    {
-        //await using var ms = new MemoryStream();
-        //await stream.CopyToAsync(ms);
-
-        return new ZipArchive(stream).Entries.Select(entry => new ZipBrowserFile(entry)).ToList();
-    }
-
-    // TODO instead of copy we should read chunked as buffer byte[]
-    private async Task<Stream> CopyStreamAsync(Stream input)
-    {
-        if (input == null)
-            return null;
-        // Ensure the input stream's position is at the beginning
-        input.Position = 0;
-
-        MemoryStream memoryStream = new MemoryStream();
-        await input.CopyToAsync(memoryStream);
-
-        // Reset the memory stream's position to the beginning before returning
-        memoryStream.Position = 0;
-
-        return memoryStream;
-    }
-
 }

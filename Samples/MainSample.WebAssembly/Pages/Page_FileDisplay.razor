@@ -1,4 +1,6 @@
 ﻿@page "/file-display"
+@using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Options
 @inject IDialogService dialogService
 @inject SampleDataService sampleDataService
 
@@ -6,7 +8,13 @@
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "Shared/MySimpleJsonDisplay.razor", "SampleDataService.cs"})">
 
-    <MudExSelect HelperText="Select sample file (See weather.json to check how own components for files can be created)" ItemCollection="@_samples" Variant="Variant.Outlined" ToStringFunc="@(f => f.name)" @bind-Value="SampleFile"></MudExSelect>
+    <MudExSelect ValuePresenter="ValuePresenter.ItemContent" HelperText="Select sample file (See weather.json to check how own components for files can be created)" ItemCollection="@_samples" Variant="Variant.Outlined" ToStringFunc="@(f => f.name)" @bind-Value="SampleFile">
+        <ItemTemplate>
+            <MudIcon Icon="@BrowserFileExt.IconForFile(context.contentType)"></MudIcon>
+            <MudText>@context.name</MudText>
+            <MudText>@context.contentType</MudText>
+        </ItemTemplate>        
+    </MudExSelect>
 
     @if (SampleFile.url != null)
     {
