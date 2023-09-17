@@ -229,3 +229,27 @@ a, .btn-link {
         padding: 10px 20px;
         cursor: pointer;
     }
+
+
+.file-combo-item {
+    display: flex; /* This makes the children elements line up horizontally */
+    align-items: center; /* Vertically aligns the children to the center */
+    gap: 10px; /* Creates a 10px gap between each child element */
+}
+
+.file-combo-item > MudIcon {
+    margin-right: 8px; /* Adds a margin to the right of the icon */
+}
+
+.file-combo-info-item {    
+    font-style: italic; /* Make it italic */
+    opacity: 0.8; /* Make it slightly transparent to differentiate from the name */
+}
+
+.file-combo-info-item::before{
+    content: "(";
+}
+
+.file-combo-info-item::after {
+    content: ")";
+}

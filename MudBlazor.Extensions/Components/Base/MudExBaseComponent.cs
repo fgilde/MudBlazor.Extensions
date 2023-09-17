@@ -56,9 +56,9 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
 
     /// <summary>
     /// MudExConfiguration
-    /// </summary>
-    [Inject] protected MudExConfiguration MudExConfiguration { get; set; }
-
+    /// </summary>    
+    protected MudExConfiguration MudExConfiguration => Get<MudExConfiguration>();
+    
     /// <summary>
     /// This is true if render has called already
     /// </summary>
@@ -118,7 +118,7 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (firstRender && !MudExConfiguration.DisableAutomaticCssLoading)
+        if (firstRender && MudExConfiguration is not {DisableAutomaticCssLoading: true})
             await JsRuntime.LoadCssAsync();
     }
 

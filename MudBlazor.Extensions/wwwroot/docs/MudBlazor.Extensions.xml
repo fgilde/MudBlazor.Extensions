@@ -91,7 +91,7 @@
         <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.MudExConfiguration">
             <summary>
             MudExConfiguration
-            </summary>
+            </summary>    
         </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.IsRendered">
             <summary>
@@ -305,7 +305,7 @@
         <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.MudExConfiguration">
             <summary>
             MudExConfiguration
-            </summary>
+            </summary>    
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.LocalizerToUse">
             <summary>

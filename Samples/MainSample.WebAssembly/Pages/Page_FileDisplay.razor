@@ -1,5 +1,4 @@
 ﻿@page "/file-display"
-@using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 @inject IDialogService dialogService
 @inject SampleDataService sampleDataService
@@ -8,20 +7,22 @@
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "Shared/MySimpleJsonDisplay.razor", "SampleDataService.cs"})">
 
-    <MudExSelect ValuePresenter="ValuePresenter.ItemContent" HelperText="Select sample file (See weather.json to check how own components for files can be created)" ItemCollection="@_samples" Variant="Variant.Outlined" ToStringFunc="@(f => f.name)" @bind-Value="SampleFile">
+    <MudExSelect T="SampleFile" ValuePresenter="ValuePresenter.ItemContent" HelperText="Select sample file (See weather.json to check how own components for files can be created)" ItemCollection="@_samples" Variant="Variant.Outlined" ToStringFunc="@(f => f.Name)" @bind-Value="SampleFile">
         <ItemTemplate>
-            <MudIcon Icon="@BrowserFileExt.IconForFile(context.contentType)"></MudIcon>
-            <MudText>@context.name</MudText>
-            <MudText>@context.contentType</MudText>
+            <div class="file-combo-item">
+                <MudIcon Color="Color.Error" Icon="@context.Icon"></MudIcon>
+                <MudText>@context.Name</MudText>
+                <MudText Class="file-combo-info-item" Typo="Typo.subtitle2">@context.ContentType</MudText>
+            </div>
         </ItemTemplate>        
     </MudExSelect>
 
-    @if (SampleFile.url != null)
+    @if (SampleFile?.Url != null)
     {
         <div style="width: 100%; height: 800px; margin-top: 20px">
             <MudExFileDisplay HandleContentErrorFunc="@HandleContentError"
                           Dense="true"
-                          FileName="@SampleFile.name" Url="@SampleFile.url" ContentType="@SampleFile.contentType"></MudExFileDisplay>
+                          FileName="@SampleFile.Name" Url="@SampleFile.Url" ContentType="@SampleFile.ContentType"></MudExFileDisplay>
         </div>
         <MudButton OnClick="@OpenAsDialog" Variant="Variant.Filled" Color="Color.Primary">Show As Dialog</MudButton>
     }
@@ -30,7 +31,7 @@
 
 @code {
     private string url;
-    private List<(string url, string contentType, string name)> _samples = new ();
+    private List<SampleFile> _samples = new ();
 
     protected override Task OnInitializedAsync()
     {
@@ -40,7 +41,7 @@
     
     private async Task OpenAsDialog()
     {
-        await dialogService.ShowFileDisplayDialog(SampleFile.url, SampleFile.name, SampleFile.contentType, HandleContentError);
+        await dialogService.ShowFileDisplayDialog(SampleFile.Url, SampleFile.Name, SampleFile.ContentType, HandleContentError);
     }
 
     private Task<MudExFileDisplayContentErrorResult> HandleContentError(IMudExFileDisplayInfos arg)
@@ -55,6 +56,6 @@
     }
 
 
-    public (string? url, string contentType, string name) SampleFile { get; set; }
+    public SampleFile SampleFile { get; set; }
 
 }
