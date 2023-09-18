@@ -1,4 +1,6 @@
 ## Change Log  
+ - 1.7.68 > New small component [MudExIcon](https://www.mudex.org/mud-ex-icon) default as MudIcon with the benefit of having [MudExColor](https://www.mudex.org/d/MudExColor) as ColorType that allows Theme and Customcolors in one type
+ - 1.7.68 > [MudExFileDisplayZip](https://www.mudex.org/file-display) now nativly supports Tar, Tar+Gzip, 7zip and Rar archives
  - 1.7.68 > Update MudBlazor to 6.10.0
  - 1.7.68 > Add Dense Parameter to [MudExFileDisplay](https://www.mudex.org/file-display)
  - 1.7.68 > Add multi tag search in [MudExFileDisplay](https://www.mudex.org/file-display)
