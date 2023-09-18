@@ -21,6 +21,7 @@
     {
         <div style="width: 100%; height: 800px; margin-top: 20px">
             <MudExFileDisplay HandleContentErrorFunc="@HandleContentError"
+                              StreamUrlHandling="StreamUrlHandling.BlobUrl"
                               Dense="true"
                           FileName="@SampleFile.Name" ContentStream="@SampleFile.Stream" ContentType="@SampleFile.ContentType"></MudExFileDisplay>
         </div>
@@ -30,9 +31,9 @@
 
 
 @code {
-    
+
     private List<SampleFileWithStream> _samples = new ();
-    
+
     protected override async Task OnInitializedAsync()
     {
         _samples.AddRange(await sampleDataService.GetSampleFilesWithStreamAsync());
@@ -41,7 +42,10 @@
     private string url;
     private async Task OpenAsDialog()
     {
-        await dialogService.ShowFileDisplayDialog(SampleFile.Stream, SampleFile.Name, SampleFile.ContentType, HandleContentError);
+        var parameters = new DialogParameters {
+            { nameof(MudExFileDisplay.StreamUrlHandling), StreamUrlHandling.BlobUrl }
+        };
+        await dialogService.ShowFileDisplayDialog(SampleFile.Stream, SampleFile.Name, SampleFile.ContentType, HandleContentError, null, parameters);
     }
 
     private Task<MudExFileDisplayContentErrorResult> HandleContentError(IMudExFileDisplayInfos arg)

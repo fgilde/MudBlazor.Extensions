@@ -41,6 +41,11 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
 
     #region Parameters
 
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter, SafeCategory("Behaviour")]
+    public StreamUrlHandling StreamUrlHandling { get; set; } = StreamUrlHandling.DataUrl;
+
     /// <summary>
     /// If true, compact vertical padding will be applied to items.
     /// </summary>
@@ -149,12 +154,6 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     public string ToolBarPaperClass { get; set; }
 
     /// <summary>
-    /// True to Reload zip content on parameter set
-    /// </summary>
-    [Parameter, SafeCategory("Behavior")]
-    public bool ReloadZipContentOnParameterSet { get; set; }
-
-    /// <summary>
     /// True to have a sticky toolbar on top
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
@@ -246,24 +245,32 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         if (!updateRequired || (string.IsNullOrEmpty(Url) && ContentStream == null))
             return;
 
-        await CreateStructure();
-
+        _ = CreateStructure().ContinueWith(_ => StateHasChanged());
     }
-
+    
     private async Task CreateStructure()
     {
-        _zipStructure = await fileService.ReadArchiveAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url), RootFolderName, ContentType);
-        _zipEntries = _zipStructure.Recursive(z => z?.Children ?? Enumerable.Empty<ArchiveStructure>()).Where(c => c is { IsDirectory: false, BrowserFile: not null}).Select(c => c.BrowserFile).ToList();     
-        StateHasChanged();
+        //if ((MudDialog?.Options is DialogOptionsEx options) && options.Animations?.Any(a => a != AnimationType.Default) == true)
+        //{        
+        //    await Task.Delay(options.AnimationDuration));
+        //}
+        var archive = await fileService.ReadArchiveAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url), RootFolderName, ContentType);
+        _zipStructure = archive.Structure;
+        _zipEntries = archive.List;
     }
     
     private async Task Preview(IArchivedBrowserFile file)
     {
         _innerPreview = file;
+        
+        //_innerPreviewStream = new MemoryStream(await file.GetBytesAsync());
+        //if(!MimeType.IsArchive(file.ContentType))
+        //    _innerPreviewUrl = await fileService.CreateDataUrlAsync(file, StreamUrlHandling == StreamUrlHandling.BlobUrl);
+        
         if (MimeType.IsArchive(file.ContentType))
             _innerPreviewStream = new MemoryStream(await file.GetBytesAsync());
         else
-            _innerPreviewUrl = await file.GetDataUrlAsync();
+            _innerPreviewUrl = await fileService.CreateDataUrlAsync(file, StreamUrlHandling == StreamUrlHandling.BlobUrl);
     }
 
     private void ClosePreview()
@@ -295,7 +302,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         {
             await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
             {
-                Url = await DataUrl.GetDataUrlAsync(await zip.ToArchiveBytesAsync(), "application/zip"),
+                Url = await fileService.CreateDataUrlAsync(await zip.ToArchiveBytesAsync(), "application/zip", StreamUrlHandling == StreamUrlHandling.BlobUrl),
                 FileName = $"{Path.ChangeExtension(zip.Name, "zip")}",
                 MimeType = "application/zip"
             });
@@ -381,4 +388,14 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     /// Returns true if the MudExFileDisplay Component can handle the file as an archive.
     /// </summary>
     public static bool CanHandleFileAsArchive(string contentType) => MimeType.IsArchive(contentType);
+
+    public override async ValueTask DisposeAsync()
+    {
+        await base.DisposeAsync();        
+        _zipStructure = null;
+        _zipEntries?.Clear();
+        _zipEntries = null;
+        ClosePreview();
+        await fileService.DisposeAsync();
+    }
 }

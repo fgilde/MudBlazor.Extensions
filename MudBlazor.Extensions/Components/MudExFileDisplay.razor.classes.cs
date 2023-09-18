@@ -232,3 +232,9 @@ public sealed class MudExFileDisplayContentErrorResult : IMudExFileDisplayInfos
     /// </summary>
     public bool? SandBoxIframes { get; set; }
 }
+
+public enum StreamUrlHandling
+{
+    DataUrl,
+    BlobUrl
+}

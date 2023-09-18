@@ -15,11 +15,14 @@
                                  ShowContentError="false"
                                  @bind-Selected="@Selected"
                                  SelectionMode="ItemSelectionMode.Single"
-                                 RootFolderName="sample.zip" Url="@(NavigationManager.ToAbsoluteUri("sample-data/sample.zip").AbsoluteUri)" ></MudExFileDisplayZip>
+                                 RootFolderName="sample.zip" Url="@(NavigationManager.ToAbsoluteUri("sample-data/LargeZipArchive.zip").AbsoluteUri)" ></MudExFileDisplayZip>
         </MudItem>
         <MudItem Style="width: 50%;height: 75vh;">
-            <MudExFileDisplay ShowContentError="false"
-                              FileName="@_selected?.FullName" ContentType="@_selected?.ContentType" Url="@_selectedUrl" ></MudExFileDisplay>
+            <MudExFileDisplay ShowContentError="false"                              
+                              FileName="@_selected?.FullName" 
+                              ContentType="@_selected?.ContentType" 
+                              ContentStream="@_selected?.OpenReadStream()"
+                              ></MudExFileDisplay>
         </MudItem>
     </MudGrid>
 
@@ -29,21 +32,6 @@
 @code {
 
     private IArchivedBrowserFile _selected => Selected?.FirstOrDefault();
-    private string _selectedUrl;
-    private IList<IArchivedBrowserFile> _selectedList;
-
-    public IList<IArchivedBrowserFile> Selected
-    {
-        get => _selectedList;
-        set
-        {
-            _selectedList = value;
-            _selected?.GetDataUrlAsync().ContinueWith(t =>
-            {
-                _selectedUrl = t.Result;
-                StateHasChanged();
-            });
-        }
-    }
+    public IList<IArchivedBrowserFile> Selected { get; set; }
 
 }
