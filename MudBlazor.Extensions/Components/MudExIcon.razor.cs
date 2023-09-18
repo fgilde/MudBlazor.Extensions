@@ -22,7 +22,8 @@ public partial class MudExIcon
     protected string Stylename =>
         new MudExStyleBuilder()
             .AddRaw(Style)            
-            .WithColor(Color, !Color.IsColor)
+            //.WithColor(Color, !Color.IsColor)
+            .WithFill(Color)
             .Build();
 
     /// <summary>

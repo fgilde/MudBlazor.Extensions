@@ -741,6 +741,11 @@
             With this setting turned on, you can use this edit control for all of your Color Properties.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.LegacyRender">
+            <summary>
+            True to use old render look and feel
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.LabelCustomTab">
             <summary>
             Gets or sets the label for the custom tab.
@@ -760,6 +765,9 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnAfterRender(System.Boolean)">

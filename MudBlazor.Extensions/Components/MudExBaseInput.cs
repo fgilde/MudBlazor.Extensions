@@ -118,12 +118,6 @@ public abstract class MudExBaseInput<T> : MudBaseInput<T>
     /// <inheritdoc />
     protected override async Task ValidateValue()
     {
-        string c = Class;
-        var b = c;
-        if(Class?.Contains("SAMPLE") == true)
-        {
-
-        }
         var error = Error;
         var validationErrors = ValidationErrors;
         var errorText = ErrorText;

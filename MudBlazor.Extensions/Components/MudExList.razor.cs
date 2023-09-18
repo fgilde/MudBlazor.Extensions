@@ -962,7 +962,7 @@ public partial class MudExList<T> : IDisposable
 
     protected void HandleOnScroll()
     {
-        if (Virtualize == true)
+        if (Virtualize)
         {
             UpdateSelectedStyles();
         }

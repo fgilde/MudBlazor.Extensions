@@ -6,6 +6,7 @@ using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Utilities;
+using System.Reflection;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -155,6 +156,12 @@ public sealed partial class MudExColorEdit
     public bool ForceSelectOfMudColor { get; set; }
 
     /// <summary>
+    /// True to use old render look and feel
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public bool LegacyRender { get; set; }
+
+    /// <summary>
     /// Gets or sets the label for the custom tab.
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
@@ -177,16 +184,33 @@ public sealed partial class MudExColorEdit
     /// </summary>
     public string TryLocalize(string text, params object[] args) => LocalizerToUse.TryLocalize(text, args);
 
+    private List<ColorItem> _colors = new();    
     
+
     private async Task EnsureCssVarsAsync()
     {
         if (_cssVars == null || _cssVars.Length == 0)
         {            
             _cssVars = await JsRuntime.GetCssColorVariablesAsync();
             _palette = _cssVars.Select(x => x.Value).Distinct().ToArray();
+            UpdateColors();
         }
     }
 
+    private void UpdateColors()
+    {
+        _colors.Clear();
+        if (ShowThemeColors)
+        {
+            foreach (Color color in Enum.GetValues(typeof(Color)))
+                _colors.Add(new ColorItem(color, color.ToString(), TryLocalize("Theme Colors")));
+        }
+        if (ShowHtmlColors)
+            _colors.AddRange(typeof(System.Drawing.Color).GetProperties(BindingFlags.Static | BindingFlags.Public).Select(c => new ColorItem(System.Drawing.Color.FromName(c.Name), c.Name, TryLocalize("HTML Colors"))));
+        if (ShowCssColorVariables && _cssVars is not null && _cssVars.Length > 0)
+            _colors.AddRange(_cssVars.Select(v => new ColorItem(v.Value, v.Key, TryLocalize("CSS Color Variables"))));
+        StateHasChanged();
+    }
 
     /// <inheritdoc />
     protected override void OnInitialized()
@@ -203,13 +227,24 @@ public sealed partial class MudExColorEdit
     /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
-        if (PickerVariant is PickerVariant.Static)
-        {
-            await EnsureCssVarsAsync();
-        }
+        if (PickerVariant is PickerVariant.Static)        
+            await EnsureCssVarsAsync();        
         Text = ValueString;
         UpdatePreview();
         await base.OnParametersSetAsync();
+        if (_colors.Count == 0)
+            UpdateColors();
+    }
+
+    /// <inheritdoc />
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var updateRequired = (parameters.TryGetValue<bool>(nameof(ShowThemeColors), out var showThemeColors) && ShowThemeColors != showThemeColors)
+                             || (parameters.TryGetValue<bool>(nameof(ShowHtmlColors), out var showHtmlColors) && ShowHtmlColors != showHtmlColors)
+                             || (parameters.TryGetValue<bool>(nameof(ShowCssColorVariables), out var showCssColorVariables) && ShowCssColorVariables != showCssColorVariables);
+        await base.SetParametersAsync(parameters);
+        if (updateRequired)
+            UpdateColors();
     }
 
     /// <inheritdoc />
@@ -229,9 +264,9 @@ public sealed partial class MudExColorEdit
     
     /// <inheritdoc />
     protected override void OnPickerOpened()
-    {
+    {        
         _ = UpdateInitialMudColor();
-        _ = EnsureCssVarsAsync();
+        _ = EnsureCssVarsAsync();        
         base.OnPickerOpened();
     }
 
@@ -308,7 +343,6 @@ public sealed partial class MudExColorEdit
             OnSet(Value = color);
         CloseIf(AutoCloseBehaviour.OnDefinedSelect);
     }
-
 
     private void Select(MudColor color) => Select(color, true);
     
@@ -390,20 +424,17 @@ public sealed partial class MudExColorEdit
     private static bool IsCssVarStr(string s) => s.StartsWith("var(") || s.StartsWith("--");
 
     private bool GetIsOpen() => IsOpen || PickerVariant == PickerVariant.Static;
-}
 
-public enum ColorPreviewMode
-{
-    None,
-    Text,
-    Icon,
-    Both
-}
+    private string ColorItemStyle(ColorItem context)
+    {
+        var borderColor = MudExColor.Transparent;
 
-public enum AutoCloseBehaviour
-{
-    Never,
-    Always,
-    OnDefinedSelect,
-    OnCustomSelect
+        if(context.Name == ValueString || context.Color.ToCssStringValue(MudColorOutputFormats.HexA).Equals(Value.ToCssStringValue(MudColorOutputFormats.HexA)) || context.Color.ToCssStringValue(MudColorOutputFormats.RGBA) == ValueString)        
+            borderColor = Color.Warning;
+        
+        return new MudExStyleBuilder()
+            .WithBorder(1, Core.Css.BorderStyle.Solid, borderColor)
+            .WithJustifyContent("flex-start")
+            .Build();
+    }
 }
