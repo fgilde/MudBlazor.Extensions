@@ -5,6 +5,7 @@
 
 @Render
 
+
 @code {
 
     protected override RenderFragment PickerContent => GetPickerContent();
@@ -12,78 +13,75 @@
     private RenderFragment DividerContent(string label)
     {
         return @<div style="margin:25px 0; position: sticky; top: 5px; z-index: 3;">
-                   <MudExDivider Label="@TryLocalize(label)" Size="2" Color="Color.Primary"/>
-               </div>;
+        <MudExDivider Label="@TryLocalize(label)" Size="2" Color="Color.Primary" />
+    </div>;
     }
-    
+
     private RenderFragment GetPickerContent()
     {
-        return 
-        @<MudTabs Class="mud-ex-color-edit-picker" TabHeaderClass="mud-ex-tab-bar-sticky" Elevation="0" Rounded="true" ApplyEffectsToContainer="true">
-            @if (HasDefinedColors)
-            {
-                <MudTabPanel Text="@TryLocalize(LabelDefinedTab)">
-                    <MudTextField Clearable="true" Variant="@FilterVariant" Immediate="true" Placeholder="@TryLocalize("Filter")" @bind-Value="@Filter" T="string"></MudTextField>
-                    <MudPaper Elevation="0">
-                        <MudList Dense="true" Class="m-0" Clickable="true">
-                            @if (ShowThemeColors)
-                            {
-                                @DividerContent("Theme")
-                            @foreach (Color color in Enum.GetValues(typeof(Color)))
-                                {
-                                    @if (Matches(color.ToString()))
-                                    {
-                                        <MudListItem Class="mud-ex-default-list-item" OnClick="@(() => Select(color))" Text="@color.ToString()" Icon="@Icons.Material.Filled.ColorLens" IconColor="@color"/>
-                                    }
-                                }
-                            }
-                            @if (ShowHtmlColors)
-                            {
-                                @DividerContent("HTML Colors")
-                                @foreach (var color in typeof(System.Drawing.Color).GetProperties(BindingFlags.Static | BindingFlags.Public))
-                                {
-                                    @if (Matches(color.Name))
-                                    {
-                                        <MudListItem UserAttributes="@(new Dictionary<string, object> {{"data-color", color.Name.ToLower()}})"
-                                                     Class="@($"mud-ex-color-edit-picker-html-list-item-{color.Name.ToLower()}")" OnClick="@(() => Select(color.Name))" Text="@color.Name" Icon="@Icons.Material.Filled.ColorLens">
-                                            <style>
-                                                    .mud-ex-color-edit-picker-html-list-item-@(color.Name.ToLower()):not(.mud-ex-default-list-item) .mud-icon-root {
-                                                        fill: @(color.Name.ToLower()) !important;
-                                                    }
-                                                </style>
-                                            @color.Name
-                                        </MudListItem>
-                                    }
-                                }
-                            }
-                            @if (ShowCssColorVariables && _cssVars is not null && _cssVars.Length > 0)
-                            {
-                                @DividerContent("CSS Color Variables")
-                                @foreach (var cssVar in _cssVars)
-                                {
-                                    @if (Matches(cssVar.Key))
-                                    {
-                                        <MudListItem OnClick="@(() => { SelectCssVar(cssVar);})"
-                                                     Class="@($"mud-ex-color-edit-picker-html-list-item-{cssVar.Key.ToLower()}")"
-                                                     Text="@cssVar.Key" Icon="@Icons.Material.Filled.ColorLens">
-                                            <style>
-                                                .mud-ex-color-edit-picker-html-list-item-@(cssVar.Key.ToLower()):not(.mud-ex-default-list-item) .mud-icon-root {
-                                                    fill: @(cssVar.Value) !important;
-                                                }
-                                            </style>
-                                            @cssVar.Key
-                                        </MudListItem>
-                                    }
-                                }
-                            }
-
-                        </MudList>
-                    </MudPaper>
+        return
+            @<MudTabs Class="mud-ex-color-edit-picker" TabHeaderClass="mud-ex-tab-bar-sticky" Elevation="0" Rounded="true" ApplyEffectsToContainer="true">
+                @if (HasDefinedColors)
+                {
+                    <MudTabPanel Text="@TryLocalize(LabelDefinedTab)">
+                        @if (LegacyRender)
+                        {
+                            @GetOldColorSelectionList();
+                        }else{
+                            @GetColorSelectionList()
+                        }
+                    </MudTabPanel>
+                }
+                <MudTabPanel OnClick="@CustomTabClick" Text="@TryLocalize(@LabelCustomTab)">
+                    <MudExColorPicker InitialColor="@_initialMudColorValue" ColorPickerMode="ColorPickerMode.HEX" DisableToolbar="@DisableToolbar" ValueChanged="@(Select)" PickerVariant="PickerVariant.Static" />
                 </MudTabPanel>
-            }
-            <MudTabPanel OnClick="@CustomTabClick" Text="@TryLocalize(@LabelCustomTab)">
-                <MudExColorPicker InitialColor="@_initialMudColorValue" ColorPickerMode="ColorPickerMode.HEX" DisableToolbar="@DisableToolbar" ValueChanged="@(Select)" PickerVariant="PickerVariant.Static" />
-            </MudTabPanel>
-        </MudTabs>;
+            </MudTabs>;
+    }
+
+    private RenderFragment GetColorSelectionList()
+    {
+        return 
+            @<MudExList GroupBy="@(x => x.Group)"
+                                       Dense="true"
+                                       Style="height: 450px"
+                                       Virtualize="true"
+                                       GroupingEnabled="true"
+                                       GroupsNested="false"
+                                       MultiSelection="false"
+                                       SearchBoxVariant="@FilterVariant"
+                                       SelectAll="false"
+                                       ItemCollection="_colors" SearchBox="true" T="ColorItem">
+                <ItemTemplate>           
+                        <MudButton FullWidth="true" Style="@ColorItemStyle(context)" OnClick="@(_ => Select(context.Name))">
+                            <MudExIcon Color="@context.Color" Icon="@Icons.Material.Filled.ColorLens"></MudExIcon>
+                            <MudText Class="ml-5">@context.Name</MudText>
+                        </MudButton>                    
+                </ItemTemplate>
+            </MudExList>;
+    }
+
+    private RenderFragment GetOldColorSelectionList()
+    {
+        return
+            @<div>
+                <MudTextField Class="mt-5 mr-5 ml-5 mb-2" Clearable="true" Variant="@FilterVariant" Immediate="true" Placeholder="@TryLocalize("Filter")" @bind-Value="@Filter" T="string"></MudTextField>
+                <MudPaper Elevation="0">
+                    <MudList Dense="true" Class="m-0" Clickable="true">
+                        @foreach (var group in _colors.Where(c => Matches(c.Name)).GroupBy(c => c.Group))
+                        {
+                            @DividerContent(group.Key)
+                            foreach (var context in group)
+                            {
+                                <MudListItem Dense="true">
+                                    <MudButton FullWidth="true" Style="@ColorItemStyle(context)" OnClick="@(_ => Select(context.Name))">
+                                        <MudExIcon Color="@context.Color" Icon="@Icons.Material.Filled.ColorLens"></MudExIcon>
+                                        <MudText Class="ml-5">@context.Name</MudText>
+                                    </MudButton>
+                                </MudListItem>
+                            }
+                        }
+                    </MudList>
+                </MudPaper>
+            </div>;
     }
 }
