@@ -1,0 +1,30 @@
+﻿@page "/mud-ex-icon"
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+@attribute [DemoNew(Name = "MudExIcon", Icon = Icons.Material.Outlined.Image, Documentation = "MudExIcon is a simple MudIcon with extended possibilities to set all colors.", ForComponentType = typeof(MudExIcon))]
+
+<DemoComponent PageType="@GetType()" >
+    <SplitContainer>
+        <Left>
+            <MudExIcon @ref="component" Icon="@Icons.Material.Filled.Image" />
+        </Left>
+        <Right>
+            <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+@code {
+    MudExIcon component;
+    private Action<ObjectEditMeta<MudExIcon>> Configure()
+    {
+        return meta =>
+        {
+            meta.GroupByCategoryAttribute();
+            meta.Property(m => m.Localizer).Ignore();            
+            meta.IgnoreAllReadOnlyFields();
+        };
+    }
+
+}

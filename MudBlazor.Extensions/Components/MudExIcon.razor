@@ -1,0 +1,17 @@
+﻿@inherits MudExBaseComponent<MudExIcon>
+
+@if (!string.IsNullOrEmpty(Icon) && Icon.Trim().StartsWith("<"))
+{
+    <svg @attributes="UserAttributes" class="@Classname" style="@Stylename" focusable="false" viewBox="@ViewBox" aria-hidden="true">
+        @if (Title != null)
+        {
+            <title>@Title</title>
+        }
+
+        @((MarkupString)Icon)
+    </svg>
+}
+else
+{
+    <span @attributes="UserAttributes" class="@($"{Classname} {Icon}")" style="@Style" title="@Title" />
+}

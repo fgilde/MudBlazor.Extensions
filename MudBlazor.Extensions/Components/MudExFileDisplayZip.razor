@@ -55,7 +55,7 @@ else
         
         @if (ShowAsTree)
         {
-            <MudTreeView Dense="@Dense" Style="width: 100%" T="ZipStructure" Items="@_zipStructure">
+            <MudTreeView Dense="@Dense" Style="width: 100%" T="ArchiveStructure" Items="@_zipStructure">
                 <ItemTemplate>
                     @if (IsInSearch(context))
                     {

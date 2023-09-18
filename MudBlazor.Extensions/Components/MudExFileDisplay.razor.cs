@@ -5,6 +5,7 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using Nextended.Blazor.Helper;
 using MudBlazor.Extensions.Services;
+using MudBlazor.Extensions.Components.ObjectEdit;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -31,6 +32,13 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     #endregion
 
     #region Parameters and Properties
+
+    /// <summary>
+    /// You can set this object with any simple data object that then is used to display file infos
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Data")]
+    public object FileInfo { get; set; }
 
     /// <summary>
     /// If true, compact vertical padding will be applied to items.
@@ -408,5 +416,23 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         {
             UpdateRenderInfos();
         }
+    }
+
+    private async Task ShowInfo()
+    {
+        var selfGenerated = FileInfo == null;
+        var infoObject = FileInfo ?? new
+        {
+            File = FileName,
+            ContentType = ContentType,
+            Url = ContentStream is { Length: > 0 } ? null : Url,
+            Size = ContentStream is {Length: > 0} ? Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(ContentStream.Length) : null
+        };
+        var options = DialogServiceExt.DefaultOptions();
+        options.CloseButton = true;
+        await Get<IDialogService>().ShowObject(infoObject, TryLocalize("Info"), Icons.Material.Filled.Info, options, meta => {
+            if(selfGenerated)
+                meta.Properties().Where(p => p.Value == null).Ignore();
+        });
     }
 }

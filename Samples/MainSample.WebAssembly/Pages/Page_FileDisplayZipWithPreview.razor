@@ -28,11 +28,11 @@
 
 @code {
 
-    private ZipBrowserFile _selected => Selected?.FirstOrDefault();
+    private IArchivedBrowserFile _selected => Selected?.FirstOrDefault();
     private string _selectedUrl;
-    private IList<ZipBrowserFile> _selectedList;
+    private IList<IArchivedBrowserFile> _selectedList;
 
-    public IList<ZipBrowserFile> Selected
+    public IList<IArchivedBrowserFile> Selected
     {
         get => _selectedList;
         set

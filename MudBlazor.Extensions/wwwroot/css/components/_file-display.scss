@@ -170,9 +170,10 @@
 
 .mud-ex-file-display-menu-header {
     display: flex;
-    padding: 5px;
+    padding: 6px;
+    padding-top: 1px;
     margin-bottom: 5px;
-    border-bottom: 1px dotted var(--mud-palette-primary);
+    border-bottom: 1px dashed var(--mud-palette-primary);
     align-items: center;
     color: var(--mud-palette-primary);
     justify-content: center;

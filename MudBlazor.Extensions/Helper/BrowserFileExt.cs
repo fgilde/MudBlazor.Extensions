@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Core;
 using Nextended.Blazor.Extensions;
 using Nextended.Core;
 using Nextended.Core.Extensions;
@@ -14,6 +15,52 @@ namespace MudBlazor.Extensions.Helper
     [HasDocumentation("BrowserFileExt.md")]
     public static class BrowserFileExt
     {
+        private static Dictionary<string, string> colorMap = new()
+        {
+            // Microsoft Office Colors
+            { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "#217346" }, // Excel green
+            { "application/vnd.ms-excel", "#217346" },
+            { "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "#2B579A" }, // Word blue
+            { "application/msword", "#2B579A" },
+            { "application/vnd.openxmlformats-officedocument.presentationml.presentation", "#D24726" }, // PowerPoint red
+            { "application/vnd.ms-powerpoint", "#D24726" },
+
+            // Adobe Colors
+            { "application/pdf", "#ae0c00" }, // Adobe PDF red
+
+            // Archive Formats
+            { "application/zip", "#FFD700" }, // ZIP yellow
+            { "application/x-rar-compressed", "#FFD700" },
+            { "application/x-tar", "#FFD700" },
+            { "application/tar+gzip", "#FFD700" },
+            { "application/x-7z-compressed", "#FFD700" },
+
+            // Image Formats
+            { "image/jpeg", "#B19CD9" }, // Lavender
+            { "image/png", "#B19CD9" },
+            { "image/gif", "#B19CD9" },
+            { "image/bmp", "#B19CD9" },
+            { "image/webp", "#B19CD9" },
+
+            // Video Formats
+            { "video/mp4", "#FF8C00" }, // Dark orange
+            { "video/mpeg", "#FF8C00" },
+            { "video/avi", "#FF8C00" },
+            { "video/quicktime", "#FF8C00" },
+
+            // Audio Formats
+            { "audio/mpeg", "#1E90FF" }, // Bright blue
+            { "audio/wav", "#1E90FF" },
+            { "audio/aac", "#1E90FF" },
+            { "audio/ogg", "#1E90FF" },
+
+            { "text/markdown", "#ADD8E6" },        // Light blue for Markdown
+            { "text/plain", "#B0B0B0" },           // Neutral gray for TXT
+            { "application/json", "#787878" },     // Darker gray for JSON
+        
+            // ... add more formats as needed
+        };
+
         /// <summary>
         /// Downloads the file
         /// </summary>
@@ -40,7 +87,19 @@ namespace MudBlazor.Extensions.Helper
         /// Returns the content type for given file
         /// </summary>
         public static string GetContentType(this IBrowserFile file)
-            => string.IsNullOrWhiteSpace(file.ContentType) ? MimeType.GetMimeType(file.Name) : file.ContentType;
+            => file == null ? "" : string.IsNullOrWhiteSpace(file.ContentType) ? MimeType.GetMimeType(file.Name) : file.ContentType;
+
+        public static MudExColor GetPreferredColor(string contentType)
+        {
+            return colorMap.TryGetValue(contentType, out string color) ? color :                
+                MudBlazor.Color.Default; 
+        }
+
+        /// <summary>
+        /// Returns Icon for IBrowserFile
+        /// </summary>
+        public static MudExColor GetPreferredColor(this IBrowserFile file)
+            => GetPreferredColor(file.GetContentType());
 
         /// <summary>
         /// Returns Icon for contentType

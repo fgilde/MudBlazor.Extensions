@@ -31,10 +31,11 @@ public abstract class MudExBaseInput<T> : MudBaseInput<T>
     /// </summary>
     [Inject] public IJSRuntime JsRuntime { get; set; }
 
+
     /// <summary>
     /// MudExConfiguration
-    /// </summary>
-    [Inject] protected MudExConfiguration MudExConfiguration { get; set; }
+    /// </summary>    
+    protected MudExConfiguration MudExConfiguration => Get<MudExConfiguration>();
 
 
     /// <summary>
