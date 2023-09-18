@@ -1141,6 +1141,11 @@
             Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.FileInfo">
+            <summary>
+            You can set this object with any simple data object that then is used to display file infos
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.Dense">
             <summary>
             If true, compact vertical padding will be applied to items.
@@ -1705,6 +1710,41 @@
             <summary>
             The on click handler
             </summary>    
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExIcon">
+            <summary>
+            MudExIcon is a simple MudIcon with extended possibilities to set all colors.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIcon.Icon">
+            <summary>
+            Icon to be used can either be svg paths for font icons.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIcon.Title">
+            <summary>
+            Title of the icon used for accessibility.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIcon.Size">
+            <summary>
+            The Size of the icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIcon.Color">
+            <summary>
+            The color of the component. It supports the theme colors.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIcon.ViewBox">
+            <summary>
+            The viewbox size of an svg element.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIcon.ChildContent">
+            <summary>
+            Child content of component.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExIconPicker">
             <summary>
@@ -7169,6 +7209,11 @@
             Prompts the user for input with customizable title, message, initialValue, buttonOkText, buttonCancelText, icon, validation function, and dialog options asynchronously.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowObject``1(MudBlazor.IDialogService,``0,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
+            <summary>
+            Shows an object edit dialog as readonly for given object.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowObject``1(MudBlazor.IDialogService,``0,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
             <summary>
             Shows an object edit dialog as readonly for given object.
@@ -7261,6 +7306,11 @@
         <member name="M:MudBlazor.Extensions.Helper.BrowserFileExt.GetContentType(Microsoft.AspNetCore.Components.Forms.IBrowserFile)">
             <summary>
             Returns the content type for given file
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.BrowserFileExt.GetPreferredColor(Microsoft.AspNetCore.Components.Forms.IBrowserFile)">
+            <summary>
+            Returns Icon for IBrowserFile
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.BrowserFileExt.IconForFile(System.Net.Mime.ContentType)">

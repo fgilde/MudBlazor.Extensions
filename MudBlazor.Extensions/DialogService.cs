@@ -20,7 +20,7 @@ namespace MudBlazor.Extensions
         /// The default dialog options.
         /// </summary>
         /// <returns>The default dialog options.</returns>
-        private static DialogOptionsEx DefaultOptions() => DialogOptionsEx.DefaultDialogOptions?.CloneOptions() ?? new();
+        internal static DialogOptionsEx DefaultOptions() => DialogOptionsEx.DefaultDialogOptions?.CloneOptions() ?? new();
 
  
         /// <summary>

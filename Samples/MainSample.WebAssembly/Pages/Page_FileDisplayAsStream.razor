@@ -10,7 +10,7 @@
     <MudExSelect T="SampleFileWithStream" ValuePresenter="ValuePresenter.ItemContent" HelperText="Select sample file (See weather.json to check how own components for files can be created)" ItemCollection="@_samples" Variant="Variant.Outlined" ToStringFunc="@(f => f.Name)" @bind-Value="SampleFile">
         <ItemTemplate>
             <div class="file-combo-item">
-                <MudIcon Color="Color.Error" Icon="@context.Icon"></MudIcon>
+                <MudExIcon Color="@context.Color" Icon="@context.Icon"></MudExIcon>
                 <MudText>@context.Name</MudText>
                 <MudText Class="file-combo-info-item" Typo="Typo.subtitle2">@($"{context.ContentType} {context.ReadableSize}")</MudText>
             </div>

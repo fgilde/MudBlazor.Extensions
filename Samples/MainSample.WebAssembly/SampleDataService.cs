@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Services;
 
@@ -61,10 +62,11 @@ public class BaseFile
     public BaseFile(string contentType, string name, string icon)
     {
         ContentType = contentType;
+        Color = BrowserFileExt.GetPreferredColor(contentType);
         Name = name;
         Icon = icon;
     }
-
+    public MudExColor Color { get; set; }
     public string ContentType { get; set; }
     public string Name { get; set; }
     public string Icon { get; set; }

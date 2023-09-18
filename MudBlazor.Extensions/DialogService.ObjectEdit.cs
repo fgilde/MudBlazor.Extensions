@@ -10,6 +10,20 @@ namespace MudBlazor.Extensions;
 
 public static partial class DialogServiceExt
 {
+
+    /// <summary>
+    /// Shows an object edit dialog as readonly for given object.
+    /// </summary>
+    public static Task<(bool Cancelled, TModel Result)> ShowObject<TModel>(this IDialogService dialogService, TModel value, string title, string icon, DialogOptionsEx options = null, Action<ObjectEditMeta<TModel>> metaConfig = null, DialogParameters dialogParameters = null)
+    {
+        var parameters = new DialogParameters
+        {
+            {nameof(MudExObjectEditDialog<TModel>.DialogIcon), icon}
+        };
+
+        return ShowObject(dialogService, value, title, options, metaConfig, dialogParameters == null ? parameters : dialogParameters.MergeWith(parameters));
+    }
+
     /// <summary>
     /// Shows an object edit dialog as readonly for given object.
     /// </summary>
@@ -21,17 +35,19 @@ public static partial class DialogServiceExt
     /// <param name="metaConfig">The configuration of meta information.</param>
     /// <param name="dialogParameters">The dialog parameters.</param>
     /// <returns>A tuple indicating if edit was cancelled and the result. </returns>
-    public static async Task<(bool Cancelled, TModel Result)> ShowObject<TModel>(this IDialogService dialogService, TModel value, string title, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null, DialogParameters dialogParameters = null)
+    public static async Task<(bool Cancelled, TModel Result)> ShowObject<TModel>(this IDialogService dialogService, TModel value, string title, DialogOptionsEx options = null, Action<ObjectEditMeta<TModel>> metaConfig = null, DialogParameters dialogParameters = null)
     {
         var parameters = new DialogParameters
             {
+                {nameof(MudExObjectEditDialog<TModel>.GlobalResetSettings), new GlobalResetSettings() { AllowReset = false} },
+                {nameof(MudExObjectEditDialog<TModel>.DefaultPropertyResetSettings), new PropertyResetSettings() { AllowReset = false} },
                 {nameof(MudExObjectEditDialog<TModel>.ShowSaveButton), false},
                 {nameof(MudExObjectEditDialog<TModel>.CancelButtonText), "Close"},
             };
         return await dialogService.EditObject(value, title, options, meta =>
         {
             metaConfig?.Invoke(meta);
-            meta.Properties().AsReadOnly();
+            meta.Properties().AsReadOnly();            
         }, dialogParameters.MergeWith(parameters));
     }
 
@@ -39,17 +55,17 @@ public static partial class DialogServiceExt
     /// Shows an object edit dialog as readonly for given data string as object edit.
     /// </summary>
     public static Task<(bool Cancelled, IStructuredDataObject Result)> ShowStructuredDataString(
-        this IDialogService dialogService, 
-        string value, string title, 
-        DialogOptionsEx options, 
-        Action<ObjectEditMeta<IStructuredDataObject>> metaConfig = null, 
+        this IDialogService dialogService,
+        string value, string title,
+        DialogOptionsEx options,
+        Action<ObjectEditMeta<IStructuredDataObject>> metaConfig = null,
         DialogParameters dialogParameters = null)
     {
         var model = ReflectionHelper.CreateTypeAndDeserialize(value);
         metaConfig = (metaConfig ?? (_ => { })).CombineWith(RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>());
         return dialogService.ShowObject(model, title, options, metaConfig, dialogParameters);
     }
-    
+
     /// <summary>
     /// Shows an object edit dialog as readonly for given data string as object edit.
     /// </summary>
@@ -70,7 +86,7 @@ public static partial class DialogServiceExt
     /// </summary>
     public static Task<(bool Cancelled, IStructuredDataObject Result)> EditStructuredDataString(
         this IDialogService dialogService,
-        string value, string title, 
+        string value, string title,
         Func<IStructuredDataObject, MudExObjectEditDialog<IStructuredDataObject>, Task<string>> customSubmit,
         DialogOptionsEx options, Action<ObjectEditMeta<IStructuredDataObject>> metaConfig = null,
         DialogParameters dialogParameters = null)
@@ -79,16 +95,16 @@ public static partial class DialogServiceExt
         metaConfig = (metaConfig ?? (_ => { })).CombineWith(RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>());
         return dialogService.EditObject(model, title, customSubmit, options, metaConfig, dialogParameters);
     }
-    
+
     /// <summary>
     /// Shows an object edit dialog for given data string as object edit.
     /// </summary>
     public static Task<(bool Cancelled, IStructuredDataObject Result)> EditStructuredDataString(
         this IDialogService dialogService,
-        string value, string title, 
-        DialogOptionsEx options, 
-        Action<ObjectEditMeta<IStructuredDataObject>> 
-        metaConfig = null, 
+        string value, string title,
+        DialogOptionsEx options,
+        Action<ObjectEditMeta<IStructuredDataObject>>
+        metaConfig = null,
         DialogParameters dialogParameters = null)
     {
         var model = ReflectionHelper.CreateTypeAndDeserialize(value);
@@ -174,22 +190,22 @@ public static partial class DialogServiceExt
                 // All registered Primitive editors that are pickers we render PickerVariant.Static to avoid extra dialogs
                 {nameof(MudPicker<object>.PickerVariant), PickerVariant.Static}
             };
-            
+
             var modelForPrimitive = new ModelForPrimitive<TModel>(value);
             options.Resizeable = true;
 
             #endregion
-          
+
 
 
             var r = await dialogService.EditObject(modelForPrimitive, title, options, meta =>
             {
                 meta.Property(m => m.Value).WithAdditionalAttributes(attributesForPrimitive, true);
-            }, dialogParameters );
-            
+            }, dialogParameters);
+
             return (r.Cancelled, r.Result.Value);
         }
-        
+
         var parameters = new DialogParameters
             {
                 {nameof(MudExObjectEditDialog<TModel>.Value), value},

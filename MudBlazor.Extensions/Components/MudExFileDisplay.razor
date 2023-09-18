@@ -107,8 +107,12 @@
                 {
                     <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(Download)" Icon="@Icons.Material.Filled.Download">@($"{TryLocalize("Download")}")</MudMenuItem>
                 }
+                <MudDivider/>
+                <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(ShowInfo)" Icon="@Icons.Material.Filled.Info">@($"{TryLocalize("Info")}")</MudMenuItem>
+
                 @if (CanClose)
                 {
+                    <MudDivider/>                    
                     <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(OnCloseClick)" Icon="@Icons.Material.Filled.Close">@($"{TryLocalize("Close")}")</MudMenuItem>
                 }
             </MudMenu>
