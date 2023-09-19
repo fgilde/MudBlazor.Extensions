@@ -43,7 +43,8 @@
     private async Task OpenAsDialog()
     {
         var parameters = new DialogParameters {
-            { nameof(MudExFileDisplay.StreamUrlHandling), StreamUrlHandling.BlobUrl }
+            { nameof(MudExFileDisplay.StreamUrlHandling), StreamUrlHandling.BlobUrl },
+            { nameof(MudExFileDisplay.Dense), true }
         };
         await dialogService.ShowFileDisplayDialog(SampleFile.Stream, SampleFile.Name, SampleFile.ContentType, HandleContentError, null, parameters);
     }

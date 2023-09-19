@@ -250,10 +250,6 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     
     private async Task CreateStructure()
     {
-        //if ((MudDialog?.Options is DialogOptionsEx options) && options.Animations?.Any(a => a != AnimationType.Default) == true)
-        //{        
-        //    await Task.Delay(options.AnimationDuration));
-        //}
         var archive = await fileService.ReadArchiveAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url), RootFolderName, ContentType);
         _zipStructure = archive.Structure;
         _zipEntries = archive.List;

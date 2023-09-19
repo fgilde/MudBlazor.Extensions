@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
-using MudBlazor.Extensions.Services;
 using Nextended.Blazor.Extensions;
-using Nextended.Core;
 
 namespace MudBlazor.Extensions;
 
@@ -25,7 +22,7 @@ public static partial class DialogServiceExt
     /// <param name="handleContentErrorFunc">A function that is called if an error occurs while handling the file's content.</param>
     /// <param name="options">Dialog options for the displayed file.</param>
     /// <returns>An awaitable task with the dialog reference.</returns>
-    public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string url, string fileName, string contentType, Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null)
+    public static Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowFileDisplayDialog(this IDialogService dialogService, string url, string fileName, string contentType, Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null)
         => dialogService.ShowFileDisplayDialog(url, fileName, contentType, options, new DialogParameters { { nameof(MudExFileDisplay.HandleContentErrorFunc), handleContentErrorFunc } });
 
     /// <summary>
@@ -36,7 +33,7 @@ public static partial class DialogServiceExt
     /// <param name="handleContentErrorFunc">A function that is called if an error occurs while handling the file's content.</param>
     /// <param name="options">Dialog options for the displayed file.</param>
     /// <returns>An awaitable task with the dialog reference.</returns>
-    public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, IBrowserFile browserFile, Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null)
+    public static Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowFileDisplayDialog(this IDialogService dialogService, IBrowserFile browserFile, Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null)
         => dialogService.ShowFileDisplayDialog(browserFile, options, new DialogParameters { { nameof(MudExFileDisplay.HandleContentErrorFunc), handleContentErrorFunc } });
 
     /// <summary>
@@ -49,7 +46,7 @@ public static partial class DialogServiceExt
     /// <param name="handleContentErrorFunc">A function that is called if an error occurs while handling the file's content.</param>
     /// <param name="options">Dialog options for the displayed file.</param>
     /// <returns>An awaitable task with the dialog reference.</returns>
-    public static Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, Stream stream, string fileName, string contentType, Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null, DialogParameters parameters = null)
+    public static Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowFileDisplayDialog(this IDialogService dialogService, Stream stream, string fileName, string contentType, Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> handleContentErrorFunc, Action<DialogOptionsEx> options = null, DialogParameters parameters = null)
     {
         parameters ??= new DialogParameters();
         parameters.Add(nameof(MudExFileDisplay.HandleContentErrorFunc), handleContentErrorFunc);
@@ -66,7 +63,7 @@ public static partial class DialogServiceExt
     /// <param name="options">Dialog options for the displayed file.</param>
     /// <param name="dialogParameters">Parameters to pass to the dialog.</param>
     /// <returns>An awaitable task with the dialog reference.</returns>
-    public static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
+    public static async Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowFileDisplayDialog(this IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
     {
         var parameters = new DialogParameters
         {
@@ -86,7 +83,7 @@ public static partial class DialogServiceExt
     /// <param name="options">Dialog options for the displayed file.</param>
     /// <param name="dialogParameters">Parameters to pass to the dialog.</param>
     /// <returns>An awaitable task with the dialog reference.</returns>
-    public static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, IBrowserFile browserFile, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
+    public static async Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowFileDisplayDialog(this IDialogService dialogService, IBrowserFile browserFile, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
     {
         using var ms = new MemoryStream(await browserFile.GetBytesAsync());
         return await dialogService.ShowFileDisplayDialog(ms, browserFile.Name, browserFile.ContentType, options, dialogParameters);
@@ -102,7 +99,7 @@ public static partial class DialogServiceExt
     /// <param name="options">Dialog options for the displayed file.</param>
     /// <param name="dialogParameters">Parameters to pass to the dialog.</param>
     /// <returns>An awaitable task with the dialog reference.</returns>
-    public static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, Stream stream, string fileName, string contentType, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
+    public static async Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowFileDisplayDialog(this IDialogService dialogService, Stream stream, string fileName, string contentType, Action<DialogOptionsEx> options = null, DialogParameters dialogParameters = null)
     {
         var parameters = new DialogParameters
         {
@@ -114,7 +111,7 @@ public static partial class DialogServiceExt
         return await dialogService.ShowFileDisplayDialog(fileName, dialogParameters.MergeWith(parameters), options);
     }
 
-    private static async Task<IDialogReference> ShowFileDisplayDialog(this IDialogService dialogService, string fileName, DialogParameters parameters, Action<DialogOptionsEx> options = null)
+    private static async Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowFileDisplayDialog(this IDialogService dialogService, string fileName, DialogParameters parameters, Action<DialogOptionsEx> options = null)
     {
         var optionsEx = new DialogOptionsEx
         {

@@ -21,10 +21,11 @@
                       ViewDependsOnContentType="@ViewDependsOnContentType"
                       HandleContentErrorFunc="@HandleContentErrorFunc"
                       CustomContentErrorMessage="@CustomContentErrorMessage"
+                      StreamUrlHandling="@StreamUrlHandling"                      
+                      Dense="@Dense"
                       FileName="@_innerPreview.Name"
                       ContentStream="@_innerPreviewStream"
                       ContentType="@_innerPreview.ContentType"
-                      Dense="@Dense"
                       Url="@_innerPreviewUrl"></MudExFileDisplay>
 }
 
@@ -69,7 +70,7 @@ else
                                 <Content>
                                     <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChildren" />
 
-                                    <MudAlert Icon="@(context.IsDirectory ? Icons.Material.Filled.Folder : context.BrowserFile?.GetIcon())"
+                                    <MudAlert NoIcon="true"
                                               OnClick="(a) => Select(context, a)"
                                               Severity="@((IsSelected(context.BrowserFile) ? Severity.Warning : Severity.Normal))"
                                               Square="true"
@@ -77,18 +78,21 @@ else
                                               Variant="Variant.Text"
                                               Style="width: 100%"
                                               Class="mud-ex-file-display-tree p-0 mr-1 ml-1 mud-alert-message-w-100 mud-alert-message-mt-5">
-                                        <MudText>
-                                            <p>
-                                                <MudHighlighter Text="@context.Name" HighlightedText="@SearchString" />
-                                                @if (context.IsDirectory)
-                                                {
-                                                    <span class="mud-ex-fd-child-count-label">@context.Children.Count</span>
-                                                }
-                                            </p>
+                                         
+                                        <div style="display: flex; align-items: center;">
+                                            <MudExIcon Class="mr-3" Icon="@(context.IsDirectory ? Icons.Material.Filled.Folder : context.BrowserFile?.GetIcon())" />
+                                             <MudText>
+                                                <p>
+                                                    <MudHighlighter Text="@context.Name" HighlightedText="@SearchString" />
+                                                    @if (context.IsDirectory)
+                                                    {
+                                                        <span class="mud-ex-fd-child-count-label">@context.Children.Count</span>
+                                                    }
+                                                </p>
 
-                                            <p class="mud-ex-fd-size-display">@Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(context.Size, LocalizerToUse, true)</p>
-                                        </MudText>
-
+                                                <p class="mud-ex-fd-size-display">@Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(context.Size, LocalizerToUse, true)</p>
+                                            </MudText>
+                                        </div>
                                         <span style="float: right; margin-top: -35px;" class="mud-ex-fd-tree-actions">
                                             @if (!context.IsDirectory && AllowPreview)
                                             {
