@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Options;
 using Nextended.Blazor.Extensions;
 using Nextended.Core;
@@ -22,7 +23,7 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
 {
     [Parameter, SafeCategory("Behaviour")]
-    public StreamUrlHandling StreamUrlHandling { get; set; } = StreamUrlHandling.DataUrl;
+    public StreamUrlHandling StreamUrlHandling { get; set; } = StreamUrlHandling.BlobUrl;
 
     /// <summary>
     /// The text displayed in the drop zone. 
@@ -366,6 +367,13 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     [Parameter, SafeCategory("Data")]
     public Func<string, Task<string>> ResolveContentTypeFromUrlFunc { get; set; }
 
+    /// <summary>
+    /// If true icons are colored
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Appearance")]
+    public bool ColorizeIcons { get; set; }
+
 
     [Inject] private MudExFileService FileService { get; set; }
     private string _errorMessage = string.Empty;
@@ -657,19 +665,31 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         return BrowserFileExt.IconForFile(request.ContentType);
     }
 
+    private MudExColor GetIconColor(T request)
+    {
+        return ColorizeIcons ? BrowserFileExt.GetPreferredColor(request.ContentType) : Color.Inherit;
+    }
+
 
     private async Task Preview(T request)
     {
+        var parameters = new DialogParameters { 
+            { nameof(MudExFileDisplay.HandleContentErrorFunc), HandlePreviewContentErrorFunc }, 
+            { nameof(MudExFileDisplay.Dense), true }, 
+            { nameof(MudExFileDisplay.StreamUrlHandling), StreamUrlHandling },
+            { nameof(MudExFileDisplay.ColorizeIcons), ColorizeIcons }
+        };
         if (MudExFileDisplayZip.CanHandleFileAsArchive(request.ContentType) && request.Data != null)
         {
-            var ms = new MemoryStream(request.Data);
-            await DialogService.ShowFileDisplayDialog(ms, request.FileName, request.ContentType);
+            using var ms = new MemoryStream(request.Data);
+            var res = await DialogService.ShowFileDisplayDialog(ms, request.FileName, request.ContentType, null, parameters);
+            await res.Result;
         }
         else
         {
             // TODO: Maybe ... some fn to get the preview of the file          
             var dataUrl = await ResolvePreviewUrlAsync(request);
-            await DialogService.ShowFileDisplayDialog(dataUrl, request.FileName, request.ContentType, HandlePreviewContentErrorFunc);
+            await DialogService.ShowFileDisplayDialog(dataUrl, request.FileName, request.ContentType, null, parameters);
         }
     }
 

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
@@ -27,7 +28,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         
     private IList<IArchivedBrowserFile> _zipEntries;    
     //private HashSet<ArchiveStructure> _zipStructure;
-    private HashSet<ArchiveStructure> _zipStructure;
+    private HashSet<MudExArchiveStructure> _zipStructure;
     
     private string _contentType;
     [Inject] private MudExFileService fileService { get; set; }
@@ -44,7 +45,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
     [Parameter, SafeCategory("Behaviour")]
-    public StreamUrlHandling StreamUrlHandling { get; set; } = StreamUrlHandling.DataUrl;
+    public StreamUrlHandling StreamUrlHandling { get; set; } = StreamUrlHandling.BlobUrl;
 
     /// <summary>
     /// If true, compact vertical padding will be applied to items.
@@ -227,6 +228,20 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     [Parameter] public string CustomContentErrorMessage { get; set; }
 
     /// <summary>
+    /// If true icons are colored
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Appearance")]
+    public bool ColorizeIcons { get; set; }
+
+    /// <summary>
+    /// If true icons are colored
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Appearance")]
+    public MudExColor IconColor { get; set; } = Color.Inherit;
+
+    /// <summary>
     /// Gets or sets a value indicating whether the collection should be virtualized.
     /// </summary>
     [Parameter]
@@ -276,7 +291,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         _innerPreviewUrl = null;
     }
 
-    private string DownloadText(ArchiveStructure structure, bool asZip)
+    private string DownloadText(MudExArchiveStructure structure, bool asZip)
     {
         if (structure.IsDirectory)
             return asZip ? TryLocalize("Download {0} with {1} files as zip", structure.Name, structure.ContainingFiles.Count()) : TryLocalize("Download {0} files separately", structure.ContainingFiles.Count());
@@ -288,7 +303,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         return file.DownloadAsync(JsRuntime);
     }
 
-    private async void DownloadAsync(ArchiveStructure zip, bool asZip = false)
+    private async void DownloadAsync(MudExArchiveStructure zip, bool asZip = false)
     {
         if (zip.IsDownloading) return;
         _downloadMenu?.CloseMenu();
@@ -311,9 +326,9 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         SetDownloadStatus(zip, false);
     }
 
-    private void SetDownloadStatus(ArchiveStructure structure, bool isDownloading)
+    private void SetDownloadStatus(MudExArchiveStructure structure, bool isDownloading)
     {
-        structure.Children?.Recursive(s => s.Children ?? Enumerable.Empty<ArchiveStructure>()).Where(s => s != null).Apply(s => s.IsDownloading = isDownloading);
+        structure.Children?.Recursive(s => s.Children ?? Enumerable.Empty<MudExArchiveStructure>()).Where(s => s != null).Apply(s => s.IsDownloading = isDownloading);
         structure.IsDownloading = isDownloading;
         StateHasChanged();
     }
@@ -321,7 +336,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private bool IsInSearch(IArchivedBrowserFile entry)
         => string.IsNullOrEmpty(SearchString) || entry.FullName.Contains(SearchString, StringComparison.OrdinalIgnoreCase);
 
-    private bool IsInSearch(ArchiveStructure context)
+    private bool IsInSearch(MudExArchiveStructure context)
     {
         var allFilters = (!string.IsNullOrEmpty(SearchString) ? new[] { SearchString } : Enumerable.Empty<string>()).Concat(Filters ?? Enumerable.Empty<string>()).Distinct().ToList();
         if (allFilters.Count == 0 || allFilters.All(string.IsNullOrEmpty))
@@ -333,7 +348,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
 
     private Task ExpandCollapse()
     {
-        _zipStructure.Recursive(s => s.Children ?? Enumerable.Empty<ArchiveStructure>()).Where(s => s != null).Apply(s => s.IsExpanded = !s.IsExpanded);
+        _zipStructure.Recursive(s => s.Children ?? Enumerable.Empty<MudExArchiveStructure>()).Where(s => s != null).Apply(s => s.IsExpanded = !s.IsExpanded);
         return Task.CompletedTask;
     }
     private string ToolbarStyle()
@@ -344,7 +359,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         return res;
     }
 
-    private Task Select(ArchiveStructure structure, MouseEventArgs args) => structure.IsDirectory ? Task.CompletedTask : Select(structure.BrowserFile, args);
+    private Task Select(MudExArchiveStructure structure, MouseEventArgs args) => structure.IsDirectory ? Task.CompletedTask : Select(structure.BrowserFile, args);
 
     private async Task Select(IArchivedBrowserFile entry, MouseEventArgs args)
     {

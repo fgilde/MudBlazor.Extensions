@@ -83,7 +83,7 @@ public class MudExFileService : IAsyncDisposable
         await _jsRuntime.InvokeVoidAsync("MudExUriHelper.revokeBlobUrl", blobUrl);
     }
 
-    public async Task<(HashSet<ArchiveStructure> Structure, List<IArchivedBrowserFile> List )> ReadArchiveAsync(Stream stream, string rootFolderName, string contentType)
+    public async Task<(HashSet<MudExArchiveStructure> Structure, List<IArchivedBrowserFile> List )> ReadArchiveAsync(Stream stream, string rootFolderName, string contentType)
     {        
         var contentStream = await CopyStreamAsync(stream);
         var archive = ArchiveFactory.Open(contentStream);
@@ -95,26 +95,21 @@ public class MudExFileService : IAsyncDisposable
         }
 
         var validEntries = archive.Entries.Select(entry => new MudExArchivedBrowserFile(entry) as IArchivedBrowserFile).ToList();
-        var res = ArchiveStructure.CreateStructure(validEntries, rootFolderName);
+        var res = MudExArchiveStructure.CreateStructure(validEntries, rootFolderName);
         var structure = new[] { res }.ToHashSet();
-        var list = structure.Recursive(z => z?.Children ?? Enumerable.Empty<ArchiveStructure>()).Where(c => c is { IsDirectory: false, BrowserFile: not null }).Select(c => c.BrowserFile).ToList();
+        var list = structure.Recursive(z => z?.Children ?? Enumerable.Empty<MudExArchiveStructure>()).Where(c => c is { IsDirectory: false, BrowserFile: not null }).Select(c => c.BrowserFile).ToList();
         return (structure, list);
     }
 
-    private async Task<Stream> CopyStreamAsync(Stream stream)
-    {
-        var res = await stream.CopyStreamAsync();
-        _streams.Add(res);
-        return res;
-    }
-
-    public async Task<HashSet<ArchiveStructure>> ReadArchiveWithSystemCompressionAsync(Stream stream, string rootFolderName, string contentType)
+    public async Task<(HashSet<MudExArchiveStructure> Structure, List<IArchivedBrowserFile> List)> ReadArchiveWithSystemCompressionAsync(Stream stream, string rootFolderName, string contentType)
     {
         var contentStream = await CopyStreamAsync(stream);
         contentStream = ArchiveConverter.ConvertToSystemCompressionZip(contentStream); // Converts archive to zip otherwise system compression cant read
         var entries = new ZipArchive(contentStream).Entries.Select(entry => new ZipBrowserFile(entry) as IArchivedBrowserFile).ToList();
-        var res = ArchiveStructure.CreateStructure(entries, rootFolderName);
-        return new[] { res }.ToHashSet();
+        var res = MudExArchiveStructure.CreateStructure(entries, rootFolderName);
+        var structure = new[] { res }.ToHashSet();
+        var list = structure.Recursive(z => z?.Children ?? Enumerable.Empty<MudExArchiveStructure>()).Where(c => c is { IsDirectory: false, BrowserFile: not null }).Select(c => c.BrowserFile).ToList();
+        return (structure, list);
     }
 
     public async ValueTask DisposeAsync()
@@ -124,5 +119,12 @@ public class MudExFileService : IAsyncDisposable
         foreach (var stream in _streams)
             await stream.DisposeAsync();
         _streams.Clear();
+    }
+
+    private async Task<Stream> CopyStreamAsync(Stream stream)
+    {
+        var res = await stream.CopyStreamAsync();
+        _streams.Add(res);
+        return res;
     }
 }

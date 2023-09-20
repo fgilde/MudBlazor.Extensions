@@ -5,6 +5,7 @@
 @using MudBlazor.Extensions.Components.ObjectEdit
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using Microsoft.AspNetCore.Components
+@using MudBlazor.Extensions.Core
 @using Nextended.Blazor.Models
 @namespace MudBlazor.Extensions.Components
 @inherits MudExBaseComponent<MudExFileDisplayZip>
@@ -21,7 +22,9 @@
                       ViewDependsOnContentType="@ViewDependsOnContentType"
                       HandleContentErrorFunc="@HandleContentErrorFunc"
                       CustomContentErrorMessage="@CustomContentErrorMessage"
-                      StreamUrlHandling="@StreamUrlHandling"                      
+                      StreamUrlHandling="@StreamUrlHandling"
+                      ColorizeIcons="@ColorizeIcons"
+                      IconColor="@IconColor"
                       Dense="@Dense"
                       FileName="@_innerPreview.Name"
                       ContentStream="@_innerPreviewStream"
@@ -62,11 +65,11 @@ else
 
             @if (ShowAsTree)
             {
-                <MudTreeView Dense="@Dense" Style="width: 100%" T="ArchiveStructure" Items="@_zipStructure">
+                <MudTreeView Dense="@Dense" Style="width: 100%" T="MudExArchiveStructure" Items="@_zipStructure">
                     <ItemTemplate>
                         @if (IsInSearch(context))
                         {
-                            <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.Children" Icon="@(context.BrowserFile?.GetIcon() ?? Icons.Material.Filled.Folder)" Text="@context.Name" EndText="2" EndTextTypo="@Typo.caption">
+                            <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.Children" Icon="@context.Icon" Text="@context.Name" EndText="2" EndTextTypo="@Typo.caption">
                                 <Content>
                                     <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChildren" />
 
@@ -80,7 +83,7 @@ else
                                               Class="mud-ex-file-display-tree p-0 mr-1 ml-1 mud-alert-message-w-100 mud-alert-message-mt-5">
                                          
                                         <div style="display: flex; align-items: center;">
-                                            <MudExIcon Class="mr-3" Icon="@(context.IsDirectory ? Icons.Material.Filled.Folder : context.BrowserFile?.GetIcon())" />
+                                            <MudExIcon Class="mr-3" Color="@(ColorizeIcons ? context.Color : IconColor)" Icon="@context.Icon" />
                                              <MudText>
                                                 <p>
                                                     <MudHighlighter Text="@context.Name" HighlightedText="@SearchString" />
@@ -125,15 +128,21 @@ else
                     {
                         <MudItem xs="12">
                             <MudItem>
-                                <MudAlert Icon="@entry.GetIcon()"
+                                <MudAlert NoIcon="true"
                                           OnClick="(a) => Select(entry, a)"
                                           Severity="@((IsSelected(entry) ? Severity.Warning : Severity.Normal))"
                                           Square="true"
                                           Dense="@Dense"
                                           Variant="Variant.Outlined"
                                           Class="mud-ex-file-display-flat mt-1 mr-1 ml-1 mud-alert-message-w-100 mud-alert-message-mt-5">
-                                    <MudHighlighter Text="@entry.FullName" HighlightedText="@SearchString" />
-                                    <p class="mud-ex-fd-size-display" style="width: 300px;">@entry.GetReadableFileSize(LocalizerToUse, true)</p>
+
+                                    <div style="display: flex; align-items: center;">
+                                        <MudExIcon Class="mr-3" Color="@(ColorizeIcons ? entry.GetPreferredColor() : IconColor)" Icon="@entry.GetIcon()" />
+                                        <div>
+                                            <MudHighlighter Text="@entry.FullName" HighlightedText="@SearchString" />
+                                            <p class="mud-ex-fd-size-display" style="width: 300px;">@entry.GetReadableFileSize(LocalizerToUse, true)</p>
+                                        </div>
+                                    </div>
                                     <span style="float: right; margin-top: -35px;">
                                         @if (AllowPreview)
                                         {

@@ -6,6 +6,7 @@ using MudBlazor.Extensions.Attribute;
 using Nextended.Blazor.Helper;
 using MudBlazor.Extensions.Services;
 using MudBlazor.Extensions.Components.ObjectEdit;
+using MudBlazor.Extensions.Core;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -34,7 +35,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     #region Parameters and Properties
 
     [Parameter, SafeCategory("Behaviour")]
-    public StreamUrlHandling StreamUrlHandling { get; set; } = StreamUrlHandling.DataUrl;
+    public StreamUrlHandling StreamUrlHandling { get; set; } = StreamUrlHandling.BlobUrl;
 
     /// <summary>
     /// You can set this object with any simple data object that then is used to display file infos
@@ -149,6 +150,20 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             Url = _contentStream != null ? null : Url;
         }
     }
+
+    /// <summary>
+    /// If true icons are colored
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Appearance")]
+    public bool ColorizeIcons { get; set; }
+
+    /// <summary>
+    /// If true icons are colored
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Appearance")]
+    public MudExColor IconColor { get; set; } = Color.Inherit;
 
     /// <summary>
     /// A function to handle content error.

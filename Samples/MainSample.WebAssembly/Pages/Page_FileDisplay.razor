@@ -21,6 +21,8 @@
     {
         <div style="width: 100%; height: 800px; margin-top: 20px">
             <MudExFileDisplay HandleContentErrorFunc="@HandleContentError"
+                              StreamUrlHandling="StreamUrlHandling.BlobUrl"
+                          ColorizeIcons="true"                                        
                           Dense="true"
                           FileName="@SampleFile.Name" Url="@SampleFile.Url" ContentType="@SampleFile.ContentType"></MudExFileDisplay>
         </div>

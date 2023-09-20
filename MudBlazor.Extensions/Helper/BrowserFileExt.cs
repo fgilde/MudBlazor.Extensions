@@ -30,6 +30,7 @@ namespace MudBlazor.Extensions.Helper
 
             // Archive Formats
             { "application/zip", "#FFD700" }, // ZIP yellow
+            { "application/x-zip-compressed", "#FFD700" },
             { "application/x-rar-compressed", "#FFD700" },
             { "application/x-tar", "#FFD700" },
             { "application/tar+gzip", "#FFD700" },

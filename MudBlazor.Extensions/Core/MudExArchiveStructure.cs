@@ -1,36 +1,30 @@
-﻿using Nextended.Blazor.Models;
+﻿using MudBlazor.Extensions.Helper;
+using Nextended.Blazor.Models;
 
 namespace MudBlazor.Extensions.Core;
 
-public class MudExArchiveStructure : ArchiveStructure
+public class MudExArchiveStructure : ArchiveStructureBase<MudExArchiveStructure>
 {
-    public MudExArchiveStructure(IArchivedBrowserFile browserFile) : base(browserFile)
-    {}
-
-    public MudExArchiveStructure(string name) : base(name)
-    {}
-
-    public new HashSet<MudExArchiveStructure> Children
-    {
-        get => base.Children.OfType<MudExArchiveStructure>().ToHashSet();
-        set => base.Children = new HashSet<ArchiveStructure>(value);
+    string _icon;
+    MudExColor? _color;
+    public string Icon => _icon ?? GetIcon();
+    public MudExColor Color => _color ??= GetColor();
+    
+    private MudExColor GetColor()
+    {       
+        if (Parent == null)
+            return BrowserFileExt.GetPreferredColor("application/zip");
+        if (IsDirectory)
+            return IsExpanded ? MudExColor.Primary : MudExColor.Secondary;
+        return BrowserFile.GetPreferredColor();
     }
 
-    public static MudExArchiveStructure CreateStructure(
-        IList<IArchivedBrowserFile> archiveEntries,
-        string rootFolderName)
+    private string GetIcon()
     {
-        var array = archiveEntries.Select(file => file.Path).Distinct().ToArray();
-        var archiveStructure = new MudExArchiveStructure(rootFolderName)
-        {
-            Children = FindByPath(archiveEntries, "").Select(a => new MudExArchiveStructure(a.BrowserFile)).ToHashSet()
-        };
-        var archiveContent = archiveStructure;
-        foreach (var p in array)
-        {
-            string[] source = p.Split('/');
-            EnsurePartExists(archiveContent, source.ToList(), p, archiveEntries);
-        }
-        return archiveContent;
+        if(Parent == null)
+            return _icon = Icons.Material.Filled.Archive;
+        if (IsDirectory)
+            return IsExpanded ? Icons.Material.Filled.FolderOpen : Icons.Material.Filled.Folder;
+        return _icon = BrowserFile?.GetIcon();
     }
 }

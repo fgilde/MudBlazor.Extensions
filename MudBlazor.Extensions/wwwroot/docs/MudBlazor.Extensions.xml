@@ -1223,6 +1223,16 @@
             Note: This stream should not be closed or disposed.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ColorizeIcons">
+            <summary>
+            If true icons are colored
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.IconColor">
+            <summary>
+            If true icons are colored
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.HandleContentErrorFunc">
             <summary>
             A function to handle content error.
@@ -1504,6 +1514,16 @@
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.CustomContentErrorMessage">
             <summary>
             Custom error message for content error
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ColorizeIcons">
+            <summary>
+            If true icons are colored
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.IconColor">
+            <summary>
+            If true icons are colored
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Virtualize">
@@ -4412,6 +4432,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ResolveContentTypeFromUrlFunc">
             <summary>
             The function that will be invoked to resolve content types from URLs.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ColorizeIcons">
+            <summary>
+            If true icons are colored
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.OnInitializedAsync">

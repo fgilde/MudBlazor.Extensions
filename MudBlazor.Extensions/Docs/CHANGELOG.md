@@ -1,4 +1,9 @@
 ## Change Log  
+ - 1.7.68 > Fix memoryleak for streams in [MudExFileDisplay](https://www.mudex.org/file-display)
+ - 1.7.68 > Add new Parameter "ColorizeIcons" to [MudExUploadEdit](https://www.mudex.org/upload-edit) if true the icons will be colored
+ - 1.7.68 > **_Breaking:_** Add new Parameter "StreamUrlHandling" to [MudExUploadEdit](https://www.mudex.org/upload-edit) this can have the value `StreamUrlHandling.BlobUrl` or `StreamUrlHandling.DataUrl` this always was earlier handled as DataUrl what now changed as default to handle as BlobUrl to allow preview of bigger files as well
+ - 1.7.68 > **_Breaking:_** Add new Parameter "StreamUrlHandling" to [MudExFileDisplay](https://www.mudex.org/file-display) this can have the value `StreamUrlHandling.BlobUrl` or `StreamUrlHandling.DataUrl` this always was earlier handled as DataUrl what now changed as default to handle as BlobUrl to allow preview of bigger files as well
+ - 1.7.68 > Add new Parameter "ColorizeIcons" to [MudExFileDisplay](https://www.mudex.org/file-display) if true the icons will be colored
  - 1.7.68 > New small component [MudExIcon](https://www.mudex.org/mud-ex-icon) default as MudIcon with the benefit of having [MudExColor](https://www.mudex.org/d/MudExColor) as ColorType that allows Theme and Customcolors in one type
  - 1.7.68 > [MudExFileDisplayZip](https://www.mudex.org/file-display) now nativly supports Tar, Tar+Gzip, 7zip and Rar archives
  - 1.7.68 > Update MudBlazor to 6.10.0
