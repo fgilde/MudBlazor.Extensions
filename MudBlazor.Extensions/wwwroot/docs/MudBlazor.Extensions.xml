@@ -1223,6 +1223,16 @@
             Note: This stream should not be closed or disposed.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ColorizeIcons">
+            <summary>
+            If true icons are colored
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.IconColor">
+            <summary>
+            If true icons are colored
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.HandleContentErrorFunc">
             <summary>
             A function to handle content error.
@@ -1439,11 +1449,6 @@
             Css Class for toolbar paper
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ReloadZipContentOnParameterSet">
-            <summary>
-            True to Reload zip content on parameter set
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.StickyToolbar">
             <summary>
             True to have a sticky toolbar on top
@@ -1509,6 +1514,16 @@
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.CustomContentErrorMessage">
             <summary>
             Custom error message for content error
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ColorizeIcons">
+            <summary>
+            If true icons are colored
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.IconColor">
+            <summary>
+            If true icons are colored
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Virtualize">
@@ -4419,11 +4434,10 @@
             The function that will be invoked to resolve content types from URLs.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.HasData">
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ColorizeIcons">
             <summary>
-            Returns whether the component has data.
+            If true icons are colored
             </summary>
-            <returns></returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.OnInitializedAsync">
             <inheritdoc />
@@ -4433,6 +4447,12 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.ImportModuleAndCreateJsAsync">
             <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.HasData">
+            <summary>
+            Returns whether the component has data.
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Remove(`0)">
             <summary>
@@ -6949,7 +6969,7 @@
             <param name="options">Dialog options for the displayed file.</param>
             <returns>An awaitable task with the dialog reference.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.IO.Stream,System.String,System.String,System.Func{MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.Tasks.Task{MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult}},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.IO.Stream,System.String,System.String,System.Func{MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.Tasks.Task{MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult}},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx},MudBlazor.DialogParameters)">
             <summary>
             Shows a dialog which displays a file from a given stream.
             </summary>

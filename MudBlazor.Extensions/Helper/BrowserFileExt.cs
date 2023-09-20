@@ -30,6 +30,7 @@ namespace MudBlazor.Extensions.Helper
 
             // Archive Formats
             { "application/zip", "#FFD700" }, // ZIP yellow
+            { "application/x-zip-compressed", "#FFD700" },
             { "application/x-rar-compressed", "#FFD700" },
             { "application/x-tar", "#FFD700" },
             { "application/tar+gzip", "#FFD700" },
@@ -58,7 +59,36 @@ namespace MudBlazor.Extensions.Helper
             { "text/plain", "#B0B0B0" },           // Neutral gray for TXT
             { "application/json", "#787878" },     // Darker gray for JSON
         
-            // ... add more formats as needed
+            // Web Development Formats
+            { "text/html", "#E34F26" }, // HTML5 orange
+            { "text/css", "#1572B6" }, // CSS3 blue
+            { "application/javascript", "#F7DF1E" }, // JavaScript yellow
+            { "application/xml", "#FF4500" }, // Orangish-red
+
+            // Database Formats
+            { "application/x-sqlite3", "#025E8C" }, // SQLite blue
+            { "application/sql", "#F29111" }, // Generic SQL color
+
+            // Scripting Languages
+            { "text/x-python", "#306998" }, // Python blue
+            { "text/x-php", "#8892BF" }, // PHP purple
+            { "text/x-ruby", "#CC342D" }, // Ruby red
+            { "text/x-perl", "#39457E" }, // Perl blue
+
+            // Others
+            { "text/yaml", "#DDFF55" }, // Bright yellowish-green
+            { "application/x-sh", "#4EAA25" }, // Green            
+
+            // Other Document Types
+            { "application/rtf", "#7D7D7D" }, // Neutral gray
+            { "application/x-latex", "#008080" }, // Teal color
+
+            // 3D Graphics
+            { "application/vnd.ms-pki.stl", "#FF6347" }, // Tomato color            
+
+            // Other Media Types
+            { "image/svg+xml", "#FF69B4" } // HotPink for SVG
+
         };
 
         /// <summary>
@@ -80,7 +110,7 @@ namespace MudBlazor.Extensions.Helper
         /// <summary>
         /// Returns Icon for IBrowserFile
         /// </summary>
-        public static string GetIcon(this IBrowserFile file) 
+        public static string GetIcon(this IBrowserFile file)
             => IconForFile(file.GetContentType());
 
         /// <summary>
@@ -91,8 +121,8 @@ namespace MudBlazor.Extensions.Helper
 
         public static MudExColor GetPreferredColor(string contentType)
         {
-            return colorMap.TryGetValue(contentType, out string color) ? color :                
-                MudBlazor.Color.Default; 
+            return colorMap.TryGetValue(contentType, out string color) ? color :
+                MudBlazor.Color.Default;
         }
 
         /// <summary>

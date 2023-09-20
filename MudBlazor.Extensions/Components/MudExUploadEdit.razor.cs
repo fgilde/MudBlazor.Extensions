@@ -1,10 +1,10 @@
-﻿using BlazorJS;
-using System.IO.Compression;
+﻿using System.IO.Compression;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Options;
 using Nextended.Blazor.Extensions;
 using Nextended.Core;
@@ -12,6 +12,7 @@ using BrowserFileExtensions = Nextended.Blazor.Extensions.BrowserFileExtensions;
 using Nextended.Blazor.Models;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Contracts;
+using MudBlazor.Extensions.Services;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -21,6 +22,9 @@ namespace MudBlazor.Extensions.Components;
 /// <typeparam name="T"></typeparam>
 public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
 {
+    [Parameter, SafeCategory("Behaviour")]
+    public StreamUrlHandling StreamUrlHandling { get; set; } = StreamUrlHandling.BlobUrl;
+
     /// <summary>
     /// The text displayed in the drop zone. 
     /// </summary>
@@ -364,14 +368,14 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     public Func<string, Task<string>> ResolveContentTypeFromUrlFunc { get; set; }
 
     /// <summary>
-    /// Returns whether the component has data.
+    /// If true icons are colored
     /// </summary>
-    /// <returns></returns>
-    public bool HasData()
-    {
-        return UploadRequests is { Count: > 0 } && UploadRequests.Any(x => (x.Data != null && x.Data.Any() || !string.IsNullOrWhiteSpace(x.Url)));
-    }
+    [Parameter]
+    [SafeCategory("Appearance")]
+    public bool ColorizeIcons { get; set; }
 
+
+    [Inject] private MudExFileService FileService { get; set; }
     private string _errorMessage = string.Empty;
     private CancellationTokenSource _tokenSource;
     
@@ -402,6 +406,15 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         if (AllowDrop && !ReadOnly && _inputFile != null)
             return base.ImportModuleAndCreateJsAsync();
         return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Returns whether the component has data.
+    /// </summary>
+    /// <returns></returns>
+    public bool HasData()
+    {
+        return UploadRequests is { Count: > 0 } && UploadRequests.Any(x => (x.Data != null && x.Data.Any() || !string.IsNullOrWhiteSpace(x.Url)));
     }
 
     private void UpdateAcceptInfo()
@@ -652,20 +665,31 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         return BrowserFileExt.IconForFile(request.ContentType);
     }
 
+    private MudExColor GetIconColor(T request)
+    {
+        return ColorizeIcons ? BrowserFileExt.GetPreferredColor(request.ContentType) : Color.Inherit;
+    }
+
 
     private async Task Preview(T request)
     {
+        var parameters = new DialogParameters { 
+            { nameof(MudExFileDisplay.HandleContentErrorFunc), HandlePreviewContentErrorFunc }, 
+            { nameof(MudExFileDisplay.Dense), true }, 
+            { nameof(MudExFileDisplay.StreamUrlHandling), StreamUrlHandling },
+            { nameof(MudExFileDisplay.ColorizeIcons), ColorizeIcons }
+        };
         if (MudExFileDisplayZip.CanHandleFileAsArchive(request.ContentType) && request.Data != null)
         {
-            var ms = new MemoryStream(request.Data);
-            await DialogService.ShowFileDisplayDialog(ms, request.FileName, request.ContentType);
+            using var ms = new MemoryStream(request.Data);
+            var res = await DialogService.ShowFileDisplayDialog(ms, request.FileName, request.ContentType, null, parameters);
+            await res.Result;
         }
         else
         {
-            // TODO: Maybe ... some fn to get the preview of the file
-            //var dataUrl = _navigationManager.ToAbsoluteServerUri(request.Url ?? await DataUrl.GetDataUrlAsync(request.Data, request.ContentType));
+            // TODO: Maybe ... some fn to get the preview of the file          
             var dataUrl = await ResolvePreviewUrlAsync(request);
-            await DialogService.ShowFileDisplayDialog(dataUrl, request.FileName, request.ContentType, HandlePreviewContentErrorFunc);
+            await DialogService.ShowFileDisplayDialog(dataUrl, request.FileName, request.ContentType, null, parameters);
         }
     }
 
@@ -675,10 +699,10 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     /// <param name="request"></param>
     /// <returns></returns>
     protected virtual async Task<string> ResolvePreviewUrlAsync(T request)
-    {
+    {        
         if(ResolvePreviewDataUrlFunc != null)
             return await ResolvePreviewDataUrlFunc(request);
-        return (request.Url ?? await DataUrl.GetDataUrlAsync(request.Data, request.ContentType));
+        return (request.Url ?? await FileService.CreateDataUrlAsync(request.Data, request.ContentType, StreamUrlHandling == StreamUrlHandling.BlobUrl));
     }
 
     private bool IsValidUrl(string s) => Uri.TryCreate(s, UriKind.Absolute, out var uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);

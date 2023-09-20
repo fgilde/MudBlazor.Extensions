@@ -41,24 +41,28 @@
             {
                 <MudItem xs="12">
                     <MudItem>
-                        <MudAlert Icon="@GetIcon(request)"
+                        <MudAlert 
+                              NoIcon="true"                              
                               Class="mud-alert-message-w-100"
                               Severity="@(IsSelected(request) ? Severity.Warning : (_withErrors.Contains(request) ? Severity.Error : Severity.Normal))"
                               OnClick="(a) => Select(request, a)"
                               ShowCloseIcon="@(AllowRemovingItems && !ReadOnly)"
                               CloseIcon="@Icons.Material.Filled.Delete"
                               CloseIconClicked="(() => Remove(request))">
-                            @if (AllowRename && !ReadOnly)
-                            {
-                                <MudTextField Class="mud-ex-collection-inline-string-edit" DisableUnderLine="true" Error="@(string.IsNullOrWhiteSpace(request.FileName))" @bind-Value="@request.FileName"></MudTextField>
-                            }
-                            else
-                            {
-                                @request.FileName
-                            }
+                            <div style="display: flex; align-items: center; width: 90%">
+                                <MudExIcon Class="mr-3" Color="@GetIconColor(request)" Icon="@GetIcon(request)" />
+                                @if (AllowRename && !ReadOnly)
+                                {
+                                      <MudTextField Style="height: 12px;" Class="mud-ex-collection-inline-string-edit" DisableUnderLine="true" Error="@(string.IsNullOrWhiteSpace(request.FileName))" @bind-Value="@request.FileName"></MudTextField>
+                                }
+                                else
+                                {
+                                    <MudText Style="height: 12px; margin-top: -13px" Typo="Typo.subtitle1">@request.FileName</MudText>
+                                }
+                            </div>
                             @if (AllowPreview)
                             {
-                                <MudIconButton OnClick="@(() => Preview(request))" Style="float: right;" Icon="@Icons.Material.Filled.ZoomIn" Color="Color.Inherit" Size="Size.Small" />
+                                <MudIconButton OnClick="@(() => Preview(request))" Style="margin-top: -24px; float: right;" Icon="@Icons.Material.Filled.ZoomIn" Color="Color.Inherit" Size="Size.Small" />
                             }
                         </MudAlert>
                     </MudItem>

@@ -10,7 +10,13 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        @Inherited()
+        @if (_rendered)
+        {
+            @Inherited()
+        }else
+        {
+            <MudProgressCircular Style="margin-top: 20%; margin-left: 50%;" Color="Color.Primary" Indeterminate="true" />
+        }
     </DialogContent>
     <DialogActions>
         @if (Buttons?.Any() == true)
@@ -26,4 +32,18 @@
 
 @code {
     private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+    private bool _rendered;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if(firstRender)
+            await Task.Delay(1000);
+        if (!_rendered)
+        {
+            _rendered = true;
+            StateHasChanged();
+        }
+    }
+    
 }

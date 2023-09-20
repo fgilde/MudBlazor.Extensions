@@ -6,6 +6,7 @@ using MudBlazor.Extensions.Attribute;
 using Nextended.Blazor.Helper;
 using MudBlazor.Extensions.Services;
 using MudBlazor.Extensions.Components.ObjectEdit;
+using MudBlazor.Extensions.Core;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -32,6 +33,9 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     #endregion
 
     #region Parameters and Properties
+
+    [Parameter, SafeCategory("Behaviour")]
+    public StreamUrlHandling StreamUrlHandling { get; set; } = StreamUrlHandling.BlobUrl;
 
     /// <summary>
     /// You can set this object with any simple data object that then is used to display file infos
@@ -146,6 +150,20 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             Url = _contentStream != null ? null : Url;
         }
     }
+
+    /// <summary>
+    /// If true icons are colored
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Appearance")]
+    public bool ColorizeIcons { get; set; }
+
+    /// <summary>
+    /// If true icons are colored
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Appearance")]
+    public MudExColor IconColor { get; set; } = Color.Inherit;
 
     /// <summary>
     /// A function to handle content error.
@@ -380,7 +398,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
     private async Task Download(MouseEventArgs arg)
     {
-        await EnsureUrlAsync();
+        await EnsureUrlAsync(true);
 
         await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
         {
@@ -390,10 +408,10 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         });
     }
 
-    private async Task EnsureUrlAsync()
+    private async Task EnsureUrlAsync(bool force = false)
     {
-        if (_componentForFile.ControlType == null && string.IsNullOrWhiteSpace(Url) && ContentStream != null)
-            Url = await FileService.ReadDataUrlForStreamAsync(ContentStream, ContentType);
+        if ((_componentForFile.ControlType == null || force) && string.IsNullOrWhiteSpace(Url) && ContentStream != null)
+            Url = await FileService.ReadDataUrlForStreamAsync(ContentStream, ContentType, StreamUrlHandling == StreamUrlHandling.BlobUrl);
     }
 
     private async Task CopyUrl(MouseEventArgs arg) => await JsApiService.CopyToClipboardAsync(Url);
@@ -434,5 +452,12 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             if(selfGenerated)
                 meta.Properties().Where(p => p.Value == null).Ignore();
         });
+    }
+    public override async ValueTask DisposeAsync()
+    {
+        await base.DisposeAsync();
+        Url = null;
+        _componentForFile.ControlType = null;
+        await FileService.DisposeAsync();
     }
 }

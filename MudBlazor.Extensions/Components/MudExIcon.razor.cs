@@ -12,7 +12,7 @@ public partial class MudExIcon
 {
     protected string Classname =>
         new MudExCssBuilder("mud-icon-root")
-            .AddClass("mud-icon-default", Color is {IsColor: true, AsColor: MudBlazor.Color.Default})
+            .AddClass("mud-icon-default", Color.Is(MudBlazor.Color.Inherit) || Color.Is(MudBlazor.Color.Default))
             .AddClass("mud-svg-icon", !string.IsNullOrEmpty(Icon) && Icon.Trim().StartsWith("<"))
             .AddClass(Color.IsColor ? $"mud-{Color.AsColor.GetDescription()}-text":"", Color.IsColor && Color.AsColor != MudBlazor.Color.Default && Color.AsColor != MudBlazor.Color.Inherit)
             .AddClass($"mud-icon-size-{Size.GetDescription()}")
@@ -23,7 +23,7 @@ public partial class MudExIcon
         new MudExStyleBuilder()
             .AddRaw(Style)            
             //.WithColor(Color, !Color.IsColor)
-            .WithFill(Color)
+            .WithFill(Color, !Color.Is(MudBlazor.Color.Inherit) && !Color.Is(MudBlazor.Color.Default))
             .Build();
 
     /// <summary>

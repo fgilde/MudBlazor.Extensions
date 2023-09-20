@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
@@ -27,7 +28,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         
     private IList<IArchivedBrowserFile> _zipEntries;    
     //private HashSet<ArchiveStructure> _zipStructure;
-    private HashSet<ArchiveStructure> _zipStructure;
+    private HashSet<MudExArchiveStructure> _zipStructure;
     
     private string _contentType;
     [Inject] private MudExFileService fileService { get; set; }
@@ -40,6 +41,11 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     public bool WrapInMudExFileDisplayDiv => false;
 
     #region Parameters
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter, SafeCategory("Behaviour")]
+    public StreamUrlHandling StreamUrlHandling { get; set; } = StreamUrlHandling.BlobUrl;
 
     /// <summary>
     /// If true, compact vertical padding will be applied to items.
@@ -149,12 +155,6 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     public string ToolBarPaperClass { get; set; }
 
     /// <summary>
-    /// True to Reload zip content on parameter set
-    /// </summary>
-    [Parameter, SafeCategory("Behavior")]
-    public bool ReloadZipContentOnParameterSet { get; set; }
-
-    /// <summary>
     /// True to have a sticky toolbar on top
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
@@ -228,6 +228,20 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     [Parameter] public string CustomContentErrorMessage { get; set; }
 
     /// <summary>
+    /// If true icons are colored
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Appearance")]
+    public bool ColorizeIcons { get; set; }
+
+    /// <summary>
+    /// If true icons are colored
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Appearance")]
+    public MudExColor IconColor { get; set; } = Color.Inherit;
+
+    /// <summary>
     /// Gets or sets a value indicating whether the collection should be virtualized.
     /// </summary>
     [Parameter]
@@ -246,24 +260,28 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         if (!updateRequired || (string.IsNullOrEmpty(Url) && ContentStream == null))
             return;
 
-        await CreateStructure();
-
+        _ = CreateStructure().ContinueWith(_ => StateHasChanged());
     }
-
+    
     private async Task CreateStructure()
     {
-        _zipStructure = await fileService.ReadArchiveAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url), RootFolderName, ContentType);
-        _zipEntries = _zipStructure.Recursive(z => z?.Children ?? Enumerable.Empty<ArchiveStructure>()).Where(c => c is { IsDirectory: false, BrowserFile: not null}).Select(c => c.BrowserFile).ToList();     
-        StateHasChanged();
+        var archive = await fileService.ReadArchiveAsync(ContentStream ?? await new HttpClient().GetStreamAsync(Url), RootFolderName, ContentType);
+        _zipStructure = archive.Structure;
+        _zipEntries = archive.List;
     }
     
     private async Task Preview(IArchivedBrowserFile file)
     {
         _innerPreview = file;
+        
+        //_innerPreviewStream = new MemoryStream(await file.GetBytesAsync());
+        //if(!MimeType.IsArchive(file.ContentType))
+        //    _innerPreviewUrl = await fileService.CreateDataUrlAsync(file, StreamUrlHandling == StreamUrlHandling.BlobUrl);
+        
         if (MimeType.IsArchive(file.ContentType))
             _innerPreviewStream = new MemoryStream(await file.GetBytesAsync());
         else
-            _innerPreviewUrl = await file.GetDataUrlAsync();
+            _innerPreviewUrl = await fileService.CreateDataUrlAsync(file, StreamUrlHandling == StreamUrlHandling.BlobUrl);
     }
 
     private void ClosePreview()
@@ -273,7 +291,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         _innerPreviewUrl = null;
     }
 
-    private string DownloadText(ArchiveStructure structure, bool asZip)
+    private string DownloadText(MudExArchiveStructure structure, bool asZip)
     {
         if (structure.IsDirectory)
             return asZip ? TryLocalize("Download {0} with {1} files as zip", structure.Name, structure.ContainingFiles.Count()) : TryLocalize("Download {0} files separately", structure.ContainingFiles.Count());
@@ -285,7 +303,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         return file.DownloadAsync(JsRuntime);
     }
 
-    private async void DownloadAsync(ArchiveStructure zip, bool asZip = false)
+    private async void DownloadAsync(MudExArchiveStructure zip, bool asZip = false)
     {
         if (zip.IsDownloading) return;
         _downloadMenu?.CloseMenu();
@@ -295,7 +313,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         {
             await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
             {
-                Url = await DataUrl.GetDataUrlAsync(await zip.ToArchiveBytesAsync(), "application/zip"),
+                Url = await fileService.CreateDataUrlAsync(await zip.ToArchiveBytesAsync(), "application/zip", StreamUrlHandling == StreamUrlHandling.BlobUrl),
                 FileName = $"{Path.ChangeExtension(zip.Name, "zip")}",
                 MimeType = "application/zip"
             });
@@ -308,9 +326,9 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         SetDownloadStatus(zip, false);
     }
 
-    private void SetDownloadStatus(ArchiveStructure structure, bool isDownloading)
+    private void SetDownloadStatus(MudExArchiveStructure structure, bool isDownloading)
     {
-        structure.Children?.Recursive(s => s.Children ?? Enumerable.Empty<ArchiveStructure>()).Where(s => s != null).Apply(s => s.IsDownloading = isDownloading);
+        structure.Children?.Recursive(s => s.Children ?? Enumerable.Empty<MudExArchiveStructure>()).Where(s => s != null).Apply(s => s.IsDownloading = isDownloading);
         structure.IsDownloading = isDownloading;
         StateHasChanged();
     }
@@ -318,7 +336,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private bool IsInSearch(IArchivedBrowserFile entry)
         => string.IsNullOrEmpty(SearchString) || entry.FullName.Contains(SearchString, StringComparison.OrdinalIgnoreCase);
 
-    private bool IsInSearch(ArchiveStructure context)
+    private bool IsInSearch(MudExArchiveStructure context)
     {
         var allFilters = (!string.IsNullOrEmpty(SearchString) ? new[] { SearchString } : Enumerable.Empty<string>()).Concat(Filters ?? Enumerable.Empty<string>()).Distinct().ToList();
         if (allFilters.Count == 0 || allFilters.All(string.IsNullOrEmpty))
@@ -330,7 +348,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
 
     private Task ExpandCollapse()
     {
-        _zipStructure.Recursive(s => s.Children ?? Enumerable.Empty<ArchiveStructure>()).Where(s => s != null).Apply(s => s.IsExpanded = !s.IsExpanded);
+        _zipStructure.Recursive(s => s.Children ?? Enumerable.Empty<MudExArchiveStructure>()).Where(s => s != null).Apply(s => s.IsExpanded = !s.IsExpanded);
         return Task.CompletedTask;
     }
     private string ToolbarStyle()
@@ -341,7 +359,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         return res;
     }
 
-    private Task Select(ArchiveStructure structure, MouseEventArgs args) => structure.IsDirectory ? Task.CompletedTask : Select(structure.BrowserFile, args);
+    private Task Select(MudExArchiveStructure structure, MouseEventArgs args) => structure.IsDirectory ? Task.CompletedTask : Select(structure.BrowserFile, args);
 
     private async Task Select(IArchivedBrowserFile entry, MouseEventArgs args)
     {
@@ -381,4 +399,14 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     /// Returns true if the MudExFileDisplay Component can handle the file as an archive.
     /// </summary>
     public static bool CanHandleFileAsArchive(string contentType) => MimeType.IsArchive(contentType);
+
+    public override async ValueTask DisposeAsync()
+    {
+        await base.DisposeAsync();        
+        _zipStructure = null;
+        _zipEntries?.Clear();
+        _zipEntries = null;
+        ClosePreview();
+        await fileService.DisposeAsync();
+    }
 }
