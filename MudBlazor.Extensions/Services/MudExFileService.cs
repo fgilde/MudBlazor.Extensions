@@ -7,6 +7,7 @@ using SharpCompress.Archives;
 using System.IO.Compression;
 using MudBlazor.Extensions.Helper;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.DependencyInjection;
 using Nextended.Blazor.Extensions;
 using Microsoft.JSInterop;
 
@@ -19,9 +20,9 @@ public class MudExFileService : IAsyncDisposable
     private List<Stream> _streams = new();
     private List<string> _blobUris = new();
 
-    public MudExFileService(HttpClient httpClient, IJSRuntime jsRuntime)
+    public MudExFileService(IJSRuntime jsRuntime, IServiceProvider serviceProvider)
     {
-        _httpClient = httpClient;
+        _httpClient = serviceProvider.GetService<HttpClient>() ?? new HttpClient();
         _jsRuntime = jsRuntime;
     }
 
