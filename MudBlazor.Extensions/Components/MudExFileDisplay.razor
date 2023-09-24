@@ -2,12 +2,23 @@
 @using Microsoft.AspNetCore.Components.Rendering
 @using MudBlazor.Extensions.Helper
 @using BlazorJS
+@using MudBlazor.Extensions.Options
 @namespace MudBlazor.Extensions.Components
 @inherits MudExJsRequiredBaseComponent<MudExFileDisplay>
 
 <BrowserDetect @bind-BrowserInfo="@Info" />
 
 <div @ref=ElementReference class="mud-ex-file-display-container">
+    
+    @if (!string.IsNullOrWhiteSpace(ErrorMessage) && !_errorClosed)
+    {
+        <MudAlert Class="@($"mud-alert-message-w-100")"
+                  CloseIconClicked="@(() => _errorClosed = true)"
+                  Style="@($"animation: {AnimationType.Pulse.GetAnimationCssStyle(TimeSpan.FromMilliseconds(400))}")"
+                  Icon="@Icons.Material.Filled.ErrorOutline" ShowCloseIcon="true" ContentAlignment="HorizontalAlignment.Center" Elevation="5" Severity="Severity.Error" Variant="Variant.Filled">
+            @ErrorMessage
+        </MudAlert>
+    }
 
     <MoveContent ElementSelector="@($".mud-ex-file-display-toolbar-{ElementId}")">
         <Found>
@@ -26,9 +37,11 @@
         _isNativeRendered = false;
         @if (_componentForFile.ShouldAddDiv)
         {
-            <div class="mud-ex-file-display">
-                <DynamicComponent Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters" />
-            </div>
+            <CascadingValue Value="@this" IsFixed="true">
+                <div class="mud-ex-file-display">
+                    <DynamicComponent Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters" />
+                </div>
+            </CascadingValue>
         }
         else
         {

@@ -6,14 +6,18 @@
 @attribute [DemoNew(Group = "File Handling", Name = "File Display with Stream", Order = 0, Documentation = "The same sample as the other FileDisplay example with the esxception that no url is used and streams are loaded and used.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "Shared/MySimpleJsonDisplay.razor", "SampleDataService.cs"})">
-
-    <MudExSelect T="SampleFileWithStream" ValuePresenter="ValuePresenter.ItemContent" HelperText="Select sample file (See weather.json to check how own components for files can be created)" ItemCollection="@_samples" Variant="Variant.Outlined" ToStringFunc="@(f => f.Name)" @bind-Value="SampleFile">
+    
+    @if (_loading)
+    {
+        <MudProgressLinear Color="Color.Secondary" Indeterminate="true" />
+    }
+    <MudExSelect Disabled="@_loading" T="SampleFileWithStream" ValuePresenter="ValuePresenter.ItemContent" HelperText="Select sample file (See weather.json to check how own components for files can be created)" ItemCollection="@_samples" Variant="Variant.Outlined" ToStringFunc="@(f => f.Name)" @bind-Value="SampleFile">
         <ItemTemplate>
-            <div class="file-combo-item">
-                <MudExIcon Color="@context.Color" Icon="@context.Icon"></MudExIcon>
-                <MudText>@context.Name</MudText>
-                <MudText Class="file-combo-info-item" Typo="Typo.subtitle2">@($"{context.ContentType} {context.ReadableSize}")</MudText>
-            </div>
+                <div class="file-combo-item">
+                    <MudExIcon Color="@context.Color" Icon="@context.Icon"></MudExIcon>
+                    <MudText>@context.Name</MudText>
+                    <MudText Class="file-combo-info-item" Typo="Typo.subtitle2">@($"{context.ContentType} {context.ReadableSize}")</MudText>
+                </div>
         </ItemTemplate>    
     </MudExSelect>
 
@@ -33,10 +37,12 @@
 @code {
 
     private List<SampleFileWithStream> _samples = new ();
-
+    private bool _loading;
     protected override async Task OnInitializedAsync()
     {
+        _loading = true;
         _samples.AddRange(await sampleDataService.GetSampleFilesWithStreamAsync());
+        _loading = false;
     }
 
     private string url;

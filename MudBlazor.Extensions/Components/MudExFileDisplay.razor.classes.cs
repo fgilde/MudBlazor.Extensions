@@ -105,10 +105,11 @@ public interface IMudExFileDisplay
     public IMudExFileDisplayInfos FileDisplayInfos { get; set; }
 
     /// <summary>
-    /// Should return true if this component can handle a file with thw given informations
+    /// Should return true if this component can handle a file with the given information
     /// </summary>
     bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos);
 
+    
     /// <summary>
     /// Determines if the control is active by default upon initialization. 
     /// If true, the control will be used initially; otherwise, it can be selected afterwards.

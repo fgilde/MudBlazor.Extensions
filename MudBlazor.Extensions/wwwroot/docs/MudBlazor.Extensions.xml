@@ -1025,7 +1025,7 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.IMudExFileDisplay.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
             <summary>
-            Should return true if this component can handle a file with thw given informations
+            Should return true if this component can handle a file with the given information
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.IMudExFileDisplay.StartsActive">
@@ -1243,7 +1243,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.CustomContentErrorMessage">
             <summary>
-            Custom content error message to show
+            Custom content error message to show if a native content from object or iframe raises an error
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ErrorMessage">
+            <summary>
+            Gets or sets a general error message
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.MediaType">

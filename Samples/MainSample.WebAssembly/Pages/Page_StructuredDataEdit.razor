@@ -5,7 +5,7 @@
 @inject IJSRuntime Js
 @inject IDialogService dialogService;
 
-@attribute [DemoNew(Group = "MudExObjectEdit", Name = "Structured Data Edit", Order = 2, Documentation = "New MudExStructureDataEditor can used to edit jason, xml or yaml string in a MudExObjectEdit", Icon = Icons.Custom.FileFormats.FileCode, ForComponentTypes = new[] { typeof(MudExStructuredDataEditor)})]
+@attribute [DemoNew(Group = "MudExObjectEdit", Name = "Structured Data Edit", Order = 2, Documentation = "New MudExStructureDataEditor can used to edit json, xml or yaml string in a MudExObjectEdit", Icon = Icons.Custom.FileFormats.FileCode, ForComponentTypes = new[] { typeof(MudExStructuredDataEditor)})]
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "SampleDialogOptions.cs"})">
     <SplitContainer Splittable="false" IsCollapsible="false">

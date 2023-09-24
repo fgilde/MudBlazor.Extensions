@@ -27,6 +27,8 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private List<IMudExFileDisplay> _possibleRenderControls;
     private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) _componentForFile;
     private Stream _contentStream;
+    private bool _errorClosed;
+
     [Inject] private IJsApiService JsApiService { get; set; }
     [Inject] private MudExFileService FileService { get; set; }
 
@@ -176,10 +178,16 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     public Func<IMudExFileDisplayInfos, Task<MudExFileDisplayContentErrorResult>> HandleContentErrorFunc { get; set; }
 
     /// <summary>
-    /// Custom content error message to show
+    /// Custom content error message to show if a native content from object or iframe raises an error
     /// </summary>
     [Parameter]
     [SafeCategory("Behavior")] public string CustomContentErrorMessage { get; set; }
+
+    /// <summary>
+    /// Gets or sets a general error message
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")] public string ErrorMessage { get; set; }
 
     /// <summary>
     /// Media Type for current file
@@ -250,6 +258,9 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
         if (!updateRequired)
             return;
+
+        _errorClosed = false;
+        ErrorMessage = null;
 
         await EnsureUrlAsync();
 
@@ -459,5 +470,15 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         Url = null;
         _componentForFile.ControlType = null;
         await FileService.DisposeAsync();
+    }
+
+    public void ShowError(string message)
+    {
+        if (ErrorMessage != message)
+        {
+            _errorClosed = false;
+            ErrorMessage = message;
+            StateHasChanged();
+        }
     }
 }

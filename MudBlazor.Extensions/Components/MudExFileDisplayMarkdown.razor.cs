@@ -59,6 +59,8 @@ public partial class MudExFileDisplayMarkdown: IMudExFileDisplay
     [Parameter]
     public IMudExFileDisplayInfos FileDisplayInfos { get; set; }
 
+    [CascadingParameter] public MudExFileDisplay MudExFileDisplay { get; set; }
+
     /// <summary>
     /// Returns true if its a markdown file and we can handle it
     /// </summary>
@@ -72,7 +74,15 @@ public partial class MudExFileDisplayMarkdown: IMudExFileDisplay
         await base.SetParametersAsync(parameters);
         if (updateRequired || Value == null)
         {
-            Value = await fileService.ReadAsStringFromFileDisplayInfosAsync(FileDisplayInfos);
+            try
+            {
+                Value = await fileService.ReadAsStringFromFileDisplayInfosAsync(FileDisplayInfos);
+            }
+            catch (Exception e)
+            {
+                MudExFileDisplay?.ShowError(e.Message);
+                Value = string.Empty;
+            }
             StateHasChanged();
         }
     }

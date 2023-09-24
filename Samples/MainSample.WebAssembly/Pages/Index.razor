@@ -13,9 +13,8 @@
 
 
 <MudHidden Breakpoint="Breakpoint.SmAndDown">
-    <MudExGradientText
-        Animate="false"
-        Style="margin-top: -100px;margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h2">MudBlazor.Extensions</MudExGradientText>
+    <MudExGradientText Animate="false"
+                       Style="margin-top: -100px;margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h2">MudBlazor.Extensions</MudExGradientText>
 </MudHidden>
 <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
     <MudExGradientText Animate="false"
@@ -36,17 +35,25 @@
             <MudText Typo="Typo.body2">Powerful UI Editor for json, xml or yaml content</MudText>
         </MudCardContent>
     </MudCard>
-    
+
     <MudCard Class="index-card" @onclick="@(() => { Navi.NavigateTo("/theme-edit"); })">
-            <MudCardHeader>
-                <CardHeaderContent>
+        <MudCardHeader>
+            <CardHeaderContent>
                 @((MarkupString)MudExSvg.ApplicationImage(ClientTheme.CurrentTheme, new MudExDimension(140, 100)))
-                    <MudText Typo="Typo.h6">Check out the MudExThemeEdit Component</MudText>
-                </CardHeaderContent>
-            </MudCardHeader>
+                <MudText Typo="Typo.h6">Check out the MudExThemeEdit Component</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
     </MudCard>
 </MudExCardList>
 
+<div style="display: flex; justify-content: center; align-items: center;">
+
+    <MudIcon Icon="@Icons.Filled.Circle" Color="Color.Warning" />
+    <MudText> New </MudText>
+
+    <MudIcon Style="margin-left:20px" Icon="@Icons.Filled.Circle" Color="Color.Info" />
+    <MudText> Updated </MudText>
+</div>
 
 <MudExpansionPanels MultiExpansion="true">
     <MudExpansionPanel IsInitiallyExpanded="true" Class="@($"mt-3 {("mud-ex-object-edit-group-flat")}")" Text="DEMOS">
@@ -61,13 +68,13 @@
                             {
                                 <MudAlert Icon="@Icons.Material.Filled.NewLabel" Style="margin-top: -15px;padding: 0;background: transparent;" Variant="Variant.Text" Severity="Severity.Warning">
                                     <MudText Typo="Typo.subtitle1">@($"NEW {(nav.Demo?.RelatedComponents?.FirstOrDefault()?.Name?.Split('`')?.FirstOrDefault() ?? nav.Text)}")</MudText>
-                                </MudAlert>
+                                    </MudAlert>
                             }
                             else if (nav.Demo is DemoUpdatedAttribute)
                             {
-                            <MudAlert Icon="@Icons.Material.Filled.Update" Style="margin-top: -15px;padding: 0;background: transparent;" Variant="Variant.Text" Severity="Severity.Info">
-                                <MudText Typo="Typo.subtitle1">@($"UPDATE {(nav.Demo?.RelatedComponents?.FirstOrDefault()?.Name?.Split('`')?.FirstOrDefault() ?? nav.Text)}")</MudText>
-                            </MudAlert>
+                                <MudAlert Icon="@Icons.Material.Filled.Update" Style="margin-top: -15px;padding: 0;background: transparent;" Variant="Variant.Text" Severity="Severity.Info">
+                                    <MudText Typo="Typo.subtitle1">@($"UPDATE {(nav.Demo?.RelatedComponents?.FirstOrDefault()?.Name?.Split('`')?.FirstOrDefault() ?? nav.Text)}")</MudText>
+                                    </MudAlert>
                             }
                             else
                             {
@@ -98,12 +105,12 @@
                 <MudCard Class="index-card" @onclick="@(() => { Open(nav); })">
                     <MudCardHeader>
                         <CardHeaderContent>
-                            
+
                             @if (nav.Demo is DemoNewAttribute)
                             {
                                 <MudAlert Icon="@Icons.Material.Filled.NewLabel" Style="margin-top: -15px;padding: 0;background: transparent;" Variant="Variant.Text" Severity="Severity.Warning">
                                     <MudText Typo="Typo.subtitle1">@($"NEW {(nav.Text)}")</MudText>
-                                </MudAlert>
+                                    </MudAlert>
                             }
                             else if (nav.Demo is DemoUpdatedAttribute)
                             {
@@ -115,7 +122,7 @@
                             {
                                 <MudText Typo="Typo.h6">@nav.Text</MudText>
                             }
-                            
+
                         </CardHeaderContent>
                         <CardHeaderActions>
                             @*<MudIconButton Icon="@nav.Icon" Color="Color.Default" />*@
@@ -143,6 +150,6 @@
     private void Open(NavigationEntry nav)
     {
         Navi.NavigateTo(nav.Href);
-        
+
     }
 }
