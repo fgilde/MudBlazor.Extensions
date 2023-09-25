@@ -15,7 +15,7 @@ class MudExColorHelper {
     static isHex(h) {
         if (!h) {
             return false;
-        }
+        } 
         h = h.replace('#', '');
         var a = parseInt(h, 16);
         return (a.toString(16) === h);

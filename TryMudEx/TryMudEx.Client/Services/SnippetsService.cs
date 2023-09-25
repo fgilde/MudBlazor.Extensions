@@ -27,7 +27,14 @@
 
         public async Task<string> SaveSnippetAsync(IEnumerable<CodeFile> codeFiles)
         {
-            var snippetId = string.Empty;
+            ValidateCodeFiles(codeFiles);
+            using var memoryStream = CreateZipArchiveFromCodeFiles(codeFiles);
+
+            return await PostZipToServerAsync(memoryStream);
+        }
+
+        public void ValidateCodeFiles(IEnumerable<CodeFile> codeFiles)
+        {
             if (codeFiles == null)
             {
                 throw new ArgumentNullException(nameof(codeFiles));
@@ -38,30 +45,39 @@
             {
                 throw new InvalidOperationException(codeFilesValidationError);
             }
-
-            using (var memoryStream = new MemoryStream())
-            {
-                using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
-                {
-                    foreach (var codeFile in codeFiles)
-                    {
-                        var byteArray = Encoding.UTF8.GetBytes(codeFile.Content);
-                        var codeEntry = archive.CreateEntry(codeFile.Path);
-                        using var entryStream = codeEntry.Open();
-                        entryStream.Write(byteArray);
-                    }
-                }
-
-                memoryStream.Position = 0;
-
-                var inputData = new StreamContent(memoryStream);
-
-                var response = await this.httpClient.PostAsync(this.snippetsService, inputData);
-                snippetId = await response.Content.ReadAsStringAsync();
-            }
-
-            return snippetId;
         }
+
+        public MemoryStream CreateZipArchiveFromCodeFiles(IEnumerable<CodeFile> codeFiles)
+        {
+            var memoryStream = new MemoryStream();
+            using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+            {
+                foreach (var codeFile in codeFiles)
+                {
+                    var byteArray = Encoding.UTF8.GetBytes(codeFile.Content);
+                    var codeEntry = archive.CreateEntry(codeFile.Path);
+                    using var entryStream = codeEntry.Open();
+                    entryStream.Write(byteArray);
+                }
+            }
+            memoryStream.Position = 0;
+            return memoryStream;
+        }
+
+        public async Task<string> PostZipToServerAsync(MemoryStream memoryStream)
+        {
+            var inputData = new StreamContent(memoryStream);
+            var response = await this.httpClient.PostAsync(this.snippetsService, inputData);
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        // Method to download the ZIP (You can expand on this to fit your needs)
+        public MemoryStream DownloadZipAsync(IEnumerable<CodeFile> codeFiles)
+        {
+            ValidateCodeFiles(codeFiles);
+            return CreateZipArchiveFromCodeFiles(codeFiles);
+        }
+
 
         public async Task<IEnumerable<CodeFile>> GetSnippetContentAsync(string snippetId)
         {

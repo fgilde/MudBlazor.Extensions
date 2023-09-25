@@ -1,4 +1,11 @@
-﻿using TryMudEx.Client.Components;
+﻿using System.Text;
+using MudBlazor.Extensions;
+using MudBlazor.Extensions.Components;
+using MudBlazor.Extensions.Options;
+using MudBlazor.Extensions.Services;
+using Nextended.Core;
+using Nextended.Core.Extensions;
+using TryMudEx.Client.Components;
 
 namespace TryMudEx.Client.Pages
 {
@@ -32,12 +39,19 @@ namespace TryMudEx.Client.Pages
 
         [Inject]
         public SnippetsService SnippetsService { get; set; }
-
+        
         [Inject]
         public CompilationService CompilationService { get; set; }
 
         [Inject]
+        public MudExFileService FileService { get; set; }
+
+        [Inject]
         public IJSInProcessRuntime JsRuntime { get; set; }
+
+
+        [Inject]
+        public IDialogService DialogService { get; set; }
 
         [Inject]
         public IJSUnmarshalledRuntime UnmarshalledJsRuntime { get; set; }
@@ -287,6 +301,53 @@ namespace TryMudEx.Client.Pages
             await LayoutService.ToggleDarkMode();
             string theme = LayoutService.IsDarkMode ? "vs-dark" : "default";
             this.JsRuntime.InvokeVoid(Try.Editor.SetTheme, theme);
+        }
+
+        private async Task Upload()
+        {
+            var parameters = new DialogParameters
+            {
+                { nameof(MudExMessageDialog.Buttons), MudExDialogResultAction.OkCancel("Upload") },
+                { nameof(MudExMessageDialog.Icon), Icons.Material.Filled.FileUpload }
+            };
+            var res =await DialogService.ShowComponentInDialogAsync<MudExUploadEdit<UploadableFile>>("Upload content", "Upload content files as zip or separate",
+                uploadEdit =>
+                {
+                    uploadEdit.MinHeight = 400;
+                    uploadEdit.AutoExtractZip = true;
+                    uploadEdit.MimeTypes = Array.Empty<string>();
+                    uploadEdit.MimeRestrictionType = MimeTypeRestrictionType.BlackList;
+                    //uploadEdit.MimeTypes = MimeType.ArchiveTypes.Concat(new[] { "text/plain", "application/x-zip-compressed"}).ToArray();
+                }, parameters, options =>
+                {
+                    options.Resizeable = true;
+                    options.FullWidth = true;
+                    options.MaxWidth = MaxWidth.Medium;
+                    //options.FullHeight = true;
+                });
+            if (!res.DialogResult.Canceled)
+            {
+                CodeFiles = res.Component.UploadRequests.Select(f => new KeyValuePair<string, CodeFile>(f.FileName,
+                    new CodeFile()
+                    {
+                        Path = f.FileName,
+                        Content = Encoding.UTF8.GetString(f.Data)
+                    })).ToDictionary(pair => pair.Key, pair => pair.Value);
+                CodeFileNames = CodeFiles.Keys.ToList();
+                StateHasChanged();
+            }
+        }
+
+        private async Task Download()
+        {
+            var stream = SnippetsService.DownloadZipAsync(CodeFiles.Values);
+            var id =  SnippetId ?? Guid.NewGuid().ToFormattedId();
+            await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
+            {
+                Url = await FileService.CreateDataUrlAsync(stream.ToArray(), "application/zip", true),
+                FileName = $"{Path.ChangeExtension($"TryMudEx_{id}", "zip")}",
+                MimeType = "application/zip"
+            });
         }
     }
 }

@@ -5,6 +5,9 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Text;
+using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
+using MudBlazor.Extensions.Options;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -15,6 +18,18 @@ public partial class MudExCodeView
 {
     private string _markdownCode;
     private string _code;
+
+    protected string Classname =>
+        new MudExCssBuilder("mud-ex-code-view")
+            .AddClass("full-width", FullWidth)
+            .AddClass("full-height", FullHeight)
+            .AddClass(Class)
+            .Build();
+
+    protected string Stylename =>
+        new MudExStyleBuilder()
+            .AddRaw(Style)
+            .Build();
 
     /// <summary>
     /// Text for expand code
@@ -34,12 +49,23 @@ public partial class MudExCodeView
     /// <summary>
     /// Programming Language of code
     /// </summary>
-    [Parameter] public string Language { get; set; } = "c#";
+    [Parameter] public MudExCodeLanguage Language { get; set; } = MudExCodeLanguage.CSharp;
 
     /// <summary>
     /// Code is expanded
     /// </summary>
     [Parameter] public bool CodeIsExpanded { get; set; }
+
+    /// <summary>
+    /// FullWidth
+    /// </summary>
+    [Parameter] public bool FullWidth { get; set; } = true;
+
+    /// <summary>
+    /// FullHeight
+    /// </summary>
+    [Parameter]
+    public bool FullHeight { get; set; } = true;
 
     /// <summary>
     /// Theme for code
@@ -66,7 +92,7 @@ public partial class MudExCodeView
             StateHasChanged();
             Task.Delay(10).ContinueWith(task =>
             {
-                _markdownCode = CodeAsMarkup(value, Language);
+                _markdownCode = CodeAsMarkup(value, Language.GetDescription());
                 StateHasChanged();
             });
             _code = value;

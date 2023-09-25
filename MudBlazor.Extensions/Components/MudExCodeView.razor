@@ -15,11 +15,15 @@
     @if (RenderChildContent && ChildContent != null)
     {
         <MudExpansionPanel @bind-IsExpanded="CodeIsExpanded" Text="@(CodeIsExpanded ? ExpandedText : CollapsedText)">
-            <MudMarkdown CodeBlockTheme="@Theme" Value="@(_markdownCode)"></MudMarkdown>
+            <div style="@Stylename" class="@Classname">
+                <MudMarkdown CodeBlockTheme="@Theme" Value="@(_markdownCode)"></MudMarkdown>
+            </div>
         </MudExpansionPanel>
     }
     else
     {
-        <MudMarkdown CodeBlockTheme="Theme" Value="@(_markdownCode)"></MudMarkdown>
+        <div style="@Stylename" class="@Classname">
+            <MudMarkdown CodeBlockTheme="Theme" Value="@(_markdownCode)"></MudMarkdown>
+        </div>
     }
 }
