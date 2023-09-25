@@ -149,7 +149,7 @@
             StateHasChanged();
             http.GetStringAsync(SelectedCodeFilePath).ContinueWith(async task =>
             {
-                SelectedCodeValue = CodeView.CodeAsMarkup(task.Result);
+                SelectedCodeValue = MudExCodeView.CodeAsMarkup(task.Result);
                 await InvokeAsync(() =>
                 {
                     StateHasChanged();

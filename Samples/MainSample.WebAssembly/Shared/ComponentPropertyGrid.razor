@@ -99,7 +99,7 @@ else
         await dialogService.ShowComponentInDialogAsync<DemoMarkdown>("Markup Code for using " + typeof(T).Name.Split('`').First(), "Notice: This is generated and maybe not 100% correct",
             md =>
             {
-                md.Value = CodeView.CodeAsMarkup(CodeView.GenerateBlazorMarkupFromInstance(Value));
+                md.Value = MudExCodeView.CodeAsMarkup(MudExCodeView.GenerateBlazorMarkupFromInstance(Value));
             },
             dialog =>
             {

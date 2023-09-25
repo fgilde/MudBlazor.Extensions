@@ -23,7 +23,7 @@
             @if (!string.IsNullOrEmpty(_code))
             {
                 <div style="position: absolute;top: 45px;border-radius: 30px;border: 2px solid var(--mud-palette-primary);padding: 20px;overflow: auto;max-height: 400px;">
-                    <CodeView Code="@_code" />
+                    <MudExCodeView Code="@_code" />
                 </div>
             }
 
@@ -87,7 +87,7 @@
 
     private void ShowSample1()
     {
-        _code = CodeView.ExecuteAndReturnFuncAsString(() =>
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(() =>
         {
             Options.DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.ColorfullGlass)
                 .WithStyle(b => b
@@ -109,7 +109,7 @@
 
     private void ShowSample2()
     {
-        _code = CodeView.ExecuteAndReturnFuncAsString(() =>
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(() =>
         {
             Options.DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass);
             Options.DialogBackgroundAppearance = MudExAppearance.FromCss(MudExCss.Classes.Backgrounds.LightBulb);
@@ -119,7 +119,7 @@
 
     private void ShowSample3()
     {
-        _code = CodeView.ExecuteAndReturnFuncAsString(() =>
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(() =>
         {
             Options.SetProperties(ex => ex.Resizeable = true);
             Options.DialogAppearance = MudExAppearance.FromStyle(b =>

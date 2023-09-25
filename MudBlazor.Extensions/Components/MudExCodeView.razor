@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Components.Rendering
+@using Microsoft.AspNetCore.Components.RenderTree
+@using System.Text
+@using System.Runtime.CompilerServices
+@using System.Text.RegularExpressions
+@inherits MudExBaseComponent<MudExCodeView>
+
+@if (RenderChildContent && ChildContent != null)
+{
+    @ChildContent
+}
+
+@if (!string.IsNullOrEmpty(Code))
+{
+    @if (RenderChildContent && ChildContent != null)
+    {
+        <MudExpansionPanel @bind-IsExpanded="CodeIsExpanded" Text="@(CodeIsExpanded ? ExpandedText : CollapsedText)">
+            <MudMarkdown CodeBlockTheme="@Theme" Value="@(_markdownCode)"></MudMarkdown>
+        </MudExpansionPanel>
+    }
+    else
+    {
+        <MudMarkdown CodeBlockTheme="Theme" Value="@(_markdownCode)"></MudMarkdown>
+    }
+}
