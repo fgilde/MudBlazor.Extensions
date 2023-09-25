@@ -11,35 +11,6 @@
     }
 </style>
 
-
-
-<MudExCodeView RenderChildContent="true">
-    <MudExCardList TData="object">
-        @for (int i = 0; i < 5; i++)
-        {
-            <MudCard>
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        <MudText Typo="Typo.h6">Sample Headline</MudText>
-                    </CardHeaderContent>
-                    <CardHeaderActions>
-                        <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
-                    </CardHeaderActions>
-                </MudCardHeader>
-                <MudCardContent>
-                    <MudText>Super sample Content text.</MudText>
-                    <MudText Typo="Typo.body2">Subline descriptin for sample card.</MudText>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
-                </MudCardActions>
-            </MudCard>
-        }
-    </MudExCardList>
-</MudExCodeView>
-
-
-
 <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudExGradientText Animate="false"
                        Style="margin-top: -100px;margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h2">MudBlazor.Extensions</MudExGradientText>
