@@ -5,6 +5,11 @@
 @using System.Text.RegularExpressions
 @inherits MudExBaseComponent<MudExCodeView>
 
+<Scripts SourceLoaded="@OnSourceLoaded"
+         UnloadOnDispose="false"
+         SourceLoadBehaviour="LoadBehaviour.OnInitializedAsync"
+         Src="_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js,_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css" />
+
 @if (RenderChildContent && ChildContent != null)
 {
     @ChildContent
@@ -16,14 +21,19 @@
     {
         <MudExpansionPanel @bind-IsExpanded="CodeIsExpanded" Text="@(CodeIsExpanded ? ExpandedText : CollapsedText)">
             <div style="@Stylename" class="@Classname">
-                <MudMarkdown CodeBlockTheme="@Theme" Value="@(_markdownCode)"></MudMarkdown>
+                @if (_requiredJsLoaded)
+                {
+                    <MudMarkdown CodeBlockTheme="@Theme" Value="@(_markdownCode)"></MudMarkdown>
+                }
             </div>
         </MudExpansionPanel>
     }
     else
     {
         <div style="@Stylename" class="@Classname">
-            <MudMarkdown CodeBlockTheme="Theme" Value="@(_markdownCode)"></MudMarkdown>
+            @if(_requiredJsLoaded){
+                <MudMarkdown CodeBlockTheme="Theme" Value="@(_markdownCode)"></MudMarkdown>
+            }
         </div>
     }
 }

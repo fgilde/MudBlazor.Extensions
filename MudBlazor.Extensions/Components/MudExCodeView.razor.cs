@@ -18,6 +18,7 @@ public partial class MudExCodeView
 {
     private string _markdownCode;
     private string _code;
+    private bool _requiredJsLoaded;
 
     protected string Classname =>
         new MudExCssBuilder("mud-ex-code-view")
@@ -108,6 +109,11 @@ public partial class MudExCodeView
             Code = FormatHtml(CodeFromFragment(ChildContent)) + Environment.NewLine + Code;
     }
 
+    private void OnSourceLoaded(string file)
+    {
+        if (file.EndsWith(".js"))
+            _requiredJsLoaded = true;
+    }
 
     /// <summary>
     /// Returns the given code to markup code value

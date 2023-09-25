@@ -315,9 +315,7 @@ namespace TryMudEx.Client.Pages
                 {
                     uploadEdit.MinHeight = 400;
                     uploadEdit.AutoExtractZip = true;
-                    uploadEdit.MimeTypes = Array.Empty<string>();
-                    uploadEdit.MimeRestrictionType = MimeTypeRestrictionType.BlackList;
-                    //uploadEdit.MimeTypes = MimeType.ArchiveTypes.Concat(new[] { "text/plain", "application/x-zip-compressed"}).ToArray();
+                    uploadEdit.MimeTypes = MimeType.ArchiveTypes.Concat(new[] { "text/plain", ""}).ToArray();
                 }, parameters, options =>
                 {
                     options.Resizeable = true;
@@ -334,6 +332,7 @@ namespace TryMudEx.Client.Pages
                         Content = Encoding.UTF8.GetString(f.Data)
                     })).ToDictionary(pair => pair.Key, pair => pair.Value);
                 CodeFileNames = CodeFiles.Keys.ToList();
+                HandleTabActivate(CodeFileNames.FirstOrDefault());
                 StateHasChanged();
             }
         }

@@ -12,7 +12,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="MudBlazor" Version="*" />
-    <PackageReference Include="MudBlazor.Extensions" Version="*" />
+    <PackageReference Include="MudBlazor.Extensions" Version="1.7.70-prev-230925161-try-mudex" />
+    <!--<PackageReference Include="MudBlazor.Extensions" Version="*" />-->
   </ItemGroup>
 
   <ItemGroup>
