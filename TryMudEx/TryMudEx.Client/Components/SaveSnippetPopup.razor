@@ -1,0 +1,34 @@
+﻿<div class="relative">
+    <MudPopover Open="@Visible" AnchorOrigin="Origin.TopRight" Class="ml-4 px-4 pt-3 pb-2">
+        <MudStack>
+            <MudText Typo="Typo.h6">Save Public Snippet</MudText>
+            <div>
+                <MudText Typo="Typo.body2">Please do <b>NOT</b> include any personal data.</MudText>
+                <MudText Typo="Typo.body2">Please do <b>NOT</b> include any copyrighted content.</MudText>
+            </div>
+            @if (string.IsNullOrEmpty(SnippetLink))
+            {
+                @if (Loading)
+                {
+                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4" />
+                }
+                else
+                {
+                    <div>
+                        <MudButton Color="Color.Primary" Disabled="@Loading" @onclick="SaveAsync" Class="ml-n1">Confirm</MudButton>
+                    </div>
+                }
+            }
+            else
+            {
+                <MudStack Spacing="1" Row="true" AlignItems="AlignItems.Center">
+                    <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="SnippetLink" ReadOnly="true" Class="try-save-snippet-input" />
+                    <MudIconButton Icon="@Icons.Material.Outlined.FileCopy" Size="Size.Small" OnClick="CopyLinkToClipboard" Class="pa-2 mr-n3" />
+                </MudStack>
+            }
+        </MudStack>
+    </MudPopover>
+    <MudOverlay Visible="Visible" OnClick="OnClose" />
+</div>
+
+

@@ -1,0 +1,53 @@
+﻿@page "/snippet/{snippetId?}"
+@layout MainLayout
+
+<div class="try-layout">
+    <MudDrawer Fixed="false" Elevation="1" Variant="@DrawerVariant.Mini" Class="try-drawer">
+        <MudIconButton Title="Run (Ctrl + S)" OnClick="@CompileAsync" Disabled="@Loading" Icon="@Icons.Material.Rounded.PlayArrow" Color="@(LayoutService.IsDarkMode ? Color.Success : Color.Inherit)" />
+        <MudTooltip Text="Save or Share" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
+            <SaveSnippetPopup @bind-Visible="SaveSnippetPopupVisible" CodeFiles="@CodeFiles.Values" UpdateActiveCodeFileContentAction="UpdateActiveCodeFileContent" />
+            <MudIconButton OnClick="ShowSaveSnippetPopup" Icon="@Icons.Material.Outlined.Save" Color="@(LayoutService.IsDarkMode ? Color.Info : Color.Inherit)" />
+        </MudTooltip>
+        <MudTooltip Text="@(LayoutService.IsDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme")" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
+            <MudIconButton OnClick="@UpdateTheme" Icon="@(LayoutService.IsDarkMode ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" Color="@(LayoutService.IsDarkMode ? Color.Warning : Color.Inherit)" />
+        </MudTooltip>
+        <MudSpacer />
+        <div class="d-flex justify-center">
+            <div class="brand"><MudExGradientText Typo="Typo.h5">MudBlazor.Extensions</MudExGradientText></div>
+        </div>
+    </MudDrawer>
+    <div class="try-editor">
+        <MudOverlay Visible="Loading" Absolute="true" DarkBackground="true">
+            <MudText Typo="Typo.h4" Class="white-text"> @LoaderText</MudText>
+        </MudOverlay>
+        <div id="user-code-editor-container">
+            <TabManager Tabs="@CodeFileNames" OnTabActivate="@HandleTabActivate" OnTabClose="@HandleTabClose" OnTabCreate="@HandleTabCreate" />
+            <CodeEditor @ref="@CodeEditorComponent" Code="@CodeEditorContent" CodeFileType="@CodeFileType" />
+            <ErrorList @bind-Show="@ShowDiagnostics" Diagnostics="@Diagnostics" />
+        </div>
+        <div id="user-page-window-container">
+            <iframe id="user-page-window" src="/user-page"></iframe>
+        </div>
+    </div>
+    <MudAppBar Bottom="true" Fixed="false" Color="@GetBottomAppBarColor()" Elevation="0" Class="try-errorlist repl-navbar">
+        <div class="try-errorlist-button d-flex align-center" @onclick="@ToggleDiagnostics">
+            <MudIcon Icon="@Icons.Material.Outlined.ErrorOutline" />
+            <MudText>@ErrorsCount</MudText>
+            <MudIcon Icon="@Icons.Material.Outlined.WarningAmber" />
+            <MudText>@WarningsCount</MudText>
+            @if (ErrorsCount != 0 || WarningsCount != 0)
+            {
+                <MudIcon Icon="@(ShowDiagnostics ? $"{Icons.Material.Outlined.ExpandMore}" : $"{Icons.Material.Outlined.ExpandLess}")" />
+            }
+        </div>
+        <MudSpacer />
+        <MudText Typo="Typo.body2" Class="ml-10 try-mudblazor-version">MudBlazor @Version</MudText>
+    </MudAppBar>
+</div>
+@code{
+
+    public Color GetBottomAppBarColor()
+    {
+        return ErrorsCount != 0 ? Color.Error : WarningsCount != 0 ? Color.Warning : Color.Inherit;
+    }
+}

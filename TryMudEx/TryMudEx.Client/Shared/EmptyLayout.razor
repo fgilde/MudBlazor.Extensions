@@ -1,0 +1,20 @@
+﻿@using TryMudEx.Client.Services
+@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="@LayoutService.Theme" IsDarkMode="@LayoutService.IsDarkMode" />
+
+<div class="main">
+	<div class="content px-4">
+		@Body
+	</div>
+</div>
+
+@code {
+	[Inject] private LayoutService LayoutService { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		await LayoutService.ApplyUserPreferences(false);
+		await base.OnInitializedAsync();
+	}
+}

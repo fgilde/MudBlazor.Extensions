@@ -1,0 +1,87 @@
+﻿.try-tabs{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .try-tabs-toolbar{
+        position: relative;
+        background-color: var(--try-tabs);
+
+        .try-tabs-toolbar-inner{
+            display: flex;
+            .try-tabs-toolbar-content {
+                width: 100%;
+                flex: 1 1 auto;
+                display: inline-block;
+                position: relative;
+                white-space: nowrap;
+                overflow: hidden;
+                
+                .try-tabs-toolbar-wrapper{
+                    width: max-content;
+                    position: inherit;
+                    display: flex;
+                    transition: .3s cubic-bezier(.25,.8,.5,1);
+                }
+            }
+        }
+    }
+
+    .try-tab{
+        color: var(--try-tabs-tab-text);
+        width: auto;
+        min-width: auto !important;
+        letter-spacing: normal;
+        text-transform: none;
+        min-height: 32px !important;
+        font-size: 14px;
+        font-weight: 400;
+        max-width: 360px;
+        display: inline-flex;
+        padding: 4px 12px;
+        flex-shrink: 0;
+        line-height: normal;
+        user-select: none;
+        white-space: normal;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 150ms cubic-bezier(.4,0,.2,1) 0ms;
+
+        &:hover {
+            cursor: pointer;
+            background-color: rgba(66,66,66,0.05);
+        }
+    }
+    
+
+    .try-tab-form-input{
+        line-height: 2;
+        height: 32px;
+    }
+    
+    .try-tab-input {
+        padding: 5px 10px;
+        border: none !important;
+        border-radius: 0px !important;
+        outline: none !important;
+        color: var(--try-tabs-tab-input-text) !important;
+        background-color: var(--try-tabs-tab-input) !important;
+
+        &:focus {
+            border: none !important;
+            border-radius: 0px !important;
+            outline: none !important;
+        }
+    }
+
+    .try-tab-active {
+        color: var(--try-tabs-tab-active-text);
+        background-color: var(--try-tabs-tab-active);
+        
+        &:hover {
+            cursor: pointer;
+            background-color: var(--try-tabs-tab-active);
+        }
+    }
+}

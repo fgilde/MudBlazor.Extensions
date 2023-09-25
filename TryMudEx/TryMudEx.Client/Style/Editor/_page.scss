@@ -1,0 +1,161 @@
+﻿
+.try-layout{
+    height: 100%;
+    overflow: hidden;
+    .try-editor{
+        display: flex;
+        height: 100%;
+        flex-direction: row;
+        position: relative;
+        .code-editor {
+            height: calc(100% - 54px);
+            border: none;
+        }
+        #user-code-editor-container{
+            position: relative;
+        }
+        
+        .decorationsOverviewRuler{
+            display: none !important;
+        }
+    }
+    .try-drawer{
+        background-color: var(--try-drawer);
+        color: var(--try-drawer-text);
+        
+        & + .mud-icon-button{
+            padding:12px;
+            font-size: 2rem;
+            .mud-icon-size-medium{
+                font-size: 2rem;
+            }
+        }
+        
+        .mud-icon-button{
+            padding:16px;
+            border-radius: 0px;
+            &:hover{
+                background-color: rgba(255, 255, 255, 0.05);
+            }
+        }
+        .brand{
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 0.5rem;
+        }
+    }
+
+    .try-diagnostics{
+        position: absolute;
+        width: 100%;
+        bottom: 32px;
+        border-top: 1px solid var(--mud-palette-table-lines);
+        
+        .mud-table{
+            background-color: var(--try-table);
+        }
+        
+        table {
+            width: 100%;
+        }
+
+        th {
+            font-weight: 600;
+            padding: 0px 8px;
+            &:last-child{
+                padding: 0px;
+            }
+        }
+
+        td{
+            padding: 6px 8px;
+        }
+
+        th , td {
+            font-family: consolas;
+            font-size: 12px;
+        }
+    }
+    .try-errorlist{
+        height: 24px;
+        bottom: 0;
+        position: absolute;
+
+        &.mud-theme-inherit{
+            background-color: #2c2c2c !important;
+            color: #e0e0e0 !important;
+        }
+
+        .mud-toolbar{
+            height: 24px;
+            min-height: unset;
+            flex-wrap: nowrap;
+            padding-left: 6px;
+            padding-right: 6px;
+        }
+
+        .try-errorlist-button{
+            padding: 3px 6px;
+            &:hover{
+                cursor: pointer;
+                background-color: rgba(255, 255, 255, 0.25);
+            }
+
+            svg {
+                margin-right: 3px;
+                margin-left: 6px;
+                font-size: 18px;
+                line-height: normal;
+            }
+            svg:last-child {
+                margin-right: 6px;
+            }
+            p {
+                font-size: 14px;
+                line-height: normal;
+                &:last-child{
+                    margin-right: 6px;
+                }
+            }
+        }
+    }
+    .gutter.gutter-horizontal {
+        cursor: ew-resize;
+        background-color: var(--try-tabs);
+        background-repeat: no-repeat;
+        background-position: 50%;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+
+        &:active{
+            background-color: #766ae7;
+        }
+    }
+    .minimap {
+        display: none;
+    }
+    .decorationsOverviewRuler{
+        width: 8px !important;
+    }
+    .invisible.scrollbar.vertical.fade, .visible.scrollbar.vertical{
+        width: 8px !important;
+    }
+    .invisible.scrollbar.horizontal.fade, .visible.scrollbar.horizontal{
+        height: 8px !important;
+    }
+
+    .try-mudblazor-version{
+        font-family: consolas;
+        font-size: 14px;
+        text-transform: lowercase;
+    }
+}
+
+.try-save-snippet-input {
+    margin: 0 !important;
+    input {
+        padding: 6px 6px !important;
+        font-size: 0.9rem !important;
+    }
+}

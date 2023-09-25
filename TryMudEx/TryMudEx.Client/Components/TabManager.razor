@@ -1,0 +1,38 @@
+﻿<div class="try-tabs tabs-wrapper">
+    <div class="try-tabs-toolbar">
+        <div class="try-tabs-toolbar-inner">
+            <div class="try-tabs-toolbar-content">
+                <div class="try-tabs-toolbar-wrapper">
+                    @if (Tabs != null)
+                    {
+                        @for (var i = 0; i < Tabs.Count; i++)
+                        {
+                            var tab = Tabs[i];
+                            var activeClass = i == ActiveIndex ? "try-tab-active" : string.Empty;
+                            var currentIndex = i;
+
+                            <div class="try-tab @activeClass mud-ripple" @onclick="@(() => ActivateTabAsync(currentIndex))" title="@tab">
+                                @tab
+                                @if (currentIndex != DefaultActiveIndex)
+                                {
+                                    <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Size="Size.Small" OnClick="@(() => CloseTabAsync(currentIndex))" Class="ml-4 mr-n2" />
+                                }
+                            </div>
+                        }
+                    }
+                    <div class="try-tab pa-0" style="@TabCreatingDisplayStyle">
+                        <form @onsubmit="@CreateTabAsync" autocomplete="off" class="try-tab-form-input">
+                            <input class="try-tab-input"
+                                @ref="_newTabInput"
+                                @bind="@_newTab"
+                                @onblur="@CreateTabAsync"
+                                placeholder=".razor OR .cs" />
+                        </form>
+                    </div>
+                    <MudIconButton Icon="@Icons.Material.Filled.Add" @onclick="@InitTabCreating" Class="rounded-0 py-1 px-2"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

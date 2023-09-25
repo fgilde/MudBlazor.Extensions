@@ -1,0 +1,100 @@
+﻿.try-mudblazor-index{
+    .mud-appbar{
+        .brand {
+            font-size: 1.7rem;
+            font-weight: 300;
+            color: var(--mud-palette-text-primary);
+            letter-spacing: .1rem;
+            line-height: 1.5;
+            margin-left: auto;
+            margin-right: auto;
+
+            span {
+                color: #594ae2;
+            }
+        }
+
+        .mud-button{
+            letter-spacing: .1rem;
+            font-weight: 400;
+            font-size: 1rem;
+        }
+    }
+
+    .mud-button {
+        text-transform: none;
+        font-size: 1.22rem;
+    }
+    
+
+    .mud-typography-h2 {
+        font-weight: 500;
+    }
+
+    .try-mudblazor-codecard {
+        background-color: var(--mud-palette-background-grey);
+    }
+
+    .try-index-landing-icons {
+        stroke-width: 0.6;
+        stroke: var(--mud-palette-background);
+    }
+
+    .try-index-footer h1 {
+        font-weight: 400;
+        letter-spacing: .4rem;
+        line-height: 1.167;
+        font-size: 1rem;
+    }
+
+    .try-index-footer ul li {
+        padding: 6px 0;
+    }
+
+    .try-codeblock-editor{
+        max-width: 50%;
+    }
+
+    @media (max-width: 576px) {
+        .mud-typography-h1 {
+            font-size: 4rem;
+        }
+        .mud-typography-h2{
+            font-size: 3rem;
+        }
+        .mud-typography-h4 {
+            font-size: 1.5rem;
+        }
+        .mud-typography-h5 {
+            font-size: 1.25rem;
+        }
+        .try-codeblock-editor{
+            max-width: 100%;
+            .try-codeblock-rowcounter{
+                border-radius: 0px !important;
+            }
+        }
+
+        .mud-button {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 412px) {
+        .mud-typography-h1 {
+            font-size: 3.5rem;
+        }
+        .mud-typography-h2{
+            font-size: 2.5rem;
+        }
+        .mud-typography-h4 {
+            font-size: 1.25rem;
+        }
+    }
+    
+    @media (min-width: 768px) and (max-width: 1200px) {
+        .mud-typography-h1{
+            font-size: 4.6rem;
+        }
+    }
+}
