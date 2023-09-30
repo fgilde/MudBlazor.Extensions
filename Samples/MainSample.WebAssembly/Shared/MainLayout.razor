@@ -89,10 +89,15 @@
     protected override async Task OnInitializedAsync()
     {
         Instance = this;
-        await BlazorMonaco.Editor.Global.SetTheme(Js,"vs-dark");
         await base.OnInitializedAsync();
     }
-       
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await BlazorMonaco.Editor.Global.SetTheme(Js,"vs-dark");
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
 
     void DrawerToggle()
     {

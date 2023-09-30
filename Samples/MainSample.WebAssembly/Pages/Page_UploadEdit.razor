@@ -1,6 +1,9 @@
 ﻿@page "/upload-edit"
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
-
+@using Nextended.Core
+@using System.Text
+@using Nextended.Core.Extensions
+@inject IDialogService dialogService;
 @attribute [Demo(Group = "File Handling", Name = "Upload Edit", Documentation = "Demo for the MudExUploadEdit.", Order = 2, Icon = Icons.Material.Outlined.Upload, ForComponentType = typeof(MudExUploadEdit<>))]
 
 
@@ -8,6 +11,7 @@
     <SplitContainer>
         <Left>
             <MudExUploadEdit MimeTypes="@mimeTypes" T="UploadableFile" Style="max-height: 400px; width: 1000px" @ref="component"></MudExUploadEdit>
+            <MudButton OnClick="@Upload">Upload in dialog</MudButton>
         </Left>
         <Right>
             <ComponentPropertyGrid DefaultGroupName="Misc" MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
@@ -33,6 +37,33 @@
         "image/*",        
         "text/*"
     };
+    
+    private async Task Upload()
+    {
+        var parameters = new DialogParameters
+        {
+            { nameof(MudExMessageDialog.Buttons), MudExDialogResultAction.OkCancel("Upload") },
+            { nameof(MudExMessageDialog.Icon), Icons.Material.Filled.FileUpload }
+        };
+        var res =await dialogService.ShowComponentInDialogAsync<MudExUploadEdit<UploadableFile>>("Upload content", "Upload content files as zip or separate",
+            uploadEdit =>
+            {
+                uploadEdit.MinHeight = 400;
+                uploadEdit.AutoExtractZip = true;
+                uploadEdit.MimeTypes = MimeType.ArchiveTypes.Concat(new[] { "text/plain", ""}).ToArray();
+            }, parameters, options =>
+            {
+                options.Resizeable = true;
+                options.FullWidth = true;
+                options.MaxWidth = MaxWidth.Medium;
+    //options.FullHeight = true;
+            });
+        if (!res.DialogResult.Canceled)
+        {
+            component.UploadRequests.AddRange(res.Component.UploadRequests);
+            StateHasChanged();
+        }
+    }
     
     private Action<ObjectEditMeta<MudExUploadEdit<UploadableFile>>> Configure()
     {
