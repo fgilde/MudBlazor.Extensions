@@ -4,10 +4,10 @@
 <div class="try-layout">
     <MudDrawer Fixed="false" Elevation="1" Variant="@DrawerVariant.Mini" Class="try-drawer">
         <MudIconButton Title="Run (Ctrl + S)" OnClick="@CompileAsync" Disabled="@Loading" Icon="@Icons.Material.Rounded.PlayArrow" Color="@(LayoutService.IsDarkMode ? Color.Success : Color.Inherit)" />
-        <MudTooltip Text="Save or Share" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
+      @*   <MudTooltip Text="Save or Share" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
             <SaveSnippetPopup @bind-Visible="SaveSnippetPopupVisible" CodeFiles="@CodeFiles.Values" UpdateActiveCodeFileContentAction="UpdateActiveCodeFileContent" />
             <MudIconButton OnClick="ShowSaveSnippetPopup" Icon="@Icons.Material.Outlined.Save" Color="@(LayoutService.IsDarkMode ? Color.Info : Color.Inherit)" />
-        </MudTooltip>
+        </MudTooltip> *@
         <MudTooltip Text="Download" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
             <MudIconButton OnClick="Download" Icon="@Icons.Material.Outlined.Download" Color="@(LayoutService.IsDarkMode ? Color.Info : Color.Inherit)" />
         </MudTooltip>

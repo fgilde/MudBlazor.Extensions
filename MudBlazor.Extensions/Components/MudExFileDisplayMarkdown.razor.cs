@@ -10,7 +10,7 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExFileDisplayMarkdown: IMudExFileDisplay
 {
-    private bool _requiredJsLoaded;
+    private readonly List<string> _loadedFiles = new();
 
     [Inject] private MudExFileService fileService { get; set; }
     /// <summary>
@@ -89,8 +89,7 @@ public partial class MudExFileDisplayMarkdown: IMudExFileDisplay
 
     private void OnSourceLoaded(string file)
     {
-        if (file.EndsWith(".js"))
-            _requiredJsLoaded = true;
+        _loadedFiles.Add(file);
     }
 
 }

@@ -18,7 +18,7 @@ public partial class MudExCodeView
 {
     private string _markdownCode;
     private string _code;
-    private bool _requiredJsLoaded;
+    private List<string> _loadedFiles = new();
 
     protected string Classname =>
         new MudExCssBuilder("mud-ex-code-view")
@@ -111,8 +111,7 @@ public partial class MudExCodeView
 
     private void OnSourceLoaded(string file)
     {
-        if (file.EndsWith(".js"))
-            _requiredJsLoaded = true;
+        _loadedFiles.Add(file);
     }
 
     /// <summary>
