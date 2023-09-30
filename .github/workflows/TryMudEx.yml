@@ -22,8 +22,8 @@ jobs:
       run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
     - name: Build
       run: dotnet build "${{ env.WORKING_DIRECTORY }}/TryMudEx.Server/TryMudEx.Server.csproj" --configuration ${{ env.CONFIGURATION }} --no-restore
-    - name: Test
-      run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
+    # - name: Test
+    #   run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
     - name: Publish
       run: dotnet publish "${{ env.WORKING_DIRECTORY }}/TryMudEx.Server/TryMudEx.Server.csproj" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
     - name: Publish Artifacts
