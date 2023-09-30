@@ -94,7 +94,7 @@ public partial class MudExCodeView
             Task.Delay(10).ContinueWith(task =>
             {
                 _markdownCode = CodeAsMarkup(value, Language.GetDescription());
-                StateHasChanged();
+                InvokeAsync(StateHasChanged);
             });
             _code = value;
         }

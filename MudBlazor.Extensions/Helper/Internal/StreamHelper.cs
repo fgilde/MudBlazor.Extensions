@@ -8,7 +8,12 @@ internal static class StreamHelper
         if (input == null)
             return null;
         // Ensure the input stream's position is at the beginning
-        input.Position = 0;
+        try
+        {
+            input.Position = 0;
+        }
+        catch (Exception e)
+        {}
 
         MemoryStream memoryStream = new MemoryStream();
         await input.CopyToAsync(memoryStream);

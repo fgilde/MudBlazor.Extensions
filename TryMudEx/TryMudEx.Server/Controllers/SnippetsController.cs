@@ -1,11 +1,14 @@
 ﻿using System;
 using System.IO;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Azure.Identity;
 using Azure.Storage;
 using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using static TryMudEx.Server.Utilities.SnippetsEncoder;
 
 namespace TryMudEx.Server.Controllers
@@ -16,7 +19,8 @@ namespace TryMudEx.Server.Controllers
     {
         private readonly IConfiguration _config;
         private readonly BlobContainerClient containerClient;
-        public SnippetsController(IConfiguration config)
+        private HttpClient _httpClient;
+        public SnippetsController(IConfiguration config, IServiceProvider serviceProvider)
         {
             _config = config;
             var containerUri = new Uri(_config["SnippetsContainerUrl"]);
@@ -35,26 +39,67 @@ namespace TryMudEx.Server.Controllers
                 var key = new StorageSharedKeyCredential(acccountName, accessKey);
                 containerClient = new BlobContainerClient(containerUri, key);
             }
+            _httpClient = serviceProvider.GetService<HttpClient>() ?? new HttpClient();
         }
+
+        //[HttpGet("{snippetId}")]
+        //public async Task<IActionResult> Get(string snippetId)
+        //{
+        //    snippetId = DecodeSnippetId(snippetId);
+        //    var blob = containerClient.GetBlobClient(BlobPath(snippetId));
+        //    var response = await blob.DownloadAsync();
+        //    var zipStream = new MemoryStream();
+        //    await response.Value.Content.CopyToAsync(zipStream);
+        //    zipStream.Position = 0;
+        //    return File(zipStream, "application/octet-stream", "snippet.zip");
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> Post()
+        //{
+        //    var newSnippetId = NewSnippetId();
+        //    await containerClient.UploadBlobAsync(BlobPath(newSnippetId), Request.Body);
+        //    return Ok(EncodeSnippetId(newSnippetId));
+        //}
 
         [HttpGet("{snippetId}")]
         public async Task<IActionResult> Get(string snippetId)
         {
-            snippetId = DecodeSnippetId(snippetId);
-            var blob = containerClient.GetBlobClient(BlobPath(snippetId));
-            var response = await blob.DownloadAsync();
-            var zipStream = new MemoryStream();
-            await response.Value.Content.CopyToAsync(zipStream);
-            zipStream.Position = 0;
-            return File(zipStream, "application/octet-stream", "snippet.zip");
+            var responseMessage = await _httpClient.GetAsync($"https://try.mudblazor.com/api/snippets/{snippetId}");
+
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                // Handle the error appropriately. For example, you can return a 500 status code
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+
+            var stream = await responseMessage.Content.ReadAsStreamAsync();
+            var contentDisposition = responseMessage.Content.Headers.ContentDisposition?.ToString();
+
+            // Return the stream from the other server directly to your client
+            return File(stream, "application/octet-stream", contentDisposition ?? "snippet.zip");
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Post()
         {
-            var newSnippetId = NewSnippetId();
-            await containerClient.UploadBlobAsync(BlobPath(newSnippetId), Request.Body);
-            return Ok(EncodeSnippetId(newSnippetId));
+            using var requestContent = new StreamContent(Request.Body);
+            foreach (var header in Request.Headers)
+            {
+                requestContent.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
+            }
+
+            var responseMessage = await _httpClient.PostAsync("https://try.mudblazor.com/api/snippets", requestContent);
+
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                // Handle error
+                return StatusCode((int)responseMessage.StatusCode, "Error forwarding the POST request");
+            }
+
+            var snippetId = await responseMessage.Content.ReadAsStringAsync();
+            return Ok(snippetId);
         }
 
         private static string NewSnippetId()

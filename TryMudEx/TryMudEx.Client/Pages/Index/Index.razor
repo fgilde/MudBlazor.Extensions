@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Try.Core
 
 
 <MudLayout Class="try-mudblazor-index">
@@ -57,24 +58,74 @@
                         </div>
                         <MudDivider />
                         <div class="d-flex flex-column flex-sm-row">
-                            <div class="d-flex try-codeblock-editor">
-                                <IndexCodeBlock />
+                            <div style="width: 600px;  align-self: stretch">
+                                <CodeEditor ReadOnly="true" Code="@_code" CodeFileType="CodeFileType.Razor"></CodeEditor>
                             </div>
-                            <MudDivider Vertical="true" FlexItem="true" />
+                            <MudDivider Vertical="true" FlexItem="true"/>
                             <div class="d-flex flex-grow-1">
                                 <div class="pt-6 pb-16 px-8">
-                                    <MudCard Elevation="25" Class="rounded-lg">
-                                        <MudCardMedia Image="/images/door.jpg" Height="200" />
-                                        <MudCardContent>
-                                            <MudText Typo="Typo.h5">Old Paint</MudText>
-                                            <MudText Typo="Typo.body2">Old paint found on a stone house door.</MudText>
-                                            <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
-                                        </MudCardContent>
-                                    </MudCard>
+                                    <MudExCardList TData="object">
+                                        <MudCard>
+                                            <MudCardHeader>
+                                                <CardHeaderContent>
+                                                    <MudText Typo="Typo.h6">Card 1</MudText>
+                                                </CardHeaderContent>
+                                                <CardHeaderActions>
+                                                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default"/>
+                                                </CardHeaderActions>
+                                            </MudCardHeader>
+                                            <MudCardContent>
+                                                <MudText>Super sample Content text.</MudText>
+                                                <MudText Typo="Typo.body2">Subline descriptin for sample card.</MudText>
+                                            </MudCardContent>
+                                            <MudCardActions>
+                                                <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
+                                            </MudCardActions>
+                                        </MudCard>
+                                        <MudCard>
+                                            <MudCardHeader>
+                                                <CardHeaderContent>
+                                                    <MudText Typo="Typo.h6">Card 2</MudText>
+                                                </CardHeaderContent>
+                                                <CardHeaderActions>
+                                                    <MudIconButton Icon="@Icons.Material.Filled.AddCard" Color="Color.Default"/>
+                                                </CardHeaderActions>
+                                            </MudCardHeader>
+                                            <MudCardContent>
+                                                <MudText>Super sample Content text.</MudText>
+                                                <MudText Typo="Typo.body2">Subline descriptin for sample card.</MudText>
+                                            </MudCardContent>
+                                            <MudCardActions>
+                                                <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
+                                            </MudCardActions>
+                                        </MudCard>
+                                        <MudCard>
+                                            <MudCardHeader>
+                                                <CardHeaderContent>
+                                                    <MudText Typo="Typo.h6">Card 3</MudText>
+                                                </CardHeaderContent>
+                                                <CardHeaderActions>
+                                                    <MudIconButton Icon="@Icons.Material.Filled.Camera" Color="Color.Default"/>
+                                                </CardHeaderActions>
+                                            </MudCardHeader>
+                                            <MudCardContent>
+                                                <MudText>Super sample Content text.</MudText>
+                                                <MudText Typo="Typo.body2">Subline descriptin for sample card.</MudText>
+                                            </MudCardContent>
+                                            <MudCardActions>
+                                                <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
+                                            </MudCardActions>
+                                        </MudCard>
+                                    </MudExCardList>
                                 </div>
                             </div>
                         </div>
                     </MudPaper>
+                    
+                    <div class="px-2 mt-8" style="display: flex;justify-content: center; align-items: center;">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" DisableElevation="true" Class="px-6" Link="/snippet/samples/CardList">Use this code</MudButton>
+                    </div>
+
                 </MudItem>
 
                 <MudItem xs="12" Class="my-16">

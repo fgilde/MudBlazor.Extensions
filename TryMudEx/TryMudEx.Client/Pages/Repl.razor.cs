@@ -59,6 +59,9 @@ namespace TryMudEx.Client.Pages
         [Parameter]
         public string SnippetId { get; set; }
 
+        [Parameter]
+        public string Sample { get; set; }
+
         public CodeEditor CodeEditorComponent { get; set; }
 
         public IDictionary<string, CodeFile> CodeFiles { get; set; } = new Dictionary<string, CodeFile>();
@@ -131,34 +134,45 @@ namespace TryMudEx.Client.Pages
             base.OnAfterRender(firstRender);
         }
 
-        protected override async Task OnInitializedAsync()
+        private async Task<LoadedSample> LoadDataAsync()
         {
-            Snackbar.Clear();
-
-            if (!string.IsNullOrWhiteSpace(this.SnippetId))
+            var isSnippet = !string.IsNullOrWhiteSpace(SnippetId) && string.IsNullOrWhiteSpace(Sample);
+            var isSample = !isSnippet && !string.IsNullOrWhiteSpace(Sample);
+            if (isSnippet || isSample)
             {
                 try
                 {
-                    this.CodeFiles = (await this.SnippetsService.GetSnippetContentAsync(this.SnippetId)).ToDictionary(f => f.Path, f => f);
-                    if (!this.CodeFiles.Any())
+                    CodeFiles = isSnippet
+                        ? (await SnippetsService.GetSnippetContentAsync(SnippetId)).ToDictionary(f => f.Path, f => f)
+                        : (await SnippetsService.LoadSampleAsync(Sample)).ToDictionary(f => f.Path, f => f);
+                    if (!CodeFiles.Any())
                     {
-                        this.errorMessage = "No files in snippet.";
+                        errorMessage = "No files in snippet or sample.";
                     }
                     else
                     {
-                        this.activeCodeFile = this.CodeFiles.First().Value;
+                        activeCodeFile = CodeFiles.First().Value;
                     }
                 }
                 catch (ArgumentException)
                 {
-                    this.errorMessage = "Invalid Snippet ID.";
+                    errorMessage = "Invalid Snippet ID.";
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    this.errorMessage = "Unable to get snippet content. Please try again later.";
+                    errorMessage = "Unable to get snippet content. Please try again later.";
                 }
+                return isSnippet ? LoadedSample.Snippet : LoadedSample.Sample;
             }
+            return LoadedSample.None;
+        }
 
+        protected override async Task OnInitializedAsync()
+        {
+            Snackbar.Clear();
+
+            var loaded = await LoadDataAsync();
+         
             if (!this.CodeFiles.Any())
             {
                 this.activeCodeFile = new CodeFile
@@ -169,10 +183,11 @@ namespace TryMudEx.Client.Pages
                 this.CodeFiles.Add(CoreConstants.MainComponentFilePath, this.activeCodeFile);
             }
 
-            this.CodeFileNames = this.CodeFiles.Keys.ToList();
+            CodeFileNames = CodeFiles.Keys.ToList();
 
             await base.OnInitializedAsync();
         }
+
 
         private async Task CompileAsync()
         {

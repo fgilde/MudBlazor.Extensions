@@ -114,6 +114,12 @@
             return snippetFiles;
         }
 
+        public async Task<IEnumerable<CodeFile>> LoadSampleAsync(string sample)
+        {
+            var stream = await httpClient.GetStreamAsync($"/data/{sample}.zip");
+            return await ExtractSnippetFilesFromZip(stream);
+        }
+
         private static async Task<IEnumerable<CodeFile>> ExtractSnippetFilesFromZip(Stream zipStream)
         {
             var result = new List<CodeFile>();

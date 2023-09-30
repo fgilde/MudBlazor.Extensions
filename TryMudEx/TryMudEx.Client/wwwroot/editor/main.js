@@ -109,7 +109,8 @@ window.Try.Editor = window.Try.Editor || (function () {
     let _overrideValue;
 
     return {
-        create: function (id, value, language) {
+        create: function (id, value, language, readOnly) {
+            debugger;
             if (!id) { return; }
             let _theme = "default";
             let userPreferences = localStorage.getItem("userPreferences");
@@ -125,6 +126,7 @@ window.Try.Editor = window.Try.Editor || (function () {
                     value: _overrideValue || value || '',
                     language: language || 'razor',
                     theme: _theme,
+                    readOnly: readOnly,
                     automaticLayout: true,
                     mouseWheelZoom: true,
                     bracketPairColorization: {
@@ -157,6 +159,11 @@ window.Try.Editor = window.Try.Editor || (function () {
                 _editor.setValue(value);
             } else {
                 _overrideValue = value;
+            }
+        },
+        setReadOnly: function (readOnly) {
+            if (_editor) {
+                _editor.updateOptions({ readOnly: readOnly });
             }
         },
         focus: function () {

@@ -1,64 +1,77 @@
-﻿namespace TryMudEx.Client.Components
+﻿using System;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using Try.Core;
+
+namespace TryMudEx.Client.Components;
+
+public partial class CodeEditor : IDisposable
 {
-    using System;
-    using System.Threading.Tasks;
-    using Try.Core;
-    using TryMudEx.Client.Models;
-    using Microsoft.AspNetCore.Components;
-    using Microsoft.JSInterop;
-    using System.Text.RegularExpressions;
+    private const string EditorId = "user-code-editor";
 
-    public partial class CodeEditor : IDisposable
+    private bool hasCodeChanged;
+    private bool hasReadOnlyChanged;
+
+    [Inject] public IJSInProcessRuntime JsRuntime { get; set; }
+
+    [Parameter] public string Code { get; set; }
+
+    [Parameter] public CodeFileType CodeFileType { get; set; }
+
+    [Parameter] public bool ReadOnly { get; set; }
+
+    public override Task SetParametersAsync(ParameterView parameters)
     {
-        private const string EditorId = "user-code-editor";
+        if (parameters.TryGetValue<string>(nameof(Code), out var parameterValue))
+            hasCodeChanged = Code != parameterValue;
 
-        private bool hasCodeChanged;
+        if (parameters.TryGetValue<bool>(nameof(ReadOnly), out var readOnly)) hasReadOnlyChanged = ReadOnly != readOnly;
 
-        [Inject]
-        public IJSInProcessRuntime JsRuntime { get; set; }
+        return base.SetParametersAsync(parameters);
+    }
 
-        [Parameter]
-        public string Code { get; set; }
+    public void Dispose()
+    {
+        JsRuntime.InvokeVoid(Models.Try.Editor.Dispose);
+    }
 
-        [Parameter]
-        public CodeFileType CodeFileType { get; set; }
+    internal void Focus()
+    {
+        JsRuntime.InvokeVoid(Models.Try.Editor.Focus);
+    }
 
-        public override Task SetParametersAsync(ParameterView parameters)
+    internal string GetCode()
+    {
+        return JsRuntime.Invoke<string>(Models.Try.Editor.GetValue);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        var newCode = Code;
+        if (newCode != null) Code = Regex.Replace(newCode, @"@code\s*\r?\n\s*{", "@code {");
+
+        if (firstRender)
         {
-            if (parameters.TryGetValue<string>(nameof(this.Code), out var parameterValue))
-            {
-                this.hasCodeChanged = this.Code != parameterValue;
-            }
-
-            return base.SetParametersAsync(parameters);
+            JsRuntime.InvokeVoid(Models.Try.Editor.Create, EditorId,
+                Code ?? CoreConstants.MainComponentDefaultFileContent, GetLanguage(), ReadOnly);
+        }
+        else if (hasCodeChanged)
+        {
+            var language = GetLanguage();
+            JsRuntime.InvokeVoid(Models.Try.Editor.SetValue, Code);
+            JsRuntime.InvokeVoid(Models.Try.Editor.SetLangugage, language);
+        }else if (hasReadOnlyChanged)
+        {
+            JsRuntime.InvokeVoid(Models.Try.Editor.SetReadOnly, ReadOnly);
         }
 
-        public void Dispose() => this.JsRuntime.InvokeVoid(Try.Editor.Dispose);
+        base.OnAfterRender(firstRender);
+    }
 
-        internal void Focus() => this.JsRuntime.InvokeVoid(Try.Editor.Focus);
-
-        internal string GetCode() => this.JsRuntime.Invoke<string>(Try.Editor.GetValue);
-
-        protected override void OnAfterRender(bool firstRender)
-        {
-            var newCode = this.Code;
-            if (newCode != null)
-            {
-                this.Code = Regex.Replace(newCode, @"@code\s*\r?\n\s*{", "@code {");
-            }
-
-            if (firstRender)
-            {
-                this.JsRuntime.InvokeVoid(Try.Editor.Create, EditorId, this.Code ?? CoreConstants.MainComponentDefaultFileContent);
-            }
-            else if (this.hasCodeChanged)
-            {
-                var language = this.CodeFileType == CodeFileType.CSharp ? "csharp" : "razor";
-                this.JsRuntime.InvokeVoid(Try.Editor.SetValue, this.Code);
-                this.JsRuntime.InvokeVoid(Try.Editor.SetLangugage, language);
-            }
-
-            base.OnAfterRender(firstRender);
-        }
+    private string GetLanguage()
+    {
+        return CodeFileType == CodeFileType.CSharp ? "csharp" : "razor";
     }
 }
