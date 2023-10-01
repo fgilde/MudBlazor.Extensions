@@ -1,4 +1,6 @@
 ## Change Log  
+ - 1.7.69 > Adapt TryMudblazor for MudEx with better autocompletion, import and export as [TryMudEx](https://trymudex.azurewebsites.net)
+ - 1.7.69 > Create MudExFileDisplayCode as file viewer for [MudExFileDisplay](https://www.mudex.org/file-display)
  - 1.7.68 > Fix memoryleak for streams in [MudExFileDisplay](https://www.mudex.org/file-display)
  - 1.7.68 > Add new Parameter "ColorizeIcons" to [MudExUploadEdit](https://www.mudex.org/upload-edit) if true the icons will be colored
  - 1.7.68 > **_Breaking:_** Add new Parameter "StreamUrlHandling" to [MudExUploadEdit](https://www.mudex.org/upload-edit) this can have the value `StreamUrlHandling.BlobUrl` or `StreamUrlHandling.DataUrl` this always was earlier handled as DataUrl what now changed as default to handle as BlobUrl to allow preview of bigger files as well

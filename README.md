@@ -202,6 +202,8 @@ dialogService.EditStructuredDataString(_dataType, _dataString, $"Auto Generated 
 
 You can find a running [Sample here](https://www.mudex.org/structured-data-edit)
 
+<!-- OBJECTEDIT:END -->
+
 ### MudExFileDisplay
 <!-- FILEDISPLAY:START -->
 <!-- Copied from MudExFileDisplay.md on 2023-09-20 13:17:34 -->
