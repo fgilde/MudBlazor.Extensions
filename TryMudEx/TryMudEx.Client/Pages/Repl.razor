@@ -29,7 +29,7 @@
         </MudOverlay>
         <div id="user-code-editor-container">
             <TabManager Tabs="@CodeFileNames" OnTabActivate="@HandleTabActivate" OnTabClose="@HandleTabClose" OnTabCreate="@HandleTabCreate" />
-            <CodeEditor @ref="@CodeEditorComponent" Code="@CodeEditorContent" CodeFileType="@CodeFileType" />
+            <CodeEditor @ref="@CodeEditorComponent" Theme="@(LayoutService.IsDarkMode ? "vs-dark" : "default")" Code="@CodeEditorContent" CodeFileType="@CodeFileType" />
             <ErrorList @bind-Show="@ShowDiagnostics" Diagnostics="@Diagnostics" />
         </div>
         <div id="user-page-window-container">

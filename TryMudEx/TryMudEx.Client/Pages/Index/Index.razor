@@ -59,7 +59,7 @@
                         <MudDivider />
                         <div class="d-flex flex-column flex-sm-row">
                             <div style="width: 600px;  align-self: stretch">
-                                <CodeEditor ReadOnly="true" Code="@_code" CodeFileType="CodeFileType.Razor"></CodeEditor>
+                                <CodeEditor Theme="@(LayoutService.IsDarkMode ? "vs-dark" : "default")" ReadOnly="true" Code="@_code" CodeFileType="CodeFileType.Razor"></CodeEditor>
                             </div>
                             <MudDivider Vertical="true" FlexItem="true"/>
                             <div class="d-flex flex-grow-1">

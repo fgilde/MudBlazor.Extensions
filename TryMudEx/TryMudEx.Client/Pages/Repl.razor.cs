@@ -314,8 +314,8 @@ namespace TryMudEx.Client.Pages
         private async void UpdateTheme()
         {
             await LayoutService.ToggleDarkMode();
-            string theme = LayoutService.IsDarkMode ? "vs-dark" : "default";
-            this.JsRuntime.InvokeVoid(Try.Editor.SetTheme, theme);
+            //string theme = LayoutService.IsDarkMode ? "vs-dark" : "default";
+            //this.JsRuntime.InvokeVoid(Try.Editor.SetTheme, theme);
         }
 
         private async Task Upload()

@@ -13,6 +13,7 @@ public partial class CodeEditor : IDisposable
 
     private bool hasCodeChanged;
     private bool hasReadOnlyChanged;
+    private bool hasThemeChanged;
 
     [Inject] public IJSInProcessRuntime JsRuntime { get; set; }
 
@@ -21,6 +22,7 @@ public partial class CodeEditor : IDisposable
     [Parameter] public CodeFileType CodeFileType { get; set; }
 
     [Parameter] public bool ReadOnly { get; set; }
+    [Parameter] public string Theme { get; set; }
 
     public override Task SetParametersAsync(ParameterView parameters)
     {
@@ -28,6 +30,7 @@ public partial class CodeEditor : IDisposable
             hasCodeChanged = Code != parameterValue;
 
         if (parameters.TryGetValue<bool>(nameof(ReadOnly), out var readOnly)) hasReadOnlyChanged = ReadOnly != readOnly;
+        if (parameters.TryGetValue<string>(nameof(Theme), out var theme)) hasThemeChanged = Theme != theme;
 
         return base.SetParametersAsync(parameters);
     }
@@ -55,17 +58,25 @@ public partial class CodeEditor : IDisposable
         if (firstRender)
         {
             JsRuntime.InvokeVoid(Models.Try.Editor.Create, EditorId,
-                Code ?? CoreConstants.MainComponentDefaultFileContent, GetLanguage(), ReadOnly);
+                Code ?? CoreConstants.MainComponentDefaultFileContent, GetLanguage(), ReadOnly, Theme);
         }
-        else if (hasCodeChanged)
+        else
         {
-            var language = GetLanguage();
-            JsRuntime.InvokeVoid(Models.Try.Editor.SetValue, Code);
-            JsRuntime.InvokeVoid(Models.Try.Editor.SetLangugage, language);
-        }else if (hasReadOnlyChanged)
-        {
-            JsRuntime.InvokeVoid(Models.Try.Editor.SetReadOnly, ReadOnly);
-        }
+	        if (hasCodeChanged)
+	        {
+		        var language = GetLanguage();
+		        JsRuntime.InvokeVoid(Models.Try.Editor.SetValue, Code);
+		        JsRuntime.InvokeVoid(Models.Try.Editor.SetLangugage, language);
+	        }
+	        if (hasReadOnlyChanged)
+	        {
+		        JsRuntime.InvokeVoid(Models.Try.Editor.SetReadOnly, ReadOnly);
+	        }
+	        if (hasThemeChanged)
+	        {
+		        JsRuntime.InvokeVoid(Models.Try.Editor.SetTheme, Theme);
+	        }
+		}
 
         base.OnAfterRender(firstRender);
     }

@@ -11,10 +11,18 @@
 
 @code {
 	[Inject] private LayoutService LayoutService { get; set; }
+	[Inject] private NavigationManager NavigationManager { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
-		await LayoutService.ApplyUserPreferences(false);
-		await base.OnInitializedAsync();
+	    if (NavigationManager.Uri.Contains("?dark") || NavigationManager.Uri.Contains("?light"))
+	    {
+			await LayoutService.ApplyUserPreferences(NavigationManager.Uri.Contains("?dark"), true);
+	    }
+	    else
+	    {
+	        await LayoutService.ApplyUserPreferences(false);
+	    }
+	    await base.OnInitializedAsync();
 	}
 }

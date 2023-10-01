@@ -28,7 +28,7 @@ public class LayoutService
 
     public LayoutService(IUserPreferencesService userPreferencesService)
     {
-        _userPreferencesService = userPreferencesService;
+	    _userPreferencesService = userPreferencesService;
     }
     
     public void SetDarkMode(bool value)
@@ -36,9 +36,9 @@ public class LayoutService
         IsDarkMode = value;
     }
     
-    public async Task ApplyUserPreferences(bool isDarkModeDefaultTheme)
+    public async Task ApplyUserPreferences(bool isDarkModeDefaultTheme, bool overwritten = false)
     {
-        _userPreferences = await _userPreferencesService.LoadUserPreferences();
+        _userPreferences = overwritten ? null : await _userPreferencesService.LoadUserPreferences();
         if (_userPreferences != null)
         {
             IsDarkMode = _userPreferences.DarkTheme;
@@ -55,9 +55,9 @@ public class LayoutService
 
     private  void OnMajorUpdateOccured() => MajorUpdateOccured?.Invoke(this,EventArgs.Empty);
     
-    public async Task ToggleDarkMode()
+    public async Task ToggleDarkMode(bool? dark = null)
     {
-        IsDarkMode = !IsDarkMode;
+        IsDarkMode = dark ?? !IsDarkMode;
         _userPreferences.DarkTheme = IsDarkMode;
         await _userPreferencesService.SaveUserPreferences(_userPreferences);
         OnMajorUpdateOccured();

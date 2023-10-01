@@ -109,23 +109,14 @@ window.Try.Editor = window.Try.Editor || (function () {
     let _overrideValue;
 
     return {
-        create: function (id, value, language, readOnly) {
-            debugger;
+        create: function (id, value, language, readOnly, theme) {
             if (!id) { return; }
-            let _theme = "default";
-            let userPreferences = localStorage.getItem("userPreferences");
-            if (userPreferences) {
-                const userPreferencesJSON = JSON.parse(userPreferences);
-                if (userPreferencesJSON.hasOwnProperty("DarkTheme") && userPreferencesJSON.DarkTheme) {
-                    _theme = "vs-dark";
-                }
-            }
-
+            
             require(['vs/editor/editor.main'], () => {
                 _editor = monaco.editor.create(document.getElementById(id), {
                     value: _overrideValue || value || '',
                     language: language || 'razor',
-                    theme: _theme,
+                    theme: theme,
                     readOnly: readOnly,
                     automaticLayout: true,
                     mouseWheelZoom: true,
@@ -175,7 +166,9 @@ window.Try.Editor = window.Try.Editor || (function () {
             }
         },
         setTheme: function (theme) {
-            monaco.editor.setTheme(theme);
+            if (_editor) {
+                monaco.editor.setTheme(theme);
+            }
         },
         dispose: function () {
             _editor = null;

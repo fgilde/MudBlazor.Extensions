@@ -13,6 +13,7 @@
     {
         [Inject] public HttpClient HttpClient { get; set; }
         [Inject] private LayoutService LayoutService { get; set; }
+        [Inject] private NavigationManager NavigationManager { get; set; }
 
         private MudThemeProvider _mudThemeProvider;
 
@@ -42,8 +43,15 @@
         
         private async Task ApplyUserPreferences()
         {
-            var defaultDarkMode = await _mudThemeProvider.GetSystemPreference();
-            await LayoutService.ApplyUserPreferences(defaultDarkMode);
+			if (NavigationManager.Uri.Contains("?dark") || NavigationManager.Uri.Contains("?light"))
+			{
+				await LayoutService.ApplyUserPreferences(NavigationManager.Uri.Contains("?dark"), true);
+			}
+			else
+			{
+				var defaultDarkMode = await _mudThemeProvider.GetSystemPreference();
+				await LayoutService.ApplyUserPreferences(defaultDarkMode);
+			}
         }
 
         public void Dispose()
