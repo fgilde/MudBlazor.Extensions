@@ -1,7 +1,19 @@
-﻿@using Nextended.Core.Extensions
+﻿@using BlazorJS;
+@using Nextended.Core.Extensions
 @using Markdig.Syntax.Inlines
 @using System.Text.RegularExpressions
 @inject HttpClient Http
+
+@if (_loadedFiles.Count <= 0)
+{
+    <BlazorJS.Scripts SourceLoaded="@OnSourceLoaded"
+             UnloadOnDispose="false"
+             SourceLoadBehaviour="LoadBehaviour.OnAfterRenderAsync"
+             Src="_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js,_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css"/>
+}
+
+@if (_loadedFiles.Count >= 2)
+{
 
 @if (CenterImagesAndHeadlines)
 {
@@ -22,14 +34,16 @@
 }
 
 
-<div class="@GetCls()">
-    <MudMarkdown OverrideLinkUrl="@LinkThat"
-                 CodeBlockTheme="@(MainLayout.Instance?.IsDark == true ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.Default)"
-                 OverrideHeaderTypo="TypoConvert()" Value="@Value">
-    </MudMarkdown>
-</div>
-
+    <div class="@GetCls()">
+        <MudMarkdown OverrideLinkUrl="@LinkThat"
+                     CodeBlockTheme="@(MainLayout.Instance?.IsDark == true ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.Default)"
+                     OverrideHeaderTypo="TypoConvert()" Value="@Value">
+        </MudMarkdown>
+    </div>
+}
 @code {
+    private List<string> _loadedFiles = new();
+
     [Parameter]
     public bool CenterImagesAndHeadlines { get; set; }
 
@@ -38,6 +52,11 @@
     {
         get => _value;
         set => _value = PrepareValue(value);
+    }
+
+    private void OnSourceLoaded(string file)
+    {
+        _loadedFiles.Add(file);
     }
 
     private string PrepareValue(string value)
