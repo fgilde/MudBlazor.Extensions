@@ -183,6 +183,8 @@ dialogService.EditObject(User, "Dialog Title", dialogOptionsEx);
 
 [More](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/ObjectEdit.md)
 
+<!-- OBJECTEDIT:END -->
+
 ### MudExStructuredDataEditor
 
 The `MudExStructuredDataEditor` is a component that allows object editing and automatically generates the corresponding UI based on structured data like json, xml or yaml. 
@@ -202,7 +204,6 @@ dialogService.EditStructuredDataString(_dataType, _dataString, $"Auto Generated 
 
 You can find a running [Sample here](https://www.mudex.org/structured-data-edit)
 
-<!-- OBJECTEDIT:END -->
 
 ### MudExFileDisplay
 <!-- FILEDISPLAY:START -->
