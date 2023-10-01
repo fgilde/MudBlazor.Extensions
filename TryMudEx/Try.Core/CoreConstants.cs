@@ -7,6 +7,8 @@
         public const string MainComponentDefaultFileContent = """
                                                               @using MudBlazor.Extensions;
                                                               @using MudBlazor.Extensions.Options;
+                                                              @using MudBlazor.Extensions.Core;
+                                                              @using MudBlazor.Utilities;
                                                               
                                                               @inject IJSRuntime Js
                                                               @inject IDialogService dialogService;

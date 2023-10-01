@@ -19,7 +19,8 @@ function registerLangugageProvider(language) {
                 if ((textUntilPosition.match(/{/g) || []).length !== (textUntilPosition.match(/}/g) || []).length) {
                     var data = await fetch("editor/snippets/csharp.json").then((response) => response.json());
                 } else {
-                    var data = await fetch("editor/snippets/mudblazor.json").then((response) => response.json());
+                    //var data = await fetch("editor/snippets/mudblazor.json").then((response) => response.json());
+                    var data = await fetch("api/snippets/mudex.json").then((response) => response.json());
                 }
             }else {
                 var data = await fetch("editor/snippets/csharp.json").then((response) => response.json());
@@ -104,6 +105,7 @@ window.Try = {
     }
 }
 
+window.Try.__providerRegistered = false;
 window.Try.Editor = window.Try.Editor || (function () {
     let _editor;
     let _overrideValue;
@@ -138,8 +140,11 @@ window.Try.Editor = window.Try.Editor || (function () {
                     documentRangeFormattingEdits: true,
                 });
 
-                registerLangugageProvider('razor');
-                registerLangugageProvider('csharp');
+                if (!window.Try.__providerRegistered) {
+                    registerLangugageProvider('razor');
+                    registerLangugageProvider('csharp');
+                    window.Try.__providerRegistered = true;
+                }
             })
         },
         getValue: function () {

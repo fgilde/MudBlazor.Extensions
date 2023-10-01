@@ -94,7 +94,10 @@ namespace TryMudEx.Client.Pages
             AreDiagnosticsShown = ShowDiagnostics;
         }
 
-        private string Version
+        string MudExVersion { get { var v = typeof(MudExIcon).Assembly.GetName().Version; return $"v{v.Major}.{v.Minor}.{v.Build}"; } }
+
+
+        private string MudVersion
         {
             get
             {

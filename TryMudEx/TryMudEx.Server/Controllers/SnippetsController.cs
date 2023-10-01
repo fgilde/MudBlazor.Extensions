@@ -1,27 +1,39 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using Azure.Identity;
 using Azure.Storage;
 using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MudBlazor;
+using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
+using Nextended.Core.Helper;
 using static TryMudEx.Server.Utilities.SnippetsEncoder;
 
 namespace TryMudEx.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
     public class SnippetsController : ControllerBase
     {
         private readonly IConfiguration _config;
         private readonly BlobContainerClient containerClient;
         private HttpClient _httpClient;
-        public SnippetsController(IConfiguration config, IServiceProvider serviceProvider)
+        private readonly IMemoryCache _cache;
+
+        public SnippetsController(IConfiguration config, IServiceProvider serviceProvider, IMemoryCache cache)
         {
+            _cache = cache;
             _config = config;
             var containerUri = new Uri(_config["SnippetsContainerUrl"]);
             string accessKey = _config["SnippetsAccessKey"];
@@ -101,6 +113,100 @@ namespace TryMudEx.Server.Controllers
             var snippetId = await responseMessage.Content.ReadAsStringAsync();
             return Ok(snippetId);
         }
+
+
+        [HttpGet("mudex.json")]
+        public async Task<IActionResult> GetTemplateSnippets()
+        {
+            return Ok(await _cache.GetOrCreateAsync("mudexSnippets", async entry =>
+            {
+                BindingFlags _flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
+
+                var interfaceType = typeof(IMudExComponent);
+                var possibleTypes = interfaceType.Assembly.GetTypes().Where(
+                    t => t.ImplementsInterface(interfaceType) && !t.IsInterface && !t.IsAbstract)
+                    .Concat(typeof(MudButton).Assembly.GetTypes().Where(t => !t.Name.StartsWith("_") && t.IsAssignableTo(typeof(ComponentBase)) && t is { IsInterface: false, IsAbstract: false, IsGenericType: false }))
+                    .ToList();
+
+                var tasks = possibleTypes.Select(type => ProcessTypeAsync(type, _flags));
+
+                var results = await Task.WhenAll(tasks);
+                return results.SelectMany(r => r).ToList();
+            }));
+        }
+
+        private Task<List<object>> ProcessTypeAsync(Type type, BindingFlags _flags)
+        {
+            return Task.Run(() =>
+            {
+                var snippets = new List<object>();
+                var placeholderCounter = 1;
+
+                var properties = type.GetProperties(_flags)
+                    .Where(i => i.CanWrite && char.IsUpper(i.Name[0]))
+                    .OrderBy(x => x.Name)
+                    .Select(i => new ApiMemberInfo<PropertyInfo>(i, type))
+                    .ToList();
+
+                var attributesList = new List<string>();
+                bool hasRenderFragment = false;
+
+                foreach (var property in properties.Where(property => property.Default != "Unknown"))
+                {
+                    if (property.TypeName == "RenderFragment")
+                    {
+                        hasRenderFragment = true;
+                        continue;
+                    }
+
+                    if (property.TypeName.Contains("MudExSize<") || property.TypeName.Contains("EventCallback"))
+                    {
+                        continue;
+                    }
+
+                    if (property.MemberInfo.PropertyType.IsEnum)
+                    {
+                        var enumType = property.MemberInfo.PropertyType;
+                        var enumValues = Enum.GetValues(enumType)
+                            .Cast<Enum>()
+                            .Select(e => $"{enumType.Namespace}.{enumType.Name}.{e}")
+                            .ToArray();
+                        if (enumValues?.Length > 0)
+                        {
+                            var joinedEnumValues = string.Join(',', enumValues);
+                            attributesList.Add($"{property.Name}=\"${{{placeholderCounter++}|{joinedEnumValues}|}}\"");
+                        }
+                    }
+                    else if (property.TypeName is "MudColor" or "MudExColor")
+                    {
+                        attributesList.Add($"{property.Name}=\"@(new {property.TypeName}(\"${{{placeholderCounter++}:{property.Default}}}\"))\"");
+                    }
+                    else
+                    {
+                        var defaultValue = property.Default.ToLower() == "true" || property.Default.ToLower() == "false"
+                                           ? property.Default.ToLower()
+                                           : property.Default;
+                        attributesList.Add($"{property.Name}=\"${{{placeholderCounter++}:{defaultValue}}}\"");
+                    }
+                }
+
+                string componentStructure;
+                componentStructure = hasRenderFragment 
+                    ? $"<{type.Name} {string.Join(' ', attributesList)}>${{{placeholderCounter++}:Text}}</{type.Name}>" 
+                    : $"<{type.Name} {string.Join(' ', attributesList)}/>";
+
+                var snippet = new
+                {
+                    prefix = type.Name,
+                    description = "Default component",
+                    body = new List<string> { componentStructure }
+                };
+
+                snippets.Add(snippet);
+                return snippets;
+            });
+        }
+
 
         private static string NewSnippetId()
         {
