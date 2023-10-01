@@ -1,6 +1,9 @@
 ﻿<!DOCTYPE html>
 <html class="mud-height-full">
 <head prefix="og: http://ogp.me/ns#">
+
+    <script src="_content/MudBlazor.Extensions/js/components/MudExAppLoader.min.js"></script>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>TryMudEx - A playground for testing MudBlazor.Extensions and MudBlazor</title>
@@ -25,7 +28,9 @@
     <meta name="twitter:description" content="TryMudEx is a fiddle-like platform for writing, compiling, executing and sharing Blazor components entirely in the browser. Perfect for code playground and testing.">
     <meta name="twitter:image" content="https://www.mudex.org/sample-data/logo.png">
 
-    <link rel="icon" type="image/png" sizes="32x32" href="https://www.mudex.org/sample-data/logo.png">
+
+    <link rel="icon" type="image/png" sizes="32x32" href="images/logo.png">
+
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400" rel="stylesheet">
@@ -34,10 +39,12 @@
     <link href="css/TryMudEx.min.css?v=#{CACHE_TOKEN}#" rel="stylesheet" />
     <script src="lib/split.js/split.min.js"></script>
     <script src="lib/monaco-editor/min/vs/loader.js"></script>
-    
+
 </head>
 
 <body class="mud-height-full">
+    <mud-ex-app-loader AppName="TryMudEx" AccentColor="#ab68ff" MainAppId="app" Logo="images/Logo.png">
+    </mud-ex-app-loader>
     <div id="app" class="mud-height-full">
         <div class="d-flex justify-content-center app-loader">
             <div class="spinner-border" role="status">
@@ -53,15 +60,6 @@
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js?v=#{CACHE_TOKEN}#"></script>
     <script src="editor/main.js?v=#{CACHE_TOKEN}#"></script>
-    <script type="text/javascript">
-        window.addEventListener('storage', (e) => {
-            if (e.key == "userPreferences") {
-                const mudblazorTheme = parent.document.getElementsByTagName('style')[4];
-                const iFrameTheme = document.getElementsByTagName('style')[3];
-                iFrameTheme.innerHTML = mudblazorTheme.innerHTML;
-            }
-        });
-    </script>
 </body>
 
 </html>

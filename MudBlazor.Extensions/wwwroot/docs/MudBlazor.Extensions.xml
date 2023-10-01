@@ -1275,6 +1275,11 @@
             Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ForceNativeRender">
+            <summary>
+            Set this to true to initially render native and ignore registered IMudExFileDisplay
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ImageAsBackgroundImage">
             <summary>
             Set to true to use image as background-url instead of img tag
@@ -1511,6 +1516,11 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FileDisplayInfos">
             <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ForceNativeRender">
+            <summary>
+            Set this to true to initially render native and ignore registered IMudExFileDisplay
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.SearchString">
             <summary>
@@ -4299,6 +4309,16 @@
             A Component to edit and upload a list of files
             </summary>
             <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.StreamUrlHandling">
+            <summary>
+            Specify how temporary urls are created
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ForceNativeRender">
+            <summary>
+            Set this to true to initially render native and ignore registered IMudExFileDisplay
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextDropZone">
             <summary>

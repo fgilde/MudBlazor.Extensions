@@ -96,9 +96,16 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     public bool ViewDependsOnContentType { get; set; } = true;
 
     /// <summary>
-    /// Set to true to use image as background-url instead of img tag
+    /// Set this to true to initially render native and ignore registered IMudExFileDisplay
     /// </summary>
     [Parameter]
+    [SafeCategory("Behavior")]
+    public bool ForceNativeRender { get; set; }
+
+	/// <summary>
+	/// Set to true to use image as background-url instead of img tag
+	/// </summary>
+	[Parameter]
     [SafeCategory("Appearance")]
     public bool ImageAsBackgroundImage { get; set; } = false;
 
@@ -275,7 +282,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     {
         _possibleRenderControls = GetServices<IMudExFileDisplay>().Where(c => c.GetType() != GetType() && c.CanHandleFile(this)).ToList();
         if (ViewDependsOnContentType)
-            _componentForFile = GetComponentForFile(_possibleRenderControls.FirstOrDefault(c => c.StartsActive));
+            _componentForFile = GetComponentForFile(_possibleRenderControls.FirstOrDefault(c => c.StartsActive && !ForceNativeRender));
         if (!internalOverwrite)
             renderInfos = GetRenderInfos();
         return base.OnParametersSetAsync();

@@ -13,7 +13,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<LocalStorageService>();
 builder.Services.AddScoped<SampleDataService>();
 builder.Services.AddMudServicesWithExtensions(c => c.WithoutAutomaticCssLoading());
-builder.Services.AddMudMarkdownServices();
 
 MySimpleTypeRegistrations.RegisterRenderDefaults();
 

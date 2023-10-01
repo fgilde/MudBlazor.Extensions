@@ -69,9 +69,16 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     }
 
     /// <summary>
-    /// SearchString for current filter
+    /// Set this to true to initially render native and ignore registered IMudExFileDisplay
     /// </summary>
-    [Parameter, SafeCategory("Filtering")]
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool ForceNativeRender { get; set; }
+
+	/// <summary>
+	/// SearchString for current filter
+	/// </summary>
+	[Parameter, SafeCategory("Filtering")]
     public string SearchString { get; set; }
 
     /// <summary>

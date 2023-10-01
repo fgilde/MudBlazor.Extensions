@@ -22,8 +22,19 @@ namespace MudBlazor.Extensions.Components;
 /// <typeparam name="T"></typeparam>
 public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
 {
+
+    /// <summary>
+    /// Specify how temporary urls are created
+    /// </summary>
     [Parameter, SafeCategory("Behaviour")]
     public StreamUrlHandling StreamUrlHandling { get; set; } = StreamUrlHandling.BlobUrl;
+
+    /// <summary>
+    /// Set this to true to initially render native and ignore registered IMudExFileDisplay
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool ForceNativeRender { get; set; }
 
     /// <summary>
     /// The text displayed in the drop zone. 
@@ -677,6 +688,7 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
             { nameof(MudExFileDisplay.HandleContentErrorFunc), HandlePreviewContentErrorFunc }, 
             { nameof(MudExFileDisplay.Dense), true }, 
             { nameof(MudExFileDisplay.StreamUrlHandling), StreamUrlHandling },
+            { nameof(MudExFileDisplay.ForceNativeRender), ForceNativeRender },
             { nameof(MudExFileDisplay.ColorizeIcons), ColorizeIcons }
         };
         if (MudExFileDisplayZip.CanHandleFileAsArchive(request.ContentType) && request.Data != null)
