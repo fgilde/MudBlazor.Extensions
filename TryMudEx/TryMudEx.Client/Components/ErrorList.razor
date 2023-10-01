@@ -1,0 +1,33 @@
+﻿
+@if (Show && Diagnostics != null && Diagnostics.Any())
+{
+    <div class="try-diagnostics">
+        <MudSimpleTable Elevation="0" Square="true">
+            <thead>
+                <tr>
+                    <th>Severity</th>
+                    <th>Code</th>
+                    <th>Description</th>
+                    <th>File</th>
+                    <th>Line</th>
+                    <th>
+                        <MudIconButton Class="rounded-0 pa-2" OnClick="@ToggleDiagnosticsAsync" Icon="@Icons.Material.Outlined.ExpandMore" />
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var diagnostic in Diagnostics)
+                {
+                    <tr>
+                        <td>@diagnostic.Severity</td>
+                        <td>@diagnostic.Code</td>
+                        <td>@diagnostic.Description</td>
+                        <td>@diagnostic.File</td>
+                        <td colspan="2">@diagnostic.Line</td>
+                    </tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+    </div>
+}
+

@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html class="mud-height-full">
+<head prefix="og: http://ogp.me/ns#">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>TryMudEx - A playground for testing MudBlazor.Extensions and MudBlazor</title>
+    <base href="/" />
+
+    <meta name="description" content="TryMudEx is a fiddle-like platform for writing, compiling, executing and sharing Blazor components entirely in the browser. Perfect for code playground and testing.">
+    <meta name="keywords" content="blazor, asp.net core, wasm, web assembly, browser, fiddle, online, compile, execute, share, component, write, front-end, playground, testing, code, single page application, dotnet, csharp, html, open-source, platform">
+    <meta name="author" content="Florian Gilde">
+    <meta name="author" content="MudBlazor">
+
+    <meta property="og:title" content="TryMudEx - Write, compile, execute and share Blazor components in the browser" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.mudex.org/" />
+    <meta property="og:image" content="https://www.mudex.org/sample-data/logo.png" />
+    <meta property="og:image:width" content="300" />
+    <meta property="og:image:height" content="300" />
+    <meta property="og:description" content="TryMudEx is a fiddle-like platform for writing, compiling, executing and sharing Blazor components entirely in the browser. Perfect for code playground and testing." />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.mudex.org/">
+    <meta name="twitter:title" content="TryMudEx - Write, compile, execute and share Blazor components in the browser">
+    <meta name="twitter:description" content="TryMudEx is a fiddle-like platform for writing, compiling, executing and sharing Blazor components entirely in the browser. Perfect for code playground and testing.">
+    <meta name="twitter:image" content="https://www.mudex.org/sample-data/logo.png">
+
+    <link rel="icon" type="image/png" sizes="32x32" href="https://www.mudex.org/sample-data/logo.png">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400" rel="stylesheet">
+    <link href="_content/MudBlazor/MudBlazor.min.css?v=#{CACHE_TOKEN}#" rel="stylesheet" />
+    <link id="mudex-styles" href="_content/MudBlazor.Extensions/mudBlazorExtensions.min.css" rel="stylesheet">
+    <link href="css/TryMudEx.min.css?v=#{CACHE_TOKEN}#" rel="stylesheet" />
+    <script src="lib/split.js/split.min.js"></script>
+    <script src="lib/monaco-editor/min/vs/loader.js"></script>
+    
+</head>
+
+<body class="mud-height-full">
+    <div id="app" class="mud-height-full">
+        <div class="d-flex justify-content-center app-loader">
+            <div class="spinner-border" role="status">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+    </div>
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_content/MudBlazor/MudBlazor.min.js?v=#{CACHE_TOKEN}#"></script>
+    <script src="editor/main.js?v=#{CACHE_TOKEN}#"></script>
+    <script type="text/javascript">
+        window.addEventListener('storage', (e) => {
+            if (e.key == "userPreferences") {
+                const mudblazorTheme = parent.document.getElementsByTagName('style')[4];
+                const iFrameTheme = document.getElementsByTagName('style')[3];
+                iFrameTheme.innerHTML = mudblazorTheme.innerHTML;
+            }
+        });
+    </script>
+</body>
+
+</html>

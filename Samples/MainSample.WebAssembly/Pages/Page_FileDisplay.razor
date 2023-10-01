@@ -7,7 +7,7 @@
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "Shared/MySimpleJsonDisplay.razor", "SampleDataService.cs"})">
 
-    <MudExSelect T="SampleFile" ValuePresenter="ValuePresenter.ItemContent" HelperText="Select sample file (See weather.json to check how own components for files can be created)" ItemCollection="@_samples" Variant="Variant.Outlined" ToStringFunc="@(f => f.Name)" @bind-Value="SampleFile">
+    <MudExSelect T="SampleFile" ValuePresenter="ValuePresenter.ItemContent" HelperText="Select sample file (See weather.json to check how own components for files can be created)" ItemCollection="@_samples" Variant="Variant.Outlined" ToStringFunc="@(f => f?.Name ?? "...")" @bind-Value="SampleFile">
         <ItemTemplate>
             <div class="file-combo-item">
                 <MudExIcon Color="@context.Color" Icon="@context.Icon"></MudExIcon>

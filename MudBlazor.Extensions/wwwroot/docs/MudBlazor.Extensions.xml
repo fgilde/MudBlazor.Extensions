@@ -554,6 +554,94 @@
             No chips, just work as listbox
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExCodeView">
+            <summary>
+            Simple CodeViewer Component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.ExpandedText">
+            <summary>
+            Text for expand code
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.CollapsedText">
+            <summary>
+            Text for hide code
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.LoadingText">
+            <summary>
+            Text while loading
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.Language">
+            <summary>
+            Programming Language of code
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.CodeIsExpanded">
+            <summary>
+            Code is expanded
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.FullWidth">
+            <summary>
+            FullWidth
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.FullHeight">
+            <summary>
+            FullHeight
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.Theme">
+            <summary>
+            Theme for code
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.ChildContent">
+            <summary>
+            ChildContent to show code for
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.RenderChildContent">
+            <summary>
+            Set to true to render also the given child content otherwise only code is generated for
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCodeView.OnParametersSet">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCodeView.CodeAsMarkup(System.String,System.String)">
+            <summary>
+            Returns the given code to markup code value
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCodeView.ExecuteAndReturnFuncAsString(System.Action,System.Boolean,System.String)">
+            <summary>
+            Executes the given action and returns the code for the action as string
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCodeView.FuncAsString(System.Action,System.Boolean,System.String)">
+            <summary>
+            Returns the given function as string
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCodeView.ReplaceLambdaInFuncString(System.String)">
+            <summary>
+            Removes lambda signs from code
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCodeView.GenerateBlazorMarkupFromInstance``1(``0)">
+            <summary>
+            Generates Markup from instance
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCodeView.FormatHtml(System.String)">
+            <summary>
+            Formats html code
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExColorBubble">
             <summary>
             A Component to quickly select a color
@@ -1277,6 +1365,44 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.OnParametersSetAsync">
             <inheritdoc/>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayCode">
+            <summary>
+            Simple component to display markdown files with MudExFileDisplay
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.Name">
+            <summary>
+            The name of the component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.Value">
+            <summary>
+            The Current code string provided from file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.Language">
+            <summary>
+            Language
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.Theme">
+            <summary>
+            The theme of the code block
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.FileDisplayInfos">
+            <summary>
+            The file display infos
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Returns true if its a markdown file and we can handle it
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDialog">
             <summary>

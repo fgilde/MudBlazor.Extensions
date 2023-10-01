@@ -1,0 +1,85 @@
+﻿@using System.Text
+
+@((MarkupString)BuildTheme())
+
+@code {
+    [Parameter] public bool IsDarkMode { get; set; }
+    
+    protected string BuildTheme()
+    {
+        var theme = new StringBuilder();
+        theme.AppendLine("<style>");
+        theme.Append(":root");
+        theme.AppendLine("{");
+        if (IsDarkMode)
+        {
+            DarkTheme(theme);
+        }
+        else
+        {
+            Light(theme);
+        }
+        theme.AppendLine("}");
+        theme.AppendLine("</style>");
+        return theme.ToString();
+    }
+
+    protected virtual void Light(StringBuilder theme)
+    {
+        theme.AppendLine($"--try-drawer: #199b90;");
+        theme.AppendLine($"--try-drawer-text: #fff;");
+        theme.AppendLine($"--try-tabs: #f3f3f3;");
+        theme.AppendLine($"--try-tabs-tab-text: #444;");
+        theme.AppendLine($"--try-tabs-tab-active: #fff;");
+        theme.AppendLine($"--try-tabs-tab-active-text: #000;");
+        theme.AppendLine($"--try-tabs-tab-input: #fff;");
+        theme.AppendLine($"--try-tabs-tab-input-text: #424242;");
+        theme.AppendLine($"--try-table: #fff;");
+        theme.AppendLine($"--try-editor: #fff;");
+        theme.AppendLine($"--try-editor-text: #000;");
+        theme.AppendLine($"--try-editor-margin: #fffffe;");
+        theme.AppendLine($"--try-editor-margin-line-text: #237893;");
+        theme.AppendLine($"--try-editor-margin-line-active: #fff;");
+        theme.AppendLine($"--try-editor-margin-line-active-text: #0b216f;");
+        theme.AppendLine($"--try-editor-cursor: #000000;");
+        theme.AppendLine($"--try-code-mtk-1: #000000;");
+        theme.AppendLine($"--try-code-mtk-4: #ff0000;");
+        theme.AppendLine($"--try-code-mtk-5: #0451a5;");
+        theme.AppendLine($"--try-code-mtk-6: #0000ff;");
+        theme.AppendLine($"--try-code-mtk-7: #00c853;");
+        theme.AppendLine($"--try-code-mtk-10: #383838;");
+        theme.AppendLine($"--try-code-mtk-14: #800000;");
+        theme.AppendLine($"--try-code-mtk-15: #e00000;");
+        theme.AppendLine($"--try-code-mtk-20: #a31515;");
+    }
+
+    protected virtual void DarkTheme(StringBuilder theme)
+    {
+        theme.AppendLine($"--try-drawer: #27272f;");
+        theme.AppendLine($"--try-drawer-text: #bbb;");
+        theme.AppendLine($"--try-tabs: #323232;");
+        theme.AppendLine($"--try-tabs-tab-text: #bbb;");
+        theme.AppendLine($"--try-tabs-tab-active: #1d1d1d;");
+        theme.AppendLine($"--try-tabs-tab-active-text: #d3d3d3;");
+        theme.AppendLine($"--try-tabs-tab-input: #161616;");
+        theme.AppendLine($"--try-tabs-tab-input-text: #bbb;");
+        theme.AppendLine($"--try-table: #242425;");
+        theme.AppendLine($"--try-editor: #1e1e1e;");
+        theme.AppendLine($"--try-editor-text: #d3d3d3;");
+        theme.AppendLine($"--try-editor-margin: #1d1d1d;");
+        theme.AppendLine($"--try-editor-margin-line-text: #848484;");
+        theme.AppendLine($"--try-editor-margin-line-active: #262626;");
+        theme.AppendLine($"--try-editor-margin-line-active-text: #a4a3a3;");
+        theme.AppendLine($"--try-editor-cursor: #adaeac;");
+        theme.AppendLine($"--try-code-mtk-1: #d3d3d3;");
+        theme.AppendLine($"--try-code-mtk-4: #1ec8a5;");
+        theme.AppendLine($"--try-code-mtk-5: #ff528c;");
+        theme.AppendLine($"--try-code-mtk-6: #7e6fff;");
+        theme.AppendLine($"--try-code-mtk-7: #00c853;");
+        theme.AppendLine($"--try-code-mtk-10: #349ed2;");
+        theme.AppendLine($"--try-code-mtk-14: #7467ef;");
+        theme.AppendLine($"--try-code-mtk-15: #808080;");
+        theme.AppendLine($"--try-code-mtk-20: #cd906a;");
+    }
+
+}

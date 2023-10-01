@@ -1,0 +1,28 @@
+﻿@using TryMudEx.Client.Services
+@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="@LayoutService.Theme" IsDarkMode="@LayoutService.IsDarkMode" />
+
+<div class="main">
+	<div class="content px-4">
+		@Body
+	</div>
+</div>
+
+@code {
+	[Inject] private LayoutService LayoutService { get; set; }
+	[Inject] private NavigationManager NavigationManager { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+	    if (NavigationManager.Uri.Contains("?dark") || NavigationManager.Uri.Contains("?light"))
+	    {
+			await LayoutService.ApplyUserPreferences(NavigationManager.Uri.Contains("?dark"), true);
+	    }
+	    else
+	    {
+	        await LayoutService.ApplyUserPreferences(false);
+	    }
+	    await base.OnInitializedAsync();
+	}
+}

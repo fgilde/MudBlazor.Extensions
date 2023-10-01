@@ -1,0 +1,107 @@
+﻿.mud-codeblock {
+    height: 100%;
+    padding: 0px;
+    overflow: auto;
+}
+
+    .mud-codeblock pre {
+        height: 100%;
+        color: var(--mud-palette-text-primary);
+        padding: 0px;
+        font-size: 1em;
+        font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        -webkit-font-smoothing: subpixel-antialiased;
+        direction: ltr;
+    }
+
+    .mud-codeblock .html + .csharp {
+        margin-top: 23px;
+    }
+
+    .mud-codeblock .html .htmlTagDelimiter {
+        color: #979797;
+    }
+
+    .mud-codeblock .html .htmlElementName {
+        color: var(--mud-palette-primary);
+    }
+
+    .mud-codeblock .html .htmlAttributeName {
+        color: var(--mud-palette-primary);
+    }
+
+    .mud-codeblock .html .htmlOperator, .mud-codeblock .html .quot {
+        color: var(--mud-palette-primary);
+    }
+
+    .mud-codeblock .html .htmlAttributeValue {
+        color: var(--mud-palette-text-primary);
+    }
+
+    .mud-codeblock .html .htmlLink {
+        color: #61afef;
+        text-decoration: underline;
+    }
+
+    .mud-codeblock .html .enum {
+        color: #00b791;
+    }
+
+    .mud-codeblock .html .enumValue, .mud-codeblock .html .sharpVariable {
+        color: var(--mud-palette-grey);
+    }
+
+    .mud-codeblock .html .keyword {
+        color: #61afef;
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .mud-codeblock .html .atSign {
+        color: #000;
+        background-color: #d2d295;
+    }
+
+    .mud-codeblock .html .comment {
+        color: #57a64a;
+    }
+
+    .mud-codeblock .csharp .atSign {
+        color: #000;
+        background-color: #d2d295;
+    }
+
+    .mud-codeblock .csharp .keyword {
+        color: #569cd6;
+    }
+
+    .mud-codeblock .csharp .string {
+        color: #d69d85;
+    }
+
+    .mud-codeblock .csharp .function {
+        color: #dcdcaa;
+    }
+
+    .mud-codeblock .csharp .class {
+        color: #4ec9b0;
+    }
+
+    .mud-codeblock .csharp .localVar {
+        color: #9cdcfe;
+    }
+
+    .mud-codeblock .csharp .interface {
+        color: #b0d7a3;
+    }
+
+    .mud-codeblock .csharp .number {
+        color: #b0d7a3;
+    }
+
+    .mud-codeblock .csharp .enum {
+        color: #b4eb8f;
+    }
+
+    .mud-codeblock .csharp .comment {
+        color: #57a64a;
+    }

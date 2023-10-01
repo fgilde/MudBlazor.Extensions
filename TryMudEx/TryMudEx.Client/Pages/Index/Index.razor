@@ -1,0 +1,229 @@
+﻿@page "/"
+@using Try.Core
+
+
+<MudLayout Class="try-mudblazor-index">
+    <MudAppBar Color="Color.Transparent" Fixed="false" Elevation="0">
+        <div style="display: flex;">
+            <MudText Typo="Typo.h5">Try</MudText>
+            <MudExGradientText Typo="Typo.h5">MudBlazor.Extensions</MudExGradientText>
+        </div>
+        <MudSpacer />
+        <MudButton Link="https://www.mudex.org/" Target="_blank"  Color="Color.Default" Size="Size.Large">MudEx</MudButton>
+        <MudButton Link="https://mudblazor.com/" Target="_blank"  Color="Color.Default" Size="Size.Large">MudBlazor</MudButton>
+        <MudButton Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank" Color="Color.Primary" Size="Size.Large">Source Code</MudButton>
+    </MudAppBar>
+    <MudMainContent>
+        <MudContainer Class="my-16" MaxWidth="MaxWidth.Large">
+            <MudGrid Spacing="10">
+                <MudItem xs="12">
+                    <div>
+                        <div style="display: flex;">
+                            <MudText Typo="Typo.h1">Try</MudText>
+                            <MudExGradientText Typo="Typo.h1">MudBlazor.Extensions</MudExGradientText>
+                        </div>
+                        <MudText Typo="Typo.h4" Class="mud-text-secondary ml-2 my-5">
+                            A playground for <MudLink Typo="Typo.h4" Href="https://www.mudex.org" Target="_blank">MudBlazor.Extensions</MudLink> @MudExVersion
+                            and <MudLink Typo="Typo.h4" Href="https://mudblazor.com" Target="_blank">MudBlazor</MudLink> @MudVersion
+                        </MudText>
+                        <div class="px-2 mt-8">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" DisableElevation="true" Class="px-6" Link="/snippet">Play now</MudButton>
+                        </div>
+                    </div>
+                </MudItem>
+
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h2" Class="my-5">Smooth Coding</MudText>
+                    <MudText Typo="Typo.h5" Class="mud-text-secondary">
+                        Play with MudBlazor components entirely in the browser. Test and experiment anytime, anywhere.
+                    </MudText>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" Size="Size.Large" Class="ml-n2" Link="/snippet" EndIcon="@Icons.Material.Filled.East">Get started</MudButton>
+                    <MudPaper Elevation="25" Class="rounded-lg mt-12">
+                        <div class="d-flex align-center py-2 try-mudblazor-codecard rounded-t-lg">
+                            <div class="flex-grow-0 px-1">
+                                <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Size="Size.Small" Class="pa-2" Disabled="true" />
+                                <MudIconButton Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" Class="pa-2" Disabled="true" />
+                                <MudIconButton Icon="@Icons.Material.Filled.Refresh" Size="Size.Small" Class="pa-2 d-none d-sm-inline" Disabled="true" />
+                            </div>
+                            <div class="d-flex flex-grow-1 justify-center mx-sm-16 px-sm-16 pl-4 pr-8">
+                                <MudPaper Outlined="true" Class="flex-grow-1 py-1 px-2">
+                                    <MudText Align="Align.Center" Typo="Typo.body2" Style="color: var(--mud-palette-text-disabled);">try.mudex.org</MudText>
+                                </MudPaper>
+                            </div>
+                            <div class="flex-grow-0 px-1 d-none d-sm-flex">
+                                <MudIconButton Icon="@Icons.Material.Filled.Remove" Size="Size.Small" Class="pa-2" Disabled="true" />
+                                <MudIconButton Icon="@Icons.Material.Filled.CropSquare" Size="Size.Small" Class="pa-2" Disabled="true" />
+                                <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Class="pa-2" Disabled="true" />
+                            </div>
+                        </div>
+                        <MudDivider />
+                        <div class="d-flex flex-column flex-sm-row">
+                            <div style="width: 600px;  align-self: stretch">
+                                <CodeEditor Theme="@(LayoutService.IsDarkMode ? "vs-dark" : "default")" ReadOnly="true" Code="@_code" CodeFileType="CodeFileType.Razor"></CodeEditor>
+                            </div>
+                            <MudDivider Vertical="true" FlexItem="true"/>
+                            <div class="d-flex flex-grow-1">
+                                <div class="pt-6 pb-16 px-8">
+                                    <MudExCardList TData="object">
+                                        <MudCard>
+                                            <MudCardHeader>
+                                                <CardHeaderContent>
+                                                    <MudText Typo="Typo.h6">Card 1</MudText>
+                                                </CardHeaderContent>
+                                                <CardHeaderActions>
+                                                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default"/>
+                                                </CardHeaderActions>
+                                            </MudCardHeader>
+                                            <MudCardContent>
+                                                <MudText>Super sample Content text.</MudText>
+                                                <MudText Typo="Typo.body2">Subline descriptin for sample card.</MudText>
+                                            </MudCardContent>
+                                            <MudCardActions>
+                                                <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
+                                            </MudCardActions>
+                                        </MudCard>
+                                        <MudCard>
+                                            <MudCardHeader>
+                                                <CardHeaderContent>
+                                                    <MudText Typo="Typo.h6">Card 2</MudText>
+                                                </CardHeaderContent>
+                                                <CardHeaderActions>
+                                                    <MudIconButton Icon="@Icons.Material.Filled.AddCard" Color="Color.Default"/>
+                                                </CardHeaderActions>
+                                            </MudCardHeader>
+                                            <MudCardContent>
+                                                <MudText>Super sample Content text.</MudText>
+                                                <MudText Typo="Typo.body2">Subline descriptin for sample card.</MudText>
+                                            </MudCardContent>
+                                            <MudCardActions>
+                                                <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
+                                            </MudCardActions>
+                                        </MudCard>
+                                        <MudCard>
+                                            <MudCardHeader>
+                                                <CardHeaderContent>
+                                                    <MudText Typo="Typo.h6">Card 3</MudText>
+                                                </CardHeaderContent>
+                                                <CardHeaderActions>
+                                                    <MudIconButton Icon="@Icons.Material.Filled.Camera" Color="Color.Default"/>
+                                                </CardHeaderActions>
+                                            </MudCardHeader>
+                                            <MudCardContent>
+                                                <MudText>Super sample Content text.</MudText>
+                                                <MudText Typo="Typo.body2">Subline descriptin for sample card.</MudText>
+                                            </MudCardContent>
+                                            <MudCardActions>
+                                                <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
+                                            </MudCardActions>
+                                        </MudCard>
+                                    </MudExCardList>
+                                </div>
+                            </div>
+                        </div>
+                    </MudPaper>
+                    
+                    <div class="px-2 mt-8" style="display: flex;justify-content: center; align-items: center;">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" DisableElevation="true" Class="px-6" Link="/snippet/samples/CardList">Use this code</MudButton>
+                    </div>
+
+                </MudItem>
+
+                <MudItem xs="12" Class="my-16">
+                    <MudGrid Spacing="5" Class="my-16">
+                        <MudItem xs="12" sm="4">
+                            <div class="d-flex justify-center">
+                                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Outlined.Beenhere" Class="try-index-landing-icons" Style="height: 96px; width: 96px;" />
+                            </div>
+                            <MudText Typo="Typo.h5" Align="Align.Center" Color="Color.Primary" Class="mt-8 mb-3" Style="font-weight:500;">Save your work</MudText>
+                            <MudText Typo="Typo.h6" Align="Align.Center" Class="mud-text-secondary">
+                                Save your code snippets anonymously and share the generated url with anyone.
+                            </MudText>
+                        </MudItem>
+                        <MudItem xs="12" sm="4">
+                            <div class="d-flex justify-center">
+                                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Outlined.Share" Class="try-index-landing-icons" Style="height: 96px; width: 96px;" />
+                            </div>
+                            <MudText Typo="Typo.h5" Align="Align.Center" Color="Color.Primary" Class="mt-8 mb-3" Style="font-weight:500;">Made for you</MudText>
+                            <MudText Typo="Typo.h6" Align="Align.Center" Class="mud-text-secondary">
+                                TryMudEx is here to help you, experiment, get help, and learn MudBlazor and MudBlazor.Extensions.
+                            </MudText>
+                        </MudItem>
+                        <MudItem xs="12" sm="4">
+                            <div class="d-flex justify-center">
+                                <MudIcon Color="Color.Primary" Icon="@Icons.Material.Outlined.FavoriteBorder" Class="try-index-landing-icons" Style="height: 96px; width: 96px;" />
+                            </div>
+                            <MudText Typo="Typo.h5" Align="Align.Center" Color="Color.Primary" Class="mt-8 mb-3" Style="font-weight:500;">Share some love</MudText>
+                            <MudText Typo="Typo.h6" Align="Align.Center" Class="mud-text-secondary">
+                                See someone having trouble with Blazor? Help them out and send them a snippet link or work together.
+                            </MudText>
+                        </MudItem>
+                    </MudGrid>
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+
+        <MudDivider Class="my-16" />
+
+        <MudContainer>
+            <MudGrid Class="try-index-footer">
+                <MudItem xs="12" sm="3">
+                    <div style="text-align:center">
+                        <h1>Try</h1>
+                        <h1 class="my-2">+</h1>
+                        <h1>MudEx</h1>
+                    </div>
+                </MudItem>
+                <MudItem xs="12" sm="3">
+                    <MudText>MudEx</MudText>
+                    <ul>
+                        <li>
+                            <MudLink Typo="Typo.body2" Href="https://www.mudex.org" Target="_blank">Website</MudLink>
+                        </li>
+                        <li>
+                            <MudLink Typo="Typo.body2" Href="https://www.nuget.org/packages/MudBlazor.Extensions/">Package</MudLink>
+                        </li>
+                        <li>
+                            <MudLink Typo="Typo.body2" Href="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank">GitHub</MudLink>
+                        </li>
+                        <li>
+                            <MudLink Typo="Typo.body2" Href="https://github.com/fgilde/MudBlazor.Extensions/discussions" Target="_blank">GitHub Discussions</MudLink>
+                        </li>
+                    </ul>
+                </MudItem>
+                <MudItem xs="12" sm="3">
+                    <MudText>MudBlazor</MudText>
+                    <ul>
+                        <li>
+                            <MudLink Typo="Typo.body2" Href="https://mudblazor.com/" Target="_blank">Website</MudLink>
+                        </li>
+                        <li>
+                            <MudLink Typo="Typo.body2" Href="https://www.nuget.org/packages/MudBlazor/">Package</MudLink>
+                        </li>
+                        <li>
+                            <MudLink Typo="Typo.body2" Href="https://discord.gg/mudblazor" Target="_blank">Discord</MudLink>
+                        </li>
+                        <li>
+                            <MudLink Typo="Typo.body2" Href="https://github.com/MudBlazor/MudBlazor/discussions" Target="_blank">GitHub Discussions</MudLink>
+                        </li>
+                    </ul>
+                </MudItem>
+                <MudItem xs="12" sm="3">
+                    <MudText>TryMudEx</MudText>
+                    <ul>
+                        <li>
+                            <MudLink Typo="Typo.body2" Href="https://github.com/MudBlazor/TryMudBlazor">Source Code</MudLink>
+                        </li>
+                    </ul>
+                </MudItem>
+            </MudGrid>
+            <MudText Align="Align.Center" Typo="Typo.body2" Class="mb-8 mt-16"><MudLink Typo="Typo.body2" Href="https://github.com/MudBlazor/TryMudEx/blob/main/LICENSE" Target="_blank">GNU General Public License v2.0.</MudLink></MudText>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+
+
+@code { 
+    string MudVersion { get { var v = typeof(MudText).Assembly.GetName().Version; return $"v{v.Major}.{v.Minor}.{v.Build}"; } } 
+    string MudExVersion { get { var v = typeof(MudExIcon).Assembly.GetName().Version; return $"v{v.Major}.{v.Minor}.{v.Build}"; } } 
+}

@@ -260,7 +260,9 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         if (!updateRequired || (string.IsNullOrEmpty(Url) && ContentStream == null))
             return;
 
-        _ = CreateStructure().ContinueWith(_ => StateHasChanged());
+       // _ = CreateStructure().ContinueWith(_ => InvokeAsync(StateHasChanged));
+       await CreateStructure();
+       StateHasChanged();
     }
     
     private async Task CreateStructure()
@@ -407,6 +409,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         _zipEntries?.Clear();
         _zipEntries = null;
         ClosePreview();
-        await fileService.DisposeAsync();
+        if(fileService != null)
+            await fileService.DisposeAsync();
     }
 }
