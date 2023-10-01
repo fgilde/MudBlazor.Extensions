@@ -19,7 +19,7 @@ MudBlazor.Extensions is a extension library for MudBlazor Component library from
 #
 
 ## Try Online
-[![TryMudEx](https://img.shields.io/badge/Azure-Demo-blue)](https://trymudex.azurewebsites.net/) 
+[![TryMudEx](https://img.shields.io/badge/TryMudEx-purple)](https://trymudex.azurewebsites.net/) 
 #
 
 <!---
