@@ -60,8 +60,10 @@
                         <MudDivider />
                         <div class="d-flex flex-column flex-sm-row">
                             <div style="width: 600px;  align-self: stretch">
-                                <CodeEditor Theme="@(LayoutService.IsDarkMode ? "vs-dark" : "default")" ReadOnly="true" Code="@_code" CodeFileType="CodeFileType.Razor"></CodeEditor>
-                                @* <MudExCodeView Theme="@(LayoutService.IsDarkMode ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.Default)" Code="@_code" Language="MudExCodeLanguage.Razor"></MudExCodeView> *@
+                                @* <CodeEditor Theme="@(LayoutService.IsDarkMode ? "vs-dark" : "default")" ReadOnly="true" Code="@_code" CodeFileType="CodeFileType.Razor"></CodeEditor> *@
+                                <div style="max-height: 600px; overflow: auto">
+                                    <MudExCodeView Theme="@(LayoutService.IsDarkMode ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.AtomOneLight)" Code="@_code" Language="MudExCodeLanguage.Razor"></MudExCodeView>
+                                </div>
                             </div>
                             <MudDivider Vertical="true" FlexItem="true"/>
                             <div class="d-flex flex-grow-1">

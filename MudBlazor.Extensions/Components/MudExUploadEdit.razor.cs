@@ -1,4 +1,5 @@
-﻿using System.IO.Compression;
+﻿using System.Diagnostics;
+using System.IO.Compression;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
@@ -13,7 +14,6 @@ using Nextended.Blazor.Models;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Contracts;
 using MudBlazor.Extensions.Services;
-using System.Linq;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
@@ -24,6 +24,11 @@ namespace MudBlazor.Extensions.Components;
 /// <typeparam name="T"></typeparam>
 public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
 {
+    /// <summary>
+    /// Specify Theme to use for code file previews
+    /// </summary>
+    [Parameter, SafeCategory("Behaviour")]
+    public CodeBlockTheme CodeBlockTheme { get; set; } = CodeBlockTheme.AtomOneDark;
 
     /// <summary>
     /// Specify how temporary urls are created
@@ -180,25 +185,69 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     /// Mime types for MimeRestrictions based on the <see cref="MimeRestrictionType"/> this types are allowed or forbidden.
     /// </summary>
     [Parameter, SafeCategory("Data")]
-    public string[] MimeTypes { get; set; }
+    public string[] MimeTypes
+    {
+        get => _mimeTypes;
+        set
+        {
+            if (_mimeTypes != value && (_mimeTypes == null ? value != null : (value == null || !_mimeTypes.SequenceEqual(value))))
+            {
+                _mimeTypes = value;
+                UpdateAllowed();
+            }
+        }
+    }
 
     /// <summary>
     /// Extensions for FileRestrictions based on the <see cref="ExtensionsRestrictionType"/> this types are allowed or forbidden.
     /// </summary>
     [Parameter, SafeCategory("Data")]
-    public string[] Extensions { get; set; }
+    public string[] Extensions
+    {
+        get => _extensions;
+        set
+        {
+            if (_extensions != value && (_extensions == null ? value != null : (value == null || !_extensions.SequenceEqual(value))))
+            {
+                _extensions = value;
+                UpdateAllowed();
+            }
+        }
+    }
 
     /// <summary>
     /// The type of the MIME restriction.
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
-    public RestrictionType MimeRestrictionType { get; set; } = RestrictionType.WhiteList;
+    public RestrictionType MimeRestrictionType
+    {
+        get => _mimeRestrictionType;
+        set
+        {
+            if (_mimeRestrictionType != value)
+            {
+                _mimeRestrictionType = value;
+                UpdateAllowed();
+            }
+        }
+    }
 
     /// <summary>
     /// The type of the restriction for extensions.
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
-    public RestrictionType ExtensionRestrictionType { get; set; } = RestrictionType.WhiteList;
+    public RestrictionType ExtensionRestrictionType
+    {
+        get => _extensionRestrictionType;
+        set
+        {
+            if (_extensionRestrictionType != value)
+            {
+                _extensionRestrictionType = value;
+                UpdateAllowed();
+            }
+        }
+    }
 
     /// <summary>
     /// The maximum file size allowed.
@@ -279,10 +328,10 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     public SelectItemsMode SelectItemsMode { get; set; } = SelectItemsMode.None;
 
     /// <summary>
-    /// Defines whether zip files should be automatically extracted.
+    /// Defines whether zip or other archives files should be automatically extracted.
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
-    public bool AutoExtractZip { get; set; } = false;
+    public bool AutoExtractArchive { get; set; } = false;
 
     /// <summary>
     /// The current upload request.
@@ -410,7 +459,12 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     
     private InputFile _inputFile;
     private List<T> _withErrors = new();
-    
+    private string[] _extensions;
+    private string[] _mimeTypes;
+    private RestrictionType _mimeRestrictionType = RestrictionType.WhiteList;
+    private RestrictionType _extensionRestrictionType = RestrictionType.WhiteList;
+    private bool _loading;
+
     /// <inheritdoc />
     protected override Task OnInitializedAsync()
     {
@@ -460,9 +514,20 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         return $"{str}{Style}";
     }
 
-    private Task Add(IEnumerable<IBrowserFile> files)
+    private void SetLoading(bool loading)
     {
-        return Task.WhenAll(files.Select(Add));
+        if (_loading != loading)
+        {
+            _loading = loading;
+            StateHasChanged();
+        }
+    }
+
+    private async Task Add(IEnumerable<IBrowserFile> files)
+    {
+        SetLoading(true);
+        await Task.WhenAll(files.Select(Add));
+        SetLoading(false);
     }
 
     private async Task Add(IBrowserFile file)
@@ -471,8 +536,9 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
 
         if (IsAllowed(file))
         {
-            if (AutoExtractZip && file.IsZipFile())
+            if (AutoExtractArchive && file.IsArchive())
             {
+                SetLoading(true);
                 await Add(await GetZipEntriesAsync(file));
                 return;
             }
@@ -514,13 +580,11 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         while (bytesRead > 0 && totalBytesRead < buffer.Length);
     }
 
-    private async Task<IList<ZipBrowserFile>> GetZipEntriesAsync(IBrowserFile file)
+    [Inject] private MudExFileService fileService { get; set; }
+    private async Task<IList<IArchivedBrowserFile>> GetZipEntriesAsync(IBrowserFile file)
     {
-        var stream = file.OpenReadStream(file.Size);
-        await using var ms = new MemoryStream();
-        await stream.CopyToAsync(ms);
-
-        return new ZipArchive(ms).Entries.Select(entry => new ZipBrowserFile(entry)).ToList();
+        var data = await fileService.ReadArchiveAsync(file.OpenReadStream(), file.Name, file.ContentType);
+        return data.List;
     }
 
     private bool IsAllowed(IBrowserFile file)
@@ -531,13 +595,15 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         return IsExtensionAllowed(Path.GetExtension(file.Name)) && IsAllowed(file.ContentType);
     }
 
-    private string[] GetAllowedMimeTypes()
+ 
+    private string[] GetAllowedMimeTypes(bool calc)
     {
+        var mimes = calc ? MimeType.AllTypes : MimeTypes;
         List<string> result;
         if(MimeRestrictionType == RestrictionType.WhiteList)
-            result = MimeTypes?.Any() == true ? MimeType.AllTypes.Where(m => MimeType.Matches(m, MimeTypes)).ToList() : new List<string>();
+            result = MimeTypes?.Any() == true ? mimes.Where(m => MimeType.Matches(m, MimeTypes)).ToList() : new List<string>();
         else
-            result = MimeTypes?.Any() == true ? MimeType.AllTypes.Where(m => !MimeType.Matches(m, MimeTypes)).ToList() : new List<string>();
+            result = MimeTypes?.Any() == true ? mimes.Where(m => !MimeType.Matches(m, MimeTypes)).ToList() : new List<string>();
         
         if(ExtensionRestrictionType == RestrictionType.WhiteList && Extensions?.Any() == true)
             result.AddRange(Extensions.Select(MimeType.GetMimeType));
@@ -546,14 +612,21 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         return result.Distinct().ToArray();
     }
 
-    private string[] GetAllowedExtensions()
+    private string[] GetAllowedExtensions(bool calc)
     {
-        var mimes = MimeTypes?.Any() == true ? MimeType.AllTypes.Where(m => MimeType.Matches(m, MimeTypes)).ToList() : new List<string>();
+        var mimeTypes = calc ? MimeType.AllTypes : MimeTypes;
+
+        var mimes = MimeTypes?.Any() == true ? mimeTypes.Where(m => MimeType.Matches(m, MimeTypes)).ToList() : new List<string>();
         List<string> result;
         if (MimeRestrictionType == RestrictionType.WhiteList)
+        {
             result = mimes.Select(MimeType.GetExtension).ToList();
+            result.AddRange(MimeTypes?.Where(MimeType.IsZip).Select(_ => "zip") ?? Array.Empty<string>());
+            result.AddRange(MimeTypes?.Where(MimeType.IsRar).Select(_ => "rar") ?? Array.Empty<string>());
+            result.AddRange(MimeTypes?.Where(MimeType.IsTar).Select(_ => "tar") ?? Array.Empty<string>());
+        }
         else
-            result = MimeTypes?.Any() == true ? MimeType.AllTypes.Select(MimeType.GetExtension).Except(MimeTypes.Select(MimeType.GetExtension)).ToList() : MimeType.AllTypes.Select(MimeType.GetExtension).ToList();
+            result = MimeTypes?.Any() == true ? mimeTypes.Select(MimeType.GetExtension).Except(MimeTypes.Select(MimeType.GetExtension)).ToList() : mimeTypes.Select(MimeType.GetExtension).ToList();
 
         if (ExtensionRestrictionType == RestrictionType.WhiteList && Extensions?.Any() == true)
             result.AddRange(Extensions);
@@ -563,24 +636,48 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         return result.Distinct().ToArray();
     }
 
+    private string _accept = "*";
+    private string[] _allowedExtensions;
+    private string[] _allowedMimeTypes;
+    private void UpdateAllowed()
+    {
+        if (IsRendered)
+        {
+            _allowedExtensions = GetAllowedExtensions(true);
+            _allowedMimeTypes = GetAllowedMimeTypes(true);
+
+            var newAccept = GetAccept();
+            if (newAccept != _accept)
+            {
+                _accept = newAccept;
+                StateHasChanged();
+            }
+        }
+    }
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            UpdateAllowed();
+        }
+    }
+
 
     private string GetAccept()
     {
-        var mimesList = GetAllowedMimeTypes().ToList();
-        var allowedExtensions = GetAllowedExtensions().ToList();
-        
-        return $"{string.Join(",", mimesList)},{string.Join(",", allowedExtensions)}";
+        return $"{string.Join(",", _allowedMimeTypes)},{string.Join(",", _allowedExtensions)}";
     }
 
     private bool IsExtensionAllowed(string extension)
     {
         if (!ExtensionAllowed(extension))
         {
-            var mimeString = string.Join(',', GetAllowedMimeTypes());
-            var extensionString = string.Join(',', GetAllowedExtensions());
-            if (MimeRestrictionType == RestrictionType.WhiteList)
-                return !SetError(TryLocalize(TextErrorExtensionNotAllowed, extension, mimeString, extensionString));
-            return !SetError(TryLocalize(TextErrorExtensionForbidden, extension, mimeString, extensionString));
+            if (ExtensionRestrictionType == RestrictionType.WhiteList)
+                return !SetError(TryLocalize(TextErrorExtensionNotAllowed, extension, string.Join(',', GetAllowedMimeTypes(false)), string.Join(',', GetAllowedExtensions(false))));
+            return !SetError(TryLocalize(TextErrorExtensionForbidden, extension, string.Join(',', Extensions.Select(MimeType.GetMimeType)), string.Join(',', Extensions)));
         }
 
         return true;
@@ -590,11 +687,9 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     {
         if (!MimeTypeAllowed(mimeType))
         {
-            var mimeString = string.Join(',', GetAllowedMimeTypes());
-            var extensionForMimeString = string.Join(',', GetAllowedExtensions());
             if (MimeRestrictionType == RestrictionType.WhiteList)
-                return !SetError(TryLocalize(TextErrorMimeTypeNotAllowed, mimeType, mimeString, extensionForMimeString));
-            return !SetError(TryLocalize(TextErrorMimeTypeForbidden, mimeType, mimeString, extensionForMimeString));
+                return !SetError(TryLocalize(TextErrorMimeTypeNotAllowed, mimeType, string.Join(',', GetAllowedMimeTypes(false)), string.Join(',', GetAllowedExtensions(false))));
+            return !SetError(TryLocalize(TextErrorMimeTypeForbidden, mimeType, string.Join(',', MimeTypes), string.Join(',',MimeTypes.Select(MimeType.GetExtension))));
         }
 
         if (UploadRequests?.Count >= Math.Max(1, MaxMultipleFiles))
@@ -606,15 +701,13 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     private bool ExtensionAllowed(string extension)
     {
         if (Extensions?.Any() != true) return true;
-        var hasMatched = Extensions.Any(ext => string.Equals(ext.EnsureStartsWith("."), extension.EnsureStartsWith("."), StringComparison.CurrentCultureIgnoreCase));
-        return (ExtensionRestrictionType != RestrictionType.WhiteList || hasMatched) && (ExtensionRestrictionType != RestrictionType.BlackList || !hasMatched);
+        return _allowedExtensions.Any(e => string.Equals(e.EnsureStartsWith('.'), extension.EnsureStartsWith('.'), StringComparison.CurrentCultureIgnoreCase));
     }
 
     private bool MimeTypeAllowed(string mimeType)
     {
         if (MimeTypes?.Any() != true) return true;
-        var hasMatched = MimeType.Matches(mimeType, MimeTypes);
-        return (MimeRestrictionType != RestrictionType.WhiteList || hasMatched) && (MimeRestrictionType != RestrictionType.BlackList || !hasMatched);
+        return MimeType.Matches(mimeType, _allowedMimeTypes) || (MimeRestrictionType == RestrictionType.WhiteList && MimeType.Matches(mimeType, MimeTypes));
     }
 
     private bool SetError(string message = default)
@@ -746,7 +839,13 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
             { nameof(MudExFileDisplay.Dense), true }, 
             { nameof(MudExFileDisplay.StreamUrlHandling), StreamUrlHandling },
             { nameof(MudExFileDisplay.ForceNativeRender), ForceNativeRender },
-            { nameof(MudExFileDisplay.ColorizeIcons), ColorizeIcons }
+            { nameof(MudExFileDisplay.ColorizeIcons), ColorizeIcons },
+            {
+                nameof(MudExFileDisplay.ParametersForSubControls), new Dictionary<string, object>
+                {
+                    {nameof(MudExFileDisplayCode.Theme), CodeBlockTheme}
+                }
+            }
         };
         if (MudExFileDisplayZip.CanHandleFileAsArchive(request.ContentType) && request.Data != null)
         {

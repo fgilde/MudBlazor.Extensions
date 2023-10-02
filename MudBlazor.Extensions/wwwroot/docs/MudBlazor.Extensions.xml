@@ -4320,6 +4320,11 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.CodeBlockTheme">
+            <summary>
+            Specify Theme to use for code file previews
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.StreamUrlHandling">
             <summary>
             Specify how temporary urls are created
@@ -4530,9 +4535,9 @@
             The mode of selecting items.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AutoExtractZip">
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AutoExtractArchive">
             <summary>
-            Defines whether zip files should be automatically extracted.
+            Defines whether zip or other archives files should be automatically extracted.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.UploadRequest">
@@ -4634,6 +4639,9 @@
             Returns whether the component has data.
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Remove(`0)">
             <summary>

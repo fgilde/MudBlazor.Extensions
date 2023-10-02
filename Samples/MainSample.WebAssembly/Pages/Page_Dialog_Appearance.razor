@@ -48,6 +48,17 @@
     private MudColor _primaryColor;
     public DialogOptionsEx? Options { get; set; }
 
+    protected override Task OnInitializedAsync()
+    {
+        MainLayout.Instance.ThemeChanged += InstanceOnThemeChanged;
+        return Task.CompletedTask;
+    }
+
+    private void InstanceOnThemeChanged(object? sender, MainLayout.ThemeChangedEventArgs e)
+    {
+        StateHasChanged();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

@@ -93,7 +93,9 @@ public enum MudExCodeLanguage
     [Description("toml")]
     Toml,
     [Description("ini")]
-    Ini
+    Ini,
+    [Description("xml")]
+    Xml
 }
 
 public class MudExCodeLanguageExtensionsMapping
@@ -148,6 +150,7 @@ public class MudExCodeLanguageExtensionsMapping
         { "md", MudExCodeLanguage.Markdown },
         { "toml", MudExCodeLanguage.Toml },
         { "ini", MudExCodeLanguage.Ini },
+        { "xml", MudExCodeLanguage.Xml },
         { "cfg", MudExCodeLanguage.Ini }
     };
 

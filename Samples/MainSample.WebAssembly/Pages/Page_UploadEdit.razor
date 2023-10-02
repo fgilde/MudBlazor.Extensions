@@ -2,9 +2,11 @@
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using Nextended.Core
 @using System.Text
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Helper
 @using Nextended.Core.Extensions
 @inject IDialogService dialogService;
-@attribute [Demo(Group = "File Handling", Name = "Upload Edit", Documentation = "Demo for the MudExUploadEdit.", Order = 2, Icon = Icons.Material.Outlined.Upload, ForComponentType = typeof(MudExUploadEdit<>))]
+@attribute [DemoUpdated(Group = "File Handling", Name = "Upload Edit", Documentation = "Demo for the MudExUploadEdit.", Order = 2, Icon = Icons.Material.Outlined.Upload, ForComponentType = typeof(MudExUploadEdit<>))]
 
 
 <DemoComponent Title="MudExUploadEdit" PageType="@GetType()">
@@ -12,11 +14,11 @@
         <Left>
             <MudCard Style="width: 80%">
                 <MudCardContent>
-                    <MudExUploadEdit MimeTypes="@mimeTypes" T="UploadableFile" Style="max-height: 400px; width: 100%" @ref="component"></MudExUploadEdit>
+                    <MudExUploadEdit CodeBlockTheme="@MainLayout.Instance.GetCodeBlockTheme()" MimeTypes="@mimeTypes" T="UploadableFile" Style="max-height: 400px; width: 100%" @ref="component"></MudExUploadEdit>
                 </MudCardContent>
                 <MudCardActions>
                     <div class="mt-6" style="width: 100%; display: flex; justify-content: center; align-items: center">
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Upload">Upload in dialog</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@ShowUploadDialog">Upload in dialog</MudButton>
                     </div>
                 </MudCardActions>
             </MudCard>
@@ -39,14 +41,26 @@
         "application/x-rar-compressed",
         "audio/*",
         "application/pdf",
+        "application/xml",
         "application/msword",
         "application/vnd.ms-excel",
         "application/vnd.openxmlformats-officedocument.*",
         "image/*",        
         "text/*"
     };
-    
-    private async Task Upload()
+
+    protected override Task OnInitializedAsync()
+    {
+        MainLayout.Instance.ThemeChanged += InstanceOnThemeChanged;
+        return Task.CompletedTask;
+    }
+
+    private void InstanceOnThemeChanged(object? sender, MainLayout.ThemeChangedEventArgs e)
+    {
+        StateHasChanged();
+    }
+
+    private async Task ShowUploadDialog()
     {
         var parameters = new DialogParameters
         {
@@ -57,14 +71,19 @@
             uploadEdit =>
             {
                 uploadEdit.MinHeight = 400;
-                uploadEdit.AutoExtractZip = true;
-                uploadEdit.MimeTypes = MimeType.ArchiveTypes.Concat(new[] { "text/plain", ""}).ToArray();
+                uploadEdit.AutoExtractArchive = true;
+                uploadEdit.MimeTypes = mimeTypes;
             }, parameters, options =>
             {
                 options.Resizeable = true;
                 options.FullWidth = true;
                 options.MaxWidth = MaxWidth.Medium;
-    //options.FullHeight = true;
+                options.DialogAppearance = MudExAppearance.FromStyle(new
+                    {
+                        Border = "2px solid",
+                        BorderColor = Color.Primary,
+                        BorderRadius = 8
+                    });
             });
         if (!res.DialogResult.Canceled)
         {

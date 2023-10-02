@@ -29,44 +29,51 @@
             {
                 @if (AllowMultiple)
                 {
-                    <InputFile @ref="_inputFile" id="@(UploadFieldId)" hidden multiple OnChange="UploadFiles" accept="@($"{GetAccept()}")" />
+                    <InputFile @ref="_inputFile" id="@(UploadFieldId)" hidden multiple OnChange="UploadFiles" accept="@($"{_accept}")" />
                 }
                 else
                 {
-                    <InputFile @ref="_inputFile" id="@(UploadFieldId)" hidden OnChange="UploadFiles" accept="@($"{GetAccept()}")" />
+                    <InputFile @ref="_inputFile" id="@(UploadFieldId)" hidden OnChange="UploadFiles" accept="@($"{_accept}")" />
                 }
             }
-
-            @foreach (var request in (UploadRequests ?? Enumerable.Empty<T>()).Where(r => r?.Data != null || !string.IsNullOrEmpty(r?.Url)))
+            
+            @if (_loading)
             {
-                <MudItem xs="12">
-                    <MudItem>
-                        <MudAlert 
-                              NoIcon="true"                              
-                              Class="mud-alert-message-w-100"
-                              Severity="@(IsSelected(request) ? Severity.Warning : (_withErrors.Contains(request) ? Severity.Error : Severity.Normal))"
-                              OnClick="(a) => Select(request, a)"
-                              ShowCloseIcon="@(AllowRemovingItems && !ReadOnly)"
-                              CloseIcon="@Icons.Material.Filled.Delete"
-                              CloseIconClicked="(() => Remove(request))">
-                            <div style="display: flex; align-items: center; width: 90%">
-                                <MudExIcon Class="mr-3" Color="@GetIconColor(request)" Icon="@GetIcon(request)" />
-                                @if (AllowRename && !ReadOnly)
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+            }
+            else
+            {
+                @foreach (var request in (UploadRequests ?? Enumerable.Empty<T>()).Where(r => r?.Data != null || !string.IsNullOrEmpty(r?.Url)))
+                {
+                    <MudItem xs="12">
+                        <MudItem>
+                            <MudAlert
+                                NoIcon="true"
+                                Class="mud-alert-message-w-100"
+                                Severity="@(IsSelected(request) ? Severity.Warning : (_withErrors.Contains(request) ? Severity.Error : Severity.Normal))"
+                                OnClick="(a) => Select(request, a)"
+                                ShowCloseIcon="@(AllowRemovingItems && !ReadOnly)"
+                                CloseIcon="@Icons.Material.Filled.Delete"
+                                CloseIconClicked="(() => Remove(request))">
+                                <div style="display: flex; align-items: center; width: 90%">
+                                    <MudExIcon Class="mr-3" Color="@GetIconColor(request)" Icon="@GetIcon(request)"/>
+                                    @if (AllowRename && !ReadOnly)
+                                    {
+                                        <MudTextField Style="height: 12px;" Class="mud-ex-collection-inline-string-edit" DisableUnderLine="true" Error="@(string.IsNullOrWhiteSpace(request.FileName))" @bind-Value="@request.FileName"></MudTextField>
+                                    }
+                                    else
+                                    {
+                                        <MudText Style="height: 12px; margin-top: -13px" Typo="Typo.subtitle1">@request.FileName</MudText>
+                                    }
+                                </div>
+                                @if (AllowPreview)
                                 {
-                                      <MudTextField Style="height: 12px;" Class="mud-ex-collection-inline-string-edit" DisableUnderLine="true" Error="@(string.IsNullOrWhiteSpace(request.FileName))" @bind-Value="@request.FileName"></MudTextField>
+                                    <MudIconButton OnClick="@(() => Preview(request))" Style="margin-top: -24px; float: right;" Icon="@Icons.Material.Filled.ZoomIn" Color="Color.Inherit" Size="Size.Small"/>
                                 }
-                                else
-                                {
-                                    <MudText Style="height: 12px; margin-top: -13px" Typo="Typo.subtitle1">@request.FileName</MudText>
-                                }
-                            </div>
-                            @if (AllowPreview)
-                            {
-                                <MudIconButton OnClick="@(() => Preview(request))" Style="margin-top: -24px; float: right;" Icon="@Icons.Material.Filled.ZoomIn" Color="Color.Inherit" Size="Size.Small" />
-                            }
-                        </MudAlert>
+                            </MudAlert>
+                        </MudItem>
                     </MudItem>
-                </MudItem>
+                }
             }
         </MudGrid>
     </div>
