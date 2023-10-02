@@ -127,6 +127,9 @@
         return string.IsNullOrWhiteSpace(u) || u == "/" ? "/gradient-text" : "/";
     }
 
+    internal CodeBlockTheme GetCodeBlockTheme() => IsDark ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.AtomOneLight;
+
+
     private async void HandleThemeChange(bool arg1, ClientTheme arg2)
     {        
         await BlazorMonaco.Editor.Global.SetTheme(Js, arg1 ? "vs-dark" : "vs");

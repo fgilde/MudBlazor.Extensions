@@ -26,6 +26,7 @@
         <div style="width: 100%; height: 800px; margin-top: 20px">
             <MudExFileDisplay HandleContentErrorFunc="@HandleContentError"
                               StreamUrlHandling="StreamUrlHandling.BlobUrl"
+                              ParametersForSubControls="@GetParams()"
                               Dense="true"
                           FileName="@SampleFile.Name" ContentStream="@SampleFile.Stream" ContentType="@SampleFile.ContentType"></MudExFileDisplay>
         </div>
@@ -40,9 +41,15 @@
     private bool _loading;
     protected override async Task OnInitializedAsync()
     {
+        MainLayout.Instance.ThemeChanged += InstanceOnThemeChanged;
         _loading = true;
         _samples.AddRange(await sampleDataService.GetSampleFilesWithStreamAsync());
         _loading = false;
+    }
+
+    private void InstanceOnThemeChanged(object? sender, MainLayout.ThemeChangedEventArgs e)
+    {
+        StateHasChanged();
     }
 
     private string url;
@@ -67,4 +74,15 @@
     }
 
     public SampleFileWithStream SampleFile { get; set; }
+
+    private IDictionary<string, object> GetParams()
+    {
+        return new Dictionary<string, object>
+        {
+            {nameof(MudExFileDisplayCode.Theme), GetTheme()},
+            {nameof(MudExFileDisplayMarkdown.CodeBlockTheme), GetTheme()},
+        };
+    }
+
+    private CodeBlockTheme GetTheme() => MainLayout.Instance.GetCodeBlockTheme();
 }

@@ -7,6 +7,7 @@ using Nextended.Blazor.Helper;
 using MudBlazor.Extensions.Services;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Core;
+using YamlDotNet.Core.Tokens;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -196,6 +197,13 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     [Parameter]
     [SafeCategory("Behavior")] public string ErrorMessage { get; set; }
 
+
+    /// <summary>
+    /// Specify parameters for viewer controls. If a possible IMudExFileDisplay is found for current content type this parameters will be forwarded
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")] 
+    public IDictionary<string, object> ParametersForSubControls { get; set; }
+
     /// <summary>
     /// Media Type for current file
     /// </summary>
@@ -287,6 +295,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             renderInfos = GetRenderInfos();
         return base.OnParametersSetAsync();
     }
+    
 
     private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) GetComponentForFile(IMudExFileDisplay fileComponent)
     {
@@ -295,6 +304,15 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             return default;
         var parameters = ComponentRenderHelper.GetCompatibleParameters(this, type);
         parameters.Add(nameof(IMudExFileDisplay.FileDisplayInfos), this);
+
+        if (ParametersForSubControls != null)
+        {
+            foreach (var param in ParametersForSubControls.Where(k => ComponentRenderHelper.IsValidParameter(type, k.Key, k.Value)))
+            {
+                parameters[param.Key] = param.Value;
+            }
+        }
+
 
         return (type, fileComponent.WrapInMudExFileDisplayDiv, parameters);
     }

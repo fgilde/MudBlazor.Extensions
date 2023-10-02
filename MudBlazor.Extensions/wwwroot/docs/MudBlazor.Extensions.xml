@@ -1344,6 +1344,11 @@
             Gets or sets a general error message
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.ParametersForSubControls">
+            <summary>
+            Specify parameters for viewer controls. If a possible IMudExFileDisplay is found for current content type this parameters will be forwarded
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.MediaType">
             <summary>
             Media Type for current file
@@ -1516,6 +1521,11 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FileDisplayInfos">
             <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ParametersForSubControls">
+            <summary>
+            Specify parameters for viewer controls. If a possible IMudExFileDisplay is found for current content type this parameters will be forwarded
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ForceNativeRender">
             <summary>
@@ -4289,17 +4299,17 @@
             Allows multi item selection with Ctrl key.
             </summary>
         </member>
-        <member name="T:MudBlazor.Extensions.Components.MimeTypeRestrictionType">
+        <member name="T:MudBlazor.Extensions.Components.RestrictionType">
             <summary>
             Specifies the type of MIME type restriction.
             </summary>
         </member>
-        <member name="F:MudBlazor.Extensions.Components.MimeTypeRestrictionType.WhiteList">
+        <member name="F:MudBlazor.Extensions.Components.RestrictionType.WhiteList">
             <summary>
             Only MIME types in the list are allowed.
             </summary>
         </member>
-        <member name="F:MudBlazor.Extensions.Components.MimeTypeRestrictionType.BlackList">
+        <member name="F:MudBlazor.Extensions.Components.RestrictionType.BlackList">
             <summary>
             MIME types in the list are not allowed.
             </summary>
@@ -4365,12 +4375,22 @@
             The error text displayed when the maximum number of files is exceeded.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextErrorExtensionNotAllowed">
+            <summary>
+            The error text displayed when a file's MIME type is not allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextErrorExtensionForbidden">
+            <summary>
+            The error text displayed when a file's MIME type is forbidden.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextErrorMimeTypeNotAllowed">
             <summary>
             The error text displayed when a file's MIME type is not allowed.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextErrorMimeTypeNotForbidden">
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextErrorMimeTypeForbidden">
             <summary>
             The error text displayed when a file's MIME type is forbidden.
             </summary>
@@ -4430,9 +4450,19 @@
             Mime types for MimeRestrictions based on the <see cref="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MimeRestrictionType"/> this types are allowed or forbidden.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.Extensions">
+            <summary>
+            Extensions for FileRestrictions based on the <see cref="!:ExtensionsRestrictionType"/> this types are allowed or forbidden.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MimeRestrictionType">
             <summary>
             The type of the MIME restriction.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ExtensionRestrictionType">
+            <summary>
+            The type of the restriction for extensions.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MaxFileSize">

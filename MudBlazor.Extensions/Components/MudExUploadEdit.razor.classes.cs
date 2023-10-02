@@ -75,7 +75,7 @@ public enum SelectItemsMode
 /// <summary>
 /// Specifies the type of MIME type restriction.
 /// </summary>
-public enum MimeTypeRestrictionType
+public enum RestrictionType
 {
     /// <summary>
     /// Only MIME types in the list are allowed.

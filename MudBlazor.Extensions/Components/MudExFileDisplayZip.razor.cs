@@ -69,6 +69,12 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     }
 
     /// <summary>
+    /// Specify parameters for viewer controls. If a possible IMudExFileDisplay is found for current content type this parameters will be forwarded
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public IDictionary<string, object> ParametersForSubControls { get; set; }
+
+    /// <summary>
     /// Set this to true to initially render native and ignore registered IMudExFileDisplay
     /// </summary>
     [Parameter]

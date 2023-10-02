@@ -13,6 +13,8 @@ using Nextended.Blazor.Models;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Contracts;
 using MudBlazor.Extensions.Services;
+using System.Linq;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -94,13 +96,25 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     /// The error text displayed when a file's MIME type is not allowed.
     /// </summary>
     [Parameter, SafeCategory("Data")]
+    public string TextErrorExtensionNotAllowed { get; set; } = "Files with the extension ({0}) are not allowed. Only following types are allowed '{1}'. Try one of these extensions ({2})";
+
+    /// <summary>
+    /// The error text displayed when a file's MIME type is forbidden.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextErrorExtensionForbidden { get; set; } = "Files with the extension ({0}) are not allowed. Following types are forbidden '{1}' ({2})";
+
+    /// <summary>
+    /// The error text displayed when a file's MIME type is not allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
     public string TextErrorMimeTypeNotAllowed { get; set; } = "Files of this type ({0}) are not allowed. Only following types are allowed '{1}'. Try one of these extensions ({2})";
 
     /// <summary>
     /// The error text displayed when a file's MIME type is forbidden.
     /// </summary>
     [Parameter, SafeCategory("Data")]
-    public string TextErrorMimeTypeNotForbidden { get; set; } = "Files of this type ({0}) are not allowed. Following types are forbidden '{1}' ({2})";
+    public string TextErrorMimeTypeForbidden { get; set; } = "Files of this type ({0}) are not allowed. Following types are forbidden '{1}' ({2})";
 
     /// <summary>
     /// The title text displayed in the add URL dialog.
@@ -166,21 +180,25 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     /// Mime types for MimeRestrictions based on the <see cref="MimeRestrictionType"/> this types are allowed or forbidden.
     /// </summary>
     [Parameter, SafeCategory("Data")]
-    public string[] MimeTypes
-    {
-        get => _mimeTypes;
-        set
-        {
-            _mimeTypes = value;
-            UpdateAcceptInfo();
-        }
-    }
+    public string[] MimeTypes { get; set; }
+
+    /// <summary>
+    /// Extensions for FileRestrictions based on the <see cref="ExtensionsRestrictionType"/> this types are allowed or forbidden.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string[] Extensions { get; set; }
 
     /// <summary>
     /// The type of the MIME restriction.
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
-    public MimeTypeRestrictionType MimeRestrictionType { get; set; } = MimeTypeRestrictionType.WhiteList;
+    public RestrictionType MimeRestrictionType { get; set; } = RestrictionType.WhiteList;
+
+    /// <summary>
+    /// The type of the restriction for extensions.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public RestrictionType ExtensionRestrictionType { get; set; } = RestrictionType.WhiteList;
 
     /// <summary>
     /// The maximum file size allowed.
@@ -392,16 +410,11 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     
     private InputFile _inputFile;
     private List<T> _withErrors = new();
-    private string _accept;
-    private string _acceptExtensions;
-    private string[] _mimeTypes;
-
-
+    
     /// <inheritdoc />
     protected override Task OnInitializedAsync()
     {
         UploadFieldId ??= $"{nameof(MudExUploadEdit<T>)}-FileInput-{Guid.NewGuid()}";
-        UpdateAcceptInfo();
         return base.OnInitializedAsync();
     }
 
@@ -427,20 +440,7 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     {
         return UploadRequests is { Count: > 0 } && UploadRequests.Any(x => (x.Data != null && x.Data.Any() || !string.IsNullOrWhiteSpace(x.Url)));
     }
-
-    private void UpdateAcceptInfo()
-    {
-        _accept = string.Join(",", (MimeTypes ?? Array.Empty<string>()).Distinct());
-        var extensions = (MimeTypes?.Select(MimeType.GetExtension) ?? Array.Empty<string>()).ToList();
-        if (MimeTypes?.Any(MimeType.IsZip) == true)
-            extensions.Add(".zip");
-        if (MimeTypes?.Any(MimeType.IsRar) == true)
-            extensions.Add(".rar");
-        if (MimeTypes?.Any(MimeType.IsTar) == true)
-            extensions.Add(".tar");
-        _acceptExtensions = string.Join(",", extensions.Distinct());
-    }
-
+    
     private async Task UploadFiles(InputFileChangeEventArgs e)
     {
         if (AllowMultiple)
@@ -528,23 +528,73 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         if (MaxFileSize != null && MaxFileSize.Value != default && MaxFileSize.Value > 0 && file.Size > MaxFileSize)
             return !SetError(TryLocalize(TextErrorMaxFileSize, BrowserFileExtensions.GetReadableFileSize(MaxFileSize.Value, LocalizerToUse), BrowserFileExtensions.GetReadableFileSize(file.Size - MaxFileSize.Value, LocalizerToUse), file.GetReadableFileSize(LocalizerToUse)));
 
-        return IsAllowed(file.ContentType);
+        return IsExtensionAllowed(Path.GetExtension(file.Name)) && IsAllowed(file.ContentType);
     }
+
+    private string[] GetAllowedMimeTypes()
+    {
+        List<string> result;
+        if(MimeRestrictionType == RestrictionType.WhiteList)
+            result = MimeTypes?.Any() == true ? MimeType.AllTypes.Where(m => MimeType.Matches(m, MimeTypes)).ToList() : new List<string>();
+        else
+            result = MimeTypes?.Any() == true ? MimeType.AllTypes.Where(m => !MimeType.Matches(m, MimeTypes)).ToList() : new List<string>();
+        
+        if(ExtensionRestrictionType == RestrictionType.WhiteList && Extensions?.Any() == true)
+            result.AddRange(Extensions.Select(MimeType.GetMimeType));
+        else if (Extensions?.Any() == true)
+            result = result.Except(Extensions.Select(MimeType.GetMimeType)).ToList();
+        return result.Distinct().ToArray();
+    }
+
+    private string[] GetAllowedExtensions()
+    {
+        var mimes = MimeTypes?.Any() == true ? MimeType.AllTypes.Where(m => MimeType.Matches(m, MimeTypes)).ToList() : new List<string>();
+        List<string> result;
+        if (MimeRestrictionType == RestrictionType.WhiteList)
+            result = mimes.Select(MimeType.GetExtension).ToList();
+        else
+            result = MimeTypes?.Any() == true ? MimeType.AllTypes.Select(MimeType.GetExtension).Except(MimeTypes.Select(MimeType.GetExtension)).ToList() : MimeType.AllTypes.Select(MimeType.GetExtension).ToList();
+
+        if (ExtensionRestrictionType == RestrictionType.WhiteList && Extensions?.Any() == true)
+            result.AddRange(Extensions);
+        else if (Extensions?.Any() == true)
+            result = result.Except(Extensions).ToList();
+
+        return result.Distinct().ToArray();
+    }
+
 
     private string GetAccept()
     {
-        if (MimeRestrictionType == MimeTypeRestrictionType.WhiteList)
-            return $"{_accept},{_acceptExtensions}";
-        return "*";
+        var mimesList = GetAllowedMimeTypes().ToList();
+        var allowedExtensions = GetAllowedExtensions().ToList();
+        
+        return $"{string.Join(",", mimesList)},{string.Join(",", allowedExtensions)}";
+    }
+
+    private bool IsExtensionAllowed(string extension)
+    {
+        if (!ExtensionAllowed(extension))
+        {
+            var mimeString = string.Join(',', GetAllowedMimeTypes());
+            var extensionString = string.Join(',', GetAllowedExtensions());
+            if (MimeRestrictionType == RestrictionType.WhiteList)
+                return !SetError(TryLocalize(TextErrorExtensionNotAllowed, extension, mimeString, extensionString));
+            return !SetError(TryLocalize(TextErrorExtensionForbidden, extension, mimeString, extensionString));
+        }
+
+        return true;
     }
 
     private bool IsAllowed(string mimeType)
     {
         if (!MimeTypeAllowed(mimeType))
         {
-            if (MimeRestrictionType == MimeTypeRestrictionType.WhiteList)
-                return !SetError(TryLocalize(TextErrorMimeTypeNotAllowed, mimeType, _accept, _acceptExtensions));
-            return !SetError(TryLocalize(TextErrorMimeTypeNotForbidden, mimeType, _accept, _acceptExtensions));
+            var mimeString = string.Join(',', GetAllowedMimeTypes());
+            var extensionForMimeString = string.Join(',', GetAllowedExtensions());
+            if (MimeRestrictionType == RestrictionType.WhiteList)
+                return !SetError(TryLocalize(TextErrorMimeTypeNotAllowed, mimeType, mimeString, extensionForMimeString));
+            return !SetError(TryLocalize(TextErrorMimeTypeForbidden, mimeType, mimeString, extensionForMimeString));
         }
 
         if (UploadRequests?.Count >= Math.Max(1, MaxMultipleFiles))
@@ -553,11 +603,18 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         return true;
     }
 
+    private bool ExtensionAllowed(string extension)
+    {
+        if (Extensions?.Any() != true) return true;
+        var hasMatched = Extensions.Any(ext => string.Equals(ext.EnsureStartsWith("."), extension.EnsureStartsWith("."), StringComparison.CurrentCultureIgnoreCase));
+        return (ExtensionRestrictionType != RestrictionType.WhiteList || hasMatched) && (ExtensionRestrictionType != RestrictionType.BlackList || !hasMatched);
+    }
+
     private bool MimeTypeAllowed(string mimeType)
     {
         if (MimeTypes?.Any() != true) return true;
         var hasMatched = MimeType.Matches(mimeType, MimeTypes);
-        return (MimeRestrictionType != MimeTypeRestrictionType.WhiteList || hasMatched) && (MimeRestrictionType != MimeTypeRestrictionType.BlackList || !hasMatched);
+        return (MimeRestrictionType != RestrictionType.WhiteList || hasMatched) && (MimeRestrictionType != RestrictionType.BlackList || !hasMatched);
     }
 
     private bool SetError(string message = default)

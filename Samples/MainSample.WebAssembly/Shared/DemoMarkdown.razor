@@ -36,7 +36,7 @@
 
     <div class="@GetCls()">
         <MudMarkdown OverrideLinkUrl="@LinkThat"
-                     CodeBlockTheme="@(MainLayout.Instance?.IsDark == true ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.Default)"
+                     CodeBlockTheme="@(MainLayout.Instance.GetCodeBlockTheme())"
                      OverrideHeaderTypo="TypoConvert()" Value="@Value">
         </MudMarkdown>
     </div>

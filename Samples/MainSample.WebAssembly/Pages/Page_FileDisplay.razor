@@ -21,6 +21,7 @@
     {
         <div style="width: 100%; height: 800px; margin-top: 20px">
             <MudExFileDisplay HandleContentErrorFunc="@HandleContentError"
+                              ParametersForSubControls="@GetParams()"
                               StreamUrlHandling="StreamUrlHandling.BlobUrl"
                           ColorizeIcons="true"                                        
                           Dense="true"
@@ -38,9 +39,15 @@
     protected override Task OnInitializedAsync()
     {
         _samples.AddRange(sampleDataService.GetSampleFiles());
+        MainLayout.Instance.ThemeChanged += InstanceOnThemeChanged;
         return Task.CompletedTask;
     }
-    
+
+    private void InstanceOnThemeChanged(object? sender, MainLayout.ThemeChangedEventArgs e)
+    {
+        StateHasChanged();
+    }
+
     private async Task OpenAsDialog()
     {
         await dialogService.ShowFileDisplayDialog(SampleFile.Url, SampleFile.Name, SampleFile.ContentType, HandleContentError);
@@ -59,5 +66,16 @@
 
 
     public SampleFile SampleFile { get; set; }
+
+    private IDictionary<string, object> GetParams()
+    {
+        return new Dictionary<string, object>
+        {
+            {nameof(MudExFileDisplayCode.Theme), GetTheme()},
+            {nameof(MudExFileDisplayMarkdown.CodeBlockTheme), GetTheme()},
+        };
+    }
+
+    private CodeBlockTheme GetTheme() => MainLayout.Instance.GetCodeBlockTheme();
 
 }
