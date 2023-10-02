@@ -323,6 +323,7 @@ namespace TryMudEx.Client.Pages
 
         private async Task Upload()
         {
+            var allowedExtensions = new List<string>() {"zip", "rar", "razor", "cs"};
             var parameters = new DialogParameters
             {
                 { nameof(MudExMessageDialog.Buttons), MudExDialogResultAction.OkCancel("Upload") },
@@ -332,8 +333,9 @@ namespace TryMudEx.Client.Pages
                 uploadEdit =>
                 {
                     uploadEdit.MinHeight = 400;
-                    uploadEdit.AutoExtractZip = true;
-                    uploadEdit.MimeTypes = MimeType.ArchiveTypes.Concat(new[] { "text/plain", ""}).ToArray();
+                    uploadEdit.AutoExtractArchive = true;
+                    uploadEdit.Extensions = allowedExtensions.ToArray();
+                    //uploadEdit.MimeTypes = MimeType.ArchiveTypes.Concat(new[] { "text/plain", ""}).ToArray();
                 }, parameters, options =>
                 {
                     options.Resizeable = true;

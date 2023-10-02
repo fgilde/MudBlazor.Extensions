@@ -4472,7 +4472,7 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MaxFileSize">
             <summary>
-            The maximum file size allowed.
+            The maximum file size allowed in bytes.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MaxHeight">

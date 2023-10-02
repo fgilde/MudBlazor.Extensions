@@ -22,7 +22,7 @@ namespace MudBlazor.Extensions.Components;
 /// A Component to edit and upload a list of files
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
+public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 {
     /// <summary>
     /// Specify Theme to use for code file previews
@@ -132,7 +132,7 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     /// </summary>
     [Parameter, SafeCategory("Data")]
     public string TextAddUrlMessage { get; set; } = "Enter the URL to existing file";
-    
+
     /// <summary>
     /// The animation type for errors.
     /// </summary>
@@ -250,7 +250,7 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     }
 
     /// <summary>
-    /// The maximum file size allowed.
+    /// The maximum file size allowed in bytes.
     /// </summary>
     [Parameter, SafeCategory("Validation")]
     public long? MaxFileSize { get; set; } = null;
@@ -456,7 +456,7 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     [Inject] private MudExFileService FileService { get; set; }
     private string _errorMessage = string.Empty;
     private CancellationTokenSource _tokenSource;
-    
+
     private InputFile _inputFile;
     private List<T> _withErrors = new();
     private string[] _extensions;
@@ -494,7 +494,7 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     {
         return UploadRequests is { Count: > 0 } && UploadRequests.Any(x => (x.Data != null && x.Data.Any() || !string.IsNullOrWhiteSpace(x.Url)));
     }
-    
+
     private async Task UploadFiles(InputFileChangeEventArgs e)
     {
         if (AllowMultiple)
@@ -583,7 +583,7 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     [Inject] private MudExFileService fileService { get; set; }
     private async Task<IList<IArchivedBrowserFile>> GetZipEntriesAsync(IBrowserFile file)
     {
-        var data = await fileService.ReadArchiveAsync(file.OpenReadStream(), file.Name, file.ContentType);
+        var data = await fileService.ReadArchiveAsync(file.OpenReadStream(file.Size), file.Name, file.ContentType);
         return data.List;
     }
 
@@ -595,17 +595,17 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         return IsExtensionAllowed(Path.GetExtension(file.Name)) && IsAllowed(file.ContentType);
     }
 
- 
+
     private string[] GetAllowedMimeTypes(bool calc)
     {
         var mimes = calc ? MimeType.AllTypes : MimeTypes;
         List<string> result;
-        if(MimeRestrictionType == RestrictionType.WhiteList)
+        if (MimeRestrictionType == RestrictionType.WhiteList)
             result = MimeTypes?.Any() == true ? mimes.Where(m => MimeType.Matches(m, MimeTypes)).ToList() : new List<string>();
         else
             result = MimeTypes?.Any() == true ? mimes.Where(m => !MimeType.Matches(m, MimeTypes)).ToList() : new List<string>();
-        
-        if(ExtensionRestrictionType == RestrictionType.WhiteList && Extensions?.Any() == true)
+
+        if (ExtensionRestrictionType == RestrictionType.WhiteList && Extensions?.Any() == true)
             result.AddRange(Extensions.Select(MimeType.GetMimeType));
         else if (Extensions?.Any() == true)
             result = result.Except(Extensions.Select(MimeType.GetMimeType)).ToList();
@@ -689,7 +689,7 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
         {
             if (MimeRestrictionType == RestrictionType.WhiteList)
                 return !SetError(TryLocalize(TextErrorMimeTypeNotAllowed, mimeType, string.Join(',', GetAllowedMimeTypes(false)), string.Join(',', GetAllowedExtensions(false))));
-            return !SetError(TryLocalize(TextErrorMimeTypeForbidden, mimeType, string.Join(',', MimeTypes), string.Join(',',MimeTypes.Select(MimeType.GetExtension))));
+            return !SetError(TryLocalize(TextErrorMimeTypeForbidden, mimeType, string.Join(',', MimeTypes), string.Join(',', MimeTypes.Select(MimeType.GetExtension))));
         }
 
         if (UploadRequests?.Count >= Math.Max(1, MaxMultipleFiles))
@@ -774,7 +774,7 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     public async Task Upload(MouseEventArgs arg = null)
     {
         //return _jsRuntime.InvokeVoidAsync("MudExBrowserHelper.clickOnElement", "#" + UploadFieldId).AsTask();
-        await JsRuntime.InvokeVoidAsync($"(document.querySelector('#{UploadFieldId}'))?.click()").AsTask();        
+        await JsRuntime.InvokeVoidAsync($"(document.querySelector('#{UploadFieldId}'))?.click()").AsTask();
     }
 
     /// <summary>
@@ -834,9 +834,9 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
 
     private async Task Preview(T request)
     {
-        var parameters = new DialogParameters { 
-            { nameof(MudExFileDisplay.HandleContentErrorFunc), HandlePreviewContentErrorFunc }, 
-            { nameof(MudExFileDisplay.Dense), true }, 
+        var parameters = new DialogParameters {
+            { nameof(MudExFileDisplay.HandleContentErrorFunc), HandlePreviewContentErrorFunc },
+            { nameof(MudExFileDisplay.Dense), true },
             { nameof(MudExFileDisplay.StreamUrlHandling), StreamUrlHandling },
             { nameof(MudExFileDisplay.ForceNativeRender), ForceNativeRender },
             { nameof(MudExFileDisplay.ColorizeIcons), ColorizeIcons },
@@ -867,8 +867,8 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
     /// <param name="request"></param>
     /// <returns></returns>
     protected virtual async Task<string> ResolvePreviewUrlAsync(T request)
-    {        
-        if(ResolvePreviewDataUrlFunc != null)
+    {
+        if (ResolvePreviewDataUrlFunc != null)
             return await ResolvePreviewDataUrlFunc(request);
         return (request.Url ?? await FileService.CreateDataUrlAsync(request.Data, request.ContentType, StreamUrlHandling == StreamUrlHandling.BlobUrl));
     }
@@ -877,7 +877,7 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
 
     private async Task AddUrl()
     {
-        #pragma warning disable CS8974 // Converting method group to non-delegate type
+#pragma warning disable CS8974 // Converting method group to non-delegate type
         var parameters = new DialogParameters
         {
             {nameof(MudExPromptDialog.Message), TryLocalize(TextAddUrlMessage)},
@@ -886,7 +886,7 @@ public partial class MudExUploadEdit<T> where T: IUploadableFile, new()
             {nameof(MudExPromptDialog.CanConfirm), IsValidUrl},
             {nameof(MudExPromptDialog.Value), string.Empty},
         };
-        #pragma warning restore CS8974 // Converting method group to non-delegate type
+#pragma warning restore CS8974 // Converting method group to non-delegate type
 
         var options = new DialogOptionsEx { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true, Animations = new[] { AnimationType.FlipX } };
 
