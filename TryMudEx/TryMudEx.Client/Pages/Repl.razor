@@ -1,5 +1,9 @@
 ﻿@page "/snippet/{snippetId?}"
 @page "/snippet/samples/{sample?}"
+@using MudBlazor.Extensions.Options
+@using Nextended.Core.Extensions
+@using TryMudEx.Client.Enums
+
 @layout MainLayout
 
 <div class="try-layout">
@@ -27,14 +31,36 @@
         <MudOverlay Visible="Loading" Absolute="true" DarkBackground="true">
             <MudText Typo="Typo.h4" Class="white-text"> @LoaderText</MudText>
         </MudOverlay>
-        <div id="user-code-editor-container">
-            <TabManager Tabs="@CodeFileNames" OnTabActivate="@HandleTabActivate" OnTabClose="@HandleTabClose" OnTabCreate="@HandleTabCreate" />
-            <CodeEditor @ref="@CodeEditorComponent" Theme="@(LayoutService.IsDarkMode ? "vs-dark" : "default")" Code="@CodeEditorContent" CodeFileType="@CodeFileType" />
-            <ErrorList @bind-Show="@ShowDiagnostics" Diagnostics="@Diagnostics" />
-        </div>
-        <div id="user-page-window-container">
-            <iframe id="user-page-window" src="/user-page"></iframe>
-        </div>
+
+        @if (Mode != CodeViewMode.Window)
+        {
+            <MudExSplitPanel Splittable="true" Reverse="@(Mode == CodeViewMode.DockedTop || Mode == CodeViewMode.DockedLeft)" ColumnLayout="@(Mode == CodeViewMode.DockedRight || Mode == CodeViewMode.DockedLeft)">
+                <Left>
+                    <MudExSplitPanelItem Class="mt-3" Style="@($"overflow-y:hidden; width: 100%; min-width: {MinWidthLeft}; height:auto; min-height: {MinHeightLeft};")">
+                        @RenderEditor()
+                    </MudExSplitPanelItem>
+                </Left>
+                <Right>
+                    <MudExSplitPanelItem Style="@($"overflow-y:hidden; min-width: {MinWidthRight}; min-height: {MinHeightRight}; width: 65%;")">
+                        @RenderIFrame()
+                    </MudExSplitPanelItem>
+                </Right>
+            </MudExSplitPanel>
+        }else 
+        {
+            @RenderEditor()
+            <MudExDialog Class="compile-result-dlg full-height" ClassContent="full-height" @bind-IsVisible="_compiledSuccessfully" OptionsEx="@GetResultDialogOptions()">
+                <TitleContent>
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Color="Color.Success" Icon="@Icons.Material.Filled.PlayArrow" Class="mr-3" /> Compilation Result
+                    </MudText>
+                </TitleContent>
+                <DialogContent>
+                    @RenderIFrame()
+                </DialogContent>
+            </MudExDialog>
+        }
+        
     </div>
     <MudAppBar Bottom="true" Fixed="false" Color="@GetBottomAppBarColor()" Elevation="0" Class="try-errorlist repl-navbar">
         <div class="try-errorlist-button d-flex align-center" @onclick="@ToggleDiagnostics">
@@ -48,14 +74,27 @@
             }
         </div>
         <MudSpacer />
+        <MudButton OnClick="@ReloadIframe">Reload</MudButton>
+        <MudDivider Vertical="true"/>
         <MudText Typo="Typo.body2" Class="ml-10 try-mudblazor-version"><a href="https://www.nuget.org/packages/MudBlazor.Extensions/" target="_blank">MudBlazor.Extensions @MudExVersion</a></MudText>
         <MudText Typo="Typo.body2" Class="ml-10 try-mudblazor-version"><a href="https://www.nuget.org/packages/MudBlazor" target="_blank">MudBlazor @MudVersion</a></MudText>
     </MudAppBar>
 </div>
-@code{
+@code {
 
-    public Color GetBottomAppBarColor()
+    public Color GetBottomAppBarColor() => ErrorsCount != 0 ? Color.Error : WarningsCount != 0 ? Color.Warning : Color.Inherit;
+
+    protected RenderFragment RenderIFrame()
     {
-        return ErrorsCount != 0 ? Color.Error : WarningsCount != 0 ? Color.Warning : Color.Inherit;
+        return @<iframe class="mt-3 pr-5" id="user-page-window" src="/user-page"></iframe>;
     }
+    protected RenderFragment RenderEditor()
+    {
+        return @<div style="height: 100%; width: 100%">
+        <TabManager @bind-ViewMode="Mode" Tabs="@CodeFileNames" OnTabActivate="@HandleTabActivate" OnTabClose="@HandleTabClose" OnTabCreate="@HandleTabCreate" />
+        <CodeEditor @ref="@CodeEditorComponent" Theme="@(LayoutService.IsDarkMode ? "vs-dark" : "default")" Code="@CodeEditorContent" CodeFileType="@CodeFileType" />
+        <ErrorList @bind-Show="@ShowDiagnostics" Diagnostics="@Diagnostics" />
+    </div>;
+    }
+
 }

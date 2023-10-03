@@ -3,6 +3,7 @@
     public static class Try
     {
         public static string Initialize = "Try.initialize";
+        public static string UpdateSplitView = "Try.updateSplitView";
         public static string ChangeDisplayUrl = "Try.changeDisplayUrl";
         public static string ReloadIframe = "Try.reloadIframe";
         public static string Dispose = "Try.dispose";

@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
+using Newtonsoft.Json;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
@@ -117,4 +118,5 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
     {
         return AsJsComponent.DisposeModulesAsync();
     }
+
 }

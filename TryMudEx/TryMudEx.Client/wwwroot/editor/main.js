@@ -75,10 +75,7 @@ window.Try = {
     initialize: function (dotNetInstance) {
         _dotNetInstance = dotNetInstance;
         throttleLastTimeFuncNameMappings['compile'] = new Date();
-
-        Split(['#user-code-editor-container', '#user-page-window-container'], {
-            gutterSize: 6,
-        })
+        
         window.addEventListener('keydown', onKeyDown);
     },
     changeDisplayUrl: function (url) {

@@ -5,6 +5,7 @@
     using TryMudEx.Client.Services;
     using Microsoft.AspNetCore.Components;
     using MudBlazor;
+    using TryMudEx.Client.Enums;
 
     public partial class TabManager
     {
@@ -15,6 +16,7 @@
         private string _newTab;
         private ElementReference _newTabInput;
         private string _previousInvalidTab;
+        private CodeViewMode _viewMode;
 
         [Parameter]
         public IList<string> Tabs { get; set; }
@@ -27,6 +29,23 @@
 
         [Parameter]
         public EventCallback<string> OnTabCreate { get; set; }
+
+        [Parameter]
+        public CodeViewMode ViewMode
+        {
+            get => _viewMode;
+            set
+            {
+                if (_viewMode != value)
+                {
+                    _viewMode = value;
+                    ViewModeChanged.InvokeAsync(value);
+                }
+            }
+        }
+
+        [Parameter]
+        public EventCallback<CodeViewMode> ViewModeChanged { get; set; }
 
         [Inject]
         public ISnackbar Snackbar { get; set; }
@@ -45,6 +64,11 @@
             }
 
             await base.OnAfterRenderAsync(firstRender);
+        }
+
+        private Color ViewModeColor(CodeViewMode mode)
+        {
+            return mode == ViewMode ? Color.Warning : Color.Default;
         }
 
         private Task ActivateTabAsync(int activeIndex)
@@ -133,5 +157,6 @@
 
             await ActivateTabAsync(newTabIndex);
         }
+
     }
 }

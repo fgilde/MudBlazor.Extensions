@@ -6,13 +6,22 @@
 <MudLayout Class="try-mudblazor-index">
     <MudAppBar Color="Color.Transparent" Fixed="false" Elevation="0">
         <div style="display: flex;">
-            <MudText Typo="Typo.h5">Try</MudText>
-            <MudExGradientText Typo="Typo.h5">MudBlazor.Extensions</MudExGradientText>
+            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                <MudText Typo="Typo.h5">Try</MudText>
+                <MudExGradientText Typo="Typo.h5">MudBlazor.Extensions</MudExGradientText>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+                <MudText Typo="Typo.h6">Try</MudText>
+                <MudExGradientText Typo="Typo.h6">MudBlazor.Extensions</MudExGradientText>
+            </MudHidden>
         </div>
         <MudSpacer />
         <MudButton Link="https://www.mudex.org/" Target="_blank"  Color="Color.Default" Size="Size.Large">MudEx</MudButton>
-        <MudButton Link="https://mudblazor.com/" Target="_blank"  Color="Color.Default" Size="Size.Large">MudBlazor</MudButton>
-        <MudButton Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank" Color="Color.Primary" Size="Size.Large">Source Code</MudButton>
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudButton Link="https://mudblazor.com/" Target="_blank"  Color="Color.Default" Size="Size.Large">MudBlazor</MudButton>
+            <MudButton Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank" Color="Color.Primary" Size="Size.Large">Source Code</MudButton>
+        </MudHidden>
+
     </MudAppBar>
     <MudMainContent>
         <MudContainer Class="my-16" MaxWidth="MaxWidth.Large">
@@ -20,13 +29,27 @@
                 <MudItem xs="12">
                     <div>
                         <div style="display: flex;">
-                            <MudText Typo="Typo.h1">Try</MudText>
-                            <MudExGradientText Typo="Typo.h1">MudBlazor.Extensions</MudExGradientText>
+                            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                                <MudText Typo="Typo.h1">Try</MudText>
+                                <MudExGradientText Typo="Typo.h1">MudBlazor.Extensions</MudExGradientText>
+                            </MudHidden>
+                            <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+                                <MudText Typo="Typo.h4">Try</MudText>
+                                <MudExGradientText Typo="Typo.h4">MudBlazor.Extensions</MudExGradientText>
+                            </MudHidden>
                         </div>
-                        <MudText Typo="Typo.h4" Class="mud-text-secondary ml-2 my-5">
-                            A playground for <MudLink Typo="Typo.h4" Href="https://www.mudex.org" Target="_blank">MudBlazor.Extensions</MudLink> @MudExVersion
-                            and <MudLink Typo="Typo.h4" Href="https://mudblazor.com" Target="_blank">MudBlazor</MudLink> @MudVersion
-                        </MudText>
+                        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                            <MudText Typo="Typo.h4" Class="mud-text-secondary ml-2 my-5">
+                                A playground for <MudLink Typo="Typo.h4" Href="https://www.mudex.org" Target="_blank">MudBlazor.Extensions</MudLink> @MudExVersion
+                                and <MudLink Typo="Typo.h4" Href="https://mudblazor.com" Target="_blank">MudBlazor</MudLink> @MudVersion
+                            </MudText>
+                        </MudHidden>
+                        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+                            <MudText Typo="Typo.h6" Class="mud-text-secondary ml-2 my-5">
+                                A playground for <MudLink Typo="Typo.h6" Href="https://www.mudex.org" Target="_blank">MudBlazor.Extensions</MudLink> @MudExVersion
+                                and <MudLink Typo="Typo.h6" Href="https://mudblazor.com" Target="_blank">MudBlazor</MudLink> @MudVersion
+                            </MudText>
+                        </MudHidden>
                         <div class="px-2 mt-8">
                             <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" DisableElevation="true" Class="px-6" Link="/snippet">Play now</MudButton>
                         </div>

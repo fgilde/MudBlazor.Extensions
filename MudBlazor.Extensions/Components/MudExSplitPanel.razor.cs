@@ -13,6 +13,7 @@ public partial class MudExSplitPanel
     private string _rightSize;
     private bool AnythingCollapsed() => _isCollapsed;
     private bool _isCollapsed;
+    private bool _columnLayout = true;
 
     /// <summary>
     /// The content that will be displayed on the left or top hand side of the SplitPanel
@@ -30,7 +31,18 @@ public partial class MudExSplitPanel
     /// Sets whether the SplitPanel component should lay out horizontally
     /// </summary>
     [Parameter, SafeCategory("Layout")]
-    public bool ColumnLayout { get; set; } = true;
+    public bool ColumnLayout
+    {
+        get => _columnLayout;
+        set
+        {
+            if (_columnLayout != value)
+            {
+                _columnLayout = value;
+                StateHasChanged();
+            }
+        }
+    }
 
     /// <summary>
     /// Sets whether the SplitPanel component should reverse its flex direction

@@ -20,7 +20,7 @@
         }
         @if (Splittable && Left != null && Right != null && !AnythingCollapsed())
         {
-            <MudExSplitter @ref="_splitter" Vertical="@ColumnLayout" Reverse="@Reverse" Color="@SplitterColor" Size="@SplitterSize" FlexItem="true" UpdateSizesInPercentage="@UpdateSizesInPercentage" />
+            <MudExSplitter @ref="_splitter" Vertical="@ColumnLayout" UseBorder="true" Reverse="@Reverse" Color="@SplitterColor" Size="@SplitterSize" FlexItem="true" UpdateSizesInPercentage="@UpdateSizesInPercentage" />
             @*<DynamicComponent Type="@typeof(MudExSplitter)" Parameters="@(new Dictionary<string, object> {{nameof(MudExSplitter.Vertical), ColumnLayout},{nameof(MudExSplitter.Reverse), Reverse}, {nameof(MudExSplitter.FlexItem), true}, {nameof(MudExSplitter.UpdateSizesInPercentage), UpdateSizesInPercentage} })"></DynamicComponent>*@
         }
         @if (Right != null)

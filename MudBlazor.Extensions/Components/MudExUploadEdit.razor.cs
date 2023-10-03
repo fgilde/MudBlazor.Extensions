@@ -557,7 +557,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             {
                 Data = buffer,
                 FileName = file.Name,
-                ContentType = file.ContentType,
+                ContentType = BrowserFileExt.GetContentType(file),
                 Extension = extension
             };
             Add(request);
@@ -583,7 +583,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     [Inject] private MudExFileService fileService { get; set; }
     private async Task<IList<IArchivedBrowserFile>> GetZipEntriesAsync(IBrowserFile file)
     {
-        var data = await fileService.ReadArchiveAsync(file.OpenReadStream(file.Size), file.Name, file.ContentType);
+        var data = await fileService.ReadArchiveAsync(file.OpenReadStream(file.Size), file.Name, BrowserFileExt.GetContentType(file));
         return data.List;
     }
 
@@ -592,7 +592,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         if (MaxFileSize != null && MaxFileSize.Value != default && MaxFileSize.Value > 0 && file.Size > MaxFileSize)
             return !SetError(TryLocalize(TextErrorMaxFileSize, BrowserFileExtensions.GetReadableFileSize(MaxFileSize.Value, LocalizerToUse), BrowserFileExtensions.GetReadableFileSize(file.Size - MaxFileSize.Value, LocalizerToUse), file.GetReadableFileSize(LocalizerToUse)));
 
-        return IsExtensionAllowed(Path.GetExtension(file.Name)) && IsAllowed(file.ContentType);
+        return IsExtensionAllowed(Path.GetExtension(file.Name)) && IsAllowed(BrowserFileExt.GetContentType(file));
     }
 
 

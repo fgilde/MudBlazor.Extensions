@@ -73,11 +73,28 @@
 
     dragElement() {
         let mouseDownInfo;
+        let overlay;
 
         this.splitter.onmousedown = (event) => {
             mouseDownInfo = this.getMouseDownInfo(event);
+
+            // Create the overlay and append it to the body
+            overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.right = '0';
+            overlay.style.bottom = '0';
+            overlay.style.left = '0';
+            overlay.style.zIndex = '99999'; // High z-index to make sure it's on top
+            overlay.style.cursor = 'default'; // You can set this to whatever cursor you want during dragging
+            document.body.appendChild(overlay);
+
             document.onmousemove = onMouseMove;
             document.onmouseup = () => {
+                // Remove the overlay when dragging is done
+                if (overlay) {
+                    overlay.parentNode.removeChild(overlay);
+                }
                 this.resetDocumentMouseEvents();
                 this.apply();
             };
@@ -89,12 +106,12 @@
 
             if (this.direction === "H") { // Horizontal
                 this.updateHorizontalElements(x, mouseDownInfo);
-
             } else if (this.direction === "V") { // Vertical
                 this.updateVerticalElements(y, mouseDownInfo);
             }
         };
     }
+
 
     apply() {
 
