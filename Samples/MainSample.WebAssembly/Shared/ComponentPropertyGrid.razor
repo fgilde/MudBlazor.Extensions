@@ -5,7 +5,12 @@
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Options
+@using MudBlazor.Extensions.Services
 @using Nextended.Core.Extensions
+@using System.Text
+@using Nextended.Core.Encode
+@using Nextended.Core.Encryption
+@using System.IO.Compression
 @inherits MudExObjectEdit<T>
 @typeparam T
 
@@ -27,6 +32,7 @@ else
     IDialogService dialogService { get; set; }
 
     [Inject] private IJsApiService JsApiService { get; set; }
+    [Inject] private MudExFileService FileService { get; set; }
 
     private bool rendered;
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
@@ -39,13 +45,13 @@ else
         ToolbarColor = Color.Surface;
         StickyToolbarTop = "-8px";
         StoreAndReadValueFromUrl = true;
-        MultiSearch = true;        
+        MultiSearch = true;
         return base.OnInitializedAsync();
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
-        if(firstRender)
+        if (firstRender)
             _showInherited = ShowInherited;
         base.OnAfterRender(firstRender);
         if (!rendered)
@@ -55,34 +61,39 @@ else
         }
     }
 
-    
+
     protected override ObjectEditMeta<T> ConfigureMetaBase(ObjectEditMeta<T> meta)
-    {        
+    {
         meta.IgnoreAllObsoleteFields();
-        meta.IgnoreAllInheritedFieldsIf(_ => !_showInherited, new[] { nameof(MudExBaseInput<T>.Color)});
+        meta.IgnoreAllInheritedFieldsIf(_ => !_showInherited, new[] { nameof(MudExBaseInput<T>.Color) });
         meta.GroupByCategoryAttribute();
-        meta.Properties<string>().Where(p => p?.Value?.ToString()?.StartsWith("<g") == true || p?.Value?.ToString()?.StartsWith("<path") == true)
+        meta.Properties<string>()
+        .Where(p => p?.Value?.ToString()?.StartsWith("<g") == true || p?.Value?.ToString()?.StartsWith("<path") == true)
         .RenderWith<MudExIconPicker, string, string>(edit => edit.Value);
-        
-        meta.AllProperties.WrapIn<PropertyInfoContainer<T>>((p, cmp) => { 
-            cmp.Property = p.PropertyInfo; 
+
+        meta.AllProperties.WrapIn<PropertyInfoContainer<T>>((p, cmp) =>
+        {
+            cmp.Property = p.PropertyInfo;
         });
 
-    return base.ConfigureMetaBase(meta);
+        return base.ConfigureMetaBase(meta);
     }
 
     RenderFragment RenderToolbarExtraContent()
     {
-        return 
-    @<div>
-            <MudTooltip Text="Show Markup">
-                <MudIconButton Icon="@Icons.Material.Filled.Code" OnClick="@ShowCode" />
-            </MudTooltip>
-            <MudTooltip Text="Show or hide inherited fields from base class">                
-                <MudSwitch T="bool" CheckedChanged="@OnChangeInherit" Size="Size.Small" Color="Color.Primary" Checked="_showInherited">Inherited</MudSwitch>
-            </MudTooltip>
-        </div>
-    ;
+        return
+            @<div>
+                <MudTooltip Text="Edit in TryMudEx">
+                    <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.PlayArrow" OnClick="@EditCode" />
+                </MudTooltip>
+                <MudTooltip Text="Show Markup">
+                    <MudIconButton Icon="@Icons.Material.Filled.Code" OnClick="@ShowCode" />
+                </MudTooltip>
+                <MudTooltip Text="Show or hide inherited fields from base class">
+                    <MudIconButton OnClick="@(() => OnChangeInherit(!_showInherited))" Color="@(_showInherited ? Color.Warning : Color.Default)" 
+                                   Icon="@(_showInherited ? Icons.Material.Filled.Workspaces : Icons.Material.Outlined.Workspaces)"></MudIconButton> 
+                </MudTooltip>
+            </div>;
     }
 
     private Task OnChangeInherit(bool b)
@@ -114,5 +125,29 @@ else
                     Resizeable = true,
                 });
     }
+
+    private async Task EditCode()
+    {
+        var code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value);
+        //var baseUrl = "https://localhost:44394";
+        var baseUrl = AppConstants.Urls.TryOnline;
+        var client = new HttpClient();
+
+        var memoryStream = new MemoryStream();
+        using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+        {
+            var byteArray = Encoding.UTF8.GetBytes(code);
+            var codeEntry = archive.CreateEntry("__Main.razor");
+            await using var entryStream = codeEntry.Open();
+            entryStream.Write(byteArray);
+        }
+        memoryStream.Position = 0;
+
+        var inputData = new StreamContent(memoryStream);
+        var response = await client.PostAsync($"{baseUrl}/api/snippets", inputData);
+        var snippetId = await response.Content.ReadAsStringAsync();
+        _ = JsRuntime.InvokeVoidAsync("window.open", $"{baseUrl}/snippet/{snippetId}{(MainLayout.Instance.IsDark ? "?dark" : "?light")}");
+    }
+
 
 }

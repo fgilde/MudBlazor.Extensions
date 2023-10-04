@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.Configuration;
 using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Extensions;
@@ -14,6 +16,8 @@ using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
+using Nextended.Blazor.Models;
+using Nextended.Core.Encode;
 using Nextended.Core.Extensions;
 using Try.Core;
 using TryMudEx.Client.Components;
@@ -38,6 +42,7 @@ public partial class Repl : IDisposable
     private CodeViewMode _mode;
     
     [Inject] public ISnackbar Snackbar { get; set; }
+    [Inject] public ILocalStorageService Storage { get; set; }
 
     [Inject] public SnippetsService SnippetsService { get; set; }
 
@@ -76,6 +81,7 @@ public partial class Repl : IDisposable
     [Parameter] public string SnippetId { get; set; }
 
     [Parameter] public string Sample { get; set; }
+    [Parameter] public string SnippetFileUrl { get; set; }
 
     public CodeEditor CodeEditorComponent { get; set; }
 
@@ -164,17 +170,40 @@ public partial class Repl : IDisposable
         base.OnAfterRender(firstRender);
     }
 
+    private async ValueTask SaveState()
+    {
+         await Storage.SetItemAsync("__temp_code", CodeFiles);
+         Snackbar.Add("Save code state for reload.", Severity.Info, options =>
+         {
+             options.HideTransitionDuration = 100;
+             options.ShowTransitionDuration = 100;
+             options.VisibleStateDuration = 1000;
+         });
+    }
+
     private async Task<LoadedSample> LoadDataAsync()
     {
         var isSnippet = !string.IsNullOrWhiteSpace(SnippetId) && string.IsNullOrWhiteSpace(Sample);
         var isSample = !isSnippet && !string.IsNullOrWhiteSpace(Sample);
-        if (isSnippet || isSample)
+        var isFromUrl = !isSnippet && !isSample && !string.IsNullOrWhiteSpace(SnippetFileUrl);
+
+        if (isSnippet || isSample || isFromUrl)
         {
             try
             {
-                CodeFiles = isSnippet
-                    ? (await SnippetsService.GetSnippetContentAsync(SnippetId)).ToDictionary(f => f.Path, f => f)
-                    : (await SnippetsService.LoadSampleAsync(Sample)).ToDictionary(f => f.Path, f => f);
+                if (isFromUrl)
+                {
+                    SnippetFileUrl = SnippetFileUrl.StartsWith("http") || SnippetFileUrl.StartsWith("blob") || DataUrl.IsDataUrl(SnippetFileUrl) ? SnippetFileUrl : SnippetFileUrl.EncodeDecode().Base64.Decode();
+                    CodeFiles = (await SnippetsService.GetSnippetContentFromUrlAsync(SnippetFileUrl)).ToDictionary(f => f.Path, f => f);
+                }
+                else
+                {
+
+                    CodeFiles = isSnippet
+                        ? (await SnippetsService.GetSnippetContentAsync(SnippetId)).ToDictionary(f => f.Path, f => f)
+                        : (await SnippetsService.LoadSampleAsync(Sample)).ToDictionary(f => f.Path, f => f);
+                }
+
                 if (!CodeFiles.Any())
                     errorMessage = "No files in snippet or sample.";
                 else
@@ -192,6 +221,13 @@ public partial class Repl : IDisposable
             return isSnippet ? LoadedSample.Snippet : LoadedSample.Sample;
         }
 
+        if (await Storage.ContainKeyAsync("__temp_code"))
+        {
+            CodeFiles = await Storage.GetItemAsync<IDictionary<string, CodeFile>>("__temp_code");
+            if(CodeFiles.Any())  
+                activeCodeFile = CodeFiles.First().Value;
+        }
+
         return LoadedSample.None;
     }
 
@@ -199,7 +235,7 @@ public partial class Repl : IDisposable
     {
         Snackbar.Clear();
         
-        var loaded = await LoadDataAsync();
+        await LoadDataAsync();
 
         if (!CodeFiles.Any())
         {
@@ -219,6 +255,7 @@ public partial class Repl : IDisposable
 
     private async Task CompileAsync()
     {
+        await SaveState();
         Loading = true;
         LoaderText = "Processing";
 
@@ -323,6 +360,7 @@ public partial class Repl : IDisposable
         if (string.IsNullOrWhiteSpace(name)) return;
 
         CodeFiles.Remove(name);
+        SaveState();
     }
 
     private void HandleTabCreate(string name)
@@ -341,6 +379,7 @@ public partial class Repl : IDisposable
 
         JsRuntime.InvokeVoid(Models.Try.Editor.SetLangugage,
             newCodeFile.Type == CodeFileType.CSharp ? "csharp" : "razor");
+        SaveState();
     }
 
     private void UpdateActiveCodeFileContent()

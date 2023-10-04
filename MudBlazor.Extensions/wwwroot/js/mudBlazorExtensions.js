@@ -22,7 +22,7 @@ window.MudBlazorExtensionHelper = MudBlazorExtensionHelper;
 window.MudBlazorExtensions = {
     helper: null,
     currentMouseArgs: null,
-    
+
     __bindEvents: function () {
         var onMouseUpdate = function(e) {
             window.MudBlazorExtensions.currentMouseArgs = e;
@@ -56,6 +56,14 @@ window.MudBlazorExtensions = {
         } else {
             style.appendChild(document.createTextNode(css));
         }
+    },
+
+    openWindowAndPostMessage: function(url, message) {
+        var newWindow = window.open(url);
+        newWindow.onload = function () {
+            console.log("POST "+ message);
+            newWindow.postMessage(message, url);
+        };
     },
 
     downloadFile(options) {

@@ -1,25 +1,35 @@
-﻿using System;
-using System.Linq;
+﻿using System.Text;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
-using TryMudEx.Client.Components;
-using TryMudEx.Client.Services;
+using Microsoft.JSInterop;
+using MudBlazor.Extensions.Components;
+using MudBlazor.Extensions.Services;
+using Nextended.Core.Encode;
 
 namespace TryMudEx.Client.Pages.Index;
 
 public partial class Index
 {
-    [Inject] private SnippetsService SnippetsService { get; set; }
-    [Inject] private LayoutService LayoutService { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
+    [Inject] private MudExFileService FileService { get; set; }
+    [Inject] private IJSRuntime JsRuntime { get; set; }
+    [Inject] public ILocalStorageService Storage { get; set; }
+    private MudExCodeView _codeView;
 
-    private string _code;
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnInitializedAsync();
-        
-        var data = await SnippetsService.LoadSampleAsync("CardList");
-        _code = data.First().Content;
+        if(firstRender)
+            await Storage.RemoveItemAsync("__temp_code");
     }
 
+    private async Task UseCodeClick()
+    {
+        //Link="/snippet/samples/CardList"
+        var code = _codeView.Code;
+        var blobUrl = await FileService.CreateDataUrlAsync(Encoding.UTF8.GetBytes(code), "text/plain", true);
+        
+        NavigationManager.NavigateTo($"/snippet/from/{blobUrl.EncodeDecode().Base64.Encode()}");
+        _= JsRuntime.InvokeVoidAsync(Models.Try.ChangeDisplayUrl, "/snippet");
+    }
 }

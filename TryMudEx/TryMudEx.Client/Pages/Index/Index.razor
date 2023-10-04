@@ -16,9 +16,9 @@
             </MudHidden>
         </div>
         <MudSpacer />
-        <MudButton Link="https://www.mudex.org/" Target="_blank"  Color="Color.Default" Size="Size.Large">MudEx</MudButton>
+        <MudButton Link="https://www.mudex.org/" Target="_blank" Color="Color.Default" Size="Size.Large">MudEx</MudButton>
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <MudButton Link="https://mudblazor.com/" Target="_blank"  Color="Color.Default" Size="Size.Large">MudBlazor</MudButton>
+            <MudButton Link="https://mudblazor.com/" Target="_blank" Color="Color.Default" Size="Size.Large">MudBlazor</MudButton>
             <MudButton Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank" Color="Color.Primary" Size="Size.Large">Source Code</MudButton>
         </MudHidden>
 
@@ -81,76 +81,71 @@
                             </div>
                         </div>
                         <MudDivider />
-                        <div class="d-flex flex-column flex-sm-row">
-                            <div style="width: 600px;  align-self: stretch">
-                                @* <CodeEditor Theme="@(LayoutService.IsDarkMode ? "vs-dark" : "default")" ReadOnly="true" Code="@_code" CodeFileType="CodeFileType.Razor"></CodeEditor> *@
-                                <div style="max-height: 600px; overflow: auto">
-                                    <MudExCodeView Theme="@(LayoutService.IsDarkMode ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.AtomOneLight)" Code="@_code" Language="MudExCodeLanguage.Razor"></MudExCodeView>
-                                </div>
-                            </div>
-                            <MudDivider Vertical="true" FlexItem="true"/>
-                            <div class="d-flex flex-grow-1">
-                                <div class="pt-6 pb-16 px-8">
-                                    <MudExCardList TData="object">
-                                        <MudCard>
-                                            <MudCardHeader>
-                                                <CardHeaderContent>
-                                                    <MudText Typo="Typo.h6">Card 1</MudText>
-                                                </CardHeaderContent>
-                                                <CardHeaderActions>
-                                                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default"/>
-                                                </CardHeaderActions>
-                                            </MudCardHeader>
-                                            <MudCardContent>
-                                                <MudText>Super sample Content text.</MudText>
-                                                <MudText Typo="Typo.body2">Subline descriptin for sample card.</MudText>
-                                            </MudCardContent>
-                                            <MudCardActions>
-                                                <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
-                                            </MudCardActions>
-                                        </MudCard>
-                                        <MudCard>
-                                            <MudCardHeader>
-                                                <CardHeaderContent>
-                                                    <MudText Typo="Typo.h6">Card 2</MudText>
-                                                </CardHeaderContent>
-                                                <CardHeaderActions>
-                                                    <MudIconButton Icon="@Icons.Material.Filled.AddCard" Color="Color.Default"/>
-                                                </CardHeaderActions>
-                                            </MudCardHeader>
-                                            <MudCardContent>
-                                                <MudText>Super sample Content text.</MudText>
-                                                <MudText Typo="Typo.body2">Subline descriptin for sample card.</MudText>
-                                            </MudCardContent>
-                                            <MudCardActions>
-                                                <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
-                                            </MudCardActions>
-                                        </MudCard>
-                                        <MudCard>
-                                            <MudCardHeader>
-                                                <CardHeaderContent>
-                                                    <MudText Typo="Typo.h6">Card 3</MudText>
-                                                </CardHeaderContent>
-                                                <CardHeaderActions>
-                                                    <MudIconButton Icon="@Icons.Material.Filled.Camera" Color="Color.Default"/>
-                                                </CardHeaderActions>
-                                            </MudCardHeader>
-                                            <MudCardContent>
-                                                <MudText>Super sample Content text.</MudText>
-                                                <MudText Typo="Typo.body2">Subline descriptin for sample card.</MudText>
-                                            </MudCardContent>
-                                            <MudCardActions>
-                                                <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
-                                            </MudCardActions>
-                                        </MudCard>
-                                    </MudExCardList>
-                                </div>
-                            </div>
-                        </div>
+                        <MudExCodeView @ref="_codeView"
+                                       CodeViewModeWithRenderFragment="CodeViewModeWithRenderFragment.CodeDockedLeft" 
+                                       Style="margin-left: 0;padding-right: 24px;margin-top: 0;" 
+                                       CodeStyle="max-height: 600px;" 
+                                       DockedMinWidthLeft="100px"
+                                       DockedMinWidthRight="100px"
+                                       RenderFragmentStyle="max-height: 600px;" RenderChildContent="true">
+                            <MudExCardList TData="object">
+                                <MudCard>
+                                    <MudCardHeader>
+                                        <CardHeaderContent>
+                                            <MudText Typo="Typo.h6">Card 1</MudText>
+                                        </CardHeaderContent>
+                                        <CardHeaderActions>
+                                            <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                                        </CardHeaderActions>
+                                    </MudCardHeader>
+                                    <MudCardContent>
+                                        <MudText>Super sample Content text.</MudText>
+                                        <MudText Typo="Typo.body2">Subline descriptin for sample card.</MudText>
+                                    </MudCardContent>
+                                    <MudCardActions>
+                                        <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
+                                    </MudCardActions>
+                                </MudCard>
+                                <MudCard>
+                                    <MudCardHeader>
+                                        <CardHeaderContent>
+                                            <MudText Typo="Typo.h6">Card 2</MudText>
+                                        </CardHeaderContent>
+                                        <CardHeaderActions>
+                                            <MudIconButton Icon="@Icons.Material.Filled.AddCard" Color="Color.Default" />
+                                        </CardHeaderActions>
+                                    </MudCardHeader>
+                                    <MudCardContent>
+                                        <MudText>Super sample Content text.</MudText>
+                                        <MudText Typo="Typo.body2">Subline descriptin for sample card.</MudText>
+                                    </MudCardContent>
+                                    <MudCardActions>
+                                        <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
+                                    </MudCardActions>
+                                </MudCard>
+                                <MudCard>
+                                    <MudCardHeader>
+                                        <CardHeaderContent>
+                                            <MudText Typo="Typo.h6">Card 3</MudText>
+                                        </CardHeaderContent>
+                                        <CardHeaderActions>
+                                            <MudIconButton Icon="@Icons.Material.Filled.Camera" Color="Color.Default" />
+                                        </CardHeaderActions>
+                                    </MudCardHeader>
+                                    <MudCardContent>
+                                        <MudText>Super sample Content text.</MudText>
+                                        <MudText Typo="Typo.body2">Subline descriptin for sample card.</MudText>
+                                    </MudCardContent>
+                                    <MudCardActions>
+                                        <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
+                                    </MudCardActions>
+                                </MudCard>
+                            </MudExCardList>
+                        </MudExCodeView>
                     </MudPaper>
-                    
+
                     <div class="px-2 mt-8" style="display: flex;justify-content: center; align-items: center;">
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" DisableElevation="true" Class="px-6" Link="/snippet/samples/CardList">Use this code</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" DisableElevation="true" Class="px-6" OnClick="@UseCodeClick" >Use this code</MudButton>
                     </div>
 
                 </MudItem>
@@ -250,7 +245,7 @@
 
 
 
-@code { 
-    string MudVersion { get { var v = typeof(MudText).Assembly.GetName().Version; return $"v{v.Major}.{v.Minor}.{v.Build}"; } } 
-    string MudExVersion { get { var v = typeof(MudExIcon).Assembly.GetName().Version; return $"v{v.Major}.{v.Minor}.{v.Build}"; } } 
+@code {
+    string MudVersion { get { var v = typeof(MudText).Assembly.GetName().Version; return $"v{v.Major}.{v.Minor}.{v.Build}"; } }
+    string MudExVersion { get { var v = typeof(MudExIcon).Assembly.GetName().Version; return $"v{v.Major}.{v.Minor}.{v.Build}"; } }
 }

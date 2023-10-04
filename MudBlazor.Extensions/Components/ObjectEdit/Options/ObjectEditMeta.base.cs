@@ -37,13 +37,13 @@ public abstract class ObjectEditMeta
     }
 
 
-    private static bool IsAllowedAsPropertyToEdit(PropertyInfo p)
+    internal static bool IsAllowedAsPropertyToEdit(PropertyInfo p)
     {
         var forbiddenAttributes = new[] { typeof(InjectAttribute), typeof(IgnoreDataMemberAttribute), typeof(IgnoreOnObjectEditAttribute) };
         return forbiddenAttributes.All(a => p.GetCustomAttribute(a) == null);
     }
 
-    private static bool IsAllowedAsPropertyToEditOnAComponent<T>(PropertyInfo p)
+    internal static bool IsAllowedAsPropertyToEditOnAComponent<T>(PropertyInfo p)
     {
         if (p.PropertyType.IsNullableOf<DateTime>() && p.Name == nameof(MudBaseDatePicker.PickerMonth))
             return false; // TODO: find out why its so hard crashing without this

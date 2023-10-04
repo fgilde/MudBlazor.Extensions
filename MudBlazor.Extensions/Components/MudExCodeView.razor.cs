@@ -5,9 +5,18 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Text;
+using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Options;
+using YamlDotNet.Core.Tokens;
+using MudBlazor.Extensions.Components.ObjectEdit;
+using MudBlazor.Extensions.Core;
+using MudBlazor.Utilities;
+using System.Collections;
+using MudBlazor.Extensions.Attribute;
+using Newtonsoft.Json;
+using static MudBlazor.CategoryTypes;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -22,15 +31,76 @@ public partial class MudExCodeView
 
     protected string Classname =>
         new MudExCssBuilder("mud-ex-code-view")
-            .AddClass("full-width", FullWidth)
-            .AddClass("full-height", FullHeight)
             .AddClass(Class)
             .Build();
 
     protected string Stylename =>
         new MudExStyleBuilder()
             .AddRaw(Style)
+            .WithOverflow("auto")
             .Build();
+
+    protected string CodeViewClassname =>
+        new MudExCssBuilder("mud-ex-code-view")
+            .AddClass("full-width", FullWidth)
+            .AddClass("full-height", FullHeight)
+            .AddClass(CodeClass)
+            .Build();
+
+    protected string CodeViewStylename =>
+        new MudExStyleBuilder()
+            .AddRaw(CodeStyle)
+            .WithOverflow("auto")
+            .Build();
+
+    protected string RenderFragmentClassname =>
+        new MudExCssBuilder("mud-ex-code-view-container")
+            .AddClass(RenderFragmentClass)
+            .Build();
+
+    protected string RenderFragmentStylename =>
+        new MudExStyleBuilder()
+            .AddRaw(RenderFragmentStyle)
+            .WithOverflow("hidden")
+            .Build();
+
+    [Parameter] public string DockedMinWidthLeft { get; set; } = "350px";
+    [Parameter] public string DockedMinWidthRight { get; set; } = "350px;";
+    [Parameter] public string DockedMinHeightLeft { get; set; } = "150px";
+    [Parameter] public string DockedMinHeightRight { get; set; } = "150px;";
+
+    /// <summary>
+    /// User class names, separated by space.
+    /// </summary>
+    [Parameter]
+    [SafeCategory(CategoryTypes.ComponentBase.Common)]
+    public string? CodeClass { get; set; }
+
+    /// <summary>
+    /// User styles, applied on top of the component's own classes and styles.
+    /// </summary>
+    [Parameter]
+    [SafeCategory(CategoryTypes.ComponentBase.Common)]
+    public string? CodeStyle { get; set; }
+
+    /// <summary>
+    /// User class names, separated by space.
+    /// </summary>
+    [Parameter]
+    [SafeCategory(CategoryTypes.ComponentBase.Common)]
+    public string? RenderFragmentClass { get; set; }
+
+    /// <summary>
+    /// User styles, applied on top of the component's own classes and styles.
+    /// </summary>
+    [Parameter]
+    [SafeCategory(CategoryTypes.ComponentBase.Common)]
+    public string? RenderFragmentStyle { get; set; }
+
+    /// <summary>
+    /// Specify layout if render content and code ist displayed
+    /// </summary>
+    [Parameter] public CodeViewModeWithRenderFragment CodeViewModeWithRenderFragment { get; set; } = CodeViewModeWithRenderFragment.ExpansionPanel;
 
     /// <summary>
     /// Text for expand code
@@ -99,8 +169,7 @@ public partial class MudExCodeView
             _code = value;
         }
     }
-
-
+    
     /// <inheritdoc />
     protected override void OnParametersSet()
     {
@@ -152,16 +221,103 @@ public partial class MudExCodeView
     public static string GenerateBlazorMarkupFromInstance<TComponent>(TComponent componentInstance)
     {
         var componentName = componentInstance.GetType().FullName.Replace(componentInstance.GetType().Namespace + ".", string.Empty);
-        var properties = componentInstance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        var properties = componentInstance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => ObjectEditMeta.IsAllowedAsPropertyToEdit(p) && ObjectEditMeta.IsAllowedAsPropertyToEditOnAComponent<TComponent>(p));
 
-        var props = properties.ToDictionary(info => info.Name, info => info.GetValue(componentInstance)).Where(pair => Nextended.Blazor.Helper.ComponentRenderHelper.IsValidParameter(typeof(TComponent), pair.Key, pair.Value));
+        var props = properties.ToDictionary(info => info.Name, info => info.GetValue(componentInstance))
+            .Where(pair => Nextended.Blazor.Helper.ComponentRenderHelper.IsValidParameter(typeof(TComponent), pair.Key, pair.Value) 
+                           && pair.Value != null 
+                           && pair.Value?.GetType() != typeof(object));
 
-        var parameterString = string.Join("\n", props.Select(p => $"    {p.Key}=\"{p.Value}\""));
+        var parameterString = string.Join("\n", 
+            props.Select(p=> new KeyValuePair<string, string>(p.Key, MarkupValue(p)))
+                .Where(p => !string.IsNullOrWhiteSpace(p.Value))
+                .Select(p => $"{p.Key}=\"{p.Value}\""));
 
-        var markup = $"<{componentName}\n{parameterString}\n/>";
+        var markup = $"<{componentName}\n{parameterString}\n></{componentName}>";
 
         return markup;
     }
+
+
+
+    private static string MarkupValue(KeyValuePair<string, object> p, bool ignoreComplexTypes = true)
+    {
+        var value = p.Value;
+        if (p.Value == null)
+            return null;
+
+        if (value is bool)
+            return value.ToString().ToLower();
+
+        if (value.GetType().IsEnum)
+            return $"{value.GetType().FullName}.{value}";
+
+        if (value is DateTime dt)
+            return $"@(System.DateTime.Parse(\"{dt}\"))";
+        if (value is TimeSpan ts)
+            return $"@(System.TimeSpan.Parse(\"{ts}\"))";
+
+        if (value is MudColor mudColor)
+            value = new MudExColor(mudColor);
+
+        if (value is System.Drawing.Color dc)
+            value = new MudExColor(dc);
+
+        if (value is MudExColor color)
+            return $"@(\"{color.ToCssStringValue()}\")";
+
+        if (value.ToString().StartsWith("<"))
+        {
+            var name = MudExSvg.SvgPropertyNameForValue(value.ToString());
+            return name != null ? $"@{name}" : value.ToString().Replace("\"", "\\\"");
+        }
+
+        if (value is string || MudExObjectEditHelper.HandleAsPrimitive(value.GetType()))
+        {
+            return value.ToString();
+        }
+
+        if (ignoreComplexTypes)
+            return null;
+
+        //return $"{p.Value?.GetType().FullName}.{p.Value}";
+
+        // Für komplexe Datentypen, serialisiere sie zu JSON:
+        var fullName = value.GetType().FullName;
+        var friendlyTypeName = GetGenericFriendlyName(fullName);
+        var json = JsonConvert.SerializeObject(value);
+        return $"@(Newtonsoft.Json.JsonConvert.DeserializeObject<{friendlyTypeName}>(\"{json.Replace("\"", "\\\"")}\"))";
+    }
+
+    private static string GetGenericFriendlyName(string fullName)
+    {
+        if (string.IsNullOrWhiteSpace(fullName))
+            return fullName;
+
+        // Wenn der Typ ein Array ist
+        if (fullName.EndsWith("[]"))
+            return GetGenericFriendlyName(fullName.Substring(0, fullName.Length - 2)) + "[]";
+
+        // Typ ist ein generischer Typ
+        var genericMatch = new Regex(@"^(.*?)`\d+\[\[(.*)\]\]$").Match(fullName);
+        if (genericMatch.Success)
+        {
+            var typeName = genericMatch.Groups[1].Value;
+            var genericArguments = genericMatch.Groups[2].Value;
+
+            var splitArgs = genericArguments.Split(new string[] { "],[" }, StringSplitOptions.None)
+                .Select(s => s.Split(',')[0])
+                .Select(GetGenericFriendlyName)
+                .ToArray();
+
+            return $"{typeName}<{string.Join(", ", splitArgs)}>";
+        }
+
+        return fullName;
+    }
+
+
 
     /// <summary>
     /// Formats html code

@@ -10,34 +10,62 @@
     <Scripts SourceLoaded="@OnSourceLoaded"
              UnloadOnDispose="false"
              SourceLoadBehaviour="LoadBehaviour.OnAfterRenderAsync"
-             Src="_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js,_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css"/>
+             Src="_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js,_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css" />
 }
 
-@if (RenderChildContent && ChildContent != null)
+@if (RenderChildContent && ChildContent != null && CodeViewModeWithRenderFragment == CodeViewModeWithRenderFragment.ExpansionPanel)
 {
-    @ChildContent
+    <div class="@RenderFragmentClassname" style="@RenderFragmentStylename">
+        @ChildContent
+    </div>
 }
 
 @if (!string.IsNullOrEmpty(Code))
 {
     @if (RenderChildContent && ChildContent != null)
     {
-        <MudExpansionPanel @bind-IsExpanded="CodeIsExpanded" Text="@(CodeIsExpanded ? ExpandedText : CollapsedText)">
-            <div style="@Stylename" class="@Classname">
-                @if (_loadedFiles.Count >= 2)
-                {
-                    <MudMarkdown CodeBlockTheme="@Theme" Value="@(_markdownCode)"></MudMarkdown>
-                }
-            </div>
-        </MudExpansionPanel>
+        if (CodeViewModeWithRenderFragment == CodeViewModeWithRenderFragment.ExpansionPanel)
+        {
+            <MudExpansionPanel @bind-IsExpanded="CodeIsExpanded" Text="@(CodeIsExpanded ? ExpandedText : CollapsedText)">
+                @CodeView()
+            </MudExpansionPanel>
+        }
+        else
+        {
+
+            <MudExSplitPanel Style="@Stylename" Class="@Classname" IsInitiallyCollapsed="false" IsCollapsible="false" Splittable="true" Reverse="@(CodeViewModeWithRenderFragment is CodeViewModeWithRenderFragment.CodeDockedTop or CodeViewModeWithRenderFragment.CodeDockedRight)" ColumnLayout="@(CodeViewModeWithRenderFragment is CodeViewModeWithRenderFragment.CodeDockedLeft or CodeViewModeWithRenderFragment.CodeDockedRight)">
+                <Left>
+                    <MudExSplitPanelItem Style="@($"min-width: {DockedMinWidthLeft}; height:auto; min-height: {DockedMinHeightLeft};")">
+                        @CodeView()
+                    </MudExSplitPanelItem>
+                </Left>
+                <Right>
+                    <MudExSplitPanelItem Style="@($"min-width: {DockedMinWidthRight}; min-height: {DockedMinHeightRight};")">
+                        <div class="@RenderFragmentClassname" style="@RenderFragmentStylename">
+                            @ChildContent
+                        </div>
+                    </MudExSplitPanelItem>
+                </Right>
+            </MudExSplitPanel>
+        }
     }
     else
     {
-        <div style="@Stylename" class="@Classname">
-            @if (_loadedFiles.Count >= 2)
-            {
-                <MudMarkdown CodeBlockTheme="Theme" Value="@(_markdownCode)"></MudMarkdown>
-            }
-        </div>
+        @CodeView()
+    }
+}
+
+@code
+{
+    protected RenderFragment CodeView()
+    {
+        @if (_loadedFiles.Count >= 2)
+        {
+            return 
+                @<div style="@CodeViewStylename" class="@CodeViewClassname">
+                 <MudMarkdown CodeBlockTheme="@Theme" Value="@(_markdownCode)"></MudMarkdown>
+                </div>;
+        }
+        return @<p></p>;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MudBlazor.Extensions.Components;
+using Newtonsoft.Json;
 
 namespace Try.Core
 {
@@ -73,6 +74,7 @@ namespace Try.Core
                 typeof(RequiredAttribute).Assembly, // System.ComponentModel.Annotations
                 typeof(MudBlazor.MudButton).Assembly, // MudBlazor
                 typeof(MudExIcon).Assembly, // MudBlazor
+                typeof(JsonConvert).Assembly, // Newtonsoft
                 typeof(WebAssemblyHostBuilder).Assembly, // Microsoft.AspNetCore.Components.WebAssembly
                 typeof(FluentValidation.AbstractValidator<>).Assembly,
             };

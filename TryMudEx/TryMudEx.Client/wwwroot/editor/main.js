@@ -72,6 +72,7 @@ function throttle(func, timeFrame, id) {
 }
 
 window.Try = {
+
     initialize: function (dotNetInstance) {
         _dotNetInstance = dotNetInstance;
         throttleLastTimeFuncNameMappings['compile'] = new Date();

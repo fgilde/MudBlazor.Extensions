@@ -1,4 +1,7 @@
-﻿namespace TryMudEx.Client.Services
+﻿using Microsoft.JSInterop;
+using Nextended.Core;
+
+namespace TryMudEx.Client.Services
 {
     using System;
     using System.Collections.Generic;
@@ -17,11 +20,13 @@
         private const int SnippetIdLength = 16;
 
         private readonly HttpClient httpClient;
+        private readonly IJSRuntime _js;
         private readonly string snippetsService;
 
-        public SnippetsService(IOptions<SnippetsOptions> snippetsOptions, HttpClient httpClient, NavigationManager navigationManager)
+        public SnippetsService(IOptions<SnippetsOptions> snippetsOptions, HttpClient httpClient, IJSRuntime js, NavigationManager navigationManager)
         {
             this.httpClient = httpClient;
+            _js = js;
             this.snippetsService = $"{navigationManager.BaseUri}{snippetsOptions.Value.SnippetsService}";
         }
 
@@ -114,10 +119,11 @@
             return snippetFiles;
         }
 
-        public async Task<IEnumerable<CodeFile>> LoadSampleAsync(string sample)
+        public Task<IEnumerable<CodeFile>> LoadSampleAsync(string sample)
         {
-            var stream = await httpClient.GetStreamAsync($"/data/{sample}.zip");
-            return await ExtractSnippetFilesFromZip(stream);
+            return GetSnippetContentFromUrlAsync($"/data/{sample}.zip");
+            //var stream = await httpClient.GetStreamAsync($"/data/{sample}.zip");
+            //return await ExtractSnippetFilesFromZip(stream);
         }
 
         private static async Task<IEnumerable<CodeFile>> ExtractSnippetFilesFromZip(Stream zipStream)
@@ -133,5 +139,34 @@
 
             return result;
         }
+
+        public async Task<IEnumerable<CodeFile>> GetSnippetContentFromUrlAsync(string snippetFileUrl)
+        {
+            var response = await httpClient.GetAsync(snippetFileUrl, HttpCompletionOption.ResponseHeadersRead);
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Failed to download the snippet from {snippetFileUrl}. Status code: {response.StatusCode}");
+            
+
+            // Prüfen, ob der Content-Type "zip" ist
+            if (MimeType.IsZip(response?.Content?.Headers?.ContentType?.MediaType))
+            {
+                await using var stream = await response.Content.ReadAsStreamAsync();
+                return await ExtractSnippetFilesFromZip(stream);
+            }
+
+            if (response.Content.Headers.ContentType.MediaType.Equals("text/plain", StringComparison.OrdinalIgnoreCase))
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                return new[] { new CodeFile()
+                {
+                    Content = content,
+                    Path = "__Main.razor"
+                } };
+            }
+
+            throw new Exception($"Unsupported media type: {response.Content.Headers.ContentType.MediaType}");
+        }
+
     }
 }

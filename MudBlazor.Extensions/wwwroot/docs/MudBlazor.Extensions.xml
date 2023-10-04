@@ -559,6 +559,31 @@
             Simple CodeViewer Component
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.CodeClass">
+            <summary>
+            User class names, separated by space.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.CodeStyle">
+            <summary>
+            User styles, applied on top of the component's own classes and styles.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.RenderFragmentClass">
+            <summary>
+            User class names, separated by space.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.RenderFragmentStyle">
+            <summary>
+            User styles, applied on top of the component's own classes and styles.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.CodeViewModeWithRenderFragment">
+            <summary>
+            Specify layout if render content and code ist displayed
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExCodeView.ExpandedText">
             <summary>
             Text for expand code

@@ -63,7 +63,7 @@
                 Label = "Name",
                 AdornmentColor = Color.Warning,
                 Adornment = Adornment.End,
-                AdornmentIcon = Icons.Filled.Key
+                AdornmentIcon = Icons.Material.Filled.Key
             }).WithGroup("Name").WrapInMudItem(i => i.xs = 6);
 
         meta.Properties(m => m.Age, m => m.Gender).WithAdditionalAttribute("Variant", Variant.Text, true).WrapInMudItem(x => x.xs = 6);
@@ -76,7 +76,7 @@
                 });
 
         meta.Property(m => m.LastName).WithLabel("Surname").WithAdditionalAttributes<MudTextField<string>>(
-            t => t.AdornmentIcon = Icons.Outlined.Abc,
+            t => t.AdornmentIcon = Icons.Material.Outlined.Abc,
             t => t.Adornment = Adornment.End,
             t => t.Immediate = true,
             t => t.Counter = 22)

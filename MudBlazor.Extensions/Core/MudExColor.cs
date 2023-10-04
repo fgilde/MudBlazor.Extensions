@@ -2,6 +2,7 @@
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Utilities;
+using Newtonsoft.Json;
 using OneOf;
 using DC = System.Drawing.Color;
 
@@ -76,26 +77,31 @@ public readonly struct MudExColor
     /// <summary>
     /// Returns the value as Color type.
     /// </summary>
+    [JsonIgnore]
     public Color AsColor => _value.AsT0;
 
     /// <summary>
     /// Returns the value as MudColor type.
     /// </summary>
+    [JsonIgnore]
     public MudColor AsMudColor => _value.AsT1;
 
     /// <summary>
     /// Returns the value as DrawingColor type.
     /// </summary>
+    [JsonIgnore]
     public DC AsDrawingColor => _value.AsT2;
 
     /// <summary>
     /// Returns the value as String type.
     /// </summary>
+    [JsonIgnore]
     public string AsString => _value.AsT3;
 
     /// <summary>
     /// Returns the value as Integer type.
     /// </summary>
+    [JsonIgnore]
     public uint AsInt => _value.AsT4;
 
     /// <summary>

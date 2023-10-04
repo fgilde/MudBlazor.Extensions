@@ -1,7 +1,6 @@
 ﻿@page "/snippet/{snippetId?}"
 @page "/snippet/samples/{sample?}"
-@using MudBlazor.Extensions.Options
-@using Nextended.Core.Extensions
+@page "/snippet/from/{snippetFileUrl?}"
 @using TryMudEx.Client.Enums
 
 @layout MainLayout
@@ -34,7 +33,7 @@
 
         @if (Mode != CodeViewMode.Window)
         {
-            <MudExSplitPanel Splittable="true" Reverse="@(Mode == CodeViewMode.DockedTop || Mode == CodeViewMode.DockedLeft)" ColumnLayout="@(Mode == CodeViewMode.DockedRight || Mode == CodeViewMode.DockedLeft)">
+            <MudExSplitPanel Splittable="true" IsCollapsible="false" Reverse="@(Mode == CodeViewMode.DockedTop || Mode == CodeViewMode.DockedLeft)" ColumnLayout="@(Mode == CodeViewMode.DockedRight || Mode == CodeViewMode.DockedLeft)">
                 <Left>
                     <MudExSplitPanelItem Class="mt-3" Style="@($"overflow-y:hidden; width: 100%; min-width: {MinWidthLeft}; height:auto; min-height: {MinHeightLeft};")">
                         @RenderEditor()

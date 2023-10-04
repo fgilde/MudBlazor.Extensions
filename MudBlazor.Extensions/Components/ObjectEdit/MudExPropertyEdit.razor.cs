@@ -71,6 +71,7 @@ public partial class MudExPropertyEdit
 
     private object _valueBackup;
     private DynamicComponent _editor;
+    private bool _urlSetDone;
     private Expression<Func<TPropertyType>> CreateFieldForExpression<TPropertyType>()
         => Check.TryCatch<Expression<Func<TPropertyType>>, Exception>(() => Expression.Lambda<Func<TPropertyType>>(Expression.Property(Expression.Constant(PropertyMeta.ReferenceHolder, PropertyMeta.ReferenceHolder.GetType()), PropertyMeta.PropertyInfo)));
 
@@ -96,7 +97,12 @@ public partial class MudExPropertyEdit
     /// <inheritdoc />
     protected override Task OnFinishedRenderAsync()
     {
-        SetValueFromUrlIf();
+        if (!_urlSetDone)
+        {
+            SetValueFromUrlIf();
+            _urlSetDone = true;
+        }
+
         return base.OnFinishedRenderAsync();
     }
 
