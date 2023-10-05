@@ -1,12 +1,13 @@
 ﻿@using MudBlazor.Extensions.Attribute;
 @using MudBlazor.Extensions.Helper
 @using System.Reflection;
+@using MudBlazor.Extensions.Api
 
 <div style="@Style" class="doc-header">
     
     @if (!DocumentationOnly)
     {
-        <PageHeader Typo="@Typo">@(Api.GetTypeName(Type) ?? Fallback)</PageHeader>
+        <PageHeader Typo="@Typo">@(ApiMemberInfo.GetGenericFriendlyTypeName(Type) ?? Fallback)</PageHeader>
     }
 
     @if (!string.IsNullOrEmpty(Documentation))
@@ -16,7 +17,7 @@
 
     @if (betaInfos?.Any() == true)
     {
-        <MudAlert Severity="Severity.Warning">@($"{Api.GetTypeName(Type)} - {string.Join("<br/>", betaInfos.Select(b => b.Message))}")</MudAlert>
+        <MudAlert Severity="Severity.Warning">@($"{ApiMemberInfo.GetGenericFriendlyTypeName(Type)} - {string.Join("<br/>", betaInfos.Select(b => b.Message))}")</MudAlert>
     }
     
 </div>

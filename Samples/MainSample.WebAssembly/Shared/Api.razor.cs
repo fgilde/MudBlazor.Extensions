@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using System.Reflection;
+using MudBlazor.Extensions.Api;
 
 namespace MainSample.WebAssembly.Shared;
 
@@ -23,7 +24,7 @@ public partial class Api
         var breadcrumbItems = new List<BreadcrumbItem>();
         while (type != null)
         {
-            breadcrumbItems.Insert(0, new BreadcrumbItem(GetTypeName(type), href: $"/a/{type.Name}", Type == type));
+            breadcrumbItems.Insert(0, new BreadcrumbItem(ApiMemberInfo.GetGenericFriendlyTypeName(type), href: $"/a/{type.Name}", Type == type));
             type = type.BaseType;
         }
         breadcrumbItems.Reverse();
@@ -44,19 +45,7 @@ public partial class Api
             return "Unknown";
         }
     }
-
-    internal static string? GetTypeName(Type? type)
-    {
-        if (type == null)
-            return null;
-        if (!type.IsGenericType)
-            return type.Name;
-        var genericTypeName = type.GetGenericTypeDefinition().Name;
-        var genericArgs = string.Join(", ", type.GetGenericArguments().Select(GetTypeName).ToArray());
-
-        return $"{genericTypeName[..genericTypeName.IndexOf('`')]}<{genericArgs}>";
-    }
-
+    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender && IsInitiallyExpanded)

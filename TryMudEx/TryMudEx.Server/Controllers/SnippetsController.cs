@@ -15,6 +15,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
+using MudBlazor.Extensions.Api;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Helper;

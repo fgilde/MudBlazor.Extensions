@@ -9,14 +9,12 @@ using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Options;
-using YamlDotNet.Core.Tokens;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Utilities;
-using System.Collections;
+using MudBlazor.Extensions.Api;
 using MudBlazor.Extensions.Attribute;
 using Newtonsoft.Json;
-using static MudBlazor.CategoryTypes;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -246,7 +244,7 @@ public partial class MudExCodeView
         {
             return (input, input);
         }
-        input = GetGenericFriendlyName(input);
+        input = ApiMemberInfo.GetGenericFriendlyTypeName(input);
         var match = Regex.Match(input, @"^(?<class>\w+)<(?<type>.+)>$");
 
 
@@ -304,38 +302,10 @@ public partial class MudExCodeView
 
         // Für komplexe Datentypen, serialisiere sie zu JSON:
         var fullName = value.GetType().FullName;
-        var friendlyTypeName = GetGenericFriendlyName(fullName);
+        var friendlyTypeName = ApiMemberInfo.GetGenericFriendlyTypeName(fullName);
         var json = JsonConvert.SerializeObject(value);
         return $"@(Newtonsoft.Json.JsonConvert.DeserializeObject<{friendlyTypeName}>(\"{json.Replace("\"", "\\\"")}\"))";
     }
-
-    private static string GetGenericFriendlyName(string fullName)
-    {
-        if (string.IsNullOrWhiteSpace(fullName))
-            return fullName;
-
-        // Wenn der Typ ein Array ist
-        if (fullName.EndsWith("[]"))
-            return GetGenericFriendlyName(fullName.Substring(0, fullName.Length - 2)) + "[]";
-
-        // Typ ist ein generischer Typ
-        var genericMatch = new Regex(@"^(.*?)`\d+\[\[(.*)\]\]$").Match(fullName);
-        if (genericMatch.Success)
-        {
-            var typeName = genericMatch.Groups[1].Value;
-            var genericArguments = genericMatch.Groups[2].Value;
-
-            var splitArgs = genericArguments.Split(new string[] { "],[" }, StringSplitOptions.None)
-                .Select(s => s.Split(',')[0])
-                .Select(GetGenericFriendlyName)
-                .ToArray();
-
-            return $"{typeName}<{string.Join(", ", splitArgs)}>";
-        }
-
-        return fullName;
-    }
-
 
 
     /// <summary>

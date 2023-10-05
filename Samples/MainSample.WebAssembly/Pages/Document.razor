@@ -9,6 +9,7 @@
 @using Nextended.Core.Extensions
 @using MudBlazor.Extensions.Attribute
 @using System.Reflection
+@using MudBlazor.Extensions.Api
 
 @if (_loaded)
 {
@@ -30,7 +31,7 @@
             {
                 string docFile = GetDocFileFileForType(c);
                 int idx = string.IsNullOrEmpty(docFile) ? 0 : 1;
-                <MudExpansionPanel IsInitiallyExpanded="false" Text="@Api.GetTypeName(c)">
+                <MudExpansionPanel IsInitiallyExpanded="false" Text="@ApiMemberInfo.GetGenericFriendlyTypeName(c)">
                     <ChildContent>
                         <HeaderForType DocumentationOnly="true" Typo="Typo.subtitle1" Type="@c"></HeaderForType>
                         @RenderTypeApiDoc(c, idx, false, docFile)

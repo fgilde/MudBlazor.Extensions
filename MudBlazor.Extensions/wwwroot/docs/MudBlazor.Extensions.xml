@@ -4,6 +4,109 @@
         <name>MudBlazor.Extensions</name>
     </assembly>
     <members>
+        <member name="T:MudBlazor.Extensions.Api.ApiMemberInfo`1">
+            <summary>
+            Simple class that reads default values and Descriptions for a Member
+            </summary>
+            <typeparam name="TMemberInfo"></typeparam>
+        </member>
+        <member name="M:MudBlazor.Extensions.Api.ApiMemberInfo`1.#ctor(`0,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MudBlazor.Extensions.Api.ApiMemberInfo"/> class.
+            </summary>
+            <param name="memberInfo">The member information.</param>
+            <param name="initialType">The initial type of the member.</param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Api.ApiMemberInfo`1.IsInherited">
+            <summary>
+            Gets a value indicating whether the member is inherited.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Api.ApiMemberInfo`1.LoadTask">
+            <summary>
+            Gets the task responsible for loading the description.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Api.ApiMemberInfo`1.DescriptionLoaded">
+            <summary>
+            Gets a value indicating whether the description has been loaded.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Api.ApiMemberInfo`1.IsStatic">
+            <summary>
+            Gets a value indicating whether the member is static.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Api.ApiMemberInfo`1.MemberInfo">
+            <summary>
+            Gets the member information.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Api.ApiMemberInfo`1.Name">
+            <summary>
+            Gets the name of the member.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Api.ApiMemberInfo`1.Description">
+            <summary>
+            Gets or sets the description of the member.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Api.ApiMemberInfo`1.TypeName">
+            <summary>
+            Gets the type name of the member.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Api.ApiMemberInfo`1.Default">
+            <summary>
+            Gets the default value of the member.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Api.ApiMemberInfo.GetGenericFriendlyTypeName(System.String)">
+            <summary>
+            Returns a generic friendly type name by an full type name
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Api.ApiMemberInfo.GetGenericFriendlyTypeName(System.Type)">
+            <summary>
+            Returns a generic friendly type name
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Api.IApiMemberInfo">
+            <summary>
+            Defines the properties required for API member information.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Api.IApiMemberInfo.Name">
+            <summary>
+            Gets the name of the member.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Api.IApiMemberInfo.Description">
+            <summary>
+            Gets the description of the member.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Api.IApiMemberInfo.TypeName">
+            <summary>
+            Gets the type name of the member.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Api.IApiMemberInfo.Default">
+            <summary>
+            Gets the default value of the member.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Api.IApiMemberInfo.IsStatic">
+            <summary>
+            Gets a value indicating whether the member is static.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Api.IApiMemberInfo.IsInherited">
+            <summary>
+            Gets a value indicating whether the member is inherited.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Attribute.BetaAttribute">
             <summary>
             Attribute to mark a class as beta

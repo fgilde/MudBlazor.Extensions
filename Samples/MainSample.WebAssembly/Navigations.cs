@@ -1,8 +1,7 @@
-﻿using System.Diagnostics;
-using MainSample.WebAssembly.Types;
+﻿using MainSample.WebAssembly.Types;
 using MudBlazor;
-using MainSample.WebAssembly.Shared;
 using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Api;
 using MudBlazor.Extensions.Helper;
 
 namespace MainSample.WebAssembly;
@@ -47,7 +46,7 @@ public static class Navigations
     private static HashSet<NavigationEntry> GetUtils()
     {
         return ComponentTypes.DocumentedUtils()
-            .Select(d => new NavigationEntry(Api.GetTypeName(d.Type) ?? d.Type.Name, "",
+            .Select(d => new NavigationEntry(ApiMemberInfo.GetGenericFriendlyTypeName(d.Type) ?? d.Type.Name, "",
                 d.Documentation != null
                  ? $"/d/{Path.GetFileNameWithoutExtension(d.Documentation.MarkdownFile)}/{d.Type.Name}"
                  : $"/a/{d.Type.Name}"
@@ -57,12 +56,12 @@ public static class Navigations
 
     internal static HashSet<NavigationEntry> ReflectMudExComponents()
     {
-        return ComponentTypes.AllMudExComponents().Select(type => new NavigationEntry($"{Api.GetTypeName(type) ?? type.Name}", "", $"/c/{type.Name}") {Type = type}).ToHashSet();
+        return ComponentTypes.AllMudExComponents().Select(type => new NavigationEntry($"{ApiMemberInfo.GetGenericFriendlyTypeName(type) ?? type.Name}", "", $"/c/{type.Name}") {Type = type}).ToHashSet();
     }
 
     internal static HashSet<NavigationEntry> ReflectMudBlazorComponents()
     {
-        return ComponentTypes.AllMudBlazorComponents().Select(type => new NavigationEntry($"{Api.GetTypeName(type) ?? type.Name}", "", $"/c/{type.Name}") { Type = type }).ToHashSet();
+        return ComponentTypes.AllMudBlazorComponents().Select(type => new NavigationEntry($"{ApiMemberInfo.GetGenericFriendlyTypeName(type) ?? type.Name}", "", $"/c/{type.Name}") { Type = type }).ToHashSet();
     }
 
 }

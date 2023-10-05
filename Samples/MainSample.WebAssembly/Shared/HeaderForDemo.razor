@@ -1,4 +1,5 @@
 ﻿@using System.Reflection;
+@using MudBlazor.Extensions.Api
 @using MudBlazor.Extensions.Attribute
 @using MudBlazor.Extensions.Helper
 
@@ -11,11 +12,11 @@
     {
         @foreach (var info in DemoAttribute?.RelatedComponents?.Select(t => new {Type = t, BetaInfos = t.GetCustomAttributes<BetaAttribute>()}).Where(arg => arg?.BetaInfos?.Any() == true)!)
         {
-            <MudAlert Severity="Severity.Warning">@($"{Api.GetTypeName(info.Type)} - {string.Join("<br/>", info.BetaInfos.Select(b => b.Message))}")</MudAlert>
+            <MudAlert Severity="Severity.Warning">@($"{ApiMemberInfo.GetGenericFriendlyTypeName(info.Type)} - {string.Join("<br/>", info.BetaInfos.Select(b => b.Message))}")</MudAlert>
         }
         @foreach (var info in DemoAttribute?.RelatedComponents?.Select(t => new { Type = t, ObsoleteAttributes = t.GetCustomAttributes<ObsoleteAttribute>() }).Where(arg => arg?.ObsoleteAttributes?.Any() == true)!)
         {
-            <MudAlert Severity="Severity.Warning">@($"{Api.GetTypeName(info.Type)} is obsolete - {string.Join("<br/>", info.ObsoleteAttributes.Select(b => b.Message))}")</MudAlert>
+            <MudAlert Severity="Severity.Warning">@($"{ApiMemberInfo.GetGenericFriendlyTypeName(info.Type)} is obsolete - {string.Join("<br/>", info.ObsoleteAttributes.Select(b => b.Message))}")</MudAlert>
         }
     }
 </div>

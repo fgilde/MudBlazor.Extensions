@@ -1,6 +1,7 @@
 ﻿@using Nextended.Core.Extensions
 @using System.Reflection.Metadata
 @using System.Reflection
+@using MudBlazor.Extensions.Api
 
 <HeaderForDemo Type="@PageType" />
 
@@ -63,7 +64,7 @@
                     <MudSelect Label="Type" @bind-Value="@_selectedApiType" Variant="Variant.Outlined" Color="Color.Primary">
                         @foreach (var type in DemoAttribute?.RelatedComponents ?? Array.Empty<Type>())
                         {
-                            <MudSelectItem Value="@type">@Api.GetTypeName(type)</MudSelectItem>
+                            <MudSelectItem Value="@type">@ApiMemberInfo.GetGenericFriendlyTypeName(type)</MudSelectItem>
                         }
                     </MudSelect>
                 }

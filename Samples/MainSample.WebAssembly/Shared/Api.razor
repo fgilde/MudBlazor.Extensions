@@ -2,6 +2,7 @@
 @using System.Text.RegularExpressions
 @using Microsoft.AspNetCore.Components.Rendering
 @using Microsoft.AspNetCore.Http.Authentication
+@using MudBlazor.Extensions.Api
 @using MudBlazor.Extensions.Core.Css
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
@@ -87,7 +88,7 @@
      
                 <PropertyColumn Hidden="@(!_showInherited)" Property="x => x.MemberInfo" Title="Declared on">
                     <CellTemplate>
-                        <MudLink Typo="Typo.subtitle2" Href="@($"/a/{context.Item.MemberInfo.DeclaringType.Name}")">@GetTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
+                        <MudLink Typo="Typo.subtitle2" Href="@($"/a/{context.Item.MemberInfo.DeclaringType.Name}")">@ApiMemberInfo.GetGenericFriendlyTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
                     </CellTemplate>
                 </PropertyColumn>
                 
@@ -127,7 +128,7 @@
                
                 <PropertyColumn Hidden="@(!_showInherited)" Property="x => x.MemberInfo" Title="Declared on">
                     <CellTemplate>
-                        <MudLink Typo="Typo.subtitle2" Href="@($"/a/{context.Item.MemberInfo.DeclaringType.Name}")">@GetTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
+                        <MudLink Typo="Typo.subtitle2" Href="@($"/a/{context.Item.MemberInfo.DeclaringType.Name}")">@ApiMemberInfo.GetGenericFriendlyTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
                     </CellTemplate>
                 </PropertyColumn>
                 <PropertyColumn Property="x => x.Description"/>
