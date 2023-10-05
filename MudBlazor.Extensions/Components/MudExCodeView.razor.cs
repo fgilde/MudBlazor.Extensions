@@ -218,6 +218,7 @@ public partial class MudExCodeView
     /// </summary>
     public static string GenerateBlazorMarkupFromInstance<TComponent>(TComponent componentInstance)
     {
+        // TODO: Move to central place with ApiMemberInfo
         var componentName = componentInstance.GetType().FullName.Replace(componentInstance.GetType().Namespace + ".", string.Empty);
         var properties = componentInstance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Where(p => ObjectEditMeta.IsAllowedAsPropertyToEdit(p) && ObjectEditMeta.IsAllowedAsPropertyToEditOnAComponent<TComponent>(p));
