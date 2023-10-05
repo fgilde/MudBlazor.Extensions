@@ -10,8 +10,18 @@ public class LayoutService
 {
     private readonly IUserPreferencesService _userPreferencesService;
     private UserPreferences.UserPreferences _userPreferences;
-    
-    public bool IsDarkMode { get; private set; } = true;
+    private bool _isDarkMode = true;
+    public event EventHandler<bool> DarkChanged;
+
+    public bool IsDarkMode
+    {
+        get => _isDarkMode;
+        private set
+        {
+            _isDarkMode = value;
+            DarkChanged?.Invoke(this, value);
+        }
+    }
 
     public MudTheme Theme { get; private set; } = new()
     {

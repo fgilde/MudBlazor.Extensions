@@ -29,7 +29,7 @@
 {
     <MudExObjectEditForm T="TTheme"
                         @ref="ObjectEditor"
-                         LightOverlayLoadingBackground="@(!IsDark ?? false)"
+                         LightOverlayLoadingBackground="@(!IsDark ?? false)"R
                          IsLoading="@_isLoading"
                          MetaConfiguration="ThemeEditMetaConfiguration"
                          Value="Theme"
@@ -49,14 +49,16 @@
                          PropertyChanged="OnPropertyChanged"
                          ValueChanged="OnThemeChanged">
         <ToolBarContent>
-            @if (AllowModeToggle)
-            {
-                <MudExEnumSelect Style="max-width:300px;" FilterEnabled="false" Clearable="false" TEnum="ThemeEditMode" ValueChanged="@EditModeChangedInternally" Value="@EditMode"></MudExEnumSelect>
-                <MudSpacer />
-            }
+            
             <MudTooltip Text="@TryLocalize("Refresh")">
                 <MudIconButton Icon="@Icons.Material.Filled.Refresh" OnClick="@(OnRefreshClick)"/>
             </MudTooltip>
+
+            @if (AllowModeToggle)
+            {
+                <MudExDivider Style="margin-top: 0 ;height: 40px; margin-right: 20px;" UseBorder="true" Class="m-1" Vertical="true"/>
+                <MudExEnumSelect Style="max-width:300px;" Variant="Variant.Outlined" SearchBox="false" Clearable="false" TEnum="ThemeEditMode" ValueChanged="@EditModeChangedInternally" Value="@EditMode"></MudExEnumSelect>
+            }
         </ToolBarContent>
     </MudExObjectEditForm>
 }

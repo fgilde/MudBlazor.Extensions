@@ -2,12 +2,17 @@
 @page "/snippet/samples/{sample?}"
 @page "/snippet/from/{snippetFileUrl?}"
 @using TryMudEx.Client.Enums
+@using MudBlazor.Extensions.Core
 
 @layout MainLayout
 
 <div class="try-layout">
     <MudDrawer Fixed="false" Elevation="1" Variant="@DrawerVariant.Mini" Class="try-drawer">
         <MudIconButton Title="Run (Ctrl + S)" OnClick="@CompileAsync" Disabled="@Loading" Icon="@Icons.Material.Rounded.PlayArrow" Color="@(LayoutService.IsDarkMode ? Color.Success : Color.Inherit)" />
+        <MudTooltip Text="@(LayoutService.IsDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme")" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
+            <MudIconButton OnClick="@UpdateTheme" Icon="@(LayoutService.IsDarkMode ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" Color="@(LayoutService.IsDarkMode ? Color.Warning : Color.Inherit)" />
+        </MudTooltip>
+        <MudExDivider Style="flex-grow: 0;" UseBorder="true" Color="MudExColor.Primary" />
         <MudTooltip Text="Save or Share" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
             <SaveSnippetPopup @bind-Visible="SaveSnippetPopupVisible" CodeFiles="@CodeFiles.Values" UpdateActiveCodeFileContentAction="UpdateActiveCodeFileContent" />
             <MudIconButton OnClick="ShowSaveSnippetPopup" Icon="@Icons.Material.Outlined.Save" Color="@(LayoutService.IsDarkMode ? Color.Info : Color.Inherit)" />
@@ -18,9 +23,16 @@
         <MudTooltip Text="Upload" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
             <MudIconButton OnClick="Upload" Icon="@Icons.Material.Outlined.UploadFile" Color="@(LayoutService.IsDarkMode ? Color.Info : Color.Inherit)" />
         </MudTooltip>
-        <MudTooltip Text="@(LayoutService.IsDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme")" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
-            <MudIconButton OnClick="@UpdateTheme" Icon="@(LayoutService.IsDarkMode ? @Icons.Material.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" Color="@(LayoutService.IsDarkMode ? Color.Warning : Color.Inherit)" />
-        </MudTooltip>
+        
+
+        @if (_samples?.Any() == true)
+        {
+            <MudExDivider Style="flex-grow: 0;" UseBorder="true" Color="MudExColor.Primary" />
+            <MudTooltip Text="Show samples" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
+                <MudIconButton OnClick="@ShowSamples" Icon="@Icons.Material.Outlined.Folder" Color="Color.Primary"/>
+            </MudTooltip>
+        }
+
         <MudSpacer />
         <div class="d-flex justify-center">
             <div class="brand" style="margin-bottom: 35px;"><MudExGradientText Typo="Typo.h5">MudEx </MudExGradientText></div>

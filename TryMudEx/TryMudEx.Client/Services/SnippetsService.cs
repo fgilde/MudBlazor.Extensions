@@ -1,4 +1,6 @@
-﻿using Microsoft.JSInterop;
+﻿using System.Linq;
+using System.Net.Http.Json;
+using Microsoft.JSInterop;
 using Nextended.Core;
 
 namespace TryMudEx.Client.Services
@@ -124,6 +126,13 @@ namespace TryMudEx.Client.Services
             return GetSnippetContentFromUrlAsync($"/data/{sample}.zip");
             //var stream = await httpClient.GetStreamAsync($"/data/{sample}.zip");
             //return await ExtractSnippetFilesFromZip(stream);
+        }
+
+        public async Task<string[]> GetSamplesAsync()
+        {
+            var response = await httpClient.GetAsync("api/Snippets/samples", HttpCompletionOption.ResponseHeadersRead);
+            var result = await response.Content.ReadFromJsonAsync<string[]>();
+            return result.Select(Path.GetFileNameWithoutExtension).ToArray();
         }
 
         private static async Task<IEnumerable<CodeFile>> ExtractSnippetFilesFromZip(Stream zipStream)

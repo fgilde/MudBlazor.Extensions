@@ -2246,6 +2246,11 @@
             <param name="text"></param>
             <returns></returns>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.SearchBoxBackgroundColor">
+            <summary>
+            BackgroundColor for Searchbox
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExList`1.GroupBy">
             <summary>
             Func to group by items collection

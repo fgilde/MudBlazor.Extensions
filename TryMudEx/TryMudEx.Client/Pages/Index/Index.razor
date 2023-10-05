@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using Try.Core
 @using MudBlazor.Extensions.Options
+@using TryMudEx.Client.Services
 
 
 <MudLayout Class="try-mudblazor-index">
@@ -82,6 +83,7 @@
                         </div>
                         <MudDivider />
                         <MudExCodeView @ref="_codeView"
+                                       Theme="@(LayoutService.IsDarkMode ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.AtomOneLight)"
                                        CodeViewModeWithRenderFragment="CodeViewModeWithRenderFragment.CodeDockedLeft" 
                                        Style="margin-left: 0;padding-right: 24px;margin-top: 0;" 
                                        CodeStyle="max-height: 600px;" 

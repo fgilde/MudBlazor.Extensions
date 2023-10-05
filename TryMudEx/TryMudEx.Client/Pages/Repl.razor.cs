@@ -40,9 +40,11 @@ public partial class Repl : IDisposable
     private bool _compiledSuccessfully;
     private bool _wasCompiledSuccessfullyAlready;
     private CodeViewMode _mode;
+    private string[] _samples;
     
     [Inject] public ISnackbar Snackbar { get; set; }
     [Inject] public ILocalStorageService Storage { get; set; }
+    [Inject] public NavigationManager NavigationManager { get; set; }
 
     [Inject] public SnippetsService SnippetsService { get; set; }
 
@@ -234,6 +236,12 @@ public partial class Repl : IDisposable
     protected override async Task OnInitializedAsync()
     {
         Snackbar.Clear();
+
+        _ = SnippetsService.GetSamplesAsync().ContinueWith(t =>
+        {
+            _samples = t.Result;
+            StateHasChanged();
+        });
         
         await LoadDataAsync();
 
@@ -334,6 +342,18 @@ public partial class Repl : IDisposable
             FullHeight = true,
             Resizeable = true
         };
+    }
+
+    private DialogOptionsEx GetSamplesDialogOptions()
+    {
+        return GetResultDialogOptions().SetProperties(o =>
+        {
+            o.Position = DialogPosition.CenterLeft;
+            o.DisableSizeMarginX = true;
+            o.DisableSizeMarginY = true;
+            o.MaxWidth = MaxWidth.Small;
+            o.AnimationDuration = TimeSpan.FromMilliseconds(500);
+        });
     }
 
     private void ShowSaveSnippetPopup()
@@ -448,18 +468,54 @@ public partial class Repl : IDisposable
 
     private async Task Download()
     {
-        var stream = SnippetsService.DownloadZipAsync(CodeFiles.Values);
         var id = SnippetId ?? Guid.NewGuid().ToFormattedId();
-        await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
+        var fileName = Path.ChangeExtension($"TryMudEx_{id}", "zip");
+        fileName = await DialogService.PromptAsync("Filename", "Enter file name", fileName, icon:Icons.Material.Filled.Archive, canConfirm: s => !string.IsNullOrEmpty(s));
+        if (!string.IsNullOrEmpty(fileName))
         {
-            Url = await FileService.CreateDataUrlAsync(stream.ToArray(), "application/zip", true),
-            FileName = $"{Path.ChangeExtension($"TryMudEx_{id}", "zip")}",
-            MimeType = "application/zip"
-        });
+            var stream = SnippetsService.DownloadZipAsync(CodeFiles.Values);
+            await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
+            {
+                Url = await FileService.CreateDataUrlAsync(stream.ToArray(), "application/zip", true),
+                FileName = $"{fileName}",
+                MimeType = "application/zip"
+            });
+        }
     }
 
     private void ReloadIframe()
     {
         JsRuntime.InvokeVoid(Models.Try.ReloadIframe, "user-page-window", MainUserPagePath);
+    }
+
+    private async Task ShowSamples()
+    {
+        var res = await DialogService.ShowComponentInDialogAsync<MudExList<string>>("Select sample", "Select sample to open",
+            list =>
+            {
+                list.Style = MudExStyleBuilder.Default.WithMaxHeight(85, CssUnit.ViewportHeight).WithOverflow("auto").ToString();
+                list.MultiSelection = false;
+                list.ItemCollection = _samples.Select(s => s.Replace("_", " ")).ToArray();
+                list.Clickable = true;
+                list.SearchBox = true;
+                list.SearchBoxVariant = Variant.Outlined;
+                list.SearchBoxBackgroundColor = "var(--mud-palette-surface)";
+            }, dlg =>
+            {
+                dlg.Icon = Icons.Material.Filled.Folder;
+                dlg.Buttons = MudExDialogResultAction.OkCancel("Open sample");
+                
+            }, GetSamplesDialogOptions());
+        var value = res.Component.SelectedValue;
+        if (!res.DialogResult.Canceled && !string.IsNullOrEmpty(value))
+        {
+            value = value.Replace(" ", "_");
+            await Storage.RemoveItemAsync("__temp_code");
+            NavigationManager.NavigateTo($"/snippet/samples/{value}");
+            Sample = value;
+            await LoadDataAsync();
+            StateHasChanged();
+            await CompileAsync();
+        }
     }
 }

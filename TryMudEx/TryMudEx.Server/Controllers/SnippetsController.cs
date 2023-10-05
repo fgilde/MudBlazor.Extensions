@@ -10,6 +10,7 @@ using Azure.Identity;
 using Azure.Storage;
 using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -27,14 +28,16 @@ namespace TryMudEx.Server.Controllers
     [ApiController]
     public class SnippetsController : ControllerBase
     {
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IConfiguration _config;
         private readonly BlobContainerClient containerClient;
         private HttpClient _httpClient;
         private readonly IMemoryCache _cache;
 
-        public SnippetsController(IConfiguration config, IServiceProvider serviceProvider, IMemoryCache cache)
+        public SnippetsController(IConfiguration config, IServiceProvider serviceProvider, IMemoryCache cache, IWebHostEnvironment webHostEnvironment)
         {
             _cache = cache;
+            _webHostEnvironment = webHostEnvironment;
             _config = config;
             var containerUri = new Uri(_config["SnippetsContainerUrl"]);
             string accessKey = _config["SnippetsAccessKey"];
@@ -53,6 +56,21 @@ namespace TryMudEx.Server.Controllers
                 containerClient = new BlobContainerClient(containerUri, key);
             }
             _httpClient = serviceProvider.GetService<HttpClient>() ?? new HttpClient();
+        }
+
+        [HttpGet("samples")]
+        public IActionResult GetSamples()
+        {
+            var dataPath = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "data");
+            if (!Directory.Exists(dataPath))
+                dataPath = Path.Combine(_webHostEnvironment.ContentRootPath, "../", "TryMudEx.Client", "wwwroot", "data");
+            if (Directory.Exists(dataPath))
+            {
+                var files = Directory.GetFiles(dataPath, "*.zip");
+                return Ok(files.Select(f => f.Replace("""\""", "/")).ToArray());
+            }
+
+            return Ok(Array.Empty<string>());
         }
 
         //[HttpGet("{snippetId}")]

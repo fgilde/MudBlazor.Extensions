@@ -44,6 +44,12 @@ public partial class MudExList<T> : IDisposable
     [CascadingParameter, IgnoreOnObjectEdit] protected MudExList<T> ParentList { get; set; }
 
     /// <summary>
+    /// BackgroundColor for Searchbox
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.List.Appearance)]
+    public MudExColor SearchBoxBackgroundColor { get; set; } = "var(--mud-palette-background)";
+
+    /// <summary>
     /// Func to group by items collection
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.List.Behavior)]

@@ -6,6 +6,7 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Services;
 using Nextended.Core.Encode;
+using TryMudEx.Client.Services;
 
 namespace TryMudEx.Client.Pages.Index;
 
@@ -14,8 +15,15 @@ public partial class Index
     [Inject] private NavigationManager NavigationManager { get; set; }
     [Inject] private MudExFileService FileService { get; set; }
     [Inject] private IJSRuntime JsRuntime { get; set; }
+    [Inject] private LayoutService LayoutService { get; set; }
     [Inject] public ILocalStorageService Storage { get; set; }
     private MudExCodeView _codeView;
+
+    protected override Task OnInitializedAsync()
+    {
+        LayoutService.DarkChanged += (sender, b) => StateHasChanged();
+        return base.OnInitializedAsync();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
