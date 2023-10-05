@@ -82,12 +82,12 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
     /// <summary>
     /// Returns the injected service for TService
     /// </summary>
-    protected TService Get<TService>() => ServiceProvider.GetService<TService>();
+    protected TService Get<TService>() => ServiceProvider != null ? ServiceProvider.GetService<TService>() : default;
 
     /// <summary>
     /// Returns the injected services for TService
     /// </summary>
-    protected IEnumerable<TService> GetServices<TService>() => ServiceProvider.GetServices<TService>();
+    protected IEnumerable<TService> GetServices<TService>() => ServiceProvider?.GetServices<TService>();
 
     /// <summary>
     /// Tries to localize given text if localizer and translation is available

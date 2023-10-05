@@ -158,11 +158,18 @@ public partial class MudExCodeView
         set
         {
             _code = _markdownCode = TryLocalize(LoadingText);
-            StateHasChanged();
+            if (IsRendered)
+            {
+                StateHasChanged();
+            }
+
             Task.Delay(10).ContinueWith(task =>
             {
                 _markdownCode = CodeAsMarkup(value, Language.GetDescription());
-                InvokeAsync(StateHasChanged);
+                if (IsRendered)
+                {
+                    InvokeAsync(StateHasChanged);
+                }
             });
             _code = value;
         }
@@ -262,7 +269,7 @@ public partial class MudExCodeView
     private static string MarkupValue(KeyValuePair<string, object> p, bool ignoreComplexTypes = true)
     {
         var value = p.Value;
-        if (p.Value == null)
+        if (string.IsNullOrEmpty(value?.ToString()))
             return null;
 
         if (value is bool)
@@ -285,7 +292,7 @@ public partial class MudExCodeView
         if (value is MudExColor color)
             return $"@(\"{color.ToCssStringValue()}\")";
 
-        if (value.ToString().StartsWith("<"))
+        if (value?.ToString()?.StartsWith("<") == true)
         {
             var name = MudExSvg.SvgPropertyNameForValue(value.ToString());
             return name != null ? $"@{name}" : value.ToString().Replace("\"", "\\\"");

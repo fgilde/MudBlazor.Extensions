@@ -34,7 +34,7 @@ public class MudExAppearance : IMudExClassAppearance, IMudExStyleAppearance, ICl
     /// <summary>
     /// Factory method for an instance filled with some classes
     /// </summary>
-    public static MudExAppearance FromCss(string cls, params string[] other) => FromCss(MudExCssBuilder.From(cls, other));
+    //public static MudExAppearance FromCss(string cls, params string[] other) => FromCss(MudExCssBuilder.From(cls, other));
 
     /// <summary>
     /// Factory method for an instance filled with some classes

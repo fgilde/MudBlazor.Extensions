@@ -20,6 +20,7 @@ public static partial class MudExCss
             /// Glass dialog
             /// </summary>
             public static readonly Classes Glass = new CssClasses("mud-ex-glass-dialog");
+            
 
             /// <summary>
             /// Class for full height content

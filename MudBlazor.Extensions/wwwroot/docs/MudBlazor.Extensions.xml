@@ -6747,11 +6747,6 @@
             Factory method for an empty instance
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Core.MudExAppearance.FromCss(System.String,System.String[])">
-            <summary>
-            Factory method for an instance filled with some classes
-            </summary>
-        </member>
         <member name="M:MudBlazor.Extensions.Core.MudExAppearance.FromCss(MudBlazor.Extensions.Helper.MudExCss.Classes,MudBlazor.Extensions.Helper.MudExCss.Classes[])">
             <summary>
             Factory method for an instance filled with some classes
@@ -7968,6 +7963,11 @@
         <member name="F:MudBlazor.Extensions.Helper.MudExCss.Classes.Dialog.FullHeightContent">
             <summary>
             Class for full height content
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Helper.MudExCss.Classes.General">
+            <summary>
+            Css classes for dialogs
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExCss.GetAnimationCssStyle(MudBlazor.Extensions.Options.AnimationType,System.Nullable{System.TimeSpan},System.Nullable{MudBlazor.Extensions.Options.AnimationDirection},MudBlazor.Extensions.Options.AnimationTimingFunction,System.Nullable{MudBlazor.DialogPosition})">

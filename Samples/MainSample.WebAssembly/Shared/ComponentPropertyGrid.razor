@@ -106,21 +106,26 @@ else
 
     private async Task ShowCode()
     {
+        var cls = await MudExStyleBuilder.Default.WithOverflow("hidden").AsImportant().BuildAsClassRuleAsync("hidden-overflow");
         //await dialogService.ShowInformationAsync("Code", ComponentRenderHelper.GenerateBlazorMarkupFromInstance(Value));
-        await dialogService.ShowComponentInDialogAsync<DemoMarkdown>("Markup Code for using " + typeof(T).Name.Split('`').First(), "Notice: This is generated and maybe not 100% correct",
+        await dialogService.ShowComponentInDialogAsync<MudExCodeView>("Markup", "This is generated and maybe not correct",
             md =>
             {
-                md.Value = MudExCodeView.CodeAsMarkup(MudExCodeView.GenerateBlazorMarkupFromInstance(Value));
+                md.Code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value);
+                md.Theme = MainLayout.Instance.GetCodeBlockTheme();
             },
             dialog =>
             {
                 dialog.Icon = Icons.Material.Filled.Code;
                 dialog.Buttons = MudExDialogResultAction.Ok();
+                dialog.ContentStyle = "height: 85%; margin-bottom: 12px;";
 
             }, new DialogOptionsEx()
                 {
-                    DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass),
+                    DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass, MudExCss.Classes.Dialog.FullHeightContent, cls),
                     DragMode = MudDialogDragMode.Simple,
+                    MaxWidth = MaxWidth.Medium,
+                    FullWidth = true,
                     CloseButton = true,
                     Resizeable = true,
                 });
