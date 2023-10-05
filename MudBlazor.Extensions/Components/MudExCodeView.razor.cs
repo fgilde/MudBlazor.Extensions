@@ -234,11 +234,30 @@ public partial class MudExCodeView
                 .Where(p => !string.IsNullOrWhiteSpace(p.Value))
                 .Select(p => $"{p.Key}=\"{p.Value}\""));
 
-        var markup = $"<{componentName}\n{parameterString}\n></{componentName}>";
+        var tags = GetComponentTagNames(componentName);
+        var markup = $"<{tags.StartTag}\n{parameterString}\n></{tags.EndTag}>";
 
         return markup;
     }
 
+    public static (string StartTag, string EndTag) GetComponentTagNames(string input)
+    {
+        if (!input.Contains("`"))
+        {
+            return (input, input);
+        }
+        input = GetGenericFriendlyName(input);
+        var match = Regex.Match(input, @"^(?<class>\w+)<(?<type>.+)>$");
+
+
+        var className = match.Groups["class"].Value;
+        var typeName = match.Groups["type"].Value;
+
+        var formatted1 = $"{className} T=\"{typeName}\"";
+        var formatted2 = className;
+
+        return (formatted1, formatted2);
+    }
 
 
     private static string MarkupValue(KeyValuePair<string, object> p, bool ignoreComplexTypes = true)
