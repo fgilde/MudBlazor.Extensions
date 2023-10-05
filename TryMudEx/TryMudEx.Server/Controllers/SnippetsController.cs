@@ -63,6 +63,8 @@ namespace TryMudEx.Server.Controllers
         {
             var dataPath = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "data");
             if (!Directory.Exists(dataPath))
+                dataPath = Path.Combine(_webHostEnvironment.ContentRootPath, "data");
+            if (!Directory.Exists(dataPath))
                 dataPath = Path.Combine(_webHostEnvironment.ContentRootPath, "../", "TryMudEx.Client", "wwwroot", "data");
             if (Directory.Exists(dataPath))
             {
