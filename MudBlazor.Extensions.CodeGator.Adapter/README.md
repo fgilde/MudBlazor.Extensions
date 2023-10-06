@@ -2,7 +2,7 @@
 
 ## Overview
 The MudBlazor.Extensions.CodeGator Adapter seamlessly integrates [CG.Blazor.Forms](https://github.com/CodeGator/CG.Blazor.Forms._MudBlazor) with the [MudExObjectEdit](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/ObjectEdit.md) component from [MudBlazor.Extensions](https://www.mudex.org). It allows developers to utilize CodeGator attributes on their properties while rendering forms using the MudExObjectEdit component.
-More about MudBlazor.Extension can found [here]((https://www.mudex.org/)
+More about MudBlazor.Extension can found [here](https://www.mudex.org/)
 
 
 [Live sample](https://www.mudex.org/object-edit-cg-adapter?layout=empty)

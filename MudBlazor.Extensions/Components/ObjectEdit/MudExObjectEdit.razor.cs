@@ -686,12 +686,19 @@ public partial class MudExObjectEdit<T>
             if (ConfigService != null && ConfigureBehaviourForRegisteredConfigurations == RegisteredConfigurationBehaviour.ExecutedBefore)
                 await ConfigService.ConfigureAsync(MetaInformation);
 
-            //c?.Invoke(MetaInformation); 
+            // TODO: Currently RenderWithAttribute isn't finished 
+            //foreach (var meta in MetaInformation.AllProperties.Where(m =>
+            //             m.PropertyInfo.GetCustomAttribute<RenderWithBaseAttribute>(true) != null))
+            //{
+            //    meta.PropertyInfo.GetCustomAttribute<RenderWithBaseAttribute>(true)?.Apply(meta);
+            //}
+
+
             if (c != null)
                 await Task.Run(() => c.Invoke(ConfigureMetaBase(MetaInformation)));
             else
-                await Task.Run(() => ConfigureMetaBase(MetaInformation));                
-
+                await Task.Run(() => ConfigureMetaBase(MetaInformation));     
+            
             if (ConfigService != null && ConfigureBehaviourForRegisteredConfigurations == RegisteredConfigurationBehaviour.ExecutedAfter)
                 await ConfigService.ConfigureAsync(MetaInformation);
             
