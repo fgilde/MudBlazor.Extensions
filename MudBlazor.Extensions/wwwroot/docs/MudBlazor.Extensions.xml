@@ -6205,6 +6205,16 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.ICustomRenderer">
+            <summary>
+            Interface can implemented and used in object edit RenderWith to completely create an own property renderer
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ICustomRenderer.Render(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder,Microsoft.AspNetCore.Components.IHandleEvent,MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
+            <summary>
+            If attached as setting in ObjectEditPropertyMeta.RenderData this is called by MudExPropertyEdit
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.Css.AlignItems">
             <summary>
             Enum representing CSS 'align-items' property values.

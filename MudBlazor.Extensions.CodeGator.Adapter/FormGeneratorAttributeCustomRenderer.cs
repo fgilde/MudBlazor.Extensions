@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using MudBlazor.Extensions.Api;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.CodeGator.Adapter;
 
@@ -24,7 +26,14 @@ public class FormGeneratorAttributeCustomRenderer : ICustomRenderer
     {
         Stack<object> path = new Stack<object>();
         path.Push(propertyMeta.ReferenceHolder);
-        path.Push(null);
+        try
+        {
+            propertyMeta.Value ??= ApiMemberInfo.DefaultValue(propertyMeta.PropertyInfo) ?? propertyMeta.PropertyInfo.PropertyType.CreateInstance();
+        }
+        catch { /* Ignored */ }
+        if(propertyMeta.Value == null && propertyMeta.PropertyInfo.PropertyType == typeof(string))
+            propertyMeta.Value = string.Empty;
+        path.Push(propertyMeta.Value);
         _attribute.Generate(builder, 0, eventTarget, path, propertyMeta.PropertyInfo, new Logger<IFormGenerator>(NullLoggerFactory.Instance));
     }
 }
@@ -45,5 +54,7 @@ public static class MudExObjectEditCGFormsAdapterExtensions
         => meta.RenderWith(new FormGeneratorAttributeCustomRenderer(attribute));
 
     public static IServiceCollection AddMudExObjectEditCGBlazorFormsAdapter(this IServiceCollection services)
-        => services.AddSingleton<IDefaultRenderDataProvider, CGBlazorFormsRenderDataProvider>();
+    {
+        return services.AddSingleton<IDefaultRenderDataProvider, CGBlazorFormsRenderDataProvider>();
+    }
 }

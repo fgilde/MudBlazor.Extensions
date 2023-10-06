@@ -29,8 +29,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MudBlazor.Extensions" Version="1.7.56" />
-    <PackageReference Include="CG.Blazor.Forms._MudBlazor" Version="2023.1.5" />
+    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*-*" />
+    <PackageReference Include="CG.Blazor.Forms._MudBlazor" Version="*" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' != 'Release'">
+    <ProjectReference Include="..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,4 +43,5 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
+
 </Project>

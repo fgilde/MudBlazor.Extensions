@@ -1,7 +1,7 @@
-﻿@using MainSample.WebAssembly.Shared
+﻿@using System.Web
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <RouteView RouteData="@routeData" DefaultLayout="layout" />
     </Found>
     <NotFound>
         <PageTitle>Not found</PageTitle>
@@ -10,3 +10,21 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code
+{ 
+    [Inject] NavigationManager navigationManager { get; set; }
+    Type layout = typeof(MainLayout);
+
+    protected override Task OnInitializedAsync()
+    {
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        var queryParams = HttpUtility.ParseQueryString(uri.Query);
+
+        if(queryParams["layout"] == "empty")
+        {
+            layout = typeof(EmptyLayout);
+        }
+        return base.OnInitializedAsync();
+    }
+}

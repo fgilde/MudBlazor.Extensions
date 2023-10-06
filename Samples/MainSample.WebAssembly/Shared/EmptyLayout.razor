@@ -1,0 +1,12 @@
+﻿@using MudBlazor.Extensions.Core
+@inherits LayoutComponentBase
+
+
+<MudThemeProvider Theme="@ClientTheme.CurrentTheme" />
+<MudDialogProvider />
+<MudExTaskBar BorderColor="MudExColor.Warning" HideContentWhenCollapsed="true"/>
+<MudSnackbarProvider />
+
+<MudLayout>
+    @Body
+</MudLayout>

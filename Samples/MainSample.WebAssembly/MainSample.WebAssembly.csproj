@@ -14,10 +14,12 @@
     <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.8" />
     <PackageReference Include="BlazorMonaco" Version="3.1.0" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*-*" />
+    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudExObjectEdit.CodeGatorAdapter" Version="*-*" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' != 'Release'">
     <ProjectReference Include="..\..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
+    <ProjectReference Include="..\..\MudBlazor.Extensions.CodeGator.Adapter\MudBlazor.Extensions.CodeGator.Adapter.csproj" />
   </ItemGroup>
 
   <ItemGroup>

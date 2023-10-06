@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
+using BlazorJS;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.JSInterop;
@@ -490,6 +492,8 @@ public partial class Repl : IDisposable
 
     private async Task ShowSamples()
     {
+        var buttons = MudExDialogResultAction.OkCancel("Open sample");
+        buttons.Last().Color = Color.Primary;
         var res = await DialogService.ShowComponentInDialogAsync<MudExList<string>>("Select sample", "Select sample to open",
             list =>
             {
@@ -499,23 +503,35 @@ public partial class Repl : IDisposable
                 list.Clickable = true;
                 list.SearchBox = true;
                 list.SearchBoxVariant = Variant.Outlined;
+                list.OnDoubleClick = EventCallback.Factory.Create<ListItemClickEventArgs<string>>(this, HandleItemDblClick);
                 list.SearchBoxBackgroundColor = "var(--mud-palette-surface)";
             }, dlg =>
             {
                 dlg.Icon = Icons.Material.Filled.Folder;
-                dlg.Buttons = MudExDialogResultAction.OkCancel("Open sample");
+                dlg.Buttons = buttons;
                 
             }, GetSamplesDialogOptions());
         var value = res.Component.SelectedValue;
         if (!res.DialogResult.Canceled && !string.IsNullOrEmpty(value))
         {
-            value = value.Replace(" ", "_");
-            await Storage.RemoveItemAsync("__temp_code");
-            NavigationManager.NavigateTo($"/snippet/samples/{value}");
-            Sample = value;
-            await LoadDataAsync();
-            StateHasChanged();
-            await CompileAsync();
+            await OpenAndCompileSampleAsync(value);
         }
+    }
+
+    private async Task HandleItemDblClick(ListItemClickEventArgs<string> arg)
+    {
+        await OpenAndCompileSampleAsync(arg.ItemValue);
+    }
+
+    private async Task OpenAndCompileSampleAsync(string value)
+    {
+        value = value.Replace(" ", "_");
+        await Storage.RemoveItemAsync("__temp_code");
+        NavigationManager.NavigateTo($"/snippet/samples/{value}", false);
+        Sample = value;
+        await LoadDataAsync();
+        CodeFileNames = CodeFiles.Keys.ToList();
+        StateHasChanged();
+        await CompileAsync();
     }
 }

@@ -44,7 +44,7 @@
                         <MudSelect Label="File" @bind-Value="@_selectedDoc" Variant="Variant.Outlined" Color="Color.Primary">
                         @foreach (var doc in _docFiles)
                             {
-                                <MudSelectItem Value="@doc.Value">@Path.GetFileNameWithoutExtension(doc.Key))</MudSelectItem>
+                                <MudSelectItem Value="@doc.Value">@Path.GetFileNameWithoutExtension(doc.Key)</MudSelectItem>
                             }
                         </MudSelect>
                     }

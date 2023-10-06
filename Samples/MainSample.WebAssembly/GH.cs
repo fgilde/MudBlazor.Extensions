@@ -13,6 +13,10 @@ internal static class GH
 
     public static async Task<string> LoadDocumentation(this HttpClient http, string doc)
     {
+        if (doc.StartsWith("http"))
+        {
+            return await Load(http, doc);
+        }
         if (!doc.Contains("Docs/"))
             doc = $"Docs/{doc}";
         var url = $"{BaseAddressExtensions}{doc.EnsureStartsWith("/")}";

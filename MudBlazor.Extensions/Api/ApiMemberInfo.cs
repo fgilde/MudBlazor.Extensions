@@ -134,27 +134,8 @@ public sealed class ApiMemberInfo<TMemberInfo> : ApiMemberInfo, IApiMemberInfo
     private string DefaultValue()
     {
         var info = MemberInfo as PropertyInfo;
-        if (info == null || info.DeclaringType == null)
-            return string.Empty;
-        try
-        {
-            if (info.PropertyType.Name.StartsWith("EventCallback"))
-                return "default";
-            var instance = CreateGenericTypeInstance(info.DeclaringType);
-            var res = instance?.GetType()?.GetProperty(info.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetField)?.GetValue(instance, null) ?? info.GetValue(instance, null);
-
-            var sres = res?.ToString() ?? "null";
-            if (sres.StartsWith("<"))
-            {
-                string name = MudExSvg.SvgPropertyNameForValue(sres);
-                return name != null ? $"@{name}" : sres;
-            }
-            return sres;
-        }
-        catch (Exception e)
-        {
-            return "Unknown";
-        }
+        var result = DefaultValue(info);
+        return result?.ToString() ?? "Unknown";
     }
 
 }
@@ -176,6 +157,30 @@ public class ApiMemberInfo
         }
 
         return Activator.CreateInstance(type);
+    }
+
+    public static object DefaultValue(PropertyInfo info)
+    {
+        if (info == null || info.DeclaringType == null)
+            return string.Empty;
+        try
+        {
+            if (info.PropertyType.Name.StartsWith("EventCallback"))
+                return "default";
+            var instance = CreateGenericTypeInstance(info.DeclaringType);
+            var res = instance?.GetType()?.GetProperty(info.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetField)?.GetValue(instance, null) ?? info.GetValue(instance, null);
+
+            if (res?.ToString()?.StartsWith("<") == true)
+            {
+                string name = MudExSvg.SvgPropertyNameForValue(res.ToString());
+                return name != null ? $"@{name}" : res;
+            }
+            return res;
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     /// <summary>

@@ -31,21 +31,6 @@ public partial class Api
         return breadcrumbItems;
     }
 
-
-    private string DefaultValue(PropertyInfo info)
-    {
-        try
-        {
-            var instance = Activator.CreateInstance(Type);
-            var res = info.GetValue(instance);
-            return res?.ToString() ?? "null";
-        }
-        catch (Exception)
-        {
-            return "Unknown";
-        }
-    }
-    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender && IsInitiallyExpanded)

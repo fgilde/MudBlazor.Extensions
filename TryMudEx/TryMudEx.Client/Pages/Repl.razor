@@ -29,7 +29,7 @@
         {
             <MudExDivider Style="flex-grow: 0;" UseBorder="true" Color="MudExColor.Primary" />
             <MudTooltip Text="Show samples" Delay="800" Arrow="true" Placement="Placement.Right" Color="Color.Dark">
-                <MudIconButton OnClick="@ShowSamples" Icon="@Icons.Material.Outlined.Folder" Color="Color.Primary"/>
+                <MudIconButton OnClick="@ShowSamples" Icon="@Icons.Material.Outlined.Folder" Color="@(LayoutService.IsDarkMode ? Color.Primary : Color.Inherit)" />
             </MudTooltip>
         }
 

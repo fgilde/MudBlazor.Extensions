@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Extensions;
+using MudBlazor.Extensions.CodeGator.Adapter;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -13,6 +14,10 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<LocalStorageService>();
 builder.Services.AddScoped<SampleDataService>();
 builder.Services.AddMudServicesWithExtensions(c => c.WithoutAutomaticCssLoading());
+
+// CodeGator Adapter for MudExObjectEdit
+builder.Services.AddMudExObjectEditCGBlazorFormsAdapter();
+builder.Services.AddFormGeneration(); // CodeGator. Just to show a compare for models with CG Attributes
 
 MySimpleTypeRegistrations.RegisterRenderDefaults();
 
