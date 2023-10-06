@@ -22,7 +22,8 @@
 {
     protected override async Task OnInitializedAsync()
     {
-        MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
         Value = await Http.GetStringAsync("https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/README.md");
     }
     private string Value { get; set; }

@@ -112,7 +112,7 @@ else
             md =>
             {
                 md.Code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value);
-                md.Theme = MainLayout.Instance.GetCodeBlockTheme();
+                md.Theme = MainLayout.GetCodeBlockTheme();
             },
             dialog =>
             {

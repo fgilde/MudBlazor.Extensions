@@ -51,13 +51,14 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
         _themes = await GetThemes();
     }
 
     private async Task ThemeChanged(ClientTheme theme)
     {
-        MainLayout.Instance.SetTheme(theme);
+        MainLayout.Instance?.SetTheme(theme);
         await AddToStorageAsync(_themes.FirstOrDefault(p => p.Theme == theme)); // Save current theme changes to storage if preset comes from storage
         StateHasChanged();
     }

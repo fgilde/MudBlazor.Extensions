@@ -26,13 +26,14 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
         _themes = ThemePreset.Create(("Default", "This is the MudEx Default theme", ClientTheme.DefaultTheme), ("Another", "Another Demo theme in Red",  ClientTheme.Another));
     }
 
     private void ThemeChanged(ClientTheme? theme)
     {
-        if(theme is not null)
+        if(theme is not null && MainLayout.Instance is not null)
             MainLayout.Instance.SetTheme(theme);
     }
     

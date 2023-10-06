@@ -36,7 +36,7 @@
 
     <div class="@GetCls()">
         <MudMarkdown OverrideLinkUrl="@LinkThat"
-                     CodeBlockTheme="@(MainLayout.Instance.GetCodeBlockTheme())"
+                     CodeBlockTheme="@(MainLayout.GetCodeBlockTheme())"
                      OverrideHeaderTypo="TypoConvert()" Value="@Value">
         </MudMarkdown>
     </div>
@@ -82,7 +82,8 @@
     
     protected override Task OnInitializedAsync()
     {
-        MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
         return base.OnInitializedAsync();
     }
 

@@ -78,7 +78,8 @@ else
     {
         _loaded = false;
         await base.OnParametersSetAsync();
-        MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
         await UpdateDocumentationOrTypeInfos();
         _loaded = true;
     }

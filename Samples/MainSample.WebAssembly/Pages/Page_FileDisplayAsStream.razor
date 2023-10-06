@@ -41,7 +41,8 @@
     private bool _loading;
     protected override async Task OnInitializedAsync()
     {
-        MainLayout.Instance.ThemeChanged += InstanceOnThemeChanged;
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.ThemeChanged += InstanceOnThemeChanged;
         _loading = true;
         _samples.AddRange(await sampleDataService.GetSampleFilesWithStreamAsync());
         _loading = false;
@@ -84,5 +85,5 @@
         };
     }
 
-    private CodeBlockTheme GetTheme() => MainLayout.Instance.GetCodeBlockTheme();
+    private CodeBlockTheme GetTheme() => MainLayout.GetCodeBlockTheme();
 }

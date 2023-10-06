@@ -39,7 +39,8 @@
     protected override Task OnInitializedAsync()
     {
         _samples.AddRange(sampleDataService.GetSampleFiles());
-        MainLayout.Instance.ThemeChanged += InstanceOnThemeChanged;
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.ThemeChanged += InstanceOnThemeChanged;
         return Task.CompletedTask;
     }
 
@@ -76,6 +77,6 @@
         };
     }
 
-    private CodeBlockTheme GetTheme() => MainLayout.Instance.GetCodeBlockTheme();
+    private CodeBlockTheme GetTheme() => MainLayout.GetCodeBlockTheme();
 
 }
