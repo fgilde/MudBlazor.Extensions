@@ -10,6 +10,7 @@ More about MudBlazor.Extension can found [here](https://www.mudex.org/)
 ## Benefits
 - Maintain all CodeGator attributes in your model properties.
 - Harness the power and flexibility of [MudExObjectEdit](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/ObjectEdit.md) for form rendering.
+- You can use all CG Attributes not only the MudBlazor onces
   
 ## Prerequisites
 Ensure you have [MudBlazor.Extensions](https://github.com/fgilde/MudBlazor.Extensions) installed in your project.
