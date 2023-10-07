@@ -68,13 +68,17 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="7.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.8" />
+    <!--<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.8" />-->
+
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.16" />
+    <!--<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.16" />-->    
   </ItemGroup>
 
-  <ItemGroup>    
+  <ItemGroup>
+
     <PackageReference Include="MudBlazor.Markdown" Version="0.1.2" />
     <PackageReference Include="Nextended.Blazor" Version="7.0.38" />
     <PackageReference Include="Nextended.Core" Version="7.0.41" /> 

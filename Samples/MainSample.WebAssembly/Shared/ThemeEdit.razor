@@ -4,8 +4,8 @@
 @using BlazorJS.JsInterop;
 
 <MudIconButton Class="mudex-demo-themeedit-toggle-button" Icon="@Icons.Material.Filled.Palette" Color="Color.Inherit" OnClick="@EditTheme" />
-<MudExPopover OnBlur="@(OnThemeBlur)" Animation="AnimationType.Slide" AnimationPosition="DialogPosition.TopRight"
-              SelectorsForIgnoreBlur=".mudex-demo-themeedit-toggle-button" Open="@_themeEditOpen" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" MaxHeight="900">
+<MudExPopover OnBlur="@(OnThemeBlur)" Animation="AnimationType.Perspective3d" AnimationPosition="DialogPosition.TopRight"
+              SelectorsForIgnoreBlur=".mudex-demo-themeedit-toggle-button" Open="@_themeEditOpen" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopRight" MaxHeight="900">
     <MudItem xs="12" Style="padding:4px;">
         <MudCard @onclick="@(() => { _themeEditOpen = false; })" Style="border-width: 3px;" Class="cursor-pointer hover-border" Outlined="true">
             <MudCardHeader>
@@ -87,39 +87,7 @@
         StateHasChanged();
     }
 
-    private async Task<ClientTheme> OpenThemeEdit()
-    {
-        var defaultDialogOptionsEx = new DialogOptionsEx()
-        {
-            MaximizeButton = true,
-            CloseButton = true,
-            FullHeight = true,
-            CloseOnEscapeKey = true,
-            MaxWidth = MaxWidth.Medium,
-            FullWidth = true,
-            DragMode = MudDialogDragMode.Simple,
-            Animations = new[] {AnimationType.SlideIn},
-            Position = DialogPosition.CenterRight,
-            DisableSizeMarginY = true,
-            DisablePositionMargin = true
-        };
-
-        var res = await DialogService.ShowComponentInDialogAsync<MudExThemeEdit<ClientTheme>>("Edit Theme", "", 
-            themeEdit =>
-            {
-                themeEdit.AllowPresetsEdit = false;
-                themeEdit.Theme = ClientTheme.CurrentTheme.CloneTheme();
-            },  
-            dialog =>
-            {
-                dialog.ClassActions = MudExCss.Classes.Dialog.DialogActionsSticky;
-                dialog.Icon = Icons.Material.Filled.Palette;
-                dialog.Buttons = MudExDialogResultAction.OkCancel();
-            }, defaultDialogOptionsEx);
-        
-        return res.DialogResult.Canceled ? ClientTheme.CurrentTheme : res.Component.Theme;
-
-    }
+    private Task<ClientTheme> OpenThemeEdit() => DialogService.ShowThemeEditAsync(ClientTheme.CurrentTheme);
 
     private void OnThemeSelected(ClientTheme obj)
     {

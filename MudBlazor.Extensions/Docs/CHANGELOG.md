@@ -1,6 +1,8 @@
 ## Change Log  
- - 1.7.71  **_Breaking:_** Parameter AutoExtractZip is renamed to AutoExtractArchive and this feature now handles all archive types instead of zip only in [MudExUploadEdit](https://www.mudex.org/upload-edit)
- - 1.7.71  **_Breaking:_** Enum MimeRestrictionType is renamed to RestrictionType because now its used for Param MimeRestrictionType and ExtensionRestrictionType in [MudExUploadEdit](https://www.mudex.org/upload-edit)
+ - 1.7.72 > Fix CursorPositionOrigin on DialogOptions for option ShowAtCursor
+ - 1.7.72 > DialogOptionsEx now supporting MaxHeight similar to MaxWidth
+ - 1.7.71 > **_Breaking:_** Parameter AutoExtractZip is renamed to AutoExtractArchive and this feature now handles all archive types instead of zip only in [MudExUploadEdit](https://www.mudex.org/upload-edit)
+ - 1.7.71 > **_Breaking:_** Enum MimeRestrictionType is renamed to RestrictionType because now its used for Param MimeRestrictionType and ExtensionRestrictionType in [MudExUploadEdit](https://www.mudex.org/upload-edit)
  - 1.7.71 > New Parameters (Extensions and ExtensionRestrictionType) to additional allow or disallow extensions [MudExUploadEdit](https://www.mudex.org/upload-edit)
  - 1.7.69 > Adapt TryMudblazor for MudEx with better autocompletion, import and export as [TryMudEx](https://trymudex.azurewebsites.net)
  - 1.7.69 > Create MudExFileDisplayCode as file viewer for [MudExFileDisplay](https://www.mudex.org/file-display)

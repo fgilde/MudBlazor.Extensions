@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
 using Nextended.Core;
@@ -280,6 +281,7 @@ namespace MudBlazor.Extensions
             options = options.CloneOptions();
 
             (options.DialogAppearance ??= MudExAppearance.Empty()).WithCss(options.DisableSizeMarginY ?? false ? MudExCss.Classes.Dialog.FullHeightWithoutMargin : MudExCss.Classes.Dialog.FullHeightWithMargin, options.FullHeight ?? false);
+            (options.DialogAppearance ??= MudExAppearance.Empty()).WithCss(options.MaxHeight != null ? $"mud-ex-dialog-max-height-{options.MaxHeight.GetDescription()}" : string.Empty);
             (options.DialogAppearance ??= MudExAppearance.Empty()).WithCss(MudExCss.Classes.Dialog.PositionFixedNoMargin, (options.DisablePositionMargin ?? false) || options.ShowAtCursor );
 
 

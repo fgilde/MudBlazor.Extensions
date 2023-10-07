@@ -81,25 +81,28 @@
         var origin = this.options.cursorPositionOriginName.split('-');
 
         var maxWidthFalseOrLargest = this.options.maxWidth === 6 || this.options.maxWidth === 4; // 4=xxl 6=false
-        if (!this.options.fullWidth || !maxWidthFalseOrLargest) {
-            if (origin[1] === 'left') {
-                element.style.left = x + 'px';
-            } else if (origin[1] === 'right') {
-                element.style.left = (x - element.offsetWidth) + 'px';
-            } else if (origin[1] === 'center') {
-                element.style.left = (x - element.offsetWidth / 2) + 'px';
+        setTimeout(() => {
+            if (!this.options.fullWidth || !maxWidthFalseOrLargest) {
+                if (origin[1] === 'left') {
+                    element.style.left = x + 'px';
+                } else if (origin[1] === 'right') {
+                    element.style.left = (x - element.offsetWidth) + 'px';
+                } else if (origin[1] === 'center') {
+                    element.style.left = (x - element.offsetWidth / 2) + 'px';
+                }
             }
-        }
-        if (!this.options.fullHeight) {
-            if (origin[0] === 'top') {
-                element.style.top = y + 'px';
-            } else if (origin[0] === 'bottom') {
-                element.style.top = (y - element.offsetHeight) + 'px';
-            } else if (origin[0] === 'center') {
-                element.style.top = (y - element.offsetHeight / 2) + 'px';
+            if (!this.options.fullHeight) {
+                if (origin[0] === 'top') {
+                    element.style.top = y + 'px';
+                } else if (origin[0] === 'bottom') {
+                    element.style.top = (y - element.offsetHeight) + 'px';
+                } else if (origin[0] === 'center') {
+                    element.style.top = (y - element.offsetHeight / 2) + 'px';
+                }
             }
-        }
-        MudExDomHelper.ensureElementIsInScreenBounds(element);
+            MudExDomHelper.ensureElementIsInScreenBounds(element);
+        }, 50);
+
     }
 }
 

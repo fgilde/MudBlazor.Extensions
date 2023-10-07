@@ -35,7 +35,7 @@ public static class ServiceCollectionExtensions
         // TODO: Find maybe a better solution. For example if the MudBlazor.DialogService has a reference to injected JsRuntime, we can remove this section and the class and interface for  MudExDialogService : IMudExDialogService
         #region Replace IDialogService with MudExDialogService
 
-        services.AddScoped<DialogService>();    
+        services.AddScoped<DialogService>(); // add the original service without interface
         // Get the original service descriptor
         var originalDescriptor = services.FirstOrDefault(d => d.ServiceType == typeof(IDialogService));
         services.Remove(originalDescriptor);

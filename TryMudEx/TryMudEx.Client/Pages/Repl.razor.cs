@@ -76,7 +76,7 @@ public partial class Repl : IDisposable
             if (_mode != value)
             {
                 _mode = value;
-                if(_wasCompiledSuccessfullyAlready)
+                if(_wasCompiledSuccessfullyAlready && value == CodeViewMode.Window)
                     Task.Delay(500).ContinueWith(_ => ReloadIframe());
             }
         }

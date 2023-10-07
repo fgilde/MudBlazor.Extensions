@@ -28,7 +28,7 @@ namespace MudBlazor.Extensions.Helper
         /// </summary>        
         internal static async Task<IJSRuntime> InitializeMudBlazorExtensionsCoreAsync(this IJSRuntime runtime, bool force = false)
         {
-            LegacyRuntimeReference ??= runtime;
+            LegacyRuntimeReference ??= (runtime ?? GetJsRuntime()); 
             if (force || !useMinified || !await runtime.IsNamespaceAvailableAsync("MudBlazorExtensions"))
             {
                 await runtime.ImportModuleBlazorJS(); // This is a workaround for using module in MAUI apps
@@ -77,5 +77,32 @@ namespace MudBlazor.Extensions.Helper
 
         internal static Task<(IJSObjectReference moduleReference, IJSObjectReference jsObjectReference)> ImportModuleAndCreateJsAsync<TComponent>(this IJSRuntime js, params object?[]? args) 
             => js.ImportModuleAndCreateJsAsync(ComponentJs<TComponent>(), $"initialize{GetJsComponentName<TComponent>()}", args);
+
+        private static IJSInProcessRuntime GetJsRuntime()
+        {
+            const string defaultJsRuntimeTypeName = "DefaultWebAssemblyJSRuntime";
+            const string instanceFieldName = "Instance";
+
+            Assembly assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a?.FullName?.Contains("Microsoft.AspNetCore.Components.WebAssembly") == true);
+            if (assembly == null)
+                return null;
+
+            var defaultJsRuntimeType = assembly
+                .GetTypes()
+                .SingleOrDefault(t => t.Name == defaultJsRuntimeTypeName);
+
+            if (defaultJsRuntimeType == null)
+            {
+                return null;
+            }
+
+            var instanceField = defaultJsRuntimeType.GetField(instanceFieldName, BindingFlags.Static | BindingFlags.NonPublic);
+            if (instanceField == null)
+            {
+                return null;
+            }
+
+            return (IJSInProcessRuntime)instanceField.GetValue(obj: null);
+        }
     }
 }

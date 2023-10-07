@@ -1,8 +1,11 @@
 ﻿@page "/object-edit-cg-adapter"
 @using System.ComponentModel.DataAnnotations
+@using BlazorJS
 @using CG.Blazor.Forms.Attributes
 @using MudBlazor.Extensions.Core
-
+@using Newtonsoft.Json
+@using Nextended.Core.Extensions
+@inject IJSRuntime js;
 @attribute [DemoNew(Group = "MudExObjectEdit", Name = "Use CodeGator Models", Documentation = "Demo for using MudExObjectEdit with CodeGator Adapter and CodeGator Attributes", Icon = Icons.Material.Outlined.Edit, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
 <DemoComponent DocFiles="@(new [] {"https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions.CodeGator.Adapter/README.md", "Docs/ObjectEdit.md"})" PageType="@GetType()">
@@ -12,14 +15,14 @@
 
     <MudText Color="Color.Primary">MudExObjectEditForm</MudText>
     <MudPaper Outlined="true" Class="px-12 py-6 mb-10">
-        <MudExObjectEditForm Value="@Model"></MudExObjectEditForm>
+        <MudExObjectEditForm OnValidSubmit="Callback" Value="@Model"></MudExObjectEditForm>
     </MudPaper>
 
     <MudExDivider Class="mb-10" Color="MudExColor.Primary"/>
     
     <MudText Class="mt-10" Color="Color.Primary">Original Code Gator DynamicForm</MudText>
     <MudPaper Outlined="true" Class="px-12 py-6">
-        <CG.Blazor.Forms.DynamicForm Model="@Model"/>
+        <CG.Blazor.Forms.DynamicForm OnSubmit="@Callback" Model="@Model.Clone().SetProperties(o => o.Text = "CG Models in DynamicForm")" />
     </MudPaper>
 </DemoComponent>
 
@@ -45,7 +48,29 @@
         
         [RenderMudDatePicker]
         public DateTime? DateOfBirth { get; set; }
+
+        [RenderMudRadioGroup(Options = "Male,Female,Rather not say")]
+        public string Sex { get; set; }
+
+        [RenderMudAutocomplete(SearchFunc = "CountrySearch")]
+        public string Country { get; set; }
+
+        public string[] _countries = new string[] { "Austria", "Brazil", "Canada", "Denmark", "Equador", "Finland", "Germany", "Haiti", "Island", "Japan", "Kuwait", "Lithuania", "Mexico", "Nigeria", "Oman", "Pakistan", "Qatar", "Russia", "Sweden", "Turkey",  "United States of America", "Vietnam", "Western Sahara", "Yemen", "Zimbabwe"};
+        public async Task<IEnumerable<string>> CountrySearch(string value)
+        {
+            // In real life use an asynchronous function for fetching data from an api.
+            await Task.Delay(20);
+
+            if (string.IsNullOrEmpty(value))
+                return _countries;
+            return _countries.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+        }
     }
-    
+
+    private void Callback(EditContext e)
+    {
+        js.AlertAsync(JsonConvert.SerializeObject(e.Model));
+    }
+
 }
 

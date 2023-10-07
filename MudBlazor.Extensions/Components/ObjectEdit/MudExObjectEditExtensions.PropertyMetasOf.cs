@@ -113,4 +113,7 @@ public static partial class MudExObjectEditExtensions
 
     //public static IEnumerable<ObjectEditPropertyMetaOf<TModel>> WithAttributesIf<TModel, TComponent>(this IEnumerable<ObjectEditPropertyMetaOf<TModel>> metas, Func<TModel, bool> condition, TComponent instanceForAttributes) where TComponent : new()
     //    => metas.Apply(m => m.WithAttributesIf<TModel, TComponent>(condition, instanceForAttributes));
+
+    public static IEnumerable<ObjectEditPropertyMetaOf<TModel>> AsDisabledIf<TModel>(this IEnumerable<ObjectEditPropertyMetaOf<TModel>> metas, Func<TModel, bool> condition)
+        => metas.Apply(m => m.AsDisabledIf(condition));
 }

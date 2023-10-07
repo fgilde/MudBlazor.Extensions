@@ -117,4 +117,8 @@ public static partial class MudExObjectEditExtensions
         });
     //public static ObjectEditPropertyMetaOf<TModel> WithAttributesIf<TModel, TComponent>(this ObjectEditPropertyMetaOf<TModel> meta, Func<TModel, bool> condition, TComponent instanceForAttributes) where TComponent : new()
     //    => meta?.WithAttributesIf(condition, PropertyHelper.ValuesDictionary(instanceForAttributes, true));
+
+    public static ObjectEditPropertyMetaOf<TModel> AsDisabledIf<TModel>(this ObjectEditPropertyMetaOf<TModel> meta, Func<TModel, bool> condition)
+        => meta?.WithAttributesIf(condition, new KeyValuePair<string, object>(nameof(MudBaseInput<string>.Disabled), true));
+
 }

@@ -3,6 +3,7 @@ using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Services;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Options
 {
@@ -34,9 +35,38 @@ namespace MudBlazor.Extensions.Options
             Animations = new[] {AnimationType.FlipX}
         };
 
+        public static DialogOptionsEx SlideInFromRight => new()
+        {
+            MaximizeButton = true,
+            CloseButton = true,
+            FullHeight = true,
+            CloseOnEscapeKey = true,
+            MaxWidth = MudBlazor.MaxWidth.Medium,
+            FullWidth = true,
+            DragMode = MudDialogDragMode.Simple,
+            Animations = new[] { AnimationType.SlideIn },
+            Position = DialogPosition.CenterRight,
+            DisableSizeMarginY = true,
+            DisablePositionMargin = true
+        };
+
+        public static DialogOptionsEx SlideInFromLeft => SlideInFromRight.SetProperties(o => o.Position = DialogPosition.CenterLeft);
+        public static DialogOptionsEx SlideInFromTop => SlideInFromRight.SetProperties(o =>
+        {
+            o.Position = DialogPosition.TopCenter;
+            o.MaxWidth = MudBlazor.MaxWidth.ExtraExtraLarge;
+            o.DisableSizeMarginX = true;
+            o.FullHeight = false;
+        });
+
+        public static DialogOptionsEx SlideInFromBottom => SlideInFromTop.SetProperties(o =>
+        {
+            o.Position = DialogPosition.BottomCenter;
+        });
+
         #endregion
 
-        
+
         /// <summary>
         /// Sets the current instance of DialogOptionsEx as the default option for dialogs.
         /// </summary>
@@ -107,6 +137,12 @@ namespace MudBlazor.Extensions.Options
         /// A nullable boolean value indicating whether the dialog full height mode is enabled or not.
         /// </summary>
         public bool? FullHeight { get; set; }
+
+        /// <summary>
+        /// MaxHeight is similar to original MaxWidth
+        /// </summary>
+        public MaxHeight? MaxHeight { get; set; } = null;
+
 
         /// <summary>
         /// A nullable boolean value indicating whether the dialog position margin is disabled or not.

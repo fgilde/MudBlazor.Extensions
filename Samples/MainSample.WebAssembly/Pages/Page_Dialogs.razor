@@ -3,7 +3,7 @@
 @inject IJSRuntime Js
 @inject IDialogService dialogService;
 
-@attribute [Demo(Group = "Dialog Samples", Name = "Dialog Sample", Documentation = "Demo for using DialogOptionsEx", Order = 0, Icon = Icons.Material.Outlined.DesktopWindows)]
+@attribute [DemoUpdated(Group = "Dialog Samples", Name = "Dialog Sample", Documentation = "Demo for using DialogOptionsEx", Order = 0, Icon = Icons.Material.Outlined.DesktopWindows)]
 
 
 <DemoComponent PageType="@GetType()">
@@ -52,6 +52,7 @@
             FullHeight = true,
             CloseOnEscapeKey = true,
             MaxWidth = MaxWidth.Medium,
+            MaxHeight = MaxHeight.False,
             FullWidth = true,
             DragMode = MudDialogDragMode.Simple,
             Animations = new[] { AnimationType.SlideIn },

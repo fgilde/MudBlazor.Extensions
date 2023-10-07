@@ -158,5 +158,20 @@
             await ActivateTabAsync(newTabIndex);
         }
 
+        CodeViewMode? _lastModeBeforeAutoChanged = null;
+        private void CheckHidden(bool hidden, CodeViewMode mode)
+        {
+            if (hidden && _viewMode == mode)
+            {
+                _lastModeBeforeAutoChanged = mode;
+                ViewMode = CodeViewMode.DockedBottom;
+            }
+
+            if (!hidden && _lastModeBeforeAutoChanged != null)
+            {
+                ViewMode = _lastModeBeforeAutoChanged.Value;
+                _lastModeBeforeAutoChanged = null;
+            }
+        }
     }
 }

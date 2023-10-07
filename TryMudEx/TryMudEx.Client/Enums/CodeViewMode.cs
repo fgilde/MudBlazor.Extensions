@@ -11,12 +11,14 @@ public enum CodeViewMode
 {
     [Icon(Icons.Material.Filled.BorderRight)]
     [Description("Dock preview panel to right side")]
+    [Hidden(Breakpoint.SmAndDown)]
     DockedRight,
     [Icon(Icons.Material.Filled.BorderBottom)]
     [Description("Dock preview panel to bottom")]
     DockedBottom,
     [Icon(Icons.Material.Filled.BorderLeft)]
     [Description("Dock preview panel to left side")]
+    [Hidden(Breakpoint.SmAndDown)]
     DockedLeft,
     [Icon(Icons.Material.Filled.BorderTop)]
     [Description("Dock preview panel to top")]
@@ -24,6 +26,18 @@ public enum CodeViewMode
     [Icon(Icons.Material.Filled.DesktopWindows)]
     [Description("Do not dock preview panel and show a dialog after compile")]
     Window,
+}
+
+internal class HiddenAttribute : Attribute
+{
+    public Breakpoint Breakpoint { get; }
+    public bool Invert { get; }
+
+    public HiddenAttribute(Breakpoint breakpoint, bool invert = false)
+    {
+        Breakpoint = breakpoint;
+        Invert = invert;
+    }
 }
 
 internal class IconAttribute : Attribute

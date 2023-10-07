@@ -10750,6 +10750,11 @@
             A nullable boolean value indicating whether the dialog full height mode is enabled or not.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.MaxHeight">
+            <summary>
+            MaxHeight is similar to original MaxWidth
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.DisablePositionMargin">
             <summary>
             A nullable boolean value indicating whether the dialog position margin is disabled or not.

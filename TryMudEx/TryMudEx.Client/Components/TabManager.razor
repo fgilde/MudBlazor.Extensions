@@ -34,16 +34,16 @@
                     </div>
                     <MudIconButton Icon="@Icons.Material.Filled.Add" @onclick="@InitTabCreating" Class="rounded-0 py-1 px-2" />
 
-                    <MudHidden IsHiddenChanged="@(hidden => ViewMode = hidden ? CodeViewMode.Window : _viewMode)" Breakpoint="Breakpoint.SmAndDown">
-                        <MudSpacer />
-                        @foreach (var mode in Enum.GetValues<CodeViewMode>())
-                        {
+                    <MudSpacer />
+                    @foreach (var mode in Enum.GetValues<CodeViewMode>())
+                    {
+                        <MudHidden IsHiddenChanged="@(hidden => CheckHidden(hidden, mode))"  Breakpoint="@(mode.GetAttribute<HiddenAttribute>()?.Breakpoint ?? Breakpoint.None)" Invert="@(mode.GetAttribute<HiddenAttribute>()?.Invert ?? false)">
                             <MudTooltip Text="@(mode.GetAttribute<DescriptionAttribute>()?.Description)">
-                                <MudIconButton OnClick="@(() => ViewMode = mode)" Color="@ViewModeColor(mode)" Icon="@(mode.GetAttribute<IconAttribute>()?.IconName)" Class="rounded-0 py-1 px-2" />
+                                <MudIconButton OnClick="@(() => { _lastModeBeforeAutoChanged = null; ViewMode = mode; })" Color="@ViewModeColor(mode)" Icon="@(mode.GetAttribute<IconAttribute>()?.IconName)" Class="rounded-0 py-1 px-2" />
                             </MudTooltip>
-                        }
-                        <div style="width: 15px;"></div>
-                    </MudHidden>
+                        </MudHidden>
+                    }
+                    <div style="width: 15px;"></div>
                 </div>
             </div>
         </div>

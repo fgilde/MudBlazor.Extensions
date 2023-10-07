@@ -708,26 +708,27 @@ public partial class MudExObjectEdit<T>
     
     private async Task OnResetClick(MouseEventArgs arg)
     {
-        if (GlobalResetSettings.RequiresConfirmation && DialogService != null && !(await ShowConfirmationBox() ?? false))
+        if (GlobalResetSettings.RequiresConfirmation && DialogService != null && !(await ShowConfirmationBox()))
             return;
         await Reset();
         StateHasChanged();
     }
     
-    private Task<bool?> ShowConfirmationBox()
+    private async Task<bool> ShowConfirmationBox()
     {
         ResetConfirmationDialogOptions ??= new DialogOptionsEx
         {
             ShowAtCursor = true,
             CursorPositionOrigin = ToolBarActionAlignment == ActionAlignment.Right ? Origin.CenterRight : Origin.CenterLeft,
             Animations = new[] { AnimationType.LightSpeed },
-            Position = DialogPosition.TopRight,
+            Position = ToolBarActionAlignment == ActionAlignment.Right ? DialogPosition.TopRight : DialogPosition.TopLeft,
             DragMode = MudDialogDragMode.Simple,
-            CloseButton = false
+            CloseButton = false,
+            DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog._Initial)
         };
         return JsRuntime != null
-            ? DialogService.ShowMessageBoxEx(ResetConfirmationMessageBoxOptions, ResetConfirmationDialogOptions)
-            : DialogService.ShowMessageBox(ResetConfirmationMessageBoxOptions, ResetConfirmationDialogOptions);
+            ? await DialogService.ShowConfirmationDialogAsync(ResetConfirmationMessageBoxOptions, ResetConfirmationDialogOptions)
+            : (await DialogService.ShowMessageBox(ResetConfirmationMessageBoxOptions, ResetConfirmationDialogOptions) ?? false);
     }
 
     private string GetStyle()
