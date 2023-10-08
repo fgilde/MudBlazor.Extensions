@@ -7375,6 +7375,16 @@
             <param name="componentOptions">The action that configures the component.</param>
             <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
         </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.Action{``0},MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows a component in a dialog with a title, message, component configuration action, dialog parameters object, and dialog options object.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.Action{``0},MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows a component in a dialog with a title, message, component configuration action, dialog parameters object, and dialog options object.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Action{``0},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
             <summary>
             Shows a component in a dialog with a title, message, component configuration action, dialog parameters action and dialog options.
@@ -10674,16 +10684,6 @@
             Extended Dialog Options class, inheriting from DialogOptions and ICloneable.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.OverriddenDefaultOptions">
-            <summary>
-            A boolean value indicating whether the default options are overriden.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.DefaultDialogOptions">
-            <summary>
-            The default dialog options object.
-            </summary>
-        </member>
         <member name="M:MudBlazor.Extensions.Options.DialogOptionsEx.SetAsDefaultDialogOptions">
             <summary>
             Sets the current instance of DialogOptionsEx as the default option for dialogs.
@@ -10816,6 +10816,16 @@
             Method that returns a cloned instance of the current object. 
             </summary>
             <returns>A cloned object instance of the current object.</returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.OverriddenDefaultOptions">
+            <summary>
+            A boolean value indicating whether the default options are overriden.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.DefaultDialogOptions">
+            <summary>
+            The default dialog options object.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Options.ItemSelectionMode">
             <summary>

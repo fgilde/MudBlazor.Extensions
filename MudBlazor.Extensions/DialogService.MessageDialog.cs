@@ -58,6 +58,27 @@ public static partial class DialogServiceExt
     }
 
     /// <summary>
+    /// Shows a component in a dialog with a title, message, component configuration action, dialog parameters object, and dialog options object.
+    /// </summary>
+    public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title,
+        Action<TComponent> componentOptions,
+        DialogParameters dialogParameters,
+        DialogOptionsEx options = null) where TComponent : ComponentBase, new()
+    {
+        return dialogService.ShowComponentInDialogAsync<TComponent>(title, string.Empty, componentOptions, dialogParameters, options);
+    }
+
+    /// <summary>
+    /// Shows a component in a dialog with a title, message, component configuration action, dialog parameters object, and dialog options object.
+    /// </summary>
+    public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title,
+        Action<TComponent> componentOptions,
+        DialogOptionsEx options) where TComponent : ComponentBase, new()
+    {
+        return dialogService.ShowComponentInDialogAsync<TComponent>(title, string.Empty, componentOptions, new DialogParameters(), options);
+    }
+
+    /// <summary>
     /// Shows a component in a dialog with a title, message, component configuration action, dialog parameters action and dialog options.
     /// </summary>
     /// <typeparam name="TComponent">The type of the component to be shown.</typeparam>

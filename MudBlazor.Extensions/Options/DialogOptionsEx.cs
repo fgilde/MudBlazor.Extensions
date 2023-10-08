@@ -3,69 +3,16 @@ using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Services;
-using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Options
 {
     /// <summary>
     /// Extended Dialog Options class, inheriting from DialogOptions and ICloneable.
     /// </summary>
-    public class DialogOptionsEx : DialogOptions, ICloneable
+    public partial class DialogOptionsEx : DialogOptions, ICloneable
     {
         internal MudExAppearanceService AppearanceService { get; set; }
         internal MudExAppearanceService GetAppearanceService() => AppearanceService ?? new MudExAppearanceService();
-
-        #region Statics
-
-        /// <summary>
-        /// A boolean value indicating whether the default options are overriden.
-        /// </summary>
-        internal static bool OverriddenDefaultOptions { get; set; }
-
-        /// <summary>
-        /// The default dialog options object.
-        /// </summary>
-        public static DialogOptionsEx DefaultDialogOptions { get; set; } = new()
-        {
-            DragMode = MudDialogDragMode.Simple,
-            CloseButton = true,
-            DisableBackdropClick = false,
-            MaxWidth = MudBlazor.MaxWidth.ExtraSmall,
-            FullWidth = true,
-            Animations = new[] {AnimationType.FlipX}
-        };
-
-        public static DialogOptionsEx SlideInFromRight => new()
-        {
-            MaximizeButton = true,
-            CloseButton = true,
-            FullHeight = true,
-            CloseOnEscapeKey = true,
-            MaxWidth = MudBlazor.MaxWidth.Medium,
-            FullWidth = true,
-            DragMode = MudDialogDragMode.Simple,
-            Animations = new[] { AnimationType.SlideIn },
-            Position = DialogPosition.CenterRight,
-            DisableSizeMarginY = true,
-            DisablePositionMargin = true
-        };
-
-        public static DialogOptionsEx SlideInFromLeft => SlideInFromRight.SetProperties(o => o.Position = DialogPosition.CenterLeft);
-        public static DialogOptionsEx SlideInFromTop => SlideInFromRight.SetProperties(o =>
-        {
-            o.Position = DialogPosition.TopCenter;
-            o.MaxWidth = MudBlazor.MaxWidth.ExtraExtraLarge;
-            o.DisableSizeMarginX = true;
-            o.FullHeight = false;
-        });
-
-        public static DialogOptionsEx SlideInFromBottom => SlideInFromTop.SetProperties(o =>
-        {
-            o.Position = DialogPosition.BottomCenter;
-        });
-
-        #endregion
-
 
         /// <summary>
         /// Sets the current instance of DialogOptionsEx as the default option for dialogs.
@@ -166,7 +113,7 @@ namespace MudBlazor.Extensions.Options
         public AnimationType? Animation
         {
             get => Animations?.FirstOrDefault();
-            set => Animations = new[] {value ?? AnimationType.Default};
+            set => Animations = new[] { value ?? AnimationType.Default };
         }
 
         /// <summary>
@@ -213,7 +160,7 @@ namespace MudBlazor.Extensions.Options
         public DialogOptionsEx CloneOptions()
         {
             var res = Clone() as DialogOptionsEx;
-            if (res == null) 
+            if (res == null)
                 return null;
             res.DialogAppearance = DialogAppearance?.Clone() as MudExAppearance;
             res.DialogBackgroundAppearance = DialogBackgroundAppearance?.Clone() as MudExAppearance;
