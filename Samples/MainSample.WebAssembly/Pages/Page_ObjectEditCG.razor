@@ -22,7 +22,7 @@
     
     <MudText Class="mt-10" Color="Color.Primary">Original Code Gator DynamicForm</MudText>
     <MudPaper Outlined="true" Class="px-12 py-6">
-        <CG.Blazor.Forms.DynamicForm OnSubmit="@Callback" Model="@Model.Clone().SetProperties(o => o.Text = "CG Models in DynamicForm")" />
+        <CG.Blazor.Forms.DynamicForm OnSubmit="@Callback" Model="@Model" />
     </MudPaper>
 </DemoComponent>
 
@@ -36,7 +36,7 @@
     public class SampleModel
     {
         [RenderMudAlert(Variant = Variant.Filled, Severity = Severity.Info)]
-        public string Text { get; set; } = "CG Models in MudExObjectEdit";
+        public string Text { get; set; } = "Hello from CG Model";
 
         [RenderMudTextField]
         [Required]
@@ -51,6 +51,20 @@
 
         [RenderMudRadioGroup(Options = "Male,Female,Rather not say")]
         public string Sex { get; set; }
+
+        [RenderMudAutocomplete(SearchFunc = "CountrySearch")]
+        public string Country { get; set; }
+
+        public string[] _countries = new string[] { "Austria", "Brazil", "Canada", "Denmark", "Equador", "Finland", "Germany", "Haiti", "Island", "Japan", "Kuwait", "Lithuania", "Mexico", "Nigeria", "Oman", "Pakistan", "Qatar", "Russia", "Sweden", "Turkey",  "United States of America", "Vietnam", "Western Sahara", "Yemen", "Zimbabwe"};
+        public async Task<IEnumerable<string>> CountrySearch(string value)
+        {
+            // In real life use an asynchronous function for fetching data from an api.
+            await Task.Delay(20);
+
+            if (string.IsNullOrEmpty(value))
+                return _countries;
+            return _countries.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+        }
 
     }
 

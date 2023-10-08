@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<LocalStorageService>();
-builder.Services.AddMudServicesWithExtensions();
+builder.Services.AddMudServicesWithExtensions(typeof(LocalStorageService).Assembly);
 builder.Services.AddMudMarkdownServices();
 builder.Services.AddScoped<LocalStorageService>();
 builder.Services.AddScoped<SampleDataService>();
