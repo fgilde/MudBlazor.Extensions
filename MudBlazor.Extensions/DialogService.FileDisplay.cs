@@ -18,7 +18,7 @@ public static partial class DialogServiceExt
     /// <summary>
     /// Shows a dialog which displays a file at the specified url.
     /// </summary>
-    public static async Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowFileDisplayDialog(this IDialogService dialogService, string url, DialogOptionsEx options, DialogParameters dialogParameters = null)
+    public static async Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowFileDisplayDialog(this IDialogService dialogService, string url, DialogOptionsEx options = null, DialogParameters dialogParameters = null)
     {
         var fileName = Path.GetFileName(url);
         var contentType = MimeType.GetMimeType(fileName);
@@ -29,7 +29,7 @@ public static partial class DialogServiceExt
             {nameof(MudExFileDisplayDialog.ContentType), contentType}
         };
 
-        return await dialogService.ShowEx<MudExFileDisplayDialog>(fileName, dialogParameters.MergeWith(parameters), options);
+        return await dialogService.ShowEx<MudExFileDisplayDialog>(fileName, dialogParameters.MergeWith(parameters), options ?? DialogOptionsEx.FileDisplayDialogOptions);
     }
 
 
@@ -46,7 +46,7 @@ public static partial class DialogServiceExt
             {nameof(MudExFileDisplayDialog.ContentType), contentType}
         };
 
-        return await dialogService.ShowEx<MudExFileDisplayDialog>(fileName, dialogParameters.MergeWith(parameters), options);
+        return await dialogService.ShowEx<MudExFileDisplayDialog>(fileName, dialogParameters.MergeWith(parameters), options ?? DialogOptionsEx.FileDisplayDialogOptions);
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ public static partial class DialogServiceExt
             {nameof(MudExFileDisplayDialog.ContentType), mime}
         };
 
-        return await dialogService.ShowEx<MudExFileDisplayDialog>(fileName, dialogParameters.MergeWith(parameters), options);
+        return await dialogService.ShowEx<MudExFileDisplayDialog>(fileName, dialogParameters.MergeWith(parameters), options ?? DialogOptionsEx.FileDisplayDialogOptions);
     }
 
     /// <summary>
