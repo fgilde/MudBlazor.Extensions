@@ -49,22 +49,9 @@
         [RenderMudDatePicker]
         public DateTime? DateOfBirth { get; set; }
 
-        // [RenderMudRadioGroup(Options = "Male,Female,Rather not say")]
-        // public string Sex { get; set; }
+        [RenderMudRadioGroup(Options = "Male,Female,Rather not say")]
+        public string Sex { get; set; }
 
-        [RenderMudAutocomplete(SearchFunc = "CountrySearch")]
-        public string Country { get; set; }
-
-        public string[] _countries = new string[] { "Austria", "Brazil", "Canada", "Denmark", "Equador", "Finland", "Germany", "Haiti", "Island", "Japan", "Kuwait", "Lithuania", "Mexico", "Nigeria", "Oman", "Pakistan", "Qatar", "Russia", "Sweden", "Turkey",  "United States of America", "Vietnam", "Western Sahara", "Yemen", "Zimbabwe"};
-        public async Task<IEnumerable<string>> CountrySearch(string value)
-        {
-            // In real life use an asynchronous function for fetching data from an api.
-            await Task.Delay(20);
-
-            if (string.IsNullOrEmpty(value))
-                return _countries;
-            return _countries.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
-        }
     }
 
     private void Callback(EditContext e)
