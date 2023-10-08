@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Net.Mime;
+using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using Nextended.Blazor.Extensions;
+using Nextended.Core;
 
 namespace MudBlazor.Extensions;
 
@@ -12,6 +15,56 @@ namespace MudBlazor.Extensions;
 /// </summary>
 public static partial class DialogServiceExt
 {
+    /// <summary>
+    /// Shows a dialog which displays a file at the specified url.
+    /// </summary>
+    public static async Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowFileDisplayDialog(this IDialogService dialogService, string url, DialogOptionsEx options, DialogParameters dialogParameters = null)
+    {
+        var fileName = Path.GetFileName(url);
+        var contentType = MimeType.GetMimeType(fileName);
+        var parameters = new DialogParameters
+        {
+            {nameof(MudExFileDisplayDialog.Icon), BrowserFileExt.IconForFile(contentType)},
+            {nameof(MudExFileDisplayDialog.Url), url},
+            {nameof(MudExFileDisplayDialog.ContentType), contentType}
+        };
+
+        return await dialogService.ShowEx<MudExFileDisplayDialog>(fileName, dialogParameters.MergeWith(parameters), options);
+    }
+
+
+    /// <summary>
+    /// Shows a dialog which displays a file at the specified url.
+    /// </summary>
+    public static async Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowFileDisplayDialog(this IDialogService dialogService, string url, string contentType, DialogOptionsEx options, DialogParameters dialogParameters = null)
+    {
+        var fileName = Path.GetFileName(url);
+        var parameters = new DialogParameters
+        {
+            {nameof(MudExFileDisplayDialog.Icon), BrowserFileExt.IconForFile(contentType)},
+            {nameof(MudExFileDisplayDialog.Url), url},
+            {nameof(MudExFileDisplayDialog.ContentType), contentType}
+        };
+
+        return await dialogService.ShowEx<MudExFileDisplayDialog>(fileName, dialogParameters.MergeWith(parameters), options);
+    }
+
+    /// <summary>
+    /// Shows a dialog which displays a file at the specified url.
+    /// </summary>
+    public static async Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowFileDisplayDialog(this IDialogService dialogService, string url, string fileName, ContentType contentType, DialogOptionsEx options, DialogParameters dialogParameters = null)
+    {
+        var mime = contentType.MediaType;
+        var parameters = new DialogParameters
+        {
+            {nameof(MudExFileDisplayDialog.Icon), BrowserFileExt.IconForFile(mime)},
+            {nameof(MudExFileDisplayDialog.Url), url},
+            {nameof(MudExFileDisplayDialog.ContentType), mime}
+        };
+
+        return await dialogService.ShowEx<MudExFileDisplayDialog>(fileName, dialogParameters.MergeWith(parameters), options);
+    }
+
     /// <summary>
     /// Shows a dialog which displays a file at the specified url.
     /// </summary>
@@ -113,23 +166,7 @@ public static partial class DialogServiceExt
 
     private static async Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowFileDisplayDialog(this IDialogService dialogService, string fileName, DialogParameters parameters, Action<DialogOptionsEx> options = null)
     {
-        var optionsEx = new DialogOptionsEx
-        {
-            CloseButton = true,
-            MaxWidth = MaxWidth.ExtraExtraLarge,
-            FullWidth = true,
-            DisableBackdropClick = false,
-            MaximizeButton = true,
-            DragMode = MudDialogDragMode.Simple,
-            Position = DialogPosition.BottomCenter,
-            Animations = new[] { AnimationType.FadeIn, AnimationType.SlideIn },
-            AnimationDuration = TimeSpan.FromSeconds(1),
-            DisablePositionMargin = true,
-            DisableSizeMarginX = false,
-            DisableSizeMarginY = false,
-            FullHeight = true,
-            Resizeable = true
-        };
+        var optionsEx = DialogOptionsEx.FileDisplayDialogOptions;
         options?.Invoke(optionsEx);
 
         return await dialogService.ShowEx<MudExFileDisplayDialog>(fileName, parameters, optionsEx);

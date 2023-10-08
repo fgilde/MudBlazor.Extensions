@@ -6,7 +6,7 @@ namespace MudBlazor.Extensions.Options;
 
 public partial class DialogOptionsEx
 {
-    
+
     public static void ConfigureObjectEditMeta(ObjectEditMeta<DialogOptionsEx> meta)
     {
         meta.Properties(o => o.AnimationDuration, o => o.Buttons, o => o.AnimationTimingFunction, o => o.Animation,
@@ -65,6 +65,24 @@ public partial class DialogOptionsEx
         MaxWidth = MudBlazor.MaxWidth.ExtraSmall,
         FullWidth = true,
         Animations = new[] { AnimationType.FlipX }
+    };
+
+    public static DialogOptionsEx FileDisplayDialogOptions => new()
+    {
+        CloseButton = true,
+        MaxWidth = MudBlazor.MaxWidth.ExtraExtraLarge,
+        FullWidth = true,
+        DisableBackdropClick = false,
+        MaximizeButton = true,
+        DragMode = MudDialogDragMode.Simple,
+        Position = DialogPosition.BottomCenter,
+        Animations = new[] { AnimationType.FadeIn, AnimationType.SlideIn },
+        AnimationDuration = TimeSpan.FromSeconds(1),
+        DisablePositionMargin = true,
+        DisableSizeMarginX = false,
+        DisableSizeMarginY = false,
+        FullHeight = true,
+        Resizeable = true
     };
 
     public static DialogOptionsEx SlideInFromRight => new()

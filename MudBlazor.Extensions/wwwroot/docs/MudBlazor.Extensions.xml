@@ -7274,6 +7274,21 @@
             <param name="dialogReference">The dialog reference.</param>
             <returns>The dialog component.</returns>
         </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,MudBlazor.DialogParameters)">
+            <summary>
+            Shows a dialog which displays a file at the specified url.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,MudBlazor.DialogParameters)">
+            <summary>
+            Shows a dialog which displays a file at the specified url.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.String,System.String,System.Net.Mime.ContentType,MudBlazor.Extensions.Options.DialogOptionsEx,MudBlazor.DialogParameters)">
+            <summary>
+            Shows a dialog which displays a file at the specified url.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.String,System.String,System.String,System.Func{MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.Tasks.Task{MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult}},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
             <summary>
             Shows a dialog which displays a file at the specified url.
