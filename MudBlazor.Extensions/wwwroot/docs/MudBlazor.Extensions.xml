@@ -4402,6 +4402,11 @@
             Gets or sets the URL of the file.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.UploadableFile.Path">
+            <summary>
+            Path if its came from folder or extracted from zip
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.UploadableFile.FromUrlAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Creates an instance of UploadableFile from a given URL.
@@ -7662,6 +7667,11 @@
             <param name="metaConfig">The configuration of meta information.</param>
             <param name="dialogParameters">The dialog parameters.</param>
             <returns>A tuple indicating if edit was cancelled and the result.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowThemeEditAsync``1(MudBlazor.IDialogService,``0,System.String,System.String,System.Nullable{System.Boolean},MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Show  the MudExThemeEdit inside of a dialog and returns the new theme if user saved it.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Helper.BrowserFileExt">
             <summary>

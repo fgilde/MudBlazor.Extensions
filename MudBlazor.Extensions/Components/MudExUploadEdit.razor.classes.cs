@@ -1,4 +1,5 @@
-﻿using Nextended.Core;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using Nextended.Core;
 using Nextended.Core.Contracts;
 
 namespace MudBlazor.Extensions.Components;
@@ -35,13 +36,18 @@ public class UploadableFile : IUploadableFile
     public string Url { get; set; }
 
     /// <summary>
+    /// Path if its came from folder or extracted from zip
+    /// </summary>
+    public string Path { get; set; }
+
+    /// <summary>
     /// Creates an instance of UploadableFile from a given URL.
     /// </summary>
     public static async Task<UploadableFile> FromUrlAsync(string url, CancellationToken cancellationToken = default) => new()
     {
-        Extension = Path.GetExtension(url),
+        Extension = System.IO.Path.GetExtension(url),
         ContentType = await MimeType.ReadMimeTypeFromUrlAsync(url, cancellationToken),
-        FileName = Path.GetFileName(url),
+        FileName = System.IO.Path.GetFileName(url),
         Url = url
     };
 }
@@ -86,4 +92,12 @@ public enum RestrictionType
     /// MIME types in the list are not allowed.
     /// </summary>
     BlackList
+}
+
+public class BrowserFileWithPath
+{
+    public string RelativePath { get; set; }
+    public string Name { get; set; }
+    public long Size { get; set; }
+    public string ContentType { get; set; }
 }

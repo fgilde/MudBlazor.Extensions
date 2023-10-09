@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO.Compression;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
@@ -464,6 +462,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     private RestrictionType _mimeRestrictionType = RestrictionType.WhiteList;
     private RestrictionType _extensionRestrictionType = RestrictionType.WhiteList;
     private bool _loading;
+    private HashSet<BrowserFileWithPath> _paths = new();
 
     /// <inheritdoc />
     protected override Task OnInitializedAsync()
@@ -472,10 +471,17 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         return base.OnInitializedAsync();
     }
 
+
+    [JSInvokable]
+    public void UpdatePathMappings(BrowserFileWithPath[] files)
+    {
+        _paths.AddRange(files);
+    }
+
     /// <inheritdoc />
     public override object[] GetJsArguments()
     {
-        return new object[] { ElementReference, _inputFile.Element, AllowFolderUpload };
+        return new object[] { ElementReference, _inputFile.Element, AllowFolderUpload, CreateDotNetObjectReference() };
     }
 
     /// <inheritdoc />
@@ -553,16 +559,20 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             if (IsDisposed) return;
 
             var extension = Path.GetExtension(file.Name);
+
             var request = new T
             {
                 Data = buffer,
                 FileName = file.Name,
                 ContentType = BrowserFileExt.GetContentType(file),
-                Extension = extension
+                Extension = extension,
+                Path = file is IArchivedBrowserFile fileInArchive ? fileInArchive.Path : FindPath(file)
             };
             Add(request);
         }
     }
+
+    private string FindPath(IBrowserFile file) => _paths?.FirstOrDefault(f => f.Name == file.Name)?.RelativePath ?? string.Empty;
 
     private async Task ReadStreamInChunksAsync(Stream stream, byte[] buffer)
     {
@@ -745,6 +755,9 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     {
         UploadRequests.Remove(request);
         UploadRequestRemoved.InvokeAsync(request);
+        var pathEntry = _paths.FirstOrDefault(p => p.RelativePath == request.Path);
+        if (pathEntry != null)
+            _paths.Remove(pathEntry);
         if (RemoveErrorOnChange)
             SetError();
         RaiseChangedAsync();
@@ -758,6 +771,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     {
         var array = UploadRequests?.ToArray() ?? Array.Empty<T>();
         UploadRequests?.Clear();
+        _paths.Clear();
         foreach (var item in array)
             UploadRequestRemoved.InvokeAsync(item);
         if (RemoveErrorOnChange)

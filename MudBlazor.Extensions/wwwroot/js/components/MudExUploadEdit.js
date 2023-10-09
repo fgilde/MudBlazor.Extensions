@@ -1,4 +1,4 @@
-﻿export function initializeMudExUploadEdit(dropZoneElement, inputFile, allowFolderUpload) {
+﻿export function initializeMudExUploadEdit(dropZoneElement, inputFile, allowFolderUpload, dotnet) {
     // Add a class when the user drags a file over the drop zone
     function onDragHover(e) {
         e.preventDefault();
@@ -8,29 +8,38 @@
         e.preventDefault();
         dropZoneElement.classList.remove("hover");
     }
-    async function readFolder(dirHandle, paths) {
-        paths = paths || [];
+    async function readFolder(dirHandle, paths = [], initialFolder = '') {
         const results = [];
         for await (const [key, fileOrFolder] of dirHandle.entries()) {
             if (fileOrFolder.kind === 'directory') {
-                paths.push(key);
-                results.push(...(await readFolder(fileOrFolder, paths)));
+                const newPath = paths.concat(key);
+                results.push(...(await readFolder(fileOrFolder, newPath, initialFolder)));
             }
             else {
                 var file = await fileOrFolder.getFile();
-                file.relativePath = paths?.join('/') + '/' + key;
+                file.relativePath = initialFolder + paths.join('/') + (paths.length > 0 ? '/' : '') + key;
                 results.push(file);
             }
         }
         return results;
     }
+
+
     function setFiles(files) {
         inputFile.files = Array.isArray(files) ? createFileListFromArray(files) : files;
+        dotnet.invokeMethodAsync('UpdatePathMappings', Array.from(inputFile.files).map(f => {
+            return {
+                name: f.name,
+                relativePath: f?.relativePath?.substring(0, f?.relativePath?.lastIndexOf('/') + 1),
+                size: f.size,
+                contentType: f.type
+            }
+        }));
         inputFile.dispatchEvent(new Event('change', { bubbles: true }));
     }
     async function openFolderPicker() {
         const dirHandle = await window.showDirectoryPicker();
-        const files = await readFolder(dirHandle);
+        const files = await readFolder(dirHandle, [], `${dirHandle.name}/`);
         setFiles(files);
     }
     function createFileListFromArray(filesArray) {
@@ -48,7 +57,8 @@
         let files = [];
         for await (const item of args.dataTransfer ? args.dataTransfer.items : args) {
             if (isFolder(item)) {
-                files.push(...(await readFolder(await item.getAsFileSystemHandle())));
+                var handle = await item.getAsFileSystemHandle();
+                files.push(...(await readFolder(handle, [], `${handle.name}/`)));
             }
             else {
                 files.push(item.getAsFile());

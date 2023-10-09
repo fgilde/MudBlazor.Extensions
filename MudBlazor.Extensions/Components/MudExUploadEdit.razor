@@ -1,4 +1,5 @@
 ﻿@using MudBlazor.Extensions.Helper
+@using Nextended.Core.Extensions
 @inherits MudExJsRequiredBaseComponent<MudExUploadEdit<T>>
 @typeparam T;
 
@@ -13,10 +14,10 @@
 
         @if (!string.IsNullOrWhiteSpace(_errorMessage) && DisplayErrors)
         {
-            <MudAlert Style="@($"animation: {ErrorAnimation.GetAnimationCssStyle(TimeSpan.FromMilliseconds(300))};")"  Severity="Severity.Error" Class="upload-request-alert" ShowCloseIcon="true" CloseIconClicked="@(() => SetError())">
+            <MudAlert Style="@($"animation: {ErrorAnimation.GetAnimationCssStyle(TimeSpan.FromMilliseconds(300))};")" Severity="Severity.Error" Class="upload-request-alert" ShowCloseIcon="true" CloseIconClicked="@(() => SetError())">
                 <span class="upload-request-alert-text">@_errorMessage</span>
             </MudAlert>
-        
+
         }
         else if (AllowDrop && !string.IsNullOrEmpty(TextDropZone) && !HasData())
         {
@@ -36,7 +37,7 @@
                     <InputFile @ref="_inputFile" id="@(UploadFieldId)" hidden OnChange="UploadFiles" accept="@($"{_accept}")" />
                 }
             }
-            
+
             @if (_loading)
             {
                 <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
@@ -47,16 +48,15 @@
                 {
                     <MudItem xs="12">
                         <MudItem>
-                            <MudAlert
-                                NoIcon="true"
-                                Class="mud-alert-message-w-100"
-                                Severity="@(IsSelected(request) ? Severity.Warning : (_withErrors.Contains(request) ? Severity.Error : Severity.Normal))"
-                                OnClick="(a) => Select(request, a)"
-                                ShowCloseIcon="@(AllowRemovingItems && !ReadOnly)"
-                                CloseIcon="@Icons.Material.Filled.Delete"
-                                CloseIconClicked="(() => Remove(request))">
-                                <div style="display: flex; align-items: center; width: 90%">
-                                    <MudExIcon Class="mr-3" Color="@GetIconColor(request)" Icon="@GetIcon(request)"/>
+                            <MudAlert NoIcon="true"
+                                      Class="mud-alert-message-w-100"
+                                      Severity="@(IsSelected(request) ? Severity.Warning : (_withErrors.Contains(request) ? Severity.Error : Severity.Normal))"
+                                      OnClick="(a) => Select(request, a)"
+                                      ShowCloseIcon="@(AllowRemovingItems && !ReadOnly)"
+                                      CloseIcon="@Icons.Material.Filled.Delete"
+                                      CloseIconClicked="(() => Remove(request))">
+                                <div title="@($"{request.Path?.EnsureEndsWith("/")}{request.FileName}")" style="display: flex; align-items: center; width: 90%">
+                                    <MudExIcon Class="mr-3" Color="@GetIconColor(request)" Icon="@GetIcon(request)" />
                                     @if (AllowRename && !ReadOnly)
                                     {
                                         <MudTextField Style="height: 12px;" Class="mud-ex-collection-inline-string-edit" DisableUnderLine="true" Error="@(string.IsNullOrWhiteSpace(request.FileName))" @bind-Value="@request.FileName"></MudTextField>
@@ -68,7 +68,7 @@
                                 </div>
                                 @if (AllowPreview)
                                 {
-                                    <MudIconButton OnClick="@(() => Preview(request))" Style="margin-top: -24px; float: right;" Icon="@Icons.Material.Filled.ZoomIn" Color="Color.Inherit" Size="Size.Small"/>
+                                    <MudIconButton OnClick="@(() => Preview(request))" Style="margin-top: -24px; float: right;" Icon="@Icons.Material.Filled.ZoomIn" Color="Color.Inherit" Size="Size.Small" />
                                 }
                             </MudAlert>
                         </MudItem>
@@ -83,11 +83,11 @@
         {
 
             <MudButton HtmlTag="label"
-                   Variant="Variant.Text"
-                   Color="Color.Primary"
-                   Size="Size.Small"
-                   StartIcon="@(AllowMultiple ? Icons.Material.Filled.FileUpload : Icons.Material.Filled.UploadFile)"
-                   for="@UploadFieldId">
+                       Variant="Variant.Text"
+                       Color="Color.Primary"
+                       Size="Size.Small"
+                       StartIcon="@(AllowMultiple ? Icons.Material.Filled.FileUpload : Icons.Material.Filled.UploadFile)"
+                       for="@UploadFieldId">
                 @(AllowMultiple ? TryLocalize(TextUploadFiles) : TryLocalize(TextUploadFile))
             </MudButton>
 
@@ -97,11 +97,11 @@
         {
             <span class="action-margin"></span>
             <MudButton HtmlTag="label"
-                   OnClick="@(UploadFolder)"
-                   Variant="Variant.Text"
-                   Color="Color.Primary"
-                   Size="Size.Small"
-                   StartIcon="@Icons.Material.Filled.DriveFolderUpload">
+                       OnClick="@(UploadFolder)"
+                       Variant="Variant.Text"
+                       Color="Color.Primary"
+                       Size="Size.Small"
+                       StartIcon="@Icons.Material.Filled.DriveFolderUpload">
                 @TryLocalize(TextUploadFolder)
             </MudButton>
         }
@@ -110,11 +110,11 @@
         {
             <span class="action-margin"></span>
             <MudButton HtmlTag="label"
-                   OnClick="@(AddUrl)"
-                   Variant="Variant.Text"
-                   Color="Color.Primary"
-                   Size="Size.Small"
-                   StartIcon="@Icons.Material.Filled.MoreHoriz">
+                       OnClick="@(AddUrl)"
+                       Variant="Variant.Text"
+                       Color="Color.Primary"
+                       Size="Size.Small"
+                       StartIcon="@Icons.Material.Filled.MoreHoriz">
                 @TryLocalize(TextAddUrl)
             </MudButton>
         }
