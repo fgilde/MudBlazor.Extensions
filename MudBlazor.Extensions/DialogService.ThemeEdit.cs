@@ -6,6 +6,9 @@ namespace MudBlazor.Extensions;
 
 public static partial class DialogServiceExt
 {
+    /// <summary>
+    /// Show  the MudExThemeEdit inside of a dialog and returns the new theme if user saved it.
+    /// </summary>
     public static async Task<TTheme> ShowThemeEditAsync<TTheme>(this IDialogService service, TTheme theme, 
         string title = "Edit Theme", string message = "",
         bool? darkMode = null,
