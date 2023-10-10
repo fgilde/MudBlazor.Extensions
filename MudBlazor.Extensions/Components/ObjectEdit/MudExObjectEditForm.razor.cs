@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using Blazored.FluentValidation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -23,7 +22,7 @@ public partial class MudExObjectEditForm<T>
     /// <summary>
     /// Returns true if both FluentValidation and DataAnnotation validation have been completed successfully
     /// </summary>
-    public bool Validated => _fluentValidated && _dataAnnotationsValidated;
+    public bool Validated => GetErrors()?.Any() != true;
 
     /// <summary>
     /// The variant of the cancel button
@@ -217,19 +216,9 @@ public partial class MudExObjectEditForm<T>
     private DataAnnotationsValidator _dataAnnotationValidator;
 
     /// <summary>
-    /// Returns true if FluentValidation validation was completed successfully, otherwise returns false
-    /// </summary>
-    private bool _fluentValidated => _fluentValidationValidator == null || _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
-
-    /// <summary>
-    /// Returns true if DataAnnotation validation was completed successfully, otherwise returns false
-    /// </summary>
-    private bool _dataAnnotationsValidated => _dataAnnotationValidator == null || !_dataValidations.Any();
-
-    /// <summary>
     /// Returns a list of validation results produced by DataAnnotation validation
     /// </summary>
-    private IEnumerable<ValidationResult> _dataValidations => _dataAnnotationValidator?.Validate() ?? Enumerable.Empty<ValidationResult>();
+    private IEnumerable<string> _dataValidations => (Form.EditContext?.GetValidationMessages() ?? Enumerable.Empty<string>());
 
     /// <summary>
     /// Handles form submission when UseFormSubmit is false
@@ -292,7 +281,7 @@ public partial class MudExObjectEditForm<T>
     /// </summary>
     /// <returns></returns>
     private IEnumerable<string> GetDataAnnotationErrors()
-        => _dataValidations.Where(v => !string.IsNullOrEmpty(v.ErrorMessage)).Select(v => LocalizerToUse.TryLocalize(v.ErrorMessage).ToString());
+        => _dataValidations.Where(v => !string.IsNullOrEmpty(v)).Select(v => LocalizerToUse.TryLocalize(v).ToString());
 
     /// <summary>
     /// Applies styles to the action bar based on properties

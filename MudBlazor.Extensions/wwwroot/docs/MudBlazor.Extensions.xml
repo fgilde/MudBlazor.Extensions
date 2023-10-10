@@ -6018,16 +6018,6 @@
             Returns the button type of the submit button
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1._fluentValidated">
-            <summary>
-            Returns true if FluentValidation validation was completed successfully, otherwise returns false
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1._dataAnnotationsValidated">
-            <summary>
-            Returns true if DataAnnotation validation was completed successfully, otherwise returns false
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1._dataValidations">
             <summary>
             Returns a list of validation results produced by DataAnnotation validation
