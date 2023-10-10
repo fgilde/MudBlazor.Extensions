@@ -1,4 +1,5 @@
 ## Change Log  
+ - 1.7.74 > Update MudBlazor to 6.11.0
  - 1.7.74 > Support Path for Uploadable items in [MudExUploadEdit](https://www.mudex.org/upload-edit) when using auto extract on zip or folder upload
  - 1.7.73 > Add overload methods to easially show themedit or guick file dialogs
  - 1.7.72 > Fix CursorPositionOrigin on DialogOptions for option ShowAtCursor
