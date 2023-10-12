@@ -1,4 +1,5 @@
 ## Change Log  
+ - 1.7.75 > Add parameter to tag field for AutoClear and fix clear for server side rendered projects
  - 1.7.75 > Add posibility to custom click handler for MudExDialogResultAction used in `DialogService.ShowComponentInDialogAsync` sample is available [here](https://www.mudex.org/component-in-dialog)
  - 1.7.75 > Add posibility to add condtions for buttons if you use `DialogService.ShowComponentInDialogAsync` sample is available [here](https://www.mudex.org/component-in-dialog)
  - 1.7.75 > Add new Component MudExCheckBox with support of `HelperText` .This component is used for default bool RenderData in MudExObjectEdit by default

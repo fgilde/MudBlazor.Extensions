@@ -5,6 +5,7 @@ using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
+using MudBlazor.Utilities;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -125,6 +126,8 @@ public partial class MudExTagField<T> : IMudExComponent
     [Parameter]
     public EventCallback<MouseEventArgs> OnChipMouseOut { get; set; }
 
+    [Parameter]
+    public bool AutoClear { get; set; } = true;
 
     /// <summary>
     /// The animation type for errors.
@@ -183,10 +186,19 @@ public partial class MudExTagField<T> : IMudExComponent
         }
         SetError();
         Values.Add(Value);
-        await InvokeValuesChanged();        
-        await Clear();
-        StateHasChanged();
+        await InvokeValuesChanged();
+        if (AutoClear)
+        {
+            if (RuntimeLocation.IsServerSide)
+                await BlurAsync();
+            
+            await Clear();
 
+            if (RuntimeLocation.IsServerSide)
+                await FocusAsync();
+        }
+
+        await InvokeAsync(StateHasChanged);
     }
 
     private async Task SetErrorWithStyle(string text)
