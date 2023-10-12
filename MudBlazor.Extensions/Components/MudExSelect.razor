@@ -25,7 +25,7 @@
                                       Value="@(Strict && !IsValueInList ? null : Text)" DisableUnderLine="@DisableUnderLine"
                                       Disabled="@Disabled" ReadOnly="true" Error="@Error" ErrorId="@ErrorId"
                                       Clearable="@(Clearable && !ReadOnly)" OnClearButtonClick="(async (e) => await SelectClearButtonClickHandlerAsync(e))"
-                                      @attributes="UserAttributes" OnBlur="@OnLostFocus" ForceShrink="@ForceShrink"
+                                      @attributes="UserAttributes" OnBlur="@OnLostFocus" ForceShrink="@(ForceShrink || (MultiSelection && SelectedValues?.Any() == true))"
                                       ShowVisualiser="true" DataVisualiserStyle="min-height: 1.1876em">
 
                         <AdornmentEnd>
@@ -39,7 +39,7 @@
                                     //Show nothing
                                     <MudText Typo="Typo.body1" Class="mud-text-secondary">@Placeholder</MudText>
                                 }
-                                @if (ValuePresenter == Options.ValuePresenter.Text)
+                                @if (ValuePresenter == ValuePresenter.Text)
                                 {
                                     if (string.IsNullOrEmpty(Text))
                                     {
@@ -48,7 +48,7 @@
 
                                     <MudRender>@GetSelectTextPresenter()</MudRender>
                                 }
-                                else if (ValuePresenter == Options.ValuePresenter.Chip)
+                                else if (ValuePresenter is ValuePresenter.Chip or ValuePresenter.ChipWithoutItemTemplate)
                                 {
                                     if (SelectedValues == null || !SelectedValues.Any())
                                     {
@@ -67,7 +67,15 @@
                                     {
                                         if (SelectedListItem != null && SelectedListItem.Value != null)
                                         {
-                                            @ItemTemplate(SelectedListItem.Value)
+                                            @if (MultiSelection)
+                                            {
+                                                @foreach(var item in SelectedValues)
+                                                    @ItemTemplate(item)
+                                            }
+                                            else
+                                            {
+                                                @ItemTemplate(SelectedListItem.Value)
+                                            }
                                         }
                                         else if (!string.IsNullOrEmpty(Placeholder))
                                         {
@@ -104,7 +112,8 @@
                                              MultiSelection="@MultiSelection" MultiSelectionComponent="@MultiSelectionComponent" MultiSelectionAlign="@MultiSelectionAlign" SelectAll="@SelectAll" SelectAllPosition="@SelectAllPosition" SelectAllText="@TryLocalize(SelectAllText)"
                                              CheckedIcon="@CheckedIcon" UncheckedIcon="@UncheckedIcon" IndeterminateIcon="@IndeterminateIcon" SelectValueOnTab="@SelectValueOnTab" Comparer="@Comparer"
                                              GroupBy="@GroupBy" GroupingEnabled="@GroupingEnabled" GroupsNested="@GroupsNested" GroupsSticky="@GroupsSticky" GroupsInitiallyExpanded="@GroupsInitiallyExpanded"
-                                             ItemTemplate="@ItemTemplate" SearchString="@SearchString" ItemSelectedTemplate="@ItemSelectedTemplate" ItemDisabledTemplate="@ItemDisabledTemplate" SearchBox="@SearchBox" SearchBoxAutoFocus="@SearchBoxAutoFocus" SearchFunc="@SearchFunc" SearchBoxPlaceholder="@SearchBoxPlaceholder" SearchBoxClearable="@SearchBoxClearable" SearchBoxVariant="@SearchBoxVariant" SearchBoxAdornment="SearchBoxAdornment" ToStringFunc="@ToStringFunc">
+                                        SelectAllTemplate="@SelectAllTemplate"
+                                       ItemTemplate="@(UseItemTemplateForSelection ? ItemTemplate : null)" SearchString="@SearchString" ItemSelectedTemplate="@ItemSelectedTemplate" ItemDisabledTemplate="@ItemDisabledTemplate" SearchBox="@SearchBox" SearchBoxAutoFocus="@SearchBoxAutoFocus" SearchFunc="@SearchFunc" SearchBoxPlaceholder="@SearchBoxPlaceholder" SearchBoxClearable="@SearchBoxClearable" SearchBoxVariant="@SearchBoxVariant" SearchBoxAdornment="SearchBoxAdornment" ToStringFunc="@ToStringFunc">
                                 @ChildContent
                             </MudExList>
                         </CascadingValue>
@@ -190,7 +199,7 @@
 
     protected virtual RenderFragment RenderItem(T item, string text)
     {
-        if (ItemTemplate != null)
+        if (ItemTemplate != null && ValuePresenter != ValuePresenter.ChipWithoutItemTemplate)
             return ItemTemplate(item);
         return @<p>@text</p>;
     }

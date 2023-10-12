@@ -1,8 +1,9 @@
 ﻿@page "/component-in-dialog"
+@using BlazorJS
 @inject IJSRuntime js;
 @inject IDialogService dialogService;
 
-@attribute [Demo(Group = "Dialog Samples", Name = "Component in Dialog", Order = 1, Documentation = "Sample to see how you can render and use any component in a dialog as easy as possible", Icon = Icons.Material.Outlined.DesktopWindows)]
+@attribute [DemoUpdated(Group = "Dialog Samples", Name = "Component in Dialog", Order = 1, Documentation = "Sample to see how you can render and use any component in a dialog as easy as possible", Icon = Icons.Material.Outlined.DesktopWindows)]
 
 <DemoComponent PageType="@GetType()">
     <MudGrid>
@@ -14,7 +15,7 @@
 
     private async Task ShowComponentSampleDialog()
     {
-        var res = await dialogService.ShowComponentInDialogAsync<MudSlider<int>>("Hello...", "Please slide around",
+        var res = await dialogService.ShowComponentInDialogAsync<MudSlider<int>>("Hello...", "This dialog can confirmed when slider value is greater then 10",
             slider =>
             {
                 slider.Color = Color.Warning;
@@ -22,13 +23,22 @@
             dialog =>
             {
                  dialog.Icon = Icons.Material.Filled.StarRate;
-                dialog.Buttons = MudExDialogResultAction.OkCancel();
+                 dialog.Buttons = MudExDialogResultAction.OkCancelWithOkCondition<MudSlider<int>>(slider => slider.Value > 10).Concat(new []{ new MudExDialogResultAction()
+                 {
+                     Label = "Hello",
+                     OnClick = HelloOnClick
+                 }}).ToArray();
             });
         if (!res.DialogResult.Canceled)
         {
             await js.InvokeVoidAsync("alert", res.Component.Value.ToString());
         }
     }
-    
+
+    private void HelloOnClick()
+    {
+        js.AlertAsync("Hello clicked");
+    }
+
 
 }

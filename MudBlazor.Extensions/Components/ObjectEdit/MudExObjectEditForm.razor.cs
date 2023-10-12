@@ -1,10 +1,15 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Blazored.FluentValidation;
+using BlazorJS;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using Newtonsoft.Json;
 using Nextended.Core.Extensions;
+using Nextended.Core.Helper;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 
@@ -307,5 +312,20 @@ public partial class MudExObjectEditForm<T>
             .AddClass(ActionBarClass)
             .AddClass("pr-5")
             .Build();
+    }
+
+    /// <inheritdoc />
+    protected override async Task OnPropertyChange(ObjectEditPropertyMeta property)
+    {
+        await base.OnPropertyChange(property);
+        Validate();
+    }
+
+    /// <summary>
+    /// Validates the form
+    /// </summary>
+    public void Validate()
+    {
+        Form?.EditContext?.Validate();
     }
 }

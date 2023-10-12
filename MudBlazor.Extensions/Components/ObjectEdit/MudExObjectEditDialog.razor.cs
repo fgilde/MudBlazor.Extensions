@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Options;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
@@ -92,7 +93,7 @@ public partial class MudExObjectEditDialog<T>
     /// The color of the dialog icon for when the dialog is used in relation to a particular color theme.
     /// </summary>
     [Parameter]
-    public Color DialogIconColor { get; set; }
+    public MudExColor DialogIconColor { get; set; }
 
     /// <summary>
     /// An optional custom submit function.

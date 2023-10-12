@@ -33,6 +33,13 @@ public partial class MudExFileDisplayDialog
     public string Icon { get; set; }
 
     /// <summary>
+    /// If true icons are colored
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Appearance")]
+    public MudExColor DialogIconColor { get; set; } = Color.Error;
+
+    /// <summary>
     /// Action buttons to display in the dialog.
     /// </summary>
     [Parameter]

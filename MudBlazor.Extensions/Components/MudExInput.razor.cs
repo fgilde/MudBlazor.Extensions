@@ -13,8 +13,8 @@ namespace MudBlazor.Extensions.Components
         [Inject] IJSRuntime JSRuntime { get; set; }
 
         protected string Classname => MudExCss.GetClassname(this,
-            () => HasNativeHtmlPlaceholder() || ForceShrink == true || !string.IsNullOrEmpty(Text) || AdornmentStart != null || !string.IsNullOrWhiteSpace(Placeholder) || !string.IsNullOrEmpty(Converter.Set(Value)));
-
+            () => HasNativeHtmlPlaceholder() || ForceShrink || !string.IsNullOrEmpty(Text) || AdornmentStart != null || !string.IsNullOrWhiteSpace(Placeholder) || !string.IsNullOrEmpty(Converter.Set(Value)));
+        
         protected string InputClassname => MudExCss.GetInputClassname(this);
 
         protected string AdornmentClassname => MudExCss.GetAdornmentClassname(this);

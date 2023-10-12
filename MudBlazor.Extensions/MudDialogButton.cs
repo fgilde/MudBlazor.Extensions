@@ -1,5 +1,7 @@
 ﻿using System;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Components;
 
 namespace MudBlazor.Extensions
 {
@@ -59,72 +61,4 @@ namespace MudBlazor.Extensions
             return $"<button id=\"{Id}\" type=\"button\" class=\"{Class}\"><span class=\"mud-icon-button-label\"><svg class=\"mud-icon-root mud-svg-icon mud-inherit-text mud-icon-size-medium\" focusable=\"false\" viewBox=\"0 0 24 24\" aria-hidden=\"true\">{Icon}</svg></span></button>";
         }
     }
-
-    /// <summary>
-    /// Represents an action within a MudBlazor dialog that returns a specific dialog result.
-    /// </summary>
-    public class MudExDialogResultAction
-    {
-        /// <summary>
-        /// Gets or sets the DialogResult for this action.
-        /// </summary>
-        public DialogResult Result { get; set; }
-
-        /// <summary>
-        /// Gets or sets the text displayed on the action button.
-        /// </summary>
-        public string Label { get; set; }
-
-        /// <summary>
-        /// Gets or sets the visual style variant for the action button.
-        /// </summary>
-        public Variant Variant { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color for the action button.
-        /// </summary>
-        public Color Color { get; set; }
-
-        /// <summary>
-        /// Creates an array with a single "Ok" action.
-        /// </summary>
-        /// <param name="confirmText">The text for the "Ok" button. Defaults to "Ok".</param>
-        /// <returns>An array with a single "Ok" action.</returns>
-        public static MudExDialogResultAction[] Ok(string confirmText = "Ok") => new[] { OkCancel(confirmText).Last() };
-
-        /// <summary>
-        /// Creates an array with a single "Cancel" action.
-        /// </summary>
-        /// <param name="confirmText">The text for the "Cancel" button. Defaults to "Ok".</param>
-        /// <returns>An array with a single "Cancel" action.</returns>
-        public static MudExDialogResultAction[] Cancel(string confirmText = "Ok") => new[] { OkCancel(confirmText).First() };
-
-        /// <summary>
-        /// Creates an array with both "Ok" and "Cancel" actions.
-        /// </summary>
-        /// <param name="confirmText">The text for the "Ok" button. Defaults to "Ok".</param>
-        /// <param name="cancelText">The text for the "Cancel" button. Defaults to "Cancel".</param>
-        /// <returns>An array with both "Ok" and "Cancel" actions.</returns>
-        public static MudExDialogResultAction[] OkCancel(string confirmText = "Ok", string cancelText = "Cancel")
-        {
-            var actions = new[]
-            {
-            new MudExDialogResultAction
-            {
-                Label = cancelText,
-                Variant = Variant.Text,
-                Result = DialogResult.Cancel()
-            },
-            new MudExDialogResultAction
-            {
-                Label = confirmText,
-                Color = Color.Error,
-                Variant = Variant.Filled,
-                Result = DialogResult.Ok(true)
-            },
-        };
-            return actions;
-        }
-    }
-
 }

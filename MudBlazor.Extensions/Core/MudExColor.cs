@@ -154,6 +154,14 @@ public readonly struct MudExColor
     public static MudExColor Secondary => new(Color.Secondary);
     public static MudExColor Tertiary => new(Color.Tertiary);
     public static MudExColor Surface => new(Color.Surface);
+    public static MudExColor AppBarBackground => new("--mud-palette-appbar-background");
+    public static MudExColor DrawerBackground => new("--mud-palette-drawer-background");
+    public static MudExColor TextPrimary => new("--mud-palette-primary-text");
+    public static MudExColor TextSecondary => new("--mud-palette-secondary-text");
+    public static MudExColor TextDrawer => new("--mud-palette-drawer-text");
+    public static MudExColor TextDisabled => new("--mud-palette-text-disabled");
+    public static MudExColor TextActionDisabled => new("--mud-palette-action-disabled");
+    public static MudExColor ActionDisabledBackground => new("--mud-palette-action-disabled-background");
 
     /// <summary>
     /// Determines if the value equals the provided Color.

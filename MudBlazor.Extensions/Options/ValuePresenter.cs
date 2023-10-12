@@ -10,6 +10,8 @@ namespace MudBlazor.Extensions.Options
         Text,
         [Description("chip")]
         Chip,
+        [Description("chips-only")]
+        ChipWithoutItemTemplate,
         [Description("itemcontent")]
         ItemContent,
     }

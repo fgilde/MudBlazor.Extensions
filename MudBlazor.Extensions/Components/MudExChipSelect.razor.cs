@@ -56,7 +56,11 @@ public partial class MudExChipSelect<T>
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
     [Obsolete($"Use {nameof(SearchBox)} instead.")]
-    public virtual bool FilterEnabled { get; set; } = true;
+    public virtual bool FilterEnabled
+    {
+        get => SearchBox;
+        set => SearchBox = value;
+    }
 
 
     /// <summary>

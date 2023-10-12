@@ -5,7 +5,7 @@
 <MudDialog Style="@Style" Class="@Class" ClassContent="@ClassContent">
     <TitleContent>
         <MudText Typo="Typo.h6">
-            <MudIcon Color="Color.Error" Icon="@Icon" Class="mr-3 mb-n1" />
+            <MudExIcon Color="@DialogIconColor" Icon="@Icon" Class="mr-3 mb-n1" />
             @MudDialog.Title
         </MudText>
     </TitleContent>
@@ -23,7 +23,9 @@
         {
             foreach (var action in Buttons)
             {
-                <MudButton Color="@action.Color" Variant="@action.Variant" OnClick="@(() => Submit(action.Result))">@TryLocalize(action.Label)</MudButton>
+                <MudExDialogActionButton OnClick="@(() => Submit(action.Result))"
+                                         @ref="action.RenderedReference" Label="@TryLocalize(action.Label)" Action="@action" />
+                @* <MudButton Color="@action.Color" Variant="@action.Variant" OnClick="@(() => Submit(action.Result))">@TryLocalize(action.Label)</MudButton> *@
             }
         }
     </DialogActions>

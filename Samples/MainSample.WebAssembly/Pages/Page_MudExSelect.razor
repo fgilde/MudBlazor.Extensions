@@ -11,14 +11,18 @@
         <Left>
             <MudGrid>
                 <MudItem xs="12" sm="8" Class="d-flex align-start justify-center">
-                    <MudExSelect @ref="component" 
-                                 @bind-SelectedValues="@_selected"                                 
+                    <MudExSelect @ref="component"
+                                 @bind-SelectedValues="@_selected"
                                  MultiSelection="true"
                                  SelectAll="true"
                                  GroupBy="@(x => x.State)"
-                                 PopoverAnimation="AnimationType.Pulse"                       
+                                 PopoverAnimation="AnimationType.Pulse"
                                  ToStringFunc="@(x => x.Name + " - " + x.PostalCode)"
-                                 ItemCollection="_samples" SearchBox="true" T="City" Label="Cities you want to live" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" />
+                                 ItemCollection="_samples" SearchBox="true" T="City" Label="Cities you want to live" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined">
+                        <ItemTemplate>
+                            <MudAlert>@context?.Name</MudAlert>
+                        </ItemTemplate>
+                    </MudExSelect>
                 </MudItem>
             </MudGrid>
         </Left>

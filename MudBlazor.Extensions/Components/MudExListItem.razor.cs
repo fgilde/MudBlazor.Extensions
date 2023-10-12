@@ -56,6 +56,9 @@ public partial class MudExListItem<T>
 
     protected internal string ItemId { get; } = "listitem_" + Guid.NewGuid().ToString().Substring(0, 8);
 
+    [Parameter] 
+    public bool IgnoreItemTemplate { get; set; }
+
     /// <summary>
     /// Functional items does not hold values. If a value set on Functional item, it ignores by the MudList. They can not count on Items list (they count on AllItems), cannot be subject of keyboard navigation and selection.
     /// </summary>

@@ -591,6 +591,26 @@
             Method to dispose the module.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExCheckBox`1">
+            <summary>
+            Just a simple MudCheckBox with HelperText
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCheckBox`1.HelperText">
+            <summary>
+            The HelperText will be displayed below the text field.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCheckBox`1.HelperTextAlignment">
+            <summary>
+            The HelperText will be displayed below the text field.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCheckBox`1.Inherited">
+            <summary>
+            Gets the inherited render fragment.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExChipSelect`1">
             <summary>
             A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.
@@ -1560,6 +1580,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Icon">
             <summary>
             Icon to display in the dialog.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.DialogIconColor">
+            <summary>
+            If true icons are colored
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Buttons">
@@ -2706,6 +2731,11 @@
             Simple MessageDialog
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.IconColor">
+            <summary>
+            The color of the dialog icon for when the dialog is used in relation to a particular color theme.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.ClassContent">
             <summary>
             Gets or sets the class for the content of the dialog
@@ -2770,6 +2800,17 @@
             <summary>
             Gets or sets the maximum value of the progress shown in the dialog
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.PreventStateHasChanged">
+            <summary>
+            If true StateHasChanged is not happen
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExMessageDialog.OnAfterRender(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExMessageDialog.ShouldRender">
+            <inheritdoc />
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.Component">
             <summary>
@@ -2928,6 +2969,11 @@
             The icon of the component.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.IconColor">
+            <summary>
+            Color for icon
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.Details">
             <summary>
             The list of strings with additional details of the component.
@@ -2965,6 +3011,16 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.Items">
             <summary>
             The collection of items within this select
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.UseItemTemplateForSelection">
+            <summary>
+            If true the item template is use for the selection list, otherwise its use only if ValuePresenter is ItemContent or Chip
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.StyleChip">
+            <summary>
+            Style applied to chip
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.GroupBy">
@@ -3071,6 +3127,11 @@
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.ItemTemplate">
+            <summary>
+            Optional presentation template for items
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SelectAllTemplate">
             <summary>
             Optional presentation template for items
             </summary>
@@ -6072,6 +6133,14 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.OnPropertyChange(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1.Validate">
+            <summary>
+            Validates the form
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit">
             <summary>
             Editor for a property of an object. Used internally inside the MudExObjectEdit
@@ -7122,6 +7191,73 @@
             Implicit conversion from String to MudExSize type.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.MudExDialogResultAction">
+            <summary>
+            Represents an action within a MudBlazor dialog that returns a specific dialog result.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.MudExDialogResultAction.OnClick">
+            <summary>
+            Attach custom on click
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.MudExDialogResultAction.Result">
+            <summary>
+            Gets or sets the DialogResult for this action.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.MudExDialogResultAction.Label">
+            <summary>
+            Gets or sets the text displayed on the action button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.MudExDialogResultAction.Variant">
+            <summary>
+            Gets or sets the visual style variant for the action button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.MudExDialogResultAction.Color">
+            <summary>
+            Gets or sets the color for the action button.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.MudExDialogResultAction.Ok(System.String)">
+            <summary>
+            Creates an array with a single "Ok" action.
+            </summary>
+            <param name="confirmText">The text for the "Ok" button. Defaults to "Ok".</param>
+            <returns>An array with a single "Ok" action.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.MudExDialogResultAction.OkWithCondition``1(System.Func{``0,System.Boolean},System.String)">
+            <summary>
+            Creates an array with a single "Ok" action.
+            </summary>
+            <param name="confirmText">The text for the "Ok" button. Defaults to "Ok".</param>
+            <returns>An array with a single "Ok" action.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.MudExDialogResultAction.Cancel(System.String)">
+            <summary>
+            Creates an array with a single "Cancel" action.
+            </summary>
+            <param name="confirmText">The text for the "Cancel" button. Defaults to "Ok".</param>
+            <returns>An array with a single "Cancel" action.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.MudExDialogResultAction.OkCancelWithOkCondition``1(System.Func{``0,System.Boolean},System.String,System.String)">
+            <summary>
+            Creates an array with both "Ok" and "Cancel" actions.
+            </summary>
+            <param name="confirmText">The text for the "Ok" button. Defaults to "Ok".</param>
+            <param name="cancelText">The text for the "Cancel" button. Defaults to "Cancel".</param>
+            <returns>An array with both "Ok" and "Cancel" actions.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.MudExDialogResultAction.OkCancel(System.String,System.String)">
+            <summary>
+            Creates an array with both "Ok" and "Cancel" actions.
+            </summary>
+            <param name="confirmText">The text for the "Ok" button. Defaults to "Ok".</param>
+            <param name="cancelText">The text for the "Cancel" button. Defaults to "Cancel".</param>
+            <returns>An array with both "Ok" and "Cancel" actions.</returns>
+        </member>
         <member name="T:MudBlazor.Extensions.DialogServiceExt">
             <summary>
             Dialog service extension methods.
@@ -8170,6 +8306,9 @@
             <summary>
             Builds and returns an applicable css string
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.ToString">
+            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.DisposeAsync">
             <summary>
@@ -10416,53 +10555,6 @@
             </summary>
             <param name="pos">The position of the button.</param>
             <returns>A string containing the generated HTML.</returns>
-        </member>
-        <member name="T:MudBlazor.Extensions.MudExDialogResultAction">
-            <summary>
-            Represents an action within a MudBlazor dialog that returns a specific dialog result.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.MudExDialogResultAction.Result">
-            <summary>
-            Gets or sets the DialogResult for this action.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.MudExDialogResultAction.Label">
-            <summary>
-            Gets or sets the text displayed on the action button.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.MudExDialogResultAction.Variant">
-            <summary>
-            Gets or sets the visual style variant for the action button.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.MudExDialogResultAction.Color">
-            <summary>
-            Gets or sets the color for the action button.
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.MudExDialogResultAction.Ok(System.String)">
-            <summary>
-            Creates an array with a single "Ok" action.
-            </summary>
-            <param name="confirmText">The text for the "Ok" button. Defaults to "Ok".</param>
-            <returns>An array with a single "Ok" action.</returns>
-        </member>
-        <member name="M:MudBlazor.Extensions.MudExDialogResultAction.Cancel(System.String)">
-            <summary>
-            Creates an array with a single "Cancel" action.
-            </summary>
-            <param name="confirmText">The text for the "Cancel" button. Defaults to "Ok".</param>
-            <returns>An array with a single "Cancel" action.</returns>
-        </member>
-        <member name="M:MudBlazor.Extensions.MudExDialogResultAction.OkCancel(System.String,System.String)">
-            <summary>
-            Creates an array with both "Ok" and "Cancel" actions.
-            </summary>
-            <param name="confirmText">The text for the "Ok" button. Defaults to "Ok".</param>
-            <param name="cancelText">The text for the "Cancel" button. Defaults to "Cancel".</param>
-            <returns>An array with both "Ok" and "Cancel" actions.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Options.AnimationTimingFunction">
             <summary>

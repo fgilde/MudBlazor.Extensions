@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components;
@@ -56,6 +57,12 @@ public partial class MudExPromptDialog
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
     public string Icon { get; set; }
+
+    /// <summary>
+    /// Color for icon
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public MudExColor IconColor { get; set; } = Color.Secondary;
 
     /// <summary>
     /// The list of strings with additional details of the component.

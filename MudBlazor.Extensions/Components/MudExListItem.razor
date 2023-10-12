@@ -5,15 +5,15 @@
 @using MudBlazor.Extensions.Options
 
 <div tabindex="0" @attributes="UserAttributes" id="@ItemId" class="@Classname" @onclick="@(((MudExList?.Clickable == true || NestedList != null) && IsFunctional == false) ? OnClickHandler : OnlyOnClick)" @onclick:stopPropagation="@OnClickStopPropagation" style="@Style">
-    @if (MudExList?.ItemDisabledTemplate != null && Disabled)
+    @if (!IgnoreItemTemplate && MudExList?.ItemDisabledTemplate != null && Disabled)
     {
         @MudExList.ItemDisabledTemplate(Value)
     }
-    else if (MudExList?.ItemSelectedTemplate != null && IsSelected)
+    else if (!IgnoreItemTemplate && MudExList?.ItemSelectedTemplate != null && IsSelected)
     {
         @MudExList.ItemSelectedTemplate(Value)
     }
-    else if (MudExList?.ItemTemplate != null)
+    else if (!IgnoreItemTemplate && MudExList?.ItemTemplate != null)
     {
         @MudExList.ItemTemplate(Value)
     }

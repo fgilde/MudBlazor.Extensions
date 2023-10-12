@@ -198,6 +198,9 @@ public sealed class MudExCssBuilder: IAsyncDisposable, IMudExClassAppearance
     /// </summary>
     public string Build() => string.Join(" ", _cssClasses.Select(c => $"{c.Key}"));
 
+    /// <inheritdoc />
+    public override string ToString() => Build();
+
     /// <summary>
     /// Disposes this instance
     /// </summary>

@@ -3,6 +3,7 @@
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using System.ComponentModel.DataAnnotations
+@using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Options
 
 @attribute [DemoUpdated(Group = "MudExObjectEdit", Name = "With custom configuration", Order = 1, Documentation = "Demo for using MudExObjectEdit for the same model with the default Demo but with some Meta configuration", Icon = Icons.Material.Outlined.TextSnippet, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
@@ -26,7 +27,7 @@
         Value="@User"
         StickyToolbar="true"
         StickyActionBar="true"
-        ActionBarColor="@("#007799")"
+        ActionBarColor="@(MudExColor.Surface)"
         ToolbarColor="Color.Surface"
         CancelButtonVariant="Variant.Outlined"
         CancelButtonColor="Color.Warning"
@@ -102,7 +103,9 @@
         meta.Properties(m => m.MainAddress.Street, m => m.MainAddress.City, m => m.MainAddress.PostalCode)
             .WrapInMudItem(i => i.xs = 6);
 
-
+        meta.Property(m => m.Checker)
+            .WithLabel("Check me")
+            .WithDescription("Checker box");
     }
 
     
@@ -150,6 +153,10 @@
     public class UserInformation
     {
         public string Id { get; set; }
+        
+        [Required]
+        public bool? Checker { get; set; }
+
         [Required]
         [MinLength(3)]
         public string FirstName { get; set; }

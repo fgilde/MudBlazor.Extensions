@@ -68,8 +68,15 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     private string _elementId = "select_" + Guid.NewGuid().ToString().Substring(0, 8);
     private string _popoverId = "selectpopover_" + Guid.NewGuid().ToString().Substring(0, 8);
 
-    [Parameter]
-    public string StyleChip { get; set; }
+    /// <summary>
+    /// If true the item template is use for the selection list, otherwise its use only if ValuePresenter is ItemContent or Chip
+    /// </summary>
+    [Parameter] public bool UseItemTemplateForSelection { get; set; } = true; 
+    
+    /// <summary>
+    /// Style applied to chip
+    /// </summary>
+    [Parameter] public string StyleChip { get; set; }
     
     /// <summary>
     ///  Func to group by items collection
@@ -139,10 +146,11 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
-        if (ChildContent == null && (ItemCollection == null || !ItemCollection.Any() || UpdateItemsOnStateChange))
+        if (UpdateItemsOnStateChange)
             ItemCollection = await GetAvailableItemsAsync();
         await base.OnParametersSetAsync();
     }
+
     /// <summary>
     /// returns all available items
     /// </summary>
@@ -204,6 +212,13 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     [Parameter]
     [SafeCategory(CategoryTypes.FormComponent.Appearance)]
     public virtual RenderFragment<T> ItemTemplate { get; set; }
+
+    /// <summary>
+    /// Optional presentation template for items
+    /// </summary>
+    [Parameter]
+    [SafeCategory(CategoryTypes.FormComponent.Appearance)]
+    public virtual RenderFragment SelectAllTemplate { get; set; }
 
     /// <summary>
     /// Optional presentation template for selected items
@@ -791,6 +806,11 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
 
         if (firstRender)
         {
+            if (ChildContent == null && (ItemCollection == null || !ItemCollection.Any()))
+            {
+                ItemCollection = await GetAvailableItemsAsync(); 
+            }
+
             _keyInterceptor = KeyInterceptorFactory.Create();
             await _keyInterceptor.Connect(_elementId, new KeyInterceptorOptions()
             {

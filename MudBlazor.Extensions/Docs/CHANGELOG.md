@@ -1,4 +1,13 @@
 ## Change Log  
+ - 1.7.75 > Add posibility to custom click handler for MudExDialogResultAction used in `DialogService.ShowComponentInDialogAsync` sample is available [here](https://www.mudex.org/component-in-dialog)
+ - 1.7.75 > Add posibility to add condtions for buttons if you use `DialogService.ShowComponentInDialogAsync` sample is available [here](https://www.mudex.org/component-in-dialog)
+ - 1.7.75 > Add new Component MudExCheckBox with support of `HelperText` .This component is used for default bool RenderData in MudExObjectEdit by default
+ - 1.7.75 > Icons in all dialogs have a MudExColor param for icon color
+ - 1.7.75 > if ValuePresenter in [MudExSelect](https://www.mudex.org/mud-ex-select) is ItemConten it works now correctly for MultipleItems
+ - 1.7.75 > Add Parameter `UseItemTemplateForSelection` to [MudExSelect](https://www.mudex.org/mud-ex-select). If true the item template is use for the selection list, otherwise its use only if ValuePresenter is ItemContent or Chip
+ - 1.7.75 > Add ValuePresenter ChipWithoutItemTemplate to [MudExSelect](https://www.mudex.org/mud-ex-select) to allow Chip display without using item template
+ - 1.7.75 > Add SelectAllTemplate to [MudExSelect](https://www.mudex.org/mud-ex-select)
+ - 1.7.75 > Fix Shrink bug for [MudExSelect](https://www.mudex.org/mud-ex-select) after update
  - 1.7.74 > Update MudBlazor to 6.11.0
  - 1.7.74 > Support Path for Uploadable items in [MudExUploadEdit](https://www.mudex.org/upload-edit) when using auto extract on zip or folder upload
  - 1.7.73 > Add overload methods to easially show themedit or guick file dialogs
