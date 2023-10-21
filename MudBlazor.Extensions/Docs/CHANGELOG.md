@@ -1,4 +1,7 @@
 ## Change Log  
+ - 1.7.75 > Fix Bug for using Streams on serverside rendered projects in MudExFileDisplay
+ - 1.7.75 > Fix Bug for using Blob url in MudExFileDisplay on serverside rendered projects
+ - 1.7.75 > Fix rendering error on serverside object edit
  - 1.7.75 > Add parameter to tag field for AutoClear and fix clear for server side rendered projects
  - 1.7.75 > Add posibility to custom click handler for MudExDialogResultAction used in `DialogService.ShowComponentInDialogAsync` sample is available [here](https://www.mudex.org/component-in-dialog)
  - 1.7.75 > Add posibility to add condtions for buttons if you use `DialogService.ShowComponentInDialogAsync` sample is available [here](https://www.mudex.org/component-in-dialog)

@@ -7,6 +7,8 @@ using Nextended.Blazor.Helper;
 using MudBlazor.Extensions.Services;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
 using YamlDotNet.Core.Tokens;
 
 namespace MudBlazor.Extensions.Components;
@@ -103,10 +105,10 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     [SafeCategory("Behavior")]
     public bool ForceNativeRender { get; set; }
 
-	/// <summary>
-	/// Set to true to use image as background-url instead of img tag
-	/// </summary>
-	[Parameter]
+    /// <summary>
+    /// Set to true to use image as background-url instead of img tag
+    /// </summary>
+    [Parameter]
     [SafeCategory("Appearance")]
     public bool ImageAsBackgroundImage { get; set; } = false;
 
@@ -201,7 +203,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     /// <summary>
     /// Specify parameters for viewer controls. If a possible IMudExFileDisplay is found for current content type this parameters will be forwarded
     /// </summary>
-    [Parameter, SafeCategory("Behavior")] 
+    [Parameter, SafeCategory("Behavior")]
     public IDictionary<string, object> ParametersForSubControls { get; set; }
 
     /// <summary>
@@ -281,7 +283,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
         if (internalOverwrite)
             return;
-        
+
         UpdateRenderInfos();
     }
 
@@ -295,12 +297,12 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             renderInfos = GetRenderInfos();
         return base.OnParametersSetAsync();
     }
-    
+
 
     private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) GetComponentForFile(IMudExFileDisplay fileComponent)
     {
         var type = fileComponent?.GetType();
-        if (type == null) 
+        if (type == null)
             return default;
         var parameters = ComponentRenderHelper.GetCompatibleParameters(this, type);
         parameters.Add(nameof(IMudExFileDisplay.FileDisplayInfos), this);
@@ -475,20 +477,42 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private async Task ShowInfo()
     {
         var selfGenerated = FileInfo == null;
+        Stream effectiveStream = ContentStream;
+        string size = null;
+
+        if (ContentStream != null)
+        {
+            try
+            {
+                if (ContentStream.Length > 0)
+                {
+                    size = Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(ContentStream.Length);
+                }
+            }
+            catch (NotSupportedException)
+            {
+                effectiveStream = await ContentStream.CopyStreamAsync();
+                size = Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(effectiveStream.Length);
+            }
+        }
+
         var infoObject = FileInfo ?? new
         {
             File = FileName,
             ContentType = ContentType,
-            Url = ContentStream is { Length: > 0 } ? null : Url,
-            Size = ContentStream is {Length: > 0} ? Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(ContentStream.Length) : null
+            Url = effectiveStream is { Length: > 0 } ? null : Url,
+            Size = size
         };
+
         var options = DialogServiceExt.DefaultOptions();
         options.CloseButton = true;
-        await Get<IDialogService>().ShowObject(infoObject, TryLocalize("Info"), Icons.Material.Filled.Info, options, meta => {
-            if(selfGenerated)
+        await Get<IDialogService>().ShowObject(infoObject, TryLocalize("Info"), Icons.Material.Filled.Info, options, meta =>
+        {
+            if (selfGenerated)
                 meta.Properties().Where(p => p.Value == null).Ignore();
         });
     }
+
     public override async ValueTask DisposeAsync()
     {
         await base.DisposeAsync();

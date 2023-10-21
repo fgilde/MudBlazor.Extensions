@@ -25,7 +25,17 @@ public static class ServiceCollectionExtensions
         if (services.All(x => x.ServiceType != typeof(MudExConfiguration)))        
             services.AddSingleton(new MudExConfiguration());  // Default configuration
 
-        services.RegisterAllImplementationsOf(new[] { typeof(IMudExFileDisplay) }, serviceImplementationAssemblies, ServiceLifetime.Scoped);
+        var assemblies = new List<Assembly>
+        {
+            typeof(MudExFileDisplayZip).Assembly,
+            Assembly.GetExecutingAssembly(),
+            Assembly.GetEntryAssembly(),
+            Assembly.GetCallingAssembly()
+        };
+        if(serviceImplementationAssemblies is { Length: > 0 })
+            assemblies.AddRange(serviceImplementationAssemblies);
+
+        services.RegisterAllImplementationsOf(new[] { typeof(IMudExFileDisplay) }, assemblies.Distinct().ToArray(), ServiceLifetime.Scoped);
         services.AddTransient<MudExFileService>();        
         services.AddScoped<MudBlazorExtensionJsInterop>();
         services.AddScoped<MudExStyleBuilder>();

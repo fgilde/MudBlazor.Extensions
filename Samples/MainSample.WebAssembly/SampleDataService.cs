@@ -85,7 +85,21 @@ public class SampleFileWithStream : BaseFile
     public SampleFileWithStream(Stream stream, string contentType, string name, string icon)
         : base(contentType, name, icon) { Stream = stream; }
 
-    public long Size => Stream.Length;
+    public long Size
+    {
+        get
+        {
+            try
+            {
+                return Stream?.Length ?? 0;
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
+    }
+
     public string ReadableSize => Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(Size);
     public Stream Stream { get; set; }
 }

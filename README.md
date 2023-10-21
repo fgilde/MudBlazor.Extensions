@@ -116,7 +116,7 @@ builder.Services.AddMudServicesWithExtensions(c => c.WithoutAutomaticCssLoading(
   <summary>Expand videos</summary>
 
 <!-- WIKI:START -->
-<!-- Copied from https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md on 2023-10-12 13:47:11 -->
+<!-- Copied from https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md on 2023-10-21 20:32:23 -->
 ## Showcase
 
 https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/39e06d88-a947-43cd-9151-a7cf96bcd849
@@ -171,7 +171,7 @@ This section introduces you to the various components provided by the MudBlazor.
 
 ### MudExObjectEdit
 <!-- OBJECTEDIT:START -->
-<!-- Copied from ObjectEdit.md on 2023-10-12 13:47:11 -->
+<!-- Copied from ObjectEdit.md on 2023-10-21 20:32:23 -->
 The `MudExObjectEdit` is a robust component that allows for object editing and automatically generates the corresponding UI. This component supports automatic validation for DataAnnotation Validations or fluent registered validations for your model.
 
 To use `MudExObjectEdit`, you can simply use the `MudExObjectEditForm` and pass your model to it as shown below:
@@ -211,7 +211,7 @@ You can find a running [Sample here](https://www.mudex.org/structured-data-edit)
 
 ### MudExFileDisplay
 <!-- FILEDISPLAY:START -->
-<!-- Copied from MudExFileDisplay.md on 2023-10-12 13:47:11 -->
+<!-- Copied from MudExFileDisplay.md on 2023-10-21 20:32:23 -->
 The `MudExFileDisplay` component is designed to display file contents, such as a preview before uploading or for referenced files. 
 This component can automatically handle URLs or streams and deliver the best possible display. 
 Additionally, you can implement `IMudExFileDisplay` in your own component to register a custom file display.
@@ -270,7 +270,7 @@ await dialogService.ShowEx<MudExFileDisplayDialog>(title, parameters, optionsEx)
 
 ### MudExUploadEdit
 <!-- UPLOADEDIT:START -->
-<!-- Copied from MudExUploadEdit.md on 2023-10-12 13:47:11 -->
+<!-- Copied from MudExUploadEdit.md on 2023-10-21 20:32:23 -->
 
 This component provides multi-file upload functionality, with features like duplicate checks, max size, specific allowed content types, max items, zip auto-extract, and many more.
 
@@ -283,7 +283,7 @@ This component provides multi-file upload functionality, with features like dupl
 
 ## Extensions
 <!-- DIALOG_EXT:START -->
-<!-- Copied from DialogExtensions.md on 2023-10-12 13:47:11 -->
+<!-- Copied from DialogExtensions.md on 2023-10-21 20:32:23 -->
 ### Resizable or Draggable Dialogs
 
 You can make your dialogs resizable or draggable using the following code snippet:
@@ -394,7 +394,11 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 ## Change Log 
 Latest Changes: 
 <!-- CHANGELOG:START -->
-<!-- Copied from CHANGELOG.md on 2023-10-12 13:47:11 -->
+<!-- Copied from CHANGELOG.md on 2023-10-21 20:32:23 -->
+ - 1.7.75 > Fix Bug for using Streams on serverside rendered projects in MudExFileDisplay
+ - 1.7.75 > Fix Bug for using Blob url in MudExFileDisplay on serverside rendered projects
+ - 1.7.75 > Fix rendering error on serverside object edit
+ - 1.7.75 > Add parameter to tag field for AutoClear and fix clear for server side rendered projects
  - 1.7.75 > Add posibility to custom click handler for MudExDialogResultAction used in `DialogService.ShowComponentInDialogAsync` sample is available [here](https://www.mudex.org/component-in-dialog)
  - 1.7.75 > Add posibility to add condtions for buttons if you use `DialogService.ShowComponentInDialogAsync` sample is available [here](https://www.mudex.org/component-in-dialog)
  - 1.7.75 > Add new Component MudExCheckBox with support of `HelperText` .This component is used for default bool RenderData in MudExObjectEdit by default
@@ -405,6 +409,7 @@ Latest Changes:
  - 1.7.75 > Add SelectAllTemplate to [MudExSelect](https://www.mudex.org/mud-ex-select)
  - 1.7.75 > Fix Shrink bug for [MudExSelect](https://www.mudex.org/mud-ex-select) after update
  - 1.7.74 > Update MudBlazor to 6.11.0
+ - 1.7.74 > Support Path for Uploadable items in [MudExUploadEdit](https://www.mudex.org/upload-edit) when using auto extract on zip or folder upload
 <!-- CHANGELOG:END -->
 Full change log can be found [here](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/CHANGELOG.md) 
 
