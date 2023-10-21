@@ -11,7 +11,6 @@ using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Options;
-using MudBlazor.Utilities;
 using Newtonsoft.Json;
 using Nextended.Blazor.Models;
 using Nextended.Core;
@@ -93,6 +92,17 @@ public partial class MudExObjectEdit<T>
     /// Whether the import action needs confirmation.
     /// </summary>
     [Parameter] public bool ImportNeedsConfirmation { get; set; }
+
+    /// <summary>
+    /// If this setting is true, all properties which are ignored by meta config will be removed
+    /// </summary>
+    [Parameter] public bool RemoveIgnoredFromImport { get; set; } = true;
+
+    /// <summary>
+    /// If this setting is true, after import all properties are set instead of full value assignment
+    /// </summary>
+    [Obsolete("This will hopefully be removed in future versions. Only use it if you have problems with the import or restore feature")] 
+    [Parameter] public bool SetPropertiesAfterImport { get; set; }
 
     /// <summary>
     /// The state key for saving and restoring the component state.
@@ -917,7 +927,7 @@ public partial class MudExObjectEdit<T>
             IsInternalLoading = true;
 
 
-            await LoadFromJson(toImport.Json, true);
+            await LoadFromJson(toImport.Json, RemoveIgnoredFromImport);
             await ImportSuccessUI();
             await AfterImport.InvokeAsync(new ImportedData<T> {Json = toImport.Json, Value = Value});
         }
@@ -955,7 +965,7 @@ public partial class MudExObjectEdit<T>
             var ignored = removeIgnoredImports ? MetaInformation.Properties().Where(p => p.Settings.IgnoreOnImport).Select(m => m.PropertyName).ToHashSet() : new HashSet<string>();
             if (ignored.Count <= 0)
             {
-                Value = JsonConvert.DeserializeObject<T>(json);
+                SetValueAfterImport(JsonConvert.DeserializeObject<T>(json));
                 return;
             }
             
@@ -967,11 +977,57 @@ public partial class MudExObjectEdit<T>
             var missing = full.Where(kvp => !notIgnored.ContainsKey(kvp.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             notIgnored.AddRange(missing);
             var cleaned = JsonDictionaryConverter.Unflatten(notIgnored);
-            Value = cleaned.ToObject<T>();
+            SetValueAfterImport(cleaned.ToObject<T>());
 
             foreach (var prop in MetaInformation.AllProperties.Where(p => p.PropertyInfo.CanWrite)) // TODO: Get rid of this hack, but otherwise currently not all UI values are updated
                 Check.TryCatch<Exception>(() => { prop.Value = notIgnored.TryGetValue(prop.PropertyName, out var val) ? val.MapTo(prop.PropertyInfo.PropertyType) : prop.Value; });
         });
-
     }
+    private void SetValueAfterImport(T value)
+    {
+        if(SetPropertiesAfterImport)
+            SetEditorValueProperties(value);
+        else
+            Value = value;
+    }
+
+    private void SetEditorValueProperties(T value)
+    {
+        if (value == null) return;
+
+        foreach (var prop in GetPropertiesWithPaths(value))
+        {
+            var meta = MetaInformation.AllProperties.FirstOrDefault(m => m.PropertyName == prop.Key);
+            if (meta != null)
+            {
+                meta.Value = prop.Value;
+                //meta.RenderData?.SetValue(prop.Value);
+            }
+        }
+    }
+
+    private IDictionary<string, object> GetPropertiesWithPaths(object obj, string currentPath = "")
+    {
+        if (obj == null) return new Dictionary<string, object>();
+
+        var result = new Dictionary<string, object>();
+        foreach (var prop in obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        {
+            var propValue = prop.GetValue(obj);
+            var newPath = string.IsNullOrEmpty(currentPath) ? prop.Name : $"{currentPath}.{prop.Name}";
+
+            if (prop.PropertyType.IsClass && prop.PropertyType != typeof(string))
+            {
+                var subProperties = GetPropertiesWithPaths(propValue, newPath);
+                foreach (var subProp in subProperties)
+                    result.Add(subProp.Key, subProp.Value);
+            }
+            else
+                result.Add(newPath, propValue);
+        }
+
+        return result;
+    }
+
+
 }

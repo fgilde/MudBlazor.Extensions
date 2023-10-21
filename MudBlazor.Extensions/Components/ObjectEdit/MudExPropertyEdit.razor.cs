@@ -271,6 +271,15 @@ public partial class MudExPropertyEdit
     public object GetCurrentValue()
         => _editor.Instance?.GetType().GetProperty(PropertyMeta.RenderData.ValueField)?.GetValue(_editor.Instance);
 
+    /// <summary>
+    /// Sets a Value independent of the PropertyMeta for example if binding is disabled
+    /// </summary>
+    public void SetValue(object value)
+    {
+        PropertyMeta.RenderData.SetValue(value);
+        //_editor.Instance?.GetType().GetProperty(PropertyMeta.RenderData.ValueField)?.SetValue(_editor.Instance, value);
+    }
+
     private string Title()
         => ShowPathAsTitle ? PropertyMeta.PropertyName.Replace(".", " > ") : null;
 }

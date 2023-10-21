@@ -49,4 +49,39 @@ internal static class PropertyHelper
     {
         return DictionaryHelper.GetValuesDictionary<T>(o, removeDefaults, flags);
     }
+
+    public static object CopyPropertyValuesTo(this object source, object target)
+    {
+        if (target == null || source == null) return target;
+
+        var targetType = target.GetType();
+        var sourceType = source.GetType();
+
+        foreach (var property in targetType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        {
+            if (!property.CanWrite) continue;
+
+            var sourceProperty = sourceType.GetProperty(property.Name);
+            if (sourceProperty == null) continue;
+
+            var sourceValue = sourceProperty.GetValue(source);
+
+            if (property.PropertyType.IsClass && property.PropertyType != typeof(string))
+            {
+                var targetValue = property.GetValue(target);
+                if (targetValue == null)
+                {
+                    targetValue = Activator.CreateInstance(property.PropertyType);
+                    property.SetValue(target, targetValue);
+                }
+                CopyPropertyValuesTo(sourceValue, targetValue);
+            }
+            else
+            {
+                property.SetValue(target, sourceValue);
+            }
+        }
+
+        return target;
+    }
 }

@@ -1,5 +1,6 @@
 ﻿@page "/dialog-object-edit"
 @using System.ComponentModel.DataAnnotations
+@using MudBlazor.Extensions.Core
 @using Newtonsoft.Json
 @inject IJSRuntime Js
 @inject IDialogService dialogService;
@@ -19,13 +20,24 @@
         [Range(1, 100)]
         public int Number { get; set; }
         public LogLevel logLevel { get; set; }
+        public SomeOther Some { get; set; }
     }
 
+    public class SomeOther
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+    }
 
     private async Task ShowSampleDialog()
     {
-        DialogParameters parameters = new DialogParameters();
-        parameters.Add(nameof(MudExObjectEditDialog<TestObject>.AutoSaveRestoreState), true);
+        DialogParameters parameters = new DialogParameters
+        {
+            { nameof(MudExObjectEditDialog<TestObject>.AutoSaveRestoreState), true },
+            { nameof(MudExObjectEditDialog<TestObject>.SetPropertiesAfterImport), true },
+            { nameof(MudExObjectEditDialog<TestObject>.AllowExport), true },
+            { nameof(MudExObjectEditDialog<TestObject>.AllowImport), true }
+        };
         var res = await dialogService.EditObject(new TestObject(), "Auto Generated Editor for TestObject", OnSubmit, SampleDialogOptions.FullSlideFromRight, meta => meta.WrapEachInMudItem(i => i.xs = 6), parameters);
         if (!res.Cancelled)
             await Js.InvokeVoidAsync("alert", JsonConvert.SerializeObject(res.Result));

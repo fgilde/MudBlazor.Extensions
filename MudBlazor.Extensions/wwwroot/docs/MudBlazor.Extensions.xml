@@ -5396,6 +5396,16 @@
             Whether the import action needs confirmation.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.RemoveIgnoredFromImport">
+            <summary>
+            If this setting is true, all properties which are ignored by meta config will be removed
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.SetPropertiesAfterImport">
+            <summary>
+            If this setting is true, after import all properties are set instead of full value assignment
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.StateKey">
             <summary>
             The state key for saving and restoring the component state.
@@ -6233,6 +6243,11 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.GetCurrentValue">
             <summary>
             Returns the current Value independent of the PropertyMeta for example if binding is disabled
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.SetValue(System.Object)">
+            <summary>
+            Sets a Value independent of the PropertyMeta for example if binding is disabled
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor">
