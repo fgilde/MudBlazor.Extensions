@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using System.Management;
 using System.Reflection;
 using System.Web;
 using Microsoft.AspNetCore.Components;
@@ -246,7 +245,7 @@ public partial class MudExPropertyEdit
                     : PropertyMeta.RenderData.ConvertToPropertyValue(
                         GetDefault(PropertyMeta.PropertyInfo.PropertyType));
 
-                StateHasChanged();
+                CallStateHasChanged();
             }
         }
         catch
@@ -262,8 +261,8 @@ public partial class MudExPropertyEdit
     {
         if (useRefresh) 
             Refresh();
-        else 
-            StateHasChanged();
+        else
+            CallStateHasChanged();
     }
 
     /// <summary>

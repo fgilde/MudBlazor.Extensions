@@ -234,6 +234,11 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.ShouldRender">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.CallStateHasChanged">
+            <summary>
+            Calls StateHasChanged
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.OnFinishedRenderAsync">
             <summary>
             Called when rendering is finished

@@ -47,7 +47,7 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
     /// <summary>
     /// Injected service provider
     /// </summary>
-    [Inject] protected IServiceProvider ServiceProvider { get; set; }  
+    [Inject] protected IServiceProvider ServiceProvider { get; set; }
 
     /// <summary>
     /// JsRuntime
@@ -58,7 +58,7 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
     /// MudExConfiguration
     /// </summary>    
     protected MudExConfiguration MudExConfiguration => Get<MudExConfiguration>();
-    
+
     /// <summary>
     /// This is true if render has called already
     /// </summary>
@@ -107,6 +107,17 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
     }
 
     /// <summary>
+    /// Calls StateHasChanged
+    /// </summary>
+    protected virtual void CallStateHasChanged()
+    {
+        if (MudExResource.IsClientSide)
+            StateHasChanged();
+        else
+            InvokeAsync(StateHasChanged);
+    }
+
+    /// <summary>
     /// Called when rendering is finished
     /// </summary>
     protected virtual Task OnFinishedRenderAsync()
@@ -118,7 +129,7 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (firstRender && MudExConfiguration is not {DisableAutomaticCssLoading: true})
+        if (firstRender && MudExConfiguration is not { DisableAutomaticCssLoading: true })
             await JsRuntime.LoadCssAsync();
     }
 
@@ -159,7 +170,7 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
     public virtual T Refresh()
     {
         RenderKey = Guid.NewGuid();
-        StateHasChanged();
+        CallStateHasChanged();
         return (T)this;
     }
 
@@ -171,7 +182,7 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
         _renderFinishTimer?.Stop();
         if (_renderFinishTimer is IAsyncDisposable renderFinishTimerAsyncDisposable)
             await renderFinishTimerAsyncDisposable.DisposeAsync();
-        else        
-            _renderFinishTimer?.Dispose();        
+        else
+            _renderFinishTimer?.Dispose();
     }
 }

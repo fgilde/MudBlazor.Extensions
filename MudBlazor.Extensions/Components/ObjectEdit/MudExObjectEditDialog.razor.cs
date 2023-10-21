@@ -134,7 +134,7 @@ public partial class MudExObjectEditDialog<T>
         finally
         {
             IsLoading = false;
-            StateHasChanged();
+            CallStateHasChanged();
         }
     }
 

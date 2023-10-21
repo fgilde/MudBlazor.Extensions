@@ -479,7 +479,7 @@ public partial class MudExObjectEdit<T>
         if (await RestoreState())
         {
             UpdateConditions();
-            StateHasChanged();
+            CallStateHasChanged();
         }
     }
 
@@ -595,7 +595,7 @@ public partial class MudExObjectEdit<T>
         if (useRefresh)
             Refresh();
         else
-            StateHasChanged();
+            CallStateHasChanged();
         Editors.Apply(e => e.Invalidate(useRefresh));
     }
     
@@ -711,7 +711,7 @@ public partial class MudExObjectEdit<T>
         if (GlobalResetSettings.RequiresConfirmation && DialogService != null && !(await ShowConfirmationBox()))
             return;
         await Reset();
-        StateHasChanged();
+        CallStateHasChanged();
     }
     
     private async Task<bool> ShowConfirmationBox()
@@ -936,7 +936,7 @@ public partial class MudExObjectEdit<T>
         var icon = ImportIcon;
         _importButtonColor = Color.Success;
         ImportIcon = Icons.Material.Filled.Check;
-        StateHasChanged();
+        CallStateHasChanged();
         await Task.Delay(2500);
         _importButtonColor = ToolbarButtonColor;
         ImportIcon = icon;

@@ -24,7 +24,9 @@
 
     private async Task ShowSampleDialog()
     {
-        var res = await dialogService.EditObject(new TestObject(), "Auto Generated Editor for TestObject", OnSubmit, SampleDialogOptions.FullSlideFromRight, meta => meta.WrapEachInMudItem(i => i.xs = 6));
+        DialogParameters parameters = new DialogParameters();
+        parameters.Add(nameof(MudExObjectEditDialog<TestObject>.AutoSaveRestoreState), true);
+        var res = await dialogService.EditObject(new TestObject(), "Auto Generated Editor for TestObject", OnSubmit, SampleDialogOptions.FullSlideFromRight, meta => meta.WrapEachInMudItem(i => i.xs = 6), parameters);
         if (!res.Cancelled)
             await Js.InvokeVoidAsync("alert", JsonConvert.SerializeObject(res.Result));
     }
