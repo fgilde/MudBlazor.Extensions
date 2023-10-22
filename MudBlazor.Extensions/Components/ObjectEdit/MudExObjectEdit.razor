@@ -10,134 +10,141 @@
     }
 </style>
 
-@if (AllowImport)
-{
-    <InputFile accept="application/json" id="importInput" OnChange="Import" hidden/>
-}
+@Render
 
-@if (AutoOverlay && (IsLoading || IsInternalLoading))
-{
-    <MudOverlay Class="mud-ex-loading-overlay" Visible="@(AutoOverlay && (IsLoading || IsInternalLoading))" DarkBackground="@(!LightOverlayLoadingBackground)" LightBackground="@LightOverlayLoadingBackground" Absolute="true">
-        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
-    </MudOverlay>
-}
-
-@if (Primitive)
-{
-    <DynamicComponent Type="@typeof(MudExObjectEdit<ModelForPrimitive<T>>)" Parameters="GetAttributesForPrimitive()"></DynamicComponent>
-}
-else
-{
-    @*<div style="@GetStyle()" class="@($"mud-ex-object-edit {Class} mud-ex-overflow")">*@
-    <div style="@GetStyle()" class="@($"mud-ex-object-edit {Class} {GetOverflowClass()}")">
-        <MudPaper Class="@($"{ToolBarPaperClass} {(StickyToolbar ? "mud-ex-toolbar-sticky" : "")}")" Style="@ToolbarStyle()" Elevation="@ToolBarElevation">
-            <MudToolBar Class="@($"{ToolBarClass} pr-4 mt-2 mb-2")">
-                @if (InternalToolBarContent != null)
-                {
-                    @InternalToolBarContent
-                }
-                @if (ToolBarContent != null)
-                {
-                    @ToolBarContent
-                }
-                @if (ToolBarActionAlignment == ActionAlignment.Right)
-                {
-                    <MudSpacer/>
-                }
-
-                <MudExToggleableSearch MultiSearch="@MultiSearch" @bind-Filter="@Filter" @bind-Filters="@Filters" SearchButtonColor="@ToolbarButtonColor" SearchIcon="@SearchIcon" FilterMode="@FilterMode" />
-
-                @if (AllowExport)
-                {
-                    <MudTooltip Text="@TryLocalize("Export")">
-                        <MudIconButton Icon="@ExportIcon" OnClick="@(Export)" Color="@ToolbarButtonColor"/>
-                    </MudTooltip>
-                }
-                @if (AllowImport)
-                {
-                    <MudTooltip Text="@TryLocalize("Import")">
-                        <MudIconButton HtmlTag="label" for="importInput" Icon="@ImportIcon" Color="@_importButtonColor"/>
-                    </MudTooltip>
-                }
-                @if (GroupsCollapsible && _groups.Count > 1)
-                {
-                    <MudTooltip Text="@TryLocalize("Expand/Collapse")">
-                        <MudIconButton Icon="@ExpandCollapseIcon" OnClick="@(ExpandCollapse)" Color="@ToolbarButtonColor"/>
-                    </MudTooltip>
-                }
-                @if (GlobalResetSettings.AllowReset)
-                {
-                    <MudTooltip Text="@GlobalResetSettings.ResetText">
-                        <MudIconButton Icon="@GlobalResetSettings.ResetIcon" OnClick="@(OnResetClick)" Color="@ToolbarButtonColor"/>
-                    </MudTooltip>
-                }
-            </MudToolBar>
-            @if (!String.IsNullOrWhiteSpace(ErrorMessage))
-            {
-                <MudAlert Class="@($"mud-alert-message-w-100")"
-                          CloseIconClicked="@(() => ErrorMessage = null)"
-                          Style="@($"animation: {AnimationType.Pulse.GetAnimationCssStyle(TimeSpan.FromMilliseconds(400))}")"
-                          Icon="@Icons.Material.Filled.ErrorOutline" ShowCloseIcon="true" ContentAlignment="HorizontalAlignment.Center" Elevation="5" Severity="Severity.Error" Variant="Variant.Filled">
-                    @ErrorMessage
-                </MudAlert>
-            }
-        </MudPaper>
-        <MudExpansionPanels Class="mud-ex-object-edit-panels" DisableBorders="@(GroupingStyle == GroupingStyle.Flat)" Elevation="@(GroupElevation ?? (GroupingStyle == GroupingStyle.Flat ? 0 : 1))" MultiExpansion="true">
-            <MudVirtualize Items="@GroupedMetaPropertyInfos()" Context="grouping" IsEnabled="@Virtualize">
-                @{
-                    var objectEditPropertyMetas = MetaInformation?.Ordered(grouping).ToList();
-                    var renderableProperties = objectEditPropertyMetas?.Where(p => p.ShouldRender()).ToList();
-                    var ignoredProperties = objectEditPropertyMetas?.Except(renderableProperties).ToList();
-                    var groupName = !string.IsNullOrWhiteSpace(grouping.Key) ? grouping.Key : DefaultGroupName;
-                    var pathStr = string.Join(" > ", objectEditPropertyMetas?.FirstOrDefault()?.PropertyName?.Split('.').SkipLast(1) ?? Array.Empty<string>());
-                    if (PathDisplayMode == PathDisplayMode.DisplayAsGroupName && !string.IsNullOrEmpty(pathStr))
-                    {
-                        groupName = pathStr;
-                    }
-
-                    if (renderableProperties?.Any() == true)
-                    {
-                        <MudExpansionPanel @ref="@ExpansionPanel" IsInitiallyExpanded="true" Disabled="@(!GroupsCollapsible)" Class="@($"mt-3 {(!string.IsNullOrWhiteSpace(groupName) ? CssClassName : "mud-ex-hidden-group")}")" Text="@(!string.IsNullOrWhiteSpace(groupName) ? TryLocalize(groupName) : groupName)">
-                            @if (PathDisplayMode == PathDisplayMode.DisplaySeparate && !string.IsNullOrEmpty(pathStr) && pathStr != groupName)
-                            {
-                                <p class="@(GroupingStyle == GroupingStyle.Flat ? "mud-ex-group-path-text-flat" : "mud-ex-group-path-text-default")">@pathStr</p>
-                            }
-
-                            @if (ShouldAddGrid(grouping))
-                            {
-                                <MudGrid>
-                                    @RenderPropertyEdits(renderableProperties)
-                                </MudGrid>
-                            }
-                            else
-                            {
-                                @RenderPropertyEdits(renderableProperties)
-                            }
-                        </MudExpansionPanel>
-                    }
-
-                    if (ignoredProperties?.Any() == true)
-                    {
-                        <div style="display:none;" class="__ignored">
-                            <!-- Ignored and not rendered, but important for reference. So we call render, but MudExPropertyEdit will not render DOM anyways -->
-                            @RenderPropertyEdits(ignoredProperties)
-                        </div>
-                    }
-                }
-            </MudVirtualize>
-
-        </MudExpansionPanels>
-        
-        
-        @if (AddScrollToTop)
-        {
-            <MudScrollToTop Class="@($"mud-ex-scroll-to-top {ScrollToTopPosition.ToDescriptionString()}")" ScrollBehavior="ScrollBehavior.Smooth">
-                <MudFab Color="Color.Tertiary" Icon="@Icons.Material.Filled.ArrowCircleUp"/>
-            </MudScrollToTop>
-        }
-    </div>
-}
 @code {
+
+    private void Render(RenderTreeBuilder __builder)
+    {
+
+        @if (AllowImport)
+        {
+            <InputFile accept="application/json" id="importInput" OnChange="Import" hidden />
+        }
+
+        @if (AutoOverlay && (IsLoading || IsInternalLoading))
+        {
+            <MudOverlay Class="mud-ex-loading-overlay" Visible="@(AutoOverlay && (IsLoading || IsInternalLoading))" DarkBackground="@(!LightOverlayLoadingBackground)" LightBackground="@LightOverlayLoadingBackground" Absolute="true">
+                <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+            </MudOverlay>
+        }
+
+        @if (Primitive)
+        {
+            <DynamicComponent Type="@typeof(MudExObjectEdit<ModelForPrimitive<T>>)" Parameters="GetAttributesForPrimitive()"></DynamicComponent>
+        }
+        else
+        {
+            @*<div style="@GetStyle()" class="@($"mud-ex-object-edit {Class} mud-ex-overflow")">*@
+            <div style="@GetStyle()" class="@($"mud-ex-object-edit {Class} {GetOverflowClass()}")">
+                <MudPaper Class="@($"{ToolBarPaperClass} {(StickyToolbar ? "mud-ex-toolbar-sticky" : "")}")" Style="@ToolbarStyle()" Elevation="@ToolBarElevation">
+                    <MudToolBar Class="@($"{ToolBarClass} pr-4 mt-2 mb-2")">
+                        @if (InternalToolBarContent != null)
+                        {
+                            @InternalToolBarContent
+                        }
+                        @if (ToolBarContent != null)
+                        {
+                            @ToolBarContent
+                        }
+                        @if (ToolBarActionAlignment == ActionAlignment.Right)
+                        {
+                            <MudSpacer />
+                        }
+
+                        <MudExToggleableSearch MultiSearch="@MultiSearch" @bind-Filter="@Filter" @bind-Filters="@Filters" SearchButtonColor="@ToolbarButtonColor" SearchIcon="@SearchIcon" FilterMode="@FilterMode" />
+
+                        @if (AllowExport)
+                        {
+                            <MudTooltip Text="@TryLocalize("Export")">
+                                <MudIconButton Icon="@ExportIcon" OnClick="@(Export)" Color="@ToolbarButtonColor" />
+                            </MudTooltip>
+                        }
+                        @if (AllowImport)
+                        {
+                            <MudTooltip Text="@TryLocalize("Import")">
+                                <MudIconButton HtmlTag="label" for="importInput" Icon="@ImportIcon" Color="@_importButtonColor" />
+                            </MudTooltip>
+                        }
+                        @if (GroupsCollapsible && _groups.Count > 1)
+                        {
+                            <MudTooltip Text="@TryLocalize("Expand/Collapse")">
+                                <MudIconButton Icon="@ExpandCollapseIcon" OnClick="@(ExpandCollapse)" Color="@ToolbarButtonColor" />
+                            </MudTooltip>
+                        }
+                        @if (GlobalResetSettings.AllowReset)
+                        {
+                            <MudTooltip Text="@GlobalResetSettings.ResetText">
+                                <MudIconButton Icon="@GlobalResetSettings.ResetIcon" OnClick="@(OnResetClick)" Color="@ToolbarButtonColor" />
+                            </MudTooltip>
+                        }
+                    </MudToolBar>
+                    @if (!String.IsNullOrWhiteSpace(ErrorMessage))
+                    {
+                        <MudAlert Class="@($"mud-alert-message-w-100")"
+                                  CloseIconClicked="@(() => ErrorMessage = null)"
+                                  Style="@($"animation: {AnimationType.Pulse.GetAnimationCssStyle(TimeSpan.FromMilliseconds(400))}")"
+                                  Icon="@Icons.Material.Filled.ErrorOutline" ShowCloseIcon="true" ContentAlignment="HorizontalAlignment.Center" Elevation="5" Severity="Severity.Error" Variant="Variant.Filled">
+                            @ErrorMessage
+                        </MudAlert>
+                    }
+                </MudPaper>
+                <MudExpansionPanels Class="mud-ex-object-edit-panels" DisableBorders="@(GroupingStyle == GroupingStyle.Flat)" Elevation="@(GroupElevation ?? (GroupingStyle == GroupingStyle.Flat ? 0 : 1))" MultiExpansion="true">
+                    <MudVirtualize Items="@GroupedMetaPropertyInfos()" Context="grouping" IsEnabled="@Virtualize">
+                        @{
+                            var objectEditPropertyMetas = MetaInformation?.Ordered(grouping).ToList();
+                            var renderableProperties = objectEditPropertyMetas?.Where(p => p.ShouldRender()).ToList();
+                            var ignoredProperties = objectEditPropertyMetas?.Except(renderableProperties).ToList();
+                            var groupName = !string.IsNullOrWhiteSpace(grouping.Key) ? grouping.Key : DefaultGroupName;
+                            var pathStr = string.Join(" > ", objectEditPropertyMetas?.FirstOrDefault()?.PropertyName?.Split('.').SkipLast(1) ?? Array.Empty<string>());
+                            if (PathDisplayMode == PathDisplayMode.DisplayAsGroupName && !string.IsNullOrEmpty(pathStr))
+                            {
+                                groupName = pathStr;
+                            }
+
+                            if (renderableProperties?.Any() == true)
+                            {
+                                <MudExpansionPanel @ref="@ExpansionPanel" IsInitiallyExpanded="true" Disabled="@(!GroupsCollapsible)" Class="@($"mt-3 {(!string.IsNullOrWhiteSpace(groupName) ? CssClassName : "mud-ex-hidden-group")}")" Text="@(!string.IsNullOrWhiteSpace(groupName) ? TryLocalize(groupName) : groupName)">
+                                    @if (PathDisplayMode == PathDisplayMode.DisplaySeparate && !string.IsNullOrEmpty(pathStr) && pathStr != groupName)
+                                    {
+                                        <p class="@(GroupingStyle == GroupingStyle.Flat ? "mud-ex-group-path-text-flat" : "mud-ex-group-path-text-default")">@pathStr</p>
+                                    }
+
+                                    @if (ShouldAddGrid(grouping))
+                                    {
+                                        <MudGrid>
+                                            @RenderPropertyEdits(renderableProperties)
+                                        </MudGrid>
+                                    }
+                                    else
+                                    {
+                                        @RenderPropertyEdits(renderableProperties)
+                                    }
+                                </MudExpansionPanel>
+                            }
+
+                            if (ignoredProperties?.Any() == true)
+                            {
+                                <div style="display:none;" class="__ignored">
+                                    <!-- Ignored and not rendered, but important for reference. So we call render, but MudExPropertyEdit will not render DOM anyways -->
+                                    @RenderPropertyEdits(ignoredProperties)
+                                </div>
+                            }
+                        }
+                    </MudVirtualize>
+
+                </MudExpansionPanels>
+
+
+                @if (AddScrollToTop)
+                {
+                    <MudScrollToTop Class="@($"mud-ex-scroll-to-top {ScrollToTopPosition.ToDescriptionString()}")" ScrollBehavior="ScrollBehavior.Smooth">
+                        <MudFab Color="Color.Tertiary" Icon="@Icons.Material.Filled.ArrowCircleUp" />
+                    </MudScrollToTop>
+                }
+            </div>
+        }
+    }
 
     private RenderFragment RenderPropertyEdits(IList<ObjectEditPropertyMeta> objectEditPropertyMetas)
     {

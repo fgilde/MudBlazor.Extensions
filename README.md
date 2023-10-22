@@ -399,7 +399,7 @@ Latest Changes:
  - 1.7.75 > Fix Bug for using Blob url in MudExFileDisplay on serverside rendered projects
  - 1.7.75 > Fix rendering error on serverside object edit
  - 1.7.75 > Add parameter to tag field for AutoClear and fix clear for server side rendered projects
- - 1.7.75 > Add posibility to custom click handler for MudExDialogResultAction used in `DialogService.ShowComponentInDialogAsync` sample is available [here](https://www.mudex.org/component-in-dialog)
+ - 1.7.75 > Add posibility for custom click handler in MudExDialogResultAction used in `DialogService.ShowComponentInDialogAsync` sample is available [here](https://www.mudex.org/component-in-dialog)
  - 1.7.75 > Add posibility to add condtions for buttons if you use `DialogService.ShowComponentInDialogAsync` sample is available [here](https://www.mudex.org/component-in-dialog)
  - 1.7.75 > Add new Component MudExCheckBox with support of `HelperText` .This component is used for default bool RenderData in MudExObjectEdit by default
  - 1.7.75 > Icons in all dialogs have a MudExColor param for icon color
