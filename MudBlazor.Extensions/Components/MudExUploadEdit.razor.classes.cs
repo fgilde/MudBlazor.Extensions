@@ -101,3 +101,11 @@ public class BrowserFileWithPath
     public long Size { get; set; }
     public string ContentType { get; set; }
 }
+
+public enum DropZoneClickAction
+{
+    None,
+    UploadFile,
+    UploadFolder,
+    AddUrl
+}

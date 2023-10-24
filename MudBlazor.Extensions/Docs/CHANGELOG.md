@@ -1,4 +1,5 @@
 ## Change Log  
+ - 1.7.76 > Add possibility to specify DropZoneClickAction in [MudExUploadEdit](https://www.mudex.org/upload-edit)
  - 1.7.75 > Fix Bug for using Streams on serverside rendered projects in MudExFileDisplay
  - 1.7.75 > Fix Bug for using Blob url in MudExFileDisplay on serverside rendered projects
  - 1.7.75 > Fix rendering error on serverside object edit

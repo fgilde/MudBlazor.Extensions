@@ -31,6 +31,20 @@ namespace MudBlazor.Extensions.Helper
                 return null;
             return localizer != null ? (hasArgs ? localizer[text, args.Where(a => a != null).ToArray()] : localizer[text]) : string.Format(text, args);
         }
-        
+
+        public static bool IsLocalized(this IStringLocalizer localizer, string text, params object[] args)
+        {
+            if (text is null || localizer is null)
+            {
+                return false;
+            }
+
+            bool hasArgs = args is { Length: > 0 };
+            var localizedValue = hasArgs ? localizer[text, args.Where(a => a != null).ToArray()] : localizer[text];
+
+            return !localizedValue.ResourceNotFound;
+        }
+
+
     }
 }

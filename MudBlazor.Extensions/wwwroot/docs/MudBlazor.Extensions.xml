@@ -231,6 +231,11 @@
             Tries to localize given text if localizer and translation is available
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.IsLocalized(System.String,System.Object[])">
+            <summary>
+            returns true if translation is available
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.ShouldRender">
             <inheritdoc />
         </member>
@@ -4829,6 +4834,11 @@
             If true icons are colored
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.DropZoneClickAction">
+            <summary>
+            If true icons are colored
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.OnInitializedAsync">
             <inheritdoc />
         </member>
@@ -4862,8 +4872,11 @@
             <summary>
             Display Upload File
             </summary>
-            <param name="arg"></param>
-            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Upload(System.String,Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
+            <summary>
+            Display Upload File
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.UploadFolder(Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
             <summary>

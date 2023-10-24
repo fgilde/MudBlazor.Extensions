@@ -94,6 +94,11 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
     /// </summary>
     public string TryLocalize(string text, params object[] args) => LocalizerToUse.TryLocalize(text, args);
 
+    /// <summary>
+    /// returns true if translation is available
+    /// </summary>
+    public bool IsLocalized(string text, params object[] args) => LocalizerToUse.IsLocalized(text, args);
+
     /// <inheritdoc />
     protected override bool ShouldRender()
     {

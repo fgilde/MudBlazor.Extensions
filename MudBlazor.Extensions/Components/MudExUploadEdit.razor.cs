@@ -22,6 +22,7 @@ namespace MudBlazor.Extensions.Components;
 /// <typeparam name="T"></typeparam>
 public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 {
+    const string _dropPlaceholderText = "Drop files here";
     /// <summary>
     /// Specify Theme to use for code file previews
     /// </summary>
@@ -45,7 +46,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// The text displayed in the drop zone. 
     /// </summary>
     [Parameter, SafeCategory("Data")]
-    public string TextDropZone { get; set; } = "Drop files here";
+    public string TextDropZone { get; set; } = _dropPlaceholderText;
 
     /// <summary>
     /// The text for the upload files button.
@@ -450,6 +451,13 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     [SafeCategory("Appearance")]
     public bool ColorizeIcons { get; set; }
 
+    /// <summary>
+    /// If true icons are colored
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public DropZoneClickAction DropZoneClickAction { get; set; }
+
 
     [Inject] private MudExFileService FileService { get; set; }
     private string _errorMessage = string.Empty;
@@ -464,10 +472,16 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     private bool _loading;
     private HashSet<BrowserFileWithPath> _paths = new();
 
+    bool HasValidDropZoneClickAction =>
+        DropZoneClickAction != DropZoneClickAction.None
+        && (DropZoneClickAction != DropZoneClickAction.UploadFolder || AllowFolderUpload)
+        && (DropZoneClickAction != DropZoneClickAction.AddUrl || AllowExternalUrl)
+        || (DropZoneClickAction == DropZoneClickAction.UploadFile);
+
     /// <inheritdoc />
     protected override Task OnInitializedAsync()
     {
-        UploadFieldId ??= $"{nameof(MudExUploadEdit<T>)}-FileInput-{Guid.NewGuid()}";
+        UploadFieldId ??= $"{nameof(MudExUploadEdit<T>)}-FileInput-{Guid.NewGuid().ToFormattedId()}";
         return base.OnInitializedAsync();
     }
 
@@ -783,13 +797,12 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// <summary>
     /// Display Upload File
     /// </summary>
-    /// <param name="arg"></param>
-    /// <returns></returns>
-    public async Task Upload(MouseEventArgs arg = null)
-    {
-        //return _jsRuntime.InvokeVoidAsync("MudExBrowserHelper.clickOnElement", "#" + UploadFieldId).AsTask();
-        await JsRuntime.InvokeVoidAsync($"(document.querySelector('#{UploadFieldId}'))?.click()").AsTask();
-    }
+    public Task Upload(MouseEventArgs arg) => Upload(null, arg);
+
+    /// <summary>
+    /// Display Upload File
+    /// </summary>
+    public async Task Upload(string id = null, MouseEventArgs arg = null) => await JsRuntime.InvokeVoidAsync("MudExEventHelper.clickElementById", id ?? UploadFieldId);
 
     /// <summary>
     /// Display Upload folder
@@ -964,4 +977,27 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         (UploadRequests ??= new List<T>()).Add(request);
         StateHasChanged();
     }
+
+    private string GetTextDropZone()
+    {
+        if(TextDropZone != _dropPlaceholderText || IsLocalized(TextDropZone))
+            return TryLocalize(TextDropZone);
+        return AllowDrop switch
+        {
+            true when AllowFolderUpload => TryLocalize("Drop/Paste files or folders here"),
+            true => TryLocalize("Drop/Paste files here"),
+            _ => AllowFolderUpload ? TryLocalize("Drop/Paste folders here") : TryLocalize("Drop/Paste is not allowed")
+        };
+    }
+
+    private async Task DropZoneClick(string id)
+    {
+        if (DropZoneClickAction == DropZoneClickAction.UploadFile)
+            await Upload(id);
+        else if (DropZoneClickAction == DropZoneClickAction.UploadFolder && AllowFolderUpload)
+            await UploadFolder(null);
+        else if (DropZoneClickAction == DropZoneClickAction.AddUrl && AllowExternalUrl)
+            await AddUrl();
+    }
+
 }

@@ -21,7 +21,7 @@
         }
         else if (AllowDrop && !string.IsNullOrEmpty(TextDropZone) && !HasData())
         {
-            <p class="mud-ex-upload-edit-drop-zone-text">@TextDropZone</p>
+            <p style="@($"{(HasValidDropZoneClickAction ? "cursor:pointer" : "")}")" @onclick="@(() => DropZoneClick(UploadFieldId))" class="mud-ex-upload-edit-drop-zone-text">@GetTextDropZone()</p>
         }
 
         <MudGrid Spacing="1">

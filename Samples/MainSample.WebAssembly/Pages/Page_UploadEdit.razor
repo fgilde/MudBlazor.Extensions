@@ -14,7 +14,7 @@
         <Left>
             <MudCard Style="width: 80%">
                 <MudCardContent>
-                    <MudExUploadEdit CodeBlockTheme="@MainLayout.GetCodeBlockTheme()" MimeTypes="@mimeTypes" T="UploadableFile" Style="max-height: 400px; width: 100%" @ref="component"></MudExUploadEdit>
+                    <MudExUploadEdit DropZoneClickAction="DropZoneClickAction.UploadFile" CodeBlockTheme="@MainLayout.GetCodeBlockTheme()" MimeTypes="@mimeTypes" T="UploadableFile" Style="max-height: 400px; width: 100%" @ref="component"></MudExUploadEdit>
                 </MudCardContent>
                 <MudCardActions>
                     <div class="mt-6" style="width: 100%; display: flex; justify-content: center; align-items: center">
@@ -73,6 +73,7 @@
             {
                 uploadEdit.MinHeight = 400;
                 uploadEdit.AutoExtractArchive = true;
+                uploadEdit.DropZoneClickAction = DropZoneClickAction.UploadFile;
                 uploadEdit.MimeTypes = mimeTypes;
             }, parameters, options =>
             {
