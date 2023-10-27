@@ -41,6 +41,21 @@ public class UploadableFile : IUploadableFile
     public string Path { get; set; }
 
     /// <summary>
+    /// 
+    /// </summary>
+    public async Task EnsureDataLoadedAsync(HttpClient client = null)
+    {
+        if ((Data == null || Data?.Length == 0) && !string.IsNullOrEmpty(Url))
+        {
+            client ??= new HttpClient();
+            Extension ??= System.IO.Path.GetExtension(Url);
+            ContentType ??= await MimeType.ReadMimeTypeFromUrlAsync(Url, client);
+            FileName ??= System.IO.Path.GetFileName(Url);
+            Data = await client.GetByteArrayAsync(Url);
+        }
+    }
+
+    /// <summary>
     /// Creates an instance of UploadableFile from a given URL.
     /// </summary>
     public static async Task<UploadableFile> FromUrlAsync(string url, CancellationToken cancellationToken = default) => new()
