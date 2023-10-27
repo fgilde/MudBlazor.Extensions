@@ -13,7 +13,12 @@
       "wwwroot/js/mudBlazorExtensions.all.min.js"
     ]
   },
-
+  {
+    "outputFileName": "wwwroot/js/components/MudExGoogleFilePicker.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExGoogleFilePicker.js"
+    ]
+  },
   {
     "outputFileName": "wwwroot/js/components/MudExFileDisplay.min.js",
     "inputFiles": [

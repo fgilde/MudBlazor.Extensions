@@ -1885,6 +1885,11 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFontSelect.OnInitialized">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGoogleFilePicker.GetJsArguments">
+            <summary>
+            Gets the JavaScript arguments to pass to the component.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExGradientText">
             <summary>
             A Component to display text with a gradient foreground or background
@@ -4476,6 +4481,11 @@
         <member name="P:MudBlazor.Extensions.Components.UploadableFile.Path">
             <summary>
             Path if its came from folder or extracted from zip
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.UploadableFile.EnsureDataLoadedAsync(System.Net.Http.HttpClient)">
+            <summary>
+            
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.UploadableFile.FromUrlAsync(System.String,System.Threading.CancellationToken)">
