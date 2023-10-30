@@ -42,6 +42,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<MudExCssBuilder>();
         services.AddScoped<MudExAppearanceService>();
 
+        services.RegisterAllImplementationsOf(new[] { typeof(IMudExExternalFilePicker) }, assemblies.Distinct().ToArray(), ServiceLifetime.Scoped);
+        
         // TODO: Find maybe a better solution. For example if the MudBlazor.DialogService has a reference to injected JsRuntime, we can remove this section and the class and interface for  MudExDialogService : IMudExDialogService
         #region Replace IDialogService with MudExDialogService
 

@@ -1,8 +1,11 @@
-﻿namespace MudBlazor.Extensions.Core;
+﻿using Microsoft.AspNetCore.Components;
+using Nextended.Core.Contracts;
 
-public interface IMudExExternalFilePicker
+namespace MudBlazor.Extensions.Core;
+
+public interface IMudExExternalFilePicker: IComponent
 {
     public string Image { get; }
 
-    public Task<string> PickAsync(CancellationToken cancellation = default);
+    public Task<IUploadableFile[]> PickAsync(CancellationToken cancellation = default);
 }

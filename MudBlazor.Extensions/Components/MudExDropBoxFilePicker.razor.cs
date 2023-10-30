@@ -1,50 +1,40 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
+using Nextended.Core;
 using Nextended.Core.Contracts;
-using System;
 
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
 /// Google Drive file picker component
 /// </summary>
-public partial class MudExGoogleFilePicker : IMudExExternalFilePicker
+public partial class MudExDropBoxFilePicker : IMudExExternalFilePicker
 {
     private TaskCompletionSource<IUploadableFile[]> _pickTaskCompletionSource;
     private TaskCompletionSource<bool> _initializationCompletionSource = new();
-    private string _clientId;
     private string _apiKey;
-    private string _appId;
     private string[] _allowedMimeTypes;
     private bool _multiSelect;
-    private bool _allowUpload = true;
-    private bool _allowFolderSelect;
-    private bool _allowFolderNavigation;
-    private bool _autoLoadFileDataBytes = true;
+    private long? _maxFileSize;
 
-    [Parameter] public EventCallback<GoogleFileInfo[]> FilesSelected { get; set; }
-    [Parameter] public string ClientId { get => _clientId; set => Set(ref _clientId, value, _ => UpdateJsOptions()); }
+    [Parameter] public EventCallback<DropBoxFileInfo[]> FilesSelected { get; set; }
     [Parameter] public string ApiKey { get => _apiKey; set => Set(ref _apiKey, value, _ => UpdateJsOptions()); }
-    [Parameter] public string AppId { get => _appId; set => Set(ref _appId, value, _ => UpdateJsOptions()); }
     [Parameter] public string[] AllowedMimeTypes { get => _allowedMimeTypes; set => Set(ref _allowedMimeTypes, value, _ => UpdateJsOptions()); }
     [Parameter] public bool MultiSelect { get => _multiSelect; set => Set(ref _multiSelect, value, _ => UpdateJsOptions()); }
-    [Parameter] public bool AllowUpload { get => _allowUpload; set => Set(ref _allowUpload, value, _ => UpdateJsOptions()); }
-    [Parameter] public bool AllowFolderSelect { get => _allowFolderSelect; set => Set(ref _allowFolderSelect, value, _ => UpdateJsOptions()); }
-    [Parameter] public bool AllowFolderNavigation { get => _allowFolderNavigation; set => Set(ref _allowFolderNavigation, value, _ => UpdateJsOptions()); }
-    [Parameter] public bool AutoLoadFileDataBytes { get => _autoLoadFileDataBytes; set => Set(ref _autoLoadFileDataBytes, value, _ => UpdateJsOptions()); }
+    [Parameter] public long? MaxFileSize { get => _maxFileSize; set => Set(ref _maxFileSize, value, _ => UpdateJsOptions()); }
+    [Parameter] public bool AutoLoadFileDataBytes { get; set; } = true;
 
     [Parameter] public Variant Variant { get; set; } = Variant.Text;
     [Parameter] public Color Color { get; set; } = Color.Primary;
     [Parameter] public Size Size { get; set; } = Size.Small;
-    [Parameter] public string StartIcon { get; set; } = Icons.Custom.Brands.Google;
+    [Parameter] public string StartIcon { get; set; } = MudExIcons.Brands.DropBox;
     [Parameter] public RenderFragment ChildContent { get; set; }
 
     internal bool IsReady { get; private set; }
     internal bool IsLoading { get; private set; }
     public string Image => "https://developers.google.com/drive/images/drive_icon.png";
-    public string AccessToken { get; private set; }
-
+    
 
     public async Task<IUploadableFile[]> PickAsync(CancellationToken cancellation = default)
     {
@@ -68,37 +58,27 @@ public partial class MudExGoogleFilePicker : IMudExExternalFilePicker
         _initializationCompletionSource.TrySetResult(IsReady);
     }
 
-    [JSInvokable]
-    public void OnAuthorized(string accessToken)
-    {
-        AccessToken = accessToken;
-        IsLoading = true;
-        CallStateHasChanged();
-    }
-
     // This method will be called from JavaScript
     [JSInvokable]
-    public Task OnFilesSelected(GoogleFileInfo[] files)
+    public async Task OnFilesSelected(DropBoxFileInfo[] files)
     {
+        if(AutoLoadFileDataBytes)
+            await Task.WhenAll(files.Select(f => f.EnsureDataLoadedAsync()));
         _pickTaskCompletionSource.TrySetResult(files);
         FilesSelected.InvokeAsync(files);
         IsLoading = false;
-        return InvokeAsync(StateHasChanged);
+        await InvokeAsync(StateHasChanged);
     }
 
     private object Options()
     {
+        //AllowedMimeTypes.Select(mt => MimeType.GetExtension(mt))
         return new
         {
-            ClientId,
             ApiKey,
-            AppId,
-            AllowedMimeTypes = AllowedMimeTypes?.Any() == true ? string.Join(",", AllowedMimeTypes) : null,
+            AllowedExtensions = AllowedMimeTypes?.Any() == true ? AllowedMimeTypes.Select(MimeType.GetExtension).ToArray() : null,
             MultiSelect,
-            AllowUpload,
-            AllowFolderSelect,
-            AllowFolderNavigation,
-            AutoLoadFileDataBytes
+            MaxFileSize
         };
     }
 
@@ -108,7 +88,7 @@ public partial class MudExGoogleFilePicker : IMudExExternalFilePicker
             JsReference.InvokeVoidAsync("setOptions", Options());
     }
 
-    private async Task ShowPicker(CancellationToken cancellation = default) => await JsReference.InvokeVoidAsync("handleAuthClick", cancellation);
+    private async Task ShowPicker(CancellationToken cancellation = default) => await JsReference.InvokeVoidAsync("showPicker", cancellation);
 
     private async Task Pick() => await PickAsync();
 }

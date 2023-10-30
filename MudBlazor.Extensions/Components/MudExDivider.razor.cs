@@ -42,6 +42,12 @@ public partial class MudExDivider : IMudExComponent
     public string Label { get; set; }
 
     /// <summary>
+    /// Set to true to add border to label
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public bool BorderLabel { get; set; } = true;
+
+    /// <summary>
     /// Color
     /// </summary>
     [Parameter, SafeCategory("Appearance")]

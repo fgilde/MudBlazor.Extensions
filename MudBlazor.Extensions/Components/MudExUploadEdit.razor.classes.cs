@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using Nextended.Core;
 using Nextended.Core.Contracts;
+using System.Net.Mime;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -10,6 +11,9 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public class UploadableFile : IUploadableFile
 {
+    private string _contentType;
+    private string _extension;
+    
     /// <summary>
     /// Gets or sets the name of the file.
     /// </summary>
@@ -18,12 +22,21 @@ public class UploadableFile : IUploadableFile
     /// <summary>
     /// Gets or sets the file extension.
     /// </summary>
-    public string Extension { get; set; }
+    public string Extension
+    {
+        get => _extension ??= !string.IsNullOrEmpty(FileName) ? System.IO.Path.GetExtension(FileName) : _extension;
+        set => _extension = value;
+    }
+
 
     /// <summary>
     /// Gets or sets the content type of the file.
     /// </summary>
-    public string ContentType { get; set; }
+    public string ContentType
+    {
+        get => _contentType ??= !string.IsNullOrEmpty(FileName) ? MimeType.GetMimeType(FileName) : _contentType;
+        set => _contentType = value;
+    }
 
     /// <summary>
     /// Gets or sets the data of the file.
@@ -40,18 +53,24 @@ public class UploadableFile : IUploadableFile
     /// </summary>
     public string Path { get; set; }
 
+    public Func<Task> LoadTask { get; set; }
+    public long Size { get; set; }
+
     /// <summary>
-    /// 
+    /// Ensure data array is filled
     /// </summary>
-    public async Task EnsureDataLoadedAsync(HttpClient client = null)
+    public virtual async Task EnsureDataLoadedAsync(HttpClient client = null)
     {
-        if ((Data == null || Data?.Length == 0) && !string.IsNullOrEmpty(Url))
+        if (LoadTask == null && (Data == null || Data?.Length == 0) && !string.IsNullOrEmpty(Url))
         {
             client ??= new HttpClient();
             Extension ??= System.IO.Path.GetExtension(Url);
             ContentType ??= await MimeType.ReadMimeTypeFromUrlAsync(Url, client);
             FileName ??= System.IO.Path.GetFileName(Url);
             Data = await client.GetByteArrayAsync(Url);
+        }else if (LoadTask != null)
+        {
+            await LoadTask();
         }
     }
 
@@ -122,5 +141,6 @@ public enum DropZoneClickAction
     None,
     UploadFile,
     UploadFolder,
-    AddUrl
+    AddUrl,
+    PickFromGoogleDrive,
 }

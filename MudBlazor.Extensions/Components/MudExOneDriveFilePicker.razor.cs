@@ -7,9 +7,9 @@ using System;
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
-/// Google Drive file picker component
+/// OneDrive file picker component
 /// </summary>
-public partial class MudExGoogleFilePicker : IMudExExternalFilePicker
+public partial class MudExOneDriveFilePicker : IMudExExternalFilePicker
 {
     private TaskCompletionSource<IUploadableFile[]> _pickTaskCompletionSource;
     private TaskCompletionSource<bool> _initializationCompletionSource = new();
@@ -23,7 +23,7 @@ public partial class MudExGoogleFilePicker : IMudExExternalFilePicker
     private bool _allowFolderNavigation;
     private bool _autoLoadFileDataBytes = true;
 
-    [Parameter] public EventCallback<GoogleFileInfo[]> FilesSelected { get; set; }
+    [Parameter] public EventCallback<OneDriveFileInfo[]> FilesSelected { get; set; }
     [Parameter] public string ClientId { get => _clientId; set => Set(ref _clientId, value, _ => UpdateJsOptions()); }
     [Parameter] public string ApiKey { get => _apiKey; set => Set(ref _apiKey, value, _ => UpdateJsOptions()); }
     [Parameter] public string AppId { get => _appId; set => Set(ref _appId, value, _ => UpdateJsOptions()); }
@@ -37,7 +37,7 @@ public partial class MudExGoogleFilePicker : IMudExExternalFilePicker
     [Parameter] public Variant Variant { get; set; } = Variant.Text;
     [Parameter] public Color Color { get; set; } = Color.Primary;
     [Parameter] public Size Size { get; set; } = Size.Small;
-    [Parameter] public string StartIcon { get; set; } = Icons.Custom.Brands.Google;
+    [Parameter] public string StartIcon { get; set; } = Icons.Custom.Brands.Microsoft;
     [Parameter] public RenderFragment ChildContent { get; set; }
 
     internal bool IsReady { get; private set; }
@@ -78,7 +78,7 @@ public partial class MudExGoogleFilePicker : IMudExExternalFilePicker
 
     // This method will be called from JavaScript
     [JSInvokable]
-    public Task OnFilesSelected(GoogleFileInfo[] files)
+    public Task OnFilesSelected(OneDriveFileInfo[] files)
     {
         _pickTaskCompletionSource.TrySetResult(files);
         FilesSelected.InvokeAsync(files);
@@ -108,7 +108,7 @@ public partial class MudExGoogleFilePicker : IMudExExternalFilePicker
             JsReference.InvokeVoidAsync("setOptions", Options());
     }
 
-    private async Task ShowPicker(CancellationToken cancellation = default) => await JsReference.InvokeVoidAsync("handleAuthClick", cancellation);
+    private async Task ShowPicker(CancellationToken cancellation = default) => await JsReference.InvokeVoidAsync("openPicker", cancellation);
 
     private async Task Pick() => await PickAsync();
 }

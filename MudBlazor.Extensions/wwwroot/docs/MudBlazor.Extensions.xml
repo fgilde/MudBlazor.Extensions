@@ -1143,6 +1143,11 @@
             Label
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDivider.BorderLabel">
+            <summary>
+            Set to true to add border to label
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExDivider.Color">
             <summary>
             Color
@@ -1167,6 +1172,16 @@
         <member name="M:MudBlazor.Extensions.Components.MudExDivider.GetStyle">
             <summary>
             Style for divider
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDropBoxFilePicker">
+            <summary>
+            Google Drive file picker component
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDropBoxFilePicker.GetJsArguments">
+            <summary>
+            Gets the JavaScript arguments to pass to the component.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExEnumSelect`1">
@@ -1884,6 +1899,11 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFontSelect.OnInitialized">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExGoogleFilePicker">
+            <summary>
+            Google Drive file picker component
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExGoogleFilePicker.GetJsArguments">
             <summary>
@@ -2835,6 +2855,16 @@
         <member name="M:MudBlazor.Extensions.Components.MudExMessageDialog.Cancel">
             <summary>
             Cancels the dialog
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExOneDriveFilePicker">
+            <summary>
+            OneDrive file picker component
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOneDriveFilePicker.GetJsArguments">
+            <summary>
+            Gets the JavaScript arguments to pass to the component.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExPopover">
@@ -4485,7 +4515,7 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.UploadableFile.EnsureDataLoadedAsync(System.Net.Http.HttpClient)">
             <summary>
-            
+            Ensure data array is filled
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.UploadableFile.FromUrlAsync(System.String,System.Threading.CancellationToken)">
@@ -4539,6 +4569,26 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ButtonVariant">
+            <summary>
+            Variant of action buttons
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ButtonColor">
+            <summary>
+            Color of action buttons
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ButtonSize">
+            <summary>
+            Size of action buttons
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ButtonsJustify">
+            <summary>
+            Alignment of action buttons
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.CodeBlockTheme">
             <summary>
             Specify Theme to use for code file previews
@@ -4575,6 +4625,11 @@
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextAddUrl">
+            <summary>
+            The text for the add URL button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextAddFromGoogle">
             <summary>
             The text for the add URL button.
             </summary>
@@ -4676,7 +4731,7 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.Extensions">
             <summary>
-            Extensions for FileRestrictions based on the <see cref="!:ExtensionsRestrictionType"/> this types are allowed or forbidden.
+            Extensions for FileRestrictions based on the <see cref="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ExtensionRestrictionType"/> this types are allowed or forbidden.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MimeRestrictionType">
@@ -4849,8 +4904,26 @@
             If true icons are colored
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AutoLoadFileDataBytes">
+            <summary>
+            If this is true the file will be loaded into memory and the data will be available in the <see cref="P:MudBlazor.Extensions.Components.UploadableFile.Data"/> property.
+            Otherwise the data will only be loaded automatically when user clicks preview. 
+            If false you can use <see cref="M:MudBlazor.Extensions.Components.UploadableFile.EnsureDataLoadedAsync(System.Net.Http.HttpClient)"/> or <see cref="!:MudExUploadEdit.EnsureDataLoadedAsync"/> to load the data manually when needed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ShowProgressForLoadingData">
+            <summary>
+            If this is true then while the file is loading the progress bar will be shown.
+            Otherwise the progress bar will be shown indeterminate what is faster for the UI.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.OnInitializedAsync">
             <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.UpdatePathMappings(MudBlazor.Extensions.Components.BrowserFileWithPath[])">
+            <summary>
+            Called from JS to update mappings
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.GetJsArguments">
             <inheritdoc />
@@ -4863,6 +4936,11 @@
             Returns whether the component has data.
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.EnsureDataLoadedAsync(System.Net.Http.HttpClient)">
+            <summary>
+            Ensures all data is loaded for all files.
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />

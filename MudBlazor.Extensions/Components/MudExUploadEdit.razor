@@ -44,20 +44,29 @@
             }
             else
             {
-                @foreach (var request in (UploadRequests ?? Enumerable.Empty<T>()).Where(r => r?.Data != null || !string.IsNullOrEmpty(r?.Url)))
+                @foreach (var request in (UploadRequests ?? Enumerable.Empty<T>()))
                 {
+                    var isLoading = IsLoading(request);
+                    var loadingState = isLoading ? _loadings[request] : default;
                     <MudItem xs="12">
                         <MudItem>
                             <MudAlert NoIcon="true"
                                       Class="mud-alert-message-w-100"
                                       Severity="@(IsSelected(request) ? Severity.Warning : (_withErrors.Contains(request) ? Severity.Error : Severity.Normal))"
                                       OnClick="(a) => Select(request, a)"
-                                      ShowCloseIcon="@(AllowRemovingItems && !ReadOnly)"
+                                      ShowCloseIcon="@(AllowRemovingItems && !ReadOnly && !isLoading)"
                                       CloseIcon="@Icons.Material.Filled.Delete"
                                       CloseIconClicked="(() => Remove(request))">
                                 <div title="@($"{request.Path?.EnsureEndsWith("/")}{request.FileName}")" style="display: flex; align-items: center; width: 90%">
-                                    <MudExIcon Class="mr-3" Color="@GetIconColor(request)" Icon="@GetIcon(request)" />
-                                    @if (AllowRename && !ReadOnly)
+                                    @if (isLoading)
+                                    {
+                                        <MudProgressCircular Class="mr-3" Size="@Size.Small" Color="@Color.Info" Indeterminate="@(!ShowProgressForLoadingData)" Max="@loadingState.Size" Value="@loadingState.ReadBytes" />
+                                    }
+                                    else
+                                    {
+                                        <MudExIcon Class="mr-3" Color="@GetIconColor(request)" Icon="@GetIcon(request)"/>
+                                    }
+                                    @if (AllowRename && !ReadOnly && !isLoading)
                                     {
                                         <MudTextField Style="height: 12px;" Class="mud-ex-collection-inline-string-edit" DisableUnderLine="true" Error="@(string.IsNullOrWhiteSpace(request.FileName))" @bind-Value="@request.FileName"></MudTextField>
                                     }
@@ -66,7 +75,7 @@
                                         <MudText Style="height: 12px; margin-top: -13px" Typo="Typo.subtitle1">@request.FileName</MudText>
                                     }
                                 </div>
-                                @if (AllowPreview)
+                                @if (AllowPreview && !isLoading)
                                 {
                                     <MudIconButton OnClick="@(() => Preview(request))" Style="margin-top: -24px; float: right;" Icon="@Icons.Material.Filled.ZoomIn" Color="Color.Inherit" Size="Size.Small" />
                                 }
@@ -74,18 +83,25 @@
                         </MudItem>
                     </MudItem>
                 }
+                @if (ShowClearButton && HasData() && !ReadOnly)
+                {
+                    <MudGrid Class="mr-5 mt-2" Justify="Justify.FlexEnd">
+                        <MudIconButton Title="@TryLocalize(TextRemoveAll)" OnClick="@RemoveAll" Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Primary" Size="Size.Small" />
+                    </MudGrid>
+                }
             }
         </MudGrid>
     </div>
+    
 
-    <div class="multi-upload-actions">
+    <MudGrid Justify="@ButtonsJustify" Class="mt-5 multi-upload-actions">
         @if (ShowFileUploadButton && !ReadOnly)
         {
 
             <MudButton HtmlTag="label"
-                       Variant="Variant.Text"
-                       Color="Color.Primary"
-                       Size="Size.Small"
+                       Variant="@ButtonVariant"
+                       Color="@ButtonColor"
+                       Size="@ButtonSize"
                        StartIcon="@(AllowMultiple ? Icons.Material.Filled.FileUpload : Icons.Material.Filled.UploadFile)"
                        for="@UploadFieldId">
                 @(AllowMultiple ? TryLocalize(TextUploadFiles) : TryLocalize(TextUploadFile))
@@ -98,9 +114,9 @@
             <span class="action-margin"></span>
             <MudButton HtmlTag="label"
                        OnClick="@(UploadFolder)"
-                       Variant="Variant.Text"
-                       Color="Color.Primary"
-                       Size="Size.Small"
+                       Variant="@ButtonVariant"
+                       Color="@ButtonColor"
+                       Size="@ButtonSize"
                        StartIcon="@Icons.Material.Filled.DriveFolderUpload">
                 @TryLocalize(TextUploadFolder)
             </MudButton>
@@ -111,19 +127,58 @@
             <span class="action-margin"></span>
             <MudButton HtmlTag="label"
                        OnClick="@(AddUrl)"
-                       Variant="Variant.Text"
-                       Color="Color.Primary"
-                       Size="Size.Small"
-                       StartIcon="@Icons.Material.Filled.MoreHoriz">
+                       Variant="@ButtonVariant"
+                       Color="@ButtonColor"
+                       Size="@ButtonSize"
+                       StartIcon="@Icons.Material.Filled.CloudUpload">
                 @TryLocalize(TextAddUrl)
             </MudButton>
         }
-
-        @if (ShowClearButton && HasData() && !ReadOnly)
+        
+        @if (CanUseGoogleDrive && !ReadOnly)
         {
-            <MudIconButton Title="@TryLocalize(TextRemoveAll)" OnClick="@RemoveAll" Style="float: right; margin-right: 15px;" Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Primary" Size="Size.Small" />
+            <span class="action-margin"></span>
+            <MudExGoogleFilePicker @ref="_googleFilePicker"
+                                   ClientId="787005879852-vkv0cduhl70u087pq4a8s2jtkdgv1n6s.apps.googleusercontent.com"
+                                   Variant="@ButtonVariant"
+                                   Color="@ButtonColor"
+                                   Size="@ButtonSize"
+                                   MultiSelect="@AllowMultiple"
+                                   AllowFolderNavigation="true"
+                                   AutoLoadFileDataBytes="@AutoLoadFileDataBytes"
+                                   AllowFolderSelect="@AllowFolderUpload"
+                                   AllowedMimeTypes="@_allowedMimeTypes"
+                                   FilesSelected="@Add">
+                @TryLocalize(TextAddFromGoogle)
+            </MudExGoogleFilePicker>
         }
-    </div>
+        
+        <span class="action-margin"></span>
+        <MudExDropBoxFilePicker ApiKey="2ak2m6cfpdeb9f1"
+                                Variant="@ButtonVariant"
+                                Color="@ButtonColor"
+                                Size="@ButtonSize"
+                                MaxFileSize="@MaxFileSize"
+                                MultiSelect="@AllowMultiple"
+                                AutoLoadFileDataBytes="@AutoLoadFileDataBytes"
+                                AllowedMimeTypes="@_allowedMimeTypes"
+                                FilesSelected="@Add">
+            @TryLocalize("DropBox")
+        </MudExDropBoxFilePicker>
+        
+        <span class="action-margin"></span>
+        <MudExOneDriveFilePicker ClientId="2ak2m6cfpdeb9f1"
+                                Variant="@ButtonVariant"
+                                Color="@ButtonColor"
+                                Size="@ButtonSize"
+                                MultiSelect="@AllowMultiple"
+                                AutoLoadFileDataBytes="@AutoLoadFileDataBytes"
+                                AllowedMimeTypes="@_allowedMimeTypes"
+                                FilesSelected="@Add">
+            @TryLocalize("One Drive")
+        </MudExOneDriveFilePicker>
+
+    </MudGrid>
 </div>
 
 @if (!string.IsNullOrWhiteSpace(HelperText))
