@@ -1,8 +1,18 @@
 ﻿@inherits MudExJsRequiredBaseComponent<T>
 @typeparam T
+@typeparam TFile
 
-<h3>MudExExternalFilePickerBase</h3>
-
-@code {
-
+@if (IsReady && !IsLoading)
+{
+    <MudButton Variant="@Variant"
+               Color="@Color"
+               Size="@Size"
+               StartIcon="@StartIcon" OnClick="@Pick">
+        @ChildContent
+    </MudButton>
 }
+else
+{
+    <MudProgressCircular Size="@Size" Color="@Color" Indeterminate="true" />
+}
+

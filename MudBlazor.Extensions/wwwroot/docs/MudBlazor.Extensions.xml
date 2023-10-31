@@ -1198,27 +1198,33 @@
         <member name="M:MudBlazor.Extensions.Components.MudExEnumSelect`1.OnBeforeSelectedChanged(System.Collections.Generic.IEnumerable{`0})">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`1.PickAsync(System.Threading.CancellationToken)">
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.PickAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`1.GetJsArguments">
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.GetJsArguments">
             <summary>
             Gets the JavaScript arguments to pass to the component.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`1.OnReady">
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.OnReady">
             <summary>
             Callback method for JavaScript to call when the picker is ready
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`1.OnFilesSelected(Nextended.Core.Contracts.IUploadableFile[])">
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.OnFilesSelected(`1[])">
             <summary>
             Callback method for JavaScript to call when files are selected
             </summary>
             <param name="files"></param>
             <returns></returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`1.ShowPicker(System.Threading.CancellationToken)">
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.JsOptions">
+            <summary>
+            Returns the options for the js class
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.ShowPicker(System.Threading.CancellationToken)">
             <summary>
             Protected method to show the picker
             </summary>
@@ -2885,11 +2891,6 @@
         <member name="T:MudBlazor.Extensions.Components.MudExOneDriveFilePicker">
             <summary>
             OneDrive file picker component
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExOneDriveFilePicker.GetJsArguments">
-            <summary>
-            Gets the JavaScript arguments to pass to the component.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExPopover">

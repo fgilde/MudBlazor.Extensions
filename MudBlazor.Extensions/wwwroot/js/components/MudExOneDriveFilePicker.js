@@ -12,13 +12,14 @@
     }
 
     setOptions(options) {
-        this.options = options;
+        this.options = { ...options, ...options.jsOptions || {} };
+        delete this.options.jsOptions;
         if (this.options.clientId) {
-            this.loadOneDriveApi();
+            this.loadApi();
         }
     }
 
-    loadOneDriveApi() {
+    loadApi() {
         const existingScript = document.getElementById('onedrivejs');
         if (existingScript) {
             this.apiLoaded();
@@ -34,7 +35,7 @@
 
     apiLoaded() {
         this.pickerInited = true;
-        this.dotnet.invokeMethodAsync('OnReady');
+        this.dotnet.invokeMethodAsync(this.options.onReadyCallback);
     }
 
     openPicker() {
@@ -52,7 +53,7 @@
                 this.processResult(files);
             },
             cancel: () => {
-                this.dotnet.invokeMethodAsync('OnFilesSelected', []);
+                this.dotnet.invokeMethodAsync(this.options.onFilesSelectedCallback, []);
             },
             error: (error) => {
                 console.error(error);
@@ -78,11 +79,11 @@
             }
         }
 
-        this.dotnet.invokeMethodAsync('OnFilesSelected', fileDataArray);
+        this.dotnet.invokeMethodAsync(this.options.onFilesSelectedCallback, fileDataArray);
     }
 
     async getFileDetails(fileId) {
-        const response = await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${fileId}`, {
+        const response = await fetch(`${this.apiEndpoint}me/drive/items/${fileId}`, {
             headers: new Headers({ Authorization: `Bearer ${this.accessToken}` })
         });
         return response.json();

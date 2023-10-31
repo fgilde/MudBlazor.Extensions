@@ -2,15 +2,15 @@
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
-using Nextended.Core;
 using Nextended.Core.Contracts;
 
 namespace MudBlazor.Extensions.Components;
 
-public abstract partial class MudExExternalFilePickerBase<T> : MudExJsRequiredBaseComponent<T>, IMudExExternalFilePicker
+public abstract partial class MudExExternalFilePickerBase<T, TFile> : MudExJsRequiredBaseComponent<T>, IMudExExternalFilePicker
     where T : MudExJsRequiredBaseComponent<T>
+    where TFile : IUploadableFile
 {
-    protected TaskCompletionSource<IUploadableFile[]> PickTaskCompletionSource;
+    protected TaskCompletionSource<TFile[]> PickTaskCompletionSource;
     protected TaskCompletionSource<bool> InitializationCompletionSource = new();
     private string _clientId;
     private string _apiKey;
@@ -20,7 +20,8 @@ public abstract partial class MudExExternalFilePickerBase<T> : MudExJsRequiredBa
 
     public abstract string Image { get; }
 
-    [Parameter] public EventCallback<IUploadableFile[]> FilesSelected { get; set; }
+    [Parameter] public EventCallback<TFile[]> FilesSelected { get; set; }
+    
     [Parameter] public string ClientId { get => _clientId; set => Set(ref _clientId, value, _ => UpdateJsOptions()); }
     [Parameter] public string ApiKey { get => _apiKey; set => Set(ref _apiKey, value, _ => UpdateJsOptions()); }
     [Parameter] public string[] AllowedMimeTypes { get => _allowedMimeTypes; set => Set(ref _allowedMimeTypes, value, _ => UpdateJsOptions()); }
@@ -34,17 +35,17 @@ public abstract partial class MudExExternalFilePickerBase<T> : MudExJsRequiredBa
     [Parameter] public string StartIcon { get; set; } = MudExIcons.Brands.DropBox;
     [Parameter] public RenderFragment ChildContent { get; set; }
 
-    internal bool IsReady { get; private set; }
-    internal bool IsLoading { get; private set; }
+    protected bool IsReady { get; set; }
+    protected bool IsLoading { get; set; }
 
     /// <inheritdoc />
     public virtual async Task<IUploadableFile[]> PickAsync(CancellationToken cancellation = default)
     {
         await InitializationCompletionSource.Task;
-        PickTaskCompletionSource = new TaskCompletionSource<IUploadableFile[]>();
+        PickTaskCompletionSource = new TaskCompletionSource<TFile[]>();
         cancellation.Register(() => PickTaskCompletionSource.TrySetCanceled());
         await ShowPicker(cancellation);
-        return await PickTaskCompletionSource.Task;
+        return (await PickTaskCompletionSource.Task).Cast<IUploadableFile>().ToArray();
     }
 
     /// <summary>
@@ -69,7 +70,7 @@ public abstract partial class MudExExternalFilePickerBase<T> : MudExJsRequiredBa
     /// <param name="files"></param>
     /// <returns></returns>
     [JSInvokable]
-    public virtual async Task OnFilesSelected(IUploadableFile[] files)
+    public virtual async Task OnFilesSelected(TFile[] files)
     {
         if (AutoLoadFileDataBytes)
             await Task.WhenAll(files.Select(f => f.EnsureDataLoadedAsync()));
@@ -79,18 +80,32 @@ public abstract partial class MudExExternalFilePickerBase<T> : MudExJsRequiredBa
         await InvokeAsync(StateHasChanged);
     }
 
+    /// <summary>
+    /// Returns the options for the js class
+    /// </summary>
+    /// <returns></returns>
+    protected virtual object JsOptions()
+    {
+        return null;
+    }
+
     private object Options()
     {
         //AllowedMimeTypes.Select(mt => MimeType.GetExtension(mt))
         return new
         {
+            OnReadyCallback = nameof(OnReady),
+            OnFilesSelectedCallback = nameof(OnFilesSelected),
+            ClientId,
             ApiKey,
-            AllowedExtensions = AllowedMimeTypes?.Any() == true ? AllowedMimeTypes.Select(MimeType.GetExtension).ToArray() : null,
-            MultiSelect
+            AllowedMimeTypes,
+            MultiSelect,
+            AutoLoadFileDataBytes,
+            JsOptions = JsOptions()
         };
     }
 
-    private void UpdateJsOptions()
+    protected virtual void UpdateJsOptions()
     {
         if (JsReference != null)
             JsReference.InvokeVoidAsync("setOptions", Options());
