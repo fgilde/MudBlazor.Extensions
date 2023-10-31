@@ -1198,6 +1198,31 @@
         <member name="M:MudBlazor.Extensions.Components.MudExEnumSelect`1.OnBeforeSelectedChanged(System.Collections.Generic.IEnumerable{`0})">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`1.PickAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`1.GetJsArguments">
+            <summary>
+            Gets the JavaScript arguments to pass to the component.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`1.OnReady">
+            <summary>
+            Callback method for JavaScript to call when the picker is ready
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`1.OnFilesSelected(Nextended.Core.Contracts.IUploadableFile[])">
+            <summary>
+            Callback method for JavaScript to call when files are selected
+            </summary>
+            <param name="files"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`1.ShowPicker(System.Threading.CancellationToken)">
+            <summary>
+            Protected method to show the picker
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.BrowserContentTypePlugin">
             <summary>
             Plugin information for a content type plugin
@@ -6900,6 +6925,21 @@
         <member name="M:MudBlazor.Extensions.Core.MudExDialogRef`1.CallStateHasChanged">
             <summary>
             Invokes the StateHasChanged method of the dialog.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.IMudExExternalFilePicker">
+            <summary>
+            External file picker
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.IMudExExternalFilePicker.Image">
+            <summary>
+            Image
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExExternalFilePicker.PickAsync(System.Threading.CancellationToken)">
+            <summary>
+            Forces the picker to open and return files
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.IMudExStyleAppearance">

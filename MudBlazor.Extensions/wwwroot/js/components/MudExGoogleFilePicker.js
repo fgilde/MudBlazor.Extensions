@@ -185,7 +185,7 @@
                 });
             const blob = await blobResponse.blob();
 
-            fileInfo.data = await this.blobToByteArray(blob);
+            fileInfo.data = await MudExUriHelper.blobToByteArray(blob);
         }
         
         return fileInfo;
@@ -242,32 +242,7 @@
 
         return allFiles;
     }
-
-    blobToByteArray(blob) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = function () {
-                const arrayBuffer = this.result;
-                const byteArray = new Uint8Array(arrayBuffer);
-                resolve(byteArray);
-            };
-            reader.onerror = reject;
-            reader.readAsArrayBuffer(blob);
-        });
-    }
-
-    blobToBase64(blob) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = function () {
-                const base64String = btoa(String.fromCharCode(...new Uint8Array(this.result)));
-                resolve(base64String);
-            };
-            reader.onerror = reject;
-            reader.readAsArrayBuffer(blob);
-        });
-    }
-
+    
 
     dispose() {
         // Cleanup if necessary
