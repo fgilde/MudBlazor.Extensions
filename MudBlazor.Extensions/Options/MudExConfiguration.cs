@@ -19,6 +19,36 @@ public class MudExConfiguration
     internal bool DisableAutomaticCssLoading { get; set; }
 
     /// <summary>
+    /// Global google drive client id
+    /// </summary>
+    internal string GoogleDriveClientId { get; set; }
+
+    /// <summary>
+    /// Global one drive client id
+    /// </summary>
+    internal string OneDriveClientId { get; set; }
+
+    /// <summary>
+    /// Global one drive client id
+    /// </summary>
+    internal string DropBoxApiKey { get; set; }
+
+    /// <summary>
+    /// Enable global drop box integration
+    /// </summary>    
+    public MudExConfiguration EnableDropBoxIntegration(string dropBoxApiKey) => With(c => c.DropBoxApiKey = dropBoxApiKey);
+
+    /// <summary>
+    /// Enable global google drive integration
+    /// </summary>    
+    public MudExConfiguration EnableGoogleDriveIntegration(string googleDriveClientId) => With(c => c.GoogleDriveClientId = googleDriveClientId);
+
+    /// <summary>
+    /// Enable global google drive integration
+    /// </summary>    
+    public MudExConfiguration EnableOneDriveIntegration(string oneDriveClientId) => With(c => c.OneDriveClientId = oneDriveClientId);
+
+    /// <summary>
     /// Disables automatic Css loading. Then you need to ensure you have added the mud-ex styles in your index.html or _Host.cshtml
     /// </summary>    
     public MudExConfiguration WithoutAutomaticCssLoading() => With(c => c.DisableAutomaticCssLoading = true);

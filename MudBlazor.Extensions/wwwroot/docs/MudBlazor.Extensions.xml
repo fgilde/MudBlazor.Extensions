@@ -1143,6 +1143,11 @@
             Label
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDivider.BorderLabel">
+            <summary>
+            Set to true to add border to label
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExDivider.Color">
             <summary>
             Color
@@ -1169,6 +1174,43 @@
             Style for divider
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.DropBoxFileInfo">
+            <summary>
+            File info for DropBox
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.DropBoxFileInfo.Id">
+            <summary>
+            File Id
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDropBoxFilePicker">
+            <summary>
+            DropBox external file picker component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDropBoxFilePicker.MaxFileSize">
+            <summary>
+            Max file size in bytes
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDropBoxFilePicker.Image">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDropBoxFilePicker.ExternalJsFiles">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDropBoxFilePicker.OnReady">
+            <summary>
+            Callback method for JavaScript to call when the picker is ready
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDropBoxFilePicker.JsOptions">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDropBoxFilePicker.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExEnumSelect`1">
             <summary>
             Drop down component to select an enum value or multiple on flags enums
@@ -1182,6 +1224,215 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExEnumSelect`1.OnBeforeSelectedChanged(System.Collections.Generic.IEnumerable{`0})">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.FilePickerInitialRenderBehaviour">
+            <summary>
+            Initial render behavior controls rendering while initialization running
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.FilePickerInitialRenderBehaviour.Normal">
+            <summary>
+            Render normal user can click while not initialized and action is then waiting for initialization
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.FilePickerInitialRenderBehaviour.Loading">
+            <summary>
+            Render loading while not initialized
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.FilePickerInitialRenderBehaviour.Hidden">
+            <summary>
+            Hide while not initialized
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.PickerActionViewMode">
+            <summary>
+            View Mode of the picker action
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.PickerActionViewMode.Button">
+            <summary>
+            Use simple MudButton to render the action
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.PickerActionViewMode.Image">
+            <summary>
+            Use image to render the action
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.PickerActionViewMode.Custom">
+            <summary>
+            ChildContent is used directly to render the action
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2">
+            <summary>
+            Base class for external file picker components
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.PickTaskCompletionSource">
+            <summary>
+            Pick task awaitable completion source
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.InitializationCompletionSource">
+            <summary>
+            Initialization task awaitable completion source
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.Image">
+            <summary>
+            The Image for the provider
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.FilesSelected">
+            <summary>
+            Callback method for when files are selected
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.ClientId">
+            <summary>
+            Client id for the picker
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.ApiKey">
+            <summary>
+            Api key for the picker
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.AllowedMimeTypes">
+            <summary>
+            Allowed mime types
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.MultiSelect">
+            <summary>
+            If true, the user can select multiple files
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.AutoLoadFileDataBytes">
+            <summary>
+            If true, the file data bytes are loaded automatically after selection
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.Variant">
+            <summary>
+            Variant of button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.Color">
+            <summary>
+            Color of button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.Size">
+            <summary>
+            Size of button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.StartIcon">
+            <summary>
+            Icon for Button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.ChildContent">
+            <summary>
+            The child content of the component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.IconsWithoutColors">
+            <summary>
+            Set to true to remove colors from icons
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.RenderBehaviourWhileInitialization">
+            <summary>
+            Initial render behavior controls rendering while initialization running
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.ActionViewMode">
+            <summary>
+            Initial render behavior controls rendering while initialization running
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.ImageSize">
+            <summary>
+            The size that is used if ActionViewMode is set to Image
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.AccessToken">
+            <summary>
+            AccessToken for the picker service api
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.ExternalJsFiles">
+            <summary>
+            External required js files
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.IsReady">
+            <summary>
+            If true, the picker is ready
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.IsLoading">
+            <summary>
+            If true, the picker is loading
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.DefaultIcon">
+            <summary>
+            DefaultIcon if no StartIcon is set for the button
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.PickAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.GetJsArguments">
+            <summary>
+            Gets the JavaScript arguments to pass to the component.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.OnAuthorized(System.String)">
+            <summary>
+            Callback method for JavaScript to call when the picker is authorized
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.SetLoading(System.Boolean)">
+            <summary>
+            Sets the loading state
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.OnReady">
+            <summary>
+            Callback method for JavaScript to call when the picker is ready
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.OnFilesSelected(`1[])">
+            <summary>
+            Callback method for JavaScript to call when files are selected
+            </summary>
+            <param name="files"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.JsOptions">
+            <summary>
+            Returns the options for the js class
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.ImportModuleAndCreateJsAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.UpdateJsOptions">
+            <summary>
+            Updates the options for the js class
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExExternalFilePickerBase`2.ShowPicker(System.Threading.CancellationToken)">
+            <summary>
+            Protected method to show the picker
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.BrowserContentTypePlugin">
             <summary>
@@ -1883,6 +2134,110 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFontSelect.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.GoogleFileInfo">
+            <summary>
+            File info for Google Drive
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.Id">
+            <summary>
+            File Id
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.AccessToken">
+            <summary>
+            Access token
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.GoogleFileInfo.EnsureDataLoadedAsync(System.Net.Http.HttpClient)">
+            <summary>
+            Ensure data is loaded
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.Size">
+            <summary>
+            File size
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.FileName">
+            <summary>
+            File name
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.Extension">
+            <summary>
+            File extension
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.ContentType">
+            <summary>
+            File content type
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.WebViewLink">
+            <summary>
+            Web view link
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.WebContentLink">
+            <summary>
+            Web content link
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.Data">
+            <summary>
+            File data
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.Url">
+            <summary>
+            Url
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.Path">
+            <summary>
+            Folder path
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExGoogleFilePicker">
+            <summary>
+            Google Drive file picker component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGoogleFilePicker.AppId">
+            <summary>
+            Google Drive App Id
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGoogleFilePicker.AllowUpload">
+            <summary>
+            Option to allow upload
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGoogleFilePicker.AlwaysLoadPath">
+            <summary>
+            Option to always load path
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGoogleFilePicker.AllowFolderSelect">
+            <summary>
+            Option to allow folder select
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGoogleFilePicker.AllowFolderNavigation">
+            <summary>
+            Option to allow folder navigation
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGoogleFilePicker.Image">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGoogleFilePicker.JsOptions">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGoogleFilePicker.OnInitialized">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExGradientText">
@@ -2831,6 +3186,53 @@
             <summary>
             Cancels the dialog
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.OneDriveFileInfo">
+            <summary>
+            File info from one drive
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.OneDriveFileInfo.Id">
+            <summary>
+            File Id
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.OneDriveFileInfo.AccessToken">
+            <summary>
+            AccessToken
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.OneDriveFileInfo.ApiPath">
+            <summary>
+            ApiPath
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.OneDriveFileInfo.DownloadUrl">
+            <summary>
+            DownloadUrl
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExOneDriveFilePicker">
+            <summary>
+            OneDrive file picker component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOneDriveFilePicker.AllowFolderSelect">
+            <summary>
+            Option to allow folder select
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOneDriveFilePicker.Image">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOneDriveFilePicker.ExternalJsFiles">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOneDriveFilePicker.JsOptions">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOneDriveFilePicker.OnInitialized">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExPopover">
             <summary>
@@ -4478,6 +4880,21 @@
             Path if its came from folder or extracted from zip
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.UploadableFile.LoadTask">
+            <summary>
+            Task for loading content
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.UploadableFile.Size">
+            <summary>
+            File size
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.UploadableFile.EnsureDataLoadedAsync(System.Net.Http.HttpClient)">
+            <summary>
+            Ensure data array is filled
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.UploadableFile.FromUrlAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Creates an instance of UploadableFile from a given URL.
@@ -4523,11 +4940,76 @@
             MIME types in the list are not allowed.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.DropZoneClickAction">
+            <summary>
+            Action for drop zone click
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ExternalProviderRendering">
+            <summary>
+            Represents the mode of rendering of the external provider.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExUploadEdit`1">
             <summary>
             A Component to edit and upload a list of files
             </summary>
             <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ExternalDialogOptions">
+            <summary>
+            Dialog options for external file dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ColoredImagesForExternalFilePicker">
+            <summary>
+            Set this to true to use the original colors for the images of the external file picker
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ExternalProviderRendering">
+            <summary>
+            Specify how external file providers are rendered
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextAddExternal">
+            <summary>
+            The text displayed when picker are rendered in the add external dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.OneDriveClientId">
+            <summary>
+            Client ID for One Drive
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.GoogleDriveClientId">
+            <summary>
+            Client ID for Google Drive
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.DropBoxApiKey">
+            <summary>
+            The API key for DropBox
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ButtonVariant">
+            <summary>
+            Variant of action buttons
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ButtonColor">
+            <summary>
+            Color of action buttons
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ButtonSize">
+            <summary>
+            Size of action buttons
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ButtonsJustify">
+            <summary>
+            Alignment of action buttons
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.CodeBlockTheme">
             <summary>
@@ -4565,6 +5047,11 @@
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextAddUrl">
+            <summary>
+            The text for the add URL button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextAddFromGoogle">
             <summary>
             The text for the add URL button.
             </summary>
@@ -4654,6 +5141,21 @@
             Defines whether adding of external URL is allowed.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowGoogleDrive">
+            <summary>
+            Defines whether adding of external files from Google Drive is allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowDropBox">
+            <summary>
+            Defines whether adding of external files from Drop Box is allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowOneDrive">
+            <summary>
+            Defines whether adding of external files from Microsoft One Drive or office 365 is allowed.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.UploadFieldId">
             <summary>
             The ID of the upload field.
@@ -4666,7 +5168,7 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.Extensions">
             <summary>
-            Extensions for FileRestrictions based on the <see cref="!:ExtensionsRestrictionType"/> this types are allowed or forbidden.
+            Extensions for FileRestrictions based on the <see cref="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ExtensionRestrictionType"/> this types are allowed or forbidden.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MimeRestrictionType">
@@ -4831,7 +5333,7 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ColorizeIcons">
             <summary>
-            If true icons are colored
+            If true file icons are colored
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.DropZoneClickAction">
@@ -4839,8 +5341,26 @@
             If true icons are colored
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AutoLoadFileDataBytes">
+            <summary>
+            If this is true the file will be loaded into memory and the data will be available in the <see cref="P:MudBlazor.Extensions.Components.UploadableFile.Data"/> property.
+            Otherwise the data will only be loaded automatically when user clicks preview. 
+            If false you can use <see cref="M:MudBlazor.Extensions.Components.UploadableFile.EnsureDataLoadedAsync(System.Net.Http.HttpClient)"/> or <see cref="!:MudExUploadEdit.EnsureDataLoadedAsync"/> to load the data manually when needed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ShowProgressForLoadingData">
+            <summary>
+            If this is true then while the file is loading the progress bar will be shown.
+            Otherwise the progress bar will be shown indeterminate what is faster for the UI.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.OnInitializedAsync">
             <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.UpdatePathMappings(MudBlazor.Extensions.Components.BrowserFileWithPath[])">
+            <summary>
+            Called from JS to update mappings
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.GetJsArguments">
             <inheritdoc />
@@ -4853,6 +5373,11 @@
             Returns whether the component has data.
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.EnsureDataLoadedAsync(System.Net.Http.HttpClient)">
+            <summary>
+            Ensures all data is loaded for all files.
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
@@ -6812,6 +7337,21 @@
         <member name="M:MudBlazor.Extensions.Core.MudExDialogRef`1.CallStateHasChanged">
             <summary>
             Invokes the StateHasChanged method of the dialog.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.IMudExExternalFilePicker">
+            <summary>
+            External file picker
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.IMudExExternalFilePicker.Image">
+            <summary>
+            Image
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExExternalFilePicker.PickAsync(System.Threading.CancellationToken)">
+            <summary>
+            Forces the picker to open and return files
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.IMudExStyleAppearance">
@@ -10246,6 +10786,11 @@
             Static Utility class for SVG
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.RemoveFillColors(System.String)">
+            <summary>
+            Removes the fill colors from an svg string
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExSvg.CombineIconsHorizontal(System.String,System.String[])">
             <summary>
             Combines SVG icons horizontally
@@ -11006,6 +11551,36 @@
             <summary>
             Set this to true to disable all automatic css loadings
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.MudExConfiguration.GoogleDriveClientId">
+            <summary>
+            Global google drive client id
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.MudExConfiguration.OneDriveClientId">
+            <summary>
+            Global one drive client id
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.MudExConfiguration.DropBoxApiKey">
+            <summary>
+            Global one drive client id
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.EnableDropBoxIntegration(System.String)">
+            <summary>
+            Enable global drop box integration
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.EnableGoogleDriveIntegration(System.String)">
+            <summary>
+            Enable global google drive integration
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.EnableOneDriveIntegration(System.String)">
+            <summary>
+            Enable global google drive integration
+            </summary>    
         </member>
         <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.WithoutAutomaticCssLoading">
             <summary>

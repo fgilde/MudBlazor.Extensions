@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Interop;
 using MudBlazor.Services;
@@ -116,7 +117,7 @@ public partial class MudExIconPicker
     /// </summary>
     [IgnoreOnObjectEdit]
     [Parameter, SafeCategory("Appearance")]
-    public Type[] IconTypes { get; set; } = { typeof(Icons) };
+    public Type[] IconTypes { get; set; } = { typeof(Icons), typeof(MudExIcons) };
 
 
     /// <summary>

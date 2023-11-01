@@ -1,0 +1,15 @@
+﻿@inherits MudExExternalFilePickerBase<MudExGoogleFilePicker, GoogleFileInfo>
+
+<style>
+    .picker-dialog, .picker-dialog iframe {
+        z-index: 99999 !important;
+    }
+</style>
+
+@Inherited()
+
+@code
+{
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+}
+

@@ -28,6 +28,16 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
     /// </summary>
     protected bool IsDisposed { get; private set; }
 
+    protected TValue Set<TValue>(ref TValue field, TValue value, Action<TValue> callback = null)
+    {
+        if (Equals(field, value))
+            return field;
+
+        field = value;
+        callback?.Invoke(value);
+        return field;
+    }
+
     /// <summary>
     /// Element id
     /// </summary>

@@ -13,7 +13,30 @@
       "wwwroot/js/mudBlazorExtensions.all.min.js"
     ]
   },
-
+  {
+    "outputFileName": "wwwroot/js/components/MudExExternalFilePickerBase.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExExternalFilePickerBase.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExOneDriveFilePicker.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExOneDriveFilePicker.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExDropBoxFilePicker.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDropBoxFilePicker.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExGoogleFilePicker.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExGoogleFilePicker.js"
+    ]
+  },
   {
     "outputFileName": "wwwroot/js/components/MudExFileDisplay.min.js",
     "inputFiles": [

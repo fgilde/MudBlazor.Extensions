@@ -1,0 +1,37 @@
+﻿@inherits MudExJsRequiredBaseComponent<T>
+@typeparam T
+@typeparam TFile
+
+@if ((IsReady || RenderBehaviourWhileInitialization == FilePickerInitialRenderBehaviour.Normal) && !IsLoading)
+{
+    @if (ActionViewMode == PickerActionViewMode.Image)
+    {
+        <MudButton Style="@($"width: {ImageSize.Width.ToString()}; height: {ImageSize.Height.ToString()}")" OnClick="@Pick">
+            <MudExIcon Color="@Color" Style="height: 100%; width: 100%" Icon="@(DefaultIcon)" />
+        </MudButton>
+    }
+    @if (ActionViewMode == PickerActionViewMode.Button)
+    {
+        <MudButton Variant="@Variant"
+                   Color="@Color"
+                   Size="@Size"
+                   StartIcon="@(StartIcon ?? DefaultIcon)" OnClick="@Pick">
+            @if (ChildContent != null)
+            {
+                @ChildContent(this)
+            }
+        </MudButton>
+    }
+    @if (ActionViewMode == PickerActionViewMode.Custom)
+    {
+        @if (ChildContent != null)
+        {
+            @ChildContent(this)
+        }
+    }
+}
+else if (IsLoading ||RenderBehaviourWhileInitialization == FilePickerInitialRenderBehaviour.Loading)
+{
+    <MudProgressCircular Size="@Size" Color="@Color" Indeterminate="true" />
+}
+
