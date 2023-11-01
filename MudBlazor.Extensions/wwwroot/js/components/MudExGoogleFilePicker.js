@@ -119,7 +119,6 @@
                         fileInfoArray.push(fileInfo);
                     }
                 } else {
-                    // If it's a file, process it
                     const fileInfo = await this.processFile(fileId, fileName, '');
                     fileInfoArray.push(fileInfo);
                 }
@@ -138,6 +137,10 @@
             fileId: fileId,
             fields: 'webViewLink, webContentLink, parents, mimeType, size'
         });
+        const parentIds = res.result.parents || [];
+        if (this.options.alwaysLoadPath) {
+            path = (await this.getFolderPath(parentIds[0]));
+        }
 
         // Building the file info object
         let fileInfo = {

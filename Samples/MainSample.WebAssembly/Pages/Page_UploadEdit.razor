@@ -1,20 +1,21 @@
 ﻿@page "/upload-edit"
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
-@using Nextended.Core
-@using System.Text
 @using MudBlazor.Extensions.Core
-@using MudBlazor.Extensions.Helper
 @using Nextended.Core.Extensions
 @inject IDialogService dialogService;
 @attribute [DemoUpdated(Group = "File Handling", Name = "Upload Edit", Documentation = "Demo for the MudExUploadEdit.", Order = 2, Icon = Icons.Material.Outlined.Upload, ForComponentType = typeof(MudExUploadEdit<>))]
 
 
-<DemoComponent Title="MudExUploadEdit" PageType="@GetType()">
+<DemoComponent DocFiles="@(new [] {"Docs/MudExUploadEdit.md"})" Title="MudExUploadEdit" PageType="@GetType()">
     <SplitContainer>
         <Left>
             <MudCard Style="width: 80%">
                 <MudCardContent>
-                    <MudExUploadEdit DropZoneClickAction="DropZoneClickAction.UploadFile" CodeBlockTheme="@MainLayout.GetCodeBlockTheme()" MimeTypes="@mimeTypes" T="UploadableFile" Style="max-height: 400px; width: 100%" @ref="component"></MudExUploadEdit>
+                    <MudExUploadEdit
+                        DropZoneClickAction="DropZoneClickAction.UploadFile"
+                        CodeBlockTheme="@MainLayout.GetCodeBlockTheme()"
+                        MimeTypes="@mimeTypes" T="UploadableFile" Style="max-height: 400px; width: 100%" @ref="component">
+                    </MudExUploadEdit>
                 </MudCardContent>
                 <MudCardActions>
                     <div class="mt-6" style="width: 100%; display: flex; justify-content: center; align-items: center">

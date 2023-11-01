@@ -153,6 +153,8 @@ public enum DropZoneClickAction
     UploadFolder,
     AddUrl,
     PickFromGoogleDrive,
+    PickFromOneDrive,
+    PickFromDropBox,
 }
 
 /// <summary>
@@ -164,5 +166,6 @@ public enum ExternalProviderRendering
     ActionButtonsNewLine,
     Images,
     ImagesNewLine,
-    IntegratedInDialog,
+    IntegratedInDialogAsImages,
+    IntegratedInDialogAsButtons,
 }

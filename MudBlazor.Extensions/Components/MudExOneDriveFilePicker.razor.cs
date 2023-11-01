@@ -32,4 +32,11 @@ public partial class MudExOneDriveFilePicker
     }
 
     private async Task Pick() => await PickAsync();
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        ClientId ??= MudExConfiguration.OneDriveClientId;
+        base.OnInitialized();
+    }
 }

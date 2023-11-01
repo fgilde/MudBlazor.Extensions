@@ -7,6 +7,8 @@
 
 @attribute [DemoNew(Group = "MudExObjectEdit", Name = "Structured Data Edit", Order = 2, Documentation = "New MudExStructureDataEditor can used to edit json, xml or yaml string in a MudExObjectEdit", Icon = Icons.Custom.FileFormats.FileCode, ForComponentTypes = new[] { typeof(MudExStructuredDataEditor)})]
 
+<Scripts SourceLoaded="JsLoaded" Src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js,_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js, _content/BlazorMonaco/jsInterop.js"></Scripts>
+
 <DemoComponent PageType="@GetType()" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "SampleDialogOptions.cs"})">
     <SplitContainer Splittable="false" IsCollapsible="false">
         <Left>
@@ -25,7 +27,10 @@
                     <MudIconButton OnClick="@ShowSampleJsonEditDialog" Icon="@Icons.Material.Outlined.DesktopWindows" Color="Color.Inherit" Class="ml-5" />
                 </MudTooltip>
             </MudToolBar>
-            <StandaloneCodeEditor OnDidBlurEditorText="@OnEditorBlur" @ref="_editor" Id="sample-data-editor" ConstructionOptions="EditorConstructionOptions" />                    
+            @if (MonacoReady())
+            {
+                <StandaloneCodeEditor OnDidBlurEditorText="@OnEditorBlur" @ref="_editor" Id="sample-data-editor" ConstructionOptions="EditorConstructionOptions"/>
+            }
         </Right>
     </SplitContainer>
 
@@ -61,7 +66,8 @@
         _dataString = SimpleConvert.ConvertDataStringTo(_dataString, _dataType, newDataType);
         _dataType = newDataType;        
         await _editor.SetValue(_dataString);        
-        await BlazorMonaco.Editor.Global.SetModelLanguage(Js ,await _editor.GetModel(), CodeLanguage);
+        if (MonacoReady())
+            await BlazorMonaco.Editor.Global.SetModelLanguage(Js ,await _editor.GetModel(), CodeLanguage);
     }
 
     private async Task OnSaveClick(EditContext arg) => await Js.AlertAsync(arg.Model.ToString());
@@ -72,6 +78,18 @@
     {
         _dataType = StructuredDataType.Json;        
         await _editor.SetValue(_dataString = InitialDataString);        
-        await BlazorMonaco.Editor.Global.SetModelLanguage(Js ,await _editor.GetModel(), CodeLanguage);
+        if (MonacoReady())
+            await BlazorMonaco.Editor.Global.SetModelLanguage(Js ,await _editor.GetModel(), CodeLanguage);
     }
+
+    int jsLoaded = 0;
+    private async Task JsLoaded()
+    {
+        if(jsLoaded == 2)
+            await Task.Delay(400);
+        jsLoaded++;
+    }
+
+    private bool MonacoReady() => jsLoaded >= 3;
+
 }

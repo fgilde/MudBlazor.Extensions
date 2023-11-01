@@ -177,11 +177,12 @@ public abstract partial class MudExExternalFilePickerBase<T, TFile> : MudExJsReq
     /// Callback method for JavaScript to call when the picker is ready
     /// </summary>
     [JSInvokable]
-    public virtual void OnReady()
+    public virtual Task OnReady()
     {
         IsReady = true;
         InitializationCompletionSource.TrySetResult(IsReady);
         CallStateHasChanged();
+        return Task.CompletedTask;
     }
 
     /// <summary>

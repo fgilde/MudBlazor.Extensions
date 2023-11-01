@@ -16,12 +16,18 @@
                    Color="@Color"
                    Size="@Size"
                    StartIcon="@(StartIcon ?? DefaultIcon)" OnClick="@Pick">
-            @ChildContent(this)
+            @if (ChildContent != null)
+            {
+                @ChildContent(this)
+            }
         </MudButton>
     }
     @if (ActionViewMode == PickerActionViewMode.Custom)
     {
-        @ChildContent(this)
+        @if (ChildContent != null)
+        {
+            @ChildContent(this)
+        }
     }
 }
 else if (IsLoading ||RenderBehaviourWhileInitialization == FilePickerInitialRenderBehaviour.Loading)

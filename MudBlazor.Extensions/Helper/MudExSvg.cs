@@ -111,14 +111,14 @@ public static class MudExSvg
     /// </summary>
     /// <param name="value">The value of the SVG constant for which to get a name.</param>
     /// <returns>A string containing the fully-qualified name of the icon constant that matches the specified value.</returns>
-    public static string SvgPropertyNameForValue(string value) => SvgPropertyNameForValue(value, typeof(Icons));
+    public static string SvgPropertyNameForValue(string value) => SvgPropertyNameForValue(value, typeof(Icons), typeof(MudExIcons));
 
     /// <summary>
     /// Returns the value of the constant in <see cref="Icons"/> that has the specified name.
     /// </summary>
     /// <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
     /// <returns>The value</returns>
-    public static string SvgPropertyValueForName(string fullName) => SvgPropertyValueForName(fullName, typeof(Icons));
+    public static string SvgPropertyValueForName(string fullName) => SvgPropertyValueForName(fullName, typeof(Icons), typeof(MudExIcons));
 
     /// <summary>
     /// Returns the value of the constant in <see cref="Icons"/> that has the specified name.

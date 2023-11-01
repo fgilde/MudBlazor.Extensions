@@ -65,7 +65,7 @@ public partial class MudExDialog : IMudExComponent
     [Parameter]
     public DialogOptionsEx OptionsEx
     {
-        get => _options;
+        get => _options ??= DialogOptionsEx.DefaultDialogOptions;
         set
         {
             _options = value;

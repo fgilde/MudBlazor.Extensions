@@ -28,12 +28,40 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
     #region Parameters
 
+    /// <summary>
+    /// Dialog options for external file dialog
+    /// </summary>
+    [Parameter] public DialogOptionsEx ExternalDialogOptions { get; set; } = new() { CloseButton = true, DragMode = MudDialogDragMode.Simple, Resizeable = true, MaxWidth = MaxWidth.Small, FullWidth = true, Animations = new[] { AnimationType.FlipX } };
+    
+    /// <summary>
+    /// Set this to true to use the original colors for the images of the external file picker
+    /// </summary>
+    [Parameter] public bool ColoredImagesForExternalFilePicker { get; set; } = true;
 
-    [Parameter] public bool ColoredImagesForExternalFilePicker { get; set; }
-    [Parameter] public ExternalProviderRendering ExternalProviderRendering { get; set; } = ExternalProviderRendering.ActionButtons;
+    /// <summary>
+    /// Specify how external file providers are rendered
+    /// </summary>
+    [Parameter] public ExternalProviderRendering ExternalProviderRendering { get; set; } = ExternalProviderRendering.ImagesNewLine;
 
-    [Parameter, SafeCategory("Data")]
-    public string TextAddExternal { get; set; } = "Add External";
+    /// <summary>
+    /// The text displayed when picker are rendered in the add external dialog
+    /// </summary>
+    [Parameter, SafeCategory("Data")] public string TextAddExternal { get; set; } = "Add External";
+
+    /// <summary>
+    /// Client ID for One Drive
+    /// </summary>
+    [Parameter, SafeCategory("Data")] public string OneDriveClientId { get; set; }
+
+    /// <summary>
+    /// Client ID for Google Drive
+    /// </summary>
+    [Parameter, SafeCategory("Data")] public string GoogleDriveClientId { get; set; }
+
+    /// <summary>
+    /// The API key for DropBox
+    /// </summary>
+    [Parameter, SafeCategory("Data")] public string DropBoxApiKey { get; set; }
 
     /// <summary>
     /// Variant of action buttons
@@ -212,6 +240,24 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
     public bool AllowExternalUrl { get; set; } = true;
+
+    /// <summary>
+    /// Defines whether adding of external files from Google Drive is allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowGoogleDrive { get; set; } = true;
+
+    /// <summary>
+    /// Defines whether adding of external files from Drop Box is allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowDropBox { get; set; } = true;
+
+    /// <summary>
+    /// Defines whether adding of external files from Microsoft One Drive or office 365 is allowed.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool AllowOneDrive{ get; set; } = true;
 
     /// <summary>
     /// The ID of the upload field.
@@ -484,7 +530,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     public Func<string, Task<string>> ResolveContentTypeFromUrlFunc { get; set; }
 
     /// <summary>
-    /// If true icons are colored
+    /// If true file icons are colored
     /// </summary>
     [Parameter]
     [SafeCategory("Appearance")]
@@ -502,8 +548,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// Otherwise the data will only be loaded automatically when user clicks preview. 
     /// If false you can use <see cref="UploadableFile.EnsureDataLoadedAsync"/> or <see cref="MudExUploadEdit.EnsureDataLoadedAsync"/> to load the data manually when needed.
     /// </summary>
-    [Parameter]
-    [SafeCategory("Behavior")]
+    [Parameter, SafeCategory("Behavior")]
     public bool AutoLoadFileDataBytes { get; set; } = true;
 
     /// <summary>
@@ -531,6 +576,10 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     private bool _loading;
     private HashSet<BrowserFileWithPath> _paths = new();
     private MudExGoogleFilePicker _googleFilePicker;
+    private MudExOneDriveFilePicker _oneDriveFilePicker;
+    private MudExDropBoxFilePicker _dropBoxFilePicker;
+    private bool _urlDialogVisible;
+    private string _externalUrl;
 
     bool HasValidDropZoneClickAction =>
         DropZoneClickAction != DropZoneClickAction.None
@@ -544,6 +593,9 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     protected override Task OnInitializedAsync()
     {
         UploadFieldId ??= $"{nameof(MudExUploadEdit<T>)}-FileInput-{Guid.NewGuid().ToFormattedId()}";
+        GoogleDriveClientId ??= MudExConfiguration.GoogleDriveClientId;
+        OneDriveClientId ??= MudExConfiguration.OneDriveClientId;
+        DropBoxApiKey ??= MudExConfiguration.DropBoxApiKey;
         return base.OnInitializedAsync();
     }
 
@@ -984,29 +1036,8 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     }
 
     private bool IsValidUrl(string s) => Uri.TryCreate(s, UriKind.Absolute, out var uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-
-    private async Task AddUrl()
-    {
-#pragma warning disable CS8974 // Converting method group to non-delegate type
-        var parameters = new DialogParameters
-        {
-            {nameof(MudExPromptDialog.Message), TryLocalize(TextAddUrlMessage)},
-            {nameof(MudExPromptDialog.Icon), Icons.Material.Filled.Web},
-            {nameof(MudExPromptDialog.OkText), TryLocalize(TextAddUrl)},
-            {nameof(MudExPromptDialog.CanConfirm), IsValidUrl},
-            {nameof(MudExPromptDialog.Value), string.Empty},
-        };
-#pragma warning restore CS8974 // Converting method group to non-delegate type
-
-        var options = new DialogOptionsEx { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true, Animations = new[] { AnimationType.FlipX } };
-
-        var res = await DialogService.ShowEx<MudExPromptDialog>(TryLocalize(TextAddUrlTitle), parameters, options);
-        var dialogResult = (await res.Result);
-
-        if (!dialogResult.Canceled && dialogResult.Data != null && IsValidUrl(dialogResult.Data.ToString()))
-            await Add(dialogResult.Data.ToString());
-
-    }
+    
+    private void AddUrl() => _urlDialogVisible = !_urlDialogVisible;
 
     /// <summary>
     /// Resolve content type
@@ -1080,9 +1111,13 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         else if (DropZoneClickAction == DropZoneClickAction.UploadFolder && AllowFolderUpload)
             await UploadFolder(null);
         else if (DropZoneClickAction == DropZoneClickAction.AddUrl && AllowExternalUrl)
-            await AddUrl();
+            AddUrl();
         else if (DropZoneClickAction == DropZoneClickAction.PickFromGoogleDrive && CanUseGoogleDrive)
             await _googleFilePicker.PickAsync();
+        else if (DropZoneClickAction == DropZoneClickAction.PickFromOneDrive && CanUseOneDrive)
+            await _oneDriveFilePicker.PickAsync();
+        else if (DropZoneClickAction == DropZoneClickAction.PickFromDropBox && CanUseDropBox)
+            await _dropBoxFilePicker.PickAsync();
     }
 
     private Task Add(IEnumerable<IUploadableFile> items)
@@ -1105,18 +1140,19 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             if (IsAllowed(request))
                 Add(request);
         }
+        _urlDialogVisible = false;
         return RaiseChangedAsync();
     }
 
-    private PickerActionViewMode ExternalPickerIconsActionViewMode() => ExternalProviderRendering is ExternalProviderRendering.ImagesNewLine or ExternalProviderRendering.Images ? PickerActionViewMode.Image : PickerActionViewMode.Button;
+    private PickerActionViewMode ExternalPickerIconsActionViewMode() => ExternalProviderRendering is ExternalProviderRendering.ImagesNewLine or ExternalProviderRendering.Images or ExternalProviderRendering.IntegratedInDialogAsImages ? PickerActionViewMode.Image : PickerActionViewMode.Button;
 
     private bool RemoveColorsFromExternalPickerIcons() => !ColoredImagesForExternalFilePicker;
 
-    private bool CanUseGoogleDrive => true; // TODO: //!string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleClientId) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleApiKey) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleAppId);
+    private bool CanUseGoogleDrive => AllowGoogleDrive && !string.IsNullOrEmpty(GoogleDriveClientId); // TODO: //!string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleClientId) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleApiKey) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleAppId);
+    private bool CanUseDropBox => AllowDropBox && !string.IsNullOrEmpty(DropBoxApiKey); // TODO: //!string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleClientId) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleApiKey) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleAppId);
+    private bool CanUseOneDrive => AllowOneDrive && !string.IsNullOrEmpty(OneDriveClientId); // TODO: //!string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleClientId) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleApiKey) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleAppId);
+    private bool RenderPickerInDialog => ExternalProviderRendering is ExternalProviderRendering.IntegratedInDialogAsButtons or ExternalProviderRendering.IntegratedInDialogAsImages;
 
 
-    private bool AnyExternalFilePicker()
-    {
-        return true; // TODO:
-    }
+    private bool AnyExternalFilePicker() => CanUseGoogleDrive || CanUseDropBox || CanUseOneDrive;
 }

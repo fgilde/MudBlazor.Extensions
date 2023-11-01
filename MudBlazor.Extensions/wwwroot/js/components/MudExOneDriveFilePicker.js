@@ -59,6 +59,7 @@
         const fileName = fileDetails.name;
         const extension = fileName.split('.').pop();
 
+
         let fileInfo = {
             id: fileId,
             size: fileDetails.size,
@@ -67,9 +68,9 @@
             fileName: fileName,
             extension: extension,
             contentType: fileDetails.file.mimeType,
-            webViewLink: fileDetails.webUrl,
+            webUrl: fileDetails.webUrl,
+            url: fileDetails["@microsoft.graph.downloadUrl"],
             downloadUrl: fileDetails["@microsoft.graph.downloadUrl"],
-            webContentLink: null, // This might not be directly available
             path: (fileDetails.parentReference?.path || '').split(':').pop() // Path might not be directly available
         };
 

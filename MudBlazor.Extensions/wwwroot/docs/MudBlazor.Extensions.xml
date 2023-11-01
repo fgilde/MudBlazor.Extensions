@@ -1174,6 +1174,16 @@
             Style for divider
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.DropBoxFileInfo">
+            <summary>
+            File info for DropBox
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.DropBoxFileInfo.Id">
+            <summary>
+            File Id
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDropBoxFilePicker">
             <summary>
             DropBox external file picker component
@@ -1190,7 +1200,15 @@
         <member name="P:MudBlazor.Extensions.Components.MudExDropBoxFilePicker.ExternalJsFiles">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDropBoxFilePicker.OnReady">
+            <summary>
+            Callback method for JavaScript to call when the picker is ready
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDropBoxFilePicker.JsOptions">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDropBoxFilePicker.OnInitialized">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExEnumSelect`1">
@@ -2118,6 +2136,71 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFontSelect.OnInitialized">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.GoogleFileInfo">
+            <summary>
+            File info for Google Drive
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.Id">
+            <summary>
+            File Id
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.AccessToken">
+            <summary>
+            Access token
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.GoogleFileInfo.EnsureDataLoadedAsync(System.Net.Http.HttpClient)">
+            <summary>
+            Ensure data is loaded
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.Size">
+            <summary>
+            File size
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.FileName">
+            <summary>
+            File name
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.Extension">
+            <summary>
+            File extension
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.ContentType">
+            <summary>
+            File content type
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.WebViewLink">
+            <summary>
+            Web view link
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.WebContentLink">
+            <summary>
+            Web content link
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.Data">
+            <summary>
+            File data
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.Url">
+            <summary>
+            Url
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.GoogleFileInfo.Path">
+            <summary>
+            Folder path
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExGoogleFilePicker">
             <summary>
             Google Drive file picker component
@@ -2131,6 +2214,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExGoogleFilePicker.AllowUpload">
             <summary>
             Option to allow upload
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGoogleFilePicker.AlwaysLoadPath">
+            <summary>
+            Option to always load path
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExGoogleFilePicker.AllowFolderSelect">
@@ -2147,6 +2235,9 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExGoogleFilePicker.JsOptions">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGoogleFilePicker.OnInitialized">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExGradientText">
@@ -3096,6 +3187,31 @@
             Cancels the dialog
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.OneDriveFileInfo">
+            <summary>
+            File info from one drive
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.OneDriveFileInfo.Id">
+            <summary>
+            File Id
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.OneDriveFileInfo.AccessToken">
+            <summary>
+            AccessToken
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.OneDriveFileInfo.ApiPath">
+            <summary>
+            ApiPath
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.OneDriveFileInfo.DownloadUrl">
+            <summary>
+            DownloadUrl
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExOneDriveFilePicker">
             <summary>
             OneDrive file picker component
@@ -3113,6 +3229,9 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExOneDriveFilePicker.JsOptions">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExOneDriveFilePicker.OnInitialized">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExPopover">
@@ -4837,6 +4956,41 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ExternalDialogOptions">
+            <summary>
+            Dialog options for external file dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ColoredImagesForExternalFilePicker">
+            <summary>
+            Set this to true to use the original colors for the images of the external file picker
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ExternalProviderRendering">
+            <summary>
+            Specify how external file providers are rendered
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextAddExternal">
+            <summary>
+            The text displayed when picker are rendered in the add external dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.OneDriveClientId">
+            <summary>
+            Client ID for One Drive
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.GoogleDriveClientId">
+            <summary>
+            Client ID for Google Drive
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.DropBoxApiKey">
+            <summary>
+            The API key for DropBox
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ButtonVariant">
             <summary>
             Variant of action buttons
@@ -4985,6 +5139,21 @@
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowExternalUrl">
             <summary>
             Defines whether adding of external URL is allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowGoogleDrive">
+            <summary>
+            Defines whether adding of external files from Google Drive is allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowDropBox">
+            <summary>
+            Defines whether adding of external files from Drop Box is allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowOneDrive">
+            <summary>
+            Defines whether adding of external files from Microsoft One Drive or office 365 is allowed.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.UploadFieldId">
@@ -5164,7 +5333,7 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ColorizeIcons">
             <summary>
-            If true icons are colored
+            If true file icons are colored
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.DropZoneClickAction">
@@ -11382,6 +11551,36 @@
             <summary>
             Set this to true to disable all automatic css loadings
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.MudExConfiguration.GoogleDriveClientId">
+            <summary>
+            Global google drive client id
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.MudExConfiguration.OneDriveClientId">
+            <summary>
+            Global one drive client id
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.MudExConfiguration.DropBoxApiKey">
+            <summary>
+            Global one drive client id
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.EnableDropBoxIntegration(System.String)">
+            <summary>
+            Enable global drop box integration
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.EnableGoogleDriveIntegration(System.String)">
+            <summary>
+            Enable global google drive integration
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.EnableOneDriveIntegration(System.String)">
+            <summary>
+            Enable global google drive integration
+            </summary>    
         </member>
         <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.WithoutAutomaticCssLoading">
             <summary>

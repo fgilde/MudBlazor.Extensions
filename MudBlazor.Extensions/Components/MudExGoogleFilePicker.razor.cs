@@ -12,6 +12,7 @@ public partial class MudExGoogleFilePicker : IMudExExternalFilePicker
     private bool _allowUpload = true;
     private bool _allowFolderSelect;
     private bool _allowFolderNavigation;
+    private bool _alwaysLoadPath = true;
 
     /// <summary>
     /// Google Drive App Id
@@ -22,6 +23,11 @@ public partial class MudExGoogleFilePicker : IMudExExternalFilePicker
     /// Option to allow upload
     /// </summary>
     [Parameter] public bool AllowUpload { get => _allowUpload; set => Set(ref _allowUpload, value, _ => UpdateJsOptions()); }
+
+    /// <summary>
+    /// Option to always load path
+    /// </summary>
+    [Parameter] public bool AlwaysLoadPath { get => _alwaysLoadPath; set => Set(ref _alwaysLoadPath, value, _ => UpdateJsOptions()); }
 
     /// <summary>
     /// Option to allow folder select
@@ -42,10 +48,18 @@ public partial class MudExGoogleFilePicker : IMudExExternalFilePicker
         return new
         {
             AppId,
+            AlwaysLoadPath,
             AllowedMimeTypes = AllowedMimeTypes?.Any() == true ? string.Join(",", AllowedMimeTypes) : null,
             AllowUpload,
             AllowFolderSelect,
             AllowFolderNavigation
         };
+    }
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        ClientId ??= MudExConfiguration.GoogleDriveClientId;
+        base.OnInitialized();
     }
 }
