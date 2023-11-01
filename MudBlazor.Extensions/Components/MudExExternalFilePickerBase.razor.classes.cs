@@ -13,6 +13,16 @@ public enum FilePickerInitialRenderBehaviour
     Normal,
 
     /// <summary>
+    /// Render normal user can click while not initialized and action is then waiting for initialization
+    /// </summary>
+    Disabled,
+
+    /// <summary>
+    /// Render normal user can click while not initialized and action is then waiting for initialization
+    /// </summary>
+    SwitchIconToColored,
+
+    /// <summary>
     /// Render loading while not initialized
     /// </summary>
     Loading,

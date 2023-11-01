@@ -1235,6 +1235,16 @@
             Render normal user can click while not initialized and action is then waiting for initialization
             </summary>
         </member>
+        <member name="F:MudBlazor.Extensions.Components.FilePickerInitialRenderBehaviour.Disabled">
+            <summary>
+            Render normal user can click while not initialized and action is then waiting for initialization
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.FilePickerInitialRenderBehaviour.SwitchIconToColored">
+            <summary>
+            Render normal user can click while not initialized and action is then waiting for initialization
+            </summary>
+        </member>
         <member name="F:MudBlazor.Extensions.Components.FilePickerInitialRenderBehaviour.Loading">
             <summary>
             Render loading while not initialized
@@ -5053,7 +5063,17 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextAddFromGoogle">
             <summary>
-            The text for the add URL button.
+            The text for google drive picker.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextAddFromDropBox">
+            <summary>
+            The text for drop box picker
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextAddFromOneDrive">
+            <summary>
+            The text for one drive picker
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextRemoveAll">

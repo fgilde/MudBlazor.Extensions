@@ -132,7 +132,10 @@ public abstract partial class MudExExternalFilePickerBase<T, TFile> : MudExJsReq
     /// <summary>
     /// DefaultIcon if no StartIcon is set for the button
     /// </summary>
-    protected virtual string DefaultIcon => IconsWithoutColors ? MudExSvg.RemoveFillColors(Image) : Image;
+    protected virtual string DefaultIcon =>
+        RenderBehaviourWhileInitialization == FilePickerInitialRenderBehaviour.SwitchIconToColored
+            ? !IsReady ? MudExSvg.RemoveFillColors(Image) : Image
+            : IconsWithoutColors ? MudExSvg.RemoveFillColors(Image) : Image;
 
     /// <inheritdoc />
     public virtual async Task<IUploadableFile[]> PickAsync(CancellationToken cancellation = default)

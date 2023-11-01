@@ -2,17 +2,28 @@
 @typeparam T
 @typeparam TFile
 
-@if ((IsReady || RenderBehaviourWhileInitialization == FilePickerInitialRenderBehaviour.Normal) && !IsLoading)
+@if ((IsReady || RenderBehaviourWhileInitialization is FilePickerInitialRenderBehaviour.Normal or FilePickerInitialRenderBehaviour.Disabled or FilePickerInitialRenderBehaviour.SwitchIconToColored) && !IsLoading)
 {
     @if (ActionViewMode == PickerActionViewMode.Image)
     {
-        <MudButton Style="@($"width: {ImageSize.Width.ToString()}; height: {ImageSize.Height.ToString()}")" OnClick="@Pick">
-            <MudExIcon Color="@Color" Style="height: 100%; width: 100%" Icon="@(DefaultIcon)" />
-        </MudButton>
+        <MudTooltip>
+            <TooltipContent>
+                @if (ChildContent != null)
+                {
+                    @ChildContent(this)
+                }
+            </TooltipContent>
+            <ChildContent>
+                <MudButton Disabled="@(!IsReady && RenderBehaviourWhileInitialization is FilePickerInitialRenderBehaviour.Disabled)" Style="@($"width: {ImageSize.Width.ToString()}; height: {ImageSize.Height.ToString()}")" OnClick="@Pick">
+                    <MudExIcon Color="@Color" Style="height: 100%; width: 100%" Icon="@(DefaultIcon)" />
+                </MudButton>
+            </ChildContent>
+        </MudTooltip>
     }
     @if (ActionViewMode == PickerActionViewMode.Button)
     {
         <MudButton Variant="@Variant"
+                   Disabled="@(!IsReady && RenderBehaviourWhileInitialization is FilePickerInitialRenderBehaviour.Disabled)"
                    Color="@Color"
                    Size="@Size"
                    StartIcon="@(StartIcon ?? DefaultIcon)" OnClick="@Pick">
@@ -30,7 +41,7 @@
         }
     }
 }
-else if (IsLoading ||RenderBehaviourWhileInitialization == FilePickerInitialRenderBehaviour.Loading)
+else if (IsLoading || RenderBehaviourWhileInitialization == FilePickerInitialRenderBehaviour.Loading)
 {
     <MudProgressCircular Size="@Size" Color="@Color" Indeterminate="true" />
 }

@@ -134,10 +134,22 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     public string TextAddUrl { get; set; } = "Add Url";
 
     /// <summary>
-    /// The text for the add URL button.
+    /// The text for google drive picker.
     /// </summary>
     [Parameter, SafeCategory("Data")]
     public string TextAddFromGoogle { get; set; } = "Google Drive";
+
+    /// <summary>
+    /// The text for drop box picker
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextAddFromDropBox { get; set; } = "Drop Box";
+
+    /// <summary>
+    /// The text for one drive picker
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextAddFromOneDrive { get; set; } = "One Drive";
 
     /// <summary>
     /// The text for the remove all button.
