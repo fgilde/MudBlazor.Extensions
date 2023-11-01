@@ -10,6 +10,7 @@ public class OneDriveFileInfo: IUploadableFile
     private string _url;
     public string Id { get; set; }
     public string AccessToken { get; set; }
+    public string ApiPath { get; set; }
 
     public async Task EnsureDataLoadedAsync(HttpClient client = null)
     {
@@ -20,12 +21,13 @@ public class OneDriveFileInfo: IUploadableFile
             Extension ??= System.IO.Path.GetExtension(Url);
             ContentType ??= await MimeType.ReadMimeTypeFromUrlAsync(Url, client);
             FileName ??= System.IO.Path.GetFileName(Url);
-            Data = await client.GetByteArrayAsync($"https://www.googleapis.com/drive/v3/files/{Id}?alt=media");
+            Data = await client.GetByteArrayAsync(DownloadUrl);
         }
     }
 
     public long Size { get; set; }
     public string FileName { get; set; }
+    public string DownloadUrl { get; set; }
     public string Extension { get; set; }
     public string ContentType { get; set; }
     public string WebViewLink { get; set; }

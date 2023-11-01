@@ -933,10 +933,11 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
     private async Task Preview(T request)
     {
-        if (request.Data == null && string.IsNullOrWhiteSpace(request.Url))
+        if (request.Data == null /*&& string.IsNullOrWhiteSpace(request.Url)*/) // TODO: check if this is needed
         {
             _loadings.AddOrUpdate(request, (null, request.Size, 0));
             await request.EnsureDataLoadedAsync();
+            _loadings.TryRemove(request, out _);
         }
         var parameters = new DialogParameters {
             { nameof(MudExFileDisplay.HandleContentErrorFunc), HandlePreviewContentErrorFunc },

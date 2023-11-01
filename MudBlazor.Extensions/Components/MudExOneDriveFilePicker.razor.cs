@@ -19,6 +19,7 @@ public partial class MudExOneDriveFilePicker
     public override string Image => "https://developers.google.com/drive/images/drive_icon.png";
     public string AccessToken { get; private set; }
 
+    protected override string[] ExternalJsFiles => new[] { "https://js.live.net/v7.2/OneDrive.js" };
   
     [JSInvokable]
     public void OnAuthorized(string accessToken)

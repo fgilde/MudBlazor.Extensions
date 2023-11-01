@@ -135,6 +135,7 @@
             </MudButton>
         }
         
+        
         @if (CanUseGoogleDrive && !ReadOnly)
         {
             <span class="action-margin"></span>
@@ -171,6 +172,7 @@
                                 Variant="@ButtonVariant"
                                 Color="@ButtonColor"
                                 Size="@ButtonSize"
+                                AllowFolderSelect="@AllowFolderUpload"
                                 MultiSelect="@AllowMultiple"
                                 AutoLoadFileDataBytes="@AutoLoadFileDataBytes"
                                 AllowedMimeTypes="@_allowedMimeTypes"

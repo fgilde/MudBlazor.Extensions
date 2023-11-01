@@ -1,48 +1,11 @@
-﻿class MudExOneDriveFilePicker {
-    elementRef;
-    dotnet;
-    options;
-    accessToken = null;
-    pickerInited = false;
-
-    constructor(elementRef, dotNet, options) {
-        this.elementRef = elementRef;
-        this.dotnet = dotNet;
-        this.setOptions(options);
-    }
-
-    setOptions(options) {
-        this.options = { ...options, ...options.jsOptions || {} };
-        delete this.options.jsOptions;
-        if (this.options.clientId) {
-            this.loadApi();
-        }
-    }
-
-    loadApi() {
-        const existingScript = document.getElementById('onedrivejs');
-        if (existingScript) {
-            this.apiLoaded();
-        } else {
-            const oneDriveScript = document.createElement('script');
-            oneDriveScript.module = true;
-            oneDriveScript.id = 'onedrivejs';
-            oneDriveScript.src = 'https://js.live.net/v7.2/OneDrive.js';
-            oneDriveScript.onload = this.apiLoaded.bind(this);
-            document.body.appendChild(oneDriveScript);
-        }
-    }
-
-    apiLoaded() {
-        this.pickerInited = true;
-        this.dotnet.invokeMethodAsync(this.options.onReadyCallback);
-    }
+﻿class MudExOneDriveFilePicker extends MudExExternalFilePickerBase {
 
     openPicker() {
         const odOptions = {
             clientId: this.options.clientId,
             action: "query",
             multiSelect: this.options.multiSelect || false,
+            viewType: this.options.allowFolderSelect ? 'all' : 'files',
             advanced: {
                 redirectUri: this.options.redirectUri || window.location.origin,
                 accessToken: this.accessToken || undefined
@@ -69,11 +32,9 @@
 
         for (const file of files.value) {
             if (file.folder) {
-                // If it's a folder, get all files within it
                 const folderFiles = await this.getAllFilesInFolder(file.id);
                 fileDataArray.push(...folderFiles);
             } else {
-                // If it's a file, process it
                 const fileInfo = await this.processFile(file);
                 fileDataArray.push(fileInfo);
             }
@@ -101,12 +62,14 @@
             id: fileId,
             size: fileDetails.size,
             accessToken: this.accessToken,
+            apiPath: this.apiEndpoint,
             fileName: fileName,
             extension: extension,
             contentType: fileDetails.file.mimeType,
             webViewLink: fileDetails.webUrl,
+            downloadUrl: fileDetails["@microsoft.graph.downloadUrl"],
             webContentLink: null, // This might not be directly available
-            path: '' // Path might not be directly available
+            path: (fileDetails.parentReference?.path || '').split(':').pop() // Path might not be directly available
         };
 
         if (this.options.autoLoadFileDataBytes) {
@@ -122,17 +85,31 @@
     }
     
     async getAllFilesInFolder(folderId) {
-        // Function to recursively fetch all files within a folder
-        // Additional implementation may be required here
-        return [];
-    }
+        let files = [];
+        let nextPageUrl = `${this.apiEndpoint}me/drive/items/${folderId}/children`;
 
-    async getFilePath(driveId, fileId) {
-        // Function to build the file path
-        // Additional implementation may be required here
-        return '';
-    }
+        while (nextPageUrl) {
+            const response = await fetch(nextPageUrl, {
+                headers: new Headers({ Authorization: `Bearer ${this.accessToken}` })
+            });
+            const data = await response.json();
 
+            for (const item of data.value) {
+                if (item.folder) {
+                    // If it's a folder, fetch files within it recursively
+                    const subFolderFiles = await this.getAllFilesInFolder(item.id);
+                    files.push(...subFolderFiles);
+                } else {
+                    files.push(await this.processFile(item));
+                }
+            }
+
+            nextPageUrl = data['@odata.nextLink']; // Check if there's a next page
+        }
+
+        return files;
+    }
+    
     dispose() {
         // Cleanup if necessary
     }

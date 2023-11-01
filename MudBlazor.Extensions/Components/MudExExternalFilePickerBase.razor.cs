@@ -35,6 +35,7 @@ public abstract partial class MudExExternalFilePickerBase<T, TFile> : MudExJsReq
     [Parameter] public string StartIcon { get; set; } = MudExIcons.Brands.DropBox;
     [Parameter] public RenderFragment ChildContent { get; set; }
 
+    protected virtual string[] ExternalJsFiles => null;
     protected bool IsReady { get; set; }
     protected bool IsLoading { get; set; }
 
@@ -94,6 +95,7 @@ public abstract partial class MudExExternalFilePickerBase<T, TFile> : MudExJsReq
         //AllowedMimeTypes.Select(mt => MimeType.GetExtension(mt))
         return new
         {
+            ExternalJsFiles,
             OnReadyCallback = nameof(OnReady),
             OnFilesSelectedCallback = nameof(OnFilesSelected),
             ClientId,
@@ -103,6 +105,12 @@ public abstract partial class MudExExternalFilePickerBase<T, TFile> : MudExJsReq
             AutoLoadFileDataBytes,
             JsOptions = JsOptions()
         };
+    }
+
+    public override async Task ImportModuleAndCreateJsAsync()
+    {
+        await JsRuntime.InvokeAsync<IJSObjectReference>("import", $"./_content/MudBlazor.Extensions/js/components/MudExExternalFilePickerBase.js");
+        await base.ImportModuleAndCreateJsAsync();
     }
 
     protected virtual void UpdateJsOptions()
