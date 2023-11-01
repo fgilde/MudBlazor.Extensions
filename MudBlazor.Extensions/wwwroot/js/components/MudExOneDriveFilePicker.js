@@ -13,6 +13,7 @@
             success: (files) => {
                 this.accessToken = files.accessToken;
                 this.apiEndpoint = files.apiEndpoint;
+                this.dotnet.invokeMethodAsync(this.options.onAuthorizedCallback, this.accessToken);
                 this.processResult(files);
             },
             cancel: () => {

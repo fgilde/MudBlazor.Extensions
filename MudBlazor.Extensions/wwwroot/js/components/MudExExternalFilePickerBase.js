@@ -18,7 +18,7 @@
     setOptions(options) {
         this.options = { ...options, ...options.jsOptions || {} };
         delete this.options.jsOptions;
-        if (this.options.clientId) {
+        if (this.options.clientId || this.options.apiKey) {
             this.loadApi();
         }
     }

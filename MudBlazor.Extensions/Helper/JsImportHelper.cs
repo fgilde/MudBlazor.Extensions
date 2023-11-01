@@ -10,8 +10,8 @@ namespace MudBlazor.Extensions.Helper
     /// </summary>
     public static class JsImportHelper
     {
-        private static bool useMinified => false;
-        private static string min => useMinified ? ".min" : string.Empty;        
+        internal static bool UseMinified => false;
+        private static string min => UseMinified ? ".min" : string.Empty;        
         
         internal static IJSRuntime LegacyRuntimeReference;
 
@@ -29,7 +29,7 @@ namespace MudBlazor.Extensions.Helper
         internal static async Task<IJSRuntime> InitializeMudBlazorExtensionsCoreAsync(this IJSRuntime runtime, bool force = false)
         {
             LegacyRuntimeReference ??= (runtime ??= GetJsRuntime());
-            if (force || !useMinified || !await runtime.IsNamespaceAvailableAsync("MudBlazorExtensions"))
+            if (force || !UseMinified || !await runtime.IsNamespaceAvailableAsync("MudBlazorExtensions"))
             {
                 await runtime.ImportModuleBlazorJS(); // This is a workaround for using module in MAUI apps
                 await ImportMainMudEx(runtime); // This is a workaround for using module in MAUI apps
@@ -42,7 +42,7 @@ namespace MudBlazor.Extensions.Helper
             => await runtime.AddCss(await MudExResource.GetEmbeddedFileContentAsync($"wwwroot/mudBlazorExtensions{min}.css"), "mudex-styles", !force);
 
         private static Task ImportMainMudEx(IJSRuntime runtime) 
-            => useMinified ? runtime.ImportModuleMudEx() : runtime.LoadFilesAsync(MainJs());
+            => UseMinified ? runtime.ImportModuleMudEx() : runtime.LoadFilesAsync(MainJs());
 
         internal static IJSRuntime GetInitializedJsRuntime() => LegacyRuntimeReference;
 
@@ -67,7 +67,7 @@ namespace MudBlazor.Extensions.Helper
         internal static string ComponentJs(string componentName) 
             => $"/_content/{Assembly.GetExecutingAssembly().GetName().Name}/js/components/{componentName}{min}.js{Cb()}";
 
-        private static string Cb() => useMinified ? string.Empty : $"?cb={DateTime.Now.Ticks}";
+        private static string Cb() => UseMinified ? string.Empty : $"?cb={DateTime.Now.Ticks}";
 
         internal static Task<IJSObjectReference> ImportModuleAsync<TComponent>(this IJSRuntime js, string name=null) 
             => js.ImportModuleAsync(ComponentJs<TComponent>(name));

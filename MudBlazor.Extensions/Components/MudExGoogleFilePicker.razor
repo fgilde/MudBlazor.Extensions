@@ -1,21 +1,15 @@
-﻿@inherits MudExJsRequiredBaseComponent<MudExGoogleFilePicker>
+﻿@inherits MudExExternalFilePickerBase<MudExGoogleFilePicker, GoogleFileInfo>
 
-@* <style>
+<style>
     .picker-dialog, .picker-dialog iframe {
-        z-index: 9999 !important; /* Use a value that works for your layout */
+        z-index: 99999 !important;
     }
-</style> *@
+</style>
 
-@if (IsReady && !IsLoading)
+@Inherited()
+
+@code
 {
-    <MudButton Variant="@Variant"
-               Color="@Color"
-               Size="@Size"
-               StartIcon="@StartIcon" OnClick="@Pick">
-        @ChildContent
-    </MudButton>
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 }
-else
-{
-    <MudProgressCircular Size="@Size" Color="@Color" Indeterminate="true" />
-}
+

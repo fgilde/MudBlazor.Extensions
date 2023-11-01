@@ -1,47 +1,22 @@
-﻿class MudExGoogleFilePicker {
-    elementRef;
-    dotnet;
-    options;
-    accessToken = null;
-    pickerInited = false;
+﻿class MudExGoogleFilePicker extends MudExExternalFilePickerBase {
     gisInited = false;
     tokenClient;
 
-    constructor(elementRef, dotNet, options) {
-        this.elementRef = elementRef;
-        this.dotnet = dotNet;
-        this.setOptions(options);
-    }
+ 
+    loadApi() {
+        const gapiScript = document.createElement('script');
+        gapiScript.async = true;
+        gapiScript.defer = true;
+        gapiScript.src = 'https://apis.google.com/js/api.js';
+        gapiScript.onload = this.gapiLoaded.bind(this);
+        document.body.appendChild(gapiScript);
 
-    setOptions(options) {
-        this.options = options;
-        if (this.options.clientId) {
-            this.loadGoogleApis();
-        }
-    }
-
-    loadGoogleApis() {
-        if (!window.gapi) {
-            const gapiScript = document.createElement('script');
-            gapiScript.async = true;
-            gapiScript.defer = true;
-            gapiScript.src = 'https://apis.google.com/js/api.js';
-            gapiScript.onload = this.gapiLoaded.bind(this);
-            document.body.appendChild(gapiScript);
-        } else {
-            this.gapiLoaded();
-        }
-
-        if (!window.google) {
-            const gisScript = document.createElement('script');
-            gisScript.async = true;
-            gisScript.defer = true;
-            gisScript.src = 'https://accounts.google.com/gsi/client';
-            gisScript.onload = this.gisLoaded.bind(this);
-            document.body.appendChild(gisScript);
-        } else {
-            this.gisLoaded();
-        }
+        const gisScript = document.createElement('script');
+        gisScript.async = true;
+        gisScript.defer = true;
+        gisScript.src = 'https://accounts.google.com/gsi/client';
+        gisScript.onload = this.gisLoaded.bind(this);
+        document.body.appendChild(gisScript);
     }
 
     gapiLoaded() {
@@ -66,18 +41,17 @@
 
     maybeEnableButtons() {
         if (this.pickerInited && this.gisInited) {
-            this.dotnet.invokeMethodAsync('OnReady');
-            // Enable your buttons or trigger your UI updates here
+            this.dotnet.invokeMethodAsync(this.options.onReadyCallback);
         }
     }
 
-    handleAuthClick() {
+    openPicker() {
         this.tokenClient.callback = async (response) => {
             if (response.error !== undefined) {
                 throw (response);
             }
             this.accessToken = response.access_token;
-            this.dotnet.invokeMethodAsync('OnAuthorized', this.accessToken);
+            this.dotnet.invokeMethodAsync(this.options.onAuthorizedCallback, this.accessToken);
             // Update your UI accordingly
             await this.createPicker();
         };
@@ -151,9 +125,9 @@
                 }
             }
 
-            this.dotnet.invokeMethodAsync('OnFilesSelected', fileInfoArray);
+            this.dotnet.invokeMethodAsync(this.options.onFilesSelectedCallback, fileInfoArray);
         } else if (data.action === google.picker.Action.CANCEL) {
-            this.dotnet.invokeMethodAsync('OnFilesSelected', []);
+            this.dotnet.invokeMethodAsync(this.options.onFilesSelectedCallback, []);
         }
     }
 
@@ -168,7 +142,6 @@
         // Building the file info object
         let fileInfo = {
             id: fileId,
-            size: parseFloat(res.result.size),
             accessToken: this.accessToken,
             fileName: fileName,
             extension: extension,
@@ -177,6 +150,10 @@
             webContentLink: res.result.webContentLink,
             path: path
         };
+
+        if (res.result.size) {
+            fileInfo.size = parseFloat(res.result.size);
+        }
 
         if (this.options.autoLoadFileDataBytes) {
             const blobResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,

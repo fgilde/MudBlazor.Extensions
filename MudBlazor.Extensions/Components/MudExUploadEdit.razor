@@ -1,5 +1,6 @@
 ﻿@using MudBlazor.Extensions.Helper
 @using Nextended.Core.Extensions
+@using Microsoft.AspNetCore.Components.Rendering
 @inherits MudExJsRequiredBaseComponent<MudExUploadEdit<T>>
 @typeparam T;
 
@@ -122,7 +123,7 @@
             </MudButton>
         }
 
-        @if (AllowExternalUrl && !ReadOnly)
+        @if ((AllowExternalUrl || (ExternalProviderRendering is ExternalProviderRendering.IntegratedInDialog && AnyExternalFilePicker())) && !ReadOnly)
         {
             <span class="action-margin"></span>
             <MudButton HtmlTag="label"
@@ -131,16 +132,39 @@
                        Color="@ButtonColor"
                        Size="@ButtonSize"
                        StartIcon="@Icons.Material.Filled.CloudUpload">
-                @TryLocalize(TextAddUrl)
+                @TryLocalize(ExternalProviderRendering is ExternalProviderRendering.IntegratedInDialog ? TextAddExternal : TextAddUrl)
             </MudButton>
         }
         
-        
+        @if (ExternalProviderRendering is ExternalProviderRendering.ActionButtons or ExternalProviderRendering.Images )
+        {
+            @RenderExternalPicker
+        }
+        else if (ExternalProviderRendering is not ExternalProviderRendering.IntegratedInDialog)
+        {
+            <MudItem>
+                @RenderExternalPicker
+            </MudItem>
+        }
+    </MudGrid>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(HelperText))
+{
+    <label style="margin-left: 8px;" class="mud-input-helper-text">@HelperText</label>
+}
+
+@code
+{
+    private void RenderExternalPicker(RenderTreeBuilder __builder)
+    {
         @if (CanUseGoogleDrive && !ReadOnly)
         {
             <span class="action-margin"></span>
             <MudExGoogleFilePicker @ref="_googleFilePicker"
                                    ClientId="787005879852-vkv0cduhl70u087pq4a8s2jtkdgv1n6s.apps.googleusercontent.com"
+                                   ActionViewMode="@ExternalPickerIconsActionViewMode()"
+                                   IconsWithoutColors="@RemoveColorsFromExternalPickerIcons()"
                                    Variant="@ButtonVariant"
                                    Color="@ButtonColor"
                                    Size="@ButtonSize"
@@ -153,9 +177,11 @@
                 @TryLocalize(TextAddFromGoogle)
             </MudExGoogleFilePicker>
         }
-        
+
         <span class="action-margin"></span>
         <MudExDropBoxFilePicker ApiKey="2ak2m6cfpdeb9f1"
+                                ActionViewMode="@ExternalPickerIconsActionViewMode()"
+                                IconsWithoutColors="@RemoveColorsFromExternalPickerIcons()"
                                 Variant="@ButtonVariant"
                                 Color="@ButtonColor"
                                 Size="@ButtonSize"
@@ -166,24 +192,20 @@
                                 FilesSelected="@Add">
             @TryLocalize("DropBox")
         </MudExDropBoxFilePicker>
-        
+
         <span class="action-margin"></span>
         <MudExOneDriveFilePicker ClientId="55d00a29-1bb6-40bf-90a6-ecd689a52a51"
-                                Variant="@ButtonVariant"
-                                Color="@ButtonColor"
-                                Size="@ButtonSize"
-                                AllowFolderSelect="@AllowFolderUpload"
-                                MultiSelect="@AllowMultiple"
-                                AutoLoadFileDataBytes="@AutoLoadFileDataBytes"
-                                AllowedMimeTypes="@_allowedMimeTypes"
-                                FilesSelected="@Add">
+                                 ActionViewMode="@ExternalPickerIconsActionViewMode()"
+                                 IconsWithoutColors="@RemoveColorsFromExternalPickerIcons()"
+                                 Variant="@ButtonVariant"
+                                 Color="@ButtonColor"
+                                 Size="@ButtonSize"
+                                 AllowFolderSelect="@AllowFolderUpload"
+                                 MultiSelect="@AllowMultiple"
+                                 AutoLoadFileDataBytes="@AutoLoadFileDataBytes"
+                                 AllowedMimeTypes="@_allowedMimeTypes"
+                                 FilesSelected="@Add">
             @TryLocalize("One Drive")
         </MudExOneDriveFilePicker>
-
-    </MudGrid>
-</div>
-
-@if (!string.IsNullOrWhiteSpace(HelperText))
-{
-    <label style="margin-left: 8px;" class="mud-input-helper-text">@HelperText</label>
+    }
 }

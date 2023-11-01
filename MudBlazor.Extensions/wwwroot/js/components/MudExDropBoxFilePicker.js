@@ -1,22 +1,14 @@
-﻿class MudExDropBoxFilePicker {
-    elementRef;
-    dotnet;
-    options;
-
-    constructor(elementRef, dotNet, options) {
-        this.elementRef = elementRef;
-        this.dotnet = dotNet;
-        this.setOptions(options);
-    }
-
+﻿class MudExDropBoxFilePicker extends MudExExternalFilePickerBase {
+  
+ 
     setOptions(options) {
-        this.options = options;
+        super.setOptions(options);
         if (this.options.apiKey) {
-            this.loadDropboxApi();
+            this.loadApi();
         }
     }
 
-    loadDropboxApi() {
+    loadApi() {
         const existingScript = document.getElementById('dropboxjs');
         if (existingScript) {
             existingScript.setAttribute('data-app-key', this.options.apiKey);
@@ -33,13 +25,8 @@
             document.body.appendChild(dropboxScript);
         }
     }
-
-
-    apiLoaded() {
-        this.dotnet.invokeMethodAsync('OnReady');
-    }
-
-    showPicker() {
+    
+    openPicker() {
         Dropbox.choose({
             success: (files) => {
                 const fileDataArray = files.map(file => ({

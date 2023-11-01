@@ -28,6 +28,13 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
     #region Parameters
 
+
+    [Parameter] public bool ColoredImagesForExternalFilePicker { get; set; }
+    [Parameter] public ExternalProviderRendering ExternalProviderRendering { get; set; } = ExternalProviderRendering.ActionButtons;
+
+    [Parameter, SafeCategory("Data")]
+    public string TextAddExternal { get; set; } = "Add External";
+
     /// <summary>
     /// Variant of action buttons
     /// </summary>
@@ -532,7 +539,6 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         && (DropZoneClickAction != DropZoneClickAction.AddUrl || AllowExternalUrl)
         || (DropZoneClickAction == DropZoneClickAction.UploadFile);
 
-    private bool CanUseGoogleDrive => true; // TODO: //!string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleClientId) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleApiKey) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleAppId);
 
     /// <inheritdoc />
     protected override Task OnInitializedAsync()
@@ -1100,5 +1106,17 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
                 Add(request);
         }
         return RaiseChangedAsync();
+    }
+
+    private PickerActionViewMode ExternalPickerIconsActionViewMode() => ExternalProviderRendering is ExternalProviderRendering.ImagesNewLine or ExternalProviderRendering.Images ? PickerActionViewMode.Image : PickerActionViewMode.Button;
+
+    private bool RemoveColorsFromExternalPickerIcons() => !ColoredImagesForExternalFilePicker;
+
+    private bool CanUseGoogleDrive => true; // TODO: //!string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleClientId) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleApiKey) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleAppId);
+
+
+    private bool AnyExternalFilePicker()
+    {
+        return true; // TODO:
     }
 }

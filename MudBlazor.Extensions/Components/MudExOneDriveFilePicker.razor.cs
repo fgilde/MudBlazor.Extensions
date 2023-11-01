@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+using MudBlazor.Extensions.Core;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -8,40 +8,28 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExOneDriveFilePicker 
 {
-    private bool _allowUpload = true;
     private bool _allowFolderSelect;
-    private bool _allowFolderNavigation;
 
-    [Parameter] public bool AllowUpload { get => _allowUpload; set => Set(ref _allowUpload, value, _ => UpdateJsOptions()); }
+    /// <summary>
+    /// Option to allow folder select
+    /// </summary>
     [Parameter] public bool AllowFolderSelect { get => _allowFolderSelect; set => Set(ref _allowFolderSelect, value, _ => UpdateJsOptions()); }
-    [Parameter] public bool AllowFolderNavigation { get => _allowFolderNavigation; set => Set(ref _allowFolderNavigation, value, _ => UpdateJsOptions()); }
 
-    public override string Image => "https://developers.google.com/drive/images/drive_icon.png";
-    public string AccessToken { get; private set; }
+    /// <inheritdoc />
+    public override string Image => MudExIcons.Custom.Brands.ColorFull.OneDrive;
 
+    /// <inheritdoc />
     protected override string[] ExternalJsFiles => new[] { "https://js.live.net/v7.2/OneDrive.js" };
-  
-    [JSInvokable]
-    public void OnAuthorized(string accessToken)
-    {
-        AccessToken = accessToken;
-        IsLoading = true;
-        CallStateHasChanged();
-    }
 
+    /// <inheritdoc />
     protected override object JsOptions()
     {
         return new
         {
             AllowedMimeTypes = AllowedMimeTypes?.Any() == true ? string.Join(",", AllowedMimeTypes) : null,
-            AllowUpload,
-            AllowFolderSelect,
-            AllowFolderNavigation
+            AllowFolderSelect
         };
     }
-
-
-    protected override async Task ShowPicker(CancellationToken cancellation = default) => await JsReference.InvokeVoidAsync("openPicker", cancellation);
 
     private async Task Pick() => await PickAsync();
 }

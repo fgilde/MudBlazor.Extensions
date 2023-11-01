@@ -1,15 +1,8 @@
-﻿@inherits MudExJsRequiredBaseComponent<MudExDropBoxFilePicker>
+﻿@inherits MudExExternalFilePickerBase<MudExDropBoxFilePicker, DropBoxFileInfo>
 
-@if (IsReady && !IsLoading)
+@Inherited()
+
+@code
 {
-    <MudButton Variant="@Variant"
-               Color="@Color"
-               Size="@Size"
-               StartIcon="@StartIcon" OnClick="@Pick">
-        @ChildContent
-    </MudButton>
-}
-else
-{
-    <MudProgressCircular Size="@Size" Color="@Color" Indeterminate="true" />
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 }

@@ -2,16 +2,29 @@
 @typeparam T
 @typeparam TFile
 
-@if (IsReady && !IsLoading)
+@if ((IsReady || RenderBehaviourWhileInitialization == FilePickerInitialRenderBehaviour.Normal) && !IsLoading)
 {
-    <MudButton Variant="@Variant"
-               Color="@Color"
-               Size="@Size"
-               StartIcon="@StartIcon" OnClick="@Pick">
-        @ChildContent
-    </MudButton>
+    @if (ActionViewMode == PickerActionViewMode.Image)
+    {
+        <MudButton Style="@($"width: {ImageSize.Width.ToString()}; height: {ImageSize.Height.ToString()}")" OnClick="@Pick">
+            <MudExIcon Color="@Color" Style="height: 100%; width: 100%" Icon="@(DefaultIcon)" />
+        </MudButton>
+    }
+    @if (ActionViewMode == PickerActionViewMode.Button)
+    {
+        <MudButton Variant="@Variant"
+                   Color="@Color"
+                   Size="@Size"
+                   StartIcon="@(StartIcon ?? DefaultIcon)" OnClick="@Pick">
+            @ChildContent(this)
+        </MudButton>
+    }
+    @if (ActionViewMode == PickerActionViewMode.Custom)
+    {
+        @ChildContent(this)
+    }
 }
-else
+else if (IsLoading ||RenderBehaviourWhileInitialization == FilePickerInitialRenderBehaviour.Loading)
 {
     <MudProgressCircular Size="@Size" Color="@Color" Indeterminate="true" />
 }

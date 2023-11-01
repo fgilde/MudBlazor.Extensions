@@ -53,7 +53,14 @@ public class UploadableFile : IUploadableFile
     /// </summary>
     public string Path { get; set; }
 
+    /// <summary>
+    /// Task for loading content
+    /// </summary>
     public Func<Task> LoadTask { get; set; }
+
+    /// <summary>
+    /// File size
+    /// </summary>
     public long Size { get; set; }
 
     /// <summary>
@@ -136,6 +143,9 @@ public class BrowserFileWithPath
     public string ContentType { get; set; }
 }
 
+/// <summary>
+/// Action for drop zone click
+/// </summary>
 public enum DropZoneClickAction
 {
     None,
@@ -143,4 +153,16 @@ public enum DropZoneClickAction
     UploadFolder,
     AddUrl,
     PickFromGoogleDrive,
+}
+
+/// <summary>
+/// Represents the mode of rendering of the external provider.
+/// </summary>
+public enum ExternalProviderRendering
+{
+    ActionButtons,
+    ActionButtonsNewLine,
+    Images,
+    ImagesNewLine,
+    IntegratedInDialog,
 }

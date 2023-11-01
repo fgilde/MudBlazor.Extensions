@@ -4,6 +4,7 @@ using System.Text;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Utilities;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -13,6 +14,11 @@ namespace MudBlazor.Extensions.Helper;
 [HasDocumentation("MudExSvg.md")]
 public static class MudExSvg
 {
+    /// <summary>
+    /// Removes the fill colors from an svg string
+    /// </summary>
+    public static string RemoveFillColors(string svgContent) => new Regex("fill=\"[^\"]*\"").Replace(svgContent, "");
+
     /// <summary>
     /// Combines SVG icons horizontally
     /// </summary>
