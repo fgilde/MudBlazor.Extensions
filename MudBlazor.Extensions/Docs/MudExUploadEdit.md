@@ -6,9 +6,6 @@
 
 ![SAMPLE](https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions/Screenshots/UploadEdit.gif)
 
-![Download Video](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Screenshots/UploadEdit.mkv?raw=true)
-
-
 <!-- UPLOADEDIT:END -->
 
 ## Parameters
@@ -18,7 +15,8 @@
 - `ExternalDialogOptions`: Options for the external file dialog. Default settings include a close button, simple drag mode, resizable, small maximum width, full width, and flip X animation.
 
 ### Appearance and Styling
-
+- `ItemTemplate`: The template for an item.
+- `DropZoneTemplate`: The template for the drop zone when no files are added.
 - `ColoredImagesForExternalFilePicker`: Set to `true` to use original colors for images in the external file picker.
 - `ExternalProviderRendering`: Defines how external file providers are rendered. Default is `ImagesNewLine`.
 - `ButtonVariant`: Variant of action buttons. Default is `Text`.
@@ -27,8 +25,11 @@
 - `ButtonsJustify`: Alignment of action buttons. Default is `Center`.
 - `ErrorAnimation`: The animation type for errors. Default is `Pulse`.
 - `Variant`: The variant of the component.
+- `ExternalPickerImageSize`: The size of the images fot the external file picker action.
 
 ### External Storage Providers
+
+*Notice: If you're One Drive you should add the script tag `<script src="https://js.live.net/v7.2/OneDrive.js" type="text/javascript" charset="utf-8"></script>` to your index.html or _Hosts.cshtml file manually to ensure correct redirect after page reload.*
 
 - `OneDriveClientId`: Client ID for One Drive.
 - `GoogleDriveClientId`: Client ID for Google Drive.
@@ -37,11 +38,12 @@
 Please notice, you can also set the client ID and API key in the `MudBlazor.Extensions` configuration to easialier using.
 
 ```c#
-	builder.Services.AddMudServicesWithExtensions(c =>
+
+builder.Services.AddMudServicesWithExtensions(c =>
     c.EnableDropBoxIntegration("<DROP_BOX_API_KEY>")
         .EnableGoogleDriveIntegration("<GOOGLE_DRIVE_CLIENT_ID>")
-        .EnableOneDriveIntegration("<ONE_DRIVE_CLIENT_ID>")
-);
+        .EnableOneDriveIntegration("<ONE_DRIVE_CLIENT_ID>"));
+
 ```
 
 ### Text and Labels
@@ -53,6 +55,8 @@ Please notice, you can also set the client ID and API key in the `MudBlazor.Exte
 - `TextUploadFolder`: Text for the upload folder button. Default is "Upload Folder".
 - `TextAddUrl`: Text for the add URL button. Default is "Add Url".
 - `TextAddFromGoogle`: Text for adding from Google Drive. Default is "Google Drive".
+- `TextAddFromOneDrive`: Text for adding from One Drive. Default is "One Drive".
+- `TextAddFromDropBox`: Text for adding from Drop Box. Default is "Drop Box".
 - `TextRemoveAll`: Text for the remove all button. Default is "Remove All".
 - `TextErrorDuplicateFile`: Error text for duplicate files.
 - `TextErrorMaxFileSize`: Error text for exceeding maximum file size.
@@ -126,3 +130,6 @@ Please notice, you can also set the client ID and API key in the `MudBlazor.Exte
 - `AutoRemoveError`: Defines whether errors should be automatically removed.
 - `RemoveErrorOnChange`: Defines whether errors should be removed when there are changes. Default is `true`.
 - `AllowDrop`: Defines whether file drop is allowed. Default is `true`.
+- `AutoLoadFileDataBytes`: Defines whether file data bytes should be automatically loaded. Default is `true`.
+- `LoadFileDataBytesInBackground`: Defines whether file data bytes should be loaded in the background. Default is `true`.
+- `ShowProgressForLoadingData`: Defines whether progress should be shown when loading file data bytes. Default is `false`.

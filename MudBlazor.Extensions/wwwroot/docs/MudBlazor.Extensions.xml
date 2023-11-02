@@ -3380,6 +3380,11 @@
             Option to allow folder select
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExOneDriveFilePicker.RedirectUri">
+            <summary>
+            Url for redirect
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExOneDriveFilePicker.Image">
             <inheritdoc />
         </member>
