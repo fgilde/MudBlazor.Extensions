@@ -82,7 +82,7 @@
     <PackageReference Include="MudBlazor.Markdown" Version="0.1.2" />
     <PackageReference Include="Nextended.Blazor" Version="7.0.38" />
     <PackageReference Include="Nextended.Core" Version="7.0.46" /> 
-    <PackageReference Include="BlazorJS" Version="2.0.9" />
+    <PackageReference Include="BlazorJS" Version="2.1.2" />
     <PackageReference Include="OneOf" Version="3.0.263" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />

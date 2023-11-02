@@ -36,7 +36,7 @@ namespace MudBlazor.Extensions.Components
         /// Indicates whether the event should be disposed.
         /// </summary>
         [Parameter, SafeCategory("Behavior")]
-        public bool DisposeEvent { get; set; } = false;
+        public bool DisposeEvent { get; set; } = true;
 
         /// <summary>
         /// The animation type.
@@ -90,7 +90,7 @@ namespace MudBlazor.Extensions.Components
         {
             if (firstRender)
             {
-                _jsEvent = new BlazorJSEventInterop<PointerEventArgs>(JsRuntime);
+                _jsEvent ??= new BlazorJSEventInterop<PointerEventArgs>(JsRuntime);
                 await _jsEvent.OnBlur(OnFocusLeft, $".{_classId}", SelectorsForIgnoreBlur);
             }
             await base.OnAfterRenderAsync(firstRender);
@@ -191,9 +191,10 @@ namespace MudBlazor.Extensions.Components
         {
             if (DisposeEvent && _jsEvent is not null)
             {
-                _jsEvent.Dispose();
+                _jsEvent.DisposeAsync().AndForget();
                 _jsEvent = null;
             }
         }
     }
 }
+
