@@ -1046,7 +1046,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
     private async Task Preview(T request)
     {
-        if (request.Data == null /*&& string.IsNullOrWhiteSpace(request.Url)*/) // TODO: check if this is needed
+        if (request.Data is not { Length: not 0 } && string.IsNullOrWhiteSpace(request.Url)) 
         {
             _loadings.AddOrUpdate(request, (null, request.Size, 0));
             await request.EnsureDataLoadedAsync();
