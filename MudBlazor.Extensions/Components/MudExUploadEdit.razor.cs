@@ -26,7 +26,18 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 {
     const string DropPlaceholderText = "Drop files here";
 
+
     #region Parameters
+
+    /// <summary>
+    /// Template can used for the drop zone part if no item is added
+    /// </summary>
+    [Parameter] public RenderFragment<MudExUploadEdit<T>> DropZoneTemplate { get; set; }
+
+    /// <summary>
+    /// Item render template
+    /// </summary>
+    [Parameter] public RenderFragment<T> ItemTemplate { get; set; }
 
     /// <summary>
     /// Dialog options for external file dialog
@@ -346,6 +357,11 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     }
 
     /// <summary>
+    /// The size for external file picker images that is used if <see cref="ExternalProviderRendering"/> is set to Image
+    /// </summary>
+    [Parameter] public MudExDimension ExternalPickerImageSize { get; set; } = new(62);
+
+    /// <summary>
     /// The maximum file size allowed in bytes.
     /// </summary>
     [Parameter, SafeCategory("Validation")]
@@ -453,6 +469,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
     /// <summary>
     /// Defines whether duplicates are allowed.
+    /// If no duplicates are allowed and this is false please ensure <see cref="AutoLoadFileDataBytes"/> is true, otherwise the duplicate check will not work
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
     public bool AllowDuplicates { get; set; }
@@ -558,14 +575,23 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// <summary>
     /// If this is true the file will be loaded into memory and the data will be available in the <see cref="UploadableFile.Data"/> property.
     /// Otherwise the data will only be loaded automatically when user clicks preview. 
-    /// If false you can use <see cref="UploadableFile.EnsureDataLoadedAsync"/> or <see cref="MudExUploadEdit.EnsureDataLoadedAsync"/> to load the data manually when needed.
+    /// If false you can use <see cref="UploadableFile.EnsureDataLoadedAsync"/> or <see cref="EnsureDataLoadedAsync"/> to load the data manually when needed.
+    /// Notice if you disable this, the duplicate from <see cref="AllowDuplicates"/> check will not work
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
     public bool AutoLoadFileDataBytes { get; set; } = true;
 
     /// <summary>
+    /// Set this to false to load the file data before adding the request.
+    /// Otherwise data will be loaded in background.
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool LoadFileDataBytesInBackground { get; set; } = true;
+
+    /// <summary>
     /// If this is true then while the file is loading the progress bar will be shown.
     /// Otherwise the progress bar will be shown indeterminate what is faster for the UI.
+    /// Notice this only works when <see cref="LoadFileDataBytesInBackground"/> is true
     /// </summary>
     [Parameter]
     [SafeCategory("Behavior")]
@@ -600,6 +626,9 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         && (DropZoneClickAction != DropZoneClickAction.AddUrl || AllowExternalUrl)
         || (DropZoneClickAction == DropZoneClickAction.UploadFile);
 
+    private ConcurrentDictionary<T, (Task Task, long Size, long ReadBytes)> _loadings = new();
+    private bool IsLoading(T request) => _loadings.ContainsKey(request);
+    private string FindPath(IBrowserFile file) => _paths?.FirstOrDefault(f => f.Name == file.Name)?.RelativePath ?? string.Empty;
 
     /// <inheritdoc />
     protected override Task OnInitializedAsync()
@@ -704,52 +733,65 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
             var request = new T
             {
-                //Data = buffer,
                 Size = file.Size,
                 FileName = file.Name,
                 ContentType = BrowserFileExt.GetContentType(file),
                 Extension = extension,
                 Path = file is IArchivedBrowserFile fileInArchive ? fileInArchive.Path : FindPath(file)
             };
+            
+            await LoadDataIfAsync(file, request, LoadFileDataBytesInBackground);
+            
+            Add(request);
+        }
+    }
 
-            byte[] buffer;
-
+    private async Task LoadDataIfAsync(IBrowserFile file, T request, bool readInBackground)
+    {
+        byte[] buffer;
+        if (!readInBackground && AutoLoadFileDataBytes)
+        {
+            await using var stream = file.OpenReadStream(file.Size);
+            buffer = new byte[file.Size];
+            await stream.ReadStreamInChunksAsync(buffer);
+            request.Data = buffer;
+        }
+        else
+        {
             (Task Task, long Size, int ReadBytes) loading = (null, file.Size, 0);
             var loadTask = new Func<Task>(async () =>
             {
                 await using var stream = file.OpenReadStream(file.Size);
                 buffer = new byte[file.Size];
-                await stream.ReadStreamInChunksAsync(buffer, breakCondition: () => IsDisposed, bytesReadCallback: !ShowProgressForLoadingData ? null : totalBytes =>
-                {
-                    loading.ReadBytes = totalBytes;
-                    _loadings.AddOrUpdate(request, loading);
-                    CallStateHasChanged();
-                });
+                await stream.ReadStreamInChunksAsync(buffer, breakCondition: () => IsDisposed,
+                    bytesReadCallback: !ShowProgressForLoadingData
+                        ? null
+                        : totalBytes =>
+                        {
+                            loading.ReadBytes = totalBytes;
+                            _loadings.AddOrUpdate(request, loading);
+                            CallStateHasChanged();
+                        });
                 request.Data = buffer;
                 _loadings.Remove(request, out _);
+                if (AutoLoadFileDataBytes && AlreadyExists(request, true)) 
+                    Remove(request, true);
+
                 await InvokeAsync(StateHasChanged);
             });
-
             if (request is UploadableFile uploadableFile)
             {
                 uploadableFile.Size = file.Size;
                 uploadableFile.LoadTask = loadTask;
             }
-            
+
             if (AutoLoadFileDataBytes)
             {
                 loading.Task = Task.Run(loadTask);
                 _loadings.AddOrUpdate(request, loading);
             }
-
-
-            Add(request);
         }
     }
-
-    private ConcurrentDictionary<T, (Task Task, long Size, long ReadBytes)> _loadings = new();
-    private bool IsLoading(T request) => _loadings.ContainsKey(request);
-    private string FindPath(IBrowserFile file) => _paths?.FirstOrDefault(f => f.Name == file.Name)?.RelativePath ?? string.Empty;
     
     private async Task<IList<IArchivedBrowserFile>> GetZipEntriesAsync(IBrowserFile file)
     {
@@ -904,7 +946,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         {
             _withErrors.Clear();
         }
-        StateHasChanged();
+        InvokeAsync(StateHasChanged);
         return hasError;
     }
 
@@ -919,17 +961,18 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// Removes the given request from the list of requests.
     /// </summary>
     /// <param name="request"></param>
-    public void Remove(T request)
+    /// <param name="keepError">if true errors will not removed independent of RemoveErrorOnChange flag</param>
+    public void Remove(T request, bool keepError = false)
     {
         UploadRequests.Remove(request);
         UploadRequestRemoved.InvokeAsync(request);
         var pathEntry = _paths.FirstOrDefault(p => p.RelativePath == request.Path);
         if (pathEntry != null)
             _paths.Remove(pathEntry);
-        if (RemoveErrorOnChange)
+        if (RemoveErrorOnChange && !keepError)
             SetError();
         RaiseChangedAsync();
-        StateHasChanged();
+        CallStateHasChanged();
     }
 
     /// <summary>
@@ -945,7 +988,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         if (RemoveErrorOnChange)
             SetError();
         RaiseChangedAsync();
-        StateHasChanged();
+        CallStateHasChanged();
     }
 
     /// <summary>
@@ -1084,18 +1127,31 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         }
     }
 
+    private bool AlreadyExists(T request, bool setError)
+    {
+        var existing = AllowDuplicates || UploadRequests == null || UploadRequests.Count == 0 ? default : UploadRequests
+            .Where(r => (r.Data != null && request.Data != null && r.Data.SequenceEqual(request.Data)) || (!string.IsNullOrWhiteSpace(r.Url) && !string.IsNullOrWhiteSpace(request.Url) && r.Url == request.Url))
+            .FirstOrDefault(r => !EqualityComparer<T>.Default.Equals(r, request));
+        if (!EqualityComparer<T>.Default.Equals(existing, default))
+        {
+            if (setError)
+            {
+                _withErrors.Add(existing);
+                SetError(TryLocalize(TextErrorDuplicateFile, request.FileName));
+            }
+            return true;
+        }
+
+        return false;
+    }
+
     private void Add(T request)
     {
         if (!AllowMultiple)
             (UploadRequests ??= new List<T>()).Clear();
 
-        var existing = AllowDuplicates || UploadRequests == null || UploadRequests.Count == 0 ? default : UploadRequests.FirstOrDefault(r => (r.Data != null && request.Data != null && r.Data.SequenceEqual(request.Data)) || (!string.IsNullOrWhiteSpace(r.Url) && !string.IsNullOrWhiteSpace(request.Url) && r.Url == request.Url));
-        if (!EqualityComparer<T>.Default.Equals(existing, default))
-        {
-            _withErrors.Add(existing);
-            SetError(TryLocalize(TextErrorDuplicateFile, request.FileName));
+        if (AlreadyExists(request, true))
             return;
-        }
 
         if (RemoveErrorOnChange)
             SetError();
@@ -1116,7 +1172,10 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         };
     }
 
-    private async Task DropZoneClick(string id)
+    /// <summary>
+    /// Executes the DropZone Click Action
+    /// </summary>
+    public async Task DropZoneClick(string id)
     {
         if (DropZoneClickAction == DropZoneClickAction.UploadFile)
             await Upload(id);
@@ -1157,14 +1216,10 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     }
 
     private PickerActionViewMode ExternalPickerIconsActionViewMode() => ExternalProviderRendering is ExternalProviderRendering.ImagesNewLine or ExternalProviderRendering.Images or ExternalProviderRendering.IntegratedInDialogAsImages ? PickerActionViewMode.Image : PickerActionViewMode.Button;
-
     private bool RemoveColorsFromExternalPickerIcons() => !ColoredImagesForExternalFilePicker;
-
-    private bool CanUseGoogleDrive => AllowGoogleDrive && !string.IsNullOrEmpty(GoogleDriveClientId); // TODO: //!string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleClientId) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleApiKey) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleAppId);
-    private bool CanUseDropBox => AllowDropBox && !string.IsNullOrEmpty(DropBoxApiKey); // TODO: //!string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleClientId) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleApiKey) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleAppId);
-    private bool CanUseOneDrive => AllowOneDrive && !string.IsNullOrEmpty(OneDriveClientId); // TODO: //!string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleClientId) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleApiKey) && !string.IsNullOrWhiteSpace(MudExConfiguration?.GoogleAppId);
+    private bool CanUseGoogleDrive => AllowGoogleDrive && !string.IsNullOrEmpty(GoogleDriveClientId); 
+    private bool CanUseDropBox => AllowDropBox && !string.IsNullOrEmpty(DropBoxApiKey); 
+    private bool CanUseOneDrive => AllowOneDrive && !string.IsNullOrEmpty(OneDriveClientId);
     private bool RenderPickerInDialog => ExternalProviderRendering is ExternalProviderRendering.IntegratedInDialogAsButtons or ExternalProviderRendering.IntegratedInDialogAsImages;
-
-
     private bool AnyExternalFilePicker() => CanUseGoogleDrive || CanUseDropBox || CanUseOneDrive;
 }

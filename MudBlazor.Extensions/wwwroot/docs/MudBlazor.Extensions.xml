@@ -5114,6 +5114,16 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.DropZoneTemplate">
+            <summary>
+            Template can used for the drop zone part if no item is added
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ItemTemplate">
+            <summary>
+            Item render template
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ExternalDialogOptions">
             <summary>
             Dialog options for external file dialog
@@ -5349,6 +5359,11 @@
             The type of the restriction for extensions.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ExternalPickerImageSize">
+            <summary>
+            The size for external file picker images that is used if <see cref="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ExternalProviderRendering"/> is set to Image
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.MaxFileSize">
             <summary>
             The maximum file size allowed in bytes.
@@ -5427,6 +5442,7 @@
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowDuplicates">
             <summary>
             Defines whether duplicates are allowed.
+            If no duplicates are allowed and this is false please ensure <see cref="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AutoLoadFileDataBytes"/> is true, otherwise the duplicate check will not work
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.DisplayErrors">
@@ -5513,13 +5529,21 @@
             <summary>
             If this is true the file will be loaded into memory and the data will be available in the <see cref="P:MudBlazor.Extensions.Components.UploadableFile.Data"/> property.
             Otherwise the data will only be loaded automatically when user clicks preview. 
-            If false you can use <see cref="M:MudBlazor.Extensions.Components.UploadableFile.EnsureDataLoadedAsync(System.Net.Http.HttpClient)"/> or <see cref="!:MudExUploadEdit.EnsureDataLoadedAsync"/> to load the data manually when needed.
+            If false you can use <see cref="M:MudBlazor.Extensions.Components.UploadableFile.EnsureDataLoadedAsync(System.Net.Http.HttpClient)"/> or <see cref="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.EnsureDataLoadedAsync(System.Net.Http.HttpClient)"/> to load the data manually when needed.
+            Notice if you disable this, the duplicate from <see cref="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowDuplicates"/> check will not work
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.LoadFileDataBytesInBackground">
+            <summary>
+            Set this to false to load the file data before adding the request.
+            Otherwise data will be loaded in background.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ShowProgressForLoadingData">
             <summary>
             If this is true then while the file is loading the progress bar will be shown.
             Otherwise the progress bar will be shown indeterminate what is faster for the UI.
+            Notice this only works when <see cref="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.LoadFileDataBytesInBackground"/> is true
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.OnInitializedAsync">
@@ -5550,11 +5574,12 @@
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Remove(`0)">
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Remove(`0,System.Boolean)">
             <summary>
             Removes the given request from the list of requests.
             </summary>
             <param name="request"></param>
+            <param name="keepError">if true errors will not removed independent of RemoveErrorOnChange flag</param>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.RemoveAll">
             <summary>
@@ -5598,6 +5623,11 @@
             </summary>
             <param name="url"></param>
             <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.DropZoneClick(System.String)">
+            <summary>
+            Executes the DropZone Click Action
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.IDefaultRenderDataProvider">
             <summary>
@@ -6487,6 +6517,11 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.OnPropertyChange(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
             <summary>
             Called when a property value is changed
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.CreateMetaIfNotExists(System.Nullable{System.Boolean})">
+            <summary>
+            Creates and updates meta configs
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Export">

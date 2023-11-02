@@ -25,7 +25,7 @@
             </MudCard>
         </Left>
         <Right>
-            <ComponentPropertyGrid DefaultGroupName="Misc" MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
+            <ComponentPropertyGrid GroupByTypes="true" DefaultGroupName="Misc" MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
         </Right>
     </SplitContainer>
 </DemoComponent>
@@ -99,7 +99,9 @@
     {
         return meta =>
         {
-            meta.GroupByTypes((typeof(string), "String Options"), (typeof(bool), "Boolean Options"));
+            meta.Property(m => m.LoadFileDataBytesInBackground).IgnoreIf(e => !e.AutoLoadFileDataBytes);
+            meta.Property(m => m.AllowDuplicates).IgnoreIf(e => !e.AutoLoadFileDataBytes);
+            meta.Property(m => m.ShowProgressForLoadingData).IgnoreIf(e => !e.LoadFileDataBytesInBackground);
             meta.IgnoreAllReadOnlyFields();
             meta.Properties(
                 ue => ue.Localizer,

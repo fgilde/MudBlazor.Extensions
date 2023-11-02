@@ -685,11 +685,14 @@ public partial class MudExObjectEdit<T>
         return meta;
     }
 
-    private async Task CreateMetaIfNotExists()
+    /// <summary>
+    /// Creates and updates meta configs
+    /// </summary>
+    protected virtual async Task CreateMetaIfNotExists(bool? reconfigure = null)
     {
         RenderDataDefaults.AddRenderDataProvider(ServiceProvider);
         Action<ObjectEditMeta<T>> c = MetaConfigurationAsync != null ? await MetaConfigurationAsync : MetaConfiguration;
-        bool metaNeedsConfig = MetaInformation == null; // If not configured or not manually bypassed wer configure the Meta
+        bool metaNeedsConfig = MetaInformation == null || (reconfigure ?? false); // If not configured or not manually bypassed wer configure the Meta
         MetaInformation ??= (Value ??= typeof(T).CreateInstance<T>()).ObjectEditMeta();
         if (metaNeedsConfig || ConfigureMetaInformationAlways)
         {

@@ -24,8 +24,8 @@
             
 
             <MudExUploadEdit T="UploadableFile"
+                             Variant="Variant.Outlined"
                              For="@(() => model.Files)"
-                             Extensions="@(new string[]{".xlsx"})"
                              TextUploadFile="Click here to upload files"
                              TextDropZone="Drag and Drop files here"
                              ColorizeIcons="true"
@@ -35,7 +35,16 @@
                              Class="MudExUploadExCustom"
                              AllowRename="true"
                              UploadRequests="@model.Files"
-                             AllowPreview="false"></MudExUploadEdit>
+                             AllowPreview="false">
+                <DropZoneTemplate>
+                    <MudPaper Height="100px" Outlined="false">
+                        <MudText Typo="Typo.h6">Drag and drop files here or click</MudText>
+                    </MudPaper>
+                </DropZoneTemplate>
+                <ItemTemplate>
+                    <span style="margin-left: 10px;">@context.FileName</span>
+                </ItemTemplate>
+            </MudExUploadEdit>
 
         </MudCardContent>
         <MudCardActions>

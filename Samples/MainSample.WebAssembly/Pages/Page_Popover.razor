@@ -39,7 +39,6 @@
 
     private Action<ObjectEditMeta<MudExPopover>> Configure() => meta =>
     {
-        meta.GroupByCategoryAttribute();
         meta.Properties(p => p.Animation, p => p.AnimationPosition, p => p.Duration, p => p.AnimationTimingFunction).WithOrder(0).WithGroup("Animation");
         meta.IgnoreAllReadOnlyFields();
     };
