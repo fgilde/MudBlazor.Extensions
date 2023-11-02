@@ -15,8 +15,8 @@ namespace MudBlazor.Extensions.Components.Base;
 /// <summary>
 /// Base component for the most of all MudExComponents
 /// </summary>
-public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent, IAsyncDisposable
-    where T : MudExBaseComponent<T>
+public abstract class MudExBaseFormComponent<T, TData, U> : MudFormComponent<TData, U>, IMudExComponent, IAsyncDisposable
+    where T : MudExBaseFormComponent<T, TData, U>
 {
     private object _previousKey;
     private System.Timers.Timer _renderFinishTimer;
@@ -199,4 +199,7 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
         else
             _renderFinishTimer?.Dispose();
     }
+
+    protected MudExBaseFormComponent(Converter<TData, U> converter = null) : base(converter ?? new Converter<TData, U>())
+    {}
 }

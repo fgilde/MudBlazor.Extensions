@@ -2,6 +2,9 @@
 using Nextended.Core;
 using Nextended.Core.Contracts;
 using System.Net.Mime;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+using MudBlazor.Extensions.Attribute;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -56,6 +59,7 @@ public class UploadableFile : IUploadableFile
     /// <summary>
     /// Task for loading content
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore, JsonIgnore, IgnoreDataMember, IgnoreOnObjectEdit]
     public Func<Task> LoadTask { get; set; }
 
     /// <summary>

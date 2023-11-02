@@ -159,7 +159,6 @@
             <summary>
             Base component for the most of all MudExComponents
             </summary>
-            <typeparam name="T"></typeparam>
         </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.IsDisposed">
             <summary>
@@ -264,6 +263,114 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.DisposeAsync">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3">
+            <summary>
+            Base component for the most of all MudExComponents
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.IsDisposed">
+            <summary>
+            Is true if dispose was called
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.ElementId">
+            <summary>
+            Element id
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.Localizer">
+            <summary>
+            Localizer for localize texts
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.RenderKey">
+            <summary>
+            Render key for refresh component
+            </summary>    
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.ServiceProvider">
+            <summary>
+            Injected service provider
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.JsRuntime">
+            <summary>
+            JsRuntime
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.MudExConfiguration">
+            <summary>
+            MudExConfiguration
+            </summary>    
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.IsRendered">
+            <summary>
+            This is true if render has called already
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.IsFullyRendered">
+            <summary>
+            This is true if render has called already and finished all after render calls
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.DialogService">
+            <summary>
+            DialogService
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.LocalizerToUse">
+            <summary>
+            The localizer to use
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.Get``1">
+            <summary>
+            Returns the injected service for TService
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.GetServices``1">
+            <summary>
+            Returns the injected services for TService
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.TryLocalize(System.String,System.Object[])">
+            <summary>
+            Tries to localize given text if localizer and translation is available
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.IsLocalized(System.String,System.Object[])">
+            <summary>
+            returns true if translation is available
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.ShouldRender">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.CallStateHasChanged">
+            <summary>
+            Calls StateHasChanged
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.OnFinishedRenderAsync">
+            <summary>
+            Called when rendering is finished
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.OnAfterRender(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.Refresh">
+            <summary>
+            Refreshes this component and forces render
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseComponent`1">
             <summary>
             Base class for components that require a JS module to be imported and a JS object to be created.
@@ -304,6 +411,47 @@
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseComponent`1.DisposeAsync">
+            <inheritdoc/>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseFormComponent`3">
+            <summary>
+            Base class for components that require a JS module to be imported and a JS object to be created.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseFormComponent`3.JsReference">
+            <summary>
+            The JS object reference.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseFormComponent`3.ModuleReference">
+            <summary>
+            The imported module reference
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseFormComponent`3.ElementReference">
+            <summary>
+            Reference to rendered element
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseFormComponent`3.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseFormComponent`3.GetJsArguments">
+            <summary>
+            Returns an object that is passed forward to the js initialize and constructor method
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseFormComponent`3.CreateDotNetObjectReference">
+            <summary>
+            The dotnet object reference for the js module
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseFormComponent`3.ImportModuleAndCreateJsAsync">
+            <summary>
+            Virtual base method to import the module
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseFormComponent`3.DisposeAsync">
             <inheritdoc/>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MoveContentPosition">
@@ -6855,6 +7003,11 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ICustomRenderer.Render(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder,Microsoft.AspNetCore.Components.IHandleEvent,MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
             <summary>
             If attached as setting in ObjectEditPropertyMeta.RenderData this is called by MudExPropertyEdit
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExValidationWrapper`1.Value">
+            <summary>
+            The value of the ValidationWrapper component. This will be passed to the set validation function.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.Css.AlignItems">

@@ -134,7 +134,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Base\" />
     <Folder Include="Enums\" />
     <Folder Include="Middleware\" />
   </ItemGroup>

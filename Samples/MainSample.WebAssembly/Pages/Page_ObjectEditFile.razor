@@ -5,6 +5,7 @@
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 @using Newtonsoft.Json
+@using System.ComponentModel.DataAnnotations
 
 @attribute [Demo(Group = "MudExObjectEdit", Name = "Model with File", Order = 4, Documentation = "Demo for using MudExObjectEdit with a model that contains file(s)", Icon = Icons.Material.Outlined.FileOpen, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
@@ -18,8 +19,12 @@
 
     public class SampelModel
     {
+        [Required]
         public string Name { get; set; }
         public string Description { get; set; }
+
+        [Required]
+        [MinLength(2)]
         public UploadableFile[] Files { get; set; }
     }
     
