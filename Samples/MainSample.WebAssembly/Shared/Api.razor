@@ -9,33 +9,38 @@
 @using MudBlazor.Utilities
 @using Nextended.Core.Extensions
 @inject IDialogService DialogService;
+@inject NavigationManager NavigationManager;
 
 @if (ShowHeader)
 {
     <HeaderForType Type="@Type"></HeaderForType>
 }
 
-
-<MudBreadcrumbs Items="_inheritance.Value" Separator="<">
-    <ItemTemplate Context="item">
-        @if (item.Disabled)
-        {
-            <MudText Typo="Typo.subtitle2" Color="Color.Warning">@item.Text</MudText>
-        }
-        else
-        {
-            <MudLink Typo="Typo.subtitle2" Disabled="@item.Disabled" Href="@item.Href">@item.Text</MudLink>
-        }
-    </ItemTemplate>
-</MudBreadcrumbs>
-
-<MudToolBar>
-    <MudSwitch Color="Color.Primary" @bind-Checked="_showInherited">Show inherited</MudSwitch>
-    <MudSpacer/>
-    <MudExToggleableSearch AutoCloseOnBlur="false"
-                            OnKeyUp="@(() => { _methodPanel.Expand(); _propertyPanel.Expand(); })" 
-                           @bind-Filter="_searchString"></MudExToggleableSearch>
-</MudToolBar>
+@if (ShowInheritance)
+{
+    <MudBreadcrumbs Items="_inheritance.Value" Separator="<">
+        <ItemTemplate Context="item">
+            @if (item.Disabled)
+            {
+                <MudText Typo="Typo.subtitle2" Color="Color.Warning">@item.Text</MudText>
+            }
+            else
+            {
+                <MudLink Typo="Typo.subtitle2" Disabled="@item.Disabled" Href="@item.Href">@item.Text</MudLink>
+            }
+        </ItemTemplate>
+    </MudBreadcrumbs>
+}
+@if (ShowTools)
+{
+    <MudToolBar>
+        <MudSwitch Color="Color.Primary" @bind-Checked="ShowInherited">Show inherited</MudSwitch>
+        <MudSpacer/>
+        <MudExToggleableSearch AutoCloseOnBlur="false"
+                               OnKeyUp="@(() => { _methodPanel.Expand(); _propertyPanel.Expand(); })"
+                               @bind-Filter="_searchString"></MudExToggleableSearch>
+    </MudToolBar>
+}
 
 @if (Type.IsEnum)
 {
@@ -51,107 +56,139 @@
     </MudExpansionPanel>
 }
 
-<MudExpansionPanel @ref="_propertyPanel" IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@(IsInitiallyExpanded)" Text="Properties">
-    @if (Properties?.Any() == true)
-    {
-        <MudDataGrid T="ApiMemberInfo<PropertyInfo>" Items="@Properties.Where(p => _showInherited || !p.IsInherited)" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
-                     DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
-                     DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
-            <ToolBarContent>
-                <MudText Typo="Typo.h6">Properties</MudText>
-            </ToolBarContent>
-            <Columns>
-                <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
-                    <CellTemplate>
-                        @((MarkupString) (context.Item.IsStatic ? "static" : ""))
-                        <MudHighlighter Text="@(context.Item.Name)" HighlightedText="@_searchString"></MudHighlighter>
-                    </CellTemplate>
-                </PropertyColumn>
-
-                <PropertyColumn Property="x => x.TypeName" Title="PropertyType">
-                    <CellTemplate>
-                        @RenderLinks(context.Item.TypeName)
-                    </CellTemplate>
-                </PropertyColumn>
-                <PropertyColumn Property="x => x.Default">
-                    <CellTemplate>
-                        @if (context?.Item?.Default?.StartsWith("@") == true)
-                        {
-                            <MudLink Typo="Typo.subtitle2" OnClick="@(() => ShowValueForIcon(context.Item.Default))">@(context.Item.Default)</MudLink>
-                        }
-                        else
-                        {
-                            <p>@(context?.Item.Default)</p>
-                        }
-                    </CellTemplate>
-                </PropertyColumn>
-     
-                <PropertyColumn Hidden="@(!_showInherited)" Property="x => x.MemberInfo" Title="Declared on">
-                    <CellTemplate>
-                        <MudLink Typo="Typo.subtitle2" Href="@($"/a/{context.Item.MemberInfo.DeclaringType.Name}")">@ApiMemberInfo.GetGenericFriendlyTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
-                    </CellTemplate>
-                </PropertyColumn>
+@if (ShowProperties)
+{
+    <MudExpansionPanel @ref="_propertyPanel" Disabled="@Compact" IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@(IsInitiallyExpanded)" Text="Properties">
+        @if (Properties?.Any() == true)
+        {
+            <MudDataGrid T="ApiMemberInfo<PropertyInfo>" Items="@Properties.Where(p => (ShowInherited || !p.IsInherited) && (ShowOnly == null || ShowOnly.Contains(p.Name)))" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+                         DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
+                         DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
                 
-                <PropertyColumn Property="x => x.Description"/>
-            </Columns>
-        </MudDataGrid>
-    }
-    else
-    {
-        <MudAlert Severity="Severity.Info">No properties found</MudAlert>
-    }
-</MudExpansionPanel>
+                <ToolBarContent>
+                    @if (ShowHeader)
+                    {
+                        <MudText Typo="Typo.h6">Properties</MudText>
+                    }
+                </ToolBarContent>
+                
+                <Columns>
+                    <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
+                        <CellTemplate>
+                            @((MarkupString)(context.Item.IsStatic ? "static" : ""))
+                            <a name="@context.Item.Name"></a>
+                            <MudHighlighter Text="@(context.Item.Name)" HighlightedText="@_searchString"></MudHighlighter>
+                        </CellTemplate>
+                    </PropertyColumn>
+                    @if (!Compact)
+                    {
+                        <PropertyColumn Property="x => x.TypeName" Title="PropertyType">
+                            <CellTemplate>
+                                @RenderLinks(context.Item.TypeName)
+                            </CellTemplate>
+                        </PropertyColumn>
+                        <PropertyColumn Property="x => x.Default">
+                            <CellTemplate>
+                                @if (context?.Item?.Default?.StartsWith("@") == true)
+                                {
+                                    <MudLink Typo="Typo.subtitle2" OnClick="@(() => ShowValueForIcon(context.Item.Default))">@(context.Item.Default)</MudLink>
+                                }
+                                else
+                                {
+                                    <p>@(context?.Item.Default)</p>
+                                }
+                            </CellTemplate>
+                        </PropertyColumn>
 
+                        <PropertyColumn Hidden="@(!ShowInherited)" Property="x => x.MemberInfo" Title="Declared on">
+                            <CellTemplate>
+                                <MudLink Typo="Typo.subtitle2" Href="@($"/a/{context.Item.MemberInfo.DeclaringType.Name}")">@ApiMemberInfo.GetGenericFriendlyTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
+                            </CellTemplate>
+                        </PropertyColumn>
+                    }
+                    <PropertyColumn Property="x => x.Description">
+                        <CellTemplate>
+                            @RenderLinksInDescription(context.Item.Description)
+                        </CellTemplate>
+                    </PropertyColumn>
+                </Columns>
+            </MudDataGrid>
+        }
+        else
+        {
+            if (!_loaded)
+            {
+                <p>Please wait...</p>
+                <MudSkeleton/>
+                <MudSkeleton Animation="Animation.False"/>
+                <MudSkeleton Animation="Animation.Wave"/>
+            }
+            else
+            {
+                <MudAlert Severity="Severity.Info">No properties found</MudAlert>
+            }
+        }
+    </MudExpansionPanel>
+}
 
-<MudExpansionPanel @ref="_methodPanel" IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@IsInitiallyExpanded" Text="Methods">
-    @if (Methods?.Any() == true)
-    {
-        <MudDataGrid T="ApiMemberInfo<MethodInfo>" Items="@Methods.Where(p => _showInherited || !p.IsInherited)" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
-                     DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
-                     DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
-            <ToolBarContent>
-                <MudText Typo="Typo.h6">Methods</MudText>
-            </ToolBarContent>
-            <Columns>
-                @*<PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name" />*@
-                <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
-                    <CellTemplate>
-                        @((MarkupString) (context.Item.IsStatic ? "static" : ""))
-                        @RenderFunction(context.Item.Name)
-                    </CellTemplate>
-                </PropertyColumn>
-                <PropertyColumn Property="x => x.TypeName" Title="ReturnType">
-                    <CellTemplate>
-                        @RenderLinks(context.Item.TypeName)
-                    </CellTemplate>
-                </PropertyColumn>
-               
-                <PropertyColumn Hidden="@(!_showInherited)" Property="x => x.MemberInfo" Title="Declared on">
-                    <CellTemplate>
-                        <MudLink Typo="Typo.subtitle2" Href="@($"/a/{context.Item.MemberInfo.DeclaringType.Name}")">@ApiMemberInfo.GetGenericFriendlyTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
-                    </CellTemplate>
-                </PropertyColumn>
-                <PropertyColumn Property="x => x.Description"/>
-            </Columns>
-        </MudDataGrid>
-    }
-    else
-    {
-        <MudAlert Severity="Severity.Info">No methods found</MudAlert>
-    }
-</MudExpansionPanel>
+@if (ShowMethods)
+{
+    <MudExpansionPanel @ref="_methodPanel" Disabled="@Compact" IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@IsInitiallyExpanded" Text="Methods">
+        @if (Methods?.Any() == true)
+        {
+            <MudDataGrid T="ApiMemberInfo<MethodInfo>" Items="@Methods.Where(p => ShowInherited || !p.IsInherited && (ShowOnly == null || ShowOnly.Contains(p.Name)))" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+                         DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
+                         DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
+                <ToolBarContent>
+                    @if (ShowHeader)
+                    {
+                        <MudText Typo="Typo.h6">Methods</MudText>
+                    }
+                </ToolBarContent>
+                    
+                <Columns>
+                    @*<PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name" />*@
+                    <PropertyColumn CellStyle="@CellStyleName()" Property="x => x.Name">
+                        <CellTemplate>
+                            <a name="@context.Item.Name"></a>
+                            @((MarkupString)(context.Item.IsStatic ? "static" : ""))
+                            @RenderFunction(context.Item.Name)
+                        </CellTemplate>
+                    </PropertyColumn>
+                    <PropertyColumn Property="x => x.TypeName" Title="ReturnType">
+                        <CellTemplate>
+                            @RenderLinks(context.Item.TypeName)
+                        </CellTemplate>
+                    </PropertyColumn>
 
+                    <PropertyColumn Hidden="@(!ShowInherited)" Property="x => x.MemberInfo" Title="Declared on">
+                        <CellTemplate>
+                            <MudLink Typo="Typo.subtitle2" Href="@($"/a/{context.Item.MemberInfo.DeclaringType.Name}")">@ApiMemberInfo.GetGenericFriendlyTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
+                        </CellTemplate>
+                    </PropertyColumn>
+                    <PropertyColumn Property="x => x.Description"/>
+                </Columns>
+            </MudDataGrid>
+        }
+        else
+        {
+            if (!_loaded)
+            {
+                <p>Please wait...</p>
+                <MudSkeleton/>
+                <MudSkeleton Animation="Animation.False"/>
+                <MudSkeleton Animation="Animation.Wave"/>
+            }
+            else
+            {
+                <MudAlert Severity="Severity.Info">No methods found</MudAlert>
+            }
+        }
+    </MudExpansionPanel>
+}
 
 @code {
 
-    private bool _showInherited;
-    private string _searchString;
-
-    MudExpansionPanel _methodPanel;
-    MudExpansionPanel _propertyPanel;
-
-    [Parameter]
-    public bool IsInitiallyExpanded { get; set; } = true;
 
     private async Task ShowValueForIcon(string iconName)
     {
@@ -185,6 +222,11 @@
     private RenderFragment RenderFunction(string function)
     {
         return builder => { RenderFunctionRecursive(builder, function, 0); };
+    }
+
+    private RenderFragment RenderLinksInDescription(string description)
+    {
+        return builder => { RenderLinksInDescription(builder, description, 0); };
     }
 
     private void RenderFunctionRecursive(RenderTreeBuilder builder, string function, int level)
@@ -227,6 +269,7 @@
             }
         }
     }
+
 
     private void RenderLinksRecursive(RenderTreeBuilder builder, string typeName, int level)
     {
@@ -286,6 +329,128 @@
                 builder.AddContent(level++, mainType);
             }
         }
+
+    }
+
+    private void RenderLinksInDescription(RenderTreeBuilder builder, string description, int level, bool isToolTipContent = false)
+    {
+        if (description?.Contains("{{{") == true)
+        {
+            string pattern = @"\([^)]*\)"; // This regex pattern finds everything between ( and )
+            string result = Regex.Replace(description, pattern, string.Empty);
+
+            var parsedDescription = ParseDescription(result);
+            foreach (var segment in parsedDescription)
+            {
+                if (segment.isLink)
+                {
+                    string? tooltip = Properties?.FirstOrDefault(x => x.Name == segment.text)?.Description ?? Methods?.FirstOrDefault(m => m.Name == segment.text)?.Description;
+
+                    if (!string.IsNullOrEmpty(tooltip) && !isToolTipContent) // Don't create a tooltip for tooltip content
+                    {
+                        builder.OpenComponent<MudTooltip>(level++);
+                        builder.AddAttribute(level, nameof(MudTooltip.Delay), (double)1000);
+
+                        builder.AddAttribute(level, "ChildContent", (RenderFragment)((tooltipBuilder) =>
+                        {
+                            // Here we render the link which is the trigger for the tooltip
+                            tooltipBuilder.OpenElement(level++, "a");
+                            tooltipBuilder.AddAttribute(level, "href", segment.linkHref);
+                            // Hack because click events don't work ... 
+                            tooltipBuilder.AddAttribute(level, "onmousedown", EventCallback.Factory.Create<MouseEventArgs>(this, () => NavigationManager.NavigateTo(segment.linkHref)));
+                            tooltipBuilder.AddAttribute(level, "class", "api-link");
+                            tooltipBuilder.AddContent(level, segment.text);
+                            tooltipBuilder.CloseElement();
+                        }));
+
+                        builder.AddAttribute(level, "TooltipContent", (RenderFragment)((tooltipContentBuilder) =>
+                        {
+                            // Here we render the tooltip content, which might itself contain links
+                            tooltipContentBuilder.OpenElement(level++, "h4");
+                            tooltipContentBuilder.AddContent(level, segment.text);
+                            tooltipContentBuilder.CloseElement();
+                            RenderLinksInDescription(tooltipContentBuilder, tooltip, level, true);
+                        }));
+
+                        builder.CloseComponent();
+                    }
+                    else
+                    {
+                        // If there's no tooltip, just render the link
+                        builder.OpenElement(level++, "a");
+                        builder.AddAttribute(level, "href", segment.linkHref);
+                        builder.AddAttribute(level, "class", "api-link");
+                        builder.AddContent(level, segment.text);
+                        builder.CloseElement();
+                    }
+                }
+                else
+                {
+                    builder.AddContent(level++, segment.text);
+                }
+            }
+        }
+        else
+        {
+            builder.AddContent(level++, description);
+        }
+    }
+
+
+
+    private IEnumerable<(bool isLink, string text, string linkHref)> ParseDescription(string description)
+    {
+        // Adjusted regex pattern to capture the new notation
+        var regex = new Regex(@"\{\{\{([^}]+)\}\}\}");
+        int lastIdx = 0;
+
+        foreach (Match match in regex.Matches(description))
+        {
+            if (match.Index > lastIdx)
+            {
+                yield return (false, description[lastIdx..match.Index], null); // Text before the match
+            }
+
+            // Process the matched link
+            string fullName = match.Groups[1].Value;
+            string linkHref = GenerateLinkHref(fullName);
+            string linkText = ExtractDisplayName(fullName); // A method to extract a user-friendly name
+
+            yield return (true, linkText, linkHref); // The link
+
+            lastIdx = match.Index + match.Length;
+        }
+
+        if (lastIdx < description.Length)
+        {
+            yield return (false, description[lastIdx..], null); // Remaining text
+        }
+    }
+
+    // Helper method to generate the href for the link
+    private string GenerateLinkHref(string fullName)
+    {
+        // Assuming fullName format is like "P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowDuplicates"
+        // You will need to extract the DeclaringType and MemberName appropriately.
+        // Below is a simplistic approach and might need adjustment.
+
+        var parts = fullName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+        string memberName = parts.Last();
+        string declaringType = parts[^2]; // Second to last part is the declaring type
+
+        // Removing backtick and generic count (e.g., `1) from type names
+        declaringType = Regex.Replace(declaringType, @"`\d+", "");
+
+        //return $"/api/{declaringType}#{memberName}";
+        return $"/api/{declaringType}/{memberName}";
+    }
+
+    // Helper method to extract a user-friendly display name from the full name
+    private string ExtractDisplayName(string fullName)
+    {
+        // Logic to extract a more user-friendly display name
+        // For now, let's just return the last part after the last period which should be the member name.
+        return fullName.Split('.').Last();
     }
 
     private string GetLinkUriForType(string mainType)

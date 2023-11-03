@@ -76,13 +76,10 @@ else
         else
             meta.GroupByCategoryAttribute();
         meta.Properties<string>()
-    .Where(p => p?.Value?.ToString()?.StartsWith("<g") == true || p?.Value?.ToString()?.StartsWith("<path") == true)
-    .RenderWith<MudExIconPicker, string, string>(edit => edit.Value);
+            .Where(p => p?.Value?.ToString()?.StartsWith("<g") == true || p?.Value?.ToString()?.StartsWith("<path") == true)
+            .RenderWith<MudExIconPicker, string, string>(edit => edit.Value);
 
-        meta.AllProperties.WrapIn<PropertyInfoContainer<T>>((p, cmp) =>
-    {
-        cmp.Property = p.PropertyInfo;
-    });
+        meta.AllProperties.WrapIn<PropertyInfoContainer<T>>((p, cmp) => cmp.Property = p.PropertyInfo);
 
         return base.ConfigureMetaBase(meta);
     }

@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Samples\Samples.Shared\Samples.Shared.csproj" />
     <ProjectReference Include="..\Try.Core\Try.Core.csproj" />
   </ItemGroup>
 

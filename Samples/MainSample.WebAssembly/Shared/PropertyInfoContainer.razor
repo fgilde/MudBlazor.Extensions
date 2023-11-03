@@ -10,17 +10,15 @@
         @ChildContent
     </div>
 
-    @if (!string.IsNullOrEmpty(info.Description))
-    {
-        <div style="text-align: right; align-self: flex-start;">            
-            <MudIconButton Color="Color.Info" OnClick="@(ShowInfoAsync)" Title="@($"Show info for {Property.Name}")" Icon="@Icons.Material.Outlined.Info" Size="Size.Small"> </MudIconButton>
-        </div>
-    }
+    <div style="text-align: right; align-self: flex-start;">
+        <MudIconButton Color="Color.Info" OnClick="@(ShowInfoAsync)" Title="@($"Show info for {Property.Name}")" Icon="@Icons.Material.Outlined.Info" Size="Size.Small"> </MudIconButton>
+    </div>
+
 </div>
 
 
 @code {
-    
+
     [Inject] IDialogService dialogService { get; set; }
 
     [Parameter]
@@ -30,23 +28,41 @@
     public PropertyInfo Property { get; set; }
 
     private ApiMemberInfo<PropertyInfo> info;
-
-    protected override void OnInitialized()
-    {
-        info = new ApiMemberInfo<PropertyInfo>(Property, typeof(T));
-    }
+    private Type? _type;
+    private Type Type => _type ??= typeof(T).IsGenericType ? typeof(T).GetGenericTypeDefinition() : typeof(T);
 
     private async Task ShowInfoAsync()
     {
-        await info.LoadTask;        
-        await dialogService.ShowInformationAsync(Property.Name, info.Description, Icons.Material.Filled.Info, new DialogOptionsEx()
-        {
-            DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass),
-            DragMode = MudDialogDragMode.Simple,
-            CloseButton = true,
-            Resizeable = true,
-        });
-  
+        var options = new DialogOptionsEx()
+            {
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true,
+                Animation = AnimationType.Slide,
+                Resizeable = true,
+                DragMode = MudDialogDragMode.Simple,
+                CloseButton = true,
+                DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass)
+            };
+
+        await dialogService.ShowComponentInDialogAsync<Api>("Info", $"{ApiMemberInfo.GetGenericFriendlyTypeName(Type)} - {Property.Name}",
+            api =>
+            {
+                //api.Search = Property.Name;
+                api.ShowHeader = false;
+                api.ShowInheritance = false;
+                api.ShowTools = false;
+                api.ShowMethods = false;
+                api.ShowInherited = true;
+                api.Compact = true;
+                api.ShowOnly = new[] { Property.Name };
+                api.Type = Type;
+            },
+            dialog =>
+            {
+                dialog.Icon = Icons.Material.Filled.Info;
+                dialog.Buttons = MudExDialogResultAction.Ok();
+            },
+            options);
     }
 
 }

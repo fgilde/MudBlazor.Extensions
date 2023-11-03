@@ -115,7 +115,28 @@ public static class MudExResource
                 return null;
             var xpath = $"//member[@name='{xpathQuery}']/summary";
             var summaryNode = xmlDoc.SelectSingleNode(xpath);
-            return summaryNode?.InnerText.Trim();
+            if (summaryNode == null)
+                return null;
+
+            // Process "see" tags
+            var seeNodes = summaryNode.SelectNodes(".//see");
+            if (seeNodes != null)
+            {
+                foreach (XmlNode seeNode in seeNodes)
+                {
+                    var crefAttr = seeNode.Attributes?["cref"];
+                    if (crefAttr != null)
+                    {
+                        // Optionally: we might want to transform this further, e.g., to only include the type/member name.
+                        string seeText = crefAttr.Value.Replace("T:", "").Replace("M:", ""); // Trimming the type/member prefixes
+                        // Replace the see node with its text representation
+                        var textNode = xmlDoc.CreateTextNode("{{{" +seeText + "}}}");
+                        seeNode.ParentNode.ReplaceChild(textNode, seeNode);
+                    }
+                }
+            }
+
+            return summaryNode.InnerText.Trim();
         }
         catch
         {

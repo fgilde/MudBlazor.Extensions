@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Concurrent;
+using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -13,8 +15,11 @@ namespace MudBlazor.Extensions.Api;
 public sealed class ApiMemberInfo<TMemberInfo> : ApiMemberInfo, IApiMemberInfo
     where TMemberInfo : MemberInfo
 {
-
+    private const BindingFlags _flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
     private readonly Type _initialType;
+    private static readonly ConcurrentDictionary<Type, HashSet<ApiMemberInfo<PropertyInfo>>> _propertiesCache = new();
+    private static readonly ConcurrentDictionary<Type, HashSet<ApiMemberInfo<MethodInfo>>> _methodsCache = new();
+    private static readonly Dictionary<(TMemberInfo, Type), ApiMemberInfo<TMemberInfo>> _cache = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ApiMemberInfo"/> class.
@@ -26,6 +31,46 @@ public sealed class ApiMemberInfo<TMemberInfo> : ApiMemberInfo, IApiMemberInfo
         _initialType = initialType;
         MemberInfo = memberInfo;
         (LoadTask = LoadDescription()).ContinueWith(_ => DescriptionLoaded = true);
+    }
+
+    public static ApiMemberInfo<TMemberInfo> Create(TMemberInfo memberInfo, Type initialType)
+    {
+        var key = (memberInfo, initialType);
+
+        if (!_cache.TryGetValue(key, out var cachedItem))
+        {
+            cachedItem = new ApiMemberInfo<TMemberInfo>(memberInfo, initialType);
+            _cache[key] = cachedItem;
+        }
+
+        return cachedItem;
+    }
+
+    public static async Task<ApiMemberInfo<TMemberInfo>> CreateAsync(TMemberInfo memberInfo, Type initialType)
+    {
+        var result = Create(memberInfo, initialType);
+        await result.LoadTask;
+        return result;
+    }
+
+    public static async Task<HashSet<ApiMemberInfo<PropertyInfo>>> AllPropertiesOf(Type initialType)
+    {
+        if (_propertiesCache.TryGetValue(initialType, out var res))
+            return res;
+        res = initialType.GetProperties(_flags).OrderBy(x => x.Name).Where(i => char.IsUpper(i.Name[0])).Select(i => ApiMemberInfo<PropertyInfo>.Create(i, initialType)).ToHashSet();
+        await Task.WhenAll(res.Select(x => x.LoadTask));
+        _propertiesCache.TryAdd(initialType, res);
+        return res;
+    }
+
+    public static async Task<HashSet<ApiMemberInfo<MethodInfo>>> AllMethodsOf(Type initialType)
+    {
+        if (_methodsCache.TryGetValue(initialType, out var res))
+            return res;
+        res = initialType.GetMethods(_flags).OrderBy(x => x.Name).Where(i => char.IsUpper(i.Name[0])).Select(i => ApiMemberInfo<MethodInfo>.Create(i, initialType)).ToHashSet();
+        await Task.WhenAll(res.Select(x => x.LoadTask));
+        _methodsCache.TryAdd(initialType, res);
+        return res;
     }
 
 
@@ -265,4 +310,22 @@ public interface IApiMemberInfo
     bool IsInherited { get; }
 }
 
+internal static class ApiMemberInfoCache
+{
+    private static readonly ConcurrentDictionary<string, object> _cache = new ConcurrentDictionary<string, object>();
+
+    public static ApiMemberInfo<TMemberInfo> GetOrCreate<TMemberInfo>(TMemberInfo memberInfo, Type initialType)
+        where TMemberInfo : MemberInfo
+    {
+        var key = CreateCacheKey(memberInfo, initialType);
+        return (ApiMemberInfo<TMemberInfo>)_cache.GetOrAdd(key, _ => ApiMemberInfo<TMemberInfo>.Create(memberInfo, initialType));
+    }
+
+    private static string CreateCacheKey(MemberInfo memberInfo, Type initialType)
+    {
+        // Der Schlüssel könnte auch weitere Informationen enthalten, die relevant sind, 
+        // um die Eindeutigkeit des Cache-Eintrags zu gewährleisten.
+        return $"{initialType.FullName}:{memberInfo.Name}";
+    }
+}
 

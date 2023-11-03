@@ -4,8 +4,8 @@
 @page "/d/{File?}"
 @page "/doc/{File?}/{TypeName?}"
 @page "/d/{File?}/{TypeName?}"
-@page "/a/{TypeName?}"
-@page "/api/{TypeName?}"
+@page "/a/{TypeName?}/{Search?}"
+@page "/api/{TypeName?}/{Search?}"
 @using Nextended.Core.Extensions
 @using MudBlazor.Extensions.Attribute
 @using System.Reflection
@@ -59,7 +59,7 @@ else
                            </MudTabPanel>
                        }
                        <MudTabPanel Text="API">
-                            <Api ShowHeader="false" IsInitiallyExpanded="@forSingleType" Type="@type"></Api>
+                            <Api Search="@Search" ShowHeader="false" IsInitiallyExpanded="@forSingleType" Type="@type"></Api>
                        </MudTabPanel>
             </MudTabs>
     ;
@@ -72,6 +72,9 @@ else
 
     [Parameter]
     public string? TypeName { get; set; }
+
+    [Parameter]
+    public string? Search { get; set; }
 
     private Type? type = null;
     protected override async Task OnParametersSetAsync()

@@ -38,31 +38,31 @@ namespace Tests
         }
 
 
-        [Test]
-        [Ignore("Investigate failure")]
-        public async Task TestGet()
-        {
-            var snippetService = new SnippetsService(snippetsOptions, new System.Net.Http.HttpClient(), new MockNavigationManager());
-            var codeFiles = await snippetService.GetSnippetContentAsync("2021020540572059");
-            Assert.IsNotNull(codeFiles);
-        }
+        //[Test]
+        //[Ignore("Investigate failure")]
+        //public async Task TestGet()
+        //{
+        //    var snippetService = new SnippetsService(snippetsOptions, new System.Net.Http.HttpClient(), new MockNavigationManager());
+        //    var codeFiles = await snippetService.GetSnippetContentAsync("2021020540572059");
+        //    Assert.IsNotNull(codeFiles);
+        //}
 
-        [Test]
-        [Ignore("Investigate failure")]
-        public async Task TestPut()
-        {
-            var snippetService = new SnippetsService(snippetsOptions, new System.Net.Http.HttpClient(), new MockNavigationManager());
-            var id = await snippetService.SaveSnippetAsync(codeFiles);
-            Assert.IsNotNull(id);
-            Console.WriteLine(id);
-            var savedCodeFiles = await snippetService.GetSnippetContentAsync(id);
-            List<CodeFile> savedCodeFilesList = new List<CodeFile>(savedCodeFiles);
-            for (int i = 0; i  < codeFiles.Count; i++ )
-            {
-                Assert.AreEqual(codeFiles[i].Path, savedCodeFilesList[i].Path);
-                Assert.AreEqual(codeFiles[i].Content,  savedCodeFilesList[i].Content);
-            }
-        }
+        //[Test]
+        //[Ignore("Investigate failure")]
+        //public async Task TestPut()
+        //{
+        //    var snippetService = new SnippetsService(snippetsOptions, new System.Net.Http.HttpClient(), new MockNavigationManager());
+        //    var id = await snippetService.SaveSnippetAsync(codeFiles);
+        //    Assert.IsNotNull(id);
+        //    Console.WriteLine(id);
+        //    var savedCodeFiles = await snippetService.GetSnippetContentAsync(id);
+        //    List<CodeFile> savedCodeFilesList = new List<CodeFile>(savedCodeFiles);
+        //    for (int i = 0; i  < codeFiles.Count; i++ )
+        //    {
+        //        Assert.AreEqual(codeFiles[i].Path, savedCodeFilesList[i].Path);
+        //        Assert.AreEqual(codeFiles[i].Content,  savedCodeFilesList[i].Content);
+        //    }
+        //}
 
         [Test]
         public void TestEncodeDecode()
