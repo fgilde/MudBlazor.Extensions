@@ -227,7 +227,7 @@ public abstract partial class MudExExternalFilePickerBase<T, TFile> : MudExJsReq
             ApiKey,
             AllowedMimeTypes,
             MultiSelect,
-            AutoLoadFileDataBytes,
+            AutoLoadFileDataBytes = AutoLoadFileDataBytes && MudExResource.IsClientSide, // On server side rendered we cant load the data in js, we do it in OnFileSelected then instead
             JsOptions = JsOptions()
         };
     }
