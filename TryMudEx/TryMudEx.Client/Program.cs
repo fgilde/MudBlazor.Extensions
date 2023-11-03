@@ -1,4 +1,5 @@
 using MudBlazor.Extensions;
+using Samples.Shared;
 
 namespace TryMudEx.Client
 {
@@ -16,7 +17,6 @@ namespace TryMudEx.Client
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.JSInterop;
-    using MudBlazor.Services;
     using Services.UserPreferences;
     using Try.UserComponents;
     using Microsoft.AspNetCore.Components.WebAssembly.Services;
@@ -41,7 +41,11 @@ namespace TryMudEx.Client
                 .Configure<IConfiguration>((options, configuration) => configuration.GetSection("Snippets").Bind(options));
 
             builder.Logging.Services.AddSingleton<ILoggerProvider, HandleCriticalUserComponentExceptionsLoggerProvider>();
-            builder.Services.AddMudServicesWithExtensions(c => c.WithoutAutomaticCssLoading());
+            builder.Services.AddMudServicesWithExtensions(c => c.WithoutAutomaticCssLoading()
+                .EnableDropBoxIntegration(AppIds.DropBox)
+                .EnableGoogleDriveIntegration(AppIds.Google)
+                .EnableOneDriveIntegration(AppIds.OneDrive));
+
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddScoped<IUserPreferencesService, UserPreferencesService>();
             builder.Services.AddScoped<LayoutService>();

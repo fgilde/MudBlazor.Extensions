@@ -1,4 +1,10 @@
 ## Change Log  
+ - 1.7.76 > Add new components [MudExGoogleFilePicker](https://www.mudex.org/c/MudExGoogleFilePicker), [MudExDropBoxFilePicker](https://www.mudex.org/c/MudExDropBoxFilePicker) and [MudExOneDriveFilePicker](https://www.mudex.org/c/MudExOneDriveFilePicker) to allow picking files from cloud storages
+ - 1.7.76 > Add suport for Google Drive, One Drive and Drop Box in [MudExUploadEdit](https://www.mudex.org/upload-edit) more infos can be found [here](https://www.mudex.org/d/MudExUploadEdit)
+ - 1.7.76 > [MudExUploadEdit](https://www.mudex.org/upload-edit) is now a Form Component with validations included
+ - 1.7.76 > Fix memory leak in MudExPopover
+ - 1.7.76 > Add possibility to decide how data should loaded in [MudExUploadEdit](https://www.mudex.org/upload-edit) with the flags `AutoLoadFileDataBytes`, `ShowProgressForLoadingData` and `LoadFileDataBytesInBackground`
+ - 1.7.76 > Add possibility to specify DropZone and ItemTemplate in [MudExUploadEdit](https://www.mudex.org/upload-edit)
  - 1.7.76 > Add possibility to specify DropZoneClickAction in [MudExUploadEdit](https://www.mudex.org/upload-edit)
  - 1.7.75 > Fix Bug for using Streams on serverside rendered projects in MudExFileDisplay
  - 1.7.75 > Fix Bug for using Blob url in MudExFileDisplay on serverside rendered projects

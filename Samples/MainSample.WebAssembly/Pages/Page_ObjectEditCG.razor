@@ -5,7 +5,7 @@
 @using MudBlazor.Extensions.Core
 @using Newtonsoft.Json
 @inject IJSRuntime js;
-@attribute [DemoNew(Group = "MudExObjectEdit", Name = "Use CodeGator Models", Documentation = "Demo for using MudExObjectEdit with CodeGator Adapter and CodeGator Attributes", Icon = Icons.Material.Outlined.Edit, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+@attribute [Demo(Group = "MudExObjectEdit", Name = "Use CodeGator Models", Documentation = "Demo for using MudExObjectEdit with CodeGator Adapter and CodeGator Attributes", Icon = Icons.Material.Outlined.Edit, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
 <DemoComponent DocFiles="@(new [] {"https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions.CodeGator.Adapter/README.md", "Docs/ObjectEdit.md"})" PageType="@GetType()">
     <MudText Class="mb-13" Typo="Typo.subtitle1">This demo show a simple demo editing an Model configured with CG.Blazor.Forms working in MudExObjectEdit</MudText>

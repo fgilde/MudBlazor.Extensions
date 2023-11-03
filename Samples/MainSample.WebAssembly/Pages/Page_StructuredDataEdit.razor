@@ -5,9 +5,9 @@
 @inject IJSRuntime Js
 @inject IDialogService dialogService;
 
-@attribute [DemoNew(Group = "MudExObjectEdit", Name = "Structured Data Edit", Order = 2, Documentation = "New MudExStructureDataEditor can used to edit json, xml or yaml string in a MudExObjectEdit", Icon = Icons.Custom.FileFormats.FileCode, ForComponentTypes = new[] { typeof(MudExStructuredDataEditor)})]
+@attribute [Demo(Group = "MudExObjectEdit", Name = "Structured Data Edit", Order = 2, Documentation = "New MudExStructureDataEditor can used to edit json, xml or yaml string in a MudExObjectEdit", Icon = Icons.Custom.FileFormats.FileCode, ForComponentTypes = new[] { typeof(MudExStructuredDataEditor)})]
 
-<Scripts SourceLoaded="JsLoaded" Src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js,_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js, _content/BlazorMonaco/jsInterop.js"></Scripts>
+<Scripts SourceLoaded="JsLoaded" Src="_content/BlazorMonaco/jsInterop.js"></Scripts>
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "SampleDialogOptions.cs"})">
     <SplitContainer Splittable="false" IsCollapsible="false">
@@ -27,7 +27,7 @@
                     <MudIconButton OnClick="@ShowSampleJsonEditDialog" Icon="@Icons.Material.Outlined.DesktopWindows" Color="Color.Inherit" Class="ml-5" />
                 </MudTooltip>
             </MudToolBar>
-            @if (MonacoReady())
+            @if (_monacoLoaded)
             {
                 <StandaloneCodeEditor OnDidBlurEditorText="@OnEditorBlur" @ref="_editor" Id="sample-data-editor" ConstructionOptions="EditorConstructionOptions"/>
             }
@@ -44,6 +44,12 @@
     private StructuredDataType _dataType = StructuredDataType.Json;
     string _dataString = InitialDataString;
     string CodeLanguage => Enum.GetName(typeof(StructuredDataType), _dataType).ToLower();
+
+    protected override void OnInitialized()
+    {
+        if(MainLayout.Instance != null)
+            MainLayout.Instance.ThemeChanged += (sender, args) => _= UpdateTheme();
+    }
 
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor) => new()
     {
@@ -66,7 +72,7 @@
         _dataString = SimpleConvert.ConvertDataStringTo(_dataString, _dataType, newDataType);
         _dataType = newDataType;        
         await _editor.SetValue(_dataString);        
-        if (MonacoReady())
+        if (_monacoLoaded)
             await BlazorMonaco.Editor.Global.SetModelLanguage(Js ,await _editor.GetModel(), CodeLanguage);
     }
 
@@ -78,20 +84,18 @@
     {
         _dataType = StructuredDataType.Json;        
         await _editor.SetValue(_dataString = InitialDataString);        
-        if (MonacoReady())
+        if (_monacoLoaded)
             await BlazorMonaco.Editor.Global.SetModelLanguage(Js ,await _editor.GetModel(), CodeLanguage);
     }
 
-    int jsLoaded = 0;
-    private async Task JsLoaded()
+    bool _monacoLoaded;
+    private async Task JsLoaded() => _monacoLoaded = await UpdateTheme();
+
+    private async Task<bool> UpdateTheme()
     {
-        if(jsLoaded == 2)
-            await Task.Delay(400);
-        jsLoaded++;
-        if (MonacoReady()) 
-            await BlazorMonaco.Editor.Global.SetTheme(Js, MainLayout.Instance?.IsDark == true ? "vs-dark" : "vs");
+        await BlazorMonaco.Editor.Global.SetTheme(Js, MainLayout.Instance?.IsDark == true ? "vs-dark" : "vs");
+        return true;
     }
 
-    private bool MonacoReady() => jsLoaded >= 3;
 
 }

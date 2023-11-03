@@ -1,3 +1,13 @@
+/*require.config({ paths: { 'vs': 'lib/monaco-editor/min/vs' } });*/
+
+window.addEventListener('load', function () {
+    require.config({ paths: { 'vs': '/lib/monaco-editor/min/vs' } });
+
+    require(['vs/editor/editor.main'], function () {
+        // 
+    });
+});
+
 window.localStorageFunctions = {
     setItem: function (key, value) {
         localStorage.setItem(key, JSON.stringify(value));

@@ -40,6 +40,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TryMudEx.Server", "TryMudEx
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Try.UserComponents", "TryMudEx\UserComponents\Try.UserComponents.csproj", "{37975869-21AC-4037-8020-30B18AA79B97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.Shared", "Samples\Samples.Shared\Samples.Shared.csproj", "{60372FA1-91CE-4A2F-ACE0-444C750D2818}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,10 @@ Global
 		{37975869-21AC-4037-8020-30B18AA79B97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37975869-21AC-4037-8020-30B18AA79B97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37975869-21AC-4037-8020-30B18AA79B97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60372FA1-91CE-4A2F-ACE0-444C750D2818}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60372FA1-91CE-4A2F-ACE0-444C750D2818}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60372FA1-91CE-4A2F-ACE0-444C750D2818}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60372FA1-91CE-4A2F-ACE0-444C750D2818}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,6 +109,7 @@ Global
 		{A471AE31-42DA-48D0-80B4-0931BA49F15F} = {4A15B7F0-B489-4B0C-99F4-DC2729FFF194}
 		{9E893097-9AC8-4D1B-9718-C5E95B78A7DF} = {4A15B7F0-B489-4B0C-99F4-DC2729FFF194}
 		{37975869-21AC-4037-8020-30B18AA79B97} = {4A15B7F0-B489-4B0C-99F4-DC2729FFF194}
+		{60372FA1-91CE-4A2F-ACE0-444C750D2818} = {7B19E2F0-E5F5-437B-9501-409EFF6A8A60}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B052338-F6B3-4AE7-BDB8-2674AA90DBD6}
