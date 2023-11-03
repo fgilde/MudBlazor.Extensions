@@ -24,3 +24,5 @@
 /MudBlazor.Extensions.Tests/bin/
 /MudBlazor.Extensions.Tests/bin/Debug/net7.0
 /MudBlazor.Extensions.Tests/obj
+/Samples/Samples.Shared/bin/Debug/net6.0
+/Samples/Samples.Shared/obj
