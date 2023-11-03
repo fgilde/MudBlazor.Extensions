@@ -26,3 +26,4 @@
 /MudBlazor.Extensions.Tests/obj
 /Samples/Samples.Shared/bin/Debug/net6.0
 /Samples/Samples.Shared/obj
+/MudBlazor.Extensions/.scripts/apiKeyEnvSet.bat
