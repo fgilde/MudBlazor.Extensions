@@ -241,67 +241,70 @@
 
     private void RenderExternalPicker(RenderTreeBuilder __builder)
     {
-        @if (CanUseGoogleDrive && !ReadOnly)
+        @if (IsRendered)
         {
-            <span class="action-margin"></span>
-            <MudExGoogleFilePicker @ref="_googleFilePicker"
-                                   ClientId="@GoogleDriveClientId"
-                                   ActionViewMode="@ExternalPickerIconsActionViewMode()"
-                                   IconsWithoutColors="@RemoveColorsFromExternalPickerIcons()"
-                                   Variant="@ButtonVariant"
-                                   ImageSize="@ExternalPickerImageSize"
-                                   RenderBehaviourWhileInitialization="FilePickerInitialRenderBehaviour.Normal"
-                                   Color="@ButtonColor"
-                                   Size="@ButtonSize"
-                                   MultiSelect="@AllowMultiple"
-                                   AllowFolderNavigation="true"
-                                   AutoLoadFileDataBytes="@AutoLoadFileDataBytes"
-                                   AllowFolderSelect="@AllowFolderUpload"
-                                   AllowedMimeTypes="@_allowedMimeTypes"
-                                   FilesSelected="@Add">
-                @TryLocalize(TextAddFromGoogle)
-            </MudExGoogleFilePicker>
-        }
+            @if (CanUseGoogleDrive && !ReadOnly)
+            {
+                <span class="action-margin"></span>
+                <MudExGoogleFilePicker @ref="_googleFilePicker"
+                                       ClientId="@GoogleDriveClientId"
+                                       ActionViewMode="@ExternalPickerIconsActionViewMode()"
+                                       IconsWithoutColors="@RemoveColorsFromExternalPickerIcons()"
+                                       Variant="@ButtonVariant"
+                                       ImageSize="@ExternalPickerImageSize"
+                                       RenderBehaviourWhileInitialization="FilePickerInitialRenderBehaviour.Normal"
+                                       Color="@ButtonColor"
+                                       Size="@ButtonSize"
+                                       MultiSelect="@AllowMultiple"
+                                       AllowFolderNavigation="true"
+                                       AutoLoadFileDataBytes="@AutoLoadFileDataBytes"
+                                       AllowFolderSelect="@AllowFolderUpload"
+                                       AllowedMimeTypes="@_allowedMimeTypes"
+                                       FilesSelected="@Add">
+                    @TryLocalize(TextAddFromGoogle)
+                </MudExGoogleFilePicker>
+            }
 
-        @if (CanUseDropBox && !ReadOnly)
-        {
-            <span class="action-margin"></span>
-            <MudExDropBoxFilePicker @ref="_dropBoxFilePicker"
-                                    ApiKey="@DropBoxApiKey"
-                                    ActionViewMode="@ExternalPickerIconsActionViewMode()"
-                                    IconsWithoutColors="@RemoveColorsFromExternalPickerIcons()"
-                                    RenderBehaviourWhileInitialization="FilePickerInitialRenderBehaviour.Normal"
-                                    Variant="@ButtonVariant"
-                                    ImageSize="@ExternalPickerImageSize"
-                                    Color="@ButtonColor"
-                                    Size="@ButtonSize"
-                                    MaxFileSize="@MaxFileSize"
-                                    MultiSelect="@AllowMultiple"
-                                    AutoLoadFileDataBytes="@AutoLoadFileDataBytes"
-                                    AllowedMimeTypes="@_allowedMimeTypes"
-                                    FilesSelected="@Add">
-                @TryLocalize(TextAddFromDropBox)
-            </MudExDropBoxFilePicker>
-        }
-        @if (CanUseOneDrive && !ReadOnly)
-        {
-            <span class="action-margin"></span>
-            <MudExOneDriveFilePicker @ref="_oneDriveFilePicker"
-                                     ClientId="@OneDriveClientId"
-                                     ActionViewMode="@ExternalPickerIconsActionViewMode()"
-                                     IconsWithoutColors="@RemoveColorsFromExternalPickerIcons()"
-                                     RenderBehaviourWhileInitialization="FilePickerInitialRenderBehaviour.Normal"
-                                     Variant="@ButtonVariant"
-                                     ImageSize="@ExternalPickerImageSize"
-                                     Color="@ButtonColor"
-                                     Size="@ButtonSize"
-                                     AllowFolderSelect="@AllowFolderUpload"
-                                     MultiSelect="@AllowMultiple"
-                                     AutoLoadFileDataBytes="@AutoLoadFileDataBytes"
-                                     AllowedMimeTypes="@_allowedMimeTypes"
-                                     FilesSelected="@Add">
-                @TryLocalize(TextAddFromOneDrive)
-            </MudExOneDriveFilePicker>
+            @if (CanUseDropBox && !ReadOnly)
+            {
+                <span class="action-margin"></span>
+                <MudExDropBoxFilePicker @ref="_dropBoxFilePicker"
+                                        ApiKey="@DropBoxApiKey"
+                                        ActionViewMode="@ExternalPickerIconsActionViewMode()"
+                                        IconsWithoutColors="@RemoveColorsFromExternalPickerIcons()"
+                                        RenderBehaviourWhileInitialization="FilePickerInitialRenderBehaviour.Normal"
+                                        Variant="@ButtonVariant"
+                                        ImageSize="@ExternalPickerImageSize"
+                                        Color="@ButtonColor"
+                                        Size="@ButtonSize"
+                                        MaxFileSize="@MaxFileSize"
+                                        MultiSelect="@AllowMultiple"
+                                        AutoLoadFileDataBytes="@AutoLoadFileDataBytes"
+                                        AllowedMimeTypes="@_allowedMimeTypes"
+                                        FilesSelected="@Add">
+                    @TryLocalize(TextAddFromDropBox)
+                </MudExDropBoxFilePicker>
+            }
+            @if (CanUseOneDrive && !ReadOnly)
+            {
+                <span class="action-margin"></span>
+                <MudExOneDriveFilePicker @ref="_oneDriveFilePicker"
+                                         ClientId="@OneDriveClientId"
+                                         ActionViewMode="@ExternalPickerIconsActionViewMode()"
+                                         IconsWithoutColors="@RemoveColorsFromExternalPickerIcons()"
+                                         RenderBehaviourWhileInitialization="FilePickerInitialRenderBehaviour.Normal"
+                                         Variant="@ButtonVariant"
+                                         ImageSize="@ExternalPickerImageSize"
+                                         Color="@ButtonColor"
+                                         Size="@ButtonSize"
+                                         AllowFolderSelect="@AllowFolderUpload"
+                                         MultiSelect="@AllowMultiple"
+                                         AutoLoadFileDataBytes="@AutoLoadFileDataBytes"
+                                         AllowedMimeTypes="@_allowedMimeTypes"
+                                         FilesSelected="@Add">
+                    @TryLocalize(TextAddFromOneDrive)
+                </MudExOneDriveFilePicker>
+            }
         }
     }
 }

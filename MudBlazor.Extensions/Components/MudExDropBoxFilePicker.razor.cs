@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
 using Nextended.Core;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -38,7 +39,7 @@ public partial class MudExDropBoxFilePicker
     {
         return new
         {
-            AllowedExtensions = AllowedMimeTypes?.Any() == true ? AllowedMimeTypes.Select(MimeType.GetExtension).ToArray() : null,
+            AllowedExtensions = AllowedMimeTypes?.Any() == true ? AllowedMimeTypes.Select(s => MimeType.GetExtension(s).EnsureStartsWith(".")).ToArray() : null,
             MaxFileSize
         };
     }

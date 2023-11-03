@@ -109,11 +109,6 @@
         await base.OnInitializedAsync();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        //await BlazorMonaco.Editor.Global.SetTheme(Js,"vs-dark");
-        await base.OnAfterRenderAsync(firstRender);
-    }
 
 
     void DrawerToggle()
@@ -125,7 +120,6 @@
     
     private async void HandleThemeChange(bool arg1, ClientTheme arg2)
     {        
-        //await BlazorMonaco.Editor.Global.SetTheme(Js, arg1 ? "vs-dark" : "vs");
         ThemeChanged?.Invoke(this, new ThemeChangedEventArgs { IsDark = arg1, Theme = arg2 });
     }
 

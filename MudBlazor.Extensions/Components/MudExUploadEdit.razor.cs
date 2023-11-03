@@ -1153,7 +1153,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         if (AlreadyExists(request, true))
             return;
 
-        if (RemoveErrorOnChange)
+        if (RemoveErrorOnChange && _loadings.Count == 0)
             SetError();
 
         (UploadRequests ??= new List<T>()).Add(request);

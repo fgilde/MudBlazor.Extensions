@@ -88,6 +88,8 @@
         if(jsLoaded == 2)
             await Task.Delay(400);
         jsLoaded++;
+        if (MonacoReady()) 
+            await BlazorMonaco.Editor.Global.SetTheme(Js, MainLayout.Instance?.IsDark == true ? "vs-dark" : "vs");
     }
 
     private bool MonacoReady() => jsLoaded >= 3;
