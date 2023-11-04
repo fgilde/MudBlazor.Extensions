@@ -43,7 +43,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// Dialog options for external file dialog
     /// </summary>
     [Parameter] public DialogOptionsEx ExternalDialogOptions { get; set; } = new() { CloseButton = true, DragMode = MudDialogDragMode.Simple, Resizeable = true, MaxWidth = MaxWidth.Small, FullWidth = true, Animations = new[] { AnimationType.FlipX } };
-    
+
     /// <summary>
     /// Set this to true to use the original colors for the images of the external file picker
     /// </summary>
@@ -280,7 +280,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// Defines whether adding of external files from Microsoft One Drive or office 365 is allowed.
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
-    public bool AllowOneDrive{ get; set; } = true;
+    public bool AllowOneDrive { get; set; } = true;
 
     /// <summary>
     /// The ID of the upload field.
@@ -739,10 +739,12 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
                 Extension = extension,
                 Path = file is IArchivedBrowserFile fileInArchive ? fileInArchive.Path : FindPath(file)
             };
-            
-            await LoadDataIfAsync(file, request, LoadFileDataBytesInBackground);
-            
-            Add(request);
+            var readInBackground = LoadFileDataBytesInBackground;
+            if (MudExResource.IsServerSide && file is MudExArchivedBrowserFile) // server side blazor does not support reading in background for archived files
+                readInBackground = false;
+            await LoadDataIfAsync(file, request, readInBackground);
+
+            await Add(request);
         }
     }
 
@@ -774,7 +776,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
                         });
                 request.Data = buffer;
                 _loadings.Remove(request, out _);
-                if (AutoLoadFileDataBytes && AlreadyExists(request, true)) 
+                if (AutoLoadFileDataBytes && AlreadyExists(request, true))
                     Remove(request, true);
 
                 await InvokeAsync(StateHasChanged);
@@ -792,7 +794,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             }
         }
     }
-    
+
     private async Task<IList<IArchivedBrowserFile>> GetZipEntriesAsync(IBrowserFile file)
     {
         var data = await FileService.ReadArchiveAsync(file.OpenReadStream(file.Size), file.Name, BrowserFileExt.GetContentType(file));
@@ -1046,7 +1048,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
     private async Task Preview(T request)
     {
-        if (request.Data is not { Length: not 0 } && string.IsNullOrWhiteSpace(request.Url)) 
+        if (request.Data is not { Length: not 0 } && string.IsNullOrWhiteSpace(request.Url))
         {
             _loadings.AddOrUpdate(request, (null, request.Size, 0));
             await request.EnsureDataLoadedAsync();
@@ -1091,7 +1093,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     }
 
     private bool IsValidUrl(string s) => Uri.TryCreate(s, UriKind.Absolute, out var uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-    
+
     private void AddUrl() => _urlDialogVisible = !_urlDialogVisible;
 
     /// <summary>
@@ -1122,7 +1124,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         };
         if (IsAllowed(request.ContentType))
         {
-            Add(request);
+            await Add(request);
             await RaiseChangedAsync();
         }
     }
@@ -1145,8 +1147,18 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         return false;
     }
 
-    private void Add(T request)
+    private async Task Add(T request)
     {
+        if (AutoExtractArchive && MimeType.IsArchive(request.ContentType))
+        {
+            SetLoading(true);
+            await request.EnsureDataLoadedAsync();
+            var data = await FileService.ReadArchiveAsync(request.Data, request.FileName, request.ContentType);
+            await Add(data.List);
+            SetLoading(false);
+            return;
+        }
+
         if (!AllowMultiple)
             (UploadRequests ??= new List<T>()).Clear();
 
@@ -1191,7 +1203,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             await _dropBoxFilePicker.PickAsync();
     }
 
-    private Task Add(IEnumerable<IUploadableFile> items)
+    private async Task Add(IEnumerable<IUploadableFile> items)
     {
         foreach (var i in items)
         {
@@ -1207,18 +1219,19 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             };
             if (request is UploadableFile uploadableFile)
                 uploadableFile.LoadTask = () => i.EnsureDataLoadedAsync();
-            
+
             if (IsAllowed(request))
-                Add(request);
+                await Add(request);
+
         }
         _urlDialogVisible = false;
-        return RaiseChangedAsync();
+        await RaiseChangedAsync();
     }
 
     private PickerActionViewMode ExternalPickerIconsActionViewMode() => ExternalProviderRendering is ExternalProviderRendering.ImagesNewLine or ExternalProviderRendering.Images or ExternalProviderRendering.IntegratedInDialogAsImages ? PickerActionViewMode.Image : PickerActionViewMode.Button;
     private bool RemoveColorsFromExternalPickerIcons() => !ColoredImagesForExternalFilePicker;
-    private bool CanUseGoogleDrive => AllowGoogleDrive && !string.IsNullOrEmpty(GoogleDriveClientId); 
-    private bool CanUseDropBox => AllowDropBox && !string.IsNullOrEmpty(DropBoxApiKey); 
+    private bool CanUseGoogleDrive => AllowGoogleDrive && !string.IsNullOrEmpty(GoogleDriveClientId);
+    private bool CanUseDropBox => AllowDropBox && !string.IsNullOrEmpty(DropBoxApiKey);
     private bool CanUseOneDrive => AllowOneDrive && !string.IsNullOrEmpty(OneDriveClientId);
     private bool RenderPickerInDialog => ExternalProviderRendering is ExternalProviderRendering.IntegratedInDialogAsButtons or ExternalProviderRendering.IntegratedInDialogAsImages;
     private bool AnyExternalFilePicker() => CanUseGoogleDrive || CanUseDropBox || CanUseOneDrive;

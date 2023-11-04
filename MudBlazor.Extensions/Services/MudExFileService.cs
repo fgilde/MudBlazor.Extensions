@@ -102,6 +102,12 @@ public class MudExFileService : IAsyncDisposable
         await _jsRuntime.InvokeVoidAsync("MudExUriHelper.revokeBlobUrl", blobUrl);
     }
 
+    public async Task<(HashSet<MudExArchiveStructure> Structure, List<IArchivedBrowserFile> List )> ReadArchiveAsync(byte[] bytes, string rootFolderName, string contentType)
+    {
+        using var memoryStream = new MemoryStream(bytes);
+        return await ReadArchiveAsync(memoryStream, rootFolderName, contentType);
+    }
+
     public async Task<(HashSet<MudExArchiveStructure> Structure, List<IArchivedBrowserFile> List )> ReadArchiveAsync(Stream stream, string rootFolderName, string contentType)
     {        
         var contentStream = await CopyStreamAsync(stream);
