@@ -18,7 +18,7 @@ It's important to note that this package requires a MudBlazor project and the re
 #
 
 ## Try Online
-[![TryMudEx](https://img.shields.io/badge/TryMudEx-purple)](https://trymudex.azurewebsites.net/) 
+[![TryMudEx](https://img.shields.io/badge/TryMudEx-purple)](https://try.mudex.org/) 
 #
 
 <!---

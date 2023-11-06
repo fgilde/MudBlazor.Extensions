@@ -12,7 +12,7 @@ public static class AppConstants
 
     public static class Urls
     {
-        public const string TryOnline = "https://trymudex.azurewebsites.net";
+        public const string TryOnline = "https://try.mudex.org";
 
         public static string? GetTryOnline(bool isDark) => TryOnline + (isDark ? "?dark" : "?light");
     }

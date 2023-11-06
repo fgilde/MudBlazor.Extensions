@@ -43,8 +43,8 @@ body:
     id: repro-link
     attributes:
       label: Reproduction link
-      description: Please reproduce the issue on [https://trymudex.azurewebsites.net/](https://trymudex.azurewebsites.net/) if possible. Otherwise if possible provide a link to a github repository with a minimal reproduction (No complete applications).
-      placeholder: https://trymudex.azurewebsites.net/XXXXXXXXXXXXXXXX
+      description: Please reproduce the issue on [https://try.mudex.org/](https://try.mudex.org/) if possible. Otherwise if possible provide a link to a github repository with a minimal reproduction (No complete applications).
+      placeholder: https://try.mudex.org/XXXXXXXXXXXXXXXX
     validations:
       required: false      
   - type: dropdown
