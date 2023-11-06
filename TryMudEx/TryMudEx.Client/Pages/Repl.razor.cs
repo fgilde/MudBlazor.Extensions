@@ -174,6 +174,16 @@ public partial class Repl : IDisposable
         base.OnAfterRender(firstRender);
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender && NavigationManager.Uri.Contains("?compile"))
+        {
+            await Task.Delay(1000);
+            await TriggerCompileAsync();
+        }
+    }
+
     private async ValueTask SaveState()
     {
          await Storage.SetItemAsync("__temp_code", CodeFiles);
