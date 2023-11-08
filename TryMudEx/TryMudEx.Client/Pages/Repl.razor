@@ -3,6 +3,7 @@
 @page "/snippet/from/{snippetFileUrl?}"
 @using TryMudEx.Client.Enums
 @using MudBlazor.Extensions.Core
+@using Try.Core
 
 @layout MainLayout
 
@@ -102,9 +103,9 @@
     protected RenderFragment RenderEditor()
     {
         return @<div style="height: 100%; width: 100%">
-        <TabManager @bind-ViewMode="Mode" Tabs="@CodeFileNames" OnTabActivate="@HandleTabActivate" OnTabClose="@HandleTabClose" OnTabCreate="@HandleTabCreate" />
+        <TabManager @bind-ViewMode="Mode" @bind-ActiveIndex="_activeTabIndex" Tabs="@CodeFileNames" OnTabActivate="@HandleTabActivate" OnTabClose="@HandleTabClose" OnTabCreate="@HandleTabCreate" />
         <CodeEditor @ref="@CodeEditorComponent" Theme="@(LayoutService.IsDarkMode ? "vs-dark" : "default")" Code="@CodeEditorContent" CodeFileType="@CodeFileType" />
-        <ErrorList @bind-Show="@ShowDiagnostics" Diagnostics="@Diagnostics" />
+        <ErrorList OnDiagnosticClick="OpenDiagnostic" @bind-Show="@ShowDiagnostics" Diagnostics="@Diagnostics" />
     </div>;
     }
 

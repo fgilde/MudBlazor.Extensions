@@ -5,11 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
-using BlazorJS;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.CodeAnalysis;
-using Microsoft.Extensions.Configuration;
 using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Extensions;
@@ -36,6 +33,7 @@ public partial class Repl : IDisposable
     private const string MainComponentCodePrefix = "@page \"/__main\"\n";
     private const string MainUserPagePath = "/__main";
 
+    private int _activeTabIndex;
     private DotNetObjectReference<Repl> dotNetInstance;
     private string errorMessage;
     private CodeFile activeCodeFile;
@@ -177,7 +175,7 @@ public partial class Repl : IDisposable
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (firstRender && NavigationManager.Uri.Contains("?compile"))
+        if (firstRender && NavigationManager.Uri.Contains("compile"))
         {
             await Task.Delay(1000);
             await TriggerCompileAsync();
@@ -375,6 +373,11 @@ public partial class Repl : IDisposable
 
     private void HandleTabActivate(string name)
     {
+        ActivateTab(name);
+    }
+
+    private void ActivateTab(string name)
+    {
         if (string.IsNullOrWhiteSpace(name)) return;
 
         UpdateActiveCodeFileContent();
@@ -382,7 +385,10 @@ public partial class Repl : IDisposable
         if (CodeFiles.TryGetValue(name, out var codeFile))
         {
             activeCodeFile = codeFile;
-
+            var idx = CodeFiles.Values.ToArray().IndexOf(codeFile);
+            if (idx >= 0 && idx != _activeTabIndex)
+                _activeTabIndex = idx;
+            
             CodeEditorComponent.Focus();
         }
     }
@@ -543,5 +549,12 @@ public partial class Repl : IDisposable
         CodeFileNames = CodeFiles.Keys.ToList();
         StateHasChanged();
         await CompileAsync();
+    }
+
+    private async Task OpenDiagnostic(CompilationDiagnostic obj)
+    {
+        ActivateTab(obj.File);
+        await Task.Delay(100);
+        await CodeEditorComponent.SelectLineAsync(obj.Line);
     }
 }

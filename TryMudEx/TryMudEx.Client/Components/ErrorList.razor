@@ -18,7 +18,7 @@
             <tbody>
                 @foreach (var diagnostic in Diagnostics)
                 {
-                    <tr>
+                    <tr @onclick="@(() => Goto(diagnostic))" style="cursor: pointer">
                         <td>@diagnostic.Severity</td>
                         <td>@diagnostic.Code</td>
                         <td>@diagnostic.Description</td>

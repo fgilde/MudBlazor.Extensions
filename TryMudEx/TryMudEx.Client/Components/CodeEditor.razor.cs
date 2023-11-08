@@ -85,4 +85,10 @@ public partial class CodeEditor : IDisposable
     {
         return CodeFileType == CodeFileType.CSharp ? "csharp" : "razor";
     }
+
+    public async Task SelectLineAsync(int? line)
+    {
+        if(line.HasValue)
+            await JsRuntime.InvokeVoidAsync(Models.Try.Editor.SetSelection, line.Value);
+    }
 }

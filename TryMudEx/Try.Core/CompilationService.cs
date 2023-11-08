@@ -175,6 +175,7 @@ namespace Try.Core
                 Diagnostics = compilationDiagnostics
                     .Select(CompilationDiagnostic.FromCSharpDiagnostic)
                     .Concat(cSharpResults.SelectMany(r => r.Diagnostics))
+                    .Distinct()
                     .ToList(),
             };
 

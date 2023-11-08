@@ -50,7 +50,11 @@
         [Inject]
         public ISnackbar Snackbar { get; set; }
 
-        private int ActiveIndex { get; set; } = DefaultActiveIndex;
+        [Parameter]
+        public int ActiveIndex { get; set; } = DefaultActiveIndex;
+
+        [Parameter]
+        public EventCallback<int> ActiveIndexChanged { get; set; }
 
         private string TabCreatingDisplayStyle => _tabCreating ? string.Empty : "display: none;";
 
@@ -79,7 +83,7 @@
             }
 
             ActiveIndex = activeIndex;
-
+            ActiveIndexChanged.InvokeAsync(activeIndex);
             return OnTabActivate.InvokeAsync(Tabs[activeIndex]);
         }
 

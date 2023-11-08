@@ -1,11 +1,28 @@
-﻿namespace Try.Core
+﻿using System;
+
+namespace Try.Core
 {
     using System.IO;
     using Microsoft.AspNetCore.Razor.Language;
     using Microsoft.CodeAnalysis;
 
-    public class CompilationDiagnostic
+    public class CompilationDiagnostic: IEquatable<CompilationDiagnostic>
     {
+        public bool Equals(CompilationDiagnostic other)
+        {
+            return Code == other.Code && Severity == other.Severity && Description == other.Description && Line == other.Line && File == other.File && Kind == other.Kind;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((CompilationDiagnostic)obj);
+        }
+
+        public override int GetHashCode() => HashCode.Combine(Code, (int)Severity, Description, Line, File, (int)Kind);
+
         public string Code { get; set; }
 
         public DiagnosticSeverity Severity { get; set; }

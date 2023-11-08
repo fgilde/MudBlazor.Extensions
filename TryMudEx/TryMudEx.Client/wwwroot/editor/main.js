@@ -168,6 +168,21 @@ window.Try.Editor = window.Try.Editor || (function () {
                 monaco.editor.setModelLanguage(_editor.getModel(), language);
             }
         },
+        setPosition: function (line, column) {
+            if (_editor) {
+                _editor.setPosition({ lineNumber: line, column: column });
+            }
+        },
+        setSelection: function (startLineNumber, startColumn, endLineNumber, endColumn) {
+            if (_editor) {
+                _editor.setSelection({
+                    startLineNumber: startLineNumber,
+                    startColumn: startColumn || 0,
+                    endLineNumber: endLineNumber || startLineNumber,
+                    endColumn: endColumn || _editor.getModel().getLineMaxColumn(endLineNumber || startLineNumber)
+                });
+            }
+        },
         setTheme: function (theme) {
             if (_editor) {
                 monaco.editor.setTheme(theme);

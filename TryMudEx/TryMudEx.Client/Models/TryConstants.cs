@@ -17,6 +17,8 @@
             public static string Focus = "Try.Editor.focus";
             public static string SetTheme = "Try.Editor.setTheme";
             public static string Dispose = "Try.Editor.dispose";
+            public static string SetSelection = "Try.Editor.setSelection";
+            public static string SetPosition = "Try.Editor.setPosition";
         }
 
         public static class CodeExecution
