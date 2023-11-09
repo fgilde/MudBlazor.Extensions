@@ -5490,6 +5490,11 @@
             The callback that will be invoked when upload requests change.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.UploadRequestDataLoaded">
+            <summary>
+            The callback that will be invoked when a added upload request has load his data.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.UploadRequestRemoved">
             <summary>
             The callback that will be invoked when an upload request is removed.

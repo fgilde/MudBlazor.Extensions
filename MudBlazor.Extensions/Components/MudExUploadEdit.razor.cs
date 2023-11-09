@@ -523,6 +523,12 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     public EventCallback<IList<T>> UploadRequestsChanged { get; set; }
 
     /// <summary>
+    /// The callback that will be invoked when a added upload request has load his data.
+    /// </summary>
+    [Parameter, SafeCategory("Event")]
+    public EventCallback<T> UploadRequestDataLoaded { get; set; }
+
+    /// <summary>
     /// The callback that will be invoked when an upload request is removed.
     /// </summary>
     [Parameter, SafeCategory("Event")]
@@ -757,6 +763,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             buffer = new byte[file.Size];
             await stream.ReadStreamInChunksAsync(buffer);
             request.Data = buffer;
+            await UploadRequestDataLoaded.InvokeAsync(request);
         }
         else
         {
@@ -777,7 +784,13 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
                 request.Data = buffer;
                 _loadings.Remove(request, out _);
                 if (AutoLoadFileDataBytes && AlreadyExists(request, true))
+                {
                     Remove(request, true);
+                }
+                else
+                {
+                    await UploadRequestDataLoaded.InvokeAsync(request);
+                }
 
                 await InvokeAsync(StateHasChanged);
             });
