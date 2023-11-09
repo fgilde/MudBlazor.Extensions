@@ -182,15 +182,18 @@ public partial class Repl : IDisposable
         }
     }
 
-    private async ValueTask SaveState()
+    private async ValueTask SaveState(bool showNotification)
     {
          await Storage.SetItemAsync("__temp_code", CodeFiles);
-         Snackbar.Add("Save code state for reload.", Severity.Info, options =>
+         if (showNotification)
          {
-             options.HideTransitionDuration = 100;
-             options.ShowTransitionDuration = 100;
-             options.VisibleStateDuration = 1000;
-         });
+             Snackbar.Add("Save code state for reload.", Severity.Info, options =>
+             {
+                 options.HideTransitionDuration = 100;
+                 options.ShowTransitionDuration = 100;
+                 options.VisibleStateDuration = 1000;
+             });
+         }
     }
 
     private async Task<LoadedSample> LoadDataAsync()
@@ -273,7 +276,7 @@ public partial class Repl : IDisposable
 
     private async Task CompileAsync()
     {
-        await SaveState();
+        await SaveState(true);
         Loading = true;
         LoaderText = "Processing";
 
@@ -398,26 +401,32 @@ public partial class Repl : IDisposable
         if (string.IsNullOrWhiteSpace(name)) return;
 
         CodeFiles.Remove(name);
-        SaveState();
+        SaveState(false);
+    }
+
+    private void HandleCreateFromTemplate(CodeFile file)
+    {
+        if (file.Content == null)
+            HandleTabCreate(file.Path);
+        else
+            AddCodeFile(file);
+        ActivateTab(file.Path);
     }
 
     private void HandleTabCreate(string name)
     {
         if (string.IsNullOrWhiteSpace(name)) return;
+        
+        AddCodeFile(CodeFile.Create(name));
+    }
 
-        var nameWithoutExtension = Path.GetFileNameWithoutExtension(name);
-
-        var newCodeFile = new CodeFile { Path = name };
-
-        newCodeFile.Content = newCodeFile.Type == CodeFileType.CSharp
-            ? string.Format(CoreConstants.DefaultCSharpFileContentFormat, nameWithoutExtension)
-            : string.Format(CoreConstants.DefaultRazorFileContentFormat, nameWithoutExtension);
-
-        CodeFiles.TryAdd(name, newCodeFile);
+    private void AddCodeFile(CodeFile codefile)
+    {
+        CodeFiles.TryAdd(codefile.Path, codefile);
 
         JsRuntime.InvokeVoid(Models.Try.Editor.SetLangugage,
-            newCodeFile.Type == CodeFileType.CSharp ? "csharp" : "razor");
-        SaveState();
+            codefile.Type == CodeFileType.CSharp ? "csharp" : "razor");
+        SaveState(false);
     }
 
     private void UpdateActiveCodeFileContent()
@@ -556,5 +565,17 @@ public partial class Repl : IDisposable
         ActivateTab(obj.File);
         await Task.Delay(100);
         await CodeEditorComponent.SelectLineAsync(obj.Line);
+    }
+
+    private async Task EditPackageReferences()
+    {
+        await DialogService.ShowComponentInDialogAsync<PackageReferences>("Packages", null, MudExIcons.Custom.Brands.ColorFull.Nuget, DialogOptionsEx.SlideInFromTop.SetProperties(o =>
+        {
+            o.Resizeable = true;
+            o.FullHeight = true;
+            o.FullWidth = true;
+            o.MaxWidth = MaxWidth.ExtraLarge;
+            o.MaxHeight = MaxHeight.Medium;
+        }));
     }
 }

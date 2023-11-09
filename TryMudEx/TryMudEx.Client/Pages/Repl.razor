@@ -33,6 +33,8 @@
                 <MudIconButton OnClick="@ShowSamples" Icon="@Icons.Material.Outlined.Folder" Color="@(LayoutService.IsDarkMode ? Color.Primary : Color.Inherit)" />
             </MudTooltip>
         }
+        
+        @* <MudIconButton Icon="@MudExIcons.Custom.Brands.ColorFull.Nuget" OnClick="@EditPackageReferences"></MudIconButton> *@
 
         <MudSpacer />
         <div class="d-flex justify-center">
@@ -103,10 +105,11 @@
     protected RenderFragment RenderEditor()
     {
         return @<div style="height: 100%; width: 100%">
-        <TabManager @bind-ViewMode="Mode" @bind-ActiveIndex="_activeTabIndex" Tabs="@CodeFileNames" OnTabActivate="@HandleTabActivate" OnTabClose="@HandleTabClose" OnTabCreate="@HandleTabCreate" />
+        <TabManager @bind-ViewMode="Mode" @bind-ActiveIndex="_activeTabIndex" Tabs="@CodeFileNames" OnTabActivate="@HandleTabActivate" OnTemplateCreate="@HandleCreateFromTemplate" OnTabClose="@HandleTabClose" OnTabCreate="@HandleTabCreate" />
         <CodeEditor @ref="@CodeEditorComponent" Theme="@(LayoutService.IsDarkMode ? "vs-dark" : "default")" Code="@CodeEditorContent" CodeFileType="@CodeFileType" />
         <ErrorList OnDiagnosticClick="OpenDiagnostic" @bind-Show="@ShowDiagnostics" Diagnostics="@Diagnostics" />
     </div>;
     }
 
 }
+

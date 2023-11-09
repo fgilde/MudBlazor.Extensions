@@ -1,6 +1,9 @@
 ﻿@using TryMudEx.Client.Enums
 @using TryMudEx.Client.Models
 @using System.ComponentModel
+@using Try.Core
+
+
 <div class="try-tabs tabs-wrapper">
     <div class="try-tabs-toolbar">
         <div class="try-tabs-toolbar-inner">
@@ -28,12 +31,27 @@
                             <input class="try-tab-input"
                             @ref="_newTabInput"
                             @bind="@_newTab"
+                            @onkeydown="OnTabCreateInputKeyDown"
                             @onblur="@CreateTabAsync"
                                    placeholder=".razor OR .cs" />
                         </form>
                     </div>
-                    <MudIconButton Icon="@Icons.Material.Filled.Add" @onclick="@InitTabCreating" Class="rounded-0 py-1 px-2" />
-
+                    <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Success" @onclick="@InitTabCreating" Class="rounded-0 py-1 px-2" />
+                    
+                    @if (CodeFileTemplates.All().Any(f => !Tabs.Contains(f.Path)))
+                    {
+                        <MudMenu Dense="true">
+                            <ActivatorContent>
+                                <MudIconButton Icon="@Icons.Material.Filled.ArrowDropDown" Class="rounded-0 py-1 px-2"/>
+                            </ActivatorContent>
+                            <ChildContent>
+                                @foreach (var file in CodeFileTemplates.All().Where(f => !Tabs.Contains(f.Path)))
+                                {
+                                    <MudMenuItem OnClick="@(() => CreateFromTemplate(file))">@file.Path</MudMenuItem>
+                                }
+                            </ChildContent>
+                        </MudMenu>
+                    }
                     <MudSpacer />
                     @foreach (var mode in Enum.GetValues<CodeViewMode>())
                     {

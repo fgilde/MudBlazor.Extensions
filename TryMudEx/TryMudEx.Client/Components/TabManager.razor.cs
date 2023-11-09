@@ -1,4 +1,6 @@
-﻿namespace TryMudEx.Client.Components
+﻿using Try.Core;
+
+namespace TryMudEx.Client.Components
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -6,6 +8,7 @@
     using Microsoft.AspNetCore.Components;
     using MudBlazor;
     using TryMudEx.Client.Enums;
+    using Microsoft.AspNetCore.Components.Web;
 
     public partial class TabManager
     {
@@ -29,6 +32,9 @@
 
         [Parameter]
         public EventCallback<string> OnTabCreate { get; set; }
+
+        [Parameter]
+        public EventCallback<CodeFile> OnTemplateCreate { get; set; }
 
         [Parameter]
         public CodeViewMode ViewMode
@@ -121,6 +127,14 @@
             _tabCreating = false;
             _newTab = null;
         }
+        private void OnTabCreateInputKeyDown(KeyboardEventArgs args)
+        {
+            if (args.Key == "Escape")
+            {
+                _newTab = string.Empty;
+                TerminateTabCreating();
+            }
+        }
 
         private async Task CreateTabAsync()
         {
@@ -176,6 +190,12 @@
                 ViewMode = _lastModeBeforeAutoChanged.Value;
                 _lastModeBeforeAutoChanged = null;
             }
+        }
+
+        private async Task CreateFromTemplate(CodeFile file)
+        {
+            Tabs.Add(file.Path);
+            await OnTemplateCreate.InvokeAsync(file);
         }
     }
 }

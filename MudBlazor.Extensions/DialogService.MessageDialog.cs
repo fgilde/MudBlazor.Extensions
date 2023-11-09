@@ -58,6 +58,80 @@ public static partial class DialogServiceExt
     }
 
     /// <summary>
+    /// Shows a component in a dialog with a title. Dialog parameters are passed as a new DialogParameters object instance.
+    /// </summary>
+    /// <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+    /// <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+    public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title,
+        string message, string icon) where TComponent : ComponentBase, new()
+    {
+        return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, _ => { }, dialog => {dialog.Icon = icon;});
+    }
+
+    /// <summary>
+    /// Shows a component in a dialog with a title. Dialog parameters are passed as a new DialogParameters object instance.
+    /// </summary>
+    /// <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+    /// <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+    public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title,
+        string message, string icon, DialogOptionsEx options) where TComponent : ComponentBase, new()
+    {
+        return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, _ => { }, dialog => { dialog.Icon = icon; }, options);
+    }
+
+    /// <summary>
+    /// Shows a component in a dialog with a title. Dialog parameters are passed as a new DialogParameters object instance.
+    /// </summary>
+    /// <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+    /// <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+    public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title,
+        string message) where TComponent : ComponentBase, new()
+    {
+        return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, _ => { });
+    }
+
+    /// <summary>
+    /// Shows a component in a dialog with a title. Dialog parameters are passed as a new DialogParameters object instance.
+    /// </summary>
+    /// <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+    /// <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+    public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title,
+        string message, DialogOptionsEx options) where TComponent : ComponentBase, new()
+    {
+        return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, _ => { }, options);
+    }
+
+    /// <summary>
+    /// Shows a component in a dialog with a title. Dialog parameters are passed as a new DialogParameters object instance.
+    /// </summary>
+    /// <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+    /// <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+    public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title) where TComponent : ComponentBase, new()
+    {
+        return dialogService.ShowComponentInDialogAsync<TComponent>(title, string.Empty);
+    }
+
+    /// <summary>
+    /// Shows a component in a dialog with a title. Dialog parameters are passed as a new DialogParameters object instance.
+    /// </summary>
+    /// <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+    /// <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+    public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title, DialogOptionsEx options) where TComponent : ComponentBase, new()
+    {
+        return dialogService.ShowComponentInDialogAsync<TComponent>(title, string.Empty, options);
+    }
+
+    /// <summary>
+    /// Shows a component in a dialog with a title. Dialog parameters are passed as a new DialogParameters object instance.
+    /// </summary>
+    /// <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+    /// <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+    public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService) where TComponent : ComponentBase, new()
+    {
+        return dialogService.ShowComponentInDialogAsync<TComponent>(string.Empty);
+    }
+
+    /// <summary>
     /// Shows a component in a dialog with a title, message, component configuration action, dialog parameters object, and dialog options object.
     /// </summary>
     public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title,

@@ -132,7 +132,7 @@ public partial class MudExMessageDialog
         {
             if(_component == value) return;
             _component = value;
-            if (_component != null && Buttons.Any(b => b.HasCondition))
+            if (_component != null && Buttons?.Any(b => b.HasCondition) == true)
                 AdjustEventCallbacks(_component); // Attach Event callbacks to update conditions for buttons
         }
     }

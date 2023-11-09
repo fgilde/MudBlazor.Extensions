@@ -8307,6 +8307,55 @@
             <param name="componentOptions">The action that configures the component.</param>
             <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
         </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String,System.String)">
+            <summary>
+            Shows a component in a dialog with a title. Dialog parameters are passed as a new DialogParameters object instance.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+            <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows a component in a dialog with a title. Dialog parameters are passed as a new DialogParameters object instance.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+            <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String)">
+            <summary>
+            Shows a component in a dialog with a title. Dialog parameters are passed as a new DialogParameters object instance.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+            <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows a component in a dialog with a title. Dialog parameters are passed as a new DialogParameters object instance.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+            <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String)">
+            <summary>
+            Shows a component in a dialog with a title. Dialog parameters are passed as a new DialogParameters object instance.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+            <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Shows a component in a dialog with a title. Dialog parameters are passed as a new DialogParameters object instance.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+            <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService)">
+            <summary>
+            Shows a component in a dialog with a title. Dialog parameters are passed as a new DialogParameters object instance.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be shown.</typeparam>
+            <returns>A Task whose result is a value tuple of DialogResult and TComponent representing the result of the operation.</returns>
+        </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowComponentInDialogAsync``1(MudBlazor.IDialogService,System.String,System.Action{``0},MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
             <summary>
             Shows a component in a dialog with a title, message, component configuration action, dialog parameters object, and dialog options object.

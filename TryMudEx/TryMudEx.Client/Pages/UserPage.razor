@@ -1,4 +1,5 @@
 ﻿@page "/user-page"
+@using Try.Core
 
 <MudContainer Class="mt-8">    
     <MudText>This snippet hasn't been compiled yet.</MudText>
@@ -11,31 +12,7 @@
     <br/>
     <MudText>Here is an example. Note the required usings!</MudText>
     <pre class="mt-6">
-namespace Try.UserComponents
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
-    // required using for UserStartup:
-    using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-    using Microsoft.Extensions.DependencyInjection;
-
-    public class UserStartup
-    {
-        public static void Configure(WebAssemblyHostBuilder builder) {
-            builder.Services.AddSingleton(new MyService());
-        }
-    }
-
-    // your service
-    public class MyService {     
-        public string Hello() => "Hello World from MyService!";
-    }
-
-}
+        @CoreConstants.StartupContent
     </pre>
 </MudContainer>
 

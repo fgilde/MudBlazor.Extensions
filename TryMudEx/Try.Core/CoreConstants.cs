@@ -2,6 +2,8 @@
 {
     public static class CoreConstants
     {
+        public const string ImportsFileName = "_Imports.razor";
+
         public const string MainComponentFilePath = "__Main.razor";
 
         public const string MainComponentDefaultFileContent = """
@@ -68,6 +70,22 @@
 
         public const string DefaultRazorFileContentFormat = "<h1>{0}</h1>";
 
+        public const string DefaultImports = """
+                                                @using System.ComponentModel.DataAnnotations
+                                                @using System.Linq
+                                                @using System.Net.Http
+                                                @using System.Net.Http.Json
+                                                @using Microsoft.AspNetCore.Components.Forms
+                                                @using Microsoft.AspNetCore.Components.Routing
+                                                @using Microsoft.AspNetCore.Components.Web
+                                                @using Microsoft.JSInterop
+                                                @using MudBlazor
+                                                @using Newtonsoft.Json
+                                                @using MudBlazor.Extensions
+                                                @using MudBlazor.Extensions.Components
+                                                @using MudBlazor.Extensions.Components.ObjectEdit
+                                                """;
+
         public static readonly string DefaultCSharpFileContentFormat =
             @$"namespace {CompilationService.DefaultRootNamespace}
 {{{{
@@ -82,5 +100,35 @@
     }}}}
 }}}}
 ";
+
+        public const string StartupContent = """
+                                             namespace Try.UserComponents
+                                             {
+                                                 using System;
+                                                 using System.Collections.Generic;
+                                                 using System.Linq;
+                                                 using System.Text;
+                                                 using System.Threading.Tasks;
+                                             
+                                                 // required using for UserStartup:
+                                                 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+                                                 using Microsoft.Extensions.DependencyInjection;
+                                             
+                                                 public class UserStartup
+                                                 {
+                                                     public static void Configure(WebAssemblyHostBuilder builder) {
+                                                         builder.Services.AddSingleton(new MyService());
+                                                     }
+                                                 }
+                                             
+                                                 // your service
+                                                 public class MyService {     
+                                                     public string Hello() => "Hello World from MyService!";
+                                                 }
+                                             
+                                             } 
+                                             """;
+
+
     }
 }

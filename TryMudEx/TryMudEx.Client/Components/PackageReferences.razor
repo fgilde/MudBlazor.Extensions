@@ -1,0 +1,38 @@
+﻿@using System.Net.Http
+@using MudBlazor.Extensions.Core
+@using Try.Core
+
+<MudTextField Adornment="Adornment.End"
+@bind-Value="_search"
+              OnKeyDown="@SearchKeyDown"
+              OnAdornmentClick="SearchPackage"
+              Immediate="true"
+              AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Warning" Class="mr-10 ml-10 mb-10" T="string" Placeholder="Search" Variant="Variant.Outlined"></MudTextField>
+
+<MudGrid Style="max-height: 600px; overflow: auto" Spacing="3" Justify="Justify.Center">
+    @if (_loading)
+    {
+            <MudProgressCircular Class="mt-5" Indeterminate="true" Size="Size.Large" Color="Color.Info" />
+    }
+    else
+    {
+        @foreach (var package in _packages ?? Array.Empty<NugetPackage>())
+        {
+            <MudItem xs="3">
+                <MudPaper Class="d-flex flex-column align-center justify-center mud-width-full py-8">
+                    @if (!string.IsNullOrWhiteSpace(package.IconUrl))
+                    {
+                        <img height="60px" width="60px" src="@package.IconUrl"/>
+                    }
+                    else
+                    {
+                        <MudExIcon Style="height: 60px; width: 60px;" Size="Size.Large" Icon="@MudExIcons.Custom.Brands.ColorFull.Nuget" />
+                    }
+                    <MudText Class="mt-1" Typo="Typo.h6" Align="Align.Center">@package.Title</MudText>
+                    <MudText Typo="Typo.caption" Align="Align.Center">@package.Version</MudText>
+                </MudPaper>
+            </MudItem>
+        }
+    }
+</MudGrid>
+

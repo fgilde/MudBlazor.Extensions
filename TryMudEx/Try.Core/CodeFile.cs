@@ -2,6 +2,7 @@
 {
     using System;
     using System.Text.Json.Serialization;
+    using System.Xml.Linq;
 
     public class CodeFile
     {
@@ -33,6 +34,30 @@
 
                 return this.type.Value;
             }
+        }
+
+        public static CodeFile Create(string name)
+        {
+            var nameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(name);
+
+            var newCodeFile = new CodeFile { Path = name };
+
+            newCodeFile.Content = DefaultContent(newCodeFile, nameWithoutExtension);
+
+            return newCodeFile;
+        }
+
+        private static string DefaultContent(CodeFile newCodeFile, string nameWithoutExtension)
+        {
+            if (newCodeFile.Type == CodeFileType.CSharp)
+                return string.Format(CoreConstants.DefaultCSharpFileContentFormat, nameWithoutExtension);
+            if (newCodeFile.Type == CodeFileType.Razor)
+            {
+                if (newCodeFile.Path == CoreConstants.ImportsFileName)
+                    return CoreConstants.DefaultImports;
+                return string.Format(CoreConstants.DefaultRazorFileContentFormat, nameWithoutExtension);
+            }
+            return string.Empty;
         }
     }
 }

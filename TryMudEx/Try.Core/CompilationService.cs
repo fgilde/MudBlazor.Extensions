@@ -28,19 +28,8 @@ namespace Try.Core
         public const string DefaultRootNamespace = $"{nameof(Try)}.{nameof(UserComponents)}";
 
         private const string WorkingDirectory = "/TryMudEx/";
-        private const string DefaultImports = @"@using System.ComponentModel.DataAnnotations
-@using System.Linq
-@using System.Net.Http
-@using System.Net.Http.Json
-@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Routing
-@using Microsoft.AspNetCore.Components.Web
-@using Microsoft.JSInterop
-@using MudBlazor
-@using MudBlazor.Extensions
-@using MudBlazor.Extensions.Components
-@using MudBlazor.Extensions.Components.ObjectEdit
-";
+
+
 
         private const string MudBlazorServices = @"
 <MudDialogProvider FullWidth=""true"" MaxWidth=""MaxWidth.ExtraSmall"" />
@@ -217,8 +206,9 @@ namespace Try.Core
             Func<string, Task> updateStatusFunc)
         {
             // The first phase won't include any metadata references for component discovery. This mirrors what the build does.
-            var projectEngine = this.CreateRazorProjectEngine(Array.Empty<MetadataReference>());
+            var projectEngine = CreateRazorProjectEngine(Array.Empty<MetadataReference>(), codeFiles?.FirstOrDefault(f => f.Path == CoreConstants.ImportsFileName)?.Content);
 
+            codeFiles = codeFiles.Where(f => f.Path != CoreConstants.ImportsFileName).ToList();
             // Result of generating declarations
             var declarations = new CompileToCSharpResult[codeFiles.Count];
             var index = 0;
@@ -295,11 +285,11 @@ namespace Try.Core
             return results;
         }
 
-        private RazorProjectEngine CreateRazorProjectEngine(IReadOnlyList<MetadataReference> references) =>
+        private RazorProjectEngine CreateRazorProjectEngine(IReadOnlyList<MetadataReference> references, string imports = null) =>
             RazorProjectEngine.Create(this.configuration, this.fileSystem, b =>
             {
                 b.SetRootNamespace(DefaultRootNamespace);
-                b.AddDefaultImports(DefaultImports);
+                b.AddDefaultImports(imports ?? CoreConstants.DefaultImports);
 
                 // Features that use Roslyn are mandatory for components
                 CompilerFeatures.Register(b);
