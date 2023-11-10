@@ -389,7 +389,10 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// The upload requests.
     /// </summary>
     [Parameter, SafeCategory("Data")]
-    public IList<T> UploadRequests { get; set; }
+    public IList<T> UploadRequests { 
+        get => _value;
+        set => _value = value;
+    }
 
     /// <summary>
     /// Defines whether multiple files can be uploaded.
@@ -967,6 +970,8 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
     private Task RaiseChangedAsync()
     {
+        Validate();
+
         return AllowMultiple
             ? UploadRequestsChanged.InvokeAsync(UploadRequests)
             : UploadRequestChanged.InvokeAsync(UploadRequest);
@@ -1122,6 +1127,16 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         if (!string.IsNullOrWhiteSpace(urlExtension))
             return Task.FromResult(MimeType.GetMimeType(urlExtension));
         return MimeType.ReadMimeTypeFromUrlAsync(url);
+    }
+
+    /// <summary>
+    /// Checks if the value is non-null and has elements.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    protected override bool HasValue(IList<T> value)//Used by Required parameter for form validation
+    {
+        return value != null && value.Any();
     }
 
     private async Task Add(string url)
