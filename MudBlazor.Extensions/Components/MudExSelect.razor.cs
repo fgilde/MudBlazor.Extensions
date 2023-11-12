@@ -29,7 +29,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     [Inject] private IKeyInterceptorFactory KeyInterceptorFactory { get; set; }
 
     private MudExList<T> _list;
-    
+
     public MudExList<T> MudExList { get => _list; }
 
     private bool _dense;
@@ -71,13 +71,13 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     /// <summary>
     /// If true the item template is use for the selection list, otherwise its use only if ValuePresenter is ItemContent or Chip
     /// </summary>
-    [Parameter] public bool UseItemTemplateForSelection { get; set; } = true; 
-    
+    [Parameter] public bool UseItemTemplateForSelection { get; set; } = true;
+
     /// <summary>
     /// Style applied to chip
     /// </summary>
     [Parameter] public string StyleChip { get; set; }
-    
+
     /// <summary>
     ///  Func to group by items collection
     /// </summary>
@@ -620,9 +620,9 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         get => _selectedValues ??= new HashSet<T>();
         set
         {
-            if (_selectedValuesSetterStarted || (value is null && _selectedValues is null))            
+            if (_selectedValuesSetterStarted || (value is null && _selectedValues is null))
                 return;
-            
+
             var set = (value ?? new HashSet<T>(_comparer)).ToList();
             if (SelectedValues.Count() != set.Count || !SelectedValues.All(x => set.Contains(x, _comparer)))
             {
@@ -632,9 +632,8 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
                 OnBeforeSelectedChanged(_selectedValues);
                 SelectedValuesChanged.InvokeAsync(new HashSet<T>(SelectedValues));
                 ValueChanged.InvokeAsync(Value);
-                if (MultiSelection)
-                    UpdateTextPropertyAsync(false).AndForget();              
-                _selectedValuesSetterStarted = false;                
+                UpdateTextPropertyAsync(false).AndForget();
+                _selectedValuesSetterStarted = false;
                 Task.Delay(30).ContinueWith(_ => BeginValidateAsync());
             }
         }
@@ -808,7 +807,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         {
             if (ChildContent == null && (ItemCollection == null || !ItemCollection.Any()))
             {
-                ItemCollection = await GetAvailableItemsAsync(); 
+                ItemCollection = await GetAvailableItemsAsync();
             }
 
             _keyInterceptor = KeyInterceptorFactory.Create();
@@ -1147,7 +1146,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     /// Extra handler for clearing selection.
     /// </summary>
     protected async ValueTask SelectClearButtonClickHandlerAsync(MouseEventArgs e)
-    {        
+    {
         await SetValueAsync(default, false);
         await SetTextAsync(default, false);
         _selectedValues.Clear();
