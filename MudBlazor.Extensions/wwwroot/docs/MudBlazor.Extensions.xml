@@ -5634,6 +5634,13 @@
             <param name="url"></param>
             <returns></returns>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.HasValue(System.Collections.Generic.IList{`0})">
+            <summary>
+            Checks if the value is non-null and has elements.
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.DropZoneClick(System.String)">
             <summary>
             Executes the DropZone Click Action
@@ -7048,11 +7055,6 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ICustomRenderer.Render(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder,Microsoft.AspNetCore.Components.IHandleEvent,MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
             <summary>
             If attached as setting in ObjectEditPropertyMeta.RenderData this is called by MudExPropertyEdit
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExValidationWrapper`1.Value">
-            <summary>
-            The value of the ValidationWrapper component. This will be passed to the set validation function.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.Css.AlignItems">

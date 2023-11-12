@@ -115,10 +115,4 @@
             return result.Errors.Select(e => e.ErrorMessage);
         };
     }
-    private MudExValidationWrapper<IReadOnlyList<UploadableFile>> FileUploadValidator = default!;
-    private Func<IReadOnlyList<UploadableFile>, string?> FilesValidator { get; set; }
-    // private Task OnFilesChanged(IList<UploadableFile> files)
-    // {
-    //     return FileUploadValidator.Validate();
-    // }
 }
