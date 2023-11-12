@@ -7057,6 +7057,11 @@
             If attached as setting in ObjectEditPropertyMeta.RenderData this is called by MudExPropertyEdit
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExValidationWrapper`1.Value">
+            <summary>
+            The value of the ValidationWrapper component. This will be passed to the set validation function.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.Css.AlignItems">
             <summary>
             Enum representing CSS 'align-items' property values.

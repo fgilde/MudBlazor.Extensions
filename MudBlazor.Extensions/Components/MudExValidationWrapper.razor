@@ -1,0 +1,29 @@
+﻿@typeparam T
+@inherits MudFormComponent<T, string>
+
+<MudInputControl Class="@Class" Style="@Style" Error="HasErrors" ErrorText="@GetErrorText()" Required="@Required">
+    <InputContent>
+        @ChildContent
+    </InputContent>
+</MudInputControl>
+
+@code {
+    /// <summary>
+    /// The value of the ValidationWrapper component. This will be passed to the set validation function.
+    /// </summary>
+    [Parameter]
+    [EditorRequired]
+    public T? Value
+    {
+        get => _value;
+        set
+        {
+            if (_value == null || !_value.Equals(value))
+                _value = value;
+        }
+    }
+    public MudExValidationWrapper() : base(new DefaultConverter<T>()) { }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

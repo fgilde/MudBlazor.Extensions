@@ -389,10 +389,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// The upload requests.
     /// </summary>
     [Parameter, SafeCategory("Data")]
-    public IList<T> UploadRequests { 
-        get => _value;
-        set => _value = value;
-    }
+    public IList<T> UploadRequests { get; set; }
 
     /// <summary>
     /// Defines whether multiple files can be uploaded.
