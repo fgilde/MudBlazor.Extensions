@@ -37,12 +37,12 @@
                         </form>
                     </div>
                     <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Success" @onclick="@InitTabCreating" Class="rounded-0 py-1 px-2" />
-                    
+
                     @if (CodeFileTemplates.All().Any(f => !Tabs.Contains(f.Path)))
                     {
                         <MudMenu Dense="true">
                             <ActivatorContent>
-                                <MudIconButton Icon="@Icons.Material.Filled.ArrowDropDown" Class="rounded-0 py-1 px-2"/>
+                                <MudIconButton Icon="@Icons.Material.Filled.ArrowDropDown" Class="rounded-0 py-1 px-2" />
                             </ActivatorContent>
                             <ChildContent>
                                 @foreach (var file in CodeFileTemplates.All().Where(f => !Tabs.Contains(f.Path)))
@@ -53,14 +53,24 @@
                         </MudMenu>
                     }
                     <MudSpacer />
-                    @foreach (var mode in Enum.GetValues<CodeViewMode>())
+
+                    @if(Tools != null)
                     {
-                        <MudHidden IsHiddenChanged="@(hidden => CheckHidden(hidden, mode))"  Breakpoint="@(mode.GetAttribute<HiddenAttribute>()?.Breakpoint ?? Breakpoint.None)" Invert="@(mode.GetAttribute<HiddenAttribute>()?.Invert ?? false)">
-                            <MudTooltip Text="@(mode.GetAttribute<DescriptionAttribute>()?.Description)">
-                                <MudIconButton OnClick="@(() => { _lastModeBeforeAutoChanged = null; ViewMode = mode; })" Color="@ViewModeColor(mode)" Icon="@(mode.GetAttribute<IconAttribute>()?.IconName)" Class="rounded-0 py-1 px-2" />
-                            </MudTooltip>
-                        </MudHidden>
+                        @Tools
                     }
+
+                    <MudIconButton OnClick="@(() => _viewModePopoverOpen = !_viewModePopoverOpen)" Color="@ViewModeColor(ViewMode)" Icon="@(ViewMode.GetAttribute<IconAttribute>()?.IconName)" Class="view_mode_toggle rounded-0 py-1 px-2" />
+
+                    <MudExPopover Animation="MudBlazor.Extensions.Options.AnimationType.Scale" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" OnBlur="@( () => _viewModePopoverOpen = false)" SelectorsForIgnoreBlur=".view_mode_toggle" @bind-Open="_viewModePopoverOpen">
+                        @foreach (var mode in Enum.GetValues<CodeViewMode>())
+                        {
+                            <MudHidden IsHiddenChanged="@(hidden => CheckHidden(hidden, mode))" Breakpoint="@(mode.GetAttribute<HiddenAttribute>()?.Breakpoint ?? Breakpoint.None)" Invert="@(mode.GetAttribute<HiddenAttribute>()?.Invert ?? false)">
+                                <MudTooltip Text="@(mode.GetAttribute<DescriptionAttribute>()?.Description)">
+                                    <MudIconButton OnClick="@(() => { _lastModeBeforeAutoChanged = null; ViewMode = mode; _viewModePopoverOpen = false; })" Color="@ViewModeColor(mode)" Icon="@(mode.GetAttribute<IconAttribute>()?.IconName)" Class="rounded-0 py-1 px-2" />
+                                </MudTooltip>
+                            </MudHidden>
+                        }
+                    </MudExPopover>
                     <div style="width: 15px;"></div>
                 </div>
             </div>
@@ -69,3 +79,6 @@
     </div>
 </div>
 
+@code {
+    bool _viewModePopoverOpen;
+}

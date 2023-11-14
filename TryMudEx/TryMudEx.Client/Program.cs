@@ -40,7 +40,11 @@ namespace TryMudEx.Client
             builder.Services.AddSingleton(serviceProvider => (IJSUnmarshalledRuntime)serviceProvider.GetRequiredService<IJSRuntime>());
             builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<SnippetsService>();
-            builder.Services.AddSingleton(new CompilationService());
+            //builder.Services.AddSingleton(new CompilationService());
+            
+            builder.Services.AddScoped<NuGetPackageSearcher>();
+            builder.Services.AddSingleton<NugetReferenceService>();
+            builder.Services.AddSingleton<CompilationService>();
 
             builder.Services
                 .AddOptions<SnippetsOptions>()

@@ -12,24 +12,64 @@
 <MudGrid Style="max-height: 600px; overflow: auto" Spacing="3" Justify="Justify.Center">
     @if (_loading)
     {
-            <MudProgressCircular Class="mt-5" Indeterminate="true" Size="Size.Large" Color="Color.Info" />
+        <MudProgressCircular Class="mt-5" Indeterminate="true" Size="Size.Large" Color="Color.Info" />
     }
     else
     {
-        @foreach (var package in _packages ?? Array.Empty<NugetPackage>())
+        @foreach (var package in _packages ?? InstalledPackages)
         {
             <MudItem xs="3">
-                <MudPaper Class="d-flex flex-column align-center justify-center mud-width-full py-8">
+                <MudPaper Class="d-flex flex-column align-center justify-center mud-width-full py-1">
+
+                    <MudMenu Style="align-self: end;" MaxHeight="400" Dense="true">
+                        <ActivatorContent>
+                            <MudChip Class="mr-5" Style="align-self: end; cursor: pointer;" Size="Size.Small" Color="@(IsInstalled(package) ? Color.Primary : Color.Default)" Variant="@(IsInstalled(package) ? Variant.Filled : Variant.Outlined)">
+                                @if (IsInstalled(package))
+                                {
+                                    <span>@($"Installed v{GetInstalledVersion(package)}")</span>
+                                }else
+                                {
+                                    <span>Install</span>
+                                }
+                            </MudChip>
+                        </ActivatorContent>
+                        <ChildContent>
+                            @if (CanChange(package))
+                            {
+                                @if (IsInstalled(package))
+                                {
+                                    <MudMenuItem OnClick="@(() => UnInstall(package))">
+                                        <p style="font-weight:bold;">@($"Uninstall")</p>
+                                    </MudMenuItem>
+                                    <MudDivider/>
+                                }
+                                @foreach (var version in package.Versions.Reverse())
+                                {
+                                    <MudMenuItem OnClick="@(() => Install(package, version))">
+                                        <p style="@PackageVersionStyle(package, version)">@($"Install {version.Version}")</p>
+                                    </MudMenuItem>
+                                }
+                            }
+                            else
+                            {
+                                <p class="mr-5 ml-5">This package can't be changed.</p>
+                            }
+                        </ChildContent>
+                    </MudMenu>
+                    
+       
+
+                    
                     @if (!string.IsNullOrWhiteSpace(package.IconUrl))
                     {
-                        <img height="60px" width="60px" src="@package.IconUrl"/>
+                        <img height="60px" width="60px" src="@package.IconUrl" />
                     }
                     else
                     {
                         <MudExIcon Style="height: 60px; width: 60px;" Size="Size.Large" Icon="@MudExIcons.Custom.Brands.ColorFull.Nuget" />
                     }
                     <MudText Class="mt-1" Typo="Typo.h6" Align="Align.Center">@package.Title</MudText>
-                    <MudText Typo="Typo.caption" Align="Align.Center">@package.Version</MudText>
+                    <MudText Class="mb-5" Typo="Typo.caption" Align="Align.Center">@package.Version</MudText>
                 </MudPaper>
             </MudItem>
         }

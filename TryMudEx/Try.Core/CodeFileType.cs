@@ -5,5 +5,6 @@
         Razor = 0,
 
         CSharp = 1,
+        Hidden = 2,
     }
 }

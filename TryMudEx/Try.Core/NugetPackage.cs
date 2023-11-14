@@ -1,5 +1,10 @@
 ﻿namespace Try.Core;
 
+public interface INugetPackageReference
+{
+    public string Id { get; }
+    public string Version { get; }
+}
 
 public class NugetResponse
 {
@@ -14,7 +19,7 @@ public class Context
     public string _base { get; set; }
 }
 
-public class NugetPackage
+public class NugetPackage: INugetPackageReference
 {
     public string Id { get; set; }
     public string Type { get; set; }

@@ -8,6 +8,7 @@
     {
         public const string RazorFileExtension = ".razor";
         public const string CsharpFileExtension = ".cs";
+        public const string RefFileExtension = ".ref";
 
         private CodeFileType? type;
 
@@ -28,7 +29,7 @@
                     {
                         RazorFileExtension => CodeFileType.Razor,
                         CsharpFileExtension => CodeFileType.CSharp,
-                        _ => throw new NotSupportedException($"Unsupported extension: {extension}"),
+                        _ => CodeFileType.Hidden
                     };
                 }
 

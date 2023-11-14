@@ -37,6 +37,9 @@ namespace TryMudEx.Client.Components
         public EventCallback<CodeFile> OnTemplateCreate { get; set; }
 
         [Parameter]
+        public RenderFragment Tools { get; set; }
+
+        [Parameter]
         public CodeViewMode ViewMode
         {
             get => _viewMode;

@@ -1,8 +1,30 @@
-﻿namespace Try.Core
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using Try.Core.Json;
+
+namespace Try.Core
 {
     public static class CoreConstants
     {
+        public const string PackageRef = "__Packages.ref";
         public const string ImportsFileName = "_Imports.razor";
+        public static JsonSerializerSettings PackageSerializerSettings = new() 
+        {
+            Formatting = Formatting.Indented,
+            ContractResolver = new InterfacePropertiesResolver(typeof(INugetPackageReference))
+        };
+
+        public static List<INugetPackageReference> DefaultPackages = new()
+        {
+            new NugetPackage()
+            {
+                Id = "MudBlazor"
+            },
+            new NugetPackage()
+            {
+                Id = "MudBlazor.Extensions"
+            }
+        };
 
         public const string MainComponentFilePath = "__Main.razor";
 

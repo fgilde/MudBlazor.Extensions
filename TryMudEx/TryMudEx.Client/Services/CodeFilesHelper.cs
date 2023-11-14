@@ -13,10 +13,11 @@
     {
         private const int MainComponentFileContentMinLength = 10;
 
-        private static readonly HashSet<string> ValidCodeFileExtensions = new(StringComparer.Ordinal)
+        public static readonly HashSet<string> ValidCodeFileExtensions = new(StringComparer.Ordinal)
         {
             CodeFile.RazorFileExtension,
             CodeFile.CsharpFileExtension,
+            CodeFile.RefFileExtension
         };
 
         public static string NormalizeCodeFilePath(string path, out string error)

@@ -26,6 +26,7 @@ namespace Try.Core
     public class CompilationService
     {
         public const string DefaultRootNamespace = $"{nameof(Try)}.{nameof(UserComponents)}";
+        public NugetReferenceService NugetReferenceService { get; set; }
 
         private const string WorkingDirectory = "/TryMudEx/";
 
@@ -104,8 +105,14 @@ namespace Try.Core
             cSharpParseOptions = new CSharpParseOptions(LanguageVersion.Preview);
         }
 
+        public CompilationService(NugetReferenceService nugetReferenceService)
+        {
+            NugetReferenceService = nugetReferenceService;        
+        }
+        
         public async Task<CompileToAssemblyResult> CompileToAssemblyAsync(
             ICollection<CodeFile> codeFiles,
+            NugetPackage[] nugetPackages,
             Func<string, Task> updateStatusFunc) // TODO: try convert to event
         {
             if (codeFiles == null)
@@ -113,7 +120,7 @@ namespace Try.Core
                 throw new ArgumentNullException(nameof(codeFiles));
             }
 
-            var cSharpResults = await this.CompileToCSharpAsync(codeFiles, updateStatusFunc);
+            var cSharpResults = await this.CompileToCSharpAsync(codeFiles, nugetPackages, updateStatusFunc);
 
             await (updateStatusFunc?.Invoke("Compiling Assembly") ?? Task.CompletedTask);
             var result = CompileToAssembly(cSharpResults);
@@ -203,12 +210,14 @@ namespace Try.Core
 
         private async Task<IReadOnlyList<CompileToCSharpResult>> CompileToCSharpAsync(
             ICollection<CodeFile> codeFiles,
+            NugetPackage[] nugetPackages,
             Func<string, Task> updateStatusFunc)
         {
+                       
             // The first phase won't include any metadata references for component discovery. This mirrors what the build does.
             var projectEngine = CreateRazorProjectEngine(Array.Empty<MetadataReference>(), codeFiles?.FirstOrDefault(f => f.Path == CoreConstants.ImportsFileName)?.Content);
 
-            codeFiles = codeFiles.Where(f => f.Path != CoreConstants.ImportsFileName).ToList();
+            codeFiles = codeFiles.Where(f => f.Path != CoreConstants.ImportsFileName && f.Type != CodeFileType.Hidden).ToList();
             // Result of generating declarations
             var declarations = new CompileToCSharpResult[codeFiles.Count];
             var index = 0;
@@ -231,7 +240,7 @@ namespace Try.Core
                         Diagnostics = cSharpDocument.Diagnostics.Select(CompilationDiagnostic.FromRazorDiagnostic).ToList(),
                     };
                 }
-                else
+                else if (codeFile.Type == CodeFileType.CSharp)
                 {
                     declarations[index] = new CompileToCSharpResult
                     {
@@ -253,6 +262,9 @@ namespace Try.Core
 
             // Add the 'temp' compilation as a metadata reference
             var references = new List<MetadataReference>(baseCompilation.References) { tempAssembly.Compilation.ToMetadataReference() };
+            var nugetReferences = await NugetReferenceService.GetMetadataReferencesAsync(nugetPackages);
+            references.AddRange(nugetReferences);
+
             projectEngine = this.CreateRazorProjectEngine(references);
 
             await (updateStatusFunc?.Invoke("Preparing Project") ?? Task.CompletedTask);
