@@ -5,6 +5,7 @@ using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using Nextended.Blazor.Extensions;
 using Nextended.Core;
+using Nextended.Core.Contracts;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Helper
@@ -108,10 +109,24 @@ namespace MudBlazor.Extensions.Helper
         }
 
         /// <summary>
+        /// Returns Icon for contentType
+        /// </summary>
+        public static string IconForFile(IUploadableFile file) => GetIcon(file.FileName, file.ContentType);
+
+        /// <summary>
         /// Returns Icon for IBrowserFile
         /// </summary>
-        public static string GetIcon(this IBrowserFile file)
-            => IconForFile(file.GetContentType());
+        public static string GetIcon(this IBrowserFile file) => GetIcon(file.Name, file.GetContentType());
+
+        /// <summary>
+        /// Returns Icon for IBrowserFile
+        /// </summary>
+        public static string GetIcon(string fileName, string contentType)
+        {
+            if (!string.IsNullOrWhiteSpace(fileName) && Path.GetExtension(fileName)?.Equals(".nupkg", StringComparison.InvariantCultureIgnoreCase) == true)
+                return MudExIcons.Custom.Brands.Nuget;
+            return IconForFile(contentType);
+        }
 
         /// <summary>
         /// Returns the content type for given file

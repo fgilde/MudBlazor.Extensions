@@ -1,4 +1,6 @@
 ## Change Log  
+ - 1.7.77 > Fix bug for simple text in MudExSelect
+ - 1.7.77 > Add main text properties to MudExThemeEdit as default properties for SimpleEdit mode
  - 1.7.76 > Add new components [MudExGoogleFilePicker](https://www.mudex.org/c/MudExGoogleFilePicker), [MudExDropBoxFilePicker](https://www.mudex.org/c/MudExDropBoxFilePicker) and [MudExOneDriveFilePicker](https://www.mudex.org/c/MudExOneDriveFilePicker) to allow picking files from cloud storages
  - 1.7.76 > Add suport for Google Drive, One Drive and Drop Box in [MudExUploadEdit](https://www.mudex.org/upload-edit) more infos can be found [here](https://www.mudex.org/d/MudExUploadEdit)
  - 1.7.76 > [MudExUploadEdit](https://www.mudex.org/upload-edit) is now a Form Component with validations included

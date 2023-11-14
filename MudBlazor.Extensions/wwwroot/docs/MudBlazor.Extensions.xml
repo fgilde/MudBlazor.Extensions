@@ -8661,7 +8661,17 @@
             Returns Icon for contentType
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Helper.BrowserFileExt.IconForFile(Nextended.Core.Contracts.IUploadableFile)">
+            <summary>
+            Returns Icon for contentType
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.BrowserFileExt.GetIcon(Microsoft.AspNetCore.Components.Forms.IBrowserFile)">
+            <summary>
+            Returns Icon for IBrowserFile
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.BrowserFileExt.GetIcon(System.String,System.String)">
             <summary>
             Returns Icon for IBrowserFile
             </summary>

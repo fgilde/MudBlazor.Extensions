@@ -1056,7 +1056,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         }
     }
 
-    private string GetIcon(T request) => BrowserFileExt.IconForFile(request.ContentType);
+    private string GetIcon(T request) => BrowserFileExt.IconForFile(request);
 
     private MudExColor GetIconColor(T request) => ColorizeIcons ? BrowserFileExt.GetPreferredColor(request.ContentType) : Color.Inherit;
 

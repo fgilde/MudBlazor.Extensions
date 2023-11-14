@@ -1,5 +1,6 @@
 ﻿using MudBlazor.Extensions.Helper;
 using Nextended.Blazor.Models;
+using Nextended.Core;
 
 namespace MudBlazor.Extensions.Core;
 
@@ -21,8 +22,8 @@ public class MudExArchiveStructure : ArchiveStructureBase<MudExArchiveStructure>
 
     private string GetIcon()
     {
-        if(Parent == null)
-            return _icon = Icons.Material.Filled.Archive;
+        if (Parent == null)
+            return _icon = BrowserFileExt.GetIcon(Name, BrowserFile?.GetContentType() ?? MimeType.GetMimeType(Name)); //Icons.Material.Filled.Archive;
         if (IsDirectory)
             return IsExpanded ? Icons.Material.Filled.FolderOpen : Icons.Material.Filled.Folder;
         return _icon = BrowserFile?.GetIcon();
