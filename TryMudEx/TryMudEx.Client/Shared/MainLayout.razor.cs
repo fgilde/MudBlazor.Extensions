@@ -22,14 +22,7 @@
             LayoutService.MajorUpdateOccured += LayoutServiceOnMajorUpdateOccured;
             base.OnInitialized();
         }
-        
-        protected override async Task OnInitializedAsync()
-        {
-            await CompilationService.InitAsync(this.HttpClient);
-
-            await base.OnInitializedAsync();
-        }
-        
+                
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);

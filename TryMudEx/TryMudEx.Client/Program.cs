@@ -43,8 +43,8 @@ namespace TryMudEx.Client
             //builder.Services.AddSingleton(new CompilationService());
             
             builder.Services.AddScoped<NuGetPackageSearcher>();
-            builder.Services.AddSingleton<NugetReferenceService>();
-            builder.Services.AddSingleton<CompilationService>();
+            builder.Services.AddScoped<NugetReferenceService>();
+            builder.Services.AddScoped<CompilationService>();
 
             builder.Services
                 .AddOptions<SnippetsOptions>()

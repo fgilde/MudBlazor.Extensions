@@ -1,5 +1,18 @@
+@using System.Reflection
+@using System.Runtime.Loader
+@using System.Web
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using Microsoft.JSInterop
+@using Newtonsoft.Json
+@using Try.Core
+@inject IJSRuntime JSRuntime;
+@inject NugetReferenceService NugetReferenceService;
+@inject NavigationManager NavigationManager;
+@inject LazyAssemblyLoader AssemblyLoader
+
 <Router AppAssembly="@typeof(Program).Assembly"
-        AdditionalAssemblies="@(new List<System.Reflection.Assembly> { typeof(Try.UserComponents.__Main).Assembly })">
+        AdditionalAssemblies="@lazyLoadedAssemblies" 
+        OnNavigateAsync="@OnNavigateAsync">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(EmptyLayout)" />
     </Found>
@@ -9,3 +22,47 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    private List<Assembly> lazyLoadedAssemblies = new();
+
+    private async Task OnNavigateAsync(NavigationContext args)
+    {
+        //var assemblies = await AssemblyLoader.LoadAssembliesAsync(new[] { {LIST OF ASSEMBLIES} });
+        if(!lazyLoadedAssemblies.Any())
+            lazyLoadedAssemblies.AddRange(await GetAdditionalAssembliesAsync());
+    }
+
+    private async Task<List<Assembly>> GetAdditionalAssembliesAsync()
+    {
+        var result = new List<Assembly> { typeof(Try.UserComponents.__Main).Assembly };
+
+
+        var packageStr = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query)["packages"];
+        if (!string.IsNullOrEmpty(packageStr))
+        {
+            try
+            {
+                var packages = JsonConvert.DeserializeObject<NugetPackage[]>(packageStr);
+                if(packages?.Any() == true)
+                {
+                    var assemblies = await NugetReferenceService.GetAssemblyStreamsAsync(packages);
+                    foreach (var assembly in assemblies)
+                    {
+                        try
+                        {
+                            assembly.Stream.Seek(0, System.IO.SeekOrigin.Begin);
+                            result.Add(AssemblyLoadContext.Default.LoadFromStream(assembly.Stream));
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);                           
+                        }
+                    }
+                }
+            }
+            catch  { /* Ignore invalad package param */ }
+        }        
+        return result;
+    }
+}

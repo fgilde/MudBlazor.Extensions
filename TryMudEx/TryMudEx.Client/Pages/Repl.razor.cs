@@ -457,6 +457,7 @@ public partial class Repl : IDisposable
             uploadEdit =>
             {
                 uploadEdit.MinHeight = 400;
+                uploadEdit.MaxHeight = 500;
                 uploadEdit.AutoExtractArchive = true;
                 uploadEdit.Extensions = allowedExtensions.ToArray();
                 //uploadEdit.MimeTypes = MimeType.ArchiveTypes.Concat(new[] { "text/plain", ""}).ToArray();
@@ -477,6 +478,7 @@ public partial class Repl : IDisposable
                 })).ToDictionary(pair => pair.Key, pair => pair.Value);
             CodeFileNames = GetCodeFileNames();
             HandleTabActivate(CodeFileNames.FirstOrDefault());
+            _installedPackages = await GetInstalledAsync();
             StateHasChanged();
         }
     }
@@ -500,7 +502,9 @@ public partial class Repl : IDisposable
 
     private void ReloadIframe()
     {
-        JsRuntime.InvokeVoid(Models.Try.ReloadIframe, "user-page-window", MainUserPagePath);
+        var packageParam = JsonConvert.SerializeObject(_installedPackages, CoreConstants.PackageSerializerSettings);
+        var url =  $"{MainUserPagePath}?packages={packageParam}";
+        JsRuntime.InvokeVoid(Models.Try.ReloadIframe, "user-page-window", url);
     }
 
     private async Task ShowSamples()
@@ -588,6 +592,7 @@ public partial class Repl : IDisposable
         var refFile = EnsureReferenceFile();        
         var tasks = JsonConvert.DeserializeObject<List<NugetPackage>>(refFile.Content).Select(x => PackageSearch.SearchForPackagesAsync(x.Id, 1));
         var results = await Task.WhenAll(tasks);
-        return results.SelectMany(r => r.Data).ToArray();
+        return results.SelectMany(r => r.Data).ToArray();        
     }
+
 }

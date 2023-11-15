@@ -14,6 +14,7 @@ namespace Try.Core
             ContractResolver = new InterfacePropertiesResolver(typeof(INugetPackageReference))
         };
 
+        // Define packages that will be added to the project by default that means all here used packages must be installed and loaded already this packages cant added later and cant uninstalled or changed.
         public static List<INugetPackageReference> DefaultPackages = new()
         {
             new NugetPackage()

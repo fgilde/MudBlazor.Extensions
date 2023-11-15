@@ -25,6 +25,8 @@ namespace Try.Core
 
     public class CompilationService
     {
+        private readonly HttpClient _httpClient;
+
         public const string DefaultRootNamespace = $"{nameof(Try)}.{nameof(UserComponents)}";
         public NugetReferenceService NugetReferenceService { get; set; }
 
@@ -35,13 +37,19 @@ namespace Try.Core
         private const string MudBlazorServices = @"
 <MudDialogProvider FullWidth=""true"" MaxWidth=""MaxWidth.ExtraSmall"" />
 <MudSnackbarProvider/>
-
 ";
+
+
+        public CompilationService(HttpClient httpClient, NugetReferenceService nugetReferenceService)
+        {
+            _httpClient = httpClient;
+            NugetReferenceService = nugetReferenceService;
+        }
 
         // Creating the initial compilation + reading references is on the order of 250ms without caching
         // so making sure it doesn't happen for each run.
-        private static CSharpCompilation baseCompilation;
-        private static CSharpParseOptions cSharpParseOptions;
+        private CSharpCompilation baseCompilation;
+        private CSharpParseOptions cSharpParseOptions;
 
         private readonly RazorProjectFileSystem fileSystem = new VirtualRazorProjectFileSystem();
         private readonly RazorConfiguration configuration = RazorConfiguration.Create(
@@ -49,7 +57,7 @@ namespace Try.Core
             configurationName: "Blazor",
             extensions: Array.Empty<RazorExtension>());
 
-        public static async Task InitAsync(HttpClient httpClient)
+        private async Task InitCompileAsync(PortableExecutableReference[] additionalReferences)
         {
             var basicReferenceAssemblyRoots = new[]
             {
@@ -69,16 +77,18 @@ namespace Try.Core
                 typeof(FluentValidation.AbstractValidator<>).Assembly,
             };
 
+            
             var assemblyNames = basicReferenceAssemblyRoots
                 .SelectMany(assembly => assembly.GetReferencedAssemblies().Concat(new[] { assembly.GetName() }))
                 .Select(x => x.Name)
                 .Distinct()
                 .ToList();
 
-            var assemblyStreams = await GetStreamFromHttpAsync(httpClient, assemblyNames);
+            var assemblyStreams = await GetStreamFromHttpAsync(_httpClient, assemblyNames);
 
-            var allReferenceAssemblies = assemblyStreams.ToDictionary(a => a.Key, a => MetadataReference.CreateFromStream(a.Value));
+            Dictionary<string, PortableExecutableReference> allReferenceAssemblies = assemblyStreams.ToDictionary(a => a.Key, a => MetadataReference.CreateFromStream(a.Value));
 
+            
             var basicReferenceAssemblies = allReferenceAssemblies
                 .Where(a => basicReferenceAssemblyRoots
                     .Select(x => x.GetName().Name)
@@ -86,6 +96,12 @@ namespace Try.Core
                     .Any(n => n == a.Key))
                 .Select(a => a.Value)
                 .ToList();
+
+            if (additionalReferences?.Any() == true)
+            {
+                basicReferenceAssemblies.AddRange(additionalReferences);
+            }
+
 
             baseCompilation = CSharpCompilation.Create(
                 DefaultRootNamespace,
@@ -105,15 +121,12 @@ namespace Try.Core
             cSharpParseOptions = new CSharpParseOptions(LanguageVersion.Preview);
         }
 
-        public CompilationService(NugetReferenceService nugetReferenceService)
-        {
-            NugetReferenceService = nugetReferenceService;        
-        }
         
         public async Task<CompileToAssemblyResult> CompileToAssemblyAsync(
             ICollection<CodeFile> codeFiles,
             INugetPackageReference[] nugetPackages,
-            Func<string, Task> updateStatusFunc) // TODO: try convert to event
+            Func<string, Task> updateStatusFunc, // TODO: try convert to event
+            bool retryOnInMemoryError = true) 
         {
             if (codeFiles == null)
             {
@@ -125,10 +138,15 @@ namespace Try.Core
             await (updateStatusFunc?.Invoke("Compiling Assembly") ?? Task.CompletedTask);
             var result = CompileToAssembly(cSharpResults);
 
+            if(retryOnInMemoryError && result.Diagnostics.Any(d => d.Severity == DiagnosticSeverity.Error && d.Code == "CS0009"))
+            {
+                return await CompileToAssemblyAsync(codeFiles, nugetPackages, updateStatusFunc, false);
+            }
+
             return result;
         }
 
-        private static async Task<IDictionary<string, Stream>> GetStreamFromHttpAsync(
+        private async Task<IDictionary<string, Stream>> GetStreamFromHttpAsync(
             HttpClient httpClient,
             IEnumerable<string> assemblyNames)
         {
@@ -147,7 +165,7 @@ namespace Try.Core
             return streams;
         }
 
-        private static CompileToAssemblyResult CompileToAssembly(IReadOnlyList<CompileToCSharpResult> cSharpResults)
+        private CompileToAssemblyResult CompileToAssembly(IReadOnlyList<CompileToCSharpResult> cSharpResults)
         {
             if (cSharpResults.Any(r => r.Diagnostics.Any(d => d.Severity == DiagnosticSeverity.Error)))
             {
@@ -186,7 +204,7 @@ namespace Try.Core
             return result;
         }
 
-        private static RazorProjectItem CreateRazorProjectItem(string fileName, string fileContent)
+        private RazorProjectItem CreateRazorProjectItem(string fileName, string fileContent)
         {
             var fullPath = WorkingDirectory + fileName;
 
@@ -216,8 +234,11 @@ namespace Try.Core
             
             var nugetReferences = (await NugetReferenceService.GetMetadataReferencesAsync(nugetPackages, updateStatusFunc))?.ToArray();
 
+            await InitCompileAsync(nugetReferences);
+
             // The first phase won't include any metadata references for component discovery. This mirrors what the build does.
             var projectEngine = CreateRazorProjectEngine(nugetReferences ?? Array.Empty<MetadataReference>(), codeFiles?.FirstOrDefault(f => f.Path == CoreConstants.ImportsFileName)?.Content);
+            //var projectEngine = CreateRazorProjectEngine(Array.Empty<MetadataReference>(), codeFiles?.FirstOrDefault(f => f.Path == CoreConstants.ImportsFileName)?.Content);
 
             codeFiles = codeFiles.Where(f => f.Path != CoreConstants.ImportsFileName && f.Type != CodeFileType.Hidden).ToList();
             // Result of generating declarations

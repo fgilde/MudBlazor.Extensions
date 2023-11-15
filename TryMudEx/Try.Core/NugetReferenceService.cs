@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -9,45 +8,99 @@ using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using Try.Core;
 using Nextended.Core.Extensions;
+using MudBlazor.Extensions.Services;
+
 
 public class NugetReferenceService
 {
-    private readonly HttpClient _httpClient = new();
-    private readonly ConcurrentDictionary<string, List<byte[]>> _packageCache = new();
+    private readonly HttpClient _httpClient;
+    private readonly MudExFileService _fileService;
+    private static readonly ConcurrentDictionary<string, List<(string AssemblyName, byte[] AssemblyBytes)>> _packageCache = new();
 
-    public async Task<IEnumerable<MetadataReference>> GetMetadataReferencesAsync(IEnumerable<INugetPackageReference> packages, Func<string, Task> updateStatusFunc)
+    public NugetReferenceService(HttpClient client, MudExFileService fileService)
     {
-        var references = new List<MetadataReference>();
+        _httpClient = client;
+        _fileService = fileService;
+    }
+
+    public async Task<IEnumerable<(string AssemblyName, byte[] AssemlbyBytes)>> GetAssemblyBytesAsync(IEnumerable<INugetPackageReference> packages)
+    {
+        var references = new List<(string AssemblyName, byte[] AssemlbyBytes)>();
 
         foreach (var package in packages)
         {
-            await (updateStatusFunc?.Invoke($"Loading Nuget package {package.Id} {package.Version}") ?? Task.CompletedTask);
-            var streams = await EnsurePackageDownloadedAsync(package);
-            if (streams?.Any() == true)
+            if (CoreConstants.DefaultPackages.All(dp => dp.Id != package.Id))
             {
-                references.AddRange(streams.Select(stream => MetadataReference.CreateFromStream(stream)));
+                var streams = await EnsurePackageDownloadedAsync(package);
+                if (streams?.Any() == true)
+                {
+                    references.AddRange(streams.Select(info =>
+                    {
+                        info.Stream.Seek(0, SeekOrigin.Begin);
+                        return (info.AssemblyName, info.Stream.ToArray());
+                    }));
+                }
             }
         }
 
         return references;
     }
 
-    private async Task<List<Stream>> EnsurePackageDownloadedAsync(INugetPackageReference package)
+    public async Task<IEnumerable<(string AssemblyName, MemoryStream Stream)>> GetAssemblyStreamsAsync(IEnumerable<INugetPackageReference> packages)
     {
-        var cacheKey = $"{package.Id}.{package.Version}";
-        if (!_packageCache.TryGetValue(cacheKey, out var bytes))
-        {
-            var streams = await DownloadAndExtractPackageAsync(package);
-            _packageCache.TryAdd(cacheKey, streams.Select(s => s.ToByteArray()).ToList());
-            return streams;
+        var references = new List<(string AssemblyName, MemoryStream Stream)>();
+
+        foreach (var package in packages)
+        {            
+            if (CoreConstants.DefaultPackages.All(dp => dp.Id != package.Id))
+            {
+                var assemblyInfos = await EnsurePackageDownloadedAsync(package);
+                if (assemblyInfos?.Any() == true)
+                {
+                    references.AddRange(assemblyInfos);
+                }
+            }
         }
-        
-        var memoryStreams = bytes.Select(b => new MemoryStream(b) as Stream).ToList();
-        memoryStreams.Apply(s => s.Seek(0, SeekOrigin.Begin));
-        return memoryStreams;
+
+        return references;
     }
 
-    private async Task<List<Stream>> DownloadAndExtractPackageAsync(INugetPackageReference package)
+    public async Task<IEnumerable<PortableExecutableReference>> GetMetadataReferencesAsync(IEnumerable<INugetPackageReference> packages, Func<string, Task> updateStatusFunc)
+    {
+        var references = new List<PortableExecutableReference>();
+
+        foreach (var package in packages)
+        {            
+            await (updateStatusFunc?.Invoke($"Loading Nuget package {package.Id} {package.Version}") ?? Task.CompletedTask);
+            if (CoreConstants.DefaultPackages.All(dp => dp.Id != package.Id))
+            {
+                var assemblyInfos = await EnsurePackageDownloadedAsync(package);
+                if (assemblyInfos?.Any() == true)
+                {
+                    references.AddRange(assemblyInfos.Select(info => MetadataReference.CreateFromStream(info.Stream)));
+                }
+            }
+        }
+
+        return references;
+    }
+
+    private async Task<List<(string AssemblyName, MemoryStream Stream)>> EnsurePackageDownloadedAsync(INugetPackageReference package)
+    {
+        var cacheKey = $"{package.Id}.{package.Version}";
+        if (!_packageCache.TryGetValue(cacheKey, out var assemblyInfo))
+        {
+            var assemblyInfos = await DownloadAndExtractPackageAsync(package);
+            _packageCache.TryAdd(cacheKey, assemblyInfos.Select(info => (info.AssemblyName, info.Stream.ToByteArray())).ToList());
+            return assemblyInfos;
+        }
+        
+        List<(string AssemblyName, MemoryStream Stream)> results = assemblyInfo.Select(i => (i.AssemblyName, new MemoryStream(i.AssemblyBytes))).ToList();
+        results.Select(r => r.Stream).Apply(s => s.Seek(0, SeekOrigin.Begin));
+        return results;
+    }
+
+    private async Task<List<(string AssemblyName, MemoryStream Stream)>> DownloadAndExtractPackageAsync(INugetPackageReference package)
     {
         var packageId = package.Id;
         var version = package.Version;
@@ -56,25 +109,42 @@ public class NugetReferenceService
         using var response = await _httpClient.GetAsync(packageUrl);
         response.EnsureSuccessStatusCode();
 
+        
         using var stream = await response.Content.ReadAsStreamAsync();
         using var memoryStream = new MemoryStream();
         await stream.CopyToAsync(memoryStream);
-
         memoryStream.Seek(0, SeekOrigin.Begin);
-        using var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read);
 
-        var dllStreams = new List<Stream>();
-        foreach (var entry in archive.Entries)
+        var entries = await _fileService.ReadArchiveAsync(memoryStream, package.Id, "application/zip");
+        var dlls = entries.List.Where(entry => entry.FullName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)).DistinctBy(e => e.FullName).ToArray();
+        var dllStreams = new List<(string AssemblyName, MemoryStream Stream)>();
+
+        foreach (var dll in dlls)
         {
-            if (entry.FullName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
-            {
-                var entryStream = new MemoryStream();
-                using var entryOriginalStream = entry.Open();
-                await entryOriginalStream.CopyToAsync(entryStream);
-                entryStream.Seek(0, SeekOrigin.Begin); // Rewind the stream for future reading
-                dllStreams.Add(entryStream);
-            }
+            var entryStream = new MemoryStream();
+            using var entryOriginalStream = dll.OpenReadStream();
+            await entryOriginalStream.CopyToAsync(entryStream);
+            entryStream.Seek(0, SeekOrigin.Begin); // Rewind the stream for future reading
+            dllStreams.Add((dll.Name, entryStream));
         }
+
+
+        //using var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read);
+
+        //var dllStreams = new List<Stream>();
+        //foreach (var entry in archive.Entries)
+        //{
+        //    // Check if the entry is a .dll file in a 'lib' subdirectory
+        //    if (entry.FullName.StartsWith("lib/", StringComparison.OrdinalIgnoreCase) &&
+        //        entry.FullName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+        //    {
+        //        var entryStream = new MemoryStream();
+        //        using var entryOriginalStream = entry.Open();
+        //        await entryOriginalStream.CopyToAsync(entryStream);
+        //        entryStream.Seek(0, SeekOrigin.Begin); // Rewind the stream for future reading
+        //        dllStreams.Add(entryStream);
+        //    }
+        //}
 
         return dllStreams;
     }
