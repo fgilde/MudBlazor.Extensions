@@ -73,10 +73,10 @@
             @SelectAllRender(Options.SelectAllPosition.NextToSearchBox)
             @if (Features.SelectColorFeature)
             {
-                <MudExTextField @ref="_searchField" @bind-Value="@SearchString" Class="@ClassSearchBox" Placeholder="@SearchBoxPlaceholder" OnKeyDown="SearchBoxHandleKeyDown" OnKeyUp="@(() => UpdateSelectedStyles())" OnClearButtonClick="@(() => UpdateSelectedStyles())" Immediate="true" Variant="SearchBoxVariant" Margin="Margin.Dense"
+                <MudExTextField @ref="_searchField" @bind-Value="@SearchString" Class="@ClassSearchBox" Placeholder="@TryLocalize(SearchBoxPlaceholder)" OnKeyDown="SearchBoxHandleKeyDown" OnKeyUp="@(() => UpdateSelectedStyles())" OnClearButtonClick="@(() => UpdateSelectedStyles())" Immediate="true" Variant="SearchBoxVariant" Margin="Margin.Dense"
                                 Color="Color" Adornment="SearchBoxAdornment" AdornmentIcon="@Icons.Material.Filled.Search" Style="@($"color:{Color}")" AdornmentColor="@(Color.IsColor ? Color.AsColor : MudBlazor.Color.Default)" AutoFocus="@SearchBoxAutoFocus" Clearable="@SearchBoxClearable" />
             }else{
-                <MudTextField @ref="_searchField" @bind-Value="@SearchString" Class="@ClassSearchBox" Placeholder="@SearchBoxPlaceholder" OnKeyDown="SearchBoxHandleKeyDown" OnKeyUp="@(() => UpdateSelectedStyles())" OnClearButtonClick="@(() => UpdateSelectedStyles())" Immediate="true" Variant="SearchBoxVariant" Margin="Margin.Dense"
+                <MudTextField @ref="_searchField" @bind-Value="@SearchString" Class="@ClassSearchBox" Placeholder="@TryLocalize(SearchBoxPlaceholder)" OnKeyDown="SearchBoxHandleKeyDown" OnKeyUp="@(() => UpdateSelectedStyles())" OnClearButtonClick="@(() => UpdateSelectedStyles())" Immediate="true" Variant="SearchBoxVariant" Margin="Margin.Dense"
                                 Adornment="SearchBoxAdornment" AdornmentIcon="@Icons.Material.Filled.Search" Style="@($"color:{Color}")" AdornmentColor="@(Color.IsColor ? Color.AsColor : MudBlazor.Color.Default)" AutoFocus="@SearchBoxAutoFocus" Clearable="@SearchBoxClearable" />
             }
         </div>
@@ -88,11 +88,11 @@
         @{
             if (MudExSelect != null)
             {
-                <MudExSelectItem Value="@item" Text="@(ToStringFunc == null ? item.ToString() : ToStringFunc(item))" />
+                <MudExSelectItem Value="@item" Text="@(ItemNameRender(item))" />
             }
             else
             {
-                <MudExListItem Value="@item" @ondblclick="@(() => OnDoubleClickHandler(new MouseEventArgs(), item))" Text="@(ToStringFunc == null ? item.ToString() : ToStringFunc(item))" />
+                <MudExListItem Value="@item" @ondblclick="@(() => OnDoubleClickHandler(new MouseEventArgs(), item))" Text="@(ItemNameRender(item))" />
             }
         }
     </div>;

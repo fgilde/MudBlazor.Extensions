@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
@@ -14,6 +15,12 @@ namespace MudBlazor.Extensions.Components.ObjectEdit;
 /// <typeparam name="T"></typeparam>
 public partial class MudExCollectionEditor<T>
 {
+    /// <summary>
+    /// Gets or Sets the Localizer Pattern.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string LocalizerPattern { get; set; } = "{0}";
+
     /// <summary>
     /// Gets or sets the height of the collection editor.
     /// </summary>
@@ -49,6 +56,7 @@ public partial class MudExCollectionEditor<T>
     /// </summary>
     [Parameter]
     public Func<T, string> ItemToStringFunc { get; set; } = (item => item?.ToString() ?? string.Empty);
+
 
     /// <summary>
     /// Gets or sets the text for the add button.
@@ -370,7 +378,13 @@ public partial class MudExCollectionEditor<T>
     /// </summary>
     public virtual string ItemNameRender(T item)
     {
-        return ItemToStringFunc(item);
+        var res = ItemToStringFunc(item);
+        if (!string.IsNullOrWhiteSpace(res) && LocalizerToUse != null && !string.IsNullOrWhiteSpace(LocalizerPattern))
+        {
+            return LocalizerToUse[string.Format(LocalizerPattern, item)];
+        }
+
+        return res;
     }
 
     /// <summary>

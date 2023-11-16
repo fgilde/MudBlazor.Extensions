@@ -203,8 +203,9 @@
                               Class="mud-alert-message-w-100"
                               Severity="@(IsSelected(request) ? Severity.Warning : (_withErrors.Contains(request) ? Severity.Error : Severity.Normal))"
                               OnClick="(a) => Select(request, a)"
+                              Style="@($"{(SelectItemsMode == SelectItemsMode.ShowPreviewOnClick ? "cursor:pointer;" : "")}")"
                               ShowCloseIcon="@(AllowRemovingItems && !ReadOnly && !isLoading && CanRemoveItemFunc(request))"
-                              CloseIcon="@Icons.Material.Filled.Delete"
+                              CloseIcon="@Icons.Material.Filled.Delete"                              
                               CloseIconClicked="(() => Remove(request))">
         <div title="@($"{request.Path?.EnsureEndsWith("/")}{request.FileName}")" style="display: flex; align-items: center; width: 90%">
             @if (isLoading)
@@ -226,7 +227,7 @@
         </div>
         @if (AllowPreview && !isLoading)
         {
-            <MudIconButton OnClick="@(() => Preview(request))" Style="margin-top: -24px; float: right;" Icon="@Icons.Material.Filled.ZoomIn" Color="Color.Inherit" Size="Size.Small" />
+            <MudIconButton OnClick="@(() => Preview(request))" Style="margin-top: -24px; float: right;" Icon="@PreviewIcon" Color="@PreviewIconColor" Size="PreviewButtonSize" />
         }
     </MudAlert>;
     }

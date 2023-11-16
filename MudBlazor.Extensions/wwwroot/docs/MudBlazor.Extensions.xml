@@ -2794,6 +2794,16 @@
             <param name="text"></param>
             <returns></returns>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.LocalizerPattern">
+            <summary>
+            Gets or Sets the Localizer Pattern.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExList`1.ItemNameRender(`0)">
+            <summary>
+            Renders the item name
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExList`1.SearchBoxBackgroundColor">
             <summary>
             BackgroundColor for Searchbox
@@ -3582,6 +3592,16 @@
             An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used and you can specify animations as well
             </summary>
             <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.LocalizerPattern">
+            <summary>
+            Gets or Sets the Localizer Pattern.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.ItemNameRender(`0)">
+            <summary>
+            Renders the item name
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.Items">
             <summary>
@@ -5088,6 +5108,11 @@
             Allows multi item selection with Ctrl key.
             </summary>
         </member>
+        <member name="F:MudBlazor.Extensions.Components.SelectItemsMode.ShowPreviewOnClick">
+            <summary>
+            In this mode the preview will popup on click.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.RestrictionType">
             <summary>
             Specifies the type of MIME type restriction.
@@ -5177,6 +5202,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ButtonSize">
             <summary>
             Size of action buttons
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.PreviewButtonSize">
+            <summary>
+            Size of action preview action buttons in item
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ButtonsJustify">
@@ -5737,6 +5767,11 @@
             Powerful component to edit a set of items and their properties.
             </summary>
             <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.LocalizerPattern">
+            <summary>
+            Gets or Sets the Localizer Pattern.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExCollectionEditor`1.Height">
             <summary>

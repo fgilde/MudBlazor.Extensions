@@ -11,6 +11,26 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExList<T> : IDisposable
 {
 
+    /// <summary>
+    /// Gets or Sets the Localizer Pattern.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string LocalizerPattern { get; set; } = "{0}";
+
+    /// <summary>
+    /// Renders the item name
+    /// </summary>
+    public virtual string ItemNameRender(T item)
+    {
+        var res = ToStringFunc != null ? ToStringFunc(item) : Converter.Set(item);
+        if (!string.IsNullOrWhiteSpace(res) && !string.IsNullOrWhiteSpace(LocalizerPattern))
+        {
+            return LocalizerToUse != null ? LocalizerToUse[string.Format(LocalizerPattern, item)] : string.Format(LocalizerPattern, res);
+        }
+
+        return res;
+    }
+
     #region Parameters, Fields, Injected Services
 
     [Inject] IKeyInterceptorFactory KeyInterceptorFactory { get; set; }

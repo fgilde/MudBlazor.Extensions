@@ -4,14 +4,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web;
 using Try.Core;
-using System.Diagnostics.Contracts;
 using System.Linq;
-using Microsoft.AspNetCore.Components.Web.Virtualization;
 using MudBlazor;
-using Nextended.Core.Extensions;
 using MudBlazor.Extensions.Helper;
 using Microsoft.JSInterop;
-using BlazorJS;
+
 
 namespace TryMudEx.Client.Components;
 

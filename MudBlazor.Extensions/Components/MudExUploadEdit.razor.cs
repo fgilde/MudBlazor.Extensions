@@ -30,6 +30,12 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     #region Parameters
 
     [Parameter]
+    public string PreviewIcon { get; set; } = Icons.Material.Filled.ZoomIn;
+    
+    [Parameter]
+    public Color PreviewIconColor { get; set; } = Color.Inherit;
+
+    [Parameter]
     public Func<T, bool> CanRemoveItemFunc { get; set; } = _ => true;
 
     [Parameter]
@@ -94,6 +100,11 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// Size of action buttons
     /// </summary>
     [Parameter] public Size ButtonSize { get; set; } = Size.Small;
+
+    /// <summary>
+    /// Size of action preview action buttons in item
+    /// </summary>
+    [Parameter] public Size PreviewButtonSize { get; set; } = Size.Small;
 
     /// <summary>
     /// Alignment of action buttons
@@ -1040,7 +1051,11 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
     private async Task Select(T request, MouseEventArgs args)
     {
-        if (SelectItemsMode != SelectItemsMode.None)
+        if(SelectItemsMode == SelectItemsMode.ShowPreviewOnClick)
+        {
+            await Preview(request);
+        }
+        else if (SelectItemsMode != SelectItemsMode.None)
         {
             SelectedRequests ??= new List<T>();
 

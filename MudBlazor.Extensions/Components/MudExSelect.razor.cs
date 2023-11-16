@@ -8,6 +8,7 @@ using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using System.Linq.Expressions;
+using static MudBlazor.CategoryTypes;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -17,6 +18,26 @@ namespace MudBlazor.Extensions.Components;
 /// <typeparam name="T"></typeparam>
 public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IMudExComponent
 {
+
+    /// <summary>
+    /// Gets or Sets the Localizer Pattern.
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string LocalizerPattern { get; set; } = "{0}";
+
+    /// <summary>
+    /// Renders the item name
+    /// </summary>
+    public virtual string ItemNameRender(T item)
+    {        
+        var res = ToStringFunc != null ? ToStringFunc(item) : Converter.Set(item);
+        if (!string.IsNullOrWhiteSpace(res) && !string.IsNullOrWhiteSpace(LocalizerPattern))
+        {
+            return LocalizerToUse != null ? LocalizerToUse[string.Format(LocalizerPattern, item)] : string.Format(LocalizerPattern, res);
+        }
+
+        return res;
+    }
 
     #region Constructor, Injected Services, Parameters, Fields
 
@@ -725,7 +746,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         {
             if (ItemCollection != null)
             {
-                textList.AddRange(from val in SelectedValues select ItemCollection.FirstOrDefault(x => x != null && (Comparer?.Equals(x, val) ?? x.Equals(val))) into collectionValue where collectionValue != null select Converter.Set(collectionValue));
+                textList.AddRange(from val in SelectedValues select ItemCollection.FirstOrDefault(x => x != null && (Comparer?.Equals(x, val) ?? x.Equals(val))) into collectionValue where collectionValue != null select ItemNameRender(collectionValue));
             }
             else
             {
@@ -733,13 +754,13 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
                 {
                     if (!Strict && !Items.Select(x => x.Value).Contains(val))
                     {
-                        textList.Add(ToStringFunc != null ? ToStringFunc(val) : Converter.Set(val));
+                        textList.Add(ItemNameRender(val));
                         continue;
                     }
                     var item = Items.FirstOrDefault(x => x != null && (x.Value == null ? val == null : Comparer?.Equals(x.Value, val) ?? x.Value.Equals(val)));
                     if (item != null)
                     {
-                        textList.Add(!string.IsNullOrEmpty(item.Text) ? item.Text : Converter.Set(item.Value));
+                        textList.Add(!string.IsNullOrEmpty(item.Text) ? item.Text : ItemNameRender(item.Value));
                     }
                 }
             }
@@ -763,9 +784,9 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
             var item = Items.FirstOrDefault(x => Value == null ? x.Value == null : Comparer?.Equals(Value, x.Value) ?? Value.Equals(x.Value));
             if (item == null)
             {
-                return SetTextAsync(Converter.Set(Value), false);
+                return SetTextAsync(ItemNameRender(Value), false);
             }
-            return SetTextAsync((!string.IsNullOrEmpty(item.Text) ? item.Text : Converter.Set(item.Value)), updateValue: updateValue);
+            return SetTextAsync((!string.IsNullOrEmpty(item.Text) && item.Value is null ? item.Text : ItemNameRender(item.Value)), updateValue: updateValue);
         }
     }
 

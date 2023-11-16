@@ -120,7 +120,12 @@ public enum SelectItemsMode
     /// <summary>
     /// Allows multi item selection with Ctrl key.
     /// </summary>
-    MultiSelectWithCtrlKey
+    MultiSelectWithCtrlKey,
+
+    /// <summary>
+    /// In this mode the preview will popup on click.
+    /// </summary>
+    ShowPreviewOnClick,
 }
 
 /// <summary>
