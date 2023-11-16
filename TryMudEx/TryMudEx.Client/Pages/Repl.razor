@@ -89,13 +89,13 @@
         </div>
         <MudSpacer />
         <MudButton DisableElevation="true" DisableRipple="true" OnClick="@ReloadIframe">Reload</MudButton>
-        <MudDivider Vertical="true" Class="mr-1" />        
+        <MudDivider Vertical="true" Class="mr-1" />
         @foreach (var package in _installedPackages.Take(_maxPackagesInStatusBar))
         {
             <MudText Typo="Typo.body2" Class="mr-3 try-mudblazor-version">
                 <a href="@package.ProjectUrl" target="_blank">@TrimmedPackageText(package)</a>
             </MudText>
-        }       
+        }
         @if (_installedPackages.Length > _maxPackagesInStatusBar)
         {
             <MudMenu Style="align-self: end;" MaxHeight="400" Dense="true">
@@ -113,7 +113,10 @@
             </MudMenu>
 
         }
-        <MudIconButton Style="transform: scale(.8);" Icon="@MudExIcons.Custom.Brands.Nuget" Class="rounded-0 py-0 px-0" OnClick="@(() => EditPackageReferences(true))"></MudIconButton>
+
+        <MudTooltip Text="Manage Nuget packages" Placement="Placement.Left">
+            <MudIconButton Style="transform: scale(.8);" Icon="@MudExIcons.Custom.Brands.Nuget" Class="rounded-0 py-0 px-0" OnClick="@(() => EditPackageReferences(true))"></MudIconButton>
+        </MudTooltip>
 
     </MudAppBar>
 </div>
@@ -130,16 +133,18 @@
         return @<div style="height: 100%; width: 100%">
         <TabManager @bind-ViewMode="Mode" @bind-ActiveIndex="_activeTabIndex" Tabs="@CodeFileNames" OnTabActivate="@HandleTabActivate" OnTemplateCreate="@HandleCreateFromTemplate" OnTabClose="@HandleTabClose" OnTabCreate="@HandleTabCreate">
             <Tools>
-                <MudIconButton Icon="@MudExIcons.Custom.Brands.ColorFull.Nuget" Class="view_mode_toggle rounded-0 py-1 px-2" OnClick="@(() => EditPackageReferences(Mode == CodeViewMode.DockedTop))"></MudIconButton>
+                <MudTooltip Text="Manage Nuget packages">
+                    <MudIconButton Icon="@MudExIcons.Custom.Brands.ColorFull.Nuget" Class="view_mode_toggle rounded-0 py-1 px-2" OnClick="@(() => EditPackageReferences(Mode == CodeViewMode.DockedTop))"></MudIconButton>
+                </MudTooltip>
             </Tools>
         </TabManager>
         <CodeEditor @ref="@CodeEditorComponent" Theme="@(LayoutService.IsDarkMode ? "vs-dark" : "default")" Code="@CodeEditorContent" CodeFileType="@CodeFileType" />
         <ErrorList OnDiagnosticClick="OpenDiagnostic" @bind-Show="@ShowDiagnostics" Diagnostics="@Diagnostics" />
     </div>;
     }
-    
+
     private string TrimmedPackageText(NugetPackage package, int maxChars = 35)
-    {        
+    {
         var text = $"{package.Id} {package.Version}";
 
         if (text.Length > maxChars)

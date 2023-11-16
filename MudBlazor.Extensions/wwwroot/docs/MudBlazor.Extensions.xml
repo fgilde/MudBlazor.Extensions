@@ -5646,6 +5646,69 @@
             Executes the DropZone Click Action
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExVirtualize`1">
+            <summary>
+            Simple virtualize component that can be disabled with support for fixed items and ItemsProvider.
+            </summary>
+            <typeparam name="TItem"></typeparam>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualize`1.IsEnabled">
+            <summary>
+            Set false to turn off virtualization
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualize`1.ChildContent">
+            <summary>
+            Gets or sets the item template for the list.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualize`1.ItemContent">
+            <summary>
+            Gets or sets the item template for the list.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualize`1.Placeholder">
+            <summary>
+            Gets or sets the template for items that have not yet been loaded in memory.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualize`1.ItemSize">
+            <summary>
+            Gets the size of each item in pixels. Defaults to 50px.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualize`1.ItemsProvider">
+            <summary>
+            Gets or sets the function providing items to the list.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualize`1.Items">
+            <summary>
+            Gets or sets the fixed item source.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualize`1.OverscanCount">
+            <summary>
+            Gets or sets a value that determines how many additional items will be rendered
+            before and after the visible region. This help to reduce the frequency of rendering
+            during scrolling. However, higher values mean that more elements will be present
+            in the page.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualize`1.SpacerElement">
+             <summary>
+             Gets or sets the tag name of the HTML element that will be used as the virtualization spacer.
+             One such element will be rendered before the visible items, and one more after them, using
+             an explicit "height" style to control the scroll range.
+            
+             The default value is "div". If you are placing the <see cref="T:Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize`1"/> instance inside
+             an element that requires a specific child tag name, consider setting that here. For example when
+             rendering inside a "tbody", consider setting <see cref="P:MudBlazor.Extensions.Components.MudExVirtualize`1.SpacerElement"/> to the value "tr".
+             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExVirtualize`1.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.IDefaultRenderDataProvider">
             <summary>
             Interface for providing default render data for mudex object edit property

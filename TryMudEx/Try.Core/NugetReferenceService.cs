@@ -22,67 +22,41 @@ public class NugetReferenceService
         _httpClient = client;
         _fileService = fileService;
     }
-
-    public async Task<IEnumerable<(string AssemblyName, byte[] AssemlbyBytes)>> GetAssemblyBytesAsync(IEnumerable<INugetPackageReference> packages)
+   
+    public async Task<IEnumerable<(string AssemblyName, byte[] AssemblyBytes)>> GetAssemblyBytesAsync(IEnumerable<INugetPackageReference> packages, Func<string, Task> updateStatusFunc = null)
     {
-        var references = new List<(string AssemblyName, byte[] AssemlbyBytes)>();
+        var assemblies = await GetAssemblyStreamsAsync(packages, updateStatusFunc);
+        return assemblies.Select(info =>
+        {
+            info.Stream.Seek(0, SeekOrigin.Begin);
+            return (info.AssemblyName, info.Stream.ToArray());
+        });
+    }
 
+    public async Task<IEnumerable<(string AssemblyName, MemoryStream Stream)>> GetAssemblyStreamsAsync(IEnumerable<INugetPackageReference> packages, Func<string, Task> updateStatusFunc = null)
+    {
+        var results = new List<(string AssemblyName, MemoryStream Stream)>();
         foreach (var package in packages)
         {
-            if (CoreConstants.DefaultPackages.All(dp => dp.Id != package.Id))
-            {
-                var streams = await EnsurePackageDownloadedAsync(package);
-                if (streams?.Any() == true)
-                {
-                    references.AddRange(streams.Select(info =>
-                    {
-                        info.Stream.Seek(0, SeekOrigin.Begin);
-                        return (info.AssemblyName, info.Stream.ToArray());
-                    }));
-                }
-            }
-        }
-
-        return references;
-    }
-
-    public async Task<IEnumerable<(string AssemblyName, MemoryStream Stream)>> GetAssemblyStreamsAsync(IEnumerable<INugetPackageReference> packages)
-    {
-        var references = new List<(string AssemblyName, MemoryStream Stream)>();
-
-        foreach (var package in packages)
-        {            
-            if (CoreConstants.DefaultPackages.All(dp => dp.Id != package.Id))
-            {
-                var assemblyInfos = await EnsurePackageDownloadedAsync(package);
-                if (assemblyInfos?.Any() == true)
-                {
-                    references.AddRange(assemblyInfos);
-                }
-            }
-        }
-
-        return references;
-    }
-
-    public async Task<IEnumerable<PortableExecutableReference>> GetMetadataReferencesAsync(IEnumerable<INugetPackageReference> packages, Func<string, Task> updateStatusFunc)
-    {
-        var references = new List<PortableExecutableReference>();
-
-        foreach (var package in packages)
-        {            
             await (updateStatusFunc?.Invoke($"Loading Nuget package {package.Id} {package.Version}") ?? Task.CompletedTask);
+
             if (CoreConstants.DefaultPackages.All(dp => dp.Id != package.Id))
             {
                 var assemblyInfos = await EnsurePackageDownloadedAsync(package);
                 if (assemblyInfos?.Any() == true)
                 {
-                    references.AddRange(assemblyInfos.Select(info => MetadataReference.CreateFromStream(info.Stream)));
+                    results.AddRange(assemblyInfos);
                 }
             }
         }
+        return results;
+    }
 
-        return references;
+    public async Task<IEnumerable<PortableExecutableReference>> GetMetadataReferencesAsync(IEnumerable<INugetPackageReference> packages, Func<string, Task> updateStatusFunc = null)
+    {
+        await (updateStatusFunc?.Invoke($"Loading packages...") ?? Task.CompletedTask);
+        var assemblies = await GetAssemblyStreamsAsync(packages, updateStatusFunc);
+        return assemblies.Select(info => MetadataReference.CreateFromStream(info.Stream));
     }
 
     private async Task<List<(string AssemblyName, MemoryStream Stream)>> EnsurePackageDownloadedAsync(INugetPackageReference package)

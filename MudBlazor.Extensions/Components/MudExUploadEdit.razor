@@ -35,7 +35,7 @@
                 }
                 else if (AllowDrop && !string.IsNullOrEmpty(TextDropZone) && !HasData())
                 {
-                    @RenderDropZone();
+                    @RenderDropZone()
                 }
 
                 <MudStack Spacing="2">
@@ -60,12 +60,15 @@
                     {
                         @foreach (var request in (UploadRequests ?? Enumerable.Empty<T>()))
                         {
-                            @RenderItem(request);
+                            @if (ItemIsVisibleFunc(request))
+                            {
+                                @RenderItem(request)
+                            }
                         }
                     }
                 </MudStack>
             </div>
-            
+
             @if (ShowClearButton && HasData() && !ReadOnly)
             {
                 <MudGrid Class="mr-5 mt-2 pr-12" Justify="Justify.FlexEnd">
@@ -194,38 +197,38 @@
         var isLoading = IsLoading(request);
         var loadingState = isLoading ? _loadings[request] : default;
 
-        if(ItemTemplate != null)
+        if (ItemTemplate != null)
             return ItemTemplate(request);
         return @<MudAlert NoIcon="true"
-                            Class="mud-alert-message-w-100"
-                            Severity="@(IsSelected(request) ? Severity.Warning : (_withErrors.Contains(request) ? Severity.Error : Severity.Normal))"
-                            OnClick="(a) => Select(request, a)"
-                            ShowCloseIcon="@(AllowRemovingItems && !ReadOnly && !isLoading)"
-                            CloseIcon="@Icons.Material.Filled.Delete"
-                            CloseIconClicked="(() => Remove(request))">
-                    <div title="@($"{request.Path?.EnsureEndsWith("/")}{request.FileName}")" style="display: flex; align-items: center; width: 90%">
-                        @if (isLoading)
-                        {
-                            <MudProgressCircular Class="mr-3" Size="@Size.Small" Color="@Color.Info" Indeterminate="@(!ShowProgressForLoadingData)" Max="@loadingState.Size" Value="@loadingState.ReadBytes"/>
-                        }
-                        else
-                        {
-                            <MudExIcon Class="mr-3" Color="@GetIconColor(request)" Icon="@GetIcon(request)"/>
-                        }
-                        @if (AllowRename && !ReadOnly && !isLoading)
-                        {
-                            <MudTextField Style="height: 12px;" Class="mud-ex-collection-inline-string-edit" DisableUnderLine="true" Error="@(string.IsNullOrWhiteSpace(request.FileName))" @bind-Value="@request.FileName"></MudTextField>
-                        }
-                        else
-                        {
-                            <MudText Style="height: 12px; margin-top: -13px" Typo="Typo.subtitle1">@request.FileName</MudText>
-                        }
-                    </div>
-                    @if (AllowPreview && !isLoading)
-                    {
-                        <MudIconButton OnClick="@(() => Preview(request))" Style="margin-top: -24px; float: right;" Icon="@Icons.Material.Filled.ZoomIn" Color="Color.Inherit" Size="Size.Small"/>
-                    }
-                </MudAlert>;
+                              Class="mud-alert-message-w-100"
+                              Severity="@(IsSelected(request) ? Severity.Warning : (_withErrors.Contains(request) ? Severity.Error : Severity.Normal))"
+                              OnClick="(a) => Select(request, a)"
+                              ShowCloseIcon="@(AllowRemovingItems && !ReadOnly && !isLoading && CanRemoveItemFunc(request))"
+                              CloseIcon="@Icons.Material.Filled.Delete"
+                              CloseIconClicked="(() => Remove(request))">
+        <div title="@($"{request.Path?.EnsureEndsWith("/")}{request.FileName}")" style="display: flex; align-items: center; width: 90%">
+            @if (isLoading)
+            {
+                <MudProgressCircular Class="mr-3" Size="@Size.Small" Color="@Color.Info" Indeterminate="@(!ShowProgressForLoadingData)" Max="@loadingState.Size" Value="@loadingState.ReadBytes" />
+            }
+            else
+            {
+                <MudExIcon Class="mr-3" Color="@GetIconColor(request)" Icon="@GetIcon(request)" />
+            }
+            @if (AllowRename && !ReadOnly && !isLoading)
+            {
+                <MudTextField Style="height: 12px;" Class="mud-ex-collection-inline-string-edit" DisableUnderLine="true" Error="@(string.IsNullOrWhiteSpace(request.FileName))" @bind-Value="@request.FileName"></MudTextField>
+            }
+            else
+            {
+                <MudText Style="height: 12px; margin-top: -13px" Typo="Typo.subtitle1">@request.FileName</MudText>
+            }
+        </div>
+        @if (AllowPreview && !isLoading)
+        {
+            <MudIconButton OnClick="@(() => Preview(request))" Style="margin-top: -24px; float: right;" Icon="@Icons.Material.Filled.ZoomIn" Color="Color.Inherit" Size="Size.Small" />
+        }
+    </MudAlert>;
     }
 
     private void RenderExternalPicker(RenderTreeBuilder __builder)

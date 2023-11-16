@@ -1,0 +1,50 @@
+﻿@inherits MudExBaseComponent<MudExVirtualize<TItem>>
+@typeparam TItem
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+
+@if (IsEnabled)
+{
+    @if (ItemsPerRow > 1)
+    {
+        <div style="position: relative; width: 100%">
+            <Virtualize Items="@VirtualizedRows" TItem="TItem[]"                        
+                        SpacerElement="@SpacerElement"
+                        Placeholder="@Placeholder"
+                        OverscanCount="@OverscanCount"
+                        ItemSize="@(ItemSize)">
+                <div class="d-flex mud-width-full">
+                    @foreach (TItem item in context)
+                    {
+                        @if (ChildContent is not null)
+                        {
+                            @ChildContent(item)
+                        }
+                    }
+                </div>
+            </Virtualize>
+        </div>
+    }
+    else
+    {
+        <Virtualize TItem="TItem"
+                    ItemsProvider="@ItemsProvider"
+                    ChildContent="@ChildContent"
+                    SpacerElement="@SpacerElement"
+                    ItemContent="@ItemContent"
+                    Placeholder="@Placeholder"
+                    Items="@Items"
+                    OverscanCount="@OverscanCount"
+                    ItemSize="@ItemSize">
+        </Virtualize>
+    }
+}
+else
+{
+    @foreach (var item in Items ?? _allItems ?? Array.Empty<TItem>())
+    {
+        if (ChildContent is not null)
+        {
+            @ChildContent(item)
+        }
+    }
+}

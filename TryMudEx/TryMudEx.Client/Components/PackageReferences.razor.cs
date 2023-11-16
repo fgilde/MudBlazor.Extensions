@@ -1,12 +1,17 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System;
+using Microsoft.AspNetCore.Components;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web;
 using Try.Core;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using Microsoft.AspNetCore.Components.Web.Virtualization;
+using MudBlazor;
 using Nextended.Core.Extensions;
 using MudBlazor.Extensions.Helper;
+using Microsoft.JSInterop;
+using BlazorJS;
 
 namespace TryMudEx.Client.Components;
 
@@ -15,20 +20,32 @@ public partial class PackageReferences
     [Parameter]
     public NugetPackage[] InstalledPackages { get; set; }
 
+    [Parameter]
+    public bool InfiniteScroll { get; set; } = true;
+
     [Inject] private NuGetPackageSearcher _nuget { get; set; }
+    [Inject] private IScrollManager _scroll { get; set; }
+    [Inject] private IJSRuntime _js { get; set; }
+    
+    public bool IsVirtualized => _packages?.Length > 40;
+
     private string _search;
     private NugetPackage[] _packages;
     private bool _loading;
-
-    private async Task SearchPackage()
+    bool _canLoadMore;
+    bool _isLoadingMore;
+    private async Task<NugetPackage[]> SearchPackage(bool loadAdditional = false)
     {
         if (!string.IsNullOrEmpty(_search))
         {
+            _isLoadingMore = loadAdditional;
             SetLoading(true);
-            var response = await _nuget.SearchForPackagesAsync(_search);
-            _packages = response.Data;
+            var response = await _nuget.SearchForPackagesAsync(_search, 20, loadAdditional ? _packages?.Length ?? 0 : 0);
+            _packages = !loadAdditional ? response.Data : (_packages ?? Array.Empty<NugetPackage>()).Concat(response.Data).ToArray();
+            _canLoadMore = response.TotalHits > _packages.Length;
             SetLoading(false);
         }
+        return _packages;
     }
 
     private bool IsInstalled(NugetPackage package)
@@ -97,4 +114,26 @@ public partial class PackageReferences
     {
         return CoreConstants.DefaultPackages.All(p => p.Id != package.Id);
     }
+
+    private async Task OnGridScroll(EventArgs arg)
+    {
+        if (InfiniteScroll)
+        {
+            var isAtBottom = await _js.InvokeAsync<bool>("isScrollAtBottom", ".package-result-grid");
+            if (isAtBottom && _canLoadMore)
+            {
+                await LoadMore();
+            }
+        }
+    }
+
+    private async Task LoadMore()
+    {
+        await SearchPackage(true);
+        if (!InfiniteScroll)
+        {
+            await _scroll.ScrollToBottomAsync("package-result-grid", ScrollBehavior.Smooth);
+        }
+    }
+
 }

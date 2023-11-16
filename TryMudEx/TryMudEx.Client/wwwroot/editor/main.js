@@ -4,6 +4,14 @@ let _dotNetInstance;
 
 const throttleLastTimeFuncNameMappings = {};
 
+function isScrollAtBottom(containerOrId) {
+    if (typeof containerOrId === 'string' || containerOrId instanceof String) {
+        containerOrId = document.querySelector(containerOrId);
+    }
+    
+    return containerOrId.scrollHeight - containerOrId.scrollTop === containerOrId.clientHeight;
+}
+
 function registerLangugageProvider(language) {
     monaco.languages.registerCompletionItemProvider(language, {
         provideCompletionItems: async function (model, position) {

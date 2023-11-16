@@ -19,7 +19,7 @@ public class NuGetPackageSearcher
     }
 
     // Method that searches for packages using the HttpClient provided
-    public async Task<NugetResponse> SearchForPackagesAsync(string searchString, int limit = 20)
+    public async Task<NugetResponse> SearchForPackagesAsync(string searchString, int limit = 20, int skip = 0)
     {
         if (string.IsNullOrEmpty(searchString))
             throw new ArgumentException("Search string cannot be null or empty.", nameof(searchString));
@@ -27,7 +27,7 @@ public class NuGetPackageSearcher
         try
         {
             // Construct the search query with a default of 20 results
-            string searchQuery = $"{NuGetSearchBaseUrl}?q={Uri.EscapeDataString(searchString)}&take={limit}";
+            string searchQuery = $"{NuGetSearchBaseUrl}?q={Uri.EscapeDataString(searchString)}&take={limit}&skip={skip}";
 
             // Send a GET request to the search URL
             HttpResponseMessage response = await _httpClient.GetAsync(searchQuery);

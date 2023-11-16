@@ -29,6 +29,12 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
     #region Parameters
 
+    [Parameter]
+    public Func<T, bool> CanRemoveItemFunc { get; set; } = _ => true;
+
+    [Parameter]
+    public Func<T, bool> ItemIsVisibleFunc { get; set; } = _ => true;
+
     /// <summary>
     /// Template can used for the drop zone part if no item is added
     /// </summary>

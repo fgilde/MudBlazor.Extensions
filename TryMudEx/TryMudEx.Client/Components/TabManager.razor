@@ -54,12 +54,14 @@
                     }
                     <MudSpacer />
 
-                    @if(Tools != null)
+                    @if (Tools != null)
                     {
                         @Tools
                     }
 
-                    <MudIconButton OnClick="@(() => _viewModePopoverOpen = !_viewModePopoverOpen)" Color="@ViewModeColor(ViewMode)" Icon="@(ViewMode.GetAttribute<IconAttribute>()?.IconName)" Class="view_mode_toggle rounded-0 py-1 px-2" />
+                    <MudTooltip Text="Change view mode">
+                        <MudIconButton OnClick="@(() => _viewModePopoverOpen = !_viewModePopoverOpen)" Color="@ViewModeColor(ViewMode)" Icon="@(ViewMode.GetAttribute<IconAttribute>()?.IconName)" Class="view_mode_toggle rounded-0 py-1 px-2" />
+                    </MudTooltip>
 
                     <MudExPopover Animation="MudBlazor.Extensions.Options.AnimationType.Scale" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" OnBlur="@( () => _viewModePopoverOpen = false)" SelectorsForIgnoreBlur=".view_mode_toggle" @bind-Open="_viewModePopoverOpen">
                         @foreach (var mode in Enum.GetValues<CodeViewMode>())

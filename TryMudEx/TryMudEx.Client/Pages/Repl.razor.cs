@@ -34,7 +34,6 @@ public partial class Repl : IDisposable
 
     private const string MainComponentCodePrefix = "@page \"/__main\"\n";
     private const string MainUserPagePath = "/__main";
-    private const bool ShowHiddenFiles = true;
 
     private int _activeTabIndex;
     private DotNetObjectReference<Repl> dotNetInstance;
@@ -64,6 +63,8 @@ public partial class Repl : IDisposable
 
     [Inject] public IJSUnmarshalledRuntime UnmarshalledJsRuntime { get; set; }
 
+
+    [Parameter] public bool ShowHiddenFiles { get; set; }
 
     [Parameter] public string MinWidthLeft { get; set; } = "350px";
     [Parameter] public string MinWidthRight { get; set; } = "350px;";
@@ -234,7 +235,7 @@ public partial class Repl : IDisposable
 
     protected override async Task OnInitializedAsync()
     {
-        Snackbar.Clear();        
+        Snackbar.Clear();
         _ = SnippetsService.GetSamplesAsync().ContinueWith(t =>
         {
             _samples = t.Result;
@@ -446,7 +447,7 @@ public partial class Repl : IDisposable
 
     private async Task Upload()
     {
-        var allowedExtensions = new List<string> { "zip", "rar"}.Concat(CodeFilesHelper.ValidCodeFileExtensions.Select(e => e.Split('.').Last())).ToList();
+        var allowedExtensions = new List<string> { "zip", "rar" }.Concat(CodeFilesHelper.ValidCodeFileExtensions.Select(e => e.Split('.').Last())).ToList();
         var parameters = new DialogParameters
         {
             { nameof(MudExMessageDialog.Buttons), MudExDialogResultAction.OkCancel("Upload") },
@@ -456,8 +457,11 @@ public partial class Repl : IDisposable
             "Upload content files as zip or separate",
             uploadEdit =>
             {
-                uploadEdit.MinHeight = 400;
-                uploadEdit.MaxHeight = 500;
+                uploadEdit.MinHeight = 250;
+                uploadEdit.MaxHeight = 250;
+                uploadEdit.ExternalProviderRendering = ExternalProviderRendering.ActionButtonsNewLine;
+                uploadEdit.ItemIsVisibleFunc = f => ShowHiddenFiles || new CodeFile() { Path = f.FileName }.Type != CodeFileType.Hidden;
+                uploadEdit.Style = "margin-bottom: 20px; height: 400px; overflow-y:auto; overflow-x: hidden";
                 uploadEdit.AutoExtractArchive = true;
                 uploadEdit.Extensions = allowedExtensions.ToArray();
                 //uploadEdit.MimeTypes = MimeType.ArchiveTypes.Concat(new[] { "text/plain", ""}).ToArray();
@@ -503,7 +507,7 @@ public partial class Repl : IDisposable
     private void ReloadIframe()
     {
         var packageParam = JsonConvert.SerializeObject(_installedPackages, CoreConstants.PackageSerializerSettings);
-        var url =  $"{MainUserPagePath}?packages={packageParam}";
+        var url = $"{MainUserPagePath}?packages={packageParam}";
         JsRuntime.InvokeVoid(Models.Try.ReloadIframe, "user-page-window", url);
     }
 
@@ -548,6 +552,7 @@ public partial class Repl : IDisposable
         Sample = value;
         await LoadDataAsync();
         CodeFileNames = GetCodeFileNames();
+        _installedPackages = await GetInstalledAsync();
         StateHasChanged();
         await CompileAsync();
     }
@@ -570,6 +575,7 @@ public partial class Repl : IDisposable
             {
                 cmp.InstalledPackages = _installedPackages;
             },
+            new DialogParameters() { { nameof(MudExMessageDialog.Icon), MudExIcons.Custom.Brands.ColorFull.Nuget } },
             (fromBottom ? DialogOptionsEx.SlideInFromBottom : DialogOptionsEx.SlideInFromTop).SetProperties(o =>
             {
                 o.Resizeable = true;
@@ -578,21 +584,22 @@ public partial class Repl : IDisposable
                 o.MaxWidth = MaxWidth.ExtraLarge;
                 o.MaxHeight = MaxHeight.Medium;
             }));
-     
+
+
         EnsureReferenceFile().Content = JsonConvert.SerializeObject(_installedPackages = dialog.Component.InstalledPackages, CoreConstants.PackageSerializerSettings);
     }
-    
-    private CodeFile EnsureReferenceFile() 
-        => CodeFiles.Values.FirstOrDefault(c => c.Path == CoreConstants.PackageRef) 
+
+    private CodeFile EnsureReferenceFile()
+        => CodeFiles.Values.FirstOrDefault(c => c.Path == CoreConstants.PackageRef)
         ?? AddCodeFile(new CodeFile() { Path = CoreConstants.PackageRef, Content = JsonConvert.SerializeObject(CoreConstants.DefaultPackages, CoreConstants.PackageSerializerSettings) });
 
 
     private async Task<NugetPackage[]> GetInstalledAsync()
-    {                            
-        var refFile = EnsureReferenceFile();        
+    {
+        var refFile = EnsureReferenceFile();
         var tasks = JsonConvert.DeserializeObject<List<NugetPackage>>(refFile.Content).Select(x => PackageSearch.SearchForPackagesAsync(x.Id, 1));
         var results = await Task.WhenAll(tasks);
-        return results.SelectMany(r => r.Data).ToArray();        
+        return results.SelectMany(r => r.Data).ToArray();
     }
 
 }

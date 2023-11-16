@@ -1,78 +1,121 @@
 ﻿@using System.Net.Http
+@using BlazorJS
 @using MudBlazor.Extensions.Core
 @using Try.Core
 
+<MudAlert Class="mr-10 ml-10" Severity="Severity.Warning">This feature is Experimental not all packages are working as maybe expected</MudAlert>
 <MudTextField Adornment="Adornment.End"
 @bind-Value="_search"
               OnKeyDown="@SearchKeyDown"
-              OnAdornmentClick="SearchPackage"
+              OnAdornmentClick="(() => SearchPackage())"
               Immediate="true"
-              AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Warning" Class="mr-10 ml-10 mb-10" T="string" Placeholder="Search" Variant="Variant.Outlined"></MudTextField>
+              AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Warning" Class="mr-10 ml-10 mb-10" T="string" Placeholder="Search for packages to use..." Variant="Variant.Outlined"></MudTextField>
 
-<MudGrid Style="max-height: 600px; overflow: auto" Spacing="3" Justify="Justify.Center">
-    @if (_loading)
+
+<MudGrid Class="package-result-grid" id="package-result-grid" @onscroll="@OnGridScroll" Style="max-height: 600px; overflow-y: auto; overflow-x:hidden" Spacing="3" Justify="Justify.Center">
+    @if (_loading && !_isLoadingMore)
     {
         <MudProgressCircular Class="mt-5" Indeterminate="true" Size="Size.Large" Color="Color.Info" />
     }
     else
     {
-        @foreach (var package in _packages ?? InstalledPackages)
+        @if (!IsVirtualized)
+        {            
+            @foreach (var package in _packages ?? InstalledPackages)
+            {
+                @RenderItem(package)
+            }
+
+        }
+        else
         {
-            <MudItem xs="3">
-                <MudPaper Class="d-flex flex-column align-center justify-center mud-width-full py-1">
-
-                    <MudMenu Style="align-self: end;" MaxHeight="400" Dense="true">
-                        <ActivatorContent>
-                            <MudChip Class="mr-5" Style="align-self: end; cursor: pointer;" Size="Size.Small" Color="@(IsInstalled(package) ? Color.Primary : Color.Default)" Variant="@(IsInstalled(package) ? Variant.Filled : Variant.Outlined)">
-                                @if (IsInstalled(package))
-                                {
-                                    <span>@($"Installed v{GetInstalledVersion(package)}")</span>
-                                }else
-                                {
-                                    <span>Install</span>
-                                }
-                            </MudChip>
-                        </ActivatorContent>
-                        <ChildContent>
-                            @if (CanChange(package))
-                            {
-                                @if (IsInstalled(package))
-                                {
-                                    <MudMenuItem OnClick="@(() => UnInstall(package))">
-                                        <p style="font-weight:bold;">@($"Uninstall")</p>
-                                    </MudMenuItem>
-                                    <MudDivider/>
-                                }
-                                @foreach (var version in package.Versions.Reverse())
-                                {
-                                    <MudMenuItem OnClick="@(() => Install(package, version))">
-                                        <p style="@PackageVersionStyle(package, version)">@($"Install {version.Version}")</p>
-                                    </MudMenuItem>
-                                }
-                            }
-                            else
-                            {
-                                <p class="mr-5 ml-5">This package can't be changed.</p>
-                            }
-                        </ChildContent>
-                    </MudMenu>
-                    
-       
-
-                    
-                    @if (!string.IsNullOrWhiteSpace(package.IconUrl))
-                    {
-                        <img height="60px" width="60px" src="@package.IconUrl" />
-                    }
-                    else
-                    {
-                        <MudExIcon Style="height: 60px; width: 60px;" Size="Size.Large" Icon="@MudExIcons.Custom.Brands.ColorFull.Nuget" />
-                    }
-                    <MudText Class="mt-1" Typo="Typo.h6" Align="Align.Center">@package.Title</MudText>
-                    <MudText Class="mb-5" Typo="Typo.caption" Align="Align.Center">@package.Version</MudText>
-                </MudPaper>
-            </MudItem>
+            <MudExVirtualize TItem="NugetPackage" ItemSize="223" ItemsPerRow="4" Items="@_packages">
+                @RenderItem(context)
+            </MudExVirtualize>
+        }
+        
+        @if (_loading && _isLoadingMore)
+        {
+            <MudProgressCircular Class="mt-5" Indeterminate="true" Size="Size.Large" Color="Color.Info" />
         }
     }
 </MudGrid>
 
+@if (_packages?.Any() == true && _canLoadMore && !InfiniteScroll)
+{
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="3">
+            <MudButton FullWidth="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@LoadMore">Load more</MudButton>
+        </MudItem>
+    </MudGrid>
+}
+
+@code {    
+    RenderFragment RenderItem(NugetPackage package)
+    {
+        return @<MudItem xs="3" Style="@(IsVirtualized ? "margin:10px;" : "")">
+        <MudPaper Class="d-flex flex-column align-center justify-center mud-width-full py-1">
+            <MudMenu Style="align-self: end;" MaxHeight="400" Dense="true">
+                <ActivatorContent>
+                    <MudChip Class="mr-5" Style="align-self: end; cursor: pointer;" Size="Size.Small" Color="@(IsInstalled(package) ? Color.Primary : Color.Default)" Variant="@(IsInstalled(package) ? Variant.Filled : Variant.Outlined)">
+                        @if (IsInstalled(package))
+                        {
+                            <span>@($"Installed v{GetInstalledVersion(package)}")</span>
+                        }
+                        else
+                        {
+                            <span>Install</span>
+                        }
+                    </MudChip>
+                </ActivatorContent>
+                <ChildContent>
+                    @if (CanChange(package))
+                    {
+                        @if (IsInstalled(package))
+                        {
+                            <MudMenuItem OnClick="@(() => UnInstall(package))">
+                                <p style="font-weight:bold;">@($"Uninstall")</p>
+                            </MudMenuItem>
+                            <MudDivider />
+                        }
+                        @foreach (var version in package.Versions.Reverse())
+                        {
+                            <MudMenuItem OnClick="@(() => Install(package, version))">
+                                <p style="@PackageVersionStyle(package, version)">@($"Install {version.Version}")</p>
+                            </MudMenuItem>
+                        }
+                    }
+                    else
+                    {
+                        <p class="mr-5 ml-5">This package can't be changed.</p>
+                    }
+                </ChildContent>
+            </MudMenu>
+
+
+            @if (!string.IsNullOrWhiteSpace(package.IconUrl))
+            {
+                <img height="60px" width="60px" src="@package.IconUrl" />
+            }
+            else
+            {
+                <MudExIcon Style="height: 60px; width: 60px;" Size="Size.Large" Icon="@MudExIcons.Custom.Brands.ColorFull.Nuget" />
+            }
+            <MudText Class="mt-1" Typo="Typo.h6" Align="Align.Center">@package.Title</MudText>
+            <MudText Class="mb-5" Typo="Typo.caption" Align="Align.Center">@package.Version</MudText>
+            <MudGrid Class="ml-5 mb-3">
+                <MudTooltip Text="Open in Nuget.org">
+                    <MudIconButton Icon="@MudExIcons.Custom.Brands.Nuget" OnClick="@(() => _js.DInvokeVoidAsync((w, url) => w.open(url), $"https://www.nuget.org/packages/{package.Id}#readme-body-tab"))" />
+                </MudTooltip>
+                @if (!string.IsNullOrWhiteSpace(package.ProjectUrl))
+                {
+                    <MudTooltip Text="Open Project Url">
+                        <MudIconButton Icon="@(package.ProjectUrl.Contains("github") ? Icons.Custom.Brands.GitHub : Icons.Material.Filled.Link)" OnClick="@(() => _js.DInvokeVoidAsync((w, url) => w.open(url), package.ProjectUrl))" />
+                    </MudTooltip>
+                }
+
+            </MudGrid>
+        </MudPaper>
+    </MudItem>;
+    }
+}
