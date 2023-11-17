@@ -176,7 +176,7 @@
             return @<span></span>;
         }
         return 
-        @<MudChipSet Class="d-flex flex-wrap mud-width-full" Style="row-gap: 4px" AllClosable="ChipCloseable" OnClose="ChipClosed">
+        @<MudChipSet Class="d-flex flex-wrap mud-width-full" Style="row-gap: 4px" AllClosable="@(ChipCloseable && !ReadOnly)" OnClose="ChipClosed">
             @if (ItemCollection != null)
             {
                 foreach (var item in SelectedValues.Distinct())
