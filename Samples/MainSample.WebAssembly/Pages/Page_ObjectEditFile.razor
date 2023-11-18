@@ -17,7 +17,7 @@
 
 @code {
 
-    public class SampelModel
+    public class SampleModel
     {
         [Required]
         public string Name { get; set; }
@@ -29,7 +29,7 @@
     }
     
     // Sample data for the form
-    public SampelModel Model { get; set; } = new();
+    public SampleModel Model { get; set; } = new();
 
     private async Task OnSubmit(EditContext ctx)
     {
@@ -44,7 +44,7 @@
         });
     }
 
-    private void Configure(ObjectEditMeta<SampelModel> meta)
+    private void Configure(ObjectEditMeta<SampleModel> meta)
     {
         meta.Property(m => m.Files).WithoutLabel();
     }
