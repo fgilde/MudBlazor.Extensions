@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Components.Forms;
 using Nextended.Core;
 using Nextended.Core.Contracts;
 using System.Net.Mime;
@@ -16,10 +17,11 @@ public class UploadableFile : IUploadableFile
 {
     private string _contentType;
     private string _extension;
-    
+
     /// <summary>
     /// Gets or sets the name of the file.
     /// </summary>
+    [Required]
     public string FileName { get; set; }
 
     /// <summary>

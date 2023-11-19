@@ -39,7 +39,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     public Func<T, bool> CanRemoveItemFunc { get; set; } = _ => true;
 
     [Parameter]
-    public Func<T, bool> ItemIsVisibleFunc { get; set; } = _ => true;
+    public Func<T, bool> ItemIsVisibleFunc { get; set; } = r => HasData(r) || !string.IsNullOrEmpty(r?.FileName);
 
     /// <summary>
     /// Template can used for the drop zone part if no item is added
@@ -476,11 +476,8 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         }
         set
         {
-            var list = UploadRequests ??= new List<T>();
-            if (list.Count > 0)
-                list[0] = value;
-            else
-                list.Add(value);
+            if (!AllowMultiple)
+                UploadRequests = new List<T> { value };            
         }
     }
 
@@ -650,7 +647,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         || (DropZoneClickAction == DropZoneClickAction.UploadFile);
 
     private ConcurrentDictionary<T, (Task Task, long Size, long ReadBytes)> _loadings = new();
-    private bool IsLoading(T request) => _loadings.ContainsKey(request);
+    private bool IsLoading(T request) => request != null && _loadings?.ContainsKey(request) == true;
     private string FindPath(IBrowserFile file) => _paths?.FirstOrDefault(f => f.Name == file.Name)?.RelativePath ?? string.Empty;
 
     /// <inheritdoc />
@@ -691,10 +688,12 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// Returns whether the component has data.
     /// </summary>
     /// <returns></returns>
-    public bool HasData()
-    {
-        return UploadRequests is { Count: > 0 } && UploadRequests.Any(x => (x.Data != null && x.Data.Any() || !string.IsNullOrWhiteSpace(x.Url)));
-    }
+    public bool HasData() => UploadRequests is { Count: > 0 } && UploadRequests.Any(HasData);
+
+    /// <summary>
+    /// Returns whether the request has data.
+    /// </summary>    
+    public static bool HasData(T request) => request?.Data != null && request?.Data.Any() == true || !string.IsNullOrWhiteSpace(request?.Url);
 
     /// <summary>
     /// Ensures all data is loaded for all files.
@@ -762,7 +761,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
                 Extension = extension,
                 Path = file is IArchivedBrowserFile fileInArchive ? fileInArchive.Path : FindPath(file)
             };
-            var readInBackground = LoadFileDataBytesInBackground;
+            var readInBackground = LoadFileDataBytesInBackground;//&& AllowMultiple;
             if (MudExResource.IsServerSide && file is MudExArchivedBrowserFile) // server side blazor does not support reading in background for archived files
                 readInBackground = false;
             await LoadDataIfAsync(file, request, readInBackground);
@@ -808,7 +807,8 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
                 {
                     await UploadRequestDataLoaded.InvokeAsync(request);
                 }
-
+                if (!AllowMultiple) // TODO: Remove workaround but otherwise binding in MudExObjectEdit for single file upload does not work
+                    UploadRequest = request; 
                 await InvokeAsync(StateHasChanged);
             });
             if (request is UploadableFile uploadableFile)
@@ -998,9 +998,9 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// <param name="keepError">if true errors will not removed independent of RemoveErrorOnChange flag</param>
     public void Remove(T request, bool keepError = false)
     {
-        UploadRequests.Remove(request);
+        UploadRequests?.Remove(request);
         UploadRequestRemoved.InvokeAsync(request);
-        var pathEntry = _paths.FirstOrDefault(p => p.RelativePath == request.Path);
+        var pathEntry = _paths?.FirstOrDefault(p => p.RelativePath == request.Path);
         if (pathEntry != null)
             _paths.Remove(pathEntry);
         if (RemoveErrorOnChange && !keepError)
@@ -1016,7 +1016,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     {
         var array = UploadRequests?.ToArray() ?? Array.Empty<T>();
         UploadRequests?.Clear();
-        _paths.Clear();
+        _paths?.Clear();
         foreach (var item in array)
             UploadRequestRemoved.InvokeAsync(item);
         if (RemoveErrorOnChange)
@@ -1149,13 +1149,11 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
     /// <summary>
     /// Checks if the value is non-null and has elements.
+    /// Used by Required parameter for form validation
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    protected override bool HasValue(IList<T> value)//Used by Required parameter for form validation
-    {
-        return value != null && value.Any();
-    }
+    protected override bool HasValue(IList<T> value) => value?.Any() == true;
 
     private async Task Add(string url)
     {

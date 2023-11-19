@@ -5606,6 +5606,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.HasData(`0)">
+            <summary>
+            Returns whether the request has data.
+            </summary>    
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.EnsureDataLoadedAsync(System.Net.Http.HttpClient)">
             <summary>
             Ensures all data is loaded for all files.
@@ -5667,6 +5672,7 @@
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.HasValue(System.Collections.Generic.IList{`0})">
             <summary>
             Checks if the value is non-null and has elements.
+            Used by Required parameter for form validation
             </summary>
             <param name="value"></param>
             <returns></returns>

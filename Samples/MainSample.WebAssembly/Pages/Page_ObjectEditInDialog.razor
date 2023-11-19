@@ -21,6 +21,8 @@
         public int Number { get; set; }
         public LogLevel logLevel { get; set; }
         public SomeOther Some { get; set; }
+        [Required]
+        public UploadableFile UploadRequest { get; set; }
     }
 
     public class SomeOther
@@ -38,7 +40,7 @@
             { nameof(MudExObjectEditDialog<TestObject>.AllowExport), true },
             { nameof(MudExObjectEditDialog<TestObject>.AllowImport), true }
         };
-        var res = await dialogService.EditObject(new TestObject(), "Auto Generated Editor for TestObject", OnSubmit, SampleDialogOptions.FullSlideFromRight, meta => meta.WrapEachInMudItem(i => i.xs = 6), parameters);
+        var res = await dialogService.EditObject(new TestObject(), "Auto Generated Editor for TestObject", OnSubmit, SampleDialogOptions.FullSlideFromRight, meta => meta.WrapEachInMudItem(i => i.xs = 6).Property(m => m.UploadRequest).WrapInMudItem(i => i.xs = 12), parameters);
         if (!res.Cancelled)
             await Js.InvokeVoidAsync("alert", JsonConvert.SerializeObject(res.Result));
     }

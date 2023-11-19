@@ -5,6 +5,7 @@
 @inherits MudExJsRequiredBaseFormComponent<MudExUploadEdit<T>, IList<T>, string>
 @typeparam T;
 
+
 <MudInputControl Class="@Class" Style="@Style" Error="HasErrors" ErrorText="@GetErrorText()" Required="@Required">
     <InputContent>
         @Render
@@ -218,7 +219,7 @@
             }
             @if (AllowRename && !ReadOnly && !isLoading)
             {
-                <MudTextField Style="height: 12px;" Class="mud-ex-collection-inline-string-edit" DisableUnderLine="true" Error="@(string.IsNullOrWhiteSpace(request.FileName))" @bind-Value="@request.FileName"></MudTextField>
+                <MudTextField Style="height: 12px;" Class="mud-ex-collection-inline-string-edit" For="@(() => request.FileName)" DisableUnderLine="true" Error="@(string.IsNullOrWhiteSpace(request.FileName))" @bind-Value="@request.FileName"></MudTextField>
             }
             else
             {
