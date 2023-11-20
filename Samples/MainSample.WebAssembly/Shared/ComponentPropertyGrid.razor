@@ -35,6 +35,7 @@ else
     [Inject] private IJsApiService JsApiService { get; set; }
     [Inject] private MudExFileService FileService { get; set; }
 
+    private string generationComment = "This is generated and maybe not correct";
     private bool rendered;
     protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
     bool _showInherited;
@@ -130,10 +131,10 @@ else
     {
         var cls = await MudExStyleBuilder.Default.WithOverflow("hidden").AsImportant().BuildAsClassRuleAsync("hidden-overflow");
         //await dialogService.ShowInformationAsync("Code", ComponentRenderHelper.GenerateBlazorMarkupFromInstance(Value));
-        await dialogService.ShowComponentInDialogAsync<MudExCodeView>("Markup", "This is generated and maybe not correct",
+        await dialogService.ShowComponentInDialogAsync<MudExCodeView>("Markup", null,
             md =>
             {
-                md.Code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value);
+                md.Code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value, generationComment);
                 md.Theme = MainLayout.GetCodeBlockTheme();
             },
             dialog =>
@@ -155,7 +156,7 @@ else
 
     private async Task EditCode()
     {
-        var code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value);
+        var code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value, generationComment);
         //var baseUrl = "https://localhost:44394";
         var baseUrl = AppConstants.Urls.TryOnline;
         var client = new HttpClient();

@@ -223,7 +223,7 @@ public partial class MudExCodeView
     /// <summary>
     /// Generates Markup from instance
     /// </summary>
-    public static string GenerateBlazorMarkupFromInstance<TComponent>(TComponent componentInstance)
+    public static string GenerateBlazorMarkupFromInstance<TComponent>(TComponent componentInstance, string comment = "")
     {
         // TODO: Move to central place with ApiMemberInfo
         var componentName = componentInstance.GetType().FullName.Replace(componentInstance.GetType().Namespace + ".", string.Empty);
@@ -243,6 +243,9 @@ public partial class MudExCodeView
         var tags = GetComponentTagNames(componentName);
         var markup = $"<{tags.StartTag}\n{parameterString}\n></{tags.EndTag}>";
 
+        if (!string.IsNullOrWhiteSpace(comment))        
+            markup = $"<!-- {comment} -->\n{markup}";
+        
         return markup;
     }
 

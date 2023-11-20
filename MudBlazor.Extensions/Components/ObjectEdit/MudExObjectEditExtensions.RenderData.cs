@@ -20,6 +20,10 @@ public static partial class MudExObjectEditExtensions
         return wrappingRenderData;
     }
 
+    /// <summary>
+    /// Adds a component after the current component    
+    /// </summary>
+    // example call meta.Property(p => p.Brand).RenderData.AddComponentAfter(RenderData.For<MudTextField<BrandDto>>(f => {}));
     public static IRenderData AddComponentAfter<TComponent>(this IRenderData renderData, params Action<TComponent>[] options) where TComponent : new()
         => renderData.WithAdditionalComponent(RenderData.For(typeof(TComponent), PropertyHelper.ValuesDictionary(true, options)), true);
     public static IRenderData AddComponentBefore<TComponent>(this IRenderData renderData, params Action<TComponent>[] options) where TComponent : new()

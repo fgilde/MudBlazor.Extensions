@@ -958,7 +958,7 @@
             Removes lambda signs from code
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExCodeView.GenerateBlazorMarkupFromInstance``1(``0)">
+        <member name="M:MudBlazor.Extensions.Components.MudExCodeView.GenerateBlazorMarkupFromInstance``1(``0,System.String)">
             <summary>
             Generates Markup from instance
             </summary>
@@ -6798,6 +6798,11 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.AddMudExObjectEdit(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Reflection.Assembly[])">
             <summary>
             Adds MudBlazor Object edit extensions to the service collection.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.AddComponentAfter``1(MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData,System.Action{``0}[])">
+            <summary>
+            Adds a component after the current component    
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditForm`1">
