@@ -53,7 +53,7 @@
                         }
                     }
 
-                    @if (_loading)
+                    @if (_loading || _mimeUpdating)
                     {
                         <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
                     }
@@ -85,6 +85,7 @@
                                Variant="@ButtonVariant"
                                Color="@ButtonColor"
                                Size="@ButtonSize"
+                               Disabled="@(_loading || _mimeUpdating)"
                                StartIcon="@(AllowMultiple ? Icons.Material.Filled.FileUpload : Icons.Material.Filled.UploadFile)"
                                for="@UploadFieldId">
                         @(AllowMultiple ? TryLocalize(TextUploadFiles) : TryLocalize(TextUploadFile))
@@ -99,6 +100,7 @@
                                OnClick="@(UploadFolder)"
                                Variant="@ButtonVariant"
                                Color="@ButtonColor"
+                               Disabled="@(_loading || _mimeUpdating)"
                                Size="@ButtonSize"
                                StartIcon="@Icons.Material.Filled.DriveFolderUpload">
                         @TryLocalize(TextUploadFolder)
@@ -111,6 +113,7 @@
                     <MudButton HtmlTag="label"
                                OnClick="@(AddUrl)"
                                Variant="@ButtonVariant"
+                               Disabled="@(_loading || _mimeUpdating)"
                                Color="@ButtonColor"
                                Size="@ButtonSize"
                                StartIcon="@Icons.Material.Filled.CloudUpload">

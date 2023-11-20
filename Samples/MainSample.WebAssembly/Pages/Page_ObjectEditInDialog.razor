@@ -2,6 +2,7 @@
 @using System.ComponentModel.DataAnnotations
 @using MudBlazor.Extensions.Core
 @using Newtonsoft.Json
+@using Nextended.Core
 @inject IJSRuntime Js
 @inject IDialogService dialogService;
 
@@ -40,7 +41,14 @@
             { nameof(MudExObjectEditDialog<TestObject>.AllowExport), true },
             { nameof(MudExObjectEditDialog<TestObject>.AllowImport), true }
         };
-        var res = await dialogService.EditObject(new TestObject(), "Auto Generated Editor for TestObject", OnSubmit, SampleDialogOptions.FullSlideFromRight, meta => meta.WrapEachInMudItem(i => i.xs = 6).Property(m => m.UploadRequest).WrapInMudItem(i => i.xs = 12), parameters);
+        var res = await dialogService.EditObject(new TestObject(), "Auto Generated Editor for TestObject", OnSubmit, SampleDialogOptions.FullSlideFromRight, 
+        meta => meta.WrapEachInMudItem(i => i.xs = 6)
+            .Property(m => m.UploadRequest)
+            .WithoutLabel()            
+            .WithAdditionalAttributes<MudExUploadEdit<UploadableFile>>(a => a.MimeTypes = new[] { "image/*" })
+            .WrapInMudItem(i => i.xs = 12), 
+        parameters);
+
         if (!res.Cancelled)
             await Js.InvokeVoidAsync("alert", JsonConvert.SerializeObject(res.Result));
     }

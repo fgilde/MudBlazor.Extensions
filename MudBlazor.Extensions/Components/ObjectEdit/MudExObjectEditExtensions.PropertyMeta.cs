@@ -117,6 +117,10 @@ public static partial class MudExObjectEditExtensions
         => meta?.SetProperties(p => p.GroupInfo = groupInfo);
     public static IRenderData WrapIn<TWrapperComponent>(this ObjectEditPropertyMeta meta, params Action<TWrapperComponent>[] options) where TWrapperComponent : new()
         => meta?.RenderData?.WrapIn(options);
+    public static IRenderData WrapInValidationWrapper<TPropertyType>(this ObjectEditPropertyMeta meta, Expression<Func<TPropertyType>> forExpression) =>
+        meta.WrapIn<MudExValidationWrapper<TPropertyType>>(w => w.For = forExpression);
+    public static IRenderData WrapInValidationWrapper<TPropertyType>(this ObjectEditPropertyMeta meta, Action<MudExValidationWrapper<TPropertyType>>[] options) 
+        => meta.WrapIn<MudExValidationWrapper<TPropertyType>>(options);
     public static IRenderData WrapInMudItem(this ObjectEditPropertyMeta meta, params Action<MudItem>[] options)
         => meta?.WrapIn(options);
     public static ObjectEditPropertyMeta WithAdditionalAttributes(this ObjectEditPropertyMeta meta, params KeyValuePair<string, object>[] attributes)

@@ -15,6 +15,7 @@ using MudBlazor.Extensions.Services;
 using Nextended.Core.Extensions;
 using System.Collections.Concurrent;
 using MudBlazor.Extensions.Helper.Internal;
+using System.Diagnostics;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -31,7 +32,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
     [Parameter]
     public string PreviewIcon { get; set; } = Icons.Material.Filled.ZoomIn;
-    
+
     [Parameter]
     public Color PreviewIconColor { get; set; } = Color.Inherit;
 
@@ -477,7 +478,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         set
         {
             if (!AllowMultiple)
-                UploadRequests = new List<T> { value };            
+                UploadRequests = new List<T> { value };
         }
     }
 
@@ -808,7 +809,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
                     await UploadRequestDataLoaded.InvokeAsync(request);
                 }
                 if (!AllowMultiple) // TODO: Remove workaround but otherwise binding in MudExObjectEdit for single file upload does not work
-                    UploadRequest = request; 
+                    UploadRequest = request;
                 await InvokeAsync(StateHasChanged);
             });
             if (request is UploadableFile uploadableFile)
@@ -847,65 +848,110 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         return IsExtensionAllowed(file.Extension) && IsAllowed(file.ContentType);
     }
 
-
     private string[] GetAllowedMimeTypes(bool calc)
     {
-        var mimes = calc ? MimeType.AllTypes : MimeTypes;
-        List<string> result;
-        if (MimeRestrictionType == RestrictionType.WhiteList)
-            result = MimeTypes?.Any() == true ? mimes.Where(m => MimeType.Matches(m, MimeTypes)).ToList() : new List<string>();
-        else
-            result = MimeTypes?.Any() == true ? mimes.Where(m => !MimeType.Matches(m, MimeTypes)).ToList() : new List<string>();
+        var mimes = calc ? new HashSet<string>(MimeType.AllTypes) : new HashSet<string>(MimeTypes ?? Array.Empty<string>());
+        var result = new HashSet<string>();
 
-        if (ExtensionRestrictionType == RestrictionType.WhiteList && Extensions?.Any() == true)
-            result.AddRange(Extensions.Select(MimeType.GetMimeType));
-        else if (Extensions?.Any() == true)
-            result = result.Except(Extensions.Select(MimeType.GetMimeType)).ToList();
-        return result.Distinct().ToArray();
+        if (MimeRestrictionType == RestrictionType.WhiteList)
+        {
+            foreach (var mime in mimes.Where(mime => MimeType.Matches(mime, MimeTypes)))
+            {
+                result.Add(mime);
+            }
+        }
+        else
+        {
+            foreach (var mime in mimes.Where(mime => !MimeType.Matches(mime, MimeTypes)))
+            {
+                result.Add(mime);
+            }
+        }
+
+        if (Extensions != null)
+        {
+            var extensionMimeTypes = Extensions.Select(MimeType.GetMimeType).ToHashSet();
+            if (ExtensionRestrictionType == RestrictionType.WhiteList)
+            {
+                result.UnionWith(extensionMimeTypes);
+            }
+            else
+            {
+                result.ExceptWith(extensionMimeTypes);
+            }
+        }
+
+        return result.ToArray();
     }
 
     private string[] GetAllowedExtensions(bool calc)
     {
-        var mimeTypes = calc ? MimeType.AllTypes : MimeTypes;
+        var mimeTypes = calc ? new HashSet<string>(MimeType.AllTypes) : new HashSet<string>(MimeTypes ?? Array.Empty<string>());
+        var result = new HashSet<string>();
 
-        var mimes = MimeTypes?.Any() == true ? mimeTypes.Where(m => MimeType.Matches(m, MimeTypes)).ToList() : new List<string>();
-        List<string> result;
         if (MimeRestrictionType == RestrictionType.WhiteList)
         {
-            result = mimes.Select(MimeType.GetExtension).ToList();
-            result.AddRange(MimeTypes?.Where(MimeType.IsZip).Select(_ => "zip") ?? Array.Empty<string>());
-            result.AddRange(MimeTypes?.Where(MimeType.IsRar).Select(_ => "rar") ?? Array.Empty<string>());
-            result.AddRange(MimeTypes?.Where(MimeType.IsTar).Select(_ => "tar") ?? Array.Empty<string>());
+            foreach (var mime in mimeTypes.Where(mime => MimeType.Matches(mime, MimeTypes)))
+            {
+                result.Add(MimeType.GetExtension(mime));
+                if (MimeType.IsZip(mime)) result.Add("zip");
+                if (MimeType.IsRar(mime)) result.Add("rar");
+                if (MimeType.IsTar(mime)) result.Add("tar");
+            }
         }
         else
-            result = MimeTypes?.Any() == true ? mimeTypes.Select(MimeType.GetExtension).Except(MimeTypes.Select(MimeType.GetExtension)).ToList() : mimeTypes.Select(MimeType.GetExtension).ToList();
+        {
+            foreach (var extension in from mime in mimeTypes let extension = MimeType.GetExtension(mime) where !MimeType.Matches(mime, MimeTypes) select extension)
+            {
+                result.Add(extension);
+            }
+        }
 
-        if (ExtensionRestrictionType == RestrictionType.WhiteList && Extensions?.Any() == true)
-            result.AddRange(Extensions);
-        else if (Extensions?.Any() == true)
-            result = result.Except(Extensions).ToList();
+        if (Extensions != null)
+        {
+            if (ExtensionRestrictionType == RestrictionType.WhiteList)
+            {
+                result.UnionWith(Extensions);
+            }
+            else
+            {
+                result.ExceptWith(Extensions);
+            }
+        }
 
-        return result.Distinct().ToArray();
+        return result.ToArray();
     }
+
+
+
 
     private string _accept = "*";
     private string[] _allowedExtensions;
     private string[] _allowedMimeTypes;
+    private bool _mimeUpdating;
     private void UpdateAllowed()
     {
-        if (IsRendered)
-        {
-            _allowedExtensions = GetAllowedExtensions(true);
-            _allowedMimeTypes = GetAllowedMimeTypes(true);
-
-            var newAccept = GetAccept();
-            if (newAccept != _accept)
+        if (_mimeUpdating)
+            return;
+        _mimeUpdating = true;
+        EnsureFullyRenderedAsync().ContinueWith(_ =>
+        {            
+            Task.WhenAll(
+                Task.Run(() => GetAllowedExtensions(true)).ContinueWith(t => _allowedExtensions = t.Result),
+                Task.Run(() => GetAllowedMimeTypes(true)).ContinueWith(t => _allowedMimeTypes = t.Result)
+            ).ContinueWith(_ =>
             {
-                _accept = newAccept;
-                StateHasChanged();
-            }
-        }
+                _mimeUpdating = false;                
+                var newAccept = GetAccept();
+                if (newAccept != _accept)
+                {
+                    _accept = newAccept;
+                    InvokeAsync(StateHasChanged);
+                }
+            });
+        });
     }
+
 
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -1051,7 +1097,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
     private async Task Select(T request, MouseEventArgs args)
     {
-        if(SelectItemsMode == SelectItemsMode.ShowPreviewOnClick)
+        if (SelectItemsMode == SelectItemsMode.ShowPreviewOnClick)
         {
             await Preview(request);
         }

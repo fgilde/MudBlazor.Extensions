@@ -20,6 +20,8 @@ public abstract class MudExBaseFormComponent<T, TData, U> : MudFormComponent<TDa
 {
     private object _previousKey;
     private System.Timers.Timer _renderFinishTimer;
+    private readonly TaskCompletionSource _renderedCompletionSource = new();
+
     private IStringLocalizer<T> _fallbackLocalizer => Get<IStringLocalizer<T>>();
 
     /// <summary>
@@ -108,6 +110,11 @@ public abstract class MudExBaseFormComponent<T, TData, U> : MudFormComponent<TDa
     /// </summary>
     public bool IsLocalized(string text, params object[] args) => LocalizerToUse.IsLocalized(text, args);
 
+    /// <summary>
+    /// Returns a task that is completed after element is fully rendered
+    /// </summary>
+    public Task EnsureFullyRenderedAsync() => _renderedCompletionSource.Task;
+
     /// <inheritdoc />
     protected override bool ShouldRender()
     {
@@ -123,19 +130,26 @@ public abstract class MudExBaseFormComponent<T, TData, U> : MudFormComponent<TDa
     /// <summary>
     /// Calls StateHasChanged
     /// </summary>
-    protected virtual void CallStateHasChanged()
+    protected virtual void CallStateHasChanged(StateChangeMode mode = StateChangeMode.Auto)
     {
-        if (MudExResource.IsClientSide)
+        mode = mode == StateChangeMode.Auto ? (MudExResource.IsClientSide ? StateChangeMode.Synchronous : StateChangeMode.Asynchronous) : mode;
+        if (mode == StateChangeMode.Synchronous)
             StateHasChanged();
         else
-            InvokeAsync(StateHasChanged);
+            StateHasChangedAsync();
     }
+
+    /// <summary>
+    /// Async state change invocation
+    /// </summary>    
+    protected Task StateHasChangedAsync() => InvokeAsync(StateHasChanged);
 
     /// <summary>
     /// Called when rendering is finished
     /// </summary>
     protected virtual Task OnFinishedRenderAsync()
     {
+        _renderedCompletionSource.SetResult();
         return Task.CompletedTask;
     }
 

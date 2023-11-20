@@ -235,13 +235,23 @@
             returns true if translation is available
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.EnsureFullyRenderedAsync">
+            <summary>
+            Returns a task that is completed after element is fully rendered
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.ShouldRender">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.CallStateHasChanged">
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.CallStateHasChanged(MudBlazor.Extensions.Core.StateChangeMode)">
             <summary>
             Calls StateHasChanged
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.StateHasChangedAsync">
+            <summary>
+            Async state change invocation
+            </summary>    
         </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.OnFinishedRenderAsync">
             <summary>
@@ -343,13 +353,23 @@
             returns true if translation is available
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.EnsureFullyRenderedAsync">
+            <summary>
+            Returns a task that is completed after element is fully rendered
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.ShouldRender">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.CallStateHasChanged">
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.CallStateHasChanged(MudBlazor.Extensions.Core.StateChangeMode)">
             <summary>
             Calls StateHasChanged
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.StateHasChangedAsync">
+            <summary>
+            Async state change invocation
+            </summary>    
         </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.OnFinishedRenderAsync">
             <summary>
@@ -8091,6 +8111,26 @@
         <member name="M:MudBlazor.Extensions.Core.MudExSize`1.op_Implicit(System.String)~MudBlazor.Extensions.Core.MudExSize{`0}">
             <summary>
             Implicit conversion from String to MudExSize type.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.StateChangeMode">
+            <summary>
+            Mode for state changes
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.StateChangeMode.Auto">
+            <summary>
+            Auto is always asynchronous on server side and synchronous on client side
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.StateChangeMode.Asynchronous">
+            <summary>
+            Equals InvokeAsync(StateHasChanged)
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.StateChangeMode.Synchronous">
+            <summary>
+            Equals StateHasChanged()
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.MudExDialogResultAction">
