@@ -1,4 +1,6 @@
 ## Change Log  
+ - 1.7.77 > Fix bug for UploadEdit with single file binding
+ - 1.7.77 > Add Parameters for PreviewIcon in MudExUploadEdit
  - 1.7.77 > Fix bug for simple text in MudExSelect
  - 1.7.77 > Add main text properties to MudExThemeEdit as default properties for SimpleEdit mode
  - 1.7.76 > Add new components [MudExGoogleFilePicker](https://www.mudex.org/c/MudExGoogleFilePicker), [MudExDropBoxFilePicker](https://www.mudex.org/c/MudExDropBoxFilePicker) and [MudExOneDriveFilePicker](https://www.mudex.org/c/MudExOneDriveFilePicker) to allow picking files from cloud storages

@@ -1,0 +1,62 @@
+﻿@page "/object-edit-selection"
+@using BlazorJS
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+@using Newtonsoft.Json
+@inject IJSRuntime js;
+@attribute [DemoNew(Group = "MudExObjectEdit", Name = "Configure list values", Documentation = "This demo shows how you can use a selection with MudExSelect with a custom item provider", Icon = Icons.Material.Outlined.List, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+
+<DemoComponent DocFiles="@(new [] {"https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions.CodeGator.Adapter/README.md", "Docs/ObjectEdit.md"})" PageType="@GetType()">    
+    <MudExObjectEditForm AutoSkeletonOnLoad="true" MetaConfiguration="@Configure" OnValidSubmit="Callback" Value="@Model"></MudExObjectEditForm>
+</DemoComponent>
+
+
+@code {
+
+    public SampleModel Model { get; set; } = new();
+
+    public class SampleModel
+    {
+        public string Name { get; set; }
+        public Brand SelectedBrand { get; set; }
+    }
+
+    public class Brand
+    {
+        public Brand(string name, string description)
+        {
+            Name = name;
+            Description = description;
+        }
+
+        public string Name { get; set; }
+        public string Description { get; set; }
+    }
+
+    private void Callback(EditContext e)
+    {
+        js.AlertAsync(JsonConvert.SerializeObject(e.Model));
+    }
+
+    private void Configure(ObjectEditMeta<SampleModel> meta)
+    {
+        meta.Property(m => m.SelectedBrand).RenderWith(f => f.Value, new MudExSelect<Brand>
+            {
+                MultiSelection = false,
+                Placeholder = "Select a brand",
+                ToStringFunc = (b) => b?.Name,
+                AvailableItemsLoadFunc = (_) => GetBrands()
+            });       
+    }
+
+    private async Task<IList<Brand>> GetBrands()
+    {
+        await Task.Delay(400); // Simulate server load
+        return new List<Brand> {
+            new("Apple", "A tech company"),
+            new("Google", "what ever"),
+            new("Some other", "hat providing samples"),
+        };
+    }
+    
+}
+
