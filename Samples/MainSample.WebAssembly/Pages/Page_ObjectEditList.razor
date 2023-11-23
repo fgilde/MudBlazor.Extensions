@@ -18,6 +18,7 @@
     {
         public string Name { get; set; }
         public Brand SelectedBrand { get; set; }
+        public string SimpleString { get; set; }
     }
 
     public class Brand
@@ -39,6 +40,7 @@
 
     private void Configure(ObjectEditMeta<SampleModel> meta)
     {
+        meta.Property(m => m.SimpleString).RenderWithMudAutocomplete(new[] { "Item 1", "Item 2", "Another Item" });
         meta.Property(m => m.SelectedBrand).RenderWith(f => f.Value, new MudExSelect<Brand>
             {
                 MultiSelection = false,
