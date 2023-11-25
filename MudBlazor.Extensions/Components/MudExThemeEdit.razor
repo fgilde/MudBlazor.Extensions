@@ -8,6 +8,7 @@
 @inherits MudExBaseComponent<MudExThemeEdit<TTheme>>
 @typeparam TTheme where TTheme : MudTheme
 
+<MudButton OnClick="@(() => UpdateConditions())">TEST</MudButton>
 
 @if (Presets?.Any() == true || AllowPresetsEdit)
 {
