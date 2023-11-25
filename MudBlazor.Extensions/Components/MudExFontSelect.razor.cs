@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web.Virtualization;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
 
@@ -9,6 +10,9 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExFontSelect
 {
+    private bool _initialized;
+    private string[] _preInitParameters;
+
     /// <summary>
     /// Render base component
     /// </summary>
@@ -37,11 +41,27 @@ public partial class MudExFontSelect
         => MudExFonts.WebSafeFonts.Concat(WithGoogleLatinFonts ? MudExFonts.GoogleLatinFonts : Array.Empty<string>()).ToList();
 
     /// <inheritdoc />
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        if(!_initialized)
+            _preInitParameters = parameters.ToDictionary().Select(x => x.Key).ToArray();
+        return base.SetParametersAsync(parameters);
+    }
+
+    private bool IsOverwritten(string paramName) => _preInitParameters?.Contains(paramName) == true;
+
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         base.OnInitialized();        
-        ItemTemplate = GetItemTemplate();
-        MultiSelection = true;
-        ValuePresenter = Options.ValuePresenter.Chip;
+        if(!IsOverwritten(nameof(ItemTemplate)))
+            ItemTemplate = GetItemTemplate();
+        if (!IsOverwritten(nameof(Virtualize)))
+            Virtualize = true;
+        if (!IsOverwritten(nameof(MultiSelection)))
+            MultiSelection = true;
+        if (!IsOverwritten(nameof(ValuePresenter)))
+            ValuePresenter = Options.ValuePresenter.Chip;
+        _initialized = true;
     }
 }

@@ -2311,6 +2311,9 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFontSelect.GetAvailableItemsAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFontSelect.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFontSelect.OnInitialized">
             <inheritdoc />
         </member>

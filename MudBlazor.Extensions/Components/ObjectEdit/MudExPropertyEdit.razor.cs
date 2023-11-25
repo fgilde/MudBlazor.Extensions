@@ -139,8 +139,7 @@ public partial class MudExPropertyEdit
             .TrySetAttributeIfAllowed(nameof(Style), () => Style)
             .TrySetAttributeIfAllowed(nameof(Localizer), Localizer)
             .TrySetAttributeIfAllowed(nameof(RenderKey), RenderKey)
-            //.TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.ReadOnly), () => PropertyMeta?.Settings?.IsEditable == false)
-            .Attributes;
+            .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.ReadOnly), () => !PropertyMeta.Settings.IsEditable).Attributes;
     }
 
     private Task OnPropertyValueChanged()
