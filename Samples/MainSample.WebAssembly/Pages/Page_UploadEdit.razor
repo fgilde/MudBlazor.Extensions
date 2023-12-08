@@ -2,7 +2,6 @@
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using MudBlazor.Extensions.Core
 @using Nextended.Core.Extensions
-@inject IDialogService dialogService;
 @attribute [DemoUpdated(Group = "File Handling", Name = "Upload Edit", Documentation = "Demo for the MudExUploadEdit.", Order = 2, Icon = Icons.Material.Outlined.Upload, ForComponentType = typeof(MudExUploadEdit<>))]
 
 
@@ -69,7 +68,7 @@
             { nameof(MudExMessageDialog.Buttons), MudExDialogResultAction.OkCancel("Upload") },
             { nameof(MudExMessageDialog.Icon), Icons.Material.Filled.FileUpload }
         };
-        var res =await dialogService.ShowComponentInDialogAsync<MudExUploadEdit<UploadableFile>>("Upload content", "Upload content files as zip or separate",
+        var res = await DialogService.ShowComponentInDialogAsync<MudExUploadEdit<UploadableFile>>("Upload content", "Upload content files as zip or separate",
             uploadEdit =>
             {
                 uploadEdit.MinHeight = 400;

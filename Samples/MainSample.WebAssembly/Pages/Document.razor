@@ -1,6 +1,4 @@
-﻿@inject HttpClient Http
-@inject NavigationManager Navi
-@page "/doc/{File?}"
+﻿@page "/doc/{File?}"
 @page "/d/{File?}"
 @page "/doc/{File?}/{TypeName?}"
 @page "/d/{File?}/{TypeName?}"
@@ -121,7 +119,7 @@ else
 
     private int GetActivePanel()
     {
-        var uri = Navi.ToBaseRelativePath(Navi.Uri);
+        var uri = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         var isApiLink = uri.StartsWith("/api") || uri.StartsWith("/a") || uri.StartsWith("api/") || uri.StartsWith("a/");
         return isApiLink && DocumentationAvailable ? 1 : 0;
     }

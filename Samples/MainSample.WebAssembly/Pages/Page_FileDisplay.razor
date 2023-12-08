@@ -1,6 +1,5 @@
 ﻿@page "/file-display"
 @using MudBlazor.Extensions.Options
-@inject IDialogService dialogService
 @inject SampleDataService sampleDataService
 
 @attribute [Demo(Group = "File Handling", Name = "File Display", Order = 0, Documentation = "See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
@@ -51,7 +50,7 @@
 
     private async Task OpenAsDialog()
     {
-        await dialogService.ShowFileDisplayDialog(SampleFile.Url, SampleFile.Name, SampleFile.ContentType, HandleContentError);
+        await DialogService.ShowFileDisplayDialog(SampleFile.Url, SampleFile.Name, SampleFile.ContentType, HandleContentError);
     }
 
     private Task<MudExFileDisplayContentErrorResult> HandleContentError(IMudExFileDisplayInfos arg)

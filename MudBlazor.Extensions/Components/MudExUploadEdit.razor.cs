@@ -15,7 +15,6 @@ using MudBlazor.Extensions.Services;
 using Nextended.Core.Extensions;
 using System.Collections.Concurrent;
 using MudBlazor.Extensions.Helper.Internal;
-using System.Diagnostics;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -403,11 +402,19 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     [Parameter, SafeCategory("Validation")]
     public int MaxMultipleFiles { get; set; } = 100;
 
-    /// <summary>
-    /// The upload requests.
-    /// </summary>
+    ///// <summary>
+    ///// The upload requests.
+    ///// </summary>
     [Parameter, SafeCategory("Data")]
-    public IList<T> UploadRequests { get; set; }
+    public IList<T> UploadRequests
+    {
+        get => _value;
+        set
+        {
+         //   if(value != null)
+                _value = value;
+        }
+    }
 
     /// <summary>
     /// Defines whether multiple files can be uploaded.
@@ -689,7 +696,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// Returns whether the component has data.
     /// </summary>
     /// <returns></returns>
-    public bool HasData() => UploadRequests is { Count: > 0 } && UploadRequests.Any(HasData);
+    public bool HasData() => UploadRequests is { Count: > 0 } && UploadRequests?.Any(HasData) == true;
 
     /// <summary>
     /// Returns whether the request has data.
@@ -780,7 +787,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             buffer = new byte[file.Size];
             await stream.ReadStreamInChunksAsync(buffer);
             request.Data = buffer;
-            await UploadRequestDataLoaded.InvokeAsync(request);
+            await RaiseDataLoadedAsync(request);
         }
         else
         {
@@ -806,7 +813,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
                 }
                 else
                 {
-                    await UploadRequestDataLoaded.InvokeAsync(request);
+                    await RaiseDataLoadedAsync(request);
                 }
                 if (!AllowMultiple) // TODO: Remove workaround but otherwise binding in MudExObjectEdit for single file upload does not work
                     UploadRequest = request;
@@ -1028,13 +1035,17 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         return hasError;
     }
 
-    private Task RaiseChangedAsync()
-    {
-        Validate();
 
-        return AllowMultiple
-            ? UploadRequestsChanged.InvokeAsync(UploadRequests)
-            : UploadRequestChanged.InvokeAsync(UploadRequest);
+    private async Task RaiseDataLoadedAsync(T request)
+    {
+        await UploadRequestDataLoaded.InvokeAsync(request);
+        await Validate();
+    }
+
+    private async Task RaiseChangedAsync()
+    {
+        await (AllowMultiple ? UploadRequestsChanged.InvokeAsync(UploadRequests) : UploadRequestChanged.InvokeAsync(UploadRequest));
+        await Validate();
     }
 
     /// <summary>
@@ -1051,7 +1062,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             _paths.Remove(pathEntry);
         if (RemoveErrorOnChange && !keepError)
             SetError();
-        RaiseChangedAsync();
+        _= RaiseChangedAsync();
         CallStateHasChanged();
     }
 
@@ -1199,8 +1210,8 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    protected override bool HasValue(IList<T> value) => value?.Any() == true;
-
+    protected override bool HasValue(IList<T> value) => HasData();
+    
     private async Task Add(string url)
     {
         var contentType = await ResolveContentTypeFromUrlAsync(url);

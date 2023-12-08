@@ -1,7 +1,5 @@
 ﻿@page "/simple-dialogs"
 @using MudBlazor.Extensions.Core
-@inject IJSRuntime js;
-@inject IDialogService dialogService;
 
 @attribute [Demo(Group = "Dialog Samples", Name = "Simple Dialogs", Documentation = "Demo for simple integrated useful dialogs. Prompt, Info, MessageBox", Order = 2, Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExMessageDialog), typeof(MudExPromptDialog) })]
 
@@ -17,23 +15,23 @@
 
     private async Task MessageBox()
     {
-        var res = await dialogService.ShowConfirmationDialogAsync("Confirmation", "Are you sure?", "Yes", "No");
+        var res = await DialogService.ShowConfirmationDialogAsync("Confirmation", "Are you sure?", "Yes", "No");
         if (res)
         {
-            await js.InvokeVoidAsync("alert", "You clicked Yes");
+            await JsRuntime.InvokeVoidAsync("alert", "You clicked Yes");
         }
         else
         {
-            await js.InvokeVoidAsync("alert", "You clicked No");
+            await JsRuntime.InvokeVoidAsync("alert", "You clicked No");
         }
     }
 
     private async Task Prompt()
     {
-        var name = await dialogService.PromptAsync("Enter name", "Please enter your name", Icons.Material.Filled.VerifiedUser, s => !string.IsNullOrEmpty(s));
+        var name = await DialogService.PromptAsync("Enter name", "Please enter your name", Icons.Material.Filled.VerifiedUser, s => !string.IsNullOrEmpty(s));
         if (name != null)
         {
-            await js.InvokeVoidAsync("alert", $"Hello {name}");
+            await JsRuntime.InvokeVoidAsync("alert", $"Hello {name}");
         }
     }
 
@@ -41,7 +39,7 @@
     private async Task ShowInfo()
     {
         int seconds = 5;
-        IMudExDialogReference<MudExMessageDialog>? dlg = await dialogService.ShowInformationAsync("Information", $"This is a simple information dialog that closes after {seconds} seconds", Icons.Material.Filled.Info, false, true);
+        IMudExDialogReference<MudExMessageDialog>? dlg = await DialogService.ShowInformationAsync("Information", $"This is a simple information dialog that closes after {seconds} seconds", Icons.Material.Filled.Info, false, true);
         for (int i = 0; i < seconds; i++)
         {
             await Task.Delay(1000);

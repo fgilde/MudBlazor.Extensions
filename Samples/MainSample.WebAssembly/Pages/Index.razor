@@ -1,6 +1,4 @@
-﻿@inject NavigationManager Navi;
-@inject HttpClient Http
-@page "/"
+﻿@page "/"
 
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Core
@@ -23,7 +21,7 @@
 <Support />
 
 <MudExCardList HoverMode="@(MudExCardHoverMode.Zoom | MudExCardHoverMode.CardEffect3d | MudExCardHoverMode.LightBulb)" HoverColor="Color.Warning" TData="object">
-    <MudCard Class="index-card" @onclick="@(() => { Navi.NavigateTo("/structured-data-edit"); })">
+    <MudCard Class="index-card" @onclick="@(() => { NavigationManager.NavigateTo("/structured-data-edit"); })">
         <MudCardHeader>
             <CardHeaderContent>
                 <div style="display: flex;">
@@ -38,7 +36,7 @@
         </MudCardContent>
     </MudCard>
     
-    <MudCard Class="index-card" @onclick="@(() => { Navi.NavigateTo(AppConstants.Urls.GetTryOnline(MainLayout.Instance.IsDark)); })">
+    <MudCard Class="index-card" @onclick="@(() => { NavigationManager.NavigateTo(AppConstants.Urls.GetTryOnline(MainLayout.Instance.IsDark)); })">
         <MudCardHeader>
             <CardHeaderContent>
                 <div style="display: flex;">
@@ -53,7 +51,7 @@
         </MudCardContent>
     </MudCard>
 
-    <MudCard Class="index-card" @onclick="@(() => { Navi.NavigateTo("/theme-edit"); })">
+    <MudCard Class="index-card" @onclick="@(() => { NavigationManager.NavigateTo("/theme-edit"); })">
         <MudCardHeader>
             <CardHeaderContent>
                 <div style="display: flex;">
@@ -171,7 +169,6 @@
 
     private void Open(NavigationEntry nav)
     {
-        Navi.NavigateTo(nav.Href);
-
+        NavigationManager.NavigateTo(nav.Href);
     }
 }

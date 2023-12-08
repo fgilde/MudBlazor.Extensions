@@ -2,7 +2,6 @@
 @page "/c/{TypeName?}"
 @using Nextended.Core.Extensions
 @using MudBlazor.Extensions.Api
-@inject NavigationManager Navi;
 
 
 @if (!string.IsNullOrEmpty(TypeName) && Type != null)
@@ -103,7 +102,7 @@ else
 
     private void Open(NavigationEntry nav)
     {
-        Navi.NavigateTo(nav.Href);
+        NavigationManager.NavigateTo(nav.Href);
 
     }
     internal NavigationEntry? AvailableDemo

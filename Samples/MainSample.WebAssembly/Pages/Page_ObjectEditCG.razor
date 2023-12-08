@@ -4,7 +4,7 @@
 @using CG.Blazor.Forms.Attributes
 @using MudBlazor.Extensions.Core
 @using Newtonsoft.Json
-@inject IJSRuntime js;
+
 @attribute [Demo(Group = "MudExObjectEdit", Name = "Use CodeGator Models", Documentation = "Demo for using MudExObjectEdit with CodeGator Adapter and CodeGator Attributes", Icon = Icons.Material.Outlined.Edit, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
 <DemoComponent DocFiles="@(new [] {"https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions.CodeGator.Adapter/README.md", "Docs/ObjectEdit.md"})" PageType="@GetType()">
@@ -52,7 +52,7 @@
 
     private void Callback(EditContext e)
     {
-        js.AlertAsync(JsonConvert.SerializeObject(e.Model));
+        JsRuntime.AlertAsync(JsonConvert.SerializeObject(e.Model));
     }
 
 }

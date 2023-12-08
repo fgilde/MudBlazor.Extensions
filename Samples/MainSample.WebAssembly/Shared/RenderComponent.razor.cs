@@ -11,7 +11,6 @@ public partial class RenderComponent<T>
     private DynamicComponent? dynamicReference;
     private bool rendered;
 
-    [Inject] IDialogService dialogService { get; set; }
     public T? Component => (T?)dynamicReference?.Instance;
 
     [Parameter] public string[] HiddenProperties { get; set; }

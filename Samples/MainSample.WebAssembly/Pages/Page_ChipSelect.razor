@@ -1,6 +1,5 @@
 ﻿@page "/chip-select"
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
-@inject IDialogService dialogService;
 
 @attribute [Demo(Name = "MudExChipSelect", Icon = Icons.Material.Outlined.BubbleChart, Documentation = "MudExChipSelect can used to select items from a collection as chips", ForComponentType = typeof(MudExChipSelect<>))]
 
@@ -49,7 +48,7 @@
     private async Task OnShowClick()
     {
         string str = $"{string.Join(", ", Selected.Select(s => s.Name))}";
-        await dialogService.ShowInformationAsync("Selected", str);
+        await DialogService.ShowInformationAsync("Selected", str);
     }
 
 }

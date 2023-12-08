@@ -2,8 +2,6 @@
 @using Nextended.Core.Helper
 @using BlazorJS
 @using MudBlazor.Extensions.Helper
-@inject IJSRuntime Js
-@inject IDialogService dialogService;
 
 @attribute [Demo(Group = "MudExObjectEdit", Name = "Structured Data Edit", Order = 2, Documentation = "New MudExStructureDataEditor can used to edit json, xml or yaml string in a MudExObjectEdit", Icon = Icons.Custom.FileFormats.FileCode, ForComponentTypes = new[] { typeof(MudExStructuredDataEditor)})]
 
@@ -60,7 +58,7 @@
 
     private async Task ShowSampleJsonEditDialog()
     {                       
-        var res = await dialogService.EditStructuredDataString(_dataType, _dataString, $"Auto Generated Editor for {_dataType}", ((_,_) => Task.FromResult("")), SampleDialogOptions.FullSlideFromRight, meta => meta.WrapEachInMudItem(i => i.xs = 6));
+        var res = await DialogService.EditStructuredDataString(_dataType, _dataString, $"Auto Generated Editor for {_dataType}", ((_,_) => Task.FromResult("")), SampleDialogOptions.FullSlideFromRight, meta => meta.WrapEachInMudItem(i => i.xs = 6));
         if (!res.Cancelled)
             await OnDataStringChanged(MudExJsonHelper.FormatDataStringIfJson(res.Result.ToString(), _dataType));
     }
@@ -73,10 +71,10 @@
         _dataType = newDataType;        
         await _editor.SetValue(_dataString);        
         if (_monacoLoaded)
-            await BlazorMonaco.Editor.Global.SetModelLanguage(Js ,await _editor.GetModel(), CodeLanguage);
+            await BlazorMonaco.Editor.Global.SetModelLanguage(JsRuntime ,await _editor.GetModel(), CodeLanguage);
     }
 
-    private async Task OnSaveClick(EditContext arg) => await Js.AlertAsync(arg.Model.ToString());
+    private async Task OnSaveClick(EditContext arg) => await JsRuntime.AlertAsync(arg.Model.ToString());
 
     private async Task OnDataStringChanged(string arg) => await _editor.SetValue(_dataString = arg);
 
@@ -85,7 +83,7 @@
         _dataType = StructuredDataType.Json;        
         await _editor.SetValue(_dataString = InitialDataString);        
         if (_monacoLoaded)
-            await BlazorMonaco.Editor.Global.SetModelLanguage(Js ,await _editor.GetModel(), CodeLanguage);
+            await BlazorMonaco.Editor.Global.SetModelLanguage(JsRuntime ,await _editor.GetModel(), CodeLanguage);
     }
 
     bool _monacoLoaded;
@@ -93,7 +91,7 @@
 
     private async Task<bool> UpdateTheme()
     {
-        await BlazorMonaco.Editor.Global.SetTheme(Js, MainLayout.Instance?.IsDark == true ? "vs-dark" : "vs");
+        await BlazorMonaco.Editor.Global.SetTheme(JsRuntime, MainLayout.Instance?.IsDark == true ? "vs-dark" : "vs");
         return true;
     }
 

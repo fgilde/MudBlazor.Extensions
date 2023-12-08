@@ -27,10 +27,6 @@
     private string aniStyle => new[] { AnimationType.LightSpeed }.GetAnimationCssStyle(TimeSpan.FromMilliseconds(300), AnimationDirection.In, null, DialogPosition.TopLeft);
     private ICollection<ThemePreset<ClientTheme>> _themes;
 
-    [Inject] public IDialogService DialogService { get; set; }
-    [Inject] public LocalStorageService StorageService { get; set; }
-    [Inject] public NavigationManager Nav { get; set; }
-
     [Parameter] public bool IsBusy { get; set; }
     [Parameter] public EventCallback<bool> IsBusyChanged { get; set; }
     [Parameter] public bool IsDark { get; set; }
@@ -56,7 +52,7 @@
         {
             MainLayout.Instance.ThemeChanged += async (_, _) =>
             {
-                _themes = await ClientTheme.GetAllThemes(StorageService);
+                _themes = await ClientTheme.GetAllThemes(LocalStorageService);
                 StateHasChanged();
             };
         }
@@ -65,7 +61,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-            _themes = await ClientTheme.GetAllThemes(StorageService);
+            _themes = await ClientTheme.GetAllThemes(LocalStorageService);
         await base.OnAfterRenderAsync(firstRender);
     }
 
@@ -97,7 +93,7 @@
     private void EditAllThemes()
     {
         _themeEditOpen = false;
-        Nav.NavigateTo("/theme-edit");
+        NavigationManager.NavigateTo("/theme-edit");
     }
 
 }

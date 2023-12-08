@@ -1,7 +1,5 @@
 ﻿@page "/dialogs"
 @using MudBlazor.Extensions.Options
-@inject IJSRuntime Js
-@inject IDialogService dialogService;
 
 @attribute [Demo(Group = "Dialog Samples", Name = "Dialog Sample", Documentation = "Demo for using DialogOptionsEx", Order = 0, Icon = Icons.Material.Outlined.DesktopWindows)]
 
@@ -36,13 +34,13 @@
     [JSInvokable]
     public void AlarmClick()
     {
-        Js.InvokeVoidAsync("alert", "Alarm Clicked ");
+        JsRuntime.InvokeVoidAsync("alert", "Alarm Clicked ");
     }
 
     [JSInvokable]
     public void ColorLensClick()
     {
-        Js.InvokeVoidAsync("alert", "Color Lens Clicked");
+        JsRuntime.InvokeVoidAsync("alert", "Color Lens Clicked");
     }
 
     public DialogOptionsEx Options { get; set; } = new()
@@ -80,12 +78,12 @@
         var options = Options.CloneOptions();
         
         options.Buttons = GetButtons();
-        IDialogReference dlgReference = await dialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, options);
+        IDialogReference dlgReference = await DialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, options);
     }
 
     private async Task SetAsDefaultClick()
     {
-        var confirmed = await dialogService.ShowConfirmationDialogAsync("Set as Default options for all Dialogs", "If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?");
+        var confirmed = await DialogService.ShowConfirmationDialogAsync("Set as Default options for all Dialogs", "If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?");
         if (confirmed)
             Options.SetAsDefaultDialogOptions();
     }

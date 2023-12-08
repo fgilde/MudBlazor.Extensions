@@ -1,5 +1,4 @@
 ﻿@page "/objectedit-with-files"
-@inject IDialogService dialogService;
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Helper
@@ -35,7 +34,7 @@
     {
         await Task.Delay(1000); // Simulate server save or whatever
         var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
-        await dialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
+        await DialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
         {
             DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass),
             Position = DialogPosition.TopCenter,

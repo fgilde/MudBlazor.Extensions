@@ -2,18 +2,6 @@
 @using Nextended.Core.Extensions
 @using Markdig.Syntax.Inlines
 @using System.Text.RegularExpressions
-@inject HttpClient Http
-
-@if (_loadedFiles.Count <= 0)
-{
-    <BlazorJS.Scripts SourceLoaded="@OnSourceLoaded"
-             UnloadOnDispose="false"
-             SourceLoadBehaviour="LoadBehaviour.OnAfterRenderAsync"
-             Src="_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js,_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css"/>
-}
-
-@if (_loadedFiles.Count >= 2)
-{
 
 @if (CenterImagesAndHeadlines)
 {
@@ -34,16 +22,15 @@
 }
 
 
-    <div class="@GetCls()">
-        <MudMarkdown OverrideLinkUrl="@LinkThat"
-                     CodeBlockTheme="@(MainLayout.GetCodeBlockTheme())"
-                     OverrideHeaderTypo="TypoConvert()" Value="@Value">
-        </MudMarkdown>
-    </div>
-}
-@code {
-    private List<string> _loadedFiles = new();
+<div class="@GetCls()">
+    <MudMarkdown OverrideLinkUrl="@LinkThat"
+                 CodeBlockTheme="@(MainLayout.GetCodeBlockTheme())"
+                 OverrideHeaderTypo="TypoConvert()" Value="@Value">
+    </MudMarkdown>
+</div>
 
+@code {
+  
     [Parameter]
     public bool CenterImagesAndHeadlines { get; set; }
 
@@ -52,11 +39,6 @@
     {
         get => _value;
         set => _value = PrepareValue(value);
-    }
-
-    private void OnSourceLoaded(string file)
-    {
-        _loadedFiles.Add(file);
     }
 
     private string PrepareValue(string value)
@@ -80,11 +62,16 @@
     }
     
     
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
+        await JsRuntime.LoadFilesAsync(
+            "./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js",
+            "./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css"
+            );
+
         if (MainLayout.Instance != null)
             MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
-        return base.OnInitializedAsync();
+        await base.OnInitializedAsync();
     }
 
     private string GetCls() => CenterImagesAndHeadlines ? "mudexmarkdownpresenter" : "";

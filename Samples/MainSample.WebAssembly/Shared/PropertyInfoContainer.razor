@@ -19,8 +19,6 @@
 
 @code {
 
-    [Inject] IDialogService dialogService { get; set; }
-
     [Parameter]
     public RenderFragment ChildContent { get; set; }
 
@@ -44,7 +42,7 @@
                 DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass)
             };
 
-        await dialogService.ShowComponentInDialogAsync<Api>("Info", $"{ApiMemberInfo.GetGenericFriendlyTypeName(Type)} - {Property.Name}",
+        await DialogService.ShowComponentInDialogAsync<Api>("Info", $"{ApiMemberInfo.GetGenericFriendlyTypeName(Type)} - {Property.Name}",
             api =>
             {
                 //api.Search = Property.Name;

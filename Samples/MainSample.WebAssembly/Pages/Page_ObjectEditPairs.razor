@@ -1,5 +1,4 @@
 ﻿@page "/oe-list"
-@inject IDialogService dialogService;
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Options
 
@@ -36,7 +35,7 @@
     private async Task OnSubmit(EditContext ctx)
     {
         var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
-        await dialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
+        await DialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
         {
             Position = DialogPosition.TopCenter,
             Animation = AnimationType.Slide,

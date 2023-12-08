@@ -1,6 +1,4 @@
-﻿@inject HttpClient Http
-@inject IJSRuntime js
-@page "/app-load"
+﻿@page "/app-load"
 @using MudBlazor.Extensions.Helper
 
 
@@ -36,7 +34,7 @@
 
     private async Task ProgressChange(int arg)
     {        
-        await js.SetCssVariableValueAsync("blazor-load-percentage", arg);
+        await JsRuntime.SetCssVariableValueAsync("blazor-load-percentage", arg);
         if (arg == 100)
         {
             _demoHiding = true;

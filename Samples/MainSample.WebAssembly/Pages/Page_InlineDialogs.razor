@@ -1,7 +1,5 @@
 ﻿@page "/inline-dialog"
 @using MudBlazor.Extensions.Options
-@inject IJSRuntime Js
-@inject IDialogService dialogService;
 
 @attribute [Demo(Group = "Dialog Samples", Name = "Inline Dialog", Documentation = "Demo for MudExDialog as inline ", Order = 0, Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExDialog) })]
 
@@ -66,7 +64,7 @@
     [JSInvokable]
     public void ColorLensClick()
     {
-        Js.InvokeVoidAsync("alert", "Color Lens Clicked");
+        JsRuntime.InvokeVoidAsync("alert", "Color Lens Clicked");
     }
 
     private Task OnSettingsImported(ImportedData<DialogOptionsEx> data)

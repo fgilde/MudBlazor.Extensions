@@ -87,8 +87,7 @@
     private Type? _pageType;
     private Type? _selectedApiType;
     private string? _title;
-    [Inject] HttpClient http { get; set; }
-
+    
     #endregion
 
     #region Parameter
@@ -148,7 +147,7 @@
             SelectedCodeFilePath = value.StartsWith("http") ? value : GH.Path(value);
             SelectedCodeValue = "Loading...";
             StateHasChanged();
-            http.GetStringAsync(SelectedCodeFilePath).ContinueWith(async task =>
+            Http.GetStringAsync(SelectedCodeFilePath).ContinueWith(async task =>
             {
                 SelectedCodeValue = MudExCodeView.CodeAsMarkup(task.Result);
                 await InvokeAsync(() =>
@@ -168,7 +167,7 @@
         {
             foreach (var doc in DocFiles ?? Array.Empty<string>())
             {
-                var v = await http.LoadDocumentation(doc);
+                var v = await Http.LoadDocumentation(doc);
                 if (!string.IsNullOrEmpty(v))
                     _docFiles.Add(doc, v);
             }

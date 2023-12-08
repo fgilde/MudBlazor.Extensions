@@ -1,5 +1,5 @@
 ﻿@page "/mudex-object-edit-with-configuration"
-@inject IDialogService dialogService;
+
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using System.ComponentModel.DataAnnotations
@@ -246,7 +246,7 @@
     {
         await Task.Delay(1000); // Simulate server save or whatever
         var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
-        await dialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
+        await DialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
         {
             Position = DialogPosition.TopCenter,
             Animation = AnimationType.Slide,

@@ -1,8 +1,7 @@
 ﻿@page "/object-edit"
-@inject IDialogService dialogService;
+
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Options
-@using MudBlazor.Extensions.Core
 
 @attribute [Demo(Group = "MudExObjectEdit", Name = "With default configuration", Documentation = "Demo for using MudExObjectEdit only with bypassing an object", Order = 0, Icon = Icons.Material.Outlined.Edit, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
@@ -99,7 +98,7 @@
     private async Task OnSubmit(EditContext ctx)
     {
         var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
-        await dialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
+        await DialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
         {
             Position = DialogPosition.TopCenter,
             Animation = AnimationType.Slide,

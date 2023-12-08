@@ -2,7 +2,7 @@
 @using BlazorJS
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using Newtonsoft.Json
-@inject IJSRuntime js;
+
 @attribute [DemoNew(Group = "MudExObjectEdit", Name = "Configure list values", Documentation = "This demo shows how you can use a selection with MudExSelect with a custom item provider", Icon = Icons.Material.Outlined.List, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
 <DemoComponent DocFiles="@(new [] {"https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudBlazor.Extensions.CodeGator.Adapter/README.md", "Docs/ObjectEdit.md"})" PageType="@GetType()">    
@@ -34,7 +34,7 @@
 
     private void Callback(EditContext e)
     {
-        js.AlertAsync(JsonConvert.SerializeObject(e.Model));
+        JsRuntime.AlertAsync(JsonConvert.SerializeObject(e.Model));
     }
 
     private void Configure(ObjectEditMeta<SampleModel> meta)

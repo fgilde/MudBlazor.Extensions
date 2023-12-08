@@ -1,10 +1,7 @@
 ﻿@page "/dialog-object-edit"
 @using System.ComponentModel.DataAnnotations
-@using MudBlazor.Extensions.Core
 @using Newtonsoft.Json
-@using Nextended.Core
-@inject IJSRuntime Js
-@inject IDialogService dialogService;
+
 
 @attribute [Demo(Group = "MudExObjectEdit", Name = "Object Edit in Dialog", Order = 5, Documentation = "See how to use MudExObjectEdit in a dialog", Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>), typeof(MudExObjectEditDialog<>) })]
 
@@ -41,7 +38,7 @@
             { nameof(MudExObjectEditDialog<TestObject>.AllowExport), true },
             { nameof(MudExObjectEditDialog<TestObject>.AllowImport), true }
         };
-        var res = await dialogService.EditObject(new TestObject(), "Auto Generated Editor for TestObject", OnSubmit, SampleDialogOptions.FullSlideFromRight, 
+        var res = await DialogService.EditObject(new TestObject(), "Auto Generated Editor for TestObject", OnSubmit, SampleDialogOptions.FullSlideFromRight, 
         meta => meta.WrapEachInMudItem(i => i.xs = 6)
             .Property(m => m.UploadRequest)
             .WithoutLabel()            
@@ -50,7 +47,7 @@
         parameters);
 
         if (!res.Cancelled)
-            await Js.InvokeVoidAsync("alert", JsonConvert.SerializeObject(res.Result));
+            await JsRuntime.InvokeVoidAsync("alert", JsonConvert.SerializeObject(res.Result));
     }
     
 

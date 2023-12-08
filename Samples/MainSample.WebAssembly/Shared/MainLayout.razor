@@ -2,9 +2,6 @@
 @using MudBlazor.Extensions.Options
 @using MudBlazor.Extensions.Core
 @inherits LayoutComponentBase
-@inject NavigationManager Navi;
-@inject IJSRuntime Js;
-@inject IDialogService DialogService;
 
 <MudThemeProvider @bind-IsDarkMode="@IsDark" Theme="@ClientTheme.CurrentTheme" />
 <MudDialogProvider />

@@ -1,5 +1,4 @@
-﻿@inject NavigationManager Navi;
-
+﻿
 <div class="mud-ex-animate-all-properties" style="@GetStyle()">
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
         <img style="height: 25px; margin-right: 10px; margin-bottom: -5px;" src="https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudExtension.png"/>
@@ -13,7 +12,7 @@
     
     private string GetHomeLink()
     {
-        var u = Navi.ToBaseRelativePath(Navi.Uri);
+        var u = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         return string.IsNullOrWhiteSpace(u) || u == "/" ? "/gradient-text" : "/";
     }
 

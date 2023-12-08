@@ -1,6 +1,5 @@
 ﻿@page "/handle-file-as-streams"
 @using MudBlazor.Extensions.Options
-@inject IDialogService dialogService
 @inject SampleDataService sampleDataService
 
 @attribute [Demo(Group = "File Handling", Name = "File Display with Stream", Order = 0, Documentation = "The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
@@ -60,7 +59,7 @@
             { nameof(MudExFileDisplay.StreamUrlHandling), StreamUrlHandling.BlobUrl },
             { nameof(MudExFileDisplay.Dense), true }
         };
-        await dialogService.ShowFileDisplayDialog(SampleFile.Stream, SampleFile.Name, SampleFile.ContentType, HandleContentError, null, parameters);
+        await DialogService.ShowFileDisplayDialog(SampleFile.Stream, SampleFile.Name, SampleFile.ContentType, HandleContentError, null, parameters);
     }
 
     private Task<MudExFileDisplayContentErrorResult> HandleContentError(IMudExFileDisplayInfos arg)

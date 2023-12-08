@@ -2,7 +2,6 @@
 @using FluentValidation
 
 
-
 <MudCard>
     <MudForm Model="@model" @ref="@form" Validation="@(ValidationRules.ValidateValue)" ValidationDelay="0">
         <MudCardContent>
@@ -10,46 +9,24 @@
                           For="@(() => model.Name)"
                           Immediate="true"
                           Label="Name" />
-            <MudFileUpload T="IBrowserFile" For="@(() => model.File)" @bind-Files="model.File" OnFilesChanged="UploadFiles" SuppressOnChangeWhenInvalid="SuppressOnChangeWhenInvalid">
-                <ButtonTemplate>
-                    <MudButton HtmlTag="label"
-                               Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               StartIcon="@Icons.Material.Filled.CloudUpload"
-                               for="@context">
-                        Upload Files
-                    </MudButton>
-                </ButtonTemplate>
-            </MudFileUpload>
+
             
 
             <MudExUploadEdit T="UploadableFile"
                              Variant="Variant.Outlined"
                              For="@(() => model.Files)"
                              TextUploadFile="Click here to upload files"
-                             Extensions="@(new []{".xlsx"})"
                              TextDropZone="Drag and Drop files here"
+                             Label="Add files"
                              ColorizeIcons="true"
                              MinHeight="80"
-                             AllowFolderUpload="false"
-                             AllowExternalUrl="false"
                              Class="MudExUploadExCustom"
                              AllowRename="true"
-                             UploadRequests="@model.Files"
-                             AllowPreview="false">
-                <DropZoneTemplate>
-                    <MudPaper Height="100px" Outlined="false">
-                        <MudText Typo="Typo.h6">Drag and drop files here or click</MudText>
-                    </MudPaper>
-                </DropZoneTemplate>
-                <ItemTemplate>
-                    <span style="margin-left: 10px;">@context.FileName</span>
-                </ItemTemplate>
+                             @bind-UploadRequests="model.Files">
             </MudExUploadEdit>
 
         </MudCardContent>
         <MudCardActions>
-            <MudSwitch Color="Color.Primary" @bind-Checked="SuppressOnChangeWhenInvalid">Suppress OnChange When Invalid</MudSwitch>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Submit</MudButton>
         </MudCardActions>
     </MudForm>
@@ -61,12 +38,7 @@
     private MudForm form;
     private FileModel model = new();
     private FileModelFluentValidator ValidationRules = new();
-    private bool SuppressOnChangeWhenInvalid;
 
-    private void UploadFiles(InputFileChangeEventArgs e)
-    {
-        //TODO upload the files to the server
-    }
 
     private async Task Submit()
     {
@@ -82,7 +54,7 @@
     {
         public string Name { get; set; }
         public IBrowserFile File { get; set; }
-        public List<UploadableFile> Files;
+        public IList<UploadableFile> Files;
 
     }
 

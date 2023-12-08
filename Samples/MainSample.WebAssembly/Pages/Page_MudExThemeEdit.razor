@@ -1,9 +1,6 @@
 ﻿@page "/theme-edit"
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
-@inject IDialogService DialogService
-@inject LocalStorageService Storage
-@inject NavigationManager Nav
 
 @attribute [Demo(Group = "MudExObjectEdit", Name = "Edit Current Theme", Order = 7, Documentation = "This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing ", Icon = Icons.Material.Outlined.Palette, ForComponentTypes = new[] { typeof(MudExThemeEdit<>) })]
 
@@ -97,7 +94,7 @@
     private async Task<ICollection<ThemePreset<ClientTheme>>> GetThemes()
     {
         var result = ThemePreset.Create(("Default", "This is the MudEx Default theme", ClientTheme.DefaultTheme), ("Another", "Another Demo theme in Red", ClientTheme.Another));
-        var fromStorage = await Storage.GetAllThemeItemsAsync<string>();
+        var fromStorage = await LocalStorageService.GetAllThemeItemsAsync<string>();
         foreach (var item in fromStorage)
         {
             var theme = MudExThemeHelper.FromJson<ClientTheme>(item.Value);
@@ -110,12 +107,12 @@
     {
         if (themePreset == null || !CanDeletePreset(themePreset))
             return;
-        await Storage.SetItemAsync($"theme-{themePreset.Name}", themePreset.Theme.AsJson());
+        await LocalStorageService.SetItemAsync($"theme-{themePreset.Name}", themePreset.Theme.AsJson());
     }
 
     private async Task DeleteFromStorageAsync(ThemePreset<ClientTheme> themePreset)
     {
-        await Storage.RemoveItemAsync($"theme-{themePreset.Name}");
+        await LocalStorageService.RemoveItemAsync($"theme-{themePreset.Name}");
         ThemeChanged(ClientTheme.DefaultTheme);
     }
 
@@ -130,7 +127,7 @@
 
     private void OnCancelEdit(ThemeChangedArgs<ClientTheme> args)
     {
-        Nav.NavigateTo("/");
+        NavigationManager.NavigateTo("/");
     }
 
 }

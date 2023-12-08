@@ -1,7 +1,5 @@
 ﻿@page "/component-in-dialog"
 @using BlazorJS
-@inject IJSRuntime js;
-@inject IDialogService dialogService;
 
 @attribute [Demo(Group = "Dialog Samples", Name = "Component in Dialog", Order = 1, Documentation = "Sample to see how you can render and use any component in a dialog as easy as possible", Icon = Icons.Material.Outlined.DesktopWindows)]
 
@@ -15,7 +13,7 @@
 
     private async Task ShowComponentSampleDialog()
     {
-        var res = await dialogService.ShowComponentInDialogAsync<MudSlider<int>>("Hello...", "This dialog can confirmed when slider value is greater then 10",
+        var res = await DialogService.ShowComponentInDialogAsync<MudSlider<int>>("Hello...", "This dialog can confirmed when slider value is greater then 10",
             slider =>
             {
                 slider.Color = Color.Warning;
@@ -31,13 +29,13 @@
             });
         if (!res.DialogResult.Canceled)
         {
-            await js.InvokeVoidAsync("alert", res.Component.Value.ToString());
+            await JsRuntime.InvokeVoidAsync("alert", res.Component.Value.ToString());
         }
     }
 
     private void HelloOnClick()
     {
-        js.AlertAsync("Hello clicked");
+        JsRuntime.AlertAsync("Hello clicked");
     }
 
 

@@ -29,9 +29,6 @@ else
     [Parameter] public bool ShowInherited { get; set; }
     [Parameter] public bool GroupByTypes { get; set; }
 
-    [Inject]
-    IDialogService dialogService { get; set; }
-
     [Inject] private IJsApiService JsApiService { get; set; }
     [Inject] private MudExFileService FileService { get; set; }
 
@@ -130,8 +127,8 @@ else
     private async Task ShowCode()
     {
         var cls = await MudExStyleBuilder.Default.WithOverflow("hidden").AsImportant().BuildAsClassRuleAsync("hidden-overflow");
-        //await dialogService.ShowInformationAsync("Code", ComponentRenderHelper.GenerateBlazorMarkupFromInstance(Value));
-        await dialogService.ShowComponentInDialogAsync<MudExCodeView>("Markup", null,
+        
+        await DialogService.ShowComponentInDialogAsync<MudExCodeView>("Markup", null,
             md =>
             {
                 md.Code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value, generationComment);

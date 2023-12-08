@@ -5,8 +5,6 @@
 @using MudBlazor.Utilities
 @using Nextended.Core.Extensions
 
-@inject IDialogService dialogService;
-@inject IJSRuntime js;
 
 @attribute [Demo(Group = "Dialog Samples", Name = "Dialog Appearance", Documentation = "Demo for using Dialog and DialogBackground Appearance in DialogOptionsEx", Order = 0, Icon = Icons.Material.Outlined.DesktopWindows)]
 
@@ -64,7 +62,7 @@
     {
         if (firstRender)
         {
-            _primaryColor = await Color.Primary.ToMudColorAsync(js);
+            _primaryColor = await Color.Primary.ToMudColorAsync(JsRuntime);
             CreateOptions();
             _loaded = true;
         }
@@ -90,7 +88,7 @@
     private async void Show()
     {
         _loaded = false;
-        var r = await dialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, Options);
+        var r = await DialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, Options);
         _loaded = true;
         await r.Result;
         StateHasChanged();

@@ -9,8 +9,6 @@ public partial class NavMenu
 {
     private ExpandMode _expandMode;
 
-    [Inject] public NavigationManager NavigationManager { get; set; }
-
     [Parameter] public bool ShowUserCard { get; set; } = true;
 
     [Parameter] public bool ShowApplicationLogo { get; set; } = false;
@@ -48,7 +46,7 @@ public partial class NavMenu
 
     private void ExpandToCurrentUrl()
     {
-        var url = _navigationManager.ToBaseRelativePath(_navigationManager.Uri);
+        var url = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         if (ExpandMode != ExpandMode.None)
         {
             if (!string.IsNullOrWhiteSpace(url) && url != "/")
@@ -62,7 +60,7 @@ public partial class NavMenu
     
     public IEnumerable<NavigationEntry> FindEntriesForUrl(string url = null)
     {
-        url = (url ?? _navigationManager.ToBaseRelativePath(_navigationManager.Uri)).EnsureStartsWith("/").ToLower();
+        url = (url ?? NavigationManager.ToBaseRelativePath(NavigationManager.Uri)).EnsureStartsWith("/").ToLower();
         return Entries.Find(e => e.Href.EnsureStartsWith("/").ToLower() == url);
     }
 
