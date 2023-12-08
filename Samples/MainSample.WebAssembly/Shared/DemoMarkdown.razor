@@ -23,14 +23,19 @@
 
 
 <div class="@GetCls()">
-    <MudMarkdown OverrideLinkUrl="@LinkThat"
-                 CodeBlockTheme="@(MainLayout.GetCodeBlockTheme())"
-                 OverrideHeaderTypo="TypoConvert()" Value="@Value">
-    </MudMarkdown>
+    @if (_initialized)
+    {
+        <MudMarkdown OverrideLinkUrl="@LinkThat"
+                     CodeBlockTheme="@(MainLayout.GetCodeBlockTheme())"
+                     OverrideHeaderTypo="TypoConvert()" Value="@Value">
+        </MudMarkdown>
+    }
 </div>
 
 @code {
   
+    bool _initialized;
+
     [Parameter]
     public bool CenterImagesAndHeadlines { get; set; }
 
@@ -68,7 +73,8 @@
             "./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js",
             "./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css"
             );
-
+        await JsRuntime.WaitForNamespaceAsync("highlightCodeElement", TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(300));
+        _initialized = true;
         if (MainLayout.Instance != null)
             MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
         await base.OnInitializedAsync();
