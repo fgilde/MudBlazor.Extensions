@@ -12023,6 +12023,11 @@
             Enables automatic Css loading.
             </summary>    
         </member>
+        <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.WithJsBasePath(System.String)">
+            <summary>
+            Sets a specific base path for static js files
+            </summary>    
+        </member>
         <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.With(System.Action{MudBlazor.Extensions.Options.MudExConfiguration}[])">
             <summary>
             Set specific options

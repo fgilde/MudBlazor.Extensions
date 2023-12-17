@@ -1,4 +1,5 @@
-﻿using Nextended.Core.Extensions;
+﻿using MudBlazor.Extensions.Helper;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Options;
 
@@ -57,6 +58,15 @@ public class MudExConfiguration
     /// Enables automatic Css loading.
     /// </summary>    
     public MudExConfiguration WithAutomaticCssLoading() => With(c => c.DisableAutomaticCssLoading = false);
+
+    /// <summary>
+    /// Sets a specific base path for static js files
+    /// </summary>    
+    public MudExConfiguration WithJsBasePath(string basePath)
+    {
+        JsImportHelper.BasePath = basePath;
+        return this;
+    }
 
     /// <summary>
     /// Set specific options

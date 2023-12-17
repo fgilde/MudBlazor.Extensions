@@ -78,7 +78,9 @@ public class NugetReferenceService
     {
         var packageId = package.Id;
         var version = package.Version;
-        var packageUrl = $"https://api.nuget.org/v3-flatcontainer/{packageId}/{version}/{packageId}.{version}.nupkg";
+        //var packageUrl = $"https://api.nuget.org/v3-flatcontainer/{packageId}/{version}/{packageId}.{version}.nupkg";
+        //var packageUrl = $"https://www.nuget.org/api/v2/package/{packageId}/{version}";
+        var packageUrl = $"api/nuget/package/{packageId}/{version}";
 
         using var response = await _httpClient.GetAsync(packageUrl);
         response.EnsureSuccessStatusCode();
