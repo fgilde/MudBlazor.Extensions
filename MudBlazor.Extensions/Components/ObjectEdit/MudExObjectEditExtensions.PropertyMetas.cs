@@ -75,6 +75,10 @@ public static partial class MudExObjectEditExtensions
         => metas.Apply(m => m.WithGroup(groupName));
     public static IEnumerable<ObjectEditPropertyMeta> WithGroup(this IEnumerable<ObjectEditPropertyMeta> metas, ObjectEditPropertyMetaGroupInfo groupInfo)
         => metas.Apply(m => m.WithGroup(groupInfo));
+    public static IEnumerable<ObjectEditPropertyMeta> WrapInValidationWrapper<TPropertyType>(this IEnumerable<ObjectEditPropertyMeta> metas, Expression<Func<TPropertyType>> forExpression) =>
+        metas.Apply(m => m.WrapIn<MudExValidationWrapper<TPropertyType>>(w => w.For = forExpression));
+    public static IEnumerable<ObjectEditPropertyMeta> WrapInValidationWrapper<TPropertyType>(this IEnumerable<ObjectEditPropertyMeta> metas, Action<MudExValidationWrapper<TPropertyType>>[] options)
+        => metas.Apply(m => m.WrapIn<MudExValidationWrapper<TPropertyType>>(options));
     public static IEnumerable<IRenderData> WrapIn<TWrapperComponent>(this IEnumerable<IRenderData> renderDatas, params Action<TWrapperComponent>[] options) where TWrapperComponent : new()
         => renderDatas.Apply(rd => rd.WrapIn<TWrapperComponent>(options));
     public static IEnumerable<IRenderData> WrapIn<TWrapperComponent>(this IEnumerable<ObjectEditPropertyMeta> metas, params Action<TWrapperComponent>[] options) where TWrapperComponent : new()

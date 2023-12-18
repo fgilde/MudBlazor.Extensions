@@ -1,0 +1,20 @@
+﻿@inherits MudExBaseComponent<MudExHtmlEdit>
+
+<div @ref="_editorElement"
+     @attributes="UserAttributes" class="@GetClass()" style="@GetStyle()"
+     @onclick="OnClickHandler"
+     @onclick:stopPropagation="OnClickStopPropagation"
+     @oninput="OnChangeHandler"
+     @onblur="OnBlurHandler"
+     @oncontextmenu="OnContextMenu"
+     @oncontextmenu:preventDefault="OnContextMenuPreventDefault"
+     @oncontextmenu:stopPropagation="OnContextMenuStopPropagation"
+     @onmouseup="OnMouseUpHandler"
+     contenteditable="@(!ReadOnly)">
+
+    @if (!ValueHasChanged)
+    {
+        @((MarkupString)Value)
+    }
+
+</div>

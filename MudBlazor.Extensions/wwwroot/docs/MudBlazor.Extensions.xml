@@ -2589,6 +2589,81 @@
             The on click handler
             </summary>    
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExHtmlEdit">
+            <summary>
+            A WYSIWYG Html editor component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExHtmlEdit.UpdateValueOnChange">
+            <summary>
+            If true, the editor will update the value on every change event otherwise on blur only.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExHtmlEdit.Value">
+            <summary>
+            The HTML content to be displayed and edited inside the editor.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExHtmlEdit.ValueChanged">
+            <summary>
+            Event callback for the value changed event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExHtmlEdit.Height">
+            <summary>
+            Gets or sets the height of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExHtmlEdit.Width">
+            <summary>
+            Gets or sets the height of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExHtmlEdit.OnClick">
+            <summary>
+            Event callback for the click event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExHtmlEdit.OnClickStopPropagation">
+            <summary>
+            Gets or sets a value indicating whether the click event should stop propagation. Default is false.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExHtmlEdit.OnContextMenu">
+            <summary>
+            Event callback for the context menu event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExHtmlEdit.OnContextMenuPreventDefault">
+            <summary>
+            Gets or sets a value indicating whether the context menu event should prevent its default action. Default is false.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExHtmlEdit.OnContextMenuStopPropagation">
+            <summary>
+            Gets or sets a value indicating whether the context menu event should stop propagation. Default is false.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExHtmlEdit.GetHtml">
+            <summary>
+            Returns the HTML content of the editor.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExHtmlEdit.SetHtml(System.String)">
+            <summary>
+            Returns the HTML content of the editor.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExHtmlEdit.GetSelectedHtml">
+            <summary>
+            Returns the HTML content of the editor.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExHtmlEdit.OnClickHandler(Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
+            <summary>
+            The on click handler
+            </summary>    
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExIcon">
             <summary>
             MudExIcon is a simple MudIcon with extended possibilities to set all colors.
