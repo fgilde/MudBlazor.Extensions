@@ -112,9 +112,13 @@
                 {
                     <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(() => RenderWith(null))" IconSize="Size.Small" Icon="@Icons.Material.Filled.ExtensionOff">@($"{TryLocalize("Render with native control")}")</MudMenuItem>
                 }
-                @if (AllowCopyUrl && !string.IsNullOrEmpty(Url))
+                @if (AllowCopyUrl)
                 {
                     <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(CopyUrl)" Icon="@Icons.Material.Filled.ContentCopy">@($"{TryLocalize("Copy url")}")</MudMenuItem>
+                }
+                @if (AllowOpenInNewTab)
+                {
+                    <MudMenuItem Class="mud-ex-file-display-menu-item-action" OnClick="@(OpenInNewTab)" Icon="@Icons.Material.Filled.OpenInNew">@($"{TryLocalize("Open in new browser tab")}")</MudMenuItem>
                 }
                 @if (AllowDownload)
                 {

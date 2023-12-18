@@ -141,6 +141,13 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     public bool AllowCopyUrl { get; set; } = true;
 
     /// <summary>
+    /// Set to true to allow user to open url in new tab
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool AllowOpenInNewTab { get; set; } = true;
+
+    /// <summary>
     /// Filename
     /// </summary>
     [Parameter]
@@ -452,7 +459,16 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             Url = await FileService.ReadDataUrlForStreamAsync(ContentStream, ContentType, StreamUrlHandling == StreamUrlHandling.BlobUrl);
     }
 
-    private async Task CopyUrl(MouseEventArgs arg) => await JsApiService.CopyToClipboardAsync(Url);
+    private async Task<string> GetUrlAsync()
+    {
+        await EnsureUrlAsync(true);
+        return Url;
+    }
+
+    private async Task CopyUrl(MouseEventArgs arg) => await JsApiService.CopyToClipboardAsync(await GetUrlAsync());
+    //private async Task OpenInNewTab(MouseEventArgs arg) => await JsApiService.OpenInNewTabAsync(await GetUrlAsync());
+    // noreferrer is important that's because otherwise the new window is opened in the same process with the opener window.
+    private async Task OpenInNewTab(MouseEventArgs arg) => await JsRuntime.InvokeVoidAsync("window.open", await GetUrlAsync(), "_blank", "noreferrer");
 
     private void CloseContentError()
     {

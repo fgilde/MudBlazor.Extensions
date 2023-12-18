@@ -1892,6 +1892,11 @@
             Set to true to allow user to copy the file url to clipboard
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.AllowOpenInNewTab">
+            <summary>
+            Set to true to allow user to open url in new tab
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.FileName">
             <summary>
             Filename
