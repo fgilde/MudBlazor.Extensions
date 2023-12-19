@@ -387,6 +387,12 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2023-11-03 13:23:17 -->
+ - 1.7.79 > Allow inherit from MudExJsRequiredBaseComponent for other projects
+ - 1.7.79 > Hide dropdown icon if readonly in MudExSelect
+ - 1.7.79 > Set cursor to default for MudExSelect if readonly
+ - 1.7.78 > Fix error with js base bath
+ - 1.7.78 > Add configuration for JS base path
+ - 1.7.78 > Fix Validation bug in MudExUploadEdit
  - 1.7.77 > Fix bug for UploadEdit with single file binding
  - 1.7.77 > Add Parameters for PreviewIcon in MudExUploadEdit
  - 1.7.77 > Fix bug for simple text in MudExSelect
