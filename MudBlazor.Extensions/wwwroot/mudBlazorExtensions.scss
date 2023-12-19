@@ -73,7 +73,7 @@
 }
 
 .full-height {
-    height: 100%;    
+    height: 100%;
 }
 
 .full-height-90 {
@@ -87,6 +87,15 @@
 
 .mud-alert-message-w-100 > .mud-alert-position > .mud-alert-message {
     width: 100%;
+}
+
+.mud-ex-alert-link {
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+        color: var(--mud-palette-primary);
+    }
 }
 
 .mud-alert-message-mt-5 > .mud-alert-position > .mud-alert-message {
@@ -124,6 +133,7 @@
 .mud-ex-scroll-to-top {
     height: 56px;
     width: 56px;
+
     &.bottomleft {
         right: auto !important;
     }
@@ -187,7 +197,7 @@
     border: 3px dotted var(--mud-palette-primary);
 }
 
-.mud-ex-overflow {    
+.mud-ex-overflow {
     overflow: auto;
 }
 
@@ -214,7 +224,7 @@
 
 .mud-ex-content-center {
     display: flex;
-    padding:80px;
+    padding: 80px;
     align-items: center;
     place-content: center;
 }

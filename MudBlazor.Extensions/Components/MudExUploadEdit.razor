@@ -204,10 +204,9 @@
         if (ItemTemplate != null)
             return ItemTemplate(request);
         return @<MudAlert NoIcon="true"
-                              Class="mud-alert-message-w-100"
+                              Class="@($"mud-alert-message-w-100 {(SelectItemsMode == SelectItemsMode.ShowPreviewOnClick ? "mud-ex-alert-link" : "")}")"
                               Severity="@(IsSelected(request) ? Severity.Warning : (_withErrors.Contains(request) ? Severity.Error : Severity.Normal))"
                               OnClick="(a) => Select(request, a)"
-                              Style="@($"{(SelectItemsMode == SelectItemsMode.ShowPreviewOnClick ? "cursor:pointer;" : "")}")"
                               ShowCloseIcon="@(AllowRemovingItems && !ReadOnly && !isLoading && CanRemoveItemFunc(request))"
                               CloseIcon="@Icons.Material.Filled.Delete"                              
                               CloseIconClicked="(() => Remove(request))">

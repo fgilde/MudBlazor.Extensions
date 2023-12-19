@@ -30,6 +30,9 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     #region Parameters
 
     [Parameter]
+    public bool PreviewInIframe { get; set; } = false;    
+    
+    [Parameter]
     public string PreviewIcon { get; set; } = Icons.Material.Filled.ZoomIn;
 
     [Parameter]
@@ -1152,6 +1155,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             { nameof(MudExFileDisplay.Dense), true },
             { nameof(MudExFileDisplay.StreamUrlHandling), StreamUrlHandling },
             { nameof(MudExFileDisplay.ForceNativeRender), ForceNativeRender },
+            { nameof(MudExFileDisplay.FallBackInIframe), PreviewInIframe },
             { nameof(MudExFileDisplay.ColorizeIcons), ColorizeIcons },
             {
                 nameof(MudExFileDisplay.ParametersForSubControls), new Dictionary<string, object>
