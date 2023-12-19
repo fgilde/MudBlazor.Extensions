@@ -58,7 +58,7 @@ namespace MudBlazor.Extensions.Helper
             => runtime.InvokeAsync<IJSObjectReference>("import", $"./_content/MudBlazor.Extensions/MudBlazor.Extensions.lib.module.js{Cb()}").AsTask();
 
         internal static string ComponentJs<TComponent>(string name = null) 
-            => ComponentJs(GetJsComponentName<TComponent>(name));
+            => ComponentJs(GetJsComponentName<TComponent>(name), typeof(TComponent).Assembly.GetName().Name);
 
         private static string GetJsComponentName<TComponent>(string name = null) 
             => string.IsNullOrEmpty(name) ? typeof(TComponent).Name.Split('`')[0] : name;
@@ -66,8 +66,12 @@ namespace MudBlazor.Extensions.Helper
         internal static string MainJs() 
             => $"{BasePath.EnsureEndsWith("/")}{Assembly.GetExecutingAssembly().GetName().Name}/js/mudBlazorExtensions.all{min}.js{Cb()}";
 
-        internal static string ComponentJs(string componentName) 
-            => $"{BasePath.EnsureEndsWith("/")}{Assembly.GetExecutingAssembly().GetName().Name}/js/components/{componentName}{min}.js{Cb()}";
+        internal static string ComponentJs(string componentName, string assemblyDirName = null)
+        {
+            //var assemblyDirName = Assembly.GetExecutingAssembly().GetName().Name;
+            assemblyDirName ??= Assembly.GetCallingAssembly().GetName().Name;
+            return $"{BasePath.EnsureEndsWith("/")}{assemblyDirName}/js/components/{componentName}{min}.js{Cb()}";
+        }
 
         private static string Cb() => UseMinified ? string.Empty : $"?cb={DateTime.Now.Ticks}";
 
