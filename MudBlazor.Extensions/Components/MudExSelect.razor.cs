@@ -76,6 +76,8 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
 
     protected string InputClassname =>
         new MudExCssBuilder("mud-ex-select-input")
+        .AddClass("mud-ex-select-readonly", ReadOnly)
+        .AddClass("mud-ex-select-no-dropdown", ReadOnly && HideDropDownWhenReadOnly)
         .AddClass("mud-ex-select-nowrap", NoWrap)
         .AddClass(InputClass)
         .Build();
@@ -93,6 +95,11 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     /// If true the item template is use for the selection list, otherwise its use only if ValuePresenter is ItemContent or Chip
     /// </summary>
     [Parameter] public bool UseItemTemplateForSelection { get; set; } = true;
+
+    /// <summary>
+    /// If true dropdown icon is not shown when ReadOnly is true
+    /// </summary>
+    [Parameter] public bool HideDropDownWhenReadOnly { get; set; } = true;
 
     /// <summary>
     /// Style applied to chip

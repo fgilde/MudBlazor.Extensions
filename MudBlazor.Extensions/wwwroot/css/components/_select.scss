@@ -217,6 +217,14 @@
     cursor: pointer;
 }
 
+.mud-ex-select .mud-ex-select-readonly {
+    cursor: default;
+}
+
+.mud-ex-select .mud-ex-select-no-dropdown > div.mud-ex-input-outlined.mud-input-adornment > svg {
+    display: none;
+}
+
 .mud-ex-select .mud-ex-select-input .mud-ex-select-nowrap {
     white-space: nowrap;
 }

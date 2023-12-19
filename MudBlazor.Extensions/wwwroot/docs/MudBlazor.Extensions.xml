@@ -3716,6 +3716,11 @@
             If true the item template is use for the selection list, otherwise its use only if ValuePresenter is ItemContent or Chip
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.HideDropDownWhenReadOnly">
+            <summary>
+            If true dropdown icon is not shown when ReadOnly is true
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.StyleChip">
             <summary>
             Style applied to chip
