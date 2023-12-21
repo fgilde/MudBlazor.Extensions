@@ -1,0 +1,33 @@
+﻿@inherits MudExBaseComponent<MudExAdditionalAdornment>
+
+@if (For is not null)
+{
+    <div class="@_cls">
+        @For
+        @Render()
+    </div>
+}
+else
+{
+    @Render()
+}
+
+@code
+{
+    RenderFragment Render()
+    {
+        return @<MoveContent QueryFromParent="@(For is null ? _parentOwnerCountForUsingAsChildContent : false)" Position="@Position" ElementSelector="@(Select(".mud-input-adornment"))">
+        <Found>
+            @ChildContent
+        </Found>
+        <NotFound>
+            <MoveContent QueryFromParent="@(For is null ? _parentOwnerCountForUsingAsChildContent: false)"
+                         Style="display: flex; align-items: center;"
+                         Position="@Position"
+                         ElementSelector="@(Select(".mud-input"))">
+                @ChildContent
+            </MoveContent>
+        </NotFound>
+    </MoveContent>;
+    }
+}

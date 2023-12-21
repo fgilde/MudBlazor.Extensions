@@ -17,14 +17,31 @@
             : { source: this.elementRef, target: this.elFromSelector };
     }
 
-    move(selector, mode, position) {
+    move(selector, mode, position, queryOwner, useParent) {
         this.mode = mode;
         this.position = position;
         this.selector = selector;
-        this.elFromSelector = document.querySelector(selector);
+
+        if ((!queryOwner || !queryOwner.querySelector) && useParent && this.elementRef) {
+            queryOwner = this.elementRef.parentElement;
+        }
+
+        if (!queryOwner || !queryOwner.querySelector) {
+            queryOwner = document;
+        } else if (useParent) {
+            var parentCount = (typeof useParent === 'number') ? useParent : 1;
+            for (let i = 0; i < parentCount; i++) {
+                if (queryOwner.parentElement) {
+                    queryOwner = queryOwner.parentElement;
+                } else {
+                    break; // Break out of the loop if there's no more parent element
+                }
+            }
+        }
+        this.elFromSelector = queryOwner.querySelector(selector);
         var el = this.getSourceAndTarget(mode);
 
-        if (this.elFromSelector && !el.target.contains(el.source) && !el.source.contains(el.target)) {
+        if (this.elFromSelector && el.source && el.target && !el.target.contains(el.source) && !el.source.contains(el.target)) {
             if (position === 'BeforeBegin') {
                 el.target.insertBefore(el.source, el.target.firstChild);
             } else if (position === 'AfterBegin') { 

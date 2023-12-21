@@ -305,6 +305,25 @@ public partial class MudExObjectEdit<T>
     [Parameter] public PropertyFilterMode FilterMode { get; set; } = PropertyFilterMode.Toggleable;
 
     /// <summary>
+    /// Event callback if filter input is toggled
+    /// </summary>
+    [Parameter] public EventCallback<bool> SearchActiveChanged { get; set; }
+
+    /// <summary>
+    /// Search is active
+    /// </summary>
+    [Parameter]
+    public bool SearchActive
+    {
+        get => _searchActive;
+        set
+        {
+            _searchActive = value;
+            SearchActiveChanged.InvokeAsync(value);
+        }
+    }
+
+    /// <summary>
     /// The filter value for the component.
     /// </summary>
     [Parameter] public string Filter { get; set; }
@@ -416,6 +435,8 @@ public partial class MudExObjectEdit<T>
     /// All rendered editors
     /// </summary>
     public List<MudExPropertyEdit> Editors = new();
+
+    private bool _searchActive;
 
     /// <summary>
     /// ExpansionPanels
@@ -1031,6 +1052,4 @@ public partial class MudExObjectEdit<T>
 
         return result;
     }
-
-
 }

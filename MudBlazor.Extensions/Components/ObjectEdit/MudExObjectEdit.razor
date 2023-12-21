@@ -52,7 +52,7 @@
                             <MudSpacer />
                         }
 
-                        <MudExToggleableSearch MultiSearch="@MultiSearch" @bind-Filter="@Filter" @bind-Filters="@Filters" SearchButtonColor="@ToolbarButtonColor" SearchIcon="@SearchIcon" FilterMode="@FilterMode" />
+                        <MudExToggleableSearch @bind-SearchActive="SearchActive" MultiSearch="@MultiSearch" @bind-Filter="@Filter" @bind-Filters="@Filters" SearchButtonColor="@ToolbarButtonColor" SearchIcon="@SearchIcon" FilterMode="@FilterMode" />
 
                         @if (AllowExport)
                         {

@@ -1,4 +1,5 @@
-## Change Log  
+## Change Log   
+ - 1.7.80 > New Component [MudExAdditionalAdornment](https://www.mudex.org/additional-adornments) to add as many additional adornments as you want to any MudInput
  - 1.7.79 > Allow inherit from MudExJsRequiredBaseComponent for other projects
  - 1.7.79 > Hide dropdown icon if readonly in MudExSelect
  - 1.7.79 > Set cursor to default for MudExSelect if readonly

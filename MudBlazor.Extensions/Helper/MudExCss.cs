@@ -18,6 +18,9 @@ public static partial class MudExCss
 
     private static readonly AnimationType[] TypesWithoutPositionReplacement = { AnimationType.SlideIn };
 
+    public static string For(string typeName) => string.Join('-', typeName.SplitByUpperCase()).ToLower();
+    public static string For(Type type) => For(type.Name);
+    public static string For<T>() => For(typeof(T));
 
     internal static string GetClassname<T>(MudExBaseInput<T> baseInput, Func<bool> shrinkWhen) =>
     new CssBuilder("mud-input")

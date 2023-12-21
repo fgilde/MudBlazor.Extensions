@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Utilities;
+using OneOf;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -51,6 +53,20 @@ public partial class MoveContent
     [SafeCategory("Behavior")]
     public MoveContentPosition Position { get; set; } = MoveContentPosition.AfterEnd;
 
+    /// <summary>
+    /// Owner element to search for the element defined by <see cref="ElementSelector"/>
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public ElementReference? QueryOwner { get; set; }
+
+    /// <summary>
+    /// If this is true the QueryOwner (or the parent of this element)'s parent will be used as query owner.
+    /// Instead of true or false you can also set a number to search the parent of the QueryOwner n-times.
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public OneOf<bool, int> QueryFromParent { get; set; } = false;
 
     /// <summary>
     /// Returns true if element is found
@@ -68,7 +84,7 @@ public partial class MoveContent
     public override async Task ImportModuleAndCreateJsAsync()
     {
         await base.ImportModuleAndCreateJsAsync();
-        await JsReference.InvokeVoidAsync("move", ElementSelector, Mode.ToString(), Position.ToString());
+        await JsReference.InvokeVoidAsync("move", ElementSelector, Mode.ToString(), Position.ToString(), QueryOwner, QueryFromParent.IsT0 ? QueryFromParent.AsT0 : QueryFromParent.AsT1 );
     }
 
 }

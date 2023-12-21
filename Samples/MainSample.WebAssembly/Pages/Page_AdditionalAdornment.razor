@@ -1,0 +1,111 @@
+﻿@page "/additional-adornments"
+@using BlazorJS
+@using Microsoft.AspNetCore.Components.Rendering
+@using MudBlazor.Extensions.Core
+@using Nextended.Core.Extensions
+@attribute [DemoNew(Name = "MudExAdditionalAdornment", Icon = Icons.Material.Outlined.PlusOne, Documentation = "Shows how you can use MudExAdditionalAdornment to ad as many adornments to any MudInput", ForComponentType = typeof(MudExAdditionalAdornment))]
+
+<DemoComponent PageType="@GetType()">
+    
+    <MudExpansionPanel Class="mb-10" DisableGutters="true" Text="Preferred way on MudExTextField">
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
+                <MudText>Preferred way on MudExTextField with <strong>For</strong> and <strong>ChildContent</strong></MudText>
+            </div>
+        </TitleContent>
+        <ChildContent>
+            <MudCard Class="mb-0" Elevation="0">
+                <MudCardHeader>
+                    <MudStack Class="m-2">
+                        <MudText Typo="Typo.body2">This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`</MudText>
+                    </MudStack>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudStack Class="m-2">
+                        @Demo()
+                        @Demo(MoveContentPosition.BeforeBegin)
+                        @Demo(MoveContentPosition.BeforeEnd, Adornment.End)
+                        @Demo(MoveContentPosition.AfterEnd, Adornment.End)
+                        @Demo(MoveContentPosition.BeforeEnd, Adornment.Start)
+                        @Demo(MoveContentPosition.AfterEnd, Adornment.Start)
+                    </MudStack>
+
+                </MudCardContent>
+            </MudCard>
+        </ChildContent>
+    </MudExpansionPanel>
+    
+    <MudExpansionPanel Class="mb-10" DisableGutters="true" Text="Use MudExAdditionalAdornment ad ChildContent">
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
+                <MudText>Use MudExAdditionalAdornment ad <strong>ChildContent</strong></MudText>
+            </div>
+        </TitleContent>
+        <ChildContent>
+            <MudCard Class="mb-0" Elevation="0">
+                <MudCardHeader>
+                    <MudStack Class="m-2">
+                        <MudText Typo="Typo.body2">You can also use MudExAdditionalAdornment as ChildContent of a MudInput</MudText>
+                    </MudStack>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudStack Class="m-2">
+                        @DemoAsChild()
+                        @DemoAsChild(MoveContentPosition.BeforeBegin)
+                        @DemoAsChild(MoveContentPosition.BeforeEnd, Adornment.End)
+                        @DemoAsChild(MoveContentPosition.AfterEnd, Adornment.End)
+                        @DemoAsChild(MoveContentPosition.BeforeEnd, Adornment.Start)
+                        @DemoAsChild(MoveContentPosition.AfterEnd, Adornment.Start)
+                    </MudStack>
+
+                </MudCardContent>
+            </MudCard>
+        </ChildContent>
+    </MudExpansionPanel>
+
+</DemoComponent>
+
+@code
+{
+    RenderFragment DemoAsChild(MoveContentPosition additionalAdornmentPosition = MoveContentPosition.BeforeEnd, Adornment textFieldDemoAdornment = Adornment.None)
+    {
+        return @<div style=@($"margin-bottom: 5px; border-bottom: 1px solid {MudExColor.Primary.ToCssStringValue()}")>
+                   <MudText Typo="Typo.body2">@Title(additionalAdornmentPosition, textFieldDemoAdornment)</MudText>
+                   <MudExCodeView RenderChildContent="true">
+                       <MudExTextField Variant="Variant.Outlined" Class="m-2" T="string" Adornment="@textFieldDemoAdornment" AdornmentIcon="@Icons.Custom.Brands.Apple" Clearable="true">
+                           <MudExAdditionalAdornment Position="@additionalAdornmentPosition">
+                               @DemoContent
+                           </MudExAdditionalAdornment>
+                       </MudExTextField>
+                   </MudExCodeView>
+               </div>;
+    }
+
+    RenderFragment Demo(MoveContentPosition additionalAdornmentPosition = MoveContentPosition.BeforeEnd, Adornment textFieldDemoAdornment = Adornment.None )
+    {
+        return @<div style=@($"margin-bottom: 5px; border-bottom: 1px solid {MudExColor.Primary.ToCssStringValue()}")>
+                   <MudText Typo="Typo.body2">@Title(additionalAdornmentPosition, textFieldDemoAdornment)</MudText>
+                   <MudExCodeView RenderChildContent="true">
+                       <MudExAdditionalAdornment Position="@additionalAdornmentPosition">
+                           <For>
+                                <MudExTextField Variant="Variant.Outlined" Class="m-2" T="string" Adornment="@textFieldDemoAdornment" AdornmentIcon="@Icons.Custom.Brands.Microsoft" />
+                           </For>
+                           <ChildContent>
+                               @DemoContent
+                           </ChildContent>
+                       </MudExAdditionalAdornment>
+                   </MudExCodeView>
+               </div>;
+    }
+    
+    string Title(MoveContentPosition additionalAdornmentPosition, Adornment textFieldDemoAdornment) => $"Additional adornments {string.Join(" ", additionalAdornmentPosition.ToString().SplitByUpperCase()).ToLower()} of {(textFieldDemoAdornment == Adornment.None ? "a MudExTextField without existing adornments" : $"existing adornments at {textFieldDemoAdornment.ToString().ToLower()} in MudExTextField")}";
+
+    void DemoContent(RenderTreeBuilder __builder)
+    {
+        <MudIconButton Title="I'm a separate control inside of the normal input" OnClick="@(() => JsRuntime.AlertAsync("Hello"))" Icon="@Icons.Material.Filled.AccessAlarms"></MudIconButton>
+        <MudIconButton Title="I'm a another separate control inside of the normal input" OnClick="@(() => JsRuntime.AlertAsync("Hello from me as well"))" Icon="@Icons.Material.Filled.Coffee"></MudIconButton>
+        <MudIconButton Title="I'm a also another separate control inside of the normal input" OnClick="@(() => JsRuntime.AlertAsync("Hello whats up"))" Icon="@Icons.Material.Filled.Key"></MudIconButton>
+    }
+}

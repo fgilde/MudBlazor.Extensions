@@ -5,14 +5,6 @@
 @using System.Text.RegularExpressions
 @inherits MudExBaseComponent<MudExCodeView>
 
-@if (_loadedFiles.Count <= 0)
-{
-    <Scripts SourceLoaded="@OnSourceLoaded"
-             UnloadOnDispose="false"
-             SourceLoadBehaviour="LoadBehaviour.OnAfterRenderAsync"
-             Src="_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js,_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css" />
-}
-
 @if (RenderChildContent && ChildContent != null && CodeViewModeWithRenderFragment == CodeViewModeWithRenderFragment.ExpansionPanel)
 {
     <div class="@RenderFragmentClassname" style="@RenderFragmentStylename">
@@ -26,7 +18,7 @@
     {
         if (CodeViewModeWithRenderFragment == CodeViewModeWithRenderFragment.ExpansionPanel)
         {
-            <MudExpansionPanel @bind-IsExpanded="CodeIsExpanded" Text="@(CodeIsExpanded ? ExpandedText : CollapsedText)">
+            <MudExpansionPanel IsExpandedChanged="OnExpandedChanged" IsInitiallyExpanded="@CodeIsExpanded" Text="@(_isExpanded ? ExpandedText : CollapsedText)">
                 @CodeView()
             </MudExpansionPanel>
         }
@@ -59,7 +51,7 @@
 {
     protected RenderFragment CodeView()
     {
-        @if (_loadedFiles.Count >= 2)
+        @if (IsRendered)
         {
             return 
                 @<div style="@CodeViewStylename" class="@CodeViewClassname">

@@ -387,6 +387,7 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2023-11-03 13:23:17 -->
+ - 1.7.80 > New Component [MudExAdditionalAdornment](https://www.mudex.org/additional-adornments) to add as many additional adornments as you want to any MudInput
  - 1.7.79 > Allow inherit from MudExJsRequiredBaseComponent for other projects
  - 1.7.79 > Hide dropdown icon if readonly in MudExSelect
  - 1.7.79 > Set cursor to default for MudExSelect if readonly
@@ -409,9 +410,6 @@ Latest Changes:
  - 1.7.75 > Fix rendering error on serverside object edit
  - 1.7.75 > Add parameter to tag field for AutoClear and fix clear for server side rendered projects
  - 1.7.75 > Add posibility for custom click handler in MudExDialogResultAction used in `DialogService.ShowComponentInDialogAsync` sample is available [here](https://www.mudex.org/component-in-dialog)
- - 1.7.75 > Add posibility to add condtions for buttons if you use `DialogService.ShowComponentInDialogAsync` sample is available [here](https://www.mudex.org/component-in-dialog)
- - 1.7.75 > Add new Component MudExCheckBox with support of `HelperText` .This component is used for default bool RenderData in MudExObjectEdit by default
- - 1.7.75 > Icons in all dialogs have a MudExColor param for icon color
 <!-- CHANGELOG:END -->
 Full change log can be found [here](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/CHANGELOG.md) 
 

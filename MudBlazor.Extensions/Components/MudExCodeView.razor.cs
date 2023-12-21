@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Text;
+using System.Xml.Linq;
+using BlazorJS;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
@@ -15,6 +17,9 @@ using MudBlazor.Utilities;
 using MudBlazor.Extensions.Api;
 using MudBlazor.Extensions.Attribute;
 using Newtonsoft.Json;
+using Nextended.Blazor.Helper;
+using Nextended.Core.Extensions;
+using YamlDotNet.Core;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -25,7 +30,7 @@ public partial class MudExCodeView
 {
     private string _markdownCode;
     private string _code;
-    private List<string> _loadedFiles = new();
+    private bool _isExpanded;
 
     protected string Classname =>
         new MudExCssBuilder("mud-ex-code-view")
@@ -174,19 +179,30 @@ public partial class MudExCodeView
             _code = value;
         }
     }
-    
-    /// <inheritdoc />
-    protected override void OnParametersSet()
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        base.OnParametersSet();
-        if (ChildContent != null)
-            Code = FormatHtml(CodeFromFragment(ChildContent)) + Environment.NewLine + Code;
+        if (firstRender)
+        {
+            _isExpanded = CodeIsExpanded;
+            await JsRuntime.LoadFilesAsync(
+                "./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js",
+                "./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css"
+            );
+            await Task.Delay(800);
+            if (ChildContent != null && string.IsNullOrWhiteSpace(Code))
+                Code = FormatHtml(CodeFromFragment(ChildContent));
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
-    private void OnSourceLoaded(string file)
+    private Task OnExpandedChanged(bool arg)
     {
-        _loadedFiles.Add(file);
+        _isExpanded = arg;
+        return Task.CompletedTask;
     }
+
+    #region Static methods for code generation
 
     /// <summary>
     /// Returns the given code to markup code value
@@ -231,12 +247,12 @@ public partial class MudExCodeView
             .Where(p => ObjectEditMeta.IsAllowedAsPropertyToEdit(p) && ObjectEditMeta.IsAllowedAsPropertyToEditOnAComponent<TComponent>(p));
 
         var props = properties.ToDictionary(info => info.Name, info => info.GetValue(componentInstance))
-            .Where(pair => Nextended.Blazor.Helper.ComponentRenderHelper.IsValidParameter(typeof(TComponent), pair.Key, pair.Value) 
+            .Where(pair => ComponentRenderHelper.IsValidParameter(typeof(TComponent), pair.Key, pair.Value) 
                            && pair.Value != null 
                            && pair.Value?.GetType() != typeof(object));
 
         var parameterString = string.Join("\n", 
-            props.Select(p=> new KeyValuePair<string, string>(p.Key, MarkupValue(p)))
+            props.Select(p=> new KeyValuePair<string, string>(p.Key, MarkupValue(p.Value, p.Key)))
                 .Where(p => !string.IsNullOrWhiteSpace(p.Value))
                 .Select(p => $"{p.Key}=\"{p.Value}\""));
 
@@ -269,11 +285,15 @@ public partial class MudExCodeView
     }
 
 
-    private static string MarkupValue(KeyValuePair<string, object> p, bool ignoreComplexTypes = true)
+    private static string MarkupValue(object value, string propName, bool ignoreComplexTypes = true)
     {
-        var value = p.Value;
         if (string.IsNullOrEmpty(value?.ToString()))
             return null;
+
+        if (value is EventCallback || (value.GetType().IsGenericType && value.GetType().GetGenericTypeDefinition() == typeof(EventCallback<>)))
+        {
+            return $"@Your{propName}EventHandler";
+        }
 
         if (value is bool)
             return value.ToString().ToLower();
@@ -318,12 +338,37 @@ public partial class MudExCodeView
         return $"@(Newtonsoft.Json.JsonConvert.DeserializeObject<{friendlyTypeName}>(\"{json.Replace("\"", "\\\"")}\"))";
     }
 
+    public static string ShortenMarkup(string markup)
+    {
+        // Regex pattern to find empty tags
+        string pattern = @"<(\w+)([^>]*)>\s*</\1>";
+
+        // Replacement pattern for self-closing tags
+        string replacement = @"<$1$2 />";
+
+        // Replace empty tags with self-closing tags
+        return RemoveEmptyLines(Regex.Replace(markup, pattern, replacement));
+    }
+
+    public static string RemoveEmptyLines(string input)
+    {
+        var filteredLines = input.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None)
+            .Where(line => !string.IsNullOrWhiteSpace(line));
+
+        return string.Join(Environment.NewLine, filteredLines);
+    }
 
     /// <summary>
     /// Formats html code
     /// </summary>
     public static string FormatHtml(string html)
     {
+        html = html.Replace(Environment.NewLine, " ");
+        while (html.Contains(">>"))
+        {
+            html = html.Replace(">>", ">");
+        }   
+        
         string pattern = @"(\<[^/][^>]*\>)|(\<\/[^>]*\>)";
         string replacement = "$1\r\n$2";
 
@@ -345,10 +390,10 @@ public partial class MudExCodeView
                 indentLevel++;
         }
 
-        return string.Join("\n", lines);
+        return ShortenMarkup(string.Join("\n", lines));
     }
 
-    private static string CodeFromFragment(RenderFragment? fragment)
+    public static string CodeFromFragment(RenderFragment? fragment)
     {
         if (fragment == null)
             return string.Empty;
@@ -399,25 +444,9 @@ public partial class MudExCodeView
         }
     }
 
-    private static string GetAttributeValueAsString(object? value)
-    {
-        if (value == null)
-            return string.Empty;
-
-        var type = value.GetType();
-
-        if (type.IsEnum)
-            return $"{type.FullName}.{value}";
-
-        if (type == typeof(bool))
-            return value.ToString().ToLower();
-
-        return value.ToString();
-    }
-
     private static string BuildAttribute(RenderTreeFrame frame)
     {
-        var value = GetAttributeValueAsString(frame.AttributeValue);
+        var value = MarkupValue(frame.AttributeValue, frame.AttributeName);
         return $" {frame.AttributeName}=\"{value}\"";
     }
 
@@ -446,10 +475,58 @@ public partial class MudExCodeView
         return stringBuilder.ToString();
     }
 
+    //private static string BuildTag(RenderTreeFrameType frameType, Type componentType, ReadOnlySpan<RenderTreeFrame> frames)
+    //{
+    //    var (baseName, attributes) = GetFriendlyComponentNameAndAttributes(componentType);
+    //    var stringBuilder = new StringBuilder().Append('<').Append(baseName);
+
+    //    if (!string.IsNullOrEmpty(attributes))
+    //    {
+    //        stringBuilder.Append(' ').Append(attributes);
+    //    }
+
+    //    // Determine if ChildContent is the only RenderFragment property
+    //    var frameArray = frames.ToArray();
+    //    bool isChildContentOnly = frameArray.Count(f => f.FrameType == RenderTreeFrameType.Attribute && f.AttributeValue is RenderFragment) == 1
+    //                              && frameArray.Any(f => f.FrameType == RenderTreeFrameType.Attribute && f.AttributeName == "ChildContent");
+
+    //    // Process each attribute
+    //    for (int i = 1; i < frames.Length; i++)
+    //    {
+    //        var frame = frames[i];
+    //        if (frame.FrameType == RenderTreeFrameType.Attribute)
+    //        {
+    //            if (frame.AttributeValue is RenderFragment fragment && fragment != null)
+    //            {
+    //                // If not only ChildContent or attribute name is not ChildContent, wrap in tags
+    //                if (!isChildContentOnly || frame.AttributeName != "ChildContent")
+    //                {
+    //                    stringBuilder.Append($"<{frame.AttributeName}>");
+    //                }
+
+    //                stringBuilder.Append(CodeFromFragment(fragment));
+
+    //                if (!isChildContentOnly || frame.AttributeName != "ChildContent")
+    //                {
+    //                    stringBuilder.Append($"</{frame.AttributeName}>");
+    //                }
+    //            }
+    //            else
+    //            {
+    //                // Process normal attribute
+    //                stringBuilder.Append(BuildAttribute(frame));
+    //            }
+    //        }
+    //    }
+
+    //    stringBuilder.Append("</").Append(baseName).Append('>');
+
+    //    return stringBuilder.ToString();
+    //}
+
     private static string BuildTag(RenderTreeFrameType frameType, Type componentType, ReadOnlySpan<RenderTreeFrame> frames)
     {
         var (baseName, attributes) = GetFriendlyComponentNameAndAttributes(componentType);
-        var frame = frames[0];
         var stringBuilder = new StringBuilder().Append('<').Append(baseName);
 
         if (!string.IsNullOrEmpty(attributes))
@@ -457,22 +534,55 @@ public partial class MudExCodeView
             stringBuilder.Append(' ').Append(attributes);
         }
 
-        ProcessFrames(frames.Slice(1, frame.ElementSubtreeLength - 1), stringBuilder);
+        var framesArray = frames.ToArray();
+        bool isChildContentOnly = framesArray.Count(f => f.FrameType == RenderTreeFrameType.Attribute && f.AttributeValue is RenderFragment) == 1
+                                  && framesArray.Any(f => f.FrameType == RenderTreeFrameType.Attribute && f.AttributeName == "ChildContent");
 
-        // Handle child content
-        var childContentFrame = frames.Slice(1, frame.ElementSubtreeLength - 1).ToArray()
-            .FirstOrDefault(f => f is { FrameType: RenderTreeFrameType.Attribute, AttributeValue: RenderFragment });
+        bool hasRenderFragments = false;
 
-        if (childContentFrame.Sequence != 0)
+        // Process each attribute
+        for (int i = 1; i < frames.Length; i++)
+        {
+            var frame = frames[i];
+            if (frame.FrameType == RenderTreeFrameType.Attribute)
+            {
+                if (frame.AttributeValue is RenderFragment fragment && fragment != null)
+                {
+                    hasRenderFragments = true;
+
+                    // Open tag for RenderFragment if not only ChildContent or attribute name is not ChildContent
+                    if (!isChildContentOnly || frame.AttributeName != "ChildContent")
+                    {
+                        stringBuilder.Append('>').Append($"<{frame.AttributeName}>");
+                    }
+                    else
+                    {
+                        stringBuilder.Append('>');
+                    }
+
+                    stringBuilder.Append(CodeFromFragment(fragment));
+
+                    // Close tag for RenderFragment
+                    if (!isChildContentOnly || frame.AttributeName != "ChildContent")
+                    {
+                        stringBuilder.Append($"</{frame.AttributeName}>");
+                    }
+                }
+                else
+                {
+                    // Process normal attribute
+                    stringBuilder.Append(BuildAttribute(frame));
+                }
+            }
+        }
+
+        // Close the main tag
+        if (!hasRenderFragments)
         {
             stringBuilder.Append('>');
-            stringBuilder.Append(CodeFromFragment((RenderFragment)childContentFrame.AttributeValue));
-            stringBuilder.Append("</").Append(baseName).Append('>');
         }
-        else
-        {
-            stringBuilder.Append("/>");
-        }
+
+        stringBuilder.Append("</").Append(baseName).Append('>');
 
         return stringBuilder.ToString();
     }
@@ -497,5 +607,6 @@ public partial class MudExCodeView
         return (typeName, attributesString);
     }
 
+    #endregion
 
 }

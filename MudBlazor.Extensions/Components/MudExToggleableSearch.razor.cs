@@ -62,6 +62,16 @@ namespace MudBlazor.Extensions.Components
         [Parameter] public EventCallback<List<string>> FiltersChanged { get; set; }
 
         /// <summary>
+        /// Event callback if filter input is toggled
+        /// </summary>
+        [Parameter] public EventCallback<bool> SearchActiveChanged { get; set; }
+
+        /// <summary>
+        /// Search is active
+        /// </summary>
+        [Parameter] public bool SearchActive { get; set; }
+
+        /// <summary>
         ///  If true and search toggleable and open, search with closed on blur
         /// </summary>
         [Parameter] public bool AutoCloseOnBlur { get; set; } = true;
@@ -75,7 +85,6 @@ namespace MudBlazor.Extensions.Components
         public bool HasSearchActive => MultiSearch ? Filters?.Count > 0 || !string.IsNullOrWhiteSpace(Filter) : !string.IsNullOrWhiteSpace(Filter);
 
         private bool _searchBoxBlur;
-        private bool _searchActive;
         private MudTextField<string> _searchBox;
         private MudExTagField<string> _searchTagBox;
         private bool _isMouseOverChip;
@@ -84,8 +93,9 @@ namespace MudBlazor.Extensions.Components
         {
             if (_searchBoxBlur)
                 return;
-            _searchActive = !_searchActive;
-            if (_searchActive)            
+            SearchActive = !SearchActive;
+            SearchActiveChanged.InvokeAsync(SearchActive);
+            if (SearchActive)            
                 FocusAsync();           
         }
 
@@ -101,7 +111,8 @@ namespace MudBlazor.Extensions.Components
             {
                 if (!string.IsNullOrWhiteSpace(Filter))
                     return OnFilterChanged(string.Empty);
-                _searchActive = false;
+                SearchActive = false;
+                SearchActiveChanged.InvokeAsync(SearchActive);
             }
             return Task.CompletedTask;
         }
@@ -111,7 +122,8 @@ namespace MudBlazor.Extensions.Components
             if (AutoCloseOnBlur && !_isMouseOverChip)
             {
                 _searchBoxBlur = true;
-                _searchActive = false;
+                SearchActive = false;
+                SearchActiveChanged.InvokeAsync(SearchActive);
                 Task.Delay(300).ContinueWith(t => _searchBoxBlur = false);
             }
             return Task.CompletedTask;

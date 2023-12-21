@@ -552,6 +552,17 @@
             Position to move the ChildContent to
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MoveContent.QueryOwner">
+            <summary>
+            Owner element to search for the element defined by <see cref="P:MudBlazor.Extensions.Components.MoveContent.ElementSelector"/>
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MoveContent.QueryFromParent">
+            <summary>
+            If this is true the QueryOwner (or the parent of this element)'s parent will be used as query owner.
+            Instead of true or false you can also set a number to search the parent of the QueryOwner n-times.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MoveContent.ElementFound">
             <summary>
             Returns true if element is found
@@ -934,9 +945,6 @@
             <summary>
             Set to true to render also the given child content otherwise only code is generated for
             </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExCodeView.OnParametersSet">
-            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExCodeView.CodeAsMarkup(System.String,System.String)">
             <summary>
@@ -5126,6 +5134,16 @@
             Event callback if filter changed
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.SearchActiveChanged">
+            <summary>
+            Event callback if filter input is toggled
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.SearchActive">
+            <summary>
+            Search is active
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.AutoCloseOnBlur">
             <summary>
              If true and search toggleable and open, search with closed on blur
@@ -6564,6 +6582,16 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.FilterMode">
             <summary>
             The filter mode for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.SearchActiveChanged">
+            <summary>
+            Event callback if filter input is toggled
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.SearchActive">
+            <summary>
+            Search is active
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Filter">

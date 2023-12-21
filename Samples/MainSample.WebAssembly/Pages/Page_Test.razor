@@ -1,5 +1,67 @@
 ﻿@page "/test"
 @using FluentValidation
+@using BlazorJS
+
+
+<MudExTextField Variant="Variant.Outlined" Class="m-2" T="string" Adornment="@Adornment.Start" AdornmentIcon="@Icons.Custom.Brands.Apple" Clearable="true">
+    <MudExAdditionalAdornment Position="MoveContentPosition.AfterEnd">
+        <MudTooltip Text="I'm a another separate control inside of the normal input">
+            <MudIconButton Icon="@Icons.Material.Filled.Coffee"></MudIconButton>
+        </MudTooltip>
+        <MudTooltip Text="I'm a separate control inside of the normal input">
+            <MudIconButton OnClick="@(() => JsRuntime.AlertAsync("Hello"))" Icon="@Icons.Material.Filled.AccessAlarms"></MudIconButton>
+        </MudTooltip>
+    </MudExAdditionalAdornment>
+</MudExTextField>
+
+<MudExTextField Variant="Variant.Outlined" Class="m-2" T="string" Adornment="@Adornment.Start">
+    <MudExAdditionalAdornment Position="MoveContentPosition.AfterEnd">
+        <MudTooltip Text="I'm a another separate control inside of the normal input">
+            <MudIconButton Icon="@Icons.Material.Filled.Coffee"></MudIconButton>
+        </MudTooltip>
+        <MudTooltip Text="I'm a separate control inside of the normal input">
+            <MudIconButton OnClick="@(() => JsRuntime.AlertAsync("Hello"))" Icon="@Icons.Material.Filled.AccessAlarms"></MudIconButton>
+        </MudTooltip>
+    </MudExAdditionalAdornment>
+</MudExTextField>
+
+<MudExAdditionalAdornment Position="MoveContentPosition.BeforeEnd">
+    <For>
+        <MudExTextField Variant="Variant.Outlined" Class="m-2" T="string" Adornment="@Adornment.Start" />
+    </For>
+    <ChildContent>
+        <MudIconButton Title="I'm a separate control inside of the normal input" OnClick="@(() => JsRuntime.AlertAsync("Hello"))" Icon="@Icons.Material.Filled.AccessAlarms"></MudIconButton>
+        <MudIconButton Title="I'm a another separate control inside of the normal input" OnClick="@(() => JsRuntime.AlertAsync("Hello from me as well"))" Icon="@Icons.Material.Filled.Coffee"></MudIconButton>
+    </ChildContent>
+</MudExAdditionalAdornment>
+
+<MudExAdditionalAdornment>
+    <For>
+        <MudExTextField Variant="Variant.Outlined" Class="m-2" T="string" Adornment="@Adornment.Start" AdornmentIcon="@Icons.Custom.Brands.Apple" Clearable="true" />
+    </For>
+    <ChildContent>
+        <MudTooltip Text="I'm a separate control inside of the normal input">
+            <MudIconButton Icon="@Icons.Material.Filled.AccessAlarms"></MudIconButton>
+        </MudTooltip>
+        <MudTooltip Text="I'm a another separate control inside of the normal input">
+            <MudIconButton Icon="@Icons.Material.Filled.Coffee"></MudIconButton>
+        </MudTooltip>
+    </ChildContent>
+</MudExAdditionalAdornment>
+
+<MudExAdditionalAdornment>
+    <For>
+        <MudExTextField Variant="Variant.Outlined" Class="m-2" T="string" Adornment="@Adornment.End" AdornmentIcon="@Icons.Custom.Brands.Apple" Clearable="true" />
+    </For>
+    <ChildContent>
+        <MudTooltip Text="I'm a separate control inside of the normal input">
+            <MudIconButton Icon="@Icons.Material.Filled.AccessAlarms"></MudIconButton>
+        </MudTooltip>
+        <MudTooltip Text="I'm a another separate control inside of the normal input">
+            <MudIconButton Icon="@Icons.Material.Filled.Coffee"></MudIconButton>
+        </MudTooltip>
+    </ChildContent>
+</MudExAdditionalAdornment>
 
 
 <MudCard>
@@ -10,7 +72,7 @@
                           Immediate="true"
                           Label="Name" />
 
-            
+
 
             <MudExUploadEdit T="UploadableFile"
                              Variant="Variant.Outlined"
@@ -46,7 +108,7 @@
 
         if (form.IsValid)
         {
-            
+
         }
     }
 

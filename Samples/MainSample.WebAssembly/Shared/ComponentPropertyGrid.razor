@@ -86,20 +86,23 @@ else
     {
         return
             @<div>
-                <MudTooltip Text="Edit in TryMudEx">
-                    <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.PlayArrow" OnClick="@EditCode" />
-                </MudTooltip>
-                <MudTooltip Text="Show Markup">
-                    <MudIconButton Icon="@Icons.Material.Filled.Code" OnClick="@ShowCode" />
-                </MudTooltip>
-                <MudTooltip Text="Show or hide inherited fields from base class">
-                    <MudIconButton OnClick="@(() => OnChangeInherit(!_showInherited))" Color="@(_showInherited ? Color.Warning : Color.Default)"
-                                   Icon="@(_showInherited ? Icons.Material.Filled.Workspaces : Icons.Material.Outlined.Workspaces)"></MudIconButton>
-                </MudTooltip>
-                <MudTooltip Text="Group by types">
-                    <MudIconButton OnClick="@(() => OnChangeGrouping(!_groupByTypes))" Color="@(_groupByTypes ? Color.Warning : Color.Default)"
-                                   Icon="@(_groupByTypes ? Icons.Material.Filled.TypeSpecimen : Icons.Material.Outlined.TypeSpecimen)"></MudIconButton>
-                </MudTooltip>
+                @if (!SearchActive)
+                {
+                    <MudTooltip Text="Edit in TryMudEx">
+                        <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.PlayArrow" OnClick="@EditCode"/>
+                    </MudTooltip>
+                    <MudTooltip Text="Show Markup">
+                        <MudIconButton Icon="@Icons.Material.Filled.Code" OnClick="@ShowCode"/>
+                    </MudTooltip>
+                    <MudTooltip Text="Show or hide inherited fields from base class">
+                        <MudIconButton OnClick="@(() => OnChangeInherit(!_showInherited))" Color="@(_showInherited ? Color.Warning : Color.Default)"
+                                       Icon="@(_showInherited ? Icons.Material.Filled.Workspaces : Icons.Material.Outlined.Workspaces)"></MudIconButton>
+                    </MudTooltip>
+                    <MudTooltip Text="Group by types">
+                        <MudIconButton OnClick="@(() => OnChangeGrouping(!_groupByTypes))" Color="@(_groupByTypes ? Color.Warning : Color.Default)"
+                                       Icon="@(_groupByTypes ? Icons.Material.Filled.TypeSpecimen : Icons.Material.Outlined.TypeSpecimen)"></MudIconButton>
+                    </MudTooltip>
+                }
             </div>;
     }
 
