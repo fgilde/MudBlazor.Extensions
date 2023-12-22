@@ -14,7 +14,7 @@ public class GlobalResetSettings: PropertyResetSettings
     {
         RequiresConfirmation = true;
         ResetIcon = Icons.Material.Filled.Undo;
-        ResetText = null;
+        ResetText = "Reset";
     }
 
     public bool RequiresConfirmation { get; set; }

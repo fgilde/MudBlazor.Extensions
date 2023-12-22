@@ -1,14 +1,6 @@
-﻿@inherits MudExBaseComponent<MudExFileDisplayMarkdown>
+﻿@inherits MudExJsRequiredBaseComponent<MudExFileDisplayMarkdown>
 
-@if (_loadedFiles.Count <= 0)
-{
-    <Scripts SourceLoaded="@OnSourceLoaded"
-             UnloadOnDispose="false"
-             SourceLoadBehaviour="LoadBehaviour.OnAfterRenderAsync"
-             Src="_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js,_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css"/>
-}
-
-@if (!string.IsNullOrEmpty(Value) && _loadedFiles.Count >= 2)
+@if (!string.IsNullOrEmpty(Value) && _jsReady)
 {
     @*TODO: Ask author of MudMarkdown if he can remove the sealed and then inherit from it*@
     <MudMarkdown TableCellMinWidth="@TableCellMinWidth" 

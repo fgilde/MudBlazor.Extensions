@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using Markdig.Syntax.Inlines;
 using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Services;
 
 namespace MudBlazor.Extensions.Components;
@@ -10,7 +11,7 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExFileDisplayMarkdown: IMudExFileDisplay
 {
-    private readonly List<string> _loadedFiles = new();
+    bool _jsReady;
 
     [Inject] private MudExFileService fileService { get; set; }
     /// <summary>
@@ -86,10 +87,12 @@ public partial class MudExFileDisplayMarkdown: IMudExFileDisplay
             StateHasChanged();
         }
     }
-
-    private void OnSourceLoaded(string file)
+    
+    public override async Task ImportModuleAndCreateJsAsync()
     {
-        _loadedFiles.Add(file);
+        await JsRuntime.LoadMudMarkdownAsync();
+        _jsReady = true;
+        await InvokeAsync(StateHasChanged);
     }
-
+    
 }

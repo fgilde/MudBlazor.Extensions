@@ -40,6 +40,16 @@ namespace MudBlazor.Extensions.Helper
             return runtime;
         }
 
+        internal static async Task LoadMudMarkdownAsync(this IJSRuntime runtime)
+        {
+            await runtime.LoadFilesAsync(
+                "./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js",
+                "./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css"
+            );
+            await runtime.WaitForNamespaceAsync("highlightCodeElement", TimeSpan.FromSeconds(2), TimeSpan.FromMilliseconds(200) );
+            await Task.Delay(200);
+        }
+
         internal static async Task LoadCssAsync(this IJSRuntime runtime, bool force = false) 
             => await runtime.AddCss(await MudExResource.GetEmbeddedFileContentAsync($"wwwroot/mudBlazorExtensions{min}.css"), "mudex-styles", !force);
 

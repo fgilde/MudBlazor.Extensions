@@ -52,8 +52,10 @@
                             <MudSpacer />
                         }
 
-                        <MudExToggleableSearch @bind-SearchActive="SearchActive" MultiSearch="@MultiSearch" @bind-Filter="@Filter" @bind-Filters="@Filters" SearchButtonColor="@ToolbarButtonColor" SearchIcon="@SearchIcon" FilterMode="@FilterMode" />
-
+                        @if (AllowSearch)
+                        {
+                            <MudExToggleableSearch @bind-SearchActive="SearchActive" MultiSearch="@MultiSearch" @bind-Filter="@Filter" @bind-Filters="@Filters" SearchButtonColor="@ToolbarButtonColor" SearchIcon="@SearchIcon" FilterMode="@FilterMode" />
+                        }
                         @if (AllowExport)
                         {
                             <MudTooltip Text="@TryLocalize("Export")">
@@ -74,7 +76,7 @@
                         }
                         @if (GlobalResetSettings.AllowReset)
                         {
-                            <MudTooltip Text="@GlobalResetSettings.ResetText">
+                            <MudTooltip Text="@TryLocalize(GlobalResetSettings.ResetText)">
                                 <MudIconButton Icon="@GlobalResetSettings.ResetIcon" OnClick="@(OnResetClick)" Color="@ToolbarButtonColor" />
                             </MudTooltip>
                         }
@@ -149,24 +151,24 @@
     private RenderFragment RenderPropertyEdits(IList<ObjectEditPropertyMeta> objectEditPropertyMetas)
     {
         return @<MudVirtualize Items="@objectEditPropertyMetas" Context="property" IsEnabled="@Virtualize">
-                   @RenderPropertyEdit(property)
-               </MudVirtualize>;
+        @RenderPropertyEdit(property)
+    </MudVirtualize>;
     }
 
     RenderFragment RenderPropertyEdit(ObjectEditPropertyMeta property)
     {
-        return 
-            @<MudExPropertyEdit @ref="@Ref" DisableFieldFallback="@DisableFieldFallback"
-                                RenderKey="@RenderKey"
-                                    StoreAndReadValueFromUrl="@StoreAndReadValueFromUrl"
-                                   ShowPathAsTitle="@ShowPathAsTitleForEachProperty"
-                                   IsLoading="@(IsLoading || IsInternalLoading)"
-                                   AutoSkeletonOnLoad="@AutoSkeletonOnLoad"
-                                   PropertyValueChanged="@OnPropertyChange"
-                                   ActiveFilterTerm="@Filter"
-                                   Localizer="@LocalizerToUse"
-                                   PropertyResetSettings="@DefaultPropertyResetSettings"
-                                   PropertyMeta="@property">
-             </MudExPropertyEdit>;
+        return
+    @<MudExPropertyEdit @ref="@Ref" DisableFieldFallback="@DisableFieldFallback"
+                            RenderKey="@RenderKey"
+                            StoreAndReadValueFromUrl="@StoreAndReadValueFromUrl"
+                            ShowPathAsTitle="@ShowPathAsTitleForEachProperty"
+                            IsLoading="@(IsLoading || IsInternalLoading)"
+                            AutoSkeletonOnLoad="@AutoSkeletonOnLoad"
+                            PropertyValueChanged="@OnPropertyChange"
+                            ActiveFilterTerm="@Filter"
+                            Localizer="@LocalizerToUse"
+                            PropertyResetSettings="@DefaultPropertyResetSettings"
+                            PropertyMeta="@property">
+    </MudExPropertyEdit>;
     }
 }

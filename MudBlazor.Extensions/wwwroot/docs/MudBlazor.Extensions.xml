@@ -6440,6 +6440,11 @@
             The position of the scroll to top button.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.AllowSearch">
+            <summary>
+            Whether search functionality is enabled.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.AllowExport">
             <summary>
             Whether export functionality is enabled.

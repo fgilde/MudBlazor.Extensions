@@ -51,13 +51,12 @@
 {
     protected RenderFragment CodeView()
     {
-        @if (IsRendered)
-        {
-            return 
-                @<div style="@CodeViewStylename" class="@CodeViewClassname">
-                 <MudMarkdown CodeBlockTheme="@Theme" Value="@(_markdownCode)"></MudMarkdown>
-                </div>;
-        }
-        return @<p></p>;
+        return 
+            @<div style="@CodeViewStylename" class="@CodeViewClassname">
+                @if (_jsReady)
+                {
+                    <MudMarkdown CodeBlockTheme="@Theme" Value="@(_markdownCode)"></MudMarkdown>
+                }
+            </div>;
     }
 }

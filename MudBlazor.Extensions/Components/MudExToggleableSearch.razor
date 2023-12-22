@@ -47,5 +47,7 @@
 }
 @if (FilterMode == PropertyFilterMode.Toggleable)
 {
-    <MudIconButton Icon="@SearchIcon" Color="@(!HasSearchActive ? SearchButtonColor : Color.Warning)" OnClick="@(ToggleSearchBox)" />
+    <MudTooltip Text="@TryLocalize("Search")">
+        <MudIconButton Icon="@SearchIcon" Color="@(!HasSearchActive ? SearchButtonColor : Color.Warning)" OnClick="@(ToggleSearchBox)" />
+    </MudTooltip>
 }

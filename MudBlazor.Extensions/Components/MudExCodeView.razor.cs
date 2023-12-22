@@ -31,6 +31,7 @@ public partial class MudExCodeView
     private string _markdownCode;
     private string _code;
     private bool _isExpanded;
+    private bool _jsReady;
 
     protected string Classname =>
         new MudExCssBuilder("mud-ex-code-view")
@@ -155,7 +156,7 @@ public partial class MudExCodeView
     /// Set to true to render also the given child content otherwise only code is generated for
     /// </summary>
     [Parameter] public bool RenderChildContent { get; set; }
-    
+
     [Parameter]
     public string Code
     {
@@ -185,13 +186,11 @@ public partial class MudExCodeView
         if (firstRender)
         {
             _isExpanded = CodeIsExpanded;
-            await JsRuntime.LoadFilesAsync(
-                "./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js",
-                "./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css"
-            );
-            await Task.Delay(800);
+            await JsRuntime.LoadMudMarkdownAsync();
+            _jsReady = true;
             if (ChildContent != null && string.IsNullOrWhiteSpace(Code))
                 Code = FormatHtml(CodeFromFragment(ChildContent));
+            await InvokeAsync(StateHasChanged);
         }
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -247,21 +246,21 @@ public partial class MudExCodeView
             .Where(p => ObjectEditMeta.IsAllowedAsPropertyToEdit(p) && ObjectEditMeta.IsAllowedAsPropertyToEditOnAComponent<TComponent>(p));
 
         var props = properties.ToDictionary(info => info.Name, info => info.GetValue(componentInstance))
-            .Where(pair => ComponentRenderHelper.IsValidParameter(typeof(TComponent), pair.Key, pair.Value) 
-                           && pair.Value != null 
+            .Where(pair => ComponentRenderHelper.IsValidParameter(typeof(TComponent), pair.Key, pair.Value)
+                           && pair.Value != null
                            && pair.Value?.GetType() != typeof(object));
 
-        var parameterString = string.Join("\n", 
-            props.Select(p=> new KeyValuePair<string, string>(p.Key, MarkupValue(p.Value, p.Key)))
+        var parameterString = string.Join("\n",
+            props.Select(p => new KeyValuePair<string, string>(p.Key, MarkupValue(p.Value, p.Key)))
                 .Where(p => !string.IsNullOrWhiteSpace(p.Value))
                 .Select(p => $"{p.Key}=\"{p.Value}\""));
 
         var tags = GetComponentTagNames(componentName);
         var markup = $"<{tags.StartTag}\n{parameterString}\n></{tags.EndTag}>";
 
-        if (!string.IsNullOrWhiteSpace(comment))        
+        if (!string.IsNullOrWhiteSpace(comment))
             markup = $"<!-- {comment} -->\n{markup}";
-        
+
         return markup;
     }
 
@@ -367,8 +366,8 @@ public partial class MudExCodeView
         while (html.Contains(">>"))
         {
             html = html.Replace(">>", ">");
-        }   
-        
+        }
+
         string pattern = @"(\<[^/][^>]*\>)|(\<\/[^>]*\>)";
         string replacement = "$1\r\n$2";
 

@@ -150,6 +150,11 @@ public partial class MudExObjectEdit<T>
     [Parameter] public DialogPosition ScrollToTopPosition { get; set; } = DialogPosition.BottomRight;
 
     /// <summary>
+    /// Whether search functionality is enabled.
+    /// </summary>
+    [Parameter] public bool AllowSearch { get; set; } = true;
+
+    /// <summary>
     /// Whether export functionality is enabled.
     /// </summary>
     [Parameter] public bool AllowExport { get; set; }
