@@ -662,7 +662,8 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
                
                 if (NeedsValueUpdateForNonMultiSelection()) // No binding so we need to update the value manually
                 {
-                    Value = _selectedValues.LastOrDefault();
+                    SetValueAsync(_selectedValues.LastOrDefault()).AndForget();
+                    //Value = _selectedValues.LastOrDefault();
                 }
 
                 ValueChanged.InvokeAsync(Value);
