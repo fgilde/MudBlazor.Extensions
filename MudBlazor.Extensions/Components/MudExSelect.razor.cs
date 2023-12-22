@@ -30,7 +30,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     /// </summary>
     public virtual string ItemNameRender(T item)
     {        
-        var res = ToStringFunc != null ? ToStringFunc(item) : Converter.Set(item);
+        var res = ToStringFunc != null && item != null ? ToStringFunc(item) : Converter.Set(item);
         if (!string.IsNullOrWhiteSpace(res) && !string.IsNullOrWhiteSpace(LocalizerPattern))
         {
             return LocalizerToUse != null ? LocalizerToUse[string.Format(LocalizerPattern, item)] : string.Format(LocalizerPattern, res);
@@ -659,12 +659,27 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
                 _selectedValues = new HashSet<T>(set);
                 OnBeforeSelectedChanged(_selectedValues);
                 SelectedValuesChanged.InvokeAsync(new HashSet<T>(SelectedValues));
+               
+                if (NeedsValueUpdateForNonMultiSelection()) // No binding so we need to update the value manually
+                {
+                    Value = _selectedValues.LastOrDefault();
+                }
+
                 ValueChanged.InvokeAsync(Value);
                 UpdateTextPropertyAsync(false).AndForget();
                 _selectedValuesSetterStarted = false;
                 Task.Delay(30).ContinueWith(_ => BeginValidateAsync());
             }
         }
+    }
+
+    /// <summary>
+    /// Setting value extra can cause an dead loop on object edit so we should only set when necessary
+    /// </summary>
+    protected virtual bool NeedsValueUpdateForNonMultiSelection()
+    {
+        var comparer = Comparer ??= EqualityComparer<T>.Default;
+        return !MultiSelection && !ValueChanged.HasDelegate && !comparer.Equals(Value, SelectedValues.LastOrDefault());
     }
 
     /// <summary>

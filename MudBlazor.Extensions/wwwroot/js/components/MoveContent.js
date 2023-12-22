@@ -20,8 +20,33 @@
     move(selector, mode, position, queryOwner, useParent) {
         this.mode = mode;
         this.position = position;
-        this.selector = selector;
+        this.selector = Array.isArray(selector) ? selector : [selector];
 
+
+        queryOwner = this.getOwner(queryOwner, useParent);
+        
+        for (let sel of this.selector) {
+            this.elFromSelector = queryOwner.querySelector(sel);
+            if (this.elFromSelector) break; // Stop if a match is found
+        }
+
+        this.dotnet.invokeMethodAsync('ElementFoundChanged', !!this.elFromSelector);
+
+        var el = this.getSourceAndTarget(mode);
+        if (this.elFromSelector && el.source && el.target && !el.target.contains(el.source) && !el.source.contains(el.target)) {
+            if (position === 'BeforeBegin') {
+                el.target.insertBefore(el.source, el.target.firstChild);
+            } else if (position === 'AfterBegin') { 
+                el.target.insertBefore(el.source, el.target.firstChild.nextSibling);
+            } else if (position === 'BeforeEnd') {
+                el.target.insertBefore(el.source, el.target.lastChild);
+            } else if (position === 'AfterEnd') {
+                el.target.appendChild(el.source);
+            }
+        }
+    }
+
+    getOwner(queryOwner, useParent) {
         if ((!queryOwner || !queryOwner.querySelector) && useParent && this.elementRef) {
             queryOwner = this.elementRef.parentElement;
         }
@@ -38,20 +63,7 @@
                 }
             }
         }
-        this.elFromSelector = queryOwner.querySelector(selector);
-        var el = this.getSourceAndTarget(mode);
-
-        if (this.elFromSelector && el.source && el.target && !el.target.contains(el.source) && !el.source.contains(el.target)) {
-            if (position === 'BeforeBegin') {
-                el.target.insertBefore(el.source, el.target.firstChild);
-            } else if (position === 'AfterBegin') { 
-                el.target.insertBefore(el.source, el.target.firstChild.nextSibling);
-            } else if (position === 'BeforeEnd') {
-                el.target.insertBefore(el.source, el.target.lastChild);
-            } else if (position === 'AfterEnd') {
-                el.target.appendChild(el.source);
-            }
-        }
+        return queryOwner;
     }
 
     dispose() {

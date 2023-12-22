@@ -2,12 +2,15 @@
 
 <div style="@Style" class="@Class" @ref="ElementReference">
     @ChildContent
-    @if (ElementFound)
+    @if (ElementFound.HasValue)
     {
-        @Found
-    }
-    else
-    {
-        @NotFound
+        @if (ElementFound.Value)
+        {
+            @Found
+        }
+        else
+        {
+            @NotFound
+        }
     }
 </div>

@@ -33,11 +33,12 @@ public partial class MoveContent
     public RenderFragment NotFound { get; set; }
 
     /// <summary>
-    /// Element selector to move content to
+    /// Element selector's to move content to.
+    /// If you set an array of selectors the first found element will be used.
     /// </summary>
     [Parameter]
     [SafeCategory("Appearance")]
-    public string ElementSelector { get; set; }
+    public OneOf<string, string[]> ElementSelector { get; set; }
 
     /// <summary>
     /// Mode how to move the content you can MoveToSelector or move from MoveFromSelector
@@ -71,20 +72,34 @@ public partial class MoveContent
     /// <summary>
     /// Returns true if element is found
     /// </summary>
-    public bool ElementFound { get; private set; }
+    public bool? ElementFound { get; private set; }
 
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        ElementFound = await JsRuntime.InvokeAsync<object>("document.querySelector", ElementSelector) != null;
+       // ElementFound = await JsRuntime.InvokeAsync<object>("document.querySelector", ElementSelector) != null;
+    }
+
+    /// <summary>
+    /// Invoked when the element is found or not found
+    /// </summary>
+    [JSInvokable]
+    public void ElementFoundChanged(bool found)
+    {
+        ElementFound = found;
+        InvokeAsync(StateHasChanged);
     }
 
     /// <inheritdoc />
     public override async Task ImportModuleAndCreateJsAsync()
     {
         await base.ImportModuleAndCreateJsAsync();
-        await JsReference.InvokeVoidAsync("move", ElementSelector, Mode.ToString(), Position.ToString(), QueryOwner, QueryFromParent.IsT0 ? QueryFromParent.AsT0 : QueryFromParent.AsT1 );
+        await JsReference.InvokeVoidAsync("move", ElementSelector.IsT0 ? ElementSelector.AsT0 : ElementSelector.AsT1, 
+            Mode.ToString(), 
+            Position.ToString(), 
+            QueryOwner, 
+            QueryFromParent.IsT0 ? QueryFromParent.AsT0 : QueryFromParent.AsT1 );
     }
 
 }

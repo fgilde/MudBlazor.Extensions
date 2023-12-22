@@ -64,4 +64,9 @@ public partial class MudExFontSelect
             ValuePresenter = Options.ValuePresenter.Chip;
         _initialized = true;
     }
+
+    protected override bool NeedsValueUpdateForNonMultiSelection()
+    {
+        return false;
+    }
 }

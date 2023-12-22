@@ -16,17 +16,12 @@ else
 {
     RenderFragment Render()
     {
-        return @<MoveContent QueryFromParent="@(For is null ? _parentOwnerCountForUsingAsChildContent : false)" Position="@Position" ElementSelector="@(Select(".mud-input-adornment"))">
+        return @<MoveContent Style="display: flex; align-items: center;" QueryFromParent="@(For is null ? _parentOwnerCountForUsingAsChildContent : false)" Position="@Position" ElementSelector="@Selectors">
         <Found>
             @ChildContent
         </Found>
         <NotFound>
-            <MoveContent QueryFromParent="@(For is null ? _parentOwnerCountForUsingAsChildContent: false)"
-                         Style="display: flex; align-items: center;"
-                         Position="@Position"
-                         ElementSelector="@(Select(".mud-input"))">
-                @ChildContent
-            </MoveContent>
+            @ChildContent
         </NotFound>
     </MoveContent>;
     }

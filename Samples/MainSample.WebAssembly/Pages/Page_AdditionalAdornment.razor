@@ -2,12 +2,36 @@
 @using BlazorJS
 @using Microsoft.AspNetCore.Components.Rendering
 @using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Options
 @using Nextended.Core.Extensions
 @attribute [DemoNew(Name = "MudExAdditionalAdornment", Icon = Icons.Material.Outlined.PlusOne, Documentation = "Shows how you can use MudExAdditionalAdornment to ad as many adornments to any MudInput", ForComponentType = typeof(MudExAdditionalAdornment))]
 
 <DemoComponent PageType="@GetType()">
     
-    <MudExpansionPanel Class="mb-10" DisableGutters="true" Text="Preferred way on MudExTextField">
+    <MudText>With the <strong>MudExAdditionalAdornment</strong> component you can have as many adornments in any MudInput based input control like this.</MudText>
+
+    <MudExAdditionalAdornment Position="MoveContentPosition.BeforeEnd">
+        <For>
+            <MudExSelect MultiSelection="false"
+                         SelectAll="true"
+                         GroupBy="@(x => x.State)"
+                         PopoverAnimation="AnimationType.Pulse"
+                         ToStringFunc="@(x => x.Name + " - " + x.PostalCode)"
+                         ItemCollection="@Page_MudExSelect.CitySamples" SearchBox="true" T="Page_MudExSelect.City" Label="Cities you want to live" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined">
+                <ItemTemplate>
+                    <MudAlert>@context?.Name</MudAlert>
+                </ItemTemplate>
+            </MudExSelect>
+        </For>
+        <ChildContent>
+            @DemoContent
+        </ChildContent>
+    </MudExAdditionalAdornment>
+    
+    <div class="mt-2"></div>
+    <MudExDivider Color="MudExColor.Primary"></MudExDivider>
+
+    <MudExpansionPanel Class="mb-5 mt-2" IsInitiallyExpanded="false" DisableGutters="true" Text="Preferred way on MudExTextField">
         <TitleContent>
             <div class="d-flex">
                 <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
@@ -36,7 +60,7 @@
         </ChildContent>
     </MudExpansionPanel>
     
-    <MudExpansionPanel Class="mb-10" DisableGutters="true" Text="Use MudExAdditionalAdornment ad ChildContent">
+    <MudExpansionPanel Class="mb-5" DisableGutters="true" Text="Use MudExAdditionalAdornment ad ChildContent">
         <TitleContent>
             <div class="d-flex">
                 <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
@@ -63,13 +87,13 @@
                 </MudCardContent>
             </MudCard>
         </ChildContent>
-    </MudExpansionPanel>
+    </MudExpansionPanel> 
 
 </DemoComponent>
 
 @code
 {
-    RenderFragment DemoAsChild(MoveContentPosition additionalAdornmentPosition = MoveContentPosition.BeforeEnd, Adornment textFieldDemoAdornment = Adornment.None)
+    RenderFragment DemoAsChild(MoveContentPosition additionalAdornmentPosition = MoveContentPosition.AfterEnd, Adornment textFieldDemoAdornment = Adornment.None)
     {
         return @<div style=@($"margin-bottom: 5px; border-bottom: 1px solid {MudExColor.Primary.ToCssStringValue()}")>
                    <MudText Typo="Typo.body2">@Title(additionalAdornmentPosition, textFieldDemoAdornment)</MudText>
@@ -83,7 +107,7 @@
                </div>;
     }
 
-    RenderFragment Demo(MoveContentPosition additionalAdornmentPosition = MoveContentPosition.BeforeEnd, Adornment textFieldDemoAdornment = Adornment.None )
+    RenderFragment Demo(MoveContentPosition additionalAdornmentPosition = MoveContentPosition.AfterEnd, Adornment textFieldDemoAdornment = Adornment.None )
     {
         return @<div style=@($"margin-bottom: 5px; border-bottom: 1px solid {MudExColor.Primary.ToCssStringValue()}")>
                    <MudText Typo="Typo.body2">@Title(additionalAdornmentPosition, textFieldDemoAdornment)</MudText>

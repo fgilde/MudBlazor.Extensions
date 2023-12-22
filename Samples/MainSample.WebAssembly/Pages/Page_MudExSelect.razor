@@ -51,7 +51,9 @@
         public override string ToString() => $"{Name}";
     }
 
-    private City[] _samples = {
+    private City[] _samples = CitySamples;
+
+    public static City[] CitySamples =  {
         new () { Name = "New York", PostalCode = "10001", State = "New York" },
         new () { Name = "Los Angeles", PostalCode = "90001", State = "California" },
         new () { Name = "Chicago", PostalCode = "60601", State = "Illinois" },
@@ -69,7 +71,7 @@
         new () { Name = "Calgary", PostalCode = "T1X 0L3", State = "Alberta" },
         new () { Name = "Ottawa", PostalCode = "K1A 0A1", State = "Ontario" },
         new () { Name = "Edmonton", PostalCode = "T5A 0A1", State = "Alberta" },
-        new () { Name = "London", PostalCode = "SW1A 1AA", State = "England" }, 
+        new () { Name = "London", PostalCode = "SW1A 1AA", State = "England" },
         new () { Name = "Manchester", PostalCode = "M1 1AE", State = "England" },
         new () { Name = "Birmingham", PostalCode = "B1 1BD", State = "England" },
         new () { Name = "Paris", PostalCode = "75001", State = "Île-de-France" },
@@ -77,7 +79,7 @@
         new () { Name = "Lyon", PostalCode = "69001", State = "Auvergne-Rhône-Alpes" },
         new () { Name = "Tokyo", PostalCode = "100-0001", State = "Tokyo" },
         new () { Name = "Yokohama", PostalCode = "220-0001", State = "Kanagawa" },
-        new () { Name = "Osaka", PostalCode = "530-0001", State = "Osaka" }                
+        new () { Name = "Osaka", PostalCode = "530-0001", State = "Osaka" }
 };
 
 }

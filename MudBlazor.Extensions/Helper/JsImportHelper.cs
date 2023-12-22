@@ -10,7 +10,7 @@ namespace MudBlazor.Extensions.Helper
     /// </summary>
     public static class JsImportHelper
     {
-        internal static bool UseMinified => true;
+        internal static bool UseMinified => false;
         private static string min => UseMinified ? ".min" : string.Empty;
 
         internal static string BasePath = "./_content/";

@@ -539,7 +539,8 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MoveContent.ElementSelector">
             <summary>
-            Element selector to move content to
+            Element selector's to move content to.
+            If you set an array of selectors the first found element will be used.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MoveContent.Mode">
@@ -570,6 +571,11 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MoveContent.OnInitializedAsync">
             <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MoveContent.ElementFoundChanged(System.Boolean)">
+            <summary>
+            Invoked when the element is found or not found
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MoveContent.ImportModuleAndCreateJsAsync">
             <inheritdoc />
@@ -4083,6 +4089,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SelectedValues">
             <summary>
             Set of selected values. If MultiSelection is false it will only ever contain a single value. This property is two-way bindable.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.NeedsValueUpdateForNonMultiSelection">
+            <summary>
+            Setting value extra can cause an dead loop on object edit so we should only set when necessary
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.OnBeforeSelectedChanged(System.Collections.Generic.IEnumerable{`0})">
