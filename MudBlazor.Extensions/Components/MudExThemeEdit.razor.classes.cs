@@ -1,5 +1,6 @@
 ﻿using Nextended.Core.Extensions;
 using System.Linq.Expressions;
+using System.Text.Json.Serialization;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -32,6 +33,8 @@ public class ThemePreset<TTheme> where TTheme : MudTheme
     /// <summary>
     /// Creates an instance
     /// </summary>
+    [JsonConstructor]
+    [Newtonsoft.Json.JsonConstructor]
     public ThemePreset()
     {}
 

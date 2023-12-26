@@ -1,4 +1,5 @@
-﻿using MudBlazor;
+﻿using System.Text.Json.Serialization;
+using MudBlazor;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Extensions;
@@ -10,6 +11,12 @@ public class ClientTheme : MudTheme
     public bool ShowLogoInDrawer { get; set; } = true;
 
     #region Statics
+
+    [JsonConstructor]
+    [Newtonsoft.Json.JsonConstructor]
+    public ClientTheme()
+    {
+    }
 
     #region Default Typography and Layout
 
@@ -160,6 +167,7 @@ public class ClientTheme : MudTheme
         try
         {
             var fromStorage = await storageService.GetAllThemeItemsAsync<string>();
+            Console.WriteLine($"Loaded {fromStorage.Length} themes from storage");
             foreach (var item in fromStorage.Where(i => !string.IsNullOrWhiteSpace(i.Value)))
             {
                 var theme = MudExThemeHelper.FromJson<ClientTheme>(item.Value);
