@@ -157,11 +157,18 @@ public class ClientTheme : MudTheme
     public static async Task<ICollection<ThemePreset<ClientTheme>>> GetAllThemes(LocalStorageService storageService)
     {
         var result = All;
-        var fromStorage = await storageService.GetAllThemeItemsAsync<string>();
-        foreach (var item in fromStorage)
+        try
         {
-            var theme = MudExThemeHelper.FromJson<ClientTheme>(item.Value);
-            result.Add(new ThemePreset<ClientTheme>(item.Key.Split("-").Last(), theme));
+            var fromStorage = await storageService.GetAllThemeItemsAsync<string>();
+            foreach (var item in fromStorage.Where(i => !string.IsNullOrWhiteSpace(i.Value)))
+            {
+                var theme = MudExThemeHelper.FromJson<ClientTheme>(item.Value);
+                result.Add(new ThemePreset<ClientTheme>(item.Key.Split("-").Last(), theme));
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);            
         }
         return result;
     }

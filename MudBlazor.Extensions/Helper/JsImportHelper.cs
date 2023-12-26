@@ -96,29 +96,36 @@ namespace MudBlazor.Extensions.Helper
 
         private static IJSInProcessRuntime GetJsRuntime()
         {
-            const string defaultJsRuntimeTypeName = "DefaultWebAssemblyJSRuntime";
-            const string instanceFieldName = "Instance";
+            try
+            {
+                const string defaultJsRuntimeTypeName = "DefaultWebAssemblyJSRuntime";
+                const string instanceFieldName = "Instance";
 
-            Assembly assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a?.FullName?.Contains("Microsoft.AspNetCore.Components.WebAssembly") == true);
-            if (assembly == null)
-                return null;
+                Assembly assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a?.FullName?.Contains("Microsoft.AspNetCore.Components.WebAssembly") == true);
+                if (assembly == null)
+                    return null;
 
-            var defaultJsRuntimeType = assembly
-                .GetTypes()
-                .SingleOrDefault(t => t.Name == defaultJsRuntimeTypeName);
+                var defaultJsRuntimeType = assembly
+                    .GetTypes()
+                    .SingleOrDefault(t => t.Name == defaultJsRuntimeTypeName);
 
-            if (defaultJsRuntimeType == null)
+                if (defaultJsRuntimeType == null)
+                {
+                    return null;
+                }
+
+                var instanceField = defaultJsRuntimeType.GetField(instanceFieldName, BindingFlags.Static | BindingFlags.NonPublic);
+                if (instanceField == null)
+                {
+                    return null;
+                }
+
+                return (IJSInProcessRuntime)instanceField.GetValue(obj: null);
+            }
+            catch (Exception e)
             {
                 return null;
             }
-
-            var instanceField = defaultJsRuntimeType.GetField(instanceFieldName, BindingFlags.Static | BindingFlags.NonPublic);
-            if (instanceField == null)
-            {
-                return null;
-            }
-
-            return (IJSInProcessRuntime)instanceField.GetValue(obj: null);
         }
     }
 }
