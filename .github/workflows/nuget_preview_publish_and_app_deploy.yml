@@ -10,7 +10,7 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: SampleApplication/publish
   AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.MudEx_016e }}
   CONFIGURATION: Release
-  DOTNET_CORE_VERSION: 7.0.x
+  DOTNET_CORE_VERSION: 8.0.x
   WORKING_DIRECTORY: Samples/MainSample.WebAssembly
 
 jobs:
@@ -34,7 +34,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '7.0.x'
+        dotnet-version: '8.0.x'
 
     - name: Restore dependencies
       run: dotnet restore ./MudBlazor.Extensions/MudBlazor.Extensions.csproj
