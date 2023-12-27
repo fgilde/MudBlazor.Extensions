@@ -387,6 +387,8 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2023-11-03 13:23:17 -->
+ - 1.7.80 > Add target for .net8
+ - 1.7.80 > Update package to MudBlazor 6.11.2
  - 1.7.80 > New Component [MudExAdditionalAdornment](https://www.mudex.org/additional-adornments) to add as many additional adornments as you want to any MudInput
  - 1.7.79 > Allow inherit from MudExJsRequiredBaseComponent for other projects
  - 1.7.79 > Hide dropdown icon if readonly in MudExSelect
