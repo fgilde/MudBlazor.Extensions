@@ -236,6 +236,7 @@ namespace MudBlazor.Extensions
 
         internal static async Task PrepareOptionsBeforeShow(DialogOptionsEx options)
         {
+            options ??= DefaultOptions();
             if (options == null)
                 return;
             if (!options.Modal)
