@@ -224,7 +224,7 @@ namespace MudBlazor.Extensions
 
         internal static async Task<IDialogReference> ShowAndInject(this IDialogService dialogService, Type type, string title, DialogOptionsEx options, DialogParameters parameters = null)
         {
-            options = options?.CloneOptions();
+            options = options?.CloneOptions() ?? DefaultOptions();
             await PrepareOptionsBeforeShow(options);
             if (dialogService is IMudExDialogService service && options != null)
             {
@@ -236,7 +236,6 @@ namespace MudBlazor.Extensions
 
         internal static async Task PrepareOptionsBeforeShow(DialogOptionsEx options)
         {
-            options ??= DefaultOptions();
             if (options == null)
                 return;
             if (!options.Modal)
