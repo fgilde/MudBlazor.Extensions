@@ -52,7 +52,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// <summary>
     /// Item render template
     /// </summary>
-    [Parameter] public RenderFragment<T> ItemTemplate { get; set; }
+    [Parameter] public RenderFragment<(T Item, MudExUploadEdit<T> UploadEdit)> ItemTemplate { get; set; }
 
     /// <summary>
     /// Dialog options for external file dialog
@@ -1142,7 +1142,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     private MudExColor GetIconColor(T request) => ColorizeIcons ? BrowserFileExt.GetPreferredColor(request.ContentType) : Color.Inherit;
 
 
-    private async Task Preview(T request)
+    public async Task Preview(T request)
     {
         if (request.Data is not { Length: not 0 } && string.IsNullOrWhiteSpace(request.Url))
         {

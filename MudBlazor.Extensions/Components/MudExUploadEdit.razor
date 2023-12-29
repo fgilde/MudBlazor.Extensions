@@ -202,7 +202,7 @@
         var loadingState = isLoading ? _loadings[request] : default;
 
         if (ItemTemplate != null)
-            return ItemTemplate(request);
+            return ItemTemplate((request, this));
         return @<MudAlert NoIcon="true"
                               Class="@($"mud-alert-message-w-100 {(SelectItemsMode == SelectItemsMode.ShowPreviewOnClick ? "mud-ex-alert-link" : "")}")"
                               Severity="@(IsSelected(request) ? Severity.Warning : (_withErrors.Contains(request) ? Severity.Error : Severity.Normal))"
