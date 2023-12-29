@@ -145,8 +145,8 @@ public static class RenderDataDefaults
             {nameof(MudDatePicker.Placeholder), dateFormat},
             {nameof(MudDatePicker.Culture), currentCulture}
         };
-        if (withPattern)
-            res.Add(nameof(MudDatePicker.Mask), new DateMask(dateFormat));
+        //if (withPattern) // TODO: Currently not supported because of value is not set on pick if enabled
+        //    res.Add(nameof(MudDatePicker.Mask), new DateMask(dateFormat));
         return res;
     }
 

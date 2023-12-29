@@ -1270,6 +1270,16 @@
             The inherited render
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCultureSelect.CultureHandling">
+            <summary>
+            Set how to handle neutral cultures
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCultureSelect.IgnoreInvariant">
+            <summary>
+            Set to true to ignore invariant culture
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExCultureSelect.GetAvailableItemsAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
@@ -5786,6 +5796,26 @@
             </summary>
             <param name="request"></param>
             <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Select(`0,Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
+            <summary>
+            Selects the given request.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.GetIcon(`0)">
+            <summary>
+            returns the recommended icon for the given request
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.GetIconColor(`0)">
+            <summary>
+            returns the color for the icon
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Preview(`0)">
+            <summary>
+            Previews the given request.
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.ResolvePreviewUrlAsync(`0)">
             <summary>
