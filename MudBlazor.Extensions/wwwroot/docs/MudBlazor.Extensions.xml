@@ -10090,6 +10090,11 @@
             Specifies the overflow property using a CSS string value, if the 'when' condition is true.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithoutOverflow(System.Boolean)">
+            <summary>
+            Specifies a hidden overflow if the 'when' condition is true.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithCursor(System.String,System.Boolean)">
             <summary>
             Specifies the cursor property using a CSS string value, if the 'when' condition is true.

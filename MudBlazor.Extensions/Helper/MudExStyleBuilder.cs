@@ -657,6 +657,11 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithOverflow(Overflow overflow, bool when = true) => WithOverflow(overflow.GetDescription(), when);
 
     /// <summary>
+    /// Specifies a hidden overflow if the 'when' condition is true.
+    /// </summary>
+    public MudExStyleBuilder WithoutOverflow(bool when = true) => WithOverflow(Overflow.Hidden, when);
+
+    /// <summary>
     /// Specifies the cursor property using a CSS string value, if the 'when' condition is true.
     /// </summary>
     public MudExStyleBuilder WithCursor(string cursor, bool when = true) => With("cursor", cursor, when);

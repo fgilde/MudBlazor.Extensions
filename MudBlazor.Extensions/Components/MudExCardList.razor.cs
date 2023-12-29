@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Utilities;
 using Nextended.Core.Extensions;
@@ -133,6 +134,7 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
         foreach (var mode in AllAppliedHoverModes)
             res.AddClass($"mud-ex-card-list-{mode.ToString().ToLower()}");
 
+        res.AddClass(Class);
         return res.Build();
     }
 
@@ -142,11 +144,12 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
     /// <returns></returns>
     public string GetStyle()
     {
-        return new StyleBuilder()
-            .AddStyle($"--mud-ex-card-bulb-size", $"{GetBulbSize()}{LightBulbSizeUnit.GetDescription()}")
-            .AddStyle($"--mud-ex-card-list-bg-color", $"{BackgroundColor.ToCssStringValue()}")
-            .AddStyle($"--mud-ex-card-list-hover-color", $"{HoverColor.ToCssStringValue()}")
-            .AddStyle($"justify-content", Justify.GetDescription())
+        return MudExStyleBuilder.Default
+            .With($"--mud-ex-card-bulb-size", $"{GetBulbSize()}{LightBulbSizeUnit.GetDescription()}")
+            .With($"--mud-ex-card-list-bg-color", $"{BackgroundColor.ToCssStringValue()}")
+            .With($"--mud-ex-card-list-hover-color", $"{HoverColor.ToCssStringValue()}")
+            .With($"justify-content", Justify.GetDescription())
+            .AddRaw(Style)
             .Build();
     }
 
