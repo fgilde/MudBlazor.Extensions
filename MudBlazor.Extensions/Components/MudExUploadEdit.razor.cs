@@ -1109,7 +1109,10 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// <returns></returns>
     public bool IsSelected(T request) => SelectedRequests?.Contains(request) == true;
 
-    private async Task Select(T request, MouseEventArgs args)
+    /// <summary>
+    /// Selects the given request.
+    /// </summary>
+    public async Task Select(T request, MouseEventArgs args)
     {
         if (SelectItemsMode == SelectItemsMode.ShowPreviewOnClick)
         {
@@ -1137,11 +1140,20 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         }
     }
 
-    private string GetIcon(T request) => BrowserFileExt.IconForFile(request);
+    /// <summary>
+    /// returns the recommended icon for the given request
+    /// </summary>
+    public string GetIcon(T request) => BrowserFileExt.IconForFile(request);
 
-    private MudExColor GetIconColor(T request) => ColorizeIcons ? BrowserFileExt.GetPreferredColor(request.ContentType) : Color.Inherit;
+    /// <summary>
+    /// returns the color for the icon
+    /// </summary>
+    public MudExColor GetIconColor(T request) => ColorizeIcons ? BrowserFileExt.GetPreferredColor(request.ContentType) : Color.Inherit;
 
 
+    /// <summary>
+    /// Previews the given request.
+    /// </summary>
     public async Task Preview(T request)
     {
         if (request.Data is not { Length: not 0 } && string.IsNullOrWhiteSpace(request.Url))
