@@ -17,7 +17,7 @@ public static class MudExSvg
     /// <summary>
     /// Removes the fill colors from an svg string
     /// </summary>
-    public static string RemoveFillColors(string svgContent) => new Regex("fill=\"[^\"]*\"").Replace(svgContent, "");
+    public static string RemoveFillColors(string svgContent) => Regex.Replace(new Regex("fill=\"[^\"]*\"").Replace(svgContent, ""), @"fill:[^;]+;?", string.Empty);
 
     /// <summary>
     /// Combines SVG icons horizontally
