@@ -238,6 +238,48 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder WithColor(Color color, bool when = true) => WithColor(color.CssVarDeclaration(), when);
 
+
+    /// <summary>
+    /// Adds a stroke property to the builder
+    /// </summary>
+    /// <param name="color">Value of the fill property</param>
+    /// <param name="when">If false, no property will be added to the builder</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
+    public MudExStyleBuilder WithStroke(string color, bool when = true) => With("stroke", color, when);
+
+    /// <summary>
+    /// Adds a stroke property to the builder
+    /// </summary>
+    /// <param name="color">Value of the MudExColor property</param>
+    /// <param name="when">If false, no property will be added to the builder</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
+    public MudExStyleBuilder WithStroke(MudExColor color, bool when = true) => WithStroke(color.ToCssStringValue(), when);
+
+    /// <summary>
+    /// Adds a stroke property to the builder
+    /// </summary>
+    /// <param name="color">Value of the MudColor property</param>
+    /// <param name="when">If false, no property will be add to the builder</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
+    public MudExStyleBuilder WithStroke(MudColor color, bool when = true) => WithStroke(color.ToString(), when);
+
+    /// <summary>
+    /// Adds a stroke property to the builder
+    /// </summary>
+    /// <param name="color">Value of the System.Drawing.Color property</param>
+    /// <param name="when">If false, no property will be added to the builder</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
+    public MudExStyleBuilder WithStroke(System.Drawing.Color color, bool when = true) => WithStroke(color.ToMudColor(), when);
+
+    /// <summary>
+    /// Adds a stroke property with a value of `var(--{color})` to the builder.
+    /// </summary>
+    /// <param name="color">Color variable name, without "--" prefix</param>
+    /// <param name="when">If false, no property will be added to the builder.</param>
+    /// <returns>This MudExStyleBuilder instance</returns>
+    public MudExStyleBuilder WithStroke(Color color, bool when = true) => WithStroke(color.CssVarDeclaration(), when);
+
+
     /// <summary>
     /// Adds a fill property to the builder
     /// </summary>
