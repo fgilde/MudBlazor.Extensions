@@ -9675,6 +9675,46 @@
             <param name="when">If false, no property will be added to the builder.</param>
             <returns>This MudExStyleBuilder instance</returns>
         </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithStroke(System.String,System.Boolean)">
+            <summary>
+            Adds a stroke property to the builder
+            </summary>
+            <param name="color">Value of the fill property</param>
+            <param name="when">If false, no property will be added to the builder</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithStroke(MudBlazor.Extensions.Core.MudExColor,System.Boolean)">
+            <summary>
+            Adds a stroke property to the builder
+            </summary>
+            <param name="color">Value of the MudExColor property</param>
+            <param name="when">If false, no property will be added to the builder</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithStroke(MudBlazor.Utilities.MudColor,System.Boolean)">
+            <summary>
+            Adds a stroke property to the builder
+            </summary>
+            <param name="color">Value of the MudColor property</param>
+            <param name="when">If false, no property will be add to the builder</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithStroke(System.Drawing.Color,System.Boolean)">
+            <summary>
+            Adds a stroke property to the builder
+            </summary>
+            <param name="color">Value of the System.Drawing.Color property</param>
+            <param name="when">If false, no property will be added to the builder</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithStroke(MudBlazor.Color,System.Boolean)">
+            <summary>
+            Adds a stroke property with a value of `var(--{color})` to the builder.
+            </summary>
+            <param name="color">Color variable name, without "--" prefix</param>
+            <param name="when">If false, no property will be added to the builder.</param>
+            <returns>This MudExStyleBuilder instance</returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFill(System.String,System.Boolean)">
             <summary>
             Adds a fill property to the builder
