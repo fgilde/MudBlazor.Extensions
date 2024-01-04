@@ -56,13 +56,13 @@ public static class RenderDataDefaults
 
 
         //RegisterDefault<bool, MudSwitch<bool>>(s => s.Checked, s => s.Color = MudBlazor.Color.Warning);
-        RegisterDefault<bool, MudExCheckBox<bool>>(s => s.Checked, box =>
+        RegisterDefault<bool, MudExCheckBox<bool>>(s => s.Value, box =>
         {
             box.TriState = false;
             box.UnCheckedColor = MudBlazor.Color.Default;
             box.Color = MudBlazor.Color.Warning;
         });
-        RegisterDefault<bool?, MudExCheckBox<bool?>>(s => s.Checked, box =>
+        RegisterDefault<bool?, MudExCheckBox<bool?>>(s => s.Value, box =>
         {
             box.TriState = true;
             box.UnCheckedColor = MudBlazor.Color.Default;
