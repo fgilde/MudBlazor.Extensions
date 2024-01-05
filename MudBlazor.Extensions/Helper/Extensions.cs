@@ -45,6 +45,13 @@ namespace MudBlazor.Extensions.Helper
             return !localizedValue.ResourceNotFound;
         }
 
+        public static string ToHtml(this (string tag, Dictionary<string, object> attributes) data)
+        {
+            string tag = data.tag;
+            var attributes = data.attributes;
+            var attributesString = string.Join(" ", attributes.Select(kv => $"{kv.Key}=\"{kv.Value}\""));
+            return $"<{tag} {attributesString}></{tag}>";
+        }
 
     }
 }

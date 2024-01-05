@@ -324,75 +324,84 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         return (type, fileComponent.WrapInMudExFileDisplayDiv, parameters);
     }
 
-    private (string tag, Dictionary<string, object> attributes) GetRenderInfos()
+    public static (string tag, Dictionary<string, object> attributes) GetFileRenderInfos(
+        string url, 
+        string fileName, string id, string contentType, bool viewDependsOnContentType = true, 
+        bool imageAsBackgroundImage = false, bool fallBackInIframe = false, bool sandBoxIframes = true, string onErrorMethod = "")
     {
-        if (ViewDependsOnContentType && !string.IsNullOrEmpty(MediaType))
+        var mediaType = contentType?.Split("/")?.FirstOrDefault()?.ToLower();
+        if (viewDependsOnContentType && !string.IsNullOrEmpty(mediaType))
         {
-            switch (MediaType)
+            switch (mediaType)
             {
                 case "image":
-                    return !ImageAsBackgroundImage
+                    return !imageAsBackgroundImage
                         ? ("img", new()
                         {
-                            {"data-id", _id},
-                            {"src", Url},
+                            {"data-id", id},
+                            {"src", url},
                             {"loading", "lazy"},
-                            {"alt", FileName},
-                            {"data-mimetype", ContentType}
+                            {"alt", fileName},
+                            {"data-mimetype", contentType}
                         })
                         : ("div", new()
                         {
-                            {"data-id", _id},
-                            {"style", $"background-image:url('{Url}')"},
+                            {"data-id", id},
+                            {"style", $"background-image:url('{url}')"},
                             {"class", "mud-ex-file-display-img-box"},
-                            {"src", Url},
+                            {"src", url},
                             {"loading", "lazy"},
-                            {"alt", FileName},
-                            {"data-mimetype", ContentType}
+                            {"alt", fileName},
+                            {"data-mimetype", contentType}
                         });
                 case "video":
                     return ("video", new()
                     {
-                        {"data-id", _id},
+                        {"data-id", id},
                         {"preload", "metadata"},
                         {"loading", "lazy"},
                         {"controls", true},
-                        {"src", Url},
-                        {"type", ContentType}
+                        {"src", url},
+                        {"type", contentType}
                     });
                 case "audio":
                     return ("audio", new()
                     {
-                        {"data-id", _id},
+                        {"data-id", id},
                         {"preload", "metadata"},
                         {"loading", "lazy"},
                         {"controls", true},
-                        {"src", Url},
-                        {"type", ContentType}
+                        {"src", url},
+                        {"type", contentType}
                     });
             }
         }
 
-        if (!FallBackInIframe) // wenn binary
+        if (!fallBackInIframe) // wenn binary
         {
             return ("object", new()
             {
-                {"data-id", _id},
-                {"data", Url},
-                {"onerror", $"{GetJsOnError()}"},
+                {"data-id", id},
+                {"data", url},
+                {"onerror", $"{onErrorMethod}"},
                 {"loading", "lazy"},
-                {"type", ContentType}
+                {"type", contentType}
             });
         }
 
         return ("iframe", new()
         {
-            {"data-id", _id},
-            {"src", Url},
-            {"onerror", $"{GetJsOnError()}"},
+            {"data-id", id},
+            {"src", url},
+            {"onerror", $"{onErrorMethod}"},
             {"loading", "lazy"},
-            {"sandbox", SandBoxIframes}
+            {"sandbox", sandBoxIframes}
         });
+    }
+
+    private (string tag, Dictionary<string, object> attributes) GetRenderInfos()
+    {
+        return GetFileRenderInfos(Url, FileName, _id, ContentType, ViewDependsOnContentType, ImageAsBackgroundImage, FallBackInIframe, SandBoxIframes, GetJsOnError());
     }
 
     private string GetJsOnError() =>
