@@ -1,4 +1,9 @@
 ## Change Log   
+ - 1.7.81 > Add support for style and class in MudExCardList
+ - 1.7.81 > Add Itemtemplate for MudExUploadEdit
+ - 1.7.81 > Add Param for MudExUploadEdit to allow custom title in preview dialog based on File
+ - 1.7.81 > Fix bug for Checkbox in MudExObjectEdit and ensure new param Value is used
+ - 1.7.81 > Update package to MudBlazor 6.12.0
  - 1.7.80 > Add target for .net8
  - 1.7.80 > Update package to MudBlazor 6.11.2
  - 1.7.80 > New Component [MudExAdditionalAdornment](https://www.mudex.org/additional-adornments) to add as many additional adornments as you want to any MudInput
