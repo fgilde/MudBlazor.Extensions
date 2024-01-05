@@ -5291,6 +5291,11 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.PreviewDialogTitleResolveFunc">
+            <summary>
+            The title text displayed in the external preview dialog.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.DropZoneTemplate">
             <summary>
             Template can used for the drop zone part if no item is added
@@ -5812,9 +5817,14 @@
             returns the color for the icon
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Preview(`0)">
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Preview(`0,System.String)">
             <summary>
             Previews the given request.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.GetTitleForFileDisplayDialog(`0)">
+            <summary>
+            Returns the title string for file display dialog
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.ResolvePreviewUrlAsync(`0)">

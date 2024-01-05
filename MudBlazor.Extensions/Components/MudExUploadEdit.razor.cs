@@ -29,6 +29,11 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
     #region Parameters
 
+    /// <summary>
+    /// The title text displayed in the external preview dialog.
+    /// </summary>
+    [Parameter] public Func<T, string> PreviewDialogTitleResolveFunc { get; set; } = r => r?.FileName;
+
     [Parameter]
     public bool PreviewInIframe { get; set; } = false;    
     
@@ -1154,7 +1159,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// <summary>
     /// Previews the given request.
     /// </summary>
-    public async Task Preview(T request)
+    public async Task Preview(T request, string dialogTitle = null)
     {
         if (request.Data is not { Length: not 0 } && string.IsNullOrWhiteSpace(request.Url))
         {
@@ -1179,15 +1184,20 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         if (MudExFileDisplayZip.CanHandleFileAsArchive(request.ContentType) && request.Data != null)
         {
             using var ms = new MemoryStream(request.Data);
-            var res = await DialogService.ShowFileDisplayDialog(ms, request.FileName, request.ContentType, null, parameters);
+            var res = await DialogService.ShowFileDisplayDialog(ms, dialogTitle ?? GetTitleForFileDisplayDialog(request), request.ContentType, null, parameters);
             await res.Result;
         }
         else
         {
             var dataUrl = await ResolvePreviewUrlAsync(request);
-            await DialogService.ShowFileDisplayDialog(dataUrl, request.FileName, request.ContentType, null, parameters);
+            await DialogService.ShowFileDisplayDialog(dataUrl, dialogTitle ?? GetTitleForFileDisplayDialog(request), request.ContentType, null, parameters);
         }
     }
+
+    /// <summary>
+    /// Returns the title string for file display dialog
+    /// </summary>
+    protected virtual string GetTitleForFileDisplayDialog(T request) => PreviewDialogTitleResolveFunc != null ? PreviewDialogTitleResolveFunc(request) : request?.FileName;
 
     /// <summary>
     /// resolves the preview data url

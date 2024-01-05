@@ -11,7 +11,7 @@
                 @for (int i = 0; i < itemCount; i++)
                 {
                     <MudCard>
-                        <MudCardHeader>
+                        <MudCardHeader Style="z-index: 5">
                             <CardHeaderContent>
                                 <MudText Typo="Typo.h6">Sample Headline</MudText>
                             </CardHeaderContent>
@@ -19,11 +19,11 @@
                                 <MudIconButton Icon="@Icons.Material.Filled.Camera" Color="Color.Default"/>
                             </CardHeaderActions>
                         </MudCardHeader>
-                        <MudCardContent>
+                        <MudCardContent Style="z-index: 5">
                             <MudText>Super sample Content text.</MudText>
                             <MudText Typo="Typo.body2">Subline descriptin for sample card.</MudText>
                         </MudCardContent>
-                        <MudCardActions>
+                        <MudCardActions Style="z-index: 5">
                             <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
                         </MudCardActions>
                     </MudCard>
