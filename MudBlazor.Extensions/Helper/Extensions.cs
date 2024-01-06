@@ -45,10 +45,15 @@ namespace MudBlazor.Extensions.Helper
             return !localizedValue.ResourceNotFound;
         }
 
-        public static string ToHtml(this (string tag, Dictionary<string, object> attributes) data)
+        public static string ToHtml(this (string tag, Dictionary<string, object> attributes) data, string style = "", string cls = "")
         {
             string tag = data.tag;
             var attributes = data.attributes;
+            if (!string.IsNullOrEmpty(style))
+                attributes["style"] = MudExStyleBuilder.CombineStyleStrings(style, attributes["style"]?.ToString() ?? string.Empty);
+            if (!string.IsNullOrEmpty(cls))
+                attributes["class"] = MudExCssBuilder.From(attributes["class"]?.ToString() ?? string.Empty).AddClass(cls).Build();
+
             var attributesString = string.Join(" ", attributes.Select(kv => $"{kv.Key}=\"{kv.Value}\""));
             return $"<{tag} {attributesString}></{tag}>";
         }

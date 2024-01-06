@@ -325,8 +325,9 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     }
 
     public static (string tag, Dictionary<string, object> attributes) GetFileRenderInfos(
+        string id,
         string url, 
-        string fileName, string id, string contentType, bool viewDependsOnContentType = true, 
+        string fileName, string contentType, bool viewDependsOnContentType = true, 
         bool imageAsBackgroundImage = false, bool fallBackInIframe = false, bool sandBoxIframes = true, string onErrorMethod = "")
     {
         var mediaType = contentType?.Split("/")?.FirstOrDefault()?.ToLower();
@@ -401,7 +402,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
     private (string tag, Dictionary<string, object> attributes) GetRenderInfos()
     {
-        return GetFileRenderInfos(Url, FileName, _id, ContentType, ViewDependsOnContentType, ImageAsBackgroundImage, FallBackInIframe, SandBoxIframes, GetJsOnError());
+        return GetFileRenderInfos(_id, Url, FileName, ContentType, ViewDependsOnContentType, ImageAsBackgroundImage, FallBackInIframe, SandBoxIframes, GetJsOnError());
     }
 
     private string GetJsOnError() =>
