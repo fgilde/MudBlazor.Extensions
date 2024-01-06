@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Components.Forms;
 using Nextended.Core;
 using Nextended.Core.Contracts;
-using System.Net.Mime;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using MudBlazor.Extensions.Attribute;
@@ -17,6 +15,20 @@ public class UploadableFile : IUploadableFile
 {
     private string _contentType;
     private string _extension;
+
+    public UploadableFile()
+    {}
+
+    public UploadableFile(IUploadableFile existing)
+    {
+        FileName = existing.FileName;
+        Extension = existing.Extension;
+        ContentType = existing.ContentType;
+        Data = existing.Data;
+        Url = existing.Url;
+        Path = existing.Path;
+        Size = existing.Size;
+    }
 
     /// <summary>
     /// Gets or sets the name of the file.
