@@ -50,9 +50,10 @@ namespace MudBlazor.Extensions.Helper
             string tag = data.tag;
             var attributes = data.attributes;
             if (!string.IsNullOrEmpty(style))
-                attributes["style"] = MudExStyleBuilder.CombineStyleStrings(style, attributes["style"]?.ToString() ?? string.Empty);
+                attributes["style"] = MudExStyleBuilder.CombineStyleStrings(style, attributes.TryGetValue("style", out var styleValue) ? styleValue?.ToString() ?? string.Empty : string.Empty);
+            
             if (!string.IsNullOrEmpty(cls))
-                attributes["class"] = MudExCssBuilder.From(attributes["class"]?.ToString() ?? string.Empty).AddClass(cls).Build();
+                attributes["class"] = MudExCssBuilder.From(attributes.TryGetValue("class", out var clsValue) ? clsValue?.ToString() ?? string.Empty : string.Empty).AddClass(cls).Build();
 
             var attributesString = string.Join(" ", attributes.Select(kv => $"{kv.Key}=\"{kv.Value}\""));
             return $"<{tag} {attributesString}></{tag}>";
