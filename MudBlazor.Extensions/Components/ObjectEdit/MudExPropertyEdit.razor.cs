@@ -113,9 +113,9 @@ public partial class MudExPropertyEdit
         if (firstRender && PropertyMeta != null)
         {
             _valueBackup = await GetBackupAsync(PropertyMeta.Value);
-            if (PropertyMeta.RenderData is RenderData renderData)
+            if (PropertyMeta is { RenderData: RenderData renderData })
             {
-                renderData.ComponentReference = Editor.Instance;
+                renderData.ComponentReference = Editor?.Instance;
             }
         }
 
