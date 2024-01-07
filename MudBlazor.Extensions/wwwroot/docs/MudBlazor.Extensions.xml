@@ -7265,6 +7265,11 @@
             If this setting is true and no RenderData is available there will no fallback in a textedit rendered
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.Editor">
+            <summary>
+            The rendered component
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
@@ -7273,6 +7278,11 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.OnInitialized">
             <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.RaiseValueChanged">
+            <summary>
+            Raises the ValueChanged Event
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.RenderAs(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder,MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
             <summary>

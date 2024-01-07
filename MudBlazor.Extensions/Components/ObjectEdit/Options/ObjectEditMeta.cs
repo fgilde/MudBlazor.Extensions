@@ -28,7 +28,7 @@ public sealed class ObjectEditMeta<T> : ObjectEditMeta
     }
     
     public override IList<ObjectEditPropertyMeta> AllProperties => Ordered((_properties ??= ReadProperties()).Recursive(m => m.Children)).ToList();
-
+    
     internal IEnumerable<ObjectEditPropertyMeta> Ordered(IEnumerable<ObjectEditPropertyMeta> entries)
         => OrderAscending ? entries.OrderBy(OrderFn) : entries.OrderByDescending(OrderFn);
 

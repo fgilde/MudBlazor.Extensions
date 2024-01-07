@@ -2,6 +2,7 @@
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 using System.Reflection;
+using Microsoft.AspNetCore.Components;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 
@@ -20,6 +21,25 @@ public partial class RenderData : IRenderData
         return this;
     }
 
+    private Action<object> _onReferenceSet;
+    public object ComponentReference
+    {
+        get => _componentReference;
+        internal set
+        {
+            _componentReference = value;
+            _onReferenceSet?.Invoke(value);
+        }
+    }
+
+
+    public void OnRendered<TComponent>(Action<TComponent> onReferenceSet) where TComponent : class, IComponent
+    {
+        if(ComponentReference != null)
+            onReferenceSet(ComponentReference as TComponent);
+        _onReferenceSet = o => onReferenceSet(o as TComponent);
+    }
+
     public bool IsValidParameterAttribute(string key, object value) => ComponentRenderHelper.IsValidParameter(ComponentType, key, value);
 
     public IDictionary<string, object> ValidAttributes => Attributes.Where(kvp => IsValidParameterAttribute(kvp.Key, kvp.Value)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
@@ -31,7 +51,8 @@ public partial class RenderData : IRenderData
     public string ValueField { get; set; }
 
     protected List<(Type modelType, Func<object, bool> condition, Action<IRenderData> trueFn, Action<IRenderData> falseFn)> _conditions;
-    
+    private object _componentReference;
+
     public RenderData(Type componentType, IDictionary<string, object> attributes = null)
     {
         ComponentType = componentType;

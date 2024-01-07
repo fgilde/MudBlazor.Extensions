@@ -67,7 +67,7 @@
         }
         else if (PropertyMeta.RenderData != null)
         {
-            result = @<DynamicComponent @ref="_editor" Type="@PropertyMeta.RenderData.ComponentType" Parameters="GetPreparedAttributes()"></DynamicComponent>;
+            result = @<DynamicComponent @ref="Editor" Type="@PropertyMeta.RenderData.ComponentType" Parameters="GetPreparedAttributes()"></DynamicComponent>;
         }
         else if (DisableFieldFallback)
         {

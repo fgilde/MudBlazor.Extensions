@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Helper.Internal;
@@ -166,5 +167,7 @@ public static partial class MudExObjectEditExtensions
     //    => meta?.WithAttributesIf(condition, PropertyHelper.ValuesDictionary(instanceForAttributes, true));
 
     public static ObjectEditPropertyMeta AsDisabledIf<TModel>(this ObjectEditPropertyMeta meta, Func<TModel, bool> condition)
-        => meta?.WithAttributesIf(condition, new KeyValuePair<string, object>(nameof(MudBaseInput<string>.Disabled), true));
+        => meta?.WithAttributesIf(condition, new KeyValuePair<string, object>(nameof(MudBaseInput<string>.Disabled), true));   
+    
+    public static ObjectEditPropertyMeta OnRendered<TComponent>(this ObjectEditPropertyMeta meta, Action<TComponent> onReferenceSet) where TComponent : class, IComponent => meta.SetProperties(m => m?.RenderData?.OnRendered(onReferenceSet));
 }

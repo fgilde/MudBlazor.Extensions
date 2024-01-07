@@ -15,6 +15,8 @@ public abstract class ObjectEditMeta
     public ObjectEditMeta Parent { get; internal set; }
     public abstract IList<ObjectEditPropertyMeta> AllProperties { get; }
     public virtual IList<ObjectEditPropertyMeta> AllIgnored => AllProperties.Where(m => !m.ShouldRender()).Distinct().ToList();
+    public virtual IList<ObjectEditPropertyMeta> AllRenderedWith<TComponent>() => AllRenderedWith(typeof(TComponent));
+    public virtual IList<ObjectEditPropertyMeta> AllRenderedWith(Type componentType) => AllProperties.Where(m => m?.RenderData?.ComponentType == componentType).Distinct().ToList();
     public BindingFlags BindingFlags { get; set; } = BindingFlags.Public | BindingFlags.Instance;
     public ObjectEditPropertyMeta Property(string name) => AllProperties.FirstOrDefault(m => m.PropertyName == name);
     public IEnumerable<ObjectEditPropertyMeta> Properties(params string[] names) => names?.Select(Property) ?? Enumerable.Empty<ObjectEditPropertyMeta>();

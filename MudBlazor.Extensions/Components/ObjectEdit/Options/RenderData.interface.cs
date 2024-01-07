@@ -25,4 +25,6 @@ public interface IRenderData : ICloneable
     bool DisableValueBinding { get; set; }
     void SetValue(object value);
     string ValueField { get; }
+
+    public void OnRendered<TComponent>(Action<TComponent> onReferenceSet) where TComponent : class, IComponent;
 }

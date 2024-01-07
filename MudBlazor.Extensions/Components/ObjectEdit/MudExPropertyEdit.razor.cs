@@ -68,9 +68,20 @@ public partial class MudExPropertyEdit
     /// </summary>
     [Parameter] public bool DisableFieldFallback { get; set; }
 
+    /// <summary>
+    /// The rendered component
+    /// </summary>
+    public DynamicComponent Editor
+    {
+        get => _editor;
+        private set => _editor = value;
+    }
+
+
     private object _valueBackup;
-    private DynamicComponent _editor;
     private bool _urlSetDone;
+
+    private DynamicComponent _editor;
     //private Expression<Func<TPropertyType>> CreateFieldForExpression<TPropertyType>()
     //    => Check.TryCatch<Expression<Func<TPropertyType>>, Exception>(() => Expression.Lambda<Func<TPropertyType>>(Expression.Property(Expression.Constant(PropertyMeta.ReferenceHolder, PropertyMeta.ReferenceHolder.GetType()), PropertyMeta.PropertyInfo)));
 
@@ -102,6 +113,10 @@ public partial class MudExPropertyEdit
         if (firstRender && PropertyMeta != null)
         {
             _valueBackup = await GetBackupAsync(PropertyMeta.Value);
+            if (PropertyMeta.RenderData is RenderData renderData)
+            {
+                renderData.ComponentReference = Editor.Instance;
+            }
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -145,8 +160,13 @@ public partial class MudExPropertyEdit
     private Task OnPropertyValueChanged()
     {
         AddValueToUrlIf();
-        return PropertyValueChanged.InvokeAsync(PropertyMeta);
+        return RaiseValueChanged();
     }
+
+    /// <summary>
+    /// Raises the ValueChanged Event
+    /// </summary>
+    public Task RaiseValueChanged() => PropertyValueChanged.InvokeAsync(PropertyMeta);
 
     private void SetValueFromUrlIf()
     {
@@ -283,7 +303,7 @@ public partial class MudExPropertyEdit
     /// Returns the current Value independent of the PropertyMeta for example if binding is disabled
     /// </summary>
     public object GetCurrentValue()
-        => _editor.Instance?.GetType().GetProperty(PropertyMeta.RenderData.ValueField)?.GetValue(_editor.Instance);
+        => Editor.Instance?.GetType().GetProperty(PropertyMeta.RenderData.ValueField)?.GetValue(Editor.Instance);
 
     /// <summary>
     /// Sets a Value independent of the PropertyMeta for example if binding is disabled
@@ -291,7 +311,7 @@ public partial class MudExPropertyEdit
     public void SetValue(object value)
     {
         PropertyMeta.RenderData.SetValue(value);
-        //_editor.Instance?.GetType().GetProperty(PropertyMeta.RenderData.ValueField)?.SetValue(_editor.Instance, value);
+        //Editor.Instance?.GetType().GetProperty(PropertyMeta.RenderData.ValueField)?.SetValue(Editor.Instance, value);
     }
 
     private string Title()

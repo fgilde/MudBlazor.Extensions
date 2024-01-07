@@ -634,7 +634,17 @@ public partial class MudExObjectEdit<T>
             CallStateHasChanged();
         Editors.Apply(e => e.Invalidate(useRefresh));
     }
-    
+
+    public Task RaiseAllEditorsValueChanged()
+    {
+        return Task.WhenAll(Editors.Select(edit => edit.RaiseValueChanged()));
+    }
+
+    public Task RaiseValueChanged()
+    {
+        return ValueChanged.InvokeAsync(Value);
+    }
+
     /// <summary>
     /// Called when a property value is changed
     /// </summary>
