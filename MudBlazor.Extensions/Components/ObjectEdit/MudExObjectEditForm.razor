@@ -7,7 +7,7 @@
 @inherits MudExObjectEdit<T>
 @typeparam T
 
-<EditForm class="@($"mud-ex-object-edit-form {FormClass}")" @ref="Form" Model="@Value" OnValidSubmit="@OnSubmit">
+<EditForm class="@($"mud-ex-object-edit-form {FormClass}")" style="@FormStyle" @ref="Form" Model="@Value" OnValidSubmit="@OnSubmit">
     
     <FluentValidationValidator @ref="_fluentValidationValidator" />
     <DataAnnotationsValidator @ref="_dataAnnotationValidator" />

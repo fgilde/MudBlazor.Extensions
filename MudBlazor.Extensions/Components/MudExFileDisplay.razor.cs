@@ -37,6 +37,12 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
     #region Parameters and Properties
 
+    /// <summary>
+    /// Status text to display in center of file display
+    /// </summary>
+    //[Parameter, SafeCategory("Appearance")]
+    public string StatusText { get; private set; }
+
     [Parameter, SafeCategory("Behaviour")]
     public StreamUrlHandling StreamUrlHandling { get; set; } = StreamUrlHandling.BlobUrl;
 
@@ -260,6 +266,16 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
     /// <inheritdoc/>
     public override object[] GetJsArguments() => base.GetJsArguments().Concat(new object[] { _id }).ToArray();
+
+    public async Task<MudExFileDisplay> SetStatusTextAsync(string text)
+    {
+        StatusText = text;
+        CallStateHasChanged();
+        await Task.Delay(100);
+        return this;
+    }
+
+    public Task<MudExFileDisplay> RemoveStatusTextAsync() => SetStatusTextAsync(null);
 
     private void UpdateRenderInfos()
     {

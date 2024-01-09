@@ -140,6 +140,12 @@ public partial class MudExObjectEditForm<T>
     public string FormClass { get; set; }
 
     /// <summary>
+    /// The class of the form itself
+    /// </summary>
+    [Parameter]
+    public string FormStyle { get; set; }
+
+    /// <summary>
     /// The class of the card containing the form
     /// </summary>
     [Parameter]

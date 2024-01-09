@@ -23,6 +23,40 @@
         }
         tryClick();
     }
+
+    static stringifyEvent(e) {
+        const obj = {};
+        for (let k in e) {
+            obj[k] = e[k];
+        }
+        return JSON.stringify(obj, (k, v) => {
+            if (v instanceof Node)
+                return 'Node';
+            if (v instanceof Window)
+                return 'Window';
+            return v;
+        }, ' ');
+    }
+
+    static cloneEvent(e, serializable) {
+        if (serializable) {
+            return JSON.parse(this.stringifyEvent(event));
+        }
+        if (e === undefined || e === null)
+            return undefined;
+        function ClonedEvent() { }
+        ;
+        let clone = new ClonedEvent();
+        for (let p in e) {
+            let d = Object.getOwnPropertyDescriptor(e, p);
+            if (d && (d.get || d.set))
+                Object.defineProperty(clone, p, d);
+            else
+                clone[p] = e[p];
+        }
+        Object.setPrototypeOf(clone, e);
+        return clone;
+    }
 }
 
 window.MudExEventHelper = MudExEventHelper;

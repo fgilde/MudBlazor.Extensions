@@ -10,7 +10,7 @@ namespace MudBlazor.Extensions.Helper
     /// </summary>
     public static class JsImportHelper
     {
-        internal static bool UseMinified => true;
+        internal static bool UseMinified => false;
         private static string min => UseMinified ? ".min" : string.Empty;
 
         internal static string BasePath = "./_content/";
@@ -78,9 +78,14 @@ namespace MudBlazor.Extensions.Helper
 
         internal static string ComponentJs(string componentName, string assemblyDirName = null)
         {
+            return JsPath($"/js/components/{componentName}{min}.js{Cb()}", assemblyDirName);
+        }
+
+        internal static string JsPath(string path, string assemblyDirName = null)
+        {
             //var assemblyDirName = Assembly.GetExecutingAssembly().GetName().Name;
             assemblyDirName ??= Assembly.GetCallingAssembly().GetName().Name;
-            return $"{BasePath.EnsureEndsWith("/")}{assemblyDirName}/js/components/{componentName}{min}.js{Cb()}";
+            return $"{BasePath.EnsureEndsWith("/")}{assemblyDirName}{path.EnsureStartsWith("/")}";
         }
 
         private static string Cb() => UseMinified ? string.Empty : $"?cb={DateTime.Now.Ticks}";

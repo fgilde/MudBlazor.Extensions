@@ -12,6 +12,8 @@ namespace MudBlazor.Extensions.Components.Base;
 public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, IAsyncDisposable, IJsMudExComponent<T>
     where T : MudExBaseComponent<T>
 {
+    private readonly TaskCompletionSource<IJSObjectReference> _jsReferenceCreatedCompletionSource = new();
+
     /// <summary>
     /// The JS object reference.
     /// </summary>
@@ -40,6 +42,11 @@ public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, I
     }
 
     /// <summary>
+    /// Returns a task that completes when the reference is created
+    /// </summary>
+    public Task<IJSObjectReference> WaitReferenceCreatedAsync() => _jsReferenceCreatedCompletionSource.Task;
+
+    /// <summary>
     /// Returns an object that is passed forward to the js initialize and constructor method
     /// </summary>
     public virtual object[] GetJsArguments() => new object[] {ElementReference, CreateDotNetObjectReference()};
@@ -58,6 +65,7 @@ public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, I
         var references = await JsRuntime.ImportModuleAndCreateJsAsync<T>(GetJsArguments());
         JsReference = references.jsObjectReference;
         ModuleReference = references.moduleReference;
+        _jsReferenceCreatedCompletionSource.TrySetResult(JsReference);
     }
 
     /// <inheritdoc/>

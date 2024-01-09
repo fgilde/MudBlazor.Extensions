@@ -1,0 +1,8 @@
+﻿@inherits MudExBaseComponent<MudExFileDisplayStructuredData>
+@using MudBlazor.Extensions.Components.ObjectEdit
+
+@namespace MudBlazor.Extensions.Components
+@if (!string.IsNullOrEmpty(Value))
+{
+    <MudExStructuredDataEditor FormStyle="width: 100%" ReadOnly="true" Data="@Value"></MudExStructuredDataEditor>
+}

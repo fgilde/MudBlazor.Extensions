@@ -14,6 +14,9 @@ public partial class MudExStructuredDataEditor
 {
     private string _data;
     private KeyValuePair<string, MudColor>[] _cssVars;
+    private bool _readOnly;
+    private bool _isConvertedFromArray;
+    private const string _tempProperty = "Items"; // Data strings that only represent an array or list will be converted to an object with this property name
 
     /// <summary>
     /// Input type of your data string
@@ -45,6 +48,17 @@ public partial class MudExStructuredDataEditor
         }
     }
 
+    [Parameter]
+    public bool ReadOnly
+    {
+        get => _readOnly;
+        set
+        {
+            _readOnly = value;
+            ShowCancelButton = ShowSaveButton = !_readOnly;
+        }
+    }
+
     /// <summary>
     /// Event when data changed
     /// </summary>
@@ -69,10 +83,47 @@ public partial class MudExStructuredDataEditor
             ErrorMessage = null;
             MetaInformation = null;
             Value = DataType.HasValue
-                        ? ReflectionHelper.CreateTypeAndDeserialize(Data, DataType.Value, nameof(MudExStructuredDataEditor), true)
-                        : ReflectionHelper.CreateTypeAndDeserialize(Data, nameof(MudExStructuredDataEditor), true);
+                        ? ReflectionHelper.CreateTypeAndDeserialize(Prepare(Data), DataType.Value, nameof(MudExStructuredDataEditor), true)
+                        : ReflectionHelper.CreateTypeAndDeserialize(Prepare(Data), nameof(MudExStructuredDataEditor), true);
         }
     }
+
+    private string Prepare(string data)
+    {
+        if (data.Trim().StartsWith("["))
+        {
+            _isConvertedFromArray = true;
+            return $$$"""{"{{{_tempProperty}}}": """ +data+ " }";
+        }
+
+        if (data.Trim().StartsWith("-"))
+        {
+            _isConvertedFromArray = true;
+            return $"{_tempProperty}: " + Environment.NewLine + MudExCodeView.RemoveEmptyLines(data.Replace("---", ""));
+        }
+
+        return data;
+    }
+
+    private string Unprepare(string data)
+    {
+        if (_isConvertedFromArray)
+        {
+            if (DataType == StructuredDataType.Json)
+            {
+                var jsonObject = Newtonsoft.Json.Linq.JObject.Parse(data);
+                var items = jsonObject[_tempProperty]?.ToString();
+                return items ?? string.Empty;
+            }
+
+            if (DataType == StructuredDataType.Yaml)
+            {
+                return data.Replace($"{_tempProperty}:", "---");
+            }
+        }
+        return data;
+    }
+
 
     /// <inheritdoc />
     protected override async Task OnPropertyChange(ObjectEditPropertyMeta property)
@@ -83,7 +134,7 @@ public partial class MudExStructuredDataEditor
         if(dataType == StructuredDataType.Json && FormatJson)                  
             dataString = JsonConvert.SerializeObject(JsonConvert.DeserializeObject(dataString), Formatting.Indented);
         
-        Data = dataString;
+        Data = Unprepare(dataString);
     }
 
     /// <inheritdoc />
@@ -97,6 +148,8 @@ public partial class MudExStructuredDataEditor
     protected override ObjectEditMeta<IStructuredDataObject> ConfigureMetaBase(ObjectEditMeta<IStructuredDataObject> meta)
     {
         RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>(_cssVars)(meta);
+        if(ReadOnly)
+            meta.AllProperties.AsReadOnly();
         return base.ConfigureMetaBase(meta);
     }
        

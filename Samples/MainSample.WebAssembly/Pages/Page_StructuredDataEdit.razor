@@ -10,7 +10,7 @@
 <DemoComponent PageType="@GetType()" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "SampleDialogOptions.cs"})">
     <SplitContainer Splittable="false" IsCollapsible="false">
         <Left>
-            <MudExStructuredDataEditor FormatJson="true" DataChanged="@OnDataStringChanged" OnValidSubmit="@OnSaveClick" ShowCancelButton="false" ShowSaveButton="true" DataType="@_dataType" Data="@_dataString"></MudExStructuredDataEditor>
+            <MudExStructuredDataEditor FormStyle="width: 100%" FormatJson="true" DataChanged="@OnDataStringChanged" OnValidSubmit="@OnSaveClick" ShowCancelButton="false" ShowSaveButton="true" DataType="@_dataType" Data="@_dataString"></MudExStructuredDataEditor>
         </Left>
         <Right>            
             <MudToolBar>

@@ -11,6 +11,8 @@ namespace MudBlazor.Extensions.Components.Base;
 public abstract class MudExJsRequiredBaseFormComponent<T, TData, U> : MudExBaseFormComponent<T, TData, U>, IAsyncDisposable, IJsMudExComponent<T>
     where T : MudExJsRequiredBaseFormComponent<T, TData, U>
 {
+    private readonly TaskCompletionSource<IJSObjectReference> _jsReferenceCreatedCompletionSource = new();
+
     /// <summary>
     /// The JS object reference.
     /// </summary>
@@ -25,6 +27,11 @@ public abstract class MudExJsRequiredBaseFormComponent<T, TData, U> : MudExBaseF
     /// Reference to rendered element
     /// </summary>
     public ElementReference ElementReference { get; set; }
+
+    /// <summary>
+    /// Returns a task that completes when the reference is created
+    /// </summary>
+    public Task<IJSObjectReference> WaitReferenceCreatedAsync() => _jsReferenceCreatedCompletionSource.Task;
 
     internal IJsMudExComponent<T> AsJsComponent => this;
 
@@ -57,6 +64,7 @@ public abstract class MudExJsRequiredBaseFormComponent<T, TData, U> : MudExBaseF
         var references = await JsRuntime.ImportModuleAndCreateJsAsync<T>(GetJsArguments());
         JsReference = references.jsObjectReference;
         ModuleReference = references.moduleReference;
+        _jsReferenceCreatedCompletionSource.TrySetResult(JsReference);
     }
 
     /// <inheritdoc/>

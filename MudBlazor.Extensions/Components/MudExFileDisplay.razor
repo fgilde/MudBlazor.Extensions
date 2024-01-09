@@ -38,8 +38,13 @@
         @if (_componentForFile.ShouldAddDiv)
         {
             <CascadingValue Value="@this" IsFixed="true">
+  
+                <MudOverlay Class="mud-ex-loading-overlay" Visible="@(!string.IsNullOrEmpty(StatusText))" Absolute="true">
+                    <MudText Typo="Typo.h3">@TryLocalize(StatusText)</MudText>
+                </MudOverlay>
+                
                 <div class="mud-ex-file-display">
-                    <DynamicComponent Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters" />
+                    <DynamicComponent Type="@_componentForFile.ControlType" Parameters="@_componentForFile.Parameters"/>
                 </div>
             </CascadingValue>
         }

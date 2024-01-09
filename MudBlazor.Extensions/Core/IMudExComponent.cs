@@ -17,6 +17,7 @@ public interface IMudExComponent
 /// <typeparam name="T"></typeparam>
 internal interface IJsMudExComponent<T> : IMudExComponent, IAsyncDisposable
 {
+    
     /// <summary>
     /// JsRuntime
     /// </summary>

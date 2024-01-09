@@ -97,8 +97,13 @@ public class MudExFileService : IAsyncDisposable
         return blobUrl;
     }
 
+    /// <summary>
+    /// Revokes a blob url
+    /// </summary>
     private async Task RevokeBlobUrlAsync(string blobUrl)
     {
+        if (string.IsNullOrEmpty(blobUrl) || !blobUrl.StartsWith("blob", StringComparison.InvariantCultureIgnoreCase))
+            return;
         await _jsRuntime.InvokeVoidAsync("MudExUriHelper.revokeBlobUrl", blobUrl);
     }
 
