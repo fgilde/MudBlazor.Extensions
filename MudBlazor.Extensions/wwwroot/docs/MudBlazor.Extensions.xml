@@ -484,454 +484,6 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseFormComponent`3.DisposeAsync">
             <inheritdoc/>
         </member>
-        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayCode">
-            <summary>
-            Simple component to display markdown files with MudExFileDisplay
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.Name">
-            <summary>
-            The name of the component
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.Value">
-            <summary>
-            The Current code string provided from file
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.Language">
-            <summary>
-            Language
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.Theme">
-            <summary>
-            The theme of the code block
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.FileDisplayInfos">
-            <summary>
-            The file display infos
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
-            <summary>
-            Returns true if its a markdown file and we can handle it
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
-            <inheritdoc />
-        </member>
-        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown">
-            <summary>
-            Simple component to display markdown files with MudExFileDisplay
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.Name">
-            <summary>
-            The name of the component
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.Value">
-            <summary>
-            The Current markdown string provided from file
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.CodeBlockTheme">
-            <summary>
-            The theme of the code block
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.LinkCommand">
-            <summary>
-            LinkCommand
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.TableCellMinWidth">
-            <summary>
-            TableCellMinWidth
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.Styling">
-            <summary>
-            Styling
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.OverrideLinkUrl">
-            <summary>
-            OverrideLinkUrl
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.OverrideHeaderTypo">
-            <summary>
-            OverrideHeaderTypo
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.FileDisplayInfos">
-            <summary>
-            The file display infos
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
-            <summary>
-            Returns true if its a markdown file and we can handle it
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
-            <inheritdoc />
-        </member>
-        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData">
-            <summary>
-            Simple component to display markdown files with MudExFileDisplay
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData.Name">
-            <summary>
-            The name of the component
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData.Value">
-            <summary>
-            The Current code string provided from file
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData.FileDisplayInfos">
-            <summary>
-            The file display infos
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
-            <summary>
-            Returns true if its a markdown file and we can handle it
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
-            <inheritdoc />
-        </member>
-        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayTiff">
-            <summary>
-            Simple component to display markdown files with MudExFileDisplay
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayTiff.Name">
-            <summary>
-            The name of the component
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayTiff.MudExFileDisplay">
-            <summary>
-            Parent display control
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayTiff.FileDisplayInfos">
-            <summary>
-            File display infos
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayTiff.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
-            <summary>
-            Returns true if its a markdown file and we can handle it
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayTiff.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
-            <inheritdoc />
-        </member>
-        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayZip">
-            <summary>
-            A Component to display the content of a zip file
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Name">
-            <inheritdoc />
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.WrapInMudExFileDisplayDiv">
-            <inheritdoc />
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Dense">
-            <summary>
-            If true, compact vertical padding will be applied to items.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FileDisplayInfos">
-            <inheritdoc />
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ParametersForSubControls">
-            <summary>
-            Specify parameters for viewer controls. If a possible IMudExFileDisplay is found for current content type this parameters will be forwarded
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ForceNativeRender">
-            <summary>
-            Set this to true to initially render native and ignore registered IMudExFileDisplay
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.SearchString">
-            <summary>
-            SearchString for current filter
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Filters">
-            <summary>
-            The filter values for the component.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.AllowSearch">
-            <summary>
-            If true user is able to search
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.RootFolderName">
-            <summary>
-            Name of root folder
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Url">
-            <summary>
-            Url
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ContentType">
-            <summary>
-            Content Type 
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ContentStream">
-            <inheritdoc />
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ShowAsTree">
-            <summary>
-            True to display structure as tree
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.AllowToggleTree">
-            <summary>
-            If true user can toggle between flat and tree view
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.AllowDownload">
-            <summary>
-            If true user can download all or specific files from zip
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.AllowPreview">
-            <summary>
-            If true user can preview containing files
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ActionButtonColor">
-            <summary>
-            Button Color for action icon button
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FilterMode">
-            <summary>
-            PropertyFilterMode
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ToolBarPaperClass">
-            <summary>
-            Css Class for toolbar paper
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.StickyToolbar">
-            <summary>
-            True to have a sticky toolbar on top
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.StickyToolbarTop">
-            <summary>
-            Top position if toolbar is sticky
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.SelectionMode">
-            <summary>
-            File Selection Mode
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Selected">
-            <summary>
-            Selected files
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.SelectedChanged">
-            <summary>
-            Event on selection change
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.IsSelected(Nextended.Blazor.Models.IArchivedBrowserFile)">
-            <summary>
-            Returns true if given ZipFile entry is selected
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ShowContentError">
-            <summary>
-            Show content error
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FallBackInIframe">
-            <summary>
-            Set to true to render all failures in iframe fallback
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ViewDependsOnContentType">
-            <summary>
-            Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ImageAsBackgroundImage">
-            <summary>
-            Render images as background image instead of img tag
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.SandBoxIframes">
-            <summary>
-            Use sandbox mode for iframe
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.HandleContentErrorFunc">
-            <summary>
-            A function to handle content error.
-            Return true if you have handled the error and false if you want to show the error message For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
-            If you reset Url or Data here you need also to reset ContentType
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.CustomContentErrorMessage">
-            <summary>
-            Custom error message for content error
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ColorizeIcons">
-            <summary>
-            If true icons are colored
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.IconColor">
-            <summary>
-            If true icons are colored
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Virtualize">
-            <summary>
-            Gets or sets a value indicating whether the collection should be virtualized.
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
-            <inheritdoc />
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FileName">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.CanHandleFileAsArchive(System.String)">
-            <summary>
-            Returns true if the MudExFileDisplay Component can handle the file as an archive.
-            </summary>
-        </member>
-        <member name="T:MudBlazor.Extensions.Components.MudExImageViewer">
-            <summary>
-            Simple component to display markdown files with MudExFileDisplay
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.Size">
-            <summary>
-            Size of the viewer
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools">
-            <summary>
-            If true tool bar is shown
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ToolbarStyle">
-            <summary>
-            Style for toolbar only if <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.Dense">
-            <summary>
-            Dense toolbar
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ToolbarBackgroundColor">
-            <summary>
-            Toolbar background color only if <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ToolbarButtonColor">
-            <summary>
-            Toolbar button color only if <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.Src">
-            <summary>
-            Image source
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.NavigatorPosition">
-            <summary>
-            Image source
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.NavigatorClass">
-            <summary>
-            Css class for the navigator
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.NavigatorSizeRatio">
-            <summary>
-            The size ratio of the navigator in relation to the viewer size
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.MaxZoomPixelRatio">
-            <summary>
-            The maximum zoom pixel ratio
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.AnimationTime">
-            <summary>
-            Animation time in seconds
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowNavigator">
-            <summary>
-            Show the navigator
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.Name">
-            <summary>
-            The name of the component
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.FileDisplayInfos">
-            <summary>
-            The file display infos
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
-            <summary>
-            Returns true if its a markdown file and we can handle it
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.ZoomBy(System.Double)">
-            <summary>
-            Zooms to the given factor
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.ResetZoom">
-            <summary>
-            Zooms to the given factor
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.ToggleFullScreen">
-            <summary>
-            Toggles the fullscreen mode
-            </summary>
-        </member>
         <member name="T:MudBlazor.Extensions.Components.MoveContentPosition">
             <summary>
             Position to move the ChildContent to a specific element that can defined by ElementSelector.
@@ -2455,6 +2007,44 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.OnParametersSetAsync">
             <inheritdoc/>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayCode">
+            <summary>
+            Simple component to display markdown files with MudExFileDisplay
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.Name">
+            <summary>
+            The name of the component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.Value">
+            <summary>
+            The Current code string provided from file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.Language">
+            <summary>
+            Language
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.Theme">
+            <summary>
+            The theme of the code block
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayCode.FileDisplayInfos">
+            <summary>
+            The file display infos
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Returns true if its a markdown file and we can handle it
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayDialog">
             <summary>
             Dialog to display a file using <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> component.
@@ -2490,6 +2080,313 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDialog.OnInitialized">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown">
+            <summary>
+            Simple component to display markdown files with MudExFileDisplay
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.Name">
+            <summary>
+            The name of the component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.Value">
+            <summary>
+            The Current markdown string provided from file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.CodeBlockTheme">
+            <summary>
+            The theme of the code block
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.LinkCommand">
+            <summary>
+            LinkCommand
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.TableCellMinWidth">
+            <summary>
+            TableCellMinWidth
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.Styling">
+            <summary>
+            Styling
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.OverrideLinkUrl">
+            <summary>
+            OverrideLinkUrl
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.OverrideHeaderTypo">
+            <summary>
+            OverrideHeaderTypo
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.FileDisplayInfos">
+            <summary>
+            The file display infos
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Returns true if its a markdown file and we can handle it
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData">
+            <summary>
+            Simple component to display markdown files with MudExFileDisplay
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData.Name">
+            <summary>
+            The name of the component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData.Value">
+            <summary>
+            The Current code string provided from file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData.FileDisplayInfos">
+            <summary>
+            The file display infos
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Returns true if its a markdown file and we can handle it
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayTiff">
+            <summary>
+            Simple component to display markdown files with MudExFileDisplay
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayTiff.Name">
+            <summary>
+            The name of the component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayTiff.MudExFileDisplay">
+            <summary>
+            Parent display control
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayTiff.FileDisplayInfos">
+            <summary>
+            File display infos
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayTiff.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Returns true if its a markdown file and we can handle it
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayTiff.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayZip">
+            <summary>
+            A Component to display the content of a zip file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.WrapInMudExFileDisplayDiv">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Dense">
+            <summary>
+            If true, compact vertical padding will be applied to items.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FileDisplayInfos">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ParametersForSubControls">
+            <summary>
+            Specify parameters for viewer controls. If a possible IMudExFileDisplay is found for current content type this parameters will be forwarded
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ForceNativeRender">
+            <summary>
+            Set this to true to initially render native and ignore registered IMudExFileDisplay
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.SearchString">
+            <summary>
+            SearchString for current filter
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Filters">
+            <summary>
+            The filter values for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.AllowSearch">
+            <summary>
+            If true user is able to search
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.RootFolderName">
+            <summary>
+            Name of root folder
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Url">
+            <summary>
+            Url
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ContentType">
+            <summary>
+            Content Type 
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ContentStream">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ShowAsTree">
+            <summary>
+            True to display structure as tree
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.AllowToggleTree">
+            <summary>
+            If true user can toggle between flat and tree view
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.AllowDownload">
+            <summary>
+            If true user can download all or specific files from zip
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.AllowPreview">
+            <summary>
+            If true user can preview containing files
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ActionButtonColor">
+            <summary>
+            Button Color for action icon button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FilterMode">
+            <summary>
+            PropertyFilterMode
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ToolBarPaperClass">
+            <summary>
+            Css Class for toolbar paper
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.StickyToolbar">
+            <summary>
+            True to have a sticky toolbar on top
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.StickyToolbarTop">
+            <summary>
+            Top position if toolbar is sticky
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.SelectionMode">
+            <summary>
+            File Selection Mode
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Selected">
+            <summary>
+            Selected files
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.SelectedChanged">
+            <summary>
+            Event on selection change
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.IsSelected(Nextended.Blazor.Models.IArchivedBrowserFile)">
+            <summary>
+            Returns true if given ZipFile entry is selected
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ShowContentError">
+            <summary>
+            Show content error
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FallBackInIframe">
+            <summary>
+            Set to true to render all failures in iframe fallback
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ViewDependsOnContentType">
+            <summary>
+            Set this to false to show everything in iframe/object tag otherwise zip, images audio and video will displayed in correct tags
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ImageAsBackgroundImage">
+            <summary>
+            Render images as background image instead of img tag
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.SandBoxIframes">
+            <summary>
+            Use sandbox mode for iframe
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.HandleContentErrorFunc">
+            <summary>
+            A function to handle content error.
+            Return true if you have handled the error and false if you want to show the error message For example you can reset Url here to create a proxy fallback or display own not supported image or what ever.
+            If you reset Url or Data here you need also to reset ContentType
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.CustomContentErrorMessage">
+            <summary>
+            Custom error message for content error
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ColorizeIcons">
+            <summary>
+            If true icons are colored
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.IconColor">
+            <summary>
+            If true icons are colored
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.Virtualize">
+            <summary>
+            Gets or sets a value indicating whether the collection should be virtualized.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FileName">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.CanHandleFileAsArchive(System.String)">
+            <summary>
+            Returns true if the MudExFileDisplay Component can handle the file as an archive.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFontSelect">
             <summary>
@@ -3010,6 +2907,109 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.StringValueChanged(System.String)">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExImageViewer">
+            <summary>
+            Simple component to display markdown files with MudExFileDisplay
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.Size">
+            <summary>
+            Size of the viewer
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools">
+            <summary>
+            If true tool bar is shown
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ToolbarStyle">
+            <summary>
+            Style for toolbar only if <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.Dense">
+            <summary>
+            Dense toolbar
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ToolbarBackgroundColor">
+            <summary>
+            Toolbar background color only if <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ToolbarButtonColor">
+            <summary>
+            Toolbar button color only if <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.Src">
+            <summary>
+            Image source
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.NavigatorPosition">
+            <summary>
+            Image source
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.NavigatorClass">
+            <summary>
+            Css class for the navigator
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.NavigatorSizeRatio">
+            <summary>
+            The size ratio of the navigator in relation to the viewer size
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.MaxZoomPixelRatio">
+            <summary>
+            The maximum zoom pixel ratio
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.AnimationTime">
+            <summary>
+            Animation time in seconds
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowNavigator">
+            <summary>
+            Show the navigator
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.Name">
+            <summary>
+            The name of the component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.FileDisplayInfos">
+            <summary>
+            The file display infos
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Returns true if its a markdown file and we can handle it
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.ZoomBy(System.Double)">
+            <summary>
+            Zooms to the given factor
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.ResetZoom">
+            <summary>
+            Zooms to the given factor
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.ToggleFullScreen">
+            <summary>
+            Toggles the fullscreen mode
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExInput`1.InputType">
             <summary>
