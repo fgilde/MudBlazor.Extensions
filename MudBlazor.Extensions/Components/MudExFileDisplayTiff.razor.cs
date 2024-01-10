@@ -10,7 +10,7 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExFileDisplayTiff : IMudExFileDisplay
 {
-    
+
     private string _url;
 
     [Inject] private MudExFileService FileService { get; set; }
@@ -19,7 +19,7 @@ public partial class MudExFileDisplayTiff : IMudExFileDisplay
     /// The name of the component
     /// </summary>
     public string Name => nameof(MudExFileDisplayTiff);
-    
+
     /// <summary>
     /// Parent display control
     /// </summary>
@@ -33,7 +33,7 @@ public partial class MudExFileDisplayTiff : IMudExFileDisplay
     /// <summary>
     /// Returns true if its a markdown file and we can handle it
     /// </summary>
-    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos) 
+    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos)
         => fileDisplayInfos?.FileName?.EndsWith(".tiff") == true || fileDisplayInfos?.FileName?.EndsWith(".tif") == true || fileDisplayInfos?.ContentType == "image/tiff";
 
     /// <inheritdoc />
@@ -56,16 +56,33 @@ public partial class MudExFileDisplayTiff : IMudExFileDisplay
         var stream = fileDisplayInfos.ContentStream != null
             ? await fileDisplayInfos.ContentStream.CopyStreamAsync()
             : await FileService.ReadStreamAsync(fileDisplayInfos.Url);
-        if(stream == null)
+        if (stream == null)
             return;
         await MudExFileDisplay.SetStatusTextAsync("Please wait while the image is being converted");
         using var image = await Image.LoadAsync(stream);
         var pngStream = new MemoryStream();
+
         await image.SaveAsPngAsync(pngStream);
         pngStream.Position = 0;
         _url = await FileService.CreateDataUrlAsync(pngStream.ToArray(), "image/png", MudExFileDisplay.StreamUrlHandling == StreamUrlHandling.BlobUrl);
         await MudExFileDisplay.RemoveStatusTextAsync();
     }
+
+    //public IEnumerable<Task<MemoryStream>> ResizeImage(Image image)
+    //{
+    //    var sizes = new[] { 1920, 1080, 720, 480 };
+    //    foreach (var size in sizes)
+    //    {
+    //        yield return Task.Run(() =>
+    //        {
+    //            image.Mutate(x => x.Resize(size, 0));
+    //            var stream = new MemoryStream();
+    //            image.Save(stream, PngFormat.Instance);
+    //            stream.Position = 0;
+    //            return stream;
+    //        });
+    //    }
+    //}
 
     public override async ValueTask DisposeAsync()
     {

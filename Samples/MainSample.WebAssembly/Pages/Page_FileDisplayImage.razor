@@ -1,0 +1,26 @@
+﻿@page "/image-view"
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+@attribute [DemoNew(Group = "File Handling", Name = "MudExImageViewer", Order = 2, Icon = Icons.Material.Outlined.Image, Documentation = "This Demo demonstrate using the MudExImageViewer without the automatic use in MudExFileDisplay", ForComponentType = typeof(MudExImageViewer))]
+
+<DemoComponent PageType="@GetType()" Title="MudExImageViewer">
+    <SplitContainer>
+        <Left>
+            <MudExImageViewer @ref="component" Src="/Logo.png"/>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+@code {
+    MudExImageViewer component;
+    private Action<ObjectEditMeta<MudExImageViewer>> Configure()
+    {
+        return meta =>
+        {
+           // meta.Property(m => m.ZoomOnHover).Ignore();
+        };
+    }
+}

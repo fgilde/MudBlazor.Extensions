@@ -21,9 +21,11 @@ public partial class MudExImageViewer: IMudExFileDisplay
     private string _navigatorClass = MudExCss.Classes.Backgrounds.TransparentIndicator;
     private bool _showNavigator = true;
     private double _maxZoomPixelRatio = 50.0;
+    private double _minZoomLevel = 0.1;
     private double _animationTime = 0.3;
     private double _navigatorSizeRatio = 0.15;
     private Origin _navigatorPosition = Origin.BottomRight;
+    private MudExColor _navigatorRectangleColor = MudExColor.Primary;
 
     [Inject] private MudExFileService fileService { get; set; }
 
@@ -58,6 +60,16 @@ public partial class MudExImageViewer: IMudExFileDisplay
     public MudExColor ToolbarBackgroundColor { get; set; }
 
     /// <summary>
+    /// Color of the navigator rectangle only if <see cref="ShowNavigator"/> is true
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.FormComponent.Appearance)]
+    public MudExColor NavigatorRectangleColor
+    {
+        get => _navigatorRectangleColor;
+        set => Set(ref _navigatorRectangleColor, value, _ => Update().AndForget());
+    }
+    
+    /// <summary>
     /// Toolbar button color only if <see cref="ShowTools"/> is true
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.FormComponent.Appearance)]
@@ -74,7 +86,7 @@ public partial class MudExImageViewer: IMudExFileDisplay
     }
 
     /// <summary>
-    /// Image source
+    /// Position of the navigator if <see cref="ShowNavigator"/> is true
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public Origin NavigatorPosition
@@ -84,7 +96,7 @@ public partial class MudExImageViewer: IMudExFileDisplay
     }
 
     /// <summary>
-    /// Css class for the navigator
+    /// Css class for the navigator if <see cref="ShowNavigator"/> is true
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.FormComponent.Appearance)]
     public string NavigatorClass
@@ -111,6 +123,16 @@ public partial class MudExImageViewer: IMudExFileDisplay
     {
         get => _maxZoomPixelRatio;
         set => Set(ref _maxZoomPixelRatio, value, _ => Update().AndForget());
+    }  
+    
+    /// <summary>
+    /// The minimum zoom level
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.FormComponent.Behavior)]
+    public double MinZoomLevel
+    {
+        get => _minZoomLevel;
+        set => Set(ref _minZoomLevel, value, _ => Update().AndForget());
     }
 
     /// <summary>
@@ -236,7 +258,9 @@ public partial class MudExImageViewer: IMudExFileDisplay
             ShowNavigator,
             AnimationTime,
             MaxZoomPixelRatio,
+            MinZoomLevel,
             NavigatorSizeRatio,
+            NavigatorRectangleColor = NavigatorRectangleColor.ToCssStringValue(),
             NavigatorPosition = NavigatorPosition.GetDescription().Replace("-", "_").ToUpper()
         };
     }

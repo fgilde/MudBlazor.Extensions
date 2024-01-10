@@ -21,6 +21,8 @@
                     id: options.id,
                     prefixUrl: "",
                     maxZoomPixelRatio: options.maxZoomPixelRatio,
+                    minZoomLevel: options.minZoomLevel,
+                    //maxZoomLevel: 2,
                     animationTime: options.animationTime,
                     tileSources: {
                         type: 'image',
@@ -35,13 +37,21 @@
                 });
 
                 //mud-ex-transparent-indicator-bg
-                if (options.showNavigator && options.navigatorClass) {
+                if (options.showNavigator) {
                     this.viewer.addHandler('open',
                         () => {
                             var navigatorElement = this.elementRef.querySelector(".navigator");
                             if (navigatorElement) {
-                                navigatorElement.style.backgroundColor = navigatorElement.style.background = null;
-                                navigatorElement.classList.add(options.navigatorClass);
+                                if (options.navigatorClass) {
+                                    navigatorElement.style.backgroundColor = navigatorElement.style.background = null;
+                                    navigatorElement.classList.add(options.navigatorClass);
+                                }
+                                if (options.navigatorRectangleColor) {
+                                    var rectangle = navigatorElement.querySelector('.displayregion'); 
+                                    if(rectangle) {
+                                        rectangle.style.border = "2px solid " + options.navigatorRectangleColor;
+                                    }
+                                }
                             }
                         });
                 }

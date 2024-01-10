@@ -2938,6 +2938,11 @@
             Toolbar background color only if <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.NavigatorRectangleColor">
+            <summary>
+            Color of the navigator rectangle only if <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowNavigator"/> is true
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ToolbarButtonColor">
             <summary>
             Toolbar button color only if <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
@@ -2950,12 +2955,12 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.NavigatorPosition">
             <summary>
-            Image source
+            Position of the navigator if <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowNavigator"/> is true
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.NavigatorClass">
             <summary>
-            Css class for the navigator
+            Css class for the navigator if <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowNavigator"/> is true
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.NavigatorSizeRatio">
@@ -2966,6 +2971,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.MaxZoomPixelRatio">
             <summary>
             The maximum zoom pixel ratio
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.MinZoomLevel">
+            <summary>
+            The minimum zoom level
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.AnimationTime">

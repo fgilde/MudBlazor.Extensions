@@ -69,6 +69,15 @@ public class MudExConfiguration
     }
 
     /// <summary>
+    /// Sets a specific base path for static js files
+    /// </summary>    
+    public MudExConfiguration WithJsMinification(bool minifyJs)
+    {
+        JsImportHelper.UseMinified = minifyJs;
+        return this;
+    }
+
+    /// <summary>
     /// Set specific options
     /// </summary>
     internal MudExConfiguration With(params Action<MudExConfiguration>[] actions) => this.SetProperties(actions);
