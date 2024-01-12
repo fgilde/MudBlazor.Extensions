@@ -1,20 +1,47 @@
-﻿@inherits MudExJsRequiredBaseComponent<MudExImageViewer>
+﻿@using Microsoft.AspNetCore.Components.Rendering
+@inherits MudExJsRequiredBaseComponent<MudExImageViewer>
 @namespace MudBlazor.Extensions.Components
 
 
 <div style="@StyleStr()">
-    @if (ShowTools)
+    @if (!string.IsNullOrEmpty(StatusText))
     {
-        <MudToolBar Style="@ToolbarStyleStr()" Dense="@Dense">
-            <MudIconButton Color="@ToolbarButtonColor" OnClick="@ZoomInClick" Icon="@Icons.Material.Outlined.ZoomIn"/>
-            <MudIconButton Color="@ToolbarButtonColor" OnClick="@ZoomOutClick" Icon="@Icons.Material.Outlined.ZoomOut"/>
-            <MudIconButton Color="@ToolbarButtonColor" OnClick="@ResetClick" Icon="@Icons.Material.Outlined.Undo"/>
-            <MudIconButton Color="@ToolbarButtonColor" OnClick="@FullscreenClick" Icon="@Icons.Material.Outlined.Fullscreen"/>
-        </MudToolBar>
+        <MudText Style="text-align: center; width: 100%" Typo="Typo.h4">@TryLocalize(StatusText)</MudText>
+    }
+    @if (ShowTools() && string.IsNullOrEmpty(StatusText) && ToolbarAlign().ToolbarPosition == "top")
+    {
+        @RenderToolBar()
     }
 
-
-    <div @ref=ElementReference id="@_id" style="width: 100%; height: 100%">
+    <div @ref=ElementReference id="@_id" style="@InnerViewerStyle()">
     </div>
-
+    @if (ShowTools() && string.IsNullOrEmpty(StatusText) && (ToolbarAlign().ToolbarPosition == "bottom" || ToolbarAlign().ToolbarPosition == "center"))
+    {
+        @RenderToolBar()
+    }
 </div>
+
+@code
+{
+    RenderFragment RenderToolBar()
+    {
+        return @<MudToolBar WrapContent="true" Style="@ToolbarStyleStr()" Dense="@Dense">
+                   @if (NeedSpacer(false))
+                   {
+                       <MudSpacer/>
+                   }
+                   <div>
+                        <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Zoom in")" Visible="@ShowZoomInButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@ZoomInClick" Icon="@ZoomInButtonIcon"/>
+                        <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Zoom out")" Visible="@ShowZoomOutButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@ZoomOutClick" Icon="@ZoomOutButtonIcon" />
+                        <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Reset view")" Visible="@ShowResetButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@ResetClick" Icon="@ResetButtonIcon" />
+                        <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Fullscreen")" Visible="@ShowFullScreenButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@FullscreenClick" Icon="@FullScreenButtonIcon" />
+                        <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Print")" Visible="@ShowPrintButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@PrintClick" Icon="@PrintButtonIcon" />
+                        <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Save as")" Visible="@ShowSaveButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@SaveAsClick" Icon="@SaveButtonIcon" />
+                   </div>
+                   @if (NeedSpacer(true))
+                   {
+                       <MudSpacer/>
+                   }
+               </MudToolBar>;
+    }
+}

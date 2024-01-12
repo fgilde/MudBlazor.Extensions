@@ -1,0 +1,35 @@
+﻿@inherits MudIconButton
+@implements MudBlazor.Extensions.Core.IMudExComponent
+
+@if (Visible)
+{
+    @if(!string.IsNullOrEmpty(ToolTip))
+    {
+        <MudTooltip Text="@ToolTip">
+            @Inherited()
+        </MudTooltip>
+    }
+    else
+    {
+        @Inherited()
+    }
+}
+
+@code {
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+
+    /// <summary>
+    /// Tooltip
+    /// </summary>
+    [Parameter]
+    [Category(CategoryTypes.Button.Appearance)]
+    public string ToolTip { get; set; }
+
+    /// <summary>
+    /// Is false control isn't rendered at all
+    /// </summary>
+    [Parameter]
+    [Category(CategoryTypes.Button.Appearance)]
+    public bool Visible { get; set; } = true;
+
+}

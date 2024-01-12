@@ -2167,34 +2167,6 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
-        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayTiff">
-            <summary>
-            Simple component to display markdown files with MudExFileDisplay
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayTiff.Name">
-            <summary>
-            The name of the component
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayTiff.MudExFileDisplay">
-            <summary>
-            Parent display control
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayTiff.FileDisplayInfos">
-            <summary>
-            File display infos
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayTiff.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
-            <summary>
-            Returns true if its a markdown file and we can handle it
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayTiff.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
-            <inheritdoc />
-        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayZip">
             <summary>
             A Component to display the content of a zip file
@@ -2913,19 +2885,104 @@
             Simple component to display markdown files with MudExFileDisplay
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.StatusText">
+            <summary>
+            Returns the current status text
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ZoomInButtonIcon">
+            <summary>
+            The icon for the ZoomIn button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ZoomOutButtonIcon">
+            <summary>
+            The icon for the ZoomOut button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.PrintButtonIcon">
+            <summary>
+            The icon for the Print button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ResetButtonIcon">
+            <summary>
+            The icon for the Reset button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.FullScreenButtonIcon">
+            <summary>
+            The icon for the Fullscreen button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.SaveButtonIcon">
+            <summary>
+            The icon for the Save button button
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.SaveDialogOptions">
+            <summary>
+            The dialog options for the save dialog
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowZoomInButton">
+            <summary>
+            If true a ZoomIn button is shown in the toolbar
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowZoomOutButton">
+            <summary>
+            If true a ZoomOut button is shown in the toolbar
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowPrintButton">
+            <summary>
+            If true a Print button is shown in the toolbar
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowSaveButton">
+            <summary>
+            If true a Save button is shown in the toolbar
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowResetButton">
+            <summary>
+            If true a Reset button is shown in the toolbar
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowFullScreenButton">
+            <summary>
+            If true a FullScreen button is shown in the toolbar
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ToolbarButtonVariant">
+            <summary>
+            Variant for tool bar buttons only if <see cref="M:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ToolbarButtonSize">
+            <summary>
+            Size for tool bar buttons only if <see cref="M:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ToolbarButtonPosition">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.Size">
             <summary>
             Size of the viewer
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools">
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools">
             <summary>
-            If true tool bar is shown
+            This method returns true when at least one button is used
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ToolbarStyle">
             <summary>
-            Style for toolbar only if <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
+            Style for toolbar only if <see cref="M:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.Dense">
@@ -2935,7 +2992,22 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ToolbarBackgroundColor">
             <summary>
-            Toolbar background color only if <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
+            Toolbar background color only if <see cref="M:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.BorderColor">
+            <summary>
+            Border color
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.BorderStyle">
+            <summary>
+            Border style
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.BorderSize">
+            <summary>
+            Border size
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.NavigatorRectangleColor">
@@ -2945,7 +3017,7 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ToolbarButtonColor">
             <summary>
-            Toolbar button color only if <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
+            Toolbar button color only if <see cref="M:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.Src">
@@ -3019,6 +3091,19 @@
         <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.ToggleFullScreen">
             <summary>
             Toggles the fullscreen mode
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.SaveImageAsync">
+            <summary>
+            Shows a dialog to specify options and then downloads the image
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.SaveImageAsync(MudBlazor.Extensions.Components.MudExImageViewerSaveOptions)">
+            <summary>
+            Downloads the image with the given options
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExInput`1.InputType">
@@ -5685,6 +5770,11 @@
             Defines whether renaming of files is allowed.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ShowRenameButton">
+            <summary>
+            If true an extra rename Button is rendered. Only used when <see cref="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowRename"/> is true. 
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowExternalUrl">
             <summary>
             Defines whether adding of external URL is allowed.
@@ -7550,6 +7640,16 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ICustomRenderer.Render(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder,Microsoft.AspNetCore.Components.IHandleEvent,MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
             <summary>
             If attached as setting in ObjectEditPropertyMeta.RenderData this is called by MudExPropertyEdit
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconButton.ToolTip">
+            <summary>
+            Tooltip
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconButton.Visible">
+            <summary>
+            Is false control isn't rendered at all
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExValidationWrapper`1.Value">
@@ -12437,6 +12537,11 @@
             </summary>    
         </member>
         <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.WithJsBasePath(System.String)">
+            <summary>
+            Sets a specific base path for static js files
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.MudExConfiguration.WithJsMinification(System.Boolean)">
             <summary>
             Sets a specific base path for static js files
             </summary>    

@@ -34,6 +34,7 @@
                     navigatorMaintainSizeRatio: false,
                     navigatorAutoResize: false,
                     showNavigationControl: false
+                    //tileSources: "path/to/your/deepzoomimage.dzi",
                 });
 
                 //mud-ex-transparent-indicator-bg
@@ -70,6 +71,30 @@
         this.viewer.viewport.goHome();
         this.viewer.viewport.applyConstraints();
     }
+
+    getCurrentViewImageDataUrl() {
+        return this.viewer.drawer.canvas.toDataURL("image/png");
+    }
+
+    print() {
+        var printWindow = window.open('', '_blank');
+        printWindow.document.open();
+        printWindow.document.write('<html><head></head><body>');
+        var image = new Image();
+        image.src = this.getCurrentViewImageDataUrl();
+        image.onload = function () {
+            printWindow.document.body.appendChild(image);
+
+            // Verzögern des Druckvorgangs, bis das Bild geladen ist
+            image.onload = function () {
+                printWindow.focus();
+                printWindow.print();
+                printWindow.close();
+            };
+        };
+        printWindow.document.close();
+    }
+
 
     toggleFullScreen() {
         this.viewer.setFullScreen(!this.viewer.isFullPage()); 

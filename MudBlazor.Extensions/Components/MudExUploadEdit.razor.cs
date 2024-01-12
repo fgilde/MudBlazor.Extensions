@@ -14,6 +14,7 @@ using Nextended.Core.Contracts;
 using MudBlazor.Extensions.Services;
 using Nextended.Core.Extensions;
 using System.Collections.Concurrent;
+using BlazorJS;
 using MudBlazor.Extensions.Helper.Internal;
 
 namespace MudBlazor.Extensions.Components;
@@ -28,6 +29,10 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
 
     #region Parameters
+
+    [Parameter] public bool RemoveItemButtonAlwaysRight { get; set; }
+
+    [Parameter] public Adornment ActionsAdornment { get; set; } = Adornment.End;
 
     /// <summary>
     /// The title text displayed in the external preview dialog.
@@ -282,6 +287,12 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
     public bool AllowRename { get; set; } = true;
+
+    /// <summary>
+    /// If true an extra rename Button is rendered. Only used when <see cref="AllowRename"/> is true. 
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool ShowRenameButton { get; set; } = true;
 
     /// <summary>
     /// Defines whether adding of external URL is allowed.
@@ -1362,4 +1373,9 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     private bool CanUseOneDrive => AllowOneDrive && !string.IsNullOrEmpty(OneDriveClientId);
     private bool RenderPickerInDialog => ExternalProviderRendering is ExternalProviderRendering.IntegratedInDialogAsButtons or ExternalProviderRendering.IntegratedInDialogAsImages;
     private bool AnyExternalFilePicker() => CanUseGoogleDrive || CanUseDropBox || CanUseOneDrive;
+
+    private async Task Rename(string textFieldId)
+    {
+        await JsRuntime.DInvokeVoidAsync((window, id) => window.document.getElementById(id).select(), textFieldId);
+    }
 }

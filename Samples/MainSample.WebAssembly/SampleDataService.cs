@@ -30,6 +30,7 @@ public class SampleDataService
         yield return (CreateSampleFile("weather.json", "text/plain"));
         yield return (CreateSampleFile("logo.png", "image/png"));
         yield return (CreateSampleFile("readme.md", "text/markdown"));
+        yield return (CreateSampleFile("Header.tiff", "image/tiff"));
     }
 
     public async Task<IEnumerable<SampleFileWithStream?>> GetSampleFilesWithStreamAsync()
