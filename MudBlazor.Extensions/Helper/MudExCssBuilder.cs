@@ -211,6 +211,31 @@ public sealed class MudExCssBuilder: IAsyncDisposable, IMudExClassAppearance
     }
 
     /// <summary>
+    /// Generates all possible combinations of given classes and returns them as list
+    /// </summary>
+    public static List<string> GenerateAllCombinationsOf(string[] classes)
+    {
+        var result = new List<string>();
+        int n = classes.Length;
+        for (int i = 0; i < (1 << n); i++)
+        {
+            var combination = new List<string>();
+            for (int j = 0; j < n; j++)
+            {
+                if ((i & (1 << j)) > 0)
+                {
+                    combination.Add(classes[j]);
+                }
+            }
+            if (combination.Count > 0)
+            {
+                result.Add(string.Join(" ", combination));
+            }
+        }
+        return result;
+    }
+
+    /// <summary>
     /// Builds and returns an applicable css string
     /// </summary>
     public string Class => Build();

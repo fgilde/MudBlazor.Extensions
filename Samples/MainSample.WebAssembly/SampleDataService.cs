@@ -31,6 +31,7 @@ public class SampleDataService
         yield return (CreateSampleFile("logo.png", "image/png"));
         yield return (CreateSampleFile("readme.md", "text/markdown"));
         yield return (CreateSampleFile("Header.tiff", "image/tiff"));
+        yield return (CreateSampleFile("SweetieBubbleGum-Regular.ttf", "font/ttf"));
     }
 
     public async Task<IEnumerable<SampleFileWithStream?>> GetSampleFilesWithStreamAsync()
@@ -54,6 +55,11 @@ public class SampleDataService
     private SampleFile CreateSampleFile(string filename, string contentType)
     {
         var absoluteUri = _navigationManager.ToAbsoluteUri($"sample-data/{filename}").AbsoluteUri;
+        if (filename.EndsWith(".md"))
+        {
+            // Hack because not delivered by azure websites server
+            absoluteUri = $"https://www.mudex.org/sample-data/{filename}";
+        }
         return new (absoluteUri, contentType, filename, BrowserFileExt.IconForFile(contentType));
     }
 }

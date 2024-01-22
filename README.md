@@ -109,7 +109,7 @@ builder.Services.AddMudServicesWithExtensions(c => c.WithoutAutomaticCssLoading(
   <summary>Expand videos</summary>
 
 <!-- WIKI:START -->
-<!-- Copied from https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md on 2024-01-05 12:48:54 -->
+<!-- Copied from https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md on 2024-01-22 15:26:41 -->
 ## Showcase
 
 https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/39e06d88-a947-43cd-9151-a7cf96bcd849
@@ -164,7 +164,7 @@ This section introduces you to the various components provided by the MudBlazor.
 
 ### MudExObjectEdit
 <!-- OBJECTEDIT:START -->
-<!-- Copied from ObjectEdit.md on 2024-01-05 12:48:54 -->
+<!-- Copied from ObjectEdit.md on 2024-01-22 15:26:40 -->
 The `MudExObjectEdit` is a robust component that allows for object editing and automatically generates the corresponding UI. This component supports automatic validation for DataAnnotation Validations or fluent registered validations for your model.
 
 To use `MudExObjectEdit`, you can simply use the `MudExObjectEditForm` and pass your model to it as shown below:
@@ -204,7 +204,7 @@ You can find a running [Sample here](https://www.mudex.org/structured-data-edit)
 
 ### MudExFileDisplay
 <!-- FILEDISPLAY:START -->
-<!-- Copied from MudExFileDisplay.md on 2024-01-05 12:48:54 -->
+<!-- Copied from MudExFileDisplay.md on 2024-01-22 15:26:40 -->
 The `MudExFileDisplay` component is designed to display file contents, such as a preview before uploading or for referenced files. 
 This component can automatically handle URLs or streams and deliver the best possible display. 
 Additionally, you can implement `IMudExFileDisplay` in your own component to register a custom file display.
@@ -263,7 +263,7 @@ await dialogService.ShowEx<MudExFileDisplayDialog>(title, parameters, optionsEx)
 
 ### MudExUploadEdit
 <!-- UPLOADEDIT:START -->
-<!-- Copied from MudExUploadEdit.md on 2024-01-05 12:48:54 -->
+<!-- Copied from MudExUploadEdit.md on 2024-01-22 15:26:40 -->
 
 `MudExUploadEdit` is a versatile file upload component with a wide range of features such as MIME and extension whitelisting/blacklisting, folder upload, drag and drop, copy and paste, renaming, and integration with Dropbox, Google Drive, and OneDrive.
 
@@ -275,7 +275,7 @@ await dialogService.ShowEx<MudExFileDisplayDialog>(title, parameters, optionsEx)
 
 ## Extensions
 <!-- DIALOG_EXT:START -->
-<!-- Copied from DialogExtensions.md on 2024-01-05 12:48:54 -->
+<!-- Copied from DialogExtensions.md on 2024-01-22 15:26:40 -->
 ### Resizable or Draggable Dialogs
 
 You can make your dialogs resizable or draggable using the following code snippet:
@@ -386,7 +386,11 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 ## Change Log 
 Latest Changes: 
 <!-- CHANGELOG:START -->
-<!-- Copied from CHANGELOG.md on 2024-01-05 12:48:54 -->
+<!-- Copied from CHANGELOG.md on 2024-01-22 15:26:40 -->
+ - 1.7.83 > Register [MudExStructuredDataEditor](https://www.mudex.org/structured-data-edit) as file viewer for json, yml and xml files [see file sample](https://www.mudex.org/file-display?file=weather.json)
+ - 1.7.83 > Add viewer for font files for MudExFileDisplay [see file sample](https://www.mudex.org/file-display?file=SweetieBubbleGum-Regular.ttf)
+ - 1.7.83 > Add support for tiff images in MudExFileDisplay [see file sample](https://www.mudex.org/file-display?file=Header.tiff)
+ - 1.7.83 > Add new Component for displaying images [MudExImageViewer](https://www.mudex.org/image-view) also registered as IMudExFileDisplay [see file sample](https://www.mudex.org/file-display?file=logo.png)
  - 1.7.81 > Add support for style and class in MudExCardList
  - 1.7.81 > Add Itemtemplate for MudExUploadEdit
  - 1.7.81 > Add Param for MudExUploadEdit to allow custom title in preview dialog based on File
@@ -398,10 +402,6 @@ Latest Changes:
  - 1.7.79 > Allow inherit from MudExJsRequiredBaseComponent for other projects
  - 1.7.79 > Hide dropdown icon if readonly in MudExSelect
  - 1.7.79 > Set cursor to default for MudExSelect if readonly
- - 1.7.78 > Fix error with js base bath
- - 1.7.78 > Add configuration for JS base path
- - 1.7.78 > Fix Validation bug in MudExUploadEdit
- - 1.7.77 > Fix bug for UploadEdit with single file binding
 <!-- CHANGELOG:END -->
 Full change log can be found [here](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/CHANGELOG.md) 
 

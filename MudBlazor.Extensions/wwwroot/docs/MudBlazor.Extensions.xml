@@ -2081,6 +2081,34 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDialog.OnInitialized">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayFont">
+            <summary>
+            Simple component to display markdown files with MudExFileDisplay
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayFont.Name">
+            <summary>
+            The name of the component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayFont.Value">
+            <summary>
+            The Current markdown string provided from file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayFont.FileDisplayInfos">
+            <summary>
+            The file display infos
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayFont.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Returns true if it's a font file and we can handle it
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayFont.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown">
             <summary>
             Simple component to display markdown files with MudExFileDisplay
@@ -9785,6 +9813,11 @@
         <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.DisposeAsync">
             <summary>
             Disposes this instance
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExCssBuilder.GenerateAllCombinationsOf(System.String[])">
+            <summary>
+            Generates all possible combinations of given classes and returns them as list
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Helper.MudExCssBuilder.Class">

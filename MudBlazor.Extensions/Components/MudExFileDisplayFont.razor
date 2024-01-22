@@ -1,0 +1,43 @@
+﻿@using MudBlazor.Extensions.Helper
+@inherits MudExBaseComponent<MudExFileDisplayFont>
+
+@if (!string.IsNullOrEmpty(Url))
+{
+    <style style="display: none">
+        @@font-face {
+            font-family: 'MudExTemporaryFont';
+            src: url('@(Url)');
+        }
+
+        .mud-ex-font-preview-sample {
+            font-family: 'MudExTemporaryFont', fallback-schriftart;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .italic {
+            font-style: italic;
+        }
+
+        .underline {
+            text-decoration: underline;
+        }
+    </style>
+}
+
+
+<div style="display: flex; flex-direction: column; height: 100%; width: 100%; align-items: center; text-align: center;">
+    <h1 style="color: @HeaderColor.ToCssStringValue(); margin-top: 2px; align-self: center;">Font: <span class="mud-ex-font-preview-sample">@FileDisplayInfos?.FileName</span></h1>
+    <MudExDivider Color="@DividerColor" Vertical="false"></MudExDivider>
+    <div class="mud-ex-font-preview-sample" style="overflow-y: auto; height: 90%; width: 100%;">
+        @foreach (var size in Enumerable.Range(minFontSize, maxFontSize - minFontSize + 1))
+        {
+            foreach (var combination in combinations ??= MudExCssBuilder.GenerateAllCombinationsOf(classes).OrderBy(s => s).Distinct().ToList())
+            {
+                <p class="@combination" style="font-size: @(size)px;">@TryLocalize(SampleText)</p>
+            }
+        }
+    </div>
+</div>

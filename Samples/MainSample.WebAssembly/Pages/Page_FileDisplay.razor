@@ -1,5 +1,6 @@
 ﻿@page "/file-display"
 @using MudBlazor.Extensions.Options
+@using System.Web
 @inject SampleDataService sampleDataService
 
 @attribute [DemoUpdated(Group = "File Handling", Name = "File Display", Order = 0, Documentation = "See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.", Icon = Icons.Material.Outlined.FolderZip, ForComponentTypes = new[] { typeof(MudExFileDisplay) })]
@@ -40,6 +41,19 @@
         _samples.AddRange(sampleDataService.GetSampleFiles());
         if (MainLayout.Instance != null)
             MainLayout.Instance.ThemeChanged += InstanceOnThemeChanged;
+
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        var queryParams = HttpUtility.ParseQueryString(uri.Query);
+
+        if (!string.IsNullOrEmpty(queryParams["file"]))
+        {
+            var sampleFile = _samples.FirstOrDefault(s => s.Name.Equals(queryParams["file"], StringComparison.CurrentCultureIgnoreCase));
+            if (sampleFile != null)
+            {
+                SampleFile = sampleFile;
+            }
+        }
+
         return Task.CompletedTask;
     }
 

@@ -1,4 +1,8 @@
 ## Change Log   
+ - 1.7.83 > Register [MudExStructuredDataEditor](https://www.mudex.org/structured-data-edit) as file viewer for json, yml and xml files [see file sample](https://www.mudex.org/file-display?file=weather.json)
+ - 1.7.83 > Add viewer for font files for MudExFileDisplay [see file sample](https://www.mudex.org/file-display?file=SweetieBubbleGum-Regular.ttf)
+ - 1.7.83 > Add support for tiff images in MudExFileDisplay [see file sample](https://www.mudex.org/file-display?file=Header.tiff)
+ - 1.7.83 > Add new Component for displaying images [MudExImageViewer](https://www.mudex.org/image-view) also registered as IMudExFileDisplay [see file sample](https://www.mudex.org/file-display?file=logo.png)
  - 1.7.81 > Add support for style and class in MudExCardList
  - 1.7.81 > Add Itemtemplate for MudExUploadEdit
  - 1.7.81 > Add Param for MudExUploadEdit to allow custom title in preview dialog based on File
