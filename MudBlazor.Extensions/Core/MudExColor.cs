@@ -21,6 +21,8 @@ public readonly struct MudExColor
     /// </summary>
     public MudExColor(OneOf<Color, MudColor, DC, string, uint> value)
     {
+        if (value.IsT3 && value.AsT3.Equals("transparent", StringComparison.InvariantCultureIgnoreCase))
+            value = Transparent._value;
         _value = value.IsT3 switch
         {
             true when Enum.TryParse(value.AsT3, out Color color) => color,

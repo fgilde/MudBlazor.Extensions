@@ -1925,6 +1925,37 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
         => WithAnimation(type, duration, direction, animationTimingFunction, null, when);
 
 
+    public MudExStyleBuilder WithAnimatedGradientBackground(MudExColor[] colors, bool when = true) => WithAnimatedConicGradientBorderdBackground(0, colors, new[] { MudExColor.Transparent }, when);
+    public MudExStyleBuilder WithAnimatedGradientBorder(MudExSize<double> borderSize, MudExColor backgroundColor, MudExColor[] borderColors, bool when = true) => WithAnimatedConicGradientBorderdBackground(borderSize, new[] { backgroundColor }, borderColors, when);
+
+    public MudExStyleBuilder WithAnimatedGradientBackground(MudTheme theme, bool dark, bool when) => WithAnimatedGradientBackground(dark ? theme.PaletteDark : theme.Palette, when);
+    public MudExStyleBuilder WithAnimatedGradientBackground(MudTheme theme, bool when = true) => WithAnimatedGradientBackground(theme, false, when);
+    public MudExStyleBuilder WithAnimatedGradientBackground(Palette palette, bool when = true) => WithAnimatedConicGradientBorderdBackground(0, GetColorsFromPalette(palette), new[] { MudExColor.Transparent }, when);
+
+    public MudExStyleBuilder WithAnimatedGradientBorder(MudExSize<double> borderSize, Palette palette, bool when = true) => WithAnimatedGradientBorder(borderSize, palette.Surface, GetColorsFromPalette(palette), when);
+    public MudExStyleBuilder WithAnimatedGradientBorder(MudExSize<double> borderSize, MudTheme theme, bool dark, bool when = true) => WithAnimatedGradientBorder(borderSize, dark ? theme.PaletteDark : theme.Palette, when);
+    public MudExStyleBuilder WithSkeletonLoadingBorder(MudExSize<double> borderSize, bool when = true) => WithAnimatedGradientBorder(borderSize, MudExColor.Surface, new []{ MudExColor.Dark, "rgba(0,0,0,.11)", MudExColor.Dark, "rgba(0,0,0,.11)" }, when);
+    
+    
+    
+    private MudExColor[] GetColorsFromPalette(Palette palette) => new MudExColor[] { palette.Primary, palette.Secondary, palette.Info, palette.Error, palette.Warning };
+
+    public MudExStyleBuilder WithAnimatedConicGradientBorderdBackground(MudExSize<double> borderSize, MudExColor[] backgroundColors, MudExColor[] borderColors, bool when = true)
+    {
+        while (backgroundColors.Length < 3)
+            backgroundColors = backgroundColors.Append(backgroundColors.Last()).ToArray();
+        while (borderColors.Length < 2)
+            borderColors = borderColors.Append(borderColors.Last()).ToArray();
+        return With("--border-size", $"{borderSize}", when)
+            .With("--border-angle", "0turn", when)
+            .With("background-image", $"conic-gradient(from var(--border-angle), {string.Join(',', backgroundColors.Take(2).Select(c => c.ToCssStringValue()))} 50%, {string.Join(',', backgroundColors.Skip(2).Select(c => c.ToCssStringValue()))}), conic-gradient(from var(--border-angle), {borderColors.FirstOrDefault().ToCssStringValue()} 20%,{string.Join(',', borderColors.Skip(1).Select(c => c.ToCssStringValue()))})", when)
+            .WithBackgroundSize("calc(100% - (var(--border-size) * 2)) calc(100% - (var(--border-size) * 2)), cover", when)
+            .WithBackgroundPosition("center center", when)
+            .WithBackgroundRepeat("no-repeat", when)
+            .WithAnimation("mud-ex-bg-spin 3s linear infinite", when);
+    }
+
+
     /// <summary>
     /// Adds an !important to last added style
     /// </summary>

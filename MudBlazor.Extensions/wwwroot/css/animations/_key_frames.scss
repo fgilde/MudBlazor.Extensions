@@ -1,0 +1,12 @@
+﻿@keyframes mud-ex-bg-spin {
+    to {
+        --border-angle: 1turn;
+    }
+}
+
+
+@property --border-angle {
+    syntax: "<angle>";
+    inherits: true;
+    initial-value: 0turn;
+}

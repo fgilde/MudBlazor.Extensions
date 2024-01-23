@@ -7,6 +7,17 @@ namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Core;
 public class MudExColorTests
 {
     [Fact]
+    public void Trans()
+    {
+        var color = MudExColor.Transparent;
+        MudExColor color2 = "transparent";
+
+        var s1 = color.ToCssStringValue();
+        var s2 = color2.ToCssStringValue();
+        Assert.Equal(s1, s2);
+    }
+
+    [Fact]
     public void ShouldCreateMudExColorFromColorEnum()
     {
         var color = MudExColor.Transparent;
