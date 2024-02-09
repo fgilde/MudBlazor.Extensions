@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Extensions.Api;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -45,7 +46,7 @@ public partial class MudExApiView
         var breadcrumbItems = new List<BreadcrumbItem>();
         while (type != null)
         {
-            breadcrumbItems.Insert(0, new BreadcrumbItem(ApiMemberInfo.GetGenericFriendlyTypeName(type), href: $"/a/{type.Name}", Type == type));
+            breadcrumbItems.Insert(0, new BreadcrumbItem(ApiMemberInfo.GetGenericFriendlyTypeName(type), href: $"/{ApiLinkPath.EnsureEndsWith("/")}{type.Name}", Type == type));
             type = type.BaseType;
         }
         breadcrumbItems.Reverse();
