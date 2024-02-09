@@ -2,7 +2,7 @@
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
-
+using BlazorJS.Attributes;
 namespace MudBlazor.Extensions.Components.Base;
 
 /// <summary>
@@ -55,6 +55,19 @@ public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, I
     /// The dotnet object reference for the js module
     /// </summary>
     public virtual DotNetObjectReference<MudExJsRequiredBaseComponent<T>> CreateDotNetObjectReference() => DotNetObjectReference.Create(this);
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var hasJsChanges = parameters.AffectedForJs(this);
+        await base.SetParametersAsync(parameters);
+        if (hasJsChanges)
+            await OnJsOptionsChanged();
+    }
+
+    protected virtual Task OnJsOptionsChanged()
+    {
+        return Task.CompletedTask;
+    }
 
     /// <summary>
     /// Virtual base method to import the module

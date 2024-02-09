@@ -17,6 +17,7 @@ using Nextended.Core;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 using Nextended.Core.Scopes;
+using IComponent = Microsoft.AspNetCore.Components.IComponent;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 
@@ -660,6 +661,11 @@ public partial class MudExObjectEdit<T>
             UpdateConditions();
         await PropertyChanged.InvokeAsync(property);
         await ValueChanged.InvokeAsync(Value);
+        if (Value is IComponent c)
+        {
+            var parameters = ParameterView.FromDictionary(new Dictionary<string, object> { { property.PropertyName, property.Value } });
+            await c.SetParametersAsync(parameters);
+        }
     }
 
     private async void SetValue(T value)

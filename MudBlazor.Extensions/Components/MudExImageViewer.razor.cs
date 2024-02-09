@@ -357,7 +357,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
         {
             try
             {
-                Src = fileDisplayInfos?.Url ?? await fileService.CreateDataUrlAsync(fileDisplayInfos?.ContentStream?.ToByteArray() ?? throw new ArgumentNullException("No stream and no url available"), fileDisplayInfos.ContentType, MudExFileDisplay.StreamUrlHandling == StreamUrlHandling.BlobUrl);
+                Src = fileDisplayInfos?.Url ?? await fileService.CreateDataUrlAsync(fileDisplayInfos?.ContentStream?.ToByteArray() ?? throw new ArgumentNullException("No stream and no url available"), fileDisplayInfos.ContentType, MudExFileDisplay == null || MudExFileDisplay.StreamUrlHandling == StreamUrlHandling.BlobUrl);
             }
             catch (Exception e)
             {

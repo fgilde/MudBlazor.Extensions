@@ -1,0 +1,12 @@
+﻿@inherits MudExJsRequiredBaseComponent<MudExAudioPlayer>
+<style style="display: none;">
+    #@_id > audio::-webkit-media-controls-panel {
+        background-color: @AudioElementBackgroundColor.ToCssStringValue();
+    }
+</style>
+
+
+<div id="@_id" @ref="ElementReference" style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%">
+    <div @ref="_visualizer" style="width: 100%; height: 100%"></div>
+    <audio @ref="_audioElement" style="@AudioElementStyleStr()" preload="metadata" loading="lazy" controls="true" type="@ContentType" src="@Src"></audio>
+</div>

@@ -11,6 +11,8 @@
 @using Nextended.Core.Encode
 @using Nextended.Core.Encryption
 @using System.IO.Compression
+@using System.Reflection
+@using MudBlazor.Extensions.Components.Base
 @inherits MudExObjectEdit<T>
 @typeparam T
 
@@ -63,8 +65,7 @@ else
             Task.Delay(500).ContinueWith(_ => InvokeAsync(StateHasChanged));
         }
     }
-
-
+    
     protected override ObjectEditMeta<T> ConfigureMetaBase(ObjectEditMeta<T> meta)
     {
         meta.IgnoreAllObsoleteFields();
@@ -74,8 +75,8 @@ else
         else
             meta.GroupByCategoryAttribute();
         meta.Properties<string>()
-            .Where(p => p?.Value?.ToString()?.StartsWith("<g") == true || p?.Value?.ToString()?.StartsWith("<path") == true)
-            .RenderWith<MudExIconPicker, string, string>(edit => edit.Value);
+        .Where(p => p?.Value?.ToString()?.StartsWith("<g") == true || p?.Value?.ToString()?.StartsWith("<path") == true)
+        .RenderWith<MudExIconPicker, string, string>(edit => edit.Value);
 
         meta.AllProperties.WrapIn<PropertyInfoContainer<T>>((p, cmp) => cmp.Property = p.PropertyInfo);
 
@@ -85,25 +86,25 @@ else
     RenderFragment RenderToolbarExtraContent()
     {
         return
-            @<div>
-                @if (!SearchActive)
-                {
-                    <MudTooltip Text="Edit in TryMudEx">
-                        <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.PlayArrow" OnClick="@EditCode"/>
-                    </MudTooltip>
-                    <MudTooltip Text="Show Markup">
-                        <MudIconButton Icon="@Icons.Material.Filled.Code" OnClick="@ShowCode"/>
-                    </MudTooltip>
-                    <MudTooltip Text="Show or hide inherited fields from base class">
-                        <MudIconButton OnClick="@(() => OnChangeInherit(!_showInherited))" Color="@(_showInherited ? Color.Warning : Color.Default)"
-                                       Icon="@(_showInherited ? Icons.Material.Filled.Workspaces : Icons.Material.Outlined.Workspaces)"></MudIconButton>
-                    </MudTooltip>
-                    <MudTooltip Text="Group by types">
-                        <MudIconButton OnClick="@(() => OnChangeGrouping(!_groupByTypes))" Color="@(_groupByTypes ? Color.Warning : Color.Default)"
-                                       Icon="@(_groupByTypes ? Icons.Material.Filled.TypeSpecimen : Icons.Material.Outlined.TypeSpecimen)"></MudIconButton>
-                    </MudTooltip>
-                }
-            </div>;
+    @<div>
+        @if (!SearchActive)
+    {
+        <MudTooltip Text="Edit in TryMudEx">
+            <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.PlayArrow" OnClick="@EditCode" />
+        </MudTooltip>
+        <MudTooltip Text="Show Markup">
+            <MudIconButton Icon="@Icons.Material.Filled.Code" OnClick="@ShowCode" />
+        </MudTooltip>
+        <MudTooltip Text="Show or hide inherited fields from base class">
+            <MudIconButton OnClick="@(() => OnChangeInherit(!_showInherited))" Color="@(_showInherited ? Color.Warning : Color.Default)"
+                           Icon="@(_showInherited ? Icons.Material.Filled.Workspaces : Icons.Material.Outlined.Workspaces)"></MudIconButton>
+        </MudTooltip>
+        <MudTooltip Text="Group by types">
+            <MudIconButton OnClick="@(() => OnChangeGrouping(!_groupByTypes))" Color="@(_groupByTypes ? Color.Warning : Color.Default)"
+                           Icon="@(_groupByTypes ? Icons.Material.Filled.TypeSpecimen : Icons.Material.Outlined.TypeSpecimen)"></MudIconButton>
+        </MudTooltip>
+    }
+    </div>;
     }
 
     private Task OnChangeInherit(bool b)
@@ -130,7 +131,7 @@ else
     private async Task ShowCode()
     {
         var cls = await MudExStyleBuilder.Default.WithOverflow("hidden").AsImportant().BuildAsClassRuleAsync("hidden-overflow");
-        
+
         await DialogService.ShowComponentInDialogAsync<MudExCodeView>("Markup", null,
             md =>
             {

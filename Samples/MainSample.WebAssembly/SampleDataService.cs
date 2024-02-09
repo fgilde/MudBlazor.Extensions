@@ -32,6 +32,7 @@ public class SampleDataService
         yield return (CreateSampleFile("readme.md", "text/markdown"));
         yield return (CreateSampleFile("Header.tiff", "image/tiff"));
         yield return (CreateSampleFile("SweetieBubbleGum-Regular.ttf", "font/ttf"));
+        yield return (CreateSampleFile("electro-psycho-ibiza-no-vocal-sample-edit-169343.mp3", "audio/mpeg3"));
     }
 
     public async Task<IEnumerable<SampleFileWithStream?>> GetSampleFilesWithStreamAsync()

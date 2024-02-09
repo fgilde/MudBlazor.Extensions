@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using BlazorJS.Attributes;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 
@@ -65,6 +66,19 @@ public abstract class MudExJsRequiredBaseFormComponent<T, TData, U> : MudExBaseF
         JsReference = references.jsObjectReference;
         ModuleReference = references.moduleReference;
         _jsReferenceCreatedCompletionSource.TrySetResult(JsReference);
+    }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var hasJsChanges = parameters.AffectedForJs(this);
+        await base.SetParametersAsync(parameters);
+        if (hasJsChanges)
+            await OnJsOptionsChanged();
+    }
+
+    protected virtual Task OnJsOptionsChanged()
+    {
+        return Task.CompletedTask;
     }
 
     /// <inheritdoc/>

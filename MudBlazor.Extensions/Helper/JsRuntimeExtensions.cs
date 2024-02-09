@@ -13,22 +13,7 @@ namespace MudBlazor.Extensions.Helper;
 /// </summary>
 public static class JsRuntimeExtensions
 {
-    /// <summary>
-    /// Checks if a namespace exists
-    /// </summary>
-    public static async Task<bool> IsNamespaceAvailableAsync(this IJSRuntime js, string ns) 
-        => await js.InvokeAsync<bool>("eval", $"typeof {ns} !== 'undefined'");
-
-    public static async Task<bool> IsElementAvailableAsync(this IJSRuntime js, string elementId)
-        => await js.InvokeAsync<bool>("eval", $"!!document.getElementById('{elementId}')");
-
-    public static async Task RemoveElementAsync(this IJSRuntime js, string id)
-    {
-        var script = $"var element = document.getElementById('{id}'); if (element) element.parentNode.removeChild(element);";
-        await js.InvokeVoidAsync("eval", script);
-    }
-
-
+    
     /// <summary>
     /// Checks if given mouse args are within given element.
     /// </summary>

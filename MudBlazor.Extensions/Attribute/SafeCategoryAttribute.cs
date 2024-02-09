@@ -1,16 +1,22 @@
 ﻿namespace MudBlazor.Extensions.Attribute;
 
 /// <summary>
-/// Don't know why i need this but however why MudBlazor think its a good idea to throw an exception if the category is not valid
-/// This is something I don't understand on a string name based param. So I created this attribute to prevent this exception.
+/// Don't know why I need this but however MudBlazor throw's an exception if the category is not valid
+/// So I created this attribute to prevent this exception.
 /// </summary>
 public class SafeCategoryAttribute : CategoryAttribute
 {
+    string _name;
     /// <summary>
     /// Constructor
     /// </summary>
-    public SafeCategoryAttribute(string name) : base(GetValidCategory(name)) { }
+    public SafeCategoryAttribute(string name) : base(GetValidCategory(name))
+    {
+        _name = name;
+    }
 
+    public new string Name => _name;
+    
     private static string GetValidCategory(string name)
     {
         try
@@ -26,7 +32,7 @@ public class SafeCategoryAttribute : CategoryAttribute
         {
             // If an ArgumentException was thrown, the name is not valid.
             // Return "Misc" as a safe default.
-            return "Misc";
+            return CategoryTypes.Element.Misc;
         }
     }
 }

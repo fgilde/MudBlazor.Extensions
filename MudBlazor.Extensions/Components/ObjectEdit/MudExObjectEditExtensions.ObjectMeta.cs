@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Extensions.Localization;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using Nextended.Core.Extensions;
 
@@ -87,6 +88,8 @@ public static partial class MudExObjectEditExtensions
         => meta?.SetProperties(m => m.AllProperties.Apply(p => p.WithGroup(groupFunc(p.PropertyInfo.GetAttributes<TAttribute>(true).FirstOrDefault()))));
 
     public static ObjectEditMeta<T> GroupByCategoryAttribute<T>(this ObjectEditMeta<T> meta, string fallbackGroupName = "Default")
-        => meta.GroupByAttribute<T, CategoryAttribute>(attribute => attribute?.Name ?? fallbackGroupName);
+        => meta.GroupByAttribute<T, CategoryAttribute>(attribute => attribute is SafeCategoryAttribute safeCategory
+            ? safeCategory.Name
+            : attribute?.Name ?? fallbackGroupName);
     
 }
