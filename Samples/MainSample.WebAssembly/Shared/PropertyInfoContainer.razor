@@ -42,7 +42,7 @@
                 DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass)
             };
 
-        await DialogService.ShowComponentInDialogAsync<Api>("Info", $"{ApiMemberInfo.GetGenericFriendlyTypeName(Type)} - {Property.Name}",
+        await DialogService.ShowComponentInDialogAsync<MudExApiView>("Info", $"{ApiMemberInfo.GetGenericFriendlyTypeName(Type)} - {Property.Name}",
             api =>
             {
                 //api.Search = Property.Name;

@@ -1,5 +1,6 @@
 ﻿@page "/simple-dialogs"
 @using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Options
 
 @attribute [Demo(Group = "Dialog Samples", Name = "Simple Dialogs", Documentation = "Demo for simple integrated useful dialogs. Prompt, Info, MessageBox", Order = 2, Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExMessageDialog), typeof(MudExPromptDialog) })]
 
@@ -28,7 +29,9 @@
 
     private async Task Prompt()
     {
-        var name = await DialogService.PromptAsync("Enter name", "Please enter your name", Icons.Material.Filled.VerifiedUser, s => !string.IsNullOrEmpty(s));
+        var op = DialogOptionsEx.DefaultDialogOptions;
+        op.NoHeader = true;
+        var name = await DialogService.PromptAsync("Enter name", "Please enter your name", Icons.Material.Filled.VerifiedUser, s => !string.IsNullOrEmpty(s), op);
         if (name != null)
         {
             await JsRuntime.InvokeVoidAsync("alert", $"Hello {name}");

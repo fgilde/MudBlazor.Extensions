@@ -21,7 +21,7 @@
 
         function dragMouseDown(e) {
             e = e || window.event;
-            e.preventDefault();
+            //e.preventDefault();
             cursorPos = { x: e.clientX, y: e.clientY };
             document.onmouseup = closeDragElement;
             document.onmousemove = elementDrag;

@@ -1,17 +1,19 @@
-﻿using Microsoft.AspNetCore.Components;
-using MudBlazor;
-using System.Reflection;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Extensions.Api;
 
-namespace MainSample.WebAssembly.Shared;
+namespace MudBlazor.Extensions.Components;
 
-public partial class Api
+public partial class MudExApiView
 {
     private bool _loaded;
     private string _searchString;
     private MudExpansionPanel _methodPanel;
     private MudExpansionPanel _propertyPanel;
 
+    [Parameter] public string ApiLinkPath { get; set; } = "api";
+    
     [Parameter]
     public Type Type { get; set; }
 
@@ -25,6 +27,8 @@ public partial class Api
     [Parameter] public bool Compact { get; set; }
     [Parameter] public string[]? ShowOnly { get; set; }
 
+    [Inject] IDialogService DialogService { get; set; }
+    [Inject] IServiceProvider ServiceProvider { get; set; }
 
     [Parameter]
     public bool IsInitiallyExpanded { get; set; } = true;
@@ -80,5 +84,15 @@ public partial class Api
         Methods ??= await ApiMemberInfo<MethodInfo>.AllMethodsOf(Type); 
         _loaded = true;
         await InvokeAsync(StateHasChanged);
+    }
+
+    private Task HandleLinkClicked((bool isLink, string text, string linkHref) segment)
+    {
+        var nav = ServiceProvider.GetService<NavigationManager>();
+        if (nav != null)
+        {
+            nav.NavigateTo(segment.linkHref);
+        }
+        return Task.CompletedTask;
     }
 }

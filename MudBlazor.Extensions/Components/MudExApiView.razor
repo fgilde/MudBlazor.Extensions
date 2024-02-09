@@ -1,17 +1,15 @@
 ﻿@using System.Reflection
 @using System.Text.RegularExpressions
 @using Microsoft.AspNetCore.Components.Rendering
-@using Microsoft.AspNetCore.Http.Authentication
 @using MudBlazor.Extensions.Api
 @using MudBlazor.Extensions.Core.Css
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
-@using MudBlazor.Utilities
 @using Nextended.Core.Extensions
 
 @if (ShowHeader)
 {
-    <HeaderForType Type="@Type"></HeaderForType>
+   @*  <HeaderForType Type="@Type"></HeaderForType> *@
 }
 
 @if (ShowInheritance)
@@ -100,7 +98,7 @@
 
                         <PropertyColumn Hidden="@(!ShowInherited)" Property="x => x.MemberInfo" Title="Declared on">
                             <CellTemplate>
-                                <MudLink Typo="Typo.subtitle2" Href="@($"/a/{context.Item.MemberInfo.DeclaringType.Name}")">@ApiMemberInfo.GetGenericFriendlyTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
+                                <MudLink Typo="Typo.subtitle2" Href="@($"/{ApiLinkPath.EnsureEndsWith("/")}{context.Item.MemberInfo.DeclaringType.Name}")">@ApiMemberInfo.GetGenericFriendlyTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
                             </CellTemplate>
                         </PropertyColumn>
                     }
@@ -161,7 +159,7 @@
 
                     <PropertyColumn Hidden="@(!ShowInherited)" Property="x => x.MemberInfo" Title="Declared on">
                         <CellTemplate>
-                            <MudLink Typo="Typo.subtitle2" Href="@($"/a/{context.Item.MemberInfo.DeclaringType.Name}")">@ApiMemberInfo.GetGenericFriendlyTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
+                            <MudLink Typo="Typo.subtitle2" Href="@($"/{ApiLinkPath.EnsureEndsWith("/")}{context.Item.MemberInfo.DeclaringType.Name}")">@ApiMemberInfo.GetGenericFriendlyTypeName(context.Item.MemberInfo.DeclaringType)</MudLink>
                         </CellTemplate>
                     </PropertyColumn>
                     <PropertyColumn Property="x => x.Description"/>
@@ -355,7 +353,7 @@
                             tooltipBuilder.OpenElement(level++, "a");
                             tooltipBuilder.AddAttribute(level, "href", segment.linkHref);
                             // Hack because click events don't work ... 
-                            tooltipBuilder.AddAttribute(level, "onmousedown", EventCallback.Factory.Create<MouseEventArgs>(this, () => NavigationManager.NavigateTo(segment.linkHref)));
+                            tooltipBuilder.AddAttribute(level, "onmousedown", EventCallback.Factory.Create<MouseEventArgs>(this, () => HandleLinkClicked(segment)));
                             tooltipBuilder.AddAttribute(level, "class", "api-link");
                             tooltipBuilder.AddContent(level, segment.text);
                             tooltipBuilder.CloseElement();
@@ -440,7 +438,7 @@
         declaringType = Regex.Replace(declaringType, @"`\d+", "");
 
         //return $"/api/{declaringType}#{memberName}";
-        return $"/api/{declaringType}/{memberName}";
+        return $"/{ApiLinkPath.EnsureEndsWith("/")}{declaringType}/{memberName}";
     }
 
     // Helper method to extract a user-friendly display name from the full name
@@ -459,7 +457,7 @@
             mainType = mainType.TrimStart('(');
         if (string.IsNullOrEmpty(mainType) || mainType == ")" || mainType == "(" || mainType == "T" || (mainType.Length > 1 && mainType.StartsWith("T") && char.IsUpper(mainType[1])))
             return null;
-        return $"/a/{mainType}";
+        return $"/{ApiLinkPath.EnsureEndsWith("/")}{mainType}";
     }
 
 
