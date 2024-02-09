@@ -29,9 +29,7 @@
 
     private async Task Prompt()
     {
-        var op = DialogOptionsEx.DefaultDialogOptions;
-        op.NoHeader = true;
-        var name = await DialogService.PromptAsync("Enter name", "Please enter your name", Icons.Material.Filled.VerifiedUser, s => !string.IsNullOrEmpty(s), op);
+        var name = await DialogService.PromptAsync("Enter name", "Please enter your name", Icons.Material.Filled.VerifiedUser, s => !string.IsNullOrEmpty(s));
         if (name != null)
         {
             await JsRuntime.InvokeVoidAsync("alert", $"Hello {name}");
