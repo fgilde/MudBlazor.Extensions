@@ -387,6 +387,7 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2024-01-22 15:26:40 -->
+ - 1.7.84 > Update MudBlazor to 6.15.0
  - 1.7.84 > Fix hidden content sometimes in MudExFileDisplayDialog
  - 1.7.84 > Fix Bug that no input can selected in draggable dialogs without header
  - 1.7.84 > Register [MudExAudioPlayer](https://www.mudex.org/audio-player) as file viewer for audio files [see file sample](https://www.mudex.org/file-display?file=electro-psycho-ibiza-no-vocal-sample-edit-169343.mp3)
