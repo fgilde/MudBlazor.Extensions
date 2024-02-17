@@ -1,8 +1,8 @@
-@using BrowserFileExtensions = MudBlazor.Extensions.Helper.BrowserFileExt
+@using MudBlazor.Extensions.Helper
 @inherits MudExFileDisplay
 
 @namespace MudBlazor.Extensions.Components
-<MudDialog Style="@Style" Class="@Class" ClassContent="@ClassContent">
+<MudDialog Style="@Style" Class="@(MudExCss.Get(MudExCss.Classes.Dialog.FullHeightContent, "overflow-hidden", MudExCss.Classes.Dialog._Initial))" ClassContent="@ClassContent">
     <TitleContent>
         <MudText Typo="Typo.h6">
             <MudExIcon Color="@DialogIconColor" Icon="@Icon" Class="mr-3 mb-n1" />

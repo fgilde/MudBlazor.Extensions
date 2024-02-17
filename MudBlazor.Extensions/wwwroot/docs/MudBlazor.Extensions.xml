@@ -590,6 +590,26 @@
         <member name="M:MudBlazor.Extensions.Components.MoveContent.ImportModuleAndCreateJsAsync">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.AnimateBorderColor">
+            <summary>
+            Mode of border animation for the audio player
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.AnimateBorderColor.None">
+            <summary>
+            None
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.AnimateBorderColor.OnPlay">
+            <summary>
+            Only on play
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.AnimateBorderColor.Always">
+            <summary>
+            Border is always animated
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExAudioPlayer">
             <summary>
             Blazor wrapper component for AudioMotionAnalyzer
@@ -610,6 +630,11 @@
             Content type of the audio file
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExAudioPlayer.AutoShowHideAudioElement">
+            <summary>
+            If true the audio player will be shown and hidden automatically depending on mouse hover
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExAudioPlayer.FileDisplayInfos">
             <summary>
             The file display infos
@@ -620,18 +645,15 @@
             Cascading parameter to get the parent MudExFileDisplay if present
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExAudioPlayer.AudioElementBackgroundColor">
+            <summary>
+            Set the audio element background color use null to use color from visualizer gradient
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExAudioPlayer.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExAudioPlayer.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExAudioPlayer.GetJsArguments">
-            <summary>
-            Gets the JavaScript arguments to pass to the component.
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExAudioPlayer.ImportModuleAndCreateJsAsync">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExBaseInput`1">
@@ -2120,9 +2142,6 @@
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDialog.OnParametersSet">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDialog.OnInitialized">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayFont">

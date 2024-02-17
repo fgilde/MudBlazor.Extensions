@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
-using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 
 namespace MudBlazor.Extensions.Components;
@@ -53,14 +52,7 @@ public partial class MudExFileDisplayDialog
         base.OnParametersSet();
         FileName ??=MudDialog.Title;
     }
-
-    /// <inheritdoc />
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        Class ??= MudExCss.Get(MudExCss.Classes.Dialog.FullHeightContent, "overflow-hidden", MudExCss.Classes.Dialog._Initial);
-    }
-
+    
     public static Task<IMudExDialogReference<MudExFileDisplayDialog>> Show(IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(url, fileName, contentType, options);
     public static Task<IMudExDialogReference<MudExFileDisplayDialog>> Show(IDialogService dialogService, IBrowserFile browserFile, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(browserFile, options);
     public static Task<IMudExDialogReference<MudExFileDisplayDialog>> Show(IDialogService dialogService, Stream stream, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(stream, fileName, contentType, options);

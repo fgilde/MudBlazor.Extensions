@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using AuralizeBlazor;
+using AuralizeBlazor.Options;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
@@ -7,27 +10,20 @@ using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Services;
 using Nextended.Core;
 using Nextended.Core.Extensions;
-using BlazorJS;
-using BlazorJS.Attributes;
 
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
 /// Blazor wrapper component for AudioMotionAnalyzer
 /// </summary>
-public partial class MudExAudioPlayer : IMudExFileDisplay
+public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
 {
     const string CATEGORY_PLAYER = "Player";
-    
+    bool _mouseWheelNeedsAlt;
     private string _id = $"mud-ex-audio-player-{Guid.NewGuid().ToFormattedId()}";
-    private List<ElementReference> _audioElements = new();
     private ElementReference _visualizer;
     private IJSObjectReference _audioMotion;
-
-    private ElementReference _audioElement
-    {
-        set => _audioElements.Add(value);
-    }
+    private ElementReference _audioElement;
 
     [Inject] private MudExFileService FileService { get; set; }
 
@@ -47,178 +43,36 @@ public partial class MudExAudioPlayer : IMudExFileDisplay
     [Parameter] public string ContentType { get; set; }
 
     /// <summary>
+    /// If true the audio player will be shown and hidden automatically depending on mouse hover
+    /// </summary>
+    [Parameter, SafeCategory(CATEGORY_PLAYER)] public bool AutoShowHideAudioElement { get; set; } = true;
+
+    /// <summary>
     /// The file display infos
     /// </summary>
-    [Parameter] public IMudExFileDisplayInfos FileDisplayInfos { get; set; }
+    [Parameter, IgnoreOnObjectEdit] public IMudExFileDisplayInfos FileDisplayInfos { get; set; }
 
     /// <summary>
     /// Cascading parameter to get the parent MudExFileDisplay if present
     /// </summary>
-    [CascadingParameter] public MudExFileDisplay MudExFileDisplay { get; set; }
+    [CascadingParameter, IgnoreOnObjectEdit] public MudExFileDisplay MudExFileDisplay { get; set; }
 
-    [Parameter, SafeCategory(CATEGORY_PLAYER)] public bool AnimateAudioElementBorderColor { get; set; }
-    [Parameter, SafeCategory(CATEGORY_PLAYER)] public MudExColor AudioElementBorderColor { get; set; } = MudExColor.Primary;
-    [Parameter, SafeCategory(CATEGORY_PLAYER)] public MudExColor AudioElementBackgroundColor { get; set; } = MudExColor.Surface;
+    [Parameter, SafeCategory(CATEGORY_PLAYER)] public AnimateBorderColor AnimateAudioElementBorderColor { get; set; } = AnimateBorderColor.OnPlay;
+    [Parameter, SafeCategory(CATEGORY_PLAYER)] public AnimateBorderColor AnimateVisualizerBorderColor { get; set; } = AnimateBorderColor.OnPlay;
+    [Parameter, SafeCategory(CATEGORY_PLAYER)] public MudExColor AudioElementBorderColor { get; set; } = MudExColor.Info;
+
+    /// <summary>
+    /// Set the audio element background color use null to use color from visualizer gradient
+    /// </summary>
+    [Parameter, SafeCategory(CATEGORY_PLAYER)] public MudExColor AudioElementBackgroundColor { get; set; }
+    [Parameter, SafeCategory(CATEGORY_PLAYER)] public MudExColor VisualizerBackgroundColor { get; set; }
+
     [Parameter, SafeCategory(CATEGORY_PLAYER)] public BorderStyle AudioElementBorderStyle { get; set; } = BorderStyle.Solid;
-    [Parameter, SafeCategory(CATEGORY_PLAYER)] public MudExSize<double> AudioElementBorderSize { get; set; } = "1px";
+    [Parameter, SafeCategory(CATEGORY_PLAYER)] public BorderStyle VisualizerElementBorderStyle { get; set; } = BorderStyle.Solid;
+    [Parameter, SafeCategory(CATEGORY_PLAYER)] public MudExSize<double> AudioElementWidth { get; set; } = "80%";
+    [Parameter, SafeCategory(CATEGORY_PLAYER)] public MudExSize<double> AudioElementBorderSize { get; set; } = "2px";
+    [Parameter, SafeCategory(CATEGORY_PLAYER)] public MudExSize<double> VisualizerElementBorderSize { get; set; } = "3px";
 
-
-    #region Audio Motion
-    
-
-    [Parameter, ForJs, SafeCategory("AudioProcessing")]
-    public int Sensitivity { get; set; } = 100;
-
-
-    [Parameter, ForJs("channelLayout"), SafeCategory("AudioProcessing")]
-    public ChannelLayout ChannelLayout { get; set; } = ChannelLayout.Single;
-
-    [Parameter, ForJs(IgnoreOnParams = true)]
-    public bool Stereo
-    {
-        get => ChannelLayout != ChannelLayout.Single;
-        set => ChannelLayout = value ? ChannelLayout.DualVertical : ChannelLayout.Single;
-    }
-
-
-    [Parameter, ForJs("frequencyScale"), SafeCategory("AudioProcessing")]
-    public FrequencyScale FrequencyScale { get; set; } = FrequencyScale.Log;
-
-    [Parameter, ForJs("fftSize"), SafeCategory("AudioProcessing")]
-    public int FFTSize { get; set; } = 8192;
-
-    [Parameter, ForJs("maxDecibels"), SafeCategory("AudioProcessing")]
-    public int MaxDecibels { get; set; } = -25;
-
-    [Parameter, ForJs("minDecibels"), SafeCategory("AudioProcessing")]
-    public int MinDecibels { get; set; } = -85;
-
-    [Parameter, ForJs("maxFreq"), SafeCategory("AudioProcessing")]
-    public int MaxFrequency { get; set; } = 22000;
-
-    [Parameter, ForJs("minFreq"), SafeCategory("AudioProcessing")]
-    public int MinFrequency { get; set; } = 20;
-
-    [Parameter, ForJs("smoothing"), SafeCategory("AudioProcessing")]
-    public double Smoothing { get; set; } = 0.5;
-
-    [Parameter, ForJs("volume"), SafeCategory("AudioProcessing")]
-    public double Volume { get; set; } = 1;
-
-    [Parameter, ForJs("weightingFilter"), SafeCategory("AudioProcessing")]
-    public WeightingFilter WeightingFilter { get; set; }
-
-    [Parameter, ForJs, SafeCategory("ControlAndModes")]
-    public VisualizationMode Mode { get; set; } = VisualizationMode.DescreteFrequencies;
-    
-    [Parameter, ForJs("maxFPS"), SafeCategory("Appearance")]
-    public int MaxFPS { get; set; } = 0;
-
-    [Parameter, ForJs("reflexRatio"), SafeCategory("Appearance")]
-    public double ReflexRatio { get; set; } = 0;
-
-    [Parameter, ForJs("roundBars"), SafeCategory("Appearance")]
-    public bool RoundBars { get; set; } = false;
-
-    [Parameter, ForJs("showBgColor"), SafeCategory("Appearance")]
-    public bool ShowBgColor { get; set; } = true;
-
-    [Parameter, ForJs("showFPS"), SafeCategory("Appearance")]
-    public bool ShowFPS { get; set; } = false;
-
-    [Parameter, ForJs("showPeaks"), SafeCategory("Appearance")]
-    public bool ShowPeaks { get; set; } = true;
-
-    [Parameter, ForJs("showScaleX"), SafeCategory("Appearance")]
-    public bool ShowScaleX { get; set; } = true;
-
-    [Parameter, ForJs("showScaleY"), SafeCategory("Appearance")]
-    public bool ShowScaleY { get; set; } = false;
-
-    [Parameter, ForJs("spinSpeed"), SafeCategory("Appearance")]
-    public double SpinSpeed { get; set; } = 0;
-
-    [Parameter, ForJs("splitGradient"), SafeCategory("Appearance")]
-    public bool SplitGradient { get; set; } = false;
-
-    [Parameter, ForJs("start"), SafeCategory("Appearance")]
-    public bool IsActive { get; set; } = true;
-
-    [Parameter, ForJs("trueLeds"), SafeCategory("Appearance")]
-    public bool TrueLeds { get; set; } = false;
-
-    [Parameter, ForJs("useCanvas"), SafeCategory("Appearance")]
-    public bool UseCanvas { get; set; } = true;
-
-
-    [Parameter, ForJs("colorMode"), SafeCategory("Appearance")]
-    public ColorMode ColorMode { get; set; } = ColorMode.Gradient;
-
-    [Parameter, ForJs("gradient"), SafeCategory("Appearance")]
-    public AudioMotionGradient Gradient { get; set; } = AudioMotionGradient.Classic;
-
-    [Parameter, ForJs("alphaBars"), SafeCategory("Appearance")]
-    public bool AlphaBars { get; set; } = false;
-
-    [Parameter, ForJs("ansiBands"), SafeCategory("Appearance")]
-    public bool AnsiBands { get; set; } = false;
-
-    [Parameter, ForJs("barSpace"), SafeCategory("Appearance")]
-    public double BarSpacing { get; set; } = 0.1;
-
-    [Parameter, ForJs("bgAlpha"), SafeCategory("Appearance")]
-    public double BgAlpha { get; set; } = 0.7;
-
-    [Parameter, ForJs("fillAlpha"), SafeCategory("Appearance")]
-    public double FillAlpha { get; set; } = 1;
-
-    [Parameter, ForJs("ledBars"), SafeCategory("Appearance")]
-    public bool LedBars { get; set; } = false;
-
-    [Parameter, ForJs("linearAmplitude"), SafeCategory("Appearance")]
-    public bool LinearAmplitude { get; set; } = false;
-
-    [Parameter, ForJs("linearBoost"), SafeCategory("Appearance")]
-    public double LinearBoost { get; set; } = 1;
-
-    [Parameter, ForJs("lineWidth"), SafeCategory("Appearance")]
-    public int LineWidth { get; set; } = 0;
-
-    [Parameter, ForJs("loRes"), SafeCategory("Appearance")]
-    public bool LoRes { get; set; } = false;
-
-    [Parameter, ForJs("lumiBars"), SafeCategory("Appearance")]
-    public bool LumiBars { get; set; } = false;
-
-    [Parameter, ForJs("mirror"), SafeCategory("Appearance")]
-    public MirrorMode Mirror { get; set; } = MirrorMode.None;
-
-    [Parameter, ForJs("noteLabels"), SafeCategory("Appearance")]
-    public bool NoteLabels { get; set; } = false;
-
-    [Parameter, ForJs("outlineBars"), SafeCategory("Appearance")]
-    public bool OutlineBars { get; set; } = false;
-
-    [Parameter, ForJs("overlay"), SafeCategory("Appearance")]
-    public bool Overlay { get; set; } = false;
-
-    [Parameter, ForJs("peakLine"), SafeCategory("Appearance")]
-    public bool PeakLine { get; set; } = false;
-
-    [Parameter, ForJs("radial"), SafeCategory("Appearance")]
-    public bool Radial { get; set; } = false;
-
-    [Parameter, ForJs("reflexAlpha"), SafeCategory("Appearance")]
-    public double ReflexAlpha { get; set; } = 0.15;
-
-    [Parameter, ForJs("reflexBright"), SafeCategory("Appearance")]
-    public double ReflexBright { get; set; } = 1;
-
-    [Parameter, ForJs("reflexFit"), SafeCategory("Appearance")]
-    public bool ReflexFit { get; set; }
-
-
-    #endregion
 
 
     /// <inheritdoc />
@@ -236,6 +90,8 @@ public partial class MudExAudioPlayer : IMudExFileDisplay
             {
                 Src = fileDisplayInfos?.Url ?? await FileService.CreateDataUrlAsync(fileDisplayInfos?.ContentStream?.ToByteArray() ?? throw new ArgumentNullException("No stream and no url available"), fileDisplayInfos.ContentType, MudExFileDisplay == null || MudExFileDisplay.StreamUrlHandling == StreamUrlHandling.BlobUrl);
                 ContentType = fileDisplayInfos?.ContentType;
+                if (MudExFileDisplay != null)
+                    ShowMessage(fileDisplayInfos.FileName);
             }
             catch (Exception e)
             {
@@ -245,55 +101,103 @@ public partial class MudExAudioPlayer : IMudExFileDisplay
         }
     }
 
-    private async Task UpdateJsOptions()
+    protected override void HandleIsPlayingChanged(bool value)
     {
-        if (JsReference != null)
-            await JsReference.InvokeVoidAsync("setOptions", JsOptions());
+        base.HandleIsPlayingChanged(value);
+        StateHasChanged();
     }
 
-    protected override async Task OnJsOptionsChanged()
+    private MudExColor _bg = MudExColor.Surface;
+    MudExColor[] _borderColors = new[] { MudExColor.Primary, MudExColor.Secondary, MudExColor.Warning, MudExColor.Error, };
+    protected override void HandleOnGradientChanged(AudioMotionGradient value)
     {
-        await UpdateJsOptions();
+        base.HandleOnGradientChanged(value);
+        _bg = !string.IsNullOrEmpty(value.BgColor) ? new MudExColor(value.BgColor) : MudExColor.Surface;
+        _borderColors = value.ColorStops.Select(s => new MudExColor(s.Color)).ToArray();
+        StateHasChanged();
     }
 
-    private object JsOptions()
+    protected override void HandleOnPresetApplied(AuralizerPreset preset)
     {
-        return this.AsJsObject(new
+        base.HandleOnPresetApplied(preset);
+        if (MudExFileDisplay != null)
+            ApplyInitialSettingsForFileView(false);
+    }
+
+    private void ApplyInitialSettingsForFileView(bool withPreset)
+    {
+        if (withPreset)
         {
-            audioMotion = _audioMotion,
-            audioElements = _audioElements.ToArray(),
-            visualizer = _visualizer
-        });
-    }
-
-    /// <summary>
-    /// Gets the JavaScript arguments to pass to the component.
-    /// </summary>
-    public override object[] GetJsArguments() => new[] { ElementReference, CreateDotNetObjectReference(), JsOptions() };
-
-    /// <inheritdoc />
-    public override async Task ImportModuleAndCreateJsAsync()
-    {
-        if(!await JsRuntime.IsNamespaceAvailableAsync("AudioMotionAnalyzer"))
-        {
-            //_audioMotion = await JsRuntime.ImportModuleAsync(JsImportHelper.JsPath("/js/libs/audioMotion-analyzer.min.js"));
-            _audioMotion = await JsRuntime.ImportModuleAsync("https://cdn.skypack.dev/audiomotion-analyzer?min");
+            InitialPreset = AuralizerPreset.BarkScaleLinearAmplitude;
+            Presets = AuralizerPreset.All;
         }
-        await base.ImportModuleAndCreateJsAsync();
+
+        Height = Width = "100%";
+        ShowBgColor = true;
+        ShowScaleX = false;
+        ShowScaleY = true;
+        _mouseWheelNeedsAlt = true;
     }
 
+    protected override Task HandleMouseWheel(WheelEventArgs arg)
+    {
+        if ((_mouseWheelNeedsAlt && arg.AltKey) || !_mouseWheelNeedsAlt)
+        {
+            return base.HandleMouseWheel(arg);
+        }
+        return Task.CompletedTask;
+    }
+
+    protected override void OnInitialized()
+    {
+        Presets = AuralizerPreset.All;
+
+        ClickAction = VisualizerAction.TogglePlayPause;
+        DoubleClickAction = VisualizerAction.ToggleFullscreen;
+        ContextMenuAction = VisualizerAction.TogglePictureInPicture;
+        
+        if (MudExFileDisplay != null)
+            ApplyInitialSettingsForFileView(true);
+        ChildContent = Player();
+        base.OnInitialized();
+    }
+
+    private MudExColor BgFor(MudExColor c, MudExColor fallback)
+    {
+        if (c.Is(Color.Inherit) || c.Is(Color.Default) || c.Is(Color.Transparent))
+        {
+            return fallback;
+        }
+
+        return c;
+    }
 
     private string AudioElementStyleStr()
     {
+        var animate = (IsPlaying && AnimateAudioElementBorderColor == AnimateBorderColor.OnPlay) || AnimateAudioElementBorderColor == AnimateBorderColor.Always;
         return MudExStyleBuilder.Default
-            .WithMargin("20px")
-            .WithPosition(Core.Css.Position.Absolute)
+            .WithPosition(Core.Css.Position.Relative)
             .WithBorderRadius("27px")
-            .WithBottom(0)
+            .WithBottom(65)
+            .WithWidth(AudioElementWidth)
+            .WithMarginLeft("auto")
+            .WithMarginRight("auto")
             .WithBorderWidth(AudioElementBorderSize)
             .WithBorderStyle(AudioElementBorderStyle)
-            .WithBorderColor(AudioElementBorderColor, !AudioElementBorderColor.Is(Color.Inherit) && !AudioElementBorderColor.Is(Color.Default) && !(AudioElementBorderColor.Is(Color.Transparent) && AnimateAudioElementBorderColor))
-            .WithAnimatedGradientBorder("10px", AudioElementBackgroundColor, new []{MudExColor.Primary, MudExColor.Secondary, MudExColor.Warning, MudExColor.Error, }, AnimateAudioElementBorderColor)
+            .WithBorderColor(AudioElementBorderColor, !animate)
+            .WithAnimatedGradientBorder("10px", BgFor(AudioElementBackgroundColor, _bg), _borderColors, animate)
+            .Build();
+    }    
+    
+
+    private string ContainerStyle()
+    {
+        var animate = (IsPlaying && AnimateVisualizerBorderColor == AnimateBorderColor.OnPlay) || AnimateVisualizerBorderColor == AnimateBorderColor.Always;
+        return MudExStyleBuilder.Default
+            .WithAnimatedGradientBorder(VisualizerElementBorderSize, BgFor(VisualizerBackgroundColor, _bg), _borderColors, animate)
+            .WithBackgroundColor(BgFor(VisualizerBackgroundColor, _bg), !animate)
+            .WithHeight(Height)
+            .WithWidth(Width)
             .Build();
     }
 }

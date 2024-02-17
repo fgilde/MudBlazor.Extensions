@@ -2,7 +2,7 @@
     overflow: auto;
     padding: 10px;
     border: 1px dashed var(--mud-palette-primary);
-    height: 100%;
+    height: 98%;
     width: 100%;
     border-radius: 5px;
     align-items: center;
@@ -53,6 +53,13 @@
     max-height: 100%;
     align-self: stretch;
     max-width: 100%;
+}
+
+.mud-ex-file-display > script {
+    display: none !important;
+}
+.mud-ex-file-display > style {
+    display: none !important;
 }
 
 .mud-ex-file-display:empty {

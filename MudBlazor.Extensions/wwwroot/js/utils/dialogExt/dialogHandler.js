@@ -3,7 +3,9 @@
     handle(dialog) {
         setTimeout(() => {
             super.handle(dialog);
-            setTimeout(() => dialog.classList.remove('mud-ex-dialog-initial'), 50);
+            setTimeout(() => {
+                dialog.classList.remove('mud-ex-dialog-initial');
+            }, 50);
             dialog.__extended = true;
             dialog.setAttribute('data-mud-extended', true);
             dialog.classList.add('mud-ex-dialog');
@@ -12,7 +14,6 @@
         }, 50);
 
     }
-    
 }
 
 window.MudExDialogHandler = MudExDialogHandler;

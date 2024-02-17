@@ -8,7 +8,7 @@
 
 <BrowserDetect @bind-BrowserInfo="@Info" />
 
-<div @ref=ElementReference style="@Style" class="@($"mud-ex-file-display-container {Class}")">
+<div @ref=ElementReference style="@Style" class="@($"mud-ex-file-display-container {Class?.Replace(MudExCss.Classes.Dialog._Initial, "")}")">
     
     @if (!string.IsNullOrWhiteSpace(ErrorMessage) && !_errorClosed)
     {

@@ -1,0 +1,66 @@
+﻿@page "/audio-player"
+
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+@using Nextended.Core.Extensions
+
+@attribute [DemoNew(Group = "File Handling", Name = "MudExAudioPlayer", Order = 3, Icon = Icons.Material.Outlined.AudioFile, Documentation = "This Demo demonstrate using the MudExAudioPlayer without the automatic use in MudExFileDisplay", ForComponentType = typeof(MudExAudioPlayer))]
+
+
+<DemoComponent PageType="@GetType()" Title="MudExAudioPlayer">
+    <SplitContainer>
+        <Left>
+            <MudExAudioPlayer OnReady="Callback" OnPresetApplied="Callback" @ref="component" Src="/sample-data/electro-psycho-ibiza-no-vocal-sample-edit-169343.mp3" />
+        </Left>
+        <Right>
+            @if (_ready)
+            {
+                <ComponentPropertyGrid @bind-GroupByTypes="_groupByTypes" ShowInheritedToggle="false" ShowInherited="true" MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
+            }
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+@code {
+    bool _ready;
+    bool _groupByTypes = false;
+    MudExAudioPlayer component;
+    private Action<ObjectEditMeta<MudExAudioPlayer>> Configure()
+    {
+        return meta =>
+        {
+            meta.Properties(
+                a => a.ConnectAllAudioSources,
+                a => a.Features,
+                a => a.OverlayChildContent,
+                a => a.AudioElements,
+                a => a.IgnoredPropertiesForReset,
+                a => a.Class,
+                a => a.Style,
+                a => a.Presets,
+                a => a.InitialPreset,
+                a => a.Gradient,
+                a => a.GradientLeft,
+                a => a.GradientRight
+            ).Ignore().SelectMany(of => of.Children ?? Array.Empty<ObjectEditPropertyMeta>().ToList()).Recursive(m => m.Children).Ignore();
+            if (!_groupByTypes)
+            {
+                meta.GroupByCategoryAttribute();
+                meta.Properties().Where(p => p.PropertyInfo.DeclaringType == typeof(AuralizeBlazor.Auralizer)).WithGroup("Visualizer");
+            }
+        };
+    }
+
+    private async Task Callback()
+    {
+        await Task.Delay(100);
+        _ready = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void PresetApplied()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+}
+

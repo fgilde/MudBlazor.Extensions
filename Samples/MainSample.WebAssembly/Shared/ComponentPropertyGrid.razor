@@ -29,7 +29,9 @@ else
 @code {
 
     [Parameter] public bool ShowInherited { get; set; }
+    [Parameter] public bool ShowInheritedToggle { get; set; } = true;
     [Parameter] public bool GroupByTypes { get; set; }
+    [Parameter] public EventCallback<bool> GroupByTypesChanged { get; set; }
 
     [Inject] private IJsApiService JsApiService { get; set; }
     [Inject] private MudExFileService FileService { get; set; }
@@ -69,7 +71,11 @@ else
     protected override ObjectEditMeta<T> ConfigureMetaBase(ObjectEditMeta<T> meta)
     {
         meta.IgnoreAllObsoleteFields();
-        meta.IgnoreAllInheritedFieldsIf(_ => !_showInherited, new[] { nameof(MudExBaseInput<T>.Color) });
+        if (ShowInheritedToggle)
+        {
+            meta.IgnoreAllInheritedFieldsIf(_ => !_showInherited, new[] { nameof(MudExBaseInput<T>.Color) });
+        }
+
         if (_groupByTypes)
             meta.GroupByTypes();
         else
@@ -95,10 +101,14 @@ else
         <MudTooltip Text="Show Markup">
             <MudIconButton Icon="@Icons.Material.Filled.Code" OnClick="@ShowCode" />
         </MudTooltip>
-        <MudTooltip Text="Show or hide inherited fields from base class">
-            <MudIconButton OnClick="@(() => OnChangeInherit(!_showInherited))" Color="@(_showInherited ? Color.Warning : Color.Default)"
-                           Icon="@(_showInherited ? Icons.Material.Filled.Workspaces : Icons.Material.Outlined.Workspaces)"></MudIconButton>
-        </MudTooltip>
+        @if (ShowInheritedToggle)
+        {
+            <MudTooltip Text="Show or hide inherited fields from base class">
+                <MudIconButton OnClick="@(() => OnChangeInherit(!_showInherited))" Color="@(_showInherited ? Color.Warning : Color.Default)"
+                               Icon="@(_showInherited ? Icons.Material.Filled.Workspaces : Icons.Material.Outlined.Workspaces)"></MudIconButton>
+            </MudTooltip>
+        }
+
         <MudTooltip Text="Group by types">
             <MudIconButton OnClick="@(() => OnChangeGrouping(!_groupByTypes))" Color="@(_groupByTypes ? Color.Warning : Color.Default)"
                            Icon="@(_groupByTypes ? Icons.Material.Filled.TypeSpecimen : Icons.Material.Outlined.TypeSpecimen)"></MudIconButton>
@@ -116,6 +126,8 @@ else
     private async Task OnChangeGrouping(bool b)
     {
         _groupByTypes = !_groupByTypes;
+        GroupByTypes = _groupByTypes;
+        await GroupByTypesChanged.InvokeAsync(_groupByTypes);
         await CreateMetaIfNotExists(true);
         await Update();
     }

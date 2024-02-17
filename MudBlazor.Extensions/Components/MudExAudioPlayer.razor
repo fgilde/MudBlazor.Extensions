@@ -1,12 +1,46 @@
-﻿@inherits MudExJsRequiredBaseComponent<MudExAudioPlayer>
+﻿@using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Core
+@using AuralizeBlazor
+@using MudBlazor.Extensions.Options
+
+@inherits AuralizeBlazor.Auralizer
+
 <style style="display: none;">
-    #@_id > audio::-webkit-media-controls-panel {
-        background-color: @AudioElementBackgroundColor.ToCssStringValue();
+    #@_id::-webkit-media-controls-panel {
+        background-color: @(BgFor(AudioElementBackgroundColor, _bg).ToCssStringValue()); 
     }
 </style>
 
+@if (AutoShowHideAudioElement)
+{
+    <style>
+        #@_id:not(:hover) {
+            opacity: 0;
+            transform: translateY(20px); 
+        }
 
-<div id="@_id" @ref="ElementReference" style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%">
-    <div @ref="_visualizer" style="width: 100%; height: 100%"></div>
-    <audio @ref="_audioElement" style="@AudioElementStyleStr()" preload="metadata" loading="lazy" controls="true" type="@ContentType" src="@Src"></audio>
+        .blazor-audio-visualizer-container.mouse-over > #@_id {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+}
+
+
+<div style="@ContainerStyle()">
+    @Inherited()
 </div>
+
+@code{
+
+    private RenderFragment Player()
+    {
+        return @<audio id="@_id" @ref="_audioElement" class="mud-ex-animate-all-properties" style="@AudioElementStyleStr()" preload="metadata" loading="lazy" controls="true" type="@ContentType" src="@Src"></audio>;
+    }
+
+    private RenderFragment Inherited() => builder =>
+    {
+        base.BuildRenderTree(builder);
+    };
+
+}
