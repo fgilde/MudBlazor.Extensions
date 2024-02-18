@@ -1225,6 +1225,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         SelectedValues = null;
     }
 
+
     #endregion
 
     protected bool IsValueInList

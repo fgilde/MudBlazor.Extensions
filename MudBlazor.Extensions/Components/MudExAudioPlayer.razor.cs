@@ -21,9 +21,8 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
     const string CATEGORY_PLAYER = "Player";
     bool _mouseWheelNeedsAlt;
     private string _id = $"mud-ex-audio-player-{Guid.NewGuid().ToFormattedId()}";
-    private ElementReference _visualizer;
-    private IJSObjectReference _audioMotion;
-    private ElementReference _audioElement;
+
+    public ElementReference AudioElement { get; private set; }
 
     [Inject] private MudExFileService FileService { get; set; }
 

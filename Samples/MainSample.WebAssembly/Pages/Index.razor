@@ -68,7 +68,7 @@
 </MudExCardList>
 
 <div class="mt-5 mb-5" style="display: flex; justify-content: center; align-items: center;">
-    <MudToggleGroup T="Type" SelectionMode="SelectionMode.MultiSelection" @bind-SelectedValues="_selectedAttributeTypes">
+    <MudToggleGroup T="Type" SelectionMode="SelectionMode.MultiSelection" @bind-Values="_selectedAttributeTypes">
         <MudToggleItem Value="@(typeof(DemoAttribute))">
             <MudIcon Icon="@Icons.Material.Filled.Circle" Size="Size.Small" Color="Color.Default" />
             <MudText Class="ml-3"> Other </MudText>

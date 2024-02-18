@@ -35,7 +35,7 @@
 
     private RenderFragment Player()
     {
-        return @<audio id="@_id" @ref="_audioElement" class="mud-ex-animate-all-properties" style="@AudioElementStyleStr()" preload="metadata" loading="lazy" controls="true" type="@ContentType" src="@Src"></audio>;
+        return @<audio id="@_id" @ref="AudioElement" class="mud-ex-animate-all-properties" style="@AudioElementStyleStr()" preload="metadata" loading="lazy" controls="true" type="@ContentType" src="@Src"></audio>;
     }
 
     private RenderFragment Inherited() => builder =>

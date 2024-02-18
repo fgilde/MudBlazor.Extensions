@@ -37,8 +37,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
 
 
     [Inject] private MudExFileService fileService { get; set; }
-    [Inject] private IDialogService DialogService { get; set; }
-
+    
     /// <summary>
     /// Returns the current status text
     /// </summary>

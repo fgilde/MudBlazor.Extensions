@@ -32,7 +32,7 @@ public partial class MudExCheckBox<T>
         base.BuildRenderTree(builder);
     };
 
-    private string Classname => MudExCssBuilder.From("mud-input-helper-text")
+    private string ClassnameStr => MudExCssBuilder.From("mud-input-helper-text")
         .AddClass("ml-12", HelperTextAlignment == HelperTextAlignment.OnLabel)
         .AddClass("ml-4", HelperTextAlignment == HelperTextAlignment.OnComponent)
         .Build();
