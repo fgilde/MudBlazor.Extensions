@@ -27,7 +27,7 @@ namespace MudBlazor.Extensions.Helper
             => runtime.InitializeMudBlazorExtensionsCoreAsync(force);
 
         /// <summary>
-        /// Imports requires JS module and required css styles for MudBlazor.Extensions
+        /// Imports requires JS module and required css styles for MudBlazor.Extensions and returns the initialized JS runtime
         /// </summary>        
         internal static async Task<IJSRuntime> InitializeMudBlazorExtensionsCoreAsync(this IJSRuntime runtime, bool force = false)
         {
