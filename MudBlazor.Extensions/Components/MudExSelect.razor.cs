@@ -8,15 +8,14 @@ using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using System.Linq.Expressions;
-using static MudBlazor.CategoryTypes;
 
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
-/// An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used and you can specify animations as well
+/// An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used, and you can specify animations as well
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IMudExComponent
+public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExComponent
 {
 
     /// <summary>
@@ -29,7 +28,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     /// Renders the item name
     /// </summary>
     public virtual string ItemNameRender(T item)
-    {        
+    {
         var res = ToStringFunc != null && item != null ? ToStringFunc(item) : Converter.Set(item);
         if (!string.IsNullOrWhiteSpace(res) && !string.IsNullOrWhiteSpace(LocalizerPattern))
         {
@@ -41,6 +40,9 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
 
     #region Constructor, Injected Services, Parameters, Fields
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
     public MudExSelect()
     {
         Adornment = Adornment.End;
@@ -51,29 +53,54 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
 
     private MudExList<T> _list;
 
-    public MudExList<T> MudExList { get => _list; }
+    /// <summary>
+    /// Reference to the internal MudExList
+    /// </summary>
+    public MudExList<T> MudExList => _list;
 
     private bool _dense;
-    private string multiSelectionText;
+    private string _multiSelectionText;
     private IKeyInterceptor _keyInterceptor;
     /// <summary>
     /// The collection of items within this select
     /// </summary>
-    public IReadOnlyList<MudExSelectItem<T>> Items => _items;
+    public IReadOnlyList<MudExSelectItem<T>> Items => ItemList;
 
-    protected internal List<MudExSelectItem<T>> _items = new();
-    protected Dictionary<T, MudExSelectItem<T>> _valueLookup = new();
-    protected Dictionary<T, MudExSelectItem<T>> _shadowLookup = new();
+    /// <summary>
+    /// Items
+    /// </summary>
+    protected internal List<MudExSelectItem<T>> ItemList = new();
+
+    /// <summary>
+    /// Lookup for items
+    /// </summary>
+    protected Dictionary<T, MudExSelectItem<T>> ValueLookup = new();
+
+    /// <summary>
+    /// Shadow lookup for items
+    /// </summary>
+    protected Dictionary<T, MudExSelectItem<T>> ShadowLookup = new();
     private MudExInput<string> _elementReference;
-    internal bool _isOpen;
-    protected internal string _currentIcon { get; set; }
+
+    internal bool IsOpen;
+
+    /// <summary>
+    /// The current Icon
+    /// </summary>
+    protected internal string CurrentIcon { get; set; }
     internal event Action<ICollection<T>> SelectionChangedFromOutside;
 
+    /// <summary>
+    /// Class to be applied
+    /// </summary>
     protected string Classname =>
         new MudExCssBuilder("mud-ex-select")
         .AddClass(Class)
         .Build();
 
+    /// <summary>
+    /// Class to be applied to the inner input element
+    /// </summary>
     protected string InputClassname =>
         new MudExCssBuilder("mud-ex-select-input")
         .AddClass("mud-ex-select-readonly", ReadOnly)
@@ -82,7 +109,10 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         .AddClass(InputClass)
         .Build();
 
-    protected string ChipStyleName =>
+    /// <summary>
+    /// Style to be applied to chip
+    /// </summary>
+    protected string ChipStyleStr =>
         new MudExStyleBuilder()
             .AddRaw(StyleChip)
             .WithColorForVariant(ChipVariant, Color, !Color.IsColor)
@@ -158,7 +188,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     /// Specify an expression which returns the model's field for which validation messages should be displayed when multiple items are selected.
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.FormComponent.Validation)]
-    public Expression<Func<IEnumerable<T>>>? ForMultiple { get; set; }
+    public Expression<Func<IEnumerable<T>>> ForMultiple { get; set; }
 
     /// <summary>
     /// Gets or Sets the function that is used to asynchronously load available items.
@@ -311,6 +341,9 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     [SafeCategory(CategoryTypes.List.Appearance)]
     public virtual bool DisableSelectedItemStyle { get; set; }
 
+    /// <summary>
+    /// Placeholder for the search box.
+    /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Behavior)]
     public virtual string SearchBoxPlaceholder { get; set; } = "Filter...";
@@ -404,14 +437,23 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     [SafeCategory(CategoryTypes.List.Behavior)]
     public virtual bool ChipCloseable { get; set; } = true;
 
+    /// <summary>
+    /// Class to be applied to the chip.
+    /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Behavior)]
     public virtual string ChipClass { get; set; }
 
+    /// <summary>
+    /// Variant to be applied to the chip.
+    /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Behavior)]
     public virtual Variant ChipVariant { get; set; } = Variant.Filled;
 
+    /// <summary>
+    /// Size to be applied to the chip.
+    /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Behavior)]
     public virtual Size ChipSize { get; set; } = Size.Small;
@@ -489,7 +531,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     public virtual bool Clearable { get; set; } = true;
 
     /// <summary>
-    /// If true, shows a searchbox for filtering items. Only works with ItemCollection approach.
+    /// If true, shows a search box for filtering items. Only works with ItemCollection approach.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Behavior)]
@@ -600,7 +642,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         get => _comparer;
         set
         {
-            if (_comparer == value)
+            if (Equals(_comparer, value))
                 return;
             _comparer = value;
             // Apply comparer and refresh selected values
@@ -639,7 +681,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     private bool _selectedValuesSetterStarted = false;
     private HashSet<T> _selectedValues;
     /// <summary>
-    /// Set of selected values. If MultiSelection is false it will only ever contain a single value. This property is two-way bindable.
+    /// Set of selected values. If MultiSelection is false it will only ever contain a single value. This property is two-way bind able.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.FormComponent.Data)]
@@ -659,7 +701,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
                 _selectedValues = new HashSet<T>(set);
                 OnBeforeSelectedChanged(_selectedValues);
                 SelectedValuesChanged.InvokeAsync(new HashSet<T>(SelectedValues));
-               
+
                 if (NeedsValueUpdateForNonMultiSelection()) // No binding so we need to update the value manually
                 {
                     SetValueAsync(_selectedValues.LastOrDefault()).AndForget();
@@ -675,7 +717,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     }
 
     /// <summary>
-    /// Setting value extra can cause an dead loop on object edit so we should only set when necessary
+    /// Setting value extra can cause a dead loop on object edit, so we should only set when necessary
     /// </summary>
     protected virtual bool NeedsValueUpdateForNonMultiSelection()
     {
@@ -689,23 +731,16 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     protected virtual void OnBeforeSelectedChanged(IEnumerable<T> selected)
     { }
 
-    private MudExListItem<T> _selectedListItem;
     private HashSet<MudExListItem<T>> _selectedListItems;
 
-    protected internal MudExListItem<T> SelectedListItem
-    {
-        get => _selectedListItem;
+    /// <summary>
+    /// SelectedListItem
+    /// </summary>
+    protected internal MudExListItem<T> SelectedListItem { get; set; }
 
-        set
-        {
-            if (_selectedListItem == value)
-            {
-                return;
-            }
-            _selectedListItem = value;
-        }
-    }
-
+    /// <summary>
+    /// Selected List Items
+    /// </summary>
     protected internal IEnumerable<MudExListItem<T>> SelectedListItems
     {
         get => _selectedListItems;
@@ -735,6 +770,9 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     /// </summary>
     [Parameter] public EventCallback<IEnumerable<MudExListItem<T>>> SelectedListItemsChanged { get; set; }
 
+    /// <summary>
+    /// Set custom text for the select input field.
+    /// </summary>
     protected async Task SetCustomizedTextAsync(string text, bool updateValue = true,
         List<T> selectedConvertedValues = null,
         Func<List<T>, string> multiSelectionTextFunc = null)
@@ -743,17 +781,20 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         Text = multiSelectionTextFunc?.Invoke(selectedConvertedValues);
 
         // The comparison is made on the multiSelectionText variable
-        if (multiSelectionText != text)
+        if (_multiSelectionText != text)
         {
-            multiSelectionText = text;
-            if (!string.IsNullOrWhiteSpace(multiSelectionText))
+            _multiSelectionText = text;
+            if (!string.IsNullOrWhiteSpace(_multiSelectionText))
                 Touched = true;
             if (updateValue)
                 await UpdateValuePropertyAsync(false);
-            await TextChanged.InvokeAsync(multiSelectionText);
+            await TextChanged.InvokeAsync(_multiSelectionText);
         }
     }
 
+    /// <summary>
+    /// Updates the value property.
+    /// </summary>
     protected override Task UpdateValuePropertyAsync(bool updateText)
     {
         // For MultiSelection of non-string T's we don't update the Value!!!
@@ -762,6 +803,9 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Updates the text property.
+    /// </summary>
     protected override Task UpdateTextPropertyAsync(bool updateValue)
     {
         List<string> textList = new List<string>();
@@ -789,8 +833,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
             }
         }
 
-        // when multiselection is true, we return
-        // a comma separated list of selected values
+        // when multi selection is true, we return a comma separated list of selected values
         if (MultiSelection)
         {
             if (MultiSelectionTextFunc != null)
@@ -802,15 +845,10 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
 
             return SetTextAsync(string.Join(Delimiter, textList), updateValue: updateValue);
         }
-        else
-        {
-            var item = Items.FirstOrDefault(x => Value == null ? x.Value == null : Comparer?.Equals(Value, x.Value) ?? Value.Equals(x.Value));
-            if (item == null)
-            {
-                return SetTextAsync(ItemNameRender(Value), false);
-            }
-            return SetTextAsync((!string.IsNullOrEmpty(item.Text) && item.Value is null ? item.Text : ItemNameRender(item.Value)), updateValue: updateValue);
-        }
+
+
+        var resultItem = Items?.FirstOrDefault(x => Value == null ? x.Value == null : Comparer?.Equals(Value, x.Value) ?? Value.Equals(x.Value));
+        return resultItem == null ? SetTextAsync(ItemNameRender(Value), false) : SetTextAsync((!string.IsNullOrEmpty(resultItem.Text) && resultItem.Value is null ? resultItem.Text : ItemNameRender(resultItem.Value)), updateValue: updateValue);
     }
 
     private string GetSelectTextPresenter()
@@ -823,6 +861,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
 
     #region Lifecycle Methods
 
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -838,12 +877,14 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         }
     }
 
+    /// <inheritdoc />
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
         UpdateIcon();
     }
 
+    /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
 
@@ -884,11 +925,17 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         await base.OnAfterRenderAsync(firstRender);
     }
 
+    /// <summary>
+    /// Force the update of the items in the select menu.
+    /// </summary>
     public void ForceUpdateItems()
     {
         _list?.ForceUpdateItems();
     }
 
+    /// <summary>
+    /// Disposes the component.
+    /// </summary>
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);
@@ -914,7 +961,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         if (Disabled || ReadOnly)
             return;
 
-        if (_list != null && _isOpen)
+        if (_list != null && IsOpen)
         {
             await _list.HandleKeyDown(obj);
         }
@@ -929,7 +976,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
                 {
                     await CloseMenu();
                 }
-                else if (!_isOpen)
+                else if (!IsOpen)
                 {
                     await OpenMenu();
                 }
@@ -939,7 +986,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
                 {
                     await OpenMenu();
                 }
-                else if (!_isOpen)
+                else if (!IsOpen)
                 {
                     await OpenMenu();
                 }
@@ -954,7 +1001,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
             case "NumpadEnter":
                 if (!MultiSelection)
                 {
-                    if (!_isOpen)
+                    if (!IsOpen)
                     {
                         await OpenMenu();
                     }
@@ -966,7 +1013,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
                 }
                 else
                 {
-                    if (!_isOpen)
+                    if (!IsOpen)
                     {
                         await OpenMenu();
                         break;
@@ -982,11 +1029,18 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
 
     }
 
+    /// <summary>
+    /// Handler for the keyup event.
+    /// </summary>
+    /// <param name="obj"></param>
     protected internal async void HandleKeyUp(KeyboardEventArgs obj)
     {
         await OnKeyUp.InvokeAsync(obj);
     }
 
+    /// <summary>
+    /// Called when the component lost the focus.
+    /// </summary>
     protected internal async Task OnLostFocus(FocusEventArgs obj)
     {
         //if (_isOpen)
@@ -1000,46 +1054,52 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         await OnBlurredAsync(obj);
     }
 
-    public override ValueTask FocusAsync()
-    {
-        return _elementReference.FocusAsync();
-    }
+    /// <summary>
+    /// Focuses the component.
+    /// </summary>
+    public override ValueTask FocusAsync() => _elementReference.FocusAsync();
 
-    public override ValueTask BlurAsync()
-    {
-        return _elementReference.BlurAsync();
-    }
+    /// <summary>
+    /// Blur the component.
+    /// </summary>
+    public override ValueTask BlurAsync() => _elementReference.BlurAsync();
 
-    public override ValueTask SelectAsync()
-    {
-        return _elementReference.SelectAsync();
-    }
+    /// <summary>
+    /// Selects the text of the input.
+    /// </summary>
+    public override ValueTask SelectAsync() => _elementReference.SelectAsync();
 
-    public override ValueTask SelectRangeAsync(int pos1, int pos2)
-    {
-        return _elementReference.SelectRangeAsync(pos1, pos2);
-    }
+    /// <summary>
+    /// Selects the text of the input in the given range.
+    /// </summary>
+    public override ValueTask SelectRangeAsync(int pos1, int pos2) => _elementReference.SelectRangeAsync(pos1, pos2);
 
     #endregion
 
 
     #region PopoverState
 
+    /// <summary>
+    /// Toggle the menu.
+    /// </summary>
     public async Task ToggleMenu()
     {
         if (Disabled || ReadOnly)
             return;
-        if (_isOpen)
+        if (IsOpen)
             await CloseMenu();
         else
             await OpenMenu();
     }
 
+    /// <summary>
+    /// Open the menu.
+    /// </summary>
     public async Task OpenMenu()
     {
         if (Disabled || ReadOnly)
             return;
-        _isOpen = true;
+        IsOpen = true;
         UpdateIcon();
         StateHasChanged();
 
@@ -1048,9 +1108,12 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         await OnOpen.InvokeAsync();
     }
 
+    /// <summary>
+    /// Close the menu.
+    /// </summary>
     public async Task CloseMenu()
     {
-        _isOpen = false;
+        IsOpen = false;
         UpdateIcon();
         StateHasChanged();
         //if (focusAgain == true)
@@ -1072,17 +1135,23 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
 
     #region Item Registration & Selection
 
+    /// <summary>
+    /// Selects the given option by index.
+    /// </summary>
     public async Task SelectOption(int index)
     {
-        if (index < 0 || index >= _items.Count)
+        if (index < 0 || index >= ItemList.Count)
         {
             if (!MultiSelection)
                 await CloseMenu();
             return;
         }
-        await SelectOption(_items[index].Value);
+        await SelectOption(ItemList[index].Value);
     }
 
+    /// <summary>
+    /// Selects the given option.
+    /// </summary>
     public async Task SelectOption(object obj)
     {
         var value = (T)obj;
@@ -1118,6 +1187,10 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     }
 
     //TODO: will override this method when core library will have the base one.
+    /// <summary>
+    /// Force the component to update.
+    /// </summary>
+    /// <returns></returns>
     public override async Task ForceUpdate()
     {
         await base.ForceUpdate();
@@ -1131,54 +1204,66 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         }
     }
 
+    /// <summary>
+    /// Begin validation for the component.
+    /// </summary>
     public async Task BeginValidatePublic()
     {
         await BeginValidateAsync();
     }
 
+    /// <summary>
+    /// Adds the given item to the list of selected items.
+    /// </summary>
     protected internal bool Add(MudExSelectItem<T> item)
     {
         if (item == null)
             return false;
         bool? result = null;
-        if (!_items.Select(x => x.Value).Contains(item.Value))
+        if (!ItemList.Select(x => x.Value).Contains(item.Value))
         {
-            _items.Add(item);
+            ItemList.Add(item);
 
             if (item.Value != null)
             {
-                _valueLookup[item.Value] = item;
+                ValueLookup[item.Value] = item;
                 if (item.Value.Equals(Value) && !MultiSelection)
                     result = true;
             }
         }
         //UpdateSelectAllChecked();
-        if (!result.HasValue)
-        {
-            result = item.Value?.Equals(Value);
-        }
+        result ??= item.Value?.Equals(Value);
         return result == true;
     }
 
+    /// <summary>
+    /// Removes the given item from the list of selected items.
+    /// </summary>
     protected internal void Remove(MudExSelectItem<T> item)
     {
-        _items.Remove(item);
+        ItemList.Remove(item);
         if (item.Value != null)
-            _valueLookup.Remove(item.Value);
+            ValueLookup.Remove(item.Value);
     }
 
+    /// <summary>
+    /// Registers the given item.
+    /// </summary>
     public void RegisterShadowItem(MudExSelectItem<T> item)
     {
         if (item == null || item.Value == null)
             return;
-        _shadowLookup[item.Value] = item;
+        ShadowLookup[item.Value] = item;
     }
 
+    /// <summary>
+    /// Unregisters the given item.
+    /// </summary>
     public void UnregisterShadowItem(MudExSelectItem<T> item)
     {
         if (item == null || item.Value == null)
             return;
-        _shadowLookup.Remove(item.Value);
+        ShadowLookup.Remove(item.Value);
     }
 
     #endregion
@@ -1202,6 +1287,10 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         await OnClearButtonClick.InvokeAsync(e);
     }
 
+    /// <summary>
+    /// Clear the selection
+    /// </summary>
+    /// <returns></returns>
     [ExcludeFromCodeCoverage]
     [Obsolete("Use Clear instead.", true)]
     public Task ClearAsync() => Clear();
@@ -1219,6 +1308,10 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
         await SelectedValuesChanged.InvokeAsync(new HashSet<T>(SelectedValues, _comparer));
     }
 
+    /// <summary>
+    /// Reset the value of the component to its initial state.
+    /// </summary>
+    [Obsolete]
     protected override void ResetValue()
     {
         base.ResetValue();
@@ -1228,39 +1321,34 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
 
     #endregion
 
-    protected bool IsValueInList
-    {
-        get
-        {
-            if (Value == null)
-                return false;
-            //return _shadowLookup.TryGetValue(Value, out var _);
-            foreach (var value in Items.Select(x => x.Value))
-            {
-                if (Comparer != null ? Comparer.Equals(value, Value) : value.Equals(Value)) //(Converter.Set(item.Value) == Converter.Set(Value))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
+    /// <summary>
+    /// Returns true if the value is in the list of items.
+    /// </summary>
+    protected bool IsValueInList =>
+        Value != null &&
+        Items.Select(x => x.Value).Any(value => Comparer?.Equals(value, Value) ?? value.Equals(Value));
 
+    /// <summary>
+    /// Updates the icon.
+    /// </summary>
     protected void UpdateIcon()
     {
-        _currentIcon = !string.IsNullOrWhiteSpace(AdornmentIcon) ? AdornmentIcon : _isOpen ? CloseIcon : OpenIcon;
+        CurrentIcon = !string.IsNullOrWhiteSpace(AdornmentIcon) ? AdornmentIcon : IsOpen ? CloseIcon : OpenIcon;
     }
 
-    public void CheckGenericTypeMatch(object select_item)
+    /// <summary>
+    /// Ensures that the generic type of the select item matches the generic type of the select.
+    /// </summary>
+    public void CheckGenericTypeMatch(object selectItem)
     {
-        var itemT = select_item.GetType().GenericTypeArguments[0];
+        var itemT = selectItem.GetType().GenericTypeArguments[0];
         if (itemT != typeof(T))
             throw new GenericTypeMismatchException("MudExSelect", "MudExSelectItem", typeof(T), itemT);
     }
 
     /// <summary>
     /// Fixes issue #4328
-    /// Returns true when MultiSelection is true and it has selected values(Since Value property is not used when MultiSelection=true
+    /// Returns true when MultiSelection is true, and it has selected values(Since Value property is not used when MultiSelection=true
     /// </summary>
     /// <param name="value"></param>
     /// <returns>True when component has a value</returns>
@@ -1272,6 +1360,9 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
             return base.HasValue(value);
     }
 
+    /// <summary>
+    /// Called when a chip is closed.
+    /// </summary>
     protected async Task ChipClosed(MudChip chip)
     {
         if (chip == null || SelectedValues == null)
@@ -1284,13 +1375,25 @@ public partial class MudExSelect<T> : IMudExSelect, IMudShadowSelectExtended, IM
     }
 }
 
-
+/// <summary>
+/// Interface for the MudExSelect component.
+/// </summary>
 internal interface IMudExSelect
 {
-    void CheckGenericTypeMatch(object select_item);
+    /// <summary>
+    /// Ensures that the generic type of the select item matches the generic type of the select.
+    /// </summary>
+    void CheckGenericTypeMatch(object selectItem);
+    
+    /// <summary>
+    /// True when multi selection is enabled.
+    /// </summary>
     bool MultiSelection { get; set; }
 }
 
-internal interface IMudShadowSelectExtended
+/// <summary>
+/// Shadow list identifier
+/// </summary>
+internal interface IMudExShadowSelect
 {
 }

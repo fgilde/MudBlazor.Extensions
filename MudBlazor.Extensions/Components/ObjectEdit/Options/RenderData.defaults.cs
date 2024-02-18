@@ -5,16 +5,21 @@ using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Utilities;
 using Nextended.Core.Extensions;
-using Nextended.Core.Helper;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 
+/// <summary>
+/// Class containing default render data for various types of properties.
+/// </summary>
 public static class RenderDataDefaults
 {
-    private static readonly Dictionary<Type, IRenderData> _renderData = new();
-    private static readonly List<IDefaultRenderDataProvider> _providers = new();
-    private static bool _registeredServicesAdded = false;
+    private static readonly Dictionary<Type, IRenderData> RenderData = new();
+    private static readonly List<IDefaultRenderDataProvider> Providers = new();
+    private static bool _registeredServicesAdded;
 
+    /// <summary>
+    /// Adds a default render data providers to the list of providers.
+    /// </summary>
     public static void AddRenderDataProvider(IServiceProvider serviceProvider)
     {
         if (!_registeredServicesAdded)
@@ -25,8 +30,15 @@ public static class RenderDataDefaults
         }
     }
 
-    public static void AddRenderDataProvider(params IDefaultRenderDataProvider[] provider) => _providers.AddRange(provider.EmptyIfNull());
-    public static void RemoveRenderDataProvider(params IDefaultRenderDataProvider[] provider) => _providers.RemoveRange(provider.EmptyIfNull());
+    /// <summary>
+    /// Adds a default render data providers to the list of providers.
+    /// </summary>
+    public static void AddRenderDataProvider(params IDefaultRenderDataProvider[] provider) => Providers.AddRange(provider.EmptyIfNull());
+    
+    /// <summary>
+    /// Removes a default render data providers from the list of providers.
+    /// </summary>
+    public static void RemoveRenderDataProvider(params IDefaultRenderDataProvider[] provider) => Providers.RemoveRange(provider.EmptyIfNull());
 
     static RenderDataDefaults()
     {
@@ -59,14 +71,14 @@ public static class RenderDataDefaults
         RegisterDefault<bool, MudExCheckBox<bool>>(s => s.Value, box =>
         {
             box.TriState = false;
-            box.UnCheckedColor = MudBlazor.Color.Default;
-            box.Color = MudBlazor.Color.Warning;
+            box.UnCheckedColor = Color.Default;
+            box.Color = Color.Warning;
         });
         RegisterDefault<bool?, MudExCheckBox<bool?>>(s => s.Value, box =>
         {
             box.TriState = true;
-            box.UnCheckedColor = MudBlazor.Color.Default;
-            box.Color = MudBlazor.Color.Warning;
+            box.UnCheckedColor = Color.Default;
+            box.Color = Color.Warning;
         });
 
         RegisterDefault<ICollection<string>, MudExCollectionEditor<string>>(f => f.Items);
@@ -79,6 +91,9 @@ public static class RenderDataDefaults
 
     }
 
+    /// <summary>
+    /// Registers the MudExColorEdit component for various color types.
+    /// </summary>
     public static void RegisterMudExColorEditForColors()
     {
         //RegisterDefault<MudColor, MudExColor, MudExColorEdit>(f => f.Value, ColorPickerOptions(), c => c, c => c.ToMudColor());
@@ -88,12 +103,18 @@ public static class RenderDataDefaults
         RegisterDefault<System.Drawing.Color?, MudExColor, MudExColorEdit>(f => f.Value, ColorPickerOptions(), c => c ?? MudExColor.Default, c => c.ToMudColor().ToDrawingColor());
     }
 
+    /// <summary>
+    /// Registers the MudColorPicker component for various color types.
+    /// </summary>
     public static void RegisterMudColorPickerForColors()
     {
         RegisterDefault<MudColor, MudColor, MudExColorPicker>(f => f.Value, ColorPickerOptions(), c => c, c => c);
         RegisterDefault<System.Drawing.Color, MudColor, MudExColorPicker>(f => f.Value, ColorPickerOptions(), c => new MudColor(c.R, c.G, c.B, c.A), mc => System.Drawing.Color.FromArgb(mc.A, mc.R, mc.G, mc.B));
     }
 
+    /// <summary>
+    /// Returns the meta configuration for rendering a color picker for a string property.
+    /// </summary>
     public static Action<ObjectEditMeta<T>> ColorFromStringOptions<T>(KeyValuePair<string, MudColor>[] cssVars = null)
     {
         return meta =>
@@ -150,39 +171,121 @@ public static class RenderDataDefaults
         return res;
     }
 
-    internal static bool HasRenderDataForType(Type type) => _renderData.ContainsKey(type);
+    internal static bool HasRenderDataForType(Type type) => RenderData.ContainsKey(type);
     
+    /// <summary>
+    /// Returns the render data for the given property meta.
+    /// </summary>
     public static IRenderData GetRenderData(ObjectEditPropertyMeta propertyMeta)
-        => FindFromProvider(propertyMeta) ?? (_renderData.ContainsKey(propertyMeta.PropertyInfo.PropertyType) ? _renderData[propertyMeta.PropertyInfo.PropertyType].Clone() as IRenderData : TryFindDynamicRenderData(propertyMeta));
+        => FindFromProvider(propertyMeta) ?? (RenderData.ContainsKey(propertyMeta.PropertyInfo.PropertyType) ? RenderData[propertyMeta.PropertyInfo.PropertyType].Clone() as IRenderData : TryFindDynamicRenderData(propertyMeta));
 
+
+    ///<summary>
+    /// Registers a default RenderData configuration for a property type using a component with additional options.
+    /// <typeparam name="TPropertyType">The type of the property to register the default for.</typeparam>
+    /// <typeparam name="TComponent">The component type to use for rendering.</typeparam>
+    /// <param name="options">An action to configure the component.</param>
+    /// <returns>A RenderData instance configured with the specified component and options.</returns>
+    ///</summary>
     public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TComponent>(Action<TComponent> options) where TComponent : new()
-        => RegisterDefault(typeof(TPropertyType), RenderData.For(options)) as RenderData<TPropertyType, TPropertyType>;
+        => RegisterDefault(typeof(TPropertyType), Options.RenderData.For(options)) as RenderData<TPropertyType, TPropertyType>;
 
+    ///<summary>
+    /// Registers a default RenderData configuration for a property type using a component and field with converters.
+    /// <typeparam name="TPropertyType">The type of the property.</typeparam>
+    /// <typeparam name="TFieldType">The field type within the component.</typeparam>
+    /// <typeparam name="TComponent">The component type for rendering.</typeparam>
+    /// <param name="valueField">An expression pointing to the component's field to bind.</param>
+    /// <param name="toFieldTypeConverter">Optional converter from property type to field type.</param>
+    /// <param name="toPropertyTypeConverter">Optional converter from field type back to property type.</param>
+    /// <returns>A RenderData instance configured with the specified component, field, and converters.</returns>
+    ///</summary>
     public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TFieldType, TComponent>(Expression<Func<TComponent, TFieldType>> valueField, Func<TPropertyType, TFieldType> toFieldTypeConverter = null, Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) where TComponent : new()
-        => RegisterDefault(typeof(TPropertyType), RenderData.For(valueField, toFieldTypeConverter, toPropertyTypeConverter)) as RenderData<TPropertyType, TPropertyType>;
+        => RegisterDefault(typeof(TPropertyType), Options.RenderData.For(valueField, toFieldTypeConverter, toPropertyTypeConverter)) as RenderData<TPropertyType, TPropertyType>;
+
+    ///<summary>
+    /// Registers a default RenderData configuration for a property type using a component and field with additional options and converters.
+    /// <typeparam name="TPropertyType">The type of the property.</typeparam>
+    /// <typeparam name="TFieldType">The field type within the component.</typeparam>
+    /// <typeparam name="TComponent">The component type for rendering.</typeparam>
+    /// <param name="valueField">An expression pointing to the component's field to bind.</param>
+    /// <param name="options">An action to configure the component.</param>
+    /// <param name="toFieldTypeConverter">Optional converter from property type to field type.</param>
+    /// <param name="toPropertyTypeConverter">Optional converter from field type back to property type.</param>
+    /// <returns>A RenderData instance configured with the specified component, field, options, and converters.</returns>
+    ///</summary>
     public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TFieldType, TComponent>(Expression<Func<TComponent, TFieldType>> valueField, Action<TComponent> options, Func<TPropertyType, TFieldType> toFieldTypeConverter = null, Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) where TComponent : new()
-        => RegisterDefault(typeof(TPropertyType), RenderData.For(valueField, options, toFieldTypeConverter, toPropertyTypeConverter)) as RenderData<TPropertyType, TPropertyType>;
+        => RegisterDefault(typeof(TPropertyType), Options.RenderData.For(valueField, options, toFieldTypeConverter, toPropertyTypeConverter)) as RenderData<TPropertyType, TPropertyType>;
 
+    ///<summary>
+    /// Registers a default RenderData configuration for a property type using a component and field with additional options specified as a dictionary and converters.
+    /// <typeparam name="TPropertyType">The type of the property.</typeparam>
+    /// <typeparam name="TFieldType">The field type within the component.</typeparam>
+    /// <typeparam name="TComponent">The component type for rendering.</typeparam>
+    /// <param name="valueField">An expression pointing to the component's field to bind.</param>
+    /// <param name="options">A dictionary of additional options to configure the component.</param>
+    /// <param name="toFieldTypeConverter">Optional converter from property type to field type.</param>
+    /// <param name="toPropertyTypeConverter">Optional converter from field type back to property type.</param>
+    /// <returns>A RenderData instance configured with the specified component, field, options, and converters.</returns>
+    ///</summary>
     public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TFieldType, TComponent>(Expression<Func<TComponent, TFieldType>> valueField, IDictionary<string, object> options, Func<TPropertyType, TFieldType> toFieldTypeConverter = null, Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) where TComponent : new()
-        => RegisterDefault(typeof(TPropertyType), RenderData.For(valueField, toFieldTypeConverter, toPropertyTypeConverter).AddAttributes(false, options?.ToArray())) as RenderData<TPropertyType, TPropertyType>;
+        => RegisterDefault(typeof(TPropertyType), Options.RenderData.For(valueField, toFieldTypeConverter, toPropertyTypeConverter).AddAttributes(false, options?.ToArray())) as RenderData<TPropertyType, TPropertyType>;
 
+    ///<summary>
+    /// Registers a default RenderData configuration for a property type using a component with a direct field binding.
+    /// <typeparam name="TPropertyType">The type of the property.</typeparam>
+    /// <typeparam name="TComponent">The component type for rendering.</typeparam>
+    /// <param name="valueField">An expression pointing to the component's field to bind directly to the property type.</param>
+    /// <returns>A RenderData instance configured with the specified component and direct field binding.</returns>
+    ///</summary>
     public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TComponent>(Expression<Func<TComponent, TPropertyType>> valueField) where TComponent : new()
-        => RegisterDefault(typeof(TPropertyType), RenderData.For(valueField)) as RenderData<TPropertyType, TPropertyType>;
+        => RegisterDefault(typeof(TPropertyType), Options.RenderData.For(valueField)) as RenderData<TPropertyType, TPropertyType>;
 
-    public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TComponent>(Expression<Func<TComponent, TPropertyType>> valueField, Action<TComponent> options) where TComponent : new()
-        => RegisterDefault(typeof(TPropertyType), RenderData.For(valueField, options)) as RenderData<TPropertyType, TPropertyType>;
-
-    public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TComponent>(Expression<Func<TComponent, TPropertyType>> valueField, IDictionary<string, object> options) where TComponent : new()
-        => RegisterDefault(typeof(TPropertyType), RenderData.For(valueField).AddAttributes(false, options?.ToArray())) as RenderData<TPropertyType, TPropertyType>;
-
+    ///<summary>
+    /// Adds a property type registration to the global defaults, associating it with a specific rendering component, field, and instance for attributes configuration.
+    /// <typeparam name="TPropertyType">The property type for which the default is registered.</typeparam>
+    /// <typeparam name="TComponent">The component type used for rendering.</typeparam>
+    /// <param name="valueField">An expression identifying the component's field that binds to the property.</param>
+    /// <param name="instanceForAttributes">An instance of the component used to derive additional attributes.</param>
+    /// <returns>The registered RenderData instance for the specified property type.</returns>
+    ///</summary>
     public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TComponent>(Expression<Func<TComponent, TPropertyType>> valueField, TComponent instanceForAttributes) where TComponent : new()
-        => RegisterDefault(typeof(TPropertyType), RenderData.For(valueField, instanceForAttributes)) as RenderData<TPropertyType, TPropertyType>;
+        => RegisterDefault(typeof(TPropertyType), Options.RenderData.For(valueField, instanceForAttributes)) as RenderData<TPropertyType, TPropertyType>;
 
+    ///<summary>
+    /// Adds or updates a default RenderData association for a given property type.
+    /// <param name="propertyType">The type of the property for which the default RenderData is being registered or updated.</param>
+    /// <param name="renderData">The RenderData instance to associate with the property type.</param>
+    /// <returns>The registered or updated RenderData instance.</returns>
+    ///</summary>
     public static IRenderData RegisterDefault(Type propertyType, IRenderData renderData)
     {
-        _renderData.AddOrUpdate(propertyType, renderData);
+        RenderData.AddOrUpdate(propertyType, renderData);
         return renderData;
     }
+
+    ///<summary>
+    /// Registers a default RenderData configuration for a property type using a component with a direct field binding and additional component configuration options.
+    /// <typeparam name="TPropertyType">The type of the property.</typeparam>
+    /// <typeparam name="TComponent">The component type for rendering.</typeparam>
+    /// <param name="valueField">An expression pointing to the component's field to bind directly to the property type.</param>
+    /// <param name="options">An action to configure additional options on the component.</param>
+    /// <returns>A RenderData instance configured with the specified component, direct field binding, and additional options.</returns>
+    ///</summary>
+    public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TComponent>(Expression<Func<TComponent, TPropertyType>> valueField, Action<TComponent> options) where TComponent : new()
+        => RegisterDefault(typeof(TPropertyType), Options.RenderData.For(valueField, options)) as RenderData<TPropertyType, TPropertyType>;
+
+    ///<summary>
+    /// Registers a default RenderData configuration for a property type using a component with a direct field binding and additional options specified as a dictionary.
+    /// <typeparam name="TPropertyType">The type of the property.</typeparam>
+    /// <typeparam name="TComponent">The component type for rendering.</typeparam>
+    /// <param name="valueField">An expression pointing to the component's field to bind directly to the property type.</param>
+    /// <param name="options">A dictionary of additional options to configure the component.</param>
+    /// <returns>A RenderData instance configured with the specified component, direct field binding, and additional options provided as a dictionary.</returns>
+    ///</summary>
+    public static RenderData<TPropertyType, TPropertyType> RegisterDefault<TPropertyType, TComponent>(Expression<Func<TComponent, TPropertyType>> valueField, IDictionary<string, object> options) where TComponent : new()
+        => RegisterDefault(typeof(TPropertyType), Options.RenderData.For(valueField).AddAttributes(false, options?.ToArray())) as RenderData<TPropertyType, TPropertyType>;
+
 
     private static IRenderData TryFindDynamicRenderData(ObjectEditPropertyMeta propertyMeta)
     {
@@ -222,5 +325,5 @@ public static class RenderDataDefaults
     }
 
     private static IRenderData FindFromProvider(ObjectEditPropertyMeta propertyMeta)
-        => _providers.Select(provider => provider.GetRenderData(propertyMeta)).FirstOrDefault(renderData => renderData != null);
+        => Providers.Select(provider => provider.GetRenderData(propertyMeta)).FirstOrDefault(renderData => renderData != null);
 }

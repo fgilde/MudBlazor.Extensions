@@ -16,10 +16,24 @@ public static class MudExResource
     private static readonly ConcurrentDictionary<Assembly, XmlDocument> XmlDocCache = new();
     private static readonly ConcurrentDictionary<string, string> EmbeddedFileContentCache = new();
 
+    /// <summary>
+    /// Returns whether the current runtime is client-side (WASM) or server-side
+    /// </summary>
     public static bool IsClientSide => RuntimeInformation.OSDescription == "Browser"; // WASM
+    
+    /// <summary>
+    /// Server-side runtime
+    /// </summary>
     public static bool IsServerSide => !IsClientSide;
 
+    /// <summary>
+    /// Returns whether the current runtime is running in debug mode
+    /// </summary>
     public static bool IsDebug => Assembly.GetEntryAssembly()?.GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled ?? false;
+    
+    /// <summary>
+    /// Returns whether the current runtime is running in a debug or preview build
+    /// </summary>
     public static bool IsDebugOrPreviewBuild
     {
         get
@@ -131,7 +145,7 @@ public static class MudExResource
                         string seeText = crefAttr.Value.Replace("T:", "").Replace("M:", ""); // Trimming the type/member prefixes
                         // Replace the see node with its text representation
                         var textNode = xmlDoc.CreateTextNode("{{{" +seeText + "}}}");
-                        seeNode.ParentNode.ReplaceChild(textNode, seeNode);
+                        seeNode.ParentNode?.ReplaceChild(textNode, seeNode);
                     }
                 }
             }

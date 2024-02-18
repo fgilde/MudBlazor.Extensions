@@ -10,16 +10,32 @@ using MudBlazor.Extensions.Helper.Internal;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// List item for MudExList.
+/// </summary>
 public partial class MudExListItem<T>
 {
 
     #region Parameters, Fields, Injected Services
 
+    /// <summary>
+    /// UriHelper for navigation.
+    /// </summary>
     [Inject] protected NavigationManager UriHelper { get; set; }
 
+    /// <summary>
+    /// Parent list if any.
+    /// </summary>
     [CascadingParameter] protected MudExList<T> MudExList { get; set; }
+    
+    /// <summary>
+    /// Parent list item if any.
+    /// </summary>
     [CascadingParameter] protected internal MudExListItem<T> ParentListItem { get; set; }
 
+    /// <summary>
+    /// Classname for the component.
+    /// </summary>
     protected string Classname => GetCls();
 
     private string GetCls()
@@ -42,20 +58,32 @@ public partial class MudExListItem<T>
         return builder.Build();
     }
 
+    /// <summary>
+    /// Classname for the multiselect component.
+    /// </summary>
     protected string MultiSelectClassName =>
     new CssBuilder()
         .AddClass("mud-ex-list-item-multiselect")
         .AddClass("mud-ex-list-item-multiselect-checkbox", MudExList?.MultiSelectionComponent == MultiSelectionComponent.CheckBox || OverrideMultiSelectionComponent == MultiSelectionComponent.CheckBox)
         .Build();
 
+    /// <summary>
+    /// Style for the icon.
+    /// </summary>
     protected string IconStyleName =>
         new MudExStyleBuilder()
             .WithColor(IconColor, !IconColor.IsColor)
             .Build();
 
 
+    /// <summary>
+    /// Id of the list item.
+    /// </summary>
     protected internal string ItemId { get; } = "listitem_" + Guid.NewGuid().ToString().Substring(0, 8);
 
+    /// <summary>
+    /// If true the item template will be ignored.
+    /// </summary>
     [Parameter] 
     public bool IgnoreItemTemplate { get; set; }
 
@@ -80,6 +108,9 @@ public partial class MudExListItem<T>
     [SafeCategory(CategoryTypes.List.Behavior)]
     public string SecondaryText { get; set; }
 
+    /// <summary>
+    /// Value of the list item.
+    /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Selecting)]
     public T Value { get; set; }
@@ -140,7 +171,7 @@ public partial class MudExListItem<T>
     public bool DisableRipple { get; set; }
 
     /// <summary>
-    /// Overrided component for multiselection. Keep it null to have default one that MudList has.
+    /// Overriden component for multi selection. Keep it null to have default one that MudList has.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.ClickAction)]
@@ -158,7 +189,7 @@ public partial class MudExListItem<T>
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Appearance)]
-    public MudExColor IconColor { get; set; } = MudBlazor.Color.Inherit;
+    public MudExColor IconColor { get; set; } = Color.Inherit;
 
     /// <summary>
     /// Sets the Icon Size.
@@ -189,7 +220,7 @@ public partial class MudExListItem<T>
     public string ExpandMoreIcon { get; set; } = Icons.Material.Filled.ExpandMore;
 
     /// <summary>
-    /// If true, the List Subheader will be indented.
+    /// If true, the List Sub header will be indented.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Appearance)]
@@ -272,7 +303,7 @@ public partial class MudExListItem<T>
 
     private bool _expanded;
     /// <summary>
-    /// Expand or collapse nested list. Two-way bindable. Note: if you directly set this to
+    /// Expand or collapse nested list. Two-way bind able. Note: if you directly set this to
     /// true or false (instead of using two-way binding) it will force the nested list's expansion state.
     /// </summary>
     [Parameter]
@@ -300,6 +331,7 @@ public partial class MudExListItem<T>
 
     #region Lifecycle Methods (& Dispose)
 
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         _expanded = InitiallyExpanded;
@@ -311,6 +343,9 @@ public partial class MudExListItem<T>
         }
     }
 
+    /// <summary>
+    /// Dispose the component.
+    /// </summary>
     public void Dispose()
     {
         try
@@ -334,16 +369,13 @@ public partial class MudExListItem<T>
     /// <summary>
     /// Selected state of the option. Readonly. Use SetSelected for selecting.
     /// </summary>
-    public bool IsSelected
-    {
-        get => _selected;
-    }
+    public bool IsSelected => _selected;
 
-    internal bool IsActive
-    {
-        get => _active;
-    }
+    internal bool IsActive => _active;
 
+    /// <summary>
+    /// Set the selected state of the option.
+    /// </summary>
     public void SetSelected(bool selected, bool forceRender = true, bool returnIfDisabled = false)
     {
         if (returnIfDisabled && Disabled)
@@ -368,7 +400,7 @@ public partial class MudExListItem<T>
         _active = active;
         if (forceRender)
         {
-            StateHasChanged();
+            ForceRender();
         }
     }
 
@@ -377,11 +409,17 @@ public partial class MudExListItem<T>
 
     #region Other (ClickHandler etc.)
 
+    /// <summary>
+    /// Force render the component.
+    /// </summary>
     public void ForceRender()
     {
-        StateHasChanged();
+        InvokeAsync(StateHasChanged);
     }
 
+    /// <summary>
+    /// Handler for click event.
+    /// </summary>
     protected void OnClickHandler(MouseEventArgs ev)
     {
         if (Disabled)
@@ -410,12 +448,19 @@ public partial class MudExListItem<T>
         }
     }
 
+    /// <summary>
+    /// Only click event.
+    /// </summary>
     protected void OnlyOnClick(MouseEventArgs ev)
     {
         OnClick.InvokeAsync(ev).AndForget();
     }
 
     private Typo _textTypo;
+    
+    /// <summary>
+    /// Called when list parameters changed.
+    /// </summary>
     protected void OnListParametersChanged()
     {
         if ((Dense ?? MudExList?.Dense) ?? false)

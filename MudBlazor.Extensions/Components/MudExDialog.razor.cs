@@ -20,7 +20,7 @@ public partial class MudExDialog : IMudExComponent
     /// <summary>
     /// Render base component
     /// </summary>
-    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
     /// <inheritdoc />
     protected override void OnParametersSet()

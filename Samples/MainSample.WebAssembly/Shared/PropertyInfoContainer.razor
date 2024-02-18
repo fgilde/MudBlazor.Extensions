@@ -25,7 +25,6 @@
     [Parameter]
     public PropertyInfo Property { get; set; }
 
-    private ApiMemberInfo<PropertyInfo> info;
     private Type? _type;
     private Type Type => _type ??= typeof(T).IsGenericType ? typeof(T).GetGenericTypeDefinition() : typeof(T);
 

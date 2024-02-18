@@ -29,8 +29,10 @@ internal static class StreamHelper
         {
             input.Position = 0;
         }
-        catch (Exception e)
-        {}
+        catch
+        {
+            // Ignored
+        }
 
         MemoryStream memoryStream = new MemoryStream();
         await input.CopyToAsync(memoryStream);

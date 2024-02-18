@@ -2,6 +2,9 @@
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 
+/// <summary>
+/// Wraps the value of a property to be edited, allowing for additional configuration through options.
+/// </summary>
 public class PropertyValueWrapper<T> : PropertyValueWrapper
 {
     private readonly bool _mapInsteadOfCast;
@@ -11,6 +14,9 @@ public class PropertyValueWrapper<T> : PropertyValueWrapper
         _mapInsteadOfCast = mapInsteadOfCast;
     }
 
+    /// <summary>
+    /// Value of the property to be edited.
+    /// </summary>
     public new T Value
     {
         get => !_mapInsteadOfCast ? (T) Meta.Value : Meta.Value.MapTo<T>();
@@ -18,9 +24,16 @@ public class PropertyValueWrapper<T> : PropertyValueWrapper
     }
 }
 
+/// <summary>
+/// Wraps the value of a property to be edited, allowing for additional configuration through options.
+/// </summary>
 public class PropertyValueWrapper
 {
     private readonly Type _propertyType;
+    
+    /// <summary>
+    /// Metadata of the property to be edited.
+    /// </summary>
     protected readonly ObjectEditPropertyMeta Meta;
 
     internal PropertyValueWrapper(Type propertyType, ObjectEditPropertyMeta meta)
@@ -28,7 +41,10 @@ public class PropertyValueWrapper
         _propertyType = propertyType;
         Meta = meta;
     }
-
+    
+    /// <summary>
+    /// Value of the property to be edited.
+    /// </summary>
     public object Value
     {
         get => Meta.Value.MapTo(_propertyType);

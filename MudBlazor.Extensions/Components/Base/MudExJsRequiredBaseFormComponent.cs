@@ -68,6 +68,7 @@ public abstract class MudExJsRequiredBaseFormComponent<T, TData, U> : MudExBaseF
         _jsReferenceCreatedCompletionSource.TrySetResult(JsReference);
     }
 
+    /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         var hasJsChanges = parameters.AffectedForJs(this);
@@ -76,6 +77,9 @@ public abstract class MudExJsRequiredBaseFormComponent<T, TData, U> : MudExBaseF
             await OnJsOptionsChanged();
     }
 
+    /// <summary>
+    /// Called when the js options are changed
+    /// </summary>
     protected virtual Task OnJsOptionsChanged()
     {
         return Task.CompletedTask;

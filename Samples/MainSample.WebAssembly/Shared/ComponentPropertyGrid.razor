@@ -38,7 +38,7 @@ else
 
     private string generationComment = "This is generated and maybe not correct";
     private bool rendered;
-    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
     bool _showInherited;
     bool _groupByTypes;
 

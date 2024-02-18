@@ -48,7 +48,7 @@ namespace MudBlazor.Extensions.Components
         /// Render the base component
         /// </summary>
         /// <returns></returns>
-        protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+        private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
         /// <summary>
         /// Converter for string and MudColor

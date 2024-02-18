@@ -4,7 +4,7 @@
 @using MudBlazor.Extensions.Helper.Internal
 @using MudBlazor.Extensions.Options;
 
-<div @attributes="UserAttributes" id="@_elementId" class="@Classname" style="@Stylename" tabindex="-1" @onkeydown="HandleKeyDown" @onfocusout="HandleOnFocusOut" @onscroll="HandleOnScroll">
+<div @attributes="UserAttributes" id="@_elementId" class="@Classname" style="@StyleStr" tabindex="-1" @onkeydown="HandleKeyDown" @onfocusout="HandleOnFocusOut" @onscroll="HandleOnScroll">
     <CascadingValue Value="@this" IsFixed="true">
         @SelectAllRender(Options.SelectAllPosition.BeforeSearchBox)
 
@@ -53,13 +53,13 @@
             {
                 if (SelectAllTemplate != null)
                 {
-                    <div class="mud-ripple" @onclick="@(() => SelectAllItems(_allSelected))" tabindex="-1">
+                    <div class="mud-ripple" @onclick="@(() => SelectAllItems(AllSelected))" tabindex="-1">
                         @SelectAllTemplate
                     </div>
                 }
                 else
                 {
-                    <MudExListItem IgnoreItemTemplate="true" T="T" IsFunctional="true" Icon="@SelectAllCheckBoxIcon" IconColor="@Color" Text="@SelectAllText" OverrideMultiSelectionComponent="MultiSelectionComponent.None" OnClick="@(() => SelectAllItems(_allSelected))" OnClickHandlerPreventDefault="true" Dense="@(Dense)" Class="mb-2" />
+                    <MudExListItem IgnoreItemTemplate="true" T="T" IsFunctional="true" Icon="@SelectAllCheckBoxIcon" IconColor="@Color" Text="@SelectAllText" OverrideMultiSelectionComponent="MultiSelectionComponent.None" OnClick="@(() => SelectAllItems(AllSelected))" OnClickHandlerPreventDefault="true" Dense="@(Dense)" Class="mb-2" />
                     <MudExDivider Style="@($"{(position == SelectAllPosition.BeforeSearchBox ? "margin-bottom: 8px;" : "")}")"
                                   Color="@Color"
                                   Vertical="@(position == SelectAllPosition.NextToSearchBox)" />
@@ -68,7 +68,7 @@
         }
     </div>;
 
-    private RenderFragment SearchBoxRender => @<MudExListSubheader T="T" Style="@($"position: sticky; top: -8px; padding-top: 8px; margin-top: -8px; background-color: {SearchBoxBackgroundColor.ToCssStringValue()}; z-index: 10")">
+    private RenderFragment SearchBoxRender => @<MudExListSubHeader T="T" Style="@($"position: sticky; top: -8px; padding-top: 8px; margin-top: -8px; background-color: {SearchBoxBackgroundColor.ToCssStringValue()}; z-index: 10")">
         <div @onkeydown:stopPropagation class="mud-ex-list-item">
             @SelectAllRender(Options.SelectAllPosition.NextToSearchBox)
             @if (Features.SelectColorFeature)
@@ -81,7 +81,7 @@
             }
         </div>
         @SelectAllRender(Options.SelectAllPosition.AfterSearchBox)
-    </MudExListSubheader>;
+    </MudExListSubHeader>;
 
 
     private RenderFragment ItemRender(T item) => @<div>

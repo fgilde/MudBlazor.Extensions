@@ -6,11 +6,11 @@
 
 @code {
 
-    public override Func<MainSample.WebAssembly.Pages.Page_ObjectEditConfigured.ProgramingSkill, string> ToStringFunc { get; set; } = ItemNameRender;
+    public override Func<MainSample.WebAssembly.Pages.Page_ObjectEditConfigured.ProgramingSkill, string> ToStringFunc { get; set; } = ItemNameRenderFn;
     public override bool MultiSelection { get; set; } = true;
     public override ValuePresenter ValuePresenter { get; set; } = ValuePresenter.Chip;
     
-    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
     
     protected override Task<IList<Page_ObjectEditConfigured.ProgramingSkill>> GetAvailableItemsAsync(CancellationToken cancellation = default)
     {
@@ -28,5 +28,5 @@
         });
     }
 
-    private static string ItemNameRender(Page_ObjectEditConfigured.ProgramingSkill item) => $"{item.Name}";
+    private static string ItemNameRenderFn(Page_ObjectEditConfigured.ProgramingSkill item) => $"{item.Name}";
 }

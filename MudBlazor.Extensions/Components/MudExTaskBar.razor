@@ -8,7 +8,7 @@
 }
 
 @code {
-    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
     public override RenderFragment ChildContent { get => TaskBarContent; set {} }
 
     [Parameter] public string CloseIcon { get; set; } = Icons.Material.Filled.Close;

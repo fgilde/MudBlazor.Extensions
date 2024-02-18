@@ -8,6 +8,9 @@ using MudBlazor.Utilities;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// MudExList is a component that allows you to select an item from a list of items. It is a wrapper for MudList.
+/// </summary>
 public partial class MudExList<T> : IDisposable
 {
 
@@ -41,30 +44,50 @@ public partial class MudExList<T> : IDisposable
     private string _elementId = "list_" + Guid.NewGuid().ToString().Substring(0, 8);
     private List<MudExListItem<T>> _items = new();
     private List<MudExList<T>> _childLists = new();
-    internal MudExListItem<T> _lastActivatedItem;
-    internal bool? _allSelected = false;
+    internal MudExListItem<T> LastActivatedItem;
+    internal bool? AllSelected = false;
 
+    /// <summary>
+    /// Class
+    /// </summary>
     protected string Classname =>
     new CssBuilder("mud-ex-list")
        .AddClass("mud-ex-list-padding", !DisablePadding)
       .AddClass(Class)
     .Build();
 
-    protected string Stylename =>
+    /// <summary>
+    /// Style
+    /// </summary>
+    protected string StyleStr =>
     new StyleBuilder()
         .AddStyle("max-height", $"{MaxItems * (!Dense ? 48 : 36) + (DisablePadding ? 0 : 16)}px", MaxItems != null)
         .AddStyle("overflow-y", "auto", MaxItems != null)
         .AddStyle(Style)
         .Build();
 
+    /// <summary>
+    /// Search string
+    /// </summary>
     [Parameter] public string SearchString { get; set; }
 
+    /// <summary>
+    /// Reference to the Select
+    /// </summary>
     [CascadingParameter, IgnoreOnObjectEdit] protected MudExSelect<T> MudExSelect { get; set; }
+    
+    /// <summary>
+    /// Reference to the Autocomplete
+    /// </summary>
     [CascadingParameter, IgnoreOnObjectEdit] protected MudAutocomplete<T> MudAutocomplete { get; set; }
+    
+    /// <summary>
+    /// Reference to the Parent List
+    /// </summary>
     [CascadingParameter, IgnoreOnObjectEdit] protected MudExList<T> ParentList { get; set; }
 
     /// <summary>
-    /// BackgroundColor for Searchbox
+    /// BackgroundColor for SearchBox
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.List.Appearance)]
     public MudExColor SearchBoxBackgroundColor { get; set; } = "var(--mud-palette-background)";
@@ -88,7 +111,7 @@ public partial class MudExList<T> : IDisposable
     public bool GroupsSticky { get; set; } = true;
 
     /// <summary>
-    /// Set to true to use a expansion panel to nest items.
+    /// Set to true to use an expansion panel to nest items.
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.List.Behavior)]
     public bool GroupsNested { get; set; }
@@ -141,12 +164,18 @@ public partial class MudExList<T> : IDisposable
     [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public RenderFragment SelectAllTemplate { get; set; }
 
+    /// <summary>
+    /// Converter for the value. If not set, the default converter is used.
+    /// </summary>
     [Parameter, IgnoreOnObjectEdit]
     [SafeCategory(CategoryTypes.List.Behavior)]
-    public DefaultConverter<T> Converter { get; set; } = new DefaultConverter<T>();
+    public DefaultConverter<T> Converter { get; set; } = new();
 
     private IEqualityComparer<T> _comparer;
     
+    /// <summary>
+    /// Comparer for the value. If not set, the default comparer is used.
+    /// </summary>
     [Parameter, IgnoreOnObjectEdit]
     [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public IEqualityComparer<T> Comparer
@@ -154,7 +183,7 @@ public partial class MudExList<T> : IDisposable
         get => _comparer;
         set
         {
-            if (_comparer == value)
+            if (Equals(_comparer, value))
                 return;
             _comparer = value;
             // Apply comparer and refresh selected values
@@ -189,21 +218,21 @@ public partial class MudExList<T> : IDisposable
     }
 
     /// <summary>
-    /// Predefined enumerable items. If its not null, creates list items automatically.
+    /// Predefined enumerable items. If it's not null, creates list items automatically.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Behavior)]
     public ICollection<T> ItemCollection { get; set; } = null;
 
     /// <summary>
-    /// Custom search func for searchbox. If doesn't set, it search with "Contains" logic by default. Passed value and searchString values.
+    /// Custom search func for search box. If it doesn't set, it searches with "Contains" logic by default. Passed value and searchString values.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.FormComponent.ListBehavior)]
     public Func<T, string, bool> SearchFunc { get; set; }
 
     /// <summary>
-    /// If true, shows a searchbox for filtering items. Only works with ItemCollection approach.
+    /// If true, shows a search box for filtering items. Only works with ItemCollection approach.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Behavior)]
@@ -238,12 +267,15 @@ public partial class MudExList<T> : IDisposable
     public bool SearchBoxClearable { get; set; } = true;
 
     /// <summary>
-    /// SearchBox's CSS classes, seperated by space.
+    /// SearchBox's CSS classes, separated by space.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Behavior)]
     public string ClassSearchBox { get; set; }
 
+    /// <summary>
+    /// Placeholder for the search box.
+    /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Behavior)]
     public string SearchBoxPlaceholder { get; set; }
@@ -263,7 +295,7 @@ public partial class MudExList<T> : IDisposable
     public int? MaxItems { get; set; } = null;
 
     /// <summary>
-    /// Overscan value for Virtualized list. Default is 2.
+    /// Over scan value for Virtualized list. Default is 2.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Behavior)]
@@ -329,7 +361,7 @@ public partial class MudExList<T> : IDisposable
     public bool Clickable { get; set; }
 
     /// <summary>
-    /// If true the active (hilighted) item select on tab key. Designed for only single selection. Default is true.
+    /// If true the active (highlighted) item select on tab key. Designed for only single selection. Default is true.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Selecting)]
@@ -420,9 +452,14 @@ public partial class MudExList<T> : IDisposable
 
     bool _centralCommanderIsProcessing = false;
     bool _centralCommanderResultRendered = false;
-    // CentralCommander has a simple aim: Prevent racing conditions. It has two mechanism to do this:
-    // (1) When this method is running, it doesn't allow to run a second one. That guarantees to different value parameters can not call this method at the same time.
-    // (2) When this method runs once, prevents all value setters until OnAfterRender runs. That guarantees to have proper values.
+
+    /// <summary>
+    /// CentralCommander has a simple aim: Prevent racing conditions. It has two mechanism to do this:
+    /// (1) When this method is running, it doesn't allow to run a second one. That guarantees to different value parameters can not call this method at the same time.
+    /// (2) When this method runs once, prevents all value setters until OnAfterRender runs. That guarantees to have proper values.
+    /// </summary>
+    /// <param name="changedValueType"></param>
+    /// <param name="updateStyles"></param>
     protected void HandleCentralValueCommander(string changedValueType, bool updateStyles = true)
     {
         if (!_setParametersDone)
@@ -463,7 +500,7 @@ public partial class MudExList<T> : IDisposable
         {
             if (MultiSelection)
             {
-                SelectedItem = SelectedItems == null ? null : SelectedItems.LastOrDefault();
+                SelectedItem = SelectedItems?.LastOrDefault();
                 UpdateSelectedValue();
             }
         }
@@ -482,21 +519,27 @@ public partial class MudExList<T> : IDisposable
         }
     }
 
+    /// <summary>
+    /// Update selected.
+    /// </summary>
     protected internal void UpdateSelectedItem()
     {
         var items = CollectAllMudListItems(true);
 
-        if (MultiSelection && (SelectedValues == null || SelectedValues.Count() == 0))
+        if (MultiSelection && (SelectedValues == null || !SelectedValues.Any()))
         {
             SelectedItem = null;
             SelectedItems = null;
             return;
         }
 
-        SelectedItem = items.FirstOrDefault(x => SelectedValue == null ? x.Value == null : Comparer != null ? Comparer.Equals(x.Value, SelectedValue) : x.Value.Equals(SelectedValue));
+        SelectedItem = items.FirstOrDefault(x => SelectedValue == null ? x.Value == null : Comparer?.Equals(x.Value, SelectedValue) ?? x.Value.Equals(SelectedValue));
         SelectedItems = SelectedValues == null ? null : items.Where(x => SelectedValues.Contains(x.Value, _comparer));
     }
 
+    /// <summary>
+    /// Update selected value
+    /// </summary>
     protected internal void UpdateSelectedValue()
     {
         if (!MultiSelection && SelectedItem == null)
@@ -511,6 +554,7 @@ public partial class MudExList<T> : IDisposable
     }
 
     private T _selectedValue;
+    
     /// <summary>
     /// The current selected value.
     /// Note: Make the list Clickable or set MultiSelection true for item selection to work.
@@ -553,10 +597,7 @@ public partial class MudExList<T> : IDisposable
     [SafeCategory(CategoryTypes.List.Selecting)]
     public IEnumerable<T> SelectedValues
     {
-        get
-        {
-            return _selectedValues;
-        }
+        get => _selectedValues;
 
         set
         {
@@ -629,7 +670,7 @@ public partial class MudExList<T> : IDisposable
 
     private HashSet<MudExListItem<T>> _selectedItems;
     /// <summary>
-    /// The current selected listitems.
+    /// The current selected list items.
     /// Note: make the list Clickable for item selection to work.
     /// </summary>
     [Parameter, IgnoreOnObjectEdit]
@@ -652,7 +693,7 @@ public partial class MudExList<T> : IDisposable
             if (value != null && _selectedItems != null && _selectedItems.SetEquals(value))
                 return;
 
-            _selectedItems = value == null ? null : value.ToHashSet();
+            _selectedItems = value?.ToHashSet();
             if (!_setParametersDone)
             {
                 return;
@@ -704,6 +745,8 @@ public partial class MudExList<T> : IDisposable
     #region Lifecycle Methods, Dispose & Register
 
     bool _setParametersDone = false;
+
+    /// <inheritdoc />
     public override Task SetParametersAsync(ParameterView parameters)
     {
         if (_centralCommanderIsProcessing)
@@ -722,6 +765,7 @@ public partial class MudExList<T> : IDisposable
         return Task.CompletedTask;
     }
 
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         if (ParentList != null)
@@ -731,6 +775,8 @@ public partial class MudExList<T> : IDisposable
     }
 
     internal event Action ParametersChanged;
+
+    /// <inheritdoc />
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
@@ -739,6 +785,8 @@ public partial class MudExList<T> : IDisposable
 
     private IKeyInterceptor _keyInterceptor;
     private bool _firstRendered = false;
+
+    /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
@@ -753,8 +801,8 @@ public partial class MudExList<T> : IDisposable
                 TargetClass = "mud-ex-list-item",
                 Keys = {
                         new KeyOptions { Key=" ", PreventDown = "key+none" }, //prevent scrolling page, toggle open/close
-                        new KeyOptions { Key="ArrowUp", PreventDown = "key+none" }, // prevent scrolling page, instead hilight previous item
-                        new KeyOptions { Key="ArrowDown", PreventDown = "key+none" }, // prevent scrolling page, instead hilight next item
+                        new KeyOptions { Key="ArrowUp", PreventDown = "key+none" }, // prevent scrolling page, instead highlight previous item
+                        new KeyOptions { Key="ArrowDown", PreventDown = "key+none" }, // prevent scrolling page, instead highlight next item
                         new KeyOptions { Key="Home", PreventDown = "key+none" },
                         new KeyOptions { Key="End", PreventDown = "key+none" },
                         new KeyOptions { Key="Escape" },
@@ -796,7 +844,7 @@ public partial class MudExList<T> : IDisposable
                 }
                 else
                 {
-                    // These updated style method cause to fail some tests after adding select phase. Can be discuss later.
+                    // These updated style method cause to fail some tests after adding select phase. Can be discussed later.
                     //UpdateSelectedStyles();
                     UpdateLastActivatedItem(SelectedValue);
                 }
@@ -805,9 +853,9 @@ public partial class MudExList<T> : IDisposable
             {
                 UpdateLastActivatedItem(SelectedValues.LastOrDefault());
             }
-            if (_lastActivatedItem != null && !(MultiSelection && _allSelected == true))
+            if (LastActivatedItem != null && !(MultiSelection && AllSelected == true))
             {
-                await ScrollToMiddleAsync(_lastActivatedItem);
+                await ScrollToMiddleAsync(LastActivatedItem);
             }
             _firstRendered = true;
         }
@@ -815,16 +863,22 @@ public partial class MudExList<T> : IDisposable
         _centralCommanderResultRendered = true;
     }
 
+    /// <summary>
+    /// Dispose the component.
+    /// </summary>
     public void Dispose()
     {
         ParametersChanged = null;
         ParentList?.Unregister(this);
     }
 
+    /// <summary>
+    /// Register list item.
+    /// </summary>
     protected internal void Register(MudExListItem<T> item)
     {
         _items.Add(item);
-        if (SelectedValue != null && object.Equals(item.Value, SelectedValue))
+        if (SelectedValue != null && Equals(item.Value, SelectedValue))
         {
             item.SetSelected(true);
             //TODO check if item is the selectable for a nested list, and deselect this.
@@ -838,16 +892,25 @@ public partial class MudExList<T> : IDisposable
         }
     }
 
+    /// <summary>
+    /// Unregister list item.
+    /// </summary>
     protected internal void Unregister(MudExListItem<T> item)
     {
         _items.Remove(item);
     }
 
+    /// <summary>
+    /// Register child list.
+    /// </summary>
     protected internal void Register(MudExList<T> child)
     {
         _childLists.Add(child);
     }
 
+    /// <summary>
+    /// Unregister child list.
+    /// </summary>
     protected internal void Unregister(MudExList<T> child)
     {
         _childLists.Remove(child);
@@ -858,6 +921,9 @@ public partial class MudExList<T> : IDisposable
 
     #region Events (Key, Focus)
 
+    /// <summary>
+    /// Key down handler for search box.
+    /// </summary>
     protected internal async Task SearchBoxHandleKeyDown(KeyboardEventArgs obj)
     {
         if (Disabled || (!Clickable && !MultiSelection))
@@ -872,7 +938,7 @@ public partial class MudExList<T> : IDisposable
                 break;
             case "a":
             case "A":
-                if (obj.CtrlKey == true)
+                if (obj.CtrlKey)
                 {
                     await _searchField.SelectAsync();
                 }
@@ -913,8 +979,14 @@ public partial class MudExList<T> : IDisposable
 
     MudBaseInput<string> _searchField;
 
+    /// <summary>
+    /// Search field.
+    /// </summary>
     public MudBaseInput<string> SearchField => _searchField;
 
+    /// <summary>
+    /// Key down handler
+    /// </summary>
     protected internal async Task HandleKeyDown(KeyboardEventArgs obj)
     {
         if (Disabled || (!Clickable && !MultiSelection))
@@ -935,7 +1007,7 @@ public partial class MudExList<T> : IDisposable
             case "Tab":
                 if (!MultiSelection && SelectValueOnTab)
                 {
-                    SetSelectedValue(_lastActivatedItem);
+                    SetSelectedValue(LastActivatedItem);
                 }
                 break;
             case "ArrowUp":
@@ -952,11 +1024,11 @@ public partial class MudExList<T> : IDisposable
                 break;
             case "Enter":
             case "NumpadEnter":
-                if (_lastActivatedItem == null)
+                if (LastActivatedItem == null)
                 {
                     return;
                 }
-                SetSelectedValue(_lastActivatedItem);
+                SetSelectedValue(LastActivatedItem);
                 break;
             case "a":
             case "A":
@@ -964,13 +1036,13 @@ public partial class MudExList<T> : IDisposable
                 {
                     if (MultiSelection)
                     {
-                        SelectAllItems(_allSelected);
+                        SelectAllItems(AllSelected);
                     }
                 }
                 break;
             case "f":
             case "F":
-                if (obj.CtrlKey == true && obj.ShiftKey == true)
+                if (obj.CtrlKey && obj.ShiftKey)
                 {
                     SearchBox = !SearchBox;
                     StateHasChanged();
@@ -980,12 +1052,18 @@ public partial class MudExList<T> : IDisposable
         await OnKeyDown.InvokeAsync(obj);
     }
 
+    /// <summary>
+    /// Handler for focus leave.
+    /// </summary>
     protected async Task HandleOnFocusOut()
     {
         DeactiveAllItems();
         await OnFocusOut.InvokeAsync();
     }
 
+    /// <summary>
+    /// Scroll handler.
+    /// </summary>
     protected void HandleOnScroll()
     {
         if (Virtualize)
@@ -999,6 +1077,9 @@ public partial class MudExList<T> : IDisposable
 
     #region Select
 
+    /// <summary>
+    /// Set selected value.
+    /// </summary>
     protected internal void SetSelectedValue(T value, bool force = false)
     {
         if ((!Clickable && !MultiSelection) && !force)
@@ -1029,17 +1110,15 @@ public partial class MudExList<T> : IDisposable
         UpdateLastActivatedItem(value);
     }
 
+    /// <summary>
+    /// Set the selected value.
+    /// </summary>
     protected internal void SetSelectedValue(MudExListItem<T> item, bool force = false)
     {
-        if (item == null)
-        {
-            return;
-        }
-
-        if ((!Clickable && !MultiSelection) && !force)
+        if (item == null || ((!Clickable && !MultiSelection) && !force))
             return;
 
-        //Make sure its the most parent one before continue method
+        //Make sure it's the most parent one before continue method
         if (ParentList != null)
         {
             ParentList?.SetSelectedValue(item);
@@ -1052,27 +1131,21 @@ public partial class MudExList<T> : IDisposable
         }
         else
         {
-            if (item.IsSelected)
-            {
-                SelectedValues = SelectedValues?.Where(x => Comparer != null ? !Comparer.Equals(x, item.Value) : !x.Equals(item.Value));
-            }
-            else
-            {
-                if (SelectedValues == null)
-                {
-                    SelectedValues = new HashSet<T>(_comparer) { item.Value };
-                }
-                else
-                {
-                    SelectedValues = SelectedValues.Append(item.Value).ToHashSet(_comparer);
-                }
-            }
+            SelectedValues = item.IsSelected
+                ?
+                SelectedValues?.Where(x => Comparer != null ? !Comparer.Equals(x, item.Value) : !x.Equals(item.Value))
+                : SelectedValues == null
+                    ? new HashSet<T>(_comparer) { item.Value }
+                    : SelectedValues.Append(item.Value).ToHashSet(_comparer);
         }
 
         UpdateSelectAllState();
-        _lastActivatedItem = item;
+        LastActivatedItem = item;
     }
 
+    /// <summary>
+    /// Update selected styles.
+    /// </summary>
     protected internal void UpdateSelectedStyles(bool deselectFirst = true, bool update = true)
     {
         var items = CollectAllMudListItems(true);
@@ -1101,22 +1174,25 @@ public partial class MudExList<T> : IDisposable
         }
     }
 
-    protected bool IsSelectable()
-    {
-        if (Clickable || MultiSelection)
-        {
-            return true;
-        }
+    /// <summary>
+    /// Returns true if the item is selectable.
+    /// </summary>
+    /// <returns></returns>
+    protected bool IsSelectable() => Clickable || MultiSelection;
 
-        return false;
-    }
-
+    /// <summary>
+    /// Unselect all items.
+    /// </summary>
+    /// <param name="items"></param>
     protected void DeselectAllItems(List<MudExListItem<T>> items)
     {
         foreach (var listItem in items)
             listItem?.SetSelected(false);
     }
 
+    /// <summary>
+    /// Collects all MudListItems.
+    /// </summary>
     protected List<MudExListItem<T>> CollectAllMudListItems(bool exceptNestedAndExceptional = false)
     {
         var items = new List<MudExListItem<T>>();
@@ -1149,37 +1225,36 @@ public partial class MudExList<T> : IDisposable
 
     #region SelectAll
 
+    /// <summary>
+    /// Update select all state.
+    /// </summary>
     protected internal void UpdateSelectAllState()
     {
         if (MultiSelection)
         {
-            var oldState = _allSelected;
             if (_selectedValues == null || !_selectedValues.Any())
             {
-                _allSelected = false;
+                AllSelected = false;
             }
             else if (ItemCollection != null && ItemCollection.Count == _selectedValues.Count)
             {
-                _allSelected = true;
+                AllSelected = true;
             }
             else if (ItemCollection == null && CollectAllMudListItems(true).Count() == _selectedValues.Count)
             {
-                _allSelected = true;
+                AllSelected = true;
             }
             else
             {
-                _allSelected = null;
+                AllSelected = null;
             }
         }
     }
 
-    protected string SelectAllCheckBoxIcon
-    {
-        get
-        {
-            return _allSelected.HasValue ? _allSelected.Value ? CheckedIcon : UncheckedIcon : IndeterminateIcon;
-        }
-    }
+    /// <summary>
+    /// Icon for select all checkbox.
+    /// </summary>
+    protected string SelectAllCheckBoxIcon => AllSelected.HasValue ? AllSelected.Value ? CheckedIcon : UncheckedIcon : IndeterminateIcon;
 
     /// <summary>
     /// Custom checked icon.
@@ -1202,45 +1277,33 @@ public partial class MudExList<T> : IDisposable
     [SafeCategory(CategoryTypes.FormComponent.ListAppearance)]
     public string IndeterminateIcon { get; set; } = Icons.Material.Filled.IndeterminateCheckBox;
 
+    /// <summary>
+    /// Select all items.
+    /// </summary>
     protected void SelectAllItems(bool? deselect = false)
     {
         var items = CollectAllMudListItems(true);
         if (deselect == true)
         {
-            foreach (var item in items)
-            {
-                if (item.IsSelected)
-                {
-                    item.SetSelected(false, returnIfDisabled: true);
-                }
-            }
-            _allSelected = false;
+            foreach (var item in items.Where(item => item.IsSelected))
+                item.SetSelected(false, returnIfDisabled: true);
+            
+            AllSelected = false;
         }
         else
         {
-            foreach (var item in items)
-            {
-                if (!item.IsSelected)
-                {
-                    item.SetSelected(true, returnIfDisabled: true);
-                }
-            }
-            _allSelected = true;
+            foreach (var item in items.Where(item => !item.IsSelected))
+                item.SetSelected(true, returnIfDisabled: true);
+            
+            AllSelected = true;
         }
 
-        if (ItemCollection != null)
-        {
-            SelectedValues = deselect == true ? Enumerable.Empty<T>() : ItemCollection.ToHashSet(_comparer);
-        }
-        else
-        {
-            SelectedValues = items.Where(x => x.IsSelected).Select(y => y.Value).ToHashSet(_comparer);
-        }
+        SelectedValues = ItemCollection != null
+            ? deselect == true ? Enumerable.Empty<T>() : ItemCollection.ToHashSet(_comparer)
+            : items.Where(x => x.IsSelected).Select(y => y.Value).ToHashSet(_comparer);
 
         if (MudExSelect != null)
-        {
-            MudExSelect.BeginValidatePublic();
-        }
+            _= MudExSelect.BeginValidatePublic();
     }
 
     #endregion
@@ -1248,46 +1311,48 @@ public partial class MudExList<T> : IDisposable
 
     #region Active (Hilight)
 
+    /// <summary>
+    /// Returns the index of the active item.
+    /// </summary>
     protected int GetActiveItemIndex()
     {
         var items = CollectAllMudListItems(true);
-        if (_lastActivatedItem == null)
+        if (LastActivatedItem == null)
         {
             var a = items.FindIndex(x => x.IsActive);
             return a;
         }
         else
         {
-            var a = items.FindIndex(x => _lastActivatedItem.Value == null ? x.Value == null : Comparer != null ? Comparer.Equals(_lastActivatedItem.Value, x.Value) : _lastActivatedItem.Value.Equals(x.Value));
+            var a = items.FindIndex(x => LastActivatedItem.Value == null ? x.Value == null : Comparer != null ? Comparer.Equals(LastActivatedItem.Value, x.Value) : LastActivatedItem.Value.Equals(x.Value));
             return a;
         }
     }
 
+    /// <summary>
+    /// returns the value of the active item.
+    /// </summary>
     protected T GetActiveItemValue()
     {
         var items = CollectAllMudListItems(true);
-        if (_lastActivatedItem == null)
-        {
-            return items.FirstOrDefault(x => x.IsActive).Value;
-        }
-        else
-        {
-            return _lastActivatedItem.Value;
-        }
+        return LastActivatedItem == null ? items.FirstOrDefault(x => x.IsActive).Value : LastActivatedItem.Value;
     }
 
+    /// <summary>
+    /// Update last activated item.
+    /// </summary>
     protected internal void UpdateLastActivatedItem(T value)
     {
         var items = CollectAllMudListItems(true);
-        _lastActivatedItem = items.FirstOrDefault(x => value == null ? x.Value == null : Comparer != null ? Comparer.Equals(value, x.Value) : value.Equals(x.Value));
+        LastActivatedItem = items.FirstOrDefault(x => value == null ? x.Value == null : Comparer != null ? Comparer.Equals(value, x.Value) : value.Equals(x.Value));
     }
 
+    /// <summary>
+    /// Deactivate all items.
+    /// </summary>
     protected void DeactiveAllItems(List<MudExListItem<T>> items = null)
     {
-        if (items == null)
-        {
-            items = CollectAllMudListItems(true);
-        }
+        items ??= CollectAllMudListItems(true);
 
         foreach (var item in items)
         {
@@ -1296,6 +1361,10 @@ public partial class MudExList<T> : IDisposable
     }
 
 #pragma warning disable BL0005
+    
+    /// <summary>
+    /// Active first item.
+    /// </summary>
     public async Task ActiveFirstItem(string startChar = null)
     {
         var items = CollectAllMudListItems(true);
@@ -1308,7 +1377,7 @@ public partial class MudExList<T> : IDisposable
         if (string.IsNullOrWhiteSpace(startChar))
         {
             items[0].SetActive(true);
-            _lastActivatedItem = items[0];
+            LastActivatedItem = items[0];
             if (items[0].ParentListItem != null && !items[0].ParentListItem.Expanded)
             {
                 items[0].ParentListItem.Expanded = true;
@@ -1319,29 +1388,29 @@ public partial class MudExList<T> : IDisposable
 
         // find first item that starts with the letter
         var possibleItems = items.Where(x => (x.Text ?? Converter.Set(x.Value) ?? "").StartsWith(startChar, StringComparison.CurrentCultureIgnoreCase)).ToList();
-        if (possibleItems == null || !possibleItems.Any())
+        if (!possibleItems.Any())
         {
-            if (_lastActivatedItem == null)
+            if (LastActivatedItem == null)
             {
                 return;
             }
-            _lastActivatedItem.SetActive(true);
-            if (_lastActivatedItem.ParentListItem != null && !_lastActivatedItem.ParentListItem.Expanded)
+            LastActivatedItem.SetActive(true);
+            if (LastActivatedItem.ParentListItem != null && !LastActivatedItem.ParentListItem.Expanded)
             {
-                _lastActivatedItem.ParentListItem.Expanded = true;
+                LastActivatedItem.ParentListItem.Expanded = true;
             }
-            await ScrollToMiddleAsync(_lastActivatedItem);
+            await ScrollToMiddleAsync(LastActivatedItem);
             return;
         }
 
-        var theItem = possibleItems.FirstOrDefault(x => x == _lastActivatedItem);
+        var theItem = possibleItems.FirstOrDefault(x => x == LastActivatedItem);
         if (theItem == null)
         {
             possibleItems[0].SetActive(true);
-            _lastActivatedItem = possibleItems[0];
-            if (_lastActivatedItem.ParentListItem != null && !_lastActivatedItem.ParentListItem.Expanded)
+            LastActivatedItem = possibleItems[0];
+            if (LastActivatedItem.ParentListItem != null && !LastActivatedItem.ParentListItem.Expanded)
             {
-                _lastActivatedItem.ParentListItem.Expanded = true;
+                LastActivatedItem.ParentListItem.Expanded = true;
             }
             await ScrollToMiddleAsync(possibleItems[0]);
             return;
@@ -1350,10 +1419,10 @@ public partial class MudExList<T> : IDisposable
         if (theItem == possibleItems.LastOrDefault())
         {
             possibleItems[0].SetActive(true);
-            _lastActivatedItem = possibleItems[0];
-            if (_lastActivatedItem.ParentListItem != null && !_lastActivatedItem.ParentListItem.Expanded)
+            LastActivatedItem = possibleItems[0];
+            if (LastActivatedItem.ParentListItem != null && !LastActivatedItem.ParentListItem.Expanded)
             {
-                _lastActivatedItem.ParentListItem.Expanded = true;
+                LastActivatedItem.ParentListItem.Expanded = true;
             }
             await ScrollToMiddleAsync(possibleItems[0]);
         }
@@ -1361,15 +1430,18 @@ public partial class MudExList<T> : IDisposable
         {
             var item = possibleItems[possibleItems.IndexOf(theItem) + 1];
             item.SetActive(true);
-            _lastActivatedItem = item;
-            if (_lastActivatedItem.ParentListItem != null && !_lastActivatedItem.ParentListItem.Expanded)
+            LastActivatedItem = item;
+            if (LastActivatedItem.ParentListItem != null && !LastActivatedItem.ParentListItem.Expanded)
             {
-                _lastActivatedItem.ParentListItem.Expanded = true;
+                LastActivatedItem.ParentListItem.Expanded = true;
             }
             await ScrollToMiddleAsync(item);
         }
     }
 
+    /// <summary>
+    /// Active adjacent item.
+    /// </summary>
     public async Task ActiveAdjacentItem(int changeCount)
     {
         var items = CollectAllMudListItems(true);
@@ -1390,7 +1462,7 @@ public partial class MudExList<T> : IDisposable
         }
         DeactiveAllItems(items);
         items[index + changeCount].SetActive(true);
-        _lastActivatedItem = items[index + changeCount];
+        LastActivatedItem = items[index + changeCount];
 
         if (items[index + changeCount].ParentListItem != null && !items[index + changeCount].ParentListItem.Expanded)
         {
@@ -1400,6 +1472,9 @@ public partial class MudExList<T> : IDisposable
         await ScrollToMiddleAsync(items[index + changeCount]);
     }
 
+    /// <summary>
+    /// Active previous item.
+    /// </summary>
     public async Task ActivePreviousItem()
     {
         var items = CollectAllMudListItems(true);
@@ -1414,7 +1489,7 @@ public partial class MudExList<T> : IDisposable
         }
         DeactiveAllItems(items);
         items[index - 1].SetActive(true);
-        _lastActivatedItem = items[index - 1];
+        LastActivatedItem = items[index - 1];
 
         if (items[index - 1].ParentListItem != null && !items[index - 1].ParentListItem.Expanded)
         {
@@ -1424,6 +1499,9 @@ public partial class MudExList<T> : IDisposable
         await ScrollToMiddleAsync(items[index - 1]);
     }
 
+    /// <summary>
+    /// Active last item.
+    /// </summary>
     public async Task ActiveLastItem()
     {
         var items = CollectAllMudListItems(true);
@@ -1442,7 +1520,7 @@ public partial class MudExList<T> : IDisposable
             }
         }
         items[properLastIndex].SetActive(true);
-        _lastActivatedItem = items[properLastIndex];
+        LastActivatedItem = items[properLastIndex];
 
         if (items[properLastIndex].ParentListItem != null && !items[properLastIndex].ParentListItem.Expanded)
         {
@@ -1459,14 +1537,14 @@ public partial class MudExList<T> : IDisposable
     #region Others (Clear, Scroll, Search)
 
     /// <summary>
-    /// Clears value(s) and item(s) and deactive all items.
+    /// Clears value(s) and item(s) and deactivates all items.
     /// </summary>
     public void Clear()
     {
         var items = CollectAllMudListItems();
         if (!MultiSelection)
         {
-            SelectedValue = default(T);
+            SelectedValue = default;
         }
         else
         {
@@ -1478,44 +1556,48 @@ public partial class MudExList<T> : IDisposable
         UpdateSelectAllState();
     }
 
+    /// <summary>
+    /// Scroll to middle.
+    /// </summary>
     protected internal ValueTask ScrollToMiddleAsync(MudExListItem<T> item)
     {
         return ValueTask.CompletedTask;
         //return ScrollManagerExtended.ScrollToMiddleAsync(_elementId, item.ItemId);
     }
 
-    protected ICollection<T> GetSearchedItems()
-    {
-        if (!SearchBox || ItemCollection == null || SearchString == null)
-        {
-            return ItemCollection;
-        }
+    /// <summary>
+    /// Returns all searched items.
+    /// </summary>
+    protected ICollection<T> GetSearchedItems() =>
+        !SearchBox || ItemCollection == null || SearchString == null ? ItemCollection :
+        SearchFunc != null ? ItemCollection.Where(x => SearchFunc.Invoke(x, SearchString)).ToList() :
+        ItemCollection
+            .Where(x => Converter.Set(x).Contains(SearchString, StringComparison.InvariantCultureIgnoreCase))
+            .ToList();
 
-        if (SearchFunc != null)
-        {
-            return ItemCollection.Where(x => SearchFunc.Invoke(x, SearchString)).ToList();
-        }
-
-        return ItemCollection.Where(x => Converter.Set(x).Contains(SearchString, StringComparison.InvariantCultureIgnoreCase)).ToList();
-    }
-
+    /// <summary>
+    /// Force update.
+    /// </summary>
     public async Task ForceUpdate()
     {
         await Task.Delay(1);
         UpdateSelectedStyles();
     }
 
+    /// <summary>
+    /// Force update items.
+    /// </summary>
     public void ForceUpdateItems()
     {
-        List<MudExListItem<T>> items = GetAllItems();
+        var items = GetAllItems();
         SelectedItem = items.FirstOrDefault(x => x.Value != null && x.Value.Equals(SelectedValue));
         SelectedItems = items.Where((x => x.Value != null && SelectedValues.Contains(x.Value)));
     }
 
-    protected async Task OnDoubleClickHandler(MouseEventArgs args, T itemValue)
-    {
-        await OnDoubleClick.InvokeAsync(new ListItemClickEventArgs<T>() { MouseEventArgs = args, ItemValue = itemValue });
-    }
+    /// <summary>
+    /// Handler for double click.
+    /// </summary>
+    protected Task OnDoubleClickHandler(MouseEventArgs args, T itemValue) => OnDoubleClick.InvokeAsync(new ListItemClickEventArgs<T> { MouseEventArgs = args, ItemValue = itemValue });
 
     #endregion
 
@@ -1537,8 +1619,18 @@ public partial class MudExList<T> : IDisposable
     }
 }
 
+/// <summary>
+/// Arguments for list item click event.
+/// </summary>
 public class ListItemClickEventArgs<T>
 {
+    /// <summary>
+    /// Mouse event arguments.
+    /// </summary>
     public MouseEventArgs MouseEventArgs { get; set; }
+    
+    /// <summary>
+    /// Value of the item.
+    /// </summary>
     public T ItemValue { get; set; }
 }

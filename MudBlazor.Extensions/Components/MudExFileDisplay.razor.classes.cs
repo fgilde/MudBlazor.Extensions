@@ -234,8 +234,18 @@ public sealed class MudExFileDisplayContentErrorResult : IMudExFileDisplayInfos
     public bool? SandBoxIframes { get; set; }
 }
 
+/// <summary>
+/// Determines how to handle the stream url creation
+/// </summary>
 public enum StreamUrlHandling
 {
+    /// <summary>
+    /// Use simple base64 encoded data url for the stream. Can be used for small files, for large files we recommend use BlobUrl
+    /// </summary>
     DataUrl,
+    
+    /// <summary>
+    /// Automatically use blob url for the stream. The blob url will be revoked after the file is closed
+    /// </summary>
     BlobUrl
 }

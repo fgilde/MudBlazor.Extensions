@@ -16,9 +16,15 @@ public class UploadableFile : IUploadableFile
     private string _contentType;
     private string _extension;
 
+    /// <summary>
+    /// Creates a new instance of UploadableFile.
+    /// </summary>
     public UploadableFile()
     {}
 
+    /// <summary>
+    /// Creates a new instance of UploadableFile from an existing instance.
+    /// </summary>
     public UploadableFile(IUploadableFile existing)
     {
         FileName = existing.FileName;
@@ -158,11 +164,29 @@ public enum RestrictionType
     BlackList
 }
 
+/// <summary>
+/// Browser file with path
+/// </summary>
 public class BrowserFileWithPath
 {
+    /// <summary>
+    /// Relative path of the file
+    /// </summary>
     public string RelativePath { get; set; }
+    
+    /// <summary>
+    /// Name of the file
+    /// </summary>
     public string Name { get; set; }
+    
+    /// <summary>
+    /// Size of the file
+    /// </summary>
     public long Size { get; set; }
+    
+    /// <summary>
+    /// Mime type of the file
+    /// </summary>
     public string ContentType { get; set; }
 }
 
@@ -171,12 +195,39 @@ public class BrowserFileWithPath
 /// </summary>
 public enum DropZoneClickAction
 {
+    /// <summary>
+    /// None
+    /// </summary>
     None,
+    
+    /// <summary>
+    /// Click to upload
+    /// </summary>
     UploadFile,
+    
+    /// <summary>
+    /// Click to select folder to upload
+    /// </summary>
     UploadFolder,
+    
+    /// <summary>
+    /// Click to add url
+    /// </summary>
     AddUrl,
+    
+    /// <summary>
+    /// Click forces pick from google drive
+    /// </summary>
     PickFromGoogleDrive,
+    
+    /// <summary>
+    /// Click forces pick from one drive
+    /// </summary>
     PickFromOneDrive,
+    
+    /// <summary>
+    /// Click forces pick from drop box
+    /// </summary>
     PickFromDropBox,
 }
 
@@ -185,10 +236,33 @@ public enum DropZoneClickAction
 /// </summary>
 public enum ExternalProviderRendering
 {
+    /// <summary>
+    /// As action buttons.
+    /// </summary>
     ActionButtons,
+    
+    /// <summary>
+    /// As action buttons on a new line.
+    /// </summary>
     ActionButtonsNewLine,
+    
+    /// <summary>
+    /// Render as images.
+    /// </summary>
     Images,
+    
+    /// <summary>
+    /// Render as images on a new line.
+    /// </summary>
     ImagesNewLine,
+    
+    /// <summary>
+    /// Integrate as images in the external add url dialog.
+    /// </summary>
     IntegratedInDialogAsImages,
+    
+    /// <summary>
+    /// Integrate as buttons in the external add url dialog.
+    /// </summary>
     IntegratedInDialogAsButtons,
 }

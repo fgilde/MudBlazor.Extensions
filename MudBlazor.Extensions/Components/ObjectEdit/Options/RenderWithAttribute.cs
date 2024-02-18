@@ -3,9 +3,15 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 
+/// <summary>
+/// Attribute to specify how the property should be rendered inside a mud ex object edit.
+/// </summary>
 [AttributeUsage(AttributeTargets.Property)]
 public abstract class RenderWithBaseAttribute : System.Attribute
 {
+    /// <summary>
+    /// Applies the attribute to the given ObjectEditPropertyMeta instance.
+    /// </summary>
     public abstract ObjectEditPropertyMeta Apply(ObjectEditPropertyMeta meta);
 }
 
@@ -26,6 +32,9 @@ internal class RenderWithAttribute<TComponent> : RenderWithBaseAttribute where T
     //    : this(valueField.GetMemberName(), attributes)
     //{ }
 
+    /// <summary>
+    /// Applies the attribute to the given ObjectEditPropertyMeta instance.
+    /// </summary>
     public override ObjectEditPropertyMeta Apply(ObjectEditPropertyMeta meta)
     {
         return meta.RenderWith(typeof(TComponent), _attributes);

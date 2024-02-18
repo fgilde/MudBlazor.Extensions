@@ -165,7 +165,7 @@ public partial class MudExSlideBar
     /// <summary>
     /// Returns the inline styles of the MudExSlideBar.
     /// </summary>
-    private string Style()
+    private string StyleStr()
     {
         return new MudExStyleBuilder()
             .With("opacity", _isOpen ? "1" : OpacityNotFocused.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), !DisableOpacityChange)

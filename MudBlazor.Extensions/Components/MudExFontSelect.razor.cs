@@ -16,7 +16,7 @@ public partial class MudExFontSelect
     /// <summary>
     /// Render base component
     /// </summary>
-    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
     /// <summary>
     /// FontFamily
@@ -65,6 +65,10 @@ public partial class MudExFontSelect
         _initialized = true;
     }
 
+    /// <summary>
+    /// Can be overwritten and should return true when the value needs to be updated for no multi selection
+    /// </summary>
+    /// <returns></returns>
     protected override bool NeedsValueUpdateForNonMultiSelection()
     {
         return false;

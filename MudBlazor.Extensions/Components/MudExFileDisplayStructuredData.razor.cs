@@ -10,7 +10,7 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExFileDisplayStructuredData : IMudExFileDisplay
 {
-    [Inject] private MudExFileService fileService { get; set; }
+    [Inject] private MudExFileService FileService { get; set; }
     /// <summary>
     /// The name of the component
     /// </summary>
@@ -27,6 +27,9 @@ public partial class MudExFileDisplayStructuredData : IMudExFileDisplay
     [Parameter]
     public IMudExFileDisplayInfos FileDisplayInfos { get; set; }
 
+    /// <summary>
+    /// Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+    /// </summary>
     [CascadingParameter] public MudExFileDisplay MudExFileDisplay { get; set; }
 
     /// <summary>
@@ -47,7 +50,7 @@ public partial class MudExFileDisplayStructuredData : IMudExFileDisplay
         {
             try
             {
-                Value = await fileService.ReadAsStringFromFileDisplayInfosAsync(FileDisplayInfos);
+                Value = await FileService.ReadAsStringFromFileDisplayInfosAsync(FileDisplayInfos);
             }
             catch (Exception e)
             {

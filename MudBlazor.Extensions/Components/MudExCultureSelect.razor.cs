@@ -11,7 +11,7 @@ public partial class MudExCultureSelect
     /// <summary>
     /// The inherited render
     /// </summary>
-    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
     /// <summary>
     /// Set how to handle neutral cultures
@@ -40,9 +40,11 @@ public partial class MudExCultureSelect
         }, cancellation);
     }
 
+    /// <inheritdoc />
     public override Func<CultureInfo, string> ToStringFunc { get; set; } = i => i?.DisplayName;
 
 
+    /// <inheritdoc />
     protected override Task OnInitializedAsync()
     {
         Virtualize = true;
@@ -51,9 +53,23 @@ public partial class MudExCultureSelect
 
 }
 
+/// <summary>
+/// Handling of neutral cultures
+/// </summary>
 public enum NeutralCultureHandling
 {
+    /// <summary>
+    /// Allow all cultures
+    /// </summary>
     AllowAllCultures,
+    
+    /// <summary>
+    /// Ignore non-neutral cultures
+    /// </summary>
     IgnoreNonNeutralCultures,
+    
+    /// <summary>
+    /// Ignore neutral cultures
+    /// </summary>
     IgnoreNeutralCultures,
 }

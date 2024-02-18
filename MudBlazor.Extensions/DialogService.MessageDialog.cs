@@ -23,7 +23,7 @@ public static partial class DialogServiceExt
     public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title, string message,
         Action<TComponent> componentOptions) where TComponent : ComponentBase, new()
     {
-        return dialogService.ShowComponentInDialogAsync(title, message, componentOptions, new DialogParameters(), _ => {});
+        return dialogService.ShowComponentInDialogAsync(title, message, componentOptions, new DialogParameters(), _ => { });
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public static partial class DialogServiceExt
     public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title, string message, string icon,
         Action<TComponent> componentOptions) where TComponent : ComponentBase, new()
     {
-        var dialogParameters = new DialogParameters {{nameof(MudExMessageDialog.Icon), icon}};
+        var dialogParameters = new DialogParameters { { nameof(MudExMessageDialog.Icon), icon } };
         return dialogService.ShowComponentInDialogAsync(title, message, componentOptions, dialogParameters, _ => { });
     }
 
@@ -65,7 +65,7 @@ public static partial class DialogServiceExt
     public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogAsync<TComponent>(this IDialogService dialogService, string title,
         string message, string icon) where TComponent : ComponentBase, new()
     {
-        return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, _ => { }, dialog => {dialog.Icon = icon;});
+        return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, _ => { }, dialog => { dialog.Icon = icon; });
     }
 
     /// <summary>
@@ -139,7 +139,7 @@ public static partial class DialogServiceExt
         DialogParameters dialogParameters,
         DialogOptionsEx options = null) where TComponent : ComponentBase, new()
     {
-        return dialogService.ShowComponentInDialogAsync<TComponent>(title, string.Empty, componentOptions, dialogParameters, options);
+        return dialogService.ShowComponentInDialogAsync(title, string.Empty, componentOptions, dialogParameters, options);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public static partial class DialogServiceExt
         Action<TComponent> componentOptions,
         DialogOptionsEx options) where TComponent : ComponentBase, new()
     {
-        return dialogService.ShowComponentInDialogAsync<TComponent>(title, string.Empty, componentOptions, new DialogParameters(), options);
+        return dialogService.ShowComponentInDialogAsync(title, string.Empty, componentOptions, new DialogParameters(), options);
     }
 
     /// <summary>
@@ -168,7 +168,7 @@ public static partial class DialogServiceExt
         Action<MudExMessageDialog> dialogParameters,
         Action<DialogOptionsEx> options = null) where TComponent : ComponentBase, new()
     {
-        
+
         var componentAttributes = componentOptions != null ? PropertyHelper.ValidValuesDictionary(componentOptions, true).ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : new Dictionary<string, object>();
         return dialogService.ShowComponentInDialogAsync<TComponent>(title, message, componentAttributes, dialogParameters, options);
     }
@@ -322,9 +322,11 @@ public static partial class DialogServiceExt
     /// <param name="dialogService">Instance of IDialogService</param>
     /// <param name="title">Title of the dialog</param>
     /// <param name="message">Message of the dialog</param>
+    /// <param name="cancelText">Text for cancel button</param>
     /// <param name="componentOptions">Component-specific configuration parameters</param>
     /// <param name="dialogParameters">Parameters for the dialog</param>
     /// <param name="options">Options for the dialog</param>
+    /// <param name="confirmText">Text for confirm button</param>
     /// <returns>A Task that returns a tuple consisting of a DialogResult and the component displayed in the dialog</returns>
     public static Task<(DialogResult DialogResult, TComponent Component)> ShowComponentInDialogOkCancelAsync<TComponent>(
         this IDialogService dialogService, string title, string message, string confirmText, string cancelText,
@@ -384,7 +386,7 @@ public static partial class DialogServiceExt
         options ??= DefaultOptions();
         var dialog = await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options);
 
-        return !(await dialog.Result).Cancelled;
+        return !(await dialog.Result).Canceled;
     }
 
     /// <summary>
@@ -433,7 +435,7 @@ public static partial class DialogServiceExt
         DialogOptionsEx options = null)
     {
         options ??= DefaultOptions();
-        return (await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options)).AsMudExDialogReference<MudExMessageDialog>();
+        return (await dialogService.ShowEx(title, parameters, options)).AsMudExDialogReference<MudExMessageDialog>();
     }
 
     /// <summary>
@@ -538,13 +540,13 @@ public static partial class DialogServiceExt
     /// </summary>
     public static async Task<string> PromptAsync(this IDialogService dialogService, string title, string message,
         string initialValue = "",
-        string buttonOkText = "Ok", 
+        string buttonOkText = "Ok",
         string buttonCancelText = "Cancel",
         string icon = null,
         Func<string, bool> canConfirm = null,
         DialogOptionsEx options = null)
     {
-        canConfirm ??= (s => true);
+        canConfirm ??= (_ => true);
         var parameters = new DialogParameters
         {
             {nameof(MudExPromptDialog.Message), message},
@@ -554,7 +556,7 @@ public static partial class DialogServiceExt
             {nameof(MudExPromptDialog.CanConfirm), canConfirm},
             {nameof(MudExPromptDialog.Value), initialValue}
         };
-        
+
         options ??= DefaultOptions();
         var res = await dialogService.ShowEx<MudExPromptDialog>(title, parameters, options);
         var dialogResult = (await res.Result);

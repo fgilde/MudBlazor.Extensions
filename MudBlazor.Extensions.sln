@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".scripts", ".scripts", "{BB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D346CB7E-2FA9-4D05-B01C-BDA3D5353982}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.github\workflows\MudEx.yml = .github\workflows\MudEx.yml
 	EndProjectSection
 EndProject

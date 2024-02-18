@@ -30,8 +30,14 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
     #region Parameters
 
+    /// <summary>
+    /// Set to set the item remove button always to the right independent of the <see cref="ActionsAdornment"/>
+    /// </summary>
     [Parameter] public bool RemoveItemButtonAlwaysRight { get; set; }
 
+    /// <summary>
+    /// Adornment for the action buttons
+    /// </summary>
     [Parameter] public Adornment ActionsAdornment { get; set; } = Adornment.End;
 
     /// <summary>
@@ -39,20 +45,30 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// </summary>
     [Parameter] public Func<T, string> PreviewDialogTitleResolveFunc { get; set; } = r => r?.FileName;
 
-    [Parameter]
-    public bool PreviewInIframe { get; set; } = false;    
+    /// <summary>
+    /// Set this to true to preview any file in an iframe
+    /// </summary>
+    [Parameter] public bool PreviewInIframe { get; set; } = false;    
     
-    [Parameter]
-    public string PreviewIcon { get; set; } = Icons.Material.Filled.ZoomIn;
+    /// <summary>
+    /// Icon for the preview button
+    /// </summary>
+    [Parameter] public string PreviewIcon { get; set; } = Icons.Material.Filled.ZoomIn;
 
-    [Parameter]
-    public Color PreviewIconColor { get; set; } = Color.Inherit;
+    /// <summary>
+    /// Color for the preview button
+    /// </summary>
+    [Parameter] public Color PreviewIconColor { get; set; } = Color.Inherit;
 
-    [Parameter]
-    public Func<T, bool> CanRemoveItemFunc { get; set; } = _ => true;
+    /// <summary>
+    /// With this function you can control if an item can be removed
+    /// </summary>
+    [Parameter] public Func<T, bool> CanRemoveItemFunc { get; set; } = _ => true;
 
-    [Parameter]
-    public Func<T, bool> ItemIsVisibleFunc { get; set; } = r => HasData(r) || !string.IsNullOrEmpty(r?.FileName);
+    /// <summary>
+    /// With this function you can control if an item should be shown
+    /// </summary>
+    [Parameter] public Func<T, bool> ItemIsVisibleFunc { get; set; } = r => HasData(r) || !string.IsNullOrEmpty(r?.FileName);
 
     /// <summary>
     /// Template can used for the drop zone part if no item is added
@@ -421,9 +437,9 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     [Parameter, SafeCategory("Validation")]
     public int MaxMultipleFiles { get; set; } = 100;
 
-    ///// <summary>
-    ///// The upload requests.
-    ///// </summary>
+    /// <summary>
+    /// The upload requests.
+    /// </summary>
     [Parameter, SafeCategory("Data")]
     public IList<T> UploadRequests
     {
@@ -1097,7 +1113,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             UploadRequestRemoved.InvokeAsync(item);
         if (RemoveErrorOnChange)
             SetError();
-        RaiseChangedAsync();
+        _= RaiseChangedAsync();
         CallStateHasChanged();
     }
 

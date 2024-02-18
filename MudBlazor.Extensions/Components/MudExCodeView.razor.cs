@@ -5,8 +5,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Text;
-using System.Xml.Linq;
-using BlazorJS;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
@@ -19,7 +17,6 @@ using MudBlazor.Extensions.Attribute;
 using Newtonsoft.Json;
 using Nextended.Blazor.Helper;
 using Nextended.Core.Extensions;
-using YamlDotNet.Core;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -33,17 +30,26 @@ public partial class MudExCodeView
     private bool _isExpanded;
     private bool _jsReady;
 
+    /// <summary>
+    /// Classname for the component
+    /// </summary>
     protected string Classname =>
         new MudExCssBuilder("mud-ex-code-view")
             .AddClass(Class)
             .Build();
 
-    protected string Stylename =>
+    /// <summary>
+    /// Style for the component
+    /// </summary>
+    protected string StyleStr =>
         new MudExStyleBuilder()
             .AddRaw(Style)
             .WithOverflow("auto")
             .Build();
 
+    /// <summary>
+    /// Classname for the code view
+    /// </summary>
     protected string CodeViewClassname =>
         new MudExCssBuilder("mud-ex-code-view")
             .AddClass("full-width", FullWidth)
@@ -51,26 +57,50 @@ public partial class MudExCodeView
             .AddClass(CodeClass)
             .Build();
 
-    protected string CodeViewStylename =>
+    /// <summary>
+    /// Style for the code view
+    /// </summary>
+    protected string CodeViewStyleStr =>
         new MudExStyleBuilder()
             .AddRaw(CodeStyle)
             .WithOverflow("auto")
             .Build();
 
+    /// <summary>
+    /// Classname for the code view container
+    /// </summary>
     protected string RenderFragmentClassname =>
         new MudExCssBuilder("mud-ex-code-view-container")
             .AddClass(RenderFragmentClass)
             .Build();
 
-    protected string RenderFragmentStylename =>
+    /// <summary>
+    /// Style for the code view container
+    /// </summary>
+    protected string RenderFragmentStyleStr =>
         new MudExStyleBuilder()
             .AddRaw(RenderFragmentStyle)
             .WithOverflow("hidden")
             .Build();
 
+    /// <summary>
+    /// MinWidth for the left docked panel when split view is used
+    /// </summary>
     [Parameter] public string DockedMinWidthLeft { get; set; } = "350px";
+    
+    /// <summary>
+    /// MinWidth for the right docked panel when split view is used
+    /// </summary>
     [Parameter] public string DockedMinWidthRight { get; set; } = "350px;";
+    
+    /// <summary>
+    /// MinHeight for the left docked panel when split view is used
+    /// </summary>
     [Parameter] public string DockedMinHeightLeft { get; set; } = "150px";
+    
+    /// <summary>
+    /// MinHeight for the right docked panel when split view is used
+    /// </summary>
     [Parameter] public string DockedMinHeightRight { get; set; } = "150px;";
 
     /// <summary>
@@ -78,28 +108,28 @@ public partial class MudExCodeView
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.ComponentBase.Common)]
-    public string? CodeClass { get; set; }
+    public string CodeClass { get; set; }
 
     /// <summary>
     /// User styles, applied on top of the component's own classes and styles.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.ComponentBase.Common)]
-    public string? CodeStyle { get; set; }
+    public string CodeStyle { get; set; }
 
     /// <summary>
     /// User class names, separated by space.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.ComponentBase.Common)]
-    public string? RenderFragmentClass { get; set; }
+    public string RenderFragmentClass { get; set; }
 
     /// <summary>
     /// User styles, applied on top of the component's own classes and styles.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.ComponentBase.Common)]
-    public string? RenderFragmentStyle { get; set; }
+    public string RenderFragmentStyle { get; set; }
 
     /// <summary>
     /// Specify layout if render content and code ist displayed
@@ -150,13 +180,16 @@ public partial class MudExCodeView
     /// <summary>
     /// ChildContent to show code for
     /// </summary>
-    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
 
     /// <summary>
     /// Set to true to render also the given child content otherwise only code is generated for
     /// </summary>
     [Parameter] public bool RenderChildContent { get; set; }
 
+    /// <summary>
+    /// Code to show
+    /// </summary>
     [Parameter]
     public string Code
     {
@@ -169,7 +202,7 @@ public partial class MudExCodeView
                 StateHasChanged();
             }
 
-            Task.Delay(10).ContinueWith(task =>
+            Task.Delay(10).ContinueWith(_ =>
             {
                 _markdownCode = CodeAsMarkup(value, Language.GetDescription());
                 if (IsRendered)
@@ -181,6 +214,7 @@ public partial class MudExCodeView
         }
     }
 
+    /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -241,14 +275,14 @@ public partial class MudExCodeView
     public static string GenerateBlazorMarkupFromInstance<TComponent>(TComponent componentInstance, string comment = "")
     {
         // TODO: Move to central place with ApiMemberInfo
-        var componentName = componentInstance.GetType().FullName.Replace(componentInstance.GetType().Namespace + ".", string.Empty);
-        var properties = componentInstance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+        var componentName = componentInstance?.GetType().FullName?.Replace(componentInstance.GetType().Namespace + ".", string.Empty);
+        var properties = componentInstance?.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Where(p => ObjectEditMeta.IsAllowedAsPropertyToEdit(p) && ObjectEditMeta.IsAllowedAsPropertyToEditOnAComponent<TComponent>(p));
 
-        var props = properties.ToDictionary(info => info.Name, info => info.GetValue(componentInstance))
+        var props = properties?.ToDictionary(info => info.Name, info => info.GetValue(componentInstance))
             .Where(pair => ComponentRenderHelper.IsValidParameter(typeof(TComponent), pair.Key, pair.Value)
                            && pair.Value != null
-                           && pair.Value?.GetType() != typeof(object));
+                           && pair.Value?.GetType() != typeof(object)) ?? Enumerable.Empty<KeyValuePair<string, object>>();
 
         var parameterString = string.Join("\n",
             props.Select(p => new KeyValuePair<string, string>(p.Key, MarkupValue(p.Value, p.Key)))
@@ -264,6 +298,9 @@ public partial class MudExCodeView
         return markup;
     }
 
+    /// <summary>
+    /// Returns the start and end tag for the given component name
+    /// </summary>
     public static (string StartTag, string EndTag) GetComponentTagNames(string input)
     {
         if (!input.Contains("`"))
@@ -286,7 +323,7 @@ public partial class MudExCodeView
 
     private static string MarkupValue(object value, string propName, bool ignoreComplexTypes = true)
     {
-        if (string.IsNullOrEmpty(value?.ToString()))
+        if (value == null || string.IsNullOrEmpty(value.ToString()))
             return null;
 
         if (value is EventCallback || (value.GetType().IsGenericType && value.GetType().GetGenericTypeDefinition() == typeof(EventCallback<>)))
@@ -295,7 +332,7 @@ public partial class MudExCodeView
         }
 
         if (value is bool)
-            return value.ToString().ToLower();
+            return value.ToString()?.ToLower();
 
         if (value.GetType().IsEnum)
             return $"{value.GetType().FullName}.{value}";
@@ -314,10 +351,10 @@ public partial class MudExCodeView
         if (value is MudExColor color)
             return $"@(\"{color.ToCssStringValue()}\")";
 
-        if (value?.ToString()?.StartsWith("<") == true)
+        if (value.ToString()?.StartsWith("<") == true)
         {
             var name = MudExSvg.SvgPropertyNameForValue(value.ToString());
-            return name != null ? $"@{name}" : value.ToString().Replace("\"", "\\\"");
+            return name != null ? $"@{name}" : value.ToString()?.Replace("\"", "\\\"");
         }
 
         if (value is string || MudExObjectEditHelper.HandleAsPrimitive(value.GetType()))
@@ -330,13 +367,16 @@ public partial class MudExCodeView
 
         //return $"{p.Value?.GetType().FullName}.{p.Value}";
 
-        // Für komplexe Datentypen, serialisiere sie zu JSON:
+        // Create a json string from the object and deserialize it in the markup
         var fullName = value.GetType().FullName;
         var friendlyTypeName = ApiMemberInfo.GetGenericFriendlyTypeName(fullName);
         var json = JsonConvert.SerializeObject(value);
         return $"@(Newtonsoft.Json.JsonConvert.DeserializeObject<{friendlyTypeName}>(\"{json.Replace("\"", "\\\"")}\"))";
     }
 
+    /// <summary>
+    /// Shortens the given markup
+    /// </summary>
     public static string ShortenMarkup(string markup)
     {
         // Regex pattern to find empty tags
@@ -349,6 +389,9 @@ public partial class MudExCodeView
         return RemoveEmptyLines(Regex.Replace(markup, pattern, replacement));
     }
 
+    /// <summary>
+    /// Removes empty lines from the given input
+    /// </summary>
     public static string RemoveEmptyLines(string input)
     {
         var filteredLines = input.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None)
@@ -392,8 +435,14 @@ public partial class MudExCodeView
         return ShortenMarkup(string.Join("\n", lines));
     }
 
-    public static string CodeFromFragment(RenderFragment? fragment)
+#pragma warning disable BL0006
+
+    /// <summary>
+    /// Returns the code from the given fragment
+    /// </summary>
+    public static string CodeFromFragment(RenderFragment fragment)
     {
+
         if (fragment == null)
             return string.Empty;
         var builder = new RenderTreeBuilder();
@@ -405,6 +454,7 @@ public partial class MudExCodeView
         var stringBuilder = new StringBuilder();
         ProcessFrames(frames, stringBuilder);
         return stringBuilder.ToString();
+
     }
 
 
@@ -545,7 +595,7 @@ public partial class MudExCodeView
             var frame = frames[i];
             if (frame.FrameType == RenderTreeFrameType.Attribute)
             {
-                if (frame.AttributeValue is RenderFragment fragment && fragment != null)
+                if (frame.AttributeValue is RenderFragment fragment)
                 {
                     hasRenderFragments = true;
 
@@ -605,6 +655,7 @@ public partial class MudExCodeView
         var attributesString = string.Join(" ", attributes);
         return (typeName, attributesString);
     }
+#pragma warning restore BL0006
 
     #endregion
 

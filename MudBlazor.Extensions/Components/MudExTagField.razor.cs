@@ -9,7 +9,10 @@ using MudBlazor.Utilities;
 
 namespace MudBlazor.Extensions.Components;
 
-public partial class MudExTagField<T> : IMudExComponent
+/// <summary>
+/// MudExTagField is a component that allows the user to enter a list of values as chips.
+/// </summary>
+public partial class MudExTagField<T>
 {
     private Adornment _renderChipsAdditional = Adornment.None;
 
@@ -114,18 +117,33 @@ public partial class MudExTagField<T> : IMudExComponent
     public int MaxChips { get; set; }
 
 
+    /// <summary>
+    /// Is true when the mouse is over a chip.
+    /// </summary>
     [Parameter]
     public bool IsMouseOverChip { get; set; }
 
+    /// <summary>
+    /// Called when the value of IsMouseOverChip changes.
+    /// </summary>
     [Parameter] 
     public EventCallback<bool> IsMouseOverChipChanged { get; set; }
 
+    /// <summary>
+    /// Callback when the mouse enters a chip.
+    /// </summary>
     [Parameter]
     public EventCallback<MouseEventArgs> OnChipMouseOver { get; set; }
-
+    
+    /// <summary>
+    /// Callback when the mouse leaves a chip.
+    /// </summary>
     [Parameter]
     public EventCallback<MouseEventArgs> OnChipMouseOut { get; set; }
 
+    /// <summary>
+    /// Auto clears the input after adding a chip.
+    /// </summary>
     [Parameter]
     public bool AutoClear { get; set; } = true;
 
@@ -135,24 +153,41 @@ public partial class MudExTagField<T> : IMudExComponent
     [Parameter, SafeCategory("Appearance")]
     public AnimationType ErrorAnimation { get; set; } = AnimationType.HeadShake;
 
-    [Inject] protected MudExAppearanceService appearanceService { get; set; }
-    [Inject] protected MudExStyleBuilder styleBuilder { get; set; }
+    /// <summary>
+    /// Appearance service for applying styles.
+    /// </summary>
+    [Inject] protected MudExAppearanceService AppearanceService { get; set; }
+    
+    /// <summary>
+    /// Style builder for building styles.
+    /// </summary>
+    [Inject] protected MudExStyleBuilder StyleBuilder { get; set; }
 
+    /// <summary>
+    /// Maximum width of the chips.
+    /// </summary>
     [Parameter]
     public MudExSize<double> ChipsMaxWidth { get; set; } = new(80, CssUnit.Percentage);
 
+    /// <summary>
+    /// Style for the chips.
+    /// </summary>
     protected string ChipStyleName =>
         new MudExStyleBuilder()
             .AddRaw(StyleChip)
             .WithColorForVariant(ChipVariant, ChipColor, !ChipColor.IsColor)    
             .Build();
 
+    /// <summary>
+    /// Class name for the chip elements.
+    /// </summary>
     protected string ChipClassname =>
         new MudExCssBuilder("d-flex")
             .AddClass("flex-wrap", WrapChips)
             .AddClass("mt-5", Variant == Variant.Filled)
             .Build();
 
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         Immediate = true;
@@ -204,7 +239,7 @@ public partial class MudExTagField<T> : IMudExComponent
     private async Task SetErrorWithStyle(string text)
     {
         SetError(text);        
-        await appearanceService.ApplyTemporarilyToAsync(styleBuilder.Clear().WithAnimation(ErrorAnimation), this);    
+        await AppearanceService.ApplyTemporarilyToAsync(StyleBuilder.Clear().WithAnimation(ErrorAnimation), this);    
     }
 
     private void SetError(string error = null) => Error = !string.IsNullOrEmpty(ErrorText = TryLocalize(error));

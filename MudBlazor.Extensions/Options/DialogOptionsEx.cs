@@ -109,7 +109,6 @@ namespace MudBlazor.Extensions.Options
         /// <summary>
         /// An animation type value indicating the animation effect of the dialog box.
         /// </summary>
-        [Obsolete("Please use Animations instead")]
         public AnimationType? Animation
         {
             get => Animations?.FirstOrDefault();

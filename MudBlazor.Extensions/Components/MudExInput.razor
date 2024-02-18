@@ -38,9 +38,9 @@
               @oninput="OnInputHandler"
               @onchange="OnChangeHandler"
               @onblur="@OnBlurredAsync"
-              @onkeydown="@InvokeKeyDown"
-              @onkeypress="@InvokeKeyPress"
-              @onkeyup="@InvokeKeyUp"
+              @onkeydown="@InvokeKeyDownAsync"
+              @onkeypress="@InvokeKeyPressObsolete"
+              @onkeyup="@InvokeKeyUpAsync"
               @onpaste="@OnPaste"
               value="@_internalText"
               maxlength="@MaxLength"
@@ -60,7 +60,7 @@
     {
         <div class="d-flex flex-wrap align-center mud-width-full">
 
-            @if (ShowVisualiser == true)
+            @if (ShowVisualiser)
             {
                 <div class="@InputClassname" style="height: auto; @DataVisualiserStyle" tabindex="0" @ref="@_elementReference1">
                     @DataVisualiser
@@ -81,9 +81,9 @@
                    @onblur="@OnBlurredAsync"
                        inputmode="@InputMode.ToString()"
                        pattern="@Pattern"
-                   @onkeydown="@InvokeKeyDown"
-                   @onkeypress="@InvokeKeyPress"
-                   @onkeyup="@InvokeKeyUp"
+                   @onkeydown="@InvokeKeyDownAsync"
+                   @onkeypress="@InvokeKeyPressObsolete"
+                   @onkeyup="@InvokeKeyUpAsync"
                        maxlength="@MaxLength"
                    @onkeydown:preventDefault="KeyDownPreventDefault"
                    @onkeypress:preventDefault="@KeyPressPreventDefault"

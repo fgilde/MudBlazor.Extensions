@@ -143,26 +143,104 @@ public readonly struct MudExColor
     /// </summary>
     public static implicit operator MudExColor(uint i) => new(i);
 
-    // Constants representing common colors
+    /// <summary>
+    /// Transparant color.
+    /// </summary>
     public static MudExColor Transparent => new(Color.Transparent);
+    
+    /// <summary>
+    /// Default color.
+    /// </summary>
     public static MudExColor Default => Transparent;
+    
+    /// <summary>
+    /// Info color.
+    /// </summary>
     public static MudExColor Info => new(Color.Info);
+    
+    /// <summary>
+    /// Warning color.
+    /// </summary>
     public static MudExColor Warning => new(Color.Warning);
+    
+    /// <summary>
+    /// Error color.
+    /// </summary>
     public static MudExColor Error => new(Color.Error);
+    
+    /// <summary>
+    /// Success color.
+    /// </summary>
     public static MudExColor Success => new(Color.Success);
+    
+    /// <summary>
+    /// Inherit color.
+    /// </summary>
     public static MudExColor Inherit => new(Color.Inherit);
+    
+    /// <summary>
+    /// Dark color.
+    /// </summary>
     public static MudExColor Dark => new(Color.Dark);
+    
+    /// <summary>
+    /// Primary color.
+    /// </summary>
     public static MudExColor Primary => new(Color.Primary);
+    
+    /// <summary>
+    /// Secondary color.
+    /// </summary>
     public static MudExColor Secondary => new(Color.Secondary);
+    
+    /// <summary>
+    /// Tertiary color.
+    /// </summary>
     public static MudExColor Tertiary => new(Color.Tertiary);
+    
+    /// <summary>
+    /// Surface color.
+    /// </summary>
     public static MudExColor Surface => new(Color.Surface);
+    
+    /// <summary>
+    /// Appbar background color.
+    /// </summary>
     public static MudExColor AppBarBackground => new("--mud-palette-appbar-background");
+    
+    /// <summary>
+    /// Drawer background color.
+    /// </summary>
     public static MudExColor DrawerBackground => new("--mud-palette-drawer-background");
+    
+    /// <summary>
+    /// Text primary color.
+    /// </summary>
     public static MudExColor TextPrimary => new("--mud-palette-primary-text");
+    
+    /// <summary>
+    /// Text secondary color.
+    /// </summary>
     public static MudExColor TextSecondary => new("--mud-palette-secondary-text");
+    
+    /// <summary>
+    /// Text drawer color.
+    /// </summary>
     public static MudExColor TextDrawer => new("--mud-palette-drawer-text");
+    
+    /// <summary>
+    /// Text disabled color.
+    /// </summary>
     public static MudExColor TextDisabled => new("--mud-palette-text-disabled");
+    
+    /// <summary>
+    /// Text action disabled color.
+    /// </summary>
     public static MudExColor TextActionDisabled => new("--mud-palette-action-disabled");
+    
+    /// <summary>
+    /// Disabled background color for actions.
+    /// </summary>
     public static MudExColor ActionDisabledBackground => new("--mud-palette-action-disabled-background");
 
     /// <summary>
@@ -236,11 +314,11 @@ public readonly struct MudExColor
     /// </summary>
     public MudColor ToMudColor()
         => Match(
-            color => default,
+            _ => default,
             mc => mc,
             dc => dc.ToMudColor(),
             s => new MudColor(s),
-            i => FromUInt(i)
+            FromUInt
         );
 
     /// <summary>

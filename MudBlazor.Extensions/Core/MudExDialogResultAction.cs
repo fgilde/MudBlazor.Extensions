@@ -11,6 +11,9 @@ public class MudExDialogResultAction
 {
     private Func<IComponent, bool> _canExecuteFunc;
 
+    /// <summary>
+    /// Specify a condition for this action to be enabled.
+    /// </summary>
     public MudExDialogResultAction WithCondition<TComponent>(Func<TComponent, bool> canExecuteFunc) where TComponent : IComponent
     {
         _canExecuteFunc = c => c is TComponent tComponent && canExecuteFunc(tComponent);
@@ -45,6 +48,9 @@ public class MudExDialogResultAction
     /// </summary>
     public Color Color { get; set; }
 
+    /// <summary>
+    /// Returns true if this action has a condition.
+    /// </summary>
     public bool HasCondition => _canExecuteFunc != null;
     //public bool Disabled { get; set; }
 
@@ -58,6 +64,7 @@ public class MudExDialogResultAction
     /// <summary>
     /// Creates an array with a single "Ok" action.
     /// </summary>
+    /// <param name="canExecuteFunc">Function to determine if action can be executed</param>
     /// <param name="confirmText">The text for the "Ok" button. Defaults to "Ok".</param>
     /// <returns>An array with a single "Ok" action.</returns>
     public static MudExDialogResultAction[] OkWithCondition<TComponent>(Func<TComponent, bool> canExecuteFunc, string confirmText = "Ok") where TComponent : IComponent
@@ -73,6 +80,7 @@ public class MudExDialogResultAction
     /// <summary>
     /// Creates an array with both "Ok" and "Cancel" actions.
     /// </summary>
+    /// <param name="canExecuteFunc">Function to determine if action can be executed</param>
     /// <param name="confirmText">The text for the "Ok" button. Defaults to "Ok".</param>
     /// <param name="cancelText">The text for the "Cancel" button. Defaults to "Cancel".</param>
     /// <returns>An array with both "Ok" and "Cancel" actions.</returns>

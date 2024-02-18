@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using MudBlazor.Extensions.Helper.Internal;
 using Nextended.Core.Extensions;
-using Nextended.Core.Helper;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 
@@ -9,6 +8,9 @@ public partial class RenderData
 {
     #region Static Factory Methods
 
+    /// <summary>
+    /// Returns a new RenderData instance for the given component type, with the specified options.
+    /// </summary>
     public static RenderData<TPropertyType, TFieldType> For<TComponent, TPropertyType, TFieldType>(
         Expression<Func<TComponent, TFieldType>> valueField, Action<TComponent> options,
         Func<TPropertyType, TFieldType> toFieldTypeConverter = null,
@@ -19,6 +21,9 @@ public partial class RenderData
             ToPropertyTypeConverterFn = toPropertyTypeConverter
         };
 
+    /// <summary>
+    /// Returns a new RenderData instance for the given component type, with the specified options.
+    /// </summary>    
     public static RenderData<TPropertyType, TFieldType> For<TComponent, TPropertyType, TFieldType>(
         Expression<Func<TComponent, TFieldType>> valueField, TComponent instanceForAttributes,
         Func<TPropertyType, TFieldType> toFieldTypeConverter = null,
@@ -30,6 +35,9 @@ public partial class RenderData
             ToPropertyTypeConverterFn = toPropertyTypeConverter
         };
 
+    /// <summary>
+    /// Returns a new RenderData instance for the given component type, with the specified options.
+    /// </summary>    
     public static RenderData<TPropertyType, TFieldType> For<TComponent, TPropertyType, TFieldType>(
         Expression<Func<TComponent, TFieldType>> valueField,
         Func<TPropertyType, TFieldType> toFieldTypeConverter = null,
@@ -40,28 +48,50 @@ public partial class RenderData
             ToPropertyTypeConverterFn = toPropertyTypeConverter
         };
 
+    /// <summary>
+    /// Returns a new RenderData instance for the given component type, with the specified options.
+    /// </summary>    
     public static RenderData<TPropertyType, TPropertyType> For<TComponent, TPropertyType>(
         Expression<Func<TComponent, TPropertyType>> valueField, Action<TComponent> options) where TComponent : new()
         => new(valueField.GetMemberName(), typeof(TComponent), PropertyHelper.ValuesDictionary(options, true));
 
+    /// <summary>
+    /// Returns a new RenderData instance for the given component type, with the specified options.
+    /// </summary>    
     public static RenderData<TPropertyType, TPropertyType> For<TComponent, TPropertyType>(
         Expression<Func<TComponent, TPropertyType>> valueField, TComponent instanceForAttributes)
         where TComponent : new()
         => new(valueField.GetMemberName(), typeof(TComponent),
             PropertyHelper.ValuesDictionary(instanceForAttributes, true));
 
+    /// <summary>
+    /// Returns a new RenderData instance for the given component type, with the specified options.
+    /// </summary>    
     public static RenderData<TPropertyType, TPropertyType> For<TComponent, TPropertyType>(
         Expression<Func<TComponent, TPropertyType>> valueField)
         => new(valueField.GetMemberName(), typeof(TComponent));
 
+    /// <summary>
+    /// Returns a new RenderData instance for the given component type, with the specified options.
+    /// </summary>    
     public static RenderData For<TComponent>(Action<TComponent> options) where TComponent : new()
         => For(typeof(TComponent), PropertyHelper.ValuesDictionary(options, true));
 
+    /// <summary>
+    /// Returns a new RenderData instance for the given component type, with the specified options.
+    /// </summary>    
     public static RenderData For<TComponent>(IDictionary<string, object> attributes = null)
         => For(typeof(TComponent), attributes);
 
+    /// <summary>
+    /// Returns a new RenderData instance for the given component type, with the specified options.
+    /// </summary>    
     public static RenderData For(Type componentType,
         IDictionary<string, object> attributes = null) => new(componentType, attributes);
+
+    /// <summary>
+    /// Returns a new RenderData instance for the given component type, with the specified options.
+    /// </summary>    
     public static RenderData For(ICustomRenderer customRenderer) => new(null) { CustomRenderer = customRenderer };
 
     #endregion

@@ -29,6 +29,9 @@ public abstract class MudExBaseFormComponent<T, TData, U> : MudFormComponent<TDa
     /// </summary>
     protected bool IsDisposed { get; private set; }
 
+    /// <summary>
+    /// Set value and call callback if value is changed
+    /// </summary>
     protected TValue Set<TValue>(ref TValue field, TValue value, Action<TValue> callback = null)
     {
         if (Equals(field, value))
@@ -214,6 +217,7 @@ public abstract class MudExBaseFormComponent<T, TData, U> : MudFormComponent<TDa
             _renderFinishTimer?.Dispose();
     }
 
+    /// <inheritdoc />
     protected MudExBaseFormComponent(Converter<TData, U> converter = null) : base(converter ?? new Converter<TData, U>())
     {}
 }

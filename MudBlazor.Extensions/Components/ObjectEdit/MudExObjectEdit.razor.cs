@@ -34,8 +34,19 @@ public partial class MudExObjectEdit<T>
     private T _value;
     private List<MudExpansionPanel> _groups = new();
 
+    /// <summary>
+    /// Is true if currently is a internal Bulk running. Like reset or clear etc..
+    /// </summary>
     protected bool IsInternalLoading;
+    
+    /// <summary>
+    /// ToolBarContent
+    /// </summary>
     protected virtual RenderFragment InternalToolBarContent => null;
+    
+    /// <summary>
+    /// Is true if the value is a primitive type
+    /// </summary>
     protected bool Primitive => IsPrimitive();
 
 
@@ -261,13 +272,13 @@ public partial class MudExObjectEdit<T>
     [Parameter] public EventCallback<ExportedData<T>> AfterExport { get; set; }
 
     /// <summary>
-    /// Called before the component exports data. Provides the export data to be manipulated.
+    /// Called before the component export's data. Provides the export data to be manipulated.
     /// If you need to change content of parameter to manipulate export data you can do it here
     /// </summary>
     [Parameter] public EventCallback<ExportData<T>> BeforeExport { get; set; }
 
     /// <summary>
-    /// Called before the component imports data. Provides the import data to be manipulated.
+    /// Called before the component import's data. Provides the import data to be manipulated.
     /// Here you can change content of parameter to manipulate import data
     /// For example you can remove some properties or change the values
     /// This is called before the import is executed
@@ -582,7 +593,7 @@ public partial class MudExObjectEdit<T>
         if (force || (AutoSaveRestoreState && !_restoreCalled))
         {
             _restoreCalled = true;
-            string json = await JsRuntime.InvokeAsync<string>($"{StateTargetStorage.ToDescriptionString()}.getItem", StateKey);
+            string json = await JsRuntime.InvokeAsync<string>($"{StateTargetStorage.GetDescription()}.getItem", StateKey);
             if (!string.IsNullOrWhiteSpace(json))
             {
                 var toImport = new ImportData<T>
@@ -607,7 +618,7 @@ public partial class MudExObjectEdit<T>
     /// <returns></returns>
     public virtual async Task DeleteState()
     {
-        await JsRuntime.InvokeVoidAsync($"{StateTargetStorage.ToDescriptionString()}.setItem", StateKey, string.Empty);
+        await JsRuntime.InvokeVoidAsync($"{StateTargetStorage.GetDescription()}.setItem", StateKey, string.Empty);
     }
 
     /// <summary>
@@ -622,11 +633,14 @@ public partial class MudExObjectEdit<T>
         await BeforeExport.InvokeAsync(exportData);
         if (exportData.Cancel)
             return;
-        await JsRuntime.InvokeVoidAsync($"{StateTargetStorage.ToDescriptionString()}.setItem", StateKey, exportData.Json);
+        await JsRuntime.InvokeVoidAsync($"{StateTargetStorage.GetDescription()}.setItem", StateKey, exportData.Json);
         await AfterExport.InvokeAsync(exportData);
     }
 
-
+    /// <summary>
+    /// Updates the component state
+    /// </summary>
+    /// <param name="useRefresh"></param>
     public void Invalidate(bool useRefresh = false)
     {
         if (useRefresh)
@@ -636,15 +650,15 @@ public partial class MudExObjectEdit<T>
         Editors.Apply(e => e.Invalidate(useRefresh));
     }
 
-    public Task RaiseAllEditorsValueChanged()
-    {
-        return Task.WhenAll(Editors.Select(edit => edit.RaiseValueChanged()));
-    }
+    /// <summary>
+    /// Raises the ValueChanged event for all editors
+    /// </summary>
+    public Task RaiseAllEditorsValueChanged() => Task.WhenAll(Editors.Select(edit => edit.RaiseValueChanged()));
 
-    public Task RaiseValueChanged()
-    {
-        return ValueChanged.InvokeAsync(Value);
-    }
+    /// <summary>
+    /// Raises the ValueChanged event
+    /// </summary>
+    public Task RaiseValueChanged() => ValueChanged.InvokeAsync(Value);
 
     /// <summary>
     /// Called when a property value is changed
@@ -722,6 +736,9 @@ public partial class MudExObjectEdit<T>
             .Recursive(w => w.Wrapper == null ? Enumerable.Empty<IRenderData>() : new[] { w.Wrapper })
             .Any(d => d.ComponentType == typeof(MudItem));
 
+    /// <summary>
+    /// Base meta configuration can be overridden to have meta configuration for all ObjectEditPropertyMeta
+    /// </summary>
     protected virtual ObjectEditMeta<T> ConfigureMetaBase(ObjectEditMeta<T> meta)
     {
         return meta;
@@ -795,10 +812,7 @@ public partial class MudExObjectEdit<T>
         }, SizeUnit, Style);
     }
 
-    private bool HasFixedHeight()
-    {
-        return Height != null || MaxHeight != null || Style?.ToLower()?.Contains("height") == true;
-    }
+    private bool HasFixedHeight() => Height != null || MaxHeight != null || Style?.ToLower().Contains("height") == true;
 
     private string GetToolbarStickyTop()
     {
@@ -807,10 +821,7 @@ public partial class MudExObjectEdit<T>
         return HasFixedHeight() ? "0" : "var(--mud-appbar-height)";
     }
 
-    private string GetOverflowClass()
-    {
-        return HasFixedHeight() ? "mud-ex-overflow" : "";
-    }
+    private string GetOverflowClass() => HasFixedHeight() ? "mud-ex-overflow" : "";
 
     private string ToolbarStyle()
     {
@@ -973,7 +984,7 @@ public partial class MudExObjectEdit<T>
 
 
             await LoadFromJson(toImport.Json, RemoveIgnoredFromImport);
-            await ImportSuccessUI();
+            await ImportSuccessUi();
             await AfterImport.InvokeAsync(new ImportedData<T> {Json = toImport.Json, Value = Value});
         }
         catch (Exception ex)
@@ -986,7 +997,7 @@ public partial class MudExObjectEdit<T>
         }
     }
 
-    private async Task ImportSuccessUI()
+    private async Task ImportSuccessUi()
     {
         var icon = ImportIcon;
         _importButtonColor = Color.Success;

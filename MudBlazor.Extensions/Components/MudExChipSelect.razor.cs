@@ -13,9 +13,10 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExChipSelect<T>
 {
 
-    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
-    
+
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         base.OnInitialized();

@@ -7,7 +7,7 @@
 
 @if (RenderChildContent && ChildContent != null && CodeViewModeWithRenderFragment == CodeViewModeWithRenderFragment.ExpansionPanel)
 {
-    <div class="@RenderFragmentClassname" style="@RenderFragmentStylename">
+    <div class="@RenderFragmentClassname" style="@RenderFragmentStyleStr">
         @ChildContent
     </div>
 }
@@ -25,7 +25,7 @@
         else
         {
 
-            <MudExSplitPanel Style="@Stylename" Class="@Classname" IsInitiallyCollapsed="false" IsCollapsible="false" Splittable="true" Reverse="@(CodeViewModeWithRenderFragment is CodeViewModeWithRenderFragment.CodeDockedTop or CodeViewModeWithRenderFragment.CodeDockedRight)" ColumnLayout="@(CodeViewModeWithRenderFragment is CodeViewModeWithRenderFragment.CodeDockedLeft or CodeViewModeWithRenderFragment.CodeDockedRight)">
+            <MudExSplitPanel Style="@StyleStr" Class="@Classname" IsInitiallyCollapsed="false" IsCollapsible="false" Splittable="true" Reverse="@(CodeViewModeWithRenderFragment is CodeViewModeWithRenderFragment.CodeDockedTop or CodeViewModeWithRenderFragment.CodeDockedRight)" ColumnLayout="@(CodeViewModeWithRenderFragment is CodeViewModeWithRenderFragment.CodeDockedLeft or CodeViewModeWithRenderFragment.CodeDockedRight)">
                 <Left>
                     <MudExSplitPanelItem Style="@($"min-width: {DockedMinWidthLeft}; height:auto; min-height: {DockedMinHeightLeft};")">
                         @CodeView()
@@ -33,7 +33,7 @@
                 </Left>
                 <Right>
                     <MudExSplitPanelItem Style="@($"min-width: {DockedMinWidthRight}; min-height: {DockedMinHeightRight};")">
-                        <div class="@RenderFragmentClassname" style="@RenderFragmentStylename">
+                        <div class="@RenderFragmentClassname" style="@RenderFragmentStyleStr">
                             @ChildContent
                         </div>
                     </MudExSplitPanelItem>
@@ -52,7 +52,7 @@
     protected RenderFragment CodeView()
     {
         return 
-            @<div style="@CodeViewStylename" class="@CodeViewClassname">
+            @<div style="@CodeViewStyleStr" class="@CodeViewClassname">
                 @if (_jsReady)
                 {
                     <MudMarkdown CodeBlockTheme="@Theme" Value="@(_markdownCode)"></MudMarkdown>

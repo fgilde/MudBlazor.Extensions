@@ -6,16 +6,28 @@ using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// MudTextField with additional features
+/// </summary>
 public partial class MudExTextField<T>: MudExBaseInput<T>, IMudExComponent
 {
+    /// <summary>
+    /// Classname for the input element
+    /// </summary>
     protected string Classname =>
          new MudExCssBuilder("mud-input-input-control")
          .AddClass(Class)
          .Build();
 
+    /// <summary>
+    /// Subscribe to parent form
+    /// </summary>
     [CascadingParameter]
     public bool SubscribeToParentForm2 { get; set; }
 
+    /// <summary>
+    /// Reference to the input element
+    /// </summary>
     public MudExInput<string> InputReference { get; private set; }
     private MudMask _maskReference;
 
@@ -51,6 +63,9 @@ public partial class MudExTextField<T>: MudExBaseInput<T>, IMudExComponent
     [Category(CategoryTypes.FormComponent.Behavior)]
     public bool Clearable { get; set; } = false;
 
+    /// <summary>
+    /// Show visualiser.
+    /// </summary>
     [Parameter]
     [Category(CategoryTypes.FormComponent.Behavior)]
     public bool ShowVisualiser { get; set; }
@@ -73,6 +88,7 @@ public partial class MudExTextField<T>: MudExBaseInput<T>, IMudExComponent
     public override ValueTask SelectRangeAsync(int pos1, int pos2) => _mask == null ? InputReference.SelectRangeAsync(pos1, pos2) : _maskReference.SelectRangeAsync(pos1, pos2);
 
     /// <inheritdoc />
+    [Obsolete("Use ResetValueAsync instead. This will be removed in v7")]
     protected override void ResetValue()
     {
         if (_mask == null)
@@ -120,6 +136,9 @@ public partial class MudExTextField<T>: MudExBaseInput<T>, IMudExComponent
         set => _mask = value;
     }
 
+    /// <summary>
+    /// On change event on the input element
+    /// </summary>
     protected Task OnChange()
     {
         return base.UpdateValuePropertyAsync(false);

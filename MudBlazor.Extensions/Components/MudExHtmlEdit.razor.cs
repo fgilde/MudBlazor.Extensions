@@ -31,8 +31,14 @@ public partial class MudExHtmlEdit
             .AddRaw(Style)
         .Build();
 
+    /// <summary>
+    /// Is true if the value has changed.
+    /// </summary>
     public bool ValueHasChanged { get; private set; }
 
+    /// <summary>
+    /// Readonly. If true, the editor is disabled.
+    /// </summary>
     [Parameter] public bool ReadOnly { get; set; }
 
     /// <summary>

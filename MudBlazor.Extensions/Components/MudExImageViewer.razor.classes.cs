@@ -11,14 +11,34 @@ using SixLabors.ImageSharp.Formats.Webp;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// Options for saving the current image in the image viewer.
+/// </summary>
 public class MudExImageViewerSaveOptions
 {
+    /// <summary>
+    /// File name for the saved image.
+    /// </summary>
     public string FileName { get; set; }
+    
+    /// <summary>
+    /// If true, only the visible part of the image will be saved.
+    /// </summary>
     public bool VisibleViewPortOnly { get; set; }
+    
+    /// <summary>
+    /// Format in which to save the image.
+    /// </summary>
     public ImageViewerExportFormat Format { get; set; } = ImageViewerExportFormat.Png;
 
+    /// <summary>
+    /// Gets the image format for the current options as IImageFormat.
+    /// </summary>
     public IImageFormat GetImageFormat() => GetImageFormat(Format);
 
+    /// <summary>
+    /// Gets the image format for the given format as IImageFormat.
+    /// </summary>
     public static IImageFormat GetImageFormat(ImageViewerExportFormat format)
     {
         return format switch
@@ -38,15 +58,53 @@ public class MudExImageViewerSaveOptions
 
 }
 
+/// <summary>
+/// Available formats for saving the image in the image viewer.
+/// </summary>
 public enum ImageViewerExportFormat
 {
+    /// <summary>
+    /// Portable Network Graphics format.
+    /// </summary>
     Png,
+    
+    /// <summary>
+    /// Joint Photographic Experts Group format.
+    /// </summary>
     Jpeg,
+    
+    /// <summary>
+    /// WebP format.
+    /// </summary>
     Webp,
+    
+    /// <summary>
+    /// Bitmap format.
+    /// </summary>
     Bmp,
+    
+    /// <summary>
+    /// Graphics Interchange Format.
+    /// </summary>
     Gif,
+    
+    /// <summary>
+    /// Tagged Image File Format.
+    /// </summary>
     Tiff,
+    
+    /// <summary>
+    /// Truevision Targa format.
+    /// </summary>
     Tga,
+    
+    /// <summary>
+    /// QuickTime Image format.
+    /// </summary>
     Qoi,
+    
+    /// <summary>
+    /// Portable Bitmap format.
+    /// </summary>
     Pbm
 }

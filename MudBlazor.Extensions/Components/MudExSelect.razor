@@ -29,7 +29,7 @@
                                       ShowVisualiser="true" DataVisualiserStyle="min-height: 1.1876em">
 
                         <AdornmentEnd>
-                            <MudIcon Icon="@_currentIcon" Color="@AdornmentColor" Size="@IconSize" @onclick="OnAdornmentClick" />
+                            <MudIcon Icon="@CurrentIcon" Color="@AdornmentColor" Size="@IconSize" @onclick="OnAdornmentClick" />
                         </AdornmentEnd>
 
                         <DataVisualiser>
@@ -105,7 +105,7 @@
                         </ChildContent>
                     </MudExInput>
 
-                    <MudExPopover Animation="@PopoverAnimation" AnimationPosition="@PopoverAnimationPosition" AnimationTimingFunction="@PopoverAnimationTimingFunction" Open="@_isOpen" MaxHeight="@MaxHeight" AnchorOrigin="@AnchorOrigin" TransformOrigin="@TransformOrigin" Class="@PopoverClass" RelativeWidth="@RelativeWidth">
+                    <MudExPopover Animation="@PopoverAnimation" AnimationPosition="@PopoverAnimationPosition" AnimationTimingFunction="@PopoverAnimationTimingFunction" Open="@IsOpen" MaxHeight="@MaxHeight" AnchorOrigin="@AnchorOrigin" TransformOrigin="@TransformOrigin" Class="@PopoverClass" RelativeWidth="@RelativeWidth">
                         <CascadingValue Value="@this" IsFixed="true">
                             <MudExList @ref="@_list" T="T" @bind-SelectedValue="@Value" Style="@($"overflow-y:auto; max-height: {MaxHeight}px")" @bind-SelectedValues="@SelectedValues" @bind-SelectedItem="@SelectedListItem" @bind-SelectedItems="@SelectedListItems"
                                              Clickable="true" Color="@Color" Dense="@Dense" ItemCollection="@ItemCollection" Virtualize="@Virtualize" DisablePadding="@DisablePopoverPadding" DisableSelectedItemStyle="@DisableSelectedItemStyle"
@@ -139,7 +139,7 @@
         </div>
     </CascadingValue>
     
-    <CascadingValue Value="@((IMudShadowSelectExtended)this)" IsFixed="true">
+    <CascadingValue Value="@((IMudExShadowSelect)this)" IsFixed="true">
         <CascadingValue Name="HideContent" Value="true">
             @ChildContent
         </CascadingValue>
@@ -148,7 +148,7 @@
 </CascadingValue>
 
 
-<MudOverlay Visible="_isOpen" @onmousedown="@(CloseMenu)" LockScroll="@LockScroll" />
+<MudOverlay Visible="IsOpen" @onmousedown="@(CloseMenu)" LockScroll="@LockScroll" />
 
 @code{
     MudExInput<IEnumerable<T>> _validationComponent;
@@ -181,7 +181,7 @@
             {
                 foreach (var item in SelectedValues.Distinct())
                 {
-                    <MudChip Class="@ChipClass" Value="@item" Color="@(Color.IsColor ? Color.AsColor : MudBlazor.Color.Default)" Style="@ChipStyleName" Size="@ChipSize" Variant="@ChipVariant">
+                    <MudChip Class="@ChipClass" Value="@item" Color="@(Color.IsColor ? Color.AsColor : MudBlazor.Color.Default)" Style="@ChipStyleStr" Size="@ChipSize" Variant="@ChipVariant">
                         @RenderItem(item, ItemNameRender(item))
                     </MudChip>
                 }
@@ -190,7 +190,7 @@
             {
                 foreach (var item in Items?.Where(x => SelectedValues.Contains(x.Value)) ?? new List<MudExSelectItem<T>>())
                 {
-                <MudChip Class="@ChipClass" Value="item.Value" Color="@(Color.IsColor ? Color.AsColor : MudBlazor.Color.Default)" Style="@ChipStyleName" Size="@ChipSize" Variant="@ChipVariant">
+                <MudChip Class="@ChipClass" Value="item.Value" Color="@(Color.IsColor ? Color.AsColor : MudBlazor.Color.Default)" Style="@ChipStyleStr" Size="@ChipSize" Variant="@ChipVariant">
                     @RenderItem(item.Value, (string.IsNullOrEmpty(item.Text) ? ItemNameRender(item.Value) : item.Text))
                 </MudChip>
                 }

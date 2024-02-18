@@ -1,5 +1,4 @@
-﻿using MudBlazor.Extensions.Components;
-using MudBlazor.Extensions.Components.ObjectEdit.Options;
+﻿using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Helper;
@@ -151,6 +150,7 @@ public static partial class DialogServiceExt
     /// <param name="dialogService">The dialog service to use.</param>
     /// <param name="value">The object to edit.</param>
     /// <param name="title">The dialog title.</param>
+    /// <param name="customSubmit">Custom submit</param>
     /// <param name="options">The dialog options.</param>
     /// <param name="metaConfig">The configuration of meta information.</param>
     /// <param name="dialogParameters">The dialog parameters.</param>

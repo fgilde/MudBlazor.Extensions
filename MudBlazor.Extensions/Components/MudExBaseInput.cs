@@ -14,7 +14,7 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public abstract class MudExBaseInput<T> : MudBaseInput<T>
 {
-    private IStringLocalizer<T> _fallbackLocalizer => Get<IStringLocalizer<T>>();
+    private IStringLocalizer<T> FallbackLocalizer => Get<IStringLocalizer<T>>();
 
     /// <summary>
     /// Localizer for localize texts
@@ -41,7 +41,7 @@ public abstract class MudExBaseInput<T> : MudBaseInput<T>
     /// <summary>
     /// The localizer to use
     /// </summary>
-    protected IStringLocalizer LocalizerToUse => Localizer ?? _fallbackLocalizer;
+    protected IStringLocalizer LocalizerToUse => Localizer ?? FallbackLocalizer;
 
     /// <summary>
     /// Returns the injected service for TService
@@ -94,16 +94,27 @@ public abstract class MudExBaseInput<T> : MudBaseInput<T>
     public string ChildContentStyle { get; set; }
 
 
+    /// <summary>
+    /// Callback when the error state changes
+    /// </summary>
     [SafeCategory(CategoryTypes.FormComponent.Validation)]
     [Parameter] public EventCallback ErrorStateChanged { get; set; }
 
-
+    /// <summary>
+    /// Callback when the error changes
+    /// </summary>
     [SafeCategory(CategoryTypes.FormComponent.Validation)]
     [Parameter] public EventCallback<bool> ErrorChanged { get; set; }
 
+    /// <summary>
+    /// Callback when the error text changes
+    /// </summary>
     [SafeCategory(CategoryTypes.FormComponent.Validation)]
     [Parameter] public EventCallback<string> ErrorTextChanged { get; set; }
 
+    /// <summary>
+    /// Callback when the validation errors change
+    /// </summary>
     [SafeCategory(CategoryTypes.FormComponent.Validation)]
     [Parameter] public EventCallback<List<string>> ValidationErrorsChanged { get; set; }
 
@@ -128,7 +139,7 @@ public abstract class MudExBaseInput<T> : MudBaseInput<T>
             await ErrorChanged.InvokeAsync(Error);
         if (errorText != ErrorText)
             await ErrorTextChanged.InvokeAsync(ErrorText);
-        if (validationErrors?.SequenceEqual(ValidationErrors) == false)
+        if (validationErrors.SequenceEqual(ValidationErrors) == false)
             await ValidationErrorsChanged.InvokeAsync(ValidationErrors);
     }
 

@@ -29,6 +29,9 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
     /// </summary>
     protected bool IsDisposed { get; private set; }
 
+    /// <summary>
+    /// Set value and call callback if value is changed
+    /// </summary>
     protected TValue Set<TValue>(ref TValue field, TValue value, Action<TValue> callback = null)
     {
         if (Equals(field, value))

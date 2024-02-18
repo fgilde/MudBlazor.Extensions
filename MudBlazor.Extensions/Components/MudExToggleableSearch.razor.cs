@@ -82,6 +82,9 @@ namespace MudBlazor.Extensions.Components
         [Parameter]
         public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
 
+        /// <summary>
+        /// Returns true if the search is active
+        /// </summary>
         public bool HasSearchActive => MultiSearch ? Filters?.Count > 0 || !string.IsNullOrWhiteSpace(Filter) : !string.IsNullOrWhiteSpace(Filter);
 
         private bool _searchBoxBlur;
@@ -124,7 +127,7 @@ namespace MudBlazor.Extensions.Components
                 _searchBoxBlur = true;
                 SearchActive = false;
                 SearchActiveChanged.InvokeAsync(SearchActive);
-                Task.Delay(300).ContinueWith(t => _searchBoxBlur = false);
+                Task.Delay(300).ContinueWith(_ => _searchBoxBlur = false);
             }
             return Task.CompletedTask;
         }

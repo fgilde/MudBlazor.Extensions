@@ -9,7 +9,7 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExFileDisplayCode: IMudExFileDisplay
 {
-    [Inject] private MudExFileService fileService { get; set; }
+    [Inject] private MudExFileService FileService { get; set; }
     /// <summary>
     /// The name of the component
     /// </summary>
@@ -37,10 +37,13 @@ public partial class MudExFileDisplayCode: IMudExFileDisplay
     [Parameter]
     public IMudExFileDisplayInfos FileDisplayInfos { get; set; }
 
+    /// <summary>
+    /// Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+    /// </summary>
     [CascadingParameter] public MudExFileDisplay MudExFileDisplay { get; set; }
 
     /// <summary>
-    /// Returns true if its a markdown file and we can handle it
+    /// Returns true if it's a markdown file and we can handle it
     /// </summary>
     public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos)
     {
@@ -57,7 +60,7 @@ public partial class MudExFileDisplayCode: IMudExFileDisplay
         {
             try
             {
-                Value = await fileService.ReadAsStringFromFileDisplayInfosAsync(FileDisplayInfos);
+                Value = await FileService.ReadAsStringFromFileDisplayInfosAsync(FileDisplayInfos);
                 Language = MudExCodeLanguageExtensionsMapping.GetCodeLanguageForFile(fileDisplayInfos?.FileName);
             }
             catch (Exception e)

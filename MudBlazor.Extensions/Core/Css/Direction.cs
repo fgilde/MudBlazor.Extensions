@@ -7,10 +7,21 @@ namespace MudBlazor.Extensions.Core.Css;
 /// </summary>
 public enum Direction
 {
+    /// <summary>
+    /// Left-to-right direction.
+    /// </summary>
     [Description("ltr")]
     LTR,
+    
+    /// <summary>
+    /// Right-to-left direction.
+    /// </summary>
     [Description("rtl")]
     RTL,
+    
+    /// <summary>
+    /// Inherit direction from parent element.
+    /// </summary>
     [Description("inherit")]
     Inherit
 }

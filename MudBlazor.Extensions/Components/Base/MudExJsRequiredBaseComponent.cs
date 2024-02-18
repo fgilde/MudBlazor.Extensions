@@ -56,6 +56,7 @@ public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, I
     /// </summary>
     public virtual DotNetObjectReference<MudExJsRequiredBaseComponent<T>> CreateDotNetObjectReference() => DotNetObjectReference.Create(this);
 
+    /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         var hasJsChanges = parameters.AffectedForJs(this);
@@ -64,6 +65,9 @@ public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, I
             await OnJsOptionsChanged();
     }
 
+    /// <summary>
+    /// Called when the js options are changed
+    /// </summary>
     protected virtual Task OnJsOptionsChanged()
     {
         return Task.CompletedTask;

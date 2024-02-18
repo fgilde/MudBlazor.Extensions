@@ -1,5 +1,8 @@
 ﻿namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// Combinable hover modes for the MudExCard
+/// </summary>
 [Flags]
 public enum MudExCardHoverMode 
 {

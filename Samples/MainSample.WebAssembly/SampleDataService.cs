@@ -47,7 +47,7 @@ public class SampleDataService
             var stream = await _fileService.ReadStreamAsync(sampleFile.Url);
             return new (stream, sampleFile.ContentType, sampleFile.Name, sampleFile.Icon);
         }
-        catch (Exception e)
+        catch
         {
             return null;
         }
@@ -101,7 +101,7 @@ public class SampleFileWithStream : BaseFile
             {
                 return Stream?.Length ?? 0;
             }
-            catch (Exception e)
+            catch
             {
                 return 0;
             }

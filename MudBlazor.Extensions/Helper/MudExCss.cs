@@ -18,8 +18,19 @@ public static partial class MudExCss
 
     private static readonly AnimationType[] TypesWithoutPositionReplacement = { AnimationType.SlideIn };
 
+    /// <summary>
+    /// Returns a css class name for given type name
+    /// </summary>
     public static string For(string typeName) => string.Join('-', typeName.SplitByUpperCase()).ToLower();
+    
+    /// <summary>
+    /// Returns a css class name for given type
+    /// </summary>
     public static string For(Type type) => For(type.Name);
+    
+    /// <summary>
+    /// Returns a css class name for given type
+    /// </summary>
     public static string For<T>() => For(typeof(T));
 
     internal static string GetClassname<T>(MudExBaseInput<T> baseInput, Func<bool> shrinkWhen) =>
@@ -73,7 +84,7 @@ public static partial class MudExCss
     }
 
     /// <summary>
-    /// Can used jus to quickly access some classes.
+    /// Can be used jus to quickly access some classes.
     /// MudExCss.Get(MudExCss.Classes.Dialog.FullHeightContent, "overflow-hidden", MudExCss.Classes.Dialog._Initial);
     /// </summary>
     public static string Get(Classes cls, params Classes[] other) => MudExCssBuilder.From(cls, other).Class;
@@ -88,43 +99,81 @@ public static partial class MudExCss
         return builder;
     }
     
-
+    /// <summary>
+    /// Generates a css string from given object
+    /// </summary>
     [Obsolete("Use MudExStyleBuilder instead")]
     public static string GenerateCssString(object obj, string existingCss = "") => MudExStyleBuilder.GenerateStyleString(obj, existingCss);
 
+    /// <summary>
+    /// Generates a css string from given object
+    /// </summary>
     [Obsolete("Use MudExStyleBuilder instead")]
     public static string GenerateCssString(object obj, CssUnit cssUnit, string existingCss = "") => MudExStyleBuilder.GenerateStyleString(obj, cssUnit, existingCss);
 
+    /// <summary>
+    /// Combines two css strings
+    /// </summary>
     [Obsolete("Use MudExStyleBuilder instead")]
     public static string CombineCSSStrings(string cssString, string leadingCssString) => MudExStyleBuilder.CombineStyleStrings(cssString, leadingCssString);
 
+    /// <summary>
+    /// Converts a css string to an object
+    /// </summary>
     [Obsolete("Use MudExStyleBuilder instead")]
     public static T CssStringToObject<T>(string css) where T : new() => MudExStyleBuilder.StyleStringToObject<T>(css);
 
+    /// <summary>
+    /// Returns all css variables as key value pairs
+    /// </summary>
     [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
     public static Task<KeyValuePair<string, string>[]> GetCssVariablesAsync() => JsImportHelper.GetInitializedJsRuntime().GetCssVariablesAsync();
 
+    /// <summary>
+    /// Finds all css variables by given value
+    /// </summary>
     [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
     public static Task<KeyValuePair<string, string>[]> FindCssVariablesByValueAsync(string value) => JsImportHelper.GetInitializedJsRuntime().FindCssVariablesByValueAsync(value);
 
+    /// <summary>
+    /// Sets a css variable value
+    /// </summary>
     [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
     public static Task SetCssVariableValueAsync(KeyValuePair<string, string> pair) => JsImportHelper.GetInitializedJsRuntime().SetCssVariableValueAsync(pair);
 
+    /// <summary>
+    /// Sets a css variable value
+    /// </summary>
     [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
     public static Task SetCssVariableValueAsync(string key, object value, params object[] fallbackValues) => JsImportHelper.GetInitializedJsRuntime().SetCssVariableValueAsync(key, value, fallbackValues);
 
+    /// <summary>
+    /// Sets a css variable value
+    /// </summary>
     [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
     public static Task SetCssVariableValueAsync(string key, object value) => JsImportHelper.GetInitializedJsRuntime().SetCssVariableValueAsync(key, value);
 
+    /// <summary>
+    /// Sets a css variable value
+    /// </summary>
     [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
     public static Task SetCssVariableValueAsync(string key, Color color) => JsImportHelper.GetInitializedJsRuntime().SetCssVariableValueAsync(key, color);
 
+    /// <summary>
+    /// Sets a css variable value
+    /// </summary>
     [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
     public static Task SetCssVariableValueAsync(string key, MudColor color) => JsImportHelper.GetInitializedJsRuntime().SetCssVariableValueAsync(key, color);
 
+    /// <summary>
+    /// Sets a css variable value
+    /// </summary>
     [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
     public static Task SetCssVariableValueAsync(string key, string value) => JsImportHelper.GetInitializedJsRuntime().SetCssVariableValueAsync(key, value);
 
+    /// <summary>
+    /// Sets a css variable value
+    /// </summary>
     [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
     public static Task<KeyValuePair<string, MudColor>[]> GetCssColorVariablesAsync() => JsImportHelper.GetInitializedJsRuntime().GetCssColorVariablesAsync();
 

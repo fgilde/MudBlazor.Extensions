@@ -16,6 +16,9 @@ public class MudExAppearanceService
 
     private IJSRuntime JSRuntime { get; }
 
+    /// <summary>
+    /// Creates a new instance of the service.
+    /// </summary>
     public MudExAppearanceService(IJSRuntime jsRuntime)
     {        
         JSRuntime = jsRuntime;
@@ -186,9 +189,9 @@ public class MudExAppearanceService
             var style = GetStyle(appearance);
             var cls = GetClass(appearance);
             if (!string.IsNullOrEmpty(cls))
-                component.Class = component.Class.Replace(cls, string.Empty).Trim();
+                component.Class = component.Class?.Replace(cls, string.Empty).Trim();
             if (!string.IsNullOrEmpty(style))
-                component.Style = component.Style.Replace(style, string.Empty).Trim();
+                component.Style = component.Style?.Replace(style, string.Empty).Trim();
         }
 
         return Task.FromResult(appearance);
@@ -232,7 +235,7 @@ public class MudExAppearanceService
         if (dialogReference.Dialog is MudComponentBase componentBase)
             return await RemoveFromAsync(appearance, componentBase);
 
-        var id = dialogReference?.GetDialogId();
+        var id = dialogReference.GetDialogId();
         return await RemoveFromAsync(appearance, $"#{id}");
     }
 

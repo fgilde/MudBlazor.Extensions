@@ -51,7 +51,7 @@
 
         if (form.IsValid)
         {
-            JsRuntime.AlertAsync(JsonConvert.SerializeObject(form.Model));
+            await JsRuntime.AlertAsync(JsonConvert.SerializeObject(form.Model));
         }
     }
 

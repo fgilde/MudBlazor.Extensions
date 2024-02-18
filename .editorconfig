@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# BL0005: Component parameter should not be set outside of its component.
+dotnet_diagnostic.BL0005.severity = silent
+
+# BL0007: Component parameters should be auto properties
+dotnet_diagnostic.BL0007.severity = silent

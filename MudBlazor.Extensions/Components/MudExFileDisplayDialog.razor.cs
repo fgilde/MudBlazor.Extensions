@@ -53,10 +53,28 @@ public partial class MudExFileDisplayDialog
         FileName ??=MudDialog.Title;
     }
     
+    /// <summary>
+    /// Shows a file using the <see cref="MudExFileDisplay"/> component in a dialog.
+    /// </summary>
     public static Task<IMudExDialogReference<MudExFileDisplayDialog>> Show(IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(url, fileName, contentType, options);
+    
+    /// <summary>
+    /// Shows a file using the <see cref="MudExFileDisplay"/> component in a dialog.
+    /// </summary>
     public static Task<IMudExDialogReference<MudExFileDisplayDialog>> Show(IDialogService dialogService, IBrowserFile browserFile, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(browserFile, options);
+
+    /// <summary>
+    /// Shows a file using the <see cref="MudExFileDisplay"/> component in a dialog.
+    /// </summary>
     public static Task<IMudExDialogReference<MudExFileDisplayDialog>> Show(IDialogService dialogService, Stream stream, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(stream, fileName, contentType, options);
 
-    void Submit(DialogResult result) => MudDialog.Close(result);
-    void Cancel() => MudDialog.Cancel();
+    /// <summary>
+    /// Submits the dialog.
+    /// </summary>
+    public void Submit(DialogResult result) => MudDialog.Close(result);
+    
+    /// <summary>
+    /// Closes the dialog.
+    /// </summary>
+    public void Cancel() => MudDialog.Cancel();
 }

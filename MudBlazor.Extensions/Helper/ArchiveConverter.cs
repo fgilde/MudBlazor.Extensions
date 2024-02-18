@@ -3,8 +3,14 @@ using SharpCompress.Archives;
 
 namespace MudBlazor.Extensions.Helper;
 
+/// <summary>
+/// Helper class for converting between different archive formats.
+/// </summary>
 public class ArchiveConverter
 {
+    /// <summary>
+    /// Extracts the contents of the given archive to a dictionary of memory streams.
+    /// </summary>
     public static Dictionary<string, MemoryStream> ExtractToMemoryStreams(IArchive archive)
     {
         var fileStreams = new Dictionary<string, MemoryStream>();
@@ -21,6 +27,9 @@ public class ArchiveConverter
         return fileStreams;
     }
     
+    /// <summary>
+    /// Converts a dictionary of memory streams to a single zip archive memory stream.
+    /// </summary>
     public static MemoryStream ConvertMemoryStreamsToZip(Dictionary<string, MemoryStream> fileStreams)
     {
         var zipStream = new MemoryStream();
@@ -38,6 +47,9 @@ public class ArchiveConverter
         return zipStream;
     }
 
+    /// <summary>
+    /// Converts the given archive to a zip archive memory stream.
+    /// </summary>
     public static MemoryStream ConvertArchiveToZip(IArchive archive)
     {
         Dictionary<string, MemoryStream> fileStreams = null;
@@ -56,6 +68,9 @@ public class ArchiveConverter
         }
     }
 
+    /// <summary>
+    /// Converts the given stream to a zip archive stream using the SharpCompress library.
+    /// </summary>
     public static Stream ConvertToSystemCompressionZip(Stream unknownArchiveStream)
     {
         using var archive = ArchiveFactory.Open(unknownArchiveStream);

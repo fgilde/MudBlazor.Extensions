@@ -188,7 +188,7 @@ namespace MudBlazor.Extensions.Components
         {
             var dialogOptionsEx = DialogOptionsEx.OverriddenDefaultOptions ? DialogOptionsEx.DefaultDialogOptions : new DialogOptionsEx
             {
-                Animation = AnimationType.FlipY,
+                Animations = new [] {AnimationType.FlipY},
                 DragMode = MudDialogDragMode.Simple,
                 CursorPositionOrigin = Origin.BottomCenter,
                 ShowAtCursor = true,

@@ -16,7 +16,7 @@ namespace MudBlazor.Extensions.Helper
     [HasDocumentation("BrowserFileExt.md")]
     public static class BrowserFileExt
     {
-        private static Dictionary<string, string> colorMap = new()
+        private static readonly Dictionary<string, string> ColorMap = new()
         {
             // Microsoft Office Colors
             { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "#217346" }, // Excel green
@@ -64,7 +64,7 @@ namespace MudBlazor.Extensions.Helper
             { "text/html", "#E34F26" }, // HTML5 orange
             { "text/css", "#1572B6" }, // CSS3 blue
             { "application/javascript", "#F7DF1E" }, // JavaScript yellow
-            { "application/xml", "#FF4500" }, // Orangish-red
+            { "application/xml", "#FF4500" }, // Orange-red
 
             // Database Formats
             { "application/x-sqlite3", "#025E8C" }, // SQLite blue
@@ -134,9 +134,12 @@ namespace MudBlazor.Extensions.Helper
         public static string GetContentType(this IBrowserFile file)
             => file == null ? "" : string.IsNullOrWhiteSpace(file.ContentType) ? MimeType.GetMimeType(file.Name) : file.ContentType;
 
+        /// <summary>
+        /// Returns the preferred color for the given content type
+        /// </summary>
         public static MudExColor GetPreferredColor(string contentType)
         {
-            return colorMap.TryGetValue(contentType, out string color) ? color :
+            return ColorMap.TryGetValue(contentType, out string color) ? color :
                 MudBlazor.Color.Default;
         }
 
@@ -178,9 +181,6 @@ namespace MudBlazor.Extensions.Helper
         /// <summary>
         /// Returns Icon for an extension
         /// </summary>
-        public static string IconForExtension(string extension)
-        {
-            return IconForFile(MimeType.GetMimeType(extension = extension?.EnsureStartsWith(".")));
-        }
+        public static string IconForExtension(string extension) => IconForFile(MimeType.GetMimeType(extension?.EnsureStartsWith(".")));
     }
 }

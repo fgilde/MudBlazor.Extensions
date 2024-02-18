@@ -6,12 +6,18 @@ using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// Group of items in a select list
+/// </summary>
 public partial class MudExSelectItemGroup<T>
 {
 
     //private IMudSelect _parent;
     internal string ItemId { get; } = "_" + Guid.NewGuid().ToString().Substring(0, 8);
 
+    /// <summary>
+    /// Style for the component.
+    /// </summary>
     protected string Stylename =>
         new MudExStyleBuilder()
             .AddRaw(Style)
@@ -81,6 +87,7 @@ public partial class MudExSelectItemGroup<T>
         }
     }
 
+    /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);

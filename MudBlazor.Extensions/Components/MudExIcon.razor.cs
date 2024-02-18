@@ -10,6 +10,9 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExIcon
 {
+    /// <summary>
+    /// Classname for the component.
+    /// </summary>
     protected string Classname =>
         new MudExCssBuilder("mud-icon-root")
             .AddClass("mud-icon-default", Color.Is(MudBlazor.Color.Inherit) || Color.Is(MudBlazor.Color.Default))
@@ -19,6 +22,9 @@ public partial class MudExIcon
             .AddClass(Class)
             .Build();
 
+    /// <summary>
+    /// Style for the component.
+    /// </summary>
     protected string Stylename =>
         new MudExStyleBuilder()
             .AddRaw(Style)            
@@ -31,14 +37,14 @@ public partial class MudExIcon
     /// </summary>
     [Parameter]
     [Category(CategoryTypes.Icon.Behavior)]
-    public string? Icon { get; set; }
+    public string Icon { get; set; }
 
     /// <summary>
     /// Title of the icon used for accessibility.
     /// </summary>
     [Parameter]
     [Category(CategoryTypes.Icon.Behavior)]
-    public string? Title { get; set; }
+    public string Title { get; set; }
 
     /// <summary>
     /// The Size of the icon.
@@ -55,7 +61,7 @@ public partial class MudExIcon
     public MudExColor Color { get; set; } = MudBlazor.Color.Inherit;
 
     /// <summary>
-    /// The viewbox size of an svg element.
+    /// The view box size of a svg element.
     /// </summary>
     [Parameter]
     [Category(CategoryTypes.Icon.Behavior)]
@@ -66,5 +72,5 @@ public partial class MudExIcon
     /// </summary>
     [Parameter]
     [Category(CategoryTypes.Icon.Behavior)]
-    public RenderFragment? ChildContent { get; set; }
+    public RenderFragment ChildContent { get; set; }
 }

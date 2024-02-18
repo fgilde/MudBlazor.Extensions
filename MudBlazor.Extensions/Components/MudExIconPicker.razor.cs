@@ -25,7 +25,6 @@ public partial class MudExIconPicker
     private int _cardsPerRow = 3;
     private string _elementId = "picker" + Guid.NewGuid().ToString()[..8];
     
-    private BlazorJSEventInterop<PointerEventArgs> _jsEvent;
     [Inject] IResizeObserver ResizeObserver { get; set; }
     
     //[Inject] private IKeyInterceptorFactory KeyInterceptorFactory { get; set; }

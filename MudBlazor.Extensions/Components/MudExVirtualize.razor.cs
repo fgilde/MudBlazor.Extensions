@@ -11,6 +11,9 @@ public partial class MudExVirtualize<TItem>
 {
     private ICollection<TItem> _allItems;
 
+    /// <summary>
+    /// Items per row. Defaults to 1.
+    /// </summary>
     [Parameter]
     public int ItemsPerRow { get; set; } = 1;
     
@@ -24,19 +27,19 @@ public partial class MudExVirtualize<TItem>
     /// Gets or sets the item template for the list.
     /// </summary>
     [Parameter]
-    public RenderFragment<TItem>? ChildContent { get; set; }
+    public RenderFragment<TItem> ChildContent { get; set; }
 
     /// <summary>
     /// Gets or sets the item template for the list.
     /// </summary>
     [Parameter]
-    public RenderFragment<TItem>? ItemContent { get; set; }
+    public RenderFragment<TItem> ItemContent { get; set; }
 
     /// <summary>
     /// Gets or sets the template for items that have not yet been loaded in memory.
     /// </summary>
     [Parameter]
-    public RenderFragment<PlaceholderContext>? Placeholder { get; set; }
+    public RenderFragment<PlaceholderContext> Placeholder { get; set; }
 
     /// <summary>
     /// Gets the size of each item in pixels. Defaults to 50px.
@@ -48,13 +51,13 @@ public partial class MudExVirtualize<TItem>
     /// Gets or sets the function providing items to the list.
     /// </summary>
     [Parameter]
-    public ItemsProviderDelegate<TItem>? ItemsProvider { get; set; }
+    public ItemsProviderDelegate<TItem> ItemsProvider { get; set; }
 
     /// <summary>
     /// Gets or sets the fixed item source.
     /// </summary>
     [Parameter]
-    public ICollection<TItem>? Items { get; set; }
+    public ICollection<TItem> Items { get; set; }
 
     /// <summary>
     /// Gets or sets a value that determines how many additional items will be rendered

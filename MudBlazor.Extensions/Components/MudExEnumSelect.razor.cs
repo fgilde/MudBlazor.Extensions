@@ -11,7 +11,7 @@ public partial class MudExEnumSelect<TEnum>
 {
     bool _isFlagsEnum;
 
-    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
 
     private static IList<TEnum> EnumValueList()

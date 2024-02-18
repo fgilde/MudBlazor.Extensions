@@ -423,7 +423,18 @@ public static class MudExSvg
 /// </summary>
 public enum SliceDirection
 {
+    /// <summary>
+    /// Diagonal slice
+    /// </summary>
     Diagonal,
+    
+    /// <summary>
+    /// Vertical slice
+    /// </summary>
     Vertical,
+    
+    /// <summary>
+    /// Horizontal slice
+    /// </summary>
     Horizontal
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Reflection;
 using System.Text;
@@ -15,11 +14,11 @@ namespace MudBlazor.Extensions.Api;
 public sealed class ApiMemberInfo<TMemberInfo> : ApiMemberInfo, IApiMemberInfo
     where TMemberInfo : MemberInfo
 {
-    private const BindingFlags _flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
+    private const BindingFlags Flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
     private readonly Type _initialType;
-    private static readonly ConcurrentDictionary<Type, HashSet<ApiMemberInfo<PropertyInfo>>> _propertiesCache = new();
-    private static readonly ConcurrentDictionary<Type, HashSet<ApiMemberInfo<MethodInfo>>> _methodsCache = new();
-    private static readonly Dictionary<(TMemberInfo, Type), ApiMemberInfo<TMemberInfo>> _cache = new();
+    private static readonly ConcurrentDictionary<Type, HashSet<ApiMemberInfo<PropertyInfo>>> PropertiesCache = new();
+    private static readonly ConcurrentDictionary<Type, HashSet<ApiMemberInfo<MethodInfo>>> MethodsCache = new();
+    private static readonly Dictionary<(TMemberInfo, Type), ApiMemberInfo<TMemberInfo>> Cache = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ApiMemberInfo"/> class.
@@ -33,19 +32,26 @@ public sealed class ApiMemberInfo<TMemberInfo> : ApiMemberInfo, IApiMemberInfo
         (LoadTask = LoadDescription()).ContinueWith(_ => DescriptionLoaded = true);
     }
 
+    /// <summary>
+    /// Creates a new instance of the <see cref="ApiMemberInfo"/> class.
+    /// </summary>
+    /// <returns></returns>
     public static ApiMemberInfo<TMemberInfo> Create(TMemberInfo memberInfo, Type initialType)
     {
         var key = (memberInfo, initialType);
 
-        if (!_cache.TryGetValue(key, out var cachedItem))
+        if (!Cache.TryGetValue(key, out var cachedItem))
         {
             cachedItem = new ApiMemberInfo<TMemberInfo>(memberInfo, initialType);
-            _cache[key] = cachedItem;
+            Cache[key] = cachedItem;
         }
 
         return cachedItem;
     }
 
+    /// <summary>
+    /// Creates a new instance of the <see cref="ApiMemberInfo"/> class asynchronously.
+    /// </summary>
     public static async Task<ApiMemberInfo<TMemberInfo>> CreateAsync(TMemberInfo memberInfo, Type initialType)
     {
         var result = Create(memberInfo, initialType);
@@ -53,23 +59,29 @@ public sealed class ApiMemberInfo<TMemberInfo> : ApiMemberInfo, IApiMemberInfo
         return result;
     }
 
+    /// <summary>
+    /// Returns all properties of the given type.
+    /// </summary>
     public static async Task<HashSet<ApiMemberInfo<PropertyInfo>>> AllPropertiesOf(Type initialType)
     {
-        if (_propertiesCache.TryGetValue(initialType, out var res))
+        if (PropertiesCache.TryGetValue(initialType, out var res))
             return res;
-        res = initialType.GetProperties(_flags).OrderBy(x => x.Name).Where(i => char.IsUpper(i.Name[0])).Select(i => ApiMemberInfo<PropertyInfo>.Create(i, initialType)).ToHashSet();
+        res = initialType.GetProperties(Flags).OrderBy(x => x.Name).Where(i => char.IsUpper(i.Name[0])).Select(i => ApiMemberInfo<PropertyInfo>.Create(i, initialType)).ToHashSet();
         await Task.WhenAll(res.Select(x => x.LoadTask));
-        _propertiesCache.TryAdd(initialType, res);
+        PropertiesCache.TryAdd(initialType, res);
         return res;
     }
 
+    /// <summary>
+    /// Returns all methods of the given type.
+    /// </summary>
     public static async Task<HashSet<ApiMemberInfo<MethodInfo>>> AllMethodsOf(Type initialType)
     {
-        if (_methodsCache.TryGetValue(initialType, out var res))
+        if (MethodsCache.TryGetValue(initialType, out var res))
             return res;
-        res = initialType.GetMethods(_flags).OrderBy(x => x.Name).Where(i => char.IsUpper(i.Name[0])).Select(i => ApiMemberInfo<MethodInfo>.Create(i, initialType)).ToHashSet();
+        res = initialType.GetMethods(Flags).OrderBy(x => x.Name).Where(i => char.IsUpper(i.Name[0])).Select(i => ApiMemberInfo<MethodInfo>.Create(i, initialType)).ToHashSet();
         await Task.WhenAll(res.Select(x => x.LoadTask));
-        _methodsCache.TryAdd(initialType, res);
+        MethodsCache.TryAdd(initialType, res);
         return res;
     }
 
@@ -119,7 +131,7 @@ public sealed class ApiMemberInfo<TMemberInfo> : ApiMemberInfo, IApiMemberInfo
     /// </summary>
     public string Default => _default ??= DefaultValue();
 
-    private string? _default;
+    private string _default;
 
     private async Task LoadDescription()
     {
@@ -185,8 +197,14 @@ public sealed class ApiMemberInfo<TMemberInfo> : ApiMemberInfo, IApiMemberInfo
 
 }
 
+/// <summary>
+/// ApiMemberInfo
+/// </summary>
 public class ApiMemberInfo
 {
+    /// <summary>
+    /// Creates a generic instance of a type
+    /// </summary>
     public static object CreateGenericTypeInstance(Type type)
     {
         if (type.IsGenericType)
@@ -204,6 +222,9 @@ public class ApiMemberInfo
         return Activator.CreateInstance(type);
     }
 
+    /// <summary>
+    /// Returns the default value of a property
+    /// </summary>
     public static object DefaultValue(PropertyInfo info)
     {
         if (info == null || info.DeclaringType == null)
@@ -213,7 +234,7 @@ public class ApiMemberInfo
             if (info.PropertyType.Name.StartsWith("EventCallback"))
                 return "default";
             var instance = CreateGenericTypeInstance(info.DeclaringType);
-            var res = instance?.GetType()?.GetProperty(info.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetField)?.GetValue(instance, null) ?? info.GetValue(instance, null);
+            var res = instance?.GetType().GetProperty(info.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetField)?.GetValue(instance, null) ?? info.GetValue(instance, null);
 
             if (res?.ToString()?.StartsWith("<") == true)
             {
@@ -236,7 +257,6 @@ public class ApiMemberInfo
         if (string.IsNullOrWhiteSpace(fullName))
             return fullName;
 
-        // Wenn der Typ ein Array ist
         if (fullName.EndsWith("[]"))
             return GetGenericFriendlyTypeName(fullName.Substring(0, fullName.Length - 2)) + "[]";
 
@@ -247,7 +267,7 @@ public class ApiMemberInfo
             var typeName = genericMatch.Groups[1].Value;
             var genericArguments = genericMatch.Groups[2].Value;
 
-            var splitArgs = genericArguments.Split(new string[] { "],[" }, StringSplitOptions.None)
+            var splitArgs = genericArguments.Split(new[] { "],[" }, StringSplitOptions.None)
                 .Select(s => s.Split(',')[0])
                 .Select(GetGenericFriendlyTypeName)
                 .ToArray();
@@ -261,7 +281,7 @@ public class ApiMemberInfo
     /// <summary>
     /// Returns a generic friendly type name
     /// </summary>
-    public static string? GetGenericFriendlyTypeName(Type? type)
+    public static string GetGenericFriendlyTypeName(Type type)
     {
         if (type == null)
             return null;
@@ -312,19 +332,20 @@ public interface IApiMemberInfo
 
 internal static class ApiMemberInfoCache
 {
-    private static readonly ConcurrentDictionary<string, object> _cache = new ConcurrentDictionary<string, object>();
+    private static readonly ConcurrentDictionary<string, object> Cache = new ConcurrentDictionary<string, object>();
 
+    /// <summary>
+    /// Gets or creates a new instance of the <see cref="ApiMemberInfo{TMemberInfo}"/> class.
+    /// </summary>
     public static ApiMemberInfo<TMemberInfo> GetOrCreate<TMemberInfo>(TMemberInfo memberInfo, Type initialType)
         where TMemberInfo : MemberInfo
     {
         var key = CreateCacheKey(memberInfo, initialType);
-        return (ApiMemberInfo<TMemberInfo>)_cache.GetOrAdd(key, _ => ApiMemberInfo<TMemberInfo>.Create(memberInfo, initialType));
+        return (ApiMemberInfo<TMemberInfo>)Cache.GetOrAdd(key, _ => ApiMemberInfo<TMemberInfo>.Create(memberInfo, initialType));
     }
 
     private static string CreateCacheKey(MemberInfo memberInfo, Type initialType)
     {
-        // Der Schlüssel könnte auch weitere Informationen enthalten, die relevant sind, 
-        // um die Eindeutigkeit des Cache-Eintrags zu gewährleisten.
         return $"{initialType.FullName}:{memberInfo.Name}";
     }
 }

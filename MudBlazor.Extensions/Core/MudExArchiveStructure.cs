@@ -4,11 +4,22 @@ using Nextended.Core;
 
 namespace MudBlazor.Extensions.Core;
 
+/// <summary>
+/// Represents the structure of an archive file or directory, used to render a file browser.
+/// </summary>
 public class MudExArchiveStructure : ArchiveStructureBase<MudExArchiveStructure>
 {
-    string _icon;
-    MudExColor? _color;
+    private string _icon;
+    private MudExColor? _color;
+    
+    /// <summary>
+    /// Icon to be used for the file or directory.
+    /// </summary>
     public string Icon => _icon ?? GetIcon();
+    
+    /// <summary>
+    /// Color to be used for the file or directory.
+    /// </summary>
     public MudExColor Color => _color ??= GetColor();
     
     private MudExColor GetColor()

@@ -2,7 +2,6 @@
 using AuralizeBlazor.Options;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Core.Css;
@@ -18,10 +17,15 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
 {
-    const string CATEGORY_PLAYER = "Player";
-    bool _mouseWheelNeedsAlt;
+    private const string CategoryPlayer = "Player";
+    private bool _mouseWheelNeedsAlt;
     private string _id = $"mud-ex-audio-player-{Guid.NewGuid().ToFormattedId()}";
-
+    private MudExColor _bg = MudExColor.Surface;
+    private MudExColor[] _borderColors = new[] { MudExColor.Primary, MudExColor.Secondary, MudExColor.Warning, MudExColor.Error };
+    
+    /// <summary>
+    /// Reference to the audio element
+    /// </summary>
     public ElementReference AudioElement { get; private set; }
 
     [Inject] private MudExFileService FileService { get; set; }
@@ -44,7 +48,7 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
     /// <summary>
     /// If true the audio player will be shown and hidden automatically depending on mouse hover
     /// </summary>
-    [Parameter, SafeCategory(CATEGORY_PLAYER)] public bool AutoShowHideAudioElement { get; set; } = true;
+    [Parameter, SafeCategory(CategoryPlayer)] public bool AutoShowHideAudioElement { get; set; } = true;
 
     /// <summary>
     /// The file display infos
@@ -56,21 +60,50 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
     /// </summary>
     [CascadingParameter, IgnoreOnObjectEdit] public MudExFileDisplay MudExFileDisplay { get; set; }
 
-    [Parameter, SafeCategory(CATEGORY_PLAYER)] public AnimateBorderColor AnimateAudioElementBorderColor { get; set; } = AnimateBorderColor.OnPlay;
-    [Parameter, SafeCategory(CATEGORY_PLAYER)] public AnimateBorderColor AnimateVisualizerBorderColor { get; set; } = AnimateBorderColor.OnPlay;
-    [Parameter, SafeCategory(CATEGORY_PLAYER)] public MudExColor AudioElementBorderColor { get; set; } = MudExColor.Info;
+    /// <summary>
+    /// Set animation for the audio element border color
+    /// </summary>
+    [Parameter, SafeCategory(CategoryPlayer)] public AnimateBorderColor AnimateAudioElementBorderColor { get; set; } = AnimateBorderColor.OnPlay;
+    
+    /// <summary>
+    /// Set animation for the visualizer border color
+    /// </summary>
+    [Parameter, SafeCategory(CategoryPlayer)] public AnimateBorderColor AnimateVisualizerBorderColor { get; set; } = AnimateBorderColor.OnPlay;
+    
+    /// <summary>
+    /// Set default audio element border color
+    /// </summary>
+    [Parameter, SafeCategory(CategoryPlayer)] public MudExColor AudioElementBorderColor { get; set; } = MudExColor.Info;
 
     /// <summary>
     /// Set the audio element background color use null to use color from visualizer gradient
     /// </summary>
-    [Parameter, SafeCategory(CATEGORY_PLAYER)] public MudExColor AudioElementBackgroundColor { get; set; }
-    [Parameter, SafeCategory(CATEGORY_PLAYER)] public MudExColor VisualizerBackgroundColor { get; set; }
+    [Parameter, SafeCategory(CategoryPlayer)] public MudExColor AudioElementBackgroundColor { get; set; }
+    
+    /// <summary>
+    /// Set the visualizer background color use null to use color from visualizer gradient
+    /// </summary>
+    [Parameter, SafeCategory(CategoryPlayer)] public MudExColor VisualizerBackgroundColor { get; set; }
 
-    [Parameter, SafeCategory(CATEGORY_PLAYER)] public BorderStyle AudioElementBorderStyle { get; set; } = BorderStyle.Solid;
-    [Parameter, SafeCategory(CATEGORY_PLAYER)] public BorderStyle VisualizerElementBorderStyle { get; set; } = BorderStyle.Solid;
-    [Parameter, SafeCategory(CATEGORY_PLAYER)] public MudExSize<double> AudioElementWidth { get; set; } = "80%";
-    [Parameter, SafeCategory(CATEGORY_PLAYER)] public MudExSize<double> AudioElementBorderSize { get; set; } = "2px";
-    [Parameter, SafeCategory(CATEGORY_PLAYER)] public MudExSize<double> VisualizerElementBorderSize { get; set; } = "3px";
+    /// <summary>
+    /// Audio element border style
+    /// </summary>
+    [Parameter, SafeCategory(CategoryPlayer)] public BorderStyle AudioElementBorderStyle { get; set; } = BorderStyle.Solid;
+    
+    /// <summary>
+    /// Width of the audio element
+    /// </summary>
+    [Parameter, SafeCategory(CategoryPlayer)] public MudExSize<double> AudioElementWidth { get; set; } = "80%";
+    
+    /// <summary>
+    /// Border size of the audio element
+    /// </summary>
+    [Parameter, SafeCategory(CategoryPlayer)] public MudExSize<double> AudioElementBorderSize { get; set; } = "2px";
+    
+    /// <summary>
+    /// Border size of the visualizer element
+    /// </summary>
+    [Parameter, SafeCategory(CategoryPlayer)] public MudExSize<double> VisualizerElementBorderSize { get; set; } = "3px";
 
 
 
@@ -87,8 +120,8 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
         {
             try
             {
-                Src = fileDisplayInfos?.Url ?? await FileService.CreateDataUrlAsync(fileDisplayInfos?.ContentStream?.ToByteArray() ?? throw new ArgumentNullException("No stream and no url available"), fileDisplayInfos.ContentType, MudExFileDisplay == null || MudExFileDisplay.StreamUrlHandling == StreamUrlHandling.BlobUrl);
-                ContentType = fileDisplayInfos?.ContentType;
+                Src = fileDisplayInfos?.Url ?? await FileService.CreateDataUrlAsync(fileDisplayInfos?.ContentStream?.ToByteArray() ?? throw new ArgumentException("No stream and no url available"), fileDisplayInfos.ContentType, MudExFileDisplay == null || MudExFileDisplay.StreamUrlHandling == StreamUrlHandling.BlobUrl);
+                ContentType = fileDisplayInfos.ContentType;
                 if (MudExFileDisplay != null)
                     ShowMessage(fileDisplayInfos.FileName);
             }
@@ -100,14 +133,14 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
         }
     }
 
+    /// <inheritdoc />
     protected override void HandleIsPlayingChanged(bool value)
     {
         base.HandleIsPlayingChanged(value);
         StateHasChanged();
     }
 
-    private MudExColor _bg = MudExColor.Surface;
-    MudExColor[] _borderColors = new[] { MudExColor.Primary, MudExColor.Secondary, MudExColor.Warning, MudExColor.Error, };
+    /// <inheritdoc />
     protected override void HandleOnGradientChanged(AudioMotionGradient value)
     {
         base.HandleOnGradientChanged(value);
@@ -116,6 +149,7 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
         StateHasChanged();
     }
 
+    /// <inheritdoc />
     protected override void HandleOnPresetApplied(AuralizerPreset preset)
     {
         base.HandleOnPresetApplied(preset);
@@ -138,6 +172,7 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
         _mouseWheelNeedsAlt = true;
     }
 
+    /// <inheritdoc />
     protected override Task HandleMouseWheel(WheelEventArgs arg)
     {
         if ((_mouseWheelNeedsAlt && arg.AltKey) || !_mouseWheelNeedsAlt)
@@ -147,6 +182,7 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
         return Task.CompletedTask;
     }
 
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         Presets = AuralizerPreset.All;

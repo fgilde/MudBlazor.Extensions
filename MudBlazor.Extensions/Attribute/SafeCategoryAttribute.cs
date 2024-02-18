@@ -6,17 +6,19 @@
 /// </summary>
 public class SafeCategoryAttribute : CategoryAttribute
 {
-    string _name;
     /// <summary>
     /// Constructor
     /// </summary>
     public SafeCategoryAttribute(string name) : base(GetValidCategory(name))
     {
-        _name = name;
+        Name = name;
     }
 
-    public new string Name => _name;
-    
+    /// <summary>
+    /// Name of the category
+    /// </summary>
+    public new string Name { get; }
+
     private static string GetValidCategory(string name)
     {
         try

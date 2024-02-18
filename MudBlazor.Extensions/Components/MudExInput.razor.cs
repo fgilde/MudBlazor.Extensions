@@ -3,36 +3,54 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
-using MudBlazor.Internal;
 using MudBlazor.Utilities;
 
 namespace MudBlazor.Extensions.Components
 {
+    /// <summary>
+    /// MudExInput is a component that allows the user to enter a value. It's an extension of MudInput.
+    /// </summary>
     public partial class MudExInput<T> : MudExBaseInput<T>
     {
-        [Inject] IJSRuntime JSRuntime { get; set; }
-
+        /// <summary>
+        /// Classname for the component.
+        /// </summary>
         protected string Classname => MudExCss.GetClassname(this,
             () => HasNativeHtmlPlaceholder() || ForceShrink || !string.IsNullOrEmpty(Text) || AdornmentStart != null || !string.IsNullOrWhiteSpace(Placeholder) || !string.IsNullOrEmpty(Converter.Set(Value)));
         
+        /// <summary>
+        /// Classname for the input element.
+        /// </summary>
         protected string InputClassname => MudExCss.GetInputClassname(this);
 
+        /// <summary>
+        /// Classname for adornment.
+        /// </summary>
         protected string AdornmentClassname => MudExCss.GetAdornmentClassname(this);
 
+        /// <summary>
+        /// Start adornment class name.
+        /// </summary>
         protected string AdornmentStartClassname =>
             new MudExCssBuilder("mud-input-adornment mud-ex-input-adornment-start")
                 .AddClass($"mud-ex-input-{Variant.GetDescription()}")
-                .AddClass($"mud-text", !string.IsNullOrEmpty(AdornmentText))
-                .AddClass($"mud-input-root-filled-shrink", Variant == Variant.Filled)
+                .AddClass("mud-text", !string.IsNullOrEmpty(AdornmentText))
+                .AddClass("mud-input-root-filled-shrink", Variant == Variant.Filled)
                 .Build();
 
+        /// <summary>
+        /// End adornment class name.
+        /// </summary>
         protected string AdornmentEndClassname =>
             new MudExCssBuilder("mud-input-adornment mud-ex-input-adornment-end")
                 .AddClass($"mud-ex-input-{Variant.GetDescription()}")
-                .AddClass($"mud-text", !string.IsNullOrEmpty(AdornmentText))
-                .AddClass($"mud-input-root-filled-shrink", Variant == Variant.Filled)
+                .AddClass("mud-text", !string.IsNullOrEmpty(AdornmentText))
+                .AddClass("mud-input-root-filled-shrink", Variant == Variant.Filled)
                 .Build();
 
+        /// <summary>
+        /// Classname for the clear button.
+        /// </summary>
         protected string ClearButtonClassname =>
                     new MudExCssBuilder()
                     .AddClass("me-n1", Adornment == Adornment.End && !HideSpinButtons)
@@ -41,12 +59,16 @@ namespace MudBlazor.Extensions.Components
                     .AddClass("mud-icon-button-edge-margin-end", Adornment != Adornment.End && HideSpinButtons)
                     .Build();
 
+        /// <summary>
+        /// Child content class name.
+        /// </summary>
         protected string ChildContentClassname =>
                     new MudExCssBuilder()
                     .AddClass("d-inline", InputType == InputType.Hidden && ChildContent != null && ShowVisualiser == false)
                     .AddClass("d-none", !(InputType == InputType.Hidden && ChildContent != null && ShowVisualiser == false))
                     .Build();
 
+        /// <inheritdoc />
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {            
             await base.OnAfterRenderAsync(firstRender);
@@ -54,13 +76,20 @@ namespace MudBlazor.Extensions.Components
             {
                 if (AutoSize)
                 {
-                    await JSRuntime.InvokeVoidAsync("auto_size", ElementReference);
+                    await JsRuntime.InvokeVoidAsync("auto_size", ElementReference);
                     StateHasChanged();
                 }
             }
         }
 
+        /// <summary>
+        /// Show visualiser.
+        /// </summary>
         [Parameter] public bool ShowVisualiser { get; set; }
+        
+        /// <summary>
+        /// Data visualiser style.
+        /// </summary>
         [Parameter] public string DataVisualiserStyle { get; set; }
 
         /// <summary>
@@ -70,8 +99,14 @@ namespace MudBlazor.Extensions.Components
 
         internal override InputType GetInputType() => InputType;
 
-        protected string InputTypeString => InputType.ToDescriptionString();
+        /// <summary>
+        /// Input type string.
+        /// </summary>
+        protected string InputTypeString => InputType.GetDescription();
 
+        /// <summary>
+        /// Handle input event.
+        /// </summary>
         protected Task OnInputHandler(ChangeEventArgs args)
         {
             if (!Immediate)
@@ -80,11 +115,14 @@ namespace MudBlazor.Extensions.Components
             OnInput.InvokeAsync();
             if (AutoSize)
             {
-                JSRuntime.InvokeVoidAsync("auto_size", ElementReference);
+                JsRuntime.InvokeVoidAsync("auto_size", ElementReference);
             }
             return SetTextAsync(args?.Value as string);
         }
 
+        /// <summary>
+        /// Text change event handler.
+        /// </summary>
         protected async Task OnChangeHandler(ChangeEventArgs args)
         {
             _internalText = args?.Value as string;
@@ -96,7 +134,7 @@ namespace MudBlazor.Extensions.Components
                 await SetTextAsync(args?.Value as string);
                 if (AutoSize)
                 {
-                    await JSRuntime.InvokeVoidAsync("auto_size", ElementReference);
+                    await JsRuntime.InvokeVoidAsync("auto_size", ElementReference);
                 }
                 
                 await OnChange.InvokeAsync();
@@ -121,23 +159,25 @@ namespace MudBlazor.Extensions.Components
         /// <summary>
         /// Paste hook for descendants.
         /// </summary>
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-
-        protected virtual async Task OnPaste(ClipboardEventArgs args)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        protected virtual Task OnPaste(ClipboardEventArgs args)
         {
-            // do nothing
-            return;
+            return Task.CompletedTask;
         }
 
         /// <summary>
-        /// ChildContent of the MudInput will only be displayed if InputType.Hidden and if its not null.
+        /// ChildContent of the MudInput will only be displayed if InputType.Hidden and if it's not null.
         /// </summary>
         [Parameter] public RenderFragment ChildContent { get; set; }
 
+        /// <summary>
+        /// Reference to the input element.
+        /// </summary>
         public ElementReference ElementReference { get; private set; }
         private ElementReference _elementReference1;
 
+        /// <summary>
+        /// Focuses the input element.
+        /// </summary>
         public override async ValueTask FocusAsync()
         {
             try
@@ -153,16 +193,25 @@ namespace MudBlazor.Extensions.Components
             }
         }
 
+        /// <summary>
+        /// Blurs the input element.
+        /// </summary>
         public override ValueTask BlurAsync()
         {
             return ElementReference.MudBlurAsync();
         }
 
+        /// <summary>
+        /// Selects the text within the input element.
+        /// </summary>
         public override ValueTask SelectAsync()
         {
             return ElementReference.MudSelectAsync();
         }
 
+        /// <summary>
+        /// Selects a range of text within the input element.
+        /// </summary>
         public override ValueTask SelectRangeAsync(int pos1, int pos2)
         {
             return ElementReference.MudSelectRangeAsync(pos1, pos2);
@@ -185,6 +234,9 @@ namespace MudBlazor.Extensions.Components
         /// </summary>
         [Parameter] public bool HideSpinButtons { get; set; } = true;
 
+        /// <summary>
+        /// Visualiser for the data.
+        /// </summary>
         [Parameter] public RenderFragment DataVisualiser { get; set; }
 
         /// <summary>
@@ -192,6 +244,9 @@ namespace MudBlazor.Extensions.Components
         /// </summary>
         [Parameter] public bool Clearable { get; set; }
 
+        /// <summary>
+        /// Force clearable.
+        /// </summary>
         [Parameter] public bool ForceClearable { get; set; }
 
         /// <summary>
@@ -220,9 +275,7 @@ namespace MudBlazor.Extensions.Components
         [Parameter] public string NumericDownIcon { get; set; } = Icons.Material.Filled.KeyboardArrowDown;
 
         private Size GetButtonSize() => Margin == Margin.Dense ? Size.Small : Size.Medium;
-
-        private bool _showClearable;
-
+        
         private void UpdateClearable(object value)
         {
             var showClearable = HasValue((T)value);
@@ -232,6 +285,7 @@ namespace MudBlazor.Extensions.Components
 
         private bool GetClearable() => Clearable && ((Value is string stringValue && !string.IsNullOrWhiteSpace(stringValue)) || (Value is not string && Value is not null));
 
+        /// <inheritdoc />
         protected override async Task UpdateTextPropertyAsync(bool updateValue)
         {
             await base.UpdateTextPropertyAsync(updateValue);
@@ -239,6 +293,7 @@ namespace MudBlazor.Extensions.Components
                 UpdateClearable(Text);
         }
 
+        /// <inheritdoc />
         protected override async Task UpdateValuePropertyAsync(bool updateText)
         {
             await base.UpdateValuePropertyAsync(updateText);
@@ -246,6 +301,9 @@ namespace MudBlazor.Extensions.Components
                 UpdateClearable(Value);
         }
 
+        /// <summary>
+        /// Handler for the clear button click.
+        /// </summary>
         protected virtual async Task ClearButtonClickHandlerAsync(MouseEventArgs e)
         {
             await SetTextAsync(string.Empty, updateValue: true);
@@ -255,6 +313,7 @@ namespace MudBlazor.Extensions.Components
 
         private string _internalText;
 
+        /// <inheritdoc />
         public override async Task SetParametersAsync(ParameterView parameters)
         {
             await base.SetParametersAsync(parameters);

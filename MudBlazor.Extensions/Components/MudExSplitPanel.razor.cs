@@ -121,6 +121,7 @@ public partial class MudExSplitPanel
         return $"flex-direction:{(ColumnLayout ? "row" : "column")}{(Reverse ? "-reverse" : "")};";
     }
 
+    /// <inheritdoc />
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)

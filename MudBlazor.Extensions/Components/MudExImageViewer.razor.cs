@@ -36,7 +36,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     private ConcurrentDictionary<(string FormatName, string Url), string> _convertedUrlMapping = new();
 
 
-    [Inject] private MudExFileService fileService { get; set; }
+    [Inject] private MudExFileService FileService { get; set; }
     
     /// <summary>
     /// Returns the current status text
@@ -76,7 +76,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public string FullScreenButtonIcon { get; set; } = Icons.Material.Filled.Fullscreen;
 
     /// <summary>
-    /// The icon for the Save button button
+    /// The icon for the Save button
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.FormComponent.Appearance)]
     public string SaveButtonIcon { get; set; } = Icons.Material.Filled.SaveAs;
@@ -85,7 +85,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     /// The dialog options for the save dialog
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.FormComponent.Appearance), IgnoreOnObjectEdit]
-    public DialogOptionsEx? SaveDialogOptions { get; set; } = null;
+    public DialogOptionsEx SaveDialogOptions { get; set; } = null;
 
     /// <summary>
     /// If true a ZoomIn button is shown in the toolbar
@@ -124,13 +124,13 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public bool ShowFullScreenButton { get; set; } = true;
 
     /// <summary>
-    /// Variant for tool bar buttons only if <see cref="ShowTools"/> is true
+    /// Variant for toolbar buttons only if <see cref="ShowTools"/> is true
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.FormComponent.Appearance)]
     public Variant ToolbarButtonVariant { get; set; } = Variant.Filled;
 
     /// <summary>
-    /// Size for tool bar buttons only if <see cref="ShowTools"/> is true
+    /// Size for toolbar buttons only if <see cref="ShowTools"/> is true
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.FormComponent.Appearance)]
     public Size ToolbarButtonSize { get; set; } = MudBlazor.Size.Small;
@@ -305,10 +305,16 @@ public partial class MudExImageViewer : IMudExFileDisplay
     [Parameter, IgnoreOnObjectEdit]
     public IMudExFileDisplayInfos FileDisplayInfos { get; set; }
 
+    /// <summary>
+    /// Reference to the MudExFileDisplay if this component is used inside a MudExFileDisplay
+    /// </summary>
     [CascadingParameter] public MudExFileDisplay MudExFileDisplay { get; set; }
 
     #endregion
 
+    /// <summary>
+    /// Called when the viewer is created
+    /// </summary>
     [JSInvokable]
     public void OnViewerCreated()
     {
@@ -316,6 +322,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
 
     //public override object[] GetJsArguments() => new[] { ElementReference, CreateDotNetObjectReference(), Options() };
 
+    /// <inheritdoc />
     public override async Task ImportModuleAndCreateJsAsync()
     {
         await JsRuntime.LoadFilesAsync(JsImportHelper.JsPath("/js/libs/MudExImageView.min.js"));
@@ -324,7 +331,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     }
 
     /// <summary>
-    /// Returns true if its a markdown file and we can handle it
+    /// Returns true if it's a markdown file and we can handle it
     /// </summary>
     public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos)
     {
@@ -356,7 +363,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
         {
             try
             {
-                Src = fileDisplayInfos?.Url ?? await fileService.CreateDataUrlAsync(fileDisplayInfos?.ContentStream?.ToByteArray() ?? throw new ArgumentNullException("No stream and no url available"), fileDisplayInfos.ContentType, MudExFileDisplay == null || MudExFileDisplay.StreamUrlHandling == StreamUrlHandling.BlobUrl);
+                Src = fileDisplayInfos?.Url ?? await FileService.CreateDataUrlAsync(fileDisplayInfos?.ContentStream?.ToByteArray() ?? throw new ArgumentException("No stream and no url available"), fileDisplayInfos.ContentType, MudExFileDisplay == null || MudExFileDisplay.StreamUrlHandling == StreamUrlHandling.BlobUrl);
             }
             catch (Exception e)
             {
@@ -366,6 +373,9 @@ public partial class MudExImageViewer : IMudExFileDisplay
         }
     }
 
+    /// <summary>
+    /// Sets the status text
+    /// </summary>
     public async Task SetStatusTextAsync(string text)
     {
         if (MudExFileDisplay is { IsRendered: true })
@@ -378,6 +388,9 @@ public partial class MudExImageViewer : IMudExFileDisplay
         }
     }
 
+    /// <summary>
+    /// removes the status text
+    /// </summary>
     public Task RemoveStatusTextAsync() => SetStatusTextAsync(null);
 
 
@@ -400,7 +413,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public override async ValueTask DisposeAsync()
     {
         _convertedUrlMapping.Clear();
-        await fileService.DisposeAsync();
+        await FileService.DisposeAsync();
         await base.DisposeAsync();
     }
 
@@ -437,7 +450,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     {
         var url = options.VisibleViewPortOnly ? await JsReference.InvokeAsync<string>("getCurrentViewImageDataUrl") : Src;
         var format = options.GetImageFormat();
-        var extension = format?.FileExtensions?.FirstOrDefault() ?? MimeType.GetExtension(FileDisplayInfos.ContentType);
+        var extension = format?.FileExtensions.FirstOrDefault() ?? MimeType.GetExtension(FileDisplayInfos.ContentType);
         string name = !string.IsNullOrEmpty(options.FileName) ? Path.ChangeExtension(options.FileName, extension) : $"{Guid.NewGuid().ToFormattedId()}{extension.EnsureStartsWith(".")}";
         
         var result = await ConvertImageToAsync(url, format);
@@ -445,7 +458,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
         {
             Url = result,
             FileName = name,
-            MimeType = format.DefaultMimeType
+            MimeType = format?.DefaultMimeType
         });
     }
     
@@ -461,7 +474,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
         await image.SaveAsync(resultStream, format);
 
         resultStream.Position = 0;
-        var resultUrl = await fileService.CreateDataUrlAsync(resultStream.ToArray(), "image/png", true);
+        var resultUrl = await FileService.CreateDataUrlAsync(resultStream.ToArray(), "image/png", true);
         await RemoveStatusTextAsync();
         return resultUrl;
     }
@@ -477,7 +490,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
             return convertedUrl;
         }
 
-        await using var stream = await fileService.ReadStreamAsync(url);
+        await using var stream = await FileService.ReadStreamAsync(url);
         var result = await ConvertImageToAsync(stream, format);
         _convertedUrlMapping.TryAdd(cacheKey, result);
         return result;
@@ -512,7 +525,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     private string StyleStr() => MudExStyleBuilder.Default
         .WithSize(Size)
         .WithPosition(Core.Css.Position.Relative)
-        .WithDisplay(Core.Css.Display.Flex, !string.IsNullOrEmpty(StatusText))
+        .WithDisplay(Display.Flex, !string.IsNullOrEmpty(StatusText))
         .WithJustifyContent("center", !string.IsNullOrEmpty(StatusText))
         .WithAlignItems(Core.Css.AlignItems.Center, !string.IsNullOrEmpty(StatusText))
         .WithBorder(BorderSize, BorderStyle, BorderColor, !BorderColor.Is(Color.Transparent) && !BorderColor.Is(Color.Inherit))

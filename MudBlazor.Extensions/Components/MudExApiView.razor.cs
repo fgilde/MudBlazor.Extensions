@@ -6,6 +6,9 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// Api view component to display the methods and properties of a type
+/// </summary>
 public partial class MudExApiView
 {
     private bool _loaded;
@@ -13,46 +16,88 @@ public partial class MudExApiView
     private MudExpansionPanel _methodPanel;
     private MudExpansionPanel _propertyPanel;
 
+    /// <summary>
+    /// Link path to the api page where this component is used
+    /// </summary>
     [Parameter] public string ApiLinkPath { get; set; } = "api";
     
-    [Parameter]
-    public Type Type { get; set; }
+    /// <summary>
+    /// Type to display the api of
+    /// </summary>
+    [Parameter] public Type Type { get; set; }
 
+    /// <summary>
+    /// Show the header
+    /// </summary>
     [Parameter] public bool ShowHeader { get; set; } = true;
 
+    /// <summary>
+    /// Show the inheritance path
+    /// </summary>
     [Parameter] public bool ShowInheritance { get; set; } = true;
+    
+    /// <summary>
+    /// Should the tools be shown
+    /// </summary>
     [Parameter] public bool ShowTools { get; set; } = true;
+    
+    /// <summary>
+    /// Show the methods
+    /// </summary>
     [Parameter] public bool ShowMethods { get; set; } = true;
+    
+    /// <summary>
+    /// Show the properties
+    /// </summary>
     [Parameter] public bool ShowProperties { get; set; } = true;
+    
+    /// <summary>
+    /// Show the inherited methods and properties
+    /// </summary>
     [Parameter] public bool ShowInherited { get; set; }
+    
+    /// <summary>
+    /// Should the view be compact
+    /// </summary>
     [Parameter] public bool Compact { get; set; }
-    [Parameter] public string[]? ShowOnly { get; set; }
+    
+    /// <summary>
+    /// Only show the specified methods and properties
+    /// </summary>
+    [Parameter] public string[] ShowOnly { get; set; }
 
     [Inject] IDialogService DialogService { get; set; }
     [Inject] IServiceProvider ServiceProvider { get; set; }
 
+    /// <summary>
+    /// Is the panel initially expanded
+    /// </summary>
     [Parameter]
     public bool IsInitiallyExpanded { get; set; } = true;
 
+    /// <summary>
+    /// Search string
+    /// </summary>
     [Parameter]
     public string Search { get; set; }
 
-    private HashSet<ApiMemberInfo<PropertyInfo>>? Properties;
-    private HashSet<ApiMemberInfo<MethodInfo>>? Methods;
-    private Lazy<List<BreadcrumbItem>> _inheritance => new(GetInheritancePath(Type));
+    private HashSet<ApiMemberInfo<PropertyInfo>> _properties;
+    private HashSet<ApiMemberInfo<MethodInfo>> _methods;
+    private Lazy<List<BreadcrumbItem>> Inheritance => new(GetInheritancePath(Type));
 
     private List<BreadcrumbItem> GetInheritancePath(Type type)
     {
         var breadcrumbItems = new List<BreadcrumbItem>();
         while (type != null)
         {
-            breadcrumbItems.Insert(0, new BreadcrumbItem(ApiMemberInfo.GetGenericFriendlyTypeName(type), href: $"/{ApiLinkPath.EnsureEndsWith("/")}{type.Name}", Type == type));
+            breadcrumbItems.Insert(0, new BreadcrumbItem(ApiMemberInfo.GetGenericFriendlyTypeName(type) ?? string.Empty, href: $"/{ApiLinkPath.EnsureEndsWith("/")}{type.Name}", Type == type));
             type = type.BaseType;
         }
         breadcrumbItems.Reverse();
         return breadcrumbItems;
     }
 
+    /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender && IsInitiallyExpanded)
@@ -72,7 +117,7 @@ public partial class MudExApiView
 
     private async Task OnExpandedChanged(bool arg)
     {
-        if (arg && (Properties == null || Methods == null))
+        if (arg && (_properties == null || _methods == null))
         {
             await LoadInfos();
         }
@@ -81,8 +126,8 @@ public partial class MudExApiView
     private async Task LoadInfos()
     {
         _loaded = false;
-        Properties ??= await ApiMemberInfo<PropertyInfo>.AllPropertiesOf(Type);
-        Methods ??= await ApiMemberInfo<MethodInfo>.AllMethodsOf(Type); 
+        _properties ??= await ApiMemberInfo<PropertyInfo>.AllPropertiesOf(Type);
+        _methods ??= await ApiMemberInfo<MethodInfo>.AllMethodsOf(Type); 
         _loaded = true;
         await InvokeAsync(StateHasChanged);
     }

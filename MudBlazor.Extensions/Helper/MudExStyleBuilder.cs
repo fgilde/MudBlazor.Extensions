@@ -34,6 +34,10 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
 
     private IJSRuntime JsRuntime { get; }
 
+    /// <summary>
+    /// Creates a new instance of <see cref="MudExStyleBuilder"/>
+    /// </summary>
+    /// <param name="jsRuntime">js runtime reference</param>
     public MudExStyleBuilder(IJSRuntime jsRuntime)
     {
         JsRuntime = jsRuntime;
@@ -259,7 +263,7 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// Adds a stroke property to the builder
     /// </summary>
     /// <param name="color">Value of the MudColor property</param>
-    /// <param name="when">If false, no property will be add to the builder</param>
+    /// <param name="when">If false, no property will be added to the builder</param>
     /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder WithStroke(MudColor color, bool when = true) => WithStroke(color.ToString(), when);
 
@@ -300,7 +304,7 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// Adds a fill property to the builder
     /// </summary>
     /// <param name="color">Value of the MudColor property</param>
-    /// <param name="when">If false, no property will be add to the builder</param>
+    /// <param name="when">If false, no property will be added to the builder</param>
     /// <returns>This MudExStyleBuilder instance</returns>
     public MudExStyleBuilder WithFill(MudColor color, bool when = true) => WithFill(color.ToString(), when);
 
@@ -759,7 +763,7 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithWordSpacing(string wordSpacing, bool when = true) => With("word-spacing", wordSpacing, when);
 
     /// <summary>
-    /// Specifies the backface-visibility property using a CSS string value, if the 'when' condition is true.
+    /// Specifies the back face visibility property using a CSS string value, if the 'when' condition is true.
     /// </summary>
     public MudExStyleBuilder WithBackfaceVisibility(string backfaceVisibility, bool when = true) => With("backface-visibility", backfaceVisibility, when);
 
@@ -1235,17 +1239,17 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithLeft(MudExSize<double> size, bool when = true) => WithLeft(size.ToString(), when);
 
     /// <summary>
-    /// Specifies the translate property using a string value, if the 'when' condition is true.
+    /// Specifies the translation property using a string value, if the 'when' condition is true.
     /// </summary>
     public MudExStyleBuilder WithTranslate(string translate, bool when = true) => With("translate", translate, when);
 
     /// <summary>
-    /// Specifies the translate property using a double value and a CssUnit, if the 'when' condition is true.
+    /// Specifies the translation property using a double value and a CssUnit, if the 'when' condition is true.
     /// </summary>
     public MudExStyleBuilder WithTranslate(double translate, CssUnit unit, bool when = true) => WithTranslate(new MudExSize<double>(translate, unit).ToString(), when);
 
     /// <summary>
-    /// Specifies the translate property using a MudExSize object, if the 'when' condition is true.
+    /// Specifies the translation property using a MudExSize object, if the 'when' condition is true.
     /// </summary>
     public MudExStyleBuilder WithTranslate(MudExSize<double> size, bool when = true) => WithTranslate(size.ToString(), when);
 
@@ -1295,7 +1299,7 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithTranslateZ(MudExSize<double> size, bool when = true) => WithTranslateZ(size.ToString(), when);
 
     /// <summary>
-    /// Specifies the translate3d property using a string value, if the 'when' condition is true.
+    /// Specifies the 3d translation property using a string value, if the 'when' condition is true.
     /// </summary>
     public MudExStyleBuilder WithTranslate3d(string translate3d, bool when = true) => With("translate3d", translate3d, when);
 
@@ -1400,12 +1404,12 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithScaleZ(double scaleZ, bool when = true) => WithScaleZ(DoubleToString(scaleZ), when);
 
     /// <summary>
-    /// Specifies the scale3d property using a string value, if the 'when' condition is true.
+    /// Specifies the scale 3d property using a string value, if the 'when' condition is true.
     /// </summary>
     public MudExStyleBuilder WithScale3d(string scale3d, bool when = true) => With("scale3d", scale3d, when);
 
     /// <summary>
-    /// Specifies the scale3d property using a double value, if the 'when' condition is true.
+    /// Specifies the scale 3d property using a double value, if the 'when' condition is true.
     /// </summary>
     public MudExStyleBuilder WithScale3d(double scale3d, bool when = true) => WithScale3d(DoubleToString(scale3d), when);
 
@@ -1925,22 +1929,57 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
         => WithAnimation(type, duration, direction, animationTimingFunction, null, when);
 
 
-    public MudExStyleBuilder WithAnimatedGradientBackground(MudExColor[] colors, bool when = true) => WithAnimatedConicGradientBorderdBackground(0, colors, new[] { MudExColor.Transparent }, when);
-    public MudExStyleBuilder WithAnimatedGradientBorder(MudExSize<double> borderSize, MudExColor backgroundColor, MudExColor[] borderColors, bool when = true) => WithAnimatedConicGradientBorderdBackground(borderSize, new[] { backgroundColor }, borderColors, when);
+    /// <summary>
+    /// Sets the animation style with a gradient background using the type, duration, direction, timing function, and target position of the animation.
+    /// </summary>
+    public MudExStyleBuilder WithAnimatedGradientBackground(MudExColor[] colors, bool when = true) => WithAnimatedConicGradientBorderedBackground(0, colors, new[] { MudExColor.Transparent }, when);
+   
+    /// <summary>
+    /// With animated gradient border
+    /// </summary>
+    public MudExStyleBuilder WithAnimatedGradientBorder(MudExSize<double> borderSize, MudExColor backgroundColor, MudExColor[] borderColors, bool when = true) => WithAnimatedConicGradientBorderedBackground(borderSize, new[] { backgroundColor }, borderColors, when);
 
+    /// <summary>
+    /// With animated gradient background
+    /// </summary>
     public MudExStyleBuilder WithAnimatedGradientBackground(MudTheme theme, bool dark, bool when) => WithAnimatedGradientBackground(dark ? theme.PaletteDark : theme.Palette, when);
-    public MudExStyleBuilder WithAnimatedGradientBackground(MudTheme theme, bool when = true) => WithAnimatedGradientBackground(theme, false, when);
-    public MudExStyleBuilder WithAnimatedGradientBackground(Palette palette, bool when = true) => WithAnimatedConicGradientBorderdBackground(0, GetColorsFromPalette(palette), new[] { MudExColor.Transparent }, when);
 
+    /// <summary>
+    /// With animated gradient background
+    /// </summary>
+    public MudExStyleBuilder WithAnimatedGradientBackground(MudTheme theme, bool when = true) => WithAnimatedGradientBackground(theme, false, when);
+
+    /// <summary>
+    /// With animated gradient background
+    /// </summary>
+    public MudExStyleBuilder WithAnimatedGradientBackground(Palette palette, bool when = true) => WithAnimatedConicGradientBorderedBackground(0, GetColorsFromPalette(palette), new[] { MudExColor.Transparent }, when);
+
+    
+    /// <summary>
+    /// With animated gradient border based on palette
+    /// </summary>
     public MudExStyleBuilder WithAnimatedGradientBorder(MudExSize<double> borderSize, Palette palette, bool when = true) => WithAnimatedGradientBorder(borderSize, palette.Surface, GetColorsFromPalette(palette), when);
+
+    /// <summary>
+    /// With animated gradient border based on theme
+    /// </summary>
     public MudExStyleBuilder WithAnimatedGradientBorder(MudExSize<double> borderSize, MudTheme theme, bool dark, bool when = true) => WithAnimatedGradientBorder(borderSize, dark ? theme.PaletteDark : theme.Palette, when);
+    
+    /// <summary>
+    /// With animated gradient border that looks like a skeleton loading wave
+    /// </summary>
     public MudExStyleBuilder WithSkeletonLoadingBorder(MudExSize<double> borderSize, bool when = true) => WithAnimatedGradientBorder(borderSize, MudExColor.Surface, new []{ MudExColor.Dark, "rgba(0,0,0,.11)", MudExColor.Dark, "rgba(0,0,0,.11)" }, when);
     
     
-    
+    /// <summary>
+    /// Returns an array of colors from a palette
+    /// </summary>
     private MudExColor[] GetColorsFromPalette(Palette palette) => new MudExColor[] { palette.Primary, palette.Secondary, palette.Info, palette.Error, palette.Warning };
 
-    public MudExStyleBuilder WithAnimatedConicGradientBorderdBackground(MudExSize<double> borderSize, MudExColor[] backgroundColors, MudExColor[] borderColors, bool when = true)
+    /// <summary>
+    /// Add a background image with a conic gradient and a border with a conic gradient
+    /// </summary>
+    public MudExStyleBuilder WithAnimatedConicGradientBorderedBackground(MudExSize<double> borderSize, MudExColor[] backgroundColors, MudExColor[] borderColors, bool when = true)
     {
         while (backgroundColors.Length < 3)
             backgroundColors = backgroundColors.Append(backgroundColors.Last()).ToArray();

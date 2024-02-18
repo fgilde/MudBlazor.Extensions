@@ -5,25 +5,38 @@ using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components;
 
-public partial class MudExListSubheader<T>
+/// <summary>
+/// MudExListSubHeader is a sub header for MudExList.
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public partial class MudExListSubHeader<T>
 {
+    /// <summary>
+    /// Classname for the component.
+    /// </summary>
     protected string Classname =>
         new MudExCssBuilder("mud-ex-list-subheader")
             .AddClass("mud-ex-list-subheader-gutters", !DisableGutters)
             .AddClass("mud-ex-list-subheader-inset", Inset)
             .AddClass("mud-ex-list-subheader-secondary-background", SecondaryBackground)
             .AddClass("mud-ex-list-subheader-sticky", Sticky)
-            .AddClass("mud-ex-list-subheader-sticky-dense", Sticky && (MudListExtended != null && MudListExtended.DisablePadding))
+            .AddClass("mud-ex-list-subheader-sticky-dense", Sticky && MudExList is { DisablePadding: true })
             .AddClass(Class)
             .Build();
 
+    /// <summary>
+    /// Style for the component.
+    /// </summary>
     protected string Stylename =>
         new MudExStyleBuilder()
             .AddRaw(Style)
             .WithTop(StickyTop, Sticky)            
             .Build();
 
-    [CascadingParameter] protected MudExList<T> MudListExtended { get; set; }
+    /// <summary>
+    /// MudExList instance.
+    /// </summary>
+    [CascadingParameter] protected MudExList<T> MudExList { get; set; }
 
     /// <summary>
     /// The child render fragment.
@@ -39,12 +52,15 @@ public partial class MudExListSubheader<T>
     [SafeCategory(CategoryTypes.List.Appearance)]
     public bool DisableGutters { get; set; }
 
+    /// <summary>
+    /// If true, the List Sub header will be indented.
+    /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Appearance)]
     public bool Inset { get; set; }
 
     /// <summary>
-    /// If true, subheader behaves sticky and remains on top until other subheader comes to top.
+    /// If true, sub header behaves sticky and remains on top until other sub header comes to top.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Appearance)]
@@ -58,7 +74,7 @@ public partial class MudExListSubheader<T>
     public MudExSize<double> StickyTop { get; set; } = -8;
 
     /// <summary>
-    /// If true, subheader has darken background.
+    /// If true, sub header has darker background.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Appearance)]

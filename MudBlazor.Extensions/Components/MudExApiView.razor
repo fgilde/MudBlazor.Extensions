@@ -14,7 +14,7 @@
 
 @if (ShowInheritance)
 {
-    <MudBreadcrumbs Items="_inheritance.Value" Separator="<">
+    <MudBreadcrumbs Items="Inheritance.Value" Separator="<">
         <ItemTemplate Context="item">
             @if (item.Disabled)
             {
@@ -30,7 +30,7 @@
 @if (ShowTools)
 {
     <MudToolBar>
-        <MudSwitch Color="Color.Primary" @bind-Checked="ShowInherited">Show inherited</MudSwitch>
+        <MudSwitch Color="Color.Primary" @bind-Value="ShowInherited">Show inherited</MudSwitch>
         <MudSpacer/>
         <MudExToggleableSearch AutoCloseOnBlur="false"
                                OnKeyUp="@(() => { _methodPanel.Expand(); _propertyPanel.Expand(); })"
@@ -55,9 +55,9 @@
 @if (ShowProperties)
 {
     <MudExpansionPanel @ref="_propertyPanel" Disabled="@Compact" IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@(IsInitiallyExpanded)" Text="Properties">
-        @if (Properties?.Any() == true)
+        @if (_properties?.Any() == true)
         {
-            <MudDataGrid T="ApiMemberInfo<PropertyInfo>" Items="@Properties.Where(p => (ShowInherited || !p.IsInherited) && (ShowOnly == null || ShowOnly.Contains(p.Name)))" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+            <MudDataGrid T="ApiMemberInfo<PropertyInfo>" Items="@_properties.Where(p => (ShowInherited || !p.IsInherited) && (ShowOnly == null || ShowOnly.Contains(p.Name)))" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
                          DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
                          DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
                 
@@ -130,9 +130,9 @@
 @if (ShowMethods)
 {
     <MudExpansionPanel @ref="_methodPanel" Disabled="@Compact" IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@IsInitiallyExpanded" Text="Methods">
-        @if (Methods?.Any() == true)
+        @if (_methods?.Any() == true)
         {
-            <MudDataGrid T="ApiMemberInfo<MethodInfo>" Items="@Methods.Where(p => ShowInherited || !p.IsInherited && (ShowOnly == null || ShowOnly.Contains(p.Name)))" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+            <MudDataGrid T="ApiMemberInfo<MethodInfo>" Items="@_methods.Where(p => ShowInherited || !p.IsInherited && (ShowOnly == null || ShowOnly.Contains(p.Name)))" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
                          DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
                          DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column">
                 <ToolBarContent>
@@ -184,7 +184,7 @@
 }
 
 @code {
-
+#pragma warning disable All
 
     private async Task ShowValueForIcon(string iconName)
     {
@@ -340,7 +340,7 @@
             {
                 if (segment.isLink)
                 {
-                    string? tooltip = Properties?.FirstOrDefault(x => x.Name == segment.text)?.Description ?? Methods?.FirstOrDefault(m => m.Name == segment.text)?.Description;
+                    string tooltip = _properties?.FirstOrDefault(x => x.Name == segment.text)?.Description ?? _methods?.FirstOrDefault(m => m.Name == segment.text)?.Description;
 
                     if (!string.IsNullOrEmpty(tooltip) && !isToolTipContent) // Don't create a tooltip for tooltip content
                     {
@@ -511,6 +511,7 @@
                || x.Default?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true;
     };
 
+#pragma warning restore All
 
 }
 

@@ -4,16 +4,19 @@ using MudBlazor.Extensions.Core;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// MudExSelectItem is a select item for MudExSelect.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public partial class MudExSelectItem<T> : IDisposable, IMudExComponent
 {
     // Fields
     private IMudExSelect _parent;
-    private IMudShadowSelectExtended _shadowParent;
+    private IMudExShadowSelect _shadowParent;
 
     // Constants
-    internal readonly string ItemId = "selectItem_" + Guid.NewGuid().ToString().Substring(0, 8);
+    internal readonly string ItemId = "selectItem_" + Guid.NewGuid().ToString()[..8];
 
-    // Properties with CascadingParameter
     [CascadingParameter]
     internal IMudExSelect IMudExSelect
     {
@@ -22,7 +25,7 @@ public partial class MudExSelectItem<T> : IDisposable, IMudExComponent
     }
 
     [CascadingParameter]
-    internal IMudShadowSelectExtended IMudShadowSelectExtended
+    internal IMudExShadowSelect MudExShadowSelect
     {
         get => _shadowParent;
         set => SetShadowParent(value);
@@ -33,24 +36,43 @@ public partial class MudExSelectItem<T> : IDisposable, IMudExComponent
 
     // Other properties
     internal MudExSelect<T> MudExSelect => _parent as MudExSelect<T>;
+    
+    /// <summary>
+    /// List item.
+    /// </summary>
     public MudExListItem<T> ListItem { get; set; }
 
+    /// <summary>
+    /// True when item is only functional.
+    /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Behavior)]
     public bool IsFunctional { get; set; }
 
+    /// <summary>
+    /// Text for the item.
+    /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Behavior)]
     public string Text { get; set; }
 
+    /// <summary>
+    /// Item value.
+    /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.FormComponent.Behavior)]
     public T Value { get; set; }
 
+    /// <summary>
+    /// Is multi selection enabled.
+    /// </summary>
     protected bool MultiSelection => MudExSelect?.MultiSelection ?? false;
 
     internal bool IsSelected { get; set; }
 
+    /// <summary>
+    /// Display string.
+    /// </summary>
     protected string DisplayString
     {
         get
@@ -83,7 +105,7 @@ public partial class MudExSelectItem<T> : IDisposable, IMudExComponent
         }
     }
 
-    private void SetShadowParent(IMudShadowSelectExtended value)
+    private void SetShadowParent(IMudExShadowSelect value)
     {
         _shadowParent = value;
         (_shadowParent as MudExSelect<T>)?.RegisterShadowItem(this);
@@ -99,6 +121,9 @@ public partial class MudExSelectItem<T> : IDisposable, IMudExComponent
             InvokeAsync(StateHasChanged);
     }
 
+    /// <summary>
+    /// Handles the click event.
+    /// </summary>
     protected async void HandleOnClick()
     {        
         await MudExSelect?.SelectOption(Value);
@@ -113,8 +138,14 @@ public partial class MudExSelectItem<T> : IDisposable, IMudExComponent
             await MudExSelect.FocusAsync();
     }
 
+    /// <summary>
+    /// Returns the disabled status.
+    /// </summary>
     protected bool GetDisabledStatus() => MudExSelect?.ItemDisabledFunc?.Invoke(Value) ?? Disabled;
 
+    /// <summary>
+    /// Disposes the component.
+    /// </summary>
     public void Dispose()
     {
         try

@@ -28,7 +28,7 @@
 
 @code {
 
-    protected RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
     protected override RenderFragment InternalToolBarContent => RenderFormActionsInToolBar ? RenderActions : null;
     

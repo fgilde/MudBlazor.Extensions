@@ -19,12 +19,12 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
     #region private fields
 
-    private bool internalCall;
+    private bool _internalCall;
     private bool _isNativeRendered;
     private string _id = Guid.NewGuid().ToString();
     private (string tag, Dictionary<string, object> attributes)? renderInfos;
     private BrowserInfo _info;
-    private bool internalOverwrite;
+    private bool _internalOverwrite;
     private List<IMudExFileDisplay> _possibleRenderControls;
     private (Type ControlType, bool ShouldAddDiv, IDictionary<string, object> Parameters) _componentForFile;
     private Stream _contentStream;
@@ -43,6 +43,9 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     //[Parameter, SafeCategory("Appearance")]
     public string StatusText { get; private set; }
 
+    /// <summary>
+    /// How to handle the stream url
+    /// </summary>
     [Parameter, SafeCategory("Behaviour")]
     public StreamUrlHandling StreamUrlHandling { get; set; } = StreamUrlHandling.BlobUrl;
 
@@ -220,7 +223,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     /// <summary>
     /// Media Type for current file
     /// </summary>
-    public string MediaType => ContentType?.Split("/")?.FirstOrDefault()?.ToLower();
+    public string MediaType => ContentType?.Split("/").FirstOrDefault()?.ToLower();
 
     /// <summary>
     /// Returns a plugin that is useful to show the content if the content cant displayed 
@@ -250,13 +253,13 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     [JSInvokable]
     public async Task<bool> HandleContentError()
     {
-        if (internalCall)
-            return !(internalCall = false);
+        if (_internalCall)
+            return !(_internalCall = false);
         var result = HandleContentErrorFunc != null ? await HandleContentErrorFunc(this) : MudExFileDisplayContentErrorResult.Unhandled;
         if (HandleContentErrorFunc != null && result != null)
         {
-            internalCall = true;
-            internalOverwrite = true;
+            _internalCall = true;
+            _internalOverwrite = true;
             UpdateChangedFields(result);
             StateHasChanged();
         }
@@ -267,6 +270,9 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     /// <inheritdoc/>
     public override object[] GetJsArguments() => base.GetJsArguments().Concat(new object[] { _id }).ToArray();
 
+    /// <summary>
+    /// Set the status text to display in center of file display
+    /// </summary>
     public async Task<MudExFileDisplay> SetStatusTextAsync(string text)
     {
         StatusText = text;
@@ -275,6 +281,9 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         return this;
     }
 
+    /// <summary>
+    /// Remove the status text
+    /// </summary>
     public Task<MudExFileDisplay> RemoveStatusTextAsync() => SetStatusTextAsync(null);
 
     private void UpdateRenderInfos()
@@ -287,6 +296,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         StateHasChanged();
     }
 
+    /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         var updateRequired = (parameters.TryGetValue<Stream>(nameof(ContentStream), out var stream) && ContentStream != stream)
@@ -302,7 +312,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 
         await EnsureUrlAsync();
 
-        if (internalOverwrite)
+        if (_internalOverwrite)
             return;
 
         UpdateRenderInfos();
@@ -314,7 +324,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         _possibleRenderControls = GetServices<IMudExFileDisplay>().Where(c => c.GetType() != GetType() && c.CanHandleFile(this)).ToList();
         if (ViewDependsOnContentType)
             _componentForFile = GetComponentForFile(_possibleRenderControls.FirstOrDefault(c => c.StartsActive && !ForceNativeRender));
-        if (!internalOverwrite)
+        if (!_internalOverwrite)
             renderInfos = GetRenderInfos();
         return base.OnParametersSetAsync();
     }
@@ -340,13 +350,16 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         return (type, fileComponent.WrapInMudExFileDisplayDiv, parameters);
     }
 
+    /// <summary>
+    /// Returns the tag and attributes for the file
+    /// </summary>
     public static (string tag, Dictionary<string, object> attributes) GetFileRenderInfos(
         string id,
         string url, 
         string fileName, string contentType, bool viewDependsOnContentType = true, 
         bool imageAsBackgroundImage = false, bool fallBackInIframe = false, bool sandBoxIframes = true, string onErrorMethod = "")
     {
-        var mediaType = contentType?.Split("/")?.FirstOrDefault()?.ToLower();
+        var mediaType = contentType?.Split("/").FirstOrDefault()?.ToLower();
         if (viewDependsOnContentType && !string.IsNullOrEmpty(mediaType))
         {
             switch (mediaType)
@@ -394,7 +407,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             }
         }
 
-        if (!fallBackInIframe) // wenn binary
+        if (!fallBackInIframe) // if binary
         {
             return ("object", new()
             {
@@ -539,7 +552,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         var infoObject = FileInfo ?? new
         {
             File = FileName,
-            ContentType = ContentType,
+            ContentType,
             Url = effectiveStream is { Length: > 0 } ? null : Url,
             Size = size
         };
@@ -553,6 +566,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         });
     }
 
+    /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
         await base.DisposeAsync();
@@ -561,6 +575,9 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         await FileService.DisposeAsync();
     }
 
+    /// <summary>
+    /// Shows an error message
+    /// </summary>
     public void ShowError(string message)
     {
         if (ErrorMessage != message)

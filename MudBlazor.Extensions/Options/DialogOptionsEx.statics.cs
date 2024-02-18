@@ -7,6 +7,9 @@ namespace MudBlazor.Extensions.Options;
 public partial class DialogOptionsEx
 {
 
+    /// <summary>
+    /// Recommended default met config to render dialog options in mudex object edit.
+    /// </summary>
     public static void ConfigureObjectEditMeta(ObjectEditMeta<DialogOptionsEx> meta)
     {
         meta.Properties(o => o.AnimationDuration, o => o.Buttons, o => o.AnimationTimingFunction, o => o.Animation,
@@ -67,6 +70,9 @@ public partial class DialogOptionsEx
         Animations = new[] { AnimationType.FlipX }
     };
 
+    /// <summary>
+    /// Dialog options for file display dialog.
+    /// </summary>
     public static DialogOptionsEx FileDisplayDialogOptions => new()
     {
         CloseButton = true,
@@ -85,6 +91,9 @@ public partial class DialogOptionsEx
         Resizeable = true
     };
 
+    /// <summary>
+    /// Dialog preset to slide in from right.
+    /// </summary>
     public static DialogOptionsEx SlideInFromRight => new()
     {
         MaximizeButton = true,
@@ -100,7 +109,14 @@ public partial class DialogOptionsEx
         DisablePositionMargin = true
     };
 
+    /// <summary>
+    /// Dialog preset to slide in from left.
+    /// </summary>
     public static DialogOptionsEx SlideInFromLeft => SlideInFromRight.SetProperties(o => o.Position = DialogPosition.CenterLeft);
+    
+    /// <summary>
+    /// Dialog preset to slide in from top.
+    /// </summary>
     public static DialogOptionsEx SlideInFromTop => SlideInFromRight.SetProperties(o =>
     {
         o.Position = DialogPosition.TopCenter;
@@ -109,6 +125,9 @@ public partial class DialogOptionsEx
         o.FullHeight = false;
     });
 
+    /// <summary>
+    /// Dialog preset to slide in from bottom.
+    /// </summary>
     public static DialogOptionsEx SlideInFromBottom => SlideInFromTop.SetProperties(o =>
     {
         o.Position = DialogPosition.BottomCenter;

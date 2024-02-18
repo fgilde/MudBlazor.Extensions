@@ -74,7 +74,7 @@ internal static class SizeParser
 
         var matchingUnit = Enum.GetValues(typeof(CssUnit))
             .Cast<CssUnit>()
-            .FirstOrDefault(u => u.ToDescriptionString().Equals(unit, StringComparison.OrdinalIgnoreCase));
+            .FirstOrDefault(u => u.GetDescription().Equals(unit, StringComparison.OrdinalIgnoreCase));
 
         return Enum.IsDefined(typeof(CssUnit), matchingUnit)
             ? (sizeValue, matchingUnit)
