@@ -68,7 +68,7 @@
         }
     </div>;
 
-    private RenderFragment SearchBoxRender => @<MudExListSubHeader T="T" Style="@($"position: sticky; top: -8px; padding-top: 8px; margin-top: -8px; background-color: {SearchBoxBackgroundColor.ToCssStringValue()}; z-index: 10")">
+    private RenderFragment SearchBoxRender => @<MudExListSubheader T="T" Style="@($"position: sticky; top: -8px; padding-top: 8px; margin-top: -8px; background-color: {SearchBoxBackgroundColor.ToCssStringValue()}; z-index: 10")">
         <div @onkeydown:stopPropagation class="mud-ex-list-item">
             @SelectAllRender(Options.SelectAllPosition.NextToSearchBox)
             @if (Features.SelectColorFeature)
@@ -81,7 +81,7 @@
             }
         </div>
         @SelectAllRender(Options.SelectAllPosition.AfterSearchBox)
-    </MudExListSubHeader>;
+    </MudExListSubheader>;
 
 
     private RenderFragment ItemRender(T item) => @<div>

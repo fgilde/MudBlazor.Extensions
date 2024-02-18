@@ -6,10 +6,10 @@ using MudBlazor.Extensions.Helper;
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
-/// MudExListSubHeader is a sub header for MudExList.
+/// MudExListSubheader is a sub header for MudExList.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public partial class MudExListSubHeader<T>
+public partial class MudExListSubheader<T>
 {
     /// <summary>
     /// Classname for the component.

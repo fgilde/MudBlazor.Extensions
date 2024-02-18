@@ -4900,53 +4900,53 @@
             Called when list parameters changed.
             </summary>
         </member>
-        <member name="T:MudBlazor.Extensions.Components.MudExListSubHeader`1">
+        <member name="T:MudBlazor.Extensions.Components.MudExListSubheader`1">
             <summary>
-            MudExListSubHeader is a sub header for MudExList.
+            MudExListSubheader is a sub header for MudExList.
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListSubHeader`1.Classname">
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.Classname">
             <summary>
             Classname for the component.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListSubHeader`1.Stylename">
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.Stylename">
             <summary>
             Style for the component.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListSubHeader`1.MudExList">
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.MudExList">
             <summary>
             MudExList instance.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListSubHeader`1.ChildContent">
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.ChildContent">
             <summary>
             The child render fragment.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListSubHeader`1.DisableGutters">
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.DisableGutters">
             <summary>
             Disables the left and right spaces.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListSubHeader`1.Inset">
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.Inset">
             <summary>
             If true, the List Sub header will be indented.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListSubHeader`1.Sticky">
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.Sticky">
             <summary>
             If true, sub header behaves sticky and remains on top until other sub header comes to top.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListSubHeader`1.StickyTop">
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.StickyTop">
             <summary>
             The top position of sticky header
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListSubHeader`1.SecondaryBackground">
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.SecondaryBackground">
             <summary>
             If true, sub header has darker background.
             </summary>
@@ -15230,7 +15230,7 @@
         </member>
         <member name="M:MudBlazor.Extensions.Helper.JsImportHelper.InitializeMudBlazorExtensionsCoreAsync(Microsoft.JSInterop.IJSRuntime,System.Boolean)">
             <summary>
-            Imports requires JS module and required css styles for MudBlazor.Extensions
+            Imports requires JS module and required css styles for MudBlazor.Extensions and returns the initialized JS runtime
             </summary>        
         </member>
         <member name="T:MudBlazor.Extensions.Helper.JsRuntimeExtensions">
