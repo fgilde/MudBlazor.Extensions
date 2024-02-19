@@ -168,3 +168,9 @@ public class ClientTheme : MudTheme
 
     #endregion
 }
+
+public class StoredThemeItem<T>
+{
+    public string Key { get; set; }
+    public T Value { get; set; }
+}

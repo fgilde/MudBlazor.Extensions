@@ -31,8 +31,8 @@ public class LocalStorageService
         return await _js.InvokeAsync<T[]>("localStorageFunctions.getAllItems");
     }
 
-    public async Task<KeyValuePair<string, T>[]> GetAllThemeItemsAsync<T>()
+    public async Task<StoredThemeItem<T>[]> GetAllThemeItemsAsync<T>()
     {
-        return await _js.InvokeAsync<KeyValuePair<string, T>[]>("localStorageFunctions.getAllThemeItems");
+        return await _js.InvokeAsync<StoredThemeItem<T>[]>("localStorageFunctions.getAllThemeItems");
     }
 }
