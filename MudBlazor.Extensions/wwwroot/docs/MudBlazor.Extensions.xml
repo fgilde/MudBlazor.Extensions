@@ -6332,6 +6332,26 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSplitter.ElementReference">
             <inheritdoc/>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitter.IsDragging">
+            <summary>
+            Indicates whether the Splitter is currently dragging
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitter.IsDraggingChanged">
+            <summary>
+            Callback when dragging starts or ends
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitter.NextElement">
+            <summary>
+            Manually set element for right or down
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitter.PrevElement">
+            <summary>
+            Manually set element for left or up
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSplitter.UpdateSizesInPercentage">
             <summary>
             Indicates whether to update sizes in percentage
@@ -6344,6 +6364,9 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSplitter.OnInitializedAsync">
             <inheritdoc/>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSplitter.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSplitter.OnParametersSetAsync">
             <inheritdoc/>
@@ -12942,6 +12965,21 @@
             The value of the ValidationWrapper component. This will be passed to the set validation function.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.CssVariable">
+            <summary>
+            Represents a CSS variable
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CssVariable.Key">
+            <summary>
+            Key of the CSS variable
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CssVariable.Value">
+            <summary>
+            Value of the CSS variable
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.Css.AlignItems">
             <summary>
             Enum representing CSS 'align-items' property values.
@@ -15253,7 +15291,7 @@
             Returns css variables by value
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,System.Collections.Generic.KeyValuePair{System.String,System.String})">
+        <member name="M:MudBlazor.Extensions.Helper.JsRuntimeExtensions.SetCssVariableValueAsync(Microsoft.JSInterop.IJSRuntime,MudBlazor.Extensions.Core.CssVariable)">
             <summary>
             Updates or creates a new css variable
             </summary>

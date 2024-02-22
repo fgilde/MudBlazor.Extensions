@@ -284,6 +284,46 @@
 }
 
 
+// Classes for transitions in seconds
+@for $i from 1 through 10 {
+    .mud-ex-fade-out-#{$i}s {
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s #{$i}s, opacity #{$i}s linear;
+    }
+}
+
+// Classes for transitions in milliseconds, corrected
+@for $i from 1 through 10 {
+    $ms: $i * 100; // Calculate the milliseconds
+    .mud-ex-fade-out-#{$ms}ms {
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s #{$ms}ms, opacity #{$ms}ms linear;
+    }
+}
+
+// Classes for transitions in seconds
+@for $i from 1 through 10 {
+    .mud-ex-fade-in-#{$i}s {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity #{$i}s linear;
+    }
+}
+
+// Classes for transitions in milliseconds, corrected
+@for $i from 1 through 10 {
+    $ms: $i * 100; // Calculate the milliseconds
+    .mud-ex-fade-in-#{$i}ms {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity #{$i}s linear;
+    }
+}
+
+
+
 .mud-dialog-animate-ex {
     position: fixed;
     transition-property: all;

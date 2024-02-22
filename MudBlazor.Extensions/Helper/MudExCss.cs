@@ -22,12 +22,12 @@ public static partial class MudExCss
     /// Returns a css class name for given type name
     /// </summary>
     public static string For(string typeName) => string.Join('-', typeName.SplitByUpperCase()).ToLower();
-    
+
     /// <summary>
     /// Returns a css class name for given type
     /// </summary>
     public static string For(Type type) => For(type.Name);
-    
+
     /// <summary>
     /// Returns a css class name for given type
     /// </summary>
@@ -70,7 +70,7 @@ public static partial class MudExCss
     /// Returns an applicable style string as animation for given animations options
     /// </summary>
     public static string GetAnimationCssStyle(this AnimationType type, TimeSpan? duration = null, AnimationDirection? direction = null, AnimationTimingFunction animationTimingFunction = null, DialogPosition? targetPosition = null)
-        => GetAnimationCssStyle(new[] {type}, duration ?? TimeSpan.FromMilliseconds(500), direction, animationTimingFunction, targetPosition);
+        => GetAnimationCssStyle(new[] { type }, duration ?? TimeSpan.FromMilliseconds(500), direction, animationTimingFunction, targetPosition);
 
     /// <summary>
     /// Returns an applicable style string as animation for given animations options
@@ -98,7 +98,7 @@ public static partial class MudExCss
         action?.Invoke(builder);
         return builder;
     }
-    
+
     /// <summary>
     /// Generates a css string from given object
     /// </summary>
@@ -127,19 +127,22 @@ public static partial class MudExCss
     /// Returns all css variables as key value pairs
     /// </summary>
     [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
-    public static Task<KeyValuePair<string, string>[]> GetCssVariablesAsync() => JsImportHelper.GetInitializedJsRuntime().GetCssVariablesAsync();
+    public static async Task<KeyValuePair<string, string>[]> GetCssVariablesAsync() 
+        => (await JsImportHelper.GetInitializedJsRuntime().GetCssVariablesAsync()).Select(v => new KeyValuePair<string,string>(v.Key, v.Value)).ToArray();
 
     /// <summary>
     /// Finds all css variables by given value
     /// </summary>
     [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
-    public static Task<KeyValuePair<string, string>[]> FindCssVariablesByValueAsync(string value) => JsImportHelper.GetInitializedJsRuntime().FindCssVariablesByValueAsync(value);
+    public static async Task<KeyValuePair<string, string>[]> FindCssVariablesByValueAsync(string value) 
+        => (await JsImportHelper.GetInitializedJsRuntime().FindCssVariablesByValueAsync(value)).Select(v => new KeyValuePair<string, string>(v.Key, v.Value)).ToArray();
 
     /// <summary>
     /// Sets a css variable value
     /// </summary>
     [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
-    public static Task SetCssVariableValueAsync(KeyValuePair<string, string> pair) => JsImportHelper.GetInitializedJsRuntime().SetCssVariableValueAsync(pair);
+    public static Task SetCssVariableValueAsync(KeyValuePair<string, string> pair) => 
+        JsImportHelper.GetInitializedJsRuntime().SetCssVariableValueAsync(new CssVariable { Key = pair.Key, Value = pair.Value });
 
     /// <summary>
     /// Sets a css variable value
@@ -177,7 +180,7 @@ public static partial class MudExCss
     [Obsolete("Use extension method for IJSRuntime instead from MudBlazor.Extensions.Helper.JsRuntimeExtensions")]
     public static Task<KeyValuePair<string, MudColor>[]> GetCssColorVariablesAsync() => JsImportHelper.GetInitializedJsRuntime().GetCssColorVariablesAsync();
 
-    
+
     private static string ReplaceAnimation(string animationDesc, string position, AnimationDirection? direction)
     {
         string fallBackPosition = string.IsNullOrWhiteSpace(position) ? "Down" : position;

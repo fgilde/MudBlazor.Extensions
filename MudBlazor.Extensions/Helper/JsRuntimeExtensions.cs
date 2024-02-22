@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 using MudBlazor.Utilities;
 using Nextended.Core.Extensions;
 using Nextended.Core;
-using BlazorJS;
+using MudBlazor.Extensions.Core;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -23,19 +23,19 @@ public static class JsRuntimeExtensions
     /// <summary>
     /// Returns all current CssVariables
     /// </summary>
-    public static async Task<KeyValuePair<string, string>[]> GetCssVariablesAsync(this IJSRuntime js) 
-        => await js.InvokeAsync<KeyValuePair<string, string>[]>("MudExCssHelper.getCssVariables");
+    public static async Task<CssVariable[]> GetCssVariablesAsync(this IJSRuntime js) 
+        => await js.InvokeAsync<CssVariable[]>("MudExCssHelper.getCssVariables");
 
     /// <summary>
     /// Returns css variables by value
     /// </summary>
-    public static async Task<KeyValuePair<string, string>[]> FindCssVariablesByValueAsync(this IJSRuntime js, string value) 
-        => await js.InvokeAsync<KeyValuePair<string, string>[]>("MudExCssHelper.findCssVariables", value);
+    public static async Task<CssVariable[]> FindCssVariablesByValueAsync(this IJSRuntime js, string value) 
+        => await js.InvokeAsync<CssVariable[]>("MudExCssHelper.findCssVariables", value);
 
     /// <summary>
     /// Updates or creates a new css variable
     /// </summary>
-    public static async Task SetCssVariableValueAsync(this IJSRuntime js, KeyValuePair<string, string> pair) 
+    public static async Task SetCssVariableValueAsync(this IJSRuntime js, CssVariable pair) 
         => await js.SetCssVariableValueAsync(pair.Key, pair.Value);
 
     /// <summary>

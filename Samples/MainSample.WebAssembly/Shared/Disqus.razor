@@ -1,0 +1,33 @@
+﻿@using BlazorJS
+@using Microsoft.Extensions.FileProviders
+@using Nextended.Core.Extensions
+@using System.Reflection
+
+<div id="@_id">
+    <style id="styles">
+        a {
+            color: var(--mud-palette-primary);
+        }
+    </style>
+    @if (!_loaded)
+    {
+        <MudCard Elevation="1" Class="m-1">
+            <MudCardContent>
+                <MudText Align="Align.Center" Typo="Typo.h6">Disqus comments are disabled by default.</MudText>
+                <MudText Class="mb-1" Align="Align.Center" Typo="Typo.body2">Click the button below to enable them and load the third party services from disqus.com</MudText>
+                <MudGrid Class="mt-2" Justify="Justify.Center">
+                    <MudItem>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="EnableDisqus">Enable Disqus</MudButton><br/>
+                    </MudItem>
+                    <MudItem>
+                        <MudSwitch Color="Color.Primary" Label="Automatically allow next time" @bind-Value="@_rememberChoice"/>
+                    </MudItem>
+                </MudGrid>
+            </MudCardContent>
+        </MudCard>
+    }
+    else
+    {
+        <div id="disqus_thread"></div>
+    }
+</div>

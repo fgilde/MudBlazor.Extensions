@@ -1,0 +1,27 @@
+﻿@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Helper
+@if (Available)
+{
+    <footer @ref="_footer" class="@ClassStr()">
+        @if (_isExpanded)
+        {
+            <MudExSplitter NextElement="@_footer" @bind-IsDragging="_dragging" Reverse="true" Vertical="false" Size="4"/>
+        }
+        else
+        {
+            <MudExDivider Style="opacity: .5;" Vertical="false" Color="MudExColor.Secondary" Size="2" />
+
+        }
+        <MudExpansionPanel @bind-IsExpanded="_isExpanded" Style="margin: 0" Class="comment-footer" Dense="true" Icon="@Icons.Material.Filled.ExpandLess" IsInitiallyExpanded="false">
+            <TitleContent>
+                <div class="d-flex">
+                    <MudText Class="comments-title"><strong>Comments</strong></MudText>
+                    <MudIconButton Class="ml-auto" Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" OnClick="@Close"/>
+                </div>
+            </TitleContent>
+            <ChildContent>
+                <Disqus/>
+            </ChildContent>
+        </MudExpansionPanel>
+    </footer>
+}

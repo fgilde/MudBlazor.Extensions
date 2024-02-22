@@ -253,3 +253,21 @@ a, .btn-link {
 .file-combo-info-item::after {
     content: ")";
 }
+
+.comment-footer-collapsed {
+    max-height: 50px;
+}
+.comment-footer-expanded {
+    max-height: 95%;
+}
+.comment-footer {
+    overflow: auto;
+}
+.comment-footer > .mud-expand-panel-header {
+    padding: 0 !important;
+}
+
+.comments-title {
+    margin-left: 10px !important;
+    align-self: center;
+}

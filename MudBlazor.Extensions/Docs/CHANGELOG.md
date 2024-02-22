@@ -1,4 +1,6 @@
 ## Change Log   
+ - 1.7.85 > Splitter can now work with one element only
+ - 1.7.85 > Sample app to net 8
  - 1.7.84 > Update MudBlazor to 6.15.0
  - 1.7.84 > Fix hidden content sometimes in MudExFileDisplayDialog
  - 1.7.84 > Fix Bug that no input can selected in draggable dialogs without header
