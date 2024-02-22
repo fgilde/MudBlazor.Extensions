@@ -63,10 +63,8 @@
             @Body
         </MudContainer>
     </MudMainContent>
-    @if (_test)
-    {
-        <CommentsFooter @bind-Available="_commentsAvailable"/>
-    }
+    
+    <CommentsFooter @bind-Available="_commentsAvailable"/>
 
 </MudLayout>
 
@@ -74,7 +72,6 @@
     public static MainLayout? Instance { get; private set; }
     bool _drawerOpen = true;
     bool _commentsAvailable = true;
-    bool _test;
     public bool IsOverlayVisible { get; set; }
     public bool IsDark { get; set; } = true;
     public event EventHandler<ThemeChangedEventArgs> ThemeChanged;
@@ -103,7 +100,6 @@
     protected override async Task OnInitializedAsync()
     {
         Instance = this;
-        _test = await JsRuntime.DInvokeAsync<bool>(w => !!w.localStorage["TEST"]);
         await base.OnInitializedAsync();
     }
 
