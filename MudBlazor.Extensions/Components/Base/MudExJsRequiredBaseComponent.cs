@@ -49,7 +49,7 @@ public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, I
     /// <summary>
     /// Returns an object that is passed forward to the js initialize and constructor method
     /// </summary>
-    public virtual object[] GetJsArguments() => new object[] {ElementReference, CreateDotNetObjectReference()};
+    public virtual object[] GetJsArguments() => new object[] { ElementReference, CreateDotNetObjectReference() };
 
     /// <summary>
     /// The dotnet object reference for the js module
@@ -87,7 +87,7 @@ public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, I
 
     /// <inheritdoc/>
     public override ValueTask DisposeAsync()
-    {                
+    {
         AsJsComponent?.DisposeModulesAsync();
         return base.DisposeAsync();
     }

@@ -319,9 +319,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public void OnViewerCreated()
     {
     }
-
-    //public override object[] GetJsArguments() => new[] { ElementReference, CreateDotNetObjectReference(), Options() };
-
+    
     /// <inheritdoc />
     public override async Task ImportModuleAndCreateJsAsync()
     {
