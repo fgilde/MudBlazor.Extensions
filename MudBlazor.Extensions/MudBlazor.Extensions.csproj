@@ -41,6 +41,10 @@
     <FileVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)</FileVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\js\components\MudExSplitter.min.js" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -81,10 +85,10 @@
     <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="MudBlazor" Version="6.15.0" />
+    <PackageReference Include="MudBlazor" Version="6.17.0" />
     <PackageReference Include="BlazorParameterCastingMagic" Version="1.2.23060811" />
     <PackageReference Include="SharpCompress" Version="0.35.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.2" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -104,6 +108,7 @@
     <None Include=".scripts\copyMarkdown.ps1" />
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
+    <None Include="wwwroot\js\components\MudExSplitter.min.js" />
     <None Include="wwwroot\js\mudBlazorExtensions.all.min.js" />
   </ItemGroup>
 
@@ -125,6 +130,7 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Components\MudExListItem.razor" />
     <_ContentIncludedByDefault Remove="Components\MudExSelectItem.razor" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\components\MudExSplitter.min.js" />
     <_ContentIncludedByDefault Remove="wwwroot\js\mudBlazorExtensions.all.min.js" />
   </ItemGroup>
 

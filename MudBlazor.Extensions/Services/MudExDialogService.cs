@@ -40,19 +40,19 @@ public class MudExDialogService : IMudExDialogService
     #region Delegating Implementation
 
     /// <inheritdoc />
-    public IDialogReference Show<TComponent>() where TComponent : ComponentBase => _innerDialogService.Show<TComponent>();
+    public IDialogReference Show<TComponent>() where TComponent : IComponent => _innerDialogService.Show<TComponent>();
 
     /// <inheritdoc />
-    public IDialogReference Show<TComponent>(string title) where TComponent : ComponentBase => _innerDialogService.Show<TComponent>(title);
+    public IDialogReference Show<TComponent>(string title) where TComponent : IComponent => _innerDialogService.Show<TComponent>(title);
 
     /// <inheritdoc />
-    public IDialogReference Show<TComponent>(string title, DialogOptions options) where TComponent : ComponentBase => _innerDialogService.Show<TComponent>(title, options);
+    public IDialogReference Show<TComponent>(string title, DialogOptions options) where TComponent : IComponent => _innerDialogService.Show<TComponent>(title, options);
 
     /// <inheritdoc />
-    public IDialogReference Show<TComponent>(string title, DialogParameters parameters) where TComponent : ComponentBase => _innerDialogService.Show<TComponent>(title, parameters);
+    public IDialogReference Show<TComponent>(string title, DialogParameters parameters) where TComponent : IComponent => _innerDialogService.Show<TComponent>(title, parameters);
 
     /// <inheritdoc />
-    public IDialogReference Show<TComponent>(string title, DialogParameters parameters, DialogOptions options) where TComponent : ComponentBase => _innerDialogService.Show<TComponent>(title, parameters, options);
+    public IDialogReference Show<TComponent>(string title, DialogParameters parameters, DialogOptions options) where TComponent : IComponent => _innerDialogService.Show<TComponent>(title, parameters, options);
 
     /// <inheritdoc />
     public IDialogReference Show(Type component) => _innerDialogService.Show(component);
@@ -73,23 +73,23 @@ public class MudExDialogService : IMudExDialogService
         => _innerDialogService.Show(component, title, parameters, options);
 
     /// <inheritdoc />
-    public Task<IDialogReference> ShowAsync<TComponent>() where TComponent : ComponentBase
+    public Task<IDialogReference> ShowAsync<TComponent>() where TComponent : IComponent
         => _innerDialogService.ShowAsync<TComponent>();
 
     /// <inheritdoc />
-    public Task<IDialogReference> ShowAsync<TComponent>(string title) where TComponent : ComponentBase
+    public Task<IDialogReference> ShowAsync<TComponent>(string title) where TComponent : IComponent
         => _innerDialogService.ShowAsync<TComponent>(title);
 
     /// <inheritdoc />
-    public Task<IDialogReference> ShowAsync<TComponent>(string title, DialogOptions options) where TComponent : ComponentBase
+    public Task<IDialogReference> ShowAsync<TComponent>(string title, DialogOptions options) where TComponent : IComponent
         => _innerDialogService.ShowAsync<TComponent>(title, options);
 
     /// <inheritdoc />
-    public Task<IDialogReference> ShowAsync<TComponent>(string title, DialogParameters parameters) where TComponent : ComponentBase
+    public Task<IDialogReference> ShowAsync<TComponent>(string title, DialogParameters parameters) where TComponent : IComponent
         => _innerDialogService.ShowAsync<TComponent>(title, parameters);
 
     /// <inheritdoc />
-    public Task<IDialogReference> ShowAsync<TComponent>(string title, DialogParameters parameters, DialogOptions options) where TComponent : ComponentBase
+    public Task<IDialogReference> ShowAsync<TComponent>(string title, DialogParameters parameters, DialogOptions options) where TComponent : IComponent
         => _innerDialogService.ShowAsync<TComponent>(title, parameters, options);
 
     /// <inheritdoc />
