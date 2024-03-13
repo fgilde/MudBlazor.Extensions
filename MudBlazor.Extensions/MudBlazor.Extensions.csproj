@@ -42,11 +42,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\js\components\MudExSplitter.min.js" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
@@ -107,9 +102,7 @@
     <None Include=".scripts\copyFromMarkdown.ps1" />
     <None Include=".scripts\copyMarkdown.ps1" />
     <None Include="bundleconfig.json" />
-    <None Include="compilerconfig.json" />
-    <None Include="wwwroot\js\components\MudExSplitter.min.js" />
-    <None Include="wwwroot\js\mudBlazorExtensions.all.min.js" />
+    <None Include="compilerconfig.json" />        
   </ItemGroup>
 
   <ItemGroup>
@@ -125,13 +118,6 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Components\MudExMessageDialog.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Components\MudExListItem.razor" />
-    <_ContentIncludedByDefault Remove="Components\MudExSelectItem.razor" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\components\MudExSplitter.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\mudBlazorExtensions.all.min.js" />
   </ItemGroup>
 
   <ItemGroup>
