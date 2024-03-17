@@ -387,6 +387,7 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2024-01-22 15:26:40 -->
+ - 1.7.86 > Fix wrong js deploy for splitter.min.js
  - 1.7.85 > Update MudBlazor to 6.17.0
  - 1.7.85 > Splitter can now work with one element only
  - 1.7.85 > Sample app to net 8
