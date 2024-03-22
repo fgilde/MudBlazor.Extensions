@@ -109,7 +109,7 @@ builder.Services.AddMudServicesWithExtensions(c => c.WithoutAutomaticCssLoading(
   <summary>Expand videos</summary>
 
 <!-- WIKI:START -->
-<!-- Copied from https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md on 2024-01-22 15:26:41 -->
+<!-- Copied from https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md on 2024-03-22 10:26:05 -->
 ## Showcase
 
 https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/39e06d88-a947-43cd-9151-a7cf96bcd849
@@ -164,7 +164,7 @@ This section introduces you to the various components provided by the MudBlazor.
 
 ### MudExObjectEdit
 <!-- OBJECTEDIT:START -->
-<!-- Copied from ObjectEdit.md on 2024-01-22 15:26:40 -->
+<!-- Copied from ObjectEdit.md on 2024-03-22 10:26:05 -->
 The `MudExObjectEdit` is a robust component that allows for object editing and automatically generates the corresponding UI. This component supports automatic validation for DataAnnotation Validations or fluent registered validations for your model.
 
 To use `MudExObjectEdit`, you can simply use the `MudExObjectEditForm` and pass your model to it as shown below:
@@ -204,7 +204,7 @@ You can find a running [Sample here](https://www.mudex.org/structured-data-edit)
 
 ### MudExFileDisplay
 <!-- FILEDISPLAY:START -->
-<!-- Copied from MudExFileDisplay.md on 2024-01-22 15:26:40 -->
+<!-- Copied from MudExFileDisplay.md on 2024-03-22 10:26:05 -->
 The `MudExFileDisplay` component is designed to display file contents, such as a preview before uploading or for referenced files. 
 This component can automatically handle URLs or streams and deliver the best possible display. 
 Additionally, you can implement `IMudExFileDisplay` in your own component to register a custom file display.
@@ -263,7 +263,7 @@ await dialogService.ShowEx<MudExFileDisplayDialog>(title, parameters, optionsEx)
 
 ### MudExUploadEdit
 <!-- UPLOADEDIT:START -->
-<!-- Copied from MudExUploadEdit.md on 2024-01-22 15:26:40 -->
+<!-- Copied from MudExUploadEdit.md on 2024-03-22 10:26:05 -->
 
 `MudExUploadEdit` is a versatile file upload component with a wide range of features such as MIME and extension whitelisting/blacklisting, folder upload, drag and drop, copy and paste, renaming, and integration with Dropbox, Google Drive, and OneDrive.
 
@@ -275,7 +275,7 @@ await dialogService.ShowEx<MudExFileDisplayDialog>(title, parameters, optionsEx)
 
 ## Extensions
 <!-- DIALOG_EXT:START -->
-<!-- Copied from DialogExtensions.md on 2024-01-22 15:26:40 -->
+<!-- Copied from DialogExtensions.md on 2024-03-22 10:26:05 -->
 ### Resizable or Draggable Dialogs
 
 You can make your dialogs resizable or draggable using the following code snippet:
@@ -386,7 +386,8 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 ## Change Log 
 Latest Changes: 
 <!-- CHANGELOG:START -->
-<!-- Copied from CHANGELOG.md on 2024-01-22 15:26:40 -->
+<!-- Copied from CHANGELOG.md on 2024-03-22 10:26:05 -->
+ - 1.7.86 > Update MudBlazor to 6.18.0
  - 1.7.86 > Fix wrong js deploy for splitter.min.js
  - 1.7.85 > Update MudBlazor to 6.17.0
  - 1.7.85 > Splitter can now work with one element only
@@ -401,15 +402,6 @@ Latest Changes:
  - 1.7.83 > Add new Component for displaying images [MudExImageViewer](https://www.mudex.org/image-view) also registered as IMudExFileDisplay [see file sample](https://www.mudex.org/file-display?file=logo.png)
  - 1.7.81 > Add support for style and class in MudExCardList
  - 1.7.81 > Add Itemtemplate for MudExUploadEdit
- - 1.7.81 > Add Param for MudExUploadEdit to allow custom title in preview dialog based on File
- - 1.7.81 > Fix bug for Checkbox in MudExObjectEdit and ensure new param Value is used
- - 1.7.81 > Update package to MudBlazor 6.12.0
- - 1.7.80 > Add target for .net8
- - 1.7.80 > Update package to MudBlazor 6.11.2
- - 1.7.80 > New Component [MudExAdditionalAdornment](https://www.mudex.org/additional-adornments) to add as many additional adornments as you want to any MudInput
- - 1.7.79 > Allow inherit from MudExJsRequiredBaseComponent for other projects
- - 1.7.79 > Hide dropdown icon if readonly in MudExSelect
- - 1.7.79 > Set cursor to default for MudExSelect if readonly
 <!-- CHANGELOG:END -->
 Full change log can be found [here](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/CHANGELOG.md) 
 
