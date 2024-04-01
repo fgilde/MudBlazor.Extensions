@@ -60,7 +60,7 @@
                 }
                 else
                 {
-                    <MudExListItem IgnoreItemTemplate="true" T="T" IsFunctional="true" Icon="@SelectAllCheckBoxIcon" IconColor="@Color" Text="@SelectAllText" OverrideMultiSelectionComponent="MultiSelectionComponent.None" OnClick="@(() => SelectAllItems(AllSelected))" OnClickHandlerPreventDefault="true" Dense="@(Dense)"
+                    <MudExListItem IgnoreItemTemplate="true" T="T" Style="cursor: pointer;" IsFunctional="true" Icon="@SelectAllCheckBoxIcon" IconColor="@Color" Text="@SelectAllText" OverrideMultiSelectionComponent="MultiSelectionComponent.None" OnClick="@(() => SelectAllItems(AllSelected))" OnClickHandlerPreventDefault="true" Dense="@(Dense || position == SelectAllPosition.NextToSearchBox)"
                            Class="@MudExCssBuilder.Default.AddClass("mb-2", position != SelectAllPosition.NextToSearchBox).Build()" />
                     @if (position == SelectAllPosition.AfterSearchBox || position == SelectAllPosition.BeforeSearchBox)
                     {
