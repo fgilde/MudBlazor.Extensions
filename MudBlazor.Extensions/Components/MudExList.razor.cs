@@ -930,12 +930,6 @@ public partial class MudExList<T> : IDisposable
             return;
         switch (obj.Key)
         {
-            case " ":
-                SearchString = SearchString + " ";
-                await _searchField.BlurAsync();
-                await _searchField.FocusAsync();
-                StateHasChanged();
-                break;
             case "a":
             case "A":
                 if (obj.CtrlKey)

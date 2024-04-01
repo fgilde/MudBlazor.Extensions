@@ -1,6 +1,7 @@
 ﻿@typeparam T
 @inherits MudExBaseComponent<MudExList<T>>
 @using MudBlazor
+@using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Helper.Internal
 @using MudBlazor.Extensions.Options;
 
@@ -59,27 +60,36 @@
                 }
                 else
                 {
-                    <MudExListItem IgnoreItemTemplate="true" T="T" IsFunctional="true" Icon="@SelectAllCheckBoxIcon" IconColor="@Color" Text="@SelectAllText" OverrideMultiSelectionComponent="MultiSelectionComponent.None" OnClick="@(() => SelectAllItems(AllSelected))" OnClickHandlerPreventDefault="true" Dense="@(Dense)" Class="mb-2" />
-                    <MudExDivider Style="@($"{(position == SelectAllPosition.BeforeSearchBox ? "margin-bottom: 8px;" : "")}")"
-                                  Color="@Color"
-                                  Vertical="@(position == SelectAllPosition.NextToSearchBox)" />
+                    <MudExListItem IgnoreItemTemplate="true" T="T" IsFunctional="true" Icon="@SelectAllCheckBoxIcon" IconColor="@Color" Text="@SelectAllText" OverrideMultiSelectionComponent="MultiSelectionComponent.None" OnClick="@(() => SelectAllItems(AllSelected))" OnClickHandlerPreventDefault="true" Dense="@(Dense)"
+                           Class="@MudExCssBuilder.Default.AddClass("mb-2", position != SelectAllPosition.NextToSearchBox).Build()" />
+                    @if (position == SelectAllPosition.AfterSearchBox || position == SelectAllPosition.BeforeSearchBox)
+                    {
+                        <MudExDivider Style="@($"{(position == SelectAllPosition.BeforeSearchBox ? "margin-bottom: 8px;" : "")}")"
+                                      Color="@Color"
+                                      Vertical="false"/>
+                    }
                 }
             }
         }
     </div>;
 
-    private RenderFragment SearchBoxRender => @<MudExListSubheader T="T" Style="@($"position: sticky; top: -8px; padding-top: 8px; margin-top: -8px; background-color: {SearchBoxBackgroundColor.ToCssStringValue()}; z-index: 10")">
-        <div @onkeydown:stopPropagation class="mud-ex-list-item">
-            @SelectAllRender(Options.SelectAllPosition.NextToSearchBox)
+    private RenderFragment SearchBoxRender => @<MudExListSubheader T="T" Style="@($"position: sticky; top: -8px; padding-top: 24px; margin-top: -8px; background-color: {SearchBoxBackgroundColor.ToCssStringValue()}; z-index: 10")">
             @if (Features.SelectColorFeature)
             {
                 <MudExTextField @ref="_searchField" @bind-Value="@SearchString" Class="@ClassSearchBox" Placeholder="@TryLocalize(SearchBoxPlaceholder)" OnKeyDown="SearchBoxHandleKeyDown" OnKeyUp="@(() => UpdateSelectedStyles())" OnClearButtonClick="@(() => UpdateSelectedStyles())" Immediate="true" Variant="SearchBoxVariant" Margin="Margin.Dense"
-                                Color="Color" Adornment="SearchBoxAdornment" AdornmentIcon="@Icons.Material.Filled.Search" Style="@($"color:{Color}")" AdornmentColor="@(Color.IsColor ? Color.AsColor : MudBlazor.Color.Default)" AutoFocus="@SearchBoxAutoFocus" Clearable="@SearchBoxClearable" />
+                                Color="Color" Adornment="SearchBoxAdornment" AdornmentIcon="@Icons.Material.Filled.Search" Style="@($"color:{Color}")" AdornmentColor="@(Color.IsColor ? Color.AsColor : MudBlazor.Color.Default)" AutoFocus="@SearchBoxAutoFocus" Clearable="@SearchBoxClearable">
+                    <MudExAdditionalAdornment Position="MoveContentPosition.AfterEnd">
+                        @SelectAllRender(Options.SelectAllPosition.NextToSearchBox)
+                    </MudExAdditionalAdornment>
+                </MudExTextField>
             }else{
                 <MudTextField @ref="_searchField" @bind-Value="@SearchString" Class="@ClassSearchBox" Placeholder="@TryLocalize(SearchBoxPlaceholder)" OnKeyDown="SearchBoxHandleKeyDown" OnKeyUp="@(() => UpdateSelectedStyles())" OnClearButtonClick="@(() => UpdateSelectedStyles())" Immediate="true" Variant="SearchBoxVariant" Margin="Margin.Dense"
-                                Adornment="SearchBoxAdornment" AdornmentIcon="@Icons.Material.Filled.Search" Style="@($"color:{Color}")" AdornmentColor="@(Color.IsColor ? Color.AsColor : MudBlazor.Color.Default)" AutoFocus="@SearchBoxAutoFocus" Clearable="@SearchBoxClearable" />
+                              Adornment="SearchBoxAdornment" AdornmentIcon="@Icons.Material.Filled.Search" Style="@($"color:{Color}")" AdornmentColor="@(Color.IsColor ? Color.AsColor : MudBlazor.Color.Default)" AutoFocus="@SearchBoxAutoFocus" Clearable="@SearchBoxClearable">
+                    <MudExAdditionalAdornment Position="MoveContentPosition.AfterEnd">
+                        @SelectAllRender(Options.SelectAllPosition.NextToSearchBox)
+                    </MudExAdditionalAdornment>
+                </MudTextField>
             }
-        </div>
         @SelectAllRender(Options.SelectAllPosition.AfterSearchBox)
     </MudExListSubheader>;
 
