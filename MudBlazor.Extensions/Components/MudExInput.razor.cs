@@ -82,6 +82,15 @@ namespace MudBlazor.Extensions.Components
             }
         }
 
+
+        [Parameter]
+        [Category(CategoryTypes.FormComponent.Behavior)]
+        public bool KeyDownStopPropagation { get; set; }
+
+        [Parameter]
+        [Category(CategoryTypes.FormComponent.Behavior)]
+        public bool KeyUpStopPropagation { get; set; }
+
         /// <summary>
         /// Show visualiser.
         /// </summary>

@@ -31,6 +31,14 @@ public partial class MudExTextField<T>: MudExBaseInput<T>, IMudExComponent
     public MudExInput<string> InputReference { get; private set; }
     private MudMask _maskReference;
 
+    [Parameter]
+    [Category(CategoryTypes.FormComponent.Behavior)]
+    public bool KeyDownStopPropagation { get; set; }
+
+    [Parameter]
+    [Category(CategoryTypes.FormComponent.Behavior)]
+    public bool KeyUpStopPropagation { get; set; }
+
     /// <summary>
     /// If true, automatically resize the height regard to the text. Needs Lines parameter to set more than 1.
     /// </summary>

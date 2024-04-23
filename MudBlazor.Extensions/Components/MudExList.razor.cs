@@ -13,7 +13,9 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExList<T> : IDisposable
 {
-
+    private bool _keyDownHandled;
+    private string[] _keysToForwardFromSearchBox = { "ArrowUp", "ArrowDown", "Enter", "NumpadEnter" };
+    
     /// <summary>
     /// Gets or Sets the Localizer Pattern.
     /// </summary>
@@ -75,12 +77,12 @@ public partial class MudExList<T> : IDisposable
     /// Reference to the Select
     /// </summary>
     [CascadingParameter, IgnoreOnObjectEdit] protected MudExSelect<T> MudExSelect { get; set; }
-    
+
     /// <summary>
     /// Reference to the Autocomplete
     /// </summary>
     [CascadingParameter, IgnoreOnObjectEdit] protected MudAutocomplete<T> MudAutocomplete { get; set; }
-    
+
     /// <summary>
     /// Reference to the Parent List
     /// </summary>
@@ -172,7 +174,7 @@ public partial class MudExList<T> : IDisposable
     public DefaultConverter<T> Converter { get; set; } = new();
 
     private IEqualityComparer<T> _comparer;
-    
+
     /// <summary>
     /// Comparer for the value. If not set, the default comparer is used.
     /// </summary>
@@ -554,7 +556,7 @@ public partial class MudExList<T> : IDisposable
     }
 
     private T _selectedValue;
-    
+
     /// <summary>
     /// The current selected value.
     /// Note: Make the list Clickable or set MultiSelection true for item selection to work.
@@ -926,48 +928,34 @@ public partial class MudExList<T> : IDisposable
     /// </summary>
     protected internal async Task SearchBoxHandleKeyDown(KeyboardEventArgs obj)
     {
+        _keyDownHandled = false;
         if (Disabled || (!Clickable && !MultiSelection))
             return;
-        switch (obj.Key)
+        
+        if (obj.Key == "Escape")
         {
-            case "a":
-            case "A":
-                if (obj.CtrlKey)
+            if (string.IsNullOrEmpty(SearchString))
+            {
+                if (MudExSelect != null)
                 {
-                    await _searchField.SelectAsync();
+                    await _searchField.BlurAsync();
+                    MudExSelect.HandleKeyDown(obj);
                 }
-                break;
-            case "ArrowUp":
-            case "ArrowDown":
-                await HandleKeyDown(obj);
-                break;
-            case "Escape":
-                if (string.IsNullOrEmpty(SearchString))
-                {
-                    if (MudExSelect != null)
-                    {
-                        await _searchField.BlurAsync();
-                        MudExSelect.HandleKeyDown(obj);                        
-                    }
-                }else
-                {
-                    SearchString = string.Empty;                    
-                }
-                break;
-            case "Enter":
-            case "NumpadEnter":
-                await HandleKeyDown(obj);
-                if (MudExSelect != null && MultiSelection == false)
-                {
-                    await MudExSelect.CloseMenu();
-                    await MudExSelect.FocusAsync();
-                }
-                break;
-            case "Tab":
-                await Task.Delay(10);
-                await ActiveFirstItem();
-                StateHasChanged();
-                break;
+            }
+            else
+            {
+                SearchString = string.Empty;
+            }
+            _keyDownHandled = true;
+        }
+
+        if (!_keyDownHandled && _keysToForwardFromSearchBox.Contains(obj.Key))
+            _keyDownHandled = true;
+
+        if (_keyDownHandled)
+        {
+            //MudExSelect?.HandleKeyDown(obj);
+            await HandleKeyDown(obj);
         }
     }
 
@@ -987,6 +975,7 @@ public partial class MudExList<T> : IDisposable
             return;
         if (ParentList != null)
         {
+            //await ParentList.HandleKeyDown(obj);
             return;
         }
 
@@ -1281,14 +1270,14 @@ public partial class MudExList<T> : IDisposable
         {
             foreach (var item in items.Where(item => item.IsSelected))
                 item.SetSelected(false, returnIfDisabled: true);
-            
+
             AllSelected = false;
         }
         else
         {
             foreach (var item in items.Where(item => !item.IsSelected))
                 item.SetSelected(true, returnIfDisabled: true);
-            
+
             AllSelected = true;
         }
 
@@ -1297,7 +1286,7 @@ public partial class MudExList<T> : IDisposable
             : items.Where(x => x.IsSelected).Select(y => y.Value).ToHashSet(_comparer);
 
         if (MudExSelect != null)
-            _= MudExSelect.BeginValidatePublic();
+            _ = MudExSelect.BeginValidatePublic();
     }
 
     #endregion
@@ -1355,7 +1344,7 @@ public partial class MudExList<T> : IDisposable
     }
 
 #pragma warning disable BL0005
-    
+
     /// <summary>
     /// Active first item.
     /// </summary>
@@ -1555,8 +1544,7 @@ public partial class MudExList<T> : IDisposable
     /// </summary>
     protected internal ValueTask ScrollToMiddleAsync(MudExListItem<T> item)
     {
-        return ValueTask.CompletedTask;
-        //return ScrollManagerExtended.ScrollToMiddleAsync(_elementId, item.ItemId);
+        return ScrollManagerExtended.ScrollIntoViewAsync($"#{item.ItemId}", ScrollBehavior.Auto);
     }
 
     /// <summary>
@@ -1598,17 +1586,18 @@ public partial class MudExList<T> : IDisposable
     private MudExSize<double> GetStickyTop()
     {
         var result = -8;
-        if(SearchBox) {
+        if (SearchBox)
+        {
             result += 90;
-            if(SearchBoxVariant == Variant.Outlined)            
+            if (SearchBoxVariant == Variant.Outlined)
                 result -= 6;
-            
-            if (SelectAll && SelectAllPosition == SelectAllPosition.AfterSearchBox)                            
+
+            if (SelectAll && SelectAllPosition == SelectAllPosition.AfterSearchBox)
                 result += 50;
-            
+
         }
-        if(Dense)        
-            result -= 4;        
+        if (Dense)
+            result -= 4;
         return result;
     }
 }
@@ -1622,7 +1611,7 @@ public class ListItemClickEventArgs<T>
     /// Mouse event arguments.
     /// </summary>
     public MouseEventArgs MouseEventArgs { get; set; }
-    
+
     /// <summary>
     /// Value of the item.
     /// </summary>
