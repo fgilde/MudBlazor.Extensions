@@ -5,7 +5,7 @@ namespace MudBlazor.Extensions.Attribute
     /// <summary>
     /// Attribute to mark and link a documentation for a class
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface)]
     public class HasDocumentationAttribute: System.Attribute
     {
         /// <summary>

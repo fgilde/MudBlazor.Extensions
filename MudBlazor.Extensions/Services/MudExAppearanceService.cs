@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using Nextended.Core.Attributes;
 
 namespace MudBlazor.Extensions.Services;
 
 /// <summary>
 /// Service class to manage and apply appearances to components.
 /// </summary>
+[RegisterAs(typeof(MudExAppearanceService), ServiceLifetime = ServiceLifetime.Scoped)]
 public class MudExAppearanceService
 {    
     private string GetClass(IMudExAppearance appearance) => appearance switch { IMudExClassAppearance classAppearance => classAppearance.Class, _ => string.Empty };

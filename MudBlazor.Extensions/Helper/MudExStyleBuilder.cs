@@ -5,11 +5,13 @@ using System.Text;
 using Microsoft.JSInterop;
 using System.Collections.Concurrent;
 using System.Globalization;
+using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core.Css;
 using Nextended.Core.Extensions;
 using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Options;
+using Nextended.Core.Attributes;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -17,6 +19,7 @@ namespace MudBlazor.Extensions.Helper;
 /// MudExStyleBuilder is useful to create style strings or convert any style to a class.
 /// </summary>
 [HasDocumentation("MudExStyleBuilder.md")]
+[RegisterAs(typeof(MudExStyleBuilder), ServiceLifetime = ServiceLifetime.Scoped)]
 public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
 {
     private static readonly string[] PropertiesToAddUnits = { "height", "width", "min-height", "min-width", "max-height", "max-width",

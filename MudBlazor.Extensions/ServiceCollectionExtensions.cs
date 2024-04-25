@@ -34,15 +34,14 @@ public static class ServiceCollectionExtensions
         };
         if(serviceImplementationAssemblies is { Length: > 0 })
             assemblies.AddRange(serviceImplementationAssemblies);
-
-        services.RegisterAllImplementationsOf(new[] { typeof(IMudExFileDisplay) }, assemblies.Distinct().ToArray(), ServiceLifetime.Scoped);
-        services.AddTransient<MudExFileService>();        
+        var assembliesArray = assemblies.Distinct().ToArray();
+        services.RegisterAllImplementationsOf(new[] { typeof(IMudExFileDisplay) }, assembliesArray, ServiceLifetime.Scoped);
+        
+        services.RegisterAllWithRegisterAsAttribute(assembliesArray);
+        
         services.AddScoped<MudBlazorExtensionJsInterop>();
-        services.AddScoped<MudExStyleBuilder>();
-        services.AddScoped<MudExCssBuilder>();
-        services.AddScoped<MudExAppearanceService>();
-
-        services.RegisterAllImplementationsOf(new[] { typeof(IMudExExternalFilePicker) }, assemblies.Distinct().ToArray(), ServiceLifetime.Scoped);
+        
+        services.RegisterAllImplementationsOf(new[] { typeof(IMudExExternalFilePicker) }, assembliesArray, ServiceLifetime.Scoped);
         
         // TODO: Find maybe a better solution. For example if the MudBlazor.DialogService has a reference to injected JsRuntime, we can remove this section and the class and interface for  MudExDialogService : IMudExDialogService
         #region Replace IDialogService with MudExDialogService

@@ -10,13 +10,15 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Nextended.Blazor.Extensions;
 using Microsoft.JSInterop;
+using Nextended.Core.Attributes;
 
 namespace MudBlazor.Extensions.Services;
 
 /// <summary>
 /// Service to handle file operations
 /// </summary>
-public class MudExFileService : IAsyncDisposable
+[RegisterAs(typeof(IMudExFileService), RegisterAsImplementation = true, ServiceLifetime = ServiceLifetime.Transient)]
+public class MudExFileService : IMudExFileService
 {
     private readonly HttpClient _httpClient;
     private readonly IJSRuntime _jsRuntime;

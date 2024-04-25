@@ -1,7 +1,9 @@
 ﻿using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Utilities;
+using Nextended.Core.Attributes;
 using System.Collections.Concurrent;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MudBlazor.Extensions.Helper;
 
@@ -9,6 +11,7 @@ namespace MudBlazor.Extensions.Helper;
 /// Simple Utility class to help with building css class strings
 /// </summary>
 [HasDocumentation("MudExCssBuilder.md")]
+[RegisterAs(typeof(MudExCssBuilder), ServiceLifetime = ServiceLifetime.Scoped)]
 public sealed class MudExCssBuilder: IAsyncDisposable, IMudExClassAppearance
 {
     private readonly ConcurrentDictionary<string, byte> _cssClasses = new();

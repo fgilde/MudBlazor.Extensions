@@ -6164,6 +6164,83 @@
             Returns the CSS classes of the MudExSlideBar.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExSpeechToTextButton">
+            <summary>
+            Button component for speech-to-text functionality, allowing for asynchronous recording and processing of speech input.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.IsRecording">
+            <summary>
+            Indicates whether a recording session is currently active.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.ActiveAnimation">
+            <summary>
+            Gets or sets a value indicating whether animations are active during recording.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.OnRecordingStarted">
+            <summary>
+            Event triggered when a recording session starts.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.OnRecordingStopped">
+            <summary>
+            Event triggered when a recording session stops.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.OnRecognized">
+            <summary>
+            Event triggered when a speech recognition result is obtained.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.IconActive">
+            <summary>
+            Icon displayed when the recording is active. Defaults to a 'Stop' icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.ColorActive">
+            <summary>
+            Color of the icon when the recording is active. Defaults to warning color.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.Language">
+            <summary>
+            Language used for speech recognition, defaults to English (US).
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.Continuous">
+            <summary>
+            Specifies whether the recording should continue listening after capturing a complete phrase.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.InterimResults">
+            <summary>
+            Specifies whether interim results should be reported during the recognition process.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpeechToTextButton.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpeechToTextButton.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpeechToTextButton.OnClickHandler(Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpeechToTextButton.StartRecordingAsync">
+            <summary>
+            Starts the recording asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpeechToTextButton.StopRecordingAsync">
+            <summary>
+            Stops the recording asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpeechToTextButton.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSplitPanel">
             <summary>
             A SplitPanel Component 
@@ -13807,6 +13884,56 @@
             Forces the picker to open and return files
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromStream(System.IO.Stream)">
+            <summary>
+            Returns the content of a file as string
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromFileDisplayInfosAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Returns the content of a file as string
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromUrlAsync(System.String)">
+            <summary>
+            Reads a string from an url
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadStreamAsync(System.String)">
+            <summary>
+            Reads a stream from an url
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadDataUrlForStreamAsync(System.IO.Stream,System.String,System.Boolean)">
+            <summary>
+            Reads a data url for a stream
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.CreateDataUrlAsync(System.Byte[],System.String,System.Boolean)">
+            <summary>
+            Creates a data url from bytes this can be a blob url or a data url
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.CreateDataUrlAsync(Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Boolean)">
+            <summary>
+            Creates an url from a file this can be a blob url or a data url
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveAsync(System.Byte[],System.String,System.String)">
+            <summary>
+            Reads an archive with SharpCompress
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveAsync(System.IO.Stream,System.String,System.String)">
+            <summary>
+            Reads an archive with SharpCompress
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveWithSystemCompressionAsync(System.IO.Stream,System.String,System.String)">
+            <summary>
+            Reads an archive with system compression
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.IMudExStyleAppearance">
             <summary>
             IMudExStyleAppearance holds an applicable style string
@@ -13821,6 +13948,41 @@
             <summary>
             IMudExAppearance is used to know an applicable style or class holder
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.ISpeechRecognitionService">
+            <summary>
+            Defines a service interface for speech recognition functionalities, allowing for asynchronous recording and processing of speech input.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StartRecordingAsync(MudBlazor.Extensions.Core.SpeechRecognitionOptions,System.Action{MudBlazor.Extensions.Core.SpeechRecognitionResult},System.Action{System.String})">
+            <summary>
+            Starts recording speech asynchronously with specified options, registering callbacks for recognition results and stop events.
+            </summary>
+            <param name="options">Configuration options for speech recognition.</param>
+            <param name="callback">Callback invoked with the speech recognition result.</param>
+            <param name="stoppedCallback">Optional callback invoked when recording is stopped.</param>
+            <returns>A Task representing the asynchronous operation, containing the recording ID.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StartRecordingAsync(System.Action{MudBlazor.Extensions.Core.SpeechRecognitionResult},System.Action{System.String})">
+            <summary>
+            Starts recording speech asynchronously, registering callbacks for recognition results and stop events.
+            </summary>
+            <param name="callback">Callback invoked with the speech recognition result.</param>
+            <param name="stoppedCallback">Optional callback invoked when recording is stopped.</param>
+            <returns>A Task representing the asynchronous operation, containing the recording ID.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StopRecordingAsync(System.String)">
+            <summary>
+            Stops the recording asynchronously using the specified recording ID.
+            </summary>
+            <param name="recordingId">The ID of the recording to be stopped.</param>
+            <returns>A Task representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.StopAllRecordingsAsync">
+            <summary>
+            Stops all ongoing recordings asynchronously.
+            </summary>
+            <returns>A Task representing the asynchronous operation.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Core.MudExAppearance">
             <summary>
@@ -14390,6 +14552,69 @@
         <member name="M:MudBlazor.Extensions.Core.MudExSize`1.op_Implicit(System.String)~MudBlazor.Extensions.Core.MudExSize{`0}">
             <summary>
             Implicit conversion from String to MudExSize type.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.SpeechRecognitionOptions">
+            <summary>
+            Defines configuration options for speech recognition services.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionOptions.CultureInfo">
+            <summary>
+            Gets or sets the culture information for the speech recognition, derived from the language code.
+            </summary>
+            <remarks>
+            This property is marked with attributes to be ignored during JSON serialization.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionOptions.Lang">
+            <summary>
+            Language code used for speech recognition, corresponding to the specific culture.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionOptions.FinalResultsOnly">
+            <summary>
+            Specifies whether only final results should be returned, ignoring interim results.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionOptions.Continuous">
+            <summary>
+            Indicates if the recognition should process continuously rather than stopping after a single utterance.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionOptions.InterimResults">
+            <summary>
+            Indicates whether interim results should be included in the recognition results.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.SpeechRecognitionResult">
+            <summary>
+            Represents the result of a speech recognition operation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionResult.Transcript">
+            <summary>
+            The transcript of the recognized speech.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionResult.TranscriptChanges">
+            <summary>
+            Detailed changes between interim and final transcripts if interim results are provided.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionResult.IsFinalResult">
+            <summary>
+            Indicates whether the result is the final transcript of the speech recognition.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionResult.Options">
+            <summary>
+            The options used for this particular instance of speech recognition.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionResult.AudioData">
+            <summary>
+            The audio data used for speech recognition.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.StateChangeMode">

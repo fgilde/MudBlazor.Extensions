@@ -1,0 +1,75 @@
+﻿@page "/speech-to-text"
+@using MudBlazor.Extensions.Core
+
+@attribute [DemoNew(Name = "MudExSpeechToTextButton", Icon = Icons.Material.Outlined.Mic, Documentation = "This component uses the ISpeechRecognitionService to record audio data and transcripts", ForComponentType = typeof(MudExSpeechToTextButton))]
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudGrid Spacing="1" Justify="Justify.Center">
+                <MudItem xs="12">
+                    <MudGrid Class="mb-3" Spacing="1" Justify="Justify.Center">
+                        <MudExSpeechToTextButton OnRecordingStarted="RecordingStarted" OnRecognized="Callback" @ref="component" />
+                    </MudGrid>
+                </MudItem>
+                @if(_audioFile != null) {
+                    <MudItem xs="12">
+                        <MudPaper>
+                            <MudExUploadEdit AllowMultiple="false" AllowRename="false" ReadOnly="true" UploadRequest="@_audioFile"></MudExUploadEdit>
+                        </MudPaper>
+                    </MudItem>
+                }
+                <MudItem>
+                    <MudPaper Width="300px">
+                        <MudTextField FullWidth="true" ReadOnly="true" T="string" Label="Sentences" Variant="Variant.Outlined" Text="@string.Join("\n", sentences)" Lines="10" />
+                    </MudPaper>
+                </MudItem>
+                <MudItem>
+                    <MudPaper Width="300px">
+                        <MudTextField FullWidth="true" ReadOnly="true" T="string" Label="Updates" Variant="Variant.Outlined" Text="@updates" Lines="10" />
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+@code {
+    MudExSpeechToTextButton component;
+    List<string> sentences = new();
+    string updates = "";
+    private UploadableFile? _audioFile;
+
+    private void Callback(SpeechRecognitionResult result)
+    {
+        if(result.AudioData?.Length > 0)
+        {
+            _audioFile = new UploadableFile
+            {
+                FileName = "audio_recording.wav",
+                ContentType = "audio/wav",
+                Data = result.AudioData
+            };
+        }
+        if (result.IsFinalResult)
+        {
+            sentences.Add(result.Transcript.Trim());
+            sentences = sentences.Distinct().ToList();
+        }
+        else
+        {
+            updates += result.TranscriptChanges + "\n";
+        }
+    }
+
+    private void RecordingStarted()
+    {
+        sentences.Clear();
+        updates = "";
+    }
+
+}

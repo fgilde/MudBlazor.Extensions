@@ -1,4 +1,6 @@
 ## Change Log    
+ - 1.7.88 > New Service [ISpeechRecognitionService](https://www.mudex.org/d/ISpeechRecognitionService/ISpeechRecognitionService) to allow easy speech to text conversion or audio recording without any UI
+ - 1.7.88 > New Component [MudExSpeechToTextButton](https://www.mudex.org/speech-to-text) to allow easy speech to text conversion or audio recording
  - 1.7.87 > Small minor BugFixes
  - 1.7.87 > Improve key navigation in MudExSelect and MudExList
  - 1.7.87 > Update MudBlazor to 6.19.1
