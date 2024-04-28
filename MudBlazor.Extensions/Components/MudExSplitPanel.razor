@@ -1,6 +1,7 @@
-﻿@inherits MudExBaseComponent<MudExSplitPanel>
+﻿@using MudBlazor.Extensions.Helper
+@inherits MudExBaseComponent<MudExSplitPanel>
 
-<MudGrid Class="@($"mud-ex-split-panel-grid {Class}")" Style="@($"{Style}")">
+<MudGrid Spacing="0" Class="@($"mud-ex-split-panel-grid {Class}")" Style="@($"{Style}")">
     <div class="mud-ex-split-panel" style="@GetStyle()">
         @if (Left != null)
         {
@@ -10,8 +11,9 @@
 
             @if (IsCollapsible)
             {
-                <div class="mud-ex-splitter-internal mud-ex-centered-content">
+                <div style="@($"{SplitterCollapsableStyle}")" class="@($"mud-ex-splitter-internal mud-ex-centered-content {SplitterCollapsableClass}")">
                     <MudToggleIconButton Toggled="@_isCollapsed"
+                                         Style="@MudExStyleBuilder.Default.WithMarginRight(35, _isCollapsed).ToString()"
                                          ToggledChanged="@ToggleCollapsed"
                                          Class="mud-ex-splitter-internal" Icon="@(ColumnLayout ? (Reverse ? IconLeft: IconRight) : (Reverse ? IconUp : IconDown))" ToggledIcon="@(ColumnLayout ? (Reverse ? IconRight: IconLeft) : (Reverse ? IconDown : IconUp))"></MudToggleIconButton>
                 </div>
@@ -20,7 +22,7 @@
         }
         @if (Splittable && Left != null && Right != null && !AnythingCollapsed())
         {
-            <MudExSplitter @ref="_splitter" Vertical="@ColumnLayout" UseBorder="true" Reverse="@Reverse" Color="@SplitterColor" Size="@SplitterSize" FlexItem="true" UpdateSizesInPercentage="@UpdateSizesInPercentage" />
+            <MudExSplitter @ref="_splitter" Class="@SplitterClass" Style="@SplitterStyle" Vertical="@ColumnLayout" UseBorder="true" Reverse="@Reverse" Color="@SplitterColor" Size="@SplitterSize" FlexItem="true" UpdateSizesInPercentage="@UpdateSizesInPercentage" />
             @*<DynamicComponent Type="@typeof(MudExSplitter)" Parameters="@(new Dictionary<string, object> {{nameof(MudExSplitter.Vertical), ColumnLayout},{nameof(MudExSplitter.Reverse), Reverse}, {nameof(MudExSplitter.FlexItem), true}, {nameof(MudExSplitter.UpdateSizesInPercentage), UpdateSizesInPercentage} })"></DynamicComponent>*@
         }
         @if (Right != null)

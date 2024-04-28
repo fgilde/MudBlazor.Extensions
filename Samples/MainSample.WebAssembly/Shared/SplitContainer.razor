@@ -1,9 +1,9 @@
 ﻿<MudHidden Breakpoint="Breakpoint.MdAndDown">
-    <MudExSplitPanel IsInitiallyCollapsed="@IsCollapsed" IsCollapsible="@IsCollapsible" Splittable="@Splittable" ColumnLayout="@ColumnLayout" Style="height: 80vh">
+    <MudExSplitPanel SplitterCollapsableClass="@ContentClass" SplitterCollapsableStyle="margin-left: -3px" IsInitiallyCollapsed="@IsCollapsed" IsCollapsible="@IsCollapsible" Splittable="@Splittable" ColumnLayout="@ColumnLayout" Style="height: 80vh">
         <Left>
             @if (Left != null)
             {
-                <MudExSplitPanelItem Class="mud-ex-content-center mud-ex-transparent-indicator-bg" Style="@($"min-width: {MinWidthLeft}; height:auto; min-height: {MinHeightLeft};")">
+                <MudExSplitPanelItem Class="@($"mud-ex-content-center {ContentClass}")" Style="@($"min-width: {MinWidthLeft}; height:auto; min-height: {MinHeightLeft};")">
                     @Left
                 </MudExSplitPanelItem>
             }
@@ -38,6 +38,7 @@
 
 
 @code {
+    [Parameter] public string ContentClass { get; set; } = "mud-ex-transparent-indicator-bg";
     [Parameter] public RenderFragment? Left { get; set; }
     [Parameter] public RenderFragment? Right { get; set; }
     [Parameter] public bool IsCollapsed { get; set; }

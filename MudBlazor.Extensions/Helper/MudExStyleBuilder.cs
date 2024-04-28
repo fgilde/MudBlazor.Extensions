@@ -1524,6 +1524,11 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithBorder(string border, bool when = true) => With("border", border, when);
 
     /// <summary>
+    /// Sets border to none.
+    /// </summary>
+    public MudExStyleBuilder WithoutBorder(bool when = true) => WithBorder("none", when);
+
+    /// <summary>
     /// Specifies the border-radius property using a string value, if the 'when' condition is true.
     /// </summary>
     public MudExStyleBuilder WithBorderRadius(string borderRadius, bool when = true) => With("border-radius", borderRadius, when);
@@ -1886,8 +1891,8 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <param name="targetPosition">The target position for the dialog.</param>
     /// <param name="when">Condition for applying the animation.</param>
     /// <returns>The modified MudExStyleBuilder object.</returns>
-    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan? duration, AnimationDirection? direction, AnimationTimingFunction animationTimingFunction, DialogPosition? targetPosition, bool when = true)
-        => WithAnimation(type.GetAnimationCssStyle(duration, direction, animationTimingFunction, targetPosition), when);
+    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan? duration, AnimationDirection? direction, AnimationTimingFunction animationTimingFunction, DialogPosition? targetPosition, AnimationIteration iterationCount = null, bool when = true)
+        => WithAnimation(type.GetAnimationCssStyle(duration, direction, animationTimingFunction, targetPosition, iterationCount), when);
 
     /// <summary>
     /// Sets the animation style using just the type of the animation.
@@ -1895,8 +1900,8 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <param name="type">The type of the animation.</param>
     /// <param name="when">Condition for applying the animation.</param>
     /// <returns>The modified MudExStyleBuilder object.</returns>
-    public MudExStyleBuilder WithAnimation(AnimationType type, bool when = true)
-        => WithAnimation(type, null, null, null, null, when);
+    public MudExStyleBuilder WithAnimation(AnimationType type, AnimationIteration iterationCount = null, bool when = true)
+        => WithAnimation(type, null, null, null, null, iterationCount, when);
 
     /// <summary>
     /// Sets the animation style using the type and duration of the animation.
@@ -1905,8 +1910,8 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <param name="duration">The duration of the animation.</param>
     /// <param name="when">Condition for applying the animation.</param>
     /// <returns>The modified MudExStyleBuilder object.</returns>
-    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan duration, bool when = true)
-        => WithAnimation(type, duration, null, null, null, when);
+    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan duration, AnimationIteration iterationCount = null, bool when = true)
+        => WithAnimation(type, duration, null, null, null, iterationCount, when);
 
     /// <summary>
     /// Sets the animation style using the type, duration, and direction of the animation.
@@ -1916,8 +1921,8 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <param name="direction">The direction of the animation.</param>
     /// <param name="when">Condition for applying the animation.</param>
     /// <returns>The modified MudExStyleBuilder object.</returns>
-    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan duration, AnimationDirection direction, bool when = true)
-        => WithAnimation(type, duration, direction, null, null, when);
+    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan duration, AnimationDirection direction, AnimationIteration iterationCount = null, bool when = true)
+        => WithAnimation(type, duration, direction, null, null, iterationCount, when);
 
     /// <summary>
     /// Sets the animation style using the type, duration, direction, and timing function of the animation.
@@ -1928,15 +1933,15 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <param name="animationTimingFunction">The timing function for the animation.</param>
     /// <param name="when">Condition for applying the animation.</param>
     /// <returns>The modified MudExStyleBuilder object.</returns>
-    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan duration, AnimationDirection direction, AnimationTimingFunction animationTimingFunction, bool when = true)
-        => WithAnimation(type, duration, direction, animationTimingFunction, null, when);
+    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan duration, AnimationDirection direction, AnimationTimingFunction animationTimingFunction, AnimationIteration iterationCount = null, bool when = true)
+        => WithAnimation(type, duration, direction, animationTimingFunction, null, iterationCount, when);
 
 
     /// <summary>
     /// Sets the animation style with a gradient background using the type, duration, direction, timing function, and target position of the animation.
     /// </summary>
     public MudExStyleBuilder WithAnimatedGradientBackground(MudExColor[] colors, bool when = true) => WithAnimatedConicGradientBorderedBackground(0, colors, new[] { MudExColor.Transparent }, when);
-   
+
     /// <summary>
     /// With animated gradient border
     /// </summary>
@@ -1957,7 +1962,7 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// </summary>
     public MudExStyleBuilder WithAnimatedGradientBackground(Palette palette, bool when = true) => WithAnimatedConicGradientBorderedBackground(0, GetColorsFromPalette(palette), new[] { MudExColor.Transparent }, when);
 
-    
+
     /// <summary>
     /// With animated gradient border based on palette
     /// </summary>
@@ -1967,13 +1972,54 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// With animated gradient border based on theme
     /// </summary>
     public MudExStyleBuilder WithAnimatedGradientBorder(MudExSize<double> borderSize, MudTheme theme, bool dark, bool when = true) => WithAnimatedGradientBorder(borderSize, dark ? theme.PaletteDark : theme.Palette, when);
-    
+
     /// <summary>
     /// With animated gradient border that looks like a skeleton loading wave
     /// </summary>
-    public MudExStyleBuilder WithSkeletonLoadingBorder(MudExSize<double> borderSize, bool when = true) => WithAnimatedGradientBorder(borderSize, MudExColor.Surface, new []{ MudExColor.Dark, "rgba(0,0,0,.11)", MudExColor.Dark, "rgba(0,0,0,.11)" }, when);
-    
-    
+    public MudExStyleBuilder WithSkeletonLoadingBorder(MudExSize<double> borderSize, bool when = true) => WithAnimatedGradientBorder(borderSize, MudExColor.Surface, new[] { MudExColor.Dark, "rgba(0,0,0,.11)", MudExColor.Dark, "rgba(0,0,0,.11)" }, when);
+
+    /// <summary>
+    /// Sets the animation style with a gradient background using the type, duration, direction, timing function, and target position of the animation.
+    /// </summary>
+    public MudExStyleBuilder WithAnimatedGradientBackground(MudExColor[] colors, TimeSpan duration, bool when = true) => WithAnimatedConicGradientBorderedBackground(0, colors, new[] { MudExColor.Transparent }, duration, when);
+
+    /// <summary>
+    /// With animated gradient border
+    /// </summary>
+    public MudExStyleBuilder WithAnimatedGradientBorder(MudExSize<double> borderSize, MudExColor backgroundColor, MudExColor[] borderColors, TimeSpan duration, bool when = true) => WithAnimatedConicGradientBorderedBackground(borderSize, new[] { backgroundColor }, borderColors, duration, when);
+
+    /// <summary>
+    /// With animated gradient background
+    /// </summary>
+    public MudExStyleBuilder WithAnimatedGradientBackground(MudTheme theme, bool dark, TimeSpan duration, bool when) => WithAnimatedGradientBackground(dark ? theme.PaletteDark : theme.Palette, duration, when);
+
+    /// <summary>
+    /// With animated gradient background
+    /// </summary>
+    public MudExStyleBuilder WithAnimatedGradientBackground(MudTheme theme, TimeSpan duration,bool when = true) => WithAnimatedGradientBackground(theme, false, duration, when);
+
+    /// <summary>
+    /// With animated gradient background
+    /// </summary>
+    public MudExStyleBuilder WithAnimatedGradientBackground(Palette palette, TimeSpan duration, bool when = true) => WithAnimatedConicGradientBorderedBackground(0, GetColorsFromPalette(palette), new[] { MudExColor.Transparent }, duration, when);
+
+
+    /// <summary>
+    /// With animated gradient border based on palette
+    /// </summary>
+    public MudExStyleBuilder WithAnimatedGradientBorder(MudExSize<double> borderSize, Palette palette, TimeSpan duration, bool when = true) => WithAnimatedGradientBorder(borderSize, palette.Surface, GetColorsFromPalette(palette), duration, when);
+
+    /// <summary>
+    /// With animated gradient border based on theme
+    /// </summary>
+    public MudExStyleBuilder WithAnimatedGradientBorder(MudExSize<double> borderSize, MudTheme theme, bool dark, TimeSpan duration, bool when = true) => WithAnimatedGradientBorder(borderSize, dark ? theme.PaletteDark : theme.Palette, duration, when);
+
+    /// <summary>
+    /// With animated gradient border that looks like a skeleton loading wave
+    /// </summary>
+    public MudExStyleBuilder WithSkeletonLoadingBorder(MudExSize<double> borderSize, TimeSpan duration, bool when = true) => WithAnimatedGradientBorder(borderSize, MudExColor.Surface, new[] { MudExColor.Dark, "rgba(0,0,0,.11)", MudExColor.Dark, "rgba(0,0,0,.11)" }, duration, when);
+
+
     /// <summary>
     /// Returns an array of colors from a palette
     /// </summary>
@@ -1982,8 +2028,16 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <summary>
     /// Add a background image with a conic gradient and a border with a conic gradient
     /// </summary>
-    public MudExStyleBuilder WithAnimatedConicGradientBorderedBackground(MudExSize<double> borderSize, MudExColor[] backgroundColors, MudExColor[] borderColors, bool when = true)
+    public MudExStyleBuilder WithAnimatedConicGradientBorderedBackground(MudExSize<double> borderSize,
+        MudExColor[] backgroundColors, MudExColor[] borderColors, bool when = true) =>
+        WithAnimatedConicGradientBorderedBackground(borderSize, backgroundColors, borderColors, TimeSpan.FromSeconds(3), when);
+
+    /// <summary>
+    /// Add a background image with a conic gradient and a border with a conic gradient
+    /// </summary>
+    public MudExStyleBuilder WithAnimatedConicGradientBorderedBackground(MudExSize<double> borderSize, MudExColor[] backgroundColors, MudExColor[] borderColors, TimeSpan duration, bool when = true)
     {
+        string durationStr = $"{duration.TotalMilliseconds}ms";
         while (backgroundColors.Length < 3)
             backgroundColors = backgroundColors.Append(backgroundColors.Last()).ToArray();
         while (borderColors.Length < 2)
@@ -1994,9 +2048,9 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
             .WithBackgroundSize("calc(100% - (var(--border-size) * 2)) calc(100% - (var(--border-size) * 2)), cover", when)
             .WithBackgroundPosition("center center", when)
             .WithBackgroundRepeat("no-repeat", when)
-            .WithAnimation("mud-ex-bg-spin 3s linear infinite", when);
+            .WithAnimation($"mud-ex-bg-spin {durationStr} linear infinite", when);
     }
-
+    
 
     /// <summary>
     /// Adds an !important to last added style

@@ -1,4 +1,5 @@
-﻿using MudBlazor;
+﻿using MainSample.WebAssembly.Shared;
+using MudBlazor;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Extensions;
@@ -7,7 +8,9 @@ namespace MainSample.WebAssembly;
 
 public class ClientTheme : MudTheme
 {
-    public bool ShowLogoInDrawer { get; set; } = true;
+    public bool ShowFilterInDrawer { get; set; } = true;
+
+    public ExpandMode NavigationExpandMode { get; set; }
 
     #region Statics
 
@@ -116,7 +119,8 @@ public class ClientTheme : MudTheme
     private static LayoutProperties DefaultLayoutProperties => new()
     {
         DefaultBorderRadius = "3px",
-        DrawerWidthLeft = "300px"
+        DrawerWidthLeft = "300px",
+        AppbarHeight = "55px"
     };
 
     #endregion
@@ -126,7 +130,7 @@ public class ClientTheme : MudTheme
         Palette = new Palette
         {
             Primary = "#199b90",
-            AppbarBackground = "#199b90",
+            AppbarBackground = "#1f2226",
             Background = Colors.Grey.Lighten5,
             DrawerBackground = "#FFF",
             DrawerText = "rgba(0,0,0, 0.7)",
@@ -134,20 +138,32 @@ public class ClientTheme : MudTheme
         },
         Typography = DefaultTypography,
         LayoutProperties = DefaultLayoutProperties
-    };
+    }.SetProperties(t => t.PaletteDark = t.Palette.ToPaletteDark().SetProperties(dark =>
+    {
+        dark.AppbarBackground = "#1f2226";
+        dark.DrawerBackground = "#1f2226";
+        dark.Background = "#121518";
+        dark.Surface = "#222529";
+    }));
 
     public static ClientTheme Another = new ClientTheme()
     {
-        ShowLogoInDrawer = false,
+        ShowFilterInDrawer = false,
         Palette = new Palette
         {
-            Primary = Colors.Pink.Default,
-            AppbarBackground = "#ff0000",
+            Primary = "#00cffc",
+            AppbarBackground = "#0f2334",
             Background = Colors.Grey.Lighten5,
             DrawerBackground = "#FFF",
             DrawerText = "rgba(0,0,0, 0.7)",
-            Success = "#19635d"
+            Success = "#19635d",
         },
+        LayoutProperties = DefaultLayoutProperties.SetProperties(p =>
+        {
+            p.DefaultBorderRadius = "10px";
+            p.DrawerWidthLeft = "250px";
+            p.AppbarHeight = "40px";
+        }),
     }.SetProperties(t => t.PaletteDark = t.Palette.ToPaletteDark());
     
     public static ClientTheme CurrentTheme = DefaultTheme;

@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Core.Css;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Options;
+using MudBlazor.Extensions.Services;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -12,13 +15,11 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExSpeechToTextButton: IAsyncDisposable
 {
     [Inject] private ISpeechRecognitionService SpeechRecognitionService { get; set; }
-    [Inject] private MudExStyleBuilder StyleBuilder { get; set; }
+    [Inject] private MudExAppearanceService AppearanceService { get; set; }
     
     private bool _initialized;
     private string[] _preInitParameters;
     private string _recordingId;
-    private Color _color;
-    private string _tmpClass;
     private string _icon;
     private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
@@ -29,10 +30,16 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     public bool IsRecording => !string.IsNullOrEmpty(_recordingId);
 
     /// <summary>
-    /// Gets or sets a value indicating whether animations are active during recording.
+    /// If this is true border animation is applied when recording is active, but <see cref="RecordingAnimation"/> has no effect if this is turned on.
     /// </summary>
     [Parameter]
-    public bool ActiveAnimation { get; set; } = true;
+    public bool RecordingBorderAnimation { get; set; } = true;
+
+    /// <summary>
+    /// This Animation is playing while recording is active, but only if <see cref="RecordingBorderAnimation"/> is false.
+    /// </summary>
+    [Parameter] 
+    public AnimationType RecordingAnimation { get; set; } = AnimationType.Default;
 
     /// <summary>
     /// Event triggered when a recording session starts.
@@ -56,13 +63,13 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     /// Icon displayed when the recording is active. Defaults to a 'Stop' icon.
     /// </summary>
     [Parameter]
-    public string IconActive { get; set; } = Icons.Material.Filled.Stop;
+    public string RecordingIcon { get; set; } = Icons.Material.Filled.Stop;
 
     /// <summary>
-    /// Color of the icon when the recording is active. Defaults to warning color.
+    /// Color of the icon when the recording is active. Defaults to error color.
     /// </summary>
     [Parameter]
-    public Color ColorActive { get; set; } = Color.Warning;
+    public MudExColor RecordingColor { get; set; } = MudExColor.Error;
 
     /// <summary>
     /// Language used for speech recognition, defaults to English (US).
@@ -82,6 +89,11 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     [Parameter]
     public bool InterimResults { get; set; } = true;
 
+    /// <summary>
+    /// Gets or sets the collection of colors to use for the gradient.
+    /// </summary>
+    [Parameter]
+    public IEnumerable<MudExColor> BorderAnimationColors { get; set; } = new[] { MudExColor.Primary, MudExColor.Secondary, MudExColor.Tertiary, MudExColor.Error };
 
     /// <inheritdoc />
     public override Task SetParametersAsync(ParameterView parameters)
@@ -149,40 +161,32 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     private void OnStopped(string obj)
     {
         _recordingId = null;
-        _ = SetInActive();
         _ = OnRecordingStopped.InvokeAsync();
     }
 
     private async Task SetActive()
     {
-        if (ActiveAnimation)
-        {
-            var borderColors = Variant != Variant.Filled ? new MudExColor[] { Color, ColorActive } : new[] { ColorActive, MudExColor.Error, MudExColor.Info };
-            var backgroundColor = Variant != Variant.Filled ? MudExColor.Surface : Color;
-            Class += _tmpClass = await StyleBuilder.WithAnimatedGradientBorder(1, backgroundColor, borderColors)
-                .BuildAsClassRuleAsync();
-        }
-
-        _icon = Icon;
-        _color = Color;
-        Color = ColorActive;
-        Icon = IconActive;
+        var currentIcon = Icon;
+        Icon = RecordingIcon;
+        var size = Variant == Variant.Text ? 50 : 1;
+        var borderColors = BorderAnimationColors.ToArray();
+        var backgroundColor = Variant != Variant.Filled ? MudExColor.Surface : Color;
+        var appearance = MudExStyleBuilder.Default
+            .WithAnimation(RecordingAnimation, TimeSpan.FromSeconds(1), AnimationIteration.Infinite, RecordingAnimation != AnimationType.Default)
+            .WithoutBorder(RecordingBorderAnimation)
+            .WithAnimatedGradientBorder(size, backgroundColor, borderColors, RecordingBorderAnimation)
+            .WithBorderColor(RecordingColor, !RecordingBorderAnimation && Variant != Variant.Text)
+            .WithBackgroundColor(RecordingColor, Variant == Variant.Filled)
+            .WithColor(RecordingColor, Variant != Variant.Filled).AsImportant();
+        _ = AppearanceService.ApplyTemporarilyToAsync(appearance, this, () => !IsRecording)
+            .ContinueWith(_ =>
+            {
+                Icon = currentIcon;
+                return InvokeAsync(StateHasChanged);
+            });
         await InvokeAsync(StateHasChanged);
     }
-
-    private async Task SetInActive()
-    {
-        if (_tmpClass != null)
-        {
-            Class = Class?.Replace(_tmpClass, string.Empty);
-            await StyleBuilder.RemoveClassRuleAsync(_tmpClass);
-        }
-
-        Color = _color;
-        Icon = _icon;
-        await InvokeAsync(StateHasChanged);
-    }
-
+    
     private void OnResult(SpeechRecognitionResult result)
     {
         OnRecognized.InvokeAsync(result);

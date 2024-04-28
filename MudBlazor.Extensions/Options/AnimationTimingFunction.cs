@@ -18,6 +18,7 @@ namespace MudBlazor.Extensions.Options
             _timingFn = timingFn;
         }
 
+        
         /// <summary>
         /// Gets the 'ease-in-out' timing function.
         /// </summary>

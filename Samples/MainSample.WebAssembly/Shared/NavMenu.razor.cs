@@ -8,15 +8,30 @@ namespace MainSample.WebAssembly.Shared;
 public partial class NavMenu
 {
     private ExpandMode _expandMode;
+    private string[] _filters;
 
-    [Parameter] public bool ShowUserCard { get; set; } = true;
+    [Parameter]
+    public string[] Filters
+    {
+        get => _filters;
+        set
+        {
+            if (_filters != value)
+            {
+                _filters = value;
+                SetAllExpanded(HasFilters, entry => true);
+            }
+        }
+    }
 
-    [Parameter] public bool ShowApplicationLogo { get; set; } = false;
+    [Parameter] public FilterMode FilterMode { get; set; }
+
+    public bool HasFilters => Filters?.Any(s => !string.IsNullOrWhiteSpace(s)) == true;
 
     [Parameter]
     public ExpandMode ExpandMode
     {
-        get => _expandMode;
+        get => HasFilters ? ExpandMode.Default : _expandMode;
         set
         {
             if (value != _expandMode)
@@ -28,6 +43,35 @@ public partial class NavMenu
     }
 
     [Parameter] public HashSet<NavigationEntry>? Entries { get; set; } = null;
+
+    private HashSet<NavigationEntry>? FilteredItems()
+    {
+        if (FilterMode == FilterMode.Flat && HasFilters)
+        {
+            return Entries.Recursive(e => e?.Children ?? Enumerable.Empty<NavigationEntry>()).Where(e =>
+                    Filters.Any(filter => e.Text.Contains(filter, StringComparison.InvariantCultureIgnoreCase)))
+                .ToHashSet();
+        }
+        return Entries;
+    }
+
+    private (bool Found, string? Term) GetMatchedSearch(NavigationEntry node)
+    {
+        if (FilterMode == FilterMode.Flat || !HasFilters)
+            return (true, string.Empty);
+
+        if ((node?.Children ?? Enumerable.Empty<NavigationEntry>()).Recursive(n => n?.Children ?? Enumerable.Empty<NavigationEntry>()).Any(n => GetMatchedSearch(n).Found))
+            return (true, string.Empty);
+
+
+        foreach (var filter in Filters.EmptyIfNull())
+        {
+            if (node?.Text == "-" || node?.Text.Contains(filter, StringComparison.InvariantCultureIgnoreCase) == true)
+                return (true, filter); ;
+        }
+
+        return (false, string.Empty); ;
+    }
 
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
@@ -57,7 +101,7 @@ public partial class NavMenu
             }
         }
     }
-    
+
     public IEnumerable<NavigationEntry> FindEntriesForUrl(string url = null)
     {
         url = (url ?? NavigationManager.ToBaseRelativePath(NavigationManager.Uri)).EnsureStartsWith("/").ToLower();
@@ -78,7 +122,7 @@ public partial class NavMenu
     private void SetAllExpanded(bool expand, Func<NavigationEntry, bool> predicate = null)
     {
         predicate ??= n => ExpandMode == ExpandMode.SingleExpand || n.Parent == null;
-        Entries.Recursive(n => n.Children.EmptyIfNull()).Where(predicate).Apply(e => e.IsExpanded = expand);
+        Entries?.Recursive(n => n.Children.EmptyIfNull()).Where(predicate).Apply(e => e.IsExpanded = expand);
     }
 
 
@@ -98,4 +142,10 @@ public enum ExpandMode
     Default,
     SingleExpand,
     None
+}
+
+public enum FilterMode
+{
+    Default,
+    Flat
 }

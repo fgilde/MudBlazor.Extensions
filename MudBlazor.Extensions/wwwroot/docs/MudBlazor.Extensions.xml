@@ -6174,9 +6174,14 @@
             Indicates whether a recording session is currently active.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.ActiveAnimation">
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.RecordingBorderAnimation">
             <summary>
-            Gets or sets a value indicating whether animations are active during recording.
+            If this is true border animation is applied when recording is active, but <see cref="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.RecordingAnimation"/> has no effect if this is turned on.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.RecordingAnimation">
+            <summary>
+            This Animation is playing while recording is active, but only if <see cref="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.RecordingBorderAnimation"/> is false.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.OnRecordingStarted">
@@ -6194,14 +6199,14 @@
             Event triggered when a speech recognition result is obtained.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.IconActive">
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.RecordingIcon">
             <summary>
             Icon displayed when the recording is active. Defaults to a 'Stop' icon.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.ColorActive">
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.RecordingColor">
             <summary>
-            Color of the icon when the recording is active. Defaults to warning color.
+            Color of the icon when the recording is active. Defaults to error color.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.Language">
@@ -6217,6 +6222,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.InterimResults">
             <summary>
             Specifies whether interim results should be reported during the recognition process.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.BorderAnimationColors">
+            <summary>
+            Gets or sets the collection of colors to use for the gradient.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpeechToTextButton.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
@@ -15791,12 +15801,12 @@
             Returns a css class name for given type
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExCss.GetAnimationCssStyle(MudBlazor.Extensions.Options.AnimationType,System.Nullable{System.TimeSpan},System.Nullable{MudBlazor.Extensions.Options.AnimationDirection},MudBlazor.Extensions.Options.AnimationTimingFunction,System.Nullable{MudBlazor.DialogPosition})">
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.GetAnimationCssStyle(MudBlazor.Extensions.Options.AnimationType,System.Nullable{System.TimeSpan},System.Nullable{MudBlazor.Extensions.Options.AnimationDirection},MudBlazor.Extensions.Options.AnimationTimingFunction,System.Nullable{MudBlazor.DialogPosition},MudBlazor.Extensions.Options.AnimationIteration)">
             <summary>
             Returns an applicable style string as animation for given animations options
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExCss.GetAnimationCssStyle(MudBlazor.Extensions.Options.AnimationType[],System.TimeSpan,System.Nullable{MudBlazor.Extensions.Options.AnimationDirection},MudBlazor.Extensions.Options.AnimationTimingFunction,System.Nullable{MudBlazor.DialogPosition})">
+        <member name="M:MudBlazor.Extensions.Helper.MudExCss.GetAnimationCssStyle(MudBlazor.Extensions.Options.AnimationType[],System.TimeSpan,System.Nullable{MudBlazor.Extensions.Options.AnimationDirection},MudBlazor.Extensions.Options.AnimationTimingFunction,System.Nullable{MudBlazor.DialogPosition},MudBlazor.Extensions.Options.AnimationIteration)">
             <summary>
             Returns an applicable style string as animation for given animations options
             </summary>
@@ -17540,6 +17550,11 @@
             Specifies the border property using a string value, if the 'when' condition is true.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithoutBorder(System.Boolean)">
+            <summary>
+            Sets border to none.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithBorderRadius(System.String,System.Boolean)">
             <summary>
             Specifies the border-radius property using a string value, if the 'when' condition is true.
@@ -17883,7 +17898,7 @@
             <param name="when">Condition for applying the animation.</param>
             <returns>The modified MudExStyleBuilder object.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimation(MudBlazor.Extensions.Options.AnimationType,System.Nullable{System.TimeSpan},System.Nullable{MudBlazor.Extensions.Options.AnimationDirection},MudBlazor.Extensions.Options.AnimationTimingFunction,System.Nullable{MudBlazor.DialogPosition},System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimation(MudBlazor.Extensions.Options.AnimationType,System.Nullable{System.TimeSpan},System.Nullable{MudBlazor.Extensions.Options.AnimationDirection},MudBlazor.Extensions.Options.AnimationTimingFunction,System.Nullable{MudBlazor.DialogPosition},MudBlazor.Extensions.Options.AnimationIteration,System.Boolean)">
             <summary>
             Sets the animation style using multiple optional parameters.
             </summary>
@@ -17895,7 +17910,7 @@
             <param name="when">Condition for applying the animation.</param>
             <returns>The modified MudExStyleBuilder object.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimation(MudBlazor.Extensions.Options.AnimationType,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimation(MudBlazor.Extensions.Options.AnimationType,MudBlazor.Extensions.Options.AnimationIteration,System.Boolean)">
             <summary>
             Sets the animation style using just the type of the animation.
             </summary>
@@ -17903,7 +17918,7 @@
             <param name="when">Condition for applying the animation.</param>
             <returns>The modified MudExStyleBuilder object.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimation(MudBlazor.Extensions.Options.AnimationType,System.TimeSpan,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimation(MudBlazor.Extensions.Options.AnimationType,System.TimeSpan,MudBlazor.Extensions.Options.AnimationIteration,System.Boolean)">
             <summary>
             Sets the animation style using the type and duration of the animation.
             </summary>
@@ -17912,7 +17927,7 @@
             <param name="when">Condition for applying the animation.</param>
             <returns>The modified MudExStyleBuilder object.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimation(MudBlazor.Extensions.Options.AnimationType,System.TimeSpan,MudBlazor.Extensions.Options.AnimationDirection,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimation(MudBlazor.Extensions.Options.AnimationType,System.TimeSpan,MudBlazor.Extensions.Options.AnimationDirection,MudBlazor.Extensions.Options.AnimationIteration,System.Boolean)">
             <summary>
             Sets the animation style using the type, duration, and direction of the animation.
             </summary>
@@ -17922,7 +17937,7 @@
             <param name="when">Condition for applying the animation.</param>
             <returns>The modified MudExStyleBuilder object.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimation(MudBlazor.Extensions.Options.AnimationType,System.TimeSpan,MudBlazor.Extensions.Options.AnimationDirection,MudBlazor.Extensions.Options.AnimationTimingFunction,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimation(MudBlazor.Extensions.Options.AnimationType,System.TimeSpan,MudBlazor.Extensions.Options.AnimationDirection,MudBlazor.Extensions.Options.AnimationTimingFunction,MudBlazor.Extensions.Options.AnimationIteration,System.Boolean)">
             <summary>
             Sets the animation style using the type, duration, direction, and timing function of the animation.
             </summary>
@@ -17973,12 +17988,57 @@
             With animated gradient border that looks like a skeleton loading wave
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimatedGradientBackground(MudBlazor.Extensions.Core.MudExColor[],System.TimeSpan,System.Boolean)">
+            <summary>
+            Sets the animation style with a gradient background using the type, duration, direction, timing function, and target position of the animation.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimatedGradientBorder(MudBlazor.Extensions.Core.MudExSize{System.Double},MudBlazor.Extensions.Core.MudExColor,MudBlazor.Extensions.Core.MudExColor[],System.TimeSpan,System.Boolean)">
+            <summary>
+            With animated gradient border
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimatedGradientBackground(MudBlazor.MudTheme,System.Boolean,System.TimeSpan,System.Boolean)">
+            <summary>
+            With animated gradient background
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimatedGradientBackground(MudBlazor.MudTheme,System.TimeSpan,System.Boolean)">
+            <summary>
+            With animated gradient background
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimatedGradientBackground(MudBlazor.Palette,System.TimeSpan,System.Boolean)">
+            <summary>
+            With animated gradient background
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimatedGradientBorder(MudBlazor.Extensions.Core.MudExSize{System.Double},MudBlazor.Palette,System.TimeSpan,System.Boolean)">
+            <summary>
+            With animated gradient border based on palette
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimatedGradientBorder(MudBlazor.Extensions.Core.MudExSize{System.Double},MudBlazor.MudTheme,System.Boolean,System.TimeSpan,System.Boolean)">
+            <summary>
+            With animated gradient border based on theme
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithSkeletonLoadingBorder(MudBlazor.Extensions.Core.MudExSize{System.Double},System.TimeSpan,System.Boolean)">
+            <summary>
+            With animated gradient border that looks like a skeleton loading wave
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.GetColorsFromPalette(MudBlazor.Palette)">
             <summary>
             Returns an array of colors from a palette
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimatedConicGradientBorderedBackground(MudBlazor.Extensions.Core.MudExSize{System.Double},MudBlazor.Extensions.Core.MudExColor[],MudBlazor.Extensions.Core.MudExColor[],System.Boolean)">
+            <summary>
+            Add a background image with a conic gradient and a border with a conic gradient
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimatedConicGradientBorderedBackground(MudBlazor.Extensions.Core.MudExSize{System.Double},MudBlazor.Extensions.Core.MudExColor[],MudBlazor.Extensions.Core.MudExColor[],System.TimeSpan,System.Boolean)">
             <summary>
             Add a background image with a conic gradient and a border with a conic gradient
             </summary>
@@ -18428,6 +18488,47 @@
             </summary>
             <param name="pos">The position of the button.</param>
             <returns>A string containing the generated HTML.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Options.AnimationIteration">
+            <summary>
+            Represents the animation timing function.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.AnimationIteration.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MudBlazor.Extensions.Options.AnimationIteration"/> class.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.AnimationIteration.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MudBlazor.Extensions.Options.AnimationIteration"/> class.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Options.AnimationIteration.Infinite">
+            <summary>
+            infinite
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.AnimationIteration.op_Implicit(MudBlazor.Extensions.Options.AnimationIteration)~System.String">
+            <summary>
+            Converts the value of the current AnimationIteration object to its equivalent string representation.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.AnimationIteration.op_Implicit(System.String)~MudBlazor.Extensions.Options.AnimationIteration">
+            <summary>
+            Converts the specified string to its equivalent AnimationIteration representation.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.AnimationIteration.op_Implicit(System.Int32)~MudBlazor.Extensions.Options.AnimationIteration">
+            <summary>
+            Converts the specified string to its equivalent AnimationIteration representation.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Options.AnimationIteration.ToString">
+            <summary>
+            Returns a string that represents the current timing function.
+            </summary>
+            <returns>A string that represents the current timing function.</returns>
         </member>
         <member name="T:MudBlazor.Extensions.Options.AnimationTimingFunction">
             <summary>
@@ -19400,6 +19501,30 @@
             <summary>
             Creates a new instance of the service.
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.MudComponentBase,System.Func{System.Boolean},System.Boolean)">
+            <summary>
+            Applies the specified appearance to a MudBlazor component temporarily.
+            </summary>
+            <returns>The applied appearance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,Microsoft.AspNetCore.Components.ElementReference,System.Func{System.Boolean},System.Boolean)">
+            <summary>
+            Applies the specified appearance to a ElementReference temporarily.
+            </summary>
+            <returns>The applied appearance.</returns>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,System.String,System.Func{System.Boolean},System.Boolean)">
+            <summary>
+            Applies the specified appearance to a element that will searched by a selector temporarily.
+            </summary>
+            <returns>The applied appearance.</returns>  
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.IDialogReference,System.Func{System.Boolean},System.Boolean)">
+            <summary>
+            Applies the specified appearance to a dialog reference temporarily.
+            </summary>
+            <returns>The applied appearance.</returns>  
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExAppearanceService.ApplyTemporarilyToAsync``1(``0,MudBlazor.MudComponentBase,System.Nullable{System.TimeSpan},System.Boolean)">
             <summary>

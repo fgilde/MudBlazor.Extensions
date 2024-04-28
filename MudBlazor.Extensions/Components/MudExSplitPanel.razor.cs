@@ -44,6 +44,12 @@ public partial class MudExSplitPanel
         }
     }
 
+    [Parameter, SafeCategory("Behavior")] public string SplitterClass { get; set; }
+    [Parameter, SafeCategory("Behavior")] public string SplitterStyle { get; set; }
+
+    [Parameter, SafeCategory("Behavior")] public string SplitterCollapsableClass { get; set; }
+    [Parameter, SafeCategory("Behavior")] public string SplitterCollapsableStyle { get; set; }
+
     /// <summary>
     /// Sets whether the SplitPanel component should reverse its flex direction
     /// </summary>

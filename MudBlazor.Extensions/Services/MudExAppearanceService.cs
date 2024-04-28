@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using Nextended.Core;
 using Nextended.Core.Attributes;
 
 namespace MudBlazor.Extensions.Services;
@@ -29,6 +30,63 @@ public class MudExAppearanceService
 
     internal MudExAppearanceService(): this(null)
     {}
+
+    /// <summary>
+    /// Applies the specified appearance to a MudBlazor component temporarily.
+    /// </summary>
+    /// <returns>The applied appearance.</returns>
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, MudComponentBase component, Func<bool> expression, bool keepExisting = true)
+        where TAppearance : IMudExAppearance
+    {
+        
+        await ApplyToAsync(appearance, component, keepExisting);
+        await expression.WaitForTrueAsync();
+        await RemoveFromAsync(appearance, component);
+
+        return appearance;
+    }
+
+    /// <summary>
+    /// Applies the specified appearance to a ElementReference temporarily.
+    /// </summary>
+    /// <returns>The applied appearance.</returns>    
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, ElementReference elementRef, Func<bool> expression, bool keepExisting = true)
+        where TAppearance : IMudExAppearance
+    {
+        await ApplyToAsync(appearance, elementRef, keepExisting);
+        await expression.WaitForTrueAsync();
+        await RemoveFromAsync(appearance, elementRef);
+
+        return appearance;
+    }
+
+    /// <summary>
+    /// Applies the specified appearance to a element that will searched by a selector temporarily.
+    /// </summary>
+    /// <returns>The applied appearance.</returns>  
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, string elementSelector, Func<bool> expression, bool keepExisting = true)
+        where TAppearance : IMudExAppearance
+    {
+        await ApplyToAsync(appearance, elementSelector, keepExisting);
+        await expression.WaitForTrueAsync();
+        await RemoveFromAsync(appearance, elementSelector);
+
+        return appearance;
+    }
+
+    /// <summary>
+    /// Applies the specified appearance to a dialog reference temporarily.
+    /// </summary>
+    /// <returns>The applied appearance.</returns>  
+    public async Task<TAppearance> ApplyTemporarilyToAsync<TAppearance>(TAppearance appearance, IDialogReference dlg, Func<bool> expression, bool keepExisting = true)
+        where TAppearance : IMudExAppearance
+    {
+        await ApplyToAsync(appearance, dlg, keepExisting);
+        await expression.WaitForTrueAsync();
+        await RemoveFromAsync(appearance, dlg);
+
+        return appearance;
+    }
 
     /// <summary>
     /// Applies the specified appearance to a MudBlazor component temporarily.

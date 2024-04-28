@@ -17,14 +17,16 @@
 <MudLayout>
 
     <MudAppBar Elevation="0">
+
+        <LogoTitle Animate="true" />
+
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <LogoTitle Hidden="@_drawerOpen" />
 
         <MudSpacer />
-        
+
         <MudExIconButton ToolTip="Activate comments" Visible="@(!_commentsAvailable)" Icon="@Icons.Material.Filled.Comment" Color="Color.Warning" OnClick="@(() => _commentsAvailable = true)" />
         <MudExIconButton ToolTip="Try MudEx online" Target="_blank" Link="@AppConstants.Urls.GetTryOnline(IsDark)" Icon="@Icons.Material.Rounded.PlayArrow" Color="@(IsDark ? Color.Success : Color.Inherit)" />
-        
+
         <MudExDivider Size="2" Vertical="true" />
 
         <MudTooltip Text="Change or edit theme" Arrow="true" Placement="Placement.Bottom">
@@ -49,26 +51,28 @@
             </MudMenu>
         </MudHidden>
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
-        @if (ClientTheme.CurrentTheme.ShowLogoInDrawer)
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="1" ClipMode="DrawerClipMode.Docked" Variant="DrawerVariant.Responsive">
+        @if (ClientTheme.CurrentTheme.ShowFilterInDrawer)
         {
-            <MudDrawerHeader>
-                <LogoTitle />
-            </MudDrawerHeader>
+            <div style="width: 100%;padding: 0 9px;z-index: 2;position: sticky;top: 0;background: var(--mud-palette-drawer-background);">
+                <MudExTagField OnKeyDown="SearchKeyDown" ChipColor="MudExColor.Primary" @bind-Values="filters" @bind-Value="filter" Placeholder="Filter (Press enter to tag)" T="string"></MudExTagField>
+            </div>
         }
-        <NavMenu />
+        <NavMenu Filters="@filters.Concat(new []{filter}).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToArray()" ExpandMode="ClientTheme.CurrentTheme.NavigationExpandMode" />
     </MudDrawer>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-sample-main-content-container my-4 pt-4">
             @Body
         </MudContainer>
     </MudMainContent>
-    
-    <CommentsFooter @bind-Available="_commentsAvailable"/>
+
+    <CommentsFooter @bind-Available="_commentsAvailable" />
 
 </MudLayout>
 
 @code {
+    private string filter;
+    private List<string> filters = new();
     public static MainLayout? Instance { get; private set; }
     bool _drawerOpen = true;
     bool _commentsAvailable = true;
@@ -128,6 +132,19 @@
         ClientTheme.CurrentTheme = theme;
         StateHasChanged();
         HandleThemeChange(IsDark, theme);
+    }
+
+    private void SearchKeyDown(KeyboardEventArgs args)
+    {
+        if(args.Key == "Escape")
+        {
+            if(string.IsNullOrWhiteSpace(filter))
+                filters.Clear();
+            filter = string.Empty;
+        } else if(args.Key == "Delete" && string.IsNullOrWhiteSpace(filter))
+        {
+            filter.Remove(filters.Count - 1);
+        }
     }
 
 }

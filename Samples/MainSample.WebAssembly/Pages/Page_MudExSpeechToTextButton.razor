@@ -1,5 +1,6 @@
 ﻿@page "/speech-to-text"
 @using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
 
 @attribute [DemoNew(Name = "MudExSpeechToTextButton", Icon = Icons.Material.Outlined.Mic, Documentation = "This component uses the ISpeechRecognitionService to record audio data and transcripts", ForComponentType = typeof(MudExSpeechToTextButton))]
 
@@ -15,7 +16,7 @@
                 @if(_audioFile != null) {
                     <MudItem xs="12">
                         <MudPaper>
-                            <MudExUploadEdit AllowMultiple="false" AllowRename="false" ReadOnly="true" UploadRequest="@_audioFile"></MudExUploadEdit>
+                            <MudExUploadEdit SelectItemsMode="SelectItemsMode.ShowPreviewOnClick" PreviewIcon="@Icons.Material.Filled.MusicNote" AllowMultiple="false" AllowRename="false" ReadOnly="true" UploadRequest="@_audioFile"></MudExUploadEdit>
                         </MudPaper>
                     </MudItem>
                 }
@@ -32,7 +33,7 @@
             </MudGrid>
         </Left>
         <Right>
-            <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>
+            <ComponentPropertyGrid MetaConfiguration="Configure()" Value="@component"></ComponentPropertyGrid>
         </Right>
     </SplitContainer>
 </DemoComponent>
@@ -50,7 +51,7 @@
         {
             _audioFile = new UploadableFile
             {
-                FileName = "audio_recording.wav",
+                FileName = $"{(sentences.FirstOrDefault() ?? "audio_recording").Replace(" ", "_").Trim()}.wav",
                 ContentType = "audio/wav",
                 Data = result.AudioData
             };
@@ -70,6 +71,15 @@
     {
         sentences.Clear();
         updates = "";
+    }
+
+    private Action<ObjectEditMeta<MudExSpeechToTextButton>> Configure()
+    {
+        return meta =>
+        {
+            meta.Property(m => m.RecordingAnimation).IgnoreIf(m => m.RecordingBorderAnimation);
+            meta.Property(m => m.BorderAnimationColors).IgnoreIf(m => !m.RecordingBorderAnimation);
+        };
     }
 
 }

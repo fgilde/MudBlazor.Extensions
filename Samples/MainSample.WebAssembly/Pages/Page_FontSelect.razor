@@ -7,7 +7,7 @@
 <DemoComponent PageType="@GetType()">
     <SplitContainer>
         <Left>
-            <MudExFontSelect @ref="component"></MudExFontSelect>            
+            <MudExFontSelect WithGoogleLatinFonts="true" @ref="component"></MudExFontSelect>            
         </Left>
         <Right>
             <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>

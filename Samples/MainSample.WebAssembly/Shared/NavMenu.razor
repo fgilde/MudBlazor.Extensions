@@ -2,39 +2,45 @@
 
 <div>
     <MudNavMenu>
-        <MudTreeView Items="@Entries">
+        <MudTreeView Items="@FilteredItems()">
             <ItemTemplate>
-                @if (context.Text == "-")
-                {
-                    <MudExDivider />
-                }
-                else
-                {
-                    <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.Children">
-                        <Content>
-                            @if (HasAction(context))
-                            {
-                                <MudNavLink Href="@context.Href" Match="@(context.Href == "/" ? NavLinkMatch.All : NavLinkMatch.Prefix)" Target="@context.Target" IconColor="@context.GetIconColor()" Icon="@context.Icon">
-                                    <p style="@GetStyle(context, false)">@context.Text</p>
-                                </MudNavLink>
-                            }
-                            else
-                            {
-                                @if (!context.Icon.IsNullOrWhiteSpace())
-                                {
-                                    <MudIcon Color="@context.GetIconColor()" Icon="@context.Icon" Class="ml-0 mr-2"/>
-                                }
+                @{
+                    var search = GetMatchedSearch(context);
+                    @if (search.Found)
+                    {
+                        if (context.Text == "-")
+                        {
+                            <MudExDivider />
+                        }
+                        else
+                        {
+                            <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.Children">
+                                <Content>
+                                    @if (HasAction(context))
+                                    {
+                                        <MudNavLink Href="@context.Href" Match="@(context.Href == "/" ? NavLinkMatch.All : NavLinkMatch.Prefix)" Target="@context.Target" IconColor="@context.GetIconColor()" Icon="@context.Icon">
+                                            @Content(context, false, search)
+                                        </MudNavLink>
+                                    }
+                                    else
+                                    {
+                                        @if (!context.Icon.IsNullOrWhiteSpace())
+                                        {
+                                            <MudIcon Color="@context.GetIconColor()" Icon="@context.Icon" Class="ml-0 mr-2" />
+                                        }
 
-                                <MudListSubheader Class="@(CanExpand(context) ? "cursor-pointer" : "")" @onclick="() => OnExpandCollapseClick(context)">
-                                    <p style="@GetStyle(context, true)">@context.Text</p>
-                                </MudListSubheader>
+                                        <MudListSubheader Class="@(CanExpand(context) ? "cursor-pointer" : "")" @onclick="() => OnExpandCollapseClick(context)">
+                                            @Content(context, true, search)
+                                        </MudListSubheader>
 
-                                <div class="apply-right">
-                                    <MudTreeViewItemToggleButton Visible="CanExpand(context)" Expanded="context.IsExpanded" ExpandedChanged="() => OnExpandCollapseClick(context)"/>
-                                </div>
-                            }
-                        </Content>
-                    </MudTreeViewItem>
+                                        <div class="apply-right">
+                                            <MudTreeViewItemToggleButton Visible="CanExpand(context)" Expanded="context.IsExpanded" ExpandedChanged="() => OnExpandCollapseClick(context)" />
+                                        </div>
+                                    }
+                                </Content>
+                            </MudTreeViewItem>
+                        }
+                    }
                 }
             </ItemTemplate>
         </MudTreeView>
@@ -43,6 +49,17 @@
 </div>
 
 @code {
+
+    private RenderFragment Content(NavigationEntry context, bool withAction, (bool Found, string? Term) search)
+    {
+        if (!string.IsNullOrEmpty(search.Term))
+        {
+            return @<MudHighlighter Text="@context.Text" HighlightedText="@search.Term" />;
+        }
+        return @<p style="@GetStyle(context, withAction)">@context.Text</p>;
+
+    }
+
     private string GetStyle(NavigationEntry context, bool withAction)
     {
         if (context.Bold == true || (!withAction && context.Demo == null && context.Parent == null) || (withAction && context.Demo == null && context.Parent == null && context.IsExpanded))
