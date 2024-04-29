@@ -1,13 +1,26 @@
 ﻿@using MudBlazor.Extensions.Core
 
-<div style="display: flex; margin-right: 20px;">
-    <MudHidden Breakpoint="Breakpoint.SmAndDown">
-        <img style="height: 25px; margin-right: 10px;" src="https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudExtension.png"/>
-    </MudHidden>
-    <MudLink Href="@GetHomeLink()" Typo="Typo.h6">
-        <MudExGradientText AnimationDuration="TimeSpan.FromSeconds(30)" Palette="new [] { MudExColor.Primary, MudExColor.Secondary, MudExColor.Tertiary }" Animate="@Animate" Typo="Typo.h6">MudBlazor.Extensions</MudExGradientText>
-    </MudLink>
-</div>
+@if (ClientTheme.CurrentTheme.ShowLogoInDrawer)
+{
+    <div class="mud-ex-animate-all-properties" style="@GetStyle()">
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <img style="height: 25px; margin-right: 10px; margin-bottom: -5px;" src="https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudExtension.png"/>
+        </MudHidden>
+        <MudLink Class="mud-ex-animate-all-properties mud-ex-gradient-text animate" Href="@GetHomeLink()" Typo="Typo.h6">MudBlazor.Extensions</MudLink>
+    </div>
+}
+else
+{
+    <div style="display: flex; margin-right: 20px;">
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <img style="height: 25px; margin-right: 10px;" src="https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/MudExtension.png"/>
+        </MudHidden>
+        <MudLink Href="@GetHomeLink()" Typo="Typo.h6">
+            <MudExGradientText AnimationDuration="TimeSpan.FromSeconds(30)" Palette="new[] { MudExColor.Primary, MudExColor.Secondary, MudExColor.Tertiary }" Animate="@Animate" Typo="Typo.h6">MudBlazor.Extensions</MudExGradientText>
+        </MudLink>
+    </div>
+}
+
 @code{
     
     [Parameter]
@@ -22,5 +35,9 @@
         return string.IsNullOrWhiteSpace(u) || u == "/" ? "/gradient-text" : "/";
     }
 
-
+    private string GetStyle()
+    {
+        //return Hidden ? "opacity: 0; transform: translateY(-100%);" : "opacity: 1; transform: translateY(0);";
+        return Hidden ? "opacity: 0; transform: translateX(-300px);" : "opacity: 1; transform: translateX(0);";
+    }
 }

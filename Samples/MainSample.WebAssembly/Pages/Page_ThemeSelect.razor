@@ -28,7 +28,7 @@
         await base.OnInitializedAsync();
         if (MainLayout.Instance != null)
             MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
-        _themes = ThemePreset.Create(("Default", "This is the MudEx Default theme", ClientTheme.DefaultTheme), ("Another", "Another Demo theme in Red",  ClientTheme.Another));
+        _themes = ThemePreset.Create(("Default", "This is the MudEx Default theme", ClientTheme.DefaultTheme), ("Another", "Another Demo theme in Red",  Another: ClientTheme.SimpleBlue));
     }
 
     private void ThemeChanged(ClientTheme? theme)

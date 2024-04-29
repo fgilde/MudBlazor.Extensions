@@ -1,3 +1,44 @@
-﻿@inherits MudExIconButton
+﻿@using MudBlazor.Extensions.Options
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Helper
+@using AuralizeBlazor
+@inherits MudExIconButton
 
-@Inherited()
+
+@if (DeviceSelection == DeviceSelectionType.SelectionList && _devices?.Length > 1)
+{
+    <MudExAdditionalAdornment Position="MoveContentPosition.BeforeEnd">
+        <For>
+            <MudExSelect MultiSelection="false"
+                         Variant="DeviceListVariant"
+                         SelectAll="false"
+                         ItemCollection="@_devices" Value="@(_devices.FirstOrDefault(d => d.DeviceId == _selectedDevice) ?? _devices[0])" ValueChanged="@AudioDeviceSelected" Clearable="false" SearchBox="true" T="AudioDevice" Label="@LocalizerToUse.TryLocalize("Select audio device")" AnchorOrigin="Origin.BottomCenter">
+            </MudExSelect>
+        </For>
+        <ChildContent>
+            @Inherited()
+        </ChildContent>
+    </MudExAdditionalAdornment>
+}
+else
+{
+    @Inherited()
+}
+
+
+<MudExPopover Duration="800" OnBlur="@(OnBlur)" SelectorsForIgnoreBlur=".toggle-sample-btn" Open="_devicePopoverOpen"
+              OverflowBehavior="OverflowBehavior.FlipAlways" Animation="AnimationType.FadeIn" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Paper="false">
+    <MudPaper Outlined="true" Class="px-4 py-8">
+        <MudText Color="Color.Primary">@LocalizerToUse.TryLocalize("Select audio device")</MudText>
+        <MudExList Clickable="true" T="AudioDevice" SelectedValueChanged="@AudioDeviceSelected" ItemCollection="@_devices" MultiSelection="false"></MudExList>
+    </MudPaper>
+</MudExPopover>
+
+@code
+{
+    RenderFragment Spectrum()
+    {
+        return @<AuralizeBlazor.Auralizer MicrophoneDeviceId="@UsedDeviceId" Height="@SizeStr()" Width="@SizeStr()" ShowPeaks="false" ShowScaleX="false" ShowScaleY="false" ConnectMicrophone="true">
+                </AuralizeBlazor.Auralizer>;
+    }
+}

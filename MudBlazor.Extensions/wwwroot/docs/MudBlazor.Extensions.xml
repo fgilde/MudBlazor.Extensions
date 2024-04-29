@@ -6169,9 +6169,45 @@
             Button component for speech-to-text functionality, allowing for asynchronous recording and processing of speech input.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.ServiceProvider">
+            <summary>
+            Gets or sets the <see cref="T:System.IServiceProvider"/> to be used for dependency injection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.LocalizerToUse">
+            <summary>
+            Gets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.UsedDeviceId">
+            <summary>
+            Returns the device id to use for recording.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.Localizer">
+            <summary>
+            Gets or sets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.IsRecording">
             <summary>
             Indicates whether a recording session is currently active.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.AudioDeviceId">
+            <summary>
+            Sets the device id for the audio input device to use for recording.
+            Leave empty to use the default device.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.DeviceSelection">
+            <summary>
+            Specify if and how the user is able to select the audio input device.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.DeviceListVariant">
+            <summary>
+            if <see cref="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.DeviceSelection"/> is set to <see cref="F:MudBlazor.Extensions.Components.DeviceSelectionType.SelectionList"/> this variant is used for the list of devices to choose from.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.RecordingBorderAnimation">
@@ -6197,6 +6233,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.OnRecognized">
             <summary>
             Event triggered when a speech recognition result is obtained.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.ShowSpectrumOnRecording">
+            <summary>
+            If this is true a spectrum is shown while recording is active but then the <see cref="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.RecordingIcon"/> has no effect and will not be used.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.RecordingIcon">
@@ -6232,6 +6273,9 @@
         <member name="M:MudBlazor.Extensions.Components.MudExSpeechToTextButton.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSpeechToTextButton.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpeechToTextButton.OnInitialized">
             <inheritdoc />
         </member>
@@ -6250,6 +6294,31 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSpeechToTextButton.DisposeAsync">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.DeviceSelectionType">
+            <summary>
+            Specifies the type of device selection to use for audio input.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DeviceSelectionType.None">
+            <summary>
+            No device selection is used and the default system device is used.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DeviceSelectionType.PopupOnlyOnce">
+            <summary>
+            If no device is selected, a popup is shown to select the device.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DeviceSelectionType.PopupEveryTime">
+            <summary>
+            Always show a popup to select the device.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DeviceSelectionType.SelectionList">
+            <summary>
+            Show a selection list of devices to choose from.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExSplitPanel">
             <summary>
@@ -13994,6 +14063,11 @@
             </summary>
             <returns>A Task representing the asynchronous operation.</returns>
         </member>
+        <member name="M:MudBlazor.Extensions.Core.ISpeechRecognitionService.GetAudioDevicesAsync">
+            <summary>
+            Returns a collection of available audio devices for input.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.MudExAppearance">
             <summary>
             The `MudExAppearance` class is a powerful tool that helps to manage CSS and styles of MudBlazor components dynamically. 
@@ -14576,6 +14650,11 @@
             <remarks>
             This property is marked with attributes to be ignored during JSON serialization.
             </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionOptions.DeviceId">
+            <summary>
+            DeviceId for audio input, used for selecting the appropriate microphone.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionOptions.Lang">
             <summary>

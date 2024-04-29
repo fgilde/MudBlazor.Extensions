@@ -39,6 +39,7 @@ namespace MudBlazor.Extensions.Services
         public Task StopRecordingAsync(string recordingId) => _jsRuntime.InvokeVoidAsync("MudExSpeechRecognition.stopRecording", recordingId).AsTask();
 
         public Task StopAllRecordingsAsync() => _jsRuntime.InvokeVoidAsync("MudExSpeechRecognition.stopAllRecordings").AsTask();
+        public Task<IEnumerable<AudioDevice>> GetAudioDevicesAsync() => _jsRuntime.InvokeAsync<IEnumerable<AudioDevice>>("MudExSpeechRecognition.getAvailableAudioDevices").AsTask();
 
         private class CallbackWrapper
         {

@@ -93,7 +93,7 @@
 
     private async Task<ICollection<ThemePreset<ClientTheme>>> GetThemes()
     {
-        var result = ThemePreset.Create(("Default", "This is the MudEx Default theme", ClientTheme.DefaultTheme), ("Another", "Another Demo theme in Red", ClientTheme.Another));
+        var result = ThemePreset.Create(("Default", "This is the MudEx Default theme", ClientTheme.DefaultTheme), ("Another", "Another Demo theme in Red", Another: ClientTheme.SimpleBlue));
         var fromStorage = await LocalStorageService.GetAllThemeItemsAsync<string>();
         foreach (var item in fromStorage)
         {

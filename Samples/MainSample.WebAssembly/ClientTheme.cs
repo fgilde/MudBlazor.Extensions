@@ -3,14 +3,19 @@ using MudBlazor;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Extensions;
+using SixLabors.ImageSharp.Processing;
 
 namespace MainSample.WebAssembly;
 
 public class ClientTheme : MudTheme
 {
     public bool ShowFilterInDrawer { get; set; } = true;
+    public bool ShowLogoInDrawer { get; set; }
 
     public ExpandMode NavigationExpandMode { get; set; }
+
+    public DrawerClipMode DrawerClipMode { get; set; }
+    public DrawerVariant DrawerVariant { get; set; } = DrawerVariant.Responsive;
 
     #region Statics
 
@@ -136,6 +141,8 @@ public class ClientTheme : MudTheme
             DrawerText = "rgba(0,0,0, 0.7)",
             Success = "#19635d"
         },
+        DrawerClipMode = DrawerClipMode.Docked,
+        DrawerVariant = DrawerVariant.Responsive,
         Typography = DefaultTypography,
         LayoutProperties = DefaultLayoutProperties
     }.SetProperties(t => t.PaletteDark = t.Palette.ToPaletteDark().SetProperties(dark =>
@@ -146,7 +153,23 @@ public class ClientTheme : MudTheme
         dark.Surface = "#222529";
     }));
 
-    public static ClientTheme Another = new ClientTheme()
+    public static ClientTheme Last = new ClientTheme()
+    {
+        Palette = new Palette
+        {
+            Primary = "#199b90",
+            AppbarBackground = "#199b90",
+            Background = Colors.Grey.Lighten5,
+            DrawerBackground = "#FFF",
+            DrawerText = "rgba(0,0,0, 0.7)",
+            Success = "#19635d"
+        },
+        ShowLogoInDrawer = true,
+        Typography = DefaultTypography,
+        LayoutProperties = DefaultLayoutProperties
+    };
+
+    public static ClientTheme SimpleBlue = new ClientTheme()
     {
         ShowFilterInDrawer = false,
         Palette = new Palette
@@ -158,6 +181,8 @@ public class ClientTheme : MudTheme
             DrawerText = "rgba(0,0,0, 0.7)",
             Success = "#19635d",
         },
+        DrawerClipMode = DrawerClipMode.Docked,
+        DrawerVariant = DrawerVariant.Responsive,
         LayoutProperties = DefaultLayoutProperties.SetProperties(p =>
         {
             p.DefaultBorderRadius = "10px";
@@ -168,7 +193,7 @@ public class ClientTheme : MudTheme
     
     public static ClientTheme CurrentTheme = DefaultTheme;
 
-    public static ICollection<ThemePreset<ClientTheme>> All => ThemePreset.Create(() => DefaultTheme, () => Another);
+    public static ICollection<ThemePreset<ClientTheme>> All => ThemePreset.Create(() => DefaultTheme, () => Last, () => SimpleBlue);
 
     public static async Task<ICollection<ThemePreset<ClientTheme>>> GetAllThemes(LocalStorageService storageService)
     {

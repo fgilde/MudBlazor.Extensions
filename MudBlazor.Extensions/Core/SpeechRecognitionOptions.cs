@@ -22,6 +22,11 @@ public class SpeechRecognitionOptions
     }
 
     /// <summary>
+    /// DeviceId for audio input, used for selecting the appropriate microphone.
+    /// </summary>
+    public string DeviceId { get; set; }
+
+    /// <summary>
     /// Language code used for speech recognition, corresponding to the specific culture.
     /// </summary>
     public string Lang { get; set; }

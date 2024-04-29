@@ -10,10 +10,11 @@
             <MudGrid Spacing="1" Justify="Justify.Center">
                 <MudItem xs="12">
                     <MudGrid Class="mb-3" Spacing="1" Justify="Justify.Center">
-                        <MudExSpeechToTextButton OnRecordingStarted="RecordingStarted" OnRecognized="Callback" @ref="component" />
+                        <MudExSpeechToTextButton OnRecordingStarted="RecordingStarted" OnRecognized="Callback" @ref="component"/>
                     </MudGrid>
                 </MudItem>
-                @if(_audioFile != null) {
+                @if (_audioFile != null)
+                {
                     <MudItem xs="12">
                         <MudPaper>
                             <MudExUploadEdit SelectItemsMode="SelectItemsMode.ShowPreviewOnClick" PreviewIcon="@Icons.Material.Filled.MusicNote" AllowMultiple="false" AllowRename="false" ReadOnly="true" UploadRequest="@_audioFile"></MudExUploadEdit>
@@ -22,12 +23,12 @@
                 }
                 <MudItem>
                     <MudPaper Width="300px">
-                        <MudTextField FullWidth="true" ReadOnly="true" T="string" Label="Sentences" Variant="Variant.Outlined" Text="@string.Join("\n", sentences)" Lines="10" />
+                        <MudTextField FullWidth="true" ReadOnly="true" T="string" Label="Sentences" Variant="Variant.Outlined" Text="@string.Join("\n", sentences)" Lines="10"/>
                     </MudPaper>
                 </MudItem>
                 <MudItem>
                     <MudPaper Width="300px">
-                        <MudTextField FullWidth="true" ReadOnly="true" T="string" Label="Updates" Variant="Variant.Outlined" Text="@updates" Lines="10" />
+                        <MudTextField FullWidth="true" ReadOnly="true" T="string" Label="Updates" Variant="Variant.Outlined" Text="@updates" Lines="10"/>
                     </MudPaper>
                 </MudItem>
             </MudGrid>
@@ -51,7 +52,7 @@
         {
             _audioFile = new UploadableFile
             {
-                FileName = $"{(sentences.FirstOrDefault() ?? "audio_recording").Replace(" ", "_").Trim()}.wav",
+                FileName = $"{(sentences.FirstOrDefault(s => !string.IsNullOrWhiteSpace(s)) ?? "audio_recording").Replace(" ", "_").Trim()}.wav",
                 ContentType = "audio/wav",
                 Data = result.AudioData
             };
@@ -77,6 +78,7 @@
     {
         return meta =>
         {
+            meta.Property(m => m.RecordingIcon).IgnoreIf(m => m.ShowSpectrumOnRecording);
             meta.Property(m => m.RecordingAnimation).IgnoreIf(m => m.RecordingBorderAnimation);
             meta.Property(m => m.BorderAnimationColors).IgnoreIf(m => !m.RecordingBorderAnimation);
         };

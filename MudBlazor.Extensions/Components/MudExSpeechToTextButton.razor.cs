@@ -1,11 +1,12 @@
-﻿using System.Globalization;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Localization;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
-using MudBlazor.Extensions.Core.Css;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -16,18 +17,60 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
 {
     [Inject] private ISpeechRecognitionService SpeechRecognitionService { get; set; }
     [Inject] private MudExAppearanceService AppearanceService { get; set; }
-    
+
+    private AudioDevice[] _devices;
+    private string _selectedDevice = null;
     private bool _initialized;
     private string[] _preInitParameters;
     private string _recordingId;
     private string _icon;
     private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
+    private IStringLocalizer<MudExSpeechToTextButton> FallbackLocalizer => ServiceProvider.GetService<IStringLocalizer<MudExSpeechToTextButton>>();
+
+
+    /// <summary>
+    /// Gets or sets the <see cref="IServiceProvider"/> to be used for dependency injection.
+    /// </summary>
+    [Inject]
+    protected IServiceProvider ServiceProvider { get; set; }
+
+    /// <summary>
+    /// Gets the <see cref="IStringLocalizer"/> to be used for localizing strings.
+    /// </summary>
+    protected IStringLocalizer LocalizerToUse => Localizer ?? FallbackLocalizer;
+    
+    /// <summary>
+    /// Returns the device id to use for recording.
+    /// </summary>
+    public string UsedDeviceId => _selectedDevice ?? AudioDeviceId;
+
+    /// <summary>
+    /// Gets or sets the <see cref="IStringLocalizer"/> to be used for localizing strings.
+    /// </summary>
+    [Parameter, SafeCategory("Common")]
+    public IStringLocalizer Localizer { get; set; }
 
     /// <summary>
     /// Indicates whether a recording session is currently active.
     /// </summary>
     public bool IsRecording => !string.IsNullOrEmpty(_recordingId);
+
+    /// <summary>
+    /// Sets the device id for the audio input device to use for recording.
+    /// Leave empty to use the default device.
+    /// </summary>
+    [Parameter] public string  AudioDeviceId { get; set; }
+
+    /// <summary>
+    /// Specify if and how the user is able to select the audio input device.
+    /// </summary>
+    [Parameter] public DeviceSelectionType DeviceSelection { get; set; }
+
+    /// <summary>
+    /// if <see cref="DeviceSelection"/> is set to <see cref="DeviceSelectionType.SelectionList"/> this variant is used for the list of devices to choose from.
+    /// </summary>
+    [Parameter] public Variant DeviceListVariant { get; set; } = Variant.Outlined;
 
     /// <summary>
     /// If this is true border animation is applied when recording is active, but <see cref="RecordingAnimation"/> has no effect if this is turned on.
@@ -58,6 +101,12 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     /// </summary>
     [Parameter]
     public EventCallback<SpeechRecognitionResult> OnRecognized { get; set; }
+
+    /// <summary>
+    /// If this is true a spectrum is shown while recording is active but then the <see cref="RecordingIcon"/> has no effect and will not be used.
+    /// </summary>
+    [Parameter]
+    public bool ShowSpectrumOnRecording { get; set; }
 
     /// <summary>
     /// Icon displayed when the recording is active. Defaults to a 'Stop' icon.
@@ -103,6 +152,19 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
         return base.SetParametersAsync(parameters);
     }
 
+    /// <inheritdoc />
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        if (DeviceSelection == DeviceSelectionType.SelectionList && _devices == null)
+            await FillDevices();
+    }
+
+    private async Task FillDevices()
+    {
+        _devices = (await SpeechRecognitionService.GetAudioDevicesAsync()).ToArray();
+    }
+
     private bool IsOverwritten(string paramName) => _preInitParameters?.Contains(paramName) == true;
 
     /// <inheritdoc />
@@ -118,14 +180,48 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
         _initialized = true;
     }
 
+    private bool _devicePopoverOpen;
+    private void OnBlur()
+    {
+        _devicePopoverOpen = false;
+        InvokeAsync(StateHasChanged);
+    }
+
+
     /// <inheritdoc />
     protected override async Task OnClickHandler(MouseEventArgs ev)
     {
         if (IsRecording)
             await StopRecordingAsync();
         else
+        {
+            if (await SelectDeviceIfRequiredAsync())
+                return;
             await StartRecordingAsync();
+        }
+
         await base.OnClickHandler(ev);
+    }
+
+    private async Task<bool> SelectDeviceIfRequiredAsync()
+    {
+        await FillDevices();
+        if (DeviceSelection == DeviceSelectionType.PopupEveryTime ||
+            (DeviceSelection == DeviceSelectionType.PopupOnlyOnce && _selectedDevice == null))
+        {
+            if(_devices?.Any() != true)
+                return false;
+            if (_devices.Length == 1)
+            {
+                _selectedDevice = _devices[0].DeviceId;
+                return false;
+            }
+            _devicePopoverOpen = true;
+            await InvokeAsync(StateHasChanged);
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -133,11 +229,13 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     /// </summary>
     public async Task StartRecordingAsync()
     {
+        Console.WriteLine(UsedDeviceId);
         var options = new SpeechRecognitionOptions
         {
             Lang = Language,
             Continuous = Continuous,
-            InterimResults = InterimResults
+            InterimResults = InterimResults,
+            DeviceId = UsedDeviceId
         };
         _recordingId = await SpeechRecognitionService.StartRecordingAsync(options, OnResult, OnStopped);
         if (IsRecording)
@@ -167,7 +265,8 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     private async Task SetActive()
     {
         var currentIcon = Icon;
-        Icon = RecordingIcon;
+        Icon = ShowSpectrumOnRecording ? null : RecordingIcon;
+        ChildContent = ShowSpectrumOnRecording ? Spectrum() : null;
         var size = Variant == Variant.Text ? 50 : 1;
         var borderColors = BorderAnimationColors.ToArray();
         var backgroundColor = Variant != Variant.Filled ? MudExColor.Surface : Color;
@@ -177,11 +276,13 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
             .WithAnimatedGradientBorder(size, backgroundColor, borderColors, RecordingBorderAnimation)
             .WithBorderColor(RecordingColor, !RecordingBorderAnimation && Variant != Variant.Text)
             .WithBackgroundColor(RecordingColor, Variant == Variant.Filled)
+            .WithPadding(0, ShowSpectrumOnRecording)
             .WithColor(RecordingColor, Variant != Variant.Filled).AsImportant();
         _ = AppearanceService.ApplyTemporarilyToAsync(appearance, this, () => !IsRecording)
             .ContinueWith(_ =>
             {
                 Icon = currentIcon;
+                ChildContent = null;
                 return InvokeAsync(StateHasChanged);
             });
         await InvokeAsync(StateHasChanged);
@@ -199,4 +300,56 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
         if (SpeechRecognitionService != null) 
             await SpeechRecognitionService.DisposeAsync();
     }
+
+    private async Task AudioDeviceSelected(AudioDevice arg)
+    {
+        _selectedDevice = arg.DeviceId;
+        Console.WriteLine($"Selected {arg.Label} - {arg.DeviceId}");
+        if (_devicePopoverOpen)
+        {
+            _devicePopoverOpen = false;
+            await StartRecordingAsync();
+        }
+        else
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private string SizeStr()
+    {
+        return Size switch
+        {
+            Size.Small => "29px;",
+            Size.Medium => "36px;",
+            Size.Large => "38px;",
+            _ => "36px;"
+        };
+    }
+}
+
+/// <summary>
+/// Specifies the type of device selection to use for audio input.
+/// </summary>
+public enum DeviceSelectionType
+{
+    /// <summary>
+    /// No device selection is used and the default system device is used.
+    /// </summary>
+    None,
+    
+    /// <summary>
+    /// If no device is selected, a popup is shown to select the device.
+    /// </summary>
+    PopupOnlyOnce,
+    
+    /// <summary>
+    /// Always show a popup to select the device.
+    /// </summary>
+    PopupEveryTime,
+    
+    /// <summary>
+    /// Show a selection list of devices to choose from.
+    /// </summary>
+    SelectionList
 }

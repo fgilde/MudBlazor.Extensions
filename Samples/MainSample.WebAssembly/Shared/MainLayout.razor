@@ -17,10 +17,17 @@
 <MudLayout>
 
     <MudAppBar Elevation="0">
-
-        <LogoTitle Animate="true" />
+        @if (!ClientTheme.CurrentTheme.ShowLogoInDrawer)
+        {
+            <LogoTitle Animate="true"/>
+        }
 
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+            
+        @if (ClientTheme.CurrentTheme.ShowLogoInDrawer)
+        {
+            <LogoTitle Hidden="@_drawerOpen" />
+        }
 
         <MudSpacer />
 
@@ -51,7 +58,13 @@
             </MudMenu>
         </MudHidden>
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="1" ClipMode="DrawerClipMode.Docked" Variant="DrawerVariant.Responsive">
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="1" ClipMode="@ClientTheme.CurrentTheme.DrawerClipMode" Variant="@ClientTheme.CurrentTheme.DrawerVariant">
+        @if (ClientTheme.CurrentTheme.ShowLogoInDrawer)
+        {
+            <MudDrawerHeader>
+                <LogoTitle />
+            </MudDrawerHeader>
+        }
         @if (ClientTheme.CurrentTheme.ShowFilterInDrawer)
         {
             <div style="width: 100%;padding: 0 9px;z-index: 2;position: sticky;top: 0;background: var(--mud-palette-drawer-background);">

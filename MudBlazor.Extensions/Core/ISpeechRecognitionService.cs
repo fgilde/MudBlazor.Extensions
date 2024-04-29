@@ -37,5 +37,18 @@ public interface ISpeechRecognitionService : IAsyncDisposable
     /// </summary>
     /// <returns>A Task representing the asynchronous operation.</returns>
     Task StopAllRecordingsAsync();
+    
+    /// <summary>
+    /// Returns a collection of available audio devices for input.
+    /// </summary>
+    Task<IEnumerable<AudioDevice>> GetAudioDevicesAsync();
 }
 
+public class AudioDevice
+{
+    public string DeviceId { get; set; }
+    public string GroupId { get; set; }
+    public string Label { get; set; }
+
+    public override string ToString() => Label;
+}

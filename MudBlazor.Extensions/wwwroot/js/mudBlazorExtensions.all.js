@@ -635,14 +635,20 @@ class MudExSpeechRecognition {
     }
 
     static async setupRecognition(options, id, callback) {
-        const { lang = 'en-US', continuous = true, interimResults = true } = options || {};
+        const { lang = 'en-US', continuous = true, interimResults = true, deviceId } = options || {};
         const recognition = new webkitSpeechRecognition();
         recognition.lang = lang;
         recognition.continuous = continuous;
         recognition.interimResults = interimResults;
 
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const audioOptions = deviceId ? { audio: { deviceId: { exact: deviceId } } } : { audio: true };
+        const stream = await navigator.mediaDevices.getUserMedia(audioOptions);
         return { recognition, stream };
+    }
+
+    static async getAvailableAudioDevices() {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        return devices.filter(device => device.kind === 'audioinput');
     }
 
     static setupMediaRecorder(stream, callback, id) {
@@ -668,7 +674,7 @@ class MudExSpeechRecognition {
     }
 
     static handleRecognitionResult(event, id, callback) {
-        let options = this.recordings[id].options;
+        let options = this.recordings[id]?.options;
         let transcript = '';
         let partialTranscript = '';
         let isFinal = false;
