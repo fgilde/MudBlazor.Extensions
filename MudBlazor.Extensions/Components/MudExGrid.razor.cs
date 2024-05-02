@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Core;
+using System.Collections.Concurrent;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -10,8 +11,10 @@ namespace MudBlazor.Extensions.Components;
 /// <summary>
 /// A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.
 /// </summary>
-public partial class MudExGrid 
+public partial class MudExGrid
 {
+    private ConcurrentBag<MudExGridSection> _childSections = new();
+
     private string GetClass() =>
       new MudExCssBuilder("mud-ex-grid")
           .AddClass($"mud-ex-grid-column-{Column}")
@@ -80,7 +83,55 @@ public partial class MudExGrid
     public bool OnContextMenuStopPropagation { get; set; }
 
     /// <summary>
+    /// Registers a section with the grid.
+    /// </summary>
+    /// <param name="section"></param>
+    internal void RegisterSection(MudExGridSection section)
+    {
+        if (!_childSections.Contains(section))
+        {
+            _childSections.Add(section);
+        }
+    }
+
+    /// <summary>
+    /// Unregisters a section with the grid.
+    /// </summary>
+    /// <param name="section"></param>
+    internal void UnregisterSection(MudExGridSection section)
+    {
+        if (_childSections.Contains(section))
+        {
+            var newSections = new ConcurrentBag<MudExGridSection>(_childSections.Where(s => s != section));
+            Interlocked.Exchange(ref _childSections, newSections);
+        }
+    }
+
+    /// <summary>
+    /// Returns all containing sections.
+    /// </summary>
+    public MudExGridSection[] GetAllChildSections() => _childSections.ToArray();
+
+    public (int Row, int Column)? GetNextFreeSpace()
+    {
+        bool isOccupied(int row, int col) => _childSections.Any(section => row >= section.Row && row < section.Row + section.RowSpan && col >= section.Column && col < section.Column + section.ColSpan);
+
+        for (int i = 1; i <= Row; i++)
+        {
+            for (int j = 1; j <= Column; j++)
+            {
+                if (!isOccupied(i, j))
+                {
+                    return (i, j); 
+                }
+            }
+        }
+
+        return null; 
+    }
+
+    /// <summary>
     /// The on click handler
     /// </summary>    
-    protected async Task OnClickHandler(MouseEventArgs ev) => await OnClick.InvokeAsync(ev);
+    protected virtual Task OnClickHandler(MouseEventArgs ev) => OnClick.InvokeAsync(ev);
 }

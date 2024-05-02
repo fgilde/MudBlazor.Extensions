@@ -6,6 +6,7 @@
      @oncontextmenu="OnContextMenu"
      @oncontextmenu:preventDefault="OnContextMenuPreventDefault"
      @oncontextmenu:stopPropagation="OnContextMenuStopPropagation">
-    
-    @ChildContent
+    <CascadingValue Value="@this" IsFixed="true">
+        @ChildContent
+    </CascadingValue>
 </div>

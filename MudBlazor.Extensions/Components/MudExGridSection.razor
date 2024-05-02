@@ -1,7 +1,9 @@
 ﻿@inherits MudExBaseComponent<MudExGridSection>
 
-<div @attributes="UserAttributes" class="@GetClass()" style="@Style"
+<div @ref="ElementReference"
+     @attributes="UserAttributes" class="@GetClass()" style="@Style"
      @onclick="OnClickHandler"
+     @ondblclick="@OnDblClickHandler"
      @onclick:stopPropagation="OnClickStopPropagation"
      @oncontextmenu="OnContextMenu"
      @oncontextmenu:preventDefault="OnContextMenuPreventDefault"

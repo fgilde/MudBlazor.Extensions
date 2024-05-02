@@ -1,0 +1,81 @@
+﻿@page "/mud-ex-grid-enhanced"
+@using BlazorJS
+
+@attribute [DemoNew(Name = "MudExGrid Enhanced", Icon = Icons.Material.Outlined.Grid4x4, ForComponentTypes = new[] { typeof(MudExGrid), typeof(MudExGridSection) })]
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <div style="width: 100%">
+                <MudButton OnClick="@AddSection" Variant="Variant.Outlined" Color="Color.Primary">Add section</MudButton>
+                <MudExGrid @ref="_component" Class="mud-border-info border-2 border-solid" Column="4" Row="4" Height="800">
+                    @foreach (var section in _sections)
+                    {
+                        var label = $"Section {section.Index}";
+                        <MudExGridSection @ref="section.Component" @bind-Column="section.Column" @bind-ColSpan="section.ColSpan" @bind-Row="section.Row" @bind-RowSpan="section.RowSpan">
+                            <MudPaper Class="@($"d-flex align-center justify-center {section.Class}")">@(label)</MudPaper>
+                        </MudExGridSection>
+                    }
+
+                </MudExGrid>
+            </div>
+        </Left>
+        <Right>
+            <MudExpansionPanels MultiExpansion="true">
+                <MudExpansionPanel IsInitiallyExpanded="true" Text="MudExGrid">
+                    <ChildContent>
+                        <ComponentPropertyGrid AutoUpdateConditions="false" Value="@_component"></ComponentPropertyGrid>
+                    </ChildContent>
+                </MudExpansionPanel>
+                @foreach (var section in _sections.Where(s => s.Component != null))
+                {
+                    <MudExpansionPanel IsInitiallyExpanded="false" Text="@(section.Label)">
+                        <ChildContent>
+                            <ComponentPropertyGrid T="MudExGridSection" Value="section.Component"></ComponentPropertyGrid>
+                        </ChildContent>
+                    </MudExpansionPanel>
+                }
+            </MudExpansionPanels>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+
+
+@code {
+    MudExGrid? _component;
+    readonly List<Section> _sections = [];
+
+    private void AddSection()
+    {
+        var space = _component?.GetNextFreeSpace();
+        if (space == null)
+        {
+            Console.WriteLine("No space available");
+            JsRuntime.AlertAsync("No space available");
+            return;
+        }
+
+        _sections.Add(new Section
+            {
+                Index = _sections.Count,
+                Column = space.Value.Column,
+                Row = space.Value.Row,
+                ColSpan = 1,
+                RowSpan = 1
+            });
+    }
+    class Section
+    {
+        public string Class => Index % 2 == 0 ? "mud-theme-primary" : "mud-theme-secondary";
+        public string Label => $"Section {Index}";
+        public int Index { get; set; }
+        public int Column { get; set; }
+        public int Row { get; set; }
+        public int ColSpan { get; set; }
+        public int RowSpan { get; set; }
+        public MudExGridSection? Component { get; set; }
+    }
+}
+

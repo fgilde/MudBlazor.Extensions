@@ -3280,6 +3280,23 @@
             Gets or sets a value indicating whether the context menu event should stop propagation. Default is false.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGrid.RegisterSection(MudBlazor.Extensions.Components.MudExGridSection)">
+            <summary>
+            Registers a section with the grid.
+            </summary>
+            <param name="section"></param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGrid.UnregisterSection(MudBlazor.Extensions.Components.MudExGridSection)">
+            <summary>
+            Unregisters a section with the grid.
+            </summary>
+            <param name="section"></param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGrid.GetAllChildSections">
+            <summary>
+            Returns all containing sections.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExGrid.OnClickHandler(Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
             <summary>
             The on click handler
@@ -3287,7 +3304,17 @@
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExGridSection">
             <summary>
-            This section can placed inside a MudExGrid component.
+            This section can be placed inside a MudExGrid component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.ElementReference">
+            <summary>
+            Reference to rendered element
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.Grid">
+            <summary>
+            Reference to the parent MudExGrid component.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExGridSection.ChildContent">
@@ -3315,9 +3342,34 @@
             Gets or sets the row span of the component. Default is 1.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.ColumnChanged">
+            <summary>
+            Callback that is invoked when the column position changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.ColSpanChanged">
+            <summary>
+            Callback that is invoked when the column span changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.RowChanged">
+            <summary>
+            Callback that is invoked when the row position changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.RowSpanChanged">
+            <summary>
+            Callback that is invoked when the row span changes.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExGridSection.OnClick">
             <summary>
             Event callback for the click event.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.OnDblClick">
+            <summary>
+            Event callback for the double click event.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExGridSection.OnClickStopPropagation">
@@ -3340,9 +3392,20 @@
             Gets or sets a value indicating whether the context menu event should stop propagation. Default is false.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGridSection.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGridSection.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExGridSection.OnClickHandler(Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
             <summary>
             The on click handler
+            </summary>    
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGridSection.OnDblClickHandler(Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
+            <summary>
+            The on double click handler
             </summary>    
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExHtmlEdit">
