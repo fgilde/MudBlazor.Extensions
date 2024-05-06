@@ -87,7 +87,9 @@ else
 
         meta.Properties<string>()
             .Where(p => IsValidCultureString(p.Value?.ToString()))
-        .RenderWith<MudExCultureSelect, string, CultureInfo>(edit => edit.Value, edit => edit.CultureHandling = NeutralCultureHandling.IgnoreNeutralCultures, s => CultureInfo.GetCultureInfo(s), info => info.Name);
+        .RenderWith<MudExCultureSelect, string, CultureInfo>(edit => edit.Value, edit => edit.CultureHandling = NeutralCultureHandling.IgnoreNeutralCultures,
+                s => !string.IsNullOrWhiteSpace(s) ? CultureInfo.GetCultureInfo(s) : null, 
+                info => info?.Name ?? string.Empty);
 
         meta.AllProperties.WrapIn<PropertyInfoContainer<T>>((p, cmp) => cmp.Property = p.PropertyInfo);
 

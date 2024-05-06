@@ -230,6 +230,7 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     public async Task StartRecordingAsync()
     {
         Console.WriteLine(UsedDeviceId);
+        Console.WriteLine("LANGUAGE: " + Language);
         var options = new SpeechRecognitionOptions
         {
             Lang = Language,

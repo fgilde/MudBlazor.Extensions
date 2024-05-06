@@ -611,7 +611,7 @@ class MudExSpeechRecognition {
             console.error("Speech Recognition or MediaRecorder is not supported in this browser.");
             return null;
         }
-
+        console.log(options);
         const id = this.generateUniqueId();
         const { recognition, stream } = await this.setupRecognition(options, id, callback);
         const mediaRecorder = this.setupMediaRecorder(stream, callback, id);
@@ -635,13 +635,14 @@ class MudExSpeechRecognition {
     }
 
     static async setupRecognition(options, id, callback) {
-        const { lang = 'en-US', continuous = true, interimResults = true, deviceId } = options || {};
         const recognition = new webkitSpeechRecognition();
-        recognition.lang = lang;
-        recognition.continuous = continuous;
-        recognition.interimResults = interimResults;
+        if (options?.lang) { 
+            recognition.lang = options.lang;
+        }
+        recognition.continuous = options.continuous;
+        recognition.interimResults = options.interimResults;
 
-        const audioOptions = deviceId ? { audio: { deviceId: { exact: deviceId } } } : { audio: true };
+        const audioOptions = options.deviceId ? { audio: { deviceId: { exact: options.deviceId } } } : { audio: true };
         const stream = await navigator.mediaDevices.getUserMedia(audioOptions);
         return { recognition, stream };
     }

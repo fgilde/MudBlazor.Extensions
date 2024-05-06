@@ -81,6 +81,7 @@
             meta.Property(m => m.RecordingIcon).IgnoreIf(m => m.ShowSpectrumOnRecording);
             meta.Property(m => m.RecordingAnimation).IgnoreIf(m => m.RecordingBorderAnimation);
             meta.Property(m => m.BorderAnimationColors).IgnoreIf(m => !m.RecordingBorderAnimation);
+            meta.Property(m => m.Language).WithDescription("Set empty/null for auto detection");
         };
     }
 
