@@ -52,10 +52,14 @@
 
     private RenderFragment Content(NavigationEntry context, bool withAction, (bool Found, string? Term) search)
     {
-        if (!string.IsNullOrEmpty(search.Term))
+        if (!string.IsNullOrEmpty(Highlight))
         {
-            return @<MudHighlighter Text="@context.Text" HighlightedText="@search.Term" />;
+            return @<MudHighlighter Style="@GetStyle(context, withAction)" Text="@context.Text" HighlightedText="@Highlight" />;
         }
+        // if (!string.IsNullOrEmpty(search.Term))
+        // {
+        //     return @<MudHighlighter Text="@context.Text" HighlightedText="@search.Term" />;
+        // }
         return @<p style="@GetStyle(context, withAction)">@context.Text</p>;
 
     }

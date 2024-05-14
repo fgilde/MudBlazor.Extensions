@@ -6,6 +6,7 @@ using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
 using MudBlazor.Utilities;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -133,13 +134,13 @@ public partial class MudExTagField<T>
     /// Callback when the mouse enters a chip.
     /// </summary>
     [Parameter]
-    public EventCallback<MouseEventArgs> OnChipMouseOver { get; set; }
+    public EventCallback<ChipMouseEventArgs<T>> OnChipMouseOver { get; set; }
     
     /// <summary>
     /// Callback when the mouse leaves a chip.
     /// </summary>
     [Parameter]
-    public EventCallback<MouseEventArgs> OnChipMouseOut { get; set; }
+    public EventCallback<ChipMouseEventArgs<T>> OnChipMouseOut { get; set; }
 
     /// <summary>
     /// Auto clears the input after adding a chip.
@@ -262,17 +263,26 @@ public partial class MudExTagField<T>
         await ValuesChanged.InvokeAsync(Values);        
     }
 
-    private async Task HandleOnChipMouseOver(MouseEventArgs arg)
+    private async Task HandleOnChipMouseOver(MouseEventArgs arg, T value)
     {
         IsMouseOverChip = true;
+        var args = ChipMouseEventArgs<T>.Create(arg, value);
         await IsMouseOverChipChanged.InvokeAsync(IsMouseOverChip);
-        await OnChipMouseOver.InvokeAsync(arg);
+        await OnChipMouseOver.InvokeAsync(args);
     }
 
-    private async Task HandleOnChipMouseOut(MouseEventArgs arg)
+    private async Task HandleOnChipMouseOut(MouseEventArgs arg, T value)
     {
         IsMouseOverChip = false;
+        var args = ChipMouseEventArgs<T>.Create(arg, value);
         await IsMouseOverChipChanged.InvokeAsync(IsMouseOverChip);
-        await OnChipMouseOut.InvokeAsync(arg);
+        await OnChipMouseOut.InvokeAsync(args);
     }
+}
+
+public class ChipMouseEventArgs<T> : MouseEventArgs
+{
+    public static ChipMouseEventArgs<T> Create(MouseEventArgs args, T value) => args.MapTo<ChipMouseEventArgs<T>>().SetProperties(a => a.Value = value);
+
+    public T Value { get; set; }
 }

@@ -11,6 +11,9 @@ public partial class NavMenu
     private string[] _filters;
 
     [Parameter]
+    public string Highlight { get; set; }
+
+    [Parameter]
     public string[] Filters
     {
         get => _filters;

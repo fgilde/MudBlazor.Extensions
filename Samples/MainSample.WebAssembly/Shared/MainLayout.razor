@@ -1,8 +1,6 @@
 ﻿@using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 @using MudBlazor.Extensions.Core
-@using BlazorJs
-@using BlazorJS
 @inherits LayoutComponentBase
 
 <MudThemeProvider @bind-IsDarkMode="@IsDark" Theme="@ClientTheme.CurrentTheme" />
@@ -68,10 +66,10 @@
         @if (ClientTheme.CurrentTheme.ShowFilterInDrawer)
         {
             <div style="width: 100%;padding: 0 9px;z-index: 2;position: sticky;top: 0;background: var(--mud-palette-drawer-background);">
-                <MudExTagField OnKeyDown="SearchKeyDown" ChipColor="MudExColor.Primary" @bind-Values="filters" @bind-Value="filter" Placeholder="Filter (Press enter to tag)" T="string"></MudExTagField>
+                <MudExTagField OnChipMouseOver="OnTagOver" OnChipMouseOut="OnTagOut" OnKeyDown="SearchKeyDown" ChipColor="MudExColor.Primary" @bind-Values="filters" @bind-Value="filter" Placeholder="Filter (Press enter to tag)" T="string"></MudExTagField>
             </div>
         }
-        <NavMenu Filters="@filters.Concat(new []{filter}).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToArray()" ExpandMode="ClientTheme.CurrentTheme.NavigationExpandMode" />
+        <NavMenu Highlight="@GetToHighlight()" Filters="@filters.Concat(new []{filter}).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToArray()" ExpandMode="ClientTheme.CurrentTheme.NavigationExpandMode" />
     </MudDrawer>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-sample-main-content-container my-4 pt-4">
@@ -82,82 +80,3 @@
     <CommentsFooter @bind-Available="_commentsAvailable" />
 
 </MudLayout>
-
-@code {
-    private string filter;
-    private List<string> filters = new();
-    public static MainLayout? Instance { get; private set; }
-    bool _drawerOpen = true;
-    bool _commentsAvailable = true;
-    public bool IsOverlayVisible { get; set; }
-    public bool IsDark { get; set; } = true;
-    public event EventHandler<ThemeChangedEventArgs> ThemeChanged;
-
-    private async void ShowAbout()
-    {
-        var op = new DialogOptionsEx
-            {
-                DragMode = MudDialogDragMode.Simple,
-                CloseButton = true,
-                MaxWidth = MaxWidth.ExtraSmall,
-                FullWidth = true,
-                FullHeight = true,
-                DisablePositionMargin = true,
-                DisableSizeMarginY = true,
-                Animation = AnimationType.SlideIn,
-                Position = DialogPosition.CenterRight,
-                DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.ColorfullGlass),
-                DialogBackgroundAppearance = MudExAppearance.FromCss(MudExCss.Classes.Backgrounds.MovingDots)
-            };
-
-
-        await DialogService.ShowEx<InfoDialog>("Info", op);
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        Instance = this;
-        await base.OnInitializedAsync();
-    }
-
-
-
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
-
-    internal static CodeBlockTheme GetCodeBlockTheme() => Instance is { IsDark: true } ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.AtomOneLight;
-
-    private async void HandleThemeChange(bool arg1, ClientTheme arg2)
-    {
-        ThemeChanged?.Invoke(this, new ThemeChangedEventArgs { IsDark = arg1, Theme = arg2 });
-    }
-
-    public class ThemeChangedEventArgs
-    {
-        public bool IsDark { get; set; }
-        public ClientTheme Theme { get; set; }
-    }
-
-    public void SetTheme(ClientTheme theme)
-    {
-        ClientTheme.CurrentTheme = theme;
-        StateHasChanged();
-        HandleThemeChange(IsDark, theme);
-    }
-
-    private void SearchKeyDown(KeyboardEventArgs args)
-    {
-        if(args.Key == "Escape")
-        {
-            if(string.IsNullOrWhiteSpace(filter))
-                filters.Clear();
-            filter = string.Empty;
-        } else if(args.Key == "Delete" && string.IsNullOrWhiteSpace(filter))
-        {
-            filter.Remove(filters.Count - 1);
-        }
-    }
-
-}

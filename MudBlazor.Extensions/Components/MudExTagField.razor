@@ -28,18 +28,19 @@
         <MudChipSet Class="@ChipClassname" Style="@($"max-width: {ChipsMaxWidth}")" AllClosable="@Closeable" OnClose="Remove">
             @for (int i = 0; i < Math.Min(Values?.Count ?? 0, MaxChips == 0 ? int.MaxValue : MaxChips); i++)
             {
-                <MudChip 
-                    Class="@ClassChip"
-                    Style="@ChipStyleName"
-                    @onmouseover="HandleOnChipMouseOver"
-                    @onmouseout="HandleOnChipMouseOut"
-                    Color="@(ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"
-                    DisableRipple="true"
-                    Text="@Converter.Set(Values[i])"
-                    Value="@Values[i]"
-                    Variant="@ChipVariant" 
-                    Size="@ChipSize" 
-                    Disabled="@Disabled" />
+
+                var value = Values[i];
+                <MudChip Class="@ClassChip"
+                         Style="@ChipStyleName"
+                         @onmouseover="@(args => HandleOnChipMouseOver(args, value))"
+                         @onmouseout="@(args =>HandleOnChipMouseOut(args, value))"
+                         Color="@(ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"
+                         DisableRipple="true"
+                         Text="@Converter.Set(value)"
+                         Value="@value"
+                         Variant="@ChipVariant"
+                         Size="@ChipSize"
+                         Disabled="@Disabled" />
             }
         </MudChipSet>
 
@@ -49,14 +50,13 @@
             var tooltipText = string.Join(", ", chipsNotShown);
 
             <MudTooltip Text="@tooltipText">
-                <MudChip 
-                    DisableRipple="true" 
-                    Text="@($" +{chipsNotShown.Count}")"
-                    Style="@ChipStyleName"
-                    Color="@(ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"
-                    Variant="@ChipVariant" 
-                    Size="@ChipSize" 
-                    Disabled="@Disabled" />
+                <MudChip DisableRipple="true"
+                         Text="@($" +{chipsNotShown.Count}")"
+                         Style="@ChipStyleName"
+                         Color="@(ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"
+                         Variant="@ChipVariant"
+                         Size="@ChipSize"
+                         Disabled="@Disabled" />
             </MudTooltip>
         }
 
