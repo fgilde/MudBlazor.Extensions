@@ -4,7 +4,7 @@
         super.handle(dialog);
         if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
             this.animate(this.options.animationDescriptions);
-        }
+        }        
     }
 
     animate(types) {

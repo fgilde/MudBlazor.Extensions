@@ -1,7 +1,8 @@
 ﻿class MudExDialogHandlerBase {
-    constructor(options, dotNet, onDone) {
+    constructor(options, dotNet, dotNetService, onDone) {
         this.options = options;
         this.dotNet = dotNet;
+        this.dotNetService = dotNetService;
         this.onDone = onDone;
 
         this.mudDialogSelector = options.mudDialogSelector || '.mud-dialog:not([data-mud-extended=true])';
@@ -45,6 +46,7 @@
         delete this.dialog;
         delete this.dialogHeader;
         delete this.dotNet;
+        delete this.dotNetService;
         delete this.onDone;
         delete this.options;
         
@@ -62,7 +64,7 @@
                 try {
                     const superClass = Object.getPrototypeOf(window[key].prototype);
                     if (superClass && superClass.constructor === MudExDialogHandlerBase && window[key].prototype.constructor !== this.constructor) {
-                        const instance = new window[key](this.options, this.dotNet, this.onDone);
+                        const instance = new window[key](this.options, this.dotNet, this.dotNetService, this.onDone);
                         handlerInstances.push(instance);
                     }
                 } catch (error) {

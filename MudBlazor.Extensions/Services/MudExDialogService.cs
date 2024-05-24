@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Interop;
 
 namespace MudBlazor.Extensions.Services;
 
@@ -10,7 +11,51 @@ namespace MudBlazor.Extensions.Services;
 public class MudExDialogService : IMudExDialogService
 {
     private readonly IDialogService _innerDialogService;
-    
+
+
+    [JSInvokable]
+    public Task OnDragEnd(DotNetObjectReference<ComponentBase> dialog, BoundingClientRect rect)
+    {       
+        
+        return Task.CompletedTask;
+    }
+
+    [JSInvokable]
+    public Task OnDragStart(DotNetObjectReference<ComponentBase> dialog, BoundingClientRect rect)
+    {
+        return Task.CompletedTask;
+    }
+
+    [JSInvokable]
+    public Task OnDragging(DotNetObjectReference<ComponentBase> dialog, BoundingClientRect rect)
+    {
+        return Task.CompletedTask;
+    }
+
+    [JSInvokable]
+    public Task OnClosing(DotNetObjectReference<ComponentBase> dialog, BoundingClientRect rect)
+    {
+        return Task.CompletedTask;
+    }
+
+    [JSInvokable]
+    public Task OnClosed(DotNetObjectReference<ComponentBase> dialog, BoundingClientRect rect)
+    {
+        return Task.CompletedTask;
+    }
+
+    [JSInvokable]
+    public Task OnResizing(DotNetObjectReference<ComponentBase> dialog, BoundingClientRect rect)
+    {
+        return Task.CompletedTask;
+    }
+
+    [JSInvokable]
+    public Task OnResized(DotNetObjectReference<ComponentBase> dialog, BoundingClientRect rect)
+    {
+        return Task.CompletedTask;
+    }
+
     /// <summary>
     /// JsRuntime
     /// </summary>

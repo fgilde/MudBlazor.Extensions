@@ -14,6 +14,7 @@ public partial class MudExDialog : IMudExComponent
     private DialogOptionsEx _options;
     //private IDialogReference _reference;
 
+    [Inject] private IMudExDialogService DialogService { get; set; }
     [Inject] private IJSRuntime Js { get; set; }
     [Inject] private MudExAppearanceService AppearanceService { get; set; }
 
@@ -32,9 +33,8 @@ public partial class MudExDialog : IMudExComponent
     /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
-        if (parameters.TryGetValue<DialogOptions>(nameof(Options), out var options) && options is DialogOptionsEx)
-            _options = (DialogOptionsEx) options;
-        
+        if (parameters.TryGetValue<DialogOptions>(nameof(Options), out var options) && options is DialogOptionsEx ex)
+            _options = ex;        
         bool oldVisible = IsVisible;
         await base.SetParametersAsync(parameters);
         if (oldVisible != IsVisible)
@@ -56,7 +56,7 @@ public partial class MudExDialog : IMudExComponent
         OptionsEx.JsRuntime = Js;
         OptionsEx.AppearanceService = AppearanceService;
         await DialogServiceExt.PrepareOptionsBeforeShow(OptionsEx);
-        return await base.Show(title, options).InjectOptionsAsync(OptionsEx);
+        return await base.Show(title, options).InjectOptionsAsync(DialogService, OptionsEx);
     }
 
     /// <summary>

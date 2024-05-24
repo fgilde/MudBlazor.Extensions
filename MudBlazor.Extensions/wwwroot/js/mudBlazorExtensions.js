@@ -1,7 +1,7 @@
 class MudBlazorExtensionHelper {
-    constructor(options, dotNet, onDone) {
-        this.dialogFinder = new MudExDialogFinder(options);
-        this.dialogHandler = new MudExDialogHandler(options, dotNet, onDone);
+    constructor(options, dotNet, dotNetService, onDone) {
+        this.dialogFinder = new MudExDialogFinder(options);        
+        this.dialogHandler = new MudExDialogHandler(options, dotNet, dotNetService, onDone);
     }
 
     init() {
@@ -35,8 +35,8 @@ window.MudBlazorExtensions = {
         return window.MudBlazorExtensions.currentMouseArgs;
     },
 
-    setNextDialogOptions: function (options, dotNet) {
-        new MudBlazorExtensionHelper(options, dotNet, () => {
+    setNextDialogOptions: function (options, dotNet, dotNetService) {
+        new MudBlazorExtensionHelper(options, dotNet, dotNetService, () => {
             MudBlazorExtensions.helper = null;
             delete MudBlazorExtensions.helper;
         }).init();

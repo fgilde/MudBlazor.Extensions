@@ -870,7 +870,7 @@
         <member name="M:MudBlazor.Extensions.Components.MudExAudioPlayer.HandleOnGradientChanged(AuralizeBlazor.Options.AudioMotionGradient)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExAudioPlayer.HandleOnPresetApplied(AuralizeBlazor.AuralizerPreset)">
+        <member name="M:MudBlazor.Extensions.Components.MudExAudioPlayer.HandleOnPresetApplied(AuralizeBlazor.AuralizerPreset,AuralizeBlazor.Options.PresetApplySettings)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExAudioPlayer.HandleMouseWheel(Microsoft.AspNetCore.Components.Web.WheelEventArgs)">
@@ -14651,6 +14651,53 @@
             GoogleDrive brand icon.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.MudExPosition">
+            <summary>
+            Holds two position one for left and one for top and their units
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExPosition.#ctor(MudBlazor.Extensions.Core.MudExSize{System.Double})">
+            <summary>
+            Creates a new instance of <see cref="T:MudBlazor.Extensions.Core.MudExDimension"/>
+            </summary>
+            <param name="leftAndTop"></param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExPosition.#ctor(MudBlazor.Extensions.Core.MudExSize{System.Double},MudBlazor.Extensions.Core.MudExSize{System.Double})">
+            <summary>
+            Creates a new instance of <see cref="T:MudBlazor.Extensions.Core.MudExDimension"/>
+            </summary>
+            <param name="left"></param>
+            <param name="top"></param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExPosition.#ctor(System.String)">
+            <summary>
+            Creates a new position by parsing a string like 3px or 10% etc
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExPosition.Left">
+            <summary>
+            Left
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExPosition.Top">
+            <summary>
+            Top
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExPosition.op_Implicit(System.Double)~MudBlazor.Extensions.Core.MudExPosition">
+            <summary>
+            Implicit conversion from double to <see cref="T:MudBlazor.Extensions.Core.MudExDimension"/>
+            </summary>
+            <param name="s"></param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExPosition.op_Implicit(System.String)~MudBlazor.Extensions.Core.MudExPosition">
+            <summary>
+            Implicit conversion from String to MudExDimension type.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExPosition.ToString">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Core.MudExSize`1">
             <summary>
             MudExSize is a readonly struct that provides a convenient and type-safe way to deal with size values in the context of MudBlazor components.
@@ -14664,6 +14711,11 @@
         <member name="P:MudBlazor.Extensions.Core.MudExSize`1.SizeUnit">
             <summary>
             The unit of the size.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExSize`1.CssValue">
+            <summary>
+            String representation of the size that is fully compatible with all css sizes.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Core.MudExSize`1.#ctor(System.String)">
@@ -18943,14 +18995,29 @@
             A nullable boolean value indicating whether the minimize button is available or not.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.CustomPosition">
+            <summary>
+            Here you can set your Own custom position where the dialog should be shown.
+            Please notice that this only works when <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.ShowAtCursor"/> is false. 
+            Please also notice when this is set the <see cref="P:MudBlazor.DialogOptions.Position"/> will be ignored for the position but still used for the animation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.CustomSize">
+            <summary>
+            Here you can set your own custom size that the dialog should have.
+            Please notice when this is set the <see cref="P:MudBlazor.DialogOptions.MaxWidth"/>, <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.MaxHeight"/>, <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.FullHeight"/> and <see cref="P:MudBlazor.DialogOptions.FullWidth"/> will be ignored.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.ShowAtCursor">
             <summary>
             A boolean value indicating whether the dialog is shown at the cursor location or not.
+            Please notice if this is true <see cref="T:MudBlazor.Position"/> and <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.CustomPosition"/> will be ignored.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.CursorPositionOrigin">
             <summary>
             The point on the dialog box where the cursor is placed on showing the dialog box.
+            this is only used when <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.ShowAtCursor"/> is true.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.Resizeable">

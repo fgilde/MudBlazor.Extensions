@@ -21,6 +21,11 @@ public readonly struct MudExSize<T>
     public CssUnit SizeUnit { get; }
 
     /// <summary>
+    /// String representation of the size that is fully compatible with all css sizes.
+    /// </summary>
+    public string CssValue => ToString();
+
+    /// <summary>
     /// Creates a new size by parsing an string like 3px or 10% etc
     /// </summary>
     public MudExSize(string value)

@@ -25,6 +25,8 @@ namespace MudBlazor.Extensions.Options
             return this;
         }
 
+        internal DotNetObjectReference<object> DotNet { get; set; }
+
         /// <summary>
         /// The look and feel of the dialog component dialog.
         /// </summary>
@@ -56,12 +58,27 @@ namespace MudBlazor.Extensions.Options
         public bool? MinimizeButton { get; set; }
 
         /// <summary>
+        /// Here you can set your Own custom position where the dialog should be shown.
+        /// Please notice that this only works when <see cref="ShowAtCursor"/> is false. 
+        /// Please also notice when this is set the <see cref="DialogOptions.Position"/> will be ignored for the position but still used for the animation.
+        /// </summary>
+        public MudExPosition? CustomPosition { get; set; } = null;
+
+        /// <summary>
+        /// Here you can set your own custom size that the dialog should have.
+        /// Please notice when this is set the <see cref="DialogOptions.MaxWidth"/>, <see cref="MaxHeight"/>, <see cref="FullHeight"/> and <see cref="DialogOptions.FullWidth"/> will be ignored.
+        /// </summary>
+        public MudExDimension? CustomSize { get; set; } = null;
+
+        /// <summary>
         /// A boolean value indicating whether the dialog is shown at the cursor location or not.
+        /// Please notice if this is true <see cref="Position"/> and <see cref="CustomPosition"/> will be ignored.
         /// </summary>
         public bool ShowAtCursor { get; set; }
 
         /// <summary>
         /// The point on the dialog box where the cursor is placed on showing the dialog box.
+        /// this is only used when <see cref="ShowAtCursor"/> is true.
         /// </summary>
         public Origin CursorPositionOrigin { get; set; } = Origin.CenterCenter;
 
@@ -157,7 +174,8 @@ namespace MudBlazor.Extensions.Options
         /// </summary>
         /// <returns>A cloned instance of the current object.</returns>
         public DialogOptionsEx CloneOptions()
-        {
+        {            
+            
             var res = Clone() as DialogOptionsEx;
             if (res == null)
                 return null;

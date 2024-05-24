@@ -149,10 +149,11 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
         StateHasChanged();
     }
 
+
     /// <inheritdoc />
-    protected override void HandleOnPresetApplied(AuralizerPreset preset)
-    {
-        base.HandleOnPresetApplied(preset);
+    protected override void HandleOnPresetApplied(AuralizerPreset preset, PresetApplySettings settings)
+    {        
+        base.HandleOnPresetApplied(preset, settings);
         if (MudExFileDisplay != null)
             ApplyInitialSettingsForFileView(false);
     }

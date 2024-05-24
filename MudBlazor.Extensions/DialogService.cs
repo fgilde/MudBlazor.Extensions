@@ -22,7 +22,7 @@ namespace MudBlazor.Extensions
         /// <returns>The default dialog options.</returns>
         internal static DialogOptionsEx DefaultOptions() => DialogOptionsEx.DefaultDialogOptions?.CloneOptions() ?? new();
 
- 
+
         /// <summary>
         /// Shows the dialog and injects dependencies asynchronously.
         /// </summary>
@@ -97,7 +97,7 @@ namespace MudBlazor.Extensions
             options(dlgOptions);
             return Show(dialogService, title, dialogParameters, dlgOptions);
         }
-        
+
         /// <summary>
         /// Shows the dialog and injects dependencies immediately.
         /// </summary>
@@ -114,7 +114,7 @@ namespace MudBlazor.Extensions
             options(dlgOptions);
             return dialogService.Show(title, dialogParameters, dlgOptions).AsMudExDialogReference<TDialog>();
         }
-        
+
         /// <summary>
         /// Shows the dialog and injects dependencies immediately.
         /// </summary>
@@ -159,7 +159,7 @@ namespace MudBlazor.Extensions
         /// <param name="title">The title.</param>
         /// <param name="options">The options.</param>
         /// <returns>The interface <see cref="IMudExDialogReference{T}"/>.</returns>
-        public static Task<IMudExDialogReference<T>> ShowEx<T>(this IDialogService dialogService, string title, DialogOptionsEx options = null) where T : ComponentBase 
+        public static Task<IMudExDialogReference<T>> ShowEx<T>(this IDialogService dialogService, string title, DialogOptionsEx options = null) where T : ComponentBase
             => dialogService.ShowAndInject<T>(title, options).AsMudExDialogReferenceAsync<T>();
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace MudBlazor.Extensions
         /// <param name="parameters">The dialog parameters.</param>
         /// <param name="options">The options.</param>
         /// <returns>The interface <see cref="IDialogReference"/>reference.</returns>
-        public static Task<IDialogReference> ShowEx(this IDialogService dialogService, Type type, string title, DialogParameters parameters, DialogOptionsEx options = null) 
+        public static Task<IDialogReference> ShowEx(this IDialogService dialogService, Type type, string title, DialogParameters parameters, DialogOptionsEx options = null)
             => dialogService.ShowAndInject(type, title, options, parameters); //dialogService.Show(type, title, parameters, options).InjectOptionsAsync(options);
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace MudBlazor.Extensions
                 ["NoText"] = mboxOptions.NoText,
                 ["YesText"] = mboxOptions.YesText
             };
-            
+
             string title = mboxOptions.Title;
             //options.ClassBackground = $"mud-ex-mb-container {options.ClassBackground}";
             var result = await (await dialogService.ShowAndInject<MudMessageBox>(title, options, parameters)).Result;
@@ -221,7 +221,7 @@ namespace MudBlazor.Extensions
         }
 
 
-        internal static Task<IDialogReference> ShowAndInject<T>(this IDialogService dialogService, string title, DialogOptionsEx options, DialogParameters parameters = null) where T : ComponentBase 
+        internal static Task<IDialogReference> ShowAndInject<T>(this IDialogService dialogService, string title, DialogOptionsEx options, DialogParameters parameters = null) where T : ComponentBase
             => dialogService.ShowAndInject(typeof(T), title, options, parameters);
 
         internal static async Task<IDialogReference> ShowAndInject(this IDialogService dialogService, Type type, string title, DialogOptionsEx options, DialogParameters parameters = null)
@@ -233,7 +233,7 @@ namespace MudBlazor.Extensions
                 options.JsRuntime = service.JSRuntime;
                 options.AppearanceService = service.AppearanceService;
             }
-            return await dialogService.ShowAsync(type, title, parameters ?? new DialogParameters(), options).InjectOptionsAsync(options);
+            return await dialogService.ShowAsync(type, title, parameters ?? new DialogParameters(), options).InjectOptionsAsync(dialogService, options);
         }
 
         internal static async Task PrepareOptionsBeforeShow(DialogOptionsEx options)
@@ -244,35 +244,43 @@ namespace MudBlazor.Extensions
                 options.ClassBackground = MudExCss.Classes.Backgrounds.NoModal;
             else if (options.DialogBackgroundAppearance != null)
                 await options.GetAppearanceService().ApplyAsClassOnlyToAsync(options.DialogBackgroundAppearance, options, (o, cls) => o.ClassBackground = $"{cls} {o.ClassBackground}");
+
+            (options.DialogAppearance ??= MudExAppearance.Empty()).WithStyle(b => 
+                b.WithLeft(options.CustomPosition?.Left, !string.IsNullOrEmpty(options.CustomPosition?.Left))
+                 .WithTop(options.CustomPosition?.Top, !string.IsNullOrEmpty(options.CustomPosition?.Top))
+                 .WithHeight(options.CustomSize?.Height, !string.IsNullOrEmpty(options.CustomSize?.Height))
+                 .WithWidth(options.CustomSize?.Width, !string.IsNullOrEmpty(options.CustomSize?.Width))
+            );
+
         }
 
-        private static async Task<IDialogReference> InjectOptionsAsync(this Task<IDialogReference> dialogReference,
-            DialogOptionsEx options)
+        private static async Task<IDialogReference> InjectOptionsAsync(this Task<IDialogReference> dialogReference, IDialogService service, DialogOptionsEx options)
         {
-            return await (await dialogReference).InjectOptionsAsync(options);
+            return await (await dialogReference).InjectOptionsAsync(service, options);
         }
 
-        internal static async Task<IDialogReference> InjectOptionsAsync(this IDialogReference dialogReference, DialogOptionsEx options)
+        internal static async Task<IDialogReference> InjectOptionsAsync(this IDialogReference dialogReference, IDialogService service, DialogOptionsEx options)
         {
             options = PrepareOptionsAfterShow(options);
             var callbackReference = await WaitForCallbackReference(dialogReference);
             var js = await JsImportHelper.GetInitializedJsRuntime(callbackReference.Value, options.JsRuntime);
-            
+
             if (options.DialogAppearance != null)
                 await options.GetAppearanceService().ApplyToAsync(options.DialogAppearance, dialogReference)!;
 
-            await InjectOptionsAsync(callbackReference, js, options);
+            await InjectOptionsAsync(service, callbackReference, js, options);
             return dialogReference;
         }
 
-        private static async Task InjectOptionsAsync(DotNetObjectReference<ComponentBase> callbackReference, IJSRuntime js, DialogOptionsEx options)
+        private static async Task InjectOptionsAsync(IDialogService service, DotNetObjectReference<ComponentBase> callbackReference, IJSRuntime js, DialogOptionsEx options)
         {
-            await js.InvokeVoidAsync("MudBlazorExtensions.setNextDialogOptions", options, callbackReference);
+            var serviceCallBackRef = DotNetObjectReference.Create(service);
+            await js.InvokeVoidAsync("MudBlazorExtensions.setNextDialogOptions", options, callbackReference, serviceCallBackRef);
         }
 
         private static async Task<DotNetObjectReference<ComponentBase>> WaitForCallbackReference(IDialogReference dialogReference)
-        {
-            var dialogComponent = await new Func<ComponentBase>(() => dialogReference.Dialog as ComponentBase).WaitForResultAsync();
+        {            
+            var dialogComponent = await new Func<ComponentBase>(() => dialogReference.Dialog as ComponentBase).WaitForResultAsync();            
             DotNetObjectReference<ComponentBase> callbackReference = DotNetObjectReference.Create(dialogComponent);
             return callbackReference;
         }
@@ -284,7 +292,7 @@ namespace MudBlazor.Extensions
 
             (options.DialogAppearance ??= MudExAppearance.Empty()).WithCss(options.DisableSizeMarginY ?? false ? MudExCss.Classes.Dialog.FullHeightWithoutMargin : MudExCss.Classes.Dialog.FullHeightWithMargin, options.FullHeight ?? false);
             (options.DialogAppearance ??= MudExAppearance.Empty()).WithCss(options.MaxHeight != null ? $"mud-ex-dialog-max-height-{options.MaxHeight.GetDescription()}" : string.Empty);
-            (options.DialogAppearance ??= MudExAppearance.Empty()).WithCss(MudExCss.Classes.Dialog.PositionFixedNoMargin, (options.DisablePositionMargin ?? false) || options.ShowAtCursor );
+            (options.DialogAppearance ??= MudExAppearance.Empty()).WithCss(MudExCss.Classes.Dialog.PositionFixedNoMargin, (options.DisablePositionMargin ?? false) || options.ShowAtCursor);
 
 
             if (options.MinimizeButton == true)

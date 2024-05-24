@@ -76,7 +76,7 @@
             const index = MudExDialogNoModalHandler.handled.indexOf(dialogInfo);
             MudExDialogNoModalHandler.handled.splice(index, 1);
 
-            const handler = new MudExDialogHandler(handleInfo.options, handleInfo.dotNet, handleInfo.onDone);
+            const handler = new MudExDialogHandler(handleInfo.options, handleInfo.dotNet, handleInfo.dotNetService, handleInfo.onDone);
             handler.handle(d);
 
             d.style.display = 'block';

@@ -776,9 +776,10 @@ class MudExUriHelper {
 
 window.MudExUriHelper = MudExUriHelper;
 class MudExDialogHandlerBase {
-    constructor(options, dotNet, onDone) {
+    constructor(options, dotNet, dotNetService, onDone) {
         this.options = options;
         this.dotNet = dotNet;
+        this.dotNetService = dotNetService;
         this.onDone = onDone;
 
         this.mudDialogSelector = options.mudDialogSelector || '.mud-dialog:not([data-mud-extended=true])';
@@ -822,6 +823,7 @@ class MudExDialogHandlerBase {
         delete this.dialog;
         delete this.dialogHeader;
         delete this.dotNet;
+        delete this.dotNetService;
         delete this.onDone;
         delete this.options;
         
@@ -839,7 +841,7 @@ class MudExDialogHandlerBase {
                 try {
                     const superClass = Object.getPrototypeOf(window[key].prototype);
                     if (superClass && superClass.constructor === MudExDialogHandlerBase && window[key].prototype.constructor !== this.constructor) {
-                        const instance = new window[key](this.options, this.dotNet, this.onDone);
+                        const instance = new window[key](this.options, this.dotNet, this.dotNetService, this.onDone);
                         handlerInstances.push(instance);
                     }
                 } catch (error) {
@@ -878,7 +880,7 @@ class MudExDialogAnimationHandler extends MudExDialogHandlerBase {
         super.handle(dialog);
         if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
             this.animate(this.options.animationDescriptions);
-        }
+        }        
     }
 
     animate(types) {
@@ -937,6 +939,7 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase  {
     }
 
     dragElement(dialogEl, headerEl, container, disableBoundCheck) {
+        const self = this;
         let startPos = { x: 0, y: 0 };
         let cursorPos = { x: 0, y: 0 };
         container = container || document.body;
@@ -993,6 +996,7 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase  {
         }
 
         function closeDragElement() {
+            self.dotNetService.invokeMethodAsync('OnDragEnd', self.dotNet, dialogEl.getBoundingClientRect());            
             document.onmouseup = null;
             document.onmousemove = null;
         }
@@ -1135,7 +1139,7 @@ class MudExDialogNoModalHandler extends MudExDialogHandlerBase {
             const index = MudExDialogNoModalHandler.handled.indexOf(dialogInfo);
             MudExDialogNoModalHandler.handled.splice(index, 1);
 
-            const handler = new MudExDialogHandler(handleInfo.options, handleInfo.dotNet, handleInfo.onDone);
+            const handler = new MudExDialogHandler(handleInfo.options, handleInfo.dotNet, handleInfo.dotNetService, handleInfo.onDone);
             handler.handle(d);
 
             d.style.display = 'block';
@@ -1346,9 +1350,9 @@ class MudExDialogResizeHandler extends MudExDialogHandlerBase {
 
 window.MudExDialogResizeHandler = MudExDialogResizeHandler;
 class MudBlazorExtensionHelper {
-    constructor(options, dotNet, onDone) {
-        this.dialogFinder = new MudExDialogFinder(options);
-        this.dialogHandler = new MudExDialogHandler(options, dotNet, onDone);
+    constructor(options, dotNet, dotNetService, onDone) {
+        this.dialogFinder = new MudExDialogFinder(options);        
+        this.dialogHandler = new MudExDialogHandler(options, dotNet, dotNetService, onDone);
     }
 
     init() {
@@ -1382,8 +1386,8 @@ window.MudBlazorExtensions = {
         return window.MudBlazorExtensions.currentMouseArgs;
     },
 
-    setNextDialogOptions: function (options, dotNet) {
-        new MudBlazorExtensionHelper(options, dotNet, () => {
+    setNextDialogOptions: function (options, dotNet, dotNetService) {
+        new MudBlazorExtensionHelper(options, dotNet, dotNetService, () => {
             MudBlazorExtensions.helper = null;
             delete MudBlazorExtensions.helper;
         }).init();

@@ -8,6 +8,7 @@
     }
 
     dragElement(dialogEl, headerEl, container, disableBoundCheck) {
+        const self = this;
         let startPos = { x: 0, y: 0 };
         let cursorPos = { x: 0, y: 0 };
         container = container || document.body;
@@ -64,6 +65,7 @@
         }
 
         function closeDragElement() {
+            self.dotNetService.invokeMethodAsync('OnDragEnd', self.dotNet, dialogEl.getBoundingClientRect());            
             document.onmouseup = null;
             document.onmousemove = null;
         }
