@@ -28,6 +28,11 @@ namespace MudBlazor.Extensions.Options
         internal DotNetObjectReference<object> DotNet { get; set; }
 
         /// <summary>
+        /// If true the dialog will be animated on close
+        /// </summary>
+        public bool AnimateClose { get; set; } = true;
+
+        /// <summary>
         /// The look and feel of the dialog component dialog.
         /// </summary>
         public MudExAppearance DialogAppearance { get; set; }

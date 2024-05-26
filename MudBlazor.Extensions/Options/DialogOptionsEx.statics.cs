@@ -49,6 +49,8 @@ public partial class DialogOptionsEx
             i.lg = 6;
             i.xs = 12;
         });
+
+        meta.Properties(m => m.CustomPosition, m => m.CustomSize).Ignore(); // TODO: Create Dimension edit and MudExSize edit 
     }
 
 

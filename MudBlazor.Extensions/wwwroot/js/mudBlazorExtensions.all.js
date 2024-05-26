@@ -810,8 +810,24 @@ class MudExDialogHandlerBase {
 
     order = 99;
 
-    raiseDialogEvent(eventName) {
-        this.dotNetService.invokeMethodAsync('PublishEvent', eventName, this.dialog.id, this.dotNet, this.dialog.getBoundingClientRect());                  
+    raiseDialogEvent(eventName) {        
+        // Get viewport dimensions
+        var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        var windowWidth = window.innerWidth || document.documentElement.clientWidth;
+
+        // Get scroll positions
+        var scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+        // Extend the rect object with new properties
+        var extendedRect = {
+            windowHeight: windowHeight,
+            windowWidth: windowWidth,
+            scrollX: scrollX,
+            scrollY: scrollY
+        };
+        const rect = Object.assign(extendedRect, JSON.parse(JSON.stringify(this.dialog.getBoundingClientRect())));        
+        this.dotNetService.invokeMethodAsync('PublishEvent', eventName, this.dialog.id, this.dotNet, rect);
     }
 
     getAnimationDuration() {
@@ -902,10 +918,12 @@ class MudExDialogAnimationHandler extends MudExDialogHandlerBase {
    
     handle(dialog) {
         super.handle(dialog);
-        //if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
-        //    this.animate();
-        //}        
-        this.extendCloseEvents();
+        if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
+           // this.animate();
+        }        
+        if (this.options.animateClose) {
+            this.extendCloseEvents();
+        }
         
     }
 
@@ -1291,11 +1309,20 @@ window.MudExDialogNoModalHandler = MudExDialogNoModalHandler;
 class MudExDialogPositionHandler extends MudExDialogHandlerBase {
 
     handle(dialog) {
-        super.handle(dialog);
-
+        super.handle(dialog);        
         if (this.options.showAtCursor) {
             this.moveElementToMousePosition(dialog);
+        } else if (this.options.customPosition) {
+            this.dialog.style.position = 'absolute';
+            this.dialog.style.left = this.options.customPosition.left.cssValue;
+            this.dialog.style.top = this.options.customPosition.top.cssValue;
         }
+
+        //if (this.options.customSize) {
+        //    this.dialog.style.position = 'absolute';
+        //    this.dialog.style.width = this.options.customSize.width.cssValue;
+        //    this.dialog.style.height = this.options.customSize.height.cssValue;
+        //}
                 
         if (this.options.fullWidth && this.options.disableSizeMarginX) {
             this.dialog.classList.remove('mud-dialog-width-full');

@@ -2,10 +2,12 @@
    
     handle(dialog) {
         super.handle(dialog);
-        //if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
-        //    this.animate();
-        //}        
-        this.extendCloseEvents();
+        if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
+           // this.animate();
+        }        
+        if (this.options.animateClose) {
+            this.extendCloseEvents();
+        }
         
     }
 

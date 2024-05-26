@@ -18965,6 +18965,11 @@
             </summary>
             <returns>A reference to the current instance.</returns>
         </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.AnimateClose">
+            <summary>
+            If true the dialog will be animated on close
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.DialogAppearance">
             <summary>
             The look and feel of the dialog component dialog.

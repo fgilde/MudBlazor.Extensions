@@ -1,4 +1,7 @@
 ## Change Log    
+ - 1.7.88 > Dialogs now supporting CustomSize and CustomPostion to allow more flexibility.
+ - 1.7.88 > New service IDialogEventService to allow handling of dialog events
+ - 1.7.88 > Dialog supports now a CloseAnimation
  - 1.7.88 > New Service [ISpeechRecognitionService](https://www.mudex.org/d/ISpeechRecognitionService/ISpeechRecognitionService) to allow easy speech to text conversion or audio recording without any UI
  - 1.7.88 > New Component [MudExSpeechToTextButton](https://www.mudex.org/speech-to-text) to allow easy speech to text conversion or audio recording
  - 1.7.87 > Small minor BugFixes

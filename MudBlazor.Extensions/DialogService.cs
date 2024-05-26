@@ -245,11 +245,9 @@ namespace MudBlazor.Extensions
             else if (options.DialogBackgroundAppearance != null)
                 await options.GetAppearanceService().ApplyAsClassOnlyToAsync(options.DialogBackgroundAppearance, options, (o, cls) => o.ClassBackground = $"{cls} {o.ClassBackground}");
 
-            (options.DialogAppearance ??= MudExAppearance.Empty()).WithStyle(b =>
-                b.WithLeft(options.CustomPosition?.Left, !string.IsNullOrEmpty(options.CustomPosition?.Left))
-                 .WithTop(options.CustomPosition?.Top, !string.IsNullOrEmpty(options.CustomPosition?.Top))
-                 .WithHeight(options.CustomSize?.Height, !string.IsNullOrEmpty(options.CustomSize?.Height))
-                 .WithWidth(options.CustomSize?.Width, !string.IsNullOrEmpty(options.CustomSize?.Width))
+            (options.DialogAppearance ??= MudExAppearance.Empty()).WithStyle(b => b                                
+                .WithHeight(options.CustomSize?.Height, !string.IsNullOrEmpty(options.CustomSize?.Height))
+                .WithWidth(options.CustomSize?.Width, !string.IsNullOrEmpty(options.CustomSize?.Width))
             );
 
             if (options.Animations?.Any(a => a != AnimationType.Default) == true)

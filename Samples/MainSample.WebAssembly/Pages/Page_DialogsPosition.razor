@@ -1,0 +1,53 @@
+﻿@page "/dialogs-pos-size"
+@using MudBlazor.Extensions.Options
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Helper
+@using MudBlazor.Interop
+
+@attribute [DemoNew(Group = "Dialog Samples", Name = "Position/Size Sample", Documentation = "Demo for using DialogOptionsEx and pass position and size", Order = 1, Icon = Icons.Material.Outlined.DesktopWindows)]
+
+
+<DemoComponent PageType="@GetType()">
+    <MudGrid>
+        <p> This demo uses the IDialogEventService to check rezized or dragged and stores the latest position relative and restore them on next open </p>
+        <MudButton OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
+    </MudGrid>
+</DemoComponent>
+
+@code {
+    [Inject] private IDialogEventService EventService { get; set; }
+
+    private MudExDimension? _lastSize;
+    private MudExPosition? _lastPosition;
+
+    protected override void OnInitialized()
+    {
+        EventService.Subscribe<DialogDragEndEvent>(e => Store(e.Rect));        
+        EventService.Subscribe<DialogResizedEvent>(e => Store(e.Rect));
+    }
+
+    private Task Store(BoundingClientRect argRect)
+    {
+        if (argRect is {Left: > 0, Top: > 0, Width: > 0, Height: > 0})
+        {
+            Console.WriteLine($"Try Store: {argRect.Left} {argRect.Top} {argRect.Width} {argRect.Height} ");
+            _lastPosition = argRect.ToPosition(CssUnit.Percentage);
+            _lastSize = argRect.ToDimension(CssUnit.Pixels);
+            Console.WriteLine($"Stored: {_lastPosition} {_lastSize}");
+        }
+        return Task.CompletedTask;
+    }
+
+
+    private async Task ShowSampleDialog()
+    {        
+        var options = DialogOptionsEx.DefaultDialogOptions.CloneOptions();
+        options.Resizeable = true;
+        options.DragMode = MudDialogDragMode.Simple;
+        options.CustomPosition = _lastPosition;
+        options.CustomSize = _lastSize;
+        IMudExDialogReference<SampleDialog>? dlgReference = await DialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, options);        
+    }
+
+
+}
