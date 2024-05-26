@@ -1,4 +1,5 @@
 ﻿@page "/dialogs-pos-size"
+@implements IAsyncDisposable
 @using MudBlazor.Extensions.Options
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Helper
@@ -8,9 +9,13 @@
 
 
 <DemoComponent PageType="@GetType()">
-    <MudGrid>
-        <p> This demo uses the IDialogEventService to check rezized or dragged and stores the latest position relative and restore them on next open </p>
-        <MudButton OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
+    <MudGrid Style="width: 100%" Justify="Justify.Center">
+        <MudItem xs="12">
+            <MudAlert><p> This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open </p></MudAlert>
+        </MudItem>
+        <MudItem xs="3" Class="mb-4">
+            <MudButton Class="m-4" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
+        </MudItem>
     </MudGrid>
 </DemoComponent>
 
@@ -22,32 +27,51 @@
 
     protected override void OnInitialized()
     {
-        EventService.Subscribe<DialogDragEndEvent>(e => Store(e.Rect));        
-        EventService.Subscribe<DialogResizedEvent>(e => Store(e.Rect));
+        EventService.Subscribe<DialogDragEndEvent>(HandleDragged);
+        EventService.Subscribe<DialogResizedEvent>(HandleResized);
+    }
+
+    private Task HandleDragged(DialogDragEndEvent arg)
+    {
+        return Store(arg.Rect);
+    }
+
+    private Task HandleResized(DialogResizedEvent arg)
+    {
+        return Store(arg.Rect);
     }
 
     private Task Store(BoundingClientRect argRect)
     {
-        if (argRect is {Left: > 0, Top: > 0, Width: > 0, Height: > 0})
-        {
-            Console.WriteLine($"Try Store: {argRect.Left} {argRect.Top} {argRect.Width} {argRect.Height} ");
+        if (argRect is { Left: > 0, Top: > 0, Width: > 0, Height: > 0 })
+        {            
             _lastPosition = argRect.ToPosition(CssUnit.Percentage);
-            _lastSize = argRect.ToDimension(CssUnit.Pixels);
-            Console.WriteLine($"Stored: {_lastPosition} {_lastSize}");
+            _lastSize = argRect.ToDimension(CssUnit.Percentage);            
         }
         return Task.CompletedTask;
     }
 
 
     private async Task ShowSampleDialog()
-    {        
+    {
         var options = DialogOptionsEx.DefaultDialogOptions.CloneOptions();
         options.Resizeable = true;
         options.DragMode = MudDialogDragMode.Simple;
         options.CustomPosition = _lastPosition;
-        options.CustomSize = _lastSize;
-        IMudExDialogReference<SampleDialog>? dlgReference = await DialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, options);        
+        if (_lastSize != null)
+        {
+            options.CustomSize = _lastSize;
+            options.MaxWidth = MaxWidth.ExtraExtraLarge;
+            options.MaxHeight = MaxHeight.ExtraExtraLarge;
+        }
+        IMudExDialogReference<SampleDialog>? dlgReference = await DialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, options);
     }
 
+    public ValueTask DisposeAsync()
+    {
+        EventService.Unsubscribe<DialogDragEndEvent>(HandleDragged);
+        EventService.Unsubscribe<DialogResizedEvent>(HandleResized);
+        return ValueTask.CompletedTask;   
+    }
 
 }

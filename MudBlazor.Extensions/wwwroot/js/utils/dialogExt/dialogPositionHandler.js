@@ -9,12 +9,6 @@
             this.dialog.style.left = this.options.customPosition.left.cssValue;
             this.dialog.style.top = this.options.customPosition.top.cssValue;
         }
-
-        //if (this.options.customSize) {
-        //    this.dialog.style.position = 'absolute';
-        //    this.dialog.style.width = this.options.customSize.width.cssValue;
-        //    this.dialog.style.height = this.options.customSize.height.cssValue;
-        //}
                 
         if (this.options.fullWidth && this.options.disableSizeMarginX) {
             this.dialog.classList.remove('mud-dialog-width-full');
