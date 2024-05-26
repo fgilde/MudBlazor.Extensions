@@ -245,13 +245,15 @@ namespace MudBlazor.Extensions
             else if (options.DialogBackgroundAppearance != null)
                 await options.GetAppearanceService().ApplyAsClassOnlyToAsync(options.DialogBackgroundAppearance, options, (o, cls) => o.ClassBackground = $"{cls} {o.ClassBackground}");
 
-            (options.DialogAppearance ??= MudExAppearance.Empty()).WithStyle(b => 
+            (options.DialogAppearance ??= MudExAppearance.Empty()).WithStyle(b =>
                 b.WithLeft(options.CustomPosition?.Left, !string.IsNullOrEmpty(options.CustomPosition?.Left))
                  .WithTop(options.CustomPosition?.Top, !string.IsNullOrEmpty(options.CustomPosition?.Top))
                  .WithHeight(options.CustomSize?.Height, !string.IsNullOrEmpty(options.CustomSize?.Height))
                  .WithWidth(options.CustomSize?.Width, !string.IsNullOrEmpty(options.CustomSize?.Width))
             );
 
+            if (options.Animations?.Any(a => a != AnimationType.Default) == true)
+                options.DialogAppearance.WithStyle(b => b.WithAnimations(options.Animations, options.AnimationDuration, AnimationDirection.In, options.AnimationTimingFunction, options.Position));
         }
 
         private static async Task<IDialogReference> InjectOptionsAsync(this Task<IDialogReference> dialogReference, IDialogService service, DialogOptionsEx options)
@@ -279,8 +281,8 @@ namespace MudBlazor.Extensions
         }
 
         private static async Task<DotNetObjectReference<ComponentBase>> WaitForCallbackReference(IDialogReference dialogReference)
-        {            
-            var dialogComponent = await new Func<ComponentBase>(() => dialogReference.Dialog as ComponentBase).WaitForResultAsync();            
+        {
+            var dialogComponent = await new Func<ComponentBase>(() => dialogReference.Dialog as ComponentBase).WaitForResultAsync();
             DotNetObjectReference<ComponentBase> callbackReference = DotNetObjectReference.Create(dialogComponent);
             return callbackReference;
         }

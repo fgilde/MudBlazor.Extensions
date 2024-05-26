@@ -566,6 +566,25 @@ class MudExEventHelper {
         }, ' ');
     }
 
+    static stopFor(e, element, milliseconds) {
+        if (e === undefined || e === null)
+            return;
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        if (milliseconds) {
+            setTimeout(() => {
+                //const newEvent = new MouseEvent('click', {
+                //    bubbles: true,
+                //    cancelable: true,
+                //    view: window
+                //});
+
+                element.dispatchEvent(e);
+            }, milliseconds);
+        }
+    }
+
     static cloneEvent(e, serializable) {
         if (serializable) {
             return JSON.parse(this.stringifyEvent(event));
@@ -791,6 +810,10 @@ class MudExDialogHandlerBase {
 
     order = 99;
 
+    raiseDialogEvent(eventName) {
+        this.dotNetService.invokeMethodAsync('PublishEvent', eventName, this.dialog.id, this.dotNet, this.dialog.getBoundingClientRect());                  
+    }
+
     getAnimationDuration() {
         // TODO: 
         return this.options.animationDurationInMs + 150;
@@ -861,6 +884,7 @@ class MudExDialogHandlerBase {
     _updateDialog(dialog) {
         this.dialog = dialog || this.dialog;
         if (this.dialog) {
+            this.dialog.options = this.options; 
             this.dialogHeader = this.dialog.querySelector(this.mudDialogHeaderSelector);
             this.dialogTitleEl = this.dialog.querySelector('.mud-dialog-title');
             this.dialogTitle = this.dialogTitleEl ? this.dialogTitleEl.innerText.trim() : '';
@@ -878,16 +902,71 @@ class MudExDialogAnimationHandler extends MudExDialogHandlerBase {
    
     handle(dialog) {
         super.handle(dialog);
-        if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
-            this.animate(this.options.animationDescriptions);
-        }        
+        //if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
+        //    this.animate();
+        //}        
+        this.extendCloseEvents();
+        
     }
 
-    animate(types) {
-        //var names = types.map(type => this.options.dialogPositionNames.map(n => `kf-mud-dialog-${type}-${n} ${this.options.animationDurationInMs}ms ${this.options.animationTimingFunctionString} 1 alternate`));
-        //this.dialog.style.animation = `${names.join(',')}`;
-        this.dialog.style.animation = `${this.options.animationStyle}`;
+    extendCloseEvents() {
+        var closeButton = this.dialog.querySelector('.mud-button-close');
+        //this.dialogOverlay 
+        if (this.dialogOverlay && this.options.modal && !this.options.disableBackdropClick) {
+            const handleClick = (e) => {
+                this.closeAnimation();
+                this.dialogOverlay.removeEventListener('click', handleClick);
+                MudExEventHelper.stopFor(e, this.dialogOverlay, this.options.animationDurationInMs);
+            };
+
+            this.dialogOverlay.addEventListener('click', handleClick);
+        }
+        if (closeButton) {
+            
+            const handleClick = (e) => {                
+                this.closeAnimation();
+                closeButton.removeEventListener('click', handleClick);
+                MudExEventHelper.stopFor(e, closeButton, this.options.animationDurationInMs);
+            };
+
+            closeButton.addEventListener('click', handleClick);
+        }
     }
+
+    animate() {
+       this.dialog.style.animation = `${this.options.animationStyle}`;
+    }
+
+    closeAnimation() {
+        MudExDialogAnimationHandler.playCloseAnimation(this.dialog);
+    }
+
+    static playCloseAnimation(dialog) {
+        if (!dialog) {
+            return Promise.resolve();
+        }        
+        var delay = dialog.options?.animationDurationInMs || 500;        
+        dialog.style['animation-duration'] = `${delay}ms`;
+        return new Promise((resolve) => {
+            MudExDialogAnimationHandler._playCloseAnimation(dialog);
+            setTimeout(() => {                
+                resolve();
+            }, delay);
+        });
+    }
+
+    static _playCloseAnimation(dialog) {        
+        const n = dialog.style.animationName;
+        dialog.style.animationName = '';
+        dialog.style.animationDirection = 'reverse';
+        dialog.style['animation-play-state'] = 'paused';
+        requestAnimationFrame(() => {
+            dialog.style.animationName = n;
+            dialog.style['animation-play-state'] = 'running';
+        });
+    }
+    
+
 }
 
 
@@ -942,6 +1021,7 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase  {
         const self = this;
         let startPos = { x: 0, y: 0 };
         let cursorPos = { x: 0, y: 0 };
+        let startDrag;
         container = container || document.body;
 
         if (headerEl) {
@@ -954,12 +1034,17 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase  {
         function dragMouseDown(e) {
             e = e || window.event;
             //e.preventDefault();
+            startDrag = true;
             cursorPos = { x: e.clientX, y: e.clientY };
             document.onmouseup = closeDragElement;
             document.onmousemove = elementDrag;
         }
 
         function elementDrag(e) {
+            if (startDrag) {
+                startDrag = false;
+                self.raiseDialogEvent('OnDragStart');
+            }
             e = e || window.event;
             e.preventDefault();
 
@@ -993,10 +1078,11 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase  {
             } else if (isOutOfBounds(newPosition.y, bounds.y)) {
                 dialogEl.style.top = bounds.y + 'px';
             }
+            self.raiseDialogEvent('OnDragging');
         }
 
-        function closeDragElement() {
-            self.dotNetService.invokeMethodAsync('OnDragEnd', self.dotNet, dialogEl.getBoundingClientRect());            
+        function closeDragElement() {            
+            self.raiseDialogEvent('OnDragEnd');
             document.onmouseup = null;
             document.onmousemove = null;
         }
@@ -1043,7 +1129,6 @@ class MudExDialogFinder {
 
 window.MudExDialogFinder = MudExDialogFinder;
 class MudExDialogHandler extends MudExDialogHandlerBase {
-
     handle(dialog) {
         setTimeout(() => {
             super.handle(dialog);
@@ -1053,10 +1138,9 @@ class MudExDialogHandler extends MudExDialogHandlerBase {
             dialog.__extended = true;
             dialog.setAttribute('data-mud-extended', true);
             dialog.classList.add('mud-ex-dialog');
-            this.handleAll(dialog);
+            this.handleAll(dialog);            
             if (this.onDone) this.onDone();
         }, 50);
-
     }
 }
 
@@ -1315,40 +1399,56 @@ class MudExDialogPositionHandler extends MudExDialogHandlerBase {
 
 window.MudExDialogPositionHandler = MudExDialogPositionHandler;
 class MudExDialogResizeHandler extends MudExDialogHandlerBase {
-
+    
     handle(dialog) {
+        this.resizeTimeout = null;
         super.handle(dialog);
+        this.dialog = dialog;
+        this.resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                this.raiseDialogEvent('OnResizing');
+                this.debounceResizeCompleted();
+            }
+        });
         this.awaitAnimation(() => this.checkResizeable());
+    }
+
+    debounceResizeCompleted() {
+        if (this.resizeTimeout) {
+            clearTimeout(this.resizeTimeout);
+        }
+        this.resizeTimeout = setTimeout(() => {
+            this.raiseDialogEvent('OnResized');
+        }, 500); // debounce
     }
 
     checkResizeable() {
         MudExDomHelper.toAbsolute(this.dialog);
         if (this.options.resizeable) {
+            this.resizeObserver.observe(this.dialog);
+
             this.dialog.style['resize'] = 'both';
             this.dialog.style['overflow'] = 'auto';
 
+            this.dialog.style.maxWidth = this.dialog.style.maxWidth || window.innerWidth + 'px';
+            this.dialog.style.maxHeight = this.dialog.style.maxHeight || window.innerHeight + 'px';
+            this.dialog.style.minWidth = this.dialog.style.minWidth || '100px';
+            this.dialog.style.minHeight = this.dialog.style.minHeight || '100px';
+        }
+    }
 
-            if (!this.dialog.style.maxWidth || this.dialog.style.maxWidth === 'none') {
-                this.dialog.style.maxWidth = window.innerWidth + 'px';
-            }
-
-            if (!this.dialog.style.maxHeight || this.dialog.style.maxHeight === 'none') {
-                this.dialog.style.maxHeight = window.innerHeight + 'px';
-            }
-
-            if (!this.dialog.style.minWidth || this.dialog.style.minWidth === 'none') {
-                this.dialog.style.minWidth = '100px';
-            }
-            
-            if (!this.dialog.style.minHeight || this.dialog.style.minHeight === 'none') {
-                this.dialog.style.minHeight = '100px';
-            }
-            
+    dispose() {
+        if (this.resizeObserver) {
+            this.resizeObserver.unobserve(this.dialog);
+        }
+        if (this.resizeTimeout) {
+            clearTimeout(this.resizeTimeout);
         }
     }
 }
 
 window.MudExDialogResizeHandler = MudExDialogResizeHandler;
+
 class MudBlazorExtensionHelper {
     constructor(options, dotNet, dotNetService, onDone) {
         this.dialogFinder = new MudExDialogFinder(options);        
@@ -1455,6 +1555,14 @@ window.MudBlazorExtensions = {
             }
         }
         return null;
+    },
+
+    closeDialogAnimated(dialogId) {
+        if (dialogId) {            
+            let dialog = document.getElementById(dialogId);            
+            return MudExDialogAnimationHandler.playCloseAnimation(dialog);
+        }
+        return Promise.resolve();
     },
 
     getElement(selector) {

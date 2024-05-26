@@ -11,6 +11,7 @@
         const self = this;
         let startPos = { x: 0, y: 0 };
         let cursorPos = { x: 0, y: 0 };
+        let startDrag;
         container = container || document.body;
 
         if (headerEl) {
@@ -23,12 +24,17 @@
         function dragMouseDown(e) {
             e = e || window.event;
             //e.preventDefault();
+            startDrag = true;
             cursorPos = { x: e.clientX, y: e.clientY };
             document.onmouseup = closeDragElement;
             document.onmousemove = elementDrag;
         }
 
         function elementDrag(e) {
+            if (startDrag) {
+                startDrag = false;
+                self.raiseDialogEvent('OnDragStart');
+            }
             e = e || window.event;
             e.preventDefault();
 
@@ -62,10 +68,11 @@
             } else if (isOutOfBounds(newPosition.y, bounds.y)) {
                 dialogEl.style.top = bounds.y + 'px';
             }
+            self.raiseDialogEvent('OnDragging');
         }
 
-        function closeDragElement() {
-            self.dotNetService.invokeMethodAsync('OnDragEnd', self.dotNet, dialogEl.getBoundingClientRect());            
+        function closeDragElement() {            
+            self.raiseDialogEvent('OnDragEnd');
             document.onmouseup = null;
             document.onmousemove = null;
         }

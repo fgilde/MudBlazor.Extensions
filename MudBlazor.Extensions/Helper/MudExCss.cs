@@ -15,8 +15,7 @@ namespace MudBlazor.Extensions.Helper;
 [HasDocumentation("MudExCss.md")]
 public static partial class MudExCss
 {
-
-    private static readonly AnimationType[] TypesWithoutPositionReplacement = { AnimationType.SlideIn };
+    internal static readonly AnimationType[] TypesWithoutPositionReplacement = { AnimationType.SlideIn };
 
     /// <summary>
     /// Returns a css class name for given type name
@@ -78,11 +77,12 @@ public static partial class MudExCss
     public static string GetAnimationCssStyle(this AnimationType[] types, TimeSpan duration, AnimationDirection? direction = null, AnimationTimingFunction animationTimingFunction = null, DialogPosition? targetPosition = null, AnimationIteration iterationCount = null)
     {
         animationTimingFunction ??= AnimationTimingFunction.EaseIn;
-        targetPosition ??= DialogPosition.TopCenter;
+        targetPosition ??= DialogPosition.TopCenter;        
         iterationCount ??= 1;
         var result = string.Join(',', types.SelectMany(type => targetPosition.GetPositionNames(!TypesWithoutPositionReplacement.Contains(type)).Select(n => $"{ReplaceAnimation(type.GetDescription(), n, direction)} {duration.TotalMilliseconds}ms {animationTimingFunction} {iterationCount} alternate")).Distinct());
         return result;
     }
+
 
     /// <summary>
     /// Can be used jus to quickly access some classes.
@@ -182,7 +182,7 @@ public static partial class MudExCss
     public static Task<KeyValuePair<string, MudColor>[]> GetCssColorVariablesAsync() => JsImportHelper.GetInitializedJsRuntime().GetCssColorVariablesAsync();
 
 
-    private static string ReplaceAnimation(string animationDesc, string position, AnimationDirection? direction)
+    internal static string ReplaceAnimation(string animationDesc, string position, AnimationDirection? direction)
     {
         string fallBackPosition = string.IsNullOrWhiteSpace(position) ? "Down" : position;
         animationDesc = animationDesc.Replace("{InOut?}", direction.HasValue ? Enum.GetName(direction.Value) ?? string.Empty : string.Empty);

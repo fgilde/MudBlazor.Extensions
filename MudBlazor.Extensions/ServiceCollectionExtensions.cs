@@ -55,7 +55,7 @@ public static class ServiceCollectionExtensions
         {
             var originalDialogService = provider.GetRequiredService<DialogService>();
             var jsRuntime = provider.GetRequiredService<IJSRuntime>();
-            return new MudExDialogService(originalDialogService, jsRuntime, provider, provider.GetRequiredService<MudExAppearanceService>());
+            return new MudExDialogService(originalDialogService, jsRuntime, provider, provider.GetRequiredService<MudExAppearanceService>(), provider.GetRequiredService<IDialogEventService>());
         });
 
         services.AddScoped<IMudExDialogService>(sp => (MudExDialogService)sp.GetRequiredService<IDialogService>());

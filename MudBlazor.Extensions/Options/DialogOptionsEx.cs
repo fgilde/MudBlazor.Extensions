@@ -168,14 +168,14 @@ namespace MudBlazor.Extensions.Options
             ? Animations.GetAnimationCssStyle(AnimationDuration, AnimationDirection.In, AnimationTimingFunction,
                 Position)
             : string.Empty;
+      
 
         /// <summary>
         /// Method that returns a clone object of the current instance.
         /// </summary>
         /// <returns>A cloned instance of the current object.</returns>
         public DialogOptionsEx CloneOptions()
-        {            
-            
+        {                        
             var res = Clone() as DialogOptionsEx;
             if (res == null)
                 return null;

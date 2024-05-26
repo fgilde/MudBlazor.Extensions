@@ -18092,7 +18092,7 @@
             <param name="when">Condition for applying the animation.</param>
             <returns>The modified MudExStyleBuilder object.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimation(MudBlazor.Extensions.Options.AnimationType,System.Nullable{System.TimeSpan},System.Nullable{MudBlazor.Extensions.Options.AnimationDirection},MudBlazor.Extensions.Options.AnimationTimingFunction,System.Nullable{MudBlazor.DialogPosition},MudBlazor.Extensions.Options.AnimationIteration,System.Boolean)">
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAnimationStyle(MudBlazor.Extensions.Options.AnimationType,System.Nullable{System.TimeSpan},System.Nullable{MudBlazor.Extensions.Options.AnimationDirection},MudBlazor.Extensions.Options.AnimationTimingFunction,System.Nullable{MudBlazor.DialogPosition},MudBlazor.Extensions.Options.AnimationIteration,System.Boolean)">
             <summary>
             Sets the animation style using multiple optional parameters.
             </summary>
@@ -19852,7 +19852,7 @@
             AppearanceService
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.#ctor(MudBlazor.IDialogService,Microsoft.JSInterop.IJSRuntime,System.IServiceProvider,MudBlazor.Extensions.Services.MudExAppearanceService)">
+        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.#ctor(MudBlazor.IDialogService,Microsoft.JSInterop.IJSRuntime,System.IServiceProvider,MudBlazor.Extensions.Services.MudExAppearanceService,MudBlazor.Extensions.Core.IDialogEventService)">
             <summary>
             Constructor
             </summary>

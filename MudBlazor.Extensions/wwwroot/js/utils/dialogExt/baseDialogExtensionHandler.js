@@ -14,6 +14,10 @@
 
     order = 99;
 
+    raiseDialogEvent(eventName) {
+        this.dotNetService.invokeMethodAsync('PublishEvent', eventName, this.dialog.id, this.dotNet, this.dialog.getBoundingClientRect());                  
+    }
+
     getAnimationDuration() {
         // TODO: 
         return this.options.animationDurationInMs + 150;
@@ -84,6 +88,7 @@
     _updateDialog(dialog) {
         this.dialog = dialog || this.dialog;
         if (this.dialog) {
+            this.dialog.options = this.options; 
             this.dialogHeader = this.dialog.querySelector(this.mudDialogHeaderSelector);
             this.dialogTitleEl = this.dialog.querySelector('.mud-dialog-title');
             this.dialogTitle = this.dialogTitleEl ? this.dialogTitleEl.innerText.trim() : '';

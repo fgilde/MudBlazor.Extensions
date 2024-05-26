@@ -1891,8 +1891,47 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <param name="targetPosition">The target position for the dialog.</param>
     /// <param name="when">Condition for applying the animation.</param>
     /// <returns>The modified MudExStyleBuilder object.</returns>
-    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan? duration, AnimationDirection? direction, AnimationTimingFunction animationTimingFunction, DialogPosition? targetPosition, AnimationIteration iterationCount = null, bool when = true)
+    public MudExStyleBuilder WithAnimationStyle(AnimationType type, TimeSpan? duration, AnimationDirection? direction, AnimationTimingFunction animationTimingFunction, DialogPosition? targetPosition, AnimationIteration iterationCount = null, bool when = true)
         => WithAnimation(type.GetAnimationCssStyle(duration, direction, animationTimingFunction, targetPosition, iterationCount), when);
+
+    public MudExStyleBuilder WithAnimations(AnimationType[] types, TimeSpan duration, AnimationDirection? direction, AnimationTimingFunction animationTimingFunction, DialogPosition? targetPosition, AnimationIteration iterationCount = null, bool when = true)
+        => WithAnimation(types.GetAnimationCssStyle(duration, direction, animationTimingFunction, targetPosition, iterationCount), when);
+
+
+
+    public MudExStyleBuilder WithAnimation(AnimationType type, TimeSpan? duration, AnimationDirection? direction,
+        AnimationTimingFunction timingFunction,
+        DialogPosition? targetPosition,
+        AnimationIteration iterationCount = null,
+        bool when = true) =>
+            WithAnimationName(type, direction, targetPosition, when)
+            .WithAnimationDuration(duration ?? TimeSpan.FromMilliseconds(500), when)
+            .WithAnimationTimingFunction(timingFunction, when && timingFunction != null)
+            .WithAnimationIterationCount(iterationCount ?? 1, when)
+            ;//.WithAnimationDirection(direction, when);
+
+    public MudExStyleBuilder WithAnimationName(string animationName, bool when = true) => With("animation-name", animationName, when);
+
+    public MudExStyleBuilder WithAnimationName(AnimationType type, AnimationDirection? direction, DialogPosition? targetPosition, bool when = true)
+    {
+        if (!when) return this;
+
+        targetPosition ??= DialogPosition.TopCenter;
+        var animationNameParts = targetPosition.GetPositionNames(!MudExCss.TypesWithoutPositionReplacement.Contains(type))
+            .Select(positionName => MudExCss.ReplaceAnimation(type.GetDescription(), positionName, direction));
+        var animationName = string.Join(", ", animationNameParts);
+        return WithAnimationName(animationName);
+    }
+
+    public MudExStyleBuilder WithAnimationTimingFunction(AnimationTimingFunction timingFunction, bool when = true) => With("animation-timing-function", timingFunction?.ToString(), when && timingFunction != null);
+    public MudExStyleBuilder WithAnimationTimingFunction(string timingFunction, bool when = true) => With("animation-timing-function", timingFunction, when);
+    public MudExStyleBuilder WithAnimationDuration(TimeSpan duration, bool when = true) => With("animation-duration", $"{duration.TotalMilliseconds}ms", when);
+    public MudExStyleBuilder WithAnimationIterationCount(AnimationIteration iterationCount, bool when = true) => With("animation-iteration-count", iterationCount.ToString(), when);
+    public MudExStyleBuilder WithAnimationIterationCount(string iterationCount, bool when = true) => With("animation-iteration-count", iterationCount, when);
+    public MudExStyleBuilder WithAnimationIterationCount(int iterationCount, bool when = true) => With("animation-iteration-count", iterationCount.ToString(), when);
+
+    //public MudExStyleBuilder WithAnimationDirection(AnimationDirection? direction, bool when = true) => With("animation-direction", direction?.ToString(), when);
+
 
     /// <summary>
     /// Sets the animation style using just the type of the animation.
@@ -1996,7 +2035,7 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <summary>
     /// With animated gradient background
     /// </summary>
-    public MudExStyleBuilder WithAnimatedGradientBackground(MudTheme theme, TimeSpan duration,bool when = true) => WithAnimatedGradientBackground(theme, false, duration, when);
+    public MudExStyleBuilder WithAnimatedGradientBackground(MudTheme theme, TimeSpan duration, bool when = true) => WithAnimatedGradientBackground(theme, false, duration, when);
 
     /// <summary>
     /// With animated gradient background
@@ -2050,7 +2089,7 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
             .WithBackgroundRepeat("no-repeat", when)
             .WithAnimation($"mud-ex-bg-spin {durationStr} linear infinite", when);
     }
-    
+
 
     /// <summary>
     /// Adds an !important to last added style

@@ -11,5 +11,7 @@ public static class DialogReferenceExtensions
     /// <param name="dialogReference"></param>
     /// <returns></returns>
     public static string GetDialogId(this IDialogReference dialogReference) 
-        => dialogReference != null && dialogReference.Id != Guid.Empty ? $"_{dialogReference.Id.ToString().Replace("-", "")}" : null;
+        => dialogReference != null && dialogReference.Id != Guid.Empty ? PrepareDialogId(dialogReference.Id) : null;
+
+    internal static string PrepareDialogId(Guid id) => $"_{id.ToString().Replace("-", "")}";
 }

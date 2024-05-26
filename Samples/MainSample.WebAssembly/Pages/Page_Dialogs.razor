@@ -78,8 +78,8 @@
         OpenDialogTask = null;
         var options = Options.CloneOptions();
         
-        options.CustomPosition = new MudExPosition { Top = "10%", Left = "40%" };
-        options.CustomSize = new MudExDimension { Width = "10%", Height = "333px" };
+        // options.CustomPosition = new MudExPosition { Top = "10%", Left = "40%" };
+        // options.CustomSize = new MudExDimension { Width = "10%", Height = "333px" };
         options.Buttons = GetButtons();
         IMudExDialogReference<SampleDialog>? dlgReference = await DialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, options);
         

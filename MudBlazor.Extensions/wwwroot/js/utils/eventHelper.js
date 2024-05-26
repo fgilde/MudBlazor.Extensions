@@ -38,6 +38,25 @@
         }, ' ');
     }
 
+    static stopFor(e, element, milliseconds) {
+        if (e === undefined || e === null)
+            return;
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        if (milliseconds) {
+            setTimeout(() => {
+                //const newEvent = new MouseEvent('click', {
+                //    bubbles: true,
+                //    cancelable: true,
+                //    view: window
+                //});
+
+                element.dispatchEvent(e);
+            }, milliseconds);
+        }
+    }
+
     static cloneEvent(e, serializable) {
         if (serializable) {
             return JSON.parse(this.stringifyEvent(event));

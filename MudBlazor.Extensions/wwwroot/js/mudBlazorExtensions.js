@@ -106,6 +106,14 @@ window.MudBlazorExtensions = {
         return null;
     },
 
+    closeDialogAnimated(dialogId) {
+        if (dialogId) {            
+            let dialog = document.getElementById(dialogId);            
+            return MudExDialogAnimationHandler.playCloseAnimation(dialog);
+        }
+        return Promise.resolve();
+    },
+
     getElement(selector) {
         return document.querySelector(selector);
     },
