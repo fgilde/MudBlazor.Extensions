@@ -13184,21 +13184,6 @@
             The value of the ValidationWrapper component. This will be passed to the set validation function.
             </summary>
         </member>
-        <member name="T:MudBlazor.Extensions.Core.CssVariable">
-            <summary>
-            Represents a CSS variable
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Core.CssVariable.Key">
-            <summary>
-            Key of the CSS variable
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Core.CssVariable.Value">
-            <summary>
-            Value of the CSS variable
-            </summary>
-        </member>
         <member name="T:MudBlazor.Extensions.Core.Css.AlignItems">
             <summary>
             Enum representing CSS 'align-items' property values.
@@ -13812,6 +13797,21 @@
         <member name="F:MudBlazor.Extensions.Core.CssUnit.Picas">
             <summary>
             Represents picas in CSS. One pica is equal to 12 points.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.CssVariable">
+            <summary>
+            Represents a CSS variable
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CssVariable.Key">
+            <summary>
+            Key of the CSS variable
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CssVariable.Value">
+            <summary>
+            Value of the CSS variable
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.IMudExClassAppearance">
