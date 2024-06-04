@@ -7759,6 +7759,11 @@
             Variant of action buttons
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.Color">
+            <summary>
+            Color
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ButtonColor">
             <summary>
             Color of action buttons

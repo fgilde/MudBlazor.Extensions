@@ -85,12 +85,12 @@
                             Size="@ButtonSize"
                             Color="@ButtonColor"       
                             Variant="ButtonVariant"
-                            Title="@TryLocalize(TextStartRecording)"
+                            ToolTip="@TryLocalize(TextStartRecording)"
                             RecordingBorderAnimation="@(ButtonVariant != Variant.Text)"                            
                             Class="mr-2 ml-2"
                             DeviceSelection="DeviceSelectionType.PopupEveryTime"                            
                             Language=""
-                            OnRecognized="AudioRecordingCallback" />
+                            OnRecognized="@AudioRecordingCallback" />
                 }
                 @if (ShowFileUploadButton && !ReadOnly)
                 {
