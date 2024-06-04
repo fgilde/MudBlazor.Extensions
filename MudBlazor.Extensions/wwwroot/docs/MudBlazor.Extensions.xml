@@ -3230,6 +3230,30 @@
         <member name="M:MudBlazor.Extensions.Components.MudExGradientText.OnParametersSetAsync">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExGravatar">
+            <summary>
+            Simple extension for MudAvatar to load automatically a profile image for an email address using Gravatar
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGravatar.GravatarUrl">
+            <summary>
+            Here you can get the current used Url for the image
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGravatar.GravatarImageSize">
+            <summary>
+            Specify the size of the Gravatar image to load. The default is 80px.
+            Please note this is not the size of the displayed image, but the size of the image behind.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGravatar.Email">
+            <summary>
+            The email address to load the Gravatar image for
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGravatar.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExGrid">
             <summary>
             A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.
@@ -13184,6 +13208,21 @@
             The value of the ValidationWrapper component. This will be passed to the set validation function.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.CssVariable">
+            <summary>
+            Represents a CSS variable
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CssVariable.Key">
+            <summary>
+            Key of the CSS variable
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CssVariable.Value">
+            <summary>
+            Value of the CSS variable
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.Css.AlignItems">
             <summary>
             Enum representing CSS 'align-items' property values.
@@ -13797,21 +13836,6 @@
         <member name="F:MudBlazor.Extensions.Core.CssUnit.Picas">
             <summary>
             Represents picas in CSS. One pica is equal to 12 points.
-            </summary>
-        </member>
-        <member name="T:MudBlazor.Extensions.Core.CssVariable">
-            <summary>
-            Represents a CSS variable
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Core.CssVariable.Key">
-            <summary>
-            Key of the CSS variable
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Core.CssVariable.Value">
-            <summary>
-            Value of the CSS variable
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.IMudExClassAppearance">

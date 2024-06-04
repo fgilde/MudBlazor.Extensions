@@ -68,7 +68,7 @@ else
             Task.Delay(500).ContinueWith(_ => InvokeAsync(StateHasChanged));
         }
     }
-    
+
     protected override ObjectEditMeta<T> ConfigureMetaBase(ObjectEditMeta<T> meta)
     {
         meta.IgnoreAllObsoleteFields();
@@ -104,7 +104,7 @@ else
         try
         {
             CultureInfo culture = new CultureInfo(s);
-            return true;
+            return s.Contains("-");
         }
         catch (CultureNotFoundException)
         {

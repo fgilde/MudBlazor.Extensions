@@ -387,6 +387,12 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2024-03-22 10:26:05 -->
+ - 1.7.88 > New Component [MudExGravatar](https://www.mudex.org/gravatar).
+ - 1.7.88 > Dialogs now supporting CustomSize and CustomPostion to allow more flexibility.
+ - 1.7.88 > New service [IDialogEventService](https://www.mudex.org/a/IDialogEventService) to allow handling of dialog events
+ - 1.7.88 > Dialog supports now a CloseAnimation
+ - 1.7.88 > New Service [ISpeechRecognitionService](https://www.mudex.org/d/ISpeechRecognitionService/ISpeechRecognitionService) to allow easy speech to text conversion or audio recording without any UI
+ - 1.7.88 > New Component [MudExSpeechToTextButton](https://www.mudex.org/speech-to-text) to allow easy speech to text conversion or audio recording
  - 1.7.87 > Small minor BugFixes
  - 1.7.87 > Improve key navigation in MudExSelect and MudExList
  - 1.7.87 > Update MudBlazor to 6.19.1

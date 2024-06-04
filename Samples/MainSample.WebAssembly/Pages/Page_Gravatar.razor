@@ -1,0 +1,19 @@
+﻿@page "/gravatar"
+
+@attribute [DemoNew(Name = "MudExGravatar", Icon = Icons.Material.Outlined.SupervisorAccount, Documentation = "MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address", ForComponentType = typeof(MudExGravatar))]
+
+<DemoComponent PageType="@GetType()" >
+    <SplitContainer>
+        <Left>
+            <MudExGravatar @ref="component" Email="jitewaboh@lagify.com"></MudExGravatar>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+@code {
+    MudExGravatar component;
+}

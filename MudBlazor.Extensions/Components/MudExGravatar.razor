@@ -1,7 +1,16 @@
 @inherits MudAvatar
 
-<Scripts SourceLoaded="JsLoaded" Src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></Scripts>
+@Inherited()
 
-@* @Inherited() *@
+@code
+{
+    RenderFragment RenderGravatarImage()
+    {
+        return @<MudImage Src="@GravatarUrl" Alt="@Email"></MudImage>;
+    }
 
-<img src="@url"/>
+    RenderFragment RenderLoading()
+    {
+        return @<MudProgressCircular Color="@GetLoadColor()" Size="@Size" Indeterminate="true" />;
+    }
+}
