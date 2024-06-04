@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
@@ -128,7 +129,7 @@ public partial class MudExObjectEditDialog<T>
             await base.OnSubmit(ctx);
             if (CustomSubmit == null || string.IsNullOrWhiteSpace(_errorMessage = await CustomSubmit.Invoke(Value, this)))
             {
-                MudDialog.Close(DialogResult.Ok(Value));
+                MudDialog.CloseAnimatedIf(DialogResult.Ok(Value));
             }
         }
         finally
@@ -144,6 +145,6 @@ public partial class MudExObjectEditDialog<T>
     protected override async Task Cancel()
     {
         await base.Cancel();
-        MudDialog.Cancel();
+        MudDialog.CancelAnimatedIf();
     }
 }

@@ -2,7 +2,6 @@
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
-using System;
 using System.Reflection;
 
 namespace MudBlazor.Extensions.Components;
@@ -172,15 +171,13 @@ public partial class MudExMessageDialog
         return wrappedCallback;
     }
 
-
-
     void Submit(DialogResult result)
     {
-        MudDialog.Close(result);
+        MudDialog.Close(result);     
     }
 
     /// <summary>
     /// Cancels the dialog
     /// </summary>
-    void Cancel() => MudDialog.Cancel();
+    void Cancel() => MudDialog.CloseAnimatedIf();
 }

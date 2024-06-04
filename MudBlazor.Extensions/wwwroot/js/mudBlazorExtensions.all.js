@@ -1578,10 +1578,12 @@ window.MudBlazorExtensions = {
         return null;
     },
 
-    closeDialogAnimated(dialogId) {
+    closeDialogAnimated(dialogId, checkOptions) {
         if (dialogId) {            
-            let dialog = document.getElementById(dialogId);            
-            return MudExDialogAnimationHandler.playCloseAnimation(dialog);
+            let dialog = document.getElementById(dialogId);
+            if (!checkOptions || dialog.options?.animateClose) {
+                return MudExDialogAnimationHandler.playCloseAnimation(dialog);
+            }
         }
         return Promise.resolve();
     },

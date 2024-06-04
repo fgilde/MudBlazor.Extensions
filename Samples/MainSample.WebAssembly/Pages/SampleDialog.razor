@@ -22,8 +22,8 @@
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     [Parameter] public string ContentMessage { get; set; }
 
-    void Submit() => MudDialog.CloseAnimated(DialogResult.Ok(true));
-    void Cancel() => MudDialog.CancelAnimated();
+    void Submit() => MudDialog.CloseAnimatedIf(DialogResult.Ok(true));
+    void Cancel() => MudDialog.CancelAnimatedIf();
     string icon;
     string title; 
     
