@@ -5,8 +5,7 @@
         if (!this.isSupported()) {
             console.error("Speech Recognition or MediaRecorder is not supported in this browser.");
             return null;
-        }
-        console.log(options);
+        }        
         const id = this.generateUniqueId();
         const { recognition, stream } = await this.setupRecognition(options, id, callback);
         const mediaRecorder = this.setupMediaRecorder(stream, callback, id);
@@ -63,7 +62,7 @@
         const audioByteArray = new Uint8Array(audioArrayBuffer);
         
         if (callback['invokeMethodAsync']) {
-            callback.invokeMethodAsync('Invoke', { ...this.recordings[id].lastParam, audioData: audioByteArray });
+            callback.invokeMethodAsync('Invoke', { ...this.recordings[id]?.lastParam, audioData: audioByteArray });
         }
 
         delete this.recordings[id];
@@ -89,9 +88,11 @@
             options: options
         };
 
-        this.recordings[id].lastParam = result;
+        if (this.recordings && this.recordings[id]) {
+            this.recordings[id].lastParam = result;
+        }
 
-        if (!options.finalResultsOnly || isFinal) {
+        if (!options || !options.finalResultsOnly || isFinal) {
             if (callback['invokeMethodAsync']) {
                 callback.invokeMethodAsync('Invoke', result);
             }

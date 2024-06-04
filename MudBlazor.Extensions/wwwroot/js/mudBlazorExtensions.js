@@ -60,8 +60,7 @@ window.MudBlazorExtensions = {
 
     openWindowAndPostMessage: function(url, message) {
         var newWindow = window.open(url);
-        newWindow.onload = function () {
-            console.log("POST "+ message);
+        newWindow.onload = function () {            
             newWindow.postMessage(message, url);
         };
     },

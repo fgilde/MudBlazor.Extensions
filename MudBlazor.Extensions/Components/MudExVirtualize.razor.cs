@@ -105,8 +105,7 @@ public partial class MudExVirtualize<TItem>
     }
 
     private Task OnScroll(EventArgs arg)
-    {
-        Console.WriteLine("OnScroll");
+    {        
         return Task.CompletedTask;
     }
 }

@@ -33,7 +33,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// <summary>
     /// If this is true audio recordings can be uploaded
     /// </summary>
-    [Parameter] public bool AllowAudioRecording { get; set; }   
+    [Parameter] public bool AllowAudioRecording { get; set; }
 
     /// <summary>
     /// Set to set the item remove button always to the right independent of the <see cref="ActionsAdornment"/>
@@ -53,8 +53,8 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// <summary>
     /// Set this to true to preview any file in an iframe
     /// </summary>
-    [Parameter] public bool PreviewInIframe { get; set; } = false;    
-    
+    [Parameter] public bool PreviewInIframe { get; set; } = false;
+
     /// <summary>
     /// Icon for the preview button
     /// </summary>
@@ -63,7 +63,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// <summary>
     /// Color for the preview button
     /// </summary>
-    [Parameter] public Color PreviewIconColor { get; set; } = Color.Inherit;
+    [Parameter] public Color PreviewIconColor { get; set; } = MudBlazor.Color.Inherit;
 
     /// <summary>
     /// With this function you can control if an item can be removed
@@ -126,9 +126,15 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     [Parameter] public Variant ButtonVariant { get; set; } = Variant.Text;
 
     /// <summary>
+    /// Color
+    /// </summary>
+    [Parameter] public MudExColor Color { get; set; } = "var(--mud-palette-lines-inputs)";
+
+
+    /// <summary>
     /// Color of action buttons
     /// </summary>
-    [Parameter] public Color ButtonColor { get; set; } = Color.Primary;
+    [Parameter] public Color ButtonColor { get; set; } = MudBlazor.Color.Primary;
 
     /// <summary>
     /// Size of action buttons
@@ -457,8 +463,8 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         get => _value;
         set
         {
-         //   if(value != null)
-                _value = value;
+            //   if(value != null)
+            _value = value;
         }
     }
 
@@ -988,13 +994,13 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             return;
         _mimeUpdating = true;
         EnsureFullyRenderedAsync().ContinueWith(_ =>
-        {            
+        {
             Task.WhenAll(
                 Task.Run(() => GetAllowedExtensions(true)).ContinueWith(t => _allowedExtensions = t.Result),
                 Task.Run(() => GetAllowedMimeTypes(true)).ContinueWith(t => _allowedMimeTypes = t.Result)
             ).ContinueWith(_ =>
             {
-                _mimeUpdating = false;                
+                _mimeUpdating = false;
                 var newAccept = GetAccept();
                 if (newAccept != _accept)
                 {
@@ -1108,7 +1114,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             _paths.Remove(pathEntry);
         if (RemoveErrorOnChange && !keepError)
             SetError();
-        _= RaiseChangedAsync();
+        _ = RaiseChangedAsync();
         CallStateHasChanged();
     }
 
@@ -1124,7 +1130,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             UploadRequestRemoved.InvokeAsync(item);
         if (RemoveErrorOnChange)
             SetError();
-        _= RaiseChangedAsync();
+        _ = RaiseChangedAsync();
         CallStateHasChanged();
     }
 
@@ -1191,7 +1197,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// <summary>
     /// returns the color for the icon
     /// </summary>
-    public MudExColor GetIconColor(T request) => ColorizeIcons ? BrowserFileExt.GetPreferredColor(request.ContentType) : Color.Inherit;
+    public MudExColor GetIconColor(T request) => ColorizeIcons ? BrowserFileExt.GetPreferredColor(request.ContentType) : MudBlazor.Color.Inherit;
 
 
     /// <summary>
@@ -1275,7 +1281,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// <param name="value"></param>
     /// <returns></returns>
     protected override bool HasValue(IList<T> value) => HasData();
-    
+
     private async Task Add(string url)
     {
         var contentType = await ResolveContentTypeFromUrlAsync(url);
@@ -1419,5 +1425,23 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             };
             await Add(audioFile);
         }
+    }
+
+    private string GetOuterCls()
+    {        
+        return MudExCssBuilder.Default.
+            AddClass("upload-request-outlined-border", Variant == Variant.Outlined)
+            .ToString();
+    }
+
+
+    private string GetOuterStyle()
+    {
+        //($"{(HasErrors ? $"border-color: {MudExColor.Error.ToCssStringValue()}" : "")}")
+        return MudExStyleBuilder.Default
+            .WithBorderColor(MudExColor.Error, HasErrors)
+            .WithBorderColor(Color, !HasErrors)
+            .WithBackgroundColor(Color, Variant == Variant.Filled)
+            .ToString();
     }
 }

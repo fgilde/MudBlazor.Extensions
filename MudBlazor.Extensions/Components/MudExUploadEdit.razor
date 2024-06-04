@@ -23,7 +23,7 @@
             <label class="@($"{(UploadRequests?.Any() == true ? "upload-request-label-small" : "")} upload-request-label mud-input-label-animated mud-input-label-text")">@Label</label>
         }
 
-        <div class="@(Variant == Variant.Outlined ? "upload-request-outlined-border" : "")" style="@($"{(HasErrors ? $"border-color: {MudExColor.Error.ToCssStringValue()}" : "")}")">
+        <div class="@GetOuterCls()" style="@GetOuterStyle()">
 
             <div @ref="ElementReference" style="@StyleStr()" class="upload-request-edit @(AllowDrop ? "drop-zone" : "") @Class">
 
@@ -52,10 +52,10 @@
                             <InputFile @ref="_inputFile" id="@(UploadFieldId)" hidden OnChange="UploadFiles" accept="@($"{_accept}")" />
                         }
                     }
-
+                    
                     @if (_loading || _mimeUpdating)
                     {
-                        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
                     }
                     else
                     {
@@ -73,7 +73,7 @@
             @if (ShowClearButton && HasData() && !ReadOnly)
             {
                 <MudGrid Class="mr-5 mt-2 pr-12" Justify="Justify.FlexEnd">
-                    <MudIconButton Title="@TryLocalize(TextRemoveAll)" OnClick="@RemoveAll" Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Primary" Size="Size.Small" />
+                    <MudExIconButton ToolTip="@TryLocalize(TextRemoveAll)" OnClick="@RemoveAll" Icon="@Icons.Material.Filled.DeleteForever" Color="@ButtonColor" Size="Size.Small" />
                 </MudGrid>
             }
 
@@ -162,7 +162,7 @@
         <MudExDialog @bind-IsVisible="_urlDialogVisible" OptionsEx="@ExternalDialogOptions">
             <TitleContent>
                 <MudText Typo="Typo.h6">
-                    <MudExIcon Color="Color.Secondary" Icon="@Icons.Material.Filled.CloudUpload" Class="mr-3 mb-n1" />
+                    <MudExIcon Color="MudBlazor.Color.Secondary" Icon="@Icons.Material.Filled.CloudUpload" Class="mr-3 mb-n1" />
                     @TryLocalize(AllowExternalUrl ? TextAddUrlTitle : TextAddExternal)
                 </MudText>
             </TitleContent>
@@ -183,12 +183,12 @@
                 }
             </DialogContent>
             <DialogActions>
-                <MudButton Color="@(AllowExternalUrl ? Color.Default : Color.Error)" Variant="@(AllowExternalUrl ? Variant.Text :Variant.Filled)" OnClick="@AddUrl">@TryLocalize("Close")</MudButton>
+                <MudButton Color="@(AllowExternalUrl ? MudBlazor.Color.Default : MudBlazor.Color.Error)" Variant="@(AllowExternalUrl ? Variant.Text :Variant.Filled)" OnClick="@AddUrl">@TryLocalize("Close")</MudButton>
 
                 @if (AllowExternalUrl)
                 {
                     <MudButton Disabled="@(!IsValidUrl(_externalUrl))"
-                               Color="Color.Error"
+                               Color="MudBlazor.Color.Error"
                                Variant="Variant.Filled"
                                OnClick="@(() => Add(_externalUrl).ContinueWith(_ => { _externalUrl = string.Empty; _urlDialogVisible = false; }))">
                         @TryLocalize(TextAddUrl)
@@ -234,7 +234,7 @@
             <div title="@($"{request.Path?.EnsureEndsWith("/")}{request.FileName}")" style="display: flex; align-items: center; width: 90%">
                 @if (isLoading)
             {
-                <MudProgressCircular Class="mr-3" Size="@Size.Small" Color="@Color.Info" Indeterminate="@(!ShowProgressForLoadingData)" Max="@loadingState.Size" Value="@loadingState.ReadBytes" />
+                <MudProgressCircular Class="mr-3" Size="@Size.Small" Color="@MudBlazor.Color.Info" Indeterminate="@(!ShowProgressForLoadingData)" Max="@loadingState.Size" Value="@loadingState.ReadBytes" />
             }
             else
             {

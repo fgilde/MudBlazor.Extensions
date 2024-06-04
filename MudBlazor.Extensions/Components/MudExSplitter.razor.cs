@@ -121,7 +121,6 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
     [JSInvokable]
     public void OnDragStart()
     {
-        Console.WriteLine("DragStart");
         IsDragging = true;
         IsDraggingChanged.InvokeAsync(IsDragging);
     }
