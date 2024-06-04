@@ -4,13 +4,13 @@
   &lt;Assembly Path="C:\Users\fgild\.nuget\packages\mudblazor\6.7.0\lib\net7.0\MudBlazor.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\User\.nuget\packages\mudblazor\6.19.1\lib\net6.0\MudBlazor.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4143c268_002Dee56_002D489e_002D9e6d_002D0b45637b6d61/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="MudExCssBuilderTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\dev\privat\github\MudBlazor.Extensions\MudBlazor.Extensions.Tests" Presentation="&amp;lt;MudBlazor.Extensions.Tests&amp;gt;" /&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4143c268_002Dee56_002D489e_002D9e6d_002D0b45637b6d61/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="MudExCssBuilderTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Project Location="C:\dev\privat\github\MudBlazor.Extensions\MudBlazor.Extensions.Tests" Presentation="&amp;lt;MudBlazor.Extensions.Tests&amp;gt;" /&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=444fbd02_002Da786_002D4ce6_002Db50b_002D81d8434612ac/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Trans" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::FA8AC591-92E8-4BCA-BD04-CAA07AD98C5A::net7.0::MudBlazor.Extensions.Tests.UnitTests.Tests.Core.MudExColorTests.Trans&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=444fbd02_002Da786_002D4ce6_002Db50b_002D81d8434612ac/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Trans" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::FA8AC591-92E8-4BCA-BD04-CAA07AD98C5A::net7.0::MudBlazor.Extensions.Tests.UnitTests.Tests.Core.MudExColorTests.Trans&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/Housekeeping/Bookmarks/NumberedBookmarks/=Bookmark2/@KeyIndexDefined">True</s:Boolean>
 	<s:String x:Key="/Default/Housekeeping/Bookmarks/NumberedBookmarks/=Bookmark2/Coords/@EntryValue">(Doc Ln 229 Col 42)</s:String>
