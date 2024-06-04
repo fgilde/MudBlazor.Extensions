@@ -229,8 +229,6 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     /// </summary>
     public async Task StartRecordingAsync()
     {
-        Console.WriteLine(UsedDeviceId);
-        Console.WriteLine("LANGUAGE: " + Language);
         var options = new SpeechRecognitionOptions
         {
             Lang = Language,
@@ -304,8 +302,7 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
 
     private async Task AudioDeviceSelected(AudioDevice arg)
     {
-        _selectedDevice = arg.DeviceId;
-        Console.WriteLine($"Selected {arg.Label} - {arg.DeviceId}");
+        _selectedDevice = arg.DeviceId;        
         if (_devicePopoverOpen)
         {
             _devicePopoverOpen = false;

@@ -1,4 +1,5 @@
 ## Change Log    
+ - 1.7.88 > [MudExUploadEdit](https://www.mudex.org/upload-edit) now supports recording audio.
  - 1.7.88 > New Component [MudExGravatar](https://www.mudex.org/gravatar).
  - 1.7.88 > Dialogs now supporting CustomSize and CustomPostion to allow more flexibility.
  - 1.7.88 > New service [IDialogEventService](https://www.mudex.org/a/IDialogEventService) to allow handling of dialog events

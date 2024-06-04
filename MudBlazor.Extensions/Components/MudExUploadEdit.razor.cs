@@ -31,6 +31,11 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     #region Parameters
 
     /// <summary>
+    /// If this is true audio recordings can be uploaded
+    /// </summary>
+    [Parameter] public bool AllowAudioRecording { get; set; }   
+
+    /// <summary>
     /// Set to set the item remove button always to the right independent of the <see cref="ActionsAdornment"/>
     /// </summary>
     [Parameter] public bool RemoveItemButtonAlwaysRight { get; set; }
@@ -177,6 +182,12 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// </summary>
     [Parameter, SafeCategory("Data")]
     public string TextUploadFile { get; set; } = "Upload File";
+
+    /// <summary>
+    /// Text for recording audio
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextStartRecording { get; set; } = "Record audio";
 
     /// <summary>
     /// The text for the upload folder button.
@@ -1393,5 +1404,20 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     private async Task Rename(string textFieldId)
     {
         await JsRuntime.DInvokeVoidAsync((window, id) => window.document.getElementById(id).select(), textFieldId);
+    }
+
+    private async void AudioRecordingCallback(SpeechRecognitionResult result)
+    {
+        if (result.AudioData?.Length > 0)
+        {
+            string transcript = result.Transcript.Trim();
+            var audioFile = new T
+            {
+                FileName = $"{(transcript ?? "audio_recording").Replace(" ", "_").Trim()}.wav",
+                ContentType = "audio/wav",
+                Data = result.AudioData
+            };
+            await Add(audioFile);
+        }
     }
 }

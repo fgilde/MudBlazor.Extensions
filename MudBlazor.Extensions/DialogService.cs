@@ -250,8 +250,8 @@ namespace MudBlazor.Extensions
                 .WithWidth(options.CustomSize?.Width, !string.IsNullOrEmpty(options.CustomSize?.Width))
             );
 
-            if (options.Animations?.Any(a => a != AnimationType.Default) == true)
-                options.DialogAppearance.WithStyle(b => b.WithAnimations(options.Animations, options.AnimationDuration, AnimationDirection.In, options.AnimationTimingFunction, options.Position));
+            //if (options.Animations?.Any(a => a != AnimationType.Default) == true)
+            //    options.DialogAppearance.WithStyle(b => b.WithAnimations(options.Animations, options.AnimationDuration, AnimationDirection.In, options.AnimationTimingFunction, options.Position));
         }
 
         private static async Task<IDialogReference> InjectOptionsAsync(this Task<IDialogReference> dialogReference, IDialogService service, DialogOptionsEx options)

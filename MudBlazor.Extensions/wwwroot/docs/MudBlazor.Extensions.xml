@@ -7664,6 +7664,11 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowAudioRecording">
+            <summary>
+            If this is true audio recordings can be uploaded
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.RemoveItemButtonAlwaysRight">
             <summary>
             Set to set the item remove button always to the right independent of the <see cref="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ActionsAdornment"/>
@@ -7802,6 +7807,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextUploadFile">
             <summary>
             The text for the upload file button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextStartRecording">
+            <summary>
+            Text for recording audio
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextUploadFolder">
@@ -13838,6 +13848,26 @@
             Represents picas in CSS. One pica is equal to 12 points.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.IDialogEventService">
+            <summary>
+            Dialog event service
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IDialogEventService.Subscribe``1(System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            Subscribe to a dialog event
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IDialogEventService.Unsubscribe``1(System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            Unsubscribe from a dialog event
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IDialogEventService.Publish``1(``0)">
+            <summary>
+            Publish a dialog event
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.IMudExClassAppearance">
             <summary>
             IMudExClassAppearance holds an applicable class string
@@ -19728,6 +19758,26 @@
         <member name="M:MudBlazor.Extensions.ServiceCollectionExtensions.AddMudServicesWithExtensions(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{MudBlazor.Services.MudServicesConfiguration},System.Action{MudBlazor.Extensions.Options.MudExConfiguration},System.Reflection.Assembly[])">
             <summary>
             Adds MudBlazor services with custom configuration and extensions with custom configuration to the service collection.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Services.DialogEventService">
+            <summary>
+            Dialog event service
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.DialogEventService.Subscribe``1(System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            Subscribe to a dialog event
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.DialogEventService.Unsubscribe``1(System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            Unsubscribe from a dialog event
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.DialogEventService.Publish``1(``0)">
+            <summary>
+            Publish a dialog event
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Services.MudExAppearanceService">

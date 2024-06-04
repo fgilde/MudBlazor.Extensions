@@ -2,7 +2,7 @@
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using MudBlazor.Extensions.Core
 @using Nextended.Core.Extensions
-@attribute [Demo(Group = "File Handling", Name = "Upload Edit", Documentation = "Demo for the MudExUploadEdit.", Order = 5, Icon = Icons.Material.Outlined.Upload, ForComponentType = typeof(MudExUploadEdit<>))]
+@attribute [DemoUpdated(Group = "File Handling", Name = "Upload Edit", Documentation = "Demo for the MudExUploadEdit.", Order = 5, Icon = Icons.Material.Outlined.Upload, ForComponentType = typeof(MudExUploadEdit<>))]
 
 
 <DemoComponent DocFiles="@(new [] {"Docs/MudExUploadEdit.md"})" Title="MudExUploadEdit" PageType="@GetType()">
@@ -10,7 +10,7 @@
         <Left>
             <MudCard Style="width: 80%">
                 <MudCardContent>
-                    <MudExUploadEdit
+                    <MudExUploadEdit AllowAudioRecording="true"
                         DropZoneClickAction="DropZoneClickAction.UploadFile"
                         CodeBlockTheme="@MainLayout.GetCodeBlockTheme()"
                         MimeTypes="@mimeTypes" T="UploadableFile" Style="max-height: 400px; width: 100%" @ref="component">
@@ -71,6 +71,7 @@
         var res = await DialogService.ShowComponentInDialogAsync<MudExUploadEdit<UploadableFile>>("Upload content", "Upload content files as zip or separate",
             uploadEdit =>
             {
+                uploadEdit.AllowAudioRecording = true;
                 uploadEdit.MinHeight = 400;
                 uploadEdit.AutoExtractArchive = true;
                 uploadEdit.DropZoneClickAction = DropZoneClickAction.UploadFile;

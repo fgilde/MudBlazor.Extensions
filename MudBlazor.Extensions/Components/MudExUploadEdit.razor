@@ -78,6 +78,20 @@
             }
 
             <MudGrid Justify="@ButtonsJustify" Class="mt-5 multi-upload-actions">
+                @if (AllowAudioRecording && !ReadOnly)
+                {
+                    <MudExSpeechToTextButton Disabled="@(_loading || _mimeUpdating)"
+                            ShowSpectrumOnRecording="true" 
+                            Size="@ButtonSize"
+                            Color="@ButtonColor"       
+                            Variant="ButtonVariant"
+                            Title="@TryLocalize(TextStartRecording)"
+                            RecordingBorderAnimation="@(ButtonVariant != Variant.Text)"                            
+                            Class="mr-2 ml-2"
+                            DeviceSelection="DeviceSelectionType.PopupEveryTime"                            
+                            Language=""
+                            OnRecognized="AudioRecordingCallback" />
+                }
                 @if (ShowFileUploadButton && !ReadOnly)
                 {
 
@@ -206,39 +220,39 @@
 
         return @<div>
         @if (ActionsAdornment == Adornment.Start)
+    {
+        @RenderActionIcons(request, isLoading, textFieldId)
+    }
+        <MudAlert NoIcon="true"
+                  Class="@($"mud-alert-message-w-100 {(SelectItemsMode == SelectItemsMode.ShowPreviewOnClick ? "mud-ex-alert-link" : "")}")"
+                  Severity="@(IsSelected(request) ? Severity.Warning : (_withErrors.Contains(request) ? Severity.Error : Severity.Normal))"
+                  OnClick="(a) => Select(request, a)"
+                  ShowCloseIcon="@(RemoveItemButtonAlwaysRight && AllowRemovingItems && !ReadOnly && !isLoading && CanRemoveItemFunc(request))"
+                  CloseIcon="@Icons.Material.Filled.Delete"
+                  CloseIconClicked="(() => Remove(request))">
+
+            <div title="@($"{request.Path?.EnsureEndsWith("/")}{request.FileName}")" style="display: flex; align-items: center; width: 90%">
+                @if (isLoading)
+            {
+                <MudProgressCircular Class="mr-3" Size="@Size.Small" Color="@Color.Info" Indeterminate="@(!ShowProgressForLoadingData)" Max="@loadingState.Size" Value="@loadingState.ReadBytes" />
+            }
+            else
+            {
+                <MudExIcon Class="mr-3" Color="@GetIconColor(request)" Icon="@GetIcon(request)" />
+            }
+                @if (AllowRename && !ReadOnly && !isLoading)
+            {
+                <MudTextField id="@textFieldId" Style="height: 12px;" Class="mud-ex-collection-inline-string-edit" For="@(() => request.FileName)" DisableUnderLine="true" Error="@(string.IsNullOrWhiteSpace(request.FileName))" @bind-Value="@request.FileName"></MudTextField>
+            }
+            else
+            {
+                <MudText Style="height: 12px; margin-top: -13px" Typo="Typo.subtitle1">@request.FileName</MudText>
+            }
+            </div>
+            @if (ActionsAdornment == Adornment.End)
         {
             @RenderActionIcons(request, isLoading, textFieldId)
         }
-        <MudAlert NoIcon="true"
-                          Class="@($"mud-alert-message-w-100 {(SelectItemsMode == SelectItemsMode.ShowPreviewOnClick ? "mud-ex-alert-link" : "")}")"
-                          Severity="@(IsSelected(request) ? Severity.Warning : (_withErrors.Contains(request) ? Severity.Error : Severity.Normal))"
-                          OnClick="(a) => Select(request, a)"
-                          ShowCloseIcon="@(RemoveItemButtonAlwaysRight && AllowRemovingItems && !ReadOnly && !isLoading && CanRemoveItemFunc(request))"
-                          CloseIcon="@Icons.Material.Filled.Delete"
-                          CloseIconClicked="(() => Remove(request))">
-        
-                   <div title="@($"{request.Path?.EnsureEndsWith("/")}{request.FileName}")" style="display: flex; align-items: center; width: 90%">
-                       @if (isLoading)
-                       {
-                           <MudProgressCircular Class="mr-3" Size="@Size.Small" Color="@Color.Info" Indeterminate="@(!ShowProgressForLoadingData)" Max="@loadingState.Size" Value="@loadingState.ReadBytes"/>
-                       }
-                       else
-                       {
-                           <MudExIcon Class="mr-3" Color="@GetIconColor(request)" Icon="@GetIcon(request)"/>
-                       }
-                       @if (AllowRename && !ReadOnly && !isLoading)
-                       {
-                           <MudTextField id="@textFieldId" Style="height: 12px;" Class="mud-ex-collection-inline-string-edit" For="@(() => request.FileName)" DisableUnderLine="true" Error="@(string.IsNullOrWhiteSpace(request.FileName))" @bind-Value="@request.FileName"></MudTextField>
-                       }
-                       else
-                       {
-                           <MudText Style="height: 12px; margin-top: -13px" Typo="Typo.subtitle1">@request.FileName</MudText>
-                       }
-                   </div>
-                   @if (ActionsAdornment == Adornment.End)
-                   {
-                       @RenderActionIcons(request, isLoading, textFieldId)
-                   }
         </MudAlert>
     </div>;
     }
@@ -246,25 +260,25 @@
     private RenderFragment RenderActionIcons(T request, bool isLoading, string textFieldId)
     {
         return @<div style="@(ActionsAdornment == Adornment.Start ? "float:left; margin-top: 15px;" : "float: right; margin-top: -24px;")">
-                   @if (AllowPreview && !isLoading)
-                   {
-                       <MudTooltip Text="@TryLocalize("Preview")">
-                           <MudIconButton OnClick="@(() => Preview(request))" Class="ml-2" Icon="@PreviewIcon" Color="@PreviewIconColor" Size="PreviewButtonSize"/>
-                       </MudTooltip>
-                   }
-                   @if (AllowRename && ShowRenameButton && !isLoading)
-                   {
-                       <MudTooltip Text="@TryLocalize("Rename")">
-                           <MudIconButton OnClick="@(() => Rename(textFieldId))" Class="ml-2" Icon="@Icons.Material.Filled.Edit" Color="@PreviewIconColor" Size="PreviewButtonSize"/>
-                       </MudTooltip>
-                   }
-                   @if (!RemoveItemButtonAlwaysRight && AllowRemovingItems && !ReadOnly && !isLoading && CanRemoveItemFunc(request))
-                   {
-                       <MudTooltip Text="@TryLocalize("Remove")">
-                           <MudIconButton OnClick="@(() => Remove(request))" Class="ml-2" Icon="@Icons.Material.Filled.Delete" Color="@PreviewIconColor" Size="PreviewButtonSize"/>
-                       </MudTooltip>
-                   }
-               </div>;
+        @if (AllowPreview && !isLoading)
+    {
+        <MudTooltip Text="@TryLocalize("Preview")">
+            <MudIconButton OnClick="@(() => Preview(request))" Class="ml-2" Icon="@PreviewIcon" Color="@PreviewIconColor" Size="PreviewButtonSize" />
+        </MudTooltip>
+    }
+        @if (AllowRename && ShowRenameButton && !isLoading)
+    {
+        <MudTooltip Text="@TryLocalize("Rename")">
+            <MudIconButton OnClick="@(() => Rename(textFieldId))" Class="ml-2" Icon="@Icons.Material.Filled.Edit" Color="@PreviewIconColor" Size="PreviewButtonSize" />
+        </MudTooltip>
+    }
+        @if (!RemoveItemButtonAlwaysRight && AllowRemovingItems && !ReadOnly && !isLoading && CanRemoveItemFunc(request))
+    {
+        <MudTooltip Text="@TryLocalize("Remove")">
+            <MudIconButton OnClick="@(() => Remove(request))" Class="ml-2" Icon="@Icons.Material.Filled.Delete" Color="@PreviewIconColor" Size="PreviewButtonSize" />
+        </MudTooltip>
+    }
+    </div>;
     }
 
     private void RenderExternalPicker(RenderTreeBuilder __builder)
