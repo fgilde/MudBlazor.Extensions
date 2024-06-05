@@ -52,7 +52,7 @@
                             <InputFile @ref="_inputFile" id="@(UploadFieldId)" hidden OnChange="UploadFiles" accept="@($"{_accept}")" />
                         }
                     }
-                    
+
                     @if (_loading || _mimeUpdating)
                     {
                         <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
@@ -80,17 +80,19 @@
             <MudGrid Justify="@ButtonsJustify" Class="mt-5 multi-upload-actions">
                 @if (AllowAudioRecording && !ReadOnly)
                 {
-                    <MudExSpeechToTextButton Disabled="@(_loading || _mimeUpdating)"
-                            ShowSpectrumOnRecording="true" 
-                            Size="@ButtonSize"
-                            Color="@ButtonColor"       
-                            Variant="ButtonVariant"
-                            ToolTip="@TryLocalize(TextStartRecording)"
-                            RecordingBorderAnimation="@(ButtonVariant != Variant.Text)"                            
-                            Class="mr-2 ml-2"
-                            DeviceSelection="DeviceSelectionType.PopupEveryTime"                            
-                            Language=""
-                            OnRecognized="@AudioRecordingCallback" />
+                    <div style="align-self: center;">
+                        <MudExSpeechToTextButton Disabled="@(_loading || _mimeUpdating)"
+                                                 ShowSpectrumOnRecording="true"
+                                                 Size="@ButtonSize"
+                                                 Color="@ButtonColor"
+                                                 Variant="ButtonVariant"
+                                                 ToolTip="@TryLocalize(TextStartRecording)"
+                                                 RecordingBorderAnimation="@(ButtonVariant != Variant.Text)"
+                                                 Class="mr-2 ml-2"
+                                                 DeviceSelection="DeviceSelectionType.PopupEveryTime"
+                                                 Language=""
+                                                 OnRecognized="@AudioRecordingCallback" />
+                    </div>
                 }
                 @if (ShowFileUploadButton && !ReadOnly)
                 {

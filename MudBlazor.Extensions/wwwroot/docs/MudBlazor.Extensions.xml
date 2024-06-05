@@ -13213,6 +13213,11 @@
             Tooltip
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconButton.ToolTipStyle">
+            <summary>
+            Tooltip style
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExIconButton.Visible">
             <summary>
             Is false control isn't rendered at all

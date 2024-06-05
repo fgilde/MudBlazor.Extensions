@@ -5,7 +5,7 @@
 {
     @if(!string.IsNullOrEmpty(ToolTip))
     {
-        <MudTooltip Text="@ToolTip">
+        <MudTooltip Style="@ToolTipStyle" Text="@ToolTip">
             @Inherited()
         </MudTooltip>
     }
@@ -24,6 +24,13 @@
     [Parameter]
     [Category(CategoryTypes.Button.Appearance)]
     public string ToolTip { get; set; }
+
+    /// <summary>
+    /// Tooltip style
+    /// </summary>
+    [Parameter]
+    [Category(CategoryTypes.Button.Appearance)]
+    public string ToolTipStyle { get; set; }
 
     /// <summary>
     /// Is false control isn't rendered at all
