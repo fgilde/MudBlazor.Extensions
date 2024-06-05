@@ -8,28 +8,35 @@ namespace MainSample.WebAssembly.Types;
 public class DemoNewAttribute : DemoAttribute
 {
     private string? _icon;
-
+    public override string GetIconStatusIcon() => Icons.Material.Filled.NewReleases;
     public override Color IconColor
     {
         get => Color.Warning;
         set { }
     }
 
-    public override string? Icon
+    public override Severity Severity
     {
-        get
-        {
-            var newIcon = Icons.Material.Filled.Star;
-            var result = string.IsNullOrEmpty(_icon) ? newIcon : MudExSvg.CombineIconsHorizontal(_icon, newIcon);
-            return result;
-        }
-        set => _icon = value;
+        get => Severity.Warning;
+        set { }
     }
+
+    //public override string? Icon
+    //{
+    //    get
+    //    {
+    //        var newIcon = Icons.Material.Filled.Star;
+    //        var result = string.IsNullOrEmpty(_icon) ? newIcon : MudExSvg.CombineIconsHorizontal(_icon, newIcon);
+    //        return result;
+    //    }
+    //    set => _icon = value;
+    //}
 }
 
 public class DemoUpdatedAttribute : DemoAttribute
 {
     private string? _icon;
+    public override string GetIconStatusIcon() => Icons.Material.Filled.Label;
 
     public override Color IconColor
     {
@@ -37,16 +44,22 @@ public class DemoUpdatedAttribute : DemoAttribute
         set { }
     }
 
-    public override string? Icon
+    public override Severity Severity
     {
-        get
-        {
-            var newIcon = Icons.Material.Filled.Update;
-            var result = string.IsNullOrEmpty(_icon) ? newIcon : MudExSvg.CombineIconsHorizontal(_icon, newIcon);
-            return result;
-        }
-        set => _icon = value;
+        get => Severity.Info;
+        set { }
     }
+
+    //public override string? Icon
+    //{
+    //    get
+    //    {
+    //        var newIcon = Icons.Material.Filled.Update;
+    //        var result = string.IsNullOrEmpty(_icon) ? newIcon : MudExSvg.CombineIconsHorizontal(_icon, newIcon);
+    //        return result;
+    //    }
+    //    set => _icon = value;
+    //}
 }
 
 
@@ -62,6 +75,9 @@ public class DemoAttribute : Attribute
 
     public DemoAttribute()
     { }
+
+    public virtual string GetIconStatusIcon() => string.Empty;
+
 
     private void UpdateType(Type pageType)
     {
@@ -90,6 +106,7 @@ public class DemoAttribute : Attribute
     public string? Group { get; set; }
     public virtual string? Icon { get; set; }
     public virtual Color IconColor { get; set; } = Color.Default;
+    public virtual Severity Severity { get; set; } = Severity.Normal;
     public int Order { get; set; } = 999;
     public string? Url { get; set; }
 

@@ -45,24 +45,7 @@ else
             <MudCard Class="index-card" @onclick="@(() => { Open(nav); })">
                 <MudCardHeader>
                     <CardHeaderContent>
-
-                        @if (nav.Demo is DemoNewAttribute)
-                        {
-                            <MudAlert Icon="@Icons.Material.Filled.NewLabel" Style="margin-top: -15px;padding: 0;background: transparent;" Variant="Variant.Text" Severity="Severity.Warning">
-                                <MudText Typo="Typo.subtitle1">@($"NEW {(nav.Text)}")</MudText>
-                                </MudAlert>
-                        }
-                        else if (nav.Demo is DemoUpdatedAttribute)
-                        {
-                            <MudAlert Icon="@Icons.Material.Filled.Update" Style="margin-top: -15px;padding: 0;background: transparent;" Variant="Variant.Text" Severity="Severity.Info">
-                                <MudText Typo="Typo.subtitle1">@($"UPDATE {(nav.Text)}")</MudText>
-                                </MudAlert>
-                        }
-                        else
-                        {
-                            <MudText Typo="Typo.h6">@nav.Text</MudText>
-                        }
-
+                        @Index.RenderNavEntry(nav)       
                     </CardHeaderContent>
                     <CardHeaderActions>
                         @*<MudIconButton Icon="@nav.Icon" Color="Color.Default" />*@
@@ -82,8 +65,11 @@ else
 }
 
 @code {
+    const bool redirectToDemo = true;
+
     private Type? type;
     private string? _typeName;
+
 
     [Parameter]
     public string? TypeName
@@ -98,7 +84,7 @@ else
     }
 
     NavigationEntry? _availableDemo;
-    
+
     private void Open(NavigationEntry nav)
     {
         NavigationManager.NavigateTo(nav.Href);
@@ -111,6 +97,15 @@ else
             _availableDemo ??= DemoAttribute.AllEntries().Recursive(e => e?.Children ?? Enumerable.Empty<NavigationEntry>()).FirstOrDefault(entry => entry?.Demo?.RelatedComponents?.Any(IsMatchType) == true);
             return _availableDemo;
         }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && redirectToDemo && AvailableDemo != null)
+        {
+            NavigationManager.NavigateTo(AvailableDemo.Href);
+        }
+        base.OnAfterRender(firstRender);
     }
 
     private bool IsMatchType(Type other)
