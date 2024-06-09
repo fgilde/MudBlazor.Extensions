@@ -1,0 +1,6 @@
+﻿@inherits MudExBaseComponent<MudExFileDisplayHtml>
+
+@if (!string.IsNullOrEmpty(Value))
+{    
+    <iframe sandbox="@Sandbox" class="mud-file-display-iframe" srcdoc="@((MarkupString)Value)" style="width:100%; height:100%; border:none;"></iframe>
+}

@@ -2738,6 +2738,39 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayFont.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayHtml">
+            <summary>
+            Simple component to display Html files with MudExFileDisplay
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHtml.Name">
+            <summary>
+            The name of the component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHtml.Value">
+            <summary>
+            The Current code string provided from file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHtml.FileDisplayInfos">
+            <summary>
+            The file display infos
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayHtml.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayHtml.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Returns true if it's a markdown file and we can handle it
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayHtml.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown">
             <summary>
             Simple component to display markdown files with MudExFileDisplay
@@ -14105,6 +14138,13 @@
             Reads a string from an url
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadStreamAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Reads filedisplay info as stream. this stream is a copy and needs to be disposed and closed.
+            </summary>
+            <param name="fileDisplayInfos"></param>
+            <returns></returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadStreamAsync(System.String)">
             <summary>
             Reads a stream from an url
@@ -20044,6 +20084,13 @@
             <summary>
             Returns the content of a file as string
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadStreamAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            Reads filedisplay info as stream. this stream is a copy and needs to be disposed and closed.
+            </summary>
+            <param name="fileDisplayInfos"></param>
+            <returns></returns>
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadAsStringFromFileDisplayInfosAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
             <summary>

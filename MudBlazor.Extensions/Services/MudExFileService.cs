@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Nextended.Blazor.Extensions;
 using Microsoft.JSInterop;
 using Nextended.Core.Attributes;
+using System;
 
 namespace MudBlazor.Extensions.Services;
 
@@ -40,7 +41,33 @@ public class MudExFileService : IMudExFileService
     public string ReadAsStringFromStream(Stream stream)
     {
         using var reader = new StreamReader(stream);
-        return reader.ReadToEnd();        
+        return reader.ReadToEnd();
+    }
+
+    /// <summary>
+    /// Reads filedisplay info as stream. this stream is a copy and needs to be disposed and closed.
+    /// </summary>
+    /// <param name="fileDisplayInfos"></param>
+    /// <returns></returns>
+    public async Task<Stream> ReadStreamAsync(IMudExFileDisplayInfos fileDisplayInfos)
+    {
+        Stream ms = null;
+        if (fileDisplayInfos.ContentStream is { Length: > 0, CanRead: true })
+        {
+            ms = new MemoryStream();
+            await fileDisplayInfos.ContentStream.CopyToAsync(ms);
+        }
+        else if (DataUrl.TryParse(fileDisplayInfos.Url, out var data))
+        {
+            ms = new MemoryStream(data.Bytes);
+        }
+        else if (!string.IsNullOrEmpty(fileDisplayInfos.Url))
+        {          
+            ms = await ReadStreamAsync(fileDisplayInfos.Url);            
+        }
+        if (ms != null)
+            ms.Position = 0;
+        return ms;
     }
 
     /// <summary>
@@ -65,7 +92,7 @@ public class MudExFileService : IMudExFileService
             }
             return await ReadAsStringFromUrlAsync(fileDisplayInfos.Url);
         }
-        
+
         return null;
     }
 
@@ -94,7 +121,7 @@ public class MudExFileService : IMudExFileService
     /// Reads a data url for a stream
     /// </summary>
     public async Task<string> ReadDataUrlForStreamAsync(Stream stream, string mimeType, bool useBlob)
-    {        
+    {
         var copy = await CopyStreamAsync(stream);
         return await CreateDataUrlAsync(copy.ToByteArray(), mimeType, useBlob);
     }
@@ -103,8 +130,8 @@ public class MudExFileService : IMudExFileService
     /// Creates a data url from bytes this can be a blob url or a data url
     /// </summary>
     public Task<string> CreateDataUrlAsync(byte[] bytes, string mimeType, bool useBlob)
-    {        
-        return useBlob 
+    {
+        return useBlob
             ? CreateBlobUrlAsync(bytes, mimeType)
             : DataUrl.GetDataUrlAsync(bytes, mimeType);
     }
@@ -113,14 +140,14 @@ public class MudExFileService : IMudExFileService
     /// Creates an url from a file this can be a blob url or a data url
     /// </summary>
     public async Task<string> CreateDataUrlAsync(IBrowserFile file, bool useBlob)
-    {        
+    {
         return useBlob
                ? await CreateBlobUrlAsync(await file.GetBytesAsync(), file.ContentType)
                : await file.GetDataUrlAsync();
     }
 
     private async Task<string> CreateBlobUrlAsync(byte[] bytes, string mimeType)
-    {        
+    {
         var blobUrl = await _jsRuntime.InvokeAsync<string>("MudExUriHelper.createBlobUrlFromByteArray", bytes, mimeType);
         _blobUris.Add(blobUrl);
         return blobUrl;
@@ -139,7 +166,7 @@ public class MudExFileService : IMudExFileService
     /// <summary>
     /// Reads an archive with SharpCompress
     /// </summary>
-    public async Task<(HashSet<MudExArchiveStructure> Structure, List<IArchivedBrowserFile> List )> ReadArchiveAsync(byte[] bytes, string rootFolderName, string contentType)
+    public async Task<(HashSet<MudExArchiveStructure> Structure, List<IArchivedBrowserFile> List)> ReadArchiveAsync(byte[] bytes, string rootFolderName, string contentType)
     {
         using var memoryStream = new MemoryStream(bytes);
         return await ReadArchiveAsync(memoryStream, rootFolderName, contentType);
@@ -148,8 +175,8 @@ public class MudExFileService : IMudExFileService
     /// <summary>
     /// Reads an archive with SharpCompress
     /// </summary>
-    public async Task<(HashSet<MudExArchiveStructure> Structure, List<IArchivedBrowserFile> List )> ReadArchiveAsync(Stream stream, string rootFolderName, string contentType)
-    {        
+    public async Task<(HashSet<MudExArchiveStructure> Structure, List<IArchivedBrowserFile> List)> ReadArchiveAsync(Stream stream, string rootFolderName, string contentType)
+    {
         var contentStream = await CopyStreamAsync(stream);
         var archive = ArchiveFactory.Open(contentStream);
         if (archive.Entries.Count() == 1 && archive.Entries.First().CompressionType == SharpCompress.Common.CompressionType.GZip)

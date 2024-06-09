@@ -22,6 +22,13 @@ public interface IMudExFileService : IAsyncDisposable
     Task<string> ReadAsStringFromUrlAsync(string url);
 
     /// <summary>
+    /// Reads filedisplay info as stream. this stream is a copy and needs to be disposed and closed.
+    /// </summary>
+    /// <param name="fileDisplayInfos"></param>
+    /// <returns></returns>
+    public Task<Stream> ReadStreamAsync(IMudExFileDisplayInfos fileDisplayInfos);
+
+    /// <summary>
     /// Reads a stream from an url
     /// </summary>
     Task<Stream> ReadStreamAsync(string url);
