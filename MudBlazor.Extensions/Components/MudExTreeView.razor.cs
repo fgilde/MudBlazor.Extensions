@@ -87,11 +87,10 @@ public partial class MudExTreeView<T> where T: Hierarchical<T>
 
     public IEnumerable<T> Path()
     {
-        selectedNode ??= Items.FirstOrDefault();
         if (selectedNode != null)
             return selectedNode.Path;
         Console.WriteLine(Items.Count);
-        return Enumerable.Empty<T>();
+        return Items; // Enumerable.Empty<T>();
     }
 
     private bool IsInPath(T node)

@@ -136,6 +136,7 @@ public class DemoAttribute : Attribute
                 foreach (var r in g.OrderBy(r => r.Attribute.Order))
                 {
                     var navigationEntry = r.Attribute.ToNavigationEntry(r.Type);
+                    navigationEntry.Parent = groupNavigationEntry;
                     groupNavigationEntry.Children.Add(navigationEntry);
                 }
 

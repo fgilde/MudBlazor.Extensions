@@ -3,6 +3,7 @@ using MudBlazor;
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Api;
 using MudBlazor.Extensions.Helper;
+using Nextended.Core.Extensions;
 
 namespace MainSample.WebAssembly;
 
@@ -50,7 +51,7 @@ public static class Navigations
                 d.Documentation != null
                  ? $"/d/{Path.GetFileNameWithoutExtension(d.Documentation.MarkdownFile)}/{d.Type.Name}"
                  : $"/a/{d.Type.Name}"
-                ))
+                ))            
             .ToHashSet();
     }
 

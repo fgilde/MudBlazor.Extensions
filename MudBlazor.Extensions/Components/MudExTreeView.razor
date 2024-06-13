@@ -248,6 +248,11 @@
 <MudExTagField Immediate="true"
                ChipColor="MudExColor.Primary"
                @bind-Values="Filters" @bind-Value="Filter" Placeholder="Filter (Press enter to tag)" T="string"></MudExTagField>
+               @if (selectedNode != null){
+<p>@(string.Join("/", selectedNode?.Path?.Select(n => TextFunc(n))))</p>
+<p>@(selectedNode.GetPathString(TextFunc))</p>
+<p>@(selectedNode.Parent?.ToString())</p>
+               }
 
 @if (ViewMode == TreeViewMode.Default)
 {
