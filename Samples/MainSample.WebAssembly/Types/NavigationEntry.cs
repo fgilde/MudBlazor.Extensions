@@ -39,4 +39,8 @@ public class NavigationEntry : Hierarchical<NavigationEntry>
     public bool? Bold { get; set; }
     internal DemoAttribute? Demo { get; set; }
     public Color GetIconColor() => Demo?.IconColor ?? Color.Default;
+    public override string ToString()
+    {
+        return Text;
+    }
 }

@@ -71,18 +71,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ExcelDataReader" Version="3.6.0" />
+    <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
     <PackageReference Include="AuralizeBlazor" Version="1.0.2" />
-    <PackageReference Include="MudBlazor.Markdown" Version="0.1.3" />
+    <PackageReference Include="MudBlazor.Markdown" Version="1.0.2" />
     <PackageReference Include="Nextended.Blazor" Version="7.0.38" />
     <PackageReference Include="Nextended.Core" Version="7.0.51" /> 
     <PackageReference Include="BlazorJS" Version="2.1.5" />
-    <PackageReference Include="OneOf" Version="3.0.263" />
-    <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
+    <PackageReference Include="OneOf" Version="3.0.271" />
+    <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="MudBlazor" Version="6.19.1" />
+    <PackageReference Include="MudBlazor" Version="6.20.0" />
     <PackageReference Include="BlazorParameterCastingMagic" Version="1.2.23060811" />
-    <PackageReference Include="SharpCompress" Version="0.37.0" />
+    <PackageReference Include="SharpCompress" Version="0.37.2" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
   </ItemGroup>
 

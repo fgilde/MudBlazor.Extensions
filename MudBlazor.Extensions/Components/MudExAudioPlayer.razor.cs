@@ -166,6 +166,8 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
             Presets = AuralizerPreset.All;
         }
 
+        InitialRender = InitialRender.WithRandomData;
+
         Height = Width = "100%";
         ShowBgColor = true;
         ShowScaleX = false;

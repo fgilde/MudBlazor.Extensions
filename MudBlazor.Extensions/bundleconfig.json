@@ -84,11 +84,5 @@
     "inputFiles": [
       "wwwroot/js/components/MudExImageViewer.js"
     ]
-  },
-  {
-    "outputFileName": "wwwroot/js/components/MudExAudioPlayer.min.js",
-    "inputFiles": [
-      "wwwroot/js/components/MudExAudioPlayer.js"
-    ]
   }
 ]

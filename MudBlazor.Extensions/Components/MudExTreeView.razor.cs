@@ -1,0 +1,192 @@
+﻿using Microsoft.AspNetCore.Components;
+using MudBlazor.Charts;
+using Nextended.Core.Extensions;
+using Nextended.Core.Types;
+using System.IO;
+using Microsoft.AspNetCore.Components.Web;
+
+namespace MudBlazor.Extensions.Components;
+
+public partial class MudExTreeView<T> where T: Hierarchical<T>
+{
+    [Parameter] public HashSet<T> Items { get; set; }
+    [Parameter] public Func<T, string> TextFunc { get; set; } = n => n.ToString();
+    [Parameter] public FilterMode FilterMode { get; set; }
+    [Parameter] public TreeViewMode ViewMode { get; set; } = TreeViewMode.Horizontal;
+    [Parameter] public RenderFragment<TreeViewItemContext<T>> ItemTemplate { get; set; }
+
+    public bool HasFilters => Filters?.Any(s => !string.IsNullOrWhiteSpace(s)) == true || !string.IsNullOrEmpty(Filter);
+    private T selectedNode;
+    private List<string> _filters;
+
+    [Parameter]
+    public string Filter { get; set; }
+
+    [Parameter]
+    public List<string> Filters
+    {
+        get => _filters;
+        set
+        {
+            if (_filters != value)
+            {
+                _filters = value;
+                SetAllExpanded(HasFilters, entry => true);
+            }
+        }
+    }
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+
+    private HashSet<T> _expanded = new();
+    public bool IsExpanded(T node) => _expanded.Contains(node);
+    public void ExpandAll() => _expanded = new HashSet<T>(Items.Recursive(n => n.Children ?? Enumerable.Empty<T>()));
+    public void CollapseAll() => _expanded.Clear();
+    private bool IsSelected(T node) => node?.Equals(selectedNode) == true;
+    private void NodeClick(T node)
+    {
+        this.selectedNode = node;
+    }
+    private void OnWheel(WheelEventArgs e)
+    {
+        // Logik hier implementieren
+    }
+
+    private string GetNodeClass(T node)
+    {
+        var classes = "horizontal-tree-node";
+        if (IsInPath(node))
+        {
+            classes += " node-selected";
+        }
+        if (HasChild(node))
+        {
+            classes += " node-expandable";
+        }
+        return classes;
+    }
+
+    public double NodeOffset(T node)
+    {
+        var children = (node.Children ?? Enumerable.Empty<T>()).ToList();
+        var indexOf = children.IndexOf(children.FirstOrDefault(IsInPath));
+        var indexOfSelected = Math.Max(indexOf, 0);
+
+        return (children.Count - 1) / 2 - indexOfSelected;        
+    }
+
+    private string GetTransformStyle(T node)
+    {
+        return $"transform: translateY({NodeOffset(node) * 100}%)";
+    }
+
+
+    private bool HasChild(T node)
+    {
+        return node?.Children?.Any() == true;
+    }
+
+    public IEnumerable<T> Path()
+    {
+        selectedNode ??= Items.FirstOrDefault();
+        if (selectedNode != null)
+            return selectedNode.Path;
+        Console.WriteLine(Items.Count);
+        return Enumerable.Empty<T>();
+    }
+
+    private bool IsInPath(T node)
+    {
+        var path = Path();
+        var result = path.Contains(node);
+        var s = string.Join("/", path.Select(n => n.ToString()));
+        Console.WriteLine($"IsInPath: {node} = {result} Path {s}");
+        return result;
+    }
+
+    private HashSet<T>? FilteredItems()
+    {
+        if (FilterMode == FilterMode.Flat && HasFilters)
+        {
+            return Items.Recursive(e => e?.Children ?? Enumerable.Empty<T>()).Where(e =>
+                    Filters?.Any(filter => MatchesFilter(e, filter)) == true)
+                .ToHashSet();
+        }
+        return Items;
+    }
+
+    private bool MatchesFilter(T node, string text)
+    { 
+        return TextFunc(node).Contains(text, StringComparison.InvariantCultureIgnoreCase);
+    }
+
+
+    private (bool Found, string? Term) GetMatchedSearch(T node)
+    {
+        if (FilterMode == FilterMode.Flat || !HasFilters)
+            return (true, string.Empty);
+
+        if ((node?.Children ?? Enumerable.Empty<T>()).Recursive(n => n?.Children ?? Enumerable.Empty<T>()).Any(n => GetMatchedSearch(n).Found))
+            return (true, string.Empty);
+
+
+        var filters = Filters.EmptyIfNull().ToList();
+        if (!string.IsNullOrEmpty(Filter))
+            filters.Add(Filter);
+        foreach (var filter in filters)
+        {
+            if (MatchesFilter(node, filter))
+                return (true, filter); ;
+        }
+
+        return (false, string.Empty); ;
+    }
+
+    private void SetAllExpanded(bool expand, Func<T, bool> predicate = null)
+    {
+        //predicate ??= n => ExpandMode == ExpandMode.SingleExpand || n.Parent == null;
+        predicate ??= n => n.Parent == null;
+        Items?.Recursive(n => n.Children.EmptyIfNull()).Where(predicate).Apply(e => SetExpanded(e, expand));
+    }
+
+    private void SetExpanded(T context, bool expanded)
+    {
+        if (expanded && !IsExpanded(context))
+            _expanded.Add(context);
+        else if (!expanded && IsExpanded(context))
+            _expanded.Remove(context);
+    }
+
+}
+
+public class TreeViewItemContext<T>
+{
+    public TreeViewItemContext(T item, bool isSelected, bool isExpanded)
+    {
+        Item = item;
+        IsSelected = isSelected;
+        IsExpanded = isExpanded;
+    }
+
+    public T Item { get; set; }
+    public bool IsSelected { get; set; }
+    public bool IsExpanded { get; set; }
+}
+
+public enum FilterMode
+{
+    Default,
+    Flat
+}
+
+public enum TreeViewMode
+{
+    Default,
+    Horizontal,
+    Breadcrumb,
+    List
+}
+
+public class RenderIf<T> : System.Attribute
+{
+
+}
