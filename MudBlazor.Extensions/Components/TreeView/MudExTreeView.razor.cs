@@ -1,19 +1,41 @@
 ﻿using Microsoft.AspNetCore.Components;
-using MudBlazor.Charts;
 using Nextended.Core.Extensions;
 using Nextended.Core.Types;
-using System.IO;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace MudBlazor.Extensions.Components;
 
-public partial class MudExTreeView<T> where T: Hierarchical<T>
+public partial class MudExTreeView<T> where T: IHierarchical<T>
 {
+    [Parameter] public bool Dense { get; set; }
     [Parameter] public HashSet<T> Items { get; set; }
-    [Parameter] public Func<T, string> TextFunc { get; set; } = n => n.ToString();
+    [Parameter] public Func<T, string> TextFunc { get; set; } = n => n?.ToString();
     [Parameter] public FilterMode FilterMode { get; set; }
     [Parameter] public TreeViewMode ViewMode { get; set; } = TreeViewMode.Horizontal;
+
+    /// <summary>
+    /// Full item template if this is set you need to handle the outer items based on ViewMode on your own. 
+    /// Also, the expand/collapse buttons, and you need to decide on your own if and how you use the <see cref="ItemContentTemplate"/>
+    /// </summary>
     [Parameter] public RenderFragment<TreeViewItemContext<T>> ItemTemplate { get; set; }
+    
+    /// <summary>
+    /// Item content template for the item itself without the requirement to change outer element like to control the expand button etc.
+    /// </summary>
+    [Parameter] public RenderFragment<TreeViewItemContext<T>> ItemContentTemplate { get; set; }
+
+    /// <summary>
+    /// This function controls how a separator will be detected. Default is if the item ToString() equals '-'
+    /// </summary>
+    [Parameter] public Func<T, bool> IsSeparatorDetectFunc { get; set; } = n => n?.ToString() == "-";
+
+    /// <summary>
+    /// The expand/collapse icon.
+    /// </summary>
+    [Parameter]
+    [Category(CategoryTypes.TreeView.Appearance)]
+    public string ExpandedIcon { get; set; } = Icons.Material.Filled.ChevronRight;
+
 
     public bool HasFilters => Filters?.Any(s => !string.IsNullOrWhiteSpace(s)) == true || !string.IsNullOrEmpty(Filter);
     private T selectedNode;
@@ -34,17 +56,23 @@ public partial class MudExTreeView<T> where T: Hierarchical<T>
                 SetAllExpanded(HasFilters, entry => true);
             }
         }
-    }
+    }    
     private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
-
     private HashSet<T> _expanded = new();
     public bool IsExpanded(T node) => _expanded.Contains(node);
     public void ExpandAll() => _expanded = new HashSet<T>(Items.Recursive(n => n.Children ?? Enumerable.Empty<T>()));
     public void CollapseAll() => _expanded.Clear();
-    private bool IsSelected(T node) => node?.Equals(selectedNode) == true;
+    public bool IsSelected(T node) => node?.Equals(selectedNode) == true; // TODO: implement multiselect
+
+    public virtual bool IsSeparator(T node) => IsSeparatorDetectFunc?.Invoke(node) == true;
+
     private void NodeClick(T node)
     {
-        this.selectedNode = node;
+        selectedNode = node;
+        if(ViewMode == TreeViewMode.Default)
+        {
+            SetExpanded(node, !IsExpanded(node));
+        }
     }
     private void OnWheel(WheelEventArgs e)
     {
@@ -54,7 +82,7 @@ public partial class MudExTreeView<T> where T: Hierarchical<T>
     private string GetNodeClass(T node)
     {
         var classes = "horizontal-tree-node";
-        if (IsInPath(node))
+        if (IsInPath(node) || IsSelected(node))
         {
             classes += " node-selected";
         }
@@ -88,17 +116,16 @@ public partial class MudExTreeView<T> where T: Hierarchical<T>
     public IEnumerable<T> Path()
     {
         if (selectedNode != null)
-            return selectedNode.Path;
-        Console.WriteLine(Items.Count);
-        return Items; // Enumerable.Empty<T>();
+            return selectedNode.Path();
+        return Enumerable.Empty<T>();
     }
 
     private bool IsInPath(T node)
-    {
+    {        
         var path = Path();
-        var result = path.Contains(node);
-        var s = string.Join("/", path.Select(n => n.ToString()));
-        Console.WriteLine($"IsInPath: {node} = {result} Path {s}");
+        var result = path?.Contains(node) == true;
+        //var s = string.Join("/", path.Select(n => n.ToString()));
+        //Console.WriteLine($"IsInPath: {node} = {result} Path {s}");
         return result;
     }
 
@@ -147,7 +174,7 @@ public partial class MudExTreeView<T> where T: Hierarchical<T>
         Items?.Recursive(n => n.Children.EmptyIfNull()).Where(predicate).Apply(e => SetExpanded(e, expand));
     }
 
-    private void SetExpanded(T context, bool expanded)
+    public void SetExpanded(T context, bool expanded)
     {
         if (expanded && !IsExpanded(context))
             _expanded.Add(context);
@@ -157,19 +184,6 @@ public partial class MudExTreeView<T> where T: Hierarchical<T>
 
 }
 
-public class TreeViewItemContext<T>
-{
-    public TreeViewItemContext(T item, bool isSelected, bool isExpanded)
-    {
-        Item = item;
-        IsSelected = isSelected;
-        IsExpanded = isExpanded;
-    }
-
-    public T Item { get; set; }
-    public bool IsSelected { get; set; }
-    public bool IsExpanded { get; set; }
-}
 
 public enum FilterMode
 {

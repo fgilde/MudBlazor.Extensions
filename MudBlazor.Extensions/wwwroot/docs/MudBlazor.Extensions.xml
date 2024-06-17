@@ -7441,6 +7441,36 @@
             Simple component to expand a Search field 
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.Placeholder">
+            <summary>
+            The short hint displayed in the input before the user enters a value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.Label">
+            <summary>
+            The short hint displayed in the input before the user enters a value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.OnChipMouseOver">
+            <summary>
+            Callback when the mouse enters a chip.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.OnChipMouseOut">
+            <summary>
+            Callback when the mouse leaves a chip.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.ChipColor">
+            <summary>
+            Sets the color of the chips.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.ChipVariant">
+            <summary>
+            Sets the visual variant of the chips.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.MultiSearch">
             <summary>
             Set to true to allow multiple values
@@ -13275,6 +13305,27 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.GlobalResetSettings.RequiresConfirmation">
             <summary>
             Requires confirmation before resetting the object.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.ItemTemplate">
+            <summary>
+            Full item template if this is set you need to handle the outer items based on ViewMode on your own. 
+            Also, the expand/collapse buttons, and you need to decide on your own if and how you use the <see cref="P:MudBlazor.Extensions.Components.MudExTreeView`1.ItemContentTemplate"/>
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.ItemContentTemplate">
+            <summary>
+            Item content template for the item itself without the requirement to change outer element like to control the expand button etc.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.IsSeparatorDetectFunc">
+            <summary>
+            This function controls how a separator will be detected. Default is if the item ToString() equals '-'
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.ExpandedIcon">
+            <summary>
+            The expand/collapse icon.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExIconButton.ToolTip">

@@ -3,13 +3,14 @@
 @using BlazorJS
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
-
-<MudExTreeView Items="@Entries">
+<MudExEnumSelect TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />
+<MudExTreeView ViewMode="@_treeViewMode" Items="@Entries">
 
 </MudExTreeView>
 
 
 @code {
+    private TreeViewMode _treeViewMode = TreeViewMode.Default;
     public HashSet<NavigationEntry> Entries { get; set; }
     private HashSet<TreeItemData> TreeItems { get; set; } = new HashSet<TreeItemData>();
 

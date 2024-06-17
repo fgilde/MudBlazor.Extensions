@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit;
+using MudBlazor.Extensions.Core;
 
 namespace MudBlazor.Extensions.Components
 {
@@ -9,7 +11,44 @@ namespace MudBlazor.Extensions.Components
     /// </summary>
     public partial class MudExToggleableSearch
     {
+        /// <summary>
+        /// The short hint displayed in the input before the user enters a value.
+        /// </summary>
+        [Parameter]
+        [Category(CategoryTypes.FormComponent.Behavior)]
+        public string Placeholder { get; set; } = "Filter";
+        
+        /// <summary>
+        /// The short hint displayed in the input before the user enters a value.
+        /// </summary>
+        [Parameter]
+        [Category(CategoryTypes.FormComponent.Behavior)]
+        public string Label { get; set; } = "Filter";
 
+        /// <summary>
+        /// Callback when the mouse enters a chip.
+        /// </summary>
+        [Parameter]
+        public EventCallback<ChipMouseEventArgs<string>> OnChipMouseOver { get; set; }
+
+        /// <summary>
+        /// Callback when the mouse leaves a chip.
+        /// </summary>
+        [Parameter]
+        public EventCallback<ChipMouseEventArgs<string>> OnChipMouseOut { get; set; }
+        
+        /// <summary>
+        /// Sets the color of the chips.
+        /// </summary>
+        [Parameter, SafeCategory("Appearance")]
+        public MudExColor ChipColor { get; set; } = MudExColor.Primary;
+
+        /// <summary>
+        /// Sets the visual variant of the chips.
+        /// </summary>
+        [Parameter, SafeCategory("Appearance")]
+        public Variant ChipVariant { get; set; } = Variant.Filled;
+        
         /// <summary>
         /// Set to true to allow multiple values
         /// </summary>

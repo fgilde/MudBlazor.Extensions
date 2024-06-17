@@ -16,8 +16,8 @@
                           Clearable="@Clearable"
                           Value="Filter" T="string"
                           ValueChanged="@OnFilterChanged"
-                          Placeholder="@TryLocalize("Filter")"
-                          Label="@TryLocalize("Filter")" />
+                          Placeholder="@TryLocalize(Placeholder)"
+                          Label="@TryLocalize(Label)" />
         }
         else
         {
@@ -30,19 +30,21 @@
                            OnKeyUp="@OnKeyUp"
                            SetChipsOnEnter="true"                           
                            Clearable="@Clearable"
-                           ChipColor="Color.Primary"
+                           ChipColor="@ChipColor"
                            ChipSize="Size.Small"
                            StyleChip="margin-top:33px;"
                            Class="@($"mud-ex-hide-inputlabel mud-ex-animate-all-properties mud-ex-property-filter {(SearchActive || FilterMode == PropertyFilterMode.AlwaysVisible ? "active" : "")}")"
                            Variant="Variant.Text"
-                           ChipVariant="Variant.Filled"
+                           ChipVariant="@ChipVariant"
                            Immediate="@Immediate"
                            Value="Filter"
                            Values="Filters"
+                           Placeholder="@TryLocalize(Placeholder)"
+                           OnChipMouseOut="@OnChipMouseOut"
+                           OnChipMouseOver="@OnChipMouseOver"
                            ValueChanged="@OnFilterChanged"
                            ValuesChanged="@OnFiltersChanged"
-                           Placeholder="@TryLocalize("Filter")"
-                           Label="@TryLocalize("Filter")" />
+                           Label="@TryLocalize(Label)" />
         }
 }
 @if (FilterMode == PropertyFilterMode.Toggleable)
