@@ -4,12 +4,15 @@
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
 <MudExEnumSelect TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />
-<MudExTreeView ViewMode="@_treeViewMode" Items="@Entries">
+<MudCheckBox @bind-Value="_reverseExpand"></MudCheckBox>
+
+<MudExTreeView ReverseExpandButton="_reverseExpand" ViewMode="@_treeViewMode" Items="@Entries">
 
 </MudExTreeView>
 
 
 @code {
+    private bool _reverseExpand;
     private TreeViewMode _treeViewMode = TreeViewMode.Default;
     public HashSet<NavigationEntry> Entries { get; set; }
     private HashSet<TreeItemData> TreeItems { get; set; } = new HashSet<TreeItemData>();

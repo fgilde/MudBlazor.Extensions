@@ -1,0 +1,114 @@
+﻿$tree-node-width: 250px;
+$tree-node-padding: 24px;
+$tree-node-line-width: 2px;
+
+.horizontal-tree-wrapper {
+    height: 100%;
+}
+
+.horizontal-tree {
+    overflow: hidden;
+    background-color: #ffe8e1;
+    height: 100%;
+    padding: 0;
+}
+
+.horizontal-tree-scroll-wrapper {
+    display: flex;
+    place-items: center;
+    height: 100%;
+    transition-property: transform;
+    transition-duration: 0.5s;
+}
+
+.horizontal-tree-column {
+    &:not(:first-child) .horizontal-tree-node:before,
+    .horizontal-tree-node.node-selected.node-expandable:after,
+    &:not(:first-child) .horizontal-tree-node:not(:last-child) > div:after {
+        content: " ";
+        background-color: green;
+        position: absolute;
+        top: 50%;
+        height: $tree-node-line-width;
+        width: $tree-node-padding;
+    }
+
+    &:not(:first-child) .horizontal-tree-node:before {
+        left: 0;
+    }
+
+    .horizontal-tree-node.node-selected.node-expandable:after {
+        right: 0;
+    }
+
+    &:not(:first-child) .horizontal-tree-node:not(:last-child) > div:after {
+        width: $tree-node-line-width;
+        height: 100%;
+        left: calc($tree-node-padding * -1 - $tree-node-line-width);
+        padding-top: calc($tree-node-line-width + 2px);
+    }
+}
+
+.horizontal-tree-node {
+    padding: 0 $tree-node-padding;
+    cursor: pointer;
+    width: $tree-node-width;
+
+    & > div {
+        position: relative;
+        padding: 4px 36px 4px 12px;
+        height: 25px;
+        white-space: nowrap;
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+    }
+
+    &.node-selected {
+        & > div {
+            background-color: #f00;
+            border-color: darkgray;
+            border-radius: 8px;
+        }
+    }
+
+    .horizontal-tree-expandable {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+    }
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:focus {
+    outline: none;
+
+    &:not(.node-selected) {
+        color: orange;
+        opacity: 0.5;
+    }
+}
+
+.node-selected {
+    color: orange;
+    opacity: 1;
+}
+
+
+.mud-ex-simple-flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mud-ex-flex-reverse-end {
+    flex-flow: row-reverse;
+    justify-content: flex-end;
+}
+
+.mud-ex-treeview-item-reverse-space-between > .mud-treeview-item-content {
+    flex-direction: row-reverse !important;
+    justify-content: space-between !important;
+}

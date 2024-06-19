@@ -9,6 +9,7 @@ public class TreeViewItemContext<T> where T : IHierarchical<T>
         bool isExpanded, 
         string search,
         bool renderedAsMenuItem,
+        TreeViewMode viewMode,
         MudExTreeView<T> treeView)
     {
         Item = item;
@@ -16,9 +17,11 @@ public class TreeViewItemContext<T> where T : IHierarchical<T>
         IsExpanded = isExpanded;
         Search = search;
         RenderedAsMenuItem = renderedAsMenuItem;
+        ViewMode = viewMode;
         TreeView = treeView;        
     }
 
+    public TreeViewMode ViewMode { get; set; }
     public T Item { get; }
     public bool IsSelected { get; }
     public bool IsExpanded { get; }

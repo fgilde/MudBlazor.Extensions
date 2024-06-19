@@ -2,11 +2,14 @@
 using Nextended.Core.Extensions;
 using Nextended.Core.Types;
 using Microsoft.AspNetCore.Components.Web;
+using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Options;
 
 namespace MudBlazor.Extensions.Components;
 
-public partial class MudExTreeView<T> where T: IHierarchical<T>
+public partial class MudExTreeView<T> where T : IHierarchical<T>
 {
+    [Parameter] public bool ReverseExpandButton { get; set; }
     [Parameter] public bool Dense { get; set; }
     [Parameter] public HashSet<T> Items { get; set; }
     [Parameter] public Func<T, string> TextFunc { get; set; } = n => n?.ToString();
@@ -18,7 +21,7 @@ public partial class MudExTreeView<T> where T: IHierarchical<T>
     /// Also, the expand/collapse buttons, and you need to decide on your own if and how you use the <see cref="ItemContentTemplate"/>
     /// </summary>
     [Parameter] public RenderFragment<TreeViewItemContext<T>> ItemTemplate { get; set; }
-    
+
     /// <summary>
     /// Item content template for the item itself without the requirement to change outer element like to control the expand button etc.
     /// </summary>
@@ -56,7 +59,7 @@ public partial class MudExTreeView<T> where T: IHierarchical<T>
                 SetAllExpanded(HasFilters, entry => true);
             }
         }
-    }    
+    }
     private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
     private HashSet<T> _expanded = new();
     public bool IsExpanded(T node) => _expanded.Contains(node);
@@ -66,27 +69,48 @@ public partial class MudExTreeView<T> where T: IHierarchical<T>
 
     public virtual bool IsSeparator(T node) => IsSeparatorDetectFunc?.Invoke(node) == true;
 
+    private AnimationDirection? _animationDirection;
     private void NodeClick(T node)
     {
+        _animationDirection = node == null || selectedNode?.Parent?.Equals(node) == true ? AnimationDirection.In : AnimationDirection.Out;
         selectedNode = node;
-        if(ViewMode == TreeViewMode.Default)
+        if (selectedNode != null && ViewMode == TreeViewMode.Default)
         {
             SetExpanded(node, !IsExpanded(node));
         }
     }
     private void OnWheel(WheelEventArgs e)
     {
-        // Logik hier implementieren
+        if (selectedNode == null || selectedNode.Parent == null || !selectedNode.Parent.HasChildren())
+            return;
+        if (e.DeltaY < 0)
+        {
+            NodeClick(selectedNode.Parent.Children.ToArray()[SelectedNodeIndexInPath() - 1]);
+        }
+        else
+        {
+            NodeClick(selectedNode.Parent.Children.ToArray()[SelectedNodeIndexInPath() + 1]);
+        }
+    }
+
+    private int SelectedNodeIndexInPath()
+    {
+        var node = selectedNode.Parent;
+        return Math.Max(node.Children.EmptyIfNull().ToArray().IndexOf(node.Children.FirstOrDefault(IsInPath)), 0);
     }
 
     private string GetNodeClass(T node)
     {
+        if (node.ToString() == "MudExCodeView")
+        {
+
+        }
         var classes = "horizontal-tree-node";
         if (IsInPath(node) || IsSelected(node))
         {
             classes += " node-selected";
         }
-        if (HasChild(node))
+        if (node.HasChildren())
         {
             classes += " node-expandable";
         }
@@ -99,33 +123,33 @@ public partial class MudExTreeView<T> where T: IHierarchical<T>
         var indexOf = children.IndexOf(children.FirstOrDefault(IsInPath));
         var indexOfSelected = Math.Max(indexOf, 0);
 
-        return (children.Count - 1) / 2 - indexOfSelected;        
+        return (children.Count - 1) / 2 - indexOfSelected;
     }
 
     private string GetTransformStyle(T node)
     {
-        return $"transform: translateY({NodeOffset(node) * 100}%)";
+        var nodeOffset = NodeOffset(node);
+        return $"transform: translateY({nodeOffset * 100}%)";
     }
 
-
-    private bool HasChild(T node)
-    {
-        return node?.Children?.Any() == true;
-    }
 
     public IEnumerable<T> Path()
     {
         if (selectedNode != null)
+        {
+            Console.WriteLine(string.Join(" > ", selectedNode.Path().Select(p => p.ToString())));
             return selectedNode.Path();
+        }
+
         return Enumerable.Empty<T>();
     }
 
     private bool IsInPath(T node)
-    {        
+    {
         var path = Path();
         var result = path?.Contains(node) == true;
-        //var s = string.Join("/", path.Select(n => n.ToString()));
-        //Console.WriteLine($"IsInPath: {node} = {result} Path {s}");
+        var s = string.Join("/", path.Select(n => n.ToString()));
+        Console.WriteLine($"IsInPath: {node} = {result} Path {s}");
         return result;
     }
 
@@ -134,14 +158,14 @@ public partial class MudExTreeView<T> where T: IHierarchical<T>
         if (FilterMode == FilterMode.Flat && HasFilters)
         {
             return Items.Recursive(e => e?.Children ?? Enumerable.Empty<T>()).Where(e =>
-                    Filters?.Any(filter => MatchesFilter(e, filter)) == true)
+                    Filters.EmptyIfNull().Concat(new[] { Filter }).Distinct().Any(filter => MatchesFilter(e, filter)))
                 .ToHashSet();
         }
         return Items;
     }
 
     private bool MatchesFilter(T node, string text)
-    { 
+    {
         return TextFunc(node).Contains(text, StringComparison.InvariantCultureIgnoreCase);
     }
 
@@ -182,6 +206,46 @@ public partial class MudExTreeView<T> where T: IHierarchical<T>
             _expanded.Remove(context);
     }
 
+    private bool ShouldRenderViewMode(TreeViewMode mode)
+    {
+        return mode == ViewMode; //ViewMode.HasFlag(mode);
+    }
+
+    private string ListItemClassStr()
+    {
+        return MudExCssBuilder.Default.
+            AddClass("mud-ex-simple-flex")
+            .AddClass("mud-ex-flex-reverse-end", ReverseExpandButton)
+            .ToString();
+    }
+
+    private string TreeItemClassStr()
+    {
+        return MudExCssBuilder.Default
+            .AddClass("mud-ex-treeview-item-reverse-space-between", ReverseExpandButton)
+            .ToString();
+    }
+
+    private string ListBoxStyleStr()
+    {
+        if (_animationDirection == null)
+        {
+            Console.WriteLine("AnimationDirection is null");
+            return string.Empty;
+        }
+        var duration = TimeSpan.FromMilliseconds(300);
+        Task.Delay(duration).ContinueWith(_ =>
+        {
+            _animationDirection = null;
+            InvokeAsync(StateHasChanged);
+        });
+        return MudExStyleBuilder.Default.WithAnimation(
+            AnimationType.Slide,
+            duration,
+            _animationDirection,
+            AnimationTimingFunction.EaseInOut,
+             DialogPosition.CenterRight, when: _animationDirection != null).Style;
+    }
 }
 
 
@@ -191,15 +255,11 @@ public enum FilterMode
     Flat
 }
 
+
 public enum TreeViewMode
 {
     Default,
     Horizontal,
     Breadcrumb,
     List
-}
-
-public class RenderIf<T> : System.Attribute
-{
-
 }

@@ -2,85 +2,13 @@
 @inherits MudExBaseComponent<MudExTreeView<T>>
 @namespace MudBlazor.Extensions.Components
 @using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Options
 @using Nextended.Core.Extensions
 @using Nextended.Core.Types
 
-<style>
-    .horizontal-tree-wrapper {
-        height: 100%;
-    }
 
-    .horizontal-tree {
-        overflow: hidden;
-        background-color: #ffe8e1;
-        height: 100%;
-        padding: 0;
-    }
-
-    .horizontal-tree-scroll-wrapper {
-        display: flex;
-        place-items: center;
-        height: 100%;
-        transition-property: transform;
-        transition-duration: 0.5s;
-    }
-
-    .horizontal-tree-column:not(:first-child) .horizontal-tree-node:before, .horizontal-tree-column .horizontal-tree-node.node-selected.node-expandable:after, .horizontal-tree-column:not(:first-child) .horizontal-tree-node:not(:last-child) > div:after {
-        content: " ";
-        background-color: green;
-        position: absolute;
-        top: 50%;
-        height: 2px;
-        width: 24px;
-    }
-
-    .horizontal-tree-column:not(:first-child) .horizontal-tree-node:before {
-        left: 0;
-    }
-
-    .horizontal-tree-column .horizontal-tree-node.node-selected.node-expandable:after {
-        right: 0;
-    }
-
-    .horizontal-tree-column:not(:first-child) .horizontal-tree-node:not(:last-child) > div:after {
-        width: 2px;
-        height: 100%;
-        left: calc($tree-node-padding * -1 - $tree-node-line-width);
-        padding-top: calc($tree-node-line-width + 2px);
-    }
-
-    .horizontal-tree-node {
-        padding: 0 24px;
-        cursor: pointer;
-        width: 250px;
-    }
-
-        .horizontal-tree-node > div {
-            position: relative;
-            padding: 4px 36px 4px 12px;
-            height: 25px;
-            white-space: nowrap;
-            border: 1px solid transparent;
-            display: flex;
-            align-items: center;
-        }
-
-        .horizontal-tree-node.node-selected > div {
-            background-color: #f00;
-            border-color: darkgray;
-            border-radius: 8px;
-        }
-
-        .horizontal-tree-node .horizontal-tree-expandable {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-        }
-
-</style>
-
-
-<RenderChild Condition="@(ViewMode == TreeViewMode.Default)">
+<RenderChild Condition="@(ShouldRenderViewMode(TreeViewMode.Default))">
     <MudExTagField Immediate="true"
                    ChipColor="MudExColor.Primary"
                    @bind-Values="Filters" @bind-Value="Filter" T="string"></MudExTagField>
@@ -90,19 +18,19 @@
                 var search = GetMatchedSearch(context);
                 @if (search.Found)
                 {
-                    @ItemRender(context, search.Term)                           
+                    @ItemRender(context, TreeViewMode.Default, search.Term)
                 }
             }
         </ItemTemplate>
     </MudTreeView>
 </RenderChild>
 
-<RenderChild Condition="@(ViewMode == TreeViewMode.Breadcrumb)">
+<RenderChild Condition="@(ShouldRenderViewMode(TreeViewMode.Breadcrumb))">
     <MudToolBar Dense="@Dense" WrapContent="true">
         @MenuFor(FilteredItems())
         @foreach (var item in Path())
         {
-            <p>@ItemRender(item)</p>
+            <p>@ItemRender(item, TreeViewMode.Breadcrumb)</p>
             @MenuFor(item.Children)
         }
         <MudSpacer />
@@ -110,8 +38,8 @@
     </MudToolBar>
 </RenderChild>
 
-<RenderChild Condition="@(ViewMode == TreeViewMode.List)">
-    <MudList Dense="@Dense" Clickable="true">
+<RenderChild Condition="@(ShouldRenderViewMode(TreeViewMode.List))">
+    <MudList Style="@ListBoxStyleStr()" Dense="@Dense" Clickable="true">
         @{
             var root = false;
             HashSet<T> nodes = (selectedNode != null ? (selectedNode.Children?.Any() == true ? selectedNode.Children : selectedNode?.Parent?.Children) : null);
@@ -128,22 +56,25 @@
         }
         @foreach (var item in nodes)
         {
-            @ItemRender(item)
+            @ItemRender(item, TreeViewMode.List)
         }
     </MudList>
 </RenderChild>
 
-<RenderChild Condition="@(ViewMode == TreeViewMode.Horizontal)">    
-    <div @onwheel="OnWheel" tabindex="0" class="horizontal-tree-wrapper">
-        <div class="horizontal-tree">
-            <div class="horizontal-tree-scroll-wrapper">
-                @* @NodeColumn(FilteredItems(), "horizontal-tree-node") *@
-                @foreach (var node in Path())
-                {
-                    @NodeColumn(node)
-                }
+<RenderChild Condition="@(ShouldRenderViewMode(TreeViewMode.Horizontal))">
+    <div style="padding: 9px; height: 350px; width: 850px;">
+    <div>
+        <div @onwheel="OnWheel" tabindex="0" class="horizontal-tree-wrapper">
+            <div class="horizontal-tree">
+                <div class="horizontal-tree-scroll-wrapper">
+                    @foreach (var node in Path())
+                    {
+                        @NodeColumn(node)
+                    }
+                </div>
             </div>
         </div>
+    </div>
     </div>
 </RenderChild>
 
@@ -161,10 +92,10 @@
         return @<div class="horizontal-tree-column">
         @foreach (var child in nodes ?? Enumerable.Empty<T>())
     {
-        <div class="@cls" style="@GetTransformStyle(child)" @onclick="() => NodeClick(child)">
-            <div id="@($"node-")">
+        <div class="@GetNodeClass(child)" style="@GetTransformStyle(child)" @onclick="() => NodeClick(child)">
+            <div>
                 <span>@child.ToString()</span>
-                @if (child.Children?.Any() == true)
+                @if (child.HasChildren())
             {
                 <span class="horizontal-tree-expandable fa fas fa-chevron-right"></span>
             }
@@ -175,32 +106,36 @@
         ;
     }
 
-    private RenderFragment MenuFor(IEnumerable<T> items)
+    private RenderFragment MenuFor(IEnumerable<T> items, bool isSubMenu = false)
     {
         var hierarchicals = items as T[] ?? items?.ToArray();
         return
-        @<RenderChild>
-            @if (hierarchicals?.Any(i => GetMatchedSearch(i).Found) == true)
-        {
-            <MudMenu Dense="@Dense" Icon="@ExpandedIcon">
+        @<RenderChild Condition="@(hierarchicals?.Any(i => GetMatchedSearch(i).Found) == true)">
+            <MudMenu ActivationEvent="@(isSubMenu ? MouseEvent.MouseOver : MouseEvent.LeftClick)"
+
+                     AnchorOrigin="Origin.TopRight"
+                     TransformOrigin="Origin.TopLeft"
+                     MaxHeight="500"
+                     Dense="@Dense"
+                     EndIcon="@ExpandedIcon"
+                     Icon="@(isSubMenu ? null : ExpandedIcon)">
                 @foreach (var child in hierarchicals)
                 {
                     var search = GetMatchedSearch(child);
-                    @if(search.Found) {
-                        @ItemRender(child, search.Term, true)
+                    @if (search.Found)
+                    {
+                        @ItemRender(child, TreeViewMode.Breadcrumb, search.Term, true)
                     }
                 }
-
             </MudMenu>
-        }
         </RenderChild>;
     }
 
     public virtual RenderFragment RenderSeparator() => @<MudExDivider />;
 
-    private RenderFragment ItemRender(T item, string search = "", bool asMenuItem = false)
+    private RenderFragment ItemRender(T item, TreeViewMode viewMode, string search = "", bool asMenuItem = false)
     {
-        var context = new TreeViewItemContext<T>(item, IsSelected(item), IsExpanded(item), search, asMenuItem, this);
+        var context = new TreeViewItemContext<T>(item, IsSelected(item), IsExpanded(item), search, asMenuItem, viewMode, this);
         if (ItemTemplate != null)
             return ItemTemplate(context);
 
@@ -211,9 +146,10 @@
     {
         return
             @<RenderChild>
-                @if(ViewMode == TreeViewMode.Default) {
+                @if(context.ViewMode == TreeViewMode.Default) {
                     <MudTreeViewItem Expanded="@IsExpanded(context.Item)"
                                      Style="@("cursor: pointer;")"
+                                     Class="@TreeItemClassStr()"
                                      OnClick="@(() => NodeClick(context.Item))"
                                      Items="@(context.Item?.Children?.ToHashSet())">
                         <Content>
@@ -221,23 +157,25 @@
                             @RenderItemContent(context)
                         </Content>
                     </MudTreeViewItem>   
-                } else if(ViewMode == TreeViewMode.List) {
+                } else if(context.ViewMode == TreeViewMode.List) {
                     <MudListItem OnClick="@(() => NodeClick(context.Item))">
-                        <div style="display: flex; justify-content: space-between;">
-                        <div>
+                        <div class="@ListItemClassStr()">
                             @RenderItemContent(context)
-                        </div>
-                        @if(context.Item.HasChildren()){
-                            <div>
-                                <MudExIcon Icon="@ExpandedIcon" />
-                            </div>
+                        @if(context.Item.HasChildren())
+                        {
+                            <MudExIcon Icon="@ExpandedIcon" />
                         }
                         </div>
                     </MudListItem>
 
-                } else if(ViewMode == TreeViewMode.Breadcrumb && context.RenderedAsMenuItem) {
-                    <MudMenuItem OnClick="@(() => NodeClick(context.Item))">
+                } else if(context.ViewMode == TreeViewMode.Breadcrumb && context.RenderedAsMenuItem) {
+                    <MudMenuItem Style="flex-flow: row-reverse;" Icon="@(context.Item.HasChildren() ? null : null)" OnClick="@(() => NodeClick(context.Item))">
                         @RenderItemContent(context)
+                        @*
+                        @if(context.Item.HasChildren())
+                        {
+                            @MenuFor(context.Item.Children, true)
+                        }*@
                     </MudMenuItem>
                 }
                 else{
