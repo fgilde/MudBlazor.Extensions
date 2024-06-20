@@ -2,9 +2,6 @@
 @inherits MudExBaseComponent<MudExTreeView<T>>
 @namespace MudBlazor.Extensions.Components
 @using MudBlazor.Extensions.Core
-@using MudBlazor.Extensions.Helper
-@using MudBlazor.Extensions.Options
-@using Nextended.Core.Extensions
 @using Nextended.Core.Types
 
 
@@ -51,7 +48,8 @@
         }
         @if (selectedNode != null && !root)
         {
-            <MudListItem OnClick="@(() => NodeClick(selectedNode.Children?.Any() == true ? selectedNode.Parent : selectedNode.Parent.Parent))" Text="@TryLocalize("Back")" Icon="@Icons.Material.Filled.ArrowBack" />
+            T targetNode = selectedNode.Children?.Any() == true ? selectedNode.Parent : selectedNode.Parent.Parent;
+            <MudListItem OnClick="@(() => NodeClick(targetNode))" Text="@TryLocalize(BackLinkLabel, TextFunc(targetNode))" Icon="@Icons.Material.Filled.ArrowBack" />
             <MudDivider />
         }
         @foreach (var item in nodes)
@@ -63,18 +61,16 @@
 
 <RenderChild Condition="@(ShouldRenderViewMode(TreeViewMode.Horizontal))">
     <div style="padding: 9px; height: 350px; width: 850px;">
-    <div>
-        <div @onwheel="OnWheel" tabindex="0" class="horizontal-tree-wrapper">
+        <div @onkeydown="KeyDown" @onwheel="OnWheel" tabindex="0" class="horizontal-tree-wrapper">
             <div class="horizontal-tree">
-                <div class="horizontal-tree-scroll-wrapper">
+                <div style="@ScrollHorizontalTree(selectedNode)" class="horizontal-tree-scroll-wrapper">
                     @foreach (var node in Path())
                     {
-                        @NodeColumn(node)
+                        @NodeColumn(node, NodeOffset(node))
                     }
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </RenderChild>
 
@@ -82,17 +78,17 @@
 
 @code {
 
-    private RenderFragment NodeColumn(T node)
+    private RenderFragment NodeColumn(T node, double top)
     {
-        return NodeColumn(node?.Children, GetNodeClass(node));
+        return NodeColumn(node?.Children, GetNodeClass(node), top);
     }
 
-    private RenderFragment NodeColumn(IEnumerable<T> nodes, string cls)
+    private RenderFragment NodeColumn(IEnumerable<T> nodes, string cls, double top)
     {
         return @<div class="horizontal-tree-column">
         @foreach (var child in nodes ?? Enumerable.Empty<T>())
     {
-        <div class="@GetNodeClass(child)" style="@GetTransformStyle(child)" @onclick="() => NodeClick(child)">
+        <div class="@GetNodeClass(child)" style="@GetTransformStyle(child, top)" @onclick="() => NodeClick(child)">
             <div>
                 <span>@child.ToString()</span>
                 @if (child.HasChildren())

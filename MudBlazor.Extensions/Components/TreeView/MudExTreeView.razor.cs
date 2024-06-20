@@ -4,11 +4,13 @@ using Nextended.Core.Types;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
+using OneOf.Types;
 
 namespace MudBlazor.Extensions.Components;
 
 public partial class MudExTreeView<T> where T : IHierarchical<T>
 {
+    [Parameter] public string BackLinkLabel { get; set; } = "Back to {0}";
     [Parameter] public bool ReverseExpandButton { get; set; }
     [Parameter] public bool Dense { get; set; }
     [Parameter] public HashSet<T> Items { get; set; }
@@ -72,7 +74,9 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
     private AnimationDirection? _animationDirection;
     private void NodeClick(T node)
     {
-        _animationDirection = node == null || selectedNode?.Parent?.Equals(node) == true ? AnimationDirection.In : AnimationDirection.Out;
+        _animationDirection = node == null || selectedNode?.Parent?.Equals(node) == true || selectedNode?.Parent?.Parent?.Equals(node) == true ? AnimationDirection.In : AnimationDirection.Out;
+        if(!node.HasChildren())
+            _animationDirection = null;
         selectedNode = node;
         if (selectedNode != null && ViewMode == TreeViewMode.Default)
         {
@@ -83,15 +87,41 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
     {
         if (selectedNode == null || selectedNode.Parent == null || !selectedNode.Parent.HasChildren())
             return;
-        if (e.DeltaY < 0)
+
+        var siblings = selectedNode.Parent.Children.ToArray();
+        var currentIndex = SelectedNodeIndexInPath();
+        var newIndex = e.DeltaY < 0 ? currentIndex - 1 : currentIndex + 1;
+
+        if (newIndex >= 0 && newIndex < siblings.Length)
+            NodeClick(siblings[newIndex]);
+    }
+
+    private void KeyDown(KeyboardEventArgs args)
+    {
+        if (!new[] { "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown" }.Contains(args.Code))
+            return;
+
+        if (args.Code == "ArrowLeft" && selectedNode != null && selectedNode.Parent != null)
         {
-            NodeClick(selectedNode.Parent.Children.ToArray()[SelectedNodeIndexInPath() - 1]);
+            NodeClick(selectedNode.Parent);
         }
-        else
+        else if (args.Code == "ArrowRight" && selectedNode?.HasChildren() == true)
         {
-            NodeClick(selectedNode.Parent.Children.ToArray()[SelectedNodeIndexInPath() + 1]);
+            NodeClick(selectedNode.Children.First());
+        }
+        else if (selectedNode != null && selectedNode.Parent != null && selectedNode.Parent.HasChildren())
+        {
+            var siblings = selectedNode.Parent.Children.ToArray();
+            var currentIndex = SelectedNodeIndexInPath();
+            var newIndex = args.Code == "ArrowUp" ? currentIndex - 1 : currentIndex + 1;
+
+            if (newIndex >= 0 && newIndex < siblings.Length)
+            {
+                NodeClick(siblings[newIndex]);
+            }
         }
     }
+
 
     private int SelectedNodeIndexInPath()
     {
@@ -126,10 +156,24 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
         return (children.Count - 1) / 2 - indexOfSelected;
     }
 
-    private string GetTransformStyle(T node)
+    private string GetTransformStyle(T node, double top)
     {
-        var nodeOffset = NodeOffset(node);
-        return $"transform: translateY({nodeOffset * 100}%)";
+        return $"transform: translateY({top * 100}%)";
+    }
+
+    private string ScrollHorizontalTree(T node)
+    {
+        var depth = this.Path().ToArray().IndexOf(node);
+        //var treeWidth = this.el.getBoundingClientRect().width;
+        //var nodeWidth = (this.el.querySelector(`#node-${node.id}`).parentNode as HTMLElement).clientWidth;
+        //var scrollWrapper = this.el.querySelector('.horizontal-tree-scroll-wrapper') as HTMLElement;
+
+        decimal nodeWidth = 298;
+        var treeWidth = 600;
+        var scrollBy = Math.Ceiling((((depth + 1) * nodeWidth) - treeWidth) / nodeWidth);
+        return MudExStyleBuilder.Default.WithTransform($"translateX(-{scrollBy * nodeWidth}px)").Style;
+
+        //scrollWrapper.style.transform = `translateX(-${ scrollBy* nodeWidth}px)`;
     }
 
 
@@ -137,7 +181,6 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
     {
         if (selectedNode != null)
         {
-            Console.WriteLine(string.Join(" > ", selectedNode.Path().Select(p => p.ToString())));
             return selectedNode.Path();
         }
 
@@ -148,8 +191,6 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
     {
         var path = Path();
         var result = path?.Contains(node) == true;
-        var s = string.Join("/", path.Select(n => n.ToString()));
-        Console.WriteLine($"IsInPath: {node} = {result} Path {s}");
         return result;
     }
 
@@ -230,7 +271,6 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
     {
         if (_animationDirection == null)
         {
-            Console.WriteLine("AnimationDirection is null");
             return string.Empty;
         }
         var duration = TimeSpan.FromMilliseconds(300);
@@ -246,6 +286,7 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
             AnimationTimingFunction.EaseInOut,
              DialogPosition.CenterRight, when: _animationDirection != null).Style;
     }
+
 }
 
 
