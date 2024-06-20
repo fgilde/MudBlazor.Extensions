@@ -4,12 +4,12 @@ using Nextended.Core.Types;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
-using OneOf.Types;
 
 namespace MudBlazor.Extensions.Components;
 
 public partial class MudExTreeView<T> where T : IHierarchical<T>
 {
+    [Parameter] public bool SkipSeparator { get; set; } = true;
     [Parameter] public string BackLinkLabel { get; set; } = "Back to {0}";
     [Parameter] public bool ReverseExpandButton { get; set; }
     [Parameter] public bool Dense { get; set; }
@@ -74,6 +74,8 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
     private AnimationDirection? _animationDirection;
     private void NodeClick(T node)
     {
+        if (IsSeparator(node))
+            return;
         _animationDirection = node == null || selectedNode?.Parent?.Equals(node) == true || selectedNode?.Parent?.Parent?.Equals(node) == true ? AnimationDirection.In : AnimationDirection.Out;
         if(!node.HasChildren())
             _animationDirection = null;
@@ -85,21 +87,30 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
     }
     private void OnWheel(WheelEventArgs e)
     {
-        if (selectedNode == null || selectedNode.Parent == null || !selectedNode.Parent.HasChildren())
+        var siblings = SiblingOfSelected();
+
+        if (selectedNode == null || !siblings.Any())
             return;
 
-        var siblings = selectedNode.Parent.Children.ToArray();
-        var currentIndex = SelectedNodeIndexInPath();
+        var currentIndex = SelectedNodeIndexInPath(siblings);
         var newIndex = e.DeltaY < 0 ? currentIndex - 1 : currentIndex + 1;
+
+        while (newIndex >= 0 && newIndex < siblings.Length && SkipSeparator && IsSeparator(siblings[newIndex]))
+        {
+            newIndex = e.DeltaY < 0 ? newIndex - 1 : newIndex + 1;
+        }
 
         if (newIndex >= 0 && newIndex < siblings.Length)
             NodeClick(siblings[newIndex]);
     }
 
+
     private void KeyDown(KeyboardEventArgs args)
     {
         if (!new[] { "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown" }.Contains(args.Code))
             return;
+
+        var siblings = SiblingOfSelected();
 
         if (args.Code == "ArrowLeft" && selectedNode != null && selectedNode.Parent != null)
         {
@@ -109,11 +120,15 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
         {
             NodeClick(selectedNode.Children.First());
         }
-        else if (selectedNode != null && selectedNode.Parent != null && selectedNode.Parent.HasChildren())
+        else if (new[] { "ArrowUp", "ArrowDown" }.Contains(args.Code) && siblings.Any())
         {
-            var siblings = selectedNode.Parent.Children.ToArray();
-            var currentIndex = SelectedNodeIndexInPath();
+            var currentIndex = SelectedNodeIndexInPath(siblings);
             var newIndex = args.Code == "ArrowUp" ? currentIndex - 1 : currentIndex + 1;
+
+            while (newIndex >= 0 && newIndex < siblings.Length && SkipSeparator && IsSeparator(siblings[newIndex]))
+            {
+                newIndex = args.Code == "ArrowUp" ? newIndex - 1 : newIndex + 1;
+            }
 
             if (newIndex >= 0 && newIndex < siblings.Length)
             {
@@ -123,18 +138,25 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
     }
 
 
+    private T[] SiblingOfSelected()
+    {
+        if (selectedNode != null && selectedNode.Parent != null && selectedNode.Parent.HasChildren())
+            return selectedNode.Parent.Children.ToArray();
+        return FilteredItems()?.ToArray() ?? Array.Empty<T>();
+    }
+
     private int SelectedNodeIndexInPath()
     {
-        var node = selectedNode.Parent;
-        return Math.Max(node.Children.EmptyIfNull().ToArray().IndexOf(node.Children.FirstOrDefault(IsInPath)), 0);
+        return SelectedNodeIndexInPath(SiblingOfSelected());
+    }
+
+    private int SelectedNodeIndexInPath(T[] nodeChildren)
+    {
+        return Math.Max(nodeChildren.EmptyIfNull().ToArray().IndexOf(nodeChildren.FirstOrDefault(IsInPath)), 0);
     }
 
     private string GetNodeClass(T node)
     {
-        if (node.ToString() == "MudExCodeView")
-        {
-
-        }
         var classes = "horizontal-tree-node";
         if (IsInPath(node) || IsSelected(node))
         {
@@ -150,6 +172,11 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
     public double NodeOffset(T node)
     {
         var children = (node.Children ?? Enumerable.Empty<T>()).ToList();
+        return NodeOffset(children);
+    }
+
+    private double NodeOffset(List<T> children)
+    {
         var indexOf = children.IndexOf(children.FirstOrDefault(IsInPath));
         var indexOfSelected = Math.Max(indexOf, 0);
 

@@ -1,7 +1,5 @@
 ﻿@page "/test"
-@using FluentValidation
-@using BlazorJS
-@using MudBlazor.Extensions.Components.ObjectEdit.Options
+
 
 <MudExEnumSelect TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />
 <MudCheckBox @bind-Value="_reverseExpand"></MudCheckBox>
@@ -18,8 +16,9 @@
     
     protected override void OnInitialized()
     {
-        var root = new NavigationEntry("ROOT") { Children = Navigations.Default(NavigationManager) };
-        Entries = new HashSet<NavigationEntry>(new [] {root});
+        //var root = new NavigationEntry("ROOT") { Children = Navigations.Default(NavigationManager) };
+        //Entries = new HashSet<NavigationEntry>(new [] {root});
+        Entries = Navigations.Default(NavigationManager);
     }
     
 

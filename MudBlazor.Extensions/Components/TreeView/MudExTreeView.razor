@@ -64,6 +64,8 @@
         <div @onkeydown="KeyDown" @onwheel="OnWheel" tabindex="0" class="horizontal-tree-wrapper">
             <div class="horizontal-tree">
                 <div style="@ScrollHorizontalTree(selectedNode)" class="horizontal-tree-scroll-wrapper">
+                    @{ var items = FilteredItems()?.ToList() ?? new List<T>(); }
+                    @NodeColumn(items, "horizontal-tree-node", NodeOffset(items))
                     @foreach (var node in Path())
                     {
                         @NodeColumn(node, NodeOffset(node))
@@ -90,11 +92,7 @@
     {
         <div class="@GetNodeClass(child)" style="@GetTransformStyle(child, top)" @onclick="() => NodeClick(child)">
             <div>
-                <span>@child.ToString()</span>
-                @if (child.HasChildren())
-            {
-                <span class="horizontal-tree-expandable fa fas fa-chevron-right"></span>
-            }
+                @ItemRender(child, TreeViewMode.Horizontal)
             </div>
         </div>
     }
