@@ -60,13 +60,14 @@
 </RenderChild>
 
 <RenderChild Condition="@(ShouldRenderViewMode(TreeViewMode.Horizontal))">
+    <MudAlert Severity="Severity.Warning">Experimental try out. DO NOT USE !</MudAlert>
     <div style="padding: 9px; height: 350px; width: 850px;">
         <div @onkeydown="KeyDown" @onwheel="OnWheel" tabindex="0" class="mud-ex-horizontal-tree-wrapper">
             <div class="mud-ex-horizontal-tree">
                 <div style="@ScrollHorizontalTree(selectedNode)" class="mud-ex-horizontal-tree-scroll-wrapper">
-                    @{ var items = FilteredItems()?.ToList() ?? new List<T>(); }
+                    @{ var items = FilteredItems()?.Where(n => GetMatchedSearch(n).Found).ToList() ?? new List<T>(); }
                     @NodeColumn(items, "mud-ex-horizontal-tree-node", NodeOffset(items))
-                    @foreach (var node in Path())
+                    @foreach (var node in Path().Where(n => GetMatchedSearch(n).Found))
                     {
                         @NodeColumn(node, NodeOffset(node))
                     }
@@ -82,7 +83,7 @@
 
     private RenderFragment NodeColumn(T node, double top)
     {
-        return NodeColumn(node?.Children, GetNodeClass(node), top);
+        return NodeColumn(node?.Children?.Where(n => GetMatchedSearch(n).Found), GetNodeClass(node), top);
     }
 
     private RenderFragment NodeColumn(IEnumerable<T> nodes, string cls, double top)
@@ -90,11 +91,15 @@
         return @<div class="mud-ex-horizontal-tree-column">
         @foreach (var child in nodes ?? Enumerable.Empty<T>())
     {
-        <div class="@GetNodeClass(child)" style="@GetTransformStyle(child, top)" @onclick="() => NodeClick(child)">
-            <div>
-                @ItemRender(child, TreeViewMode.Horizontal)
+        var search = GetMatchedSearch(child);
+        @if (search.Found)
+        {
+            <div class="@GetNodeClass(child)" style="@GetTransformStyle(child, top)" @onclick="() => NodeClick(child)">
+                <div>
+                    @ItemRender(child, TreeViewMode.Horizontal)
+                </div>
             </div>
-        </div>
+        }
     }
     </div>
         ;
@@ -171,6 +176,15 @@
                             @MenuFor(context.Item.Children, true)
                         }*@
                     </MudMenuItem>
+                } else if (context.ViewMode == TreeViewMode.Horizontal)
+                {
+                    <div class="@ListItemClassStr()">
+                        @RenderItemContent(context)
+                        @if(context.Item.HasChildren())
+                        {
+                            <MudExIcon Icon="@ExpandedIcon" />
+                        }
+                    </div>
                 }
                 else{
                     @RenderItemContent(context)
@@ -183,7 +197,7 @@
         if (ItemContentTemplate != null)
             return ItemContentTemplate(context);
         return
-        @<MudText Style="@($"color: {(context.IsSelected ? MudExColor.Secondary.ToCssStringValue() : "inherit")};")">@TextFunc(context.Item)</MudText>;
+        @<MudText Class="trimmer" Style="@($"color: {(context.IsSelected ? MudExColor.Secondary.ToCssStringValue() : "inherit")};")">@TextFunc(context.Item)</MudText>;
     }
 
 }

@@ -56,7 +56,7 @@ $tree-node-line-width: 2px;
 
     & > div {
         position: relative;
-        padding: 4px 36px 4px 12px;
+        padding: 4px 4px 4px 12px;
         height: 25px;
         white-space: nowrap;
         border: 1px solid transparent;
@@ -100,6 +100,7 @@ $tree-node-line-width: 2px;
 
 .mud-ex-simple-flex {
     display: flex;
+    width: 100%;
     justify-content: space-between;
 }
 
@@ -111,4 +112,10 @@ $tree-node-line-width: 2px;
 .mud-ex-treeview-item-reverse-space-between > .mud-treeview-item-content {
     flex-direction: row-reverse !important;
     justify-content: space-between !important;
+}
+
+.trimmer {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

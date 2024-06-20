@@ -107,18 +107,39 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
 
     private void KeyDown(KeyboardEventArgs args)
     {
-        if (!new[] { "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown" }.Contains(args.Code))
+        if (!new[] { "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "PageDown", "PageUp", "End", "Home" }.Contains(args.Code))
             return;
 
         var siblings = SiblingOfSelected();
-
-        if (args.Code == "ArrowLeft" && selectedNode != null && selectedNode.Parent != null)
+        if (args.Code == "Home")
+        {
+            var toSelect = FilteredItems().EmptyIfNull().FirstOrDefault();
+            var parent = selectedNode;
+            while (parent != null && parent.Parent != null)
+            {
+                parent = parent.Parent;
+            }
+            NodeClick(parent ?? toSelect);
+        }
+        else if (args.Code == "End" && selectedNode?.HasChildren() == true)
+        {
+            var lastOrDefault = selectedNode.Children.Recursive(n => n.Children ?? Enumerable.Empty<T>()).ToList();
+            NodeClick(lastOrDefault.FirstOrDefault(n => !n.HasChildren()));
+        }else if (args.Code == "PageDown" && siblings.Any())
+        {
+            NodeClick(siblings.LastOrDefault());
+        }
+        else if (args.Code == "PageUp" && siblings.Any())
+        {
+            NodeClick(siblings.FirstOrDefault());
+        }
+        else if (args.Code == "ArrowLeft" && selectedNode != null && selectedNode.Parent != null && GetMatchedSearch(selectedNode.Parent).Found)
         {
             NodeClick(selectedNode.Parent);
         }
         else if (args.Code == "ArrowRight" && selectedNode?.HasChildren() == true)
         {
-            NodeClick(selectedNode.Children.First());
+            NodeClick(selectedNode.Children.FirstOrDefault(n => GetMatchedSearch(n).Found));
         }
         else if (new[] { "ArrowUp", "ArrowDown" }.Contains(args.Code) && siblings.Any())
         {
@@ -141,8 +162,8 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
     private T[] SiblingOfSelected()
     {
         if (selectedNode != null && selectedNode.Parent != null && selectedNode.Parent.HasChildren())
-            return selectedNode.Parent.Children.ToArray();
-        return FilteredItems()?.ToArray() ?? Array.Empty<T>();
+            return selectedNode.Parent.Children.Where(n => GetMatchedSearch(n).Found).ToArray();
+        return FilteredItems()?.Where(n => GetMatchedSearch(n).Found).ToArray() ?? Array.Empty<T>();
     }
 
     private int SelectedNodeIndexInPath()
@@ -165,7 +186,7 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
 
     public double NodeOffset(T node)
     {
-        return NodeOffset((node.Children ?? Enumerable.Empty<T>()).ToList());
+        return NodeOffset((node.Children?.Where(n => GetMatchedSearch(n).Found) ?? Enumerable.Empty<T>()).ToList());
     }
 
     private double NodeOffset(List<T> children)
@@ -179,7 +200,7 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
 
     private string GetTransformStyle(T node, double top)
     {
-        return $"transform: translateY({top * 100}%)";
+        return $"transform: translateY(calc({top * 100}% + 0px))";
     }
 
     private string ScrollHorizontalTree(T node)
