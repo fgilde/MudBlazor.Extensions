@@ -2,18 +2,18 @@
 $tree-node-padding: 24px;
 $tree-node-line-width: 2px;
 
-.horizontal-tree-wrapper {
+.mud-ex-horizontal-tree-wrapper {
     height: 100%;
 }
 
-.horizontal-tree {
+.mud-ex-horizontal-tree {
     overflow: hidden;
     /*background-color: #ffe8e1;*/
     height: 100%;
     padding: 0;
 }
 
-.horizontal-tree-scroll-wrapper {
+.mud-ex-horizontal-tree-scroll-wrapper {
     display: flex;
     place-items: center;
     height: 100%;
@@ -21,10 +21,10 @@ $tree-node-line-width: 2px;
     transition-duration: 0.5s;
 }
 
-.horizontal-tree-column {
-    &:not(:first-child) .horizontal-tree-node:before,
-    .horizontal-tree-node.node-selected.node-expandable:after,
-    &:not(:first-child) .horizontal-tree-node:not(:last-child) > div:after {
+.mud-ex-horizontal-tree-column {
+    &:not(:first-child) .mud-ex-horizontal-tree-node:before,
+    .mud-ex-horizontal-tree-node.node-selected.node-expandable:after,
+    &:not(:first-child) .mud-ex-horizontal-tree-node:not(:last-child) > div:after {
         content: " ";
         background-color: green;
         position: absolute;
@@ -33,15 +33,15 @@ $tree-node-line-width: 2px;
         width: $tree-node-padding;
     }
 
-    &:not(:first-child) .horizontal-tree-node:before {
+    &:not(:first-child) .mud-ex-horizontal-tree-node:before {
         left: 0;
     }
 
-    .horizontal-tree-node.node-selected.node-expandable:after {
+    .mud-ex-horizontal-tree-node.node-selected.node-expandable:after {
         right: 0;
     }
 
-    &:not(:first-child) .horizontal-tree-node:not(:last-child) > div:after {
+    &:not(:first-child) .mud-ex-horizontal-tree-node:not(:last-child) > div:after {
         width: $tree-node-line-width;
         height: 100%;
         left: calc($tree-node-padding * -1 - $tree-node-line-width);
@@ -49,7 +49,7 @@ $tree-node-line-width: 2px;
     }
 }
 
-.horizontal-tree-node {
+.mud-ex-horizontal-tree-node {
     padding: 0 $tree-node-padding;
     cursor: pointer;
     width: $tree-node-width;
@@ -72,7 +72,7 @@ $tree-node-line-width: 2px;
         }
     }
 
-    .horizontal-tree-expandable {
+    .mud-ex-horizontal-tree-expandable {
         position: absolute;
         top: 8px;
         right: 8px;

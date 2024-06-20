@@ -61,11 +61,11 @@
 
 <RenderChild Condition="@(ShouldRenderViewMode(TreeViewMode.Horizontal))">
     <div style="padding: 9px; height: 350px; width: 850px;">
-        <div @onkeydown="KeyDown" @onwheel="OnWheel" tabindex="0" class="horizontal-tree-wrapper">
-            <div class="horizontal-tree">
-                <div style="@ScrollHorizontalTree(selectedNode)" class="horizontal-tree-scroll-wrapper">
+        <div @onkeydown="KeyDown" @onwheel="OnWheel" tabindex="0" class="mud-ex-horizontal-tree-wrapper">
+            <div class="mud-ex-horizontal-tree">
+                <div style="@ScrollHorizontalTree(selectedNode)" class="mud-ex-horizontal-tree-scroll-wrapper">
                     @{ var items = FilteredItems()?.ToList() ?? new List<T>(); }
-                    @NodeColumn(items, "horizontal-tree-node", NodeOffset(items))
+                    @NodeColumn(items, "mud-ex-horizontal-tree-node", NodeOffset(items))
                     @foreach (var node in Path())
                     {
                         @NodeColumn(node, NodeOffset(node))
@@ -87,7 +87,7 @@
 
     private RenderFragment NodeColumn(IEnumerable<T> nodes, string cls, double top)
     {
-        return @<div class="horizontal-tree-column">
+        return @<div class="mud-ex-horizontal-tree-column">
         @foreach (var child in nodes ?? Enumerable.Empty<T>())
     {
         <div class="@GetNodeClass(child)" style="@GetTransformStyle(child, top)" @onclick="() => NodeClick(child)">

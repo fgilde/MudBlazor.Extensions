@@ -157,22 +157,15 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
 
     private string GetNodeClass(T node)
     {
-        var classes = "horizontal-tree-node";
-        if (IsInPath(node) || IsSelected(node))
-        {
-            classes += " node-selected";
-        }
-        if (node.HasChildren())
-        {
-            classes += " node-expandable";
-        }
-        return classes;
+        return MudExCssBuilder.From("mud-ex-horizontal-tree-node")
+            .AddClass("node-selected", IsInPath(node) || IsSelected(node))
+            .AddClass("node-expandable", node.HasChildren())
+            .ToString();
     }
 
     public double NodeOffset(T node)
     {
-        var children = (node.Children ?? Enumerable.Empty<T>()).ToList();
-        return NodeOffset(children);
+        return NodeOffset((node.Children ?? Enumerable.Empty<T>()).ToList());
     }
 
     private double NodeOffset(List<T> children)
@@ -180,8 +173,9 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
         var indexOf = children.IndexOf(children.FirstOrDefault(IsInPath));
         var indexOfSelected = Math.Max(indexOf, 0);
 
-        return (children.Count - 1) / 2 - indexOfSelected;
+        return ((children.Count - 1) / 2.0) - indexOfSelected;
     }
+
 
     private string GetTransformStyle(T node, double top)
     {
