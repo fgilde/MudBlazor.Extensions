@@ -3,7 +3,7 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/fgilde/MudBlazor.Extensions?color=594ae2&style=flat-square&logo=github)](https://github.com/fgilde/MudBlazor.Extensions)
 [![Nuget version](https://img.shields.io/nuget/v/MudBlazor.Extensions?color=ff4081&label=nuget%20version&logo=nuget&style=flat-square)](https://www.nuget.org/packages/MudBlazor.Extensions/)
 [![Nuget downloads](https://img.shields.io/nuget/dt/MudBlazor.Extensions?color=ff4081&label=nuget%20downloads&logo=nuget&style=flat-square)](https://www.nuget.org/packages/MudBlazor.Extensions)
-[![Website](https://img.shields.io/website?label=mudex.org&url=http%3A%2F%2Fmudex.org)](https://www.mudex.org/)
+[![Website](https://img.shields.io/website?label=mudex.org&url=http%3A%2F%2Fwww.mudex.org)](https://www.mudex.org/)
 [![Publish Nuget Preview Package and deploy Test App](https://github.com/fgilde/MudBlazor.Extensions/actions/workflows/nuget_preview_publish_and_app_deploy.yml/badge.svg)](https://github.com/fgilde/MudBlazor.Extensions/actions/workflows/nuget_preview_publish_and_app_deploy.yml)
 [![Publish Nuget Release Package](https://github.com/fgilde/MudBlazor.Extensions/actions/workflows/nuget_release_publish.yml/badge.svg)](https://github.com/fgilde/MudBlazor.Extensions/actions/workflows/nuget_release_publish.yml)
 [![Deploy TryMudEx](https://github.com/fgilde/MudBlazor.Extensions/actions/workflows/TryMudEx.yml/badge.svg)](https://github.com/fgilde/MudBlazor.Extensions/actions/workflows/TryMudEx.yml)
