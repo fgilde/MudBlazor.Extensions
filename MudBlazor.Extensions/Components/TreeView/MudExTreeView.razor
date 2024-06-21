@@ -1,14 +1,16 @@
 ﻿@typeparam T
 @inherits MudExBaseComponent<MudExTreeView<T>>
 @namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Components.ObjectEdit
 @using MudBlazor.Extensions.Core
+@using Nextended.Core.Extensions
 @using Nextended.Core.Types
 
+<MudExTagField Immediate="true"
+               ChipColor="MudExColor.Primary"
+               @bind-Values="Filters" @bind-Value="Filter" T="string"></MudExTagField>
 
 <RenderChild Condition="@(ShouldRenderViewMode(TreeViewMode.Default))">
-    <MudExTagField Immediate="true"
-                   ChipColor="MudExColor.Primary"
-                   @bind-Values="Filters" @bind-Value="Filter" T="string"></MudExTagField>
     <MudTreeView Color="Color.Primary" Hover="true" Items="@FilteredItems()" Dense="@Dense">
         <ItemTemplate>
             @{
@@ -31,7 +33,7 @@
             @MenuFor(item.Children)
         }
         <MudSpacer />
-        <MudExToggleableSearch MultiSearch="true" @bind-Filters="Filters" @bind-Filter="Filter"></MudExToggleableSearch>
+        <MudExToggleableSearch FilterMode="PropertyFilterMode.AlwaysVisible" ChipVariant="Variant.Text" MultiSearch="true" @bind-Filters="Filters" @bind-Filter="Filter"></MudExToggleableSearch>
     </MudToolBar>
 </RenderChild>
 
@@ -52,9 +54,13 @@
             <MudListItem OnClick="@(() => NodeClick(targetNode))" Text="@TryLocalize(BackLinkLabel, TextFunc(targetNode))" Icon="@Icons.Material.Filled.ArrowBack" />
             <MudDivider />
         }
-        @foreach (var item in nodes)
+        @foreach (var item in nodes.EmptyIfNull())
         {
-            @ItemRender(item, TreeViewMode.List)
+            var search = GetMatchedSearch(item);
+            if (search.Found)
+            {
+                @ItemRender(item, TreeViewMode.List, search.Term)
+            }
         }
     </MudList>
 </RenderChild>
@@ -96,7 +102,7 @@
         {
             <div class="@GetNodeClass(child)" style="@GetTransformStyle(child, top)" @onclick="() => NodeClick(child)">
                 <div>
-                    @ItemRender(child, TreeViewMode.Horizontal)
+                    @ItemRender(child, TreeViewMode.Horizontal, search.Term)
                 </div>
             </div>
         }
