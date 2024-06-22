@@ -8,13 +8,13 @@
 
 <MudExTagField Immediate="true"
                ChipColor="MudExColor.Primary"
-               @bind-Values="Filters" @bind-Value="Filter" T="string"></MudExTagField>
+               @bind-Values="FilterManager.Filters" @bind-Value="Filter" T="string"></MudExTagField>
 
 <RenderChild Condition="@(ShouldRenderViewMode(TreeViewMode.Default))">
-    <MudTreeView Color="Color.Primary" Hover="true" Items="@FilteredItems()" Dense="@Dense">
+    <MudTreeView Color="Color.Primary" Hover="true" Items="@FilterManager.FilteredItems()" Dense="@Dense">
         <ItemTemplate>
             @{
-                var search = GetMatchedSearch(context);
+                var search = FilterManager.GetMatchedSearch(context);
                 @if (search.Found)
                 {
                     @ItemRender(context, TreeViewMode.Default, search.Term)
@@ -26,14 +26,14 @@
 
 <RenderChild Condition="@(ShouldRenderViewMode(TreeViewMode.Breadcrumb))">
     <MudToolBar Dense="@Dense" WrapContent="true">
-        @MenuFor(FilteredItems())
+        @MenuFor(FilterManager.FilteredItems())
         @foreach (var item in Path())
         {
             <p>@ItemRender(item, TreeViewMode.Breadcrumb)</p>
             @MenuFor(item.Children)
         }
         <MudSpacer />
-        <MudExToggleableSearch FilterMode="PropertyFilterMode.AlwaysVisible" ChipVariant="Variant.Text" MultiSearch="true" @bind-Filters="Filters" @bind-Filter="Filter"></MudExToggleableSearch>
+        <MudExToggleableSearch FilterMode="PropertyFilterMode.AlwaysVisible" ChipVariant="Variant.Text" MultiSearch="true" @bind-Filters="FilterManager.Filters" @bind-Filter="Filter"></MudExToggleableSearch>
     </MudToolBar>
 </RenderChild>
 
@@ -44,7 +44,7 @@
             HashSet<T> nodes = (selectedNode != null ? (selectedNode.Children?.Any() == true ? selectedNode.Children : selectedNode?.Parent?.Children) : null);
             if (nodes == null)
             {
-                nodes = FilteredItems();
+                nodes = FilterManager.FilteredItems();
                 root = true;
             }
         }
@@ -56,7 +56,7 @@
         }
         @foreach (var item in nodes.EmptyIfNull())
         {
-            var search = GetMatchedSearch(item);
+            var search = FilterManager.GetMatchedSearch(item);
             if (search.Found)
             {
                 @ItemRender(item, TreeViewMode.List, search.Term)
@@ -71,9 +71,11 @@
         <div @onkeydown="KeyDown" @onwheel="OnWheel" tabindex="0" class="mud-ex-horizontal-tree-wrapper">
             <div class="mud-ex-horizontal-tree">
                 <div style="@ScrollHorizontalTree(selectedNode)" class="mud-ex-horizontal-tree-scroll-wrapper">
-                    @{ var items = FilteredItems()?.Where(n => GetMatchedSearch(n).Found).ToList() ?? new List<T>(); }
+                    @{
+                        var items = FilterManager.FilteredItems()?.Where(n => FilterManager.GetMatchedSearch(n).Found).ToList() ?? new List<T>();
+                    }
                     @NodeColumn(items, "mud-ex-horizontal-tree-node", NodeOffset(items))
-                    @foreach (var node in Path().Where(n => GetMatchedSearch(n).Found))
+                    @foreach (var node in Path().Where(n => FilterManager.GetMatchedSearch(n).Found))
                     {
                         @NodeColumn(node, NodeOffset(node))
                     }
@@ -89,7 +91,7 @@
 
     private RenderFragment NodeColumn(T node, double top)
     {
-        return NodeColumn(node?.Children?.Where(n => GetMatchedSearch(n).Found), GetNodeClass(node), top);
+        return NodeColumn(node?.Children?.Where(n => FilterManager.GetMatchedSearch(n).Found), GetNodeClass(node), top);
     }
 
     private RenderFragment NodeColumn(IEnumerable<T> nodes, string cls, double top)
@@ -97,7 +99,7 @@
         return @<div class="mud-ex-horizontal-tree-column">
         @foreach (var child in nodes ?? Enumerable.Empty<T>())
     {
-        var search = GetMatchedSearch(child);
+    var search = FilterManager.GetMatchedSearch(child);
         @if (search.Found)
         {
             <div class="@GetNodeClass(child)" style="@GetTransformStyle(child, top)" @onclick="() => NodeClick(child)">
@@ -115,7 +117,7 @@
     {
         var hierarchicals = items as T[] ?? items?.ToArray();
         return
-        @<RenderChild Condition="@(hierarchicals?.Any(i => GetMatchedSearch(i).Found) == true)">
+        @<RenderChild Condition="@(hierarchicals?.Any(i => FilterManager.GetMatchedSearch(i).Found) == true)">
             <MudMenu ActivationEvent="@(isSubMenu ? MouseEvent.MouseOver : MouseEvent.LeftClick)"
 
                      AnchorOrigin="Origin.TopRight"
@@ -126,7 +128,7 @@
                      Icon="@(isSubMenu ? null : ExpandedIcon)">
                 @foreach (var child in hierarchicals)
                 {
-                    var search = GetMatchedSearch(child);
+                    var search = FilterManager.GetMatchedSearch(child);
                     @if (search.Found)
                     {
                         @ItemRender(child, TreeViewMode.Breadcrumb, search.Term, true)

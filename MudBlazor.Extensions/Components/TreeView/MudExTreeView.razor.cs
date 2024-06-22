@@ -7,15 +7,34 @@ using MudBlazor.Extensions.Options;
 
 namespace MudBlazor.Extensions.Components;
 
-public partial class MudExTreeView<T> where T : IHierarchical<T>
+public partial class MudExTreeView<T> 
+    where T : IHierarchical<T>
 {
     [Parameter] public bool SkipSeparator { get; set; } = true;
     [Parameter] public string BackLinkLabel { get; set; } = "Back to {0}";
     [Parameter] public bool ReverseExpandButton { get; set; }
     [Parameter] public bool Dense { get; set; }
-    [Parameter] public HashSet<T> Items { get; set; }
-    [Parameter] public Func<T, string> TextFunc { get; set; } = n => n?.ToString();
-    [Parameter] public FilterMode FilterMode { get; set; }
+
+    [Parameter]
+    public HashSet<T> Items
+    {
+        get => FilterManager.Items;
+        set => FilterManager.Items = value;
+    }
+
+    [Parameter]
+    public Func<T, string> TextFunc
+    {
+        get => FilterManager.TextFunc;
+        set => FilterManager.TextFunc = value;
+    }
+
+    [Parameter]
+    public HierarchicalFilterBehaviour FilterBehaviour
+    {
+        get => FilterManager.FilterBehaviour;
+        set => FilterManager.FilterBehaviour = value;
+    }
     [Parameter] public TreeViewMode ViewMode { get; set; } = TreeViewMode.Horizontal;
 
     /// <summary>
@@ -41,24 +60,27 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
     [Category(CategoryTypes.TreeView.Appearance)]
     public string ExpandedIcon { get; set; } = Icons.Material.Filled.ChevronRight;
 
+    protected HierarchicalFilter<T> FilterManager = new();
 
-    public bool HasFilters => Filters?.Any(s => !string.IsNullOrWhiteSpace(s)) == true || !string.IsNullOrEmpty(Filter);
     private T selectedNode;
-    private List<string> _filters;
 
     [Parameter]
-    public string Filter { get; set; }
+    public string Filter
+    {
+        get => FilterManager.Filter;
+        set => FilterManager.Filter = value;
+    }
 
     [Parameter]
     public List<string> Filters
     {
-        get => _filters;
+        get => FilterManager.Filters;
         set
         {
-            if (_filters != value)
+            if (FilterManager.Filters != value)
             {
-                _filters = value;
-                SetAllExpanded(HasFilters, entry => true);
+                FilterManager.Filters = value;
+                SetAllExpanded(FilterManager.HasFilters, _ => true);
             }
         }
     }
@@ -72,7 +94,7 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
     public virtual bool IsSeparator(T node) => IsSeparatorDetectFunc?.Invoke(node) == true;
 
     private AnimationDirection? _animationDirection;
-    private void NodeClick(T node)
+    protected virtual void NodeClick(T node)
     {
         if (IsSeparator(node))
             return;
@@ -113,7 +135,7 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
         var siblings = SiblingOfSelected();
         if (args.Code == "Home")
         {
-            var toSelect = FilteredItems().EmptyIfNull().FirstOrDefault();
+            var toSelect = FilterManager.FilteredItems().EmptyIfNull().FirstOrDefault();
             var parent = selectedNode;
             while (parent != null && parent.Parent != null)
             {
@@ -133,13 +155,13 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
         {
             NodeClick(siblings.FirstOrDefault());
         }
-        else if (args.Code == "ArrowLeft" && selectedNode != null && selectedNode.Parent != null && GetMatchedSearch(selectedNode.Parent).Found)
+        else if (args.Code == "ArrowLeft" && selectedNode != null && selectedNode.Parent != null && FilterManager.GetMatchedSearch(selectedNode.Parent).Found)
         {
             NodeClick(selectedNode.Parent);
         }
         else if (args.Code == "ArrowRight" && selectedNode?.HasChildren() == true)
         {
-            NodeClick(selectedNode.Children.FirstOrDefault(n => GetMatchedSearch(n).Found));
+            NodeClick(selectedNode.Children.FirstOrDefault(n => FilterManager.GetMatchedSearch(n).Found));
         }
         else if (new[] { "ArrowUp", "ArrowDown" }.Contains(args.Code) && siblings.Any())
         {
@@ -162,8 +184,8 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
     private T[] SiblingOfSelected()
     {
         if (selectedNode != null && selectedNode.Parent != null && selectedNode.Parent.HasChildren())
-            return selectedNode.Parent.Children.Where(n => GetMatchedSearch(n).Found).ToArray();
-        return FilteredItems()?.Where(n => GetMatchedSearch(n).Found).ToArray() ?? Array.Empty<T>();
+            return selectedNode.Parent.Children.Where(n => FilterManager.GetMatchedSearch(n).Found).ToArray();
+        return FilterManager.FilteredItems()?.Where(n => FilterManager.GetMatchedSearch(n).Found).ToArray() ?? Array.Empty<T>();
     }
 
     private int SelectedNodeIndexInPath()
@@ -186,7 +208,7 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
 
     public double NodeOffset(T node)
     {
-        return NodeOffset((node.Children?.Where(n => GetMatchedSearch(n).Found) ?? Enumerable.Empty<T>()).ToList());
+        return NodeOffset((node.Children?.Where(n => FilterManager.GetMatchedSearch(n).Found) ?? Enumerable.Empty<T>()).ToList());
     }
 
     private double NodeOffset(List<T> children)
@@ -236,43 +258,6 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
         return result;
     }
 
-    private HashSet<T>? FilteredItems()
-    {
-        if (FilterMode == FilterMode.Flat && HasFilters)
-        {
-            return Items.Recursive(e => e?.Children ?? Enumerable.Empty<T>()).Where(e =>
-                    Filters.EmptyIfNull().Concat(new[] { Filter }).Distinct().Any(filter => MatchesFilter(e, filter)))
-                .ToHashSet();
-        }
-        return Items;
-    }
-
-    private bool MatchesFilter(T node, string text)
-    {
-        return TextFunc(node).Contains(text, StringComparison.InvariantCultureIgnoreCase);
-    }
-
-
-    private (bool Found, string? Term) GetMatchedSearch(T node)
-    {
-        if (FilterMode == FilterMode.Flat || !HasFilters)
-            return (true, string.Empty);
-
-        if ((node?.Children ?? Enumerable.Empty<T>()).Recursive(n => n?.Children ?? Enumerable.Empty<T>()).Any(n => GetMatchedSearch(n).Found))
-            return (true, string.Empty);
-
-
-        var filters = Filters.EmptyIfNull().ToList();
-        if (!string.IsNullOrEmpty(Filter))
-            filters.Add(Filter);
-        foreach (var filter in filters)
-        {
-            if (MatchesFilter(node, filter))
-                return (true, filter); ;
-        }
-
-        return (false, string.Empty); ;
-    }
 
     private void SetAllExpanded(bool expand, Func<T, bool> predicate = null)
     {
@@ -332,11 +317,7 @@ public partial class MudExTreeView<T> where T : IHierarchical<T>
 }
 
 
-public enum FilterMode
-{
-    Default,
-    Flat
-}
+
 
 
 public enum TreeViewMode
