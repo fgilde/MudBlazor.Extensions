@@ -59,7 +59,14 @@ public abstract partial class MudExTreeViewBase<TItem, TComponent> : MudExBaseCo
 
     protected HierarchicalFilter<TItem> FilterManager = new();
 
-    protected TItem selectedNode;
+    [Parameter] public EventCallback<TItem> SelectedNodeChanged { get; set; }
+
+    [Parameter]
+    public TItem SelectedNode
+    {
+        get => _selectedNode;
+        set => Set(ref _selectedNode, value, _ => SelectedNodeChanged.InvokeAsync(value).AndForget());
+    }
 
     [Parameter]
     public string Filter
@@ -82,10 +89,11 @@ public abstract partial class MudExTreeViewBase<TItem, TComponent> : MudExBaseCo
         }
     }
     private HashSet<TItem> _expanded = new();
+    private TItem _selectedNode;
     public bool IsExpanded(TItem node) => _expanded.Contains(node);
     public void ExpandAll() => _expanded = new HashSet<TItem>(Items.Recursive(n => n.Children ?? Enumerable.Empty<TItem>()));
     public void CollapseAll() => _expanded.Clear();
-    public bool IsSelected(TItem node) => node?.Equals(selectedNode) == true; // TODO: implement multiselect
+    public bool IsSelected(TItem node) => node?.Equals(_selectedNode) == true; // TODO: implement multiselect
 
     public virtual bool IsSeparator(TItem node) => IsSeparatorDetectFunc?.Invoke(node) == true;
 
@@ -99,8 +107,8 @@ public abstract partial class MudExTreeViewBase<TItem, TComponent> : MudExBaseCo
     {
         if (IsSeparator(node))
             return;
-        selectedNode = node;
-        if (selectedNode != null)
+        SelectedNode = node;
+        if (SelectedNode != null)
         {
             SetExpanded(node, !IsExpanded(node));
         }
@@ -110,7 +118,7 @@ public abstract partial class MudExTreeViewBase<TItem, TComponent> : MudExBaseCo
 
     public IEnumerable<TItem> Path()
     {
-        return selectedNode != null ? selectedNode.Path() : Enumerable.Empty<TItem>();
+        return _selectedNode != null ? _selectedNode.Path() : Enumerable.Empty<TItem>();
     }
 
     public bool IsInPath(TItem node)

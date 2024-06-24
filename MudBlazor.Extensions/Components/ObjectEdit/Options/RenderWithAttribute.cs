@@ -6,17 +6,28 @@ namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 /// <summary>
 /// Attribute to specify how the property should be rendered inside a mud ex object edit.
 /// </summary>
-[AttributeUsage(AttributeTargets.Property)]
-public abstract class RenderWithBaseAttribute : System.Attribute
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Enum | AttributeTargets.Field)]
+public class RenderWithAttribute : System.Attribute
 {
+    public Type ComponentType { get; }
+    public string TypeName { get; }
+
+    public RenderWithAttribute(Type type)
+    {
+        ComponentType = type;
+        TypeName = type.FullName;
+    }
+
     /// <summary>
     /// Applies the attribute to the given ObjectEditPropertyMeta instance.
     /// </summary>
-    public abstract ObjectEditPropertyMeta Apply(ObjectEditPropertyMeta meta);
+    public virtual ObjectEditPropertyMeta Apply(ObjectEditPropertyMeta meta)
+    {
+        return meta.RenderWith(ComponentType);
+    }
 }
 
-[AttributeUsage(AttributeTargets.Property)]
-internal class RenderWithAttribute<TComponent> : RenderWithBaseAttribute where TComponent : new()
+public class RenderWithAttribute<TComponent> : RenderWithAttribute where TComponent : new()
 {
     private readonly IDictionary<string, object> _attributes;
     //private string _valueFieldName;
@@ -39,36 +50,39 @@ internal class RenderWithAttribute<TComponent> : RenderWithBaseAttribute where T
     {
         return meta.RenderWith(typeof(TComponent), _attributes);
     }
+
+    public RenderWithAttribute() : base(typeof(TComponent))
+    {}
 }
 
 [AttributeUsage(AttributeTargets.Property)]
-internal class RenderWithAttribute<TComponent, TPropertyType, TFieldType> : RenderWithBaseAttribute where TComponent : new()
+public class RenderWithAttribute<TComponent, TPropertyType, TFieldType> : RenderWithAttribute where TComponent : new()
 {
     private readonly Expression<Func<TComponent, TFieldType>> _valueField;
     private readonly object _instanceOrOptions;
     private readonly Func<TPropertyType, TFieldType> _toFieldTypeConverter;
     private readonly Func<TFieldType, TPropertyType> _toPropertyTypeConverter;
 
-    public RenderWithAttribute(Expression<Func<TComponent, TFieldType>> valueField, Action<TComponent> options)
+    public RenderWithAttribute(Expression<Func<TComponent, TFieldType>> valueField, Action<TComponent> options) : base(typeof(TComponent))
     {
         _valueField = valueField;
         _instanceOrOptions = options;
     }
 
-    public RenderWithAttribute(Expression<Func<TComponent, TFieldType>> valueField, TComponent instanceForAttributes)
+    public RenderWithAttribute(Expression<Func<TComponent, TFieldType>> valueField, TComponent instanceForAttributes) : base(typeof(TComponent))
     {
         _valueField = valueField;
         _instanceOrOptions = instanceForAttributes;
     }
 
-    public RenderWithAttribute(Expression<Func<TComponent, TFieldType>> valueField, Func<TPropertyType, TFieldType> toFieldTypeConverter, Func<TFieldType, TPropertyType> toPropertyTypeConverter = null)
+    public RenderWithAttribute(Expression<Func<TComponent, TFieldType>> valueField, Func<TPropertyType, TFieldType> toFieldTypeConverter, Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) : base(typeof(TComponent))
     {
         _valueField = valueField;
         _toFieldTypeConverter = toFieldTypeConverter;
         _toPropertyTypeConverter = toPropertyTypeConverter;
     }
 
-    public RenderWithAttribute(Expression<Func<TComponent, TFieldType>> valueField, Action<TComponent> options, Func<TPropertyType, TFieldType> toFieldTypeConverter, Func<TFieldType, TPropertyType> toPropertyTypeConverter = null)
+    public RenderWithAttribute(Expression<Func<TComponent, TFieldType>> valueField, Action<TComponent> options, Func<TPropertyType, TFieldType> toFieldTypeConverter, Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) : base(typeof(TComponent))
     {
         _valueField = valueField;
         _instanceOrOptions = options;
@@ -76,7 +90,7 @@ internal class RenderWithAttribute<TComponent, TPropertyType, TFieldType> : Rend
         _toPropertyTypeConverter = toPropertyTypeConverter;
     }
 
-    public RenderWithAttribute(Expression<Func<TComponent, TFieldType>> valueField, TComponent instanceForAttributes, Func<TPropertyType, TFieldType> toFieldTypeConverter, Func<TFieldType, TPropertyType> toPropertyTypeConverter = null)
+    public RenderWithAttribute(Expression<Func<TComponent, TFieldType>> valueField, TComponent instanceForAttributes, Func<TPropertyType, TFieldType> toFieldTypeConverter, Func<TFieldType, TPropertyType> toPropertyTypeConverter = null) : base(typeof(TComponent))
     {
         _valueField = valueField;
         _instanceOrOptions = instanceForAttributes;

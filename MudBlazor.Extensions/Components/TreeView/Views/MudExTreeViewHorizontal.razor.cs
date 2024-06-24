@@ -15,7 +15,7 @@ public partial class MudExTreeViewHorizontal<T>
     {
         var siblings = SiblingOfSelected();
 
-        if (selectedNode == null || !siblings.Any())
+        if (SelectedNode == null || !siblings.Any())
             return;
 
         var currentIndex = SelectedNodeIndexInPath(siblings);
@@ -40,16 +40,16 @@ public partial class MudExTreeViewHorizontal<T>
         if (args.Code == "Home")
         {
             var toSelect = FilterManager.FilteredItems().EmptyIfNull().FirstOrDefault();
-            var parent = selectedNode;
+            var parent = SelectedNode;
             while (parent != null && parent.Parent != null)
             {
                 parent = parent.Parent;
             }
             NodeClick(parent ?? toSelect);
         }
-        else if (args.Code == "End" && selectedNode?.HasChildren() == true)
+        else if (args.Code == "End" && SelectedNode?.HasChildren() == true)
         {
-            var lastOrDefault = selectedNode.Children.Recursive(n => n.Children ?? Enumerable.Empty<T>()).ToList();
+            var lastOrDefault = SelectedNode.Children.Recursive(n => n.Children ?? Enumerable.Empty<T>()).ToList();
             NodeClick(lastOrDefault.FirstOrDefault(n => !n.HasChildren()));
         }
         else if (args.Code == "PageDown" && siblings.Any())
@@ -60,13 +60,13 @@ public partial class MudExTreeViewHorizontal<T>
         {
             NodeClick(siblings.FirstOrDefault());
         }
-        else if (args.Code == "ArrowLeft" && selectedNode != null && selectedNode.Parent != null && FilterManager.GetMatchedSearch(selectedNode.Parent).Found)
+        else if (args.Code == "ArrowLeft" && SelectedNode != null && SelectedNode.Parent != null && FilterManager.GetMatchedSearch(SelectedNode.Parent).Found)
         {
-            NodeClick(selectedNode.Parent);
+            NodeClick(SelectedNode.Parent);
         }
-        else if (args.Code == "ArrowRight" && selectedNode?.HasChildren() == true)
+        else if (args.Code == "ArrowRight" && SelectedNode?.HasChildren() == true)
         {
-            NodeClick(selectedNode.Children.FirstOrDefault(n => FilterManager.GetMatchedSearch(n).Found));
+            NodeClick(SelectedNode.Children.FirstOrDefault(n => FilterManager.GetMatchedSearch(n).Found));
         }
         else if (new[] { "ArrowUp", "ArrowDown" }.Contains(args.Code) && siblings.Any())
         {
@@ -88,8 +88,8 @@ public partial class MudExTreeViewHorizontal<T>
 
     private T[] SiblingOfSelected()
     {
-        if (selectedNode != null && selectedNode.Parent != null && selectedNode.Parent.HasChildren())
-            return selectedNode.Parent.Children.Where(n => FilterManager.GetMatchedSearch(n).Found).ToArray();
+        if (SelectedNode != null && SelectedNode.Parent != null && SelectedNode.Parent.HasChildren())
+            return SelectedNode.Parent.Children.Where(n => FilterManager.GetMatchedSearch(n).Found).ToArray();
         return FilterManager.FilteredItems()?.Where(n => FilterManager.GetMatchedSearch(n).Found).ToArray() ?? Array.Empty<T>();
     }
 

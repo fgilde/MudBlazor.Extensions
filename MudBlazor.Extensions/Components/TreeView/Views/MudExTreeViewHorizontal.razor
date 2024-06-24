@@ -3,22 +3,22 @@
 @inherits MudExTreeViewBase<T, MudExTreeViewHorizontal<T>>
 @namespace MudBlazor.Extensions.Components
 
-<div style="padding: 9px; height: 350px; width: 850px;">
-    <div @onkeydown="KeyDown" @onwheel="OnWheel" tabindex="0" class="mud-ex-horizontal-tree-wrapper">
-        <div class="mud-ex-horizontal-tree">
-            <div style="@ScrollHorizontalTree(selectedNode)" class="mud-ex-horizontal-tree-scroll-wrapper">
-                @{
-                    var items = FilterManager.FilteredItems()?.Where(n => FilterManager.GetMatchedSearch(n).Found).ToList() ?? new List<T>();
-                }
-                @NodeColumn(items, "mud-ex-horizontal-tree-node", NodeOffset(items))
-                @foreach (var node in Path().Where(n => FilterManager.GetMatchedSearch(n).Found))
-                {
-                    @NodeColumn(node, NodeOffset(node))
-                }
-            </div>
+
+<div @onkeydown="KeyDown" @onwheel="OnWheel" tabindex="0" class="mud-ex-horizontal-tree-wrapper">
+    <div class="mud-ex-horizontal-tree">
+        <div style="@ScrollHorizontalTree(SelectedNode)" class="mud-ex-horizontal-tree-scroll-wrapper">
+            @{
+                var items = FilterManager.FilteredItems()?.Where(n => FilterManager.GetMatchedSearch(n).Found).ToList() ?? new List<T>();
+            }
+            @NodeColumn(items, "mud-ex-horizontal-tree-node", NodeOffset(items))
+            @foreach (var node in Path().Where(n => FilterManager.GetMatchedSearch(n).Found))
+            {
+                @NodeColumn(node, NodeOffset(node))
+            }
         </div>
     </div>
 </div>
+
 
 @code {
 

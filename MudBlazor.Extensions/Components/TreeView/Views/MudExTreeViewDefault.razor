@@ -3,6 +3,9 @@
 @namespace MudBlazor.Extensions.Components
 
 <MudTreeView Color="Color.Primary" Hover="true" Items="@FilterManager.FilteredItems()" Dense="@Dense">
+  @*   <HeadContent>
+        @RenderSearch
+    </HeadContent> *@
     <ItemTemplate>
         @{
             var search = FilterManager.GetMatchedSearch(context);

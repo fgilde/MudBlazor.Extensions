@@ -2,23 +2,24 @@
 @inherits MudExTreeViewBase<T, MudExTreeViewList<T>>
 @namespace MudBlazor.Extensions.Components
 @using MudBlazor.Extensions.Components.ObjectEdit
+@using MudBlazor.Extensions.Options
 @using Nextended.Core.Extensions
 @using Nextended.Core.Types
 
 <MudList Style="@ListBoxStyleStr()" Dense="@Dense" Clickable="true">
     @{
         var root = false;
-        HashSet<T> nodes = (selectedNode != null ? (selectedNode.Children?.Any() == true ? selectedNode.Children : selectedNode?.Parent?.Children) : null);
+        HashSet<T> nodes = (SelectedNode != null ? (SelectedNode.Children?.Any() == true ? SelectedNode.Children : SelectedNode?.Parent?.Children) : null);
         if (nodes == null)
         {
             nodes = FilterManager.FilteredItems();
             root = true;
         }
     }
-    @if (selectedNode != null && !root)
+    @if (SelectedNode != null && !root)
     {
-        T targetNode = selectedNode.Children?.Any() == true ? selectedNode.Parent : selectedNode.Parent.Parent;
-        <MudListItem OnClick="@(() => NodeClick(targetNode))" Text="@TryLocalize(BackLinkLabel, TextFunc(targetNode))" Icon="@Icons.Material.Filled.ArrowBack" />
+        T targetNode = SelectedNode.Children?.Any() == true ? SelectedNode.Parent : SelectedNode.Parent.Parent;
+        <MudListItem OnClick="@(() => { _animationDirection = AnimationDirection.In; NodeClick(targetNode); })" Text="@TryLocalize(BackLinkLabel, targetNode != null ? TextFunc(targetNode) : RootName)" Icon="@Icons.Material.Filled.ArrowBack" />
         <MudDivider />
     }
     @foreach (var item in nodes.EmptyIfNull())

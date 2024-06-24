@@ -13252,12 +13252,12 @@
             Callback to be used when the reference is rendered.
             </summary>
         </member>
-        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderWithBaseAttribute">
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderWithAttribute">
             <summary>
             Attribute to specify how the property should be rendered inside a mud ex object edit.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderWithBaseAttribute.Apply(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderWithAttribute.Apply(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
             <summary>
             Applies the attribute to the given ObjectEditPropertyMeta instance.
             </summary>
@@ -13370,27 +13370,6 @@
         <member name="F:MudBlazor.Extensions.Components.HierarchicalFilterBehaviour.Flat">
             <summary>
             Flat behaviour will flatten the tree structure and only show the nodes that match the filter
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.ItemTemplate">
-            <summary>
-            Full item template if this is set you need to handle the outer items based on ViewMode on your own. 
-            Also, the expand/collapse buttons, and you need to decide on your own if and how you use the <see cref="P:MudBlazor.Extensions.Components.MudExTreeView`1.ItemContentTemplate"/>
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.ItemContentTemplate">
-            <summary>
-            Item content template for the item itself without the requirement to change outer element like to control the expand button etc.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.IsSeparatorDetectFunc">
-            <summary>
-            This function controls how a separator will be detected. Default is if the item ToString() equals '-'
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.ExpandedIcon">
-            <summary>
-            The expand/collapse icon.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`2.ItemTemplate">
