@@ -1,13 +1,12 @@
 ﻿@page "/test"
+@using MudBlazor.Extensions.Core
 
 
 <MudExEnumSelect TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />
 <MudCheckBox @bind-Value="_reverseExpand"></MudCheckBox>
 
-<MudExTreeView ReverseExpandButton="_reverseExpand" ViewMode="@_treeViewMode" Items="@Entries">
-
-</MudExTreeView>
-
+<MudExDivider Color="MudExColor.Primary" />
+<MudExTreeView ViewMode="_treeViewMode" ReverseExpandButton="_reverseExpand" Items="@Entries" />
 
 @code {
     private bool _reverseExpand;

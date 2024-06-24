@@ -1,0 +1,25 @@
+﻿@typeparam TItem
+@typeparam TComponent
+@using Microsoft.AspNetCore.Components.Rendering
+@using MudBlazor.Extensions.Components.ObjectEdit
+@using MudBlazor.Extensions.Core
+@inherits MudExBaseComponent<MudExTreeViewBase<TItem, TComponent>>
+@namespace MudBlazor.Extensions.Components
+
+@code
+{
+    public virtual RenderFragment RenderSeparator() => @<MudExDivider />;
+
+    public virtual void RenderSearch(RenderTreeBuilder __builder)
+    {
+        <MudExToggleableSearch FilterMode="PropertyFilterMode.AlwaysVisible" ChipVariant="Variant.Text" MultiSearch="true" @bind-Filters="Filters" @bind-Filter="Filter"></MudExToggleableSearch>;
+    }
+
+    public virtual RenderFragment RenderItemContent(TreeViewItemContext<TItem, TComponent> context)
+    {
+        if (ItemContentTemplate != null)
+            return ItemContentTemplate(context);
+        return
+            @<MudText Class="trimmer" Style="@($"color: {(context.IsSelected ? MudExColor.Secondary.ToCssStringValue() : "inherit")};")">@TextFunc(context.Item)</MudText>;
+    }
+}

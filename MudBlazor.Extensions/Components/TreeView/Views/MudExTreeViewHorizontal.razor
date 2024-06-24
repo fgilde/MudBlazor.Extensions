@@ -1,0 +1,69 @@
+﻿@typeparam T
+@using Nextended.Core.Types
+@inherits MudExTreeViewBase<T, MudExTreeViewHorizontal<T>>
+@namespace MudBlazor.Extensions.Components
+
+<div style="padding: 9px; height: 350px; width: 850px;">
+    <div @onkeydown="KeyDown" @onwheel="OnWheel" tabindex="0" class="mud-ex-horizontal-tree-wrapper">
+        <div class="mud-ex-horizontal-tree">
+            <div style="@ScrollHorizontalTree(selectedNode)" class="mud-ex-horizontal-tree-scroll-wrapper">
+                @{
+                    var items = FilterManager.FilteredItems()?.Where(n => FilterManager.GetMatchedSearch(n).Found).ToList() ?? new List<T>();
+                }
+                @NodeColumn(items, "mud-ex-horizontal-tree-node", NodeOffset(items))
+                @foreach (var node in Path().Where(n => FilterManager.GetMatchedSearch(n).Found))
+                {
+                    @NodeColumn(node, NodeOffset(node))
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+        private RenderFragment NodeColumn(T node, double top)
+        {
+            return NodeColumn(node?.Children?.Where(n => FilterManager.GetMatchedSearch(n).Found), GetNodeClass(node), top);
+        }
+
+        private RenderFragment NodeColumn(IEnumerable<T> nodes, string cls, double top)
+        {
+            return @<div class="mud-ex-horizontal-tree-column">
+                       @foreach (var child in nodes ?? Enumerable.Empty<T>())
+                       {
+                           var search = FilterManager.GetMatchedSearch(child);
+                           @if (search.Found)
+                           {
+                               <div class="@GetNodeClass(child)" style="@GetTransformStyle(child, top)" @onclick="() => NodeClick(child)">
+                                   <div>
+                                       @ItemRender(child, TreeViewMode.Horizontal, search.Term)
+                                   </div>
+                               </div>
+                           }
+                       }
+                   </div>
+                ;
+        }
+
+    private RenderFragment ItemRender(T item, TreeViewMode viewMode, string search = "", bool asMenuItem = false)
+    {
+        var context = CreateContext(item, search, asMenuItem);
+        if (ItemTemplate != null)
+            return ItemTemplate(context);
+
+        return IsSeparator(item) ? RenderSeparator() : RenderItem(context);
+    }
+
+    public virtual RenderFragment RenderItem(TreeViewItemContext<T, MudExTreeViewHorizontal<T>> context)
+    {
+        return
+        @<div class="@ListItemClassStr()">
+            @RenderItemContent(context)
+            @if(context.Item.HasChildren())
+            {
+                <MudExIcon Icon="@ExpandedIcon" />
+            }
+        </div>;
+    }
+}

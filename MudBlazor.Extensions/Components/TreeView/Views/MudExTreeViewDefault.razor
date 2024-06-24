@@ -1,0 +1,42 @@
+﻿@typeparam T
+@inherits MudExTreeViewBase<T, MudExTreeViewDefault<T>>
+@namespace MudBlazor.Extensions.Components
+
+<MudTreeView Color="Color.Primary" Hover="true" Items="@FilterManager.FilteredItems()" Dense="@Dense">
+    <ItemTemplate>
+        @{
+            var search = FilterManager.GetMatchedSearch(context);
+            @if (search.Found)
+            {
+                @ItemRender(context, TreeViewMode.Default, search.Term)
+            }
+        }
+    </ItemTemplate>
+</MudTreeView>
+
+@code {
+
+    private RenderFragment ItemRender(T item, TreeViewMode viewMode, string search = "", bool asMenuItem = false)
+    {
+        var context = CreateContext(item, search, asMenuItem);
+        if (ItemTemplate != null)
+            return ItemTemplate(context);
+
+        return IsSeparator(item) ? RenderSeparator() : RenderItem(context);
+    }
+
+    public virtual RenderFragment RenderItem(TreeViewItemContext<T, MudExTreeViewDefault<T>> context)
+    {
+        return
+        @<MudTreeViewItem Expanded="@IsExpanded(context.Item)"
+                                  Style="@("cursor: pointer;")"
+                                  Class="@TreeItemClassStr()"
+                                  OnClick="@(() => NodeClick(context.Item))"
+                                  Items="@(context.Item?.Children?.ToHashSet())">
+            <Content>
+                <MudTreeViewItemToggleButton ExpandedIcon="@ExpandedIcon" ExpandedChanged="@(expanded => SetExpanded(context.Item, expanded))" Expanded="@context.IsExpanded" Visible="@(context.Item?.Children?.Any() == true)" />
+                @RenderItemContent(context)
+            </Content>
+        </MudTreeViewItem>;
+    }
+}

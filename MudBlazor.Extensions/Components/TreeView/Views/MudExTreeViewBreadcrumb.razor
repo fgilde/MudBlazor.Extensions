@@ -1,0 +1,66 @@
+﻿@typeparam T
+@inherits MudExTreeViewBase<T, MudExTreeViewBreadcrumb<T>>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Components.ObjectEdit
+@using Nextended.Core.Types
+
+<MudToolBar Dense="@Dense" WrapContent="true">
+    @MenuFor(FilterManager.FilteredItems())
+    @foreach (var item in Path())
+    {
+        <p>@ItemRender(item, TreeViewMode.Breadcrumb)</p>
+        @MenuFor(item.Children)
+    }
+    <MudSpacer />
+    <MudExToggleableSearch FilterMode="PropertyFilterMode.AlwaysVisible" ChipVariant="Variant.Text" MultiSearch="true" @bind-Filters="Filters" @bind-Filter="Filter"></MudExToggleableSearch>
+</MudToolBar>
+
+@code {
+    private RenderFragment MenuFor(IEnumerable<T> items, bool isSubMenu = false)
+    {
+        var hierarchical = items as T[] ?? items?.ToArray() ?? Array.Empty<T>();
+        return
+        @<RenderChild Condition="@(hierarchical?.Any(i => FilterManager.GetMatchedSearch(i).Found) == true)">
+            <MudMenu ActivationEvent="@(isSubMenu ? MouseEvent.MouseOver : MouseEvent.LeftClick)"
+                     AnchorOrigin="Origin.TopRight"
+                     TransformOrigin="Origin.TopLeft"
+                     MaxHeight="500"
+                     Dense="@Dense"
+                     EndIcon="@ExpandedIcon"
+                     Icon="@(isSubMenu ? null : ExpandedIcon)">
+            @foreach (var child in hierarchical)
+            {
+                var search = FilterManager.GetMatchedSearch(child);
+                @if (search.Found)
+                {
+                    @ItemRender(child, TreeViewMode.Breadcrumb, search.Term, true)
+                }
+            }
+            </MudMenu>
+        </RenderChild>;
+    }
+    
+    private RenderFragment ItemRender(T item, TreeViewMode viewMode, string search = "", bool asMenuItem = false)
+    {
+        var context = CreateContext(item, search, asMenuItem);
+        if (ItemTemplate != null)
+            return ItemTemplate(context);
+
+        return IsSeparator(item) ? RenderSeparator() : RenderItem(context);
+    }
+
+    public virtual RenderFragment RenderItem(TreeViewItemContext<T, MudExTreeViewBreadcrumb<T>> context)
+    {
+        return
+        @<RenderChild>
+            @if(context.RenderedAsMenuItem) {
+                <MudMenuItem Style="flex-flow: row-reverse;" Icon="@(context.Item.HasChildren() ? null : null)" OnClick="@(() => NodeClick(context.Item))">
+                    @RenderItemContent(context)
+                </MudMenuItem>
+            } 
+            else{
+                @RenderItemContent(context)
+            }
+        </RenderChild>;
+    }
+}

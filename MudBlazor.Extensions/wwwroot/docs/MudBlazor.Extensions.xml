@@ -13307,6 +13307,71 @@
             Requires confirmation before resetting the object.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.HierarchicalFilter`1">
+            <summary>
+            Filter for hierarchical data
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.HierarchicalFilter`1.Items">
+            <summary>
+            Items to filter
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.HierarchicalFilter`1.Filters">
+            <summary>
+            Filters to apply
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.HierarchicalFilter`1.Filter">
+            <summary>
+            Filter to apply
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.HierarchicalFilter`1.FilterBehaviour">
+            <summary>
+            Filter behaviour
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.HierarchicalFilter`1.TextFunc">
+            <summary>
+            Text function
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.HierarchicalFilter`1.MatchFunc">
+            <summary>
+            Match function for filter
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.HierarchicalFilter`1.HasFilters">
+            <summary>
+            Returns true if a filter is present
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.HierarchicalFilter`1.FilteredItems">
+            <summary>
+            Returns filtered items only if FilterBehaviour is Flat and there are filters
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.HierarchicalFilter`1.GetMatchedSearch(`0)">
+            <summary>
+            Returns a tuple with a boolean indicating if the node matches the search and the term that matched
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.HierarchicalFilterBehaviour">
+            <summary>
+            The behaviour of the hierarchical filter
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.HierarchicalFilterBehaviour.Default">
+            <summary>
+            Default behaviour will not change the tree structure
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.HierarchicalFilterBehaviour.Flat">
+            <summary>
+            Flat behaviour will flatten the tree structure and only show the nodes that match the filter
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.ItemTemplate">
             <summary>
             Full item template if this is set you need to handle the outer items based on ViewMode on your own. 
@@ -13324,6 +13389,27 @@
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.ExpandedIcon">
+            <summary>
+            The expand/collapse icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`2.ItemTemplate">
+            <summary>
+            Full item template if this is set you need to handle the outer items based on ViewMode on your own. 
+            Also, the expand/collapse buttons, and you need to decide on your own if and how you use the <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`2.ItemContentTemplate"/>
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`2.ItemContentTemplate">
+            <summary>
+            Item content template for the item itself without the requirement to change outer element like to control the expand button etc.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`2.IsSeparatorDetectFunc">
+            <summary>
+            This function controls how a separator will be detected. Default is if the item ToString() equals '-'
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`2.ExpandedIcon">
             <summary>
             The expand/collapse icon.
             </summary>

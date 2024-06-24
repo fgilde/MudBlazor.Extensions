@@ -1,0 +1,58 @@
+﻿@typeparam T
+@inherits MudExTreeViewBase<T, MudExTreeViewList<T>>
+@namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Components.ObjectEdit
+@using Nextended.Core.Extensions
+@using Nextended.Core.Types
+
+<MudList Style="@ListBoxStyleStr()" Dense="@Dense" Clickable="true">
+    @{
+        var root = false;
+        HashSet<T> nodes = (selectedNode != null ? (selectedNode.Children?.Any() == true ? selectedNode.Children : selectedNode?.Parent?.Children) : null);
+        if (nodes == null)
+        {
+            nodes = FilterManager.FilteredItems();
+            root = true;
+        }
+    }
+    @if (selectedNode != null && !root)
+    {
+        T targetNode = selectedNode.Children?.Any() == true ? selectedNode.Parent : selectedNode.Parent.Parent;
+        <MudListItem OnClick="@(() => NodeClick(targetNode))" Text="@TryLocalize(BackLinkLabel, TextFunc(targetNode))" Icon="@Icons.Material.Filled.ArrowBack" />
+        <MudDivider />
+    }
+    @foreach (var item in nodes.EmptyIfNull())
+    {
+        var search = FilterManager.GetMatchedSearch(item);
+        if (search.Found)
+        {
+            @ItemRender(item, TreeViewMode.List, search.Term)
+        }
+    }
+</MudList>
+
+@code {
+ 
+    private RenderFragment ItemRender(T item, TreeViewMode viewMode, string search = "", bool asMenuItem = false)
+    {
+        var context = CreateContext(item, search, asMenuItem);
+        if (ItemTemplate != null)
+            return ItemTemplate(context);
+
+        return IsSeparator(item) ? RenderSeparator() : RenderItem(context);
+    }
+
+    public virtual RenderFragment RenderItem(TreeViewItemContext<T, MudExTreeViewList<T>> context)
+    {
+        return
+        @<MudListItem OnClick="@(() => NodeClick(context.Item))">
+            <div class="@ListItemClassStr()">
+                @RenderItemContent(context)
+            @if(context.Item.HasChildren())
+            {
+                <MudExIcon Icon="@ExpandedIcon" />
+            }
+            </div>
+        </MudListItem>;
+    }
+}
