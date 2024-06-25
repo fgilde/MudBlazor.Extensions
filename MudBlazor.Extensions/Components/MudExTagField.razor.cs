@@ -16,6 +16,7 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExTagField<T>
 {
     private Adornment _renderChipsAdditional = Adornment.None;
+    private List<T> _values;
 
     /// <summary>
     /// Set to true to allow duplicates
@@ -34,7 +35,19 @@ public partial class MudExTagField<T>
     /// </summary>
     /// <remarks>Used to store the data of each chip.</remarks>
     [Parameter, SafeCategory("Data")]
-    public List<T> Values { get; set; }
+    public List<T> Values
+    {
+        get => _values;
+        set
+        {
+            if ((value != null && _values == null) || (value == null && _values != null) ||
+                (value != null && _values != null && !value.SequenceEqual(_values)))
+            {
+                _values = value;
+                _ = InvokeValuesChanged();
+            }
+        }
+    }
 
     /// <summary>
     /// Triggered when the list of values changes.
@@ -205,7 +218,7 @@ public partial class MudExTagField<T>
         if (((Delimiters?.Contains(args.Key[0]) == true && args.Key.Length == 1) || (SetChipsOnEnter && args.Key == "Enter")) && Value != null)        
             await ApplyChips();        
 
-        if (args.Key == "Backspace" && string.IsNullOrEmpty(Converter.Set(Value)) && Values.Any())
+        if (args.Key == "Backspace" && string.IsNullOrEmpty(Converter.Set(Value)) && Values?.Any() == true)
         {
             Values.RemoveAt(Values.Count - 1);
             await InvokeValuesChanged();

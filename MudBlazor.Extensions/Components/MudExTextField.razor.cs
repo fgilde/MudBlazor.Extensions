@@ -31,6 +31,8 @@ public partial class MudExTextField<T>: MudExBaseInput<T>, IMudExComponent
     public MudExInput<string> InputReference { get; private set; }
     private MudMask _maskReference;
 
+    [Parameter] public string DataVisualiserStyle { get; set; }
+
     [Parameter]
     [Category(CategoryTypes.FormComponent.Behavior)]
     public bool KeyDownStopPropagation { get; set; }
@@ -177,5 +179,12 @@ public partial class MudExTextField<T>: MudExBaseInput<T>, IMudExComponent
     }
 
     private async Task OnMaskedValueChanged(string s) => await SetTextAsync(s);
+
+    private string DataVisualiserStyleStr()
+    {
+        return MudExStyleBuilder.FromStyle(DataVisualiserStyle)
+            .WithMinHeight("1.1876em", DataVisualiser != null)
+            .ToString();
+    }
 }
 

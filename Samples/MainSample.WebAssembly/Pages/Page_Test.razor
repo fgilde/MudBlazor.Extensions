@@ -8,11 +8,13 @@
 <p>@_selectedNode?.ToString()</p>
 <MudExDivider Color="MudExColor.Primary" />
 
+<div style="height: 333px">
 <MudExTreeView @bind-SelectedNode="_selectedNode" ViewMode="_treeViewMode" ReverseExpandButton="_reverseExpand" Items="@Entries">
-    <ItemContentTemplate>
-        <p>@string.Join("", context.Item.ToString().ToCharArray().Reverse())</p>
-    </ItemContentTemplate>
+    @*     <ItemContentTemplate>
+        <p style="background-color: @(context.IsSelected ? "pink" : "yellow")">@string.Join("", context.Item.ToString().ToCharArray().Reverse())</p>
+    </ItemContentTemplate> *@
 </MudExTreeView>
+</div>
 
 
 @code {

@@ -1,7 +1,6 @@
 ﻿@typeparam T
-@inherits MudExTreeViewBase<T, MudExTreeViewBreadcrumb<T>>
+@inherits MudExTreeViewBase<T>
 @namespace MudBlazor.Extensions.Components
-@using MudBlazor.Extensions.Components.ObjectEdit
 @using Nextended.Core.Types
 
 <MudToolBar Dense="@Dense" WrapContent="true">
@@ -12,7 +11,7 @@
         @MenuFor(item.Children)
     }
     <MudSpacer />
-    <MudExToggleableSearch FilterMode="PropertyFilterMode.AlwaysVisible" ChipVariant="Variant.Text" MultiSearch="true" @bind-Filters="Filters" @bind-Filter="Filter"></MudExToggleableSearch>
+    @RenderSearchBox()
 </MudToolBar>
 
 @code {
@@ -49,11 +48,11 @@
         return IsSeparator(item) ? RenderSeparator() : RenderItem(context);
     }
 
-    public virtual RenderFragment RenderItem(TreeViewItemContext<T, MudExTreeViewBreadcrumb<T>> context)
+    public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
     {
         return
         @<RenderChild>
-            @if(context.RenderedAsMenuItem) {
+            @if(context.Tag is true) {
                 <MudMenuItem Style="flex-flow: row-reverse;" Icon="@(context.Item.HasChildren() ? null : null)" OnClick="@(() => NodeClick(context.Item))">
                     @RenderItemContent(context)
                 </MudMenuItem>

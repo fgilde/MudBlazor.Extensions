@@ -206,6 +206,21 @@
             Base component for the most of all MudExComponents
             </summary>
         </member>
+        <member name="F:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.IsInitialized">
+            <summary>
+            Is true if init was called
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.PreInitParameters">
+            <summary>
+            Contains all parameters before init
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.IsOverwritten(System.String)">
+            <summary>
+            Checks if a parameter is overwritten by user
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.IsDisposed">
             <summary>
             Is true if dispose was called
@@ -291,6 +306,12 @@
             Returns a task that is completed after element is fully rendered
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.ShouldRender">
             <inheritdoc />
         </member>
@@ -327,6 +348,21 @@
         <member name="T:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3">
             <summary>
             Base component for the most of all MudExComponents
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.IsInitialized">
+            <summary>
+            Is true if init was called
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.PreInitParameters">
+            <summary>
+            Contains all parameters before init
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.IsOverwritten(System.String)">
+            <summary>
+            Checks if a parameter is overwritten by user
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.IsDisposed">
@@ -413,6 +449,12 @@
             <summary>
             Returns a task that is completed after element is fully rendered
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.OnInitialized">
+            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.ShouldRender">
             <inheritdoc />
@@ -13307,6 +13349,26 @@
             Requires confirmation before resetting the object.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.FilterHighlighting">
+            <summary>
+            Controls how the highlighting of the filter is displayed
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.FilterHighlighting.ActiveFilterOnly">
+            <summary>
+            Only the current active filter is highlighted
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.FilterHighlighting.AllFilters">
+            <summary>
+            All filters are highlighted
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.FilterHighlighting.None">
+            <summary>
+            No highlighting at all
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.HierarchicalFilter`1">
             <summary>
             Filter for hierarchical data
@@ -13372,25 +13434,205 @@
             Flat behaviour will flatten the tree structure and only show the nodes that match the filter
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`2.ItemTemplate">
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.ViewMode">
             <summary>
-            Full item template if this is set you need to handle the outer items based on ViewMode on your own. 
-            Also, the expand/collapse buttons, and you need to decide on your own if and how you use the <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`2.ItemContentTemplate"/>
+            Mode controls how the tree view will be rendered.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`2.ItemContentTemplate">
+        <member name="T:MudBlazor.Extensions.Components.TreeViewMode">
+            <summary>
+            TreeView mode determines how the tree view will be rendered.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TreeViewMode.Default">
+            <summary>
+            Render tree view in default mode.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TreeViewMode.Horizontal">
+            <summary>
+            Render tree view in horizontal mode.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TreeViewMode.Breadcrumb">
+            <summary>
+            Render tree view as breadcrumb.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.TreeViewMode.List">
+            <summary>
+            Render tree view as list.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTypo">
+            <summary>
+            Typographic style for the item content only used if <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTemplate"/> and <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemTemplate"/> are not set
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterMode">
+            <summary>
+            Filter mode for the filter box
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterHighlighting">
+            <summary>
+            Behaviour for the highlighting of an applied filter
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterMultiple">
+            <summary>
+            Set to false to disable multiple filters
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ReverseExpandButton">
+            <summary>
+            If true the expand button will be on the other right side of the item content
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.Dense">
+            <summary>
+            Dense mode for the treeview
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ExpandOnFilter">
+            <summary>
+            If true the treeview will expand all nodes on filter
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentStyle">
+            <summary>
+            Style for Item content this only is used if <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTemplate"/> and <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemTemplate"/> are not set
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentClass">
+            <summary>
+            Class for Item content this only is used if <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTemplate"/> and <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemTemplate"/> are not set
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.Items">
+            <summary>
+            Items to display in the treeview
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.TextFunc">
+            <summary>
+            Function to get the text of an item this is used for the filter and the item content if <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTemplate"/> and <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemTemplate"/> are not set
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterBehaviour">
+            <summary>
+            Behaviour for the filtering
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemTemplate">
+            <summary>
+            Full item template if this is set you need to handle the outer items based on ViewMode on your own. 
+            Also, the expand/collapse buttons, and you need to decide on your own if and how you use the <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTemplate"/>
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTemplate">
             <summary>
             Item content template for the item itself without the requirement to change outer element like to control the expand button etc.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`2.IsSeparatorDetectFunc">
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.IsSeparatorDetectFunc">
             <summary>
             This function controls how a separator will be detected. Default is if the item ToString() equals '-'
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`2.ExpandedIcon">
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ExpandedIcon">
             <summary>
             The expand/collapse icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.SelectedNodeChanged">
+            <summary>
+            Callback when the selected node changes
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterChanged">
+            <summary>
+            Callback when the filter changes
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FiltersChanged">
+            <summary>
+            Callback when the filters change
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.SelectedNode">
+            <summary>
+            Selected node
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.Filter">
+            <summary>
+            Filter for the treeview
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.Filters">
+            <summary>
+            Filters for the treeview
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.IsExpanded(`0)">
+            <summary>
+            Returns true if the given node is expanded
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ExpandAll">
+            <summary>
+            Expand all nodes
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.CollapseAll">
+            <summary>
+            Collapse all nodes
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.IsSelected(`0)">
+            <summary>
+            Returns true if the given node is selected
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.IsSeparator(`0)">
+            <summary>
+            Returns true if the given node is a separator
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.CreateContext(`0,System.String,System.Object)">
+            <summary>
+            Creates a context for the given item
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.NodeClick(`0)">
+            <summary>
+            On node click
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.Path">
+            <summary>
+            The current path
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.IsInPath(`0)">
+            <summary>
+            Returns true if the given node is in the current path
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.SetAllExpanded(System.Boolean,System.Func{`0,System.Boolean})">
+            <summary>
+            Set all nodes expanded where the predicate returns true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.SetExpanded(`0,System.Boolean)">
+            <summary>
+            Set the expanded state of the given node
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.GetFilterClassStr">
+            <summary>
+            Class for use in the filter box
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExIconButton.ToolTip">

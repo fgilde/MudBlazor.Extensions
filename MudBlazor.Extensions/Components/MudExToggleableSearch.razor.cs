@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components
 {
@@ -130,6 +131,14 @@ namespace MudBlazor.Extensions.Components
         private MudTextField<string> _searchBox;
         private MudExTagField<string> _searchTagBox;
         private bool _isMouseOverChip;
+
+        private string GetClassStr()
+        {
+            return MudExCssBuilder.From(Class)
+                .AddClass("mud-ex-hide-inputlabel mud-ex-animate-all-properties mud-ex-property-filter")
+                .AddClass("active", SearchActive || FilterMode == PropertyFilterMode.AlwaysVisible)
+                .ToString();
+        }
         
         private void ToggleSearchBox()
         {
@@ -184,5 +193,15 @@ namespace MudBlazor.Extensions.Components
             return FiltersChanged.InvokeAsync(arg);
         }
 
+        private string VisualizerStyleStr()
+        {
+            return MudExStyleBuilder.Default.WithHeight("20px")
+                .WithDisplay("flex")
+                .WithMarginTop("-40px")
+                .WithWidth("100%")
+                .WithJustifyContent("end")
+                .WithZIndex(2)
+                .Style;
+        }
     }
 }

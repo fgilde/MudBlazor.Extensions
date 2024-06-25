@@ -6,21 +6,26 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
-public partial class MudExTreeView<T> 
+public partial class MudExTreeView<T>
     where T : IHierarchical<T>
 {
+    /// <summary>
+    /// Mode controls how the tree view will be rendered.
+    /// </summary>
     [Parameter] public TreeViewMode ViewMode { get; set; } = TreeViewMode.Horizontal;
 
-    private Type GetComponentForViewMode() 
+    private Type GetComponentForViewMode()
         => (GetRenderWithAttribute(ViewMode)?.ComponentType ?? typeof(MudExTreeViewDefault<>)).MakeGenericType(typeof(T));
 
     private IDictionary<string, object> GetParameters()
     {
         var res = ComponentRenderHelper.GetCompatibleParameters(this, GetComponentForViewMode());
-        //res.Add("TItem", typeof(T));
-        //res.Add("TComponent", GetComponentForViewMode());
-        //res.AddOrUpdate(nameof(ItemContentTemplate), ItemContentTemplate);
-        //res.AddOrUpdate(nameof(ItemTemplate), ItemContentTemplate);
+
+        if(!FiltersChanged.HasDelegate)
+            res = res.Where(p => p.Key != nameof(Filters)).ToDictionary();
+        if (!FilterChanged.HasDelegate)
+            res = res.Where(p => p.Key != nameof(Filter)).ToDictionary();
+
         return res;
     }
 
@@ -34,15 +39,32 @@ public partial class MudExTreeView<T>
 
 
 
-
+/// <summary>
+/// TreeView mode determines how the tree view will be rendered.
+/// </summary>
 public enum TreeViewMode
 {
+    /// <summary>
+    /// Render tree view in default mode.
+    /// </summary>
     [RenderWith(typeof(MudExTreeViewDefault<>))]
     Default,
+
+    /// <summary>
+    /// Render tree view in horizontal mode.
+    /// </summary>
     [RenderWith(typeof(MudExTreeViewHorizontal<>))]
     Horizontal,
+
+    /// <summary>
+    /// Render tree view as breadcrumb.
+    /// </summary>
     [RenderWith(typeof(MudExTreeViewBreadcrumb<>))]
     Breadcrumb,
+
+    /// <summary>
+    /// Render tree view as list.
+    /// </summary>
     [RenderWith(typeof(MudExTreeViewList<>))]
     List
 }

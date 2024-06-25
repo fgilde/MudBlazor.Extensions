@@ -1,17 +1,16 @@
 ﻿@using MudBlazor.Extensions.Components.ObjectEdit
-@using Microsoft.AspNetCore.Components
-@using MudBlazor.Extensions.Helper
 @inherits MudExBaseComponent<MudExToggleableSearch>
 
 @if (FilterMode != PropertyFilterMode.Disabled)
 {
         @if (!MultiSearch)
         {
-            <MudTextField @ref="_searchBox"                          
+            <MudTextField @ref="_searchBox"                
+                          Style="@Style"
                           OnBlur="@(FilterBoxBlur)"
                           OnKeyDown="@(FilterKeyPress)"
                           OnKeyUp="@OnKeyUp"
-                          Class="@($"mud-ex-hide-inputlabel mud-ex-animate-all-properties mud-ex-property-filter {(SearchActive || FilterMode == PropertyFilterMode.AlwaysVisible ? "active" : "")}")"
+                          Class="@GetClassStr()"
                           Immediate="@Immediate"
                           Clearable="@Clearable"
                           Value="Filter" T="string"
@@ -24,16 +23,19 @@
             <MudExTagField T="string"           
                            @ref="_searchTagBox"
                            @bind-IsMouseOverChip="_isMouseOverChip"
+                           Style="@Style"
                            OnBlur="@(FilterBoxBlur)"
                            AutoFocus="SearchActive"
                            OnKeyDown="@(FilterKeyPress)"
                            OnKeyUp="@OnKeyUp"
                            SetChipsOnEnter="true"                           
                            Clearable="@Clearable"
+                           DataVisualiserStyle="@VisualizerStyleStr()"
+                           ShowVisualiser="@(SearchActive || FilterMode == PropertyFilterMode.AlwaysVisible)"
                            ChipColor="@ChipColor"
                            ChipSize="Size.Small"
                            StyleChip="margin-top:33px;"
-                           Class="@($"mud-ex-hide-inputlabel mud-ex-animate-all-properties mud-ex-property-filter {(SearchActive || FilterMode == PropertyFilterMode.AlwaysVisible ? "active" : "")}")"
+                           Class="@GetClassStr()"
                            Variant="Variant.Text"
                            ChipVariant="@ChipVariant"
                            Immediate="@Immediate"

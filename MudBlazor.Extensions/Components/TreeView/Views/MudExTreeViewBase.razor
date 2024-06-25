@@ -1,25 +1,43 @@
 ﻿@typeparam TItem
-@typeparam TComponent
-@using Microsoft.AspNetCore.Components.Rendering
 @using MudBlazor.Extensions.Components.ObjectEdit
 @using MudBlazor.Extensions.Core
-@inherits MudExBaseComponent<MudExTreeViewBase<TItem, TComponent>>
+@using Nextended.Core.Extensions
+@inherits MudExBaseComponent<MudExTreeViewBase<TItem>>
 @namespace MudBlazor.Extensions.Components
 
 @code
 {
     public virtual RenderFragment RenderSeparator() => @<MudExDivider />;
 
-    public virtual void RenderSearch(RenderTreeBuilder __builder)
+    protected virtual RenderFragment RenderSearchBar()
     {
-        <MudExToggleableSearch FilterMode="PropertyFilterMode.AlwaysVisible" ChipVariant="Variant.Text" MultiSearch="true" @bind-Filters="Filters" @bind-Filter="Filter"></MudExToggleableSearch>;
+        return
+            @<RenderChild Condition="@(FilterMode != PropertyFilterMode.Disabled)">
+                <MudToolBar Style="padding-left: 0; padding-right: 0;">
+                    <MudSpacer/>
+                    @RenderSearchBox()
+                </MudToolBar>
+            </RenderChild>;
     }
 
-    public virtual RenderFragment RenderItemContent(TreeViewItemContext<TItem, TComponent> context)
+    protected virtual RenderFragment RenderSearchBox()
+    {
+        return @<MudExToggleableSearch OnChipMouseOut="@OnFilterChipLeave" OnChipMouseOver="@OnFilterChipHover" Class="@GetFilterClassStr()" FilterMode="@FilterMode" ChipVariant="Variant.Text" MultiSearch="@FilterMultiple" @bind-Filters="Filters" @bind-Filter="Filter"></MudExToggleableSearch>;
+    }
+
+    public virtual RenderFragment RenderItemContent(TreeViewItemContext<TItem> context)
     {
         if (ItemContentTemplate != null)
             return ItemContentTemplate(context);
+        var text = TextFunc(context.Item);
+        
+        if (!string.IsNullOrEmpty(context.Highlight))
+        {
+            return @<div class="@ItemContentClassStr(context)"><MudHighlighter Style="@ItemContentStyleStr(context)" Text="@text" 
+                                         HighlightedTexts="@(FilterHighlighting == FilterHighlighting.AllFilters ? Filters.EmptyIfNull().Concat(new []{Filter}) : null)" 
+                                         HighlightedText="@context.Highlight" /></div>;
+        }
         return
-            @<MudText Class="trimmer" Style="@($"color: {(context.IsSelected ? MudExColor.Secondary.ToCssStringValue() : "inherit")};")">@TextFunc(context.Item)</MudText>;
+            @<MudText Class="@ItemContentClassStr(context)" Style="@ItemContentStyleStr(context)">@TextFunc(context.Item)</MudText>;
     }
 }

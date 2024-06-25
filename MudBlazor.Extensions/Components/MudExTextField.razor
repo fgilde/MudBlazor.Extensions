@@ -64,7 +64,7 @@
                                 AutoSize="AutoSize"
                                 ForceShrink="@ForceShrink"
                                 ShowVisualiser="@(DataVisualiser != null && ShowVisualiser)"
-                                DataVisualiserStyle="@(DataVisualiser != null ? "min-height: 1.1876em" : null)">
+                                DataVisualiserStyle="@(DataVisualiserStyleStr())">
                         <DataVisualiser>
                             @DataVisualiser
                         </DataVisualiser>

@@ -1,10 +1,12 @@
 ﻿@typeparam T
-@inherits MudExTreeViewBase<T, MudExTreeViewList<T>>
+@inherits MudExTreeViewBase<T>
 @namespace MudBlazor.Extensions.Components
-@using MudBlazor.Extensions.Components.ObjectEdit
+
 @using MudBlazor.Extensions.Options
 @using Nextended.Core.Extensions
 @using Nextended.Core.Types
+
+@RenderSearchBar()
 
 <MudList Style="@ListBoxStyleStr()" Dense="@Dense" Clickable="true">
     @{
@@ -19,8 +21,8 @@
     @if (SelectedNode != null && !root)
     {
         T targetNode = SelectedNode.Children?.Any() == true ? SelectedNode.Parent : SelectedNode.Parent.Parent;
-        <MudListItem OnClick="@(() => { _animationDirection = AnimationDirection.In; NodeClick(targetNode); })" Text="@TryLocalize(BackLinkLabel, targetNode != null ? TextFunc(targetNode) : RootName)" Icon="@Icons.Material.Filled.ArrowBack" />
-        <MudDivider />
+        <MudListItem OnClick="@(() => { _animationDirection = AnimationDirection.In; NodeClick(targetNode); })" Text="@TryLocalize(BackLinkLabel, targetNode != null ? TextFunc(targetNode) : RootName)" Icon="@Icons.Material.Filled.ArrowBack"/>
+        <MudDivider/>
     }
     @foreach (var item in nodes.EmptyIfNull())
     {
@@ -34,16 +36,16 @@
 
 @code {
  
-    private RenderFragment ItemRender(T item, TreeViewMode viewMode, string search = "", bool asMenuItem = false)
+    private RenderFragment ItemRender(T item, TreeViewMode viewMode, string search = "")
     {
-        var context = CreateContext(item, search, asMenuItem);
+        var context = CreateContext(item, search);
         if (ItemTemplate != null)
             return ItemTemplate(context);
 
         return IsSeparator(item) ? RenderSeparator() : RenderItem(context);
     }
 
-    public virtual RenderFragment RenderItem(TreeViewItemContext<T, MudExTreeViewList<T>> context)
+    public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
     {
         return
         @<MudListItem OnClick="@(() => NodeClick(context.Item))">

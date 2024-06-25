@@ -25,6 +25,21 @@ public abstract class MudExBaseFormComponent<T, TData, U> : MudFormComponent<TDa
     private IStringLocalizer<T> _fallbackLocalizer => Get<IStringLocalizer<T>>();
 
     /// <summary>
+    /// Is true if init was called
+    /// </summary>
+    protected bool IsInitialized;
+
+    /// <summary>
+    /// Contains all parameters before init
+    /// </summary>
+    protected string[] PreInitParameters;
+
+    /// <summary>
+    /// Checks if a parameter is overwritten by user
+    /// </summary>
+    protected bool IsOverwritten(string paramName) => PreInitParameters?.Contains(paramName) == true;
+
+    /// <summary>
     /// Is true if dispose was called
     /// </summary>
     protected bool IsDisposed { get; private set; }
@@ -117,6 +132,21 @@ public abstract class MudExBaseFormComponent<T, TData, U> : MudFormComponent<TDa
     /// Returns a task that is completed after element is fully rendered
     /// </summary>
     public Task EnsureFullyRenderedAsync() => _renderedCompletionSource.Task;
+
+    /// <inheritdoc />
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        if (!IsInitialized)
+            PreInitParameters = parameters.ToDictionary().Select(x => x.Key).ToArray();
+        return base.SetParametersAsync(parameters);
+    }
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        IsInitialized = true;
+    }
 
     /// <inheritdoc />
     protected override bool ShouldRender()

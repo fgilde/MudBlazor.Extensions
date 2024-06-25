@@ -1,10 +1,12 @@
 ﻿@typeparam T
+@using MudBlazor.Extensions.Components.ObjectEdit
 @using Nextended.Core.Types
-@inherits MudExTreeViewBase<T, MudExTreeViewHorizontal<T>>
+@inherits MudExTreeViewBase<T>
 @namespace MudBlazor.Extensions.Components
 
 
 <div @onkeydown="KeyDown" @onwheel="OnWheel" tabindex="0" class="mud-ex-horizontal-tree-wrapper">
+    @RenderSearchBar()
     <div class="mud-ex-horizontal-tree">
         <div style="@ScrollHorizontalTree(SelectedNode)" class="mud-ex-horizontal-tree-scroll-wrapper">
             @{
@@ -46,16 +48,16 @@
                 ;
         }
 
-    private RenderFragment ItemRender(T item, TreeViewMode viewMode, string search = "", bool asMenuItem = false)
+    private RenderFragment ItemRender(T item, TreeViewMode viewMode, string search = "")
     {
-        var context = CreateContext(item, search, asMenuItem);
+        var context = CreateContext(item, search);
         if (ItemTemplate != null)
             return ItemTemplate(context);
 
         return IsSeparator(item) ? RenderSeparator() : RenderItem(context);
     }
 
-    public virtual RenderFragment RenderItem(TreeViewItemContext<T, MudExTreeViewHorizontal<T>> context)
+    public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
     {
         return
         @<div class="@ListItemClassStr()">
