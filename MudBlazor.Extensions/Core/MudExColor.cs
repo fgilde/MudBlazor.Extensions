@@ -207,6 +207,11 @@ public readonly struct MudExColor
     /// Appbar background color.
     /// </summary>
     public static MudExColor AppBarBackground => new("--mud-palette-appbar-background");
+
+    /// <summary>
+    /// Background color when hovered.
+    /// </summary>
+    public static MudExColor HoverBackground => new("--mud-palette-action-default-hover");
     
     /// <summary>
     /// Drawer background color.

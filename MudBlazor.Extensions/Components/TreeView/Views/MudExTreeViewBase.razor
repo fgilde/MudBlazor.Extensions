@@ -12,17 +12,19 @@
     protected virtual RenderFragment RenderSearchBar()
     {
         return
-    @<RenderChild Condition="@(FilterMode != PropertyFilterMode.Disabled)">
-        <MudToolBar Style="padding-left: 0; padding-right: 0;">
-            <MudSpacer />
-            @RenderSearchBox()
-        </MudToolBar>
-    </RenderChild>;
+        @<RenderChild Condition="@(FilterMode != PropertyFilterMode.Disabled)">
+            <MudToolBar Style="height: auto; padding-left: 0; padding-right: 0;">
+                <MudSpacer />
+                @RenderSearchBox()
+            </MudToolBar>
+        </RenderChild>;
     }
 
     protected virtual RenderFragment RenderSearchBox()
     {
-        return @<MudExToggleableSearch OnChipMouseOut="@OnFilterChipLeave" OnChipMouseOver="@OnFilterChipHover" Class="@GetFilterClassStr()" FilterMode="@FilterMode" ChipVariant="Variant.Text" MultiSearch="@FilterMultiple" @bind-Filters="Filters" @bind-Filter="Filter"></MudExToggleableSearch>;
+        return @<RenderChild Condition="@(FilterMode != PropertyFilterMode.Disabled)">
+                   <MudExToggleableSearch Placeholder="@FilterPlaceholder" ChipsRight="@FilterChipsPlacedRight" Style="@FilterBoxStyle" OnChipMouseOut="@OnFilterChipLeave" OnChipMouseOver="@OnFilterChipHover" Class="@GetFilterClassStr()" FilterMode="@FilterMode" ChipVariant="Variant.Text" MultiSearch="@FilterMultiple" @bind-Filters="Filters" @bind-Filter="Filter"></MudExToggleableSearch>
+               </RenderChild>;
     }
 
     public RenderFragment RenderItemContent(TreeViewItemContext<TItem> context) => RenderItemContent(context, false);
@@ -36,13 +38,16 @@
         @<RenderChild>
             @if (!string.IsNullOrEmpty(context.Highlight))
             {
-                <div class="@ItemContentClassStr(context)">
-                    <MudHighlighter Style="@ItemContentStyleStr(context)" Text="@text"
+                <div style="@ItemContentStyleStr(context)" class="@ItemContentClassStr(context)">
+                    <MudHighlighter Text="@text"
                                     HighlightedTexts="@(FilterHighlighting == FilterHighlighting.AllFilters ? Filters.EmptyIfNull().Concat(new []{Filter}) : null)"
                                     HighlightedText="@context.Highlight" />
                 </div>
             }
-            <MudText Class="@ItemContentClassStr(context)" Style="@ItemContentStyleStr(context)">@TextFunc(context.Item)</MudText>
+            else
+            {
+                <MudText Class="@ItemContentClassStr(context)" Style="@ItemContentStyleStr(context)">@TextFunc(context.Item)</MudText>
+            }
         </RenderChild>;
     }
 }

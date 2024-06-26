@@ -63,13 +63,7 @@
                 <LogoTitle />
             </MudDrawerHeader>
         }
-        @if (ClientTheme.CurrentTheme.ShowFilterInDrawer)
-        {
-            <div style="width: 100%;padding: 0 9px;z-index: 2;position: sticky;top: 0;background: var(--mud-palette-drawer-background);">
-                <MudExTagField OnChipMouseOver="OnTagOver" OnChipMouseOut="OnTagOut" OnKeyDown="SearchKeyDown" ChipColor="MudExColor.Primary" @bind-Values="filters" @bind-Value="filter" Placeholder="Filter (Press enter to tag)" T="string"></MudExTagField>
-            </div>
-        }
-        <NavMenu Highlight="@GetToHighlight()" Filters="@filters.Concat(new []{filter}).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToArray()" ExpandMode="ClientTheme.CurrentTheme.NavigationExpandMode" />
+        <NavMenu ExpandBehaviour="ClientTheme.CurrentTheme.NavigationExpandMode" />
     </MudDrawer>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-sample-main-content-container my-4 pt-4">

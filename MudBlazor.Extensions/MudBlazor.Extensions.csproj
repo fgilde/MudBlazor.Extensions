@@ -128,7 +128,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Enums\" />
     <Folder Include="Middleware\" />
   </ItemGroup>
 

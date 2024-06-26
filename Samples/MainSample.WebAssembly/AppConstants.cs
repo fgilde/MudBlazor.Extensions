@@ -4,6 +4,7 @@ namespace MainSample.WebAssembly;
 
 public static class AppConstants
 {
+    public const string UngroupedNavCategory = "Other Components";
     public static Action<MudExConfiguration> MudExConfiguration = c =>
         c.WithoutAutomaticCssLoading()
             .EnableDropBoxIntegration(AppIds.DropBox)

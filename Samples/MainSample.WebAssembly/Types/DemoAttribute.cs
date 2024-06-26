@@ -113,7 +113,7 @@ public class DemoAttribute : Attribute
     public IEnumerable<Type> RelatedComponents => (ForComponentTypes ?? Array.Empty<Type>()).Union(ForComponentType != null ? new[] { ForComponentType } : Array.Empty<Type>());
 
 
-    public static HashSet<NavigationEntry> AllEntries(bool flat = false, string ungrouppedName = "Other Components")
+    public static HashSet<NavigationEntry> AllEntries(bool flat = false, string ungrouppedName = AppConstants.UngroupedNavCategory)
     {
         var attrType = typeof(DemoAttribute);
 
@@ -130,6 +130,7 @@ public class DemoAttribute : Attribute
                 var groupNavigationEntry = new NavigationEntry
                 {
                     Text = g.Key ?? ungrouppedName,
+                    Href = $"/demos/{g.Key ?? ungrouppedName}",
                     Children = new HashSet<NavigationEntry>(),
                     // IsExpanded = g.Key == null
                 };

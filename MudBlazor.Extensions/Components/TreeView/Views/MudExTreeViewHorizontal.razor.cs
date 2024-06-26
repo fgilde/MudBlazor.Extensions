@@ -15,16 +15,39 @@ public partial class MudExTreeViewHorizontal<T>
     private double _treeWidth;
     private bool _showSplitter;
 
+    /// <summary>
+    /// Set to false if you want to break keyboard or wheel navigation on a separator
+    /// </summary>
     [Parameter] public bool SkipSeparator { get; set; } = true;
+
+    /// <summary>
+    /// If true, the <see cref="ColumnWidth"/> can be changed by dragging the splitter
+    /// </summary>
     [Parameter] public bool AllowColumnSizeChange { get; set; } = true;
 
     /// <summary>
     /// Border radius of the node leave null to use the default value from theme
     /// </summary>
     [Parameter] public MudExSize<double>? NodeBorderRadius { get; set; }
+
+    /// <summary>
+    /// Width of the tree column
+    /// </summary>
     [Parameter] public MudExSize<double> ColumnWidth { get; set; } = 250;
+
+    /// <summary>
+    /// Padding of the node
+    /// </summary>
     [Parameter] public MudExSize<double> NodePadding { get; set; } = 24;
+
+    /// <summary>
+    /// Strength of the line between nodes
+    /// </summary>
     [Parameter] public MudExSize<double> LineWidth { get; set; } = 2;
+
+    /// <summary>
+    /// Color of the line between nodes
+    /// </summary>
     [Parameter] public MudExColor LineColor { get; set; } = MudExColor.Primary;
 
     /// <inheritdoc />
@@ -145,7 +168,7 @@ public partial class MudExTreeViewHorizontal<T>
     }
 
 
-    public string GetNodeStyle(T node, double top)
+    private string GetNodeStyle(T node, double top)
     {
         return MudExStyleBuilder.Default
             .WithWidth(ColumnWidth)
@@ -161,6 +184,7 @@ public partial class MudExTreeViewHorizontal<T>
         return IsInPath(node) || IsSelected(node) || IsFocused(node);
     }
 
+    /// <inheritdoc />
     protected override string ItemStyleStr(TreeViewItemContext<T> context)
     {
         return MudExStyleBuilder.FromStyle(base.ItemStyleStr(context))
@@ -193,6 +217,7 @@ public partial class MudExTreeViewHorizontal<T>
         return ((children.Count - 1) / 2.0) - indexOfSelected;
     }
 
+    /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
@@ -204,7 +229,7 @@ public partial class MudExTreeViewHorizontal<T>
         _treeWidth = await JsRuntime.DInvokeAsync<double>((w, id) => w.document.getElementById(id).getBoundingClientRect().width, _treeId);
     }
 
-    public string ScrollHorizontalTree(T node)
+    private string ScrollHorizontalTree(T node)
     {
         var depth = this.Path().ToArray().IndexOf(node);
         double nodeWidth = ColumnWidth;

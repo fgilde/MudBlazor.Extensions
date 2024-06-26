@@ -10,9 +10,6 @@ namespace MainSample.WebAssembly.Shared;
 
 public partial class MainLayout
 {
-    private string filter;
-    private string hoveredFilter;
-    private List<string> filters = new();
     public static MainLayout? Instance { get; private set; }
     bool _drawerOpen = true;
     bool _commentsAvailable = true;
@@ -73,30 +70,5 @@ public partial class MainLayout
         StateHasChanged();
         HandleThemeChange(IsDark, theme);
     }
-
-    private void SearchKeyDown(KeyboardEventArgs args)
-    {
-        if (args.Key == "Escape")
-        {
-            if (string.IsNullOrWhiteSpace(filter))
-                filters.Clear();
-            filter = string.Empty;
-        }
-        else if (args.Key == "Delete" && string.IsNullOrWhiteSpace(filter))
-        {
-            filter.Remove(filters.Count - 1);
-        }
-    }
-
-    private string GetToHighlight() => !string.IsNullOrWhiteSpace(hoveredFilter) && filters.Contains(hoveredFilter) ? hoveredFilter : filter;
-
-    private void OnTagOver(ChipMouseEventArgs<string> arg)
-    {
-        hoveredFilter = arg.Value;
-    }
-
-    private void OnTagOut(ChipMouseEventArgs<string> arg)
-    {
-        hoveredFilter = string.Empty;
-    }
+    
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Nextended.Core.Types;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
+using MudBlazor.Extensions.Core.Enums;
 using Nextended.Blazor.Helper;
 using Nextended.Core.Extensions;
 
@@ -14,18 +15,30 @@ public partial class MudExTreeView<T>
     /// </summary>
     [Parameter] public TreeViewMode ViewMode { get; set; } = TreeViewMode.Horizontal;
 
+    /// <summary>
+    /// Parameters for the component based on ViewMode. 
+    /// </summary>
+    [Parameter] public IDictionary<string, object> Parameters { get; set; }
+
     private Type GetComponentForViewMode()
         => (GetRenderWithAttribute(ViewMode)?.ComponentType ?? typeof(MudExTreeViewDefault<>)).MakeGenericType(typeof(T));
 
     private IDictionary<string, object> GetParameters()
     {
-        var res = ComponentRenderHelper.GetCompatibleParameters(this, GetComponentForViewMode())
-            .Where(p => IsOverwritten(p.Key));
+        var componentType = GetComponentForViewMode();
+        var res = ComponentRenderHelper.GetCompatibleParameters(this, componentType)
+            .Where(p => IsOverwritten(p.Key)).ToDictionary();
 
         if(!FiltersChanged.HasDelegate)
-            res = res.Where(p => p.Key != nameof(Filters));
+            res = res.Where(p => p.Key != nameof(Filters)).ToDictionary();
         if (!FilterChanged.HasDelegate)
-            res = res.Where(p => p.Key != nameof(Filter));
+            res = res.Where(p => p.Key != nameof(Filter)).ToDictionary();
+        
+        foreach (var parameter in Parameters ?? new Dictionary<string, object>())
+        {
+            if (ComponentRenderHelper.IsValidParameter(componentType, parameter.Key, parameter.Value))
+                res.AddOrUpdate(parameter.Key, parameter.Value);
+        }
 
         return res.ToDictionary();
     }
@@ -35,43 +48,4 @@ public partial class MudExTreeView<T>
         var customAttributes = (RenderWithAttribute[])val.GetType().GetField(val.ToString()).GetCustomAttributes(typeof(RenderWithAttribute), false);
         return customAttributes.FirstOrDefault();
     }
-}
-
-
-
-
-/// <summary>
-/// TreeView mode determines how the tree view will be rendered.
-/// </summary>
-public enum TreeViewMode
-{
-    /// <summary>
-    /// Render tree view in default mode.
-    /// </summary>
-    [RenderWith(typeof(MudExTreeViewDefault<>))]
-    Default,
-
-    /// <summary>
-    /// Render tree view in horizontal mode.
-    /// </summary>
-    [RenderWith(typeof(MudExTreeViewHorizontal<>))]
-    Horizontal,
-
-    /// <summary>
-    /// Render tree view as breadcrumb.
-    /// </summary>
-    [RenderWith(typeof(MudExTreeViewBreadcrumb<>))]
-    Breadcrumb,
-
-    /// <summary>
-    /// Render tree view as list.
-    /// </summary>
-    [RenderWith(typeof(MudExTreeViewList<>))]
-    List,
-
-    /// <summary>
-    /// Render tree view as flat list.
-    /// </summary>
-    [RenderWith(typeof(MudExTreeViewFlatList<>))]
-    FlatList
 }

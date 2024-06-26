@@ -24,35 +24,6 @@ public static class Navigations
         if (MudExResource.IsDebug && host is "localhost" or "127.0.0.1" )
         {
             navigationEntries.Add(new NavigationEntry("TEST", Icons.Material.Outlined.BugReport, "/test"));
-            navigationEntries.Add(new NavigationEntry("Subtest")
-            {
-                Children = new()
-                {
-                    new NavigationEntry("Sub 1", null)
-                    {
-                        Children = new HashSet<NavigationEntry>
-                        {
-                            new NavigationEntry("Sub 1.1")
-                            {
-                                Children = new HashSet<NavigationEntry>
-                                {
-                                    new NavigationEntry("Sub 1.1.1"),
-                                    new NavigationEntry("Sub 1.1.2"),
-                                }
-                            },
-                            new NavigationEntry("Sub 1.2"),
-                        }
-                    },
-                    new NavigationEntry("Sub 2", null)
-                    {
-                        Children = new HashSet<NavigationEntry>
-                        {
-                            new NavigationEntry("Sub 2.1"),
-                            new NavigationEntry("Sub 2.2"),
-                        }
-                    },
-                }
-            });
         }
 
         navigationEntries.UnionWith(DemoAttribute.AllEntries());

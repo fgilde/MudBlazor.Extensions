@@ -1,5 +1,6 @@
 ﻿using MainSample.WebAssembly.Types;
 using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Core.Enums;
 using Nextended.Core.Extensions;
 using Nextended.Core.Types;
 
@@ -7,79 +8,55 @@ namespace MainSample.WebAssembly.Shared;
 
 public partial class NavMenu
 {
-    private ExpandMode _expandMode;
-    private string[] _filters;
 
-    [Parameter]
-    public string Highlight { get; set; }
 
-    [Parameter]
-    public string[] Filters
+    private NavigationEntry _selectedNavEntry;
+    private TreeViewExpandBehaviour _expandBehaviour;
+
+    public NavigationEntry SelectedNavEntry
     {
-        get => _filters;
+        get => _selectedNavEntry;
         set
         {
-            if (_filters != value)
+            if (_selectedNavEntry != value)
             {
-                _filters = value;
-                SetAllExpanded(HasFilters, entry => true);
+                _selectedNavEntry = value;
+                if (HasAction(value))
+                {
+                    NavigationManager.NavigateTo(value.Href);
+                }
             }
         }
     }
 
-    [Parameter] public FilterMode FilterMode { get; set; }
 
-    public bool HasFilters => Filters?.Any(s => !string.IsNullOrWhiteSpace(s)) == true;
 
-    [Parameter]
-    public ExpandMode ExpandMode
-    {
-        get => HasFilters ? ExpandMode.Default : _expandMode;
-        set
-        {
-            if (value != _expandMode)
-            {
-                _expandMode = value;
-                SetAllExpanded(ExpandMode != ExpandMode.SingleExpand);
-            }
-        }
-    }
 
     [Parameter] public HashSet<NavigationEntry>? Entries { get; set; } = null;
 
-    private HashSet<NavigationEntry>? FilteredItems()
+    [Parameter]
+    public TreeViewExpandBehaviour ExpandBehaviour
     {
-        if (FilterMode == FilterMode.Flat && HasFilters)
+        get => _expandBehaviour;
+        set
         {
-            return Entries.Recursive(e => e?.Children ?? Enumerable.Empty<NavigationEntry>()).Where(e =>
-                    Filters.Any(filter => e.Text.Contains(filter, StringComparison.InvariantCultureIgnoreCase)))
-                .ToHashSet();
+            if (value != _expandBehaviour)
+            {
+                _expandBehaviour = value;
+                InvokeAsync(StateHasChanged);
+            }
         }
-        return Entries;
     }
 
-    private (bool Found, string? Term) GetMatchedSearch(NavigationEntry node)
-    {
-        if (FilterMode == FilterMode.Flat || !HasFilters)
-            return (true, string.Empty);
-
-        if ((node?.Children ?? Enumerable.Empty<NavigationEntry>()).Recursive(n => n?.Children ?? Enumerable.Empty<NavigationEntry>()).Any(n => GetMatchedSearch(n).Found))
-            return (true, string.Empty);
-
-
-        foreach (var filter in Filters.EmptyIfNull())
-        {
-            if (node?.Text == "-" || node?.Text.Contains(filter, StringComparison.InvariantCultureIgnoreCase) == true)
-                return (true, filter); ;
-        }
-
-        return (false, string.Empty); ;
-    }
 
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
-        //if (firstRender)
-        //    SetAllExpanded(ExpandMode != ExpandMode.SingleExpand);
+        if (firstRender)
+        {
+            NavigationManager.LocationChanged += (s, e) => ExpandToCurrentUrl();
+            //SetAllExpanded(ExpandMode != ExpandMode.SingleExpand);
+        }
+
         return base.OnAfterRenderAsync(firstRender);
     }
 
@@ -93,16 +70,11 @@ public partial class NavMenu
 
     private void ExpandToCurrentUrl()
     {
+        var current = SelectedNavEntry;
         var url = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-        if (ExpandMode != ExpandMode.None)
-        {
-            if (!string.IsNullOrWhiteSpace(url) && url != "/")
-            {
-                FindEntriesForUrl(url)
-                    .SelectMany(e => e.Path)
-                    .Apply(e => e.IsExpanded = true);
-            }
-        }
+        SelectedNavEntry = FindEntriesForUrl(url)?.FirstOrDefault();
+        if(SelectedNavEntry != null && SelectedNavEntry != current)
+            InvokeAsync(StateHasChanged);
     }
 
     public IEnumerable<NavigationEntry> FindEntriesForUrl(string url = null)
@@ -111,44 +83,12 @@ public partial class NavMenu
         return Entries.Find(e => e.Href.EnsureStartsWith("/").ToLower() == url);
     }
 
-    private void OnExpandCollapseClick(NavigationEntry entry)
-    {
-        if (ExpandMode != ExpandMode.None)
-        {
-            var state = !entry.IsExpanded;
-            if (ExpandMode == ExpandMode.SingleExpand)
-                SetAllExpanded(false, e => e != entry && !e.ContainsChild(entry));
-            entry.IsExpanded = state;
-        }
-    }
-
-    private void SetAllExpanded(bool expand, Func<NavigationEntry, bool> predicate = null)
-    {
-        predicate ??= n => ExpandMode == ExpandMode.SingleExpand || n.Parent == null;
-        Entries?.Recursive(n => n.Children.EmptyIfNull()).Where(predicate).Apply(e => e.IsExpanded = expand);
-    }
 
 
     private bool HasAction(NavigationEntry entry)
     {
-        return !string.IsNullOrWhiteSpace(entry.Href);
+        return !string.IsNullOrWhiteSpace(entry?.Href);
     }
 
-    private bool CanExpand(NavigationEntry context)
-    {
-        return context.HasChildren && ExpandMode != ExpandMode.None && (context.Parent == null || context.Parent.IsExpanded);
-    }
-}
 
-public enum ExpandMode
-{
-    Default,
-    SingleExpand,
-    None
-}
-
-public enum FilterMode
-{
-    Default,
-    Flat
 }

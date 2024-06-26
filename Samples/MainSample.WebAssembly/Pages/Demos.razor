@@ -1,0 +1,36 @@
+﻿@page "/demos/{Group?}"
+
+
+<MudExCardList TData="object">
+
+    @foreach (var nav in DemoAttribute.AllEntries(true).Where(n => string.IsNullOrEmpty(Group) || n?.Demo?.Group == Group || (Group == AppConstants.UngroupedNavCategory && string.IsNullOrEmpty(n?.Demo?.Group))))
+    {
+        <MudCard Class="index-card" @onclick="@(() => { Open(nav); })">
+            <MudCardHeader Style="z-index: 5">
+                <CardHeaderContent>
+                    @Index.RenderNavEntry(nav)
+                </CardHeaderContent>
+                <CardHeaderActions>
+                    <MudIcon Color="@nav.GetIconColor()" Icon="@nav.Icon" />
+                </CardHeaderActions>
+            </MudCardHeader>
+            <MudCardContent Style="z-index: 5">
+                <MudText>@nav.Text</MudText>
+                @if (!string.IsNullOrEmpty(nav.Documentation))
+                {
+                    <MudText Typo="Typo.body2">@nav.Documentation</MudText>
+                }
+            </MudCardContent>
+        </MudCard>
+    }
+</MudExCardList>
+
+@code
+{
+    [Parameter] public string Group { get; set; }
+
+    private void Open(NavigationEntry nav)
+    {
+        NavigationManager.NavigateTo(nav.Href);
+    }
+}

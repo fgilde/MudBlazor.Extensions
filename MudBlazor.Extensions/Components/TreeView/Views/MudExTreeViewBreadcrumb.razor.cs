@@ -1,6 +1,5 @@
 ﻿using MudBlazor.Extensions.Components.ObjectEdit;
 using Nextended.Core.Types;
-using static MudBlazor.CategoryTypes;
 
 namespace MudBlazor.Extensions.Components;
 

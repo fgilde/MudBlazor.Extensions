@@ -17,13 +17,49 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     private HashSet<TItem> _expanded = new();
     private TItem _selectedNode;
 
+    /// <summary>
+    /// Filter manager
+    /// </summary>
     protected HierarchicalFilter<TItem> FilterManager = new();
 
+    /// <summary>
+    /// Placeholder for the filter box
+    /// </summary>
+    [Parameter] public string FilterPlaceholder { get; set; } = "Filter";
+
+    /// <summary>
+    /// Style for the filter box
+    /// </summary>
+    [Parameter] public string FilterBoxStyle { get; set; }
+
+    /// <summary>
+    /// Css class for the filter box
+    /// </summary>
+    [Parameter] public string FilterBoxClass { get; set; }
+
+    /// <summary>
+    /// Background color for the item
+    /// </summary>
     [Parameter] public MudExColor ItemBackgroundColor { get; set; }
+
+    /// <summary>
+    /// Background color for the selected item
+    /// </summary>
     [Parameter] public MudExColor SelectedItemBackgroundColor { get; set; }
+
+    /// <summary>
+    /// Foreground color for the selected item
+    /// </summary>
     [Parameter] public MudExColor SelectedItemColor { get; set; } = MudExColor.Primary;
+
+    /// <summary>
+    /// Border color for the selected item
+    /// </summary>
     [Parameter] public MudExColor SelectedItemBorderColor { get; set; }
 
+    /// <summary>
+    /// Width for the item
+    /// </summary>
     [Parameter] public MudExSize<double> ItemWidth { get; set; } = "100%";
     
     /// <summary>
@@ -40,6 +76,11 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// Behaviour for the highlighting of an applied filter
     /// </summary>
     [Parameter] public FilterHighlighting FilterHighlighting { get; set; } = FilterHighlighting.ActiveFilterOnly;
+
+    /// <summary>
+    /// If true the chips will be placed to the right in the input
+    /// </summary>
+    [Parameter] public bool? FilterChipsPlacedRight { get; set; }
 
     /// <summary>
     /// Set to false to disable multiple filters
@@ -138,12 +179,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// Callback when the selected node changes
     /// </summary>
     [Parameter] public EventCallback<TItem> SelectedNodeChanged { get; set; }
-
-    /// <summary>
-    /// Callback when the selected node changes
-    /// </summary>
-    [Parameter] public EventCallback<TItem> NodeClicked { get; set; }
-
+    
     /// <summary>
     /// Callback when the filter changes
     /// </summary>
@@ -169,11 +205,17 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
         });
     }
 
+    /// <summary>
+    /// Expand the treeview to the given value
+    /// </summary>
     public void ExpandTo(TItem value)
     {
         value.Path().Apply(e => SetExpanded(e, true));
     }
 
+    /// <summary>
+    /// The last selected node independent of <see cref="IsAllowedToSelect"/>
+    /// </summary>
     protected TItem LastSelectedNode;
 
     /// <summary>
@@ -185,8 +227,13 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
         get => FilterManager.Filter;
         set
         {
-            FilterManager.Filter = value;
-            FilterChanged.InvokeAsync(value).AndForget();
+            if (FilterManager.Filter != value)
+            {
+                FilterManager.Filter = value;
+                if (ExpandOnFilter)
+                    SetAllExpanded(FilterManager.HasFilters, _ => true);
+                FilterChanged.InvokeAsync(value).AndForget();
+            }
         }
     }
 
@@ -216,32 +263,35 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
         }
     }
 
+    /// <summary>
+    /// All items flatted
+    /// </summary>
     public HashSet<TItem> FlattedItems() => FilterManager.FilteredItems().Recursive(n => n.Children ?? Enumerable.Empty<TItem>()).ToHashSet();
 
     /// <summary>
     /// Returns true if the given node is expanded
     /// </summary>
-    public bool IsExpanded(TItem node) => _expanded.Contains(node);
+    public virtual bool IsExpanded(TItem node) => _expanded.Contains(node);
 
     /// <summary>
     /// Expand all nodes
     /// </summary>
-    public void ExpandAll() => _expanded = new HashSet<TItem>(Items.Recursive(n => n.Children ?? Enumerable.Empty<TItem>()));
+    public virtual void ExpandAll() => _expanded = new HashSet<TItem>(Items.Recursive(n => n.Children ?? Enumerable.Empty<TItem>()));
 
     /// <summary>
     /// Collapse all nodes
     /// </summary>
-    public void CollapseAll() => _expanded.Clear();
+    public virtual void CollapseAll() => _expanded.Clear();
 
     /// <summary>
     /// Returns true if the given node is selected
     /// </summary>
-    public bool IsSelected(TItem node) => node?.Equals(_selectedNode) == true; // TODO: implement multiselect
+    public virtual bool IsSelected(TItem node) => node?.Equals(_selectedNode) == true; // TODO: implement multiselect
 
     /// <summary>
     /// Returns true if the given node is selected
     /// </summary>
-    public bool IsFocused(TItem node) => node?.Equals(LastSelectedNode) == true; 
+    public virtual bool IsFocused(TItem node) => node?.Equals(LastSelectedNode) == true; 
 
     /// <summary>
     /// Returns true if the given node is a separator
@@ -256,9 +306,19 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
         return new TreeViewItemContext<TItem>(item, IsSelected(item), IsExpanded(item), IsFocused(item), search, this, tag, GetTermToHighlight(search));
     }
 
-
+    /// <summary>
+    /// Set to true to automatically expand the node when clicked and is not expanded
+    /// </summary>
     [Parameter] public bool AutoExpand { get; set; } = true;
+
+    /// <summary>
+    /// Set to true to automatically collapse the node when clicked and is already expanded
+    /// </summary>
     [Parameter] public bool AutoCollapse { get; set; } = true;
+
+    /// <summary>
+    /// Set to true to allow selection of nodes with children
+    /// </summary>
     [Parameter] public bool AllowSelectionOfNonEmptyNodes { get; set; } = false;
 
     /// <summary>
@@ -280,6 +340,9 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
         InvokeAsync(StateHasChanged);
     }
 
+    /// <summary>
+    /// Returns true if the given node is allowed to be selected
+    /// </summary>
     public virtual bool IsAllowedToSelect(TItem node)
     {
         if(AllowedToSelectFunc != null)
@@ -323,7 +386,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// <summary>
     /// Toggle the expanded state of the given node
     /// </summary>
-    public void ToggleExpand(TItem node)
+    public virtual void ToggleExpand(TItem node)
     {
         SetExpanded(node, !IsExpanded(node));
     }
@@ -331,7 +394,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// <summary>
     /// Set the expanded state of the given node
     /// </summary>
-    public void SetExpanded(TItem context, bool expanded)
+    public virtual void SetExpanded(TItem context, bool expanded)
     {
         if (expanded && !IsExpanded(context))
             _expanded.Add(context);
@@ -344,11 +407,14 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// </summary>
     protected virtual string GetFilterClassStr()
     {
-        return MudExCssBuilder.Default
+        return MudExCssBuilder.From(FilterBoxClass)
             .AddClass("mud-ex-property-filter-full-width", FilterMode == PropertyFilterMode.AlwaysVisible)
             .ToString();
     }
 
+    /// <summary>
+    /// Css class for item content
+    /// </summary>
     protected virtual string ItemContentClassStr(TreeViewItemContext<TItem> context)
     {
         return MudExCssBuilder.From(ItemContentClass)
@@ -357,6 +423,9 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
             .ToString();
     }
 
+    /// <summary>
+    /// Style for item content
+    /// </summary>
     protected virtual string ItemContentStyleStr(TreeViewItemContext<TItem> context)
     {
         return MudExStyleBuilder.FromStyle(ItemContentStyle)
@@ -365,15 +434,28 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
             .ToString();
     }
 
+    /// <summary>
+    /// Css class for item container
+    /// </summary>
     protected virtual string ItemClassStr(TreeViewItemContext<TItem> context)
     {
         return MudExCssBuilder.From(ItemContentClass)
             .ToString();
     }
 
+    /// <summary>
+    /// Style for item container
+    /// </summary>
     protected string ItemStyleStr(TItem context) => ItemStyleStr(CreateContext(context, Filter));
+
+    /// <summary>
+    /// Css class for item container
+    /// </summary>
     protected string ItemClassStr(TItem context) => ItemClassStr(CreateContext(context, Filter));
 
+    /// <summary>
+    /// Style for item container
+    /// </summary>
     protected virtual string ItemStyleStr(TreeViewItemContext<TItem> context)
     {
         return MudExStyleBuilder.FromStyle(ItemStyle)
@@ -385,6 +467,9 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
             .ToString();
     }
 
+    /// <summary>
+    /// Get the term to highlight
+    /// </summary>
     public virtual string GetTermToHighlight(string search)
     {
         return FilterHighlighting == FilterHighlighting.ActiveFilterOnly ? _highlight ?? Filter : search;

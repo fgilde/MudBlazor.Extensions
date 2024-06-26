@@ -1,10 +1,9 @@
 ﻿@typeparam T
-@using MudBlazor.Extensions.Components.ObjectEdit
 @inherits MudExTreeViewBase<T>
 @namespace MudBlazor.Extensions.Components
 
 @RenderSearchBar()
-<MudTreeView Color="Color.Primary" Hover="true" Items="@FilterManager.FilteredItems()" Dense="@Dense">
+<MudTreeView Class="@Class" Style="@Style" Hover="true" Items="@FilterManager.FilteredItems()" Dense="@Dense">
     <ItemTemplate>
         @{
             var search = FilterManager.GetMatchedSearch(context);
@@ -35,7 +34,10 @@
                                   Items="@(context.Item?.Children?.ToHashSet())">
             <Content>
                 <div style="@ItemStyleStr(context)" class="@ItemClassStr(context)">
-                    <MudTreeViewItemToggleButton ExpandedIcon="@ExpandedIcon" ExpandedChanged="@(expanded => SetExpanded(context.Item, expanded))" Expanded="@context.IsExpanded" Visible="@(context.Item?.Children?.Any() == true)"/>
+                    @if (ExpandBehaviour != Core.Enums.TreeViewExpandBehaviour.None)
+                    {
+                        <MudTreeViewItemToggleButton ExpandedIcon="@ExpandedIcon" ExpandedChanged="@(expanded => SetExpanded(context.Item, expanded))" Expanded="@context.IsExpanded" Visible="@(context.Item?.Children?.Any() == true)"/>
+                    }
                     @RenderItemContent(context, true)
                 </div>
             </Content>

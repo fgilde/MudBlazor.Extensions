@@ -18,7 +18,14 @@ namespace MudBlazor.Extensions.Components
         [Parameter]
         [Category(CategoryTypes.FormComponent.Behavior)]
         public string Placeholder { get; set; } = "Filter";
-        
+
+        /// <summary>
+        /// When true chips are placed to the right in the input, if null this is true when toggleable is true.
+        /// </summary>
+        [Parameter]
+        [Category(CategoryTypes.FormComponent.Behavior)]
+        public bool? ChipsRight { get; set; }
+
         /// <summary>
         /// The short hint displayed in the input before the user enters a value.
         /// </summary>
@@ -195,6 +202,9 @@ namespace MudBlazor.Extensions.Components
 
         private string VisualizerStyleStr()
         {
+            var right = ChipsRight ?? FilterMode == PropertyFilterMode.Toggleable;
+            if(!right)
+                return string.Empty;
             return MudExStyleBuilder.Default.WithHeight("20px")
                 .WithDisplay("flex")
                 .WithMarginTop("-40px")

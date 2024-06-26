@@ -11,9 +11,6 @@
     initialize(options) {
         this.options = options;
         const splitter = document.querySelector(`.mud-ex-splitter[data-id="${options.id}"]`);
-        splitter.style.opacity = options.opacity;
-        splitter.addEventListener('mouseenter', () => splitter.style.opacity = options.hoverOpacity);
-        splitter.addEventListener('mouseleave', () => splitter.style.opacity = options.opacity);
         if (splitter) {
             this.initSplitter(splitter);
             this.saveInitialState();
@@ -47,6 +44,11 @@
 
     initSplitter(splitter) {
         this.splitter = splitter;
+
+        splitter.style.opacity = this.options.opacity;
+        splitter.addEventListener('mouseenter', () => splitter.style.opacity = this.options.hoverOpacity);
+        splitter.addEventListener('mouseleave', () => splitter.style.opacity = this.options.opacity);
+
         this.prevElem = splitter.previousElementSibling;
         this.prevElem = this.options?.prevElement || this.findSiblingElement(splitter, el => el.previousElementSibling, ['mud-ex-splitter-internal']);
         this.nextElem = this.options?.nextElement ||this.findSiblingElement(splitter, el => el.nextElementSibling, ['mud-ex-splitter-internal']);

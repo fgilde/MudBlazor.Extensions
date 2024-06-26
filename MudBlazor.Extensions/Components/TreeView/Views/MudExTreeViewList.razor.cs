@@ -8,13 +8,29 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExTreeViewList<T> 
     where T : IHierarchical<T>
 {
+    /// <summary>
+    /// Set to true to animate navigation.
+    /// </summary>
     [Parameter] public bool AnimateNavigation { get; set; } = true;
+
+    /// <summary>
+    /// Duration of the animation.
+    /// </summary>
     [Parameter] public TimeSpan AnimationDuration { get; set; } = TimeSpan.FromMilliseconds(300);
+
+    /// <summary>
+    /// Name of the root node.
+    /// </summary>
     [Parameter] public string RootName { get; set; } = "Root";
+
+    /// <summary>
+    /// Label for the back link.
+    /// </summary>
     [Parameter] public string BackLinkLabel { get; set; } = "Back to {0}";
 
     private AnimationDirection? _animationDirection;
 
+    /// <inheritdoc />
     protected override void NodeClick(T node)
     {
         if (_animationDirection == null)
@@ -50,12 +66,8 @@ public partial class MudExTreeViewList<T>
             _animationDirection = null;
             InvokeAsync(StateHasChanged);
         });
-        return MudExStyleBuilder.Default.WithAnimation(
-            AnimationType.Slide,
-            AnimationDuration,
-            _animationDirection,
-            AnimationTimingFunction.EaseInOut,
-            DialogPosition.CenterRight, when: _animationDirection != null && AnimateNavigation).Style;
+        return MudExStyleBuilder.FromStyle(Style)
+            .WithAnimation(AnimationType.Slide, AnimationDuration, _animationDirection, AnimationTimingFunction.EaseInOut, DialogPosition.CenterRight, when: _animationDirection != null && AnimateNavigation).Style;
     }
 }
 

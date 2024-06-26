@@ -1,6 +1,7 @@
 ﻿using MainSample.WebAssembly.Shared;
 using MudBlazor;
 using MudBlazor.Extensions.Components;
+using MudBlazor.Extensions.Core.Enums;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Extensions;
 using SixLabors.ImageSharp.Processing;
@@ -12,7 +13,7 @@ public class ClientTheme : MudTheme
     public bool ShowFilterInDrawer { get; set; } = true;
     public bool ShowLogoInDrawer { get; set; }
 
-    public ExpandMode NavigationExpandMode { get; set; }
+    public TreeViewExpandBehaviour NavigationExpandMode { get; set; }
 
     public DrawerClipMode DrawerClipMode { get; set; }
     public DrawerVariant DrawerVariant { get; set; } = DrawerVariant.Responsive;

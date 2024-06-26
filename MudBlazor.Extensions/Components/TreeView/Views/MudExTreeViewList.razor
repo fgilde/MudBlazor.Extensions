@@ -8,7 +8,7 @@
 
 @RenderSearchBar()
 
-<MudList Style="@ListBoxStyleStr()" Dense="@Dense" Clickable="true">
+<MudList Class="@Class" Style="@ListBoxStyleStr()" Dense="@Dense" Clickable="true">
     @{
         var root = false;
         HashSet<T> nodes = (LastSelectedNode != null ? (LastSelectedNode.Children?.Any() == true ? LastSelectedNode.Children : LastSelectedNode?.Parent?.Children) : null);

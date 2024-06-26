@@ -7506,6 +7506,11 @@
             The short hint displayed in the input before the user enters a value.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.ChipsRight">
+            <summary>
+            When true chips are placed to the right in the input, if null this is true when toggleable is true.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExToggleableSearch.Label">
             <summary>
             The short hint displayed in the input before the user enters a value.
@@ -13457,34 +13462,9 @@
             Mode controls how the tree view will be rendered.
             </summary>
         </member>
-        <member name="T:MudBlazor.Extensions.Components.TreeViewMode">
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.Parameters">
             <summary>
-            TreeView mode determines how the tree view will be rendered.
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Components.TreeViewMode.Default">
-            <summary>
-            Render tree view in default mode.
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Components.TreeViewMode.Horizontal">
-            <summary>
-            Render tree view in horizontal mode.
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Components.TreeViewMode.Breadcrumb">
-            <summary>
-            Render tree view as breadcrumb.
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Components.TreeViewMode.List">
-            <summary>
-            Render tree view as list.
-            </summary>
-        </member>
-        <member name="F:MudBlazor.Extensions.Components.TreeViewMode.FlatList">
-            <summary>
-            Render tree view as flat list.
+            Parameters for the component based on ViewMode. 
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTypo">
@@ -13579,11 +13559,6 @@
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.SelectedNodeChanged">
-            <summary>
-            Callback when the selected node changes
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.NodeClicked">
             <summary>
             Callback when the selected node changes
             </summary>
@@ -14532,6 +14507,56 @@
             Represents picas in CSS. One pica is equal to 12 points.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.Enums.TreeViewExpandBehaviour">
+            <summary>
+            Controls how the tree view will expand.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.TreeViewExpandBehaviour.Default">
+            <summary>
+            Default behaviour.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.TreeViewExpandBehaviour.SingleExpand">
+            <summary>
+            Only one node can be expanded at a time.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.TreeViewExpandBehaviour.None">
+            <summary>
+            All nodes are expanded and cannot be collapsed.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Enums.TreeViewMode">
+            <summary>
+            TreeView mode determines how the tree view will be rendered.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.TreeViewMode.Default">
+            <summary>
+            Render tree view in default mode.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.TreeViewMode.Horizontal">
+            <summary>
+            Render tree view in horizontal mode.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.TreeViewMode.Breadcrumb">
+            <summary>
+            Render tree view as breadcrumb.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.TreeViewMode.List">
+            <summary>
+            Render tree view as list.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.TreeViewMode.FlatList">
+            <summary>
+            Render tree view as flat list.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.IDialogEventService">
             <summary>
             Dialog event service
@@ -15188,6 +15213,11 @@
         <member name="P:MudBlazor.Extensions.Core.MudExColor.AppBarBackground">
             <summary>
             Appbar background color.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.MudExColor.HoverBackground">
+            <summary>
+            Background color when hovered.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Core.MudExColor.DrawerBackground">
