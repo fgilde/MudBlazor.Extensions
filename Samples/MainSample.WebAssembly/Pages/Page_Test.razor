@@ -5,14 +5,12 @@
 <MudExEnumSelect TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />
 <MudCheckBox @bind-Value="_reverseExpand"></MudCheckBox>
 
-@* <p>@_selectedNode?.ToString()</p> *@
+<p>@_selectedNode?.ToString()</p>
 <MudExDivider Color="MudExColor.Primary" />
 
 <div style="height: 333px">
 <MudExTreeView @bind-SelectedNode="_selectedNode" ViewMode="_treeViewMode" ReverseExpandButton="_reverseExpand" Items="@Entries">
-    @*     <ItemContentTemplate>
-        <p style="background-color: @(context.IsSelected ? "pink" : "yellow")">@string.Join("", context.Item.ToString().ToCharArray().Reverse())</p>
-    </ItemContentTemplate> *@
+
 </MudExTreeView>
 </div>
 

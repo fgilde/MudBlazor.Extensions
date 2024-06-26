@@ -10,7 +10,7 @@
             var search = FilterManager.GetMatchedSearch(context);
             @if (search.Found)
             {
-                @ItemRender(context, TreeViewMode.Default, search.Term)
+                @ItemRender(context, search.Term)
             }
         }
     </ItemTemplate>
@@ -18,7 +18,7 @@
 
 @code {
 
-    private RenderFragment ItemRender(T item, TreeViewMode viewMode, string search = "")
+    private RenderFragment ItemRender(T item, string search = "")
     {
         var context = CreateContext(item, search);
         if (ItemTemplate != null)
@@ -36,7 +36,7 @@
             <Content>
                 <div style="@ItemStyleStr(context)" class="@ItemClassStr(context)">
                     <MudTreeViewItemToggleButton ExpandedIcon="@ExpandedIcon" ExpandedChanged="@(expanded => SetExpanded(context.Item, expanded))" Expanded="@context.IsExpanded" Visible="@(context.Item?.Children?.Any() == true)"/>
-                    @RenderItemContent(context)
+                    @RenderItemContent(context, true)
                 </div>
             </Content>
         </MudTreeViewItem>;

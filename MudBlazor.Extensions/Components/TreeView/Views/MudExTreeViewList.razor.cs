@@ -20,8 +20,8 @@ public partial class MudExTreeViewList<T>
         if (_animationDirection == null)
         {
             _animationDirection =
-                node == null || SelectedNode?.Parent?.Equals(node) == true ||
-                SelectedNode?.Parent?.Parent?.Equals(node) == true
+                node == null || LastSelectedNode?.Parent?.Equals(node) == true ||
+                LastSelectedNode?.Parent?.Parent?.Equals(node) == true
                     ? AnimationDirection.In
                     : AnimationDirection.Out;
             if (!node.HasChildren())

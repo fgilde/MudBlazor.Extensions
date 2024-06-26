@@ -25,7 +25,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     [Parameter] public MudExColor SelectedItemBorderColor { get; set; }
 
     [Parameter] public MudExSize<double> ItemWidth { get; set; } = "100%";
-
+    
     /// <summary>
     /// Typographic style for the item content only used if <see cref="ItemContentTemplate"/> and <see cref="ItemTemplate"/> are not set
     /// </summary>
@@ -140,6 +140,11 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     [Parameter] public EventCallback<TItem> SelectedNodeChanged { get; set; }
 
     /// <summary>
+    /// Callback when the selected node changes
+    /// </summary>
+    [Parameter] public EventCallback<TItem> NodeClicked { get; set; }
+
+    /// <summary>
     /// Callback when the filter changes
     /// </summary>
     [Parameter] public EventCallback<string> FilterChanged { get; set; }
@@ -156,8 +161,20 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     public TItem SelectedNode
     {
         get => _selectedNode;
-        set => Set(ref _selectedNode, value, _ => SelectedNodeChanged.InvokeAsync(value).AndForget());
+        set => Set(ref _selectedNode, LastSelectedNode = value, _ =>
+        {
+            SelectedNodeChanged.InvokeAsync(value).AndForget();
+            if(AutoExpand)
+                ExpandTo(value);
+        });
     }
+
+    public void ExpandTo(TItem value)
+    {
+        value.Path().Apply(e => SetExpanded(e, true));
+    }
+
+    protected TItem LastSelectedNode;
 
     /// <summary>
     /// Filter for the treeview
@@ -199,6 +216,8 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
         }
     }
 
+    public HashSet<TItem> FlattedItems() => FilterManager.FilteredItems().Recursive(n => n.Children ?? Enumerable.Empty<TItem>()).ToHashSet();
+
     /// <summary>
     /// Returns true if the given node is expanded
     /// </summary>
@@ -220,6 +239,11 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     public bool IsSelected(TItem node) => node?.Equals(_selectedNode) == true; // TODO: implement multiselect
 
     /// <summary>
+    /// Returns true if the given node is selected
+    /// </summary>
+    public bool IsFocused(TItem node) => node?.Equals(LastSelectedNode) == true; 
+
+    /// <summary>
     /// Returns true if the given node is a separator
     /// </summary>
     public virtual bool IsSeparator(TItem node) => IsSeparatorDetectFunc?.Invoke(node) == true;
@@ -229,8 +253,18 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// </summary>
     protected virtual TreeViewItemContext<TItem> CreateContext(TItem item, string search, object tag = null)
     {
-        return new TreeViewItemContext<TItem>(item, IsSelected(item), IsExpanded(item), search, this, tag, GetTermToHighlight(search));
+        return new TreeViewItemContext<TItem>(item, IsSelected(item), IsExpanded(item), IsFocused(item), search, this, tag, GetTermToHighlight(search));
     }
+
+
+    [Parameter] public bool AutoExpand { get; set; } = true;
+    [Parameter] public bool AutoCollapse { get; set; } = true;
+    [Parameter] public bool AllowSelectionOfNonEmptyNodes { get; set; } = false;
+
+    /// <summary>
+    /// Here you can specify a function to determine if a node is allowed to be selected
+    /// </summary>
+    [Parameter] public Func<TItem, bool> AllowedToSelectFunc { get; set; }
 
     /// <summary>
     /// On node click
@@ -239,18 +273,36 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     {
         if (IsSeparator(node))
             return;
-        SelectedNode = node;
-        if (SelectedNode != null)
-        {
-            SetExpanded(node, !IsExpanded(node));
-        }
+        LastSelectedNode = node;
+        ExecuteAutoExpand(node);
+        if(IsAllowedToSelect(node))
+            SelectedNode = node;
         InvokeAsync(StateHasChanged);
+    }
+
+    public virtual bool IsAllowedToSelect(TItem node)
+    {
+        if(AllowedToSelectFunc != null)
+            return AllowedToSelectFunc(node);
+        return AllowSelectionOfNonEmptyNodes || !node.HasChildren();
+    }
+
+    private void ExecuteAutoExpand(TItem node)
+    {
+        if (node != null && (AutoExpand || AutoCollapse))
+        {
+            var isExpanded = IsExpanded(node);
+            if (isExpanded && AutoCollapse)
+                SetExpanded(node, false);
+            else if (!isExpanded && AutoExpand)
+                SetExpanded(node, true);
+        }
     }
 
     /// <summary>
     /// The current path
     /// </summary>
-    public IEnumerable<TItem> Path() => _selectedNode != null ? _selectedNode.Path() : Enumerable.Empty<TItem>();
+    public IEnumerable<TItem> Path() => LastSelectedNode != null ? LastSelectedNode.Path() : Enumerable.Empty<TItem>();
 
     /// <summary>
     /// Returns true if the given node is in the current path
@@ -266,6 +318,14 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
         //predicate ??= n => ExpandMode == ExpandMode.SingleExpand || n.Parent == null;
         predicate ??= n => n.Parent == null;
         Items?.Recursive(n => n.Children.EmptyIfNull()).Where(predicate).Apply(e => SetExpanded(e, expand));
+    }
+
+    /// <summary>
+    /// Toggle the expanded state of the given node
+    /// </summary>
+    public void ToggleExpand(TItem node)
+    {
+        SetExpanded(node, !IsExpanded(node));
     }
 
     /// <summary>
@@ -317,7 +377,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     protected virtual string ItemStyleStr(TreeViewItemContext<TItem> context)
     {
         return MudExStyleBuilder.FromStyle(ItemStyle)
-            .WithCursor(Cursor.Pointer)
+            .WithCursor(Cursor.Pointer, IsAllowedToSelect(context.Item))
             .WithWidth(ItemWidth)
             .WithOutline(1, BorderStyle.Solid, SelectedItemBorderColor, context.IsSelected && SelectedItemBorderColor.IsSet())
             .WithBackgroundColor(SelectedItemBackgroundColor, context.IsSelected && SelectedItemBackgroundColor.IsSet())

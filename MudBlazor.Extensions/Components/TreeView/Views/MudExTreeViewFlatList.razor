@@ -1,0 +1,54 @@
+﻿@typeparam T
+@inherits MudExTreeViewBase<T>
+@namespace MudBlazor.Extensions.Components
+
+@using Nextended.Core.Extensions
+@using Nextended.Core.Types
+
+@RenderSearchBar()
+
+<MudList Dense="@Dense" Clickable="true">
+
+    @foreach (var item in FlattedItems().EmptyIfNull())
+    {
+        var search = FilterManager.GetMatchedSearch(item);
+        if (search.Found && IsAllowedToSelect(item))
+        {
+            @ItemRender(item, search.Term)
+        }
+    }
+</MudList>
+
+@code {
+ 
+    private RenderFragment ItemRender(T item, string search = "")
+    {
+        var context = CreateContext(item, search);
+        if (ItemTemplate != null)
+            return ItemTemplate(context);
+
+        return IsSeparator(item) ? RenderSeparator() : RenderItem(context);
+    }
+
+    public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
+    {
+        return
+        @<MudListItem Style="@ItemStyleStr(context)" Class="@ItemClassStr(context)" OnClick="@(() => NodeClick(context.Item))">
+             @RenderItemContent(context, true)
+        </MudListItem>;
+    }
+
+    protected override RenderFragment RenderItemContent(TreeViewItemContext<T> context, bool checkTemplate)
+    {
+        if (checkTemplate && ItemContentTemplate != null)
+            return ItemContentTemplate(context);
+        return @<RenderChild>
+                    @base.RenderItemContent(context, checkTemplate)
+                   @if (ShowPath)
+                   {
+                       <MudText Style="font-size:8pt">@context.Item.GetPathString(TextFunc, PathSeparator)</MudText>
+                   }
+               </RenderChild>;
+    }
+
+}

@@ -22,5 +22,11 @@ public partial class MudExTreeViewBreadcrumb<T>
             FilterMode = PropertyFilterMode.Toggleable;
         base.OnInitialized();
     }
+
+    private void NodeItemClick(T node)
+    {
+        if(IsAllowedToSelect(node))
+            base.NodeClick(node);
+    }
 }
 

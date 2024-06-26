@@ -21,7 +21,7 @@ $tree-node-line-width: 2px;
 
 .mud-ex-horizontal-tree-column {
     &:not(:first-child) .mud-ex-horizontal-tree-node:before,
-    .mud-ex-horizontal-tree-node.node-selected.node-expandable:after,
+    .mud-ex-horizontal-tree-node.node-selected.node-expandable.node-expanded:after,
     &:not(:first-child) .mud-ex-horizontal-tree-node:not(:last-child) > div:after {
         content: " ";
         background-color: var(--tree-node-line-color, green);

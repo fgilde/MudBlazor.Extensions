@@ -32,6 +32,10 @@ public partial class MudExTreeViewHorizontal<T>
     {
         if (!IsOverwritten(nameof(SelectedItemBorderColor)))
             SelectedItemBorderColor = SelectedItemColor;
+        if (!IsOverwritten(nameof(AutoCollapse)))
+            AutoCollapse = false;
+        if (!IsOverwritten(nameof(AutoExpand)))
+            AutoExpand = true;
         base.OnInitialized();
     }
 
@@ -39,7 +43,7 @@ public partial class MudExTreeViewHorizontal<T>
     {
         var siblings = SiblingOfSelected();
 
-        if (SelectedNode == null || !siblings.Any())
+        if (LastSelectedNode == null || !siblings.Any())
             return;
 
         var currentIndex = SelectedNodeIndexInPath(siblings);
@@ -61,20 +65,25 @@ public partial class MudExTreeViewHorizontal<T>
             return;
 
         var siblings = SiblingOfSelected();
+        var selectedNode = LastSelectedNode;
         if (args.Code == "Home")
         {
             var toSelect = FilterManager.FilteredItems().EmptyIfNull().FirstOrDefault();
-            var parent = SelectedNode;
+            var parent = selectedNode;
             while (parent != null && parent.Parent != null)
             {
                 parent = parent.Parent;
             }
+            if (!AutoExpand || AutoCollapse)
+                CollapseAll();
             NodeClick(parent ?? toSelect);
         }
-        else if (args.Code == "End" && SelectedNode?.HasChildren() == true)
+        else if (args.Code == "End" && selectedNode?.HasChildren() == true)
         {
-            var lastOrDefault = SelectedNode.Children.Recursive(n => n.Children ?? Enumerable.Empty<T>()).ToList();
-            NodeClick(lastOrDefault.FirstOrDefault(n => !n.HasChildren()));
+            var lastOrDefault = selectedNode.Children.Recursive(n => n.Children ?? Enumerable.Empty<T>()).ToList();
+            var node = lastOrDefault.FirstOrDefault(n => !n.HasChildren());
+            ExpandTo(node);
+            NodeClick(node);
         }
         else if (args.Code == "PageDown" && siblings.Any())
         {
@@ -84,13 +93,16 @@ public partial class MudExTreeViewHorizontal<T>
         {
             NodeClick(siblings.FirstOrDefault());
         }
-        else if (args.Code == "ArrowLeft" && SelectedNode != null && SelectedNode.Parent != null && FilterManager.GetMatchedSearch(SelectedNode.Parent).Found)
+        else if (args.Code == "ArrowLeft" && selectedNode != null && selectedNode.Parent != null && FilterManager.GetMatchedSearch(selectedNode.Parent).Found)
         {
-            NodeClick(SelectedNode.Parent);
+            if(!AutoExpand || AutoCollapse)
+                SetExpanded(selectedNode.Parent, false);
+            NodeClick(selectedNode.Parent);
         }
-        else if (args.Code == "ArrowRight" && SelectedNode?.HasChildren() == true)
+        else if (args.Code == "ArrowRight" && selectedNode?.HasChildren() == true)
         {
-            NodeClick(SelectedNode.Children.FirstOrDefault(n => FilterManager.GetMatchedSearch(n).Found));
+            SetExpanded(selectedNode, true);
+            NodeClick(selectedNode.Children.FirstOrDefault(n => FilterManager.GetMatchedSearch(n).Found));
         }
         else if (new[] { "ArrowUp", "ArrowDown" }.Contains(args.Code) && siblings.Any())
         {
@@ -112,8 +124,8 @@ public partial class MudExTreeViewHorizontal<T>
 
     private T[] SiblingOfSelected()
     {
-        if (SelectedNode != null && SelectedNode.Parent != null && SelectedNode.Parent.HasChildren())
-            return SelectedNode.Parent.Children.Where(n => FilterManager.GetMatchedSearch(n).Found).ToArray();
+        if (LastSelectedNode != null && LastSelectedNode.Parent != null && LastSelectedNode.Parent.HasChildren())
+            return LastSelectedNode.Parent.Children.Where(n => FilterManager.GetMatchedSearch(n).Found).ToArray();
         return FilterManager.FilteredItems()?.Where(n => FilterManager.GetMatchedSearch(n).Found).ToArray() ?? Array.Empty<T>();
     }
 
@@ -128,6 +140,7 @@ public partial class MudExTreeViewHorizontal<T>
         return MudExCssBuilder.From("mud-ex-horizontal-tree-node")
             .AddClass("node-selected", IsInPath(node) || IsSelected(node))
             .AddClass("node-expandable", node.HasChildren())
+            .AddClass("node-expanded", IsExpanded(node))
             .ToString();
     }
 
@@ -143,13 +156,18 @@ public partial class MudExTreeViewHorizontal<T>
             .Style;
     }
 
+    private bool RenderAsSelected(T node)
+    {
+        return IsInPath(node) || IsSelected(node) || IsFocused(node);
+    }
+
     protected override string ItemStyleStr(TreeViewItemContext<T> context)
     {
         return MudExStyleBuilder.FromStyle(base.ItemStyleStr(context))
             .WithHeight(Dense ? 18 : 25)
-            .WithBackgroundColor(SelectedItemBackgroundColor, (IsInPath(context.Item) || IsSelected(context.Item)) && SelectedItemBackgroundColor.IsSet())
-            .WithBorderColor(SelectedItemBorderColor, (IsInPath(context.Item) || IsSelected(context.Item)) && SelectedItemBorderColor.IsSet())
-            .WithBorderRadius(NodeBorderRadius, (IsInPath(context.Item) || IsSelected(context.Item)) && NodeBorderRadius.HasValue)
+            .WithBackgroundColor(SelectedItemBackgroundColor, RenderAsSelected(context.Item) && SelectedItemBackgroundColor.IsSet())
+            .WithBorderColor(SelectedItemBorderColor, RenderAsSelected(context.Item) && SelectedItemBorderColor.IsSet())
+            .WithBorderRadius(NodeBorderRadius, RenderAsSelected(context.Item) && NodeBorderRadius.HasValue)
             .Style;
     }
 

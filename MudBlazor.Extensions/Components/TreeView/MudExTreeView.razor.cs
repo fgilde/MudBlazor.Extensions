@@ -67,5 +67,11 @@ public enum TreeViewMode
     /// Render tree view as list.
     /// </summary>
     [RenderWith(typeof(MudExTreeViewList<>))]
-    List
+    List,
+
+    /// <summary>
+    /// Render tree view as flat list.
+    /// </summary>
+    [RenderWith(typeof(MudExTreeViewFlatList<>))]
+    FlatList
 }

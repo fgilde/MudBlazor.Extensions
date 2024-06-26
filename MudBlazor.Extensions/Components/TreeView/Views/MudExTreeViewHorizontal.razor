@@ -1,5 +1,4 @@
 ﻿@typeparam T
-@using MudBlazor.Extensions.Components.ObjectEdit
 @using Nextended.Core.Types
 @inherits MudExTreeViewBase<T>
 @namespace MudBlazor.Extensions.Components
@@ -8,14 +7,17 @@
 <div id="@_treeId" @onkeydown="KeyDown" @onwheel="OnWheel" tabindex="0" class="mud-ex-horizontal-tree-wrapper">
     @RenderSearchBar()
     <div class="mud-ex-horizontal-tree">
-        <div style="@ScrollHorizontalTree(SelectedNode)" class="mud-ex-horizontal-tree-scroll-wrapper">
+        <div style="@ScrollHorizontalTree(LastSelectedNode)" class="mud-ex-horizontal-tree-scroll-wrapper">
             @{
                 var items = FilterManager.FilteredItems()?.Where(n => FilterManager.GetMatchedSearch(n).Found).ToList() ?? new List<T>();
             }
             @NodeColumn(items, NodeOffset(items))
             @foreach (var node in Path().Where(n => FilterManager.GetMatchedSearch(n).Found))
             {
-                @NodeColumn(node, NodeOffset(node))
+                @if (IsExpanded(node))
+                {
+                    @NodeColumn(node, NodeOffset(node))
+                }
             }
         </div>
     </div>
@@ -41,7 +43,7 @@
                                {
                                    <div class="@GetNodeClass(child)" style="@GetNodeStyle(child, top)" @onclick="() => NodeClick(child)">
                                        <div style="@ItemStyleStr(CreateContext(child, search.Term))">
-                                           @ItemRender(child, TreeViewMode.Horizontal, search.Term)
+                                           @ItemRender(child, search.Term)
                                        </div>
                                    </div>
                                }
@@ -54,7 +56,7 @@
                  </RenderChild>;
         }
 
-    private RenderFragment ItemRender(T item, TreeViewMode viewMode, string search = "")
+    private RenderFragment ItemRender(T item, string search = "")
     {
         var context = CreateContext(item, search);
         if (ItemTemplate != null)
@@ -67,10 +69,10 @@
     {
         return
         @<div class="@InnerItemClassStr()">
-            @RenderItemContent(context)
+            @RenderItemContent(context, true)
             @if(context.Item.HasChildren())
             {
-                <MudExIcon Icon="@ExpandedIcon" />
+                <MudExIconButton Size="Size.Small" OnClick="@(() => ToggleExpand(context.Item))" Icon="@ExpandedIcon" />
             }
         </div>;
     }

@@ -7,7 +7,7 @@
     @MenuFor(FilterManager.FilteredItems())
     @foreach (var item in Path())
     {
-        <p>@ItemRender(item, TreeViewMode.Breadcrumb)</p>
+        <p>@ItemRender(item)</p>
         @MenuFor(item.Children)
     }
     <MudSpacer />
@@ -32,14 +32,14 @@
                 var search = FilterManager.GetMatchedSearch(child);
                 @if (search.Found)
                 {
-                    @ItemRender(child, TreeViewMode.Breadcrumb, search.Term, true)
+                    @ItemRender(child, search.Term, true)
                 }
             }
             </MudMenu>
         </RenderChild>;
     }
     
-    private RenderFragment ItemRender(T item, TreeViewMode viewMode, string search = "", bool asMenuItem = false)
+    private RenderFragment ItemRender(T item, string search = "", bool asMenuItem = false)
     {
         var context = CreateContext(item, search, asMenuItem);
         if (ItemTemplate != null)
@@ -54,12 +54,12 @@
         @<RenderChild>
             @if(context.Tag is true) {
                 <MudMenuItem Class="@ItemClassStr(context)" Style="@ItemStyleStr(context)" Icon="@(context.Item.HasChildren() ? null : null)" OnClick="@(() => NodeClick(context.Item))">
-                    @RenderItemContent(context)
+                    @RenderItemContent(context, true)
                 </MudMenuItem>
             } 
             else{
-                <div class="@ItemClassStr(context)" style="@ItemStyleStr(context)" @onclick="() => NodeClick(context.Item)">
-                    @RenderItemContent(context)
+                <div class="@ItemClassStr(context)" style="@ItemStyleStr(context)" @onclick="() => NodeItemClick(context.Item)">
+                    @RenderItemContent(context, true)
                 </div>
             }
         </RenderChild>;

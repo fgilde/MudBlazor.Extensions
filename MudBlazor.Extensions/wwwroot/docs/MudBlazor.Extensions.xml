@@ -13482,6 +13482,11 @@
             Render tree view as list.
             </summary>
         </member>
+        <member name="F:MudBlazor.Extensions.Components.TreeViewMode.FlatList">
+            <summary>
+            Render tree view as flat list.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTypo">
             <summary>
             Typographic style for the item content only used if <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTemplate"/> and <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemTemplate"/> are not set
@@ -13578,6 +13583,11 @@
             Callback when the selected node changes
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.NodeClicked">
+            <summary>
+            Callback when the selected node changes
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterChanged">
             <summary>
             Callback when the filter changes
@@ -13623,6 +13633,11 @@
             Returns true if the given node is selected
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.IsFocused(`0)">
+            <summary>
+            Returns true if the given node is selected
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.IsSeparator(`0)">
             <summary>
             Returns true if the given node is a separator
@@ -13631,6 +13646,11 @@
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.CreateContext(`0,System.String,System.Object)">
             <summary>
             Creates a context for the given item
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.AllowedToSelectFunc">
+            <summary>
+            Here you can specify a function to determine if a node is allowed to be selected
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.NodeClick(`0)">
@@ -13651,6 +13671,11 @@
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.SetAllExpanded(System.Boolean,System.Func{`0,System.Boolean})">
             <summary>
             Set all nodes expanded where the predicate returns true
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ToggleExpand(`0)">
+            <summary>
+            Toggle the expanded state of the given node
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.SetExpanded(`0,System.Boolean)">
