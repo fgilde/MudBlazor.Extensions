@@ -1,5 +1,4 @@
-﻿$tree-node-width: 250px;
-$tree-node-padding: 24px;
+﻿$tree-node-padding: 24px;
 $tree-node-line-width: 2px;
 
 .mud-ex-horizontal-tree-wrapper {
@@ -7,8 +6,7 @@ $tree-node-line-width: 2px;
 }
 
 .mud-ex-horizontal-tree {
-    overflow: hidden;
-    /*background-color: #ffe8e1;*/
+    overflow: hidden;    
     height: 100%;
     padding: 0;
 }
@@ -26,11 +24,11 @@ $tree-node-line-width: 2px;
     .mud-ex-horizontal-tree-node.node-selected.node-expandable:after,
     &:not(:first-child) .mud-ex-horizontal-tree-node:not(:last-child) > div:after {
         content: " ";
-        background-color: green;
+        background-color: var(--tree-node-line-color, green);
         position: absolute;
         top: 50%;
-        height: $tree-node-line-width;
-        width: $tree-node-padding;
+        height: var(--tree-node-line-width, $tree-node-line-width);
+        width: var(--tree-node-padding, $tree-node-padding);
     }
 
     &:not(:first-child) .mud-ex-horizontal-tree-node:before {
@@ -42,22 +40,21 @@ $tree-node-line-width: 2px;
     }
 
     &:not(:first-child) .mud-ex-horizontal-tree-node:not(:last-child) > div:after {
-        width: $tree-node-line-width;
+        width: var(--tree-node-line-width, $tree-node-line-width);
         height: 100%;
-        left: calc($tree-node-padding * -1 - $tree-node-line-width);
-        padding-top: calc($tree-node-line-width + 2px);
+        left: calc(var(--tree-node-padding, $tree-node-padding) * -1 - var(--tree-node-line-width, $tree-node-line-width));
+        padding-top: calc(var(--tree-node-line-width, $tree-node-line-width) + 2px);
     }
 }
 
 .mud-ex-horizontal-tree-node {
-    padding: 0 $tree-node-padding;
+    padding: 0 var(--tree-node-padding, $tree-node-padding);
     cursor: pointer;
-    width: $tree-node-width;
 
     & > div {
         position: relative;
         padding: 4px 4px 4px 12px;
-        height: 25px;
+        
         white-space: nowrap;
         border: 1px solid transparent;
         display: flex;
@@ -66,9 +63,7 @@ $tree-node-line-width: 2px;
 
     &.node-selected {
         & > div {
-            background-color: #f00;
-            border-color: darkgray;
-            border-radius: 8px;
+            border-radius: var(--mud-default-borderradius, 8px);
         }
     }
 
@@ -87,13 +82,13 @@ $tree-node-line-width: 2px;
     outline: none;
 
     &:not(.node-selected) {
-        color: orange;
-        opacity: 0.5;
+        /*color: orange;
+        opacity: 0.5;*/
     }
 }
 
 .node-selected {
-    color: orange;
+    /*color: orange;*/
     opacity: 1;
 }
 

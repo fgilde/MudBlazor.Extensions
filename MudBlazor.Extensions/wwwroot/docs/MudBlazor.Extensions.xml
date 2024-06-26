@@ -6677,6 +6677,11 @@
             A Splitter Component
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitter.DontApply">
+            <summary>
+            Set this to true if you don't want to apply changes. 
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSplitter.JsReference">
             <inheritdoc/>
         </member>
@@ -6694,6 +6699,16 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSplitter.IsDraggingChanged">
             <summary>
             Callback when dragging starts or ends
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitter.Dragging">
+            <summary>
+            Callback when drag size changed
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSplitter.DragEnd">
+            <summary>
+            Callback when drag ends
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSplitter.NextElement">
@@ -6748,6 +6763,9 @@
             <summary>
             Returns options for setting up the Splitter.
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExSplitter.GetStyle">
+            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSplitter.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc/>
@@ -13499,6 +13517,16 @@
             If true the treeview will expand all nodes on filter
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemStyle">
+            <summary>
+            Style for Item itself this only is used if <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTemplate"/> and <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemTemplate"/> are not set
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemClass">
+            <summary>
+            Class for Item itself this only is used if <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTemplate"/> and <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemTemplate"/> are not set
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentStyle">
             <summary>
             Style for Item content this only is used if <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTemplate"/> and <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemTemplate"/> are not set
@@ -13634,6 +13662,25 @@
             <summary>
             Class for use in the filter box
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBreadcrumb`1.GetFilterClassStr">
+            <summary>
+            Class for use in the filter box
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBreadcrumb`1.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewDefault`1.ItemStyleStr(MudBlazor.Extensions.Components.TreeViewItemContext{`0})">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewHorizontal`1.NodeBorderRadius">
+            <summary>
+            Border radius of the node leave null to use the default value from theme
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewHorizontal`1.OnInitialized">
+            <inheritdoc />
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExIconButton.ToolTip">
             <summary>
@@ -13910,6 +13957,131 @@
             Inherit display value from parent element.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.FlexFlow">
+            <summary>
+            Enum representing CSS 'flex-flow' property values.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.NoWrap">
+            <summary>
+            Set flex to nowrap.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.Wrap">
+            <summary>
+            Set flex direction to row and wrap to wrap-reverse.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.WrapReverse">
+            <summary>
+            Set flex direction to row and wrap to wrap-reverse.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.Row">
+            <summary>
+            Set flex direction to row
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.RowReverse">
+            <summary>
+            Set flex direction to row reverse
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.RowNowrap">
+            <summary>
+            Set flex direction to row and wrap to nowrap.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.RowWrap">
+            <summary>
+            Set flex direction to row and wrap to wrap.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.RowWrapReverse">
+            <summary>
+            Set flex direction to row and wrap to wrap-reverse.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.RowReverseNowrap">
+            <summary>
+            Set flex direction to row-reverse and wrap to nowrap.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.RowReverseWrap">
+            <summary>
+            Set flex direction to row-reverse and wrap to wrap.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.RowReverseWrapReverse">
+            <summary>
+            Set flex direction to row-reverse and wrap to wrap-reverse.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.Column">
+            <summary>
+            Set flex direction to column and wrap to nowrap.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.ColumnReverse">
+            <summary>
+            Set flex direction to column and wrap to nowrap.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.ColumnNowrap">
+            <summary>
+            Set flex direction to column and wrap to nowrap.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.ColumnWrap">
+            <summary>
+            Set flex direction to column and wrap to wrap.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.ColumnWrapReverse">
+            <summary>
+            Set flex direction to column and wrap to wrap-reverse.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.ColumnReverseNowrap">
+            <summary>
+            Set flex direction to column-reverse and wrap to nowrap.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.ColumnReverseWrap">
+            <summary>
+            Set flex direction to column-reverse and wrap to wrap.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.ColumnReverseWrapReverse">
+            <summary>
+            Set flex direction to column-reverse and wrap to wrap-reverse.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.Inherit">
+            <summary>
+            Inherit the value from the parent element.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.Initial">
+            <summary>
+            Use the initial value.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.Revert">
+            <summary>
+            Revert
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.RevertLayer">
+            <summary>
+            RevertLayer
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.FlexFlow.Unset">
+            <summary>
+            Unset the value.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.Css.Float">
             <summary>
             Enum representing CSS 'float' property values.
@@ -14023,6 +14195,56 @@
         <member name="F:MudBlazor.Extensions.Core.Css.FontWeight.Inherit">
             <summary>
             Inherits this property from its parent element.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.Css.JustifyContent">
+            <summary>
+            Enum representing CSS 'justify-content' property values.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.JustifyContent.FlexStart">
+            <summary>
+            Justify content to flex-start.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.JustifyContent.FlexEnd">
+            <summary>
+            Justify content to flex-end.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.JustifyContent.Center">
+            <summary>
+            Justify content to the center.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.JustifyContent.SpaceBetween">
+            <summary>
+            Justify content to space-between.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.JustifyContent.SpaceAround">
+            <summary>
+            Justify content to space-around.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.JustifyContent.SpaceEvenly">
+            <summary>
+            Justify content to space-evenly.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.JustifyContent.Start">
+            <summary>
+            Justify content to the start.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.JustifyContent.End">
+            <summary>
+            Justify content to the end.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Css.JustifyContent.Inherit">
+            <summary>
+            Inherit the value from the parent element.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.Css.Overflow">
@@ -17240,6 +17462,21 @@
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithJustifyContent(System.String,System.Boolean)">
             <summary>
             Specifies the justify-content property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithJustifyContent(MudBlazor.Extensions.Core.Css.JustifyContent,System.Boolean)">
+            <summary>
+            Specifies the justify-content property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFlexFlow(System.String,System.Boolean)">
+            <summary>
+            Specifies the flex-flow property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFlexFlow(MudBlazor.Extensions.Core.Css.FlexFlow,System.Boolean)">
+            <summary>
+            Specifies the flex-flow property using a CSS string value, if the 'when' condition is true.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithAlignItems(System.String,System.Boolean)">

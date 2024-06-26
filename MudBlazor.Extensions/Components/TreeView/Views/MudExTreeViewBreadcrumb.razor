@@ -53,12 +53,14 @@
         return
         @<RenderChild>
             @if(context.Tag is true) {
-                <MudMenuItem Style="flex-flow: row-reverse;" Icon="@(context.Item.HasChildren() ? null : null)" OnClick="@(() => NodeClick(context.Item))">
+                <MudMenuItem Class="@ItemClassStr(context)" Style="@ItemStyleStr(context)" Icon="@(context.Item.HasChildren() ? null : null)" OnClick="@(() => NodeClick(context.Item))">
                     @RenderItemContent(context)
                 </MudMenuItem>
             } 
             else{
-                @RenderItemContent(context)
+                <div class="@ItemClassStr(context)" style="@ItemStyleStr(context)" @onclick="() => NodeClick(context.Item)">
+                    @RenderItemContent(context)
+                </div>
             }
         </RenderChild>;
     }

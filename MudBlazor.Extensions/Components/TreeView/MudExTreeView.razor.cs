@@ -19,14 +19,15 @@ public partial class MudExTreeView<T>
 
     private IDictionary<string, object> GetParameters()
     {
-        var res = ComponentRenderHelper.GetCompatibleParameters(this, GetComponentForViewMode());
+        var res = ComponentRenderHelper.GetCompatibleParameters(this, GetComponentForViewMode())
+            .Where(p => IsOverwritten(p.Key));
 
         if(!FiltersChanged.HasDelegate)
-            res = res.Where(p => p.Key != nameof(Filters)).ToDictionary();
+            res = res.Where(p => p.Key != nameof(Filters));
         if (!FilterChanged.HasDelegate)
-            res = res.Where(p => p.Key != nameof(Filter)).ToDictionary();
+            res = res.Where(p => p.Key != nameof(Filter));
 
-        return res;
+        return res.ToDictionary();
     }
 
     private static RenderWithAttribute GetRenderWithAttribute(Enum val)

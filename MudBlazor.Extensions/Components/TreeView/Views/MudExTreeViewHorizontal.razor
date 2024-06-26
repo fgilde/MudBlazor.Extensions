@@ -5,14 +5,14 @@
 @namespace MudBlazor.Extensions.Components
 
 
-<div @onkeydown="KeyDown" @onwheel="OnWheel" tabindex="0" class="mud-ex-horizontal-tree-wrapper">
+<div id="@_treeId" @onkeydown="KeyDown" @onwheel="OnWheel" tabindex="0" class="mud-ex-horizontal-tree-wrapper">
     @RenderSearchBar()
     <div class="mud-ex-horizontal-tree">
         <div style="@ScrollHorizontalTree(SelectedNode)" class="mud-ex-horizontal-tree-scroll-wrapper">
             @{
                 var items = FilterManager.FilteredItems()?.Where(n => FilterManager.GetMatchedSearch(n).Found).ToList() ?? new List<T>();
             }
-            @NodeColumn(items, "mud-ex-horizontal-tree-node", NodeOffset(items))
+            @NodeColumn(items, NodeOffset(items))
             @foreach (var node in Path().Where(n => FilterManager.GetMatchedSearch(n).Found))
             {
                 @NodeColumn(node, NodeOffset(node))
@@ -26,26 +26,32 @@
 
         private RenderFragment NodeColumn(T node, double top)
         {
-            return NodeColumn(node?.Children?.Where(n => FilterManager.GetMatchedSearch(n).Found), GetNodeClass(node), top);
+            return NodeColumn(node?.Children?.Where(n => FilterManager.GetMatchedSearch(n).Found), top);
         }
 
-        private RenderFragment NodeColumn(IEnumerable<T> nodes, string cls, double top)
+        private RenderFragment NodeColumn(IEnumerable<T> nodes, double top)
         {
-            return @<div class="mud-ex-horizontal-tree-column">
-                       @foreach (var child in nodes ?? Enumerable.Empty<T>())
-                       {
-                           var search = FilterManager.GetMatchedSearch(child);
-                           @if (search.Found)
+            return 
+                @<RenderChild>
+                       <div class="mud-ex-horizontal-tree-column">
+                           @foreach (var child in nodes ?? Enumerable.Empty<T>())
                            {
-                               <div class="@GetNodeClass(child)" style="@GetTransformStyle(child, top)" @onclick="() => NodeClick(child)">
-                                   <div>
-                                       @ItemRender(child, TreeViewMode.Horizontal, search.Term)
+                               var search = FilterManager.GetMatchedSearch(child);
+                               @if (search.Found)
+                               {
+                                   <div class="@GetNodeClass(child)" style="@GetNodeStyle(child, top)" @onclick="() => NodeClick(child)">
+                                       <div style="@ItemStyleStr(CreateContext(child, search.Term))">
+                                           @ItemRender(child, TreeViewMode.Horizontal, search.Term)
+                                       </div>
                                    </div>
-                               </div>
+                               }
                            }
+                       </div>
+                       @if (AllowColumnSizeChange)
+                       {
+                           <MudExSplitter Dragging="ColumnSizeChanged" DontApply="true" Opacity="0" HoverOpacity="0.4" Size="@LineWidth" Vertical="true"/>
                        }
-                   </div>
-                ;
+                 </RenderChild>;
         }
 
     private RenderFragment ItemRender(T item, TreeViewMode viewMode, string search = "")
@@ -60,7 +66,7 @@
     public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
     {
         return
-        @<div class="@ListItemClassStr()">
+        @<div class="@InnerItemClassStr()">
             @RenderItemContent(context)
             @if(context.Item.HasChildren())
             {
@@ -69,3 +75,4 @@
         </div>;
     }
 }
+

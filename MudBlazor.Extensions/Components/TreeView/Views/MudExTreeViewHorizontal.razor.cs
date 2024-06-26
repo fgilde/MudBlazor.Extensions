@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorJS;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Extensions;
 using Nextended.Core.Types;
@@ -9,7 +11,29 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExTreeViewHorizontal<T> 
     where T : IHierarchical<T>
 {
+    private readonly string _treeId = $"mud-ex-tree-{Guid.NewGuid().ToFormattedId()}";
+    private double _treeWidth;
+    private bool _showSplitter;
+
     [Parameter] public bool SkipSeparator { get; set; } = true;
+    [Parameter] public bool AllowColumnSizeChange { get; set; } = true;
+
+    /// <summary>
+    /// Border radius of the node leave null to use the default value from theme
+    /// </summary>
+    [Parameter] public MudExSize<double>? NodeBorderRadius { get; set; }
+    [Parameter] public MudExSize<double> ColumnWidth { get; set; } = 250;
+    [Parameter] public MudExSize<double> NodePadding { get; set; } = 24;
+    [Parameter] public MudExSize<double> LineWidth { get; set; } = 2;
+    [Parameter] public MudExColor LineColor { get; set; } = MudExColor.Primary;
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        if (!IsOverwritten(nameof(SelectedItemBorderColor)))
+            SelectedItemBorderColor = SelectedItemColor;
+        base.OnInitialized();
+    }
 
     private void OnWheel(WheelEventArgs e)
     {
@@ -93,10 +117,6 @@ public partial class MudExTreeViewHorizontal<T>
         return FilterManager.FilteredItems()?.Where(n => FilterManager.GetMatchedSearch(n).Found).ToArray() ?? Array.Empty<T>();
     }
 
-    private int SelectedNodeIndexInPath()
-    {
-        return SelectedNodeIndexInPath(SiblingOfSelected());
-    }
 
     private int SelectedNodeIndexInPath(T[] nodeChildren)
     {
@@ -111,6 +131,37 @@ public partial class MudExTreeViewHorizontal<T>
             .ToString();
     }
 
+
+    public string GetNodeStyle(T node, double top)
+    {
+        return MudExStyleBuilder.Default
+            .WithWidth(ColumnWidth)
+            .With("--tree-node-line-width", LineWidth)
+            .With("--tree-node-line-color", LineColor.ToCssStringValue())
+            .With("--tree-node-padding", NodePadding)
+            .WithTransform($"translateY(calc({top * 100}% + 0px))")
+            .Style;
+    }
+
+    protected override string ItemStyleStr(TreeViewItemContext<T> context)
+    {
+        return MudExStyleBuilder.FromStyle(base.ItemStyleStr(context))
+            .WithHeight(Dense ? 18 : 25)
+            .WithBackgroundColor(SelectedItemBackgroundColor, (IsInPath(context.Item) || IsSelected(context.Item)) && SelectedItemBackgroundColor.IsSet())
+            .WithBorderColor(SelectedItemBorderColor, (IsInPath(context.Item) || IsSelected(context.Item)) && SelectedItemBorderColor.IsSet())
+            .WithBorderRadius(NodeBorderRadius, (IsInPath(context.Item) || IsSelected(context.Item)) && NodeBorderRadius.HasValue)
+            .Style;
+    }
+
+    private string InnerItemClassStr()
+    {
+        return MudExCssBuilder.Default.
+            AddClass("mud-ex-simple-flex")
+            .AddClass("mud-ex-flex-reverse-end", ReverseExpandButton)
+            .ToString();
+    }
+
+
     private double NodeOffset(T node)
     {
         return NodeOffset((node.Children?.Where(n => FilterManager.GetMatchedSearch(n).Found) ?? Enumerable.Empty<T>()).ToList());
@@ -124,26 +175,30 @@ public partial class MudExTreeViewHorizontal<T>
         return ((children.Count - 1) / 2.0) - indexOfSelected;
     }
 
-
-    public string GetTransformStyle(T node, double top)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        return $"transform: translateY(calc({top * 100}% + 0px))";
+        await base.OnAfterRenderAsync(firstRender);
+        _= UpdateTreeWidth();
+    }
+
+    private async Task UpdateTreeWidth()
+    {
+        _treeWidth = await JsRuntime.DInvokeAsync<double>((w, id) => w.document.getElementById(id).getBoundingClientRect().width, _treeId);
     }
 
     public string ScrollHorizontalTree(T node)
     {
         var depth = this.Path().ToArray().IndexOf(node);
-        //var treeWidth = this.el.getBoundingClientRect().width;
-        //var nodeWidth = (this.el.querySelector(`#node-${node.id}`).parentNode as HTMLElement).clientWidth;
-        //var scrollWrapper = this.el.querySelector('.horizontal-tree-scroll-wrapper') as HTMLElement;
+        double nodeWidth = ColumnWidth;
 
-        decimal nodeWidth = 298;
-        var treeWidth = 600;
-        var scrollBy = Math.Ceiling((((depth + 1) * nodeWidth) - treeWidth) / nodeWidth);
+        var treeWidth = Math.Max(_treeWidth, ColumnWidth);
+        var scrollBy = Math.Ceiling(((depth + 1) * nodeWidth - treeWidth) / nodeWidth);
         return MudExStyleBuilder.Default.WithTransform($"translateX(-{scrollBy * nodeWidth}px)").Style;
-
-        //scrollWrapper.style.transform = `translateX(-${ scrollBy* nodeWidth}px)`;
     }
 
+    private void ColumnSizeChanged(SplitterEventArgs obj)
+    {
+        ColumnWidth = obj?.FirstElementRect?.Width ?? ColumnWidth;
+    }
 }
 

@@ -274,6 +274,8 @@ public readonly struct MudExColor
     /// <returns>A string that represents this MudExColor object.</returns>
     public override string ToString() => ToString(_value);
 
+    public bool IsSet() => !Is(Color.Transparent) && !Is(Color.Inherit) && !Is(Color.Default);
+
     /// <summary>
     /// Converts this MudExColor object to a CSS string.
     /// </summary>

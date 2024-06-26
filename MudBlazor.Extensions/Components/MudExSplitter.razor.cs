@@ -2,6 +2,8 @@
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
+using MudBlazor.Interop;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
@@ -20,6 +22,14 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
         base.BuildRenderTree(builder);
     };
 
+    [Parameter] public double Opacity { get; set; } = 1;
+    [Parameter] public double HoverOpacity { get; set; } = 1;
+
+    /// <summary>
+    /// Set this to true if you don't want to apply changes. 
+    /// </summary>
+    [Parameter] public bool DontApply { get; set; }
+
     /// <inheritdoc/>
     public IJSObjectReference JsReference { get; set; }
     /// <inheritdoc/>
@@ -36,6 +46,16 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
     /// Callback when dragging starts or ends
     /// </summary>
     [Parameter] public EventCallback<bool> IsDraggingChanged { get; set; }
+
+    /// <summary>
+    /// Callback when drag size changed
+    /// </summary>
+    [Parameter] public EventCallback<SplitterEventArgs> Dragging { get; set; }
+
+    /// <summary>
+    /// Callback when drag ends
+    /// </summary>
+    [Parameter] public EventCallback<SplitterEventArgs> DragEnd { get; set; }
 
     /// <summary>
     /// Manually set element for right or down
@@ -126,10 +146,17 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
     }
 
     [JSInvokable]
-    public void OnDragEnd()
+    public void OnDragEnd(BoundingClientRect? firstElementRect, BoundingClientRect? secondElementRect)
     {
         IsDragging = false;
         IsDraggingChanged.InvokeAsync(IsDragging);
+        DragEnd.InvokeAsync(new SplitterEventArgs(firstElementRect, secondElementRect));
+    }
+
+    [JSInvokable]
+    public void OnDragging(BoundingClientRect? firstElementRect, BoundingClientRect? secondElementRect)
+    {
+       Dragging.InvokeAsync(new SplitterEventArgs(firstElementRect, secondElementRect));
     }
 
     /// <summary>
@@ -150,12 +177,24 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
         {
             Id = _dataId,
             Reverse,
+            DontApply,
             Style = GetStyle(),
+            HoverOpacity,
+            Opacity,
+            DraggingAttached = Dragging.HasDelegate,
             Percentage = UpdateSizesInPercentage,
             VerticalSplit = !Vertical, // Splitter is vertical so container is horizontal,
             PrevElement = !string.IsNullOrEmpty(PrevElement.Id) ? PrevElement as object : null,
             NextElement = !string.IsNullOrEmpty(NextElement.Id) ? NextElement as object : null,
         };
+    }
+
+    /// <inheritdoc />
+    protected override string GetStyle()
+    {
+        return MudExStyleBuilder.FromStyle(base.GetStyle())
+            .WithOpacity(Opacity)
+            .Style;
     }
 
     /// <inheritdoc/>
@@ -172,4 +211,16 @@ public partial class MudExSplitter : IJsMudExComponent<MudExSplitter>
         return AsJsComponent.DisposeModulesAsync();
     }
 
+}
+
+public class SplitterEventArgs
+{
+    public SplitterEventArgs(BoundingClientRect firstElementRect, BoundingClientRect secondElementRect)
+    {
+        FirstElementRect = firstElementRect;
+        SecondElementRect = secondElementRect;
+    }
+
+    public BoundingClientRect? FirstElementRect { get; set; }
+    public BoundingClientRect? SecondElementRect { get; set; }
 }

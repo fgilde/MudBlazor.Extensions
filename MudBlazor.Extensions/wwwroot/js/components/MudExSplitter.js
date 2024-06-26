@@ -11,6 +11,9 @@
     initialize(options) {
         this.options = options;
         const splitter = document.querySelector(`.mud-ex-splitter[data-id="${options.id}"]`);
+        splitter.style.opacity = options.opacity;
+        splitter.addEventListener('mouseenter', () => splitter.style.opacity = options.hoverOpacity);
+        splitter.addEventListener('mouseleave', () => splitter.style.opacity = options.opacity);
         if (splitter) {
             this.initSplitter(splitter);
             this.saveInitialState();
@@ -73,7 +76,7 @@
 
         this.splitter.onmousedown = (event) => {
             mouseDownInfo = this.getMouseDownInfo(event);
-
+            this.splitter.style.opacity = this.options.hoverOpacity;
             // Create the overlay and append it to the body
             overlay = document.createElement('div');
             overlay.style.position = 'fixed';
@@ -88,6 +91,7 @@
             document.onmousemove = onMouseMove;
             this.dotNet.invokeMethodAsync('OnDragStart');
             document.onmouseup = () => {
+                this.splitter.style.opacity = this.options.opacity;
                 // Remove the overlay when dragging is done
                 if (overlay) {
                     overlay.parentNode.removeChild(overlay);
@@ -100,17 +104,26 @@
         const onMouseMove = (event) => {
             const delta = this.getDelta(event, mouseDownInfo);
             const { x, y } = this.getLimitedDelta(delta, mouseDownInfo);
-
+            this.splitter.style.opacity = this.options.hoverOpacity;
             if (this.direction === "H") { // Horizontal
                 this.updateHorizontalElements(x, mouseDownInfo);
             } else if (this.direction === "V") { // Vertical
                 this.updateVerticalElements(y, mouseDownInfo);
+            }
+            if (this.options.draggingAttached) {
+                this.dotNet.invokeMethodAsync('OnDragging',
+                    this.prevElem?.getBoundingClientRect(),
+                    this.nextElem?.getBoundingClientRect());
             }
         };
     }
 
 
     apply() {
+        if (this.options.dontApply) {
+            this.reset();
+            return;
+        }
         this.currentState = {
             splitterStyle: { ...this.splitter.style },
             prevElemStyle: { ...this.prevElem?.style },
@@ -122,7 +135,7 @@
         }
 
         this.stretchOtherDirection();
-        this.dotNet.invokeMethodAsync('OnDragEnd');
+        this.dotNet.invokeMethodAsync('OnDragEnd', this.prevElem?.getBoundingClientRect(), this.nextElem?.getBoundingClientRect());
     }
 
     stretchOtherDirection() {

@@ -31,6 +31,14 @@ public partial class MudExTreeViewList<T>
         base.NodeClick(node);
     }
 
+    private string ListItemClassStr()
+    {
+        return MudExCssBuilder.Default.
+            AddClass("mud-ex-simple-flex")
+            .AddClass("mud-ex-flex-reverse-end", ReverseExpandButton)
+            .ToString();
+    }
+
     private string ListBoxStyleStr()
     {
         if (_animationDirection == null)

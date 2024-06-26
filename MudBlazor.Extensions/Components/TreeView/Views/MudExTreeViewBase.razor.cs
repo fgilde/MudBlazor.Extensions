@@ -19,6 +19,13 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
 
     protected HierarchicalFilter<TItem> FilterManager = new();
 
+    [Parameter] public MudExColor ItemBackgroundColor { get; set; }
+    [Parameter] public MudExColor SelectedItemBackgroundColor { get; set; }
+    [Parameter] public MudExColor SelectedItemColor { get; set; } = MudExColor.Primary;
+    [Parameter] public MudExColor SelectedItemBorderColor { get; set; }
+
+    [Parameter] public MudExSize<double> ItemWidth { get; set; } = "100%";
+
     /// <summary>
     /// Typographic style for the item content only used if <see cref="ItemContentTemplate"/> and <see cref="ItemTemplate"/> are not set
     /// </summary>
@@ -53,6 +60,16 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// If true the treeview will expand all nodes on filter
     /// </summary>
     [Parameter] public bool ExpandOnFilter { get; set; }
+
+    /// <summary>
+    /// Style for Item itself this only is used if <see cref="ItemContentTemplate"/> and <see cref="ItemTemplate"/> are not set
+    /// </summary>
+    [Parameter] public string ItemStyle { get; set; }
+
+    /// <summary>
+    /// Class for Item itself this only is used if <see cref="ItemContentTemplate"/> and <see cref="ItemTemplate"/> are not set
+    /// </summary>
+    [Parameter] public string ItemClass { get; set; }
 
     /// <summary>
     /// Style for Item content this only is used if <see cref="ItemContentTemplate"/> and <see cref="ItemTemplate"/> are not set
@@ -261,22 +278,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
         else if (!expanded && IsExpanded(context))
             _expanded.Remove(context);
     }
-
-    protected string ListItemClassStr()
-    {
-        return MudExCssBuilder.Default.
-            AddClass("mud-ex-simple-flex")
-            .AddClass("mud-ex-flex-reverse-end", ReverseExpandButton)
-            .ToString();
-    }
-
-    public string TreeItemClassStr()
-    {
-        return MudExCssBuilder.Default
-            .AddClass("mud-ex-treeview-item-reverse-space-between", ReverseExpandButton)
-            .ToString();
-    }
-
+    
     /// <summary>
     /// Class for use in the filter box
     /// </summary>
@@ -298,8 +300,28 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     protected virtual string ItemContentStyleStr(TreeViewItemContext<TItem> context)
     {
         return MudExStyleBuilder.FromStyle(ItemContentStyle)
-            .WithColor(MudExColor.Secondary, context.IsSelected)
-            .WithBorder(2, BorderStyle.Dashed , Color.Primary, context.IsSelected)
+            //.WithWidth(100, CssUnit.Percentage)
+            .WithColor(SelectedItemColor, context.IsSelected && SelectedItemColor.IsSet())
+            .ToString();
+    }
+
+    protected virtual string ItemClassStr(TreeViewItemContext<TItem> context)
+    {
+        return MudExCssBuilder.From(ItemContentClass)
+            .ToString();
+    }
+
+    protected string ItemStyleStr(TItem context) => ItemStyleStr(CreateContext(context, Filter));
+    protected string ItemClassStr(TItem context) => ItemClassStr(CreateContext(context, Filter));
+
+    protected virtual string ItemStyleStr(TreeViewItemContext<TItem> context)
+    {
+        return MudExStyleBuilder.FromStyle(ItemStyle)
+            .WithCursor(Cursor.Pointer)
+            .WithWidth(ItemWidth)
+            .WithOutline(1, BorderStyle.Solid, SelectedItemBorderColor, context.IsSelected && SelectedItemBorderColor.IsSet())
+            .WithBackgroundColor(SelectedItemBackgroundColor, context.IsSelected && SelectedItemBackgroundColor.IsSet())
+            .WithBackgroundColor(ItemBackgroundColor, !context.IsSelected && ItemBackgroundColor.IsSet())
             .ToString();
     }
 

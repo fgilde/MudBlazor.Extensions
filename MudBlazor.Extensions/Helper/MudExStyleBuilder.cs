@@ -520,6 +520,22 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithJustifyContent(string justifyContent, bool when = true) => With("justify-content", justifyContent, when);
 
     /// <summary>
+    /// Specifies the justify-content property using a CSS string value, if the 'when' condition is true.
+    /// </summary>
+    public MudExStyleBuilder WithJustifyContent(MudBlazor.Extensions.Core.Css.JustifyContent justifyContent, bool when = true) => WithJustifyContent(justifyContent.GetDescription(), when);
+
+    /// <summary>
+    /// Specifies the flex-flow property using a CSS string value, if the 'when' condition is true.
+    /// </summary>
+    public MudExStyleBuilder WithFlexFlow(string flexFlow, bool when = true) => With("flex-flow", flexFlow, when);
+
+    /// <summary>
+    /// Specifies the flex-flow property using a CSS string value, if the 'when' condition is true.
+    /// </summary>
+    public MudExStyleBuilder WithFlexFlow(MudBlazor.Extensions.Core.Css.FlexFlow flexFlow, bool when = true) => WithFlexFlow(flexFlow.GetDescription(), when);
+
+    
+    /// <summary>
     /// Specifies the align-items property using a CSS string value, if the 'when' condition is true.
     /// </summary>
     public MudExStyleBuilder WithAlignItems(string alignItems, bool when = true) => With("align-items", alignItems, when);

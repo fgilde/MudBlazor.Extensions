@@ -20,8 +20,8 @@
     }
     @if (SelectedNode != null && !root)
     {
-        T targetNode = SelectedNode.Children?.Any() == true ? SelectedNode.Parent : SelectedNode.Parent.Parent;
-        <MudListItem OnClick="@(() => { _animationDirection = AnimationDirection.In; NodeClick(targetNode); })" Text="@TryLocalize(BackLinkLabel, targetNode != null ? TextFunc(targetNode) : RootName)" Icon="@Icons.Material.Filled.ArrowBack"/>
+        var targetNode = CreateContext(SelectedNode.Children?.Any() == true ? SelectedNode.Parent : SelectedNode.Parent.Parent, "");
+        <MudListItem Class="@ItemClassStr(targetNode)" Style="@ItemStyleStr(targetNode)" OnClick="@(() => { _animationDirection = AnimationDirection.In; NodeClick(targetNode.Item); })" Text="@TryLocalize(BackLinkLabel, targetNode != null ? TextFunc(targetNode.Item) : RootName)" Icon="@Icons.Material.Filled.ArrowBack" />
         <MudDivider/>
     }
     @foreach (var item in nodes.EmptyIfNull())
@@ -48,7 +48,7 @@
     public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
     {
         return
-        @<MudListItem OnClick="@(() => NodeClick(context.Item))">
+        @<MudListItem Style="@ItemStyleStr(context)" Class="@ItemClassStr(context)" OnClick="@(() => NodeClick(context.Item))">
             <div class="@ListItemClassStr()">
                 @RenderItemContent(context)
             @if(context.Item.HasChildren())

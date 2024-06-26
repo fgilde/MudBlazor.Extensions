@@ -30,14 +30,14 @@
     public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
     {
         return
-        @<MudTreeViewItem Expanded="@IsExpanded(context.Item)"
-                                  Style="@("cursor: pointer;")"
-                                  Class="@TreeItemClassStr()"
+            @<MudTreeViewItem Expanded="@context.IsExpanded"
                                   OnClick="@(() => NodeClick(context.Item))"
                                   Items="@(context.Item?.Children?.ToHashSet())">
             <Content>
-                <MudTreeViewItemToggleButton ExpandedIcon="@ExpandedIcon" ExpandedChanged="@(expanded => SetExpanded(context.Item, expanded))" Expanded="@context.IsExpanded" Visible="@(context.Item?.Children?.Any() == true)" />
-                @RenderItemContent(context)
+                <div style="@ItemStyleStr(context)" class="@ItemClassStr(context)">
+                    <MudTreeViewItemToggleButton ExpandedIcon="@ExpandedIcon" ExpandedChanged="@(expanded => SetExpanded(context.Item, expanded))" Expanded="@context.IsExpanded" Visible="@(context.Item?.Children?.Any() == true)"/>
+                    @RenderItemContent(context)
+                </div>
             </Content>
         </MudTreeViewItem>;
     }
