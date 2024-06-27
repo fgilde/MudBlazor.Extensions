@@ -221,6 +221,11 @@
             Checks if a parameter is overwritten by user
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.IsOverwritten(System.String[])">
+            <summary>
+            Returns true if any of the parameters is overwritten
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.IsDisposed">
             <summary>
             Is true if dispose was called
@@ -363,6 +368,11 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.IsOverwritten(System.String)">
             <summary>
             Checks if a parameter is overwritten by user
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.IsOverwritten(System.String[])">
+            <summary>
+            Returns true if any of the parameters is overwritten
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExBaseFormComponent`3.IsDisposed">
@@ -13467,6 +13477,101 @@
             Parameters for the component based on ViewMode. 
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.TreeViewItemContext`1">
+            <summary>
+            Context for the tree view item.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.Item">
+            <summary>
+            The item itself.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.IsSelected">
+            <summary>
+            Is true if the item is selected.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.IsExpanded">
+            <summary>
+            Is true if the item is expanded.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.IsFocused">
+            <summary>
+            Is true if the item is focused.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.Search">
+            <summary>
+            The string that was used to search for this item.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.Highlight">
+            <summary>
+            The recommended string to highlight in the item.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.Tag">
+            <summary>
+            The tag of the item.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.TreeView">
+            <summary>
+            The owning tree view.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterManager">
+            <summary>
+            Filter manager
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.BackgroundColor">
+            <summary>
+            Gets or Sets MudExColor BackgroundColor Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterPlaceholder">
+            <summary>
+            Placeholder for the filter box
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterBoxStyle">
+            <summary>
+            Style for the filter box
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterBoxClass">
+            <summary>
+            Css class for the filter box
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemBackgroundColor">
+            <summary>
+            Background color for the item
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.SelectedItemBackgroundColor">
+            <summary>
+            Background color for the selected item
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.SelectedItemColor">
+            <summary>
+            Foreground color for the selected item
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.SelectedItemBorderColor">
+            <summary>
+            Border color for the selected item
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemWidth">
+            <summary>
+            Width for the item
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTypo">
             <summary>
             Typographic style for the item content only used if <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTemplate"/> and <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemTemplate"/> are not set
@@ -13480,6 +13585,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterHighlighting">
             <summary>
             Behaviour for the highlighting of an applied filter
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterChipsPlacedRight">
+            <summary>
+            If true the chips will be placed to the right in the input
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterMultiple">
@@ -13578,6 +13688,16 @@
             Selected node
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ExpandTo(`0)">
+            <summary>
+            Expand the treeview to the given value
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.MudExTreeViewBase`1.LastSelectedNode">
+            <summary>
+            The last selected node independent of <see cref="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.IsAllowedToSelect(`0)"/>
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.Filter">
             <summary>
             Filter for the treeview
@@ -13586,6 +13706,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.Filters">
             <summary>
             Filters for the treeview
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FlattedItems">
+            <summary>
+            All items flatted
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.IsExpanded(`0)">
@@ -13623,6 +13748,21 @@
             Creates a context for the given item
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.AutoExpand">
+            <summary>
+            Set to true to automatically expand the node when clicked and is not expanded
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.AutoCollapse">
+            <summary>
+            Set to true to automatically collapse the node when clicked and is already expanded
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.AllowSelectionOfNonEmptyNodes">
+            <summary>
+            Set to true to allow selection of nodes with children
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.AllowedToSelectFunc">
             <summary>
             Here you can specify a function to determine if a node is allowed to be selected
@@ -13631,6 +13771,11 @@
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.NodeClick(`0)">
             <summary>
             On node click
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.IsAllowedToSelect(`0)">
+            <summary>
+            Returns true if the given node is allowed to be selected
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.Path">
@@ -13663,6 +13808,46 @@
             Class for use in the filter box
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentClassStr(MudBlazor.Extensions.Components.TreeViewItemContext{`0})">
+            <summary>
+            Css class for item content
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentStyleStr(MudBlazor.Extensions.Components.TreeViewItemContext{`0})">
+            <summary>
+            Style for item content
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemClassStr(MudBlazor.Extensions.Components.TreeViewItemContext{`0})">
+            <summary>
+            Css class for item container
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemStyleStr(`0,System.String)">
+            <summary>
+            Style for item container
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemClassStr(`0)">
+            <summary>
+            Css class for item container
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemStyleStr(MudBlazor.Extensions.Components.TreeViewItemContext{`0},System.String)">
+            <summary>
+            Style for item container
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.StyleStr">
+            <summary>
+            Style for main control
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.GetTermToHighlight(System.String)">
+            <summary>
+            Get the term to highlight
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBreadcrumb`1.GetFilterClassStr">
             <summary>
             Class for use in the filter box
@@ -13671,15 +13856,171 @@
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBreadcrumb`1.OnInitialized">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewDefault`1.ItemStyleStr(MudBlazor.Extensions.Components.TreeViewItemContext{`0})">
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewCardGrid`1.HoverColor">
+            <summary>
+            Gets or Sets MudExColor HoverColor Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewCardGrid`1.Justify">
+            <summary>
+            Gets or Sets Justify Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewCardGrid`1.Spacing">
+            <summary>
+            Gets or Sets Spacing Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewCardGrid`1.LightBulbSize">
+            <summary>
+            Gets or Sets Light Bulb Size Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewCardGrid`1.LightBulbSizeUnit">
+            <summary>
+            Gets or Sets Light Bulb Size Unit Property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewCardGrid`1.MaxItemWidth">
+            <summary>
+            Max width of the item
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewCardGrid`1.ItemStyleStr(MudBlazor.Extensions.Components.TreeViewItemContext{`0},System.String)">
             <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewDefault`1.ExpandBehaviour">
+            <summary>
+            This behaviour controls how the tree view will be expanded.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewDefault`1.IsExpanded(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewDefault`1.SetExpanded(`0,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewDefault`1.ItemStyleStr(MudBlazor.Extensions.Components.TreeViewItemContext{`0},System.String)">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewFlatList`1.ShowPath">
+            <summary>
+            Set to true to show the item path under the item name.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewFlatList`1.PathSeparator">
+            <summary>
+            Separator for the path.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewHorizontal`1.SkipSeparator">
+            <summary>
+            Set to false if you want to break keyboard or wheel navigation on a separator
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewHorizontal`1.AllowColumnSizeChange">
+            <summary>
+            If true, the <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewHorizontal`1.ColumnWidth"/> can be changed by dragging the splitter
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewHorizontal`1.NodeBorderRadius">
             <summary>
             Border radius of the node leave null to use the default value from theme
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewHorizontal`1.ColumnWidth">
+            <summary>
+            Width of the tree column
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewHorizontal`1.NodePadding">
+            <summary>
+            Padding of the node
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewHorizontal`1.LineWidth">
+            <summary>
+            Strength of the line between nodes
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewHorizontal`1.LineColor">
+            <summary>
+            Color of the line between nodes
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewHorizontal`1.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewHorizontal`1.ItemStyleStr(MudBlazor.Extensions.Components.TreeViewItemContext{`0},System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewHorizontal`1.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewList`1.AnimationIn">
+            <summary>
+            The Animation to use when navigating through the tree. Default is Slide.
+            Set this to AnimationType.Default to disable animations.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewList`1.AnimationOut">
+            <summary>
+            The Animation to use when navigating back through the tree. Default is Slide.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewList`1.AnimationInPosition">
+            <summary>
+            The position of the animation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewList`1.AnimationOutPosition">
+            <summary>
+            The position of the out animation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewList`1.AnimationInDirection">
+            <summary>
+            The direction of the animation when navigating deeper in the tree. Default is In.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewList`1.AnimationOutDirection">
+            <summary>
+            The direction of the animation when navigating back in the tree. Default is Out.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewList`1.AnimationInDuration">
+            <summary>
+            Duration of the in animation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewList`1.AnimationOutDuration">
+            <summary>
+            Duration of the out animation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewList`1.RootName">
+            <summary>
+            Name of the root node.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewList`1.BackLinkLabel">
+            <summary>
+            Label for the back link.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewList`1.GetBackNodeTarget">
+            <summary>
+            Context and label of back node
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewList`1.LevelNodes">
+            <summary>
+            Returns the root node and its children if the current node is null.
+            Otherwise, returns the children of the current node.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewList`1.NodeClick(`0)">
             <inheritdoc />
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExIconButton.ToolTip">
@@ -14553,6 +14894,11 @@
             </summary>
         </member>
         <member name="F:MudBlazor.Extensions.Core.Enums.TreeViewMode.FlatList">
+            <summary>
+            Render tree view as flat list.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.Enums.TreeViewMode.CardGrid">
             <summary>
             Render tree view as flat list.
             </summary>

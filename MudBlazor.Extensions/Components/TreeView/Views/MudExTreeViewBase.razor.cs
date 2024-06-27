@@ -23,6 +23,12 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     protected HierarchicalFilter<TItem> FilterManager = new();
 
     /// <summary>
+    /// Gets or Sets MudExColor BackgroundColor Property.
+    /// </summary>
+    [Parameter]
+    public MudExColor BackgroundColor { get; set; } = Color.Default;
+
+    /// <summary>
     /// Placeholder for the filter box
     /// </summary>
     [Parameter] public string FilterPlaceholder { get; set; } = "Filter";
@@ -446,7 +452,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// <summary>
     /// Style for item container
     /// </summary>
-    protected string ItemStyleStr(TItem context) => ItemStyleStr(CreateContext(context, Filter));
+    protected string ItemStyleStr(TItem context, string mergeWith = "") => ItemStyleStr(CreateContext(context, Filter), mergeWith);
 
     /// <summary>
     /// Css class for item container
@@ -456,7 +462,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// <summary>
     /// Style for item container
     /// </summary>
-    protected virtual string ItemStyleStr(TreeViewItemContext<TItem> context)
+    protected virtual string ItemStyleStr(TreeViewItemContext<TItem> context, string mergeWith = "")
     {
         return MudExStyleBuilder.FromStyle(ItemStyle)
             .WithCursor(Cursor.Pointer, IsAllowedToSelect(context.Item))
@@ -464,6 +470,17 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
             .WithOutline(1, BorderStyle.Solid, SelectedItemBorderColor, context.IsSelected && SelectedItemBorderColor.IsSet())
             .WithBackgroundColor(SelectedItemBackgroundColor, context.IsSelected && SelectedItemBackgroundColor.IsSet())
             .WithBackgroundColor(ItemBackgroundColor, !context.IsSelected && ItemBackgroundColor.IsSet())
+            .AddRaw(mergeWith, !string.IsNullOrEmpty(mergeWith))
+            .ToString();
+    }
+
+    /// <summary>
+    /// Style for main control
+    /// </summary>
+    protected string StyleStr()
+    {
+        return MudExStyleBuilder.FromStyle(Style)
+            .WithBackground(BackgroundColor, BackgroundColor.IsSet())
             .ToString();
     }
 

@@ -9,9 +9,9 @@ namespace MainSample.WebAssembly.Shared;
 public partial class NavMenu
 {
 
-
     private NavigationEntry _selectedNavEntry;
     private TreeViewExpandBehaviour _expandBehaviour;
+    private TreeViewMode _viewMode = TreeViewMode.Default;
 
     public NavigationEntry SelectedNavEntry
     {
@@ -29,7 +29,17 @@ public partial class NavMenu
         }
     }
 
-
+    [Parameter] public TreeViewMode ViewMode
+    {
+        get => _viewMode;
+        set
+        {
+            if (_viewMode == value)
+                return;
+            _viewMode = value;
+            InvokeAsync(StateHasChanged);
+        }
+    }
 
 
     [Parameter] public HashSet<NavigationEntry>? Entries { get; set; } = null;

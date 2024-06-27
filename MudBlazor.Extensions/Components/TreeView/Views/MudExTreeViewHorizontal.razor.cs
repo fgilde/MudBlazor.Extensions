@@ -59,6 +59,8 @@ public partial class MudExTreeViewHorizontal<T>
             AutoCollapse = false;
         if (!IsOverwritten(nameof(AutoExpand)))
             AutoExpand = true;
+        if (!IsOverwritten(nameof(AllowSelectionOfNonEmptyNodes)))
+            AllowSelectionOfNonEmptyNodes = true;
         base.OnInitialized();
     }
 
@@ -185,9 +187,9 @@ public partial class MudExTreeViewHorizontal<T>
     }
 
     /// <inheritdoc />
-    protected override string ItemStyleStr(TreeViewItemContext<T> context)
+    protected override string ItemStyleStr(TreeViewItemContext<T> context, string mergeWith = "")
     {
-        return MudExStyleBuilder.FromStyle(base.ItemStyleStr(context))
+        return MudExStyleBuilder.FromStyle(base.ItemStyleStr(context, mergeWith))
             .WithHeight(Dense ? 18 : 25)
             .WithBackgroundColor(SelectedItemBackgroundColor, RenderAsSelected(context.Item) && SelectedItemBackgroundColor.IsSet())
             .WithBorderColor(SelectedItemBorderColor, RenderAsSelected(context.Item) && SelectedItemBorderColor.IsSet())

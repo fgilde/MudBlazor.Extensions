@@ -3,7 +3,7 @@
 @namespace MudBlazor.Extensions.Components
 @using Nextended.Core.Types
 
-<MudToolBar Class="@Class" Style="@Style" Dense="@Dense" WrapContent="true">
+<MudToolBar Class="@Class" Style="@StyleStr()" Dense="@Dense" WrapContent="true">
     @MenuFor(FilterManager.FilteredItems())
     @foreach (var item in Path())
     {

@@ -36,5 +36,12 @@ public enum TreeViewMode
     /// Render tree view as flat list.
     /// </summary>
     [RenderWith(typeof(MudExTreeViewFlatList<>))]
-    FlatList
+    FlatList,
+
+
+    /// <summary>
+    /// Render tree view as flat list.
+    /// </summary>
+    [RenderWith(typeof(MudExTreeViewCardGrid<>))]
+    CardGrid
 }

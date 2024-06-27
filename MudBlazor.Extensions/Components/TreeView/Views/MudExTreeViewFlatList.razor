@@ -7,7 +7,7 @@
 
 @RenderSearchBar()
 
-<MudList Class="@Class" Style="@Style" Dense="@Dense" Clickable="true">
+<MudList Class="@Class" Style="@StyleStr()" Dense="@Dense" Clickable="true">
 
     @foreach (var item in FlattedItems().EmptyIfNull())
     {
@@ -34,20 +34,27 @@
     {
         return
         @<MudListItem Style="@ItemStyleStr(context)" Class="@ItemClassStr(context)" OnClick="@(() => NodeClick(context.Item))">
-             @RenderItemContent(context, true)
+             @RenderItemContent(context, true, true)
         </MudListItem>;
     }
 
-    protected override RenderFragment RenderItemContent(TreeViewItemContext<T> context, bool checkTemplate)
+    protected RenderFragment RenderPath(TreeViewItemContext<T> context)
+    {
+        return @<RenderChild Condition="@ShowPath">
+                    <MudText Style="font-size:8pt">@context.Item.GetPathString(TextFunc, PathSeparator)</MudText>
+               </RenderChild>;
+    }
+
+    protected RenderFragment RenderItemContent(TreeViewItemContext<T> context, bool checkTemplate, bool path)
     {
         if (checkTemplate && ItemContentTemplate != null)
             return ItemContentTemplate(context);
         return @<RenderChild>
                     @base.RenderItemContent(context, checkTemplate)
-                   @if (ShowPath)
-                   {
-                       <MudText Style="font-size:8pt">@context.Item.GetPathString(TextFunc, PathSeparator)</MudText>
-                   }
+                    @if (path)
+                    {
+                        @RenderPath(context)
+                    }
                </RenderChild>;
     }
 

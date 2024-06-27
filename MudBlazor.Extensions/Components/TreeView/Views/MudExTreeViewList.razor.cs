@@ -9,14 +9,45 @@ public partial class MudExTreeViewList<T>
     where T : IHierarchical<T>
 {
     /// <summary>
-    /// Set to true to animate navigation.
+    /// The Animation to use when navigating through the tree. Default is Slide.
+    /// Set this to AnimationType.Default to disable animations.
     /// </summary>
-    [Parameter] public bool AnimateNavigation { get; set; } = true;
+    [Parameter] public AnimationType AnimationIn { get; set; } = AnimationType.Slide;
 
     /// <summary>
-    /// Duration of the animation.
+    /// The Animation to use when navigating back through the tree. Default is Slide.
     /// </summary>
-    [Parameter] public TimeSpan AnimationDuration { get; set; } = TimeSpan.FromMilliseconds(300);
+    [Parameter] public AnimationType AnimationOut { get; set; } = AnimationType.Slide;
+
+    /// <summary>
+    /// The position of the animation.
+    /// </summary>
+    [Parameter] public DialogPosition AnimationInPosition { get; set; } = DialogPosition.CenterRight;
+
+    /// <summary>
+    /// The position of the out animation.
+    /// </summary>
+    [Parameter] public DialogPosition AnimationOutPosition { get; set; } = DialogPosition.CenterRight;
+
+    /// <summary>
+    /// The direction of the animation when navigating deeper in the tree. Default is In.
+    /// </summary>
+    [Parameter] public AnimationDirection AnimationInDirection { get; set; } = AnimationDirection.In;
+
+    /// <summary>
+    /// The direction of the animation when navigating back in the tree. Default is Out.
+    /// </summary>
+    [Parameter] public AnimationDirection AnimationOutDirection { get; set; } = AnimationDirection.Out;
+
+    /// <summary>
+    /// Duration of the in animation.
+    /// </summary>
+    [Parameter] public TimeSpan AnimationInDuration { get; set; } = TimeSpan.FromMilliseconds(300);
+
+    /// <summary>
+    /// Duration of the out animation.
+    /// </summary>
+    [Parameter] public TimeSpan AnimationOutDuration { get; set; } = TimeSpan.FromMilliseconds(300);
 
     /// <summary>
     /// Name of the root node.
@@ -28,20 +59,45 @@ public partial class MudExTreeViewList<T>
     /// </summary>
     [Parameter] public string BackLinkLabel { get; set; } = "Back to {0}";
 
-    private AnimationDirection? _animationDirection;
+    private bool? _animationIn;
+
+    /// <summary>
+    /// Context and label of back node
+    /// </summary>
+    /// <returns></returns>
+    protected (string Label, TreeViewItemContext<T> Context) GetBackNodeTarget()
+    {
+        var ctx = CreateContext(LastSelectedNode.Children?.Any() == true ? LastSelectedNode.Parent : LastSelectedNode.Parent.Parent, "");
+        var label = TryLocalize(BackLinkLabel, ctx != null && ctx.Item != null ? TextFunc(ctx.Item) : RootName);
+        return (label, ctx);
+    }
+
+    /// <summary>
+    /// Returns the root node and its children if the current node is null.
+    /// Otherwise, returns the children of the current node.
+    /// </summary>
+    protected (bool IsRoot, HashSet<T> Nodes) LevelNodes()
+    {
+        var root = false;
+        HashSet<T> nodes = (LastSelectedNode != null ? (LastSelectedNode.Children?.Any() == true ? LastSelectedNode.Children : LastSelectedNode?.Parent?.Children) : null);
+        if (nodes == null)
+        {
+            nodes = FilterManager.FilteredItems();
+            root = true;
+        }
+        return (root, nodes);
+    }
 
     /// <inheritdoc />
     protected override void NodeClick(T node)
     {
-        if (_animationDirection == null)
+        if (_animationIn == null)
         {
-            _animationDirection =
+            _animationIn =
                 node == null || LastSelectedNode?.Parent?.Equals(node) == true ||
-                LastSelectedNode?.Parent?.Parent?.Equals(node) == true
-                    ? AnimationDirection.In
-                    : AnimationDirection.Out;
+                LastSelectedNode?.Parent?.Parent?.Equals(node) == true;
             if (!node.HasChildren())
-                _animationDirection = null;
+                _animationIn = null;
         }
 
         base.NodeClick(node);
@@ -55,19 +111,26 @@ public partial class MudExTreeViewList<T>
             .ToString();
     }
 
-    private string ListBoxStyleStr()
+    protected string AnimationStyleStr()
     {
-        if (_animationDirection == null)
+        if (_animationIn == null)
+            return StyleStr();
+
+        return _animationIn.Value
+            ? AnimationStyleStr(AnimationIn, AnimationInDirection, AnimationInPosition, AnimationInDuration)
+            : AnimationStyleStr(AnimationOut, AnimationOutDirection, AnimationOutPosition, AnimationOutDuration);
+    }
+
+    private string AnimationStyleStr(AnimationType animation, AnimationDirection direction, DialogPosition position, TimeSpan duration)
+    {
+        Task.Delay(duration).ContinueWith(_ =>
         {
-            return string.Empty;
-        }
-        Task.Delay(AnimationDuration).ContinueWith(_ =>
-        {
-            _animationDirection = null;
+            _animationIn = null;
             InvokeAsync(StateHasChanged);
         });
-        return MudExStyleBuilder.FromStyle(Style)
-            .WithAnimation(AnimationType.Slide, AnimationDuration, _animationDirection, AnimationTimingFunction.EaseInOut, DialogPosition.CenterRight, when: _animationDirection != null && AnimateNavigation).Style;
+        return MudExStyleBuilder.FromStyle(StyleStr())
+            .WithAnimation(animation, duration, direction, AnimationTimingFunction.EaseOut, position, when: _animationIn != null && animation != AnimationType.Default)
+            .Style;
     }
 }
 

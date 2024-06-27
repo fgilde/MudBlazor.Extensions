@@ -46,9 +46,9 @@ public partial class MudExTreeViewDefault<T>
     }
 
     /// <inheritdoc />
-    protected override string ItemStyleStr(TreeViewItemContext<T> context)
+    protected override string ItemStyleStr(TreeViewItemContext<T> context, string mergeWith = "")
     {
-        return MudExStyleBuilder.FromStyle(base.ItemStyleStr(context))
+        return MudExStyleBuilder.FromStyle(base.ItemStyleStr(context, mergeWith))
             .WithDisplay(Display.Flex)
             .WithAlignItems(Core.Css.AlignItems.Center)
             .WithFlexFlow(FlexFlow.RowReverse, ReverseExpandButton)

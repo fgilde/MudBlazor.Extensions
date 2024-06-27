@@ -10,9 +10,11 @@
 <MudExDivider Color="MudExColor.Primary" />
 
 <div style="height: 333px">
-<MudExTreeView @bind-SelectedNode="_selectedNode" ViewMode="_treeViewMode" ReverseExpandButton="_reverseExpand" Items="@Entries">
+    <MudExTreeView @bind-SelectedNode="_selectedNode" 
+                   Parameters="@(new Dictionary<string, object> { { nameof(MudExCardList<object>.HoverMode), MudExCardHoverMode.Simple } })"
+                   ViewMode="_treeViewMode" ReverseExpandButton="_reverseExpand" Items="@Entries">
 
-</MudExTreeView>
+    </MudExTreeView>
 </div>
 
 

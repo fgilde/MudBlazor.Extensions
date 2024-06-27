@@ -3,7 +3,7 @@
 @namespace MudBlazor.Extensions.Components
 
 @RenderSearchBar()
-<MudTreeView Class="@Class" Style="@Style" Hover="true" Items="@FilterManager.FilteredItems()" Dense="@Dense">
+<MudTreeView Class="@Class" Style="@StyleStr()" Hover="true" Items="@FilterManager.FilteredItems()" Dense="@Dense">
     <ItemTemplate>
         @{
             var search = FilterManager.GetMatchedSearch(context);

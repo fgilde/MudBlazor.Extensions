@@ -191,8 +191,7 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
         styleString.Split(';')
             .Select(p => p.Split(':'))
             .Where(p => p.Length == 2)
-            .ToDictionary(p => p[0].Trim(), p => p[1].Trim())
-            .Apply(property => With(property.Key, property.Value));
+            .Apply(p => With(p[0].Trim(), p[1].Trim()));
         return this;
     }
 

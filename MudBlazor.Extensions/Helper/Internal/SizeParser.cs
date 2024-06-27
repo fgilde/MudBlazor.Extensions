@@ -82,10 +82,9 @@ internal static class SizeParser
     }
 
 
-
-
+    
     //public static T Parse<T>(this ReadOnlySpan<char> input, IFormatProvider? formatProvider = null)
-    //    where T: ISpanParsable<T>
+    //    where T : ISpanParsable<T>
     //{
     //    return T.Parse(input, formatProvider);
     //}

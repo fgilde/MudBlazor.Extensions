@@ -1,0 +1,72 @@
+﻿@typeparam T
+@inherits MudExTreeViewList<T>
+@namespace MudBlazor.Extensions.Components
+
+@using Nextended.Core.Extensions
+
+@RenderSearchBar()
+
+<MudExCardList LightBulbSize="@LightBulbSize" LightBulbSizeUnit="@LightBulbSizeUnit"
+               HoverColor="@HoverColor" HoverMode="@HoverMode" BackgroundColor="@BackgroundColor" 
+               Spacing="@Spacing" Justify="@Justify"
+               Class="@Class" Style="@AnimationStyleStr()" TData="T">
+    @{
+        var nodeInfo = LevelNodes();
+    }
+    @if (LastSelectedNode != null && !nodeInfo.IsRoot)
+    {
+        @RenderBackNode("flex-direction: column; width: 30%")
+    }
+
+    @foreach (var item in nodeInfo.Nodes.EmptyIfNull())
+    {
+        var search = FilterManager.GetMatchedSearch(item);
+        if (search.Found)
+        {
+            @ItemRender(item, search.Term)
+        }
+    }
+
+</MudExCardList>
+
+
+@code {
+
+    private RenderFragment ItemRender(T item, string search = "")
+    {
+        var context = CreateContext(item, search);
+        if (ItemTemplate != null)
+            return ItemTemplate(context);
+
+        return IsSeparator(item) ? RenderSeparator() : RenderItem(context);
+    }
+
+    // protected override RenderFragment RenderBackNode(string style = "")
+    // {
+    //     var backNode = GetBackNodeTarget();
+    //     return @<RenderChild>
+    //                <MudCard Class="@ItemClassStr(backNode.Context)" Style="@ItemStyleStr(backNode.Context)" @onclick="@(() => { NodeClick(backNode.Context.Item); })">
+    //                    <MudCardContent Style="z-index: 5">
+    //                        @backNode.Label
+    //                    </MudCardContent>
+    //                </MudCard>
+    //     </RenderChild>;
+    // }
+
+    public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
+    {
+        return @<MudCard Class="@ItemClassStr(context)" Style="@ItemStyleStr(context)" @onclick="@(() => { NodeClick(context.Item); })">
+        <MudCardHeader>
+            <CardHeaderContent>
+                @RenderItemContent(context, true, false)
+            </CardHeaderContent>
+            <CardHeaderActions>
+
+            </CardHeaderActions>
+        </MudCardHeader>
+        <MudCardContent>
+            @RenderItemContent(context, true, true)
+        </MudCardContent>
+    </MudCard>;
+    }
+}

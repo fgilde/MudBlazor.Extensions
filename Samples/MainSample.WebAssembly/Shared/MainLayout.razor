@@ -1,6 +1,5 @@
-﻿@using MudBlazor.Extensions.Helper
-@using MudBlazor.Extensions.Options
-@using MudBlazor.Extensions.Core
+﻿@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Core.Enums
 @inherits LayoutComponentBase
 
 <MudThemeProvider @bind-IsDarkMode="@IsDark" Theme="@ClientTheme.CurrentTheme" />
@@ -26,6 +25,7 @@
         {
             <LogoTitle Hidden="@_drawerOpen" />
         }
+
 
         <MudSpacer />
 
@@ -65,8 +65,12 @@
         }
         <NavMenu ExpandBehaviour="ClientTheme.CurrentTheme.NavigationExpandMode" />
     </MudDrawer>
+
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-sample-main-content-container my-4 pt-4">
+        <MudContainer Style="max-height: 100vh" MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-sample-main-content-container my-4 pt-4">
+            <div style="margin-top: -43px;margin-left: -44px;">
+                <NavMenu ViewMode="TreeViewMode.Breadcrumb"/>
+            </div>
             @Body
         </MudContainer>
     </MudMainContent>

@@ -4,9 +4,17 @@
 @namespace MudBlazor.Extensions.Components
 
 
-<div id="@_treeId" @onkeydown="KeyDown" @onwheel="OnWheel" tabindex="0" class="mud-ex-horizontal-tree-wrapper">
+<div id="@_treeId" 
+     @onkeydown="KeyDown"
+     @onkeydown:stopPropagation="true"
+     @onkeydown:preventDefault="true"
+     @onwheel="OnWheel" 
+     @onwheel:stopPropagation="true" 
+     @onwheel:preventDefault="true"
+     tabindex="0" 
+     class="mud-ex-horizontal-tree-wrapper">
     @RenderSearchBar()
-    <div class="mud-ex-horizontal-tree">
+    <div class="mud-ex-horizontal-tree" style="@StyleStr()">
         <div style="@ScrollHorizontalTree(LastSelectedNode)" class="mud-ex-horizontal-tree-scroll-wrapper">
             @{
                 var items = FilterManager.FilteredItems()?.Where(n => FilterManager.GetMatchedSearch(n).Found).ToList() ?? new List<T>();

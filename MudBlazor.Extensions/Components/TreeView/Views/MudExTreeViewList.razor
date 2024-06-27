@@ -1,30 +1,21 @@
 ﻿@typeparam T
-@inherits MudExTreeViewBase<T>
+@inherits MudExTreeViewFlatList<T>
 @namespace MudBlazor.Extensions.Components
 
-@using MudBlazor.Extensions.Options
 @using Nextended.Core.Extensions
 @using Nextended.Core.Types
 
 @RenderSearchBar()
 
-<MudList Class="@Class" Style="@ListBoxStyleStr()" Dense="@Dense" Clickable="true">
+<MudList Class="@Class" Style="@AnimationStyleStr()" Dense="@Dense" Clickable="true">
     @{
-        var root = false;
-        HashSet<T> nodes = (LastSelectedNode != null ? (LastSelectedNode.Children?.Any() == true ? LastSelectedNode.Children : LastSelectedNode?.Parent?.Children) : null);
-        if (nodes == null)
-        {
-            nodes = FilterManager.FilteredItems();
-            root = true;
-        }
+        var nodeRenderInfo = LevelNodes();
     }
-    @if (LastSelectedNode != null && !root)
+    @if (LastSelectedNode != null && !nodeRenderInfo.IsRoot)
     {
-        var targetNode = CreateContext(LastSelectedNode.Children?.Any() == true ? LastSelectedNode.Parent : LastSelectedNode.Parent.Parent, "");
-        <MudListItem Class="@ItemClassStr(targetNode)" Style="@ItemStyleStr(targetNode)" OnClick="@(() => { _animationDirection = AnimationDirection.In; NodeClick(targetNode.Item); })" Text="@TryLocalize(BackLinkLabel, targetNode != null && targetNode.Item != null ? TextFunc(targetNode.Item) : RootName)" Icon="@Icons.Material.Filled.ArrowBack" />
-        <MudDivider/>
+        @RenderBackNode()
     }
-    @foreach (var item in nodes.EmptyIfNull())
+    @foreach (var item in nodeRenderInfo.Nodes.EmptyIfNull())
     {
         var search = FilterManager.GetMatchedSearch(item);
         if (search.Found)
@@ -35,6 +26,17 @@
 </MudList>
 
 @code {
+
+    protected virtual RenderFragment RenderBackNode(string style = "")
+    {
+        var targetNode = GetBackNodeTarget();
+        return @<RenderChild>
+                   <MudListItem Class="@ItemClassStr(targetNode.Context)" 
+                                Style="@ItemStyleStr(targetNode.Context, style)"
+                                OnClick="@(() => { _animationIn = true; NodeClick(targetNode.Context.Item); })" Text="@targetNode.Label" Icon="@Icons.Material.Filled.ArrowBack" />
+                   <MudDivider/>
+                </RenderChild>;
+    }
  
     private RenderFragment ItemRender(T item, string search = "")
     {
@@ -50,12 +52,13 @@
         return
         @<MudListItem Style="@ItemStyleStr(context)" Class="@ItemClassStr(context)" OnClick="@(() => NodeClick(context.Item))">
             <div class="@ListItemClassStr()">
-                @RenderItemContent(context, true)
-            @if(context.Item.HasChildren())
-            {
-                <MudExIcon Icon="@ExpandedIcon" />
-            }
+                @RenderItemContent(context, true, false)
+                @if(context.Item.HasChildren())
+                {
+                    <MudExIcon Icon="@ExpandedIcon" />
+                }
             </div>
+            @RenderPath(context)
         </MudListItem>;
     }
 }

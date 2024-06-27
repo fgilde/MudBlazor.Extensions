@@ -39,6 +39,11 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
     /// </summary>
     protected bool IsOverwritten(string paramName) => PreInitParameters?.Contains(paramName) == true;
 
+    /// <summary>
+    /// Returns true if any of the parameters is overwritten
+    /// </summary>
+    protected bool IsOverwritten(string[] paramName) => PreInitParameters?.Any(paramName.Contains) == true;
+
     
     /// <summary>
     /// Is true if dispose was called
