@@ -1,0 +1,38 @@
+﻿@page "/MudExTreeViewList"
+
+
+@attribute [DemoNew(Name = "List", Order = 3, Group = "TreeView", Icon = Icons.Material.Outlined.List, Documentation = "Displays a tree structure as navigable List", ForComponentType = typeof(MudExTreeViewList<>))]
+
+<DemoComponent DocFiles="@(new [] {"Docs/MudExTreeViewList.md"})" PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "SampleTreeStructure.cs"})">
+    
+    <SplitContainer>
+        <Left>
+            <div style="width: 100%">
+                <p>Selected: @_selectedNode?.Name</p>
+                <MudExTreeViewList @bind-SelectedNode="_selectedNode"
+                                         @ref="component"
+                                         Items="@Entries">
+
+                </MudExTreeViewList>
+            </div>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid ShowInherited="true" Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+
+</DemoComponent>
+
+
+@code {
+    MudExTreeViewList<SampleTreeItem> component;
+    private SampleTreeItem _selectedNode;
+    public HashSet<SampleTreeItem> Entries { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Entries = SampleTreeStructure.GetItems();
+    }
+
+
+}

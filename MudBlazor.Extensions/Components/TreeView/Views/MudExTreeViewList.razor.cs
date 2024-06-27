@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Core.Enums;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using Nextended.Core.Types;
@@ -107,7 +108,7 @@ public partial class MudExTreeViewList<T>
     {
         return MudExCssBuilder.Default.
             AddClass("mud-ex-simple-flex")
-            .AddClass("mud-ex-flex-reverse-end", ReverseExpandButton)
+            .AddClass("mud-ex-flex-reverse-end", ExpandButtonDirection == LeftOrRight.Left)
             .ToString();
     }
 

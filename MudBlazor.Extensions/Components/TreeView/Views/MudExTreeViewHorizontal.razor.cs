@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Core.Enums;
 using MudBlazor.Extensions.Helper;
 using Nextended.Core.Extensions;
 using Nextended.Core.Types;
@@ -55,10 +56,10 @@ public partial class MudExTreeViewHorizontal<T>
     {
         if (!IsOverwritten(nameof(SelectedItemBorderColor)))
             SelectedItemBorderColor = SelectedItemColor;
-        if (!IsOverwritten(nameof(AutoCollapse)))
-            AutoCollapse = false;
-        if (!IsOverwritten(nameof(AutoExpand)))
-            AutoExpand = true;
+        if (!IsOverwritten(nameof(CollapseOnClick)))
+            CollapseOnClick = false;
+        if (!IsOverwritten(nameof(ExpandOnClick)))
+            ExpandOnClick = true;
         if (!IsOverwritten(nameof(AllowSelectionOfNonEmptyNodes)))
             AllowSelectionOfNonEmptyNodes = true;
         base.OnInitialized();
@@ -83,9 +84,11 @@ public partial class MudExTreeViewHorizontal<T>
             NodeClick(siblings[newIndex]);
     }
 
+    protected bool KeyDownHandled { get; set; }
 
     private void KeyDown(KeyboardEventArgs args)
     {
+        KeyDownHandled = false;
         if (!new[] { "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "PageDown", "PageUp", "End", "Home" }.Contains(args.Code))
             return;
 
@@ -99,8 +102,9 @@ public partial class MudExTreeViewHorizontal<T>
             {
                 parent = parent.Parent;
             }
-            if (!AutoExpand || AutoCollapse)
+            if (!ExpandOnClick || CollapseOnClick)
                 CollapseAll();
+            KeyDownHandled = true;
             NodeClick(parent ?? toSelect);
         }
         else if (args.Code == "End" && selectedNode?.HasChildren() == true)
@@ -108,25 +112,30 @@ public partial class MudExTreeViewHorizontal<T>
             var lastOrDefault = selectedNode.Children.Recursive(n => n.Children ?? Enumerable.Empty<T>()).ToList();
             var node = lastOrDefault.FirstOrDefault(n => !n.HasChildren());
             ExpandTo(node);
+            KeyDownHandled = true;
             NodeClick(node);
         }
         else if (args.Code == "PageDown" && siblings.Any())
         {
+            KeyDownHandled = true;
             NodeClick(siblings.LastOrDefault());
         }
         else if (args.Code == "PageUp" && siblings.Any())
         {
+            KeyDownHandled = true;
             NodeClick(siblings.FirstOrDefault());
         }
         else if (args.Code == "ArrowLeft" && selectedNode != null && selectedNode.Parent != null && FilterManager.GetMatchedSearch(selectedNode.Parent).Found)
         {
-            if(!AutoExpand || AutoCollapse)
+            if(!ExpandOnClick || CollapseOnClick)
                 SetExpanded(selectedNode.Parent, false);
+            KeyDownHandled = true;
             NodeClick(selectedNode.Parent);
         }
         else if (args.Code == "ArrowRight" && selectedNode?.HasChildren() == true)
         {
             SetExpanded(selectedNode, true);
+            KeyDownHandled = true;
             NodeClick(selectedNode.Children.FirstOrDefault(n => FilterManager.GetMatchedSearch(n).Found));
         }
         else if (new[] { "ArrowUp", "ArrowDown" }.Contains(args.Code) && siblings.Any())
@@ -141,6 +150,7 @@ public partial class MudExTreeViewHorizontal<T>
 
             if (newIndex >= 0 && newIndex < siblings.Length)
             {
+                KeyDownHandled = true;
                 NodeClick(siblings[newIndex]);
             }
         }
@@ -201,7 +211,7 @@ public partial class MudExTreeViewHorizontal<T>
     {
         return MudExCssBuilder.Default.
             AddClass("mud-ex-simple-flex")
-            .AddClass("mud-ex-flex-reverse-end", ReverseExpandButton)
+            .AddClass("mud-ex-flex-reverse-end", ExpandButtonDirection == LeftOrRight.Left)
             .ToString();
     }
 

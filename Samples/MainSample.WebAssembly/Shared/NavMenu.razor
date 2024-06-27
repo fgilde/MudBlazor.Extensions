@@ -1,7 +1,7 @@
 ﻿@using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Core.Enums
 @using Nextended.Core.Extensions
-<MudExTreeView SelectedItemBackgroundColor="MudExColor.HoverBackground" 
+<MudExTreeView SelectedItemBackgroundColor="@(SelectedNavEntry.HasChildren || ViewMode != TreeViewMode.Default ? MudExColor.Default : MudExColor.HoverBackground)"
                @bind-SelectedNode="SelectedNavEntry" 
                AllowedToSelectFunc="@HasAction" 
                ItemContentStyle="font-size:14px;" 
@@ -11,7 +11,7 @@
                FilterMode="@(ClientTheme.CurrentTheme.ShowFilterInDrawer && ViewMode != TreeViewMode.Breadcrumb ? PropertyFilterMode.AlwaysVisible : PropertyFilterMode.Disabled)"
                FilterBoxStyle="margin:10px;" 
                Style="margin: 0 10px;" 
-               ReverseExpandButton="true" 
+               ExpandButtonDirection="LeftOrRight.Right" 
                ViewMode="@ViewMode" 
                Items="@Entries">
     <ItemContentTemplate>

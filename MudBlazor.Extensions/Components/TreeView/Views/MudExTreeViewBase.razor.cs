@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Core.Css;
+using MudBlazor.Extensions.Core.Enums;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
 using Nextended.Core.Extensions;
@@ -94,9 +96,9 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     [Parameter] public bool FilterMultiple { get; set; } = true;
 
     /// <summary>
-    /// If true the expand button will be on the other right side of the item content
+    /// Controls if the expand button is at the start or end 
     /// </summary>
-    [Parameter] public bool ReverseExpandButton { get; set; }
+    [Parameter] public LeftOrRight? ExpandButtonDirection { get; set; }
 
     /// <summary>
     /// Dense mode for the treeview
@@ -132,6 +134,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// Items to display in the treeview
     /// </summary>
     [Parameter]
+    [IgnoreOnObjectEdit]
     public HashSet<TItem> Items
     {
         get => FilterManager.Items;
@@ -147,6 +150,16 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
         get => FilterManager.TextFunc;
         set => FilterManager.TextFunc = value;
     }
+
+    /// <summary>
+    /// This function controls how a separator will be detected. Default is if the item ToString() equals '-'
+    /// </summary>
+    [Parameter] public Func<TItem, bool> IsSeparatorDetectFunc { get; set; } = n => n?.ToString() == "-";
+
+    /// <summary>
+    /// Here you can specify a function to determine if a node is allowed to be selected
+    /// </summary>
+    [Parameter] public Func<TItem, bool> AllowedToSelectFunc { get; set; }
 
     /// <summary>
     /// Behaviour for the filtering
@@ -168,11 +181,6 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// Item content template for the item itself without the requirement to change outer element like to control the expand button etc.
     /// </summary>
     [Parameter] public RenderFragment<TreeViewItemContext<TItem>> ItemContentTemplate { get; set; }
-
-    /// <summary>
-    /// This function controls how a separator will be detected. Default is if the item ToString() equals '-'
-    /// </summary>
-    [Parameter] public Func<TItem, bool> IsSeparatorDetectFunc { get; set; } = n => n?.ToString() == "-";
 
     /// <summary>
     /// The expand/collapse icon.
@@ -200,13 +208,14 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// Selected node
     /// </summary>
     [Parameter]
+    [IgnoreOnObjectEdit]
     public TItem SelectedNode
     {
         get => _selectedNode;
         set => Set(ref _selectedNode, LastSelectedNode = value, _ =>
         {
             SelectedNodeChanged.InvokeAsync(value).AndForget();
-            if(AutoExpand)
+            if(ExpandOnClick)
                 ExpandTo(value);
         });
     }
@@ -315,22 +324,18 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// <summary>
     /// Set to true to automatically expand the node when clicked and is not expanded
     /// </summary>
-    [Parameter] public bool AutoExpand { get; set; } = true;
+    [Parameter] public bool ExpandOnClick { get; set; } = true;
 
     /// <summary>
     /// Set to true to automatically collapse the node when clicked and is already expanded
     /// </summary>
-    [Parameter] public bool AutoCollapse { get; set; } = true;
+    [Parameter] public bool CollapseOnClick { get; set; } = true;
 
     /// <summary>
     /// Set to true to allow selection of nodes with children
     /// </summary>
     [Parameter] public bool AllowSelectionOfNonEmptyNodes { get; set; } = false;
 
-    /// <summary>
-    /// Here you can specify a function to determine if a node is allowed to be selected
-    /// </summary>
-    [Parameter] public Func<TItem, bool> AllowedToSelectFunc { get; set; }
 
     /// <summary>
     /// On node click
@@ -358,12 +363,12 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
 
     private void ExecuteAutoExpand(TItem node)
     {
-        if (node != null && (AutoExpand || AutoCollapse))
+        if (node != null && (ExpandOnClick || CollapseOnClick))
         {
             var isExpanded = IsExpanded(node);
-            if (isExpanded && AutoCollapse)
+            if (isExpanded && CollapseOnClick)
                 SetExpanded(node, false);
-            else if (!isExpanded && AutoExpand)
+            else if (!isExpanded && ExpandOnClick)
                 SetExpanded(node, true);
         }
     }

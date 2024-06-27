@@ -1,6 +1,7 @@
 ﻿@typeparam T
 @inherits MudExTreeViewBase<T>
 @namespace MudBlazor.Extensions.Components
+@using MudBlazor.Extensions.Options
 @using Nextended.Core.Types
 
 <MudToolBar Class="@Class" Style="@StyleStr()" Dense="@Dense" WrapContent="true">
@@ -21,9 +22,9 @@
         return
         @<RenderChild Condition="@(hierarchical?.Any(i => FilterManager.GetMatchedSearch(i).Found) == true)">
             <MudMenu ActivationEvent="@(isSubMenu ? MouseEvent.MouseOver : MouseEvent.LeftClick)"
-                     AnchorOrigin="Origin.TopRight"
-                     TransformOrigin="Origin.TopLeft"
-                     MaxHeight="500"
+                     AnchorOrigin="@MenuAnchorOrigin"
+                     TransformOrigin="@MenuTransformOrigin"
+                     MaxHeight="@MenuMaxHeight"
                      Dense="@Dense"
                      EndIcon="@ExpandedIcon"
                      Icon="@(isSubMenu ? null : ExpandedIcon)">

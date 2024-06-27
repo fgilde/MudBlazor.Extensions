@@ -5,16 +5,17 @@
 
 
 <div id="@_treeId" 
-     @onkeydown="KeyDown"
-     @onkeydown:stopPropagation="true"
-     @onkeydown:preventDefault="true"
-     @onwheel="OnWheel" 
-     @onwheel:stopPropagation="true" 
-     @onwheel:preventDefault="true"
-     tabindex="0" 
      class="mud-ex-horizontal-tree-wrapper">
     @RenderSearchBar()
-    <div class="mud-ex-horizontal-tree" style="@StyleStr()">
+    <div @onkeydown="KeyDown"
+         @onkeydown:stopPropagation="@KeyDownHandled"
+         @onkeydown:preventDefault="@KeyDownHandled"
+         @onwheel="OnWheel" 
+         @onwheel:stopPropagation="true" 
+         @onwheel:preventDefault="true"
+         tabindex="0"
+         class="mud-ex-horizontal-tree" 
+         style="@StyleStr()">
         <div style="@ScrollHorizontalTree(LastSelectedNode)" class="mud-ex-horizontal-tree-scroll-wrapper">
             @{
                 var items = FilterManager.FilteredItems()?.Where(n => FilterManager.GetMatchedSearch(n).Found).ToList() ?? new List<T>();

@@ -7,6 +7,10 @@ using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
+/// <summary>
+/// TreeView component that renders a tree structure of items.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public partial class MudExTreeView<T>
     where T : IHierarchical<T>
 {

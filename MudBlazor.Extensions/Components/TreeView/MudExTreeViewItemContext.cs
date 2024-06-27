@@ -50,7 +50,7 @@ public class TreeViewItemContext<T> where T : IHierarchical<T>
     /// <summary>
     /// The string that was used to search for this item.
     /// </summary>
-    public string Search { get; }
+    public string Search { get;  }
 
     /// <summary>
     /// The recommended string to highlight in the item.

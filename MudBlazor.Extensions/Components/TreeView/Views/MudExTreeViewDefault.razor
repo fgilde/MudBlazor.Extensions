@@ -30,10 +30,12 @@
     {
         return
             @<MudTreeViewItem Expanded="@context.IsExpanded"
-                                  OnClick="@(() => NodeClick(context.Item))"
-                                  Items="@(context.Item?.Children?.ToHashSet())">
+                              Style="@ItemStyleStr(context)"
+                              Class="@ItemClassStr(context)"
+                              OnClick="@(() => NodeClick(context.Item))"
+                              Items="@(context.Item?.Children?.ToHashSet())">
             <Content>
-                <div style="@ItemStyleStr(context)" class="@ItemClassStr(context)">
+                <div style="@ContentFlexStyleStr()">
                     @if (ExpandBehaviour != Core.Enums.TreeViewExpandBehaviour.None)
                     {
                         <MudTreeViewItemToggleButton ExpandedIcon="@ExpandedIcon" ExpandedChanged="@(expanded => SetExpanded(context.Item, expanded))" Expanded="@context.IsExpanded" Visible="@(context.Item?.Children?.Any() == true)"/>

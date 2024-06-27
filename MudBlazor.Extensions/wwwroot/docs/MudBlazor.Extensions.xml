@@ -13467,6 +13467,12 @@
             Flat behaviour will flatten the tree structure and only show the nodes that match the filter
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExTreeView`1">
+            <summary>
+            TreeView component that renders a tree structure of items.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.ViewMode">
             <summary>
             Mode controls how the tree view will be rendered.
@@ -13597,9 +13603,9 @@
             Set to false to disable multiple filters
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ReverseExpandButton">
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ExpandButtonDirection">
             <summary>
-            If true the expand button will be on the other right side of the item content
+            Controls if the expand button is at the start or end 
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.Dense">
@@ -13642,6 +13648,16 @@
             Function to get the text of an item this is used for the filter and the item content if <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTemplate"/> and <see cref="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemTemplate"/> are not set
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.IsSeparatorDetectFunc">
+            <summary>
+            This function controls how a separator will be detected. Default is if the item ToString() equals '-'
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.AllowedToSelectFunc">
+            <summary>
+            Here you can specify a function to determine if a node is allowed to be selected
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterBehaviour">
             <summary>
             Behaviour for the filtering
@@ -13656,11 +13672,6 @@
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemContentTemplate">
             <summary>
             Item content template for the item itself without the requirement to change outer element like to control the expand button etc.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.IsSeparatorDetectFunc">
-            <summary>
-            This function controls how a separator will be detected. Default is if the item ToString() equals '-'
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ExpandedIcon">
@@ -13748,12 +13759,12 @@
             Creates a context for the given item
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.AutoExpand">
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ExpandOnClick">
             <summary>
             Set to true to automatically expand the node when clicked and is not expanded
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.AutoCollapse">
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.CollapseOnClick">
             <summary>
             Set to true to automatically collapse the node when clicked and is already expanded
             </summary>
@@ -13761,11 +13772,6 @@
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.AllowSelectionOfNonEmptyNodes">
             <summary>
             Set to true to allow selection of nodes with children
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.AllowedToSelectFunc">
-            <summary>
-            Here you can specify a function to determine if a node is allowed to be selected
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.NodeClick(`0)">
@@ -13848,6 +13854,21 @@
             Get the term to highlight
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBreadcrumb`1.MenuAnchorOrigin">
+            <summary>
+            Set the anchor origin point to determine where the popover will open from.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBreadcrumb`1.MenuTransformOrigin">
+            <summary>
+            Sets the transform origin point for the popover.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBreadcrumb`1.MenuMaxHeight">
+            <summary>
+            Max height of the menu when this is reached overflow will be scrollable
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBreadcrumb`1.GetFilterClassStr">
             <summary>
             Class for use in the filter box
@@ -13898,9 +13919,6 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewDefault`1.SetExpanded(`0,System.Boolean)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewDefault`1.ItemStyleStr(MudBlazor.Extensions.Components.TreeViewItemContext{`0},System.String)">
             <inheritdoc />
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewFlatList`1.ShowPath">

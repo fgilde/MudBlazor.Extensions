@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Core.Css;
 using MudBlazor.Extensions.Core.Enums;
 using MudBlazor.Extensions.Helper;
@@ -45,16 +46,17 @@ public partial class MudExTreeViewDefault<T>
         }
     }
 
-    /// <inheritdoc />
-    protected override string ItemStyleStr(TreeViewItemContext<T> context, string mergeWith = "")
+    private string ContentFlexStyleStr()
     {
-        return MudExStyleBuilder.FromStyle(base.ItemStyleStr(context, mergeWith))
+        return MudExStyleBuilder.Default
+            .WithWidth(100, CssUnit.Percentage)
             .WithDisplay(Display.Flex)
             .WithAlignItems(Core.Css.AlignItems.Center)
-            .WithFlexFlow(FlexFlow.RowReverse, ReverseExpandButton)
-            .WithJustifyContent(JustifyContent.SpaceBetween, ReverseExpandButton)
+            .WithFlexFlow(FlexFlow.RowReverse, ExpandButtonDirection == LeftOrRight.Right)
+            .WithJustifyContent(JustifyContent.SpaceBetween, ExpandButtonDirection == LeftOrRight.Right)
             .Style;
     }
+
 
 }
 
