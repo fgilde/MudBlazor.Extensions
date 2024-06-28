@@ -869,6 +869,8 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
                 }
                 if (!AllowMultiple) // TODO: Remove workaround but otherwise binding in MudExObjectEdit for single file upload does not work
                     UploadRequest = request;
+
+                await RaiseChangedAsync();
                 await InvokeAsync(StateHasChanged);
             });
             if (request is UploadableFile uploadableFile)

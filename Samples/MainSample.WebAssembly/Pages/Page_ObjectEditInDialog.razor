@@ -53,6 +53,8 @@
 
     private async Task<string> OnSubmit(TestObject value, MudExObjectEditDialog<TestObject> dialog)
     {
+        //await value.UploadRequest.EnsureDataLoadedAsync();
+        Console.WriteLine(value.UploadRequest.Data.Length);
         await Task.Delay(2000); // Simulate server save
         if (value.Value == "Test")
             return "'Test' is as Value not allowed or already exists";
