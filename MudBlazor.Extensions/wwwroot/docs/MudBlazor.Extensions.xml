@@ -2689,7 +2689,7 @@
             The MudDialog instance
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ClassContent">
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ContentClass">
             <summary>
             CSS classes applied to the content of the dialog.
             </summary>
@@ -5169,7 +5169,7 @@
             The color of the dialog icon for when the dialog is used in relation to a particular color theme.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.ClassContent">
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.ContentClass">
             <summary>
             Gets or sets the class for the content of the dialog
             </summary>
@@ -5359,34 +5359,6 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnInitializedAsync">
             <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnAfterRenderAsync(System.Boolean)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExPopover.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
-            <summary>
-            Sets the component's parameters asynchronously.
-            </summary>
-            <param name="parameters">The parameter view.</param>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnOpenChanged(System.Boolean)">
-            <summary>
-            Handles open state change event.
-            </summary>
-            <param name="newOpenValue">The new open value.</param>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnParametersSetAsync">
-            <inheritdoc />
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExPopover.PopoverClass">
-            <summary>
-            Gets the popover class.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExPopover.PopoverStyles">
-            <summary>
-            Gets the popover styles.
-            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnFocusLeft(Microsoft.AspNetCore.Components.Web.PointerEventArgs)">
             <summary>
@@ -9525,7 +9497,7 @@
             The CSS class to apply to the dialog.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ClassContent">
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ContentClass">
             <summary>
             The CSS class to apply to the content area of the dialog.
             </summary>

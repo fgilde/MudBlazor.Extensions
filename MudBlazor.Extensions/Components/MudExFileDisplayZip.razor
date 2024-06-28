@@ -125,7 +125,7 @@ else
             }
             else
             {
-                <MudVirtualize IsEnabled="@Virtualize" Context="entry" Items="@_zipEntries">
+                <MudVirtualize Enabled="@Virtualize" Context="entry" Items="@_zipEntries">
                     @if (IsInSearch(entry))
                     {
                         <MudItem xs="12">

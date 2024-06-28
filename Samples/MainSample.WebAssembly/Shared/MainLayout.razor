@@ -30,7 +30,7 @@
         <MudSpacer />
 
         <MudExIconButton ToolTip="Activate comments" Visible="@(!_commentsAvailable)" Icon="@Icons.Material.Filled.Comment" Color="Color.Warning" OnClick="@(() => _commentsAvailable = true)" />
-        <MudExIconButton ToolTip="Try MudEx online" Target="_blank" Link="@AppConstants.Urls.GetTryOnline(IsDark)" Icon="@Icons.Material.Rounded.PlayArrow" Color="@(IsDark ? Color.Success : Color.Inherit)" />
+        <MudExIconButton ToolTip="Try MudEx online" Target="_blank" Href="@AppConstants.Urls.GetTryOnline(IsDark)" Icon="@Icons.Material.Rounded.PlayArrow" Color="@(IsDark ? Color.Success : Color.Inherit)" />
 
         <MudExDivider Size="2" Vertical="true" />
 
@@ -41,16 +41,16 @@
         <MudExDivider Size="2" Vertical="true" />
 
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <MudExIconButton ToolTip="Official MudBlazor website" Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Link="https://www.mudblazor.com" Target="_blank" />
-            <MudExIconButton ToolTip="Nuget Package source" Icon="@MudExIcons.Custom.Brands.Nuget" Color="Color.Inherit" Link="https://www.nuget.org/packages/MudBlazor.Extensions" Target="_blank" />
-            <MudExIconButton ToolTip="GitHub Project repository" Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank" />
+            <MudExIconButton ToolTip="Official MudBlazor website" Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Href="https://www.mudblazor.com" Target="_blank" />
+            <MudExIconButton ToolTip="Nuget Package source" Icon="@MudExIcons.Custom.Brands.Nuget" Color="Color.Inherit" Href="https://www.nuget.org/packages/MudBlazor.Extensions" Target="_blank" />
+            <MudExIconButton ToolTip="GitHub Project repository" Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank" />
             <MudExIconButton ToolTip="Info & About" Icon="@Icons.Material.Outlined.Info" Size="Size.Small" Color="Color.Inherit" OnClick="ShowAbout" />
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
             <MudMenu Dense="true" AnchorOrigin="Origin.BottomRight" Icon="@Icons.Material.Filled.MoreVert">
-                <MudMenuItem Icon="@Icons.Custom.Brands.MudBlazor" Link="https://www.mudblazor.com" Target="_blank">Official MudBlazor website</MudMenuItem>
-                <MudMenuItem Icon="@Icons.Custom.Brands.Microsoft" Link="https://www.nuget.org/packages/MudBlazor.Extensions" Target="_blank">Nuget</MudMenuItem>
-                <MudMenuItem Icon="@Icons.Custom.Brands.GitHub" Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank">GitHub</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Custom.Brands.MudBlazor" Href="https://www.mudblazor.com" Target="_blank">Official MudBlazor website</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Custom.Brands.Microsoft" Href="https://www.nuget.org/packages/MudBlazor.Extensions" Target="_blank">Nuget</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Custom.Brands.GitHub" Href="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank">GitHub</MudMenuItem>
                 <MudExDivider Color="Color.Primary" />
                 <MudMenuItem Icon="@Icons.Material.Outlined.Info" Size="Size.Small" Color="Color.Inherit" OnClick="ShowAbout">Info</MudMenuItem>
             </MudMenu>
@@ -63,7 +63,7 @@
                 <LogoTitle />
             </MudDrawerHeader>
         }
-        <NavMenu ExpandBehaviour="ClientTheme.CurrentTheme.NavigationExpandMode" />
+        <NavMenu ViewMode="TreeViewMode.List" ExpandBehaviour="ClientTheme.CurrentTheme.NavigationExpandMode" />
     </MudDrawer>
 
     <MudMainContent>

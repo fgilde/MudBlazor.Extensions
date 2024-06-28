@@ -22,7 +22,7 @@ public partial class MudExFileDisplayDialog
     /// </summary>
     [Parameter]
     [SafeCategory("Appearance")]
-    public string ClassContent { get; set; } = "full-height";
+    public string ContentClass { get; set; } = "full-height";
 
     /// <summary>
     /// Icon to display in the dialog.

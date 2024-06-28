@@ -935,7 +935,7 @@ public partial class MudExObjectEdit<T>
         {
             { nameof(MudExFileDisplayDialog.AllowDownload), false },
             { nameof(MudExFileDisplayDialog.Style), "height:700px; width: 900px;" },
-            { nameof(MudExFileDisplayDialog.ClassContent), "full-height-90" },
+            { nameof(MudExFileDisplayDialog.ContentClass), "full-height-90" },
             { nameof(MudExFileDisplayDialog.Buttons), new[]
             {
                 new MudExDialogResultAction

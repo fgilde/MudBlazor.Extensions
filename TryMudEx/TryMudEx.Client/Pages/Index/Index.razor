@@ -17,10 +17,10 @@
             </MudHidden>
         </div>
         <MudSpacer />
-        <MudButton Link="https://www.mudex.org/" Target="_blank" Color="Color.Default" Size="Size.Large">MudEx</MudButton>
+        <MudButton Href="https://www.mudex.org/" Target="_blank" Color="Color.Default" Size="Size.Large">MudEx</MudButton>
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <MudButton Link="https://mudblazor.com/" Target="_blank" Color="Color.Default" Size="Size.Large">MudBlazor</MudButton>
-            <MudButton Link="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank" Color="Color.Primary" Size="Size.Large">Source Code</MudButton>
+            <MudButton Href="https://mudblazor.com/" Target="_blank" Color="Color.Default" Size="Size.Large">MudBlazor</MudButton>
+            <MudButton Href="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank" Color="Color.Primary" Size="Size.Large">Source Code</MudButton>
         </MudHidden>
 
     </MudAppBar>
@@ -52,7 +52,7 @@
                             </MudText>
                         </MudHidden>
                         <div class="px-2 mt-8">
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" DisableElevation="true" Class="px-6" Link="/snippet">Play now</MudButton>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" DropShadow="false" Class="px-6" Href="/snippet">Play now</MudButton>
                         </div>
                     </div>
                 </MudItem>
@@ -62,7 +62,7 @@
                     <MudText Typo="Typo.h5" Class="mud-text-secondary">
                         Play with MudBlazor components entirely in the browser. Test and experiment anytime, anywhere.
                     </MudText>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary" Size="Size.Large" Class="ml-n2" Link="/snippet" EndIcon="@Icons.Material.Filled.East">Get started</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" Size="Size.Large" Class="ml-n2" Href="/snippet" EndIcon="@Icons.Material.Filled.East">Get started</MudButton>
                     <MudPaper Elevation="25" Class="rounded-lg mt-12">
                         <div class="d-flex align-center py-2 try-mudblazor-codecard rounded-t-lg">
                             <div class="flex-grow-0 px-1">
@@ -147,7 +147,7 @@
                     </MudPaper>
 
                     <div class="px-2 mt-8" style="display: flex;justify-content: center; align-items: center;">
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" DisableElevation="true" Class="px-6" OnClick="@UseCodeClick" >Use this code</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" DropShadow="false" Class="px-6" OnClick="@UseCodeClick">Use this code</MudButton>
                     </div>
 
                 </MudItem>

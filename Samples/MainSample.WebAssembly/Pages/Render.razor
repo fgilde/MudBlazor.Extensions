@@ -10,7 +10,7 @@
 
     @if (AvailableDemo != null)
     {
-        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" AlertTextPosition="AlertTextPosition.Center" ContentAlignment="HorizontalAlignment.Center">
+        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" ContentAlignment="HorizontalAlignment.Center">
             <a href="@AvailableDemo.Href" target="@AvailableDemo.Target">Here is another Real demo available for @(ApiMemberInfo.GetGenericFriendlyTypeName(Type) ?? TypeName)</a>
         </MudAlert>
     }

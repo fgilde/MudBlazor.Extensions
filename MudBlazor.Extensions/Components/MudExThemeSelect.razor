@@ -25,7 +25,7 @@
     }
     else if (SelectionMode == ThemeSelectionMode.ItemList)
     {
-        <MudList Class="@Class" Style="@Style" Clickable="true" @bind-SelectedValue="SelectedValue">
+        <MudList Class="@Class" Style="@Style" @bind-SelectedValue="SelectedValue">
             @foreach (var theme in Available)
             {
                 <MudListItem Class="mt-2" Value="@theme">

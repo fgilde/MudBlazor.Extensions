@@ -172,9 +172,8 @@ namespace MudBlazor.Extensions.Components
         /// <summary>
         /// Disposes of the object.
         /// </summary>
-        public new ValueTask DisposeAsync()
+        public override ValueTask DisposeAsync()
         {
-            // TODO: Ask MudBlazor Author if they can make DisposeAsync virtual
             DisposeCore();
             return base.DisposeAsync();
         }

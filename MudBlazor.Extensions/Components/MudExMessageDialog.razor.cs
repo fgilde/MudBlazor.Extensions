@@ -24,7 +24,7 @@ public partial class MudExMessageDialog
     /// Gets or sets the class for the content of the dialog
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
-    public string ClassContent { get; set; } = string.Empty;
+    public string ContentClass { get; set; } = string.Empty;
 
     /// <summary>
     /// The CSS class to apply to the action buttons of the dialog.

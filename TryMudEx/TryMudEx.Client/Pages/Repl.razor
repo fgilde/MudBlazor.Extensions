@@ -63,7 +63,7 @@
         else
         {
             @RenderEditor()
-            <MudExDialog Class="compile-result-dlg full-height" ClassContent="full-height" @bind-IsVisible="_compiledSuccessfully" OptionsEx="@GetResultDialogOptions()">
+            <MudExDialog Class="compile-result-dlg full-height" ContentClass="full-height" @bind-Visible="_compiledSuccessfully" OptionsEx="@GetResultDialogOptions()">
                 <TitleContent>
                     <MudText Typo="Typo.h6">
                         <MudIcon Color="Color.Success" Icon="@Icons.Material.Filled.PlayArrow" Class="mr-3" /> Compilation Result
@@ -88,7 +88,7 @@
             }
         </div>
         <MudSpacer />
-        <MudButton DisableElevation="true" DisableRipple="true" OnClick="@ReloadIframe">Reload</MudButton>
+        <MudButton DropShadow="false" DisableRipple="true" OnClick="@ReloadIframe">Reload</MudButton>
         <MudDivider Vertical="true" Class="mr-1" />
         @foreach (var package in _installedPackages.Take(_maxPackagesInStatusBar))
         {

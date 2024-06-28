@@ -92,7 +92,7 @@
                     }
                 </MudPaper>
                 <MudExpansionPanels Class="mud-ex-object-edit-panels" DisableBorders="@(GroupingStyle == GroupingStyle.Flat)" Elevation="@(GroupElevation ?? (GroupingStyle == GroupingStyle.Flat ? 0 : 1))" MultiExpansion="true">
-                    <MudVirtualize Items="@GroupedMetaPropertyInfos()" Context="grouping" IsEnabled="@Virtualize">
+                    <MudVirtualize Items="@GroupedMetaPropertyInfos()" Context="grouping" Enabled="@Virtualize">
                         @{
                             var objectEditPropertyMetas = MetaInformation?.Ordered(grouping).ToList();
                             var renderableProperties = objectEditPropertyMetas?.Where(p => p.ShouldRender()).ToList();
@@ -150,7 +150,7 @@
 
     private RenderFragment RenderPropertyEdits(IList<ObjectEditPropertyMeta> objectEditPropertyMetas)
     {
-        return @<MudVirtualize Items="@objectEditPropertyMetas" Context="property" IsEnabled="@Virtualize">
+        return @<MudVirtualize Items="@objectEditPropertyMetas" Context="property" Enabled="@Virtualize">
         @RenderPropertyEdit(property)
     </MudVirtualize>;
     }
