@@ -20198,6 +20198,7 @@
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.CanCloseCallbackReference">
             <summary>
             the .NET object reference where the <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.CanCloseCallbackName"/> is located.
+            if you don't specify reference the dialog itself will be the reference.Then you need to have the CanCloseCallback Method on your DialogClass
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.DragMode">

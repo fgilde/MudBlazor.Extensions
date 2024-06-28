@@ -1,4 +1,6 @@
 ## Change Log    
+ - 1.7.88 > Dialogs now supporting a can close event to allow canceling the close event [see sample](https://www.mudex.org/dialogs-closing-event)
+ - 1.7.88 > Add new Components [MudExTreeView](https://www.mudex.org/demos/TreeView).
  - 1.7.88 > Update MudBlazor to 6.20.0
  - 1.7.88 > New Component `MudExFileDisplayExcel` to support preview of Excel files in [MudExFileDisplay](https://www.mudex.org/file-display) and [MudExUploadEdit](https://www.mudex.org/upload-edit) .
  - 1.7.88 > [MudExUploadEdit](https://www.mudex.org/upload-edit) now supports recording audio.
