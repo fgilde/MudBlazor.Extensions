@@ -387,6 +387,7 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2024-06-28 13:18:31 -->
+ - 1.7.89 > Fix bug that uploadable file is not updated in MudExObjectEditDialog
  - 1.7.88 > Dialogs now supporting a can close event to allow canceling the close event [see sample](https://www.mudex.org/dialogs-closing-event)
  - 1.7.88 > Add new Components [MudExTreeView](https://www.mudex.org/demos/TreeView).
  - 1.7.88 > Update MudBlazor to 6.20.0
