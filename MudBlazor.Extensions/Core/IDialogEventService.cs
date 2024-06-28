@@ -20,5 +20,5 @@ public interface IDialogEventService
     /// <summary>
     /// Publish a dialog event
     /// </summary>
-    public Task Publish<TEvent>(TEvent eventToPublish) where TEvent : IDialogEvent;
+    public Task<TEvent> Publish<TEvent>(TEvent eventToPublish) where TEvent : IDialogEvent;
 }

@@ -5,35 +5,67 @@
         if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
             this.animate();
         }        
-        if (this.options.animateClose) {
-            this.extendCloseEvents();
-        }
+
+        this.extendCloseEvents();
         
     }
 
-    extendCloseEvents() {
-        var closeButton = this.dialog.querySelector('.mud-button-close');
-        //this.dialogOverlay 
-        if (this.dialogOverlay && this.options.modal && !this.options.disableBackdropClick) {
-            const handleClick = (e) => {
-                this.closeAnimation();
-                this.dialogOverlay.removeEventListener('click', handleClick);
-                MudExEventHelper.stopFor(e, this.dialogOverlay, this.options.animationDurationInMs);
-            };
-
-            this.dialogOverlay.addEventListener('click', handleClick);
+    async checkCanClose() {
+        const callbackName = this.options.canCloseCallbackName;
+        const reference = this.options.canCloseCallbackReference || this.dotNet;
+        if (callbackName && reference) {
+            try {
+                const result = await reference.invokeMethodAsync(callbackName);
+                if (result === false) {
+                    return false;
+                }
+            } catch (e) {
+                console.error(e);
+            }
         }
-        if (closeButton) {
-            
-            const handleClick = (e) => {                
-                this.closeAnimation();
-                closeButton.removeEventListener('click', handleClick);
-                MudExEventHelper.stopFor(e, closeButton, this.options.animationDurationInMs);
-            };
+        const closeEvent = await this.raiseDialogEvent('OnDialogClosing');
+        if (closeEvent?.cancel === true) {
+            return false;
+        }
+        return true;
+    }
 
-            closeButton.addEventListener('click', handleClick);
+
+    extendCloseEvents() {
+        const handleCloseEvent = (element) => {
+            const handleClick = async (e) => {
+                if (!e.__internalDispatched) {
+                    e.__internalDispatched = true;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const canClose = await this.checkCanClose();
+                    if (canClose) {
+                        setTimeout(() => {
+                            element.dispatchEvent(e);
+                        }, 1);
+                    }
+                    return;
+                }
+                
+                if (this.options.animateClose) {
+                    this.closeAnimation();
+                    element.removeEventListener('click', handleClick);
+                    MudExEventHelper.stopFor(e, element, this.options.animationDurationInMs);
+                }
+            };
+            element.addEventListener('click', handleClick);
+        };
+
+        const closeButton = this.dialog.querySelector('.mud-button-close');
+        if (closeButton) {
+            handleCloseEvent(closeButton);
+        }
+
+        if (this.dialogOverlay && this.options.modal && !this.options.disableBackdropClick) {
+            handleCloseEvent(this.dialogOverlay);
         }
     }
+
 
     animate() {
        this.dialog.style.animation = `${this.options.animationStyle}`;

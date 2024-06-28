@@ -30,6 +30,11 @@ public class DialogClosedEvent : DialogBeforeOpenEvent
     public DialogResult Result { get; set; }
 }
 
+public class DialogClosingEvent : BaseDialogEvent
+{
+    public bool? Cancel { get; set; }
+}
+
 public class DialogDragEndEvent : BaseDialogEvent { }
 public class DialogDragStartEvent : BaseDialogEvent { }
 public class DialogDraggingEvent : BaseDialogEvent { }

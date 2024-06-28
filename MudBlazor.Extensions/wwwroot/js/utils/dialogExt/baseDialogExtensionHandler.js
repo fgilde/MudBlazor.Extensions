@@ -14,7 +14,7 @@
 
     order = 99;
 
-    raiseDialogEvent(eventName) {        
+    async raiseDialogEvent(eventName) {        
         // Get viewport dimensions
         var windowHeight = window.innerHeight || document.documentElement.clientHeight;
         var windowWidth = window.innerWidth || document.documentElement.clientWidth;
@@ -31,7 +31,7 @@
             scrollY: scrollY
         };
         const rect = Object.assign(extendedRect, JSON.parse(JSON.stringify(this.dialog.getBoundingClientRect())));        
-        this.dotNetService.invokeMethodAsync('PublishEvent', eventName, this.dialog.id, this.dotNet, rect);
+        return await this.dotNetService.invokeMethodAsync('PublishEvent', eventName, this.dialog.id, this.dotNet, rect);
     }
 
     getAnimationDuration() {

@@ -5,11 +5,19 @@
 @attribute [Demo(Group = "Dialog Samples", Name = "Simple Dialogs", Documentation = "Demo for simple integrated useful dialogs. Prompt, Info, MessageBox", Order = 2, Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExMessageDialog), typeof(MudExPromptDialog) })]
 
 <DemoComponent PageType="@GetType()">
-    <MudGrid>
-        <MudButton Class="mt-3" Size="Size.Large" OnClick="@Prompt" Variant="Variant.Filled" Color="Color.Primary">Simple Prompt</MudButton>
-        <MudButton Class="mt-3 ml-3" Size="Size.Large" OnClick="@MessageBox" Variant="Variant.Outlined" Color="Color.Primary">Simple Confirmation</MudButton>
-        <MudButton Class="mt-3 ml-3" Size="Size.Large" OnClick="@ShowInfo" Variant="Variant.Outlined" Color="Color.Secondary">Show info</MudButton>
+    
+    <MudGrid Style="width: 100%" Justify="Justify.Center">
+        <MudItem xs="3" Class="mb-4">
+            <MudButton Class="mt-3" Size="Size.Large" OnClick="@Prompt" Variant="Variant.Filled" Color="Color.Primary">Simple Prompt</MudButton>
+        </MudItem>
+        <MudItem xs="3" Class="mb-4">
+            <MudButton Class="mt-3" Size="Size.Large" OnClick="@MessageBox" Variant="Variant.Outlined" Color="Color.Primary">Simple Confirmation</MudButton>
+        </MudItem>
+        <MudItem xs="3" Class="mb-4">
+            <MudButton Class="mt-3" Size="Size.Large" OnClick="@ShowInfo" Variant="Variant.Outlined" Color="Color.Secondary">Show info</MudButton>
+        </MudItem>
     </MudGrid>
+
 </DemoComponent>
 
 @code {

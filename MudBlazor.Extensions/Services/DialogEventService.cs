@@ -42,13 +42,13 @@ public class DialogEventService : IDialogEventService
     /// <summary>
     /// Publish a dialog event
     /// </summary>
-    public Task Publish<TEvent>(TEvent eventToPublish) where TEvent : IDialogEvent
+    public async Task<TEvent> Publish<TEvent>(TEvent eventToPublish) where TEvent : IDialogEvent
     {
         if (eventHandlers.TryGetValue(typeof(TEvent), out var handlers))
         {
             var tasks = handlers.Cast<Func<TEvent, Task>>().Select(handler => handler(eventToPublish));
-            return Task.WhenAll(tasks);
+            await Task.WhenAll(tasks);
         }
-        return Task.CompletedTask;
+        return eventToPublish;
     }
 }

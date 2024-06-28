@@ -15,7 +15,7 @@ public class MudExDialogService : IMudExDialogService
     private readonly IDialogEventService _dialogEventService;
 
     [JSInvokable]
-    public Task PublishEvent(string eventName, string dialogId, DotNetObjectReference<ComponentBase> dialog, BoundingClientRect rect)
+    public async Task<object> PublishEvent(string eventName, string dialogId, DotNetObjectReference<ComponentBase> dialog, BoundingClientRect rect)
     {        
         dynamic eventToPublish = eventName switch
         {
@@ -24,15 +24,16 @@ public class MudExDialogService : IMudExDialogService
             "OnDragging" => new DialogDraggingEvent { Dialog = dialog.Value, Rect = rect, DialogId = dialogId },
             "OnResizing" => new DialogResizingEvent { Dialog = dialog.Value, Rect = rect, DialogId = dialogId },
             "OnResized" => new DialogResizedEvent { Dialog = dialog.Value, Rect = rect, DialogId = dialogId },
+            "OnDialogClosing" => new DialogClosingEvent { Dialog = dialog.Value, Rect = rect, DialogId = dialogId },
             _ => null
         };
 
         if (eventToPublish != null)
         {
-            return PublishDynamic(eventToPublish);
+            return await PublishDynamic(eventToPublish);
         }
 
-        return Task.CompletedTask;
+        return null;
     }
 
     private Task PublishDynamic<TEvent>(TEvent eventToPublish) where TEvent : IDialogEvent

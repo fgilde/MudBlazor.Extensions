@@ -41,6 +41,7 @@
     static stopFor(e, element, milliseconds) {
         if (e === undefined || e === null)
             return;
+        e.__internalDispatched = true;
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();

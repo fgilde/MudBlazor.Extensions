@@ -98,6 +98,19 @@ namespace MudBlazor.Extensions.Options
         public MudDialogButton[] Buttons { get; set; }
 
         /// <summary>
+        /// Here you can set a callback that will be called before the dialog is closed.
+        /// Ensure your callback returns a boolean value and has the JsInvokable attribute set.
+        /// </summary>
+        public string CanCloseCallbackName { get; set; }
+
+        /// <summary>
+        /// the .NET object reference where the <see cref="CanCloseCallbackName"/> is located.
+        /// if you don't specify reference the dialog itself will be the reference.Then you need to have the CanCloseCallback Method on your DialogClass
+        /// </summary>
+        public DotNetObjectReference<object> CanCloseCallbackReference { get; set; }
+
+
+        /// <summary>
         /// A MudDialogDragMode value indicating the drag mode of the dialog box.
         /// </summary>
         public MudDialogDragMode DragMode { get; set; }

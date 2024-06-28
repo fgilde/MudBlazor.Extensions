@@ -20189,6 +20189,17 @@
             An array of MudDialogButton.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.CanCloseCallbackName">
+            <summary>
+            Here you can set a callback that will be called before the dialog is closed.
+            Ensure your callback returns a boolean value and has the JsInvokable attribute set.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.CanCloseCallbackReference">
+            <summary>
+            the .NET object reference where the <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.CanCloseCallbackName"/> is located.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.DragMode">
             <summary>
             A MudDialogDragMode value indicating the drag mode of the dialog box.
