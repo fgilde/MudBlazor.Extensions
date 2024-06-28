@@ -67,7 +67,7 @@ else
 
             @if (ShowAsTree)
             {
-                <MudTreeView Dense="@Dense" Style="width: 100%" T="MudExArchiveStructure" Items="@_zipStructure">
+               @*  <MudTreeView Dense="@Dense" Style="width: 100%" T="MudExArchiveStructure" Items="@_zipStructure">
                     <ItemTemplate>
                         @if (IsInSearch(context))
                         {
@@ -121,7 +121,7 @@ else
                             </MudTreeViewItem>
                         }
                     </ItemTemplate>
-                </MudTreeView>
+                </MudTreeView> *@
             }
             else
             {

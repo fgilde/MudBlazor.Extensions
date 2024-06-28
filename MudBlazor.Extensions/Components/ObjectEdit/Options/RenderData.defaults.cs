@@ -71,13 +71,13 @@ public static class RenderDataDefaults
         RegisterDefault<bool, MudExCheckBox<bool>>(s => s.Value, box =>
         {
             box.TriState = false;
-            box.UnCheckedColor = Color.Default;
+            box.UncheckedColor = Color.Default;
             box.Color = Color.Warning;
         });
         RegisterDefault<bool?, MudExCheckBox<bool?>>(s => s.Value, box =>
         {
             box.TriState = true;
-            box.UnCheckedColor = Color.Default;
+            box.UncheckedColor = Color.Default;
             box.Color = Color.Warning;
         });
 
@@ -134,7 +134,7 @@ public static class RenderDataDefaults
         {
             {nameof(MudExColorEdit.Editable), true},
             {nameof(MudExColorEdit.ForceSelectOfMudColor), true},
-            {nameof(MudExColorEdit.DisableToolbar), false},
+            {nameof(MudExColorEdit.ShowToolbar), true},
             {nameof(MudExColorEdit.DelayValueChangeToPickerClose), true},
             {nameof(MudExColorEdit.PickerVariant), PickerVariant.Inline},
             {nameof(MudExColorEdit.PreviewMode), ColorPreviewMode.Icon},

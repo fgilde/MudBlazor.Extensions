@@ -90,13 +90,11 @@ public static partial class MudExObjectEditExtensions
         return meta.RenderWith<MudAutocomplete<TPropertyType>, TPropertyType>(ac => ac.Value, ac =>
         {
             ac.CoerceValue = !requireValueFromSuggestion;
-            ac.SearchFunc = s => Task.Run(() =>
+            ac.SearchFunc = (s, token) => Task.Run(() =>
             {
                 var res = !filterSuggestionForValue ? suggestionItems : suggestionItems.Where(x => string.IsNullOrWhiteSpace(s) || x?.ToString()?.Contains(s, StringComparison.InvariantCultureIgnoreCase) == true);
-                if (!requireValueFromSuggestion)
-                    return res.Prepend(s.MapTo<TPropertyType>()).Distinct();
-                return res;
-            });
+                return !requireValueFromSuggestion ? res.Prepend(s.MapTo<TPropertyType>()).Distinct() : res;
+            }, token);
             options?.Invoke(ac);
         });
     }
@@ -243,8 +241,8 @@ public static partial class MudExObjectEditExtensions
     /// <param name="disableUnderline">Indicates whether the underline should be disabled.</param>
     /// <returns>The modified ObjectEditPropertyMeta instance.</returns>
     ///</summary>
-    public static ObjectEditPropertyMeta DisableUnderline(this ObjectEditPropertyMeta meta, bool disableUnderline = true)
-        => meta?.SetProperties(p => p?.RenderData?.AddAttributes(true, new KeyValuePair<string, object>(nameof(MudBaseInput<string>.DisableUnderLine), disableUnderline)));
+    public static ObjectEditPropertyMeta DisableUnderline(this ObjectEditPropertyMeta meta, bool underline = false)
+        => meta?.SetProperties(p => p?.RenderData?.AddAttributes(true, new KeyValuePair<string, object>(nameof(MudBaseInput<string>.Underline), underline)));
 
     ///<summary>
     /// Ignores an ObjectEditPropertyMeta in the UI rendering process.

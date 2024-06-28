@@ -22,7 +22,7 @@
                                       AdornmentColor="@AdornmentColor"
                                       Color="@Color"
                                       TextUpdateSuppression="false"
-                                      Value="@(Strict && !IsValueInList ? null : Text)" DisableUnderLine="@DisableUnderLine"
+                                      Value="@(Strict && !IsValueInList ? null : Text)" Underline="@Underline"
                                       Disabled="@Disabled" ReadOnly="true" Error="@Error" ErrorId="@ErrorId"
                                       Clearable="@(Clearable && !ReadOnly)" OnClearButtonClick="(async (e) => await SelectClearButtonClickHandlerAsync(e))"
                                       @attributes="UserAttributes" OnBlur="@OnLostFocus" ForceShrink="@(ForceShrink || (MultiSelection && SelectedValues?.Any() == true))"
@@ -176,7 +176,7 @@
             return @<span></span>;
         }
         return 
-        @<MudChipSet Class="d-flex flex-wrap mud-width-full" Style="row-gap: 4px" AllClosable="@(ChipCloseable && !ReadOnly)" OnClose="ChipClosed">
+        @<MudChipSet Class="d-flex flex-wrap mud-width-full" Style="row-gap: 4px" AllClosable="@(ChipCloseable && !ReadOnly)" T="T" OnClose="ChipClosed">
             @if (ItemCollection != null)
             {
                 foreach (var item in SelectedValues.Distinct())

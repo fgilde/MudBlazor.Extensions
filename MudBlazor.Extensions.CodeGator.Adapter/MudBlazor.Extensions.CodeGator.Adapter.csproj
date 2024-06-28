@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net8</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
@@ -13,7 +13,7 @@
     <Title>MudExObjectEdit.CodeGatorAdapter</Title>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageId>MudExObjectEdit.CodeGatorAdapter</PackageId>
-    <PackageVersion>1.0.12</PackageVersion>
+    <PackageVersion>2.0.0</PackageVersion>
     <Authors>fgilde</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryType>Git</RepositoryType>

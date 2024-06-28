@@ -84,11 +84,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddMudServicesWithExtensions(this IServiceCollection services, params Assembly[] serviceImplementationAssemblies)
         => services.AddMudServices().AddMudExtensions(serviceImplementationAssemblies);
 
-    /// <summary>
-    /// Adds MudBlazor services with custom configuration and extensions to the service collection.
-    /// </summary>
-    public static IServiceCollection AddMudServicesWithExtensions(this IServiceCollection services, MudServicesConfiguration mudServicesConfiguration, params Assembly[] serviceImplementationAssemblies)
-        => services.AddMudServices(mudServicesConfiguration).AddMudExtensions(serviceImplementationAssemblies);
 
     /// <summary>
     /// Adds MudBlazor services with custom configuration and extensions to the service collection.
@@ -102,11 +97,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddMudServicesWithExtensions(this IServiceCollection services, Action<MudExConfiguration> config, params Assembly[] serviceImplementationAssemblies)
         => services.AddMudServices().AddMudExtensions(config, serviceImplementationAssemblies);
 
-    /// <summary>
-    /// Adds MudBlazor services with custom configuration and extensions with custom configuration to the service collection.
-    /// </summary>
-    public static IServiceCollection AddMudServicesWithExtensions(this IServiceCollection services, MudServicesConfiguration mudServicesConfiguration, Action<MudExConfiguration> config, params Assembly[] serviceImplementationAssemblies)
-        => services.AddMudServices(mudServicesConfiguration).AddMudExtensions(config, serviceImplementationAssemblies);
 
     /// <summary>
     /// Adds MudBlazor services with custom configuration and extensions with custom configuration to the service collection.

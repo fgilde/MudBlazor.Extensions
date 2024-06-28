@@ -10,8 +10,8 @@
 
 <DemoComponent DocFiles="@(new[] {"Docs/ObjectEdit.md"})" PageType="@GetType()">
     <MudGrid>
-        <MudCheckBox @bind-Checked="@virtualize">Virtualize</MudCheckBox>
-        <MudCheckBox @bind-Checked="@disableGrouping">Disable Grouping</MudCheckBox>
+        <MudCheckBox @bind-Value="@virtualize">Virtualize</MudCheckBox>
+        <MudCheckBox @bind-Value="@disableGrouping">Disable Grouping</MudCheckBox>
     </MudGrid>
     <MudExObjectEditForm Height="80" SizeUnit="CssUnit.ViewportHeight" ActionBarColor="Color.Surface"
                          Virtualize="@virtualize"

@@ -182,6 +182,18 @@ public class MudExDialogService : IMudExDialogService
         => _innerDialogService.ShowMessageBox(messageBoxOptions, options);
 
     /// <inheritdoc />
+    public void Close(IDialogReference dialog)
+    {
+        _innerDialogService.Close(dialog);
+    }
+
+    /// <inheritdoc />
+    public void Close(IDialogReference dialog, DialogResult result)
+    {
+        _innerDialogService.Close(dialog, result);
+    }
+
+    /// <inheritdoc />
     public void Close(DialogReference dialog)
         => _innerDialogService.Close(dialog);
 

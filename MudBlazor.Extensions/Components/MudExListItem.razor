@@ -53,13 +53,13 @@
                 {
                     <MudExListItem Style="width: 36px; margin-left: -15px; margin-top: 0px;" T="T" IsFunctional="true" Icon="@(_selected ? Icons.Material.Filled.CheckBox : Icons.Material.Filled.CheckBoxOutlineBlank)" IconColor="@MudExList.Color" OverrideMultiSelectionComponent="MultiSelectionComponent.None" OnClick="@((a) => {OnClickHandler(a);})" OnClickHandlerPreventDefault="true" Dense="true" Class="mb-2" />   
                 }else {
-                    <MudCheckBox Color="@(MudExList.Color.IsColor ? MudExList.Color.AsColor : Color.Default)" Disabled="@Disabled" @bind-Checked="_selected" @onclick="OnClickHandler" Dense="true" />
+                    <MudCheckBox Color="@(MudExList.Color.IsColor ? MudExList.Color.AsColor : Color.Default)" Disabled="@Disabled" @bind-Value="_selected" @onclick="OnClickHandler" Dense="true" />
                 }                                        
 
             }
             else if (OverrideMultiSelectionComponent == null ? MudExList?.MultiSelectionComponent == MultiSelectionComponent.Switch : OverrideMultiSelectionComponent.Value == MultiSelectionComponent.Switch)
             {
-                <MudSwitch Color="@(MudExList.Color.IsColor ? MudExList.Color.AsColor : Color.Default)" Disabled="@Disabled" @bind-Checked="_selected"  @onclick:stopPropagation="true" />
+                <MudSwitch Color="@(MudExList.Color.IsColor ? MudExList.Color.AsColor : Color.Default)" Disabled="@Disabled" @bind-Value="_selected"  @onclick:stopPropagation="true" />
             }
         </div>
         }

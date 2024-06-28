@@ -8,6 +8,7 @@ using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using System.Linq.Expressions;
+using static MudBlazor.CategoryTypes;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -612,7 +613,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
             if (value != _multiSelection)
             {
                 _multiSelection = value;
-                UpdateTextPropertyAsync(false).AndForget();
+                _ = UpdateTextPropertyAsync(false);
             }
         }
     }
@@ -704,12 +705,12 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
 
                 if (NeedsValueUpdateForNonMultiSelection()) // No binding so we need to update the value manually
                 {
-                    SetValueAsync(_selectedValues.LastOrDefault()).AndForget();
+                    _ = SetValueAsync(_selectedValues.LastOrDefault());
                     //Value = _selectedValues.LastOrDefault();
                 }
 
                 ValueChanged.InvokeAsync(Value);
-                UpdateTextPropertyAsync(false).AndForget();
+                _ = UpdateTextPropertyAsync(false);
                 _selectedValuesSetterStarted = false;
                 Task.Delay(30).ContinueWith(_ => BeginValidateAsync());
             }
@@ -799,8 +800,8 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     {
         // For MultiSelection of non-string T's we don't update the Value!!!
         //if (typeof(T) == typeof(string) || !MultiSelection)
-        base.UpdateValuePropertyAsync(updateText).AndForget();
-        return Task.CompletedTask;
+        return base.UpdateValuePropertyAsync(updateText);
+        //return Task.CompletedTask;
     }
 
     /// <summary>
@@ -873,7 +874,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
         else if (MultiSelection && SelectedValues != null)
         {
             // TODO: Check this line again
-            SetValueAsync(SelectedValues.FirstOrDefault()).AndForget();
+            _ = SetValueAsync(SelectedValues.FirstOrDefault());
         }
     }
 
@@ -1175,7 +1176,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
 
             await SetValueAsync(value);
             //await UpdateTextPropertyAsync(false);
-            _elementReference.SetText(Text).AndForget();
+            _= _elementReference.SetText(Text);
             //_selectedValues.Clear();
             //_selectedValues.Add(value);
         }
@@ -1308,15 +1309,6 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
         await SelectedValuesChanged.InvokeAsync(new HashSet<T>(SelectedValues, _comparer));
     }
 
-    /// <summary>
-    /// Reset the value of the component to its initial state.
-    /// </summary>
-    [Obsolete]
-    protected override void ResetValue()
-    {
-        base.ResetValue();
-        SelectedValues = null;
-    }
 
 
     #endregion
@@ -1360,10 +1352,11 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
             return base.HasValue(value);
     }
 
+
     /// <summary>
     /// Called when a chip is closed.
     /// </summary>
-    protected async Task ChipClosed(MudChip chip)
+    protected async Task ChipClosed<T>(MudChip<T> chip)
     {
         if (chip == null || SelectedValues == null)
         {
@@ -1373,6 +1366,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
         SelectedValues = SelectedValues.Where(x => x.Equals(chip.Value) == false);
         await SelectedValuesChanged.InvokeAsync(SelectedValues);
     }
+
 }
 
 /// <summary>

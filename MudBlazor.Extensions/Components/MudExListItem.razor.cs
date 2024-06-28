@@ -427,7 +427,7 @@ public partial class MudExListItem<T>
 
         if (OnClickHandlerPreventDefault)
         {
-            OnClick.InvokeAsync(ev).AndForget();
+            _ = OnClick.InvokeAsync(ev);
             return;
         }
 
@@ -438,13 +438,13 @@ public partial class MudExListItem<T>
         else if (Href != null)
         {
             MudExList?.SetSelectedValue(this);
-            OnClick.InvokeAsync(ev).AndForget();
+            _ = OnClick.InvokeAsync(ev);
             UriHelper.NavigateTo(Href, ForceLoad);
         }
         else if (MudExList?.Clickable == true || MudExList?.MultiSelection == true)
         {
             MudExList?.SetSelectedValue(this);
-            OnClick.InvokeAsync(ev).AndForget();
+            _ = OnClick.InvokeAsync(ev);
         }
     }
 
@@ -453,7 +453,7 @@ public partial class MudExListItem<T>
     /// </summary>
     protected void OnlyOnClick(MouseEventArgs ev)
     {
-        OnClick.InvokeAsync(ev).AndForget();
+        _ = OnClick.InvokeAsync(ev);
     }
 
     private Typo _textTypo;

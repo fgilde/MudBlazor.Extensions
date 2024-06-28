@@ -214,7 +214,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
         get => _selectedNode;
         set => Set(ref _selectedNode, LastSelectedNode = value, _ =>
         {
-            SelectedNodeChanged.InvokeAsync(value).AndForget();
+            SelectedNodeChanged.InvokeAsync(value);
             if(ExpandOnClick)
                 ExpandTo(value);
         });
@@ -247,7 +247,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
                 FilterManager.Filter = value;
                 if (ExpandOnFilter)
                     SetAllExpanded(FilterManager.HasFilters, _ => true);
-                FilterChanged.InvokeAsync(value).AndForget();
+                FilterChanged.InvokeAsync(value);
             }
         }
     }
@@ -273,7 +273,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
                 if (ExpandOnFilter)
                     SetAllExpanded(FilterManager.HasFilters, _ => true);
                 
-                FiltersChanged.InvokeAsync(value).AndForget();
+                FiltersChanged.InvokeAsync(value);
             }
         }
     }

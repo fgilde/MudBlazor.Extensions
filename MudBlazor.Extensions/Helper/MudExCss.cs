@@ -37,7 +37,7 @@ public static partial class MudExCss
         .AddClass($"mud-ex-base-input")
         .AddClass($"mud-input-{baseInput.Variant.GetDescription()}")
         .AddClass($"mud-input-margin-{baseInput.Margin.GetDescription()}", when: () => baseInput.Margin != Margin.None)
-        .AddClass("mud-input-underline", when: () => !baseInput.DisableUnderLine && baseInput.Variant != Variant.Outlined)
+        .AddClass("mud-input-underline", when: () => baseInput.Underline && baseInput.Variant != Variant.Outlined)
         .AddClass("mud-shrink", when: shrinkWhen)
         .AddClass("mud-disabled", baseInput.Disabled)
         .AddClass("mud-input-error", baseInput.HasErrors)

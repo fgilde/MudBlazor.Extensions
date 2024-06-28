@@ -133,11 +133,11 @@ public class ClientTheme : MudTheme
 
     public static ClientTheme DefaultTheme = new ClientTheme()
     {
-        Palette = new Palette
+        PaletteLight = new PaletteLight()
         {
             Primary = "#199b90",
             AppbarBackground = "#1f2226",
-            Background = Colors.Grey.Lighten5,
+            Background = Colors.Gray.Lighten5,
             DrawerBackground = "#FFF",
             DrawerText = "rgba(0,0,0, 0.7)",
             Success = "#19635d"
@@ -146,7 +146,7 @@ public class ClientTheme : MudTheme
         DrawerVariant = DrawerVariant.Responsive,
         Typography = DefaultTypography,
         LayoutProperties = DefaultLayoutProperties
-    }.SetProperties(t => t.PaletteDark = t.Palette.ToPaletteDark().SetProperties(dark =>
+    }.SetProperties(t => t.PaletteDark = t.PaletteLight.ToPaletteDark().SetProperties(dark =>
     {
         dark.AppbarBackground = "#1f2226";
         dark.DrawerBackground = "#1f2226";
@@ -156,11 +156,11 @@ public class ClientTheme : MudTheme
 
     public static ClientTheme Last = new ClientTheme()
     {
-        Palette = new Palette
+        PaletteLight = new PaletteLight()
         {
             Primary = "#199b90",
             AppbarBackground = "#199b90",
-            Background = Colors.Grey.Lighten5,
+            Background = Colors.Gray.Lighten5,
             DrawerBackground = "#FFF",
             DrawerText = "rgba(0,0,0, 0.7)",
             Success = "#19635d"
@@ -173,11 +173,11 @@ public class ClientTheme : MudTheme
     public static ClientTheme SimpleBlue = new ClientTheme()
     {
         ShowFilterInDrawer = false,
-        Palette = new Palette
+        PaletteLight = new PaletteLight
         {
             Primary = "#00cffc",
             AppbarBackground = "#0f2334",
-            Background = Colors.Grey.Lighten5,
+            Background = Colors.Gray.Lighten5,
             DrawerBackground = "#FFF",
             DrawerText = "rgba(0,0,0, 0.7)",
             Success = "#19635d",
@@ -190,7 +190,7 @@ public class ClientTheme : MudTheme
             p.DrawerWidthLeft = "250px";
             p.AppbarHeight = "40px";
         }),
-    }.SetProperties(t => t.PaletteDark = t.Palette.ToPaletteDark());
+    }.SetProperties(t => t.PaletteDark = t.PaletteLight.ToPaletteDark());
     
     public static ClientTheme CurrentTheme = DefaultTheme;
 

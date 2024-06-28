@@ -18,7 +18,7 @@ public partial class DialogOptionsEx
         meta.Properties(
             o => o.Animations
         ).WrapInMudItem(i => i.xs = 12);
-        meta.Property(o => o.ClassBackground).Ignore();
+        meta.Property(o => o.BackgroundClass).Ignore();
         meta.Properties(o => o.MaxWidth, o => o.MaxHeight).WithOrder(0).WithGroup("Options");
         meta.Properties(o => o.DragMode, o => o.Position, o => o.AnimationDurationInMs).WithOrder(1)
             .WithGroup("Options");
@@ -66,7 +66,7 @@ public partial class DialogOptionsEx
     {
         DragMode = MudDialogDragMode.Simple,
         CloseButton = true,
-        DisableBackdropClick = false,
+        BackdropClick = true,
         MaxWidth = MudBlazor.MaxWidth.ExtraSmall,
         FullWidth = true,
         Animations = new[] { AnimationType.FlipX }
@@ -80,7 +80,7 @@ public partial class DialogOptionsEx
         CloseButton = true,
         MaxWidth = MudBlazor.MaxWidth.ExtraExtraLarge,
         FullWidth = true,
-        DisableBackdropClick = false,
+        BackdropClick = true,
         MaximizeButton = true,
         DragMode = MudDialogDragMode.Simple,
         Position = DialogPosition.BottomCenter,

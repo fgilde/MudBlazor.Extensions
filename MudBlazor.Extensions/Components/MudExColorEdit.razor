@@ -33,7 +33,7 @@
                     </MudTabPanel>
                 }
                 <MudTabPanel OnClick="@CustomTabClick" Text="@TryLocalize(@LabelCustomTab)">
-                    <MudExColorPicker InitialColor="@_initialMudColorValue" ColorPickerMode="ColorPickerMode.HEX" DisableToolbar="@DisableToolbar" ValueChanged="@(Select)" PickerVariant="PickerVariant.Static" />
+                    <MudExColorPicker InitialColor="@_initialMudColorValue" ColorPickerMode="ColorPickerMode.HEX" ShowToolbar="@ShowToolbar" ValueChanged="@(Select)" PickerVariant="PickerVariant.Static" />
                 </MudTabPanel>
             </MudTabs>;
     }
@@ -66,7 +66,7 @@
             @<div>
                 <MudTextField Class="mt-5 mr-5 ml-5 mb-2" Clearable="true" Variant="@FilterVariant" Immediate="true" Placeholder="@TryLocalize("Filter")" @bind-Value="@Filter" T="string"></MudTextField>
                 <MudPaper Elevation="0">
-                    <MudList Dense="true" Class="m-0" Clickable="true">
+                    <MudList T="ColorItem" Dense="true" Class="m-0" Clickable="true">
                         @foreach (var group in _colors.Where(c => Matches(c.Name)).GroupBy(c => c.Group))
                         {
                             @DividerContent(group.Key)

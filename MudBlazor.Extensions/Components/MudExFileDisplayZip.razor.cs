@@ -27,7 +27,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private Stream _innerPreviewStream;
     private IList<IArchivedBrowserFile> _zipEntries;    
     //private HashSet<ArchiveStructure> _zipStructure;
-    private HashSet<MudExArchiveStructure> _zipStructure;
+    private IReadOnlyCollection<MudExArchiveStructure> _zipStructure;
     private string _contentType;
     
     [Inject] private MudExFileService FileService { get; set; }
@@ -326,7 +326,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private async void DownloadAsync(MudExArchiveStructure zip, bool asZip = false)
     {
         if (zip.IsDownloading) return;
-        _downloadMenu?.CloseMenu();
+        _= _downloadMenu?.CloseMenuAsync();
         SetDownloadStatus(zip, true);
 
         if (asZip)

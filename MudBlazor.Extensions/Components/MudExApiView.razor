@@ -33,7 +33,7 @@
         <MudSwitch Color="Color.Primary" @bind-Value="ShowInherited">Show inherited</MudSwitch>
         <MudSpacer/>
         <MudExToggleableSearch AutoCloseOnBlur="false"
-                               OnKeyUp="@(() => { _methodPanel.Expand(); _propertyPanel.Expand(); })"
+                               OnKeyUp="@(() => { _= _methodPanel.ExpandAsync(); _= _propertyPanel.ExpandAsync(); })"
                                @bind-Filter="_searchString"></MudExToggleableSearch>
     </MudToolBar>
 }
@@ -43,7 +43,7 @@
     <p>Enum</p>
 
     var names = Enum.GetNames(Type).Where(s => string.IsNullOrEmpty(_searchString) || s.Contains(_searchString, StringComparison.OrdinalIgnoreCase));
-    <MudExpansionPanel IsInitiallyExpanded="@IsInitiallyExpanded" Text="Enum Member">
+    <MudExpansionPanel Expanded="@IsInitiallyExpanded" Text="Enum Member">
         <MudTable Items="@names" Hover="true" Breakpoint="Breakpoint.Sm">
             <RowTemplate>
                 <MudTd DataLabel="Member">@context</MudTd>
@@ -54,7 +54,7 @@
 
 @if (ShowProperties)
 {
-    <MudExpansionPanel @ref="_propertyPanel" Disabled="@Compact" IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@(IsInitiallyExpanded)" Text="Properties">
+    <MudExpansionPanel @ref="_propertyPanel" Disabled="@Compact" ExpandedChanged="@OnExpandedChanged" Expanded="@(IsInitiallyExpanded)" Text="Properties">
         @if (_properties?.Any() == true)
         {
             <MudDataGrid T="ApiMemberInfo<PropertyInfo>" Items="@_properties.Where(p => (ShowInherited || !p.IsInherited) && (ShowOnly == null || ShowOnly.Contains(p.Name)))" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
@@ -129,7 +129,7 @@
 
 @if (ShowMethods)
 {
-    <MudExpansionPanel @ref="_methodPanel" Disabled="@Compact" IsExpandedChanged="@OnExpandedChanged" IsInitiallyExpanded="@IsInitiallyExpanded" Text="Methods">
+    <MudExpansionPanel @ref="_methodPanel" Disabled="@Compact" ExpandedChanged="@OnExpandedChanged" Expanded="@IsInitiallyExpanded" Text="Methods">
         @if (_methods?.Any() == true)
         {
             <MudDataGrid T="ApiMemberInfo<MethodInfo>" Items="@_methods.Where(p => ShowInherited || !p.IsInherited && (ShowOnly == null || ShowOnly.Contains(p.Name)))" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"

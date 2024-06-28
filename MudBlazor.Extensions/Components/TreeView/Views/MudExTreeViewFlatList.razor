@@ -7,7 +7,7 @@
 
 @RenderSearchBar()
 
-<MudList Class="@Class" Style="@StyleStr()" Dense="@Dense" Clickable="true">
+<MudList T="T" Class="@Class" Style="@StyleStr()" Dense="@Dense" Clickable="true">
 
     @foreach (var item in FlattedItems().EmptyIfNull())
     {
@@ -33,7 +33,7 @@
     public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
     {
         return
-        @<MudListItem Style="@ItemStyleStr(context)" Class="@ItemClassStr(context)" OnClick="@(() => NodeClick(context.Item))">
+        @<MudListItem T="T" Value="@context.Item" Style="@ItemStyleStr(context)" Class="@ItemClassStr(context)" OnClick="@(() => NodeClick(context.Item))">
              @RenderItemContent(context, true, true)
         </MudListItem>;
     }

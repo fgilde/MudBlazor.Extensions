@@ -85,7 +85,7 @@
 </div>
 
 <MudExpansionPanels MultiExpansion="true">
-    <MudExpansionPanel IsInitiallyExpanded="true" Class="@($"mt-3 {("mud-ex-object-edit-group-flat")}")" Text="DEMOS">
+    <MudExpansionPanel Expanded="true" Class="@($"mt-3 {("mud-ex-object-edit-group-flat")}")" Text="DEMOS">
         <MudExCardList TData="object">
 
             @foreach (var nav in DemoAttribute.AllEntries(true).Where(n => !_selectedAttributeTypes.Any() || _selectedAttributeTypes.Contains(n?.Demo?.GetType())))
@@ -111,7 +111,7 @@
         </MudExCardList>
     </MudExpansionPanel>
 
-    <MudExpansionPanel IsInitiallyExpanded="true" Class="@($"mt-3 {("mud-ex-object-edit-group-flat")}")" Text="ALL COMPONENTS">
+    <MudExpansionPanel Expanded="true" Class="@($"mt-3 {("mud-ex-object-edit-group-flat")}")" Text="ALL COMPONENTS">
         <MudExCardList HoverColor="Color.Info" TData="object">
 
             @foreach (var nav in Navigations.ReflectMudExComponents())
@@ -150,7 +150,7 @@
                    </MudAlert>
                    @if (nav?.Demo is DemoNewAttribute or DemoUpdatedAttribute)
                    {
-                       <MudChip Style="float: right; margin-right: -27px;" Size="Size.Small" Variant="Variant.Text" Color="@nav.Demo.IconColor">@(nav?.Demo.GetType().Name.Replace("Demo", "").Replace("Attribute", ""))</MudChip>
+                       <MudChip T="NavigationEntry" Style="float: right; margin-right: -27px;" Size="Size.Small" Variant="Variant.Text" Color="@nav.Demo.IconColor">@(nav?.Demo.GetType().Name.Replace("Demo", "").Replace("Attribute", ""))</MudChip>
                    }
         </div>;
     }

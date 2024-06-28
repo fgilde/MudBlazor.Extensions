@@ -1738,13 +1738,13 @@
         <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnAfterRender(System.Boolean)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnPickerClosed">
+        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnPickerClosedAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnPickerOpened">
+        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnPickerOpenedAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.StringValueChanged(System.String)">
+        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.StringValueChangedAsync(System.String)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExColorPicker">
@@ -1791,10 +1791,10 @@
         <member name="M:MudBlazor.Extensions.Components.MudExColorPicker.OnInitialized">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExColorPicker.OnPickerOpened">
+        <member name="M:MudBlazor.Extensions.Components.MudExColorPicker.OnPickerOpenedAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExColorPicker.OnPickerClosed">
+        <member name="M:MudBlazor.Extensions.Components.MudExColorPicker.OnPickerClosedAsync">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExCultureSelect">
@@ -3788,13 +3788,13 @@
         <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnPickerClosed">
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnPickerClosedAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnPickerOpened">
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnPickerOpenedAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.StringValueChanged(System.String)">
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.StringValueChangedAsync(System.String)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExImageViewerSaveOptions">
@@ -6106,11 +6106,6 @@
             Clear the selection
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.ResetValue">
-            <summary>
-            Reset the value of the component to its initial state.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.IsValueInList">
             <summary>
             Returns true if the value is in the list of items.
@@ -6134,7 +6129,7 @@
             <param name="value"></param>
             <returns>True when component has a value</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.ChipClosed(MudBlazor.MudChip)">
+        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.ChipClosed``1(MudBlazor.MudChip{``0})">
             <summary>
             Called when a chip is closed.
             </summary>
@@ -7046,7 +7041,7 @@
         <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.SelectRangeAsync(System.Int32,System.Int32)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.ResetValue">
+        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.ResetValueAsync">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.Clear">
@@ -20847,11 +20842,6 @@
             Adds MudBlazor services and extensions to the service collection.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.ServiceCollectionExtensions.AddMudServicesWithExtensions(Microsoft.Extensions.DependencyInjection.IServiceCollection,MudBlazor.Services.MudServicesConfiguration,System.Reflection.Assembly[])">
-            <summary>
-            Adds MudBlazor services with custom configuration and extensions to the service collection.
-            </summary>
-        </member>
         <member name="M:MudBlazor.Extensions.ServiceCollectionExtensions.AddMudServicesWithExtensions(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{MudBlazor.Services.MudServicesConfiguration},System.Reflection.Assembly[])">
             <summary>
             Adds MudBlazor services with custom configuration and extensions to the service collection.
@@ -20860,11 +20850,6 @@
         <member name="M:MudBlazor.Extensions.ServiceCollectionExtensions.AddMudServicesWithExtensions(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{MudBlazor.Extensions.Options.MudExConfiguration},System.Reflection.Assembly[])">
             <summary>
             Adds MudBlazor services and extensions with custom configuration to the service collection.
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.ServiceCollectionExtensions.AddMudServicesWithExtensions(Microsoft.Extensions.DependencyInjection.IServiceCollection,MudBlazor.Services.MudServicesConfiguration,System.Action{MudBlazor.Extensions.Options.MudExConfiguration},System.Reflection.Assembly[])">
-            <summary>
-            Adds MudBlazor services with custom configuration and extensions with custom configuration to the service collection.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.ServiceCollectionExtensions.AddMudServicesWithExtensions(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{MudBlazor.Services.MudServicesConfiguration},System.Action{MudBlazor.Extensions.Options.MudExConfiguration},System.Reflection.Assembly[])">
@@ -21118,6 +21103,12 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowMessageBox(MudBlazor.MessageBoxOptions,MudBlazor.DialogOptions)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Close(MudBlazor.IDialogReference)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Close(MudBlazor.IDialogReference,MudBlazor.DialogResult)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Close(MudBlazor.DialogReference)">

@@ -3,7 +3,7 @@
 @namespace MudBlazor.Extensions.Components
 
 @RenderSearchBar()
-<MudTreeView Class="@Class" Style="@StyleStr()" Hover="true" Items="@FilterManager.FilteredItems()" Dense="@Dense">
+@* <MudTreeView T="T" Class="@Class" Style="@StyleStr()" Hover="true" Items="@FilterManager.FilteredItems()" Dense="@Dense">
     <ItemTemplate>
         @{
             var search = FilterManager.GetMatchedSearch(context);
@@ -13,36 +13,37 @@
             }
         }
     </ItemTemplate>
-</MudTreeView>
+</MudTreeView> *@
 
 @code {
 
-    private RenderFragment ItemRender(T item, string search = "")
-    {
-        var context = CreateContext(item, search);
-        if (ItemTemplate != null)
-            return ItemTemplate(context);
+    // private RenderFragment ItemRender(T item, string search = "")
+    // {
+    //     var context = CreateContext(item, search);
+    //     if (ItemTemplate != null)
+    //         return ItemTemplate(context);
 
-        return IsSeparator(item) ? RenderSeparator() : RenderItem(context);
-    }
+    //     return IsSeparator(item) ? RenderSeparator() : RenderItem(context);
+    // }
 
-    public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
-    {
-        return
-            @<MudTreeViewItem Expanded="@context.IsExpanded"
-                              Style="@ItemStyleStr(context)"
-                              Class="@ItemClassStr(context)"
-                              OnClick="@(() => NodeClick(context.Item))"
-                              Items="@(context.Item?.Children?.ToHashSet())">
-            <Content>
-                <div style="@ContentFlexStyleStr()">
-                    @if (ExpandBehaviour != Core.Enums.TreeViewExpandBehaviour.None)
-                    {
-                        <MudTreeViewItemToggleButton ExpandedIcon="@ExpandedIcon" ExpandedChanged="@(expanded => SetExpanded(context.Item, expanded))" Expanded="@context.IsExpanded" Visible="@(context.Item?.Children?.Any() == true)"/>
-                    }
-                    @RenderItemContent(context, true)
-                </div>
-            </Content>
-        </MudTreeViewItem>;
-    }
+    // public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
+    // {
+    //     return
+    //         @<MudTreeViewItem Expanded="@context.IsExpanded"
+    //                           T="T"
+    //                           Style="@ItemStyleStr(context)"
+    //                           Class="@ItemClassStr(context)"
+    //                           OnClick="@(() => NodeClick(context.Item))"
+    //                           Items="@(context.Item?.Children?.ToHashSet())">
+    //         <Content>
+    //             <div style="@ContentFlexStyleStr()">
+    //                 @if (ExpandBehaviour != Core.Enums.TreeViewExpandBehaviour.None)
+    //                 {
+    //                     <MudTreeViewItemToggleButton ExpandedIcon="@ExpandedIcon" ExpandedChanged="@(expanded => SetExpanded(context.Item, expanded))" Expanded="@context.IsExpanded" Visible="@(context.Item?.Children?.Any() == true)"/>
+    //                 }
+    //                 @RenderItemContent(context, true)
+    //             </div>
+    //         </Content>
+    //     </MudTreeViewItem>;
+    // }
 }

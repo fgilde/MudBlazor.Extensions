@@ -98,14 +98,13 @@ public partial class MudExTextField<T>: MudExBaseInput<T>, IMudExComponent
     public override ValueTask SelectRangeAsync(int pos1, int pos2) => _mask == null ? InputReference.SelectRangeAsync(pos1, pos2) : _maskReference.SelectRangeAsync(pos1, pos2);
 
     /// <inheritdoc />
-    [Obsolete("Use ResetValueAsync instead. This will be removed in v7")]
-    protected override void ResetValue()
+    protected override async Task ResetValueAsync()
     {
         if (_mask == null)
-            InputReference.Reset();
+            await InputReference.ResetAsync();
         else
-            _maskReference.Reset();
-        base.ResetValue();
+            await _maskReference.ResetAsync();
+        await base.ResetValueAsync();
     }
 
     /// <summary>

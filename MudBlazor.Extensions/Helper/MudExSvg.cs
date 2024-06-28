@@ -303,7 +303,7 @@ public static class MudExSvg
     /// <param name="height">The height of the output image.</param>
     /// <returns>A new SVG that displays an application image sliced diagonally.</returns>
     public static string ApplicationImage(MudTheme theme, bool dark, string width, string height)
-        => ApplicationImage(dark ? theme.PaletteDark : theme.Palette, width, height);
+        => ApplicationImage(dark ? theme.PaletteDark : theme.PaletteLight, width, height);
 
     /// <summary>
     ///  Returns a default application image as with given color palette.

@@ -143,8 +143,8 @@ public static partial class MudExObjectEditExtensions
     /// <param name="meta">The ObjectEditPropertyMetaOf instance for the model.</param>
     /// <param name="disableUnderline">Indicates whether to disable the underline.</param>
     ///</summary>
-    public static ObjectEditPropertyMetaOf<TModel> DisableUnderline<TModel>(this ObjectEditPropertyMetaOf<TModel> meta, bool disableUnderline = true)
-        => meta?.SetProperties(p => p?.RenderData?.AddAttributes(true, new KeyValuePair<string, object>(nameof(MudBaseInput<string>.DisableUnderLine), disableUnderline)));
+    public static ObjectEditPropertyMetaOf<TModel> DisableUnderline<TModel>(this ObjectEditPropertyMetaOf<TModel> meta, bool underline = false)
+        => meta?.SetProperties(p => p?.RenderData?.AddAttributes(true, new KeyValuePair<string, object>(nameof(MudBaseInput<string>.Underline), underline)));
 
     ///<summary>
     /// Ignores a property for editing purposes, optionally based on a condition.

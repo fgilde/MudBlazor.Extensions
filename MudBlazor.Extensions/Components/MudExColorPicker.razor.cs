@@ -67,10 +67,10 @@ namespace MudBlazor.Extensions.Components
         }
         
         /// <inheritdoc />
-        protected override void OnPickerOpened()
+        protected override async Task OnPickerOpenedAsync()
         {
 
-            base.OnPickerOpened();
+            await base.OnPickerOpenedAsync();
             if (!ShouldDelay) return;
 
             _originalValueChanged = ValueChanged;
@@ -83,11 +83,11 @@ namespace MudBlazor.Extensions.Components
         }
 
         /// <inheritdoc />
-        protected override void OnPickerClosed()
+        protected override Task OnPickerClosedAsync()
         {
             if (ShouldDelay)
                 _originalValueChanged.InvokeAsync(Value);
-            base.OnPickerClosed();
+            return base.OnPickerClosedAsync();
         }
 
         private Task NativeColorChange(ChangeEventArgs arg)
@@ -108,7 +108,7 @@ namespace MudBlazor.Extensions.Components
                     typeof(MudColorPicker).GetMethod("UpdateColorSelectorBasedOnRgb", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(this, new object[] { });
                     typeof(MudColorPicker).GetMethod("UpdateBaseColorSlider", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(this, new object[] { InitialColor.H });
                     typeof(MudColorPicker).GetMethod("SelectPaletteColor", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(this, new object[] { InitialColor });
-                    SetTextAsync(InitialColor.ToString(!DisableAlpha ? MudColorOutputFormats.HexA : MudColorOutputFormats.Hex), false).AndForget();
+                    _ = SetTextAsync(InitialColor.ToString(ShowAlpha ? MudColorOutputFormats.HexA : MudColorOutputFormats.Hex), false);
                     FieldChanged(InitialColor);
                     StateHasChanged();
                     _value = c;

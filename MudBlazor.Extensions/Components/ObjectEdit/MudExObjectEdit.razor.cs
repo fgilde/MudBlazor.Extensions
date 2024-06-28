@@ -835,15 +835,8 @@ public partial class MudExObjectEdit<T>
 
     private Task ExpandCollapse()
     {
-        var collapse = _groups[0].IsExpanded;
-        _groups.ForEach(g =>
-        {
-            if (collapse)
-                g.Collapse();
-            else
-                g.Expand();
-        });
-        return Task.CompletedTask;
+        var collapse = _groups[0].Expanded;
+        return Task.WhenAll(_groups.Select(g => collapse ? g.CollapseAsync() : g.ExpandAsync()));
     }
 
     private IDictionary<string, object> GetAttributesForPrimitive()

@@ -191,7 +191,7 @@ namespace MudBlazor.Extensions.Components
         {
             if (DisposeEvent && _jsEvent is not null)
             {
-                _jsEvent.DisposeAsync().AndForget();
+                _ = _jsEvent.DisposeAsync();
                 _jsEvent = null;
             }
         }
