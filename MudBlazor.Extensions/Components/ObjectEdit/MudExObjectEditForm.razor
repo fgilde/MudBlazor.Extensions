@@ -33,14 +33,14 @@
     protected override RenderFragment InternalToolBarContent => RenderFormActionsInToolBar ? RenderActions : null;
     
     RenderFragment RenderSaveButton() => (SaveButtonAsIconButton
-        ? @<MudIconButton OnClick="@OnSubmitButtonClick" Title="@(!string.IsNullOrWhiteSpace(SaveButtonText) ? LocalizerToUse.TryLocalize(SaveButtonText) : "")" DisableElevation Variant="@SaveButtonVariant" Icon="@SaveButtonIcon" ButtonType="@SubmitButtonType" Disabled="@(!Validated || IsLoading || IsInternalLoading)" Color="@SaveButtonColor"></MudIconButton>
-        : @<MudButton OnClick="@OnSubmitButtonClick" DisableElevation Variant="@SaveButtonVariant" EndIcon="@(SaveButtonIconAlignment == ActionAlignment.Right ? SaveButtonIcon : null)" StartIcon="@(SaveButtonIconAlignment == ActionAlignment.Left ? SaveButtonIcon : null)" ButtonType="@SubmitButtonType" Disabled="@(!Validated || IsLoading || IsInternalLoading)" Color="@SaveButtonColor">@(!string.IsNullOrWhiteSpace(SaveButtonText) ? LocalizerToUse.TryLocalize(SaveButtonText) : "")</MudButton>
+    ? @<MudIconButton OnClick="@OnSubmitButtonClick" title="@(!string.IsNullOrWhiteSpace(SaveButtonText) ? LocalizerToUse.TryLocalize(SaveButtonText) : "")" DropShadow Variant="@SaveButtonVariant" Icon="@SaveButtonIcon" ButtonType="@SubmitButtonType" Disabled="@(!Validated || IsLoading || IsInternalLoading)" Color="@SaveButtonColor"></MudIconButton>
+    : @<MudButton OnClick="@OnSubmitButtonClick" DropShadow="false" Variant="@SaveButtonVariant" EndIcon="@(SaveButtonIconAlignment == ActionAlignment.Right ? SaveButtonIcon : null)" StartIcon="@(SaveButtonIconAlignment == ActionAlignment.Left ? SaveButtonIcon : null)" ButtonType="@SubmitButtonType" Disabled="@(!Validated || IsLoading || IsInternalLoading)" Color="@SaveButtonColor">@(!string.IsNullOrWhiteSpace(SaveButtonText) ? LocalizerToUse.TryLocalize(SaveButtonText) : "")</MudButton>
     );
 
 
     RenderFragment RenderCancelButton() => (CancelButtonAsIconButton
-        ? @<MudIconButton Title="@(!string.IsNullOrWhiteSpace(CancelButtonText) ? LocalizerToUse.TryLocalize(CancelButtonText) : "")" DisableElevation Variant="@CancelButtonVariant" Icon="@CancelButtonIcon" Disabled="@(IsLoading || IsInternalLoading)" Class="mr-2" Color="@CancelButtonColor" OnClick="@Cancel"></MudIconButton>
-        : @<MudButton DisableElevation Variant="@CancelButtonVariant" EndIcon="@(CancelButtonIconAlignment == ActionAlignment.Right ? CancelButtonIcon : null)" StartIcon="@(CancelButtonIconAlignment == ActionAlignment.Left ? CancelButtonIcon : null)" Disabled="@(IsLoading || IsInternalLoading)" Class="mr-2" Color="@CancelButtonColor" OnClick="@Cancel">@(!string.IsNullOrWhiteSpace(CancelButtonText) ? LocalizerToUse.TryLocalize(CancelButtonText) : "")</MudButton>
+    ? @<MudIconButton title="@(!string.IsNullOrWhiteSpace(CancelButtonText) ? LocalizerToUse.TryLocalize(CancelButtonText) : "")" DropShadow="false" Variant="@CancelButtonVariant" Icon="@CancelButtonIcon" Disabled="@(IsLoading || IsInternalLoading)" Class="mr-2" Color="@CancelButtonColor" OnClick="@Cancel"></MudIconButton>
+    : @<MudButton DropShadow="false" Variant="@CancelButtonVariant" EndIcon="@(CancelButtonIconAlignment == ActionAlignment.Right ? CancelButtonIcon : null)" StartIcon="@(CancelButtonIconAlignment == ActionAlignment.Left ? CancelButtonIcon : null)" Disabled="@(IsLoading || IsInternalLoading)" Class="mr-2" Color="@CancelButtonColor" OnClick="@Cancel">@(!string.IsNullOrWhiteSpace(CancelButtonText) ? LocalizerToUse.TryLocalize(CancelButtonText) : "")</MudButton>
         );
 
     protected void RenderActionBar(RenderTreeBuilder __builder)

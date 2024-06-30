@@ -79,9 +79,9 @@
         return
         @<div class="@InnerItemClassStr()">
             @RenderItemContent(context, true)
-            @if(context.Item.HasChildren())
+            @if(context.Value.HasChildren())
             {
-                <MudExIconButton Size="Size.Small" OnClick="@(() => ToggleExpand(context.Item))" Icon="@ExpandedIcon" />
+                <MudExIconButton Size="Size.Small" OnClick="@(() => ToggleExpand(context.Value))" Icon="@ExpandedIcon" />
             }
         </div>;
     }

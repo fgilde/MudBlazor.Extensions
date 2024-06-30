@@ -25,6 +25,21 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     protected HierarchicalFilter<TItem> FilterManager = new();
 
     /// <summary>
+    /// Returns the filtered items as a collection of <see cref="TreeViewItemContext{TItem}"/>
+    /// </summary>
+    public IReadOnlyCollection<TreeViewItemContext<TItem>> FilteredItems
+    {
+        get
+        {
+            return FilterManager.FilteredItems().Select(n => new
+            {
+                Item = n,
+                Search = FilterManager.GetMatchedSearch(n)
+            }).Where(r => r.Search.Found).Select(res => CreateContext(res.Item, res.Search.Term)).ToHashSet();
+        }
+    }
+
+    /// <summary>
     /// Gets or Sets MudExColor BackgroundColor Property.
     /// </summary>
     [Parameter]
@@ -135,7 +150,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// </summary>
     [Parameter]
     [IgnoreOnObjectEdit]
-    public HashSet<TItem> Items
+    public IReadOnlyCollection<TItem> Items
     {
         get => FilterManager.Items;
         set => FilterManager.Items = value;
@@ -281,7 +296,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// <summary>
     /// All items flatted
     /// </summary>
-    public HashSet<TItem> FlattedItems() => FilterManager.FilteredItems().Recursive(n => n.Children ?? Enumerable.Empty<TItem>()).ToHashSet();
+    public IReadOnlyCollection<TItem> FlattedItems() => FilterManager.FilteredItems().Recursive(n => n.Children ?? Enumerable.Empty<TItem>()).ToHashSet();
 
     /// <summary>
     /// Returns true if the given node is expanded
@@ -441,7 +456,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     {
         return MudExStyleBuilder.FromStyle(ItemContentStyle)
             //.WithWidth(100, CssUnit.Percentage)
-            .WithColor(SelectedItemColor, context.IsSelected && SelectedItemColor.IsSet())
+            .WithColor(SelectedItemColor, context.Selected && SelectedItemColor.IsSet())
             .ToString();
     }
 
@@ -470,11 +485,11 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     protected virtual string ItemStyleStr(TreeViewItemContext<TItem> context, string mergeWith = "")
     {
         return MudExStyleBuilder.FromStyle(ItemStyle)
-            .WithCursor(Cursor.Pointer, IsAllowedToSelect(context.Item))
+            .WithCursor(Cursor.Pointer, IsAllowedToSelect(context.Value))
             .WithWidth(ItemWidth)
-            .WithOutline(1, BorderStyle.Solid, SelectedItemBorderColor, context.IsSelected && SelectedItemBorderColor.IsSet())
-            .WithBackgroundColor(SelectedItemBackgroundColor, context.IsSelected && SelectedItemBackgroundColor.IsSet())
-            .WithBackgroundColor(ItemBackgroundColor, !context.IsSelected && ItemBackgroundColor.IsSet())
+            .WithOutline(1, BorderStyle.Solid, SelectedItemBorderColor, context.Selected && SelectedItemBorderColor.IsSet())
+            .WithBackgroundColor(SelectedItemBackgroundColor, context.Selected && SelectedItemBackgroundColor.IsSet())
+            .WithBackgroundColor(ItemBackgroundColor, !context.Selected && ItemBackgroundColor.IsSet())
             .AddRaw(mergeWith, !string.IsNullOrEmpty(mergeWith))
             .ToString();
     }

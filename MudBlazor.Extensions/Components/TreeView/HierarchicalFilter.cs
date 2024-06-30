@@ -12,7 +12,7 @@ public class HierarchicalFilter<T>
     /// <summary>
     /// Items to filter
     /// </summary>
-    public HashSet<T> Items { get; set; }
+    public IReadOnlyCollection<T> Items { get; set; }
 
     /// <summary>
     /// Filters to apply
@@ -54,7 +54,7 @@ public class HierarchicalFilter<T>
     /// <summary>
     /// Returns filtered items only if FilterBehaviour is Flat and there are filters
     /// </summary>
-    public HashSet<T>? FilteredItems()
+    public IReadOnlyCollection<T>? FilteredItems()
     {
         if (FilterBehaviour == HierarchicalFilterBehaviour.Flat && HasFilters)
         {

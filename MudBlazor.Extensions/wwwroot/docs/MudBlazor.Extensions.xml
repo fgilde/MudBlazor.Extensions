@@ -5360,6 +5360,34 @@
         <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnInitializedAsync">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPopover.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <summary>
+            Sets the component's parameters asynchronously.
+            </summary>
+            <param name="parameters">The parameter view.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnOpenChanged(System.Boolean)">
+            <summary>
+            Handles open state change event.
+            </summary>
+            <param name="newOpenValue">The new open value.</param>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPopover.PopoverClass">
+            <summary>
+            Gets the popover class.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPopover.PopoverStyles">
+            <summary>
+            Gets the popover styles.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExPopover.OnFocusLeft(Microsoft.AspNetCore.Components.Web.PointerEventArgs)">
             <summary>
             Handles focus left event.
@@ -9487,12 +9515,12 @@
             The MudDialog instance that represents the current dialog instance that is open.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.DisableSidePadding">
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.Gutters">
             <summary>
             If set to true, remove the side padding of the dialog content.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ClassDialog">
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.DialogClass">
             <summary>
             The CSS class to apply to the dialog.
             </summary>
@@ -9502,17 +9530,17 @@
             The CSS class to apply to the content area of the dialog.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ClassDialogForm">
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.DialogFormClass">
             <summary>
             The CSS class to apply to the form element of the dialog.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ClassActions">
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ActionsClass">
             <summary>
             The CSS class to apply to the action buttons of the dialog.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ClassTitle">
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.TitleClass">
             <summary>
             The CSS class to apply to the title of the dialog.
             </summary>
@@ -13455,22 +13483,7 @@
             Context for the tree view item.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.Item">
-            <summary>
-            The item itself.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.IsSelected">
-            <summary>
-            Is true if the item is selected.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.IsExpanded">
-            <summary>
-            Is true if the item is expanded.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.IsFocused">
+        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.Focused">
             <summary>
             Is true if the item is focused.
             </summary>
@@ -13498,6 +13511,11 @@
         <member name="F:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterManager">
             <summary>
             Filter manager
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilteredItems">
+            <summary>
+            Returns the filtered items as a collection of <see cref="T:MudBlazor.Extensions.Components.TreeViewItemContext`1"/>
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.BackgroundColor">
@@ -19509,14 +19527,14 @@
             <summary>
             Returns the value of the constant in <see cref="T:MudBlazor.Icons"/> that has the specified name.
             </summary>
-            <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+            <param name="fullName">Name like MudBlazor.Icons.Material.Outlined.Search</param>
             <returns>The value</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExSvg.SvgPropertyValueForName(System.String,System.Type[])">
             <summary>
             Returns the value of the constant in <see cref="T:MudBlazor.Icons"/> that has the specified name.
             </summary>
-            <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+            <param name="fullName">Name like MudBlazor.Icons.Material.Outlined.Search</param>
             <param name="allOwnerTypes">Owner types where to search in</param>
             <returns>The value</returns>
         </member>
@@ -19524,7 +19542,7 @@
             <summary>
             Returns the value of the constant in <see cref="T:MudBlazor.Icons"/> that has the specified name.
             </summary>
-            <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+            <param name="fullName">Name like MudBlazor.Icons.Material.Outlined.Search</param>
             <param name="ownerType">Owner type to search in</param>
             <param name="ownerTypes">Other types where to search in</param>
             <returns>The value</returns>

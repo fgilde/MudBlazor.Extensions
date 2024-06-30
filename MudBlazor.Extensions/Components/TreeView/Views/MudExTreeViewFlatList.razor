@@ -33,7 +33,7 @@
     public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
     {
         return
-        @<MudListItem T="T" Value="@context.Item" Style="@ItemStyleStr(context)" Class="@ItemClassStr(context)" OnClick="@(() => NodeClick(context.Item))">
+        @<MudListItem T="T" Value="@context.Value" Style="@ItemStyleStr(context)" Class="@ItemClassStr(context)" OnClick="@(() => NodeClick(context.Value))">
              @RenderItemContent(context, true, true)
         </MudListItem>;
     }
@@ -41,7 +41,7 @@
     protected RenderFragment RenderPath(TreeViewItemContext<T> context)
     {
         return @<RenderChild Condition="@ShowPath">
-                    <MudText Style="font-size:8pt">@context.Item.GetPathString(TextFunc, PathSeparator)</MudText>
+                    <MudText Style="font-size:8pt">@context.Value.GetPathString(TextFunc, PathSeparator)</MudText>
                </RenderChild>;
     }
 

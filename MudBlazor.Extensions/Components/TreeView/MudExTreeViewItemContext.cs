@@ -6,46 +6,33 @@ namespace MudBlazor.Extensions.Components;
 /// <summary>
 /// Context for the tree view item.
 /// </summary>
-public class TreeViewItemContext<T> where T : IHierarchical<T>
+public class TreeViewItemContext<T> : TreeItemData<T>
+    where T : IHierarchical<T>
 {
-    public TreeViewItemContext(T item,
-        bool isSelected,
-        bool isExpanded,
-        bool isFocused,
+    public TreeViewItemContext(T value,
+        bool selected,
+        bool expanded,
+        bool focused,
         string search,
         MudExTreeViewBase<T> treeView,
         object tag = null,
         string highlight = null)
     {
-        Item = item;
-        IsSelected = isSelected;
-        IsExpanded = isExpanded;
-        IsFocused = isFocused;
+        Value = value;
+        Selected = selected;
+        Expanded = expanded;
+        Focused = focused;
         Search = search;
         Tag = tag;
         TreeView = treeView;
         Highlight = highlight;
     }
 
-    /// <summary>
-    /// The item itself.
-    /// </summary>
-    public T Item { get; }
-
-    /// <summary>
-    /// Is true if the item is selected.
-    /// </summary>
-    public bool IsSelected { get; }
-
-    /// <summary>
-    /// Is true if the item is expanded.
-    /// </summary>
-    public bool IsExpanded { get; }
-
+    
     /// <summary>
     /// Is true if the item is focused.
     /// </summary>
-    public bool IsFocused { get; }
+    public bool Focused { get; }
 
     /// <summary>
     /// The string that was used to search for this item.

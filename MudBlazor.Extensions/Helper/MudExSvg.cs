@@ -116,14 +116,14 @@ public static class MudExSvg
     /// <summary>
     /// Returns the value of the constant in <see cref="Icons"/> that has the specified name.
     /// </summary>
-    /// <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+    /// <param name="fullName">Name like MudBlazor.Icons.Material.Outlined.Search</param>
     /// <returns>The value</returns>
     public static string SvgPropertyValueForName(string fullName) => SvgPropertyValueForName(fullName, typeof(Icons), typeof(MudExIcons));
 
     /// <summary>
     /// Returns the value of the constant in <see cref="Icons"/> that has the specified name.
     /// </summary>
-    /// <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+    /// <param name="fullName">Name like MudBlazor.Icons.Material.Outlined.Search</param>
     /// <param name="allOwnerTypes">Owner types where to search in</param>
     /// <returns>The value</returns>
     public static string SvgPropertyValueForName(string fullName, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type[] allOwnerTypes)
@@ -138,7 +138,7 @@ public static class MudExSvg
     /// <summary>
     /// Returns the value of the constant in <see cref="Icons"/> that has the specified name.
     /// </summary>
-    /// <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+    /// <param name="fullName">Name like MudBlazor.Icons.Material.Outlined.Search</param>
     /// <param name="ownerType">Owner type to search in</param>
     /// <param name="ownerTypes">Other types where to search in</param>
     /// <returns>The value</returns>

@@ -9,7 +9,7 @@
         <MudCard @onclick="@(() => { _themeEditOpen = false; })" Style="border-width: 3px;" Class="cursor-pointer hover-border" Outlined="true">
             <MudCardHeader>
                 <CardHeaderContent>
-                    <MudCheckBox UncheckedIcon="@Icons.Material.Outlined.LightMode" CheckedIcon="@Icons.Material.Outlined.DarkMode" T="bool" CheckedChanged="@(OnDarkChange)" Checked="@IsDark" Color="Color.Inherit" Label="Dark Mode" />
+                    <MudCheckBox UncheckedIcon="@Icons.Material.Outlined.LightMode" CheckedIcon="@Icons.Material.Outlined.DarkMode" T="bool" ValueChanged="@(OnDarkChange)" Value="@IsDark" Color="Color.Inherit" Label="Dark Mode" />
                     <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(EditThemeFull)">Customize current</MudButton>
                     <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(EditAllThemes)">Create, Delete or Edit Themes</MudButton>
                 </CardHeaderContent>

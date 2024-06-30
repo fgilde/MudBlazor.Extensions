@@ -54,12 +54,12 @@
         return
         @<RenderChild>
             @if(context.Tag is true) {
-                <MudMenuItem Class="@ItemClassStr(context)" Style="@ItemStyleStr(context)" Icon="@(context.Item.HasChildren() ? null : null)" OnClick="@(() => NodeClick(context.Item))">
+                <MudMenuItem Class="@ItemClassStr(context)" Style="@ItemStyleStr(context)" Icon="@(context.Value.HasChildren() ? null : null)" OnClick="@(() => NodeClick(context.Value))">
                     @RenderItemContent(context, true)
                 </MudMenuItem>
             } 
             else{
-                <div class="@ItemClassStr(context)" style="@ItemStyleStr(context)" @onclick="() => NodeItemClick(context.Item)">
+                <div class="@ItemClassStr(context)" style="@ItemStyleStr(context)" @onclick="() => NodeItemClick(context.Value)">
                     @RenderItemContent(context, true)
                 </div>
             }

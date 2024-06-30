@@ -2,15 +2,15 @@
 @using MudBlazor.Extensions.Helper
 @typeparam T
 
-<EditForm class="@($"{ClassDialogForm}")" Model="@Value" OnValidSubmit="@OnSubmit">
-    <MudDialog Class="@($"mud-ex-dialog-initial {ClassDialog}")" ContentClass="@ContentClass"
-               ClassActions="@ClassActions"
+<EditForm class="@($"{DialogFormClass}")" Model="@Value" OnValidSubmit="@OnSubmit">
+    <MudDialog Class="@($"mud-ex-dialog-initial {DialogClass}")" ContentClass="@ContentClass"
+               ActionsClass="@ActionsClass"
                ContentStyle="@ContentStyle"
                Style="@DialogStyle"
                DefaultFocus="@DefaultFocus"
-               DisableSidePadding="@DisableSidePadding">
+               Gutters="@Gutters">
         <TitleContent>
-            <MudText Class="@ClassTitle" Typo="Typo.h6">
+            <MudText Class="@TitleClass" Typo="Typo.h6">
                 <MudExIcon Color="@DialogIconColor" Icon="@DialogIcon" Class="mr-3 mb-n1" />
                 @MudDialog.Title
             </MudText>

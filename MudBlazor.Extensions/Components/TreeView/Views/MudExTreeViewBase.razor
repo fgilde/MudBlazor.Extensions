@@ -32,7 +32,7 @@
     {
         if (checkTemplate && ItemContentTemplate != null)
             return ItemContentTemplate(context);
-        var text = TextFunc(context.Item);
+        var text = TextFunc(context.Value);
         return 
         @<RenderChild>
             @if (!string.IsNullOrEmpty(context.Highlight))
@@ -45,7 +45,7 @@
             }
             else
             {
-                <MudText Class="@ItemContentClassStr(context)" Style="@ItemContentStyleStr(context)">@TextFunc(context.Item)</MudText>
+                <MudText Class="@ItemContentClassStr(context)" Style="@ItemContentStyleStr(context)">@TextFunc(context.Value)</MudText>
             }
         </RenderChild>;
     }
