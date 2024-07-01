@@ -47,7 +47,8 @@ public class HierarchicalFilter<T>
     private bool MatchesFilter(T node, string text)
     {
         var textFn = TextFunc ?? (n => n?.ToString());
-        var matchFn = MatchFunc ?? ((n, t) => textFn(n).Contains(t, StringComparison.OrdinalIgnoreCase));
+        var textNode = textFn(node);
+        var matchFn = MatchFunc ?? ((n, t) => textNode.Contains(t, StringComparison.OrdinalIgnoreCase));
         return matchFn(node, text);
     }
 
@@ -58,8 +59,9 @@ public class HierarchicalFilter<T>
     {
         if (FilterBehaviour == HierarchicalFilterBehaviour.Flat && HasFilters)
         {
+            var filters = Filters.EmptyIfNull().Concat(new []{Filter}).Where(f => !string.IsNullOrEmpty(f)).Distinct();
             return Items.Recursive(e => e?.Children ?? Enumerable.Empty<T>()).Where(e =>
-                    Filters.Any(filter => MatchesFilter(e, filter)))
+                    filters.Any(filter => MatchesFilter(e, filter)))
                 .ToHashSet();
         }
         return Items;

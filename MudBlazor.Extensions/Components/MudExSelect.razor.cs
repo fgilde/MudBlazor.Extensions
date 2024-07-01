@@ -308,7 +308,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     public virtual string TemplateClass { get; set; }
 
     /// <summary>
-    /// If true the active (hilighted) item select on tab key. Designed for only single selection. Default is true.
+    /// If true the active (highlighted) item select on tab key. Designed for only single selection. Default is true.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Selecting)]
@@ -903,8 +903,8 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
                 TargetClass = "mud-input-control",
                 Keys = {
                         new KeyOptions { Key=" ", PreventDown = "key+none" }, //prevent scrolling page, toggle open/close
-                        new KeyOptions { Key="ArrowUp", PreventDown = "key+none" }, // prevent scrolling page, instead hilight previous item
-                        new KeyOptions { Key="ArrowDown", PreventDown = "key+none" }, // prevent scrolling page, instead hilight next item
+                        new KeyOptions { Key="ArrowUp", PreventDown = "key+none" }, // prevent scrolling page, instead highlight previous item
+                        new KeyOptions { Key="ArrowDown", PreventDown = "key+none" }, // prevent scrolling page, instead highlight next item
                         new KeyOptions { Key="Home", PreventDown = "key+none" },
                         new KeyOptions { Key="End", PreventDown = "key+none" },
                         new KeyOptions { Key="Escape" },

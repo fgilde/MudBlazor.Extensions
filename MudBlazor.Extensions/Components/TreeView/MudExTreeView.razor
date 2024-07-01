@@ -1,5 +1,40 @@
 ﻿@typeparam T
+@using MudBlazor.Extensions.Core.Enums
 @inherits MudExTreeViewBase<T>
 @namespace MudBlazor.Extensions.Components
 
 <DynamicComponent Type="@GetComponentForViewMode()" Parameters="@GetParameters()"/>
+
+@code
+{
+    private RenderFragment ToggleComponent()
+    {
+        return @<RenderChild Condition="@(ToggleableViewModes?.Any() == true && TreeViewModeToggleComponent != TreeViewModeToggleComponent.None)">
+            @if (TreeViewModeToggleComponent == TreeViewModeToggleComponent.ButtonGroup)
+            {
+                <MudButtonGroup Class="mr-2" Size="Size.Small" Color="Color.Primary" Variant="Variant.Outlined">
+                    @foreach (var mode in ToggleableViewModes)
+                    {
+                        @ToggleButtonFor(mode)
+                    }
+                </MudButtonGroup>
+            }else if (TreeViewModeToggleComponent == TreeViewModeToggleComponent.ToggleButton )
+            {
+                var indexOfCurrentMode = (Math.Max(Array.IndexOf(ToggleableViewModes, ViewMode), 0) + 1);
+                if (indexOfCurrentMode >= ToggleableViewModes.Length)
+                {
+                    indexOfCurrentMode = 0;
+                }
+                var nextMode = ToggleableViewModes.ElementAtOrDefault(indexOfCurrentMode);
+                @ToggleButtonFor(nextMode)
+            }
+        </RenderChild>;
+    }
+
+    private RenderFragment ToggleButtonFor(TreeViewMode mode)
+    {
+        return @<MudTooltip Text="@(TryLocalize("Toggle to {0}", mode))">
+                    <MudExIconButton Color="@(mode == ViewMode ? Color.Secondary : Color.Default)" OnClick="@(() => ViewMode = mode)" Icon="@IconFor(mode)"></MudExIconButton>
+               </MudTooltip>;
+    }
+}

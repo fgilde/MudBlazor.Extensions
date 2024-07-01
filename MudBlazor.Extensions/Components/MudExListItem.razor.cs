@@ -42,14 +42,14 @@ public partial class MudExListItem<T>
     {
         var builder = new MudExCssBuilder("mud-ex-list-item")
             .AddClass("mud-ex-list-item-dense", Dense == true || MudExList?.Dense == true)
-            .AddClass("mud-ex-list-item-gutters", !DisableGutters && !(MudExList?.DisableGutters == true))
+            .AddClass("mud-ex-list-item-gutters", Gutters && MudExList?.Gutters == true)
             .AddClass("mud-ex-list-item-clickable", MudExList?.Clickable == true)
-            .AddClass("mud-ripple", MudExList?.Clickable == true && !DisableRipple && !Disabled && !IsFunctional);
+            .AddClass("mud-ripple", MudExList?.Clickable == true && Ripple && !Disabled && !IsFunctional);
         if (MudExList?.Color.IsColor == true) 
         {             
             builder.AddClass($"mud-selected-item mud-{MudExList?.Color.AsColor.GetDescription()}-text mud-{MudExList?.Color.AsColor.GetDescription()}-hover", MudExList != null && _selected && !Disabled && NestedList == null && !MudExList.DisableSelectedItemStyle);
         }
-        builder.AddClass("mud-ex-list-item-hilight", _active && !Disabled && NestedList == null && !IsFunctional)
+        builder.AddClass("mud-ex-list-item-highlight", _active && !Disabled && NestedList == null && !IsFunctional)
         .AddClass("mud-ex-list-item-disabled", Disabled)
         .AddClass("mud-ex-list-item-nested-background", MudExList != null && MudExList.SecondaryBackgroundForNestedItemHeader && NestedList != null)
         .AddClass("mud-list-item-functional", IsFunctional)
@@ -161,14 +161,14 @@ public partial class MudExListItem<T>
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Appearance)]
-    public bool DisableGutters { get; set; }
+    public bool Gutters { get; set; } = true;
 
     /// <summary>
     /// If true, disables ripple effect.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Appearance)]
-    public bool DisableRipple { get; set; }
+    public bool Ripple { get; set; } = true;
 
     /// <summary>
     /// Overriden component for multi selection. Keep it null to have default one that MudList has.

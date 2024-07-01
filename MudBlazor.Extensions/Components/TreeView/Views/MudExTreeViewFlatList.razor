@@ -47,14 +47,19 @@
 
     protected RenderFragment RenderItemContent(TreeViewItemContext<T> context, bool checkTemplate, bool path)
     {
-        if (checkTemplate && ItemContentTemplate != null)
-            return ItemContentTemplate(context);
         return @<RenderChild>
-                    @base.RenderItemContent(context, checkTemplate)
-                    @if (path)
-                    {
-                        @RenderPath(context)
-                    }
+                   @if (checkTemplate && ItemContentTemplate != null)
+                   {
+                       @ItemContentTemplate(context)
+                   }
+                   else
+                   {
+                       @base.RenderItemContent(context, checkTemplate)
+                   }
+                   @if (path)
+                   {
+                       @RenderPath(context)
+                   }
                </RenderChild>;
     }
 

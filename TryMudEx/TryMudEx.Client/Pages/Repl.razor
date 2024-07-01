@@ -88,7 +88,7 @@
             }
         </div>
         <MudSpacer />
-        <MudButton DropShadow="false" DisableRipple="true" OnClick="@ReloadIframe">Reload</MudButton>
+        <MudButton DropShadow="false" Ripple="false" OnClick="@ReloadIframe">Reload</MudButton>
         <MudDivider Vertical="true" Class="mr-1" />
         @foreach (var package in _installedPackages.Take(_maxPackagesInStatusBar))
         {

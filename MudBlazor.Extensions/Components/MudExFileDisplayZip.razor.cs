@@ -5,6 +5,7 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Core.Enums;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
@@ -26,10 +27,11 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     private string _innerPreviewUrl;
     private Stream _innerPreviewStream;
     private IList<IArchivedBrowserFile> _zipEntries;    
-    //private HashSet<ArchiveStructure> _zipStructure;
-    private IReadOnlyCollection<MudExArchiveStructure> _zipStructure;
+    private HashSet<MudExArchiveStructure> _zipStructure;
     private string _contentType;
-    
+
+    private MudExTreeView<MudExArchiveStructure> _treeView;
+
     [Inject] private MudExFileService FileService { get; set; }
 
     /// <inheritdoc />
@@ -134,7 +136,18 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     /// True to display structure as tree
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
-    public bool ShowAsTree { get; set; } = true;
+    [Obsolete("Use ViewMode instead")]
+    public bool ShowAsTree
+    {
+        get => ViewMode == TreeViewMode.Default;
+        set => ViewMode = value ? TreeViewMode.Default : TreeViewMode.FlatList;
+    }
+
+    /// <summary>
+    /// True to display structure as tree
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public TreeViewMode ViewMode { get; set; } = TreeViewMode.Default;
 
     /// <summary>
     /// If true user can toggle between flat and tree view
@@ -352,31 +365,14 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         structure.IsDownloading = isDownloading;
         StateHasChanged();
     }
+    
 
-    private bool IsInSearch(IArchivedBrowserFile entry)
-        => string.IsNullOrEmpty(SearchString) || entry.FullName.Contains(SearchString, StringComparison.OrdinalIgnoreCase);
-
-    private bool IsInSearch(MudExArchiveStructure context)
-    {
-        var allFilters = (!string.IsNullOrEmpty(SearchString) ? new[] { SearchString } : Enumerable.Empty<string>()).Concat(Filters ?? Enumerable.Empty<string>()).Distinct().ToList();
-        if (allFilters.Count == 0 || allFilters.All(string.IsNullOrEmpty))
-            return true;
-        return allFilters.Any(filter => string.IsNullOrEmpty(filter) || context.Name.Contains(filter, StringComparison.OrdinalIgnoreCase))
-               || context.Children?.Any(IsInSearch) == true;
-    }
-
-
-    private Task ExpandCollapse()
-    {
-        _zipStructure.Recursive(s => s.Children ?? Enumerable.Empty<MudExArchiveStructure>()).Where(s => s != null).Apply(s => s.IsExpanded = !s.IsExpanded);
-        return Task.CompletedTask;
-    }
     private string ToolbarStyle()
     {
-        var res = string.Empty;
-        if (StickyToolbar && !string.IsNullOrWhiteSpace(StickyToolbarTop))
-            res += $"top: {StickyToolbarTop};";
-        return res;
+        return MudExStyleBuilder.Default
+            .WithBackgroundColor(Color.Surface)
+            .WithTop(StickyToolbarTop, StickyToolbar && !string.IsNullOrWhiteSpace(StickyToolbarTop))
+            .Style;
     }
 
     private Task Select(MudExArchiveStructure structure, MouseEventArgs args) => structure.IsDirectory ? Task.CompletedTask : Select(structure.BrowserFile, args);

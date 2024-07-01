@@ -1,19 +1,13 @@
-@using MudBlazor.Extensions.Helper
-@using Nextended.Blazor.Extensions
-@using MudBlazor
-@using MudBlazor.Extensions.Components
 @using MudBlazor.Extensions.Components.ObjectEdit
-@using MudBlazor.Extensions.Components.ObjectEdit.Options
-@using Microsoft.AspNetCore.Components
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Core.Enums
-@using Nextended.Blazor.Models
 
 @inherits MudExBaseComponent<MudExFileDisplayZip>
 
 @if (_innerPreview != null)
 {
     <MudExFileDisplay FallBackInIframe="@FallBackInIframe"
+                      Localizer="@Localizer"
                       CanClose="true"
                       ElementId="@ElementId"
                       OnCloseClick="@(ClosePreview)"
@@ -44,176 +38,66 @@ else
         }
         else
         {
-            <MudPaper Class="@($"{ToolBarPaperClass} {(StickyToolbar ? "mud-ex-toolbar-sticky" : "")}")" Style="@ToolbarStyle()">
-                <MudToolBar Dense="@Dense" Class="@($"mb-2")">
-                    @if (AllowToggleTree)
-                    {
-                        <MudToggleIconButton @bind-Toggled="@ShowAsTree"
-                                             Icon="@Icons.Material.Filled.AccountTree"
-                                             ToggledIcon="@Icons.Material.Filled.List" />
-                        <span>@(ShowAsTree ? TryLocalize("Show flat") : TryLocalize("Show as Tree"))</span>
-                    }
-                    <MudSpacer />
+            <MudExTreeView ToolBarClass="@($"{ToolBarPaperClass} {(StickyToolbar ? "mud-ex-toolbar-sticky" : "")}")"
+                           @ref="_treeView"
+                           @bind-Filters="Filters"
+                           @bind-Filter="SearchString"
+                           InitiallyExpanded="true"
+                           
+                           Parameters="@(new Dictionary<string, object> {{nameof(MudExTreeViewList<MudExArchiveStructure>.RootName), RootFolderName}})"
+                           ToolBarStyle="@ToolbarStyle()"
+                           ToggleableViewModes="new [] { TreeViewMode.Default , TreeViewMode.List, TreeViewMode.FlatList}"
+                           TreeViewModeToggleComponent="@(AllowToggleTree ? TreeViewModeToggleComponent.ToggleButton : TreeViewModeToggleComponent.None)"
+                           Dense="@Dense"
+                           @bind-ViewMode="ViewMode"
+                           FilterBehaviour="HierarchicalFilterBehaviour.Default"
+                           FilterMode="PropertyFilterMode.Toggleable"
+                           TextFunc="@(i => i.Name)" Items="@_zipStructure">
+                <ItemContentTemplate>
+                    <MudAlert NoIcon="true"
+                              OnClick="(a) => Select(context.Value, a)"
+                              Severity="@((IsSelected(context.Value?.BrowserFile) ? Severity.Warning : Severity.Normal))"
+                              Square="true"
+                              Dense="@Dense"
+                              Variant="Variant.Text"
+                              Style="width: 100%"
+                              Class="mud-ex-file-display-tree p-0 mr-1 ml-1 mud-alert-message-w-100 mud-alert-message-mt-5">
 
-                    <MudExToggleableSearch MultiSearch="true" @bind-Filters="@Filters" @bind-Filter="@SearchString" SearchButtonColor="@(string.IsNullOrWhiteSpace(SearchString) ? Color.Default : Color.Warning)" FilterMode="@FilterMode" />
-
-                    @if (ShowAsTree)
-                    {
-                        <MudTooltip Text="@TryLocalize("Expand/Collapse")">
-                            <MudIconButton Icon="@Icons.Material.Filled.Expand" OnClick="@(ExpandCollapse)" />
-                        </MudTooltip>
-                    }
-                </MudToolBar>
-            </MudPaper>
-
-            @if (ShowAsTree)
-            {
-                <MudExTreeView ViewMode="TreeViewMode.Default" FilterMode="PropertyFilterMode.AlwaysVisible" TextFunc="@(i => i.Name)" Items="@_zipStructure">
-                    <ItemContentTemplate>
-                        @if (IsInSearch(context.Value))
-                        {
-                            <MudAlert NoIcon="true"
-                                      OnClick="(a) => Select(context.Value, a)"
-                                      Severity="@((IsSelected(context.Value?.BrowserFile) ? Severity.Warning : Severity.Normal))"
-                                      Square="true"
-                                      Dense="@Dense"
-                                      Variant="Variant.Text"
-                                      Style="width: 100%"
-                                      Class="mud-ex-file-display-tree p-0 mr-1 ml-1 mud-alert-message-w-100 mud-alert-message-mt-5">
-
-                                <div style="display: flex; align-items: center;">
-                                    <MudExIcon Class="mr-3" Color="@(ColorizeIcons ? context.Value.Color : IconColor)" Icon="@context.Value.Icon"/>
-                                    <MudText>
-                                        <p>
-                                            <MudHighlighter Text="@context.Value.Name" HighlightedText="@SearchString"/>
-                                            @if (context.Value.IsDirectory)
-                                            {
-                                                <span class="mud-ex-fd-child-count-label">@context.Value.Children.Count</span>
-                                            }
-                                        </p>
-
-                                        <p class="mud-ex-fd-size-display">@Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(context.Value.Size, LocalizerToUse, true)</p>
-                                    </MudText>
-                                </div>
-                                <span style="float: right; margin-top: -35px;" class="mud-ex-fd-tree-actions">
-                                    @if (!context.Value.IsDirectory && AllowPreview)
+                        <div style="display: flex; align-items: center;">
+                            <MudExIcon Class="mr-3" Color="@(ColorizeIcons ? context.Value.Color : IconColor)" Icon="@context.Value.Icon" />
+                            <MudText>
+                                <p>
+                                    <MudHighlighter Text="@context.Value.Name" HighlightedText="@context.Highlight" />
+                                    @if (context.Value.IsDirectory)
                                     {
-                                        <MudTooltip Placement="Placement.Left" Delay="600" Color="Color.Primary" Text="@($"{TryLocalize("Preview")} ({context.Value.Name})")">
-                                            <MudIconButton OnClick="@(() => Preview(context.Value.BrowserFile))" Icon="@Icons.Material.Filled.ZoomIn" Color="@ActionButtonColor" Size="Size.Medium"/>
-                                        </MudTooltip>
+                                        <span class="mud-ex-fd-child-count-label">@context.Value.Children.Count</span>
                                     }
-                                    @if (AllowDownload)
-                                    {
-                                        <MudTooltip Placement="Placement.Right" Delay="600" Color="Color.Primary" Text="@($"{TryLocalize("Download")} ({context.Value.Name})")">
-                                            <MudMenu @ref="_downloadMenu" Style="margin-left: 10px;" Disabled="@context.Value.IsDownloading" Icon="@(context.Value.IsDownloading ? Icons.Material.Filled.Downloading : Icons.Material.Filled.Download)" Color="@ActionButtonColor" Size="Size.Medium" Dense="true">
-                                                <MudListItem Value="@context.Value" Text="@DownloadText(context.Value, false)" Icon="@Icons.Material.Filled.FileDownload" OnClick="@(() => DownloadAsync(context.Value, false))"/>
-                                                <MudListItem Value="@context.Value" Text="@DownloadText(context.Value, true)" Icon="@Icons.Material.Filled.Archive" OnClick="@(() => DownloadAsync(context.Value, true))"/>
-                                            </MudMenu>
-                                        </MudTooltip>
-                                    }
-                                </span>
-                            </MudAlert>
-                        }
-                    </ItemContentTemplate>
-                </MudExTreeView>
-               @*  <MudTreeView Dense="@Dense" Style="width: 100%" T="MudExArchiveStructure" Items="@_zipStructure">
-                    <ItemTemplate>
-                        @if (IsInSearch(context))
-                        {
-                            <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.Children" Icon="@context.Icon" Text="@context.Name" EndText="2" EndTextTypo="@Typo.caption">
-                                <Content>
-                                    <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChildren" />
+                                </p>
 
-                                    <MudAlert NoIcon="true"
-                                              OnClick="(a) => Select(context, a)"
-                                              Severity="@((IsSelected(context.BrowserFile) ? Severity.Warning : Severity.Normal))"
-                                              Square="true"
-                                              Dense="@Dense"
-                                              Variant="Variant.Text"
-                                              Style="width: 100%"
-                                              Class="mud-ex-file-display-tree p-0 mr-1 ml-1 mud-alert-message-w-100 mud-alert-message-mt-5">
-                                         
-                                        <div style="display: flex; align-items: center;">
-                                            <MudExIcon Class="mr-3" Color="@(ColorizeIcons ? context.Color : IconColor)" Icon="@context.Icon" />
-                                             <MudText>
-                                                <p>
-                                                    <MudHighlighter Text="@context.Name" HighlightedText="@SearchString" />
-                                                    @if (context.IsDirectory)
-                                                    {
-                                                        <span class="mud-ex-fd-child-count-label">@context.Children.Count</span>
-                                                    }
-                                                </p>
+                                <p class="mud-ex-fd-size-display">@Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(context.Value.Size, LocalizerToUse, true)</p>
+                            </MudText>
+                        </div>
+                        <span style="float: right; margin-top: -35px;" class="mud-ex-fd-tree-actions">
+                            @if (!context.Value.IsDirectory && AllowPreview)
+                            {
+                                <MudTooltip Placement="Placement.Left" Delay="600" Color="Color.Primary" Text="@($"{TryLocalize("Preview")} ({context.Value.Name})")">
+                                    <MudIconButton OnClick="@(() => Preview(context.Value.BrowserFile))" Icon="@Icons.Material.Filled.ZoomIn" Color="@ActionButtonColor" Size="Size.Medium" />
+                                </MudTooltip>
+                            }
+                            @if (AllowDownload)
+                            {
+                                <MudTooltip Placement="Placement.Right" Delay="600" Color="Color.Primary" Text="@($"{TryLocalize("Download")} ({context.Value.Name})")">
+                                    <MudMenu @ref="_downloadMenu" Style="margin-left: 10px;" Disabled="@context.Value.IsDownloading" Icon="@(context.Value.IsDownloading ? Icons.Material.Filled.Downloading : Icons.Material.Filled.Download)" Color="@ActionButtonColor" Size="Size.Medium" Dense="@Dense">
+                                        <MudMenuItem Icon="@Icons.Material.Filled.FileDownload" OnClick="@(() => DownloadAsync(context.Value, false))">@DownloadText(context.Value, false) </MudMenuItem>
+                                        <MudMenuItem Icon="@Icons.Material.Filled.Archive" OnClick="@(() => DownloadAsync(context.Value, true))">@DownloadText(context.Value, true) </MudMenuItem>
+                                    </MudMenu>
+                                </MudTooltip>
+                            }
+                        </span>
+                    </MudAlert>
+                </ItemContentTemplate>
+            </MudExTreeView>
 
-                                                <p class="mud-ex-fd-size-display">@Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(context.Size, LocalizerToUse, true)</p>
-                                            </MudText>
-                                        </div>
-                                        <span style="float: right; margin-top: -35px;" class="mud-ex-fd-tree-actions">
-                                            @if (!context.IsDirectory && AllowPreview)
-                                            {
-                                                <MudTooltip Placement="Placement.Left" Delay="600" Color="Color.Primary" Text="@($"{TryLocalize("Preview")} ({context.Name})")">
-                                                    <MudIconButton OnClick="@(() => Preview(context.BrowserFile))" Icon="@Icons.Material.Filled.ZoomIn" Color="@ActionButtonColor" Size="Size.Medium" />
-                                                </MudTooltip>
-                                            }
-                                            @if (AllowDownload)
-                                            {
-                                                <MudTooltip Placement="Placement.Right" Delay="600" Color="Color.Primary" Text="@($"{TryLocalize("Download")} ({context.Name})")">
-                                                    <MudMenu @ref="_downloadMenu" Style="margin-left: 10px;" Disabled="@context.IsDownloading" Icon="@(context.IsDownloading ? Icons.Material.Filled.Downloading : Icons.Material.Filled.Download)" Color="@ActionButtonColor" Size="Size.Medium" Dense="true">
-                                                        <MudListItem Text="@DownloadText(context, false)" Icon="@Icons.Material.Filled.FileDownload" OnClick="@(() => DownloadAsync(context, false))" />
-                                                        <MudListItem Text="@DownloadText(context, true)" Icon="@Icons.Material.Filled.Archive" OnClick="@(() => DownloadAsync(context, true))" />
-                                                    </MudMenu>
-                                                </MudTooltip>
-                                            }
-                                        </span>
-                                    </MudAlert>
-
-                                </Content>
-                            </MudTreeViewItem>
-                        }
-                    </ItemTemplate>
-                </MudTreeView> *@
-            }
-            else
-            {
-                <MudVirtualize Enabled="@Virtualize" Context="entry" Items="@_zipEntries">
-                    @if (IsInSearch(entry))
-                    {
-                        <MudItem xs="12">
-                            <MudItem>
-                                <MudAlert NoIcon="true"
-                                          OnClick="(a) => Select(entry, a)"
-                                          Severity="@((IsSelected(entry) ? Severity.Warning : Severity.Normal))"
-                                          Square="true"
-                                          Dense="@Dense"
-                                          Variant="Variant.Outlined"
-                                          Class="mud-ex-file-display-flat mt-1 mr-1 ml-1 mud-alert-message-w-100 mud-alert-message-mt-5">
-
-                                    <div style="display: flex; align-items: center;">
-                                        <MudExIcon Class="mr-3" Color="@(ColorizeIcons ? entry.GetPreferredColor() : IconColor)" Icon="@entry.GetIcon()" />
-                                        <div>
-                                            <MudHighlighter Text="@entry.FullName" HighlightedText="@SearchString" />
-                                            <p class="mud-ex-fd-size-display" style="width: 300px;">@entry.GetReadableFileSize(LocalizerToUse, true)</p>
-                                        </div>
-                                    </div>
-                                    <span style="float: right; margin-top: -35px;">
-                                        @if (AllowPreview)
-                                        {
-                                            <MudTooltip Placement="Placement.Left" Delay="600" Color="Color.Primary" Text="@($"{TryLocalize("Preview")} ({entry.Name})")">
-                                                <MudIconButton OnClick="@(() => Preview(entry))" Icon="@Icons.Material.Filled.ZoomIn" Color="@ActionButtonColor" Size="Size.Medium" />
-                                            </MudTooltip>
-                                        }
-                                        @if (AllowDownload)
-                                        {
-                                            <MudTooltip Placement="Placement.Left" Delay="600" Color="Color.Primary" Text="@($"{TryLocalize("Download")} ({entry.Name})")">
-                                                <MudIconButton OnClick="@(() => DownloadAsync(entry))" Icon="@(Icons.Material.Filled.Download)" Color="@ActionButtonColor" Size="Size.Medium" />
-                                            </MudTooltip>
-                                        }
-                                    </span>
-                                </MudAlert>
-                            </MudItem>
-                        </MudItem>
-                    }
-                </MudVirtualize>
-            }
         }
     </div>
 }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
 
-    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <ImplicitUsings>enable</ImplicitUsings>
 
@@ -78,7 +78,7 @@
     <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="MudBlazor" Version="7.0.0-rc.2" />
+    <PackageReference Include="MudBlazor" Version="7.0.0" />
     <PackageReference Include="BlazorParameterCastingMagic" Version="1.2.23060811" />
     <PackageReference Include="SharpCompress" Version="0.37.2" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />

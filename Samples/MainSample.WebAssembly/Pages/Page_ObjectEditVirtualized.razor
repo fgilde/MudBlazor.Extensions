@@ -9,7 +9,7 @@
 
 
 <DemoComponent DocFiles="@(new[] {"Docs/ObjectEdit.md"})" PageType="@GetType()">
-    <MudGrid>
+    <MudGrid Style="margin-top: 20px;margin-left: -6px;margin-bottom: 3px;">
         <MudCheckBox @bind-Value="@virtualize">Virtualize</MudCheckBox>
         <MudCheckBox @bind-Value="@disableGrouping">Disable Grouping</MudCheckBox>
     </MudGrid>

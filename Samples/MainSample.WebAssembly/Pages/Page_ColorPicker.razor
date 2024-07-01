@@ -8,7 +8,7 @@
 <DemoComponent PageType="@GetType()">
     <SplitContainer>
         <Left>
-            <MudExColorPicker DisableToolbar="false" @bind-Value="@color" @ref="component"></MudExColorPicker>
+            <MudExColorPicker ShowToolbar="true" @bind-Value="@color" @ref="component"></MudExColorPicker>
         </Left>
         <Right>
             <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>

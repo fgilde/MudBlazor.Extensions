@@ -66,7 +66,7 @@
                     <MudExPopover Animation="MudBlazor.Extensions.Options.AnimationType.Scale" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" OnBlur="@( () => _viewModePopoverOpen = false)" SelectorsForIgnoreBlur=".view_mode_toggle" @bind-Open="_viewModePopoverOpen">
                         @foreach (var mode in Enum.GetValues<CodeViewMode>())
                         {
-                            <MudHidden IsHiddenChanged="@(hidden => CheckHidden(hidden, mode))" Breakpoint="@(mode.GetAttribute<HiddenAttribute>()?.Breakpoint ?? Breakpoint.None)" Invert="@(mode.GetAttribute<HiddenAttribute>()?.Invert ?? false)">
+                            <MudHidden HiddenChanged="@(hidden => CheckHidden(hidden, mode))" Breakpoint="@(mode.GetAttribute<HiddenAttribute>()?.Breakpoint ?? Breakpoint.None)" Invert="@(mode.GetAttribute<HiddenAttribute>()?.Invert ?? false)">
                                 <MudTooltip Text="@(mode.GetAttribute<DescriptionAttribute>()?.Description)">
                                     <MudIconButton OnClick="@(() => { _lastModeBeforeAutoChanged = null; ViewMode = mode; _viewModePopoverOpen = false; })" Color="@ViewModeColor(mode)" Icon="@(mode.GetAttribute<IconAttribute>()?.IconName)" Class="rounded-0 py-1 px-2" />
                                 </MudTooltip>

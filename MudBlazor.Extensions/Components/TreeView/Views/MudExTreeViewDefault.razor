@@ -6,7 +6,13 @@
 <MudTreeView T="T" Class="@Class" Style="@StyleStr()" Hover="true" Items="@FilteredItems" Dense="@Dense">
     <ItemTemplate>
         @{
-            @ItemRender(context as TreeViewItemContext<T>)
+            // TODO: Can in general removed but we need a statechange after filtering to update items
+            var search = FilterManager.GetMatchedSearch(context.Value);
+            if (search.Found)
+            {
+                // @ItemRender(context as TreeViewItemContext<T>)
+                @ItemRender(CreateContext(context.Value, search.Term ))
+            }
         }
     </ItemTemplate>
 </MudTreeView>
@@ -24,7 +30,7 @@
     public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
     {
         return
-            @<MudTreeViewItem Expanded="@context.Expanded"
+            @<MudTreeViewItem @bind-Expanded="@context.Expanded"
                               T="T"
                               Style="@ItemStyleStr(context)"
                               Class="@ItemClassStr(context)"

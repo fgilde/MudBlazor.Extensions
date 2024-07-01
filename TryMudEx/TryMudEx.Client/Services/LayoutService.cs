@@ -25,11 +25,11 @@ public class LayoutService
 
     public MudTheme Theme { get; private set; } = new()
     {
-        Palette = new PaletteLight
+        PaletteLight = new PaletteLight
         {
             Primary = "#199b90",
             AppbarBackground = "#199b90",
-            Background = Colors.Grey.Lighten5,
+            Background = Colors.Gray.Lighten5,
             DrawerBackground = "#FFF",
             DrawerText = "rgba(0,0,0, 0.7)",
             Success = "#19635d"

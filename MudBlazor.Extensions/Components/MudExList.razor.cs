@@ -395,7 +395,7 @@ public partial class MudExList<T> : IDisposable
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Appearance)]
-    public bool DisableGutters { get; set; }
+    public bool Gutters { get; set; } = true;
 
     /// <summary>
     /// If true, will disable the list item if it has onclick.
@@ -1292,7 +1292,7 @@ public partial class MudExList<T> : IDisposable
     #endregion
 
 
-    #region Active (Hilight)
+    #region Active (highlight)
 
     /// <summary>
     /// Returns the index of the active item.

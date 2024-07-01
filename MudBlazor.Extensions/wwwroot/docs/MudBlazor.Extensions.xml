@@ -3035,6 +3035,11 @@
             True to display structure as tree
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ViewMode">
+            <summary>
+            True to display structure as tree
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.AllowToggleTree">
             <summary>
             If true user can toggle between flat and tree view
@@ -4547,7 +4552,7 @@
             If true, compact vertical padding will be applied to all list items.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExList`1.DisableGutters">
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.Gutters">
             <summary>
             If true, the left and right padding is removed on all list items.
             </summary>
@@ -4964,12 +4969,12 @@
             The value can be overridden by the parent list.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.DisableGutters">
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.Gutters">
             <summary>
             If true, the left and right padding is removed.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.DisableRipple">
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.Ripple">
             <summary>
             If true, disables ripple effect.
             </summary>
@@ -5134,7 +5139,7 @@
             The child render fragment.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.DisableGutters">
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.Gutters">
             <summary>
             Disables the left and right spaces.
             </summary>
@@ -5703,7 +5708,7 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SelectValueOnTab">
             <summary>
-            If true the active (hilighted) item select on tab key. Designed for only single selection. Default is true.
+            If true the active (highlighted) item select on tab key. Designed for only single selection. Default is true.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.NoWrap">
@@ -13473,6 +13478,21 @@
             Mode controls how the tree view will be rendered.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.ViewModeChanged">
+            <summary>
+            Invoked when the view mode changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.ToggleableViewModes">
+            <summary>
+            Here you can specify between which view modes the user can toggle.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.TreeViewModeToggleComponent">
+            <summary>
+            Specify if and how the view mode can be toggled.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.Parameters">
             <summary>
             Parameters for the component based on ViewMode. 
@@ -13648,6 +13668,11 @@
             Behaviour for the filtering
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ToolBarContent">
+            <summary>
+            Additional content for the toolbar
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemTemplate">
             <summary>
             Full item template if this is set you need to handle the outer items based on ViewMode on your own. 
@@ -13758,6 +13783,14 @@
             <summary>
             Set to true to allow selection of nodes with children
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.InitiallyExpanded">
+            <summary>
+            Set to true to allow selection of nodes with children
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.OnAfterRender(System.Boolean)">
+            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.NodeClick(`0)">
             <summary>
@@ -19458,6 +19491,14 @@
             <summary>
             Static Utility class for SVG
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.RotateSvg(System.String,System.Single)">
+            <summary>
+            Rotates an SVG by the specified degrees.
+            </summary>
+            <param name="svgContent">The SVG content to rotate.</param>
+            <param name="degrees">The degrees to rotate the SVG.</param>
+            <returns>A new SVG string with the rotation applied.</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExSvg.RemoveFillColors(System.String)">
             <summary>

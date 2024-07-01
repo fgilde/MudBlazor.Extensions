@@ -12,8 +12,12 @@
     {
         return
         @<RenderChild Condition="@(FilterMode != PropertyFilterMode.Disabled)">
-            <MudToolBar Style="height: auto; padding-left: 0; padding-right: 0;">
-                <MudSpacer />
+        <MudToolBar WrapContent="@WrapToolBarContent" Dense="@Dense" Class="@ToolBarClassStr()" Style="@ToolBarStyleStr()">
+                @if (ToolBarContent != null)
+                {
+                    @ToolBarContent
+                }
+                <MudSpacer/>
                 @RenderSearchBox()
             </MudToolBar>
         </RenderChild>;

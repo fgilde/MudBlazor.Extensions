@@ -24,6 +24,10 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// </summary>
     protected HierarchicalFilter<TItem> FilterManager = new();
 
+    [Parameter] public string ToolBarStyle { get; set; }
+    [Parameter] public string ToolBarClass { get; set; }
+    [Parameter] public bool WrapToolBarContent {get; set; }
+
     /// <summary>
     /// Returns the filtered items as a collection of <see cref="TreeViewItemContext{TItem}"/>
     /// </summary>
@@ -185,6 +189,11 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
         get => FilterManager.FilterBehaviour;
         set => FilterManager.FilterBehaviour = value;
     }
+
+    /// <summary>
+    /// Additional content for the toolbar
+    /// </summary>
+    [Parameter] public RenderFragment ToolBarContent { get; set; }
 
     /// <summary>
     /// Full item template if this is set you need to handle the outer items based on ViewMode on your own. 
@@ -351,6 +360,20 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// </summary>
     [Parameter] public bool AllowSelectionOfNonEmptyNodes { get; set; } = false;
 
+    /// <summary>
+    /// Set to true to allow selection of nodes with children
+    /// </summary>
+    [Parameter] public bool InitiallyExpanded { get; set; } = false;
+
+    /// <inheritdoc />
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender && InitiallyExpanded)
+        {
+            SetAllExpanded(true);
+        }
+    }
 
     /// <summary>
     /// On node click
@@ -405,7 +428,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     public void SetAllExpanded(bool expand, Func<TItem, bool> predicate = null)
     {
         //predicate ??= n => ExpandMode == ExpandMode.SingleExpand || n.Parent == null;
-        predicate ??= n => n.Parent == null;
+        predicate ??= n => n.HasChildren();
         Items?.Recursive(n => n.Children.EmptyIfNull()).Where(predicate).Apply(e => SetExpanded(e, expand));
     }
 
@@ -426,6 +449,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
             _expanded.Add(context);
         else if (!expanded && IsExpanded(context))
             _expanded.Remove(context);
+        InvokeAsync(StateHasChanged);
     }
     
     /// <summary>
@@ -520,5 +544,21 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     private void OnFilterChipHover(ChipMouseEventArgs<string> arg)
     {
         _highlight = arg.Value;
+    }
+
+    protected virtual string ToolBarClassStr()
+    {
+        return MudExCssBuilder.From(ToolBarClass)
+            .AddClass("mud-ex-treeview-toolbar")
+            .ToString();
+    }
+
+    protected virtual string ToolBarStyleStr()
+    {
+        return MudExStyleBuilder.FromStyle(ToolBarStyle)
+            .WithHeight("auto")
+            .WithPaddingLeft(0)
+            .WithPaddingRight(0)
+            .ToString();
     }
 }

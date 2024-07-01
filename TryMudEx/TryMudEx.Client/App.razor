@@ -26,7 +26,7 @@
 @code {
     private List<Assembly> lazyLoadedAssemblies = new();
 
-    private async Task OnNavigateAsync(NavigationContext args)
+    private async Task OnNavigateAsync(Microsoft.AspNetCore.Components.Routing.NavigationContext args)
     {
         //var assemblies = await AssemblyLoader.LoadAssembliesAsync(new[] { {LIST OF ASSEMBLIES} });
         if(!lazyLoadedAssemblies.Any())

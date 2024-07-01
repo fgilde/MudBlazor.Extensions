@@ -1,17 +1,21 @@
 ﻿@typeparam T
 @inherits MudExTreeViewBase<T>
 @namespace MudBlazor.Extensions.Components
-@using MudBlazor.Extensions.Options
+@using MudBlazor.Extensions.Core
 @using Nextended.Core.Types
 
-<MudToolBar Class="@Class" Style="@StyleStr()" Dense="@Dense" WrapContent="true">
+<MudToolBar Class="@Class" Style="@StyleStr()" Dense="@Dense" WrapContent="@WrapToolBarContent">
+    @if(ToolBarContent != null)
+    {
+        @ToolBarContent
+    }
     @MenuFor(FilterManager.FilteredItems())
     @foreach (var item in Path())
     {
         <p>@ItemRender(item)</p>
         @MenuFor(item.Children)
     }
-    <MudSpacer />
+    <MudSpacer/>
     @RenderSearchBox()
 </MudToolBar>
 

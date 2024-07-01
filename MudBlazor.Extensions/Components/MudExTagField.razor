@@ -35,7 +35,7 @@
                          @onmouseover="@(args => HandleOnChipMouseOver(args, value))"
                          @onmouseout="@(args =>HandleOnChipMouseOut(args, value))"
                          Color="@(ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"
-                         DisableRipple="true"
+                         Ripple="false"
                          Text="@Converter.Set(value)"
                          Value="@value"
                          Variant="@ChipVariant"
@@ -50,7 +50,7 @@
             var tooltipText = string.Join(", ", chipsNotShown);
 
             <MudTooltip Text="@tooltipText">
-                <MudChip DisableRipple="true"
+                <MudChip Ripple="false"
                          T="T"
                          Text="@($" +{chipsNotShown.Count}")"
                          Style="@ChipStyleName"
