@@ -33,7 +33,7 @@
 
     private RenderFragment ToggleButtonFor(TreeViewMode mode)
     {
-        return @<MudTooltip Text="@(TryLocalize("Toggle to {0}", mode))">
+        return @<MudTooltip Placement="Placement.Right" Text="@(TryLocalize("Toggle to {0}", mode))">
                     <MudExIconButton Color="@(mode == ViewMode ? Color.Secondary : Color.Default)" OnClick="@(() => ViewMode = mode)" Icon="@IconFor(mode)"></MudExIconButton>
                </MudTooltip>;
     }

@@ -3,7 +3,7 @@
 
 
 <MudIconButton Class="mudex-demo-themeedit-toggle-button" Icon="@Icons.Material.Filled.Palette" Color="Color.Inherit" OnClick="@EditTheme" />
-<MudExPopover OnBlur="@(OnThemeBlur)" Animation="AnimationType.Perspective3d" AnimationPosition="DialogPosition.TopRight"
+@* <MudExPopover OnBlur="@(OnThemeBlur)" Animation="AnimationType.Perspective3d" AnimationPosition="DialogPosition.TopRight"
               SelectorsForIgnoreBlur=".mudex-demo-themeedit-toggle-button" Open="@_themeEditOpen" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopRight" MaxHeight="900">
     <MudItem xs="12" Style="padding:4px;">
         <MudCard @onclick="@(() => { _themeEditOpen = false; })" Style="border-width: 3px;" Class="cursor-pointer hover-border" Outlined="true">
@@ -19,7 +19,24 @@
             </MudCardContent>
         </MudCard>
     </MudItem>
-</MudExPopover>
+</MudExPopover> *@
+
+<MudDrawer @bind-Open="@_themeEditOpen" Anchor="Anchor.End" Elevation="1" Variant="@DrawerVariant.Temporary">
+    <MudDrawerHeader>
+        <MudGrid Justify="Justify.SpaceBetween" Spacing="0">
+            <MudText Style="align-self: center" Typo="Typo.h6">Theming</MudText>
+            <MudCheckBox UncheckedIcon="@Icons.Material.Outlined.LightMode" CheckedIcon="@Icons.Material.Outlined.DarkMode" T="bool" ValueChanged="@(OnDarkChange)" Value="@IsDark" Color="Color.Inherit" />
+        </MudGrid>
+    </MudDrawerHeader>
+    <MudExDivider />
+
+    <MudExThemeSelect PreviewFont="true" PreviewImageSize="@("60x40")" SelectedThemeChanged="@OnThemeSelected" TTheme="ClientTheme" Available="@_themes" SelectionMode="ThemeSelectionMode.ItemList"></MudExThemeSelect>
+    <MudExDivider />
+    <MudGrid Justify="Justify.FlexEnd" Spacing="0">
+        <MudExIconButton ToolTip="Edit Current" OnClick="@(EditThemeFull)" Icon="@Icons.Material.Filled.Edit"></MudExIconButton>
+        <MudExIconButton ToolTip="Create, Edit or delete themes" OnClick="@(EditAllThemes)" Icon="@Icons.Material.Filled.Settings"></MudExIconButton>
+    </MudGrid>
+</MudDrawer>
 
 @code {
     bool _themeEditOpen = false;

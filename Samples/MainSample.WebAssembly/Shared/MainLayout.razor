@@ -64,7 +64,7 @@
                 <LogoTitle />
             </MudDrawerHeader>
         }
-        <NavMenu ViewMode="TreeViewMode.Default" ExpandBehaviour="ClientTheme.CurrentTheme.NavigationExpandMode" />
+        <NavMenu ViewMode="@(ClientTheme.CurrentTheme?.NavigationViewMode ?? TreeViewMode.Default)" ExpandBehaviour="ClientTheme.CurrentTheme.NavigationExpandMode" />
     </MudDrawer>
 
     <MudMainContent>

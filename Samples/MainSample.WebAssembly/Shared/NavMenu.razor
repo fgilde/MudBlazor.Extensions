@@ -12,7 +12,9 @@
                FilterBoxStyle="margin:10px;" 
                Style="margin: 0 10px;" 
                ExpandButtonDirection="LeftOrRight.Right" 
-               ViewMode="@ViewMode" 
+               @bind-ViewMode="@ViewMode" 
+               TreeViewModeToggleComponent="@(_toggleableViewModes.Contains(ViewMode) ? TreeViewModeToggleComponent.ToggleButton : TreeViewModeToggleComponent.None)"
+               ToggleableViewModes="@_toggleableViewModes"
                Items="@Entries">
     <ItemContentTemplate>
         <div style="display: flex; align-items: center; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" >
@@ -28,6 +30,7 @@
 
 
 @code {
+    private TreeViewMode[] _toggleableViewModes = new[] { TreeViewMode.Default, TreeViewMode.List, TreeViewMode.FlatList };
     private RenderFragment RenderChipIf(NavigationEntry context)
     {
         if (context.Demo is DemoNewAttribute or DemoUpdatedAttribute)

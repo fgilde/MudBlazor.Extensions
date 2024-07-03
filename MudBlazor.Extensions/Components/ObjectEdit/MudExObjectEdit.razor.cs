@@ -154,7 +154,7 @@ public partial class MudExObjectEdit<T>
     /// <summary>
     /// Whether the component should add a scroll to top button.
     /// </summary>
-    [Parameter] public bool AddScrollToTop { get; set; } = true;
+    [Parameter] public bool AddScrollToTop { get; set; }
 
     /// <summary>
     /// The position of the scroll to top button.

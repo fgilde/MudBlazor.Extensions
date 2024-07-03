@@ -13,6 +13,7 @@ public class ClientTheme : MudTheme
     public bool ShowLogoInDrawer { get; set; }
 
     public TreeViewExpandBehaviour NavigationExpandMode { get; set; }
+    public TreeViewMode NavigationViewMode { get; set; } = TreeViewMode.Default;
 
     public DrawerClipMode DrawerClipMode { get; set; }
     public DrawerVariant DrawerVariant { get; set; } = DrawerVariant.Responsive;
@@ -194,6 +195,7 @@ public class ClientTheme : MudTheme
     public static ClientTheme CurrentTheme = DefaultTheme;
 
     public static ICollection<ThemePreset<ClientTheme>> All => ThemePreset.Create(() => DefaultTheme, () => Last, () => SimpleBlue);
+    
 
     public static async Task<ICollection<ThemePreset<ClientTheme>>> GetAllThemes(LocalStorageService storageService)
     {
