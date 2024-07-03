@@ -1585,20 +1585,21 @@ public partial class MudExList<T> : IDisposable
 
     private MudExSize<double> GetStickyTop()
     {
+        if (!SearchBox)
+            return -8;
         var result = -8;
         if (SearchBox)
         {
             result += 90;
-            if (SearchBoxVariant == Variant.Outlined)
-                result -= 6;
+            if (SearchBoxVariant is Variant.Outlined or Variant.Filled)
+                result += 19;
 
             if (SelectAll && SelectAllPosition == SelectAllPosition.AfterSearchBox)
                 result += 50;
 
         }
-        if (Dense)
-            result -= 4;
-        return result;
+
+        return result - 23;
     }
 }
 

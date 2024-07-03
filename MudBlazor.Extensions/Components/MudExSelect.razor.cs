@@ -96,8 +96,9 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     /// </summary>
     protected string Classname =>
         new MudExCssBuilder("mud-ex-select")
-        .AddClass(Class)
-        .Build();
+            .AddClass("mud-ex-select-variant-text", Variant == Variant.Text)
+            .AddClass(Class)
+            .Build();
 
     /// <summary>
     /// Class to be applied to the inner input element
@@ -107,6 +108,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
         .AddClass("mud-ex-select-readonly", ReadOnly)
         .AddClass("mud-ex-select-no-dropdown", ReadOnly && HideDropDownWhenReadOnly)
         .AddClass("mud-ex-select-nowrap", NoWrap)
+        .AddClass("mud-ex-select-input-variant-text", Variant == Variant.Text)
         .AddClass(InputClass)
         .Build();
 
@@ -1176,7 +1178,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
 
             await SetValueAsync(value);
             //await UpdateTextPropertyAsync(false);
-            _= _elementReference.SetText(Text);
+            _ = _elementReference.SetText(Text);
             //_selectedValues.Clear();
             //_selectedValues.Add(value);
         }
@@ -1378,7 +1380,7 @@ internal interface IMudExSelect
     /// Ensures that the generic type of the select item matches the generic type of the select.
     /// </summary>
     void CheckGenericTypeMatch(object selectItem);
-    
+
     /// <summary>
     /// True when multi selection is enabled.
     /// </summary>
