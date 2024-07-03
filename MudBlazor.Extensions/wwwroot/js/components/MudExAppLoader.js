@@ -52,6 +52,8 @@
         this.timeout = parseInt(this.getAttribute('Timeout')) || 2000;
         this.preLoadText = this.getAttribute('PreLoadText') || 'Loading...';
         this.appName = this.getAttribute('AppName') || '';
+        this.subTitle = this.getAttribute('SubTitle') || '';
+        this.subTitleClass = this.getAttribute('subTitleClass') || '';
         this.size = this.getAttribute('Size') || '200';
 
         // Set CSS variable --loading-color to accentColor value
@@ -88,7 +90,11 @@
               </svg>
               ${this.logo ? `<img class="logo ${this.logoClass}" src="${this.logo}" />` : `<div class="logo ${this.logoClass}">${this.innerHTML}</div>`}
               <span class="mud-ex-app-loader-loading-percentage ${this.percentageClass}">${this.preLoadText}</span>
-              <span class="app-name ${this.appNameClass}">${this.appName}</span>
+              <div class="app-name ${this.appNameClass}">
+                <span>${this.appName}</span> <br />
+                <center><span class="${this.subTitleClass}">${this.subTitle}</span></center>
+              </div>
+                           
             </div>
           </div>
         `;
