@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Reflection;
+using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Core;
 
@@ -159,11 +160,7 @@ internal class MudExDialogRef<T> : IMudExDialogReference<T> where T : ComponentB
     /// </summary>
     public void CallStateHasChanged()
     {
-        Invoke(() =>
-        {
-            var methodInfo = Dialog?.GetType().GetMethod("StateHasChanged", BindingFlags.Instance | BindingFlags.NonPublic);
-            methodInfo?.Invoke(Dialog, Array.Empty<object>());
-        });
+        (Dialog as IComponent)?.CallReflectionStateHasChanged();
     }
 
 }

@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
@@ -10,6 +11,11 @@ namespace MudBlazor.Extensions.Helper
     /// </summary>
     public static class Extensions
     {
+        internal static ParameterView ToParameterView(this IDictionary<string, object> dict)
+        {
+            return ParameterView.FromDictionary(dict);
+        }
+
         /// <summary>
         /// Returns the names of the given DialogPosition enum value.
         /// </summary>
