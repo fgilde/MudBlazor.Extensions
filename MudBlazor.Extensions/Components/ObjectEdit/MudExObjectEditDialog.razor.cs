@@ -40,7 +40,7 @@ public partial class MudExObjectEditDialog<T>
     /// The CSS class to apply to the content area of the dialog.
     /// </summary>
     [Parameter]
-    public string ContentClass { get; set; } = "full-height flex-column";
+    public string ContentClass { get; set; } = "flex-column";
 
     /// <summary>
     /// The CSS class to apply to the form element of the dialog.
