@@ -13,8 +13,7 @@
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="MudBlazor" Version="7.0.0" />
     <PackageReference Include="MudBlazor.Markdown" Version="1.0.2" />
-    <!--<PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*-*" />-->
-    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="2.0.0-prev-2407011629-for-mudblazor-7.0.0" />
+    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*-*" />
 
   </ItemGroup>
 
