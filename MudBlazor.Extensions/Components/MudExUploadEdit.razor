@@ -244,7 +244,7 @@
             }
                 @if (AllowRename && !ReadOnly && !isLoading)
             {
-                <MudTextField id="@textFieldId" Style="height: 12px;" Class="mud-ex-collection-inline-string-edit" For="@(() => request.FileName)" Underline="false" Error="@(string.IsNullOrWhiteSpace(request.FileName))" @bind-Value="@request.FileName"></MudTextField>
+                <MudTextField id="@textFieldId" Style="margin-top: 5px;" Class="mud-ex-collection-inline-string-edit" For="@(() => request.FileName)" Underline="false" Error="@(string.IsNullOrWhiteSpace(request.FileName))" @bind-Value="@request.FileName"></MudTextField>
             }
             else
             {

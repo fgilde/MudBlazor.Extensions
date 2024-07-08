@@ -73,7 +73,7 @@ public partial class MudExApiView
     /// Is the panel initially expanded
     /// </summary>
     [Parameter]
-    public bool IsInitiallyExpanded { get; set; } = true;
+    public bool Expanded { get; set; } = true;
 
     /// <summary>
     /// Search string
@@ -100,7 +100,7 @@ public partial class MudExApiView
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && IsInitiallyExpanded)
+        if (firstRender && Expanded)
         {
             await LoadInfos();
         }

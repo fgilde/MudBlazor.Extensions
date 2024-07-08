@@ -792,7 +792,7 @@
             Only show the specified methods and properties
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExApiView.IsInitiallyExpanded">
+        <member name="P:MudBlazor.Extensions.Components.MudExApiView.Expanded">
             <summary>
             Is the panel initially expanded
             </summary>
