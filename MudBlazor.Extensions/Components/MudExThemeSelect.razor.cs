@@ -30,7 +30,9 @@ public partial class MudExThemeSelect<TTheme>
     /// Size of preview image
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
-    public MudExDimension PreviewImageSize { get; set; } = new MudExDimension(140, 100);
+    public MudExDimension PreviewImageSize { get; set; } = new(140, 100);
+
+    [Parameter] public bool PreviewFont { get; set; }
 
     /// <summary>
     /// Variant if SelectionMode is ThemeSelectionMode.Select
@@ -187,6 +189,18 @@ public partial class MudExThemeSelect<TTheme>
             .WithMargin("auto auto auto 25px", IsOpen())
             .WithMargin("12px 0 0 18px", !IsOpen())
             .WithStyle(NameContainerStyle, !string.IsNullOrEmpty(NameContainerStyle))
+            .Build();
+    }
+
+    private string TextStyleStr(TTheme theme)
+    {
+        var typography = theme.Typography.Default;
+        return MudExStyleBuilder.Default
+            .WithFontFamily(string.Join(", ", typography.FontFamily ?? Array.Empty<string>()), PreviewFont && typography.FontFamily?.Any() == true)
+            .WithFontSize(typography.FontSize, PreviewFont)
+            .WithFontWeight(typography.FontWeight.ToString(), PreviewFont)
+            .WithLineHeight(typography.LineHeight, PreviewFont)
+            .WithLetterSpacing(typography.LetterSpacing, PreviewFont)
             .Build();
     }
 }

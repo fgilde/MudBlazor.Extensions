@@ -22,14 +22,14 @@
         </Left>
         <Right>
             <MudExpansionPanels MultiExpansion="true">
-                <MudExpansionPanel IsInitiallyExpanded="true" Text="MudExGrid">
+                <MudExpansionPanel Expanded="true" Text="MudExGrid">
                     <ChildContent>
                         <ComponentPropertyGrid AutoUpdateConditions="false" Value="@_component"></ComponentPropertyGrid>
                     </ChildContent>
                 </MudExpansionPanel>
                 @foreach (var section in _sections.Where(s => s.Component != null))
                 {
-                    <MudExpansionPanel IsInitiallyExpanded="false" Text="@(section.Label)">
+                    <MudExpansionPanel Expanded="false" Text="@(section.Label)">
                         <ChildContent>
                             <ComponentPropertyGrid T="MudExGridSection" Value="section.Component"></ComponentPropertyGrid>
                         </ChildContent>

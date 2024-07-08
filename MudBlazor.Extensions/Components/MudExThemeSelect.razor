@@ -25,7 +25,7 @@
     }
     else if (SelectionMode == ThemeSelectionMode.ItemList)
     {
-        <MudList Class="@Class" Style="@Style" Clickable="true" @bind-SelectedValue="SelectedValue">
+        <MudList Class="@Class" Style="@Style" @bind-SelectedValue="Selected">
             @foreach (var theme in Available)
             {
                 <MudListItem Class="mt-2" Value="@theme">
@@ -49,7 +49,7 @@
                    <div style="@GetThemeNameContainerStyle()">
                        @if (!string.IsNullOrEmpty(theme.Name))
                        {
-                           <MudText Typo="@TypoThemeName">@theme.Name</MudText>
+                           <MudText Style="@TextStyleStr(theme.Theme)" Typo="@TypoThemeName">@theme.Name</MudText>
                        }
                        @if (!string.IsNullOrEmpty(theme.Description) && IsOpen())
                        {

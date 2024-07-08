@@ -81,20 +81,20 @@ public class MudExSvgTests
     public void SvgPropertyNameForValue_ShouldReturnFullyQualifiedNameOfConstant_WhenPassedValueAndSingleOwnerType()
     {
         // Act
-        var result = MudExSvg.SvgPropertyNameForValue(Icons.Outlined.Search, typeof(Icons));
+        var result = MudExSvg.SvgPropertyNameForValue(Icons.Material.Outlined.Search, typeof(Icons));
 
         // Assert
-        Assert.Equal("MudBlazor.Icons.Outlined.Search", result);
+        Assert.Equal("MudBlazor.Icons.Material.Outlined.Search", result);
     }
 
     [Fact]
     public void SvgPropertyNameForValue_ShouldReturnFullyQualifiedNameOfConstant_WhenPassedValueAndMultipleOwnerTypes()
     {
         // Act
-        var result = MudExSvg.SvgPropertyNameForValue(Icons.Outlined.Search, typeof(Icons), typeof(OtherIcons));
+        var result = MudExSvg.SvgPropertyNameForValue(Icons.Material.Outlined.Search, typeof(Icons), typeof(OtherIcons));
 
         // Assert
-        Assert.Equal("MudBlazor.Icons.Outlined.Search", result);
+        Assert.Equal("MudBlazor.Icons.Material.Outlined.Search", result);
     }
 
     [Fact]
@@ -104,10 +104,10 @@ public class MudExSvgTests
         var allOwnerTypes = new[] { typeof(Icons), typeof(OtherIcons) };
 
         // Act
-        var result = MudExSvg.SvgPropertyNameForValue(Icons.Outlined.Search, allOwnerTypes);
+        var result = MudExSvg.SvgPropertyNameForValue(Icons.Material.Outlined.Search, allOwnerTypes);
 
         // Assert
-        Assert.Equal("MudBlazor.Icons.Outlined.Search", result);
+        Assert.Equal("MudBlazor.Icons.Material.Outlined.Search", result);
     }
 
     [Fact]
@@ -124,10 +124,10 @@ public class MudExSvgTests
     public void SvgPropertyValueForName_ShouldReturnValueOfConstant_WhenPassedFullyQualifiedNameOfConstant()
     {
         // Act
-        var result = MudExSvg.SvgPropertyValueForName("MudBlazor.Icons.Outlined.Search");
+        var result = MudExSvg.SvgPropertyValueForName("MudBlazor.Icons.Material.Outlined.Search");
 
         // Assert
-        Assert.Equal(Icons.Outlined.Search, result);
+        Assert.Equal(Icons.Material.Outlined.Search, result);
     }
 
     [Fact]

@@ -201,9 +201,9 @@ public partial class MudExTreeViewHorizontal<T>
     {
         return MudExStyleBuilder.FromStyle(base.ItemStyleStr(context, mergeWith))
             .WithHeight(Dense ? 18 : 25)
-            .WithBackgroundColor(SelectedItemBackgroundColor, RenderAsSelected(context.Item) && SelectedItemBackgroundColor.IsSet())
-            .WithBorderColor(SelectedItemBorderColor, RenderAsSelected(context.Item) && SelectedItemBorderColor.IsSet())
-            .WithBorderRadius(NodeBorderRadius, RenderAsSelected(context.Item) && NodeBorderRadius.HasValue)
+            .WithBackgroundColor(SelectedItemBackgroundColor, RenderAsSelected(context.Value) && SelectedItemBackgroundColor.IsSet())
+            .WithBorderColor(SelectedItemBorderColor, RenderAsSelected(context.Value) && SelectedItemBorderColor.IsSet())
+            .WithBorderRadius(NodeBorderRadius, RenderAsSelected(context.Value) && NodeBorderRadius.HasValue)
             .Style;
     }
 

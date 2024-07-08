@@ -243,3 +243,16 @@
 .mud-dialog-container:has(.mud-ex-dialog-no-margin) {
     padding: 0px !important;
 }
+
+
+
+/*WORKAROUND CURRENTLY input label content VARIANT text datalist BROKEN*/
+
+.mud-ex-select-variant-text .mud-input-label-inputcontrol {
+    top: -15px;
+}
+
+.mud-ex-select-variant-text {
+    margin-bottom: 15px;
+    margin-top: 5px;
+}

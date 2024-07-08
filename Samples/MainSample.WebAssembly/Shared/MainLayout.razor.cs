@@ -53,7 +53,7 @@ public partial class MainLayout
 
     internal static CodeBlockTheme GetCodeBlockTheme() => Instance is { IsDark: true } ? CodeBlockTheme.AtomOneDark : CodeBlockTheme.AtomOneLight;
 
-    private async void HandleThemeChange(bool arg1, ClientTheme arg2)
+    private void HandleThemeChange(bool arg1, ClientTheme arg2)
     {
         ThemeChanged?.Invoke(this, new ThemeChangedEventArgs { IsDark = arg1, Theme = arg2 });
     }

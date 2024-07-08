@@ -96,7 +96,7 @@
                        { @RenderWrapper(data, false)}
                        
                        @if(PropertyMeta.Settings.ValidationComponent) {
-                           <MudTextField Class="mud-ex-property-validation-component" DisableUnderLine="true" For="@(CreateFieldForExpression<string>())" ReadOnly="true"/>
+                           <MudTextField Class="mud-ex-property-validation-component" Underline="false" For="@(CreateFieldForExpression<string>())" ReadOnly="true"/>
                        }
                    </div>;
         }

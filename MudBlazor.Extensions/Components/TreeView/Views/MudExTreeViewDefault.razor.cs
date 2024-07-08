@@ -29,6 +29,7 @@ public partial class MudExTreeViewDefault<T>
         }
     }
 
+
     /// <inheritdoc />
     public override bool IsExpanded(T node) => ExpandBehaviour == TreeViewExpandBehaviour.None || base.IsExpanded(node);
 

@@ -16,7 +16,7 @@ public partial class MudExListSubheader<T>
     /// </summary>
     protected string Classname =>
         new MudExCssBuilder("mud-ex-list-subheader")
-            .AddClass("mud-ex-list-subheader-gutters", !DisableGutters)
+            .AddClass("mud-ex-list-subheader-gutters", Gutters)
             .AddClass("mud-ex-list-subheader-inset", Inset)
             .AddClass("mud-ex-list-subheader-secondary-background", SecondaryBackground)
             .AddClass("mud-ex-list-subheader-sticky", Sticky)
@@ -50,7 +50,7 @@ public partial class MudExListSubheader<T>
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Appearance)]
-    public bool DisableGutters { get; set; }
+    public bool Gutters { get; set; }
 
     /// <summary>
     /// If true, the List Sub header will be indented.

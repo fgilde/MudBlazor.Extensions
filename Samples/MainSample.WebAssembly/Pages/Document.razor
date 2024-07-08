@@ -29,7 +29,7 @@
             {
                 string docFile = GetDocFileFileForType(c);
                 int idx = string.IsNullOrEmpty(docFile) ? 0 : 1;
-                <MudExpansionPanel IsInitiallyExpanded="false" Text="@ApiMemberInfo.GetGenericFriendlyTypeName(c)">
+                <MudExpansionPanel Expanded="false" Text="@ApiMemberInfo.GetGenericFriendlyTypeName(c)">
                     <ChildContent>
                         <HeaderForType DocumentationOnly="true" Typo="Typo.subtitle1" Type="@c"></HeaderForType>
                         @RenderTypeApiDoc(c, idx, false, docFile)
@@ -57,7 +57,7 @@ else
                            </MudTabPanel>
                        }
                        <MudTabPanel Text="API">
-                            <MudExApiView Search="@Search" ShowHeader="false" IsInitiallyExpanded="@forSingleType" Type="@type"></MudExApiView>
+                            <MudExApiView Search="@Search" ShowHeader="false" Expanded="@forSingleType" Type="@type"></MudExApiView>
                        </MudTabPanel>
             </MudTabs>
     ;

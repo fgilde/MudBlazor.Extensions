@@ -241,9 +241,9 @@ namespace MudBlazor.Extensions
             if (options == null)
                 return;
             if (!options.Modal)
-                options.ClassBackground = MudExCss.Classes.Backgrounds.NoModal;
+                options.BackgroundClass = MudExCss.Classes.Backgrounds.NoModal;
             else if (options.DialogBackgroundAppearance != null)
-                await options.GetAppearanceService().ApplyAsClassOnlyToAsync(options.DialogBackgroundAppearance, options, (o, cls) => o.ClassBackground = $"{cls} {o.ClassBackground}");
+                await options.GetAppearanceService().ApplyAsClassOnlyToAsync(options.DialogBackgroundAppearance, options, (o, cls) => o.BackgroundClass = $"{cls} {o.BackgroundClass}");
 
             (options.DialogAppearance ??= MudExAppearance.Empty()).WithStyle(b => b                                
                 .WithHeight(options.CustomSize?.Height, !string.IsNullOrEmpty(options.CustomSize?.Height))
@@ -254,7 +254,7 @@ namespace MudBlazor.Extensions
             //    options.DialogAppearance.WithStyle(b => b.WithAnimations(options.Animations, options.AnimationDuration, AnimationDirection.In, options.AnimationTimingFunction, options.Position));
         }
 
-        private static async Task<IDialogReference> InjectOptionsAsync(this Task<IDialogReference> dialogReference, IDialogService service, DialogOptionsEx options)
+        internal static async Task<IDialogReference> InjectOptionsAsync(this Task<IDialogReference> dialogReference, IDialogService service, DialogOptionsEx options)
         {
             return await (await dialogReference).InjectOptionsAsync(service, options);
         }

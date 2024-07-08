@@ -7,7 +7,7 @@
 
 @RenderSearchBar()
 
-<MudList Class="@Class" Style="@AnimationStyleStr()" Dense="@Dense" Clickable="true">
+<MudList T="T" Class="@Class" Style="@AnimationStyleStr()" Dense="@Dense">
     @{
         var nodeRenderInfo = LevelNodes();
     }
@@ -31,9 +31,10 @@
     {
         var targetNode = GetBackNodeTarget();
         return @<RenderChild>
-                   <MudListItem Class="@ItemClassStr(targetNode.Context)" 
+                   <MudListItem T="T" Class="@ItemClassStr(targetNode.Context)" 
+                                Value="@targetNode.Context.Value"
                                 Style="@ItemStyleStr(targetNode.Context, style)"
-                                OnClick="@(() => { _animationIn = true; NodeClick(targetNode.Context.Item); })" Text="@targetNode.Label" Icon="@Icons.Material.Filled.ArrowBack" />
+                                OnClick="@(() => { _animationIn = true; NodeClick(targetNode.Context.Value); })" Text="@targetNode.Label" Icon="@Icons.Material.Filled.ArrowBack" />
                    <MudDivider/>
                 </RenderChild>;
     }
@@ -50,10 +51,10 @@
     public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
     {
         return
-        @<MudListItem Style="@ItemStyleStr(context)" Class="@ItemClassStr(context)" OnClick="@(() => NodeClick(context.Item))">
+        @<MudListItem T="T" Style="@ItemStyleStr(context)" Value="@context.Value" Class="@ItemClassStr(context)" OnClick="@(() => NodeClick(context.Value))">
             <div class="@ListItemClassStr()">
                 @RenderItemContent(context, true, false)
-                @if(context.Item.HasChildren())
+                @if(context.Value.HasChildren())
                 {
                     <MudExIcon Icon="@ExpandedIcon" />
                 }

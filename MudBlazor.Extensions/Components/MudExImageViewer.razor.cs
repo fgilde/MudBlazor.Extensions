@@ -195,7 +195,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public MudExColor NavigatorRectangleColor
     {
         get => _navigatorRectangleColor;
-        set => Set(ref _navigatorRectangleColor, value, _ => Update().AndForget());
+        set => Set(ref _navigatorRectangleColor, value, _ => Update());
     }
 
     /// <summary>
@@ -211,7 +211,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public string Src
     {
         get => _src;
-        set => Set(ref _src, value, _ => Update().AndForget());
+        set => Set(ref _src, value, _ => Update());
     }
 
     /// <summary>
@@ -221,7 +221,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public Origin NavigatorPosition
     {
         get => _navigatorPosition;
-        set => Set(ref _navigatorPosition, value, _ => Update().AndForget());
+        set => Set(ref _navigatorPosition, value, _ => Update());
     }
 
     /// <summary>
@@ -231,7 +231,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public string NavigatorClass
     {
         get => _navigatorClass;
-        set => Set(ref _navigatorClass, value, _ => Update().AndForget());
+        set => Set(ref _navigatorClass, value, _ => Update());
     }
 
     /// <summary>
@@ -241,7 +241,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public double NavigatorSizeRatio
     {
         get => _navigatorSizeRatio;
-        set => Set(ref _navigatorSizeRatio, value, _ => Update().AndForget());
+        set => Set(ref _navigatorSizeRatio, value, _ => Update());
     }
 
     /// <summary>
@@ -251,7 +251,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public double MaxZoomPixelRatio
     {
         get => _maxZoomPixelRatio;
-        set => Set(ref _maxZoomPixelRatio, value, _ => Update().AndForget());
+        set => Set(ref _maxZoomPixelRatio, value, _ => Update());
     }
 
     /// <summary>
@@ -261,7 +261,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public double MinZoomLevel
     {
         get => _minZoomLevel;
-        set => Set(ref _minZoomLevel, value, _ => Update().AndForget());
+        set => Set(ref _minZoomLevel, value, _ => Update());
     }
 
     /// <summary>
@@ -271,7 +271,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public double AnimationTime
     {
         get => _animationTime;
-        set => Set(ref _animationTime, value, _ => Update().AndForget());
+        set => Set(ref _animationTime, value, _ => Update());
     }
 
     /// <summary>
@@ -281,7 +281,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public bool ShowNavigator
     {
         get => _showNavigator;
-        set => Set(ref _showNavigator, value, _ => Update().AndForget());
+        set => Set(ref _showNavigator, value, _ => Update());
     }
 
     #endregion

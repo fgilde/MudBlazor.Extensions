@@ -258,11 +258,11 @@ public partial class MudExTagField<T>
 
     private void SetError(string error = null) => Error = !string.IsNullOrEmpty(ErrorText = TryLocalize(error));
 
-    private async Task Remove(MudChip chip)
+    private async Task Remove(MudChip<T> chip)
     {        
         if (Disabled || ReadOnly)        
             return;        
-        Values.Remove((T)chip.Value);
+        Values.Remove(chip.Value);
         IsMouseOverChip = false;
         await IsMouseOverChipChanged.InvokeAsync(IsMouseOverChip);
         await InvokeValuesChanged();

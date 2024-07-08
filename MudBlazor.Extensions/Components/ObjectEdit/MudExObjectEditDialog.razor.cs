@@ -28,37 +28,37 @@ public partial class MudExObjectEditDialog<T>
     /// If set to true, remove the side padding of the dialog content.
     /// </summary>
     [Parameter]
-    public bool DisableSidePadding { get; set; }
+    public bool Gutters { get; set; }
 
     /// <summary>
     /// The CSS class to apply to the dialog.
     /// </summary>
     [Parameter]
-    public string ClassDialog { get; set; } = "dialog-content-full-height overflow-hidden mud-ex-object-edit-dialog";
+    public string DialogClass { get; set; } = "dialog-content-full-height overflow-hidden mud-ex-object-edit-dialog";
 
     /// <summary>
     /// The CSS class to apply to the content area of the dialog.
     /// </summary>
     [Parameter]
-    public string ClassContent { get; set; } = "full-height flex-column";
+    public string ContentClass { get; set; } = "flex-column";
 
     /// <summary>
     /// The CSS class to apply to the form element of the dialog.
     /// </summary>
     [Parameter]
-    public string ClassDialogForm { get; set; } = "mud-ex-object-edit-dialog-form";
+    public string DialogFormClass { get; set; } = "mud-ex-object-edit-dialog-form";
 
     /// <summary>
     /// The CSS class to apply to the action buttons of the dialog.
     /// </summary>
     [Parameter]
-    public string ClassActions { get; set; }
+    public string ActionsClass { get; set; }
 
     /// <summary>
     /// The CSS class to apply to the title of the dialog.
     /// </summary>
     [Parameter]
-    public string ClassTitle { get; set; }
+    public string TitleClass { get; set; }
 
     /// <summary>
     /// The CSS styles to apply to the content area of the dialog.

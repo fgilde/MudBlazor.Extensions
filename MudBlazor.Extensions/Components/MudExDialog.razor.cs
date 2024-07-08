@@ -81,14 +81,14 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
     {
         if (parameters.TryGetValue<DialogOptions>(nameof(Options), out var options) && options is DialogOptionsEx ex)
             _options = ex;        
-        bool oldVisible = IsVisible;
+        bool oldVisible = Visible;
         await base.SetParametersAsync(parameters);
-        if (oldVisible != IsVisible)
+        if (oldVisible != Visible)
         {
-            if (IsVisible)
+            if (Visible)
                 await Show();
             else
-                Close();
+                await CloseAsync();
         }
     }
 
@@ -110,7 +110,8 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
         OptionsEx.JsRuntime = Js;
         OptionsEx.AppearanceService = AppearanceService;
         await DialogServiceExt.PrepareOptionsBeforeShow(OptionsEx);
-        return await base.Show(title, options).InjectOptionsAsync(DialogService, OptionsEx);
+        Task<IDialogReference> x = ShowAsync(title, options);
+        return await x.InjectOptionsAsync(DialogService, OptionsEx);
     }
 
     /// <summary>

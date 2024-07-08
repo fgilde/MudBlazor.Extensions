@@ -25,7 +25,7 @@
 
     private void RenderDataVisualizer(RenderTreeBuilder __builder)
     {
-        <MudChipSet Class="@ChipClassname" Style="@($"max-width: {ChipsMaxWidth}")" AllClosable="@Closeable" OnClose="Remove">
+        <MudChipSet Class="@ChipClassname" Style="@($"max-width: {ChipsMaxWidth}")" AllClosable="@Closeable" T="T" OnClose="Remove">
             @for (int i = 0; i < Math.Min(Values?.Count ?? 0, MaxChips == 0 ? int.MaxValue : MaxChips); i++)
             {
 
@@ -35,7 +35,7 @@
                          @onmouseover="@(args => HandleOnChipMouseOver(args, value))"
                          @onmouseout="@(args =>HandleOnChipMouseOut(args, value))"
                          Color="@(ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"
-                         DisableRipple="true"
+                         Ripple="false"
                          Text="@Converter.Set(value)"
                          Value="@value"
                          Variant="@ChipVariant"
@@ -50,7 +50,8 @@
             var tooltipText = string.Join(", ", chipsNotShown);
 
             <MudTooltip Text="@tooltipText">
-                <MudChip DisableRipple="true"
+                <MudChip Ripple="false"
+                         T="T"
                          Text="@($" +{chipsNotShown.Count}")"
                          Style="@ChipStyleName"
                          Color="@(ChipColor.IsColor ? ChipColor.AsColor : MudBlazor.Color.Default)"

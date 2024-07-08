@@ -20,7 +20,7 @@
     <MudGrid Style="@GetMudGridStyle()" Spacing="1">
         @if (Items != null)
         {
-            <MudVirtualize IsEnabled="@Virtualize" Context="item" Items="@Items.Where(IsInFilter).ToList()">
+            <MudVirtualize Enabled="@Virtualize" Context="item" Items="@Items.Where(IsInFilter).ToList()">
                 <MudItem xs="12">
                     <MudItem>
                         <MudAlert Icon="@ItemIcon"
@@ -32,7 +32,7 @@
 
                             @if (AllowEditOrPreview && !ReadOnly && item is string)
                             {
-                                <MudTextField Class="mud-ex-collection-inline-string-edit" T="string" ValueChanged="@(s => SetValue(item, s.MapTo<T>()))" DisableUnderLine="true" Value="@(item.MapTo<string>())"></MudTextField>
+                                <MudTextField Class="mud-ex-collection-inline-string-edit" T="string" ValueChanged="@(s => SetValue(item, s.MapTo<T>()))" Underline="false" Value="@(item.MapTo<string>())"></MudTextField>
                             }
                             else
                             {

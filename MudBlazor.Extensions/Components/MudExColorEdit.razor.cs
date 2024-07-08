@@ -255,23 +255,25 @@ public sealed partial class MudExColorEdit
         base.OnAfterRender(firstRender);
     }
 
+    
     /// <inheritdoc />
-    protected override void OnPickerClosed()
+    protected override Task OnPickerClosedAsync()
     {
         if (DelayValueChangeToPickerClose)
             RaiseChanged();
+        return base.OnPickerClosedAsync();
     }
     
     /// <inheritdoc />
-    protected override void OnPickerOpened()
+    protected override Task OnPickerOpenedAsync()
     {        
         _ = UpdateInitialMudColor();
         _ = EnsureCssVarsAsync();        
-        base.OnPickerOpened();
+        return base.OnPickerOpenedAsync();
     }
 
     /// <inheritdoc />
-    protected override async Task StringValueChanged(string value)
+    protected override async Task StringValueChangedAsync(string value)
     {
         SetSuggestedFormat();
         if (!rendered)
@@ -312,7 +314,7 @@ public sealed partial class MudExColorEdit
 
     private void RaiseChangedIf()
     {
-        if (DelayValueChangeToPickerClose && IsOpen)
+        if (DelayValueChangeToPickerClose && Open)
             return;
         RaiseChanged();
     }
@@ -332,7 +334,7 @@ public sealed partial class MudExColorEdit
     private void CloseIf(AutoCloseBehaviour behaviour)
     {
         if (AutoCloseBehaviour == behaviour || AutoCloseBehaviour == AutoCloseBehaviour.Always)
-            Close();
+            CloseAsync();
     }
 
     private void Select(string color)
@@ -423,7 +425,7 @@ public sealed partial class MudExColorEdit
 
     private static bool IsCssVarStr(string s) => s.StartsWith("var(") || s.StartsWith("--");
 
-    private bool GetIsOpen() => IsOpen || PickerVariant == PickerVariant.Static;
+    private bool GetIsOpen() => Open || PickerVariant == PickerVariant.Static;
 
     private string ColorItemStyle(ColorItem context)
     {

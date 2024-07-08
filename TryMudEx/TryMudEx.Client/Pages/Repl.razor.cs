@@ -331,7 +331,7 @@ public partial class Repl : IDisposable
             CloseButton = true,
             MaxWidth = MaxWidth.ExtraExtraLarge,
             FullWidth = true,
-            DisableBackdropClick = false,
+            BackdropClick = true,
             MaximizeButton = true,
             DragMode = MudDialogDragMode.Simple,
             Position = DialogPosition.BottomCenter,

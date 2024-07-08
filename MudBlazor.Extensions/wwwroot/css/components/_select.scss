@@ -108,6 +108,8 @@
     font-weight: 500;
     padding-top: 16px;
     padding-bottom: 16px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .mud-ex-list-subheader-secondary-background {
@@ -134,11 +136,11 @@
     top: 0;
 }
 
-.mud-ex-list-item-hilight {
+.mud-ex-list-item-highlight {
     background-color: var(--mud-palette-background-grey);
 }
 
-.mud-list-item-hilight-selected {
+.mud-list-item-highlight-selected {
     background-color: var(--mud-palette-lines-default) !important;
 }
 

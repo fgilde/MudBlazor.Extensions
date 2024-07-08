@@ -23,7 +23,7 @@
         {
             meta.Property(m => m.Localizer).Ignore();
             meta.Property(m => m.CssVars).Ignore();
-            meta.Property(m => m.Color).WithAdditionalAttribute(nameof(MudColorPicker.DisableAlpha), true, true);
+            meta.Property(m => m.Color).WithAdditionalAttribute(nameof(MudColorPicker.ShowAlpha), false, true);
             meta.IgnoreAllReadOnlyFields();
         };
     }

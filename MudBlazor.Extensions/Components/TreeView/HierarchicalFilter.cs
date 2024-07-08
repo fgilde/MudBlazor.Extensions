@@ -12,7 +12,7 @@ public class HierarchicalFilter<T>
     /// <summary>
     /// Items to filter
     /// </summary>
-    public HashSet<T> Items { get; set; }
+    public IReadOnlyCollection<T> Items { get; set; }
 
     /// <summary>
     /// Filters to apply
@@ -47,19 +47,21 @@ public class HierarchicalFilter<T>
     private bool MatchesFilter(T node, string text)
     {
         var textFn = TextFunc ?? (n => n?.ToString());
-        var matchFn = MatchFunc ?? ((n, t) => textFn(n).Contains(t, StringComparison.OrdinalIgnoreCase));
+        var textNode = textFn(node);
+        var matchFn = MatchFunc ?? ((n, t) => textNode.Contains(t, StringComparison.OrdinalIgnoreCase));
         return matchFn(node, text);
     }
 
     /// <summary>
     /// Returns filtered items only if FilterBehaviour is Flat and there are filters
     /// </summary>
-    public HashSet<T>? FilteredItems()
+    public IReadOnlyCollection<T>? FilteredItems()
     {
         if (FilterBehaviour == HierarchicalFilterBehaviour.Flat && HasFilters)
         {
+            var filters = Filters.EmptyIfNull().Concat(new []{Filter}).Where(f => !string.IsNullOrEmpty(f)).Distinct();
             return Items.Recursive(e => e?.Children ?? Enumerable.Empty<T>()).Where(e =>
-                    Filters.Any(filter => MatchesFilter(e, filter)))
+                    filters.Any(filter => MatchesFilter(e, filter)))
                 .ToHashSet();
         }
         return Items;

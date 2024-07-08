@@ -69,7 +69,7 @@ public partial class MudExTreeViewList<T>
     protected (string Label, TreeViewItemContext<T> Context) GetBackNodeTarget()
     {
         var ctx = CreateContext(LastSelectedNode.Children?.Any() == true ? LastSelectedNode.Parent : LastSelectedNode.Parent.Parent, "");
-        var label = TryLocalize(BackLinkLabel, ctx != null && ctx.Item != null ? TextFunc(ctx.Item) : RootName);
+        var label = TryLocalize(BackLinkLabel, ctx != null && ctx.Value != null ? TextFunc(ctx.Value) : RootName);
         return (label, ctx);
     }
 
@@ -77,10 +77,10 @@ public partial class MudExTreeViewList<T>
     /// Returns the root node and its children if the current node is null.
     /// Otherwise, returns the children of the current node.
     /// </summary>
-    protected (bool IsRoot, HashSet<T> Nodes) LevelNodes()
+    protected (bool IsRoot, IReadOnlyCollection<T> Nodes) LevelNodes()
     {
         var root = false;
-        HashSet<T> nodes = (LastSelectedNode != null ? (LastSelectedNode.Children?.Any() == true ? LastSelectedNode.Children : LastSelectedNode?.Parent?.Children) : null);
+        IReadOnlyCollection<T> nodes = (LastSelectedNode != null ? (LastSelectedNode.Children?.Any() == true ? LastSelectedNode.Children : LastSelectedNode?.Parent?.Children) : null);
         if (nodes == null)
         {
             nodes = FilterManager.FilteredItems();

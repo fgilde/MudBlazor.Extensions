@@ -91,7 +91,7 @@ public abstract class ObjectEditMeta
     {
         if (p.PropertyType.IsNullableOf<DateTime>() && p.Name == nameof(MudBaseDatePicker.PickerMonth))
             return false; // TODO: find out why its so hard crashing without this
-        if (typeof(T) == typeof(MudChip) && p.Name == nameof(MudChip.Value))
+        if (typeof(T) == typeof(MudChip<>) && p.Name == nameof(MudChip<T>.Value))
             return false; // TODO: find out why its so hard crashing without this
 
         var forbiddenTypes = new[] { typeof(EventCallback), typeof(EventCallback<>), typeof(Expression<>), typeof(Func<>), typeof(Converter<>), typeof(Converter<,>), typeof(CultureInfo), typeof(RenderFragment), typeof(RenderFragment<>), typeof(IStringLocalizer<>), typeof(IStringLocalizer) };

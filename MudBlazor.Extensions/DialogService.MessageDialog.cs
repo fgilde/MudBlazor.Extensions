@@ -505,7 +505,7 @@ public static partial class DialogServiceExt
         options ??= DefaultOptions();
         options.CloseButton = canClose;
         options.CloseOnEscapeKey = canClose;
-        options.DisableBackdropClick = !canClose;
+        options.BackdropClick = canClose;
         var reference = await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options);
         return reference.AsMudExDialogReference<MudExMessageDialog>();
     }

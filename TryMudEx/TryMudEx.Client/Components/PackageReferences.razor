@@ -57,7 +57,7 @@
         <MudPaper Class="d-flex flex-column align-center justify-center mud-width-full py-1">
             <MudMenu Style="align-self: end;" MaxHeight="400" Dense="true">
                 <ActivatorContent>
-                    <MudChip Class="mr-5" Style="align-self: end; cursor: pointer;" Size="Size.Small" Color="@(IsInstalled(package) ? Color.Primary : Color.Default)" Variant="@(IsInstalled(package) ? Variant.Filled : Variant.Outlined)">
+                    <MudChip Value="@package" Class="mr-5" Style="align-self: end; cursor: pointer;" Size="Size.Small" Color="@(IsInstalled(package) ? Color.Primary : Color.Default)" Variant="@(IsInstalled(package) ? Variant.Filled : Variant.Outlined)">
                         @if (IsInstalled(package))
                         {
                             <span>@($"Installed v{GetInstalledVersion(package)}")</span>

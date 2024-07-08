@@ -12,27 +12,30 @@
                FilterBoxStyle="margin:10px;" 
                Style="margin: 0 10px;" 
                ExpandButtonDirection="LeftOrRight.Right" 
-               ViewMode="@ViewMode" 
+               @bind-ViewMode="@ViewMode" 
+               TreeViewModeToggleComponent="@(_toggleableViewModes.Contains(ViewMode) ? TreeViewModeToggleComponent.ToggleButton : TreeViewModeToggleComponent.None)"
+               ToggleableViewModes="@_toggleableViewModes"
                Items="@Entries">
     <ItemContentTemplate>
         <div style="display: flex; align-items: center; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" >
-        @if (!context.Item.Icon.IsNullOrWhiteSpace())
+        @if (!context.Value.Icon.IsNullOrWhiteSpace())
         {
-            <MudIcon Color="@context.Item.GetIconColor()" Icon="@context.Item.Icon" Class="ml-0 mr-2"/>
+            <MudIcon Color="@context.Value.GetIconColor()" Icon="@context.Value.Icon" Class="ml-0 mr-2"/>
         }
         @context.TreeView.RenderItemContent(context)
-        @RenderChipIf(context.Item)
+        @RenderChipIf(context.Value)
         </div>
     </ItemContentTemplate>
 </MudExTreeView>
 
 
 @code {
+    private TreeViewMode[] _toggleableViewModes = new[] { TreeViewMode.Default, TreeViewMode.List, TreeViewMode.FlatList };
     private RenderFragment RenderChipIf(NavigationEntry context)
     {
         if (context.Demo is DemoNewAttribute or DemoUpdatedAttribute)
         {
-            return @<MudChip Style="margin-left: 8px; margin-top: 0;" Size="Size.Small" Variant="Variant.Text" Color="@context.Demo.IconColor">@(context?.Demo.GetType().Name.Replace("Demo", "").Replace("Attribute", ""))</MudChip>;
+            return @<MudChip T="NavigationEntry" Style="margin-left: 8px; margin-top: 0;" Size="Size.Small" Variant="Variant.Text" Color="@context.Demo.IconColor">@(context?.Demo.GetType().Name.Replace("Demo", "").Replace("Attribute", ""))</MudChip>;
         }
         return @<p></p>;
     }

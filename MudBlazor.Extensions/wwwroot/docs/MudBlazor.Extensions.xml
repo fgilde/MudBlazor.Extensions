@@ -792,7 +792,7 @@
             Only show the specified methods and properties
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExApiView.IsInitiallyExpanded">
+        <member name="P:MudBlazor.Extensions.Components.MudExApiView.Expanded">
             <summary>
             Is the panel initially expanded
             </summary>
@@ -1738,13 +1738,13 @@
         <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnAfterRender(System.Boolean)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnPickerClosed">
+        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnPickerClosedAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnPickerOpened">
+        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnPickerOpenedAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.StringValueChanged(System.String)">
+        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.StringValueChangedAsync(System.String)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExColorPicker">
@@ -1791,10 +1791,10 @@
         <member name="M:MudBlazor.Extensions.Components.MudExColorPicker.OnInitialized">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExColorPicker.OnPickerOpened">
+        <member name="M:MudBlazor.Extensions.Components.MudExColorPicker.OnPickerOpenedAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExColorPicker.OnPickerClosed">
+        <member name="M:MudBlazor.Extensions.Components.MudExColorPicker.OnPickerClosedAsync">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExCultureSelect">
@@ -2689,7 +2689,7 @@
             The MudDialog instance
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ClassContent">
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ContentClass">
             <summary>
             CSS classes applied to the content of the dialog.
             </summary>
@@ -3031,6 +3031,11 @@
             <inheritdoc />
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ShowAsTree">
+            <summary>
+            True to display structure as tree
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.ViewMode">
             <summary>
             True to display structure as tree
             </summary>
@@ -3788,13 +3793,13 @@
         <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnPickerClosed">
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnPickerClosedAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnPickerOpened">
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnPickerOpenedAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.StringValueChanged(System.String)">
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.StringValueChangedAsync(System.String)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExImageViewerSaveOptions">
@@ -4547,7 +4552,7 @@
             If true, compact vertical padding will be applied to all list items.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExList`1.DisableGutters">
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.Gutters">
             <summary>
             If true, the left and right padding is removed on all list items.
             </summary>
@@ -4964,12 +4969,12 @@
             The value can be overridden by the parent list.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.DisableGutters">
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.Gutters">
             <summary>
             If true, the left and right padding is removed.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.DisableRipple">
+        <member name="P:MudBlazor.Extensions.Components.MudExListItem`1.Ripple">
             <summary>
             If true, disables ripple effect.
             </summary>
@@ -5134,7 +5139,7 @@
             The child render fragment.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.DisableGutters">
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.Gutters">
             <summary>
             Disables the left and right spaces.
             </summary>
@@ -5169,7 +5174,7 @@
             The color of the dialog icon for when the dialog is used in relation to a particular color theme.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.ClassContent">
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.ContentClass">
             <summary>
             Gets or sets the class for the content of the dialog
             </summary>
@@ -5703,7 +5708,7 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.SelectValueOnTab">
             <summary>
-            If true the active (hilighted) item select on tab key. Designed for only single selection. Default is true.
+            If true the active (highlighted) item select on tab key. Designed for only single selection. Default is true.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.NoWrap">
@@ -6106,11 +6111,6 @@
             Clear the selection
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.ResetValue">
-            <summary>
-            Reset the value of the component to its initial state.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.IsValueInList">
             <summary>
             Returns true if the value is in the list of items.
@@ -6134,7 +6134,7 @@
             <param name="value"></param>
             <returns>True when component has a value</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.ChipClosed(MudBlazor.MudChip)">
+        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.ChipClosed``1(MudBlazor.MudChip{``0})">
             <summary>
             Called when a chip is closed.
             </summary>
@@ -7046,7 +7046,7 @@
         <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.SelectRangeAsync(System.Int32,System.Int32)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.ResetValue">
+        <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.ResetValueAsync">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTextField`1.Clear">
@@ -9520,32 +9520,32 @@
             The MudDialog instance that represents the current dialog instance that is open.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.DisableSidePadding">
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.Gutters">
             <summary>
             If set to true, remove the side padding of the dialog content.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ClassDialog">
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.DialogClass">
             <summary>
             The CSS class to apply to the dialog.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ClassContent">
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ContentClass">
             <summary>
             The CSS class to apply to the content area of the dialog.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ClassDialogForm">
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.DialogFormClass">
             <summary>
             The CSS class to apply to the form element of the dialog.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ClassActions">
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ActionsClass">
             <summary>
             The CSS class to apply to the action buttons of the dialog.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.ClassTitle">
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog`1.TitleClass">
             <summary>
             The CSS class to apply to the title of the dialog.
             </summary>
@@ -13478,6 +13478,21 @@
             Mode controls how the tree view will be rendered.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.ViewModeChanged">
+            <summary>
+            Invoked when the view mode changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.ToggleableViewModes">
+            <summary>
+            Here you can specify between which view modes the user can toggle.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.TreeViewModeToggleComponent">
+            <summary>
+            Specify if and how the view mode can be toggled.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.Parameters">
             <summary>
             Parameters for the component based on ViewMode. 
@@ -13488,22 +13503,7 @@
             Context for the tree view item.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.Item">
-            <summary>
-            The item itself.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.IsSelected">
-            <summary>
-            Is true if the item is selected.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.IsExpanded">
-            <summary>
-            Is true if the item is expanded.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.IsFocused">
+        <member name="P:MudBlazor.Extensions.Components.TreeViewItemContext`1.Focused">
             <summary>
             Is true if the item is focused.
             </summary>
@@ -13531,6 +13531,11 @@
         <member name="F:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterManager">
             <summary>
             Filter manager
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilteredItems">
+            <summary>
+            Returns the filtered items as a collection of <see cref="T:MudBlazor.Extensions.Components.TreeViewItemContext`1"/>
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.BackgroundColor">
@@ -13663,6 +13668,11 @@
             Behaviour for the filtering
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ToolBarContent">
+            <summary>
+            Additional content for the toolbar
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ItemTemplate">
             <summary>
             Full item template if this is set you need to handle the outer items based on ViewMode on your own. 
@@ -13773,6 +13783,14 @@
             <summary>
             Set to true to allow selection of nodes with children
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.InitiallyExpanded">
+            <summary>
+            Set to true to allow selection of nodes with children
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.OnAfterRender(System.Boolean)">
+            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.NodeClick(`0)">
             <summary>
@@ -15871,6 +15889,12 @@
             <summary>
             Returns the string representation that is fully compatible with all css sizes
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExSize`1.IsZero">
+            <summary>
+            Returns true if the size is zero
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:MudBlazor.Extensions.Core.MudExSize`1.op_Implicit(MudBlazor.Extensions.Core.MudExSize{`0})~`0">
             <summary>
@@ -19474,6 +19498,14 @@
             Static Utility class for SVG
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExSvg.RotateSvg(System.String,System.Single)">
+            <summary>
+            Rotates an SVG by the specified degrees.
+            </summary>
+            <param name="svgContent">The SVG content to rotate.</param>
+            <param name="degrees">The degrees to rotate the SVG.</param>
+            <returns>A new SVG string with the rotation applied.</returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExSvg.RemoveFillColors(System.String)">
             <summary>
             Removes the fill colors from an svg string
@@ -19542,14 +19574,14 @@
             <summary>
             Returns the value of the constant in <see cref="T:MudBlazor.Icons"/> that has the specified name.
             </summary>
-            <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+            <param name="fullName">Name like MudBlazor.Icons.Material.Outlined.Search</param>
             <returns>The value</returns>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExSvg.SvgPropertyValueForName(System.String,System.Type[])">
             <summary>
             Returns the value of the constant in <see cref="T:MudBlazor.Icons"/> that has the specified name.
             </summary>
-            <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+            <param name="fullName">Name like MudBlazor.Icons.Material.Outlined.Search</param>
             <param name="allOwnerTypes">Owner types where to search in</param>
             <returns>The value</returns>
         </member>
@@ -19557,7 +19589,7 @@
             <summary>
             Returns the value of the constant in <see cref="T:MudBlazor.Icons"/> that has the specified name.
             </summary>
-            <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+            <param name="fullName">Name like MudBlazor.Icons.Material.Outlined.Search</param>
             <param name="ownerType">Owner type to search in</param>
             <param name="ownerTypes">Other types where to search in</param>
             <returns>The value</returns>
@@ -20847,11 +20879,6 @@
             Adds MudBlazor services and extensions to the service collection.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.ServiceCollectionExtensions.AddMudServicesWithExtensions(Microsoft.Extensions.DependencyInjection.IServiceCollection,MudBlazor.Services.MudServicesConfiguration,System.Reflection.Assembly[])">
-            <summary>
-            Adds MudBlazor services with custom configuration and extensions to the service collection.
-            </summary>
-        </member>
         <member name="M:MudBlazor.Extensions.ServiceCollectionExtensions.AddMudServicesWithExtensions(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{MudBlazor.Services.MudServicesConfiguration},System.Reflection.Assembly[])">
             <summary>
             Adds MudBlazor services with custom configuration and extensions to the service collection.
@@ -20860,11 +20887,6 @@
         <member name="M:MudBlazor.Extensions.ServiceCollectionExtensions.AddMudServicesWithExtensions(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{MudBlazor.Extensions.Options.MudExConfiguration},System.Reflection.Assembly[])">
             <summary>
             Adds MudBlazor services and extensions with custom configuration to the service collection.
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.ServiceCollectionExtensions.AddMudServicesWithExtensions(Microsoft.Extensions.DependencyInjection.IServiceCollection,MudBlazor.Services.MudServicesConfiguration,System.Action{MudBlazor.Extensions.Options.MudExConfiguration},System.Reflection.Assembly[])">
-            <summary>
-            Adds MudBlazor services with custom configuration and extensions with custom configuration to the service collection.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.ServiceCollectionExtensions.AddMudServicesWithExtensions(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{MudBlazor.Services.MudServicesConfiguration},System.Action{MudBlazor.Extensions.Options.MudExConfiguration},System.Reflection.Assembly[])">
@@ -21118,6 +21140,12 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowMessageBox(MudBlazor.MessageBoxOptions,MudBlazor.DialogOptions)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Close(MudBlazor.IDialogReference)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Close(MudBlazor.IDialogReference,MudBlazor.DialogResult)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Close(MudBlazor.DialogReference)">

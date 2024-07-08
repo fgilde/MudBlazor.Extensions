@@ -30,22 +30,22 @@ public partial class MudExThemeEdit<TTheme>
     /// </summary>
     [Parameter, SafeCategory("Data")]
     public string[] PropertiesForSimpleMode { get; set; } = {
-        nameof(MudTheme.Palette.AppbarBackground),
-        nameof(MudTheme.Palette.Surface),
-        nameof(MudTheme.Palette.DrawerBackground),
-        nameof(MudTheme.Palette.DrawerIcon),
-        nameof(MudTheme.Palette.Background),
-        nameof(MudTheme.Palette.Primary),
-        nameof(MudTheme.Palette.Secondary),
-        nameof(MudTheme.Palette.Tertiary),
-        nameof(MudTheme.Palette.Info),
-        nameof(MudTheme.Palette.Success),
-        nameof(MudTheme.Palette.Warning),
-        nameof(MudTheme.Palette.Error),
-        nameof(MudTheme.Palette.TextPrimary),
-        nameof(MudTheme.Palette.TextSecondary),
-        nameof(MudTheme.Palette.TextDisabled),
-        nameof(MudTheme.Palette.DrawerText),
+        nameof(MudTheme.PaletteLight.AppbarBackground),
+        nameof(MudTheme.PaletteLight.Surface),
+        nameof(MudTheme.PaletteLight.DrawerBackground),
+        nameof(MudTheme.PaletteLight.DrawerIcon),
+        nameof(MudTheme.PaletteLight.Background),
+        nameof(MudTheme.PaletteLight.Primary),
+        nameof(MudTheme.PaletteLight.Secondary),
+        nameof(MudTheme.PaletteLight.Tertiary),
+        nameof(MudTheme.PaletteLight.Info),
+        nameof(MudTheme.PaletteLight.Success),
+        nameof(MudTheme.PaletteLight.Warning),
+        nameof(MudTheme.PaletteLight.Error),
+        nameof(MudTheme.PaletteLight.TextPrimary),
+        nameof(MudTheme.PaletteLight.TextSecondary),
+        nameof(MudTheme.PaletteLight.TextDisabled),
+        nameof(MudTheme.PaletteLight.DrawerText),
         nameof(MudTheme.LayoutProperties.AppbarHeight),
         nameof(MudTheme.LayoutProperties.DefaultBorderRadius),
         nameof(MudTheme.LayoutProperties.DrawerWidthLeft),
@@ -62,13 +62,13 @@ public partial class MudExThemeEdit<TTheme>
     [Parameter, SafeCategory("Data")]
     public string[] PaletteColorsToSync { get; set; } =
     {
-        nameof(MudTheme.Palette.Primary),
-        nameof(MudTheme.Palette.Secondary),
-        nameof(MudTheme.Palette.Tertiary),
-        nameof(MudTheme.Palette.Info),
-        nameof(MudTheme.Palette.Success),
-        nameof(MudTheme.Palette.Warning),
-        nameof(MudTheme.Palette.Error),
+        nameof(MudTheme.PaletteLight.Primary),
+        nameof(MudTheme.PaletteLight.Secondary),
+        nameof(MudTheme.PaletteLight.Tertiary),
+        nameof(MudTheme.PaletteLight.Info),
+        nameof(MudTheme.PaletteLight.Success),
+        nameof(MudTheme.PaletteLight.Warning),
+        nameof(MudTheme.PaletteLight.Error),
     };
 
     /// <summary>
@@ -313,7 +313,7 @@ public partial class MudExThemeEdit<TTheme>
             if (PaletteColorsToSync?.Contains(arg.PropertyInfo.Name) == true)
             {
                 var toSet = MetaInformation.Property(arg.PropertyName.StartsWith(nameof(Theme.PaletteDark))
-                        ? t => t.Palette
+                        ? t => t.PaletteLight
                         : t => t.PaletteDark)?
                     .Children?.FirstOrDefault(m => m.PropertyInfo.Name == arg.PropertyInfo.Name);
                 if (toSet != null && toSet.Settings.Ignored)
@@ -341,7 +341,7 @@ public partial class MudExThemeEdit<TTheme>
             .RenderWith<MudExColorEdit, string, string>(edit => edit.ValueString)
             .WithAdditionalAttributes(OptionsForColorEdit());
 
-        ConfigurePalette(meta.Property(c => c.Palette));
+        ConfigurePalette(meta.Property(c => c.PaletteLight));
         ConfigurePalette(meta.Property(c => c.PaletteDark));
 
         //meta.Properties(theme => theme.Typography.Default.FontFamily)
@@ -368,7 +368,7 @@ public partial class MudExThemeEdit<TTheme>
         if (typeof(TTheme) != typeof(MudTheme) && typeof(TTheme).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Contains(objectEditPropertyMeta.PropertyInfo))
             return true;
 
-        var isLightPalette = objectEditPropertyMeta.PropertyName.Contains($"{nameof(MudTheme.Palette)}.");
+        var isLightPalette = objectEditPropertyMeta.PropertyName.Contains($"{nameof(MudTheme.PaletteLight)}.");
         var isDarkPalette = objectEditPropertyMeta.PropertyName.Contains(nameof(MudTheme.PaletteDark));
 
         if ((IsDark.HasValue && isDarkPalette && !IsDark.Value) || (IsDark.HasValue && isLightPalette && IsDark.Value))

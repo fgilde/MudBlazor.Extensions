@@ -395,7 +395,7 @@ public partial class MudExList<T> : IDisposable
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Appearance)]
-    public bool DisableGutters { get; set; }
+    public bool Gutters { get; set; } = true;
 
     /// <summary>
     /// If true, will disable the list item if it has onclick.
@@ -587,7 +587,7 @@ public partial class MudExList<T> : IDisposable
 
             _selectedValue = value;
             HandleCentralValueCommander(nameof(SelectedValue));
-            SelectedValueChanged.InvokeAsync(_selectedValue).AndForget();
+            _= SelectedValueChanged.InvokeAsync(_selectedValue);
         }
     }
 
@@ -637,7 +637,7 @@ public partial class MudExList<T> : IDisposable
                 return;
             }
             HandleCentralValueCommander(nameof(SelectedValues));
-            SelectedValuesChanged.InvokeAsync(SelectedValues == null ? null : new HashSet<T>(SelectedValues, _comparer)).AndForget();
+            _= SelectedValuesChanged.InvokeAsync(SelectedValues == null ? null : new HashSet<T>(SelectedValues, _comparer));
         }
     }
 
@@ -666,7 +666,7 @@ public partial class MudExList<T> : IDisposable
                 return;
             }
             HandleCentralValueCommander(nameof(SelectedItem));
-            SelectedItemChanged.InvokeAsync(_selectedItem).AndForget();
+            _ = SelectedItemChanged.InvokeAsync(_selectedItem);
         }
     }
 
@@ -701,7 +701,7 @@ public partial class MudExList<T> : IDisposable
                 return;
             }
             HandleCentralValueCommander(nameof(SelectedItems));
-            SelectedItemsChanged.InvokeAsync(_selectedItems).AndForget();
+            _ = SelectedItemsChanged.InvokeAsync(_selectedItems);
         }
     }
 
@@ -761,7 +761,7 @@ public partial class MudExList<T> : IDisposable
             return Task.CompletedTask;
         }
 
-        base.SetParametersAsync(parameters).AndForget();
+        _ = base.SetParametersAsync(parameters);
 
         _setParametersDone = true;
         return Task.CompletedTask;
@@ -1292,7 +1292,7 @@ public partial class MudExList<T> : IDisposable
     #endregion
 
 
-    #region Active (Hilight)
+    #region Active (highlight)
 
     /// <summary>
     /// Returns the index of the active item.
@@ -1585,20 +1585,21 @@ public partial class MudExList<T> : IDisposable
 
     private MudExSize<double> GetStickyTop()
     {
+        if (!SearchBox)
+            return -8;
         var result = -8;
         if (SearchBox)
         {
             result += 90;
-            if (SearchBoxVariant == Variant.Outlined)
-                result -= 6;
+            if (SearchBoxVariant is Variant.Outlined or Variant.Filled)
+                result += 19;
 
             if (SelectAll && SelectAllPosition == SelectAllPosition.AfterSearchBox)
                 result += 50;
 
         }
-        if (Dense)
-            result -= 4;
-        return result;
+
+        return result - 23;
     }
 }
 

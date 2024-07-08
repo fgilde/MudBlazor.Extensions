@@ -154,7 +154,7 @@ public partial class MudExObjectEdit<T>
     /// <summary>
     /// Whether the component should add a scroll to top button.
     /// </summary>
-    [Parameter] public bool AddScrollToTop { get; set; } = true;
+    [Parameter] public bool AddScrollToTop { get; set; }
 
     /// <summary>
     /// The position of the scroll to top button.
@@ -835,15 +835,8 @@ public partial class MudExObjectEdit<T>
 
     private Task ExpandCollapse()
     {
-        var collapse = _groups[0].IsExpanded;
-        _groups.ForEach(g =>
-        {
-            if (collapse)
-                g.Collapse();
-            else
-                g.Expand();
-        });
-        return Task.CompletedTask;
+        var collapse = _groups[0].Expanded;
+        return Task.WhenAll(_groups.Select(g => collapse ? g.CollapseAsync() : g.ExpandAsync()));
     }
 
     private IDictionary<string, object> GetAttributesForPrimitive()
@@ -942,7 +935,7 @@ public partial class MudExObjectEdit<T>
         {
             { nameof(MudExFileDisplayDialog.AllowDownload), false },
             { nameof(MudExFileDisplayDialog.Style), "height:700px; width: 900px;" },
-            { nameof(MudExFileDisplayDialog.ClassContent), "full-height-90" },
+            { nameof(MudExFileDisplayDialog.ContentClass), "full-height-90" },
             { nameof(MudExFileDisplayDialog.Buttons), new[]
             {
                 new MudExDialogResultAction

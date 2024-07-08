@@ -15,6 +15,60 @@ namespace MudBlazor.Extensions.Helper;
 public static class MudExSvg
 {
     /// <summary>
+    /// Rotates an SVG by the specified degrees.
+    /// </summary>
+    /// <param name="svgContent">The SVG content to rotate.</param>
+    /// <param name="degrees">The degrees to rotate the SVG.</param>
+    /// <returns>A new SVG string with the rotation applied.</returns>
+    public static string RotateSvg(string svgContent, float degrees)
+    {
+        // Extract the content inside the <svg> tag
+        var svgTagMatch = Regex.Match(svgContent, @"<svg[^>]*>");
+        string svgBody;
+        string viewBox = "0 0 24 24"; // Default viewBox
+        if (svgTagMatch.Success)
+        {
+            var svgBodyMatch = Regex.Match(svgContent, @"<svg[^>]*>([\s\S]*?)<\/svg>");
+            if (!svgBodyMatch.Success)
+            {
+                throw new ArgumentException("Invalid SVG content.");
+            }
+
+            svgBody = svgBodyMatch.Groups[1].Value;
+
+            // Extract viewBox if present
+            var viewBoxMatch = Regex.Match(svgTagMatch.Value, @"viewBox=['""]([^'""]*)['""]");
+            if (viewBoxMatch.Success)
+            {
+                viewBox = viewBoxMatch.Groups[1].Value;
+            }
+        }
+        else
+        {
+            svgBody = svgContent;
+        }
+
+        // Calculate the center of rotation from viewBox
+        var viewBoxValues = viewBox.Split(' ');
+        if (viewBoxValues.Length != 4)
+        {
+            throw new ArgumentException("Invalid viewBox attribute.");
+        }
+        float centerX = (float.Parse(viewBoxValues[2]) - float.Parse(viewBoxValues[0])) / 2;
+        float centerY = (float.Parse(viewBoxValues[3]) - float.Parse(viewBoxValues[1])) / 2;
+
+        // Create a new SVG with the rotation applied
+        var rotatedSvg = $@"
+        <svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='{viewBox}'>
+            <g transform='rotate({degrees}, {centerX}, {centerY})'>
+                {svgBody}
+            </g>
+        </svg>";
+
+        return rotatedSvg;
+    }
+
+    /// <summary>
     /// Removes the fill colors from an svg string
     /// </summary>
     public static string RemoveFillColors(string svgContent) => Regex.Replace(new Regex("fill=\"[^\"]*\"").Replace(svgContent, ""), @"fill:[^;]+;?", string.Empty);
@@ -116,14 +170,14 @@ public static class MudExSvg
     /// <summary>
     /// Returns the value of the constant in <see cref="Icons"/> that has the specified name.
     /// </summary>
-    /// <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+    /// <param name="fullName">Name like MudBlazor.Icons.Material.Outlined.Search</param>
     /// <returns>The value</returns>
     public static string SvgPropertyValueForName(string fullName) => SvgPropertyValueForName(fullName, typeof(Icons), typeof(MudExIcons));
 
     /// <summary>
     /// Returns the value of the constant in <see cref="Icons"/> that has the specified name.
     /// </summary>
-    /// <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+    /// <param name="fullName">Name like MudBlazor.Icons.Material.Outlined.Search</param>
     /// <param name="allOwnerTypes">Owner types where to search in</param>
     /// <returns>The value</returns>
     public static string SvgPropertyValueForName(string fullName, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type[] allOwnerTypes)
@@ -138,7 +192,7 @@ public static class MudExSvg
     /// <summary>
     /// Returns the value of the constant in <see cref="Icons"/> that has the specified name.
     /// </summary>
-    /// <param name="fullName">Name like MudBlazor.Icons.Outlined.Search</param>
+    /// <param name="fullName">Name like MudBlazor.Icons.Material.Outlined.Search</param>
     /// <param name="ownerType">Owner type to search in</param>
     /// <param name="ownerTypes">Other types where to search in</param>
     /// <returns>The value</returns>
@@ -303,7 +357,7 @@ public static class MudExSvg
     /// <param name="height">The height of the output image.</param>
     /// <returns>A new SVG that displays an application image sliced diagonally.</returns>
     public static string ApplicationImage(MudTheme theme, bool dark, string width, string height)
-        => ApplicationImage(dark ? theme.PaletteDark : theme.Palette, width, height);
+        => ApplicationImage(dark ? theme.PaletteDark : theme.PaletteLight, width, height);
 
     /// <summary>
     ///  Returns a default application image as with given color palette.

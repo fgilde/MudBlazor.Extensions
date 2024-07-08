@@ -17,7 +17,7 @@
         <MudText Typo="Typo.subtitle2">@($"Currently ThemeEditor is not bind to DarkMode from current theme and works for Dark and light. You can enable binding by toggle the switch")</MudText>
 
     }
-    <MudSwitch Color="Color.Primary" Label="Bind Dark Mode" @bind-Checked="_bindDarkMode"></MudSwitch>
+    <MudSwitch Color="Color.Primary" Label="Bind Dark Mode" @bind-Value="_bindDarkMode"></MudSwitch>
 
     <MudExDivider Size="3"></MudExDivider>
     <div class="mb-5"></div>
@@ -93,7 +93,7 @@
 
     private async Task<ICollection<ThemePreset<ClientTheme>>> GetThemes()
     {
-        var result = ThemePreset.Create(("Default", "This is the MudEx Default theme", ClientTheme.DefaultTheme), ("Another", "Another Demo theme in Red", Another: ClientTheme.SimpleBlue));
+        var result = ClientTheme.All;
         var fromStorage = await LocalStorageService.GetAllThemeItemsAsync<string>();
         foreach (var item in fromStorage)
         {

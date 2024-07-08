@@ -24,7 +24,7 @@ public partial class MudExMessageDialog
     /// Gets or sets the class for the content of the dialog
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
-    public string ClassContent { get; set; } = string.Empty;
+    public string ContentClass { get; set; } = string.Empty;
 
     /// <summary>
     /// The CSS class to apply to the action buttons of the dialog.
@@ -153,18 +153,29 @@ public partial class MudExMessageDialog
 
             var method = GetType().GetMethod(nameof(WrapCallback), BindingFlags.NonPublic | BindingFlags.Instance)?.MakeGenericMethod(callbackType);
             if(method == null) continue;
-            var newCallback = method.Invoke(this, new[] { existingCallback });
+            var newCallback = method.Invoke(this, new[] { existingCallback, prop.Name });
             prop.SetValue(component, newCallback);
         }
     }
 
-    private EventCallback<T> WrapCallback<T>(EventCallback<T> existing)
+    private EventCallback<T> WrapCallback<T>(EventCallback<T> existing, string propName)
     {
         var wrappedCallback = EventCallback.Factory.Create<T>(
             Component,
             (value) =>
             {
-                existing.InvokeAsync(value);
+                if (existing.HasDelegate)
+                {
+                    // If we have an existing delegate, we invoke it to keep bindings working
+                    existing.InvokeAsync(value);
+                }
+                else
+                {
+                    // Otherwise, we set the value of the property directly to ensure correct value in condition checks
+                    var valueProperty = propName[..^"Changed".Length];
+                    Component.GetType().GetProperty(valueProperty)?.SetValue(Component, value);
+                }
+
                 UpdateConditions();
             });
 

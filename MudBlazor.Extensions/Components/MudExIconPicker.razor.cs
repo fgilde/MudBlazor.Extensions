@@ -259,22 +259,23 @@ public partial class MudExIconPicker
     }
 
     /// <inheritdoc />
-    protected override void OnPickerClosed()
+    protected override Task OnPickerClosedAsync()
     {
         if (DelayValueChangeToPickerClose)
             RaiseChanged();
+        return base.OnPickerClosedAsync();
     }
     
     /// <inheritdoc />
-    protected override void OnPickerOpened()
+    protected override Task OnPickerOpenedAsync()
     {
         EnsureAvailable();
         SetCardsPerRow();
-        base.OnPickerOpened();
+        return base.OnPickerOpenedAsync();
     }
 
     /// <inheritdoc />
-    protected override async Task StringValueChanged(string value)
+    protected override async Task StringValueChangedAsync(string value)
     {
         if (!_rendered)
             return;
@@ -327,7 +328,7 @@ public partial class MudExIconPicker
 
     private void RaiseChangedIf()
     {
-        if (DelayValueChangeToPickerClose && IsOpen)
+        if (DelayValueChangeToPickerClose && Open)
             return;
         RaiseChanged();
     }
@@ -339,7 +340,7 @@ public partial class MudExIconPicker
         if (AutoCloseOnSelect)
         {
            // canClose = true;
-            Close();
+           CloseAsync();
         }
     }
 

@@ -367,7 +367,7 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <param name="dark">If true, the dark palette will be used.</param>
     /// <param name="when">If false, no property will be added to the builder.</param>
     /// <returns>This MudExStyleBuilder instance.</returns>
-    public MudExStyleBuilder WithBackground(MudTheme theme, bool dark, bool when) => WithBackground(dark ? theme.PaletteDark : theme.Palette, when);
+    public MudExStyleBuilder WithBackground(MudTheme theme, bool dark, bool when) => WithBackground(dark ? theme.PaletteDark : theme.PaletteLight, when);
 
     /// <summary>
     /// Adds a background property to the builder. The background is a gradient of a concatenated list of two palettes, default and dark.
@@ -375,7 +375,7 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <param name="theme">The theme to use.</param>
     /// <param name="when">If false, no property will be added to the builder.</param>
     /// <returns>This MudExStyleBuilder instance.</returns>
-    public MudExStyleBuilder WithBackground(MudTheme theme, bool when = true) => WithBackground(theme.Palette.AllColors().Concat(theme.PaletteDark.AllColors()).ToArray(), when);
+    public MudExStyleBuilder WithBackground(MudTheme theme, bool when = true) => WithBackground(theme.PaletteLight.AllColors().Concat(theme.PaletteDark.AllColors()).ToArray(), when);
 
     /// <summary>
     /// Adds a background property to the builder. The background is a gradient of all entries in the color array.
@@ -2004,7 +2004,7 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <summary>
     /// With animated gradient background
     /// </summary>
-    public MudExStyleBuilder WithAnimatedGradientBackground(MudTheme theme, bool dark, bool when) => WithAnimatedGradientBackground(dark ? theme.PaletteDark : theme.Palette, when);
+    public MudExStyleBuilder WithAnimatedGradientBackground(MudTheme theme, bool dark, bool when) => WithAnimatedGradientBackground(dark ? theme.PaletteDark : theme.PaletteLight, when);
 
     /// <summary>
     /// With animated gradient background
@@ -2025,7 +2025,7 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <summary>
     /// With animated gradient border based on theme
     /// </summary>
-    public MudExStyleBuilder WithAnimatedGradientBorder(MudExSize<double> borderSize, MudTheme theme, bool dark, bool when = true) => WithAnimatedGradientBorder(borderSize, dark ? theme.PaletteDark : theme.Palette, when);
+    public MudExStyleBuilder WithAnimatedGradientBorder(MudExSize<double> borderSize, MudTheme theme, bool dark, bool when = true) => WithAnimatedGradientBorder(borderSize, dark ? theme.PaletteDark : theme.PaletteLight, when);
 
     /// <summary>
     /// With animated gradient border that looks like a skeleton loading wave
@@ -2045,7 +2045,7 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <summary>
     /// With animated gradient background
     /// </summary>
-    public MudExStyleBuilder WithAnimatedGradientBackground(MudTheme theme, bool dark, TimeSpan duration, bool when) => WithAnimatedGradientBackground(dark ? theme.PaletteDark : theme.Palette, duration, when);
+    public MudExStyleBuilder WithAnimatedGradientBackground(MudTheme theme, bool dark, TimeSpan duration, bool when) => WithAnimatedGradientBackground(dark ? theme.PaletteDark : theme.PaletteLight, duration, when);
 
     /// <summary>
     /// With animated gradient background
@@ -2066,7 +2066,7 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     /// <summary>
     /// With animated gradient border based on theme
     /// </summary>
-    public MudExStyleBuilder WithAnimatedGradientBorder(MudExSize<double> borderSize, MudTheme theme, bool dark, TimeSpan duration, bool when = true) => WithAnimatedGradientBorder(borderSize, dark ? theme.PaletteDark : theme.Palette, duration, when);
+    public MudExStyleBuilder WithAnimatedGradientBorder(MudExSize<double> borderSize, MudTheme theme, bool dark, TimeSpan duration, bool when = true) => WithAnimatedGradientBorder(borderSize, dark ? theme.PaletteDark : theme.PaletteLight, duration, when);
 
     /// <summary>
     /// With animated gradient border that looks like a skeleton loading wave
