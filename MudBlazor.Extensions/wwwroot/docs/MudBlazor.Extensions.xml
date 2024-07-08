@@ -15890,6 +15890,12 @@
             Returns the string representation that is fully compatible with all css sizes
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Core.MudExSize`1.IsZero">
+            <summary>
+            Returns true if the size is zero
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Core.MudExSize`1.op_Implicit(MudBlazor.Extensions.Core.MudExSize{`0})~`0">
             <summary>
             Implicit conversion from MudExSize type to Generic Type T.

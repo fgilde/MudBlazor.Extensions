@@ -9,8 +9,7 @@ namespace MudBlazor.Extensions.Core;
 /// MudExSize is a readonly struct that provides a convenient and type-safe way to deal with size values in the context of MudBlazor components.
 /// </summary>
 [HasDocumentation("MudExSize.md")]
-public readonly struct MudExSize<T> 
-    //where T : INumber<T> // TODO: use with net7
+public readonly struct MudExSize<T> where T : INumber<T>
 {
     /// <summary>
     /// The value of the size.
@@ -61,15 +60,14 @@ public readonly struct MudExSize<T>
         return $"{stringValue}{Nextended.Core.Helper.EnumExtensions.ToDescriptionString(SizeUnit)}";
     }
 
-    // TODO: use INumber<T> with net7
-    public bool IsZero() => Value switch 
+    /// <summary>
+    /// Returns true if the size is zero
+    /// </summary>
+    /// <returns></returns>
+    public bool IsZero()
     {
-        float floatValue => floatValue == 0,
-        double doubleValue => doubleValue == 0,
-        int i => i == 0,
-        string s => s == "0",
-        _ => false
-    };
+        return T.IsZero(Value);
+    }
 
     /// <summary>
     /// Implicit conversion from MudExSize type to Generic Type T.
