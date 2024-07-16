@@ -24,7 +24,7 @@
   <PropertyGroup>
     <MajorVersion>2</MajorVersion>
     <MinorVersion>0</MinorVersion>
-    <PatchVersion>01</PatchVersion>
+    <PatchVersion>02</PatchVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -72,7 +72,7 @@
     <PackageReference Include="AuralizeBlazor" Version="1.0.2" />
     <PackageReference Include="MudBlazor.Markdown" Version="1.0.2" />
     <PackageReference Include="Nextended.Blazor" Version="7.0.38" />
-    <PackageReference Include="Nextended.Core" Version="7.0.54" /> 
+    <PackageReference Include="Nextended.Core" Version="7.0.55" /> 
     <PackageReference Include="BlazorJS" Version="2.1.6" />
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />

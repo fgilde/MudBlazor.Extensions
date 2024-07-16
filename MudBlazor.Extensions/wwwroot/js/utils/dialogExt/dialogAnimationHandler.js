@@ -55,13 +55,13 @@
             };
             element.addEventListener('click', handleClick);
         };
-
+        
         const closeButton = this.dialog.querySelector('.mud-button-close');
         if (closeButton) {
             handleCloseEvent(closeButton);
         }
 
-        if (this.dialogOverlay && this.options.modal && !!this.options.backdropClick) {
+        if (this.dialogOverlay && this.options.modal && this.options.backdropClick !== false) {
             handleCloseEvent(this.dialogOverlay);
         }
     }
