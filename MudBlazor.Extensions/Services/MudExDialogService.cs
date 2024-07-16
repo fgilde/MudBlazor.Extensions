@@ -209,6 +209,13 @@ public class MudExDialogService : IMudExDialogService
     }
 
     /// <inheritdoc />
+    public event Func<IDialogReference, Task> DialogInstanceAddedAsync
+    {
+        add => _innerDialogService.DialogInstanceAddedAsync += value;
+        remove => _innerDialogService.DialogInstanceAddedAsync -= value;
+    }
+
+    /// <inheritdoc />
     public event Action<IDialogReference, DialogResult> OnDialogCloseRequested
     {
         add => _innerDialogService.OnDialogCloseRequested += value;

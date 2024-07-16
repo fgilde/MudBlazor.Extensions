@@ -21157,6 +21157,9 @@
         <member name="E:MudBlazor.Extensions.Services.MudExDialogService.OnDialogInstanceAdded">
             <inheritdoc />
         </member>
+        <member name="E:MudBlazor.Extensions.Services.MudExDialogService.DialogInstanceAddedAsync">
+            <inheritdoc />
+        </member>
         <member name="E:MudBlazor.Extensions.Services.MudExDialogService.OnDialogCloseRequested">
             <inheritdoc />
         </member>

@@ -986,7 +986,7 @@ class MudExDialogAnimationHandler extends MudExDialogHandlerBase {
             handleCloseEvent(closeButton);
         }
 
-        if (this.dialogOverlay && this.options.modal && !this.options.disableBackdropClick) {
+        if (this.dialogOverlay && this.options.modal && !!this.options.backdropClick) {
             handleCloseEvent(this.dialogOverlay);
         }
     }
