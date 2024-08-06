@@ -23,7 +23,12 @@ public partial class NavMenu
                 _selectedNavEntry = value;
                 if (HasAction(value))
                 {
-                    NavigationManager.NavigateTo(value.Href);
+                    try
+                    {
+                        NavigationManager.NavigateTo(value.Href);
+                    }
+                    catch
+                    {}
                 }
             }
         }

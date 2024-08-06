@@ -56,13 +56,13 @@ public partial class MudExTreeView<T>
     {
         var componentType = GetComponentForViewMode();
         var res = ComponentRenderHelper.GetCompatibleParameters(this, componentType)
-            .Where(p => IsOverwritten(p.Key)).ToDictionary();
+            .Where(p => IsOverwritten(p.Key)).ToDictionary(p => p.Key, p => p.Value);
 
-        if(!FiltersChanged.HasDelegate)
-            res = res.Where(p => p.Key != nameof(Filters)).ToDictionary();
+        if (!FiltersChanged.HasDelegate)
+            res = res.Where(p => p.Key != nameof(Filters)).ToDictionary(p => p.Key, p => p.Value);
         if (!FilterChanged.HasDelegate)
-            res = res.Where(p => p.Key != nameof(Filter)).ToDictionary();
-        
+            res = res.Where(p => p.Key != nameof(Filter)).ToDictionary(p => p.Key, p => p.Value);
+
         foreach (var parameter in Parameters ?? new Dictionary<string, object>())
         {
             if (ComponentRenderHelper.IsValidParameter(componentType, parameter.Key, parameter.Value))
@@ -70,7 +70,7 @@ public partial class MudExTreeView<T>
         }
 
         res.AddOrUpdate(nameof(ToolBarContent), ToggleComponent().CombineWith(ToolBarContent));
-        return res.ToDictionary();
+        return res.ToDictionary(p => p.Key, p => p.Value);
     }
 
     private static RenderWithAttribute GetRenderWithAttribute(Enum val)
