@@ -2,6 +2,7 @@
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Services
+@using Nextended.Core.Extensions
 @inject IDialogService dialogService;
 @inject MudExFileService fileService;
 @implements IMudExFileDisplay
@@ -38,6 +39,14 @@
                 }); // Here we load the json string for given file
             }
         }
+    }
+
+    public Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos)
+    {
+        return Task.FromResult<IDictionary<string, object>>(new Dictionary<string, object>()
+        {
+            {"Lines", jsonValue.GetLines().Count()}
+        });
     }
 
     // That's all you need to implement from Interface. All other code depends on your component and on what you want to archive

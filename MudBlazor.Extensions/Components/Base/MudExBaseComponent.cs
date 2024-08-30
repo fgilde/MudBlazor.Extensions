@@ -154,10 +154,15 @@ public abstract class MudExBaseComponent<T> : MudComponentBase, IMudExComponent,
         IsInitialized = true;
     }
 
+    /// <summary>
+    /// Supresses state change
+    /// </summary>
+    protected bool SupressStateChange = false;
+
     /// <inheritdoc />
     protected override bool ShouldRender()
     {
-        if (base.ShouldRender() || !Equals(_previousKey, RenderKey))
+        if (!SupressStateChange && (base.ShouldRender() || !Equals(_previousKey, RenderKey)))
         {
             _previousKey = RenderKey;
             return true;

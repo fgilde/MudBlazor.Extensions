@@ -98,5 +98,7 @@ public partial class MudExFileDisplayMarkdown: IMudExFileDisplay
         _jsReady = true;
         await InvokeAsync(StateHasChanged);
     }
-    
+
+    public Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos) => Task.FromResult<IDictionary<string, object>>(null);
+
 }

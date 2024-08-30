@@ -89,5 +89,5 @@ public partial class MudExFileDisplayFont: IMudExFileDisplay
         }
     }
 
-
+    public Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos) => Task.FromResult<IDictionary<string, object>>(null);
 }

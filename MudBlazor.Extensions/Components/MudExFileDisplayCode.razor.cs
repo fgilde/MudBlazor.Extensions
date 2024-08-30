@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
+using System.Text.Json.Nodes;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -49,6 +51,15 @@ public partial class MudExFileDisplayCode: IMudExFileDisplay
     {
         var language = Language = MudExCodeLanguageExtensionsMapping.GetCodeLanguageForFile(fileDisplayInfos?.FileName);
         return language != MudExCodeLanguage.Unknown && language != MudExCodeLanguage.Markdown;
+    }
+
+    public Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos)
+    {
+        return Task.FromResult<IDictionary<string, object>>(new Dictionary<string, object>()
+        {
+            {"Lines", Value.GetLines().Count()},
+            {"Language", Language.ToString()}
+        });
     }
 
     /// <inheritdoc />

@@ -21,6 +21,7 @@ namespace MudBlazor.Extensions.Components
         /// </summary>
         public string Name => nameof(MudExFileDisplayExcel);
 
+        
         private int ActiveSheetIndex { 
             get => _excelData?.Keys.ToList().IndexOf(_selectedSheet) ?? -1;
             set => _selectedSheet = _excelData?.Keys.ElementAtOrDefault(value);
@@ -64,6 +65,16 @@ namespace MudBlazor.Extensions.Components
         public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos)
         {
             return MimeType.Matches(fileDisplayInfos.ContentType, "application/vnd.ms-excel", "text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml*", "application/vnd.ms-excel*");
+        }
+
+        public Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos)
+        {
+            return Task.FromResult<IDictionary<string, object>>(new Dictionary<string, object>()
+            {
+                {"Sheets", _excelData.Keys.Count},
+                {"Rows", _excelData.Values.SelectMany(x => x).Count()},
+                {"Columns", ((IDictionary<string, object>)_excelData[_selectedSheet][0]).Keys.Count}
+            });
         }
 
         /// <inheritdoc />

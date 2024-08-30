@@ -459,7 +459,9 @@ public partial class MudExImageViewer : IMudExFileDisplay
             MimeType = format?.DefaultMimeType
         });
     }
-    
+
+    public Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos) => Task.FromResult<IDictionary<string, object>>(null);
+
     private Task<string> ConvertImageToAsync(Stream stream, ImageViewerExportFormat format = ImageViewerExportFormat.Png) => ConvertImageToAsync(stream, MudExImageViewerSaveOptions.GetImageFormat(format));
 
     private async Task<string> ConvertImageToAsync(Stream stream, IImageFormat format)

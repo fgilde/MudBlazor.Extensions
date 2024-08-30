@@ -44,6 +44,12 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     #region Parameters
 
     /// <summary>
+    /// Specify types of IMudExFileDisplay that should be ignored
+    /// </summary>
+    [Parameter]
+    public Type[] IgnoredRenderControls { get; set; }
+
+    /// <summary>
     /// Reference to the parent MudDialog if the component is used inside a MudDialog
     /// </summary>
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
@@ -426,5 +432,14 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
         ClosePreview();
         if(FileService != null)
             await FileService.DisposeAsync();
+    }
+
+    public Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos)
+    {
+        return Task.FromResult<IDictionary<string, object>>(new Dictionary<string, object>()
+        {
+            {"Folders", _zipStructure.Recursive(s => s.Children ?? new HashSet<MudExArchiveStructure>()).Count(s => s.IsDirectory)},
+            {"Files",_zipStructure.Recursive(s => s.Children ?? new HashSet<MudExArchiveStructure>()).Count(s => !s.IsDirectory)},
+        });
     }
 }

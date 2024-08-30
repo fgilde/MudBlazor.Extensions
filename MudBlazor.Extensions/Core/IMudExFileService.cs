@@ -49,6 +49,13 @@ public interface IMudExFileService : IAsyncDisposable
     Task<string> CreateDataUrlAsync(IBrowserFile file, bool useBlob);
 
     /// <summary>
+    /// Read bytes from a file
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
+    Task<byte[]> ReadBytesAsync(string url);
+
+    /// <summary>
     /// Reads an archive with SharpCompress
     /// </summary>
     Task<(HashSet<MudExArchiveStructure> Structure, List<IArchivedBrowserFile> List)> ReadArchiveAsync(byte[] bytes, string rootFolderName, string contentType);

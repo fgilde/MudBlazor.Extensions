@@ -102,10 +102,27 @@ public class MudExFileService : IMudExFileService
     public async Task<string> ReadAsStringFromUrlAsync(string url) => ReadAsStringFromStream(await ReadStreamAsync(url));
 
     /// <summary>
+    /// Reads bytes from an url
+    /// </summary>
+    public async Task<byte[]> ReadBytesAsync(string url)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+            return null;
+        if (DataUrl.TryParse(url, out var data)) // If not but given url is a data url we can use the bytes from it
+            return data.Bytes;
+        if (MudExResource.IsServerSide && url.StartsWith("blob:")) // If server side rendering we need to ensure client is reading the blob
+            return await _jsRuntime.InvokeAsync<byte[]>("MudExUriHelper.readBlobAsByteArray", url);
+        
+        return await (_httpClient ?? new HttpClient()).GetByteArrayAsync(url);
+    }
+
+    /// <summary>
     /// Reads a stream from an url
     /// </summary>
     public async Task<Stream> ReadStreamAsync(string url)
     {
+        if (string.IsNullOrWhiteSpace(url))
+            return null;
         if (DataUrl.TryParse(url, out var data)) // If not but given url is a data url we can use the bytes from it
             return new MemoryStream(data.Bytes);
         if (MudExResource.IsServerSide && url.StartsWith("blob:")) // If server side rendering we need to ensure client is reading the blob

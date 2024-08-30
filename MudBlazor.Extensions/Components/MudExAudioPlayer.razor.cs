@@ -1,12 +1,15 @@
-﻿using AuralizeBlazor;
+﻿using System.Reflection;
+using AuralizeBlazor;
 using AuralizeBlazor.Options;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Core.Css;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Services;
+using Nextended.Blazor.Models;
 using Nextended.Core;
 using Nextended.Core.Extensions;
 
@@ -93,7 +96,7 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
     /// <summary>
     /// Width of the audio element
     /// </summary>
-    [Parameter, SafeCategory(CategoryPlayer)] public MudExSize<double> AudioElementWidth { get; set; } = "80%";
+    [Parameter, SafeCategory(CategoryPlayer)] public MudExSize<double> AudioElementWidth { get; set; } = "50%";
     
     /// <summary>
     /// Border size of the audio element
@@ -111,16 +114,47 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
     public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos) =>
         MimeType.AudioTypes.Contains(fileDisplayInfos.ContentType, StringComparer.InvariantCultureIgnoreCase) || MimeType.Matches(fileDisplayInfos.ContentType, "audio/*");
 
+
+    public async Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos)
+    {
+        await UpdateMetaInfos(null, true);
+        if (Meta != null)
+        {
+            return new Dictionary<string, object>
+            {
+                { "Duration", Meta.Properties?.Duration.ToString() },
+                { "AudioSampleRate", Meta.Properties?.AudioSampleRate },
+                { "BitRate", Meta.Properties?.AudioBitrate },
+                { "Channels", Meta.Properties?.AudioChannels },
+                { "Codecs", string.Join(",", Meta.Properties?.Codecs?.Select(c => c.Description) ?? Array.Empty<string>()) },
+                { "Title", Meta.Tag?.Title },
+                { "Album", Meta.Tag?.Album },
+                { "Year", Meta.Tag?.Year },
+                { "Artists", Meta.Tag?.JoinedPerformers },
+                { "AlbumArtists", Meta.Tag?.JoinedAlbumArtists },
+                { "Genre", Meta.Tag?.JoinedGenres },
+                { "Composers", Meta.Tag?.JoinedComposers },
+            };
+        }
+        return null;
+    }
+
+    private byte[] _dataBytes = null;
     /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
-        var updateRequired = (parameters.TryGetValue<IMudExFileDisplayInfos>(nameof(FileDisplayInfos), out var fileDisplayInfos) && (FileDisplayInfos != fileDisplayInfos || (!string.IsNullOrEmpty(fileDisplayInfos.Url) && fileDisplayInfos.Url != Src)));
+        var updateRequired = parameters.TryGetValue<IMudExFileDisplayInfos>(nameof(FileDisplayInfos), out var fileDisplayInfos) && (FileDisplayInfos != fileDisplayInfos 
+            || (!string.IsNullOrEmpty(fileDisplayInfos.Url) && fileDisplayInfos.Url != Src)
+            || (fileDisplayInfos.ContentStream != null && fileDisplayInfos.ContentStream.Length != (_dataBytes?.Length ?? 0))
+            );
         await base.SetParametersAsync(parameters);
         if (updateRequired || Src == null)
         {
             try
             {
-                Src = fileDisplayInfos?.Url ?? await FileService.CreateDataUrlAsync(fileDisplayInfos?.ContentStream?.ToByteArray() ?? throw new ArgumentException("No stream and no url available"), fileDisplayInfos.ContentType, MudExFileDisplay == null || MudExFileDisplay.StreamUrlHandling == StreamUrlHandling.BlobUrl);
+                Meta = null;
+                _dataBytes = fileDisplayInfos?.ContentStream?.ToByteArray();
+                Src = fileDisplayInfos?.Url ?? await FileService.CreateDataUrlAsync(_dataBytes ?? throw new ArgumentException("No stream and no url available"), fileDisplayInfos.ContentType, MudExFileDisplay == null || MudExFileDisplay.StreamUrlHandling == StreamUrlHandling.BlobUrl);
                 ContentType = fileDisplayInfos.ContentType;
                 if (MudExFileDisplay != null)
                     ShowMessage(fileDisplayInfos.FileName);
@@ -129,10 +163,12 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
             {
                 MudExFileDisplay?.ShowError(e.Message);
             }
-            StateHasChanged();
+
+            await InvokeAsync(StateHasChanged);
+            _= Task.Delay(400).ContinueWith(_ => UpdateMetaInfos());
         }
     }
-
+    
     /// <inheritdoc />
     protected override void HandleIsPlayingChanged(bool value)
     {
@@ -166,6 +202,8 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
             Presets = AuralizerPreset.All;
         }
 
+        KeepState = true;
+        ApplyBackgroundImageFromTrack = false;
         InitialRender = InitialRender.WithRandomData;
 
         Height = Width = "100%";

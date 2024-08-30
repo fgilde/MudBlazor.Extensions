@@ -115,6 +115,13 @@ public interface IMudExFileDisplay
     /// If true, the control will be used initially; otherwise, it can be selected afterwards.
     /// </summary>
     bool StartsActive => true;
+
+    /// <summary>
+    /// This method will be called to get extra meta infos to display in the info dialog
+    /// </summary>
+    /// <param name="fileDisplayInfos"></param>
+    /// <returns></returns>
+    Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos);
 }
 
 /// <summary>

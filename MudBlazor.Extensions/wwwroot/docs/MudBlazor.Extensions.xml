@@ -317,6 +317,11 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.OnInitialized">
             <inheritdoc />
         </member>
+        <member name="F:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.SupressStateChange">
+            <summary>
+            Supresses state change
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExBaseComponent`1.ShouldRender">
             <inheritdoc />
         </member>
@@ -2326,6 +2331,13 @@
             If true, the control will be used initially; otherwise, it can be selected afterwards.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.IMudExFileDisplay.FileMetaInformationAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+            <summary>
+            This method will be called to get extra meta infos to display in the info dialog
+            </summary>
+            <param name="fileDisplayInfos"></param>
+            <returns></returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.IMudExFileDisplayInfos">
             <summary>
             Interface containing infos for a file
@@ -2459,6 +2471,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.StatusText">
             <summary>
             Status text to display in center of file display
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.IgnoredRenderControls">
+            <summary>
+            Specify types of IMudExFileDisplay that should be ignored
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.StreamUrlHandling">
@@ -2968,6 +2985,11 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.WrapInMudExFileDisplayDiv">
             <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.IgnoredRenderControls">
+            <summary>
+            Specify types of IMudExFileDisplay that should be ignored
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.MudDialog">
             <summary>
@@ -15213,6 +15235,13 @@
             Creates an url from a file this can be a blob url or a data url
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadBytesAsync(System.String)">
+            <summary>
+            Read bytes from a file
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadArchiveAsync(System.Byte[],System.String,System.String)">
             <summary>
             Reads an archive with SharpCompress
@@ -21193,6 +21222,11 @@
         <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadAsStringFromUrlAsync(System.String)">
             <summary>
             Reads a string from an url
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadBytesAsync(System.String)">
+            <summary>
+            Reads bytes from an url
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadStreamAsync(System.String)">

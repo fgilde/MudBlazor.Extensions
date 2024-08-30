@@ -60,6 +60,6 @@ public partial class MudExFileDisplayStructuredData : IMudExFileDisplay
             StateHasChanged();
         }
     }
-
+    public Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos) => Task.FromResult<IDictionary<string, object>>(null);
 
 }

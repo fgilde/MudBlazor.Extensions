@@ -1,4 +1,7 @@
 ## Change Log    
+ - 2.0.4 > All file viewers can now implement a method to return info like meta tags for the info dialog.
+ - 2.0.4 > New propertry in MudExFileDisplay "IgnoredRenderControls" here you can specify an arry of types to ignore as file renderer.
+ - 2.0.4 > Update MudBlazor to 7.6.0
  - 2.0.3 > Update MudBlazor to 7.5.0
  - 2.0.3 > Fix small bugs
  - 2.0.0 > Update MudBlazor to 7.0.0
