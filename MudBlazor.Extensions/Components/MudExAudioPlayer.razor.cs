@@ -204,6 +204,7 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
 
         KeepState = true;
         ApplyBackgroundImageFromTrack = false;
+        PreviewImageInPresetList = true;
         InitialRender = InitialRender.WithRandomData;
 
         Height = Width = "100%";

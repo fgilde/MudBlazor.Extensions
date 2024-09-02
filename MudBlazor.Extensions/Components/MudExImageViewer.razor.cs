@@ -18,6 +18,7 @@ using Nextended.Core.Extensions;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using MudBlazor.Interop;
+using MetadataExtractor;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -554,7 +555,21 @@ public partial class MudExImageViewer : IMudExFileDisplay
         });
     }
 
-    public Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos) => Task.FromResult<IDictionary<string, object>>(null);
+    public async Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos)
+    {
+        var stream = fileDisplayInfos?.ContentStream ?? await Get<MudExFileService>().ReadStreamAsync(Src);
+        var meta = ImageMetadataReader.ReadMetadata(stream);
+        var result = new Dictionary<string, object>();
+        foreach (var directory in meta)
+        {
+            foreach (var tag in directory.Tags)
+            {
+                result.Add($"{directory.Name} - {tag.Name}", tag.Description);
+            }
+        }
+
+        return result;
+    }
 
     private Task<string> ConvertImageToAsync(Stream stream, ImageViewerExportFormat format = ImageViewerExportFormat.Png) => ConvertImageToAsync(stream, MudExImageViewerSaveOptions.GetImageFormat(format));
 
