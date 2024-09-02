@@ -21,6 +21,7 @@
 @import '_zoom.scss';
 @import '_key_frames.scss';
 
+
 .mud-ex-gradient-text {
     background: linear-gradient( 90deg,var(--mud-palette-primary),var(--mud-palette-secondary),var(--mud-palette-info),var(--mud-palette-primary-hover),var(--mud-palette-secondary-lighten),var(--mud-palette-warning),var(--mud-palette-tertiary));
     background-size: 200% auto;

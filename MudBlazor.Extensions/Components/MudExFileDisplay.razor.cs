@@ -7,9 +7,12 @@ using Nextended.Blazor.Helper;
 using MudBlazor.Extensions.Services;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
+using MudBlazor.Extensions.Options;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
+using MudBlazor.Interop;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -20,7 +23,8 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
 {
 
     #region private fields
-
+    
+    private (MudExDimension? Dimension, MudExPosition? Position)? _lastInfoDialogLocation;
     private DynamicComponent _currentFileDisplay;
     private bool _internalCall;
     private bool _isNativeRendered;
@@ -608,14 +612,49 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         options.CloseButton = true;
         options.Resizeable = true;
         options.DragMode = MudDialogDragMode.Simple;
-        
+        if (_lastInfoDialogLocation.HasValue)
+        {
+            options.CustomPosition = _lastInfoDialogLocation.Value.Position;
+            options.CustomSize = _lastInfoDialogLocation.Value.Dimension;
+            options.MaxWidth = MaxWidth.ExtraExtraLarge;
+            options.MaxHeight = MaxHeight.ExtraExtraLarge;
+        }
+
+        Get<IDialogEventService>()
+            .Subscribe<DialogDragEndEvent>(HandleDragged)
+            .Subscribe<DialogResizedEvent>(HandleResized);
+
         await Get<IDialogService>().ShowObject(infoObject, TryLocalize("Info"), Icons.Material.Filled.Info, options, meta =>
         {
             meta.AllProperties.WrapInMudItem(i => i.xs = 6);
             meta.Property("Url").WrapInMudItem(i => i.xs = 12);
         });
-        
+
+        Get<IDialogEventService>()
+            .Unsubscribe<DialogDragEndEvent>(HandleDragged)
+            .Unsubscribe<DialogResizedEvent>(HandleResized);
     }
+
+
+    private Task HandleDragged(DialogDragEndEvent arg)
+    {
+        return Store(arg.Rect);
+    }
+
+    private Task HandleResized(DialogResizedEvent arg)
+    {
+        return Store(arg.Rect);
+    }
+
+    private Task Store(BoundingClientRect argRect)
+    {
+        if (argRect is { Left: > 0, Top: > 0, Width: > 0, Height: > 0 })
+        {
+            _lastInfoDialogLocation = (argRect.ToDimension(CssUnit.Percentage), argRect.ToPosition(CssUnit.Percentage));
+        }
+        return Task.CompletedTask;
+    }
+
 
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()

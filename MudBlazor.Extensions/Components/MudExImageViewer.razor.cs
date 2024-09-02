@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Services;
 using BlazorJS;
+using BlazorJS.Attributes;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit;
@@ -15,6 +17,7 @@ using Nextended.Core;
 using Nextended.Core.Extensions;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
+using MudBlazor.Interop;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -34,16 +37,52 @@ public partial class MudExImageViewer : IMudExFileDisplay
     private Origin _navigatorPosition = Origin.BottomRight;
     private MudExColor _navigatorRectangleColor = MudExColor.Primary;
     private ConcurrentDictionary<(string FormatName, string Url), string> _convertedUrlMapping = new();
-
-
+    private ElementReference _selectionToolBar;
+    private ElementReference _rubberBand;
+    private ElementReference ContainerElement;
+    private Stack<Action> _undoStack = new();
+    private bool _allowInteractingUnderRubberBand = true;
+    private bool _allowRubberBandSelection = true;
     [Inject] private MudExFileService FileService { get; set; }
-    
+
     /// <summary>
     /// Returns the current status text
     /// </summary>
     public string StatusText { get; private set; }
 
     #region Parameters
+
+    /// <summary>
+    /// Extra additional toolbar content
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Common")]
+    public RenderFragment ToolbarContent { get; set; }
+
+    /// <summary>
+    /// Extra additional toolbar content for the selected area toolbar for <see cref="AllowRubberBandSelection"/>
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Common")]
+    public RenderFragment SelectedAreaToolbarContent { get; set; }
+
+    /// <summary>
+    /// Callback when the error state changes
+    /// </summary>
+    [SafeCategory(CategoryTypes.FormComponent.Validation)]
+    [Parameter] public EventCallback<ImageAreaSelectedArgs> ImageAreaSelected { get; set; }
+
+    /// <summary>
+    /// How to handle the stream url
+    /// </summary>
+    [Parameter, SafeCategory("Behaviour")]
+    public StreamUrlHandling StreamUrlHandling { get; set; } = StreamUrlHandling.BlobUrl;
+
+    /// <summary>
+    /// The icon for Undo
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.FormComponent.Appearance)]
+    public string UndoIcon { get; set; } = Icons.Material.Filled.Undo;
 
     /// <summary>
     /// The icon for the ZoomIn button
@@ -82,6 +121,12 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public string SaveButtonIcon { get; set; } = Icons.Material.Filled.SaveAs;
 
     /// <summary>
+    /// The icon for the Selection Mode
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.FormComponent.Appearance)]
+    public string SelectionModeIcon { get; set; } = Icons.Material.Filled.SelectAll;
+
+    /// <summary>
     /// The dialog options for the save dialog
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.FormComponent.Appearance), IgnoreOnObjectEdit]
@@ -118,6 +163,29 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public bool ShowResetButton { get; set; } = true;
 
     /// <summary>
+    /// If true user can select an area with the mouse by holding the ctrl key
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.FormComponent.Behavior)]
+    public bool AllowRubberBandSelection
+    {
+        get => _allowRubberBandSelection;
+        set => Set(ref _allowRubberBandSelection, value, _ => Update());
+    }
+
+    /// <summary>
+    /// If true the rubber band stays open and the user can still move or zoom the image
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.FormComponent.Behavior)]
+    public bool AllowInteractingUnderRubberBand
+    {
+        get => _allowInteractingUnderRubberBand;
+        set => Set(ref _allowInteractingUnderRubberBand, value, _ => Update());
+    }
+
+
+    [Parameter] public MudExColor RubberBandColor { get; set; } = MudExColor.Primary;
+
+    /// <summary>
     /// If true a FullScreen button is shown in the toolbar
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.FormComponent.Behavior)]
@@ -150,13 +218,19 @@ public partial class MudExImageViewer : IMudExFileDisplay
     /// <summary>
     /// This method returns true when at least one button is used
     /// </summary>
-    public bool ShowTools() => ShowZoomInButton || ShowZoomOutButton || ShowPrintButton || ShowResetButton || ShowFullScreenButton;
+    public bool ShowTools() => ShowZoomInButton || ShowZoomOutButton || ShowPrintButton || ShowResetButton || ShowFullScreenButton || ToolbarContent != null;
 
     /// <summary>
     /// Style for toolbar only if <see cref="ShowTools"/> is true
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.FormComponent.Appearance)]
     public string ToolbarStyle { get; set; }
+
+    /// <summary>
+    /// Style for RubberBand only if <see cref="AllowRubberBandSelection"/> is true
+    /// </summary>
+    [Parameter, SafeCategory(CategoryTypes.FormComponent.Appearance)]
+    public string RubberBandStyle { get; set; }
 
     /// <summary>
     /// Dense toolbar
@@ -289,7 +363,12 @@ public partial class MudExImageViewer : IMudExFileDisplay
     private async Task Update()
     {
         await WaitReferenceCreatedAsync();
-        await JsReference.InvokeVoidAsync("createViewer", await Options());
+        await JsReference.InvokeVoidAsync("createViewer", await Options(), ContainerElement, _rubberBand, _selectionToolBar);
+    }
+
+    private void ToggleRubberBandSelection(bool on)
+    {
+        JsReference.InvokeVoidAsync("toggleRubberBandSelection", on);
     }
 
     #region Interface Implementation
@@ -319,7 +398,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     public void OnViewerCreated()
     {
     }
-    
+
     /// <inheritdoc />
     public override async Task ImportModuleAndCreateJsAsync()
     {
@@ -428,29 +507,44 @@ public partial class MudExImageViewer : IMudExFileDisplay
             {nameof(MudExObjectEditDialog<MudExImageViewerSaveOptions>.AllowSearch), false},
             {nameof(MudExObjectEditDialog<MudExImageViewerSaveOptions>.DialogIcon), SaveButtonIcon},
         };
-        var r = await DialogService.EditObject(new MudExImageViewerSaveOptions {FileName = FileDisplayInfos?.FileName ?? Path.GetFileName(Src)}, TryLocalize("Save image"), dlgOptions,
+        var r = await DialogService.EditObject(new MudExImageViewerSaveOptions { FileName = FileDisplayInfos?.FileName ?? Path.GetFileName(Src) }, TryLocalize("Save image"), dlgOptions,
             meta =>
             {
                 meta.Property(m => m.FileName).WithLabel(TryLocalize("Filename"));
-                meta.Property(m => m.VisibleViewPortOnly).WithLabel(TryLocalize("Save visible area only")).WithDescription(TryLocalize("Otherwise the full image will be downloaded"));
+                meta.Property(m => m.AreaToSave).WithLabel(TryLocalize("Area to save"));
                 meta.Property(m => m.Format).WithLabel(TryLocalize("Image format"));
             }, parameters);
-        if(r.Cancelled)
+        if (r.Cancelled)
             return;
         await SaveImageAsync(r.Result);
 
     }
+
+    [JSInvokable]
+    public Task OnAreaSelected(System.Drawing.RectangleF area, BoundingClientRect clientRect, byte[] areaImage, string imageBlobUrl)
+    {
+        var args = new ImageAreaSelectedArgs(area, clientRect, areaImage, imageBlobUrl);
+        return ImageAreaSelected.InvokeAsync(args);
+    }
+
+    private Task<string> GetUrlForArea(SaveImageMode mode) => mode switch
+    {
+        SaveImageMode.SelectedArea => GetSelectedAreaImageUrlAsync(),
+        SaveImageMode.VisibleViewPort => JsReference.InvokeAsync<string>("getCurrentViewImageDataUrl").AsTask(),
+        _ => Task.FromResult(Src)
+    };
 
     /// <summary>
     /// Downloads the image with the given options
     /// </summary>
     public async Task SaveImageAsync(MudExImageViewerSaveOptions options)
     {
-        var url = options.VisibleViewPortOnly ? await JsReference.InvokeAsync<string>("getCurrentViewImageDataUrl") : Src;
+        var url = await GetUrlForArea(options.AreaToSave);
+
         var format = options.GetImageFormat();
         var extension = format?.FileExtensions.FirstOrDefault() ?? MimeType.GetExtension(FileDisplayInfos.ContentType);
         string name = !string.IsNullOrEmpty(options.FileName) ? Path.ChangeExtension(options.FileName, extension) : $"{Guid.NewGuid().ToFormattedId()}{extension.EnsureStartsWith(".")}";
-        
+
         var result = await ConvertImageToAsync(url, format);
         await JsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
         {
@@ -507,10 +601,13 @@ public partial class MudExImageViewer : IMudExFileDisplay
     private async Task<object> Options()
     {
         var url = await ConvertUrlIfNeededAsync(Src);
+        //background: linear-gradient(90deg, blue 50%, transparent 50%), linear-gradient(90deg, blue 50%, transparent 50%), linear-gradient(0deg, blue 50%, transparent 50%), linear-gradient(0deg, blue 50%, transparent 50%);
         return new
         {
             id = _id,
             Src = url,
+            AllowInteractingUnderRubberBand,
+            AllowRubberBandSelection,
             NavigatorClass,
             ShowNavigator,
             AnimationTime,
@@ -559,7 +656,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
     private Task ResetClick() => ResetZoom();
     private Task FullscreenClick() => ToggleFullScreen();
     private Task SaveAsClick() => SaveImageAsync();
-    private Task PrintClick() => JsReference.InvokeVoidAsync("print").AsTask();
+    private Task PrintClick() => Print(SaveImageMode.VisibleViewPort);
 
     private bool NeedSpacer(bool toolsRendered)
     {
@@ -570,4 +667,79 @@ public partial class MudExImageViewer : IMudExFileDisplay
         ToolbarButtonPosition.GetDescription().Split("-").First().ToLower(),
         ToolbarButtonPosition.GetDescription().Split("-").Last().ToLower());
 
+    /// <summary>
+    /// Opens the selected area in a new tab
+    /// </summary>
+    public async Task OpenSelectionInNewTab() 
+        => await JsRuntime.InvokeVoidAsync("window.open", await GetSelectedAreaImageUrlAsync(), "_blank", "noreferrer");
+
+    private async Task SwapToSelection()
+    {
+       ChangeSrc(await GetSelectedAreaImageUrlAsync());
+       await HideRubberBand();
+    }
+
+    private void ChangeSrc(string url)
+    {
+        var currentUrl = Src;
+        _undoStack.Push(() => Src = currentUrl);
+        Src = url;
+        InvokeAsync(StateHasChanged);
+    }
+    
+    /// <summary>
+    /// Downloads the selected area as image
+    /// </summary>
+    public async Task SaveSelection() => await SaveImageAsync(new MudExImageViewerSaveOptions { AreaToSave = SaveImageMode.SelectedArea });
+
+    /// <summary>
+    /// Returns the selected area image url depending on the <see cref="StreamUrlHandling"/> property
+    /// </summary>
+    public Task<string> GetSelectedAreaImageUrlAsync() => StreamUrlHandling == StreamUrlHandling.BlobUrl ? GetSelectedAreaImageBlobUrlAsync() : GetSelectedAreaImageDataUrlAsync();
+
+    /// <summary>
+    /// Returns the selected area image as blob url
+    /// </summary>
+    public Task<string> GetSelectedAreaImageBlobUrlAsync() => JsReference.InvokeAsync<string>("getSelectedAreaImageData", "blob").AsTask();
+
+    /// <summary>
+    /// Returns the selected area image as data url
+    /// </summary>
+    public Task<string> GetSelectedAreaImageDataUrlAsync() => JsReference.InvokeAsync<string>("getSelectedAreaImageData", "dataURL").AsTask();
+
+    /// <summary>
+    /// Returns the selected area image as byte array
+    /// </summary>
+    public Task<byte[]> GetSelectedAreaImageAsync() => JsReference.InvokeAsync<byte[]>("getSelectedAreaImageData", "bytes").AsTask();
+
+    public bool CanUndo() => _undoStack.Count > 0;
+
+    public void Undo()
+    {
+        _undoStack.Pop()?.Invoke();
+        InvokeAsync(StateHasChanged);
+    }
+
+    /// <summary>
+    /// Hides the rubber band
+    /// </summary>
+    public Task HideRubberBand() => JsReference.InvokeVoidAsync("hideRubberBand").AsTask();
+
+    /// <summary>
+    /// Prints the image
+    /// </summary>
+    public async Task Print(SaveImageMode area) => await JsReference.InvokeVoidAsync("print", await GetUrlForArea(area));
+
+
+    private Task PrintSelectionClick() => Print(SaveImageMode.SelectedArea);
+
+    private string RubberBandStyleStr() => MudExStyleBuilder.Default
+        .WithPosition(Core.Css.Position.Absolute)
+        .WithBorder(2, BorderStyle.Dashed, RubberBandColor)
+        .With("pointer-events", "none")
+        .WithZIndex(1)
+        .WithDisplay(Display.None)
+        .With("box-sizing", "border-box")
+        .AddRaw(RubberBandStyle)
+        .Build();
 }

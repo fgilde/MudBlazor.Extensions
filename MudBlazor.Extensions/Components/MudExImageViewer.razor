@@ -3,7 +3,9 @@
 @namespace MudBlazor.Extensions.Components
 
 
-<div style="@StyleStr()">
+<div @ref="ContainerElement" @onkeydown="ContainerKeyDown" style="@StyleStr()">
+    <div style="@RubberBandStyleStr()" @ref="_rubberBand"></div>
+    @SelectionToolbar()
     @if (!string.IsNullOrEmpty(StatusText))
     {
         <MudText Style="text-align: center; width: 100%" Typo="Typo.h4">@TryLocalize(StatusText)</MudText>
@@ -23,6 +25,17 @@
 
 @code
 {
+    RenderFragment SelectionToolbar()
+    {
+        return @<div @ref="_selectionToolBar" style="display: none; z-index: 1">
+                   <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Open in new browser tab")" Class="ml-1" OnClick="@(OpenSelectionInNewTab)" Icon="@Icons.Material.Filled.OpenInNew" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" />
+                   <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Download")" Class="ml-1" OnClick="@(SaveSelection)" Icon="@Icons.Material.Filled.Download" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" />
+                   <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Print")" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@PrintSelectionClick" Icon="@PrintButtonIcon"/>
+                   <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Swap")" Class="ml-1" OnClick="@(SwapToSelection)" Icon="@Icons.Material.Filled.SwapVerticalCircle" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" />
+                    @SelectedAreaToolbarContent
+               </div>;
+    }
+
     RenderFragment RenderToolBar()
     {
         return @<MudToolBar WrapContent="true" Style="@ToolbarStyleStr()" Dense="@Dense">
@@ -31,12 +44,28 @@
                        <MudSpacer/>
                    }
                    <div>
-                        <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Zoom in")" Visible="@ShowZoomInButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@ZoomInClick" Icon="@ZoomInButtonIcon"/>
-                        <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Zoom out")" Visible="@ShowZoomOutButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@ZoomOutClick" Icon="@ZoomOutButtonIcon" />
-                        <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Reset view")" Visible="@ShowResetButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@ResetClick" Icon="@ResetButtonIcon" />
-                        <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Fullscreen")" Visible="@ShowFullScreenButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@FullscreenClick" Icon="@FullScreenButtonIcon" />
-                        <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Print")" Visible="@ShowPrintButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@PrintClick" Icon="@PrintButtonIcon" />
-                        <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Save as")" Visible="@ShowSaveButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@SaveAsClick" Icon="@SaveButtonIcon" />
+                       <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Undo")" Visible="@CanUndo()" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@Undo" Icon="@UndoIcon"/>
+                       <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Zoom in")" Visible="@ShowZoomInButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@ZoomInClick" Icon="@ZoomInButtonIcon"/>
+                       <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Zoom out")" Visible="@ShowZoomOutButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@ZoomOutClick" Icon="@ZoomOutButtonIcon"/>
+                       <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Reset view")" Visible="@ShowResetButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@ResetClick" Icon="@ResetButtonIcon"/>
+                       <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Fullscreen")" Visible="@ShowFullScreenButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@FullscreenClick" Icon="@FullScreenButtonIcon"/>
+                       <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Print")" Visible="@ShowPrintButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@PrintClick" Icon="@PrintButtonIcon"/>
+                       <MudExIconButton Size="@ToolbarButtonSize" ToolTip="@TryLocalize("Save as")" Visible="@ShowSaveButton" Class="ml-1" Variant="@ToolbarButtonVariant" Color="@ToolbarButtonColor" OnClick="@SaveAsClick" Icon="@SaveButtonIcon"/>
+                       @if (AllowRubberBandSelection)
+                       {
+                            <MudTooltip RootClass="ml-1" Class="ml-1" Text="@TryLocalize("Start/Stop selection")">
+                                <MudToggleIconButton Size="@ToolbarButtonSize"
+                                                     Class="ml-1" 
+                                                    Variant="@ToolbarButtonVariant"
+                                                    ToggledChanged="ToggleRubberBandSelection"
+                                                    Icon="@SelectionModeIcon"
+                                                    ToggledIcon="@SelectionModeIcon"
+                                                    Color="@ToolbarButtonColor"
+                                                    ToggledColor="Color.Warning">
+                               </MudToggleIconButton>
+                           </MudTooltip>
+                       }
+                       @ToolbarContent
                    </div>
                    @if (NeedSpacer(true))
                    {
@@ -44,4 +73,13 @@
                    }
                </MudToolBar>;
     }
+
+    private void ContainerKeyDown(KeyboardEventArgs args)
+    {
+        if (args.Key is "Z" or "z" && args.CtrlKey)
+        {
+            Undo();
+        }
+    }
 }
+

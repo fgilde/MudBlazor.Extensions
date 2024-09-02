@@ -3834,9 +3834,10 @@
             File name for the saved image.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExImageViewerSaveOptions.VisibleViewPortOnly">
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewerSaveOptions.AreaToSave">
             <summary>
-            If true, only the visible part of the image will be saved.
+            Specify the area to save.
+            Choose between the full image, the visible viewport or the selected area.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewerSaveOptions.Format">
@@ -3914,6 +3915,31 @@
             Returns the current status text
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ToolbarContent">
+            <summary>
+            Extra additional toolbar content
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.SelectedAreaToolbarContent">
+            <summary>
+            Extra additional toolbar content for the selected area toolbar for <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.AllowRubberBandSelection"/>
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ImageAreaSelected">
+            <summary>
+            Callback when the error state changes
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.StreamUrlHandling">
+            <summary>
+            How to handle the stream url
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.UndoIcon">
+            <summary>
+            The icon for Undo
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ZoomInButtonIcon">
             <summary>
             The icon for the ZoomIn button
@@ -3944,6 +3970,11 @@
             The icon for the Save button
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.SelectionModeIcon">
+            <summary>
+            The icon for the Selection Mode
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.SaveDialogOptions">
             <summary>
             The dialog options for the save dialog
@@ -3972,6 +4003,16 @@
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowResetButton">
             <summary>
             If true a Reset button is shown in the toolbar
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.AllowRubberBandSelection">
+            <summary>
+            If true user can select an area with the mouse by holding the ctrl key
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.AllowInteractingUnderRubberBand">
+            <summary>
+            If true the rubber band stays open and the user can still move or zoom the image
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ShowFullScreenButton">
@@ -4007,6 +4048,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.ToolbarStyle">
             <summary>
             Style for toolbar only if <see cref="M:MudBlazor.Extensions.Components.MudExImageViewer.ShowTools"/> is true
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.RubberBandStyle">
+            <summary>
+            Style for RubberBand only if <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.AllowRubberBandSelection"/> is true
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExImageViewer.Dense">
@@ -4151,6 +4197,46 @@
         <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.SaveImageAsync(MudBlazor.Extensions.Components.MudExImageViewerSaveOptions)">
             <summary>
             Downloads the image with the given options
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.OpenSelectionInNewTab">
+            <summary>
+            Opens the selected area in a new tab
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.SaveSelection">
+            <summary>
+            Downloads the selected area as image
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.GetSelectedAreaImageUrlAsync">
+            <summary>
+            Returns the selected area image url depending on the <see cref="P:MudBlazor.Extensions.Components.MudExImageViewer.StreamUrlHandling"/> property
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.GetSelectedAreaImageBlobUrlAsync">
+            <summary>
+            Returns the selected area image as blob url
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.GetSelectedAreaImageDataUrlAsync">
+            <summary>
+            Returns the selected area image as data url
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.GetSelectedAreaImageAsync">
+            <summary>
+            Returns the selected area image as byte array
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.HideRubberBand">
+            <summary>
+            Hides the rubber band
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.Print(MudBlazor.Extensions.Components.SaveImageMode)">
+            <summary>
+            Prints the image
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExInput`1">

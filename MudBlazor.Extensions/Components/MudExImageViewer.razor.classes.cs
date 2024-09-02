@@ -1,4 +1,8 @@
-﻿using SixLabors.ImageSharp.Formats;
+﻿using System.Drawing;
+using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
+using MudBlazor.Interop;
+using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Bmp;
 using SixLabors.ImageSharp.Formats.Gif;
 using SixLabors.ImageSharp.Formats.Jpeg;
@@ -22,9 +26,10 @@ public class MudExImageViewerSaveOptions
     public string FileName { get; set; }
     
     /// <summary>
-    /// If true, only the visible part of the image will be saved.
+    /// Specify the area to save.
+    /// Choose between the full image, the visible viewport or the selected area.
     /// </summary>
-    public bool VisibleViewPortOnly { get; set; }
+    public SaveImageMode AreaToSave { get; set; }
     
     /// <summary>
     /// Format in which to save the image.
@@ -107,4 +112,27 @@ public enum ImageViewerExportFormat
     /// Portable Bitmap format.
     /// </summary>
     Pbm
+}
+
+public enum SaveImageMode
+{
+    Full = 0,
+    VisibleViewPort = 1,
+    SelectedArea = 2
+}
+
+public class ImageAreaSelectedArgs
+{
+    public ImageAreaSelectedArgs(RectangleF area, BoundingClientRect rubberBandRect, byte[] imageBytes, string imageBlobUrl)
+    {
+        Area = area;
+        RubberBandRect = rubberBandRect;
+        ImageBytes = imageBytes;
+        ImageBlobUrl = imageBlobUrl;
+    }
+
+    public RectangleF Area { get; private set; }
+    public BoundingClientRect RubberBandRect { get; private set; }
+    public byte[] ImageBytes { get; private set; }
+    public string ImageBlobUrl { get; private set; }
 }
