@@ -198,7 +198,8 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
     {
         if (withPreset)
         {
-            InitialPreset = AuralizerPreset.BarkScaleLinearAmplitude;
+            //InitialPreset = AuralizerPreset.BarkScaleLinearAmplitude;
+            InitialPreset = AuralizerPreset.ReflexMirror;
             Presets = AuralizerPreset.All;
         }
 

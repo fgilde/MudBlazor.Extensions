@@ -387,6 +387,7 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2024-06-28 13:18:31 -->
+ - 2.0.5 > Update MudBlazor to 7.8.0
  - 2.0.4 > The [MudExImageViewer](https://www.mudex.org/image-view) Now allows custom toolbar content and custom content for the new floating toolbar for the selected area.
  - 2.0.4 > The [MudExImageViewer](https://www.mudex.org/image-view) now has an option to allow a rubberband selection. The user can then open, download, print or directly switching the view to the selected area as an image.
            Also an event is fired when the user selects an area where an blob url and the image bytes are provided in.
