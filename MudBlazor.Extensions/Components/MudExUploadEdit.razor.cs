@@ -707,7 +707,8 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         || (DropZoneClickAction == DropZoneClickAction.UploadFile);
 
     private ConcurrentDictionary<T, (Task Task, long Size, long ReadBytes)> _loadings = new();
-    private bool IsLoading(T request) => request != null && _loadings?.ContainsKey(request) == true;
+    public bool IsLoading(T request) => request != null && _loadings?.ContainsKey(request) == true;
+    public bool IsLoading() => _loadings?.Any() == true;
     private string FindPath(IBrowserFile file) => _paths?.FirstOrDefault(f => f.Name == file.Name)?.RelativePath ?? string.Empty;
 
     /// <inheritdoc />
