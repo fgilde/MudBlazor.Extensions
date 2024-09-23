@@ -3,6 +3,7 @@ using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Services;
 using Nextended.Blazor.Models;
 using Nextended.Core;
+using System.Web;
 
 namespace MudBlazor.Extensions.Components
 {
@@ -72,7 +73,7 @@ namespace MudBlazor.Extensions.Components
 
             try
             {
-                if (srcUpdated)
+                if (srcUpdated || string.IsNullOrEmpty(_iframeUrl))
                 {
                     await UpdateUrl();
                 }
@@ -88,7 +89,8 @@ namespace MudBlazor.Extensions.Components
         private async Task UpdateUrl()
         {
             //var url = await FileService.ToDataUrlAsync(Src, FileDisplayInfos?.ContentType);
-            _iframeUrl = $"https://view.officeapps.live.com/op/view.aspx?src={Src}";
+            _iframeUrl = $"https://view.officeapps.live.com/op/view.aspx?src={HttpUtility.HtmlEncode(Src)}";
+            // _iframeUrl = $"https://view.officeapps.live.com/op/view.aspx?src={HttpUtility.HtmlEncode("https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls")}";
             await InvokeAsync(StateHasChanged);
         }
     }

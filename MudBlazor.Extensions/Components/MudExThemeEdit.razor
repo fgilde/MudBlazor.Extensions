@@ -1,9 +1,5 @@
 ﻿@using MudBlazor.Extensions.Components.ObjectEdit
-@using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using MudBlazor.Extensions.Helper
-@using MudBlazor
-@using MudBlazor.Extensions.Components
-@using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Core.Css
 @inherits MudExBaseComponent<MudExThemeEdit<TTheme>>
 @typeparam TTheme where TTheme : MudTheme
@@ -11,25 +7,30 @@
 
 @if (Presets?.Any() == true || AllowPresetsEdit)
 {
-    <MudGrid Class="mb-5 mt-5">
-        <MudExThemeSelect Style="@MudExStyleBuilder.Default.WithBorder(1, BorderStyle.Solid, Color.Primary).WithBorderRadius("var(--mud-default-borderradius)").Style"
-                          PreviewMode="@GetPreviewMode()" TTheme="TTheme" Available="@Presets" SelectedChanged="@OnSelectedPresetChange" SelectedTheme="Theme" />
-        @if (AllowPresetsEdit)
-        {
-            <MudButtonGroup Color="Color.Primary" Style="margin-left: -1px; margin-top: 6px;" Class="mr-2" Size="Size.Small" Variant="Variant.Outlined">
-                <MudIconButton OnClick="@OnAddThemeClick" Icon="@Icons.Material.Filled.Add" Color="Color.Primary"/>
-                <MudIconButton OnClick="@OnDeleteThemeClick" Disabled="@(!CanDeletePreset(_selectedPreset))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
-            </MudButtonGroup>
-        }
-    </MudGrid>
+
+    <MudExAdditionalAdornment Position="MoveContentPosition.BeforeEnd">
+        <For>
+            <MudExThemeSelect Class="mb-2 mt-2" Style="@MudExStyleBuilder.Default.WithBorder(1, BorderStyle.Solid, Color.Primary).WithBorderRadius("var(--mud-default-borderradius)").Style"
+                              PreviewImageSize="@("100x60")"
+                              PreviewMode="@GetPreviewMode()" TTheme="TTheme" Available="@Presets" SelectedChanged="@OnSelectedPresetChange" SelectedTheme="Theme" />
+        </For>
+        <ChildContent>
+            @if (AllowPresetsEdit)
+            {
+                <MudExIconButton OnClick="@OnAddThemeClick" Icon="@Icons.Material.Filled.Add" Color="Color.Primary" />
+                <MudExIconButton OnClick="@OnDeleteThemeClick" Disabled="@(!CanDeletePreset(_selectedPreset))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+            }
+        </ChildContent>
+    </MudExAdditionalAdornment>
+
 }
 
 
 @if (Theme is not null)
 {
     <MudExObjectEditForm T="TTheme"
-                        @ref="ObjectEditor"
-                         LightOverlayLoadingBackground="@(!IsDark ?? false)"R
+                         @ref="ObjectEditor"
+                         LightOverlayLoadingBackground="@(!IsDark ?? false)" R
                          IsLoading="@_isLoading"
                          MetaConfiguration="ThemeEditMetaConfiguration"
                          Value="Theme"
@@ -49,14 +50,14 @@
                          PropertyChanged="OnPropertyChanged"
                          ValueChanged="OnThemeChanged">
         <ToolBarContent>
-            
+
             <MudTooltip Text="@TryLocalize("Refresh")">
-                <MudIconButton Icon="@Icons.Material.Filled.Refresh" OnClick="@(OnRefreshClick)"/>
+                <MudIconButton Icon="@Icons.Material.Filled.Refresh" OnClick="@(OnRefreshClick)" />
             </MudTooltip>
 
             @if (AllowModeToggle)
             {
-                <MudExDivider Style="margin-top: 0 ;height: 40px; margin-right: 20px;" UseBorder="true" Class="m-1" Vertical="true"/>
+                <MudExDivider Style="margin-top: 0 ;height: 40px; margin-right: 20px;" UseBorder="true" Class="m-1" Vertical="true" />
                 <MudExEnumSelect Style="max-width:300px;" Variant="Variant.Outlined" SearchBox="false" Clearable="false" TEnum="ThemeEditMode" ValueChanged="@EditModeChangedInternally" Value="@EditMode"></MudExEnumSelect>
             }
         </ToolBarContent>

@@ -1,19 +1,19 @@
 ﻿@using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Core.Enums
 @using Nextended.Core.Extensions
-<MudExTreeView SelectedItemBackgroundColor="@(SelectedNavEntry.HasChildren || ViewMode != TreeViewMode.Default ? MudExColor.Default : MudExColor.HoverBackground)"
+<MudExTreeView SelectedItemBackgroundColor="@(SelectedNavEntry?.HasChildren == true || ViewMode != TreeViewMode.Default ? MudExColor.Default : MudExColor.HoverBackground)"
                @bind-SelectedNode="SelectedNavEntry" 
                AllowedToSelectFunc="@HasAction" 
                ItemContentStyle="font-size:14px;" 
                FilterChipsPlacedRight="true"
                ExpandOnFilter="true"
                Parameters="@(new Dictionary<string, object>() {{nameof(ExpandBehaviour), ExpandBehaviour}})"
-               FilterMode="@(ClientTheme.CurrentTheme.ShowFilterInDrawer && ViewMode != TreeViewMode.Breadcrumb ? PropertyFilterMode.AlwaysVisible : PropertyFilterMode.Disabled)"
+               FilterMode="@(ClientTheme.CurrentTheme?.ShowFilterInDrawer == true && ViewMode != TreeViewMode.Breadcrumb ? PropertyFilterMode.AlwaysVisible : PropertyFilterMode.Disabled)"
                FilterBoxStyle="margin:10px;" 
                Style="margin: 0 10px;" 
                ExpandButtonDirection="LeftOrRight.Right" 
                @bind-ViewMode="@ViewMode" 
-               TreeViewModeToggleComponent="@(_toggleableViewModes.Contains(ViewMode) ? TreeViewModeToggleComponent.ToggleButton : TreeViewModeToggleComponent.None)"
+               TreeViewModeToggleComponent="@(_toggleableViewModes?.Contains(ViewMode) == true ? TreeViewModeToggleComponent.ToggleButton : TreeViewModeToggleComponent.None)"
                ToggleableViewModes="@_toggleableViewModes"
                Items="@Entries">
     <ItemContentTemplate>

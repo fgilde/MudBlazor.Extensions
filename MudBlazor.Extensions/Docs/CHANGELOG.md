@@ -1,4 +1,5 @@
 ## Change Log    
+ - 2.0.6 > **_Breaking:_** Signature of [IMudExFileDisplay](https://www.mudex.org/api/IMudExFileDisplay) `CanHandleFile` changed to an async method. This allows to handle async file checks. The method now returns a Task<bool> instead of a bool.
  - 2.0.5 > Update MudBlazor to 7.8.0
  - 2.0.4 > The [MudExImageViewer](https://www.mudex.org/image-view) Now allows custom toolbar content and custom content for the new floating toolbar for the selected area.
  - 2.0.4 > The [MudExImageViewer](https://www.mudex.org/image-view) now has an option to allow a rubberband selection. The user can then open, download, print or directly switching the view to the selected area as an image.
@@ -9,7 +10,7 @@
  - 2.0.3 > Update MudBlazor to 7.5.0
  - 2.0.3 > Fix small bugs
  - 2.0.0 > Update MudBlazor to 7.0.0
- - 2.0.0 > **_Breaking:_** Rename: Many properties and behavoirs as MudBlazor does. Se migration gide from MudBlazor 6 to 7 [here](https://github.com/MudBlazor/MudBlazor/issues/8447)
+ - 2.0.0 > **_Breaking:_** Rename: Many properties and behavoirs as MudBlazor does. Se migration guide from MudBlazor 6 to 7 [here](https://github.com/MudBlazor/MudBlazor/issues/8447)
  - 1.7.89 > Fix bug that uploadable file is not updated in MudExObjectEditDialog
  - 1.7.88 > Dialogs now supporting a can close event to allow canceling the close event [see sample](https://www.mudex.org/dialogs-closing-event)
  - 1.7.88 > Add new Components [MudExTreeView](https://www.mudex.org/demos/TreeView).
