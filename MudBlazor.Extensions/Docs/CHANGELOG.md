@@ -37,7 +37,7 @@
  - 1.7.84 > Update MudBlazor to 6.15.0
  - 1.7.84 > Fix hidden content sometimes in MudExFileDisplayDialog
  - 1.7.84 > Fix Bug that no input can selected in draggable dialogs without header
- - 1.7.84 > Register [MudExAudioPlayer](https://www.mudex.org/audio-player) as file viewer for audio files [see file sample](https://www.mudex.org/file-display?file=electro-psycho-ibiza-no-vocal-sample-edit-169343.mp3)
+ - 1.7.84 > Register [MudExAudioPlayer](https://www.mudex.org/audio-player) as file viewer for audio files [see file sample](https://www.mudex.org/file-display?file=4.Unified-Voice.mp3)
  - 1.7.83 > Register [MudExStructuredDataEditor](https://www.mudex.org/structured-data-edit) as file viewer for json, yml and xml files [see file sample](https://www.mudex.org/file-display?file=weather.json)
  - 1.7.83 > Add viewer for font files for MudExFileDisplay [see file sample](https://www.mudex.org/file-display?file=SweetieBubbleGum-Regular.ttf)
  - 1.7.83 > Add support for tiff images in MudExFileDisplay [see file sample](https://www.mudex.org/file-display?file=Header.tiff)

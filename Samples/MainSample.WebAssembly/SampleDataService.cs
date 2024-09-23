@@ -33,7 +33,6 @@ public class SampleDataService
         yield return (CreateSampleFile("Header.tiff", "image/tiff"));
         yield return (CreateSampleFile("SweetieBubbleGum-Regular.ttf", "font/ttf"));
         yield return (CreateSampleFile("4.Unified-Voice.mp3", "audio/mpeg3"));
-        yield return (CreateSampleFile("electro-psycho-ibiza-no-vocal-sample-edit-169343.mp3", "audio/mpeg3"));
         yield return (CreateSampleFile("WordDokument.doc", "application/msword"));
         yield return (CreateSampleFile("ExcelSheet.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
     }
