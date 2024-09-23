@@ -1,4 +1,4 @@
-[![GitHub Repo stars](https://img.shields.io/github/stars/fgilde/mudblazor.extensions?color=594ae2&style=flat-square&logo=github)](https://github.com/fgilde/mudblazor.extensions/stargazers)
+﻿[![GitHub Repo stars](https://img.shields.io/github/stars/fgilde/mudblazor.extensions?color=594ae2&style=flat-square&logo=github)](https://github.com/fgilde/mudblazor.extensions/stargazers)
 [![GitHub](https://img.shields.io/github/license/garderoben/mudblazor?color=594ae2&style=flat-square&logo=github)](https://github.com/fgilde/MudBlazor.Extensions/blob/master/LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/fgilde/MudBlazor.Extensions?color=594ae2&style=flat-square&logo=github)](https://github.com/fgilde/MudBlazor.Extensions)
 [![Nuget version](https://img.shields.io/nuget/v/MudBlazor.Extensions?color=ff4081&label=nuget%20version&logo=nuget&style=flat-square)](https://www.nuget.org/packages/MudBlazor.Extensions/)
@@ -109,7 +109,7 @@ builder.Services.AddMudServicesWithExtensions(c => c.WithoutAutomaticCssLoading(
   <summary>Expand videos</summary>
 
 <!-- WIKI:START -->
-<!-- Copied from https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md on 2024-06-28 13:18:32 -->
+<!-- Copied from https://raw.githubusercontent.com/wiki/fgilde/MudBlazor.Extensions/Showcase.md on 2024-09-23 15:35:58 -->
 ## Showcase
 
 https://github.com/fgilde/MudBlazor.Extensions/assets/11070717/39e06d88-a947-43cd-9151-a7cf96bcd849
@@ -164,7 +164,7 @@ This section introduces you to the various components provided by the MudBlazor.
 
 ### MudExObjectEdit
 <!-- OBJECTEDIT:START -->
-<!-- Copied from ObjectEdit.md on 2024-06-28 13:18:32 -->
+<!-- Copied from ObjectEdit.md on 2024-09-23 15:35:55 -->
 The `MudExObjectEdit` is a robust component that allows for object editing and automatically generates the corresponding UI. This component supports automatic validation for DataAnnotation Validations or fluent registered validations for your model.
 
 To use `MudExObjectEdit`, you can simply use the `MudExObjectEditForm` and pass your model to it as shown below:
@@ -204,7 +204,7 @@ You can find a running [Sample here](https://www.mudex.org/structured-data-edit)
 
 ### MudExFileDisplay
 <!-- FILEDISPLAY:START -->
-<!-- Copied from MudExFileDisplay.md on 2024-06-28 13:18:32 -->
+<!-- Copied from MudExFileDisplay.md on 2024-09-23 15:35:55 -->
 The `MudExFileDisplay` component is designed to display file contents, such as a preview before uploading or for referenced files. 
 This component can automatically handle URLs or streams and deliver the best possible display. 
 Additionally, you can implement `IMudExFileDisplay` in your own component to register a custom file display.
@@ -263,7 +263,7 @@ await dialogService.ShowEx<MudExFileDisplayDialog>(title, parameters, optionsEx)
 
 ### MudExUploadEdit
 <!-- UPLOADEDIT:START -->
-<!-- Copied from MudExUploadEdit.md on 2024-06-28 13:18:32 -->
+<!-- Copied from MudExUploadEdit.md on 2024-09-23 15:35:55 -->
 
 `MudExUploadEdit` is a versatile file upload component with a wide range of features such as MIME and extension whitelisting/blacklisting, folder upload, drag and drop, copy and paste, renaming, and integration with Dropbox, Google Drive, and OneDrive.
 
@@ -275,7 +275,7 @@ await dialogService.ShowEx<MudExFileDisplayDialog>(title, parameters, optionsEx)
 
 ## Extensions
 <!-- DIALOG_EXT:START -->
-<!-- Copied from DialogExtensions.md on 2024-06-28 13:18:32 -->
+<!-- Copied from DialogExtensions.md on 2024-09-23 15:35:55 -->
 ### Resizable or Draggable Dialogs
 
 You can make your dialogs resizable or draggable using the following code snippet:
@@ -386,12 +386,14 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 ## Change Log 
 Latest Changes: 
 <!-- CHANGELOG:START -->
-<!-- Copied from CHANGELOG.md on 2024-06-28 13:18:31 -->
+<!-- Copied from CHANGELOG.md on 2024-09-23 15:35:55 -->
+ - 2.0.6 > Add New Component `MudExFileDisplayOfficeLive` to support preview of any remote accessable office files in [MudExFileDisplay](https://www.mudex.org/file-display) and [MudExUploadEdit](https://www.mudex.org/upload-edit) . 
+ - 2.0.6 > Use [MudExAdditionalAdornment](https://www.mudex.org/additional-adornments) for Theme edit buttons in [MudExThemeEdit](https://www.mudex.org/theme-edit)
+ - 2.0.6 > Fix some style bugs
  - 2.0.6 > **_Breaking:_** Signature of [IMudExFileDisplay](https://www.mudex.org/api/IMudExFileDisplay) `CanHandleFile` changed to an async method. This allows to handle async file checks. The method now returns a Task<bool> instead of a bool.
  - 2.0.5 > Update MudBlazor to 7.8.0
  - 2.0.4 > The [MudExImageViewer](https://www.mudex.org/image-view) Now allows custom toolbar content and custom content for the new floating toolbar for the selected area.
  - 2.0.4 > The [MudExImageViewer](https://www.mudex.org/image-view) now has an option to allow a rubberband selection. The user can then open, download, print or directly switching the view to the selected area as an image.
-           Also an event is fired when the user selects an area where an blob url and the image bytes are provided in.
  - 2.0.4 > All file viewers can now implement a method to return info like meta tags for the info dialog.
  - 2.0.4 > New propertry in MudExFileDisplay "IgnoredRenderControls" here you can specify an arry of types to ignore as file renderer.
  - 2.0.4 > Update MudBlazor to 7.6.0
@@ -400,21 +402,6 @@ Latest Changes:
  - 2.0.0 > Update MudBlazor to 7.0.0
  - 2.0.0 > **_Breaking:_** Rename: Many properties and behavoirs as MudBlazor does. Se migration guide from MudBlazor 6 to 7 [here](https://github.com/MudBlazor/MudBlazor/issues/8447)
  - 1.7.89 > Fix bug that uploadable file is not updated in MudExObjectEditDialog
- - 1.7.88 > Dialogs now supporting a can close event to allow canceling the close event [see sample](https://www.mudex.org/dialogs-closing-event)
- - 1.7.88 > Add new Components [MudExTreeView](https://www.mudex.org/demos/TreeView).
- - 1.7.88 > Update MudBlazor to 6.20.0
- - 1.7.88 > New Component `MudExFileDisplayExcel` to support preview of Excel files in [MudExFileDisplay](https://www.mudex.org/file-display) and [MudExUploadEdit](https://www.mudex.org/upload-edit) .
- - 1.7.88 > [MudExUploadEdit](https://www.mudex.org/upload-edit) now supports recording audio.
- - 1.7.88 > New Component [MudExGravatar](https://www.mudex.org/gravatar).
- - 1.7.88 > Dialogs now supporting CustomSize and CustomPostion to allow more flexibility.
- - 1.7.88 > New service [IDialogEventService](https://www.mudex.org/a/IDialogEventService) to allow handling of dialog events
- - 1.7.88 > Dialog supports now a CloseAnimation
- - 1.7.88 > New Service [ISpeechRecognitionService](https://www.mudex.org/d/ISpeechRecognitionService/ISpeechRecognitionService) to allow easy speech to text conversion or audio recording without any UI
- - 1.7.88 > New Component [MudExSpeechToTextButton](https://www.mudex.org/speech-to-text) to allow easy speech to text conversion or audio recording
- - 1.7.87 > Small minor BugFixes
- - 1.7.87 > Improve key navigation in MudExSelect and MudExList
- - 1.7.87 > Update MudBlazor to 6.19.1
- - 1.7.86 > Update MudBlazor to 6.18.0
 <!-- CHANGELOG:END -->
 Full change log can be found [here](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/CHANGELOG.md) 
 

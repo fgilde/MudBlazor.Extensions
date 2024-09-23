@@ -1,4 +1,7 @@
 ## Change Log    
+ - 2.0.6 > Add New Component `MudExFileDisplayOfficeLive` to support preview of any remote accessable office files in [MudExFileDisplay](https://www.mudex.org/file-display) and [MudExUploadEdit](https://www.mudex.org/upload-edit) . 
+ - 2.0.6 > Use [MudExAdditionalAdornment](https://www.mudex.org/additional-adornments) for Theme edit buttons in [MudExThemeEdit](https://www.mudex.org/theme-edit)
+ - 2.0.6 > Fix some style bugs
  - 2.0.6 > **_Breaking:_** Signature of [IMudExFileDisplay](https://www.mudex.org/api/IMudExFileDisplay) `CanHandleFile` changed to an async method. This allows to handle async file checks. The method now returns a Task<bool> instead of a bool.
  - 2.0.5 > Update MudBlazor to 7.8.0
  - 2.0.4 > The [MudExImageViewer](https://www.mudex.org/image-view) Now allows custom toolbar content and custom content for the new floating toolbar for the selected area.
@@ -115,7 +118,7 @@
  - 1.7.64 > Remove need for `jsRuntime.InitializeMudBlazorExtensionsAsync()`
  - 1.7.63 > Use MudMarkdown as IMudExFileDisplay to support markdown files in [MudExFileDisplay](https://www.mudex.org/file-display)
  - 1.7.63 > Add new option to allow copy url to clipboard in [MudExFileDisplay](https://www.mudex.org/file-display)
- - 1.7.63 > Fix bug in [MudExThemeEdit](https://www.mudex.org/theme-ed  it) where component wasnt loaded if its rendered in a dialog.
+ - 1.7.63 > Fix bug in [MudExThemeEdit](https://www.mudex.org/theme-edit) where component wasnt loaded if its rendered in a dialog.
  - 1.7.62 > Update all nuget packages to latest versions. Now using MudBlazor 6.7.0
  - 1.7.61 > **_Breaking:_** Rename: Move namespace for Css enums like CssUnit, BorderStyle etc from MudBlazor.Extensions.Core to MudBlazor.Extensions.Core.Css
  - 1.7.61 > new Component [MudExIconPicker](https://www.mudex.org/mud-ex-icon-picker) to select icons. Used in [API]((https://www.mudex.org/api)) overview and in ComponentGrid as MudExObjectedit config.
