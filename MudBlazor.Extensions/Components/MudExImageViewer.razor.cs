@@ -411,15 +411,16 @@ public partial class MudExImageViewer : IMudExFileDisplay
     /// <summary>
     /// Returns true if it's a markdown file and we can handle it
     /// </summary>
-    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos)
+    public Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService)
     {
-        return fileDisplayInfos?.FileName?.EndsWith(".png") == true
+        var canHandle = fileDisplayInfos?.FileName?.EndsWith(".png") == true
                || fileDisplayInfos?.FileName?.EndsWith(".jpg") == true
                || fileDisplayInfos?.FileName?.EndsWith(".jpeg") == true
                || fileDisplayInfos?.FileName?.EndsWith(".webp") == true
                || fileDisplayInfos?.FileName?.EndsWith(".bmp") == true
                || fileDisplayInfos?.FileName?.EndsWith(".gif") == true
                || MimeType.Matches(fileDisplayInfos?.ContentType, "image/*");
+        return Task.FromResult(canHandle);
     }
 
     private bool IsTiff(IMudExFileDisplayInfos fileDisplayInfos)

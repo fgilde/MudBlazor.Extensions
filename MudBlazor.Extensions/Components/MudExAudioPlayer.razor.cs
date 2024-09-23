@@ -111,8 +111,8 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
 
 
     /// <inheritdoc />
-    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos) =>
-        MimeType.AudioTypes.Contains(fileDisplayInfos.ContentType, StringComparer.InvariantCultureIgnoreCase) || MimeType.Matches(fileDisplayInfos.ContentType, "audio/*");
+    public Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService) =>
+        Task.FromResult(MimeType.AudioTypes.Contains(fileDisplayInfos.ContentType, StringComparer.InvariantCultureIgnoreCase) || MimeType.Matches(fileDisplayInfos.ContentType, "audio/*"));
 
 
     public async Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos)

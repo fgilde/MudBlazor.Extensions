@@ -63,7 +63,7 @@ public partial class MudExFileDisplayFont: IMudExFileDisplay
     /// <summary>
     /// Returns true if it's a font file and we can handle it
     /// </summary>
-    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos) => MimeType.Matches(fileDisplayInfos.ContentType, "application/font-*", "font/*", "application/vnd.ms-fontobject");
+    public Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService) => Task.FromResult(MimeType.Matches(fileDisplayInfos.ContentType, "application/font-*", "font/*", "application/vnd.ms-fontobject"));
 
     /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)

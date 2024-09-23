@@ -38,7 +38,11 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private bool _errorClosed;
 
     [Inject] private IJsApiService JsApiService { get; set; }
-    [Inject] private MudExFileService FileService { get; set; }
+
+    /// <summary>
+    /// Reference to the FileService
+    /// </summary>
+    [Inject] public MudExFileService FileService { get; set; }
 
     #endregion
 
@@ -335,14 +339,22 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     }
 
     /// <inheritdoc/>
-    protected override Task OnParametersSetAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        _possibleRenderControls = GetServices<IMudExFileDisplay>().Where(c => c.GetType() != GetType() && !Ignored(c) && c.CanHandleFile(this)).ToList();
+        var fs = Get<IMudExFileService>();
+        var possibleRenderControls = GetServices<IMudExFileDisplay>().Where(c => c.GetType() != GetType() && !Ignored(c)).ToList();
+        _possibleRenderControls = new List<IMudExFileDisplay>();
+        foreach (var possibleRenderControl in possibleRenderControls)
+        {
+            if (await possibleRenderControl.CanHandleFileAsync(this, fs))
+                _possibleRenderControls.Add(possibleRenderControl);
+        }
+
         if (ViewDependsOnContentType && _componentForFile == default)
             _componentForFile = GetComponentForFile(_possibleRenderControls.FirstOrDefault(c => c.StartsActive && !ForceNativeRender));
         if (!_internalOverwrite)
             renderInfos = GetRenderInfos();
-        return base.OnParametersSetAsync();
+        await base.OnParametersSetAsync();
     }
 
     private bool Ignored(IMudExFileDisplay mudExFileDisplay)

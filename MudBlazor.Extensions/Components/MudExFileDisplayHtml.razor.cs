@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Services;
 using Nextended.Core;
 
@@ -38,9 +39,9 @@ public partial class MudExFileDisplayHtml: IMudExFileDisplay
     /// <summary>
     /// Returns true if it's a markdown file and we can handle it
     /// </summary>
-    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos)
+    public Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService)
     {
-        return MimeType.Matches(fileDisplayInfos.ContentType, "text/html", "application/xhtml+xml", "application/vnd.wap.xhtml+xml");
+        return Task.FromResult(MimeType.Matches(fileDisplayInfos.ContentType, "text/html", "application/xhtml+xml", "application/vnd.wap.xhtml+xml"));
     }
 
 

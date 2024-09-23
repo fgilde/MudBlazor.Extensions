@@ -125,6 +125,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Components\MudExFileDisplayOfficeLive.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
     <Content Update="wwwroot\css\_backgrounds.scss">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

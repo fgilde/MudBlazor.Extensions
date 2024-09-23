@@ -12,6 +12,8 @@ using Nextended.Blazor.Extensions;
 using Microsoft.JSInterop;
 using Nextended.Core.Attributes;
 using System;
+using BlazorJS;
+using Nextended.Core;
 
 namespace MudBlazor.Extensions.Services;
 
@@ -96,6 +98,47 @@ public class MudExFileService : IMudExFileService
         return null;
     }
 
+    public async Task<string> ToAbsoluteUrlAsync(string url)
+    {
+        if(string.IsNullOrEmpty(url) || DataUrl.IsDataUrl(url) || url.StartsWith("blob:", StringComparison.InvariantCultureIgnoreCase))
+            return url;
+        if(url.StartsWith("http:", StringComparison.InvariantCultureIgnoreCase) || url.StartsWith("https:", StringComparison.InvariantCultureIgnoreCase))
+            return url;
+        return await _jsRuntime.DInvokeAsync<string>((w, href) =>
+        {
+            var a = w.document.createElement('a');
+            a.href = href;
+            return a.href;
+        }, url);
+    }
+
+    /// <summary>
+    /// Converts a url to a blob url
+    /// </summary>
+    /// <returns></returns>
+    public async Task<string> ToBlobUrlAsync(string url, string mimeType = "application/octet-stream")
+    {
+        if(string.IsNullOrEmpty(url) || url.StartsWith("blob:", StringComparison.InvariantCultureIgnoreCase))
+            return url;
+        if (DataUrl.TryParse(url, out var data))
+            return await CreateBlobUrlAsync(data.Bytes, data.MimeType ?? mimeType);
+        var bytes = await ReadBytesAsync(url);
+        return await CreateBlobUrlAsync(bytes, mimeType);
+    }
+
+
+    /// <summary>
+    /// Converts a url to a data url
+    /// </summary>    
+    /// <returns></returns>
+    public async Task<string> ToDataUrlAsync(string url, string mimeType = "application/octet-stream")
+    {
+        if(string.IsNullOrEmpty(url) || DataUrl.IsDataUrl(url))
+            return url;
+        var bytes = await ReadBytesAsync(url);                        
+        return await DataUrl.GetDataUrlAsync(bytes, mimeType);
+    }
+
     /// <summary>
     /// Reads a string from an url
     /// </summary>
@@ -110,7 +153,7 @@ public class MudExFileService : IMudExFileService
             return null;
         if (DataUrl.TryParse(url, out var data)) // If not but given url is a data url we can use the bytes from it
             return data.Bytes;
-        if (MudExResource.IsServerSide && url.StartsWith("blob:")) // If server side rendering we need to ensure client is reading the blob
+        if (MudExResource.IsServerSide && url.StartsWith("blob:", StringComparison.InvariantCultureIgnoreCase)) // If server side rendering we need to ensure client is reading the blob
             return await _jsRuntime.InvokeAsync<byte[]>("MudExUriHelper.readBlobAsByteArray", url);
         
         return await (_httpClient ?? new HttpClient()).GetByteArrayAsync(url);
@@ -125,7 +168,7 @@ public class MudExFileService : IMudExFileService
             return null;
         if (DataUrl.TryParse(url, out var data)) // If not but given url is a data url we can use the bytes from it
             return new MemoryStream(data.Bytes);
-        if (MudExResource.IsServerSide && url.StartsWith("blob:")) // If server side rendering we need to ensure client is reading the blob
+        if (MudExResource.IsServerSide && url.StartsWith("blob:", StringComparison.InvariantCultureIgnoreCase)) // If server side rendering we need to ensure client is reading the blob
         {
             var resultByteArray = await _jsRuntime.InvokeAsync<byte[]>("MudExUriHelper.readBlobAsByteArray", url);
             return new MemoryStream(resultByteArray);

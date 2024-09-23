@@ -1,4 +1,5 @@
-﻿using Nextended.Core;
+﻿using MudBlazor.Extensions.Core;
+using Nextended.Core;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -107,7 +108,7 @@ public interface IMudExFileDisplay
     /// <summary>
     /// Should return true if this component can handle a file with the given information
     /// </summary>
-    bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos);
+    Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService);
 
     
     /// <summary>

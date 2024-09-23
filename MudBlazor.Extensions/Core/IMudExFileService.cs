@@ -7,6 +7,29 @@ namespace MudBlazor.Extensions.Core;
 public interface IMudExFileService : IAsyncDisposable
 {
     /// <summary>
+    /// Converts a url to an absolute url
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
+    Task<string> ToAbsoluteUrlAsync(string url);
+
+    /// <summary>
+    /// Converts a url to a blob url
+    /// </summary>
+    /// <param name="url"></param>
+    /// <param name="mimeType"></param>
+    /// <returns></returns>
+    Task<string> ToBlobUrlAsync(string url, string mimeType = "application/octet-stream");
+
+    /// <summary>
+    /// Converts a url to a data url
+    /// </summary>
+    /// <param name="url"></param>
+    /// <param name="mimeType"></param>
+    /// <returns></returns>
+    Task<string> ToDataUrlAsync(string url, string mimeType = "application/octet-stream");
+
+    /// <summary>
     /// Returns the content of a file as string
     /// </summary>
     string ReadAsStringFromStream(Stream stream);

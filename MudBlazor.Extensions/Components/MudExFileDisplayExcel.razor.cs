@@ -5,6 +5,7 @@ using Nextended.Core;
 using Nextended.Core.Extensions;
 using System.Data;
 using System.Dynamic;
+using MudBlazor.Extensions.Core;
 
 
 namespace MudBlazor.Extensions.Components
@@ -62,9 +63,9 @@ namespace MudBlazor.Extensions.Components
         };
 
         /// <inheritdoc />
-        public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos)
+        public Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService)
         {
-            return MimeType.Matches(fileDisplayInfos.ContentType, "application/vnd.ms-excel", "text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml*", "application/vnd.ms-excel*");
+            return Task.FromResult(MimeType.Matches(fileDisplayInfos.ContentType, "application/vnd.ms-excel", "text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml*", "application/vnd.ms-excel*"));
         }
 
         public Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos)

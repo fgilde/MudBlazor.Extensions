@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Components.ObjectEdit;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
 
@@ -35,10 +36,10 @@ public partial class MudExFileDisplayStructuredData : IMudExFileDisplay
     /// <summary>
     /// Returns true if its a markdown file and we can handle it
     /// </summary>
-    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos)
+    public Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService)
     {
         var language = MudExCodeLanguageExtensionsMapping.GetCodeLanguageForFile(fileDisplayInfos?.FileName);
-        return language is MudExCodeLanguage.Json or MudExCodeLanguage.Xml or MudExCodeLanguage.Yaml;
+        return Task.FromResult(language is MudExCodeLanguage.Json or MudExCodeLanguage.Xml or MudExCodeLanguage.Yaml);
     }
 
     /// <inheritdoc />

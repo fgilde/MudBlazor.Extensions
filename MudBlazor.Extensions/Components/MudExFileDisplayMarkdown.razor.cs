@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using Markdig.Syntax.Inlines;
 using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Services;
 
@@ -68,8 +69,8 @@ public partial class MudExFileDisplayMarkdown: IMudExFileDisplay
     /// <summary>
     /// Returns true if its a markdown file and we can handle it
     /// </summary>
-    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos) 
-        => fileDisplayInfos?.FileName?.EndsWith(".md") == true || fileDisplayInfos?.FileName?.EndsWith(".markdown") == true || fileDisplayInfos?.ContentType == "text/markdown" || fileDisplayInfos?.ContentType == "text/x-markdown";
+    public Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService) 
+        => Task.FromResult(fileDisplayInfos?.FileName?.EndsWith(".md") == true || fileDisplayInfos?.FileName?.EndsWith(".markdown") == true || fileDisplayInfos?.ContentType == "text/markdown" || fileDisplayInfos?.ContentType == "text/x-markdown");
 
     /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)

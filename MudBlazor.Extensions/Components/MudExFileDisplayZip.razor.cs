@@ -415,7 +415,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     }
 
     /// <inheritdoc />
-    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos) => CanHandleFileAsArchive(fileDisplayInfos.ContentType);
+    public Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService) => Task.FromResult(CanHandleFileAsArchive(fileDisplayInfos.ContentType));
 
     /// <summary>
     /// Returns true if the MudExFileDisplay Component can handle the file as an archive.

@@ -2,6 +2,7 @@
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
 using System.Text.Json.Nodes;
+using MudBlazor.Extensions.Core;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
@@ -47,10 +48,10 @@ public partial class MudExFileDisplayCode: IMudExFileDisplay
     /// <summary>
     /// Returns true if it's a markdown file and we can handle it
     /// </summary>
-    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos)
+    public Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService)
     {
         var language = Language = MudExCodeLanguageExtensionsMapping.GetCodeLanguageForFile(fileDisplayInfos?.FileName);
-        return language != MudExCodeLanguage.Unknown && language != MudExCodeLanguage.Markdown;
+        return Task.FromResult(language != MudExCodeLanguage.Unknown && language != MudExCodeLanguage.Markdown);
     }
 
     public Task<IDictionary<string, object>> FileMetaInformationAsync(IMudExFileDisplayInfos fileDisplayInfos)

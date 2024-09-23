@@ -17,9 +17,9 @@
     [Inject] HttpClient http { get; set; }
     public string Name => "Most stupid json display"; // Name of your component. (Is displayed in menu if user wants to switch between multiple components for one file type)
 
-    public bool CanHandleFile(IMudExFileDisplayInfos fileDisplayInfos) // Here you need to check if your component can handle the file. Please do this as accurate as possible to prevent using the wrong component for a file.
+    public Task<bool> CanHandleFileAsync(IMudExFileDisplayInfos fileDisplayInfos, IMudExFileService fileService) // Here you need to check if your component can handle the file. Please do this as accurate as possible to prevent using the wrong component for a file.
     {
-        return fileDisplayInfos.ContentType == "application/json" || (fileDisplayInfos.ContentType == "text/plain" && fileDisplayInfos.FileName.EndsWith(".json"));
+        return Task.FromResult(fileDisplayInfos.ContentType == "application/json" || (fileDisplayInfos.ContentType == "text/plain" && fileDisplayInfos.FileName.EndsWith(".json")));
     }
 
     private IMudExFileDisplayInfos _fileDisplayInfos;

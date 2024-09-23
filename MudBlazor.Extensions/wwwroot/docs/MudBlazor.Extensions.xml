@@ -915,7 +915,7 @@
             Border size of the visualizer element
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExAudioPlayer.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Components.MudExAudioPlayer.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExAudioPlayer.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
@@ -2320,7 +2320,7 @@
             Important. The property for FileDisplayInfos from interface IMudExFileDisplayInfos needs to have the [Parameter] attribute
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.IMudExFileDisplay.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Components.IMudExFileDisplay.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
             <summary>
             Should return true if this component can handle a file with the given information
             </summary>
@@ -2466,6 +2466,11 @@
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplay">
             <summary>
             Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.FileService">
+            <summary>
+            Reference to the FileService
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplay.StatusText">
@@ -2688,7 +2693,7 @@
             Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayCode.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
             <summary>
             Returns true if it's a markdown file and we can handle it
             </summary>
@@ -2784,7 +2789,7 @@
             Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcel.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcel.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayExcel.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
@@ -2835,7 +2840,7 @@
             Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayFont.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayFont.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
             <summary>
             Returns true if it's a font file and we can handle it
             </summary>
@@ -2868,7 +2873,7 @@
             Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayHtml.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayHtml.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
             <summary>
             Returns true if it's a markdown file and we can handle it
             </summary>
@@ -2931,7 +2936,7 @@
             Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
             <summary>
             Returns true if its a markdown file and we can handle it
             </summary>
@@ -2940,6 +2945,42 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.ImportModuleAndCreateJsAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayOfficeLive">
+            <summary>
+            Simple Excel file viewer
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayOfficeLive.Name">
+            <summary>
+            The name of the component
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayOfficeLive.Value">
+            <summary>
+            The Current code string provided from file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayOfficeLive.FileDisplayInfos">
+            <summary>
+            The file display infos
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayOfficeLive.Src">
+            <summary>
+            Src url of xlsx file
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayOfficeLive.MudExFileDisplay">
+            <summary>
+            Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayOfficeLive.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayOfficeLive.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData">
@@ -2967,7 +3008,7 @@
             Reference to the parent MudExFileDisplay if the component is used inside a MudExFileDisplay
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayStructuredData.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
             <summary>
             Returns true if its a markdown file and we can handle it
             </summary>
@@ -3180,7 +3221,7 @@
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayZip.FileName">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayZip.CanHandleFileAsArchive(System.String)">
@@ -4153,7 +4194,7 @@
         <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.ImportModuleAndCreateJsAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.CanHandleFile(MudBlazor.Extensions.Components.IMudExFileDisplayInfos)">
+        <member name="M:MudBlazor.Extensions.Components.MudExImageViewer.CanHandleFileAsync(MudBlazor.Extensions.Components.IMudExFileDisplayInfos,MudBlazor.Extensions.Core.IMudExFileService)">
             <summary>
             Returns true if it's a markdown file and we can handle it
             </summary>
@@ -15279,6 +15320,29 @@
             Forces the picker to open and return files
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToAbsoluteUrlAsync(System.String)">
+            <summary>
+            Converts a url to an absolute url
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToBlobUrlAsync(System.String,System.String)">
+            <summary>
+            Converts a url to a blob url
+            </summary>
+            <param name="url"></param>
+            <param name="mimeType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToDataUrlAsync(System.String,System.String)">
+            <summary>
+            Converts a url to a data url
+            </summary>
+            <param name="url"></param>
+            <param name="mimeType"></param>
+            <returns></returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadAsStringFromStream(System.IO.Stream)">
             <summary>
             Returns the content of a file as string
@@ -21304,6 +21368,18 @@
             <summary>
             Returns the content of a file as string
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ToBlobUrlAsync(System.String,System.String)">
+            <summary>
+            Converts a url to a blob url
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ToDataUrlAsync(System.String,System.String)">
+            <summary>
+            Converts a url to a data url
+            </summary>    
+            <returns></returns>
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadAsStringFromUrlAsync(System.String)">
             <summary>
