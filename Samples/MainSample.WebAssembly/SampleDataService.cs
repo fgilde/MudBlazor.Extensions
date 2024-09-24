@@ -35,6 +35,8 @@ public class SampleDataService
         yield return (CreateSampleFile("4.Unified-Voice.mp3", "audio/mpeg3"));
         yield return (CreateSampleFile("WordDokument.doc", "application/msword"));
         yield return (CreateSampleFile("ExcelSheet.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+        yield return (CreateSampleFile("https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc", "application/msword"));
+        yield return (CreateSampleFile("https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
     }
 
     public async Task<IEnumerable<SampleFileWithStream?>> GetSampleFilesWithStreamAsync()
@@ -57,6 +59,10 @@ public class SampleDataService
     
     private SampleFile CreateSampleFile(string filename, string contentType)
     {
+        if(filename.StartsWith("http"))
+        {
+            return new (filename, contentType, filename, BrowserFileExt.IconForFile(contentType));
+        }
         var absoluteUri = _navigationManager.ToAbsoluteUri($"sample-data/{filename}").AbsoluteUri;
         if (filename.EndsWith(".md"))
         {

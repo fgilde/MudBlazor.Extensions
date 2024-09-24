@@ -13,6 +13,7 @@ using MudBlazor.Extensions.Options;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 using MudBlazor.Interop;
+using System.Runtime.CompilerServices;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -680,12 +681,12 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     /// <summary>
     /// Shows an error message
     /// </summary>
-    public void ShowError(string message)
+    public void ShowError(string message, [CallerMemberName] string callerName = "")
     {
         if (ErrorMessage != message)
         {
             _errorClosed = false;
-            ErrorMessage = message;
+            ErrorMessage = $"{message}";
             StateHasChanged();
         }
     }

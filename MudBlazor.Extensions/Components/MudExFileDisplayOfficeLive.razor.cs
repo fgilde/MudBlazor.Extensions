@@ -75,7 +75,7 @@ namespace MudBlazor.Extensions.Components
             {
                 if (srcUpdated || string.IsNullOrEmpty(_iframeUrl))
                 {
-                    await UpdateUrl();
+                    await UpdateUrl(FileDisplayInfos?.Url ?? Src);
                 }
             }
             catch (Exception e)
@@ -86,11 +86,10 @@ namespace MudBlazor.Extensions.Components
             }
         }
 
-        private async Task UpdateUrl()
+        private async Task UpdateUrl(string url)
         {
-            //var url = await FileService.ToDataUrlAsync(Src, FileDisplayInfos?.ContentType);
-            _iframeUrl = $"https://view.officeapps.live.com/op/view.aspx?src={HttpUtility.HtmlEncode(Src)}";
-            // _iframeUrl = $"https://view.officeapps.live.com/op/view.aspx?src={HttpUtility.HtmlEncode("https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls")}";
+            //var url = await FileService.ToDataUrlAsync(url, FileDisplayInfos?.ContentType);
+            _iframeUrl = $"https://view.officeapps.live.com/op/view.aspx?src={HttpUtility.HtmlEncode(url)}";
             await InvokeAsync(StateHasChanged);
         }
     }

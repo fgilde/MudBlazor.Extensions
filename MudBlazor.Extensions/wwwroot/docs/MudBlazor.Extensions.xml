@@ -2653,7 +2653,7 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.DisposeAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.ShowError(System.String)">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.ShowError(System.String,System.String)">
             <summary>
             Shows an error message
             </summary>
