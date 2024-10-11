@@ -94,7 +94,7 @@ public sealed class ObjectEditMeta<T> : ObjectEditMeta
                     var reference = Check.TryCatch<object, Exception>(() => propertyInfo.GetValue(value));
                     reference ??= Check.TryCatch<object, Exception>(() =>
                     {
-                        propertyInfo.SetValue(value, ReflectionHelper.CreateInstance(propertyInfo.PropertyType));
+                        //propertyInfo.SetValue(value, ReflectionHelper.CreateInstance(propertyInfo.PropertyType));
                         return propertyInfo.GetValue(value);
                     });
                     
