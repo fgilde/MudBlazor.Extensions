@@ -56,13 +56,28 @@ public static class MudExThemeHelper
     /// <summary>
     /// Creates a new theme from json
     /// </summary>
-    public static TTheme FromJson<TTheme>(string json) where TTheme : MudTheme 
-        => JsonConvert.DeserializeObject<TTheme>(MudExJsonHelper.SimplifyMudColorInJson(json));
+    public static TTheme FromJson<TTheme>(string json) where TTheme : MudTheme
+    {
+        var settings = new JsonSerializerSettings()
+        {
+            CheckAdditionalContent = false
+        };
+        settings.Converters.Add(new MudColorConverter());
+        //return JsonConvert.DeserializeObject<TTheme>(MudExJsonHelper.SimplifyMudColorInJson(json), settings);
+        return JsonConvert.DeserializeObject<TTheme>(json, settings);
+    }
 
     /// <summary>
     /// Converts Theme to json
     /// </summary>
     public static string AsJson<TTheme>(this TTheme theme) where TTheme : MudTheme
-        => MudExJsonHelper.SimplifyMudColorInJson(JsonConvert.SerializeObject(theme));
-
+    {
+        var settings = new JsonSerializerSettings()
+        {
+            CheckAdditionalContent = false
+        };
+        settings.Converters.Add(new MudColorConverter());
+        //return MudExJsonHelper.SimplifyMudColorInJson(JsonConvert.SerializeObject(theme));
+        return JsonConvert.SerializeObject(theme);
+    }
 }

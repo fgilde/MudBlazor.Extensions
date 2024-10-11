@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MudBlazor.Utilities;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
@@ -88,5 +89,22 @@ public static class MudExJsonHelper
             }
         }
         return jObject.ToString();
+    }
+}
+
+public class MudColorConverter : JsonConverter<MudColor>
+{
+    public override void WriteJson(JsonWriter writer, MudColor value, JsonSerializer serializer)
+    {
+        Console.WriteLine("MUDCOLOR WriteJson");
+        writer.WriteValue(value.Value); // Write MudColor as a string (hex, rgb, etc.)
+    }
+
+    public override MudColor ReadJson(JsonReader reader, Type objectType, MudColor existingValue, bool hasExistingValue, JsonSerializer serializer)
+    {
+        Console.WriteLine("MUDCOLOR ReadJson");
+
+        string colorString = reader?.Value?.ToString();
+        return !string.IsNullOrEmpty(colorString) ? new MudColor(colorString) : new MudColor();
     }
 }
