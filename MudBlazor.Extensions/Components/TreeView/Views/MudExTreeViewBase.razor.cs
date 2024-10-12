@@ -386,7 +386,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
         ExecuteAutoExpand(node);
         if(IsAllowedToSelect(node))
             SelectedNode = node;
-        InvokeAsync(StateHasChanged);
+        Update();
     }
 
     /// <summary>
@@ -446,10 +446,16 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     public virtual void SetExpanded(TItem context, bool expanded)
     {
         if (expanded && !IsExpanded(context))
+        {
             _expanded.Add(context);
+            if (context.HasChildren() && context?.LoadChildrenFunc != null) // TODO: use context.NeedsLoadChildren()
+            {
+                context.LoadChildren();
+            }
+        }
         else if (!expanded && IsExpanded(context))
             _expanded.Remove(context);
-        InvokeAsync(StateHasChanged);
+        Update();
     }
     
     /// <summary>
@@ -560,5 +566,10 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
             .WithPaddingLeft(0)
             .WithPaddingRight(0)
             .ToString();
+    }
+
+    public void Update()
+    {
+        InvokeAsync(StateHasChanged);
     }
 }

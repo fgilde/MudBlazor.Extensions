@@ -1,5 +1,5 @@
-﻿@inherits MudExBaseComponent<MudExFileDisplayExcel>
-@using System.Dynamic
+﻿@using MudBlazor.Extensions.Core
+@inherits MudExBaseComponent<MudExFileDisplayExcel>
 
 <style>
     .mud-ex-file-display-excel {
@@ -7,59 +7,55 @@
         height: 100%;
     }
 
-    .mud-ex-file-display-excel > .mud-table-container {
-        width: 100% !important;        
-    }
+        .mud-ex-file-display-excel > .mud-table-container {
+            width: 100% !important;
+        }
 </style>
 
-@if (_excelData != null)
+@if (_excelFile != null && _selectedSheet != null)
 {
-        <MudDataGrid Class="mud-ex-file-display-excel" Height="100%"
-                     Virtualize="true"
-                     Dense="true"
-                     Items="@_excelData[_selectedSheet]"
-                     T="ExpandoObject"
-                     ColumnResizeMode="ResizeMode.Container"
-                     SortMode="SortMode.Multiple"
-                     FixedHeader="true"
-                     FixedFooter="true"
-                     Filterable="false"
-                     QuickFilter="@_quickFilter">
-            <ToolBarContent>
-                <MudText Typo="Typo.h6">@(FileDisplayInfos?.FileName ?? TryLocalize("Data"))</MudText>
-                <MudSpacer />
-                <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-            </ToolBarContent>
-            <Columns>
-                @if (_excelData[_selectedSheet].Count > 0)
+    <MudDataGrid Class="mud-ex-file-display-excel" Height="100%"
+                 Virtualize="true"
+                 Dense="true"
+                 Items="@_selectedSheet.Rows"
+                 T="ExcelRow"
+                 ColumnResizeMode="ResizeMode.Container"
+                 SortMode="SortMode.Multiple"
+                 FixedHeader="true"
+                 FixedFooter="true"
+                 Filterable="false"
+                 QuickFilter="@_quickFilter">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">@(FileDisplayInfos?.FileName ?? TryLocalize("Data"))</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <Columns>
+            @if (_selectedSheet.Rows.Count > 0)
+            {
+                @foreach (var key in _selectedSheet.Rows[0].Cells.Keys)
                 {
-                    @foreach (var key in ((IDictionary<string, object>)_excelData[_selectedSheet][0]).Keys)
-                    {
-                        <PropertyColumn Property="@(row => ((IDictionary<string, object>)row)[key])" Title="@key"
-                                        Groupable="true"
-                                        ShowColumnOptions="true"
-                                        Hideable="true"
-                                        Comparer="@(new DynamicComparer())" CellStyleFunc="@(row => GetCellStyle(row, key))">
-                            <CellTemplate Context="context">
-                                <MudHighlighter Text="@(GetCellValue(context.Item, key))" HighlightedText="@_searchString"></MudHighlighter>
-                            </CellTemplate>
-
-
-                        </PropertyColumn>
-                    }
+                    <PropertyColumn Property="@(row => row.Cells[key])" Title="@key"
+                                    Groupable="true"
+                                    ShowColumnOptions="true"
+                                    Hideable="true"
+                                    Comparer="@(new DynamicComparer())">
+                        <CellTemplate Context="context">
+                            <MudHighlighter Text="@(GetCellValue(context.Item, key))" HighlightedText="@_searchString"></MudHighlighter>
+                        </CellTemplate>
+                    </PropertyColumn>
                 }
-            </Columns>
-
-        </MudDataGrid>
-        @if (_excelData.Keys.Count > 1)
-        {
-            <MudTabs Style="position: absolute; bottom: 0;" Position="Position.Bottom" Elevation="0" Outlined="true" @bind-ActivePanelIndex="ActiveSheetIndex">
-                @foreach (var sheetName in _excelData.Keys)
-                {
-                    <MudTabPanel Text="@sheetName" ID="@sheetName"></MudTabPanel>
-                }
-            </MudTabs>
-        }
-
+            }
+        </Columns>
+    </MudDataGrid>
+    @if (_excelFile.Sheets.Count > 1)
+    {
+        <MudTabs Style="position: absolute; bottom: 0;" Position="Position.Bottom" Elevation="0" Outlined="true" @bind-ActivePanelIndex="ActiveSheetIndex">
+            @foreach (var sheet in _excelFile.Sheets)
+            {
+                <MudTabPanel Text="@sheet.Name" ID="@sheet.Name"></MudTabPanel>
+            }
+        </MudTabs>
+    }
 }

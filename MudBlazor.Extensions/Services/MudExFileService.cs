@@ -11,9 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Nextended.Blazor.Extensions;
 using Microsoft.JSInterop;
 using Nextended.Core.Attributes;
-using System;
 using BlazorJS;
+using ExcelDataReader;
 using Nextended.Core;
+using System.Data;
 
 namespace MudBlazor.Extensions.Services;
 
@@ -275,6 +276,59 @@ public class MudExFileService : IMudExFileService
         foreach (var stream in _streams)
             await stream.DisposeAsync();
         _streams.Clear();
+    }
+
+    /// <summary>
+    /// Reads a stream as excel file
+    /// </summary>
+    public ExcelFile ReadExcelFile(Stream stream, string contentType)
+    {
+        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+        var excelFile = new ExcelFile();
+
+        using var reader = CreateReader(stream, contentType);
+
+        // Configuration to use the first row as column headers
+        var conf = new ExcelDataSetConfiguration
+        {
+            ConfigureDataTable = (_) => new ExcelDataTableConfiguration
+            {
+                UseHeaderRow = true
+            }
+        };
+
+        var result = reader.AsDataSet(conf);
+
+        foreach (DataTable table in result.Tables)
+        {
+            var sheet = new ExcelSheet
+            {
+                Name = table.TableName
+            };
+
+            foreach (DataRow row in table.Rows)
+            {
+                var excelRow = new ExcelRow();
+
+                foreach (DataColumn col in table.Columns)
+                {
+                    excelRow.Cells[col.ColumnName] = row[col];
+                }
+
+                sheet.Rows.Add(excelRow);
+            }
+
+            excelFile.Sheets.Add(sheet);
+        }
+
+        return excelFile;
+    }
+
+    private IExcelDataReader CreateReader(Stream stream, string contentType)
+    {
+        if (MimeType.Matches(contentType, MimeType.Csv))
+            return ExcelReaderFactory.CreateCsvReader(stream);
+        return ExcelReaderFactory.CreateReader(stream);
     }
 
     private async Task<Stream> CopyStreamAsync(Stream stream)

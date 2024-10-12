@@ -1,12 +1,8 @@
-﻿using ExcelDataReader;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Services;
-using Nextended.Core;
-using Nextended.Core.Extensions;
-using System.Data;
-using System.Dynamic;
 using MudBlazor.Extensions.Core;
-
+using Nextended.Core.Extensions;
+using Nextended.Core;
 
 namespace MudBlazor.Extensions.Components
 {
@@ -22,10 +18,10 @@ namespace MudBlazor.Extensions.Components
         /// </summary>
         public string Name => nameof(MudExFileDisplayExcel);
 
-        
-        private int ActiveSheetIndex { 
-            get => _excelData?.Keys.ToList().IndexOf(_selectedSheet) ?? -1;
-            set => _selectedSheet = _excelData?.Keys.ElementAtOrDefault(value);
+        private int ActiveSheetIndex
+        {
+            get => _excelFile?.Sheets.IndexOf(_selectedSheet) ?? -1;
+            set => _selectedSheet = _excelFile?.Sheets.ElementAtOrDefault(value);
         }
 
         /// <summary>
@@ -50,16 +46,15 @@ namespace MudBlazor.Extensions.Components
         /// </summary>
         [CascadingParameter] public MudExFileDisplay MudExFileDisplay { get; set; }
 
-        private Dictionary<string, List<ExpandoObject>> _excelData;        
-        private Dictionary<string, Dictionary<string, string>> _cellStyles;
-        
+        private ExcelFile _excelFile;
+        private ExcelSheet _selectedSheet;
+
         private string _searchString;
-        private Func<object, bool> _quickFilter => x =>
+        private Func<ExcelRow, bool> _quickFilter => x =>
         {
             if (string.IsNullOrWhiteSpace(_searchString))
                 return true;
-            var row = x as IDictionary<string, object>;
-            return row != null && row.Values.Any(value => value?.ToString()?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true);
+            return x.Cells.Values.Any(value => value?.ToString()?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true);
         };
 
         /// <inheritdoc />
@@ -72,9 +67,9 @@ namespace MudBlazor.Extensions.Components
         {
             return Task.FromResult<IDictionary<string, object>>(new Dictionary<string, object>()
             {
-                {"Sheets", _excelData.Keys.Count},
-                {"Rows", _excelData.Values.SelectMany(x => x).Count()},
-                {"Columns", ((IDictionary<string, object>)_excelData[_selectedSheet][0]).Keys.Count}
+                {"Sheets", _excelFile?.Sheets.Count ?? 0},
+                {"Rows", _excelFile?.Sheets.Sum(s => s.Rows.Count) ?? 0},
+                {"Columns", _selectedSheet?.Rows.FirstOrDefault()?.Cells.Keys.Count ?? 0}
             });
         }
 
@@ -92,7 +87,7 @@ namespace MudBlazor.Extensions.Components
                     await LoadXlsxAsync();
                 }
                 if (fileInfosUpdated || Src == null)
-                {                    
+                {
                     Src = fileDisplayInfos?.Url ?? await FileService.CreateDataUrlAsync(fileDisplayInfos?.ContentStream?.ToByteArray() ?? throw new ArgumentException("No stream and no url available"), fileDisplayInfos.ContentType, MudExFileDisplay == null || MudExFileDisplay.StreamUrlHandling == StreamUrlHandling.BlobUrl);
                     await LoadXlsxAsync();
                 }
@@ -104,67 +99,23 @@ namespace MudBlazor.Extensions.Components
                 Value = string.Empty;
             }
         }
-            
+
         private async Task LoadXlsxAsync()
         {
             if (!string.IsNullOrEmpty(Src))
-            {                
+            {
                 var stream = await FileService.ReadStreamAsync(Src);
-                _excelData = ReadExcelFileToExpandoList(stream);
+                _excelFile = FileService.ReadExcelFile(stream, FileDisplayInfos?.ContentType);
+                _selectedSheet = _excelFile?.Sheets.FirstOrDefault();
                 StateHasChanged();
             }
         }
 
-        private Dictionary<string, List<ExpandoObject>> ReadExcelFileToExpandoList(Stream stream)
-        {
-            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-            var allSheetsData = new Dictionary<string, List<ExpandoObject>>();
-            _cellStyles = new Dictionary<string, Dictionary<string, string>>();
-
-            using var reader = ExcelReaderFactory.CreateReader(stream);
-            var result = reader.AsDataSet();
-
-            foreach (DataTable table in result.Tables)
-            {
-                var data = new List<ExpandoObject>();
-
-                foreach (DataRow row in table.Rows)
-                {
-                    dynamic expando = new ExpandoObject();
-                    var dict = (IDictionary<string, object>)expando;
-                    foreach (DataColumn col in table.Columns)
-                    {
-                        dict[col.ColumnName] = row[col];
-                        // Placeholder for styles
-                        //_cellStyles[$"{row.Table.Rows.IndexOf(row)}_{col.Ordinal}"] = new Dictionary<string, string>
-                        //{
-                        //    {"font-weight", "bold"},
-                        //    {"color", "red"}
-                        //};
-                    }
-                    data.Add(expando);
-                }
-
-                allSheetsData[table.TableName] = data;
-            }
-            _selectedSheet = allSheetsData.Keys.First();
-            return allSheetsData;
-        }
-
-        private string _selectedSheet;
-        private string GetCellValue(IDictionary<string, object> context, string key) => context.TryGetValue(key, out var value) ? value?.ToString() : string.Empty;
-
-        private string GetCellStyle(IDictionary<string, object> row, string key)
-        {
-            var rowIndex = _excelData[_selectedSheet].IndexOf((ExpandoObject)row) + 2; // Adjust for 1-based index and header row
-            var colIndex = row.Keys.ToList().IndexOf(key) + 1; // Adjust for 1-based index
-
-            var cellKey = $"{rowIndex}_{colIndex}";
-            return _cellStyles.TryGetValue(cellKey, out var style) ? string.Join(";", style.Select(kv => $"{kv.Key}:{kv.Value}")) : string.Empty;
-        }
+        private string GetCellValue(ExcelRow row, string key) => row.Cells.TryGetValue(key, out var value) ? value?.ToString() : string.Empty;
 
     }
 }
+
 
 
 internal class DynamicComparer : IComparer<object>

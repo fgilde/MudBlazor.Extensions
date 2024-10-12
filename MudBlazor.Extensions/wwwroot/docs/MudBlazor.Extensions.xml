@@ -15320,6 +15320,16 @@
             Forces the picker to open and return files
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.IMudExFileService">
+            <summary>
+            FileService 
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ReadExcelFile(System.IO.Stream,System.String)">
+            <summary>
+            Reads a stream as excel file
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Core.IMudExFileService.ToAbsoluteUrlAsync(System.String)">
             <summary>
             Converts a url to an absolute url
@@ -21433,6 +21443,11 @@
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExFileService.DisposeAsync">
             <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExFileService.ReadExcelFile(System.IO.Stream,System.String)">
+            <summary>
+            Reads a stream as excel file
+            </summary>
         </member>
     </members>
 </doc>

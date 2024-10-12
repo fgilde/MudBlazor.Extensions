@@ -59,5 +59,13 @@ public partial class MudExTreeViewDefault<T>
     }
 
 
+    private IReadOnlyCollection<TreeViewItemContext<T>> GetChildren(TreeViewItemContext<T> context)
+    {
+        if (context.NeedsLoadChildren)
+        {
+            return context.Value.GetLoadingIndicatorItems().Select(i => CreateContext(i, "")).ToHashSet();
+        }
+        return context.Value?.Children?.Select(i => CreateContext(i, "")).ToHashSet();
+    }
 }
 

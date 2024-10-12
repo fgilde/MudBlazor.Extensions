@@ -1,4 +1,5 @@
-﻿using Nextended.Core.Extensions;
+﻿using Nextended.Core;
+using Nextended.Core.Extensions;
 using Nextended.Core.Types;
 
 namespace MudBlazor.Extensions.Components;
@@ -47,7 +48,7 @@ public class HierarchicalFilter<T>
     private bool MatchesFilter(T node, string text)
     {
         var textFn = TextFunc ?? (n => n?.ToString());
-        var textNode = textFn(node);
+        var textNode = Check.TryCatch<string, Exception>(() => textFn(node)) ?? string.Empty;
         var matchFn = MatchFunc ?? ((n, t) => textNode.Contains(t, StringComparison.OrdinalIgnoreCase));
         return matchFn(node, text);
     }
@@ -60,7 +61,7 @@ public class HierarchicalFilter<T>
         if (FilterBehaviour == HierarchicalFilterBehaviour.Flat && HasFilters)
         {
             var filters = Filters.EmptyIfNull().Concat(new []{Filter}).Where(f => !string.IsNullOrEmpty(f)).Distinct();
-            return Items.Recursive(e => e?.Children ?? Enumerable.Empty<T>()).Where(e =>
+            return Items.Recursive(e => e?.Children ?? Enumerable.Empty<T>(), a => a.ValidForRecursion()).Where(e =>
                     filters.Any(filter => MatchesFilter(e, filter)))
                 .ToHashSet();
         }
@@ -75,7 +76,7 @@ public class HierarchicalFilter<T>
         if (FilterBehaviour == HierarchicalFilterBehaviour.Flat || !HasFilters)
             return (true, string.Empty);
 
-        if ((node?.Children ?? Enumerable.Empty<T>()).Recursive(n => n?.Children ?? Enumerable.Empty<T>()).Any(n => GetMatchedSearch(n).Found))
+        if ((node?.Children ?? Enumerable.Empty<T>()).Recursive(n => n?.Children ?? Enumerable.Empty<T>(), a => a.ValidForRecursion()).Any(n => GetMatchedSearch(n).Found))
             return (true, string.Empty);
 
 

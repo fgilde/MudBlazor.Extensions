@@ -193,6 +193,7 @@ public class SampleTreeStructure
                 }
             ]
         },
+                new SampleTreeItem("Async load sample 1", LoadChildren ),
                 new SampleTreeItem("Item 1")
                 {
                     Children =
@@ -278,14 +279,42 @@ public class SampleTreeStructure
             }
         ];
     }
+
+    private static async Task<HashSet<SampleTreeItem>> LoadChildren(SampleTreeItem arg, CancellationToken token)
+    {
+        await Task.Delay(5000);
+        return
+        [
+            new SampleTreeItem("Async load sample 1.1"),
+            new SampleTreeItem("Async load sample 1.2"),
+            new SampleTreeItem("Async load sample 1.3")
+            {
+                Children =
+                [
+                    new SampleTreeItem("Async load sample 1.3.1"),
+                    new SampleTreeItem("Async load sample 1.3.2"),
+                    new SampleTreeItem("Async load sample 1.3.3")
+                ]
+            }
+        ];
+    }
 }
 
 public class SampleTreeItem : Hierarchical<SampleTreeItem>
 {
     public string Name { get; }
 
+    public SampleTreeItem()
+    {}
+
     public SampleTreeItem(string name)
     {
+        Name = name;
+    }
+    
+    public SampleTreeItem(string name, Func<SampleTreeItem, CancellationToken, Task<HashSet<SampleTreeItem>>> load)
+    {
+        LoadChildrenFunc = load;
         Name = name;
     }
 

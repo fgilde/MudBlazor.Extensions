@@ -38,19 +38,26 @@
             return ItemContentTemplate(context);
         var text = TextFunc(context.Value);
         return 
-        @<RenderChild>
-            @if (!string.IsNullOrEmpty(context.Highlight))
-            {
-                <div style="@ItemContentStyleStr(context)" class="@ItemContentClassStr(context)">
-                    <MudHighlighter Text="@text"
-                                    HighlightedTexts="@(FilterHighlighting == FilterHighlighting.AllFilters ? Filters.EmptyIfNull().Concat(new []{Filter}) : null)"
-                                    HighlightedText="@context.Highlight" />
-                </div>
-            }
-            else
-            {
-                <MudText Class="@ItemContentClassStr(context)" Style="@ItemContentStyleStr(context)">@TextFunc(context.Value)</MudText>
-            }
-        </RenderChild>;
+            @<RenderChild>
+                @if (context?.Value?.IsLoading == true)
+                {
+                    <MudProgressCircular Class="m-1" Color="@Color.Primary" Size="@Size.Small" Indeterminate="true" />
+                }
+                else
+                {
+                    @if (!string.IsNullOrEmpty(context.Highlight))
+                    {
+                        <div style="@ItemContentStyleStr(context)" class="@ItemContentClassStr(context)">
+                            <MudHighlighter Text="@text"
+                                            HighlightedTexts="@(FilterHighlighting == FilterHighlighting.AllFilters ? Filters.EmptyIfNull().Concat(new[] { Filter }) : null)"
+                                            HighlightedText="@context.Highlight"/>
+                        </div>
+                    }
+                    else
+                    {
+                        <MudText Class="@ItemContentClassStr(context)" Style="@ItemContentStyleStr(context)">@TextFunc(context.Value)</MudText>
+                    }
+                }
+            </RenderChild>;
     }
 }

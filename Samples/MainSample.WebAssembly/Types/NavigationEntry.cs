@@ -8,7 +8,10 @@ public class NavigationEntry : Hierarchical<NavigationEntry>
 {
     private Type _type;
 
-    public NavigationEntry(string text = "", string icon = "", string href = "", string target = "")
+    public NavigationEntry()
+    {}
+
+    public NavigationEntry(string text = "", string icon = "", string href = "", string target = "") : this()
     {
         Icon = icon;
         Text = text;

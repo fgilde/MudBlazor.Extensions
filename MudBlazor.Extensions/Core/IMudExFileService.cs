@@ -4,8 +4,16 @@ using Nextended.Blazor.Models;
 
 namespace MudBlazor.Extensions.Core;
 
+/// <summary>
+/// FileService 
+/// </summary>
 public interface IMudExFileService : IAsyncDisposable
 {
+    /// <summary>
+    /// Reads a stream as excel file
+    /// </summary>
+    ExcelFile ReadExcelFile(Stream stream, string contentType);
+
     /// <summary>
     /// Converts a url to an absolute url
     /// </summary>
