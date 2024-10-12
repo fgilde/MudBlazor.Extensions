@@ -34,7 +34,7 @@ public static class ServiceCollectionExtensions
         };
         if(serviceImplementationAssemblies is { Length: > 0 })
             assemblies.AddRange(serviceImplementationAssemblies);
-        var assembliesArray = assemblies.Distinct().ToArray();
+        var assembliesArray = assemblies.Where(a => a != null).Distinct().ToArray();
         services.RegisterAllImplementationsOf(new[] { typeof(IMudExFileDisplay) }, assembliesArray, ServiceLifetime.Scoped);
         
         services.RegisterAllWithRegisterAsAttribute(assembliesArray);
