@@ -28,3 +28,7 @@
 /Samples/Samples.Shared/obj
 /MudBlazor.Extensions/.scripts/apiKeyEnvSet.bat
 /.idea/.idea.MudBlazor.Extensions/.idea
+.editorconfig
+MudBlazor.Extensions.sln.DotSettings
+MudBlazor.Extensions.sln.DotSettings.user
+
