@@ -5,7 +5,7 @@
  - 2.0.6 > Allow async child loading in [MudExTreeView](https://www.mudex.org/demos/TreeView).
  - 2.0.6 > Fixed error in sample app for [MudExSelect](https://www.mudex.org/mud-ex-select) and [MudExThemeEdit](https://www.mudex.org/theme-edit)
  - 2.0.6 > update used nuget packages to latest versions
- - 2.0.6 > update MudBlazor to 7.10.0
+ - 2.0.6 > update MudBlazor to 7.11.0
  - 2.0.6 > Add New Component `MudExFileDisplayOfficeLive` to support preview of any remote accessable office files in [MudExFileDisplay](https://www.mudex.org/file-display) and [MudExUploadEdit](https://www.mudex.org/upload-edit) . 
  - 2.0.6 > Use [MudExAdditionalAdornment](https://www.mudex.org/additional-adornments) for Theme edit buttons in [MudExThemeEdit](https://www.mudex.org/theme-edit)
  - 2.0.6 > Fix some style bugs
