@@ -282,6 +282,7 @@ public class SampleTreeStructure
 
     private static async Task<HashSet<SampleTreeItem>> LoadChildren(SampleTreeItem arg, CancellationToken token)
     {
+        Console.WriteLine("Loading children for " + arg.Name);
         await Task.Delay(5000);
         return
         [

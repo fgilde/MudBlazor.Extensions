@@ -61,8 +61,8 @@ public class HierarchicalFilter<T>
         if (FilterBehaviour == HierarchicalFilterBehaviour.Flat && HasFilters)
         {
             var filters = Filters.EmptyIfNull().Concat(new []{Filter}).Where(f => !string.IsNullOrEmpty(f)).Distinct();
-            return Items.Recursive(e => e?.Children ?? Enumerable.Empty<T>(), a => a.ValidForRecursion()).Where(e =>
-                    filters.Any(filter => MatchesFilter(e, filter)))
+            return Items.Recursive(e => e.GetLoadedChildren()).Where(e =>
+                    filters.Any(filter => e is IAsyncHierarchical<T> { IsLoading: true }  || MatchesFilter(e, filter)))
                 .ToHashSet();
         }
         return Items;
@@ -76,7 +76,7 @@ public class HierarchicalFilter<T>
         if (FilterBehaviour == HierarchicalFilterBehaviour.Flat || !HasFilters)
             return (true, string.Empty);
 
-        if ((node?.Children ?? Enumerable.Empty<T>()).Recursive(n => n?.Children ?? Enumerable.Empty<T>(), a => a.ValidForRecursion()).Any(n => GetMatchedSearch(n).Found))
+        if ((node?.GetLoadedChildren() ?? Enumerable.Empty<T>()).Recursive(n => n.GetLoadedChildren()).Any(n => GetMatchedSearch(n).Found))
             return (true, string.Empty);
 
 
@@ -85,13 +85,14 @@ public class HierarchicalFilter<T>
             filters.Add(Filter);
         foreach (var filter in filters)
         {
-            if (MatchesFilter(node, filter))
+            if (node is IAsyncHierarchical<T> { IsLoading: true } || MatchesFilter(node, filter))
                 return (true, filter);
         }
 
         return (false, string.Empty); 
     }
 }
+
 
 /// <summary>
 /// The behaviour of the hierarchical filter

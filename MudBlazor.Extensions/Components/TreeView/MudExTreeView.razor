@@ -3,7 +3,7 @@
 @inherits MudExTreeViewBase<T>
 @namespace MudBlazor.Extensions.Components
 
-<DynamicComponent Type="@GetComponentForViewMode()" Parameters="@GetParameters()"/>
+<DynamicComponent @ref="_renderedTree" Type="@GetComponentForViewMode()" Parameters="@GetParameters()"/>
 
 @code
 {

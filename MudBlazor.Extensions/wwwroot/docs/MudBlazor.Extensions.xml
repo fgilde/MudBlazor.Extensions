@@ -13647,6 +13647,21 @@
             Parameters for the component based on ViewMode. 
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeView`1.ExpandAll">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeView`1.ExpandAllLoaded">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeView`1.ExpandAllNotLoaded">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeView`1.ToggleExpand(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeView`1.SetExpanded(`0,System.Boolean)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.TreeViewItemContext`1">
             <summary>
             Context for the tree view item.
@@ -13891,6 +13906,16 @@
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ExpandAll">
             <summary>
             Expand all nodes
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ExpandAllLoaded">
+            <summary>
+            Expand all nodes their children are loaded
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ExpandAllNotLoaded">
+            <summary>
+            Expand all nodes their children aren't loaded yet
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.CollapseAll">

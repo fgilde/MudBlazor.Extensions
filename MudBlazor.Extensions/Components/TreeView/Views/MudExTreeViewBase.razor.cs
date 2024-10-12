@@ -318,6 +318,16 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     public virtual void ExpandAll() => _expanded = new HashSet<TItem>(Items.Recursive(n => n.Children ?? Enumerable.Empty<TItem>()));
 
     /// <summary>
+    /// Expand all nodes their children are loaded
+    /// </summary>
+    public virtual void ExpandAllLoaded() => _expanded = new HashSet<TItem>(Items.Where(n => !n.NeedsLoadChildren()).Recursive(n => n.GetLoadedChildren() ?? Enumerable.Empty<TItem>()));
+
+    /// <summary>
+    /// Expand all nodes their children aren't loaded yet
+    /// </summary>
+    public virtual void ExpandAllNotLoaded() => _expanded = new HashSet<TItem>(Items.Where(n => n.NeedsLoadChildren()).Recursive(n => n.Children ?? Enumerable.Empty<TItem>()).Where(n => n.NeedsLoadChildren()));
+
+    /// <summary>
     /// Collapse all nodes
     /// </summary>
     public virtual void CollapseAll() => _expanded.Clear();
@@ -448,9 +458,9 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
         if (expanded && !IsExpanded(context))
         {
             _expanded.Add(context);
-            if (context.HasChildren() && context?.LoadChildrenFunc != null) // TODO: use context.NeedsLoadChildren()
+            if (context.NeedsLoadChildren() && (context is IAsyncHierarchical<TItem> asyncHierarchical)) 
             {
-                context.LoadChildren();
+                asyncHierarchical.LoadChildren();
             }
         }
         else if (!expanded && IsExpanded(context))

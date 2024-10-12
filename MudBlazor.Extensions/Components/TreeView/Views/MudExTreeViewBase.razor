@@ -1,6 +1,8 @@
 ﻿@typeparam TItem
 @using MudBlazor.Extensions.Components.ObjectEdit
 @using Nextended.Core.Extensions
+@using Nextended.Core.Types
+@using YamlDotNet.Core.Tokens
 @inherits MudExBaseComponent<MudExTreeViewBase<TItem>>
 @namespace MudBlazor.Extensions.Components
 
@@ -39,7 +41,7 @@
         var text = TextFunc(context.Value);
         return 
             @<RenderChild>
-                @if (context?.Value?.IsLoading == true)
+                @if (context.Value is IAsyncHierarchical<TItem> { IsLoading: true })
                 {
                     <MudProgressCircular Class="m-1" Color="@Color.Primary" Size="@Size.Small" Indeterminate="true" />
                 }

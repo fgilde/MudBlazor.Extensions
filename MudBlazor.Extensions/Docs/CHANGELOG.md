@@ -1,4 +1,8 @@
 ## Change Log    
+ - 2.0.6 > [MudExAudioPlayer](https://www.mudex.org/file-display?file=4.Unified-Voice.mp3) now displays meta infos
+ - 2.0.6 > The [MudExImageViewer](https://www.mudex.org/image-view) now allows area to select with a rubberband and open, download, print or directly switching the view to the selected area as an image.
+ - 2.0.6 > Allow Xls and CSV files and fix header bug in [MudExFileDisplayExcel](https://www.mudex.org/file-display?file=ExcelSheet.xlsx)
+ - 2.0.6 > Allow async child loading in [MudExTreeView](https://www.mudex.org/demos/TreeView).
  - 2.0.6 > Fixed error in sample app for [MudExSelect](https://www.mudex.org/mud-ex-select) and [MudExThemeEdit](https://www.mudex.org/theme-edit)
  - 2.0.6 > update used nuget packages to latest versions
  - 2.0.6 > update MudBlazor to 7.10.0
