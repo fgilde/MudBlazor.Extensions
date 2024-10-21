@@ -12,7 +12,7 @@
 <div style="height: 333px">
     <MudExTreeView @bind-SelectedNode="_selectedNode" 
                    Parameters="@(new Dictionary<string, object> { { nameof(MudExCardList<object>.HoverMode), MudExCardHoverMode.Simple } })"
-                   ViewMode="_treeViewMode" ReverseExpandButton="_reverseExpand" Items="@Entries">
+                   ViewMode="_treeViewMode" ExpandButtonDirection="@((_reverseExpand ? LeftOrRight.Right : LeftOrRight.Left ))" Items="@Entries">
         <ItemContentTemplate>
             <p style="text-decoration: underline">@context.Value.ToString()</p>
         </ItemContentTemplate>

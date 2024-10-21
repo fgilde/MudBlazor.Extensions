@@ -885,6 +885,11 @@
             Set default audio element border color
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExAudioPlayer.BorderColor">
+            <summary>
+            Border color of the visualizer element
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExAudioPlayer.AudioElementBackgroundColor">
             <summary>
             Set the audio element background color use null to use color from visualizer gradient

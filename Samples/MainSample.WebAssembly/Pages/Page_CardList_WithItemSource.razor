@@ -1,0 +1,88 @@
+﻿@page "/card-with-items"
+
+@attribute [DemoNew(Name = "MudExCardList with ItemsSource", Icon = Icons.Material.Outlined.HorizontalSplit, Documentation = "This Demo demonstrate using the MudExCardList with an item source", ForComponentType = typeof(MudExCardList<>))]
+
+<DemoComponent PageType="@GetType()" Title="MudExCardList">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => AddUsers(500)">Add 500 Users</MudButton>
+
+    <SplitContainer>
+        <Left>
+
+            <MudExCardList ItemTemplate="@RenderUser" @ref="component" TData="User" ItemsSource="@Users">
+
+            </MudExCardList>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid ShowInherited="true" Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+@code {
+    MudExCardList<User> component;
+
+
+    public class User
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public override string ToString() => Name;
+    }
+
+        private RenderFragment RenderUser(User user)
+        {
+            return @<MudCard>
+                       <MudCardHeader Style="z-index: 5">
+                           <CardHeaderContent>
+                               <MudText Typo="Typo.h6">@user.Name</MudText>
+                           </CardHeaderContent>
+                           <CardHeaderActions>
+                               <MudExGravatar Email="@user.Email" Size="Size.Small" />
+                           </CardHeaderActions>
+                       </MudCardHeader>
+                       <MudCardContent Style="z-index: 5">
+                           <MudText Typo="Typo.body2">@user.Email</MudText>
+                       </MudCardContent>
+                   </MudCard>
+    ;
+    }
+
+    public List<User> Users { get; set; } = GetSampleUsers().Concat(Enumerable.Range(1, 500).Select(i => new User { Name = "New User " + i, Email = "new.user" + i + "@example.com" })).ToList();
+
+    public static List<User> GetSampleUsers()
+    {
+        return
+        [
+            new User { Name = "Alice Johnson", Email = "alice.johnson@example.com" },
+        new User { Name = "Bob Smith", Email = "jitewaboh@lagify.com" },
+        new User { Name = "Charlie Brown", Email = "charlie.brown@example.com" },
+        new User { Name = "Diana Prince", Email = "diana.prince@example.com" },
+        new User { Name = "Ethan Hunt", Email = "ethan.hunt@example.com" },
+        new User { Name = "Fiona Gallagher", Email = "fiona.gallagher@example.com" },
+        new User { Name = "George Miller", Email = "george.miller@example.com" },
+        new User { Name = "Hannah Davis", Email = "hannah.davis@example.com" },
+        new User { Name = "Ian Wright", Email = "ian.wright@example.com" },
+        new User { Name = "Julia Roberts", Email = "julia.roberts@example.com" },
+        new User { Name = "Kevin Hart", Email = "kevin.hart@example.com" },
+        new User { Name = "Laura Palmer", Email = "laura.palmer@example.com" },
+        new User { Name = "Michael Scott", Email = "michael.scott@example.com" },
+        new User { Name = "Natalie Portman", Email = "natalie.portman@example.com" },
+        new User { Name = "Oscar Wilde", Email = "oscar.wilde@example.com" },
+        new User { Name = "Penelope Cruz", Email = "penelope.cruz@example.com" },
+        new User { Name = "Quentin Tarantino", Email = "quentin.tarantino@example.com" },
+        new User { Name = "Rachel Green", Email = "rachel.green@example.com" },
+        new User { Name = "Steve Rogers", Email = "steve.rogers@example.com" },
+        new User { Name = "Tina Fey", Email = "tina.fey@example.com" },
+        new User { Name = "Uma Thurman", Email = "uma.thurman@example.com" }
+        ];
+    }
+
+    private void AddUsers(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            Users.Add(new User { Name = "New User " + Users.Count, Email = "new.user" + Users.Count + "@example.com" });
+        }
+    }
+
+}
