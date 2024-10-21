@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using AuralizeBlazor;
+using AuralizeBlazor.Features;
 using AuralizeBlazor.Options;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -77,6 +78,11 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
     /// Set default audio element border color
     /// </summary>
     [Parameter, SafeCategory(CategoryPlayer)] public MudExColor AudioElementBorderColor { get; set; } = MudExColor.Info;
+
+    /// <summary>
+    /// Border color of the visualizer element
+    /// </summary>
+    [Parameter, SafeCategory(CategoryPlayer)] public MudExColor BorderColor { get; set; } = MudExColor.Transparent;
 
     /// <summary>
     /// Set the audio element background color use null to use color from visualizer gradient
@@ -203,9 +209,18 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
             Presets = AuralizerPreset.All;
         }
 
+        //Features = new IVisualizerFeature[]
+        //{
+        //    new ShowLogoFeature() {Label =MudExFileDisplay?.FileName, Position = TextPosition.CenterCenter}
+        //};
         KeepState = true;
         ApplyBackgroundImageFromTrack = false;
         PreviewImageInPresetList = true;
+        AnimateVisualizerBorderColor = AnimateBorderColor.None;
+        ContextMenuAction = VisualizerAction.DisplayActionMenu;
+        VisualizerElementBorderSize = "0px";
+        TrackListBehaviour = SelectionListBehaviour.Hidden;
+        TrackList = new[] { new AuralizerTrack(Src, MudExFileDisplay?.FileName) };
         InitialRender = InitialRender.WithRandomData;
 
         Height = Width = "100%";
@@ -272,6 +287,9 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
     {
         var animate = (IsPlaying && AnimateVisualizerBorderColor == AnimateBorderColor.OnPlay) || AnimateVisualizerBorderColor == AnimateBorderColor.Always;
         return MudExStyleBuilder.Default
+            .WithBorderWidth(VisualizerElementBorderSize)
+            .WithBorderStyle(BorderStyle.Solid)
+            .WithBorderColor(BorderColor, !animate)
             .WithAnimatedGradientBorder(VisualizerElementBorderSize, BgFor(VisualizerBackgroundColor, _bg), _borderColors, animate)
             .WithBackgroundColor(BgFor(VisualizerBackgroundColor, _bg), !animate)
             .WithHeight(Height)

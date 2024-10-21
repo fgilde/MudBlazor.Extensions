@@ -44,7 +44,6 @@ else
                            @bind-Filters="Filters"
                            @bind-Filter="SearchString"
                            InitiallyExpanded="true"
-                           
                            Parameters="@(new Dictionary<string, object> {{nameof(MudExTreeViewList<MudExArchiveStructure>.RootName), RootFolderName}})"
                            ToolBarStyle="@ToolbarStyle()"
                            ToggleableViewModes="new [] { TreeViewMode.Default , TreeViewMode.List, TreeViewMode.FlatList}"
