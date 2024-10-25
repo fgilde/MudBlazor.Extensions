@@ -34,6 +34,9 @@
     .mud-ex-card:hover {
         background-color: var(--mud-ex-card-list-hover-color) !important;
     }
+    .mud-ex-virtual-item > *:hover {
+        background-color: var(--mud-ex-card-list-hover-color) !important;
+    }
 }
 
 .mud-ex-card-list-zoom {

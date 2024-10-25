@@ -8,13 +8,24 @@
         {
             @ChildContent
         }
-        @if (ItemTemplate != null && ItemsSource?.Any() == true)
+        @if (ItemsSource?.Any() == true)
         {
             foreach (TData item in ItemsSource)
             {
                 <MudExVirtualItem Virtualize="@Virtualize"
-                                  Class="mud-ex-card-parent skip-card-check">
-                    @ItemTemplate(item)
+                                  Class="mud-ex-card">
+                    @if (ItemTemplate != null)
+                    {
+                        @ItemTemplate(item)
+                    }
+                    else
+                    {
+                        <MudCard Style="height: 100%">
+                        <MudCardHeader>
+                            <p>@item?.ToString()</p>
+                        </MudCardHeader>
+                        </MudCard>
+                    }
                 </MudExVirtualItem>
             }
         }
