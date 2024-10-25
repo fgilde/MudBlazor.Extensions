@@ -58,7 +58,6 @@ public partial class MudExTreeViewCardGrid<T>
     /// <inheritdoc />
     protected override string ItemStyleStr(TreeViewItemContext<T> context, string mergeWith = "")
     {
-        Console.WriteLine(MaxItemWidth.ToString());
         return MudExStyleBuilder.FromStyle(base.ItemStyleStr(context, mergeWith))
             .WithMaxWidth(MaxItemWidth, !MaxItemWidth.IsZero())
             .Style;

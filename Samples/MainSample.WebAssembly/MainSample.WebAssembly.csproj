@@ -30,6 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Pages\Page_CardList_Combined.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
     <Content Update="Pages\Page_SimpleDialog.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>

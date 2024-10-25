@@ -2,21 +2,14 @@
 @inherits MudExTreeViewBase<T>
 @namespace MudBlazor.Extensions.Components
 
-@using Nextended.Core.Extensions
 @using Nextended.Core.Types
 
 @RenderSearchBar()
 
 <MudList T="T" Class="@Class" Style="@StyleStr()" Dense="@Dense">
-
-    @foreach (var item in FlattedItems().EmptyIfNull())
-    {
-        var search = FilterManager.GetMatchedSearch(item);
-        if (search.Found && IsAllowedToSelect(item))
-        {
-            @ItemRender(item, search.Term)
-        }
-    }
+    <MudExVirtualize IsEnabled="@Virtualize" Items="@GetFilteredItems(FlattedItems())">
+        @ItemRender(context.Item, context.Term)
+    </MudExVirtualize>
 </MudList>
 
 @code {

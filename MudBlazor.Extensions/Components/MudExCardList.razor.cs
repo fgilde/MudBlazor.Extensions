@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
-using MudBlazor.Extensions.Components.Base;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
@@ -23,6 +22,13 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
     /// </summary>
     [Inject]
     public IJSRuntime JsRuntime { get; set; }
+
+    /// <summary>
+    /// Set this to true to virtualize items is only possible if ItemsSource is used.
+    /// </summary>
+    [Parameter]
+    [SafeCategory("Behavior")]
+    public bool Virtualize { get; set; }
 
     /// <summary>
     /// Gets or Sets IJSObjectReference JsReference Property.
@@ -149,6 +155,7 @@ public partial class MudExCardList<TData> : MudBaseBindableItemsControl<MudItem,
             .With($"--mud-ex-card-list-bg-color", $"{BackgroundColor.ToCssStringValue()}")
             .With($"--mud-ex-card-list-hover-color", $"{HoverColor.ToCssStringValue()}")
             .With($"justify-content", Justify.GetDescription())
+            .WithHeight("100%")
             .AddRaw(Style)
             .Build();
     }

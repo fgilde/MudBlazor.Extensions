@@ -12,6 +12,8 @@
     <MudExDivider/>
     <MudExTreeView @bind-SelectedNode="_selectedNode"
                    @ref="component"
+                   Style="max-height: 50vh; overflow: auto"
+                   Virtualize="false"
                    Parameters="@(new Dictionary<string, object> { { nameof(MudExCardList<object>.HoverMode), MudExCardHoverMode.Simple } })"
                    ViewMode="_treeViewMode"
                    Items="@Entries">

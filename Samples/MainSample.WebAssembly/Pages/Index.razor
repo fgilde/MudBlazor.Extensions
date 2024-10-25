@@ -22,7 +22,7 @@
 
 <MudExCardList HoverMode="@(MudExCardHoverMode.Zoom | MudExCardHoverMode.CardEffect3d | MudExCardHoverMode.LightBulb)" HoverColor="Color.Warning" TData="object">
     <MudCard Class="index-card" @onclick="@(() => { NavigationManager.NavigateTo("/structured-data-edit"); })">
-        <MudCardHeader Style="z-index: 5">
+        <MudCardHeader >
             <CardHeaderContent>
                 <div style="display: flex;">
                     <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@Icons.Custom.FileFormats.FileCode"/>
@@ -30,14 +30,14 @@
                 </div>
             </CardHeaderContent>
         </MudCardHeader>
-        <MudCardContent Style="z-index: 5">
+        <MudCardContent >
             <MudText>You don't need an extra JsonEditor anymore</MudText>
             <MudText Typo="Typo.body2">Powerful UI Editor for json, xml or yaml content now also as viewer for MudExFileDisplay</MudText>
         </MudCardContent>
     </MudCard>
     
     <MudCard Class="index-card" @onclick="@(() => { NavigationManager.NavigateTo(AppConstants.Urls.GetTryOnline(MainLayout.Instance.IsDark)); })">
-        <MudCardHeader Style="z-index: 5">
+        <MudCardHeader >
             <CardHeaderContent>
                 <div style="display: flex;">
                     <MudIcon Color="Color.Primary" Size="Size.Large" Icon="@Icons.Custom.Brands.MicrosoftVisualStudio"/>
@@ -45,14 +45,14 @@
                 </div>
             </CardHeaderContent>
         </MudCardHeader>
-        <MudCardContent Style="z-index: 5">
+        <MudCardContent >
             <MudText>Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor</MudText>
             <MudText Typo="Typo.body2">Test and use components live without required environment</MudText>
         </MudCardContent>
     </MudCard>
 
     <MudCard Class="index-card" @onclick="@(() => { NavigationManager.NavigateTo("/theme-edit"); })">
-        <MudCardHeader Style="z-index: 5">
+        <MudCardHeader >
             <CardHeaderContent>
                 <div style="display: flex;">
                     @((MarkupString)MudExSvg.ApplicationImage(ClientTheme.CurrentTheme, new MudExDimension(70, 50)))
@@ -60,7 +60,7 @@
                 </div>
             </CardHeaderContent>
         </MudCardHeader>
-        <MudCardContent Style="z-index: 5">
+        <MudCardContent >
             <MudText>Change or edit your theme</MudText>
             <MudText Typo="Typo.body2">Test the powerful MudExThemeEdit and change theme colors fonts and more</MudText>
         </MudCardContent>
@@ -91,7 +91,7 @@
             @foreach (var nav in DemoAttribute.AllEntries(true).Where(n => !_selectedAttributeTypes.Any() || _selectedAttributeTypes.Contains(n?.Demo?.GetType())))
             {
                 <MudCard Class="index-card" @onclick="@(() => { Open(nav); })">
-                    <MudCardHeader Style="z-index: 5">
+                    <MudCardHeader >
                         <CardHeaderContent>
                             @RenderNavEntry(nav)
                         </CardHeaderContent>
@@ -99,7 +99,7 @@
                             <MudIcon Color="@nav.GetIconColor()" Icon="@nav.Icon" />
                         </CardHeaderActions>
                     </MudCardHeader>
-                    <MudCardContent Style="z-index: 5">
+                    <MudCardContent >
                         <MudText>@nav.Text</MudText>
                         @if (!string.IsNullOrEmpty(nav.Documentation))
                         {
@@ -117,7 +117,7 @@
             @foreach (var nav in Navigations.ReflectMudExComponents())
             {
                 <MudCard Class="index-card" @onclick="@(() => { Open(nav); })">
-                    <MudCardHeader Style="z-index: 5">
+                    <MudCardHeader >
                         <CardHeaderContent>
                             @RenderNavEntry(nav)
                         </CardHeaderContent>
@@ -126,7 +126,7 @@
                             <MudIcon Color="@nav.GetIconColor()" Icon="@nav.Icon" />
                         </CardHeaderActions>
                     </MudCardHeader>
-                    <MudCardContent Style="z-index: 5">
+                    <MudCardContent >
                         <MudText>@nav.Text</MudText>
                         @if (!string.IsNullOrEmpty(nav.Documentation))
                         {

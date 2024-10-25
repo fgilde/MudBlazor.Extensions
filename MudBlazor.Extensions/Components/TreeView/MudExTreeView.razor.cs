@@ -18,7 +18,11 @@ public partial class MudExTreeView<T>
 {
     private TreeViewMode _viewMode = TreeViewMode.Horizontal;
     private DynamicComponent _renderedTree;
-    private MudExTreeViewBase<T> _renderedTreeComponent => _renderedTree?.Instance as MudExTreeViewBase<T>;
+
+    /// <summary>
+    /// Inner component that renders the tree.
+    /// </summary>
+    public MudExTreeViewBase<T> RenderedTreeComponent => _renderedTree?.Instance as MudExTreeViewBase<T>;
 
     /// <summary>
     /// Mode controls how the tree view will be rendered.
@@ -55,38 +59,43 @@ public partial class MudExTreeView<T>
     /// <inheritdoc />
     public override void ExpandAll()
     {
-        _renderedTreeComponent?.ExpandAll();
+        RenderedTreeComponent?.ExpandAll();
         base.ExpandAll();
     }
 
     /// <inheritdoc />
     public override void ExpandAllLoaded()
     {
-        _renderedTreeComponent?.ExpandAllLoaded();
+        RenderedTreeComponent?.ExpandAllLoaded();
         base.ExpandAllLoaded();
     }
 
     /// <inheritdoc />
     public override void ExpandAllNotLoaded()
     {
-        _renderedTreeComponent?.ExpandAllNotLoaded();
+        RenderedTreeComponent?.ExpandAllNotLoaded();
         base.ExpandAllNotLoaded();
     }
 
     /// <inheritdoc />
     public override void ToggleExpand(T node)
     {
-        _renderedTreeComponent?.ToggleExpand(node);
+        RenderedTreeComponent?.ToggleExpand(node);
         base.ToggleExpand(node);
     }
 
     /// <inheritdoc />
     public override void SetExpanded(T context, bool expanded)
     {
-        _renderedTreeComponent?.SetExpanded(context, expanded);
+        RenderedTreeComponent?.SetExpanded(context, expanded);
         base.SetExpanded(context, expanded);
     }
 
+    /// <inheritdoc />
+    public override void Update()
+    {
+        RenderedTreeComponent?.Update();
+    }
 
     #endregion
 

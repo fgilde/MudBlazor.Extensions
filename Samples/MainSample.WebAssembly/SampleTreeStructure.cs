@@ -275,6 +275,10 @@ public class SampleTreeStructure
                             ]
                         }
                     ]
+                },
+                new SampleTreeItem("Item with many sub items")
+                {
+                    Children = Enumerable.Range(1, 300).Select(i => new SampleTreeItem("Item " + i)).ToHashSet()
                 }
             }
         ];

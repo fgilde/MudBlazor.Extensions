@@ -6,31 +6,33 @@
 
 @RenderSearchBar()
 
-<MudExCardList LightBulbSize="@LightBulbSize" LightBulbSizeUnit="@LightBulbSizeUnit"
-               HoverColor="@HoverColor" HoverMode="@HoverMode" BackgroundColor="@BackgroundColor" 
-               Spacing="@Spacing" Justify="@Justify"
-               Class="@Class" Style="@AnimationStyleStr()" TData="T">
-    @{
-        var nodeInfo = LevelNodes();
-    }
-    @if (LastSelectedNode != null && !nodeInfo.IsRoot)
-    {
-        @RenderBackNode("flex-direction: column; width: 30%")
-    }
+@{
+    _nodeInfo = LevelNodes();
+}
 
-    @foreach (var item in nodeInfo.Nodes.EmptyIfNull())
-    {
-        var search = FilterManager.GetMatchedSearch(item);
-        if (search.Found)
-        {
-            @ItemRender(item, search.Term)
-        }
-    }
+@RenderNavigationNodes(_nodeInfo, "justify-center")
+
+
+<MudExCardList LightBulbSize="@LightBulbSize" LightBulbSizeUnit="@LightBulbSizeUnit"
+               Virtualize="@Virtualize"
+               TData="(string Term, T Item)"
+               ItemsSource="@GetFilteredItems(_nodeInfo.Nodes)"
+               ItemTemplate="@ItemTpl"
+               HoverColor="@HoverColor" HoverMode="@HoverMode" BackgroundColor="@BackgroundColor"
+               Spacing="@Spacing" Justify="@Justify"
+               Class="@Class" Style="@AnimationStyleStr()">
+
 
 </MudExCardList>
 
 
 @code {
+    (bool IsRoot, IReadOnlyCollection<T> Nodes) _nodeInfo;
+
+    private RenderFragment ItemTpl((string Term, T Item) value)
+    {
+        return ItemRender(value.Item, value.Term);
+    }
 
     private RenderFragment ItemRender(T item, string search = "")
     {
@@ -41,32 +43,22 @@
         return IsSeparator(item) ? RenderSeparator() : RenderItem(context);
     }
 
-    // protected override RenderFragment RenderBackNode(string style = "")
-    // {
-    //     var backNode = GetBackNodeTarget();
-    //     return @<RenderChild>
-    //                <MudCard Class="@ItemClassStr(backNode.Context)" Style="@ItemStyleStr(backNode.Context)" @onclick="@(() => { NodeClick(backNode.Context.Item); })">
-    //                    <MudCardContent Style="z-index: 5">
-    //                        @backNode.Label
-    //                    </MudCardContent>
-    //                </MudCard>
-    //     </RenderChild>;
-    // }
 
     public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
     {
         return @<MudCard Class="@ItemClassStr(context)" Style="@ItemStyleStr(context)" @onclick="@(() => { NodeClick(context.Value); })">
-        <MudCardHeader>
-            <CardHeaderContent>
-                @RenderItemContent(context, true, false)
-            </CardHeaderContent>
-            <CardHeaderActions>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    @RenderItemContent(context, true, false)
+                </CardHeaderContent>
+                <CardHeaderActions>
 
-            </CardHeaderActions>
-        </MudCardHeader>
-        <MudCardContent>
-            @RenderItemContent(context, true, true)
-        </MudCardContent>
-    </MudCard>;
+                </CardHeaderActions>
+            </MudCardHeader>
+            <MudCardContent>
+                @RenderItemContent(context, true, true)
+            </MudCardContent>
+        </MudCard>;
     }
+
 }

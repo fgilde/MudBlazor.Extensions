@@ -1078,6 +1078,11 @@
             Dependency Injection for IJSRuntime Service.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.Virtualize">
+            <summary>
+            Set this to true to virtualize items is only possible if ItemsSource is used.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExCardList`1.JsReference">
             <summary>
             Gets or Sets IJSObjectReference JsReference Property.
@@ -8615,6 +8620,74 @@
             Executes the DropZone Click Action
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.CssAndStyleApplyMode">
+            <summary>
+            Mode how css and style will be applied.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.CssAndStyleApplyMode.BeforeContentRendered">
+            <summary>
+            The css and style will be applied to the container before the content is rendered.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.CssAndStyleApplyMode.AfterContentRendered">
+            <summary>
+            The css and style will be applied to the container after the content is rendered.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExVirtualItem">
+            <summary>
+            An item that only renders the content if it is in the viewport.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualItem.IsVisibleChanged">
+            <summary>
+            Is invoked when the visibility of the element changes.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualItem.ChildContent">
+            <summary>
+            Child content of component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualItem.NotIntersectingContent">
+            <summary>
+            this content is rendered when element is not into view.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualItem.Virtualize">
+            <summary>
+            If this is false the <see cref="P:MudBlazor.Extensions.Components.MudExVirtualItem.ChildContent"/>> will always be rendered.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualItem.CssAndStyleApplyMode">
+            <summary>
+            The css class that will be applied to the container.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualItem.NotIntersectingClass">
+            <summary>
+            the class that will be applied to the container if the content is not intersecting.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualItem.IntersectingClass">
+            <summary>
+            the class that will be applied to the container if the content is intersecting.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualItem.NotIntersectingStyle">
+            <summary>
+            the style that will be applied to the container if the content is not intersecting.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExVirtualItem.IntersectingStyle">
+            <summary>
+            the style that will be applied to the container if the content is intersecting.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExVirtualItem.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExVirtualize`1">
             <summary>
             Simple virtualize component that can be disabled with support for fixed items and ItemsProvider.
@@ -13627,6 +13700,11 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.RenderedTreeComponent">
+            <summary>
+            Inner component that renders the tree.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeView`1.ViewMode">
             <summary>
             Mode controls how the tree view will be rendered.
@@ -13665,6 +13743,9 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeView`1.SetExpanded(`0,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeView`1.Update">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.TreeViewItemContext`1">
@@ -14041,7 +14122,7 @@
             Style for item container
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.StyleStr">
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.StyleStr(System.Action{MudBlazor.Extensions.Helper.MudExStyleBuilder})">
             <summary>
             Style for main control
             </summary>
@@ -14049,6 +14130,23 @@
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.GetTermToHighlight(System.String)">
             <summary>
             Get the term to highlight
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ToolBarClassStr">
+            <summary>
+            returns the class for the toolbar
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.ToolBarStyleStr">
+            <summary>
+            Returns the style for the toolbar
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewBase`1.Update">
+            <summary>
+            Updates the state of the component
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBreadcrumb`1.MenuAnchorOrigin">
@@ -14223,6 +14321,26 @@
             Label for the back link.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewList`1.RenderBackLink">
+            <summary>
+            Set false to hide the back link.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewList`1.RenderHomeLink">
+            <summary>
+            Set false to hide the home link.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewList`1.NavigationLinkBarClass">
+            <summary>
+            Css class for the toolbar where back and home link are located in
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewList`1.NavigationLinkBarStyle">
+            <summary>
+            Style for the toolbar where back and home link are located in
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewList`1.GetBackNodeTarget">
             <summary>
             Context and label of back node
@@ -14237,6 +14355,11 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExTreeViewList`1.NodeClick(`0)">
             <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExTreeViewList`1.AnimationStyleStr">
+            <summary>
+            Creates the style with animation styles included.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExIconButton.ToolTip">
             <summary>
@@ -17806,6 +17929,21 @@
             <param name="styleString">CSS style string to parse and add to the builder</param>
             <param name="when">If false, no properties will be added to the builder</param>
             <returns>This MudExStyleBuilder instance</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.MergeWith(System.Action{MudBlazor.Extensions.Helper.MudExStyleBuilder},System.Boolean)">
+            <summary>
+            Merges the properties and values from the given Action with the current style string
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.MergeWith(System.String,System.Boolean)">
+            <summary>
+            Merges the properties and values from the given style string with the current style string
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.MergeWith(MudBlazor.Extensions.Helper.MudExStyleBuilder,System.Boolean)">
+            <summary>
+            Merges the properties and values from the given styleBuilder with the current style string
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.With(System.Object,MudBlazor.Extensions.Core.CssUnit,System.Boolean)">
             <summary>

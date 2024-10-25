@@ -60,6 +60,26 @@ public partial class MudExTreeViewList<T>
     /// </summary>
     [Parameter] public string BackLinkLabel { get; set; } = "Back to {0}";
 
+    /// <summary>
+    /// Set false to hide the back link.
+    /// </summary>
+    [Parameter] public bool RenderBackLink { get; set; } = true;
+
+    /// <summary>
+    /// Set false to hide the home link.
+    /// </summary>
+    [Parameter] public bool RenderHomeLink { get; set; } = true;
+
+    /// <summary>
+    /// Css class for the toolbar where back and home link are located in
+    /// </summary>
+    [Parameter] public string NavigationLinkBarClass { get; set; }
+
+    /// <summary>
+    /// Style for the toolbar where back and home link are located in
+    /// </summary>
+    [Parameter] public string NavigationLinkBarStyle { get; set; }
+
     private bool? _animationIn;
 
     /// <summary>
@@ -69,10 +89,10 @@ public partial class MudExTreeViewList<T>
     protected (string Label, TreeViewItemContext<T> Context) GetBackNodeTarget()
     {
         var ctx = CreateContext(LastSelectedNode.Children?.Any() == true ? LastSelectedNode.Parent : LastSelectedNode.Parent.Parent, "");
-        var label = TryLocalize(BackLinkLabel, ctx != null && ctx.Value != null ? TextFunc(ctx.Value) : RootName);
+        var label = TryLocalize(BackLinkLabel, ctx != null && ctx.Value != null ? TryLocalize(TextFunc(ctx.Value)) : TryLocalize(RootName));
         return (label, ctx);
     }
-
+    
     /// <summary>
     /// Returns the root node and its children if the current node is null.
     /// Otherwise, returns the children of the current node.
@@ -90,7 +110,7 @@ public partial class MudExTreeViewList<T>
     }
 
     /// <inheritdoc />
-    protected override void NodeClick(T node)
+    public override void NodeClick(T node)
     {
         if (_animationIn == null)
         {
@@ -112,10 +132,13 @@ public partial class MudExTreeViewList<T>
             .ToString();
     }
 
-    protected string AnimationStyleStr()
+    /// <summary>
+    /// Creates the style with animation styles included.
+    /// </summary>
+    protected virtual string AnimationStyleStr()
     {
         if (_animationIn == null)
-            return StyleStr();
+            return StyleStr(b => b.WithMarginTop(10));
 
         return _animationIn.Value
             ? AnimationStyleStr(AnimationIn, AnimationInDirection, AnimationInPosition, AnimationInDuration)
@@ -129,7 +152,7 @@ public partial class MudExTreeViewList<T>
             _animationIn = null;
             InvokeAsync(StateHasChanged);
         });
-        return MudExStyleBuilder.FromStyle(StyleStr())
+        return MudExStyleBuilder.FromStyle(StyleStr(b => b.WithMarginTop(10)))
             .WithAnimation(animation, duration, direction, AnimationTimingFunction.EaseOut, position, when: _animationIn != null && animation != AnimationType.Default)
             .Style;
     }

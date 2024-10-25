@@ -1,10 +1,30 @@
 ﻿class MudExCardList {
-
+    _cardCls = ['mud-ex-card', 'mud-ex-animate-all-properties'];
     constructor(elementRef, dotNet, options) {
         this.elementRef = elementRef;
         this.initialize(options);
     }
 
+    _cardIsRelevant(card) {
+        return card.getAttribute('data-intersecting') !== "false";
+    }
+
+    _addItemClsIf(el, cls) {
+        if (!el) return;
+        if (el.classList.contains('mud-ex-card-parent')) {
+            this._addItemClsIf(el.querySelector('*'), cls);
+        }
+        if (el.classList.contains('skip-card-check')) {
+            return;
+        }
+
+        var arr = Array.from(cls).flatMap(c => c.split(' ')).filter(s => s);
+        arr.forEach(c => {
+            if (!el.classList.contains(c)) {
+                el.classList.add(c);
+            }
+        });
+    }
 
     initialize(options) {
         var me = this;
@@ -14,16 +34,15 @@
         }
         this._container = this.elementRef.querySelector(".mud-ex-cards");        
         this._container.onmousemove = null;
-        for (const card of Array.from(this._container.children)) {
-            card._isMouseOver = false;
-        }
+
+        let children = Array.from(this._container.children);
+
+        children.forEach(child => {
+            this._addItemClsIf(child, this._cardCls);
+        });
         
         this._container.onmousemove = e => {
-            for (const card of Array.from(this._container.children)) {                    
-                if (!card.classList.contains('mud-ex-card')) {
-                    card.classList.add('mud-ex-card');
-                    card.classList.add('mud-ex-animate-all-properties');
-                }
+            for (const card of Array.from(this._container.children)) {
                 const rect = card.getBoundingClientRect(),
                     x = e.clientX - rect.left,
                     y = e.clientY - rect.top;
@@ -31,9 +50,10 @@
                 card.style.setProperty('--mouse-x', `${x}px`);
                 card.style.setProperty('--mouse-y', `${y}px`);
 
-                if (card._isMouseOver)
+                if (card._isMouseOver || !this._cardIsRelevant(card))
                     continue;
-                                    
+                
+                this._addItemClsIf(card, this._cardCls);
                 card.addEventListener('mouseenter', () => {                    
                     card.addEventListener('mousemove', this.cardMouseMove.bind(this, card));
                 });

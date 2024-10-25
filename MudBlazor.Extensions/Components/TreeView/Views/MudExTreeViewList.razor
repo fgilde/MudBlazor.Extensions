@@ -2,41 +2,60 @@
 @inherits MudExTreeViewFlatList<T>
 @namespace MudBlazor.Extensions.Components
 
-@using Nextended.Core.Extensions
 @using Nextended.Core.Types
 
 @RenderSearchBar()
+@{
+    var nodeRenderInfo = LevelNodes();
+}
+
+@RenderNavigationNodes(nodeRenderInfo)
 
 <MudList T="T" Class="@Class" Style="@AnimationStyleStr()" Dense="@Dense">
-    @{
-        var nodeRenderInfo = LevelNodes();
-    }
-    @if (LastSelectedNode != null && !nodeRenderInfo.IsRoot)
-    {
-        @RenderBackNode()
-    }
-    @foreach (var item in nodeRenderInfo.Nodes.EmptyIfNull())
-    {
-        var search = FilterManager.GetMatchedSearch(item);
-        if (search.Found)
-        {
-            @ItemRender(item, search.Term)
-        }
-    }
+    <MudExVirtualize IsEnabled="@Virtualize" Items="@GetFilteredItems(nodeRenderInfo.Nodes)">
+        @ItemRender(context.Item, context.Term)
+    </MudExVirtualize>
 </MudList>
 
 @code {
 
+    protected virtual RenderFragment RenderNavigationNodes((bool IsRoot, IReadOnlyCollection<T> Nodes) levelNodes = default, string additionalCls = "")
+    {
+        if(levelNodes == default)
+            levelNodes = LevelNodes();
+        return @<RenderChild Condition="@((RenderBackLink || RenderHomeLink) && (LastSelectedNode != null && !levelNodes.IsRoot))">
+                   <MudToolBar Class="@($"{NavigationLinkBarClass} {additionalCls}")" Style="@NavigationLinkBarStyle" Dense="true" WrapContent="true">
+                       @if (RenderHomeLink && LastSelectedNode != null && (GetBackNodeTarget().Context.Value != null || !RenderBackLink) && !levelNodes.IsRoot)
+                       {
+                           @RenderRootNode()
+                       }
+                       @if (RenderBackLink)
+                       {
+                           @RenderBackNode("margin-left: 10px")
+                       }
+                   </MudToolBar>
+                   <MudDivider/>
+               </RenderChild>;
+    }
+
+    protected virtual RenderFragment RenderRootNode(string style = "")
+    {
+        return RenderActionNode((TryLocalize(RootName), CreateContext(default)), Icons.Material.Filled.Home, style);
+    }
+
     protected virtual RenderFragment RenderBackNode(string style = "")
     {
-        var targetNode = GetBackNodeTarget();
+        return RenderActionNode(GetBackNodeTarget(), Icons.Material.Filled.ArrowBack, style);
+    }
+
+    protected virtual RenderFragment RenderActionNode((string Label, TreeViewItemContext<T> Context) targetNode, string icon, string style = "")
+    {
         return @<RenderChild>
-                   <MudListItem T="T" Class="@ItemClassStr(targetNode.Context)" 
-                                Value="@targetNode.Context.Value"
-                                Style="@ItemStyleStr(targetNode.Context, style)"
-                                OnClick="@(() => { _animationIn = true; NodeClick(targetNode.Context.Value); })" Text="@targetNode.Label" Icon="@Icons.Material.Filled.ArrowBack" />
-                   <MudDivider/>
-                </RenderChild>;
+                   <MudButton Style="@style" OnClick="@(() => { _animationIn = true; NodeClick(targetNode.Context.Value); })" StartIcon="@icon">
+                        @targetNode.Label
+                   </MudButton>
+            
+        </RenderChild>;
     }
  
     private RenderFragment ItemRender(T item, string search = "")

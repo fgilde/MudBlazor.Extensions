@@ -29,22 +29,23 @@
 
     public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
     {
-        return
-            @<MudTreeViewItem @bind-Expanded="@context.Expanded"
-                              T="T"
-                              Style="@ItemStyleStr(context)"
-                              Class="@ItemClassStr(context)"
-                              OnClick="@(() => NodeClick(context.Value))"
-                              Items="@(GetChildren(context))">
-            <Content>
-                <div style="@ContentFlexStyleStr()">
-                    @if (ExpandBehaviour != Core.Enums.TreeViewExpandBehaviour.None)
-                    {
-                        <MudTreeViewItemToggleButton ExpandedIcon="@ExpandedIcon" ExpandedChanged="@(expanded => SetExpanded(context.Value, expanded))" Expanded="@context.Expanded" Visible="@(context.HasChildren)"/>
-                    }
-                    @RenderItemContent(context, true)
-                </div>
-            </Content>
-        </MudTreeViewItem>;
+        return @<MudExVirtualItem Virtualize="@Virtualize">
+                   <MudTreeViewItem @bind-Expanded="@context.Expanded"
+                                    T="T"
+                                    Style="@ItemStyleStr(context)"
+                                    Class="@ItemClassStr(context)"
+                                    OnClick="@(() => NodeClick(context.Value))"
+                                    Items="@(GetChildren(context))">
+                       <Content>
+                           <div style="@ContentFlexStyleStr()">
+                               @if (ExpandBehaviour != Core.Enums.TreeViewExpandBehaviour.None)
+                               {
+                                   <MudTreeViewItemToggleButton ExpandedIcon="@ExpandedIcon" ExpandedChanged="@(expanded => SetExpanded(context.Value, expanded))" Expanded="@context.Expanded" Visible="@(context.HasChildren)"/>
+                               }
+                               @RenderItemContent(context, true)
+                           </div>
+                       </Content>
+                   </MudTreeViewItem>
+               </MudExVirtualItem>;
     }
 }

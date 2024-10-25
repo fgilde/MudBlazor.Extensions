@@ -1,0 +1,20 @@
+﻿@inherits MudExBaseComponent<MudExVirtualItem>
+
+<div @ref="_container" class="@($"mud-ex-virtual-item {Class}")"
+     data-virtualize="@(Virtualize ? "true" : "false")"
+     data-intersect-class="@IntersectingClass"
+     data-no-intersect-class="@NotIntersectingClass"
+     data-intersect-style="@IntersectingStyle"
+     data-no-intersect-style="@NotIntersectingStyle"
+     data-apply-styles-first="@(CssAndStyleApplyMode == CssAndStyleApplyMode.BeforeContentRendered ? "true" : "false")"
+     style="@(_isVisible || !Virtualize ? "" : _style)">
+    @if (_isVisible || !Virtualize)
+    {
+        @ChildContent
+    }
+    else if(NotIntersectingContent != null)
+    {
+        @NotIntersectingContent
+    }
+</div>
+

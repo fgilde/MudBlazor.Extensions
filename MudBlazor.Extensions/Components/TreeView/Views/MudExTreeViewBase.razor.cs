@@ -24,9 +24,16 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// </summary>
     protected HierarchicalFilter<TItem> FilterManager = new();
 
+    [Parameter] public bool Virtualize { get; set; }
     [Parameter] public string ToolBarStyle { get; set; }
     [Parameter] public string ToolBarClass { get; set; }
     [Parameter] public bool WrapToolBarContent {get; set; }
+
+    public IList<(string Term, TItem Item)> GetFilteredItems(IEnumerable<TItem> nodes)
+    {
+        var result =  from item in nodes.EmptyIfNull() let search = FilterManager.GetMatchedSearch(item) where search.Found select (search.Term, item);
+        return result.ToList();
+    }
 
     /// <summary>
     /// Returns the filtered items as a collection of <see cref="TreeViewItemContext{TItem}"/>
@@ -350,7 +357,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// <summary>
     /// Creates a context for the given item
     /// </summary>
-    protected virtual TreeViewItemContext<TItem> CreateContext(TItem item, string search, object tag = null)
+    protected virtual TreeViewItemContext<TItem> CreateContext(TItem item, string search = "", object tag = null)
     {
         return new TreeViewItemContext<TItem>(item, IsSelected(item), IsExpanded(item), IsFocused(item), search, this, tag, GetTermToHighlight(search));
     }
@@ -388,7 +395,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// <summary>
     /// On node click
     /// </summary>
-    protected virtual void NodeClick(TItem node)
+    public virtual void NodeClick(TItem node)
     {
         if (IsSeparator(node))
             return;
@@ -537,10 +544,11 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// <summary>
     /// Style for main control
     /// </summary>
-    protected string StyleStr()
+    protected virtual string StyleStr(Action<MudExStyleBuilder> mergeWith = null)
     {
         return MudExStyleBuilder.FromStyle(Style)
             .WithBackground(BackgroundColor, BackgroundColor.IsSet())
+            .MergeWith(mergeWith)
             .ToString();
     }
 
@@ -562,6 +570,10 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
         _highlight = arg.Value;
     }
 
+    /// <summary>
+    /// returns the class for the toolbar
+    /// </summary>
+    /// <returns></returns>
     protected virtual string ToolBarClassStr()
     {
         return MudExCssBuilder.From(ToolBarClass)
@@ -569,6 +581,10 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
             .ToString();
     }
 
+    /// <summary>
+    /// Returns the style for the toolbar
+    /// </summary>
+    /// <returns></returns>
     protected virtual string ToolBarStyleStr()
     {
         return MudExStyleBuilder.FromStyle(ToolBarStyle)
@@ -578,7 +594,10 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
             .ToString();
     }
 
-    public void Update()
+    /// <summary>
+    /// Updates the state of the component
+    /// </summary>
+    public virtual void Update()
     {
         InvokeAsync(StateHasChanged);
     }

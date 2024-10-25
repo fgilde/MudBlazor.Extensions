@@ -43,6 +43,7 @@ else
                            @ref="_treeView"
                            @bind-Filters="Filters"
                            @bind-Filter="SearchString"
+                           Virtualize="@Virtualize"
                            InitiallyExpanded="true"
                            Parameters="@(new Dictionary<string, object> {{nameof(MudExTreeViewList<MudExArchiveStructure>.RootName), RootFolderName}})"
                            ToolBarStyle="@ToolbarStyle()"

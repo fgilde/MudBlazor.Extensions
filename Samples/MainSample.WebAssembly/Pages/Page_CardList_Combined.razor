@@ -1,6 +1,6 @@
-﻿@page "/card-with-items"
+﻿@page "/card-combined"
 
-@attribute [DemoNew(Name = "MudExCardList with ItemsSource", Icon = Icons.Material.Outlined.HorizontalSplit, Documentation = "This Demo demonstrate using the MudExCardList with an item source", ForComponentType = typeof(MudExCardList<>))]
+@attribute [DemoNew(Name = "MudExCardList with ItemsSource and child content", Icon = Icons.Material.Outlined.HorizontalSplit, Documentation = "This Demo demonstrate using the MudExCardList with an item source and child content together", ForComponentType = typeof(MudExCardList<>))]
 
 <DemoComponent PageType="@GetType()" Title="MudExCardList">
     <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => AddUsers(500)">Add 500 Users</MudButton>
@@ -8,6 +8,17 @@
     <SplitContainer>
         <Left>
             <MudExCardList ItemTemplate="@RenderUser" @ref="component" TData="User" ItemsSource="@Users">
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">Static item</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent >
+                        <MudText>Static card.</MudText>
+                        <MudText Typo="Typo.body2">This one card is still added without an corresponding item.</MudText>
+                    </MudCardContent>
+                </MudCard>
             </MudExCardList>
         </Left>
         <Right>
@@ -29,7 +40,7 @@
 
         private RenderFragment RenderUser(User user)
         {
-            return @<MudCard>
+            return @<MudCard Style="height: 100%">
                        <MudCardHeader>
                            <CardHeaderContent>
                                <MudText Typo="Typo.h6">@user.Name</MudText>

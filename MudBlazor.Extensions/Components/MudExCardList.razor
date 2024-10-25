@@ -3,20 +3,21 @@
 
 
 <div @ref="ElementReference" class="@GetCss()" style="@($"{GetStyle()}")">
-    <div style="@($"gap:{Spacing}px; justify-content: {Justify.ToDescriptionString()}")" class="@($"mud-ex-cards mud-ex-cards-{_id}")">
-        @if (ItemsSource == null)
+    <div style="@($"gap:{Spacing}px; height: 100%; max-height: inherit; justify-content: {Justify.ToDescriptionString()}")" class="@($"mud-ex-cards mud-ex-cards-{_id}")">
+        @if (ChildContent != null)
         {
             @ChildContent
         }
-        else
+        @if (ItemTemplate != null && ItemsSource?.Any() == true)
         {
             foreach (TData item in ItemsSource)
             {
-                <div class="mud-ex-card">
+                <MudExVirtualItem Virtualize="@Virtualize"
+                                  Class="mud-ex-card-parent skip-card-check">
                     @ItemTemplate(item)
-                </div>
+                </MudExVirtualItem>
             }
         }
-        
+
     </div>
 </div>
