@@ -3,35 +3,84 @@
 @using MudBlazor.Extensions.Core.Enums
 
 
-<MudExEnumSelect TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />
+@* <MudExEnumSelect TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />
 <MudCheckBox @bind-Value="_reverseExpand"></MudCheckBox>
 
 <p>@_selectedNode?.ToString()</p>
 <MudExDivider Color="MudExColor.Primary" />
 
 <div style="height: 333px">
-    <MudExTreeView @bind-SelectedNode="_selectedNode" 
+    <MudExTreeView @bind-SelectedNode="_selectedNode"
                    Parameters="@(new Dictionary<string, object> { { nameof(MudExCardList<object>.HoverMode), MudExCardHoverMode.Simple } })"
                    ViewMode="_treeViewMode" ExpandButtonDirection="@((_reverseExpand ? LeftOrRight.Right : LeftOrRight.Left ))" Items="@Entries">
         <ItemContentTemplate>
             <p style="text-decoration: underline">@context.Value.ToString()</p>
         </ItemContentTemplate>
     </MudExTreeView>
-</div>
+</div> *@
 
+
+<MudButton OnClick="@StartStopRecording">Start/Stop Capture</MudButton>
+@if (!string.IsNullOrEmpty(_url))
+{
+    <MudExFileDisplay FileName="Capture.mp4" Url="@_url" ContentType="video/webm; codecs=vp9"></MudExFileDisplay>
+}
 
 @code {
     private bool _reverseExpand;
     private NavigationEntry _selectedNode;
     private TreeViewMode _treeViewMode = TreeViewMode.Default;
     public HashSet<NavigationEntry> Entries { get; set; }
-    
+    private string _url;
     protected override void OnInitialized()
     {
         //var root = new NavigationEntry("ROOT") { Children = Navigations.Default(NavigationManager) };
         //Entries = new HashSet<NavigationEntry>(new [] {root});
         Entries = Navigations.Default(NavigationManager);
     }
-    
+
+    [Inject]
+    private ICaptureService _captureService { get; set; }
+    [Inject]
+    private IMudExFileService _fileService { get; set; }
+
+    private string _captureId;
+    private async Task StartStopRecording(MouseEventArgs obj)
+    {
+        if (!string.IsNullOrEmpty(_captureId))
+        {
+            await _captureService.StopCaptureAsync(_captureId);
+            _captureId = null;
+        }
+        else
+        {
+            var audioDevices = await _captureService.GetAudioDevicesAsync();
+            var videoDevices = await _captureService.GetVideoDevicesAsync();
+            var source = await _captureService.SelectCaptureSourceAsync();
+            
+            // var jbl = audioDevices.ElementAt(16);
+            var options = new CaptureOptions
+                {
+                    CaptureScreen = true,
+                  //  ScreenSource = source,
+                    
+                    VideoDeviceId = videoDevices.FirstOrDefault()?.DeviceId,
+                    //AudioDevices = [jbl.DeviceId]
+                    AudioDevices = [audioDevices.First().DeviceId]
+                };
+            _captureId = await _captureService.StartCaptureAsync(options, CaptureCallback);
+        }
+    }
+
+    private void CaptureCallback(CaptureResult obj)
+    {
+        _url = obj.BlobUrl;
+        StateHasChanged();
+        // _fileService.CreateDataUrlAsync(obj.VideoData, obj.Options.ContentType, true).ContinueWith(task =>
+        // {
+        //     _url = task.Result;
+        //     StateHasChanged();
+        // });
+    }
 
 }

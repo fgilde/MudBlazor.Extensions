@@ -43,12 +43,3 @@ public interface ISpeechRecognitionService : IAsyncDisposable
     /// </summary>
     Task<IEnumerable<AudioDevice>> GetAudioDevicesAsync();
 }
-
-public class AudioDevice
-{
-    public string DeviceId { get; set; }
-    public string GroupId { get; set; }
-    public string Label { get; set; }
-
-    public override string ToString() => Label;
-}

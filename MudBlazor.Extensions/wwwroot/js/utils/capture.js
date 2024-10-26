@@ -1,26 +1,59 @@
 ﻿class MudExCapture {
     static recordings = {};
 
+    static async selectCaptureSource() {
+        try {
+            const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+            const selectedTrack = stream.getVideoTracks()[0];
+            stream.getTracks().forEach(track => track.stop()); // Beende den Stream direkt nach der Auswahl
+            var result = {
+                id: selectedTrack.id,
+                label: selectedTrack.label,
+                kind: selectedTrack.kind,
+                deviceId: selectedTrack.getSettings().deviceId,
+                stats: selectedTrack.stats,
+                enabled: selectedTrack.enabled,
+                muted: selectedTrack.muted,
+                readyState: selectedTrack.readyState
+            };
+            return result;
+        } catch (err) {
+            console.error("Fehler beim Anzeigen der Bildschirmquelle.", err);
+            return null;
+        }
+    }
+
     static async startCapture(options, callback) {
         const id = this.generateUniqueId();
-        const { stream, mediaRecorder } = await this.setupCapture(options, id, callback);
+        const { videoStream, audioStream, combinedStream, mediaRecorders } = await this.setupCapture(options, id, callback);
 
-        mediaRecorder.start();
+        // Eventlistener für das Stoppen der Freigabe durch den Benutzer
+        combinedStream.getVideoTracks()[0].addEventListener("ended", () => {
+            this.stopCapture(id);
+            if (callback['invokeMethodAsync']) {
+                callback.invokeMethodAsync('OnStopped', id);
+            }
+        });
 
-        this.recordings[id] = { mediaRecorder, options, stream };
+        // Start all media recorders
+        mediaRecorders.forEach(recorder => recorder.start());
+
+        this.recordings[id] = { mediaRecorders, options, videoStream, audioStream, combinedStream };
         return id;
     }
 
     static stopCapture(id) {
         const recording = this.recordings[id];
         if (recording) {
-            recording.mediaRecorder.stop();
-            recording.stream.getTracks().forEach(track => track.stop());
+            recording.mediaRecorders.forEach(recorder => recorder.stop());
+            recording.combinedStream.getTracks().forEach(track => track.stop());
+            if (recording.videoStream) recording.videoStream.getTracks().forEach(track => track.stop());
+            if (recording.audioStream) recording.audioStream.getTracks().forEach(track => track.stop());
         }
     }
 
     static async setupCapture(options, id, callback) {
-        // Build video and audio constraints
+        options.contentType = options.contentType || 'video/webm; codecs=vp9';
         const videoConstraints = options.captureScreen
             ? { video: true }
             : { video: { deviceId: options.videoDeviceId ? { exact: options.videoDeviceId } : undefined } };
@@ -30,16 +63,27 @@
             ? await navigator.mediaDevices.getDisplayMedia({ video: true })
             : await navigator.mediaDevices.getUserMedia({ video: videoConstraints });
 
-        // Combine video stream and audio streams
-        const combinedStream = this.combineStreams(videoStream, audioStreams);
+        const audioStream = this.mergeAudioStreams(audioStreams);
+        const combinedStream = this.combineStreams(videoStream, audioStream);
 
-        const mediaRecorder = new MediaRecorder(combinedStream, { mimeType: 'video/webm; codecs=vp9' });
-        const recordedChunks = [];
+        const videoChunks = [];
+        const audioChunks = [];
+        const combinedChunks = [];
 
-        mediaRecorder.ondataavailable = event => recordedChunks.push(event.data);
-        mediaRecorder.onstop = async () => this.saveVideoData(recordedChunks, callback, id);
+        // Create MediaRecorder for each stream
+        const videoRecorder = new MediaRecorder(videoStream, { mimeType: options.contentType });
+        const audioRecorder = new MediaRecorder(audioStream, { mimeType: 'audio/webm' });
+        const combinedRecorder = new MediaRecorder(combinedStream, { mimeType: options.contentType });
 
-        return { stream: combinedStream, mediaRecorder };
+        // Collect data for each recorder
+        videoRecorder.ondataavailable = event => videoChunks.push(event.data);
+        audioRecorder.ondataavailable = event => audioChunks.push(event.data);
+        combinedRecorder.ondataavailable = event => combinedChunks.push(event.data);
+
+        // Handle stop event for all recorders
+        combinedRecorder.onstop = async () => this.saveVideoData(videoChunks, audioChunks, combinedChunks, callback, id, options);
+
+        return { videoStream, audioStream, combinedStream, mediaRecorders: [videoRecorder, audioRecorder, combinedRecorder] };
     }
 
     static async getAudioStreams(audioDeviceIds) {
@@ -49,27 +93,34 @@
 
         const audioStreams = await Promise.all(
             audioDeviceIds.map(async deviceId => {
-                return await navigator.mediaDevices.getUserMedia({
-                    audio: { deviceId: { exact: deviceId } }
-                });
+                try {
+                    return await navigator.mediaDevices.getUserMedia({
+                        audio: { deviceId: { exact: deviceId } }
+                    });
+                } catch (error) {
+                    console.warn(`Audio device with ID ${deviceId} konnte nicht abgerufen werden.`, error);
+                    return null;
+                }
             })
         );
 
-        return audioStreams;
+        return audioStreams.filter(stream => stream !== null); // Filter out failed streams
     }
 
-    static combineStreams(videoStream, audioStreams) {
-        // Create a new MediaStream to hold the combined tracks
-        const combinedStream = new MediaStream();
-
-        // Add video tracks
-        videoStream.getTracks().forEach(track => combinedStream.addTrack(track));
-
-        // Add all audio tracks from each audio stream
+    static mergeAudioStreams(audioStreams) {
+        const combinedAudioStream = new MediaStream();
         audioStreams.forEach(audioStream => {
-            audioStream.getAudioTracks().forEach(track => combinedStream.addTrack(track));
+            audioStream.getAudioTracks().forEach(track => combinedAudioStream.addTrack(track));
         });
+        return combinedAudioStream;
+    }
 
+    static combineStreams(videoStream, audioStream) {
+        const combinedStream = new MediaStream();
+        videoStream.getTracks().forEach(track => combinedStream.addTrack(track));
+        if (audioStream) {
+            audioStream.getTracks().forEach(track => combinedStream.addTrack(track));
+        }
         return combinedStream;
     }
 
@@ -77,21 +128,40 @@
         return `${new Date().getTime()}`;
     }
 
-    static async saveVideoData(recordedChunks, callback, id) {
-        const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+    static async saveVideoData(videoChunks, audioChunks, combinedChunks, callback, id, options) {
+        const combinedBlob = new Blob(combinedChunks, { type: options.contentType });
+        const videoBlob = new Blob(videoChunks, { type: options.contentType });
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
 
-        // Generate a Blob URL and log it to the console
+        const combinedUrl = URL.createObjectURL(combinedBlob);
         const videoUrl = URL.createObjectURL(videoBlob);
-        console.log(`Recorded video available at: ${videoUrl}`);
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        const combinedArrayBuffer = await combinedBlob.arrayBuffer();
+        const combinedByteArray = new Uint8Array(combinedArrayBuffer);
 
         const videoArrayBuffer = await videoBlob.arrayBuffer();
         const videoByteArray = new Uint8Array(videoArrayBuffer);
 
+        const audioArrayBuffer = await audioBlob.arrayBuffer();
+        const audioByteArray = new Uint8Array(audioArrayBuffer);
+
         if (callback['invokeMethodAsync']) {
-            callback.invokeMethodAsync('Invoke', { videoData: videoByteArray });
+            callback.invokeMethodAsync('Invoke',
+                {
+                    videoData: { bytes: videoByteArray, blobUrl: videoUrl },
+                    audioData: { bytes: audioByteArray, blobUrl: audioUrl },
+                    combinedData: { bytes: combinedByteArray, blobUrl: combinedUrl },
+                    options: options,
+                    captureId: id
+                });
         }
 
         delete this.recordings[id];
+    }
+
+    static async getDevices() {
+        return await navigator.mediaDevices.enumerateDevices();
     }
 
     static async getAvailableAudioDevices() {

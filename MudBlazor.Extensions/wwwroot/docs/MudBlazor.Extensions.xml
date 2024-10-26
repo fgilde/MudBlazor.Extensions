@@ -15241,6 +15241,42 @@
             Render tree view as flat list.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.ICaptureService">
+            <summary>
+            Service for capturing the screen or camera and audio.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StartCaptureAsync(MudBlazor.Extensions.Core.CaptureOptions,System.Action{MudBlazor.Extensions.Core.CaptureResult},System.Action{System.String})">
+            <summary>
+            Starts capturing the screen or camera and audio.
+            </summary>
+            <returns>Id to stop recording</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopCaptureAsync(System.String)">
+            <summary>
+            Stops the capture with the specified ID.
+            </summary>
+            <param name="captureId">The id for the capture recording to stop</param>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopAllCapturesAsync">
+            <summary>
+            Stops all captures.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.GetAudioDevicesAsync">
+            <summary>
+            Gets the available audio devices.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.GetVideoDevicesAsync">
+            <summary>
+            Gets the available video devices.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.IDialogEventService">
             <summary>
             Dialog event service
@@ -21401,6 +21437,32 @@
             <param name="appearance">The appearance to remove.</param>
             <param name="dialogReference">The reference to the dialog from which the appearance will be removed.</param>
             <returns>The removed appearance.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Services.MudExCaptureService">
+            <summary>
+            Capture service for capturing audio and video.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StartCaptureAsync(MudBlazor.Extensions.Core.CaptureOptions,System.Action{MudBlazor.Extensions.Core.CaptureResult},System.Action{System.String})">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StopCaptureAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StopAllCapturesAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.GetAudioDevicesAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.GetVideoDevicesAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.SelectCaptureSourceAsync">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Services.MudExDialogService">
             <summary>

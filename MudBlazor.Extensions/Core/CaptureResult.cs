@@ -1,0 +1,19 @@
+﻿namespace MudBlazor.Extensions.Core;
+
+public class CaptureResult
+{
+    public string CaptureId { get; set; }
+    public CaptureOptions Options { get; set; }
+    public byte[] Bytes => CombinedData?.Bytes;
+    public string BlobUrl => CombinedData?.BlobUrl;
+
+    public CaptureData VideoData { get; set; }
+    public CaptureData AudioData { get; set; }
+    public CaptureData CombinedData { get; set; }
+}
+
+public class CaptureData
+{
+    public byte[] Bytes { get; set; }
+    public string BlobUrl { get; set; }
+}
