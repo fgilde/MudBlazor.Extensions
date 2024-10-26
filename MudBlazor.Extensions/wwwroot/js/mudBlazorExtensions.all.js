@@ -25,7 +25,7 @@ class MudExCapture {
 
     static async startCapture(options, callback) {
         const id = this.generateUniqueId();
-        const { videoStream, audioStream, combinedStream, mediaRecorders } = await this.setupCapture(options, id, callback);
+        const { videoStream, audioStream, cameraStream, combinedStream, mediaRecorders } = await this.setupCapture(options, id, callback);
 
         // Eventlistener für das Stoppen der Freigabe durch den Benutzer
         combinedStream.getVideoTracks()[0].addEventListener("ended", () => {
@@ -38,7 +38,7 @@ class MudExCapture {
         // Start all media recorders
         mediaRecorders.forEach(recorder => recorder.start());
 
-        this.recordings[id] = { mediaRecorders, options, videoStream, audioStream, combinedStream };
+        this.recordings[id] = { mediaRecorders, options, videoStream, audioStream, cameraStream, combinedStream };
         return id;
     }
 
@@ -49,6 +49,7 @@ class MudExCapture {
             recording.combinedStream.getTracks().forEach(track => track.stop());
             if (recording.videoStream) recording.videoStream.getTracks().forEach(track => track.stop());
             if (recording.audioStream) recording.audioStream.getTracks().forEach(track => track.stop());
+            if (recording.cameraStream) recording.cameraStream.getTracks().forEach(track => track.stop());
         }
     }
 
@@ -63,17 +64,33 @@ class MudExCapture {
             ? await navigator.mediaDevices.getDisplayMedia({ video: true })
             : await navigator.mediaDevices.getUserMedia({ video: videoConstraints });
 
+        // Erfassen des Kamerastreams, wenn ein `videoDeviceId` angegeben ist und `captureScreen` aktiv ist
+        const cameraStream = options.captureScreen && options.videoDeviceId
+            ? await navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: options.videoDeviceId } } })
+            : null;
+
         const audioStream = this.mergeAudioStreams(audioStreams);
-        const combinedStream = this.combineStreams(videoStream, audioStream);
+        const combinedStream = cameraStream
+            ? this.createOverlayStream(videoStream, cameraStream, audioStream)
+            : this.combineStreams(videoStream, audioStream);
 
         const videoChunks = [];
         const audioChunks = [];
         const combinedChunks = [];
+        const cameraChunks = [];
+
+        // Initialize mediaRecorders
+        const mediaRecorders = [];
 
         // Create MediaRecorder for each stream
         const videoRecorder = new MediaRecorder(videoStream, { mimeType: options.contentType });
         const audioRecorder = new MediaRecorder(audioStream, { mimeType: 'audio/webm' });
         const combinedRecorder = new MediaRecorder(combinedStream, { mimeType: options.contentType });
+        if (cameraStream) {
+            const cameraRecorder = new MediaRecorder(cameraStream, { mimeType: options.contentType });
+            cameraRecorder.ondataavailable = event => cameraChunks.push(event.data);
+            mediaRecorders.push(cameraRecorder);
+        }
 
         // Collect data for each recorder
         videoRecorder.ondataavailable = event => videoChunks.push(event.data);
@@ -81,9 +98,12 @@ class MudExCapture {
         combinedRecorder.ondataavailable = event => combinedChunks.push(event.data);
 
         // Handle stop event for all recorders
-        combinedRecorder.onstop = async () => this.saveVideoData(videoChunks, audioChunks, combinedChunks, callback, id, options);
+        combinedRecorder.onstop = async () => this.saveVideoData(videoChunks, audioChunks, combinedChunks, cameraChunks, callback, id, options);
 
-        return { videoStream, audioStream, combinedStream, mediaRecorders: [videoRecorder, audioRecorder, combinedRecorder] };
+        // Add all recorders to the mediaRecorders array
+        mediaRecorders.push(videoRecorder, audioRecorder, combinedRecorder);
+
+        return { videoStream, audioStream, cameraStream, combinedStream, mediaRecorders };
     }
 
     static async getAudioStreams(audioDeviceIds) {
@@ -107,14 +127,6 @@ class MudExCapture {
         return audioStreams.filter(stream => stream !== null); // Filter out failed streams
     }
 
-    static mergeAudioStreams(audioStreams) {
-        const combinedAudioStream = new MediaStream();
-        audioStreams.forEach(audioStream => {
-            audioStream.getAudioTracks().forEach(track => combinedAudioStream.addTrack(track));
-        });
-        return combinedAudioStream;
-    }
-
     static combineStreams(videoStream, audioStream) {
         const combinedStream = new MediaStream();
         videoStream.getTracks().forEach(track => combinedStream.addTrack(track));
@@ -124,18 +136,66 @@ class MudExCapture {
         return combinedStream;
     }
 
+
+    static mergeAudioStreams(audioStreams) {
+        const combinedAudioStream = new MediaStream();
+        audioStreams.forEach(audioStream => {
+            audioStream.getAudioTracks().forEach(track => combinedAudioStream.addTrack(track));
+        });
+        return combinedAudioStream;
+    }
+
+    static createOverlayStream(videoStream, cameraStream, audioStream) {
+        const canvas = document.createElement("canvas");
+        const videoSettings = videoStream.getVideoTracks()[0].getSettings();
+
+        canvas.width = videoSettings.width;
+        canvas.height = videoSettings.height;
+
+        const context = canvas.getContext("2d");
+        const videoElement = document.createElement("video");
+        videoElement.srcObject = videoStream;
+        videoElement.play();
+
+        const cameraElement = document.createElement("video");
+        cameraElement.srcObject = cameraStream;
+        cameraElement.play();
+
+        // Positionierung des Overlays (20% Größe, unten rechts)
+        const overlayWidth = canvas.width * 0.2;
+        const overlayHeight = (overlayWidth / cameraElement.videoWidth) * cameraElement.videoHeight;
+        const overlayPosition = { x: canvas.width - overlayWidth - 10, y: canvas.height - overlayHeight - 10 };
+
+        function draw() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+            context.drawImage(cameraElement, overlayPosition.x, overlayPosition.y, overlayWidth, overlayHeight);
+            requestAnimationFrame(draw);
+        }
+
+        draw();
+
+        // Kombiniere Canvas-Stream mit Audio für die Aufnahme
+        const combinedStream = canvas.captureStream();
+        audioStream.getTracks().forEach(track => combinedStream.addTrack(track));
+
+        return combinedStream;
+    }
+
     static generateUniqueId() {
         return `${new Date().getTime()}`;
     }
 
-    static async saveVideoData(videoChunks, audioChunks, combinedChunks, callback, id, options) {
+    static async saveVideoData(videoChunks, audioChunks, combinedChunks, cameraChunks, callback, id, options) {
         const combinedBlob = new Blob(combinedChunks, { type: options.contentType });
         const videoBlob = new Blob(videoChunks, { type: options.contentType });
         const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        const cameraBlob = new Blob(cameraChunks, { type: options.contentType });
 
         const combinedUrl = URL.createObjectURL(combinedBlob);
         const videoUrl = URL.createObjectURL(videoBlob);
         const audioUrl = URL.createObjectURL(audioBlob);
+        const cameraUrl = URL.createObjectURL(cameraBlob);
 
         const combinedArrayBuffer = await combinedBlob.arrayBuffer();
         const combinedByteArray = new Uint8Array(combinedArrayBuffer);
@@ -146,12 +206,16 @@ class MudExCapture {
         const audioArrayBuffer = await audioBlob.arrayBuffer();
         const audioByteArray = new Uint8Array(audioArrayBuffer);
 
+        const cameraArrayBuffer = await cameraBlob.arrayBuffer();
+        const cameraByteArray = new Uint8Array(cameraArrayBuffer);
+
         if (callback['invokeMethodAsync']) {
             callback.invokeMethodAsync('Invoke',
                 {
                     videoData: { bytes: videoByteArray, blobUrl: videoUrl },
                     audioData: { bytes: audioByteArray, blobUrl: audioUrl },
                     combinedData: { bytes: combinedByteArray, blobUrl: combinedUrl },
+                    cameraData: { bytes: cameraByteArray, blobUrl: cameraUrl },
                     options: options,
                     captureId: id
                 });

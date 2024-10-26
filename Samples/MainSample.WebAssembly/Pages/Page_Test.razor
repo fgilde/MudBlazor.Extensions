@@ -21,12 +21,20 @@
 
 
 <MudButton OnClick="@StartStopRecording">Start/Stop Capture</MudButton>
-@if (!string.IsNullOrEmpty(_url))
+<MudCheckBox @bind-Value="_recordAudio">Audio</MudCheckBox>
+<MudCheckBox @bind-Value="_captureScreen">Capture Screen</MudCheckBox>
+<MudCheckBox @bind-Value="_camera">record Camera</MudCheckBox>
+@if (_captureResult != null)
 {
-    <MudExFileDisplay FileName="Capture.mp4" Url="@_url" ContentType="video/webm; codecs=vp9"></MudExFileDisplay>
+    <MudExFileDisplay FileName="Capture.mp4" Url="@_captureResult.CombinedData.BlobUrl" ContentType="video/webm; codecs=vp9"></MudExFileDisplay>
+    <MudExFileDisplay Style="height: 300px;" FileName="Audio.mp3" Url="@_captureResult.AudioData.BlobUrl" ContentType="audio/mp3"></MudExFileDisplay>
+    <MudExFileDisplay FileName="Camera.mp4" Url="@_captureResult.CameraData.BlobUrl" ContentType="video/webm; codecs=vp9"></MudExFileDisplay>
 }
 
 @code {
+    private bool _captureScreen;
+    private bool _recordAudio;
+    private bool _camera;
     private bool _reverseExpand;
     private NavigationEntry _selectedNode;
     private TreeViewMode _treeViewMode = TreeViewMode.Default;
@@ -56,25 +64,25 @@
         {
             var audioDevices = await _captureService.GetAudioDevicesAsync();
             var videoDevices = await _captureService.GetVideoDevicesAsync();
-            var source = await _captureService.SelectCaptureSourceAsync();
+            // var source = await _captureService.SelectCaptureSourceAsync();
             
-            // var jbl = audioDevices.ElementAt(16);
             var options = new CaptureOptions
                 {
-                    CaptureScreen = true,
+                    CaptureScreen = _captureScreen,
                   //  ScreenSource = source,
                     
-                    VideoDeviceId = videoDevices.FirstOrDefault()?.DeviceId,
+                    VideoDeviceId = _camera ? videoDevices.FirstOrDefault()?.DeviceId : null,
                     //AudioDevices = [jbl.DeviceId]
-                    AudioDevices = [audioDevices.First().DeviceId]
+                    AudioDevices = _recordAudio ? [audioDevices.First().DeviceId] : []
                 };
             _captureId = await _captureService.StartCaptureAsync(options, CaptureCallback);
         }
     }
 
+    private CaptureResult _captureResult;
     private void CaptureCallback(CaptureResult obj)
     {
-        _url = obj.BlobUrl;
+        _captureResult = obj;
         StateHasChanged();
         // _fileService.CreateDataUrlAsync(obj.VideoData, obj.Options.ContentType, true).ContinueWith(task =>
         // {

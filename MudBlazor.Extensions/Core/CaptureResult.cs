@@ -8,6 +8,7 @@ public class CaptureResult
     public string BlobUrl => CombinedData?.BlobUrl;
 
     public CaptureData VideoData { get; set; }
+    public CaptureData CameraData { get; set; }
     public CaptureData AudioData { get; set; }
     public CaptureData CombinedData { get; set; }
 }
