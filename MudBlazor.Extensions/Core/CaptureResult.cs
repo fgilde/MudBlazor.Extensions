@@ -10,6 +10,7 @@ public class CaptureResult
     public CaptureData CaptureData { get; set; }
     public CaptureData CameraData { get; set; }
     public CaptureData AudioData { get; set; }
+    public CaptureData SystemAudioData { get; set; }
     public CaptureData CombinedData { get; set; }
 }
 

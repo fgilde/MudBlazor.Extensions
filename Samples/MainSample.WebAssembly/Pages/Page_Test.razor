@@ -38,6 +38,10 @@
                 {
                     <MudExFileDisplay Style="height: 100%" FileName="Audio.mp3" Url="@_captureResult.AudioData.BlobUrl" ContentType="@_captureResult.AudioData.ContentType"></MudExFileDisplay>
                 }
+                @if (_captureResult.SystemAudioData != null)
+                {
+                    <MudExFileDisplay Style="height: 100%" FileName="Audio.mp3" Url="@_captureResult.SystemAudioData.BlobUrl" ContentType="@_captureResult.SystemAudioData.ContentType"></MudExFileDisplay>
+                }
             </MudPaper>
         </MudItem>
         <MudItem>
@@ -92,15 +96,14 @@
         {
             var audioDevices = await _captureService.GetAudioDevicesAsync();
             var videoDevices = await _captureService.GetVideoDevicesAsync();
-            // var source = await _captureService.SelectCaptureSourceAsync();
+         //    var source = await _captureService.SelectCaptureSourceAsync();
 
             var options = new CaptureOptions
                 {
                     CaptureScreen = _captureScreen,
-                    //  ScreenSource = source,
+                   // ScreenSource = source,
 
                     VideoDeviceId = _camera ? videoDevices.FirstOrDefault()?.DeviceId : null,
-                    //AudioDevices = [jbl.DeviceId]
                     AudioDevices = _recordAudio ? [audioDevices.First().DeviceId] : []
                 };
             _captureId = await _captureService.StartCaptureAsync(options, CaptureCallback);

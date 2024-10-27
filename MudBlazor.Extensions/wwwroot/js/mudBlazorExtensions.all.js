@@ -6,6 +6,7 @@ class MudExCapture {
             const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
             const selectedTrack = stream.getVideoTracks()[0];
             stream.getTracks().forEach(track => track.stop());
+            return selectedTrack;
             return {
                 id: selectedTrack.id,
                 label: selectedTrack.label,
@@ -55,19 +56,58 @@ class MudExCapture {
     }
 
     static async setupCapture(options, id, callback) {
+        const displayMediaOptions = {
+            video: {
+                displaySurface: "browser",
+            },
+            audio: {
+                suppressLocalAudioPlayback: false,
+                autoGainControl: false,
+                echoCancellation: false,
+                noiseSuppression: false
+            },
+            preferCurrentTab: false,
+            selfBrowserSurface: "exclude",
+            systemAudio: "include",
+            surfaceSwitching: "include",
+            monitorTypeSurfaces: "include",
+        };
+
         options.contentType = options.contentType || 'video/webm; codecs=vp9';
         const audioContentType = options.audioContentType || 'audio/webm';
 
         // Streams sammeln
         const streams = {
-            screen: options.captureScreen ? await navigator.mediaDevices.getDisplayMedia({ video: true }) : null,
-            camera: options.videoDeviceId ? await navigator.mediaDevices.getUserMedia({
-                video: { deviceId: { exact: options.videoDeviceId } }
-            }) : null,
-            audio: null
+            screen: null,
+            camera: null,
+            audio: null,
+            systemAudio: null
         };
 
-        // Audio Streams zusammenführen
+        // Screen Capture mit System Audio
+        if (options.captureScreen) {
+            try {
+                const screenStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+                streams.screen = new MediaStream(screenStream.getVideoTracks());
+
+                // System Audio Track extrahieren
+                const systemAudioTracks = screenStream.getAudioTracks();
+                if (systemAudioTracks.length > 0) {
+                    streams.systemAudio = new MediaStream(systemAudioTracks);
+                }
+            } catch (error) {
+                console.warn('System Audio konnte nicht erfasst werden:', error);
+            }
+        }
+
+        // Camera Stream
+        if (options.videoDeviceId) {
+            streams.camera = await navigator.mediaDevices.getUserMedia({
+                video: { deviceId: { exact: options.videoDeviceId } }
+            });
+        }
+
+        // Mikrofon Audio Streams
         const audioStreams = await this.getAudioStreams(options.audioDevices);
         streams.audio = this.mergeAudioStreams(audioStreams);
 
@@ -79,27 +119,35 @@ class MudExCapture {
             screen: [],
             camera: [],
             audio: [],
+            systemAudio: [],
             combined: []
         };
 
         // MediaRecorder erstellen
         const recorders = [];
 
-        // Haupt-Video Recorder (Screen oder Kamera)
+        // Haupt-Video Recorder (Screen)
         if (streams.screen) {
             const screenRecorder = new MediaRecorder(streams.screen, { mimeType: options.contentType });
             screenRecorder.ondataavailable = event => chunks.screen.push(event.data);
             recorders.push(screenRecorder);
         }
 
-        // Kamera Recorder (wenn vorhanden)
+        // System Audio Recorder
+        if (streams.systemAudio) {
+            const systemAudioRecorder = new MediaRecorder(streams.systemAudio, { mimeType: audioContentType });
+            systemAudioRecorder.ondataavailable = event => chunks.systemAudio.push(event.data);
+            recorders.push(systemAudioRecorder);
+        }
+
+        // Kamera Recorder
         if (streams.camera) {
             const cameraRecorder = new MediaRecorder(streams.camera, { mimeType: options.contentType });
             cameraRecorder.ondataavailable = event => chunks.camera.push(event.data);
             recorders.push(cameraRecorder);
         }
 
-        // Audio Recorder
+        // Mikrofon Audio Recorder
         if (streams.audio) {
             const audioRecorder = new MediaRecorder(streams.audio, { mimeType: audioContentType });
             audioRecorder.ondataavailable = event => chunks.audio.push(event.data);
@@ -125,24 +173,31 @@ class MudExCapture {
             screenStream: streams.screen,
             cameraStream: streams.camera,
             audioStream: streams.audio,
+            systemAudioStream: streams.systemAudio,
             combinedStream,
             canvas
         };
     }
 
-    static createCombinedStream(streams, options) {
-        const { screen, camera, audio } = streams;
 
-        // Wenn wir keine visuellen Streams haben, return null
+    static createCombinedStream(streams, options) {
+        const { screen, camera, audio, systemAudio } = streams;
+
+        // Wenn wir keine visuellen Streams haben, kombiniere nur Audio
         if (!screen && !camera) {
-            return { combinedStream: audio, canvas: null };
+            return {
+                combinedStream: this.mergeAudioStreams([audio, systemAudio].filter(s => s)),
+                canvas: null
+            };
         }
 
         // Wenn wir nur einen visuellen Stream haben
         if (!screen || !camera) {
             const videoStream = screen || camera;
+            const allAudioStreams = [audio, systemAudio].filter(s => s);
+            debugger;
             return {
-                combinedStream: this.combineStreams(videoStream, audio),
+                combinedStream: this.combineStreams(videoStream, this.mergeAudioStreams(allAudioStreams)),
                 canvas: null
             };
         }
@@ -278,11 +333,9 @@ class MudExCapture {
 
         // Canvas als Stream
         const canvasStream = canvas.captureStream();
-
-        // Audio hinzufügen wenn vorhanden
-        if (audio) {
-            audio.getAudioTracks().forEach(track => canvasStream.addTrack(track));
-        }
+        [audio, systemAudio].filter(s => s).forEach(audioStream => {
+            audioStream.getAudioTracks().forEach(track => canvasStream.addTrack(track));
+        });
 
         return {
             combinedStream: canvasStream,
@@ -317,6 +370,7 @@ class MudExCapture {
         const combinedStream = new MediaStream();
         if (videoStream) {
             videoStream.getVideoTracks().forEach(track => combinedStream.addTrack(track));
+            videoStream.getAudioTracks().forEach(track => combinedStream.addTrack(track));
         }
         if (audioStream) {
             audioStream.getAudioTracks().forEach(track => combinedStream.addTrack(track));
@@ -339,9 +393,8 @@ class MudExCapture {
     }
 
     static async saveVideoData(chunks, callback, id, options) {
-        const { screen, camera, audio, combined } = chunks;
+        const { screen, camera, audio, systemAudio, combined } = chunks;
 
-        // Blobs erstellen
         const createBlobData = async (chunks, contentType) => {
             if (!chunks || chunks.length === 0) return null;
             const blob = new Blob(chunks, { type: contentType });
@@ -357,6 +410,7 @@ class MudExCapture {
             captureData: await createBlobData(screen, options.contentType),
             cameraData: await createBlobData(camera, options.contentType),
             audioData: await createBlobData(audio, options.audioContentType || 'audio/webm'),
+            systemAudioData: await createBlobData(systemAudio, options.audioContentType || 'audio/webm'),
             combinedData: await createBlobData(combined, options.contentType),
             options: options,
             captureId: id
