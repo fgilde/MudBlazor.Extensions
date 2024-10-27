@@ -55,7 +55,6 @@ class MudExCapture {
     }
 
     static async setupCapture(options, id, callback) {
-        debugger;
         options.contentType = options.contentType || 'video/webm; codecs=vp9';
         const audioContentType = options.audioContentType || 'audio/webm';
 
@@ -73,7 +72,7 @@ class MudExCapture {
         streams.audio = this.mergeAudioStreams(audioStreams);
 
         // Canvas für Picture-in-Picture Setup
-        const { combinedStream, canvas } = this.createCombinedStream(streams);
+        const { combinedStream, canvas } = this.createCombinedStream(streams, options);
 
         // Chunks für jeden Stream
         const chunks = {
@@ -131,7 +130,7 @@ class MudExCapture {
         };
     }
 
-    static createCombinedStream(streams) {
+    static createCombinedStream(streams, options) {
         const { screen, camera, audio } = streams;
 
         // Wenn wir keine visuellen Streams haben, return null
@@ -159,31 +158,123 @@ class MudExCapture {
         canvas.height = settings.height;
 
         // Video Elemente für beide Streams
-        const screenVideo = document.createElement('video');
-        const cameraVideo = document.createElement('video');
-        screenVideo.srcObject = screen;
-        cameraVideo.srcObject = camera;
-        screenVideo.play();
-        cameraVideo.play();
+        const mainVideo = document.createElement('video');
+        const overlayVideo = document.createElement('video');
+
+        var useVideoDeviceAsOverlay = options.overlaySource === 'VideoDevice';
+        mainVideo.srcObject = useVideoDeviceAsOverlay ? screen : camera;
+        overlayVideo.srcObject = useVideoDeviceAsOverlay ? camera : screen;
+        mainVideo.play();
+        overlayVideo.play();
+
+        const calculateOverlayPosition = (position, size, canvasWidth, canvasHeight) => {
+            let x = 0;
+            let y = 0;
+
+            // Overlay-Größe parsen
+            let overlayWidth, overlayHeight;
+            try {
+                const sizeObj = typeof size === 'string' ? JSON.parse(size) : size;
+                overlayWidth = sizeObj.width.cssValue.includes('%')
+                    ? (canvasWidth * parseFloat(sizeObj.width.cssValue) / 100)
+                    : parseFloat(sizeObj.width.cssValue);
+                overlayHeight = sizeObj.height.cssValue.includes('%')
+                    ? (canvasHeight * parseFloat(sizeObj.height.cssValue) / 100)
+                    : parseFloat(sizeObj.height.cssValue);
+            } catch (e) {
+                // Fallback zu Standard-Größen
+                overlayWidth = canvasWidth * 0.2;
+                overlayHeight = (canvasWidth * 0.2) * (9 / 16);
+            }
+
+            // Position basierend auf Option berechnen
+            if (position === 'Custom' && options.overlayCustomPosition) {
+                try {
+                    const customPos = typeof options.overlayCustomPosition === 'string'
+                        ? JSON.parse(options.overlayCustomPosition)
+                        : options.overlayCustomPosition;
+
+                    x = customPos.left.cssValue.includes('%')
+                        ? (canvasWidth * parseFloat(customPos.left.cssValue) / 100)
+                        : parseFloat(customPos.left.cssValue);
+
+                    y = customPos.top.cssValue.includes('%')
+                        ? (canvasHeight * parseFloat(customPos.top.cssValue) / 100)
+                        : parseFloat(customPos.top.cssValue);
+                } catch (e) {
+                    console.warn('Fehler beim Parsen der Custom Position:', e);
+                    x = 20;
+                    y = canvasHeight - overlayHeight - 20;
+                }
+            } else {
+                // Vordefinierte Positionen
+                switch (position) {
+                    case 'Center':
+                        x = (canvasWidth - overlayWidth) / 2;
+                        y = (canvasHeight - overlayHeight) / 2;
+                        break;
+                    case 'CenterLeft':
+                        x = 20;
+                        y = (canvasHeight - overlayHeight) / 2;
+                        break;
+                    case 'CenterRight':
+                        x = canvasWidth - overlayWidth - 20;
+                        y = (canvasHeight - overlayHeight) / 2;
+                        break;
+                    case 'TopCenter':
+                        x = (canvasWidth - overlayWidth) / 2;
+                        y = 20;
+                        break;
+                    case 'TopLeft':
+                        x = 20;
+                        y = 20;
+                        break;
+                    case 'TopRight':
+                        x = canvasWidth - overlayWidth - 20;
+                        y = 20;
+                        break;
+                    case 'BottomCenter':
+                        x = (canvasWidth - overlayWidth) / 2;
+                        y = canvasHeight - overlayHeight - 20;
+                        break;
+                    case 'BottomLeft':
+                        x = 20;
+                        y = canvasHeight - overlayHeight - 20;
+                        break;
+                    case 'BottomRight':
+                    default:
+                        x = canvasWidth - overlayWidth - 20;
+                        y = canvasHeight - overlayHeight - 20;
+                        break;
+                }
+            }
+
+            return { x, y, width: overlayWidth, height: overlayHeight };
+        };
 
         // Picture-in-Picture Rendering
-        const draw = () => {
-            // Hauptbild (Screen)
-            ctx.drawImage(screenVideo, 0, 0, canvas.width, canvas.height);
+        const draw = (options) => {
+            ctx.drawImage(mainVideo, 0, 0, canvas.width, canvas.height);
 
-            // Kamera als Overlay (unten rechts, 20% der Gesamtgröße)
-            const pipWidth = canvas.width * 0.2;
-            const pipHeight = (canvas.width * 0.2) * (9 / 16); // 16:9 Aspekt
-            ctx.drawImage(cameraVideo,
-                canvas.width - pipWidth - 20,  // 20px Abstand vom rechten Rand
-                canvas.height - pipHeight - 20, // 20px Abstand vom unteren Rand
-                pipWidth,
-                pipHeight
+            // Overlay Position und Größe berechnen
+            const overlay = calculateOverlayPosition(
+                options.overlayCustomPosition,
+                options.overlaySize,
+                canvas.width,
+                canvas.height
             );
 
-            requestAnimationFrame(draw);
+            // Kamera als Overlay zeichnen
+            ctx.drawImage(overlayVideo,
+                overlay.x,
+                overlay.y,
+                overlay.width,
+                overlay.height
+            );
+
+            requestAnimationFrame(() => draw(options));
         };
-        requestAnimationFrame(draw);
+        requestAnimationFrame(() => draw(options));
 
         // Canvas als Stream
         const canvasStream = canvas.captureStream();
@@ -198,7 +289,7 @@ class MudExCapture {
             canvas: {
                 element: canvas,
                 stream: canvasStream,
-                videos: [screenVideo, cameraVideo]
+                videos: [mainVideo, overlayVideo]
             }
         };
     }

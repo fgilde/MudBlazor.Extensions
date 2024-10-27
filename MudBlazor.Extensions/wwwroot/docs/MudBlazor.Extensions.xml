@@ -14381,6 +14381,46 @@
             The value of the ValidationWrapper component. This will be passed to the set validation function.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.CaptureOptions">
+            <summary>
+            Options for capturing video and audio.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CaptureOptions.OverlaySource">
+            <summary>
+            The source for the overlay default is camera as overlay over screen.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CaptureOptions.OverlayPosition">
+            <summary>
+            Position of the overlay.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CaptureOptions.OverlaySize">
+            <summary>
+            Size of the overlay.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CaptureOptions.OverlayCustomPosition">
+            <summary>
+            For the Overlay you can set <see cref="P:MudBlazor.Extensions.Core.CaptureOptions.OverlayPosition"/> to <see cref="F:MudBlazor.DialogPosition.Custom"/> and set the custom position for the overlay here.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.OverlaySource">
+            <summary>
+            The source for the overlay.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.OverlaySource.VideoDevice">
+            <summary>
+            Use the camera as overlay over screen.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.OverlaySource.CapturedScreen">
+            <summary>
+            Use the screen as overlay over camera.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.CssVariable">
             <summary>
             Represents a CSS variable
