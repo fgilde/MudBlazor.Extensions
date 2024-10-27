@@ -6,6 +6,7 @@ namespace MudBlazor.Extensions.Core;
 public class CaptureOptions
 {
     public string ContentType { get; set; } = "video/webm; codecs=vp9";
+    public string AudioContentType { get; set; } = "video/webm; codecs=vp9";
     public bool CaptureScreen { get; set; } = true; // Bildschirmaufnahme
     public string ScreenSource { get; set; } // Optional: Gibt die Bildschirmquelle an, wenn vorhanden
     public string VideoDeviceId { get; set; } // Kamera-ID

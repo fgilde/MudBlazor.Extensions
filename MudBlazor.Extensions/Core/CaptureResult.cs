@@ -15,6 +15,7 @@ public class CaptureResult
 
 public class CaptureData
 {
+    public string ContentType { get; set; }
     public byte[] Bytes { get; set; }
     public string BlobUrl { get; set; }
 }

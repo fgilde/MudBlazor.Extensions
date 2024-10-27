@@ -29,7 +29,8 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
     /// <inheritdoc />
     public async Task<string> StartCaptureAsync(CaptureOptions options, Action<CaptureResult> callback, Action<string> stoppedCallback = null)
     {
-        var callbackReference = DotNetObjectReference.Create(new JsRecordingCallbackWrapper<CaptureResult>(callback, s =>
+        var callbackReference = DotNetObjectReference.Create(new JsRecordingCallbackWrapper<CaptureResult>(
+            captureResult => callback?.Invoke(Prepare(captureResult)), s =>
         {
             _captures.TryTake(out s);
             stoppedCallback?.Invoke(s);
@@ -38,6 +39,11 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
         var result = await _jsRuntime.InvokeAsync<string>("MudExCapture.startCapture", options, callbackReference);
         _captures.Add(result);
         return result;
+    }
+
+    private CaptureResult Prepare(CaptureResult captureResult)
+    {
+        return captureResult;
     }
 
     /// <inheritdoc />

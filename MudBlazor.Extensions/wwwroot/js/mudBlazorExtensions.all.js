@@ -70,9 +70,7 @@ class MudExCapture {
             : null;
 
         const audioStream = this.mergeAudioStreams(audioStreams);
-        const combinedStream = cameraStream
-            ? this.createOverlayStream(videoStream, cameraStream, audioStream)
-            : this.combineStreams(videoStream, audioStream);
+        const combinedStream = this.combineStreams(videoStream, audioStream);
 
         const videoChunks = [];
         const audioChunks = [];
@@ -84,7 +82,7 @@ class MudExCapture {
 
         // Create MediaRecorder for each stream
         const videoRecorder = new MediaRecorder(videoStream, { mimeType: options.contentType });
-        const audioRecorder = new MediaRecorder(audioStream, { mimeType: 'audio/webm' });
+        const audioRecorder = new MediaRecorder(audioStream, { mimeType: options.audioContentType || 'audio/webm' });
         const combinedRecorder = new MediaRecorder(combinedStream, { mimeType: options.contentType });
         if (cameraStream) {
             const cameraRecorder = new MediaRecorder(cameraStream, { mimeType: options.contentType });
@@ -145,42 +143,6 @@ class MudExCapture {
         return combinedAudioStream;
     }
 
-    static createOverlayStream(videoStream, cameraStream, audioStream) {
-        const canvas = document.createElement("canvas");
-        const videoSettings = videoStream.getVideoTracks()[0].getSettings();
-
-        canvas.width = videoSettings.width;
-        canvas.height = videoSettings.height;
-
-        const context = canvas.getContext("2d");
-        const videoElement = document.createElement("video");
-        videoElement.srcObject = videoStream;
-        videoElement.play();
-
-        const cameraElement = document.createElement("video");
-        cameraElement.srcObject = cameraStream;
-        cameraElement.play();
-
-        // Positionierung des Overlays (20% Größe, unten rechts)
-        const overlayWidth = canvas.width * 0.2;
-        const overlayHeight = (overlayWidth / cameraElement.videoWidth) * cameraElement.videoHeight;
-        const overlayPosition = { x: canvas.width - overlayWidth - 10, y: canvas.height - overlayHeight - 10 };
-
-        function draw() {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-            context.drawImage(cameraElement, overlayPosition.x, overlayPosition.y, overlayWidth, overlayHeight);
-            requestAnimationFrame(draw);
-        }
-
-        draw();
-
-        // Kombiniere Canvas-Stream mit Audio für die Aufnahme
-        const combinedStream = canvas.captureStream();
-        audioStream.getTracks().forEach(track => combinedStream.addTrack(track));
-
-        return combinedStream;
-    }
 
     static generateUniqueId() {
         return `${new Date().getTime()}`;
@@ -212,10 +174,10 @@ class MudExCapture {
         if (callback['invokeMethodAsync']) {
             callback.invokeMethodAsync('Invoke',
                 {
-                    videoData: { bytes: videoByteArray, blobUrl: videoUrl },
-                    audioData: { bytes: audioByteArray, blobUrl: audioUrl },
-                    combinedData: { bytes: combinedByteArray, blobUrl: combinedUrl },
-                    cameraData: { bytes: cameraByteArray, blobUrl: cameraUrl },
+                    videoData: { bytes: videoByteArray, blobUrl: videoUrl, contentType: options.contentType || 'video/webm; codecs=vp9' },
+                    audioData: { bytes: audioByteArray, blobUrl: audioUrl, contentType: options.audioContentType || 'audio/webm' },
+                    combinedData: { bytes: combinedByteArray, blobUrl: combinedUrl, contentType: options.contentType || 'video/webm; codecs=vp9' },
+                    cameraData: { bytes: cameraByteArray, blobUrl: cameraUrl, contentType: options.contentType || 'video/webm; codecs=vp9' },
                     options: options,
                     captureId: id
                 });
