@@ -26,9 +26,37 @@
 <MudCheckBox @bind-Value="_camera">record Camera</MudCheckBox>
 @if (_captureResult != null)
 {
-    <MudExFileDisplay FileName="Capture.mp4" Url="@_captureResult.CombinedData.BlobUrl" ContentType="video/webm; codecs=vp9"></MudExFileDisplay>
-    <MudExFileDisplay Style="height: 300px;" FileName="Audio.mp3" Url="@_captureResult.AudioData.BlobUrl" ContentType="audio/mp3"></MudExFileDisplay>
-    <MudExFileDisplay FileName="Camera.mp4" Url="@_captureResult.CameraData.BlobUrl" ContentType="video/webm; codecs=vp9"></MudExFileDisplay>
+    <MudGrid Spacing="4" Justify="Justify.Center">
+        <MudItem xs="12">
+            <MudPaper Height="400px" Width="100%">
+                <MudExFileDisplay Style="height: 100%" FileName="Capture.mp4" Url="@_captureResult.CombinedData.BlobUrl" ContentType="@_captureResult.CombinedData.ContentType"></MudExFileDisplay>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12">
+            <MudPaper Height="400px" Width="100%">
+                @if (_captureResult.AudioData != null)
+                {
+                    <MudExFileDisplay Style="height: 100%" FileName="Audio.mp3" Url="@_captureResult.AudioData.BlobUrl" ContentType="@_captureResult.AudioData.ContentType"></MudExFileDisplay>
+                }
+            </MudPaper>
+        </MudItem>
+        <MudItem>
+            <MudPaper Height="400px" Width="100%">
+                @if (_captureResult.CaptureData != null)
+                {
+                    <MudExFileDisplay Style="height: 100%" FileName="Camera.mp4" Url="@_captureResult.CaptureData.BlobUrl" ContentType="@_captureResult.CaptureData.ContentType"></MudExFileDisplay>
+                }
+            </MudPaper>
+            <MudPaper Height="400px" Width="100%">
+                @if (_captureResult.CameraData != null)
+                {
+                    <MudExFileDisplay Style="height: 100%" FileName="Camera.mp4" Url="@_captureResult.CameraData.BlobUrl" ContentType="@_captureResult.CameraData.ContentType"></MudExFileDisplay>
+                }
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+
 }
 
 @code {
@@ -65,12 +93,12 @@
             var audioDevices = await _captureService.GetAudioDevicesAsync();
             var videoDevices = await _captureService.GetVideoDevicesAsync();
             // var source = await _captureService.SelectCaptureSourceAsync();
-            
+
             var options = new CaptureOptions
                 {
                     CaptureScreen = _captureScreen,
-                  //  ScreenSource = source,
-                    
+                    //  ScreenSource = source,
+
                     VideoDeviceId = _camera ? videoDevices.FirstOrDefault()?.DeviceId : null,
                     //AudioDevices = [jbl.DeviceId]
                     AudioDevices = _recordAudio ? [audioDevices.First().DeviceId] : []
