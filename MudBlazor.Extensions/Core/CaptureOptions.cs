@@ -11,6 +11,9 @@ public class CaptureOptions
     public string ContentType { get; set; } = "video/webm; codecs=vp9";
     public string AudioContentType { get; set; } = "audio/webm";
     public bool CaptureScreen { get; set; } = true; // Bildschirmaufnahme
+
+    public DisplayMediaOptions CaptureMediaOptions { get; set; }
+
     public MediaStreamTrack ScreenSource { get; set; }
 
     public string VideoDeviceId { get; set; } // Kamera-ID

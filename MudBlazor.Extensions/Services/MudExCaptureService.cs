@@ -30,7 +30,7 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
     public async Task<string> StartCaptureAsync(CaptureOptions options, Action<CaptureResult> callback, Action<string> stoppedCallback = null)
     {
         var callbackReference = DotNetObjectReference.Create(new JsRecordingCallbackWrapper<CaptureResult>(
-            captureResult => callback?.Invoke(Prepare(captureResult)), s =>
+            captureResult => callback?.Invoke(Prepare(captureResult, options)), s =>
         {
             _captures.TryTake(out s);
             stoppedCallback?.Invoke(s);
@@ -41,8 +41,10 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
         return result;
     }
 
-    private CaptureResult Prepare(CaptureResult captureResult)
+    private CaptureResult Prepare(CaptureResult captureResult, CaptureOptions options)
     {
+        //var datas = new [] { captureResult.CaptureData, captureResult.CameraData, captureResult.AudioData, captureResult.SystemAudioData }.Where(data => data != null);
+
         return captureResult;
     }
 

@@ -1,6 +1,8 @@
 ﻿@page "/test"
+@using BlazorJS
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Core.Enums
+@using Nextended.Core.Extensions
 
 
 @* <MudExEnumSelect TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />
@@ -18,7 +20,16 @@
         </ItemContentTemplate>
     </MudExTreeView>
 </div> *@
-
+<style>
+    .p-info {
+        position: absolute;
+        margin-top: 35px;
+        margin-left: 15px;
+        z-index: 1;
+        font-weight: bold;
+        color: cadetblue;
+    }
+</style>
 
 <MudButton OnClick="@StartStopRecording">Start/Stop Capture</MudButton>
 <MudCheckBox @bind-Value="_recordAudio">Audio</MudCheckBox>
@@ -29,29 +40,41 @@
     <MudGrid Spacing="4" Justify="Justify.Center">
         <MudItem xs="12">
             <MudPaper Height="400px" Width="100%">
-                <MudExFileDisplay Style="height: 100%" FileName="Capture.mp4" Url="@_captureResult.CombinedData.BlobUrl" ContentType="@_captureResult.CombinedData.ContentType"></MudExFileDisplay>
+                <p class="p-info">Combined result</p>
+                <MudExFileDisplay Style="height: 100%" FileName="Combined result.mp4" Url="@_captureResult.CombinedData.BlobUrl" ContentType="@_captureResult.CombinedData.ContentType"></MudExFileDisplay>
             </MudPaper>
         </MudItem>
-        <MudItem xs="12">
+        <MudItem xs="6">
             <MudPaper Height="400px" Width="100%">
+                <p class="p-info">Audio result</p>
                 @if (_captureResult.AudioData != null)
                 {
                     <MudExFileDisplay Style="height: 100%" FileName="Audio.mp3" Url="@_captureResult.AudioData.BlobUrl" ContentType="@_captureResult.AudioData.ContentType"></MudExFileDisplay>
                 }
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="6">
+            <MudPaper Height="400px" Width="100%">
+                <p class="p-info">System audio result</p>
                 @if (_captureResult.SystemAudioData != null)
                 {
-                    <MudExFileDisplay Style="height: 100%" FileName="Audio.mp3" Url="@_captureResult.SystemAudioData.BlobUrl" ContentType="@_captureResult.SystemAudioData.ContentType"></MudExFileDisplay>
+                    <MudExFileDisplay Style="height: 100%" FileName="System audio.mp3" Url="@_captureResult.SystemAudioData.BlobUrl" ContentType="@_captureResult.SystemAudioData.ContentType"></MudExFileDisplay>
                 }
             </MudPaper>
         </MudItem>
-        <MudItem>
+        <MudItem xs="6">
             <MudPaper Height="400px" Width="100%">
+                <p class="p-info">Capture result</p>
+
                 @if (_captureResult.CaptureData != null)
                 {
-                    <MudExFileDisplay Style="height: 100%" FileName="Camera.mp4" Url="@_captureResult.CaptureData.BlobUrl" ContentType="@_captureResult.CaptureData.ContentType"></MudExFileDisplay>
+                    <MudExFileDisplay Style="height: 100%" FileName="Captured.mp4" Url="@_captureResult.CaptureData.BlobUrl" ContentType="@_captureResult.CaptureData.ContentType"></MudExFileDisplay>
                 }
             </MudPaper>
+        </MudItem>
+        <MudItem xs="6">
             <MudPaper Height="400px" Width="100%">
+                <p class="p-info">Camera result</p>
                 @if (_captureResult.CameraData != null)
                 {
                     <MudExFileDisplay Style="height: 100%" FileName="Camera.mp4" Url="@_captureResult.CameraData.BlobUrl" ContentType="@_captureResult.CameraData.ContentType"></MudExFileDisplay>
@@ -59,7 +82,7 @@
             </MudPaper>
         </MudItem>
     </MudGrid>
-
+    <div style="height: 100px;"></div>
 
 }
 
@@ -96,12 +119,13 @@
         {
             var audioDevices = await _captureService.GetAudioDevicesAsync();
             var videoDevices = await _captureService.GetVideoDevicesAsync();
-         //    var source = await _captureService.SelectCaptureSourceAsync();
-
+            //var source = await _captureService.SelectCaptureSourceAsync();
+            //await JsRuntime.AlertAsync("Click ok to start");
             var options = new CaptureOptions
                 {
                     CaptureScreen = _captureScreen,
-                   // ScreenSource = source,
+                    CaptureMediaOptions = _captureScreen ? DisplayMediaOptions.Default : null,
+                    //ScreenSource = source,
 
                     VideoDeviceId = _camera ? videoDevices.FirstOrDefault()?.DeviceId : null,
                     AudioDevices = _recordAudio ? [audioDevices.First().DeviceId] : []

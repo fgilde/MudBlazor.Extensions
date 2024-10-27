@@ -20,6 +20,7 @@ public class VideoDevice : HardwareDeviceInfo
 
 public class MediaStreamTrack : HardwareDeviceInfo
 {
+    public string AccessId { get; set; }
     public bool Enabled { get; set; }
     public string Id { get; set; }
     public bool Muted { get; set; }
