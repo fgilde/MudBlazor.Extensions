@@ -6,6 +6,7 @@ using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
 using Nextended.Core.Attributes;
 using Nextended.Core.Extensions;
+using OneOf;
 
 namespace MudBlazor.Extensions.Services;
 
@@ -107,7 +108,16 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
         _jsRuntime.InvokeAsync<IEnumerable<VideoDevice>>("MudExCapture.getAvailableVideoDevices").AsTask();
 
     /// <inheritdoc />
-    public async Task<MediaStreamTrack> SelectCaptureSourceAsync(DisplayMediaOptions? displayMediaOptions = null) =>
-        await _jsRuntime.InvokeAsync<MediaStreamTrack>("MudExCapture.selectCaptureSource", displayMediaOptions);
-
+    public async Task<MediaStreamTrack> SelectCaptureSourceAsync(DisplayMediaOptions? displayMediaOptions = null, OneOf<ElementReference, string> elementForPreview = default)
+    {
+        object toPass = null;
+        if (elementForPreview is { IsT0: true, AsT0: { Context: not null, Id: not null } })
+        {
+            toPass = elementForPreview.AsT0;
+        }
+        else if (elementForPreview.IsT1 && !string.IsNullOrWhiteSpace(elementForPreview.AsT1))
+            toPass = elementForPreview.AsT1;
+        
+        return await _jsRuntime.InvokeAsync<MediaStreamTrack>("MudExCapture.selectCaptureSource", displayMediaOptions, toPass);
+    }
 }

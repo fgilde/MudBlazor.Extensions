@@ -1,9 +1,7 @@
 ﻿@page "/capture-service"
 @using BlazorJS
 @using MudBlazor.Extensions.Core
-@using MudBlazor.Extensions.Helper
-@using MudBlazor.Extensions.Options
-@using Nextended.Core.Extensions
+@using OneOf
 
 @attribute [DemoNew(Name = "Capture service", Order = 0, Icon = Icons.Material.Outlined.AccountTree, Documentation = "Sample for Capture Service ", ForComponentType = typeof(ICaptureService))]
 
@@ -18,6 +16,9 @@
         color: cadetblue;
     }
 </style>
+
+<video style="width: 200px; height: 200px;" controls controlsList="nodownload noplaybackrate nocaptions" @ref="@_videoPref"></video>
+<MudButton OnClick="@(async () => _source = await _captureService.SelectCaptureSourceAsync(DisplayMediaOptions.Default, _videoPref))">Select Source</MudButton>
 
 <MudButton OnClick="@StartStopRecording">Start/Stop Capture</MudButton>
 <MudCheckBox @bind-Value="_recordAudio">Audio</MudCheckBox>
@@ -72,50 +73,21 @@
     </MudGrid>
     <div style="height: 100px;"></div>
 }
-<MudButton OnClick="@OnClick">Show Snackbars</MudButton>
+
 
 @code {
     private bool _captureScreen;
     private bool _recordAudio;
     private bool _camera;
 
+    ElementReference _videoPref;
 
     [Inject] private ICaptureService _captureService { get; set; }
     [Inject] private IMudExFileService _fileService { get; set; }
     [Inject] private IDialogService _dialogService { get; set; }
-    [Inject] private ISnackbar SnackbarService { get; set; }
 
-    RenderFragment Test()
-    {
-        return @<div>Test @_captureId</div>;
-    }
 
-    private void OnClick()
-    {
-        string message = "Recording";
-        
-        _captureId = Guid.NewGuid().ToFormattedId();
-        SnackbarService.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
-        
-        SnackbarService.Add(Test(), Severity.Error, config =>
-            {
-                config.SnackbarVariant = Variant.Outlined;
-                config.Icon = Icons.Material.Filled.Stop;
-                config.BackgroundBlurred = true;
-                config.RequireInteraction = true;
-                config.ShowCloseIcon = false;
-                config.Onclick = snackbar =>
-                {
-
-                    return Task.CompletedTask;
-                };
-            }, key: "mudblazor");
-    }
-
-    public class XXXX
-    {
-        public TimeSpan TimeSpan { get; set; }
-    }
+    private MediaStreamTrack _source;
 
     private string _captureId;
     private async Task StartStopRecording(MouseEventArgs obj)
@@ -129,11 +101,10 @@
             var audioDevices = await _captureService.GetAudioDevicesAsync();
             var videoDevices = await _captureService.GetVideoDevicesAsync();
             //await _dialogService.EditObject(new XXXX { TimeSpan = TimeSpan.FromSeconds(32) });
-            var source = await _captureService.SelectCaptureSourceAsync(DisplayMediaOptions.Default);
             await JsRuntime.AlertAsync("Click ok to start");
             var options = new CaptureOptions
                 {
-                    ScreenCapture = source,
+                    ScreenCapture = _source,
                     //CaptureMediaOptions = _captureScreen ? DisplayMediaOptions.Default : null,
                     //ScreenSource = source,
                     //MaxCaptureTime = TimeSpan.FromSeconds(10),

@@ -15359,6 +15359,14 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.SelectCaptureSourceAsync(MudBlazor.Extensions.Core.DisplayMediaOptions,OneOf.OneOf{Microsoft.AspNetCore.Components.ElementReference,System.String})">
+            <summary>
+            Selects the capture source.
+            </summary>
+            <param name="displayMediaOptions">The media options for capturing</param>
+            <param name="elementForPreview">Specify an element to show preview. This should be a ElementReference of a videoElement or a selector for a videoElement</param>
+            <returns></returns>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.IDialogEventService">
             <summary>
             Dialog event service
@@ -21543,7 +21551,7 @@
         <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.GetVideoDevicesAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.SelectCaptureSourceAsync(MudBlazor.Extensions.Core.DisplayMediaOptions)">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.SelectCaptureSourceAsync(MudBlazor.Extensions.Core.DisplayMediaOptions,OneOf.OneOf{Microsoft.AspNetCore.Components.ElementReference,System.String})">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Services.MudExDialogService">

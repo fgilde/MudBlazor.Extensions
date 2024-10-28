@@ -2,11 +2,17 @@ class MudExCapture {
     static recordings = {};
     static _preselected = {};
 
-    static async selectCaptureSource(captureMediaOptions) {
+    static async selectCaptureSource(captureMediaOptions, videoElementForPreview) {
         try {
             var captureMediaOptionsWithoutNullProperties = this.removeOptionsWithoutNullProperties(captureMediaOptions);
             const stream = await navigator.mediaDevices.getDisplayMedia(captureMediaOptionsWithoutNullProperties);
             const selectedTrack = stream.getVideoTracks()[0];
+            const element = MudExObserver.getElement(videoElementForPreview);
+            if (element && typeof element.play === 'function') {
+                element.autoplay = true;
+                element.srcObject = stream;
+                element.play();
+            }
             //stream.getTracks().forEach(track => track.stop());
             this._preselected[selectedTrack.id] = stream;
             return {

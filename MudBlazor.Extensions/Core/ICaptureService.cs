@@ -1,4 +1,7 @@
-﻿namespace MudBlazor.Extensions.Core;
+﻿using Microsoft.AspNetCore.Components;
+using OneOf;
+
+namespace MudBlazor.Extensions.Core;
 
 /// <summary>
 /// Service for capturing the screen or camera and audio.
@@ -36,5 +39,11 @@ public interface ICaptureService
     /// <returns></returns>
     Task<IEnumerable<VideoDevice>> GetVideoDevicesAsync();
 
-    Task<MediaStreamTrack> SelectCaptureSourceAsync(DisplayMediaOptions? displayMediaOptions = null);
+    /// <summary>
+    /// Selects the capture source.
+    /// </summary>
+    /// <param name="displayMediaOptions">The media options for capturing</param>
+    /// <param name="elementForPreview">Specify an element to show preview. This should be a ElementReference of a videoElement or a selector for a videoElement</param>
+    /// <returns></returns>
+    Task<MediaStreamTrack> SelectCaptureSourceAsync(DisplayMediaOptions? displayMediaOptions = null, OneOf<ElementReference, string> elementForPreview = default);
 }
