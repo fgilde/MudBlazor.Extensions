@@ -32,16 +32,10 @@ class MudExCapture {
         // Event listener für das manuelle Stoppen der Aufnahme
         if (capture.screenStream) {
             capture.screenStream.addEventListener("inactive", () => {
-                this.stopCapture(id);
-                if (callback['invokeMethodAsync']) {
-                    callback.invokeMethodAsync('OnStopped', id);
-                }
+                this.stopCapture(id, callback);
             });
             capture.screenStream.getVideoTracks()[0].addEventListener("ended", () => {
-                this.stopCapture(id);
-                if (callback['invokeMethodAsync']) {
-                    callback.invokeMethodAsync('OnStopped', id);
-                }
+                this.stopCapture(id, callback);
             });
         }
 
@@ -54,7 +48,10 @@ class MudExCapture {
         return id;
     }
 
-    static stopCapture(id) {
+    static stopCapture(id, callback) {
+        if (callback && callback['invokeMethodAsync']) {
+            callback.invokeMethodAsync('OnStopped', id);
+        }
         const recording = this.recordings[id];
         if (recording) {
             recording.recorders.forEach(recorder => {
@@ -88,7 +85,7 @@ class MudExCapture {
         delete this._preselected[id];
     }
 
-    static removeOptionsWithoutNullProperties(captureMediaOptions) {
+    static removeOptionsWithoutNullProperties(captureMediaOptions) { 
         var captureMediaOptionsWithoutNullProperties = {};
         for (var key in captureMediaOptions) {
             if (Object.prototype.hasOwnProperty.call(captureMediaOptions, key)) {
@@ -97,11 +94,12 @@ class MudExCapture {
                 }
             }
         }
+        return captureMediaOptionsWithoutNullProperties;
     }
 
     static async setupCapture(options, id, callback) {
         var captureMediaOptionsWithoutNullProperties = this.removeOptionsWithoutNullProperties(options.captureMediaOptions);
-
+        
         options.contentType = options.contentType || 'video/webm; codecs=vp9';
         const audioContentType = options.audioContentType || 'audio/webm';
 

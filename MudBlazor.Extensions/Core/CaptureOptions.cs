@@ -1,5 +1,6 @@
-﻿using System.Globalization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using Nextended.Core.Extensions;
+using OneOf;
 
 namespace MudBlazor.Extensions.Core;
 
@@ -8,16 +9,60 @@ namespace MudBlazor.Extensions.Core;
 /// </summary>
 public class CaptureOptions
 {
+    /// <summary>
+    /// The content type for video.
+    /// </summary>
     public string ContentType { get; set; } = "video/webm; codecs=vp9";
+
+    /// <summary>
+    /// The content type for audio.
+    /// </summary>
     public string AudioContentType { get; set; } = "audio/webm";
-    public bool CaptureScreen { get; set; } = true; // Bildschirmaufnahme
 
-    public DisplayMediaOptions CaptureMediaOptions { get; set; }
+    [JsonInclude]
+    internal bool CaptureScreen
+    {
+        get => ScreenCapture is { IsT0: true, AsT0: true } || CaptureMediaOptions != null || ScreenSource != null;
+        set => ScreenCapture = value;
+    }
 
-    public MediaStreamTrack ScreenSource { get; set; }
+    [JsonInclude]
+    internal DisplayMediaOptions CaptureMediaOptions
+    {
+        get => ScreenCapture.IsT2 ? ScreenCapture.AsT2 : null;
+        set => ScreenCapture = value;
+    }
 
-    public string VideoDeviceId { get; set; } // Kamera-ID
+    [JsonInclude]
+    internal MediaStreamTrack ScreenSource
+    {
+        get => ScreenCapture.IsT1 ? ScreenCapture.AsT1 : null;
+        set => ScreenCapture = value;
+    }
+
+    /// <summary>
+    /// The screen capture options.
+    /// Provide a boolean to capture a screen or a <see cref="MediaStreamTrack"/> to capture a specific preselected screen or a <see cref="DisplayMediaOptions"/> to capture the screen with options.
+    /// Set false to not capture the screen.
+    /// </summary>
+    [JsonIgnore]
+    public OneOf<bool, MediaStreamTrack, DisplayMediaOptions> ScreenCapture { get; set; }
+
+    /// <summary>
+    /// The video device id to record (cameraId).
+    /// </summary>
+    public string VideoDeviceId { get; set; }
+
+    /// <summary>
+    /// The audio device ids to record audio.
+    /// </summary>
     public List<string> AudioDevices { get; set; } = new(); // Liste der Audio-Device-IDs
+
+
+    /// <summary>
+    /// If set, the recording will stop after the specified time.
+    /// </summary>
+    public TimeSpan? MaxCaptureTime { get; set; }
 
     /// <summary>
     /// The source for the overlay default is camera as overlay over screen.
@@ -40,6 +85,13 @@ public class CaptureOptions
     /// </summary>
     public MudExPosition OverlayCustomPosition { get; set; } = new("0", "0");
 
+    /// <summary>
+    /// Returns true when anything to capture is set.
+    /// </summary>
+    public bool Valid()
+    {
+        return AudioDevices.EmptyIfNull().Any() || !string.IsNullOrEmpty(VideoDeviceId) || CaptureScreen;
+    }
 }
 
 /// <summary>

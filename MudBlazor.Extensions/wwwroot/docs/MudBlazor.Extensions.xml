@@ -616,6 +616,11 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseFormComponent`3.DisposeAsync">
             <inheritdoc/>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.CaptureInfoComponent">
+            <summary>
+            Component to move the ChildContent to a specific element that can defined by ElementSelector.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MoveContentPosition">
             <summary>
             Position to move the ChildContent to a specific element that can defined by ElementSelector.
@@ -14386,6 +14391,38 @@
             Options for capturing video and audio.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Core.CaptureOptions.ContentType">
+            <summary>
+            The content type for video.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CaptureOptions.AudioContentType">
+            <summary>
+            The content type for audio.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CaptureOptions.ScreenCapture">
+            <summary>
+            The screen capture options.
+            Provide a boolean to capture a screen or a <see cref="T:MudBlazor.Extensions.Core.MediaStreamTrack"/> to capture a specific preselected screen or a <see cref="T:MudBlazor.Extensions.Core.DisplayMediaOptions"/> to capture the screen with options.
+            Set false to not capture the screen.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CaptureOptions.VideoDeviceId">
+            <summary>
+            The video device id to record (cameraId).
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CaptureOptions.AudioDevices">
+            <summary>
+            The audio device ids to record audio.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CaptureOptions.MaxCaptureTime">
+            <summary>
+            If set, the recording will stop after the specified time.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Core.CaptureOptions.OverlaySource">
             <summary>
             The source for the overlay default is camera as overlay over screen.
@@ -14404,6 +14441,11 @@
         <member name="P:MudBlazor.Extensions.Core.CaptureOptions.OverlayCustomPosition">
             <summary>
             For the Overlay you can set <see cref="P:MudBlazor.Extensions.Core.CaptureOptions.OverlayPosition"/> to <see cref="F:MudBlazor.DialogPosition.Custom"/> and set the custom position for the overlay here.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.CaptureOptions.Valid">
+            <summary>
+            Returns true when anything to capture is set.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.OverlaySource">
@@ -21501,7 +21543,7 @@
         <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.GetVideoDevicesAsync">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.SelectCaptureSourceAsync">
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.SelectCaptureSourceAsync(MudBlazor.Extensions.Core.DisplayMediaOptions)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Services.MudExDialogService">

@@ -27,8 +27,20 @@ public class DisplayMediaOptions
             NoiseSuppression = false
         },
         PreferCurrentTab = false,
-        SelfBrowserSurface = IncludeExclude.Exclude,
+        SelfBrowserSurface = IncludeExclude.Include,
         SystemAudio = IncludeExclude.Include,
+        SurfaceSwitching = IncludeExclude.Include,
+        MonitorTypeSurfaces = IncludeExclude.Include
+    };
+
+    public static DisplayMediaOptions WithoutAudio => new DisplayMediaOptions
+    {
+        Video = new VideoConstraints
+        {
+            DisplaySurface = CaptureDisplaySurface.Browser,
+        },
+        PreferCurrentTab = false,
+        SelfBrowserSurface = IncludeExclude.Include,
         SurfaceSwitching = IncludeExclude.Include,
         MonitorTypeSurfaces = IncludeExclude.Include
     };
@@ -44,8 +56,14 @@ public class DisplayMediaOptions
             Height = 2160,
             FrameRate = 60.0 
         },
-        Audio = null,
-        SystemAudio = IncludeExclude.Exclude
+        Audio = new AudioConstraints()
+        {
+            SuppressLocalAudioPlayback = false,
+            AutoGainControl = false,
+            EchoCancellation = false,
+            NoiseSuppression = false
+        },
+        SystemAudio = IncludeExclude.Include
     };
 
     

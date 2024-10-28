@@ -1,0 +1,12 @@
+﻿@inherits MudExBaseComponent<CaptureInfoComponent>
+
+<div>
+    <p>
+        @TryLocalize("Recording"): @_elapsedTime.ToString(@"hh\:mm\:ss")
+        @if (MaxRecordingTime is { TotalSeconds: > 0 })
+        {
+            @(" / " + MaxRecordingTime.Value.ToString(@"hh\:mm\:ss"))
+        }    
+    </p>
+    
+</div>

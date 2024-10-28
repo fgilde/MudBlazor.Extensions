@@ -36,5 +36,5 @@ public interface ICaptureService
     /// <returns></returns>
     Task<IEnumerable<VideoDevice>> GetVideoDevicesAsync();
 
-    Task<MediaStreamTrack> SelectCaptureSourceAsync();
+    Task<MediaStreamTrack> SelectCaptureSourceAsync(DisplayMediaOptions? displayMediaOptions = null);
 }

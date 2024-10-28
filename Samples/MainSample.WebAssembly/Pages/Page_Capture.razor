@@ -1,0 +1,160 @@
+﻿@page "/capture-service"
+@using BlazorJS
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Options
+@using Nextended.Core.Extensions
+
+@attribute [DemoNew(Name = "Capture service", Order = 0, Icon = Icons.Material.Outlined.AccountTree, Documentation = "Sample for Capture Service ", ForComponentType = typeof(ICaptureService))]
+
+
+<style>
+    .p-info {
+        position: absolute;
+        margin-top: 35px;
+        margin-left: 15px;
+        z-index: 1;
+        font-weight: bold;
+        color: cadetblue;
+    }
+</style>
+
+<MudButton OnClick="@StartStopRecording">Start/Stop Capture</MudButton>
+<MudCheckBox @bind-Value="_recordAudio">Audio</MudCheckBox>
+<MudCheckBox @bind-Value="_captureScreen">Capture Screen</MudCheckBox>
+<MudCheckBox @bind-Value="_camera">record Camera</MudCheckBox>
+@if (_captureResult != null)
+{
+    <MudGrid Spacing="4" Justify="Justify.Center">
+        <MudItem xs="12">
+            <MudPaper Height="400px" Width="100%">
+                <p class="p-info">Combined result</p>
+                <MudExFileDisplay Style="height: 100%" FileName="Combined result.mp4" Url="@_captureResult.CombinedData.BlobUrl" ContentType="@_captureResult.CombinedData.ContentType"></MudExFileDisplay>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="6">
+            <MudPaper Height="400px" Width="100%">
+                <p class="p-info">Audio result</p>
+                @if (_captureResult.AudioData != null)
+                {
+                    <MudExFileDisplay Style="height: 100%" FileName="Audio.mp3" Url="@_captureResult.AudioData.BlobUrl" ContentType="@_captureResult.AudioData.ContentType"></MudExFileDisplay>
+                }
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="6">
+            <MudPaper Height="400px" Width="100%">
+                <p class="p-info">System audio result</p>
+                @if (_captureResult.SystemAudioData != null)
+                {
+                    <MudExFileDisplay Style="height: 100%" FileName="System audio.mp3" Url="@_captureResult.SystemAudioData.BlobUrl" ContentType="@_captureResult.SystemAudioData.ContentType"></MudExFileDisplay>
+                }
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="6">
+            <MudPaper Height="400px" Width="100%">
+                <p class="p-info">Capture result</p>
+
+                @if (_captureResult.CaptureData != null)
+                {
+                    <MudExFileDisplay Style="height: 100%" FileName="Captured.mp4" Url="@_captureResult.CaptureData.BlobUrl" ContentType="@_captureResult.CaptureData.ContentType"></MudExFileDisplay>
+                }
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="6">
+            <MudPaper Height="400px" Width="100%">
+                <p class="p-info">Camera result</p>
+                @if (_captureResult.CameraData != null)
+                {
+                    <MudExFileDisplay Style="height: 100%" FileName="Camera.mp4" Url="@_captureResult.CameraData.BlobUrl" ContentType="@_captureResult.CameraData.ContentType"></MudExFileDisplay>
+                }
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <div style="height: 100px;"></div>
+}
+<MudButton OnClick="@OnClick">Show Snackbars</MudButton>
+
+@code {
+    private bool _captureScreen;
+    private bool _recordAudio;
+    private bool _camera;
+
+
+    [Inject] private ICaptureService _captureService { get; set; }
+    [Inject] private IMudExFileService _fileService { get; set; }
+    [Inject] private IDialogService _dialogService { get; set; }
+    [Inject] private ISnackbar SnackbarService { get; set; }
+
+    RenderFragment Test()
+    {
+        return @<div>Test @_captureId</div>;
+    }
+
+    private void OnClick()
+    {
+        string message = "Recording";
+        
+        _captureId = Guid.NewGuid().ToFormattedId();
+        SnackbarService.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        
+        SnackbarService.Add(Test(), Severity.Error, config =>
+            {
+                config.SnackbarVariant = Variant.Outlined;
+                config.Icon = Icons.Material.Filled.Stop;
+                config.BackgroundBlurred = true;
+                config.RequireInteraction = true;
+                config.ShowCloseIcon = false;
+                config.Onclick = snackbar =>
+                {
+
+                    return Task.CompletedTask;
+                };
+            }, key: "mudblazor");
+    }
+
+    public class XXXX
+    {
+        public TimeSpan TimeSpan { get; set; }
+    }
+
+    private string _captureId;
+    private async Task StartStopRecording(MouseEventArgs obj)
+    {
+        if (!string.IsNullOrEmpty(_captureId))
+        {
+            await _captureService.StopCaptureAsync(_captureId);
+        }
+        else
+        {
+            var audioDevices = await _captureService.GetAudioDevicesAsync();
+            var videoDevices = await _captureService.GetVideoDevicesAsync();
+            //await _dialogService.EditObject(new XXXX { TimeSpan = TimeSpan.FromSeconds(32) });
+            var source = await _captureService.SelectCaptureSourceAsync(DisplayMediaOptions.Default);
+            await JsRuntime.AlertAsync("Click ok to start");
+            var options = new CaptureOptions
+                {
+                    ScreenCapture = source,
+                    //CaptureMediaOptions = _captureScreen ? DisplayMediaOptions.Default : null,
+                    //ScreenSource = source,
+                    //MaxCaptureTime = TimeSpan.FromSeconds(10),
+                    VideoDeviceId = _camera ? videoDevices.FirstOrDefault()?.DeviceId : null,
+                    AudioDevices = _recordAudio ? [audioDevices.First().DeviceId] : []
+                };
+            _captureId = await _captureService.StartCaptureAsync(options, CaptureCallback, s => _captureId = null);
+        }
+    }
+
+
+    private CaptureResult _captureResult;
+    private void CaptureCallback(CaptureResult obj)
+    {
+        _captureResult = obj;
+        StateHasChanged();
+        // _fileService.CreateDataUrlAsync(obj.VideoData, obj.Options.ContentType, true).ContinueWith(task =>
+        // {
+        //     _url = task.Result;
+        //     StateHasChanged();
+        // });
+    }
+
+}

@@ -166,6 +166,12 @@ public static partial class DialogServiceExt
         return await dialogService.EditObject(value, title, options, metaConfig, dialogParameters.MergeWith(parameters));
     }
 
+    public static async Task<(bool Cancelled, TModel Result)> EditObject<TModel>(this IDialogService dialogService,
+        TModel value)
+    {
+        return await dialogService.EditObject(value, $"Edit {typeof(TModel).Name}", DialogOptionsEx.DefaultDialogOptions);
+    }
+
     /// <summary>
     /// Shows an object edit dialog for the given object.
     /// </summary>

@@ -1,8 +1,11 @@
 using System.Collections.Concurrent;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
 using Nextended.Core.Attributes;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Services;
 
@@ -14,10 +17,38 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
 {
     private readonly IJSRuntime _jsRuntime;
     private readonly ConcurrentBag<string> _captures = new();
+    private readonly ConcurrentDictionary<string, Snackbar> _toasts = new();
+    private readonly ISnackbar _snackBarService;
 
-    public MudExCaptureService(IJSRuntime jsRuntime)
+    public MudExCaptureService(IJSRuntime jsRuntime, IServiceProvider serviceProvider)
     {
         _jsRuntime = jsRuntime;
+        _snackBarService = serviceProvider.GetService<ISnackbar>();
+    }
+
+    RenderFragment CaptureInfo(TimeSpan? maxRecordingTime) => builder =>
+    {
+        int seq = 0;
+        builder.OpenComponent(seq++, typeof(CaptureInfoComponent));
+        builder.AddAttribute(seq++, "MaxRecordingTime", maxRecordingTime);
+        builder.CloseComponent();
+    };
+
+
+    internal void ShowRecordingInfo(string captureId, TimeSpan? maxRecordingTime)
+    {
+        _snackBarService.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+
+        var toast =_snackBarService.Add(CaptureInfo(maxRecordingTime), Severity.Error, config =>
+        {
+            config.SnackbarVariant = Variant.Outlined;
+            config.Icon = Icons.Material.Filled.Stop;
+            config.BackgroundBlurred = true;
+            config.RequireInteraction = true;
+            config.ShowCloseIcon = false;
+            config.Onclick = _ => StopCaptureAsync(captureId);
+        }, key: captureId);
+        _toasts.TryAdd(captureId, toast);
     }
 
     /// <inheritdoc />
@@ -29,15 +60,26 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
     /// <inheritdoc />
     public async Task<string> StartCaptureAsync(CaptureOptions options, Action<CaptureResult> callback, Action<string> stoppedCallback = null)
     {
+        if (!options.Valid())
+        {
+            return null;
+        }
         var callbackReference = DotNetObjectReference.Create(new JsRecordingCallbackWrapper<CaptureResult>(
             captureResult => callback?.Invoke(Prepare(captureResult, options)), s =>
         {
             _captures.TryTake(out s);
+            if (_toasts.TryRemove(s, out var toast))
+                _snackBarService.Remove(toast);
+            
             stoppedCallback?.Invoke(s);
         }));
 
         var result = await _jsRuntime.InvokeAsync<string>("MudExCapture.startCapture", options, callbackReference);
         _captures.Add(result);
+        if (options.MaxCaptureTime is { TotalSeconds: > 0 })
+            _ = Task.Delay(options.MaxCaptureTime.Value).ContinueWith(_ => StopCaptureAsync(result));
+        
+        ShowRecordingInfo(result, options.MaxCaptureTime);
         return result;
     }
 
@@ -65,7 +107,7 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
         _jsRuntime.InvokeAsync<IEnumerable<VideoDevice>>("MudExCapture.getAvailableVideoDevices").AsTask();
 
     /// <inheritdoc />
-    public async Task<MediaStreamTrack> SelectCaptureSourceAsync() =>
-        await _jsRuntime.InvokeAsync<MediaStreamTrack>("MudExCapture.selectCaptureSource");
+    public async Task<MediaStreamTrack> SelectCaptureSourceAsync(DisplayMediaOptions? displayMediaOptions = null) =>
+        await _jsRuntime.InvokeAsync<MediaStreamTrack>("MudExCapture.selectCaptureSource", displayMediaOptions);
 
 }
