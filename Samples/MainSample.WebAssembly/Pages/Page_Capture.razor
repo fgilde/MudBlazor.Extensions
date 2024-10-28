@@ -87,7 +87,7 @@
     [Inject] private IDialogService _dialogService { get; set; }
 
 
-    private MediaStreamTrack _source;
+    private MediaStreamTrack? _source;
 
     private string _captureId;
     private async Task StartStopRecording(MouseEventArgs obj)
@@ -100,18 +100,23 @@
         {
             var audioDevices = await _captureService.GetAudioDevicesAsync();
             var videoDevices = await _captureService.GetVideoDevicesAsync();
-            //await _dialogService.EditObject(new XXXX { TimeSpan = TimeSpan.FromSeconds(32) });
+
+            await _dialogService.EditObject(new CaptureOptions());
+
             await JsRuntime.AlertAsync("Click ok to start");
             var options = new CaptureOptions
                 {
-                    ScreenCapture = _source,
-                    //CaptureMediaOptions = _captureScreen ? DisplayMediaOptions.Default : null,
-                    //ScreenSource = source,
-                    //MaxCaptureTime = TimeSpan.FromSeconds(10),
+                    OverlayPosition = DialogPosition.CenterLeft,
+                    OverlaySource = OverlaySource.CapturedScreen,
+                    ScreenCapture = _source ?? (OneOf<bool, MediaStreamTrack, DisplayMediaOptions>)_captureScreen,
                     VideoDeviceId = _camera ? videoDevices.FirstOrDefault()?.DeviceId : null,
                     AudioDevices = _recordAudio ? [audioDevices.First().DeviceId] : []
                 };
-            _captureId = await _captureService.StartCaptureAsync(options, CaptureCallback, s => _captureId = null);
+            _captureId = await _captureService.StartCaptureAsync(options, CaptureCallback, s =>
+            {
+                _source = null;
+                _captureId = null;
+            });
         }
     }
 

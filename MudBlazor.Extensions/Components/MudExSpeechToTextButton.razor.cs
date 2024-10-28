@@ -46,6 +46,16 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     public string UsedDeviceId => _selectedDevice ?? AudioDeviceId;
 
     /// <summary>
+    /// If set, the recording will stop after the specified time.
+    /// </summary>
+    [Parameter] public TimeSpan? MaxCaptureTime { get; set; }
+
+    /// <summary>
+    /// If this is true a notification toast will be shown while recording.
+    /// </summary>
+    [Parameter] public bool ShowNotificationWhileRecording { get; set; }
+
+    /// <summary>
     /// Gets or sets the <see cref="IStringLocalizer"/> to be used for localizing strings.
     /// </summary>
     [Parameter, SafeCategory("Common")]
@@ -234,7 +244,9 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
             Lang = Language,
             Continuous = Continuous,
             InterimResults = InterimResults,
-            DeviceId = UsedDeviceId
+            DeviceId = UsedDeviceId,
+            ShowNotificationWhileRecording = ShowNotificationWhileRecording,
+            MaxCaptureTime = MaxCaptureTime
         };
         _recordingId = await SpeechRecognitionService.StartRecordingAsync(options, OnResult, OnStopped);
         if (IsRecording)

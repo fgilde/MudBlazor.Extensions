@@ -22,14 +22,14 @@ public class CaptureOptions
     [JsonInclude]
     internal bool CaptureScreen
     {
-        get => ScreenCapture is { IsT0: true, AsT0: true } || CaptureMediaOptions != null || ScreenSource != null;
+        get => ScreenCapture is { IsT0: true } ? ScreenCapture.AsT0 : CaptureMediaOptions != null || ScreenSource != null;
         set => ScreenCapture = value;
     }
 
     [JsonInclude]
     internal DisplayMediaOptions CaptureMediaOptions
     {
-        get => ScreenCapture.IsT2 ? ScreenCapture.AsT2 : null;
+        get => ScreenCapture.IsT2 ? ScreenCapture.AsT2 : DisplayMediaOptions.Default;
         set => ScreenCapture = value;
     }
 
@@ -56,7 +56,7 @@ public class CaptureOptions
     /// <summary>
     /// The audio device ids to record audio.
     /// </summary>
-    public List<string> AudioDevices { get; set; } = new(); // Liste der Audio-Device-IDs
+    public List<string> AudioDevices { get; set; } = new();
 
 
     /// <summary>
@@ -84,6 +84,7 @@ public class CaptureOptions
     /// For the Overlay you can set <see cref="OverlayPosition"/> to <see cref="DialogPosition.Custom"/> and set the custom position for the overlay here.
     /// </summary>
     public MudExPosition OverlayCustomPosition { get; set; } = new("0", "0");
+
 
     /// <summary>
     /// Returns true when anything to capture is set.

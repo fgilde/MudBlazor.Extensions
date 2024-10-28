@@ -618,7 +618,7 @@
         </member>
         <member name="T:MudBlazor.Extensions.Components.CaptureInfoComponent">
             <summary>
-            Component to move the ChildContent to a specific element that can defined by ElementSelector.
+            Component to display information about the current recording
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MoveContentPosition">
@@ -1046,6 +1046,11 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExBaseInput`1.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExCaptureOptionsEdit">
+            <summary>
+            Component edit capture options
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExCardHoverMode">
             <summary>
@@ -6554,6 +6559,16 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.UsedDeviceId">
             <summary>
             Returns the device id to use for recording.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.MaxCaptureTime">
+            <summary>
+            If set, the recording will stop after the specified time.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.ShowNotificationWhileRecording">
+            <summary>
+            If this is true a notification toast will be shown while recording.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.Localizer">
@@ -15268,6 +15283,499 @@
             Represents picas in CSS. One pica is equal to 12 points.
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Core.DisplayMediaOptions">
+            <summary>
+            Represents the options for capturing display media, including video and audio constraints, 
+            preferences for capturing the current tab, and settings for system audio and browser surfaces.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.Video">
+            <summary>
+            Gets or sets the constraints for video capture.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.Audio">
+            <summary>
+            Gets or sets the constraints for audio capture.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.PreferCurrentTab">
+            <summary>
+            Indicates whether the current tab is preferred for capture.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.SelfBrowserSurface">
+            <summary>
+            Determines whether the self browser surface should be included or excluded during capture.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.SystemAudio">
+            <summary>
+            Determines whether the system audio should be included or excluded.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.SurfaceSwitching">
+            <summary>
+            Determines whether surface switching is allowed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.MonitorTypeSurfaces">
+            <summary>
+            Determines whether monitor-type surfaces should be included or excluded.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.DisplayMediaOptions.WithSystemAudio">
+            <summary>
+            Configures the options to include system audio.
+            </summary>
+            <returns>The updated <see cref="T:MudBlazor.Extensions.Core.DisplayMediaOptions"/>.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.DisplayMediaOptions.WithoutSystemAudio">
+            <summary>
+            Configures the options to exclude system audio.
+            </summary>
+            <returns>The updated <see cref="T:MudBlazor.Extensions.Core.DisplayMediaOptions"/>.</returns>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.Default">
+            <summary>
+            Provides default display media options.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.WithoutAudio">
+            <summary>
+            Provides display media options without audio.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.BestQuality">
+            <summary>
+            Provides display media options configured for best quality.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.LowBandwidth">
+            <summary>
+            Provides display media options optimized for low bandwidth usage.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.CurrentTabWithAudio">
+            <summary>
+            Provides display media options to capture the current tab with audio.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.AudioConstraints">
+            <summary>
+            Represents constraints for capturing audio, including settings like device ID, echo cancellation, and sample rate.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.AudioConstraints.DeviceId">
+            <summary>
+            Gets or sets the device ID for the audio source.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.AudioConstraints.GroupId">
+            <summary>
+            Gets or sets the group ID for the audio source.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.AudioConstraints.SuppressLocalAudioPlayback">
+            <summary>
+            Indicates whether local audio playback should be suppressed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.AudioConstraints.EchoCancellation">
+            <summary>
+            Indicates whether echo cancellation is enabled.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.AudioConstraints.AutoGainControl">
+            <summary>
+            Indicates whether auto gain control is enabled.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.AudioConstraints.NoiseSuppression">
+            <summary>
+            Indicates whether noise suppression is enabled.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.AudioConstraints.SampleRate">
+            <summary>
+            Gets or sets the desired sample rate for audio capture.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.AudioConstraints.SampleSize">
+            <summary>
+            Gets or sets the desired sample size for audio capture.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.AudioConstraints.ChannelCount">
+            <summary>
+            Gets or sets the number of audio channels.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.AudioConstraints.Latency">
+            <summary>
+            Gets or sets the desired latency for audio capture.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.AudioConstraints.VoiceIsolation">
+            <summary>
+            Gets or sets the voice isolation mode.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.VideoConstraints">
+            <summary>
+            Represents constraints for capturing video, including settings like resolution, frame rate, and device-specific properties.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.DeviceId">
+            <summary>
+            Gets or sets the device ID for the video source.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.GroupId">
+            <summary>
+            Gets or sets the group ID for the video source.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.DisplaySurface">
+            <summary>
+            Gets or sets the display surface type (e.g., monitor, window).
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.LogicalSurface">
+            <summary>
+            Indicates whether to capture the logical surface of the display.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.Cursor">
+            <summary>
+            Specifies how the cursor should be captured (e.g., always, motion only).
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.Width">
+            <summary>
+            Gets or sets the desired width of the video.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.Height">
+            <summary>
+            Gets or sets the desired height of the video.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.AspectRatio">
+            <summary>
+            Gets or sets the desired aspect ratio of the video.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.FrameRate">
+            <summary>
+            Gets or sets the desired frame rate of the video.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.FacingMode">
+            <summary>
+            Specifies the facing mode (e.g., user-facing or environment-facing).
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.ResizeMode">
+            <summary>
+            Specifies the resize mode for the video (e.g., crop and scale).
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.Brightness">
+            <summary>
+            Gets or sets the desired brightness level for the video.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.ColorTemperature">
+            <summary>
+            Gets or sets the desired color temperature for the video.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.Contrast">
+            <summary>
+            Gets or sets the desired contrast level for the video.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.Saturation">
+            <summary>
+            Gets or sets the desired saturation level for the video.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.Sharpness">
+            <summary>
+            Gets or sets the desired sharpness level for the video.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.ExposureCompensation">
+            <summary>
+            Gets or sets the exposure compensation for the video.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.ExposureMode">
+            <summary>
+            Specifies the exposure mode (e.g., manual, single, continuous).
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.ExposureTime">
+            <summary>
+            Gets or sets the desired exposure time for the video.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.ISO">
+            <summary>
+            Gets or sets the ISO sensitivity for the video.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.FocusMode">
+            <summary>
+            Specifies the focus mode (e.g., manual, continuous).
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.FocusDistance">
+            <summary>
+            Gets or sets the focus distance for the video.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.PointsOfInterest">
+            <summary>
+            Gets or sets points of interest for the camera to focus on.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.Pan">
+            <summary>
+            Gets or sets the pan level for the camera.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.Tilt">
+            <summary>
+            Gets or sets the tilt level for the camera.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.Zoom">
+            <summary>
+            Gets or sets the zoom level for the camera.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.Torch">
+            <summary>
+            Indicates whether the camera's torch (flashlight) is enabled.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.VideoConstraints.WhiteBalanceMode">
+            <summary>
+            Specifies the white balance mode (e.g., manual, continuous).
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.CapturePoint">
+            <summary>
+            Represents a point in 2D space, used for specifying areas of interest in video capture.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CapturePoint.X">
+            <summary>
+            The X-coordinate of the point.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.CapturePoint.Y">
+            <summary>
+            The Y-coordinate of the point.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.IncludeExclude">
+            <summary>
+            Defines options to include or exclude a feature.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.IncludeExclude.Include">
+            <summary>
+            Include the feature.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.IncludeExclude.Exclude">
+            <summary>
+            Exclude the feature.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.CaptureDisplaySurface">
+            <summary>
+            Defines types of display surfaces for video capture.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureDisplaySurface.Monitor">
+            <summary>
+            Capture the entire monitor display.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureDisplaySurface.Window">
+            <summary>
+            Capture a specific window.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureDisplaySurface.Application">
+            <summary>
+            Capture an application view.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureDisplaySurface.Browser">
+            <summary>
+            Capture the browser display.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.CaptureCursor">
+            <summary>
+            Specifies how the cursor should be captured during video recording.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureCursor.Always">
+            <summary>
+            Always capture the cursor.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureCursor.Motion">
+            <summary>
+            Capture the cursor only when it moves.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureCursor.Never">
+            <summary>
+            Never capture the cursor.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.CaptureExposureMode">
+            <summary>
+            Defines the exposure modes for a camera.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureExposureMode.None">
+            <summary>
+            No specific exposure mode.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureExposureMode.Manual">
+            <summary>
+            Manual exposure control.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureExposureMode.Single">
+            <summary>
+            Single-shot exposure adjustment.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureExposureMode.Continuous">
+            <summary>
+            Continuous exposure adjustment.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.CaptureFocusMode">
+            <summary>
+            Specifies focus modes for camera devices.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureFocusMode.None">
+            <summary>
+            No specific focus mode.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureFocusMode.Manual">
+            <summary>
+            Manual focus control.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureFocusMode.Single">
+            <summary>
+            Single focus adjustment.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureFocusMode.Continuous">
+            <summary>
+            Continuous focus adjustment.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.CaptureFacingMode">
+            <summary>
+            Specifies the facing mode for the camera (e.g., front-facing or rear-facing).
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureFacingMode.User">
+            <summary>
+            The camera is user-facing.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureFacingMode.Environment">
+            <summary>
+            The camera is environment-facing (e.g., rear camera).
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureFacingMode.Left">
+            <summary>
+            The camera faces the left side.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureFacingMode.Right">
+            <summary>
+            The camera faces the right side.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.CaptureResizeMode">
+            <summary>
+            Defines resize modes for video capture.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureResizeMode.None">
+            <summary>
+            No specific resize mode.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureResizeMode.CropAndScale">
+            <summary>
+            Crop the captured video and scale it to fit.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.CaptureWhiteBalanceMode">
+            <summary>
+            Specifies white balance modes for camera devices.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureWhiteBalanceMode.None">
+            <summary>
+            No specific white balance mode.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureWhiteBalanceMode.Manual">
+            <summary>
+            Manual white balance adjustment.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureWhiteBalanceMode.Single">
+            <summary>
+            Single-shot white balance adjustment.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureWhiteBalanceMode.Continuous">
+            <summary>
+            Continuous white balance adjustment.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Core.CaptureVoiceIsolationMode">
+            <summary>
+            Specifies voice isolation modes for audio capture.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureVoiceIsolationMode.Off">
+            <summary>
+            No voice isolation.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureVoiceIsolationMode.Standard">
+            <summary>
+            Standard voice isolation.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Core.CaptureVoiceIsolationMode.High">
+            <summary>
+            High level of voice isolation.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.Enums.TreeViewExpandBehaviour">
             <summary>
             Controls how the tree view will expand.
@@ -16396,6 +16904,16 @@
             <remarks>
             This property is marked with attributes to be ignored during JSON serialization.
             </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionOptions.MaxCaptureTime">
+            <summary>
+            If set, the recording will stop after the specified time.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionOptions.ShowNotificationWhileRecording">
+            <summary>
+            If this is true a notification toast will be shown while recording.
+            </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionOptions.DeviceId">
             <summary>
@@ -21527,6 +22045,14 @@
             <param name="appearance">The appearance to remove.</param>
             <param name="dialogReference">The reference to the dialog from which the appearance will be removed.</param>
             <returns>The removed appearance.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.Services.MudExCaptureNotificationService">
+            <summary>
+            Capture service for capturing audio and video.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureNotificationService.DisposeAsync">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Services.MudExCaptureService">
             <summary>

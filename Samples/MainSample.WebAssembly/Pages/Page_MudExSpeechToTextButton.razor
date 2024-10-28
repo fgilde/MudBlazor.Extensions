@@ -2,7 +2,7 @@
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
-@attribute [Demo(Name = "MudExSpeechToTextButton", Icon = Icons.Material.Outlined.Mic, Documentation = "This component uses the ISpeechRecognitionService to record audio data and transcripts", ForComponentType = typeof(MudExSpeechToTextButton))]
+@attribute [DemoUpdated(Name = "MudExSpeechToTextButton", Icon = Icons.Material.Outlined.Mic, Documentation = "This component uses the ISpeechRecognitionService to record audio data and transcripts", ForComponentType = typeof(MudExSpeechToTextButton))]
 
 <DemoComponent PageType="@GetType()">
     <SplitContainer>
@@ -10,7 +10,7 @@
             <MudGrid Spacing="1" Justify="Justify.Center">
                 <MudItem xs="12">
                     <MudGrid Class="mb-3" Spacing="1" Justify="Justify.Center">
-                        <MudExSpeechToTextButton OnRecordingStarted="RecordingStarted" OnRecognized="Callback" @ref="component"/>
+                        <MudExSpeechToTextButton ShowNotificationWhileRecording="true" OnRecordingStarted="RecordingStarted" OnRecognized="Callback" @ref="component"/>
                     </MudGrid>
                 </MudItem>
                 @if (_audioFile != null)

@@ -10,6 +10,7 @@
             const element = MudExObserver.getElement(videoElementForPreview);
             if (element && typeof element.play === 'function') {
                 element.autoplay = true;
+                element.muted = true;
                 element.srcObject = stream;
                 element.play();
             }
@@ -26,7 +27,7 @@
                 readyState: selectedTrack.readyState
             };
         } catch (err) {
-            console.error("Fehler beim Anzeigen der Bildschirmquelle.", err);
+            console.error("Error selecting capture source", err);
             return null;
         }
     }
@@ -35,7 +36,6 @@
         const id = this.generateUniqueId();
         const capture = await this.setupCapture(options, id, callback);
 
-        // Event listener für das manuelle Stoppen der Aufnahme
         if (capture.screenStream) {
             capture.screenStream.addEventListener("inactive", () => {
                 this.stopCapture(id, callback);
@@ -45,7 +45,6 @@
             });
         }
 
-        // Starte alle Recorder
         capture.recorders.forEach(recorder => {
             setTimeout(() => { recorder.start(); }, 1);
         });
@@ -109,7 +108,6 @@
         options.contentType = options.contentType || 'video/webm; codecs=vp9';
         const audioContentType = options.audioContentType || 'audio/webm';
 
-        // Streams sammeln
         const streams = {
             screen: null,
             camera: null,
@@ -118,7 +116,6 @@
             audioContext: null
         };
 
-        // Screen Capture mit System Audio
         if (options.captureScreen) {
             try {
                 let screenStream;
@@ -131,7 +128,6 @@
                 }
                 streams.screen = new MediaStream(screenStream.getVideoTracks());
 
-                // System Audio Track extrahieren
                 const systemAudioTracks = screenStream.getAudioTracks();
                 if (systemAudioTracks.length > 0) {
                     streams.systemAudio = new MediaStream(systemAudioTracks);
@@ -148,7 +144,7 @@
             });
         }
 
-        // Mikrofon Audio Streams
+        // Audio Streams
         const audioStreams = await this.getAudioStreams(options.audioDevices);
 
         // Audio Streams mischen
@@ -156,10 +152,10 @@
         streams.audio = mixedAudioStream;
         streams.audioContext = audioContext;
 
-        // Canvas für Picture-in-Picture Setup
+        // Canvas Picture-in-Picture Setup
         const { combinedStream, canvas } = this.createCombinedStream(streams, options);
 
-        // Chunks für jeden Stream
+        // Chunks
         const chunks = {
             screen: [],
             camera: [],
@@ -168,10 +164,9 @@
             combined: []
         };
 
-        // MediaRecorder erstellen
         const recorders = [];
 
-        // Haupt-Video Recorder (Screen)
+        // Main recorder
         if (streams.screen) {
             const screenRecorder = new MediaRecorder(streams.screen, { mimeType: options.contentType });
             screenRecorder.ondataavailable = event => chunks.screen.push(event.data);
@@ -185,14 +180,14 @@
             recorders.push(systemAudioRecorder);
         }
 
-        // Kamera Recorder
+        // Cam Recorder
         if (streams.camera) {
             const cameraRecorder = new MediaRecorder(streams.camera, { mimeType: options.contentType });
             cameraRecorder.ondataavailable = event => chunks.camera.push(event.data);
             recorders.push(cameraRecorder);
         }
 
-        // Mikrofon Audio Recorder
+        // Mic Audio Recorder
         if (streams.audio) {
             const audioRecorder = new MediaRecorder(streams.audio, { mimeType: audioContentType });
             audioRecorder.ondataavailable = event => chunks.audio.push(event.data);
@@ -228,7 +223,7 @@
     static createCombinedStream(streams, options) {
         const { screen, camera, audio, systemAudio, audioContext } = streams;
 
-        // Audio Streams mischen
+        // Mix audio streams
         const audioStreamsToMix = [audio, systemAudio].filter(s => s);
         const { stream: mixedAudioStream } = this.mixAudioStreams(audioStreamsToMix);
         streams.audioContext = audioContext;

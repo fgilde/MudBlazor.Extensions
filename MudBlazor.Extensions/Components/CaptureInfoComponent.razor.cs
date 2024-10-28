@@ -4,7 +4,7 @@ using MudBlazor.Extensions.Components.Base;
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
-/// Component to move the ChildContent to a specific element that can defined by ElementSelector.
+/// Component to display information about the current recording
 /// </summary>
 public partial class CaptureInfoComponent 
 {

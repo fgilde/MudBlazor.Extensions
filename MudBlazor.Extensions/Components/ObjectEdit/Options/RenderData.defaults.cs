@@ -144,7 +144,7 @@ public static class RenderDataDefaults
     private static Dictionary<string, object> TimePickerOptions()
     {
         var currentCulture = CultureInfo.CurrentCulture;
-        var timeFormat = currentCulture.DateTimeFormat.ShortTimePattern;
+        var timeFormat = currentCulture.DateTimeFormat.LongTimePattern;
         return new Dictionary<string, object>
         {
             {nameof(MudTimePicker.Editable), true},

@@ -22,6 +22,16 @@ public class SpeechRecognitionOptions
     }
 
     /// <summary>
+    /// If set, the recording will stop after the specified time.
+    /// </summary>
+    public TimeSpan? MaxCaptureTime { get; set; }
+
+    /// <summary>
+    /// If this is true a notification toast will be shown while recording.
+    /// </summary>
+    public bool ShowNotificationWhileRecording { get; set; }
+
+    /// <summary>
     /// DeviceId for audio input, used for selecting the appropriate microphone.
     /// </summary>
     public string DeviceId { get; set; }

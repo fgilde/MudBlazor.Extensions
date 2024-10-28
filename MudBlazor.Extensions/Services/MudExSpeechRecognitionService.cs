@@ -11,10 +11,12 @@ namespace MudBlazor.Extensions.Services
     {
         private readonly IJSRuntime _jsRuntime;
         private readonly ConcurrentBag<string> _recordings = new();
+        private readonly MudExCaptureNotificationService _captureNotifier;
 
-        public MudExSpeechRecognitionService(IJSRuntime jsRuntime)
+        public MudExSpeechRecognitionService(IJSRuntime jsRuntime, MudExCaptureNotificationService captureNotifier)
         {
             _jsRuntime = jsRuntime;
+            _captureNotifier = captureNotifier;
         }
 
         public async ValueTask DisposeAsync()
@@ -27,10 +29,15 @@ namespace MudBlazor.Extensions.Services
             var callbackReference = DotNetObjectReference.Create(new JsRecordingCallbackWrapper<SpeechRecognitionResult>(callback, s =>
             {
                 _recordings.TryTake(out s);
+                _captureNotifier.RemoveRecordingInfo(s);
                 stoppedCallback?.Invoke(s);
             }));
             var result = await _jsRuntime.InvokeAsync<string>("MudExSpeechRecognition.startRecording", options, callbackReference);
             _recordings.Add(result);
+            if (options.MaxCaptureTime is { TotalSeconds: > 0 })
+                _ = Task.Delay(options.MaxCaptureTime.Value).ContinueWith(_ => StopRecordingAsync(result));
+            if (options.ShowNotificationWhileRecording)
+                _captureNotifier.ShowRecordingInfo(result, options.MaxCaptureTime, (s, _) => StopRecordingAsync(s));
             return result;
         }
 
