@@ -99,13 +99,14 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
     /// <returns></returns>
     public new async Task<IDialogReference> Show(string title = null, DialogOptions options = null)
     {
-        void OnAdded(IDialogReference reference)
+        Task OnAdded(IDialogReference reference)
         {
             _dialogId = reference.GetDialogId();
-            DialogService.OnDialogInstanceAdded -= OnAdded;
+            DialogService.DialogInstanceAddedAsync -= OnAdded;
+            return Task.CompletedTask;
         }
 
-        DialogService.OnDialogInstanceAdded += OnAdded;        
+        DialogService.DialogInstanceAddedAsync += OnAdded;        
         
         OptionsEx.JsRuntime = Js;
         OptionsEx.AppearanceService = AppearanceService;

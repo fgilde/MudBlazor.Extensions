@@ -28,7 +28,7 @@ public partial class MudExTaskBar: MudExSlideBar
     /// <inheritdoc />
     protected override void OnInitialized()
     {
-        DialogService.OnDialogInstanceAdded += DialogService_OnDialogInstanceAdded;
+        DialogService.DialogInstanceAddedAsync += DialogService_OnDialogInstanceAdded;
         DialogService.OnDialogCloseRequested += DialogService_OnDialogCloseRequested;
     }
 
@@ -37,7 +37,7 @@ public partial class MudExTaskBar: MudExSlideBar
         
     }
 
-    private async void DialogService_OnDialogInstanceAdded(IDialogReference obj)
+    private async Task DialogService_OnDialogInstanceAdded(IDialogReference obj)
     {
         await obj.GetDialogAsync<ComponentBase>(); // Wait until dialog is rendered
         var data = await JsRuntime.InvokeAsync<DialogData>("MudBlazorExtensions.attachDialog", obj?.GetDialogId());

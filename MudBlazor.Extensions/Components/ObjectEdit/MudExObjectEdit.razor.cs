@@ -38,6 +38,11 @@ public partial class MudExObjectEdit<T>
     private Type? _registeredEditorType;
 
     /// <summary>
+    /// If this is set all properties will be readonly depending on the value otherwise the property settings for meta configuration will be used
+    /// </summary>
+    [Parameter] public bool? ReadOnlyOverwrite { get; set; }
+
+    /// <summary>
     /// Returns true if we have a registration for the current object that then uses the registered component
     /// </summary>
     protected bool HasRegistrationForWholeObject => RenderWithType != null;
@@ -875,6 +880,8 @@ public partial class MudExObjectEdit<T>
                    where attr != null && !ignore.Contains(prop.Name) && prop.CanWrite
                    select prop).ToDictionary(prop => prop.Name, prop => prop.GetValue(this));
         var primitiveWrapper = new ModelForPrimitive<T>(Value);
+        if (ReadOnlyOverwrite.HasValue)
+            res.AddOrUpdate(nameof(MudBaseInput<object>.ReadOnly), ReadOnlyOverwrite.Value);
         res.AddOrUpdate(nameof(Primitive), false);
         res.AddOrUpdate(nameof(Value), primitiveWrapper);
         res.AddOrUpdate(nameof(ValueChanged), RuntimeHelpers.TypeCheck(
@@ -904,6 +911,8 @@ public partial class MudExObjectEdit<T>
             res.AddOrUpdate(parameter.Key, parameter.Value);
         }
 
+        if(ReadOnlyOverwrite.HasValue)
+            res.AddOrUpdate(nameof(MudBaseInput<object>.ReadOnly), ReadOnlyOverwrite.Value);
         res.AddOrUpdate(nameof(Value), Value);
         res.AddOrUpdate(nameof(ValueChanged), RuntimeHelpers.TypeCheck(
             EventCallback.Factory.Create(

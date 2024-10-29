@@ -68,7 +68,7 @@ public class MudExDialogService : IMudExDialogService
         JSRuntime = jsRuntime;
         ServiceProvider = serviceProvider;
         AppearanceService = appearanceService;
-        _innerDialogService.OnDialogInstanceAdded += OnDialogInstanceAddedHandler;
+        _innerDialogService.DialogInstanceAddedAsync += DialogInstanceAddedAsyncHandler;
         _innerDialogService.OnDialogCloseRequested += OnDialogCloseRequestedHandler;
     }
 
@@ -78,7 +78,7 @@ public class MudExDialogService : IMudExDialogService
         _ = _dialogEventService.Publish(new DialogClosedEvent { DialogReference = reference, Dialog = c, Result = result, DialogId = reference.GetDialogId() });
     }
 
-    private async void OnDialogInstanceAddedHandler(IDialogReference obj)
+    private async Task DialogInstanceAddedAsyncHandler(IDialogReference obj)
     {
         var id = obj.GetDialogId();
         await _dialogEventService.Publish(new DialogBeforeOpenEvent { DialogReference = obj, DialogId = id });        

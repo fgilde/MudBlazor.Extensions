@@ -37,3 +37,25 @@ public static partial class MudExObjectEditExtensions
     }
 
 }
+
+public static class TypeExt
+{
+    public static T GetFieldValue<T>(this Type type, object owner, string name)
+    {
+        var bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
+        var fieldInfo = type.GetField(name, bindingFlags);
+        var result = fieldInfo?.GetValue(owner);
+        if (result is T res) return res;
+        fieldInfo = null;
+        while (type != null)
+        {
+            fieldInfo = type.GetField(name, bindingFlags);
+            if (fieldInfo != null)
+                break;
+            type = type.BaseType;
+        }
+        result = fieldInfo?.GetValue(owner)?.ToString();
+        if (result is T res2) return res2;
+        return default;
+    }
+}

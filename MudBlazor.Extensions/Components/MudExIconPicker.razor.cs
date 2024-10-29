@@ -27,7 +27,7 @@ public partial class MudExIconPicker
     /// The width of the picker in pixels.
     /// </summary>
     [Parameter, SafeCategory("Common")]
-    public int PickerWidth { get; set; } = 500;
+    public MudExSize<double>? PickerWidth { get; set; } = "100%";
 
     /// <summary>
     /// Set this to true to disable the list view
@@ -194,14 +194,21 @@ public partial class MudExIconPicker
 
     private string GetKillZoneStyle() => "height:65vh;width:100%;position:sticky;top:0px;";
 
+    /// <inheritdoc />
+    protected override Task OnSyncResized(BoundingClientRect size)
+    {
+        SetCardsPerRow(size.Width);
+        return base.OnSyncResized(size);
+    }
+
     private async void OnResized(IDictionary<ElementReference, BoundingClientRect> changes)
     {
         SetCardsPerRow();
         await InvokeAsync(StateHasChanged);
     }
-    private void SetCardsPerRow()
+    private void SetCardsPerRow(double? width = null)
     {
-        var width = ResizeObserver.GetWidth(killZone);
+        width ??= ResizeObserver.GetWidth(killZone);
         if (width <= 0)
             width = PickerWidth;
         _cardsPerRow = Convert.ToInt32(width / _iconCardWidth);

@@ -165,8 +165,9 @@
     RenderFragment RenderPropertyEdit(ObjectEditPropertyMeta property)
     {
         return
-    @<MudExPropertyEdit @ref="@Ref" DisableFieldFallback="@DisableFieldFallback"
-                            RenderKey="@RenderKey"
+            @<MudExPropertyEdit @ref="@Ref" DisableFieldFallback="@DisableFieldFallback"
+                                RenderKey="@RenderKey"
+                                ReadOnlyOverwrite="@ReadOnlyOverwrite"
                             StoreAndReadValueFromUrl="@StoreAndReadValueFromUrl"
                             ShowPathAsTitle="@ShowPathAsTitleForEachProperty"
                             IsLoading="@(IsLoading || IsInternalLoading)"

@@ -4,6 +4,11 @@ using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Options;
+using MudBlazor.Interop;
+using Nextended.Core.Extensions;
+using System.ComponentModel;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace MudBlazor.Extensions.Components.Base;
 
@@ -13,11 +18,46 @@ namespace MudBlazor.Extensions.Components.Base;
 public partial class MudExPickerBase<T>
 {
     private IStringLocalizer<MudExPickerBase<T>> _fallbackLocalizer => ServiceProvider.GetService<IStringLocalizer<MudExPickerBase<T>>>();
-    
+    private ElementReference _pickerInlineRef;
+    private Task CloseOverlayAsync() => CloseAsync(PickerActions == null);
+    private double? _currentWidth;
+
+    /// <summary>
+    /// Is true if init was called
+    /// </summary>
+    protected bool IsInitialized;
+
     /// <summary>
     /// Is true if the component is rendered
     /// </summary>
     protected bool Rendered { get; set; }
+
+    /// <summary>
+    /// This animation will be used for the picker if the <see cref="PickerVariant"/> is <see cref="PickerVariant.Inline"/>.
+    /// </summary>
+    [Parameter]
+    public AnimationType InlineAnimation { get; set; } = AnimationType.Pulse;
+
+    /// <summary>
+    /// Contains all parameters before init
+    /// </summary>
+    protected string[] PreInitParameters;
+
+    /// <summary>
+    /// Checks if a parameter is overwritten by user
+    /// </summary>
+    protected bool IsOverwritten(string paramName) => PreInitParameters?.Contains(paramName) == true;
+
+    /// <summary>
+    /// Returns true if any of the parameters is overwritten
+    /// </summary>
+    protected bool IsOverwritten(string[] paramName) => PreInitParameters?.Any(paramName.Contains) == true;
+
+    /// <summary>
+    /// The dialog options to be used for the picker if the <see cref="PickerVariant"/> is <see cref="PickerVariant.Dialog"/>.
+    /// </summary>
+    [Parameter]
+    public DialogOptionsEx DialogOptions { get; set; } = DialogOptionsEx.DefaultDialogOptions.SetProperties(o => o.Resizeable = true);
 
     /// <summary>
     /// Gets or sets the <see cref="IServiceProvider"/> to be used for dependency injection.
@@ -89,22 +129,124 @@ public partial class MudExPickerBase<T>
     [Parameter, SafeCategory("Behavior")]
     public bool DelayValueChangeToPickerClose { get; set; }
 
+    /// <summary>
+    /// If this is set to true, the picker will fit the width of the parent container.
+    /// This is only has effect if <see cref="PickerVariant"/> is set to <see cref="PickerVariant.Inline"/>.
+    /// </summary>
+    public bool BindWidthToPicker { get; set; } = true;
 
     /// <summary>
     /// tries to localize given string
     /// </summary>
     public string TryLocalize(string text, params object[] args) => LocalizerToUse.TryLocalize(text, args);
 
+    /// <summary>
+    /// If this is set to true, the picker will open also if the input is read only.
+    /// </summary>
+    [Parameter]
+    public bool AllowOpenOnReadOnly { get; set; }
+
+    /// <summary>
+    /// Id for picker element
+    /// </summary>
+    protected string Id = $"mud-ex-picker-{Guid.NewGuid().ToFormattedId()}";
+
+    /// <inheritdoc />
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        if (!IsInitialized)
+            PreInitParameters = parameters.ToDictionary().Select(x => x.Key).ToArray();
+        return base.SetParametersAsync(parameters);
+    }
+
+    /// <inheritdoc />
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        IsInitialized = true;
+        UserAttributes ??= new();
+        UserAttributes.AddOrUpdate("data-picker-id", Id);
+    }
 
     /// <inheritdoc />
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender || !Rendered)
+        {
             Rendered = true;
+        }
+
         base.OnAfterRender(firstRender);
     }
 
+    protected internal async Task ToggleStateExtAsync()
+    {
+        if (GetDisabledState() || (GetReadOnlyState() && !AllowOpenOnReadOnly))
+            return;
+        if (Open)
+        {
+            Open = false;
+            await OnClosedAsync();
+        }
+        else
+        {
+            Open = true;
+            await OnOpenedAsync();
+            await FocusAsync();
+        }
+    }
+
+    private async Task OnClickAsync(MouseEventArgs args)
+    {
+        if (!Editable)
+        {
+            await ToggleStateExtAsync();
+        }
+
+        if (OnClick.HasDelegate)
+        {
+            await OnClick.InvokeAsync(args);
+        }
+    }
+
+
+    /// <inheritdoc />
+    protected override async Task OnOpenedAsync()
+    {
+        await base.OnOpenedAsync();
+        await BindPickerWidthAsync();
+    }
     
+    private async Task BindPickerWidthAsync()
+    {
+        if (BindWidthToPicker && PickerVariant == PickerVariant.Inline)
+        {
+            var el = _inputReference?.InputReference?.ElementReference;
+            var selector = $"[data-picker-id=\"{Id}\"]";
+            if (el != null)
+                await JsRuntime.InvokeVoidAsync("MudExDomHelper.syncSize", el, selector, null, DotNetObjectReference.Create(this));
+        }
+    }
+
+    /// <summary>
+    /// Called when the size of the picker is changed by binding.
+    /// </summary>
+    [JSInvokable]
+    public Task OnSyncResized(BoundingClientRect size, ElementReference? owneReference, ElementReference? targetReference)
+    {
+        _currentWidth = size.Width;
+        return OnSyncResized(size);
+    }
+
+    /// <summary>
+    /// Called when the size of the picker is changed by binding.
+    /// </summary>
+    protected virtual Task OnSyncResized(BoundingClientRect size)
+    {
+        return Task.CompletedTask;
+    }
+
+
     /// <inheritdoc />
     protected override Task OnPickerClosedAsync()
     {
@@ -131,5 +273,11 @@ public partial class MudExPickerBase<T>
             return;
         RaiseChanged();
     }
-    
+
+    private string GetPopOverStyle()
+    {
+        return MudExStyleBuilder.Default
+            .WithWidth(_currentWidth ?? 0, BindWidthToPicker && _currentWidth.HasValue)
+            .Style;
+    }
 }

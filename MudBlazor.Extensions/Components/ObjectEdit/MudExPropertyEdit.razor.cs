@@ -7,7 +7,6 @@ using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Utilities;
 using Newtonsoft.Json;
-using Nextended.Core;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
@@ -17,6 +16,12 @@ namespace MudBlazor.Extensions.Components.ObjectEdit;
 /// </summary>
 public partial class MudExPropertyEdit
 {
+
+    /// <summary>
+    /// If this is set all properties will be readonly depending on the value otherwise the property settings for meta configuration will be used
+    /// </summary>
+    [Parameter] public bool? ReadOnlyOverwrite { get; set; }
+
     /// <summary>
     /// If this is true, the component adds the value if possible to url and reads it automatically if its present in Url
     /// </summary>
@@ -144,7 +149,7 @@ public partial class MudExPropertyEdit
 
     private IDictionary<string, object> GetPreparedAttributes()
     {
-        return PropertyMeta.RenderData
+        var result = PropertyMeta.RenderData
             .InitValueBinding(PropertyMeta, OnPropertyValueChanged)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.For), CreateFieldForExpressionPropertyType())
             .TrySetAttributeIfAllowed(nameof(MudExSelect<string>.ForMultiple), CreateFieldForExpressionPropertyType())
@@ -154,7 +159,12 @@ public partial class MudExPropertyEdit
             .TrySetAttributeIfAllowed(nameof(Style), () => Style)
             .TrySetAttributeIfAllowed(nameof(Localizer), Localizer)
             .TrySetAttributeIfAllowed(nameof(RenderKey), RenderKey)
-            .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.ReadOnly), () => !PropertyMeta.Settings.IsEditable).Attributes;
+            .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.ReadOnly), () => !PropertyMeta.Settings.IsEditable);
+
+        if (ReadOnlyOverwrite.HasValue)
+            result.TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.ReadOnly), ReadOnlyOverwrite.Value);
+
+        return result.Attributes;
     }
 
     private Task OnPropertyValueChanged()

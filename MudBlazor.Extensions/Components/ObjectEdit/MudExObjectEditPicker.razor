@@ -1,0 +1,14 @@
+﻿@inherits MudExPickerBase<T>
+@typeparam T
+
+@Render
+
+@code
+{
+    protected override RenderFragment PickerContent { get
+    {
+        return @<MudExObjectEdit ReadOnlyOverwrite="@ReadOnlyOverwrite()" T="T" @bind-Value="Value">
+
+               </MudExObjectEdit>;
+    }}
+}

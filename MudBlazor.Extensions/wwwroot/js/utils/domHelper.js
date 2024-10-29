@@ -173,6 +173,64 @@
             element.style.top = (window.innerHeight - element.offsetHeight) + 'px';
         }
     }
+
+    static syncSize(main, target, options, callbackRef) {
+        options = options || { width: true, height: false, live: true, minWidth: 'auto' };
+        var mainEl = MudExObserver.getElement(main);
+        var sourceEl = MudExObserver.getElement(target);
+        mainEl = mainEl?.parentElement || mainEl;
+
+        if (!mainEl || !sourceEl) return;
+
+        var sourceRect = sourceEl.getBoundingClientRect();
+        //var computedStyle = window.getComputedStyle(sourceEl);
+        //var initialWidth = computedStyle.width;
+        //var initialHeight = computedStyle.height;
+        var initialWidth = sourceRect.width + 'px';
+        var initialHeight = sourceRect.height + 'px';
+
+        if (options.minWidth === 'auto') {
+            options.minWidth = initialWidth;
+        }
+        if (options.minHeight === 'auto') {
+            options.minHeight = initialHeight;
+        }
+
+        function updateSize() {
+            var rect = mainEl.getBoundingClientRect();
+            if (options.width) {
+                var width = rect.width;
+                sourceEl.style.width = width + 'px';
+                if (options.minWidth) {
+                    sourceEl.style.minWidth = options.minWidth;
+                }
+            }
+            if (options.height) {
+                var height = rect.height;
+                sourceEl.style.height = height + 'px';
+                if (options.minHeight) {
+                    sourceEl.style.minHeight = options.minHeight;
+                }
+            }
+            if (callbackRef) {
+                callbackRef.invokeMethodAsync('OnSyncResized', rect, null, null); // TODO: pass mainEl and sourceEl
+            }
+        }
+
+        updateSize();
+
+        if (options.live) {
+            var resizeObserver = new ResizeObserver(() => {
+                if (!mainEl.isConnected) {
+                    resizeObserver.disconnect();
+                    return;
+                }
+                updateSize();
+            });
+            resizeObserver.observe(mainEl);
+        }
+    }
+
     
 }
 

@@ -18,7 +18,7 @@
     private RenderFragment GetPickerContent()
     {
         return
-            @<MudTabs Class="mud-ex-color-edit-picker" TabHeaderClass="mud-ex-tab-bar-sticky" Elevation="0" Rounded="true" ApplyEffectsToContainer="true">
+            @<MudTabs Class="mud-ex-color-edit-picker" Style="width: 100%" TabHeaderClass="mud-ex-tab-bar-sticky" Elevation="0" Rounded="true" ApplyEffectsToContainer="true">
                 @if (HasDefinedColors)
                 {
                     <MudTabPanel Text="@TryLocalize(LabelDefinedTab)">
@@ -31,7 +31,7 @@
                     </MudTabPanel>
                 }
                 <MudTabPanel OnClick="@CustomTabClick" Text="@TryLocalize(@LabelCustomTab)">
-                    <MudExColorPicker InitialColor="@_initialMudColorValue" ColorPickerMode="ColorPickerMode.HEX" ShowToolbar="@ShowToolbar" ValueChanged="@(Select)" PickerVariant="PickerVariant.Static" />
+                    <MudExColorPicker Style="width: 100%" InitialColor="@_initialMudColorValue" ColorPickerMode="ColorPickerMode.HEX" ShowToolbar="@ShowToolbar" ValueChanged="@(Select)" PickerVariant="PickerVariant.Static" />
                 </MudTabPanel>
             </MudTabs>;
     }

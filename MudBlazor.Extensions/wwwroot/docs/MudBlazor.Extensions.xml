@@ -621,6 +621,41 @@
             Base component for a picker
             </summary>
         </member>
+        <member name="F:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.IsInitialized">
+            <summary>
+            Is true if init was called
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.Rendered">
+            <summary>
+            Is true if the component is rendered
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.InlineAnimation">
+            <summary>
+            This animation will be used for the picker if the <see cref="T:MudBlazor.PickerVariant"/> is <see cref="F:MudBlazor.PickerVariant.Inline"/>.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.PreInitParameters">
+            <summary>
+            Contains all parameters before init
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.IsOverwritten(System.String)">
+            <summary>
+            Checks if a parameter is overwritten by user
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.IsOverwritten(System.String[])">
+            <summary>
+            Returns true if any of the parameters is overwritten
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.DialogOptions">
+            <summary>
+            The dialog options to be used for the picker if the <see cref="T:MudBlazor.PickerVariant"/> is <see cref="F:MudBlazor.PickerVariant.Dialog"/>.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.ServiceProvider">
             <summary>
             Gets or sets the <see cref="T:System.IServiceProvider"/> to be used for dependency injection.
@@ -646,6 +681,17 @@
             Gets or sets the value of the color picker.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.BeforeValueChanged(`0,`0)">
+            <summary>
+            Called before the value is changed. If the return value is false, the value will not be changed.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.AfterValueChanged(`0,`0)">
+            <summary>
+            Called after the value is changed.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.ValueChanged">
             <summary>
             Gets or sets the callback method when the value of the color picker is changed.
@@ -656,16 +702,61 @@
             Gets or sets a value indicating whether to delay the value change of the color picker until the picker is closed.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.BindWidthToPicker">
+            <summary>
+            If this is set to true, the picker will fit the width of the parent container.
+            This is only has effect if <see cref="T:MudBlazor.PickerVariant"/> is set to <see cref="F:MudBlazor.PickerVariant.Inline"/>.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.TryLocalize(System.String,System.Object[])">
             <summary>
             tries to localize given string
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.AllowOpenOnReadOnly">
+            <summary>
+            If this is set to true, the picker will open also if the input is read only.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.Id">
+            <summary>
+            Id for picker element
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.OnInitializedAsync">
+            <inheritdoc />
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.OnAfterRender(System.Boolean)">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.OnOpenedAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.OnSyncResized(MudBlazor.Interop.BoundingClientRect,System.Nullable{Microsoft.AspNetCore.Components.ElementReference},System.Nullable{Microsoft.AspNetCore.Components.ElementReference})">
+            <summary>
+            Called when the size of the picker is changed by binding.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.OnSyncResized(MudBlazor.Interop.BoundingClientRect)">
+            <summary>
+            Called when the size of the picker is changed by binding.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.OnPickerClosedAsync">
             <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.RaiseChanged">
+            <summary>
+            Raises the <see cref="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.ValueChanged"/> event.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.RaiseChangedIf">
+            <summary>
+            Calls the <see cref="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.RaiseChanged"/> method if picker is closed or <see cref="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.DelayValueChangeToPickerClose"/> is false.
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.CaptureInfoComponent">
             <summary>
@@ -3853,6 +3944,9 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnSyncResized(MudBlazor.Interop.BoundingClientRect)">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnPickerClosedAsync">
@@ -9253,6 +9347,11 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ReadOnlyOverwrite">
+            <summary>
+            If this is set all properties will be readonly depending on the value otherwise the property settings for meta configuration will be used
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.HasRegistrationForWholeObject">
             <summary>
             Returns true if we have a registration for the current object that then uses the registered component
@@ -12575,9 +12674,17 @@
             Validates the form
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.OnInitialized">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit">
             <summary>
             Editor for a property of an object. Used internally inside the MudExObjectEdit
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.ReadOnlyOverwrite">
+            <summary>
+            If this is set all properties will be readonly depending on the value otherwise the property settings for meta configuration will be used
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.StoreAndReadValueFromUrl">

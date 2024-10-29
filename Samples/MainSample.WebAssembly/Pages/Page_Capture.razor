@@ -111,8 +111,8 @@
             var audioDevices = await _captureService.GetAudioDevicesAsync();
             var videoDevices = await _captureService.GetVideoDevicesAsync();
 
-            //var r = await _dialogService.EditObject(_xxx);
-            var r = await _dialogService.EditObject(_xxx, "Show", DialogOptionsEx.DefaultDialogOptions, m =>
+            var r = await _dialogService.EditObject(_xxx);
+            var r3 = await _dialogService.EditObject(_xxx, "Show", DialogOptionsEx.DefaultDialogOptions, m =>
             {
                 m.Property(a => a.Name).AsReadOnly();
                 m.Property(a => a.CaptureI).AsReadOnly();

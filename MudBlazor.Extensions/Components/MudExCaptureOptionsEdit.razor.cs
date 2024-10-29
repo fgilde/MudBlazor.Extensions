@@ -21,13 +21,9 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomRenderData
 
     public IRenderData GetRenderData(ObjectEditPropertyMeta meta)
     {
-        return RenderData.For<MudExCaptureOptionsEdit, CaptureOptions>(edit => edit.Value, edit =>
+        return RenderData.For<MudExObjectEditPicker<CaptureOptions>, CaptureOptions>(edit => edit.Value, edit =>
         {
-            edit.Style = "background-color:pink;";
+            edit.AllowOpenOnReadOnly = true;
         });
-        //return RenderData.For<MudExObjectEditPicker<CaptureOptions>, CaptureOptions>(edit => edit.Value, edit =>
-        //{
-        //    edit.Style = "background-color:pink;";
-        //});
     }
 }
