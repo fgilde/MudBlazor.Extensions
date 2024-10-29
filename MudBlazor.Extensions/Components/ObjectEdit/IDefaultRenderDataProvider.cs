@@ -12,3 +12,11 @@ public interface IDefaultRenderDataProvider
     /// </summary>
     IRenderData GetRenderData(ObjectEditPropertyMeta propertyMeta);
 }
+
+
+/// <summary>
+/// Interface for providing default render data for mudex object only for a specific type
+/// This renderdata is only used when that type a property of the current edited object
+/// </summary>
+public interface IDefaultRenderDataProviderFor<T> : IDefaultRenderDataProvider
+{ }

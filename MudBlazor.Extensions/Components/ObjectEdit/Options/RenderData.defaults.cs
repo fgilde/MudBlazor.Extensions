@@ -5,6 +5,7 @@ using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Utilities;
 using Nextended.Core.Extensions;
+using Nextended.Core.Helper;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 
@@ -33,8 +34,9 @@ public static class RenderDataDefaults
     /// <summary>
     /// Adds a default render data providers to the list of providers.
     /// </summary>
-    public static void AddRenderDataProvider(params IDefaultRenderDataProvider[] provider) => Providers.AddRange(provider.EmptyIfNull());
-    
+    public static void AddRenderDataProvider(params IDefaultRenderDataProvider[] provider) 
+        => Providers.AddRange(provider.EmptyIfNull().Where(p => !Providers.Contains(p)));
+
     /// <summary>
     /// Removes a default render data providers from the list of providers.
     /// </summary>
@@ -325,5 +327,16 @@ public static class RenderDataDefaults
     }
 
     private static IRenderData FindFromProvider(ObjectEditPropertyMeta propertyMeta)
-        => Providers.Select(provider => provider.GetRenderData(propertyMeta)).FirstOrDefault(renderData => renderData != null);
+    {
+        return Providers.Where( p => ProviderIsValidFor(p, propertyMeta))
+            .Select(provider => provider.GetRenderData(propertyMeta))
+            .FirstOrDefault(renderData => renderData != null);
+    }
+
+    private static bool ProviderIsValidFor(IDefaultRenderDataProvider defaultRenderDataProvider, ObjectEditPropertyMeta propertyMeta)
+    {
+        var providerType = defaultRenderDataProvider.GetType();
+        return providerType.ImplementsInterface(typeof(IDefaultRenderDataProviderFor<>).MakeGenericType(propertyMeta.PropertyInfo.PropertyType)) 
+               || !providerType.GetInterfaces().Any(p => p.IsGenericType && p.GetGenericTypeDefinition() == typeof(IDefaultRenderDataProviderFor<>));
+    }
 }

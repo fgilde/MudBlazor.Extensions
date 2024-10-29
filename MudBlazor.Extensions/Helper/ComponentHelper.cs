@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Nextended.Core.Extensions;
 using Microsoft.AspNetCore.Components;
-using MudBlazor.Extensions.Core;
 using Nextended.Core.Helper;
 
 namespace MudBlazor.Extensions.Helper;

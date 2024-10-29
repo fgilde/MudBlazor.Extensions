@@ -72,7 +72,7 @@
     <PackageReference Include="AuralizeBlazor" Version="1.1.4" />
     <PackageReference Include="MudBlazor.Markdown" Version="7.8.0" />
     <PackageReference Include="Nextended.Blazor" Version="8.0.12" />
-    <PackageReference Include="Nextended.Core" Version="8.0.12" />
+    <PackageReference Include="Nextended.Core" Version="8.0.16" />
     <PackageReference Include="BlazorJS" Version="2.1.6" />
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
@@ -144,17 +144,6 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Components\MudExListItem.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Components\MudExSelectItem.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\css\components\_mudextreeview.scss" />
-  </ItemGroup>
 
   <!--<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="cd &quot;$(ProjectDir)\.scripts&quot;&#xD;&#xA;powershell -ExecutionPolicy Bypass -File &quot;copyMarkdown.ps1&quot;" />

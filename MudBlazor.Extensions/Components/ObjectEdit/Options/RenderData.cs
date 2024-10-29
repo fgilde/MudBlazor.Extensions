@@ -13,6 +13,7 @@ public sealed class RenderData<TPropertyType, TFieldType> : RenderData
 {
     internal override Type FieldType => typeof(TFieldType);
     internal override Type PropertyType => typeof(TPropertyType);
+    private bool _bindingInitialized = false;
 
     /// <summary>
     /// Converter function to convert the property type to the field type.
@@ -54,13 +55,28 @@ public sealed class RenderData<TPropertyType, TFieldType> : RenderData
     /// </summary>
     public override IRenderData InitValueBinding(ObjectEditPropertyMeta propertyMeta, Func<Task> valueChanged)
     {
+        if (_bindingInitialized && OneTimeBinding)
+            return this;
         base.InitValueBinding(propertyMeta, valueChanged);
-        ToFieldTypeConverterFn ??= v => v == null ? default : v.MapTo<TFieldType>();
-        ToPropertyTypeConverterFn ??= v => v == null ? default : v.MapTo<TPropertyType>();
+
+        ToFieldTypeConverterFn ??= v =>
+        {
+            if (v is TFieldType fieldType && !AlwaysMapToField)
+                return fieldType;
+            return v == null ? default : v.MapTo<TFieldType>();
+        };
+        ToPropertyTypeConverterFn ??= v =>
+        {
+            if (v is TPropertyType propertyType && !AlwaysMapToProperty)
+                return propertyType;
+            return v == null ? default : v.MapTo<TPropertyType>();
+        };
 
         ValueWrapper = propertyMeta.As<TPropertyType>();
+        
         Attributes.AddOrUpdate(ValueField, ToFieldTypeConverterFn(ValueWrapper.Value));
         AttachValueChanged(propertyMeta.ReferenceHolder, valueChanged);
+        _bindingInitialized = true;
         return this;
     }
 

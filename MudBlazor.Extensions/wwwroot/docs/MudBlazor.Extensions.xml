@@ -8786,6 +8786,39 @@
             Returns the render data 
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.IDefaultRenderDataProviderFor`1">
+            <summary>
+            Interface for providing default render data for mudex object only for a specific type
+            This renderdata is only used when that type a property of the current edited object
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.IObjectEditorFor`1">
+            <summary>
+            Interface for object editor
+            Just implement this interface on any component to make it as the default object editor for <typeparam name="T"></typeparam>
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.IObjectEditorFor`1.Value">
+            <summary>
+            The value to edit. This is the value that will be edited by the component
+            It's required that this property has the parameter attribute
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.IObjectEditorFor`1.ValueChanged">
+            <summary>
+            The value changed event
+            It's required that this property has the parameter attribute
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.IObjectEditorWithCustomRenderDataFor`1">
+            <summary>
+            Interface for object editor
+            Just implement this interface on any component to make it as the default object editor for <typeparam name="T"></typeparam>
+            Additionally this interface provides a method to get the custom render data for the object editor.
+            This is useful when you want to provide custom render data behavior for your editor if it is used as a property of another object.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.IObjectMetaConfiguration`1">
             <summary>
             Interface for configuring the <see cref="T:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1"/> component for a meta of TModel.
@@ -9238,9 +9271,14 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.HasRegistrationForWholeObject">
+            <summary>
+            Returns true if we have a registration for the current object that then uses the registered component
+            </summary>
+        </member>
         <member name="F:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.IsInternalLoading">
             <summary>
-            Is true if currently is a internal Bulk running. Like reset or clear etc..
+            Is true if currently is an internal Bulk running. Like reset or clear etc.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.InternalToolBarContent">
@@ -9251,6 +9289,11 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.Primitive">
             <summary>
             Is true if the value is a primitive type
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.RenderWithType">
+            <summary>
+            Returns the type of the registered editor if available
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.MultiSearch">
@@ -13128,6 +13171,21 @@
             Initializes the value binding for the current render data.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.OneTimeBinding">
+            <summary>
+            If this is set to true, the binding will only be done once at first render otherwise StateChange updates binding as well.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.AlwaysMapToField">
+            <summary>
+            If this is set to true and field and property type are equal it will anyhow map the propertyType to the fieldType what creates a clone of an object.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.AlwaysMapToProperty">
+            <summary>
+            If this is set to true and field and property type are equal it will anyhow map the fieldType to the propertyType what creates a clone of an object.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.ComponentReference">
             <summary>
             Component reference for the current render data.
@@ -13487,6 +13545,21 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData.ComponentType">
             <summary>
             Component type to be rendered.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData.OneTimeBinding">
+            <summary>
+            If this is set to true, the binding will only be done once at first render otherwise StateChange updates binding as well.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData.AlwaysMapToField">
+            <summary>
+            If this is set to true and field and property type are equal it will anyhow map the propertyType to the fieldType what creates a clone of an object.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData.AlwaysMapToProperty">
+            <summary>
+            If this is set to true and field and property type are equal it will anyhow map the fieldType to the propertyType what creates a clone of an object.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData.Attributes">

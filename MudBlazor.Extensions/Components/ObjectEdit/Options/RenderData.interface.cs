@@ -31,7 +31,22 @@ public interface IRenderData : ICloneable
     /// Component type to be rendered.
     /// </summary>
     public Type ComponentType { get; }
-    
+
+    /// <summary>
+    /// If this is set to true, the binding will only be done once at first render otherwise StateChange updates binding as well.
+    /// </summary>
+    public bool OneTimeBinding { get; set; }
+
+    /// <summary>
+    /// If this is set to true and field and property type are equal it will anyhow map the propertyType to the fieldType what creates a clone of an object.
+    /// </summary>
+    public bool AlwaysMapToField { get; set; }
+
+    /// <summary>
+    /// If this is set to true and field and property type are equal it will anyhow map the fieldType to the propertyType what creates a clone of an object.
+    /// </summary>
+    public bool AlwaysMapToProperty { get; set; }
+
     /// <summary>
     /// Attributes to be used when rendering the component.
     /// </summary>

@@ -29,7 +29,14 @@
             </MudOverlay>
         }
 
-        @if (Primitive)
+        @if (RenderWithType != null && HasRegistrationForWholeObject)
+        {
+            <div style="margin-left: 20px">
+                <!-- Render the whole object with an registered editor for it -->
+                <DynamicComponent Type="@RenderWithType" Parameters="GetCompatibleParameters(RenderWithType)"></DynamicComponent>
+            </div>
+        }
+        else if (Primitive)
         {
             <DynamicComponent Type="@typeof(MudExObjectEdit<ModelForPrimitive<T>>)" Parameters="GetAttributesForPrimitive()"></DynamicComponent>
         }

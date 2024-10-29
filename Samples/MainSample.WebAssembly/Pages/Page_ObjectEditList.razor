@@ -17,7 +17,7 @@
     public class SampleModel
     {
         public string Name { get; set; }
-        public Brand SelectedBrand { get; set; }        
+        public Brand SelectedBrand { get; set; } = new("Apple", "A tech company");
     }
 
     public class Brand
@@ -30,6 +30,7 @@
 
         public string Name { get; set; }
         public string Description { get; set; }
+
     }
 
     private void Callback(EditContext e)
@@ -39,25 +40,29 @@
 
     private void Configure(ObjectEditMeta<SampleModel> meta)
     {
-        //meta.Property(m => m.SimpleString).RenderWithMudAutocomplete(new[] { "Item 1", "Item 2", "Another Item" });
-        meta.Property(m => m.SelectedBrand).RenderWith(f => f.Value, new MudExSelect<Brand>
+        meta.Property(m => m.SelectedBrand).RenderWith(f => f.SelectedValues, new MudExSelect<Brand>
             {
                 MultiSelection = false,
                 Placeholder = "Select a brand",
                 ToStringFunc = (b) => b?.Name,
-                AvailableItemsLoadFunc = (_) => GetBrands()
-            });       
+                AvailableItemsLoadFunc = (_) => GetBrandsAsync()
+            }, b => new List<Brand> {b}, brands => brands?.FirstOrDefault() );       
     }
 
-    private async Task<IList<Brand>> GetBrands()
+    private async Task<IList<Brand>> GetBrandsAsync()
     {
         await Task.Delay(400); // Simulate server load
+        return GetBrands();
+    }
+
+    private static IList<Brand> GetBrands()
+    {
         return new List<Brand> {
             new("Apple", "A tech company"),
             new("Google", "what ever"),
             new("Some other", "hat providing samples"),
         };
     }
-    
+
 }
 

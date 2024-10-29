@@ -8,6 +8,17 @@ public partial class RenderData
 {
     #region Static Factory Methods
 
+    public static IRenderData For(string valueField, Type propertyType, Type controlType)
+    {
+        return For(valueField, propertyType, propertyType, controlType);
+    }
+
+    public static IRenderData For(string valueField, Type propertyType, Type fieldType, Type controlType)
+    {
+        return typeof(RenderData<,>).MakeGenericType(propertyType, fieldType).CreateInstance<IRenderData>(valueField, controlType, null);
+    }
+
+
     /// <summary>
     /// Returns a new RenderData instance for the given component type, with the specified options.
     /// </summary>

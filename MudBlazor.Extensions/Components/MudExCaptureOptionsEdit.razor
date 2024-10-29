@@ -1,5 +1,9 @@
 ﻿@inherits MudExBaseComponent<MudExCaptureOptionsEdit>
 
-<div>
- Hello
+<div class="super-dupa-class" style="@Style">
+    Hello
+    @if (Value != null)
+    {
+        <MudTextField ReadOnly="@ReadOnly" @bind-Value="@Value.AudioContentType" Label="AudioContentType" />
+    }
 </div>

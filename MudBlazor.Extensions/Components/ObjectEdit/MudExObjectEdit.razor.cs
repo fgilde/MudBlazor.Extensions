@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.CompilerServices;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Core;
@@ -12,6 +13,7 @@ using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Options;
 using Newtonsoft.Json;
+using Nextended.Blazor.Helper;
 using Nextended.Blazor.Models;
 using Nextended.Core;
 using Nextended.Core.Extensions;
@@ -33,9 +35,15 @@ public partial class MudExObjectEdit<T>
     private bool _restoreCalled;
     private T _value;
     private List<MudExpansionPanel> _groups = new();
+    private Type? _registeredEditorType;
 
     /// <summary>
-    /// Is true if currently is a internal Bulk running. Like reset or clear etc..
+    /// Returns true if we have a registration for the current object that then uses the registered component
+    /// </summary>
+    protected bool HasRegistrationForWholeObject => RenderWithType != null;
+    
+    /// <summary>
+    /// Is true if currently is an internal Bulk running. Like reset or clear etc.
     /// </summary>
     protected bool IsInternalLoading;
     
@@ -49,6 +57,24 @@ public partial class MudExObjectEdit<T>
     /// </summary>
     protected bool Primitive => IsPrimitive();
 
+    /// <summary>
+    /// Returns the type of the registered editor if available
+    /// </summary>
+    protected Type? RenderWithType
+    {
+        get
+        {
+            if (_registeredEditorType != null)
+                return _registeredEditorType;
+            var editor = ServiceProvider.GetService<IObjectEditorFor<T>>();
+            if (editor != null)
+                _registeredEditorType = editor.GetType();
+
+            // TODO: Think about more other ways to register an editor
+
+            return _registeredEditorType;
+        }
+    }
 
     #region Parameters
 
@@ -533,6 +559,7 @@ public partial class MudExObjectEdit<T>
 
     #endregion
 
+
     /// <summary>
     /// Returns the current value independent of disabled value bindings
     /// </summary>
@@ -865,6 +892,34 @@ public partial class MudExObjectEdit<T>
         ));
 
         return res;
+    }
+    
+    private IDictionary<string, object> GetCompatibleParameters(Type componentType)
+    {
+        var res = ComponentRenderHelper.GetCompatibleParameters(this, componentType)
+            .Where(p => IsOverwritten(p.Key)).ToDictionary(p => p.Key, p => p.Value);
+        
+        foreach (var parameter in UserAttributes.Where(parameter => ComponentRenderHelper.IsValidParameter(componentType, parameter.Key, parameter.Value)))
+        {
+            res.AddOrUpdate(parameter.Key, parameter.Value);
+        }
+
+        res.AddOrUpdate(nameof(Value), Value);
+        res.AddOrUpdate(nameof(ValueChanged), RuntimeHelpers.TypeCheck(
+            EventCallback.Factory.Create(
+                this,
+                EventCallback.Factory.CreateInferred(
+                    this, x =>
+                    {
+                        Value = x;
+                        ValueChanged.InvokeAsync(Value);
+                    },
+                    Value
+                )
+            )
+        ));
+
+        return res.Where(pair => ComponentRenderHelper.IsValidParameter(componentType, pair.Key, pair.Value)).ToDictionary(p => p.Key, p => p.Value);
     }
 
     /// <summary>
