@@ -1,9 +1,5 @@
-﻿using BlazorJS.JsInterop;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
-using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
@@ -19,7 +15,6 @@ public partial class MudExIconPicker
 {
     private double _iconCardWidth = 136.88; // single icon card width including margins
     private float _iconCardHeight = 144; // single icon card height including margins
-    private IStringLocalizer<MudExIconPicker> FallbackLocalizer => ServiceProvider.GetService<IStringLocalizer<MudExIconPicker>>();
     private bool _rendered;
     private string _propertyName;
     private int _cardsPerRow = 3;
@@ -27,27 +22,6 @@ public partial class MudExIconPicker
     
     [Inject] IResizeObserver ResizeObserver { get; set; }
     
-    //[Inject] private IKeyInterceptorFactory KeyInterceptorFactory { get; set; }
-    //private IEventListener _throttledEventManager;
-    //[Inject] IEventListenerFactory ThrottledEventManagerFactory { get; set; }
-
-
-    /// <summary>
-    /// Gets or sets the <see cref="IServiceProvider"/> to be used for dependency injection.
-    /// </summary>
-    [Inject]
-    protected IServiceProvider ServiceProvider { get; set; }
-
-    /// <summary>
-    /// Gets the <see cref="IStringLocalizer"/> to be used for localizing strings.
-    /// </summary>
-    protected IStringLocalizer LocalizerToUse => Localizer ?? FallbackLocalizer;
-
-    /// <summary>
-    /// Gets or sets the <see cref="IStringLocalizer"/> to be used for localizing strings.
-    /// </summary>
-    [Parameter, SafeCategory("Common")]
-    public IStringLocalizer Localizer { get; set; }
 
     /// <summary>
     /// The width of the picker in pixels.
@@ -73,29 +47,16 @@ public partial class MudExIconPicker
     [Parameter, SafeCategory("Filtering")]
     public Variant FilterVariant { get; set; }
 
-    /// <summary>
-    /// Gets or sets the value.
-    /// </summary>
-    [Parameter, SafeCategory("Data")]
-    public string Value
+
+    /// <inheritdoc />
+    protected override void AfterValueChanged(string from, string to)
     {
-        get => _value;
-        set
-        {
-            if (_value == value)
-                return;
-            AdornmentIcon = value;
-            _value = value;
-            _propertyName = MudExSvg.SvgPropertyNameForValue(value, IconTypes) ?? value;
-            StateHasChanged();
-        }
+        base.AfterValueChanged(from, to);
+        AdornmentIcon = to;
+        _propertyName = MudExSvg.SvgPropertyNameForValue(to, IconTypes) ?? to;
+        StateHasChanged();
     }
 
-    /// <summary>
-    /// Gets or sets the callback method when the value of the picker is changed.
-    /// </summary>
-    [Parameter, SafeCategory("Behavior")]
-    public EventCallback<string> ValueChanged { get; set; }
 
     /// <summary>
     /// Gets or sets the callback method when the property name for the value of the is changed.
@@ -125,13 +86,7 @@ public partial class MudExIconPicker
     [Parameter, SafeCategory("Filtering")]
     public string Filter { get; set; }
 
-
-    /// <summary>
-    /// Gets or sets a value indicating whether to delay the value change of the picker until the picker is closed.
-    /// </summary>
-    [Parameter, SafeCategory("Behavior")]
-    public bool DelayValueChangeToPickerClose { get; set; }
-
+    
     /// <summary>
     /// Gets or sets the auto close behavior.
     /// </summary>
@@ -162,10 +117,6 @@ public partial class MudExIconPicker
         }
     }
 
-    /// <summary>
-    /// Localizes a text
-    /// </summary>
-    public string TryLocalize(string text, params object[] args) => LocalizerToUse.TryLocalize(text, args);
 
     private string OnGetValueFromName(string name) => Value = MudExSvg.SvgPropertyValueForName(name, IconTypes);
 
@@ -209,7 +160,6 @@ public partial class MudExIconPicker
             _rendered = true;
             await ResizeObserver.Observe(killZone);
             ResizeObserver.OnResized += OnResized;
-          //  _jsEvent = await new BlazorJSEventInterop<PointerEventArgs>(ServiceProvider.GetService<IJSRuntime>()).OnBlur(LostFocusAsync, $".{_elementId}");
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -288,58 +238,18 @@ public partial class MudExIconPicker
     }
 
 
-    //private bool canClose = true;
-    
-    //protected override void OnClosed()
-    //{
-    //    if (!canClose && PickerVariant == PickerVariant.Dialog)
-    //    {
-    //        IsOpen = true;
-    //        return;
-    //    }
-    //    base.OnClosed();
-    //}
-
-
-
-    //public override ValueTask FocusAsync()
-    //{
-    //    if (PickerVariant == PickerVariant.Dialog)
-    //        canClose = false;
-    //    return base.FocusAsync();
-    //}
-
-    //private ElementReference element;
-    //private async Task LostFocusAsync(PointerEventArgs arg)
-    //{
-    //    var js = ServiceProvider.GetService<IJSRuntime>();
-    //    if (PickerVariant == PickerVariant.Dialog && IsOpen && !(await js.IsWithin(arg, element)))
-    //    {
-    //        canClose = true;
-    //    }
-    //}
-
-    private void RaiseChanged()
+    /// <inheritdoc />
+    protected override void RaiseChanged()
     {
-        ValueChanged.InvokeAsync(Value);
+        base.RaiseChanged();
         PropertyNameChanged.InvokeAsync(PropertyName);
     }
 
-
-    private void RaiseChangedIf()
-    {
-        if (DelayValueChangeToPickerClose && Open)
-            return;
-        RaiseChanged();
-    }
-
-
-
+    
     private void CloseIf()
     {
         if (AutoCloseOnSelect)
         {
-           // canClose = true;
            CloseAsync();
         }
     }
@@ -356,10 +266,8 @@ public partial class MudExIconPicker
 
     private static bool IsValueName(string s) => !s.StartsWith("<");
 
-
     private Task OnMouseDown(MouseEventArgs arg)
     {
-        
         return Task.CompletedTask;
     }
 }

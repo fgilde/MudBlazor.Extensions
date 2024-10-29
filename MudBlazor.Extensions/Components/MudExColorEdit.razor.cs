@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
-using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
@@ -17,31 +14,11 @@ public sealed partial class MudExColorEdit
 {
     private MudColorOutputFormats? _suggestedFormat = null;
     private MudColor _initialMudColorValue;
-    private IStringLocalizer<MudExColorEdit> _fallbackLocalizer => ServiceProvider.GetService<IStringLocalizer<MudExColorEdit>>();
-    private bool rendered;
+    private KeyValuePair<string, MudColor>[] _cssVars;
+    private MudColor[] _palette;
+    private bool HasDefinedColors => ShowThemeColors || ShowHtmlColors || ShowCssColorVariables;
+    private List<ColorItem> _colors = new();
 
-    /// <summary>
-    /// Gets or sets the <see cref="IServiceProvider"/> to be used for dependency injection.
-    /// </summary>
-    [Inject]
-    private IServiceProvider ServiceProvider { get; set; }
-
-    /// <summary>
-    /// Gets or sets the <see cref="IJSRuntime"/> to be used.
-    /// </summary>
-    [Inject]
-    private IJSRuntime JsRuntime { get; set; }
-
-    /// <summary>
-    /// Gets the <see cref="IStringLocalizer"/> to be used for localizing strings.
-    /// </summary>
-    private IStringLocalizer LocalizerToUse => Localizer ?? _fallbackLocalizer;
-
-    /// <summary>
-    /// Gets or sets the <see cref="IStringLocalizer"/> to be used for localizing strings.
-    /// </summary>
-    [Parameter, SafeCategory("Common")]
-    public IStringLocalizer Localizer { get; set; }
 
     /// <summary>
     /// Gets or sets the variant filter.
@@ -49,17 +26,6 @@ public sealed partial class MudExColorEdit
     [Parameter, SafeCategory("Filtering")]
     public Variant FilterVariant { get; set; }
 
-    /// <summary>
-    /// Gets or sets the value of the color picker.
-    /// </summary>
-    [Parameter, SafeCategory("Data")]
-    public MudExColor Value { get => _value; set => _value = value; }
-
-    /// <summary>
-    /// Gets or sets the callback method when the value of the color picker is changed.
-    /// </summary>
-    [Parameter, SafeCategory("Behavior")]
-    public EventCallback<MudExColor> ValueChanged { get; set; }
 
     /// <summary>
     /// Gets or sets the Css Variables.
@@ -131,12 +97,6 @@ public sealed partial class MudExColorEdit
     public ColorPreviewMode PreviewMode { get; set; } = ColorPreviewMode.Both;
 
     /// <summary>
-    /// Gets or sets a value indicating whether to delay the value change of the color picker until the picker is closed.
-    /// </summary>
-    [Parameter, SafeCategory("Behavior")]
-    public bool DelayValueChangeToPickerClose { get; set; }
-
-    /// <summary>
     /// Gets or sets the auto close behavior.
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
@@ -172,19 +132,6 @@ public sealed partial class MudExColorEdit
     /// </summary>
     [Parameter, SafeCategory("Appearance")]
     public string LabelDefinedTab { get; set; } = "Defined";
-    
-
-    private KeyValuePair<string, MudColor>[] _cssVars;
-    private MudColor[] _palette ;
-
-    private bool HasDefinedColors => ShowThemeColors || ShowHtmlColors || ShowCssColorVariables;
-
-    /// <summary>
-    /// tries to localize given string
-    /// </summary>
-    public string TryLocalize(string text, params object[] args) => LocalizerToUse.TryLocalize(text, args);
-
-    private List<ColorItem> _colors = new();    
     
 
     private async Task EnsureCssVarsAsync()
@@ -247,14 +194,6 @@ public sealed partial class MudExColorEdit
             UpdateColors();
     }
 
-    /// <inheritdoc />
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender || !rendered)
-            rendered = true;
-        base.OnAfterRender(firstRender);
-    }
-
     
     /// <inheritdoc />
     protected override Task OnPickerClosedAsync()
@@ -276,7 +215,7 @@ public sealed partial class MudExColorEdit
     protected override async Task StringValueChangedAsync(string value)
     {
         SetSuggestedFormat();
-        if (!rendered)
+        if (!Rendered)
             return;
         Touched = true;
         Value = Converter.Get(value);
@@ -287,9 +226,10 @@ public sealed partial class MudExColorEdit
         RaiseChangedIf();
     }
 
-    private void RaiseChanged()
+    /// <inheritdoc />
+    protected override void RaiseChanged()
     {
-        ValueChanged.InvokeAsync(Value);
+        base.RaiseChanged();
         ValueStringChanged.InvokeAsync(ValueString);
     }
 
@@ -311,14 +251,7 @@ public sealed partial class MudExColorEdit
         RaiseChangedIf();
         return Text = ValueString;
     }
-
-    private void RaiseChangedIf()
-    {
-        if (DelayValueChangeToPickerClose && Open)
-            return;
-        RaiseChanged();
-    }
-
+    
 
     private void UpdatePreview()
     {

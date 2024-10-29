@@ -616,6 +616,57 @@
         <member name="M:MudBlazor.Extensions.Components.Base.MudExJsRequiredBaseFormComponent`3.DisposeAsync">
             <inheritdoc/>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.Base.MudExPickerBase`1">
+            <summary>
+            Base component for a picker
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.ServiceProvider">
+            <summary>
+            Gets or sets the <see cref="T:System.IServiceProvider"/> to be used for dependency injection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.JsRuntime">
+            <summary>
+            Gets or sets the <see cref="T:Microsoft.JSInterop.IJSRuntime"/> to be used.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.LocalizerToUse">
+            <summary>
+            Gets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.Localizer">
+            <summary>
+            Gets or sets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.Value">
+            <summary>
+            Gets or sets the value of the color picker.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.ValueChanged">
+            <summary>
+            Gets or sets the callback method when the value of the color picker is changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.DelayValueChangeToPickerClose">
+            <summary>
+            Gets or sets a value indicating whether to delay the value change of the color picker until the picker is closed.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.TryLocalize(System.String,System.Object[])">
+            <summary>
+            tries to localize given string
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.OnAfterRender(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.OnPickerClosedAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.CaptureInfoComponent">
             <summary>
             Component to display information about the current recording
@@ -1635,39 +1686,9 @@
             Component to Edit MudExColor
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.ServiceProvider">
-            <summary>
-            Gets or sets the <see cref="T:System.IServiceProvider"/> to be used for dependency injection.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.JsRuntime">
-            <summary>
-            Gets or sets the <see cref="T:Microsoft.JSInterop.IJSRuntime"/> to be used.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.LocalizerToUse">
-            <summary>
-            Gets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.Localizer">
-            <summary>
-            Gets or sets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.FilterVariant">
             <summary>
             Gets or sets the variant filter.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.Value">
-            <summary>
-            Gets or sets the value of the color picker.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.ValueChanged">
-            <summary>
-            Gets or sets the callback method when the value of the color picker is changed.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.CssVars">
@@ -1710,11 +1731,6 @@
             Gets or sets the color preview mode.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.DelayValueChangeToPickerClose">
-            <summary>
-            Gets or sets a value indicating whether to delay the value change of the color picker until the picker is closed.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExColorEdit.AutoCloseBehaviour">
             <summary>
             Gets or sets the auto close behavior.
@@ -1746,11 +1762,6 @@
             Gets or sets the label for the defined tab.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.TryLocalize(System.String,System.Object[])">
-            <summary>
-            tries to localize given string
-            </summary>
-        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnInitialized">
             <inheritdoc />
         </member>
@@ -1760,9 +1771,6 @@
         <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnAfterRender(System.Boolean)">
-            <inheritdoc />
-        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnPickerClosedAsync">
             <inheritdoc />
         </member>
@@ -1770,6 +1778,9 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.StringValueChangedAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.RaiseChanged">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExColorPicker">
@@ -3776,21 +3787,6 @@
             Component to Edit Icon values
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.ServiceProvider">
-            <summary>
-            Gets or sets the <see cref="T:System.IServiceProvider"/> to be used for dependency injection.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.LocalizerToUse">
-            <summary>
-            Gets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.Localizer">
-            <summary>
-            Gets or sets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.PickerWidth">
             <summary>
             The width of the picker in pixels.
@@ -3811,15 +3807,8 @@
             Gets or sets the variant filter.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.Value">
-            <summary>
-            Gets or sets the value.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.ValueChanged">
-            <summary>
-            Gets or sets the callback method when the value of the picker is changed.
-            </summary>
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.AfterValueChanged(System.String,System.String)">
+            <inheritdoc />
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.PropertyNameChanged">
             <summary>
@@ -3842,11 +3831,6 @@
             Gets or sets the filter for the icons.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.DelayValueChangeToPickerClose">
-            <summary>
-            Gets or sets a value indicating whether to delay the value change of the picker until the picker is closed.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.AutoCloseOnSelect">
             <summary>
             Gets or sets the auto close behavior.
@@ -3860,11 +3844,6 @@
         <member name="P:MudBlazor.Extensions.Components.MudExIconPicker.PropertyName">
             <summary>
             Gets or sets the string name of the property for the value.
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.TryLocalize(System.String,System.Object[])">
-            <summary>
-            Localizes a text
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.OnInitialized">
@@ -3883,6 +3862,9 @@
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.StringValueChangedAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExIconPicker.RaiseChanged">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExImageViewerSaveOptions">
