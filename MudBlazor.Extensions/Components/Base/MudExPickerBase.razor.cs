@@ -7,8 +7,9 @@ using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Interop;
 using Nextended.Core.Extensions;
-using System.ComponentModel;
 using Microsoft.AspNetCore.Components.Web;
+using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Core.Css;
 
 namespace MudBlazor.Extensions.Components.Base;
 
@@ -36,7 +37,7 @@ public partial class MudExPickerBase<T>
     /// This animation will be used for the picker if the <see cref="PickerVariant"/> is <see cref="PickerVariant.Inline"/>.
     /// </summary>
     [Parameter]
-    public AnimationType InlineAnimation { get; set; } = AnimationType.Pulse;
+    public AnimationType PopverAnimation { get; set; } = AnimationType.Pulse;
 
     /// <summary>
     /// Contains all parameters before init
@@ -57,13 +58,25 @@ public partial class MudExPickerBase<T>
     /// The dialog options to be used for the picker if the <see cref="PickerVariant"/> is <see cref="PickerVariant.Dialog"/>.
     /// </summary>
     [Parameter]
-    public DialogOptionsEx DialogOptions { get; set; } = DialogOptionsEx.DefaultDialogOptions.SetProperties(o => o.Resizeable = true);
+    public DialogOptionsEx DialogOptions { get; set; }
+
+    /// <summary>
+    /// Simple possibility to set the border color of the picker.
+    /// </summary>
+    [Parameter]
+    public MudExColor BorderColor { get; set; }
+
+    /// <summary>
+    /// Style of the picker.
+    /// </summary>
+    [Parameter]
+    public string PickerStyle { get; set; }
 
     /// <summary>
     /// Gets or sets the <see cref="IServiceProvider"/> to be used for dependency injection.
     /// </summary>
     [Inject]
-    protected IServiceProvider ServiceProvider { get; set; }
+    public IServiceProvider ServiceProvider { get; protected set; }
 
     /// <summary>
     /// Gets or sets the <see cref="IJSRuntime"/> to be used.
@@ -100,6 +113,11 @@ public partial class MudExPickerBase<T>
         }
     }
 
+    private int GetActiveElevation()
+    {
+        return Elevation;
+    }
+
     /// <summary>
     /// Called before the value is changed. If the return value is false, the value will not be changed.
     /// </summary>
@@ -133,6 +151,7 @@ public partial class MudExPickerBase<T>
     /// If this is set to true, the picker will fit the width of the parent container.
     /// This is only has effect if <see cref="PickerVariant"/> is set to <see cref="PickerVariant.Inline"/>.
     /// </summary>
+    [Parameter]
     public bool BindWidthToPicker { get; set; } = true;
 
     /// <summary>
@@ -279,5 +298,23 @@ public partial class MudExPickerBase<T>
         return MudExStyleBuilder.Default
             .WithWidth(_currentWidth ?? 0, BindWidthToPicker && _currentWidth.HasValue)
             .Style;
+    }
+
+    private string GetPickerPaperStyle()
+    {
+        return MudExStyleBuilder.FromStyle(PickerPaperStylename)
+            .WithBorder(1, BorderStyle.Solid, BorderColor, BorderColor.IsSet())
+            .AddRaw(PickerStyle)
+            .Style;
+    }
+
+    private DialogOptionsEx GetDialogOptions()
+    {
+        var options = (DialogOptions ?? DialogOptionsEx.DefaultDialogOptions).CloneOptions();
+        options.DialogAppearance = MudExAppearance.FromStyle(b => 
+            b.WithBorder(1, BorderStyle.Solid, BorderColor, BorderColor.IsSet())
+                .AddRaw(PickerStyle)
+            );
+        return options;
     }
 }

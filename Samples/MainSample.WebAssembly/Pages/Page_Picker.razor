@@ -1,0 +1,53 @@
+﻿@page "/mud-ex-picker"
+
+
+@attribute [DemoNew(Name = "MudExPicker", Icon = Icons.Material.Outlined.ArrowDropDown, Documentation = "This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker", ForComponentTypes = new[] { typeof(MudExPicker) })]
+
+<DemoComponent PageType="@GetType()" >
+    <SplitContainer>
+        <Left>
+            <MudExPicker @ref="component" Text="@text">
+                <MudExCardList TData="object">
+                    @for (int i = 0; i < 4; i++)
+                    {
+                        
+                        var i1 = i;
+                        <MudCard @onclick="@(() => Select(i1))">
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    <MudText Typo="Typo.h6">Sample Card @i1</MudText>
+                                </CardHeaderContent>
+                                <CardHeaderActions>
+                                    <MudIconButton Icon="@Icons.Material.Filled.Camera" Color="Color.Default"/>
+                                </CardHeaderActions>
+                            </MudCardHeader>
+                            <MudCardContent Style="z-index: 5">
+                                <MudText>Super sample Content text.</MudText>
+                                <MudText Typo="Typo.body2">Subline description for sample card.</MudText>
+                            </MudCardContent>
+                            <MudCardActions Style="z-index: 5">
+                                <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    }
+                </MudExCardList>
+            </MudExPicker>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid ShowInherited="true" Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+@code {
+    MudExPicker component;
+    string text = "Select something...";
+
+    private Task Select(int i)
+    {
+        text = $"Selected {i}";
+        return component.CloseAsync();
+    }
+
+}

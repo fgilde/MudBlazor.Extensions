@@ -1,8 +1,11 @@
-﻿using System.Globalization;
+﻿using System.Collections;
+using System.Globalization;
 using System.Linq.Expressions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Options;
 using MudBlazor.Utilities;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
@@ -91,7 +94,79 @@ public static class RenderDataDefaults
         RegisterDefault<IList<UploadableFile>, MudExUploadEdit<UploadableFile>>(edit => edit.UploadRequests);
         RegisterDefault<UploadableFile, MudExUploadEdit<UploadableFile>>(edit => edit.UploadRequest, edit => edit.AllowMultiple = false);
 
+
+        RegisterDefault<DialogOptionsEx, MudExObjectEditPicker<DialogOptionsEx>>(picker =>
+        {
+            picker.DialogOptions = DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(o => o.Resizeable = true);
+            picker.PickerVariant = PickerVariant.Dialog;
+        });
+
+        RegisterAsSelection<VideoDevice>(select => select.AvailableItemsLoadFunc = LoadFromJsFunc<VideoDevice>("MudExCapture.getAvailableVideoDevices"));
+        RegisterAsSelection<AudioDevice>(select => select.AvailableItemsLoadFunc = LoadFromJsFunc<AudioDevice>("MudExCapture.getAvailableAudioDevices"));
+        
+        RegisterAsMultiSelection<VideoDevice, List<VideoDevice>>(list => list, items => items.ToList(),
+            select =>
+            {
+                select.MultiSelection = true;
+                select.AvailableItemsLoadFunc = LoadFromJsFunc<VideoDevice>("MudExCapture.getAvailableVideoDevices");
+            });
+        RegisterAsMultiSelection<VideoDevice, IList<VideoDevice>>(list => list, items => items.ToList(),
+            select =>
+            {
+                select.MultiSelection = true;
+                select.AvailableItemsLoadFunc = LoadFromJsFunc<VideoDevice>("MudExCapture.getAvailableVideoDevices");
+            });
+        RegisterAsMultiSelection<VideoDevice, VideoDevice[]>(list => list, items => items.ToArray(),
+            select =>
+            {
+                select.MultiSelection = true;
+                select.AvailableItemsLoadFunc = LoadFromJsFunc<VideoDevice>("MudExCapture.getAvailableVideoDevices");
+            });
+
+        RegisterAsMultiSelection<AudioDevice, List<AudioDevice>>(list => list, items => items.ToList(),
+            select =>
+            {
+                select.MultiSelection = true;
+                select.AvailableItemsLoadFunc = LoadFromJsFunc<AudioDevice>("MudExCapture.getAvailableAudioDevices");
+            });
+        RegisterAsMultiSelection<AudioDevice, IList<AudioDevice>>(list => list, items => items.ToList(),
+            select =>
+            {
+                select.MultiSelection = true;
+                select.AvailableItemsLoadFunc = LoadFromJsFunc<AudioDevice>("MudExCapture.getAvailableAudioDevices");
+            });
+        RegisterAsMultiSelection<AudioDevice, AudioDevice[]>(list => list, items => items.ToArray(),
+            select =>
+            {
+                select.MultiSelection = true;
+                select.AvailableItemsLoadFunc = LoadFromJsFunc<AudioDevice>("MudExCapture.getAvailableAudioDevices");
+            });
     }
+
+    public static Func<CancellationToken, Task<IList<T>>> LoadFromJsFunc<T>(string identifier, IJSRuntime js = null) 
+        => token => (js ?? JsImportHelper.GetInitializedJsRuntime()).InvokeAsync<IList<T>>(identifier, token, null).AsTask();
+
+    public static void RegisterAsSelection<T>(Action<MudExSelect<T>> configure) {
+        RegisterDefault(s => s.Value, configure);
+    }
+
+    public static void RegisterAsMultiSelection<TItem, TCollection>(
+        Func<TCollection, IEnumerable<TItem>> toEnumerable,
+        Func<IEnumerable<TItem>, TCollection> toCollection,
+        Action<MudExSelect<TItem>> configure)
+    {
+        RegisterDefault<TCollection, IEnumerable<TItem>, MudExSelect<TItem>>(
+            s => s.SelectedValues,
+            s =>
+            {
+                s.ValuePresenter = ValuePresenter.Chip;
+                configure?.Invoke(s);
+            },
+            toEnumerable,
+            toCollection);
+    }
+
+
 
     /// <summary>
     /// Registers the MudExColorEdit component for various color types.

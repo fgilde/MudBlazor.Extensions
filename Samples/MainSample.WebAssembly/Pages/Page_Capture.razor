@@ -111,26 +111,16 @@
             var audioDevices = await _captureService.GetAudioDevicesAsync();
             var videoDevices = await _captureService.GetVideoDevicesAsync();
 
-            var r = await _dialogService.EditObject(_xxx);
-            var r3 = await _dialogService.EditObject(_xxx, "Show", DialogOptionsEx.DefaultDialogOptions, m =>
-            {
-                m.Property(a => a.Name).AsReadOnly();
-                m.Property(a => a.CaptureI).AsReadOnly();
-            });
-            await JsRuntime.AlertAsync(r.Result.CaptureI.AudioContentType + "  for " + r.Result.Name + " is" + r.Result.Color);
+            await Test();
 
-
-            var r2 = await _dialogService.EditObject(new CaptureOptions());
-            await JsRuntime.AlertAsync(r2.Result.AudioContentType);
-            return;
             await JsRuntime.AlertAsync("Click ok to start");
             var options = new CaptureOptions
                 {
                     OverlayPosition = DialogPosition.CenterLeft,
                     OverlaySource = OverlaySource.CapturedScreen,
                     ScreenCapture = _source ?? (OneOf<bool, MediaStreamTrack, DisplayMediaOptions>)_captureScreen,
-                    VideoDeviceId = _camera ? videoDevices.FirstOrDefault()?.DeviceId : null,
-                    AudioDevices = _recordAudio ? [audioDevices.First().DeviceId] : []
+                    VideoDevice = _camera ? videoDevices.FirstOrDefault() : null,
+                    AudioDevices = _recordAudio ? [audioDevices.First()] : []
                 };
             _captureId = await _captureService.StartCaptureAsync(options, CaptureCallback, s =>
             {
@@ -140,17 +130,28 @@
         }
     }
 
+    private async Task Test()
+    {
+        return;
+        var r = await _dialogService.EditObject(_xxx);
+        var r3 = await _dialogService.EditObject(_xxx, "Show", DialogOptionsEx.DefaultDialogOptions, m =>
+        {
+            m.Property(a => a.Name).AsReadOnly();
+            m.Property(a => a.CaptureI).AsReadOnly();
+        });
+        await JsRuntime.AlertAsync(r.Result.CaptureI.AudioContentType + "  for " + r.Result.Name + " is" + r.Result.Color);
+
+
+        var r2 = await _dialogService.EditObject(new CaptureOptions());
+        await JsRuntime.AlertAsync(r2.Result.AudioContentType);
+    }
+
 
     private CaptureResult _captureResult;
     private void CaptureCallback(CaptureResult obj)
     {
         _captureResult = obj;
         StateHasChanged();
-        // _fileService.CreateDataUrlAsync(obj.VideoData, obj.Options.ContentType, true).ContinueWith(task =>
-        // {
-        //     _url = task.Result;
-        //     StateHasChanged();
-        // });
     }
 
 }

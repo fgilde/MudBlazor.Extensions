@@ -32,6 +32,7 @@ public partial class DialogOptionsEx
                 i.lg = 6;
                 i.xs = 12;
             });
+        
         meta.Properties(o => o.Position).WrapInMudItem(i =>
         {
             i.xl = 12;

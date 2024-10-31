@@ -28,5 +28,5 @@ public interface IObjectEditorFor<T> : IComponent
 /// This is useful when you want to provide custom render data behavior for your editor if it is used as a property of another object.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public interface IObjectEditorWithCustomRenderDataFor<T> : IObjectEditorFor<T>, IDefaultRenderDataProviderFor<T>
+public interface IObjectEditorWithCustomPropertyRenderDataFor<T> : IObjectEditorFor<T>, IDefaultRenderDataProviderFor<T>
 {}

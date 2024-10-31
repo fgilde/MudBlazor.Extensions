@@ -5,10 +5,83 @@
 
 @code
 {
-    protected override RenderFragment PickerContent { get
+    protected override RenderFragment PickerContent
     {
-        return @<MudExObjectEdit ReadOnlyOverwrite="@ReadOnlyOverwrite()" T="T" @bind-Value="Value">
+        get
+        {
+            return @<MudExObjectEdit ReadOnlyOverwrite="@ReadOnlyOverwrite()" T="T" @bind-Value="Value"
+                                         MetaInformation="@MetaInformation"
+                                         MetaConfiguration="@MetaConfiguration"
+                                         MetaConfigurationAsync="@MetaConfigurationAsync"
+                                         MultiSearch="@MultiSearch"
+                                         RenderIgnoredReferences="@RenderIgnoredReferences"
+                                         IsLoading="@IsLoading"
+                                         AutoUpdateConditions="@AutoUpdateConditions"
+                                         Height="@Height"
+                                         MaxHeight="@MaxHeight"
+                                         SizeUnit="@SizeUnit"
+                                         ImportNeedsConfirmation="@ImportNeedsConfirmation"
+                                         RemoveIgnoredFromImport="@RemoveIgnoredFromImport"
+                                         SetPropertiesAfterImport="@SetPropertiesAfterImport"
+                                         StateKey="@StateKey"
+                                         ImportConfirmText="@ImportConfirmText"
+                                         ImportCancelText="@ImportCancelText"
+                                         Virtualize="@Virtualize"
+                                         LightOverlayLoadingBackground="@LightOverlayLoadingBackground"
+                                         AutoOverlay="@AutoOverlay"
+                                         ToolbarButtonColor="@ToolbarButtonColor"
+                                         AddScrollToTop="@AddScrollToTop"
+                                         ScrollToTopPosition="@ScrollToTopPosition"
+                                         AllowSearch="@AllowSearch"
+                                         AllowImport="@AllowImport"
+                                         AutoSaveRestoreState="@AutoSaveRestoreState"
+                                         StoreAndReadValueFromUrl="@StoreAndReadValueFromUrl"
+                                         StateTargetStorage="@StateTargetStorage"
+                                         ExportFileName="@ExportFileName"
+                                         ImportIcon="@ImportIcon"
+                                         SearchIcon="@SearchIcon"
+                                         ExpandCollapseIcon="@ExpandCollapseIcon"
+                                         ExportIcon="@ExportIcon"
+                                         AutoSkeletonOnLoad="@AutoSkeletonOnLoad"
+                                         ToolBarClass="@ToolBarClassObjectEdit"
+                                         ToolbarColor="@ToolbarColor"
+                                         GroupLineColor="@GroupLineColor"
+                                         GroupElevation="@GroupElevation"
+                                         ToolBarElevation="@ToolBarElevation"
+                                         ToolBarPaperClass="@ToolBarPaperClass"
+                                         StickyToolbar="@StickyToolbar"
+                                         StickyToolbarTop="@StickyToolbarTop"
+                                         AfterImport="@AfterImport"
+                                         AfterExport="@AfterExport"
+                                         BeforeExport="@BeforeExport"
+                                         PropertyChanged="@PropertyChanged"
+                                         BeforeImport="@BeforeImport"
+                                         PathDisplayMode="@PathDisplayMode"
+                                         GroupingStyle="@GroupingStyle"
+                                         FilterMode="@FilterMode"
+                                         SearchActiveChanged="@SearchActiveChanged"
+                                         SearchActive="@SearchActive"
+                                         Filter="@Filter"
+                                         Filters="@Filters"
+                                         AutoHideDisabledFields="@AutoHideDisabledFields"
+                                         DisableGrouping="@DisableGrouping"
+                                         DefaultGroupName="@DefaultGroupName"
+                                         DisableFieldFallback="@DisableFieldFallback"
+                                         WrapInMudGrid="@WrapInMudGrid"
+                                         GroupsCollapsible="@GroupsCollapsible"
+                                         GlobalResetSettings="@GlobalResetSettings"
+                                         DefaultPropertyResetSettings="@DefaultPropertyResetSettings"
+                                         ResetConfirmationMessageBoxOptions="@ResetConfirmationMessageBoxOptions"
+                                         ResetConfirmationDialogOptions="@ResetConfirmationDialogOptions"
+                                         ToolBarActionAlignment="@ToolBarActionAlignment"
+                                         ToolBarContent="@ToolBarContent"
+                                         ConfigureBehaviourForRegisteredConfigurations="@ConfigureBehaviourForRegisteredConfigurations"
+                                         ConfigureMetaInformationAlways="@ConfigureMetaInformationAlways"
+                                         ErrorMessage="@ErrorMessage"
+                                         CustomResetFunction="@CustomResetFunction"
+                                         ShowPathAsTitleForEachProperty="@ShowPathAsTitleForEachProperty">
 
-               </MudExObjectEdit>;
-    }}
+    </MudExObjectEdit>;
+        }
+    }
 }

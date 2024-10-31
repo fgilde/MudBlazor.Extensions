@@ -49,14 +49,14 @@ public class CaptureOptions
     public OneOf<bool, MediaStreamTrack, DisplayMediaOptions> ScreenCapture { get; set; }
 
     /// <summary>
-    /// The video device id to record (cameraId).
+    /// The video device to record.
     /// </summary>
-    public string VideoDeviceId { get; set; }
+    public VideoDevice VideoDevice { get; set; }
 
     /// <summary>
     /// The audio device ids to record audio.
     /// </summary>
-    public List<string> AudioDevices { get; set; } = new();
+    public List<AudioDevice> AudioDevices { get; set; } = new();
 
 
     /// <summary>
@@ -91,7 +91,7 @@ public class CaptureOptions
     /// </summary>
     public bool Valid()
     {
-        return AudioDevices.EmptyIfNull().Any() || !string.IsNullOrEmpty(VideoDeviceId) || CaptureScreen;
+        return AudioDevices.EmptyIfNull().Any() || VideoDevice != null || CaptureScreen;
     }
 }
 

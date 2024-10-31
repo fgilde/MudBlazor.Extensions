@@ -19,7 +19,7 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     [Inject] private MudExAppearanceService AppearanceService { get; set; }
 
     private AudioDevice[] _devices;
-    private string _selectedDevice = null;
+    private AudioDevice _selectedDevice = null;
     private bool _initialized;
     private string[] _preInitParameters;
     private string _recordingId;
@@ -43,7 +43,7 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     /// <summary>
     /// Returns the device id to use for recording.
     /// </summary>
-    public string UsedDeviceId => _selectedDevice ?? AudioDeviceId;
+    public AudioDevice UsedDevice => (_selectedDevice ?? AudioDevice);
 
     /// <summary>
     /// If set, the recording will stop after the specified time.
@@ -67,10 +67,10 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     public bool IsRecording => !string.IsNullOrEmpty(_recordingId);
 
     /// <summary>
-    /// Sets the device id for the audio input device to use for recording.
+    /// Sets the device for the audio input device to use for recording.
     /// Leave empty to use the default device.
     /// </summary>
-    [Parameter] public string  AudioDeviceId { get; set; }
+    [Parameter] public AudioDevice  AudioDevice { get; set; }
 
     /// <summary>
     /// Specify if and how the user is able to select the audio input device.
@@ -223,7 +223,7 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
                 return false;
             if (_devices.Length == 1)
             {
-                _selectedDevice = _devices[0].DeviceId;
+                _selectedDevice = _devices[0];
                 return false;
             }
             _devicePopoverOpen = true;
@@ -244,7 +244,7 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
             Lang = Language,
             Continuous = Continuous,
             InterimResults = InterimResults,
-            DeviceId = UsedDeviceId,
+            Device = UsedDevice,
             ShowNotificationWhileRecording = ShowNotificationWhileRecording,
             MaxCaptureTime = MaxCaptureTime
         };
@@ -314,7 +314,7 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
 
     private async Task AudioDeviceSelected(AudioDevice arg)
     {
-        _selectedDevice = arg.DeviceId;        
+        _selectedDevice = arg;        
         if (_devicePopoverOpen)
         {
             _devicePopoverOpen = false;

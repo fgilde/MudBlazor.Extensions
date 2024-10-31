@@ -54,9 +54,9 @@
         }
             @if (PickerVariant == PickerVariant.Inline)
         {
-            <MudExPopover Style="@GetPopOverStyle()" Animation="@InlineAnimation" Open="@Open" Fixed="true" AnchorOrigin="@(AnchorOrigin)" TransformOrigin="@(TransformOrigin)" OverflowBehavior="@(OverflowBehavior)" Paper="false">
+            <MudExPopover Style="@GetPopOverStyle()" Animation="@PopverAnimation" Open="@Open" Fixed="true" AnchorOrigin="@(AnchorOrigin)" TransformOrigin="@(TransformOrigin)" OverflowBehavior="@(OverflowBehavior)" Paper="false">
                 <div @ref="_pickerInlineRef" class="@PickerInlineClassname">
-                    <MudPaper @attributes="UserAttributes" Class="@PickerPaperClassname" Style="@PickerPaperStylename" Elevation="@Elevation" Square="@(!Rounded)">
+                    <MudPaper @attributes="UserAttributes" Class="@PickerPaperClassname" Style="@GetPickerPaperStyle()" Elevation="@GetActiveElevation()" Square="@(!Rounded)">
                         <div class="@PickerContainerClassname">
                             @if(PickerContent != null){
                             @PickerContent
@@ -74,7 +74,7 @@
         }
         else if (PickerVariant == PickerVariant.Static)
         {
-            <MudPaper @attributes="UserAttributes" Class="@PickerPaperClassname" Style="@PickerPaperStylename" Elevation="@Elevation" Square="@(!Rounded)">
+            <MudPaper @attributes="UserAttributes" Class="@PickerPaperClassname" Style="@GetPickerPaperStyle()" Elevation="@Elevation" Square="@(!Rounded)">
                 <div class="@PickerContainerClassname">
                     @if(PickerContent != null){
                     @PickerContent
@@ -90,7 +90,7 @@
         }
         else if(PickerVariant == PickerVariant.Dialog)
         {
-            <MudExDialog @bind-Visible="Open" OptionsEx="DialogOptions">
+            <MudExDialog @bind-Visible="Open" OptionsEx="GetDialogOptions()" OnClosed="@OnPickerClosedAsync">
                 <TitleContent>
                     <MudText Typo="Typo.subtitle2">
                         <div style="display: flex">

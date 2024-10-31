@@ -631,7 +631,7 @@
             Is true if the component is rendered
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.InlineAnimation">
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.PopverAnimation">
             <summary>
             This animation will be used for the picker if the <see cref="T:MudBlazor.PickerVariant"/> is <see cref="F:MudBlazor.PickerVariant.Inline"/>.
             </summary>
@@ -654,6 +654,16 @@
         <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.DialogOptions">
             <summary>
             The dialog options to be used for the picker if the <see cref="T:MudBlazor.PickerVariant"/> is <see cref="F:MudBlazor.PickerVariant.Dialog"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.BorderColor">
+            <summary>
+            Simple possibility to set the border color of the picker.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.PickerStyle">
+            <summary>
+            Style of the picker.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.ServiceProvider">
@@ -1193,6 +1203,20 @@
             <summary>
             Component edit capture options
             </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureOptionsEdit.Value">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureOptionsEdit.ValueChanged">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureOptionsEdit.ReadOnly">
+            <summary>
+            Set to true to have a read only mode
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCaptureOptionsEdit.GetRenderData(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExCardHoverMode">
             <summary>
@@ -5557,6 +5581,14 @@
         <member name="M:MudBlazor.Extensions.Components.MudExOneDriveFilePicker.OnInitialized">
             <inheritdoc />
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPicker.ChildContent">
+            <summary>
+            Child content of the picker
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPicker.PickerContent">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExPopover">
             <summary>
             A Popover can be used to display some content on top of another.
@@ -6632,7 +6664,7 @@
             Gets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.UsedDeviceId">
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.UsedDevice">
             <summary>
             Returns the device id to use for recording.
             </summary>
@@ -6657,9 +6689,9 @@
             Indicates whether a recording session is currently active.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.AudioDeviceId">
+        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.AudioDevice">
             <summary>
-            Sets the device id for the audio input device to use for recording.
+            Sets the device for the audio input device to use for recording.
             Leave empty to use the default device.
             </summary>
         </member>
@@ -8868,6 +8900,11 @@
             This renderdata is only used when that type a property of the current edited object
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.IDefaultRenderDataProviderFor`1.GetPropertyType">
+            <summary>
+            Returns the type of the property where this render data is used for
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.IObjectEditorFor`1">
             <summary>
             Interface for object editor
@@ -8886,7 +8923,7 @@
             It's required that this property has the parameter attribute
             </summary>
         </member>
-        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.IObjectEditorWithCustomRenderDataFor`1">
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.IObjectEditorWithCustomPropertyRenderDataFor`1">
             <summary>
             Interface for object editor
             Just implement this interface on any component to make it as the default object editor for <typeparam name="T"></typeparam>
@@ -12674,7 +12711,377 @@
             Validates the form
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ToStringFunc">
+            <summary>
+            Function to display a string representation of the object
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.MetaInformation">
+            <summary>
+            The object edit metadata for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.MultiSearch">
+            <summary>
+            Set to true to allow multiple values
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.RenderIgnoredReferences">
+            <summary>
+            If you need the reference for dynamic ignored fields for example because of Model Validation or resets you should set this to true
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.IsLoading">
+            <summary>
+            Whether the component should show a loading indicator.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.AutoUpdateConditions">
+            <summary>
+            Whether the component should automatically update all registered Conditions.
+            Otherwise you need to call UpdateAllConditions on your own.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.Height">
+            <summary>
+            The height of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.MaxHeight">
+            <summary>
+            The maximum height of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.SizeUnit">
+            <summary>
+            The size unit of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ImportNeedsConfirmation">
+            <summary>
+            Whether the import action needs confirmation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.RemoveIgnoredFromImport">
+            <summary>
+            If this setting is true, all properties which are ignored by meta config will be removed
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.SetPropertiesAfterImport">
+            <summary>
+            If this setting is true, after import all properties are set instead of full value assignment
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.StateKey">
+            <summary>
+            The state key for saving and restoring the component state.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ImportConfirmText">
+            <summary>
+            The text for confirming an import action.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ImportCancelText">
+            <summary>
+            The text for cancelling an import action.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.Virtualize">
+            <summary>
+            Whether the component should be virtualized.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.LightOverlayLoadingBackground">
+            <summary>
+            Whether the component should have a light overlay loading background.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.AutoOverlay">
+            <summary>
+            Whether the component should automatically display an overlay when loading.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ToolbarButtonColor">
+            <summary>
+            The color of the toolbar buttons.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.AddScrollToTop">
+            <summary>
+            Whether the component should add a scroll to top button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ScrollToTopPosition">
+            <summary>
+            The position of the scroll to top button.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.AllowSearch">
+            <summary>
+            Whether search functionality is enabled.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.AllowExport">
+            <summary>
+            Whether export functionality is enabled.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.AllowImport">
+            <summary>
+            Whether import functionality is enabled.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.AutoSaveRestoreState">
+            <summary>
+            Whether the component should automatically save and restore its state.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.StoreAndReadValueFromUrl">
+            <summary>
+            If this is true, the component adds the value if possible to url and reads it automatically if its present in Url
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.StateTargetStorage">
+            <summary>
+            The storage location for saving and restoring component state.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ExportFileName">
+            <summary>
+            The file name for exporting the component data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ImportIcon">
+            <summary>
+            The icon to display for the import action.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.SearchIcon">
+            <summary>
+            The icon to display for the search action.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ExpandCollapseIcon">
+            <summary>
+            The icon to display for expanding and collapsing.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ExportIcon">
+            <summary>
+            The icon to display for the export action.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.AutoSkeletonOnLoad">
+            <summary>
+            Whether to automatically display the skeleton loading state on component load.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ToolbarColor">
+            <summary>
+            The color of the toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.GroupLineColor">
+            <summary>
+            The color of the group lines in the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.GroupElevation">
+            <summary>
+            The elevation of the group.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ToolBarElevation">
+            <summary>
+            The elevation of the toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ToolBarClassObjectEdit">
+            <summary>
+            A CSS class for the component toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ToolBarPaperClass">
+            <summary>
+            A CSS class for the component toolbar paper.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.StickyToolbar">
+            <summary>
+            Whether the toolbar should be sticky to the top of the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.StickyToolbarTop">
+            <summary>
+            The positioning CSS value for a sticky toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.AfterImport">
+            <summary>
+            Called after the component has imported data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.AfterExport">
+            <summary>
+            Called after the component has exported data.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.BeforeExport">
+            <summary>
+            Called before the component export's data. Provides the export data to be manipulated.
+            If you need to change content of parameter to manipulate export data you can do it here
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.BeforeImport">
+            <summary>
+            Called before the component import's data. Provides the import data to be manipulated.
+            Here you can change content of parameter to manipulate import data
+            For example you can remove some properties or change the values
+            This is called before the import is executed
+            importData.Json = "{\"FirstName\": \"Changed Test\"}";
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.PropertyChanged">
+            <summary>
+            Called when a property of the edited object is changed.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ShowPathAsTitleForEachProperty">
+            <summary>
+            Whether to show the property path as title for each property.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.PathDisplayMode">
+            <summary>
+            The path display mode for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.GroupingStyle">
+            <summary>
+            The grouping style for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.FilterMode">
+            <summary>
+            The filter mode for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.SearchActiveChanged">
+            <summary>
+            Event callback if filter input is toggled
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.SearchActive">
+            <summary>
+            Search is active
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.Filter">
+            <summary>
+            The filter value for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.Filters">
+            <summary>
+            The filter values for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.AutoHideDisabledFields">
+            <summary>
+            Whether to automatically hide disabled fields.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.DisableGrouping">
+            <summary>
+            Whether to disable grouping.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.DefaultGroupName">
+            <summary>
+            The default group name for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.DisableFieldFallback">
+            <summary>
+            Whether to disable field fallback.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.WrapInMudGrid">
+            <summary>
+            Whether to wrap the component in a MudGrid component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.GroupsCollapsible">
+            <summary>
+            Whether groups are collapsible in the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.GlobalResetSettings">
+            <summary>
+            The global reset settings for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.DefaultPropertyResetSettings">
+            <summary>
+            The default property reset settings for the component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ResetConfirmationMessageBoxOptions">
+            <summary>
+            The message box options for reset confirmation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ResetConfirmationDialogOptions">
+            <summary>
+            The dialog options for reset confirmation.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.MetaConfiguration">
+            <summary>
+            The action to perform for object metadata configuration.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.MetaConfigurationAsync">
+            <summary>
+            The async action to perform for object metadata configuration.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ToolBarActionAlignment">
+            <summary>
+            The alignment of actions in the component toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ToolBarContent">
+            <summary>
+            The content to display in the component toolbar.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ConfigureBehaviourForRegisteredConfigurations">
+            <summary>
+            The behaviour how registered Meta and configured meta should applied
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ConfigureMetaInformationAlways">
+            If this setting is true a manual passed MetaInformation will also re configured
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.ErrorMessage">
+            <summary>
+            Error message to display
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.CustomResetFunction">
+            <summary>
+            Set this to handle Reset on your own
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.OnPickerClosedAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditPicker`1.AfterValueChanged(`0,`0)">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit">
@@ -14585,9 +14992,9 @@
             Set false to not capture the screen.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Core.CaptureOptions.VideoDeviceId">
+        <member name="P:MudBlazor.Extensions.Core.CaptureOptions.VideoDevice">
             <summary>
-            The video device id to record (cameraId).
+            The video device to record.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Core.CaptureOptions.AudioDevices">
@@ -17077,7 +17484,7 @@
             If this is true a notification toast will be shown while recording.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionOptions.DeviceId">
+        <member name="P:MudBlazor.Extensions.Core.SpeechRecognitionOptions.Device">
             <summary>
             DeviceId for audio input, used for selecting the appropriate microphone.
             </summary>

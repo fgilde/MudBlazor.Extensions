@@ -11,7 +11,7 @@
             <MudExSelect MultiSelection="false"
                          Variant="DeviceListVariant"
                          SelectAll="false"
-                         ItemCollection="@_devices" Value="@(_devices.FirstOrDefault(d => d.DeviceId == _selectedDevice) ?? _devices[0])" ValueChanged="@AudioDeviceSelected" Clearable="false" SearchBox="true" T="AudioDevice" Label="@LocalizerToUse.TryLocalize("Select audio device")" AnchorOrigin="Origin.BottomCenter">
+                         ItemCollection="@_devices" Value="@(_devices.FirstOrDefault(d => d.DeviceId == _selectedDevice?.DeviceId) ?? _devices[0])" ValueChanged="@AudioDeviceSelected" Clearable="false" SearchBox="true" T="AudioDevice" Label="@LocalizerToUse.TryLocalize("Select audio device")" AnchorOrigin="Origin.BottomCenter">
             </MudExSelect>
         </For>
         <ChildContent>
@@ -37,7 +37,7 @@ else
 {
     RenderFragment Spectrum()
     {
-        return @<AuralizeBlazor.Auralizer MicrophoneDeviceId="@UsedDeviceId" Height="@SizeStr()" Width="@SizeStr()" ShowPeaks="false" ShowScaleX="false" ShowScaleY="false" ConnectMicrophone="true">
+        return @<AuralizeBlazor.Auralizer MicrophoneDeviceId="@(UsedDevice?.DeviceId)" Height="@SizeStr()" Width="@SizeStr()" ShowPeaks="false" ShowScaleX="false" ShowScaleY="false" ConnectMicrophone="true">
                 </AuralizeBlazor.Auralizer>;
     }
 }

@@ -19,4 +19,9 @@ public interface IDefaultRenderDataProvider
 /// This renderdata is only used when that type a property of the current edited object
 /// </summary>
 public interface IDefaultRenderDataProviderFor<T> : IDefaultRenderDataProvider
-{ }
+{
+    /// <summary>
+    /// Returns the type of the property where this render data is used for
+    /// </summary>
+    public Type GetPropertyType() => typeof(T);
+}

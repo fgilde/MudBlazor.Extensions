@@ -36,7 +36,9 @@
         recognition.continuous = options.continuous;
         recognition.interimResults = options.interimResults;
 
-        const audioOptions = options.deviceId ? { audio: { deviceId: { exact: options.deviceId } } } : { audio: true };
+        var deviceId = typeof options?.device === 'string' ? options.device : options.device?.deviceId;
+        
+        const audioOptions = deviceId ? { audio: { deviceId: { exact: deviceId } } } : { audio: true };
         const stream = await navigator.mediaDevices.getUserMedia(audioOptions);
         return { recognition, stream };
     }

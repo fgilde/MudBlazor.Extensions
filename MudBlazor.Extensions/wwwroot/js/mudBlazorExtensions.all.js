@@ -138,9 +138,10 @@ class MudExCapture {
         }
 
         // Camera Stream
-        if (options.videoDeviceId) {
+        if (options.videoDevice) {
+            var videoDeviceId = typeof options.videoDevice === 'string' ? options.videoDevice : options.videoDevice.deviceId;
             streams.camera = await navigator.mediaDevices.getUserMedia({
-                video: { deviceId: { exact: options.videoDeviceId } }
+                video: { deviceId: { exact: videoDeviceId } }
             });
         }
 
@@ -399,12 +400,13 @@ class MudExCapture {
         };
     }
 
-    static async getAudioStreams(audioDeviceIds) {
-        if (!audioDeviceIds || audioDeviceIds.length === 0) return [];
+    static async getAudioStreams(audioDevices) {
+        if (!audioDevices || audioDevices.length === 0) return [];
 
         const audioStreams = await Promise.all(
-            audioDeviceIds.map(async deviceId => {
+            audioDevices.map(async device => {
                 try {
+                    const deviceId = typeof device === 'string' ? device : device.deviceId;
                     return await navigator.mediaDevices.getUserMedia({
                         audio: { deviceId: { exact: deviceId } }
                     });
@@ -1306,7 +1308,9 @@ class MudExSpeechRecognition {
         recognition.continuous = options.continuous;
         recognition.interimResults = options.interimResults;
 
-        const audioOptions = options.deviceId ? { audio: { deviceId: { exact: options.deviceId } } } : { audio: true };
+        var deviceId = typeof options?.device === 'string' ? options.device : options.device?.deviceId;
+        
+        const audioOptions = deviceId ? { audio: { deviceId: { exact: deviceId } } } : { audio: true };
         const stream = await navigator.mediaDevices.getUserMedia(audioOptions);
         return { recognition, stream };
     }

@@ -3,8 +3,23 @@ using System.Text.Json.Serialization;
 
 namespace MudBlazor.Extensions.Core;
 
-public class HardwareDeviceInfo
+public class HardwareDeviceInfo: IEquatable<HardwareDeviceInfo>
 {
+    #region Equality
+
+    public bool Equals(HardwareDeviceInfo other) => DeviceId == other.DeviceId;
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        return obj.GetType() == this.GetType() && Equals((HardwareDeviceInfo)obj);
+    }
+
+    public override int GetHashCode() => (DeviceId != null ? DeviceId.GetHashCode() : 0);
+
+    #endregion
+
     public string DeviceId { get; set; }
     public string GroupId { get; set; }
     public string Label { get; set; }

@@ -1,0 +1,51 @@
+﻿@page "/objectedit-picker"
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Options
+@using Newtonsoft.Json
+@using System.ComponentModel.DataAnnotations
+
+@attribute [DemoNew(Group = "MudExObjectEdit", Name = "As Picker", Order = 4, Documentation = "Demo for using MudExObjectEditPicker with a model that contains file(s)", Icon = Icons.Material.Outlined.ArrowDropDown, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditPicker<>), typeof(MudExObjectEditForm<>) })]
+
+
+<DemoComponent DocFiles="@(new[] { "Docs/ObjectEdit.md" })" PageType="@GetType()">
+    <div style="height:100px"/>
+    <MudExObjectEditPicker Variant="Variant.Outlined" OnValidSubmit="@OnSubmit" MetaConfiguration="@Configure" Value="@Model"></MudExObjectEditPicker>
+</DemoComponent>
+
+
+@code {
+
+    public class SampleModel
+    {
+        [Required]
+        public string Name { get; set; }
+        public string Description { get; set; }
+
+        [Required]
+        [MinLength(2)]
+        public UploadableFile[] Files { get; set; }
+    }
+    
+    // Sample data for the form
+    public SampleModel Model { get; set; } = new();
+
+    private async Task OnSubmit(EditContext ctx)
+    {
+        var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
+        await DialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
+        {
+            DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass),
+            Position = DialogPosition.TopCenter,
+            Animation = AnimationType.Slide,
+            MaxWidth = MaxWidth.Medium
+        });
+    }
+
+    private void Configure(ObjectEditMeta<SampleModel> meta)
+    {
+        meta.Property(m => m.Files).WithoutLabel();
+    }
+
+}
