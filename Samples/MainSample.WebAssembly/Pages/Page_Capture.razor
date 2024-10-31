@@ -117,7 +117,6 @@
             var options = new CaptureOptions
                 {
                     OverlayPosition = DialogPosition.CenterLeft,
-                    OverlaySource = OverlaySource.CapturedScreen,
                     ScreenCapture = _source ?? (OneOf<bool, MediaStreamTrack, DisplayMediaOptions>)_captureScreen,
                     VideoDevice = _camera ? videoDevices.FirstOrDefault() : null,
                     AudioDevices = _recordAudio ? [audioDevices.First()] : []
