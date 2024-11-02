@@ -9,6 +9,8 @@ namespace MudBlazor.Extensions.Core;
 /// </summary>
 public class CaptureOptions
 {
+    private List<AudioDevice> _audioDevices = new();
+
     /// <summary>
     /// The content type for video.
     /// </summary>
@@ -56,7 +58,11 @@ public class CaptureOptions
     /// <summary>
     /// The audio device ids to record audio.
     /// </summary>
-    public List<AudioDevice> AudioDevices { get; set; } = new();
+    public List<AudioDevice> AudioDevices
+    {
+        get => _audioDevices;
+        set => _audioDevices = value;
+    }
 
 
     /// <summary>

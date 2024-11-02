@@ -78,7 +78,7 @@
     <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="MudBlazor" Version="7.11.0" />
+    <PackageReference Include="MudBlazor" Version="7.15.0" />
     <PackageReference Include="BlazorParameterCastingMagic" Version="1.2.23060811" />
     <PackageReference Include="SharpCompress" Version="0.38.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
@@ -149,7 +149,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\MudExGroupBox.razor" />
     <_ContentIncludedByDefault Remove="Components\MudExPicker.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\MudExGroupBox.razor" />
   </ItemGroup>
 
 

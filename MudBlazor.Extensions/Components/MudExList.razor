@@ -1,8 +1,6 @@
 ﻿@typeparam T
 @inherits MudExBaseComponent<MudExList<T>>
-@using MudBlazor
 @using MudBlazor.Extensions.Helper
-@using MudBlazor.Extensions.Helper.Internal
 @using MudBlazor.Extensions.Options;
 
 <div @attributes="UserAttributes" id="@_elementId" class="@Classname" style="@StyleStr" tabindex="-1" @onkeydown="HandleKeyDown" @onfocusout="HandleOnFocusOut" @onscroll="HandleOnScroll">
@@ -73,7 +71,7 @@
         }
     </div>;
 
-    private RenderFragment SearchBoxRender => @<MudExListSubheader T="T" Style="@($"position: sticky; top: -8px; padding-top: 24px; margin-top: -9px; background-color: {SearchBoxBackgroundColor.ToCssStringValue()}; z-index: 10")">
+    private RenderFragment SearchBoxRender => @<MudExListSubheader T="T" BackgroundColor="@SearchBoxBackgroundColor" Style="@($"position: sticky; top: -8px; padding-top: 24px; margin-top: -9px; z-index: 10")">
         <MudExTextField @ref="_searchField" @bind-Value="@SearchString" Class="@ClassSearchBox" Placeholder="@TryLocalize(SearchBoxPlaceholder)" KeyDownStopPropagation="@(_keyDownHandled)" KeyDownPreventDefault="@(_keyDownHandled)" OnKeyDown="SearchBoxHandleKeyDown" OnKeyUp="@(() => UpdateSelectedStyles())" OnClearButtonClick="@(() => UpdateSelectedStyles())" Immediate="true" Variant="SearchBoxVariant" Margin="Margin.Dense"
                             Color="Color" Adornment="SearchBoxAdornment" AdornmentIcon="@Icons.Material.Filled.Search" Style="@($"color:{Color}")" AdornmentColor="@(Color.IsColor ? Color.AsColor : MudBlazor.Color.Default)" AutoFocus="@SearchBoxAutoFocus" Clearable="@SearchBoxClearable">
                 <MudExAdditionalAdornment Position="MoveContentPosition.AfterEnd">

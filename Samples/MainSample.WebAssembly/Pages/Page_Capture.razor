@@ -2,6 +2,7 @@
 @using BlazorJS
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Options
+@using Nextended.Core.Extensions
 @using OneOf
 
 @attribute [DemoNew(Name = "Capture service", Order = 0, Icon = Icons.Material.Outlined.AccountTree, Documentation = "Sample for Capture Service ", ForComponentType = typeof(ICaptureService))]
@@ -111,7 +112,7 @@
             var audioDevices = await _captureService.GetAudioDevicesAsync();
             var videoDevices = await _captureService.GetVideoDevicesAsync();
 
-            await Test();
+            await Test(audioDevices, videoDevices);
 
             await JsRuntime.AlertAsync("Click ok to start");
             var options = new CaptureOptions
@@ -129,20 +130,22 @@
         }
     }
 
-    private async Task Test()
+    private async Task Test(IEnumerable<AudioDevice> audioDevices, IEnumerable<VideoDevice> videoDevices)
     {
-        return;
-        var r = await _dialogService.EditObject(_xxx);
-        var r3 = await _dialogService.EditObject(_xxx, "Show", DialogOptionsEx.DefaultDialogOptions, m =>
-        {
-            m.Property(a => a.Name).AsReadOnly();
-            m.Property(a => a.CaptureI).AsReadOnly();
-        });
-        await JsRuntime.AlertAsync(r.Result.CaptureI.AudioContentType + "  for " + r.Result.Name + " is" + r.Result.Color);
+        // return;
+        // var r = await _dialogService.EditObject(_xxx);
+        // var r3 = await _dialogService.EditObject(_xxx, "Show", DialogOptionsEx.DefaultDialogOptions, m =>
+        // {
+        //     m.Property(a => a.Name).AsReadOnly();
+        //     m.Property(a => a.CaptureI).AsReadOnly();
+        // });
+        // await JsRuntime.AlertAsync(r.Result.CaptureI.AudioContentType + "  for " + r.Result.Name + " is" + r.Result.Color);
 
 
-        var r2 = await _dialogService.EditObject(new CaptureOptions());
-        await JsRuntime.AlertAsync(r2.Result.AudioContentType);
+        var options = new CaptureOptions() {VideoDevice = videoDevices.FirstOrDefault(), AudioDevices = audioDevices.ToList()};
+        var r2 = await _dialogService.EditObject(options, "", DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(o => o.Resizeable = true));
+        var captureOptions = r2.Result;
+        await JsRuntime.AlertAsync(captureOptions.AudioContentType + " audio device count " + captureOptions.AudioDevices.Count);
     }
 
 

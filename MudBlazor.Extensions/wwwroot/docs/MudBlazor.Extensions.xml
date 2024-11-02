@@ -1218,6 +1218,9 @@
         <member name="M:MudBlazor.Extensions.Components.MudExCaptureOptionsEdit.GetRenderData(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCaptureOptionsEdit.OnInitializedAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExCardHoverMode">
             <summary>
             Combinable hover modes for the MudExCard
@@ -3767,6 +3770,26 @@
             The on double click handler
             </summary>    
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGroupBox.ChildContent">
+            <summary>
+            Child content of the group box
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGroupBox.Text">
+            <summary>
+            Text to display as group Header
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGroupBox.Square">
+            <summary>
+            If true, the group box will have a square border
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGroupBox.BorderColor">
+            <summary>
+            The color of the border
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExHtmlEdit">
             <summary>
             A WYSIWYG Html editor component.
@@ -5428,9 +5451,9 @@
             The top position of sticky header
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.SecondaryBackground">
+        <member name="P:MudBlazor.Extensions.Components.MudExListSubheader`1.BackgroundColor">
             <summary>
-            If true, sub header has darker background.
+            Set custom header background color.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExMessageDialog">

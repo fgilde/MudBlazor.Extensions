@@ -637,7 +637,7 @@ public partial class MudExList<T> : IDisposable
                 return;
             }
             HandleCentralValueCommander(nameof(SelectedValues));
-            _= SelectedValuesChanged.InvokeAsync(SelectedValues == null ? null : new HashSet<T>(SelectedValues, _comparer));
+            SelectedValuesChanged.InvokeAsync(SelectedValues == null ? null : new HashSet<T>(SelectedValues, _comparer));
         }
     }
 

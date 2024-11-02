@@ -18,7 +18,6 @@ public partial class MudExListSubheader<T>
         new MudExCssBuilder("mud-ex-list-subheader")
             .AddClass("mud-ex-list-subheader-gutters", Gutters)
             .AddClass("mud-ex-list-subheader-inset", Inset)
-            .AddClass("mud-ex-list-subheader-secondary-background", SecondaryBackground)
             .AddClass("mud-ex-list-subheader-sticky", Sticky)
             .AddClass("mud-ex-list-subheader-sticky-dense", Sticky && MudExList is { DisablePadding: true })
             .AddClass(Class)
@@ -30,6 +29,7 @@ public partial class MudExListSubheader<T>
     protected string Stylename =>
         new MudExStyleBuilder()
             .AddRaw(Style)
+            .WithBackgroundColor(BackgroundColor)
             .WithTop(StickyTop, Sticky)            
             .Build();
 
@@ -74,9 +74,9 @@ public partial class MudExListSubheader<T>
     public MudExSize<double> StickyTop { get; set; } = -8;
 
     /// <summary>
-    /// If true, sub header has darker background.
+    /// Set custom header background color.
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Appearance)]
-    public bool SecondaryBackground { get; set; }
+    public MudExColor BackgroundColor { get; set; } = "var(--mud-palette-background)";
 }
