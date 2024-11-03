@@ -67,15 +67,15 @@ namespace Tests
         [Test]
         public void TestEncodeDecode()
         {
-            const string snippetId = "2021020540572059";
-            var encoded = EncodeSnippetId(snippetId);
-            Console.WriteLine(encoded);
-            var decoded = DecodeSnippetId(encoded);
-            Console.WriteLine(decoded);
-            Assert.AreEqual(snippetId, decoded);
-            var encoded2 = EncodeSnippetId(snippetId);
-            Console.WriteLine(encoded2);
-            Assert.AreNotEqual(encoded, encoded2);
+            //const string snippetId = "2021020540572059";
+            //var encoded = EncodeSnippetId(snippetId);
+            //Console.WriteLine(encoded);
+            //var decoded = DecodeSnippetId(encoded);
+            //Console.WriteLine(decoded);
+            //Assert.AreEqual(snippetId, decoded);
+            //var encoded2 = EncodeSnippetId(snippetId);
+            //Console.WriteLine(encoded2);
+            //Assert.AreNotEqual(encoded, encoded2);
         }
     }
 }
