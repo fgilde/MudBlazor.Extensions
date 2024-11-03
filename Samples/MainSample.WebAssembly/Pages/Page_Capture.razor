@@ -143,7 +143,11 @@
 
 
         var options = new CaptureOptions() {VideoDevice = videoDevices.FirstOrDefault(), AudioDevices = audioDevices.ToList()};
-        var r2 = await _dialogService.EditObject(options, "", DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(o => o.Resizeable = true));
+        var dialogOptionsEx = DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(o =>
+        {
+            o.Resizeable = true;
+        });
+        var r2 = await _dialogService.EditObject(options, "Capture", Icons.Material.Filled.VideoCameraFront, dialogOptionsEx);
         var captureOptions = r2.Result;
         await JsRuntime.AlertAsync(captureOptions.AudioContentType + " audio device count " + captureOptions.AudioDevices.Count);
     }

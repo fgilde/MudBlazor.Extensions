@@ -15,7 +15,7 @@ public partial class MudExList<T> : IDisposable
 {
     private bool _keyDownHandled;
     private string[] _keysToForwardFromSearchBox = { "ArrowUp", "ArrowDown", "Enter", "NumpadEnter" };
-    
+
     /// <summary>
     /// Gets or Sets the Localizer Pattern.
     /// </summary>
@@ -464,7 +464,7 @@ public partial class MudExList<T> : IDisposable
     /// <param name="updateStyles"></param>
     protected void HandleCentralValueCommander(string changedValueType, bool updateStyles = true)
     {
-        if (!_setParametersDone)
+        if (!_setParametersDone || !IsFullyRendered) // TODO: Check this
         {
             return;
         }

@@ -2,6 +2,7 @@
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
 using Nextended.Core;
 using Nextended.Core.Extensions;
 
@@ -61,8 +62,6 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
 
     private void AudioDevicesChanged(IEnumerable<MudExListItem<AudioDevice>> obj) 
         => SetAndStateChange(o => o.AudioDevices = obj?.Select(x => x.Value).ToList());
-    private void VideoDeviceChanged(IEnumerable<MudExListItem<VideoDevice>> obj)
-        => SetAndStateChange(o => o.VideoDevice = obj?.Select(x => x.Value).FirstOrDefault());
 
     private void SetAndStateChange(Action<CaptureOptions> action)
     {
@@ -71,4 +70,11 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     }
 
 
+    private string GetStyleStr()
+    {
+        return Get<MudExStyleBuilder>()
+            .WithWidth("100%")
+            .WithHeight("100%")
+            .AddRaw(Style).Style;
+    }
 }
