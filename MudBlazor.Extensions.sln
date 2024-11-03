@@ -30,6 +30,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MainSample.ServerSide", "Samples\MainSample.ServerSide\MainSample.ServerSide.csproj", "{2157700D-95A6-4279-AD8A-F03B6D8B8255}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TryMudEx", "TryMudEx", "{4A15B7F0-B489-4B0C-99F4-DC2729FFF194}"
+	ProjectSection(SolutionItems) = preProject
+		TryMudEx\Directory.Build.props = TryMudEx\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Try.Core", "TryMudEx\Try.Core\Try.Core.csproj", "{8FED433A-1F49-4F42-B00B-CC15031E3A74}"
 EndProject

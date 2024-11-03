@@ -236,7 +236,8 @@ window.Try.CodeExecution = window.Try.CodeExecution || (function () {
                 return;
             }
 
-            const cache = await caches.open('blazor-resources-/');
+            //const cache = await caches.open('blazor-resources-/');
+            const cache = await caches.open('dotnet-resources-/');
 
             const cacheKeys = await cache.keys();
             const userComponentsDllCacheKey = cacheKeys.find(x => x.url.indexOf('Try.UserComponents.dll') > -1);

@@ -146,7 +146,7 @@ namespace Try.Core
             return result;
         }
 
-        private async Task<IDictionary<string, Stream>> GetStreamFromHttpAsync(
+        private static async Task<IDictionary<string, Stream>> GetStreamFromHttpAsync(
             HttpClient httpClient,
             IEnumerable<string> assemblyNames)
         {
