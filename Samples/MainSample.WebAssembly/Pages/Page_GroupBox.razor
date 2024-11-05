@@ -1,0 +1,32 @@
+﻿@page "/mud-ex-group-box"
+
+
+@attribute [DemoNew(Name = "GroupBox", Icon = Icons.Material.Outlined.Group, Documentation = "As simple as it sound. This is a simple GroupBox", ForComponentType = typeof(MudExGroupBox))]
+
+<DemoComponent PageType="@GetType()" >
+    <SplitContainer>
+        <Left>
+            <MudExGroupBox @ref="component" Text="Hello">
+                <MudGrid Spacing="3" Justify="Justify.Center">
+                    <MudItem>
+                        <MudPaper Height="140px" Width="140px"/>
+                    </MudItem>
+                    <MudItem>
+                        <MudPaper Height="140px" Width="140px"/>
+                    </MudItem>
+                    <MudItem>
+                        <MudPaper Height="140px" Width="140px" />
+                    </MudItem>
+                </MudGrid>
+            </MudExGroupBox>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+@code {
+    MudExGroupBox component;
+}

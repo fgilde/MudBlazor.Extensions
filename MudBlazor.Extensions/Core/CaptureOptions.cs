@@ -97,7 +97,7 @@ public class CaptureOptions
     /// </summary>
     public bool Valid()
     {
-        return AudioDevices.EmptyIfNull().Any() || VideoDevice != null || CaptureScreen;
+        return AudioDevices.EmptyIfNull().Any(d => !string.IsNullOrEmpty(d.DeviceId)) || VideoDevice?.DeviceId != null || CaptureScreen;
     }
 }
 

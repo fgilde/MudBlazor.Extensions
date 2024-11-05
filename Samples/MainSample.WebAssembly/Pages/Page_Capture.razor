@@ -1,12 +1,11 @@
 ﻿@page "/capture-service"
-@using BlazorJS
+
 @using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 @using Nextended.Core.Extensions
-@using OneOf
 
-@* @attribute [DemoNew(Name = "Capture service", Order = 0, Icon = Icons.Material.Outlined.AccountTree, Documentation = "Sample for Capture Service ", ForComponentType = typeof(ICaptureService))] *@
-
+@attribute [DemoNew(Name = "Capture service", Order = 0, Icon = Icons.Material.Outlined.AccountTree, Documentation = "This sample demonstrate how to use the MudExCaptureService", ForComponentType = typeof(ICaptureService))]
 
 <style>
     .p-info {
@@ -19,87 +18,71 @@
     }
 </style>
 
-<video style="width: 200px; height: 200px;" controls controlsList="nodownload noplaybackrate nocaptions" @ref="@_videoPref"></video>
-<MudButton OnClick="@(async () => _source = await _captureService.SelectCaptureSourceAsync(DisplayMediaOptions.Default, _videoPref))">Select Source</MudButton>
 
-<MudButton OnClick="@StartStopRecording">Start/Stop Capture</MudButton>
-<MudCheckBox @bind-Value="_recordAudio">Audio</MudCheckBox>
-<MudCheckBox @bind-Value="_captureScreen">Capture Screen</MudCheckBox>
-<MudCheckBox @bind-Value="_camera">record Camera</MudCheckBox>
-@if (_captureResult != null)
-{
-    <MudGrid Spacing="4" Justify="Justify.Center">
-        <MudItem xs="12">
-            <MudPaper Height="400px" Width="100%">
-                <p class="p-info">Combined result</p>
-                <MudExFileDisplay Style="height: 100%" FileName="Combined result.mp4" Url="@_captureResult.CombinedData.BlobUrl" ContentType="@_captureResult.CombinedData.ContentType"></MudExFileDisplay>
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="6">
-            <MudPaper Height="400px" Width="100%">
-                <p class="p-info">Audio result</p>
-                @if (_captureResult.AudioData != null)
-                {
-                    <MudExFileDisplay Style="height: 100%" FileName="Audio.mp3" Url="@_captureResult.AudioData.BlobUrl" ContentType="@_captureResult.AudioData.ContentType"></MudExFileDisplay>
-                }
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="6">
-            <MudPaper Height="400px" Width="100%">
-                <p class="p-info">System audio result</p>
-                @if (_captureResult.SystemAudioData != null)
-                {
-                    <MudExFileDisplay Style="height: 100%" FileName="System audio.mp3" Url="@_captureResult.SystemAudioData.BlobUrl" ContentType="@_captureResult.SystemAudioData.ContentType"></MudExFileDisplay>
-                }
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="6">
-            <MudPaper Height="400px" Width="100%">
-                <p class="p-info">Capture result</p>
+<DemoComponent PageType="@GetType()">
 
-                @if (_captureResult.CaptureData != null)
-                {
-                    <MudExFileDisplay Style="height: 100%" FileName="Captured.mp4" Url="@_captureResult.CaptureData.BlobUrl" ContentType="@_captureResult.CaptureData.ContentType"></MudExFileDisplay>
-                }
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="6">
-            <MudPaper Height="400px" Width="100%">
-                <p class="p-info">Camera result</p>
-                @if (_captureResult.CameraData != null)
-                {
-                    <MudExFileDisplay Style="height: 100%" FileName="Camera.mp4" Url="@_captureResult.CameraData.BlobUrl" ContentType="@_captureResult.CameraData.ContentType"></MudExFileDisplay>
-                }
-            </MudPaper>
-        </MudItem>
-    </MudGrid>
-    <div style="height: 100px;"></div>
-}
+    <MudButton Class="mt-5" Variant="Variant.Outlined" Color="@(_captureId == null ? Color.Default : Color.Error)" OnClick="@StartStopRecording">@(_captureId == null ? "Start Capture" : "Stop Capture")</MudButton>
 
+    @if (_captureResult != null)
+    {
+        <MudGrid Spacing="4" Justify="Justify.Center">
+            <MudItem xs="12">
+                <MudPaper Height="400px" Width="100%">
+                    <p class="p-info">Combined result</p>
+                    <MudExFileDisplay Style="height: 100%" FileName="Combined result.mp4" Url="@_captureResult.CombinedData.BlobUrl" ContentType="@_captureResult.CombinedData.ContentType"></MudExFileDisplay>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="6">
+                <MudPaper Height="400px" Width="100%">
+                    <p class="p-info">Audio result</p>
+                    @if (_captureResult.AudioData != null)
+                    {
+                        <MudExFileDisplay Style="height: 100%" FileName="Audio.mp3" Url="@_captureResult.AudioData.BlobUrl" ContentType="@_captureResult.AudioData.ContentType"></MudExFileDisplay>
+                    }
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="6">
+                <MudPaper Height="400px" Width="100%">
+                    <p class="p-info">System audio result</p>
+                    @if (_captureResult.SystemAudioData != null)
+                    {
+                        <MudExFileDisplay Style="height: 100%" FileName="System audio.mp3" Url="@_captureResult.SystemAudioData.BlobUrl" ContentType="@_captureResult.SystemAudioData.ContentType"></MudExFileDisplay>
+                    }
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="6">
+                <MudPaper Height="400px" Width="100%">
+                    <p class="p-info">Capture result</p>
+
+                    @if (_captureResult.CaptureData != null)
+                    {
+                        <MudExFileDisplay Style="height: 100%" FileName="Captured.mp4" Url="@_captureResult.CaptureData.BlobUrl" ContentType="@_captureResult.CaptureData.ContentType"></MudExFileDisplay>
+                    }
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="6">
+                <MudPaper Height="400px" Width="100%">
+                    <p class="p-info">Camera result</p>
+                    @if (_captureResult.CameraData != null)
+                    {
+                        <MudExFileDisplay Style="height: 100%" FileName="Camera.mp4" Url="@_captureResult.CameraData.BlobUrl" ContentType="@_captureResult.CameraData.ContentType"></MudExFileDisplay>
+                    }
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+        <div style="height: 100px;"></div>
+    }
+
+</DemoComponent>
 
 @code {
-    private bool _captureScreen;
-    private bool _recordAudio;
-    private bool _camera;
 
-    ElementReference _videoPref;
 
     [Inject] private ICaptureService _captureService { get; set; }
-    [Inject] private IMudExFileService _fileService { get; set; }
     [Inject] private IDialogService _dialogService { get; set; }
 
-
-    private MediaStreamTrack? _source;
-
-    private string _captureId;
-
-    class XXX
-    {
-        public string Name { get; private set; } = "Hello";
-        public MudExColor Color { get; set; }
-        public CaptureOptions CaptureI { get; private set; } = new CaptureOptions();
-    }
-    private XXX _xxx = new XXX();
+    private CaptureResult? _captureResult;
+    private string? _captureId;
 
     private async Task StartStopRecording(MouseEventArgs obj)
     {
@@ -109,51 +92,35 @@
         }
         else
         {
-            var audioDevices = await _captureService.GetAudioDevicesAsync();
-            var videoDevices = await _captureService.GetVideoDevicesAsync();
+            var options = await Test();
 
-            await Test(audioDevices, videoDevices);
-
-            await JsRuntime.AlertAsync("Click ok to start");
-            var options = new CaptureOptions
-                {
-                    OverlayPosition = DialogPosition.CenterLeft,
-                    ScreenCapture = _source ?? (OneOf<bool, MediaStreamTrack, DisplayMediaOptions>)_captureScreen,
-                    VideoDevice = _camera ? videoDevices.FirstOrDefault() : null,
-                    AudioDevices = _recordAudio ? [audioDevices.First()] : []
-                };
-            _captureId = await _captureService.StartCaptureAsync(options, CaptureCallback, s =>
-            {
-                _source = null;
-                _captureId = null;
-            });
+            if (options != null && options.Valid())
+                _captureId = await _captureService.StartCaptureAsync(options, CaptureCallback, s => _captureId = null);
         }
     }
 
-    private async Task Test(IEnumerable<AudioDevice> audioDevices, IEnumerable<VideoDevice> videoDevices)
+    private async Task<CaptureOptions?> Test()
     {
-        // return;
-        // var r = await _dialogService.EditObject(_xxx);
-        // var r3 = await _dialogService.EditObject(_xxx, "Show", DialogOptionsEx.DefaultDialogOptions, m =>
-        // {
-        //     m.Property(a => a.Name).AsReadOnly();
-        //     m.Property(a => a.CaptureI).AsReadOnly();
-        // });
-        // await JsRuntime.AlertAsync(r.Result.CaptureI.AudioContentType + "  for " + r.Result.Name + " is" + r.Result.Color);
+        var options = new CaptureOptions();
 
-
-        var options = new CaptureOptions() {VideoDevice = videoDevices.FirstOrDefault(), AudioDevices = audioDevices.ToList()};
         var dialogOptionsEx = DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(o =>
         {
+            o.DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.FullHeightWithMargin);
+            o.MaxWidth = MaxWidth.Medium;
+            o.FullWidth = true;
+            o.MaxHeight = MaxHeight.Medium;
+            o.FullHeight = true;
             o.Resizeable = true;
+            o.DragMode = MudDialogDragMode.Simple;
         });
-        var r2 = await _dialogService.EditObject(options, "Capture", Icons.Material.Filled.VideoCameraFront, dialogOptionsEx);
-        var captureOptions = r2.Result;
-        await JsRuntime.AlertAsync(captureOptions.AudioContentType + " audio device count " + captureOptions.AudioDevices.Count);
+
+        var result = await _dialogService.EditObject(options, "Capture", Icons.Material.Filled.VideoCameraFront, dialogOptionsEx);
+        if (result.Cancelled)
+            return null;
+        return result.Result;
     }
+    
 
-
-    private CaptureResult _captureResult;
     private void CaptureCallback(CaptureResult obj)
     {
         _captureResult = obj;

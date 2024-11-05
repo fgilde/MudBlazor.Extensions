@@ -2,6 +2,7 @@
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 @using Microsoft.AspNetCore.Components.Rendering
+@using Nextended.Core.Extensions
 @typeparam T
 @inherits MudExBaseComponent<MudExObjectEdit<T>>
 <style>
@@ -113,7 +114,8 @@
 
                             if (renderableProperties?.Any() == true)
                             {
-                                <MudExpansionPanel @ref="@ExpansionPanel" Expanded="true" Disabled="@(!GroupsCollapsible)" Class="@($"mt-3 {(!string.IsNullOrWhiteSpace(groupName) ? CssClassName : "mud-ex-hidden-group")}")" Text="@(!string.IsNullOrWhiteSpace(groupName) ? TryLocalize(groupName) : groupName)">
+                                var groupId = Guid.NewGuid().ToString("N");
+                                <MudExpansionPanel @ref="@ExpansionPanel" Expanded="true" Tag="@groupId" ExpandedChanged="@(b => GroupExpandedChange(groupId, b))" Disabled="@(!GroupsCollapsible)" Class="@($"mt-3 {(!string.IsNullOrWhiteSpace(groupName) ? CssClassName : "mud-ex-hidden-group")}")" Text="@(!string.IsNullOrWhiteSpace(groupName) ? TryLocalize(groupName) : groupName)">
                                     @if (PathDisplayMode == PathDisplayMode.DisplaySeparate && !string.IsNullOrEmpty(pathStr) && pathStr != groupName)
                                     {
                                         <p class="@(GroupingStyle == GroupingStyle.Flat ? "mud-ex-group-path-text-flat" : "mud-ex-group-path-text-default")">@pathStr</p>

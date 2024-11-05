@@ -1,67 +1,109 @@
 ﻿@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Components.ObjectEdit
 @inherits MudExBaseComponent<MudExCaptureOptionsEdit>
 
 
 <div class="@Class" style="@GetStyleStr()">
     @if (Value != null)
     {
-        <MudStack Style="margin: 10px;" StretchItems="StretchItems.All" Row="true">
-            <MudStack Style="width: 300px;">
-                <MudPaper Class="pa-3">Item 1</MudPaper>
-                <MudPaper Class="pa-3">Item 2</MudPaper>
-                <MudPaper Class="pa-3">Item 3</MudPaper>
-            </MudStack>
-            <MudStack>
-                <MudExGroupBox Text="@TryLocalize("Video")" Class="pa-3">
-                    <MudAutocomplete T="string" @bind-Value="@Value.ContentType"
-                                     Label="@TryLocalize("VideoContentType")"
-                                     Dense="@Dense"
-                                     Disabled="@(string.IsNullOrEmpty(Value?.VideoDevice?.DeviceId))"
-                                     ReadOnly="@ReadOnly"
-                                     ResetValueOnEmptyText="true"
-                                     CoerceText="false"
-                                     CoerceValue="false"
-                                     Placeholder="@TryLocalize("VideoContentType")"
-                                     SearchFunc="@SearchVideoContentType"
-                                     Clearable="true" />
-        
-                    <p>@TryLocalize("Video device")</p>
-                    <MudExSelect T="VideoDevice" 
-                                 ItemCollection="@_videoDevices" 
-                                 Value="@Value.VideoDevice"
-                                 ValueChanged="@(v => SetAndStateChange(o => o.VideoDevice = v))"
-                                 MultiSelection="false"
-                               SearchBox="true"
-                               SearchBoxVariant="Variant.Text"
-                               Dense="@Dense"
-                               SelectAll="false"></MudExSelect>
-                </MudExGroupBox>
-                <MudExGroupBox Text="@TryLocalize("Audio")" Class="pa-3">
-                    <MudAutocomplete T="string" @bind-Value="@Value.AudioContentType"
-                                     Label="@TryLocalize("AudioContentType")"
-                                     Dense="@Dense"
-                                     Disabled="@((Value.AudioDevices?.Count ?? 0) <= 0)"
-                                     ReadOnly="@ReadOnly"
-                                     ResetValueOnEmptyText="true"
-                                     CoerceText="false"
-                                     CoerceValue="false"
-                                     Placeholder="@TryLocalize("AudioContentType")"
-                                     SearchFunc="@SearchAudioContentType"
-                                     Clearable="true"/>
+        <MudExSplitPanel SplitterSize="1" UpdateSizesInPercentage="true" Splittable="false" ColumnLayout="true" Style="margin-bottom: 50px;">
+            <Left>
+                <MudExGroupBox Text="@TryLocalize("Screen Capture")" Class="pa-3" Style="width: 60%">
 
-                    <p>@TryLocalize("Audio devices")</p>
-                    <MudExList T="AudioDevice" ItemCollection="@_audioDevices" 
-                               SelectedValues="@Value.AudioDevices"
-                               MultiSelection="true"
-                               SelectedItemsChanged="@AudioDevicesChanged"
-                               SearchBox="true"
-                               SearchBoxBackgroundColor="@("var(--mud-palette-surface)")"
-                               SearchBoxVariant="Variant.Text"
-                               Dense="@Dense"
-                               SelectAll="false"
-                               Style="max-height: 300px; overflow-y: auto;"></MudExList>
+                    <MudSwitch Style="margin: 7px;" Color="Color.Primary" UncheckedColor="Color.Default" T="bool" @bind-Value="@_captureScreen" Label="@TryLocalize("Capture Screen")" />
+
+                    @if (_captureScreen)
+                    {
+                        <MudPaper Class="ma-3 pa-3" Elevation="3" Style="cursor: pointer;" @onclick="@(SelectScreen)">
+                            <MudGrid Class="mt-1 mb-2" Justify="Justify.Center">
+                                @if (_track != null)
+                                {
+                                    <MudFab Style="position: absolute; margin-left: 200px;" Color="Color.Error" OnClick="@StopPreviewTrack" StartIcon="@Icons.Material.Filled.Close" Size="Size.Small" />
+                                }
+                                <MudPaper Class="ma-3 pa-3" Style="width: 200px; height: 200px; border: 3px dotted gray">
+                                    <video @ref="_preview" style="@GetPreviewStyle()"></video>
+                                </MudPaper>
+                            </MudGrid>
+                            <MudText Typo="Typo.subtitle1">@TryLocalize("Select Screen")</MudText>
+                            <MudText Typo="Typo.body2">@TryLocalize("Click here to choose a screen to capture. If not selected, you will be prompted when starting the recording.")</MudText>
+                        </MudPaper>
+
+                        @if (!string.IsNullOrEmpty(Value?.VideoDevice?.DeviceId))
+                        {
+                            <MudExEnumSelect Class="ma-3" Variant="Variant.Outlined" @bind-Value="Value.OverlaySource" Label="@TryLocalize("Overlay Source")"></MudExEnumSelect>
+                            <MudExEnumSelect Class="ml-3 mr-3 mb-1" Variant="Variant.Outlined" @bind-Value="Value.OverlayPosition" Label="@TryLocalize("Overlay Position")"></MudExEnumSelect>
+                        }
+
+                        <MudText Typo="Typo.body2" Color="Color.Warning" Class="pl-6" Style="font-size: 0.875em;">
+                            @TryLocalize("Note: Following options can't changed after a screen is selected")
+                        </MudText>
+                        <MudCheckBox Disabled="@(_track != null)" @bind-Value="_recordSystemAudio" T="bool" Label="@TryLocalize("Record System Audio")" Class="mt-3 ml-2" />
+                        <MudText Typo="Typo.body2" Color="Color.Secondary" Class="pl-6" Style="font-size: 0.875em;">
+                            @TryLocalize("Note: System audio recording is supported only in certain browsers and typically for browser tabs only.")
+                        </MudText>
+
+                        <MudGrid Class="mt-6" Justify="Justify.FlexEnd">
+                            <MudFab Disabled="@(_track != null)" StartIcon="@Icons.Material.Filled.ScreenShare" OnClick="@ChangeMediaOptions" Label="@TryLocalize("Change media options")" />
+                        </MudGrid>
+                    }
+
                 </MudExGroupBox>
-            </MudStack>
-        </MudStack>
+
+            </Left>
+            <Right>
+                <MudStack StretchItems="StretchItems.End" Style="width: 40%">
+                    <MudExGroupBox Text="@TryLocalize("Additional Video")" Class="pa-3">
+                        <MudAutocomplete T="string" @bind-Value="@Value.ContentType"
+                                         Label="@TryLocalize("VideoContentType")"
+                                         Dense="@Dense"
+                                         Disabled="@(string.IsNullOrEmpty(Value?.VideoDevice?.DeviceId))"
+                                         ReadOnly="@ReadOnly"
+                                         ResetValueOnEmptyText="true"
+                                         CoerceText="false"
+                                         CoerceValue="false"
+                                         Placeholder="@TryLocalize("VideoContentType")"
+                                         SearchFunc="@SearchVideoContentType"
+                                         Clearable="true" />
+
+                        <p>@TryLocalize("Video device")</p>
+                        <MudExSelect T="VideoDevice"
+                                     ItemCollection="@_videoDevices"
+                                     Value="@Value.VideoDevice"
+                                     ValueChanged="@(v => SetAndStateChange(o => o.VideoDevice = v))"
+                                     MultiSelection="false"
+                                     SearchBox="true"
+                                     SearchBoxVariant="Variant.Text"
+                                     Dense="@Dense"
+                                     SelectAll="false"></MudExSelect>
+                    </MudExGroupBox>
+                    <MudExGroupBox Text="@TryLocalize("Additional Audio")" Class="pa-3">
+                        <MudAutocomplete T="string" @bind-Value="@Value.AudioContentType"
+                                         Label="@TryLocalize("AudioContentType")"
+                                         Dense="@Dense"
+                                         Disabled="@((Value.AudioDevices?.Count ?? 0) <= 0)"
+                                         ReadOnly="@ReadOnly"
+                                         ResetValueOnEmptyText="true"
+                                         CoerceText="false"
+                                         CoerceValue="false"
+                                         Placeholder="@TryLocalize("AudioContentType")"
+                                         SearchFunc="@SearchAudioContentType"
+                                         Clearable="true" />
+
+                        <p>@TryLocalize("Audio devices")</p>
+                        <MudExList T="AudioDevice" ItemCollection="@_audioDevices"
+                                   SelectedValues="@Value.AudioDevices"
+                                   Color="MudExColor.Inherit"
+                                   MultiSelection="true"
+                                   SelectedItemsChanged="@AudioDevicesChanged"
+                                   SearchBox="true"
+                                   SearchBoxBackgroundColor="@("var(--mud-palette-surface)")"
+                                   SearchBoxVariant="Variant.Text"
+                                   Dense="@Dense"
+                                   SelectAll="false"
+                                   Style="max-height: 400px; overflow-y: auto;"></MudExList>
+                    </MudExGroupBox>
+                </MudStack>
+            </Right>
+        </MudExSplitPanel>
     }
 </div>

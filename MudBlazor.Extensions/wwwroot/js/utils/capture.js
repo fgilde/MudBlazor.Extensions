@@ -32,6 +32,14 @@
         }
     }
 
+    static stopPreviewCapture(trackId) {
+        const stream = this._preselected[trackId];
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            delete this._preselected[trackId];
+        }
+    }
+
     static async startCapture(options, callback) {
         const id = this.generateUniqueId();
         const capture = await this.setupCapture(options, id, callback);

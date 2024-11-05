@@ -43,6 +43,11 @@ public partial class MudExObjectEdit<T>
     [Parameter] public bool? ReadOnlyOverwrite { get; set; }
 
     /// <summary>
+    /// If this is true only one group can be expanded at a time other groups will be collapsed
+    /// </summary>
+    [Parameter] public bool SingleExpand { get; set; }
+
+    /// <summary>
     /// Returns true if we have a registration for the current object that then uses the registered component
     /// </summary>
     protected bool HasRegistrationForWholeObject => RenderWithType != null;
@@ -865,10 +870,29 @@ public partial class MudExObjectEdit<T>
         return res;
     }
 
+    private void GroupExpandedChange(string groupId, bool expanded)
+    {
+        if (expanded && SingleExpand)
+            _groups.Where(g => g.Tag?.ToString() != groupId).Apply(g => g.CollapseAsync());
+    }
+
+    //private bool GetIsExpanded(string groupId)
+    //{
+    //    var existing = _groups.FirstOrDefault(g => g.Tag?.ToString() == groupId);
+    //    if (existing != null)
+    //        return existing.Expanded;
+    //    if (SingleExpand && GroupsCollapsible && _groups.Any(p => p.Expanded))
+    //        return false;
+    //    return true;
+    //}
+
     private Task ExpandCollapse()
     {
-        var collapse = _groups[0].Expanded;
-        return Task.WhenAll(_groups.Select(g => collapse ? g.CollapseAsync() : g.ExpandAsync()));
+        _groups.ForEach(g =>
+        {
+            g.ToggleExpansionAsync();
+        });
+        return Task.CompletedTask;
     }
 
     private IDictionary<string, object> GetAttributesForPrimitive()

@@ -11,16 +11,6 @@ namespace MudBlazor.Extensions.Core;
 public class DisplayMediaOptions
 {
     /// <summary>
-    /// Gets or sets the constraints for video capture.
-    /// </summary>
-    public VideoConstraints Video { get; set; }
-
-    /// <summary>
-    /// Gets or sets the constraints for audio capture.
-    /// </summary>
-    public AudioConstraints Audio { get; set; }
-
-    /// <summary>
     /// Indicates whether the current tab is preferred for capture.
     /// </summary>
     public bool PreferCurrentTab { get; set; }
@@ -44,6 +34,17 @@ public class DisplayMediaOptions
     /// Determines whether monitor-type surfaces should be included or excluded.
     /// </summary>
     public IncludeExclude? MonitorTypeSurfaces { get; set; }
+    /// <summary>
+    /// Gets or sets the constraints for video capture.
+    /// </summary>
+    public VideoConstraints Video { get; set; }
+
+    /// <summary>
+    /// Gets or sets the constraints for audio capture.
+    /// </summary>
+    public AudioConstraints Audio { get; set; }
+
+    #region Static factory
 
     /// <summary>
     /// Configures the options to include system audio.
@@ -164,6 +165,8 @@ public class DisplayMediaOptions
         PreferCurrentTab = true,
         SystemAudio = IncludeExclude.Include
     };
+
+    #endregion
 }
 /// <summary>
 /// Represents constraints for capturing audio, including settings like device ID, echo cancellation, and sample rate.

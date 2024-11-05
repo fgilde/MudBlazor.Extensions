@@ -54,6 +54,11 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
         return result;
     }
 
+    public Task StopCaptureAsync(MediaStreamTrack track)
+    {
+         return _jsRuntime.InvokeAsync<string>("MudExCapture.stopPreviewCapture", track.Id).AsTask();
+    }
+
     private CaptureResult Prepare(CaptureResult captureResult, CaptureOptions options)
     {
         // TODO: Think about to build the combined result in blazor maybe with FFMpegBlazor

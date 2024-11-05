@@ -54,6 +54,12 @@ public static class RenderDataDefaults
         RegisterDefault<double, MudNumericField<double>>(f => f.Value);
         RegisterDefault<float, MudNumericField<float>>(f => f.Value);
 
+        RegisterDefault<int?, MudNumericField<int?>>(f => f.Value, field => { field.Clearable = true; });
+        RegisterDefault<decimal?, MudNumericField<decimal?>>(f => f.Value, field => { field.Clearable = true; });
+        RegisterDefault<double?, MudNumericField<double?>>(f => f.Value, field => { field.Clearable = true; });
+        RegisterDefault<float?, MudNumericField<float?>>(f => f.Value, field => { field.Clearable = true; });
+
+
         RegisterDefault<DateTime?, MudDatePicker>(f => f.Date, DatePickerOptions(true));
         RegisterDefault<DateTime, DateTime?, MudDatePicker>(f => f.Date, DatePickerOptions(false));
         RegisterDefault<DateOnly, DateTime?, MudDatePicker>(f => f.Date, DatePickerOptions(false));

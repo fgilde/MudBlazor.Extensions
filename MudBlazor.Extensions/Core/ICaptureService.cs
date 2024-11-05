@@ -15,6 +15,11 @@ public interface ICaptureService
     Task<string> StartCaptureAsync(CaptureOptions options, Action<CaptureResult> callback, Action<string> stoppedCallback = null);
 
     /// <summary>
+    /// Stops the preview capture for the specified track.
+    /// </summary>
+    Task StopCaptureAsync(MediaStreamTrack track);
+
+    /// <summary>
     /// Stops the capture with the specified ID.
     /// </summary>
     /// <param name="captureId">The id for the capture recording to stop</param>

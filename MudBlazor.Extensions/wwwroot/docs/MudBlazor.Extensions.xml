@@ -1215,6 +1215,11 @@
             Set to true to have a read only mode
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureOptionsEdit.Dense">
+            <summary>
+            Dense
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExCaptureOptionsEdit.GetRenderData(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
             <inheritdoc />
         </member>
@@ -9412,6 +9417,11 @@
             If this is set all properties will be readonly depending on the value otherwise the property settings for meta configuration will be used
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.SingleExpand">
+            <summary>
+            If this is true only one group can be expanded at a time other groups will be collapsed
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.HasRegistrationForWholeObject">
             <summary>
             Returns true if we have a registration for the current object that then uses the registered component
@@ -15881,16 +15891,6 @@
             preferences for capturing the current tab, and settings for system audio and browser surfaces.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.Video">
-            <summary>
-            Gets or sets the constraints for video capture.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.Audio">
-            <summary>
-            Gets or sets the constraints for audio capture.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.PreferCurrentTab">
             <summary>
             Indicates whether the current tab is preferred for capture.
@@ -15914,6 +15914,16 @@
         <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.MonitorTypeSurfaces">
             <summary>
             Determines whether monitor-type surfaces should be included or excluded.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.Video">
+            <summary>
+            Gets or sets the constraints for video capture.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.DisplayMediaOptions.Audio">
+            <summary>
+            Gets or sets the constraints for audio capture.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Core.DisplayMediaOptions.WithSystemAudio">
@@ -16433,6 +16443,11 @@
             Starts capturing the screen or camera and audio.
             </summary>
             <returns>Id to stop recording</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopCaptureAsync(MudBlazor.Extensions.Core.MediaStreamTrack)">
+            <summary>
+            Stops the preview capture for the specified track.
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Core.ICaptureService.StopCaptureAsync(System.String)">
             <summary>
