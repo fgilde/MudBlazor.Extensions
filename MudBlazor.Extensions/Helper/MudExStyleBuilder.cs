@@ -584,6 +584,14 @@ public sealed class MudExStyleBuilder : IAsyncDisposable, IMudExStyleAppearance
     public MudExStyleBuilder WithPosition(MudBlazor.Extensions.Core.Css.Position position, bool when = true) => WithPosition(position.GetDescription(), when);
 
     /// <summary>
+    /// Specifies the position property using a CSS string value, if the 'when' condition is true.
+    /// </summary>
+    public MudExStyleBuilder WithPosition(MudExPosition position, bool when = true) => 
+        WithPosition(Core.Css.Position.Absolute, when)
+        .WithLeft(position.Left, when)
+        .WithTop(position.Top, when);
+
+    /// <summary>
     /// Specifies the top property using a CSS string value, if the 'when' condition is true.
     /// </summary>
     public MudExStyleBuilder WithTop(string top, bool when = true) => With("top", top, when);

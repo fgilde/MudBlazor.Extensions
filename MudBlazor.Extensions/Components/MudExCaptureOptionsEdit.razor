@@ -1,5 +1,4 @@
 ﻿@using MudBlazor.Extensions.Core
-@using MudBlazor.Extensions.Components.ObjectEdit
 @inherits MudExBaseComponent<MudExCaptureOptionsEdit>
 
 
@@ -8,20 +7,30 @@
     {
         <MudExSplitPanel SplitterSize="1" UpdateSizesInPercentage="true" Splittable="false" ColumnLayout="true" Style="margin-bottom: 50px;">
             <Left>
-                <MudExGroupBox Text="@TryLocalize("Screen Capture")" Class="pa-3" Style="width: 60%">
+                <MudExGroupBox Text="@TryLocalize("Preview")" Class="pa-3" Style="width: 60%">
 
                     <MudSwitch Style="margin: 7px;" Color="Color.Primary" UncheckedColor="Color.Default" T="bool" @bind-Value="@_captureScreen" Label="@TryLocalize("Capture Screen")" />
 
-                    @if (_captureScreen)
+                    @if (_captureScreen || Value.VideoDevice?.DeviceId != null)
                     {
                         <MudPaper Class="ma-3 pa-3" Elevation="3" Style="cursor: pointer;" @onclick="@(SelectScreen)">
                             <MudGrid Class="mt-1 mb-2" Justify="Justify.Center">
-                                @if (_track != null)
+                                @if (_screenTrack != null)
                                 {
-                                    <MudFab Style="position: absolute; margin-left: 200px;" Color="Color.Error" OnClick="@StopPreviewTrack" StartIcon="@Icons.Material.Filled.Close" Size="Size.Small" />
+                                    <MudFab Style="@StopPreviewButtonStyle()" Color="Color.Error" OnClick="@StopPreviewScreenTrack" StartIcon="@Icons.Material.Filled.Close" Size="Size.Small" />
                                 }
-                                <MudPaper Class="ma-3 pa-3" Style="width: 200px; height: 200px; border: 3px dotted gray">
-                                    <video @ref="_preview" style="@GetPreviewStyle()"></video>
+                                <MudPaper @onmousemove="OnDrag" @onmouseup="EndDrag" Class="ma-3 pa-3" Style="@GetPreviewContainerStyle()">
+                                    <div style="@GetMainCapturePreviewStyle()">
+                                        <video style="height: 100%; width: 100%" @ref="_previewScreen"></video>
+                                    </div>
+                                    <div @onclick:preventDefault="true"
+                                         @onclick:stopPropagation="true"
+                                         class="mud-ex-draggable mud-ex-resizeable"
+                                         @ref="_overlayContainer"
+                                         style="@GetOverlayPreviewStyle()">
+                                        <video @onmousedown="StartDrag"
+                                               @onmouseup="EndDrag" style="height: 100%; width: 100%" @ref="_previewCamera"></video>
+                                    </div>
                                 </MudPaper>
                             </MudGrid>
                             <MudText Typo="Typo.subtitle1">@TryLocalize("Select Screen")</MudText>
@@ -37,13 +46,13 @@
                         <MudText Typo="Typo.body2" Color="Color.Warning" Class="pl-6" Style="font-size: 0.875em;">
                             @TryLocalize("Note: Following options can't changed after a screen is selected")
                         </MudText>
-                        <MudCheckBox Disabled="@(_track != null)" @bind-Value="_recordSystemAudio" T="bool" Label="@TryLocalize("Record System Audio")" Class="mt-3 ml-2" />
+                        <MudCheckBox Disabled="@(_screenTrack != null)" @bind-Value="_recordSystemAudio" T="bool" Label="@TryLocalize("Record System Audio")" Class="mt-3 ml-2" />
                         <MudText Typo="Typo.body2" Color="Color.Secondary" Class="pl-6" Style="font-size: 0.875em;">
                             @TryLocalize("Note: System audio recording is supported only in certain browsers and typically for browser tabs only.")
                         </MudText>
 
                         <MudGrid Class="mt-6" Justify="Justify.FlexEnd">
-                            <MudFab Disabled="@(_track != null)" StartIcon="@Icons.Material.Filled.ScreenShare" OnClick="@ChangeMediaOptions" Label="@TryLocalize("Change media options")" />
+                            <MudFab Disabled="@(_screenTrack != null)" StartIcon="@Icons.Material.Filled.ScreenShare" OnClick="@ChangeMediaOptions" Label="@TryLocalize("Change media options")" />
                         </MudGrid>
                     }
 
@@ -69,7 +78,7 @@
                         <MudExSelect T="VideoDevice"
                                      ItemCollection="@_videoDevices"
                                      Value="@Value.VideoDevice"
-                                     ValueChanged="@(v => SetAndStateChange(o => o.VideoDevice = v))"
+                                     ValueChanged="@VideoDeviceChanged"
                                      MultiSelection="false"
                                      SearchBox="true"
                                      SearchBoxVariant="Variant.Text"

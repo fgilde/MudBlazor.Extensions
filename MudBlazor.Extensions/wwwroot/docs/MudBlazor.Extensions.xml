@@ -19550,6 +19550,11 @@
             Specifies the position property using a CSS string value, if the 'when' condition is true.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithPosition(MudBlazor.Extensions.Core.MudExPosition,System.Boolean)">
+            <summary>
+            Specifies the position property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithTop(System.String,System.Boolean)">
             <summary>
             Specifies the top property using a CSS string value, if the 'when' condition is true.

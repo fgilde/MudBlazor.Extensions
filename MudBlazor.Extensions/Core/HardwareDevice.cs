@@ -28,10 +28,14 @@ public class HardwareDeviceInfo: IEquatable<HardwareDeviceInfo>
 }
 
 public class AudioDevice : HardwareDeviceInfo
-{}
+{
+    public static AudioDevice Default = new() { Label = "Default", DeviceId = "default" };
+}
 
 public class VideoDevice : HardwareDeviceInfo
-{}
+{
+    public static VideoDevice Default = new() { Label = "Default", DeviceId = "default" };
+}
 
 public class MediaStreamTrack : HardwareDeviceInfo
 {

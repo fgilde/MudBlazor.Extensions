@@ -63,8 +63,7 @@ public class CaptureOptions
         get => _audioDevices;
         set => _audioDevices = value;
     }
-
-
+    
     /// <summary>
     /// If set, the recording will stop after the specified time.
     /// </summary>
@@ -99,6 +98,31 @@ public class CaptureOptions
     {
         return AudioDevices.EmptyIfNull().Any(d => !string.IsNullOrEmpty(d.DeviceId)) || VideoDevice?.DeviceId != null || CaptureScreen;
     }
+
+    public MudExPosition GetOverlayPosition(MudExDimension containerDimension, MudExDimension? overlayDimension = null)
+    {
+        overlayDimension ??= OverlaySize;
+        overlayDimension = overlayDimension.Value.ToAbsolute(containerDimension);
+        return GetOverlayPosition(containerDimension.Width, containerDimension.Height, overlayDimension.Value.Width, overlayDimension.Value.Height);
+    }
+
+    public MudExPosition GetOverlayPosition(double canvasWidth, double canvasHeight, double overlayWidth, double overlayHeight)
+    {
+        return OverlayPosition switch
+        {
+            DialogPosition.Center => new MudExPosition((canvasWidth - overlayWidth) / 2, (canvasHeight - overlayHeight) / 2),
+            DialogPosition.CenterLeft => new MudExPosition(20, (canvasHeight - overlayHeight) / 2),
+            DialogPosition.CenterRight => new MudExPosition(canvasWidth - overlayWidth - 20, (canvasHeight - overlayHeight) / 2),
+            DialogPosition.TopCenter => new MudExPosition((canvasWidth - overlayWidth) / 2, 20),
+            DialogPosition.TopLeft => new MudExPosition(20, 20),
+            DialogPosition.TopRight => new MudExPosition(canvasWidth - overlayWidth - 20, 20),
+            DialogPosition.BottomCenter => new MudExPosition((canvasWidth - overlayWidth) / 2, canvasHeight - overlayHeight - 20),
+            DialogPosition.BottomLeft => new MudExPosition(20, canvasHeight - overlayHeight - 20),
+            DialogPosition.Custom => OverlayCustomPosition,
+            DialogPosition.BottomRight or _ => new MudExPosition(canvasWidth - overlayWidth - 20, canvasHeight - overlayHeight - 20),
+        };
+    }
+
 }
 
 /// <summary>

@@ -244,10 +244,16 @@
     padding: 0px !important;
 }
 
+.mud-ex-draggable {
+    cursor: move;
+}
 
+.mud-ex-resizeable {
+    resize: both;    
+    overflow: hidden;
+}
 
 /*WORKAROUND CURRENTLY input label content VARIANT text datalist BROKEN*/
-
 .mud-ex-select-variant-text .mud-input-label-inputcontrol {
     top: -15px;
 }

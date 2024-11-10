@@ -89,4 +89,61 @@ public readonly struct MudExSize<T> where T : INumber<T>
     /// </summary>
     public static implicit operator MudExSize<T>(string s) => new(s);
 
+    public MudExSize<double> ToAbsolute(double parentSize = 0, double fontSize = 16,    
+        double viewportWidth = 0,   
+        double viewportHeight = 0,
+        double dpi = 96)
+    {
+        var doubleValue = Value is double value ? value : 0;
+        return MudExSize<double>.ToAbsolute(new MudExSize<double>(doubleValue, SizeUnit), parentSize, fontSize, viewportWidth, viewportHeight, dpi);
+    }
+
+    public static MudExSize<double> ToAbsolute(MudExSize<double> size,
+        double parentSize = 0,      // Für Prozentangaben
+        double fontSize = 16,       // Für em und rem, Standard-Schriftgröße ist meist 16px
+        double viewportWidth = 0,   // Für vw
+        double viewportHeight = 0,  // Für vh
+        double dpi = 96             // Für physische Maßeinheiten (cm, mm, in, pt, pc)
+    )
+    {
+        const double inchInMillimeters = 25.4;
+
+        return size.SizeUnit switch
+        {
+            CssUnit.Pixels => size.Value,
+
+            CssUnit.Percentage when parentSize > 0 =>
+                (parentSize * size.Value) / 100,
+
+            CssUnit.Em => size.Value * fontSize,
+
+            CssUnit.Rem => size.Value * fontSize,
+
+            CssUnit.ViewportWidth when viewportWidth > 0 =>
+                (viewportWidth * size.Value) / 100,
+
+            CssUnit.ViewportHeight when viewportHeight > 0 =>
+                (viewportHeight * size.Value) / 100,
+
+            CssUnit.ViewportMinimum when viewportWidth > 0 && viewportHeight > 0 =>
+                (Math.Min(viewportWidth, viewportHeight) * size.Value) / 100,
+
+            CssUnit.ViewportMaximum when viewportWidth > 0 && viewportHeight > 0 =>
+                (Math.Max(viewportWidth, viewportHeight) * size.Value) / 100,
+
+            CssUnit.Centimeters => (size.Value / inchInMillimeters) * dpi,
+
+            CssUnit.Millimeters => (size.Value / inchInMillimeters) * dpi,
+
+            CssUnit.Inches => size.Value * dpi,
+
+            CssUnit.Points => (size.Value * dpi) / 72,  // 1pt = 1/72 inch
+
+            CssUnit.Picas => (size.Value * dpi) / 6,    // 1pc = 12pt = 1/6 inch
+
+            _ => throw new NotSupportedException($"Konvertierung für Einheit {size.SizeUnit} wird nicht unterstützt oder es fehlen Kontextinformationen.")
+        };
+    }
+
+
 }

@@ -5,7 +5,14 @@ class MudExCapture {
     static async selectCaptureSource(captureMediaOptions, videoElementForPreview) {
         try {
             var captureMediaOptionsWithoutNullProperties = this.removeOptionsWithoutNullProperties(captureMediaOptions);
-            const stream = await navigator.mediaDevices.getDisplayMedia(captureMediaOptionsWithoutNullProperties);
+            var stream = null;
+            if (captureMediaOptions.video?.deviceId)
+                stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: captureMediaOptions.video.deviceId } } });
+            else if (captureMediaOptions.audio?.deviceId)
+                stream = await navigator.mediaDevices.getUserMedia({ audio: { deviceId: { exact: captureMediaOptions.audio.deviceId } } });
+            else
+                stream = await navigator.mediaDevices.getDisplayMedia(captureMediaOptionsWithoutNullProperties);
+
             const selectedTrack = stream.getVideoTracks()[0];
             const element = MudExObserver.getElement(videoElementForPreview);
             if (element && typeof element.play === 'function') {
@@ -31,6 +38,8 @@ class MudExCapture {
             return null;
         }
     }
+
+
 
     static stopPreviewCapture(trackId) {
         const stream = this._preselected[trackId];
@@ -318,7 +327,6 @@ class MudExCapture {
                     y = canvasHeight - overlayHeight - 20;
                 }
             } else {
-                // Vordefinierte Positionen
                 switch (position) {
                     case 'Center':
                         x = (canvasWidth - overlayWidth) / 2;
@@ -372,7 +380,7 @@ class MudExCapture {
 
                 // Overlay Position und Größe berechnen
                 const overlay = calculateOverlayPosition(
-                    options.overlayCustomPosition,
+                    options.overlayPosition,
                     options.overlaySize,
                     canvas.width,
                     canvas.height
