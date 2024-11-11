@@ -15008,6 +15008,11 @@
             Options for capturing video and audio.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Core.CaptureOptions.ShowNotificationWhileRecording">
+            <summary>
+            If this is true a notification toast will be shown while recording.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Core.CaptureOptions.ContentType">
             <summary>
             The content type for video.
@@ -16436,6 +16441,16 @@
         <member name="T:MudBlazor.Extensions.Core.ICaptureService">
             <summary>
             Service for capturing the screen or camera and audio.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.EditCaptureOptionsAsync(MudBlazor.Extensions.Core.CaptureOptions)">
+            <summary>
+            Shows a dialog where the user can specify or edit the capture options.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.ICaptureService.StartCaptureAsync(System.Action{MudBlazor.Extensions.Core.CaptureResult},System.Action{System.String})">
+            <summary>
+            Shows a dialog where the user can specify the capture options and starts capture if.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Core.ICaptureService.StartCaptureAsync(MudBlazor.Extensions.Core.CaptureOptions,System.Action{MudBlazor.Extensions.Core.CaptureResult},System.Action{System.String})">
@@ -22672,6 +22687,12 @@
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.EditCaptureOptionsAsync(MudBlazor.Extensions.Core.CaptureOptions)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StartCaptureAsync(System.Action{MudBlazor.Extensions.Core.CaptureResult},System.Action{System.String})">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExCaptureService.StartCaptureAsync(MudBlazor.Extensions.Core.CaptureOptions,System.Action{MudBlazor.Extensions.Core.CaptureResult},System.Action{System.String})">

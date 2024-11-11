@@ -9,6 +9,17 @@ namespace MudBlazor.Extensions.Core;
 public interface ICaptureService
 {
     /// <summary>
+    /// Shows a dialog where the user can specify or edit the capture options.
+    /// </summary>
+    Task<CaptureOptions> EditCaptureOptionsAsync(CaptureOptions? options = null);
+
+
+    /// <summary>
+    /// Shows a dialog where the user can specify the capture options and starts capture if.
+    /// </summary>
+    Task<(string RecordingId, CaptureOptions CaptureOptions)> StartCaptureAsync(Action<CaptureResult> callback, Action<string> stoppedCallback = null);
+
+    /// <summary>
     /// Starts capturing the screen or camera and audio.
     /// </summary>
     /// <returns>Id to stop recording</returns>

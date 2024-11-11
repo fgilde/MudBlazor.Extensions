@@ -60,4 +60,14 @@ public struct MudExPosition
 
     /// <inheritdoc />
     public override string ToString() => $"{Left}x{Top}";
+
+    public MudExPosition ToAbsolute(MudExDimension reference)
+    {
+        return new MudExPosition(Left.ToAbsolute(reference.Width), Top.ToAbsolute(reference.Height));
+    }
+
+    public MudExPosition ToRelative(MudExDimension reference)
+    {
+        return new MudExPosition(Left.ToRelative(reference.Width), Top.ToRelative(reference.Height));
+    }
 }

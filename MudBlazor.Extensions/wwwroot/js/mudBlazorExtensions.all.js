@@ -206,7 +206,7 @@ class MudExCapture {
         streams.audioContext = audioContext;
 
         // Canvas Picture-in-Picture Setup
-        const { combinedStream, canvas } = this.createCombinedStream(streams, options);
+        const { combinedStream, canvas } = this.createCombinedStream(streams, options, id);
 
         // Chunks
         const chunks = {
@@ -273,7 +273,7 @@ class MudExCapture {
         };
     }
 
-    static createCombinedStream(streams, options) {
+    static createCombinedStream(streams, options, id) {
         const { screen, camera, audio, systemAudio, audioContext } = streams;
 
         // Mix audio streams
@@ -356,6 +356,7 @@ class MudExCapture {
                     y = customPos.top.cssValue.includes('%')
                         ? (canvasHeight * parseFloat(customPos.top.cssValue) / 100)
                         : parseFloat(customPos.top.cssValue);
+
                 } catch (e) {
                     console.warn('Fehler beim Parsen der Custom Position:', e);
                     x = 20;
@@ -409,10 +410,12 @@ class MudExCapture {
         // Optimiertes Picture-in-Picture Rendering
         let lastDrawTime = 0;
         const draw = (timestamp) => {
+            if (!this.recordings[id]) {
+                return;
+            }
             if (!lastDrawTime || (timestamp - lastDrawTime) >= frameInterval) {
                 lastDrawTime = timestamp;
                 ctx.drawImage(mainVideo, 0, 0, canvas.width, canvas.height);
-
                 // Overlay Position und Größe berechnen
                 const overlay = calculateOverlayPosition(
                     options.overlayPosition,
@@ -536,13 +539,17 @@ class MudExCapture {
     }
 
     static async getAvailableAudioDevices() {
-        await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        try {
+            await navigator.mediaDevices.getUserMedia({ video: false, audio: true });
+        } catch (e) {} 
         const devices = await navigator.mediaDevices.enumerateDevices();
         return devices.filter(device => device.kind === 'audioinput');
     }
 
     static async getAvailableVideoDevices() {
-        await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        try {
+            await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        } catch (e) { } 
         const devices = await navigator.mediaDevices.enumerateDevices();
         return devices.filter(device => device.kind === 'videoinput');
     }
@@ -1369,7 +1376,9 @@ class MudExSpeechRecognition {
     }
 
     static async getAvailableAudioDevices() {
-        await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        try {
+            await navigator.mediaDevices.getUserMedia({ video: false, audio: true });
+        } catch (e) { } 
         const devices = await navigator.mediaDevices.enumerateDevices();
         return devices.filter(device => device.kind === 'audioinput');
     }

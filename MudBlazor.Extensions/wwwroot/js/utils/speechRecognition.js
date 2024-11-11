@@ -44,7 +44,9 @@
     }
 
     static async getAvailableAudioDevices() {
-        await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        try {
+            await navigator.mediaDevices.getUserMedia({ video: false, audio: true });
+        } catch (e) { } 
         const devices = await navigator.mediaDevices.enumerateDevices();
         return devices.filter(device => device.kind === 'audioinput');
     }

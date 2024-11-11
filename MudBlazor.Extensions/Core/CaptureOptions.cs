@@ -12,6 +12,11 @@ public class CaptureOptions
     private List<AudioDevice> _audioDevices = new();
 
     /// <summary>
+    /// If this is true a notification toast will be shown while recording.
+    /// </summary>
+    public bool ShowNotificationWhileRecording { get; set; } = true;
+
+    /// <summary>
     /// The content type for video.
     /// </summary>
     public string ContentType { get; set; } = "video/webm; codecs=vp9";

@@ -1,9 +1,6 @@
 ﻿@page "/capture-service"
 
 @using MudBlazor.Extensions.Core
-@using MudBlazor.Extensions.Helper
-@using MudBlazor.Extensions.Options
-@using Nextended.Core.Extensions
 
 @attribute [DemoNew(Name = "Capture service", Order = 0, Icon = Icons.Material.Outlined.AccountTree, Documentation = "This sample demonstrate how to use the MudExCaptureService", ForComponentType = typeof(ICaptureService))]
 
@@ -29,7 +26,7 @@
             <MudItem xs="12">
                 <MudPaper Height="400px" Width="100%">
                     <p class="p-info">Combined result</p>
-                    <MudExFileDisplay Style="height: 100%" FileName="Combined result.mp4" Url="@_captureResult.CombinedData.BlobUrl" ContentType="@_captureResult.CombinedData.ContentType"></MudExFileDisplay>
+                    <MudExFileDisplay Dense="true" Style="height: 100%" FileName="Combined result.mp4" Url="@_captureResult.CombinedData.BlobUrl" ContentType="@_captureResult.CombinedData.ContentType"></MudExFileDisplay>
                 </MudPaper>
             </MudItem>
             <MudItem xs="6">
@@ -37,7 +34,7 @@
                     <p class="p-info">Audio result</p>
                     @if (_captureResult.AudioData != null)
                     {
-                        <MudExFileDisplay Style="height: 100%" FileName="Audio.mp3" Url="@_captureResult.AudioData.BlobUrl" ContentType="@_captureResult.AudioData.ContentType"></MudExFileDisplay>
+                        <MudExFileDisplay Dense="true" Style="height: 100%" FileName="Audio.mp3" Url="@_captureResult.AudioData.BlobUrl" ContentType="@_captureResult.AudioData.ContentType"></MudExFileDisplay>
                     }
                 </MudPaper>
             </MudItem>
@@ -46,7 +43,7 @@
                     <p class="p-info">System audio result</p>
                     @if (_captureResult.SystemAudioData != null)
                     {
-                        <MudExFileDisplay Style="height: 100%" FileName="System audio.mp3" Url="@_captureResult.SystemAudioData.BlobUrl" ContentType="@_captureResult.SystemAudioData.ContentType"></MudExFileDisplay>
+                        <MudExFileDisplay Dense="true" Style="height: 100%" FileName="System audio.mp3" Url="@_captureResult.SystemAudioData.BlobUrl" ContentType="@_captureResult.SystemAudioData.ContentType"></MudExFileDisplay>
                     }
                 </MudPaper>
             </MudItem>
@@ -56,7 +53,7 @@
 
                     @if (_captureResult.CaptureData != null)
                     {
-                        <MudExFileDisplay Style="height: 100%" FileName="Captured.mp4" Url="@_captureResult.CaptureData.BlobUrl" ContentType="@_captureResult.CaptureData.ContentType"></MudExFileDisplay>
+                        <MudExFileDisplay Dense="true" Style="height: 100%" FileName="Captured.mp4" Url="@_captureResult.CaptureData.BlobUrl" ContentType="@_captureResult.CaptureData.ContentType"></MudExFileDisplay>
                     }
                 </MudPaper>
             </MudItem>
@@ -65,7 +62,7 @@
                     <p class="p-info">Camera result</p>
                     @if (_captureResult.CameraData != null)
                     {
-                        <MudExFileDisplay Style="height: 100%" FileName="Camera.mp4" Url="@_captureResult.CameraData.BlobUrl" ContentType="@_captureResult.CameraData.ContentType"></MudExFileDisplay>
+                        <MudExFileDisplay Dense="true" Style="height: 100%" FileName="Camera.mp4" Url="@_captureResult.CameraData.BlobUrl" ContentType="@_captureResult.CameraData.ContentType"></MudExFileDisplay>
                     }
                 </MudPaper>
             </MudItem>
@@ -79,7 +76,6 @@
 
 
     [Inject] private ICaptureService _captureService { get; set; }
-    [Inject] private IDialogService _dialogService { get; set; }
 
     private CaptureResult? _captureResult;
     private string? _captureId;
@@ -92,33 +88,10 @@
         }
         else
         {
-            var options = await Test();
-
-            if (options != null && options.Valid())
-                _captureId = await _captureService.StartCaptureAsync(options, CaptureCallback, s => _captureId = null);
+            await _captureService.StartCaptureAsync(CaptureCallback, s => _captureId = null);
         }
     }
 
-    private async Task<CaptureOptions?> Test()
-    {
-        var options = new CaptureOptions();
-
-        var dialogOptionsEx = DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(o =>
-        {
-            o.DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.FullHeightWithMargin);
-            o.MaxWidth = MaxWidth.Medium;
-            o.FullWidth = true;
-            o.MaxHeight = MaxHeight.Medium;
-            o.FullHeight = true;
-            o.Resizeable = true;
-            o.DragMode = MudDialogDragMode.Simple;
-        });
-
-        var result = await _dialogService.EditObject(options, "Capture", Icons.Material.Filled.VideoCameraFront, dialogOptionsEx);
-        if (result.Cancelled)
-            return null;
-        return result.Result;
-    }
     
 
     private void CaptureCallback(CaptureResult obj)

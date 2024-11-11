@@ -65,4 +65,9 @@ public struct MudExDimension
     {
         return new MudExDimension(Width.ToAbsolute(reference.Width), Height.ToAbsolute(reference.Height));
     }
+
+    public MudExDimension ToRelative(MudExDimension reference)
+    {
+        return new MudExDimension(Width.ToRelative(reference.Width), Height.ToRelative(reference.Height));
+    }
 }

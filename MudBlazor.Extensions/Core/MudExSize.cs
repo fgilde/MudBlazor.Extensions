@@ -89,8 +89,18 @@ public readonly struct MudExSize<T> where T : INumber<T>
     /// </summary>
     public static implicit operator MudExSize<T>(string s) => new(s);
 
-    public MudExSize<double> ToAbsolute(double parentSize = 0, double fontSize = 16,    
-        double viewportWidth = 0,   
+    public MudExSize<double> ToRelative(double reference)
+    {
+        var doubleValue = Value is double value ? value : 0;
+        if (SizeUnit == CssUnit.Pixels)
+        {
+            return new MudExSize<double>((doubleValue / reference) * 100, CssUnit.Percentage);
+        }
+        return new MudExSize<double>(doubleValue, SizeUnit);
+    }
+
+    public MudExSize<double> ToAbsolute(double parentSize = 0, double fontSize = 16,
+        double viewportWidth = 0,
         double viewportHeight = 0,
         double dpi = 96)
     {

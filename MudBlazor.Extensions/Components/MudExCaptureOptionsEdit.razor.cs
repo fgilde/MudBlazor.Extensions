@@ -166,11 +166,18 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
         return DialogService.EditObject(_displayMediaOptions, TryLocalize("Change media options"), Icons.Material.Filled.VideoCameraFront, dialogOptionsEx);
     }
 
+    private Task SelectScreenIf()
+    {
+        if(_captureScreen && Value.OverlaySource == OverlaySource.VideoDevice)
+            return SelectScreen();
+        return Task.CompletedTask;
+    }
 
     private string StopPreviewButtonStyle()
     {
         return MudExStyleBuilder.Default
             .WithPosition(Core.Css.Position.Absolute)
+            .WithMarginTop(-20)
             .WithMarginLeft(_previewSize.Width)
             .WithZIndex(1)
             .WithTransform("scale(0.8)")
@@ -182,6 +189,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
         return MudExStyleBuilder.Default
             .WithHeight("100%", _captureScreen)
             .WithWidth("100%", _captureScreen)
+            .WithCursor(Cursor.Pointer, _captureScreen && Value.OverlaySource == OverlaySource.VideoDevice)
             .WithDisplay(Display.None, !_captureScreen)
             .Style;
     }
@@ -238,7 +246,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
             if (_displayMediaOptions is not null)
                 Value.ScreenCapture = _displayMediaOptions;
             else
-                Value.ScreenCapture = true;
+                Value.ScreenCapture = _captureScreen;
             await SetDummyStream();
         }
     }
@@ -257,7 +265,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     {
         _isDragging = true;
         _dragStartPoint = new MudExDimension(e.ClientX, e.ClientY);
-        _elementStartPosition = Value.GetOverlayPosition(_previewSize);
+        _elementStartPosition = Value.GetOverlayPosition(_previewSize).ToAbsolute(_previewSize);
         Value.OverlayPosition = DialogPosition.Custom;
     }
 
@@ -271,6 +279,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
                 _elementStartPosition.Left + deltaX,
                 _elementStartPosition.Top + deltaY);
             ConstrainWithinContainer();
+            Console.WriteLine($"Left: {Value.OverlayCustomPosition.Left}, Top: {Value.OverlayCustomPosition.Top}");
             StateHasChanged();
         }
     }
@@ -278,6 +287,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     private void EndDrag(MouseEventArgs e)
     {
         _isDragging = false;
+        Value.OverlayCustomPosition = Value.OverlayCustomPosition.ToRelative(_previewSize);
     }
 
     private void ConstrainWithinContainer()
@@ -303,6 +313,11 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
             //var videoElement = Value.OverlaySource == OverlaySource.VideoDevice ? _previewCamera : _previewScreen;
             _cameraTrack = await CaptureService.SelectCaptureSourceAsync(new DisplayMediaOptions { Video = new VideoConstraints { DeviceId = obj.DeviceId } }, _previewCamera);
         }
+        else
+        {
+            if (Value.OverlaySource == OverlaySource.CapturedScreen)
+                await ToogleOverlaySource();
+        }
         SetAndStateChange(o => o.VideoDevice = obj);
     }
 
@@ -322,6 +337,8 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     private async Task CaptureScreenChanged(bool @checked)
     {
         _captureScreen = @checked;
+        if(!_captureScreen && Value.OverlaySource == OverlaySource.CapturedScreen)
+            await ToogleOverlaySource();
         if (_captureScreen && _screenTrack == null)
             await SetDummyStream();
     }
@@ -349,5 +366,20 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
             Value.OverlaySize = change.Value.ToDimension(CssUnit.Percentage);
             StateHasChanged();
         }
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        await StopPreviewCameraTrack();
+        await StopPreviewScreenTrack();
+        await base.DisposeAsync();
+    }
+
+    private string OverlayOptionsStyle()
+    {
+        var hasOverlay = _captureScreen && !string.IsNullOrEmpty(Value?.VideoDevice?.DeviceId);
+        return MudExStyleBuilder.Default
+            .WithVisibility(Visibility.Hidden, !hasOverlay)
+            .Style;
     }
 }
