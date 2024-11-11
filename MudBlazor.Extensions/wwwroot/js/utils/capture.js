@@ -536,11 +536,13 @@
     }
 
     static async getAvailableAudioDevices() {
+        await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         const devices = await navigator.mediaDevices.enumerateDevices();
         return devices.filter(device => device.kind === 'audioinput');
     }
 
     static async getAvailableVideoDevices() {
+        await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         const devices = await navigator.mediaDevices.enumerateDevices();
         return devices.filter(device => device.kind === 'videoinput');
     }

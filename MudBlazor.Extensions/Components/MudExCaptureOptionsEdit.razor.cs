@@ -103,8 +103,18 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     protected override async Task OnInitializedAsync()
     {
         await Task.WhenAll(
-            CaptureService.GetAudioDevicesAsync().ContinueWith(task => _audioDevices = task.Result.ToList()),
-            CaptureService.GetVideoDevicesAsync().ContinueWith(task => _videoDevices = task.Result.ToList()),
+            CaptureService.GetAudioDevicesAsync().ContinueWith(task =>
+            {
+                _audioDevices = task.Result.ToList();
+                if(_audioDevices.All(device => device?.DeviceId == null))
+                    _audioDevices.Insert(0, AudioDevice.Default);
+            }),
+            CaptureService.GetVideoDevicesAsync().ContinueWith(task =>
+            {
+                _videoDevices = task.Result.ToList();
+                if(_videoDevices.All(device => device?.DeviceId == null))
+                    _videoDevices.Insert(0, VideoDevice.Default);
+            }),
             base.OnInitializedAsync()
         );
         // _videoDevices.Insert(0, VideoDevice.Default);
