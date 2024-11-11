@@ -2,6 +2,41 @@ class MudExCapture {
     static recordings = {};
     static _preselected = {};
 
+    static setText(videoElement, text) {
+        videoElement = MudExObserver.getElement(videoElement);
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = 640;
+        canvas.height = 480;
+
+        context.fillStyle = 'black';
+        context.fillRect(0, 0, canvas.width, canvas.height); 
+        context.font = '48px Arial';
+        context.fillStyle = 'white';
+        context.translate(canvas.width / 2, canvas.height / 2);
+        context.rotate(-Math.PI / 4); 
+        context.textAlign = 'center';
+        context.fillText(text, 0, 0);
+
+        const stream = canvas.captureStream(30); // 30 fps
+        if (videoElement && typeof videoElement.play === 'function') {
+            videoElement.autoplay = true;
+            videoElement.muted = true;
+            videoElement.srcObject = stream;
+            videoElement.play();
+        }
+    }
+
+    static switchSrcObject(videoElement1, videoElement2, condition) {
+        const element1 = MudExObserver.getElement(videoElement1);
+        const element2 = MudExObserver.getElement(videoElement2);
+        if (element1 && element2 && condition) {
+            var srcObject1 = element1.srcObject;
+            element1.srcObject = element2.srcObject;
+            element2.srcObject = srcObject1;
+        }
+    }
+
     static async selectCaptureSource(captureMediaOptions, videoElementForPreview) {
         try {
             var captureMediaOptionsWithoutNullProperties = this.removeOptionsWithoutNullProperties(captureMediaOptions);

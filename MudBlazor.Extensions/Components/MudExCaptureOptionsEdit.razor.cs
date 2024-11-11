@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Core;
@@ -22,8 +23,9 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
 
     [Inject] private ICaptureService CaptureService { get; set; }
     [Inject] private IDialogService DialogService { get; set; }
-    [Inject] IResizeObserver ResizeObserver { get; set; }
+    [Inject] private IResizeObserver ResizeObserver { get; set; }
 
+    private bool _resizeObserved = false;
     private bool _isDragging = false;
     private MudExDimension _dragStartPoint;
     private MudExPosition _elementStartPosition;
@@ -38,15 +40,6 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     private MediaStreamTrack _cameraTrack;
     private bool _captureScreen;
 
-    private bool _recordSystemAudio
-    {
-        get => _displayMediaOptions?.SystemAudio == IncludeExclude.Include;
-        set
-        {
-            (_displayMediaOptions ??= DisplayMediaOptions.Default).SystemAudio = value ? IncludeExclude.Include : IncludeExclude.Exclude;
-            Value.ScreenCapture = _displayMediaOptions;
-        }
-    }
 
     /// <inheritdoc />
     [Parameter]
@@ -114,29 +107,15 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
             CaptureService.GetVideoDevicesAsync().ContinueWith(task => _videoDevices = task.Result.ToList()),
             base.OnInitializedAsync()
         );
-       // _videoDevices.Insert(0, VideoDevice.Default);
+        // _videoDevices.Insert(0, VideoDevice.Default);
     }
 
     protected override async Task OnFinishedRenderAsync()
     {
-        await ResizeObserver.Observe(_overlayContainer);
         ResizeObserver.OnResized += OnOverlayResized;
         await base.OnFinishedRenderAsync();
     }
-
-    private void OnOverlayResized(IDictionary<ElementReference, BoundingClientRect> changes)
-    {
-        var change = changes.FirstOrDefault(c => c.Key.Id == _overlayContainer.Id);
-        if (change.Value != null)
-        {
-            ResizeObserver.Unobserve(_overlayContainer);
-            change.Value.WindowWidth = _previewSize.Width;
-            change.Value.WindowHeight = _previewSize.Height;
-            Value.OverlaySize = change.Value.ToDimension(CssUnit.Percentage);
-            StateHasChanged();
-            Task.Delay(200).ContinueWith(_ => ResizeObserver.Observe(_overlayContainer));
-        }
-    }
+    
 
     private Task<IEnumerable<string>> SearchAudioContentType(string value, CancellationToken token)
         => Task.FromResult(MimeType.AudioTypes.Concat(new[] { "audio/webm" }).Distinct().Where(x => string.IsNullOrEmpty(value) || x.Contains(value, StringComparison.InvariantCultureIgnoreCase)));
@@ -162,7 +141,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
             .AddRaw(Style).Style;
     }
 
-    private async Task ChangeMediaOptions(MouseEventArgs obj)
+    private Task ChangeMediaOptions(MouseEventArgs obj)
     {
         var dialogOptionsEx = DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(o =>
         {
@@ -174,10 +153,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
             o.DragMode = MudDialogDragMode.Simple;
         });
 
-        var dialogResult = await DialogService.EditObject(_displayMediaOptions, TryLocalize("Change media options"), Icons.Material.Filled.VideoCameraFront, dialogOptionsEx);
-        if (dialogResult.Cancelled)
-            return;
-        _recordSystemAudio = _displayMediaOptions.SystemAudio == IncludeExclude.Include;
+        return DialogService.EditObject(_displayMediaOptions, TryLocalize("Change media options"), Icons.Material.Filled.VideoCameraFront, dialogOptionsEx);
     }
 
 
@@ -194,19 +170,29 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     private string GetMainCapturePreviewStyle()
     {
         return MudExStyleBuilder.Default
-            .WithHeight("100%")
-            .WithWidth("100%")
-            //.WithOpacity(0, track == null)
+            .WithHeight("100%", _captureScreen)
+            .WithWidth("100%", _captureScreen)
+            .WithDisplay(Display.None, !_captureScreen)
             .Style;
     }
 
     private string GetOverlayPreviewStyle()
     {
         return MudExStyleBuilder.Default
-            .WithSize(Value.OverlaySize)
-            .WithPosition(Value.GetOverlayPosition(_previewSize))
-            //.WithOpacity(0, track == null)
+            .WithSize(Value.OverlaySize, _captureScreen)
+            .WithHeight("100%", !_captureScreen)
+            .WithWidth("100%", !_captureScreen)
+            .WithPosition(Value.GetOverlayPosition(_previewSize), _captureScreen)
+            .WithDisplay(Display.None, _cameraTrack == null)
             .Style;
+    }
+
+    private string GetOverlayClass()
+    {
+        return MudExCssBuilder.Default
+            .AddClass("mud-ex-draggable", _captureScreen)
+            .AddClass("mud-ex-resizeable", _captureScreen)
+            .Class;
     }
 
 
@@ -228,8 +214,8 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
             return;
         }
         await StopPreviewScreenTrack();
-
-        _screenTrack = await CaptureService.SelectCaptureSourceAsync(_displayMediaOptions, _previewScreen);
+        var videoElement = Value.OverlaySource == OverlaySource.CapturedScreen && Value.VideoDevice?.DeviceId != null ? _previewCamera : _previewScreen;
+        _screenTrack = await CaptureService.SelectCaptureSourceAsync(_displayMediaOptions, videoElement);
         Value.ScreenCapture = _screenTrack;
     }
 
@@ -243,6 +229,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
                 Value.ScreenCapture = _displayMediaOptions;
             else
                 Value.ScreenCapture = true;
+            await SetDummyStream();
         }
     }
 
@@ -301,10 +288,56 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     private async Task VideoDeviceChanged(VideoDevice obj)
     {
         await StopPreviewCameraTrack();
-        if(obj != null)
+        if (obj != null)
+        {
+            //var videoElement = Value.OverlaySource == OverlaySource.VideoDevice ? _previewCamera : _previewScreen;
             _cameraTrack = await CaptureService.SelectCaptureSourceAsync(new DisplayMediaOptions { Video = new VideoConstraints { DeviceId = obj.DeviceId } }, _previewCamera);
+        }
         SetAndStateChange(o => o.VideoDevice = obj);
     }
 
 
+    private async Task ToogleOverlaySource()
+    {
+        Value.OverlaySource = Value.OverlaySource == OverlaySource.CapturedScreen ? OverlaySource.VideoDevice : OverlaySource.CapturedScreen;
+        await JsRuntime.InvokeVoidAsync("MudExCapture.switchSrcObject", _previewScreen, _previewCamera, true);
+    }
+
+    private async Task SetDummyStream()
+    {
+        var videoElement = Value.OverlaySource == OverlaySource.CapturedScreen && Value.VideoDevice?.DeviceId != null ? _previewCamera : _previewScreen;
+        await JsRuntime.InvokeVoidAsync("MudExCapture.setText", videoElement, TryLocalize("Screen"));
+    }
+
+    private async Task CaptureScreenChanged(bool @checked)
+    {
+        _captureScreen = @checked;
+        if (_captureScreen && _screenTrack == null)
+            await SetDummyStream();
+    }
+
+    private async Task DetachResize()
+    {
+        await Task.Delay(500);
+        await ResizeObserver.Unobserve(_overlayContainer);
+        _resizeObserved = false;
+    }
+
+    private async Task AttachResize()
+    {
+        await ResizeObserver.Observe(_overlayContainer);
+        _resizeObserved = true;
+    }
+
+    private void OnOverlayResized(IDictionary<ElementReference, BoundingClientRect> changes)
+    {
+        var change = changes.FirstOrDefault(c => c.Key.Id == _overlayContainer.Id);
+        if (change.Value != null && _captureScreen && _resizeObserved)
+        {
+            change.Value.WindowWidth = _previewSize.Width;
+            change.Value.WindowHeight = _previewSize.Height;
+            Value.OverlaySize = change.Value.ToDimension(CssUnit.Percentage);
+            StateHasChanged();
+        }
+    }
 }
