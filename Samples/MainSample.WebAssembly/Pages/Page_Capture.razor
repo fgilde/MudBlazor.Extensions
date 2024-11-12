@@ -1,8 +1,10 @@
 ﻿@page "/capture-service"
 
-@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Core;
+@using MudBlazor.Extensions.Core.Capture;
+@using MudBlazor.Extensions.Core.W3C
 
-@attribute [DemoNew(Name = "Capture service", Order = 0, Icon = Icons.Material.Outlined.AccountTree, Documentation = "This sample demonstrate how to use the MudExCaptureService", ForComponentType = typeof(ICaptureService))]
+@attribute [DemoNew(Name = "Capture service", Order = 0, Icon = Icons.Material.Outlined.VideoCameraBack, Documentation = "This sample demonstrate how to use the MudExCaptureService", ForComponentType = typeof(ICaptureService))]
 
 <style>
     .p-info {
@@ -18,9 +20,21 @@
 
 <DemoComponent PageType="@GetType()">
 
-    <MudButton Class="mt-5" Variant="Variant.Outlined" Color="@(_captureId == null ? Color.Default : Color.Error)" OnClick="@StartStopRecording">@(_captureId == null ? "Start Capture" : "Stop Capture")</MudButton>
+    @if (_captureId != null)
+    {
+        <MudButton Class="ma-5" StartIcon="@Icons.Material.Filled.Stop" Variant="Variant.Filled" Color="Color.Error" OnClick="@StopRecording">Stop Capture</MudButton>
+    }
+    else
+    {
+        <MudMenu Class="ma-5" StartIcon="@Icons.Material.Filled.VideoCameraBack" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="Start Capture" Color="Color.Primary" Variant="Variant.Filled">
+            <MudMenuItem OnClick="@RecordScreen">Record Screen</MudMenuItem>
+            <MudMenuItem OnClick="@RecordMainCamera">Record Main Camera</MudMenuItem>
+            <MudMenuItem OnClick="@Record">Specify Options...</MudMenuItem>
+            <MudMenuItem OnClick="@RecordQuick">Specify Quick Options...</MudMenuItem>
+        </MudMenu>
+    }
 
-    @if (_captureResult != null)
+    @if (_captureResult != null && _captureId == null)
     {
         <MudGrid Spacing="4" Justify="Justify.Center">
             <MudItem xs="12">
@@ -73,31 +87,32 @@
 </DemoComponent>
 
 @code {
-
-
+    
     [Inject] private ICaptureService _captureService { get; set; }
 
     private CaptureResult? _captureResult;
-    private string? _captureId;
+    private CaptureId? _captureId;
+    private Task StopRecording() => _captureService.StopCaptureAsync(_captureId);
 
-    private async Task StartStopRecording(MouseEventArgs obj)
-    {
-        if (!string.IsNullOrEmpty(_captureId))
-        {
-            await _captureService.StopCaptureAsync(_captureId);
-        }
-        else
-        {
-            await _captureService.StartCaptureAsync(CaptureCallback, s => _captureId = null);
-        }
-    }
-
-    
 
     private void CaptureCallback(CaptureResult obj)
     {
         _captureResult = obj;
         StateHasChanged();
     }
+
+    private async Task RecordWithOptions(CaptureOptions options)
+    {
+        if (options?.Valid() == true)
+            _captureId = await _captureService.StartCaptureAsync(options, CaptureCallback, s => _captureId = null);
+    }
+
+    private Task RecordScreen() => RecordWithOptions(new CaptureOptions() { ScreenCapture = true });
+
+    private Task RecordMainCamera() => RecordWithOptions(new CaptureOptions { VideoDevice = VideoDevice.Default });
+
+    private async Task Record() => await RecordWithOptions(await _captureService.EditCaptureOptionsAsync(CaptureOptionsEditMode.Full));
+
+    private async Task RecordQuick() => await RecordWithOptions(await _captureService.EditCaptureOptionsAsync(CaptureOptionsEditMode.Simple));
 
 }

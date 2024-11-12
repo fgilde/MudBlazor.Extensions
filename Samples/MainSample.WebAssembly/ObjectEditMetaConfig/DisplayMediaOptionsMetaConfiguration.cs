@@ -1,6 +1,6 @@
 ﻿using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
-using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Core.W3C;
 using Nextended.Core.Extensions;
 
 namespace MainSample.WebAssembly.ObjectEditMetaConfig;

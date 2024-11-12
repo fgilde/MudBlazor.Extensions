@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Core.Capture;
+using MudBlazor.Extensions.Core.W3C;
 using OneOf;
 
 namespace MudBlazor.Extensions.Core;
@@ -11,19 +13,13 @@ public interface ICaptureService
     /// <summary>
     /// Shows a dialog where the user can specify or edit the capture options.
     /// </summary>
-    Task<CaptureOptions> EditCaptureOptionsAsync(CaptureOptions? options = null);
-
-
-    /// <summary>
-    /// Shows a dialog where the user can specify the capture options and starts capture if.
-    /// </summary>
-    Task<(string RecordingId, CaptureOptions CaptureOptions)> StartCaptureAsync(Action<CaptureResult> callback, Action<string> stoppedCallback = null);
-
+    Task<CaptureOptions> EditCaptureOptionsAsync(CaptureOptionsEditMode editMode, CaptureOptions? options = null);
+    
     /// <summary>
     /// Starts capturing the screen or camera and audio.
     /// </summary>
     /// <returns>Id to stop recording</returns>
-    Task<string> StartCaptureAsync(CaptureOptions options, Action<CaptureResult> callback, Action<string> stoppedCallback = null);
+    Task<CaptureId> StartCaptureAsync(CaptureOptions options, Action<CaptureResult> callback, Action<CaptureId> stoppedCallback = null);
 
     /// <summary>
     /// Stops the preview capture for the specified track.
@@ -35,7 +31,7 @@ public interface ICaptureService
     /// </summary>
     /// <param name="captureId">The id for the capture recording to stop</param>
     /// <returns></returns>
-    Task StopCaptureAsync(string captureId);
+    Task StopCaptureAsync(CaptureId captureId);
 
     /// <summary>
     /// Stops all captures.

@@ -1,5 +1,8 @@
 ﻿@using System.Globalization
+@using AuralizeBlazor
+@using AuralizeBlazor.Options
 @using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Core.W3C
 @inherits MudExBaseComponent<MudExCaptureOptionsEdit>
 
 
@@ -108,12 +111,25 @@
                                    Color="MudExColor.Inherit"
                                    MultiSelection="true"
                                    SelectedItemsChanged="@AudioDevicesChanged"
-                                   SearchBox="true"
+                                   SearchBox="false"
                                    SearchBoxBackgroundColor="@("var(--mud-palette-surface)")"
                                    SearchBoxVariant="Variant.Text"
                                    Dense="@Dense"
                                    SelectAll="false"
-                                   Style="height: 300px; overflow-y: auto; font-size: 8pt"></MudExList>
+                                   Style="height: 260px; overflow-y: auto;"></MudExList>
+                        <Auralizer Overlay="true" OverlayChildContent="true" ConnectMicrophone="true" 
+                                          Style="@GetAuralizerStyle()"
+                                          MicrophoneDeviceId="@Value?.AudioDevices?.FirstOrDefault()?.DeviceId"
+                                          IsActive="@(!string.IsNullOrEmpty(Value?.AudioDevices?.FirstOrDefault()?.DeviceId))"
+                                          MouseWheelDownAction="VisualizerAction.None"
+                                          InitialPreset="AuralizerPreset.ReflexMirror"
+                                          ShowScaleX="false"
+                                          ShowScaleY="false"
+                                          MouseWheelUpAction="VisualizerAction.None"
+                                          ShowBgColor="false">
+
+                        </Auralizer>
+
                     </MudExGroupBox>
                     <MudExGroupBox Text="@TryLocalize("Misc Options")" Class="pa-3">
                         <MudSwitch Class="ml-1" Color="Color.Primary" UncheckedColor="Color.Default" T="bool" @bind-Value="@Value.ShowNotificationWhileRecording" Label="@TryLocalize("Show notification while recording")" />

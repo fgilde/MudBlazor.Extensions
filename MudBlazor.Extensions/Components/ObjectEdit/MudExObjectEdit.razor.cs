@@ -293,6 +293,11 @@ public partial class MudExObjectEdit<T>
     [Parameter] public bool StickyToolbar { get; set; }
 
     /// <summary>
+    /// If false the toolbar will be hidden
+    /// </summary>
+    [Parameter] public bool ShowToolbar { get; set; } = true;
+
+    /// <summary>
     /// The positioning CSS value for a sticky toolbar.
     /// </summary>
     [Parameter] public string StickyToolbarTop { get; set; } = string.Empty;

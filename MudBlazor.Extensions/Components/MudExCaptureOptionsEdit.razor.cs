@@ -4,7 +4,9 @@ using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Core.Capture;
 using MudBlazor.Extensions.Core.Css;
+using MudBlazor.Extensions.Core.W3C;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Interop;
@@ -279,7 +281,6 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
                 _elementStartPosition.Left + deltaX,
                 _elementStartPosition.Top + deltaY);
             ConstrainWithinContainer();
-            Console.WriteLine($"Left: {Value.OverlayCustomPosition.Left}, Top: {Value.OverlayCustomPosition.Top}");
             StateHasChanged();
         }
     }
@@ -380,6 +381,15 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
         var hasOverlay = _captureScreen && !string.IsNullOrEmpty(Value?.VideoDevice?.DeviceId);
         return MudExStyleBuilder.Default
             .WithVisibility(Visibility.Hidden, !hasOverlay)
+            .Style;
+    }
+
+    private string GetAuralizerStyle()
+    {
+        return MudExStyleBuilder.Default
+            .WithVisibility(Visibility.Collapse, string.IsNullOrEmpty(Value?.AudioDevices?.FirstOrDefault()?.DeviceId))
+            .WithHeight(50)
+            .WithWidth("100%")
             .Style;
     }
 }

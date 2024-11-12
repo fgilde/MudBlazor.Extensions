@@ -7,6 +7,7 @@ using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
 using Microsoft.Extensions.DependencyInjection;
+using MudBlazor.Extensions.Core.W3C;
 
 namespace MudBlazor.Extensions.Components;
 

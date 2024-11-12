@@ -46,49 +46,52 @@
             @*<div style="@GetStyle()" class="@($"mud-ex-object-edit {Class} mud-ex-overflow")">*@
             <div style="@GetStyle()" class="@($"mud-ex-object-edit {Class} {GetOverflowClass()}")">
                 <MudPaper Class="@($"{ToolBarPaperClass} {(StickyToolbar ? "mud-ex-toolbar-sticky" : "")}")" Style="@ToolbarStyle()" Elevation="@ToolBarElevation">
-                    <MudToolBar Class="@($"{ToolBarClass} pr-4 mt-2 mb-2")">
-                        @if (InternalToolBarContent != null)
-                        {
-                            @InternalToolBarContent
-                        }
-                        @if (ToolBarContent != null)
-                        {
-                            @ToolBarContent
-                        }
-                        @if (ToolBarActionAlignment == ActionAlignment.Right)
-                        {
-                            <MudSpacer />
-                        }
+                    @if (ShowToolbar)
+                    {
+                        <MudToolBar Class="@($"{ToolBarClass} pr-4 mt-2 mb-2")">
+                            @if (InternalToolBarContent != null)
+                            {
+                                @InternalToolBarContent
+                            }
+                            @if (ToolBarContent != null)
+                            {
+                                @ToolBarContent
+                            }
+                            @if (ToolBarActionAlignment == ActionAlignment.Right)
+                            {
+                                <MudSpacer />
+                            }
 
-                        @if (AllowSearch)
-                        {
-                            <MudExToggleableSearch @bind-SearchActive="SearchActive" MultiSearch="@MultiSearch" @bind-Filter="@Filter" @bind-Filters="@Filters" SearchButtonColor="@ToolbarButtonColor" SearchIcon="@SearchIcon" FilterMode="@FilterMode" />
-                        }
-                        @if (AllowExport)
-                        {
-                            <MudTooltip Text="@TryLocalize("Export")">
-                                <MudIconButton Icon="@ExportIcon" OnClick="@(Export)" Color="@ToolbarButtonColor" />
-                            </MudTooltip>
-                        }
-                        @if (AllowImport)
-                        {
-                            <MudTooltip Text="@TryLocalize("Import")">
-                                <MudIconButton HtmlTag="label" for="importInput" Icon="@ImportIcon" Color="@_importButtonColor" />
-                            </MudTooltip>
-                        }
-                        @if (GroupsCollapsible && _groups.Count > 1)
-                        {
-                            <MudTooltip Text="@TryLocalize("Expand/Collapse")">
-                                <MudIconButton Icon="@ExpandCollapseIcon" OnClick="@(ExpandCollapse)" Color="@ToolbarButtonColor" />
-                            </MudTooltip>
-                        }
-                        @if (GlobalResetSettings.AllowReset)
-                        {
-                            <MudTooltip Text="@TryLocalize(GlobalResetSettings.ResetText)">
-                                <MudIconButton Icon="@GlobalResetSettings.ResetIcon" OnClick="@(OnResetClick)" Color="@ToolbarButtonColor" />
-                            </MudTooltip>
-                        }
-                    </MudToolBar>
+                            @if (AllowSearch)
+                            {
+                                <MudExToggleableSearch @bind-SearchActive="SearchActive" MultiSearch="@MultiSearch" @bind-Filter="@Filter" @bind-Filters="@Filters" SearchButtonColor="@ToolbarButtonColor" SearchIcon="@SearchIcon" FilterMode="@FilterMode" />
+                            }
+                            @if (AllowExport)
+                            {
+                                <MudTooltip Text="@TryLocalize("Export")">
+                                    <MudIconButton Icon="@ExportIcon" OnClick="@(Export)" Color="@ToolbarButtonColor" />
+                                </MudTooltip>
+                            }
+                            @if (AllowImport)
+                            {
+                                <MudTooltip Text="@TryLocalize("Import")">
+                                    <MudIconButton HtmlTag="label" for="importInput" Icon="@ImportIcon" Color="@_importButtonColor" />
+                                </MudTooltip>
+                            }
+                            @if (GroupsCollapsible && _groups.Count > 1)
+                            {
+                                <MudTooltip Text="@TryLocalize("Expand/Collapse")">
+                                    <MudIconButton Icon="@ExpandCollapseIcon" OnClick="@(ExpandCollapse)" Color="@ToolbarButtonColor" />
+                                </MudTooltip>
+                            }
+                            @if (GlobalResetSettings.AllowReset)
+                            {
+                                <MudTooltip Text="@TryLocalize(GlobalResetSettings.ResetText)">
+                                    <MudIconButton Icon="@GlobalResetSettings.ResetIcon" OnClick="@(OnResetClick)" Color="@ToolbarButtonColor" />
+                                </MudTooltip>
+                            }
+                        </MudToolBar>
+                    }
                     @if (!String.IsNullOrWhiteSpace(ErrorMessage))
                     {
                         <MudAlert Class="@($"mud-alert-message-w-100")"
@@ -167,18 +170,18 @@
     RenderFragment RenderPropertyEdit(ObjectEditPropertyMeta property)
     {
         return
-            @<MudExPropertyEdit @ref="@Ref" DisableFieldFallback="@DisableFieldFallback"
-                                RenderKey="@RenderKey"
-                                ReadOnlyOverwrite="@ReadOnlyOverwrite"
-                            StoreAndReadValueFromUrl="@StoreAndReadValueFromUrl"
-                            ShowPathAsTitle="@ShowPathAsTitleForEachProperty"
-                            IsLoading="@(IsLoading || IsInternalLoading)"
-                            AutoSkeletonOnLoad="@AutoSkeletonOnLoad"
-                            PropertyValueChanged="@OnPropertyChange"
-                            ActiveFilterTerm="@Filter"
-                            Localizer="@LocalizerToUse"
-                            PropertyResetSettings="@DefaultPropertyResetSettings"
-                            PropertyMeta="@property">
+    @<MudExPropertyEdit @ref="@Ref" DisableFieldFallback="@DisableFieldFallback"
+                                    RenderKey="@RenderKey"
+                                    ReadOnlyOverwrite="@ReadOnlyOverwrite"
+                                    StoreAndReadValueFromUrl="@StoreAndReadValueFromUrl"
+                                    ShowPathAsTitle="@ShowPathAsTitleForEachProperty"
+                                    IsLoading="@(IsLoading || IsInternalLoading)"
+                                    AutoSkeletonOnLoad="@AutoSkeletonOnLoad"
+                                    PropertyValueChanged="@OnPropertyChange"
+                                    ActiveFilterTerm="@Filter"
+                                    Localizer="@LocalizerToUse"
+                                    PropertyResetSettings="@DefaultPropertyResetSettings"
+                                    PropertyMeta="@property">
     </MudExPropertyEdit>;
     }
 }

@@ -249,8 +249,16 @@
 }
 
 .mud-ex-resizeable {
-    resize: both;    
+    resize: both;
     overflow: hidden;
+}
+
+.mud-ex-collapsed {
+    visibility: collapse;
+}
+
+.mud-ex-hidden {
+    visibility: hidden;
 }
 
 /*WORKAROUND CURRENTLY input label content VARIANT text datalist BROKEN*/

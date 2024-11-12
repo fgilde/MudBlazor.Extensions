@@ -156,9 +156,12 @@
 
     static async setupCapture(options, id, callback) {
         var captureMediaOptionsWithoutNullProperties = this.removeOptionsWithoutNullProperties(options.captureMediaOptions);
-        
         options.contentType = options.contentType || 'video/webm; codecs=vp9';
         const audioContentType = options.audioContentType || 'audio/webm';
+        if (!options.captureScreen && !options.videoDevice) {
+            // if only audio is captured, set content type to audio
+            options.contentType = audioContentType;
+        }
 
         const streams = {
             screen: null,
@@ -167,7 +170,7 @@
             systemAudio: null,
             audioContext: null
         };
-
+        
         if (options.captureScreen) {
             try {
                 let screenStream;
@@ -193,7 +196,7 @@
         if (options.videoDevice) {
             var videoDeviceId = typeof options.videoDevice === 'string' ? options.videoDevice : options.videoDevice.deviceId;
             streams.camera = await navigator.mediaDevices.getUserMedia({
-                video: { deviceId: { exact: videoDeviceId } }
+                video: videoDeviceId && videoDeviceId !== 'default' ? { deviceId: { exact: videoDeviceId } } : true
             });
         }
 

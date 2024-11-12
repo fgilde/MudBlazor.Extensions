@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Core.W3C;
 using Nextended.Core.Attributes;
 
 namespace MudBlazor.Extensions.Services

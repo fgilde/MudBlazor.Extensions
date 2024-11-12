@@ -1,8 +1,9 @@
 ﻿using System.Text.Json.Serialization;
+using MudBlazor.Extensions.Core.W3C;
 using Nextended.Core.Extensions;
 using OneOf;
 
-namespace MudBlazor.Extensions.Core;
+namespace MudBlazor.Extensions.Core.Capture;
 
 /// <summary>
 /// Options for capturing video and audio.
@@ -68,7 +69,7 @@ public class CaptureOptions
         get => _audioDevices;
         set => _audioDevices = value;
     }
-    
+
     /// <summary>
     /// If set, the recording will stop after the specified time.
     /// </summary>
@@ -104,6 +105,9 @@ public class CaptureOptions
         return AudioDevices.EmptyIfNull().Any(d => !string.IsNullOrEmpty(d.DeviceId)) || VideoDevice?.DeviceId != null || CaptureScreen;
     }
 
+    /// <summary>
+    /// returns the position for the overlay based on given containerDimension.
+    /// </summary>
     public MudExPosition GetOverlayPosition(MudExDimension containerDimension, MudExDimension? overlayDimension = null)
     {
         overlayDimension ??= OverlaySize;
@@ -111,6 +115,9 @@ public class CaptureOptions
         return GetOverlayPosition(containerDimension.Width, containerDimension.Height, overlayDimension.Value.Width, overlayDimension.Value.Height);
     }
 
+    /// <summary>
+    /// returns the position for the overlay based on given reference sizes.
+    /// </summary>
     public MudExPosition GetOverlayPosition(double canvasWidth, double canvasHeight, double overlayWidth, double overlayHeight)
     {
         return OverlayPosition switch
@@ -128,21 +135,55 @@ public class CaptureOptions
         };
     }
 
-}
-
-/// <summary>
-/// The source for the overlay.
-/// </summary>
-[JsonConverter(typeof(JsonStringEnumConverter))]
-public enum OverlaySource
-{
-    /// <summary>
-    /// Use the camera as overlay over screen.
-    /// </summary>
-    VideoDevice,
+    #region Static factory methods
 
     /// <summary>
-    /// Use the screen as overlay over camera.
+    /// Creates a new instance of <see cref="CaptureOptions"/> setting to capture the screen only.
     /// </summary>
-    CapturedScreen
+    public static CaptureOptions ScreenOnly => new() { CaptureScreen = true};
+
+    /// <summary>
+    /// Creates a new instance of <see cref="CaptureOptions"/> setting to capture the camera only.
+    /// </summary>
+    public static CaptureOptions CameraOnly => new() { VideoDevice = VideoDevice.Default };
+
+    /// <summary>
+    /// Creates a new instance of <see cref="CaptureOptions"/> setting to capture audio only.
+    /// </summary>
+    public static CaptureOptions AudioOnly => new() { AudioDevices = new List<AudioDevice> { AudioDevice.Default } };
+
+    /// <summary>
+    /// Creates a new instance of <see cref="CaptureOptions"/> setting to capture the screen and camera.
+    /// </summary>
+    public static CaptureOptions ScreenAndCamera => new() { CaptureScreen = true, VideoDevice = VideoDevice.Default };
+
+    /// <summary>
+    /// Creates a new instance of <see cref="CaptureOptions"/> setting to capture the screen and audio.
+    /// </summary>
+    public static CaptureOptions ScreenAndAudio => new() { CaptureScreen = true, AudioDevices = new List<AudioDevice> { AudioDevice.Default } };
+
+    /// <summary>
+    /// Creates a new instance of <see cref="CaptureOptions"/> setting to capture the camera and audio.
+    /// </summary>
+    public static CaptureOptions CameraAndAudio => new() { VideoDevice = VideoDevice.Default, AudioDevices = new List<AudioDevice> { AudioDevice.Default } };
+
+    /// <summary>
+    /// Creates a new instance of <see cref="CaptureOptions"/> setting to capture the screen, camera and audio.
+    /// </summary>
+    public static CaptureOptions ScreenCameraAndAudio => new() { CaptureScreen = true, VideoDevice = VideoDevice.Default, AudioDevices = new List<AudioDevice> { AudioDevice.Default } };
+
+    /// <summary>
+    /// Creates a new instance of <see cref="CaptureOptions"/> setting to capture the screen and camera with the screen as overlay over the camera.
+    /// </summary>
+    public static CaptureOptions CameraAndScreen => ScreenAndCamera.SetProperties(o => o.OverlaySource = OverlaySource.CapturedScreen);
+
+    /// <summary>
+    /// Creates a new instance of <see cref="CaptureOptions"/> setting to capture the screen, camera and audio with the screen as overlay over the camera.
+    /// </summary>
+    public static CaptureOptions CameraScreenAndAudio => ScreenCameraAndAudio.SetProperties(o => o.OverlaySource = OverlaySource.CapturedScreen);
+    
+    #endregion
+
+
 }
+

@@ -28,8 +28,8 @@ public partial class MudExGroupBox
     [Parameter] public MudExColor BorderColor { get; set; } = "var(--mud-palette-lines-default);";
 
     private string FieldSetStyle() => MudExStyleBuilder.Default
-            .WithMargin(8)
-            .WithPadding(8)
+            .WithMargin(4)
+            .WithPadding(4)
             .WithBorderRadius("var(--mud-default-borderradius)", !Square)
             .WithBorder(1, BorderStyle.Solid, BorderColor, BorderColor.IsSet())
             .AddRaw(Style)

@@ -4,7 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Components.ObjectEdit;
+using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Core.Capture;
+using MudBlazor.Extensions.Core.W3C;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using Nextended.Core.Attributes;
@@ -40,14 +43,53 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
     /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
-        await Task.WhenAll(_captures.Select(pair => StopCaptureAsync(pair.Key)));
+        await Task.WhenAll(_captures.Select(pair => StopCaptureAsync(new CaptureId(pair.Key))));
+    }
+
+    public async Task<CaptureOptions> QuickEditCaptureOptionsAsync(CaptureOptions? options = null)
+    {
+        var simple = SimpleCaptureOptions.From(options);
+
+        var dialogOptionsEx = new DialogOptionsEx()
+        {
+            DialogAppearance = MudExAppearance.FromCss(await _serviceProvider.GetService<MudExStyleBuilder>().WithHeight("auto").AsImportant().BuildAsClassRuleAsync()),
+            Animation = AnimationType.Pulse,
+            AnimationDuration = TimeSpan.FromMilliseconds(200),
+            ShowAtCursor = true,
+            CursorPositionOrigin = Origin.TopCenter,
+            NoHeader = true,
+        };
+
+        var parameters = new DialogParameters
+        {
+            { nameof(MudExObjectEditDialog<CaptureOptions>.GlobalResetSettings), new GlobalResetSettings() {AllowReset = false} },
+            { nameof(MudExObjectEditDialog<CaptureOptions>.DefaultPropertyResetSettings), new PropertyResetSettings() {AllowReset = false} },
+            { nameof(MudExObjectEditDialog<CaptureOptions>.AllowSearch),false },
+            { nameof(MudExObjectEditDialog<CaptureOptions>.SaveButtonText), TryLocalize("Start Recording") },
+            { nameof(MudExObjectEditDialog<CaptureOptions>.SaveButtonColor), Color.Error },
+            { nameof(MudExObjectEditDialog<CaptureOptions>.SaveButtonIcon), Icons.Material.Filled.RecordVoiceOver },
+            { nameof(MudExObjectEditDialog<CaptureOptions>.ShowCancelButton), false },
+            { nameof(MudExObjectEditDialog<CaptureOptions>.ShowToolbar), false }
+        };
+
+        var result = await _dialogService.EditObject(simple, TryLocalize("Capture"),
+            (captureOptions, _) => Task.FromResult(captureOptions?.Valid() == true ? "" : TryLocalize("Please select at least one source to record")), 
+            dialogOptionsEx, meta =>
+            {
+                meta.AllProperties.WithLabelResolver(i => TryLocalize(string.Join(" ", i.Name.SplitByUpperCase())));
+            }, parameters);
+
+        if (result.Cancelled)
+            return null;
+        return result.Result.ToCaptureOptions();
     }
 
     /// <inheritdoc />
-    public async Task<CaptureOptions> EditCaptureOptionsAsync(CaptureOptions? options = null)
+    public async Task<CaptureOptions> EditCaptureOptionsAsync(CaptureOptionsEditMode mode, CaptureOptions? options = null)
     {
+        if (mode == CaptureOptionsEditMode.Simple)
+            return await QuickEditCaptureOptionsAsync(options);
         options ??= new CaptureOptions();
-
         var dialogOptionsEx = DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(o =>
         {
             o.DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.FullHeightWithMargin);
@@ -67,7 +109,7 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
             { nameof(MudExObjectEditDialog<CaptureOptions>.SaveButtonIcon), Icons.Material.Filled.RecordVoiceOver },
         };
 
-        var result = await _dialogService.EditObject(options, TryLocalize("Capture"), (captureOptions, dialog) => Task.FromResult(captureOptions?.Valid() == true ? "" : TryLocalize("Please select at least one source to record")), dialogOptionsEx, null, parameters);
+        var result = await _dialogService.EditObject(options, TryLocalize("Capture"), (captureOptions, _) => Task.FromResult(captureOptions?.Valid() == true ? "" : TryLocalize("Please select at least one source to record")), dialogOptionsEx, null, parameters);
 
         if (result.Cancelled)
             return null;
@@ -75,17 +117,7 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
     }
 
     /// <inheritdoc />
-    public async Task<(string RecordingId, CaptureOptions CaptureOptions)> StartCaptureAsync(Action<CaptureResult> callback, Action<string> stoppedCallback = null)
-    {
-        var options = await EditCaptureOptionsAsync();
-        if (options is null || !options.Valid())
-            return (null, options);
-        var id = await StartCaptureAsync(options, callback, stoppedCallback);
-        return (id, options);
-    }
-
-    /// <inheritdoc />
-    public async Task<string> StartCaptureAsync(CaptureOptions options, Action<CaptureResult> callback, Action<string> stoppedCallback = null)
+    public async Task<CaptureId> StartCaptureAsync(CaptureOptions options, Action<CaptureResult> callback, Action<CaptureId> stoppedCallback = null)
     {
         if (!options.Valid())
         {
@@ -96,16 +128,16 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
             {
                 _captures.TryRemove(s, out _);
                 _captureNotifier.RemoveRecordingInfo(s);
-                stoppedCallback?.Invoke(s);
+                stoppedCallback?.Invoke(new CaptureId(s));
             }));
 
-        var result = await _jsRuntime.InvokeAsync<string>("MudExCapture.startCapture", options, callbackReference);
+        var result = new CaptureId(await _jsRuntime.InvokeAsync<string>("MudExCapture.startCapture", options, callbackReference));
         _captures.TryAdd(result, callbackReference);
         if (options.MaxCaptureTime is { TotalSeconds: > 0 })
             _ = Task.Delay(options.MaxCaptureTime.Value).ContinueWith(_ => StopCaptureAsync(result));
 
         if (options.ShowNotificationWhileRecording)
-            _captureNotifier.ShowRecordingInfo(result, options.MaxCaptureTime, (s, _) => StopCaptureAsync(s));
+            _captureNotifier.ShowRecordingInfo(result, options.MaxCaptureTime, (s, _) => StopCaptureAsync(new CaptureId(s)));
         return result;
     }
 
@@ -121,10 +153,11 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
     }
 
     /// <inheritdoc />
-    public Task StopCaptureAsync(string captureId)
+    public Task StopCaptureAsync(CaptureId captureId)
     {
-        var callback = _captures.GetOrAdd(captureId, _ => null);
-        return _jsRuntime.InvokeVoidAsync("MudExCapture.stopCapture", captureId, callback).AsTask();
+        string id = captureId;
+        var callback = _captures.GetOrAdd(id, _ => null);
+        return _jsRuntime.InvokeVoidAsync("MudExCapture.stopCapture", id, callback).AsTask();
     }
 
     /// <inheritdoc />

@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Core.W3C;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Utilities;
