@@ -10,7 +10,9 @@
         <Left>
             <MudCard Style="width: 80%">
                 <MudCardContent>
-                    <MudExUploadEdit AllowAudioRecording="true"
+                    <MudExUploadEdit 
+                        AllowAudioRecording="true"
+                        AllowVideoCapture="true"
                         DropZoneClickAction="DropZoneClickAction.UploadFile"
                         CodeBlockTheme="@MainLayout.GetCodeBlockTheme()"
                         MimeTypes="@mimeTypes" T="UploadableFile" Style="max-height: 400px; width: 100%" @ref="component">

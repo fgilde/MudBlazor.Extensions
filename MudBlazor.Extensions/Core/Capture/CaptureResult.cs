@@ -49,6 +49,11 @@ public class CaptureResult
     /// Combined data of all captures.
     /// </summary>
     public CaptureData CombinedData { get; set; }
+
+    /// <summary>
+    /// All data of the capture.
+    /// </summary>
+    public CaptureData[] AllData => new[] { CombinedData, CaptureData, CameraData, AudioData, SystemAudioData };
 }
 
 public class CaptureData

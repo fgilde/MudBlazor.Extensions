@@ -1199,6 +1199,109 @@
         <member name="M:MudBlazor.Extensions.Components.MudExBaseInput`1.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExCaptureButton">
+            <summary>
+            Button component for capturing audio and video.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureButton.IsRecording">
+            <summary>
+            Indicates whether a recording session is currently active.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureButton.RecordingBorderAnimation">
+            <summary>
+            If this is true border animation is applied when recording is active, but <see cref="P:MudBlazor.Extensions.Components.MudExCaptureButton.RecordingAnimation"/> has no effect if this is turned on.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureButton.RecordingAnimation">
+            <summary>
+            This Animation is playing while recording is active, but only if <see cref="P:MudBlazor.Extensions.Components.MudExCaptureButton.RecordingBorderAnimation"/> is false.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureButton.OnRecordingStarted">
+            <summary>
+            Event triggered when a recording session starts.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureButton.OnRecordingStopped">
+            <summary>
+            Event triggered when a recording session stops.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureButton.OnDataCaptured">
+            <summary>
+            Event triggered capture result is obtained.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureButton.ShowSpectrumOnRecording">
+            <summary>
+            If this is true a spectrum is shown while recording is active but then the <see cref="P:MudBlazor.Extensions.Components.MudExCaptureButton.RecordingIcon"/> has no effect and will not be used.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureButton.RecordingIcon">
+            <summary>
+            Icon displayed when the recording is active. Defaults to a 'Stop' icon.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureButton.RecordingColor">
+            <summary>
+            Color of the icon when the recording is active. Defaults to error color.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureButton.CaptureOptions">
+            <summary>
+            The options to use for the capture.
+            If no options are provided, the user will be prompted to set them.
+            The complexity of the options edit can be controlled with <see cref="P:MudBlazor.Extensions.Components.MudExCaptureButton.EditMode"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureButton.EditMode">
+            <summary>
+            The editing mode to use for the capture options edit.
+            This is only used when <see cref="P:MudBlazor.Extensions.Components.MudExCaptureButton.CaptureOptions"/> is null or <see cref="P:MudBlazor.Extensions.Components.MudExCaptureButton.AlwaysEditOptions"/> is true and the user should set the options.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureButton.AlwaysEditOptions">
+            <summary>
+            Is this is true the user is always prompted to edit the options before starting a recording.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureButton.RememberEditedOptions">
+            <summary>
+            If this is true the options are remembered after the user edited them and then no dialog is shown again.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCaptureButton.BorderAnimationColors">
+            <summary>
+            Gets or sets the collection of colors to use for the gradient.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCaptureButton.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCaptureButton.OnParametersSetAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCaptureButton.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCaptureButton.OnClickHandler(Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCaptureButton.StartRecordingAsync">
+            <summary>
+            Starts the recording asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCaptureButton.StopRecordingAsync">
+            <summary>
+            Stops the recording asynchronously.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCaptureButton.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExCaptureOptionsEdit">
             <summary>
             Component edit capture options
@@ -6682,16 +6785,6 @@
             Button component for speech-to-text functionality, allowing for asynchronous recording and processing of speech input.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.ServiceProvider">
-            <summary>
-            Gets or sets the <see cref="T:System.IServiceProvider"/> to be used for dependency injection.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.LocalizerToUse">
-            <summary>
-            Gets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.UsedDevice">
             <summary>
             Returns the device id to use for recording.
@@ -6705,11 +6798,6 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.ShowNotificationWhileRecording">
             <summary>
             If this is true a notification toast will be shown while recording.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.Localizer">
-            <summary>
-            Gets or sets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSpeechToTextButton.IsRecording">
@@ -8158,6 +8246,11 @@
             If this is true audio recordings can be uploaded
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.AllowVideoCapture">
+            <summary>
+            If this is true videos can be captured and uploaded
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.RemoveItemButtonAlwaysRight">
             <summary>
             Set to set the item remove button always to the right independent of the <see cref="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.ActionsAdornment"/>
@@ -8306,6 +8399,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextStartRecording">
             <summary>
             Text for recording audio
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextStartVideoCapture">
+            <summary>
+            Text for video capture
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExUploadEdit`1.TextUploadFolder">
@@ -14988,6 +15086,26 @@
             Creates the style with animation styles included.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconButton.ServiceProvider">
+            <summary>
+            Gets or sets the <see cref="T:System.IServiceProvider"/> to be used for dependency injection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconButton.LocalizerToUse">
+            <summary>
+            Gets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExIconButton.TryLocalize(System.String,System.Object[])">
+            <summary>
+            Tries to localize given text if localizer and translation is available
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExIconButton.Localizer">
+            <summary>
+            Gets or sets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExIconButton.ToolTip">
             <summary>
             Tooltip
@@ -15203,6 +15321,11 @@
         <member name="P:MudBlazor.Extensions.Core.Capture.CaptureResult.CombinedData">
             <summary>
             Combined data of all captures.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.Capture.CaptureResult.AllData">
+            <summary>
+            All data of the capture.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Core.Capture.OverlaySource">

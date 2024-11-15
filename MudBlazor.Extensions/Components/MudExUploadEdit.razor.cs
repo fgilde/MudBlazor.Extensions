@@ -15,6 +15,7 @@ using MudBlazor.Extensions.Services;
 using Nextended.Core.Extensions;
 using System.Collections.Concurrent;
 using BlazorJS;
+using MudBlazor.Extensions.Core.Capture;
 using MudBlazor.Extensions.Helper.Internal;
 
 namespace MudBlazor.Extensions.Components;
@@ -34,6 +35,11 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// If this is true audio recordings can be uploaded
     /// </summary>
     [Parameter] public bool AllowAudioRecording { get; set; }
+
+    /// <summary>
+    /// If this is true videos can be captured and uploaded
+    /// </summary>
+    [Parameter] public bool AllowVideoCapture { get; set; }
 
     /// <summary>
     /// Set to set the item remove button always to the right independent of the <see cref="ActionsAdornment"/>
@@ -193,7 +199,13 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// Text for recording audio
     /// </summary>
     [Parameter, SafeCategory("Data")]
-    public string TextStartRecording { get; set; } = "Record audio";
+    public string TextStartRecording { get; set; } = "Record audio";  
+    
+    /// <summary>
+    /// Text for video capture
+    /// </summary>
+    [Parameter, SafeCategory("Data")]
+    public string TextStartVideoCapture { get; set; } = "Capture video";
 
     /// <summary>
     /// The text for the upload folder button.
@@ -1417,6 +1429,19 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         await JsRuntime.DInvokeVoidAsync((window, id) => window.document.getElementById(id).select(), textFieldId);
     }
 
+    private async void CapturedCallback(CaptureResult result)
+    {
+        if(result.CombinedData?.Bytes == null || result.CombinedData.Bytes.Length == 0)
+            return;
+        var captured = new T
+        {
+            FileName = $"{Guid.NewGuid()}.{(result.CombinedData.ContentType.StartsWith("video") ? "mp4" : "mp3")}",
+            ContentType = result.CombinedData.ContentType,
+            Data = result.CombinedData.Bytes
+        };
+        await Add(captured);
+    }
+    
     private async void AudioRecordingCallback(SpeechRecognitionResult result)
     {
         if (result.AudioData?.Length > 0)

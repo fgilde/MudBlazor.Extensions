@@ -43,7 +43,7 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
     /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
-        await Task.WhenAll(_captures.Select(pair => StopCaptureAsync(new CaptureId(pair.Key))));
+        await StopAllCapturesAsync();
     }
 
     public async Task<CaptureOptions> QuickEditCaptureOptionsAsync(CaptureOptions? options = null)
@@ -162,7 +162,8 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
 
     /// <inheritdoc />
     public Task StopAllCapturesAsync() =>
-        _jsRuntime.InvokeVoidAsync("MudExCapture.stopAllCaptures").AsTask();
+        Task.WhenAll(_captures.Select(pair => StopCaptureAsync(new CaptureId(pair.Key))));
+        //_jsRuntime.InvokeVoidAsync("MudExCapture.stopAllCaptures").AsTask();
 
     /// <inheritdoc />
     public Task<IEnumerable<AudioDevice>> GetAudioDevicesAsync() =>

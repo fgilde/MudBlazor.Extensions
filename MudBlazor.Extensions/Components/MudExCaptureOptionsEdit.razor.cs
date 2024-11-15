@@ -97,6 +97,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     {
         return RenderData.For<MudExObjectEditPicker<CaptureOptions>, CaptureOptions>(edit => edit.Value, edit =>
         {
+            //edit.PickerVariant = PickerVariant.Dialog;
             edit.AllowOpenOnReadOnly = true;
         });
     }
@@ -372,7 +373,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     public override async ValueTask DisposeAsync()
     {
         await StopPreviewCameraTrack();
-        await StopPreviewScreenTrack();
+        //await StopPreviewScreenTrack();
         await base.DisposeAsync();
     }
 

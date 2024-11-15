@@ -1,0 +1,77 @@
+﻿@page "/capture-button"
+
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+@using MudBlazor.Extensions.Core.Capture
+
+@attribute [DemoNew(Name = "MudExCaptureButton", Icon = Icons.Material.Outlined.VideoCall, Documentation = "This component uses the ICaptureService to capture audio and/or video data", ForComponentType = typeof(MudExCaptureButton))]
+
+<MudLink Href="/capture-service">Here you find a Demo how to use the service directly</MudLink>
+
+<DemoComponent PageType="@GetType()">
+    <SplitContainer>
+        <Left>
+            <MudGrid Spacing="1" Justify="Justify.Center">
+                <MudItem xs="12">
+                    <MudGrid Class="mb-3" Spacing="1" Justify="Justify.Center">
+                        <MudExCaptureButton OnDataCaptured="@Callback">
+                        </MudExCaptureButton>
+                    </MudGrid>
+                </MudItem>
+                @if (_files?.Any() == true)
+                {
+                    <MudItem xs="12">
+                        <MudPaper>
+                            <MudExUploadEdit SelectItemsMode="SelectItemsMode.ShowPreviewOnClick" PreviewIcon="@Icons.Material.Filled.VideoFile" AllowMultiple="true" AllowRename="false" ReadOnly="true" UploadRequests="@_files"></MudExUploadEdit>
+                        </MudPaper>
+                    </MudItem>
+                }
+
+            </MudGrid>
+        </Left>
+        <Right>
+             <ComponentPropertyGrid MetaConfiguration="Configure()" Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+
+@code {
+    MudExCaptureButton component;
+    private List<UploadableFile> _files;
+
+
+    private void Callback(CaptureResult captureResult)
+    {
+        Add("Combined result.mp4", captureResult.CombinedData);
+        Add("Camera Result.mp4", captureResult.CameraData);
+        Add("Audio Data.mp3", captureResult.AudioData);
+        Add("System audio data.mp3", captureResult.AudioData);
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void Add(string name, CaptureData data)
+    {
+        _files ??= new List<UploadableFile>();
+        if(data?.Bytes == null || data.Bytes.Length == 0)
+            return;
+        _files.Add(new UploadableFile()
+        {
+            FileName = name,
+            Data = data.Bytes,
+            ContentType = data.ContentType
+        });
+    }
+        
+
+    private Action<ObjectEditMeta<MudExCaptureButton>> Configure()
+    {
+        return meta =>
+        {
+            meta.Property(m => m.RecordingIcon).IgnoreIf(m => m.ShowSpectrumOnRecording);
+            meta.Property(m => m.RecordingAnimation).IgnoreIf(m => m.RecordingBorderAnimation);
+            meta.Property(m => m.BorderAnimationColors).IgnoreIf(m => !m.RecordingBorderAnimation);
+        };
+    }
+
+}

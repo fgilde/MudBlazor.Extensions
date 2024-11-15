@@ -94,6 +94,20 @@
                                                  OnRecognized="@AudioRecordingCallback" />
                     </div>
                 }
+                @if (AllowVideoCapture && !ReadOnly)
+                {
+                    <div style="align-self: center;">
+                        <MudExCaptureButton Disabled="@(_loading || _mimeUpdating)"
+                                                 ShowSpectrumOnRecording="true"
+                                                 Size="@ButtonSize"
+                                                 Color="@ButtonColor"
+                                                 Variant="ButtonVariant"
+                                                 ToolTip="@TryLocalize(TextStartVideoCapture)"
+                                                 RecordingBorderAnimation="@(ButtonVariant != Variant.Text)"
+                                                 Class="mr-2 ml-2"
+                                                 OnDataCaptured="@CapturedCallback" />
+                    </div>
+                }
                 @if (ShowFileUploadButton && !ReadOnly)
                 {
 

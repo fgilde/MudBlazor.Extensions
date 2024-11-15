@@ -1,11 +1,15 @@
 ﻿@inherits MudIconButton
+@using Microsoft.Extensions.DependencyInjection
+@using Microsoft.Extensions.Localization
+@using MudBlazor.Extensions.Attribute
+@using MudBlazor.Extensions.Helper
 @implements MudBlazor.Extensions.Core.IMudExComponent
 
 @if (Visible)
 {
     @if(!string.IsNullOrEmpty(ToolTip))
     {
-        <MudTooltip Style="@ToolTipStyle" Text="@ToolTip">
+        <MudTooltip Style="@ToolTipStyle" Text="@TryLocalize(ToolTip)">
             @Inherited()
         </MudTooltip>
     }
@@ -17,6 +21,31 @@
 
 @code {
     private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+
+    private IStringLocalizer<MudIconButton> FallbackLocalizer => ServiceProvider.GetService<IStringLocalizer<MudIconButton>>();
+    
+    /// <summary>
+    /// Gets or sets the <see cref="IServiceProvider"/> to be used for dependency injection.
+    /// </summary>
+    [Inject]
+    protected IServiceProvider ServiceProvider { get; set; }
+
+    /// <summary>
+    /// Gets the <see cref="IStringLocalizer"/> to be used for localizing strings.
+    /// </summary>
+    protected IStringLocalizer LocalizerToUse => Localizer ?? FallbackLocalizer;
+    
+
+    /// <summary>
+    /// Tries to localize given text if localizer and translation is available
+    /// </summary>
+    public string TryLocalize(string text, params object[] args) => LocalizerToUse.TryLocalize(text, args);
+
+    /// <summary>
+    /// Gets or sets the <see cref="IStringLocalizer"/> to be used for localizing strings.
+    /// </summary>
+    [Parameter, SafeCategory("Common")]
+    public IStringLocalizer Localizer { get; set; }
 
     /// <summary>
     /// Tooltip

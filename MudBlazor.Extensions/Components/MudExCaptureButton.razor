@@ -1,0 +1,12 @@
+﻿@inherits MudExIconButton
+
+@Inherited()
+
+@code
+{
+    RenderFragment Spectrum()
+    {
+        return @<AuralizeBlazor.Auralizer Height="@SizeStr()" Width="@SizeStr()" ShowPeaks="false" ShowScaleX="false" ShowScaleY="false" ConnectMicrophone="true">
+                </AuralizeBlazor.Auralizer>;
+    }
+}

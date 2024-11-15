@@ -4,61 +4,29 @@ using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
-using MudBlazor.Extensions.Core.W3C;
+using MudBlazor.Extensions.Core.Capture;
 
 namespace MudBlazor.Extensions.Components;
 
 /// <summary>
-/// Button component for speech-to-text functionality, allowing for asynchronous recording and processing of speech input.
+/// Button component for capturing audio and video.
 /// </summary>
-public partial class MudExSpeechToTextButton: IAsyncDisposable
+public partial class MudExCaptureButton : IAsyncDisposable
 {
-    [Inject] private ISpeechRecognitionService SpeechRecognitionService { get; set; }
+    [Inject] private ICaptureService CaptureService { get; set; }
     [Inject] private MudExAppearanceService AppearanceService { get; set; }
 
-    private AudioDevice[] _devices;
-    private AudioDevice _selectedDevice = null;
     private bool _initialized;
     private string[] _preInitParameters;
-    private string _recordingId;
-    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
+    private CaptureId _recordingId;
     
-    /// <summary>
-    /// Returns the device id to use for recording.
-    /// </summary>
-    public AudioDevice UsedDevice => (_selectedDevice ?? AudioDevice);
-
-    /// <summary>
-    /// If set, the recording will stop after the specified time.
-    /// </summary>
-    [Parameter] public TimeSpan? MaxCaptureTime { get; set; }
-
-    /// <summary>
-    /// If this is true a notification toast will be shown while recording.
-    /// </summary>
-    [Parameter] public bool ShowNotificationWhileRecording { get; set; }
+    private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
     /// <summary>
     /// Indicates whether a recording session is currently active.
     /// </summary>
-    public bool IsRecording => !string.IsNullOrEmpty(_recordingId);
-
-    /// <summary>
-    /// Sets the device for the audio input device to use for recording.
-    /// Leave empty to use the default device.
-    /// </summary>
-    [Parameter] public AudioDevice  AudioDevice { get; set; }
-
-    /// <summary>
-    /// Specify if and how the user is able to select the audio input device.
-    /// </summary>
-    [Parameter] public DeviceSelectionType DeviceSelection { get; set; }
-
-    /// <summary>
-    /// if <see cref="DeviceSelection"/> is set to <see cref="DeviceSelectionType.SelectionList"/> this variant is used for the list of devices to choose from.
-    /// </summary>
-    [Parameter] public Variant DeviceListVariant { get; set; } = Variant.Outlined;
-
+    public bool IsRecording => _recordingId != null && !string.IsNullOrEmpty(_recordingId);
+    
     /// <summary>
     /// If this is true border animation is applied when recording is active, but <see cref="RecordingAnimation"/> has no effect if this is turned on.
     /// </summary>
@@ -84,10 +52,10 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     public EventCallback OnRecordingStopped { get; set; }
 
     /// <summary>
-    /// Event triggered when a speech recognition result is obtained.
+    /// Event triggered capture result is obtained.
     /// </summary>
     [Parameter]
-    public EventCallback<SpeechRecognitionResult> OnRecognized { get; set; }
+    public EventCallback<CaptureResult> OnDataCaptured { get; set; }
 
     /// <summary>
     /// If this is true a spectrum is shown while recording is active but then the <see cref="RecordingIcon"/> has no effect and will not be used.
@@ -108,23 +76,30 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     public MudExColor RecordingColor { get; set; } = MudExColor.Error;
 
     /// <summary>
-    /// Language used for speech recognition, defaults to English (US).
+    /// The options to use for the capture.
+    /// If no options are provided, the user will be prompted to set them.
+    /// The complexity of the options edit can be controlled with <see cref="EditMode"/>.
     /// </summary>
     [Parameter]
-    public string Language { get; set; } = "en-US";
+    public CaptureOptions CaptureOptions { get; set; }
 
     /// <summary>
-    /// Specifies whether the recording should continue listening after capturing a complete phrase.
+    /// The editing mode to use for the capture options edit.
+    /// This is only used when <see cref="CaptureOptions"/> is null or <see cref="AlwaysEditOptions"/> is true and the user should set the options.
     /// </summary>
     [Parameter]
-    public bool Continuous { get; set; } = true;
+    public CaptureOptionsEditMode EditMode { get; set; } = CaptureOptionsEditMode.Full;
 
     /// <summary>
-    /// Specifies whether interim results should be reported during the recognition process.
+    /// Is this is true the user is always prompted to edit the options before starting a recording.
     /// </summary>
-    [Parameter]
-    public bool InterimResults { get; set; } = true;
+    [Parameter] public bool AlwaysEditOptions { get; set; }
 
+    /// <summary>
+    /// If this is true the options are remembered after the user edited them and then no dialog is shown again.
+    /// </summary>
+    [Parameter] public bool RememberEditedOptions { get; set; }
+    
     /// <summary>
     /// Gets or sets the collection of colors to use for the gradient.
     /// </summary>
@@ -143,14 +118,8 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
-        if (DeviceSelection == DeviceSelectionType.SelectionList && _devices == null)
-            await FillDevices();
     }
 
-    private async Task FillDevices()
-    {
-        _devices = (await SpeechRecognitionService.GetAudioDevicesAsync()).ToArray();
-    }
 
     private bool IsOverwritten(string paramName) => _preInitParameters?.Contains(paramName) == true;
 
@@ -159,19 +128,12 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     {
         base.OnInitialized();
         if (!IsOverwritten(nameof(Icon)))
-            Icon = Icons.Material.Filled.Mic;
+            Icon = Icons.Material.Filled.VideoCall;
         if (!IsOverwritten(nameof(Variant)))
             Variant = Variant.Outlined;
         if (!IsOverwritten(nameof(Color)))
             Color = Color.Primary;
         _initialized = true;
-    }
-
-    private bool _devicePopoverOpen;
-    private void OnBlur()
-    {
-        _devicePopoverOpen = false;
-        InvokeAsync(StateHasChanged);
     }
 
 
@@ -182,54 +144,29 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
             await StopRecordingAsync();
         else
         {
-            if (await SelectDeviceIfRequiredAsync())
-                return;
             await StartRecordingAsync();
         }
 
         await base.OnClickHandler(ev);
     }
-
-    private async Task<bool> SelectDeviceIfRequiredAsync()
-    {
-        await FillDevices();
-        if (DeviceSelection == DeviceSelectionType.PopupEveryTime ||
-            (DeviceSelection == DeviceSelectionType.PopupOnlyOnce && _selectedDevice == null))
-        {
-            if(_devices?.Any() != true)
-                return false;
-            if (_devices.Length == 1)
-            {
-                _selectedDevice = _devices[0];
-                return false;
-            }
-            _devicePopoverOpen = true;
-            await InvokeAsync(StateHasChanged);
-            return true;
-        }
-
-        return false;
-    }
-
+    
     /// <summary>
     /// Starts the recording asynchronously.
     /// </summary>
     public async Task StartRecordingAsync()
     {
-        var options = new SpeechRecognitionOptions
+        var options = CaptureOptions != null && !AlwaysEditOptions ? CaptureOptions : await CaptureService.EditCaptureOptionsAsync(EditMode, CaptureOptions);
+        if (RememberEditedOptions)
+            CaptureOptions = options;
+
+        if (options != null && options.Valid())
         {
-            Lang = Language,
-            Continuous = Continuous,
-            InterimResults = InterimResults,
-            Device = UsedDevice,
-            ShowNotificationWhileRecording = ShowNotificationWhileRecording,
-            MaxCaptureTime = MaxCaptureTime
-        };
-        _recordingId = await SpeechRecognitionService.StartRecordingAsync(options, OnResult, OnStopped);
-        if (IsRecording)
-        {
-            await SetActive();
-            await OnRecordingStarted.InvokeAsync();
+            _recordingId = await CaptureService.StartCaptureAsync(options, OnResult, OnStopped);
+            if (IsRecording)
+            {
+                await SetActive();
+                await OnRecordingStarted.InvokeAsync();
+            }
         }
     }
 
@@ -240,11 +177,11 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
     {
         if (IsRecording)
         {
-            await SpeechRecognitionService.StopRecordingAsync(_recordingId);
+            await CaptureService.StopCaptureAsync(_recordingId);
         }
     }
 
-    private void OnStopped(string obj)
+    private void OnStopped(CaptureId captureId)
     {
         _recordingId = null;
         _ = OnRecordingStopped.InvokeAsync();
@@ -276,32 +213,19 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
         await InvokeAsync(StateHasChanged);
     }
     
-    private void OnResult(SpeechRecognitionResult result)
+    private void OnResult(CaptureResult captureResult)
     {
-        OnRecognized.InvokeAsync(result);
+        OnDataCaptured.InvokeAsync(captureResult);
     }
 
 
     /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
-        if (SpeechRecognitionService != null) 
-            await SpeechRecognitionService.DisposeAsync();
+        if (CaptureService != null) 
+            await CaptureService.StopAllCapturesAsync();
     }
 
-    private async Task AudioDeviceSelected(AudioDevice arg)
-    {
-        _selectedDevice = arg;        
-        if (_devicePopoverOpen)
-        {
-            _devicePopoverOpen = false;
-            await StartRecordingAsync();
-        }
-        else
-        {
-            await InvokeAsync(StateHasChanged);
-        }
-    }
 
     private string SizeStr()
     {
@@ -313,30 +237,4 @@ public partial class MudExSpeechToTextButton: IAsyncDisposable
             _ => "36px;"
         };
     }
-}
-
-/// <summary>
-/// Specifies the type of device selection to use for audio input.
-/// </summary>
-public enum DeviceSelectionType
-{
-    /// <summary>
-    /// No device selection is used and the default system device is used.
-    /// </summary>
-    None,
-    
-    /// <summary>
-    /// If no device is selected, a popup is shown to select the device.
-    /// </summary>
-    PopupOnlyOnce,
-    
-    /// <summary>
-    /// Always show a popup to select the device.
-    /// </summary>
-    PopupEveryTime,
-    
-    /// <summary>
-    /// Show a selection list of devices to choose from.
-    /// </summary>
-    SelectionList
 }

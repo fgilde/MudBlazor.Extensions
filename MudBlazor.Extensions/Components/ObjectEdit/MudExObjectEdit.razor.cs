@@ -719,8 +719,15 @@ public partial class MudExObjectEdit<T>
         await ValueChanged.InvokeAsync(Value);
         if (Value is IComponent c)
         {
-            var parameters = ParameterView.FromDictionary(new Dictionary<string, object> { { property.PropertyName, property.Value } });
-            await c.SetParametersAsync(parameters);
+            try
+            {
+                var parameters = ParameterView.FromDictionary(new Dictionary<string, object> { { property.PropertyName, property.Value } });
+                await c.SetParametersAsync(parameters);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 
