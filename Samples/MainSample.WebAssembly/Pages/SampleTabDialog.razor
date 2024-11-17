@@ -1,0 +1,35 @@
+﻿@using MudBlazor.Extensions.Helper
+
+<MudDialog Class="mud-ex-dialog-initial_">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3"/> Sample Dialog
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTabs Elevation="1" Rounded="true" PanelClass="pa-6">
+            <MudTabPanel Height="200" Text="Item One" ToolTip="ToolTip One">
+                <div style="height: 100px">
+                    <MudText>Item One</MudText>
+                </div>
+            </MudTabPanel>
+            <MudTabPanel Text="Item Two" ToolTip="ToolTip Two">
+                <MudText>Item Two</MudText>
+            </MudTabPanel>
+            <MudTabPanel Text="Item Three" ToolTip="ToolTip Three">
+                <MudText>Item Three</MudText>
+            </MudTabPanel>
+        </MudTabs>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    
+    void Submit() => MudDialog.CloseAnimatedIf(DialogResult.Ok(true));
+    void Cancel() => MudDialog.CancelAnimatedIf();
+}

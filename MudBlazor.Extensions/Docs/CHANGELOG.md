@@ -1,4 +1,15 @@
 ## Change Log    
+ - 2.0.7 > Update MudBlazor to 7.15.0
+ - 2.0.7 > For the MudExObjectEdit you can now easially register a component as editor for a specific type [see here how you can register your component as editor for a type](https://www.mudex.org/d/ObjectEditRegisterComponent)
+ - 2.0.7 > **_Breaking:_** The DailogOptionsEx class has a new Property `KeepRelations`. this is true by default and ensures positions and sizes are in relative percentage values. With this a dialog stays in the same position and size relative to the screen size. If you want to have a dialog with fixed sizes and positions you can set this to false and return to the old behaviour. 
+ - 2.0.7 > The DailogOptionsEx class has a new Property `KeepMaxSizeConstraints`. if this is is true then the max width and max height while resizing is limited to initial MaxWidth or MaxHeight property values. 
+ - 2.0.7 > New Component [MudExObjectEditPicker](https://www.mudex.org//objectedit-picker) is the known MudExObjectEdit as a picker.
+ - 2.0.7 > All MudEx picker components like [MudExObjectEditPicker](https://www.mudex.org//objectedit-picker) [MudExColorEdit](https://www.mudex.org/mud-ex-color-edit), [MudExIconPicker](https://www.mudex.org/mud-ex-icon-picker) or [MudExPicker](https://www.mudex.org/mud-ex-picker) now inherits from new [MudExPickerBase](https://www.mudex.org/https://www.mudex.org/api/MudExPickerBase). All theese pickers now supports animations, and all DialogOptionsEx for PickerVariant as Dialog
+ - 2.0.7 > New Component [MudExPicker](https://www.mudex.org/mud-ex-picker) is a picker component that easially supports own picker content.
+ - 2.0.7 > New Component [MudExGroupBox](https://www.mudex.org/mud-ex-group-box) is a simple group box component to group content with a title and a border.
+ - 2.0.7 > [MudExUploadEdit](https://www.mudex.org/upload-edit) now allows recording of audio, video and captured screen directly using the new [CaptureService](https://www.mudex.org/capture-service)
+ - 2.0.7 > Add [CaptureService](https://www.mudex.org/capture-service) to allow easy recording of screen capture, camera video and audio
+ - 2.0.7 > New Component [MudExCaptureButton](https://www.mudex.org/mud-ex-capture-button) to allow easy recording of screen capture, camera video and audio
  - 2.0.6 > [MudExAudioPlayer](https://www.mudex.org/file-display?file=4.Unified-Voice.mp3) now displays meta infos
  - 2.0.6 > The [MudExImageViewer](https://www.mudex.org/image-view) now allows area to select with a rubberband and open, download, print or directly switching the view to the selected area as an image.
  - 2.0.6 > Allow Xls and CSV files and fix header bug in [MudExFileDisplayExcel](https://www.mudex.org/file-display?file=ExcelSheet.xlsx)

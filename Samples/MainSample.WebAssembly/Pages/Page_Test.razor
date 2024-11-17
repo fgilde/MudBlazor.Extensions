@@ -1,6 +1,37 @@
 ﻿@page "/test"
+@using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Options
 
-<p>Empty</p>
+<DemoComponent PageType="@GetType()">
+    <MudGrid Style="width: 100%" Justify="Justify.Center">
+        <MudItem xs="12">
+            <MudAlert><p> This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open </p></MudAlert>
+        </MudItem>
+        <MudItem xs="3" Class="mb-4">
+            <MudButton Class="m-4" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
+        </MudItem>
+    </MudGrid>
+</DemoComponent>
 
 @code {
+    [Inject]
+    MudExStyleBuilder _styleBuilder { get; set; }
+
+    private async Task ShowSampleDialog()
+    {
+        DialogOptionsEx dlgOptions = new()
+            {
+                MaximizeButton = true,
+                CloseButton = true,
+                CloseOnEscapeKey = true,
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true,
+                Resizeable = true,
+                DragMode = MudDialogDragMode.Simple,
+                DisableSizeMarginY = true,
+                DisablePositionMargin = true
+            };
+        DialogService.ShowEx<SampleTabDialog>("Simple Dialog", dlgOptions);
+    }
+
 }

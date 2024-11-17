@@ -34,6 +34,30 @@
         return await this.dotNetService.invokeMethodAsync('PublishEvent', eventName, this.dialog.id, this.dotNet, rect);
     }
 
+    isInternalHandler() {
+        return this.dialog.getAttribute('data-mud-ex-internal-handler') === 'true';
+    }
+
+    setRelativeIf() {
+        if (this.options.keepRelations && MudExDomHelper.toRelative) {
+            this.dialog.setAttribute('data-mud-ex-internal-handler', 'true');
+
+            var observer = this.getHandler(MudExDialogResizeHandler)?.resizeObserver;
+            if (observer) {
+                observer.unobserve(this.dialog);
+            }
+            MudExDomHelper.toRelative(this.dialog);
+            if (observer) {
+                observer.observe(this.dialog);
+            }
+            this.removeInternalHandler();
+        }
+    }
+
+    removeInternalHandler() {
+        setTimeout(() => this.dialog.removeAttribute('data-mud-ex-internal-handler'), 100);
+    }
+
     getAnimationDuration() {
         // TODO: 
         return this.options.animationDurationInMs + 150;

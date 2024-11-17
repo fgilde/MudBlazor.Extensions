@@ -22196,6 +22196,17 @@
             </summary>
             <returns>A reference to the current instance.</returns>
         </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.KeepMaxSizeConstraints">
+            <summary>
+            If true the dialog will keep the max size constraints for resizing defined with <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.MaxHeight"/> and <see cref="T:MudBlazor.MaxWidth"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.KeepRelations">
+            <summary>
+            If true the dialog will keep the relations to the parent component.
+            That means sizes and positions will set to values in percentages.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.AnimateClose">
             <summary>
             If true the dialog will be animated on close

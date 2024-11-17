@@ -241,9 +241,9 @@ public partial class MudExPickerBase<T>
         if (BindWidthToPicker && PickerVariant == PickerVariant.Inline)
         {
             var el = _inputReference?.InputReference?.ElementReference;
-            var selector = $"[data-picker-id=\"{Id}\"]";
+            //var selector = $"[data-picker-id=\"{Id}\"]";
             if (el != null)
-                await JsRuntime.InvokeVoidAsync("MudExDomHelper.syncSize", el, selector, null, DotNetObjectReference.Create(this));
+                await JsRuntime.InvokeVoidAsync("MudExDomHelper.syncSize", el, _pickerInlineRef, null, DotNetObjectReference.Create(this));
         }
     }
 

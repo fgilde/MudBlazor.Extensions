@@ -1,4 +1,4 @@
-﻿@page "/capture-button"
+﻿@page "/mud-ex-capture-button"
 
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using MudBlazor.Extensions.Core.Capture
@@ -13,7 +13,7 @@
             <MudGrid Spacing="1" Justify="Justify.Center">
                 <MudItem xs="12">
                     <MudGrid Class="mb-3" Spacing="1" Justify="Justify.Center">
-                        <MudExCaptureButton OnDataCaptured="@Callback">
+                        <MudExCaptureButton @ref="component" OnDataCaptured="@Callback">
                         </MudExCaptureButton>
                     </MudGrid>
                 </MudItem>
@@ -29,7 +29,7 @@
             </MudGrid>
         </Left>
         <Right>
-             <ComponentPropertyGrid MetaConfiguration="Configure()" Value="@component"></ComponentPropertyGrid>
+            <ComponentPropertyGrid MetaConfiguration="Configure()" Value="@component"></ComponentPropertyGrid>
         </Right>
     </SplitContainer>
 </DemoComponent>
@@ -43,6 +43,7 @@
 
     private void Callback(CaptureResult captureResult)
     {
+        _files?.Clear();
         Add("Combined result.mp4", captureResult.CombinedData);
         Add("Camera Result.mp4", captureResult.CameraData);
         Add("Audio Data.mp3", captureResult.AudioData);
@@ -53,16 +54,16 @@
     private void Add(string name, CaptureData data)
     {
         _files ??= new List<UploadableFile>();
-        if(data?.Bytes == null || data.Bytes.Length == 0)
+        if (data?.Bytes == null || data.Bytes.Length == 0)
             return;
         _files.Add(new UploadableFile()
-        {
-            FileName = name,
-            Data = data.Bytes,
-            ContentType = data.ContentType
-        });
+            {
+                FileName = name,
+                Data = data.Bytes,
+                ContentType = data.ContentType
+            });
     }
-        
+
 
     private Action<ObjectEditMeta<MudExCaptureButton>> Configure()
     {

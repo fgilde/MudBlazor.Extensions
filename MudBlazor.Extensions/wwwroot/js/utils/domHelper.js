@@ -133,13 +133,58 @@
         return el ? new MudExDomHelper(el) : null;
     }
 
-    static toAbsolute(element) {
+    static toRelative(element, useWindowAsReference = false) {
+
+        if (!element || !(element instanceof HTMLElement)) {
+            console.error("Das angegebene Element ist ungültig.");
+            return;
+        }
+
+        const parent = element.offsetParent;
+        const referenceWidth = useWindowAsReference || !parent ? window.innerWidth : parent.offsetWidth;
+        const referenceHeight = useWindowAsReference || !parent ? window.innerHeight : parent.offsetHeight;
+
+        if (!referenceWidth || !referenceHeight) {
+            console.warn("No reference to set relatives");
+            return;
+        }
+
+        const computedStyle = getComputedStyle(element);
+        const leftPx = parseFloat(computedStyle.left);
+        const topPx = parseFloat(computedStyle.top);
+        const widthPx = parseFloat(computedStyle.width);
+        const heightPx = parseFloat(computedStyle.height);
+
+        const leftPercent = (leftPx / referenceWidth) * 100;
+        const topPercent = (topPx / referenceHeight) * 100;
+        const widthPercent = (widthPx / referenceWidth) * 100;
+        const heightPercent = (heightPx / referenceHeight) * 100;
+
+        element.style.left = `${leftPercent}%`;
+        element.style.top = `${topPercent}%`;
+        
+        if (element.style.width && element.style.width !== 'auto') {
+            element.style.width = `${widthPercent}%`;
+        }
+        if (element.style.height && element.style.height !== 'auto') {
+            element.style.height = `${heightPercent}%`;
+        }
+
+    }
+
+    static toAbsolute(element, sizesAuto) {
         element.style.position = 'absolute';
         var rect = element.getBoundingClientRect();
         element.style.left = rect.left + "px";
         element.style.top = rect.top + "px";
-        element.style.width = rect.width + "px";
-        element.style.height = rect.height + "px";
+
+        if (sizesAuto) {
+            element.style.width = 'auto';
+            element.style.height = 'auto';
+        } else {
+            element.style.width = rect.width + "px";
+            element.style.height = rect.height + "px";
+        }
     }
 
     static ensureElementIsInScreenBounds(element) {

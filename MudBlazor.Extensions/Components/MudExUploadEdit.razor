@@ -2,6 +2,7 @@
 @using Nextended.Core.Extensions
 @using Microsoft.AspNetCore.Components.Rendering
 @using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Options
 @inherits MudExJsRequiredBaseFormComponent<MudExUploadEdit<T>, IList<T>, string>
 @typeparam T;
 
@@ -98,14 +99,18 @@
                 {
                     <div style="align-self: center;">
                         <MudExCaptureButton Disabled="@(_loading || _mimeUpdating)"
-                                                 ShowSpectrumOnRecording="true"
-                                                 Size="@ButtonSize"
-                                                 Color="@ButtonColor"
-                                                 Variant="ButtonVariant"
-                                                 ToolTip="@TryLocalize(TextStartVideoCapture)"
-                                                 RecordingBorderAnimation="@(ButtonVariant != Variant.Text)"
-                                                 Class="mr-2 ml-2"
-                                                 OnDataCaptured="@CapturedCallback" />
+                                            ShowSpectrumOnRecording="false"
+                                            RecordingIcon="@Icons.Material.Filled.StopCircle"
+                                            RecordingAnimation="AnimationType.Pulse"
+                                            AlwaysEditOptions="true"
+                                            RememberEditedOptions="true"
+                                            Size="@ButtonSize"
+                                            Color="@ButtonColor"
+                                            Variant="ButtonVariant"
+                                            ToolTip="@TryLocalize(TextStartVideoCapture)"
+                                            RecordingBorderAnimation="@(ButtonVariant != Variant.Text)"
+                                            Class="mr-2 ml-2"
+                                            OnDataCaptured="@CapturedCallback" />
                     </div>
                 }
                 @if (ShowFileUploadButton && !ReadOnly)

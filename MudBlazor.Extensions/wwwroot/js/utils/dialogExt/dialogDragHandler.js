@@ -73,6 +73,7 @@
 
         function closeDragElement() {            
             self.raiseDialogEvent('OnDragEnd');
+            self.setRelativeIf();
             document.onmouseup = null;
             document.onmousemove = null;
         }

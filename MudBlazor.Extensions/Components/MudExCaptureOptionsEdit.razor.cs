@@ -98,6 +98,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
         return RenderData.For<MudExObjectEditPicker<CaptureOptions>, CaptureOptions>(edit => edit.Value, edit =>
         {
             //edit.PickerVariant = PickerVariant.Dialog;
+            edit.BindWidthToPicker = false;
             edit.AllowOpenOnReadOnly = true;
         });
     }
@@ -149,6 +150,8 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     private string GetStyleStr()
     {
         return Get<MudExStyleBuilder>()
+            .WithMinWidth("500px")
+            .WithMinHeight("500px")
             .WithWidth("100%")
             .WithHeight("100%")
             .AddRaw(Style).Style;

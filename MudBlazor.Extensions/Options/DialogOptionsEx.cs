@@ -29,6 +29,17 @@ namespace MudBlazor.Extensions.Options
         internal DotNetObjectReference<object> DotNet { get; set; }
 
         /// <summary>
+        /// If true the dialog will keep the max size constraints for resizing defined with <see cref="MaxHeight"/> and <see cref="MaxWidth"/>.
+        /// </summary>
+        public bool KeepMaxSizeConstraints { get; set; } = false;
+
+        /// <summary>
+        /// If true the dialog will keep the relations to the parent component.
+        /// That means sizes and positions will set to values in percentages.
+        /// </summary>
+        public bool KeepRelations { get; set; } = true;
+
+        /// <summary>
         /// If true the dialog will be animated on close
         /// </summary>
         public bool AnimateClose { get; set; } = true;
