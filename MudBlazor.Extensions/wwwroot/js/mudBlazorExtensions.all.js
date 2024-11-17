@@ -1091,10 +1091,10 @@ class MudExDomHelper {
 
         if (sizesAuto) {
             element.style.width = 'auto';
-            element.style.height = 'auto';
+           // element.style.height = 'auto';
         } else {
             element.style.width = rect.width + "px";
-            element.style.height = rect.height + "px";
+           // element.style.height = rect.height + "px";
         }
     }
 
@@ -1686,6 +1686,7 @@ class MudExDialogHandlerBase {
     _updateDialog(dialog) {
         this.dialog = dialog || this.dialog;
         if (this.dialog) {
+            this.dialog.style.position = 'absolute';
             this.dialog.options = this.options; 
             this.dialogHeader = this.dialog.querySelector(this.mudDialogHeaderSelector);
             this.dialogTitleEl = this.dialog.querySelector('.mud-dialog-title');
@@ -1811,6 +1812,9 @@ class MudExDialogButtonHandler extends MudExDialogHandlerBase {
 
     handle(dialog) {
         super.handle(dialog);
+        if (this.options.maximizeButton && this.dialogHeader) {
+            this.dialogHeader.addEventListener('dblclick', this.onDoubleClick.bind(this));
+        }
         if (this.options.buttons && this.options.buttons.length) {
             var dialogButtonWrapper = document.createElement('div');
             dialogButtonWrapper.classList.add('mud-ex-dialog-header-actions');
@@ -1831,13 +1835,25 @@ class MudExDialogButtonHandler extends MudExDialogHandlerBase {
                         }
                         if (b.id.indexOf('mud-button-minimize') >= 0) {
                             this.getHandler(MudExDialogPositionHandler).minimize();
-                            
+
                         } else {
                             b.callBackReference.invokeMethodAsync(b.callbackName);
                         }
                     }
                 }
             });
+        }
+    }
+
+    onDoubleClick(e) {
+        if (this.dialogHeader && MudExEventHelper.isWithin(e, this.dialogHeader)) {
+            this.getHandler(MudExDialogPositionHandler).maximize();
+        }
+    }
+
+    dispose() {
+        if (this.dialogHeader) {
+            this.dialogHeader.removeEventListener('dblclick', this.onDoubleClick);
         }
     }
 }
@@ -2247,6 +2263,7 @@ class MudExDialogResizeHandler extends MudExDialogHandlerBase {
         this.dialog = dialog;
         this.dialog.addEventListener('mousedown', this.onMouseDown.bind(this));
         this.dialog.addEventListener('mouseup', this.onMouseUp.bind(this));
+        
 
         this.resizeObserver = new ResizeObserver(entries => {
             for (let entry of entries) {
@@ -2284,6 +2301,7 @@ class MudExDialogResizeHandler extends MudExDialogHandlerBase {
     }
 
     checkResizeable() {
+        MudExDomHelper.toAbsolute(this.dialog, false);
         if (this.options.resizeable) {
             this.resizeObserver.observe(this.dialog);
             this.dialog.style['resize'] = 'both';

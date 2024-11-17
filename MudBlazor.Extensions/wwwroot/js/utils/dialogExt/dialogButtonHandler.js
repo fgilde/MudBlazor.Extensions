@@ -2,6 +2,9 @@
 
     handle(dialog) {
         super.handle(dialog);
+        if (this.options.maximizeButton && this.dialogHeader) {
+            this.dialogHeader.addEventListener('dblclick', this.onDoubleClick.bind(this));
+        }
         if (this.options.buttons && this.options.buttons.length) {
             var dialogButtonWrapper = document.createElement('div');
             dialogButtonWrapper.classList.add('mud-ex-dialog-header-actions');
@@ -22,13 +25,25 @@
                         }
                         if (b.id.indexOf('mud-button-minimize') >= 0) {
                             this.getHandler(MudExDialogPositionHandler).minimize();
-                            
+
                         } else {
                             b.callBackReference.invokeMethodAsync(b.callbackName);
                         }
                     }
                 }
             });
+        }
+    }
+
+    onDoubleClick(e) {
+        if (this.dialogHeader && MudExEventHelper.isWithin(e, this.dialogHeader)) {
+            this.getHandler(MudExDialogPositionHandler).maximize();
+        }
+    }
+
+    dispose() {
+        if (this.dialogHeader) {
+            this.dialogHeader.removeEventListener('dblclick', this.onDoubleClick);
         }
     }
 }

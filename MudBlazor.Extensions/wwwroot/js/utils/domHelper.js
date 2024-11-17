@@ -180,10 +180,10 @@
 
         if (sizesAuto) {
             element.style.width = 'auto';
-            element.style.height = 'auto';
+           // element.style.height = 'auto';
         } else {
             element.style.width = rect.width + "px";
-            element.style.height = rect.height + "px";
+           // element.style.height = rect.height + "px";
         }
     }
 

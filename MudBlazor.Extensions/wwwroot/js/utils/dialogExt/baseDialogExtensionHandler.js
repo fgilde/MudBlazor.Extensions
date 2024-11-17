@@ -128,6 +128,7 @@
     _updateDialog(dialog) {
         this.dialog = dialog || this.dialog;
         if (this.dialog) {
+            this.dialog.style.position = 'absolute';
             this.dialog.options = this.options; 
             this.dialogHeader = this.dialog.querySelector(this.mudDialogHeaderSelector);
             this.dialogTitleEl = this.dialog.querySelector('.mud-dialog-title');

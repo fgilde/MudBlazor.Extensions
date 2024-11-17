@@ -7,6 +7,7 @@
         this.dialog = dialog;
         this.dialog.addEventListener('mousedown', this.onMouseDown.bind(this));
         this.dialog.addEventListener('mouseup', this.onMouseUp.bind(this));
+        
 
         this.resizeObserver = new ResizeObserver(entries => {
             for (let entry of entries) {
@@ -44,6 +45,7 @@
     }
 
     checkResizeable() {
+        MudExDomHelper.toAbsolute(this.dialog, false);
         if (this.options.resizeable) {
             this.resizeObserver.observe(this.dialog);
             this.dialog.style['resize'] = 'both';
