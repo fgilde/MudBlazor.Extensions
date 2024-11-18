@@ -21835,36 +21835,6 @@
             Converts Theme to json
             </summary>
         </member>
-        <member name="T:MudBlazor.Extensions.Middleware.MudBlazorExtensionsMiddleware">
-            <summary>
-            Middleware for MudBlazor extensions that allows to inject IJSRuntime.
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Middleware.MudBlazorExtensionsMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MudBlazor.Extensions.Middleware.MudBlazorExtensionsMiddleware"/> class.
-            </summary>
-            <param name="next">The next middleware in the pipeline.</param>
-        </member>
-        <member name="M:MudBlazor.Extensions.Middleware.MudBlazorExtensionsMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,Microsoft.JSInterop.IJSRuntime)">
-            <summary>
-            Method invoked by the pipeline. Injects IJSRuntime into JsImportHelper and then passes control to the next middleware in the pipeline.
-            </summary>
-            <param name="context">The HttpContext for the current request.</param>
-            <param name="jsRuntime">The IJSRuntime instance for the current request.</param>
-        </member>
-        <member name="T:MudBlazor.Extensions.MudBlazorExtensionsMiddlewareExtensions">
-            <summary>
-            MudBlazorExtensionsMiddlewareExtensions
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.MudBlazorExtensionsMiddlewareExtensions.UseMudExtensions(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
-            <summary>
-            Adds the MudBlazorExtensionsMiddleware
-            </summary>
-            <param name="builder"></param>
-            <returns></returns>
-        </member>
         <member name="T:MudBlazor.Extensions.MudDialogButton">
             <summary>
             Represents a custom dialog button within a MudBlazor dialog.

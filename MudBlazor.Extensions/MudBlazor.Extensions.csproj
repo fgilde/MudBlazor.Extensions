@@ -24,7 +24,7 @@
   <PropertyGroup>
     <MajorVersion>2</MajorVersion>
     <MinorVersion>0</MinorVersion>
-    <PatchVersion>8</PatchVersion>
+    <PatchVersion>7.1</PatchVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -70,14 +70,13 @@
     <PackageReference Include="ExcelDataReader" Version="3.7.0" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0" />
     <PackageReference Include="AuralizeBlazor" Version="1.1.4" />
-    <PackageReference Include="MudBlazor.Markdown" Version="7.8.0" />
+    <PackageReference Include="MudBlazor.Markdown" Version="7.14.0" />
     <PackageReference Include="Nextended.Blazor" Version="8.0.12" />
     <PackageReference Include="Nextended.Core" Version="8.0.16" />
     <PackageReference Include="BlazorJS" Version="2.1.6" />
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="MudBlazor" Version="7.15.0" />
     <PackageReference Include="BlazorParameterCastingMagic" Version="1.2.23060811" />
     <PackageReference Include="SharpCompress" Version="0.38.0" />
