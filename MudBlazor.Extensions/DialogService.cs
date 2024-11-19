@@ -233,7 +233,17 @@ namespace MudBlazor.Extensions
                 options.JsRuntime = service.JSRuntime;
                 options.AppearanceService = service.AppearanceService;
             }
-            return await dialogService.ShowAsync(type, title, parameters ?? new DialogParameters(), options).InjectOptionsAsync(dialogService, options);
+
+            Task OnAddedFunc(IDialogReference reference)
+            {
+                _= reference.InjectOptionsAsync(dialogService, options);
+                return Task.CompletedTask;
+            }
+
+            dialogService.DialogInstanceAddedAsync += OnAddedFunc;
+            var res = await dialogService.ShowAsync(type, title, parameters ?? new DialogParameters(), options);
+            dialogService.DialogInstanceAddedAsync -= OnAddedFunc;
+            return res;
         }
 
         internal static async Task PrepareOptionsBeforeShow(DialogOptionsEx options)

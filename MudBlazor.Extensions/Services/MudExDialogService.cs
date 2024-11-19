@@ -70,9 +70,8 @@ public class MudExDialogService : DialogService, IMudExDialogService
         JSRuntime = jsRuntime;
         ServiceProvider = serviceProvider;
         AppearanceService = appearanceService;
-        // TODO: MudBlazor 8
-        //_innerDialogService.DialogInstanceAddedAsync += DialogInstanceAddedAsyncHandler;
-        //_innerDialogService.OnDialogCloseRequested += OnDialogCloseRequestedHandler;
+        DialogInstanceAddedAsync += DialogInstanceAddedAsyncHandler;
+        OnDialogCloseRequested += OnDialogCloseRequestedHandler;
     }
 
     private void OnDialogCloseRequestedHandler(IDialogReference reference, DialogResult result)
