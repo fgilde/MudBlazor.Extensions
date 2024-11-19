@@ -14,7 +14,7 @@ public partial class MudExPromptDialog
     /// <summary>
     /// Cascading parameter of the MudDialogInstance object, which is responsible for the dialog instance.
     /// </summary>
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
 
     /// <summary>
     /// Boolean value indicating whether prompt should be submitted immediately.

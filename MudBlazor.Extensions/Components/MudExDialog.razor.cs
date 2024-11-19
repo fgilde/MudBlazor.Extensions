@@ -79,8 +79,8 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
     /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
-        if (parameters.TryGetValue<DialogOptions>(nameof(Options), out var options) && options is DialogOptionsEx ex)
-            _options = ex;        
+        if (parameters.TryGetValue<DialogOptions>(nameof(Options), out var options))
+            _options = options;        
         bool oldVisible = Visible;
         await base.SetParametersAsync(parameters);
         if (oldVisible != Visible)

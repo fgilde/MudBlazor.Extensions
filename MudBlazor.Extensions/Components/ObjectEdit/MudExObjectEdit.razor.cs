@@ -1030,7 +1030,7 @@ public partial class MudExObjectEdit<T>
             op.MaxWidth = MaxWidth.Large;
             op.FullWidth = false;
             op.FullHeight = false;
-            op.Position = DialogPosition.TopCenter;
+            
         }, new DialogParameters
         {
             { nameof(MudExFileDisplayDialog.AllowDownload), false },

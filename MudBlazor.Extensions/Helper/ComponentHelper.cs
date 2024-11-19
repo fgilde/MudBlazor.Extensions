@@ -29,16 +29,16 @@ public static class ComponentHelper
         return res as Task ?? Task.CompletedTask;
     }
 
-    internal static MudDialogInstance FindMudDialogInstance(this IComponent component) 
-        => component.AllOf<MudDialogInstance>(ReflectReadSettings.AllWithHierarchyTraversal).FirstOrDefault();
+    internal static IMudDialogInstance FindMudDialogInstance(this IComponent component) 
+        => component.AllOf<IMudDialogInstance>(ReflectReadSettings.AllWithHierarchyTraversal).FirstOrDefault();
 
     internal static MudDialogProvider FindMudDialogProvider(this IComponent component)
     {
-        return component is MudDialogInstance instance
+        return component is IMudDialogInstance instance
             ? FindMudDialogProvider(instance)
             : component.FindMudDialogInstance()?.FindMudDialogProvider();
     }
 
-    internal static MudDialogProvider FindMudDialogProvider(this MudDialogInstance component)
+    internal static MudDialogProvider FindMudDialogProvider(this IMudDialogInstance component)
         => component.AllOf<MudDialogProvider>(ReflectReadSettings.AllWithHierarchyTraversal).FirstOrDefault();
 }

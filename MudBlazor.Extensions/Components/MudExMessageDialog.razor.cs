@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
-using MudBlazor.Extensions.Helper;
 using System.Reflection;
+using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -12,7 +12,7 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExMessageDialog
 {
     private ComponentBase _component;
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
 
     /// <summary>
     /// The color of the dialog icon for when the dialog is used in relation to a particular color theme.

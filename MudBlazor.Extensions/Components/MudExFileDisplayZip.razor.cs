@@ -52,7 +52,7 @@ public partial class MudExFileDisplayZip : IMudExFileDisplayInfos, IMudExFileDis
     /// <summary>
     /// Reference to the parent MudDialog if the component is used inside a MudDialog
     /// </summary>
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
 
     /// <summary>
     /// Behavior for handling stream urls

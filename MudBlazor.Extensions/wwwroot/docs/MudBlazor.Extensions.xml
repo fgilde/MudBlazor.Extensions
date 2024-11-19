@@ -6411,11 +6411,6 @@
             Force the update of the items in the select menu.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.Dispose(System.Boolean)">
-            <summary>
-            Disposes the component.
-            </summary>
-        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.HandleKeyUp(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs)">
             <summary>
             Handler for the keyup event.
@@ -6467,7 +6462,7 @@
             Selects the given option by index.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.SelectOption(System.Object)">
+        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.SelectOption(System.Object,System.Boolean)">
             <summary>
             Selects the given option.
             </summary>
@@ -6591,19 +6586,9 @@
             Text for the item.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.Value">
-            <summary>
-            Item value.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.MultiSelection">
             <summary>
             Is multi selection enabled.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.DisplayString">
-            <summary>
-            Display string.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSelectItem`1.HandleOnClick">
@@ -6631,11 +6616,6 @@
             Style for the component.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.Value">
-            <summary>
-            A user-defined option that can be selected
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.Text">
             <summary>
             A user-defined option that can be selected
@@ -6659,12 +6639,6 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.StickyTop">
             <summary>
             The top position of sticky header
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.HideContent">
-            <summary>
-            Select items with HideContent==true are only there to register their RenderFragment with the select but
-            wont render and have no other purpose!
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.OnAfterRenderAsync(System.Boolean)">
@@ -22166,9 +22140,78 @@
             </summary>
             <returns>A reference to the current instance.</returns>
         </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.Position">
+            <summary>
+            The location of the dialog.
+            </summary>
+            <remarks>
+            Defaults to <c>null</c>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.MaxWidth">
+            <summary>
+            The maximum allowed width of the dialog.
+            </summary>
+            <remarks>
+            Defaults to <c>null</c>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.BackdropClick">
+            <summary>
+            Allows closing the dialog by clicking outside of the dialog.
+            </summary>
+            <remarks>
+            Defaults to <c>true</c>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.CloseOnEscapeKey">
+            <summary>
+            Allows closing the dialog by pressing the Escape key.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.NoHeader">
+            <summary>
+            Hides the dialog header.
+            </summary>
+            <remarks>
+            Defaults to <c>false</c>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.CloseButton">
+            <summary>
+            Shows a close button in the top-right corner of the dialog.
+            </summary>
+            <remarks>
+            Defaults to <c>false</c>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.FullScreen">
+            <summary>
+            Sets the size of the dialog to the entire screen.
+            </summary>
+            <remarks>
+            Defaults to <c>false</c>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.FullWidth">
+            <summary>
+            Sets the width of the dialog to the width of the screen.
+            </summary>
+            <remarks>
+            Defaults to <c>false</c>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.BackgroundClass">
+            <summary>
+            The custom CSS classes to apply to the dialog background.
+            </summary>
+            <remarks>
+            Multiple classes must be separated by spaces.
+            </remarks>
+        </member>
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.KeepMaxSizeConstraints">
             <summary>
-            If true the dialog will keep the max size constraints for resizing defined with <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.MaxHeight"/> and <see cref="T:MudBlazor.MaxWidth"/>.
+            If true the dialog will keep the max size constraints for resizing defined with <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.MaxHeight"/> and <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.MaxWidth"/>.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.KeepRelations">
@@ -22228,7 +22271,7 @@
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.ShowAtCursor">
             <summary>
             A boolean value indicating whether the dialog is shown at the cursor location or not.
-            Please notice if this is true <see cref="T:MudBlazor.Position"/> and <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.CustomPosition"/> will be ignored.
+            Please notice if this is true <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.Position"/> and <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.CustomPosition"/> will be ignored.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.CursorPositionOrigin">
@@ -23128,103 +23171,10 @@
             AppearanceService
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.#ctor(MudBlazor.IDialogService,Microsoft.JSInterop.IJSRuntime,System.IServiceProvider,MudBlazor.Extensions.Services.MudExAppearanceService,MudBlazor.Extensions.Core.IDialogEventService)">
+        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.#ctor(Microsoft.JSInterop.IJSRuntime,System.IServiceProvider,MudBlazor.Extensions.Services.MudExAppearanceService,MudBlazor.Extensions.Core.IDialogEventService)">
             <summary>
             Constructor
             </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show``1">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show``1(System.String)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show``1(System.String,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show``1(System.String,MudBlazor.DialogParameters)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show``1(System.String,MudBlazor.DialogParameters,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show(System.Type)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show(System.Type,System.String)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show(System.Type,System.String,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show(System.Type,System.String,MudBlazor.DialogParameters)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show(System.Type,System.String,MudBlazor.DialogParameters,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync``1">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync``1(System.String)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync``1(System.String,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync``1(System.String,MudBlazor.DialogParameters)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync``1(System.String,MudBlazor.DialogParameters,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync(System.Type)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync(System.Type,System.String)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync(System.Type,System.String,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync(System.Type,System.String,MudBlazor.DialogParameters)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync(System.Type,System.String,MudBlazor.DialogParameters,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.CreateReference">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowMessageBox(System.String,System.String,System.String,System.String,System.String,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowMessageBox(System.String,Microsoft.AspNetCore.Components.MarkupString,System.String,System.String,System.String,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowMessageBox(MudBlazor.MessageBoxOptions,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Close(MudBlazor.IDialogReference)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Close(MudBlazor.IDialogReference,MudBlazor.DialogResult)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Close(MudBlazor.DialogReference)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Close(MudBlazor.DialogReference,MudBlazor.DialogResult)">
-            <inheritdoc />
-        </member>
-        <member name="E:MudBlazor.Extensions.Services.MudExDialogService.OnDialogInstanceAdded">
-            <inheritdoc />
-        </member>
-        <member name="E:MudBlazor.Extensions.Services.MudExDialogService.DialogInstanceAddedAsync">
-            <inheritdoc />
-        </member>
-        <member name="E:MudBlazor.Extensions.Services.MudExDialogService.OnDialogCloseRequested">
-            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Services.MudExFileService">
             <summary>

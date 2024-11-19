@@ -48,17 +48,9 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<DialogService>(); // add the original service without interface
         // Get the original service descriptor
-        var originalDescriptor = services.FirstOrDefault(d => d.ServiceType == typeof(IDialogService));
-        services.Remove(originalDescriptor);
-        
-        services.AddScoped<IDialogService>(provider =>
-        {
-            var originalDialogService = provider.GetRequiredService<DialogService>();
-            var jsRuntime = provider.GetRequiredService<IJSRuntime>();
-            return new MudExDialogService(originalDialogService, jsRuntime, provider, provider.GetRequiredService<MudExAppearanceService>(), provider.GetRequiredService<IDialogEventService>());
-        });
+        services.Remove(services.First(d => d.ServiceType == typeof(IDialogService)));
+        services.AddScoped<IDialogService, MudExDialogService>(); // add the new service with the original interface
 
-        services.AddScoped<IMudExDialogService>(sp => (MudExDialogService)sp.GetRequiredService<IDialogService>());
 
         #endregion
        

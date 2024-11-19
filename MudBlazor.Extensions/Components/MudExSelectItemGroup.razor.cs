@@ -27,12 +27,6 @@ public partial class MudExSelectItemGroup<T>
             .WithBackgroundColor("var(--mud-palette-background)")
             .Build();
 
-    /// <summary>
-    /// A user-defined option that can be selected
-    /// </summary>
-    [Parameter]
-    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
-    public T Value { get; set; }
 
     /// <summary>
     /// A user-defined option that can be selected
@@ -72,12 +66,6 @@ public partial class MudExSelectItemGroup<T>
     [CascadingParameter]
     internal MudExList<T> MudExList { get; set; }
 
-    /// <summary>
-    /// Select items with HideContent==true are only there to register their RenderFragment with the select but
-    /// wont render and have no other purpose!
-    /// </summary>
-    [CascadingParameter(Name = "HideContent")]
-    internal bool HideContent { get; set; }
 
     private void HandleExpandedChanged(bool isExpanded)
     {

@@ -291,7 +291,7 @@ public partial class MudExThemeEdit<TTheme>
     private Task OnPropertyChanged(ObjectEditPropertyMeta arg)
     {
         if(EditMode == ThemeEditMode.Simple && !arg.Settings.Ignored) {
-            if (arg.PropertyInfo.Name == nameof(Default.FontFamily)) {
+            if (arg.PropertyInfo.Name == nameof(DefaultTypography.FontFamily)) {
                 SetIfIgnored(
                     arg.Value as string[],
                     theme => theme.Typography.Body1.FontFamily,

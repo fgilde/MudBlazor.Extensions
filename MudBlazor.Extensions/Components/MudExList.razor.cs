@@ -38,7 +38,7 @@ public partial class MudExList<T> : IDisposable
 
     #region Parameters, Fields, Injected Services
 
-    [Inject] IKeyInterceptorFactory KeyInterceptorFactory { get; set; }
+    [Inject] IKeyInterceptorService KeyInterceptorService { get; set; }
     [Inject] IScrollManager ScrollManagerExtended { get; set; }
 
     // Fields used in more than one place (or protected and internal ones) are shown here.
@@ -785,7 +785,7 @@ public partial class MudExList<T> : IDisposable
         ParametersChanged?.Invoke();
     }
 
-    private IKeyInterceptor _keyInterceptor;
+    //private KeyInterceptorOptions _keyInterceptorOptions;
     private bool _firstRendered = false;
 
     /// <inheritdoc />
@@ -795,26 +795,21 @@ public partial class MudExList<T> : IDisposable
         if (firstRender)
         {
             _firstRendered = false;
-            _keyInterceptor = KeyInterceptorFactory.Create();
-
-            await _keyInterceptor.Connect(_elementId, new KeyInterceptorOptions()
-            {
-                //EnableLogging = true,
-                TargetClass = "mud-ex-list-item",
-                Keys = {
-                        new KeyOptions { Key=" ", PreventDown = "key+none" }, //prevent scrolling page, toggle open/close
-                        new KeyOptions { Key="ArrowUp", PreventDown = "key+none" }, // prevent scrolling page, instead highlight previous item
-                        new KeyOptions { Key="ArrowDown", PreventDown = "key+none" }, // prevent scrolling page, instead highlight next item
-                        new KeyOptions { Key="Home", PreventDown = "key+none" },
-                        new KeyOptions { Key="End", PreventDown = "key+none" },
-                        new KeyOptions { Key="Escape" },
-                        new KeyOptions { Key="Enter", PreventDown = "key+none" },
-                        new KeyOptions { Key="NumpadEnter", PreventDown = "key+none" },
-                        new KeyOptions { Key="a", PreventDown = "key+ctrl" }, // select all items instead of all page text
-                        new KeyOptions { Key="A", PreventDown = "key+ctrl" }, // select all items instead of all page text
-                        new KeyOptions { Key="/./", SubscribeDown = true, SubscribeUp = true }, // for our users
-                    },
-            });
+            var k = new List<KeyOptions>(){
+                new KeyOptions { Key = " ", PreventDown = "key+none" }, //prevent scrolling page, toggle open/close
+                new KeyOptions { Key = "ArrowUp", PreventDown = "key+none" }, // prevent scrolling page, instead highlight previous item
+                new KeyOptions { Key = "ArrowDown", PreventDown = "key+none" }, // prevent scrolling page, instead highlight next item
+                new KeyOptions { Key = "Home", PreventDown = "key+none" },
+                new KeyOptions { Key = "End", PreventDown = "key+none" },
+                new KeyOptions { Key = "Escape" },
+                new KeyOptions { Key = "Enter", PreventDown = "key+none" },
+                new KeyOptions { Key = "NumpadEnter", PreventDown = "key+none" },
+                new KeyOptions { Key = "a", PreventDown = "key+ctrl" }, // select all items instead of all page text
+                new KeyOptions { Key = "A", PreventDown = "key+ctrl" }, // select all items instead of all page text
+                new KeyOptions { Key = "/./", SubscribeDown = true, SubscribeUp = true }, // for our users
+            };
+            var keyInterceptorOptions = new KeyInterceptorOptions("mud-ex-list-item", k.ToArray());
+            await KeyInterceptorService.SubscribeAsync(_elementId, keyInterceptorOptions, args => { HandleKeyDown(args);}); // TODO: Check this MudBlazor 8
 
             if (MudExSelect == null && MudAutocomplete == null)
             {

@@ -28,7 +28,7 @@
 </MudDialog>
 
 @code {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
     
     void Submit() => MudDialog.CloseAnimatedIf(DialogResult.Ok(true));
     void Cancel() => MudDialog.CancelAnimatedIf();

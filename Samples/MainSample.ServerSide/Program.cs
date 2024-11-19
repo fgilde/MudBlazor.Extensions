@@ -36,6 +36,6 @@ app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
-app.UseMudExtensions();
+//app.UseMudExtensions();
 
 app.Run();

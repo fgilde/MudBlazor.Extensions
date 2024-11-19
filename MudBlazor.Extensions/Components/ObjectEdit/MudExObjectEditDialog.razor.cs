@@ -22,7 +22,7 @@ public partial class MudExObjectEditDialog<T>
     /// The MudDialog instance that represents the current dialog instance that is open.
     /// </summary>
     [CascadingParameter]
-    public MudDialogInstance MudDialog { get; set; }
+    public IMudDialogInstance MudDialog { get; set; }
 
     /// <summary>
     /// If set to true, remove the side padding of the dialog content.

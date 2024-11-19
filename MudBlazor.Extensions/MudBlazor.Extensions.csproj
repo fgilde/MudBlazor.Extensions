@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
 
-    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <ImplicitUsings>enable</ImplicitUsings>
 
@@ -22,9 +22,9 @@
 
   <!--Versioning-->
   <PropertyGroup>
-    <MajorVersion>2</MajorVersion>
+    <MajorVersion>8</MajorVersion>
     <MinorVersion>0</MinorVersion>
-    <PatchVersion>7.1</PatchVersion>
+    <PatchVersion>0</PatchVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -77,7 +77,7 @@
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
-    <PackageReference Include="MudBlazor" Version="7.15.0" />
+    <PackageReference Include="MudBlazor" Version="8.0.0-preview.4" />
     <PackageReference Include="BlazorParameterCastingMagic" Version="1.2.23060811" />
     <PackageReference Include="SharpCompress" Version="0.38.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />

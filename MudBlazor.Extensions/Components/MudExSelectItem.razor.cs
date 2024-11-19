@@ -31,8 +31,8 @@ public partial class MudExSelectItem<T> : IDisposable, IMudExComponent
         set => SetShadowParent(value);
     }
 
-    [CascadingParameter(Name = "HideContent")]
-    internal bool HideContent { get; set; }
+    //[CascadingParameter(Name = "HideContent")]
+    //internal bool HideContent { get; set; }
 
     // Other properties
     internal MudExSelect<T> MudExSelect => _parent as MudExSelect<T>;
@@ -56,33 +56,13 @@ public partial class MudExSelectItem<T> : IDisposable, IMudExComponent
     [SafeCategory(CategoryTypes.List.Behavior)]
     public string Text { get; set; }
 
-    /// <summary>
-    /// Item value.
-    /// </summary>
-    [Parameter]
-    [SafeCategory(CategoryTypes.FormComponent.Behavior)]
-    public T Value { get; set; }
 
     /// <summary>
     /// Is multi selection enabled.
     /// </summary>
-    protected bool MultiSelection => MudExSelect?.MultiSelection ?? false;
+    protected bool MultiSelection => MudExSelect?.MultiSelection ?? base.MultiSelection;
 
     internal bool IsSelected { get; set; }
-
-    /// <summary>
-    /// Display string.
-    /// </summary>
-    protected string DisplayString
-    {
-        get
-        {
-            var converter = MudExSelect?.Converter;
-            if (converter == null)
-                return string.IsNullOrEmpty(Text) ? Value?.ToString() : Text;
-            return !string.IsNullOrEmpty(Text) ? Text : converter.Set(Value);
-        }
-    }
 
     // Methods
     private void SetParent(IMudExSelect value)

@@ -1,9 +1,9 @@
 ﻿@typeparam T
-@inherits MudBaseSelectItem
+@inherits MudSelectItem<T>
 
-@if (HideContent == false)
+@if (true)
 {
-    <MudExListItem @ref="@ListItem" @attributes="UserAttributes" T="T" Value="@Value" Text="@Text" id="@ItemId" OnClick="@HandleOnClick" IsFunctional="@IsFunctional" Href="@Href" Disabled="@GetDisabledStatus()" Class="@Class" Style="@Style">
+    <MudExListItem @ref="@ListItem" @attributes="UserAttributes" T="T" Value="@Value" Text="@Text" id="@ItemId" OnClick="@HandleOnClick" IsFunctional="@IsFunctional" Disabled="@GetDisabledStatus()" Class="@Class" Style="@Style">
         @if (ChildContent != null && MudExSelect?.ItemCollection == null)
         {
             @ChildContent
