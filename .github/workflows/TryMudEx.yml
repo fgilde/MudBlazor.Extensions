@@ -2,7 +2,7 @@ name: Deploy TryMudEx
 on:
   push:
     branches:
-    - '**'
+    - 'main'
 env:
   AZURE_WEBAPP_NAME: TryMudEx
   AZURE_WEBAPP_PACKAGE_PATH: .\published

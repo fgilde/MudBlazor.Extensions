@@ -63,6 +63,7 @@ jobs:
   deploy_application_to_azure:
     needs: build_and_deploy_preview_package
     runs-on: windows-latest
+    if: github.ref == 'refs/heads/main'
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
