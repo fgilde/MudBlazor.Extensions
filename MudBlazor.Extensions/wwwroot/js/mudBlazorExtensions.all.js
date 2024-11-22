@@ -2303,6 +2303,7 @@ class MudExDialogResizeHandler extends MudExDialogHandlerBase {
 
     checkResizeable() {
         MudExDomHelper.toAbsolute(this.dialog, false);
+        this.setRelativeIf();
         if (this.options.resizeable) {
             this.resizeObserver.observe(this.dialog);
             this.dialog.style['resize'] = 'both';

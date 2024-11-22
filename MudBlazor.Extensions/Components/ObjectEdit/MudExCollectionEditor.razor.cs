@@ -281,6 +281,7 @@ public partial class MudExCollectionEditor<T>
             throw new ArgumentException("ToolbarPosition must be either 'Top' or 'Bottom'.");
         base.OnParametersSet();
         Items ??= new List<T>();
+        Items = new List<T>(Items);
     }
 
     /// <summary>
