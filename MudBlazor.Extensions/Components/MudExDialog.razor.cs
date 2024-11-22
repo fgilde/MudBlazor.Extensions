@@ -1,8 +1,6 @@
-﻿using System.Reflection;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
-using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
 
@@ -15,8 +13,9 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
 {
     private string _dialogId;
     private DialogOptionsEx _options;
-    //private IDialogReference _reference;
-
+    private IDialogReference _reference;
+    private bool _renderPaused;
+    
     [Inject] private IMudExDialogService DialogService { get; set; }
     [Inject] private IJSRuntime Js { get; set; }
     [Inject] private MudExAppearanceService AppearanceService { get; set; }
@@ -28,6 +27,8 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
     [Parameter] public EventCallback<DialogDragEndEvent> OnDragEnd { get; set; }
     [Parameter] public EventCallback<DialogResizedEvent> OnDialogResized { get; set; }
     [Parameter] public EventCallback<DialogResizingEvent> OnDialogResize { get; set; }
+    [Parameter] public EventCallback<DialogBeforeOpenEvent> OnBeforeOpened { get; set; }
+    [Parameter] public EventCallback<DialogBeforeOpenEvent> OnAfterOpened { get; set; }
 
     /// <summary>
     /// Render base component
@@ -35,7 +36,9 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
     private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
 
     protected override void OnInitialized()
-    {        
+    {
+        DialogEventService.Subscribe<DialogBeforeOpenEvent>(HandleBeforeOpen);
+        DialogEventService.Subscribe<DialogAfterOpenEvent>(HandleAfterOpen);
         DialogEventService.Subscribe<DialogDragStartEvent>(HandleOnDragStart);
         DialogEventService.Subscribe<DialogDragEndEvent>(HandleOnDragEnd);
         DialogEventService.Subscribe<DialogDraggingEvent>(HandleOnDragging);
@@ -45,16 +48,46 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
         base.OnInitialized();
     }
 
+
+    private async Task HandleBeforeOpen(DialogBeforeOpenEvent arg)
+    {
+        _dialogId = arg.DialogId;
+        await DialogServiceExt.PrepareOptionsBeforeShow(OptionsEx);
+        _ = arg.DialogReference.InjectOptionsAsync(DialogService, OptionsEx);
+    }
+
+    private Task AfterOpened(DialogAfterOpenEvent arg)
+    {
+        OnAfterOpened.InvokeAsync(arg);
+        _renderPaused = true;
+        return Task.CompletedTask;
+    }
+    
+    private Task Closed(DialogClosedEvent arg)
+    {
+        OnClosed.InvokeAsync(arg);
+        _renderPaused = false;
+        return Task.CompletedTask;
+    }
+
+    //protected override bool ShouldRender()
+    //{
+    //    return base.ShouldRender() && !_renderPaused;
+    //}
+
+    private Task HandleAfterOpen(DialogAfterOpenEvent arg) => EventIsForThisDialog(arg) ? AfterOpened(arg) : Task.CompletedTask;
     private Task HandleOnDragStart(DialogDragStartEvent arg) => EventIsForThisDialog(arg) ? OnDragStart.InvokeAsync(arg) : Task.CompletedTask;
     private Task HandleOnDragEnd(DialogDragEndEvent arg) => EventIsForThisDialog(arg) ? OnDragEnd.InvokeAsync(arg) : Task.CompletedTask;
     private Task HandleOnDragging(DialogDraggingEvent arg) => EventIsForThisDialog(arg) ? OnDragging.InvokeAsync(arg) : Task.CompletedTask;
-    private Task HandleOnDialogClosed(DialogClosedEvent arg) => EventIsForThisDialog(arg) ? OnClosed.InvokeAsync(arg) : Task.CompletedTask;
+    private Task HandleOnDialogClosed(DialogClosedEvent arg) => EventIsForThisDialog(arg) ? Closed(arg) : Task.CompletedTask;
     private Task HandleOnDialogResized(DialogResizedEvent arg) => EventIsForThisDialog(arg) ? OnDialogResized.InvokeAsync(arg) : Task.CompletedTask;
     private Task HandleOnDialogResize(DialogResizingEvent arg) => EventIsForThisDialog(arg) ? OnDialogResize.InvokeAsync(arg) : Task.CompletedTask;
     
 
     public ValueTask DisposeAsync()
     {
+        DialogEventService.Subscribe<DialogBeforeOpenEvent>(HandleBeforeOpen);
+        DialogEventService.Subscribe<DialogAfterOpenEvent>(HandleAfterOpen);
         DialogEventService.Unsubscribe<DialogDragStartEvent>(HandleOnDragStart);
         DialogEventService.Unsubscribe<DialogDragEndEvent>(HandleOnDragEnd);
         DialogEventService.Unsubscribe<DialogDraggingEvent>(HandleOnDragging);
@@ -67,52 +100,6 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
     private bool EventIsForThisDialog(IDialogEvent dialogEvent)
     {                        
         return _dialogId == dialogEvent.DialogId;
-    }
-
-    /// <inheritdoc />
-    protected override void OnParametersSet()
-    {
-        EnsureInitialClass();
-        base.OnParametersSet();
-    }
-
-    /// <inheritdoc />
-    public override async Task SetParametersAsync(ParameterView parameters)
-    {
-        if (parameters.TryGetValue<DialogOptions>(nameof(Options), out var options))
-            _options = options;        
-        bool oldVisible = Visible;
-        await base.SetParametersAsync(parameters);
-        if (oldVisible != Visible)
-        {
-            if (Visible)
-                await Show();
-            else
-                await CloseAsync();
-        }
-    }
-
-
-    /// <summary>Show this inlined dialog</summary>
-    /// <param name="title"></param>
-    /// <param name="options"></param>
-    /// <returns></returns>
-    public new async Task<IDialogReference> Show(string title = null, DialogOptions options = null)
-    {
-        Task OnAdded(IDialogReference reference)
-        {
-            _dialogId = reference.GetDialogId();
-            DialogService.DialogInstanceAddedAsync -= OnAdded;
-            return Task.CompletedTask;
-        }
-
-        DialogService.DialogInstanceAddedAsync += OnAdded;        
-        
-        OptionsEx.JsRuntime = Js;
-        OptionsEx.AppearanceService = AppearanceService;
-        await DialogServiceExt.PrepareOptionsBeforeShow(OptionsEx);
-        Task<IDialogReference> x = ShowAsync(title, options);
-        return await x.InjectOptionsAsync(DialogService, OptionsEx);
     }
 
     /// <summary>
@@ -128,6 +115,24 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
             Options = value;
         }
     }
+
+    /// <inheritdoc />
+    protected override void OnParametersSet()
+    {
+        EnsureInitialClass();
+        base.OnParametersSet();
+    }
+
+    /// <inheritdoc />
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        if (parameters.TryGetValue<DialogOptions>(nameof(Options), out var options))
+        {
+            _options = options; 
+        }
+        await base.SetParametersAsync(parameters);
+    }
+
 
     private void EnsureInitialClass()
     {
