@@ -1,4 +1,6 @@
 ## Change Log    
+ - 2.0.8 > Ensure dialog initial relative state if configured
+ - 2.0.8 > Fix Remove Item Bug in Collection editor 
  - 2.0.7 > Update MudBlazor to 7.15.0
  - 2.0.7 > For the MudExObjectEdit you can now easially register a component as editor for a specific type [see here how you can register your component as editor for a type](https://www.mudex.org/d/ObjectEditRegisterComponent)
  - 2.0.7 > **_Breaking:_** The DailogOptionsEx class has a new Property `KeepRelations`. this is true by default and ensures positions and sizes are in relative percentage values. With this a dialog stays in the same position and size relative to the screen size. If you want to have a dialog with fixed sizes and positions you can set this to false and return to the old behaviour. 

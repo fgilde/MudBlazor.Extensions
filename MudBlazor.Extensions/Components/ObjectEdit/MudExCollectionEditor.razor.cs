@@ -282,8 +282,6 @@ public partial class MudExCollectionEditor<T>
         base.OnParametersSet();
         Items ??= new List<T>();
         Items = new List<T>(Items);
-        var tn = Items.GetType().Name;
-        Console.WriteLine($"Items type: {tn}");
     }
 
     /// <summary>
