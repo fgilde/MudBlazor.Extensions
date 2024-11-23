@@ -2476,7 +2476,7 @@ window.MudBlazorExtensions = {
         const elements = document.querySelectorAll('[data-auto-focus="true"]');
         elements.forEach(element => {
             element.removeAttribute('data-auto-focus');
-            window.MudBlazorExtensions._originalFocusMethod(element);
+            (window.__originalBlazorFocusMethod || window.Blazor._internal.domWrapper.focus)(element);
         });
     }
 
@@ -2485,9 +2485,13 @@ window.MudBlazorExtensions = {
 
 window.MudBlazorExtensions.__bindEvents();
 
-// override focus method 
-window.MudBlazorExtensions._originalFocusMethod = window.Blazor._internal.domWrapper.focus;
-Blazor._internal.domWrapper.focus = function (element, preventScroll) {
-    element.setAttribute('data-auto-focus', 'true');
-    window.MudBlazorExtensions._originalFocusMethod(element, preventScroll);
-}
+(function () {
+
+    if (window.__originalBlazorFocusMethod)
+        return;
+    window.__originalBlazorFocusMethod = window.Blazor._internal.domWrapper.focus;
+    Blazor._internal.domWrapper.focus = function (element, preventScroll) {
+        element.setAttribute('data-auto-focus', 'true');
+        window.__originalBlazorFocusMethod(element, preventScroll);
+    };
+})();
