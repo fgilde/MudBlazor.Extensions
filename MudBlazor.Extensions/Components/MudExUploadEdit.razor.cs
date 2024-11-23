@@ -27,7 +27,7 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 {
     const string DropPlaceholderText = "Drop files here";
-
+    private MudExDialog _addUrlDialog;
 
     #region Parameters
 
@@ -709,7 +709,20 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     private MudExOneDriveFilePicker _oneDriveFilePicker;
     private MudExDropBoxFilePicker _dropBoxFilePicker;
     private bool _urlDialogVisible;
-    private string _externalUrl;
+
+    private string ExternalUrl
+    {
+        get => _externalUrl;
+        set
+        {
+            if (_externalUrl != value)
+            {
+                _externalUrl = value;
+                InvokeAsync(StateHasChanged);
+                _addUrlDialog.InvokeStateHasChanged();
+            }
+        }
+    }
 
     bool HasValidDropZoneClickAction =>
         DropZoneClickAction != DropZoneClickAction.None
@@ -1005,6 +1018,8 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     private string[] _allowedExtensions;
     private string[] _allowedMimeTypes;
     private bool _mimeUpdating;
+    private string _externalUrl;
+
     private void UpdateAllowed()
     {
         if (_mimeUpdating)

@@ -14,7 +14,6 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
     private string _dialogId;
     private DialogOptionsEx _options;
     private IDialogReference _reference;
-    private bool _renderPaused;
     
     [Inject] private IMudExDialogService DialogService { get; set; }
     [Inject] private IJSRuntime Js { get; set; }
@@ -30,6 +29,7 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
     [Parameter] public EventCallback<DialogBeforeOpenEvent> OnBeforeOpened { get; set; }
     [Parameter] public EventCallback<DialogBeforeOpenEvent> OnAfterOpened { get; set; }
 
+    
     /// <summary>
     /// Render base component
     /// </summary>
@@ -51,29 +51,33 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
 
     private async Task HandleBeforeOpen(DialogBeforeOpenEvent arg)
     {
-        _dialogId = arg.DialogId;
-        await DialogServiceExt.PrepareOptionsBeforeShow(OptionsEx);
-        _ = arg.DialogReference.InjectOptionsAsync(DialogService, OptionsEx);
+        if(!Visible)
+            return;
+        if (_dialogId == null)
+        {
+            _dialogId = arg.DialogId;
+            _reference = arg.DialogReference;
+        }
+
+        if (EventIsForThisDialog(arg))
+        {
+            await DialogServiceExt.PrepareOptionsBeforeShow(OptionsEx);
+            _ = arg.DialogReference.InjectOptionsAsync(DialogService, OptionsEx);
+        }
     }
 
     private Task AfterOpened(DialogAfterOpenEvent arg)
     {
-        OnAfterOpened.InvokeAsync(arg);
-        _renderPaused = true;
-        return Task.CompletedTask;
+        return OnAfterOpened.InvokeAsync(arg);
     }
     
     private Task Closed(DialogClosedEvent arg)
     {
-        OnClosed.InvokeAsync(arg);
-        _renderPaused = false;
-        return Task.CompletedTask;
+        _dialogId = null;
+        _reference = null;
+        return OnClosed.InvokeAsync(arg);
     }
 
-    //protected override bool ShouldRender()
-    //{
-    //    return base.ShouldRender() && !_renderPaused;
-    //}
 
     private Task HandleAfterOpen(DialogAfterOpenEvent arg) => EventIsForThisDialog(arg) ? AfterOpened(arg) : Task.CompletedTask;
     private Task HandleOnDragStart(DialogDragStartEvent arg) => EventIsForThisDialog(arg) ? OnDragStart.InvokeAsync(arg) : Task.CompletedTask;
@@ -130,7 +134,27 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
         {
             _options = options; 
         }
+
+        var updateRequired = parameters.TryGetValue<bool>(nameof(Visible), out var visible) && Visible != visible;
         await base.SetParametersAsync(parameters);
+        if (updateRequired)
+        {
+            if (Visible && _reference == null)
+                _reference = await ShowAsync();
+            else if (!Visible && _reference != null)
+            {
+                _reference?.Close();
+                _reference = null;
+                _dialogId = null;
+                await InvokeAsync(StateHasChanged);
+
+            }
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Don't call base.OnAfterRenderAsync to avoid double rendering
     }
 
 
@@ -142,4 +166,5 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
             Class += " mud-ex-dialog-initial";
     }
 
+    public Task InvokeStateHasChanged() => InvokeAsync(StateHasChanged);
 }

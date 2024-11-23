@@ -42,7 +42,10 @@
     private bool visible;
     private int rating;
     private void OpenDialog() => visible = true;
-    void Submit() => visible = false;
+    void Submit()
+    {
+        visible = false;
+    }
 
     public DialogOptionsEx Options { get; set; } = new()
     {
