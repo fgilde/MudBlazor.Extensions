@@ -191,7 +191,7 @@
                 @if (AllowExternalUrl)
                 {
                     <MudText>@TryLocalize(TextAddUrlMessage)</MudText>
-                    <MudTextField Immediate="true" T="string" @bind-Value="_externalUrl" Variant="Variant.Outlined"></MudTextField>
+                    <MudTextField AutoFocus="true" Immediate="true" T="string" @bind-Value="_externalUrl" Variant="Variant.Outlined"></MudTextField>
                 }
 
                 @if (RenderPickerInDialog)
