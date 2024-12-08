@@ -34,7 +34,7 @@
                            @RenderBackNode("margin-left: 10px")
                        }
                    </MudToolBar>
-                   <MudDivider/>
+                   <MudExDivider/>
                </RenderChild>;
     }
 
@@ -67,7 +67,7 @@
         return IsSeparator(item) ? RenderSeparator() : RenderItem(context);
     }
 
-    public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
+    public override RenderFragment RenderItem(TreeViewItemContext<T> context)
     {
         return
         @<MudListItem T="T" Style="@ItemStyleStr(context)" Value="@context.Value" Class="@ItemClassStr(context)" OnClick="@(() => NodeClick(context.Value))">
