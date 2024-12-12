@@ -1776,7 +1776,7 @@ class MudExDialogAnimationHandler extends MudExDialogHandlerBase {
     }
 
     closeAnimation() {
-        MudExDialogAnimationHandler.playCloseAnimation(this.dialog);
+        return MudExDialogAnimationHandler.playCloseAnimation(this.dialog);
     }
 
     static playCloseAnimation(dialog) {
@@ -1787,7 +1787,8 @@ class MudExDialogAnimationHandler extends MudExDialogHandlerBase {
         dialog.style['animation-duration'] = `${delay}ms`;
         return new Promise((resolve) => {
             MudExDialogAnimationHandler._playCloseAnimation(dialog);
-            setTimeout(() => {                
+            setTimeout(() => {
+                dialog.classList.add('mud-ex-dialog-initial');
                 resolve();
             }, delay);
         });
