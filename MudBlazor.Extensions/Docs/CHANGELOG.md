@@ -1,4 +1,5 @@
 ## Change Log    
+ - 2.0.9 > Fix bug with dialog animations on server side rendered projects #112
  - 2.0.8 > Ensure dialog initial relative state if configured
  - 2.0.8 > Fix Remove Item Bug in Collection editor 
  - 2.0.7 > Update MudBlazor to 7.15.0

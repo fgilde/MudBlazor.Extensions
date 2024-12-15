@@ -24,7 +24,9 @@ It's important to note that this package requires a MudBlazor project and the re
 <!---
 [Running Sample Application (Github Pages)](https://fgilde.github.io/MudBlazor.Extensions/sample/wwwroot/)
 -->
+<!---
 ![Alt](https://repobeats.axiom.co/api/embed/d1dbd5b5469b639723e0fc094a8408628d2487af.svg "Repobeats analytics image")
+-->
 
 ## Table of Contents
 - [Installation](#installation)
@@ -387,6 +389,7 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2024-09-23 15:35:55 -->
+ - 2.0.9 > Fix bug with dialog animations on server side rendered projects #112
  - 2.0.8 > Ensure dialog initial relative state if configured
  - 2.0.8 > Fix Remove Item Bug in Collection editor 
  - 2.0.7 > Update MudBlazor to 7.15.0
