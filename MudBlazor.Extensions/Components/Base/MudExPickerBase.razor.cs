@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
@@ -94,7 +95,7 @@ public partial class MudExPickerBase<T>
     /// </summary>
     [Parameter, SafeCategory("Common")]
     public IStringLocalizer Localizer { get; set; }
-    
+
     /// <summary>
     /// Gets or sets the value of the color picker.
     /// </summary>
@@ -105,7 +106,7 @@ public partial class MudExPickerBase<T>
         set
         {
             var org = _value;
-            if(BeforeValueChanged(org, value))
+            if (BeforeValueChanged(org, value))
             {
                 _value = value;
                 AfterValueChanged(org, value);
@@ -168,7 +169,7 @@ public partial class MudExPickerBase<T>
     /// <summary>
     /// Id for picker element
     /// </summary>
-    protected string Id = $"mud-ex-picker-{Guid.NewGuid().ToFormattedId()}";
+    protected string Id => this.ExposeField<string>("_elementId") ?? $"mud-ex-picker-{Guid.NewGuid().ToFormattedId()}";
 
     /// <inheritdoc />
     public override Task SetParametersAsync(ParameterView parameters)
@@ -235,7 +236,7 @@ public partial class MudExPickerBase<T>
         await base.OnOpenedAsync();
         await BindPickerWidthAsync();
     }
-    
+
     private async Task BindPickerWidthAsync()
     {
         if (BindWidthToPicker && PickerVariant == PickerVariant.Inline)
@@ -273,7 +274,7 @@ public partial class MudExPickerBase<T>
             RaiseChanged();
         return base.OnPickerClosedAsync();
     }
-    
+
     /// <summary>
     /// Raises the <see cref="ValueChanged"/> event.
     /// </summary>
@@ -311,7 +312,7 @@ public partial class MudExPickerBase<T>
     private DialogOptionsEx GetDialogOptions()
     {
         var options = (DialogOptions ?? DialogOptionsEx.DefaultDialogOptions).CloneOptions();
-        options.DialogAppearance = MudExAppearance.FromStyle(b => 
+        options.DialogAppearance = MudExAppearance.FromStyle(b =>
             b.WithBorder(1, BorderStyle.Solid, BorderColor, BorderColor.IsSet())
                 .AddRaw(PickerStyle)
             );
