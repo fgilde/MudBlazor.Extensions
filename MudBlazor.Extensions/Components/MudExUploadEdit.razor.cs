@@ -1461,7 +1461,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     {
         if (result.AudioData?.Length > 0)
         {
-            string transcript = result.Transcript.Trim();
+            string transcript = result.Transcript?.Trim();
             var audioFile = new T
             {
                 FileName = $"{(transcript ?? "audio_recording").Replace(" ", "_").Trim()}.wav",

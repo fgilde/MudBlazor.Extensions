@@ -728,7 +728,7 @@
             If this is set to true, the picker will open also if the input is read only.
             </summary>
         </member>
-        <member name="F:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.Id">
+        <member name="P:MudBlazor.Extensions.Components.Base.MudExPickerBase`1.Id">
             <summary>
             Id for picker element
             </summary>

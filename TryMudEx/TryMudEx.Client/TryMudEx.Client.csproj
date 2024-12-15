@@ -17,10 +17,6 @@
 
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)' != 'Release'">
-    <ProjectReference Include="..\..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
-  </ItemGroup>
-
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>

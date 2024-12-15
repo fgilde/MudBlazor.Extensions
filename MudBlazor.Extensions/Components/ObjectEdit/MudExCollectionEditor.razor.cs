@@ -290,6 +290,7 @@ public partial class MudExCollectionEditor<T>
     /// <param name="item">The item to add.</param>
     public void Add(T item)
     {
+        //
         Items?.Add(item);
         RaiseChanged();
     }
