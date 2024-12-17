@@ -236,6 +236,15 @@ public static partial class MudExObjectEditExtensions
         => meta?.SetProperties(p => p.Settings.IsEditable = !isReadOnly, p => p?.RenderData?.AddAttributes(true, new KeyValuePair<string, object>(nameof(MudBaseInput<string>.ReadOnly), isReadOnly)));
 
     ///<summary>
+    /// Marks an ObjectEditPropertyMeta to have Auto focus
+    /// <param name="meta">The ObjectEditPropertyMeta instance to modify.</param>
+    /// <returns>The modified ObjectEditPropertyMeta instance.</returns>
+    ///</summary>
+    public static ObjectEditPropertyMeta WithDefaultFocus(this ObjectEditPropertyMeta meta)
+        => meta?.SetProperties(p => p.Settings.AutoFocus = true, p => p?.RenderData?.AddAttributes(true, new KeyValuePair<string, object>(nameof(MudBaseInput<string>.AutoFocus), true)));
+
+
+    ///<summary>
     /// Disables the underline for an ObjectEditPropertyMeta.
     /// <param name="meta">The ObjectEditPropertyMeta instance to modify.</param>
     /// <param name="disableUnderline">Indicates whether the underline should be disabled.</param>

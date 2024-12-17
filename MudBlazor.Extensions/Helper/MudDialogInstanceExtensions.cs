@@ -29,9 +29,16 @@ public static class MudDialogInstanceExtensions
 
     private static async Task AnimateClose(this MudDialogInstance instance, Func<MudDialogInstance, Task> callback, IJSRuntime jsRuntime = null, bool checkOptions = false)
     {
-        var dialogId = DialogReferenceExtensions.PrepareDialogId(instance.Id);
-        await (jsRuntime ?? JsImportHelper.GetInitializedJsRuntime()).InvokeVoidAsync("MudBlazorExtensions.closeDialogAnimated", dialogId, checkOptions);
-        await callback(instance);
+        try
+        {
+            var dialogId = DialogReferenceExtensions.PrepareDialogId(instance.Id);
+            await (jsRuntime ?? JsImportHelper.GetInitializedJsRuntime()).InvokeVoidAsync("MudBlazorExtensions.closeDialogAnimated", dialogId, checkOptions);
+        }
+        finally
+        {
+            await callback(instance);
+        }
+        
     }
 
 }

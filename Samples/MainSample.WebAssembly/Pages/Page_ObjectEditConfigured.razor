@@ -82,7 +82,10 @@
                 {nameof(MudSelect<string>.Variant), Variant.Filled}
                 });
 
-        meta.Property(m => m.LastName).WithLabel("Surname").WithAdditionalAttributes<MudTextField<string>>(
+        meta.Property(m => m.LastName)
+        .WithLabel("Surname")
+        .WithDefaultFocus()
+        .WithAdditionalAttributes<MudTextField<string>>(
             t => t.AdornmentIcon = Icons.Material.Outlined.Abc,
             t => t.Adornment = Adornment.End,
             t => t.Immediate = true,

@@ -77,6 +77,7 @@
             //Todo we need to have value changed or something to raise also this PropertyValueChanged
             result = @<MudTextField ReadOnly="@(!PropertyMeta.Settings.IsEditable)"
                                     For="@(CreateFieldForExpression<string>())"
+                                    AutoFocus="@AutoFocus"
                                     HelperText="@(PropertyMeta.Settings.DescriptionFor(Localizer))"
                                     Label="@(PropertyMeta.Settings.LabelFor(Localizer))"
                                     @bind-Value="PropertyMeta.As<string>(true).Value">

@@ -16,6 +16,17 @@ namespace MudBlazor.Extensions.Components.ObjectEdit;
 /// </summary>
 public partial class MudExPropertyEdit
 {
+    private bool? _autoFocus;
+
+    /// <summary>
+    /// Editor should be focused on load
+    /// </summary>
+    [Parameter]
+    public bool AutoFocus   
+    {
+        get => _autoFocus ?? PropertyMeta.Settings.AutoFocus;
+        set => _autoFocus = value;
+    }
 
     /// <summary>
     /// If this is set all properties will be readonly depending on the value otherwise the property settings for meta configuration will be used
@@ -87,6 +98,7 @@ public partial class MudExPropertyEdit
     private bool _urlSetDone;
 
     private DynamicComponent _editor;
+
     //private Expression<Func<TPropertyType>> CreateFieldForExpression<TPropertyType>()
     //    => Check.TryCatch<Expression<Func<TPropertyType>>, Exception>(() => Expression.Lambda<Func<TPropertyType>>(Expression.Property(Expression.Constant(PropertyMeta.ReferenceHolder, PropertyMeta.ReferenceHolder.GetType()), PropertyMeta.PropertyInfo)));
 
@@ -159,6 +171,7 @@ public partial class MudExPropertyEdit
             .TrySetAttributeIfAllowed(nameof(Style), () => Style)
             .TrySetAttributeIfAllowed(nameof(Localizer), Localizer)
             .TrySetAttributeIfAllowed(nameof(RenderKey), RenderKey)
+            .TrySetAttributeIfAllowed(nameof(AutoFocus), AutoFocus)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.ReadOnly), () => !PropertyMeta.Settings.IsEditable);
 
         if (ReadOnlyOverwrite.HasValue)

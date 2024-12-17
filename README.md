@@ -90,8 +90,8 @@ builder.Services.AddMudServicesWithExtensions(c =>
 
 if your are running on Blazor Server side, you should also use the `MudBlazorExtensionMiddleware` you can do this in your startup or program.cs by adding the following line on your WebApplication:
 
-```
-    app.UseMudExtensions();
+```    
+    app.Use(MudExWebApp.MudExMiddleware);
 ```
 
 (Optional) if you have problems with automatic loaded styles you can also load the styles manually by adding the following line to your `index.html` or `_Host.cshtml`
@@ -389,6 +389,10 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2024-09-23 15:35:55 -->
+ - 2.1.0 > MudExObject now supports default focused element within the meta configuration with `meta.Property(m => m.LastName).WithDefaultFocus()`
+ - 2.1.0 > MudExObject edit now has AutoFocus for first input field if no other focus is configured
+ - 2.1.0 > Provide a Middleware again without deprecated UseMudExtensions now you should use `app.Use(MudExWebApp.MudExMiddleware);`
+ - 2.1.0 > Fix another bug with dialog that only occurs on webassembly projects hosted in a .net8 runtime
  - 2.0.9 > Fix bug with dialog animations on server side rendered projects #112
  - 2.0.8 > Ensure dialog initial relative state if configured
  - 2.0.8 > Fix Remove Item Bug in Collection editor 

@@ -76,7 +76,12 @@
 
     private async Task OnSaveClick(EditContext arg) => await JsRuntime.AlertAsync(arg.Model.ToString());
 
-    private async Task OnDataStringChanged(string arg) => await _editor.SetValue(_dataString = arg);
+    private async Task OnDataStringChanged(string arg)
+    {
+        if (_editor == null)
+            return;
+        await _editor.SetValue(_dataString = arg);
+    }
 
     private async Task ResetDataString()
     {

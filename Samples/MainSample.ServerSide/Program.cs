@@ -1,7 +1,9 @@
 using MainSample.WebAssembly;
 using MainSample.WebAssembly.ObjectEditMetaConfig;
+using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Extensions;
+using MudBlazor.Extensions.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,7 @@ app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
-//app.UseMudExtensions();
+app.Use(MudExWebApp.MudExMiddleware);
+
 
 app.Run();

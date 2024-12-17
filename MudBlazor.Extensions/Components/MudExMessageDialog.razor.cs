@@ -190,5 +190,5 @@ public partial class MudExMessageDialog
     /// <summary>
     /// Cancels the dialog
     /// </summary>
-    void Cancel() => MudDialog.CloseAnimatedIf();
+    void Cancel() => MudDialog.CloseAnimatedIf(JsRuntime);
 }

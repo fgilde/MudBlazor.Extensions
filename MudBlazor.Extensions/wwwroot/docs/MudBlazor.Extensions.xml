@@ -10643,6 +10643,13 @@
              <returns>The modified ObjectEditPropertyMeta instance.</returns>
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WithDefaultFocus(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
+            <summary>
+             Marks an ObjectEditPropertyMeta to have Auto focus
+             <param name="meta">The ObjectEditPropertyMeta instance to modify.</param>
+             <returns>The modified ObjectEditPropertyMeta instance.</returns>
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.DisableUnderline(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta,System.Boolean)">
             <summary>
              Disables the underline for an ObjectEditPropertyMeta.
@@ -13225,6 +13232,11 @@
             Editor for a property of an object. Used internally inside the MudExObjectEdit
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.AutoFocus">
+            <summary>
+            Editor should be focused on load
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExPropertyEdit.ReadOnlyOverwrite">
             <summary>
             If this is set all properties will be readonly depending on the value otherwise the property settings for meta configuration will be used
@@ -13661,6 +13673,11 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMetaSettings.IsEditable">
             <summary>
             Determines if the property is editable.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMetaSettings.AutoFocus">
+            <summary>
+            Should have Auto focus.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMetaSettings.Ignored">
@@ -21883,6 +21900,11 @@
             </summary>
             <param name="pos">The position of the button.</param>
             <returns>A string containing the generated HTML.</returns>
+        </member>
+        <member name="T:MudBlazor.Extensions.MudExWebApp">
+            <summary>
+            MudBlazorExtensionsMiddlewareExtensions
+            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Options.AnimationIteration">
             <summary>
