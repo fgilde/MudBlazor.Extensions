@@ -17,7 +17,7 @@
     <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.10" />
     <PackageReference Include="BlazorMonaco" Version="3.2.0" />
     <!--<PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*-*" />-->
-    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="2.*" />
+    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="2.*-*" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudExObjectEdit.CodeGatorAdapter" Version="*-*" />
   </ItemGroup>
 
