@@ -1,4 +1,8 @@
 ## Change Log    
+ - 2.1.0 > MudExObject now supports default focused element within the meta configuration with `meta.Property(m => m.LastName).WithDefaultFocus()`
+ - 2.1.0 > MudExObject edit now has AutoFocus for first input field if no other focus is configured
+ - 2.1.0 > Provide a Middleware again without deprecated UseMudExtensions now you should use `app.Use(MudExWebApp.MudExMiddleware);`
+ - 2.1.0 > Fix another bug with dialog that only occurs on webassembly projects hosted in a .net8 runtime
  - 2.0.9 > Fix bug with dialog animations on server side rendered projects #112
  - 2.0.8 > Ensure dialog initial relative state if configured
  - 2.0.8 > Fix Remove Item Bug in Collection editor 

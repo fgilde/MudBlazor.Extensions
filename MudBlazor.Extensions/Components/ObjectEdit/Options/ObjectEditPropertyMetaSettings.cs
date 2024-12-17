@@ -47,7 +47,12 @@ public class ObjectEditPropertyMetaSettings
     /// Determines if the property is editable.
     /// </summary>
     public bool IsEditable { get; set; }
-    
+
+    /// <summary>
+    /// Should have Auto focus.
+    /// </summary>
+    public bool AutoFocus { get; set; }
+
     /// <summary>
     /// Determines if the property is ignored.
     /// </summary>

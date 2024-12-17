@@ -19,6 +19,7 @@ using Nextended.Core;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 using Nextended.Core.Scopes;
+using TagLib;
 using IComponent = Microsoft.AspNetCore.Components.IComponent;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
@@ -51,17 +52,17 @@ public partial class MudExObjectEdit<T>
     /// Returns true if we have a registration for the current object that then uses the registered component
     /// </summary>
     protected bool HasRegistrationForWholeObject => RenderWithType != null;
-    
+
     /// <summary>
     /// Is true if currently is an internal Bulk running. Like reset or clear etc.
     /// </summary>
     protected bool IsInternalLoading;
-    
+
     /// <summary>
     /// ToolBarContent
     /// </summary>
     protected virtual RenderFragment InternalToolBarContent => null;
-    
+
     /// <summary>
     /// Is true if the value is a primitive type
     /// </summary>
@@ -149,7 +150,7 @@ public partial class MudExObjectEdit<T>
     /// <summary>
     /// If this setting is true, after import all properties are set instead of full value assignment
     /// </summary>
-    [Obsolete("This will hopefully be removed in future versions. Only use it if you have problems with the import or restore feature")] 
+    [Obsolete("This will hopefully be removed in future versions. Only use it if you have problems with the import or restore feature")]
     [Parameter] public bool SetPropertiesAfterImport { get; set; }
 
     /// <summary>
@@ -466,7 +467,7 @@ public partial class MudExObjectEdit<T>
     /// The behaviour how registered Meta and configured meta should applied
     /// </summary>
     [Parameter] public RegisteredConfigurationBehaviour ConfigureBehaviourForRegisteredConfigurations { get; set; } = RegisteredConfigurationBehaviour.ExecutedBefore;
-    
+
     /**
      * If this setting is true a manual passed MetaInformation will also re configured
      */
@@ -476,7 +477,7 @@ public partial class MudExObjectEdit<T>
     /// Error message to display
     /// </summary>
     [Parameter] public string ErrorMessage { get; set; }
-    
+
     /// <summary>
     /// Set this to handle Reset on your own
     /// </summary>
@@ -507,7 +508,7 @@ public partial class MudExObjectEdit<T>
     public MudExPropertyEdit Ref { set => Editors.Add(value); }
 
     internal static bool IsPrimitive() => MudExObjectEditHelper.HandleAsPrimitive(typeof(T));
-    
+
     #region Overrides
 
     /// <inheritdoc/>
@@ -522,7 +523,7 @@ public partial class MudExObjectEdit<T>
             CancelText = TryLocalize("Cancel"),
             YesText = TryLocalize("Reset")
         };
-            
+
     }
 
     /// <inheritdoc/>
@@ -709,7 +710,7 @@ public partial class MudExObjectEdit<T>
     {
         if (!IsRendered)
             return;
-        
+
         if (AutoSaveRestoreState)
             _ = Task.Run(SaveState);
 
@@ -746,12 +747,13 @@ public partial class MudExObjectEdit<T>
         // No filters, nothing to filter against, so return true
         return !allFilters.Any() ||
                // Loop through each filter in allFilters
-               (from filter in allFilters where !string.IsNullOrWhiteSpace(filter) 
-                select propertyMeta.Settings.LabelFor(LocalizerToUse).Contains(filter, StringComparison.InvariantCultureIgnoreCase) 
-                || propertyMeta.Settings.DescriptionFor(LocalizerToUse).Contains(filter, StringComparison.InvariantCultureIgnoreCase) 
-                || propertyMeta.PropertyInfo.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase) 
-                || (propertyMeta.Value?.ToString()?.Contains(filter, StringComparison.InvariantCultureIgnoreCase) == true) 
-                || (propertyMeta.GroupInfo?.Name?.Contains(filter, StringComparison.InvariantCultureIgnoreCase) == true) 
+               (from filter in allFilters
+                where !string.IsNullOrWhiteSpace(filter)
+                select propertyMeta.Settings.LabelFor(LocalizerToUse).Contains(filter, StringComparison.InvariantCultureIgnoreCase)
+                || propertyMeta.Settings.DescriptionFor(LocalizerToUse).Contains(filter, StringComparison.InvariantCultureIgnoreCase)
+                || propertyMeta.PropertyInfo.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase)
+                || (propertyMeta.Value?.ToString()?.Contains(filter, StringComparison.InvariantCultureIgnoreCase) == true)
+                || (propertyMeta.GroupInfo?.Name?.Contains(filter, StringComparison.InvariantCultureIgnoreCase) == true)
                 || (propertyMeta.RenderData?.Attributes.Values.OfType<string>().Any(x => x.Contains(filter, StringComparison.InvariantCultureIgnoreCase)) == true))
                 .Any(matchesCurrentFilter => matchesCurrentFilter);
     }
@@ -761,7 +763,7 @@ public partial class MudExObjectEdit<T>
     private bool ShouldAddGrid(IEnumerable<ObjectEditPropertyMeta> meta) => WrapInMudGrid ?? ContainsMudItemInWrapper(meta);
     private string CssClassName => GroupingStyle == GroupingStyle.Flat ? $"mud-ex-object-edit-group-flat {(!GroupsCollapsible ? "mud-ex-hide-expand-btn" : "")}" : string.Empty;
 
-    
+
     private List<IGrouping<string, ObjectEditPropertyMeta>> DefaultGroupedMetaPropertyInfos() // Here we filter ignore directly
         => MetaInformation?.AllProperties?.EmptyIfNull()
             .Where(m => m.ShouldRender() && IsInFilter(m) && (!AutoHideDisabledFields || m.Settings.IsEditable))
@@ -774,8 +776,8 @@ public partial class MudExObjectEdit<T>
             .GroupBy(m => !DisableGrouping ? m.GroupInfo?.Name : string.Empty)
             .ToList();
 
-    
-    private List<IGrouping<string, ObjectEditPropertyMeta>> GroupedMetaPropertyInfos() 
+
+    private List<IGrouping<string, ObjectEditPropertyMeta>> GroupedMetaPropertyInfos()
         => !RenderIgnoredReferences ? DefaultGroupedMetaPropertyInfos() : AllGroupedMetaPropertyInfos();
 
 
@@ -818,15 +820,15 @@ public partial class MudExObjectEdit<T>
             if (c != null)
                 await Task.Run(() => c.Invoke(ConfigureMetaBase(MetaInformation)));
             else
-                await Task.Run(() => ConfigureMetaBase(MetaInformation));     
-            
+                await Task.Run(() => ConfigureMetaBase(MetaInformation));
+
             if (ConfigService != null && ConfigureBehaviourForRegisteredConfigurations == RegisteredConfigurationBehaviour.ExecutedAfter)
                 await ConfigService.ConfigureAsync(MetaInformation);
-            
-            UpdateConditions(); 
+
+            UpdateConditions();
         }
     }
-    
+
     private async Task OnResetClick(MouseEventArgs arg)
     {
         if (GlobalResetSettings.RequiresConfirmation && DialogService != null && !(await ShowConfirmationBox()))
@@ -834,7 +836,7 @@ public partial class MudExObjectEdit<T>
         await Reset();
         CallStateHasChanged();
     }
-    
+
     private async Task<bool> ShowConfirmationBox()
     {
         ResetConfirmationDialogOptions ??= new DialogOptionsEx
@@ -936,18 +938,18 @@ public partial class MudExObjectEdit<T>
 
         return res;
     }
-    
+
     private IDictionary<string, object> GetCompatibleParameters(Type componentType)
     {
         var res = ComponentRenderHelper.GetCompatibleParameters(this, componentType)
             .Where(p => IsOverwritten(p.Key)).ToDictionary(p => p.Key, p => p.Value);
-        
+
         foreach (var parameter in UserAttributes.Where(parameter => ComponentRenderHelper.IsValidParameter(componentType, parameter.Key, parameter.Value)))
         {
             res.AddOrUpdate(parameter.Key, parameter.Value);
         }
 
-        if(ReadOnlyOverwrite.HasValue)
+        if (ReadOnlyOverwrite.HasValue)
             res.AddOrUpdate(nameof(MudBaseInput<object>.ReadOnly), ReadOnlyOverwrite.Value);
         res.AddOrUpdate(nameof(Value), Value);
         res.AddOrUpdate(nameof(ValueChanged), RuntimeHelpers.TypeCheck(
@@ -974,8 +976,8 @@ public partial class MudExObjectEdit<T>
     {
         var exported = new ExportData<T> { Value = Value, Json = await ToJsonAsync() };
         await BeforeExport.InvokeAsync(exported);
-        
-        if(exported.Cancel)
+
+        if (exported.Cancel)
             return;
 
         IsInternalLoading = true;
@@ -1012,7 +1014,7 @@ public partial class MudExObjectEdit<T>
     public string ToJson()
     {
         var ignored = MetaInformation.Properties().Where(p => p.Settings.IgnoreOnExport).Select(m => m.PropertyName).ToArray();
-        
+
         var json = JsonConvert.SerializeObject(Value, new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
@@ -1067,7 +1069,7 @@ public partial class MudExObjectEdit<T>
         {
             var buffer = new byte[e.File.Size];
             await e.File.OpenReadStream(e.File.Size).ReadAsync(buffer);
-            
+
             var toImport = new ImportData<T> { Json = Encoding.UTF8.GetString(buffer), Value = Value };
             await BeforeImport.InvokeAsync(toImport);
             if (toImport.Cancel || await ShouldCancelImportAsync(toImport.Json, e.File.Name))
@@ -1078,7 +1080,7 @@ public partial class MudExObjectEdit<T>
 
             await LoadFromJson(toImport.Json, RemoveIgnoredFromImport);
             await ImportSuccessUi();
-            await AfterImport.InvokeAsync(new ImportedData<T> {Json = toImport.Json, Value = Value});
+            await AfterImport.InvokeAsync(new ImportedData<T> { Json = toImport.Json, Value = Value });
         }
         catch (Exception ex)
         {
@@ -1117,7 +1119,7 @@ public partial class MudExObjectEdit<T>
                 SetValueAfterImport(JsonConvert.DeserializeObject<T>(json));
                 return;
             }
-            
+
             var obj = JsonConvert.DeserializeObject(json, Value.GetType());
             var notIgnored = obj.ToFlatDictionary().Where(kvp => !ignored.Contains(kvp.Key) && !ignored.Any(path => PropertyHelper.IsPropertyPathSubPropertyOf(kvp.Key, path))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -1134,7 +1136,7 @@ public partial class MudExObjectEdit<T>
     }
     private void SetValueAfterImport(T value)
     {
-        if(SetPropertiesAfterImport)
+        if (SetPropertiesAfterImport)
             SetEditorValueProperties(value);
         else
             Value = value;
@@ -1176,5 +1178,18 @@ public partial class MudExObjectEdit<T>
         }
 
         return result;
+    }
+
+    bool _defaultFocus = true;
+    private bool HasAutoFocus(ObjectEditPropertyMeta property)
+    {
+        var isConfigured = MetaInformation.AllProperties.Any(p => p?.Settings?.AutoFocus == true);
+        if (isConfigured)
+            return property?.Settings?.AutoFocus == true;
+        var res = _defaultFocus;
+        _defaultFocus = false;
+        if (res)
+            property.WithDefaultFocus();
+        return res;
     }
 }
