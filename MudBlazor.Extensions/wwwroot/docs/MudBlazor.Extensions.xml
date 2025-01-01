@@ -5851,6 +5851,11 @@
             The initial value of the input field.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.HelperText">
+            <summary>
+            The Helper text
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.Message">
             <summary>
             The message to be displayed in the component.
@@ -11004,6 +11009,16 @@
              Note: This method signature seems to be incomplete as provided, so the description is based on the visible pattern and assumption of intended functionality.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WithEditConfirmation(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta,System.String,MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition)">
+            <summary>
+            Protects the property from being edited by the user until a confirmation is received.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WithEditConfirmation(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta,MudBlazor.Extensions.Components.ObjectEdit.Options.IConfirmationProtection,MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition)">
+            <summary>
+            Protects the property from being edited by the user until a confirmation is received.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.RenderWith``4(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMetaOf{``0},System.Linq.Expressions.Expression{System.Func{``1,``3}},System.Action{``1},System.Func{``2,``3},System.Func{``3,``2})">
             <summary>
              Configures a property to be rendered with a specified component, allowing for customization of the component's value field, options, and type converters between the property and field types.
@@ -12564,6 +12579,24 @@
             <returns>The added render data component.</returns>
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WithAdditionalComponent(MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData,MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData,MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition)">
+            <summary>
+            Adds an additional component (either before or after) to the current render data.
+            <param name="renderData">The current render data to which the additional component is to be added.</param>
+            <param name="additionalRenderData">The additional render data to add.</param>
+            <param name="position">Enum indicating whether the additional component should be rendered after or before the current render data.</param>
+            <returns>The added render data component.</returns>
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WithAdditionalComponent``1(MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData,MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition,System.Action{``0}[])">
+            <summary>
+            Adds a component of type <typeparamref name="TComponent"/> at the specified position to the current render data, allowing for additional configuration through options.
+            <typeparam name="TComponent">The component type to add.</typeparam>
+            <param name="renderData">The current render data before which the new component is to be added.</param>
+            <param name="options">A set of actions to configure the added component.</param>
+            <returns>The newly added component's render data.</returns>
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WrapInMudItem(MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData,System.Action{MudBlazor.MudItem}[])">
             <summary>
             Wraps the current render data within a MudItem component, allowing for additional configuration through options.
@@ -13361,6 +13394,47 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor.ConfigureMetaBase(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject})">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition">
+            <summary>
+            The position at which to render an additional component.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition.Before">
+            <summary>
+            Render the additional component before the current component.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition.After">
+            <summary>
+            Render the additional component after the current component.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.BooleanInputProtectionBase`1">
+            <summary>
+            Base class for a boolean input protection instance, providing a set of properties and methods to configure the boolean input protection.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.BooleanInputProtectionBase`1.#ctor(System.String,System.Action{`0})">
+            <summary>
+            Constructor for a boolean input protection instance.
+            </summary>
+            <param name="tooltip"></param>
+            <param name="configure"></param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.BooleanInputProtectionBase`1.AdditionalRenderData">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.BooleanInputProtectionBase`1.ConfirmationCallback">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.CheckBoxConfirmationProtection">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.ConfirmationProtection">
+            <summary>
+            Provides a set of static factory options to protect a component with a confirmation.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.ICustomRenderer">
             <summary>
             Interface can implemented and used in object edit RenderWith to completely create an own property renderer
@@ -13369,6 +13443,29 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ICustomRenderer.Render(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder,Microsoft.AspNetCore.Components.IHandleEvent,MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
             <summary>
             If attached as setting in ObjectEditPropertyMeta.RenderData this is called by MudExPropertyEdit
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.DialogConfirmationProtection">
+            <summary>
+            Base class for a boolean input protection instance, providing a set of properties and methods to configure the boolean input protection.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.DialogConfirmationProtection.OnButtonSet(MudBlazor.MudToggleIconButton)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.IConfirmationProtection">
+            <summary>
+            Interface for a confirmation protection instance, providing a set of properties and methods to configure the confirmation protection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.IConfirmationProtection.AdditionalRenderData">
+            <summary>
+            Additional render data to be used for the confirmation protection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.IConfirmationProtection.ConfirmationCallback">
+            <summary>
+            Callback to be invoked when the confirmation protection is triggered.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta">
@@ -13497,6 +13594,16 @@
             Reference to the main edit meta data.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta.Style">
+            <summary>
+            Style
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta.Class">
+            <summary>
+            Class
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta.Parent">
             <summary>
             Parent property meta data.
@@ -13565,6 +13672,11 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta.UpdateConditionalSettings``1(``0)">
             <summary>
             Updates all conditional settings for this property metadata.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta.ForceUpdate">
+            <summary>
+            Forces an update of the property metadata and the containing editor.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMetaGroupInfo">
@@ -13810,7 +13922,7 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.OnRendered``1(System.Action{``0})">
             <summary>
-            Callback for when the component reference is set.
+            Action to be executed when the component reference is set.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.IsValidParameterAttribute(System.String,System.Object)">
@@ -14318,6 +14430,32 @@
             <summary>
             Requires confirmation before resetting the object.
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.SwitchConfirmationProtection">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.ToggleButtonConfirmationProtection">
+            <summary>
+            Protection with a toggle button that requires confirmation before changing the value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ToggleButtonConfirmationProtection.Button">
+            <summary>
+            The button instance.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ToggleButtonConfirmationProtection.#ctor(System.String,System.Action{MudBlazor.MudToggleIconButton})">
+            <summary>
+            Constructor for a boolean input protection instance.
+            </summary>
+            <param name="tooltip"></param>
+            <param name="configure"></param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ToggleButtonConfirmationProtection.AdditionalRenderData">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ToggleButtonConfirmationProtection.ConfirmationCallback">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.FilterHighlighting">
             <summary>
@@ -18591,12 +18729,17 @@
             Prompts the user for input with a validation function asynchronously.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.PromptAsync(MudBlazor.IDialogService,System.String,System.String,System.String,System.Func{System.String,System.Boolean},MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Prompts the user for input with a validation function and custom icon asynchronously.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.PromptAsync(MudBlazor.IDialogService,System.String,System.String,System.String,System.Func{System.String,System.Boolean},MudBlazor.Extensions.Options.DialogOptionsEx)">
             <summary>
             Prompts the user for input with a validation function and custom icon asynchronously.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.PromptAsync(MudBlazor.IDialogService,System.String,System.String,System.String,System.String,System.String,System.String,System.Func{System.String,System.Boolean},MudBlazor.Extensions.Options.DialogOptionsEx)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.PromptAsync(MudBlazor.IDialogService,System.String,System.String,System.String,System.String,System.String,System.String,System.Func{System.String,System.Boolean},MudBlazor.Extensions.Options.DialogOptionsEx,MudBlazor.DialogParameters)">
             <summary>
             Prompts the user for input with customizable title, message, initialValue, buttonOkText, buttonCancelText, icon, validation function, and dialog options asynchronously.
             </summary>

@@ -47,6 +47,12 @@ public partial class MudExPromptDialog
     public string Value { get; set; }
 
     /// <summary>
+    /// The Helper text
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public string HelperText { get; set; }
+
+    /// <summary>
     /// The message to be displayed in the component.
     /// </summary>
     [Parameter, SafeCategory("Content")]

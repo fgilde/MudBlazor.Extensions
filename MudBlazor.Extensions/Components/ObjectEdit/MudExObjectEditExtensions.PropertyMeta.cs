@@ -1,8 +1,10 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Localization;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
 using Nextended.Core.Extensions;
 
@@ -678,4 +680,29 @@ public static partial class MudExObjectEditExtensions
     ///</summary>
     public static ObjectEditPropertyMeta WithAdditionalAttributes<TComponent>(this ObjectEditPropertyMeta meta, TComponent instanceForAttributes, bool overwriteExisting = false) where TComponent : new()
         => meta?.WithAdditionalAttributes(PropertyHelper.ValuesDictionary(instanceForAttributes, true), overwriteExisting);
+
+    /// <summary>
+    /// Protects the property from being edited by the user until a confirmation is received.
+    /// </summary>
+    public static ObjectEditPropertyMeta WithEditConfirmation(this ObjectEditPropertyMeta meta, string message,
+        AdditionalComponentRenderPosition position = AdditionalComponentRenderPosition.After) => meta.WithEditConfirmation(ConfirmationProtection.CheckBox(message), position);
+
+    /// <summary>
+    /// Protects the property from being edited by the user until a confirmation is received.
+    /// </summary>
+    public static ObjectEditPropertyMeta WithEditConfirmation(this ObjectEditPropertyMeta meta, IConfirmationProtection protection, 
+        AdditionalComponentRenderPosition position = AdditionalComponentRenderPosition.After)
+    {
+        void ConfirmFunc(bool confirmed)
+        {
+            meta?.RenderData?.AddAttributes(true, new KeyValuePair<string, object>(nameof(MudBaseInput<string>.Disabled), !confirmed));
+            meta?.ForceUpdate();
+        }
+
+        meta?.RenderData.AddAttributes(true, new KeyValuePair<string, object>(nameof(MudBaseInput<string>.Disabled), true));
+        protection.ConfirmationCallback = ConfirmFunc;
+        meta?.RenderData.WithAdditionalComponent(protection.AdditionalRenderData, position);
+
+        return meta;
+    }
 }

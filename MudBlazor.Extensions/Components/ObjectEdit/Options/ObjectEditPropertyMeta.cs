@@ -1,11 +1,12 @@
-﻿using System.Reflection;
+﻿using MudBlazor.Extensions.Core;
+using System.Reflection;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
 
 /// <summary>
 /// Metadata for a property of an object to be edited.
 /// </summary>
-public class ObjectEditPropertyMeta
+public class ObjectEditPropertyMeta: IMudExStyleAppearance, IMudExClassAppearance
 {
     /// <summary>
     /// Reference to the main edit meta data.
@@ -13,7 +14,17 @@ public class ObjectEditPropertyMeta
     public ObjectEditMeta MainEditMeta { get; }
     private object _value;
     private IRenderData _renderData;
-    
+
+    /// <summary>
+    /// Style
+    /// </summary>
+    public string Style { get; set; }
+
+    /// <summary>
+    /// Class
+    /// </summary>
+    public string Class { get; set; }
+
     /// <summary>
     /// Parent property meta data.
     /// </summary>
@@ -116,4 +127,14 @@ public class ObjectEditPropertyMeta
         Settings?.UpdateConditionalSettings(model);
         RenderData?.UpdateConditionalSettings(model);
     }
+
+    /// <summary>
+    /// Forces an update of the property metadata and the containing editor.
+    /// </summary>
+    public void ForceUpdate()
+    {
+        UpdateRequired?.Invoke(this);
+    }
+
+    public event Action<ObjectEditPropertyMeta> UpdateRequired;
 }

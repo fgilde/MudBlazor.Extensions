@@ -551,4 +551,21 @@ public static partial class MudExObjectEditExtensions
     public static ObjectEditPropertyMetaOf<TModel> WithAttributesIf<TModel>(this ObjectEditPropertyMetaOf<TModel> meta, Func<TModel, bool> condition, Dictionary<string, object> attributes)
         => meta?.WithAttributesIf(condition, attributes.ToArray());
 
+    /// <summary>
+    /// Protects the property from being edited by the user until a confirmation is received.
+    /// </summary>
+    public static ObjectEditPropertyMetaOf<TModel> WithEditConfirmation<TModel>(this ObjectEditPropertyMetaOf<TModel> meta, string message,
+        AdditionalComponentRenderPosition position = AdditionalComponentRenderPosition.After) => meta.WithEditConfirmation(ConfirmationProtection.CheckBox(message), position);
+
+    /// <summary>
+    /// Protects the property from being edited by the user until a confirmation is received.
+    /// </summary>
+    public static ObjectEditPropertyMetaOf<TModel> WithEditConfirmation<TModel>(this ObjectEditPropertyMetaOf<TModel> meta, IConfirmationProtection protection,
+        AdditionalComponentRenderPosition position = AdditionalComponentRenderPosition.After)
+    {
+        var m = meta as ObjectEditPropertyMeta;
+        m.WithEditConfirmation(protection, position);
+        return meta;
+    }
+
 }

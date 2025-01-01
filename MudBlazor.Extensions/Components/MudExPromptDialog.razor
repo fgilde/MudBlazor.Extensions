@@ -9,7 +9,7 @@
     </TitleContent>
     <DialogContent>
         <MudText>@Message</MudText>
-        <MudExTextField AutoFocus="true" OnKeyUp="@OnKeyUp" Immediate="@Immediate" @bind-Value="@Value"></MudExTextField>
+        <MudExTextField AutoFocus="true" HelperText="@HelperText" OnKeyUp="@OnKeyUp" Immediate="@Immediate" @bind-Value="@Value"></MudExTextField>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">@TryLocalize(CancelText)</MudButton>

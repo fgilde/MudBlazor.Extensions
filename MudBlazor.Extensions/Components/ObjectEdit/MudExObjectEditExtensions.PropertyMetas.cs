@@ -590,4 +590,18 @@ public static partial class MudExObjectEditExtensions
     /// </summary>
     public static IEnumerable<ObjectEditPropertyMeta> AsDisabledIf<TModel>(this IEnumerable<ObjectEditPropertyMeta> metas, Func<TModel, bool> condition)
         => metas.Apply(m => m.AsDisabledIf(condition));
+
+    /// <summary>
+    /// Protects the property from being edited by the user until a confirmation is received.
+    /// </summary>
+    public static IEnumerable<ObjectEditPropertyMeta> WithEditConfirmation(this IEnumerable<ObjectEditPropertyMeta> metas, string message,
+        AdditionalComponentRenderPosition position = AdditionalComponentRenderPosition.After) => metas.WithEditConfirmation(ConfirmationProtection.CheckBox(message), position);
+
+    /// <summary>
+    /// Protects the property from being edited by the user until a confirmation is received.
+    /// </summary>
+    public static IEnumerable<ObjectEditPropertyMeta> WithEditConfirmation(this IEnumerable<ObjectEditPropertyMeta> metas, IConfirmationProtection protection,
+        AdditionalComponentRenderPosition position = AdditionalComponentRenderPosition.After)
+        => metas.Apply(m => m.WithEditConfirmation(protection, position));
+
 }
