@@ -2124,7 +2124,7 @@ class MudExDialogNoModalHandler extends MudExDialogHandlerBase {
             const app = targetDlg.parentElement;            
             //const targetRef = MudExDialogNoModalHandler.getDialogReference(targetDlg);
             const lastDialog = allDialogs[allDialogs.length - 1];
-            if (targetDlg !== lastDialog) {
+            if (lastDialog && targetDlg && targetDlg !== lastDialog) {
                 //const lastDialogRef = MudExDialogNoModalHandler.getDialogReference(lastDialog);
                 app.insertBefore(targetDlg, lastDialog.nextSibling);                
             }

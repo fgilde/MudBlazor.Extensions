@@ -710,7 +710,14 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
                     //Value = _selectedValues.LastOrDefault();
                 }
 
-                ValueChanged.InvokeAsync(Value);
+                try
+                {
+                    ValueChanged.InvokeAsync(Value);
+                }
+                catch (Exception)   
+                {
+                    // BUG: After newest MudBlazor update we have to catch this exception
+                }
                 _ = UpdateTextPropertyAsync(false);
                 _selectedValuesSetterStarted = false;
                 Task.Delay(30).ContinueWith(_ => BeginValidateAsync());

@@ -1997,9 +1997,6 @@
         <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnPickerClosedAsync">
-            <inheritdoc />
-        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnPickerOpenedAsync">
             <inheritdoc />
         </member>

@@ -194,15 +194,7 @@ public sealed partial class MudExColorEdit
             UpdateColors();
     }
 
-    
-    /// <inheritdoc />
-    protected override Task OnPickerClosedAsync()
-    {
-        if (DelayValueChangeToPickerClose)
-            RaiseChanged();
-        return base.OnPickerClosedAsync();
-    }
-    
+        
     /// <inheritdoc />
     protected override Task OnPickerOpenedAsync()
     {        

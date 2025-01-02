@@ -46,7 +46,7 @@ internal class MudExCaptureNotificationService : IAsyncDisposable
             config.BackgroundBlurred = true;
             config.RequireInteraction = true;
             config.ShowCloseIcon = false;
-            config.Onclick = bar => onClick(captureId, bar);
+            config.OnClick = bar => onClick(captureId, bar);            
         }, key: captureId);
         _toasts.TryAdd(captureId, toast);
     }
