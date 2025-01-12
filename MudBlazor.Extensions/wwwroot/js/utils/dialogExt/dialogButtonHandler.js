@@ -22,11 +22,13 @@
                     btnEl.onclick = () => {
                         if (b.id.indexOf('mud-button-maximize') >= 0) {
                             this.getHandler(MudExDialogPositionHandler).maximize();
+                            return;
                         }
                         if (b.id.indexOf('mud-button-minimize') >= 0) {
                             this.getHandler(MudExDialogPositionHandler).minimize();
+                            return;
 
-                        } else {
+                        } else if (b.callBackReference && b.callbackName) {
                             b.callBackReference.invokeMethodAsync(b.callbackName);
                         }
                     }
