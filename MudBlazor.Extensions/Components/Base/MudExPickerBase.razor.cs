@@ -202,10 +202,8 @@ public partial class MudExPickerBase<T>
     
     private string GetElementId()
     {
-        var fieldInfo = typeof(MudPicker<T>)
-            .GetField("_elementId", BindingFlags.NonPublic | BindingFlags.Instance);
-
-        return fieldInfo?.GetValue(this)?.ToString();      
+        return typeof(MudPicker<T>)
+            .GetField("_elementId", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(this)?.ToString();      
     }
 
     protected internal async Task ToggleStateExtAsync()
