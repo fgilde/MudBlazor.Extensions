@@ -12,7 +12,7 @@ namespace MudBlazor.Extensions.Helper
     {
         private static string min => UseMinified ? ".min" : string.Empty;
 
-        internal static bool UseMinified = false;
+        internal static bool UseMinified = true;
 
         internal static string BasePath = "./_content/";
 
@@ -34,8 +34,19 @@ namespace MudBlazor.Extensions.Helper
             LegacyRuntimeReference ??= (runtime ??= GetJsRuntime());
             if (force || !UseMinified || !await runtime.IsNamespaceAvailableAsync("MudBlazorExtensions"))
             {
-                await runtime.ImportModuleBlazorJS(); // This is a workaround for using module in MAUI apps
-                await ImportMainMudEx(runtime); // This is a workaround for using module in MAUI apps
+                try
+                {
+                    await runtime.ImportModuleBlazorJS(); // This is a workaround for using module in MAUI apps
+                }
+                catch (Exception e)
+                {}
+
+                try
+                {
+                    await ImportMainMudEx(runtime); // This is a workaround for using module in MAUI apps
+                }
+                catch (Exception e)
+                {}
             }
             await LoadCssAsync(runtime, force);
             return runtime;
