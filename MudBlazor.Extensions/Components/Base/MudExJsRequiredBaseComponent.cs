@@ -78,12 +78,7 @@ public abstract class MudExJsRequiredBaseComponent<T> : MudExBaseComponent<T>, I
     /// </summary>
     public virtual async Task ImportModuleAndCreateJsAsync()
     {
-        try
-        {
-            await JsRuntime.InitializeMudBlazorExtensionsCoreAsync();
-        }
-        catch (Exception)
-        {}
+        await JsRuntime.InitializeMudBlazorExtensionsCoreAsync();
         var references = await JsRuntime.ImportModuleAndCreateJsAsync<T>(GetJsArguments());
         JsReference = references.jsObjectReference;
         ModuleReference = references.moduleReference;
