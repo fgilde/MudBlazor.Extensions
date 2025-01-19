@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Options;
 using MudBlazor.Interop;
 using Nextended.Core.Attributes;
 
@@ -22,12 +23,13 @@ public class MudExDialogService : DialogService, IMudExDialogService
     {        
         dynamic eventToPublish = eventName switch
         {
-            "OnDragStart" => new DialogDragStartEvent { Dialog = dialog.Value, Rect = rect, DialogId = dialogId },
+            "OnDragStart" => new DialogDragStartEvent { Dialog = dialog.Value, Rect = rect, DialogId = dialogId},
             "OnDragEnd" => new DialogDragEndEvent { Dialog = dialog.Value, Rect = rect, DialogId = dialogId },
             "OnDragging" => new DialogDraggingEvent { Dialog = dialog.Value, Rect = rect, DialogId = dialogId },
             "OnResizing" => new DialogResizingEvent { Dialog = dialog.Value, Rect = rect, DialogId = dialogId },
             "OnResized" => new DialogResizedEvent { Dialog = dialog.Value, Rect = rect, DialogId = dialogId },
             "OnDialogClosing" => new DialogClosingEvent { Dialog = dialog.Value, Rect = rect, DialogId = dialogId },
+            "OnAnimated" => new DialogAfterAnimationEvent { Dialog = dialog.Value, Rect = rect, DialogId = dialogId },
             _ => null
         };
 
@@ -82,9 +84,9 @@ public class MudExDialogService : DialogService, IMudExDialogService
 
     private async Task DialogInstanceAddedAsyncHandler(IDialogReference obj)
     {
-        var id = obj.GetDialogId();
+        var id = obj.GetDialogId();        
         await _dialogEventService.Publish(new DialogBeforeOpenEvent { DialogReference = obj, DialogId = id });        
-        var result = await obj.GetDialogAsync<ComponentBase>();
+        var result = await obj.GetDialogAsync<ComponentBase>();        
         await _dialogEventService.Publish(new DialogAfterOpenEvent { DialogReference = obj, Dialog = result, DialogId = id });
         var dlgResult = await obj.Result;
         OnDialogCloseRequestedHandler(obj, dlgResult);

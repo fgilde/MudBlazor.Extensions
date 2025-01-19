@@ -3,8 +3,8 @@
 @inherits MudExBaseComponent<MudExMessageDialog>
 
 <MudDialog Style="@Style" Class="@($"{MudExCss.Classes.Dialog._Initial} {Class}")" ContentClass="@ContentClass"
-           ActionsClass="@ClassActions"
-           ContentStyle="@ContentStyle">
+ActionsClass="@ClassActions"                      
+ContentStyle="@ContentStyle">
     <TitleContent>
         @if (ShowProgress)
         {
@@ -22,7 +22,14 @@
         }
         @if (Content != null)
         {
-            @Content
+            if(ShouldRenderContent){
+                @Content
+            }else
+            {
+                <div style="height: 100%; width: 100%; display: flex">
+                    <MudProgressCircular Style="align-self: center; justify-self: center; margin-left: 50%;" Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+                </div>
+            }
         }
     </DialogContent>
     <DialogActions>

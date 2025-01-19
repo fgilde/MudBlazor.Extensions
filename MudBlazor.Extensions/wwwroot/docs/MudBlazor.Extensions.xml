@@ -5630,6 +5630,11 @@
             Gets or sets the maximum value of the progress shown in the dialog
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.DelayContentRendering">
+            <summary>
+            If this is true the content of the dialog will be rendered after the dialog is opened and animation is finished
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.PreventStateHasChanged">
             <summary>
             If true StateHasChanged is not happen

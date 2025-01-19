@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Options;
 using MudBlazor.Interop;
 
 namespace MudBlazor.Extensions.Core;
@@ -12,16 +13,20 @@ public interface IDialogEvent
 public class BaseDialogEvent : IDialogEvent {
     public string DialogId { get; set; }
     public ComponentBase Dialog { get; set; }
-    public BoundingClientRect Rect { get; set; }
+    public BoundingClientRect Rect { get; set; }    
 }
 
 public class DialogBeforeOpenEvent : IDialogEvent {
     public string DialogId { get; set; }
     public ComponentBase Dialog { get; set; }
-    public IDialogReference DialogReference { get; set; }
+    public IDialogReference DialogReference { get; set; }    
+
 }
 
 public class DialogAfterOpenEvent : DialogBeforeOpenEvent
+{ }
+
+public class DialogAfterAnimationEvent : BaseDialogEvent
 { }
 
 

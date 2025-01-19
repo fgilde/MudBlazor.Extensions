@@ -4,6 +4,9 @@
         super.handle(dialog);
         if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
             this.animate();
+            this.awaitAnimation(() => this.raiseDialogEvent('OnAnimated'));
+        } else {
+            this.raiseDialogEvent('OnAnimated');
         }        
 
         this.extendCloseEvents();

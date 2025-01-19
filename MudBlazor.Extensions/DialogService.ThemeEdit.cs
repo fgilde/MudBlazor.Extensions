@@ -23,6 +23,7 @@ public static partial class DialogServiceExt
             },
             dialog =>
             {
+                dialog.DelayContentRendering = true;
                 dialog.ClassActions = MudExCss.Classes.Dialog.DialogActionsSticky;
                 dialog.Icon = Icons.Material.Filled.Palette;
                 dialog.Buttons = MudExDialogResultAction.OkCancel();
