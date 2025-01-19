@@ -28,7 +28,8 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 {
     const string DropPlaceholderText = "Drop files here";
     private MudExDialog _addUrlDialog;
-
+    private MudButton _addUrlButton;
+    private MudTextField<string> _addUrlTextField;
     #region Parameters
 
     /// <summary>
@@ -199,8 +200,8 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// Text for recording audio
     /// </summary>
     [Parameter, SafeCategory("Data")]
-    public string TextStartRecording { get; set; } = "Record audio";  
-    
+    public string TextStartRecording { get; set; } = "Record audio";
+
     /// <summary>
     /// Text for video capture
     /// </summary>
@@ -1287,7 +1288,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         return (request.Url ?? await FileService.CreateDataUrlAsync(request.Data, request.ContentType, StreamUrlHandling == StreamUrlHandling.BlobUrl));
     }
 
-    private bool IsValidUrl(string s) => Uri.TryCreate(s, UriKind.Absolute, out var uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+    private bool IsValidUrl(string s) => DataUrl.IsDataUrl(s) || Uri.TryCreate(s, UriKind.Absolute, out var uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
 
     private void AddUrl() => _urlDialogVisible = !_urlDialogVisible;
 
@@ -1446,7 +1447,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
 
     private async void CapturedCallback(CaptureResult result)
     {
-        if(result.CombinedData?.Bytes == null || result.CombinedData.Bytes.Length == 0)
+        if (result.CombinedData?.Bytes == null || result.CombinedData.Bytes.Length == 0)
             return;
         var captured = new T
         {
@@ -1456,7 +1457,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         };
         await Add(captured);
     }
-    
+
     private async void AudioRecordingCallback(SpeechRecognitionResult result)
     {
         if (result.AudioData?.Length > 0)
@@ -1473,7 +1474,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     }
 
     private string GetOuterCls()
-    {        
+    {
         return MudExCssBuilder.Default.
             AddClass("upload-request-outlined-border", Variant == Variant.Outlined)
             .ToString();
@@ -1488,5 +1489,20 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             .WithBorderColor(Color, !HasErrors)
             .WithBackgroundColor(Color, Variant == Variant.Filled)
             .ToString();
+    }
+
+    private async Task AddExternalUrlClick()
+    {
+        var isValidUrl = IsValidUrl(ExternalUrl);
+
+        _addUrlTextField.ErrorId = isValidUrl ? null : "InvalidUrl";
+        _addUrlTextField.ErrorText = isValidUrl ? null : TryLocalize("Invalid Url");
+        _addUrlTextField.Error = !isValidUrl;
+
+        if (_addUrlTextField.HasErrors)
+            return;
+        await Add(ExternalUrl);
+        ExternalUrl = string.Empty;
+        await _addUrlDialog.CloseAsync();
     }
 }

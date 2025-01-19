@@ -191,7 +191,7 @@
                 @if (AllowExternalUrl)
                 {
                     <MudText>@TryLocalize(TextAddUrlMessage)</MudText>
-                    <MudTextField AutoFocus="true" Immediate="true" T="string" @bind-Value="ExternalUrl" Variant="Variant.Outlined"></MudTextField>
+                    <MudTextField @ref="_addUrlTextField" AutoFocus="true" Immediate="true" T="string" @bind-Value="ExternalUrl" Variant="Variant.Outlined"></MudTextField>
                 }
 
                 @if (RenderPickerInDialog)
@@ -204,14 +204,14 @@
                 }
             </DialogContent>
             <DialogActions>
-                <MudButton Color="@(AllowExternalUrl ? MudBlazor.Color.Default : MudBlazor.Color.Error)" Variant="@(AllowExternalUrl ? Variant.Text :Variant.Filled)" OnClick="@AddUrl">@TryLocalize("Close")</MudButton>
+                <MudButton Color="@(AllowExternalUrl ? MudBlazor.Color.Default : MudBlazor.Color.Error)" Variant="@(AllowExternalUrl ? Variant.Text :Variant.Filled)" OnClick="@(() => _addUrlDialog.CloseAsync())">@TryLocalize("Close")</MudButton>
 
                 @if (AllowExternalUrl)
                 {
-                    <MudButton Disabled="@(!IsValidUrl(ExternalUrl))"
+                    <MudButton @ref="_addUrlButton"
                                Color="MudBlazor.Color.Error"
                                Variant="Variant.Filled"
-                               OnClick="@(() => Add(ExternalUrl).ContinueWith(_ => { ExternalUrl = string.Empty; _urlDialogVisible = false; }))">
+                               OnClick="@(AddExternalUrlClick)">
                         @TryLocalize(TextAddUrl)
                     </MudButton>
                 }

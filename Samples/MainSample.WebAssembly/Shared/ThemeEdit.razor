@@ -21,7 +21,7 @@
     </MudItem>
 </MudExPopover> *@
 
-<MudDrawer @bind-Open="@_themeEditOpen" Anchor="Anchor.End" Elevation="1" Variant="@DrawerVariant.Temporary">
+<MudDrawer @bind-Open="@_themeEditOpen" Anchor="Anchor.End" Elevation="1" Class="theme_edit_drawer" Variant="@DrawerVariant.Persistent" OverlayAutoClose="true">
     <MudDrawerHeader>
         <MudGrid Justify="Justify.SpaceBetween" Spacing="0">
             <MudText Style="align-self: center" Typo="Typo.h6">Theming</MudText>

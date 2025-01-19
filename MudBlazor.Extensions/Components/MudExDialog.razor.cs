@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
 
@@ -151,12 +152,25 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
             }
         }
     }
-
+   
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         // Don't call base.OnAfterRenderAsync to avoid double rendering
     }
 
+    public new Task CloseAsync(DialogResult? result = null)
+    {
+        if (_reference is null)
+        {
+            Visible = false;
+            return Task.CompletedTask;
+        }
+                
+        _reference.CloseAnimatedIf(result);
+        _reference = null;
+        
+        return Task.CompletedTask;
+    }
 
     private void EnsureInitialClass()
     {

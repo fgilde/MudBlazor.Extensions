@@ -472,7 +472,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.FormComponent.Behavior)]
-    public virtual bool RelativeWidth { get; set; } = true;
+    public virtual DropdownWidth RelativeWidth { get; set; } = DropdownWidth.Relative;
 
     /// <summary>
     /// Sets the maxheight the Select can have when open.
