@@ -7,6 +7,26 @@ namespace MudBlazor.Extensions.Helper;
 
 public static class ComponentHelper
 {
+    public static bool IsRenderHandleAssigned(this IComponent component)
+    {
+        try
+        {
+            if (component is ComponentBase baseComponent)
+            {            
+                var fieldInfo = typeof(ComponentBase)
+                    .GetField("_renderHandle", BindingFlags.NonPublic | BindingFlags.Instance);
+
+                var value = fieldInfo?.GetValue(baseComponent);
+                var handleValue = value as RenderHandle? ?? default;                            
+                return handleValue.IsInitialized;
+            }
+        }
+        catch (Exception e)
+        {}
+
+        return true;
+    }
+
     internal static Task CallReflectionStateHasChanged(this IComponent cmp)
     {
         var stateHasChangedMethod = cmp.GetType().GetMethod("StateHasChanged", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -29,16 +49,16 @@ public static class ComponentHelper
         return res as Task ?? Task.CompletedTask;
     }
 
-    internal static MudDialogInstance FindMudDialogInstance(this IComponent component) 
-        => component.AllOf<MudDialogInstance>(ReflectReadSettings.AllWithHierarchyTraversal).FirstOrDefault();
+    internal static IMudDialogInstance FindMudDialogInstance(this IComponent component) 
+        => component.AllOf<IMudDialogInstance>(ReflectReadSettings.AllWithHierarchyTraversal).FirstOrDefault();
 
     internal static MudDialogProvider FindMudDialogProvider(this IComponent component)
     {
-        return component is MudDialogInstance instance
+        return component is IMudDialogInstance instance
             ? FindMudDialogProvider(instance)
             : component.FindMudDialogInstance()?.FindMudDialogProvider();
     }
 
-    internal static MudDialogProvider FindMudDialogProvider(this MudDialogInstance component)
+    internal static MudDialogProvider FindMudDialogProvider(this IMudDialogInstance component)
         => component.AllOf<MudDialogProvider>(ReflectReadSettings.AllWithHierarchyTraversal).FirstOrDefault();
 }

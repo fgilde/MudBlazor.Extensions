@@ -2,16 +2,25 @@
 @using MudBlazor.Extensions.Options;
 
 
+
 <MudIconButton Class="mudex-demo-themeedit-toggle-button" Icon="@Icons.Material.Filled.Palette" Color="Color.Inherit" OnClick="@EditTheme" />
-@* <MudExPopover OnBlur="@(OnThemeBlur)" Animation="AnimationType.Perspective3d" AnimationPosition="DialogPosition.TopRight"
+<MudExPopover OnBlur="@(OnThemeBlur)" Animation="AnimationType.Perspective3d" AnimationPosition="DialogPosition.TopRight"
               SelectorsForIgnoreBlur=".mudex-demo-themeedit-toggle-button" Open="@_themeEditOpen" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopRight" MaxHeight="900">
     <MudItem xs="12" Style="padding:4px;">
         <MudCard @onclick="@(() => { _themeEditOpen = false; })" Style="border-width: 3px;" Class="cursor-pointer hover-border" Outlined="true">
             <MudCardHeader>
                 <CardHeaderContent>
-                    <MudCheckBox UncheckedIcon="@Icons.Material.Outlined.LightMode" CheckedIcon="@Icons.Material.Outlined.DarkMode" T="bool" ValueChanged="@(OnDarkChange)" Value="@IsDark" Color="Color.Inherit" Label="Dark Mode" />
-                    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(EditThemeFull)">Customize current</MudButton>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(EditAllThemes)">Create, Delete or Edit Themes</MudButton>
+                    <MudGrid Justify="Justify.SpaceBetween">
+                        <MudItem>
+                            <MudCheckBox UncheckedIcon="@Icons.Material.Outlined.LightMode" CheckedIcon="@Icons.Material.Outlined.DarkMode" 
+                                         T="bool" ValueChanged="@(OnDarkChange)" Value="@IsDark" Color="Color.Inherit" Label="Dark Mode" />
+                        </MudItem>
+                        <MudItem Class="d-flex justify-end">
+                            <MudExIconButton ToolTip="Edit Current" OnClick="@(EditThemeFull)" Icon="@Icons.Material.Filled.Edit"></MudExIconButton>
+                            <MudExIconButton ToolTip="Create, Edit or delete themes" OnClick="@(EditAllThemes)" Icon="@Icons.Material.Filled.Settings"></MudExIconButton>
+                        </MudItem>
+                    </MudGrid>
+
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent>
@@ -19,9 +28,9 @@
             </MudCardContent>
         </MudCard>
     </MudItem>
-</MudExPopover> *@
+</MudExPopover>
 
-<MudDrawer @bind-Open="@_themeEditOpen" Anchor="Anchor.End" Elevation="1" Variant="@DrawerVariant.Temporary">
+@* <MudDrawer @bind-Open="@_themeEditOpen" Anchor="Anchor.End" Elevation="1" Class="theme_edit_drawer" Variant="@DrawerVariant.Temporary" OverlayAutoClose="true">
     <MudDrawerHeader>
         <MudGrid Justify="Justify.SpaceBetween" Spacing="0">
             <MudText Style="align-self: center" Typo="Typo.h6">Theming</MudText>
@@ -36,7 +45,7 @@
         <MudExIconButton ToolTip="Edit Current" OnClick="@(EditThemeFull)" Icon="@Icons.Material.Filled.Edit"></MudExIconButton>
         <MudExIconButton ToolTip="Create, Edit or delete themes" OnClick="@(EditAllThemes)" Icon="@Icons.Material.Filled.Settings"></MudExIconButton>
     </MudGrid>
-</MudDrawer>
+</MudDrawer> *@
 
 @code {
     bool _themeEditOpen = false;

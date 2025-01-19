@@ -23,7 +23,7 @@
         return IsSeparator(item) ? RenderSeparator() : RenderItem(context);
     }
 
-    public virtual RenderFragment RenderItem(TreeViewItemContext<T> context)
+    public override RenderFragment RenderItem(TreeViewItemContext<T> context)
     {
         return
         @<MudListItem T="T" Value="@context.Value" Style="@ItemStyleStr(context)" Class="@ItemClassStr(context)" OnClick="@(() => NodeClick(context.Value))">

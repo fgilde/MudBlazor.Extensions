@@ -71,7 +71,9 @@
                 AdornmentIcon = Icons.Material.Filled.Key
             })
             .OnRendered<MudTextField<string>>(tf => _firstNameField = tf)
-            .WithGroup("Name").WrapInMudItem(i => i.xs = 6);
+            .WithGroup("Name")
+            .WithEditConfirmation(ConfirmationProtection.PromptDialog(DialogService))
+            .WrapInMudItem(i => i.xs = 6);
 
         meta.Properties(m => m.Age, m => m.Gender).WithAdditionalAttribute("Variant", Variant.Text, true).WrapInMudItem(x => x.xs = 6);
         meta.Property(m => m.Gender)

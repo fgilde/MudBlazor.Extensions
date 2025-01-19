@@ -73,7 +73,7 @@
         }
         else if (PickerVariant == PickerVariant.Static)
         {
-            <MudPaper @attributes="UserAttributes" Class="@PickerPaperClassname" Style="@GetPickerPaperStyle()" Elevation="@Elevation" Square="@(!Rounded)">
+            <MudPaper @attributes="UserAttributes" Class="@PickerPaperClassname" Style="@GetPickerPaperStyle()" Elevation="@GetActiveElevation()" Square="@(!Rounded)">
                 <div class="@PickerContainerClassname">
                     @if(PickerContent != null){
                     @PickerContent

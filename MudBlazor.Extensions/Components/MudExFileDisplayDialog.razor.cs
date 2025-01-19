@@ -15,7 +15,7 @@ public partial class MudExFileDisplayDialog
     /// <summary>
     /// The MudDialog instance
     /// </summary>
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
     
     /// <summary>
     /// CSS classes applied to the content of the dialog.

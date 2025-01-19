@@ -4,6 +4,9 @@
         super.handle(dialog);
         if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
             this.animate();
+            this.awaitAnimation(() => this.raiseDialogEvent('OnAnimated'));
+        } else {
+            this.raiseDialogEvent('OnAnimated');
         }        
 
         this.extendCloseEvents();
@@ -72,7 +75,7 @@
     }
 
     closeAnimation() {
-        MudExDialogAnimationHandler.playCloseAnimation(this.dialog);
+        return MudExDialogAnimationHandler.playCloseAnimation(this.dialog);
     }
 
     static playCloseAnimation(dialog) {
@@ -83,7 +86,8 @@
         dialog.style['animation-duration'] = `${delay}ms`;
         return new Promise((resolve) => {
             MudExDialogAnimationHandler._playCloseAnimation(dialog);
-            setTimeout(() => {                
+            setTimeout(() => {
+                dialog.classList.add('mud-ex-dialog-initial');
                 resolve();
             }, delay);
         });

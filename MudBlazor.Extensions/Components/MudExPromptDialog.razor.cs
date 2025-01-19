@@ -14,7 +14,7 @@ public partial class MudExPromptDialog
     /// <summary>
     /// Cascading parameter of the MudDialogInstance object, which is responsible for the dialog instance.
     /// </summary>
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
 
     /// <summary>
     /// Boolean value indicating whether prompt should be submitted immediately.
@@ -45,6 +45,12 @@ public partial class MudExPromptDialog
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
     public string Value { get; set; }
+
+    /// <summary>
+    /// The Helper text
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public string HelperText { get; set; }
 
     /// <summary>
     /// The message to be displayed in the component.

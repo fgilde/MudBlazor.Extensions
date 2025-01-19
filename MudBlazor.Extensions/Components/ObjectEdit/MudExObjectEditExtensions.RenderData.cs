@@ -13,12 +13,8 @@ public static partial class MudExObjectEditExtensions
     /// <param name="options">A set of actions to configure the wrapper component.</param>
     /// <returns>The modified render data wrapped inside the specified component.</returns>
     /// </summary>
-    public static IRenderData WrapIn<TWrapperComponent>(this IRenderData renderData, params Action<TWrapperComponent>[] options) where TWrapperComponent : new()
-    {
-        if (renderData != null)
-            renderData.Wrapper = RenderData.For(typeof(TWrapperComponent), PropertyHelper.ValuesDictionary(true, options));
-        return renderData?.Wrapper;
-    }
+    public static IRenderData WrapIn<TWrapperComponent>(this IRenderData renderData, params Action<TWrapperComponent>[] options) where TWrapperComponent : new() 
+        => renderData?.WrapIn(RenderData.For(typeof(TWrapperComponent), PropertyHelper.ValuesDictionary(true, options)));
 
     /// <summary>
     /// Wraps the current render data with another provided render data as its wrapper.
@@ -29,7 +25,9 @@ public static partial class MudExObjectEditExtensions
     public static IRenderData WrapIn(this IRenderData renderData, IRenderData wrappingRenderData)
     {
         if (renderData != null)
+        {
             renderData.Wrapper = wrappingRenderData;
+        }
         return wrappingRenderData;
     }
 
@@ -84,6 +82,27 @@ public static partial class MudExObjectEditExtensions
             (renderAfter ? renderData.RenderDataAfterComponent : renderData.RenderDataBeforeComponent).Add(additionalRenderData);
         return additionalRenderData;
     }
+
+    /// <summary>
+    /// Adds an additional component (either before or after) to the current render data.
+    /// <param name="renderData">The current render data to which the additional component is to be added.</param>
+    /// <param name="additionalRenderData">The additional render data to add.</param>
+    /// <param name="position">Enum indicating whether the additional component should be rendered after or before the current render data.</param>
+    /// <returns>The added render data component.</returns>
+    /// </summary>
+    public static IRenderData WithAdditionalComponent(this IRenderData renderData, IRenderData additionalRenderData, AdditionalComponentRenderPosition position) 
+        => renderData.WithAdditionalComponent(additionalRenderData, position == AdditionalComponentRenderPosition.After);
+
+    /// <summary>
+    /// Adds a component of type <typeparamref name="TComponent"/> at the specified position to the current render data, allowing for additional configuration through options.
+    /// <typeparam name="TComponent">The component type to add.</typeparam>
+    /// <param name="renderData">The current render data before which the new component is to be added.</param>
+    /// <param name="options">A set of actions to configure the added component.</param>
+    /// <returns>The newly added component's render data.</returns>
+    /// </summary>
+    public static IRenderData WithAdditionalComponent<TComponent>(this IRenderData renderData, AdditionalComponentRenderPosition position, params Action<TComponent>[] options) where TComponent : new()
+        => renderData.WithAdditionalComponent(RenderData.For(typeof(TComponent), PropertyHelper.ValuesDictionary(true, options)), position);
+
 
     /// <summary>
     /// Wraps the current render data within a MudItem component, allowing for additional configuration through options.

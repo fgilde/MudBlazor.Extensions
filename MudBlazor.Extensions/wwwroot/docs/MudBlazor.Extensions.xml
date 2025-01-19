@@ -1997,9 +1997,6 @@
         <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnPickerClosedAsync">
-            <inheritdoc />
-        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExColorEdit.OnPickerOpenedAsync">
             <inheritdoc />
         </member>
@@ -2118,22 +2115,16 @@
             Render base component
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExDialog.OptionsEx">
+            <summary>
+            DialogOptionsEx for this dialog
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDialog.OnParametersSet">
             <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDialog.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExDialog.Show(System.String,MudBlazor.DialogOptions)">
-            <summary>Show this inlined dialog</summary>
-            <param name="title"></param>
-            <param name="options"></param>
-            <returns></returns>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExDialog.OptionsEx">
-            <summary>
-            DialogOptionsEx for this dialog
-            </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDialogActionButton">
             <summary>
@@ -5639,6 +5630,11 @@
             Gets or sets the maximum value of the progress shown in the dialog
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.DelayContentRendering">
+            <summary>
+            If this is true the content of the dialog will be rendered after the dialog is opened and animation is finished
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExMessageDialog.PreventStateHasChanged">
             <summary>
             If true StateHasChanged is not happen
@@ -5855,6 +5851,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.Value">
             <summary>
             The initial value of the input field.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.HelperText">
+            <summary>
+            The Helper text
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.Message">
@@ -6411,11 +6412,6 @@
             Force the update of the items in the select menu.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.Dispose(System.Boolean)">
-            <summary>
-            Disposes the component.
-            </summary>
-        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.HandleKeyUp(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs)">
             <summary>
             Handler for the keyup event.
@@ -6467,7 +6463,7 @@
             Selects the given option by index.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.SelectOption(System.Object)">
+        <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.SelectOption(System.Object,System.Boolean)">
             <summary>
             Selects the given option.
             </summary>
@@ -6591,19 +6587,9 @@
             Text for the item.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.Value">
-            <summary>
-            Item value.
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.MultiSelection">
             <summary>
             Is multi selection enabled.
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSelectItem`1.DisplayString">
-            <summary>
-            Display string.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSelectItem`1.HandleOnClick">
@@ -6631,11 +6617,6 @@
             Style for the component.
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.Value">
-            <summary>
-            A user-defined option that can be selected
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.Text">
             <summary>
             A user-defined option that can be selected
@@ -6659,12 +6640,6 @@
         <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.StickyTop">
             <summary>
             The top position of sticky header
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.HideContent">
-            <summary>
-            Select items with HideContent==true are only there to register their RenderFragment with the select but
-            wont render and have no other purpose!
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSelectItemGroup`1.OnAfterRenderAsync(System.Boolean)">
@@ -11036,6 +11011,16 @@
              Note: This method signature seems to be incomplete as provided, so the description is based on the visible pattern and assumption of intended functionality.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WithEditConfirmation(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta,System.String,MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition)">
+            <summary>
+            Protects the property from being edited by the user until a confirmation is received.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WithEditConfirmation(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta,MudBlazor.Extensions.Components.ObjectEdit.Options.IConfirmationProtection,MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition)">
+            <summary>
+            Protects the property from being edited by the user until a confirmation is received.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.RenderWith``4(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMetaOf{``0},System.Linq.Expressions.Expression{System.Func{``1,``3}},System.Action{``1},System.Func{``2,``3},System.Func{``3,``2})">
             <summary>
              Configures a property to be rendered with a specified component, allowing for customization of the component's value field, options, and type converters between the property and field types.
@@ -11521,6 +11506,16 @@
             <param name="condition">The condition that determines if the attributes should be added.</param>
             <param name="attributes">A dictionary of attributes to add.</param>
             <returns>The modified ObjectEditPropertyMetaOf instance.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WithEditConfirmation``1(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMetaOf{``0},System.String,MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition)">
+            <summary>
+            Protects the property from being edited by the user until a confirmation is received.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WithEditConfirmation``1(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMetaOf{``0},MudBlazor.Extensions.Components.ObjectEdit.Options.IConfirmationProtection,MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition)">
+            <summary>
+            Protects the property from being edited by the user until a confirmation is received.
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.RenderWith``3(System.Collections.Generic.IEnumerable{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta},System.Linq.Expressions.Expression{System.Func{``0,``2}},System.Action{``0},System.Func{``1,``2},System.Func{``2,``1})">
             <summary>
@@ -12035,6 +12030,16 @@
             <returns>The modified collection of ObjectEditPropertyMeta with certain properties set as disabled based on the condition.</returns>
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WithEditConfirmation(System.Collections.Generic.IEnumerable{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta},System.String,MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition)">
+            <summary>
+            Protects the property from being edited by the user until a confirmation is received.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WithEditConfirmation(System.Collections.Generic.IEnumerable{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta},MudBlazor.Extensions.Components.ObjectEdit.Options.IConfirmationProtection,MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition)">
+            <summary>
+            Protects the property from being edited by the user until a confirmation is received.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.RenderWith``4(System.Collections.Generic.IEnumerable{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMetaOf{``0}},System.Linq.Expressions.Expression{System.Func{``1,``3}},System.Action{``1},System.Func{``2,``3},System.Func{``3,``2})">
             <summary>
             Extends the collection of ObjectEditPropertyMetaOf with a component for rendering, providing custom options, field type converters, and the ability to specify instance attributes for the component.
@@ -12536,6 +12541,16 @@
             <returns>A modified IEnumerable of ObjectEditPropertyMetaOf with properties disabled based on the specified condition.</returns>
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WithEditConfirmation``1(System.Collections.Generic.IEnumerable{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMetaOf{``0}},System.String,MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition)">
+            <summary>
+            Protects the property from being edited by the user until a confirmation is received.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WithEditConfirmation``1(System.Collections.Generic.IEnumerable{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMetaOf{``0}},MudBlazor.Extensions.Components.ObjectEdit.Options.IConfirmationProtection,MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition)">
+            <summary>
+            Protects the property from being edited by the user until a confirmation is received.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WrapIn``1(MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData,System.Action{``0}[])">
             <summary>
             Wraps the current render data within a new component of type <typeparamref name="TWrapperComponent"/>, allowing for additional configuration through options.
@@ -12594,6 +12609,24 @@
             <param name="additionalRenderData">The additional render data to add.</param>
             <param name="renderAfter">Boolean indicating whether the additional component should be rendered after (true) or before (false) the current render data.</param>
             <returns>The added render data component.</returns>
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WithAdditionalComponent(MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData,MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData,MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition)">
+            <summary>
+            Adds an additional component (either before or after) to the current render data.
+            <param name="renderData">The current render data to which the additional component is to be added.</param>
+            <param name="additionalRenderData">The additional render data to add.</param>
+            <param name="position">Enum indicating whether the additional component should be rendered after or before the current render data.</param>
+            <returns>The added render data component.</returns>
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WithAdditionalComponent``1(MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData,MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition,System.Action{``0}[])">
+            <summary>
+            Adds a component of type <typeparamref name="TComponent"/> at the specified position to the current render data, allowing for additional configuration through options.
+            <typeparam name="TComponent">The component type to add.</typeparam>
+            <param name="renderData">The current render data before which the new component is to be added.</param>
+            <param name="options">A set of actions to configure the added component.</param>
+            <returns>The newly added component's render data.</returns>
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditExtensions.WrapInMudItem(MudBlazor.Extensions.Components.ObjectEdit.Options.IRenderData,System.Action{MudBlazor.MudItem}[])">
@@ -13393,6 +13426,47 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.MudExStructuredDataEditor.ConfigureMetaBase(MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject})">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition">
+            <summary>
+            The position at which to render an additional component.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition.Before">
+            <summary>
+            Render the additional component before the current component.
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.Options.AdditionalComponentRenderPosition.After">
+            <summary>
+            Render the additional component after the current component.
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.BooleanInputProtectionBase`1">
+            <summary>
+            Base class for a boolean input protection instance, providing a set of properties and methods to configure the boolean input protection.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.BooleanInputProtectionBase`1.#ctor(System.String,System.Action{`0})">
+            <summary>
+            Constructor for a boolean input protection instance.
+            </summary>
+            <param name="tooltip"></param>
+            <param name="configure"></param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.BooleanInputProtectionBase`1.AdditionalRenderData">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.BooleanInputProtectionBase`1.ConfirmationCallback">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.CheckBoxConfirmationProtection">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.ConfirmationProtection">
+            <summary>
+            Provides a set of static factory options to protect a component with a confirmation.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.ICustomRenderer">
             <summary>
             Interface can implemented and used in object edit RenderWith to completely create an own property renderer
@@ -13401,6 +13475,29 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ICustomRenderer.Render(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder,Microsoft.AspNetCore.Components.IHandleEvent,MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta)">
             <summary>
             If attached as setting in ObjectEditPropertyMeta.RenderData this is called by MudExPropertyEdit
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.DialogConfirmationProtection">
+            <summary>
+            Base class for a boolean input protection instance, providing a set of properties and methods to configure the boolean input protection.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.DialogConfirmationProtection.OnButtonSet(MudBlazor.MudToggleIconButton)">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.IConfirmationProtection">
+            <summary>
+            Interface for a confirmation protection instance, providing a set of properties and methods to configure the confirmation protection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.IConfirmationProtection.AdditionalRenderData">
+            <summary>
+            Additional render data to be used for the confirmation protection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.IConfirmationProtection.ConfirmationCallback">
+            <summary>
+            Callback to be invoked when the confirmation protection is triggered.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta">
@@ -13529,6 +13626,16 @@
             Reference to the main edit meta data.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta.Style">
+            <summary>
+            Style
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta.Class">
+            <summary>
+            Class
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta.Parent">
             <summary>
             Parent property meta data.
@@ -13597,6 +13704,11 @@
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta.UpdateConditionalSettings``1(``0)">
             <summary>
             Updates all conditional settings for this property metadata.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMeta.ForceUpdate">
+            <summary>
+            Forces an update of the property metadata and the containing editor.
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditPropertyMetaGroupInfo">
@@ -13842,7 +13954,7 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.OnRendered``1(System.Action{``0})">
             <summary>
-            Callback for when the component reference is set.
+            Action to be executed when the component reference is set.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderData.IsValidParameterAttribute(System.String,System.Object)">
@@ -14350,6 +14462,32 @@
             <summary>
             Requires confirmation before resetting the object.
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.SwitchConfirmationProtection">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.ToggleButtonConfirmationProtection">
+            <summary>
+            Protection with a toggle button that requires confirmation before changing the value.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ToggleButtonConfirmationProtection.Button">
+            <summary>
+            The button instance.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.ToggleButtonConfirmationProtection.#ctor(System.String,System.Action{MudBlazor.MudToggleIconButton})">
+            <summary>
+            Constructor for a boolean input protection instance.
+            </summary>
+            <param name="tooltip"></param>
+            <param name="configure"></param>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ToggleButtonConfirmationProtection.AdditionalRenderData">
+            <inheritdoc />
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.Options.ToggleButtonConfirmationProtection.ConfirmationCallback">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.FilterHighlighting">
             <summary>
@@ -18623,12 +18761,17 @@
             Prompts the user for input with a validation function asynchronously.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.PromptAsync(MudBlazor.IDialogService,System.String,System.String,System.String,System.Func{System.String,System.Boolean},MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
+            <summary>
+            Prompts the user for input with a validation function and custom icon asynchronously.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.PromptAsync(MudBlazor.IDialogService,System.String,System.String,System.String,System.Func{System.String,System.Boolean},MudBlazor.Extensions.Options.DialogOptionsEx)">
             <summary>
             Prompts the user for input with a validation function and custom icon asynchronously.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.PromptAsync(MudBlazor.IDialogService,System.String,System.String,System.String,System.String,System.String,System.String,System.Func{System.String,System.Boolean},MudBlazor.Extensions.Options.DialogOptionsEx)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.PromptAsync(MudBlazor.IDialogService,System.String,System.String,System.String,System.String,System.String,System.String,System.Func{System.String,System.Boolean},MudBlazor.Extensions.Options.DialogOptionsEx,MudBlazor.DialogParameters)">
             <summary>
             Prompts the user for input with customizable title, message, initialValue, buttonOkText, buttonCancelText, icon, validation function, and dialog options asynchronously.
             </summary>
@@ -22188,9 +22331,78 @@
             </summary>
             <returns>A reference to the current instance.</returns>
         </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.Position">
+            <summary>
+            The location of the dialog.
+            </summary>
+            <remarks>
+            Defaults to <c>null</c>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.MaxWidth">
+            <summary>
+            The maximum allowed width of the dialog.
+            </summary>
+            <remarks>
+            Defaults to <c>null</c>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.BackdropClick">
+            <summary>
+            Allows closing the dialog by clicking outside of the dialog.
+            </summary>
+            <remarks>
+            Defaults to <c>true</c>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.CloseOnEscapeKey">
+            <summary>
+            Allows closing the dialog by pressing the Escape key.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.NoHeader">
+            <summary>
+            Hides the dialog header.
+            </summary>
+            <remarks>
+            Defaults to <c>false</c>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.CloseButton">
+            <summary>
+            Shows a close button in the top-right corner of the dialog.
+            </summary>
+            <remarks>
+            Defaults to <c>false</c>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.FullScreen">
+            <summary>
+            Sets the size of the dialog to the entire screen.
+            </summary>
+            <remarks>
+            Defaults to <c>false</c>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.FullWidth">
+            <summary>
+            Sets the width of the dialog to the width of the screen.
+            </summary>
+            <remarks>
+            Defaults to <c>false</c>.
+            </remarks>
+        </member>
+        <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.BackgroundClass">
+            <summary>
+            The custom CSS classes to apply to the dialog background.
+            </summary>
+            <remarks>
+            Multiple classes must be separated by spaces.
+            </remarks>
+        </member>
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.KeepMaxSizeConstraints">
             <summary>
-            If true the dialog will keep the max size constraints for resizing defined with <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.MaxHeight"/> and <see cref="T:MudBlazor.MaxWidth"/>.
+            If true the dialog will keep the max size constraints for resizing defined with <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.MaxHeight"/> and <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.MaxWidth"/>.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.KeepRelations">
@@ -22250,7 +22462,7 @@
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.ShowAtCursor">
             <summary>
             A boolean value indicating whether the dialog is shown at the cursor location or not.
-            Please notice if this is true <see cref="T:MudBlazor.Position"/> and <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.CustomPosition"/> will be ignored.
+            Please notice if this is true <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.Position"/> and <see cref="P:MudBlazor.Extensions.Options.DialogOptionsEx.CustomPosition"/> will be ignored.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Options.DialogOptionsEx.CursorPositionOrigin">
@@ -23150,103 +23362,10 @@
             AppearanceService
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.#ctor(MudBlazor.IDialogService,Microsoft.JSInterop.IJSRuntime,System.IServiceProvider,MudBlazor.Extensions.Services.MudExAppearanceService,MudBlazor.Extensions.Core.IDialogEventService)">
+        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.#ctor(Microsoft.JSInterop.IJSRuntime,System.IServiceProvider,MudBlazor.Extensions.Services.MudExAppearanceService,MudBlazor.Extensions.Core.IDialogEventService)">
             <summary>
             Constructor
             </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show``1">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show``1(System.String)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show``1(System.String,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show``1(System.String,MudBlazor.DialogParameters)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show``1(System.String,MudBlazor.DialogParameters,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show(System.Type)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show(System.Type,System.String)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show(System.Type,System.String,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show(System.Type,System.String,MudBlazor.DialogParameters)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Show(System.Type,System.String,MudBlazor.DialogParameters,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync``1">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync``1(System.String)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync``1(System.String,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync``1(System.String,MudBlazor.DialogParameters)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync``1(System.String,MudBlazor.DialogParameters,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync(System.Type)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync(System.Type,System.String)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync(System.Type,System.String,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync(System.Type,System.String,MudBlazor.DialogParameters)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowAsync(System.Type,System.String,MudBlazor.DialogParameters,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.CreateReference">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowMessageBox(System.String,System.String,System.String,System.String,System.String,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowMessageBox(System.String,Microsoft.AspNetCore.Components.MarkupString,System.String,System.String,System.String,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.ShowMessageBox(MudBlazor.MessageBoxOptions,MudBlazor.DialogOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Close(MudBlazor.IDialogReference)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Close(MudBlazor.IDialogReference,MudBlazor.DialogResult)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Close(MudBlazor.DialogReference)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.Close(MudBlazor.DialogReference,MudBlazor.DialogResult)">
-            <inheritdoc />
-        </member>
-        <member name="E:MudBlazor.Extensions.Services.MudExDialogService.OnDialogInstanceAdded">
-            <inheritdoc />
-        </member>
-        <member name="E:MudBlazor.Extensions.Services.MudExDialogService.DialogInstanceAddedAsync">
-            <inheritdoc />
-        </member>
-        <member name="E:MudBlazor.Extensions.Services.MudExDialogService.OnDialogCloseRequested">
-            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Services.MudExFileService">
             <summary>

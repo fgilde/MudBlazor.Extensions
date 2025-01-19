@@ -194,6 +194,7 @@ public partial class MudExThemeSelect<TTheme>
 
     private string TextStyleStr(TTheme theme)
     {
+
         var typography = theme.Typography.Default;
         return MudExStyleBuilder.Default
             .WithFontFamily(string.Join(", ", typography.FontFamily ?? Array.Empty<string>()), PreviewFont && typography.FontFamily?.Any() == true)

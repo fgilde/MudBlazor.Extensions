@@ -31,13 +31,29 @@ namespace MudBlazor.Extensions.Helper
         /// </summary>        
         internal static async Task<IJSRuntime> InitializeMudBlazorExtensionsCoreAsync(this IJSRuntime runtime, bool force = false)
         {
-            LegacyRuntimeReference ??= (runtime ??= GetJsRuntime());
-            if (force || !UseMinified || !await runtime.IsNamespaceAvailableAsync("MudBlazorExtensions"))
+            try
             {
-                await runtime.ImportModuleBlazorJS(); // This is a workaround for using module in MAUI apps
-                await ImportMainMudEx(runtime); // This is a workaround for using module in MAUI apps
+                LegacyRuntimeReference ??= (runtime ??= GetJsRuntime());
+                if (force || !UseMinified || !await runtime.IsNamespaceAvailableAsync("MudBlazorExtensions"))
+                {
+                    try
+                    {
+                        await runtime.ImportModuleBlazorJS(); // This is a workaround for using module in MAUI apps
+                    }
+                    catch (Exception e)
+                    {}
+
+                    try
+                    {
+                        await ImportMainMudEx(runtime); // This is a workaround for using module in MAUI apps
+                    }
+                    catch (Exception e)
+                    {}
+                }
+                await LoadCssAsync(runtime, force);
             }
-            await LoadCssAsync(runtime, force);
+            catch (Exception e)
+            {}
             return runtime;
         }
 

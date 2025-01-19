@@ -13,7 +13,7 @@
                 <MudRating SelectedValue="rating" Disabled="true" Class="mt-1 ml-3"/>
             </div>
 
-            <MudExDialog @bind-Visible="visible" OptionsEx="Options">
+            <MudExDialog @ref="_dialog" @bind-Visible="visible" OptionsEx="Options">
                 <TitleContent>
                     <MudText Typo="Typo.h6">
                         <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3"/> Edit rating
@@ -39,10 +39,19 @@
 </DemoComponent>
 
 @code {
+    MudExDialog _dialog;
     private bool visible;
     private int rating;
-    private void OpenDialog() => visible = true;
-    void Submit() => visible = false;
+    private void OpenDialog()
+    {
+        visible = true;
+        InvokeAsync(StateHasChanged);
+    }
+
+    async Task Submit()
+    {
+        await _dialog.CloseAsync();        
+    }
 
     public DialogOptionsEx Options { get; set; } = new()
     {

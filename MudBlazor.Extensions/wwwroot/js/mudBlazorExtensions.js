@@ -143,6 +143,7 @@ window.MudBlazorExtensions = {
 window.MudBlazorExtensions.__bindEvents();
 
 (function () {
+
     if (window.__originalBlazorFocusMethod)
         return;
     window.__originalBlazorFocusMethod = window.Blazor._internal.domWrapper.focus;

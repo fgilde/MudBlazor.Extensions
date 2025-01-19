@@ -23,6 +23,7 @@ public partial class MudExPickerBase<T>
     private ElementReference _pickerInlineRef;
     private Task CloseOverlayAsync() => CloseAsync(PickerActions == null);
     private double? _currentWidth;
+    private string _id;
 
     /// <summary>
     /// Is true if init was called
@@ -116,7 +117,7 @@ public partial class MudExPickerBase<T>
 
     private int GetActiveElevation()
     {
-        return Elevation;
+        return Elevation ?? 15;
     }
 
     /// <summary>
@@ -169,7 +170,7 @@ public partial class MudExPickerBase<T>
     /// <summary>
     /// Id for picker element
     /// </summary>
-    protected string Id => this.ExposeField<string>("_elementId") ?? $"mud-ex-picker-{Guid.NewGuid().ToFormattedId()}";
+    protected string Id => _id ??= (GetElementId() ?? $"mud-ex-picker-{Guid.NewGuid().ToFormattedId()}");
 
     /// <inheritdoc />
     public override Task SetParametersAsync(ParameterView parameters)
@@ -197,6 +198,12 @@ public partial class MudExPickerBase<T>
         }
 
         base.OnAfterRender(firstRender);
+    }
+    
+    private string GetElementId()
+    {
+        return typeof(MudPicker<T>)
+            .GetField("_elementId", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(this)?.ToString();      
     }
 
     protected internal async Task ToggleStateExtAsync()
@@ -280,7 +287,14 @@ public partial class MudExPickerBase<T>
     /// </summary>
     protected virtual void RaiseChanged()
     {
-        ValueChanged.InvokeAsync(Value);
+        try
+        {
+            ValueChanged.InvokeAsync(Value);
+        }
+        catch (Exception)
+        {
+            // BUG: After newest MudBlazor update we have to catch this exception
+        }
     }
 
 

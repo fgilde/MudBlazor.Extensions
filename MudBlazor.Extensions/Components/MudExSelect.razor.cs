@@ -50,7 +50,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
         IconSize = Size.Medium;
     }
 
-    [Inject] private IKeyInterceptorFactory KeyInterceptorFactory { get; set; }
+    [Inject] private IKeyInterceptorService KeyInterceptorService { get; set; }
 
     private MudExList<T> _list;
 
@@ -61,7 +61,6 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
 
     private bool _dense;
     private string _multiSelectionText;
-    private IKeyInterceptor _keyInterceptor;
     /// <summary>
     /// The collection of items within this select
     /// </summary>
@@ -473,7 +472,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.FormComponent.Behavior)]
-    public virtual bool RelativeWidth { get; set; } = true;
+    public virtual DropdownWidth RelativeWidth { get; set; } = DropdownWidth.Relative;
 
     /// <summary>
     /// Sets the maxheight the Select can have when open.
@@ -711,7 +710,14 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
                     //Value = _selectedValues.LastOrDefault();
                 }
 
-                ValueChanged.InvokeAsync(Value);
+                try
+                {
+                    ValueChanged.InvokeAsync(Value);
+                }
+                catch (Exception)   
+                {
+                    // BUG: After newest MudBlazor update we have to catch this exception
+                }
                 _ = UpdateTextPropertyAsync(false);
                 _selectedValuesSetterStarted = false;
                 Task.Delay(30).ContinueWith(_ => BeginValidateAsync());
@@ -898,27 +904,22 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
                 ItemCollection = await GetAvailableItemsAsync();
             }
 
-            _keyInterceptor = KeyInterceptorFactory.Create();
-            await _keyInterceptor.Connect(_elementId, new KeyInterceptorOptions()
-            {
-                //EnableLogging = true,
-                TargetClass = "mud-input-control",
-                Keys = {
-                        new KeyOptions { Key=" ", PreventDown = "key+none" }, //prevent scrolling page, toggle open/close
-                        new KeyOptions { Key="ArrowUp", PreventDown = "key+none" }, // prevent scrolling page, instead highlight previous item
-                        new KeyOptions { Key="ArrowDown", PreventDown = "key+none" }, // prevent scrolling page, instead highlight next item
-                        new KeyOptions { Key="Home", PreventDown = "key+none" },
-                        new KeyOptions { Key="End", PreventDown = "key+none" },
-                        new KeyOptions { Key="Escape" },
-                        new KeyOptions { Key="Enter", PreventDown = "key+none" },
-                        new KeyOptions { Key="NumpadEnter", PreventDown = "key+none" },
-                        new KeyOptions { Key="a", PreventDown = "key+ctrl" }, // select all items instead of all page text
-                        new KeyOptions { Key="A", PreventDown = "key+ctrl" }, // select all items instead of all page text
-                        new KeyOptions { Key="/./", SubscribeDown = true, SubscribeUp = true }, // for our users
-                    },
-            });
-            _keyInterceptor.KeyDown += HandleKeyDown;
-            _keyInterceptor.KeyUp += HandleKeyUp;
+            var keys = new[]{
+                new KeyOptions { Key=" ", PreventDown = "key+none" }, //prevent scrolling page, toggle open/close
+                new KeyOptions { Key="ArrowUp", PreventDown = "key+none" }, // prevent scrolling page, instead highlight previous item
+                new KeyOptions { Key="ArrowDown", PreventDown = "key+none" }, // prevent scrolling page, instead highlight next item
+                new KeyOptions { Key="Home", PreventDown = "key+none" },
+                new KeyOptions { Key="End", PreventDown = "key+none" },
+                new KeyOptions { Key="Escape" },
+                new KeyOptions { Key="Enter", PreventDown = "key+none" },
+                new KeyOptions { Key="NumpadEnter", PreventDown = "key+none" },
+                new KeyOptions { Key="a", PreventDown = "key+ctrl" }, // select all items instead of all page text
+                new KeyOptions { Key="A", PreventDown = "key+ctrl" }, // select all items instead of all page text
+                new KeyOptions { Key="/./", SubscribeDown = true, SubscribeUp = true }, // for our users
+            };
+            var options = new KeyInterceptorOptions("mud-input-control", keys);
+            await KeyInterceptorService.SubscribeAsync(_elementId, options, HandleKeyDown, HandleKeyUp);
+
             await UpdateTextPropertyAsync(false);
             _list?.ForceUpdateItems();
             SelectedListItem = Items.FirstOrDefault(x => x.Value != null && Value != null && x.Value.Equals(Value))?.ListItem;
@@ -936,23 +937,12 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
         _list?.ForceUpdateItems();
     }
 
-    /// <summary>
-    /// Disposes the component.
-    /// </summary>
-    protected override void Dispose(bool disposing)
+    protected override async ValueTask DisposeAsyncCore()
     {
-        base.Dispose(disposing);
-
-        if (disposing)
-        {
-            if (_keyInterceptor != null)
-            {
-                _keyInterceptor.KeyDown -= HandleKeyDown;
-                _keyInterceptor.KeyUp -= HandleKeyUp;
-            }
-            _keyInterceptor?.Dispose();
-        }
+        await base.DisposeAsyncCore();
+        await KeyInterceptorService.UnsubscribeAsync(_elementId);
     }
+
 
     #endregion
 
@@ -1106,8 +1096,8 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
         UpdateIcon();
         StateHasChanged();
 
-        //disable escape propagation: if selectmenu is open, only the select popover should close and underlying components should not handle escape key
-        await _keyInterceptor.UpdateKey(new() { Key = "Escape", StopDown = "Key+none" });
+        // TODO: MudBlazor 8
+        //await _keyInterceptor.UpdateKey(new() { Key = "Escape", StopDown = "Key+none" });
         await OnOpen.InvokeAsync();
     }
 
@@ -1119,16 +1109,9 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
         IsOpen = false;
         UpdateIcon();
         StateHasChanged();
-        //if (focusAgain == true)
-        //{
-        //    StateHasChanged();
-        //    await OnBlur.InvokeAsync(new FocusEventArgs());
-        //    _elementReference.FocusAsync().AndForget(TaskOption.Safe);
-        //    StateHasChanged();
-        //}
 
-        //enable escape propagation: the select popover was closed, now underlying components are allowed to handle escape key
-        await _keyInterceptor.UpdateKey(new() { Key = "Escape", StopDown = "none" });
+        // TODO: MudBlazor 8
+        //await _keyInterceptor.UpdateKey(new() { Key = "Escape", StopDown = "none" });
 
         await OnClose.InvokeAsync();
     }
@@ -1155,7 +1138,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     /// <summary>
     /// Selects the given option.
     /// </summary>
-    public async Task SelectOption(object obj)
+    public async Task SelectOption(object obj, bool force = true)
     {
         var value = (T)obj;
         if (MultiSelection)
@@ -1170,14 +1153,8 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
             // CloseMenu(true) doesn't close popover in BSS
             await CloseMenu();
 
-            if (EqualityComparer<T>.Default.Equals(Value, value))
-            {
-                StateHasChanged();
-                return;
-            }
-
-            await SetValueAsync(value);
-            //await UpdateTextPropertyAsync(false);
+            await SetValueAsync(value, force: force);
+            
             _ = _elementReference.SetText(Text);
             //_selectedValues.Clear();
             //_selectedValues.Add(value);

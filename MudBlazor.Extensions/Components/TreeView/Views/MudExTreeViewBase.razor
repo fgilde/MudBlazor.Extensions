@@ -2,7 +2,6 @@
 @using MudBlazor.Extensions.Components.ObjectEdit
 @using Nextended.Core.Extensions
 @using Nextended.Core.Types
-@using YamlDotNet.Core.Tokens
 @inherits MudExBaseComponent<MudExTreeViewBase<TItem>>
 @namespace MudBlazor.Extensions.Components
 
@@ -34,6 +33,8 @@
 
     public RenderFragment RenderItemContent(TreeViewItemContext<TItem> context) => RenderItemContent(context, false);
 
+    public virtual RenderFragment RenderItem(TreeViewItemContext<TItem> context) => null;
+    
     protected virtual RenderFragment RenderItemContent(TreeViewItemContext<TItem> context, bool checkTemplate)
     {
         if (checkTemplate && ItemContentTemplate != null)

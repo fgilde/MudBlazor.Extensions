@@ -1687,6 +1687,7 @@ class MudExDialogHandlerBase {
         this.dialog = dialog || this.dialog;
         if (this.dialog) {
             this.dialog.style.position = 'absolute';
+            //this.setRelativeIf();
             this.dialog.options = this.options; 
             this.dialogHeader = this.dialog.querySelector(this.mudDialogHeaderSelector);
             this.dialogTitleEl = this.dialog.querySelector('.mud-dialog-title');
@@ -1707,6 +1708,9 @@ class MudExDialogAnimationHandler extends MudExDialogHandlerBase {
         super.handle(dialog);
         if (this.options.animations != null && Array.isArray(this.options.animations) && this.options.animations.length) {
             this.animate();
+            this.awaitAnimation(() => this.raiseDialogEvent('OnAnimated'));
+        } else {
+            this.raiseDialogEvent('OnAnimated');
         }        
 
         this.extendCloseEvents();
@@ -1775,7 +1779,7 @@ class MudExDialogAnimationHandler extends MudExDialogHandlerBase {
     }
 
     closeAnimation() {
-        MudExDialogAnimationHandler.playCloseAnimation(this.dialog);
+        return MudExDialogAnimationHandler.playCloseAnimation(this.dialog);
     }
 
     static playCloseAnimation(dialog) {
@@ -1786,7 +1790,8 @@ class MudExDialogAnimationHandler extends MudExDialogHandlerBase {
         dialog.style['animation-duration'] = `${delay}ms`;
         return new Promise((resolve) => {
             MudExDialogAnimationHandler._playCloseAnimation(dialog);
-            setTimeout(() => {                
+            setTimeout(() => {
+                dialog.classList.add('mud-ex-dialog-initial');
                 resolve();
             }, delay);
         });
@@ -1832,11 +1837,13 @@ class MudExDialogButtonHandler extends MudExDialogHandlerBase {
                     btnEl.onclick = () => {
                         if (b.id.indexOf('mud-button-maximize') >= 0) {
                             this.getHandler(MudExDialogPositionHandler).maximize();
+                            return;
                         }
                         if (b.id.indexOf('mud-button-minimize') >= 0) {
                             this.getHandler(MudExDialogPositionHandler).minimize();
+                            return;
 
-                        } else {
+                        } else if (b.callBackReference && b.callbackName) {
                             b.callBackReference.invokeMethodAsync(b.callbackName);
                         }
                     }
@@ -2122,7 +2129,7 @@ class MudExDialogNoModalHandler extends MudExDialogHandlerBase {
             const app = targetDlg.parentElement;            
             //const targetRef = MudExDialogNoModalHandler.getDialogReference(targetDlg);
             const lastDialog = allDialogs[allDialogs.length - 1];
-            if (targetDlg !== lastDialog) {
+            if (lastDialog && targetDlg && targetDlg !== lastDialog) {
                 //const lastDialogRef = MudExDialogNoModalHandler.getDialogReference(lastDialog);
                 app.insertBefore(targetDlg, lastDialog.nextSibling);                
             }
@@ -2485,6 +2492,7 @@ window.MudBlazorExtensions = {
 window.MudBlazorExtensions.__bindEvents();
 
 (function () {
+
     if (window.__originalBlazorFocusMethod)
         return;
     window.__originalBlazorFocusMethod = window.Blazor._internal.domWrapper.focus;

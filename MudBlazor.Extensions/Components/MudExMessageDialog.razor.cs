@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
-using MudBlazor.Extensions.Helper;
 using System.Reflection;
+using MudBlazor.Extensions.Helper;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -12,7 +12,9 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExMessageDialog
 {
     private ComponentBase _component;
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
+
+    [Inject] private IDialogEventService DialogEventService { get; set; }
 
     /// <summary>
     /// The color of the dialog icon for when the dialog is used in relation to a particular color theme.
@@ -99,17 +101,45 @@ public partial class MudExMessageDialog
     public double ProgressMax { get; set; } = 100.0;
 
     /// <summary>
+    /// If this is true the content of the dialog will be rendered after the dialog is opened and animation is finished
+    /// </summary>
+    [Parameter, SafeCategory("Behavior")]
+    public bool DelayContentRendering { get; set; }
+
+    /// <summary>
     /// If true StateHasChanged is not happen
     /// </summary>
     [Parameter, SafeCategory("Behavior")]
     public bool PreventStateHasChanged { get; set; }
 
+    private bool _animationFinished;
+    private bool ShouldRenderContent => Content != null && (!DelayContentRendering || _animationFinished);
+
     /// <inheritdoc />
     protected override void OnAfterRender(bool firstRender)
     {
-        if(firstRender && Buttons?.Any(b => b.HasCondition) == true)
-            UpdateConditions();
+        if(firstRender)
+        {
+            if (DelayContentRendering)
+            {
+                DialogEventService.Subscribe<DialogAfterAnimationEvent>(DialogOpened);
+            }
+            else if(Buttons?.Any(b => b.HasCondition) == true)            
+            {
+                UpdateConditions();
+            }
+        }
         base.OnAfterRender(firstRender);
+    }
+
+    private async Task DialogOpened(DialogAfterAnimationEvent arg)
+    {
+        if(_animationFinished)
+            return;
+        _animationFinished = true;
+        if (Buttons?.Any(b => b.HasCondition) == true)        
+            UpdateConditions();
+        await InvokeAsync(StateHasChanged);             
     }
 
     private void UpdateConditions()
@@ -191,4 +221,10 @@ public partial class MudExMessageDialog
     /// Cancels the dialog
     /// </summary>
     void Cancel() => MudDialog.CloseAnimatedIf(JsRuntime);
+
+    public override ValueTask DisposeAsync()
+    {
+        DialogEventService.Unsubscribe<DialogAfterAnimationEvent>(DialogOpened);
+        return base.DisposeAsync();
+    }
 }

@@ -81,19 +81,35 @@ public partial class RenderData : IRenderData
         internal set
         {
             _componentReference = value;
-            _onReferenceSet?.Invoke(value);
+            if(_componentReference != null)
+                _onReferenceSet?.Invoke(value);
         }
     }
 
     /// <summary>
-    /// Callback for when the component reference is set.
+    /// Action to be executed when the component reference is set.
     /// </summary>
-    public void OnRendered<TComponent>(Action<TComponent> onReferenceSet) where TComponent : class, IComponent
+    public void OnRendered<TComponent>(Action<TComponent> onReferenceSet)
+        where TComponent : class, IComponent
     {
-        if(ComponentReference != null)
-            onReferenceSet(ComponentReference as TComponent);
-        _onReferenceSet = o => onReferenceSet(o as TComponent);
+        if (ComponentReference is TComponent component)        
+            onReferenceSet(component);        
+
+        _onReferenceSet = async o =>
+        {
+            if (o is DynamicComponent dynamicComponent)
+            {
+                while (dynamicComponent.Instance is null)                
+                    await Task.Delay(100);
+                
+                if (dynamicComponent.Instance is TComponent actualInstance)                
+                    onReferenceSet(actualInstance);                
+            }
+            else if (o is TComponent typedComponent)            
+                onReferenceSet(typedComponent);            
+        };
     }
+
 
     /// <summary>
     /// Returns whether the given key and value are valid parameters for the current component type.

@@ -827,6 +827,18 @@ public partial class MudExObjectEdit<T>
 
             UpdateConditions();
         }
+
+        foreach (var item in MetaInformation.AllProperties)
+        {
+            item.UpdateRequired -= OnMetaUpdateRequired;
+            item.UpdateRequired += OnMetaUpdateRequired;
+        }
+
+    }
+
+    private void OnMetaUpdateRequired(ObjectEditPropertyMeta meta)
+    {        
+        CallStateHasChanged();
     }
 
     private async Task OnResetClick(MouseEventArgs arg)
@@ -1032,7 +1044,7 @@ public partial class MudExObjectEdit<T>
             op.MaxWidth = MaxWidth.Large;
             op.FullWidth = false;
             op.FullHeight = false;
-            op.Position = DialogPosition.TopCenter;
+            
         }, new DialogParameters
         {
             { nameof(MudExFileDisplayDialog.AllowDownload), false },

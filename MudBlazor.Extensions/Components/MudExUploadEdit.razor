@@ -180,7 +180,7 @@
             </MudGrid>
         </div>
 
-        <MudExDialog @bind-Visible="_urlDialogVisible" OptionsEx="@ExternalDialogOptions">
+        <MudExDialog @ref="_addUrlDialog" @bind-Visible="_urlDialogVisible" OptionsEx="@ExternalDialogOptions">
             <TitleContent>
                 <MudText Typo="Typo.h6">
                     <MudExIcon Color="MudBlazor.Color.Secondary" Icon="@Icons.Material.Filled.CloudUpload" Class="mr-3 mb-n1" />
@@ -191,7 +191,7 @@
                 @if (AllowExternalUrl)
                 {
                     <MudText>@TryLocalize(TextAddUrlMessage)</MudText>
-                    <MudTextField AutoFocus="true" Immediate="true" T="string" @bind-Value="_externalUrl" Variant="Variant.Outlined"></MudTextField>
+                    <MudTextField @ref="_addUrlTextField" AutoFocus="true" Immediate="true" T="string" @bind-Value="ExternalUrl" Variant="Variant.Outlined"></MudTextField>
                 }
 
                 @if (RenderPickerInDialog)
@@ -204,14 +204,14 @@
                 }
             </DialogContent>
             <DialogActions>
-                <MudButton Color="@(AllowExternalUrl ? MudBlazor.Color.Default : MudBlazor.Color.Error)" Variant="@(AllowExternalUrl ? Variant.Text :Variant.Filled)" OnClick="@AddUrl">@TryLocalize("Close")</MudButton>
+                <MudButton Color="@(AllowExternalUrl ? MudBlazor.Color.Default : MudBlazor.Color.Error)" Variant="@(AllowExternalUrl ? Variant.Text :Variant.Filled)" OnClick="@(() => _addUrlDialog.CloseAsync())">@TryLocalize("Close")</MudButton>
 
                 @if (AllowExternalUrl)
                 {
-                    <MudButton Disabled="@(!IsValidUrl(_externalUrl))"
+                    <MudButton @ref="_addUrlButton"
                                Color="MudBlazor.Color.Error"
                                Variant="Variant.Filled"
-                               OnClick="@(() => Add(_externalUrl).ContinueWith(_ => { _externalUrl = string.Empty; _urlDialogVisible = false; }))">
+                               OnClick="@(AddExternalUrlClick)">
                         @TryLocalize(TextAddUrl)
                     </MudButton>
                 }

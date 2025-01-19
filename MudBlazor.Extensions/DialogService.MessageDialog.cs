@@ -530,6 +530,14 @@ public static partial class DialogServiceExt
     /// <summary>
     /// Prompts the user for input with a validation function and custom icon asynchronously.
     /// </summary>
+    public static Task<string> PromptAsync(this IDialogService dialogService, string title, string message, string icon, Func<string, bool> canConfirm, DialogParameters dialogParameters, DialogOptionsEx options = null)
+    {
+        return dialogService.PromptAsync(title, message, "", icon: icon, canConfirm: canConfirm, options: options, dialogParameters: dialogParameters);
+    }
+
+    /// <summary>
+    /// Prompts the user for input with a validation function and custom icon asynchronously.
+    /// </summary>
     public static Task<string> PromptAsync(this IDialogService dialogService, string title, string message, string icon, Func<string, bool> canConfirm, DialogOptionsEx options = null)
     {
         return dialogService.PromptAsync(title, message, "", icon: icon, canConfirm: canConfirm, options: options);
@@ -544,8 +552,10 @@ public static partial class DialogServiceExt
         string buttonCancelText = "Cancel",
         string icon = null,
         Func<string, bool> canConfirm = null,
-        DialogOptionsEx options = null)
+        DialogOptionsEx options = null,
+        DialogParameters dialogParameters = null)
     {
+        dialogParameters ??= new DialogParameters();
         canConfirm ??= (_ => true);
         var parameters = new DialogParameters
         {
@@ -558,7 +568,7 @@ public static partial class DialogServiceExt
         };
 
         options ??= DefaultOptions();
-        var res = await dialogService.ShowEx<MudExPromptDialog>(title, parameters, options);
+        var res = await dialogService.ShowEx<MudExPromptDialog>(title, dialogParameters.MergeWith(parameters), options);
         var dialogResult = (await res.Result);
 
         if (!dialogResult.Canceled && dialogResult.Data != null && canConfirm(dialogResult.Data.ToString()))

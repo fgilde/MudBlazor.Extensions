@@ -233,7 +233,17 @@ namespace MudBlazor.Extensions
                 options.JsRuntime = service.JSRuntime;
                 options.AppearanceService = service.AppearanceService;
             }
-            return await dialogService.ShowAsync(type, title, parameters ?? new DialogParameters(), options).InjectOptionsAsync(dialogService, options);
+
+            Task OnAddedFunc(IDialogReference reference)
+            {
+                _ = reference.InjectOptionsAsync(dialogService, options);
+                return Task.CompletedTask;
+            }
+
+            dialogService.DialogInstanceAddedAsync += OnAddedFunc;
+            var res = await dialogService.ShowAsync(type, title, parameters ?? new DialogParameters(), options);
+            dialogService.DialogInstanceAddedAsync -= OnAddedFunc;
+            return res;
         }
 
         internal static async Task PrepareOptionsBeforeShow(DialogOptionsEx options)
@@ -245,7 +255,7 @@ namespace MudBlazor.Extensions
             else if (options.DialogBackgroundAppearance != null)
                 await options.GetAppearanceService().ApplyAsClassOnlyToAsync(options.DialogBackgroundAppearance, options, (o, cls) => o.BackgroundClass = $"{cls} {o.BackgroundClass}");
 
-            (options.DialogAppearance ??= MudExAppearance.Empty()).WithStyle(b => b                                
+            (options.DialogAppearance ??= MudExAppearance.Empty()).WithStyle(b => b
                 .WithHeight(options.CustomSize?.Height, !string.IsNullOrEmpty(options.CustomSize?.Height))
                 .WithWidth(options.CustomSize?.Width, !string.IsNullOrEmpty(options.CustomSize?.Width))
             );
@@ -253,12 +263,7 @@ namespace MudBlazor.Extensions
             //if (options.Animations?.Any(a => a != AnimationType.Default) == true)
             //    options.DialogAppearance.WithStyle(b => b.WithAnimations(options.Animations, options.AnimationDuration, AnimationDirection.In, options.AnimationTimingFunction, options.Position));
         }
-
-        internal static async Task<IDialogReference> InjectOptionsAsync(this Task<IDialogReference> dialogReference, IDialogService service, DialogOptionsEx options)
-        {
-            return await (await dialogReference).InjectOptionsAsync(service, options);
-        }
-
+        
         internal static async Task<IDialogReference> InjectOptionsAsync(this IDialogReference dialogReference, IDialogService service, DialogOptionsEx options)
         {
             options = PrepareOptionsAfterShow(options);

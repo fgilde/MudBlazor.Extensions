@@ -14,14 +14,17 @@
 
     private void Render(RenderTreeBuilder __builder)
     {
-        @RenderWrapper(PropertyMeta?.RenderData?.Wrapper);
+        @RenderWrapper(PropertyMeta?.RenderData?.Wrapper)
+        ;
     }
-    
+
     private RenderFragment RenderWrapper(IRenderData wrapper, bool renderEditorAfter = true)
-    {
+    {        
         if (wrapper == null)
             return renderEditorAfter ? RenderEditor() : null;
-        return @<DynamicComponent Type="@wrapper.ComponentType" Parameters="@wrapper.Attributes.AddOrUpdate("ChildContent", RenderWrapper(wrapper.Wrapper, renderEditorAfter))"></DynamicComponent>;
+        if (wrapper is not RenderData wrapperRenderData)
+            return @<DynamicComponent Type="@wrapper.ComponentType" Parameters="@wrapper.Attributes.AddOrUpdate("ChildContent", RenderWrapper(wrapper.Wrapper, renderEditorAfter))"></DynamicComponent>;            
+        return @<DynamicComponent @ref="wrapperRenderData.ComponentReference" Type="@wrapper.ComponentType" Parameters="@wrapper.Attributes.AddOrUpdate("ChildContent", RenderWrapper(wrapper.Wrapper, renderEditorAfter))"></DynamicComponent>;
     }
 
     private RenderFragment RenderEditor()
@@ -86,7 +89,7 @@
 
         if (PropertyMeta.Settings.ValidationComponent || PropertyMeta.RenderData?.RenderDataBeforeComponent?.Any() == true || PropertyMeta.RenderData?.RenderDataAfterComponent?.Any() == true)
         {
-            return @<div class="@($"mud-ex-property-component-wrapper mud-ex-property-component-wrapper-for-{PropertyMeta.PropertyName.Replace(".", "-")}")">
+            return @<div style="@($"{PropertyMeta.Style}")" class="@($"mud-ex-property-component-wrapper mud-ex-property-component-wrapper-for-{PropertyMeta.PropertyName.Replace(".", "-")} {PropertyMeta.Class}")">
                        @foreach (var data in PropertyMeta.RenderData?.RenderDataBeforeComponent ?? Enumerable.Empty<IRenderData>())
                        { @RenderWrapper(data, false)}
   

@@ -1,5 +1,6 @@
 ﻿using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
+using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
@@ -10,7 +11,7 @@ namespace MudBlazor.Extensions.Options
     /// <summary>
     /// Extended Dialog Options class, inheriting from DialogOptions and ICloneable.
     /// </summary>
-    public partial class DialogOptionsEx : DialogOptions, ICloneable
+    public partial class DialogOptionsEx : ICloneable
     {
         internal MudExAppearanceService AppearanceService { get; set; }
         internal MudExAppearanceService GetAppearanceService() => AppearanceService ?? new MudExAppearanceService();
@@ -27,6 +28,75 @@ namespace MudBlazor.Extensions.Options
         }
 
         internal DotNetObjectReference<object> DotNet { get; set; }
+
+        /// <summary>
+        /// The location of the dialog.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to <c>null</c>.
+        /// </remarks>
+        public DialogPosition? Position { get; set; }
+
+        /// <summary>
+        /// The maximum allowed width of the dialog.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to <c>null</c>.
+        /// </remarks>
+        public MaxWidth? MaxWidth { get; set; }
+
+        /// <summary>
+        /// Allows closing the dialog by clicking outside of the dialog.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to <c>true</c>.
+        /// </remarks>
+        public bool? BackdropClick { get; set; }
+
+        /// <summary>
+        /// Allows closing the dialog by pressing the Escape key.
+        /// </summary>
+        public bool? CloseOnEscapeKey { get; set; }
+
+        /// <summary>
+        /// Hides the dialog header.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to <c>false</c>.
+        /// </remarks>
+        public bool? NoHeader { get; set; }
+
+        /// <summary>
+        /// Shows a close button in the top-right corner of the dialog.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to <c>false</c>.
+        /// </remarks>
+        public bool? CloseButton { get; set; }
+
+        /// <summary>
+        /// Sets the size of the dialog to the entire screen.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to <c>false</c>.
+        /// </remarks>
+        public bool? FullScreen { get; set; }
+
+        /// <summary>
+        /// Sets the width of the dialog to the width of the screen.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to <c>false</c>.
+        /// </remarks>
+        public bool? FullWidth { get; set; }
+
+        /// <summary>
+        /// The custom CSS classes to apply to the dialog background.
+        /// </summary>
+        /// <remarks>
+        /// Multiple classes must be separated by spaces.
+        /// </remarks>
+        public string? BackgroundClass { get; set; }
 
         /// <summary>
         /// If true the dialog will keep the max size constraints for resizing defined with <see cref="MaxHeight"/> and <see cref="MaxWidth"/>.
@@ -220,5 +290,35 @@ namespace MudBlazor.Extensions.Options
         /// </summary>
         /// <returns>A cloned object instance of the current object.</returns>
         public object Clone() => MemberwiseClone();
+
+        public DialogOptions ToMudDialogOptions() => new()
+        {
+            MaxWidth = MaxWidth,
+            NoHeader = NoHeader,
+            BackdropClick = BackdropClick,
+            BackgroundClass = BackgroundClass,
+            CloseButton = CloseButton,
+            CloseOnEscapeKey = CloseOnEscapeKey,
+            FullScreen = FullScreen,
+            FullWidth = FullWidth,
+            Position = Position,
+        };
+        
+        public static DialogOptionsEx FromMudDialogOptions (DialogOptions options) => new()
+        {
+            MaxWidth = options.MaxWidth,
+            NoHeader = options.NoHeader,
+            BackdropClick = options.BackdropClick,
+            BackgroundClass = options.BackgroundClass,
+            CloseButton = options.CloseButton,
+            CloseOnEscapeKey = options.CloseOnEscapeKey,
+            FullScreen = options.FullScreen,
+            FullWidth = options.FullWidth,
+            Position = options.Position,
+        };
+
+        public static implicit operator DialogOptionsEx(DialogOptions options) => FromMudDialogOptions(options);
+        public static implicit operator DialogOptions(DialogOptionsEx options) => options.ToMudDialogOptions();
+
     }
 }
