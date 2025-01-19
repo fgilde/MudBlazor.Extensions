@@ -1,4 +1,6 @@
 ## Change Log    
+ - 8.0.0 > Support for MudBlazor 8.0.0
+ - 8.0.0 > MudExObject now supports Protected elements where edit needs to be confirmed `meta.Property(m => m.LastName).WithEditConfirmation()`
  - 2.1.0 > MudExObject now supports default focused element within the meta configuration with `meta.Property(m => m.LastName).WithDefaultFocus()`
  - 2.1.0 > MudExObject edit now has AutoFocus for first input field if no other focus is configured
  - 2.1.0 > Provide a Middleware again without deprecated UseMudExtensions now you should use `app.Use(MudExWebApp.MudExMiddleware);`
