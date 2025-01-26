@@ -15,6 +15,8 @@
     <PackageReference Include="Microsoft.Playwright" Version="1.45.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
     <PackageReference Include="xunit" Version="2.9.0" />
+    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*-*" />
+
     <PackageReference Include="bunit" Version="1.30.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -27,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
+    <ProjectReference Condition="'$(Configuration)' != 'Release'" Include="..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
     <ProjectReference Include="..\Samples\MainSample.ServerSide\MainSample.ServerSide.csproj" />
     <ProjectReference Include="..\Samples\MainSample.WebAssembly\MainSample.WebAssembly.csproj" />
   </ItemGroup>
