@@ -6,6 +6,13 @@
         <MudGrid Style="width: 100%" Justify="Justify.Center">
         <MudItem xs="12">
             <MudAlert><p> This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open </p></MudAlert>
+            
+            <MudExSelect T="string" >
+                <MudExSelectItem T="string">test</MudExSelectItem>
+                <MudExSelectItem T="string">test 2</MudExSelectItem>
+            </MudExSelect>
+            
+
         </MudItem>
         <MudItem xs="3" Class="mb-4">
             <MudButton Class="m-4" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>

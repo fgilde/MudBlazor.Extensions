@@ -389,6 +389,7 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2024-09-23 15:35:55 -->
+ - 8.0.1 > Fix small bug in MudExSelect
  - 8.0.0 > Support for MudBlazor 8.0.0
  - 8.0.0 > MudExObject now supports Protected elements where edit needs to be confirmed `meta.Property(m => m.LastName).WithEditConfirmation()`
  - 2.1.0 > MudExObject now supports default focused element within the meta configuration with `meta.Property(m => m.LastName).WithDefaultFocus()`

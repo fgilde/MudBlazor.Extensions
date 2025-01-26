@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -63,6 +64,8 @@ public partial class MudExSelectItem<T> : IDisposable, IMudExComponent
     protected bool MultiSelection => MudExSelect?.MultiSelection ?? base.MultiSelection;
 
     internal bool IsSelected { get; set; }
+
+    private bool ShouldHideContent() => this.ExposeField<bool>("HideContent");
 
     // Methods
     private void SetParent(IMudExSelect value)
