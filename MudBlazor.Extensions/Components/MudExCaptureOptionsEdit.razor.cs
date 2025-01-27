@@ -13,6 +13,7 @@ using MudBlazor.Interop;
 using MudBlazor.Services;
 using Nextended.Core;
 using Nextended.Core.Extensions;
+using YamlDotNet.Core.Tokens;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -155,6 +156,23 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
             .WithWidth("100%")
             .WithHeight("100%")
             .AddRaw(Style).Style;
+    }
+
+    private Task ChangeVideoContraints(MouseEventArgs obj)
+    {
+        Value.VideoConstraints ??= new VideoConstraints();
+        Value.VideoConstraints.DeviceId = Value.VideoDevice?.DeviceId;
+        var dialogOptionsEx = DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(o =>
+        {
+            o.MaxWidth = MaxWidth.Medium;
+            o.FullWidth = true;
+            o.MaxHeight = MaxHeight.Medium;
+            o.FullHeight = true;
+            o.Resizeable = true;
+            o.DragMode = MudDialogDragMode.Simple;
+        });
+
+        return DialogService.EditObject(Value.VideoConstraints, TryLocalize("Edit Constraints"), Icons.Material.Filled.Edit, dialogOptionsEx);
     }
 
     private Task ChangeMediaOptions(MouseEventArgs obj)

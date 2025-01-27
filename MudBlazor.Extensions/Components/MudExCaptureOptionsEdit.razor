@@ -82,15 +82,26 @@
                                          Clearable="true" />
 
                         <p>@TryLocalize("Video device")</p>
-                        <MudExSelect T="VideoDevice"
-                                     ItemCollection="@_videoDevices"
-                                     Value="@Value.VideoDevice"
-                                     ValueChanged="@VideoDeviceChanged"
-                                     MultiSelection="false"
-                                     SearchBox="true"
-                                     SearchBoxVariant="Variant.Text"
-                                     Dense="@Dense"
-                                     SelectAll="false"></MudExSelect>
+                        
+                        <MudExAdditionalAdornment Position="MoveContentPosition.BeforeEnd">
+                            <For>
+                                <MudExSelect T="VideoDevice"
+                                             ItemCollection="@_videoDevices"
+                                             Value="@Value.VideoDevice"
+                                             ValueChanged="@VideoDeviceChanged"
+                                             MultiSelection="false"
+                                             SearchBox="true"
+                                             SearchBoxVariant="Variant.Text"
+                                             Dense="@Dense"
+                                             SelectAll="false">
+                                </MudExSelect>
+                            </For>
+                            <ChildContent>
+                                <MudExIconButton Disabled="@string.IsNullOrEmpty(Value?.VideoDevice?.DeviceId)" Size="Size.Small" OnClick="@ChangeVideoContraints" Icon="@Icons.Material.Filled.Edit" ToolTip="@TryLocalize("Edit Constraints")" />
+                            </ChildContent>
+                        </MudExAdditionalAdornment>
+
+              
                     </MudExGroupBox>
                     <MudExGroupBox Text="@TryLocalize("Additional Audio")" Class="pa-3">
                         <MudAutocomplete T="string" @bind-Value="@Value.AudioContentType"

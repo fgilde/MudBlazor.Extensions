@@ -62,6 +62,12 @@ public class CaptureOptions
     public VideoDevice VideoDevice { get; set; }
 
     /// <summary>
+    /// Constraints for the additional video.
+    /// Please notice that this constraint is only for the additional video <see cref="VideoDevice"/>. To set constraints for the screen capture use <see cref="DisplayMediaOptions"/> as <see cref="ScreenSource"/>.
+    /// </summary>
+    public VideoConstraints VideoConstraints { get; set; }
+
+    /// <summary>
     /// The audio device ids to record audio.
     /// </summary>
     public List<AudioDevice> AudioDevices
@@ -102,7 +108,7 @@ public class CaptureOptions
     /// </summary>
     public bool Valid()
     {
-        return AudioDevices.EmptyIfNull().Any(d => !string.IsNullOrEmpty(d.DeviceId)) || VideoDevice?.DeviceId != null || CaptureScreen;
+        return AudioDevices.EmptyIfNull().Any(d => !string.IsNullOrEmpty(d.DeviceId)) || VideoDevice?.DeviceId != null || VideoConstraints?.DeviceId != null || CaptureScreen;
     }
 
     /// <summary>

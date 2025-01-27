@@ -15323,6 +15323,12 @@
             The video device to record.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Core.Capture.CaptureOptions.VideoConstraints">
+            <summary>
+            Constraints for the additional video.
+            Please notice that this constraint is only for the additional video <see cref="P:MudBlazor.Extensions.Core.Capture.CaptureOptions.VideoDevice"/>. To set constraints for the screen capture use <see cref="T:MudBlazor.Extensions.Core.W3C.DisplayMediaOptions"/> as <see cref="P:MudBlazor.Extensions.Core.Capture.CaptureOptions.ScreenSource"/>.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Core.Capture.CaptureOptions.AudioDevices">
             <summary>
             The audio device ids to record audio.

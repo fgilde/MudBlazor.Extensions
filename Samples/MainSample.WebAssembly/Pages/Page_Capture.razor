@@ -29,6 +29,7 @@
         <MudMenu Class="ma-5" StartIcon="@Icons.Material.Filled.VideoCameraBack" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="Start Capture" Color="Color.Primary" Variant="Variant.Filled">
             <MudMenuItem OnClick="@RecordScreen">Record Screen</MudMenuItem>
             <MudMenuItem OnClick="@RecordMainCamera">Record Main Camera</MudMenuItem>
+            <MudMenuItem OnClick="@RecordMainCameraLow">Record Main Camera Lower Quality</MudMenuItem>
             <MudMenuItem OnClick="@Record">Specify Options...</MudMenuItem>
             <MudMenuItem OnClick="@RecordQuick">Specify Quick Options...</MudMenuItem>
         </MudMenu>
@@ -109,7 +110,8 @@
 
     private Task RecordScreen() => RecordWithOptions(new CaptureOptions() { ScreenCapture = true });
 
-    private Task RecordMainCamera() => RecordWithOptions(new CaptureOptions { VideoDevice = VideoDevice.Default });
+    private Task RecordMainCamera() => RecordWithOptions(new CaptureOptions { VideoDevice = VideoDevice.Default});
+    private Task RecordMainCameraLow() => RecordWithOptions(new CaptureOptions { VideoConstraints = new VideoConstraints { DeviceId = VideoDevice.Default.DeviceId, AspectRatio = 1.7, Width = 10, Height = 10 } });
 
     private async Task Record() => await RecordWithOptions(await _captureService.EditCaptureOptionsAsync(CaptureOptionsEditMode.Full));
 

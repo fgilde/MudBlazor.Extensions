@@ -158,7 +158,7 @@ class MudExCapture {
         var captureMediaOptionsWithoutNullProperties = this.removeOptionsWithoutNullProperties(options.captureMediaOptions);
         options.contentType = options.contentType || 'video/webm; codecs=vp9';
         const audioContentType = options.audioContentType || 'audio/webm';
-        if (!options.captureScreen && !options.videoDevice) {
+        if (!options.captureScreen && !options.videoDevice && !options.videoConstraints?.deviceId) {
             // if only audio is captured, set content type to audio
             options.contentType = audioContentType;
         }
@@ -193,12 +193,38 @@ class MudExCapture {
         }
 
         // Camera Stream
-        if (options.videoDevice) {
-            var videoDeviceId = typeof options.videoDevice === 'string' ? options.videoDevice : options.videoDevice.deviceId;
-            streams.camera = await navigator.mediaDevices.getUserMedia({
-                video: videoDeviceId && videoDeviceId !== 'default' ? { deviceId: { exact: videoDeviceId } } : true
-            });
+        if (options.videoDevice || options.videoConstraints) {
+            let videoDeviceId = typeof options.videoDevice === 'string'
+                ? options.videoDevice
+                : options.videoDevice?.deviceId;
+
+            if (!videoDeviceId && options.videoConstraints?.deviceId) {
+                videoDeviceId = options.videoConstraints.deviceId;
+            }
+            const videoParam = {
+                video: {
+                    ...(videoDeviceId && videoDeviceId !== 'default'
+                        ? { deviceId: { exact: videoDeviceId } }
+                        : {}),
+                    ...options.videoConstraints
+                }
+            };
+
+            if (!options.videoConstraints?.deviceId) {
+                delete videoParam.video.deviceId;
+            }
+
+            try {
+                streams.camera = await navigator.mediaDevices.getUserMedia(videoParam);
+
+                if (options.videoConstraints) {
+                    options.videoConstraints.deviceId = videoDeviceId || null; 
+                }
+            } catch (e) {
+                console.error('Error while accessing the camera:', e);
+            }
         }
+
 
         // Audio Streams
         const audioStreams = await this.getAudioStreams(options.audioDevices);
