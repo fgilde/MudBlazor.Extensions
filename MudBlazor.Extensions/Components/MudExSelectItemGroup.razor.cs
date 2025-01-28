@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
-using System.Xml.Linq;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -65,6 +65,8 @@ public partial class MudExSelectItemGroup<T>
 
     [CascadingParameter]
     internal MudExList<T> MudExList { get; set; }
+
+    private bool ShouldHideContent() => this.ExposeField<bool>("HideContent");
 
 
     private void HandleExpandedChanged(bool isExpanded)
