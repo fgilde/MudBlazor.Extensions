@@ -7,20 +7,24 @@ namespace MudBlazor.Extensions.Core;
 public interface IDialogEvent
 {
     string DialogId { get; }
+    Guid DialogGuid => Guid.TryParse(DialogId.StartsWith("_") ? DialogId.Remove(0, 1) : DialogId, out var r) ? r : Guid.Empty;
     ComponentBase Dialog { get; }    
+    DialogOptionsEx DialogOptions { get; set; }    
 }
 
 public class BaseDialogEvent : IDialogEvent {
     public string DialogId { get; set; }
     public ComponentBase Dialog { get; set; }
-    public BoundingClientRect Rect { get; set; }    
+    public BoundingClientRect Rect { get; set; }
+    public DialogOptionsEx DialogOptions { get; set; }
+
 }
 
 public class DialogBeforeOpenEvent : IDialogEvent {
     public string DialogId { get; set; }
     public ComponentBase Dialog { get; set; }
-    public IDialogReference DialogReference { get; set; }    
-
+    public IDialogReference DialogReference { get; set; }
+    public DialogOptionsEx DialogOptions { get; set; }
 }
 
 public class DialogAfterOpenEvent : DialogBeforeOpenEvent

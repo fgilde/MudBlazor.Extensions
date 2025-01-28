@@ -10,11 +10,11 @@ class MudExCapture {
         canvas.height = 480;
 
         context.fillStyle = 'black';
-        context.fillRect(0, 0, canvas.width, canvas.height); 
+        context.fillRect(0, 0, canvas.width, canvas.height);
         context.font = '48px Arial';
         context.fillStyle = 'white';
         context.translate(canvas.width / 2, canvas.height / 2);
-        context.rotate(-Math.PI / 4); 
+        context.rotate(-Math.PI / 4);
         context.textAlign = 'center';
         context.fillText(text, 0, 0);
 
@@ -140,7 +140,7 @@ class MudExCapture {
         delete this._preselected[id];
     }
 
-    static removeOptionsWithoutNullProperties(captureMediaOptions) { 
+    static removeOptionsWithoutNullProperties(captureMediaOptions) {
         var captureMediaOptionsWithoutNullProperties = {};
         for (var key in captureMediaOptions) {
             if (Object.prototype.hasOwnProperty.call(captureMediaOptions, key)) {
@@ -153,34 +153,21 @@ class MudExCapture {
     }
 
     static prepareAudioConstraints(deviceId, constraints) {
-        const result = {
-            audio: {
-                ...(deviceId && deviceId !== 'default'
-                    ? { deviceId: { exact: deviceId } }
-                    : {}),
-                ...constraints
-            }
-        };
-
-        if (!constraints?.deviceId) {
-            delete result.audio.deviceId;
-        }
-        return result;
+        return this.constraintsAsMediaOptions(deviceId, constraints, 'audio');
     }
 
     static prepareVideoConstraints(deviceId, constraints) {
-        const result = {
-            video: {
-                ...(deviceId && deviceId !== 'default'
-                    ? { deviceId: { exact: deviceId } }
-                    : {}),
-                ...constraints
-            },
-        };
+        return this.constraintsAsMediaOptions(deviceId, constraints, 'video');
+    }
 
-        if (!constraints?.deviceId) {
-            delete result.video.deviceId;
-        }
+    static constraintsAsMediaOptions(deviceId, constraints, section) {
+        const constraintsCopy = constraints ? { ...constraints } : {};
+        deviceId = deviceId || constraintsCopy.deviceId;
+
+        const result = {};
+        result[section] = { ...constraintsCopy }; 
+        result[section].deviceId = deviceId && deviceId !== 'default' ? { exact: deviceId } : undefined;
+
         return result;
     }
 
@@ -200,7 +187,7 @@ class MudExCapture {
             systemAudio: null,
             audioContext: null
         };
-        
+
         if (options.captureScreen) {
             try {
                 let screenStream;
@@ -502,8 +489,8 @@ class MudExCapture {
             audioDevices.map(async device => {
                 try {
                     const deviceId = typeof device === 'string' ? device : device.deviceId;
-                    const audioConstraints = typeof device === 'string' ? {} : device; 
-                    
+                    const audioConstraints = typeof device === 'string' ? {} : device;
+
                     return await navigator.mediaDevices.getUserMedia(this.prepareAudioConstraints(deviceId, audioConstraints));
                 } catch (error) {
                     console.warn(`Audio device with ID ${deviceId} konnte nicht abgerufen werden.`, error);
@@ -582,7 +569,7 @@ class MudExCapture {
     static async getAvailableAudioDevices() {
         try {
             await navigator.mediaDevices.getUserMedia({ video: false, audio: true });
-        } catch (e) {} 
+        } catch (e) { }
         const devices = await navigator.mediaDevices.enumerateDevices();
         return devices.filter(device => device.kind === 'audioinput');
     }
@@ -590,7 +577,7 @@ class MudExCapture {
     static async getAvailableVideoDevices() {
         try {
             await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-        } catch (e) { } 
+        } catch (e) { }
         const devices = await navigator.mediaDevices.enumerateDevices();
         return devices.filter(device => device.kind === 'videoinput');
     }
@@ -1627,7 +1614,9 @@ class MudExDialogHandlerBase {
             scrollY: scrollY
         };
         const rect = Object.assign(extendedRect, JSON.parse(JSON.stringify(this.dialog.getBoundingClientRect())));        
-        return await this.dotNetService.invokeMethodAsync('PublishEvent', eventName, this.dialog.id, this.dotNet, rect);
+        if (this.dotNetService) {
+            return await this.dotNetService.invokeMethodAsync('PublishEvent', eventName, this.dialog.id, this.dotNet, rect);
+        }
     }
 
     isInternalHandler() {
@@ -2143,7 +2132,7 @@ class MudExDialogNoModalHandler extends MudExDialogHandlerBase {
                         if (index !== -1) {
                             MudExDialogNoModalHandler.handled.splice(index, 1);
                         }
-
+                        // this.dotNetService.invokeMethodAsync('HandleNonModalClose', this.dialog.id, this.dotNet);
                         this.dialog.remove();
                         this.reInitOtherDialogs();
                         break;

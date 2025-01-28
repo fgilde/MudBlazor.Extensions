@@ -16665,6 +16665,16 @@
             Gets the appearance service instance.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExDialogService.GetDialogReference(System.Guid)">
+            <summary>
+            Returns a dialog reference for the dialog with the specified GUID.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Core.IMudExDialogService.GetDialogUsedDialogOptions(System.Guid)">
+            <summary>
+            Returns the dialog options for the dialog with the specified GUID.
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Core.IMudExExternalFilePicker">
             <summary>
             External file picker
@@ -23361,6 +23371,12 @@
             <summary>
             AppearanceService
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.GetDialogReference(System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Services.MudExDialogService.GetDialogUsedDialogOptions(System.Guid)">
+            <inheritdoc />
         </member>
         <member name="M:MudBlazor.Extensions.Services.MudExDialogService.#ctor(Microsoft.JSInterop.IJSRuntime,System.IServiceProvider,MudBlazor.Extensions.Services.MudExAppearanceService,MudBlazor.Extensions.Core.IDialogEventService)">
             <summary>

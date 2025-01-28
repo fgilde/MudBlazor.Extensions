@@ -31,7 +31,9 @@
             scrollY: scrollY
         };
         const rect = Object.assign(extendedRect, JSON.parse(JSON.stringify(this.dialog.getBoundingClientRect())));        
-        return await this.dotNetService.invokeMethodAsync('PublishEvent', eventName, this.dialog.id, this.dotNet, rect);
+        if (this.dotNetService) {
+            return await this.dotNetService.invokeMethodAsync('PublishEvent', eventName, this.dialog.id, this.dotNet, rect);
+        }
     }
 
     isInternalHandler() {

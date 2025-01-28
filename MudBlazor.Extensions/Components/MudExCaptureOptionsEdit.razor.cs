@@ -168,21 +168,36 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     private async Task ChangeAudioConstraintsAsync(AudioDevice device)
     {
         var constraintToEdit = Value?.AudioDevices?.FirstOrDefault(d => d.DeviceId == device.DeviceId);
-        if(constraintToEdit != null)
-            await DialogService.EditObject(constraintToEdit, TryLocalize("Edit Audio Constraints"), Icons.Material.Filled.Edit, 
-                DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(dialogOptions), 
+        if (constraintToEdit != null)
+        {
+            constraintToEdit = constraintToEdit.Clone();
+            var res = await DialogService.EditObject(constraintToEdit, TryLocalize("Edit Audio Constraints"),
+                Icons.Material.Filled.Edit,
+                DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(dialogOptions),
                 meta => meta.Properties(m => m.DeviceId, m => m.GroupId).Ignore());
+            if (!res.Cancelled)
+            {
+                SetAndStateChange(o =>
+                {
+                    var index = o.AudioDevices.FindIndex(d => d.DeviceId == device.DeviceId);
+                    if (index >= 0)
+                        o.AudioDevices[index] = res.Result;
+                });
+            }
+        }
     }
 
     private async Task ChangeVideoConstraintsAsync(MouseEventArgs obj)
     {
-        Value.VideoDevice ??= new VideoConstraints();
+        var toEdit = (Value.VideoDevice ??= new VideoConstraints()).Clone();
         
-        var res = await DialogService.EditObject(Value.VideoDevice, TryLocalize("Edit Video Constraints"), Icons.Material.Filled.Edit, 
+        var res = await DialogService.EditObject(toEdit, TryLocalize("Edit Video Constraints"), Icons.Material.Filled.Edit, 
             DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(dialogOptions), 
             meta => meta.Properties(m => m.DeviceId, m => m.GroupId).Ignore());
         if (!res.Cancelled)
-            await VideoDeviceChanged(Value.VideoDevice);
+        {
+            await VideoDeviceChanged(res.Result);
+        }
     }
 
     private Task ChangeMediaOptionsAsync(MouseEventArgs obj)
@@ -346,7 +361,6 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
 
     private async Task VideoDeviceChanged(VideoDevice obj)
     {
-        await StopPreviewCameraTrack();
         VideoConstraints constraints = null;
         if (obj != null)
         {

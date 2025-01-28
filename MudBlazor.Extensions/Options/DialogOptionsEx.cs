@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using System.Text.Json.Serialization;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
@@ -127,6 +128,8 @@ namespace MudBlazor.Extensions.Options
         /// <summary>
         /// The JavaScript Runtime used to interact with the browser's JavaScript host environment. 
         /// </summary>
+        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public IJSRuntime JsRuntime { get; set; }
 
         /// <summary>

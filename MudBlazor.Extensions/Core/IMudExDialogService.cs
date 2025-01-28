@@ -1,4 +1,5 @@
 ﻿using Microsoft.JSInterop;
+using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
 
 namespace MudBlazor.Extensions.Core;
@@ -23,5 +24,14 @@ public interface IMudExDialogService : IDialogService
     /// </summary>
     public MudExAppearanceService AppearanceService { get; }
 
+    /// <summary>
+    /// Returns a dialog reference for the dialog with the specified GUID.
+    /// </summary>
+    public IDialogReference GetDialogReference(Guid dialogGuid);
+
+    /// <summary>
+    /// Returns the dialog options for the dialog with the specified GUID.
+    /// </summary>
+    public DialogOptionsEx GetDialogUsedDialogOptions(Guid dialogGuid);
 
 }

@@ -95,7 +95,7 @@
                         if (index !== -1) {
                             MudExDialogNoModalHandler.handled.splice(index, 1);
                         }
-
+                        // this.dotNetService.invokeMethodAsync('HandleNonModalClose', this.dialog.id, this.dotNet);
                         this.dialog.remove();
                         this.reInitOtherDialogs();
                         break;

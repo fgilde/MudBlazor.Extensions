@@ -61,4 +61,28 @@ public static class ComponentHelper
 
     internal static MudDialogProvider FindMudDialogProvider(this IMudDialogInstance component)
         => component.AllOf<MudDialogProvider>(ReflectReadSettings.AllWithHierarchyTraversal).FirstOrDefault();
+
+    internal static MudDialogProvider FindMudDialogProvider(this IDialogReference component)
+    {
+        var result = component.AllOf<MudDialogProvider>(ReflectReadSettings.AllWithHierarchyTraversal).FirstOrDefault();
+        if (result == null)
+        {
+            if(component.Dialog is IMudDialogInstance instance)
+                result = instance.FindMudDialogProvider();
+            else if (component.Dialog is ComponentBase cmp)
+                result = cmp.FindMudDialogProvider();
+        }
+        return result;
+    }
+
+    internal static IDialogReference GetDialogReference(this IMudDialogInstance dlgInstance)
+    {
+        var provider = dlgInstance.FindMudDialogProvider();
+
+        //ComponentHelper.FindMudDialogProvider
+        MethodInfo getDialog = provider.GetType().GetMethod("GetDialogReference",
+            BindingFlags.NonPublic | BindingFlags.Instance);
+        IDialogReference? dialogRef = (IDialogReference)getDialog.Invoke(provider, new object[] { dlgInstance.Id });
+        return dialogRef;
+    }
 }

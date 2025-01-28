@@ -5,6 +5,7 @@ using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Options;
+using MudBlazor.Extensions.Services;
 using Nextended.Core;
 using Nextended.Core.Extensions;
 
@@ -267,6 +268,10 @@ namespace MudBlazor.Extensions
         internal static async Task<IDialogReference> InjectOptionsAsync(this IDialogReference dialogReference, IDialogService service, DialogOptionsEx options)
         {
             options = PrepareOptionsAfterShow(options);
+            if (service is MudExDialogService mudExService)
+            {
+                mudExService.AddOrUpdate(dialogReference.Id, dialogReference, options);
+            }
             var callbackReference = await WaitForCallbackReference(dialogReference);
             var js = await JsImportHelper.GetInitializedJsRuntime(callbackReference.Value, options.JsRuntime);
 
