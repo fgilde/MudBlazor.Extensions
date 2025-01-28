@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq.Expressions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
@@ -51,14 +50,14 @@ public static class RenderDataDefaults
         RegisterDefault<string, MudTextField<string>>(f => f.Value);
 
         RegisterDefault<int, MudNumericField<int>>(f => f.Value);
-        RegisterDefault<decimal, MudNumericField<decimal>>(f => f.Value);
-        RegisterDefault<double, MudNumericField<double>>(f => f.Value);
-        RegisterDefault<float, MudNumericField<float>>(f => f.Value);
+        RegisterDefault<decimal, MudNumericField<decimal>>(f => f.Value, field => { field.Culture = CurrentCulture; field.Format = "N2"; });
+        RegisterDefault<double, MudNumericField<double>>(f => f.Value, field => { field.Culture = CurrentCulture; field.Format = "N4"; });
+        RegisterDefault<float, MudNumericField<float>>(f => f.Value, field => { field.Culture = CurrentCulture; field.Format = "N4"; });
 
         RegisterDefault<int?, MudNumericField<int?>>(f => f.Value, field => { field.Clearable = true; });
-        RegisterDefault<decimal?, MudNumericField<decimal?>>(f => f.Value, field => { field.Clearable = true; });
-        RegisterDefault<double?, MudNumericField<double?>>(f => f.Value, field => { field.Clearable = true; });
-        RegisterDefault<float?, MudNumericField<float?>>(f => f.Value, field => { field.Clearable = true; });
+        RegisterDefault<decimal?, MudNumericField<decimal?>>(f => f.Value, field => { field.Clearable = true; field.Culture = CurrentCulture; field.Format = "N2"; });
+        RegisterDefault<double?, MudNumericField<double?>>(f => f.Value, field => { field.Clearable = true; field.Culture = CurrentCulture; field.Format = "N4"; });
+        RegisterDefault<float?, MudNumericField<float?>>(f => f.Value, field => { field.Clearable = true; field.Culture = CurrentCulture; field.Format = "N4"; });
 
 
         RegisterDefault<DateTime?, MudDatePicker>(f => f.Date, DatePickerOptions(true));
@@ -212,6 +211,8 @@ public static class RenderDataDefaults
         };
     }
 
+    private static CultureInfo CurrentCulture => CultureInfo.CurrentCulture;
+
     internal static Dictionary<string, object> ColorPickerOptions()
     {
         return new Dictionary<string, object>
@@ -227,28 +228,26 @@ public static class RenderDataDefaults
 
     private static Dictionary<string, object> TimePickerOptions()
     {
-        var currentCulture = CultureInfo.CurrentCulture;
-        var timeFormat = currentCulture.DateTimeFormat.LongTimePattern;
+        var timeFormat = CurrentCulture.DateTimeFormat.LongTimePattern;
         return new Dictionary<string, object>
         {
             {nameof(MudTimePicker.Editable), true},
             {nameof(MudTimePicker.TimeFormat), timeFormat},
             {nameof(MudTimePicker.Placeholder), timeFormat},
-            {nameof(MudTimePicker.Culture), currentCulture}
+            {nameof(MudTimePicker.Culture), CurrentCulture}
         };
     }
 
 
     private static Dictionary<string, object> DatePickerOptions(bool withPattern)
     {
-        var currentCulture = CultureInfo.CurrentCulture;
-        var dateFormat = currentCulture.DateTimeFormat.ShortDatePattern;
+        var dateFormat = CurrentCulture.DateTimeFormat.ShortDatePattern;
         var res = new Dictionary<string, object>()
         {
             {nameof(MudDatePicker.Editable), true},
             {nameof(MudDatePicker.DateFormat), dateFormat},
             {nameof(MudDatePicker.Placeholder), dateFormat},
-            {nameof(MudDatePicker.Culture), currentCulture}
+            {nameof(MudDatePicker.Culture), CurrentCulture}
         };
         //if (withPattern) // TODO: Currently not supported because of value is not set on pick if enabled
         //    res.Add(nameof(MudDatePicker.Mask), new DateMask(dateFormat));

@@ -42,6 +42,16 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     private MediaStreamTrack _screenTrack;
     private MediaStreamTrack _cameraTrack;
     private bool _captureScreen;
+    private Action<DialogOptionsEx> dialogOptions = o =>
+    {
+        o.MaxWidth = MaxWidth.Medium;
+        o.Animation = AnimationType.FadeIn;
+        o.FullWidth = true;
+        o.MaxHeight = MaxHeight.Medium;
+        o.FullHeight = true;
+        o.Resizeable = true;
+        o.DragMode = MudDialogDragMode.Simple;
+    };
 
 
     /// <inheritdoc />
@@ -138,9 +148,6 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     private Task<IEnumerable<string>> SearchVideoContentType(string value, CancellationToken token)
         => Task.FromResult(MimeType.VideoTypes.Concat(new[] { "video/webm" }).Distinct().Where(x => string.IsNullOrEmpty(value) || x.Contains(value, StringComparison.InvariantCultureIgnoreCase)));
 
-    private void AudioDevicesChanged(IEnumerable<MudExListItem<AudioDevice>> obj)
-        => SetAndStateChange(o => o.AudioDevices = obj?.Select(x => x.Value).ToList());
-
     private void SetAndStateChange(Action<CaptureOptions> action)
     {
         (Value ??= new CaptureOptions()).SetProperties(action);
@@ -158,35 +165,29 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
             .AddRaw(Style).Style;
     }
 
-    private Task ChangeVideoContraints(MouseEventArgs obj)
+    private async Task ChangeAudioConstraintsAsync(AudioDevice device)
     {
-        Value.VideoConstraints ??= new VideoConstraints();
-        Value.VideoConstraints.DeviceId = Value.VideoDevice?.DeviceId;
-        var dialogOptionsEx = DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(o =>
-        {
-            o.MaxWidth = MaxWidth.Medium;
-            o.FullWidth = true;
-            o.MaxHeight = MaxHeight.Medium;
-            o.FullHeight = true;
-            o.Resizeable = true;
-            o.DragMode = MudDialogDragMode.Simple;
-        });
-
-        return DialogService.EditObject(Value.VideoConstraints, TryLocalize("Edit Constraints"), Icons.Material.Filled.Edit, dialogOptionsEx);
+        var constraintToEdit = Value?.AudioDevices?.FirstOrDefault(d => d.DeviceId == device.DeviceId);
+        if(constraintToEdit != null)
+            await DialogService.EditObject(constraintToEdit, TryLocalize("Edit Audio Constraints"), Icons.Material.Filled.Edit, 
+                DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(dialogOptions), 
+                meta => meta.Properties(m => m.DeviceId, m => m.GroupId).Ignore());
     }
 
-    private Task ChangeMediaOptions(MouseEventArgs obj)
+    private async Task ChangeVideoConstraintsAsync(MouseEventArgs obj)
     {
-        var dialogOptionsEx = DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(o =>
-        {
-            o.MaxWidth = MaxWidth.Medium;
-            o.FullWidth = true;
-            o.MaxHeight = MaxHeight.Medium;
-            o.FullHeight = true;
-            o.Resizeable = true;
-            o.DragMode = MudDialogDragMode.Simple;
-        });
+        Value.VideoDevice ??= new VideoConstraints();
+        
+        var res = await DialogService.EditObject(Value.VideoDevice, TryLocalize("Edit Video Constraints"), Icons.Material.Filled.Edit, 
+            DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(dialogOptions), 
+            meta => meta.Properties(m => m.DeviceId, m => m.GroupId).Ignore());
+        if (!res.Cancelled)
+            await VideoDeviceChanged(Value.VideoDevice);
+    }
 
+    private Task ChangeMediaOptionsAsync(MouseEventArgs obj)
+    {
+        var dialogOptionsEx = DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(dialogOptions);
         return DialogService.EditObject(_displayMediaOptions, TryLocalize("Change media options"), Icons.Material.Filled.VideoCameraFront, dialogOptionsEx);
     }
 
@@ -328,20 +329,35 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
             Value.OverlayCustomPosition = new MudExPosition(left ?? Value.OverlayCustomPosition.Left, top ?? Value.OverlayCustomPosition.Top);
     }
 
-    private async Task VideoDeviceChanged(VideoDevice obj)
+    private async Task VideoDeviceChanged(VideoConstraints constraints)
     {
         await StopPreviewCameraTrack();
-        if (obj != null)
+        if (constraints != null)
         {
-            //var videoElement = Value.OverlaySource == OverlaySource.VideoDevice ? _previewCamera : _previewScreen;
-            _cameraTrack = await CaptureService.SelectCaptureSourceAsync(new DisplayMediaOptions { Video = new VideoConstraints { DeviceId = obj.DeviceId } }, _previewCamera);
+            _cameraTrack = await CaptureService.SelectCaptureSourceAsync(new DisplayMediaOptions { Video = constraints }, _previewCamera);
         }
         else
         {
             if (Value.OverlaySource == OverlaySource.CapturedScreen)
                 await ToogleOverlaySource();
         }
-        SetAndStateChange(o => o.VideoDevice = obj);
+        SetAndStateChange(o => o.VideoDevice = constraints);
+    }
+
+    private async Task VideoDeviceChanged(VideoDevice obj)
+    {
+        await StopPreviewCameraTrack();
+        VideoConstraints constraints = null;
+        if (obj != null)
+        {
+            constraints = Value?.VideoDevice ?? new VideoConstraints();
+            constraints.DeviceId = obj.DeviceId;
+            await VideoDeviceChanged(constraints);
+        }
+        else
+        {
+            await VideoDeviceChanged(constraints);
+        }
     }
 
 
@@ -413,5 +429,19 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
             .WithHeight(50)
             .WithWidth("100%")
             .Style;
+    }
+
+    private bool IsAudioDeviceSelected(string deviceId)
+    {
+        return Value?.AudioDevices?.FirstOrDefault(d => d.DeviceId == deviceId) != null;
+    }
+
+    private Task OnAudioDeviceSelected(AudioDevice context, bool isSelected)
+    {
+        if(isSelected && !IsAudioDeviceSelected(context.DeviceId))
+            SetAndStateChange(o => (o.AudioDevices ??= new List<AudioConstraints>()).Add(context.ToConstraints()));
+        else if (!isSelected && Value?.AudioDevices != null)
+            SetAndStateChange(o => o.AudioDevices.RemoveAll(d => d.DeviceId == context.DeviceId));
+        return Task.CompletedTask;
     }
 }

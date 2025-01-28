@@ -1,9 +1,7 @@
-﻿using MudBlazor.Extensions.Components.ObjectEdit;
-using MudBlazor.Extensions.Components.ObjectEdit.Options;
-using MudBlazor.Extensions.Core.W3C;
+﻿using MudBlazor.Extensions.Core.W3C;
 using Nextended.Core.Extensions;
 
-namespace MainSample.WebAssembly.ObjectEditMetaConfig;
+namespace MudBlazor.Extensions.Components.ObjectEdit.Options.MetaDataConfig;
 
 public class DisplayMediaOptionsMetaConfiguration : IObjectMetaConfiguration<DisplayMediaOptions>
 {
@@ -15,8 +13,8 @@ public class DisplayMediaOptionsMetaConfiguration : IObjectMetaConfiguration<Dis
                 o => o.Video.DeviceId,
                 o => o.Video.GroupId
                 ).Ignore();
-        meta.Property(o => o.Audio).Children.Recursive(om => om.Children).Except(meta.Properties(o => o.Audio.DeviceId, o => o.Audio.GroupId))
-            .IgnoreIf<DisplayMediaOptions>(o => o.SystemAudio != IncludeExclude.Include);
+        //meta.Property(o => o.Audio).Children.Recursive(om => om.Children).Except(meta.Properties(o => o.Audio.DeviceId, o => o.Audio.GroupId))
+        //    .IgnoreIf<DisplayMediaOptions>(o => o.SystemAudio != IncludeExclude.Include);
 
         meta.WrapEachInMudItem(i =>
         {

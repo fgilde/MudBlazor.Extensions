@@ -42,9 +42,9 @@
             var captureMediaOptionsWithoutNullProperties = this.removeOptionsWithoutNullProperties(captureMediaOptions);
             var stream = null;
             if (captureMediaOptions.video?.deviceId)
-                stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: captureMediaOptions.video.deviceId } } });
+                stream = await navigator.mediaDevices.getUserMedia(this.prepareVideoConstraints(captureMediaOptions.video.deviceId, captureMediaOptions.video));
             else if (captureMediaOptions.audio?.deviceId)
-                stream = await navigator.mediaDevices.getUserMedia({ audio: { deviceId: { exact: captureMediaOptions.audio.deviceId } } });
+                stream = await navigator.mediaDevices.getUserMedia(this.prepareAudioConstraints(captureMediaOptions.audio.deviceId, captureMediaOptions.audio));
             else
                 stream = await navigator.mediaDevices.getDisplayMedia(captureMediaOptionsWithoutNullProperties);
 
@@ -87,7 +87,6 @@
     static async startCapture(options, callback) {
         const id = this.generateUniqueId();
         const capture = await this.setupCapture(options, id, callback);
-
         if (capture.screenStream) {
             capture.screenStream.addEventListener("inactive", () => {
                 this.stopCapture(id, callback);
@@ -96,7 +95,6 @@
                 this.stopCapture(id, callback);
             });
         }
-
         capture.recorders.forEach(recorder => {
             setTimeout(() => { recorder.start(); }, 1);
         });
@@ -154,6 +152,38 @@
         return captureMediaOptionsWithoutNullProperties;
     }
 
+    static prepareAudioConstraints(deviceId, constraints) {
+        const result = {
+            audio: {
+                ...(deviceId && deviceId !== 'default'
+                    ? { deviceId: { exact: deviceId } }
+                    : {}),
+                ...constraints
+            }
+        };
+
+        if (!constraints?.deviceId) {
+            delete result.audio.deviceId;
+        }
+        return result;
+    }
+
+    static prepareVideoConstraints(deviceId, constraints) {
+        const result = {
+            video: {
+                ...(deviceId && deviceId !== 'default'
+                    ? { deviceId: { exact: deviceId } }
+                    : {}),
+                ...constraints
+            },
+        };
+
+        if (!constraints?.deviceId) {
+            delete result.video.deviceId;
+        }
+        return result;
+    }
+
     static async setupCapture(options, id, callback) {
         var captureMediaOptionsWithoutNullProperties = this.removeOptionsWithoutNullProperties(options.captureMediaOptions);
         options.contentType = options.contentType || 'video/webm; codecs=vp9';
@@ -193,33 +223,18 @@
         }
 
         // Camera Stream
-        if (options.videoDevice || options.videoConstraints) {
+        if (options.videoDevice) {
             let videoDeviceId = typeof options.videoDevice === 'string'
                 ? options.videoDevice
                 : options.videoDevice?.deviceId;
 
-            if (!videoDeviceId && options.videoConstraints?.deviceId) {
-                videoDeviceId = options.videoConstraints.deviceId;
-            }
-            const videoParam = {
-                video: {
-                    ...(videoDeviceId && videoDeviceId !== 'default'
-                        ? { deviceId: { exact: videoDeviceId } }
-                        : {}),
-                    ...options.videoConstraints
-                }
-            };
+            const constraints = typeof options.videoDevice === 'string' ? {} : options.videoDevice;
 
-            if (!options.videoConstraints?.deviceId) {
-                delete videoParam.video.deviceId;
-            }
+            const videoParam = this.prepareVideoConstraints(videoDeviceId, constraints);
 
             try {
                 streams.camera = await navigator.mediaDevices.getUserMedia(videoParam);
 
-                if (options.videoConstraints) {
-                    options.videoConstraints.deviceId = videoDeviceId || null; 
-                }
             } catch (e) {
                 console.error('Error while accessing the camera:', e);
             }
@@ -228,7 +243,6 @@
 
         // Audio Streams
         const audioStreams = await this.getAudioStreams(options.audioDevices);
-
         // Audio Streams mischen
         const { stream: mixedAudioStream, audioContext } = this.mixAudioStreams(audioStreams);
         streams.audio = mixedAudioStream;
@@ -288,7 +302,6 @@
             };
             recorders.push(combinedRecorder);
         }
-
         return {
             streams: Object.values(streams).filter(stream => stream !== null),
             recorders,
@@ -304,7 +317,6 @@
 
     static createCombinedStream(streams, options, id) {
         const { screen, camera, audio, systemAudio, audioContext } = streams;
-
         // Mix audio streams
         const audioStreamsToMix = [audio, systemAudio].filter(s => s);
         const { stream: mixedAudioStream } = this.mixAudioStreams(audioStreamsToMix);
@@ -490,9 +502,9 @@
             audioDevices.map(async device => {
                 try {
                     const deviceId = typeof device === 'string' ? device : device.deviceId;
-                    return await navigator.mediaDevices.getUserMedia({
-                        audio: { deviceId: { exact: deviceId } }
-                    });
+                    const audioConstraints = typeof device === 'string' ? {} : device; 
+                    
+                    return await navigator.mediaDevices.getUserMedia(this.prepareAudioConstraints(deviceId, audioConstraints));
                 } catch (error) {
                     console.warn(`Audio device with ID ${deviceId} konnte nicht abgerufen werden.`, error);
                     return null;

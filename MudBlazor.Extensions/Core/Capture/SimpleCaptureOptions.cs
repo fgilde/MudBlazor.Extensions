@@ -37,8 +37,8 @@ public class SimpleCaptureOptions
         var options = new CaptureOptions
         {
             ScreenCapture = RecordScreen,
-            VideoDevice = RecordCamera ? VideoDevice.Default : null,
-            AudioDevices = RecordAudio ? new List<AudioDevice> { AudioDevice.Default } : null
+            VideoDevice = RecordCamera ? VideoDevice.Default.ToConstraints() : null,
+            AudioDevices = RecordAudio ? new List<AudioConstraints> { AudioDevice.Default.ToConstraints() } : null
         };
 
         return options;

@@ -59,7 +59,7 @@
 
 
                             <MudGrid Class="mt-6" Justify="Justify.FlexEnd">
-                                <MudFab Disabled="@(_screenTrack != null)" StartIcon="@Icons.Material.Filled.CameraAlt" OnClick="@ChangeMediaOptions" Label="@TryLocalize("Change media options")" />
+                                <MudFab Disabled="@(_screenTrack != null)" StartIcon="@Icons.Material.Filled.CameraAlt" OnClick="@ChangeMediaOptionsAsync" Label="@TryLocalize("Change media options")" />
                             </MudGrid>
                         }
 
@@ -70,6 +70,7 @@
                 <MudStack StretchItems="StretchItems.End" Style="width: 40%">
                     <MudExGroupBox Text="@TryLocalize("Additional Video")" Class="pa-3">
                         <MudAutocomplete T="string" @bind-Value="@Value.ContentType"
+                                         Class="mb-3"
                                          Label="@TryLocalize("Content-Type")"
                                          Dense="@Dense"
                                          Disabled="@(!_captureScreen && string.IsNullOrEmpty(Value?.VideoDevice?.DeviceId))"
@@ -87,17 +88,18 @@
                             <For>
                                 <MudExSelect T="VideoDevice"
                                              ItemCollection="@_videoDevices"
-                                             Value="@Value.VideoDevice"
+                                             Value="@_videoDevices.FirstOrDefault(d => d?.DeviceId == Value?.VideoDevice?.DeviceId)"
                                              ValueChanged="@VideoDeviceChanged"
                                              MultiSelection="false"
                                              SearchBox="true"
                                              SearchBoxVariant="Variant.Text"
                                              Dense="@Dense"
+                                             Color="Color.Primary"
                                              SelectAll="false">
                                 </MudExSelect>
                             </For>
                             <ChildContent>
-                                <MudExIconButton Disabled="@string.IsNullOrEmpty(Value?.VideoDevice?.DeviceId)" Size="Size.Small" OnClick="@ChangeVideoContraints" Icon="@Icons.Material.Filled.Edit" ToolTip="@TryLocalize("Edit Constraints")" />
+                                <MudExIconButton Color="Color.Primary" Disabled="@string.IsNullOrEmpty(Value?.VideoDevice?.DeviceId)" Size="Size.Small" OnClick="@ChangeVideoConstraintsAsync" Icon="@Icons.Material.Filled.Edit" ToolTip="@TryLocalize("Edit Video Constraints")" />
                             </ChildContent>
                         </MudExAdditionalAdornment>
 
@@ -105,6 +107,7 @@
                     </MudExGroupBox>
                     <MudExGroupBox Text="@TryLocalize("Additional Audio")" Class="pa-3">
                         <MudAutocomplete T="string" @bind-Value="@Value.AudioContentType"
+                                         Class="mb-3"
                                          Label="@TryLocalize("Content-Type")"
                                          Dense="@Dense"
                                          Disabled="@((Value.AudioDevices?.Count ?? 0) <= 0)"
@@ -117,17 +120,25 @@
                                          Clearable="true" />
 
                         <p>@TryLocalize("Audio devices")</p>
+
                         <MudExList T="AudioDevice" ItemCollection="@_audioDevices"
-                                   SelectedValues="@Value.AudioDevices"
                                    Color="MudExColor.Inherit"
                                    MultiSelection="true"
-                                   SelectedItemsChanged="@AudioDevicesChanged"
-                                   SearchBox="false"
+                                   SearchBox="true"
                                    SearchBoxBackgroundColor="@("var(--mud-palette-surface)")"
                                    SearchBoxVariant="Variant.Text"
                                    Dense="@Dense"
                                    SelectAll="false"
-                                   Style="height: 260px; overflow-y: auto;"></MudExList>
+                                   Style="height: 260px; overflow-y: auto; overflow-x: hidden;">
+                            <ItemTemplate>
+                                <MudExIconButton Color="Color.Primary" Class="mr-1"
+                                                 Disabled="@(!IsAudioDeviceSelected(context.DeviceId))" Size="Size.Small"
+                                                 OnClick="@(() => ChangeAudioConstraintsAsync(context))" Icon="@Icons.Material.Filled.Edit" ToolTip="@TryLocalize("Edit Audio Constraints")" />
+                                <MudSwitch Size="Size.Small" Color="Color.Primary" T="bool" ValueChanged="@(b => OnAudioDeviceSelected(context, b))" Value="@IsAudioDeviceSelected(context.DeviceId)">
+                                    <p style="margin-left: 5px; margin-right:20px;">@context.Label</p>
+                                </MudSwitch>
+                            </ItemTemplate>
+                        </MudExList>
                         <Auralizer Overlay="true" OverlayChildContent="true" ConnectMicrophone="true" 
                                           Style="@GetAuralizerStyle()"
                                           MicrophoneDeviceId="@Value?.AudioDevices?.FirstOrDefault()?.DeviceId"

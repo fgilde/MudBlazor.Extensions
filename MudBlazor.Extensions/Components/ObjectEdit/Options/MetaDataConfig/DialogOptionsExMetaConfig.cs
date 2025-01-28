@@ -1,8 +1,6 @@
-﻿using MudBlazor.Extensions.Components.ObjectEdit;
-using MudBlazor.Extensions.Components.ObjectEdit.Options;
-using MudBlazor.Extensions.Options;
+﻿using MudBlazor.Extensions.Options;
 
-namespace MainSample.WebAssembly.ObjectEditMetaConfig;
+namespace MudBlazor.Extensions.Components.ObjectEdit.Options.MetaDataConfig;
 
 public class DialogOptionsExMetaConfig : IObjectMetaConfiguration<DialogOptionsEx>
 {

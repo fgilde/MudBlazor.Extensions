@@ -9,4 +9,6 @@ public class AudioDevice : HardwareDeviceInfo
     /// Default audio device.
     /// </summary>
     public static AudioDevice Default = new() { Label = "Default", DeviceId = "default" };
+
+    public AudioConstraints ToConstraints() => new() { DeviceId = DeviceId };
 }
