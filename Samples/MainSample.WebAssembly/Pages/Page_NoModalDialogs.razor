@@ -11,22 +11,19 @@
     
     private Task ShowSampleDialogs()
     {
-        int count = 1;
-        var rnd = new Random();
-        foreach (var i in Enumerable.Range(1, count))
+        return DialogService.ShowEx<SampleDialog>($"Simple Dialog", dialog =>
         {
-            _= DialogService.ShowEx<SampleDialog>($"Simple Dialog {i}", dialog => { dialog.ContentMessage = $"Hello from dialog nr {i} sample page"; }, new DialogOptionsEx()
-            {
-                Position = (DialogPosition)rnd.Next(0, 9),
-                Animation = (AnimationType)rnd.Next(1, 25),
-                DragMode = MudDialogDragMode.Simple,
-                CloseButton = true,
-                MinimizeButton = true,
-                Resizeable = true,
-                Modal = false
-            });
-        }
-        return Task.CompletedTask;
+            dialog.ContentMessage = $"Hello from dialog";
+        }, new DialogOptionsEx()
+        {
+            Position = (DialogPosition)Random.Shared.Next(0, 9),
+            Animation = (AnimationType)Random.Shared.Next(1, 25),
+            DragMode = MudDialogDragMode.Simple,
+            CloseButton = true,
+            MinimizeButton = true,
+            Resizeable = true,
+            Modal = false
+        });
     }
 
 }

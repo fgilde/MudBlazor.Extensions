@@ -81,15 +81,17 @@ internal class MudExDialogRef<T> : IMudExDialogReference<T> where T : ComponentB
         _synchronizationContext = SynchronizationContext.Current;
         DialogReference = dialogReference;
     }
+
     /// <summary>
     /// Closes the dialog.
     /// </summary>
-    public void Close() => DialogReference.Close();
+    public void Close() => DialogReference.CloseAnimatedIf();
+
 
     /// <summary>
     /// Closes the dialog with a specific result.
     /// </summary>
-    public void Close(DialogResult result) => DialogReference.Close(result);
+    public void Close(DialogResult result) => DialogReference.CloseAnimatedIf(result);
 
     /// <summary>
     /// Dismisses the dialog with a specific result.

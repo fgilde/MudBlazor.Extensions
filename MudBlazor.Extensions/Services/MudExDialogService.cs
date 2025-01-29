@@ -7,7 +7,7 @@ using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Interop;
 using Nextended.Core.Attributes;
-using System.Reflection;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Services;
 
@@ -17,7 +17,6 @@ namespace MudBlazor.Extensions.Services;
 [RegisterAs(typeof(IMudExDialogService), RegisterAsImplementation = true, ServiceLifetime = ServiceLifetime.Scoped)]
 public class MudExDialogService : DialogService, IMudExDialogService
 {
-    private readonly IDialogService _innerDialogService;
     private readonly IDialogEventService _dialogEventService;
 
     private readonly ConcurrentDictionary<Guid, (IDialogReference DialogReference, DialogOptionsEx Options)> _dialogs =
@@ -42,42 +41,51 @@ public class MudExDialogService : DialogService, IMudExDialogService
 
         if (eventToPublish != null)
         {
-            var res = await PublishDynamic(eventToPublish);
+            return await PublishDynamic(eventToPublish);
             //if (eventToPublish is DialogClosingEvent closingEvent && closingEvent.Cancel != true && !closingEvent.DialogOptions.Modal)
-            //{
             //    WorkaroundClosingNonModalDialog(closingEvent.Dialog);
-            //}
-
-            return res;
+            
         }
 
         return null;
     }
 
+    #region NoModel Close
+ 
+    MudDialogProvider _provider;
 
-    [JSInvokable]
-    public async Task HandleNonModalClose(string dialogId, DotNetObjectReference<ComponentBase> dialog)
+
+    public override IDialogReference CreateReference()
     {
-        WorkaroundClosingNonModalDialog(dialog.Value);
+        var result = base.CreateReference();
+
+        return result;
     }
-    
+
+    private void InitProvider(MudDialogProvider findMudDialogProvider)
+    {
+        _provider = findMudDialogProvider;
+    }
+
 
     private void WorkaroundClosingNonModalDialog(ComponentBase dialogComponent)
     {
         var dlgInstance = dialogComponent.FindMudDialogInstance();
-        var dialogRef = dlgInstance.GetDialogReference();
+        WorkaroundClosingNonModalDialog(dlgInstance.GetDialogReference());
+    }
+
+    private void WorkaroundClosingNonModalDialog(IDialogReference dialogRef)
+    {
+        MudDialogProvider provider = dialogRef.FindMudDialogProvider();
+        List<IDialogReference> dialogs = provider.ExposeField<List<IDialogReference>>("_dialogs");
         bool hasDismissed = dialogRef.Dismiss(DialogResult.Cancel());
-        if (hasDismissed || true)
+        if (hasDismissed && dialogs.Contains(dialogRef))
         {
-            var provider = dialogComponent.FindMudDialogProvider();
-            FieldInfo dialogs = provider.GetType().GetField("_dialogs", BindingFlags.NonPublic | BindingFlags.Instance);
-            MethodInfo removeMethod =
-                dialogs.FieldType.GetMethod("Remove", BindingFlags.Public | BindingFlags.Instance);
-            removeMethod?.Invoke(dialogs.GetValue(provider), new object[] { dialogRef });
-            dialogRef.CloseAnimatedIf();
+            dialogs.Remove(dialogRef);
         }
     }
 
+    #endregion
 
 
     private Task PublishDynamic<TEvent>(TEvent eventToPublish) where TEvent : IDialogEvent
@@ -125,6 +133,11 @@ public class MudExDialogService : DialogService, IMudExDialogService
     private void OnDialogCloseRequestedHandler(IDialogReference reference, DialogResult result)
     {
         var options = GetDialogUsedDialogOptions(reference.Id);
+        if (options is { Modal: false })
+        {
+            _ = JSRuntime.InvokeVoidAsync("MudExDialogNoModalHandler.closeNonModal", reference.GetDialogId());
+        }
+
         Remove(reference.Id);
         var c = reference.Dialog as ComponentBase;
         _ = _dialogEventService.Publish(new DialogClosedEvent { DialogOptions = options, DialogReference = reference, Dialog = c, Result = result, DialogId = reference.GetDialogId() });
@@ -136,11 +149,14 @@ public class MudExDialogService : DialogService, IMudExDialogService
         
         await _dialogEventService.Publish(new DialogBeforeOpenEvent { DialogReference = obj, DialogId = id });
         var result = await obj.GetDialogAsync<ComponentBase>();
+        if(_provider == null)
+            InitProvider(result.FindMudDialogProvider());
         var options = GetDialogUsedDialogOptions(obj.Id);
         await _dialogEventService.Publish(new DialogAfterOpenEvent { DialogOptions = options, DialogReference = obj, Dialog = result, DialogId = id });
         var dlgResult = await obj.Result;
         OnDialogCloseRequestedHandler(obj, dlgResult);
     }
+
 
 
     internal void AddOrUpdate(Guid dialogReferenceId, IDialogReference dialogReference, DialogOptionsEx options)

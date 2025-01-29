@@ -7,14 +7,8 @@
 
         if (!this.options.modal) {
             this._updateHandledDialogs(dialog);
-
-            this.appOrBody = this.dialogContainerReference.parentElement;
             this._modifyDialogAppearance();
-
             this.dialog.onmousedown = this._handleDialogMouseDown.bind(this);
-
-            this.observer = new MutationObserver(this._checkMutationsForRemove.bind(this));
-            this.observer.observe(this.appOrBody, { childList: true });
         }
     }
 
@@ -36,30 +30,45 @@
         this.changeCls();
         this.awaitAnimation(() => {
             this.dialog.style['animation-duration'] = '0s';
-            MudExDomHelper.toAbsolute(this.dialog, true);
-            this.appOrBody.insertBefore(this.dialog, this.appOrBody.firstChild);
+            MudExDomHelper.toAbsolute(this.dialog, false);
             Object.assign(this.dialogContainerReference.style, {
-                display: 'none',
-                height: '2px',
-                width: '2px'
+                'pointer-events': 'none'
+            });
+            Object.assign(this.dialog.style, {
+                'pointer-events': 'all'
             });
         });
     }
 
     _handleDialogMouseDown(e) {
         if (!this.dialogHeader || !Array.from(this.dialogHeader.querySelectorAll('button')).some(b => MudExEventHelper.isWithin(e, b))) {
-            MudExDialogNoModalHandler.bringToFront(this.dialog);
+            MudExDialogNoModalHandler.bringToFront(this.dialogContainerReference);
         }
     }
 
-    reInitOtherDialogs() {
+    
+    changeCls() {
+        this.dialog.classList.add('mudex-dialog-no-modal');
+        this.dialogContainerReference.classList.add('mudex-dialog-ref-no-modal');
+        this.dialogContainerReference.setAttribute('data-modal', false);
+        this.dialogContainerReference.setAttribute('data-dialog-id', this.dialog.id);
+        this.dialogOverlay.remove();
+    }
+
+    static closeNonModal(dialogIdStr) {
+        return;
+        const dialog = document.querySelector(`#${dialogIdStr}`);
+        this.reInitOtherDialogs(dialogIdStr);
+    }
+
+    static reInitOtherDialogs(exceptId) {
         const dialogsToReInit = Array.from(document.querySelectorAll('.mud-ex-dialog-initial'))
-            .filter(d => d.getAttribute('data-mud-extended') !== 'true');
+            .filter(d => d.id !== exceptId && d.getAttribute('data-mud-extended') !== 'true');
 
         dialogsToReInit.forEach(this.reInitDialog.bind(this));
     }
 
-    reInitDialog(d) {
+    static reInitDialog(d) {
         const dialogInfo = MudExDialogNoModalHandler.handled.find(h => h.id === d.id);
         if (dialogInfo) {
             const currentStyle = d.style;
@@ -84,46 +93,20 @@
         }
     }
 
-    _checkMutationsForRemove(mutationsList) {
-        for (const mutation of mutationsList) {
-            if (mutation.type === 'childList') {
-                for (const removedNode of mutation.removedNodes) {
-                    if (removedNode === this.dialogContainerReference) {
-                        this.observer.disconnect();
-
-                        const index = MudExDialogNoModalHandler.handled.findIndex(h => h.id === this.dialog.id);
-                        if (index !== -1) {
-                            MudExDialogNoModalHandler.handled.splice(index, 1);
-                        }
-                        // this.dotNetService.invokeMethodAsync('HandleNonModalClose', this.dialog.id, this.dotNet);
-                        this.dialog.remove();
-                        this.reInitOtherDialogs();
-                        break;
-                    }
-                }
+    static bringToFront(dialogContainterRef) {
+        if (!dialogContainterRef) return;
+        if (dialogContainterRef.getAttribute('role') === 'dialog') {
+            dialogContainterRef = dialogContainterRef.parentNode;
+        }
+        const all = MudExDialogNoModalHandler.getAllDialogReferences();
+        let maxZ = 1400;
+        for (const d of all) {
+            const z = parseInt(window.getComputedStyle(d).zIndex) || 999;
+            if (z > maxZ) {
+                maxZ = z;
             }
         }
-    }
-
-    changeCls() {
-        this.dialog.classList.add('mudex-dialog-no-modal');
-        this.dialogContainerReference.classList.add('mudex-dialog-ref-no-modal');
-        this.dialogContainerReference.setAttribute('data-modal', false);
-        this.dialogContainerReference.setAttribute('data-dialog-id', this.dialog.id);
-        this.dialogOverlay.remove();
-    }
-
-    static bringToFront(targetDlg, animate) {
-        const allDialogs = this.getAllNonModalDialogs();
-        if (targetDlg) {
-            const app = targetDlg.parentElement;            
-            //const targetRef = MudExDialogNoModalHandler.getDialogReference(targetDlg);
-            const lastDialog = allDialogs[allDialogs.length - 1];
-            if (lastDialog && targetDlg && targetDlg !== lastDialog) {
-                //const lastDialogRef = MudExDialogNoModalHandler.getDialogReference(lastDialog);
-                app.insertBefore(targetDlg, lastDialog.nextSibling);                
-            }
-        }
+        dialogContainterRef.style.zIndex = (maxZ >= 1400 ? maxZ + 1 : 1400).toString();
     }
 
     static getDialogReference(dialog) {

@@ -5,7 +5,7 @@
 <MudDialog Class="mud-ex-dialog-initial">
     <TitleContent>
         <MudText Typo="Typo.h6">
-            <MudIcon Icon="@icon" Class="mr-3"/> @title
+            <MudIcon Icon="@icon" Class="mr-3" /> @Title
         </MudText>
     </TitleContent>
     <DialogContent>
@@ -21,16 +21,16 @@
 @code {
     [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
     [Parameter] public string ContentMessage { get; set; }
+    [Parameter] public string? Title { get; set; }
 
     void Submit() => MudDialog.CloseAnimatedIf(DialogResult.Ok(true));
     void Cancel() => MudDialog.CancelAnimatedIf();
     string icon;
-    string title; 
     
     protected override void OnInitialized()
     {
         icon = GetRandomMember<string>(typeof(Icons.Material.Filled));
-        title = RandomTitleGenerator.GenerateRandomTitle();
+        Title ??= RandomTitleGenerator.GenerateRandomTitle();
         if (string.IsNullOrEmpty(icon))
             icon = Icons.Material.Filled.People;
         base.OnInitialized();
