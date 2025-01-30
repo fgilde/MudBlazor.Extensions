@@ -10,7 +10,7 @@ namespace MudBlazor.Extensions.Services;
 /// Capture service for capturing audio and video.
 /// </summary>
 [RegisterAs(typeof(MudExCaptureNotificationService), RegisterAsImplementation = true, ServiceLifetime = ServiceLifetime.Transient)]
-internal class MudExCaptureNotificationService : IAsyncDisposable
+public class MudExCaptureNotificationService : IAsyncDisposable
 {
     private readonly ConcurrentDictionary<string, Snackbar> _toasts = new();
     private readonly ISnackbar _snackBarService;

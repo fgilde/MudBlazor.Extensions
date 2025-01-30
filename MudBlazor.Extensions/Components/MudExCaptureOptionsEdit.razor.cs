@@ -143,7 +143,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     
 
     private Task<IEnumerable<string>> SearchAudioContentType(string value, CancellationToken token)
-        => Task.FromResult(MimeType.AudioTypes.Concat(new[] { "audio/webm" }).Distinct().Where(x => string.IsNullOrEmpty(value) || x.Contains(value, StringComparison.InvariantCultureIgnoreCase)));
+        => Task.FromResult(MimeType.AudioTypes.Concat(new[] { "audio/mp3", "audio/webm" }).Distinct().Where(x => string.IsNullOrEmpty(value) || x.Contains(value, StringComparison.InvariantCultureIgnoreCase)));
 
     private Task<IEnumerable<string>> SearchVideoContentType(string value, CancellationToken token)
         => Task.FromResult(MimeType.VideoTypes.Concat(new[] { "video/webm" }).Distinct().Where(x => string.IsNullOrEmpty(value) || x.Contains(value, StringComparison.InvariantCultureIgnoreCase)));
@@ -442,6 +442,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
             .WithVisibility(Visibility.Collapse, string.IsNullOrEmpty(Value?.AudioDevices?.FirstOrDefault()?.DeviceId))
             .WithHeight(50)
             .WithWidth("100%")
+            .WithMarginBottom(-33) // TODO: Find better solution to have it on the line
             .Style;
     }
 
