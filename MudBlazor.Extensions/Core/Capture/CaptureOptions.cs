@@ -89,7 +89,7 @@ public class CaptureOptions
     /// <summary>
     /// Size of the overlay.
     /// </summary>
-    public MudExDimension OverlaySize { get; set; } = new("20%", "20%");
+    public MudExDimension OverlaySize { get; set; } = new("20%", "20%"); // TODO: Support video constraints for overlay size
 
     /// <summary>
     /// For the Overlay you can set <see cref="OverlayPosition"/> to <see cref="DialogPosition.Custom"/> and set the custom position for the overlay here.
