@@ -389,6 +389,8 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2024-09-23 15:35:55 -->
+ - 8.2.0 > Update to MudBlazor 8.2.0
+ - 8.2.0 > Fix some smaller bugs
  - 8.0.2 > CaptureService now supporting full VideoConstraints and AudioConstraints.  
  - 8.0.1 > Fix small bug in MudExSelect
  - 8.0.0 > Support for MudBlazor 8.0.0
