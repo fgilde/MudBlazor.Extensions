@@ -17,8 +17,21 @@
         <MudItem xs="3" Class="mb-4">
             <MudButton Class="m-4" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
         </MudItem>
-    </MudGrid>    
-    @((MarkupString)_svg)
+        </MudGrid>    
+        
+        <MudExSelect Label="Moin moin" T="string" ItemCollection="@(new List<string>() {"Test 1", "Test 2"})" Variant="Variant.Outlined"></MudExSelect>
+            
+        
+        <MudSelect Variant="Variant.Outlined"
+                   T="string"
+                   Label="Original">
+            <MudSelectItem Value="@("Item1")">@("Item1")"</MudSelectItem>
+            <MudSelectItem Value="@("Item2")">@("Item2")"</MudSelectItem>
+            <MudSelectItem Value="@("Item3")">@("Item3")"</MudSelectItem>
+
+        </MudSelect>
+
+        @((MarkupString)_svg)
 </DemoComponent>
 
 @code {

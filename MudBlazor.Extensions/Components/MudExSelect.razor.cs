@@ -9,6 +9,9 @@ using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using System.Linq.Expressions;
 using static MudBlazor.CategoryTypes;
+using YamlDotNet.Core.Tokens;
+using System.Reflection;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -24,6 +27,16 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     /// </summary>
     [Parameter, SafeCategory("Data")]
     public string LocalizerPattern { get; set; } = "{0}";
+
+    /// <summary>
+    /// The CSS classes applied to the outer <c>div</c>.
+    /// </summary>
+    /// <remarks>
+    /// Defaults to <c>null</c>.  Multiple classes must be separated by spaces.
+    /// </remarks>
+    [Category(CategoryTypes.FormComponent.Appearance)]
+    [Parameter]
+    public string? OuterClass { get; set; }
 
     /// <summary>
     /// Renders the item name
@@ -90,11 +103,19 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     protected internal string CurrentIcon { get; set; }
     internal event Action<ICollection<T>> SelectionChangedFromOutside;
 
+    protected string OuterClassname =>
+        new MudExCssBuilder("mud-select")
+            .AddClass("mud-ex-select")
+            .AddClass("mud-width-full", FullWidth)
+            .AddClass(OuterClass)
+            .Build();
+
     /// <summary>
     /// Class to be applied
     /// </summary>
     protected string Classname =>
         new MudExCssBuilder("mud-ex-select")
+            .AddClass("mud-select")
             .AddClass("mud-ex-select-variant-text", Variant == Variant.Text)
             .AddClass(Class)
             .Build();
@@ -104,6 +125,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     /// </summary>
     protected string InputClassname =>
         new MudExCssBuilder("mud-ex-select-input")
+            .AddClass("mud-select-input")
         .AddClass("mud-ex-select-readonly", ReadOnly)
         .AddClass("mud-ex-select-no-dropdown", ReadOnly && HideDropDownWhenReadOnly)
         .AddClass("mud-ex-select-nowrap", NoWrap)
@@ -714,7 +736,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
                 {
                     ValueChanged.InvokeAsync(Value);
                 }
-                catch (Exception)   
+                catch (Exception)
                 {
                     // BUG: After newest MudBlazor update we have to catch this exception
                 }
@@ -1031,6 +1053,21 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
         await OnKeyUp.InvokeAsync(obj);
     }
 
+    private bool GetOpen()
+    {
+        return this.ExposeField<bool>("_open");
+    }
+
+    private async Task OnFocusOutAsync(FocusEventArgs focusEventArgs)
+    {
+        if (GetOpen())
+        {
+            // when the menu is open we immediately get back the focus if we lose it (i.e. because of checkboxes in multi-select)
+            // otherwise we can't receive key strokes any longer
+            await FocusAsync();
+        }
+    }
+
     /// <summary>
     /// Called when the component lost the focus.
     /// </summary>
@@ -1154,7 +1191,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
             await CloseMenu();
 
             await SetValueAsync(value, force: force);
-            
+
             _ = _elementReference.SetText(Text);
             //_selectedValues.Clear();
             //_selectedValues.Add(value);

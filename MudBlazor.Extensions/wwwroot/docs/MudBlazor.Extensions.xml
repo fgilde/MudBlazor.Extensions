@@ -5912,6 +5912,14 @@
             Gets or Sets the Localizer Pattern.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExSelect`1.OuterClass">
+            <summary>
+            The CSS classes applied to the outer <c>div</c>.
+            </summary>
+            <remarks>
+            Defaults to <c>null</c>.  Multiple classes must be separated by spaces.
+            </remarks>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExSelect`1.ItemNameRender(`0)">
             <summary>
             Renders the item name

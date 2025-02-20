@@ -5,7 +5,7 @@
 
 <CascadingValue Name="Standalone" Value="false" IsFixed="true">
     <CascadingValue Value="@this" IsFixed="true">
-        <div class="mud-ex-select" id="@_elementId">
+        <div class="@OuterClassname" @onfocusout="@OnFocusOutAsync" id="@_elementId">
             @RenderChips(RenderChipsAdditional == Adornment.Start)
             
             @* Hidden validation component to have validation for IEnumerable<T> as well *@
@@ -19,6 +19,7 @@
                     <MudExInput @ref="_elementReference" InputType="InputType.Hidden"
                                       Class="@InputClassname" Style="@InputStyle" Margin="@Margin" Placeholder="@TryLocalize(Placeholder)"
                                       Variant="@Variant"
+                                      Label="@Label"
                                       AdornmentColor="@AdornmentColor"
                                       Color="@Color"
                                       TextUpdateSuppression="false"

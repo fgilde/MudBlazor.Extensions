@@ -1,4 +1,5 @@
 ## Change Log    
+ - 8.2.1 > Fix label outlined bug in MudExSelect #120
  - 8.2.0 > Update to MudBlazor 8.2.0
  - 8.2.0 > Fix some smaller bugs
  - 8.0.2 > CaptureService now supporting full VideoConstraints and AudioConstraints. 
