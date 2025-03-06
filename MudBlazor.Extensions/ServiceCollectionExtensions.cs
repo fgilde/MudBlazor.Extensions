@@ -56,7 +56,7 @@ public static class ServiceCollectionExtensions
        
         services.AddMudMarkdownServices();
 
-        return services.AddMudExObjectEdit(serviceImplementationAssemblies);
+        return services.AddMudExObjectEdit(assembliesArray);
     }
 
     /// <summary>

@@ -50,14 +50,14 @@ public static class RenderDataDefaults
         RegisterDefault<string, MudTextField<string>>(f => f.Value);
 
         RegisterDefault<int, MudNumericField<int>>(f => f.Value);
-        RegisterDefault<decimal, MudNumericField<decimal>>(f => f.Value, field => { field.Culture = CurrentCulture; field.Format = "N2"; });
-        RegisterDefault<double, MudNumericField<double>>(f => f.Value, field => { field.Culture = CurrentCulture; field.Format = "N4"; });
-        RegisterDefault<float, MudNumericField<float>>(f => f.Value, field => { field.Culture = CurrentCulture; field.Format = "N4"; });
+        RegisterDefault<decimal, MudNumericField<decimal>>(f => f.Value, field => { });
+        RegisterDefault<double, MudNumericField<double>>(f => f.Value, field => {  });
+        RegisterDefault<float, MudNumericField<float>>(f => f.Value, field => { });
 
         RegisterDefault<int?, MudNumericField<int?>>(f => f.Value, field => { field.Clearable = true; });
-        RegisterDefault<decimal?, MudNumericField<decimal?>>(f => f.Value, field => { field.Clearable = true; field.Culture = CurrentCulture; field.Format = "N2"; });
-        RegisterDefault<double?, MudNumericField<double?>>(f => f.Value, field => { field.Clearable = true; field.Culture = CurrentCulture; field.Format = "N4"; });
-        RegisterDefault<float?, MudNumericField<float?>>(f => f.Value, field => { field.Clearable = true; field.Culture = CurrentCulture; field.Format = "N4"; });
+        RegisterDefault<decimal?, MudNumericField<decimal?>>(f => f.Value, field => { field.Clearable = true; });
+        RegisterDefault<double?, MudNumericField<double?>>(f => f.Value, field => { field.Clearable = true; });
+        RegisterDefault<float?, MudNumericField<float?>>(f => f.Value, field => { field.Clearable = true; });
 
 
         RegisterDefault<DateTime?, MudDatePicker>(f => f.Date, DatePickerOptions(true));
