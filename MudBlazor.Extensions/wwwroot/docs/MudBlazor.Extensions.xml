@@ -15319,6 +15319,11 @@
             The content type for audio.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Core.Capture.CaptureOptions.TakePhoto">
+            <summary>
+            If this is true a photo will be taken instead of a video.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Core.Capture.CaptureOptions.ScreenCapture">
             <summary>
             The screen capture options.
@@ -15339,6 +15344,11 @@
         <member name="P:MudBlazor.Extensions.Core.Capture.CaptureOptions.MaxCaptureTime">
             <summary>
             If set, the recording will stop after the specified time.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Core.Capture.CaptureOptions.StartDelay">
+            <summary>
+            If set, the recording will start after the specified time.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Core.Capture.CaptureOptions.OverlaySource">

@@ -93,13 +93,13 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
         var dialogOptionsEx = DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(o =>
         {
             o.DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.FullHeightWithMargin);
-            o.MaxWidth = MaxWidth.Medium;
+            o.MaxWidth = MaxWidth.Large;
             o.FullWidth = true;
-            o.MaxHeight = MaxHeight.Medium;
+            o.MaxHeight = MaxHeight.Large;
             o.FullHeight = true;
             o.Resizeable = true;
             o.DragMode = MudDialogDragMode.Simple;
-        });
+        }); 
 
         var parameters = new DialogParameters
         {
@@ -121,6 +121,9 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
         {
             return null;
         }
+
+        await WaitForStartAsync(options);
+
         var callbackReference = DotNetObjectReference.Create(new JsRecordingCallbackWrapper<CaptureResult>(
             captureResult => callback?.Invoke(Prepare(captureResult, options)), s =>
             {
@@ -131,12 +134,40 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
 
         var result = new CaptureId(await _jsRuntime.InvokeAsync<string>("MudExCapture.startCapture", options, callbackReference));
         _captures.TryAdd(result, callbackReference);
+        
+        if (options.TakePhoto)
+        {
+            return null;
+        }
+
         if (options.MaxCaptureTime is { TotalSeconds: > 0 })
             _ = Task.Delay(options.MaxCaptureTime.Value).ContinueWith(_ => StopCaptureAsync(result));
-
         if (options.ShowNotificationWhileRecording)
             _captureNotifier.ShowRecordingInfo(result, options.MaxCaptureTime, (s, _) => StopCaptureAsync(new CaptureId(s)));
         return result;
+    }
+
+    private async Task WaitForStartAsync(CaptureOptions options)
+    {
+        if (options.StartDelay is { TotalSeconds: > 0 })
+        {
+            string toastId = null;
+            var cancel = new CancellationTokenSource();
+            if (options.ShowNotificationWhileRecording)
+            {
+                toastId = _captureNotifier.ShowRecordingInfo(null, options.StartDelay, (s, _) =>
+                {
+                    _captureNotifier.RemoveRecordingInfo(s);
+                    return cancel.CancelAsync();
+                });
+            }
+
+            await Task.Delay(options.StartDelay.Value, cancel.Token);
+            if(cancel.IsCancellationRequested)
+                return;
+            if(!string.IsNullOrEmpty(toastId))
+                _captureNotifier.RemoveRecordingInfo(toastId);
+        }
     }
 
     public Task StopCaptureAsync(MediaStreamTrack track)

@@ -74,8 +74,6 @@
         }
     }
 
-
-
     static stopPreviewCapture(trackId) {
         const stream = this._preselected[trackId];
         if (stream) {
@@ -84,22 +82,51 @@
         }
     }
 
+    static async takePhoto(options, callback) {
+        const id = this.generateUniqueId();
+
+        console.warn('PHOTO TAKER');
+        const capture = await this.setupCapture(options, id, callback);
+        await new Promise(resolve => setTimeout(resolve, 10));
+        this.recordings[id] = capture;
+
+        const result = {};
+        const contentType = 'image/png';
+
+        if (capture.screenStream) {
+            result.captureData = await this.captureImageFromStream(capture.screenStream, contentType);
+        }
+        if (capture.cameraStream) {
+            result.cameraData = await this.captureImageFromStream(capture.cameraStream, contentType);
+        }
+
+        if (result.captureData && result.cameraData) {
+            result.combinedData = await this.combineCapturedImages(result.captureData, result.cameraData, options, contentType);
+        }
+        
+       // result.combinedData = await this.captureImageFromStream(capture.combinedStream, contentType);
+        result.options = options;
+        result.captureId = id;
+        this.stopCapture(id, callback);
+        if (callback && callback.invokeMethodAsync) {
+            callback.invokeMethodAsync('Invoke', result);
+        }
+        return id;
+    }
+
     static async startCapture(options, callback) {
+        
+        if (options.takePhoto) {
+            return await this.takePhoto(options, callback);
+        }
+
         const id = this.generateUniqueId();
         const capture = await this.setupCapture(options, id, callback);
-        if (capture.screenStream) {
-            capture.screenStream.addEventListener("inactive", () => {
-                this.stopCapture(id, callback);
-            });
-            capture.screenStream.getVideoTracks()[0].addEventListener("ended", () => {
-                this.stopCapture(id, callback);
-            });
-        }
         capture.recorders.forEach(recorder => {
             setTimeout(() => { recorder.start(); }, 1);
         });
-
         this.recordings[id] = capture;
+
         return id;
     }
 
@@ -112,27 +139,21 @@
             recording.recorders.forEach(recorder => {
                 try {
                     recorder.stop();
-                } catch (e) {
-
-                }
+                } catch (e) { }
             });
             recording.streams.forEach(stream => {
                 if (stream && typeof stream.getTracks === 'function') {
                     stream.getTracks().forEach(track => {
                         try {
                             track.stop();
-                        } catch (e) {
-
-                        }
+                        } catch (e) { }
                     });
                 }
             });
             if (recording.audioContext) {
                 try {
                     recording.audioContext.close();
-                } catch (e) {
-
-                }
+                } catch (e) { }
             }
             delete this.recordings[id];
         }
@@ -165,7 +186,7 @@
         deviceId = deviceId || constraintsCopy.deviceId;
 
         const result = {};
-        result[section] = { ...constraintsCopy }; 
+        result[section] = { ...constraintsCopy };
         result[section].deviceId = deviceId && deviceId !== 'default' ? { exact: deviceId } : undefined;
 
         return result;
@@ -226,7 +247,6 @@
                 console.error('Error while accessing the camera:', e);
             }
         }
-
 
         // Audio Streams
         const audioStreams = await this.getAudioStreams(options.audioDevices);
@@ -289,7 +309,7 @@
             };
             recorders.push(combinedRecorder);
         }
-        return {
+        const result = {
             streams: Object.values(streams).filter(stream => stream !== null),
             recorders,
             screenStream: streams.screen,
@@ -300,11 +320,125 @@
             canvas,
             audioContext: streams.audioContext
         };
+
+        if (result.screenStream) {
+            result.screenStream.addEventListener("inactive", () => {
+                this.stopCapture(id, callback);
+            });
+            result.screenStream.getVideoTracks()[0].addEventListener("ended", () => {
+                this.stopCapture(id, callback);
+            });
+        }
+
+        return result;
     }
+
+    static async combineCapturedImages(screenData, cameraData, options, contentType = 'image/png') {
+        return new Promise(async (resolve, reject) => {
+            const baseImg = new Image();
+            baseImg.src = screenData.blobUrl;
+            const overlayImg = new Image();
+            overlayImg.src = cameraData.blobUrl;
+
+            await Promise.all([
+                new Promise(r => { baseImg.onload = r; }),
+                new Promise(r => { overlayImg.onload = r; })
+            ]);
+
+            const canvas = document.createElement('canvas');
+            canvas.width = baseImg.width;
+            canvas.height = baseImg.height;
+            const ctx = canvas.getContext('2d');
+
+            ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
+            const overlayRect = this.calculateOverlayPosition(options, canvas.width, canvas.height);
+            ctx.drawImage(overlayImg, overlayRect.x, overlayRect.y, overlayRect.width, overlayRect.height);
+            const combined = await this.captureImageFromCanvas(canvas, contentType);
+            resolve(combined);
+        });
+    }
+
+
+    static calculateOverlayPosition(options, canvasWidth, canvasHeight) {
+        let x = 0, y = 0, overlayWidth, overlayHeight;
+        try {
+            const sizeObj = typeof options.overlaySize === 'string'
+                ? JSON.parse(options.overlaySize)
+                : options.overlaySize;
+            overlayWidth = sizeObj.width.cssValue.includes('%')
+                ? (canvasWidth * parseFloat(sizeObj.width.cssValue) / 100)
+                : parseFloat(sizeObj.width.cssValue);
+            overlayHeight = sizeObj.height.cssValue.includes('%')
+                ? (canvasHeight * parseFloat(sizeObj.height.cssValue) / 100)
+                : parseFloat(sizeObj.height.cssValue);
+        } catch (e) {
+            overlayWidth = canvasWidth * 0.2;
+            overlayHeight = (canvasWidth * 0.2) * (9 / 16);
+        }
+
+        if (options.overlayPosition === 'Custom' && options.overlayCustomPosition) {
+            try {
+                const customPos = typeof options.overlayCustomPosition === 'string'
+                    ? JSON.parse(options.overlayCustomPosition)
+                    : options.overlayCustomPosition;
+                x = customPos.left.cssValue.includes('%')
+                    ? (canvasWidth * parseFloat(customPos.left.cssValue) / 100)
+                    : parseFloat(customPos.left.cssValue);
+                y = customPos.top.cssValue.includes('%')
+                    ? (canvasHeight * parseFloat(customPos.top.cssValue) / 100)
+                    : parseFloat(customPos.top.cssValue);
+            } catch (e) {
+                console.warn('Fehler beim Parsen der Custom Position:', e);
+                x = 20;
+                y = canvasHeight - overlayHeight - 20;
+            }
+        } else {
+            switch (options.overlayPosition) {
+                case 'Center':
+                    x = (canvasWidth - overlayWidth) / 2;
+                    y = (canvasHeight - overlayHeight) / 2;
+                    break;
+                case 'CenterLeft':
+                    x = 20;
+                    y = (canvasHeight - overlayHeight) / 2;
+                    break;
+                case 'CenterRight':
+                    x = canvasWidth - overlayWidth - 20;
+                    y = (canvasHeight - overlayHeight) / 2;
+                    break;
+                case 'TopCenter':
+                    x = (canvasWidth - overlayWidth) / 2;
+                    y = 20;
+                    break;
+                case 'TopLeft':
+                    x = 20;
+                    y = 20;
+                    break;
+                case 'TopRight':
+                    x = canvasWidth - overlayWidth - 20;
+                    y = 20;
+                    break;
+                case 'BottomCenter':
+                    x = (canvasWidth - overlayWidth) / 2;
+                    y = canvasHeight - overlayHeight - 20;
+                    break;
+                case 'BottomLeft':
+                    x = 20;
+                    y = canvasHeight - overlayHeight - 20;
+                    break;
+                case 'BottomRight':
+                default:
+                    x = canvasWidth - overlayWidth - 20;
+                    y = canvasHeight - overlayHeight - 20;
+                    break;
+            }
+        }
+        return { x, y, width: overlayWidth, height: overlayHeight };
+    }
+
 
     static createCombinedStream(streams, options, id) {
         const { screen, camera, audio, systemAudio, audioContext } = streams;
-        // Mix audio streams
         const audioStreamsToMix = [audio, systemAudio].filter(s => s);
         const { stream: mixedAudioStream } = this.mixAudioStreams(audioStreamsToMix);
         streams.audioContext = audioContext;
@@ -336,11 +470,11 @@
         canvas.width = settings.width;
         canvas.height = settings.height;
 
-        // Video Elemente für beide Streams
+        // Video-Elemente für beide Streams
         const mainVideo = document.createElement('video');
         const overlayVideo = document.createElement('video');
 
-        var useVideoDeviceAsOverlay = options.overlaySource === 'VideoDevice';
+        const useVideoDeviceAsOverlay = options.overlaySource === 'VideoDevice';
         mainVideo.srcObject = useVideoDeviceAsOverlay ? screen : camera;
         overlayVideo.srcObject = useVideoDeviceAsOverlay ? camera : screen;
         mainVideo.play();
@@ -349,91 +483,6 @@
         // Frame Rate einstellen
         const frameRate = options.frameRate || 30;
         const frameInterval = 1000 / frameRate;
-
-        const calculateOverlayPosition = (position, size, canvasWidth, canvasHeight) => {
-            let x = 0;
-            let y = 0;
-
-            // Overlay-Größe parsen
-            let overlayWidth, overlayHeight;
-            try {
-                const sizeObj = typeof size === 'string' ? JSON.parse(size) : size;
-                overlayWidth = sizeObj.width.cssValue.includes('%')
-                    ? (canvasWidth * parseFloat(sizeObj.width.cssValue) / 100)
-                    : parseFloat(sizeObj.width.cssValue);
-                overlayHeight = sizeObj.height.cssValue.includes('%')
-                    ? (canvasHeight * parseFloat(sizeObj.height.cssValue) / 100)
-                    : parseFloat(sizeObj.height.cssValue);
-            } catch (e) {
-                // Fallback zu Standard-Größen
-                overlayWidth = canvasWidth * 0.2;
-                overlayHeight = (canvasWidth * 0.2) * (9 / 16);
-            }
-
-            // Position basierend auf Option berechnen
-            if (position === 'Custom' && options.overlayCustomPosition) {
-                try {
-                    const customPos = typeof options.overlayCustomPosition === 'string'
-                        ? JSON.parse(options.overlayCustomPosition)
-                        : options.overlayCustomPosition;
-
-                    x = customPos.left.cssValue.includes('%')
-                        ? (canvasWidth * parseFloat(customPos.left.cssValue) / 100)
-                        : parseFloat(customPos.left.cssValue);
-
-                    y = customPos.top.cssValue.includes('%')
-                        ? (canvasHeight * parseFloat(customPos.top.cssValue) / 100)
-                        : parseFloat(customPos.top.cssValue);
-
-                } catch (e) {
-                    console.warn('Fehler beim Parsen der Custom Position:', e);
-                    x = 20;
-                    y = canvasHeight - overlayHeight - 20;
-                }
-            } else {
-                switch (position) {
-                    case 'Center':
-                        x = (canvasWidth - overlayWidth) / 2;
-                        y = (canvasHeight - overlayHeight) / 2;
-                        break;
-                    case 'CenterLeft':
-                        x = 20;
-                        y = (canvasHeight - overlayHeight) / 2;
-                        break;
-                    case 'CenterRight':
-                        x = canvasWidth - overlayWidth - 20;
-                        y = (canvasHeight - overlayHeight) / 2;
-                        break;
-                    case 'TopCenter':
-                        x = (canvasWidth - overlayWidth) / 2;
-                        y = 20;
-                        break;
-                    case 'TopLeft':
-                        x = 20;
-                        y = 20;
-                        break;
-                    case 'TopRight':
-                        x = canvasWidth - overlayWidth - 20;
-                        y = 20;
-                        break;
-                    case 'BottomCenter':
-                        x = (canvasWidth - overlayWidth) / 2;
-                        y = canvasHeight - overlayHeight - 20;
-                        break;
-                    case 'BottomLeft':
-                        x = 20;
-                        y = canvasHeight - overlayHeight - 20;
-                        break;
-                    case 'BottomRight':
-                    default:
-                        x = canvasWidth - overlayWidth - 20;
-                        y = canvasHeight - overlayHeight - 20;
-                        break;
-                }
-            }
-
-            return { x, y, width: overlayWidth, height: overlayHeight };
-        };
 
         // Optimiertes Picture-in-Picture Rendering
         let lastDrawTime = 0;
@@ -444,27 +493,14 @@
             if (!lastDrawTime || (timestamp - lastDrawTime) >= frameInterval) {
                 lastDrawTime = timestamp;
                 ctx.drawImage(mainVideo, 0, 0, canvas.width, canvas.height);
-                // Overlay Position und Größe berechnen
-                const overlay = calculateOverlayPosition(
-                    options.overlayPosition,
-                    options.overlaySize,
-                    canvas.width,
-                    canvas.height
-                );
-
-                // Kamera als Overlay zeichnen
-                ctx.drawImage(overlayVideo,
-                    overlay.x,
-                    overlay.y,
-                    overlay.width,
-                    overlay.height
-                );
+                const overlay = this.calculateOverlayPosition(options, canvas.width, canvas.height);
+                ctx.drawImage(overlayVideo, overlay.x, overlay.y, overlay.width, overlay.height);
             }
             requestAnimationFrame(draw);
         };
         requestAnimationFrame(draw);
 
-        // Canvas als Stream mit begrenzter Frame Rate
+        // Erzeuge den Canvas-Stream mit der gewünschten Framerate
         const canvasStream = canvas.captureStream(frameRate);
 
         // Gemischten Audio Stream hinzufügen
@@ -560,6 +596,48 @@
         if (callback['invokeMethodAsync']) {
             callback.invokeMethodAsync('Invoke', result);
         }
+    }
+
+    // Neue Hilfsmethoden zum Erfassen eines Fotos:
+
+    static captureImageFromCanvas(canvas, contentType) {
+        return new Promise(resolve => {
+            canvas.toBlob(blob => {
+                if (blob) {
+                    blob.arrayBuffer().then(buffer => {
+                        resolve({
+                            bytes: new Uint8Array(buffer),
+                            blobUrl: URL.createObjectURL(blob),
+                            contentType
+                        });
+                    });
+                } else {
+                    resolve(null);
+                }
+            }, contentType);
+        });
+    }
+
+    static async captureImageFromVideo(video, contentType) {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth || 640;
+        canvas.height = video.videoHeight || 480;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        return await this.captureImageFromCanvas(canvas, contentType);
+    }
+
+    static async captureImageFromStream(stream, contentType) {
+        return new Promise(resolve => {
+            const video = document.createElement('video');
+            video.srcObject = stream;
+            video.muted = true;
+            video.play();
+            video.addEventListener('loadedmetadata', async () => {
+                const result = await this.captureImageFromVideo(video, contentType);
+                resolve(result);
+            });
+        });
     }
 
     static async getDevices() {

@@ -27,6 +27,11 @@ public class CaptureOptions
     /// </summary>
     public string AudioContentType { get; set; } = "audio/webm";
 
+    /// <summary>
+    /// If this is true a photo will be taken instead of a video.
+    /// </summary>
+    public bool TakePhoto { get; set; }
+    
     [JsonInclude]
     internal bool CaptureScreen
     {
@@ -74,6 +79,11 @@ public class CaptureOptions
     /// If set, the recording will stop after the specified time.
     /// </summary>
     public TimeSpan? MaxCaptureTime { get; set; }
+
+    /// <summary>
+    /// If set, the recording will start after the specified time.
+    /// </summary>
+    public TimeSpan? StartDelay { get; set; }
 
     /// <summary>
     /// The source for the overlay default is camera as overlay over screen.

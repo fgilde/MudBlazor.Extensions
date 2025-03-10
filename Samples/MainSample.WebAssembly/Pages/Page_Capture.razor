@@ -27,60 +27,65 @@
     else
     {
         <MudMenu Class="ma-5" StartIcon="@Icons.Material.Filled.VideoCameraBack" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="Start Capture" Color="Color.Primary" Variant="Variant.Filled">
+            <MudMenuItem OnClick="@Record">Specify Options...</MudMenuItem>
+            <MudMenuItem OnClick="@RecordQuick">Specify Quick Options...</MudMenuItem>
+            <MudDivider />
             <MudMenuItem OnClick="@RecordScreen">Record Screen</MudMenuItem>
             <MudMenuItem OnClick="@RecordMainCamera">Record Main Camera</MudMenuItem>
             <MudMenuItem OnClick="@RecordMainCameraLow">Record Main Camera Lower Quality</MudMenuItem>
-            <MudMenuItem OnClick="@Record">Specify Options...</MudMenuItem>
-            <MudMenuItem OnClick="@RecordQuick">Specify Quick Options...</MudMenuItem>
+            <MudDivider />
+            <MudMenuItem OnClick="@TakePhotoFromMainCamera">Take Photo from Main camera</MudMenuItem>
         </MudMenu>
     }
 
     @if (_captureResult != null && _captureId == null)
     {
         <MudGrid Spacing="4" Justify="Justify.Center">
-            <MudItem xs="12">
-                <MudPaper Height="400px" Width="100%">
-                    <p class="p-info">Combined result</p>
-                    <MudExFileDisplay Dense="true" Style="height: 100%" FileName="Combined result.mp4" Url="@_captureResult.CombinedData.BlobUrl" ContentType="@_captureResult.CombinedData.ContentType"></MudExFileDisplay>
-                </MudPaper>
-            </MudItem>
-            <MudItem xs="6">
-                <MudPaper Height="400px" Width="100%">
-                    <p class="p-info">Audio result</p>
-                    @if (_captureResult.AudioData != null)
-                    {
+            @if (_captureResult.CombinedData != null)
+            {
+                <MudItem xs="12">
+                    <MudPaper Height="400px" Width="100%">
+                        <p class="p-info">Combined result</p>
+                        <MudExFileDisplay Dense="true" Style="height: 100%" FileName="@FileName("Combined", _captureResult.Options.TakePhoto)" Url="@_captureResult.CombinedData.BlobUrl" ContentType="@_captureResult.CombinedData.ContentType"></MudExFileDisplay>
+                    </MudPaper>
+                </MudItem>
+            }
+            @if (_captureResult.AudioData != null)
+            {
+                <MudItem xs="6">
+                    <MudPaper Height="400px" Width="100%">
+                        <p class="p-info">Audio result</p>
                         <MudExFileDisplay Dense="true" Style="height: 100%" FileName="Audio.mp3" Url="@_captureResult.AudioData.BlobUrl" ContentType="@_captureResult.AudioData.ContentType"></MudExFileDisplay>
-                    }
-                </MudPaper>
-            </MudItem>
-            <MudItem xs="6">
-                <MudPaper Height="400px" Width="100%">
-                    <p class="p-info">System audio result</p>
-                    @if (_captureResult.SystemAudioData != null)
-                    {
+                    </MudPaper>
+                </MudItem>
+            }
+            @if (_captureResult.SystemAudioData != null)
+            {
+                <MudItem xs="6">
+                    <MudPaper Height="400px" Width="100%">
+                        <p class="p-info">System audio result</p>
                         <MudExFileDisplay Dense="true" Style="height: 100%" FileName="System audio.mp3" Url="@_captureResult.SystemAudioData.BlobUrl" ContentType="@_captureResult.SystemAudioData.ContentType"></MudExFileDisplay>
-                    }
-                </MudPaper>
-            </MudItem>
-            <MudItem xs="6">
-                <MudPaper Height="400px" Width="100%">
-                    <p class="p-info">Capture result</p>
-
-                    @if (_captureResult.CaptureData != null)
-                    {
-                        <MudExFileDisplay Dense="true" Style="height: 100%" FileName="Captured.mp4" Url="@_captureResult.CaptureData.BlobUrl" ContentType="@_captureResult.CaptureData.ContentType"></MudExFileDisplay>
-                    }
-                </MudPaper>
-            </MudItem>
-            <MudItem xs="6">
-                <MudPaper Height="400px" Width="100%">
-                    <p class="p-info">Camera result</p>
-                    @if (_captureResult.CameraData != null)
-                    {
-                        <MudExFileDisplay Dense="true" Style="height: 100%" FileName="Camera.mp4" Url="@_captureResult.CameraData.BlobUrl" ContentType="@_captureResult.CameraData.ContentType"></MudExFileDisplay>
-                    }
-                </MudPaper>
-            </MudItem>
+                    </MudPaper>
+                </MudItem>
+            }
+            @if (_captureResult.CaptureData != null)
+            {
+                <MudItem xs="6">
+                    <MudPaper Height="400px" Width="100%">
+                        <p class="p-info">Capture result</p>
+                        <MudExFileDisplay Dense="true" Style="height: 100%" FileName="@FileName("Captured", _captureResult.Options.TakePhoto)" Url="@_captureResult.CaptureData.BlobUrl" ContentType="@_captureResult.CaptureData.ContentType"></MudExFileDisplay>
+                    </MudPaper>
+                </MudItem>
+            }
+            @if (_captureResult.CameraData != null)
+            {
+                <MudItem xs="6">
+                    <MudPaper Height="400px" Width="100%">
+                        <p class="p-info">Camera result</p>
+                        <MudExFileDisplay Dense="true" Style="height: 100%" FileName="@FileName("Camera", _captureResult.Options.TakePhoto)" Url="@_captureResult.CameraData.BlobUrl" ContentType="@_captureResult.CameraData.ContentType"></MudExFileDisplay>
+                    </MudPaper>
+                </MudItem>
+            }
         </MudGrid>
         <div style="height: 100px;"></div>
     }
@@ -88,13 +93,14 @@
 </DemoComponent>
 
 @code {
-    
+
     [Inject] private ICaptureService _captureService { get; set; }
 
     private CaptureResult? _captureResult;
     private CaptureId? _captureId;
     private Task StopRecording() => _captureService.StopCaptureAsync(_captureId);
 
+    private string FileName(string name, bool isImage) => isImage ? $"{name}.png" : $"{name}.mp4";
 
     private void CaptureCallback(CaptureResult obj)
     {
@@ -108,13 +114,13 @@
             _captureId = await _captureService.StartCaptureAsync(options, CaptureCallback, s => _captureId = null);
     }
 
-    private Task RecordScreen() => RecordWithOptions(new CaptureOptions() { ScreenCapture = true });
-
-    private Task RecordMainCamera() => RecordWithOptions(new CaptureOptions { VideoDevice = VideoDevice.Default.ToConstraints()});
-    private Task RecordMainCameraLow() => RecordWithOptions(new CaptureOptions { VideoDevice = new VideoConstraints { DeviceId = VideoDevice.Default.DeviceId, AspectRatio = 1.7, Width = 10, Height = 10 } });
 
     private async Task Record() => await RecordWithOptions(await _captureService.EditCaptureOptionsAsync(CaptureOptionsEditMode.Full));
-
     private async Task RecordQuick() => await RecordWithOptions(await _captureService.EditCaptureOptionsAsync(CaptureOptionsEditMode.Simple));
 
+    private Task RecordScreen() => RecordWithOptions(new CaptureOptions() { ScreenCapture = true });
+    private Task RecordMainCamera() => RecordWithOptions(new CaptureOptions { VideoDevice = VideoDevice.Default.ToConstraints() });
+    private Task RecordMainCameraLow() => RecordWithOptions(new CaptureOptions { VideoDevice = new VideoConstraints { DeviceId = VideoDevice.Default.DeviceId, AspectRatio = 1.7, Width = 10, Height = 10 } });
+
+    private Task TakePhotoFromMainCamera() => RecordWithOptions(new CaptureOptions { TakePhoto = true, VideoDevice = VideoDevice.Default.ToConstraints() });
 }

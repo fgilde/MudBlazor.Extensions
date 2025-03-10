@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Extensions.Components;
 using Nextended.Core.Attributes;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Services;
 
@@ -20,11 +21,13 @@ public class MudExCaptureNotificationService : IAsyncDisposable
         _snackBarService = serviceProvider.GetService<ISnackbar>();
     }
 
-    RenderFragment CaptureInfo(TimeSpan? maxRecordingTime) => builder =>
+    RenderFragment CaptureInfo(TimeSpan? timeInfo, bool isAlreadyRecording) => builder =>
     {
         int seq = 0;
         builder.OpenComponent(seq++, typeof(CaptureInfoComponent));
-        builder.AddAttribute(seq++, nameof(CaptureInfoComponent.MaxRecordingTime), maxRecordingTime);
+        builder.AddAttribute(seq++, nameof(CaptureInfoComponent.MaxRecordingTime), timeInfo);
+        builder.AddAttribute(seq++, nameof(CaptureInfoComponent.ShowRemainingTimeOnly), !isAlreadyRecording);
+        builder.AddAttribute(seq++, nameof(CaptureInfoComponent.InfoText), isAlreadyRecording ? "Recording" : "Recording starts in");
         builder.CloseComponent();
     };
 
@@ -34,11 +37,13 @@ public class MudExCaptureNotificationService : IAsyncDisposable
             _snackBarService.Remove(toast);
     }
 
-    public void ShowRecordingInfo(string captureId, TimeSpan? maxRecordingTime, Func<string, Snackbar, Task> onClick)
+    public string ShowRecordingInfo(string captureId, TimeSpan? maxRecordingTime, Func<string, Snackbar, Task> onClick)
     {
         _snackBarService.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
 
-        var toast =_snackBarService.Add(CaptureInfo(maxRecordingTime), Severity.Error, config =>
+        var isAlreadyRecording = captureId != null;
+        captureId ??= Guid.NewGuid().ToFormattedId();
+        var toast =_snackBarService.Add(CaptureInfo(maxRecordingTime, isAlreadyRecording), isAlreadyRecording ? Severity.Error : Severity.Info, config =>
         {
             config.ShowTransitionDuration = 400;
             config.SnackbarVariant = Variant.Outlined;
@@ -49,6 +54,7 @@ public class MudExCaptureNotificationService : IAsyncDisposable
             config.OnClick = bar => onClick(captureId, bar);            
         }, key: captureId);
         _toasts.TryAdd(captureId, toast);
+        return captureId;
     }
 
     /// <inheritdoc />

@@ -2,11 +2,27 @@
 
 <div>
     <p>
-        @TryLocalize("Recording"): @_elapsedTime.ToString(@"hh\:mm\:ss")
+        @TryLocalize(InfoText): 
         @if (MaxRecordingTime is { TotalSeconds: > 0 })
         {
-            @(" / " + MaxRecordingTime.Value.ToString(@"hh\:mm\:ss"))
-        }    
+            if (ShowRemainingTimeOnly)
+            {
+                var remaining = MaxRecordingTime.Value - _elapsedTime;
+                if (remaining < TimeSpan.Zero)
+                {
+                    remaining = TimeSpan.Zero;
+                }
+                @remaining.ToString(@"hh\:mm\:ss")
+            }
+            else
+            {
+                @_elapsedTime.ToString(@"hh\:mm\:ss")
+                @(" / " + MaxRecordingTime.Value.ToString(@"hh\:mm\:ss"))
+            }
+        }
+        else
+        {
+            @_elapsedTime.ToString(@"hh\:mm\:ss")
+        }
     </p>
-    
 </div>
