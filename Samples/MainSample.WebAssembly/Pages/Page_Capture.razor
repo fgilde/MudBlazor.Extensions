@@ -4,7 +4,7 @@
 @using MudBlazor.Extensions.Core.Capture;
 @using MudBlazor.Extensions.Core.W3C
 
-@attribute [DemoNew(Name = "Capture service", Order = 0, Icon = Icons.Material.Outlined.VideoCameraBack, Documentation = "This sample demonstrate how to use the MudExCaptureService", ForComponentType = typeof(ICaptureService))]
+@attribute [DemoUpdated(Name = "Capture service", Order = 0, Icon = Icons.Material.Outlined.VideoCameraBack, Documentation = "This sample demonstrate how to use the MudExCaptureService", ForComponentType = typeof(ICaptureService))]
 
 <style>
     .p-info {
@@ -35,6 +35,7 @@
             <MudMenuItem OnClick="@RecordMainCameraLow">Record Main Camera Lower Quality</MudMenuItem>
             <MudDivider />
             <MudMenuItem OnClick="@TakePhotoFromMainCamera">Take Photo from Main camera</MudMenuItem>
+            <MudMenuItem OnClick="@TakePhotoFromMainCamera5Sec">Take Photo from Main camera in 5 seconds</MudMenuItem>
         </MudMenu>
     }
 
@@ -123,4 +124,5 @@
     private Task RecordMainCameraLow() => RecordWithOptions(new CaptureOptions { VideoDevice = new VideoConstraints { DeviceId = VideoDevice.Default.DeviceId, AspectRatio = 1.7, Width = 10, Height = 10 } });
 
     private Task TakePhotoFromMainCamera() => RecordWithOptions(new CaptureOptions { TakePhoto = true, VideoDevice = VideoDevice.Default.ToConstraints() });
+    private Task TakePhotoFromMainCamera5Sec() => RecordWithOptions(new CaptureOptions { TakePhoto = true, StartDelay = TimeSpan.FromSeconds(5), VideoDevice = VideoDevice.Default.ToConstraints() });
 }
