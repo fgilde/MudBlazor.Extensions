@@ -49,6 +49,19 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
         base.OnInitialized();
     }
 
+    public ValueTask DisposeAsync()
+    {
+        DialogEventService.Unsubscribe<DialogBeforeOpenEvent>(HandleBeforeOpen);
+        DialogEventService.Unsubscribe<DialogAfterOpenEvent>(HandleAfterOpen);
+        DialogEventService.Unsubscribe<DialogDragStartEvent>(HandleOnDragStart);
+        DialogEventService.Unsubscribe<DialogDragEndEvent>(HandleOnDragEnd);
+        DialogEventService.Unsubscribe<DialogDraggingEvent>(HandleOnDragging);
+        DialogEventService.Unsubscribe<DialogClosedEvent>(HandleOnDialogClosed);
+        DialogEventService.Unsubscribe<DialogResizedEvent>(HandleOnDialogResized);
+        DialogEventService.Unsubscribe<DialogResizingEvent>(HandleOnDialogResize);
+        return ValueTask.CompletedTask;
+    }
+
 
     private async Task HandleBeforeOpen(DialogBeforeOpenEvent arg)
     {
@@ -89,18 +102,6 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
     private Task HandleOnDialogResize(DialogResizingEvent arg) => EventIsForThisDialog(arg) ? OnDialogResize.InvokeAsync(arg) : Task.CompletedTask;
     
 
-    public ValueTask DisposeAsync()
-    {
-        DialogEventService.Subscribe<DialogBeforeOpenEvent>(HandleBeforeOpen);
-        DialogEventService.Subscribe<DialogAfterOpenEvent>(HandleAfterOpen);
-        DialogEventService.Unsubscribe<DialogDragStartEvent>(HandleOnDragStart);
-        DialogEventService.Unsubscribe<DialogDragEndEvent>(HandleOnDragEnd);
-        DialogEventService.Unsubscribe<DialogDraggingEvent>(HandleOnDragging);
-        DialogEventService.Unsubscribe<DialogClosedEvent>(HandleOnDialogClosed);
-        DialogEventService.Unsubscribe<DialogResizedEvent>(HandleOnDialogResized);
-        DialogEventService.Unsubscribe<DialogResizingEvent>(HandleOnDialogResize);        
-        return ValueTask.CompletedTask;
-    }
     
     private bool EventIsForThisDialog(IDialogEvent dialogEvent)
     {                        
