@@ -60,15 +60,20 @@ public static class RenderDataDefaults
         RegisterDefault<float?, MudNumericField<float?>>(f => f.Value, field => { field.Clearable = true; });
 
 
-        RegisterDefault<DateTime?, MudDatePicker>(f => f.Date, DatePickerOptions(true));
+        RegisterDefault<DateTime?, MudDatePicker>(f => f.Date, DatePickerOptions(true).AddOrUpdate(nameof(MudDatePicker.Clearable), true));
         RegisterDefault<DateTime, DateTime?, MudDatePicker>(f => f.Date, DatePickerOptions(false));
+        
         RegisterDefault<DateOnly, DateTime?, MudDatePicker>(f => f.Date, DatePickerOptions(false));
-        RegisterDefault<DateOnly?, DateTime?, MudDatePicker>(f => f.Date, DatePickerOptions(true));
+        RegisterDefault<DateOnly?, DateTime?, MudDatePicker>(f => f.Date, DatePickerOptions(true).AddOrUpdate(nameof(MudDatePicker.Clearable), true));
+        
+        RegisterDefault<DateTimeOffset?, DateTime?, MudDatePicker>(f => f.Date, DatePickerOptions(true).AddOrUpdate(nameof(MudDatePicker.Clearable), true));
+        RegisterDefault<DateTimeOffset, DateTime?, MudDatePicker>(f => f.Date, DatePickerOptions(false));
 
         RegisterDefault<TimeOnly, TimeSpan?, MudTimePicker>(f => f.Time, TimePickerOptions());
-        RegisterDefault<TimeOnly?, TimeSpan?, MudTimePicker>(f => f.Time, TimePickerOptions());
+        RegisterDefault<TimeOnly?, TimeSpan?, MudTimePicker>(f => f.Time, TimePickerOptions().AddOrUpdate(nameof(MudTimePicker.Clearable), true));
+        
         RegisterDefault<TimeSpan, TimeSpan?, MudTimePicker>(f => f.Time, TimePickerOptions());
-        RegisterDefault<TimeSpan?, MudTimePicker>(f => f.Time, TimePickerOptions());
+        RegisterDefault<TimeSpan?, MudTimePicker>(f => f.Time, TimePickerOptions().AddOrUpdate(nameof(MudTimePicker.Clearable), true));
 
 
         RegisterMudExColorEditForColors();
