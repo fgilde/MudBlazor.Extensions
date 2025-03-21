@@ -30,7 +30,7 @@ public partial class MudExList<T> : IDisposable
         var res = ToStringFunc != null ? ToStringFunc(item) : Converter.Set(item);
         if (!string.IsNullOrWhiteSpace(res) && !string.IsNullOrWhiteSpace(LocalizerPattern))
         {
-            return LocalizerToUse != null ? LocalizerToUse[string.Format(LocalizerPattern, item)] : string.Format(LocalizerPattern, res);
+            res = LocalizerToUse != null ? LocalizerToUse[string.Format(LocalizerPattern, res)] : string.Format(LocalizerPattern, res);
         }
 
         return res;

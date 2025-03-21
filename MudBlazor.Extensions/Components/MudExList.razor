@@ -85,7 +85,7 @@
     private RenderFragment ItemRender(T item) => @<div>
         @{
             if (MudExSelect != null)
-            { 
+            {
                 // In select box
                 <MudExSelectItem Value="@item" Text="@(ItemNameRender(item))" />
             }

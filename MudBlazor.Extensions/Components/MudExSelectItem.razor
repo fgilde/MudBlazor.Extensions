@@ -12,11 +12,11 @@
         {            
             @if (MudExSelect?.HighlightSearch == true && !string.IsNullOrWhiteSpace(MudExSelect?.MudExList?.SearchField?.Text))
             {
-                <MudHighlighter Text="@DisplayString" HighlightedText="@MudExSelect?.MudExList?.SearchField?.Text" />
+                <MudHighlighter Text="@(Text ?? DisplayString)" HighlightedText="@MudExSelect?.MudExList?.SearchField?.Text" />
             }
             else
             {
-                @DisplayString
+                @(Text ?? DisplayString)
             }
         }
     </MudExListItem>
