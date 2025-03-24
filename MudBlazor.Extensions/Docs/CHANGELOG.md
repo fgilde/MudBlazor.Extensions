@@ -1,6 +1,6 @@
 ## Change Log    
- - 8.4.0 > Update to MudBlazor 8.40
- - 8.4.0 > Option for Screenshots in capture service
+ - 8.3.0 > Update to MudBlazor 8.3.0
+ - 8.3.0 > Option for Screenshots in capture service
  - 8.2.1 > Fix label outlined bug in MudExSelect #120
  - 8.2.0 > Update to MudBlazor 8.2.0
  - 8.2.0 > Fix some smaller bugs

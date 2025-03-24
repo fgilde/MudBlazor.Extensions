@@ -389,8 +389,8 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2024-09-23 15:35:55 -->
- - 8.4.0 > Update to MudBlazor 8.40
- - 8.4.0 > Option for Screenshots in capture service
+ - 8.3.0 > Update to MudBlazor 8.3.0
+ - 8.3.0 > Option for Screenshots in capture service
  - 8.2.1 > Fix label outlined bug in MudExSelect #120
  - 8.2.0 > Update to MudBlazor 8.2.0
  - 8.2.0 > Fix some smaller bugs
