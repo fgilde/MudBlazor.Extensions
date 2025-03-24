@@ -2120,9 +2120,6 @@
             DialogOptionsEx for this dialog
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExDialog.OnParametersSet">
-            <inheritdoc />
-        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExDialog.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
             <inheritdoc />
         </member>

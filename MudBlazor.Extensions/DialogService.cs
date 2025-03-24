@@ -228,12 +228,13 @@ namespace MudBlazor.Extensions
         internal static async Task<IDialogReference> ShowAndInject(this IDialogService dialogService, Type type, string title, DialogOptionsEx options, DialogParameters parameters = null)
         {
             options = options?.CloneOptions() ?? DefaultOptions();
-            await PrepareOptionsBeforeShow(options);
             if (dialogService is IMudExDialogService service && options != null)
             {
                 options.JsRuntime = service.JSRuntime;
                 options.AppearanceService = service.AppearanceService;
             }
+
+            await PrepareOptionsBeforeShow(options);
 
             Task OnAddedFunc(IDialogReference reference)
             {
@@ -276,7 +277,7 @@ namespace MudBlazor.Extensions
             var js = await JsImportHelper.GetInitializedJsRuntime(callbackReference.Value, options.JsRuntime);
 
             if (options.DialogAppearance != null)
-                await options.GetAppearanceService().ApplyToAsync(options.DialogAppearance, dialogReference)!;
+                await options.GetAppearanceService().ApplyToAsync(options.DialogAppearance, dialogReference);
 
             await InjectOptionsAsync(service, callbackReference, js, options);
             return dialogReference;
@@ -295,7 +296,7 @@ namespace MudBlazor.Extensions
             return callbackReference;
         }
 
-        private static DialogOptionsEx PrepareOptionsAfterShow(DialogOptionsEx options)
+        internal static DialogOptionsEx PrepareOptionsAfterShow(DialogOptionsEx options)
         {
             options ??= DefaultOptions();
             options = options.CloneOptions();

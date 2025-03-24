@@ -1055,7 +1055,9 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
 
     private bool GetOpen()
     {
-        return this.ExposeField<bool>("_open");
+        FieldInfo field = GetType().GetField("_open", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
+        var value = field?.GetValue(this);
+        return value is bool b ? b : IsOpen;
     }
 
     private async Task OnFocusOutAsync(FocusEventArgs focusEventArgs)

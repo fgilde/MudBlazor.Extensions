@@ -10,7 +10,7 @@ namespace MudBlazor.Extensions.Components;
 /// <summary>
 /// MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.
 /// </summary>
-public partial class MudExDialog : IMudExComponent, IAsyncDisposable
+public partial class MudExDialog : IMudExComponent, IAsyncDisposable 
 {
     private string _dialogId;
     private DialogOptionsEx _options;
@@ -75,8 +75,7 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
 
         if (EventIsForThisDialog(arg))
         {
-            await DialogServiceExt.PrepareOptionsBeforeShow(OptionsEx);
-            _ = arg.DialogReference.InjectOptionsAsync(DialogService, OptionsEx);
+            await arg.DialogReference.InjectOptionsAsync(DialogService, OptionsEx);
         }
     }
 
@@ -123,15 +122,12 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
     }
 
     /// <inheritdoc />
-    protected override void OnParametersSet()
-    {
-        EnsureInitialClass();
-        base.OnParametersSet();
-    }
-
-    /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
+        if (parameters.TryGetValue<DialogOptions>(nameof(Class), out var cls))
+        {
+        }
+
         if (parameters.TryGetValue<DialogOptions>(nameof(Options), out var options))
         {
             _options = options; 
@@ -142,7 +138,9 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
         if (updateRequired)
         {
             if (Visible && _reference == null)
-                _reference = await ShowAsync();
+            {
+                _reference = await ShowDialogAsync();
+            }
             else if (!Visible && _reference != null)
             {
                 _reference?.Close();
@@ -153,7 +151,19 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
             }
         }
     }
-   
+
+    private async Task<IDialogReference> ShowDialogAsync()
+    {
+        var cls = Class;
+        OptionsEx.JsRuntime ??= Js;
+        await DialogServiceExt.PrepareOptionsBeforeShow(OptionsEx);
+        var appliedOptions = DialogServiceExt.PrepareOptionsAfterShow(OptionsEx);
+        Class = $"{EnsureInitialClass()} {appliedOptions?.DialogAppearance?.Class}";
+        var result = await ShowAsync();
+        Class = cls;
+        return result;
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         // Don't call base.OnAfterRenderAsync to avoid double rendering
@@ -173,13 +183,15 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
         return Task.CompletedTask;
     }
 
-    private void EnsureInitialClass()
+    private string EnsureInitialClass()
     {
         if (string.IsNullOrEmpty(Class))
-            Class = "mud-ex-dialog-initial";
-        if (!Class.Contains("mud-ex-dialog-initial"))
-            Class += " mud-ex-dialog-initial";
+            return MudExCss.Classes.Dialog._Initial;
+        if (!Class.Contains(MudExCss.Classes.Dialog._Initial))
+            return Class + MudExCss.Classes.Dialog._Initial;
+        return Class;
     }
 
     public Task InvokeStateHasChanged() => InvokeAsync(StateHasChanged);
+
 }
