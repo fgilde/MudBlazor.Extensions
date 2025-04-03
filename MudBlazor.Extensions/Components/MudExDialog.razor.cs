@@ -124,10 +124,7 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
     /// <inheritdoc />
     public override async Task SetParametersAsync(ParameterView parameters)
     {
-        if (parameters.TryGetValue<DialogOptions>(nameof(Class), out var cls))
-        {
-        }
-
+   
         if (parameters.TryGetValue<DialogOptions>(nameof(Options), out var options))
         {
             _options = options; 
