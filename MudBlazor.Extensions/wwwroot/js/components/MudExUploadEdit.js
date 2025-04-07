@@ -1,5 +1,4 @@
 ﻿export function initializeMudExUploadEdit(dropZoneElement, inputFile, allowFolderUpload, dotnet) {
-    // Add a class when the user drags a file over the drop zone
     function onDragHover(e) {
         e.preventDefault();
         dropZoneElement.classList.add("hover");
@@ -54,14 +53,49 @@
         return false;
     }
     async function readFromDataTransfer(args) {
+        var me = this;
         let files = [];
         for await (const item of args.dataTransfer ? args.dataTransfer.items : args) {
             if (isFolder(item)) {
                 var handle = await item.getAsFileSystemHandle();
                 files.push(...(await readFolder(handle, [], `${handle.name}/`)));
             }
-            else {
-                files.push(item.getAsFile());
+            else if (item.kind === 'file') {
+                let asFile = item.getAsFile();
+                if (asFile) {
+                    files.push(asFile);
+                }
+            }
+            else if (item.kind === 'string') {
+                item.getAsString(async function (url) {
+                    var failed = false;
+                    try {
+                        if (url?.toLowerCase()?.startsWith('http')) {
+                            const response = await fetch(url,
+                                {
+                                    credentials: 'include',
+                                    withCredentials: true,
+                                    crossorigin: true,
+                                    mode: 'no-cors'
+                                });
+                            if (!response.ok) {
+                                failed = true;
+                                return;
+                            }
+                            const blob = await response.blob();
+                            const fileName = url.split('/').pop().split('?')[0] || 'attachment';
+                            const file = new File([blob], fileName, { type: blob.type });
+                            files.push(file);
+                        }
+                    } catch (error) {
+                        failed = true;
+                    } finally {
+                        if (failed) {
+                            dotnet.invokeMethodAsync('Add', url);
+                        }
+                    }
+                });
+
             }
         }
         return files;
@@ -94,7 +128,7 @@
         dropZoneElement.ondrop = onDrop;
         dropZoneElement.onpaste = onPaste;
     }
-    
+
     // The returned object allows to unregister the events when the Blazor component is destroyed
     return {
         selectFolder: () => {

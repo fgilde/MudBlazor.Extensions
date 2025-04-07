@@ -8763,6 +8763,20 @@
             Ensures all data is loaded for all files.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Add(System.Collections.Generic.IEnumerable{Microsoft.AspNetCore.Components.Forms.IBrowserFile})">
+            <summary>
+            Adds all given files to the upload requests.
+            </summary>
+            <param name="files"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Add(Microsoft.AspNetCore.Components.Forms.IBrowserFile)">
+            <summary>
+            Adds a file to the upload requests.
+            </summary>
+            <param name="file"></param>
+            <returns></returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
@@ -8847,6 +8861,20 @@
             Used by Required parameter for form validation
             </summary>
             <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Add(System.String)">
+            <summary>
+            Adds a new request from the given URL.
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.Add(`0)">
+            <summary>
+            Adds a new request
+            </summary>
+            <param name="request"></param>
             <returns></returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExUploadEdit`1.DropZoneClick(System.String)">

@@ -23,8 +23,8 @@
   <!--Versioning-->
   <PropertyGroup>
     <MajorVersion>8</MajorVersion>
-    <MinorVersion>3</MinorVersion>
-    <PatchVersion>2</PatchVersion>
+    <MinorVersion>5</MinorVersion>
+    <PatchVersion>1</PatchVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -78,7 +78,7 @@
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />    
-    <PackageReference Include="MudBlazor" Version="8.3.0" />
+    <PackageReference Include="MudBlazor" Version="8.5.1" />
     <PackageReference Include="BlazorParameterCastingMagic" Version="1.2.23060811" />
     <PackageReference Include="SharpCompress" Version="0.39.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.7" />

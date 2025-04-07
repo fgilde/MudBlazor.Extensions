@@ -817,14 +817,24 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         }
     }
 
-    private async Task Add(IEnumerable<IBrowserFile> files)
+    /// <summary>
+    /// Adds all given files to the upload requests.
+    /// </summary>
+    /// <param name="files"></param>
+    /// <returns></returns>
+    public async Task Add(IEnumerable<IBrowserFile> files)
     {
         SetLoading(true);
         await Task.WhenAll(files.Select(Add));
         SetLoading(false);
     }
 
-    private async Task Add(IBrowserFile file)
+    /// <summary>
+    /// Adds a file to the upload requests.
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
+    public async Task Add(IBrowserFile file)
     {
         if (IsDisposed) return;
 
@@ -1315,7 +1325,13 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
     /// <returns></returns>
     protected override bool HasValue(IList<T> value) => HasData();
 
-    private async Task Add(string url)
+    /// <summary>
+    /// Adds a new request from the given URL.
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
+    [JSInvokable]
+    public async Task Add(string url)
     {
         var contentType = await ResolveContentTypeFromUrlAsync(url);
         var request = new T
@@ -1351,7 +1367,12 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         return false;
     }
 
-    private async Task Add(T request)
+    /// <summary>
+    /// Adds a new request
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    public async Task Add(T request)
     {
         if (AutoExtractArchive && MimeType.IsArchive(request.ContentType))
         {
