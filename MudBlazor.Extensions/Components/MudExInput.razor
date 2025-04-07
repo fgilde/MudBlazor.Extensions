@@ -155,7 +155,12 @@
     @if (Variant == Variant.Outlined)
     {
         @* <div class="mud-input-outlined-border"></div> *@
-        <fieldset class="mud-input-outlined-border"><legend>@Label</legend></fieldset>
+        <fieldset class="mud-input-outlined-border">
+            @if (!string.IsNullOrWhiteSpace(Label))
+            {
+                <legend>@Label</legend>
+            }
+        </fieldset>
     }
 
     @if (!HideSpinButtons)

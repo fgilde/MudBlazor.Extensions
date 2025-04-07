@@ -8,10 +8,7 @@ using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using System.Linq.Expressions;
-using static MudBlazor.CategoryTypes;
-using YamlDotNet.Core.Tokens;
 using System.Reflection;
-using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 

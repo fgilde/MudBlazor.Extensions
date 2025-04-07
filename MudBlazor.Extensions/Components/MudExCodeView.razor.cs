@@ -262,6 +262,8 @@ public partial class MudExCodeView
         var callbackMethodName = nameof(OnCopyClick);
         _copyCallbackIsAttached = await JsRuntime.DInvokeAsync<bool>((w, el, dotnet, methodName) =>
         {
+            if(!el || !el.querySelector)
+                return false;
             var btn = el.querySelector("button");
             if(!btn)
                 return false;
