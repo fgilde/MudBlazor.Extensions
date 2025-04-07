@@ -13,7 +13,6 @@ using MudBlazor.Interop;
 using MudBlazor.Services;
 using Nextended.Core;
 using Nextended.Core.Extensions;
-using YamlDotNet.Core.Tokens;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -22,14 +21,13 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRenderDataFor<CaptureOptions>
 {
-    private MudExDimension _previewSize = new(400, 300);
+    private readonly MudExDimension _previewSize = new(400, 300);
 
     [Inject] private ICaptureService CaptureService { get; set; }
-    [Inject] private IDialogService DialogService { get; set; }
     [Inject] private IResizeObserver ResizeObserver { get; set; }
 
-    private bool _resizeObserved = false;
-    private bool _isDragging = false;
+    private bool _resizeObserved;
+    private bool _isDragging;
     private MudExDimension _dragStartPoint;
     private MudExPosition _elementStartPosition;
     private List<AudioDevice> _audioDevices = new();
@@ -42,7 +40,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     private MediaStreamTrack _screenTrack;
     private MediaStreamTrack _cameraTrack;
     private bool _captureScreen;
-    private Action<DialogOptionsEx> dialogOptions = o =>
+    private readonly Action<DialogOptionsEx> _dialogOptions = o =>
     {
         o.MaxWidth = MaxWidth.Medium;
         o.Animation = AnimationType.FadeIn;
@@ -135,6 +133,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
         // _videoDevices.Insert(0, VideoDevice.Default);
     }
 
+    /// <inheritdoc />
     protected override async Task OnFinishedRenderAsync()
     {
         ResizeObserver.OnResized += OnOverlayResized;
@@ -171,9 +170,9 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
         if (constraintToEdit != null)
         {
             constraintToEdit = constraintToEdit.Clone();
-            var res = await DialogService.EditObject(constraintToEdit, TryLocalize("Edit Audio Constraints"),
+            var res = await DialogService.EditObjectAsync(constraintToEdit, TryLocalize("Edit Audio Constraints"),
                 Icons.Material.Filled.Edit,
-                DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(dialogOptions),
+                DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(_dialogOptions),
                 meta => meta.Properties(m => m.DeviceId, m => m.GroupId).Ignore());
             if (!res.Cancelled)
             {
@@ -191,8 +190,8 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     {
         var toEdit = (Value.VideoDevice ??= new VideoConstraints()).Clone();
         
-        var res = await DialogService.EditObject(toEdit, TryLocalize("Edit Video Constraints"), Icons.Material.Filled.Edit, 
-            DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(dialogOptions), 
+        var res = await DialogService.EditObjectAsync(toEdit, TryLocalize("Edit Video Constraints"), Icons.Material.Filled.Edit, 
+            DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(_dialogOptions), 
             meta => meta.Properties(m => m.DeviceId, m => m.GroupId).Ignore());
         if (!res.Cancelled)
         {
@@ -202,8 +201,8 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
 
     private Task ChangeMediaOptionsAsync(MouseEventArgs obj)
     {
-        var dialogOptionsEx = DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(dialogOptions);
-        return DialogService.EditObject(_displayMediaOptions, TryLocalize("Change media options"), Icons.Material.Filled.VideoCameraFront, dialogOptionsEx);
+        var dialogOptionsEx = DialogOptionsEx.DefaultDialogOptions.CloneOptions().SetProperties(_dialogOptions);
+        return DialogService.EditObjectAsync(_displayMediaOptions, TryLocalize("Change media options"), Icons.Material.Filled.VideoCameraFront, dialogOptionsEx);
     }
 
     private Task SelectScreenIf()
@@ -344,7 +343,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
             Value.OverlayCustomPosition = new MudExPosition(left ?? Value.OverlayCustomPosition.Left, top ?? Value.OverlayCustomPosition.Top);
     }
 
-    private async Task VideoDeviceChanged(VideoConstraints constraints)
+    private async Task VideoDeviceChanged(VideoConstraints constraints = null)
     {
         await StopPreviewCameraTrack();
         if (constraints != null)
@@ -354,28 +353,27 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
         else
         {
             if (Value.OverlaySource == OverlaySource.CapturedScreen)
-                await ToogleOverlaySource();
+                await ToggleOverlaySource();
         }
         SetAndStateChange(o => o.VideoDevice = constraints);
     }
 
     private async Task VideoDeviceChanged(VideoDevice obj)
     {
-        VideoConstraints constraints = null;
         if (obj != null)
         {
-            constraints = Value?.VideoDevice ?? new VideoConstraints();
+            var constraints = Value?.VideoDevice ?? new VideoConstraints();
             constraints.DeviceId = obj.DeviceId;
             await VideoDeviceChanged(constraints);
         }
         else
         {
-            await VideoDeviceChanged(constraints);
+            await VideoDeviceChanged();
         }
     }
 
 
-    private async Task ToogleOverlaySource()
+    private async Task ToggleOverlaySource()
     {
         Value.OverlaySource = Value.OverlaySource == OverlaySource.CapturedScreen ? OverlaySource.VideoDevice : OverlaySource.CapturedScreen;
         await JsRuntime.InvokeVoidAsync("MudExCapture.switchSrcObject", _previewScreen, _previewCamera, true);
@@ -391,7 +389,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
     {
         _captureScreen = @checked;
         if(!_captureScreen && Value.OverlaySource == OverlaySource.CapturedScreen)
-            await ToogleOverlaySource();
+            await ToggleOverlaySource();
         if (_captureScreen && _screenTrack == null)
             await SetDummyStream();
     }
@@ -421,6 +419,7 @@ public partial class MudExCaptureOptionsEdit : IObjectEditorWithCustomPropertyRe
         }
     }
 
+    /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
         await StopPreviewCameraTrack();

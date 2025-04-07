@@ -72,7 +72,7 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
             { nameof(MudExObjectEditDialog<CaptureOptions>.ShowToolbar), false }
         };
 
-        var result = await _dialogService.EditObject(simple, TryLocalize("Capture"),
+        var result = await _dialogService.EditObjectAsync(simple, TryLocalize("Capture"),
             (captureOptions, _) => Task.FromResult(captureOptions?.Valid() == true ? "" : TryLocalize("Please select at least one source to record")), 
             dialogOptionsEx, meta =>
             {
@@ -109,7 +109,7 @@ internal class MudExCaptureService : ICaptureService, IAsyncDisposable
             { nameof(MudExObjectEditDialog<CaptureOptions>.SaveButtonIcon), Icons.Material.Filled.RecordVoiceOver },
         };
 
-        var result = await _dialogService.EditObject(options, TryLocalize("Capture"), (captureOptions, _) => Task.FromResult(captureOptions?.Valid() == true ? "" : TryLocalize("Please select at least one source to record")), dialogOptionsEx, null, parameters);
+        var result = await _dialogService.EditObjectAsync(options, TryLocalize("Capture"), (captureOptions, _) => Task.FromResult(captureOptions?.Valid() == true ? "" : TryLocalize("Please select at least one source to record")), dialogOptionsEx, null, parameters);
 
         return result.Cancelled ? null : result.Result;
     }

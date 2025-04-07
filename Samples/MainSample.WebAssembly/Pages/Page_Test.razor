@@ -46,7 +46,7 @@
         return base.OnInitializedAsync();
     }
 
-    private async Task ShowSampleDialog()
+    private Task ShowSampleDialog()
     {
         DialogOptionsEx dlgOptions = new()
             {
@@ -60,7 +60,7 @@
                 DisableSizeMarginY = true,
                 DisablePositionMargin = true
             };
-        DialogService.ShowEx<SampleTabDialog>("Simple Dialog", dlgOptions);
+        return DialogService.ShowExAsync<SampleTabDialog>("Simple Dialog", dlgOptions);
     }
 
 }

@@ -56,17 +56,17 @@ public partial class MudExFileDisplayDialog
     /// <summary>
     /// Shows a file using the <see cref="MudExFileDisplay"/> component in a dialog.
     /// </summary>
-    public static Task<IMudExDialogReference<MudExFileDisplayDialog>> Show(IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(url, fileName, contentType, options);
+    public static Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowAsync(IDialogService dialogService, string url, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialogAsync(url, fileName, contentType, options);
     
     /// <summary>
     /// Shows a file using the <see cref="MudExFileDisplay"/> component in a dialog.
     /// </summary>
-    public static Task<IMudExDialogReference<MudExFileDisplayDialog>> Show(IDialogService dialogService, IBrowserFile browserFile, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(browserFile, options);
+    public static Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowAsync(IDialogService dialogService, IBrowserFile browserFile, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialogAsync(browserFile, options);
 
     /// <summary>
     /// Shows a file using the <see cref="MudExFileDisplay"/> component in a dialog.
     /// </summary>
-    public static Task<IMudExDialogReference<MudExFileDisplayDialog>> Show(IDialogService dialogService, Stream stream, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialog(stream, fileName, contentType, options);
+    public static Task<IMudExDialogReference<MudExFileDisplayDialog>> ShowAsync(IDialogService dialogService, Stream stream, string fileName, string contentType, Action<DialogOptionsEx> options = null) => dialogService.ShowFileDisplayDialogAsync(stream, fileName, contentType, options);
 
     /// <summary>
     /// Submits the dialog.

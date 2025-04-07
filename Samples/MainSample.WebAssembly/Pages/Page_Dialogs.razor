@@ -79,7 +79,7 @@
         var options = Options.CloneOptions();
         
         options.Buttons = GetButtons();
-        IMudExDialogReference<SampleDialog>? dlgReference = await DialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, options);
+        IMudExDialogReference<SampleDialog>? dlgReference = await DialogService.ShowExAsync<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, options);
         
     }
 

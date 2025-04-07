@@ -46,7 +46,7 @@
 
     private async Task AddUser()
     {
-        var res = await DialogService.EditObject<UserModel>(new UserModel(), "Add user", Options.SetProperties(o => o.Position = DialogPosition.TopCenter), null, new DialogParameters()
+        var res = await DialogService.EditObjectAsync<UserModel>(new UserModel(), "Add user", Options.SetProperties(o => o.Position = DialogPosition.TopCenter), null, new DialogParameters()
         {
             {nameof(MudExObjectEditDialog<UserModel>.CancelButtonText), "Annular"},
             {nameof(MudExObjectEditDialog<UserModel>.SaveButtonText), "Confirminger"},

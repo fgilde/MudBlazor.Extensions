@@ -35,7 +35,7 @@ public partial class MainLayout
         };
 
 
-        await DialogService.ShowEx<InfoDialog>("Info", op);
+        await DialogService.ShowExAsync<InfoDialog>("Info", op);
     }
 
     protected override async Task OnInitializedAsync()

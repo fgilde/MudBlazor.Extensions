@@ -41,7 +41,7 @@
             { nameof(MudExObjectEditDialog<TestObject>.AllowExport), true },
             { nameof(MudExObjectEditDialog<TestObject>.AllowImport), true }
         };
-        var res = await DialogService.EditObject(new TestObject(), "Auto Generated Editor for TestObject", OnSubmit, SampleDialogOptions.FullSlideFromRight, 
+        var res = await DialogService.EditObjectAsync(new TestObject(), "Auto Generated Editor for TestObject", OnSubmit, SampleDialogOptions.FullSlideFromRight, 
         meta => meta.WrapEachInMudItem(i => i.xs = 6)
             .Property(m => m.UploadRequest)
             .WithoutLabel()            

@@ -370,9 +370,10 @@ public static partial class DialogServiceExt
             builder.CloseComponent();
         }));
         options ??= DefaultOptions();
-        var dialog = await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options);
+        var dialog = await dialogService.ShowExAsync<MudExMessageDialog>(title, parameters, options);
         var mudExMessageDialog = ((MudExMessageDialog)dialog.Dialog);
-        mudExMessageDialog.Component = component;
+        if(mudExMessageDialog != null)
+            mudExMessageDialog.Component = component;
         return (await dialog.Result, component);
     }
 
@@ -384,9 +385,9 @@ public static partial class DialogServiceExt
         DialogOptionsEx options = null)
     {
         options ??= DefaultOptions();
-        var dialog = await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options);
+        var dialog = await dialogService.ShowExAsync<MudExMessageDialog>(title, parameters, options);
 
-        return !(await dialog.Result).Canceled;
+        return !((await dialog.Result)?.Canceled ?? true);
     }
 
     /// <summary>
@@ -435,7 +436,7 @@ public static partial class DialogServiceExt
         DialogOptionsEx options = null)
     {
         options ??= DefaultOptions();
-        return (await dialogService.ShowEx(title, parameters, options)).AsMudExDialogReference<MudExMessageDialog>();
+        return (await dialogService.ShowExAsync(title, parameters, options)).AsMudExDialogReference<MudExMessageDialog>();
     }
 
     /// <summary>
@@ -446,7 +447,7 @@ public static partial class DialogServiceExt
         DialogOptionsEx options = null)
     {
         options ??= DefaultOptions();
-        return (await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options)).AsMudExDialogReference<MudExMessageDialog>();
+        return (await dialogService.ShowExAsync<MudExMessageDialog>(title, parameters, options)).AsMudExDialogReference<MudExMessageDialog>();
     }
 
     /// <summary>
@@ -506,7 +507,7 @@ public static partial class DialogServiceExt
         options.CloseButton = canClose;
         options.CloseOnEscapeKey = canClose;
         options.BackdropClick = canClose;
-        var reference = await dialogService.ShowEx<MudExMessageDialog>(title, parameters, options);
+        var reference = await dialogService.ShowExAsync<MudExMessageDialog>(title, parameters, options);
         return reference.AsMudExDialogReference<MudExMessageDialog>();
     }
 
@@ -568,10 +569,10 @@ public static partial class DialogServiceExt
         };
 
         options ??= DefaultOptions();
-        var res = await dialogService.ShowEx<MudExPromptDialog>(title, dialogParameters.MergeWith(parameters), options);
+        var res = await dialogService.ShowExAsync<MudExPromptDialog>(title, dialogParameters.MergeWith(parameters), options);
         var dialogResult = (await res.Result);
 
-        if (!dialogResult.Canceled && dialogResult.Data != null && canConfirm(dialogResult.Data.ToString()))
+        if (dialogResult is { Canceled: false, Data: not null } && canConfirm(dialogResult.Data.ToString()))
             return dialogResult.Data.ToString();
         return null;
     }

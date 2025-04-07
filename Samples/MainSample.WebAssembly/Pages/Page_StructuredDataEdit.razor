@@ -58,7 +58,7 @@
 
     private async Task ShowSampleJsonEditDialog()
     {                       
-        var res = await DialogService.EditStructuredDataString(_dataType, _dataString, $"Auto Generated Editor for {_dataType}", ((_,_) => Task.FromResult("")), SampleDialogOptions.FullSlideFromRight, meta => meta.WrapEachInMudItem(i => i.xs = 6));
+        var res = await DialogService.EditStructuredDataStringAsync(_dataType, _dataString, $"Auto Generated Editor for {_dataType}", ((_,_) => Task.FromResult("")), SampleDialogOptions.FullSlideFromRight, meta => meta.WrapEachInMudItem(i => i.xs = 6));
         if (!res.Cancelled)
             await OnDataStringChanged(MudExJsonHelper.FormatDataStringIfJson(res.Result.ToString(), _dataType));
     }

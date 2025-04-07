@@ -63,7 +63,7 @@
 
     private async Task OpenAsDialog()
     {
-        await DialogService.ShowFileDisplayDialog(SampleFile.Url, SampleFile.Name, SampleFile.ContentType, HandleContentError);
+        await DialogService.ShowFileDisplayDialogAsync(SampleFile.Url, SampleFile.Name, SampleFile.ContentType, HandleContentError);
     }
 
     private Task<MudExFileDisplayContentErrorResult> HandleContentError(IMudExFileDisplayInfos arg)

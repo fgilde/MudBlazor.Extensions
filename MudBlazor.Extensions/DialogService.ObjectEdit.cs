@@ -13,7 +13,7 @@ public static partial class DialogServiceExt
     /// <summary>
     /// Shows an object edit dialog as readonly for given object.
     /// </summary>
-    public static Task<(bool Cancelled, TModel Result)> ShowObject<TModel>(this IDialogService dialogService,
+    public static Task<(bool Cancelled, TModel Result)> ShowObjectAsync<TModel>(this IDialogService dialogService,
         TModel value, string title, string icon, DialogOptionsEx options = null,
         Action<ObjectEditMeta<TModel>> metaConfig = null, DialogParameters dialogParameters = null)
     {
@@ -22,7 +22,7 @@ public static partial class DialogServiceExt
             { nameof(MudExObjectEditDialog<TModel>.DialogIcon), icon }
         };
 
-        return ShowObject(dialogService, value, title, options, metaConfig,
+        return ShowObjectAsync(dialogService, value, title, options, metaConfig,
             dialogParameters == null ? parameters : dialogParameters.MergeWith(parameters));
     }
 
@@ -37,7 +37,7 @@ public static partial class DialogServiceExt
     /// <param name="metaConfig">The configuration of meta information.</param>
     /// <param name="dialogParameters">The dialog parameters.</param>
     /// <returns>A tuple indicating if edit was cancelled and the result. </returns>
-    public static async Task<(bool Cancelled, TModel Result)> ShowObject<TModel>(this IDialogService dialogService,
+    public static async Task<(bool Cancelled, TModel Result)> ShowObjectAsync<TModel>(this IDialogService dialogService,
         TModel value, string title, DialogOptionsEx options = null, Action<ObjectEditMeta<TModel>> metaConfig = null,
         DialogParameters dialogParameters = null)
     {
@@ -54,7 +54,7 @@ public static partial class DialogServiceExt
             { nameof(MudExObjectEditDialog<TModel>.ShowSaveButton), false },
             { nameof(MudExObjectEditDialog<TModel>.CancelButtonText), "Close" },
         };
-        return await dialogService.EditObject(value, title, options, meta =>
+        return await dialogService.EditObjectAsync(value, title, options, meta =>
         {
             metaConfig?.Invoke(meta);
             meta.Properties().AsReadOnly();
@@ -64,7 +64,7 @@ public static partial class DialogServiceExt
     /// <summary>
     /// Shows an object edit dialog as readonly for given data string as object edit.
     /// </summary>
-    public static Task<(bool Cancelled, IStructuredDataObject Result)> ShowStructuredDataString(
+    public static Task<(bool Cancelled, IStructuredDataObject Result)> ShowStructuredDataStringAsync(
         this IDialogService dialogService,
         string value, string title,
         DialogOptionsEx options,
@@ -74,13 +74,13 @@ public static partial class DialogServiceExt
         var model = ReflectionHelper.CreateTypeAndDeserialize(value);
         metaConfig =
             (metaConfig ?? (_ => { })).CombineWith(RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>());
-        return dialogService.ShowObject(model, title, options, metaConfig, dialogParameters);
+        return dialogService.ShowObjectAsync(model, title, options, metaConfig, dialogParameters);
     }
 
     /// <summary>
     /// Shows an object edit dialog as readonly for given data string as object edit.
     /// </summary>
-    public static Task<(bool Cancelled, IStructuredDataObject Result)> ShowStructuredDataString(
+    public static Task<(bool Cancelled, IStructuredDataObject Result)> ShowStructuredDataStringAsync(
         this IDialogService dialogService, StructuredDataType dataType,
         string value, string title,
         DialogOptionsEx options,
@@ -88,15 +88,14 @@ public static partial class DialogServiceExt
         DialogParameters dialogParameters = null)
     {
         var model = ReflectionHelper.CreateTypeAndDeserialize(value, dataType);
-        metaConfig =
-            (metaConfig ?? (_ => { })).CombineWith(RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>());
-        return dialogService.ShowObject(model, title, options, metaConfig, dialogParameters);
+        metaConfig = (metaConfig ?? (_ => { })).CombineWith(RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>());
+        return dialogService.ShowObjectAsync(model, title, options, metaConfig, dialogParameters);
     }
 
     /// <summary>
     /// Shows an object edit dialog for given data string as object edit.
     /// </summary>
-    public static Task<(bool Cancelled, IStructuredDataObject Result)> EditStructuredDataString(
+    public static Task<(bool Cancelled, IStructuredDataObject Result)> EditStructuredDataStringAsync(
         this IDialogService dialogService,
         string value, string title,
         Func<IStructuredDataObject, MudExObjectEditDialog<IStructuredDataObject>, Task<string>> customSubmit,
@@ -106,13 +105,13 @@ public static partial class DialogServiceExt
         var model = ReflectionHelper.CreateTypeAndDeserialize(value);
         metaConfig =
             (metaConfig ?? (_ => { })).CombineWith(RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>());
-        return dialogService.EditObject(model, title, customSubmit, options, metaConfig, dialogParameters);
+        return dialogService.EditObjectAsync(model, title, customSubmit, options, metaConfig, dialogParameters);
     }
 
     /// <summary>
     /// Shows an object edit dialog for given data string as object edit.
     /// </summary>
-    public static Task<(bool Cancelled, IStructuredDataObject Result)> EditStructuredDataString(
+    public static Task<(bool Cancelled, IStructuredDataObject Result)> EditStructuredDataStringAsync(
         this IDialogService dialogService,
         string value, string title,
         DialogOptionsEx options,
@@ -123,13 +122,13 @@ public static partial class DialogServiceExt
         var model = ReflectionHelper.CreateTypeAndDeserialize(value);
         metaConfig =
             (metaConfig ?? (_ => { })).CombineWith(RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>());
-        return dialogService.EditObject(model, title, options, metaConfig, dialogParameters);
+        return dialogService.EditObjectAsync(model, title, options, metaConfig, dialogParameters);
     }
 
     /// <summary>
     /// Shows an object edit dialog for given data string as object edit.
     /// </summary>
-    public static Task<(bool Cancelled, IStructuredDataObject Result)> EditStructuredDataString(
+    public static Task<(bool Cancelled, IStructuredDataObject Result)> EditStructuredDataStringAsync(
         this IDialogService dialogService, StructuredDataType dataType,
         string value, string title,
         Func<IStructuredDataObject, MudExObjectEditDialog<IStructuredDataObject>, Task<string>> customSubmit,
@@ -139,13 +138,13 @@ public static partial class DialogServiceExt
         var model = ReflectionHelper.CreateTypeAndDeserialize(value, dataType);
         metaConfig =
             (metaConfig ?? (_ => { })).CombineWith(RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>());
-        return dialogService.EditObject(model, title, customSubmit, options, metaConfig, dialogParameters);
+        return dialogService.EditObjectAsync(model, title, customSubmit, options, metaConfig, dialogParameters);
     }
 
     /// <summary>
     /// Shows an object edit dialog for given data string as object edit.
     /// </summary>
-    public static Task<(bool Cancelled, IStructuredDataObject Result)> EditStructuredDataString(
+    public static Task<(bool Cancelled, IStructuredDataObject Result)> EditStructuredDataStringAsync(
         this IDialogService dialogService, StructuredDataType dataType,
         string value, string title,
         DialogOptionsEx options,
@@ -156,7 +155,7 @@ public static partial class DialogServiceExt
         var model = ReflectionHelper.CreateTypeAndDeserialize(value, dataType);
         metaConfig =
             (metaConfig ?? (_ => { })).CombineWith(RenderDataDefaults.ColorFromStringOptions<IStructuredDataObject>());
-        return dialogService.EditObject(model, title, options, metaConfig, dialogParameters);
+        return dialogService.EditObjectAsync(model, title, options, metaConfig, dialogParameters);
     }
 
 
@@ -172,7 +171,7 @@ public static partial class DialogServiceExt
     /// <param name="metaConfig">The configuration of meta information.</param>
     /// <param name="dialogParameters">The dialog parameters.</param>
     /// <returns>A tuple indicating if edit was cancelled and the result.</returns>
-    public static async Task<(bool Cancelled, TModel Result)> EditObject<TModel>(this IDialogService dialogService,
+    public static async Task<(bool Cancelled, TModel Result)> EditObjectAsync<TModel>(this IDialogService dialogService,
         TModel value, string title, Func<TModel, MudExObjectEditDialog<TModel>, Task<string>> customSubmit,
         DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null,
         DialogParameters dialogParameters = null)
@@ -181,24 +180,22 @@ public static partial class DialogServiceExt
         {
             { nameof(MudExObjectEditDialog<TModel>.CustomSubmit), customSubmit }
         };
-        return await dialogService.EditObject(value, title, options, metaConfig,
-            dialogParameters.MergeWith(parameters));
+        return await dialogService.EditObjectAsync(value, title, options, metaConfig, dialogParameters.MergeWith(parameters));
     }
 
-    public static async Task<(bool Cancelled, TModel Result)> EditObject<TModel>(this IDialogService dialogService,
+    public static async Task<(bool Cancelled, TModel Result)> EditObjectAsync<TModel>(this IDialogService dialogService,
         TModel value)
     {
-        return await dialogService.EditObject(value, $"Edit {typeof(TModel).Name}",
-            DialogOptionsEx.DefaultDialogOptions);
+        return await dialogService.EditObjectAsync(value, $"Edit {typeof(TModel).Name}", DialogOptionsEx.DefaultDialogOptions);
     }
 
-    public static Task<(bool Cancelled, TModel Result)> EditObject<TModel>(this IDialogService dialogService,
+    public static Task<(bool Cancelled, TModel Result)> EditObjectAsync<TModel>(this IDialogService dialogService,
         TModel value, string title, string icon, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null,
         DialogParameters dialogParameters = null)
     {
         dialogParameters ??= new DialogParameters();
         dialogParameters.Add(nameof(MudExObjectEditDialog<TModel>.DialogIcon), icon);
-        return EditObject<TModel>(dialogService, value, title, options, metaConfig, dialogParameters);
+        return EditObjectAsync<TModel>(dialogService, value, title, options, metaConfig, dialogParameters);
     }
 
     /// <summary>
@@ -212,12 +209,10 @@ public static partial class DialogServiceExt
     /// <param name="metaConfig">The configuration of meta information.</param>
     /// <param name="dialogParameters">The dialog parameters.</param>
     /// <returns>A tuple indicating if edit was cancelled and the result.</returns>
-    public static async Task<(bool Cancelled, TModel Result)> EditObject<TModel>(this IDialogService dialogService, TModel value, string title, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null, DialogParameters dialogParameters = null)
+    public static async Task<(bool Cancelled, TModel Result)> EditObjectAsync<TModel>(this IDialogService dialogService, TModel value, string title, DialogOptionsEx options, Action<ObjectEditMeta<TModel>> metaConfig = null, DialogParameters dialogParameters = null)
     {
         if (MudExObjectEdit<TModel>.IsPrimitive())
         {
-
-
             #region Not important but here we change some options for primitives
 
             var attributesForPrimitive = new Dictionary<string, object>
@@ -230,10 +225,8 @@ public static partial class DialogServiceExt
             options.Resizeable = true;
 
             #endregion
-
-
-
-            var r = await dialogService.EditObject(modelForPrimitive, title, options, meta =>
+            
+            var r = await dialogService.EditObjectAsync(modelForPrimitive, title, options, meta =>
             {
                 meta.Property(m => m.Value).WithAdditionalAttributes(attributesForPrimitive, true);
             }, dialogParameters);
@@ -248,9 +241,9 @@ public static partial class DialogServiceExt
                 {nameof(MudExObjectEditDialog<TModel>.MetaInformation), value.ObjectEditMeta(metaConfig)}
             };
 
-        var dialog = await dialogService.ShowEx<MudExObjectEditDialog<TModel>>(title, dialogParameters.MergeWith(parameters), options);
+        var dialog = await dialogService.ShowExAsync<MudExObjectEditDialog<TModel>>(title, dialogParameters.MergeWith(parameters), options);
 
         var res = await dialog.Result;
-        return (res.Canceled, res.Canceled ? value : (TModel)res.Data);
+        return (res?.Canceled ?? false, res?.Canceled == true ? value : (TModel)res.Data);
     }
 }

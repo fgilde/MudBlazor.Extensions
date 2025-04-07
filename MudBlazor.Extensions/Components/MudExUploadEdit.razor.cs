@@ -1271,13 +1271,13 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         if (MudExFileDisplayZip.CanHandleFileAsArchive(request.ContentType) && request.Data != null)
         {
             using var ms = new MemoryStream(request.Data);
-            var res = await DialogService.ShowFileDisplayDialog(ms, dialogTitle ?? GetTitleForFileDisplayDialog(request), request.ContentType, null, parameters);
+            var res = await DialogService.ShowFileDisplayDialogAsync(ms, dialogTitle ?? GetTitleForFileDisplayDialog(request), request.ContentType, null, parameters);
             await res.Result;
         }
         else
         {
             var dataUrl = await ResolvePreviewUrlAsync(request);
-            await DialogService.ShowFileDisplayDialog(dataUrl, dialogTitle ?? GetTitleForFileDisplayDialog(request), request.ContentType, null, parameters);
+            await DialogService.ShowFileDisplayDialogAsync(dataUrl, dialogTitle ?? GetTitleForFileDisplayDialog(request), request.ContentType, null, parameters);
         }
     }
 

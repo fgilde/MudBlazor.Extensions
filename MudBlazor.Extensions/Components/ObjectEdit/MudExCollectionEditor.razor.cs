@@ -333,7 +333,7 @@ public partial class MudExCollectionEditor<T>
             { nameof(MudExObjectEditDialog<T>.DialogIcon), EditIcon },
             { nameof(MudExObjectEditDialog<T>.Localizer), Localizer }
         };
-        var res = await DialogService.EditObject(item, TryLocalize(TextEdit, ItemNameRender(item)), DialogOptions ?? DefaultOptions(), null, parameters);
+        var res = await DialogService.EditObjectAsync(item, TryLocalize(TextEdit, ItemNameRender(item)), DialogOptions ?? DefaultOptions(), null, parameters);
         if (!res.Cancelled)
         {
             SetValue(item, res.Result);
@@ -372,7 +372,7 @@ public partial class MudExCollectionEditor<T>
             {nameof(MudExObjectEditDialog<T>.GlobalResetSettings), new GlobalResetSettings {AllowReset = false}},
             {nameof(MudExObjectEditDialog<T>.CancelButtonText), "Close"}
         };
-        await DialogService.ShowObject(item, ItemNameRender(item), DialogOptions ?? DefaultOptions(), null, parameters);
+        await DialogService.ShowObjectAsync(item, ItemNameRender(item), DialogOptions ?? DefaultOptions(), null, parameters);
     }
 
     /// <summary>
@@ -401,7 +401,7 @@ public partial class MudExCollectionEditor<T>
             { nameof(MudExObjectEditDialog<T>.DialogIcon), AddIcon },
             { nameof(MudExObjectEditDialog<T>.Localizer), Localizer }
         };
-        var res = await DialogService.EditObject(item, TryLocalize(TextAdd), DialogOptions ?? DefaultOptions(), null, parameters);
+        var res = await DialogService.EditObjectAsync(item, TryLocalize(TextAdd), DialogOptions ?? DefaultOptions(), null, parameters);
         if (!res.Cancelled)
         {
             Add(res.Result);

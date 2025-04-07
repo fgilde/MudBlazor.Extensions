@@ -82,7 +82,7 @@
 
     private Task Show()
     {
-        return DialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, Options);
+        return DialogService.ShowExAsync<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, Options);
     }
 
     private void ShowSample1()

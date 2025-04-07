@@ -509,7 +509,7 @@ public partial class MudExImageViewer : IMudExFileDisplay
             {nameof(MudExObjectEditDialog<MudExImageViewerSaveOptions>.AllowSearch), false},
             {nameof(MudExObjectEditDialog<MudExImageViewerSaveOptions>.DialogIcon), SaveButtonIcon},
         };
-        var r = await DialogService.EditObject(new MudExImageViewerSaveOptions { FileName = FileDisplayInfos?.FileName ?? Path.GetFileName(Src) }, TryLocalize("Save image"), dlgOptions,
+        var r = await DialogService.EditObjectAsync(new MudExImageViewerSaveOptions { FileName = FileDisplayInfos?.FileName ?? Path.GetFileName(Src) }, TryLocalize("Save image"), dlgOptions,
             meta =>
             {
                 meta.Property(m => m.FileName).WithLabel(TryLocalize("Filename"));

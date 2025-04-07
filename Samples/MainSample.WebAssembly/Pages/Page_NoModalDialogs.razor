@@ -15,7 +15,7 @@
         var rnd = new Random();
         foreach (var i in Enumerable.Range(1, count))
         {
-            _= DialogService.ShowEx<SampleDialog>($"Simple Dialog {i}", dialog => { dialog.ContentMessage = $"Hello from dialog nr {i} sample page"; }, new DialogOptionsEx()
+            _ = DialogService.ShowExAsync<SampleDialog>($"Simple Dialog {i}", dialog => { dialog.ContentMessage = $"Hello from dialog nr {i} sample page"; }, new DialogOptionsEx()
             {
                 Position = (DialogPosition)rnd.Next(0, 9),
                 Animation = (AnimationType)rnd.Next(1, 25),

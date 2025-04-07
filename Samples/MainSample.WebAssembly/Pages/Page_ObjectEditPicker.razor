@@ -34,7 +34,7 @@
     private async Task OnSubmit(EditContext ctx)
     {
         var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
-        await DialogService.ShowEx<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
+        await DialogService.ShowExAsync<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
         {
             DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass),
             Position = DialogPosition.TopCenter,

@@ -49,7 +49,7 @@
         options.DragMode = MudDialogDragMode.Simple;
         options.CanCloseCallbackName = nameof(CanCloseDialog);
         options.CanCloseCallbackReference = DotNetObjectReference.Create(this as object);
-        await DialogService.ShowEx<SampleDialog>("", dialog => { dialog.ContentMessage = "This sample uses the options for a can close callback"; }, options);
+        await DialogService.ShowExAsync<SampleDialog>("", dialog => { dialog.ContentMessage = "This sample uses the options for a can close callback"; }, options);
     }
 
     private async Task ShowSampleDialogMethod2()
@@ -60,7 +60,7 @@
         options.Position = DialogPosition.CenterRight;
         options.Resizeable = true;
         options.DragMode = MudDialogDragMode.Simple;
-        var r = await DialogService.ShowEx<SampleDialog>("", dialog => { dialog.ContentMessage = "This sample uses the IDialogEventService to cancel the dialog close"; }, options);
+        var r = await DialogService.ShowExAsync<SampleDialog>("", dialog => { dialog.ContentMessage = "This sample uses the IDialogEventService to cancel the dialog close"; }, options);
         await r.Result;
         EventService.Unsubscribe<DialogClosingEvent>(HandleClosing);
     }

@@ -637,7 +637,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             .Subscribe<DialogDragEndEvent>(HandleDragged)
             .Subscribe<DialogResizedEvent>(HandleResized);
 
-        await Get<IDialogService>().ShowObject(infoObject, TryLocalize("Info"), Icons.Material.Filled.Info, options, meta =>
+        await Get<IDialogService>().ShowObjectAsync(infoObject, TryLocalize("Info"), Icons.Material.Filled.Info, options, meta =>
         {
             meta.AllProperties.WrapInMudItem(i => i.xs = 6);
             meta.Property("Url").WrapInMudItem(i => i.xs = 12);

@@ -58,7 +58,7 @@
             { nameof(MudExFileDisplay.StreamUrlHandling), StreamUrlHandling.BlobUrl },
             { nameof(MudExFileDisplay.Dense), true }
         };
-        await DialogService.ShowFileDisplayDialog(SampleFile.Stream, SampleFile.Name, SampleFile.ContentType, HandleContentError, null, parameters);
+        await DialogService.ShowFileDisplayDialogAsync(SampleFile.Stream, SampleFile.Name, SampleFile.ContentType, HandleContentError, null, parameters);
     }
 
     private Task<MudExFileDisplayContentErrorResult> HandleContentError(IMudExFileDisplayInfos arg)

@@ -1039,7 +1039,7 @@ public partial class MudExObjectEdit<T>
     {
         var mimeType = "application/json";
         var url = await DataUrl.GetDataUrlAsync(Encoding.UTF8.GetBytes(json), mimeType);
-        var cancelled = ImportNeedsConfirmation && (await (await DialogService.ShowFileDisplayDialog(url, fileName, mimeType, op =>
+        var cancelled = ImportNeedsConfirmation && (await (await DialogService.ShowFileDisplayDialogAsync(url, fileName, mimeType, op =>
         {
             op.MaxWidth = MaxWidth.Large;
             op.FullWidth = false;

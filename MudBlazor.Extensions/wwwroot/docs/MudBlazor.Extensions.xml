@@ -1329,6 +1329,12 @@
         <member name="M:MudBlazor.Extensions.Components.MudExCaptureOptionsEdit.OnInitializedAsync">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCaptureOptionsEdit.OnFinishedRenderAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCaptureOptionsEdit.DisposeAsync">
+            <inheritdoc />
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExCardHoverMode">
             <summary>
             Combinable hover modes for the MudExCard
@@ -2999,17 +3005,17 @@
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDialog.OnParametersSet">
             <inheritdoc />
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Show(MudBlazor.IDialogService,System.String,System.String,System.String,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ShowAsync(MudBlazor.IDialogService,System.String,System.String,System.String,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
             <summary>
             Shows a file using the <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> component in a dialog.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Show(MudBlazor.IDialogService,Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ShowAsync(MudBlazor.IDialogService,Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
             <summary>
             Shows a file using the <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> component in a dialog.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDialog.Show(MudBlazor.IDialogService,System.IO.Stream,System.String,System.String,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayDialog.ShowAsync(MudBlazor.IDialogService,System.IO.Stream,System.String,System.String,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
             <summary>
             Shows a file using the <see cref="T:MudBlazor.Extensions.Components.MudExFileDisplay"/> component in a dialog.
             </summary>
@@ -18333,6 +18339,9 @@
             <summary>
             Contains extensions for the IDialogService for displaying a file in different formats.
             </summary>
+            <summary>
+            Contains extensions for the IDialogService for displaying a file in different formats.
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.DefaultOptions">
             <summary>
@@ -18340,7 +18349,7 @@
             </summary>
             <returns>The default dialog options.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx``1(MudBlazor.IDialogService,System.String,System.Action{``0},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowExAsync``1(MudBlazor.IDialogService,System.String,System.Action{``0},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
             <summary>
             Shows the dialog and injects dependencies asynchronously.
             </summary>
@@ -18351,7 +18360,7 @@
             <param name="optionsEx">The options.</param>
             <returns>A <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx``1(MudBlazor.IDialogService,System.String,``0,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowExAsync``1(MudBlazor.IDialogService,System.String,``0,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
             <summary>
             Shows the dialog and injects dependencies asynchronously.
             </summary>
@@ -18362,7 +18371,7 @@
             <param name="optionsEx">The options.</param>
             <returns>A <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx``1(MudBlazor.IDialogService,System.String,``0,MudBlazor.Extensions.Options.DialogOptionsEx)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowExAsync``1(MudBlazor.IDialogService,System.String,``0,MudBlazor.Extensions.Options.DialogOptionsEx)">
             <summary>
             Shows the dialog and injects dependencies asynchronously.
             </summary>
@@ -18373,7 +18382,7 @@
             <param name="optionsEx">The options.</param>
             <returns>A <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx``1(MudBlazor.IDialogService,System.String,System.Action{``0},MudBlazor.Extensions.Options.DialogOptionsEx)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowExAsync``1(MudBlazor.IDialogService,System.String,System.Action{``0},MudBlazor.Extensions.Options.DialogOptionsEx)">
             <summary>
             Shows the dialog and injects dependencies asynchronously.
             </summary>
@@ -18428,7 +18437,7 @@
             <param name="options">The options.</param>
             <returns>The interface <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx``1(MudBlazor.IDialogService,System.String,MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowExAsync``1(MudBlazor.IDialogService,System.String,MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
             <summary>
             Shows the dialog and injects dependencies asynchronously.
             </summary>
@@ -18439,7 +18448,7 @@
             <param name="options">The options.</param>
             <returns>The interface <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx``1(MudBlazor.IDialogService,System.String,MudBlazor.Extensions.Options.DialogOptionsEx)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowExAsync``1(MudBlazor.IDialogService,System.String,MudBlazor.Extensions.Options.DialogOptionsEx)">
             <summary>
             Shows the dialog and injects dependencies asynchronously.
             </summary>
@@ -18449,7 +18458,7 @@
             <param name="options">The options.</param>
             <returns>The interface <see cref="T:MudBlazor.Extensions.Core.IMudExDialogReference`1"/>.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx(MudBlazor.IDialogService,System.Type,System.String,MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowExAsync(MudBlazor.IDialogService,System.Type,System.String,MudBlazor.DialogParameters,MudBlazor.Extensions.Options.DialogOptionsEx)">
             <summary>
             Shows the dialog and injects dependencies immediately.
             </summary>
@@ -18460,7 +18469,7 @@
             <param name="options">The options.</param>
             <returns>The interface <see cref="T:MudBlazor.IDialogReference"/>reference.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowMessageBoxEx(MudBlazor.IDialogService,MudBlazor.MessageBoxOptions,MudBlazor.Extensions.Options.DialogOptionsEx)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowMessageBoxExAsync(MudBlazor.IDialogService,MudBlazor.MessageBoxOptions,MudBlazor.Extensions.Options.DialogOptionsEx)">
             <summary>
             Shows the message box asynchronously.
             </summary>
@@ -18473,27 +18482,27 @@
             <param name="dialogReference">The dialog reference.</param>
             <returns>The dialog component.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowEx(MudBlazor.IDialogService,System.Type,System.String,MudBlazor.Extensions.Options.DialogOptionsEx)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowExAsync(MudBlazor.IDialogService,System.Type,System.String,MudBlazor.Extensions.Options.DialogOptionsEx)">
             <summary>
             Shows the dialog and injects dependencies immediately.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialogAsync(MudBlazor.IDialogService,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,MudBlazor.DialogParameters)">
             <summary>
             Shows a dialog which displays a file at the specified url.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialogAsync(MudBlazor.IDialogService,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,MudBlazor.DialogParameters)">
             <summary>
             Shows a dialog which displays a file at the specified url.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.String,System.String,System.Net.Mime.ContentType,MudBlazor.Extensions.Options.DialogOptionsEx,MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialogAsync(MudBlazor.IDialogService,System.String,System.String,System.Net.Mime.ContentType,MudBlazor.Extensions.Options.DialogOptionsEx,MudBlazor.DialogParameters)">
             <summary>
             Shows a dialog which displays a file at the specified url.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.String,System.String,System.String,System.Func{MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.Tasks.Task{MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult}},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialogAsync(MudBlazor.IDialogService,System.String,System.String,System.String,System.Func{MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.Tasks.Task{MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult}},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
             <summary>
             Shows a dialog which displays a file at the specified url.
             </summary>
@@ -18505,7 +18514,7 @@
             <param name="options">Dialog options for the displayed file.</param>
             <returns>An awaitable task with the dialog reference.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Func{MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.Tasks.Task{MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult}},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialogAsync(MudBlazor.IDialogService,Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Func{MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.Tasks.Task{MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult}},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx})">
             <summary>
             Shows a dialog which displays a browser file.
             </summary>
@@ -18515,7 +18524,7 @@
             <param name="options">Dialog options for the displayed file.</param>
             <returns>An awaitable task with the dialog reference.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.IO.Stream,System.String,System.String,System.Func{MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.Tasks.Task{MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult}},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx},MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialogAsync(MudBlazor.IDialogService,System.IO.Stream,System.String,System.String,System.Func{MudBlazor.Extensions.Components.IMudExFileDisplayInfos,System.Threading.Tasks.Task{MudBlazor.Extensions.Components.MudExFileDisplayContentErrorResult}},System.Action{MudBlazor.Extensions.Options.DialogOptionsEx},MudBlazor.DialogParameters)">
             <summary>
             Shows a dialog which displays a file from a given stream.
             </summary>
@@ -18527,7 +18536,7 @@
             <param name="options">Dialog options for the displayed file.</param>
             <returns>An awaitable task with the dialog reference.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.String,System.String,System.String,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx},MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialogAsync(MudBlazor.IDialogService,System.String,System.String,System.String,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx},MudBlazor.DialogParameters)">
             <summary>
             Shows a dialog which displays a file at the specified url.
             </summary>
@@ -18539,7 +18548,7 @@
             <param name="dialogParameters">Parameters to pass to the dialog.</param>
             <returns>An awaitable task with the dialog reference.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx},MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialogAsync(MudBlazor.IDialogService,Microsoft.AspNetCore.Components.Forms.IBrowserFile,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx},MudBlazor.DialogParameters)">
             <summary>
             Shows a dialog which displays a browser file.
             </summary>
@@ -18549,7 +18558,7 @@
             <param name="dialogParameters">Parameters to pass to the dialog.</param>
             <returns>An awaitable task with the dialog reference.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialog(MudBlazor.IDialogService,System.IO.Stream,System.String,System.String,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx},MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowFileDisplayDialogAsync(MudBlazor.IDialogService,System.IO.Stream,System.String,System.String,System.Action{MudBlazor.Extensions.Options.DialogOptionsEx},MudBlazor.DialogParameters)">
             <summary>
             Shows a dialog which displays a file from a given stream.
             </summary>
@@ -18849,12 +18858,12 @@
             Prompts the user for input with customizable title, message, initialValue, buttonOkText, buttonCancelText, icon, validation function, and dialog options asynchronously.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowObject``1(MudBlazor.IDialogService,``0,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowObjectAsync``1(MudBlazor.IDialogService,``0,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
             <summary>
             Shows an object edit dialog as readonly for given object.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowObject``1(MudBlazor.IDialogService,``0,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowObjectAsync``1(MudBlazor.IDialogService,``0,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
             <summary>
             Shows an object edit dialog as readonly for given object.
             </summary>
@@ -18867,37 +18876,37 @@
             <param name="dialogParameters">The dialog parameters.</param>
             <returns>A tuple indicating if edit was cancelled and the result. </returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowStructuredDataString(MudBlazor.IDialogService,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowStructuredDataStringAsync(MudBlazor.IDialogService,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
             <summary>
             Shows an object edit dialog as readonly for given data string as object edit.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowStructuredDataString(MudBlazor.IDialogService,Nextended.Core.Helper.StructuredDataType,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowStructuredDataStringAsync(MudBlazor.IDialogService,Nextended.Core.Helper.StructuredDataType,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
             <summary>
             Shows an object edit dialog as readonly for given data string as object edit.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditStructuredDataString(MudBlazor.IDialogService,System.String,System.String,System.Func{Nextended.Core.Helper.IStructuredDataObject,MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog{Nextended.Core.Helper.IStructuredDataObject},System.Threading.Tasks.Task{System.String}},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditStructuredDataStringAsync(MudBlazor.IDialogService,System.String,System.String,System.Func{Nextended.Core.Helper.IStructuredDataObject,MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog{Nextended.Core.Helper.IStructuredDataObject},System.Threading.Tasks.Task{System.String}},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
             <summary>
             Shows an object edit dialog for given data string as object edit.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditStructuredDataString(MudBlazor.IDialogService,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditStructuredDataStringAsync(MudBlazor.IDialogService,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
             <summary>
             Shows an object edit dialog for given data string as object edit.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditStructuredDataString(MudBlazor.IDialogService,Nextended.Core.Helper.StructuredDataType,System.String,System.String,System.Func{Nextended.Core.Helper.IStructuredDataObject,MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog{Nextended.Core.Helper.IStructuredDataObject},System.Threading.Tasks.Task{System.String}},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditStructuredDataStringAsync(MudBlazor.IDialogService,Nextended.Core.Helper.StructuredDataType,System.String,System.String,System.Func{Nextended.Core.Helper.IStructuredDataObject,MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog{Nextended.Core.Helper.IStructuredDataObject},System.Threading.Tasks.Task{System.String}},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
             <summary>
             Shows an object edit dialog for given data string as object edit.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditStructuredDataString(MudBlazor.IDialogService,Nextended.Core.Helper.StructuredDataType,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditStructuredDataStringAsync(MudBlazor.IDialogService,Nextended.Core.Helper.StructuredDataType,System.String,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{Nextended.Core.Helper.IStructuredDataObject}},MudBlazor.DialogParameters)">
             <summary>
             Shows an object edit dialog for given data string as object edit.
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditObject``1(MudBlazor.IDialogService,``0,System.String,System.Func{``0,MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog{``0},System.Threading.Tasks.Task{System.String}},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditObjectAsync``1(MudBlazor.IDialogService,``0,System.String,System.Func{``0,MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEditDialog{``0},System.Threading.Tasks.Task{System.String}},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
             <summary>
             Shows an object edit dialog for the given object.
             </summary>
@@ -18911,7 +18920,7 @@
             <param name="dialogParameters">The dialog parameters.</param>
             <returns>A tuple indicating if edit was cancelled and the result.</returns>
         </member>
-        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditObject``1(MudBlazor.IDialogService,``0,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditObjectAsync``1(MudBlazor.IDialogService,``0,System.String,MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.ObjectEdit.Options.ObjectEditMeta{``0}},MudBlazor.DialogParameters)">
             <summary>
             Shows an object edit dialog for the given object.
             </summary>
