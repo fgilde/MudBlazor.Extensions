@@ -161,11 +161,6 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
         return result;
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        // Don't call base.OnAfterRenderAsync to avoid double rendering
-    }
-
     public new Task CloseAsync(DialogResult? result = null)
     {
         if (_reference is null)
@@ -189,6 +184,10 @@ public partial class MudExDialog : IMudExComponent, IAsyncDisposable
         return Class;
     }
 
-    public Task InvokeStateHasChanged() => InvokeAsync(StateHasChanged);
-
+    public async Task InvokeStateHasChanged()
+    {
+        var mudExReference = _reference.AsMudExDialogReference<MudExDialog>();
+        mudExReference?.CallStateHasChanged();
+        await InvokeAsync(StateHasChanged);
+    }
 }

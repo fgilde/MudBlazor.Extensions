@@ -21,6 +21,8 @@
                 </TitleContent>
                 <DialogContent>
                     <p>How awesome are inline dialogs?</p>
+                    <h3>DialogContentClickCount=@_dialogContentClickCount</h3>
+                    <MudButton OnClick="DialogContentClick">DialogContent Click</MudButton>
                     <MudRating @bind-SelectedValue="rating" Class="mt-3"/>
                 </DialogContent>
                 <DialogActions>
@@ -30,18 +32,21 @@
         </Left>
         <Right>
             <MudExObjectEditForm T="DialogOptionsEx" AfterImport="@(OnSettingsImported)" AllowExport="true" AllowImport="true" ShowSaveButton="false" ShowCancelButton="false" DefaultGroupName="Other" StickyActionBar="true" Value="@Options">
-               
+
             </MudExObjectEditForm>
         </Right>
     </SplitContainer> 
-    
+
 
 </DemoComponent>
+
 
 @code {
     MudExDialog _dialog;
     private bool visible;
     private int rating;
+    private int _dialogContentClickCount = 0;
+
     private void OpenDialog()
     {
         visible = true;
@@ -51,6 +56,14 @@
     async Task Submit()
     {
         await _dialog.CloseAsync();        
+    }
+
+
+    private Task DialogContentClick()
+    {
+       _dialogContentClickCount++;
+       return _dialog.InvokeStateHasChanged();
+        //return InvokeAsync(StateHasChanged);
     }
 
     public DialogOptionsEx Options { get; set; } = new()
