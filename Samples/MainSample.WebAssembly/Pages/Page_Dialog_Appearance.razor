@@ -17,7 +17,7 @@
                 <MudButton OnClick="@ShowSample2" Variant="Variant.Filled" Color="Color.Primary">Show Sample 2</MudButton>
                 <MudButton OnClick="@ShowSample3" Variant="Variant.Filled" Color="Color.Primary">Show Sample 3</MudButton>
             </div>
-            
+
             @if (!string.IsNullOrEmpty(_code))
             {
                 <div style="position: absolute;top: 45px;border-radius: 30px;border: 2px solid var(--mud-palette-primary);padding: 20px;overflow: auto;max-height: 400px;">
@@ -27,20 +27,16 @@
 
         </Left>
         <Right>
-            @if (_loaded)
-            {
-                <MudExObjectEdit @ref="_edit" T="DialogOptionsEx" StickyToolbar="true" ToolbarColor="Color.Surface" StickyToolbarTop="-8px" DefaultGroupName="Other" Value="@Options">
-                    <ToolBarContent>
-                        <MudButton OnClick="@Show" Variant="Variant.Filled" Color="Color.Primary">Show With this Options</MudButton>
-                    </ToolBarContent>
-                </MudExObjectEdit>
-            }
+            <MudExObjectEdit @ref="_edit" T="DialogOptionsEx" StickyToolbar="true" ToolbarColor="Color.Surface" StickyToolbarTop="-8px" DefaultGroupName="Other" Value="@Options">
+                <ToolBarContent>
+                    <MudButton OnClick="@Show" Variant="Variant.Filled" Color="Color.Primary">Show With this Options</MudButton>
+                </ToolBarContent>
+            </MudExObjectEdit>
         </Right>
     </SplitContainer>
 </DemoComponent>
 
 @code {
-    private bool _loaded;
     private string _code;
     private MudExObjectEdit<DialogOptionsEx> _edit;
     private MudColor _primaryColor;
@@ -64,7 +60,6 @@
         {
             _primaryColor = await Color.Primary.ToMudColorAsync(JsRuntime);
             CreateOptions();
-            _loaded = true;
         }
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -85,14 +80,9 @@
     }
 
 
-    private async void Show()
+    private Task Show()
     {
-        _loaded = false;
-        var r = await DialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, Options);
-        _loaded = true;
-        await r.Result;
-        StateHasChanged();
-
+        return DialogService.ShowEx<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, Options);
     }
 
     private void ShowSample1()

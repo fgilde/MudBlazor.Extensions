@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Components.Rendering;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Components;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Text;
+using BlazorJS;
 using MudBlazor.Extensions.Components.ObjectEdit.Options;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
@@ -16,7 +18,7 @@ using MudBlazor.Extensions.Api;
 using MudBlazor.Extensions.Attribute;
 using Newtonsoft.Json;
 using Nextended.Blazor.Helper;
-using Nextended.Core.Extensions;
+using Microsoft.JSInterop;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -25,11 +27,13 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExCodeView
 {
+    private ElementReference _element;
     private string _markdownCode;
     private string _code;
     private bool _isExpanded;
     private bool _jsReady;
-
+    private bool _copyCallbackIsAttached;
+    private string _elementId = $"mudex-codeview-{Guid.NewGuid().ToString("N")[..8]}";
     /// <summary>
     /// Classname for the component
     /// </summary>
@@ -83,6 +87,18 @@ public partial class MudExCodeView
             .WithOverflow("hidden")
             .Build();
 
+    [Inject] private ISnackbar Snackbar { get; set; }
+
+    /// <summary>
+    /// If this is true, a toast is shown when the code is copied
+    /// </summary>
+    public bool ShowCopyToast { get; set; } = true;
+
+    /// <summary>
+    /// Is raised when the code is copied
+    /// </summary>
+    [Parameter] public EventCallback OnCodeCopied { get; set; }
+
     /// <summary>
     /// MinWidth for the left docked panel when split view is used
     /// </summary>
@@ -135,6 +151,11 @@ public partial class MudExCodeView
     /// Specify layout if render content and code ist displayed
     /// </summary>
     [Parameter] public CodeViewModeWithRenderFragment CodeViewModeWithRenderFragment { get; set; } = CodeViewModeWithRenderFragment.ExpansionPanel;
+
+    /// <summary>
+    /// Text for code copied toast
+    /// </summary>
+    [Parameter] public string CodeCopiedText { get; set; } = "Code copied";
 
     /// <summary>
     /// Text for expand code
@@ -196,6 +217,7 @@ public partial class MudExCodeView
         get => _code;
         set
         {
+            _copyCallbackIsAttached = false;
             _code = _markdownCode = TryLocalize(LoadingText);
             if (IsRendered)
             {
@@ -226,7 +248,37 @@ public partial class MudExCodeView
                 Code = FormatHtml(CodeFromFragment(ChildContent));
             await InvokeAsync(StateHasChanged);
         }
+        
+        await AttachCopyClickAsync();
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task AttachCopyClickAsync()
+    {
+        if(_copyCallbackIsAttached)
+            return;
+        _copyCallbackIsAttached = true;
+        var cbref = DotNetObjectReference.Create(this);
+        var callbackMethodName = nameof(OnCopyClick);
+        _copyCallbackIsAttached = await JsRuntime.DInvokeAsync<bool>((w, el, dotnet, methodName) =>
+        {
+            var btn = el.querySelector("button");
+            if(!btn)
+                return false;
+            w.MudExEventHelper.addEventListenerCallback(btn, "click", methodName, dotnet);
+            return true;
+        }, _element, cbref, callbackMethodName).AsTask();
+    }
+
+    /// <summary>
+    ///  Callback when the copy button is clicked
+    /// </summary>
+    [JSInvokable]
+    public Task OnCopyClick()
+    {
+        if (Snackbar != null && ShowCopyToast)
+            Snackbar.Add(LocalizerToUse.TryLocalize(CodeCopiedText), Severity.Success);
+        return OnCodeCopied.InvokeAsync();
     }
 
     private Task OnExpandedChanged(bool arg)
@@ -245,7 +297,7 @@ public partial class MudExCodeView
     /// <summary>
     /// Executes the given action and returns the code for the action as string
     /// </summary>
-    public static string ExecuteAndReturnFuncAsString(Action func, bool replaceLambda = true, [CallerArgumentExpression("func")] string caller = null)
+    public static string ExecuteAndReturnFuncAsString(Action func, bool replaceLambda = true, [CallerArgumentExpression(nameof(func))] string caller = null)
     {
         func();
         return replaceLambda ? ReplaceLambdaInFuncString(caller) : caller;

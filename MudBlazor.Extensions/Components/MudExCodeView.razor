@@ -1,9 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components.Rendering
-@using Microsoft.AspNetCore.Components.RenderTree
-@using System.Text
-@using System.Runtime.CompilerServices
-@using System.Text.RegularExpressions
-@inherits MudExBaseComponent<MudExCodeView>
+﻿@inherits MudExBaseComponent<MudExCodeView>
 
 @if (RenderChildContent && ChildContent != null && CodeViewModeWithRenderFragment == CodeViewModeWithRenderFragment.ExpansionPanel)
 {
@@ -52,7 +47,7 @@
     protected RenderFragment CodeView()
     {
         return 
-            @<div style="@CodeViewStyleStr" class="@CodeViewClassname">
+            @<div id="@_elementId" @ref="_element" style="@CodeViewStyleStr" class="@CodeViewClassname">
                 @if (_jsReady)
                 {
                     <MudMarkdown CodeBlockTheme="@Theme" Value="@(_markdownCode)"></MudMarkdown>

@@ -1618,6 +1618,16 @@
             Style for the code view container
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.ShowCopyToast">
+            <summary>
+            If this is true, a toast is shown when the code is copied
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.OnCodeCopied">
+            <summary>
+            Is raised when the code is copied
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExCodeView.DockedMinWidthLeft">
             <summary>
             MinWidth for the left docked panel when split view is used
@@ -1661,6 +1671,11 @@
         <member name="P:MudBlazor.Extensions.Components.MudExCodeView.CodeViewModeWithRenderFragment">
             <summary>
             Specify layout if render content and code ist displayed
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExCodeView.CodeCopiedText">
+            <summary>
+            Text for code copied toast
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExCodeView.ExpandedText">
@@ -1720,6 +1735,11 @@
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExCodeView.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExCodeView.OnCopyClick">
+            <summary>
+             Callback when the copy button is clicked
+            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExCodeView.CodeAsMarkup(System.String,System.String)">
             <summary>

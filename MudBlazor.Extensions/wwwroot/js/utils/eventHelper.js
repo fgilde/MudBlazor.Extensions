@@ -77,6 +77,28 @@
         Object.setPrototypeOf(clone, e);
         return clone;
     }
+
+    static addEventListenerCallback(element, eventName, methodName, dotnet) {
+
+        var callback = (event) => {
+            const eventData = {
+                type: event.type,
+                targetId: event.target.id,
+                clientX: event.clientX,
+                clientY: event.clientY
+            };
+
+            dotnet.invokeMethodAsync(methodName, eventData);
+        };
+
+        if (element === undefined || element === null)
+            return;
+        if (element.addEventListener) {
+            element.addEventListener(eventName, callback);
+        } else {
+            element.attachEvent('on' + eventName, callback);
+        }
+    }
 }
 
 window.MudExEventHelper = MudExEventHelper;
