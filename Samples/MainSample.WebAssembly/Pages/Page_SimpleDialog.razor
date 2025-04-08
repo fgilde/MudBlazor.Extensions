@@ -1,65 +1,201 @@
 ﻿@page "/simple-dialogs"
+@using BlazorJS
 @using MudBlazor.Extensions.Core
-@using MudBlazor.Extensions.Options
 
-@attribute [Demo(Group = "Dialog Samples", Name = "Simple Dialogs", Documentation = "Demo for simple integrated useful dialogs. Prompt, Info, MessageBox", Order = 2, Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExMessageDialog), typeof(MudExPromptDialog) })]
+@attribute [DemoUpdated(Group = "Dialog Samples", Name = "Simple Dialogs", Documentation = "Demo for simple integrated useful dialogs. Prompt, Info, MessageBox", Order = 2, Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExMessageDialog), typeof(MudExPromptDialog) })]
 
 <DemoComponent PageType="@GetType()">
-    
-    <MudGrid Style="width: 100%" Justify="Justify.Center">
-        <MudItem xs="3" Class="mb-4">
-            <MudButton Class="mt-3" Size="Size.Large" OnClick="@Prompt" Variant="Variant.Filled" Color="Color.Primary">Simple Prompt</MudButton>
-        </MudItem>
-        <MudItem xs="3" Class="mb-4">
-            <MudButton Class="mt-3" Size="Size.Large" OnClick="@MessageBox" Variant="Variant.Outlined" Color="Color.Primary">Simple Confirmation</MudButton>
-        </MudItem>
-        <MudItem xs="3" Class="mb-4">
-            <MudButton Class="mt-3" Size="Size.Large" OnClick="@ShowInfo" Variant="Variant.Outlined" Color="Color.Secondary">Show info</MudButton>
-        </MudItem>
-    </MudGrid>
+
+    <MudExGroupBox Text="Simple Dialogs">
+        <MudGrid Style="width: 100%" Justify="Justify.Center">
+            <MudItem xs="3" Class="mb-4">
+                <MudButton Class="mt-3" Size="Size.Large" OnClick="@Prompt" Variant="Variant.Filled" Color="Color.Primary">Simple Prompt</MudButton>
+            </MudItem>
+            <MudItem xs="3" Class="mb-4">
+                <MudButton Class="mt-3" Size="Size.Large" OnClick="@MessageBox" Variant="Variant.Outlined" Color="Color.Primary">Simple Confirmation</MudButton>
+            </MudItem>
+            <MudItem xs="3" Class="mb-4">
+                <MudButton Class="mt-3" Size="Size.Large" OnClick="@ShowInfo" Variant="Variant.Outlined" Color="Color.Secondary">Show info</MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudExGroupBox>
+
+    <MudExGroupBox Class="mt-1" Text="Items Pick and edit">
+        <p>You have @Users.Count Users where you can pick from</p>
+
+        <MudGrid Style="width: 100%" Justify="Justify.Center">
+            <MudItem xs="3" Class="mb-4">
+                <MudMenu Class="ma-5" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="Pick Item(s)" Color="Color.Primary" Variant="Variant.Filled">
+                    <MudMenuItem OnClick="@PickItem">Pick Item...</MudMenuItem>
+                    <MudMenuItem OnClick="@PickItems">Pick Items...</MudMenuItem>
+                    <MudDivider />
+                    <MudMenuItem OnClick="@ForcePickItem">Force pick Item...</MudMenuItem>
+                    <MudMenuItem OnClick="@ForcePickItems">Force pick Items...</MudMenuItem>
+                </MudMenu>
+            </MudItem>
+            <MudItem xs="3" Class="mb-4">
+                <MudMenu Class="ma-5" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="Select Item(s)" Color="Color.Primary" Variant="Variant.Filled">
+                    <MudMenuItem OnClick="@SelectItem">Select Item...</MudMenuItem>
+                    <MudMenuItem OnClick="@SelectItems">Select Items...</MudMenuItem>
+                    <MudDivider />
+                    <MudMenuItem OnClick="@ForceSelectItem">Force select Item...</MudMenuItem>
+                    <MudMenuItem OnClick="@ForceSelectItems">Force select Items...</MudMenuItem>
+                </MudMenu>
+            </MudItem>
+            <MudItem xs="3" Class="mb-4">
+                <MudButton Class="mt-3" Size="Size.Large" OnClick="@EditItems" Variant="Variant.Outlined" Color="Color.Secondary">Edit Items</MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudExGroupBox>
+
+    @if (!string.IsNullOrEmpty(_code))
+    {
+        <MudExGroupBox Class="mt-1" Text="Code">
+            <MudExCodeView Theme="@(MainLayout.GetCodeBlockTheme())" Code="@_code"/>
+        </MudExGroupBox>
+    }
 
 </DemoComponent>
 
 @code {
+    private string _code;
+    public List<UserModel> Users { get; set; } =
+        [
+        new() { FirstName = "Florian", LastName = "Gilde", Password = "xyz1234" },
+        new() { FirstName = "Peter", LastName = "Griffin", Password = "jdojdo90udu" },
+        new() { FirstName = "Bart", LastName = "Simpson", Password = "ayCaramba" },
+        new() { FirstName = "Simon", LastName = "Pack", Password = "dsasdI)SH)(" }
+    ];
+
+    private async Task EditItems()
+    {
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(async () =>
+        {
+            Users = (await DialogService.EditItemsAsync("Edit Users", "Here you can edit the users, but only confirm if count is at least 2", Users, canCancel: false, validResult: users => users.Count >= 2)).ToList();
+        });
+    }
+
+    private async Task PickItems()
+    {
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(async () =>
+        {
+            var res = await DialogService.PickItemsAsync<UserModel>("Pick some users", "In this sample you can pick multiple users", Users);
+            if (res?.Length > 0)
+                await JsRuntime.AlertAsync($"You picked ({res.Length}) {string.Join(",", res.Select(u => u.FirstName))}");
+        });
+    }
+
+    private async Task PickItem()
+    {
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(async () =>
+        {
+            var res = await DialogService.PickItemAsync<UserModel>("Pick one user", "In this sample you can pick one user", Users);
+            if (res != null)
+                await JsRuntime.AlertAsync($"You picked {res}");
+        });
+    }
+
+    private async Task ForcePickItems()
+    {
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(async () =>
+        {
+            var res = await DialogService.PickItemsAsync<UserModel>("Pick one user", "In this sample you are forced to pick some users", Users, true, false, cmpConfigure: list => list.SearchBox = false);
+            if (res?.Length > 0)
+                await JsRuntime.AlertAsync($"You picked ({res.Length}) {string.Join(",", res.Select(u => u.FirstName))}");
+        });
+    }
+
+    private async Task ForcePickItem()
+    {
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(async () =>
+        {
+            var res = await DialogService.PickItemAsync<UserModel>("Pick one user", "In this sample you are forced to pick an user", Users, true, false, cmpConfigure: list => list.SearchBox = false);
+            if (res != null)
+                await JsRuntime.AlertAsync($"You picked {res}");
+        });
+    }
+
+
+    private async Task SelectItems()
+    {
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(async () =>
+        {
+            var res = await DialogService.SelectItemsAsync<UserModel>("Pick some users", "In this sample you can select multiple users", Users);
+            if (res?.Length > 0)
+                await JsRuntime.AlertAsync($"You picked ({res.Length}) {string.Join(",", res.Select(u => u.FirstName))}");
+        });
+    }
+
+    private async Task SelectItem()
+    {
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(async () =>
+        {
+            var res = await DialogService.SelectItemAsync<UserModel>("Pick one user", "In this sample you can select one user", Users);
+            if (res != null)
+                await JsRuntime.AlertAsync($"You picked {res}");
+        });
+    }
+
+    private async Task ForceSelectItems()
+    {
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(async () =>
+        {
+            var res = await DialogService.SelectItemsAsync<UserModel>("Pick one user", "In this sample you are forced to select some users", Users, true, false, cmpConfigure: list => list.SearchBox = false);
+            if (res?.Length > 0)
+                await JsRuntime.AlertAsync($"You picked ({res.Length}) {string.Join(",", res.Select(u => u.FirstName))}");
+        });
+    }
+
+    private async Task ForceSelectItem()
+    {
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(async () =>
+        {
+            var res = await DialogService.SelectItemAsync<UserModel>("Pick one user", "In this sample you are forced to select an user", Users, true, false, cmpConfigure: list => list.SearchBox = false);
+            if (res != null)
+                await JsRuntime.AlertAsync($"You picked {res}");
+        });
+    }
+
 
     private async Task MessageBox()
     {
-        var res = await DialogService.ShowConfirmationDialogAsync("Confirmation", "Are you sure?", "Yes", "No");
-        if (res)
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(async () =>
         {
-            await JsRuntime.InvokeVoidAsync("alert", "You clicked Yes");
-        }
-        else
-        {
-            await JsRuntime.InvokeVoidAsync("alert", "You clicked No");
-        }
+            var res = await DialogService.ShowConfirmationDialogAsync("Confirmation", "Are you sure?", "Yes", "No");
+            await JsRuntime.AlertAsync($"You clicked {(res ? "Yes" : "No")}");
+        });
     }
 
     private async Task Prompt()
     {
-        var name = await DialogService.PromptAsync("Enter name", "Please enter your name", Icons.Material.Filled.VerifiedUser, s => !string.IsNullOrEmpty(s));
-        if (name != null)
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(async () =>
         {
-            await JsRuntime.InvokeVoidAsync("alert", $"Hello {name}");
-        }
+            var name = await DialogService.PromptAsync("Enter name", "Please enter your name", Icons.Material.Filled.VerifiedUser, s => !string.IsNullOrEmpty(s));
+            if (name != null)
+                await JsRuntime.AlertAsync($"Hello {name}");
+        });
     }
 
 
     private async Task ShowInfo()
     {
-        int seconds = 5;
-        IMudExDialogReference<MudExMessageDialog>? dlg = await DialogService.ShowInformationAsync("Information", $"This is a simple information dialog that closes after {seconds} seconds", Icons.Material.Filled.Info, false, true);
-        for (int i = 0; i < seconds; i++)
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(async () =>
         {
-            await Task.Delay(1000);
-            dlg.ExecuteOnDialogComponent(dialog =>
+            int seconds = 5;
+            IMudExDialogReference<MudExMessageDialog>? dlg = await DialogService.ShowInformationAsync("Information", $"This is a simple information dialog that closes after {seconds} seconds", Icons.Material.Filled.Info, false, true);
+            for (int i = 0; i < seconds; i++)
             {
-                dialog.ProgressValue = (i + 1) * 100 / seconds;
-                dialog.Message = $"This is a simple information dialog that closes after {seconds - i - 1} seconds";
-            });
-        }
+                await Task.Delay(1000);
+                dlg.ExecuteOnDialogComponent(dialog =>
+                {
+                    dialog.ProgressValue = (i + 1) * 100 / seconds;
+                    dialog.Message = $"This is a simple information dialog that closes after {seconds - i - 1} seconds";
+                });
+            }
 
-        dlg.Close();
+            dlg.Close();
+        });
+
     }
 
 }

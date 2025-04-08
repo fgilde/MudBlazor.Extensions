@@ -4946,6 +4946,11 @@
             Set true to make the list items clickable. This is also the precondition for list selection to work.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExList`1.Unselectable">
+            <summary>
+            Set true to allow unselecting the selected item.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExList`1.SelectValueOnTab">
             <summary>
             If true the active (highlighted) item select on tab key. Designed for only single selection. Default is true.
@@ -18334,6 +18339,9 @@
         </member>
         <member name="T:MudBlazor.Extensions.DialogServiceExt">
             <summary>
+            Contains extensions for component-based dialog actions.
+            </summary>
+            <summary>
             Dialog service extension methods.
             </summary>
             <summary>
@@ -18342,6 +18350,254 @@
             <summary>
             Contains extensions for the IDialogService for displaying a file in different formats.
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.InnerPickItemsAsync``2(MudBlazor.IDialogService,System.String,System.String,System.Action{``0},System.Func{``0,System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``1}}},MudBlazor.Extensions.MudExDialogResultAction[],MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
+            <summary>
+            Displays a dialog with a custom component and retrieves items from that component.
+            </summary>
+            <typeparam name="TComponent">The type of the component to be displayed in the dialog.</typeparam>
+            <typeparam name="T">The type of items to be retrieved from the component.</typeparam>
+            <param name="dialogService">The dialog service instance used to show the dialog.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="headerText">The header text of the dialog.</param>
+            <param name="cmpConfigure">An action to configure the component instance.</param>
+            <param name="retrieveItemsFromComponent">A function to asynchronously retrieve items from the component.</param>
+            <param name="buttons">An array of dialog result actions to configure dialog buttons and result conditions.</param>
+            <param name="options">Optional dialog options to customize behavior and appearance.</param>
+            <param name="dialogParameters">An optional action to configure additional dialog parameters.</param>
+            <returns>A task that represents the asynchronous operation. The task result contains an array of selected items of type <typeparamref name="T"/>.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.PickItemsAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Func{System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}},System.Boolean,System.Boolean,System.Func{``0,System.String},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExList{``0}},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
+            <summary>
+            Displays a dialog to let the user pick one or multiple items from a list.
+            </summary>
+            <typeparam name="T">The type of items to display in the list.</typeparam>
+            <param name="dialogService">The dialog service instance used to show the dialog.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="headerText">The header text of the dialog.</param>
+            <param name="itemsLoadFunc">A function that asynchronously loads the items to be displayed.</param>
+            <param name="forceSelect">
+            If set to <c>true</c>, the dialog cannot be closed without selecting an item.
+            </param>
+            <param name="allowEmpty">
+            Indicates whether an empty selection is allowed.
+            </param>
+            <param name="itemToStringFunc">
+            A function to convert an item to its string representation. If not provided, the item's <c>ToString</c> method is used.
+            </param>
+            <param name="options">Optional dialog options to customize the dialog behavior.</param>
+            <param name="cmpConfigure">An optional action to further configure the list component.</param>
+            <param name="dialogParameters">An optional action to configure additional dialog parameters.</param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains an array of the selected items.
+            </returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.SelectItemsAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Func{System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}},System.Boolean,System.Boolean,System.Func{``0,System.String},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExSelect{``0}},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
+            <summary>
+            Displays a dialog to let the user select one or more items using a select component.
+            </summary>
+            <typeparam name="T">The type of items available for selection.</typeparam>
+            <param name="dialogService">The dialog service instance used to show the dialog.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="headerText">The header text of the dialog.</param>
+            <param name="itemsLoadFunc">A function that asynchronously loads the items for selection.</param>
+            <param name="forceSelect">
+            If set to <c>true</c>, the dialog requires an item to be selected before closing.
+            </param>
+            <param name="allowEmpty">
+            Indicates whether an empty selection is allowed.
+            </param>
+            <param name="itemToStringFunc">
+            A function to convert an item to its string representation. Defaults to <c>ToString</c> if not provided.
+            </param>
+            <param name="options">Optional dialog options to customize the appearance and behavior.</param>
+            <param name="cmpConfigure">An optional action to further configure the select component.</param>
+            <param name="dialogParameters">An optional action to set additional dialog parameters.</param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains an array of the selected items.
+            </returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.PickItemsAsync``1(MudBlazor.IDialogService,System.String,System.String,``0[])">
+            <summary>
+            Displays a dialog to pick one or more items from a predefined set of items passed as parameters.
+            </summary>
+            <typeparam name="T">The type of items available for selection.</typeparam>
+            <param name="dialogService">The dialog service instance used to show the dialog.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="headerText">The header text of the dialog.</param>
+            <param name="items">A parameter array of items from which the user can make a selection.</param>
+            <returns>A task that represents the asynchronous operation. The task result contains an array of the selected items.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.PickItemsAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Boolean,System.Func{``0,System.String},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExList{``0}},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
+            <summary>
+            Displays a dialog to pick one or more items from a predefined collection.
+            </summary>
+            <typeparam name="T">The type of items available for selection.</typeparam>
+            <param name="dialogService">The dialog service instance used to display the dialog.</param>
+            <param name="title">The dialog title.</param>
+            <param name="headerText">The header text shown in the dialog.</param>
+            <param name="items">A collection of items from which the user can choose.</param>
+            <param name="forceSelect">If <c>true</c> the dialog cannot be closed without a selection.</param>
+            <param name="allowEmpty">If <c>true</c>, an empty selection is allowed.</param>
+            <param name="itemToStringFunc">A function to convert items to a string; if not provided, <c>ToString()</c> is used.</param>
+            <param name="options">Optional dialog options for customization.</param>
+            <param name="cmpConfigure">An optional action to further configure the list component.</param>
+            <param name="dialogParameters">An optional action to set additional dialog parameters.</param>
+            <returns>A task that represents the asynchronous operation. The task result contains an array of the selected items.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.PickItemAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Func{System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}},System.Boolean,System.Boolean,System.Func{``0,System.String},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExList{``0}},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
+            <summary>
+            Displays a dialog for picking a single item from a list.
+            </summary>
+            <typeparam name="T">The type of the item to select.</typeparam>
+            <param name="dialogService">The dialog service instance used to show the dialog.</param>
+            <param name="title">The dialog title.</param>
+            <param name="headerText">The header text of the dialog.</param>
+            <param name="itemsLoadFunc">A function that asynchronously loads the items to display.</param>
+            <param name="forceSelect">
+            If set to <c>true</c>, the dialog requires a selection and cannot be closed without choosing an item.
+            </param>
+            <param name="allowEmpty">Specifies whether a null or empty selection is permitted.</param>
+            <param name="itemToStringFunc">
+            A function to convert an item to its string representation. Uses <c>ToString()</c> if not provided.
+            </param>
+            <param name="options">Optional dialog options for further customization.</param>
+            <param name="cmpConfigure">
+            An optional action to configure the list component with the selection settings; multi-selection is disabled.
+            </param>
+            <param name="dialogParameters">An optional action to configure additional dialog parameters.</param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains the selected item, or the default value if none was selected.
+            </returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.PickItemAsync``1(MudBlazor.IDialogService,System.String,System.String,``0[])">
+            <summary>
+            Displays a dialog for picking a single item from a predefined set of items.
+            </summary>
+            <typeparam name="T">The type of the item to select.</typeparam>
+            <param name="dialogService">The dialog service instance used to display the dialog.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="headerText">The header text of the dialog.</param>
+            <param name="items">A parameter array of items to choose from.</param>
+            <returns>A task that represents the asynchronous operation. The task result contains the selected item, or the default value if no selection was made.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.PickItemAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Boolean,System.Func{``0,System.String},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExList{``0}},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
+            <summary>
+            Displays a dialog for picking a single item from a predefined collection.
+            </summary>
+            <typeparam name="T">The type of the item to select.</typeparam>
+            <param name="dialogService">The dialog service instance used to display the dialog.</param>
+            <param name="title">The dialog title.</param>
+            <param name="headerText">The header text displayed in the dialog.</param>
+            <param name="items">A collection of items available for selection.</param>
+            <param name="forceSelect">
+            If set to <c>true</c>, forces the user to make a selection before the dialog can be closed.
+            </param>
+            <param name="allowEmpty">Indicates whether an empty selection is allowed.</param>
+            <param name="itemToStringFunc">
+            A function to determine the string representation of an item. Defaults to <c>ToString()</c> if not specified.
+            </param>
+            <param name="options">Optional dialog options to adjust the behavior and appearance.</param>
+            <param name="cmpConfigure">An optional action to further configure the list component.</param>
+            <param name="dialogParameters">An optional action to specify additional dialog parameters.</param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains the selected item, or the default value if none was selected.
+            </returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.SelectItemsAsync``1(MudBlazor.IDialogService,System.String,System.String,``0[])">
+            <summary>
+            Displays a dialog to select one or multiple items using a select component from a predefined set of items.
+            </summary>
+            <typeparam name="T">The type of items available for selection.</typeparam>
+            <param name="dialogService">The dialog service instance used to display the dialog.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="headerText">The header text displayed in the dialog.</param>
+            <param name="items">A parameter array of items available for selection.</param>
+            <returns>A task that represents the asynchronous operation. The task result contains an array of selected items.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.SelectItemsAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Boolean,System.Func{``0,System.String},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExSelect{``0}},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
+            <summary>
+            Displays a dialog to select one or multiple items from a predefined collection using a select component.
+            </summary>
+            <typeparam name="T">The type of items available for selection.</typeparam>
+            <param name="dialogService">The dialog service instance used to display the dialog.</param>
+            <param name="title">The dialog title.</param>
+            <param name="headerText">The header text for the dialog.</param>
+            <param name="items">A collection of items available for selection.</param>
+            <param name="forceSelect">
+            If set to <c>true</c>, the dialog requires a selection before closing.
+            </param>
+            <param name="allowEmpty">Specifies whether an empty selection is allowed.</param>
+            <param name="itemToStringFunc">
+            A function used to convert each item to a string. Defaults to using <c>ToString()</c> if not provided.
+            </param>
+            <param name="options">Optional dialog options to further customize the dialog.</param>
+            <param name="cmpConfigure">An optional action to configure the select component.</param>
+            <param name="dialogParameters">An optional action to set additional dialog parameters.</param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains an array of the selected items.
+            </returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.SelectItemAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Func{System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}},System.Boolean,System.Boolean,System.Func{``0,System.String},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExSelect{``0}},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
+            <summary>
+            Displays a dialog for selecting a single item using a select component.
+            </summary>
+            <typeparam name="T">The type of item to select.</typeparam>
+            <param name="dialogService">The dialog service instance used to display the dialog.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="headerText">The header text of the dialog.</param>
+            <param name="itemsLoadFunc">A function that asynchronously loads the items to choose from.</param>
+            <param name="forceSelect">
+            If set to <c>true</c>, the dialog requires a selection before closing.
+            </param>
+            <param name="allowEmpty">Specifies whether an empty selection is allowed.</param>
+            <param name="itemToStringFunc">
+            A function used to convert an item to its string representation. Defaults to using <c>ToString()</c> if not provided.
+            </param>
+            <param name="options">Optional dialog options to configure the dialog.</param>
+            <param name="cmpConfigure">
+            An optional action to further configure the select component; multi-selection is disabled in this case.
+            </param>
+            <param name="dialogParameters">An optional action to configure additional dialog parameters.</param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains the selected item, or the default value if none was selected.
+            </returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.SelectItemAsync``1(MudBlazor.IDialogService,System.String,System.String,``0[])">
+            <summary>
+            Displays a dialog for selecting a single item from a predefined list using a select component.
+            </summary>
+            <typeparam name="T">The type of the item to select.</typeparam>
+            <param name="dialogService">The dialog service instance used to display the dialog.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="headerText">The header text of the dialog.</param>
+            <param name="items">A parameter array of items available for selection.</param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains the selected item, or the default value if none was selected.
+            </returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.SelectItemAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Boolean,System.Func{``0,System.String},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExSelect{``0}},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
+            <summary>
+            Displays a dialog for selecting a single item from a predefined collection using a select component.
+            </summary>
+            <typeparam name="T">The type of the item to select.</typeparam>
+            <param name="dialogService">The dialog service instance used to display the dialog.</param>
+            <param name="title">The dialog title.</param>
+            <param name="headerText">The header text displayed in the dialog.</param>
+            <param name="items">A collection of items available for selection.</param>
+            <param name="forceSelect">
+            If set to <c>true</c>, forces the user to select an item before closing the dialog.
+            </param>
+            <param name="allowEmpty">Specifies whether an empty selection is permitted.</param>
+            <param name="itemToStringFunc">
+            A function to convert an item to its string representation. Defaults to using <c>ToString()</c> if not provided.
+            </param>
+            <param name="options">Optional dialog options for further customization.</param>
+            <param name="cmpConfigure">An optional action to configure the select component.</param>
+            <param name="dialogParameters">An optional action to set additional dialog parameters.</param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains the selected item, or the default value if no selection was made.
+            </returns>
         </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.DefaultOptions">
             <summary>
@@ -18932,6 +19188,86 @@
             <param name="metaConfig">The configuration of meta information.</param>
             <param name="dialogParameters">The dialog parameters.</param>
             <returns>A tuple indicating if edit was cancelled and the result.</returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditItemsAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Func{System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}},System.Boolean,System.Boolean,System.Func{System.Collections.Generic.ICollection{``0},System.Boolean},System.Func{``0,System.String},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
+            <summary>
+            Displays a dialog that allows the user to edit a collection of items.
+            </summary>
+            <typeparam name="T">The type of items to edit.</typeparam>
+            <param name="dialogService">The dialog service instance used to display the dialog.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="headerText">The header text displayed in the dialog.</param>
+            <param name="itemsLoadFunc">
+            A function that asynchronously loads the items to be edited.
+            </param>
+            <param name="allowAddAndRemove">
+            Indicates whether the dialog allows adding and removing items.
+            Defaults to <c>true</c>.
+            </param>
+            <param name="canCancel">
+            Specifies whether canceling the dialog is allowed.
+            If <c>false</c>, the close button will be disabled.
+            </param>
+            <param name="validResult">
+            A function used to validate the edited items.
+            The dialog is confirmed only if this function returns <c>true</c>.
+            If not provided, a default validation is applied (always valid).
+            </param>
+            <param name="itemToStringFunc">
+            A function to convert each item into its string representation.
+            If not provided, the item's <c>ToString()</c> method is used.
+            </param>
+            <param name="options">
+            Optional dialog options to customize the behavior and appearance of the dialog.
+            </param>
+            <param name="dialogParameters">
+            An optional action to configure additional parameters for the dialog.
+            </param>
+            <returns>
+            A task that represents the asynchronous operation.
+            The result contains the edited array of items if the dialog was confirmed,
+            or the original items if the dialog was canceled.
+            </returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.EditItemsAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Boolean,System.Func{System.Collections.Generic.ICollection{``0},System.Boolean},System.Func{``0,System.String},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
+            <summary>
+            Displays a dialog that allows the user to edit a collection of items.
+            This overload accepts a predefined collection of items.
+            </summary>
+            <typeparam name="T">The type of items to edit.</typeparam>
+            <param name="dialogService">The dialog service instance used to display the dialog.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="headerText">The header text displayed in the dialog.</param>
+            <param name="items">
+            The collection of items to be edited.
+            </param>
+            <param name="allowAddAndRemove">
+            Indicates whether the dialog allows adding and removing items.
+            Defaults to <c>true</c>.
+            </param>
+            <param name="canCancel">
+            Specifies whether canceling the dialog is allowed.
+            If <c>false</c>, the dialog cannot be closed without confirming a valid edit.
+            </param>
+            <param name="validResult">
+            A function used to validate the edited items.
+            The dialog is confirmed only if this function returns <c>true</c>.
+            </param>
+            <param name="itemToStringFunc">
+            A function to convert each item into its string representation.
+            If not provided, the item's <c>ToString()</c> method is used.
+            </param>
+            <param name="options">
+            Optional dialog options to customize the behavior and appearance of the dialog.
+            </param>
+            <param name="dialogParameters">
+            An optional action to configure additional parameters for the dialog.
+            </param>
+            <returns>
+            A task that represents the asynchronous operation.
+            The result contains the edited array of items if the dialog was confirmed,
+            or the original items if the dialog was canceled.
+            </returns>
         </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.ShowThemeEditAsync``1(MudBlazor.IDialogService,``0,System.String,System.String,System.Nullable{System.Boolean},MudBlazor.Extensions.Options.DialogOptionsEx)">
             <summary>

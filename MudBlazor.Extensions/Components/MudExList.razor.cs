@@ -363,6 +363,13 @@ public partial class MudExList<T> : IDisposable
     public bool Clickable { get; set; }
 
     /// <summary>
+    /// Set true to allow unselecting the selected item.
+    /// </summary>
+    [Parameter]
+    [SafeCategory(CategoryTypes.List.Selecting)]
+    public bool Unselectable { get; set; }
+
+    /// <summary>
     /// If true the active (highlighted) item select on tab key. Designed for only single selection. Default is true.
     /// </summary>
     [Parameter]
@@ -1105,13 +1112,25 @@ public partial class MudExList<T> : IDisposable
 
         if (!MultiSelection)
         {
-            SelectedValue = item.Value;
+            var itemAlreadySelected = Comparer?.Equals(SelectedValue, item.Value) ?? item.Value.Equals(SelectedValue);
+            if (!itemAlreadySelected)
+            {
+                SelectedValue = item.Value;
+            }
+            else
+            {
+                if (Unselectable)
+                {
+                    SelectedValue = default;
+                    SelectedValues = null;
+                }
+            }
         }
         else
         {
             SelectedValues = item.IsSelected
                 ?
-                SelectedValues?.Where(x => Comparer != null ? !Comparer.Equals(x, item.Value) : !x.Equals(item.Value))
+                SelectedValues?.Where(x => !Comparer?.Equals(x, item.Value) ?? !x.Equals(item.Value))
                 : SelectedValues == null
                     ? new HashSet<T>(_comparer) { item.Value }
                     : SelectedValues.Append(item.Value).ToHashSet(_comparer);

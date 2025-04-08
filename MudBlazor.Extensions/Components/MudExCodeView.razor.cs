@@ -317,8 +317,11 @@ public partial class MudExCodeView
     /// </summary>
     public static string ReplaceLambdaInFuncString(string caller)
     {
-        caller = Regex.Replace(caller, @"^\s*\([^)]*\)\s*=>\s*{?", "", RegexOptions.Singleline);
+        //caller = Regex.Replace(caller, @"^\s*\([^)]*\)\s*=>\s*{?", "", RegexOptions.Singleline);
+        //caller = Regex.Replace(caller, @"\s*}\s*$", "", RegexOptions.Singleline);
+        caller = Regex.Replace(caller, @"^\s*(?:async\s+)?\([^)]*\)\s*=>\s*{?", "", RegexOptions.Singleline);
         caller = Regex.Replace(caller, @"\s*}\s*$", "", RegexOptions.Singleline);
+
         return caller;
     }
 
