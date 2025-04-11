@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Components;
-using MudBlazor.Extensions.Components.ObjectEdit;
 using MudBlazor.Extensions.Helper.Internal;
 using MudBlazor.Extensions.Options;
-using Nextended.Core.Contracts;
-using Nextended.Core.Types;
 
 namespace MudBlazor.Extensions;
 
@@ -73,8 +70,9 @@ public static partial class DialogServiceExt
     /// <param name="forceSelect">
     /// If set to <c>true</c>, the dialog cannot be closed without selecting an item.
     /// </param>
-    /// <param name="allowEmpty">
-    /// Indicates whether an empty selection is allowed.
+    /// <param name="okCondition">Condition for the ok button. If this func returns true Ok is enabled</param>
+    /// <param name="unselectable">
+    /// Indicates whether a selected item can be unselected again
     /// </param>
     /// <param name="itemToStringFunc">
     /// A function to convert an item to its string representation. If not provided, the item's <c>ToString</c> method is used.
@@ -90,8 +88,9 @@ public static partial class DialogServiceExt
         string title,
         string headerText,
         Func<Task<IEnumerable<T>>> itemsLoadFunc,
+        Func<MudExList<T>, bool>? okCondition,
+        bool unselectable = false,
         bool forceSelect = false,
-        bool allowEmpty = false,
         Func<T, string> itemToStringFunc = null,
         DialogOptionsEx options = null,
         Action<MudExList<T>> cmpConfigure = null,
@@ -99,7 +98,7 @@ public static partial class DialogServiceExt
     )
     {
         cmpConfigure ??= _ => { };
-        Func<MudExList<T>, bool> canOkCondition = c => allowEmpty || c.SelectedItem != null;
+        okCondition ??= c => true;
         itemToStringFunc ??= i => i.ToString();
         dialogParameters ??= _ => { };
         options ??= DialogOptionsEx.DefaultDialogOptions;
@@ -113,8 +112,8 @@ public static partial class DialogServiceExt
 
         var items = (await itemsLoadFunc()).ToList();
         var buttons = forceSelect
-            ? MudExDialogResultAction.OkWithCondition(canOkCondition)
-            : MudExDialogResultAction.OkCancelWithOkCondition(canOkCondition);
+            ? MudExDialogResultAction.OkWithCondition(okCondition)
+            : MudExDialogResultAction.OkCancelWithOkCondition(okCondition);
 
         return await dialogService.InnerPickItemsAsync(
             title,
@@ -127,7 +126,7 @@ public static partial class DialogServiceExt
                 lb.SearchBox = true;
                 lb.SearchBoxBackgroundColor = Color.Transparent;
                 lb.MultiSelection = true;
-                lb.Unselectable = allowEmpty;
+                lb.Unselectable = unselectable;
                 lb.Clickable = true;
                 lb.Color = Color.Primary;
             }),
@@ -136,6 +135,121 @@ public static partial class DialogServiceExt
             options,
             dialogParameters);
     }
+
+    /// <summary>
+    /// Displays a dialog to let the user pick one or multiple items from a list.
+    /// </summary>
+    /// <typeparam name="T">The type of items to display in the list.</typeparam>
+    /// <param name="dialogService">The dialog service instance used to show the dialog.</param>
+    /// <param name="title">The title of the dialog.</param>
+    /// <param name="headerText">The header text of the dialog.</param>
+    /// <param name="itemsLoadFunc">A function that asynchronously loads the items to be displayed.</param>
+    /// <param name="forceSelect">
+    /// If set to <c>true</c>, the dialog cannot be closed without selecting an item.
+    /// </param>
+    /// <param name="allowEmpty">
+    /// Indicates whether an empty selection is allowed.
+    /// </param>
+    /// <param name="itemToStringFunc">
+    /// A function to convert an item to its string representation. If not provided, the item's <c>ToString</c> method is used.
+    /// </param>
+    /// <param name="options">Optional dialog options to customize the dialog behavior.</param>
+    /// <param name="cmpConfigure">An optional action to further configure the list component.</param>
+    /// <param name="dialogParameters">An optional action to configure additional dialog parameters.</param>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result contains an array of the selected items.
+    /// </returns>
+    public static Task<T[]> PickItemsAsync<T>(
+        this IDialogService dialogService,
+        string title,
+        string headerText,
+        Func<Task<IEnumerable<T>>> itemsLoadFunc,
+        bool forceSelect = false,
+        bool allowEmpty = false,
+        Func<T, string> itemToStringFunc = null,
+        DialogOptionsEx options = null,
+        Action<MudExList<T>> cmpConfigure = null,
+        Action<MudExMessageDialog> dialogParameters = null
+    )
+    {
+        Func<MudExList<T>, bool> canOkCondition = c => allowEmpty || c.SelectedItem != null;
+        return PickItemsAsync<T>(dialogService, title, headerText, itemsLoadFunc, canOkCondition, allowEmpty, forceSelect, itemToStringFunc, options, cmpConfigure, dialogParameters);
+    }
+
+
+    /// <summary>
+    /// Displays a dialog to let the user select one or more items using a select component.
+    /// </summary>
+    /// <typeparam name="T">The type of items available for selection.</typeparam>
+    /// <param name="dialogService">The dialog service instance used to show the dialog.</param>
+    /// <param name="title">The title of the dialog.</param>
+    /// <param name="headerText">The header text of the dialog.</param>
+    /// <param name="itemsLoadFunc">A function that asynchronously loads the items for selection.</param>
+    /// <param name="okCondition">Condition for ok, if this func returns true ok button is enabled</param>
+    /// <param name="forceSelect">
+    /// If set to <c>true</c>, the dialog requires an item to be selected before closing.
+    /// </param>
+    /// <param name="itemToStringFunc">
+    /// A function to convert an item to its string representation. Defaults to <c>ToString</c> if not provided.
+    /// </param>
+    /// <param name="options">Optional dialog options to customize the appearance and behavior.</param>
+    /// <param name="cmpConfigure">An optional action to further configure the select component.</param>
+    /// <param name="dialogParameters">An optional action to set additional dialog parameters.</param>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result contains an array of the selected items.
+    /// </returns>
+    public static async Task<T[]> SelectItemsAsync<T>(
+        this IDialogService dialogService,
+        string title,
+        string headerText,
+        Func<Task<IEnumerable<T>>> itemsLoadFunc,
+        Func<MudExSelect<T>, bool>? okCondition,
+        bool forceSelect = false,
+        Func<T, string> itemToStringFunc = null,
+        DialogOptionsEx options = null,
+        Action<MudExSelect<T>> cmpConfigure = null,
+        Action<MudExMessageDialog> dialogParameters = null
+    )
+    {
+        cmpConfigure ??= _ => { };
+        okCondition ??= c => true;
+        itemToStringFunc ??= i => i.ToString();
+        dialogParameters ??= _ => { };
+        options ??= DialogOptionsEx.DefaultDialogOptions;
+
+        if (forceSelect)
+        {
+            options.CloseButton = false;
+            options.BackdropClick = false;
+            options.CloseOnEscapeKey = false;
+        }
+
+        var items = (await itemsLoadFunc()).ToList();
+        var buttons = forceSelect
+            ? MudExDialogResultAction.OkWithCondition(okCondition)
+            : MudExDialogResultAction.OkCancelWithOkCondition(okCondition);
+
+        var result = await dialogService.InnerPickItemsAsync(
+            title,
+            headerText,
+            cmpConfigure.CombineWith(lb =>
+            {
+                lb.ToStringFunc = itemToStringFunc;
+                lb.ItemCollection = items;
+                lb.SelectAll = true;
+                lb.SearchBox = true;
+                lb.MultiSelection = true;
+                lb.Color = Color.Primary;
+            }),
+            cmp => Task.FromResult(cmp.SelectedValues),
+            buttons,
+            options,
+            dialogParameters);
+
+        return result;
+    }
+
+
 
     /// <summary>
     /// Displays a dialog to let the user select one or more items using a select component.
@@ -160,7 +274,7 @@ public static partial class DialogServiceExt
     /// <returns>
     /// A task that represents the asynchronous operation. The task result contains an array of the selected items.
     /// </returns>
-    public static async Task<T[]> SelectItemsAsync<T>(
+    public static Task<T[]> SelectItemsAsync<T>(
         this IDialogService dialogService,
         string title,
         string headerText,
@@ -173,43 +287,11 @@ public static partial class DialogServiceExt
         Action<MudExMessageDialog> dialogParameters = null
     )
     {
-        cmpConfigure ??= _ => { };
-        Func<MudExSelect<T>, bool> canOkCondition = c => allowEmpty || c.Value != null;
-        itemToStringFunc ??= i => i.ToString();
-        dialogParameters ??= _ => { };
-        options ??= DialogOptionsEx.DefaultDialogOptions;
-
-        if (forceSelect)
-        {
-            options.CloseButton = false;
-            options.BackdropClick = false;
-            options.CloseOnEscapeKey = false;
-        }
-
-        var items = (await itemsLoadFunc()).ToList();
-        var buttons = forceSelect
-            ? MudExDialogResultAction.OkWithCondition(canOkCondition)
-            : MudExDialogResultAction.OkCancelWithOkCondition(canOkCondition);
-
-        var result = await dialogService.InnerPickItemsAsync(
-            title,
-            headerText,
-            cmpConfigure.CombineWith(lb =>
-            {
-                lb.ToStringFunc = itemToStringFunc;
-                lb.ItemCollection = items;
-                lb.SelectAll = true;
-                lb.SearchBox = true;
-                lb.MultiSelection = true;
-                lb.Color = Color.Primary;
-            }),
-            cmp => Task.FromResult(cmp.SelectedValues),
-            buttons,
-            options,
-            dialogParameters);
-
-        return result;
+        bool CanOkCondition(MudExSelect<T> c) => allowEmpty || c.Value != null;
+        return SelectItemsAsync<T>(dialogService, title, headerText, itemsLoadFunc, CanOkCondition, forceSelect, itemToStringFunc, options, cmpConfigure, dialogParameters);
     }
+
+
 
     /// <summary>
     /// Displays a dialog to pick one or more items from a predefined set of items passed as parameters.

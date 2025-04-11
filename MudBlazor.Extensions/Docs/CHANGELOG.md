@@ -1,4 +1,8 @@
 ## Change Log    
+ - 8.5.2 > DialogService now has more helping methods like PickAsync, SelectAsync or EditAsync for items editing
+ - 8.5.0 > Update to MudBlazor 8.5.0
+ - 8.5.0 > Bug fix 
+ - 8.5.0 > Inline dialog improvements for statechange and server rendered
  - 8.3.0 > Update to MudBlazor 8.3.0
  - 8.3.0 > Option for Screenshots in capture service
  - 8.3.0 > Bugfix in MudExSelect 

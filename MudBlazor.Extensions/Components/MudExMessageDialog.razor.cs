@@ -227,4 +227,10 @@ public partial class MudExMessageDialog
         DialogEventService.Unsubscribe<DialogAfterAnimationEvent>(DialogOpened);
         return base.DisposeAsync();
     }
+
+    public async Task InvokeStateHasChanged()
+    {
+        MudDialog.StateHasChanged();
+        await InvokeAsync(StateHasChanged);
+    }
 }

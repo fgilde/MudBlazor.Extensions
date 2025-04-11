@@ -18367,6 +18367,32 @@
             <param name="dialogParameters">An optional action to configure additional dialog parameters.</param>
             <returns>A task that represents the asynchronous operation. The task result contains an array of selected items of type <typeparamref name="T"/>.</returns>
         </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.PickItemsAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Func{System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}},System.Func{MudBlazor.Extensions.Components.MudExList{``0},System.Boolean},System.Boolean,System.Boolean,System.Func{``0,System.String},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExList{``0}},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
+            <summary>
+            Displays a dialog to let the user pick one or multiple items from a list.
+            </summary>
+            <typeparam name="T">The type of items to display in the list.</typeparam>
+            <param name="dialogService">The dialog service instance used to show the dialog.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="headerText">The header text of the dialog.</param>
+            <param name="itemsLoadFunc">A function that asynchronously loads the items to be displayed.</param>
+            <param name="forceSelect">
+            If set to <c>true</c>, the dialog cannot be closed without selecting an item.
+            </param>
+            <param name="okCondition">Condition for the ok button. If this func returns true Ok is enabled</param>
+            <param name="unselectable">
+            Indicates whether a selected item can be unselected again
+            </param>
+            <param name="itemToStringFunc">
+            A function to convert an item to its string representation. If not provided, the item's <c>ToString</c> method is used.
+            </param>
+            <param name="options">Optional dialog options to customize the dialog behavior.</param>
+            <param name="cmpConfigure">An optional action to further configure the list component.</param>
+            <param name="dialogParameters">An optional action to configure additional dialog parameters.</param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains an array of the selected items.
+            </returns>
+        </member>
         <member name="M:MudBlazor.Extensions.DialogServiceExt.PickItemsAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Func{System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}},System.Boolean,System.Boolean,System.Func{``0,System.String},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExList{``0}},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
             <summary>
             Displays a dialog to let the user pick one or multiple items from a list.
@@ -18388,6 +18414,29 @@
             <param name="options">Optional dialog options to customize the dialog behavior.</param>
             <param name="cmpConfigure">An optional action to further configure the list component.</param>
             <param name="dialogParameters">An optional action to configure additional dialog parameters.</param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains an array of the selected items.
+            </returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.DialogServiceExt.SelectItemsAsync``1(MudBlazor.IDialogService,System.String,System.String,System.Func{System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}},System.Func{MudBlazor.Extensions.Components.MudExSelect{``0},System.Boolean},System.Boolean,System.Func{``0,System.String},MudBlazor.Extensions.Options.DialogOptionsEx,System.Action{MudBlazor.Extensions.Components.MudExSelect{``0}},System.Action{MudBlazor.Extensions.Components.MudExMessageDialog})">
+            <summary>
+            Displays a dialog to let the user select one or more items using a select component.
+            </summary>
+            <typeparam name="T">The type of items available for selection.</typeparam>
+            <param name="dialogService">The dialog service instance used to show the dialog.</param>
+            <param name="title">The title of the dialog.</param>
+            <param name="headerText">The header text of the dialog.</param>
+            <param name="itemsLoadFunc">A function that asynchronously loads the items for selection.</param>
+            <param name="okCondition">Condition for ok, if this func returns true ok button is enabled</param>
+            <param name="forceSelect">
+            If set to <c>true</c>, the dialog requires an item to be selected before closing.
+            </param>
+            <param name="itemToStringFunc">
+            A function to convert an item to its string representation. Defaults to <c>ToString</c> if not provided.
+            </param>
+            <param name="options">Optional dialog options to customize the appearance and behavior.</param>
+            <param name="cmpConfigure">An optional action to further configure the select component.</param>
+            <param name="dialogParameters">An optional action to set additional dialog parameters.</param>
             <returns>
             A task that represents the asynchronous operation. The task result contains an array of the selected items.
             </returns>
