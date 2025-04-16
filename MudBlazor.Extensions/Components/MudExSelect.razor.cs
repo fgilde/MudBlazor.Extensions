@@ -51,14 +51,6 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
 
     #region Constructor, Injected Services, Parameters, Fields
 
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    public MudExSelect()
-    {
-        Adornment = Adornment.End;
-        IconSize = Size.Medium;
-    }
 
     [Inject] private IKeyInterceptorService KeyInterceptorService { get; set; }
 
@@ -563,7 +555,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     /// </summary>
     [Parameter]
     [SafeCategory(CategoryTypes.List.Behavior)]
-    public virtual bool SearchBoxAutoFocus { get; set; }
+    public virtual bool SearchBoxAutoFocus { get; set; } = true;
 
     /// <summary>
     /// If true, the search-box has a clear icon.

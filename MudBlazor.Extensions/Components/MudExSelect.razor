@@ -21,6 +21,7 @@
                                       Variant="@Variant"
                                       Label="@Label"
                                       AdornmentColor="@AdornmentColor"
+                                      Adornment="@Adornment"
                                       Color="@Color"
                                       TextUpdateSuppression="false"
                                       Value="@(Strict && !IsValueInList ? null : Text)" Underline="@Underline"
@@ -29,8 +30,17 @@
                                       @attributes="UserAttributes" OnBlur="@OnLostFocus" ForceShrink="@(ForceShrink || (MultiSelection && SelectedValues?.Any() == true))"
                                       ShowVisualiser="true" DataVisualiserStyle="min-height: 1.1876em">
 
+                        <AdornmentStart>
+                            @if (Adornment == Adornment.Start)
+                            {
+                                <MudIcon Icon="@CurrentIcon" Color="@AdornmentColor" Size="@IconSize" @onclick="OnAdornmentClick" />
+                            }
+                        </AdornmentStart>
                         <AdornmentEnd>
-                            <MudIcon Icon="@CurrentIcon" Color="@AdornmentColor" Size="@IconSize" @onclick="OnAdornmentClick" />
+                            @if (Adornment == Adornment.End)
+                            {
+                                <MudIcon Icon="@CurrentIcon" Color="@AdornmentColor" Size="@IconSize" @onclick="OnAdornmentClick" />
+                            }
                         </AdornmentEnd>
 
                         <DataVisualiser>
