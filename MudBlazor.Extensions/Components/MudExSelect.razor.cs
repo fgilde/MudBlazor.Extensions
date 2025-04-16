@@ -51,6 +51,13 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
 
     #region Constructor, Injected Services, Parameters, Fields
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    public MudExSelect()
+    {
+        Adornment = Adornment.End;
+    }
 
     [Inject] private IKeyInterceptorService KeyInterceptorService { get; set; }
 
