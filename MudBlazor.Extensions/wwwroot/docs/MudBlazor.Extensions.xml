@@ -1103,6 +1103,11 @@
             MudExBaseInput
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.ElementId">
+            <summary>
+            Returns the Id of the input element
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExBaseInput`1.Localizer">
             <summary>
             Localizer for localize texts
