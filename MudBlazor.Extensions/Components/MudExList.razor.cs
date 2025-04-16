@@ -961,12 +961,12 @@ public partial class MudExList<T> : IDisposable
         }
     }
 
-    MudBaseInput<string> _searchField;
+    MudExTextField<string> _searchField;
 
     /// <summary>
     /// Search field.
     /// </summary>
-    public MudBaseInput<string> SearchField => _searchField;
+    public MudExTextField<string> SearchField => _searchField;
 
     /// <summary>
     /// Key down handler

@@ -17,6 +17,11 @@ public abstract class MudExBaseInput<T> : MudBaseInput<T>
     private IStringLocalizer<T> FallbackLocalizer => Get<IStringLocalizer<T>>();
 
     /// <summary>
+    /// Returns the Id of the input element
+    /// </summary>
+    public string ElementId => InputElementId;
+
+    /// <summary>
     /// Localizer for localize texts
     /// </summary>
     [Parameter] public IStringLocalizer Localizer { get; set; }
