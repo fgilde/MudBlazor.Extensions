@@ -189,6 +189,8 @@ namespace MudBlazor.Extensions.Components
         /// </summary>
         public override async ValueTask FocusAsync()
         {
+            await ElementReference.FocusAsync();
+            return; // TODO: #136
             try
             {
                 if (InputType == InputType.Hidden && ChildContent != null)
