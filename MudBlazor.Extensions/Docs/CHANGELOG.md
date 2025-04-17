@@ -1,4 +1,5 @@
 ## Change Log    
+ - 8.5.2 > Fix bug where no focus in searchbox is possible in MudExSelect
  - 8.5.2 > DialogService now has more helping methods like PickAsync, SelectAsync or EditAsync for items editing
  - 8.5.0 > Update to MudBlazor 8.5.0
  - 8.5.0 > Bug fix 
