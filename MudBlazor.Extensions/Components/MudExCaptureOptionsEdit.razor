@@ -40,7 +40,7 @@
 
 
                             <MudExEnumSelect Style="@OverlayOptionsStyle()" Class="ml-8 mr-8" Clearable="false" Variant="Variant.Outlined" @bind-Value="Value.OverlayPosition" Label="@TryLocalize("Overlay")">
-                                <MudExAdditionalAdornment Position="MoveContentPosition.AfterBegin">
+                                <MudExAdditionalAdornment Position="MoveContentPosition.BeforeBegin">
                                     <MudExIconButton ToolTip="@TryLocalize("Switch overlay source")" OnClick="@ToggleOverlaySource" Size="Size.Small" Icon="@Icons.Material.Filled.Cameraswitch"></MudExIconButton>
                                 </MudExAdditionalAdornment>
                             </MudExEnumSelect>
