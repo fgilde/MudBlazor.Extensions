@@ -23,8 +23,8 @@
   <!--Versioning-->
   <PropertyGroup>
     <MajorVersion>8</MajorVersion>
-    <MinorVersion>5</MinorVersion>
-    <PatchVersion>2</PatchVersion>
+    <MinorVersion>6</MinorVersion>
+    <PatchVersion>0</PatchVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -73,15 +73,15 @@
     <PackageReference Include="AuralizeBlazor" Version="2.0.5" />
     <PackageReference Include="MudBlazor.Markdown" Version="8.0.0" />
     <PackageReference Include="Nextended.Blazor" Version="9.0.9" />
-    <PackageReference Include="Nextended.Core" Version="9.0.12" />
+    <PackageReference Include="Nextended.Core" Version="9.0.14" />
     <PackageReference Include="BlazorJS" Version="2.2.0" />
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />    
-    <PackageReference Include="MudBlazor" Version="8.5.1" />
+    <PackageReference Include="MudBlazor" Version="8.6.0" />
     <PackageReference Include="BlazorParameterCastingMagic" Version="1.2.23060811" />
     <PackageReference Include="SharpCompress" Version="0.39.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.7" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.8" />
     <PackageReference Include="MetadataExtractor" Version="2.8.1" />
   </ItemGroup>
 
