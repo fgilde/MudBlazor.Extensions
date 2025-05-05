@@ -875,8 +875,16 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
 
 
         var resultItem = Items?.FirstOrDefault(x => Value == null ? x.Value == null : Comparer?.Equals(Value, x.Value) ?? Value.Equals(x.Value));
+        
+        if (Value != null && !MultiSelection && !_initialSet) // FIX: #140 for chips
+        {
+            _initialSet = true;
+            _selectedValues = new HashSet<T>(_comparer) { Value };
+        }
         return resultItem == null ? SetTextAsync(ItemNameRender(Value), false) : SetTextAsync((!string.IsNullOrEmpty(resultItem.Text) && resultItem.Value is null ? resultItem.Text : ItemNameRender(resultItem.Value)), updateValue: updateValue);
     }
+    
+    bool _initialSet = false;
 
     private string GetSelectTextPresenter()
     {
@@ -946,6 +954,8 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
         //Console.WriteLine("Select rendered");
         await base.OnAfterRenderAsync(firstRender);
     }
+    
+    private T ValueToRender => SelectedListItem != null ? SelectedListItem.Value ?? Value : Value;
 
     /// <summary>
     /// Force the update of the items in the select menu.

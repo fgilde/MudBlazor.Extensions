@@ -3,7 +3,7 @@
 @using MudBlazor.Extensions.Options
 
 <DemoComponent PageType="@GetType()">
-        <MudGrid Style="width: 100%" Justify="Justify.Center">
+    <MudGrid Style="width: 100%" Justify="Justify.Center">
         <MudItem xs="12">
             <MudAlert><p> This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open </p></MudAlert>
             
@@ -17,33 +17,54 @@
         <MudItem xs="3" Class="mb-4">
             <MudButton Class="m-4" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
         </MudItem>
-        </MudGrid>    
+    </MudGrid>    
         
-        <MudExSelect Label="Moin moin" T="string" ItemCollection="@(new List<string>() {"Test 1", "Test 2"})" Variant="Variant.Outlined"></MudExSelect>
+    <MudExSelect Label="Moin moin" T="string" ItemCollection="@(new List<string>() {"Test 1", "Test 2"})" Variant="Variant.Outlined"></MudExSelect>
             
-        <MudTextField T="string" Variant="Variant.Outlined"></MudTextField>
-        <MudExTextField T="string" Variant="Variant.Outlined"></MudExTextField>
+    <MudTextField T="string" Variant="Variant.Outlined"></MudTextField>
+    <MudExTextField T="string" Variant="Variant.Outlined"></MudExTextField>
         
-        <MudSelect Variant="Variant.Outlined"
-                   T="string"
-                   Label="Original">
-            <MudSelectItem Value="@("Item1")">@("Item1")"</MudSelectItem>
-            <MudSelectItem Value="@("Item2")">@("Item2")"</MudSelectItem>
-            <MudSelectItem Value="@("Item3")">@("Item3")"</MudSelectItem>
+    <MudSelect Variant="Variant.Outlined"
+               T="string"
+               Label="Original">
+        <MudSelectItem Value="@("Item1")">@("Item1")"</MudSelectItem>
+        <MudSelectItem Value="@("Item2")">@("Item2")"</MudSelectItem>
+        <MudSelectItem Value="@("Item3")">@("Item3")"</MudSelectItem>
 
-        </MudSelect>
+    </MudSelect>
 
-        @((MarkupString)_svg)
+    @((MarkupString)_svg)
 </DemoComponent>
 
+<MudExSelect ItemCollection="_players" @bind-Value="_selected" ValuePresenter="ValuePresenter.ItemContent" 
+             Placeholder="Template & ItemContent"Label="Select Player" 
+             Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+    <ItemTemplate>
+        <MudStack Class="mud-width-full" Justify="Justify.SpaceBetween">
+            <MudText><b>@context.Name</b></MudText>
+            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                <MudStack Row="true">
+                    <MudIcon Icon="@Icons.Material.Outlined.Person" />
+                    <MudText>@(context.Retired == true ? "Retired" : "Active")</MudText>
+                </MudStack>
+                <MudChip T="string" Color="Color.Info" Variant="Variant.Outlined">Total Score: @context.Score</MudChip>
+            </MudStack>
+        </MudStack>
+    </ItemTemplate>
+</MudExSelect>
+
+
 @code {
+    List<Player> _players = null;
+    Player _selected = null;
 
     [Inject]
     MudExStyleBuilder _styleBuilder { get; set; }
     private string _svg = string.Empty;
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        return base.OnInitializedAsync();
+        _players = await LoadData();
+        _selected = _players.FirstOrDefault();
     }
 
     private Task ShowSampleDialog()
@@ -61,6 +82,31 @@
                 DisablePositionMargin = true
             };
         return DialogService.ShowExAsync<SampleTabDialog>("Simple Dialog", dlgOptions);
+    }
+
+    private async Task<List<Player>> LoadData() {
+        await Task.Delay(1000);
+        return new List<Player>
+        {
+            new Player("Kareem Abdul-Jabbar", "38.387", true),
+            new Player("LeBron James", "37.062", false),
+            new Player("Karl Malone", "36.928", true),
+            new Player("Kobe Bryant", "33.643", true),
+            new Player("Michael Jordan", "32.292", true),
+        };
+    }
+
+    private record Player {
+
+        public Player(string name, string score, bool retired) {
+            Name = name;
+            Score = score;
+            Retired = retired;
+        }
+
+        public string Name { get; set; }
+        public string Score { get; set; }
+        public bool Retired { get; set; }
     }
 
 }

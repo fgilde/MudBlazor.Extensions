@@ -69,14 +69,14 @@
                                 }
                                 else if (ValuePresenter == Options.ValuePresenter.ItemContent)
                                 {
-                                    if (SelectedListItem == null)
+                                    if (ValueToRender == null)
                                     {
                                         <MudText Typo="Typo.body1" Class="mud-text-secondary">@Placeholder</MudText>
 
                                     }
                                     else if (ItemTemplate != null)
                                     {
-                                        if (SelectedListItem != null && SelectedListItem.Value != null)
+                                        if (ValueToRender != null)
                                         {
                                             @if (MultiSelection)
                                             {
@@ -85,7 +85,7 @@
                                             }
                                             else
                                             {
-                                                @ItemTemplate(SelectedListItem.Value)
+                                                @ItemTemplate(ValueToRender)
                                             }
                                         }
                                         else if (!string.IsNullOrEmpty(Placeholder))
