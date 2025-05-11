@@ -3,27 +3,34 @@
 @using MudBlazor.Extensions.Options
 
 <DemoComponent PageType="@GetType()">
+    
+    <MudExEnumSelect Label="EnumSelect" TEnum="MudDialogDragMode" @bind-Value="_dragMode"  Variant="Variant.Outlined"></MudExEnumSelect>
+
+
     <MudGrid Style="width: 100%" Justify="Justify.Center">
         <MudItem xs="12">
-            <MudAlert><p> This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open </p></MudAlert>
-            
-            <MudExSelect T="string" >
+            <MudAlert>
+                <p> This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open </p></MudAlert>
+
+            <MudExSelect T="string">
                 <MudExSelectItem T="string">test</MudExSelectItem>
                 <MudExSelectItem T="string">test 2</MudExSelectItem>
             </MudExSelect>
-            
+
 
         </MudItem>
+
+
         <MudItem xs="3" Class="mb-4">
             <MudButton Class="m-4" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
         </MudItem>
-    </MudGrid>    
-        
-    <MudExSelect Label="Moin moin" T="string" ItemCollection="@(new List<string>() {"Test 1", "Test 2"})" Variant="Variant.Outlined"></MudExSelect>
-            
+    </MudGrid>
+
+    <MudExSelect Label="Moin moin" T="string" ItemCollection="@(new List<string>() { "Test 1", "Test 2" })" Variant="Variant.Outlined"></MudExSelect>
+
     <MudTextField T="string" Variant="Variant.Outlined"></MudTextField>
     <MudExTextField T="string" Variant="Variant.Outlined"></MudExTextField>
-        
+
     <MudSelect Variant="Variant.Outlined"
                T="string"
                Label="Original">
@@ -37,8 +44,8 @@
 </DemoComponent>
 
 <MudExSelect ItemCollection="_players" @bind-Value="_selected" ValuePresenter="ValuePresenter.ItemContent" 
-             Placeholder="Template & ItemContent"Label="Select Player" 
-             Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+Placeholder="Template & ItemContent"Label="Select Player" 
+Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
     <ItemTemplate>
         <MudStack Class="mud-width-full" Justify="Justify.SpaceBetween">
             <MudText><b>@context.Name</b></MudText>
@@ -57,7 +64,7 @@
 @code {
     List<Player> _players = null;
     Player _selected = null;
-
+    MudDialogDragMode _dragMode = MudDialogDragMode.Simple;
     [Inject]
     MudExStyleBuilder _styleBuilder { get; set; }
     private string _svg = string.Empty;
@@ -77,7 +84,7 @@
                 MaxWidth = MaxWidth.Medium,
                 FullWidth = true,
                 Resizeable = true,
-                DragMode = MudDialogDragMode.Simple,
+                DragMode = _dragMode,
                 DisableSizeMarginY = true,
                 DisablePositionMargin = true
             };

@@ -1997,101 +1997,174 @@ window.MudExDialogButtonHandler = MudExDialogButtonHandler;
 class MudExDialogDragHandler extends MudExDialogHandlerBase {
     constructor(options) {
         super(options);
-        this.snappedTo = null;     // 'left'|'right'|'top'|'bottom'|'top-half'|'top-left'|'top-right'|'bottom-left'|'bottom-right'|'maximized'
-        this._preSnapState = null;     // gespeicherter Zustand vor dem Snap
+        this.snappedTo = null;   // zeigt aktuellen Snap-Zustand
+        this._preSnapState = null;   // gespeicherter Zustand vor Snap
+        this._preview = null;   // Vorschau-DIV
+        this._handlers = [];     // zum Cleanup
+        this._threshold = 20;     // px für Rand-Zone
+        this._transition = 'all 0.2s ease';
         this._isDragging = false;
-        this._pendingZone = null;
-        this._handlers = [];
-        this._transition = 'left 0.2s ease, top 0.2s ease, width 0.2s ease, height 0.2s ease';
-        this._threshold = 20;       // px, Zone-Größe für Snap
     }
 
     handle(dialog) {
         super.handle(dialog);
         if (!this.dialog) return;
-        const container = document.body;
-
-        this.options.dragMode = 3; 
-        if (this.options.dragMode === 1) {
-            this.dragElement(this.dialog, this.dialogHeader, container, false);
-            return;
+        const c = document.body;
+        switch (this.options.dragMode) {
+            case 1:
+                return this.dragElement(this.dialog, this.dialogHeader, c, false);
+            case 2:
+                return this.dragElement(this.dialog, this.dialogHeader, c, true);
+            case 3:
+                this._createPreview(c);
+                this._attachMouseSnap();
+                this._attachKeySnap();
+                this._attachResizeHandler();
+                return;
         }
-        if (this.options.dragMode === 2) {
-            this.dragElement(this.dialog, this.dialogHeader, container, true);
-            return;
-        }
-        // dragMode 3 → Snap
-        this._createPreview(container);
-        this._attachMouseSnap(container);
-        this._attachKeySnap();
-        this._attachResizeHandler();
     }
 
-    // ────────────────────────────────────────────────────────────────────────────
-    // PREVIEW-ELEMENT
-    // ────────────────────────────────────────────────────────────────────────────
+
+
+    dragElement(dialogEl, headerEl, container, disableBoundCheck) {
+        const self = this;
+        let startPos = { x: 0, y: 0 };
+        let cursorPos = { x: 0, y: 0 };
+        let startDrag;
+        container = container || document.body;
+
+        if (headerEl) {
+            headerEl.style.cursor = 'move';
+            headerEl.onmousedown = dragMouseDown;
+        } else {
+            dialogEl.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            //e.preventDefault();
+            startDrag = true;
+            cursorPos = { x: e.clientX, y: e.clientY };
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            if (startDrag) {
+                startDrag = false;
+                self.raiseDialogEvent('OnDragStart');
+            }
+            e = e || window.event;
+            e.preventDefault();
+
+            startPos = {
+                x: cursorPos.x - e.clientX,
+                y: cursorPos.y - e.clientY,
+            };
+
+            cursorPos = { x: e.clientX, y: e.clientY };
+
+            const bounds = {
+                x: container.offsetWidth - dialogEl.offsetWidth,
+                y: container === document.body ? window.innerHeight - dialogEl.offsetHeight : container.offsetHeight - dialogEl.offsetHeight,
+            };
+
+            const newPosition = {
+                x: dialogEl.offsetLeft - startPos.x,
+                y: dialogEl.offsetTop - startPos.y,
+            };
+
+            dialogEl.style.position = 'absolute';
+
+            if (disableBoundCheck || isWithinBounds(newPosition.x, bounds.x)) {
+                dialogEl.style.left = newPosition.x + 'px';
+            } else if (isOutOfBounds(newPosition.x, bounds.x)) {
+                dialogEl.style.left = bounds.x + 'px';
+            }
+
+            if (disableBoundCheck || isWithinBounds(newPosition.y, bounds.y)) {
+                dialogEl.style.top = newPosition.y + 'px';
+            } else if (isOutOfBounds(newPosition.y, bounds.y)) {
+                dialogEl.style.top = bounds.y + 'px';
+            }
+            self.raiseDialogEvent('OnDragging');
+        }
+
+        function closeDragElement() {
+            self.raiseDialogEvent('OnDragEnd');
+            self.setRelativeIf();
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+
+        function isWithinBounds(value, maxValue) {
+            return value >= 0 && value <= maxValue;
+        }
+
+        function isOutOfBounds(value, maxValue) {
+            return value > maxValue;
+        }
+    }
+
+
+    // ─── Vorschau DIV ────────────────────────────────────────────────────────────
     _createPreview(container) {
         if (this._preview) return;
         const p = document.createElement('div');
         p.className = 'snap-preview';
         p.style.display = 'none';
-        // Du brauchst im CSS:
-        // .snap-preview { position:absolute; background:rgba(0,120,215,0.2);
+        // CSS:
+        // .snap-preview {
+        //   position:absolute;
+        //   background:rgba(0,120,215,0.2);
         //   box-shadow:0 0 10px rgba(0,0,0,0.5);
-        //   transition:all 0.2s ease; z-index:9999; pointer-events:none; }
+        //   transition:all 0.2s ease;
+        //   z-index:9999;
+        //   pointer-events:none;
+        // }
         container.appendChild(p);
         this._preview = p;
     }
 
-    // ────────────────────────────────────────────────────────────────────────────
-    // MAUS-DRAG + SNAP
-    // ────────────────────────────────────────────────────────────────────────────
-    _attachMouseSnap(container) {
-        const header = this.dialogHeader || this.dialog;
-        header.style.cursor = 'move';
+    // ─── Maus-Drag + Snap ────────────────────────────────────────────────────────
+    _attachMouseSnap() {
+        const hdr = this.dialogHeader || this.dialog;
+        hdr.style.cursor = 'move';
+        const onMD = e => {
+            e.preventDefault();
+            this.raiseDialogEvent('OnDragStart');
+            this._isDragging = true;
+            this._hasMoved = false;
+            this._pendingZone = null;
 
-        this._md = this._onMouseDown.bind(this);
-        header.addEventListener('mousedown', this._md);
-        this._handlers.push([header, 'mousedown', this._md]);
-    }
+            this._startX = e.clientX; this._startY = e.clientY;
+            this._origX = this.dialog.offsetLeft;
+            this._origY = this.dialog.offsetTop;
 
-    _onMouseDown(e) {
-        e.preventDefault();
-        this.raiseDialogEvent('OnDragStart');
-        this._isDragging = true;
-        this._pendingZone = null;
-
-        // beim ersten richtigen Move unSnap, außer maximiert
-        this._hasMoved = false;
-
-        this._startX = e.clientX;
-        this._startY = e.clientY;
-        this._origX = this.dialog.offsetLeft;
-        this._origY = this.dialog.offsetTop;
-
-        this._mm = this._onMouseMove.bind(this);
-        this._mu = this._onMouseUp.bind(this);
-        document.addEventListener('mousemove', this._mm);
-        document.addEventListener('mouseup', this._mu);
-        this._handlers.push([document, 'mousemove', this._mm]);
-        this._handlers.push([document, 'mouseup', this._mu]);
+            const onMM = this._onMouseMove.bind(this);
+            const onMU = this._onMouseUp.bind(this);
+            document.addEventListener('mousemove', onMM);
+            document.addEventListener('mouseup', onMU);
+            this._handlers.push([document, 'mousemove', onMM], [document, 'mouseup', onMU]);
+        };
+        hdr.addEventListener('mousedown', onMD);
+        this._handlers.push([hdr, 'mousedown', onMD]);
     }
 
     _onMouseMove(e) {
         if (!this._isDragging) return;
-        e.preventDefault();
         this.raiseDialogEvent('OnDragging');
 
         const x = e.clientX, y = e.clientY;
         const W = window.innerWidth, H = window.innerHeight;
 
-        // beim allerersten Move: unSnap, außer maximiert
-        if (!this._hasMoved && this.snappedTo && !this.dialog.classList.contains('maximized')) {
+        // Beim allerersten Move: immer unsnappen (auch aus top/maximized)
+        if (!this._hasMoved && this.snappedTo) {
             this._unsnap(false);
         }
         this._hasMoved = true;
 
-        // Zone erkennen (top/bottom/left/right)
+        // Zone erkennen
         let zone = null;
         if (y <= this._threshold) zone = 'top';
         else if (y >= H - this._threshold) zone = 'bottom';
@@ -2099,177 +2172,158 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
         else if (x >= W - this._threshold) zone = 'right';
 
         if (!zone) {
-            // freies Verschieben
+            // freies Ziehen
             const dx = x - this._startX, dy = y - this._startY;
             Object.assign(this.dialog.style, {
+                transition: 'none',
                 position: 'absolute',
                 left: this._origX + dx + 'px',
                 top: this._origY + dy + 'px'
             });
+            // unbedingt pendingZone löschen!
             this._preview.style.display = 'none';
+            this._pendingZone = null;
             return;
         }
 
-        // Preview anzeigen
-        const rect = this._calcRect(zone, W, H);
+        // Vorschau
+        const r = this._calcRect(zone, W, H);
         Object.assign(this._preview.style, {
             display: 'block',
-            left: rect.x + 'px',
-            top: rect.y + 'px',
-            width: rect.w + 'px',
-            height: rect.h + 'px'
+            left: r.x + 'px',
+            top: r.y + 'px',
+            width: r.w + 'px',
+            height: r.h + 'px'
         });
         this._pendingZone = zone;
     }
 
-    _onMouseUp(e) {
+    _onMouseUp() {
         if (!this._isDragging) return;
         this.raiseDialogEvent('OnDragEnd');
         this._isDragging = false;
-
-        // Snap anwenden, falls in Zone
         if (this._pendingZone) {
             this._doSnap(this._pendingZone, true);
         }
         this._preview.style.display = 'none';
     }
 
-    // ────────────────────────────────────────────────────────────────────────────
-    // KEY-BINDINGS (Ctrl+Arrows)
-    // ────────────────────────────────────────────────────────────────────────────
+    // ─── Keybinds (Ctrl+Arrows) ─────────────────────────────────────────────────
     _attachKeySnap() {
-        this._kd = this._onKeyDown.bind(this);
-        window.addEventListener('keydown', this._kd, true);
-        this._handlers.push([window, 'keydown', this._kd, true]);
-    }
-
-    _onKeyDown(e) {
-        if (!e.ctrlKey) return;
-        let dir = null;
-        switch (e.key) {
-            case 'ArrowLeft': dir = 'left'; break;
-            case 'ArrowRight': dir = 'right'; break;
-            case 'ArrowUp': dir = 'top'; break;
-            case 'ArrowDown': dir = 'bottom'; break;
-            default: return;
-        }
-        e.preventDefault();
-        this._handleKeySnap(dir);
+        const onKD = e => {
+            if (!e.ctrlKey) return;
+            let dir = null;
+            switch (e.key) {
+                case 'ArrowLeft': dir = 'left'; break;
+                case 'ArrowRight': dir = 'right'; break;
+                case 'ArrowUp': dir = 'top'; break;
+                case 'ArrowDown': dir = 'bottom'; break;
+                default: return;
+            }
+            e.preventDefault();
+            MudExDomHelper.toAbsolute(this.dialog, false);
+            this._handleKeySnap(dir);
+        };
+        window.addEventListener('keydown', onKD, true);
+        this._handlers.push([window, 'keydown', onKD, true]);
     }
 
     _handleKeySnap(dir) {
         const cur = this.snappedTo;
-        // 1) nicht gesnapped?
-        if (!cur) {
-            return this._doSnap(dir, true);
+        const snap = z => this._doSnap(z, true);
+        const unsnap = () => this._unsnap(true);
+
+        if (!cur) return snap(dir);
+
+        // RIGHT-Seite
+        if (cur === 'right') {
+            if (dir === 'right') return snap('left');
+            if (dir === 'left') return unsnap();
+            if (dir === 'top') return snap('top-right');
+            if (dir === 'bottom') return snap('bottom-right');
+        }
+        if (cur === 'top-right') {
+            if (dir === 'top') return snap('top');
+            if (dir === 'left') return unsnap();
+            if (dir === 'right') return snap('right');
+            if (dir === 'bottom') return snap('bottom-right');
+        }
+        if (cur === 'bottom-right') {
+            if (dir === 'top') return snap('top-right');
+            if (dir === 'left') return unsnap();
+            if (dir === 'right') return snap('right');
+            if (dir === 'bottom') {
+                return this._isMinimizable()
+                    ? this.getHandler(MudExDialogPositionHandler).minimize()
+                    : snap('bottom');
+            }
         }
 
-        // 2) Regeln für 'right'
-        if (cur === 'right') {
-            if (dir === 'right') return this._doSnap('left', true);
-            if (dir === 'left') return this._unsnap(true);
-            if (dir === 'top') return this._doCorner('top-right');
-            if (dir === 'bottom') return this._doCorner('bottom-right');
-        }
-        // 3) Regeln für 'left'
+        // LEFT-Seite
         if (cur === 'left') {
-            if (dir === 'left') return this._doSnap('right', true);
-            if (dir === 'right') return this._unsnap(true);
-            if (dir === 'top') return this._doCorner('top-left');
-            if (dir === 'bottom') return this._doCorner('bottom-left');
+            if (dir === 'left') return snap('right');
+            if (dir === 'right') return unsnap();
+            if (dir === 'top') return snap('top-left');
+            if (dir === 'bottom') return snap('bottom-left');
         }
-        // 4) Regeln für 'top' (maximized)
+        if (cur === 'top-left') {
+            if (dir === 'top') return snap('top');
+            if (dir === 'right') return unsnap();
+            if (dir === 'left') return snap('left');
+            if (dir === 'bottom') return snap('bottom-left');
+        }
+        if (cur === 'bottom-left') {
+            if (dir === 'top') return snap('top-left');
+            if (dir === 'right') return unsnap();
+            if (dir === 'left') return snap('left');
+            if (dir === 'bottom') {
+                return this._isMinimizable()
+                    ? this.getHandler(MudExDialogPositionHandler).minimize()
+                    : snap('bottom');
+            }
+        }
+
+        // TOP (maximized)
         if (cur === 'top') {
-            if (dir === 'top') return this._toggleTopHalf();
+            if (dir === 'top') return snap('top-half');
             if (dir === 'left' ||
-                dir === 'right') return this._doSnap(dir, true);
-            if (dir === 'bottom') return this._unsnap(true);
+                dir === 'right') return snap(dir);
+            if (dir === 'bottom') return unsnap();
         }
-        // 5) Regeln für 'top-half'
+        // TOP-HALF
         if (cur === 'top-half') {
-            if (dir === 'top') return this._doSnap('top', true);
+            if (dir === 'top') return snap('top');
             if (dir === 'left' ||
-                dir === 'right') return this._doSnap(dir, true);
-            if (dir === 'bottom') return this._unsnap(true);
+                dir === 'right') return snap(dir);
+            if (dir === 'bottom') return unsnap();
         }
-        // 6) Regeln für 'bottom'
+        // BOTTOM
         if (cur === 'bottom') {
             if (dir === 'bottom') {
-                if (this._isMinimizable()) {
-                    return this.getHandler(MudExDialogPositionHandler).minimize();
-                }
-                return this._doSnap('top', true);
-            } else {
-                return this._unsnap(true);
+                return this._isMinimizable()
+                    ? this.getHandler(MudExDialogPositionHandler).minimize()
+                    : snap('top');
             }
+            return unsnap();
         }
     }
 
-    // ────────────────────────────────────────────────────────────────────────────
-    // APPLICATION DER SNAPS (Maus & Key)
-    // ────────────────────────────────────────────────────────────────────────────
+    // ─── Snap / Unsnap Umsetzung ────────────────────────────────────────────────
     _doSnap(zone, animate) {
-        // Zustand merken
         if (!this._preSnapState) this._captureState();
-
         this.raiseDialogEvent('OnSnapStart', { position: zone });
 
         if (zone === 'top') {
+            console.log('MAXIMIZE');
             this.getHandler(MudExDialogPositionHandler).maximize();
-            this.snappedTo = 'top';
-        }
-        else if (zone === 'bottom') {
-            const W = window.innerWidth, H = window.innerHeight;
-            const r = { x: 0, y: Math.floor(H / 2), w: W, h: Math.floor(H / 2) };
+        } else {
+            const r = this._calcRect(zone, window.innerWidth, window.innerHeight);
             this._applyRect(r, animate);
-            this.snappedTo = 'bottom';
-        }
-        else if (zone === 'left' || zone === 'right') {
-            const W = window.innerWidth, H = window.innerHeight;
-            const halfW = Math.floor(W / 2);
-            const r = zone === 'left'
-                ? { x: 0, y: 0, w: halfW, h: H }
-                : { x: halfW, y: 0, w: halfW, h: H };
-            this._applyRect(r, animate);
-            this.snappedTo = zone;
         }
 
+        this.snappedTo = zone;
         this.raiseDialogEvent('OnSnap', { position: zone });
         this.raiseDialogEvent('OnSnapEnd', { position: zone });
-    }
-
-    _doCorner(corner) {
-        // z.B. 'top-left', 'top-right', 'bottom-left', 'bottom-right'
-        if (!this._preSnapState) this._captureState();
-        this.raiseDialogEvent('OnSnapStart', { position: corner });
-
-        const W = window.innerWidth, H = window.innerHeight;
-        const halfW = Math.floor(W / 2), halfH = Math.floor(H / 2);
-        let r;
-        if (corner === 'top-left') r = { x: 0, y: 0, w: halfW, h: halfH };
-        if (corner === 'top-right') r = { x: halfW, y: 0, w: halfW, h: halfH };
-        if (corner === 'bottom-left') r = { x: 0, y: halfH, w: halfW, h: halfH };
-        if (corner === 'bottom-right') r = { x: halfW, y: halfH, w: halfW, h: halfH };
-
-        this._applyRect(r, true);
-        this.snappedTo = corner;
-        this.raiseDialogEvent('OnSnap', { position: corner });
-        this.raiseDialogEvent('OnSnapEnd', { position: corner });
-    }
-
-    _toggleTopHalf() {
-        // Zwischen maximized <-> top-half toggeln
-        if (this.snappedTo === 'top') {
-            // zu top-half
-            this.snappedTo = 'top-half';
-            const W = window.innerWidth, H = window.innerHeight;
-            const r = { x: 0, y: 0, w: W, h: Math.floor(H / 2) };
-            this._applyRect(r, true);
-        }
-        else {
-            // zurück maximize
-            this._doSnap('top', true);
-        }
     }
 
     _unsnap(animate) {
@@ -2292,22 +2346,24 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
     }
 
     _isMinimizable() {
-        // aktuell immer true (Später kannst du hier logik ergänzen)
-        return true;
+        return this.options.minimizeButton;
     }
 
-    // ────────────────────────────────────────────────────────────────────────────
-    // RECT & STYLE HELPERS
-    // ────────────────────────────────────────────────────────────────────────────
+    // ─── Helfer für Rects ───────────────────────────────────────────────────────
     _calcRect(zone, W, H) {
         const halfW = Math.floor(W / 2), halfH = Math.floor(H / 2);
         switch (zone) {
             case 'top': return { x: 0, y: 0, w: W, h: H };
+            case 'top-half': return { x: 0, y: 0, w: W, h: halfH };
             case 'bottom': return { x: 0, y: halfH, w: W, h: halfH };
             case 'left': return { x: 0, y: 0, w: halfW, h: H };
             case 'right': return { x: halfW, y: 0, w: halfW, h: H };
-            default: return { x: 0, y: 0, w: W, h: H };
+            case 'top-left': return { x: 0, y: 0, w: halfW, h: halfH };
+            case 'top-right': return { x: halfW, y: 0, w: halfW, h: halfH };
+            case 'bottom-left': return { x: 0, y: halfH, w: halfW, h: halfH };
+            case 'bottom-right': return { x: halfW, y: halfH, w: halfW, h: halfH };
         }
+        return { x: 0, y: 0, w: W, h: H };
     }
 
     _applyRect({ x, y, w, h }, animate) {
@@ -2322,32 +2378,25 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
         });
     }
 
-    // ────────────────────────────────────────────────────────────────────────────
-    // BROWSER-RESIZE: aktuellen Snap neu anwenden
-    // ────────────────────────────────────────────────────────────────────────────
+    // ─── Browser-Resize ─────────────────────────────────────────────────────────
     _attachResizeHandler() {
-        this._rz = () => {
-            if (!this.snappedTo) return;
-            // Maus-Snaps und Key-Snaps benutzen denselben Calc-Code
-            if (this.snappedTo.includes('-')) {
-                // Ecke
-                this._doCorner(this.snappedTo);
-            } else {
-                this._doSnap(this.snappedTo, false);
-            }
+        const onR = () => {
+            if (!this.snappedTo || this.snappedTo === 'top') return;
+            const r = this._calcRect(this.snappedTo, window.innerWidth, window.innerHeight);
+            Object.assign(this.dialog.style, {
+                left: r.x + 'px',
+                top: r.y + 'px',
+                width: r.w + 'px',
+                height: r.h + 'px'
+            });
         };
-        window.addEventListener('resize', this._rz);
-        this._handlers.push([window, 'resize', this._rz]);
+        window.addEventListener('resize', onR);
+        this._handlers.push([window, 'resize', onR]);
     }
 
-    // ────────────────────────────────────────────────────────────────────────────
-    // CLEANUP
-    // ────────────────────────────────────────────────────────────────────────────
+    // ─── Cleanup ─────────────────────────────────────────────────────────────────
     destroy() {
-        // alle EventListener entfernen
-        this._handlers.forEach(([t, ev, fn, opt]) =>
-            t.removeEventListener(ev, fn, opt)
-        );
+        this._handlers.forEach(([t, e, fn, opt]) => t.removeEventListener(e, fn, opt));
         super.destroy();
     }
 }
