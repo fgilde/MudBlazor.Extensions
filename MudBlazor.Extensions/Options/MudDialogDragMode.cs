@@ -23,7 +23,6 @@
         /// <summary>
         /// Snap dragging mode (not currently implemented).
         /// </summary>
-        [Obsolete("Not finished yet. Will be implemented later")]
         SnapDrag
     }
 
