@@ -62,6 +62,10 @@
         this.dialog.style.visibility = 'visible';
     }
 
+    isMaximized() {
+        return this._oldStyle !== undefined;
+    }
+
     maximize() {
         if (this._oldStyle) {
             this.dialog.style.cssText = this._oldStyle;
