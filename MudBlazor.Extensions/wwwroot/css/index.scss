@@ -9,3 +9,13 @@
 .mud-ex-property-component-wrapper {
     display: flex;
 }
+
+
+.snap-preview {
+    position: absolute;
+    background: rgba(0, 120, 215, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: all 0.2s ease-out;
+    z-index: 9999;
+    pointer-events: none;
+}

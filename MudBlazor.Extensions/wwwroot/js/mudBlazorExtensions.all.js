@@ -1994,99 +1994,224 @@ class MudExDialogButtonHandler extends MudExDialogHandlerBase {
 
 
 window.MudExDialogButtonHandler = MudExDialogButtonHandler;
-class MudExDialogDragHandler extends MudExDialogHandlerBase  {
-    
+class MudExDialogDragHandler extends MudExDialogHandlerBase {
+    constructor(options) {
+        super(options);
+        this._preSnapState = null;
+        this._currentSnap = null; // 'left'|'right'|'top'|null
+        this._keyDownHandler = this._onKeyDown.bind(this);
+    }
+
     handle(dialog) {
         super.handle(dialog);
-        if (this.options.dragMode !== 0 && this.dialog) {
-            this.dragElement(this.dialog, this.dialogHeader, document.body, this.options.dragMode === 2);
+        if (!this.dialog || this.options.dragMode === 0) return;
+
+        this.options.dragMode = 3;
+
+        const { dragMode } = this.options;
+        if (dragMode === 3) {
+            this.snapDragElement(this.dialog, this.dialogHeader, document.body);
+            // Keybindings global auf den Dialog anwenden
+            window.addEventListener('keydown', this._keyDownHandler, true);
+        } else {
+            const disableBoundCheck = dragMode === 2;
+            this.dragElement(this.dialog, this.dialogHeader, document.body, disableBoundCheck);
         }
     }
 
-    dragElement(dialogEl, headerEl, container, disableBoundCheck) {
+    // -------- SNAP-DRAG IMPLEMENTATION --------
+    snapDragElement(dialogEl, headerEl, container) {
         const self = this;
-        let startPos = { x: 0, y: 0 };
-        let cursorPos = { x: 0, y: 0 };
-        let startDrag;
+        let dragging = false;
+        let snapZone = null;
+        const threshold = 20; // px zum Rand
         container = container || document.body;
 
-        if (headerEl) {
-            headerEl.style.cursor = 'move';
-            headerEl.onmousedown = dragMouseDown;
-        } else {
-            dialogEl.onmousedown = dragMouseDown;
-        }
+        // Preview-Overlay
+        const previewEl = document.createElement('div');
+        previewEl.className = 'snap-preview';
+        previewEl.style.display = 'none';
+        container.appendChild(previewEl);
 
-        function dragMouseDown(e) {
-            e = e || window.event;
-            //e.preventDefault();
-            startDrag = true;
-            cursorPos = { x: e.clientX, y: e.clientY };
-            document.onmouseup = closeDragElement;
-            document.onmousemove = elementDrag;
-        }
+        // Für normales Bewegen
+        let startX, startY, origX, origY;
 
-        function elementDrag(e) {
-            if (startDrag) {
-                startDrag = false;
-                self.raiseDialogEvent('OnDragStart');
-            }
-            e = e || window.event;
+        // Mousedown starten
+        (headerEl || dialogEl).style.cursor = 'move';
+        (headerEl || dialogEl).addEventListener('mousedown', onMouseDown);
+
+        function onMouseDown(e) {
             e.preventDefault();
+            dragging = true;
+            self.raiseDialogEvent('OnDragStart');
 
-            startPos = {
-                x: cursorPos.x - e.clientX,
-                y: cursorPos.y - e.clientY,
-            };
+            // Start-Koordinaten für free-drag
+            startX = e.clientX;
+            startY = e.clientY;
+            origX = dialogEl.offsetLeft;
+            origY = dialogEl.offsetTop;
 
-            cursorPos = { x: e.clientX, y: e.clientY };
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        }
 
-            const bounds = {
-                x: container.offsetWidth - dialogEl.offsetWidth,
-                y: container === document.body ? window.innerHeight - dialogEl.offsetHeight : container.offsetHeight - dialogEl.offsetHeight,
-            };
-
-            const newPosition = {
-                x: dialogEl.offsetLeft - startPos.x,
-                y: dialogEl.offsetTop - startPos.y,
-            };
-
-            dialogEl.style.position = 'absolute';
-
-            if (disableBoundCheck || isWithinBounds(newPosition.x, bounds.x)) {
-                dialogEl.style.left = newPosition.x + 'px';
-            } else if (isOutOfBounds(newPosition.x, bounds.x)) {
-                dialogEl.style.left = bounds.x + 'px';
-            }
-
-            if (disableBoundCheck || isWithinBounds(newPosition.y, bounds.y)) {
-                dialogEl.style.top = newPosition.y + 'px';
-            } else if (isOutOfBounds(newPosition.y, bounds.y)) {
-                dialogEl.style.top = bounds.y + 'px';
-            }
+        function onMouseMove(e) {
+            if (!dragging) return;
             self.raiseDialogEvent('OnDragging');
+
+            const x = e.clientX;
+            const y = e.clientY;
+            const W = container.clientWidth;
+            const H = container === document.body
+                ? window.innerHeight
+                : container.clientHeight;
+
+            // 1) Snap-Zone bestimmen
+            if (x <= threshold) snapZone = 'left';
+            else if (x >= W - threshold) snapZone = 'right';
+            else if (y <= threshold) snapZone = 'top';
+            else snapZone = null;
+
+            // 2) Free-drag Bewegung, wenn nicht in einer Snap-Zone
+            if (!snapZone) {
+                // Fenster verschieben
+                const dx = x - startX;
+                const dy = y - startY;
+                dialogEl.style.position = 'absolute';
+                dialogEl.style.left = origX + dx + 'px';
+                dialogEl.style.top = origY + dy + 'px';
+                // Vorschau ausblenden
+                previewEl.style.display = 'none';
+                return;
+            }
+
+            // 3) In Snap-Zone: Vorschau berechnen & anzeigen
+            let rect;
+            if (snapZone === 'left') {
+                rect = { left: 0, top: 0, width: W / 2, height: H };
+            } else if (snapZone === 'right') {
+                rect = { left: W / 2, top: 0, width: W / 2, height: H };
+            } else if (snapZone === 'top') {
+                rect = { left: 0, top: 0, width: W, height: H };
+            }
+
+            Object.assign(previewEl.style, {
+                display: 'block',
+                left: rect.left + 'px',
+                top: rect.top + 'px',
+                width: rect.width + 'px',
+                height: rect.height + 'px'
+            });
         }
 
-        function closeDragElement() {            
+        function onMouseUp(e) {
+            if (!dragging) return;
             self.raiseDialogEvent('OnDragEnd');
-            self.setRelativeIf();
-            document.onmouseup = null;
-            document.onmousemove = null;
-        }
+            dragging = false;
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
 
-        function isWithinBounds(value, maxValue) {
-            return value >= 0 && value <= maxValue;
-        }
+            // Wenn in Snap-Zone, Fenster auf Vorschau-Größe setzen
+            if (snapZone) {
+                const W = container.clientWidth;
+                const H = container === document.body
+                    ? window.innerHeight
+                    : container.clientHeight;
+                let final;
+                if (snapZone === 'left') {
+                    final = { left: 0, top: 0, width: W / 2, height: H };
+                } else if (snapZone === 'right') {
+                    final = { left: W / 2, top: 0, width: W / 2, height: H };
+                } else if (snapZone === 'top') {
+                    final = { left: 0, top: 0, width: W, height: H };
+                }
+                dialogEl.style.position = 'absolute';
+                dialogEl.style.left = final.left + 'px';
+                dialogEl.style.top = final.top + 'px';
+                dialogEl.style.width = final.width + 'px';
+                dialogEl.style.height = final.height + 'px';
+                this._currentSnap = snapZone;
+            }
 
-        function isOutOfBounds(value, maxValue) {
-            return value > maxValue;
+            // Vorschau wieder verstecken
+            previewEl.style.display = 'none';
+            snapZone = null;
         }
     }
-    
+
+
+    // -------- KEYBINDINGS --------
+    _onKeyDown(e) {
+        if (!e.ctrlKey) return;
+        let targetSnap = null;
+
+        switch (e.key) {
+            case 'ArrowLeft': targetSnap = 'left'; break;
+            case 'ArrowRight': targetSnap = 'right'; break;
+            case 'ArrowUp': targetSnap = 'top'; break;
+            case 'ArrowDown': targetSnap = 'down'; break;
+            default: return;
+        }
+        e.preventDefault();
+        this._toggleSnap(targetSnap);
+    }
+
+    _toggleSnap(direction) {
+        const dlg = this.dialog;
+        const W = document.body.clientWidth;
+        const H = window.innerHeight;
+
+        // Minimize?
+        if (direction === 'down') {
+            return typeof dlg.minimize === 'function'
+                ? dlg.minimize()
+                : this.raiseDialogEvent('OnMinimize');
+        }
+
+        // Wenn bereits in dieser Zone, zurück zur alten Größe
+        if (this._currentSnap === direction && this._preSnapState) {
+            Object.assign(dlg.style, {
+                left: this._preSnapState.x + 'px',
+                top: this._preSnapState.y + 'px',
+                width: this._preSnapState.width + 'px',
+                height: this._preSnapState.height + 'px'
+            });
+            this._currentSnap = null;
+            return;
+        }
+
+        // Andernfalls Snap anwenden
+        let final;
+        if (direction === 'left') {
+            final = { x: 0, y: 0, width: W / 2, height: H };
+        } else if (direction === 'right') {
+            final = { x: W / 2, y: 0, width: W / 2, height: H };
+        } else if (direction === 'top') {
+            final = { x: 0, y: 0, width: W, height: H };
+        }
+        // Vorherigen Zustand speichern
+        if (!this._preSnapState) {
+            this._preSnapState = {
+                x: dlg.offsetLeft,
+                y: dlg.offsetTop,
+                width: dlg.offsetWidth,
+                height: dlg.offsetHeight
+            };
+        }
+        // Setze neuen Zustand
+        Object.assign(dlg.style, {
+            position: 'absolute',
+            left: final.x + 'px',
+            top: final.y + 'px',
+            width: final.width + 'px',
+            height: final.height + 'px'
+        });
+        this._currentSnap = direction;
+    }
 }
 
-
 window.MudExDialogDragHandler = MudExDialogDragHandler;
+
 class MudExDialogFinder {
     constructor(options) {
         this.options = options;
