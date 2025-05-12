@@ -62,41 +62,10 @@
         this.dialog.style.visibility = 'visible';
     }
 
-    ensureMaximized() {
-        if (!this.isMaximized()) {
-            this.maximize();
-        }
-    }
-
-
-    unMaximizeIf() {
-        if (this.isMaximized()) {
-            this.maximize();
-        }
-    }
-
-    isMaximized() {
-        return this._oldStyle !== undefined || this.getHandler(MudExDialogDragHandler).snappedTo === MudExDialogDragHandler.Direction.TOP;
-    }
 
     maximize() {
         var handler = this.getHandler(MudExDialogDragHandler);
-        if (true || this.options.dragMode === MudExDialogDragHandler.DragMode.SNAP) {
-            handler.toggleSnap(MudExDialogDragHandler.Direction.TOP);
-            return;
-        }
-        if (this._oldStyle) {
-            this.dialog.style.cssText = this._oldStyle;
-            delete this._oldStyle;
-        } else {
-            this._oldStyle = this.dialog.style.cssText;
-            this.dialog.style.position = 'absolute';
-            this.dialog.style.left = "0";
-            this.dialog.style.top = "0";
-            this.dialog.style.maxWidth = this.dialog.style.width = window.innerWidth + 'px';
-            this.dialog.style.maxHeight = this.dialog.style.height = window.innerHeight + 'px';
-        }
-        this.getHandler(MudExDialogResizeHandler).checkResizeable();
+        handler.toggleSnap(MudExDialogDragHandler.Direction.TOP);
     }
     
     moveElementToMousePosition(element) {

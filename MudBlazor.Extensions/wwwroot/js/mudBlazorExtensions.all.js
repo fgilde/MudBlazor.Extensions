@@ -1719,6 +1719,34 @@ class MudExDialogHandlerBase {
         }
     }
 
+    restoreSizeConstraintsIf() {
+        if (!this.options.keepMaxSizeConstraints && this._savedMaxConstraints) {
+            if (this._savedMaxConstraints?.maxWidth)
+                this.dialog.style.maxWidth = this._savedMaxConstraints.maxWidth;
+            else
+                this.dialog.style.removeProperty('max-width');
+
+            if (this._savedMaxConstraints?.maxHeight)
+                this.dialog.style.maxHeight = this._savedMaxConstraints.maxHeight;
+            else
+                this.dialog.style.removeProperty('max-height');
+            this._savedMaxConstraints = null;
+        }
+    }
+
+    removeSizeConstraintsIf() {
+        if (!this.options.keepMaxSizeConstraints) {
+            this._savedMaxConstraints = {
+                maxWidth: this.dialog.style.maxWidth,
+                maxHeight: this.dialog.style.maxHeight
+            };
+            //this.dialog.style.maxWidth = 'unset';
+            //this.dialog.style.maxHeight = 'unset';
+            this.dialog.style.maxWidth = 'none';
+            this.dialog.style.maxHeight = 'none';
+        }
+    }
+
     isInternalHandler() {
         return this.dialog.getAttribute('data-mud-ex-internal-handler') === 'true';
     }
@@ -2015,7 +2043,7 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
 
     constructor(options) {
         super(options);
-        this.snapAnimationDuration = 200; // milliseconds
+        this.snapAnimationDuration = 200;
         this.snappedTo = null;
         this._preSnapState = null;
         this._preview = null;
@@ -2024,6 +2052,7 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
         this._transition = `all ${this.snapAnimationDuration}ms ease`;
         this._isDragging = false;
         this.animateSnap = true;
+        this._savedMaxConstraints = null; // store original maxWidth/Height
     }
 
     handle(dialog) {
@@ -2244,7 +2273,7 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
         }
         if (cur === D.TOP_RIGHT) {
             if (dir === D.TOP) return snap(D.TOP);
-            if (dir === D.LEFT) return unsnap();
+            if (dir === D.LEFT) return snap(D.TOP_LEFT);
             if (dir === D.RIGHT) return snap(D.RIGHT);
             if (dir === D.BOTTOM) return snap(D.BOTTOM_RIGHT);
         }
@@ -2252,7 +2281,7 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
             if (dir === D.TOP) {
                 return snap(D.TOP_RIGHT);
             }
-            if (dir === D.LEFT) return unsnap();
+            if (dir === D.LEFT) return snap(D.BOTTOM_LEFT);
             if (dir === D.RIGHT) return snap(D.RIGHT);
             if (dir === D.BOTTOM) return snap(D.BOTTOM);
         }
@@ -2264,7 +2293,7 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
         }
         if (cur === D.TOP_LEFT) {
             if (dir === D.TOP) return snap(D.TOP);
-            if (dir === D.RIGHT) return unsnap();
+            if (dir === D.RIGHT) return snap(D.TOP_RIGHT);
             if (dir === D.LEFT) return snap(D.LEFT);
             if (dir === D.BOTTOM) return snap(D.BOTTOM_LEFT);
         }
@@ -2272,7 +2301,7 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
             if (dir === D.TOP) {
                 return snap(D.TOP_LEFT);
             }
-            if (dir === D.RIGHT) return unsnap();
+            if (dir === D.RIGHT) return snap(D.BOTTOM_RIGHT);
             if (dir === D.LEFT) return snap(D.LEFT);
             if (dir === D.BOTTOM) return snap(D.BOTTOM);
         }
@@ -2282,11 +2311,15 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
             if (dir === D.BOTTOM) return unsnap();
         }
         if (cur === D.TOP_HALF) {
+            if (dir === D.RIGHT) return snap(D.TOP_RIGHT);
+            if (dir === D.LEFT) return snap(D.TOP_LEFT);
             if (dir === D.TOP) return snap(D.TOP);
             if (dir === D.LEFT || dir === D.RIGHT) return snap(dir);
             if (dir === D.BOTTOM) return unsnap();
         }
         if (cur === D.BOTTOM) {
+            if (dir === D.RIGHT) return snap(D.BOTTOM_RIGHT);
+            if (dir === D.LEFT) return snap(D.BOTTOM_LEFT);
             if (dir === D.BOTTOM) {
                 return this._isMinimizable()
                     ? this.getHandler(MudExDialogPositionHandler).minimize()
@@ -2297,7 +2330,9 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
     }
 
     _doSnap(zone, animate) {
-        this.getHandler(MudExDialogResizeHandler).setBounds();
+        // remove max constraints if needed
+        this.removeSizeConstraintsIf();
+
         if (!this._preSnapState) this._captureState();
         this.raiseDialogEvent('OnSnapStart', { position: zone });
         const r = this._calcRect(zone, window.innerWidth, window.innerHeight);
@@ -2305,6 +2340,7 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
         this.snappedTo = zone;
         this.raiseDialogEvent('OnSnap', { position: zone });
         this.raiseDialogEvent('OnSnapEnd', { position: zone });
+        setTimeout(() => { this.dialog.style.transition = 'none'; }, this.snapAnimationDuration);
     }
 
     _unsnap(animate) {
@@ -2315,6 +2351,7 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
         this.snappedTo = null;
         this._preSnapState = null;
         this.raiseDialogEvent('OnSnapEnd', { position: null });
+        this.restoreSizeConstraintsIf();
         setTimeout(() => { this.dialog.style.transition = 'none'; }, this.snapAnimationDuration);
     }
 
@@ -2347,25 +2384,14 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
     _applyRect({ x, y, w, h }, animate) {
         const d = this.dialog;
         d.style.transition = animate ? this._transition : 'none';
-        Object.assign(d.style, {
-            position: 'absolute',
-            left: x + 'px',
-            top: y + 'px',
-            width: w + 'px',
-            height: h + 'px'
-        });
+        Object.assign(d.style, { position: 'absolute', left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
     }
 
     _attachResizeHandler() {
         const onR = () => {
-            if (!this.snappedTo || this.snappedTo === MudExDialogDragHandler.Direction.TOP) return;
+            if (!this.snappedTo) return;
             const r = this._calcRect(this.snappedTo, window.innerWidth, window.innerHeight);
-            Object.assign(this.dialog.style, {
-                left: r.x + 'px',
-                top: r.y + 'px',
-                width: r.w + 'px',
-                height: r.h + 'px'
-            });
+            Object.assign(this.dialog.style, { left: r.x + 'px', top: r.y + 'px', width: r.w + 'px', height: r.h + 'px' });
         };
         window.addEventListener('resize', onR);
         this._handlers.push([window, 'resize', onR]);
@@ -2389,7 +2415,6 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
 }
 
 window.MudExDialogDragHandler = MudExDialogDragHandler;
-
 class MudExDialogFinder {
     constructor(options) {
         this.options = options;
@@ -2645,41 +2670,10 @@ class MudExDialogPositionHandler extends MudExDialogHandlerBase {
         this.dialog.style.visibility = 'visible';
     }
 
-    ensureMaximized() {
-        if (!this.isMaximized()) {
-            this.maximize();
-        }
-    }
-
-
-    unMaximizeIf() {
-        if (this.isMaximized()) {
-            this.maximize();
-        }
-    }
-
-    isMaximized() {
-        return this._oldStyle !== undefined || this.getHandler(MudExDialogDragHandler).snappedTo === MudExDialogDragHandler.Direction.TOP;
-    }
 
     maximize() {
         var handler = this.getHandler(MudExDialogDragHandler);
-        if (true || this.options.dragMode === MudExDialogDragHandler.DragMode.SNAP) {
-            handler.toggleSnap(MudExDialogDragHandler.Direction.TOP);
-            return;
-        }
-        if (this._oldStyle) {
-            this.dialog.style.cssText = this._oldStyle;
-            delete this._oldStyle;
-        } else {
-            this._oldStyle = this.dialog.style.cssText;
-            this.dialog.style.position = 'absolute';
-            this.dialog.style.left = "0";
-            this.dialog.style.top = "0";
-            this.dialog.style.maxWidth = this.dialog.style.width = window.innerWidth + 'px';
-            this.dialog.style.maxHeight = this.dialog.style.height = window.innerHeight + 'px';
-        }
-        this.getHandler(MudExDialogResizeHandler).checkResizeable();
+        handler.toggleSnap(MudExDialogDragHandler.Direction.TOP);
     }
     
     moveElementToMousePosition(element) {

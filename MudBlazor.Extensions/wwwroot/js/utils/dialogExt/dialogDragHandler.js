@@ -19,7 +19,7 @@
 
     constructor(options) {
         super(options);
-        this.snapAnimationDuration = 200; // milliseconds
+        this.snapAnimationDuration = 200;
         this.snappedTo = null;
         this._preSnapState = null;
         this._preview = null;
@@ -28,6 +28,7 @@
         this._transition = `all ${this.snapAnimationDuration}ms ease`;
         this._isDragging = false;
         this.animateSnap = true;
+        this._savedMaxConstraints = null; // store original maxWidth/Height
     }
 
     handle(dialog) {
@@ -248,7 +249,7 @@
         }
         if (cur === D.TOP_RIGHT) {
             if (dir === D.TOP) return snap(D.TOP);
-            if (dir === D.LEFT) return unsnap();
+            if (dir === D.LEFT) return snap(D.TOP_LEFT);
             if (dir === D.RIGHT) return snap(D.RIGHT);
             if (dir === D.BOTTOM) return snap(D.BOTTOM_RIGHT);
         }
@@ -256,7 +257,7 @@
             if (dir === D.TOP) {
                 return snap(D.TOP_RIGHT);
             }
-            if (dir === D.LEFT) return unsnap();
+            if (dir === D.LEFT) return snap(D.BOTTOM_LEFT);
             if (dir === D.RIGHT) return snap(D.RIGHT);
             if (dir === D.BOTTOM) return snap(D.BOTTOM);
         }
@@ -268,7 +269,7 @@
         }
         if (cur === D.TOP_LEFT) {
             if (dir === D.TOP) return snap(D.TOP);
-            if (dir === D.RIGHT) return unsnap();
+            if (dir === D.RIGHT) return snap(D.TOP_RIGHT);
             if (dir === D.LEFT) return snap(D.LEFT);
             if (dir === D.BOTTOM) return snap(D.BOTTOM_LEFT);
         }
@@ -276,7 +277,7 @@
             if (dir === D.TOP) {
                 return snap(D.TOP_LEFT);
             }
-            if (dir === D.RIGHT) return unsnap();
+            if (dir === D.RIGHT) return snap(D.BOTTOM_RIGHT);
             if (dir === D.LEFT) return snap(D.LEFT);
             if (dir === D.BOTTOM) return snap(D.BOTTOM);
         }
@@ -286,11 +287,15 @@
             if (dir === D.BOTTOM) return unsnap();
         }
         if (cur === D.TOP_HALF) {
+            if (dir === D.RIGHT) return snap(D.TOP_RIGHT);
+            if (dir === D.LEFT) return snap(D.TOP_LEFT);
             if (dir === D.TOP) return snap(D.TOP);
             if (dir === D.LEFT || dir === D.RIGHT) return snap(dir);
             if (dir === D.BOTTOM) return unsnap();
         }
         if (cur === D.BOTTOM) {
+            if (dir === D.RIGHT) return snap(D.BOTTOM_RIGHT);
+            if (dir === D.LEFT) return snap(D.BOTTOM_LEFT);
             if (dir === D.BOTTOM) {
                 return this._isMinimizable()
                     ? this.getHandler(MudExDialogPositionHandler).minimize()
@@ -301,7 +306,9 @@
     }
 
     _doSnap(zone, animate) {
-        this.getHandler(MudExDialogResizeHandler).setBounds();
+        // remove max constraints if needed
+        this.removeSizeConstraintsIf();
+
         if (!this._preSnapState) this._captureState();
         this.raiseDialogEvent('OnSnapStart', { position: zone });
         const r = this._calcRect(zone, window.innerWidth, window.innerHeight);
@@ -309,6 +316,7 @@
         this.snappedTo = zone;
         this.raiseDialogEvent('OnSnap', { position: zone });
         this.raiseDialogEvent('OnSnapEnd', { position: zone });
+        setTimeout(() => { this.dialog.style.transition = 'none'; }, this.snapAnimationDuration);
     }
 
     _unsnap(animate) {
@@ -319,6 +327,7 @@
         this.snappedTo = null;
         this._preSnapState = null;
         this.raiseDialogEvent('OnSnapEnd', { position: null });
+        this.restoreSizeConstraintsIf();
         setTimeout(() => { this.dialog.style.transition = 'none'; }, this.snapAnimationDuration);
     }
 
@@ -351,25 +360,14 @@
     _applyRect({ x, y, w, h }, animate) {
         const d = this.dialog;
         d.style.transition = animate ? this._transition : 'none';
-        Object.assign(d.style, {
-            position: 'absolute',
-            left: x + 'px',
-            top: y + 'px',
-            width: w + 'px',
-            height: h + 'px'
-        });
+        Object.assign(d.style, { position: 'absolute', left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
     }
 
     _attachResizeHandler() {
         const onR = () => {
-            if (!this.snappedTo || this.snappedTo === MudExDialogDragHandler.Direction.TOP) return;
+            if (!this.snappedTo) return;
             const r = this._calcRect(this.snappedTo, window.innerWidth, window.innerHeight);
-            Object.assign(this.dialog.style, {
-                left: r.x + 'px',
-                top: r.y + 'px',
-                width: r.w + 'px',
-                height: r.h + 'px'
-            });
+            Object.assign(this.dialog.style, { left: r.x + 'px', top: r.y + 'px', width: r.w + 'px', height: r.h + 'px' });
         };
         window.addEventListener('resize', onR);
         this._handlers.push([window, 'resize', onR]);
