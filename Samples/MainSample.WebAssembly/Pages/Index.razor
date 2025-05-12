@@ -67,6 +67,12 @@
     </MudCard>
 </MudExCardList>
 
+<MudAlert Class="mt-5 mb-5 ml-5 mr-5" ContentAlignment="HorizontalAlignment.Center" Severity="Severity.Success" Variant="Variant.Outlined" Icon="@MaterialDesignIcons.Normal.CameraControl">
+    <MudButton Size="Size.Small" EndIcon="@MaterialDesignIcons.Normal.DockWindow" Color="Color.Info" Href="/dialog-snap">
+        New dialog Feature: <b>@nameof(MudDialogDragMode).@nameof(MudDialogDragMode.SnapDrag)</b>
+    </MudButton>
+</MudAlert>
+
 <div class="mt-5 mb-5" style="display: flex; justify-content: center; align-items: center;">
     <MudToggleGroup T="Type" SelectionMode="SelectionMode.MultiSelection" @bind-Values="_selectedAttributeTypes">
         <MudToggleItem Value="@(typeof(DemoAttribute))">
