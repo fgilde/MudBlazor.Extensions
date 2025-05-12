@@ -62,6 +62,19 @@
         this.dialog.style.visibility = 'visible';
     }
 
+    ensureMaximized() {
+        if (!this.isMaximized()) {
+            this.maximize();
+        }
+    }
+
+
+    unMaximizeIf() {
+        if (this.isMaximized()) {
+            this.maximize();
+        }
+    }
+
     isMaximized() {
         return this._oldStyle !== undefined;
     }

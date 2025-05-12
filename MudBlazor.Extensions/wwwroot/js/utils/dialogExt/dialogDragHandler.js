@@ -1,4 +1,16 @@
 ﻿class MudExDialogDragHandler extends MudExDialogHandlerBase {
+    static Direction = {
+        LEFT: 'left',
+        RIGHT: 'right',
+        TOP: 'top',
+        BOTTOM: 'bottom',
+        TOP_HALF: 'top-half',
+        TOP_LEFT: 'top-left',
+        TOP_RIGHT: 'top-right',
+        BOTTOM_LEFT: 'bottom-left',
+        BOTTOM_RIGHT: 'bottom-right'
+    };
+
     constructor(options) {
         super(options);
         this.snappedTo = null;
@@ -14,17 +26,15 @@
         super.handle(dialog);
         if (!this.dialog) return;
         const container = document.body;
+        this._cleanupHandlers();
         switch (this.options.dragMode) {
             case 1:
-                this._cleanupHandlers();
                 this.dragElement(this.dialog, this.dialogHeader, container, false);
                 break;
             case 2:
-                this._cleanupHandlers();
                 this.dragElement(this.dialog, this.dialogHeader, container, true);
                 break;
             case 3:
-                this._cleanupHandlers();
                 this._createPreview(container);
                 this._attachMouseSnap();
                 this._attachKeySnap();
@@ -38,14 +48,12 @@
         let startPos = { x: 0, y: 0 };
         let cursorPos = { x: 0, y: 0 };
         let startDrag;
-
         const down = e => {
             startDrag = true;
             cursorPos = { x: e.clientX, y: e.clientY };
             document.onmouseup = up;
             document.onmousemove = move;
         };
-
         const move = e => {
             if (startDrag) {
                 startDrag = false;
@@ -74,22 +82,16 @@
             }
             self.raiseDialogEvent('OnDragging');
         };
-
         const up = () => {
             self.raiseDialogEvent('OnDragEnd');
             self.setRelativeIf();
             document.onmouseup = null;
             document.onmousemove = null;
         };
-
-        if (headerEl) {
-            headerEl.style.cursor = 'move';
-            headerEl.addEventListener('mousedown', down);
-            this._handlers.push([headerEl, 'mousedown', down]);
-        } else {
-            dialogEl.addEventListener('mousedown', down);
-            this._handlers.push([dialogEl, 'mousedown', down]);
-        }
+        const target = headerEl || dialogEl;
+        target.style.cursor = 'move';
+        target.addEventListener('mousedown', down);
+        this._handlers.push([target, 'mousedown', down]);
     }
 
     _createPreview(container) {
@@ -133,11 +135,12 @@
             this._unsnap(false);
         }
         this._hasMoved = true;
+        const D = MudExDialogDragHandler.Direction;
         let zone = null;
-        if (y <= this._threshold) zone = 'top';
-        else if (y >= H - this._threshold) zone = 'bottom';
-        else if (x <= this._threshold) zone = 'left';
-        else if (x >= W - this._threshold) zone = 'right';
+        if (y <= this._threshold) zone = D.TOP;
+        else if (y >= H - this._threshold) zone = D.BOTTOM;
+        else if (x <= this._threshold) zone = D.LEFT;
+        else if (x >= W - this._threshold) zone = D.RIGHT;
         if (!zone) {
             const dx = x - this._startX, dy = y - this._startY;
             Object.assign(this.dialog.style, {
@@ -175,15 +178,15 @@
         const kd = e => {
             if (!e.ctrlKey) return;
             let dir = null;
+            const D = MudExDialogDragHandler.Direction;
             switch (e.key) {
-                case 'ArrowLeft': dir = 'left'; break;
-                case 'ArrowRight': dir = 'right'; break;
-                case 'ArrowUp': dir = 'top'; break;
-                case 'ArrowDown': dir = 'bottom'; break;
+                case 'ArrowLeft': dir = D.LEFT; break;
+                case 'ArrowRight': dir = D.RIGHT; break;
+                case 'ArrowUp': dir = D.TOP; break;
+                case 'ArrowDown': dir = D.BOTTOM; break;
                 default: return;
             }
             e.preventDefault();
-            //this.getHandler(MudExDialogResizeHandler).checkResizeable();
             this._handleKeySnap(dir);
         };
         window.addEventListener('keydown', kd, true);
@@ -191,76 +194,86 @@
     }
 
     _handleKeySnap(dir) {
+        const D = MudExDialogDragHandler.Direction;
         const cur = this.snappedTo;
         const snap = z => this._doSnap(z, true);
         const unsnap = () => this._unsnap(true);
         if (!cur) return snap(dir);
-        if (cur === 'right') {
-            if (dir === 'right') return snap('left');
-            if (dir === 'left') return unsnap();
-            if (dir === 'top') return snap('top-right');
-            if (dir === 'bottom') return snap('bottom-right');
+
+        if (cur === D.RIGHT) {
+            if (dir === D.RIGHT) return snap(D.LEFT);
+            if (dir === D.LEFT) return unsnap();
+            if (dir === D.TOP) return snap(D.TOP_RIGHT);
+            if (dir === D.BOTTOM) return snap(D.BOTTOM_RIGHT);
         }
-        if (cur === 'top-right') {
-            if (dir === 'top') return snap('top');
-            if (dir === 'left') return unsnap();
-            if (dir === 'right') return snap('right');
-            if (dir === 'bottom') return snap('bottom-right');
+        if (cur === D.TOP_RIGHT) {
+            if (dir === D.TOP) return snap(D.TOP);
+            if (dir === D.LEFT) return unsnap();
+            if (dir === D.RIGHT) return snap(D.RIGHT);
+            if (dir === D.BOTTOM) return snap(D.BOTTOM_RIGHT);
         }
-        if (cur === 'bottom-right') {
-            if (dir === 'top') return snap('top-right');
-            if (dir === 'left') return unsnap();
-            if (dir === 'right') return snap('right');
-            if (dir === 'bottom') {
-                if (this._isMinimizable()) return this.getHandler(MudExDialogPositionHandler).minimize();
-                return snap('bottom');
+        if (cur === D.BOTTOM_RIGHT) {
+            if (dir === D.TOP) {
+                return snap(D.TOP_RIGHT);
+            }
+            if (dir === D.LEFT) return unsnap();
+            if (dir === D.RIGHT) return snap(D.RIGHT);
+            if (dir === D.BOTTOM) {
+                return this._isMinimizable()
+                    ? this.getHandler(MudExDialogPositionHandler).minimize()
+                    : snap(D.BOTTOM);
             }
         }
-        if (cur === 'left') {
-            if (dir === 'left') return snap('right');
-            if (dir === 'right') return unsnap();
-            if (dir === 'top') return snap('top-left');
-            if (dir === 'bottom') return snap('bottom-left');
+        if (cur === D.LEFT) {
+            if (dir === D.LEFT) return snap(D.RIGHT);
+            if (dir === D.RIGHT) return unsnap();
+            if (dir === D.TOP) return snap(D.TOP_LEFT);
+            if (dir === D.BOTTOM) return snap(D.BOTTOM_LEFT);
         }
-        if (cur === 'top-left') {
-            if (dir === 'top') return snap('top');
-            if (dir === 'right') return unsnap();
-            if (dir === 'left') return snap('left');
-            if (dir === 'bottom') return snap('bottom-left');
+        if (cur === D.TOP_LEFT) {
+            if (dir === D.TOP) return snap(D.TOP);
+            if (dir === D.RIGHT) return unsnap();
+            if (dir === D.LEFT) return snap(D.LEFT);
+            if (dir === D.BOTTOM) return snap(D.BOTTOM_LEFT);
         }
-        if (cur === 'bottom-left') {
-            if (dir === 'top') return snap('top-left');
-            if (dir === 'right') return unsnap();
-            if (dir === 'left') return snap('left');
-            if (dir === 'bottom') {
-                if (this._isMinimizable()) return this.getHandler(MudExDialogPositionHandler).minimize();
-                return snap('bottom');
+        if (cur === D.BOTTOM_LEFT) {
+            if (dir === D.TOP) {
+                return snap(D.TOP_LEFT);
+            }
+            if (dir === D.RIGHT) return unsnap();
+            if (dir === D.LEFT) return snap(D.LEFT);
+            if (dir === D.BOTTOM) {
+                return this._isMinimizable()
+                    ? this.getHandler(MudExDialogPositionHandler).minimize()
+                    : snap(D.BOTTOM);
             }
         }
-        if (cur === 'top') {
-            if (dir === 'top') return snap('top-half');
-            if (dir === 'left' || dir === 'right') return snap(dir);
-            if (dir === 'bottom') return unsnap();
+        if (cur === D.TOP) {
+            if (dir === D.TOP) return snap(D.TOP_HALF);
+            if (dir === D.LEFT || dir === D.RIGHT) return snap(dir);
+            if (dir === D.BOTTOM) return unsnap();
         }
-        if (cur === 'top-half') {
-            if (dir === 'top') return snap('top');
-            if (dir === 'left' || dir === 'right') return snap(dir);
-            if (dir === 'bottom') return unsnap();
+        if (cur === D.TOP_HALF) {
+            if (dir === D.TOP) return snap(D.TOP);
+            if (dir === D.LEFT || dir === D.RIGHT) return snap(dir);
+            if (dir === D.BOTTOM) return unsnap();
         }
-        if (cur === 'bottom') {
-            if (dir === 'bottom') {
-                if (this._isMinimizable()) return this.getHandler(MudExDialogPositionHandler).minimize();
-                return snap('top');
+        if (cur === D.BOTTOM) {
+            if (dir === D.BOTTOM) {
+                return this._isMinimizable()
+                    ? this.getHandler(MudExDialogPositionHandler).minimize()
+                    : snap(D.TOP);
             }
             return unsnap();
         }
     }
 
     _doSnap(zone, animate) {
+        this.getHandler(MudExDialogPositionHandler).unMaximizeIf();
         if (!this._preSnapState) this._captureState();
         this.raiseDialogEvent('OnSnapStart', { position: zone });
-        if (zone === 'top') {
-            this.getHandler(MudExDialogPositionHandler).maximize();
+        if (zone === MudExDialogDragHandler.Direction.TOP) {
+            this.getHandler(MudExDialogPositionHandler).ensureMaximized();
         } else {
             const r = this._calcRect(zone, window.innerWidth, window.innerHeight);
             this._applyRect(r, animate);
@@ -272,10 +285,6 @@
 
     _unsnap(animate) {
         if (!this._preSnapState) return;
-        if (this.getHandler(MudExDialogPositionHandler).isMaximized()) {
-            // Undo maximize
-            this.getHandler(MudExDialogPositionHandler).maximize();
-        }
         this.raiseDialogEvent('OnSnapStart', { position: null });
         const s = this._preSnapState;
         this._applyRect({ x: s.x, y: s.y, w: s.width, h: s.height }, animate);
@@ -293,37 +302,45 @@
         };
     }
 
-    _isMinimizable() {
-        return this.options.minimizeButton;
-    }
-
     _calcRect(zone, W, H) {
+        const D = MudExDialogDragHandler.Direction;
         const halfW = Math.floor(W / 2), halfH = Math.floor(H / 2);
         switch (zone) {
-            case 'top': return { x: 0, y: 0, w: W, h: H };
-            case 'top-half': return { x: 0, y: 0, w: W, h: halfH };
-            case 'bottom': return { x: 0, y: halfH, w: W, h: halfH };
-            case 'left': return { x: 0, y: 0, w: halfW, h: H };
-            case 'right': return { x: halfW, y: 0, w: halfW, h: H };
-            case 'top-left': return { x: 0, y: 0, w: halfW, h: halfH };
-            case 'top-right': return { x: halfW, y: 0, w: halfW, h: halfH };
-            case 'bottom-left': return { x: 0, y: halfH, w: halfW, h: halfH };
-            case 'bottom-right': return { x: halfW, y: halfH, w: halfW, h: halfH };
+            case D.TOP: return { x: 0, y: 0, w: W, h: H };
+            case D.TOP_HALF: return { x: 0, y: 0, w: W, h: halfH };
+            case D.BOTTOM: return { x: 0, y: halfH, w: W, h: halfH };
+            case D.LEFT: return { x: 0, y: 0, w: halfW, h: H };
+            case D.RIGHT: return { x: halfW, y: 0, w: halfW, h: H };
+            case D.TOP_LEFT: return { x: 0, y: 0, w: halfW, h: halfH };
+            case D.TOP_RIGHT: return { x: halfW, y: 0, w: halfW, h: halfH };
+            case D.BOTTOM_LEFT: return { x: 0, y: halfH, w: halfW, h: halfH };
+            case D.BOTTOM_RIGHT: return { x: halfW, y: halfH, w: halfW, h: halfH };
+            default: return { x: 0, y: 0, w: W, h: H };
         }
-        return { x: 0, y: 0, w: W, h: H };
     }
 
     _applyRect({ x, y, w, h }, animate) {
         const d = this.dialog;
         d.style.transition = animate ? this._transition : 'none';
-        Object.assign(d.style, { position: 'absolute', left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
+        Object.assign(d.style, {
+            position: 'absolute',
+            left: x + 'px',
+            top: y + 'px',
+            width: w + 'px',
+            height: h + 'px'
+        });
     }
 
     _attachResizeHandler() {
         const onR = () => {
-            if (!this.snappedTo || this.snappedTo === 'top') return;
+            if (!this.snappedTo || this.snappedTo === MudExDialogDragHandler.Direction.TOP) return;
             const r = this._calcRect(this.snappedTo, window.innerWidth, window.innerHeight);
-            Object.assign(this.dialog.style, { left: r.x + 'px', top: r.y + 'px', width: r.w + 'px', height: r.h + 'px' });
+            Object.assign(this.dialog.style, {
+                left: r.x + 'px',
+                top: r.y + 'px',
+                width: r.w + 'px',
+                height: r.h + 'px'
+            });
         };
         window.addEventListener('resize', onR);
         this._handlers.push([window, 'resize', onR]);
