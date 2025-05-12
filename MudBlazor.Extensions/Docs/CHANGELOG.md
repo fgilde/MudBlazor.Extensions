@@ -1,4 +1,5 @@
 ## Change Log    
+ - 8.6.1 > New finally implemented SnapDrag Mode for dialog. Sample available [here](https://www.mudex.org/dialog-snap)
  - 8.6.0 > Improve performance for lightbulb on cards
  - 8.6.0 > Update MudBlazor to 8.6.0
  - 8.5.2 > Fix bug where no focus in searchbox is possible in MudExSelect

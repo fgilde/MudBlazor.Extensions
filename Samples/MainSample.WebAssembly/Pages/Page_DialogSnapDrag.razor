@@ -1,0 +1,42 @@
+﻿@page "/dialog-snap"
+@using MudBlazor.Extensions.Options
+
+@attribute [DemoNew(Group = "Dialog Samples", Name = "Dialog Snap Drag", Documentation = $"Demo drag mode {nameof(MudDialogDragMode.SnapDrag)}", Order = 10, Icon = Icons.Material.Outlined.Crop)]
+
+
+<DemoComponent PageType="@GetType()">
+    <MudGrid Style="width: 100%" Justify="Justify.Center">
+        <MudItem xs="12">
+            <MudAlert>
+                <p>This demo uses @nameof(MudDialogDragMode.SnapDrag) as @nameof(DialogOptionsEx.DragMode) on the @nameof(DialogOptionsEx)</p>
+                <p>After the dialog is shown you can drag it to the edges to see snap. Also you can use Ctrl + {ArrowKeys} to change position</p>
+            </MudAlert>
+        </MudItem>
+        <MudItem xs="3" Class="mb-4">
+            <MudButton Class="m-4" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
+        </MudItem>
+    </MudGrid>
+</DemoComponent>
+
+
+
+
+@code {
+
+    private Task ShowSampleDialog()
+    {
+        DialogOptionsEx dlgOptions = new()
+            {
+                MaximizeButton = true,
+                CloseButton = true,
+                CloseOnEscapeKey = true,
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true,
+                Resizeable = true,
+                DragMode = MudDialogDragMode.SnapDrag,
+                DisableSizeMarginY = true,
+                DisablePositionMargin = true
+            };
+        return DialogService.ShowExAsync<SampleTabDialog>("Simple Dialog", dlgOptions);
+    }
+}

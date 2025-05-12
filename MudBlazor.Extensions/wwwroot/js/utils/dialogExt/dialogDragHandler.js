@@ -17,8 +17,8 @@
         SNAP: 3
     };
 
-    constructor(options) {
-        super(options);
+    constructor(options, dotNet, dotNetService, onDone) {
+        super(options, dotNet, dotNetService, onDone);
         this.snapAnimationDuration = 200;
         this.snappedTo = null;
         this._preSnapState = null;
@@ -53,7 +53,6 @@
     }
 
     dragElement(dialogEl, headerEl, container, disableBoundCheck) {
-        const self = this;
         let startPos = { x: 0, y: 0 };
         let cursorPos = { x: 0, y: 0 };
         let startDrag;
@@ -66,7 +65,7 @@
         const move = e => {
             if (startDrag) {
                 startDrag = false;
-                self.raiseDialogEvent('OnDragStart');
+                this.raiseDialogEvent('OnDragStart');
             }
             e.preventDefault();
             startPos = { x: cursorPos.x - e.clientX, y: cursorPos.y - e.clientY };
@@ -89,11 +88,11 @@
             } else if (newPos.y > bounds.y) {
                 dialogEl.style.top = bounds.y + 'px';
             }
-            self.raiseDialogEvent('OnDragging');
+            this.raiseDialogEvent('OnDragging');
         };
         const up = () => {
-            self.raiseDialogEvent('OnDragEnd');
-            self.setRelativeIf();
+            this.raiseDialogEvent('OnDragEnd');
+            this.setRelativeIf();
             document.onmouseup = null;
             document.onmousemove = null;
         };

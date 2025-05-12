@@ -1697,7 +1697,8 @@ class MudExDialogHandlerBase {
 
     order = 99;
 
-    async raiseDialogEvent(eventName) {        
+    async raiseDialogEvent(eventName) {
+        console.log('raise ' + eventName);
         // Get viewport dimensions
         var windowHeight = window.innerHeight || document.documentElement.clientHeight;
         var windowWidth = window.innerWidth || document.documentElement.clientWidth;
@@ -1715,6 +1716,7 @@ class MudExDialogHandlerBase {
         };
         const rect = Object.assign(extendedRect, JSON.parse(JSON.stringify(this.dialog.getBoundingClientRect())));        
         if (this.dotNetService) {
+            console.log('PublishEvent ' + eventName);
             return await this.dotNetService.invokeMethodAsync('PublishEvent', eventName, this.dialog.id, this.dotNet, rect);
         }
     }
@@ -2041,8 +2043,8 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
         SNAP: 3
     };
 
-    constructor(options) {
-        super(options);
+    constructor(options, dotNet, dotNetService, onDone) {
+        super(options, dotNet, dotNetService, onDone);
         this.snapAnimationDuration = 200;
         this.snappedTo = null;
         this._preSnapState = null;
@@ -2077,7 +2079,6 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
     }
 
     dragElement(dialogEl, headerEl, container, disableBoundCheck) {
-        const self = this;
         let startPos = { x: 0, y: 0 };
         let cursorPos = { x: 0, y: 0 };
         let startDrag;
@@ -2090,7 +2091,7 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
         const move = e => {
             if (startDrag) {
                 startDrag = false;
-                self.raiseDialogEvent('OnDragStart');
+                this.raiseDialogEvent('OnDragStart');
             }
             e.preventDefault();
             startPos = { x: cursorPos.x - e.clientX, y: cursorPos.y - e.clientY };
@@ -2113,11 +2114,11 @@ class MudExDialogDragHandler extends MudExDialogHandlerBase {
             } else if (newPos.y > bounds.y) {
                 dialogEl.style.top = bounds.y + 'px';
             }
-            self.raiseDialogEvent('OnDragging');
+            this.raiseDialogEvent('OnDragging');
         };
         const up = () => {
-            self.raiseDialogEvent('OnDragEnd');
-            self.setRelativeIf();
+            this.raiseDialogEvent('OnDragEnd');
+            this.setRelativeIf();
             document.onmouseup = null;
             document.onmousemove = null;
         };
