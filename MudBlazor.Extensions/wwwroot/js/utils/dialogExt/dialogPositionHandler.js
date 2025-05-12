@@ -76,10 +76,15 @@
     }
 
     isMaximized() {
-        return this._oldStyle !== undefined;
+        return this._oldStyle !== undefined || this.getHandler(MudExDialogDragHandler).snappedTo === MudExDialogDragHandler.Direction.TOP;
     }
 
     maximize() {
+        var handler = this.getHandler(MudExDialogDragHandler);
+        if (true || this.options.dragMode === MudExDialogDragHandler.DragMode.SNAP) {
+            handler.toggleSnap(MudExDialogDragHandler.Direction.TOP);
+            return;
+        }
         if (this._oldStyle) {
             this.dialog.style.cssText = this._oldStyle;
             delete this._oldStyle;

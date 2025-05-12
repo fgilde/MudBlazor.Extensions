@@ -10,16 +10,24 @@
         BOTTOM_LEFT: 'bottom-left',
         BOTTOM_RIGHT: 'bottom-right'
     };
+    static DragMode = {
+        NONE: 0,
+        DRAG: 1,
+        DRAG_WITHOUT_BOUNDS: 2,
+        SNAP: 3
+    };
 
     constructor(options) {
         super(options);
+        this.snapAnimationDuration = 200; // milliseconds
         this.snappedTo = null;
         this._preSnapState = null;
         this._preview = null;
         this._handlers = [];
         this._threshold = 20;
-        this._transition = 'all 0.2s ease';
+        this._transition = `all ${this.snapAnimationDuration}ms ease`;
         this._isDragging = false;
+        this.animateSnap = true;
     }
 
     handle(dialog) {
@@ -28,13 +36,13 @@
         const container = document.body;
         this._cleanupHandlers();
         switch (this.options.dragMode) {
-            case 1:
+            case MudExDialogDragHandler.DragMode.DRAG:
                 this.dragElement(this.dialog, this.dialogHeader, container, false);
                 break;
-            case 2:
+            case MudExDialogDragHandler.DragMode.DRAG_WITHOUT_BOUNDS:
                 this.dragElement(this.dialog, this.dialogHeader, container, true);
                 break;
-            case 3:
+            case MudExDialogDragHandler.DragMode.SNAP:
                 this._createPreview(container);
                 this._attachMouseSnap();
                 this._attachKeySnap();
@@ -92,6 +100,38 @@
         target.style.cursor = 'move';
         target.addEventListener('mousedown', down);
         this._handlers.push([target, 'mousedown', down]);
+    }
+
+    toggleSnap(direction) {
+        if (this.snappedTo === direction) {
+            if (this._lastSnap) {
+                this._doSnap(this._lastSnap, this.animateSnap);
+                this._lastSnap = null;
+            } else {
+                this.unsnap(this.animateSnap);
+            }
+        } else {
+            this._lastSnap = this.snappedTo;
+            this.snap(direction);
+        }
+    }
+
+    isSnapped() {
+        return this.snappedTo !== null;
+    }
+
+    snap(direction) {
+        this._doSnap(direction, this.animateSnap);
+    }
+
+    unsnap(animate) {
+        if (this.snappedTo) {
+            this._unsnap(animate ?? this.animateSnap);
+        }
+    }
+
+    _isMinimizable() {
+        return this.options.minimizeButton;
     }
 
     _createPreview(container) {
@@ -169,7 +209,7 @@
         this.raiseDialogEvent('OnDragEnd');
         this._isDragging = false;
         if (this._pendingZone) {
-            this._doSnap(this._pendingZone, true);
+            this._doSnap(this._pendingZone, this.animateSnap);
         }
         this._preview.style.display = 'none';
     }
@@ -196,8 +236,8 @@
     _handleKeySnap(dir) {
         const D = MudExDialogDragHandler.Direction;
         const cur = this.snappedTo;
-        const snap = z => this._doSnap(z, true);
-        const unsnap = () => this._unsnap(true);
+        const snap = z => this._doSnap(z, this.animateSnap);
+        const unsnap = () => this._unsnap(this.animateSnap);
         if (!cur) return snap(dir);
 
         if (cur === D.RIGHT) {
@@ -218,11 +258,7 @@
             }
             if (dir === D.LEFT) return unsnap();
             if (dir === D.RIGHT) return snap(D.RIGHT);
-            if (dir === D.BOTTOM) {
-                return this._isMinimizable()
-                    ? this.getHandler(MudExDialogPositionHandler).minimize()
-                    : snap(D.BOTTOM);
-            }
+            if (dir === D.BOTTOM) return snap(D.BOTTOM);
         }
         if (cur === D.LEFT) {
             if (dir === D.LEFT) return snap(D.RIGHT);
@@ -242,11 +278,7 @@
             }
             if (dir === D.RIGHT) return unsnap();
             if (dir === D.LEFT) return snap(D.LEFT);
-            if (dir === D.BOTTOM) {
-                return this._isMinimizable()
-                    ? this.getHandler(MudExDialogPositionHandler).minimize()
-                    : snap(D.BOTTOM);
-            }
+            if (dir === D.BOTTOM) return snap(D.BOTTOM);
         }
         if (cur === D.TOP) {
             if (dir === D.TOP) return snap(D.TOP_HALF);
@@ -269,15 +301,11 @@
     }
 
     _doSnap(zone, animate) {
-        this.getHandler(MudExDialogPositionHandler).unMaximizeIf();
+        this.getHandler(MudExDialogResizeHandler).setBounds();
         if (!this._preSnapState) this._captureState();
         this.raiseDialogEvent('OnSnapStart', { position: zone });
-        if (zone === MudExDialogDragHandler.Direction.TOP) {
-            this.getHandler(MudExDialogPositionHandler).ensureMaximized();
-        } else {
-            const r = this._calcRect(zone, window.innerWidth, window.innerHeight);
-            this._applyRect(r, animate);
-        }
+        const r = this._calcRect(zone, window.innerWidth, window.innerHeight);
+        this._applyRect(r, animate);
         this.snappedTo = zone;
         this.raiseDialogEvent('OnSnap', { position: zone });
         this.raiseDialogEvent('OnSnapEnd', { position: zone });
@@ -291,6 +319,7 @@
         this.snappedTo = null;
         this._preSnapState = null;
         this.raiseDialogEvent('OnSnapEnd', { position: null });
+        setTimeout(() => { this.dialog.style.transition = 'none'; }, this.snapAnimationDuration);
     }
 
     _captureState() {
