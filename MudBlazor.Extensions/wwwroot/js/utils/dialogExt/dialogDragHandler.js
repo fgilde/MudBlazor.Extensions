@@ -28,6 +28,8 @@
         this._transition = `all ${this.snapAnimationDuration}ms ease`;
         this._isDragging = false;
         this.animateSnap = true;
+        this._snapPreviewClassName = 'snap-preview';
+
         this._savedMaxConstraints = null; // store original maxWidth/Height
     }
 
@@ -133,12 +135,18 @@
     _isMinimizable() {
         return this.options.minimizeButton;
     }
+    _hidePreview() {
+        const p = this._preview;
+        if (!p) return;
+        p.style.transform = 'scale(0)';        
+    }
 
     _createPreview(container) {
         if (this._preview) return;
         const p = document.createElement('div');
-        p.className = 'snap-preview';
-        p.style.display = 'none';
+        p.className = this._snapPreviewClassName;
+        p.style.height = 0;
+        p.style.width = 0;
         container.appendChild(p);
         this._preview = p;
     }
@@ -189,18 +197,24 @@
                 left: this._origX + dx + 'px',
                 top: this._origY + dy + 'px'
             });
-            this._preview.style.display = 'none';
+            this._hidePreview();
             this._pendingZone = null;
             return;
         }
         const r = this._calcRect(zone, W, H);
+        const offsetX = e.clientX - r.x;
+        const offsetY = e.clientY - r.y;
+
         Object.assign(this._preview.style, {
             display: 'block',
-            left: r.x + 'px',
-            top: r.y + 'px',
-            width: r.w + 'px',
-            height: r.h + 'px'
+            left: `${r.x}px`,
+            top: `${r.y}px`,
+            width: `${r.w}px`,
+            height: `${r.h}px`,
+            transformOrigin: `${offsetX}px ${offsetY}px`,
+            transform: 'scale(1)'
         });
+
         this._pendingZone = zone;
     }
 
@@ -211,7 +225,7 @@
         if (this._pendingZone) {
             this._doSnap(this._pendingZone, this.animateSnap);
         }
-        this._preview.style.display = 'none';
+        this._hidePreview();
     }
 
     _attachKeySnap() {
