@@ -15,7 +15,6 @@
     order = 99;
 
     async raiseDialogEvent(eventName) {
-        console.log('raise ' + eventName);
         // Get viewport dimensions
         var windowHeight = window.innerHeight || document.documentElement.clientHeight;
         var windowWidth = window.innerWidth || document.documentElement.clientWidth;
@@ -33,7 +32,6 @@
         };
         const rect = Object.assign(extendedRect, JSON.parse(JSON.stringify(this.dialog.getBoundingClientRect())));        
         if (this.dotNetService) {
-            console.log('PublishEvent ' + eventName);
             return await this.dotNetService.invokeMethodAsync('PublishEvent', eventName, this.dialog.id, this.dotNet, rect);
         }
     }
