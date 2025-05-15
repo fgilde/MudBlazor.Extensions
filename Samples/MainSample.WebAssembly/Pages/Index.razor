@@ -67,11 +67,26 @@
     </MudCard>
 </MudExCardList>
 
-<MudAlert Class="mt-5 mb-5 ml-5 mr-5" ContentAlignment="HorizontalAlignment.Center" Severity="Severity.Success" Variant="Variant.Outlined" Icon="@MaterialDesignIcons.Normal.CameraControl">
-    <MudButton Size="Size.Small" EndIcon="@MaterialDesignIcons.Normal.DockWindow" Color="Color.Info" Href="/dialog-snap">
-        New dialog Feature: <b>@nameof(MudDialogDragMode).@nameof(MudDialogDragMode.SnapDrag)</b>
-    </MudButton>
-</MudAlert>
+<MudExCardList HoverMode="@(MudExCardHoverMode.Zoom | MudExCardHoverMode.LightBulb)" HoverColor="Color.Warning" TData="object">
+    <MudCard Class="index-card" 
+             Style="@MudExStyleBuilder.Default.WithAnimatedConicGradientBorderedBackground(2, [MudExColor.Surface], ["#3300aa", "#0066aa", MudExColor.Info, MudExColor.Success, "purple"], TimeSpan.FromSeconds(5)).WithMaxWidth("none").WithWidth("100%").WithMarginLeft("10%").WithMarginRight("10%").Style" 
+             @onclick="@(() => { NavigationManager.NavigateTo("/dialog-snap"); })">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <div style="display: flex;">
+                    <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@MaterialDesignIcons.Normal.DockWindow" />
+                    <MudText Class="ml-5" Typo="Typo.h6">Dialog Drag & Drop</MudText>
+                </div>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudText>NEW Dialog Drag Drop Mode</MudText>
+            <MudText Typo="Typo.body2">New dialog Feature: <b>@nameof(MudDialogDragMode).@nameof(MudDialogDragMode.SnapDrag)</b></MudText>
+        </MudCardContent>
+    </MudCard>
+
+</MudExCardList>
+
 
 <div class="mt-5 mb-5" style="display: flex; justify-content: center; align-items: center;">
     <MudToggleGroup T="Type" SelectionMode="SelectionMode.MultiSelection" @bind-Values="_selectedAttributeTypes">
