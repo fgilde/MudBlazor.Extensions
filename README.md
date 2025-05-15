@@ -441,13 +441,6 @@ Full change log can be found [here](https://github.com/fgilde/MudBlazor.Extensio
 
  
 
-
-#### Planned Features
-Notice this is just a first preview version. 
-There are some features planned like 
- - Dragging with snap behaviour  
- 
-
  #
  
 If you like this package, please star it on [GitHub](https://github.com/fgilde/MudBlazor.Extensions) and share it with your friends
