@@ -13,8 +13,11 @@
     static async readBlobAsByteArray(blobUrl) {
         const response = await fetch(blobUrl);
         const blob = await response.blob();
-        const arrayBuffer = await blob.arrayBuffer();
-        return Array.from(new Uint8Array(arrayBuffer));
+        return await this.blobToByteArray(blob);
+
+        // The following code works in general, but raises errors on serverside rendering
+        //const arrayBuffer = await blob.arrayBuffer();
+        //return Array.from(new Uint8Array(arrayBuffer));
     }
 
     static blobToByteArray(blob) {

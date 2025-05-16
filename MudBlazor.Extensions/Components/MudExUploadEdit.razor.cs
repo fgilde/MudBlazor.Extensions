@@ -813,7 +813,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
         if (_loading != loading)
         {
             _loading = loading;
-            StateHasChanged();
+            InvokeAsync(StateHasChanged);
         }
     }
 
@@ -1394,7 +1394,7 @@ public partial class MudExUploadEdit<T> where T : IUploadableFile, new()
             SetError();
 
         (UploadRequests ??= new List<T>()).Add(request);
-        StateHasChanged();
+        await InvokeAsync(StateHasChanged);
     }
 
     private string GetTextDropZone()
