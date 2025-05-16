@@ -157,7 +157,7 @@
         const down = e => {
             e.preventDefault();
             this.raiseDialogEvent('OnDragStart');
-            if (!this._preSnapState) this._captureState();
+            if (!this.snappedTo) this._captureState();
             this._isDragging = true;
             this._hasMoved = false;
             this._pendingZone = null;
@@ -225,6 +225,8 @@
         this._isDragging = false;
         if (this._pendingZone) {
             this._doSnap(this._pendingZone, this.animateSnap);
+        } else {
+            if (!this.snappedTo) this._captureState();
         }
         this._hidePreview();
     }
