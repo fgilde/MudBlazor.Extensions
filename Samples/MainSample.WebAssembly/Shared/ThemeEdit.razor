@@ -4,8 +4,8 @@
 
 
 <MudIconButton Class="mudex-demo-themeedit-toggle-button" Icon="@Icons.Material.Filled.Palette" Color="Color.Inherit" OnClick="@EditTheme" />
-<MudExPopover OnBlur="@(OnThemeBlur)" Animation="AnimationType.Perspective3d" AnimationPosition="DialogPosition.TopRight"
-              SelectorsForIgnoreBlur=".mudex-demo-themeedit-toggle-button" Open="@_themeEditOpen" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopRight" MaxHeight="900">
+<MudExPopover OnBlur="@(OnThemeBlur)" 
+              SelectorsForIgnoreBlur=".mudex-demo-themeedit-toggle-button" Open="@_themeEditOpen" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter" MaxHeight="900">
     <MudItem xs="12" Style="padding:4px;">
         <MudCard @onclick="@(() => { _themeEditOpen = false; })" Style="border-width: 3px;" Class="cursor-pointer hover-border" Outlined="true">
             <MudCardHeader>
