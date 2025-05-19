@@ -1,5 +1,6 @@
 using MainSample.WebAssembly;
 using MainSample.WebAssembly.ObjectEditMetaConfig;
+using MainSample.WebAssembly.Services;
 using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Extensions;
@@ -16,6 +17,7 @@ builder.Services.AddMudServicesWithExtensions(AppConstants.MudExConfiguration ,t
 builder.Services.AddMudMarkdownServices();
 builder.Services.AddScoped<LocalStorageService>();
 builder.Services.AddScoped<SampleDataService>();
+builder.Services.AddSingleton<DeploymentsService>();
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped(sp => new HttpClient { });
 

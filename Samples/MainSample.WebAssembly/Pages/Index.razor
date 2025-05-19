@@ -2,21 +2,22 @@
 
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Core
+@using Newtonsoft.Json
 
 <style>
     .mud-ex-object-edit-group-flat .mud-expand-panel-text:after {
-        background-color: var(@Color.Secondary.CssVarName());
+    background-color: var(@Color.Secondary.CssVarName());
     }
 </style>
 
 
 <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudExGradientText Animate="false"
-                       Style="margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h2">MudBlazor.Extensions</MudExGradientText>
+    Style="margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h2">MudBlazor.Extensions</MudExGradientText>
 </MudHidden>
 <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
     <MudExGradientText Animate="false"
-                       Style="margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h4">MudBlazor.Extensions</MudExGradientText>
+    Style="margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h4">MudBlazor.Extensions</MudExGradientText>
 </MudHidden>
 <Support />
 
@@ -35,7 +36,7 @@
             <MudText Typo="Typo.body2">Powerful UI Editor for json, xml or yaml content now also as viewer for MudExFileDisplay</MudText>
         </MudCardContent>
     </MudCard>
-    
+
     <MudCard Class="index-card" @onclick="@(() => { NavigationManager.NavigateTo(AppConstants.Urls.GetTryOnline(MainLayout.Instance.IsDark)); })">
         <MudCardHeader >
             <CardHeaderContent>
@@ -69,8 +70,8 @@
 
 <MudExCardList HoverMode="@(MudExCardHoverMode.Zoom | MudExCardHoverMode.LightBulb)" HoverColor="Color.Warning" TData="object">
     <MudCard Class="index-card" 
-             Style="@MudExStyleBuilder.Default.WithAnimatedConicGradientBorderedBackground(2, [MudExColor.Surface], ["#3300aa", "#0066aa", MudExColor.Info, MudExColor.Success, "purple"], TimeSpan.FromSeconds(5)).WithMaxWidth("none").WithWidth("100%").WithMarginLeft("10%").WithMarginRight("10%").Style" 
-             @onclick="@(() => { NavigationManager.NavigateTo("/dialog-snap"); })">
+    Style="@MudExStyleBuilder.Default.WithAnimatedConicGradientBorderedBackground(2, [MudExColor.Surface], ["#3300aa", "#0066aa", MudExColor.Info, MudExColor.Success, "purple"], TimeSpan.FromSeconds(5)).WithMaxWidth("none").WithWidth("100%").WithMarginLeft("10%").WithMarginRight("10%").Style" 
+    @onclick="@(() => { NavigationManager.NavigateTo("/dialog-snap"); })">
         <MudCardHeader>
             <CardHeaderContent>
                 <div style="display: flex;">
@@ -163,6 +164,7 @@
 
 @code
 {
+
     internal static RenderFragment RenderNavEntry(NavigationEntry nav)
     {
         return @<div>

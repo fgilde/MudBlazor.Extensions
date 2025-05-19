@@ -16,6 +16,7 @@ public static class Navigations
             new("Home", Icons.Material.Outlined.Home, "/"),
             new("Readme", Icons.Material.Outlined.ReadMore, "/readme"),
             new("API", Icons.Material.Outlined.Api, "/api"),
+            new("Deployments", Icons.Material.Outlined.Computer, "/deployments"),
             new("-")
         };
 

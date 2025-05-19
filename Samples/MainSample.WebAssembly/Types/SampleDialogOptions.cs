@@ -2,7 +2,7 @@
 using MudBlazor.Extensions;
 using MudBlazor.Extensions.Options;
 
-namespace MainSample.WebAssembly;
+namespace MainSample.WebAssembly.Types;
 
 public static class SampleDialogOptions
 {

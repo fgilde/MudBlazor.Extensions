@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include=".scripts\Export-CloudFlare-Deployments.ps1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Bromix.MudBlazor.MaterialDesignIcons" Version="7.4.47.56" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.15" />
     <PackageReference Include="MudBlazor" Version="8.6.0" />
@@ -30,5 +34,15 @@
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
+
+
+  <!-- Collect deployments -->
+  <PropertyGroup>
+    <DeploymentsOutputFile>$(ProjectDir)wwwroot/deployments.json</DeploymentsOutputFile>
+  </PropertyGroup>
+  <Target Name="ExportCloudflareDeployments" AfterTargets="Build" Condition="'$(Configuration)'=='Release'">
+    <Exec IgnoreExitCode="true" Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(ProjectDir).scripts\Export-CloudFlare-Deployments.ps1&quot; -OutputFile &quot;$(DeploymentsOutputFile)&quot;" WorkingDirectory="$(ProjectDir)" />
+  </Target>
+  <!-- END Collect deployments -->
 
 </Project>

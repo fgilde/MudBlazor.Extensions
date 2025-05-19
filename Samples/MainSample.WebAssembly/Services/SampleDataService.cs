@@ -3,7 +3,7 @@ using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Services;
 
-namespace MainSample.WebAssembly;
+namespace MainSample.WebAssembly.Services;
 
 public class SampleDataService
 {
@@ -19,24 +19,24 @@ public class SampleDataService
 
     public IEnumerable<SampleFile> GetSampleFiles()
     {
-        yield return (CreateSampleFile("Archive.zip", "application/zip"));
-        yield return (CreateSampleFile("AnotherRar.rar", "application/x-rar-compressed"));
-        yield return (CreateSampleFile("npm-example-0.0.20.tgz", "application/tar+gzip"));
-        yield return (CreateSampleFile("RarArchive.rar", "application/x-rar-compressed"));
-        yield return (CreateSampleFile("TarArchive.tar", "application/x-tar"));
-        yield return (CreateSampleFile("SevenZipArchive.7z", "application/x-7z-compressed"));        
-        yield return (CreateSampleFile("LargeZipArchive.zip", "application/zip"));
-        yield return (CreateSampleFile("sample.pdf", "application/pdf"));
-        yield return (CreateSampleFile("weather.json", "text/plain"));
-        yield return (CreateSampleFile("logo.png", "image/png"));
-        yield return (CreateSampleFile("readme.md", "text/markdown"));
-        yield return (CreateSampleFile("Header.tiff", "image/tiff"));
-        yield return (CreateSampleFile("SweetieBubbleGum-Regular.ttf", "font/ttf"));
-        yield return (CreateSampleFile("4.Unified-Voice.mp3", "audio/mpeg3"));
-        yield return (CreateSampleFile("WordDokument.doc", "application/msword"));
-        yield return (CreateSampleFile("ExcelSheet.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
-        yield return (CreateSampleFile("https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc", "application/msword"));
-        yield return (CreateSampleFile("https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+        yield return CreateSampleFile("Archive.zip", "application/zip");
+        yield return CreateSampleFile("AnotherRar.rar", "application/x-rar-compressed");
+        yield return CreateSampleFile("npm-example-0.0.20.tgz", "application/tar+gzip");
+        yield return CreateSampleFile("RarArchive.rar", "application/x-rar-compressed");
+        yield return CreateSampleFile("TarArchive.tar", "application/x-tar");
+        yield return CreateSampleFile("SevenZipArchive.7z", "application/x-7z-compressed");        
+        yield return CreateSampleFile("LargeZipArchive.zip", "application/zip");
+        yield return CreateSampleFile("sample.pdf", "application/pdf");
+        yield return CreateSampleFile("weather.json", "text/plain");
+        yield return CreateSampleFile("logo.png", "image/png");
+        yield return CreateSampleFile("readme.md", "text/markdown");
+        yield return CreateSampleFile("Header.tiff", "image/tiff");
+        yield return CreateSampleFile("SweetieBubbleGum-Regular.ttf", "font/ttf");
+        yield return CreateSampleFile("4.Unified-Voice.mp3", "audio/mpeg3");
+        yield return CreateSampleFile("WordDokument.doc", "application/msword");
+        yield return CreateSampleFile("ExcelSheet.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        yield return CreateSampleFile("https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc", "application/msword");
+        yield return CreateSampleFile("https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     }
 
     public async Task<IEnumerable<SampleFileWithStream?>> GetSampleFilesWithStreamAsync()

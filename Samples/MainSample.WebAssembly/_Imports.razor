@@ -16,9 +16,11 @@
 @using BlazorMonaco.Editor
 @using BlazorMonaco.Languages
 @using Bromix.MudBlazor.MaterialDesignIcons
+@using MainSample.WebAssembly.Services
 
 @inject IDialogService DialogService
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
 @inject LocalStorageService LocalStorageService
 @inject HttpClient Http
+@inject DeploymentsService Deployments
