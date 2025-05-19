@@ -1,83 +1,100 @@
 ﻿@page "/deployments"
+@using System.Globalization
 
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
 
 <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="d-flex flex-column h-100 p-4">
     <MudText Typo="Typo.h4" GutterBottom="true">Deployment History | Time Machine</MudText>
     <MudText Typo="Typo.subtitle1" GutterBottom="true">Here you can see and visit older versions to compare features and errors.</MudText>
 
     <MudDivider Class="mb-4" />
-    
-    @if (_deployments == null)
+
+    @if (_deployments is null)
     {
         <MudProgressCircular Indeterminate="true" Color="Color.Primary" Size="Size.Medium" />
     }
-    else if (_deployments.Length == 0)
+    else if (!_deployments.Any())
     {
         <MudText Typo="Typo.body1">No deployments found.</MudText>
     }
     else
     {
-        <MudTable Items="_deployments"
-                  Hover="true"
-                  Bordered="true"
-                  Striped="true"
-                  Virtualize="true"
-                  Height="75vh"
-                  Elevation="1">
-            <HeaderContent>
-                <MudTh>Date</MudTh>
-                <MudTh>Project</MudTh>
-                <MudTh>MudEx Version</MudTh>
-                <MudTh>MudBlazor Version</MudTh>
-                <MudTh>Environment</MudTh>
-                <MudTh>Link</MudTh>
-            </HeaderContent>
-            <RowTemplate>
-                <MudTd DataLabel="Date">
-                    @context.CreatedOn.ToString("dd.MM.yyyy HH:mm")
-                    <MudText Typo="Typo.caption" Class="ml-2">(@GetRelativeTime(context.CreatedOn))</MudText>
-                </MudTd>
-                <MudTd DataLabel="Project">@context.ProjectName</MudTd>
-                <MudTd DataLabel="MudEx Version">
-                    <MudChip T="Deployment" Color="Color.Primary"
-                             Variant="Variant.Outlined">
-                        @context.AssemblyVersion
+        <MudDataGrid T="Deployment"
+                     Items="_deployments"
+                     Filterable="true"
+                     QuickFilter="_quickFilter"
+                     Height="70vh"
+                     SortMode="SortMode.Multiple"
+                     Hover="true"
+                     Bordered="true"
+                     Virtualize="true"
+                     Striped="true"
+                     DragDropColumnReordering="true" ApplyDropClassesOnDragStarted="true"
+                     DragIndicatorIcon="@Icons.Material.Filled.DragIndicator" ColumnResizeMode="ResizeMode.Column"
+                     Class="flex-grow-1">
+
+            <ToolBarContent>
+                <MudTextField @bind-Value="_searchString"
+                              Placeholder="Search..."
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search"
+                              Immediate="true"
+                              Class="mr-4 mt-0" />
+            </ToolBarContent>
+
+            <Columns>
+                <PropertyColumn Property="x => x.CreatedOn">
+                    <CellTemplate Context="context">
+                        @context.Item.CreatedOn.ToString("dd.MM.yyyy HH:mm")
+                            <MudText Typo="Typo.caption" Class="ml-2">(@GetRelativeTime(context.Item.CreatedOn))</MudText>
+                    </CellTemplate>
+                </PropertyColumn>
+
+                <PropertyColumn Property="context => context.ProjectName" Title="Project" />
+                <PropertyColumn Property="context => context.AssemblyVersion" Title="MudEx Version">
+                    <CellTemplate Context="context">
+                    <MudChip T="Deployment" Color="Color.Primary" Variant="Variant.Outlined">
+                        @context.Item.AssemblyVersion
                     </MudChip>
-                </MudTd>
-                <MudTd DataLabel="MudBlazor Version">
-                    <MudChip T="Deployment" Color="Color.Info"
-                             Variant="Variant.Outlined">
-                        @context.MudBlazorVersion
-                    </MudChip>
-                </MudTd>
-                <MudTd DataLabel="Environment">@context.Environment</MudTd>
-   
-                <MudTd DataLabel="Link">
-                    <MudExIconButton Href="@context.Url"
-                                     Target="_blank"
-                                     Icon="@Icons.Material.Filled.OpenInNew"
-                                     Color="Color.Primary"
-                                     Size="Size.Small"
-                                     ToolTip="Open deployment URL" />
-                </MudTd>
-            </RowTemplate>
-        </MudTable>
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="context => context.MudBlazorVersion" Title="MudBlazor Version">
+                    <CellTemplate Context="context">
+                        <MudChip T="Deployment" Color="Color.Info" Variant="Variant.Outlined">
+                            @context.Item.MudBlazorVersion
+                        </MudChip>
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="context => context.Environment" Title="Environment" />
+
+                <TemplateColumn Title="Link" Filterable="false" Sortable="false">
+                    <CellTemplate Context="context">
+                        <MudExIconButton Icon="@Icons.Material.Filled.OpenInNew"
+                                         Target="_blank"
+                                         Href="@context.Item.Url"
+                                       Color="Color.Primary"
+                                       Size="Size.Small"
+                                       ToolTip="Open deployment URL" />
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+
+            @* <PagerContent>
+                <MudDataGridPager T="Deployment" />
+            </PagerContent> *@
+        </MudDataGrid>
     }
-    
 </MudContainer>
 
 @code {
-    private Deployment[]? _deployments = null;
+    private Deployment[]? _deployments;
+    private MudDataGrid<Deployment> _dataGrid;
+    private string _searchString = string.Empty;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
-        {
-            _deployments = await Deployments.GetAllDeploymentsAsync();
-            
-            StateHasChanged();
-        }
+        _deployments = await Deployments.GetSuccessFullDeploymentsAsync();
     }
 
     private string GetRelativeTime(DateTime dt)
@@ -91,4 +108,17 @@
             return span.Minutes == 1 ? "1 minute ago" : $"{span.Minutes} minutes ago";
         return "just now";
     }
+
+    private bool _quickFilter(Deployment d)
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+            return true;
+        var term = _searchString.Trim();
+        return (d.ProjectName?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false)
+            || (d.CreatedOn.ToString(CultureInfo.InvariantCulture)?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false)
+            || (d.Environment?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false)
+            || (d.AssemblyVersion?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false)
+            || (d.MudBlazorVersion?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false);
+    }
+
 }
