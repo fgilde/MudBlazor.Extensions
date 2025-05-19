@@ -52483,7 +52483,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.51",
         "MudBlazorVersion":  "6.4.1"
     },
     {
@@ -52571,7 +52571,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.51",
         "MudBlazorVersion":  "6.4.1"
     },
     {
@@ -52661,7 +52661,7 @@
                     ],
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.49",
         "MudBlazorVersion":  "6.4.1"
     },
     {
@@ -52749,7 +52749,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.51",
         "MudBlazorVersion":  "6.4.1"
     },
     {
@@ -52839,7 +52839,7 @@
                     ],
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.49",
         "MudBlazorVersion":  "6.4.1"
     },
     {
@@ -52927,7 +52927,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.49",
         "MudBlazorVersion":  "6.4.1"
     },
     {
@@ -53015,7 +53015,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.49",
         "MudBlazorVersion":  "6.4.1"
     },
     {
@@ -53103,7 +53103,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.48",
         "MudBlazorVersion":  "6.4.1"
     },
     {
@@ -53191,7 +53191,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.48",
         "MudBlazorVersion":  "6.4.1"
     },
     {
@@ -53279,7 +53279,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.48",
         "MudBlazorVersion":  "6.4.1"
     },
     {
@@ -53367,7 +53367,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.47",
         "MudBlazorVersion":  "6.4.1"
     },
     {
@@ -53455,7 +53455,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.47",
         "MudBlazorVersion":  "6.4.1"
     },
     {
@@ -53543,7 +53543,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.47",
         "MudBlazorVersion":  "6.4.1"
     },
     {
@@ -53631,7 +53631,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.47",
         "MudBlazorVersion":  "6.4.1"
     },
     {
@@ -53719,7 +53719,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.46",
         "MudBlazorVersion":  "6.2.3"
     },
     {
@@ -53807,7 +53807,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.46",
         "MudBlazorVersion":  "6.2.3"
     },
     {
@@ -53895,7 +53895,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.46",
         "MudBlazorVersion":  "6.2.3"
     },
     {
@@ -53983,7 +53983,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.46",
         "MudBlazorVersion":  "6.2.3"
     },
     {
@@ -54071,7 +54071,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.45",
         "MudBlazorVersion":  "6.2.3"
     },
     {
@@ -54159,7 +54159,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.44",
         "MudBlazorVersion":  "6.2.3"
     },
     {
@@ -54247,7 +54247,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.43",
         "MudBlazorVersion":  "6.2.3"
     },
     {
@@ -54335,7 +54335,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.42",
         "MudBlazorVersion":  "6.2.3"
     },
     {
@@ -54423,7 +54423,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.42",
         "MudBlazorVersion":  "6.2.3"
     },
     {
@@ -54511,7 +54511,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.42",
         "MudBlazorVersion":  "6.2.3"
     },
     {
@@ -54599,7 +54599,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.41",
         "MudBlazorVersion":  "6.2.3"
     },
     {
@@ -54687,7 +54687,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.41",
         "MudBlazorVersion":  "6.2.3"
     },
     {
@@ -54775,7 +54775,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.41",
         "MudBlazorVersion":  "6.2.3"
     },
     {
@@ -54863,7 +54863,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.40",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -54951,7 +54951,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.39",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -55039,7 +55039,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.39",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -55127,7 +55127,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.38",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -55215,7 +55215,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.37",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -55303,7 +55303,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.37",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -55391,7 +55391,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.37",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -55479,7 +55479,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.36",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -55567,7 +55567,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.35",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -55655,7 +55655,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.35",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -55743,7 +55743,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.35",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -55831,7 +55831,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.34",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -55919,7 +55919,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.34",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -56007,7 +56007,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.34",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -56095,7 +56095,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.34",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -56183,7 +56183,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.33",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -56271,7 +56271,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.33",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -56359,7 +56359,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.33",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -56447,7 +56447,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.33",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -56535,7 +56535,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.33",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -56623,7 +56623,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.33",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -56711,7 +56711,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.33",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -56799,7 +56799,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.33",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -56887,7 +56887,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.33",
         "MudBlazorVersion":  "6.1.9"
     },
     {
@@ -56975,7 +56975,7 @@
         "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
-        "AssemblyVersion":  "..",
+        "AssemblyVersion":  "1.7.33",
         "MudBlazorVersion":  "6.1.9"
     }
 ]
