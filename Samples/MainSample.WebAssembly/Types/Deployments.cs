@@ -64,6 +64,8 @@ namespace MainSample.WebAssembly.Types
 
         [JsonProperty("production_branch")]
         public string ProductionBranch { get; set; }
+        public string AssemblyVersion { get; set; }
+        public string MudBlazorVersion { get; set; }
     }
 
     public class LatestStage

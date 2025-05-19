@@ -24,10 +24,21 @@ public class DeploymentsService(NavigationManager navigationManager)
             Stages = [new Stage { Name = "Deploy", Status = "success" }],
             Environment = "GitHub",
             ProjectName = "mudblazor-extensions",
+            AssemblyVersion = "1.1.0",
+            MudBlazorVersion = "6.0.2",
             CreatedOn = new DateTime(2022, 8, 1),
             ModifiedOn = new DateTime(2022, 8, 1)
         }]).ToArray();
         return _deployments;
+    }
+
+    public async Task<Deployment[]> GetSuccessFullDeploymentsAsync()
+    {
+        var all = await GetAllDeploymentsAsync();
+        var successful = all
+            .Where(d => d.Stages.All(s => s.Status == "success"));
+
+        return successful.ToArray();
     }
 
     public async Task<Deployment[]> GetLatestSuccessFullDeploymentsPerDayAsync()

@@ -6,55 +6,75 @@
     <MudText Typo="Typo.subtitle1" GutterBottom="true">Here you can see and browser older versions to compare features and errors.</MudText>
 
     <MudDivider Class="mb-4" />
-
-    <MudTable Items="_deployments"
-              Hover="true"
-              Bordered="true"
-              Striped="true"
-              Virtualize="true"
-              Height="75vh"
-              Elevation="1">
-        <HeaderContent>
-            <MudTh>Datum</MudTh>
-            <MudTh>Projekt</MudTh>
-            <MudTh>Environment</MudTh>
-            <MudTh>Status</MudTh>
-            <MudTh>Link</MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Datum">
-                @context.CreatedOn.ToString("dd.MM.yyyy HH:mm")
-                <MudText Typo="Typo.caption" Class="ml-2">(@GetRelativeTime(context.CreatedOn))</MudText>
-            </MudTd>
-            <MudTd DataLabel="Projekt">@context.ProjectName</MudTd>
-            <MudTd DataLabel="Environment">@context.Environment</MudTd>
-            <MudTd DataLabel="Status">
-                <MudChip T="Deployment" Color="@(context.Stages.All(s => s.Status == "success") ? Color.Success : Color.Warning)"
-                         Variant="Variant.Filled">
-                    @context.Stages.Last().Status
-                </MudChip>
-            </MudTd>
-            <MudTd DataLabel="Link">
-                <MudExIconButton Href="@context.Url"
-                               Target="_blank"
-                               Icon="@Icons.Material.Filled.OpenInNew"
-                               Color="Color.Primary"
-                               Size="Size.Small"
-                               ToolTip="Open deployment URL" />
-            </MudTd>
-        </RowTemplate>
-    </MudTable>
+    
+    @if (_deployments == null)
+    {
+        <MudProgressCircular Indeterminate="true" Color="Color.Primary" Size="Size.Medium" />
+    }
+    else if (_deployments.Length == 0)
+    {
+        <MudText Typo="Typo.body1">No deployments found.</MudText>
+    }
+    else
+    {
+        <MudTable Items="_deployments"
+                  Hover="true"
+                  Bordered="true"
+                  Striped="true"
+                  Virtualize="true"
+                  Height="75vh"
+                  Elevation="1">
+            <HeaderContent>
+                <MudTh>Date</MudTh>
+                <MudTh>Project</MudTh>
+                <MudTh>MudEx Version</MudTh>
+                <MudTh>MudBlazor Version</MudTh>
+                <MudTh>Environment</MudTh>
+                <MudTh>Link</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Date">
+                    @context.CreatedOn.ToString("dd.MM.yyyy HH:mm")
+                    <MudText Typo="Typo.caption" Class="ml-2">(@GetRelativeTime(context.CreatedOn))</MudText>
+                </MudTd>
+                <MudTd DataLabel="Project">@context.ProjectName</MudTd>
+                <MudTd DataLabel="MudEx Version">
+                    <MudChip T="Deployment" Color="Color.Primary"
+                             Variant="Variant.Outlined">
+                        @context.AssemblyVersion
+                    </MudChip>
+                </MudTd>
+                <MudTd DataLabel="MudBlazor Version">
+                    <MudChip T="Deployment" Color="Color.Info"
+                             Variant="Variant.Outlined">
+                        @context.MudBlazorVersion
+                    </MudChip>
+                </MudTd>
+                <MudTd DataLabel="Environment">@context.Environment</MudTd>
+   
+                <MudTd DataLabel="Link">
+                    <MudExIconButton Href="@context.Url"
+                                     Target="_blank"
+                                     Icon="@Icons.Material.Filled.OpenInNew"
+                                     Color="Color.Primary"
+                                     Size="Size.Small"
+                                     ToolTip="Open deployment URL" />
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    }
+    
 </MudContainer>
 
 @code {
-    private Deployment[] _deployments = Array.Empty<Deployment>();
+    private Deployment[]? _deployments = null;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            _deployments = await Deployments.GetLatestSuccessFullDeploymentsPerDayAsync();
+            _deployments = await Deployments.GetAllDeploymentsAsync();
             
             StateHasChanged();
         }
