@@ -300,6 +300,12 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     }
 
     /// <summary>
+    /// Opens the file in a new tab
+    /// </summary>
+    /// <returns></returns>
+    public async Task OpenFileInNewTabAsync() => await JsRuntime.InvokeVoidAsync("window.open", await GetUrlAsync(), "_blank", "noreferrer");
+
+    /// <summary>
     /// Remove the status text
     /// </summary>
     public Task<MudExFileDisplay> RemoveStatusTextAsync() => SetStatusTextAsync(null);
@@ -515,7 +521,10 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             JsRuntime.InvokeVoidAsync("eval", $"document.querySelector('object[data-id=\"{_id}\"]').data += ' ';");
     }
 
-    private async Task Download(MouseEventArgs arg)
+    /// <summary>
+    /// Downloads the file using the browser download functionality.
+    /// </summary>
+    public async Task DownloadFileAsync()
     {
         await EnsureUrlAsync(true);
 
@@ -542,7 +551,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
     private async Task CopyUrl(MouseEventArgs arg) => await JsApiService.CopyToClipboardAsync(await GetUrlAsync());
     //private async Task OpenInNewTab(MouseEventArgs arg) => await JsApiService.OpenInNewTabAsync(await GetUrlAsync());
     // noreferrer is important that's because otherwise the new window is opened in the same process with the opener window.
-    private async Task OpenInNewTab(MouseEventArgs arg) => await JsRuntime.InvokeVoidAsync("window.open", await GetUrlAsync(), "_blank", "noreferrer");
+    private async Task OpenInNewTab(MouseEventArgs arg) => await OpenFileInNewTabAsync();
 
     private void CloseContentError()
     {
@@ -564,9 +573,12 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         }
     }
 
-    private Task ShowInfo() => ShowInfo(false);
-
-    private async Task ShowInfo(bool showEmptyValues)
+    /// <summary>
+    /// Returns the file infos as dictionary with keys like File, ContentType, Url, Size and more
+    /// </summary>
+    /// <param name="withEmptyValues"></param>
+    /// <returns></returns>
+    public async Task<IDictionary<string, object>> GetFileFinfosAsync(bool withEmptyValues)
     {
         Stream effectiveStream = ContentStream;
         string size = null;
@@ -586,12 +598,11 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
                 size = Nextended.Blazor.Extensions.BrowserFileExtensions.GetReadableFileSize(effectiveStream.Length);
             }
         }
-
         var dict = new Dictionary<string, object>()
         {
-            { "File", FileName }, 
+            { "File", FileName },
             { "ContentType", ContentType },
-            { "Url", effectiveStream is { Length: > 0 } ? null : Url }, 
+            { "Url", effectiveStream is { Length: > 0 } ? null : Url },
             { "Size", size }
         };
 
@@ -609,7 +620,7 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
             }
         }
 
-        if (showEmptyValues)
+        if (withEmptyValues)
         {
             foreach (var o in dict.Where(o => o.Value == null))
                 dict[o.Key] = string.Empty;
@@ -618,6 +629,24 @@ public partial class MudExFileDisplay : IMudExFileDisplayInfos
         {
             dict = dict.Where(o => o.Value != null).ToDictionary(o => o.Key, o => o.Value);
         }
+
+        return dict;
+    }
+
+    /// <summary>
+    /// Shows the info dialog with file information
+    /// </summary>
+    /// <returns></returns>
+    public Task ShowInfoFileInfoAsync() => ShowInfoFileInfoAsync(false);
+
+    /// <summary>
+    /// Shows the info dialog with file information
+    /// </summary>
+    /// <param name="showEmptyValues"></param>
+    /// <returns></returns>
+    public async Task ShowInfoFileInfoAsync(bool showEmptyValues)
+    {
+        var dict = await GetFileFinfosAsync(showEmptyValues);
 
         var infoObject = FileInfo ?? ReflectionHelper.CreateTypeAndDeserialize(dict);
         

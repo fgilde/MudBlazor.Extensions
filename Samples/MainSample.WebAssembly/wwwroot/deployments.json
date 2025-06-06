@@ -1,5 +1,304 @@
 [
     {
+        "id":  "4cec5ebb-20a4-4010-bcc2-13e61b1ecc89",
+        "short_id":  "4cec5ebb",
+        "project_id":  "f395c89b-9b67-4d9c-a35a-a31a5e81994a",
+        "project_name":  "mudblazor-extensions",
+        "environment":  "production",
+        "url":  "https://4cec5ebb.mudblazor-extensions.pages.dev",
+        "created_on":  "2025-05-19T12:47:08.66903Z",
+        "modified_on":  "2025-05-19T12:58:47.043659Z",
+        "latest_stage":  {
+                             "name":  "deploy",
+                             "started_on":  "2025-05-19T12:58:36.322589Z",
+                             "ended_on":  "2025-05-19T12:58:47.043659Z",
+                             "status":  "success"
+                         },
+        "deployment_trigger":  {
+                                   "type":  "github:push",
+                                   "metadata":  {
+                                                    "branch":  "main",
+                                                    "commit_hash":  "751c8b42ae45ea3fdb4ad7c935750f750f4150c5",
+                                                    "commit_message":  "Test",
+                                                    "commit_dirty":  false
+                                                }
+                               },
+        "stages":  [
+                       {
+                           "name":  "queued",
+                           "started_on":  "2025-05-19T12:47:08.748452Z",
+                           "ended_on":  "2025-05-19T12:47:08.748452Z",
+                           "status":  "success"
+                       },
+                       {
+                           "name":  "initialize",
+                           "started_on":  "2025-05-19T12:47:08.748452Z",
+                           "ended_on":  "2025-05-19T12:47:11.112698Z",
+                           "status":  "success"
+                       },
+                       {
+                           "name":  "clone_repo",
+                           "started_on":  "2025-05-19T12:47:11.112698Z",
+                           "ended_on":  "2025-05-19T12:47:15.587605Z",
+                           "status":  "success"
+                       },
+                       {
+                           "name":  "build",
+                           "started_on":  "2025-05-19T12:47:15.587605Z",
+                           "ended_on":  "2025-05-19T12:58:36.322589Z",
+                           "status":  "success"
+                       },
+                       {
+                           "name":  "deploy",
+                           "started_on":  "2025-05-19T12:58:36.322589Z",
+                           "ended_on":  "2025-05-19T12:58:47.043659Z",
+                           "status":  "success"
+                       }
+                   ],
+        "build_config":  {
+                             "build_command":  "chmod +x deploy.sh \u0026\u0026 ./deploy.sh",
+                             "destination_dir":  "output/wwwroot",
+                             "build_caching":  null,
+                             "root_dir":  "Samples/MainSample.WebAssembly/",
+                             "web_analytics_tag":  null,
+                             "web_analytics_token":  null
+                         },
+        "source":  {
+                       "type":  "github",
+                       "config":  {
+                                      "owner":  "fgilde",
+                                      "repo_name":  "MudBlazor.Extensions",
+                                      "production_branch":  "main",
+                                      "pr_comments_enabled":  false
+                                  }
+                   },
+        "env_vars":  {
+                         "DROPBOX_APP_ID":  {
+                                                "type":  "plain_text",
+                                                "value":  "2ak2m6cfpdeb9f1"
+                                            },
+                         "GOOGLE_CLIENT_ID":  {
+                                                  "type":  "plain_text",
+                                                  "value":  "787005879852-vkv0cduhl70u087pq4a8s2jtkdgv1n6s.apps.googleusercontent.com"
+                                              },
+                         "ONEDRIVE_APP_ID":  {
+                                                 "type":  "plain_text",
+                                                 "value":  "55d00a29-1bb6-40bf-90a6-ecd689a52a51"
+                                             }
+                     },
+        "compatibility_date":  "2023-03-01",
+        "compatibility_flags":  [
+
+                                ],
+        "build_image_major_version":  1,
+        "usage_model":  null,
+        "aliases":  [
+                        "https://www.mudex.org"
+                    ],
+        "is_skipped":  false,
+        "production_branch":  "main",
+        "AssemblyVersion":  "8.6.2",
+        "MudBlazorVersion":  "8.6.0"
+    },
+    {
+        "id":  "d05eae97-d21e-41c9-b402-a6e417a9d387",
+        "short_id":  "d05eae97",
+        "project_id":  "f395c89b-9b67-4d9c-a35a-a31a5e81994a",
+        "project_name":  "mudblazor-extensions",
+        "environment":  "production",
+        "url":  "https://d05eae97.mudblazor-extensions.pages.dev",
+        "created_on":  "2025-05-19T12:34:27.420684Z",
+        "modified_on":  "2025-05-19T12:45:52.807388Z",
+        "latest_stage":  {
+                             "name":  "build",
+                             "started_on":  "2025-05-19T12:45:25.716037Z",
+                             "ended_on":  "2025-05-19T12:45:52.807388Z",
+                             "status":  "failure"
+                         },
+        "deployment_trigger":  {
+                                   "type":  "github:push",
+                                   "metadata":  {
+                                                    "branch":  "main",
+                                                    "commit_hash":  "a9ccd6b846265f95cd537f3ae53b3fc65bbafd7d",
+                                                    "commit_message":  "remove unused stuff",
+                                                    "commit_dirty":  false
+                                                }
+                               },
+        "stages":  [
+                       {
+                           "name":  "queued",
+                           "started_on":  "2025-05-19T12:34:27.868998Z",
+                           "ended_on":  "2025-05-19T12:45:16.626716Z",
+                           "status":  "success"
+                       },
+                       {
+                           "name":  "initialize",
+                           "started_on":  "2025-05-19T12:45:16.626716Z",
+                           "ended_on":  "2025-05-19T12:45:18.812121Z",
+                           "status":  "success"
+                       },
+                       {
+                           "name":  "clone_repo",
+                           "started_on":  "2025-05-19T12:45:18.812121Z",
+                           "ended_on":  "2025-05-19T12:45:25.716037Z",
+                           "status":  "success"
+                       },
+                       {
+                           "name":  "build",
+                           "started_on":  "2025-05-19T12:45:25.716037Z",
+                           "ended_on":  "2025-05-19T12:45:52.807388Z",
+                           "status":  "failure"
+                       },
+                       {
+                           "name":  "deploy",
+                           "started_on":  null,
+                           "ended_on":  null,
+                           "status":  "idle"
+                       }
+                   ],
+        "build_config":  {
+                             "build_command":  "chmod +x deploy.sh \u0026\u0026 ./deploy.sh",
+                             "destination_dir":  "output/wwwroot",
+                             "build_caching":  null,
+                             "root_dir":  "Samples/MainSample.WebAssembly/",
+                             "web_analytics_tag":  null,
+                             "web_analytics_token":  null
+                         },
+        "source":  {
+                       "type":  "github",
+                       "config":  {
+                                      "owner":  "fgilde",
+                                      "repo_name":  "MudBlazor.Extensions",
+                                      "production_branch":  "main",
+                                      "pr_comments_enabled":  false
+                                  }
+                   },
+        "env_vars":  {
+                         "DROPBOX_APP_ID":  {
+                                                "type":  "plain_text",
+                                                "value":  "2ak2m6cfpdeb9f1"
+                                            },
+                         "GOOGLE_CLIENT_ID":  {
+                                                  "type":  "plain_text",
+                                                  "value":  "787005879852-vkv0cduhl70u087pq4a8s2jtkdgv1n6s.apps.googleusercontent.com"
+                                              },
+                         "ONEDRIVE_APP_ID":  {
+                                                 "type":  "plain_text",
+                                                 "value":  "55d00a29-1bb6-40bf-90a6-ecd689a52a51"
+                                             }
+                     },
+        "compatibility_date":  "2023-03-01",
+        "compatibility_flags":  [
+
+                                ],
+        "build_image_major_version":  1,
+        "usage_model":  null,
+        "aliases":  null,
+        "is_skipped":  false,
+        "production_branch":  "main",
+        "AssemblyVersion":  "8.6.2",
+        "MudBlazorVersion":  "8.6.0"
+    },
+    {
+        "id":  "8a455a59-98d6-45ad-abf7-583bdec05c8b",
+        "short_id":  "8a455a59",
+        "project_id":  "f395c89b-9b67-4d9c-a35a-a31a5e81994a",
+        "project_name":  "mudblazor-extensions",
+        "environment":  "production",
+        "url":  "https://8a455a59.mudblazor-extensions.pages.dev",
+        "created_on":  "2025-05-19T12:33:46.377801Z",
+        "modified_on":  "2025-05-19T12:45:18.587768Z",
+        "latest_stage":  {
+                             "name":  "deploy",
+                             "started_on":  "2025-05-19T12:45:06.508531Z",
+                             "ended_on":  "2025-05-19T12:45:18.587768Z",
+                             "status":  "success"
+                         },
+        "deployment_trigger":  {
+                                   "type":  "github:push",
+                                   "metadata":  {
+                                                    "branch":  "main",
+                                                    "commit_hash":  "3ffaad70444188c41d883b02604e054786ae0e6e",
+                                                    "commit_message":  "change deployment ui to datagrid",
+                                                    "commit_dirty":  false
+                                                }
+                               },
+        "stages":  [
+                       {
+                           "name":  "queued",
+                           "started_on":  "2025-05-19T12:33:46.480247Z",
+                           "ended_on":  "2025-05-19T12:33:46.480247Z",
+                           "status":  "success"
+                       },
+                       {
+                           "name":  "initialize",
+                           "started_on":  "2025-05-19T12:33:46.480247Z",
+                           "ended_on":  "2025-05-19T12:33:48.997064Z",
+                           "status":  "success"
+                       },
+                       {
+                           "name":  "clone_repo",
+                           "started_on":  "2025-05-19T12:33:48.997064Z",
+                           "ended_on":  "2025-05-19T12:33:53.618577Z",
+                           "status":  "success"
+                       },
+                       {
+                           "name":  "build",
+                           "started_on":  "2025-05-19T12:33:53.618577Z",
+                           "ended_on":  "2025-05-19T12:45:06.508531Z",
+                           "status":  "success"
+                       },
+                       {
+                           "name":  "deploy",
+                           "started_on":  "2025-05-19T12:45:06.508531Z",
+                           "ended_on":  "2025-05-19T12:45:18.587768Z",
+                           "status":  "success"
+                       }
+                   ],
+        "build_config":  {
+                             "build_command":  "chmod +x deploy.sh \u0026\u0026 ./deploy.sh",
+                             "destination_dir":  "output/wwwroot",
+                             "build_caching":  null,
+                             "root_dir":  "Samples/MainSample.WebAssembly/",
+                             "web_analytics_tag":  null,
+                             "web_analytics_token":  null
+                         },
+        "source":  {
+                       "type":  "github",
+                       "config":  {
+                                      "owner":  "fgilde",
+                                      "repo_name":  "MudBlazor.Extensions",
+                                      "production_branch":  "main",
+                                      "pr_comments_enabled":  false
+                                  }
+                   },
+        "env_vars":  {
+                         "DROPBOX_APP_ID":  {
+                                                "type":  "plain_text",
+                                                "value":  "2ak2m6cfpdeb9f1"
+                                            },
+                         "GOOGLE_CLIENT_ID":  {
+                                                  "type":  "plain_text",
+                                                  "value":  "787005879852-vkv0cduhl70u087pq4a8s2jtkdgv1n6s.apps.googleusercontent.com"
+                                              },
+                         "ONEDRIVE_APP_ID":  {
+                                                 "type":  "plain_text",
+                                                 "value":  "55d00a29-1bb6-40bf-90a6-ecd689a52a51"
+                                             }
+                     },
+        "compatibility_date":  "2023-03-01",
+        "compatibility_flags":  [
+
+                                ],
+        "build_image_major_version":  1,
+        "usage_model":  null,
+        "aliases":  null,
+        "is_skipped":  false,
+        "production_branch":  "main",
+        "AssemblyVersion":  "8.6.2",
+        "MudBlazorVersion":  "8.6.0"
+    },
+    {
         "id":  "b99a1dbe-8ae5-4b0d-9899-1f25ee91c48e",
         "short_id":  "b99a1dbe",
         "project_id":  "f395c89b-9b67-4d9c-a35a-a31a5e81994a",
@@ -191,9 +490,7 @@
                                 ],
         "build_image_major_version":  1,
         "usage_model":  null,
-        "aliases":  [
-                        "https://www.mudex.org"
-                    ],
+        "aliases":  null,
         "is_skipped":  false,
         "production_branch":  "main",
         "AssemblyVersion":  "8.6.2",

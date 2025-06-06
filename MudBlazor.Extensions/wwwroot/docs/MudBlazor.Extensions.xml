@@ -2910,6 +2910,12 @@
             Set the status text to display in center of file display
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.OpenFileInNewTabAsync">
+            <summary>
+            Opens the file in a new tab
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.RemoveStatusTextAsync">
             <summary>
             Remove the status text
@@ -2925,6 +2931,31 @@
             <summary>
             Returns the tag and attributes for the file
             </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.DownloadFileAsync">
+            <summary>
+            Downloads the file using the browser download functionality.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.GetFileFinfosAsync(System.Boolean)">
+            <summary>
+            Returns the file infos as dictionary with keys like File, ContentType, Url, Size and more
+            </summary>
+            <param name="withEmptyValues"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.ShowInfoFileInfoAsync">
+            <summary>
+            Shows the info dialog with file information
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.ShowInfoFileInfoAsync(System.Boolean)">
+            <summary>
+            Shows the info dialog with file information
+            </summary>
+            <param name="showEmptyValues"></param>
+            <returns></returns>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplay.DisposeAsync">
             <inheritdoc />
