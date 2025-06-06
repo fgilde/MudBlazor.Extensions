@@ -48,7 +48,7 @@ public class DeploymentsService(NavigationManager navigationManager)
             .Where(d => d.Stages.All(s => s.Status == "success"));
 
         var latestPerDay = successful
-            .GroupBy(d => d.CreatedOn.Date)
+            .GroupBy(d => d.CreatedOn?.Date)
             .Select(g => g.OrderByDescending(d => d.CreatedOn)
                 .First())
             .ToArray();

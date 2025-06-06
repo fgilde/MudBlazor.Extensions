@@ -8,7 +8,9 @@
         TOP_LEFT: 'top-left',
         TOP_RIGHT: 'top-right',
         BOTTOM_LEFT: 'bottom-left',
-        BOTTOM_RIGHT: 'bottom-right'
+        BOTTOM_RIGHT: 'bottom-right',
+        CUSTOM_HEIGHT: 'custom-height',
+        CUSTOM_WIDTH: 'custom-width'
     };
     static DragMode = {
         NONE: 0,
@@ -25,6 +27,7 @@
         this._preview = null;
         this._handlers = [];
         this._threshold = 20;
+        this._thresholdTopHalf = 80;
         this._transition = `all ${this.snapAnimationDuration}ms ease`;
         this._isDragging = false;
         this.animateSnap = true;
@@ -47,6 +50,7 @@
                 break;
             case MudExDialogDragHandler.DragMode.SNAP:
                 this._createPreview(container);
+                this._attachResizeSnap();
                 this._attachMouseSnap();
                 this._attachKeySnap();
                 this._attachResizeHandler();
@@ -151,6 +155,21 @@
         this._preview = p;
     }
 
+    _attachResizeSnap() {
+        if (this.options.resizeable) {
+            this.on('OnResizing', this._onResize);
+            this.on('OnResized', this._onResized);
+        }
+    }
+
+    _onResize(dialogId, dialog, rect) {
+        this._isResizing = true;
+    }
+
+    _onResized(dialogId, dialog, rect) {
+        this._isResizing = true;
+    }
+
     _attachMouseSnap() {
         const hdr = this.dialogHeader || this.dialog;
         hdr.style.cursor = 'move';
@@ -186,10 +205,18 @@
         this._hasMoved = true;
         const D = MudExDialogDragHandler.Direction;
         let zone = null;
-        if (y <= this._threshold) zone = D.TOP;
+
+        // --- NEU: Zuerst Ecken checken ---
+        if (x <= this._threshold && y <= this._thresholdTopHalf) zone = D.TOP_LEFT;
+        else if (x >= W - this._threshold && y <= this._thresholdTopHalf) zone = D.TOP_RIGHT;
+        else if (x <= this._threshold && y >= H - this._thresholdTopHalf) zone = D.BOTTOM_LEFT;
+        else if (x >= W - this._threshold && y >= H - this._thresholdTopHalf) zone = D.BOTTOM_RIGHT;
+        // --- Dann wie gehabt Kanten checken ---
+        else if (y <= this._threshold) zone = D.TOP;
         else if (y >= H - this._threshold) zone = D.BOTTOM;
         else if (x <= this._threshold) zone = D.LEFT;
         else if (x >= W - this._threshold) zone = D.RIGHT;
+
         if (!zone) {
             const dx = x - this._startX, dy = y - this._startY;
             Object.assign(this.dialog.style, {
@@ -218,6 +245,7 @@
 
         this._pendingZone = zone;
     }
+
 
     _onMouseUp() {
         if (!this._isDragging) return;
@@ -398,11 +426,15 @@
         this._isDragging = false;
         this._pendingZone = null;
         this._hasMoved = false;
+        if (this.options.resizeable) {
+            this.un('OnResizing', this._onResize);
+            this.un('OnResized', this._onResized);
+        }
     }
 
-    destroy() {
+    dispose() {
         this._cleanupHandlers();
-        super.destroy();
+        super.dispose();
     }
 }
 

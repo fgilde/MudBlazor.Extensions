@@ -12,7 +12,7 @@ namespace MudBlazor.Extensions.Helper
     {
         private static string min => UseMinified ? ".min" : string.Empty;
 
-        internal static bool UseMinified = true;
+        internal static bool UseMinified = false;
 
         internal static string BasePath = "./_content/";
 

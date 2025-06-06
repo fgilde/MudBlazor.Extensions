@@ -24,10 +24,10 @@ namespace MainSample.WebAssembly.Types
         public string Url { get; set; }
 
         [JsonProperty("created_on")]
-        public DateTime CreatedOn { get; set; }
+        public DateTime? CreatedOn { get; set; }
 
         [JsonProperty("modified_on")]
-        public DateTime ModifiedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
 
         [JsonProperty("latest_stage")]
         public LatestStage LatestStage { get; set; }

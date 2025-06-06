@@ -1,5 +1,6 @@
 ﻿@page "/deployments"
 @using System.Globalization
+@using MudBlazor.Extensions.Core
 
 
 <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="d-flex flex-column h-100 p-4">
@@ -44,17 +45,23 @@
             <Columns>
                 <PropertyColumn Property="x => x.CreatedOn">
                     <CellTemplate Context="context">
-                        @context.Item.CreatedOn.ToString("dd.MM.yyyy HH:mm")
-                            <MudText Typo="Typo.caption" Class="ml-2">(@GetRelativeTime(context.Item.CreatedOn))</MudText>
+                        <div style="display: flex">
+                            @if (IsCurrent(context.Item))
+                            {
+                                <MudExIcon Size="Size.Small" Color="MudExColor.Success" Title="Current version" Icon="@Icons.Material.Filled.Check" />
+                            }
+                            <MudText Color="GetColorCurrent(context.Item)">@context.Item.CreatedOn?.ToString("dd.MM.yyyy HH:mm")</MudText>
+                            <MudText Style="align-self: center;" Color="GetColorCurrent(context.Item)" Typo="Typo.caption" Class="ml-2">(@GetRelativeTime(context.Item.CreatedOn))</MudText>
+                        </div>
                     </CellTemplate>
                 </PropertyColumn>
 
                 <PropertyColumn Property="context => context.ProjectName" Title="Project" />
                 <PropertyColumn Property="context => context.AssemblyVersion" Title="MudEx Version">
                     <CellTemplate Context="context">
-                    <MudChip T="Deployment" Color="Color.Primary" Variant="Variant.Outlined">
-                        @context.Item.AssemblyVersion
-                    </MudChip>
+                        <MudChip T="Deployment" Color="Color.Primary" Variant="Variant.Outlined">
+                            @context.Item.AssemblyVersion
+                        </MudChip>
                     </CellTemplate>
                 </PropertyColumn>
                 <PropertyColumn Property="context => context.MudBlazorVersion" Title="MudBlazor Version">
@@ -71,9 +78,9 @@
                         <MudExIconButton Icon="@Icons.Material.Filled.OpenInNew"
                                          Target="_blank"
                                          Href="@context.Item.Url"
-                                       Color="Color.Primary"
-                                       Size="Size.Small"
-                                       ToolTip="Open deployment URL" />
+                                         Color="Color.Primary"
+                                         Size="Size.Small"
+                                         ToolTip="Open deployment URL" />
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>
@@ -95,8 +102,11 @@
         _deployments = await Deployments.GetSuccessFullDeploymentsAsync();
     }
 
-    private string GetRelativeTime(DateTime dt)
+    private string GetRelativeTime(DateTime? dateTime)
     {
+        if (dateTime is null)
+            return "unknown";
+        var dt = dateTime.Value;
         var span = DateTime.Now - dt;
         if (span.TotalDays >= 1)
             return span.Days == 1 ? "1 day ago" : $"{span.Days} days ago";
@@ -113,10 +123,22 @@
             return true;
         var term = _searchString.Trim();
         return (d.ProjectName?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false)
-            || (d.CreatedOn.ToString(CultureInfo.InvariantCulture)?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false)
+            || (d.CreatedOn?.ToString(CultureInfo.InvariantCulture)?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false)
             || (d.Environment?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false)
             || (d.AssemblyVersion?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false)
             || (d.MudBlazorVersion?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false);
+    }
+
+    private bool IsCurrent(Deployment contextItem)
+    {
+        var baseUrl = NavigationManager.BaseUri.TrimEnd('/');
+        var url = contextItem.Url.TrimEnd('/');
+        return baseUrl.Equals(url, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private Color GetColorCurrent(Deployment contextItem)
+    {
+        return IsCurrent(contextItem) ? Color.Success : Color.Default;
     }
 
 }

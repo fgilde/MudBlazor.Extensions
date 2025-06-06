@@ -9,10 +9,38 @@
         this.mudDialogHeaderSelector = options.mudDialogHeaderSelector || '.mud-dialog-title';
         this._updateDialog(document.querySelector(this.mudDialogSelector));
         this.disposed = false;
+        MudExDialogHandlerBase._listeners = {};
 
     }
 
     order = 99;
+
+    on(eventName, handler) {
+        if (!MudExDialogHandlerBase._listeners[eventName]) {
+            MudExDialogHandlerBase._listeners[eventName] = [];
+        }
+        MudExDialogHandlerBase._listeners[eventName].push(handler);
+    }
+
+    un(eventName, handler) {
+        this.off(eventName, handler);
+    }
+
+    off(eventName, handler) {
+        if (!MudExDialogHandlerBase._listeners[eventName]) return;
+        MudExDialogHandlerBase._listeners[eventName] = MudExDialogHandlerBase._listeners[eventName].filter(h => h !== handler);
+    }
+
+    _emit(eventName, ...args) {
+        if (!MudExDialogHandlerBase._listeners[eventName]) return;
+        for (const handler of MudExDialogHandlerBase._listeners[eventName]) {
+            try {
+                handler(...args);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    }
 
     async raiseDialogEvent(eventName) {
         // Get viewport dimensions
@@ -30,10 +58,17 @@
             scrollX: scrollX,
             scrollY: scrollY
         };
+        var result = null;
         const rect = Object.assign(extendedRect, JSON.parse(JSON.stringify(this.dialog.getBoundingClientRect())));        
         if (this.dotNetService) {
-            return await this.dotNetService.invokeMethodAsync('PublishEvent', eventName, this.dialog.id, this.dotNet, rect);
+            result = await this.dotNetService.invokeMethodAsync('PublishEvent', eventName, this.dialog.id, this.dotNet, rect);
         }
+        this._emit(eventName, {
+            dialogId: this.dialog.id,
+            dialog: this.dialog,
+            rect
+        });
+        return result;
     }
 
     restoreSizeConstraintsIf() {
@@ -110,6 +145,7 @@
     }
 
     dispose() {
+        debugger;
         this.disposed = true;
         this._handlersCache.forEach(handlerInstance => {
             if (!handlerInstance.disposed) {
