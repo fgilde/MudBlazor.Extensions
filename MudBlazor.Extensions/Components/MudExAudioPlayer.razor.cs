@@ -271,6 +271,7 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
         return MudExStyleBuilder.Default
             .WithPosition(Core.Css.Position.Relative)
             .WithBorderRadius("27px")
+            .WithZIndex(1)
             .WithBottom(65)
             .WithWidth(AudioElementWidth)
             .WithMarginLeft("auto")
@@ -287,12 +288,12 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
     {
         var animate = (IsPlaying && AnimateVisualizerBorderColor == AnimateBorderColor.OnPlay) || AnimateVisualizerBorderColor == AnimateBorderColor.Always;
         return MudExStyleBuilder.Default
-            .WithBorderWidth(VisualizerElementBorderSize)
+            .WithBorderWidth(VisualizerElementBorderSize, !animate)
             .WithBorderStyle(BorderStyle.Solid)
             .WithBorderColor(BorderColor, !animate)
             .WithAnimatedGradientBorder(VisualizerElementBorderSize, BgFor(VisualizerBackgroundColor, _bg), _borderColors, animate)
             .WithBackgroundColor(BgFor(VisualizerBackgroundColor, _bg), !animate)
-            .WithHeight(Height)
+            .WithPadding(VisualizerElementBorderSize, animate)
             .WithWidth(Width)
             .Build();
     }
