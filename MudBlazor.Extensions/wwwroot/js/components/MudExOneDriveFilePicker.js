@@ -75,9 +75,10 @@
         };
 
         if (this.options.autoLoadFileDataBytes) {
-            const blobResponse = await fetch(fileDetails["@microsoft.graph.downloadUrl"], {
-                headers: new Headers({ Authorization: `Bearer ${this.accessToken}` })
-            });
+            //const blobResponse = await fetch(fileDetails["@microsoft.graph.downloadUrl"], {
+            //    headers: new Headers({ Authorization: `Bearer ${this.accessToken}` })
+            //});
+            const blobResponse = await fetch(fileDetails["@microsoft.graph.downloadUrl"]);
             const blob = await blobResponse.blob();
 
             fileInfo.data = await MudExUriHelper.blobToByteArray(blob);

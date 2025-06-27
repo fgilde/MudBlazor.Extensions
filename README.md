@@ -389,6 +389,10 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2024-09-23 15:35:55 -->
+ - 8.8.0 > Update MudBlazor to 8.8.0 and other Packages to latest version 
+ - 8.8.0 > Fix Bug in MudExOneDriveFilePicker where the file couldnt be loaded when AutoLoadDataBytes is true
+ - 8.7.0 > Update MudBlazor to 8.7.0
+ - 8.7.0 > Fix bug in SnapDrag Mode for dialog
  - 8.6.1 > New finally implemented SnapDrag Mode for dialog. Sample available [here](https://www.mudex.org/dialog-snap)
  - 8.6.0 > Improve performance for lightbulb on cards
  - 8.6.0 > Update MudBlazor to 8.6.0
@@ -431,11 +435,6 @@ Latest Changes:
  - 2.0.6 > Allow async child loading in [MudExTreeView](https://www.mudex.org/demos/TreeView).
  - 2.0.6 > Fixed error in sample app for [MudExSelect](https://www.mudex.org/mud-ex-select) and [MudExThemeEdit](https://www.mudex.org/theme-edit)
  - 2.0.6 > update used nuget packages to latest versions
- - 2.0.6 > update MudBlazor to 7.11.0
- - 2.0.6 > Add New Component `MudExFileDisplayOfficeLive` to support preview of any remote accessable office files in [MudExFileDisplay](https://www.mudex.org/file-display) and [MudExUploadEdit](https://www.mudex.org/upload-edit) . 
- - 2.0.6 > Use [MudExAdditionalAdornment](https://www.mudex.org/additional-adornments) for Theme edit buttons in [MudExThemeEdit](https://www.mudex.org/theme-edit)
- - 2.0.6 > Fix some style bugs
- - 2.0.6 > **_Breaking:_** Signature of [IMudExFileDisplay](https://www.mudex.org/api/IMudExFileDisplay) `CanHandleFile` changed to an async method. This allows to handle async file checks. The method now returns a Task&lt;bool&gt; instead of a bool.
 <!-- CHANGELOG:END -->
 Full change log can be found [here](https://github.com/fgilde/MudBlazor.Extensions/blob/main/MudBlazor.Extensions/Docs/CHANGELOG.md) 
 

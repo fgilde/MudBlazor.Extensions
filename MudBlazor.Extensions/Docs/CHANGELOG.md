@@ -1,5 +1,6 @@
 ## Change Log    
  - 8.8.0 > Update MudBlazor to 8.8.0 and other Packages to latest version 
+ - 8.8.0 > Fix Bug in MudExOneDriveFilePicker where the file couldnt be loaded when AutoLoadDataBytes is true
  - 8.7.0 > Update MudBlazor to 8.7.0
  - 8.7.0 > Fix bug in SnapDrag Mode for dialog
  - 8.6.1 > New finally implemented SnapDrag Mode for dialog. Sample available [here](https://www.mudex.org/dialog-snap)
