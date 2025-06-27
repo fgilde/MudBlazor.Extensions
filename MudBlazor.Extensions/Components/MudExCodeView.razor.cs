@@ -30,9 +30,9 @@ public partial class MudExCodeView
     private string _markdownCode;
     private string _code;
     private bool _isExpanded;
-    private bool _jsReady;
     private bool _copyCallbackIsAttached;
     private string _elementId = $"mudex-codeview-{Guid.NewGuid().ToString("N")[..8]}";
+    
     /// <summary>
     /// Classname for the component
     /// </summary>
@@ -92,6 +92,7 @@ public partial class MudExCodeView
     /// If this is true, a toast is shown when the code is copied
     /// </summary>
     public bool ShowCopyToast { get; set; } = true;
+
 
     /// <summary>
     /// Is raised when the code is copied
@@ -192,10 +193,12 @@ public partial class MudExCodeView
     [Parameter]
     public bool FullHeight { get; set; } = true;
 
+
     /// <summary>
     /// Theme for code
     /// </summary>
-    [Parameter] public CodeBlockTheme Theme { get; set; } = CodeBlockTheme.AtomOneDark;
+    [Parameter]
+    public CodeBlockTheme Theme { get; set; }
 
     /// <summary>
     /// ChildContent to show code for
@@ -241,8 +244,6 @@ public partial class MudExCodeView
         if (firstRender)
         {
             _isExpanded = CodeIsExpanded;
-            await JsRuntime.LoadMudMarkdownAsync();
-            _jsReady = true;
             if (ChildContent != null && string.IsNullOrWhiteSpace(Code))
                 Code = FormatHtml(CodeFromFragment(ChildContent));
             await InvokeAsync(StateHasChanged);
@@ -256,6 +257,7 @@ public partial class MudExCodeView
     {
         if(_copyCallbackIsAttached)
             return;
+        await EnsureFullyRenderedAsync();
         _copyCallbackIsAttached = true;
         var cbref = DotNetObjectReference.Create(this);
         var callbackMethodName = nameof(OnCopyClick);

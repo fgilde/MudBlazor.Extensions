@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Web;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using MudBlazor.Extensions;
 using MudBlazor.Extensions.Components;
@@ -16,7 +17,7 @@ public partial class MainLayout
     public bool IsOverlayVisible { get; set; }
     public bool IsDark { get; set; } = true;
     public event EventHandler<ThemeChangedEventArgs> ThemeChanged;
-
+    [Inject] private IMudMarkdownThemeService MudMarkdownThemeService { get; set; }
     private async void ShowAbout()
     {
         var op = new DialogOptionsEx
@@ -44,6 +45,15 @@ public partial class MainLayout
         await base.OnInitializedAsync();
     }
 
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var codeBlockTheme = GetCodeBlockTheme();
+            MudMarkdownThemeService.SetCodeBlockTheme(codeBlockTheme);
+        }
+        return base.OnAfterRenderAsync(firstRender);
+    }
 
 
     void DrawerToggle()
@@ -56,6 +66,8 @@ public partial class MainLayout
     private void HandleThemeChange(bool arg1, ClientTheme arg2)
     {
         ThemeChanged?.Invoke(this, new ThemeChangedEventArgs { IsDark = arg1, Theme = arg2 });
+        var codeBlockTheme = GetCodeBlockTheme();
+        MudMarkdownThemeService.SetCodeBlockTheme(codeBlockTheme);
     }
 
     public class ThemeChangedEventArgs

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor.Extensions.Options;
 using MudBlazor.Extensions.Services;
-using System.Text.Json.Nodes;
 using MudBlazor.Extensions.Core;
 using Nextended.Core.Extensions;
 
@@ -13,6 +12,7 @@ namespace MudBlazor.Extensions.Components;
 public partial class MudExFileDisplayCode: IMudExFileDisplay
 {
     [Inject] private MudExFileService FileService { get; set; }
+    
     /// <summary>
     /// The name of the component
     /// </summary>
@@ -31,7 +31,8 @@ public partial class MudExFileDisplayCode: IMudExFileDisplay
     /// <summary>
     /// The theme of the code block
     /// </summary>
-    [Parameter] public CodeBlockTheme Theme { get; set; } = CodeBlockTheme.AtomOneDark;
+    [Parameter]
+    public CodeBlockTheme Theme { get; set; }
 
 
     /// <summary>

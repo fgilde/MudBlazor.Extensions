@@ -48,10 +48,7 @@
     {
         return 
             @<div id="@_elementId" @ref="_element" style="@CodeViewStyleStr" class="@CodeViewClassname">
-                @if (_jsReady)
-                {
-                    <MudMarkdown CodeBlockTheme="@Theme" Value="@(_markdownCode)"></MudMarkdown>
-                }
+                <MudExMarkdown CodeBlockTheme="@Theme" Value="@(_markdownCode)"></MudExMarkdown>
             </div>;
     }
 }

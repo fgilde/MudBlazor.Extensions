@@ -25,10 +25,9 @@
 <div class="@GetCls()">
     @if (_initialized)
     {
-        <MudMarkdown OverrideLinkUrl="@LinkThat"
-                     CodeBlockTheme="@(MainLayout.GetCodeBlockTheme())"
+        <MudExMarkdown CodeBlockTheme="@MainLayout.GetCodeBlockTheme()" OverrideLinkUrl="@LinkThat"
                      OverrideHeaderTypo="TypoConvert()" Value="@Value">
-        </MudMarkdown>
+        </MudExMarkdown>
     }
 </div>
 

@@ -3198,41 +3198,6 @@
             The name of the component
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.Value">
-            <summary>
-            The Current markdown string provided from file
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.CodeBlockTheme">
-            <summary>
-            The theme of the code block
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.LinkCommand">
-            <summary>
-            LinkCommand
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.TableCellMinWidth">
-            <summary>
-            TableCellMinWidth
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.Styling">
-            <summary>
-            Styling
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.OverrideLinkUrl">
-            <summary>
-            OverrideLinkUrl
-            </summary>
-        </member>
-        <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.OverrideHeaderTypo">
-            <summary>
-            OverrideHeaderTypo
-            </summary>
-        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.FileDisplayInfos">
             <summary>
             The file display infos
@@ -3249,9 +3214,6 @@
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView)">
-            <inheritdoc />
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExFileDisplayMarkdown.ImportModuleAndCreateJsAsync">
             <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExFileDisplayOfficeLive">
@@ -5618,6 +5580,19 @@
             <summary>
             Set custom header background color.
             </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExMarkdown">
+            <summary>
+            Simple component to display markdown
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExMarkdown.CodeBlockTheme">
+            <summary>
+            The theme of the code block
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExMarkdown.OnAfterRenderAsync(System.Boolean)">
+            <inheritdoc />
         </member>
         <member name="T:MudBlazor.Extensions.Components.MudExMessageDialog">
             <summary>
