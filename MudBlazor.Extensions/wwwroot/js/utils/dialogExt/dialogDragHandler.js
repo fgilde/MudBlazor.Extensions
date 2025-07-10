@@ -34,9 +34,6 @@
         this._snapPreviewClassName = 'snap-preview';
         this._savedMaxConstraints = null;
 
-        // Touch
-        this._isTouchDevice = 'ontouchstart' in window;
-        this._touchStartTime = 0;
         this._touchMoveThreshold = 10;
     }
 
@@ -47,115 +44,172 @@
         this._cleanupHandlers();
         switch (this.options.dragMode) {
             case MudExDialogDragHandler.DragMode.DRAG:
-                this.dragElement(this.dialog, this.dialogHeader, container, false);
+                this._attachDrag(this.dialog, this.dialogHeader, container, false);
                 break;
             case MudExDialogDragHandler.DragMode.DRAG_WITHOUT_BOUNDS:
-                this.dragElement(this.dialog, this.dialogHeader, container, true);
+                this._attachDrag(this.dialog, this.dialogHeader, container, true);
                 break;
             case MudExDialogDragHandler.DragMode.SNAP:
                 this._createPreview(container);
                 this._attachResizeSnap();
                 this._attachMouseSnap();
-                this._attachTouchSnap(); 
+                this._attachTouchSnap();
                 this._attachKeySnap();
                 this._attachResizeHandler();
                 break;
         }
     }
 
-    dragElement(dialogEl, headerEl, container, disableBoundCheck) {
-        let startPos = { x: 0, y: 0 };
-        let cursorPos = { x: 0, y: 0 };
-        let startDrag;
-
-        // Mouse Events
-        const down = e => {
-            startDrag = true;
-            cursorPos = { x: e.clientX, y: e.clientY };
-            document.onmouseup = up;
-            document.onmousemove = move;
-        };
-
-        // Touch Events
-        const touchStart = e => {
-            if (e.touches.length !== 1) return;
-            const touch = e.touches[0];
-            startDrag = true;
-            cursorPos = { x: touch.clientX, y: touch.clientY };
-            document.ontouchend = touchEnd;
-            document.ontouchmove = touchMove;
-            e.preventDefault();
-        };
-
-        const move = e => {
-            if (startDrag) {
-                startDrag = false;
-                this.raiseDialogEvent('OnDragStart');
-            }
-            e.preventDefault();
-            this._performDrag(e.clientX, e.clientY, dialogEl, container, disableBoundCheck);
-        };
-
-        const touchMove = e => {
-            if (e.touches.length !== 1) return;
-            const touch = e.touches[0];
-            if (startDrag) {
-                startDrag = false;
-                this.raiseDialogEvent('OnDragStart');
-            }
-            e.preventDefault();
-            this._performDrag(touch.clientX, touch.clientY, dialogEl, container, disableBoundCheck);
-        };
-
-        const up = () => {
-            this.raiseDialogEvent('OnDragEnd');
-            this.setRelativeIf();
-            document.onmouseup = null;
-            document.onmousemove = null;
-        };
-
-        const touchEnd = () => {
-            this.raiseDialogEvent('OnDragEnd');
-            this.setRelativeIf();
-            document.ontouchend = null;
-            document.ontouchmove = null;
-        };
-
-        // Helper-Methode für gemeinsame Drag-Logik
-        this._performDrag = (clientX, clientY, dialogEl, container, disableBoundCheck) => {
-            startPos = { x: cursorPos.x - clientX, y: cursorPos.y - clientY };
-            cursorPos = { x: clientX, y: clientY };
-            const bounds = {
-                x: container.offsetWidth - dialogEl.offsetWidth,
-                y: container === document.body
-                    ? window.innerHeight - dialogEl.offsetHeight
-                    : container.offsetHeight - dialogEl.offsetHeight
-            };
-            const newPos = { x: dialogEl.offsetLeft - startPos.x, y: dialogEl.offsetTop - startPos.y };
-            dialogEl.style.position = 'absolute';
-            if (disableBoundCheck || (newPos.x >= 0 && newPos.x <= bounds.x)) {
-                dialogEl.style.left = newPos.x + 'px';
-            } else if (newPos.x > bounds.x) {
-                dialogEl.style.left = bounds.x + 'px';
-            }
-            if (disableBoundCheck || (newPos.y >= 0 && newPos.y <= bounds.y)) {
-                dialogEl.style.top = newPos.y + 'px';
-            } else if (newPos.y > bounds.y) {
-                dialogEl.style.top = bounds.y + 'px';
-            }
-            this.raiseDialogEvent('OnDragging');
-        };
-
+    // ---- DRAG-ATTACHER ----
+    _attachDrag(dialogEl, headerEl, container, disableBoundCheck) {
         const target = headerEl || dialogEl;
         target.style.cursor = 'move';
-        target.style.touchAction = 'none'; // Verhindert Browser-Zoom/Scroll
 
-        target.addEventListener('mousedown', down);
-        target.addEventListener('touchstart', touchStart);
+        // Shared State for both input methods:
+        let startPos = { x: 0, y: 0 };
+        let cursorPos = { x: 0, y: 0 };
+        let dragging = false;
+        let touchId = null;
+        let touchMoved = false;
 
-        this._handlers.push([target, 'mousedown', down]);
+        // ----- Mouse -----
+        const mouseDown = e => {
+            if (this._isClickable(e.target)) return;
+            dragging = true;
+            cursorPos = { x: e.clientX, y: e.clientY };
+            document.addEventListener('mousemove', mouseMove);
+            document.addEventListener('mouseup', mouseUp);
+        };
+
+        const mouseMove = e => {
+            if (!dragging) return;
+            e.preventDefault();
+            this._raiseDragStartIfNeeded();
+            this._performDrag(e.clientX, e.clientY, dialogEl, container, disableBoundCheck, cursorPos, pos => { cursorPos = pos; });
+        };
+
+        const mouseUp = e => {
+            if (!dragging) return;
+            dragging = false;
+            this._raiseDragEnd();
+            document.removeEventListener('mousemove', mouseMove);
+            document.removeEventListener('mouseup', mouseUp);
+        };
+
+        // ----- Touch -----
+        const touchStart = e => {
+            if (e.touches.length !== 1) return;
+            if (this._isClickable(e.target)) {
+                setTimeout(() => this._simulateClick(e.target), 1);
+                return;
+            }
+            const touch = e.touches[0];
+            touchId = touch.identifier;
+            cursorPos = { x: touch.clientX, y: touch.clientY };
+            touchMoved = false;
+            dragging = false;
+
+            document.addEventListener('touchmove', touchMove, { passive: false });
+            document.addEventListener('touchend', touchEnd);
+            document.addEventListener('touchcancel', touchEnd);
+        };
+
+        const touchMove = ev => {
+            const t = this._findTouchById(ev, touchId);
+            if (!t) return;
+            const deltaX = Math.abs(t.clientX - cursorPos.x);
+            const deltaY = Math.abs(t.clientY - cursorPos.y);
+
+            if (!touchMoved && (deltaX > this._touchMoveThreshold || deltaY > this._touchMoveThreshold)) {
+                touchMoved = true;
+                dragging = true;
+            }
+            if (touchMoved && dragging) {
+                ev.preventDefault();
+                this._raiseDragStartIfNeeded();
+                this._performDrag(t.clientX, t.clientY, dialogEl, container, disableBoundCheck, cursorPos, pos => { cursorPos = pos; });
+            }
+        };
+
+        const touchEnd = ev => {
+            if (touchMoved && dragging) {
+                this._raiseDragEnd();
+            }
+            document.removeEventListener('touchmove', touchMove);
+            document.removeEventListener('touchend', touchEnd);
+            document.removeEventListener('touchcancel', touchEnd);
+            dragging = false;
+            touchMoved = false;
+            touchId = null;
+        };
+
+        // ----- Attach Events -----
+        target.addEventListener('mousedown', mouseDown);
+        target.addEventListener('touchstart', touchStart, { passive: true });
+
+        this._handlers.push([target, 'mousedown', mouseDown]);
         this._handlers.push([target, 'touchstart', touchStart]);
     }
+
+    // ---- SHARED DRAG MOVE ----
+    _performDrag(clientX, clientY, dialogEl, container, disableBoundCheck, lastPos, updateCursorPos) {
+        // lastPos: {x, y}, updateCursorPos: (newPos) => { ... }
+        const startPos = { x: lastPos.x - clientX, y: lastPos.y - clientY };
+        const bounds = {
+            x: container.offsetWidth - dialogEl.offsetWidth,
+            y: container === document.body
+                ? window.innerHeight - dialogEl.offsetHeight
+                : container.offsetHeight - dialogEl.offsetHeight
+        };
+        const newPos = { x: dialogEl.offsetLeft - startPos.x, y: dialogEl.offsetTop - startPos.y };
+        dialogEl.style.position = 'absolute';
+        if (disableBoundCheck || (newPos.x >= 0 && newPos.x <= bounds.x)) {
+            dialogEl.style.left = newPos.x + 'px';
+        } else if (newPos.x > bounds.x) {
+            dialogEl.style.left = bounds.x + 'px';
+        }
+        if (disableBoundCheck || (newPos.y >= 0 && newPos.y <= bounds.y)) {
+            dialogEl.style.top = newPos.y + 'px';
+        } else if (newPos.y > bounds.y) {
+            dialogEl.style.top = bounds.y + 'px';
+        }
+        if (updateCursorPos) updateCursorPos({ x: clientX, y: clientY });
+        this.raiseDialogEvent('OnDragging');
+    }
+
+    // -- Util: Check if element should not start drag --
+    _isClickable(el) {
+        return el.closest('button, [role="button"], a, input, textarea, select, [tabindex]:not([tabindex="-1"])');
+    }
+
+    // -- Util: Simulate click for iOS/Safari workaround --
+    _simulateClick(el) {
+        const evt = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
+        el.dispatchEvent(evt);
+    }
+
+    // -- Util: Find correct touch object by identifier --
+    _findTouchById(ev, id) {
+        if (!ev.touches || ev.touches.length === 0) return null;
+        for (const t of ev.touches) if (t.identifier === id) return t;
+        return ev.touches[0]; // fallback
+    }
+
+    // -- Helper: Raise drag events only once at start/end --
+    _raiseDragStartIfNeeded() {
+        if (this._didDragStart) return;
+        this._didDragStart = true;
+        this.raiseDialogEvent('OnDragStart');
+    }
+    _raiseDragEnd() {
+        this._didDragStart = false;
+        this.raiseDialogEvent('OnDragEnd');
+        this.setRelativeIf && this.setRelativeIf();
+    }
+
+    // =========================
+    // SNAP-MODE & OTHER EVENTS:
+    // =========================
 
     toggleSnap(direction) {
         if (this.snappedTo === direction) {
@@ -170,31 +224,18 @@
             this.snap(direction);
         }
     }
-
-    isSnapped() {
-        return this.snappedTo !== null;
-    }
-
-    snap(direction) {
-        this._doSnap(direction, this.animateSnap);
-    }
-
+    isSnapped() { return this.snappedTo !== null; }
+    snap(direction) { this._doSnap(direction, this.animateSnap); }
     unsnap(animate) {
-        if (this.snappedTo) {
-            this._unsnap(animate ?? this.animateSnap);
-        }
+        if (this.snappedTo) this._unsnap(animate ?? this.animateSnap);
     }
-
-    _isMinimizable() {
-        return this.options.minimizeButton;
-    }
+    _isMinimizable() { return this.options.minimizeButton; }
 
     _hidePreview() {
         const p = this._preview;
         if (!p) return;
         p.style.transform = 'scale(0)';
     }
-
     _createPreview(container) {
         if (this._preview) return;
         const p = document.createElement('div');
@@ -204,65 +245,89 @@
         container.appendChild(p);
         this._preview = p;
     }
-
     _attachResizeSnap() {
         if (this.options.resizeable) {
             this.on('OnResizing', this._onResize);
             this.on('OnResized', this._onResized);
         }
     }
-
-    _onResize(dialogId, dialog, rect) {
-    }
-
-    _onResized(dialogId, dialog, rect) {
-    }
+    _onResize(dialogId, dialog, rect) { }
+    _onResized(dialogId, dialog, rect) { }
 
     _attachMouseSnap() {
         const hdr = this.dialogHeader || this.dialog;
         hdr.style.cursor = 'move';
-        hdr.style.touchAction = 'none';
-
         const down = e => {
+            if (this._isClickable(e.target)) return;
             e.preventDefault();
-            this._startDrag(e.clientX, e.clientY);
-            const onMM = this._onMouseMove.bind(this);
-            const onMU = this._onMouseUp.bind(this);
+            this._startSnapDrag(e.clientX, e.clientY);
+            const onMM = this._onMouseMoveSnap.bind(this);
+            const onMU = this._onMouseUpSnap.bind(this);
             document.addEventListener('mousemove', onMM);
             document.addEventListener('mouseup', onMU);
             this._handlers.push([document, 'mousemove', onMM], [document, 'mouseup', onMU]);
         };
-
         hdr.addEventListener('mousedown', down);
         this._handlers.push([hdr, 'mousedown', down]);
     }
 
     _attachTouchSnap() {
         const hdr = this.dialogHeader || this.dialog;
+        let touchId = null, touchMoved = false, dragging = false;
+        let startX = 0, startY = 0;
 
         const touchStart = e => {
             if (e.touches.length !== 1) return;
+            if (this._isClickable(e.target)) {
+                setTimeout(() => this._simulateClick(e.target), 1);
+                return;
+            }
             const touch = e.touches[0];
-            e.preventDefault();
-            this._startDrag(touch.clientX, touch.clientY);
+            touchId = touch.identifier;
+            startX = touch.clientX;
+            startY = touch.clientY;
+            touchMoved = false;
+            dragging = false;
 
-            const onTM = this._onTouchMove.bind(this);
-            const onTE = this._onTouchEnd.bind(this);
-
-            document.addEventListener('touchmove', onTM);
-            document.addEventListener('touchend', onTE);
-            document.addEventListener('touchcancel', onTE);
-
-            this._handlers.push([document, 'touchmove', onTM]);
-            this._handlers.push([document, 'touchend', onTE]);
-            this._handlers.push([document, 'touchcancel', onTE]);
+            document.addEventListener('touchmove', touchMove, { passive: false });
+            document.addEventListener('touchend', touchEnd);
+            document.addEventListener('touchcancel', touchEnd);
         };
 
-        hdr.addEventListener('touchstart', touchStart);
+        const touchMove = ev => {
+            const t = this._findTouchById(ev, touchId);
+            if (!t) return;
+            const deltaX = Math.abs(t.clientX - startX);
+            const deltaY = Math.abs(t.clientY - startY);
+
+            if (!touchMoved && (deltaX > this._touchMoveThreshold || deltaY > this._touchMoveThreshold)) {
+                touchMoved = true;
+                dragging = true;
+                this._startSnapDrag(startX, startY);
+            }
+            if (touchMoved && dragging) {
+                ev.preventDefault();
+                this._onMoveSnap(t.clientX, t.clientY);
+            }
+        };
+
+        const touchEnd = ev => {
+            if (touchMoved && dragging) {
+                this._onEndSnap();
+            }
+            document.removeEventListener('touchmove', touchMove);
+            document.removeEventListener('touchend', touchEnd);
+            document.removeEventListener('touchcancel', touchEnd);
+            dragging = false;
+            touchMoved = false;
+            touchId = null;
+        };
+
+        hdr.addEventListener('touchstart', touchStart, { passive: true });
         this._handlers.push([hdr, 'touchstart', touchStart]);
     }
 
-    _startDrag(clientX, clientY) {
+    _startSnapDrag(clientX, clientY) {
         this.raiseDialogEvent('OnDragStart');
         if (!this.snappedTo) this._captureState();
         this._isDragging = true;
@@ -274,27 +339,19 @@
         this._origY = this.dialog.offsetTop;
     }
 
-    _onMouseMove(e) {
+    _onMouseMoveSnap(e) {
         if (!this._isDragging) return;
-        this._handleMove(e.clientX, e.clientY);
+        this._onMoveSnap(e.clientX, e.clientY);
     }
 
-    _onTouchMove(e) {
-        if (!this._isDragging || e.touches.length !== 1) return;
-        const touch = e.touches[0];
-        this._handleMove(touch.clientX, touch.clientY);
-    }
-
-    _handleMove(clientX, clientY) {
+    _onMoveSnap(clientX, clientY) {
         this.raiseDialogEvent('OnDragging');
         const x = clientX, y = clientY;
         const W = window.innerWidth, H = window.innerHeight;
-
         if (!this._hasMoved && this.snappedTo) {
             this._unsnap(false);
         }
         this._hasMoved = true;
-
         const D = MudExDialogDragHandler.Direction;
         let zone = null;
 
@@ -339,17 +396,12 @@
         this._pendingZone = zone;
     }
 
-    _onMouseUp() {
+    _onMouseUpSnap() {
         if (!this._isDragging) return;
-        this._endDrag();
+        this._onEndSnap();
     }
 
-    _onTouchEnd() {
-        if (!this._isDragging) return;
-        this._endDrag();
-    }
-
-    _endDrag() {
+    _onEndSnap() {
         this.raiseDialogEvent('OnDragEnd');
         this._isDragging = false;
         if (this._pendingZone) {
@@ -399,9 +451,7 @@
             if (dir === D.BOTTOM) return snap(D.BOTTOM_RIGHT);
         }
         if (cur === D.BOTTOM_RIGHT) {
-            if (dir === D.TOP) {
-                return snap(D.TOP_RIGHT);
-            }
+            if (dir === D.TOP) return snap(D.TOP_RIGHT);
             if (dir === D.LEFT) return snap(D.BOTTOM_LEFT);
             if (dir === D.RIGHT) return snap(D.RIGHT);
             if (dir === D.BOTTOM) return snap(D.BOTTOM);
@@ -419,9 +469,7 @@
             if (dir === D.BOTTOM) return snap(D.BOTTOM_LEFT);
         }
         if (cur === D.BOTTOM_LEFT) {
-            if (dir === D.TOP) {
-                return snap(D.TOP_LEFT);
-            }
+            if (dir === D.TOP) return snap(D.TOP_LEFT);
             if (dir === D.RIGHT) return snap(D.BOTTOM_RIGHT);
             if (dir === D.LEFT) return snap(D.LEFT);
             if (dir === D.BOTTOM) return snap(D.BOTTOM);
@@ -451,7 +499,7 @@
     }
 
     _doSnap(zone, animate) {
-        this.removeSizeConstraintsIf();
+        this.removeSizeConstraintsIf && this.removeSizeConstraintsIf();
         if (!this._preSnapState) this._captureState();
         this.raiseDialogEvent('OnSnapStart', { position: zone });
         const r = this._calcRect(zone, window.innerWidth, window.innerHeight);
@@ -470,7 +518,7 @@
         this.snappedTo = null;
         this._preSnapState = null;
         this.raiseDialogEvent('OnSnapEnd', { position: null });
-        this.restoreSizeConstraintsIf();
+        this.restoreSizeConstraintsIf && this.restoreSizeConstraintsIf();
         setTimeout(() => { this.dialog.style.transition = 'none'; }, this.snapAnimationDuration);
     }
 

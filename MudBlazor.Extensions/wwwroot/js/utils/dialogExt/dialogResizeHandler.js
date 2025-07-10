@@ -11,9 +11,9 @@
         this.dialog.addEventListener('mouseup', this.onMouseUp.bind(this));
 
         // Touch events
-        this.dialog.addEventListener('touchstart', this.onTouchStart.bind(this));
-        this.dialog.addEventListener('touchend', this.onTouchEnd.bind(this));
-        this.dialog.addEventListener('touchcancel', this.onTouchEnd.bind(this));
+        //this.dialog.addEventListener('touchstart', this.onTouchStart.bind(this));
+        //this.dialog.addEventListener('touchend', this.onTouchEnd.bind(this));
+        //this.dialog.addEventListener('touchcancel', this.onTouchEnd.bind(this));
 
 
         this.resizeObserver = new ResizeObserver(entries => {
@@ -99,9 +99,9 @@
         this.dialog.removeEventListener('mousedown', this.onMouseDown);
         this.dialog.removeEventListener('mouseup', this.onMouseUp);
 
-        this.dialog.removeEventListener('touchstart', this.onTouchStart);
-        this.dialog.removeEventListener('touchend', this.onTouchEnd);
-        this.dialog.removeEventListener('touchcancel', this.onTouchEnd);
+        //this.dialog.removeEventListener('touchstart', this.onTouchStart);
+        //this.dialog.removeEventListener('touchend', this.onTouchEnd);
+        //this.dialog.removeEventListener('touchcancel', this.onTouchEnd);
     }
 }
 
