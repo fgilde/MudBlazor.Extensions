@@ -32,8 +32,12 @@
         this._isDragging = false;
         this.animateSnap = true;
         this._snapPreviewClassName = 'snap-preview';
+        this._savedMaxConstraints = null;
 
-        this._savedMaxConstraints = null; // store original maxWidth/Height
+        // Touch
+        this._isTouchDevice = 'ontouchstart' in window;
+        this._touchStartTime = 0;
+        this._touchMoveThreshold = 10;
     }
 
     handle(dialog) {
@@ -52,6 +56,7 @@
                 this._createPreview(container);
                 this._attachResizeSnap();
                 this._attachMouseSnap();
+                this._attachTouchSnap(); 
                 this._attachKeySnap();
                 this._attachResizeHandler();
                 break;
@@ -62,20 +67,64 @@
         let startPos = { x: 0, y: 0 };
         let cursorPos = { x: 0, y: 0 };
         let startDrag;
+
+        // Mouse Events
         const down = e => {
             startDrag = true;
             cursorPos = { x: e.clientX, y: e.clientY };
             document.onmouseup = up;
             document.onmousemove = move;
         };
+
+        // Touch Events
+        const touchStart = e => {
+            if (e.touches.length !== 1) return;
+            const touch = e.touches[0];
+            startDrag = true;
+            cursorPos = { x: touch.clientX, y: touch.clientY };
+            document.ontouchend = touchEnd;
+            document.ontouchmove = touchMove;
+            e.preventDefault();
+        };
+
         const move = e => {
             if (startDrag) {
                 startDrag = false;
                 this.raiseDialogEvent('OnDragStart');
             }
             e.preventDefault();
-            startPos = { x: cursorPos.x - e.clientX, y: cursorPos.y - e.clientY };
-            cursorPos = { x: e.clientX, y: e.clientY };
+            this._performDrag(e.clientX, e.clientY, dialogEl, container, disableBoundCheck);
+        };
+
+        const touchMove = e => {
+            if (e.touches.length !== 1) return;
+            const touch = e.touches[0];
+            if (startDrag) {
+                startDrag = false;
+                this.raiseDialogEvent('OnDragStart');
+            }
+            e.preventDefault();
+            this._performDrag(touch.clientX, touch.clientY, dialogEl, container, disableBoundCheck);
+        };
+
+        const up = () => {
+            this.raiseDialogEvent('OnDragEnd');
+            this.setRelativeIf();
+            document.onmouseup = null;
+            document.onmousemove = null;
+        };
+
+        const touchEnd = () => {
+            this.raiseDialogEvent('OnDragEnd');
+            this.setRelativeIf();
+            document.ontouchend = null;
+            document.ontouchmove = null;
+        };
+
+        // Helper-Methode für gemeinsame Drag-Logik
+        this._performDrag = (clientX, clientY, dialogEl, container, disableBoundCheck) => {
+            startPos = { x: cursorPos.x - clientX, y: cursorPos.y - clientY };
+            cursorPos = { x: clientX, y: clientY };
             const bounds = {
                 x: container.offsetWidth - dialogEl.offsetWidth,
                 y: container === document.body
@@ -96,16 +145,16 @@
             }
             this.raiseDialogEvent('OnDragging');
         };
-        const up = () => {
-            this.raiseDialogEvent('OnDragEnd');
-            this.setRelativeIf();
-            document.onmouseup = null;
-            document.onmousemove = null;
-        };
+
         const target = headerEl || dialogEl;
         target.style.cursor = 'move';
+        target.style.touchAction = 'none'; // Verhindert Browser-Zoom/Scroll
+
         target.addEventListener('mousedown', down);
+        target.addEventListener('touchstart', touchStart);
+
         this._handlers.push([target, 'mousedown', down]);
+        this._handlers.push([target, 'touchstart', touchStart]);
     }
 
     toggleSnap(direction) {
@@ -139,10 +188,11 @@
     _isMinimizable() {
         return this.options.minimizeButton;
     }
+
     _hidePreview() {
         const p = this._preview;
         if (!p) return;
-        p.style.transform = 'scale(0)';        
+        p.style.transform = 'scale(0)';
     }
 
     _createPreview(container) {
@@ -163,55 +213,97 @@
     }
 
     _onResize(dialogId, dialog, rect) {
-        this._isResizing = true;
     }
 
     _onResized(dialogId, dialog, rect) {
-        this._isResizing = true;
     }
 
     _attachMouseSnap() {
         const hdr = this.dialogHeader || this.dialog;
         hdr.style.cursor = 'move';
+        hdr.style.touchAction = 'none';
+
         const down = e => {
             e.preventDefault();
-            this.raiseDialogEvent('OnDragStart');
-            if (!this.snappedTo) this._captureState();
-            this._isDragging = true;
-            this._hasMoved = false;
-            this._pendingZone = null;
-            this._startX = e.clientX;
-            this._startY = e.clientY;
-            this._origX = this.dialog.offsetLeft;
-            this._origY = this.dialog.offsetTop;
+            this._startDrag(e.clientX, e.clientY);
             const onMM = this._onMouseMove.bind(this);
             const onMU = this._onMouseUp.bind(this);
             document.addEventListener('mousemove', onMM);
             document.addEventListener('mouseup', onMU);
             this._handlers.push([document, 'mousemove', onMM], [document, 'mouseup', onMU]);
         };
+
         hdr.addEventListener('mousedown', down);
         this._handlers.push([hdr, 'mousedown', down]);
     }
 
+    _attachTouchSnap() {
+        const hdr = this.dialogHeader || this.dialog;
+
+        const touchStart = e => {
+            if (e.touches.length !== 1) return;
+            const touch = e.touches[0];
+            e.preventDefault();
+            this._startDrag(touch.clientX, touch.clientY);
+
+            const onTM = this._onTouchMove.bind(this);
+            const onTE = this._onTouchEnd.bind(this);
+
+            document.addEventListener('touchmove', onTM);
+            document.addEventListener('touchend', onTE);
+            document.addEventListener('touchcancel', onTE);
+
+            this._handlers.push([document, 'touchmove', onTM]);
+            this._handlers.push([document, 'touchend', onTE]);
+            this._handlers.push([document, 'touchcancel', onTE]);
+        };
+
+        hdr.addEventListener('touchstart', touchStart);
+        this._handlers.push([hdr, 'touchstart', touchStart]);
+    }
+
+    _startDrag(clientX, clientY) {
+        this.raiseDialogEvent('OnDragStart');
+        if (!this.snappedTo) this._captureState();
+        this._isDragging = true;
+        this._hasMoved = false;
+        this._pendingZone = null;
+        this._startX = clientX;
+        this._startY = clientY;
+        this._origX = this.dialog.offsetLeft;
+        this._origY = this.dialog.offsetTop;
+    }
+
     _onMouseMove(e) {
         if (!this._isDragging) return;
+        this._handleMove(e.clientX, e.clientY);
+    }
+
+    _onTouchMove(e) {
+        if (!this._isDragging || e.touches.length !== 1) return;
+        const touch = e.touches[0];
+        this._handleMove(touch.clientX, touch.clientY);
+    }
+
+    _handleMove(clientX, clientY) {
         this.raiseDialogEvent('OnDragging');
-        const x = e.clientX, y = e.clientY;
+        const x = clientX, y = clientY;
         const W = window.innerWidth, H = window.innerHeight;
+
         if (!this._hasMoved && this.snappedTo) {
             this._unsnap(false);
         }
         this._hasMoved = true;
+
         const D = MudExDialogDragHandler.Direction;
         let zone = null;
 
-        // --- NEU: Zuerst Ecken checken ---
+        // Zuerst Ecken checken
         if (x <= this._threshold && y <= this._thresholdTopHalf) zone = D.TOP_LEFT;
         else if (x >= W - this._threshold && y <= this._thresholdTopHalf) zone = D.TOP_RIGHT;
         else if (x <= this._threshold && y >= H - this._thresholdTopHalf) zone = D.BOTTOM_LEFT;
         else if (x >= W - this._threshold && y >= H - this._thresholdTopHalf) zone = D.BOTTOM_RIGHT;
-        // --- Dann wie gehabt Kanten checken ---
+        // Dann Kanten checken
         else if (y <= this._threshold) zone = D.TOP;
         else if (y >= H - this._threshold) zone = D.BOTTOM;
         else if (x <= this._threshold) zone = D.LEFT;
@@ -229,9 +321,10 @@
             this._pendingZone = null;
             return;
         }
+
         const r = this._calcRect(zone, W, H);
-        const offsetX = e.clientX - r.x;
-        const offsetY = e.clientY - r.y;
+        const offsetX = x - r.x;
+        const offsetY = y - r.y;
 
         Object.assign(this._preview.style, {
             display: 'block',
@@ -246,9 +339,17 @@
         this._pendingZone = zone;
     }
 
-
     _onMouseUp() {
         if (!this._isDragging) return;
+        this._endDrag();
+    }
+
+    _onTouchEnd() {
+        if (!this._isDragging) return;
+        this._endDrag();
+    }
+
+    _endDrag() {
         this.raiseDialogEvent('OnDragEnd');
         this._isDragging = false;
         if (this._pendingZone) {
@@ -350,9 +451,7 @@
     }
 
     _doSnap(zone, animate) {
-        // remove max constraints if needed
         this.removeSizeConstraintsIf();
-
         if (!this._preSnapState) this._captureState();
         this.raiseDialogEvent('OnSnapStart', { position: zone });
         const r = this._calcRect(zone, window.innerWidth, window.innerHeight);
