@@ -61,6 +61,13 @@ Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
 </MudExSelect>
 
 
+<MudStack>
+    <MudExGradientText Typo="Typo.h6">Edit object in Dialog</MudExGradientText>
+    <MudButton OnClick="@ShowGoodDialog" Variant="Variant.Filled" Color="Color.Primary">Show currectly size modal</MudButton>
+    <MudButton OnClick="@ShowBadDialog" Variant="Variant.Filled" Color="Color.Primary">Show incorrect non-modal</MudButton>
+</MudStack>
+
+
 @code {
     List<Player> _players = null;
     Player _selected = null;
@@ -72,6 +79,30 @@ Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
     {
         _players = await LoadData();
         _selected = _players.FirstOrDefault();
+    }
+
+    private async Task ShowGoodDialog()
+    {
+        DialogOptionsEx dlgOptions = new()
+        {
+            Resizeable = true,
+            Modal = true,
+            CustomSize = new("60%x60%")
+        };
+
+        await DialogService.ShowExAsync<SampleDialog>("title", dlgOptions);
+    }
+
+    private async Task ShowBadDialog()
+    {
+        DialogOptionsEx dlgOptions = new()
+        {
+            Resizeable = true,
+            Modal = false,
+            CustomSize = new("60%x60%")
+        };
+
+        await DialogService.ShowExAsync<SampleDialog>("title", dlgOptions);
     }
 
     private Task ShowSampleDialog()

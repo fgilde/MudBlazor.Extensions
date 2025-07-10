@@ -36,7 +36,7 @@
         this.changeCls();
         this.awaitAnimation(() => {
             this.dialog.style['animation-duration'] = '0s';
-            MudExDomHelper.toAbsolute(this.dialog, true);
+            MudExDomHelper.toAbsolute(this.dialog, !this.options.customSize);
             this.appOrBody.insertBefore(this.dialog, this.appOrBody.firstChild);
             Object.assign(this.dialogContainerReference.style, {
                 display: 'none',

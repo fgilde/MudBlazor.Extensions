@@ -52,7 +52,7 @@ public partial class MudExIconPicker
     protected override void AfterValueChanged(string from, string to)
     {
         base.AfterValueChanged(from, to);
-        AdornmentIcon = to;
+        AdornmentIcon = !string.IsNullOrEmpty(to) ? to : Icons.Material.Filled.ArrowDropDown;
         _propertyName = MudExSvg.SvgPropertyNameForValue(to, IconTypes) ?? to;
         StateHasChanged();
     }
