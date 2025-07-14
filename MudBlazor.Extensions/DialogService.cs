@@ -285,7 +285,8 @@ namespace MudBlazor.Extensions
 
         private static async Task InjectOptionsAsync(IDialogService service, DotNetObjectReference<ComponentBase> callbackReference, IJSRuntime js, DialogOptionsEx options)
         {
-            var serviceCallBackRef = DotNetObjectReference.Create(service);
+            // Only create service callback reference for IMudExDialogService which has the required JSInvokable methods
+            var serviceCallBackRef = service is IMudExDialogService ? DotNetObjectReference.Create(service) : null;
             await js.InvokeVoidAsync("MudBlazorExtensions.setNextDialogOptions", options, callbackReference, serviceCallBackRef);
         }
 
