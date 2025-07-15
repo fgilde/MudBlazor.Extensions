@@ -88,6 +88,8 @@ body:
       label: What .net Version are you using?
       multiple: true
       options:
+        - .Net10
+        - .Net9
         - .Net8
         - .Net7
         - .Net6
