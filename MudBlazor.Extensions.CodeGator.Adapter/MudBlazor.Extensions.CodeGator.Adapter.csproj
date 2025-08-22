@@ -13,7 +13,7 @@
     <Title>MudExObjectEdit.CodeGatorAdapter</Title>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageId>MudExObjectEdit.CodeGatorAdapter</PackageId>
-    <PackageVersion>8.9.0</PackageVersion>
+    <PackageVersion>8.11.0</PackageVersion>
     <Authors>fgilde</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryType>Git</RepositoryType>

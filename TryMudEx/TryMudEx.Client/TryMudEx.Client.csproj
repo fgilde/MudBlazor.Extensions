@@ -9,10 +9,10 @@
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.15" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.15" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.15" />
-    <PackageReference Include="MudBlazor.Markdown" Version="8.7.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.19" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.19" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.19" />
+    <PackageReference Include="MudBlazor.Markdown" Version="8.11.0" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*-*" />
 
   </ItemGroup>
