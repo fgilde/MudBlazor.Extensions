@@ -28,7 +28,7 @@ public class MainAppTests: BaseUITest
     {
         await Test(async page =>
         {
-            await page.GetByRole(AriaRole.Link, new() { Name = "API" }).ClickAsync();
+            await page.Locator("li.mud-treeview-item").Filter(new() { HasText = "API" }).ClickAsync();
             await page.WaitForURLAsync($"{Url}/api");
             await page.WaitForRequestFinishedAsync();
             await Task.Delay(2000);
@@ -43,12 +43,23 @@ public class MainAppTests: BaseUITest
         await Test(async page =>
         {
             var version = MudExResource.MudExVersion().ToString();
+
             await page.GetByRole(AriaRole.Banner).GetByRole(AriaRole.Button).Nth(2).ClickAsync();
 
             var head = await page.GetByRole(AriaRole.Heading, new() { Name = $"MudBlazor.Extensions {version}" }).TextContentAsync();
+            
             head.Should().Contain($"MudBlazor.Extensions {version}");
 
-            await page.GetByRole(AriaRole.Button, new() { Name = "Close", Exact = true }).ClickAsync();
+            var dialog = page.Locator(".mud-dialog");
+            
+            await dialog.WaitForAsync(); 
+            
+            var closeBtn = dialog.Locator("button.mud-button-close");
+            
+            await closeBtn.ScrollIntoViewIfNeededAsync();
+            
+            await closeBtn.ClickAsync();
+
         });
 
     }
