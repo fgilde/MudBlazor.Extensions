@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
+using System.ComponentModel;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 
@@ -15,7 +17,17 @@ public enum GroupingStyle
     /// <summary>
     /// Use MudBlazor expansion panel
     /// </summary>
-    DefaultExpansionPanel
+    DefaultExpansionPanel,
+    
+    /// <summary>
+    /// Grouping with tabs
+    /// </summary>
+    Tabs,
+
+    /// <summary>
+    /// No grouping style
+    /// </summary>
+    None
 }
 
 /// <summary>
@@ -196,4 +208,11 @@ public class ExportData<T> : ExportedData<T>
     /// Gets or sets a value indicating whether the export operation should be cancelled.
     /// </summary>
     public bool Cancel { get; set; }
+}
+
+public sealed class FragmentWrapper : ComponentBase
+{
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    protected override void BuildRenderTree(RenderTreeBuilder builder)
+        => builder.AddContent(0, ChildContent);
 }

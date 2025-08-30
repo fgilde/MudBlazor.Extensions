@@ -24,6 +24,10 @@
         public SomeOther Some { get; set; }
         [Required]
         public UploadableFile UploadRequest { get; set; }
+
+        public List<string> Names { get; set; }
+        public Page_ObjectEdit.Address Address { get; set; }
+        public Page_ObjectEdit.UserInformation UserInformation { get; set; }
     }
 
     public class SomeOther
@@ -45,7 +49,7 @@
         meta => meta.WrapEachInMudItem(i => i.xs = 6)
             .Property(m => m.UploadRequest)
             .WithoutLabel()            
-            .WithAdditionalAttributes<MudExUploadEdit<UploadableFile>>(a => a.MimeTypes = new[] { "image/*" })
+            .WithAdditionalAttributes<MudExUploadEdit<UploadableFile>>(a => a.MimeTypes = ["image/*"])
             .WrapInMudItem(i => i.xs = 12), 
         parameters);
 

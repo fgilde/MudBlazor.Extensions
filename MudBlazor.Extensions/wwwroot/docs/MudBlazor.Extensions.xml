@@ -9389,6 +9389,16 @@
             Use MudBlazor expansion panel
             </summary>
         </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.GroupingStyle.Tabs">
+            <summary>
+            Grouping with tabs
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.GroupingStyle.None">
+            <summary>
+            No grouping style
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.PropertyFilterMode">
             <summary>
             Specifies the property filter mode.
@@ -9854,6 +9864,7 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.GroupingStyle">
             <summary>
             The grouping style for the component.
+            Here also <see cref="F:MudBlazor.Extensions.Components.ObjectEdit.GroupingStyle.None"/> is possible to disable grouping styles but properties are grouped by groups anyway.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.FilterMode">
@@ -9889,6 +9900,7 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.DisableGrouping">
             <summary>
             Whether to disable grouping.
+            However if you specify a <see cref="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.DefaultGroupName"/> everything is ungrouped under this group name.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.DefaultGroupName">
@@ -9979,7 +9991,7 @@
             All rendered editors
             </summary>
         </member>
-        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ExpansionPanel">
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.DynamicComponentRef">
             <summary>
             ExpansionPanels
             </summary>
