@@ -1,4 +1,6 @@
 ## Change Log    
+ - 8.11.0 > MudExObject edit now supports grouping by tabs and accordions. See sample [here](https://www.mudex.org/mudex-object-edit-tabs)
+ - 8.11.0 > Small bug fixes
  - 8.9.0 > Support touch events for dialog dragging
  - 8.9.0 > Fixes bug with icon picker if no value is specified
  - 8.9.0 > Fixes bug with custom size in non modal dialogs
