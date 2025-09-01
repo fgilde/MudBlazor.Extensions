@@ -74,10 +74,10 @@ namespace MainSample.WebAssembly.Types
         public string Name { get; set; }
 
         [JsonProperty("started_on")]
-        public DateTime StartedOn { get; set; }
+        public DateTime? StartedOn { get; set; }
 
         [JsonProperty("ended_on")]
-        public DateTime EndedOn { get; set; }
+        public DateTime? EndedOn { get; set; }
 
         [JsonProperty("status")]
         public string Status { get; set; }
