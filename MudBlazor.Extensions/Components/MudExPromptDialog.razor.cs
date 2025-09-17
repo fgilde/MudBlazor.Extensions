@@ -35,6 +35,12 @@ public partial class MudExPromptDialog
     public string OkText { get; set; } = "Ok";
 
     /// <summary>
+    /// Color for icon
+    /// </summary>
+    [Parameter, SafeCategory("Appearance")]
+    public MudExColor OkColor { get; set; } = Color.Error;
+
+    /// <summary>
     /// The text of the "Cancel" button.
     /// </summary>
     [Parameter, SafeCategory("Content")]
