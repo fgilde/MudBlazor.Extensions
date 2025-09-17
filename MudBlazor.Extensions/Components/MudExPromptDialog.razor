@@ -12,7 +12,7 @@
         <MudExTextField AutoFocus="true" HelperText="@HelperText" OnKeyUp="@OnKeyUp" Immediate="@Immediate" @bind-Value="@Value"></MudExTextField>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">@TryLocalize(CancelText)</MudButton>
-        <MudButton Disabled="@(!IsValid())" Color="@OkColor.AsColor" Variant="Variant.Filled" OnClick="@(Submit)">@TryLocalize(OkText)</MudButton>
+        <MudButton Color="@CancelColor" Variant="@CancelVariant" OnClick="Cancel">@TryLocalize(CancelText)</MudButton>
+        <MudButton Disabled="@(!IsValid())" Color="@OkColor" Variant="@OkVariant" OnClick="@(Submit)">@TryLocalize(OkText)</MudButton>
     </DialogActions>
 </MudDialog>

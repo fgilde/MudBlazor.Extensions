@@ -5884,7 +5884,22 @@
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.OkColor">
             <summary>
-            Color for icon
+            Color for Ok Button 
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.CancelColor">
+            <summary>
+            Color for Cancel Button 
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.OkVariant">
+            <summary>
+            Variant for Ok Button 
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.CancelVariant">
+            <summary>
+            Variant for Cancel Button 
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.CancelText">

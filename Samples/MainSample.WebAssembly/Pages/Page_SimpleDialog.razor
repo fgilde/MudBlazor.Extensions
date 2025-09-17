@@ -9,10 +9,10 @@
     <MudExGroupBox Text="Simple Dialogs">
         <MudGrid Style="width: 100%" Justify="Justify.Center">
             <MudItem xs="3" Class="mb-4">
-                <MudButton Class="mt-3" Size="Size.Large" OnClick="@Prompt" Variant="Variant.Filled" Color="Color.Primary">Simple Prompt</MudButton>
-            </MudItem>
-            <MudItem xs="3" Class="mb-4">
-                <MudButton Class="mt-3" Size="Size.Large" OnClick="@PromptWithColors" Variant="Variant.Filled" Color="Color.Primary">Simple Prompt with Colors</MudButton>
+                <MudMenu Class="ma-5" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="Simple Prompt" Color="Color.Primary" Variant="Variant.Filled">
+                    <MudMenuItem OnClick="@Prompt">Simple Prompt</MudMenuItem>
+                    <MudMenuItem OnClick="@PromptWithColors">Simple Prompt with Colors</MudMenuItem>
+                </MudMenu>
             </MudItem>
             <MudItem xs="3" Class="mb-4">
                 <MudButton Class="mt-3" Size="Size.Large" OnClick="@MessageBox" Variant="Variant.Outlined" Color="Color.Primary">Simple Confirmation</MudButton>
@@ -185,7 +185,8 @@
         {
             var parameters = new DialogParameters
             {
-                {nameof(MudExPromptDialog.OkColor), MudExColor.Primary}
+                {nameof(MudExPromptDialog.OkColor), Color.Primary},
+                {nameof(MudExPromptDialog.CancelVariant), Variant.Outlined}
             };
             var name = await DialogService.PromptAsync("Enter name", "Please enter your name", Icons.Material.Filled.VerifiedUser, s => !string.IsNullOrEmpty(s),parameters);
             if (name != null)
