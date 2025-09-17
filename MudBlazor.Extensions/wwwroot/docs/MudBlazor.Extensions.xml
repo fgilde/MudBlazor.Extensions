@@ -5882,6 +5882,11 @@
             The text of the "Ok" button.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.OkColor">
+            <summary>
+            Color for icon
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExPromptDialog.CancelText">
             <summary>
             The text of the "Cancel" button.
