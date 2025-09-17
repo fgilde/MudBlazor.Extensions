@@ -12,6 +12,9 @@
                 <MudButton Class="mt-3" Size="Size.Large" OnClick="@Prompt" Variant="Variant.Filled" Color="Color.Primary">Simple Prompt</MudButton>
             </MudItem>
             <MudItem xs="3" Class="mb-4">
+                <MudButton Class="mt-3" Size="Size.Large" OnClick="@PromptWithColors" Variant="Variant.Filled" Color="Color.Primary">Simple Prompt with Colors</MudButton>
+            </MudItem>
+            <MudItem xs="3" Class="mb-4">
                 <MudButton Class="mt-3" Size="Size.Large" OnClick="@MessageBox" Variant="Variant.Outlined" Color="Color.Primary">Simple Confirmation</MudButton>
             </MudItem>
             <MudItem xs="3" Class="mb-4">
@@ -171,6 +174,20 @@
         _code = MudExCodeView.ExecuteAndReturnFuncAsString(async () =>
         {
             var name = await DialogService.PromptAsync("Enter name", "Please enter your name", Icons.Material.Filled.VerifiedUser, s => !string.IsNullOrEmpty(s));
+            if (name != null)
+                await JsRuntime.AlertAsync($"Hello {name}");
+        });
+    }
+
+    private async Task PromptWithColors()
+    {
+        _code = MudExCodeView.ExecuteAndReturnFuncAsString(async () =>
+        {
+            var parameters = new DialogParameters
+            {
+                {nameof(MudExPromptDialog.OkColor), MudExColor.Primary}
+            };
+            var name = await DialogService.PromptAsync("Enter name", "Please enter your name", Icons.Material.Filled.VerifiedUser, s => !string.IsNullOrEmpty(s),parameters);
             if (name != null)
                 await JsRuntime.AlertAsync($"Hello {name}");
         });
