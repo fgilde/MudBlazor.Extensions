@@ -1,0 +1,4347 @@
+﻿_ Text: _Mensaje de texto
+--accent-color1: --color-de-acento1
+--accent-color2: --color-de-acento2
+--accent-color3: --color-de-acento3
+--accent-color4: --color-de-acento4
+--loading-color: --loading-color
+--mud-palette-black: --paleta-de-barro-negro
+--mud-palette-primary: --paleta-de-barro-primario
+--mud-palette-primary-darken: --paleta-de-barro-primario-oscurecer
+--mud-palette-primary-hover: --paleta-de-barro-primario-hover
+--mud-palette-primary-lighten: --paleta-de-barro-primario-aclarar
+--mud-palette-primary-text: --paleta-de-barro-texto-primario
+--mud-palette-secondary: --paleta-de-barro-secundario
+--mud-palette-secondary-darken: --paleta-de-barro-secundario-oscurecer
+--mud-palette-secondary-hover: --paleta-de-barro-hover secundario
+--mud-palette-secondary-lighten: --paleta-de-barro-secundario-aclarar
+--mud-palette-secondary-text: --paleta-de-barro-texto-secundario
+--mud-palette-white: --paleta-de-barro-blanco
+(currently the item is not visible): (actualmente el elemento no está visible)
+(currently the item is visible): (actualmente el elemento está visible)
+4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+A: Un
+A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Un componente que permite al usuario seleccionar un valor de una lista de valores posibles y mostrarlo como Chips o Combobox predeterminado.
+A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Un componente que se puede usar para deslizar un ChildContent desde la parte inferior, superior, izquierda o derecha al pasar el mouse.
+A Component to display text with a gradient foreground or background: Un componente para mostrar texto con un degradado en primer plano o fondo
+A Component to display the content of a zip file: Un componente para mostrar el contenido de un archivo zip
+A Component to edit and upload a list of files: Un componente para editar y cargar una lista de archivos
+A Component to quickly select a color: Un componente para seleccionar rápidamente un color
+A connection to the server cannot be established. Your network connection may be down or the server is unreachable. Please wait until the connection has been restored: No se puede establecer una conexión con el servidor. Es posible que su conexión de red esté inactiva o que no se pueda acceder al servidor. Espere hasta que se haya restablecido la conexión
+A divider to separate content: Un divisor para separar el contenido
+A maximum of {0} files are allowed: Se permite un máximo de {0} archivos
+A Popover can be used to display some content on top of another.: Un Popover se puede usar para mostrar algún contenido encima de otro.
+A powerful component to edit an object and its properties.: Un potente componente para editar un objeto y sus propiedades.
+A powerful editor that can handle json, xml or yaml content: Un potente editor que puede manejar contenido json, xml o yaml
+A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: Un componente ColorPicker simple que hereda el MudColorPicker pero agrega la posibilidad de retrasar el evento de cierre y usar un componente de selector nativo del explorador
+A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: Un componente de cuadrícula simple que admite columnas y filas y ColSpan y RowSpan para contener secciones.
+A SplitPanel Component: Un componente SplitPanel
+A Splitter Component: Un componente divisor
+A WYSIWYG Html editor component.: Un componente del editor HTML WYSIWYG.
+A11yDark: A11yOscuro
+A11yLight: A11yLuz
+aa-DJ: Afar (Yibuti)
+aa-ER: Afar (Eritrea)
+aa-ET: Afar (Etiopía)
+about: Acerca de
+Account: Cuenta
+ActionButtons: Botones de acción
+ActionButtonsNewLine: ActionButtonsNewLine
+ActionDefault: AcciónPredeterminada
+ActionDisabled: AcciónDeshabilitada
+ActionDisabledBackground: ActionDisabledBackground
+Actions: Acciones
+ActionsAdornment: AccionesAdorno
+ActionsClass: ActionsClass
+Activate comments: Activar comentarios
+Activate User?: ¿Activar usuario?
+Active: Activo
+Active?: ¿Activo?
+ActiveFilterOnly: ActiveFilterOnly
+Adaptive: Adaptable
+ADblNumber: Número de ADbl
+Add: Agregar
+Add 1000 random items: Agrega 1000 elementos aleatorios
+Add 500 Users: Añadir 500 usuarios
+Add Brand: Agregar marca
+Add Document: Agregar documento
+Add Document Type: Agregar tipo de documento
+Add Extended Attribute: Agregar atributo extendido
+Add external Url: Agregar URL externa
+Add files: Agregar archivos
+Add Product: Agregar producto
+Add Role: Agregar rol
+Add Url: Agregar URL
+Add user: Agregar usuario
+Add user to both lists: Agregar usuario a ambas listas
+Additional Audio: Audio adicional
+Additional Video: Video adicional
+AdditionalAdornment: Adorno adicional
+Address: Dirección
+Addresses: Direcciones
+AddUrl: AddUrl
+Administrator: Administrador
+Administrator Settings.: Configuración del administrador.
+Administrators Profile's Status cannot be toggled: El estado del perfil de administrador no se puede alternar
+Adornment: Adorno
+AdornmentAriaLabel: Etiqueta AriaAdorno
+AdornmentColor: Color de adorno
+AdornmentIcon: Icono de adorno
+AdornmentText: Texto de adorno
+af-NA: Afrikaans (Namibia)
+af-ZA: Afrikaans (Sudáfrica)
+After the dialog is shown you can drag it to the edges to see snap. Also you can use Ctrl + {ArrowKeys} to change position: Después de mostrar el cuadro de diálogo, puede arrastrarlo a los bordes para ver el ajuste. También puede usar Ctrl + {ArrowKeys} para cambiar de posición
+AfterBegin: DespuésComenzar
+AfterEnd: AfterEnd
+AfterSearchBox: Cuadro de búsqueda posterior
+Agate: Ágata
+Age: Edad
+agq-CM: Aghem (Camerún)
+ak-GH: Akan (Ghana)
+Albertus: Alberto
+Alice Johnson: Alice Johnson
+AliceBlue: AliceBlue
+Align: Alinear
+ALL COMPONENTS: TODOS LOS COMPONENTES
+All Documents without Type are stored here: Todos los documentos sin tipo se almacenan aquí
+All Groups: Todos los grupos
+All Permissions: Todos los permisos
+All roles: Todos los roles
+All roles unfiltered: Todos los roles sin filtrar
+AllFilters: TodosFiltros
+AllowAudioRecording: AllowAudioRecording
+AllowColumnSizeChange: AllowColumnSizeChange
+AllowCopyUrl: AllowCopyUrl
+AllowDownload: PermitirDescargar
+AllowDrop: AllowDrop
+AllowDropBox: Permitir DropBox
+AllowDuplicates: AllowDuplicates
+AllowExternalUrl: AllowExternalUrl
+AllowFolderUpload: AllowFolderUpload
+AllowGoogleDrive: PermitirGoogleDrive
+AllowInteractingUnderRubberBand: AllowInteractingUnderRubberBand
+AllowMultiple: Permitir múltiplo
+AllowOneDrive: AllowOneDrive
+AllowOpenInNewTab: AllowOpenInNewTab
+AllowOpenOnReadOnly: AllowOpenOnReadOnly
+AllowPreview: AllowPreview
+AllowRemovingItems: AllowRemovingItems
+AllowRename: AllowRename
+AllowRubberBandSelection: AllowRubberBandSelection
+AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
+AllowSelectOnPreviewClick: AllowSelectOnPreviewClick
+AllowVideoCapture: AllowVideoCapture
+AlphaBars: Barras alfa
+Already have an account?: ¿Ya tienes una cuenta?
+Always: Siempre
+AlwaysEditOptions: AlwaysEditOptions
+AlwaysShowValue: AlwaysShowValue
+AlwaysVisible: AlwaysVisible
+am-ET: Amárico (Etiopía)
+An Error has occured!: ¡Se ha producido un error!
+An Error has occurred!: ¡Se ha producido un error!
+An error occurred while confirming {0}: Se ha producido un error al confirmar {0}
+An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used, and you can specify animations as well: Un componente SelectBox extendido que permite seleccionar varios elementos y proporciona una función de búsqueda también internamente se utiliza el MudExPopover, y también puede especificar animaciones
+An item that only renders the content if it is in the viewport.: Un elemento que solo representa el contenido si está en la ventanilla.
+AnchorOrigin: AnchorOrigin
+Andale Mono: Andale Mono
+Androidstudio: Estudio Androide
+Animate: Animar
+AnimateAudioElementBorderColor: AnimateAudioElementBorderColor
+AnimateClose: AnimateClose
+AnimateVisualizerBorderColor: AnimateVisualizerBorderColor
+Animation: Animación
+AnimationDuration: AnimationDuration
+AnimationDuration (in ms): AnimationDuration (en ms)
+AnimationDurationInMs: AnimationDurationInMs
+AnimationIn: AnimaciónEn
+AnimationInDirection: AnimationInDirection
+AnimationInDuration: AnimationInDuration
+AnimationInPosition: AnimationInPosition
+AnimationOut: Salida de animación
+AnimationOutDirection: AnimationOutDirection
+AnimationOutDuration: AnimationOutDuration
+AnimationOutPosition: AnimationOutPosition
+AnimationPosition: Posición de animación
+Animations: Animaciones
+AnimationTime: Tiempo de animación
+AnimationTimingFunction: AnimationTimingFunction
+AnOldHope: Una vieja esperanza
+Another Demo theme: Otro tema de demostración
+AnotherRar.rar: AnotherRar.rar
+AnotherStringProperty10: OtraPropiedadCadena10
+AnotherStringProperty11: OtraPropiedadCadena11
+AnotherStringProperty12: OtraPropiedadCadena12
+AnotherStringProperty13: OtraPropiedadCadena13
+AnotherStringProperty14: OtraPropiedadCadena14
+AnotherStringProperty15: OtraCadenaPropiedad15
+AnotherStringProperty16: OtraPropiedadCadena16
+AnotherStringProperty17: OtraPropiedadCadena17
+AnotherStringProperty18: OtraPropiedadCadena18
+AnotherStringProperty19: OtraPropiedadCadena19
+AnotherStringProperty20: OtraPropiedadCadena20
+AnotherStringProperty21: OtraPropiedadCadena21
+AnotherStringProperty22: OtraPropiedadCadena22
+AnotherStringProperty23: OtraPropiedadCadena23
+AnotherStringProperty24: OtraPropiedadCadena24
+AnotherStringProperty25: OtraPropiedadCadena25
+AnotherStringProperty26: OtraPropiedadCadena26
+AnotherStringProperty27: OtraPropiedadCadena27
+AnotherStringProperty28: OtraCadenaPropiedad28
+AnotherStringProperty29: OtraPropiedadCadena29
+AnotherStringProperty30: OtraPropiedadCadena30
+AnotherStringProperty31: OtraCadenaPropiedad31
+AnotherStringProperty32: OtraPropiedadCadena32
+AnotherStringProperty33: OtraPropiedadCadena33
+AnotherStringProperty34: OtraPropiedadCadena34
+AnotherStringProperty35: OtraPropiedadCadena35
+AnotherStringProperty36: OtraPropiedadCadena36
+AnotherStringProperty37: OtraPropiedadCadena37
+AnotherStringProperty38: OtraPropiedadCadena38
+AnotherStringProperty39: OtraCadenaPropiedad39
+AnotherStringProperty40: OtraCadenaPropiedad40
+AnotherStringProperty41: OtraPropiedadCadena41
+AnotherStringProperty42: OtraPropiedadCadena42
+AnotherStringProperty43: OtraPropiedadCadena43
+AnotherStringProperty44: OtraPropiedadCadena44
+AnotherStringProperty45: OtraPropiedadCadena45
+AnotherStringProperty46: OtraPropiedadCadena46
+AnotherStringProperty47: OtraPropiedadCadena47
+AnotherStringProperty48: OtraPropiedadCadena48
+AnotherStringProperty49: OtraPropiedadCadena49
+AnotherStringProperty50: OtraPropiedadCadena50
+AnotherStringProperty51: OtraPropiedadCadena51
+AnotherStringProperty52: OtraPropiedadCadena52
+AnotherStringProperty53: OtraPropiedadCadena53
+AnotherStringProperty54: OtraPropiedadCadena54
+AnotherStringProperty55: OtraPropiedadCadena55
+AnotherStringProperty56: OtraPropiedadCadena56
+AnotherStringProperty57: OtraPropiedadCadena57
+AnotherStringProperty58: OtraPropiedadCadena58
+AnotherStringProperty59: OtraPropiedadCadena59
+AnotherStringProperty60: OtraPropiedadCadena60
+AnsiBands: Bandas Ansi
+AntiqueWhite: Blanco antiguo
+ApathyBase16: ApatíaBase16
+Api: API
+API: API
+API-Versions: Versiones de API
+AppBar: Barra de aplicaciones
+AppbarBackground: AppbarBackground
+AppbarHeight: AppbarHeight
+AppbarText: AppbarText
+Appearance: Apariencia
+Appetizer: Aperitivo
+Apple: Manzana
+Apple Gothic: Manzana gótica
+Application: Aplicación
+ApplicationDescription: Aplicación de ejemplo con WebAssembly y patrón de arquitectura limpia
+ApplicationSubDescription: Bienvenidos a Coworkee
+applies a CSS class when the item is not visible.: aplica una clase CSS cuando el elemento no está visible.
+applies a CSS class when the item is visible.: aplica una clase CSS cuando el elemento está visible.
+applies styles when the item is not visible.: aplica estilos cuando el elemento no está visible.
+applies styles when the item is visible.: aplica estilos cuando el elemento está visible.
+Apply: Aplicar
+ApplyBackgroundImageFromTrack: ApplyBackgroundImageFromTrack
+ApprenticeBase16: Base de aprendices16
+Apr: Apr
+Aqua: Aqua
+Aquamarine: Aguamarina
+ar-001: Árabe (Mundo)
+ar-AE: Árabe (Emiratos Árabes Unidos)
+ar-BH: Árabe (Baréin)
+ar-DJ: Árabe (Yibuti)
+ar-DZ: Árabe (Argelia)
+ar-EG: Árabe (Egipto)
+ar-ER: Árabe (Eritrea)
+ar-IL: Árabe (Israel)
+ar-IQ: Árabe (Irak)
+ar-JO: Árabe (Jordania)
+ar-KM: Árabe (Comoras)
+ar-KW: Árabe (Kuwait)
+ar-LB: Árabe (Líbano)
+ar-LY: Árabe (Libia)
+ar-MA: Árabe (Marruecos)
+ar-MR: Árabe (Mauritania)
+ar-OM: Árabe (Omán)
+ar-PS: Árabe (Autoridad Palestina)
+ar-QA: Árabe (Qatar)
+ar-SA: Árabe (Arabia Saudita)
+ar-SD: Árabe (Sudán)
+ar-SO: Árabe (Somalia)
+ar-SS: Árabe (Sudán del Sur)
+ar-SY: Árabe (Siria)
+ar-TD: Árabe (Chad)
+ar-TN: Árabe (Túnez)
+ar-YE: Árabe (Yemen)
+Archive.zip: Archive.zip
+ArduinoLight: ArduinoLight
+Are you sure to close: ¿Estás seguro de cerrar?
+Are you sure you want to force logout for user {0}: ¿Está seguro de que desea forzar el cierre de sesión para {0} de usuario
+Are you sure you want to restart Backend/Server?: ¿Está seguro de que desea reiniciar el backend/servidor?
+Are you sure you want to restore the default settings? This will overwrite any changes you've ever made here.: ¿Estás seguro de que quieres restaurar la configuración predeterminada? Esto sobrescribirá cualquier cambio que haya realizado aquí.
+Are you sure?: ¿Estás seguro?
+Arial: Arial
+Arial Black: Arial Negro
+Arial Narrow: Arial Estrecho
+arn-CL: Mapuche (Chile)
+Arta: Arte
+As Admin you can filter for users here: Como administrador, puede filtrar por usuarios aquí
+As Picker: Como seleccionador
+as read: como se lee
+As simple as it sound. This is a simple GroupBox: Tan simple como suena. Este es un GroupBox simple
+As soon as your account has been activated you can log in: Tan pronto como su cuenta haya sido activada, puede iniciar sesión
+as unread: como no leído
+as-IN: Asamés (India)
+asa-TZ: Asu (Tanzania)
+Ascetic: Ascético
+AshesBase16: CenizasBase16
+AspectRatio: Relación de aspecto
+ast-ES: Asturiano (España)
+At least one document is required: Se requiere al menos un documento
+AtelierCaveBase16: AtelierCaveBase16
+AtelierCaveLightBase16: AtelierCaveLightBase16
+AtelierDuneBase16: AtelierDuneBase16
+AtelierDuneLightBase16: AtelierDuneLightBase16
+AtelierEstuaryBase16: AtelierEstuaryBase16
+AtelierEstuaryLightBase16: AtelierEstuaryLightBase16
+AtelierForestBase16: AtelierForestBase16
+AtelierForestLightBase16: AtelierForestLightBase16
+AtelierHeathBase16: AtelierHeathBase16
+AtelierHeathLightBase16: AtelierHeathLightBase16
+AtelierLakesideBase16: AtelierLakesideBase16
+AtelierLakesideLightBase16: AtelierLakesideLightBase16
+AtelierPlateauBase16: AtelierPlateauBase16
+AtelierPlateauLightBase16: AtelierPlateauLightBase16
+AtelierSavannaBase16: TallerSavannaBase16
+AtelierSavannaLightBase16: AtelierSavannaLightBase16
+AtelierSeasideBase16: AtelierSeasideBase16
+AtelierSeasideLightBase16: AtelierSeasideLightBase16
+AtelierSulphurpoolBase16: AtelierSulphurpoolBase16
+AtelierSulphurpoolLightBase16: AtelierSulphurpoolLightBase16
+AtlasBase16: AtlasBase16
+AtomOneDark: AtomOneDark
+AtomOneDarkReasonable: AtomOneDarkRazonable
+AtomOneLight: AtomOneLight
+Audio Content-Type: Tipo de contenido de audio
+Audio devices: Dispositivos de audio
+AudioDevice: Dispositivo de audio
+AudioElementBackgroundColor: AudioElementBackgroundColor
+AudioElementBorderColor: AudioElementBorderColor
+AudioElementBorderSize: AudioElementBorderSize
+AudioElementBorderStyle: AudioElementBorderStyle
+AudioElements: Elementos de audio
+AudioElementWidth: AudioElementWidth
+Audit Trails: Pistas de auditoría
+Audit Trails exported: Pistas de auditoría exportadas
+Aug: Ago
+Austin: Austin
+Austin - 73301: Austin - 73301
+Austin - 73301ender: Austin - 73301ender
+Auto Confirm Email?: ¿Correo electrónico de confirmación automática?
+Auto Generated Editor for TestObject: Editor generado automáticamente para TestObject
+Auto Stop recording after: Detener automáticamente la grabación después de
+AutoApplyGradient: AutoApplyGradient
+AutoClear: Autoborrado
+AutoCloseBehaviour: Comportamiento de cierre automático
+AutoCloseOnSelect: AutoCloseOnSelect
+AutoCollapse: AutoContraer
+AutoExtractArchive: AutoExtractArchive
+AutoFocus: Enfoque automático
+AutoFocusFilter: Filtro de enfoque automático
+AutoLoadFileDataBytes: AutoLoadFileDataBytes
+Automatically allow next time: Permitir automáticamente la próxima vez
+AutoPlayNextTrackOnEnd: Reproducción automáticaSiguientePistaEnFin
+AutoRemoveError: AutoRemoveError
+AutoShowHideAudioElement: AutoShowHideAudioElement
+AutoSize: Tamaño automático
+Available: Disponible
+AvailableItems: Artículos disponibles
+Avant Garde: Vanguardia
+az-Cyrl-AZ: Azerbaiyano (cirílico, Azerbaiyán)
+az-Latn-AZ: Azerbaiyano (latín, Azerbaiyán)
+Azure: Celeste
+B: B
+ba-RU: Bashkir (Rusia)
+Back: Atrás
+BackdropClick: BackdropClick
+Background: Fondo
+BackgroundColor: Color de fondo
+BackgroundGray: FondoGris
+BackgroundImage: Imagen de fondo
+BackgroundPosition: Posición de fondo
+BackgroundRepeat: BackgroundRepeat
+BackgroundSize: Tamaño de fondo
+BackLinkLabel: Etiqueta de vínculo posterior
+Bar: Barra
+BarBeverage: BarBebida
+Barcode: Código de barras
+Barcode already exists.: El código de barras ya existe.
+Barcode is required!: ¡Se requiere código de barras!
+BarIndex: Índice de barras
+Bark: Corteza
+BarLevel: Nivel de barra
+BarSpacing: Espaciado de barras
+Bart Simpson: Bart Simpson
+bas-CM: Basaa (Camerún)
+Base component for a picker: Componente base para un selector
+Basic: Básico
+Basic role with default permissions: Rol básico con permisos predeterminados
+Bauhaus 93: Bauhaus 93
+be-BY: Bielorruso (Bielorrusia)
+BeforeBegin: AntesComenzar
+BeforeEnd: Antes de finalizar
+BeforeSearchBox: AntesSearchBox
+Behavior: Comportamiento
+Behaviour: Comportamiento
+Beige: Beige
+Bell MT: Campana MT
+bem-ZM: Bemba (Zambia)
+Bernard MT Condensed: Bernard MT Condensado
+BespinBase16: BespinBase16
+Beverage: Bebida
+bez-TZ: Bena (Tanzania)
+bg-BG: Búlgaro (Bulgaria)
+BgAlpha: BgAlpha
+BgColor: BgColor
+bin-NG: Edo (Nigeria)
+Bind Dark Mode: Modo oscuro de enlace
+BindWidthToPicker: BindWidthToPicker
+Birmingham: Birmingham
+Birmingham - B1 1BD: Birmingham - B1 1BD
+Birmingham - B1 1BDender: Birmingham - B1 1BDender
+Bisque: Bizcocho
+Black: Negro
+Blackadder ITC: Víbora negra ITC
+BlackList: Lista negra
+BlackMetalBase16: NegroMetalBase16
+BlackMetalBathoryBase16: NegroMetalBathoryBase16
+BlackMetalBurzumBase16: NegroMetalBurzumBase16
+BlackMetalDarkFuneralBase16: NegroMetalOscuroFuneralBase16
+BlackMetalGorgorothBase16: NegroMetalGorgorothBase16
+BlackMetalImmortalBase16: BlackMetalImmortalBase16
+BlackMetalKholdBase16: NegroMetalKholdBase16
+BlackMetalMardukBase16: NegroMetalMardukBase16
+BlackMetalMayhemBase16: NegroMetalCaosBase16
+BlackMetalNileBase16: BlackMetalNileBase16
+BlackMetalVenomBase16: NegroMetalVenomBase16
+BlanchedAlmond: Almendra blanqueada
+Blazor wrapper component for AudioMotionAnalyzer: Componente contenedor de Blazor para AudioMotionAnalyzer
+BlobUrl: BlobUrl
+Blue: Azul
+BlueViolet: AzulVioleta
+bm-Latn-ML: Bamanankan (latín, Malí)
+bn-BD: Bengalí (Bangladesh)
+bn-IN: Bangla (India)
+bo-CN: Tibetano (China)
+bo-IN: Tibetano (India)
+Bob Smith: Bob Smith
+Bodoni MT: Bodoni MT
+body1: cuerpo1
+Body1: Cuerpo1
+body2: cuerpo2
+Body2: Cuerpo2
+Bookman: Erudito
+BorderAnimationColors: BorderAnimationColors
+BorderColor: Color de borde
+Bordered: Confinado
+BorderOpacity: BorderOpacity
+BorderSize: Tamaño del borde
+BorderStyle: Estilo de borde
+Both: Ambos
+BothDiagonal: AmbosDiagonal
+BothHorizontal: AmbosHorizontal
+BothVertical: AmbosVerticales
+Bottom: Fondo
+BottomCenter: Centro inferior
+BottomLeft: AbajoIzquierda
+BottomRight: AbajoDerecha
+Bounce: Rebote
+br-FR: Bretón (Francia)
+Brand: Marca
+Brand Deleted: Marca eliminada
+Brand is required!: ¡Se requiere marca!
+Brand Not Found!: ¡Marca no encontrada!
+Brand Saved: ¡Marca salvada!
+Brand Updated: ¡Marca actualizada!
+BrandName: Marca
+Brands: Marcas
+Brands exported: Marcas exportadas
+Breadcrumb: Pan rallado
+BreadcrumbLink: BreadcrumbLink
+BreadcrumbSeparator: Separador de migas de pan
+BrewerBase16: Base de cervecero16
+BrightBase16: Base brillante16
+Brightness: Brillo
+Broadway: Broadway
+BrogrammerBase16: BrogrammerBase16
+Brown: Marrón
+BrownPaper: Papel marrón
+Browse Available Documents.: Examinar los documentos disponibles.
+Browser: Explorador
+BrowserFileExt: BrowserFileExt
+Brush Script MT: Script de pincel MT
+Brush Script Std: Script de pincel estándar
+BrushTreesBase16: ArbustosBase16
+BrushTreesDarkBase16: ArbustosÁrbolesBaseOscura16
+brx-IN: Bodo (India)
+bs-Cyrl-BA: Bosnio (cirílico, Bosnia y Herzegovina)
+bs-Latn-BA: Bosnio (latín, Bosnia y Herzegovina)
+BurlyWood: BurlyWood
+button: botón
+Button: Botón
+Button component for capturing audio and video.: Componente de botón para capturar audio y video.
+Button component for speech-to-text functionality, allowing for asynchronous recording and processing of speech input.: Componente de botón para la funcionalidad de voz a texto, lo que permite la grabación y el procesamiento asíncronos de la entrada de voz.
+ButtonColor: Color del botón
+ButtonSize: Tamaño del botón
+ButtonsJustify: BotonesJustificar
+ButtonType: Tipo de botón
+ButtonVariant: ButtonVariant
+byn-ER: Blin (Eritrea)
+Bytes: Bytes
+C: C
+C#: C#
+ca-AD: Catalán (Andorra)
+ca-ES: Catalán (España)
+ca-FR: Catalán (Francia)
+ca-IT: Catalán (Italia)
+CadetBlue: CadetBlue
+Calgary: Calgary
+Calgary - T1X 0L3: Calgary - T1X 0L3
+Calgary - T1X 0L3ender: Calgary - T1X 0L3ender
+Californian FB: FB californiano
+Can close: Puede cerrar
+Cancel: Cancelar
+Cancel deletion: Cancelar eliminación
+Cancelled: Anulado
+CanClose: Cerrar
+CanCloseCallbackName: CanCloseCallbackName
+caption: subtítulo
+Caption: Subtítulo
+Capture: Capturar
+Capture Screen: Captura de pantalla
+Capture service: Servicio de captura
+Capture video: Captura de vídeo
+CaptureButton: Botón de captura
+CaptureInfoComponent: CaptureInfoComponent
+CaptureOptions: Opciones de captura
+Card Grid: Cuadrícula de cartas
+CardEffect3d: EfectoDeTarjeta3d
+CardGrid: Cuadrícula de tarjetas
+Catalog Management: Gestión de catálogos
+ccp-Cakm-BD: Chakma (Chakma, Bangladesh)
+ccp-Cakm-IN: Chakma (Chakma, India)
+ce-RU: Checheno (Rusia)
+ceb-Latn-PH: Cebuano (latín, Filipinas)
+Centaur: Centauro
+Center: Centro
+CenterCenter: Centro
+CenterLeft: CentroIzquierda
+CenterRight: Centro-derecha
+Centimeters: Centímetros
+Century Gothic: Gótico del siglo
+cgg-UG: Chiga (Uganda)
+ChalkBase16: Base de tiza16
+Change media options: Cambiar las opciones de medios
+Change or edit your theme: Cambiar o editar el tema
+Change Password: Cambiar contraseña
+Change the system settings carefully: Cambie la configuración del sistema con cuidado
+ChannelLayout: Diseño de canal
+Charlie Brown: Charlie Brown
+Chartreuse: Chartreuse
+Charts comming soon ish...: Listas próximamente ish...
+ChartTooltip: Información sobre herramientas de gráficos
+chat: Charlar
+Chat: Charlar
+Chat?: ¿Charlar?
+Check me: Compruébame
+Check out the MudExThemeEdit Component: Echa un vistazo al componente MudExThemeEdit
+CheckBox: Casilla de verificación
+CheckedIcon: Icono de verificación
+Checker: Verificador
+Checker box: Casilla de verificación
+Chicago: Chicago
+Chicago - 60601: Chicago - 60601
+Chicago - 60601ender: Chicago - 60601ender
+ChildContentStyle: ChildContentStyle
+Chiller: Enfriador
+Chip: Chip
+ChipClass: Clase de chip
+ChipCloseable: ChipCloseable
+ChipColor: ChipColor
+ChipsAdditionalAbove: ChipsAdditionalAbove
+ChipsAdditionalBelow: ChipsAdditionalBelow
+ChipSelect: Selección de chip
+ChipSize: Tamaño del chip
+ChipsMaxWidth: ChipsMaxWidth
+ChipsOnly: Solo papas fritas
+ChipVariant: Variante de chip
+ChipWithoutItemTemplate: ChipSinItemPlantilla
+Chocolate: Chocolate
+chr-Cher-US: Cherokee (Cherokee, Estados Unidos)
+CircusBase16: CircusBase16
+Cities you want to live: Ciudades en las que quieres vivir
+City: Ciudad
+Class: Clase
+ClassChip: Chip de clase
+ClassicDarkBase16: BaseOscura Clásica16
+ClassicLightBase16: ClassicLightBase16
+ClassSearchBox: Cuadro de búsqueda de clase
+Clear: Claro
+Clearable: Borrable
+Click here to choose a screen to capture. If not selected, you will be prompted when starting the recording.: Haga clic aquí para elegir una pantalla para capturar. Si no se selecciona, se le preguntará al iniciar la grabación.
+Click here to upload files: Haga clic aquí para cargar archivos
+Click the button below to enable them and load the third party services from disqus.com: Haga clic en el botón de abajo para habilitarlos y cargar los servicios de terceros desde disqus.com
+Clickable: Se puede hacer clic
+ClickAction: Acción de clic
+ClickPropagation: ClickPropagation
+Client Language has been changed: Se ha cambiado el idioma del cliente
+Close: Cerrar
+Closeable: Se puede cerrar
+CloseAfterSelect: CloseAfterSelect
+CloseButton: Botón de cierre
+Closed: Cerrado
+CloseIcon: CerrarIcono
+CloseOnEscapeKey: CloseOnEscapeKey
+co-FR: Córcega (Francia)
+Code: Código
+CodeBlockTheme: CodeBlockTheme
+CodepenEmbed: CodepenEmbed
+CodeschoolBase16: CodeschoolBase16
+CollapseOnClick: CollapseOnClick
+Colonna MT: Columna MT
+color: Color
+Color: Color
+ColorBrewer: ColorBrewer
+ColorBubble: Burbuja de color
+ColoredImagesForExternalFilePicker: ColoredImagesForExternalFilePicker
+ColorEdit: ColorEditar
+ColorElements: Elementos de color
+ColorizeIcons: ColorizeIcons
+ColorMode: Modo de color
+ColorPicker: Selector de color
+ColorPickerMode: ColorPickerMode
+ColorPickerView: ColorPickerView
+ColorsBase16: ColoresBase16
+ColorStops: ColorStops
+ColorTemperature: Temperatura de color
+ColSpan: ColSpan
+Column: Columna
+Columns Affected: Columnas afectadas
+ColumnWidth: Ancho de columna
+Comic Sans MS: Comic Sans MS
+Comments: Comentarios
+Common: Común
+Communication: Comunicación
+Community: Comunidad
+Compact: Compacto
+Comparer: Comparar
+Component edit capture options: Opciones de captura de edición de componentes
+Component in Dialog: Componente en el cuadro de diálogo
+Component to add additional adornment to a MudInput: Componente para agregar adornos adicionales a un MudInput
+Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Componente para mostrar un archivo en una etiqueta de objeto o iframe o en un visor registrado que implementa IMudExFileDisplay
+Component to display information about the current recording: Componente para mostrar información sobre la grabación actual
+Component to Edit Icon values: Componente para editar valores de icono
+Component to Edit MudExColor: Componente para editar MudExColor
+Component to move the ChildContent to a specific element that can defined by ElementSelector.: Componente para mover el ChildContent a un elemento específico que puede definir ElementSelector.
+Component to select a theme from a list of themes.: Componente para seleccionar un tema de una lista de temas.
+ComponentBaseWithState: ComponentBaseWithState
+ComponentInDialog: ComponentInDialog
+Conditional updates: Actualizaciones condicionales
+Configure list values: Configurar valores de lista
+Confirm: Confirmar
+CONFIRM: CONFIRMAR
+Confirm and Ignore: Confirmar e ignorar
+Confirm and Set Required: Confirmar y establecer requerido
+Confirm edit: Confirmar edición
+Confirm Password: Confirmar contraseña
+Confirm Registration: Confirmar registro
+Confirmation: Confirmación
+ConnectAllAudioSources: ConnectAllAudioSources
+ConnectCapture: ConnectCapture
+ConnectCurrentTab: ConnectCurrentTab
+ConnectionMode: Modo de conexión
+ConnectMicrophone: ConnectMicrophone
+ConnectToCapture: ConnectToCapture
+contacts: Contactos
+Content-Type: Tipo de contenido
+ContentAlignment: Alineación de contenido
+ContentStream: Flujo de contenido
+ContentType: Tipo de contenido
+ContextMenuAction: Acción ContextMenuAction
+Continue to {0}: Continuar con {0}
+Continuous: Continuo
+Contrast: Contraste
+Cooper Black: Negro Cooper
+Copperplate Gothic Bold: Placa de cobre gótica audaz
+Copperplate Gothic Light: Luz gótica de cobre
+Copy url: Copiar url
+Counter: Mostrador
+Country: País
+Courier New: Mensajero Nuevo
+Courrier: Correo
+Create: Crear
+Create address: Crear dirección
+Create new backup: Crear una nueva copia de seguridad
+CreatedOn: Fecha de creación
+Critical: Crítico
+CropAndScale: CropAndScale
+cs-CZ: Checo (Chequia)
+CSS Color Variables: CSS Color Variables
+CssVars: CssVars
+cu-RU: Eslavo eclesiástico (Rusia)
+CupcakeBase16: CupcakeBase16
+CupertinoBase16: CupertinoBase16
+Current Password: Contraseña actual
+Current Password is required!: ¡Se requiere la contraseña actual!
+Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can change DarMode in the Top right menu or disable binding by toggle the switch: Actualmente, ThemeEditor está vinculado a DarkMode desde el tema actual y en {0}. Puede cambiar DarMode en el menú superior derecho o deshabilitar la vinculación alternando el interruptor
+Cursor: Cursor
+CursorPositionOrigin: CursorPositionOrigin
+Custom: Costumbre
+CustomContentErrorMessage: CustomContentErrorMessage
+Customize: Personalizar
+cy-GB: Galés (Reino Unido)
+D: D
+da-DK: Danés (Dinamarca)
+da-GL: Danés (Groenlandia)
+Dallas: Dallas
+Dallas - 75201: Dallas - 75201
+Dallas - 75201ender: Dallas - 75201ender
+DanqingBase16: DanqingBase16
+DarculaBase16: DarculaBase16
+Dark: Oscuro
+DarkContrastText: Texto de contraste oscuro
+DarkDarken: OscuridadOscurecer
+DarkGreen: Verde oscuro
+DarkKhaki: Caqui oscuro
+DarkLighten: DarkLighten
+DarkMagenta: Magenta oscuro
+DarkmossBase16: Musgo oscuroBase16
+DarkOliveGreen: Verde oliva oscuro
+DarkOnly: Solo oscuro
+DarkOrange: Naranja oscuro
+DarkOrchid: Orquídea oscura
+DarkRed: Rojo oscuro
+DarkSalmon: Salmón oscuro
+DarkSeaGreen: Verde mar oscuro
+DarkSlateBlue: Azul pizarra oscuro
+DarkSlateGray: Gris pizarra oscuro
+DarktoothBase16: Base de dientes oscuros16
+DarkTurquoise: Turquesa oscuro
+DarkViolet: Violeta oscuro
+DarkVioletBase16: BaseVioleta Oscuro16
+Dashboard: Salpicadero
+Dashed: Discontinua
+Data: Datos
+Data has been updated: Los datos han sido actualizados
+Database Backups: Copias de seguridad de bases de datos
+DataUrl: Url de datos
+DataVisualiserStyle: DataVisualiserStyle
+date: fecha
+Date: Fecha
+Date Created: Fecha de creación
+Date Range For Searching: Rango de fechas para buscar
+DateOfBirth: FechaDeNacimiento
+DateTime value is required using {0} type!: ¡El valor DateTime es necesario usando {0} tipo!
+DateTimeLocal: DateTimeLocal
+dav-KE: Taita (Kenia)
+de-AT: Alemán (Austria)
+de-BE: Alemán (Bélgica)
+de-CH: Alemán (Suiza)
+de-DE: Alemán (Alemania)
+de-IT: Alemán (Italia)
+de-LI: Alemán (Liechtenstein)
+de-LU: Alemán (Luxemburgo)
+Debug: Depurar
+Dec: Dic
+DecafBase16: DescafeinadoBase16
+decimal: decimal
+Decimal: Decimal
+Decimal value is required using {0} type!: ¡Se requiere un valor decimal usando {0} tipo!
+DeepPink: Rosa intenso
+DeepSkyBlue: Azul cielo profundo
+Default: Predeterminado
+DefaultBorderRadius: DefaultBorderRadius
+DefaultDarkBase16: BaseOscura por defecto16
+DefaultLightBase16: DefaultLightBase16
+Defined: Definido
+Delay: Demorar
+DelayValueChangeToPickerClose: DelayValueChangeToPickerClose
+Delete: Borrar
+Delete all: Eliminar todo
+Delete Confirmation: Borrar confirmación
+Delete Content: Eliminar contenido
+Delete Content {0}: Eliminar contenido '{0}'
+Delete Extended Attribute?: ¿Eliminar el atributo extendido?
+Delete file from server: Eliminar archivo del servidor
+Delete Image: Eliminar imagen
+Delete Picture: Eliminar imagen
+Delete Role Content: ¿Desea eliminar el rol con Id {0}?
+Delete these {0} elements: ¿Eliminar estos elementos {0}?
+Delete this element: ¿Eliminar este elemento?
+Delete User: Eliminar usuario
+Deletion Not Allowed: No se permite la eliminación
+Delimiter: Delimitador
+Delimiters: Delimitadores
+Demo drag mode SnapDrag: Modo de arrastre de demostración SnapDrag
+Demo for MudExDialog as inline: Demostración de MudExDialog en línea
+Demo for MudExTaskBar and not Modal dialogs: Demostración para MudExTaskBar y no cuadros de diálogo modales
+Demo for simple integrated useful dialogs. Prompt, Info, MessageBox: Demostración para diálogos útiles integrados simples. Mensaje, Información, Cuadro de mensajes
+Demo for the MudExUploadEdit inside of a MudForm and a FluentValidator.: Demostración de MudExUploadEdit dentro de un MudForm y un FluentValidator.
+Demo for the MudExUploadEdit.: Demostración de MudExUploadEdit.
+Demo for using custom can close in DialogOptionsEx: Demostración para usar el cierre personalizado en DialogOptionsEx
+Demo for using Dialog and DialogBackground Appearance in DialogOptionsEx: Demostración del uso de Dialog y DialogBackground Appearance en DialogOptionsEx
+Demo for using DialogOptionsEx: Demostración de uso de DialogOptionsEx
+Demo for using DialogOptionsEx and pass position and size: Demostración para usar DialogOptionsEx y pasar posición y tamaño
+Demo for using MudExObjectEdit for the same model with the default Demo but with some Meta configuration: Demostración para usar MudExObjectEdit para el mismo modelo con la demostración predeterminada pero con alguna configuración de Meta
+Demo for using MudExObjectEdit GroupingStyle.Tabs: Demostración para usar MudExObjectEdit GroupingStyle.Tabs
+Demo for using MudExObjectEdit only with bypassing an object: Demostración para usar MudExObjectEdit solo con la omisión de un objeto
+Demo for using MudExObjectEdit with a configuration for Conditional using 'WithAttributesIf': Demostración para usar MudExObjectEdit con una configuración para condicional usando 'WithAttributesIf'
+Demo for using MudExObjectEdit with a model that contains file(s): Demostración para usar MudExObjectEdit con un modelo que contiene archivos
+Demo for using MudExObjectEdit with CodeGator Adapter and CodeGator Attributes: Demostración para usar MudExObjectEdit con el adaptador CodeGator y los atributos de CodeGator
+Demo for using MudExObjectEditPicker with a model that contains file(s): Demostración del uso de MudExObjectEditPicker con un modelo que contiene archivos
+Demo of using explicit the MudExFileDisplayZip to show and select content inside of a zip file: Demostración del uso explícito de MudExFileDisplayZip para mostrar y seleccionar contenido dentro de un archivo zip
+Demonstration for a simple but very useful Enum Selector: Demostración de un selector de enumeración simple pero muy útil
+Demonstration of the MudExSplitter: Demostración del MudExSplitter
+Demonstration of the quickly color select with MudExColorBubble: Demostración de la selección rápida de color con MudExColorBubble
+DEMOS: DEMOS
+Dense: Denso
+Dependent permissions required: Permisos dependientes necesarios
+Deployments: Implementaciones
+Description: Descripción
+Description is required!: ¡Se requiere descripción!
+Description_for_Age: Description_for_Age
+Description_for_City: Description_for_City
+Description_for_FirstName: Description_for_FirstName
+Description_for_Id: Description_for_Id
+Description_for_LastName: Description_for_LastName
+Description_for_Notice: Description_for_Notice
+Description_for_OtherAddresses: Description_for_OtherAddresses
+Description_for_PostalCode: Description_for_PostalCode
+Description_for_ProgramingSkills: Description_for_ProgramingSkills
+Description_for_Street: Description_for_Street
+Description_for_TrueOrFalse: Description_for_TrueOrFalse
+Dessert: Postre
+detailed guide for more.: Guía detallada para obtener más información.
+Details for Trail ID: Detalles de Trail ID
+Devibeans: Devibeans
+DeviceId: DeviceId
+DeviceListVariant: DeviceListVariant
+DeviceSelection: Selección de dispositivos
+Dialog: Diálogo
+Dialog Appearance: Apariencia del cuadro de diálogo
+Dialog Content: Contenido del cuadro de diálogo
+Dialog Drag & Drop: Diálogo Arrastrar y soltar
+Dialog for editing objects with the MudExObjectEditForm: Cuadro de diálogo para editar objetos con MudExObjectEditForm
+Dialog Sample: Ejemplo de diálogo
+Dialog Samples: Ejemplos de cuadros de diálogo
+Dialog Snap Drag: Cuadro de diálogo Forzar arrastre
+Dialog to display a file using {{{MudBlazor.Extensions.Components.MudExFileDisplay}}} component.: Cuadro de diálogo para mostrar un archivo usando el componente {{{MudBlazor.Extensions.Components.MudExFileDisplay}}}.
+Dialog_Appearance: Dialog_Appearance
+DialogAppearance: Apariencia del cuadro de diálogo
+DialogBackgroundAppearance: DialogBackgroundAppearance
+DialogOptions: Opciones de diálogo
+Dialogs: Diálogos
+DialogsCanClose: DiálogosExplorarCerrar
+DialogServiceExt: DialogServiceExt
+DialogSnapDrag: Cuadro de diálogoSnapDrag
+DialogsPosition: DialogsPosición
+Diana Prince: Diana Príncipe
+DimGray: Gris tenue
+Direct: Directo
+Direction: Dirección
+DirtyseaBase16: Base del mar sucio16
+Disable Grouping: Deshabilitar agrupación
+Disabled: Deshabilitado
+DisableList: Lista de desactivación
+DisableOpacityChange: DesactivarCambiarOpacidad
+DisablePadding: DisablePadding
+DisablePopoverPadding: DisablePopoverPadding
+DisablePositionMargin: DisablePositionMargin
+DisableSelectedItemStyle: DisableSelectedItemStyle
+DisableSizeMarginX: DisableSizeMarginX
+DisableSizeMarginY: DisableSizeMarginY
+DiscreteFrequencies: Frecuencias discretas
+DisplayActionMenu: DisplayActionMenu
+DisplayErrors: DisplayErrors
+DisplayPresetList: DisplayPresetList
+Displays a tree structure as flat list: Muestra una estructura de árbol como lista plana
+Displays a tree structure as horizontal navigable tree: Muestra una estructura de árbol como árbol navegable horizontal
+Displays a tree structure as navigable Breadcrumb: Muestra una estructura de árbol como ruta de navegación navegable
+Displays a tree structure as navigable card grid: Muestra una estructura de árbol como cuadrícula de tarjeta navegable
+Displays a tree structure as navigable List: Muestra una estructura de árbol como Lista navegable
+Displays a tree structure as simple tree: Muestra una estructura de árbol como árbol simple
+DisplaySurface: Superficie de visualización
+DisplayTrackList: DisplayTrackList
+DisposeEvent: DisposeEvent
+Disqus comments are disabled by default.: Los comentarios de Disqus están deshabilitados de forma predeterminada.
+Divider: Divisor
+DividerLight: Luz divisoria
+dje-NE: Zarma (Níger)
+DNumber: DNumber
+Do you really want to restart the server?: ¿Realmente quieres reiniciar el servidor?
+Do you really want to restore the database from backup '{0}'? Note that any changes made after {1} are gone. This also means any changes made by any user: ¿Realmente desea restaurar la base de datos desde la copia de seguridad '{0}'? Tenga en cuenta que los cambios realizados después de {1} han desaparecido. Esto también significa cualquier cambio realizado por cualquier usuario
+Do you want to delete the profile picture of {0}: ¿Quieres eliminar la foto de perfil de {0}
+Do you want to delete the User {0}: ¿Desea eliminar el {0} de usuario
+Docco: Docco
+Docked: Acoplado
+Document Deleted: Documento eliminado
+Document Extended Attributes: Atributos extendidos del documento
+Document Management: Gestión de documentos
+Document Not Found!: ¡Documento no encontrado!
+Document Saved: Documento guardado
+Document Store: Almacén de documentos
+Document Type: Tipo de documento
+Document Type Deleted: Tipo de documento eliminado
+Document Type is required!: ¡Se requiere el tipo de documento!
+Document Type Not Found!: ¡Tipo de documento no encontrado!
+Document Type Saved: Tipo de documento guardado
+Document Type Updated: Tipo de documento actualizado
+Document type with this name already exists.: El tipo de documento con este nombre ya existe.
+Document Types: Tipos de documentos
+Document Types exported: Tipos de documentos exportados
+Document Updated: Documento actualizado
+Documentation: Documentación
+Documents: Documentos
+DodgerBlue: DodgerBlue
+doi-Deva-IN: Dogri (Devanagari, India)
+Don't have an account?: ¿No tienes una cuenta?
+Done!: ¡Hecho!
+Donut: Dónut
+Dotted: Punteado
+Double: Doble
+DoubleClickAction: Acción de doble clic
+Download: Descargar
+Download {0} files separately: Descargar archivos {0} por separado
+Download {0} with {1} files as zip: Descargar {0} con archivos {1} como zip
+Download file {0}: Descargar archivo {0}
+Download file {0} as zip: Descargar archivo {0} como zip
+DraculaBase16: DraculaBase16
+Drag and Drop files here: Arrastra y suelta archivos aquí
+DragEffect: Efecto de arrastre
+DragMode: Modo de arrastre
+Drawer: Cajón
+DrawerBackground: Fondo del cajón
+DrawerClipMode: DrawerClipMode
+DrawerIcon: Icono de cajón
+DrawerMiniWidthLeft: CajónMiniAnchoIzquierdo
+DrawerMiniWidthRight: cajónMiniWidthRight
+DrawerText: Texto del cajón
+DrawerVariant: VarianteDibujante
+DrawerWidthLeft: Ancho del cajónIzquierda
+DrawerWidthRight: CajónAnchoDerecho
+DroidCam Source 2: DroidCam Source 2
+DroidCam Source 3: DroidCam Source 3
+Drop Box: Buzón
+Drop down component to select a culture: Componente desplegable para seleccionar una referencia cultural
+Drop down component to select an enum value or multiple on flags enums: Componente desplegable para seleccionar un valor de enumeración o varios en las enumeraciones de indicadores
+Drop files here: Suelta archivos aquí
+DropBox external file picker component: Componente selector de archivos externo de DropBox
+DropBoxApiKey: DropBoxApiKey
+Dropdown list component to select one ore more fonts: Componente de lista desplegable para seleccionar una o más fuentes
+DropShadow: Sombra paralela
+DropZoneClickAction: Acción de clic de zona de caída
+dsb-DE: Bajo sorabo (Alemania)
+dua-CM: Duala (Camerún)
+DualCombined: DualCombinado
+DualHorizontal: DualHorizontal
+DualVertical: DualVertical
+DuplicateErrorText: DuplicateErrorText
+Duration: Duración
+dv-MV: Divehi (Maldivas)
+Dynamic component tests: Pruebas de componentes dinámicos
+dyo-SN: Jola-Fonyi (Senegal)
+dz-BT: Dzongkha (Bután)
+E-mail: Correo electrónico
+E-Mail: Correo electrónico
+E-Mail not confirmed.: Correo electrónico no confirmado. Revise su buzón y confirme su dirección de correo electrónico. <a href='{0}'>Reenviar confirmación por correo electrónico</a>
+ebu-KE: Embu (Kenia)
+Edge: Borde
+EdgeDarkBase16: EdgeDarkBase16
+EdgeLightBase16: EdgeLightBase16
+Edit: Editar
+Edit {0}: Editar {0}
+Edit a complex Model with included Collection of users: Editar un modelo complejo con la colección de usuarios incluida
+Edit Audio Constraints: Editar restricciones de audio
+Edit Current Theme: Editar tema actual
+Edit data in dialog: Editar datos en el cuadro de diálogo
+Edit in TryMudEx: Editar en TryMudEx
+Edit Items: Editar elementos
+Edit only a Collection of users: Editar solo una colección de usuarios
+Edit rating: Editar calificación
+Edit Running Component: Editar componente en ejecución
+Edit Test Object: Editar objeto de prueba
+Edit Users: Editar usuarios
+Edit Video Constraints: Editar restricciones de vídeo
+Edit with shared MetaConfig: Editar con MetaConfig compartido
+Editable: Editable
+Editing of the DB Connection can break whole application. Please edit this only if you know what you are doing: La edición de la conexión de base de datos puede romper toda la aplicación. Por favor, edite esto solo si sabe lo que está haciendo
+Editing of this endpoint can break AI integration: La edición de este punto final puede interrumpir la integración de IA
+EditMode: Modo de edición
+Editor for a property of an object. Used internally inside the MudExObjectEdit: Editor para una propiedad de un objeto. Se usa internamente dentro del MudExObjectEditar
+EditRunningComponent: EditRunningComponent
+Edmonton: Edmonton
+Edmonton - T5A 0A1: Edmonton - T5A 0A1
+Edmonton - T5A 0A1ender: Edmonton - T5A 0A1ender
+ee-GH: Ewe (Ghana)
+ee-TG: Oveja (Togo)
+EightiesBase16: Ochenta Base16
+el-CY: Griego (Chipre)
+el-GR: Griego (Grecia)
+Elevation: Elevación
+Em: En
+email: Correo electrónico
+Email: Correo electrónico
+Email {0} is already registered.: Email {0} ya está registrado.
+Email cannot changed: El correo electrónico no se puede cambiar
+Email Confirmation: Confirmación por correo electrónico
+Email is not correct: El correo electrónico no es correcto
+Email is required: Se requiere correo electrónico
+Email is required!: ¡Se requiere correo electrónico!
+EmbersBase16: EmbersBase16
+en-001: Español (Mundo)
+en-029: Inglés (Caribe)
+en-150: Español (Europa)
+en-AE: Español (Emiratos Árabes Unidos)
+en-AG: Inglés (Antigua y Barbuda)
+en-AI: Inglés (Anguila)
+en-AS: Inglés (Samoa Americana)
+en-AT: Español (Austria)
+en-AU: Español (España)
+en-BB: Español (Barbados)
+en-BE: Español (Bélgica)
+en-BI: Inglés (Burundi)
+en-BM: Inglés (Bermudas)
+en-BS: Inglés (Bahamas)
+en-BW: Inglés (Botswana)
+en-BZ: Inglés (Belice)
+en-CA: Español (Canadá)
+en-CC: Inglés (Islas Cocos [Keeling])
+en-CH: Español (Suiza)
+en-CK: Inglés (Islas Cook)
+en-CM: Inglés (Camerún)
+en-CX: Inglés (Isla de Navidad)
+en-CY: Español (Chipre)
+en-DE: Español (Alemania)
+en-DK: Español (Dinamarca)
+en-DM: Español (Dominica)
+en-ER: Español (Eritrea)
+en-FI: Español (Finlandia)
+en-FJ: Inglés (Fiji)
+en-FK: Inglés (Islas Malvinas)
+en-FM: Inglés (Micronesia)
+en-GB: Español (España)
+en-GD: Español (Granada)
+en-GG: Inglés (Guernsey)
+en-GH: Español (Ghana)
+en-GI: Español (Gibraltar)
+en-GM: Inglés (Gambia)
+en-GU: Inglés (Guam)
+en-GY: Inglés (Guyana)
+en-HK: Inglés (RAE de Hong Kong)
+en-ID: Español (Indonesia)
+en-IE: Español (Irlanda)
+en-IL: Inglés (Israel)
+en-IM: Inglés (Isla de Man)
+en-IN: Español (India)
+en-IO: Inglés (Territorio Británico del Océano Índico)
+en-JE: Inglés (Jersey)
+en-JM: Inglés (Jamaica)
+en-KE: Inglés (Kenia)
+en-KI: Inglés (Kiribati)
+en-KN: Inglés (San Cristóbal y Nieves)
+en-KY: Inglés (Islas Caimán)
+en-LC: Inglés (Santa Lucía)
+en-LR: Español (Liberia)
+en-LS: Inglés (Lesotho)
+en-MG: Español (Madagascar)
+en-MH: Inglés (Islas Marshall)
+en-MO: Inglés (RAE de Macao)
+en-MP: Inglés (Islas Marianas del Norte)
+en-MS: Inglés (Montserrat)
+en-MT: Español (Malta)
+en-MU: Inglés (Mauricio)
+en-MW: Inglés (Malawi)
+en-MY: Español (Malasia)
+en-NA: Español (Namibia)
+en-NF: Inglés (Isla Norfolk)
+en-NG: Español (Nigeria)
+en-NL: Español (Países Bajos)
+en-NR: Inglés (Nauru)
+en-NU: Español (Niue)
+en-NZ: Inglés (Nueva Zelanda)
+en-PG: Inglés (Papúa Nueva Guinea)
+en-PH: Inglés (Filipinas)
+en-PK: Español (Pakistán)
+en-PN: Inglés (Islas Pitcairn)
+en-PR: Inglés (Puerto Rico)
+en-PW: Español (Palau)
+en-RW: Inglés (Ruanda)
+en-SB: Inglés (Islas Salomón)
+en-SC: Inglés (Seychelles)
+en-SD: Español (Sudán)
+en-SE: Español (Suecia)
+en-SG: Español (Singapur)
+en-SH: Inglés (Santa Elena, Ascensión, Tristán da Cunha)
+en-SI: Español (Eslovenia)
+en-SL: Inglés (Sierra Leona)
+en-SS: Inglés (Sudán del Sur)
+en-SX: Inglés (Sint Maarten)
+en-SZ: Inglés (Eswatini)
+en-TC: Inglés (Islas Turcas y Caicos)
+en-TK: Inglés (Tokelau)
+en-TO: Inglés (Tonga)
+en-TT: Inglés (Trinidad y Tobago)
+en-TV: Inglés (Tuvalu)
+en-TZ: Español (Tanzania)
+en-UG: Español (Uganda)
+en-UM: Inglés (Islas Ultramarinas de EE. UU.)
+en-US: Español (España)
+en-US-posix: Español (Estados Unidos, Computadora)
+en-VC: Inglés (San Vicente y las Granadinas)
+en-VG: Inglés (Islas Vírgenes Británicas)
+en-VI: Inglés (Islas Vírgenes de EE. UU.)
+en-VU: Inglés (Vanuatu)
+en-WS: Inglés (Samoa)
+en-ZA: Inglés (Sudáfrica)
+en-ZM: Español (Zambia)
+en-ZW: Español (Zimbabue)
+Enable Disqus: Habilitar Disqus
+enables or disables virtualization.: Habilita o deshabilita la virtualización.
+End: Fin
+English: Inglés
+Engravers MT: Grabadores MT
+Enter email and your new password here: Ingrese su correo electrónico y su nueva contraseña aquí
+Enter email for password reset: Ingrese la dirección de correo electrónico vinculada a su cuenta y recibirá un correo electrónico con un enlace para restablecer su contraseña
+Enter name: Ingrese el nombre
+Enter name of backup file: Introduzca el nombre del archivo de copia de seguridad
+Enter new name of backup file: Ingrese el nuevo nombre del archivo de copia de seguridad
+Enter the email address for the confirmation mail: Ingrese la dirección de correo electrónico para el correo de confirmación
+Enter the URL to existing file: Ingrese la URL del archivo existente
+Enter your message...: Ingrese su mensaje...
+Entity Id: Identificador de entidad
+Entity is required!: ¡Se requiere entidad!
+EntityCreatedBy: EntityCreatedBy
+EntityCreatedOn (Local): EntityCreatedOn (local)
+EntityCreatedOn (UTC): EntityCreatedOn (UTC)
+EntityId: EntityId
+EntityLastModifiedBy: EntidadÚltimaModificadaPor
+EntityLastModifiedOn (Local): EntityLastModifiedOn (local)
+EntityLastModifiedOn (UTC): EntityLastModifiedOn (UTC)
+Entree: Entrada
+EnumSelect: Selección de enumeración
+Environment: Medio ambiente
+eo-001: Esperanto (Mundo)
+EquilibriumDarkBase16: EquilibrioBaseOscura16
+EquilibriumGrayDarkBase16: EquilibrioGrisBaseOscura16
+EquilibriumGrayLightBase16: EquilibrioGrisLuzBase16
+EquilibriumLightBase16: EquilibriumLightBase16
+Eras Bold ITC: Eras Bold ITC
+Eras Demi ITC: Eras Demi ITC
+Eras Light ITC: Eras Light ITC
+Eras Medium ITC: Eras Medio ITC
+Error: Error
+ErrorAnimation: ErrorAnimation
+ErrorContrastText: ErrorContrastText
+ErrorDarken: ErrorDarken
+ErrorId: ErrorId
+ErrorLighten: ErrorLighten
+ErrorMessage: Mensaje de error
+ErrorText: TextoDeError
+es-419: Español (América Latina)
+es-AR: Español (Argentina)
+es-BO: Español (Bolivia)
+es-BR: Español (Brasil)
+es-BZ: Español (Belice)
+es-CL: Español (Chile)
+es-CO: Español (Colombia)
+es-CR: Español (Costa Rica)
+es-CU: Español (Cuba)
+es-DO: Español (República Dominicana)
+es-EC: Español (Ecuador)
+es-ES: Español (España)
+es-GQ: Español (Guinea Ecuatorial)
+es-GT: Español (Guatemala)
+es-HN: Español (Honduras)
+es-MX: Español (México)
+es-NI: Español (Nicaragua)
+es-PA: Español (Panamá)
+es-PE: Español (Perú)
+es-PH: Español (Filipinas)
+es-PR: Español (Puerto Rico)
+es-PY: Español (Paraguay)
+es-SV: Español (El Salvador)
+es-US: Español (Estados Unidos)
+es-UY: Español (Uruguay)
+es-VE: Español (Venezuela)
+Español: Español
+EspressoBase16: Base de espresso16
+et-EE: Estonio (Estonia)
+Ethan Hunt: Ethan Hunt
+eu-ES: Euskera (España)
+EvaBase16: EvaBase16
+EvaDimBase16: EvaDimBase16
+ewo-CM: Ewondo (Camerún)
+ExcelSheet.xlsx: ExcelSheet.xlsx
+Expand &nbsp; <b>not</b> &nbsp; loaded nodes: Expandir &nbsp; nodos <b>no</b> &nbsp; cargados
+Expand all nodes: Expandir todos los nodos
+Expand loaded nodes: Expandir nodos cargados
+Expand/Collapse: Expandir/Contraer
+ExpandBehaviour: ExpandirComportamiento
+ExpandButtonDirection: ExpandButtonDirection
+ExpandedIcon: Icono expandido
+ExpandOnClick: ExpandOnClick
+ExpandOnFilter: ExpandOnFilter
+Explicit File Display Zip: Archivo explícito Zip de visualización
+Export: Exportar
+Export To Excel: Exportar a Excel
+Export_SheetName: Datos
+ExposureCompensation: Compensación de exposición
+ExposureMode: Modo de exposición
+ExposureTime: Tiempo de exposición
+Extended Attribute Deleted: Atributo extendido eliminado
+Extended Attribute Not Found!: ¡Atributo extendido no encontrado!
+Extended Attribute Saved: Atributo extendido guardado
+Extended Attribute Updated: Atributo extendido actualizado
+Extended Attribute with this Key already exists.: El atributo extendido con esta clave ya existe.
+Extended Attributes: '\{0}\ Atributos extendidos'
+Extended Attributes exported: Atributos extendidos exportados
+ExtensionRestrictionType: ExtensionRestrictionType
+Extensions: Extensiones
+External Id: Identificador externo
+ExternalDialogOptions: Opciones de diálogo externo
+ExternalId: Identificador externo
+ExternalPickerImageSize: ExternalPickerImageSize
+ExternalProviderRendering: ExternalProviderRendering
+ExtraExtraLarge: ExtraExtraLarge
+ExtraLarge: Extragrande
+ExtraSmall: ExtraSmall
+fa-IR: Persa (Irán)
+FacingMode: Modo de enfrentamiento
+Fade: Desvanecerse
+FadeIn: Fundido de entrada
+Failed to get client preferences: No se pudieron obtener las preferencias del cliente
+FallBackInIframe: FallBackInIframe
+False: Falso
+FAQs: Preguntas Frecuentes
+Far: Lejos
+Features: Funciones
+Feb: Feb
+Felix Titling: Titulación de Félix
+Female: Hembra
+Female_ Text: Female_ Texto
+ff-Adlm-BF: Fulah (Adlam, Burkina Faso)
+ff-Adlm-CM: Fulah (Adlam, Camerún)
+ff-Adlm-GH: Fulah (Adlam, Ghana)
+ff-Adlm-GM: Fulah (Adlam, Gambia)
+ff-Adlm-GN: Fulah (Adlam, Guinea)
+ff-Adlm-GW: Fulah (Adlam, Guinea-Bissau)
+ff-Adlm-LR: Fulah (Adlam, Liberia)
+ff-Adlm-MR: Fulah (Adlam, Mauritania)
+ff-Adlm-NE: Fulah (Adlam, Níger)
+ff-Adlm-NG: Fulah (Adlam, Nigeria)
+ff-Adlm-SL: Fulah (Adlam, Sierra Leona)
+ff-Adlm-SN: Fulah (Adlam, Senegal)
+ff-Latn-BF: Fulah (latín, Burkina Faso)
+ff-Latn-CM: Fulah (latín, Camerún)
+ff-Latn-GH: Fulah (latín, Ghana)
+ff-Latn-GM: Fulah (latín, Gambia)
+ff-Latn-GN: Fulah (latín, Guinea)
+ff-Latn-GW: Fulah (latín, Guinea-Bissau)
+ff-Latn-LR: Fulah (latín, Liberia)
+ff-Latn-MR: Fulah (latín, Mauritania)
+ff-Latn-NE: Fulah (latín, Níger)
+ff-Latn-NG: Fulah (latín, Nigeria)
+ff-Latn-SL: Fulah (latín, Sierra Leona)
+ff-Latn-SN: Fulah (latín, Senegal)
+FFTSize: Tamaño FFTS
+fi-FI: Finlandés (Finlandia)
+fil-PH: Filipino (Filipinas)
+File Display: Visualización de archivos
+File Display with Stream: Visualización de archivos con Stream
+File Handling: Manejo de archivos
+File is required!: ¡Se requiere archivo!
+FileDisplay: Visualización de archivos
+FileDisplayAsStream: FileDisplayAsStream
+FileDisplayZipWithPreview: FileDisplayZipWithPreview
+FileInfo: Información de archivo
+FileName: Nombre
+Files: Archivos
+Files of this type ({0}) are not allowed. Only following types are allowed '{1}'. Try one of these extensions ({2}): No se permiten archivos de este tipo ({0}). Solo se permiten los siguientes tipos '{1}'. Prueba una de estas extensiones ({2})
+Fill Administrator Credentials: Rellenar credenciales de administrador
+Fill Basic User Credentials: Rellenar credenciales de usuario básicas
+FillAlpha: FillAlpha
+Filled: Lleno
+Filter: Filtro
+Filter...: Filtro...
+Filter468: Filtro468
+FilterBehaviour: Comportamiento del filtro
+FilterBoxClass: FilterBoxClass
+FilterBoxStyle: Estilo de caja de filtro
+FilterChipsPlacedRight: FiltroChipsColocadosBien
+Filtered Audit Trails exported: Registros de auditoría filtrados exportados
+Filtered Brands exported: Marcas filtradas exportadas
+Filtered Document Types exported: Tipos de documentos filtrados exportados
+Filtered Extended Attributes exported: Atributos extendidos filtrados exportados
+Filtered Products exported: Productos filtrados exportados
+Filtered Users exported: Usuarios filtrados exportados
+FilterEnabled: Filtro habilitado
+FilterHighlighting: Resaltado de filtros
+Filtering: Filtrado
+FilterMode: Modo de filtro
+FilterMultiple: FiltroMúltiple
+FilterPlaceholder: Marcador de posición de filtro
+Filters: Filtros
+FilterVariant: VarianteFiltro
+Fiona Gallagher: Fiona Gallagher
+Firebrick: Ladrillo refractario
+First Name: Nombre
+First Name is required: Se requiere el nombre
+FirstName: Nombre
+Fixed: Fijo
+Flags Enum: Enumeración de banderas
+Flat: Plano
+Flat List: Lista plana
+FlatBase16: Base plana16
+FlatList: Lista plana
+FlexEnd: FlexEnd
+FlexStart: FlexStart
+Flip: Dar la vuelta
+FlipAlways: FlipAlways
+FlipNever: Voltear nunca
+FlipOnOpen: FlipOnOpen
+FlipX: FlipX
+FlipY: Voltear
+FloralWhite: Blanco Floral
+Florian Gilde: Florian Gilde
+FNumber: FNumber
+fo-DK: Feroese (Dinamarca)
+fo-FO: Islas Feroe (Islas Feroe)
+FocusDistance: Distancia de enfoque
+FocusMode: Modo de enfoque
+FontFamily: Familia de fuentes
+FontSelect: Selección de fuente
+FontSize: Tamaño de fuente
+FontWeight: Peso de fuente
+Footlight MT Light: Footlight MT Light
+Force pick Item: Forzar selección de objeto
+Force pick Items: Forzar selección de objetos
+Force select Item: Forzar selección de elemento
+Force select Items: Forzar selección de elementos
+ForceNativeRender: ForceNativeRender
+ForceSelectOfMudColor: ForceSelectOfMudColor
+ForceShrink: FuerzaEncogimiento
+ForestGreen: Verde bosque
+Forgot password?: ¿Olvidó su contraseña?
+Format: Formato
+Foundation: Fundación
+fr-029: Francés (Caribe)
+fr-BE: Francés (Bélgica)
+fr-BF: Francés (Burkina Faso)
+fr-BI: Francés (Burundi)
+fr-BJ: Francés (Benín)
+fr-BL: Francés (San Bartolomé)
+fr-CA: Francés (Canadá)
+fr-CD: Francés (Congo [RDC])
+fr-CF: Francés (República Centroafricana)
+fr-CG: Francés (Congo)
+fr-CH: Francés (Suiza)
+fr-CI: Francés (Costa de Marfil)
+fr-CM: Francés (Camerún)
+fr-DJ: Francés (Yibuti)
+fr-DZ: Francés (Argelia)
+fr-FR: Francés (Francia)
+fr-GA: Francés (Gabón)
+fr-GF: Francés (Guayana Francesa)
+fr-GN: Francés (Guinea)
+fr-GP: Francés (Guadalupe)
+fr-GQ: Francés (Guinea Ecuatorial)
+fr-HT: Francés (Haití)
+fr-KM: Francés (Comoras)
+fr-LU: Francés (Luxemburgo)
+fr-MA: Francés (Marruecos)
+fr-MC: Francés (Mónaco)
+fr-MF: Francés (San Martín)
+fr-MG: Francés (Madagascar)
+fr-ML: Francés (Malí)
+fr-MQ: Francés (Martinica)
+fr-MR: Francés (Mauritania)
+fr-MU: Francés (Mauricio)
+fr-NC: Francés (Nueva Caledonia)
+fr-NE: Francés (Níger)
+fr-PF: Francés (Polinesia Francesa)
+fr-PM: Francés (San Pedro y Miquelón)
+fr-RE: Francés (Reunión)
+fr-RW: Francés (Ruanda)
+fr-SC: Francés (Seychelles)
+fr-SN: Francés (Senegal)
+fr-SY: Francés (Siria)
+fr-TD: Francés (Chad)
+fr-TG: Francés (Togo)
+fr-TN: Francés (Túnez)
+fr-VU: Francés (Vanuatu)
+fr-WF: Francés (Wallis y Futuna)
+fr-YT: Francés (Mayotte)
+FrameRate: Velocidad de fotogramas
+FramerBase16: FramerBase16
+Franklin Gothic Medium: Franklin Gótico Medio
+French: Francés
+FrequencyScale: Escala de frecuencia
+FruitSodaBase16: Base de soda de frutas16
+Fuchsia: Fucsia
+Full: Lleno
+FullHeight: Altura completa
+FullOctaveBands: FullOctaveBands
+FullPaged: FullPaging
+Fullscreen: Pantalla completa
+FullScreen: Pantalla completa
+FullScreenButtonIcon: FullScreenButtonIcon
+FullWidth: Ancho completo
+fur-IT: Friulano (Italia)
+Futura: Futura
+fy-NL: Frisia occidental (Países Bajos)
+ga-GB: Irlandés (Reino Unido)
+ga-IE: Irlandés (Irlanda)
+Gain: Ganar
+Gainsboro: Gainsboro
+Garamond: Garamond
+gd-GB: Gaélico escocés (Reino Unido)
+Gender: Género
+General: General
+Geneva: Ginebra
+George Miller: George Miller
+Georgia: Georgia
+German: Alemán
+GhostWhite: Blanco fantasma
+GigavoltBase16: GigavoltBase16
+Gigi: Gigi
+Gill Sans: Gill Sans
+Gill Sans MT: Branquias sin MT
+Github: Github
+GitHub Project repository: Repositorio de proyectos de GitHub
+GithubBase16: GithubBase16
+GithubDark: GithubDark
+GithubDarkDimmed: GithubDarkDimmed
+gl-ES: Gallego (España)
+Gml: Gml
+gn-PY: Guaraní (Paraguay)
+GoHome: ¡Vete a casa!
+Gold: Oro
+Goldenrod: Vara de oro
+Google: Google
+Google Drive: Google Drive
+Google Drive file picker component: Componente selector de archivos de Google Drive
+Googlecode: Código de Google
+GoogleDarkBase16: GoogleDarkBase16
+GoogleDriveClientId: GoogleDriveClientId
+GoogleLightBase16: GoogleLightBase16
+Goudy Old Style: Estilo antiguo de Goudy
+Goudy Stout: Goudy Stout
+Gradient: Gradiente
+GradientDark: DegradadoOscuro
+GradientForeground: DegradadoPrimer plano
+GradientLeft: GradienteIzquierda
+GradientLight: GradientLight
+GradientRight: GradientRight
+GradientText: Texto degradado
+Gravatar: Gravatar
+GravatarImageSize: GravatarImageSize
+Gray: Gris
+GrayDark: GrisOscuro
+GrayDarker: GrisMás oscuro
+GrayDefault: GrayDefault
+GrayLight: Luz gris
+GrayLighter: GrisEncendedor
+Grayscale: Escala de grises
+GrayscaleDarkBase16: Escala de grisesDarkBase16
+GrayscaleLightBase16: Escala de grisesLightBase16
+Green: Verde
+GreenScreenBase16: Pantalla verdeBase16
+GreenYellow: VerdeAmarillo
+Grid: Rejilla
+Grid_Enhanced: Grid_Enhanced
+GridCompact: Cuadrícula compacta
+GridIcon: Icono de cuadrícula
+Groove: Surco
+Group: Grupo
+Group by types: Agrupar por tipos
+GroupBox: Caja de grupo
+GroupId: GroupId
+GroupingEnabled: Agrupación habilitada
+GroupsInitiallyExpanded: GruposInicialmenteExpandido
+GroupsNested: GruposAnidados
+GroupsSticky: GruposPegajoso
+GruvboxDarkHardBase16: GruvboxDarkHardBase16
+GruvboxDarkMediumBase16: Caja de minasDarkMediumBase16
+GruvboxDarkPaleBase16: GruvboxDarkPaleBase16
+GruvboxDarkSoftBase16: GruvboxDarkSoftBase16
+GruvboxLightHardBase16: GruvboxLightHardBase16
+GruvboxLightMediumBase16: GruvboxLigeroMedioBase16
+GruvboxLightSoftBase16: GruvboxLightSoftBase16
+gsw-CH: Suizo Alemán (Suiza)
+gsw-FR: Suizo Alemán (Francia)
+gsw-LI: Alemán suizo (Liechtenstein)
+gu-IN: Gujarati (India)
+GutterBottom: Fondo de canalón
+Gutters: Canales
+guz-KE: Gusii (Kenia)
+gv-IM: Manx (Isla de Man)
+h1: H1
+H1: H1
+h2: H2
+H2: H2
+h3: H3
+H3: H3
+h4: H4
+H4: H4
+h5: H5
+H5: H5
+h6: H6
+H6: H6
+ha-Latn-GH: Hausa (latín, Ghana)
+ha-Latn-NE: Hausa (latín, Níger)
+ha-Latn-NG: Hausa (latín, Nigeria)
+Haettenschweiler: Haettenschweiler
+HalfOctaveBands: Bandas de media octava
+Hannah Davis: Hannah Davis
+HardcoreBase16: HardcoreBase16
+Harlow Solid Italic: Harlow Cursiva sólida
+Harmonic16DarkBase16: Armónico16BaseOscura16
+Harmonic16LightBase16: Armónico16BaseLigera16
+Harrington: Harrington
+haw-US: Hawaiano (Estados Unidos)
+he-IL: Hebreo (Israel)
+Header.tiff: Header.tiff
+HeadShake: Movimiento de cabeza
+HeatMap: Mapa de calor
+HeetchDarkBase16: HeetchDarkBase16
+HeetchLightBase16: HeetchLightBase16
+Height: Altura
+HeliosBase16: HeliosBase16
+Hello: Hola
+Hello from dialog: Hola desde el diálogo
+Hello from dialog 1: Hola desde el diálogo 1
+Hello from dialog sample page: Hola desde la página de muestra del cuadro de diálogo
+Hello World: Hola mundo
+Hello...: Hola...
+HelperId: Id de ayudante
+HelperText: Texto auxiliar
+HelperTextOnFocus: AyudanteTextoEnFoco
+Helvetica: Helvetica
+Helvetica Narrow: Helvetica Estrecha
+Here is another Real demo available for: Aquí hay otra demostración real disponible para
+Here only number is configured to render with NumEdit edit but DataType is string. Also this field is ignored for import: Aquí solo el número está configurado para representar con NumEdit edit, pero DataType es una cadena. Además, este campo se ignora para la importación
+Here you can edit the users, but only confirm if count is at least 2: Aquí puede editar los usuarios, pero solo confirme si el recuento es al menos 2
+Here you can leave a comment for this permission for the current role: Aquí puede dejar un comentario para este permiso para el rol actual
+Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Aquí puede ver cómo puede usar MudExObjectEdit para editar las propiedades de un componente en ejecución
+Here you find a Demo how to use the service directly: Aquí encontrará una demostración de cómo utilizar el servicio directamente
+Hex: Maleficio
+HEX: MALEFICIO
+HexA: Hexa
+hi-IN: Hindi (India)
+Hidden: Escondido
+Hide: Esconder
+HideContentWhenCollapsed: OcultarContenidoCuandoContraído
+HideDropDownWhenReadOnly: HideDropDownWhenReadOnly
+High Tower Text: Texto de la Torre Alta
+HighlightSearch: DestacarBuscar
+Hinge: Bisagra
+Home: Hogar
+Honeydew: Honeydew
+HopscotchBase16: RayuelaBase16
+HorizonDarkBase16: HorizonDarkBase16
+HorizonLightBase16: HorizonLightBase16
+Horizontal: Horizontal
+HouseNumber: Número
+Houston: Houston
+Houston - 77001: Houston - 77001
+Houston - 77001ender: Houston - 77001ender
+Houstonender: Houstonender
+HoverColor: HoverColor
+HoverMode: Modo de desplazamiento
+HoverOpacity: HoverOpacity
+hr-BA: Croata (Bosnia y Herzegovina)
+hr-HR: Croata (Croacia)
+Href: Href
+hsb-DE: Alto sorabo (Alemania)
+HSL: HSL
+HTML Colors: Colores HTML
+HtmlTag: Etiqueta HTML
+https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls: https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls
+https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc: https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc
+hu-HU: Húngaro (Hungría)
+HumanoidDarkBase16: HumanoidDarkBase16
+HumanoidLightBase16: HumanoidLightBase16
+hy-AM: Armenio (Armenia)
+Hybrid: Híbrido
+I agree to the terms and privacy: Acepto los términos y la privacidad
+I'm a also another separate control inside of the normal input: También soy otro control separado dentro de la entrada normal
+I'm a another separate control inside of the normal input: Soy otro control separado dentro de la entrada normal
+I'm a separate control inside of the normal input: Soy un control separado dentro de la entrada normal
+ia-001: Interlingua (Mundo)
+IaDarkBase16: IaDarkBase16
+IaLightBase16: IaLightBase16
+Ian Wright: Ian Wright
+ibb-NG: Ibibio (Nigeria)
+ICaptureService: Servicio ICapture
+Icon: Icono
+IconColor: IconColor
+IconPicker: Selector de iconos
+IconSize: Tamaño del icono
+IcyDarkBase16: IcyDarkBase16
+id: identificación
+Id: Identificación
+id-ID: Indonesio (Indonesia)
+Idea: Idea
+Identifier: Identificador
+If this is set a photo will be taken instead of a video.: Si se establece, se tomará una foto en lugar de un video.
+If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Si te gusta este paquete, múscalo ⭐ en Github y compártelo con tus amigos. Si no, puedes dar una estrella de todos modos y decirme qué puedo mejorar para que sea mejor para ti.
+If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Si establece estas opciones como predeterminadas. Estas opciones se utilizarán para todos los cuadros de diálogo en los que no se especifiquen opciones. ¿Continuar?
+ig-NG: Igbo (Nigeria)
+Ignore: Ignorar
+IgnoredPropertiesForReset: Propiedades ignoradasparaReset
+IgnoredRenderControls: IgnoredRenderControls
+ii-CN: Yi (China)
+Image format: Formato de imagen
+ImageAsBackgroundImage: ImageAsBackgroundImage
+Images: Imágenes
+ImagesNewLine: ImágenesNewLine
+Immediate: Inmediato
+ImmediateText: ImmediateText
+Impact: Impacto
+Import: Importación
+ImportExportIcon: ImportExportIcon
+In: En
+In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: En este ejemplo, los datos se cargan dinámicamente tan pronto como el elemento aparece por primera vez en la vista. El componente admite dos ranuras de contenido
+In this sample you are forced to pick an user: En este ejemplo, se ve obligado a elegir un usuario
+In this sample you are forced to pick some users: En este ejemplo, se ve obligado a elegir algunos usuarios
+In this sample you are forced to select some users: En este ejemplo, se ve obligado a seleccionar algunos usuarios
+In this sample you can pick one user: En este ejemplo, puede elegir un usuario
+In this sample you can select multiple users: En este ejemplo, puede seleccionar varios usuarios
+In this sample you can select one user: En este ejemplo puede seleccionar un usuario
+Inches: Pulgadas
+Include Entity fields (Export): Incluir campos de entidad (Exportar)
+Incorrect Password.: Contraseña incorrecta.
+IndeterminateIcon: IndeterminateIcon
+Indigo: Añil
+Indonesia: Indonesia
+Info: Información
+Info & About: Información y Acerca de
+InfoContrastText: InfoContrastText
+InfoDarken: InfoDarken
+InfoLighten: InfoLighten
+Informal Roman: Romano informal
+Information: Información
+InfoText: InfoTexto
+inherit: heredar
+Inherit: Heredar
+Initial: Inicial
+InitialColor: Color inicial
+InitiallyExpanded: InicialmenteExpandido
+InitialMessage: Mensaje inicial
+InitialMessageVisibilityTime: InitialMessageVisibilityTime
+InitialPreset: InitialPreset
+InitialRender: Renderizado inicial
+Inline: Inline
+Inline Dialog: Cuadro de diálogo en línea
+InlineDialogs: Diálogos en línea
+InProgress: En progreso
+InputClass: Clase de entrada
+InputId: InputId
+InputMode: Modo de entrada
+InputStyle: Estilo de entrada
+InputType: Tipo de entrada
+Inset: Intercalación
+IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
+IntegratedInDialogAsImages: IntegratedInDialogAsImages
+InterimResults: Resultados intermedios
+Invalid Credentials.: Credenciales no válidas.
+IrBlack: IrNegro
+IrBlackBase16: IrBlackBase16
+Is Active: Está activo
+Is Public: Es público
+Is Public?: ¿Es público?
+is-IS: Islandés (Islandia)
+IsActive: IsActive
+IsblEditorDark: IsblEditorDark
+IsblEditorLight: IsblEditorLight
+IsMouseOverChip: IsMouseOverChip
+ISO: ISO
+IsOpen: IsOpen
+IsotopeBase16: BaseIsotópica16
+ISpeechRecognitionService: ISpeechRecognitionService
+IsPredefined: EsPredefinido
+it-CH: Italiano (Suiza)
+it-IT: Italiano (Italia)
+it-SM: Italiano (San Marino)
+it-VA: Italiano (Ciudad del Vaticano)
+Italian: Italiano
+Item 1: Tema 1
+Item 2: Tema 2
+Item 3: Tema 3
+Item 3, Item 1: Tema 3, Tema 1
+Item 4: Tema 4
+Item 5: Tema 5
+Item One: Elemento uno
+Item Three: Punto tres
+Item Two: Punto dos
+ItemBackgroundColor: ItemBackgroundColor
+ItemClass: Clase de artículo
+ItemCollection: Colección de artículos
+ItemContent: Contenido del artículo
+ItemContentClass: ItemContentClass
+ItemContentStyle: Estilo de contenido de elemento
+ItemContentTypo: ItemContentTypo
+ItemList: Lista de elementos
+Items: Artículos
+ItemsSource: ItemsSource
+ItemStyle: Estilo de artículo
+ItemWidth: Ancho del artículo
+iu-CA: Inuktitut (Canadá)
+iu-Latn-CA: Inuktitut (latín, Canadá)
+Ivory: Marfil
+ja-JP: Japonés (Japón)
+JackInTheBox: JackInTheBox
+Jan: Ene
+JavaScript: JavaScript
+Jello: Gelatina
+jgo-CM: Ngomba (Camerún)
+jmc-TZ: Machame (Tanzania)
+John Doe: Juan Pérez
+Jokerman: Jokerman
+Json: Json
+Json value is required using {0} type!: ¡Se requiere el valor Json usando {0} tipo!
+Json value must be a valid json string using {0} type!: El valor Json debe ser una cadena JSON válida usando {0} tipo!
+Juice ITC: Jugo ITC
+Jul: Jul
+Julia Roberts: Julia Roberts
+Jun: Jun
+Justify: Justificar
+jv-Java-ID: Javanés (Javanés, Indonesia)
+jv-Latn-ID: Javanés (latín, Indonesia)
+ka-GE: Georgiano (Georgia)
+kab-DZ: Cabila (Argelia)
+kam-KE: Kamba (Kenia)
+kde-TZ: Makonde (Tanzania)
+kea-CV: Kabuverdianu (Cabo Verde)
+Keep scrolling to reveal the content below...: Sigue desplazándote para revelar el contenido a continuación...
+KeepExisting: Mantener existente
+KeepMaxSizeConstraints: KeepMaxSizeConstraints
+KeepRelations: Mantener relaciones
+KeepState: KeepState
+Kevin Hart: Kevin Hart
+Key: Llave
+Key is required!: ¡Se requiere llave!
+KeyDownPreventDefault: KeyDownPreventDefault
+KeyDownStopPropagation: KeyDownStopPropagation
+KeyUpPreventDefault: KeyUpPreventDefault
+KeyUpStopPropagation: KeyUpStopPropagation
+Khaki: Caqui
+khq-ML: Koyra Chiini (Malí)
+ki-KE: Kikuyu (Kenia)
+Kilobytes: Kilobytes
+KimberBase16: KimberBase16
+KimbieDark: KimbieDark
+KimbieLight: KimbieLight
+kk-KZ: Kazajistán (Kazajistán)
+kkj-CM: Kako (Camerún)
+kl-GL: Kalaallisut (Groenlandia)
+kln-KE: Kalenjin (Kenia)
+km-KH: Khmer (Camboya)
+kn-IN: Kannada (India)
+ko-KP: Coreano (Corea del Norte)
+ko-KR: Coreano (Corea)
+kok-IN: Konkani (India)
+Kommunikation - Mikrofon (Voicemod Virtual Audio Device (WDM)): Comunicación - Micrófono (Dispositivo de audio virtual Voicemod (WDM))
+kr-Latn-NG: Kanuri (latín, Nigeria)
+ks-Arab-IN: Cachemira (árabe, India)
+ks-Deva-IN: Cachemira (Devanagari, India)
+ksb-TZ: Shambala (Tanzania)
+ksf-CM: Bafia (Camerún)
+ksh-DE: Colonia (Alemania)
+ku-Arab-IQ: Kurdo (árabe, Irak)
+ku-Arab-IR: Kurdo (árabe, Irán)
+Kunstler Script: Guión Kunstler
+kw-GB: Cornualles (Reino Unido)
+ky-KG: Kirguistán (Kirguistán)
+la-VA: Latín (Ciudad del Vaticano)
+Label: Etiqueta
+Label_Description: Descripción
+Label_for_Age: Label_for_Age
+Label_for_City: Label_for_City
+Label_for_FirstName: Label_for_FirstName
+Label_for_Gender: Label_for_Gender
+Label_for_HouseNumber: Label_for_HouseNumber
+Label_for_Id: Label_for_Id
+Label_for_Notice: Label_for_Notice
+Label_for_OtherAddresses: Label_for_OtherAddresses
+Label_for_PostalCode: Label_for_PostalCode
+Label_for_ProgramingSkills: Label_for_ProgramingSkills
+Label_for_Street: Label_for_Street
+Label_for_TrueOrFalse: Label_for_TrueOrFalse
+Label_UploadRequests: Archivos
+LabelCustomTab: Pestaña LabelCustomTab
+LabelDefinedTab: Pestaña LabelDefinedTab
+lag-TZ: Langi (Tanzania)
+Landscape: Paisaje
+Language: Idioma
+Languages: Idiomas
+Large: Grande
+LargeZipArchive.zip: LargeZipArchive.zip
+Last Name: Apellido
+Last Name is required: Se requiere apellido
+LastName: Apellido
+Laura Palmer: Laura Palmer
+Lavender: Lavanda
+LavenderBlush: LavandaColorete
+LawnGreen: Verde césped
+LayoutProperties: Propiedades de diseño
+lb-LU: Luxemburgués (Luxemburgo)
+Leave editor focus to update MudExStructuredDataEditor: Deje el foco del editor para actualizar MudExStructuredDataEditor
+LedBars: LedBars
+Left: Izquierda
+Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): Parte izquierda en MudExSplitPanel. (Tenga en cuenta que también puede usar MudExSplitter directamente)
+LegacyRender: Renderizado heredado
+Legend: Leyenda
+LemonChiffon: Gasa de limón
+LetterSpacing: Espaciado entre letras
+lg-UG: Ganda (Uganda)
+Library: Biblioteca
+LightBlue: Azul claro
+LightBulb: Bombilla
+LightBulbSize: Tamaño de la bombilla
+LightBulbSizeUnit: UnidadDeTamañoDeBombilla
+LightCoral: Coral claro
+LightCyan: Cian claro
+Lightfair: Feria de la luz
+LightGoldenrodYellow: ClaroVara de OroAmarillo
+LightGray: Gris claro
+LightGreen: Verde claro
+LightOnly: Solo luz
+LightPink: Rosa claro
+LightSalmon: Salmón ligero
+LightSeaGreen: Verde mar claro
+LightSkyBlue: Azul cielo claro
+LightSlateGray: Gris pizarra claro
+LightSpeed: Velocidad de la luz
+LightSteelBlue: Azul acero claro
+LightYellow: Amarillo claro
+Lime: Lima
+LimeGreen: Verde lima
+Line: Línea
+Linear: Lineal
+LinearAmplitude: Amplitud lineal
+LinearBoost: Impulso lineal
+LineAreaGraph: Gráfico de área de línea
+LineColor: Color de línea
+LineHeight: Altura de línea
+Lines: Lineas
+LinesDefault: LíneasPredeterminado
+LinesInputs: Entradas de líneas
+LineWidth: Ancho de línea
+Lioshi: Lioshi
+List: Lista
+List appearance: Apariencia de la lista
+List behavior: Comportamiento de la lista
+List item for MudExList.: Elemento de lista para MudExList.
+lkt-US: Lakota (Estados Unidos)
+ln-AO: Lingala (Angola)
+ln-CD: Lingala (Congo [RDC])
+ln-CF: Lingala (República Centroafricana)
+ln-CG: Lingala (Congo)
+lo-LA: Laos (Laos)
+LoadFileDataBytesInBackground: LoadFileDataBytesInBackground
+Loading: Carga
+Loading...: Carga...
+Local: Local
+LocalizerPattern: Patrón Localizador
+LockScroll: LockScroll
+Log: Registro
+Logged In.: Inicié sesión.
+Logged Out.: Cerrado la sesión.
+LogicalSurface: Superficie lógica
+Login with Keycloak: Iniciar sesión con Keycloak
+LoginDescription: Inicie sesión con sus credenciales.
+Logitech BRIO (046d:085e): Logitech BRIO (046d:085e)
+logLevel: Nivel de registro
+logo.png: logo.png
+Logout: Cerrar sesión
+Logout Confirmation: ¿Realmente quieres cerrar sesión?
+Logout user: Cerrar sesión de usuario
+London: Londres
+London - SW1A 1AA: Londres - SW1A 1AA
+London - SW1A 1AAender: Londres - SW1A 1AAender
+LondonTubeBase16: LondresTubeBase16
+LoRes: LoRes
+Los Angeles: Los Ángeles
+Los Angeles - 90001: Los Ángeles - 90001
+Los Angeles - 90001ender: Los Ángeles - 90001ender
+lrc-IQ: Luri del Norte (Irak)
+lrc-IR: Luri del Norte (Irán)
+lt-LT: Lituano (Lituania)
+lu-CD: Luba-Katanga (Congo [RDC])
+Lucida Bright: Lucida Bright
+Lucida Calligraphy: Caligrafía lúcida
+Lucida Console: Consola Lucida
+Lucida Fax: Lucida Fax
+Lucida Grande: Lucida Grande
+Lucida Handwriting: Escritura Lucida
+Lucida Sans: Lucida Sans
+Lucida Sans Typewriter: Lucida Sans Máquina de escribir
+Lucida Sans Unicode: Lucida Sans Unicode
+LumiBars: LumiBars
+luo-KE: Luo (Kenia)
+luy-KE: Luyia (Kenia)
+lv-LV: Letón (Letonia)
+Lyon: Lyon
+Lyon - 69001: Lyon - 69001
+Lyon - 69001ender: Lyon - 69001ender
+Lyrics: Letras
+MacintoshBase16: MacintoshBase16
+Magneto: Magneto
+Magula: Magula
+mai-IN: Maithili (India)
+Mail: Correo
+Main User: Usuario principal
+MainAddress: Dirección principal
+MainSample.WebAssembly.Pages.Page_ObjectEditList+Brand: MainSample.WebAssembly.Pages.Page_ObjectEditList+Marca
+MainSample.WebAssembly.Services.SampleFile: MainSample.WebAssembly.Services.SampleFile
+MainSample.WebAssembly.Services.SampleFileWithStream: MainSample.WebAssembly.Services.SampleFileWithStream
+MainUser: Usuario principal
+Male: Masculino
+Manage {0} {1}'s Extended Attributes: Administrar los atributos extendidos de {0} {1}
+Manage {0} {1}'s Permissions: Administrar los permisos de {0} {1}
+Manage {0} {1}'s Roles: Administrar los roles de {0} {1}
+Manage {0} Extended Attributes: Administrar {0} atributos extendidos
+Manage {0}'s Permissions: Administrar los permisos de {0}
+Manage Brands.: Gestionar marcas.
+Manage Database Backups.: Administrar o restaurar copias de seguridad de bases de datos.
+Manage Document Types.: Administrar tipos de documentos.
+Manage Extended Attributes: Administrar atributos extendidos
+Manage Languages: Administrar idiomas
+Manage Permission: Administrar permisos
+Manage Products.: Administrar productos.
+Manage Roles: Administrar roles
+Manage Roles.: Administrar roles.
+Manage Translations: Gestionar traducciones
+Manage Users: Administrar usuarios
+Manage your account: Administra tu cuenta
+Manchester: Mánchester
+Manchester - M1 1AE: Mánchester - M1 1AE
+Manchester - M1 1AEender: Mánchester - M1 1AEender
+Manual: Manual
+Mar: Estropear
+Margin: Margen
+Mark all: Marcar todo
+Mark all as read: Marcar todo como leído
+Mark all as unread: Marcar todo como no leído
+Mark as read: Marcar leído
+Mark as unread: Marcar como no leído
+MarrakeshBase16: MarrakechBase16
+Marseille: Marsella
+Marseille - 13001: Marsella - 13001
+Marseille - 13001ender: Marsella - 13001ender
+mas-KE: Masai (Kenia)
+mas-TZ: Masai (Tanzania)
+Mask: Máscara
+MateriaBase16: MateriaBase16
+MaterialBase16: MaterialBase16
+MaterialDarkerBase16: MaterialDarkerBase16
+MaterialLighterBase16: MaterialLighterBase16
+MaterialPalenightBase16: MaterialPalenightBase16
+MaterialVividBase16: MaterialVividBase16
+Matura MT Script Capitals: Matura MT Script Capitales
+MaxCaptureTime: MaxCaptureTime
+MaxChips: MaxChips
+MaxDecibels: MaxDecibels
+MaxFileSize: MaxFileSize
+MaxFPS: Máx. FPS
+MaxFrequency: Frecuencia máxima
+MaxHeight: Altura máxima
+MaximizeButton: MaximizarBotón
+MaxItems: MaxItems
+MaxItemWidth: MaxItemWidth
+MaxLength: Longitud máxima
+MaxLuminance: MaxLuminance
+MaxMultipleFiles: MaxMultipleFiles
+MaxRecordingTime: MaxRecordingTime
+MaxWidth: Ancho máximo
+MaxZoomPixelRatio: MaxZoomPixelRatio
+May: Mayo
+Medium: Medio
+MediumSlateBlue: MedioAzul pizarra
+MediumSpringGreen: MediumSpringGreen
+MediumTurquoise: MedioTurquesa
+MediumVioletRed: MedioVioletaRojo
+Megabytes: Megabytes
+Mel: Mel
+MellowPurpleBase16: MellowPurpleBase16
+MenuAnchorOrigin: MenuAnchorOrigin
+MenuMaxHeight: MenuMaxHeight
+MenuTransformOrigin: MenuTransformOrigin
+mer-KE: Meru (Kenia)
+Message will be deleted in {0} seconds: El mensaje se eliminará en {0} segundos
+MessageClass: MessageClass
+MessageStyle: Estilo de mensaje
+MetaCoverImage: MetaCoverImage
+Method 1: Método 1
+Method 2: Método 2
+MexicoLightBase16: MéxicoLightBase16
+mfe-MU: Morisyen (Mauricio)
+mg-MG: Malgache (Madagascar)
+mgh-MZ: Makhuwa-Meetto (Mozambique)
+mgo-CM: Metaʼ (Camerún)
+mi-NZ: Maorí (Nueva Zelanda)
+Michael Scott: Michael Scott
+MicrophoneDeviceId: MicrophoneDeviceId
+MidnightBlue: Azul medianoche
+Mikrofon (3- RODE NT-USB) (19f7:0003): Micrófono (3-RODE NT-USB) (19f7:0003)
+Mikrofon (DroidCam Virtual Audio): Micrófono (DroidCam Virtual Audio)
+Mikrofon (Logitech BRIO) (046d:085e): Micrófono (Logitech BRIO) (046d:085e)
+Mikrofon (ROG Headset) (0b05:1876): Micrófono (auriculares ROG) (0b05:1876)
+Mikrofon (USB Audio Device) (1b3f:2008): 'Mikrofon (dispositivo de audio USB) (1b3f: 2008)'
+Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Dispositivo de audio virtual Voicemod (WDM))
+Millimeters: Milímetros
+MimeRestrictionType: MimeRestrictionType
+MimeTypes: Tipos de mimo
+MinDecibels: MinDecibelios
+MinFrequency: Frecuencia mínima
+MinHeight: MinHeight
+Mini: Mini
+MinimizeButton: Botón de minimización
+MinLuminance: MinLuminancia
+MintCream: Crema de menta
+MinZoomLevel: MinZoomLevel
+Mirror: Espejo
+Misc: Misc
+Misc Options: Opciones misceláneas
+Mistral: Mistral
+MistyRose: MistyRose
+mk-MK: Macedonio (Macedonia del Norte)
+ml-IN: Malayalam (India)
+mn-MN: Mongol (Mongolia)
+mn-Mong-CN: Mongol (Mongol, China)
+mn-Mong-MN: Mongol (Mongol, Mongolia)
+mni-IN: Manipuri (India)
+Moccasin: Mocasín
+MochaBase16: MochaBase16
+Modal: Capital
+Mode: Modo
+Model with File: Modelo con archivo
+Modern No. 20: Moderno No. 20
+moh-CA: Mohawk (Canadá)
+Monaco: Mónaco
+Monitor: Monitor
+MonoBlue: MonoBlue
+Monokai: Monokai
+MonokaiBase16: MonokaiBase16
+MonokaiSublime: MonokaiSublime
+Monotype Corsiva: Monotype Corsiva
+Month: Mes
+Montreal: Montreal
+Montreal - H1A 0A1: Montreal - H1A 0A1
+Montreal - H1A 0A1ender: Montreal - H1A 0A1ender
+Montserrat: Montserrat
+Motion: Movimiento
+Mouse: Ratón
+MouseOverMessageClass: MouseOverMessageClass
+MouseOverMessageStyle: MouseOverMessageStyle
+MouseWheelDownAction: MouseWheelDownAction
+MouseWheelUpAction: Acción MouseWheelUpAction
+MoveContent: MoveContent
+mr-IN: Marathi (India)
+MS Outlook: Perspectivas de MS
+MS Reference Sans Serif: Referencia de MS Sans Serif
+MS Reference Specialty: Especialidad de referencia de MS
+MS Sans Serif: MS Sans Serif
+MS Serif: MS Serif
+ms-BN: Malayo (Brunei)
+ms-ID: Malayo (Indonesia)
+ms-MY: Malayo (Malasia)
+ms-SG: Malayo (Singapur)
+mt-MT: Maltés (Malta)
+mua-CM: Mundang (Camerún)
+mud-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788: mud-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788
+MudAlert: Alerta de barro
+MudAppBar: MudAppBar
+MudAvatar: MudAvatar
+MudAvatarGroup: Grupo MudAvatar
+MudBadge: Insignia de barro
+MudBlazor Components: Componentes de MudBlazor
+MudBlazor Popover: MudBlazor Popover
+MudBlazor.Extensions.Components.ThemePreset`1[MainSample.WebAssembly.ClientTheme]: MudBlazor.Extensions.Components.ThemePreset'1[MainSample.WebAssembly.ClientTheme]
+MudBreadcrumbs: BarroPan rallado
+MudBreakpointProvider: Proveedor de punto de ruptura de barro
+MudButton: MudButton
+MudButtonGroup: Grupo de botones de barro
+MudCard: Tarjeta de barro
+MudCardActions: MudCardAcciones
+MudCardContent: Contenido de MudCard
+MudCardHeader: Encabezado de MudCardHeader
+MudCardMedia: MudCardMedia
+MudCarouselItem: MudCarouselArtículo
+MudChart: MudChart
+MudChat: MudChat
+MudChatBubble: Burbuja de MudChatBubble
+MudChatFooter: MudChatFooter
+MudChatHeader: Encabezado de MudChat
+MudCollapse: MudCollapse
+MudColorPicker: MudColorPicker
+MudColorStringFormat: MudColorStringFormat
+MudContainer: Contenedor de barro
+MudContextualActionBar: MudContextualActionBar
+MudDatePicker: MudDatePicker
+MudDateRangePicker: MudDateRangePicker
+MudDialog: MudDialog
+MudDialogContainer: MudDialogContainer
+MudDialogProvider: MudDialogProvider
+MudDivider: Divisor de barro
+MudDrawer: Cajón de barro
+MudDrawerContainer: Contenedor de cajón de barro
+MudDrawerHeader: Encabezado de cajón de barro
+MudDynamicTabs: MudDynamicTabs
+MudElement: Elemento de barro
+MudEx Components: Componentes de MudEx
+MudExAdditionalAdornment: MudExAdorno adicional
+MudExAppearance: MudExApariencia
+MudExAppLoader: MudExAppLoader
+MudExAudioPlayer: MudExAudioPlayer
+MudExCaptureButton: MudExCaptureButton
+MudExCaptureOptionsEdit: MudExOpciones de capturaEditar
+MudExCardList: Lista de tarjetas MudExCard
+MudExCardList with ItemsSource: MudExCardList con ItemsSource
+MudExCardList with ItemsSource and child content: MudExCardList con ItemsSource y contenido secundario
+MudExCardList<TData>: Lista de <TData>tarjetas MudExCard
+MudExChipSelect: MudExChipSelect
+MudExChipSelect can used to select items from a collection as chips: MudExChipSelect se puede usar para seleccionar elementos de una colección como chips
+MudExChipSelect<T>: MudExChipSelect<T>
+MudExCodeView: MudExCodeView
+MudExCollectionEditor<T>: Editor de MudExCollectionEditor<T>
+MudExColor: MudExColor
+MudExColorBubble: MudExColorBubble
+MudExColorEdit: MudExColorEditar
+MudExColorEdit is in general a MudBlazor Picker component specially for the struct MudExColor. But because name MudExColorPicker is already used for an extended ColorPicker this Component is named MusExColorEdit: MudExColorEdit es, en general, un componente del selector de MudBlazor, especialmente para la estructura MudExColor. Pero debido a que el nombre MudExColorPicker ya se usa para un ColorPicker extendido, este componente se llama MusExColorEdit
+MudExColorPicker: MudExColorPicker
+MudExColorUtils: MudExColorUtils
+MudExCss: MudExCss
+MudExCssBuilder: MudExCssBuilder
+MudExCultureSelect: MudExCultureSelect
+MudExDialog: MudExDialog
+MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog es el componente que se va a usar cuando se desea mostrar un cuadro de diálogo insertado en la página con todos los DialogExtensions.
+MudExDivider: Divisor de barro
+MudExDropBoxFilePicker: MudExDropBoxFilePicker
+MudExEnumSelect: MudExEnumSelect
+MudExEnumSelect<TEnum>: MudExEnumSelect<TEnum>
+MudExFileDisplay: MudExFileDisplay
+MudExFileDisplayCode: MudExFileDisplayCode
+MudExFileDisplayDialog: MudExFileDisplayDialog
+MudExFileDisplayExcel: MudExArchivoDisplayExcel
+MudExFileDisplayFont: MudExFileDisplayFont
+MudExFileDisplayHtml: MudExFileDisplayHtml
+MudExFileDisplayOfficeLive: MudExFileDisplayOfficeLive
+MudExFileDisplayStructuredData: MudExFileDisplayStructuredData
+MudExFileDisplayZip: MudExFileDisplayZip
+MudExFontSelect: MudExFontSelect
+MudExFontSelect can used to select one ore more fonts: MudExFontSelect se puede usar para seleccionar una o más fuentes
+MudExGoogleFilePicker: MudExGoogleFilePicker
+MudExGradientText: MudExGradientText
+MudExGravatar: MudExGravatar
+MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar es un MudAvatar que utiliza automáticamente la imagen de perfil de gravatar para una dirección de correo electrónico
+MudExGrid: MudExGrid
+MudExGrid Enhanced: MudExGrid mejorado
+MudExGridSection: MudExGridSection
+MudExGroupBox: MudExGroupBox
+MudExHtmlEdit: MudExHtmlEditar
+MudExIcon: Icono de MudExIcon
+MudExIcon is a simple MudIcon with extended possibilities to set all colors.: MudExIcon es un MudIcon simple con posibilidades extendidas para configurar todos los colores.
+MudExIconButton: MudExIconButton
+MudExIconPicker: MudExIconPicker
+MudExIconPicker is in general a MudBlazor Picker component specially for selecting an icon.: MudExIconPicker es, en general, un componente del selector de MudBlazor especialmente para seleccionar un icono.
+MudExImageViewer: MudExImageViewer
+MudExList: Lista de MudExlist
+MudExList can used to select one ore more items from a bindeable collection.: MudExList se puede usar para seleccionar uno o más elementos de una colección enlazable.
+MudExList is a component that allows you to select an item from a list of items. It is a wrapper for MudList.: MudExList es un componente que le permite seleccionar un elemento de una lista de elementos. Es un envoltorio para MudList.
+MudExList<T>: Lista de MudExlist<T>
+MudExListItem<T>: MudExListItem<T>
+MudExListSubheader is a sub header for MudExList.: MudExListSubheader es un subencabezado de MudExList.
+MudExListSubheader<T>: MudExListSubheader<T>
+MudExMessageDialog: MudExMessageDialog
+MudExObjectEdit: MudExObjectEdit
+MudExObjectEdit and MudExCollectionEditor with a shared config: MudExObjectEdit y MudExCollectionEditor con una configuración compartida
+MudExObjectEdit with virtual property rendering: MudExObjectEdit con representación de propiedades virtuales
+MudExObjectEdit<T>: MudExObjectEdit<T>
+MudExObjectEditDialog<T>: MudExObjectEditDialog<T>
+MudExObjectEditForm<T>: MudExObjectEditForm<T>
+MudExObjectEditPicker<T>: MudExObjectEditPicker<T>
+MudExOneDriveFilePicker: MudExOneDriveFilePicker
+MudExpansionPanel: Panel de expansión de barro
+MudExpansionPanels: Paneles de expansión de barro
+MudExPicker: MudExPicker
+MudExPickerBase<T>: MudExPickerBase<T>
+MudExPopover: MudExPopover
+MudExPromptDialog: MudExPromptDialog
+MudExPromptDialog Component: MudExPromptDialog (Componente)
+MudExPropertyEdit: MudExPropiedadEditar
+MudExSelect: MudExSelect
+MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect se puede usar para seleccionar uno o más elementos de una colección enlazable. Además, este componente admite todas las animaciones como diálogos o MudExPopover.
+MudExSelect<T>: MudExSelect<T>
+MudExSelectItem is a select item for MudExSelect.: MudExSelectItem es un elemento de selección para MudExSelect.
+MudExSelectItem<T>: MudExSelectItem<T>
+MudExSize is a readonly struct that provides a convenient and type-safe way to deal with size values in the context of MudBlazor components.: MudExSize es una estructura de solo lectura que proporciona una manera cómoda y con seguridad de tipos de tratar los valores de tamaño en el contexto de los componentes de MudBlazor.
+MudExSize<T>: Tamaño de MudEx<T>
+MudExSlideBar: MudExSlideBar
+MudExSpeechToTextButton: MudExSpeechToTextButton
+MudExSplitPanel: MudExSplitPanel
+MudExSplitPanelItem: MudExSplitPanelItem
+MudExSplitter: Divisor de barro
+MudExStructuredDataEditor: Editor de datos estructurados de MudEx
+MudExStyleBuilder: MudExStyleBuilder
+MudExSvg: MudExSvg
+MudExTagField: Campo MudExTagField
+MudExTagField creates chips when user press on of the specified delimiter or presses enter.: MudExTagField crea chips cuando el usuario presiona el delimitador especificado o presiona enter.
+MudExTagField is a component that allows the user to enter a list of values as chips.: MudExTagField es un componente que permite al usuario introducir una lista de valores como fichas.
+MudExTagField<T>: Campo MudExTagField<T>
+MudExTaskBar: MudExTaskBar
+MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide  somewhere in your Layout: MudExTaskBar hereda MudExSlideBar y proporciona una barra de pestañas para seleccionar cuadros de diálogo no modales. Simplemente proporcione en algún lugar de su diseño
+MudExTextField<T>: MudExTextField<T>
+MudExThemeEdit: MudExTema Editar
+MudExThemeEdit is a powerful component to edit one ore more themes: MudExThemeEdit es un componente poderoso para editar uno o más temas
+MudExThemeEdit<TTheme>: MudExTema Editar<TTheme>
+MudExThemeSelect: MudExThemeSelect
+MudExThemeSelect<TTheme>: MudExThemeSelect<TTheme>
+MudExToggleableSearch: MudExToggleableSearch
+MudExTreeView: MudExTreeView
+MudExTreeView is useful to bind tree structured items. The control that should used can be set with the ViewMode property: MudExTreeView es útil para enlazar elementos estructurados de árbol. El control que se debe usar se puede establecer con la propiedad ViewMode
+MudExTreeView with template: MudExTreeView con plantilla
+MudExTreeView<T>: MudExTreeView<T>
+MudExTreeViewBreadcrumb: MudExTreeViewBreadcrumb
+MudExTreeViewBreadcrumb<T>: MudExTreeViewBreadcrumb<T>
+MudExTreeViewCardGrid: MudExTreeViewCardGrid
+MudExTreeViewCardGrid<T>: MudExTreeViewCardGrid<T>
+MudExTreeViewDefault: MudExTreeViewDefault
+MudExTreeViewDefault<T>: MudExTreeViewDefault<T>
+MudExTreeViewFlatList: MudExTreeViewFlatList
+MudExTreeViewFlatList<T>: MudExTreeViewFlatList<T>
+MudExTreeViewHorizontal: MudExTreeViewHorizontal
+MudExTreeViewHorizontal<T>: MudExTreeViewHorizontal<T>
+MudExTreeViewList: Lista de vistas de árbol de MudExTreeList
+MudExTreeViewList<T>: Lista de vistas de árbol de MudExTreeList<T>
+MudExUploadEdit: MudExUploadEditar
+MudExUploadEdit<T>: MudExUploadEditar<T>
+MudExVirtualItem: MudExVirtualItem
+MudExVirtualize<TItem>: MudExVirtualizar<TItem>
+MudFab: MudFab
+MudField: Campo de barro
+MudFlexBreak: MudFlexBreak
+MudFocusTrap: Trampa de enfoque de barro
+MudForm: Forma de barro
+MudGrid: MudGrid
+MudHeatMapCell: MudHeatMapCell
+MudHidden: BarroEscondido
+MudHighlighter: MudHighlighter
+MudIcon: Icono de barro
+MudIconButton: MudIconButton
+MudImage: MudImage
+MudInputAdornment: Adorno de entrada de barro
+MudInputControl: MudInputControl
+MudInputLabel: Etiqueta de entrada de barro
+MudInputString: MudInputString
+MudItem: Objeto de barro
+MudLayout: Diseño de barro
+MudLink: Enlace de barro
+MudListSubheader: MudListSubheader
+MudMainContent: Contenido principal de barro
+MudMask: Máscara de barro
+MudMenu: MudMenu
+MudMenuItem: MudMenuItem
+MudMessageBox: MudMessageBox
+MudNavGroup: Grupo MudNav
+MudNavLink: MudNavLink
+MudNavMenu: MudNavMenú
+MudOverlay: Superposición de barro
+MudPageContentNavigation: MudPageContentNavigation
+MudPagination: MudPaginación
+MudPaper: Papel de barro
+MudPickerContent: Contenido de MudPicker
+MudPickerToolbar: Barra de herramientas MudPicker
+MudPopover: MudPopover
+MudPopoverProvider: MudPopoverProvider
+MudProgressCircular: MudProgressCircular
+MudProgressLinear: MudProgressLinear
+MudRating: Clasificación de barro
+MudRatingItem: MudRatingItem
+MudRender: MudRender
+MudRTLProvider: MudRTLProvider
+MudScrollToTop: MudScrollToTop
+MudSimpleTable: MudSimpleTable
+MudSkeleton: MudSkeleton
+MudSnackbarElement: MudSnackbarElement
+MudSnackbarProvider: Proveedor de MudSnackbar
+MudSpacer: Espaciador de barro
+MudStack: Pila de barro
+MudStep: MudStep
+MudStepper: MudStepper
+MudSwipeArea: Área de MudSwipeArea
+MudTablePager: MudTablePager
+MudTabPanel: Panel MudTabPanel
+MudTabs: MudTabs
+MudTd: MudTd
+MudText: MudText
+MudTextField with additional features: MudTextField con funciones adicionales
+MudTFootRow: MudTFootRow
+MudTh: MudTh
+MudTHeadRow: MudTHeadRow
+MudThemeProvider: Proveedor de MudThemeProvider
+MudTimeline: Línea de tiempo de barro
+MudTimelineItem: MudTimelineItem
+MudTimePicker: MudTimePicker
+MudTimeSeriesChart: Gráfico de MudTimeSeriesChart
+MudToggleIconButton: MudToggleIconButton
+MudToolBar: MudToolBar
+MudTooltip: MudTooltip
+MudTr: MudTr
+MudTreeViewItemToggleButton: MudTreeViewItemToggleButton
+MultiSelect: Selección múltiple
+MultiSelection: Selección múltiple
+MultiSelectionAlign: Alineación de selección múltiple
+MultiSelectionComponent: Componente de selección múltiple
+MultiSelectWithCtrlKey: MultiSelectWithCtrlKey
+My Custom action: Mi acción personalizada
+my-MM: Birmano (Myanmar)
+mzn-IR: Mazanderani (Irán)
+name: nombre
+Name: Nombre
+Name is required: El nombre es obligatorio
+Name is required!: ¡Se requiere nombre!
+NameContainerStyle: NameContainerStyle
+Names: Nombres
+naq-NA: Nombre (Namibia)
+Natalie Portman: Natalie Portman
+NavajoWhite: NavajoBlanco
+NavigationExpandMode: NavigationExpandMode
+NavigationLinkBarClass: NavigationLinkBarClass
+NavigationLinkBarStyle: NavigationLinkBarStyle
+NavigationViewMode: NavigationViewMode
+NavigatorClass: Clase Navigator
+NavigatorPosition: Posición del navegador
+NavigatorRectangleColor: NavigatorRectangleColor
+NavigatorSizeRatio: NavigatorSizeRatio
+Navy: Marina
+nb-NO: Noruego Bokmål (Noruega)
+nb-SJ: Noruego Bokmål (Svalbard y Jan Mayen)
+nd-ZW: Ndebele del Norte (Zimbabue)
+nds-DE: Bajo alemán (Alemania)
+nds-NL: Bajo alemán (Países Bajos)
+ne-IN: Nepalí (India)
+ne-NP: Nepalí (Nepal)
+NebulaBase16: NebulosaBase16
+Never: Nunca
+New: Nuevo
+NEW Dialog Drag Drop Mode: NUEVO Cuadro de diálogo Modo de arrastrar y soltar
+New dialog Feature - SnapDrag: 'Nueva función de cuadro de diálogo: SnapDrag'
+New Message From {0}: Nuevo mensaje de {0}
+New MudExStructureDataEditor can used to edit json, xml or yaml string in a MudExObjectEdit: El nuevo MudExStructureDataEditor se puede usar para editar cadenas json, xml o yaml en un MudExObjectEdit
+New Password: Nueva contraseña
+New User 100: Nuevo usuario 100
+New User 101: Nuevo usuario 101
+New User 102: Nuevo usuario 102
+New User 103: Nuevo usuario 103
+New User 104: Nuevo usuario 104
+New User 105: Nuevo usuario 105
+New User 106: Nuevo usuario 106
+New User 107: Nuevo usuario 107
+New User 108: Nuevo usuario 108
+New User 109: Nuevo usuario 109
+New User 110: Nuevo usuario 110
+New User 111: Nuevo usuario 111
+New User 112: Nuevo usuario 112
+New User 113: Nuevo usuario 113
+New User 114: Nuevo usuario 114
+New User 115: Nuevo usuario 115
+New User 116: Nuevo usuario 116
+New User 117: Nuevo usuario 117
+New User 118: Nuevo usuario 118
+New User 119: Nuevo usuario 119
+New User 120: Nuevo usuario 120
+New User 121: Nuevo usuario 121
+New User 122: Nuevo usuario 122
+New User 123: Nuevo usuario 123
+New User 124: Nuevo usuario 124
+New User 125: Nuevo usuario 125
+New User 126: Nuevo usuario 126
+New User 127: Nuevo usuario 127
+New User 128: Nuevo usuario 128
+New User 129: Nuevo usuario 129
+New User 130: Nuevo usuario 130
+New User 131: Nuevo usuario 131
+New User 132: Nuevo usuario 132
+New User 133: Nuevo usuario 133
+New User 134: Nuevo usuario 134
+New User 135: Nuevo usuario 135
+New User 136: Nuevo usuario 136
+New User 137: Nuevo usuario 137
+New User 138: Nuevo usuario 138
+New User 139: Nuevo usuario 139
+New User 140: Nuevo usuario 140
+New User 141: Nuevo usuario 141
+New User 142: Nuevo usuario 142
+New User 143: Nuevo usuario 143
+New User 144: Nuevo usuario 144
+New User 145: Nuevo usuario 145
+New User 146: Nuevo usuario 146
+New User 147: Nuevo usuario 147
+New User 148: Nuevo usuario 148
+New User 149: Nuevo usuario 149
+New User 150: Nuevo usuario 150
+New User 151: Nuevo usuario 151
+New User 152: Nuevo usuario 152
+New User 153: Nuevo usuario 153
+New User 154: Nuevo usuario 154
+New User 155: Nuevo usuario 155
+New User 156: Nuevo usuario 156
+New User 157: Nuevo usuario 157
+New User 158: Nuevo usuario 158
+New User 159: Nuevo usuario 159
+New User 160: Nuevo usuario 160
+New User 161: Nuevo usuario 161
+New User 162: Nuevo usuario 162
+New User 163: Nuevo usuario 163
+New User 164: Nuevo usuario 164
+New User 165: Nuevo usuario 165
+New User 166: Nuevo usuario 166
+New User 167: Nuevo usuario 167
+New User 168: Nuevo usuario 168
+New User 169: Nuevo usuario 169
+New User 170: Nuevo usuario 170
+New User 171: Nuevo usuario 171
+New User 172: Nuevo usuario 172
+New User 173: Nuevo usuario 173
+New User 174: Nuevo usuario 174
+New User 175: Nuevo usuario 175
+New User 176: Nuevo usuario 176
+New User 177: Nuevo usuario 177
+New User 178: Nuevo usuario 178
+New User 179: Nuevo usuario 179
+New User 180: Nuevo usuario 180
+New User 181: Nuevo usuario 181
+New User 182: Nuevo usuario 182
+New User 183: Nuevo usuario 183
+New User 184: Nuevo usuario 184
+New User 185: Nuevo usuario 185
+New User 186: Nuevo usuario 186
+New User 187: Nuevo usuario 187
+New User 188: Nuevo usuario 188
+New User 189: Nuevo usuario 189
+New User 190: Nuevo usuario 190
+New User 191: Nuevo usuario 191
+New User 192: Nuevo usuario 192
+New User 193: Nuevo usuario 193
+New User 194: Nuevo usuario 194
+New User 195: Nuevo usuario 195
+New User 196: Nuevo usuario 196
+New User 197: Nuevo usuario 197
+New User 198: Nuevo usuario 198
+New User 199: Nuevo usuario 199
+New User 200: Nuevo usuario 200
+New User 201: Nuevo usuario 201
+New User 202: Nuevo usuario 202
+New User 203: Nuevo usuario 203
+New User 204: Nuevo usuario 204
+New User 205: Nuevo usuario 205
+New User 206: Nuevo usuario 206
+New User 207: Nuevo usuario 207
+New User 208: Nuevo usuario 208
+New User 209: Nuevo usuario 209
+New User 21: Nuevo usuario 21
+New User 210: Nuevo usuario 210
+New User 211: Nuevo usuario 211
+New User 212: Nuevo usuario 212
+New User 213: Nuevo usuario 213
+New User 214: Nuevo usuario 214
+New User 215: Nuevo usuario 215
+New User 216: Nuevo usuario 216
+New User 217: Nuevo usuario 217
+New User 218: Nuevo usuario 218
+New User 219: Nuevo usuario 219
+New User 22: Nuevo usuario 22
+New User 220: Nuevo usuario 220
+New User 221: Nuevo usuario 221
+New User 222: Nuevo usuario 222
+New User 223: Nuevo usuario 223
+New User 224: Nuevo usuario 224
+New User 225: Nuevo usuario 225
+New User 226: Nuevo usuario 226
+New User 227: Nuevo usuario 227
+New User 228: Nuevo usuario 228
+New User 229: Nuevo usuario 229
+New User 23: Nuevo usuario 23
+New User 230: Nuevo usuario 230
+New User 231: Nuevo usuario 231
+New User 232: Nuevo usuario 232
+New User 233: Nuevo usuario 233
+New User 234: Nuevo usuario 234
+New User 235: Nuevo usuario 235
+New User 236: Nuevo usuario 236
+New User 237: Nuevo usuario 237
+New User 238: Nuevo usuario 238
+New User 239: Nuevo usuario 239
+New User 24: Nuevo usuario 24
+New User 240: Nuevo usuario 240
+New User 241: Nuevo usuario 241
+New User 242: Nuevo usuario 242
+New User 243: Nuevo usuario 243
+New User 244: Nuevo usuario 244
+New User 245: Nuevo usuario 245
+New User 246: Nuevo usuario 246
+New User 247: Nuevo usuario 247
+New User 248: Nuevo usuario 248
+New User 249: Nuevo usuario 249
+New User 25: Nuevo usuario 25
+New User 250: Nuevo usuario 250
+New User 251: Nuevo usuario 251
+New User 252: Nuevo usuario 252
+New User 253: Nuevo usuario 253
+New User 254: Nuevo usuario 254
+New User 255: Nuevo usuario 255
+New User 256: Nuevo usuario 256
+New User 257: Nuevo usuario 257
+New User 258: Nuevo usuario 258
+New User 259: Nuevo usuario 259
+New User 26: Nuevo usuario 26
+New User 260: Nuevo usuario 260
+New User 261: Nuevo usuario 261
+New User 262: Nuevo usuario 262
+New User 263: Nuevo usuario 263
+New User 264: Nuevo usuario 264
+New User 265: Nuevo usuario 265
+New User 266: Nuevo usuario 266
+New User 267: Nuevo usuario 267
+New User 268: Nuevo usuario 268
+New User 269: Nuevo usuario 269
+New User 27: Nuevo usuario 27
+New User 270: Nuevo usuario 270
+New User 271: Nuevo usuario 271
+New User 272: Nuevo usuario 272
+New User 273: Nuevo usuario 273
+New User 274: Nuevo usuario 274
+New User 275: Nuevo usuario 275
+New User 276: Nuevo usuario 276
+New User 277: Nuevo usuario 277
+New User 278: Nuevo usuario 278
+New User 279: Nuevo usuario 279
+New User 28: Nuevo usuario 28
+New User 280: Nuevo usuario 280
+New User 281: Nuevo usuario 281
+New User 282: Nuevo usuario 282
+New User 283: Nuevo usuario 283
+New User 284: Nuevo usuario 284
+New User 285: Nuevo usuario 285
+New User 286: Nuevo usuario 286
+New User 287: Nuevo usuario 287
+New User 288: Nuevo usuario 288
+New User 289: Nuevo usuario 289
+New User 29: Nuevo usuario 29
+New User 290: Nuevo usuario 290
+New User 291: Nuevo usuario 291
+New User 292: Nuevo usuario 292
+New User 293: Nuevo usuario 293
+New User 294: Nuevo usuario 294
+New User 295: Nuevo usuario 295
+New User 296: Nuevo usuario 296
+New User 297: Nuevo usuario 297
+New User 298: Nuevo usuario 298
+New User 299: Nuevo usuario 299
+New User 30: Nuevo usuario 30
+New User 300: Nuevo usuario 300
+New User 301: Nuevo usuario 301
+New User 302: Nuevo usuario 302
+New User 303: Nuevo usuario 303
+New User 304: Nuevo usuario 304
+New User 305: Nuevo usuario 305
+New User 306: Nuevo usuario 306
+New User 307: Nuevo usuario 307
+New User 308: Nuevo usuario 308
+New User 309: Nuevo usuario 309
+New User 31: Nuevo usuario 31
+New User 310: Nuevo usuario 310
+New User 311: Nuevo usuario 311
+New User 312: Nuevo usuario 312
+New User 313: Nuevo usuario 313
+New User 314: Nuevo usuario 314
+New User 315: Nuevo usuario 315
+New User 316: Nuevo usuario 316
+New User 317: Nuevo usuario 317
+New User 318: Nuevo usuario 318
+New User 319: Nuevo usuario 319
+New User 32: Nuevo usuario 32
+New User 320: Nuevo usuario 320
+New User 321: Nuevo usuario 321
+New User 322: Nuevo usuario 322
+New User 323: Nuevo usuario 323
+New User 324: Nuevo usuario 324
+New User 325: Nuevo usuario 325
+New User 326: Nuevo usuario 326
+New User 327: Nuevo usuario 327
+New User 328: Nuevo usuario 328
+New User 329: Nuevo usuario 329
+New User 33: Nuevo usuario 33
+New User 330: Nuevo usuario 330
+New User 331: Nuevo usuario 331
+New User 332: Nuevo usuario 332
+New User 333: Nuevo usuario 333
+New User 334: Nuevo usuario 334
+New User 335: Nuevo usuario 335
+New User 336: Nuevo usuario 336
+New User 337: Nuevo usuario 337
+New User 338: Nuevo usuario 338
+New User 339: Nuevo usuario 339
+New User 34: Nuevo usuario 34
+New User 340: Nuevo usuario 340
+New User 341: Nuevo usuario 341
+New User 342: Nuevo usuario 342
+New User 343: Nuevo usuario 343
+New User 344: Nuevo usuario 344
+New User 345: Nuevo usuario 345
+New User 346: Nuevo usuario 346
+New User 347: Nuevo usuario 347
+New User 348: Nuevo usuario 348
+New User 349: Nuevo usuario 349
+New User 35: Nuevo usuario 35
+New User 350: Nuevo usuario 350
+New User 351: Nuevo usuario 351
+New User 352: Nuevo usuario 352
+New User 353: Nuevo usuario 353
+New User 354: Nuevo usuario 354
+New User 355: Nuevo usuario 355
+New User 356: Nuevo usuario 356
+New User 357: Nuevo usuario 357
+New User 358: Nuevo usuario 358
+New User 359: Nuevo usuario 359
+New User 36: Nuevo usuario 36
+New User 360: Nuevo usuario 360
+New User 361: Nuevo usuario 361
+New User 362: Nuevo usuario 362
+New User 363: Nuevo usuario 363
+New User 364: Nuevo usuario 364
+New User 365: Nuevo usuario 365
+New User 366: Nuevo usuario 366
+New User 367: Nuevo usuario 367
+New User 368: Nuevo usuario 368
+New User 369: Nuevo usuario 369
+New User 37: Nuevo usuario 37
+New User 370: Nuevo usuario 370
+New User 371: Nuevo usuario 371
+New User 372: Nuevo usuario 372
+New User 373: Nuevo usuario 373
+New User 374: Nuevo usuario 374
+New User 375: Nuevo usuario 375
+New User 376: Nuevo usuario 376
+New User 377: Nuevo usuario 377
+New User 378: Nuevo usuario 378
+New User 379: Nuevo usuario 379
+New User 38: Nuevo usuario 38
+New User 380: Nuevo usuario 380
+New User 381: Nuevo usuario 381
+New User 382: Nuevo usuario 382
+New User 383: Nuevo usuario 383
+New User 384: Nuevo usuario 384
+New User 385: Nuevo usuario 385
+New User 386: Nuevo usuario 386
+New User 387: Nuevo usuario 387
+New User 388: Nuevo usuario 388
+New User 389: Nuevo usuario 389
+New User 39: Nuevo usuario 39
+New User 390: Nuevo usuario 390
+New User 391: Nuevo usuario 391
+New User 392: Nuevo usuario 392
+New User 393: Nuevo usuario 393
+New User 394: Nuevo usuario 394
+New User 395: Nuevo usuario 395
+New User 396: Nuevo usuario 396
+New User 397: Nuevo usuario 397
+New User 398: Nuevo usuario 398
+New User 399: Nuevo usuario 399
+New User 40: Nuevo usuario 40
+New User 400: Nuevo usuario 400
+New User 401: Nuevo usuario 401
+New User 402: Nuevo usuario 402
+New User 403: Nuevo usuario 403
+New User 404: Nuevo usuario 404
+New User 405: Nuevo usuario 405
+New User 406: Nuevo usuario 406
+New User 407: Nuevo usuario 407
+New User 408: Nuevo usuario 408
+New User 409: Nuevo usuario 409
+New User 41: Nuevo usuario 41
+New User 410: Nuevo usuario 410
+New User 411: Nuevo usuario 411
+New User 412: Nuevo usuario 412
+New User 413: Nuevo usuario 413
+New User 414: Nuevo usuario 414
+New User 415: Nuevo usuario 415
+New User 416: Nuevo usuario 416
+New User 417: Nuevo usuario 417
+New User 418: Nuevo usuario 418
+New User 419: Nuevo usuario 419
+New User 42: Nuevo usuario 42
+New User 420: Nuevo usuario 420
+New User 421: Nuevo usuario 421
+New User 422: Nuevo usuario 422
+New User 423: Nuevo usuario 423
+New User 424: Nuevo usuario 424
+New User 425: Nuevo usuario 425
+New User 426: Nuevo usuario 426
+New User 427: Nuevo usuario 427
+New User 428: Nuevo usuario 428
+New User 429: Nuevo usuario 429
+New User 43: Nuevo usuario 43
+New User 430: Nuevo usuario 430
+New User 431: Nuevo usuario 431
+New User 432: Nuevo usuario 432
+New User 433: Nuevo usuario 433
+New User 434: Nuevo usuario 434
+New User 435: Nuevo usuario 435
+New User 436: Nuevo usuario 436
+New User 437: Nuevo usuario 437
+New User 438: Nuevo usuario 438
+New User 439: Nuevo usuario 439
+New User 44: Nuevo usuario 44
+New User 440: Nuevo usuario 440
+New User 441: Nuevo usuario 441
+New User 442: Nuevo usuario 442
+New User 443: Nuevo usuario 443
+New User 444: Nuevo usuario 444
+New User 445: Nuevo usuario 445
+New User 446: Nuevo usuario 446
+New User 447: Nuevo usuario 447
+New User 448: Nuevo usuario 448
+New User 449: Nuevo usuario 449
+New User 45: Nuevo usuario 45
+New User 450: Nuevo usuario 450
+New User 451: Nuevo usuario 451
+New User 452: Nuevo usuario 452
+New User 453: Nuevo usuario 453
+New User 454: Nuevo usuario 454
+New User 455: Nuevo usuario 455
+New User 456: Nuevo usuario 456
+New User 457: Nuevo usuario 457
+New User 458: Nuevo usuario 458
+New User 459: Nuevo usuario 459
+New User 46: Nuevo usuario 46
+New User 460: Nuevo usuario 460
+New User 461: Nuevo usuario 461
+New User 462: Nuevo usuario 462
+New User 463: Nuevo usuario 463
+New User 464: Nuevo usuario 464
+New User 465: Nuevo usuario 465
+New User 466: Nuevo usuario 466
+New User 467: Nuevo usuario 467
+New User 468: Nuevo usuario 468
+New User 469: Nuevo usuario 469
+New User 47: Nuevo usuario 47
+New User 470: Nuevo usuario 470
+New User 471: Nuevo usuario 471
+New User 472: Nuevo usuario 472
+New User 473: Nuevo usuario 473
+New User 474: Nuevo usuario 474
+New User 475: Nuevo usuario 475
+New User 476: Nuevo usuario 476
+New User 477: Nuevo usuario 477
+New User 478: Nuevo usuario 478
+New User 479: Nuevo usuario 479
+New User 48: Nuevo usuario 48
+New User 480: Nuevo usuario 480
+New User 481: Nuevo usuario 481
+New User 482: Nuevo usuario 482
+New User 483: Nuevo usuario 483
+New User 484: Nuevo usuario 484
+New User 485: Nuevo usuario 485
+New User 486: Nuevo usuario 486
+New User 487: Nuevo usuario 487
+New User 488: Nuevo usuario 488
+New User 489: Nuevo usuario 489
+New User 49: Nuevo usuario 49
+New User 490: Nuevo usuario 490
+New User 491: Nuevo usuario 491
+New User 492: Nuevo usuario 492
+New User 493: Nuevo usuario 493
+New User 494: Nuevo usuario 494
+New User 495: Nuevo usuario 495
+New User 496: Nuevo usuario 496
+New User 497: Nuevo usuario 497
+New User 498: Nuevo usuario 498
+New User 499: Nuevo usuario 499
+New User 50: Nuevo usuario 50
+New User 500: Nuevo usuario 500
+New User 501: Nuevo usuario 501
+New User 502: Nuevo usuario 502
+New User 503: Nuevo usuario 503
+New User 504: Nuevo usuario 504
+New User 505: Nuevo usuario 505
+New User 506: Nuevo usuario 506
+New User 507: Nuevo usuario 507
+New User 508: Nuevo usuario 508
+New User 509: Nuevo usuario 509
+New User 51: Nuevo usuario 51
+New User 510: Nuevo usuario 510
+New User 511: Nuevo usuario 511
+New User 512: Nuevo usuario 512
+New User 513: Nuevo usuario 513
+New User 514: Nuevo usuario 514
+New User 515: Nuevo usuario 515
+New User 516: Nuevo usuario 516
+New User 517: Nuevo usuario 517
+New User 518: Nuevo usuario 518
+New User 519: Nuevo usuario 519
+New User 52: Nuevo usuario 52
+New User 520: Nuevo usuario 520
+New User 53: Nuevo usuario 53
+New User 54: Nuevo usuario 54
+New User 55: Nuevo usuario 55
+New User 56: Nuevo usuario 56
+New User 57: Nuevo usuario 57
+New User 58: Nuevo usuario 58
+New User 59: Nuevo usuario 59
+New User 60: Nuevo usuario 60
+New User 61: Nuevo usuario 61
+New User 62: Nuevo usuario 62
+New User 63: Nuevo usuario 63
+New User 64: Nuevo usuario 64
+New User 65: Nuevo usuario 65
+New User 66: Nuevo usuario 66
+New User 67: Nuevo usuario 67
+New User 68: Nuevo usuario 68
+New User 69: Nuevo usuario 69
+New User 70: Nuevo usuario 70
+New User 71: Nuevo usuario 71
+New User 72: Nuevo usuario 72
+New User 73: Nuevo usuario 73
+New User 74: Nuevo usuario 74
+New User 75: Nuevo usuario 75
+New User 76: Nuevo usuario 76
+New User 77: Nuevo usuario 77
+New User 78: Nuevo usuario 78
+New User 79: Nuevo usuario 79
+New User 80: Nuevo usuario 80
+New User 81: Nuevo usuario 81
+New User 82: Nuevo usuario 82
+New User 83: Nuevo usuario 83
+New User 84: Nuevo usuario 84
+New User 85: Nuevo usuario 85
+New User 86: Nuevo usuario 86
+New User 87: Nuevo usuario 87
+New User 88: Nuevo usuario 88
+New User 89: Nuevo usuario 89
+New User 90: Nuevo usuario 90
+New User 91: Nuevo usuario 91
+New User 92: Nuevo usuario 92
+New User 93: Nuevo usuario 93
+New User 94: Nuevo usuario 94
+New User 95: Nuevo usuario 95
+New User 96: Nuevo usuario 96
+New User 97: Nuevo usuario 97
+New User 98: Nuevo usuario 98
+New User 99: Nuevo usuario 99
+New Values: Nuevos valores
+New York: Nueva York
+New York - 10001: Nueva York - 10001
+New York - 10001ender: Nueva York - 10001ender
+New Yorkender: Nueva Yorkender
+NextPreset: SiguientePreestablecido
+NextToSearchBox: SiguienteCuadro de búsqueda
+NextTrack: SiguientePista
+Niagara Engraved: Niágara grabado
+Niagara Solid: Niagara Solid
+NightOwl: Búho nocturno
+nl-AW: Holandés (Aruba)
+nl-BE: Holandés (Bélgica)
+nl-BQ: Holandés (Bonaire, San Eustaquio y Saba)
+nl-CW: Holandés (Curazao)
+nl-NL: Holandés (Países Bajos)
+nl-SR: Holandés (Surinam)
+nl-SX: Holandés (Sint Maarten)
+nmg-CM: Kwasio (Camerún)
+nn-NO: Nynorsk noruego (Noruega)
+NnfxDark: NnfxDark
+NnfxLight: NnfxLuz
+nnh-CM: Ngiemboon (Camerún)
+No: No
+No address: Sin dirección
+No Allowed Actions: No se permiten acciones
+No longer update automatically: Ya no se actualiza automáticamente
+No notifications: Sin notificaciones
+No space available: No hay espacio disponible
+NoChips: NoChips
+NodeBorderRadius: NodeBorderRadius
+NodePadding: NodePadding
+NoHeader: NoHeader
+NoIcon: NoIcon
+NoModalDialogs: Diálogos NoModal
+none: ninguno
+None: Ninguno
+Nord: Norte
+NordBase16: NordBase16
+Normal: Normal
+Not Allowed to add or delete Administrator Role if you have not this role.: No se permite agregar o eliminar el rol de administrador si no tiene este rol.
+Not allowed to Delete this user: No se permite eliminar este usuario
+Not Allowed.: No permitido.
+Not connected: No conectado
+Not Modal Dialogs: Diálogos no modales
+Note - Media options can't changed after a screen is selected: Nota - Las opciones de medios no se pueden cambiar después de seleccionar una pantalla
+NoteLabels: NotaEtiquetas
+NotFoundMessage: La página que estabas buscando no existe.
+Notice: Notar
+Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Tenga en cuenta que si usa este método, puede especificar una referencia de devolución de llamada donde se encuentra el método, si no lo hace, la referencia es el cuadro de diálogo en sí y debe tener el método en su DialogClass en este caso
+Notifications: Notificaciones
+Nov: Nov
+NovaBase16: NovaBase16
+NoWrap: NoWrap
+npm-example-0.0.20.tgz: npm-ejemplo-0.0.20.tgz
+nqo-GN: N'Ko (Guinea)
+nr-ZA: Ndebele del Sur (Sudáfrica)
+nso-ZA: Sesotho sa Leboa (Sudáfrica)
+Nuget Package source: Origen del paquete Nuget
+Nullable enum: Enumeración que acepta valores NULL
+Nullable Flags Enum: Enumeración de marcas que aceptan valores NULL
+Number: Número
+numeric: numérico
+nus-SS: Nuer (Sudán del Sur)
+nyn-UG: Nyankole (Uganda)
+Object Edit in Dialog: Edición de objetos en el cuadro de diálogo
+ObjectEdit: Objeto
+ObjectEditCG: ObjectEditCG
+ObjectEditCondition: ObjectEditCondition
+ObjectEditConfigured: ObjectEditConfigurado
+ObjectEditFile: ObjectEditFile
+ObjectEditInDialog: ObjectEditInDialog
+ObjectEditList: ObjectEditList
+ObjectEditPicker: ObjectEditPicker
+ObjectEditTabs: Fichas de edición de objetos
+ObjectEditVirtualized: ObjectEditVirtualizado
+OBS Virtual Camera: Cámara virtual OBS
+Obsidian: Obsidiana
+oc-FR: Occitano (Francia)
+OceanBase16: OceanBase16
+OceanicnextBase16: OceanicnextBase16
+OCR A Extended: OCR A extendido
+Oct: Oct
+Official MudBlazor website: Sitio web oficial de MudBlazor
+Offline: Sin conexión
+OffsetX: DesplazamientoX
+OffsetY: Compensaciones
+Ok: De acuerdo
+Old English Text MT: Texto en inglés antiguo MT
+Old Paint: Pintura vieja
+Old paint found on a stone house door.: Pintura vieja encontrada en la puerta de una casa de piedra.
+Old Values: Valores antiguos
+OldLace: Encaje viejo
+Olive: Aceituna
+OliveDrab: OliveDrab
+om-ET: Oromo (Etiopía)
+om-KE: Oromo (Kenia)
+OnClickStopPropagation: OnClickStopPropagation
+OnContextMenuPreventDefault: OnContextMenuPreventDefault
+OnContextMenuStopPropagation: OnContextMenuStopPropagation
+OnCustomSelect: OnCustomSelect
+OnDefinedSelect: OnDefinedSelect
+One Drive: Una unidad
+OnedarkBase16: OnedarkBase16
+OneDrive file picker component: Componente de selector de archivos de OneDrive
+OneDriveClientId: OneDriveClientId
+OneEighthOctaveBands: Un octavoBandas de octava
+OneFourthOctaveBands: Un cuarto de octava Bandas
+OneLightBase16: OneLightBase16
+OneSixthOctaveBands: Bandas de un sexto de octava
+OneThirdOctaveBands: Un terciode octava Bandas
+OneTwelfthOctaveBands: UnaDuodécimaOctava Bandas
+OneTwentyFourthOctaveBands: Unavigésima cuartaoctava Bandas
+Online: En línea
+Only Selected Group (Export): Solo grupo seleccionado (Exportar)
+OnlyValidateIfDirty: OnlyValidateIfDirty
+OnPlay: En juego
+Onyx: Ónix
+Opacity: Opacidad
+OpacityNotFocused: OpacityNotFocused
+Open: Abrir
+Open in new browser tab: Abrir en una nueva pestaña del navegador
+Open now: Abrir
+Open Url {0}: Abrir URL {0}
+Open Url {0} in a new browser tab: Abrir {0} de URL en una nueva pestaña del navegador
+OpenIcon: OpenIcon
+Optima: Optima
+Options: Opciones
+or-IN: Oria (India)
+Orange: Naranja
+OrangeRed: NaranjaRojo
+Orchid: Orquídea
+Orientation: Orientación
+Original Code Gator DynamicForm: Código original Gator DynamicForm
+os-GE: Osetia (Georgia)
+os-RU: Ossetic (Rusia)
+Osaka: Osaka
+Osaka - 530-0001: Osaka - 530-0001
+Osaka - 530-0001ender: Osaka - 530-0001ender
+Oscar Wilde: Oscar Wilde
+Other: Otro
+Other Components: Otros componentes
+OtherAddresses: Otras direcciones
+Otherwise the full image will be downloaded: De lo contrario, se descargará la imagen completa
+Ottawa: Ottawa
+Ottawa - K1A 0A1: Ottawa - K1A 0A1
+Ottawa - K1A 0A1ender: Ottawa - K1A 0A1ender
+Out: Fuera
+OuterClass: Clase exterior
+OutlineBars: Barras de contorno
+Outlined: Descrito
+OutrunDarkBase16: OutrunDarkBase16
+Outset: Principio
+OverflowBehavior: Comportamiento de desbordamiento
+Overlay: Superponer
+OverlayChildContent: OverlayChildContent
+OverlayDark: SuperposiciónOscuro
+OverlayLight: SuperposiciónLuz
+overline: línea superior
+Overline: Línea superior
+OverscanCount: OverscanCount
+Overview: Visión general
+Owner: Dueño
+pa-Arab-PK: Punjabi (árabe, Pakistán)
+pa-IN: Punjabi (India)
+Palatino: Palatino
+Palatino Linotype: Palatino Linotype
+PaleGreen: Verde pálido
+Palette: Paleta
+PaletteDark: PaletaOscuro
+PaletteIcon: Icono de paleta
+PaletteLight: PaletaLuz
+PaleTurquoise: Turquesa pálido
+PaleVioletRed: PálidoVioletaRojo
+Pan: Caballero
+pap-029: Papiamento (Caribe)
+PapayaWhip: Látigo de papaya
+Paper: Papel
+PapercolorDarkBase16: ColorPapelBaseOscura16
+PapercolorLightBase16: ColorPapelBase16
+Papyrus: Papiro
+ParaisoBase16: ParaisoBase16
+ParaisoDark: ParaisoDark
+ParaisoLight: ParaisoLight
+ParametersForSubControls: ParámetrosParaSubControles
+Parchment: Pergamino
+Paris: París
+Paris - 75001: París - 75001
+Paris - 75001ender: París - 75001ender
+PasqueBase16: PasqueBase16
+Password: Contraseña
+Password Changed!: ¡Contraseña cambiada!
+Password Confirmation: Confirmación de contraseña
+Password Confirmation is required!: ¡Se requiere confirmación de contraseña!
+Password is required!: ¡Se requiere contraseña!
+Password must be at least of length 8: La contraseña debe tener al menos una longitud de 8
+Password must contain at least one capital letter: La contraseña debe contener al menos una letra mayúscula
+Password must contain at least one digit: La contraseña debe contener al menos un dígito
+Password must contain at least one lowercase letter: La contraseña debe contener al menos una letra minúscula
+Password Reset Mail has been sent to your authorized Email.: El correo de restablecimiento de contraseña se ha enviado a su correo electrónico autorizado.
+Password Reset Successful!: ¡Restablecimiento de contraseña exitoso!
+Passwords don't match: Las contraseñas no coinciden
+PathSeparator: Separador de rutas
+Pattern: Patrón
+pcm-Latn-NG: Pidgin nigeriano (latín, Nigeria)
+PeachPuff: Melocotón
+PeakLine: Línea Pico
+Penelope Cruz: Penélope Cruz
+Percentage: Porcentaje
+Permission Name: Nombre del permiso
+Perpetua: Perpetua
+Persistent: Persistente
+Personal: Personal
+Perspective3d: Perspectiva3d
+Peru: Perú
+Peter Griffin: Peter Griffin
+PhdBase16: DoctoradoBase16
+Philadelphia: Filadelfia
+Philadelphia - 19019: Filadelfia - 19019
+Philadelphia - 19019ender: Filadelfia - 19019ender
+Philadelphiaender: Filadelfia
+Phoenix: Fénix
+Phoenix - 85001: Fénix - 85001
+Phoenix - 85001ender: Fénix - 85001ender
+Phone Number: Número de teléfono
+Phone number {0} is already registered.: El número de teléfono {0} ya está registrado.
+PhoneNumber: Número de teléfono
+Picas: Picas
+Pick Item: Elegir artículo
+Pick Items: Elegir artículos
+Pick one user: Elige un usuario
+Pick some users: Elige algunos usuarios
+Picker: Recogedor
+Picker appearance: Apariencia del selector
+PickerHeight: Altura del selector
+PickerStyle: Estilo de selector
+PickerVariant: PickerVariant
+PickerWidth: Ancho del selector
+PickFromDropBox: PickFromDropBox
+PickFromGoogleDrive: PickFromGoogleDrive
+PickFromOneDrive: PickFromOneDrive
+PicoBase16: PicoBase16
+Pie: Pie
+Pink: Rosado
+Pixels: Píxeles
+pl-PL: Polaco (Polonia)
+Placeholder: Marcador
+Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Juega con MudBlazor y MudBlazor.Extensions en un editor de código en línea
+Playbill: Programa de juegos
+Player: Jugador
+Please confirm your account by <a href='{0}'>clicking here</a>.: Confirme su cuenta <a href='{0}'>haciendo clic aquí</a>.
+Please enter your name: Por favor, introduzca su nombre
+Please reset your password by <a href='{0}'>clicking here</a>.: Restablezca su contraseña <a href='{0}'>haciendo clic aquí</a>.
+Please type {0} to confirm edit: Escriba {0} para confirmar la edición
+Please upload your personal qualifications and references that confirm your person and qualification: Cargue sus calificaciones personales y referencias que confirmen su persona y calificación
+Please Wait: Espera
+PleaseSelect: Por favorSeleccione
+Plum: Ciruela
+Points: Puntos
+PointsOfInterest: Puntos de interés
+Pojoaque: Pojoaque
+Poor Richard: Pobre Richard
+PopBase16: PopBase16
+Popover: Popover
+PopoverAnimation: PopoverAnimation
+PopoverAnimationPosition: PopoverAnimationPosition
+PopoverAnimationTimingFunction: PopoverAnimationTimingFunction
+PopoverClass: PopoverClass
+PopupEveryTime: PopupEveryTime
+PopupOnlyOnce: PopupOnlyOnce
+PopverAnimation: PopverAnimation
+PorpleBase16: PorpleBase16
+Portrait: Retrato
+Position: Posición
+Position/Size Sample: Posición/Tamaño de la muestra
+PostalCode: Código postal
+PowderBlue: Azul polvo
+Powerful component to edit a set of items and their properties.: Potente componente para editar un conjunto de elementos y sus propiedades.
+Powerful component to edit an object and its properties.: Potente componente para editar un objeto y sus propiedades.
+Powerful UI Editor for json, xml or yaml content now also as viewer for MudExFileDisplay: Potente editor de interfaz de usuario para contenido json, xml o yaml ahora también como visor para MudExFileDisplay
+Preferred way on MudExTextField: Forma preferida en MudExTextField
+Preferred way on MudExTextField with For and ChildContent: Forma preferida en MudExTextField con For y ChildContent
+PresetListBehaviour: Comportamiento de la lista preestablecida
+PresetListClass: Clase PresetListClass
+PresetListMode: Modo de lista preestablecido
+PresetListPosition: Posición de lista preestablecida
+PresetListToggleButtonPosition: Lista preestablecidaToggleButtonPosition
+Presets: Presets
+Preview: Vista previa
+PreviewButtonSize: PreviewButtonSize
+PreviewFont: Fuente de vista previa
+PreviewIcon: Icono de vista previa
+PreviewIconColor: Vista previaIconColor
+PreviewImageInPresetList: PreviewImageInPresetList
+PreviewImageSize: PreviewImageSize
+PreviewInIframe: Vista previaInIframe
+PreviewMode: Modo de vista previa
+PreviousPreset: AnteriorAjuste preestablecido
+PreviousTrack: AnteriorPista
+prg-001: Prusiano (Mundo)
+Primary: Primario
+Primary Key: Clave principal
+PrimaryContrastText: Texto de contraste primario
+PrimaryDarken: Oscurecimiento primario
+PrimaryLighten: PrimarioAclarado
+Print: Impresión
+PrintButtonIcon: Icono de botón de impresión
+Pristina: Pristina
+Product Deleted: ¡Producto eliminado!
+Product Not Found!: ¡Producto no encontrado!
+Product Saved: ¡Producto guardado!
+Product Updated: ¡Producto actualizado!
+Products: Productos
+Products exported: Productos exportados
+Profile: Perfil
+Profile Details: Detalles del perfil
+Profile picture added.: Foto de perfil agregada.
+Profile picture deleted.: Foto de perfil eliminada.
+Profile updated: Perfil actualizado
+ProgramingSkills: Habilidades de programación
+Property1: Propiedad1
+Property10: Propiedad10
+Property11: Propiedad11
+Property12: Propiedad12
+Property13: Propiedad13
+Property14: Propiedad14
+Property15: Propiedad15
+Property16: Propiedad16
+Property17: Propiedad17
+Property18: Propiedad18
+Property19: Propiedad19
+Property2: Propiedad2
+Property20: Propiedad20
+Property21: Propiedad21
+Property22: Propiedad22
+Property23: Propiedad23
+Property24: Propiedad24
+Property25: Propiedad25
+Property26: Propiedad26
+Property27: Propiedad27
+Property28: Propiedad28
+Property29: Propiedad29
+Property3: Propiedad3
+Property30: Propiedad30
+Property31: Propiedad31
+Property32: Propiedad32
+Property33: Propiedad33
+Property34: Propiedad34
+Property35: Propiedad35
+Property36: Propiedad36
+Property37: Propiedad37
+Property38: Propiedad38
+Property39: Propiedad39
+Property4: Propiedad4
+Property40: Propiedad40
+Property41: Propiedad41
+Property42: Propiedad42
+Property43: Propiedad43
+Property44: Propiedad44
+Property45: Propiedad45
+Property5: Propiedad5
+Property6: Propiedad6
+Property7: Propiedad7
+Property8: Propiedad8
+Property9: Propiedad9
+prs-AF: prs (Afganistán)
+ps-AF: Pashto (Afganistán)
+ps-PK: Pashto (Pakistán)
+PseudoCss: PseudoCss
+pt-AO: Portugués (Angola)
+pt-BR: Portugués (Brasil)
+pt-CH: Portugués (Suiza)
+pt-CV: Portugués (Cabo Verde)
+pt-GQ: Portugués (Guinea Ecuatorial)
+pt-GW: Portugués (Guinea-Bissau)
+pt-LU: Portugués (Luxemburgo)
+pt-MO: Portugués (RAE de Macao)
+pt-MZ: Portugués (Mozambique)
+pt-PT: Portugués (Portugal)
+pt-ST: Portugués (Santo Tomé y Príncipe)
+pt-TL: Portugués (Timor-Leste)
+Public Profile: Perfil público
+Pulse: Pulso
+Purebasic: Purebasic
+Purple: Morado
+QtcreatorDark: QtcreatorDark
+QtcreatorLight: QtcreatorLight
+QualiaBase16: QualiaBase16
+Qualifications and References: Calificaciones y referencias
+quc-GT: K'iche' (Guatemala)
+Quentin Tarantino: Quentin Tarantino
+Quick Insights.: Ideas rápidas.
+Quick Start Guide: Guía de inicio rápido
+quz-BO: quz (Bolivia)
+quz-EC: quz (Ecuador)
+quz-PE: quz (Perú)
+Rachel Green: Raquel Verde
+Radial: Radial
+RadialInvert: RadialInvert
+Radius: Radio
+Rage Italic: Rage Italic
+RailscastsBase16: RailscastsBase16
+Rainbow: Arco iris
+Random: Aleatorio
+RandomColorUpdateDelay: RandomColorUpdateDelay
+RarArchive.rar: RarArchive.rar
+Rate: Tasa
+Rate must be greater than 0: La tasa debe ser superior a 0
+Ravie: Encantado
+Read More: Leer más
+Readme: Léame
+readme.md: readme.md
+ReadOnly: Solo lectura
+Realtime Updates & Insights with SignalR.: Actualizaciones e información en tiempo real con SignalR.
+RebeccaBase16: RebeccaBase16
+RebeccaPurple: RebeccaPúrpura
+Record audio: Grabar audio
+Record Audio: Grabar audio
+Record Camera: Grabar cámara
+Record Main Camera: Grabar cámara principal
+Record Main Camera Lower Quality: Grabar cámara principal de menor calidad
+Record Screen: Grabar pantalla
+Recording: Grabación
+RecordingAnimation: GrabaciónAnimación
+RecordingBorderAnimation: GrabaciónBorderAnimation
+RecordingColor: RecordingColor
+RecordingIcon: RecordingIcon
+Red: Rojo
+Redirect: Redirigir
+Redirecting to {0}: Redirigir a {0}
+Redirecting...: Redirigiendo...
+ReflexAlpha: ReflexAlpha
+ReflexBright: ReflexBright
+ReflexFit: Ajuste reflejo
+ReflexRatio: Relación de reflejos
+Refresh: Actualizar
+Refreshed Token.: Token actualizado.
+Register: Registro
+Register as: Regístrese como
+Register as {0}: Regístrese como {0}
+Register here: Regístrese aquí
+Register New User: Registrar nuevo usuario
+Register User: Registrar usuario
+Registered Roles: Roles registrados
+Registered Users: Usuarios registrados
+Rel: Rel
+Relative: Pariente
+RelativeToParent: RelativeToParent
+RelativeWidth: Anchura relativa
+Reload: Recargar
+Reload Data: Recargar datos
+Rem: Rem
+Remember me?: ¿Recuérdame?
+RememberEditedOptions: RecordarOpciones editadas
+Remove: Eliminar
+Remove All: Eliminar todo
+RemoveErrorAfter: RemoveErrorAfter
+RemoveErrorOnChange: RemoveErrorOnChange
+RemoveItemButtonAlwaysRight: RemoveItemButtonAlwaysRight
+Rename: Rebautizar
+Rename backup: Cambiar el nombre de la copia de seguridad
+Render with {0}: Renderizar con {0}
+Render with MudExFileDisplayTiff: Renderizar con el visor Tiff
+Render with MudExFileDisplayZip: Renderizar con visor Zip
+Render with MudExImageViewer: Renderización con MudExImageViewer
+Render with native control: Renderizado con control nativo
+RenderBackLink: RenderBackLink
+RenderChipsAdditional: RenderChipsAdditional
+Rendered Virtualized: Renderizado virtualizado
+rendered when the item is outside the viewport.: renderizado cuando el elemento está fuera de la ventana gráfica.
+rendered when the item is visible in the viewport.: renderizado cuando el elemento está visible en la ventana gráfica.
+RenderHomeLink: RenderHomeLink
+RenderOnlyOnce: RenderOnlyOnce
+Required: Obligatorio
+RequiredError: RequiredError
+Reset: Restablecimiento
+Reset {0}: Restablecer {0}
+Reset all: Restablecer todo
+Reset all properties?: ¿Restablecer todas las propiedades?
+Reset password: Restablecer contraseña
+Reset Password: Restablecer contraseña
+Reset to initial data: Restablecer a los datos iniciales
+Reset view: Restablecer vista
+ResetButtonIcon: ResetButtonIcon
+ResetToDefaultFirst: Restablecer por defecto primero
+Resizeable: Redimensionable
+ResizeMode: Modo de cambio de tamaño
+Resources: Recursos
+Responsive: Sensible
+Restart server: Reiniciar servidor
+Restore: Restaurar
+Restore database: Restaurar base de datos
+Restore default: Restaurar valor predeterminado
+Restore finished: Restauración finalizada
+Restore in progress. Please wait until the restore is finished. This can take a while.: Restauración en curso. Espere hasta que finalice la restauración. Esto puede llevar un tiempo.
+Revert: Revertir
+RGB: RGB
+RGBA: RGBA
+rgba(0,200,83,1): rgba(0,200,83,1)
+rgba(126,247,160,1): rgba(126,247,160,1)
+rgba(133,135,145,1): rgba(133,135,145,1)
+rgba(157,241,250,1): rgba(157,241,250,1)
+rgba(17,59,83,1): rgba(17,59,83,1)
+rgba(170,0,0,1): rgba(170,0,0,1)
+rgba(18,121,66,1): rgba(18,121,66,1)
+rgba(189,255,207,1): RGBA(189,255,207,1)
+rgba(19,184,232,1): rgba(19,184,232,1)
+rgba(191,125,17,1): rgba(191,125,17,1)
+rgba(20,220,113,1): RGBA(20,220,113,1)
+rgba(201,204,207,1): rgba(201,204,207,1)
+rgba(217,152,13,1): rgba(217,152,13,1)
+rgba(220,63,17,1): rgba(220,63,17,1)
+rgba(23,105,142,1): rgba(23,105,142,1)
+rgba(23,162,88,1): rgba(23,162,88,1)
+rgba(230,233,235,1): rgba(230,233,235,1)
+rgba(235,179,35,1): rgba(235,179,35,1)
+rgba(244,67,54,1): rgba(244,67,54,1)
+rgba(246,249,251,1): rgba(246,249,251,1)
+rgba(253,210,47,1): rgba(253,210,47,1)
+rgba(254,104,0,1): rgba(254,104,0,1)
+rgba(255,145,2,1): rgba(255,145,2,1)
+rgba(255,152,0,1): rgba(255,152,0,1)
+rgba(255,179,31,1): rgba(255,179,31,1)
+rgba(255,210,84,1): rgba(255,210,84,1)
+rgba(255,226,115,1): rgba(255,226,115,1)
+rgba(255,240,163,1): rgba(255,240,163,1)
+rgba(27,189,102,1): rgba(27,189,102,1)
+rgba(33,150,243,1): rgba(33,150,243,1)
+rgba(39,219,245,1): rgba(39,219,245,1)
+rgba(53,57,64,1): rgba(53,57,64,1)
+rgba(66,66,66,1): rgba(66,66,66,1)
+rgba(88,91,98,1): RGBA(88,91,98,1)
+rgba(9,137,194,1): rgba(9,137,194,1)
+Ridge: Cresta
+Right: Derecha
+Right part in MudExSplitPanel.: Parte derecha en MudExSplitPanel.
+RightToLeft: DerechaToIzquierda
+Ripple: Ondulación
+RippleOpacity: RippleOpacity
+RippleOpacitySecondary: RippleOpacitySecondary
+rm-CH: Romanche (Suiza)
+rn-BI: Rundi (Burundi)
+ro-MD: Rumano (Moldavia)
+ro-RO: Rumano (Rumanía)
+Roboto: Robot
+Rockwell: Rockwell
+Rockwell Condensed: Rockwell condensado
+Rockwell Extra Bold: Rockwell Extra Bold
+rof-TZ: Rombo (Tanzania)
+Role: Rol
+Role ID: ID de rol
+Role Name: Nombre del rol
+Roles: Papeles
+Roles Updated: ¡Roles actualizados!
+RootName: Nombre raíz
+RosPineBase16: RosPineBase16
+RosPineDawnBase16: RosPineDawnBase16
+RosPineMoonBase16: RosPineMoonBase16
+RosyBrown: Marrón rosado
+Rotate: Rotar
+RoundBars: Barras redondas
+Rounded: Redondeado
+Routeros: Routeros
+Row: Fila
+RowSpan: RowSpan
+RowsPerPageString: Filas por página
+RoyalBlue: Azul real
+ru-BY: Ruso (Bielorrusia)
+ru-KG: Ruso (Kirguistán)
+ru-KZ: Ruso (Kazajistán)
+ru-MD: Ruso (Moldavia)
+ru-RU: Ruso (Rusia)
+ru-UA: Ruso (Ucrania)
+RubberBand: Banda elástica
+RubberBandColor: RubberBandColor
+RubberBandStyle: Estilo de banda elástica
+Runic MT Condensed: MT rúnico condensado
+Runtime: Ejecución
+Russian: Ruso
+rw-RW: Kinyarwanda (Ruanda)
+rwk-TZ: Rwa (Tanzania)
+sa-IN: Sánscrito (India)
+SaddleBrown: Silla de montarMarrón
+SagelightBase16: SagelightBase16
+sah-RU: Sakha (Rusia)
+Salmon: Salmón
+Sample Card: Tarjeta de muestra
+Sample Dialog: Cuadro de diálogo de ejemplo
+Sample Headline: Ejemplo de titular
+Sample how to use Theme Select: Ejemplo de cómo usar la selección de tema
+Sample mega: Muestra mega
+Sample to see how you can render and use any component in a dialog as easy as possible: Ejemplo para ver cómo puede representar y utilizar cualquier componente de un cuadro de diálogo de la forma más sencilla posible
+sample.pdf: sample.pdf
+San Antonio: San Antonio
+San Antonio - 78201: San Antonio - 78201
+San Antonio - 78201ender: San Antonio - 78201ender
+San Diego: San Diego
+San Diego - 92101: San Diego - 92101
+San Diego - 92101ender: San Diego - 92101ender
+San Jose: San José
+San Jose - 95101: San José - 95101
+San Jose - 95101ender: San Jose - 95101ender
+SandBoxIframes: SandBoxIframes
+SandcastleBase16: Castillo de arenaBase16
+SandyBrown: Marrón arenoso
+sans-serif: sans-serif
+Sans-serif: Sans-serif
+saq-KE: Samburu (Kenia)
+sat-Olck-IN: Santali (Ol Chiki, India)
+Saturation: Saturación
+Save: Salvar
+Save {0} Changes: '{0} Guardar cambios'
+Save as: Guardar como
+Save Changes: Guardar cambios
+Save image: Guardar imagen
+Save Role: Guardar rol
+Save visible area only: Guardar solo área visible
+SaveButtonIcon: SaveButtonIcon
+saved: ¡Guardado!
+sbp-TZ: Sangu (Tanzania)
+Scale: Escama
+SchoolBook: Schoolbook
+Scope: Alcance
+Screen: Pantalla
+Script MT Bold: Script MT Negrita
+Scroll down to discover the content: Desplácese hacia abajo para descubrir el contenido
+Scroll down to see the behavior: Desplácese hacia abajo para ver el comportamiento
+Scroll to top: Desplazarse hacia arriba
+sd-Arab-PK: Sindhi (árabe, Pakistán)
+sd-Deva-IN: Sindhi (Devanagari, India)
+se-FI: Sami del Norte (Finlandia)
+se-NO: Sami del Norte (Noruega)
+se-SE: Sami del Norte (Suecia)
+SeaGreen: Verde mar
+search: buscar
+Search: Buscar
+Search by users: Búsqueda por usuarios
+Search For {0} Extended Attributes: Buscar {0} atributos extendidos
+Search for Brands: Buscar marcas
+Search for Document Types: Buscar tipos de documentos
+Search For Permissions: Buscar permisos
+Search for Roles...: Buscar roles...
+Search for Trails: Buscar senderos
+Search For User Roles: Buscar roles de usuario
+Search For Users: Buscar usuarios
+Search in New Values: Buscar en nuevos valores
+Search in Old Values: Buscar en valores antiguos
+SearchBox: Cuadro de búsqueda
+SearchBoxAdornment: Cuadro de búsquedaAdorno
+SearchBoxAutoFocus: SearchBoxAutoFocus
+SearchBoxBackgroundColor: Cuadro de búsquedaColor de fondo
+SearchBoxClearable: Cuadro de búsquedaClearable
+SearchBoxPlaceholder: SearchBoxPlaceholder
+SearchBoxVariant: Variante de cuadro de búsqueda
+SearchString: Cadena de búsqueda
+SeaShell: Concha
+Secondary: Secundario
+SecondaryBackgroundForNestedItemHeader: SecondaryBackgroundForNestedItemHeader
+SecondaryContrastText: Texto de contraste secundario
+SecondaryDarken: Oscurecimiento secundario
+SecondaryLighten: SecundarioAclarar
+Section 0: Sección 0
+Section 1: Sección 1
+Section 10: Sección 10
+Section 11: Sección 11
+Section 12: Sección 12
+Section 13: Sección 13
+Section 14: Sección 14
+Section 15: Sección 15
+Section 2: Sección 2
+Section 3: Sección 3
+Section 4: Sección 4
+Section 5: Sección 5
+Section 6: Sección 6
+Section 7: Sección 7
+Section 8: Sección 8
+Section 9: Sección 9
+Security: Seguridad
+See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.: Vea cómo usar MudExFileDisplay para mostrar el contenido del archivo. También se muestra cómo implementar la interfaz IMudExFileDisplay para proporcionar componentes propios para tipos de archivo específicos.
+See how to use MudExObjectEdit in a dialog: Vea cómo usar MudExObjectEdit en un cuadro de diálogo
+See how you can use different pickers or delay change event with the MudExColorPicker: Vea cómo puede usar diferentes selectores o retrasar el evento de cambio con MudExColorPicker
+seh-MZ: Sena (Mozambique)
+Select: Escoger
+Select a brand: Selecciona una marca
+Select All: Seleccionar todo
+Select Item: Seleccionar artículo
+Select Items: Seleccionar artículos
+Select Language: Seleccionar idioma
+Select sample file (See weather.json to check how own components for files can be created): Seleccione un archivo de muestra (consulte weather.json para comprobar cómo se pueden crear componentes propios para archivos)
+Select screen: Seleccionar pantalla
+SelectAll: Seleccionar todo
+SelectAllPosition: SeleccionarTodaPosición
+SelectAllText: SeleccionarTodoTexto
+SelectColorText: SeleccionarColorTexto
+Selected: Seleccionado
+Selected Node: Nodo seleccionado
+SelectedBrand: Marca seleccionada
+SelectedIndex: Índice seleccionado
+SelectedItemBackgroundColor: SelectedItemBackgroundColor
+SelectedItemBorderColor: SelectedItemBorderColor
+SelectedItemColor: SelectedItemColor
+SelectedRequests: SolicitudesSeleccionadas
+SelectedValues: Valores seleccionados
+Selecting: Seleccionar
+SelectionList: Lista de selección
+SelectionMode: Modo de selección
+SelectionModeIcon: SelectionModeIcon
+SelectItemsMode: SelectItemsMode
+SelectorsForIgnoreBlur: Selectores para ignorar desenfoque
+SelectorSize: Tamaño del selector
+SelectorsToKeepOpenOnMouseLeave: SelectoresParaMantenerAbiertoEnMouseLeave
+SelectValueOnTab: SelectValueOnTab
+SelectVariant: SelectVariant
+Send: Enviar
+Send confirmation email: Enviar correo electrónico de confirmación
+Sensitivity: Sensibilidad
+Sep: Sep
+Server restarted successfully: El servidor se reinició con éxito
+ses-ML: Koyraboro Senni (Malí)
+Set as Default options for all Dialogs: Establecer como opciones predeterminadas para todos los diálogos
+Set empty/null for auto detection: Establecer vacío/nulo para la detección automática
+Set new password: Establecer nueva contraseña
+Set this to automatically stop recording after the desired time.: Configúrelo para detener automáticamente la grabación después del tiempo deseado.
+Set this to wait before a photo is taken: Configure esto para esperar antes de tomar una foto
+Set this to wait before recording starts: Configure esto para esperar antes de que comience la grabación
+SetChipsOnEnter: SetChipsOnEnter
+SetiUiBase16: SetiUiBase16
+SevenZipArchive.7z: SevenZipArchive.7z
+Severity: Severidad
+sg-CF: Sango (República Centroafricana)
+ShadesOfPurple: Tonos de púrpura
+Shadows: Sombras
+Shake: Sacudir
+ShapeshifterBase16: CambiaformasBase16
+SharedConfig: Configuración compartida
+Sharpness: Agudeza
+shi-Latn-MA: Tachelhit (latín, Marruecos)
+shi-Tfng-MA: Tachelhit (Tifinagh, Marruecos)
+Show: Mostrar
+Show As Dialog: Cuadro de diálogo Mostrar como
+Show as Tree: Mostrar como árbol
+Show Demo: Mostrar demostración
+Show flat: Piso piloto
+Show info: Mostrar información
+Show info for: Mostrar información para
+Show Markup: Mostrar marcado
+Show notification: Mostrar notificación
+Show notification while recording: Mostrar notificación durante la grabación
+Show on github: Mostrar en github
+Show or hide inherited fields from base class: Mostrar u ocultar campos heredados de la clase base
+Show Sample 1: Mostrar muestra 1
+Show Sample 2: Mostrar muestra 2
+Show Sample 3: Mostrar muestra 3
+Show Sample Dialog: Mostrar cuadro de diálogo de muestra
+Show Sample Dialog METHOD 1: Mostrar cuadro de diálogo de ejemplo MÉTODO 1
+Show Sample Dialog METHOD 2: Mostrar cuadro de diálogo de ejemplo MÉTODO 2
+Show Sample Dialogs: Mostrar diálogos de ejemplo
+Show selected: Mostrar seleccionado
+Show With this Options: Mostrar con estas opciones
+ShowAlpha: Mostrar alfa
+ShowAtCursor: ShowAtCursor
+ShowBgColor: ShowBgColor
+Showcard Gothic: Showcard Gótico
+ShowClearButton: ShowClearButton
+ShowCloseIcon: Mostrar Cerrar Icono
+ShowColorField: ShowColorField
+ShowColorPreview: Mostrar vista previa de color
+ShowContentError: ShowContentError
+ShowCssColorVariables: Mostrar variables de color
+ShowFileUploadButton: ShowFileUploadButton
+ShowFilterInDrawer: ShowFilterInDrawer
+ShowFolderUploadButton: ShowFolderUploadButton
+ShowFPS: MostrarFPS
+ShowFullScreenButton: ShowFullScreenButton
+ShowHtmlColors: Mostrar colores HTML
+ShowInputs: Mostrar entradas
+ShowLogoInDrawer: ShowLogoInDrawer
+ShowModeSwitch: ShowModeSwitch
+ShowNavigator: ShowNavigator
+ShowNotificationWhileRecording: Mostrar notificación mientras graba
+ShowPath: Mostrar camino
+ShowPeaks: Mostrar picos
+ShowPresetNameOnChange: ShowPresetNameOnChange
+ShowPreview: Mostrar vista previa
+ShowPreviewOnClick: MostrarVista previa en clic
+ShowPrintButton: Botón MostrarImprimir
+ShowProgressForLoadingData: ShowProgressForLoadingData
+ShowRemainingTimeOnly: ShowRemainingTimeOnly
+ShowRenameButton: Botón MostrarRenombrar
+ShowResetButton: ShowResetButton
+Shows how you can use MudExAdditionalAdornment to ad as many adornments to any MudInput: Muestra cómo puede usar MudExAdditionalAdornment para agregar tantos adornos a cualquier MudInput
+ShowSaveButton: ShowSaveButton
+ShowScaleX: Mostrar escala X
+ShowScaleY: Mostrar escala
+ShowSliders: ShowSliders
+ShowSpectrumOnRecording: ShowSpectrumOnRecording
+ShowThemeColors: Mostrar colores temáticos
+ShowToolbar: Mostrar barra de herramientas
+ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
+ShowVisualiser: ShowVisualiser
+ShowZoomInButton: ShowZoomInButton
+ShowZoomOutButton: ShowZoomOutButton
+ShrinkLabel: Etiqueta retráctil
+si-LK: Cingalés (Sri Lanka)
+Side: Lado
+Sienna: Sienna
+Sign In: Inicia sesión
+Sign Up: Únete
+SilkDarkBase16: SedaBaseOscura16
+SilkLightBase16: SilkLightBase16
+Silver: Plata
+Simon Pack: Manada Simon
+Simple: Sencillo
+Simple Card List with a hover effect.: Lista de cartas simple con efecto de desplazamiento.
+Simple CodeViewer Component: Componente CodeViewer simple
+Simple component to display Html files with MudExFileDisplay: Componente simple para mostrar archivos Html con MudExFileDisplay
+Simple component to display markdown files with MudExFileDisplay: Componente simple para mostrar archivos de rebajas con MudExFileDisplay
+Simple component to expand a Search field: Componente simple para expandir un campo de búsqueda
+Simple Confirmation: Confirmación simple
+Simple Dialog: Diálogo simple
+Simple Dialogs: Diálogos simples
+Simple Enum: Enumeración simple
+Simple Excel file viewer: Visor de archivos de Excel simple
+Simple extended popover that adds Animations and an onblur event to close if a click outside happens.: Ventana emergente extendida simple que agrega animaciones y un evento onblur para cerrar si ocurre un clic externo.
+Simple extension for MudAvatar to load automatically a profile image for an email address using Gravatar: Extensión simple para que MudAvatar cargue automáticamente una imagen de perfil para una dirección de correo electrónico usando Gravatar
+Simple MessageDialog: Mensaje simpleDiálogo
+Simple Prompt: Aviso simple
+Simple virtualize component that can be disabled with support for fixed items and ItemsProvider.: Componente de virtualización simple que se puede deshabilitar con soporte para elementos fijos y ItemsProvider.
+SimpleDialog: Cuadro de diálogo simple
+SimulateOnHover: SimulateOnHover
+SimulateWithFullSpectrumAudioData: SimulateWithFullSpectrumAudioData
+SimulateWithRandomData: SimulateWithRandomData
+Single: Soltero
+SingleExpand: SingleExpand
+Size: Tamaño
+sk-SK: Eslovaco (Eslovaquia)
+Skeleton: Esqueleto
+SkipSeparator: SkipSeparator
+SkyBlue: Azul cielo
+sl-SI: Esloveno (Eslovenia)
+SlateBlue: Azul pizarra
+SlateGray: Gris pizarra
+Slide: Diapositiva
+SlideBar: Barra deslizante
+SlideIn: Deslizarse
+sma-NO: Sami del Sur (Noruega)
+sma-SE: Sami del Sur (Suecia)
+Small: Pequeño
+smj-NO: Lule Sami (Noruega)
+smj-SE: Lule Sami (Suecia)
+smn-FI: Inari Sami (Finlandia)
+Smoothing: Allanamiento
+sms-FI: Skolt Sami (Finlandia)
+sn-Latn-ZW: Shona (latín, Zimbabue)
+Snackbar: Snackbar
+SnackbarMessageMarkupString: SnackbarMessageMarkupString
+SnackbarMessageRenderFragment: SnackbarMessageRenderFragment
+SnackbarMessageText: SnackbarMessageText
+Snap ITC: Snap ITC
+SnapDrag: SnapDrag
+SnazzyBase16: Base16 elegante
+Snow: Nieve
+so-DJ: Somalí (Yibuti)
+so-ET: Somalí (Etiopía)
+so-KE: Somalí (Kenia)
+so-SO: Somalí (Somalia)
+SolarFlareBase16: SolarFlareBase16
+SolarFlareLightBase16: SolarFlareLightBase16
+SolarizedDarkBase16: SolarizedDarkBase16
+SolarizedLightBase16: SolarizedLightBase16
+Solid: Sólido
+Some: Alguno
+Some other: Algunos otros
+SomeOtherInformation: Alguna otrainformación
+Something went wrong during the refresh token action: Algo salió mal durante la acción de actualización del token
+SomeUnimportantTestModel: SomeUnimportantTestModel
+SomeUnimportantTestModel as Json: SomeUnimportantTestModel como Json
+SpaceAround: Espacio alrededor
+SpaceBetween: EspacioEntre
+SpaceEvenly: EspacioUniformemente
+SpacemacsBase16: SpacemacsBase16
+Spacing: Espaciamiento
+Specify Options...: Especificar opciones...
+Specify Quick Options...: Especificar opciones rápidas...
+Spectrum: Espectro
+SpectrumIcon: Icono de espectro
+SpinSpeed: Velocidad de giro
+SplitGradient: Gradiente dividido
+SplitPanelItem for MudExSplitPanel component: SplitPanelItem para el componente MudExSplitPanel
+SpringGreen: Verde primavera
+sq-AL: Albanés (Albania)
+sq-MK: Albanés (Macedonia del Norte)
+sq-XK: Albanés (Kosovo)
+Square: Cuadrado
+sr-Cyrl-BA: Serbio (cirílico, Bosnia y Herzegovina)
+sr-Cyrl-ME: Serbio (cirílico, Montenegro)
+sr-Cyrl-RS: Serbio (cirílico, Serbia)
+sr-Cyrl-XK: Serbio (cirílico, Kosovo)
+sr-Latn-BA: Serbio (latín, Bosnia y Herzegovina)
+sr-Latn-ME: Serbio (Latín, Montenegro)
+sr-Latn-RS: Serbio (latín, Serbia)
+sr-Latn-XK: Serbio (latín, Kosovo)
+Src: Fuente
+Srcery: Srcery
+ss-SZ: siSwati (Eswatini)
+ss-ZA: siSwati (Sudáfrica)
+ssy-ER: Saho (Eritrea)
+st-LS: Sesotho (Lesotho)
+st-ZA: Sesotho (Sudáfrica)
+StackedBar: Barra apilada
+StackoverflowDark: StackoverflowDark
+StackoverflowLight: StackoverflowLight
+Standard - Mikrofon (Voicemod Virtual Audio Device (WDM)): Estándar - Mikrofon (Dispositivo de audio virtual Voicemod (WDM))
+Start: Empezar
+Start Capture: Iniciar captura
+Start Recording: Iniciar grabación
+Start recording after: Comience a grabar después de
+Start/Stop selection: Selección de inicio/parada
+State: Estado
+Static: Estático
+Static card.: Tarjeta estática.
+Static item: Elemento estático
+Status: Estado
+SteelBlue: Azul acero
+Stencil: Plantilla
+Stereo: Estéreo
+Steve Rogers: Steve Rogers
+Store: Tienda
+Stream: Corriente
+StreamUrlHandling: StreamUrlHandling
+Street: Calle
+Street 2 2, 32365 City 2: Calle 2 2, 32365 Ciudad 2
+Strict: Estricto
+StringProperty1: StringProperty1
+StringProperty10: StringProperty10
+StringProperty11: StringProperty11
+StringProperty12: StringProperty12
+StringProperty13: StringProperty13
+StringProperty14: StringProperty14
+StringProperty15: StringProperty15
+StringProperty16: StringProperty16
+StringProperty17: StringProperty17
+StringProperty18: StringProperty18
+StringProperty19: StringProperty19
+StringProperty2: StringProperty2
+StringProperty20: StringProperty20
+StringProperty21: StringProperty21
+StringProperty22: StringProperty22
+StringProperty23: StringProperty23
+StringProperty24: StringProperty24
+StringProperty25: StringProperty25
+StringProperty26: StringProperty26
+StringProperty27: StringProperty27
+StringProperty28: StringProperty28
+StringProperty29: StringProperty29
+StringProperty3: StringProperty3
+StringProperty30: StringProperty30
+StringProperty31: StringProperty31
+StringProperty32: StringProperty32
+StringProperty33: StringProperty33
+StringProperty34: StringProperty34
+StringProperty35: StringProperty35
+StringProperty36: StringProperty36
+StringProperty37: StringProperty37
+StringProperty38: StringProperty38
+StringProperty39: StringProperty39
+StringProperty4: StringProperty4
+StringProperty40: StringProperty40
+StringProperty41: StringProperty41
+StringProperty42: StringProperty42
+StringProperty43: StringProperty43
+StringProperty44: StringProperty44
+StringProperty45: StringProperty45
+StringProperty46: StringProperty46
+StringProperty47: StringProperty47
+StringProperty48: StringProperty48
+StringProperty49: StringProperty49
+StringProperty5: StringProperty5
+StringProperty50: StringProperty50
+StringProperty51: StringProperty51
+StringProperty52: StringProperty52
+StringProperty53: StringProperty53
+StringProperty54: StringProperty54
+StringProperty55: StringProperty55
+StringProperty56: StringProperty56
+StringProperty57: StringProperty57
+StringProperty58: StringProperty58
+StringProperty59: StringProperty59
+StringProperty6: StringProperty6
+StringProperty60: StringProperty60
+StringProperty7: StringProperty7
+StringProperty8: StringProperty8
+StringProperty9: StringProperty9
+Striped: Rayado
+Structured Data Edit: Editar datos estructurados
+StructuredDataEdit: Datos estructurados
+Style: Estilo
+StyleChip: StyleChip
+su-Latn-ID: Sundanés (latín, Indonesia)
+Subject: Asunto
+Subline description for sample card.: Descripción de la sublínea para la tarjeta de muestra.
+Submit: Enviar
+SubscribeToParentForm2: SubscribeToParentForm2
+subtitle1: subtítulo1
+Subtitle1: Subtítulo1
+subtitle2: subtítulo2
+Subtitle2: Subtítulo2
+Success: Éxito
+SuccessContrastText: Texto de contraste de éxito
+SuccessDarken: SuccessDarken
+SuccessLighten: SuccessLighten
+SummercampBase16: Campamento de veranoBase16
+SummerfruitDarkBase16: SummerfruitDarkBase16
+SummerfruitLightBase16: SummerfruitLightBase16
+Sunburst: Sunburst
+Super sample Content text.: Texto de contenido de súper muestra.
+Support: Apoyo
+Surface: Superficie
+Surname: Apellido
+sv-AX: Sueco (Islas Åland)
+sv-FI: Sueco (Finlandia)
+sv-SE: Sueco (Suecia)
+sw-CD: Kiswahili (Congo [RDC])
+sw-KE: Kiswahili (Kenia)
+sw-TZ: Kiswahili (Tanzania)
+sw-UG: Kiswahili (Uganda)
+Swagger: Documentación de la API
+Swap: Intercambio
+Swedish: Sueco
+SweetieBubbleGum-Regular.ttf: SweetieBubbleGum-Regular.ttf
+Swing: Columpio
+Switch: Interruptor
+Switch expand button position: Cambiar la posición del botón de expansión
+Switch overlay source: Cambiar fuente de superposición
+Symbol: Símbolo
+SynthMidnightTerminalDarkBase16: SintetizadorMidnightTerminalDarkBase16
+SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16
+syr-SY: Siríaco (Siria)
+System: Sistema
+System Settings: Configuración del sistema
+T3024Base16: T3024Base16
+ta-IN: Tamil (India)
+ta-LK: Tamil (Sri Lanka)
+ta-MY: Tamil (Malasia)
+ta-SG: Tamil (Singapur)
+Table Name: Nombre de la tabla
+TableHover: Pasar el cursor sobre la mesa
+TableLines: Líneas de tabla
+TableStriped: TablaStriped
+Tada: Entonces
+Tag: Día
+TagField: Campo de etiquetas
+Tahoma: Tahoma
+Take case: Toma caso
+Take photo after: Tomar foto después
+Take Photo from Main camera: Tomar foto desde la cámara principal
+Take Photo from Main camera in 5 seconds: Toma una foto desde la cámara principal en 5 segundos
+Take Photo only: Tomar solo foto
+Tan: Tan
+TangoBase16: TangoBase16
+TarArchive.tar: TarArchive.tar
+Target: Blanco
+Tax: Impuesto
+Tax must be greater than 0: El impuesto debe ser mayor que 0
+te-IN: Telugu (India)
+Teal: Cerceta
+tel: Tel
+Telephone: Teléfono
+TemplateClass: Clase de plantilla
+Temporary: Temporal
+TenderBase16: BaseTierna16
+teo-KE: Teso (Kenia)
+teo-UG: Teso (Uganda)
+Tertiary: Terciario
+TertiaryContrastText: Texto de contraste terciario
+TertiaryDarken: TerciarioOscurecer
+TertiaryLighten: TerciarioAclara
+TEST: PRUEBA
+Test and use components live without required environment: Pruebe y use componentes en vivo sin el entorno requerido
+Test the powerful MudExThemeEdit and change theme colors fonts and more: Prueba el poderoso MudExThemeEdita y cambia los colores, las fuentes del tema y más
+text: Mensaje de texto
+Text: Mensaje de texto
+Text value is required using {0} type!: ¡El valor de texto es obligatorio usando {0} tipo!
+TextAddExternal: TextAddExternal
+TextAddFromDropBox: TextAddFromDropBox
+TextAddFromGoogle: TextAddFromGoogle
+TextAddFromOneDrive: TextAddFromOneDrive
+TextAddUrl: TextAddUrl
+TextAddUrlMessage: TextAddUrlMessage
+TextAddUrlTitle: TextAddUrlTitle
+TextDisabled: TextoDeshabilitado
+TextDropZone: Zona de caída de texto
+TextErrorDuplicateFile: TextErrorDuplicateFile
+TextErrorExtensionForbidden: TextErrorExtensionForbidden
+TextErrorExtensionNotAllowed: TextErrorExtensionNotAllowed
+TextErrorMaxFileCount: TextErrorMaxFileCount
+TextErrorMaxFileSize: TextErrorMaxFileSize
+TextErrorMimeTypeForbidden: TextErrorMimeTypeForbidden
+TextErrorMimeTypeNotAllowed: TextErrorMimeTypeNotAllowed
+TextFillColor: TextFillColor
+TextPrimary: TextoPrimario
+TextRemoveAll: TextRemoveAll
+TextSecondary: TextoSecundario
+TextStartRecording: TextStartRecording
+TextStartVideoCapture: TextStartVideoCapture
+TextTransform: Transformación de texto
+TextUpdateSuppression: Supresión de actualización de texto
+TextUploadFile: Archivo de carga de texto
+TextUploadFiles: Archivos de carga de texto
+TextUploadFolder: Carpeta TextUpload
+tg-Cyrl-TJ: Tayiko (cirílico, Tayikistán)
+th-TH: Tailandés (Tailandia)
+The Checker field is required.: El campo Comprobador es obligatorio.
+The component also provides the <strong>IsVisibleChanged</strong> event, which triggers whenever the visibility of the item changes.: El componente también proporciona el evento <strong>IsVisibleChanged</strong>, que se desencadena cada vez que cambia la visibilidad del elemento.
+The content type {0} cannot be displayed without a suitable plugin: El tipo de contenido {0} no se puede mostrar sin un complemento adecuado
+The field Number must be between 1 and 100.: El campo Número debe estar entre 1 y 100.
+The file ({0}) has already been added: El archivo ({0}) ya se ha agregado
+The file has exceeded the maximum size of {0} with {1}. File size is {2}: El archivo ha superado el tamaño máximo de {0} con {1}. El tamaño del archivo es {2}
+The following {0} permissions are also required for permission {1}: También se requieren los siguientes permisos de {0} para {1} de permisos
+The following permission is also required for permission {1}: También se requiere el siguiente permiso para {1}
+The maximum file size is 10 MB: El tamaño máximo del archivo es de 10 MB
+The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit es una herramienta robusta y versátil diseñada para facilitar de manera efectiva la edición de uno o más temas o ajustes preestablecidos. Se adapta inherentemente al modo oscuro, al modo claro o a una combinación de ambos. Además, admite clases derivadas de MudTheme, así como propiedades personalizadas inherentes a él, lo que proporciona una solución completa y flexible para todos sus requisitos de edición de temas.
+The Plugin '{0}' may be able to help: El complemento '{0}' puede ayudar
+The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: El ejemplo es el mismo que el otro ejemplo de FileDisplay, pero con la diferencia de que no se usa ninguna dirección URL; en su lugar, se cargan y usan flujos.
+The server is just restarting. Please wait until the connection has been restored: El servidor se está reiniciando. Espere hasta que se haya restablecido la conexión
+The user "{0}" just changed some of this data: El usuario "{0}" acaba de cambiar algunos de estos datos
+The user {0} has been logged off: El usuario {0} ha cerrado la sesión
+The User {0} has just edited, created or deleted entries here. You should reload the data: El usuario {0} acaba de editar, crear o eliminar entradas aquí. Debe volver a cargar los datos
+Theme: Tema
+Theme Colors: Colores del tema
+Themes: Temas
+ThemeSelect: Selección de tema
+There are no new notifications: No hay nuevas notificaciones
+These features make <strong>MudExVirtualItem</strong> ideal for optimizing performance when working with large datasets or dynamic content that doesn't need to be loaded all at once.: Estas características hacen que <strong>MudExVirtualItem</strong> sea ideal para optimizar el rendimiento cuando se trabaja con grandes conjuntos de datos o contenido dinámico que no necesita cargarse de una vez.
+This bar can be positioned left, right, top or bottom, and expands automatically on mouseover. This is also the Base component for the MudExTaskBar that automatically displays all open dialogs: Esta barra se puede colocar a la izquierda, derecha, arriba o abajo, y se expande automáticamente al pasar el mouse. Este es también el componente base de MudExTaskBar que muestra automáticamente todos los cuadros de diálogo abiertos
+This changes the Variant if Age is at least 18 and is enabled if Age is more than 1: Esto cambia la variante si la edad es al menos 18 y está habilitada si la edad es superior a 1
+This component and the dialog no modal behaviour is still in development and not ready for production use. Please report any issues you find on GitHub.: Este componente y el comportamiento modal del diálogo no están todavía en desarrollo y no están listos para su uso en producción. Informe cualquier problema que encuentre en GitHub.
+This component uses the ICaptureService to capture audio and/or video data: Este componente usa ICaptureService para capturar datos de audio o vídeo
+This component uses the ISpeechRecognitionService to record audio data and transcripts: Este componente usa ISpeechRecognitionService para grabar datos de audio y transcripciones
+This Demo demonstrate using for the MudExCardList: Esta demostración demuestra el uso de MudExCardList
+This Demo demonstrate using the MudExAudioPlayer without the automatic use in MudExFileDisplay: En esta demostración se muestra el uso de MudExAudioPlayer sin el uso automático en MudExFileDisplay
+This Demo demonstrate using the MudExCardList with an item source: En esta demostración se muestra el uso de MudExCardList con un origen de elemento
+This Demo demonstrate using the MudExCardList with an item source and child content together: En esta demostración se muestra el uso de MudExCardList con un origen de elemento y contenido secundario juntos
+This Demo demonstrate using the MudExImageViewer without the automatic use in MudExFileDisplay: En esta demostración se muestra el uso de MudExImageViewer sin el uso automático en MudExFileDisplay
+This demo showcases the <strong>MudExVirtualItem</strong> component, a virtualized container that efficiently renders content<br/> only when it becomes visible in the viewport.: En esta demostración se muestra el componente <strong>MudExVirtualItem</strong>, un contenedor virtualizado que representa eficazmente el contenido<br/> solo cuando se hace visible en la ventanilla.
+This demo shows how to pass a can close method: Esta demostración muestra cómo pasar un método can close
+This demo shows how you can use a selection with MudExSelect with a custom item provider: En esta demostración se muestra cómo puede usar una selección con MudExSelect con un proveedor de elementos personalizados
+This demo uses SnapDrag as DragMode on the DialogOptionsEx: Esta demostración usa SnapDrag como DragMode en DialogOptionsEx
+This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open: Esta demostración usa IDialogEventService para comprobar, cambiar el tamaño o arrastrar, y almacena la posición y el tamaño más recientes como valores relativos y restaurarlos en la próxima apertura
+This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: Esto demuestra el componente MudExThemeEdit que usa internamente MudExObjectEdit y MudExThemeSelect para la edición de temas
+This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: En esta demostración se muestra la forma recomendada de usar MudExAdditionalAdornment con el uso de RenderFragments 'For' y 'ChildContent'
+This dialog can confirmed when slider value is greater then 10: Este cuadro de diálogo se puede confirmar cuando el valor del control deslizante es mayor que 10
+This is a Json representation of the TestModel. This is ignored for Export and Import: Esta es una representación Json de TestModel. Esto se ignora para Exportar e Importar
+This is a simple information dialog that closes after {0} seconds: Este es un cuadro de diálogo de información simple que se cierra después de {0} segundos
+This is a simple information dialog that closes after 0 seconds: Este es un cuadro de diálogo de información simple que se cierra después de 0 segundos
+This is a simple information dialog that closes after 1 seconds: Este es un cuadro de diálogo de información simple que se cierra después de 1 segundo
+This is a simple information dialog that closes after 2 seconds: Este es un cuadro de diálogo de información simple que se cierra después de 2 segundos
+This is a simple information dialog that closes after 3 seconds: Este es un cuadro de diálogo de información simple que se cierra después de 3 segundos
+This is a simple information dialog that closes after 4 seconds: Este es un diálogo de información simple que se cierra después de 4 segundos
+This is a simple information dialog that closes after 5 seconds: Este es un cuadro de diálogo de información simple que se cierra después de 5 segundos
+This is an Administrator Only View.: Esta es una vista solo para administradores.
+This is the MudEx Default theme: Este es el tema predeterminado de MudEx
+This is the sample Popover. In general it inherits the original MudPopover.: Este es el Popover de muestra. En general, hereda el MudPopover original.
+This one card is still added without an corresponding item.: Esta carta todavía se agrega sin un elemento correspondiente.
+This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: Esto pasa como método a las opciones del cuadro de diálogo. El cuadro de diálogo no se cerrará si el método devuelve false. El resultado debe ser un bool o un Task&lt;bool&gt;
+This photo was taken in a small village in Istra Croatia.: Esta foto fue tomada en un pequeño pueblo de Istra, Croacia.
+This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Este selector trae animaciones, mejores comportamientos y un cuadro de diálogo que admite todas las DialogOptions. Para crear su propio componente de selector, simplemente herede de MudExPickerBase, o simplemente para usar contenido simple, use MudExPicker
+This sample demonstrate how to use the MudExCaptureService: En este ejemplo se muestra cómo usar MudExCaptureService
+This sample demonstrate the usage of MudExTreeView with an Item template: En este ejemplo se muestra el uso de MudExTreeView con una plantilla de elemento
+This sample uses the IDialogEventService to cancel the dialog close: En este ejemplo se usa IDialogEventService para cancelar el cierre del cuadro de diálogo
+This sample uses the options for a can close callback: En este ejemplo se usan las opciones para una devolución de llamada de cierre de lata
+This section can be placed inside a MudExGrid component.: Esta sección se puede colocar dentro de un componente MudExGrid.
+Thistle: Cardo
+ThrottleInterval: Intervalo de aceleración
+ti-ER: Tigrinya (Eritrea)
+ti-ET: Tigrinya (Etiopía)
+tig-ER: Tigre (Eritrea)
+Tilt: Ladear
+Time: Hora
+Times: Veces
+Times New Roman: Times New Roman
+TimeSeries: Series temporales
+Tina Fey: Tina Fey
+Title: Título
+Title is required!: ¡Se requiere título!
+tk-TM: Turkmenistán (Turkmenistán)
+tn-BW: Setswana (Botswana)
+tn-ZA: Setswana (Sudáfrica)
+to-TO: Tonga (Tonga)
+Toggle loading: Alternar carga
+Toggle right-to-left/left-to-right: Alternar de derecha a izquierda/de izquierda a derecha
+Toggle to {0}: Alternar para {0}
+Toggleable: Conmutable
+ToggleAllFeatures: ToggleAllFeatures
+ToggleFullPage: AlternarPágina completa
+ToggleFullscreen: AlternarPantalla completa
+ToggleMicrophone: ToggleMicrophone
+TogglePictureInPicture: TogglePictureInPicture
+TogglePlayPause: AlternarReproducirPausa
+Token is required: Se requiere token
+Token Not Found!: ¡Token no encontrado!
+Tokyo: Tokio
+Tokyo - 100-0001: Tokio - 100-0001
+Tokyo - 100-0001ender: Tokio - 100-0001ender
+Tomato: Tomate
+TomorrowBase16: MañanaBase16
+TomorrowNightBase16: MañanaNocheBase16
+TomorrowNightBlue: Mañana por la nocheazul
+TomorrowNightBright: Mañana por la nocheBrillante
+ToolbarBackgroundColor: Barra de herramientasBackgroundColor
+ToolbarButtonColor: ToolbarButtonColor
+ToolbarButtonPosition: Barra de herramientasButtonPosition
+ToolbarButtonSize: ToolbarButtonSize
+ToolbarButtonVariant: ToolbarButtonVariant
+ToolbarClass: Clase de barra de herramientas
+ToolBarClass: ToolBarClass
+ToolbarStyle: Estilo de barra de herramientas
+ToolBarStyle: Estilo de barra de herramientas
+Tooltip: Información sobre herramientas
+ToolTip: Información sobre herramientas
+ToolTip Three: Información sobre herramientas tres
+ToolTip Two: Información sobre herramientas dos
+ToolTipStyle: Estilo de información sobre herramientas
+Top: Arriba
+TopCenter: Centro superior
+TopLeft: ArribaIzquierda
+TopRight: ArribaDerecha
+Torch: Antorcha
+Toronto: Toronto
+Toronto - M1B 1A1: Toronto - M1B 1A1
+Toronto - M1B 1A1ender: Toronto - M1B 1A1ender
+tr-CY: Turco (Chipre)
+tr-TR: Turco (Turquía)
+Trace: Rastro
+TrackInfoPosition: TrackInfoPosition
+TrackList: Lista de canciones
+TrackListBehaviour: Comportamiento de la lista de pistas
+TrackListClass: TrackListClass
+TrackListCoverImage: TrackListCoverImage
+TrackListMode: Modo TrackListMode
+TrackListPosition: Posición de la lista de canciones
+TrackListToggleButtonPosition: TrackListToggleButtonPosition
+Trail Details: Detalles del sendero
+TransformOrigin: TransformOrigin
+Translations: Traducciones
+Translations are being imported: Se están importando traducciones
+Translations updated: Traducciones actualizadas
+Transparent: Transparente
+Trebuchet MS: Trebuquete MS
+TreeView: Vista de árbol
+TreeView component that renders a tree structure of items.: Componente TreeView que representa una estructura de árbol de elementos.
+TreeViewBreadcrumb: TreeViewBreadcrumb
+TreeViewCardGrid: TreeViewCardGrid
+TreeViewDefault: TreeViewPredeterminado
+TreeViewFlatList: Lista plana de vista de árbol
+TreeViewHorizontal: TreeViewHorizontal
+TreeViewList: Lista de vistas de árbol
+TreeViewMode: Modo de vista de árbol
+TrueLeds: TrueLeds
+TrueOrFalse: VerdaderoOrFalso
+Try different role: Prueba un rol diferente
+Try MudEx online: Pruebe MudEx en línea
+Try MudEx online CodeEditor: Pruebe el editor de código en línea de MudEx
+ts-ZA: Xitsonga (Sudáfrica)
+tt-RU: Tártaro (Rusia)
+Turquoise: Turquesa
+TwilightBase16: CrepúsculoBase16
+twq-NE: Tasawaq (Níger)
+Type: Tipo
+Type should be valid: El tipo debe ser válido
+Typo: Error tipográfico
+TypoThemeDescription: TypoThemeDescripción
+TypoThemeName: TypoThemeName
+tzm-Arab-MA: Atlas Central Tamazight (árabe, Marruecos)
+tzm-Latn-DZ: Atlas Central Tamazight (latín, Argelia)
+tzm-Latn-MA: Atlas Central Tamazight (latín, Marruecos)
+tzm-Tfng-MA: Atlas Central Tamazight (Tifinagh, Marruecos)
+ug-CN: Uigur (China)
+uk-UA: Ucraniano (Ucrania)
+Uma Thurman: Uma Thurman
+Unassigned: Sin asignar
+UncheckedIcon: Icono desmarcado
+Underline: Subrayar
+Undo: Deshacer
+UndoIcon: DeshacerIcono
+UnikittyDarkBase16: UnikittyDarkBase16
+UnikittyLightBase16: UnikittyLightBase16
+Unselectable: No seleccionable
+Unset: Unset
+Update: Actualizar
+Update automatically next time: Actualizar automáticamente la próxima vez
+Update Brand: Actualizar marca
+Update Document: Documento de actualización
+Update Document Type: Actualizar tipo de documento
+Update Extended Attribute: Actualizar atributo extendido
+Update Now: Actualiza ahora
+Update Permissions: Actualizar permisos
+Update Product: Actualizar producto
+Update Role: Rol de actualización
+Update Role Permissions: Actualizar permisos de rol
+Update User Roles: Actualizar roles de usuario
+UpdateBindingIfOnlyHSLChanged: UpdateBindingIfOnlyHSLChanged
+Updated: Actualizado
+Updated User Status.: Estado de usuario actualizado.
+UpdateItemsOnStateChange: UpdateItemsOnStateChange
+Upload: Subir
+Upload Edit: Subir Editar
+Upload File: Subir archivo
+Upload Files: Subir archivos
+Upload Folder: Cargar carpeta
+Upload Image: Subir imagen
+Upload in dialog: Subir en el cuadro de diálogo
+Upload Qualifications and References: Cargar calificaciones y referencias
+UploadFieldId: UploadFieldId
+UploadFile: Archivo de carga
+UploadFolder: Carpeta de carga
+UploadRequest: Solicitud de carga
+UploadRequests: Solicitudes de carga
+ur-IN: Urdu (India)
+ur-PK: Urdu (Pakistán)
+url: URL
+Url: URL
+Use CodeGator Models: Usar modelos de CodeGator
+Use MudExAdditionalAdornment ad ChildContent: Usar MudExAdditionalAdornment ad ChildContent
+Use MudExAdditionalAdornment as ChildContent of a MudInput: Usar MudExAdditionalAdornment como ChildContent de un MudInput
+Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Use MudExSelect en su lugar y establezca MultiSelection en true y ValuePresenter en Chip.
+UseCanvas: UseCanvas
+UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
+UseItemTemplateForSelection: UseItemTemplateForSelection
+UseMudExColorBubble: UseMudExColorBubble
+UseNativeBrowserControl: UseNativeBrowserControl
+User: Usuario
+User {0} Registered. Please check your Mailbox to verify!: Usuario {0} registrado. ¡Revise su buzón para verificar su dirección de correo electrónico!
+User and Roles: Usuario y roles
+User Data: Datos de usuario
+User Deleted: Usuario eliminado
+User Name: Nombre de usuario
+User Not Active. Please contact the administrator.: Usuario no activo. Espere la activación o póngase en contacto con el administrador.
+User Not Found!: ¡Usuario no encontrado!
+User Registered: ¡Usuario registrado!
+User Registered Mailbox: Usuario registrado. El correo de confirmación se ha entregado al buzón.
+User registration is not allowed: No se permite el registro de usuarios
+UserAttributes: Atributos de usuario
+UserInformation: Información del usuario
+Username: Nombre de usuario
+UserName: Nombre de usuario
+Username {0} is already taken.: El nombre de usuario {0} ya está ocupado.
+Username cannot changed: El nombre de usuario no se puede cambiar
+UserName is required: Se requiere un nombre de usuario
+UserName must be at least of length 6: El nombre de usuario debe tener al menos una longitud 6
+Username or Email: Nombre de usuario o correo electrónico
+Users: Usuarios
+Users and Roles: Usuarios y roles
+Users exported: Usuarios exportados
+Uses the IDialogEventService and handles the before close event. Here you can just set args.Cancel to true to stop closing: Usa IDialogEventService y controla el evento antes del cierre. Aquí puedes establecer argumentos. Cancelar a verdadero para detener el cierre
+UTC: UTC
+Utilities: Utilidades
+uz-Arab-AF: Uzbeko (árabe, Afganistán)
+uz-Cyrl-UZ: Uzbeko (cirílico, Uzbekistán)
+uz-Latn-UZ: Uzbeko (latín, Uzbekistán)
+vai-Latn-LR: Vai (latín, Liberia)
+vai-Vaii-LR: Vai (Vai, Liberia)
+Validate Upload Edit in MudForm: Validar la edición de carga en MudForm
+Validation: Validación
+Value: Valor
+ValuePresenter: ValuePresenter
+Values: Valores
+ValueString: Cadena de valor
+Vancouver: Vancouver
+Vancouver - V5K 0A1: Vancouver - V5K 0A1
+Vancouver - V5K 0A1ender: Vancouver - V5K 0A1ender
+Variant: Variante
+ve-ZA: Venda (Sudáfrica)
+Verdana: Verdana
+Version: Versión
+vi-VN: Vietnamita (Vietnam)
+Video Content-Type: Tipo de contenido de video
+Video device: Dispositivo de video
+VideoDevice: Dispositivo de video
+View: Vista
+View Profile: Ver perfil
+ViewBox: Caja de visualización
+ViewDependsOnContentType: ViewDependsOnContentType
+ViewMode: Modo de visualización
+ViewportHeight: Altura de la ventana gráfica
+ViewportMaximum: ViewportMaximum
+ViewportMinimum: ViewportMinimum
+ViewportWidth: Ancho de la ventana gráfica
+Viner Hand ITC: Viner Mano ITC
+Violet: Violeta
+Virtualize: Virtualizar
+Visible: Visible
+Visualizer: Visualizador
+VisualizerBackgroundColor: VisualizadorBackgroundColor
+VisualizerElementBorderSize: VisualizerElementBorderSize
+Vivaldi: Vivaldi
+Vladimir Script: Escritura de Vladimir
+vo-001: Volapük (Mundo)
+Volume: Volumen
+Vs: Vs
+Vs2015: Vs2015
+VulcanBase16: VulcanBase16
+vun-TZ: Vunjo (Tanzania)
+wae-CH: Walser (Suiza)
+wal-ET: Wolaytta (Etiopía)
+Warning: Advertencia
+WarningContrastText: WarningContrastText
+WarningDarken: AdvertenciaOscurecer
+WarningLighten: AdvertenciaAclarar
+weather.json: weather.json
+Webdings: Correas
+Week: Semana
+WeightingFilter: Filtro de ponderación
+Welcome {0}: Bienvenidos {0}
+whatever: lo que sea
+Wheat: Trigo
+White: Blanco
+WhiteBalanceMode: Modo de balance de blancos
+WhiteList: Lista blanca
+WhiteSmoke: Humo blanco
+Wide Latin: Latín ancho
+Width: Ancho
+Will be saved only when selected Permission: Se guardará solo cuando se seleccione Permiso
+Window: Ventana
+Windows10Base16: Windows10Base16
+Windows10LightBase16: Windows10LightBase16
+Windows95Base16: Windows95Base16
+Windows95LightBase16: Windows95LightBase16
+WindowsHighContrastBase16: WindowsHighContrastBase16
+WindowsHighContrastLightBase16: WindowsHighContrastLightBase16
+WindowsNtBase16: WindowsNtBase16
+WindowsNtLightBase16: WindowsNtLightBase16
+Wingdings: Wingdings
+With custom configuration: Con configuración personalizada
+With default configuration: Con configuración predeterminada
+With tabs: Con pestañas
+With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: Con el componente MudExAdditionalAdornment, puede tener tantos adornos en cualquier control de entrada basado en MudInput como este.
+With this component you can have an animation while loading the main blazor app: Con este componente puedes tener una animación mientras cargas la aplicación principal de blazor
+With_Selected: '{0} Seleccionado'
+WithFullSpectrumAudioData: WithFullSpectrumAudioData
+WithFullSpectrumAudioDataPrefilledWithRandomData: WithFullSpectrumAudioDataPrefilledWithRandomData
+WithGoogleLatinFonts: ConGoogleLatinFonts
+WithoutBounds: SinLímites
+WithRandomData: WithRandomData
+WithRealAudioData: WithRealAudioData
+wo-SN: Wolof (Senegal)
+Wobble: Tambaleo
+WoodlandBase16: Base16 del bosque
+WordDokument.doc: WordDokument.doc
+WrapChips: WrapChips
+WrapToolBarContent: WrapToolBarContent
+Xcode: Xcode
+XcodeDuskBase16: XcodeDuskBase16
+xh-ZA: isiXhosa (Sudáfrica)
+Xml: XML
+xog-UG: Soga (Uganda)
+Xt256: XT256
+Yaml: Yaml
+yav-CM: Yangben (Camerún)
+Yellow: Amarillo
+YellowGreen: AmarilloVerde
+Yes: Sí
+yi-001: Yiddish (Mundo)
+yo-BJ: Yoruba (Benín)
+yo-NG: Yoruba (Nigeria)
+Yokohama: Yokohama
+Yokohama - 220-0001: Yokohama - 220-0001
+Yokohama - 220-0001ender: Yokohama - 220-0001ender
+you: tú
+You are logged out because the Permissions of one of your Roles have been updated.: Se cierra la sesión porque se han actualizado los permisos de uno de sus roles.
+You are logged out because the user with your Token has been deleted or token is expired.: Se cierra la sesión porque el usuario con su token se ha eliminado o el token ha caducado.
+You are logged out by an Administrator or profile change.: Un administrador o un cambio de perfil se desconectan.
+You are Logged Out.: Está desconectado.
+You can also use MudExAdditionalAdornment as ChildContent of a MudInput: También puede usar MudExAdditionalAdornment como ChildContent de un MudInput
+You can now Login with your credentials: Ahora puede iniciar sesión con sus credenciales
+You cannot delete yourself: No puedes eliminarte a ti mismo
+You clicked: Has hecho clic
+You don't need an extra JsonEditor anymore: Ya no necesitas un JsonEditor adicional
+You have {0} Users where you can pick from: Tienes {0} Usuarios donde puedes elegir
+You picked: Tú elegiste
+You received a new chat message from {0}: Recibiste un nuevo mensaje de chat de {0}
+You're leaving {0} and will redirected to {1}: Te vas de {0} y serás redirigido a {1}
+Your e-mail address has been confirmed!: ¡Tu dirección de correo electrónico ha sido confirmada!
+Your email address could not be verified. If you have any problems, please contact {0}: No se pudo verificar su dirección de correo electrónico. Si tiene algún problema, comuníquese con {0}
+Your Profile has been updated.: Tu perfil ha sido actualizado.
+Your Recent Activities.: Sus actividades recientes.
+ZenburnBase16: ZenburnBase16
+zgh-Tfng-MA: Tamazight marroquí estándar (Tifinagh, Marruecos)
+zh-CN: Chino (China)
+zh-Hans-HK: Chino (simplificado, RAE de Hong Kong)
+zh-Hans-MO: Chino (simplificado, RAE de Macao)
+zh-HK: Chino (RAE de Hong Kong)
+zh-MO: Chino (RAE de Macao)
+zh-SG: Chino (Singapur)
+zh-TW: Chino (Taiwán)
+ZIndex: ZIndex
+ZipCode: Código postal
+Zoom: Zoom
+Zoom in: Acercar
+Zoom out: Alejar
+ZoomInButtonIcon: ZoomInButtonIcon
+ZoomOnHover: ZoomOnHover
+ZoomOutButtonIcon: ZoomOutButtonIcon
+zu-ZA: isiZulu (Sudáfrica)

@@ -1,10 +1,12 @@
 ﻿@page "/no-modal"
+@inherits BasePage
+
 @using MudBlazor.Extensions.Options
 
 @attribute [Demo(Group = "Dialog Samples", Name = "Not Modal Dialogs", Documentation = "Demo for MudExTaskBar and not Modal dialogs", Order = 40, Icon = MaterialDesignIcons.Normal.WindowRestore, ForComponentTypes = new[] { typeof(MudExTaskBar) })]
 
 <DemoComponent PageType="@GetType()">
-    <MudButton OnClick="@ShowSampleDialogs" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialogs</MudButton>
+    <MudButton OnClick="@ShowSampleDialogs" Variant="Variant.Filled" Color="Color.Primary">@L["Show Sample Dialogs"]</MudButton>
 </DemoComponent>
 
 @code {
@@ -15,7 +17,7 @@
         var rnd = new Random();
         foreach (var i in Enumerable.Range(1, count))
         {
-            _ = DialogService.ShowExAsync<SampleDialog>($"Simple Dialog {i}", dialog => { dialog.ContentMessage = $"Hello from dialog nr {i} sample page"; }, new DialogOptionsEx()
+            _ = DialogService.ShowExAsync<SampleDialog>($"Simple Dialog {i}", dialog => { dialog.ContentMessage = $"{L["Hello from dialog"]} {i}"; }, new DialogOptionsEx()
             {
                 Position = (DialogPosition)rnd.Next(0, 9),
                 Animation = (AnimationType)rnd.Next(1, 25),

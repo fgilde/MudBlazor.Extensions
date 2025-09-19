@@ -1,0 +1,4347 @@
+﻿_ Text: _Текст
+--accent-color1: --акцент-цвят1
+--accent-color2: --акцент-цвят2
+--accent-color3: --акцент-цвят3
+--accent-color4: --акцент-цвят4
+--loading-color: --зареждане-цвят
+--mud-palette-black: --кална палитра-черна
+--mud-palette-primary: --кална палитра-първична
+--mud-palette-primary-darken: --mud-palette-primary-darken
+--mud-palette-primary-hover: --mud-palette-primary-hover
+--mud-palette-primary-lighten: --mud-palette-primary-lighten
+--mud-palette-primary-text: --mud-palette-primary-text
+--mud-palette-secondary: --кална палитра-вторична
+--mud-palette-secondary-darken: --mud-palette-вторичен-потъмняване
+--mud-palette-secondary-hover: --кална палитра-вторичен-задържане на курсора
+--mud-palette-secondary-lighten: --кална палитра-вторична-изсветляване
+--mud-palette-secondary-text: --mud-palette-secondary-text
+--mud-palette-white: --кална палитра-бяла
+(currently the item is not visible): (в момента елементът не се вижда)
+(currently the item is visible): (в момента елементът е видим)
+4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+A: Една
+A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Компонент, който позволява на потребителя да избере стойност от списък с възможни стойности и да я покаже като чипове или разгъващ се списък по подразбиране.
+A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Компонент, който може да се използва за плъзгане на ChildContent отдолу, отгоре, наляво или надясно с курсор на мишката
+A Component to display text with a gradient foreground or background: Компонент за показване на текст с градиентен преден план или фон
+A Component to display the content of a zip file: Компонент за показване на съдържанието на zip файл
+A Component to edit and upload a list of files: Компонент за редактиране и качване на списък с файлове
+A Component to quickly select a color: Компонент за бърз избор на цвят
+A connection to the server cannot be established. Your network connection may be down or the server is unreachable. Please wait until the connection has been restored: Връзка със сървъра не може да бъде установена. Вашата мрежова връзка може да е прекъсната или сървърът да е недостъпен. Моля, изчакайте, докато връзката бъде възстановена
+A divider to separate content: Разделител за разделяне на съдържанието
+A maximum of {0} files are allowed: Допускат се максимум {0} файлове
+A Popover can be used to display some content on top of another.: Изскачащият прозорец може да се използва за показване на някакво съдържание върху друго.
+A powerful component to edit an object and its properties.: Мощен компонент за редактиране на обект и неговите свойства.
+A powerful editor that can handle json, xml or yaml content: Мощен редактор, който може да обработва json, xml или yaml съдържание
+A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: Прост компонент ColorPicker, който наследява MudColorPicker, но добавя възможност за забавяне на събитието за затваряне и използване на собствен компонент за избор от браузъра
+A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: Прост компонент на мрежата, който поддържа колони и редове и ColSpan и RowSpan за съдържащи секции.
+A SplitPanel Component: Компонент на SplitPanel
+A Splitter Component: Компонент на сплитера
+A WYSIWYG Html editor component.: Компонент за редактор на WYSIWYG Html.
+A11yDark: A11yТъмно
+A11yLight: A11yLight
+aa-DJ: Афар (Джибути)
+aa-ER: Афар (Еритрея)
+aa-ET: Афар (Етиопия)
+about: За
+Account: Сметка
+ActionButtons: ActionButtons
+ActionButtonsNewLine: ActionButtonsNewLine
+ActionDefault: ДействиеПо подразбиране
+ActionDisabled: ДействиеДеактивирано
+ActionDisabledBackground: ДействиеДеактивиранФон
+Actions: Действия
+ActionsAdornment: ДействияУкрашение
+ActionsClass: ActionsClass
+Activate comments: Активиране на коментари
+Activate User?: Активиране на потребител?
+Active: Активен
+Active?: Активен?
+ActiveFilterOnly: ActiveFilterOnly
+Adaptive: Приспособим
+ADblNumber: ADblNumber
+Add: Добавям
+Add 1000 random items: Добавяне на 1000 произволни елемента
+Add 500 Users: Добавете 500 потребители
+Add Brand: Добавяне на марка
+Add Document: Добавяне на документ
+Add Document Type: Добавяне на тип документ
+Add Extended Attribute: Добавяне на разширен атрибут
+Add external Url: Добавяне на външен URL адрес
+Add files: Добавяне на файлове
+Add Product: Добави продукт
+Add Role: Добавяне на роля
+Add Url: Добавяне на URL адрес
+Add user: Добавяне на потребител
+Add user to both lists: Добавяне на потребител и към двата списъка
+Additional Audio: Допълнително аудио
+Additional Video: Допълнително видео
+AdditionalAdornment: ДопълнителноУкрашение
+Address: Адрес
+Addresses: Адреси
+AddUrl: Добавяне
+Administrator: Администратор
+Administrator Settings.: Администраторски настройки.
+Administrators Profile's Status cannot be toggled: Състоянието на профила на администратора не може да се превключва
+Adornment: Украшение
+AdornmentAriaLabel: УкрасаAriaLabel
+AdornmentColor: УкрашениеЦвят
+AdornmentIcon: УкрасаИкона
+AdornmentText: УкрасаТекст
+af-NA: Африкаанс (Намибия)
+af-ZA: Африкаанс (Южна Африка)
+After the dialog is shown you can drag it to the edges to see snap. Also you can use Ctrl + {ArrowKeys} to change position: След като диалоговият прозорец се покаже, можете да го плъзнете по краищата, за да видите прилепване. Също така можете да използвате Ctrl + {ArrowKeys}, за да промените позицията
+AfterBegin: След началото
+AfterEnd: AfterEnd
+AfterSearchBox: Кутия за следследване
+Agate: Ахат
+Age: Възраст
+agq-CM: Агем (Камерун)
+ak-GH: Акан (Гана)
+Albertus: Алберт
+Alice Johnson: Алис Джонсън
+AliceBlue: АлисБлу
+Align: Строявам
+ALL COMPONENTS: ВСИЧКИ КОМПОНЕНТИ
+All Documents without Type are stored here: Тук се съхраняват всички документи без тип
+All Groups: Всички групи
+All Permissions: Всички разрешения
+All roles: Всички роли
+All roles unfiltered: Всички роли са нефилтрирани
+AllFilters: Всичкифилтри
+AllowAudioRecording: Разрешаване на аудиозапис
+AllowColumnSizeChange: AllowColumnSizeChange
+AllowCopyUrl: AllowCopyUrl
+AllowDownload: РазрешаванеИзтегляне
+AllowDrop: AllowDrop
+AllowDropBox: Разрешаване на DropBox
+AllowDuplicates: РазрешаванеДубликати
+AllowExternalUrl: AllowExternalUrl
+AllowFolderUpload: Разрешаване на папкаКачване
+AllowGoogleDrive: Разрешаване на GoogleDrive
+AllowInteractingUnderRubberBand: РазрешаваневзаимодействиеПодгумена лента
+AllowMultiple: Разрешаване на множество
+AllowOneDrive: AllowOneDrive
+AllowOpenInNewTab: AllowOpenInNewTab
+AllowOpenOnReadOnly: AllowOpenOnReadOnly
+AllowPreview: AllowPreview
+AllowRemovingItems: Разрешаване на премахванеЕлементи
+AllowRename: Разрешаване на преименуване
+AllowRubberBandSelection: AllowRubberBandSelection
+AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
+AllowSelectOnPreviewClick: AllowSelectOnPreviewClick
+AllowVideoCapture: Разрешаване на видеозаснемане
+AlphaBars: Алфа Барове
+Already have an account?: Вече имате акаунт?
+Always: Винаги
+AlwaysEditOptions: AlwaysEditOptions
+AlwaysShowValue: ВинагиПоказвайСтойност
+AlwaysVisible: ВинагиВидими
+am-ET: Амхарски (Етиопия)
+An Error has occured!: Възникна грешка!
+An Error has occurred!: Възникна грешка!
+An error occurred while confirming {0}: Възникна грешка при потвърждаване на {0}
+An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used, and you can specify animations as well: Разширен компонент SelectBox, който позволява да изберете множество елементи и предоставя функция за търсене, също така вътрешно се използва MudExPopover, като можете да зададете и анимации
+An item that only renders the content if it is in the viewport.: Елемент, който изобразява съдържанието само ако е в прозореца за изглед.
+AnchorOrigin: КотваПроизход
+Andale Mono: Андале Моно
+Androidstudio: Androidstudio
+Animate: Съживявам
+AnimateAudioElementBorderColor: AnimateAudioElementBorderColor
+AnimateClose: АнимиранеЗатвори
+AnimateVisualizerBorderColor: AnimateVisualizerBorderColor
+Animation: Анимация
+AnimationDuration: АнимацияПродължителност
+AnimationDuration (in ms): АнимацияПродължителност (в ms)
+AnimationDurationInMs: АнимацияПродължителностВMs
+AnimationIn: АнимацияВ
+AnimationInDirection: АнимацияInDirection
+AnimationInDuration: AnimationInDuration
+AnimationInPosition: AnimationInPosition
+AnimationOut: АнимацияИзход
+AnimationOutDirection: AnimationOutDirection
+AnimationOutDuration: AnimationOutDuration
+AnimationOutPosition: АнимацияOutPosition
+AnimationPosition: АнимацияПозиция
+Animations: Анимации
+AnimationTime: Време за анимация
+AnimationTimingFunction: AnimationTimingFunction
+AnOldHope: АнОлдХоуп
+Another Demo theme: Друга демо тема
+AnotherRar.rar: AnotherRar.rar
+AnotherStringProperty10: ДругоStringProperty10
+AnotherStringProperty11: ДругоStringProperty11
+AnotherStringProperty12: ДругоStringProperty12
+AnotherStringProperty13: ДругоStringProperty13
+AnotherStringProperty14: ДругоStringProperty14
+AnotherStringProperty15: ДругоStringProperty15
+AnotherStringProperty16: ДругоStringProperty16
+AnotherStringProperty17: ДругоStringProperty17
+AnotherStringProperty18: ДругоStringProperty18
+AnotherStringProperty19: ДругоStringProperty19
+AnotherStringProperty20: ДругоStringProperty20
+AnotherStringProperty21: ДругоStringProperty21
+AnotherStringProperty22: ДругоStringProperty22
+AnotherStringProperty23: ДругоStringProperty23
+AnotherStringProperty24: ДругоStringProperty24
+AnotherStringProperty25: ДругоStringProperty25
+AnotherStringProperty26: ДругоStringProperty26
+AnotherStringProperty27: ДругоStringProperty27
+AnotherStringProperty28: ДругоStringProperty28
+AnotherStringProperty29: ДругоStringProperty29
+AnotherStringProperty30: ДругоStringProperty30
+AnotherStringProperty31: ДругоStringProperty31
+AnotherStringProperty32: ДругоStringProperty32
+AnotherStringProperty33: ДругоStringProperty33
+AnotherStringProperty34: ДругоStringProperty34
+AnotherStringProperty35: ДругоStringProperty35
+AnotherStringProperty36: ДругоStringProperty36
+AnotherStringProperty37: ДругоStringProperty37
+AnotherStringProperty38: ДругоStringProperty38
+AnotherStringProperty39: ДругоStringProperty39
+AnotherStringProperty40: ДругоStringProperty40
+AnotherStringProperty41: ДругоStringProperty41
+AnotherStringProperty42: ДругоStringProperty42
+AnotherStringProperty43: ДругоStringProperty43
+AnotherStringProperty44: ДругоStringProperty44
+AnotherStringProperty45: ДругоStringProperty45
+AnotherStringProperty46: ДругоStringProperty46
+AnotherStringProperty47: ДругоStringProperty47
+AnotherStringProperty48: ДругоStringProperty48
+AnotherStringProperty49: ДругоStringProperty49
+AnotherStringProperty50: ДругоStringProperty50
+AnotherStringProperty51: ДругоStringProperty51
+AnotherStringProperty52: ДругоStringProperty52
+AnotherStringProperty53: ДругоStringProperty53
+AnotherStringProperty54: ДругоStringProperty54
+AnotherStringProperty55: ДругоStringProperty55
+AnotherStringProperty56: ДругоStringProperty56
+AnotherStringProperty57: ДругоStringProperty57
+AnotherStringProperty58: ДругоStringProperty58
+AnotherStringProperty59: ДругоStringProperty59
+AnotherStringProperty60: ДругоStringProperty60
+AnsiBands: AnsiBands
+AntiqueWhite: Античнобяло
+ApathyBase16: АпатияБаза16
+Api: Апи
+API: API
+API-Versions: API версии
+AppBar: Лента за приложения
+AppbarBackground: AppbarФон
+AppbarHeight: AppbarВисочина
+AppbarText: AppbarText
+Appearance: Външен вид
+Appetizer: Мезе
+Apple: Ябълка
+Apple Gothic: Ябълка готика
+Application: Приложение
+ApplicationDescription: Примерно приложение с WebAssembly и Clean Architecture Pattern
+ApplicationSubDescription: Добре дошли в Coworkee
+applies a CSS class when the item is not visible.: прилага CSS клас, когато елементът не се вижда.
+applies a CSS class when the item is visible.: прилага CSS клас, когато елементът е видим.
+applies styles when the item is not visible.: прилага стилове, когато елементът не се вижда.
+applies styles when the item is visible.: прилага стилове, когато елементът е видим.
+Apply: Прилагам
+ApplyBackgroundImageFromTrack: ПрилаганеФонИзображениеОтПроследяване
+ApprenticeBase16: База за чираку16
+Apr: Април
+Aqua: Аква
+Aquamarine: Аквамарин
+ar-001: Арабски (световен)
+ar-AE: Арабски (Обединени арабски емирства)
+ar-BH: Арабски (Бахрейн)
+ar-DJ: Арабски (Джибути)
+ar-DZ: Арабски (Алжир)
+ar-EG: Арабски (Египет)
+ar-ER: Арабски (Еритрея)
+ar-IL: Арабски (Израел)
+ar-IQ: Арабски (Ирак)
+ar-JO: Арабски (Йордания)
+ar-KM: Арабски (Коморски острови)
+ar-KW: Арабски (Кувейт)
+ar-LB: Арабски (Ливан)
+ar-LY: Арабски (Либия)
+ar-MA: Арабски (Мароко)
+ar-MR: Арабски (Мавритания)
+ar-OM: Арабски (Оман)
+ar-PS: Арабски (Палестинска автономия)
+ar-QA: Арабски (Катар)
+ar-SA: Арабски (Саудитска Арабия)
+ar-SD: Арабски (Судан)
+ar-SO: Арабски (Сомалия)
+ar-SS: Арабски (Южен Судан)
+ar-SY: Арабски (Сирия)
+ar-TD: Арабски (Чад)
+ar-TN: Арабски (Тунис)
+ar-YE: Арабски (Йемен)
+Archive.zip: Archive.zip
+ArduinoLight: ArduinoLight
+Are you sure to close: Сигурни ли сте, че ще затворите
+Are you sure you want to force logout for user {0}: Сигурни ли сте, че искате принудително да излезете за потребителски {0}
+Are you sure you want to restart Backend/Server?: Сигурни ли сте, че искате да рестартирате бекенда/сървъра?
+Are you sure you want to restore the default settings? This will overwrite any changes you've ever made here.: Сигурни ли сте, че искате да възстановите настройките по подразбиране? Това ще замени всички промени, които някога сте правили тук.
+Are you sure?: Сигурни ли сте?
+Arial: Ариал
+Arial Black: Ариал Черен
+Arial Narrow: Arial Narrow
+arn-CL: Мапуче (Чили)
+Arta: Изкуство
+As Admin you can filter for users here: Като администратор можете да филтрирате потребителите тук
+As Picker: Като берач
+as read: както се чете
+As simple as it sound. This is a simple GroupBox: Толкова просто, колкото и да звучи. Това е проста GroupBox
+As soon as your account has been activated you can log in: Веднага след като акаунтът ви бъде активиран, можете да влезете
+as unread: като непрочетено
+as-IN: Асамски (Индия)
+asa-TZ: Asu (Танзания)
+Ascetic: Аскетичен
+AshesBase16: ПепелБаза16
+AspectRatio: Съотношение на аспекта
+ast-ES: Астурийски (Испания)
+At least one document is required: Изисква се поне един документ
+AtelierCaveBase16: AtelierCaveBase16
+AtelierCaveLightBase16: AtelierCaveLightBase16
+AtelierDuneBase16: AtelierDuneBase16
+AtelierDuneLightBase16: AtelierDuneLightBase16
+AtelierEstuaryBase16: AtelierEstuaryBase16
+AtelierEstuaryLightBase16: AtelierEstuaryLightBase16
+AtelierForestBase16: AtelierForestBase16
+AtelierForestLightBase16: AtelierForestLightBase16
+AtelierHeathBase16: AtelierHeathBase16
+AtelierHeathLightBase16: AtelierHeathLightBase16
+AtelierLakesideBase16: АтелиеLakesideBase16
+AtelierLakesideLightBase16: AtelierLakesideLightBase16
+AtelierPlateauBase16: AtelierPlateauBase16
+AtelierPlateauLightBase16: AtelierPlateauLightBase16
+AtelierSavannaBase16: РаботилницаSavannaBase16
+AtelierSavannaLightBase16: AtelierSavannaLightBase16
+AtelierSeasideBase16: AtelierSeasideBase16
+AtelierSeasideLightBase16: АтелиеSeasideLightBase16
+AtelierSulphurpoolBase16: AtelierSulphurpoolBase16
+AtelierSulphurpoolLightBase16: AtelierSulphurpoolLightBase16
+AtlasBase16: AtlasBase16
+AtomOneDark: AtomOneDark
+AtomOneDarkReasonable: АтомЕдинТъмРазумен
+AtomOneLight: AtomOneLight
+Audio Content-Type: Тип аудио съдържание
+Audio devices: Аудио устройства
+AudioDevice: Аудиоустройство
+AudioElementBackgroundColor: AudioElementBackgroundColor
+AudioElementBorderColor: AudioElementBorderColor
+AudioElementBorderSize: AudioElementBorderSize
+AudioElementBorderStyle: AudioElementBorderStyle
+AudioElements: Аудиоелементи
+AudioElementWidth: AudioElementWidth
+Audit Trails: Одитни пътеки
+Audit Trails exported: Изнесени одитни пътеки
+Aug: Август
+Austin: Остин
+Austin - 73301: Остин - 73301
+Austin - 73301ender: Остин - 73301ender
+Auto Confirm Email?: Автоматично потвърждение на имейл?
+Auto Generated Editor for TestObject: Автоматично генериран редактор за TestObject
+Auto Stop recording after: Автоматично спиране на записа след
+AutoApplyGradient: AutoApplyGradient
+AutoClear: Автоматично изчистване
+AutoCloseBehaviour: Поведение при автоматично затваряне
+AutoCloseOnSelect: AutoCloseOnSelect
+AutoCollapse: Автоматично свиване
+AutoExtractArchive: Автоматично извличанеАрхив
+AutoFocus: Автофокус
+AutoFocusFilter: АвтофокусФилтър
+AutoLoadFileDataBytes: AutoLoadFileDataBytes
+Automatically allow next time: Автоматично разрешаване следващия път
+AutoPlayNextTrackOnEnd: AutoPlayNextTrackOnEnd
+AutoRemoveError: AutoRemoveError
+AutoShowHideAudioElement: AutoShowHideAudioElement
+AutoSize: Автоматично оразмеряване
+Available: Наличен
+AvailableItems: НаличниАртикули
+Avant Garde: Авангард
+az-Cyrl-AZ: Азербайджански (кирилица, Азербайджан)
+az-Latn-AZ: Азербайджански (латински, азербайджански)
+Azure: Лазурен
+B: B
+ba-RU: Башкирски (Русия)
+Back: Гръб
+BackdropClick: BackbackgroundClick
+Background: Фон
+BackgroundColor: Цвят на фона
+BackgroundGray: ФонСив
+BackgroundImage: ФонИзображение
+BackgroundPosition: BackgroundPosition
+BackgroundRepeat: ФонПовторение
+BackgroundSize: ФонРазмер
+BackLinkLabel: Обратна връзкаЕтикет
+Bar: Бар
+BarBeverage: БарНапитки
+Barcode: Баркод
+Barcode already exists.: Баркод вече съществува.
+Barcode is required!: Изисква се баркод!
+BarIndex: Бар индекс
+Bark: Кора
+BarLevel: Ниво на лента
+BarSpacing: Разстояние между лентите
+Bart Simpson: Барт Симпсън
+bas-CM: Басаа (Камерун)
+Base component for a picker: Основен компонент за берач
+Basic: Основен
+Basic role with default permissions: Основна роля с разрешения по подразбиране
+Bauhaus 93: Баухаус 93
+be-BY: Беларуски (Беларус)
+BeforeBegin: ПредиНачало
+BeforeEnd: ПредиКрай
+BeforeSearchBox: BeforeSearchBox
+Behavior: Поведение
+Behaviour: Поведение
+Beige: Бежов
+Bell MT: Камбана MT
+bem-ZM: Бемба (Замбия)
+Bernard MT Condensed: Bernard MT Кондензиран
+BespinBase16: BespinBase16
+Beverage: Напитка
+bez-TZ: Бена (Танзания)
+bg-BG: Български (България)
+BgAlpha: БгАлфа
+BgColor: BgColor
+bin-NG: Едо (Нигерия)
+Bind Dark Mode: Свързване на тъмен режим
+BindWidthToPicker: BindWidthToPicker
+Birmingham: Бирмингам
+Birmingham - B1 1BD: Бирмингам - B1 1BD
+Birmingham - B1 1BDender: Бирмингам - B1 1BDender
+Bisque: Биск
+Black: Черен
+Blackadder ITC: Blackadder ITC
+BlackList: Черен списък
+BlackMetalBase16: Черна метална основа16
+BlackMetalBathoryBase16: ЧеренМеталБаняОснова16
+BlackMetalBurzumBase16: Черен металBurzumBase16
+BlackMetalDarkFuneralBase16: БлекМетълТъмПогребална база16
+BlackMetalGorgorothBase16: ЧеренМеталГоргоротОснова16
+BlackMetalImmortalBase16: BlackMetalImmortalBase16
+BlackMetalKholdBase16: BlackMetalKholdBase16
+BlackMetalMardukBase16: Черен металMardukBase16
+BlackMetalMayhemBase16: ЧеренМеталMayhemBase16
+BlackMetalNileBase16: ЧеренМеталНилОснова16
+BlackMetalVenomBase16: Черен металОтровна база16
+BlanchedAlmond: БланширанБадеми
+Blazor wrapper component for AudioMotionAnalyzer: Компонент за обвивка на Blazor за AudioMotionAnalyzer
+BlobUrl: BlobUrl
+Blue: Син
+BlueViolet: СиньоВиолетово
+bm-Latn-ML: Bamanankan (латински, мали)
+bn-BD: Бенгалски (Бангладеш)
+bn-IN: Бангла (Индия)
+bo-CN: Тибетски (Китай)
+bo-IN: Тибетски (Индия)
+Bob Smith: Боб Смит
+Bodoni MT: Бодони МТ
+body1: тяло1
+Body1: Тяло1
+body2: тяло2
+Body2: Тяло2
+Bookman: Букман
+BorderAnimationColors: BorderAnimationColors
+BorderColor: ГраницаЦвят
+Bordered: Граничи
+BorderOpacity: Гранична непрозрачност
+BorderSize: Размер на границата
+BorderStyle: BorderStyle
+Both: Двата
+BothDiagonal: И дветедиагонал
+BothHorizontal: И дветеХоризонтално
+BothVertical: И дветевертикални
+Bottom: Дъно
+BottomCenter: Долен център
+BottomLeft: Долу вляво
+BottomRight: Долу вдясно
+Bounce: Подскачам
+br-FR: Бретон (Франция)
+Brand: Марка
+Brand Deleted: Марката е изтрита
+Brand is required!: Марката е задължителна!
+Brand Not Found!: Марката не е намерена!
+Brand Saved: Марката е запазена!
+Brand Updated: Марката е актуализирана!
+BrandName: Марка
+Brands: Марки
+Brands exported: Изнесени марки
+Breadcrumb: Галета
+BreadcrumbLink: ГалетаВръзка
+BreadcrumbSeparator: ГалетаСепаратор
+BrewerBase16: Пивоварна база16
+BrightBase16: Ярка база16
+Brightness: Яркост
+Broadway: Бродуей
+BrogrammerBase16: BrogrammerBase16
+Brown: Кафяв
+BrownPaper: Кафява хартия
+Browse Available Documents.: Прегледайте наличните документи.
+Browser: Браузер
+BrowserFileExt: БраузърФайлЕкст
+Brush Script MT: Скрипт за четка MT
+Brush Script Std: Четка скрипт Std
+BrushTreesBase16: ЧеткаДърветаОснова16
+BrushTreesDarkBase16: ЧеткаДърветаТъмнаОснова16
+brx-IN: Бодо (Индия)
+bs-Cyrl-BA: Босненски (кирилица, Босна и Херцеговина)
+bs-Latn-BA: Босненски (латински, Босна и Херцеговина)
+BurlyWood: БърлиУуд
+button: копче
+Button: Копче
+Button component for capturing audio and video.: Компонент на бутона за заснемане на аудио и видео.
+Button component for speech-to-text functionality, allowing for asynchronous recording and processing of speech input.: Бутонен компонент за функционалност за преобразуване на реч в текст, позволяващ асинхронен запис и обработка на въвеждане на реч.
+ButtonColor: БутонЦвят
+ButtonSize: БутонРазмер
+ButtonsJustify: БутониПодравняване
+ButtonType: Тип бутон
+ButtonVariant: БутонВариант
+byn-ER: Блин (Еритрея)
+Bytes: Байта
+C: C
+C#: C#
+ca-AD: Каталунски (Андора)
+ca-ES: Каталунски (Испания)
+ca-FR: Каталунски (Франция)
+ca-IT: Каталунски (Италия)
+CadetBlue: КадетСиньо
+Calgary: Калгари
+Calgary - T1X 0L3: Калгари - T1X 0L3
+Calgary - T1X 0L3ender: Калгари - T1X 0L3ender
+Californian FB: Калифорнийски FB
+Can close: Може да се затвори
+Cancel: Отмени
+Cancel deletion: Отмяна на изтриването
+Cancelled: Отменени
+CanClose: МожеЗатвори
+CanCloseCallbackName: МожеЗатвориОбратно повикванеИме
+caption: надпис
+Caption: Надпис
+Capture: Хващам
+Capture Screen: Заснемане на екрана
+Capture service: Услуга за заснемане
+Capture video: Заснемане на видео
+CaptureButton: Бутон за заснемане
+CaptureInfoComponent: CaptureInfoComponent
+CaptureOptions: Опции за заснемане
+Card Grid: Решетка за карти
+CardEffect3d: CardEffect3d
+CardGrid: Картична мрежа
+Catalog Management: Управление на каталог
+ccp-Cakm-BD: Чакма (Чакма, Бангладеш)
+ccp-Cakm-IN: Чакма (Чакма, Индия)
+ce-RU: Чеченски (Русия)
+ceb-Latn-PH: Себуано (латински, Филипините)
+Centaur: Кентавър
+Center: Център
+CenterCenter: Център
+CenterLeft: ЦентърЛяв
+CenterRight: Център вдясно
+Centimeters: Сантиметра
+Century Gothic: Готика на века
+cgg-UG: Chiga (Уганда)
+ChalkBase16: Тебеширна основа16
+Change media options: Промяна на опциите за мултимедия
+Change or edit your theme: Промяна или редактиране на темата ви
+Change Password: Промяна на паролата
+Change the system settings carefully: Променете внимателно системните настройки
+ChannelLayout: Оформление на канала
+Charlie Brown: Чарли Браун
+Chartreuse: Шартрьоз
+Charts comming soon ish...: Класациите идват скоро...
+ChartTooltip: ДиаграмаПодсказка
+chat: Чат
+Chat: Чат
+Chat?: Чат?
+Check me: Провери ме
+Check out the MudExThemeEdit Component: Разгледайте компонента MudExThemeEdit
+CheckBox: Квадратче за отметка
+CheckedIcon: ОтметнаИкона
+Checker: Проверител
+Checker box: Поле за проверка
+Chicago: Чикаго
+Chicago - 60601: Чикаго - 60601
+Chicago - 60601ender: Чикаго - 60601ender
+ChildContentStyle: ChildContentStyle
+Chiller: Охладител
+Chip: Чип
+ChipClass: Чип клас
+ChipCloseable: Чип Closeable
+ChipColor: ЧипЦвят
+ChipsAdditionalAbove: ЧиповеДопълнителниПо-горе
+ChipsAdditionalBelow: ЧиповеДопълнителниОтдолу
+ChipSelect: Избор на чип
+ChipSize: Размер на чипа
+ChipsMaxWidth: ЧиповеМаксШирина
+ChipsOnly: Само чипс
+ChipVariant: ChipVariant
+ChipWithoutItemTemplate: ЧипБезItemTemplate
+Chocolate: Шоколад
+chr-Cher-US: Чероки (чероки, САЩ)
+CircusBase16: Циркова база16
+Cities you want to live: Градове, които искате да живеете
+City: Град
+Class: Класа
+ClassChip: КласЧип
+ClassicDarkBase16: КласическиТъмна база16
+ClassicLightBase16: КласическаLightBase16
+ClassSearchBox: Поле за търсене на клас
+Clear: Ясен
+Clearable: Изчистим
+Click here to choose a screen to capture. If not selected, you will be prompted when starting the recording.: Щракнете тук, за да изберете екран за заснемане. Ако не е избрано, ще бъдете подканени при стартиране на записа.
+Click here to upload files: Щракнете тук, за да качите файлове
+Click the button below to enable them and load the third party services from disqus.com: Щракнете върху бутона по-долу, за да ги активирате и да заредите услугите на трети страни от disqus.com
+Clickable: Може да се кликне
+ClickAction: КликванеДействие
+ClickPropagation: ЩракванеРазпространение
+Client Language has been changed: Езикът на клиента е променен
+Close: Затварям
+Closeable: Затварящ се
+CloseAfterSelect: ЗатвориСлед Избор
+CloseButton: Бутон за затваряне
+Closed: Затворен
+CloseIcon: ЗатвориИкона
+CloseOnEscapeKey: Ключ CloseOnEscape
+co-FR: Корсиканска (Франция)
+Code: Код
+CodeBlockTheme: CodeBlockTheme
+CodepenEmbed: CodepenEmbed
+CodeschoolBase16: CodeschoolBase16
+CollapseOnClick: CollapseOnClick
+Colonna MT: MT колона
+color: цвят
+Color: Цвят
+ColorBrewer: ColorBrewer
+ColorBubble: Цветен балон
+ColoredImagesForExternalFilePicker: ColoredImagesForExternalFilePicker
+ColorEdit: ЦвятРедактиране
+ColorElements: Цветни елементи
+ColorizeIcons: ColorizeIcons
+ColorMode: Цветен режим
+ColorPicker: Избор на цвят
+ColorPickerMode: Избор на цвят
+ColorPickerView: Избор на цвятИзглед
+ColorsBase16: ЦветовеОснова16
+ColorStops: ColorStops
+ColorTemperature: Цветна температура
+ColSpan: ColSpan
+Column: Колона
+Columns Affected: Засегнати колони
+ColumnWidth: Ширина на колоната
+Comic Sans MS: Комикс без MS
+Comments: Коментари
+Common: Обикновен
+Communication: Общуване
+Community: Общност
+Compact: Компактен
+Comparer: Сравнявам
+Component edit capture options: Опции за заснемане на елементи за редактиране
+Component in Dialog: Компонент в диалогов прозорец
+Component to add additional adornment to a MudInput: Компонент за добавяне на допълнително украшение към MudInput
+Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Компонент за показване на файл в iframe или обектен таг или в регистриран визуализатор, който реализира IMudExFileDisplay
+Component to display information about the current recording: Компонент за показване на информация за текущия запис
+Component to Edit Icon values: Компонент за редактиране на стойности на икони
+Component to Edit MudExColor: Компонент за редактиране на MudExColor
+Component to move the ChildContent to a specific element that can defined by ElementSelector.: Компонент за преместване на ChildContent в конкретен елемент, който може да се дефинира от ElementSelector.
+Component to select a theme from a list of themes.: Компонент за избор на тема от списък с теми.
+ComponentBaseWithState: ComponentBaseWithState
+ComponentInDialog: ComponentInDialog
+Conditional updates: Условни актуализации
+Configure list values: Конфигуриране на стойности на списъци
+Confirm: Потвърждавам
+CONFIRM: ПОТВЪРЖДАВАМ
+Confirm and Ignore: Потвърждаване и игнориране
+Confirm and Set Required: Потвърдете и задайте Required
+Confirm edit: Потвърждаване на редакцията
+Confirm Password: Потвърдете паролата
+Confirm Registration: Потвърдете регистрацията
+Confirmation: Потвърждаване
+ConnectAllAudioSources: СвързванеВсичкиАудиоИзточници
+ConnectCapture: СвързванеЗаснемане
+ConnectCurrentTab: ConnectCurrentTab
+ConnectionMode: Режим на свързване
+ConnectMicrophone: СвързванеМикрофон
+ConnectToCapture: Свързване с заснемане
+contacts: Контакти
+Content-Type: Тип съдържание
+ContentAlignment: Подравняване на съдържанието
+ContentStream: СъдържаниеПоток
+ContentType: Съдържание Тип
+ContextMenuAction: ContextMenuAction
+Continue to {0}: Продължете да {0}
+Continuous: Непрекъснат
+Contrast: Контраст
+Cooper Black: Купър Блек
+Copperplate Gothic Bold: Медна плоча готически удебелен
+Copperplate Gothic Light: Готическа светлина от медна плоча
+Copy url: Копиране на URL адрес
+Counter: Контра
+Country: Страна
+Courier New: Куриер Нов
+Courrier: Поща
+Create: Създавам
+Create address: Създаване на адрес
+Create new backup: Създаване на ново архивно копие
+CreatedOn: Дата на създаване
+Critical: Критичен
+CropAndScale: CropAndScale
+cs-CZ: Чешки (Чехия)
+CSS Color Variables: CSS цветови променливи
+CssVars: CssVars
+cu-RU: Църковнославянски (Русия)
+CupcakeBase16: КапкейкBase16
+CupertinoBase16: КупертиноБаза16
+Current Password: Текуща парола
+Current Password is required!: Изисква се актуална парола!
+Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can change DarMode in the Top right menu or disable binding by toggle the switch: В момента ThemeEditor е обвързан с DarkMode от текущата тема и в {0}. Можете да промените DarMode в горното дясно меню или да деактивирате обвързването, като превключите превключвателя
+Cursor: Курсор
+CursorPositionOrigin: КурсорПозицияПроизход
+Custom: Обичай
+CustomContentErrorMessage: CustomContentErrorСъобщение
+Customize: Персонализирате
+cy-GB: Уелски (Обединеното кралство)
+D: D
+da-DK: датски (Дания)
+da-GL: Датски (Гренландия)
+Dallas: Далас
+Dallas - 75201: Далас - 75201
+Dallas - 75201ender: Далас - 75201ender
+DanqingBase16: База Danqing16
+DarculaBase16: ДаркулаБаза16
+Dark: Тъмен
+DarkContrastText: Тъмен контрастТекст
+DarkDarken: Тъмно потъмняване
+DarkGreen: Тъмнозелен
+DarkKhaki: Тъмно каки
+DarkLighten: ТъмноИзсветляване
+DarkMagenta: Тъмно пурпурно
+DarkmossBase16: Тъмен мъхBase16
+DarkOliveGreen: Тъмномаслиненозелено
+DarkOnly: Само тъмно
+DarkOrange: Тъмно оранжево
+DarkOrchid: Тъмна орхидея
+DarkRed: тъмночервен
+DarkSalmon: Тъмна сьомга
+DarkSeaGreen: Тъмноморско зелено
+DarkSlateBlue: ТъмноШистиСиньо
+DarkSlateGray: ТъмноШистиСиво
+DarktoothBase16: ТъмнозъбаБаза16
+DarkTurquoise: Тъмнотюркоаз
+DarkViolet: Тъмно виолетово
+DarkVioletBase16: ТъмновиолетоваОснова16
+Dashboard: Таблото
+Dashed: Пунктирана
+Data: Данни
+Data has been updated: Данните са актуализирани
+Database Backups: Архивиране на бази данни
+DataUrl: Адрес на данни
+DataVisualiserStyle: DataVisualiserStyle
+date: дата
+Date: Дата
+Date Created: Дата на създаване
+Date Range For Searching: Период от време за търсене
+DateOfBirth: Дата на раждане
+DateTime value is required using {0} type!: Необходима е стойност DateTime с помощта на {0} type!
+DateTimeLocal: ДатаЧасМестен
+dav-KE: Taita (Кения)
+de-AT: Немски (Австрия)
+de-BE: Немски (Белгия)
+de-CH: Немски (Швейцария)
+de-DE: Немски (Германия)
+de-IT: Немски (Италия)
+de-LI: Немски (Лихтенщайн)
+de-LU: Немски (Люксембург)
+Debug: Отстраняване
+Dec: Декември
+DecafBase16: БезкофеинБаза16
+decimal: десетичен
+Decimal: Десетичен
+Decimal value is required using {0} type!: Необходима е десетична стойност, като се използва {0} тип!
+DeepPink: Наситено розово
+DeepSkyBlue: Дълбоко небесно синьо
+Default: По подразбиране
+DefaultBorderRadius: DefaultBorderRadius
+DefaultDarkBase16: По подразбиранеТъмна база16
+DefaultLightBase16: DefaultLightBase16
+Defined: Определени
+Delay: Забавяне
+DelayValueChangeToPickerClose: ЗакъснениеСтойностПромянаДоИзборЗатвори
+Delete: Изтривам
+Delete all: Изтриване на всички
+Delete Confirmation: Потвърждение за изтриване
+Delete Content: Изтриване на съдържание
+Delete Content {0}: Изтриване на съдържание "{0}"
+Delete Extended Attribute?: Изтриване на разширен атрибут?
+Delete file from server: Изтриване на файл от сървър
+Delete Image: Изтриване на изображение
+Delete Picture: Изтриване на картина
+Delete Role Content: Искате ли да изтриете ролята с Id {0}?
+Delete these {0} elements: Изтриване на тези {0} елементи?
+Delete this element: Изтриване на този елемент?
+Delete User: Изтриване на потребител
+Deletion Not Allowed: Изтриването не е позволено
+Delimiter: Разделител
+Delimiters: Разделители
+Demo drag mode SnapDrag: Демонстрационен режим на плъзгане SnapDrag
+Demo for MudExDialog as inline: Демонстрация за MudExDialog като вградена
+Demo for MudExTaskBar and not Modal dialogs: Демонстрация за MudExTaskBar, а не за модални диалогови прозорци
+Demo for simple integrated useful dialogs. Prompt, Info, MessageBox: Демонстрация за прости интегрирани полезни диалози. Подкана, информация, кутия за съобщения
+Demo for the MudExUploadEdit inside of a MudForm and a FluentValidator.: Демонстрация за MudExUploadEdit в MudForm и FluentValidator.
+Demo for the MudExUploadEdit.: Демонстрация за MudExUploadEdit.
+Demo for using custom can close in DialogOptionsEx: Демонстрация за използване на персонализирана може да се затвори в DialogOptionsEx
+Demo for using Dialog and DialogBackground Appearance in DialogOptionsEx: Демонстрация за използване на Dialog и DialogBackground Appearance в DialogOptionsEx
+Demo for using DialogOptionsEx: Демонстрация за използване на DialogOptionsEx
+Demo for using DialogOptionsEx and pass position and size: Демонстрация за използване на DialogOptionsEx и позиция и размер на преминаване
+Demo for using MudExObjectEdit for the same model with the default Demo but with some Meta configuration: Демонстрация за използване на MudExObjectEdit за същия модел с Demo по подразбиране, но с някаква Meta конфигурация
+Demo for using MudExObjectEdit GroupingStyle.Tabs: Демонстрация за използване на MudExObjectEdit GroupingStyle.Tabs
+Demo for using MudExObjectEdit only with bypassing an object: Демонстрация за използване на MudExObjectEdit само с заобикаляне на обект
+Demo for using MudExObjectEdit with a configuration for Conditional using 'WithAttributesIf': Демонстрация за използване на MudExObjectEdit с конфигурация за условно използване на 'WithAttributesIf'
+Demo for using MudExObjectEdit with a model that contains file(s): Демонстрация за използване на MudExObjectEdit с модел, който съдържа файл(и)
+Demo for using MudExObjectEdit with CodeGator Adapter and CodeGator Attributes: Демонстрация за използване на MudExObjectEdit с CodeGator адаптер и атрибути на CodeGator
+Demo for using MudExObjectEditPicker with a model that contains file(s): Демонстрация за използване на MudExObjectEditPicker с модел, който съдържа файлове
+Demo of using explicit the MudExFileDisplayZip to show and select content inside of a zip file: Демонстрация на използването на изричен MudExFileDisplayZip за показване и избиране на съдържание в zip файл
+Demonstration for a simple but very useful Enum Selector: Демонстрация на прост, но много полезен селектор на Enum
+Demonstration of the MudExSplitter: Демонстрация на MudExSplitter
+Demonstration of the quickly color select with MudExColorBubble: Демонстрация на бързия избор на цвят с MudExColorBubble
+DEMOS: ДЕМОНСТРАЦИИ
+Dense: Гъст
+Dependent permissions required: Необходими са зависими разрешения
+Deployments: Разполагания
+Description: Описание
+Description is required!: Описанието е задължително!
+Description_for_Age: Description_for_Age
+Description_for_City: Description_for_City
+Description_for_FirstName: Description_for_FirstName
+Description_for_Id: Description_for_Id
+Description_for_LastName: Description_for_LastName
+Description_for_Notice: Description_for_Notice
+Description_for_OtherAddresses: Description_for_OtherAddresses
+Description_for_PostalCode: Description_for_PostalCode
+Description_for_ProgramingSkills: Description_for_ProgramingSkills
+Description_for_Street: Description_for_Street
+Description_for_TrueOrFalse: Description_for_TrueOrFalse
+Dessert: Десерт
+detailed guide for more.: подробно ръководство за повече.
+Details for Trail ID: Подробности за Trail ID
+Devibeans: Деви
+DeviceId: Идентификатор на устройството
+DeviceListVariant: Списък с устройстваВариант
+DeviceSelection: Избор на устройство.
+Dialog: Диалог
+Dialog Appearance: Изглед на диалоговия прозорец
+Dialog Content: Съдържание на диалоговия прозорец
+Dialog Drag & Drop: Диалогов прозорец Плъзгане и пускане
+Dialog for editing objects with the MudExObjectEditForm: Диалогов прозорец за редактиране на обекти с MudExObjectEditForm
+Dialog Sample: Пример за диалогов прозорец
+Dialog Samples: Примери за диалогови прозорци
+Dialog Snap Drag: Диалогов прозорец Прилепване Плъзгане
+Dialog to display a file using {{{MudBlazor.Extensions.Components.MudExFileDisplay}}} component.: Диалогов прозорец за показване на файл с помощта на компонента {{{MudBlazor.Extensions.Components.MudExFileDisplay}}}.
+Dialog_Appearance: Dialog_Appearance
+DialogAppearance: ДиалогВъншен вид
+DialogBackgroundAppearance: ДиалогBackgroundAppearance
+DialogOptions: Dialog Options
+Dialogs: Диалози
+DialogsCanClose: Диалогови прозорциМожетеЗатвори
+DialogServiceExt: DialogServiceExt
+DialogSnapDrag: DialogSnapDrag
+DialogsPosition: Диалогови прозорциПозиция
+Diana Prince: Даяна Принс
+DimGray: Тъмно сиво
+Direct: Пряк
+Direction: Посока
+DirtyseaBase16: DirtyseaBase16
+Disable Grouping: Деактивиране на групирането
+Disabled: Инвалид
+DisableList: DisableList
+DisableOpacityChange: DisableOpacityChange
+DisablePadding: ДеактивиранеПодплата
+DisablePopoverPadding: ДеактивиранеPopoverPadding
+DisablePositionMargin: DisablePositionMargin
+DisableSelectedItemStyle: DisableSelectedItemStyle
+DisableSizeMarginX: DisableSizeMarginX
+DisableSizeMarginY: DisableSizeMarginY
+DiscreteFrequencies: Дискретни честоти
+DisplayActionMenu: DisplayActionMenu
+DisplayErrors: DisplayErrors
+DisplayPresetList: DisplayPresetList
+Displays a tree structure as flat list: Показва дървовидна структура като плосък списък
+Displays a tree structure as horizontal navigable tree: Показва дървовидна структура като хоризонтално навигационно дърво
+Displays a tree structure as navigable Breadcrumb: Показва дървовидна структура като навигационна Галета
+Displays a tree structure as navigable card grid: Показва дървовидна структура като навигационна мрежа с карти
+Displays a tree structure as navigable List: Показва дървовидна структура като навигационен списък
+Displays a tree structure as simple tree: Показва дървовидна структура като просто дърво
+DisplaySurface: DisplaySurface
+DisplayTrackList: DisplayTrackList
+DisposeEvent: РазпорежданеСъбитие
+Disqus comments are disabled by default.: Коментарите на дискуса са деактивирани по подразбиране.
+Divider: Разделител
+DividerLight: РазделителСветлина
+dje-NE: Зарма (Нигер)
+DNumber: Дъмбър
+Do you really want to restart the server?: Наистина ли искате да рестартирате сървъра?
+Do you really want to restore the database from backup '{0}'? Note that any changes made after {1} are gone. This also means any changes made by any user: Наистина ли искате да възстановите базата данни от резервно копие "{0}"? Имайте предвид, че всички промени, направени след {1}, са изчезнали. Това означава и всички промени, направени от всеки потребител
+Do you want to delete the profile picture of {0}: Искате ли да изтриете профилната снимка на {0}
+Do you want to delete the User {0}: Искате ли да изтриете потребителския {0}
+Docco: Docco
+Docked: Фиксирана
+Document Deleted: Документът е изтрит
+Document Extended Attributes: Разширени атрибути на документа
+Document Management: Управление на документи
+Document Not Found!: Документът не е намерен!
+Document Saved: Запазен документ
+Document Store: Магазин за документи
+Document Type: Тип документ
+Document Type Deleted: Тип документ е изтрит
+Document Type is required!: Тип документ е задължителен!
+Document Type Not Found!: Типът на документа не е намерен!
+Document Type Saved: Запазен тип документ
+Document Type Updated: Типът на документа е актуализиран
+Document type with this name already exists.: Типът на документа с това име вече съществува.
+Document Types: Типове документи
+Document Types exported: Експортирани типове документи
+Document Updated: Актуализиран документ
+Documentation: Документация
+Documents: Документи
+DodgerBlue: DodgerBlue
+doi-Deva-IN: Догри (Деванагари, Индия)
+Don't have an account?: Нямате акаунт?
+Done!: Направи!
+Donut: Поничка
+Dotted: Пунктирана
+Double: Двоен
+DoubleClickAction: Двойно щракванеДействие
+Download: Свалям
+Download {0} files separately: Изтеглете {0} файлове отделно
+Download {0} with {1} files as zip: Изтеглете {0} с {1} файлове като zip
+Download file {0}: Изтегляне на файл {0}
+Download file {0} as zip: Изтегляне на файл {0} като zip
+DraculaBase16: DraculaBase16
+Drag and Drop files here: Плъзнете и пуснете файлове тук
+DragEffect: Ефект на плъзгане
+DragMode: Режим на плъзгане
+Drawer: Чекмедже
+DrawerBackground: ЧекмеджеФон
+DrawerClipMode: Режим на чекмеджеClipMode
+DrawerIcon: Икона на чекмеджето
+DrawerMiniWidthLeft: ЧекмеджеМиниШиринаЛяво
+DrawerMiniWidthRight: ЧекмеджеМиниШиринаДясно
+DrawerText: ЧекмеджеТекст
+DrawerVariant: ЧекмеджеВариант
+DrawerWidthLeft: ЧекмеджеШиринаВляво
+DrawerWidthRight: ЧекмеджеШиринаНадясно
+DroidCam Source 2: Източник на DroidCam 2
+DroidCam Source 3: DroidCam Източник 3
+Drop Box: Кутия за пускане
+Drop down component to select a culture: Падащ компонент за избор на култура
+Drop down component to select an enum value or multiple on flags enums: Падащ компонент за избор на стойност на enum или множество на пречисления на флагове
+Drop files here: Пуснете файлове тук
+DropBox external file picker component: Външен компонент за избор на файлове на DropBox
+DropBoxApiKey: DropBoxApiKey
+Dropdown list component to select one ore more fonts: Компонент на падащия списък за избор на още един шрифт
+DropShadow: DropShadow
+DropZoneClickAction: DropZoneClickAction
+dsb-DE: Долнолужиц (Германия)
+dua-CM: Дуала (Камерун)
+DualCombined: Двойно комбинирано
+DualHorizontal: ДвойнаХоризонтална
+DualVertical: Двойна вертикална
+DuplicateErrorText: DuplicateErrorText
+Duration: Времетраене
+dv-MV: Divehi (Малдиви)
+Dynamic component tests: Динамични тестове на компоненти
+dyo-SN: Jola-Fonyi (Сенегал)
+dz-BT: Dzongkha (Бутан)
+E-mail: Имейл
+E-Mail: Имейл
+E-Mail not confirmed.: Имейлът не е потвърден. Моля, проверете пощенската си кутия и потвърдете имейл адреса си. <a href='{0}'>Изпратете отново потвърждение по имейл</a>
+ebu-KE: Ембу (Кения)
+Edge: Ръб
+EdgeDarkBase16: КрайТъмна Основа16
+EdgeLightBase16: EdgeLightBase16
+Edit: Редактирам
+Edit {0}: Редактиране {0}
+Edit a complex Model with included Collection of users: Редактиране на сложен модел с включена колекция от потребители
+Edit Audio Constraints: Редактиране на аудио ограничения
+Edit Current Theme: Редактиране на текущата тема
+Edit data in dialog: Редактиране на данни в диалогов прозорец
+Edit in TryMudEx: Редактиране в TryMudEx
+Edit Items: Редактиране на елементи
+Edit only a Collection of users: Редактиране само на колекция от потребители
+Edit rating: Редактиране на рейтинга
+Edit Running Component: Редактиране на работещ компонент
+Edit Test Object: Редактиране на тестов обект
+Edit Users: Редактиране на потребители
+Edit Video Constraints: Редактиране на ограничения за видео
+Edit with shared MetaConfig: Редактиране със споделен MetaConfig
+Editable: Редактиране
+Editing of the DB Connection can break whole application. Please edit this only if you know what you are doing: Редактирането на DB връзката може да повреди цялото приложение. Моля, редактирайте това само ако знаете какво правите
+Editing of this endpoint can break AI integration: Редактирането на тази крайна точка може да наруши интеграцията на AI
+EditMode: Режим на редактиране
+Editor for a property of an object. Used internally inside the MudExObjectEdit: Редактор за свойство на обект. Използва се вътрешно в MudExObjectEdit
+EditRunningComponent: EditRunningComponent
+Edmonton: Едмънтън
+Edmonton - T5A 0A1: Едмънтън - T5A 0A1
+Edmonton - T5A 0A1ender: Едмънтън - T5A 0A1ender
+ee-GH: Еве (Гана)
+ee-TG: Еве (Того)
+EightiesBase16: ОсемдесетБаза16
+el-CY: Гръцки (Кипър)
+el-GR: Гръцки (Гърция)
+Elevation: Издигане
+Em: В
+email: Имейл
+Email: Имейл
+Email {0} is already registered.: Имейл {0} вече е регистриран.
+Email cannot changed: Имейлът не може да се промени
+Email Confirmation: Потвърждение по имейл
+Email is not correct: Имейлът не е правилен
+Email is required: Изисква се имейл
+Email is required!: Изисква се имейл!
+EmbersBase16: EmbersBase16
+en-001: Английски (световен)
+en-029: Английски (Карибски)
+en-150: Английски (Европа)
+en-AE: английски (Обединени арабски емирства)
+en-AG: Английски (Антигуа и Барбуда)
+en-AI: Английски (Ангила)
+en-AS: Английски (Американска Самоа)
+en-AT: Английски (Австрия)
+en-AU: Английски (България)
+en-BB: Английски (Барбадос)
+en-BE: Английски (Белгия)
+en-BI: Английски (Бурунди)
+en-BM: Английски (Бермудски острови)
+en-BS: Английски (Бахамски острови)
+en-BW: Английски (Ботсвана)
+en-BZ: Английски (Белиз)
+en-CA: Английски (Канада)
+en-CC: Английски (Кокосови острови)
+en-CH: Английски (Швейцария)
+en-CK: Английски (Острови Кук)
+en-CM: Английски (Камерун)
+en-CX: Английски (Остров Коледа)
+en-CY: Английски (Кипър)
+en-DE: Английски (Германия)
+en-DK: Английски (Дания)
+en-DM: Английски (Доминика)
+en-ER: Английски (Еритрея)
+en-FI: Английски (Финландия)
+en-FJ: Английски (Фиджи)
+en-FK: Английски (Фолклендски острови)
+en-FM: Английски (Микронезия)
+en-GB: Английски (Обединеното кралство)
+en-GD: Английски (Гренада)
+en-GG: Английски (Гърнзи)
+en-GH: Английски (Гана)
+en-GI: Английски (Гибралтар)
+en-GM: Английски (Гамбия)
+en-GU: Английски (Гуам)
+en-GY: Английски (Гвиана)
+en-HK: Английски (САР Хонконг)
+en-ID: Английски (Индонезия)
+en-IE: Английски (Ирландия)
+en-IL: Английски (Израел)
+en-IM: Английски (Остров Ман)
+en-IN: Английски (Индия)
+en-IO: Английски (Британска територия в Индийския океан)
+en-JE: Английски (Джърси)
+en-JM: Английски (Ямайка)
+en-KE: Английски (Кения)
+en-KI: Английски (Кирибати)
+en-KN: Английски (Сейнт Китс и Невис)
+en-KY: Английски (Кайманови острови)
+en-LC: Английски (Сейнт Лусия)
+en-LR: Английски (Либерия)
+en-LS: Английски (Лесото)
+en-MG: Английски (Мадагаскар)
+en-MH: Английски (Маршалови острови)
+en-MO: Английски (САР Макао)
+en-MP: Английски (Северни Мариански острови)
+en-MS: Английски (Монсерат)
+en-MT: Английски (Малта)
+en-MU: Английски (Мавриций)
+en-MW: Английски (Малави)
+en-MY: Английски (Малайзия)
+en-NA: Английски (Намибия)
+en-NF: Английски (остров Норфолк)
+en-NG: Български (Нигерия)
+en-NL: Английски (Холандия)
+en-NR: Английски (Науру)
+en-NU: Английски (Ниуе)
+en-NZ: Английски (Нова Зеландия)
+en-PG: Английски (Папуа Нова Гвинея)
+en-PH: Английски (Филипини)
+en-PK: Английски (Пакистан)
+en-PN: Английски (острови Питкерн)
+en-PR: Английски (Пуерто Рико)
+en-PW: Английски (Палау)
+en-RW: Английски (Руанда)
+en-SB: Английски (Соломонови острови)
+en-SC: Английски (Сейшелски острови)
+en-SD: Английски (Судан)
+en-SE: Английски (Швеция)
+en-SG: Английски (Сингапур)
+en-SH: Английски (Света Елена, Възнесение, Тристан да Куня)
+en-SI: Английски (Словения)
+en-SL: Английски (Сиера Леоне)
+en-SS: Английски (Южен Судан)
+en-SX: Английски (Синт Мартен)
+en-SZ: Английски (Eswatini)
+en-TC: Английски (острови Търкс и Кайкос)
+en-TK: Английски (Токелау)
+en-TO: Английски (Тонга)
+en-TT: Английски (Тринидад и Тобаго)
+en-TV: Английски (Тувалу)
+en-TZ: Английски (Танзания)
+en-UG: Английски (Уганда)
+en-UM: Английски (Отдалечени острови на САЩ)
+en-US: Английски (Съединени щати)
+en-US-posix: Английски (САЩ, компютър)
+en-VC: Английски (Сейнт Винсент и Гренадини)
+en-VG: Английски (Британски Вирджински острови)
+en-VI: Английски (Американски Вирджински острови)
+en-VU: Английски (Вануату)
+en-WS: Английски (Самоа)
+en-ZA: Английски (Южна Африка)
+en-ZM: Английски (Замбия)
+en-ZW: Английски (Зимбабве)
+Enable Disqus: Активиране на Disqus
+enables or disables virtualization.: Разрешава или деактивира виртуализацията.
+End: Край
+English: Английски
+Engravers MT: Гравьори MT
+Enter email and your new password here: Въведете имейл и новата си парола тук
+Enter email for password reset: Въведете имейл адреса, свързан с вашия акаунт, и ще получите имейл, съдържащ връзка за нулиране на паролата ви
+Enter name: Въведете име
+Enter name of backup file: Въведете името на архивния файл
+Enter new name of backup file: Въведете ново име на архивния файл
+Enter the email address for the confirmation mail: Въведете имейл адреса за имейла за потвърждение
+Enter the URL to existing file: Въведете URL адреса на съществуващия файл
+Enter your message...: Въведете съобщението си...
+Entity Id: ИД на обекта
+Entity is required!: Обектът е задължителен!
+EntityCreatedBy: EntityСъздаденоОт
+EntityCreatedOn (Local): EntityCreatedOn (локално)
+EntityCreatedOn (UTC): EntityCreatedOn (UTC)
+EntityId: Идентификатор на обект
+EntityLastModifiedBy: EntityLastModifiedBy
+EntityLastModifiedOn (Local): EntityLastModifiedOn (Local)
+EntityLastModifiedOn (UTC): EntityLastModifiedOn (UTC)
+Entree: Вход
+EnumSelect: EnumSelect
+Environment: Околна среда
+eo-001: Есперанто (Свят)
+EquilibriumDarkBase16: РавновесиеТъмна Основа16
+EquilibriumGrayDarkBase16: РавновесиеСивоТъмноОснова16
+EquilibriumGrayLightBase16: РавновесиеСивоСветлоОснова16
+EquilibriumLightBase16: EquilibriumLightBase16
+Eras Bold ITC: Eras Bold ITC
+Eras Demi ITC: Eras Demi ITC
+Eras Light ITC: Ерас Лайт ITC
+Eras Medium ITC: Ерас Среден ITC
+Error: Грешка
+ErrorAnimation: ГрешкаАнимация
+ErrorContrastText: ГрешкаКонтрастТекст
+ErrorDarken: ГрешкаПотъмняване
+ErrorId: ГрешкаИд
+ErrorLighten: ГрешкаИзсветляване
+ErrorMessage: Съобщение за грешка
+ErrorText: ГрешкаТекст
+es-419: Испански (Латинска Америка)
+es-AR: Испански (Аржентина)
+es-BO: Испански (Боливия)
+es-BR: Испански (Бразилия)
+es-BZ: Испански (Белиз)
+es-CL: Испански (Чили)
+es-CO: Испански (Колумбия)
+es-CR: Испански (Коста Рика)
+es-CU: Испански (Куба)
+es-DO: Испански (Доминиканска република)
+es-EC: Испански (Еквадор)
+es-ES: Испански (Испания)
+es-GQ: Испански (Екваториална Гвинея)
+es-GT: Испански (Гватемала)
+es-HN: Испански (Хондурас)
+es-MX: Испански (Мексико)
+es-NI: Испански (Никарагуа)
+es-PA: Испански (Панама)
+es-PE: Испански (Перу)
+es-PH: Испански (Филипини)
+es-PR: Испански (Пуерто Рико)
+es-PY: Испански (Парагвай)
+es-SV: Испански (Ел Салвадор)
+es-US: Испански (Съединени щати)
+es-UY: Испански (Уругвай)
+es-VE: Испански (Венецуела)
+Español: Испански
+EspressoBase16: ЕспресоБаза16
+et-EE: Естонски (Естония)
+Ethan Hunt: Итън Хънт
+eu-ES: Баски (Испания)
+EvaBase16: ЕваБаза16
+EvaDimBase16: EvaDimBase16
+ewo-CM: Евондо (Камерун)
+ExcelSheet.xlsx: ExcelSheet.xlsx
+Expand &nbsp; <b>not</b> &nbsp; loaded nodes: Разгъване &nbsp; <b>на незаредени</b> &nbsp; възли
+Expand all nodes: Разгъване на всички възли
+Expand loaded nodes: Разширете заредените възли
+Expand/Collapse: Разгъване/свиване
+ExpandBehaviour: Разширяване на поведението
+ExpandButtonDirection: ExpandButtonDirection
+ExpandedIcon: РазширенаИкона
+ExpandOnClick: ExpandOnClick
+ExpandOnFilter: ExpandOnFilter
+Explicit File Display Zip: Zip за показване на изричен файл
+Export: Износ
+Export To Excel: Експортиране в Excel
+Export_SheetName: Данни
+ExposureCompensation: Компенсация на експозицията
+ExposureMode: Режим на експозиция
+ExposureTime: ЕкспозицияВреме
+Extended Attribute Deleted: Разширеният атрибут е изтрит
+Extended Attribute Not Found!: Разширеният атрибут не е намерен!
+Extended Attribute Saved: Запазен разширен атрибут
+Extended Attribute Updated: Разширеният атрибут е актуализиран
+Extended Attribute with this Key already exists.: Разширен атрибут с този ключ вече съществува.
+Extended Attributes: '\{0}\ Разширени атрибути'
+Extended Attributes exported: Експортирани разширени атрибути
+ExtensionRestrictionType: РазширениеТип на ограничение
+Extensions: Разширения
+External Id: Външен идентификатор
+ExternalDialogOptions: ВъншниДиалогови опции
+ExternalId: Външен идентификатор
+ExternalPickerImageSize: ВъншенPickerImageSize
+ExternalProviderRendering: Външен доставчикИзобразяване
+ExtraExtraLarge: Екстра Екстра Голям
+ExtraLarge: Изключително голям
+ExtraSmall: Изключително малък
+fa-IR: персийски (Иран)
+FacingMode: Облицовъчен режим
+Fade: Замирам
+FadeIn: Избледняване
+Failed to get client preferences: Неуспешно получаване на предпочитания на клиента
+FallBackInIframe: FallBackInIframe
+False: Фалшиво
+FAQs: Често задавани въпроси
+Far: Далече
+Features: Функции
+Feb: Февруари
+Felix Titling: Феликс Титлинг
+Female: Жена
+Female_ Text: Female_ Текст
+ff-Adlm-BF: Фула (Адлам, Буркина Фасо)
+ff-Adlm-CM: Фула (Адлам, Камерун)
+ff-Adlm-GH: Фула (Адлам, Гана)
+ff-Adlm-GM: Фула (Адлам, Гамбия)
+ff-Adlm-GN: Фула (Адлам, Гвинея)
+ff-Adlm-GW: Фула (Адлам, Гвинея-Бисау)
+ff-Adlm-LR: Фула (Адлам, Либерия)
+ff-Adlm-MR: Фула (Адлам, Мавритания)
+ff-Adlm-NE: Фула (Адлам, Нигер)
+ff-Adlm-NG: Фула (Адлам, Нигерия)
+ff-Adlm-SL: Фула (Адлам, Сиера Леоне)
+ff-Adlm-SN: Фула (Адлам, Сенегал)
+ff-Latn-BF: Fulah (латински, Буркина Фасо)
+ff-Latn-CM: Фула (латински, камерун)
+ff-Latn-GH: Fulah (латински, Гана)
+ff-Latn-GM: Фула (латински, Гамбия)
+ff-Latn-GN: Fulah (латински, Гвинея)
+ff-Latn-GW: Fulah (латински, Гвинея-Бисау)
+ff-Latn-LR: Fulah (латински, Либерия)
+ff-Latn-MR: Фула (латински, Мавритания)
+ff-Latn-NE: Fulah (латински, нигер)
+ff-Latn-NG: Фула (латински, Нигерия)
+ff-Latn-SL: Фула (латински, Сиера Леоне)
+ff-Latn-SN: Fulah (латински, сенегал)
+FFTSize: FFTSize
+fi-FI: Финландски (Финландия)
+fil-PH: Филипински (Филипини)
+File Display: Показване на файлове
+File Display with Stream: Показване на файлове с поток
+File Handling: Обработка на файлове
+File is required!: Изисква се файл!
+FileDisplay: Показване на файлове
+FileDisplayAsStream: FileDisplayAsStream
+FileDisplayZipWithPreview: FileDisplayZipWithPreview
+FileInfo: ФайлИнформация
+FileName: Име
+Files: Файлове
+Files of this type ({0}) are not allowed. Only following types are allowed '{1}'. Try one of these extensions ({2}): Файлове от този тип ({0}) не са разрешени. Разрешени са само следните типове "{1}". Опитайте едно от тези разширения ({2})
+Fill Administrator Credentials: Попълнете идентификационните данни за администратор
+Fill Basic User Credentials: Попълнете основни потребителски идентификационни данни
+FillAlpha: FillAlpha
+Filled: Изпълнен
+Filter: Филтър
+Filter...: Филтър...
+Filter468: Филтър468
+FilterBehaviour: Поведение на филтъра
+FilterBoxClass: FilterBoxClass
+FilterBoxStyle: ФилтърБоксСтил
+FilterChipsPlacedRight: ФилтърЧиповеПоставеноПравилно
+Filtered Audit Trails exported: Експортирани филтрирани одитни пътеки
+Filtered Brands exported: Експортирани филтрирани марки
+Filtered Document Types exported: Експортирани филтрирани типове документи
+Filtered Extended Attributes exported: Експортирани филтрирани разширени атрибути
+Filtered Products exported: Експортирани филтрирани продукти
+Filtered Users exported: Експортирани филтрирани потребители
+FilterEnabled: Активиран филтър
+FilterHighlighting: ФилтърПодчертаване
+Filtering: Филтриране
+FilterMode: Режим на филтър
+FilterMultiple: ФилтърМножество
+FilterPlaceholder: ФилтърКонтейнер
+Filters: Филтри
+FilterVariant: ФилтърВариант
+Fiona Gallagher: Фиона Галахър
+Firebrick: Огнеупорна тухла
+First Name: Собствено име
+First Name is required: Изисква се собствено име
+FirstName: Собствено име
+Fixed: Неподвижен
+Flags Enum: Знамена Енум
+Flat: Апартамент
+Flat List: Плосък списък
+FlatBase16: Плоска база16
+FlatList: Плосък списък
+FlexEnd: FlexEnd
+FlexStart: FlexStart
+Flip: Флип
+FlipAlways: Обръщане на винаги
+FlipNever: Обръщане Никога
+FlipOnOpen: FlipOnОтвори
+FlipX: ФлипХ
+FlipY: FlipY
+FloralWhite: Флоралнобял
+Florian Gilde: Флориан Гилде
+FNumber: Фнумбър
+fo-DK: Фарьорски (Дания)
+fo-FO: Фарьорски острови (Фарьорски острови)
+FocusDistance: ФокусРазстояние
+FocusMode: Режим на фокусиране
+FontFamily: Семейство шрифтове
+FontSelect: Избор на шрифт
+FontSize: Размер на шрифта
+FontWeight: Тегло на шрифта
+Footlight MT Light: Светлина за крака MT
+Force pick Item: Принудително избиране на елемент
+Force pick Items: Принудително избиране на елементи
+Force select Item: Принудително избиране на елемент
+Force select Items: Принудително избиране на елементи
+ForceNativeRender: Принудително изобразяване
+ForceSelectOfMudColor: СилаИзборНаКалЦвят
+ForceShrink: Принудително свиване
+ForestGreen: ФорестГрийн
+Forgot password?: Забравена парола?
+Format: Формат
+Foundation: Фондация
+fr-029: Френски (Карибски басейн)
+fr-BE: Френски (Белгия)
+fr-BF: Френски (Буркина Фасо)
+fr-BI: Френски (Бурунди)
+fr-BJ: Френски (Бенин)
+fr-BL: Френски (Сейнт Бартелеми)
+fr-CA: Френски (Канада)
+fr-CD: Френски (Конго [ДРК])
+fr-CF: Френски (Централноафриканска република)
+fr-CG: Френски (Конго)
+fr-CH: Френски (Швейцария)
+fr-CI: Френски (Кот д'Ивоар)
+fr-CM: Френски (Камерун)
+fr-DJ: Френски (Джибути)
+fr-DZ: Френски (Алжир)
+fr-FR: Френски (Франция)
+fr-GA: Френски (Габон)
+fr-GF: Френски (Френска Гвиана)
+fr-GN: Френски (Гвинея)
+fr-GP: Френски (Гваделупа)
+fr-GQ: Френски (Екваториална Гвинея)
+fr-HT: Френски (Хаити)
+fr-KM: Френски (Коморски острови)
+fr-LU: Френски (Люксембург)
+fr-MA: Френски (Мароко)
+fr-MC: Френски (Монако)
+fr-MF: Френски (Сейнт Мартен)
+fr-MG: Френски (Мадагаскар)
+fr-ML: Френски (Мали)
+fr-MQ: Френски (Мартиника)
+fr-MR: Френски (Мавритания)
+fr-MU: Френски (Мавриций)
+fr-NC: Френски (Нова Каледония)
+fr-NE: Френски (Нигер)
+fr-PF: Френски (Френска Полинезия)
+fr-PM: Френски (Сен Пиер и Микелон)
+fr-RE: Френски (Реюнион)
+fr-RW: Френски (Руанда)
+fr-SC: Френски (Сейшелски острови)
+fr-SN: Френски (Сенегал)
+fr-SY: Френски (Сирия)
+fr-TD: Френски (Чад)
+fr-TG: Френски (Того)
+fr-TN: Френски (Тунис)
+fr-VU: Френски (Вануату)
+fr-WF: Френски (Wallis & Futuna)
+fr-YT: Френски (Майот)
+FrameRate: Честота на кадрите
+FramerBase16: Рамка за основа16
+Franklin Gothic Medium: Франклин готически медиум
+French: Френски
+FrequencyScale: ЧестотаСкала
+FruitSodaBase16: FruitSodaBase16
+Fuchsia: Обичка
+Full: Пълен
+FullHeight: Пълна височина
+FullOctaveBands: Пълни октавни ленти
+FullPaged: Пълна страница
+Fullscreen: Цял екран
+FullScreen: Цял екран
+FullScreenButtonIcon: Икона на FullScreenButtonIcon
+FullWidth: Пълна ширина
+fur-IT: Friulian (Италия)
+Futura: Бъдеще
+fy-NL: Западен фризийски (Холандия)
+ga-GB: Ирландски (Обединеното кралство)
+ga-IE: Ирландски (Ирландия)
+Gain: Печеля
+Gainsboro: Гейнсбъро
+Garamond: Гарамонд
+gd-GB: Шотландски келтски (Обединеното кралство)
+Gender: Пол
+General: Основни
+Geneva: Женева
+George Miller: Джордж Милър
+Georgia: Грузия
+German: Немски
+GhostWhite: Призрачно бяло
+GigavoltBase16: GigavoltBase16
+Gigi: Джиджи
+Gill Sans: Гил Санс
+Gill Sans MT: Хриле без MT
+Github: Github
+GitHub Project repository: Хранилище на проекта на GitHub
+GithubBase16: GithubBase16
+GithubDark: GithubDark
+GithubDarkDimmed: GithubDarkDimmed
+gl-ES: Галисийски (Испания)
+Gml: Гмл
+gn-PY: Гуарани (Парагвай)
+GoHome: Отивай си вкъщи!
+Gold: Злато
+Goldenrod: Златна пръчица
+Google: Google
+Google Drive: Google Диск
+Google Drive file picker component: Компонент за избор на файлове в Google Диск
+Googlecode: Googlecode
+GoogleDarkBase16: GoogleDarkBase16
+GoogleDriveClientId: GoogleDriveClientId
+GoogleLightBase16: GoogleLightBase16
+Goudy Old Style: Гъди стар стил
+Goudy Stout: Гуди стаут
+Gradient: Градиент
+GradientDark: ГрадиентТъмно
+GradientForeground: ГрадиентПреден план
+GradientLeft: ГрадиентЛяво
+GradientLight: Градиентна светлина
+GradientRight: ГрадиентПраво
+GradientText: ГрадиентТекст
+Gravatar: Граватар
+GravatarImageSize: GravatarImageSize
+Gray: Сив
+GrayDark: СивоТъмно
+GrayDarker: СивоПо-тъмно
+GrayDefault: СивоПо подразбиране
+GrayLight: Сива светлина
+GrayLighter: СивоПо-светло
+Grayscale: Скала на сивото
+GrayscaleDarkBase16: Скала на сивотоТъмна основа16
+GrayscaleLightBase16: GrayscaleLightBase16
+Green: Зелен
+GreenScreenBase16: GreenScreenBase16
+GreenYellow: Зеленожълто
+Grid: Мрежа
+Grid_Enhanced: Grid_Enhanced
+GridCompact: GridCompact
+GridIcon: GridIcon
+Groove: Бразда
+Group: Група
+Group by types: Групиране по видове
+GroupBox: Групова кутия
+GroupId: Идентификатор на групата
+GroupingEnabled: ГрупиранеАктивирано
+GroupsInitiallyExpanded: ГрупиПървоначалноРазширен
+GroupsNested: ГрупиВложени
+GroupsSticky: ГрупиЛепкави
+GruvboxDarkHardBase16: ГрувбоксТъмнаТвърдаБаза16
+GruvboxDarkMediumBase16: MineboxТъмнаСреднаБаза16
+GruvboxDarkPaleBase16: ГрувбоксТъмноБледаОснова16
+GruvboxDarkSoftBase16: ГрувбоксТъмна МекаБаза16
+GruvboxLightHardBase16: GruvboxLightHardBase16
+GruvboxLightMediumBase16: GruvboxLightMediumBase16
+GruvboxLightSoftBase16: ГрувбоксЛайтСофтБаза16
+gsw-CH: Швейцарски немски (Швейцария)
+gsw-FR: Швейцарски немски (Франция)
+gsw-LI: Швейцарски немски (Лихтенщайн)
+gu-IN: Гуджарати (Индия)
+GutterBottom: УлукДъно
+Gutters: Улуци
+guz-KE: Gusii (Кения)
+gv-IM: Манкс (остров Ман)
+h1: Н1
+H1: Н1
+h2: H2
+H2: H2
+h3: Н3
+H3: Н3
+h4: Н4
+H4: Н4
+h5: Н5
+H5: Н5
+h6: Н6
+H6: Н6
+ha-Latn-GH: Хауса (латински, Гана)
+ha-Latn-NE: Хауса (латински, Нигер)
+ha-Latn-NG: Хауса (латински, Нигерия)
+Haettenschweiler: Хетеншвайлер
+HalfOctaveBands: Полуоктавни ленти
+Hannah Davis: Хана Дейвис
+HardcoreBase16: ХардкорБаза16
+Harlow Solid Italic: Харлоу твърд курсив
+Harmonic16DarkBase16: Хармоник16Тъмна база16
+Harmonic16LightBase16: Harmonic16LightBase16
+Harrington: Харингтън
+haw-US: Хавайски (Съединени щати)
+he-IL: Иврит (Израел)
+Header.tiff: Header.tiff
+HeadShake: Разклащане на главата
+HeatMap: Топлинна карта
+HeetchDarkBase16: HeetchDarkBase16
+HeetchLightBase16: HeetchLightBase16
+Height: Височина
+HeliosBase16: ХелиосБаза16
+Hello: Здравейте
+Hello from dialog: Здравейте от диалоговия прозорец
+Hello from dialog 1: Здравейте от диалогов прозорец 1
+Hello from dialog sample page: Здравейте от примерна страница на диалоговия прозорец
+Hello World: Здравей, свят
+Hello...: Здравейте...
+HelperId: Помощен идентификатор
+HelperText: Помощен текст
+HelperTextOnFocus: ПомощникТекстНаФокус
+Helvetica: Хелветика
+Helvetica Narrow: Хелветика Роуз
+Here is another Real demo available for: Ето още една реална демонстрация, достъпна за
+Here only number is configured to render with NumEdit edit but DataType is string. Also this field is ignored for import: Тук само числото е конфигурирано да изобразява с редактиране на NumEdit, но DataType е низ. Също така това поле се игнорира за импортиране
+Here you can edit the users, but only confirm if count is at least 2: Тук можете да редактирате потребителите, но само да потвърдите дали броят е поне 2
+Here you can leave a comment for this permission for the current role: Тук можете да оставите коментар за това разрешение за текущата роля
+Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Тук можете да видите как можете да използвате MudExObjectEdit, за да редактирате свойствата на работещ компонент
+Here you find a Demo how to use the service directly: Тук ще намерите демонстрация как да използвате услугата директно
+Hex: Шестнадесетичен
+HEX: ШЕСТНАДЕСЕТИЧЕН
+HexA: Шестоъгълник
+hi-IN: Хинди (Индия)
+Hidden: Скрит
+Hide: Крия
+HideContentWhenCollapsed: СкриванеСъдържаниеКогатоСвито
+HideDropDownWhenReadOnly: HideDropDownКогатоReadOnly
+High Tower Text: Текст на високата кула
+HighlightSearch: Търсене на акценти
+Hinge: Панта
+Home: Дом
+Honeydew: Медена роса
+HopscotchBase16: HopscotchBase16
+HorizonDarkBase16: ХоризонтТъмна база16
+HorizonLightBase16: HorizonLightBase16
+Horizontal: Хоризонтален
+HouseNumber: Номер
+Houston: Хюстън
+Houston - 77001: Хюстън - 77001
+Houston - 77001ender: Хюстън - 77001ender
+Houstonender: Хюстънендер
+HoverColor: HoverColor
+HoverMode: Режим на задържане
+HoverOpacity: Задържане на курсора на непрозрачността
+hr-BA: Хърватски (Босна и Херцеговина)
+hr-HR: Хърватски (Хърватия)
+Href: Хреф
+hsb-DE: Горнолужички (Германия)
+HSL: HSL
+HTML Colors: HTML цветове
+HtmlTag: HtmlТаг
+https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls: https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls
+https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc: https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc
+hu-HU: унгарски (Унгария)
+HumanoidDarkBase16: HumanoidDarkBase16
+HumanoidLightBase16: HumanoidLightBase16
+hy-AM: Арменски (Армения)
+Hybrid: Хибрид
+I agree to the terms and privacy: Съгласен съм с условията и поверителността
+I'm a also another separate control inside of the normal input: Аз съм и още една отделна контрола в рамките на нормалния вход
+I'm a another separate control inside of the normal input: Аз съм друга отделна контрола вътре в нормалния вход
+I'm a separate control inside of the normal input: Аз съм отделна контрола вътре в нормалния вход
+ia-001: Интерлингва (Свят)
+IaDarkBase16: IaDarkBase16
+IaLightBase16: IaLightBase16
+Ian Wright: Иън Райт
+ibb-NG: Ибибио (Нигерия)
+ICaptureService: ICaptureService
+Icon: Икона
+IconColor: Цвят на иконата
+IconPicker: Избор на икони
+IconSize: Размер на иконата
+IcyDarkBase16: Ледена тъмна база16
+id: ИД
+Id: Пак там
+id-ID: Индонезийски (Индонезия)
+Idea: Идея
+Identifier: Идентификатор
+If this is set a photo will be taken instead of a video.: Ако това е зададено, ще бъде направена снимка вместо видео.
+If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Ако харесвате този пакет, моля, поставете го в Github ⭐ и го споделете с приятелите си. Ако не, можете да дадете звезда така или иначе и да ми кажете какво мога да подобря, за да го направя по-добро за вас.
+If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Ако зададете тези опции по подразбиране. Тези опции ще се използват за всички диалогови прозорци, където не са посочени опции. Продължавам?
+ig-NG: Игбо (Нигерия)
+Ignore: Игнорирам
+IgnoredPropertiesForReset: IgnoredPropertiesForReset
+IgnoredRenderControls: ИгнорираниRenderControls
+ii-CN: Yi (Китай)
+Image format: Формат на изображението
+ImageAsBackgroundImage: ИзображениеКатоФонИзображение
+Images: Изображения
+ImagesNewLine: ИзображенияNewLine
+Immediate: Непосредствен
+ImmediateText: Незабавен текст
+Impact: Въздействие
+Import: Внос
+ImportExportIcon: ImportExportIcon
+In: В
+In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: В този пример данните се зареждат динамично веднага щом елементът се появи за първи път в полезрението. Компонентът поддържа два слота за съдържание
+In this sample you are forced to pick an user: В тази извадка сте принудени да изберете потребител
+In this sample you are forced to pick some users: В тази извадка сте принудени да изберете някои потребители
+In this sample you are forced to select some users: В тази извадка сте принудени да изберете някои потребители
+In this sample you can pick one user: В тази извадка можете да изберете един потребител
+In this sample you can select multiple users: В този пример можете да изберете няколко потребители
+In this sample you can select one user: В тази извадка можете да изберете един потребител
+Inches: Инча
+Include Entity fields (Export): Включване на полета за обект (Експортиране)
+Incorrect Password.: Неправилна парола.
+IndeterminateIcon: НеопределенаИкона
+Indigo: Индиго
+Indonesia: Индонезия
+Info: Информация
+Info & About: Информация и информация
+InfoContrastText: ИнфоКонтрастТекст
+InfoDarken: Информация за потъмняване
+InfoLighten: InfoLighten
+Informal Roman: Неформален римски
+Information: Информация
+InfoText: ИнфоТекст
+inherit: наследявам
+Inherit: Наследявам
+Initial: Инициал
+InitialColor: Първоначален цвят
+InitiallyExpanded: ПървоначалноРазширен
+InitialMessage: Първоначално съобщение
+InitialMessageVisibilityTime: НачалоСъобщениеВидимостВреме
+InitialPreset: Първоначална предварителна настройка
+InitialRender: Първоначално изобразяване
+Inline: Вградени
+Inline Dialog: Вграден диалогов прозорец
+InlineDialogs: Вградени диалози
+InProgress: Неизпълнение
+InputClass: Входен клас
+InputId: Входен идентификатор
+InputMode: Входен режим
+InputStyle: InputStyle
+InputType: ВходТип
+Inset: Добавям
+IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
+IntegratedInDialogAsImages: IntegratedInDialogAsImages
+InterimResults: Междинни резултати
+Invalid Credentials.: Невалидни идентификационни данни.
+IrBlack: IrBlack
+IrBlackBase16: IrBlackBase16
+Is Active: Активен е
+Is Public: Публично ли е
+Is Public?: Публичен ли е?
+is-IS: Исландски (Исландия)
+IsActive: ИсАктив
+IsblEditorDark: IsblEditorТъмен
+IsblEditorLight: IsblEditorLight
+IsMouseOverChip: IsMouseOverChip
+ISO: ISO
+IsOpen: Отворено
+IsotopeBase16: Изотопна основа16
+ISpeechRecognitionService: ISpeechRecognitionService
+IsPredefined: Е предварително дефиниран
+it-CH: Италиански (Швейцария)
+it-IT: Италиански (Италия)
+it-SM: Италиански (Сан Марино)
+it-VA: Италиански (Ватикана)
+Italian: Италиански
+Item 1: Точка 1
+Item 2: Точка 2
+Item 3: Точка 3
+Item 3, Item 1: Точка 3, т. 1
+Item 4: Точка 4
+Item 5: Точка 5
+Item One: Елемент първи
+Item Three: Точка трета
+Item Two: Точка втори
+ItemBackgroundColor: ItemBackgroundColor
+ItemClass: АртикулКлас
+ItemCollection: Колекция от предмети
+ItemContent: АртикулСъдържание
+ItemContentClass: ItemContentClass
+ItemContentStyle: ItemContentStyle
+ItemContentTypo: ItemContentTypo
+ItemList: Списък с елементи
+Items: Елементи
+ItemsSource: ЕлементиИзточник
+ItemStyle: АртикулСтил
+ItemWidth: Ширина на предмета
+iu-CA: Инуктитут (Канада)
+iu-Latn-CA: Инуктитут (латински, Канада)
+Ivory: Слонова кост
+ja-JP: Японски (Япония)
+JackInTheBox: JackInTheBox
+Jan: Ян
+JavaScript: JavaScript
+Jello: Хапче
+jgo-CM: Нгомба (Камерун)
+jmc-TZ: Мачаме (Танзания)
+John Doe: Джон Доу
+Jokerman: Джокерман
+Json: Json
+Json value is required using {0} type!: Изисква се стойността на Json с помощта на {0} тип!
+Json value must be a valid json string using {0} type!: Json стойността трябва да е валиден json низ, използващ {0} тип!
+Juice ITC: Сок ITC
+Jul: Юли
+Julia Roberts: Джулия Робъртс
+Jun: Юни
+Justify: Оправдавам
+jv-Java-ID: Явански (явански, индонезия)
+jv-Latn-ID: Явански (латински, индонезия)
+ka-GE: Грузински (Грузия)
+kab-DZ: Kabyle (Алжир)
+kam-KE: Камба (Кения)
+kde-TZ: Маконде (Танзания)
+kea-CV: Кабувердиану (Кабо Верде)
+Keep scrolling to reveal the content below...: Продължете да превъртате, за да разкриете съдържанието по-долу...
+KeepExisting: ЗапазванеСъществуващо
+KeepMaxSizeConstraints: KeepMaxSizeConstraints
+KeepRelations: Поддържане на връзки
+KeepState: Поддържане на държавата
+Kevin Hart: Кевин Харт
+Key: Ключ
+Key is required!: Необходим е ключ!
+KeyDownPreventDefault: KeyDownPreventDefault
+KeyDownStopPropagation: KeyDownStopPropagation
+KeyUpPreventDefault: KeyUpPreventDefault
+KeyUpStopPropagation: KeyUpStopРазпространение
+Khaki: Каки
+khq-ML: Койра Чиини (Мали)
+ki-KE: Кикую (Кения)
+Kilobytes: Килобайта
+KimberBase16: KimberBase16
+KimbieDark: КимбиТъм
+KimbieLight: КимбиЛайт
+kk-KZ: Казахски (Казахстан)
+kkj-CM: Како (Камерун)
+kl-GL: Kalaallisut (Гренландия)
+kln-KE: Календжин (Кения)
+km-KH: Кхмерски (Камбоджа)
+kn-IN: Каннада (Индия)
+ko-KP: Корейски (Северна Корея)
+ko-KR: Корейски (Корея)
+kok-IN: Конкани (Индия)
+Kommunikation - Mikrofon (Voicemod Virtual Audio Device (WDM)): Комуникация - микрофон (Voicemod Virtual Audio Device (WDM))
+kr-Latn-NG: Канури (латински, Нигерия)
+ks-Arab-IN: Кашмирски (арабски, Индия)
+ks-Deva-IN: Кашмирски (Деванагари, Индия)
+ksb-TZ: Шамбала (Танзания)
+ksf-CM: Бафия (Камерун)
+ksh-DE: Colognian (Германия)
+ku-Arab-IQ: Кюрдски (арабски, иракски)
+ku-Arab-IR: Кюрдски (арабски, ирански)
+Kunstler Script: Скрипт на Кунстлер
+kw-GB: Корниш (Обединеното кралство)
+ky-KG: Киргизки (Киргизстан)
+la-VA: Латински (Ватикана)
+Label: Етикет
+Label_Description: Описание
+Label_for_Age: Label_for_Age
+Label_for_City: Label_for_City
+Label_for_FirstName: Label_for_FirstName
+Label_for_Gender: Label_for_Gender
+Label_for_HouseNumber: Label_for_HouseNumber
+Label_for_Id: Label_for_Id
+Label_for_Notice: Label_for_Notice
+Label_for_OtherAddresses: Label_for_OtherAddresses
+Label_for_PostalCode: Label_for_PostalCode
+Label_for_ProgramingSkills: Label_for_ProgramingSkills
+Label_for_Street: Label_for_Street
+Label_for_TrueOrFalse: Label_for_TrueOrFalse
+Label_UploadRequests: Файлове
+LabelCustomTab: ЕтикетПерсонализиранРаздел
+LabelDefinedTab: LabelDefinedTab
+lag-TZ: Ланги (Танзания)
+Landscape: Ландшафт
+Language: Език
+Languages: Езици
+Large: Голям
+LargeZipArchive.zip: LargeZipArchive.zip
+Last Name: Презиме
+Last Name is required: Изисква се фамилно име
+LastName: Фамилно име
+Laura Palmer: Лора Палмър
+Lavender: Лавандула
+LavenderBlush: ЛавандулаРуж
+LawnGreen: Тревна площ
+LayoutProperties: ОформлениеСвойства
+lb-LU: Люксембургски (Люксембург)
+Leave editor focus to update MudExStructuredDataEditor: Оставете фокуса на редактора, за да актуализирате MudExStructuredDataEditor
+LedBars: LedBars
+Left: Ляво
+Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): Лява част в MudExSplitPanel. (Забележете, че можете да използвате MudExSplitter директно)
+LegacyRender: LegacyRender
+Legend: Легенда
+LemonChiffon: Лимон Шифон
+LetterSpacing: Разстояние между буквите
+lg-UG: Ганда (Уганда)
+Library: Библиотека
+LightBlue: Светло синьо
+LightBulb: Електрическа крушка
+LightBulbSize: Размер на крушката
+LightBulbSizeUnit: LightBulbSizeUnit
+LightCoral: Лайткорал
+LightCyan: Светлоциан
+Lightfair: Светло панаир
+LightGoldenrodYellow: СветлаЗлатна пръчицаЖълта
+LightGray: Светлосиво
+LightGreen: Светлозелено
+LightOnly: Само светлина
+LightPink: Светлорозов
+LightSalmon: Лека сьомга
+LightSeaGreen: Светломорско зелено
+LightSkyBlue: Светло небесно синьо
+LightSlateGray: СветлоШистиСиво
+LightSpeed: Скорост на светлината
+LightSteelBlue: СветлостоманаСиньо
+LightYellow: Светложълт
+Lime: Вар
+LimeGreen: ЛаймГрийн
+Line: Линия
+Linear: Линеен
+LinearAmplitude: ЛинейнаАмплитуда
+LinearBoost: Линеарен усилване
+LineAreaGraph: LineAreaGraph
+LineColor: Цвят на линията
+LineHeight: ЛинияВисочина
+Lines: Линии
+LinesDefault: ЛинииПо подразбиране
+LinesInputs: ЛинииВходове
+LineWidth: Ширина на линията
+Lioshi: Лиоши
+List: Списък
+List appearance: Външен вид на списъка
+List behavior: Поведение на списъка
+List item for MudExList.: Елемент от списък за MudExList.
+lkt-US: Lakota (Съединени щати)
+ln-AO: Лингала (Ангола)
+ln-CD: Лингала (Конго [ДРК])
+ln-CF: Лингала (Централноафриканска република)
+ln-CG: Лингала (Конго)
+lo-LA: Лаос (Лаос)
+LoadFileDataBytesInBackground: LoadFileDataBytesInBackground
+Loading: Зареждане
+Loading...: Зареждане...
+Local: Местен
+LocalizerPattern: ЛокализаторМодел
+LockScroll: ЗаключванеПревъртане
+Log: Влезете
+Logged In.: Влязъл в системата.
+Logged Out.: Излезли.
+LogicalSurface: Логическа повърхност
+Login with Keycloak: Влезте с Keycloak
+LoginDescription: Влезте с вашите идентификационни данни.
+Logitech BRIO (046d:085e): Logitech BRIO (046d:085e)
+logLevel: logLevel
+logo.png: logo.png
+Logout: Изход
+Logout Confirmation: Наистина ли искате да излезете?
+Logout user: Потребител за излизане
+London: Лондон
+London - SW1A 1AA: Лондон - SW1A 1AA
+London - SW1A 1AAender: Лондон - SW1A 1AAender
+LondonTubeBase16: LondonTubeBase16
+LoRes: Господари
+Los Angeles: Лос Анджелис
+Los Angeles - 90001: Лос Анджелис - 90001
+Los Angeles - 90001ender: Лос Анджелис - 90001ender
+lrc-IQ: Северен Лури (Ирак)
+lrc-IR: Северен Лури (Иран)
+lt-LT: Литовски (Литва)
+lu-CD: Люба-Катанга (Конго [ДРК])
+Lucida Bright: Лусида Брайт
+Lucida Calligraphy: Калиграфия на Луцида
+Lucida Console: Конзола Lucida
+Lucida Fax: Факс Lucida
+Lucida Grande: Лусида Гранде
+Lucida Handwriting: Почерк на Lucida
+Lucida Sans: Луцида Санс
+Lucida Sans Typewriter: Пишеща машина Lucida Sans
+Lucida Sans Unicode: Lucida Sans Unicode
+LumiBars: LumiBars
+luo-KE: Луо (Кения)
+luy-KE: Luyia (Кения)
+lv-LV: Латвийски (Латвия)
+Lyon: Лион
+Lyon - 69001: Лион - 69001
+Lyon - 69001ender: Лион - 69001ender
+Lyrics: Текст
+MacintoshBase16: MacintoshBase16
+Magneto: Магнито
+Magula: Магула
+mai-IN: Майтхили (Индия)
+Mail: Поща
+Main User: Основен потребител
+MainAddress: ГлавенАдрес
+MainSample.WebAssembly.Pages.Page_ObjectEditList+Brand: MainSample.WebAssembly.Pages.Page_ObjectEditList+Марка
+MainSample.WebAssembly.Services.SampleFile: MainSample.WebAssembly.Services.SampleFile
+MainSample.WebAssembly.Services.SampleFileWithStream: MainSample.WebAssembly.Services.SampleFileWithStream
+MainUser: Основен потребител
+Male: Мъжки
+Manage {0} {1}'s Extended Attributes: Управление на разширените атрибути на {0} {1}
+Manage {0} {1}'s Permissions: Управление на разрешенията на {0} {1}
+Manage {0} {1}'s Roles: Управление на ролите на {0} {1}
+Manage {0} Extended Attributes: Управление {0} разширени атрибути
+Manage {0}'s Permissions: Управление на разрешенията на {0}
+Manage Brands.: Управление на марки.
+Manage Database Backups.: Управление или възстановяване на архивни копия на база данни.
+Manage Document Types.: Управление на типове документи.
+Manage Extended Attributes: Управление на разширени атрибути
+Manage Languages: Управление на езиците
+Manage Permission: Управление на разрешението
+Manage Products.: Управление на продуктите.
+Manage Roles: Управление на роли
+Manage Roles.: Управление на роли.
+Manage Translations: Управление на преводите
+Manage Users: Управление на потребителите
+Manage your account: Управление на профила ви
+Manchester: Манчестър
+Manchester - M1 1AE: Манчестър - M1 1AE
+Manchester - M1 1AEender: Манчестър - M1 1AEender
+Manual: Ръчен
+Mar: Мар
+Margin: Поле
+Mark all: Маркиране на всички
+Mark all as read: Маркирайте всички като прочетени
+Mark all as unread: Маркиране на всички като непрочетени
+Mark as read: Марк чете
+Mark as unread: Маркиране като непрочетено
+MarrakeshBase16: MarrakeshBase16
+Marseille: Марсилия
+Marseille - 13001: Марсилия - 13001
+Marseille - 13001ender: Марсилия - 13001ender
+mas-KE: Масаи (Кения)
+mas-TZ: Масаи (Танзания)
+Mask: Маска
+MateriaBase16: МатерияБаза16
+MaterialBase16: МатериалОснова16
+MaterialDarkerBase16: МатериалПо-тъмна основа16
+MaterialLighterBase16: МатериалПо-лекаОснова16
+MaterialPalenightBase16: МатериалPalenightBase16
+MaterialVividBase16: МатериалЖива база16
+Matura MT Script Capitals: Matura MT Script Capitals
+MaxCaptureTime: Максимално време за заснемане
+MaxChips: МаксЧипс
+MaxDecibels: Максимални децибели
+MaxFileSize: Максимален размер на файла
+MaxFPS: Макс FPS
+MaxFrequency: Максимална честота
+MaxHeight: Максимална височина
+MaximizeButton: Бутон за максимизиране
+MaxItems: МаксЕлементи
+MaxItemWidth: Максимална ширина на предмета
+MaxLength: Максимална дължина
+MaxLuminance: Максимална яркост
+MaxMultipleFiles: МаксМножество файлове
+MaxRecordingTime: MaxRecordingTime
+MaxWidth: Максимална ширина
+MaxZoomPixelRatio: MaxZoomPixelRatio
+May: Май
+Medium: Средно
+MediumSlateBlue: СреденШистиСиньо
+MediumSpringGreen: СреденПролетЗелено
+MediumTurquoise: СреденТюркоазено
+MediumVioletRed: СреденВиолетовЧервен
+Megabytes: Мегабайта
+Mel: Мел
+MellowPurpleBase16: МекаЛилаваОснова16
+MenuAnchorOrigin: МенюКотваПроизход
+MenuMaxHeight: МенюМаксимална височина
+MenuTransformOrigin: MenuTransformOrigin
+mer-KE: Меру (Кения)
+Message will be deleted in {0} seconds: Съобщението ще бъде изтрито след {0} секунди
+MessageClass: MessageClass
+MessageStyle: Стил на съобщение
+MetaCoverImage: MetaCoverImage
+Method 1: Метод 1
+Method 2: Метод 2
+MexicoLightBase16: МексикоLightBase16
+mfe-MU: Моризиен (Мавриций)
+mg-MG: Мадагаскар (Мадагаскар)
+mgh-MZ: Makhuwa-Meetto (Мозамбик)
+mgo-CM: Metaʼ (Камерун)
+mi-NZ: Маори (Нова Зеландия)
+Michael Scott: Майкъл Скот
+MicrophoneDeviceId: MicrophoneDeviceId
+MidnightBlue: СреднощСиньо
+Mikrofon (3- RODE NT-USB) (19f7:0003): Микрофон (3-RODE NT-USB) (19f7:0003)
+Mikrofon (DroidCam Virtual Audio): Микрофон (DroidCam Virtual Audio)
+Mikrofon (Logitech BRIO) (046d:085e): Микрофон (Logitech BRIO) (046d:085e)
+Mikrofon (ROG Headset) (0b05:1876): Микрофон (ROG слушалки) (0b05:1876)
+Mikrofon (USB Audio Device) (1b3f:2008): Mikrofon (USB аудио устройство) (1b3f:2008)
+Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Виртуално аудио устройство Voicemod (WDM))
+Millimeters: Милиметра
+MimeRestrictionType: MIMERestrictionType
+MimeTypes: Типове MIME
+MinDecibels: МинДецибели
+MinFrequency: Минимална честота
+MinHeight: МинВисочина
+Mini: Мини
+MinimizeButton: Бутон за минимизиране
+MinLuminance: МинЯркост
+MintCream: МентаКрем
+MinZoomLevel: MinZoomLevel
+Mirror: Огледало
+Misc: Разни
+Misc Options: Различни опции
+Mistral: Мистрал
+MistyRose: Мъглива роза
+mk-MK: Македонски (Северна Македония)
+ml-IN: Малаялам (Индия)
+mn-MN: Монголски (Монголия)
+mn-Mong-CN: Монголски (монголски, китайски)
+mn-Mong-MN: Монголски (монголски, монголски)
+mni-IN: Манипури (Индия)
+Moccasin: Мокасини
+MochaBase16: MochaBase16
+Modal: Столица
+Mode: Режим
+Model with File: Модел с файл
+Modern No. 20: Модерен No 20
+moh-CA: Мохок (Канада)
+Monaco: Монако
+Monitor: Монитор
+MonoBlue: Моносиньо
+Monokai: Монокай
+MonokaiBase16: МонокайБаза16
+MonokaiSublime: Монокай Възвишено
+Monotype Corsiva: Монотип Корсива
+Month: Месец
+Montreal: Монреал
+Montreal - H1A 0A1: Монреал - H1A 0A1
+Montreal - H1A 0A1ender: Монреал - H1A 0A1ender
+Montserrat: Монсерат
+Motion: Движение
+Mouse: Мишка
+MouseOverMessageClass: MouseOverMessageClass
+MouseOverMessageStyle: MouseOverMessageStyle
+MouseWheelDownAction: MouseWheelDownAction
+MouseWheelUpAction: MouseWheelUpAction
+MoveContent: ПреместванеСъдържание
+mr-IN: Маратхи (Индия)
+MS Outlook: MS Outlook
+MS Reference Sans Serif: MS Reference Sans Serif
+MS Reference Specialty: MS Референтна специалност
+MS Sans Serif: MS Sans Serif
+MS Serif: MS Serif
+ms-BN: Малайски (Бруней)
+ms-ID: Малайски (Индонезия)
+ms-MY: Малайски (Малайзия)
+ms-SG: Малайски (Сингапур)
+mt-MT: Малтийски (Малта)
+mua-CM: Мунданг (Камерун)
+mud-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788: кал-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788
+MudAlert: Кален сигнал
+MudAppBar: MudAppBar
+MudAvatar: Кален аватар
+MudAvatarGroup: Кална Аватар Група
+MudBadge: Кална значка
+MudBlazor Components: Компоненти на MudBlazor
+MudBlazor Popover: MudBlazor Popover
+MudBlazor.Extensions.Components.ThemePreset`1[MainSample.WebAssembly.ClientTheme]: MudBlazor.Extensions.Components.ThemePreset'1[MainSample.WebAssembly.ClientTheme]
+MudBreadcrumbs: Кални галета
+MudBreakpointProvider: MudBreakpointProvider
+MudButton: Кален бутон
+MudButtonGroup: MudButtonGroup
+MudCard: Кална карта
+MudCardActions: Действия на MudCard
+MudCardContent: Кална картаСъдържание
+MudCardHeader: Кална карта заглавка
+MudCardMedia: Кална картаМедия
+MudCarouselItem: Кална въртележкаАртикул
+MudChart: Кална диаграма
+MudChat: Кален чат
+MudChatBubble: Кален чатБалон
+MudChatFooter: Кален долен колонтитул
+MudChatHeader: Кален чатХедър
+MudCollapse: Кален колапс
+MudColorPicker: Кален избор на цвят
+MudColorStringFormat: MudColorStringFormat
+MudContainer: Кален контейнер
+MudContextualActionBar: MudContextualActionBar
+MudDatePicker: Кален избор на датаКал
+MudDateRangePicker: Кална датаRangePicker
+MudDialog: Кален диалог
+MudDialogContainer: Кален диалогКонтейнер
+MudDialogProvider: MudDialogProvider
+MudDivider: Кален разделител
+MudDrawer: Кално чекмедже
+MudDrawerContainer: Кален чекмеджеКонтейнер
+MudDrawerHeader: Header MudDrawerHeader
+MudDynamicTabs: MudDynamicTabs
+MudElement: Кален елемент
+MudEx Components: Компоненти на MudEx
+MudExAdditionalAdornment: КалЕксДопълнителноУкрашение
+MudExAppearance: MudExВъншен вид
+MudExAppLoader: MudExAppLoader
+MudExAudioPlayer: Кален аудио плейър
+MudExCaptureButton: Бутон MudExCaptureButton
+MudExCaptureOptionsEdit: MudExCaptureOptionsРедактиране
+MudExCardList: Кален списък с карти
+MudExCardList with ItemsSource: MudExCardList с елементиИзточник
+MudExCardList with ItemsSource and child content: MudExCardList с ItemsSource и дъщерно съдържание
+MudExCardList<TData>: Кален списък с карти<TData>
+MudExChipSelect: MudExChipSelect
+MudExChipSelect can used to select items from a collection as chips: MudExChipSelect може да се използва за избор на артикули от колекция като чипове
+MudExChipSelect<T>: MudExChipSelect<T>
+MudExCodeView: MudExCodeView
+MudExCollectionEditor<T>: Редактор на MudExCollectionEditor<T>
+MudExColor: Кален цвят
+MudExColorBubble: Кален цвятБалон
+MudExColorEdit: MudExColorРедактиране
+MudExColorEdit is in general a MudBlazor Picker component specially for the struct MudExColor. But because name MudExColorPicker is already used for an extended ColorPicker this Component is named MusExColorEdit: MudExColorEdit като цяло е компонент на MudBlazor Picker, специално за структурата MudExColor. Но тъй като името MudExColorPicker вече се използва за разширен ColorPicker, този компонент се нарича MusExColorEdit
+MudExColorPicker: MudExColorPicker
+MudExColorUtils: КалниЕксЦветни Утили
+MudExCss: Кал ЕксКс
+MudExCssBuilder: Кален ЕксСсСтроител
+MudExCultureSelect: MudExCultureSelect
+MudExDialog: MudExDialog
+MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog е компонентът, който трябва да използвате, когато искате да покажете диалогов прозорец, вграден във вашата страница с всички DialogExtensions.
+MudExDivider: Кален разделител
+MudExDropBoxFilePicker: MudExDropBoxFilePicker
+MudExEnumSelect: КалЕксИзбери
+MudExEnumSelect<TEnum>: КалЕксИзбери<TEnum>
+MudExFileDisplay: MudExFileDisplay
+MudExFileDisplayCode: MudExFileDisplayCode
+MudExFileDisplayDialog: MudExFileDisplayDialog
+MudExFileDisplayExcel: MudExFileDisplayExcel
+MudExFileDisplayFont: MudExFileDisplayFont
+MudExFileDisplayHtml: MudExFileDisplayHtml
+MudExFileDisplayOfficeLive: MudExFileDisplayOfficeLive
+MudExFileDisplayStructuredData: MudExFileDisplayStructuredData
+MudExFileDisplayZip: MudExFileDisplayZip
+MudExFontSelect: MudExFontSelect
+MudExFontSelect can used to select one ore more fonts: MudExFontSelect може да се използва за избор на един или повече шрифтове
+MudExGoogleFilePicker: MudExGoogleFilePicker
+MudExGradientText: Кален градиентТекст
+MudExGravatar: Кал ЕксГраватар
+MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar е MudAvatar, който автоматично използва изображението на профила от gravatar за имейл адрес
+MudExGrid: Кална мрежа
+MudExGrid Enhanced: MudExGrid подобрен
+MudExGridSection: MudExGridSection
+MudExGroupBox: Кална Ексгрупна кутия
+MudExHtmlEdit: Кален Изход HtmlРедактиране
+MudExIcon: MudExIcon
+MudExIcon is a simple MudIcon with extended possibilities to set all colors.: MudExIcon е обикновена MudIcon с разширени възможности за задаване на всички цветове.
+MudExIconButton: Бутон MudExIconButton
+MudExIconPicker: Кален избор на икони
+MudExIconPicker is in general a MudBlazor Picker component specially for selecting an icon.: MudExIconPicker като цяло е компонент на MudBlazor Picker, специално за избор на икона.
+MudExImageViewer: MudExImageViewer
+MudExList: Кален списък
+MudExList can used to select one ore more items from a bindeable collection.: MudExList може да се използва за избор на един или още елементи от колекция с подвързване.
+MudExList is a component that allows you to select an item from a list of items. It is a wrapper for MudList.: MudExList е компонент, който ви позволява да изберете елемент от списък с елементи. Това е обвивка за MudList.
+MudExList<T>: Кален <T>списък
+MudExListItem<T>: Кален списъкЕлемент<T>
+MudExListSubheader is a sub header for MudExList.: MudExListSubheader е подзаглавие за MudExList.
+MudExListSubheader<T>: Подзаглавие <T>MudExListSubheader
+MudExMessageDialog: MudExMessageDialog
+MudExObjectEdit: Кален обектРедактиране
+MudExObjectEdit and MudExCollectionEditor with a shared config: MudExObjectEdit и MudExCollectionEditor със споделена конфигурация
+MudExObjectEdit with virtual property rendering: MudExObjectEdit с визуализиране на виртуални свойства
+MudExObjectEdit<T>: Кален обектРедактиране<T>
+MudExObjectEditDialog<T>: MudExObjectEditDialog<T>
+MudExObjectEditForm<T>: MudExObjectEditForm<T>
+MudExObjectEditPicker<T>: MudExObjectEditPicker<T>
+MudExOneDriveFilePicker: MudExOneDriveFilePicker
+MudExpansionPanel: MudExpansionPanel
+MudExpansionPanels: КалниРазширенияПанели
+MudExPicker: Кален Пиккер
+MudExPickerBase<T>: Кална <T>база
+MudExPopover: Кал ЕксПоповер
+MudExPromptDialog: MudExPromptDialog
+MudExPromptDialog Component: Компонент MudExPromptDialog
+MudExPropertyEdit: MudExPropertyРедактиране
+MudExSelect: Кал Ексселект
+MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect може да се използва за избор на един или още елементи от колекция с подвързване. Също така този компонент поддържа всички анимации като диалогови прозорци или MudExPopover.
+MudExSelect<T>: Кал Ексселект<T>
+MudExSelectItem is a select item for MudExSelect.: MudExSelectItem е избран елемент за MudExSelect.
+MudExSelectItem<T>: MudExSelectItem<T>
+MudExSize is a readonly struct that provides a convenient and type-safe way to deal with size values in the context of MudBlazor components.: MudExSize е структура само за четене, която предоставя удобен и безопасен начин за работа със стойностите на размера в контекста на компонентите на MudBlazor.
+MudExSize<T>: Кален ЕксСайз<T>
+MudExSlideBar: MudExSlideBar
+MudExSpeechToTextButton: Бутон MudExSpeechToTextButton
+MudExSplitPanel: MudExSplitPanel
+MudExSplitPanelItem: MudExSplitPanelItem
+MudExSplitter: Кален сплитер
+MudExStructuredDataEditor: MudExStructuredDataEditor
+MudExStyleBuilder: MudExStyleBuilder
+MudExSvg: КалЕксСвг
+MudExTagField: MudExTagField
+MudExTagField creates chips when user press on of the specified delimiter or presses enter.: MudExTagField създава чипове, когато потребителят натисне на посочения разделител или натиснете enter.
+MudExTagField is a component that allows the user to enter a list of values as chips.: MudExTagField е компонент, който позволява на потребителя да въведе списък със стойности като чипове.
+MudExTagField<T>: MudExTagField<T>
+MudExTaskBar: MudExTaskBar
+MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide  somewhere in your Layout: MudExTaskBar наследява MudExSlideBar и предоставя лента с раздели за избор на немодални диалогови прозорци. Просто предоставете някъде във вашето оформление
+MudExTextField<T>: MudExTextField<T>
+MudExThemeEdit: Кална темаРедактиране
+MudExThemeEdit is a powerful component to edit one ore more themes: MudExThemeEdit е мощен компонент за редактиране на една или повече теми
+MudExThemeEdit<TTheme>: Кална темаРедактиране<TTheme>
+MudExThemeSelect: MudExThemeSelect
+MudExThemeSelect<TTheme>: MudExThemeSelect<TTheme>
+MudExToggleableSearch: MudExToggleableSearch
+MudExTreeView: КалЕксДървоИзглед
+MudExTreeView is useful to bind tree structured items. The control that should used can be set with the ViewMode property: MudExTreeView е полезен за свързване на дървовидни структурирани елементи. Контролата, която трябва да се използва, може да бъде зададена със свойството ViewMode
+MudExTreeView with template: MudExTreeView с шаблон
+MudExTreeView<T>: КалЕксДървоИзглед<T>
+MudExTreeViewBreadcrumb: КалExTreeViewГалета
+MudExTreeViewBreadcrumb<T>: КалExTreeViewГалета<T>
+MudExTreeViewCardGrid: MudExTreeViewCardGrid
+MudExTreeViewCardGrid<T>: MudExTreeViewCardGrid<T>
+MudExTreeViewDefault: MudExTreeView по подразбиране
+MudExTreeViewDefault<T>: MudExTreeView по подразбиране<T>
+MudExTreeViewFlatList: MudExTreeViewПлосък списък
+MudExTreeViewFlatList<T>: MudExTreeViewПлосък списък<T>
+MudExTreeViewHorizontal: КалЕксДървоИзгледХоризонтален
+MudExTreeViewHorizontal<T>: КалЕксДървоИзгледХоризонтален<T>
+MudExTreeViewList: MudExTreeViewList
+MudExTreeViewList<T>: MudExTreeViewList<T>
+MudExUploadEdit: КалЕксКачванеРедактиране
+MudExUploadEdit<T>: КалЕксКачванеРедактиране<T>
+MudExVirtualItem: MudExVirtualItem
+MudExVirtualize<TItem>: MudExVirtualize<TItem>
+MudFab: Кал Фабрика
+MudField: Кално поле
+MudFlexBreak: Кален ФлексБрейк
+MudFocusTrap: Кален фокусКапан
+MudForm: Кална форма
+MudGrid: Кална мрежа
+MudHeatMapCell: Кална топлинна картаКлетка
+MudHidden: Кал Скрит
+MudHighlighter: Кален хайлайтър
+MudIcon: Кална икона
+MudIconButton: Бутон MudIcon
+MudImage: Кално изображение
+MudInputAdornment: MudInputDecoration
+MudInputControl: MudInputControl
+MudInputLabel: MudInputLabel
+MudInputString: MudInputString
+MudItem: Кален елемент
+MudLayout: Кално оформление
+MudLink: Кална връзка
+MudListSubheader: Подзаглавие MudListSubheader
+MudMainContent: КалОсновноСъдържание
+MudMask: Кална маска
+MudMenu: Кално меню
+MudMenuItem: Кално менюЕлемент
+MudMessageBox: Кална кутия за съобщения
+MudNavGroup: MudNavGroup
+MudNavLink: Кална навигация
+MudNavMenu: Кално навигационно меню
+MudOverlay: MudOverlay
+MudPageContentNavigation: Кална страницаСъдържаниеНавигация
+MudPagination: Кално пагиниране
+MudPaper: Кална хартия
+MudPickerContent: Съдържание на MudPicker
+MudPickerToolbar: Лента с инструменти на MudPicker
+MudPopover: Кален попоувър
+MudPopoverProvider: MudPopoverДоставчик
+MudProgressCircular: Кален прогресЦиркуляр
+MudProgressLinear: Кален прогресЛинеен
+MudRating: Кал Рейтинг
+MudRatingItem: КалРейтингЕлемент
+MudRender: Кален рендер
+MudRTLProvider: Кален RTLПровидер
+MudScrollToTop: Кално превъртанеНагоре
+MudSimpleTable: Кална простаТаблица
+MudSkeleton: Кален скелет
+MudSnackbarElement: Кален снекбарЕлемент
+MudSnackbarProvider: Доставчик на кален снекбар
+MudSpacer: Кален спейсър
+MudStack: Кален стек
+MudStep: Кална стъпка
+MudStepper: Кален степер
+MudSwipeArea: MudSwipeArea
+MudTablePager: Кална таблица пейджър
+MudTabPanel: Кален панел
+MudTabs: Кални раздели
+MudTd: Кал
+MudText: Кален текст
+MudTextField with additional features: MudTextField с допълнителни функции
+MudTFootRow: Кал
+MudTh: Кал
+MudTHeadRow: Кал
+MudThemeProvider: Доставчик на кална тема
+MudTimeline: Кална хронология
+MudTimelineItem: Кална таймлинияЕлемент
+MudTimePicker: Кален избор на време
+MudTimeSeriesChart: Диаграма MudTimeSeriesChart
+MudToggleIconButton: MudToggleIconButton
+MudToolBar: Кална лента с инструменти
+MudTooltip: Кален съвет
+MudTr: Кал
+MudTreeViewItemToggleButton: MudTreeViewItemToggleButton
+MultiSelect: Мултиселект
+MultiSelection: Мултиселекция
+MultiSelectionAlign: МултиселекцияПодравняване
+MultiSelectionComponent: MultiSelectionComponent
+MultiSelectWithCtrlKey: MultiSelectWithCtrlKey
+My Custom action: Моето персонализирано действие
+my-MM: Бирмански (Мианмар)
+mzn-IR: Мазандерани (Иран)
+name: Име
+Name: Име
+Name is required: Името е задължително
+Name is required!: Името е задължително!
+NameContainerStyle: ИмеКонтейнерСтил
+Names: Имена
+naq-NA: Име (Намибия)
+Natalie Portman: Натали Портман
+NavajoWhite: Навахобял
+NavigationExpandMode: NavigationExpandMode
+NavigationLinkBarClass: НавигацияLinkBarКлас
+NavigationLinkBarStyle: НавигацияLinkBarStyle
+NavigationViewMode: НавигацияИзгледРежим
+NavigatorClass: НавигаторКлас
+NavigatorPosition: НавигаторПозиция
+NavigatorRectangleColor: НавигаторПравоъгълникЦвят
+NavigatorSizeRatio: НавигаторРазмерСъотношение
+Navy: Флот
+nb-NO: Норвежки букмол (Норвегия)
+nb-SJ: Норвежки букмол (Свалбард и Ян Майен)
+nd-ZW: Северен Ндебеле (Зимбабве)
+nds-DE: Долнонемски (Германия)
+nds-NL: Долнонемски (Холандия)
+ne-IN: Непалски (Индия)
+ne-NP: Непалски (Непал)
+NebulaBase16: МъглявинаБаза16
+Never: Никога
+New: Нов
+NEW Dialog Drag Drop Mode: НОВ диалогов прозорец Режим на плъзгане
+New dialog Feature - SnapDrag: Функция за нов диалогов прозорец - SnapDrag
+New Message From {0}: Ново съобщение от {0}
+New MudExStructureDataEditor can used to edit json, xml or yaml string in a MudExObjectEdit: Новият MudExStructureDataEditor може да се използва за редактиране на json, xml или yaml низ в MudExObjectEdit
+New Password: Нова парола
+New User 100: Нов потребител 100
+New User 101: Нов потребител 101
+New User 102: Нов потребител 102
+New User 103: Нов потребител 103
+New User 104: Нов потребител 104
+New User 105: Нов потребител 105
+New User 106: Нов потребител 106
+New User 107: Нов потребител 107
+New User 108: Нов потребител 108
+New User 109: Нов потребител 109
+New User 110: Нов потребител 110
+New User 111: Нов потребител 111
+New User 112: Нов потребител 112
+New User 113: Нов потребител 113
+New User 114: Нов потребител 114
+New User 115: Нов потребител 115
+New User 116: Нов потребител 116
+New User 117: Нов потребител 117
+New User 118: Нов потребител 118
+New User 119: Нов потребител 119
+New User 120: Нов потребител 120
+New User 121: Нов потребител 121
+New User 122: Нов потребител 122
+New User 123: Нов потребител 123
+New User 124: Нов потребител 124
+New User 125: Нов потребител 125
+New User 126: Нов потребител 126
+New User 127: Нов потребител 127
+New User 128: Нов потребител 128
+New User 129: Нов потребител 129
+New User 130: Нов потребител 130
+New User 131: Нов потребител 131
+New User 132: Нов потребител 132
+New User 133: Нов потребител 133
+New User 134: Нов потребител 134
+New User 135: Нов потребител 135
+New User 136: Нов потребител 136
+New User 137: Нов потребител 137
+New User 138: Нов потребител 138
+New User 139: Нов потребител 139
+New User 140: Нов потребител 140
+New User 141: Нов потребител 141
+New User 142: Нов потребител 142
+New User 143: Нов потребител 143
+New User 144: Нов потребител 144
+New User 145: Нов потребител 145
+New User 146: Нов потребител 146
+New User 147: Нов потребител 147
+New User 148: Нов потребител 148
+New User 149: Нов потребител 149
+New User 150: Нов потребител 150
+New User 151: Нов потребител 151
+New User 152: Нов потребител 152
+New User 153: Нов потребител 153
+New User 154: Нов потребител 154
+New User 155: Нов потребител 155
+New User 156: Нов потребител 156
+New User 157: Нов потребител 157
+New User 158: Нов потребител 158
+New User 159: Нов потребител 159
+New User 160: Нов потребител 160
+New User 161: Нов потребител 161
+New User 162: Нов потребител 162
+New User 163: Нов потребител 163
+New User 164: Нов потребител 164
+New User 165: Нов потребител 165
+New User 166: Нов потребител 166
+New User 167: Нов потребител 167
+New User 168: Нов потребител 168
+New User 169: Нов потребител 169
+New User 170: Нов потребител 170
+New User 171: Нов потребител 171
+New User 172: Нов потребител 172
+New User 173: Нов потребител 173
+New User 174: Нов потребител 174
+New User 175: Нов потребител 175
+New User 176: Нов потребител 176
+New User 177: Нов потребител 177
+New User 178: Нов потребител 178
+New User 179: Нов потребител 179
+New User 180: Нов потребител 180
+New User 181: Нов потребител 181
+New User 182: Нов потребител 182
+New User 183: Нов потребител 183
+New User 184: Нов потребител 184
+New User 185: Нов потребител 185
+New User 186: Нов потребител 186
+New User 187: Нов потребител 187
+New User 188: Нов потребител 188
+New User 189: Нов потребител 189
+New User 190: Нов потребител 190
+New User 191: Нов потребител 191
+New User 192: Нов потребител 192
+New User 193: Нов потребител 193
+New User 194: Нов потребител 194
+New User 195: Нов потребител 195
+New User 196: Нов потребител 196
+New User 197: Нов потребител 197
+New User 198: Нов потребител 198
+New User 199: Нов потребител 199
+New User 200: Нов потребител 200
+New User 201: Нов потребител 201
+New User 202: Нов потребител 202
+New User 203: Нов потребител 203
+New User 204: Нов потребител 204
+New User 205: Нов потребител 205
+New User 206: Нов потребител 206
+New User 207: Нов потребител 207
+New User 208: Нов потребител 208
+New User 209: Нов потребител 209
+New User 21: Нов потребител 21
+New User 210: Нов потребител 210
+New User 211: Нов потребител 211
+New User 212: Нов потребител 212
+New User 213: Нов потребител 213
+New User 214: Нов потребител 214
+New User 215: Нов потребител 215
+New User 216: Нов потребител 216
+New User 217: Нов потребител 217
+New User 218: Нов потребител 218
+New User 219: Нов потребител 219
+New User 22: Нов потребител 22
+New User 220: Нов потребител 220
+New User 221: Нов потребител 221
+New User 222: Нов потребител 222
+New User 223: Нов потребител 223
+New User 224: Нов потребител 224
+New User 225: Нов потребител 225
+New User 226: Нов потребител 226
+New User 227: Нов потребител 227
+New User 228: Нов потребител 228
+New User 229: Нов потребител 229
+New User 23: Нов потребител 23
+New User 230: Нов потребител 230
+New User 231: Нов потребител 231
+New User 232: Нов потребител 232
+New User 233: Нов потребител 233
+New User 234: Нов потребител 234
+New User 235: Нов потребител 235
+New User 236: Нов потребител 236
+New User 237: Нов потребител 237
+New User 238: Нов потребител 238
+New User 239: Нов потребител 239
+New User 24: Нов потребител 24
+New User 240: Нов потребител 240
+New User 241: Нов потребител 241
+New User 242: Нов потребител 242
+New User 243: Нов потребител 243
+New User 244: Нов потребител 244
+New User 245: Нов потребител 245
+New User 246: Нов потребител 246
+New User 247: Нов потребител 247
+New User 248: Нов потребител 248
+New User 249: Нов потребител 249
+New User 25: Нов потребител 25
+New User 250: Нов потребител 250
+New User 251: Нов потребител 251
+New User 252: Нов потребител 252
+New User 253: Нов потребител 253
+New User 254: Нов потребител 254
+New User 255: Нов потребител 255
+New User 256: Нов потребител 256
+New User 257: Нов потребител 257
+New User 258: Нов потребител 258
+New User 259: Нов потребител 259
+New User 26: Нов потребител 26
+New User 260: Нов потребител 260
+New User 261: Нов потребител 261
+New User 262: Нов потребител 262
+New User 263: Нов потребител 263
+New User 264: Нов потребител 264
+New User 265: Нов потребител 265
+New User 266: Нов потребител 266
+New User 267: Нов потребител 267
+New User 268: Нов потребител 268
+New User 269: Нов потребител 269
+New User 27: Нов потребител 27
+New User 270: Нов потребител 270
+New User 271: Нов потребител 271
+New User 272: Нов потребител 272
+New User 273: Нов потребител 273
+New User 274: Нов потребител 274
+New User 275: Нов потребител 275
+New User 276: Нов потребител 276
+New User 277: Нов потребител 277
+New User 278: Нов потребител 278
+New User 279: Нов потребител 279
+New User 28: Нов потребител 28
+New User 280: Нов потребител 280
+New User 281: Нов потребител 281
+New User 282: Нов потребител 282
+New User 283: Нов потребител 283
+New User 284: Нов потребител 284
+New User 285: Нов потребител 285
+New User 286: Нов потребител 286
+New User 287: Нов потребител 287
+New User 288: Нов потребител 288
+New User 289: Нов потребител 289
+New User 29: Нов потребител 29
+New User 290: Нов потребител 290
+New User 291: Нов потребител 291
+New User 292: Нов потребител 292
+New User 293: Нов потребител 293
+New User 294: Нов потребител 294
+New User 295: Нов потребител 295
+New User 296: Нов потребител 296
+New User 297: Нов потребител 297
+New User 298: Нов потребител 298
+New User 299: Нов потребител 299
+New User 30: Нов потребител 30
+New User 300: Нов потребител 300
+New User 301: Нов потребител 301
+New User 302: Нов потребител 302
+New User 303: Нов потребител 303
+New User 304: Нов потребител 304
+New User 305: Нов потребител 305
+New User 306: Нов потребител 306
+New User 307: Нов потребител 307
+New User 308: Нов потребител 308
+New User 309: Нов потребител 309
+New User 31: Нов потребител 31
+New User 310: Нов потребител 310
+New User 311: Нов потребител 311
+New User 312: Нов потребител 312
+New User 313: Нов потребител 313
+New User 314: Нов потребител 314
+New User 315: Нов потребител 315
+New User 316: Нов потребител 316
+New User 317: Нов потребител 317
+New User 318: Нов потребител 318
+New User 319: Нов потребител 319
+New User 32: Нов потребител 32
+New User 320: Нов потребител 320
+New User 321: Нов потребител 321
+New User 322: Нов потребител 322
+New User 323: Нов потребител 323
+New User 324: Нов потребител 324
+New User 325: Нов потребител 325
+New User 326: Нов потребител 326
+New User 327: Нов потребител 327
+New User 328: Нов потребител 328
+New User 329: Нов потребител 329
+New User 33: Нов потребител 33
+New User 330: Нов потребител 330
+New User 331: Нов потребител 331
+New User 332: Нов потребител 332
+New User 333: Нов потребител 333
+New User 334: Нов потребител 334
+New User 335: Нов потребител 335
+New User 336: Нов потребител 336
+New User 337: Нов потребител 337
+New User 338: Нов потребител 338
+New User 339: Нов потребител 339
+New User 34: Нов потребител 34
+New User 340: Нов потребител 340
+New User 341: Нов потребител 341
+New User 342: Нов потребител 342
+New User 343: Нов потребител 343
+New User 344: Нов потребител 344
+New User 345: Нов потребител 345
+New User 346: Нов потребител 346
+New User 347: Нов потребител 347
+New User 348: Нов потребител 348
+New User 349: Нов потребител 349
+New User 35: Нов потребител 35
+New User 350: Нов потребител 350
+New User 351: Нов потребител 351
+New User 352: Нов потребител 352
+New User 353: Нов потребител 353
+New User 354: Нов потребител 354
+New User 355: Нов потребител 355
+New User 356: Нов потребител 356
+New User 357: Нов потребител 357
+New User 358: Нов потребител 358
+New User 359: Нов потребител 359
+New User 36: Нов потребител 36
+New User 360: Нов потребител 360
+New User 361: Нов потребител 361
+New User 362: Нов потребител 362
+New User 363: Нов потребител 363
+New User 364: Нов потребител 364
+New User 365: Нов потребител 365
+New User 366: Нов потребител 366
+New User 367: Нов потребител 367
+New User 368: Нов потребител 368
+New User 369: Нов потребител 369
+New User 37: Нов потребител 37
+New User 370: Нов потребител 370
+New User 371: Нов потребител 371
+New User 372: Нов потребител 372
+New User 373: Нов потребител 373
+New User 374: Нов потребител 374
+New User 375: Нов потребител 375
+New User 376: Нов потребител 376
+New User 377: Нов потребител 377
+New User 378: Нов потребител 378
+New User 379: Нов потребител 379
+New User 38: Нов потребител 38
+New User 380: Нов потребител 380
+New User 381: Нов потребител 381
+New User 382: Нов потребител 382
+New User 383: Нов потребител 383
+New User 384: Нов потребител 384
+New User 385: Нов потребител 385
+New User 386: Нов потребител 386
+New User 387: Нов потребител 387
+New User 388: Нов потребител 388
+New User 389: Нов потребител 389
+New User 39: Нов потребител 39
+New User 390: Нов потребител 390
+New User 391: Нов потребител 391
+New User 392: Нов потребител 392
+New User 393: Нов потребител 393
+New User 394: Нов потребител 394
+New User 395: Нов потребител 395
+New User 396: Нов потребител 396
+New User 397: Нов потребител 397
+New User 398: Нов потребител 398
+New User 399: Нов потребител 399
+New User 40: Нов потребител 40
+New User 400: Нов потребител 400
+New User 401: Нов потребител 401
+New User 402: Нов потребител 402
+New User 403: Нов потребител 403
+New User 404: Нов потребител 404
+New User 405: Нов потребител 405
+New User 406: Нов потребител 406
+New User 407: Нов потребител 407
+New User 408: Нов потребител 408
+New User 409: Нов потребител 409
+New User 41: Нов потребител 41
+New User 410: Нов потребител 410
+New User 411: Нов потребител 411
+New User 412: Нов потребител 412
+New User 413: Нов потребител 413
+New User 414: Нов потребител 414
+New User 415: Нов потребител 415
+New User 416: Нов потребител 416
+New User 417: Нов потребител 417
+New User 418: Нов потребител 418
+New User 419: Нов потребител 419
+New User 42: Нов потребител 42
+New User 420: Нов потребител 420
+New User 421: Нов потребител 421
+New User 422: Нов потребител 422
+New User 423: Нов потребител 423
+New User 424: Нов потребител 424
+New User 425: Нов потребител 425
+New User 426: Нов потребител 426
+New User 427: Нов потребител 427
+New User 428: Нов потребител 428
+New User 429: Нов потребител 429
+New User 43: Нов потребител 43
+New User 430: Нов потребител 430
+New User 431: Нов потребител 431
+New User 432: Нов потребител 432
+New User 433: Нов потребител 433
+New User 434: Нов потребител 434
+New User 435: Нов потребител 435
+New User 436: Нов потребител 436
+New User 437: Нов потребител 437
+New User 438: Нов потребител 438
+New User 439: Нов потребител 439
+New User 44: Нов потребител 44
+New User 440: Нов потребител 440
+New User 441: Нов потребител 441
+New User 442: Нов потребител 442
+New User 443: Нов потребител 443
+New User 444: Нов потребител 444
+New User 445: Нов потребител 445
+New User 446: Нов потребител 446
+New User 447: Нов потребител 447
+New User 448: Нов потребител 448
+New User 449: Нов потребител 449
+New User 45: Нов потребител 45
+New User 450: Нов потребител 450
+New User 451: Нов потребител 451
+New User 452: Нов потребител 452
+New User 453: Нов потребител 453
+New User 454: Нов потребител 454
+New User 455: Нов потребител 455
+New User 456: Нов потребител 456
+New User 457: Нов потребител 457
+New User 458: Нов потребител 458
+New User 459: Нов потребител 459
+New User 46: Нов потребител 46
+New User 460: Нов потребител 460
+New User 461: Нов потребител 461
+New User 462: Нов потребител 462
+New User 463: Нов потребител 463
+New User 464: Нов потребител 464
+New User 465: Нов потребител 465
+New User 466: Нов потребител 466
+New User 467: Нов потребител 467
+New User 468: Нов потребител 468
+New User 469: Нов потребител 469
+New User 47: Нов потребител 47
+New User 470: Нов потребител 470
+New User 471: Нов потребител 471
+New User 472: Нов потребител 472
+New User 473: Нов потребител 473
+New User 474: Нов потребител 474
+New User 475: Нов потребител 475
+New User 476: Нов потребител 476
+New User 477: Нов потребител 477
+New User 478: Нов потребител 478
+New User 479: Нов потребител 479
+New User 48: Нов потребител 48
+New User 480: Нов потребител 480
+New User 481: Нов потребител 481
+New User 482: Нов потребител 482
+New User 483: Нов потребител 483
+New User 484: Нов потребител 484
+New User 485: Нов потребител 485
+New User 486: Нов потребител 486
+New User 487: Нов потребител 487
+New User 488: Нов потребител 488
+New User 489: Нов потребител 489
+New User 49: Нов потребител 49
+New User 490: Нов потребител 490
+New User 491: Нов потребител 491
+New User 492: Нов потребител 492
+New User 493: Нов потребител 493
+New User 494: Нов потребител 494
+New User 495: Нов потребител 495
+New User 496: Нов потребител 496
+New User 497: Нов потребител 497
+New User 498: Нов потребител 498
+New User 499: Нов потребител 499
+New User 50: Нов потребител 50
+New User 500: Нов потребител 500
+New User 501: Нов потребител 501
+New User 502: Нов потребител 502
+New User 503: Нов потребител 503
+New User 504: Нов потребител 504
+New User 505: Нов потребител 505
+New User 506: Нов потребител 506
+New User 507: Нов потребител 507
+New User 508: Нов потребител 508
+New User 509: Нов потребител 509
+New User 51: Нов потребител 51
+New User 510: Нов потребител 510
+New User 511: Нов потребител 511
+New User 512: Нов потребител 512
+New User 513: Нов потребител 513
+New User 514: Нов потребител 514
+New User 515: Нов потребител 515
+New User 516: Нов потребител 516
+New User 517: Нов потребител 517
+New User 518: Нов потребител 518
+New User 519: Нов потребител 519
+New User 52: Нов потребител 52
+New User 520: Нов потребител 520
+New User 53: Нов потребител 53
+New User 54: Нов потребител 54
+New User 55: Нов потребител 55
+New User 56: Нов потребител 56
+New User 57: Нов потребител 57
+New User 58: Нов потребител 58
+New User 59: Нов потребител 59
+New User 60: Нов потребител 60
+New User 61: Нов потребител 61
+New User 62: Нов потребител 62
+New User 63: Нов потребител 63
+New User 64: Нов потребител 64
+New User 65: Нов потребител 65
+New User 66: Нов потребител 66
+New User 67: Нов потребител 67
+New User 68: Нов потребител 68
+New User 69: Нов потребител 69
+New User 70: Нов потребител 70
+New User 71: Нов потребител 71
+New User 72: Нов потребител 72
+New User 73: Нов потребител 73
+New User 74: Нов потребител 74
+New User 75: Нов потребител 75
+New User 76: Нов потребител 76
+New User 77: Нов потребител 77
+New User 78: Нов потребител 78
+New User 79: Нов потребител 79
+New User 80: Нов потребител 80
+New User 81: Нов потребител 81
+New User 82: Нов потребител 82
+New User 83: Нов потребител 83
+New User 84: Нов потребител 84
+New User 85: Нов потребител 85
+New User 86: Нов потребител 86
+New User 87: Нов потребител 87
+New User 88: Нов потребител 88
+New User 89: Нов потребител 89
+New User 90: Нов потребител 90
+New User 91: Нов потребител 91
+New User 92: Нов потребител 92
+New User 93: Нов потребител 93
+New User 94: Нов потребител 94
+New User 95: Нов потребител 95
+New User 96: Нов потребител 96
+New User 97: Нов потребител 97
+New User 98: Нов потребител 98
+New User 99: Нов потребител 99
+New Values: Нови ценности
+New York: Ню Йорк
+New York - 10001: Ню Йорк - 10001
+New York - 10001ender: Ню Йорк - 10001ender
+New Yorkender: Ню Йоркенд
+NextPreset: НапредПредварителна настройка
+NextToSearchBox: СледващоКъмполе за търсене
+NextTrack: НапредСледващ
+Niagara Engraved: Гравирана Ниагара
+Niagara Solid: Ниагара Солид
+NightOwl: Нощна сова
+nl-AW: Холандски (Аруба)
+nl-BE: Холандски (Белгия)
+nl-BQ: Холандски (Бонайре, Свети Евстаций и Саба)
+nl-CW: Холандски (Кюрасао)
+nl-NL: Холандски (Холандия)
+nl-SR: Холандски (Суринам)
+nl-SX: Холандски (Синт Мартен)
+nmg-CM: Квасио (Камерун)
+nn-NO: Норвежки Нюнорск (Норвегия)
+NnfxDark: NnfxDark
+NnfxLight: НфхЛайк
+nnh-CM: Нгиембун (Камерун)
+No: Не
+No address: Няма адрес
+No Allowed Actions: Неразрешени действия
+No longer update automatically: Вече не се актуализира автоматично
+No notifications: Няма известия
+No space available: Няма свободно място
+NoChips: Без чипове
+NodeBorderRadius: NodeBorderRadius
+NodePadding: NodePadding
+NoHeader: NoHeader
+NoIcon: NoIcon
+NoModalDialogs: NoModalDialogs
+none: Никой
+None: Никой
+Nord: Север
+NordBase16: NordBase16
+Normal: Нормален
+Not Allowed to add or delete Administrator Role if you have not this role.: Не е позволено да добавяте или изтривате администраторска роля, ако нямате тази роля.
+Not allowed to Delete this user: Не е позволено да изтриете този потребител
+Not Allowed.: Не се допуска.
+Not connected: Не е свързан
+Not Modal Dialogs: Немодални диалогови прозорци
+Note - Media options can't changed after a screen is selected: Забележка - Опциите за мултимедия не могат да се променят, след като е избран екран
+NoteLabels: ЗабележкаЕтикети
+NotFoundMessage: Страницата, която търсите, не съществува.
+Notice: Забелязвам
+Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Забележете, че ако използвате този метод, можете да зададете препратка към обратно извикване, където се намира методът, ако не направите това, препратката е самият диалогов прозорец и в този случай трябва да имате метода във вашия DialogClass
+Notifications: Уведомления
+Nov: Ноември
+NovaBase16: NovaBase16
+NoWrap: NoWrap
+npm-example-0.0.20.tgz: npm-example-0.0.20.tgz
+nqo-GN: N'Ko (Гвинея)
+nr-ZA: Южна Ндебеле (Южна Африка)
+nso-ZA: Sesotho sa Leboa (Южна Африка)
+Nuget Package source: Nuget Източник на пакета
+Nullable enum: Нулеви числа
+Nullable Flags Enum: Нулеви флагове Enum
+Number: Номер
+numeric: Цифров
+nus-SS: Нуер (Южен Судан)
+nyn-UG: Нянколе (Уганда)
+Object Edit in Dialog: Редактиране на обект в диалогов прозорец
+ObjectEdit: ОбектРедактиране
+ObjectEditCG: ОбектEditCG
+ObjectEditCondition: Състояние за редактиране на обект
+ObjectEditConfigured: ObjectEditConfiguration
+ObjectEditFile: ОбектРедактиранеФайл
+ObjectEditInDialog: ObjectEditInDialog
+ObjectEditList: Списък на обекти
+ObjectEditPicker: ObjectEditPicker
+ObjectEditTabs: ОбектРедактиранеРаздели
+ObjectEditVirtualized: ОбектРедактиранеВиртуализирано
+OBS Virtual Camera: Виртуална камера OBS
+Obsidian: Обсидиан
+oc-FR: Окситански (Франция)
+OceanBase16: OceanBase16
+OceanicnextBase16: OceanicnextBase16
+OCR A Extended: OCR A разширен
+Oct: Ост
+Official MudBlazor website: Официален уебсайт на MudBlazor
+Offline: Офлайн
+OffsetX: ОфсетХ
+OffsetY: Компенсации
+Ok: Добре
+Old English Text MT: Староанглийски текст MT
+Old Paint: Стара боя
+Old paint found on a stone house door.: Стара боя, намерена на каменна врата на къща.
+Old Values: Стари ценности
+OldLace: Стара дантела
+Olive: Маслина
+OliveDrab: Маслинен драб
+om-ET: Оромо (Етиопия)
+om-KE: Оромо (Кения)
+OnClickStopPropagation: OnClickStopPropagation
+OnContextMenuPreventDefault: OnContextMenuPreventDefault
+OnContextMenuStopPropagation: OnContextMenuStopPropagation
+OnCustomSelect: OnCustomSelect
+OnDefinedSelect: OnDefinedSelect
+One Drive: Едно задвижване
+OnedarkBase16: OnedarkBase16
+OneDrive file picker component: Компонент за избор на файлове в OneDrive
+OneDriveClientId: OneDriveClientId
+OneEighthOctaveBands: ЕдноОсма октаваЛенти
+OneFourthOctaveBands: ЕднаЧетвърта октаваЛенти
+OneLightBase16: OneLightBase16
+OneSixthOctaveBands: ЕдноШеста октаваЛенти
+OneThirdOctaveBands: ЕдноТрета октаваЛенти
+OneTwelfthOctaveBands: ЕднаДванадесета октаваЛенти
+OneTwentyFourthOctaveBands: ЕднаДвадесет Четвърта октаваЛенти
+Online: Онлайн
+Only Selected Group (Export): Само избрана група (експортиране)
+OnlyValidateIfDirty: OnlyValidateIfDirty
+OnPlay: OnPlay
+Onyx: Оникс
+Opacity: Непрозрачност
+OpacityNotFocused: НепрозрачностНефокусиран
+Open: Отворя
+Open in new browser tab: Отваряне в нов раздел на браузъра
+Open now: Отворя
+Open Url {0}: Отворете URL {0}
+Open Url {0} in a new browser tab: Отворете URL {0} в нов раздел на браузъра
+OpenIcon: Отворена икона
+Optima: Оптима
+Options: Опции
+or-IN: Одия (Индия)
+Orange: Портокал
+OrangeRed: Оранжевочервен
+Orchid: Орхидея
+Orientation: Ориентация
+Original Code Gator DynamicForm: Оригинален код Gator DynamicForm
+os-GE: Осетик (Грузия)
+os-RU: Осетик (Русия)
+Osaka: Осака
+Osaka - 530-0001: Осака - 530-0001
+Osaka - 530-0001ender: Осака - 530-0001ender
+Oscar Wilde: Оскар Уайлд
+Other: Друг
+Other Components: Други компоненти
+OtherAddresses: ДругиАдреси
+Otherwise the full image will be downloaded: В противен случай пълното изображение ще бъде изтеглено
+Ottawa: Отава
+Ottawa - K1A 0A1: Отава - K1A 0A1
+Ottawa - K1A 0A1ender: Отава - K1A 0A1ender
+Out: Навън
+OuterClass: ВъншенКлас
+OutlineBars: КонтуриЛенти
+Outlined: Очертани
+OutrunDarkBase16: ИзпреварванеТъмна база16
+Outset: Самото начало
+OverflowBehavior: ПреливанеПоведение
+Overlay: Наслагване
+OverlayChildContent: НаслагванеChildContent
+OverlayDark: НаслагванеТъмно
+OverlayLight: НаслагванеСветлина
+overline: Овърлайн
+Overline: Овърлайн
+OverscanCount: Преброяване на сканиране
+Overview: Преглед
+Owner: Собственик
+pa-Arab-PK: Пенджаби (арабски, Пакистан)
+pa-IN: Пенджаби (Индия)
+Palatino: Палатин
+Palatino Linotype: Линотип Палатино
+PaleGreen: Бледозелено
+Palette: Палитра
+PaletteDark: ПалитраТъмна
+PaletteIcon: Икона на палитра
+PaletteLight: ПалитраСветлина
+PaleTurquoise: Бледо тюркоазено
+PaleVioletRed: Бледо виолетовочервен
+Pan: Джентълмен
+pap-029: Papiamento (Карибите)
+PapayaWhip: ПапаяКамшик
+Paper: Хартия
+PapercolorDarkBase16: Цвят на хартияТъмна основа16
+PapercolorLightBase16: Цвят на хартияLightBase16
+Papyrus: Папирус
+ParaisoBase16: ПараисоБаза16
+ParaisoDark: ПараисоТъмно
+ParaisoLight: ПараисоЛайт
+ParametersForSubControls: ПараметриЗаПодконтроли
+Parchment: Пергамент
+Paris: Париж
+Paris - 75001: Париж - 75001
+Paris - 75001ender: Париж - 75001ender
+PasqueBase16: PasqueBase16
+Password: Парола
+Password Changed!: Паролата е променена!
+Password Confirmation: Потвърждение на паролата
+Password Confirmation is required!: Изисква се потвърждение на паролата!
+Password is required!: Изисква се парола!
+Password must be at least of length 8: Паролата трябва да е най-малко с дължина 8
+Password must contain at least one capital letter: Паролата трябва да съдържа поне една главна буква
+Password must contain at least one digit: Паролата трябва да съдържа поне една цифра
+Password must contain at least one lowercase letter: Паролата трябва да съдържа поне една малка буква
+Password Reset Mail has been sent to your authorized Email.: Имейлът за нулиране на парола е изпратен на вашия оторизиран имейл.
+Password Reset Successful!: Нулирането на паролата е успешно!
+Passwords don't match: Паролите не съвпадат
+PathSeparator: Разделител на пътя
+Pattern: Шарка
+pcm-Latn-NG: Нигерийски пиджин (латински, Нигерия)
+PeachPuff: ПрасковаБуф
+PeakLine: PeakLine
+Penelope Cruz: Пенелопе Крус
+Percentage: Процент
+Permission Name: Име на разрешение
+Perpetua: Вечен
+Persistent: Постоянен
+Personal: Личен
+Perspective3d: Перспектива3d
+Peru: Перу
+Peter Griffin: Питър Грифин
+PhdBase16: Докторска база16
+Philadelphia: Филаделфия
+Philadelphia - 19019: Филаделфия - 19019 г.
+Philadelphia - 19019ender: Филаделфия - 19019 г.
+Philadelphiaender: Филаделфийдър
+Phoenix: Феникс
+Phoenix - 85001: Финикс - 85001
+Phoenix - 85001ender: Финикс - 85001ender
+Phone Number: Телефонен номер
+Phone number {0} is already registered.: Телефонен номер {0} вече е регистриран.
+PhoneNumber: Телефонен номер
+Picas: Пика
+Pick Item: Изберете артикул
+Pick Items: Изберете артикули
+Pick one user: Изберете един потребител
+Pick some users: Изберете някои потребители
+Picker: Избор
+Picker appearance: Външен вид на берача
+PickerHeight: PickerHeight
+PickerStyle: PickerStyle
+PickerVariant: PickerVariant
+PickerWidth: PickerWidth
+PickFromDropBox: PickFromDropBox
+PickFromGoogleDrive: Избиране отGoogleDrive
+PickFromOneDrive: Избор отOneDrive
+PicoBase16: ПикоБаза16
+Pie: Крак
+Pink: Розов
+Pixels: Пиксела
+pl-PL: Полски (Полша)
+Placeholder: Контейнер
+Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Играйте с MudBlazor и MudBlazor.Extensions в онлайн редактор на код
+Playbill: Афиш
+Player: Играч
+Please confirm your account by <a href='{0}'>clicking here</a>.: Моля, потвърдете акаунта си чрез <a href='{0}'>щракнете тук</a>.
+Please enter your name: Моля, въведете името си
+Please reset your password by <a href='{0}'>clicking here</a>.: Моля, нулирайте паролата си, като <a href='{0}'>щракнете тук</a>.
+Please type {0} to confirm edit: Моля, въведете {0}, за да потвърдите редакцията
+Please upload your personal qualifications and references that confirm your person and qualification: Моля, качете личните си квалификации и препоръки, които потвърждават вашата личност и квалификация
+Please Wait: Моля, изчакайте
+PleaseSelect: Моля Изберете
+Plum: Слива
+Points: Точки
+PointsOfInterest: Интересни точки
+Pojoaque: Похоаке
+Poor Richard: Горкият Ричард
+PopBase16: ПопБаза16
+Popover: Поп
+PopoverAnimation: PopoverAnimation
+PopoverAnimationPosition: PopoverAnimationPosition
+PopoverAnimationTimingFunction: PopoverAnimationTimingFunction
+PopoverClass: ПопоувърКлас
+PopupEveryTime: Изскачащ прозорецВсеки път
+PopupOnlyOnce: Изскачащ прозорецСамо веднъж
+PopverAnimation: PopverAnimation
+PorpleBase16: ПорпълБаза16
+Portrait: Портрет
+Position: Положение
+Position/Size Sample: Извадка от позиция/размер
+PostalCode: Пощенски код
+PowderBlue: Прахообразно синьо
+Powerful component to edit a set of items and their properties.: Мощен компонент за редактиране на набор от елементи и техните свойства.
+Powerful component to edit an object and its properties.: Мощен компонент за редактиране на обект и неговите свойства.
+Powerful UI Editor for json, xml or yaml content now also as viewer for MudExFileDisplay: Мощен редактор на потребителския интерфейс за json, xml или yaml съдържание вече е и като визуализатор за MudExFileDisplay
+Preferred way on MudExTextField: Предпочитан начин на MudExTextField
+Preferred way on MudExTextField with For and ChildContent: Предпочитан начин на MudExTextField с For и ChildContent
+PresetListBehaviour: PresetListBehavior
+PresetListClass: PresetListClass
+PresetListMode: PresetListMode
+PresetListPosition: Предварителна настройкаСписъкПозиция
+PresetListToggleButtonPosition: PresetListToggleButtonPosition
+Presets: Настройки
+Preview: Преглед
+PreviewButtonSize: PreviewButtonSize
+PreviewFont: ПрегледШрифт
+PreviewIcon: Икона за преглед
+PreviewIconColor: ПрегледЦвят на иконата
+PreviewImageInPresetList: PreviewImageInPresetList
+PreviewImageSize: PreviewImageSize
+PreviewInIframe: ПрегледInIframe
+PreviewMode: Режим на предварителен преглед
+PreviousPreset: ПредишенПредварителна настройка
+PreviousTrack: ПредишенПиста
+prg-001: Пруски (световни)
+Primary: Първичен
+Primary Key: Първичен ключ
+PrimaryContrastText: ПървиченКонтрастТекст
+PrimaryDarken: ПървичноПотъмняване
+PrimaryLighten: ПървичноИзсветляване
+Print: Печатам
+PrintButtonIcon: PrintButtonIcon
+Pristina: Прищина
+Product Deleted: Продуктът е изтрит!
+Product Not Found!: Продуктът не е намерен!
+Product Saved: Продуктът е спасен!
+Product Updated: Продуктът е актуализиран!
+Products: Продукти
+Products exported: Изнесени продукти
+Profile: Профил
+Profile Details: Подробности за профила
+Profile picture added.: Добавена е профилна снимка.
+Profile picture deleted.: Профилната снимка е изтрита.
+Profile updated: Профилът е актуализиран
+ProgramingSkills: ПрограмиранеУмения
+Property1: Имот1
+Property10: Имоти10
+Property11: Имоти11
+Property12: Имот12
+Property13: Имот13
+Property14: Имот14
+Property15: Имот15
+Property16: Имоти16
+Property17: Имоти17
+Property18: Имоти18
+Property19: Имоти19
+Property2: Имот2
+Property20: Имоти20
+Property21: Имот21
+Property22: Имоти22
+Property23: Имоти23
+Property24: Имоти24
+Property25: Имоти25
+Property26: Имоти26
+Property27: Имоти27
+Property28: Имоти28
+Property29: Имоти29
+Property3: Имот3
+Property30: Имот30
+Property31: Имот31
+Property32: Имот32
+Property33: Имот33
+Property34: Имот34
+Property35: Имот35
+Property36: Имот36
+Property37: Имоти37
+Property38: Имоти38
+Property39: Имоти39
+Property4: Имот4
+Property40: Имоти40
+Property41: Имоти41
+Property42: Имоти42
+Property43: Имоти43
+Property44: Имот 44
+Property45: Имоти45
+Property5: Имот5
+Property6: Имот6
+Property7: Имот7
+Property8: Имоти8
+Property9: Имот9
+prs-AF: prs (Афганистан)
+ps-AF: Пущу (Афганистан)
+ps-PK: Пущу (Пакистан)
+PseudoCss: PseudoCss
+pt-AO: Португалски (Ангола)
+pt-BR: Португалски (Бразилия)
+pt-CH: Португалски (Швейцария)
+pt-CV: Португалски (Кабо Верде)
+pt-GQ: Португалски (Екваториална Гвинея)
+pt-GW: Португалски (Гвинея-Бисау)
+pt-LU: Португалски (Люксембург)
+pt-MO: Португалски (САР Макао)
+pt-MZ: Португалски (Мозамбик)
+pt-PT: Португалски (Португалия)
+pt-ST: Португалски (São Tomé & Príncipe)
+pt-TL: Португалски (Източен Тимор)
+Public Profile: Публичен профил
+Pulse: Пулс
+Purebasic: Чисто основно
+Purple: Лилав
+QtcreatorDark: QtcreatorDark
+QtcreatorLight: QtcreatorLight
+QualiaBase16: QualiaBase16
+Qualifications and References: Квалификации и препоръки
+quc-GT: Kʼicheʼ (Гватемала)
+Quentin Tarantino: Куентин Тарантино
+Quick Insights.: Бързи прозрения.
+Quick Start Guide: Ръководство за бърз старт
+quz-BO: quz (Боливия)
+quz-EC: quz (Еквадор)
+quz-PE: quz (Перу)
+Rachel Green: Рейчъл Грийн
+Radial: Радиални
+RadialInvert: Радиално обръщане
+Radius: Радиус
+Rage Italic: Ярост курсив
+RailscastsBase16: РелсиBase16
+Rainbow: Дъга
+Random: Случаен
+RandomColorUpdateDelay: RandomColorUpdateDelay
+RarArchive.rar: RarArchive.rar
+Rate: Ставка
+Rate must be greater than 0: Процентът трябва да е по-голям от 0
+Ravie: Удоволствие
+Read More: Прочетете Повече
+Readme: Прочетете
+readme.md: readme.md
+ReadOnly: Само за четене
+Realtime Updates & Insights with SignalR.: Актуализации и прозрения в реално време с SignalR.
+RebeccaBase16: RebeccaBase16
+RebeccaPurple: РебекаЛилаво
+Record audio: Запис на аудио
+Record Audio: Запис на аудио
+Record Camera: Камера за запис
+Record Main Camera: Запис на основната камера
+Record Main Camera Lower Quality: Запис на основната камера с по-ниско качество
+Record Screen: Запис на екрана
+Recording: Запис
+RecordingAnimation: ЗаписАнимация
+RecordingBorderAnimation: RecordingBorderAnimation
+RecordingColor: ЗаписЦвят
+RecordingIcon: Икона за запис
+Red: Червен
+Redirect: Пренасочване
+Redirecting to {0}: Пренасочване към {0}
+Redirecting...: Пренасочване...
+ReflexAlpha: ReflexAlpha
+ReflexBright: ReflexBright
+ReflexFit: ReflexFit
+ReflexRatio: Рефлексно съотношение
+Refresh: Опреснявам
+Refreshed Token.: Освежен токен.
+Register: Регистрирайте се
+Register as: Регистрирайте се като
+Register as {0}: Регистрирайте се като {0}
+Register here: Регистрирайте се тук
+Register New User: Регистрирайте нов потребител
+Register User: Регистриране на потребител
+Registered Roles: Регистрирани роли
+Registered Users: Регистрирани потребители
+Rel: Рел
+Relative: Роднина
+RelativeToParent: Относителен родител
+RelativeWidth: Относителна ширина
+Reload: Презареди
+Reload Data: Данни за презареждане
+Rem: Рем
+Remember me?: Помните ли ме?
+RememberEditedOptions: ЗапомниРедактираниОпции
+Remove: Махам
+Remove All: Премахване на всички
+RemoveErrorAfter: RemoveErrorAfter
+RemoveErrorOnChange: RemoveErrorOnChange
+RemoveItemButtonAlwaysRight: Премахване на ItemButtonAlwaysRight
+Rename: Преименуване
+Rename backup: Преименуване на архива
+Render with {0}: Рендиране с {0}
+Render with MudExFileDisplayTiff: Рендиране с визуализатор Tiff
+Render with MudExFileDisplayZip: Рендиране с Zip viewer
+Render with MudExImageViewer: Рендиране с MudExImageViewer
+Render with native control: Рендиране с вграден контрол
+RenderBackLink: RenderBackLink
+RenderChipsAdditional: RenderChipsДопълнително
+Rendered Virtualized: Визуализирано виртуализирано
+rendered when the item is outside the viewport.: изобразява, когато елементът е извън прозореца за изглед.
+rendered when the item is visible in the viewport.: Изобразява, когато елементът се вижда в прозореца за изглед.
+RenderHomeLink: RenderHomeLink
+RenderOnlyOnce: RenderOnlyOnce
+Required: Изисква
+RequiredError: ЗадължителноГрешка
+Reset: Проучване
+Reset {0}: Нулиране {0}
+Reset all: Нулиране на всички
+Reset all properties?: Нулирайте всички свойства?
+Reset password: Нулиране на паролата
+Reset Password: Нулиране на паролата
+Reset to initial data: Нулиране на първоначалните данни
+Reset view: Нулиране на изгледа
+ResetButtonIcon: ResetButtonIcon
+ResetToDefaultFirst: ResetToDefaultFirst
+Resizeable: С възможност за преоразмеряване
+ResizeMode: Режим на преоразмеряване
+Resources: Ресурси
+Responsive: Отзивчив
+Restart server: Рестартиране на сървъра
+Restore: Възстановявам
+Restore database: Възстановяване на база данни
+Restore default: Възстановяване по подразбиране
+Restore finished: Възстановяването е завършено
+Restore in progress. Please wait until the restore is finished. This can take a while.: Възстановяване е в ход. Моля, изчакайте, докато възстановяването приключи. Това може да отнеме известно време.
+Revert: Обръщам
+RGB: RGB
+RGBA: RGBA
+rgba(0,200,83,1): rgba(0,200,83,1)
+rgba(126,247,160,1): RGBA(126,247,160,1)
+rgba(133,135,145,1): RGBA(133,135,145,1)
+rgba(157,241,250,1): RGBA(157,241,250,1)
+rgba(17,59,83,1): RGBA(17,59,83,1)
+rgba(170,0,0,1): RGBA(170,0,0,1)
+rgba(18,121,66,1): RGBA(18,121,66,1)
+rgba(189,255,207,1): RGBA(189,255,207,1)
+rgba(19,184,232,1): RGBA(19,184,232,1)
+rgba(191,125,17,1): RGBA(191,125,17,1)
+rgba(20,220,113,1): RGBA(20,220,113,1)
+rgba(201,204,207,1): RGBA(201,204,207,1)
+rgba(217,152,13,1): RGBA(217,152,13,1)
+rgba(220,63,17,1): RGBA(220,63,17,1)
+rgba(23,105,142,1): RGBA(23,105,142,1)
+rgba(23,162,88,1): RGBA(23,162,88,1)
+rgba(230,233,235,1): RGBA(230,233,235,1)
+rgba(235,179,35,1): RGBA(235,179,35,1)
+rgba(244,67,54,1): RGBA(244,67,54,1)
+rgba(246,249,251,1): RGBA(246,249,251,1)
+rgba(253,210,47,1): RGBA(253,210,47,1)
+rgba(254,104,0,1): RGBA(254,104,0,1)
+rgba(255,145,2,1): RGBA(255,145,2,1)
+rgba(255,152,0,1): RGBA(255,152,0,1)
+rgba(255,179,31,1): RGBA(255,179,31,1)
+rgba(255,210,84,1): RGBA(255,210,84,1)
+rgba(255,226,115,1): RGBA(255,226,115,1)
+rgba(255,240,163,1): RGBA(255,240,163,1)
+rgba(27,189,102,1): RGBA(27,189,102,1)
+rgba(33,150,243,1): RGBA(33,150,243,1)
+rgba(39,219,245,1): RGBA(39,219,245,1)
+rgba(53,57,64,1): rgba(53,57,64,1)
+rgba(66,66,66,1): RGBA(66,66,66,1)
+rgba(88,91,98,1): RGBA(88,91,98,1)
+rgba(9,137,194,1): RGBA(9,137,194,1)
+Ridge: Хребет
+Right: Дясно
+Right part in MudExSplitPanel.: Дясната част в MudExSplitPanel.
+RightToLeft: ОтдясноНаляво
+Ripple: Пулсации
+RippleOpacity: Вълнопрозрачност
+RippleOpacitySecondary: RippleOpacitySecondary
+rm-CH: Ретороманш (Швейцария)
+rn-BI: Рунди (Бурунди)
+ro-MD: Румънски (Молдова)
+ro-RO: Румънски (Румъния)
+Roboto: Робот
+Rockwell: Рокуел
+Rockwell Condensed: Рокуел кондензиран
+Rockwell Extra Bold: Рокуел Екстра Смел
+rof-TZ: Ромбо (Танзания)
+Role: Роля
+Role ID: ИД на ролята
+Role Name: Име на ролята
+Roles: Роли
+Roles Updated: Ролите са актуализирани!
+RootName: Коренно име
+RosPineBase16: RosPineBase16
+RosPineDawnBase16: RosPineDawnBase16
+RosPineMoonBase16: RosPineMoonBase16
+RosyBrown: Розово кафяво
+Rotate: Въртя
+RoundBars: Кръгли пръти
+Rounded: Заоблени
+Routeros: Роутери
+Row: Ред
+RowSpan: RowSpan
+RowsPerPageString: Редове на страница
+RoyalBlue: Кралско синьо
+ru-BY: Руски (Беларус)
+ru-KG: Руски (Киргизстан)
+ru-KZ: Руски (Казахстан)
+ru-MD: Руски (Молдова)
+ru-RU: Руски (Русия)
+ru-UA: Руски (Украйна)
+RubberBand: Гумена лента
+RubberBandColor: Гумена лентаЦвят
+RubberBandStyle: Гумена лентаСтил
+Runic MT Condensed: Руничен MT кондензиран
+Runtime: Времетраене
+Russian: Руски
+rw-RW: Киняруанда (Руанда)
+rwk-TZ: Рва (Танзания)
+sa-IN: Санскрит (Индия)
+SaddleBrown: СедлоКафяво
+SagelightBase16: Градински чайБаза16
+sah-RU: Саха (Русия)
+Salmon: Сьомга
+Sample Card: Примерна карта
+Sample Dialog: Примерен диалогов прозорец
+Sample Headline: Примерно заглавие
+Sample how to use Theme Select: Пример как да използвате Theme Select
+Sample mega: Примерен мега
+Sample to see how you can render and use any component in a dialog as easy as possible: Пример, за да видите как можете да рендирате и използвате всеки компонент в диалогов прозорец възможно най-лесно
+sample.pdf: sample.pdf
+San Antonio: Сан Антонио
+San Antonio - 78201: Сан Антонио - 78201
+San Antonio - 78201ender: Сан Антонио - 78201ender
+San Diego: Сан Диего
+San Diego - 92101: Сан Диего - 92101
+San Diego - 92101ender: Сан Диего - 92101ender
+San Jose: Сан Хосе
+San Jose - 95101: Сан Хосе - 95101
+San Jose - 95101ender: Сан Хосе - 95101ender
+SandBoxIframes: SandBoxIframes
+SandcastleBase16: Пясъчен замъкБаза16
+SandyBrown: Пясъчно кафяво
+sans-serif: sans-serif
+Sans-serif: Без сериф
+saq-KE: Самбуру (Кения)
+sat-Olck-IN: Сантали (Ол Чики, Индия)
+Saturation: Насищане
+Save: Спасявам
+Save {0} Changes: '{0} Запазване на промените'
+Save as: Запазване като
+Save Changes: Запазване на промените
+Save image: Запазване на изображението
+Save Role: Запазване на ролята
+Save visible area only: Запазване само на видима област
+SaveButtonIcon: SaveButtonIcon
+saved: Записани!
+sbp-TZ: Сангу (Танзания)
+Scale: Мащаб
+SchoolBook: Учебник
+Scope: Обхват
+Screen: Екран
+Script MT Bold: Скрипт MT удебелен
+Scroll down to discover the content: Превъртете надолу, за да откриете съдържанието
+Scroll down to see the behavior: Превъртете надолу, за да видите поведението
+Scroll to top: Превъртете нагоре
+sd-Arab-PK: Синдхи (арабски, Пакистан)
+sd-Deva-IN: Синдхи (Деванагари, Индия)
+se-FI: Северно саамски (Финландия)
+se-NO: Северен саамски (Норвегия)
+se-SE: Северно саамски (Швеция)
+SeaGreen: Морско зелено
+search: търсене
+Search: Търсене
+Search by users: Търсене по потребители
+Search For {0} Extended Attributes: Търсене на {0} разширени атрибути
+Search for Brands: Търсене на марки
+Search for Document Types: Търсене на типове документи
+Search For Permissions: Търсене на разрешения
+Search for Roles...: Търсене на роли...
+Search for Trails: Търсене на пътеки
+Search For User Roles: Търсене на потребителски роли
+Search For Users: Търсене на потребители
+Search in New Values: Търсене в Нови стойности
+Search in Old Values: Търсене в Стари ценности
+SearchBox: Поле за търсене
+SearchBoxAdornment: SearchBox Украса
+SearchBoxAutoFocus: SearchBoxАвтофокус
+SearchBoxBackgroundColor: SearchBoxBackgroundColor
+SearchBoxClearable: SearchBoxClearable
+SearchBoxPlaceholder: SearchBoxPlaceholder
+SearchBoxVariant: SearchBoxVariant
+SearchString: SearchString
+SeaShell: Морска черупка
+Secondary: Вторичен
+SecondaryBackgroundForNestedItemHeader: SecondaryBackgroundForNestedItemHeader
+SecondaryContrastText: ВториченКонтрастТекст
+SecondaryDarken: ВториченПотъмняване
+SecondaryLighten: ВторичноИзсветляване
+Section 0: Раздел 0
+Section 1: Раздел 1
+Section 10: Раздел 10
+Section 11: Раздел 11
+Section 12: Раздел 12
+Section 13: Раздел 13
+Section 14: Раздел 14
+Section 15: Раздел 15
+Section 2: Раздел 2
+Section 3: Раздел 3
+Section 4: Раздел 4
+Section 5: Раздел 5
+Section 6: Раздел 6
+Section 7: Раздел 7
+Section 8: Раздел 8
+Section 9: Раздел 9
+Security: Безопасност
+See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.: Вижте как да използвате MudExFileDisplay за показване на съдържанието на файловете. Също така демонстрация как да имплементирате интерфейса IMudExFileDisplay, за да предоставите собствени компоненти за конкретни типове файлове.
+See how to use MudExObjectEdit in a dialog: Вижте как да използвате MudExObjectEdit в диалогов прозорец
+See how you can use different pickers or delay change event with the MudExColorPicker: Вижте как можете да използвате различни инструменти за избор или да забавите събитието за промяна с MudExColorPicker
+seh-MZ: Сена (Мозамбик)
+Select: Отбран
+Select a brand: Изберете марка
+Select All: Изберете всички
+Select Item: Изберете елемент
+Select Items: Изберете елементи
+Select Language: Изберете език
+Select sample file (See weather.json to check how own components for files can be created): Изберете примерен файл (вижте weather.json, за да проверите как могат да бъдат създадени собствени компоненти за файлове)
+Select screen: Изберете екран
+SelectAll: Избери Всички
+SelectAllPosition: SelectAllPosition
+SelectAllText: SelectAllText
+SelectColorText: SelectColorText
+Selected: Избран
+Selected Node: Избран възел
+SelectedBrand: ИзбранаМарка
+SelectedIndex: Избран индекс
+SelectedItemBackgroundColor: ИзбранПредметЦвят на фона
+SelectedItemBorderColor: SelectedItemBorderColor
+SelectedItemColor: SelectedItemColor
+SelectedRequests: ИзбраниЗаявки
+SelectedValues: ИзбраниСтойности
+Selecting: Изберете
+SelectionList: Списък с избори
+SelectionMode: Режим на избор
+SelectionModeIcon: SelectionModeIcon
+SelectItemsMode: SelectItemsMode
+SelectorsForIgnoreBlur: SelectorsForIgnoreBlur
+SelectorSize: СелекторРазмер
+SelectorsToKeepOpenOnMouseLeave: СелекториДаПоддържанеОтвореноНа мишкатаНапускане
+SelectValueOnTab: SelectValueOnTab
+SelectVariant: ИзборВариант
+Send: Изпращам
+Send confirmation email: Изпращане на имейл за потвърждение
+Sensitivity: Чувствителност
+Sep: Септември
+Server restarted successfully: Сървърът се рестартира успешно
+ses-ML: Койраборо Сени (Мали)
+Set as Default options for all Dialogs: Задаване на опции по подразбиране за всички диалогови прозорци
+Set empty/null for auto detection: Задаване на empty/null за автоматично откриване
+Set new password: Задаване на нова парола
+Set this to automatically stop recording after the desired time.: Задайте това автоматично да спира записа след желаното време.
+Set this to wait before a photo is taken: Задайте това да изчака, преди да бъде направена снимка
+Set this to wait before recording starts: Задайте това да изчака, преди да започне записът
+SetChipsOnEnter: SetChipsOnEnter
+SetiUiBase16: SetiUiBase16
+SevenZipArchive.7z: SevenZipArchive.7z
+Severity: Тежестта
+sg-CF: Санго (Централноафриканска република)
+ShadesOfPurple: НюансиНаЛилаво
+Shadows: Сенки
+Shake: Треперя
+ShapeshifterBase16: ShapeshifterBase16
+SharedConfig: Споделена конфигурация
+Sharpness: Рязкост
+shi-Latn-MA: Tachelhit (латински, марокански)
+shi-Tfng-MA: Tachelhit (Тифинах, Мароко)
+Show: Показвам
+Show As Dialog: Диалогов прозорец "Показване като"
+Show as Tree: Показване като дърво
+Show Demo: Показване на демонстрация
+Show flat: Покажи апартамент
+Show info: Показване на информация
+Show info for: Покажи информация за
+Show Markup: Показване на маркиране
+Show notification: Показване на известие
+Show notification while recording: Показване на известие по време на запис
+Show on github: Показване в github
+Show or hide inherited fields from base class: Показване или скриване на наследени полета от основен клас
+Show Sample 1: Покажи извадка 1
+Show Sample 2: Покажи пример 2
+Show Sample 3: Покажи пример 3
+Show Sample Dialog: Показване на примерен диалогов прозорец
+Show Sample Dialog METHOD 1: Показване на примерен диалогов прозорец МЕТОД 1
+Show Sample Dialog METHOD 2: Показване на примерен диалогов прозорец МЕТОД 2
+Show Sample Dialogs: Показване на примерни диалози
+Show selected: Показване на избрани
+Show With this Options: Покажи с тези опции
+ShowAlpha: ШоуАлфа
+ShowAtCursor: ПоказванеНаКурсор
+ShowBgColor: ПоказванеЦвят
+Showcard Gothic: Готика на Showcard
+ShowClearButton: Бутон ПоказванеИзчистване
+ShowCloseIcon: ПоказванеЗатвориИкона
+ShowColorField: Покажи цветно поле
+ShowColorPreview: ПокажиЦвятПреглед
+ShowContentError: ПоказванеContentError
+ShowCssColorVariables: ShowCssColorVariables
+ShowFileUploadButton: Бутон ПоказванеФайлКачване
+ShowFilterInDrawer: ПоказванеФилтърВчекмедже
+ShowFolderUploadButton: Бутон ПоказванеПапкаКачване
+ShowFPS: ШоуFPS
+ShowFullScreenButton: Бутон за показване на цял екран
+ShowHtmlColors: ПоказванеHtmlЦветове
+ShowInputs: Показване на входове
+ShowLogoInDrawer: ShowLogoInDroper
+ShowModeSwitch: Превключвател за показване на режим
+ShowNavigator: ShowNavigator
+ShowNotificationWhileRecording: ShowNotificationWhileRecording
+ShowPath: Показване на пътя
+ShowPeaks: ШоуПикс
+ShowPresetNameOnChange: ПоказванеПредварителна настройкаИмеНаПромяна
+ShowPreview: ПокажиПредварителен преглед
+ShowPreviewOnClick: ПоказванеПрегледНащракване
+ShowPrintButton: Бутон ПоказванеПечат
+ShowProgressForLoadingData: ShowProgressForLoadingData
+ShowRemainingTimeOnly: ПоказванеОставащоВремеСамо
+ShowRenameButton: ПокажиПреименуванеБутон
+ShowResetButton: Бутон ShowResetButton
+Shows how you can use MudExAdditionalAdornment to ad as many adornments to any MudInput: Показва как можете да използвате MudExAdditionalAdornment, за да рекламирате възможно най-много украшения към всеки MudInput
+ShowSaveButton: Бутон "Показване"Запазване"
+ShowScaleX: Покажи мащабX
+ShowScaleY: Показване на мащаба
+ShowSliders: Показване на плъзгачи
+ShowSpectrumOnRecording: ПоказванеСпектърНаЗапис
+ShowThemeColors: ПоказванеТемаЦветове
+ShowToolbar: Покажи лентата с инструменти
+ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
+ShowVisualiser: Показване на визуализатор
+ShowZoomInButton: Покажи бутона ZoomInButton
+ShowZoomOutButton: Покажи бутон за мащабиране
+ShrinkLabel: ShrinkLabel
+si-LK: Синхалски (Шри Ланка)
+Side: Страна
+Sienna: Сиена
+Sign In: Влизане
+Sign Up: Регистрирайте се
+SilkDarkBase16: КопринаТъмна Основа16
+SilkLightBase16: КопринаЛайтБаза16
+Silver: Сребро
+Simon Pack: Саймън Пак
+Simple: Прост
+Simple Card List with a hover effect.: Прост списък с карти с ефект на задържане на курсора на мишката
+Simple CodeViewer Component: Прост компонент на CodeViewer
+Simple component to display Html files with MudExFileDisplay: Лесен компонент за показване на Html файлове с MudExFileDisplay
+Simple component to display markdown files with MudExFileDisplay: Лесен компонент за показване на файлове за маркиране с MudExFileDisplay
+Simple component to expand a Search field: Прост компонент за разширяване на поле за търсене
+Simple Confirmation: Просто потвърждение
+Simple Dialog: Прост диалогов прозорец
+Simple Dialogs: Прости диалози
+Simple Enum: Прост Enum
+Simple Excel file viewer: Прост преглед на файлове в Excel
+Simple extended popover that adds Animations and an onblur event to close if a click outside happens.: Просто разширено изскачащо меню, което добавя анимации и събитие за замъгляване, което да се затвори, ако се случи щракване навън.
+Simple extension for MudAvatar to load automatically a profile image for an email address using Gravatar: Лесно разширение за MudAvatar за автоматично зареждане на изображение на профил за имейл адрес с помощта на Gravatar
+Simple MessageDialog: Прост диалогов прозорец за съобщения
+Simple Prompt: Проста подкана
+Simple virtualize component that can be disabled with support for fixed items and ItemsProvider.: Прост компонент за виртуализация, който може да бъде деактивиран с поддръжка на фиксирани елементи и ItemsProvider.
+SimpleDialog: Прост диалог
+SimulateOnHover: СимулиранеНа курсора
+SimulateWithFullSpectrumAudioData: СимулирайтеСПълен спектърАудиоданни
+SimulateWithRandomData: Симулиране сСлучайни данни
+Single: Единичен
+SingleExpand: Единично разширяване
+Size: Големина
+sk-SK: Словашки (Словакия)
+Skeleton: Скелет
+SkipSeparator: SkipSeparator
+SkyBlue: Небесно синьо
+sl-SI: Словенски (Словения)
+SlateBlue: ШистиСиньо
+SlateGray: ШистиСив
+Slide: Пързалка
+SlideBar: Плъзгаща лента
+SlideIn: Плъзгане
+sma-NO: Южносаамски (Норвегия)
+sma-SE: Южно саамски (Швеция)
+Small: Малък
+smj-NO: Луле Сами (Норвегия)
+smj-SE: Lule Sami (Швеция)
+smn-FI: Инари Сами (Финландия)
+Smoothing: Изглаждане
+sms-FI: Сколт саами (Финландия)
+sn-Latn-ZW: Шона (латински, Зимбабве)
+Snackbar: Снек бар
+SnackbarMessageMarkupString: SnackbarMessageMarkupString
+SnackbarMessageRenderFragment: SnackbarMessageRenderFragment
+SnackbarMessageText: SnackbarСъобщениеТекст
+Snap ITC: Snap ITC
+SnapDrag: SnapDrag
+SnazzyBase16: СназиБаза16
+Snow: Сняг
+so-DJ: Сомалийски (Джибути)
+so-ET: Сомалийски (Етиопия)
+so-KE: Сомалийски (Кения)
+so-SO: Сомалийски (Сомалия)
+SolarFlareBase16: SolarFlareBase16
+SolarFlareLightBase16: SolarFlareLightBase16
+SolarizedDarkBase16: SolarizedDarkBase16
+SolarizedLightBase16: SolarizedLightBase16
+Solid: Солиден
+Some: Някакъв
+Some other: Някои други
+SomeOtherInformation: НякояДругаИнформация
+Something went wrong during the refresh token action: Нещо се обърка по време на действието за опресняване
+SomeUnimportantTestModel: НякоиНеважниТестовиМодел
+SomeUnimportantTestModel as Json: SomeUnimportantTestModel като Json
+SpaceAround: SpaceAround
+SpaceBetween: Интервал между
+SpaceEvenly: ПространствоРавномерно
+SpacemacsBase16: SpacemacsBase16
+Spacing: Разредка
+Specify Options...: Посочете опции...
+Specify Quick Options...: Посочете бързи опции...
+Spectrum: Спектър
+SpectrumIcon: SpectrumIcon
+SpinSpeed: Скорост на въртене
+SplitGradient: Сплитградиент
+SplitPanelItem for MudExSplitPanel component: SplitPanelItem за компонент MudExSplitPanel
+SpringGreen: Пролетен зелен
+sq-AL: Албански (Албания)
+sq-MK: Албански (Северна Македония)
+sq-XK: Албански (Косово)
+Square: Квадратен
+sr-Cyrl-BA: Сръбски (кирилица, Босна и Херцеговина)
+sr-Cyrl-ME: Сръбска (кирилица, Черна гора)
+sr-Cyrl-RS: Сръбска (кирилица, Сърбия)
+sr-Cyrl-XK: Сръбски (кирилица, Косово)
+sr-Latn-BA: Сръбски (латински, Босна и Херцеговина)
+sr-Latn-ME: Сръбски (латински, Черна гора)
+sr-Latn-RS: Сръбски (латински, Сърбия)
+sr-Latn-XK: Сръбски (латински, косовски)
+Src: Срц
+Srcery: Съри
+ss-SZ: siSwati (Есватини)
+ss-ZA: siSwati (Южна Африка)
+ssy-ER: Сахо (Еритрея)
+st-LS: Сесото (Лесото)
+st-ZA: Сесото (Южна Африка)
+StackedBar: Подредена лента
+StackoverflowDark: StackoverflowТъмен
+StackoverflowLight: StackoverflowLight
+Standard - Mikrofon (Voicemod Virtual Audio Device (WDM)): Стандартно - Mikrofon (Виртуално аудио устройство Voicemod (WDM))
+Start: Започвам
+Start Capture: Стартиране на заснемането
+Start Recording: Започнете да записвате
+Start recording after: Започнете да записвате след
+Start/Stop selection: Избор на старт/стоп
+State: Държава
+Static: Статични
+Static card.: Статична карта.
+Static item: Статичен елемент
+Status: Статус
+SteelBlue: Стоманено синьо
+Stencil: Шаблон
+Stereo: Стерео
+Steve Rogers: Стив Роджърс
+Store: Магазин
+Stream: Ручей
+StreamUrlHandling: StreamUrlОбработка
+Street: Улица
+Street 2 2, 32365 City 2: Улица 2 2, 32365 Град 2
+Strict: Строг
+StringProperty1: StringProperty1
+StringProperty10: StringProperty10
+StringProperty11: StringProperty11
+StringProperty12: StringProperty12
+StringProperty13: StringProperty13
+StringProperty14: StringProperty14
+StringProperty15: StringProperty15
+StringProperty16: StringProperty16
+StringProperty17: StringProperty17
+StringProperty18: StringProperty18
+StringProperty19: StringProperty19
+StringProperty2: StringProperty2
+StringProperty20: StringProperty20
+StringProperty21: StringProperty21
+StringProperty22: StringProperty22
+StringProperty23: StringProperty23
+StringProperty24: StringProperty24
+StringProperty25: StringProperty25
+StringProperty26: StringProperty26
+StringProperty27: StringProperty27
+StringProperty28: StringProperty28
+StringProperty29: StringProperty29
+StringProperty3: StringProperty3
+StringProperty30: StringProperty30
+StringProperty31: StringProperty31
+StringProperty32: StringProperty32
+StringProperty33: StringProperty33
+StringProperty34: StringProperty34
+StringProperty35: StringProperty35
+StringProperty36: StringProperty36
+StringProperty37: StringProperty37
+StringProperty38: StringProperty38
+StringProperty39: StringProperty39
+StringProperty4: StringProperty4
+StringProperty40: StringProperty40
+StringProperty41: StringProperty41
+StringProperty42: StringProperty42
+StringProperty43: StringProperty43
+StringProperty44: StringProperty44
+StringProperty45: StringProperty45
+StringProperty46: StringProperty46
+StringProperty47: StringProperty47
+StringProperty48: StringProperty48
+StringProperty49: StringProperty49
+StringProperty5: StringProperty5
+StringProperty50: StringProperty50
+StringProperty51: StringProperty51
+StringProperty52: StringProperty52
+StringProperty53: StringProperty53
+StringProperty54: StringProperty54
+StringProperty55: StringProperty55
+StringProperty56: StringProperty56
+StringProperty57: StringProperty57
+StringProperty58: StringProperty58
+StringProperty59: StringProperty59
+StringProperty6: StringProperty6
+StringProperty60: StringProperty60
+StringProperty7: StringProperty7
+StringProperty8: StringProperty8
+StringProperty9: StringProperty9
+Striped: Шарени
+Structured Data Edit: Редактиране на структурирани данни
+StructuredDataEdit: Структурирани данниРедактиране
+Style: Стил
+StyleChip: СтилЧип
+su-Latn-ID: Сундански (латински, индонезия)
+Subject: Предмет
+Subline description for sample card.: Описание на подред за примерна карта.
+Submit: Изпрати
+SubscribeToParentForm2: АбониранеЗаРодителФормуляр2
+subtitle1: Субтитрит1
+Subtitle1: Подзаглавие1
+subtitle2: субтитри2
+Subtitle2: Субтитри2
+Success: Успех
+SuccessContrastText: УспехКонтрастТекст
+SuccessDarken: УспехПотъмняване
+SuccessLighten: УспехОлекотяване
+SummercampBase16: Летен лагерБаза16
+SummerfruitDarkBase16: SummerfruitDarkBase16
+SummerfruitLightBase16: SummerfruitLightBase16
+Sunburst: Слънчев изблъсък
+Super sample Content text.: Супер примерен текст на съдържанието.
+Support: Поддръжка
+Surface: Повърхност
+Surname: Фамилно име
+sv-AX: Шведски (Оландски острови)
+sv-FI: Шведски (Финландия)
+sv-SE: Шведски (Швеция)
+sw-CD: Суахили (Конго [ДРК])
+sw-KE: Суахили (Кения)
+sw-TZ: Суахили (Танзания)
+sw-UG: Суахили (Уганда)
+Swagger: Документация за API
+Swap: Разменям
+Swedish: Шведски
+SweetieBubbleGum-Regular.ttf: SweetieBubbleGum-Regular.ttf
+Swing: Люлка
+Switch: Комутатор
+Switch expand button position: Позиция на бутона за разширяване на превключвателя
+Switch overlay source: Превключване на източника на наслагване
+Symbol: Символ
+SynthMidnightTerminalDarkBase16: SynthMidnightTerminalDarkBase16
+SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16
+syr-SY: Сирийски език (Сирия)
+System: Система
+System Settings: Системни настройки
+T3024Base16: Т3024База16
+ta-IN: Тамилски (Индия)
+ta-LK: Тамилски (Шри Ланка)
+ta-MY: Тамилски (Малайзия)
+ta-SG: Тамилски (Сингапур)
+Table Name: Име на таблицата
+TableHover: Задържане на маса
+TableLines: ТаблициЛинии
+TableStriped: МасаРайета
+Tada: Тогава
+Tag: Ден
+TagField: TagField
+Tahoma: Тахома
+Take case: Вземете случай
+Take photo after: Направете снимка след
+Take Photo from Main camera: Заснемане на снимка от основна камера
+Take Photo from Main camera in 5 seconds: Направете снимка от основната камера за 5 секунди
+Take Photo only: Правене само на снимки
+Tan: Така
+TangoBase16: TangoBase16
+TarArchive.tar: TarArchive.tar
+Target: Цел
+Tax: Данък
+Tax must be greater than 0: Данъкът трябва да е по-голям от 0
+te-IN: Телугу (Индия)
+Teal: Тийл
+tel: Тел
+Telephone: Телефон
+TemplateClass: ШаблонКлас
+Temporary: Временен
+TenderBase16: ТендерБаза16
+teo-KE: Teso (Кения)
+teo-UG: Teso (Уганда)
+Tertiary: Висше
+TertiaryContrastText: Третичен контрастТекст
+TertiaryDarken: Третичен
+TertiaryLighten: Третично изсветляване
+TEST: ТЕСТ
+Test and use components live without required environment: Тествайте и използвайте компоненти на живо без необходимата среда
+Test the powerful MudExThemeEdit and change theme colors fonts and more: Тествайте мощния MudExThemeEdit и променете цветовете на темата, шрифтовете и други
+text: Текст
+Text: Текст
+Text value is required using {0} type!: Необходима е текстова стойност с помощта на {0} type!
+TextAddExternal: Добавяне на текстВъншен
+TextAddFromDropBox: ТекстДобавянеОтDropBox
+TextAddFromGoogle: ТекстДобавянеОтGoogle
+TextAddFromOneDrive: ТекстДобавянеОтOneDrive
+TextAddUrl: TextAddUrl адрес
+TextAddUrlMessage: TextAddUrlMessage
+TextAddUrlTitle: TextAddUrlTitle
+TextDisabled: ТекстДеактивиран
+TextDropZone: TextDropZone
+TextErrorDuplicateFile: ТекстГрешкаДублиран файл
+TextErrorExtensionForbidden: ТекстГрешкаРазширениеЗабранено
+TextErrorExtensionNotAllowed: TextErrorExtensionNotAllowed
+TextErrorMaxFileCount: TextErrorMaxFileCount
+TextErrorMaxFileSize: TextErrorMaxFileSize
+TextErrorMimeTypeForbidden: TextErrorMimeTypeForbidden
+TextErrorMimeTypeNotAllowed: TextErrorMimeTypeNotAllowed
+TextFillColor: TextFillColor
+TextPrimary: ТекстОсновен
+TextRemoveAll: ТекстПремахване на всички
+TextSecondary: ТекстВторичен
+TextStartRecording: TextStartRecording
+TextStartVideoCapture: ТекстСтартВидеозаснемане
+TextTransform: Преобразуване на текст
+TextUpdateSuppression: Потискане на текстАктуализация
+TextUploadFile: ТекстКачванеФайл
+TextUploadFiles: ТекстКачване на файлове
+TextUploadFolder: ТекстКачванеПапка
+tg-Cyrl-TJ: Таджикски (кирилица, Таджикистан)
+th-TH: Тайландски (Тайланд)
+The Checker field is required.: Полето Checker е задължително.
+The component also provides the <strong>IsVisibleChanged</strong> event, which triggers whenever the visibility of the item changes.: Компонентът също така предоставя <strong>събитието IsVisibleChanged</strong>, което се задейства всеки път, когато видимостта на елемента се промени.
+The content type {0} cannot be displayed without a suitable plugin: Типът съдържание {0} не може да се показва без подходящ плъгин
+The field Number must be between 1 and 100.: Полето Номер трябва да е между 1 и 100.
+The file ({0}) has already been added: Файлът ({0}) вече е добавен
+The file has exceeded the maximum size of {0} with {1}. File size is {2}: Файлът е надхвърлил максималния размер на {0} с {1}. Размерът на файла е {2}
+The following {0} permissions are also required for permission {1}: Следните {0} разрешения също са необходими за разрешение {1}
+The following permission is also required for permission {1}: Следното разрешение също се изисква за {1} за разрешение
+The maximum file size is 10 MB: Максималният размер на файла е 10 MB
+The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit е стабилен и универсален инструмент, предназначен ефективно да улесни редактирането на една или повече теми или предварително зададени настройки. Той по своята същност побира тъмен режим, светъл режим или комбинация от двете. Освен това поддържа производни класове от MudTheme, както и персонализирани свойства, присъщи на него, като по този начин предоставя цялостно и гъвкаво решение за всички ваши изисквания за редактиране на теми.
+The Plugin '{0}' may be able to help: Плъгинът "{0}" може да помогне
+The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: Примерът е същият като другия пример за FileDisplay, но с тази разлика, че не се използва URL адрес; вместо това се зареждат и използват потоци.
+The server is just restarting. Please wait until the connection has been restored: Сървърът току-що се рестартира. Моля, изчакайте, докато връзката бъде възстановена
+The user "{0}" just changed some of this data: Потребителят "{0}" току-що промени някои от тези данни
+The user {0} has been logged off: Потребителят {0} е излязъл
+The User {0} has just edited, created or deleted entries here. You should reload the data: Потребителят {0} току-що е редактирал, създал или изтрил записи тук. Трябва да презаредите данните
+Theme: Тема
+Theme Colors: Цветове на темата
+Themes: Теми
+ThemeSelect: ТемаИзбор
+There are no new notifications: Няма нови известия
+These features make <strong>MudExVirtualItem</strong> ideal for optimizing performance when working with large datasets or dynamic content that doesn't need to be loaded all at once.: Тези функции правят <strong>MudExVirtualItem</strong> идеален за оптимизиране на производителността при работа с големи набори от данни или динамично съдържание, което не е необходимо да се зарежда наведнъж.
+This bar can be positioned left, right, top or bottom, and expands automatically on mouseover. This is also the Base component for the MudExTaskBar that automatically displays all open dialogs: Тази лента може да бъде разположена отляво, надясно, отгоре или отдолу и се разширява автоматично при курсиране на курсора на мишката Това е и основният компонент за MudExTaskBar, който автоматично показва всички отворени диалогови прозорци
+This changes the Variant if Age is at least 18 and is enabled if Age is more than 1: Това променя варианта, ако възрастта е поне 18 и е активирана, ако възрастта е по-голяма от 1
+This component and the dialog no modal behaviour is still in development and not ready for production use. Please report any issues you find on GitHub.: Този компонент и диалоговото поведение no modal все още са в процес на разработка и не са готови за производствена употреба. Моля, докладвайте всички проблеми, които откриете в GitHub.
+This component uses the ICaptureService to capture audio and/or video data: Този компонент използва ICaptureService за заснемане на аудио и/или видео данни
+This component uses the ISpeechRecognitionService to record audio data and transcripts: Този компонент използва ISpeechRecognitionService за запис на аудио данни и преписи
+This Demo demonstrate using for the MudExCardList: Тази демонстрация демонстрира използването на MudExCardList
+This Demo demonstrate using the MudExAudioPlayer without the automatic use in MudExFileDisplay: Тази демонстрация демонстрира използването на MudExAudioPlayer без автоматична употреба в MudExFileDisplay
+This Demo demonstrate using the MudExCardList with an item source: Тази демонстрация демонстрира използването на MudExCardList с източник на артикул
+This Demo demonstrate using the MudExCardList with an item source and child content together: Тази демонстрация демонстрира използването на MudExCardList с източник на елемент и дъщерно съдържание заедно
+This Demo demonstrate using the MudExImageViewer without the automatic use in MudExFileDisplay: Тази демонстрация демонстрира използването на MudExImageViewer без автоматична употреба в MudExFileDisplay
+This demo showcases the <strong>MudExVirtualItem</strong> component, a virtualized container that efficiently renders content<br/> only when it becomes visible in the viewport.: Тази демонстрация показва компонента <strong>MudExVirtualItem</strong>, виртуализиран контейнер, който ефективно изобразява съдържание<br/> само когато стане видимо в прозореца за изглед.
+This demo shows how to pass a can close method: Тази демонстрация показва как да преминете метод за затваряне
+This demo shows how you can use a selection with MudExSelect with a custom item provider: Тази демонстрация показва как можете да използвате селекция с MudExSelect с доставчик на персонализирани артикули
+This demo uses SnapDrag as DragMode on the DialogOptionsEx: Тази демонстрация използва SnapDrag като DragMode в DialogOptionsEx
+This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open: Тази демонстрация използва IDialogEventService, за да провери преоразмеряването или плъзгането и съхранява най-новата позиция и размер като относителни стойности и да ги възстанови при следващото отваряне
+This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: Това демонстрира компонента MudExThemeEdit, който вътрешно използва MudExObjectEdit и MudExThemeSelect за редактиране на теми
+This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: Тази демонстрация показва препоръчителния начин за използване на MudExAdditionalAdornment с помощта на RenderFragments 'For' и 'ChildContent'
+This dialog can confirmed when slider value is greater then 10: Този диалогов прозорец може да потвърди, когато стойността на плъзгача е по-голяма от 10
+This is a Json representation of the TestModel. This is ignored for Export and Import: Това е Json представяне на TestModel. Това се игнорира за експортиране и импортиране
+This is a simple information dialog that closes after {0} seconds: Това е прост информационен диалог, който се затваря след {0} секунди
+This is a simple information dialog that closes after 0 seconds: Това е прост информационен диалогов прозорец, който се затваря след 0 секунди
+This is a simple information dialog that closes after 1 seconds: Това е прост информационен диалог, който се затваря след 1 секунда
+This is a simple information dialog that closes after 2 seconds: Това е прост информационен диалог, който се затваря след 2 секунди
+This is a simple information dialog that closes after 3 seconds: Това е прост информационен диалог, който се затваря след 3 секунди
+This is a simple information dialog that closes after 4 seconds: Това е прост информационен диалог, който се затваря след 4 секунди
+This is a simple information dialog that closes after 5 seconds: Това е прост информационен диалог, който се затваря след 5 секунди
+This is an Administrator Only View.: Това е изглед само за администратор.
+This is the MudEx Default theme: Това е темата по подразбиране на MudEx
+This is the sample Popover. In general it inherits the original MudPopover.: Това е примерът Popover. Като цяло наследява оригиналния MudPopover.
+This one card is still added without an corresponding item.: Тази карта все още се добавя без съответния елемент.
+This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: Това преминава като метод към опциите на диалоговия прозорец. Диалоговият прозорец няма да се затвори, ако методът върне false. Резултатът трябва да бъде бул&lt;бул&gt;
+This photo was taken in a small village in Istra Croatia.: Тази снимка е направена в малко селце в Истра, Хърватия.
+This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Този инструмент за избор носи анимации, по-добро поведение и диалогов прозорец, който поддържа всички DialogOptions. За да създадете свой собствен компонент за избор jus наследете от MudExPickerBase или просто да използвате просто съдържание, използвайте MudExPicker
+This sample demonstrate how to use the MudExCaptureService: Този пример демонстрира как да използвате MudExCaptureService
+This sample demonstrate the usage of MudExTreeView with an Item template: Този пример демонстрира използването на MudExTreeView с шаблон на елемент
+This sample uses the IDialogEventService to cancel the dialog close: Този пример използва IDialogEventService, за да отмени затварянето на диалоговия прозорец
+This sample uses the options for a can close callback: Този пример използва опциите за обратно извикване може да затвори
+This section can be placed inside a MudExGrid component.: Тази секция може да бъде поставена вътре в компонент на MudExGrid.
+Thistle: Бодил
+ThrottleInterval: ДроселИнтервал
+ti-ER: Тигриня (Еритрея)
+ti-ET: Тигриня (Етиопия)
+tig-ER: Тигре (Еритрея)
+Tilt: Наклон
+Time: Час
+Times: Пъти
+Times New Roman: Таймс Ню Роман
+TimeSeries: Времеви серии
+Tina Fey: Тина Фей
+Title: Заглавие
+Title is required!: Задължително е заглавие!
+tk-TM: Туркмен (Туркменистан)
+tn-BW: Сетсвана (Ботсвана)
+tn-ZA: Сетсвана (Южна Африка)
+to-TO: Тонга (Тонга)
+Toggle loading: Превключване на зареждане
+Toggle right-to-left/left-to-right: Превключване отдясно наляво/отляво надясно
+Toggle to {0}: Превключване към {0}
+Toggleable: Възможност за превключване
+ToggleAllFeatures: Превключване на всички функции
+ToggleFullPage: Превключване на цяла страница
+ToggleFullscreen: Превключване на цял екран
+ToggleMicrophone: ПревключванеМикрофон
+TogglePictureInPicture: ПревключванеКартинаВКартина
+TogglePlayPause: Превключване на пауза за възпроизвеждане
+Token is required: Изисква се токен
+Token Not Found!: Token не е намерен!
+Tokyo: Токио
+Tokyo - 100-0001: Токио - 100-0001
+Tokyo - 100-0001ender: Токио - 100-0001ender
+Tomato: Домат
+TomorrowBase16: TomorrowBase16
+TomorrowNightBase16: УтреНощБаза16
+TomorrowNightBlue: УтреНощСиньо
+TomorrowNightBright: УтреВечерЯрко
+ToolbarBackgroundColor: Лента с инструментиФонЦвят
+ToolbarButtonColor: Лента с инструментиБутонЦвят
+ToolbarButtonPosition: Лента с инструментиБутонПозиция
+ToolbarButtonSize: Лента с инструментиБутонРазмер
+ToolbarButtonVariant: Лента с инструментиБутонВариант
+ToolbarClass: Лента с инструментиКлас
+ToolBarClass: Лента с инструментиКлас
+ToolbarStyle: Лента с инструментиСтил
+ToolBarStyle: Стил на лентата с инструменти
+Tooltip: Пояснение
+ToolTip: Съвет за инструменти
+ToolTip Three: Съвет три
+ToolTip Two: Съвет втори
+ToolTipStyle: Стил на ToolTip
+Top: Връх
+TopCenter: Топцентър
+TopLeft: Горевляво
+TopRight: ГореВдясно
+Torch: Факел
+Toronto: Торонто
+Toronto - M1B 1A1: Торонто - M1B 1A1
+Toronto - M1B 1A1ender: Торонто - M1B 1A1ender
+tr-CY: Турски (Кипър)
+tr-TR: Турски (Турция)
+Trace: Проследи
+TrackInfoPosition: TrackInfoPosition
+TrackList: Списък с песни
+TrackListBehaviour: TrackListПоведение
+TrackListClass: TrackListClass
+TrackListCoverImage: TrackListCoverImage
+TrackListMode: TrackListMode
+TrackListPosition: TrackListPosition
+TrackListToggleButtonPosition: TrackListToggleButtonPosition
+Trail Details: Подробности за пътеката
+TransformOrigin: TransformOrigin
+Translations: Преводи
+Translations are being imported: Преводите се внасят
+Translations updated: Преводите са актуализирани
+Transparent: Прозрачен
+Trebuchet MS: Trebuchet MS
+TreeView: TreeView
+TreeView component that renders a tree structure of items.: TreeView компонент, който изобразява дървовидна структура от елементи.
+TreeViewBreadcrumb: TreeViewГалета
+TreeViewCardGrid: TreeViewCardGrid
+TreeViewDefault: TreeView по подразбиране
+TreeViewFlatList: TreeViewПлосък списък
+TreeViewHorizontal: Изглед на дървоХоризонтален
+TreeViewList: TreeViewList
+TreeViewMode: TreeViewMode
+TrueLeds: TrueLed
+TrueOrFalse: ВярноИлиНевярно
+Try different role: Опитайте различна роля
+Try MudEx online: Изпробвайте MudEx онлайн
+Try MudEx online CodeEditor: Опитайте MudEx онлайн CodeEditor
+ts-ZA: Xitsonga (Южна Африка)
+tt-RU: Татарски (Русия)
+Turquoise: Тюркоаз
+TwilightBase16: ЗдрачБаза16
+twq-NE: Tasawaq (Нигер)
+Type: Вид
+Type should be valid: Типът трябва да е валиден
+Typo: Правописна грешка
+TypoThemeDescription: TypoThemeОписание
+TypoThemeName: TypoThemeName
+tzm-Arab-MA: Централен атлас Тамазигт (арабски, Мароко)
+tzm-Latn-DZ: Central Atlas Tamazight (латински, Алжир)
+tzm-Latn-MA: Central Atlas Tamazight (латински, марокански)
+tzm-Tfng-MA: Central Atlas Tamazight (Тифинаг, Мароко)
+ug-CN: уйгурски (Китай)
+uk-UA: Украински (Украйна)
+Uma Thurman: Ума Търман
+Unassigned: Некласираните
+UncheckedIcon: UnmarkedIcon
+Underline: Подчертавам
+Undo: Отменям
+UndoIcon: Отмяна на иконата
+UnikittyDarkBase16: UnikittyDarkBase16
+UnikittyLightBase16: UnikittyLightBase16
+Unselectable: Неизбираем
+Unset: Незададен
+Update: Актуализирам
+Update automatically next time: Актуализирайте автоматично следващия път
+Update Brand: Актуализиране на марката
+Update Document: Актуализиране на документа
+Update Document Type: Актуализиране на типа документ
+Update Extended Attribute: Актуализиране на разширения атрибут
+Update Now: Актуализирай сега
+Update Permissions: Разрешения за актуализиране
+Update Product: Актуализиране на продукта
+Update Role: Роля за актуализиране
+Update Role Permissions: Актуализиране на разрешенията за роли
+Update User Roles: Актуализиране на потребителските роли
+UpdateBindingIfOnlyHSLChanged: UpdateBindingIfOnlyHSLChanged
+Updated: Актуализира
+Updated User Status.: Актуализирано потребителско състояние.
+UpdateItemsOnStateChange: UpdateItemsOnStateChange
+Upload: Качвам
+Upload Edit: Качване Редактиране
+Upload File: Качване на файл
+Upload Files: Качване на файлове
+Upload Folder: Качване на папка
+Upload Image: Качване на изображение
+Upload in dialog: Качване в диалогов прозорец
+Upload Qualifications and References: Качване на квалификации и препоръки
+UploadFieldId: UploadFieldId
+UploadFile: Качване на файл
+UploadFolder: UploadFolder
+UploadRequest: КачванеЗаявка
+UploadRequests: КачванеЗаявки
+ur-IN: Урду (Индия)
+ur-PK: Урду (Пакистан)
+url: URL адрес
+Url: URL адрес
+Use CodeGator Models: Използвайте модели на CodeGator
+Use MudExAdditionalAdornment ad ChildContent: Използване на MudExAdditionalDecoration ad ChildContent
+Use MudExAdditionalAdornment as ChildContent of a MudInput: Използване на MudExAdditionalУкрашение като детеСъдържание на калВход
+Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Вместо това използвайте MudExSelect и задайте MultiSelection на true и ValuePresenter на Chip.
+UseCanvas: ИзползвайПлатно
+UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
+UseItemTemplateForSelection: ИзползвайItemTemplateForSelection
+UseMudExColorBubble: ИзползвайMudExColorBubble
+UseNativeBrowserControl: UseNativeBrowserControl
+User: Потребител
+User {0} Registered. Please check your Mailbox to verify!: Потребител {0} регистриран. Моля, проверете пощенската си кутия, за да потвърдите имейл адреса си!
+User and Roles: Потребител и роли
+User Data: Потребителски данни
+User Deleted: Потребителят е изтрит
+User Name: Потребителско име
+User Not Active. Please contact the administrator.: Потребителят не е активен. Моля, изчакайте активиране или се свържете с администратора.
+User Not Found!: Потребителят не е намерен!
+User Registered: Регистриран е потребител!
+User Registered Mailbox: Регистриран потребител. Писмото за потвърждение е доставено до пощенската кутия.
+User registration is not allowed: Регистрацията на потребителя не е разрешена
+UserAttributes: Потребителски атрибути
+UserInformation: Информация за потребителя
+Username: Потребителско име
+UserName: Потребителско име
+Username {0} is already taken.: Потребителското име {0} вече е заето.
+Username cannot changed: Потребителското име не може да се промени
+UserName is required: Изисква се потребителско име
+UserName must be at least of length 6: Потребителското име трябва да е с дължина най-малко 6
+Username or Email: Потребителско име или имейл
+Users: Потребители
+Users and Roles: Потребители и роли
+Users exported: Експортирани потребители
+Uses the IDialogEventService and handles the before close event. Here you can just set args.Cancel to true to stop closing: Използва IDialogEventService и обработва събитието преди затваряне. Тук можете просто да зададете args. Отказ на true, за да спре затварянето
+UTC: UTC
+Utilities: Полезност
+uz-Arab-AF: Узбекски (арабски, Афганистан)
+uz-Cyrl-UZ: Узбекски (кирилица, Узбекистан)
+uz-Latn-UZ: Узбекски (латински, Узбекистан)
+vai-Latn-LR: Vai (латински, Либерия)
+vai-Vaii-LR: Вай (Вай, Либерия)
+Validate Upload Edit in MudForm: Валидиране на редактиране на качване в MudForm
+Validation: Ратифицирам
+Value: Стойност
+ValuePresenter: ValuePresenter
+Values: Стойности
+ValueString: СтойностНиз
+Vancouver: Ванкувър
+Vancouver - V5K 0A1: Ванкувър - V5K 0A1
+Vancouver - V5K 0A1ender: Ванкувър - V5K 0A1ender
+Variant: Версия
+ve-ZA: Venda (Южна Африка)
+Verdana: Вердана
+Version: Версия
+vi-VN: Виетнамски (Виетнам)
+Video Content-Type: Тип видео съдържание
+Video device: Видео устройство
+VideoDevice: Видеоустройство
+View: Изглед
+View Profile: Преглед на профила
+ViewBox: Преглед на кутията
+ViewDependsOnContentType: ViewDependsOnContentType
+ViewMode: ViewMode
+ViewportHeight: ViewportВисочина
+ViewportMaximum: ViewportМаксимум
+ViewportMinimum: Преглед на екранаМинимум
+ViewportWidth: ViewWidthWidth
+Viner Hand ITC: Viner Hand ITC
+Violet: Виолетов
+Virtualize: Виртуализира
+Visible: Видим
+Visualizer: Визуализатор
+VisualizerBackgroundColor: ВизуализаторBackgroundЦвят
+VisualizerElementBorderSize: ВизуализаторЕлементГраницаРазмер
+Vivaldi: Вивалди
+Vladimir Script: Владимир Скрипт
+vo-001: Volapük (Свят)
+Volume: Том
+Vs: Срещу
+Vs2015: Срещу 2015 г.
+VulcanBase16: ВулканБаза16
+vun-TZ: Вунджо (Танзания)
+wae-CH: Walser (Швейцария)
+wal-ET: Wolaytta (Етиопия)
+Warning: Предупреждение
+WarningContrastText: ПредупреждениеКонтрастТекст
+WarningDarken: ПредупреждениеПотъмняване
+WarningLighten: ПредупреждениеИзсветляване
+weather.json: weather.json
+Webdings: Ленти
+Week: Седмица
+WeightingFilter: Филтър за претегляне
+Welcome {0}: Добре дошли {0}
+whatever: каквото
+Wheat: Пшеница
+White: Бял
+WhiteBalanceMode: Режим на баланс на бялото
+WhiteList: Бял списък
+WhiteSmoke: Бял дим
+Wide Latin: Широк латински
+Width: Широчина
+Will be saved only when selected Permission: Ще бъде запазено само когато е избрано Разрешение
+Window: Прозорец
+Windows10Base16: Windows10Base16
+Windows10LightBase16: Windows10LightBase16
+Windows95Base16: Windows95Base16
+Windows95LightBase16: Windows95LightBase16
+WindowsHighContrastBase16: WindowsHighContrastBase16
+WindowsHighContrastLightBase16: WindowsHighContrastLightBase16
+WindowsNtBase16: WindowsNtBase16
+WindowsNtLightBase16: WindowsNtLightBase16
+Wingdings: крила
+With custom configuration: С персонализирана конфигурация
+With default configuration: С конфигурация по подразбиране
+With tabs: С раздели
+With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: С компонента MudExAdditionalAdornment можете да имате толкова украшения във всяка контрола, базирана на MudInput, като този.
+With this component you can have an animation while loading the main blazor app: С този компонент можете да имате анимация, докато зареждате основното приложение blazor
+With_Selected: '{0} Избрани'
+WithFullSpectrumAudioData: WithFullSpectrumAudioData
+WithFullSpectrumAudioDataPrefilledWithRandomData: СПълен спектърАудиоДанниПредварително попълнениССлучайни данни
+WithGoogleLatinFonts: СGoogleLatinFonts
+WithoutBounds: Без граници
+WithRandomData: СRandomData
+WithRealAudioData: WithRealAudioData
+wo-SN: Волоф (Сенегал)
+Wobble: Потреперване
+WoodlandBase16: Горска база16
+WordDokument.doc: WordDokument.doc
+WrapChips: Обвивки
+WrapToolBarContent: WrapToolBarСъдържание
+Xcode: Xcode
+XcodeDuskBase16: XcodeDuskBase16
+xh-ZA: isiXhosa (Южна Африка)
+Xml: Xml
+xog-UG: Сога (Уганда)
+Xt256: Хт256
+Yaml: Ямл
+yav-CM: Янбен (Камерун)
+Yellow: Жълт
+YellowGreen: ЖълтоЗелено
+Yes: Да
+yi-001: Идиш (свят)
+yo-BJ: Йоруба (Бенин)
+yo-NG: Йоруба (Нигерия)
+Yokohama: Йокохама
+Yokohama - 220-0001: Йокохама - 220-0001
+Yokohama - 220-0001ender: Йокохама - 220-0001ender
+you: ти
+You are logged out because the Permissions of one of your Roles have been updated.: Излизате от системата, защото разрешенията на една от вашите роли са актуализирани.
+You are logged out because the user with your Token has been deleted or token is expired.: Вие сте излезли, защото потребителят с вашия токен е изтрит или маркерът е изтекъл.
+You are logged out by an Administrator or profile change.: Излизате от системата си при промяна на администратор или профил.
+You are Logged Out.: Вие сте излезли.
+You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Можете също да използвате MudExAdditionalDecoration като ChildContent на MudInput
+You can now Login with your credentials: Вече можете да влезете с вашите идентификационни данни
+You cannot delete yourself: Не можете да изтриете себе си
+You clicked: Щракнахте
+You don't need an extra JsonEditor anymore: Вече нямате нужда от допълнителен JsonEditor
+You have {0} Users where you can pick from: Имате {0} потребители, от които можете да избирате
+You picked: Вие избрахте
+You received a new chat message from {0}: Получихте ново съобщение в чата от {0}
+You're leaving {0} and will redirected to {1}: Напускате {0} и ще се пренасочите към {1}
+Your e-mail address has been confirmed!: Вашият имейл адрес е потвърден!
+Your email address could not be verified. If you have any problems, please contact {0}: Вашият имейл адрес не може да бъде потвърден. Ако имате някакви проблеми, моля, свържете се с {0}
+Your Profile has been updated.: Вашият профил е актуализиран.
+Your Recent Activities.: Вашите скорошни дейности.
+ZenburnBase16: ZenburnBase16
+zgh-Tfng-MA: Стандартен марокански тамазигт (Тифинаг, Мароко)
+zh-CN: Китайски (Китай)
+zh-Hans-HK: Китайски (опростен, САР Хонконг)
+zh-Hans-MO: Китайски (опростен, САР Макао)
+zh-HK: Китайски (САР Хонконг)
+zh-MO: Китайски (САР Макао)
+zh-SG: Китайски (Сингапур)
+zh-TW: Китайски (Тайван)
+ZIndex: ZIndex
+ZipCode: Пощенски код
+Zoom: Увеличение
+Zoom in: Увеличаване
+Zoom out: Намаляване на мащаба
+ZoomInButtonIcon: ZoomInButtonIcon
+ZoomOnHover: ZoomOnHover
+ZoomOutButtonIcon: ZoomOutButtonIcon
+zu-ZA: isiZulu (Южна Африка)

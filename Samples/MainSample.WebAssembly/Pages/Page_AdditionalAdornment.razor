@@ -1,4 +1,5 @@
 ﻿@page "/additional-adornments"
+@inherits BasePage
 @using BlazorJS
 @using Microsoft.AspNetCore.Components.Rendering
 @using MudBlazor.Extensions.Core
@@ -8,7 +9,7 @@
 
 <DemoComponent PageType="@GetType()">
     
-    <MudText>With the <strong>MudExAdditionalAdornment</strong> component you can have as many adornments in any MudInput based input control like this.</MudText>
+    <MudText>@L["With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this."]</MudText>
 
     <MudExAdditionalAdornment Position="MoveContentPosition.BeforeEnd">
         <For>
@@ -17,7 +18,7 @@
                          GroupBy="@(x => x.State)"
                          PopoverAnimation="AnimationType.Pulse"
                          ToStringFunc="@(x => x.Name + " - " + x.PostalCode)"
-                         ItemCollection="@Page_MudExSelect.CitySamples" SearchBox="true" T="Page_MudExSelect.City" Label="Cities you want to live" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined">
+                         ItemCollection="@Page_MudExSelect.CitySamples" SearchBox="true" T="Page_MudExSelect.City" Label="@L["Cities you want to live"]" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined">
                 <ItemTemplate>
                     <MudAlert>@context?.Name</MudAlert>
                 </ItemTemplate>
@@ -31,18 +32,18 @@
     <div class="mt-2"></div>
     <MudExDivider Color="MudExColor.Primary"></MudExDivider>
 
-    <MudExpansionPanel Class="mb-5 mt-2" Expanded="false" Gutters="false" Text="Preferred way on MudExTextField">
+    <MudExpansionPanel Class="mb-5 mt-2" Expanded="false" Gutters="false" Text="@L["Preferred way on MudExTextField"]">
         <TitleContent>
             <div class="d-flex">
                 <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
-                <MudText>Preferred way on MudExTextField with <strong>For</strong> and <strong>ChildContent</strong></MudText>
+                <MudText>@L["Preferred way on MudExTextField with For and ChildContent"]</MudText>
             </div>
         </TitleContent>
         <ChildContent>
             <MudCard Class="mb-0" Elevation="0">
                 <MudCardHeader>
                     <MudStack Class="m-2">
-                        <MudText Typo="Typo.body2">This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`</MudText>
+                        <MudText Typo="Typo.body2">@L["This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`"]</MudText>
                     </MudStack>
                 </MudCardHeader>
                 <MudCardContent>
@@ -60,18 +61,18 @@
         </ChildContent>
     </MudExpansionPanel>
     
-    <MudExpansionPanel Class="mb-5" Gutters="false" Text="Use MudExAdditionalAdornment ad ChildContent">
+    <MudExpansionPanel Class="mb-5" Gutters="false" Text="@L["Use MudExAdditionalAdornment ad ChildContent"]">
         <TitleContent>
             <div class="d-flex">
                 <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
-                <MudText>Use MudExAdditionalAdornment as <strong>ChildContent</strong> of a MudInput</MudText>
+                <MudText>@L["Use MudExAdditionalAdornment as ChildContent of a MudInput"]</MudText>
             </div>
         </TitleContent>
         <ChildContent>
             <MudCard Class="mb-0" Elevation="0">
                 <MudCardHeader>
                     <MudStack Class="m-2">
-                        <MudText Typo="Typo.body2">You can also use MudExAdditionalAdornment as ChildContent of a MudInput</MudText>
+                        <MudText Typo="Typo.body2">@L["You can also use MudExAdditionalAdornment as ChildContent of a MudInput"]</MudText>
                     </MudStack>
                 </MudCardHeader>
                 <MudCardContent>
@@ -128,8 +129,8 @@
 
     void DemoContent(RenderTreeBuilder __builder)
     {
-        <MudIconButton Title="I'm a separate control inside of the normal input" OnClick="@(() => JsRuntime.AlertAsync("Hello"))" Icon="@Icons.Material.Filled.AccessAlarms"></MudIconButton>
-        <MudIconButton Title="I'm a another separate control inside of the normal input" OnClick="@(() => JsRuntime.AlertAsync("Hello from me as well"))" Icon="@Icons.Material.Filled.Coffee"></MudIconButton>
-        <MudIconButton Title="I'm a also another separate control inside of the normal input" OnClick="@(() => JsRuntime.AlertAsync("Hello whats up"))" Icon="@Icons.Material.Filled.Key"></MudIconButton>
+        <MudIconButton Title="@L["I'm a separate control inside of the normal input"]" OnClick="@(() => JsRuntime.AlertAsync("Hello"))" Icon="@Icons.Material.Filled.AccessAlarms"></MudIconButton>
+        <MudIconButton Title="@L["I'm a another separate control inside of the normal input"]" OnClick="@(() => JsRuntime.AlertAsync("Hello from me as well"))" Icon="@Icons.Material.Filled.Coffee"></MudIconButton>
+        <MudIconButton Title="@L["I'm a also another separate control inside of the normal input"]" OnClick="@(() => JsRuntime.AlertAsync("Hello whats up"))" Icon="@Icons.Material.Filled.Key"></MudIconButton>
     }
 }

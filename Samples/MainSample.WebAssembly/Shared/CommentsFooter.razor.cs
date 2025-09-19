@@ -27,7 +27,13 @@ public partial class CommentsFooter
     }
 
     [Parameter] public EventCallback<bool> AvailableChanged { get; set; }
-    
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
+    }
     private async Task Close()
     {
         _closing = true;

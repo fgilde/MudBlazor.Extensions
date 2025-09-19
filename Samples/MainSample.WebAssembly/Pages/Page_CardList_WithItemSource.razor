@@ -1,9 +1,9 @@
 ﻿@page "/card-with-items"
-
+@inherits BasePage
 @attribute [Demo(Name = "MudExCardList with ItemsSource", Icon = Icons.Material.Outlined.HorizontalSplit, Documentation = "This Demo demonstrate using the MudExCardList with an item source", ForComponentType = typeof(MudExCardList<>))]
 
 <DemoComponent PageType="@GetType()" Title="MudExCardList">
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => AddUsers(500)">Add 500 Users</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => AddUsers(500)">@L["Add 500 Users"]</MudButton>
 
     <SplitContainer>
         <Left>

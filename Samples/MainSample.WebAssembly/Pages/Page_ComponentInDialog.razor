@@ -1,4 +1,5 @@
 ﻿@page "/component-in-dialog"
+@inherits BasePage
 @using BlazorJS
 
 @attribute [Demo(Group = "Dialog Samples", Name = "Component in Dialog", Order = 50, Documentation = "Sample to see how you can render and use any component in a dialog as easy as possible", Icon = MaterialDesignIcons.Normal.FormDropdown)]
@@ -13,7 +14,7 @@
 
     private async Task ShowComponentSampleDialog()
     {
-        var res = await DialogService.ShowComponentInDialogAsync<MudSlider<int>>("Hello...", "This dialog can confirmed when slider value is greater then 10",
+        var res = await DialogService.ShowComponentInDialogAsync<MudSlider<int>>(L["Hello..."], L["This dialog can confirmed when slider value is greater then 10"],
             slider =>
             {
                 slider.Color = Color.Warning;
@@ -21,11 +22,13 @@
             dialog =>
             {
                  dialog.Icon = Icons.Material.Filled.StarRate;
-                 dialog.Buttons = MudExDialogResultAction.OkCancelWithOkCondition<MudSlider<int>>(slider => slider.Value > 10).Concat(new []{ new MudExDialogResultAction()
+                 dialog.Buttons = MudExDialogResultAction.OkCancelWithOkCondition<MudSlider<int>>(slider => slider.Value > 10).Concat([
+                     new MudExDialogResultAction()
                  {
-                     Label = "Hello",
+                     Label = L["Hello"],
                      OnClick = HelloOnClick
-                 }}).ToArray();
+                 }
+                 ]).ToArray();
             });
         if (!res.DialogResult.Canceled)
         {
@@ -35,7 +38,7 @@
 
     private void HelloOnClick()
     {
-        JsRuntime.AlertAsync("Hello clicked");
+        JsRuntime.AlertAsync(L["Hello clicked"]);
     }
 
 

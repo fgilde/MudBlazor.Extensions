@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+﻿using System.Globalization;
+using AKSoftware.Localization.MultiLanguages;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Extensions;
-using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Options;
+using Nextended.Core.Types;
 
 namespace MainSample.WebAssembly.Shared;
 
@@ -17,7 +18,11 @@ public partial class MainLayout
     public bool IsOverlayVisible { get; set; }
     public bool IsDark { get; set; } = true;
     public event EventHandler<ThemeChangedEventArgs> ThemeChanged;
+    public event EventHandler<EventArgs<CultureInfo>> LanguageChanged;
     [Inject] private IMudMarkdownThemeService MudMarkdownThemeService { get; set; }
+    [Inject] private ILanguageContainerService LanguageContainerService { get; set; }
+
+    
     private async void ShowAbout()
     {
         var op = new DialogOptionsEx
@@ -82,5 +87,13 @@ public partial class MainLayout
         StateHasChanged();
         HandleThemeChange(IsDark, theme);
     }
-    
+
+
+    public void SetLanguage(CultureInfo info)
+    {
+        CultureInfo.CurrentUICulture = info;
+        LanguageContainerService.SetLanguage(info);
+        StateHasChanged();
+        LanguageChanged?.Invoke(this, new EventArgs<CultureInfo>(info));
+    }
 }

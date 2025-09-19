@@ -1,4 +1,5 @@
 ﻿@page "/virtualized-object-edit"
+@inherits BasePage
 
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Options
@@ -10,8 +11,8 @@
 
 <DemoComponent DocFiles="@(new[] {"Docs/ObjectEdit.md"})" PageType="@GetType()">
     <MudGrid Style="margin-top: 20px;margin-left: -6px;margin-bottom: 3px;">
-        <MudCheckBox @bind-Value="@virtualize">Virtualize</MudCheckBox>
-        <MudCheckBox @bind-Value="@disableGrouping">Disable Grouping</MudCheckBox>
+        <MudCheckBox @bind-Value="@virtualize">@L["Virtualize"]</MudCheckBox>
+        <MudCheckBox @bind-Value="@disableGrouping">@L["Disable Grouping"]</MudCheckBox>
     </MudGrid>
     <MudExObjectEditForm Height="80" SizeUnit="CssUnit.ViewportHeight" ActionBarColor="Color.Surface"
                          Virtualize="@virtualize"

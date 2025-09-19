@@ -8,6 +8,7 @@
 @using MudBlazor.Extensions.Attribute
 @using System.Reflection
 @using MudBlazor.Extensions.Api
+@inherits BasePage
 
 @if (_loaded)
 {
@@ -19,7 +20,7 @@
     else if (DocumentationAvailable)
     {
         <PageHeader>@Path.GetFileNameWithoutExtension(File)</PageHeader>
-        <DemoMarkdown Value="@DocumentationValue"></DemoMarkdown>
+        <DemoMarkdown Value="@L[DocumentationValue]"></DemoMarkdown>
     }
     else
     {
@@ -53,10 +54,10 @@ else
                        @if (!string.IsNullOrEmpty(documentationValue))
                        {
                            <MudTabPanel Text="Documentation">
-                                <DemoMarkdown Value="@documentationValue"></DemoMarkdown>
+                                <DemoMarkdown Value="@L[documentationValue]"></DemoMarkdown>
                            </MudTabPanel>
                        }
-                       <MudTabPanel Text="API">
+                       <MudTabPanel Text="@L["API"]">
                             <MudExApiView Search="@Search" ShowHeader="false" Expanded="@forSingleType" Type="@type"></MudExApiView>
                        </MudTabPanel>
             </MudTabs>

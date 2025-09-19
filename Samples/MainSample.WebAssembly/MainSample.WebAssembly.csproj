@@ -5,9 +5,47 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+    <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\ar-SA.yml" />
+    <None Remove="Resources\bg-BG.yml" />
+    <None Remove="Resources\cs-CZ.yml" />
+    <None Remove="Resources\da-DK.yml" />
+    <None Remove="Resources\de-DE.yml" />
+    <None Remove="Resources\el-CY.yml" />
+    <None Remove="Resources\en-US.yml" />
+    <None Remove="Resources\es-ES.yml" />
+    <None Remove="Resources\fr-FR.yml" />
+    <None Remove="Resources\hr-HR.yml" />
+    <None Remove="Resources\it-IT.yml" />
+    <None Remove="Resources\ja-JP.yml" />
+    <None Remove="Resources\ko-KR.yml" />
+    <None Remove="Resources\nl-NL.yml" />
+    <None Remove="Resources\pl-PL.yml" />
+    <None Remove="Resources\sv-SE.yml" />
+    <None Remove="Resources\tr-TR.yml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ar-SA.yml" />
+    <EmbeddedResource Include="Resources\bg-BG.yml" />
+    <EmbeddedResource Include="Resources\cs-CZ.yml" />
+    <EmbeddedResource Include="Resources\da-DK.yml" />
+    <EmbeddedResource Include="Resources\de-DE.yml" />
+    <EmbeddedResource Include="Resources\el-CY.yml" />
+    <EmbeddedResource Include="Resources\en-US.yml" />
+    <EmbeddedResource Include="Resources\es-ES.yml" />
+    <EmbeddedResource Include="Resources\fr-FR.yml" />
+    <EmbeddedResource Include="Resources\hr-HR.yml" />
+    <EmbeddedResource Include="Resources\it-IT.yml" />
+    <EmbeddedResource Include="Resources\ja-JP.yml" />
+    <EmbeddedResource Include="Resources\ko-KR.yml" />
+    <EmbeddedResource Include="Resources\nl-NL.yml" />
+    <EmbeddedResource Include="Resources\pl-PL.yml" />
+    <EmbeddedResource Include="Resources\sv-SE.yml" />
+    <EmbeddedResource Include="Resources\tr-TR.yml" />
     <EmbeddedResource Include="Shared\Disqus.razor.css" />
   </ItemGroup>
 
@@ -24,6 +62,8 @@
     <PackageReference Include="BlazorMonaco" Version="3.3.0" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudBlazor.Extensions" Version="*-*" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="MudExObjectEdit.CodeGatorAdapter" Version="*-*" />
+    <PackageReference Include="AKSoftware.Localization.MultiLanguages.Blazor" Version="1.5.0" />
+
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' != 'Release'">
@@ -35,6 +75,10 @@
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
 
+  <Target Name="Translate" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+    <Exec IgnoreExitCode="true" Command="dotnet tool install --global ResourceTranslator.CLI" />
+    <Exec IgnoreExitCode="true" Command="resourceTranslator --optionsfile $(ProjectDir)resourceTranslationOptions.json -f $(ProjectDir)Resources/en-US.yml" />
+  </Target>
 
   <!-- Collect deployments -->
   <!--<PropertyGroup>

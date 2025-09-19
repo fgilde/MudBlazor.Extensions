@@ -1,4 +1,5 @@
 ﻿@page "/shared-config"
+@inherits BasePage
 
 @using MudBlazor.Extensions.Options
 @using Nextended.Core.Extensions
@@ -9,16 +10,16 @@
 
 
 <DemoComponent PageType="@GetType()" DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "ObjectEditMetaConfig/SomeClassWithUserMetaConfiguration.cs", "ObjectEditMetaConfig/UserModelMetaConfiguration.cs"})">
-    <MudButton Variant="Variant.Outlined" Color="Color.Primary" EndIcon="@Icons.Material.Filled.PersonAdd" OnClick="@AddUser">Add user to both lists</MudButton>
+    <MudButton Variant="Variant.Outlined" Color="Color.Primary" EndIcon="@Icons.Material.Filled.PersonAdd" OnClick="@AddUser">@L["Add user to both lists"]</MudButton>
 
-    <h2 style="text-decoration: underline">Edit a complex Model with included Collection of users</h2>
+    <h2 style="text-decoration: underline">@L["Edit a complex Model with included Collection of users"]</h2>
     <MudExObjectEditForm DefaultGroupName="Data" Value="@Model"></MudExObjectEditForm>
 
     
-    <h2 style="text-decoration: underline">Edit only a Collection of users</h2>
+    <h2 style="text-decoration: underline">@L["Edit only a Collection of users"]</h2>
     <br />
     
-    <MudButton Variant="Variant.Outlined" Color="Color.Primary" EndIcon="@Icons.Material.Filled.PersonAdd" OnClick="@AddSome">Add 1000 random items</MudButton>
+    <MudButton Variant="Variant.Outlined" Color="Color.Primary" EndIcon="@Icons.Material.Filled.PersonAdd" OnClick="@AddSome">@L["Add 1000 random items"]</MudButton>
     <MudExCollectionEditor DialogOptions="@Options" MaxHeight="500" Items="@Users"></MudExCollectionEditor>
 </DemoComponent>
 
@@ -46,10 +47,10 @@
 
     private async Task AddUser()
     {
-        var res = await DialogService.EditObjectAsync<UserModel>(new UserModel(), "Add user", Options.SetProperties(o => o.Position = DialogPosition.TopCenter), null, new DialogParameters()
+        var res = await DialogService.EditObjectAsync<UserModel>(new UserModel(), L["Add user"], Options.SetProperties(o => o.Position = DialogPosition.TopCenter), null, new DialogParameters()
         {
-            {nameof(MudExObjectEditDialog<UserModel>.CancelButtonText), "Annular"},
-            {nameof(MudExObjectEditDialog<UserModel>.SaveButtonText), "Confirminger"},
+            {nameof(MudExObjectEditDialog<UserModel>.CancelButtonText), L["Cancel"].Value},
+            {nameof(MudExObjectEditDialog<UserModel>.SaveButtonText), L["Confirm"].Value},
             {nameof(MudExObjectEditDialog<UserModel>.SaveButtonColor), Color.Surface}
         });
 

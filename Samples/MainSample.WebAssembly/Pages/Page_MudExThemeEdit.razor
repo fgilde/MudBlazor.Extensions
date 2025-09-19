@@ -1,4 +1,6 @@
 ﻿@page "/theme-edit"
+@inherits BasePage
+
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 
@@ -6,18 +8,18 @@
 
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new[] {$"Pages/{GetType().Name}.razor", $"/ClientTheme.cs"})">
-    <MudText Class="mb-5" Typo="Typo.subtitle1">The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.</MudText>
+    <MudText Class="mb-5" Typo="Typo.subtitle1">@L["The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements."]</MudText>
     @if (_bindDarkMode)
     {
         string mode = MainLayout.Instance.IsDark ? "darkmode" : "lightmode";
-        <MudText Typo="Typo.subtitle2">@($"Currently ThemeEditor is bind to DarkMode from current theme and in {mode}. You can change DarMode in the Top right menu or disable binding by toggle the switch")</MudText>
+        <MudText Typo="Typo.subtitle2">@L[("Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can change DarMode in the Top right menu or disable binding by toggle the switch"), mode]</MudText>
     }
     else
     {
-        <MudText Typo="Typo.subtitle2">@($"Currently ThemeEditor is not bind to DarkMode from current theme and works for Dark and light. You can enable binding by toggle the switch")</MudText>
+        <MudText Typo="Typo.subtitle2">@L[($"Currently ThemeEditor is not bind to DarkMode from current theme and works for Dark and light. You can enable binding by toggle the switch")]</MudText>
 
     }
-    <MudSwitch Color="Color.Primary" Label="Bind Dark Mode" @bind-Value="_bindDarkMode"></MudSwitch>
+    <MudSwitch Color="Color.Primary" Label="@L["Bind Dark Mode"]" @bind-Value="_bindDarkMode"></MudSwitch>
 
     <MudExDivider Size="3"></MudExDivider>
     <div class="mb-5"></div>
@@ -77,7 +79,7 @@
     private async Task OnDeleteTheme(ThemePreset<ClientTheme> arg)
     {
         // Here you can implement your logic. For example delete from server. Important: Update presets and call StateHasChanged()
-        var res = await DialogService.ShowConfirmationDialogAsync("Confirmation", $"Are you sure to delete {arg.Name}?", "Yes", "No");
+        var res = await DialogService.ShowConfirmationDialogAsync(L["Confirmation"], $"{L["Are you sure to delete"]} {arg.Name}?", L["Yes"], L["No"]);
         if (res)
         {
             await DeleteFromStorageAsync(arg);
@@ -118,7 +120,7 @@
 
     private async Task OnThemeSaveClick(ThemeChangedArgs<ClientTheme> args)
     {
-        await DialogService.ShowInformationAsync($"Saved {args.Preset?.Name}", "We do nothing here in this Demo because we store theme on every change. However you can use ThemeSaved to do something if the user has save clicked", Icons.Material.Filled.Save, new DialogOptionsEx {
+        await DialogService.ShowInformationAsync($"{L["Saved"]} {args.Preset?.Name}", L["We do nothing here in this Demo because we store theme on every change. However you can use ThemeSaved to do something if the user has save clicked"], Icons.Material.Filled.Save, new DialogOptionsEx {
             Animations = new[] { AnimationType.SlideIn },
             Position = DialogPosition.TopCenter,
             DisablePositionMargin = true

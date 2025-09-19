@@ -1,4 +1,5 @@
 ﻿@page "/mudex-object-edit-with-configuration"
+@inherits BasePage
 
 @using Newtonsoft.Json
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
@@ -11,7 +12,7 @@
 
 <MudButton OnClick="@TestRef">Test firstname reference</MudButton>
 <DemoComponent PageType="@GetType()" DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "ObjectEditMetaConfig/MySimpleTypeRegistrations.cs", "Shared/ProgrammingSkillSelect.razor"})">
-    <MudButton Variant="Variant.Outlined" Color="Color.Warning" OnClick="@(() => _isLoading = !_isLoading)">Toggle loading</MudButton>
+    <MudButton Variant="Variant.Outlined" Color="Color.Warning" OnClick="@(() => _isLoading = !_isLoading)">@L["Toggle loading"]</MudButton>
     <MudExObjectEditForm 
         T="UserInformation"
         @ref="form"
@@ -37,7 +38,7 @@
         AutoSaveRestoreState="true"
         GroupingStyle="GroupingStyle.Flat">
         <ActionContent>
-            <MudButton Class="ml-2" DropShadow="false" Variant="Variant.Filled" Color="Color.Warning">My Custom action</MudButton>
+            <MudButton Class="ml-2" DropShadow="false" Variant="Variant.Filled" Color="Color.Warning">@L["My Custom action"]</MudButton>
         </ActionContent>
         <ToolBarContent>
             <MudIconButton Title="Clear" Icon="@Icons.Material.Filled.ClearAll" OnClick="@(() => form.Clear())"/>

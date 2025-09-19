@@ -1,11 +1,13 @@
-﻿@using MudBlazor.Extensions.Helper;
+﻿@using Microsoft.Extensions.Localization
+@using MudBlazor.Extensions.Helper;
 @using MudBlazor.Extensions.Options;
+@inject IStringLocalizer<ThemeEdit> L
 
 
 
 <MudIconButton Class="mudex-demo-themeedit-toggle-button" Icon="@Icons.Material.Filled.Palette" Color="Color.Inherit" OnClick="@EditTheme" />
 <MudExPopover OnBlur="@(OnThemeBlur)" 
-              SelectorsForIgnoreBlur=".mudex-demo-themeedit-toggle-button" Open="@_themeEditOpen" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter" MaxHeight="900">
+              SelectorsForIgnoreBlur=".mudex-demo-themeedit-toggle-button" Open="@_themeEditOpen" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft" MaxHeight="900">
     <MudItem xs="12" Style="padding:4px;">
         <MudCard @onclick="@(() => { _themeEditOpen = false; })" Style="border-width: 3px;" Class="cursor-pointer hover-border" Outlined="true">
             <MudCardHeader>
@@ -13,11 +15,11 @@
                     <MudGrid Justify="Justify.SpaceBetween">
                         <MudItem>
                             <MudCheckBox UncheckedIcon="@Icons.Material.Outlined.LightMode" CheckedIcon="@Icons.Material.Outlined.DarkMode" 
-                                         T="bool" ValueChanged="@(OnDarkChange)" Value="@IsDark" Color="Color.Inherit" Label="Dark Mode" />
+                                         T="bool" ValueChanged="@(OnDarkChange)" Value="@IsDark" Color="Color.Inherit" Label="@L["Dark Mode"]" />
                         </MudItem>
                         <MudItem Class="d-flex justify-end">
-                            <MudExIconButton ToolTip="Edit Current" OnClick="@(EditThemeFull)" Icon="@Icons.Material.Filled.Edit"></MudExIconButton>
-                            <MudExIconButton ToolTip="Create, Edit or delete themes" OnClick="@(EditAllThemes)" Icon="@Icons.Material.Filled.Settings"></MudExIconButton>
+                            <MudExIconButton ToolTip="@L["Edit Current"]" OnClick="@(EditThemeFull)" Icon="@Icons.Material.Filled.Edit"></MudExIconButton>
+                            <MudExIconButton ToolTip="@L["Create, Edit or delete themes"]" OnClick="@(EditAllThemes)" Icon="@Icons.Material.Filled.Settings"></MudExIconButton>
                         </MudItem>
                     </MudGrid>
 
@@ -75,6 +77,7 @@
         base.OnInitialized();
         if (MainLayout.Instance != null)
         {
+            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
             MainLayout.Instance.ThemeChanged += async (_, _) =>
             {
                 _themes = await ClientTheme.GetAllThemes(LocalStorageService);

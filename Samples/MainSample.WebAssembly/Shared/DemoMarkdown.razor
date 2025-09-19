@@ -2,7 +2,8 @@
 @using Nextended.Core.Extensions
 @using Markdig.Syntax.Inlines
 @using System.Text.RegularExpressions
-
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<DemoMarkdown> L
 @if (CenterImagesAndHeadlines)
 {
     <style>
@@ -74,8 +75,6 @@
             );
         await JsRuntime.WaitForNamespaceAsync("highlightCodeElement", TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(300));
         _initialized = true;
-        if (MainLayout.Instance != null)
-            MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
         await base.OnInitializedAsync();
     }
 
@@ -117,4 +116,11 @@
     }
 
     private string _value;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
+    }
 }

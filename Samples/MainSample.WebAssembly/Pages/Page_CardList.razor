@@ -1,10 +1,11 @@
 ﻿@page "/card"
+@inherits BasePage
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
 @attribute [Demo(Name = "MudExCardList", Icon = Icons.Material.Outlined.HorizontalSplit, Documentation = "This Demo demonstrate using for the MudExCardList", ForComponentType = typeof(MudExCardList<>))]
 
 <DemoComponent PageType="@GetType()" Title="MudExCardList">
-    <MudSlider @bind-Value="itemCount" Min="0" Max="40" Color="Color.Info" Class="mb-6">Items: @itemCount.ToString()</MudSlider>
+    <MudSlider @bind-Value="itemCount" Min="0" Max="40" Color="Color.Info" Class="mb-6">@L["Items"]: @itemCount.ToString()</MudSlider>
     <SplitContainer>
         <Left>
             <MudExCardList @ref="component" TData="object">
@@ -13,18 +14,18 @@
                     <MudCard>
                         <MudCardHeader Style="z-index: 5">
                             <CardHeaderContent>
-                                <MudText Typo="Typo.h6">Sample Headline</MudText>
+                                <MudText Typo="Typo.h6">@L["Sample Headline"]</MudText>
                             </CardHeaderContent>
                             <CardHeaderActions>
                                 <MudIconButton Icon="@Icons.Material.Filled.Camera" Color="Color.Default"/>
                             </CardHeaderActions>
                         </MudCardHeader>
                         <MudCardContent Style="z-index: 5">
-                            <MudText>Super sample Content text.</MudText>
-                            <MudText Typo="Typo.body2">Subline descriptin for sample card.</MudText>
+                            <MudText>@L["Super sample Content text."]</MudText>
+                            <MudText Typo="Typo.body2">@L["Subline description for sample card."]</MudText>
                         </MudCardContent>
                         <MudCardActions Style="z-index: 5">
-                            <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary">@L["Read More"]</MudButton>
                         </MudCardActions>
                     </MudCard>
                 }

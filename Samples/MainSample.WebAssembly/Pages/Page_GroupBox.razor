@@ -1,12 +1,12 @@
 ﻿@page "/mud-ex-group-box"
-
+@inherits BasePage
 
 @attribute [Demo(Name = "GroupBox", Icon = Icons.Material.Outlined.Group, Documentation = "As simple as it sound. This is a simple GroupBox", ForComponentType = typeof(MudExGroupBox))]
 
 <DemoComponent PageType="@GetType()" >
     <SplitContainer>
         <Left>
-            <MudExGroupBox @ref="component" Text="Hello">
+            <MudExGroupBox @ref="component" Text="@L["Hello"]">
                 <MudGrid Spacing="3" Justify="Justify.Center">
                     <MudItem>
                         <MudPaper Height="140px" Width="140px"/>

@@ -1,5 +1,6 @@
 ﻿
 @page "/readme"
+@inherits BasePage
 
 <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudExGradientText Animate="false"
@@ -22,8 +23,7 @@
 {
     protected override async Task OnInitializedAsync()
     {
-        if (MainLayout.Instance != null)
-            MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
+        await base.OnInitializedAsync();
         Value = await Http.GetStringAsync("https://raw.githubusercontent.com/fgilde/MudBlazor.Extensions/main/README.md");
     }
     private string Value { get; set; }

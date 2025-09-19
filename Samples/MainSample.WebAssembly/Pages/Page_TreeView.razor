@@ -1,4 +1,6 @@
 ﻿@page "/tree-view"
+@inherits BasePage
+
 @using MudBlazor.Extensions.Core.Enums
 
 @attribute [Demo(Name = "MudExTreeView", Order = 0, Group = "TreeView", Icon = Icons.Material.Outlined.AccountTree, Documentation = "MudExTreeView is useful to bind tree structured items. The control that should used can be set with the ViewMode property", ForComponentType = typeof(MudExTreeView<>))]
@@ -6,9 +8,9 @@
 <DemoComponent DocFiles="@(new [] {"Docs/MudExTreeView.md"})" PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "SampleTreeStructure.cs"})">
     <MudExEnumSelect Variant="Variant.Outlined" Class="mb-2 mt-4" TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />
     <p>Selected: @_selectedNode?.Name</p>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => component.ExpandAll()">Expand all nodes</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => component.ExpandAllNotLoaded()">Expand &nbsp; <b>not</b> &nbsp; loaded nodes</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => component.ExpandAllLoaded()">Expand loaded nodes</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => component.ExpandAll()">@L["Expand all nodes"]</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => component.ExpandAllNotLoaded()">@L["Expand &nbsp; <b>not</b> &nbsp; loaded nodes"]</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => component.ExpandAllLoaded()">@L["Expand loaded nodes"]</MudButton>
     <MudExDivider/>
     <MudExTreeView @bind-SelectedNode="_selectedNode"
                    @ref="component"

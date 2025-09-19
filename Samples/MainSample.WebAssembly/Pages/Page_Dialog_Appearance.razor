@@ -1,4 +1,5 @@
 ﻿@page "/dialog-appearance"
+@inherits BasePage
 @using MudBlazor.Extensions.Options
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Core
@@ -13,9 +14,9 @@
     <SplitContainer>
         <Left>
             <div>
-                <MudButton OnClick="@ShowSample1" Variant="Variant.Filled" Color="Color.Primary">Show Sample 1</MudButton>
-                <MudButton OnClick="@ShowSample2" Variant="Variant.Filled" Color="Color.Primary">Show Sample 2</MudButton>
-                <MudButton OnClick="@ShowSample3" Variant="Variant.Filled" Color="Color.Primary">Show Sample 3</MudButton>
+                <MudButton OnClick="@ShowSample1" Variant="Variant.Filled" Color="Color.Primary">@L["Show Sample 1"]</MudButton>
+                <MudButton OnClick="@ShowSample2" Variant="Variant.Filled" Color="Color.Primary">@L["Show Sample 2"]</MudButton>
+                <MudButton OnClick="@ShowSample3" Variant="Variant.Filled" Color="Color.Primary">@L["Show Sample 3"]</MudButton>
             </div>
 
             @if (!string.IsNullOrEmpty(_code))
@@ -29,7 +30,7 @@
         <Right>
             <MudExObjectEdit @ref="_edit" T="DialogOptionsEx" StickyToolbar="true" ToolbarColor="Color.Surface" StickyToolbarTop="-8px" DefaultGroupName="Other" Value="@Options">
                 <ToolBarContent>
-                    <MudButton OnClick="@Show" Variant="Variant.Filled" Color="Color.Primary">Show With this Options</MudButton>
+                    <MudButton OnClick="@Show" Variant="Variant.Filled" Color="Color.Primary">@L["Show With this Options"]</MudButton>
                 </ToolBarContent>
             </MudExObjectEdit>
         </Right>
@@ -82,7 +83,7 @@
 
     private Task Show()
     {
-        return DialogService.ShowExAsync<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, Options);
+        return DialogService.ShowExAsync<SampleDialog>(L["Simple Dialog"], dialog => { dialog.ContentMessage = L["Hello from dialog sample page"]; }, Options);
     }
 
     private void ShowSample1()

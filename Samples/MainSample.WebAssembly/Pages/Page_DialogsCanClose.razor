@@ -1,4 +1,5 @@
 ﻿@page "/dialogs-closing-event"
+@inherits BasePage
 @implements IAsyncDisposable
 @using BlazorJS
 @using MudBlazor.Extensions.Options
@@ -12,17 +13,17 @@
     <MudGrid Style="width: 100%" Justify="Justify.Center">
         <MudItem xs="12">
             <MudAlert>
-                <p> This demo shows how to pass a can close method</p>
-                <p> <b>Method 1:</b> This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;</p>
-                <li>Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case <code>SampleDialog</code></li>
-                <p> <b>Method 2:</b> Uses the IDialogEventService and handles the before close event. Here you can just set args.Cancel to true to stop closing</p>
+                <p> @L["This demo shows how to pass a can close method"]</p>
+                <p> <b>@L["Method 1"]:</b> @L["This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;"]</p>
+                <li>@L["Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case"] <code>SampleDialog</code></li>
+                <p> <b>@L["Method 2"]:</b> @L["Uses the IDialogEventService and handles the before close event. Here you can just set args.Cancel to true to stop closing"]</p>
             </MudAlert>
         </MudItem>
         <MudItem xs="3" Class="mb-4">
-            <MudButton Class="m-4" OnClick="@ShowSampleDialogMethod1" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog METHOD 1</MudButton>
+            <MudButton Class="m-4" OnClick="@ShowSampleDialogMethod1" Variant="Variant.Filled" Color="Color.Primary">@L["Show Sample Dialog METHOD 1"]</MudButton>
         </MudItem>
         <MudItem xs="3" Class="mb-4">
-            <MudButton Class="m-4" OnClick="@ShowSampleDialogMethod2" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog METHOD 2</MudButton>
+            <MudButton Class="m-4" OnClick="@ShowSampleDialogMethod2" Variant="Variant.Filled" Color="Color.Primary">@L["Show Sample Dialog METHOD 2"]</MudButton>
         </MudItem>
     </MudGrid>
 </DemoComponent>
@@ -33,13 +34,13 @@
 
     private async Task HandleClosing(DialogClosingEvent arg)
     {
-        arg.Cancel = !(await JsRuntime.ConfirmAsync("Are you sure to close"));
+        arg.Cancel = !(await JsRuntime.ConfirmAsync(L["Are you sure to close"]));
     }
 
     [JSInvokable]
     public Task<bool> CanCloseDialog()
     {
-        return JsRuntime.ConfirmAsync("Are you sure to close");
+        return JsRuntime.ConfirmAsync(L["Are you sure to close"]);
     }
 
     private async Task ShowSampleDialogMethod1()
@@ -49,7 +50,7 @@
         options.DragMode = MudDialogDragMode.Simple;
         options.CanCloseCallbackName = nameof(CanCloseDialog);
         options.CanCloseCallbackReference = DotNetObjectReference.Create(this as object);
-        await DialogService.ShowExAsync<SampleDialog>("", dialog => { dialog.ContentMessage = "This sample uses the options for a can close callback"; }, options);
+        await DialogService.ShowExAsync<SampleDialog>("", dialog => { dialog.ContentMessage = L["This sample uses the options for a can close callback"]; }, options);
     }
 
     private async Task ShowSampleDialogMethod2()
@@ -60,7 +61,7 @@
         options.Position = DialogPosition.CenterRight;
         options.Resizeable = true;
         options.DragMode = MudDialogDragMode.Simple;
-        var r = await DialogService.ShowExAsync<SampleDialog>("", dialog => { dialog.ContentMessage = "This sample uses the IDialogEventService to cancel the dialog close"; }, options);
+        var r = await DialogService.ShowExAsync<SampleDialog>("", dialog => { dialog.ContentMessage = L["This sample uses the IDialogEventService to cancel the dialog close"]; }, options);
         await r.Result;
         EventService.Unsubscribe<DialogClosingEvent>(HandleClosing);
     }

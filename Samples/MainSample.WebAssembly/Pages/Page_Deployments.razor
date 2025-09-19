@@ -1,11 +1,12 @@
 ﻿@page "/deployments"
+@inherits BasePage
 @using System.Globalization
 @using MudBlazor.Extensions.Core
 
 
 <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="d-flex flex-column h-100 p-4">
-    <MudText Typo="Typo.h4" GutterBottom="true">Deployment History | Time Machine</MudText>
-    <MudText Typo="Typo.subtitle1" GutterBottom="true">Here you can see and visit older versions to compare features and errors.</MudText>
+    <MudText Typo="Typo.h4" GutterBottom="true">@L["Deployment History | Time Machine"]</MudText>
+    <MudText Typo="Typo.subtitle1" GutterBottom="true">@L["Here you can see and visit older versions to compare features and errors."]</MudText>
 
     <MudDivider Class="mb-4" />
 
@@ -15,7 +16,7 @@
     }
     else if (!_deployments.Any())
     {
-        <MudText Typo="Typo.body1">No deployments found.</MudText>
+        <MudText Typo="Typo.body1">@L["No deployments found."]</MudText>
     }
     else
     {
@@ -48,7 +49,7 @@
                         <div style="display: flex">
                             @if (IsCurrent(context.Item))
                             {
-                                <MudExIcon Size="Size.Small" Color="MudExColor.Success" Title="Current version" Icon="@Icons.Material.Filled.Check" />
+                                <MudExIcon Size="Size.Small" Color="MudExColor.Success" Title="@L["Current version"]" Icon="@Icons.Material.Filled.Check" />
                             }
                             <MudText Color="GetColorCurrent(context.Item)">@context.Item.CreatedOn?.ToString("dd.MM.yyyy HH:mm")</MudText>
                             <MudText Style="align-self: center;" Color="GetColorCurrent(context.Item)" Typo="Typo.caption" Class="ml-2">(@GetRelativeTime(context.Item.CreatedOn))</MudText>
@@ -56,22 +57,22 @@
                     </CellTemplate>
                 </PropertyColumn>
 
-                <PropertyColumn Property="context => context.ProjectName" Title="Project" />
-                <PropertyColumn Property="context => context.AssemblyVersion" Title="MudEx Version">
+                <PropertyColumn Property="context => context.ProjectName" Title="@L["Project"]" />
+                <PropertyColumn Property="context => context.AssemblyVersion" Title="@L["MudEx Version"]">
                     <CellTemplate Context="context">
                         <MudChip T="Deployment" Color="Color.Primary" Variant="Variant.Outlined">
                             @context.Item.AssemblyVersion
                         </MudChip>
                     </CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="context => context.MudBlazorVersion" Title="MudBlazor Version">
+                <PropertyColumn Property="context => context.MudBlazorVersion" Title="@L["MudBlazor Version"]">
                     <CellTemplate Context="context">
                         <MudChip T="Deployment" Color="Color.Info" Variant="Variant.Outlined">
                             @context.Item.MudBlazorVersion
                         </MudChip>
                     </CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="context => context.Environment" Title="Environment" />
+                <PropertyColumn Property="context => context.Environment" Title="@L["Environment"]" />
 
                 <TemplateColumn Title="Link" Filterable="false" Sortable="false">
                     <CellTemplate Context="context">
@@ -80,7 +81,7 @@
                                          Href="@context.Item.Url"
                                          Color="Color.Primary"
                                          Size="Size.Small"
-                                         ToolTip="Open deployment URL" />
+                                         ToolTip="@L["Open deployment URL"]" />
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>

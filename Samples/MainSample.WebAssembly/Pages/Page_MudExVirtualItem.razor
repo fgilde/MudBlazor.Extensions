@@ -1,4 +1,6 @@
 ﻿@page "/virtual-item"
+@inherits BasePage
+
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 
@@ -9,7 +11,7 @@
 
         <MudCard Elevation="4" Style="position: fixed; top: 54px; z-index: 1; left: 70px; width: 100%">
             <MudText Typo="Typo.h5" Align="Align.Center">
-                <p>Scroll down to discover the content (currently the @(_itemIsVisible ? "item is visible" : "item is not visible"))</p>
+                <p>@L["Scroll down to discover the content"] @L[$"(currently the {(_itemIsVisible ? "item is visible" : "item is not visible")})"]</p>
             </MudText>
         </MudCard>
 
@@ -17,21 +19,20 @@
             <MudText Typo="Typo.h4" Color="Color.Primary" GutterBottom="true">MudExVirtualItem Demo</MudText>
 
             <MudText Typo="Typo.body1" GutterBottom="true">
-                This demo showcases the <strong>MudExVirtualItem</strong> component, a virtualized container that efficiently renders content
-                only when it becomes visible in the viewport.
+                @L["This demo showcases the <strong>MudExVirtualItem</strong> component, a virtualized container that efficiently renders content<br/> only when it becomes visible in the viewport."].ToMarkupString()
             </MudText>
 
             <MudText Typo="Typo.body1" GutterBottom="true">
-                In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots:
+                @L["In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots"].ToMarkupString()
             </MudText>
 
             <ul style="text-align: left; display: inline-block;">
-                <li><MudText Typo="Typo.body2"><strong>ChildContent</strong> - rendered when the item is visible in the viewport.</MudText></li>
-                <li><MudText Typo="Typo.body2"><strong>NotIntersectingContent</strong> - rendered when the item is outside the viewport.</MudText></li>
+                <li><MudText Typo="Typo.body2"><strong>ChildContent</strong> - @L["rendered when the item is visible in the viewport."]</MudText></li>
+                <li><MudText Typo="Typo.body2"><strong>NotIntersectingContent</strong> - @L["rendered when the item is outside the viewport."]</MudText></li>
             </ul>
 
             <MudText Typo="Typo.body1" GutterBottom="true">
-                The component also provides the <strong>IsVisibleChanged</strong> event, which triggers whenever the visibility of the item changes.
+                @L["The component also provides the <strong>IsVisibleChanged</strong> event, which triggers whenever the visibility of the item changes."].ToMarkupString()
             </MudText>
 
             <MudText Typo="Typo.body1" GutterBottom="true">
@@ -39,19 +40,18 @@
             </MudText>
 
             <ul style="text-align: left; display: inline-block; margin-bottom: 30px">
-                <li><MudText Typo="Typo.subtitle2"><strong>Virtualize</strong> - enables or disables virtualization.</MudText></li>
-                <li><MudText Typo="Typo.subtitle2"><strong>IntersectingClass</strong> - applies a CSS class when the item is visible.</MudText></li>
-                <li><MudText Typo="Typo.subtitle2"><strong>NotIntersectingClass</strong> - applies a CSS class when the item is not visible.</MudText></li>
-                <li><MudText Typo="Typo.subtitle2"><strong>IntersectingStyle</strong> - applies styles when the item is visible.</MudText></li>
-                <li><MudText Typo="Typo.subtitle2"><strong>NotIntersectingStyle</strong> - applies styles when the item is not visible.</MudText></li>
-            </ul>
+                <li><MudText Typo="Typo.subtitle2"><strong>Virtualize</strong> -  @L["enables or disables virtualization."]</MudText></li>
+                <li><MudText Typo="Typo.subtitle2"><strong>IntersectingClass</strong> -  @L["applies a CSS class when the item is visible."]</MudText></li>
+                <li><MudText Typo="Typo.subtitle2"><strong>NotIntersectingClass</strong> -  @L["applies a CSS class when the item is not visible."]</MudText></li>
+                <li><MudText Typo="Typo.subtitle2"><strong>IntersectingStyle</strong> -  @L["applies styles when the item is visible."]</MudText></li>
+                <li><MudText Typo="Typo.subtitle2"><strong>NotIntersectingStyle</strong> -  @L["applies styles when the item is not visible."]</MudText></li>
+                                                                                               </ul>
 
             <MudText Typo="Typo.body1" Style="margin-bottom: 30px;">
-                These features make <strong>MudExVirtualItem</strong> ideal for optimizing performance when working with large datasets or dynamic content that
-                doesn't need to be loaded all at once.
+                @L["These features make <strong>MudExVirtualItem</strong> ideal for optimizing performance when working with large datasets or dynamic content that doesn't need to be loaded all at once."].ToMarkupString()
             </MudText>
 
-            <MudText Style="@MudExStyleBuilder.Default.WithAnimation(AnimationType.RubberBand, TimeSpan.FromMilliseconds(1500), iterationCount: AnimationIteration.Infinite).Style" Typo="Typo.h5" Color="Color.Primary" GutterBottom="true">Scroll down to see the behavior</MudText>
+            <MudText Style="@MudExStyleBuilder.Default.WithAnimation(AnimationType.RubberBand, TimeSpan.FromMilliseconds(1500), iterationCount: AnimationIteration.Infinite).Style" Typo="Typo.h5" Color="Color.Primary" GutterBottom="true">@L["Scroll down to see the behavior"]</MudText>
 
         </div>
 
@@ -59,7 +59,7 @@
         <div style="height: 3000px; display: flex; justify-content: center; align-items: center;">
             <MudExVirtualItem>
                 <div style="@MudExStyleBuilder.Default.WithAnimation(AnimationType.FadeIn, TimeSpan.FromSeconds(2)).Style">
-                    <MudText Typo="Typo.subtitle2" Style="font-style: italic">Keep scrolling to reveal the content below...</MudText>
+                    <MudText Typo="Typo.subtitle2" Style="font-style: italic">@L["Keep scrolling to reveal the content below..."]</MudText>
                 </div>
             </MudExVirtualItem>
         </div>
@@ -98,7 +98,7 @@
 
         <div style="height: 1000px;"></div>
         <MudScrollToTop TopOffset="400" Style="margin-bottom: 70px">
-            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowUpward" Color="Color.Primary">Scroll to top</MudButton>
+            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowUpward" Color="Color.Primary">@L["Scroll to top"]</MudButton>
         </MudScrollToTop>
     </MudContainer>
 </DemoComponent>
@@ -133,9 +133,9 @@
             _data = new SampleData
                 {
                     Image = "https://mudblazor.com/images/door.jpg",
-                    Title = "Old Paint",
-                    Description = "Old paint found on a stone house door.",
-                    Content = "This photo was taken in a small village in Istra Croatia."
+                    Title = L["Old Paint"],
+                    Description = L["Old paint found on a stone house door."],
+                    Content = L["This photo was taken in a small village in Istra Croatia."]
                 };
         }
     }

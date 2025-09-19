@@ -1,11 +1,12 @@
 ﻿@page "/mud-ex-capture-button"
-
+@inherits BasePage
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using MudBlazor.Extensions.Core.Capture
+@using Nextended.Core.Extensions
 
 @attribute [Demo(Name = "MudExCaptureButton", Icon = Icons.Material.Outlined.VideoCall, Documentation = "This component uses the ICaptureService to capture audio and/or video data", ForComponentType = typeof(MudExCaptureButton))]
 
-<MudLink Href="/capture-service">Here you find a Demo how to use the service directly</MudLink>
+<MudLink Href="/capture-service">@L["Here you find a Demo how to use the service directly"]</MudLink>
 
 <DemoComponent PageType="@GetType()">
     <SplitContainer>
@@ -56,6 +57,9 @@
         _files ??= new List<UploadableFile>();
         if (data?.Bytes == null || data.Bytes.Length == 0)
             return;
+        var translated = L[Path.GetFileNameWithoutExtension(name)];
+        var ext = Path.GetExtension(name);
+        name = $"{translated}{ext.EnsureStartsWith(".")}";
         _files.Add(new UploadableFile()
             {
                 FileName = name,

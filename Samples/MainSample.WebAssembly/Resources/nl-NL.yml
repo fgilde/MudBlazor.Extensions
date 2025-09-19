@@ -1,0 +1,4347 @@
+﻿_ Text: _Sms
+--accent-color1: --accent-kleur1
+--accent-color2: --accent-kleur2
+--accent-color3: --accent-kleur3
+--accent-color4: --accent-kleur4
+--loading-color: --laden-kleur
+--mud-palette-black: --modder-palet-zwart
+--mud-palette-primary: --modder-palet-primair
+--mud-palette-primary-darken: --modder-palet-primair-donkerder maken
+--mud-palette-primary-hover: --modder-palet-primair-zweven
+--mud-palette-primary-lighten: --modder-palet-primair-lichter maken
+--mud-palette-primary-text: --modder-palet-primaire-tekst
+--mud-palette-secondary: --modder-palet-secundair
+--mud-palette-secondary-darken: --modderpalet-secundair-verduisteren
+--mud-palette-secondary-hover: --modder-palet-secundaire-hover
+--mud-palette-secondary-lighten: --modderpalet-secundair-verlichten
+--mud-palette-secondary-text: --modderpalet-secundaire-tekst
+--mud-palette-white: --modder-palet-wit
+(currently the item is not visible): (momenteel is het item niet zichtbaar)
+(currently the item is visible): (momenteel is het item zichtbaar)
+4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+A: Een
+A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Een component waarmee de gebruiker een waarde kan selecteren uit een lijst met mogelijke waarden en deze kan weergeven als Chips of standaard Combobox.
+A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Een component die kan worden gebruikt om een ChildContent van onder, boven, links of rechts te schuiven door de muisaanwijzer erop te plaatsen.
+A Component to display text with a gradient foreground or background: Een component om tekst weer te geven met een voor- of achtergrond met een verloop
+A Component to display the content of a zip file: Een component om de inhoud van een zip-bestand weer te geven
+A Component to edit and upload a list of files: Een component om een lijst met bestanden te bewerken en te uploaden
+A Component to quickly select a color: Een component om snel een kleur te selecteren
+A connection to the server cannot be established. Your network connection may be down or the server is unreachable. Please wait until the connection has been restored: Er kan geen verbinding met de server tot stand worden gebracht. Uw netwerkverbinding is mogelijk verbroken of de server is onbereikbaar. Wacht tot de verbinding is hersteld
+A divider to separate content: Een scheidingswand om inhoud te scheiden
+A maximum of {0} files are allowed: Er zijn maximaal {0} bestanden toegestaan
+A Popover can be used to display some content on top of another.: Een pop-over kan worden gebruikt om bepaalde inhoud op een andere weer te geven.
+A powerful component to edit an object and its properties.: Een krachtig onderdeel om een object en zijn eigenschappen te bewerken.
+A powerful editor that can handle json, xml or yaml content: Een krachtige editor die overweg kan met json-, xml- of yaml-content
+A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: Een eenvoudig ColorPicker-onderdeel dat de MudColorPicker erft, maar de mogelijkheid toevoegt om het sluiten van de gebeurtenis uit te stellen en een native kiezerscomponent van de browser te gebruiken
+A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: Een eenvoudige rastercomponent die ondersteuning biedt voor kolommen en rijen en ColSpan en RowSpan voor het bevatten van secties.
+A SplitPanel Component: Een SplitPanel-component
+A Splitter Component: Een splitter component
+A WYSIWYG Html editor component.: Een WYSIWYG Html-editorcomponent.
+A11yDark: A11yDonker
+A11yLight: A11yLight
+aa-DJ: Afar (Djibouti)
+aa-ER: Afar (Eritrea)
+aa-ET: Afar (Ethiopië)
+about: Over
+Account: Rekening
+ActionButtons: ActieKnoppen
+ActionButtonsNewLine: ActieKnoppenNieuwe lijn
+ActionDefault: ActionDefault
+ActionDisabled: ActieUitgeschakeld
+ActionDisabledBackground: ActieUitgeschakeldAchtergrond
+Actions: Acties
+ActionsAdornment: ActiesVersiering
+ActionsClass: ActiesKlasse
+Activate comments: Opmerkingen activeren
+Activate User?: Gebruiker activeren?
+Active: Actief
+Active?: Actief?
+ActiveFilterOnly: Alleen ActiveFilter
+Adaptive: Aanpasbaar
+ADblNumber: ADblNummer
+Add: Toevoegen
+Add 1000 random items: Voeg 1000 willekeurige items toe
+Add 500 Users: Voeg 500 gebruikers toe
+Add Brand: Merk toevoegen
+Add Document: Document toevoegen
+Add Document Type: Documenttype toevoegen
+Add Extended Attribute: Uitgebreid attribuut toevoegen
+Add external Url: Externe URL toevoegen
+Add files: Bestanden toevoegen
+Add Product: Product toevoegen
+Add Role: Rol toevoegen
+Add Url: Url toevoegen
+Add user: Gebruiker toevoegen
+Add user to both lists: Gebruiker toevoegen aan beide lijsten
+Additional Audio: Extra audio
+Additional Video: Extra video
+AdditionalAdornment: ExtraVersiering
+Address: Adres
+Addresses: Adressen
+AddUrl: Url toevoegen
+Administrator: Administrateur
+Administrator Settings.: Beheerdersinstellingen.
+Administrators Profile's Status cannot be toggled: De status van het beheerdersprofiel kan niet worden ingeschakeld
+Adornment: Tooi
+AdornmentAriaLabel: VersieringAriaLabel
+AdornmentColor: VersieringKleur
+AdornmentIcon: Versiering Icoon
+AdornmentText: VersieringTekst
+af-NA: Afrikaans (Namibië)
+af-ZA: Afrikaans (Zuid-Afrika)
+After the dialog is shown you can drag it to the edges to see snap. Also you can use Ctrl + {ArrowKeys} to change position: Nadat het dialoogvenster is weergegeven, kunt u het naar de randen slepen om de snap te zien. U kunt ook Ctrl + {ArrowKeys} gebruiken om van positie te veranderen
+AfterBegin: NaBegin
+AfterEnd: AfterEnd
+AfterSearchBox: NaZoekenVak
+Agate: Agaat
+Age: Leeftijd
+agq-CM: Aghem (Kameroen)
+ak-GH: Akan (Ghana)
+Albertus: Albertus
+Alice Johnson: Alice Johnson
+AliceBlue: AliceBlauw
+Align: Uitlijnen
+ALL COMPONENTS: ALLE ONDERDELEN
+All Documents without Type are stored here: Alle documenten zonder type worden hier opgeslagen
+All Groups: Alle groepen
+All Permissions: Alle machtigingen
+All roles: Alle rollen
+All roles unfiltered: Alle rollen ongefilterd
+AllFilters: AlleFilters
+AllowAudioRecording: Audio-opname toestaan
+AllowColumnSizeChange: ToestaanKolomGrootteWijzigen
+AllowCopyUrl: ToestaanCopyUrl
+AllowDownload: Toestaan Downloaden
+AllowDrop: Toelaten
+AllowDropBox: DropBox toestaan
+AllowDuplicates: Duplicaten toestaan
+AllowExternalUrl: AllowExternalUrl
+AllowFolderUpload: ToestaanMapUploaden
+AllowGoogleDrive: GoogleDrive toestaan
+AllowInteractingUnderRubberBand: ToestaanInteractingUnderRubberBand
+AllowMultiple: Meerdere toestaan
+AllowOneDrive: OneDrive toestaan
+AllowOpenInNewTab: ToestaanOpenenInNieuwTabblad
+AllowOpenOnReadOnly: Alleen toestaan
+AllowPreview: Voorbeeld toestaan
+AllowRemovingItems: AllowRemovingItems
+AllowRename: AllowRename
+AllowRubberBandSelection: ToestaanRubberBandSelection
+AllowSelectionOfNonEmptyNodes: ToestaanSelectieVanNietLege Knooppunten
+AllowSelectOnPreviewClick: ToestaanSelecterenOnPreviewKlikken
+AllowVideoCapture: VideoCapture toestaan
+AlphaBars: AlphaBars
+Already have an account?: Heb je al een account?
+Always: Altijd
+AlwaysEditOptions: AltijdBewerkenOpties
+AlwaysShowValue: AlwaysShowValue
+AlwaysVisible: Altijd zichtbaar
+am-ET: Amhaars (Ethiopië)
+An Error has occured!: Er is een fout opgetreden!
+An Error has occurred!: Er is een fout opgetreden!
+An error occurred while confirming {0}: Er is een fout opgetreden bij het bevestigen van {0}
+An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used, and you can specify animations as well: Een uitgebreide SelectBox-component die het mogelijk maakt om meerdere items te selecteren en een zoekfunctie biedt, ook intern wordt de MudExPopover gebruikt, en u kunt ook animaties specificeren
+An item that only renders the content if it is in the viewport.: Een item dat de inhoud alleen weergeeft als deze zich in de viewport bevindt.
+AnchorOrigin: Anker Oorsprong
+Andale Mono: Andale Mono
+Androidstudio: Androidstudio
+Animate: Bezielen
+AnimateAudioElementBorderColor: AnimerenAudioElementBorderColor
+AnimateClose: AnimerenSluiten
+AnimateVisualizerBorderColor: AnimateVisualizerBorderColor
+Animation: Animatie
+AnimationDuration: AnimatieDuur
+AnimationDuration (in ms): AnimatieDuur (in ms)
+AnimationDurationInMs: AnimatieDuurInMs
+AnimationIn: AnimatieIn
+AnimationInDirection: AnimatieInDirection
+AnimationInDuration: AnimatieInDuur
+AnimationInPosition: AnimatieInPositie
+AnimationOut: Animatie uit
+AnimationOutDirection: AnimatieOutDirection
+AnimationOutDuration: AnimatieOutDuration
+AnimationOutPosition: AnimatieOutPosition
+AnimationPosition: AnimatiePositie
+Animations: Animaties
+AnimationTime: Animatie Tijd
+AnimationTimingFunction: AnimatieTimingFunctie
+AnOldHope: AnOldHope
+Another Demo theme: Nog een demo-thema
+AnotherRar.rar: AnotherRar.rar
+AnotherStringProperty10: Een andereStringProperty10
+AnotherStringProperty11: Een andereStringProperty11
+AnotherStringProperty12: Een andereStringProperty12
+AnotherStringProperty13: Een andereStringProperty13
+AnotherStringProperty14: Een andereStringProperty14
+AnotherStringProperty15: Een andereStringProperty15
+AnotherStringProperty16: Een andereStringProperty16
+AnotherStringProperty17: Een andereStringProperty17
+AnotherStringProperty18: Een anderStringProperty18
+AnotherStringProperty19: Een anderStringProperty19
+AnotherStringProperty20: Een anderStringProperty20
+AnotherStringProperty21: Een anderStringProperty21
+AnotherStringProperty22: Een anderStringProperty22
+AnotherStringProperty23: Een anderStringProperty23
+AnotherStringProperty24: Een anderStringProperty24
+AnotherStringProperty25: Een anderStringProperty25
+AnotherStringProperty26: Een andereStringProperty26
+AnotherStringProperty27: Een anderStringProperty27
+AnotherStringProperty28: Een anderStringProperty28
+AnotherStringProperty29: Een anderStringProperty29
+AnotherStringProperty30: Een anderStringProperty30
+AnotherStringProperty31: Een anderStringProperty31
+AnotherStringProperty32: Een anderStringProperty32
+AnotherStringProperty33: Een anderStringProperty33
+AnotherStringProperty34: Een andereStringProperty34
+AnotherStringProperty35: Een andereStringProperty35
+AnotherStringProperty36: Een anderStringProperty36
+AnotherStringProperty37: Een anderStringProperty37
+AnotherStringProperty38: Een anderStringProperty38
+AnotherStringProperty39: Een anderStringProperty39
+AnotherStringProperty40: Een anderStringProperty40
+AnotherStringProperty41: Een anderStringProperty41
+AnotherStringProperty42: Een anderStringProperty42
+AnotherStringProperty43: Een andereStringProperty43
+AnotherStringProperty44: Een anderStringProperty44
+AnotherStringProperty45: Een anderStringProperty45
+AnotherStringProperty46: Een anderStringProperty46
+AnotherStringProperty47: Een anderStringProperty47
+AnotherStringProperty48: Een anderStringProperty48
+AnotherStringProperty49: Een anderStringProperty49
+AnotherStringProperty50: Een anderStringProperty50
+AnotherStringProperty51: Een anderStringProperty51
+AnotherStringProperty52: Een anderStringProperty52
+AnotherStringProperty53: Een anderStringProperty53
+AnotherStringProperty54: Een anderStringProperty54
+AnotherStringProperty55: Een anderStringProperty55
+AnotherStringProperty56: Een anderStringProperty56
+AnotherStringProperty57: Een anderStringProperty57
+AnotherStringProperty58: Een anderStringProperty58
+AnotherStringProperty59: Een anderStringProperty59
+AnotherStringProperty60: Een andereStringProperty60
+AnsiBands: AnsiBanden
+AntiqueWhite: AntiekWit
+ApathyBase16: ApathieBase16
+Api: Api
+API: API
+API-Versions: API-versies
+AppBar: App-balk
+AppbarBackground: AppbarAchtergrond
+AppbarHeight: AppbarHoogte
+AppbarText: AppbarTekst
+Appearance: Uiterlijk
+Appetizer: Voorgerecht
+Apple: Appel
+Apple Gothic: Appel Gotisch
+Application: Toepassing
+ApplicationDescription: Voorbeeldtoepassing met WebAssembly en Clean Architecture Pattern
+ApplicationSubDescription: Welkom bij Coworkee
+applies a CSS class when the item is not visible.: past een CSS-klasse toe wanneer het item niet zichtbaar is.
+applies a CSS class when the item is visible.: past een CSS-klasse toe wanneer het item zichtbaar is.
+applies styles when the item is not visible.: Hiermee worden stijlen toegepast wanneer het item niet zichtbaar is.
+applies styles when the item is visible.: Hiermee past u stijlen toe wanneer het item zichtbaar is.
+Apply: Toepassen
+ApplyBackgroundImageFromTrack: ApplyBackgroundImageFromTrack
+ApprenticeBase16: Leerlingbasis16
+Apr: Apr
+Aqua: Aqua
+Aquamarine: Aquamarijn
+ar-001: Arabisch (Wereld)
+ar-AE: Arabisch (Verenigde Arabische Emiraten)
+ar-BH: Arabisch (Bahrein)
+ar-DJ: Arabisch (Djibouti)
+ar-DZ: Arabisch (Algerije)
+ar-EG: Arabisch (Egypte)
+ar-ER: Arabisch (Eritrea)
+ar-IL: Arabisch (Israël)
+ar-IQ: Arabisch (Irak)
+ar-JO: Arabisch (Jordanië)
+ar-KM: Arabisch (Comoren)
+ar-KW: Arabisch (Koeweit)
+ar-LB: Arabisch (Libanon)
+ar-LY: Arabisch (Libië)
+ar-MA: Arabisch (Marokko)
+ar-MR: Arabisch (Mauritanië)
+ar-OM: Arabisch (Oman)
+ar-PS: Arabisch (Palestijnse Autoriteit)
+ar-QA: Arabisch (Qatar)
+ar-SA: Arabisch (Saoedi-Arabië)
+ar-SD: Arabisch (Soedan)
+ar-SO: Arabisch (Somalië)
+ar-SS: Arabisch (Zuid-Soedan)
+ar-SY: Arabisch (Syrië)
+ar-TD: Arabisch (Tsjaad)
+ar-TN: Arabisch (Tunesië)
+ar-YE: Arabisch (Jemen)
+Archive.zip: Archive.zip
+ArduinoLight: ArduinoLight
+Are you sure to close: Weet je zeker dat je gaat sluiten?
+Are you sure you want to force logout for user {0}: Weet u zeker dat u zich wilt afmelden voor {0}
+Are you sure you want to restart Backend/Server?: Weet u zeker dat u Backend/Server opnieuw wilt opstarten?
+Are you sure you want to restore the default settings? This will overwrite any changes you've ever made here.: Weet je zeker dat je de standaardinstellingen wilt herstellen? Dit overschrijft alle wijzigingen die u hier ooit heeft aangebracht.
+Are you sure?: Weet je het zeker?
+Arial: Arial
+Arial Black: Arial Zwart
+Arial Narrow: Arial Smal
+arn-CL: Mapuche (Chili)
+Arta: Kunst
+As Admin you can filter for users here: Als Admin kun je hier filteren op gebruikers
+As Picker: Als kiezer
+as read: zoals gelezen
+As simple as it sound. This is a simple GroupBox: Zo simpel als het klinkt. Dit is een eenvoudige GroupBox
+As soon as your account has been activated you can log in: Zodra je account is geactiveerd kun je inloggen
+as unread: als ongelezen
+as-IN: Assamees (India)
+asa-TZ: Asu (Tanzania)
+Ascetic: Asceet
+AshesBase16: Asbasis16
+AspectRatio: Beeldverhouding
+ast-ES: Asturisch (Spanje)
+At least one document is required: Er is ten minste één document vereist
+AtelierCaveBase16: AtelierCaveBase16
+AtelierCaveLightBase16: AtelierCaveLightBase16
+AtelierDuneBase16: AtelierDuneBase16
+AtelierDuneLightBase16: AtelierDuneLightBase16
+AtelierEstuaryBase16: AtelierEstuariumBase16
+AtelierEstuaryLightBase16: AtelierEstuariumLightBase16
+AtelierForestBase16: AtelierForestBase16
+AtelierForestLightBase16: AtelierForestLightBase16
+AtelierHeathBase16: AtelierHeathBase16
+AtelierHeathLightBase16: AtelierHeathLightBase16
+AtelierLakesideBase16: AtelierLakesideBase16
+AtelierLakesideLightBase16: AtelierLakesideLightBase16
+AtelierPlateauBase16: AtelierPlateauBase16
+AtelierPlateauLightBase16: AtelierPlateauLightBase16
+AtelierSavannaBase16: WerkplaatsSavannaBase16
+AtelierSavannaLightBase16: AtelierSavannaLightBase16
+AtelierSeasideBase16: AtelierSeasideBase16
+AtelierSeasideLightBase16: AtelierSeasideLightBase16
+AtelierSulphurpoolBase16: AtelierZwavelbadBase16
+AtelierSulphurpoolLightBase16: AtelierZwavelbadLightBase16
+AtlasBase16: 'AtlasBase16 zei:'
+AtomOneDark: AtomOneDark
+AtomOneDarkReasonable: AtomOneDarkRedelijk
+AtomOneLight: AtomOneLight
+Audio Content-Type: Type audio-inhoud
+Audio devices: Audio-apparaten
+AudioDevice: Audio-apparaat
+AudioElementBackgroundColor: AudioElementAchtergrondKleur
+AudioElementBorderColor: AudioElementBorderColor
+AudioElementBorderSize: AudioElementBorderSize
+AudioElementBorderStyle: AudioElementBorderStyle
+AudioElements: Audio-elementen
+AudioElementWidth: AudioElementBreedte
+Audit Trails: Audit trajecten
+Audit Trails exported: Audit Trails geëxporteerd
+Aug: Aug
+Austin: Austin
+Austin - 73301: Austin - 73301
+Austin - 73301ender: Austin - 73301ender
+Auto Confirm Email?: E-mail automatisch bevestigen?
+Auto Generated Editor for TestObject: Automatisch gegenereerde editor voor TestObject
+Auto Stop recording after: Opname automatisch stoppen na
+AutoApplyGradient: AutoApplyGradient
+AutoClear: Automatisch wissen
+AutoCloseBehaviour: AutoCloseBehaviour
+AutoCloseOnSelect: AutoCloseOnSelect
+AutoCollapse: Automatisch inklappen
+AutoExtractArchive: AutoExtractArchive
+AutoFocus: Autofocus
+AutoFocusFilter: AutoFocusFilter
+AutoLoadFileDataBytes: AutoLoadFileDataBytes
+Automatically allow next time: Automatisch de volgende keer toestaan
+AutoPlayNextTrackOnEnd: AutoPlayNextTrackOnEnd
+AutoRemoveError: AutoRemoveError
+AutoShowHideAudioElement: AutoShowHideAudioElement
+AutoSize: AutoGrootte
+Available: Beschikbaar
+AvailableItems: Beschikbare artikelen
+Avant Garde: Avant-garde
+az-Cyrl-AZ: Azerbeidzjaans (Cyrillisch, Azerbeidzjan)
+az-Latn-AZ: Azerbeidzjaans (Latijn, Azerbeidzjan)
+Azure: Azuur
+B: B
+ba-RU: Basjkiers (Rusland)
+Back: Terug
+BackdropClick: AchtergrondKlik
+Background: Achtergrond
+BackgroundColor: AchtergrondKleur
+BackgroundGray: AchtergrondGrijs
+BackgroundImage: AchtergrondAfbeelding
+BackgroundPosition: AchtergrondPositie
+BackgroundRepeat: AchtergrondRepeat
+BackgroundSize: AchtergrondGrootte
+BackLinkLabel: BackLinkLabel
+Bar: Bar
+BarBeverage: Bar Drank
+Barcode: Barcode
+Barcode already exists.: Barcode bestaat al.
+Barcode is required!: Barcode is vereist!
+BarIndex: BarIndex
+Bark: Schors
+BarLevel: Bar niveau
+BarSpacing: Afstand tussen de staven
+Bart Simpson: Bart Simpson
+bas-CM: Basaa (Kameroen)
+Base component for a picker: Basiscomponent voor een picker
+Basic: Basisch
+Basic role with default permissions: Basisrol met standaardmachtigingen
+Bauhaus 93: Bauhaus 93
+be-BY: Wit-Russisch (Wit-Rusland)
+BeforeBegin: VoorBegin
+BeforeEnd: VoorEnd
+BeforeSearchBox: VoorZoekvak
+Behavior: Gedrag
+Behaviour: Gedrag
+Beige: Beige
+Bell MT: Bel MT
+bem-ZM: Bemba (Zambia)
+Bernard MT Condensed: Bernard MT Gecondenseerd
+BespinBase16: BespinBase16
+Beverage: Drank
+bez-TZ: Bena (Tanzania)
+bg-BG: Bulgaars (Bulgarije)
+BgAlpha: BgAlpha
+BgColor: BgColor
+bin-NG: Edo (Nigeria)
+Bind Dark Mode: Bind donkere modus
+BindWidthToPicker: BindBreedteNaarKiezer
+Birmingham: Birmingham
+Birmingham - B1 1BD: Birmingham - B1 1BD
+Birmingham - B1 1BDender: Birmingham - B1 1BDender
+Bisque: Bisque
+Black: Zwart
+Blackadder ITC: Blackadder ITC
+BlackList: Zwarte lijst
+BlackMetalBase16: ZwartMetaalBase16
+BlackMetalBathoryBase16: ZwartMetaalBathoryBase16
+BlackMetalBurzumBase16: ZwartMetaalBurzumBase16
+BlackMetalDarkFuneralBase16: BlackMetalDarkFuneralBase16
+BlackMetalGorgorothBase16: ZwartMetaalGorgorothBase16
+BlackMetalImmortalBase16: ZwartMetaalOnsterfelijkeBase16
+BlackMetalKholdBase16: ZwartMetaalKholdBase16
+BlackMetalMardukBase16: ZwartMetaalMardukBase16
+BlackMetalMayhemBase16: ZwartMetaalMayhemBase16
+BlackMetalNileBase16: ZwartMetaalNileBase16
+BlackMetalVenomBase16: ZwartMetaalVenomBase16
+BlanchedAlmond: GeblancheerdAmandel
+Blazor wrapper component for AudioMotionAnalyzer: Blazor wrapper component voor AudioMotionAnalyzer
+BlobUrl: BlobUrl
+Blue: Blauw
+BlueViolet: Blauwviolet
+bm-Latn-ML: Bamanankan (Latijn, Mali)
+bn-BD: Bengaals (Bangladesh)
+bn-IN: Bangla (India)
+bo-CN: Tibetaans (China)
+bo-IN: Tibetaans (India)
+Bob Smith: Bob Smit
+Bodoni MT: Bodoni MT
+body1: lichaam1
+Body1: Lichaam1
+body2: lichaam2
+Body2: Lichaam 2
+Bookman: Bookman
+BorderAnimationColors: BorderAnimationColors
+BorderColor: BorderKleur
+Bordered: Grenst aan
+BorderOpacity: GrensOpaciteit
+BorderSize: BorderSize
+BorderStyle: BorderStyle
+Both: Beide
+BothDiagonal: BeideDiagonaal
+BothHorizontal: BeideHorizontaal
+BothVertical: BeideVerticaal
+Bottom: Bodem
+BottomCenter: Midden onderaan
+BottomLeft: Linksonder
+BottomRight: Rechtsonder
+Bounce: Stuiteren
+br-FR: Bretons (Frankrijk)
+Brand: Merk
+Brand Deleted: Merk verwijderd
+Brand is required!: Merk is vereist!
+Brand Not Found!: Merk niet gevonden!
+Brand Saved: Merk gered!
+Brand Updated: Merk bijgewerkt!
+BrandName: Merk
+Brands: Merken
+Brands exported: Geëxporteerde merken
+Breadcrumb: Paneermeel
+BreadcrumbLink: BroodkruimelLink
+BreadcrumbSeparator: Paneermeel Scheider
+BrewerBase16: Brouwerbasis16
+BrightBase16: 'BrightBase16 zei:'
+Brightness: Helderheid
+Broadway: Broadway
+BrogrammerBase16: 'BrogrammerBase16 zei:'
+Brown: Bruin
+BrownPaper: Bruin papier
+Browse Available Documents.: Blader door de beschikbare documenten.
+Browser: Browser
+BrowserFileExt: BrowserFileExt
+Brush Script MT: Penseel Script MT
+Brush Script Std: Penseel Script Std
+BrushTreesBase16: BorstelbomenBasis16
+BrushTreesDarkBase16: BorstelbomenDarkBase16
+brx-IN: Bodo (India)
+bs-Cyrl-BA: Bosnisch (Cyrillisch, Bosnië en Herzegovina)
+bs-Latn-BA: Bosnisch (Latijn, Bosnië en Herzegovina)
+BurlyWood: BurlyWood
+button: knoop
+Button: Knoop
+Button component for capturing audio and video.: Knopcomponent voor het vastleggen van audio en video.
+Button component for speech-to-text functionality, allowing for asynchronous recording and processing of speech input.: Knopcomponent voor spraak-naar-tekstfunctionaliteit, waardoor asynchrone opname en verwerking van spraakinvoer mogelijk is.
+ButtonColor: Knop Kleur
+ButtonSize: Knoop Grootte
+ButtonsJustify: KnoppenUitvullen
+ButtonType: KnopType
+ButtonVariant: Knop Variant
+byn-ER: Blin (Eritrea)
+Bytes: Bytes
+C: C
+C#: C#
+ca-AD: Catalaans (Andorra)
+ca-ES: Catalaans (Spanje)
+ca-FR: Catalaans (Frankrijk)
+ca-IT: Catalaans (Italië)
+CadetBlue: CadetBlauw
+Calgary: Calgary
+Calgary - T1X 0L3: Calgary - T1X 0L3
+Calgary - T1X 0L3ender: Calgary - T1X 0L3ender
+Californian FB: Californische FB
+Can close: Kan sluiten
+Cancel: Annuleren
+Cancel deletion: Verwijdering annuleren
+Cancelled: Geannuleerd
+CanClose: Kan sluiten
+CanCloseCallbackName: CanCloseCallbackNaam
+caption: bijschrift
+Caption: Bijschrift
+Capture: Vangen
+Capture Screen: Scherm vastleggen
+Capture service: Dienst voor vastleggen
+Capture video: Video vastleggen
+CaptureButton: Knop vastleggen
+CaptureInfoComponent: CaptureInfoComponent
+CaptureOptions: Opties vastleggen
+Card Grid: Kaart raster
+CardEffect3d: KaartEffect3d
+CardGrid: Kaart Raster
+Catalog Management: Catalogus beheer
+ccp-Cakm-BD: Chakma (Chakma, Bangladesh)
+ccp-Cakm-IN: Chakma (Chakma, India)
+ce-RU: Tsjetsjenië (Rusland)
+ceb-Latn-PH: Cebuano (Latijn, Filipijnen)
+Centaur: Centaur
+Center: Middelpunt
+CenterCenter: Centrum Centrum
+CenterLeft: CentrumLinks
+CenterRight: CentrumRechts
+Centimeters: Centimeters
+Century Gothic: Eeuw Gotisch
+cgg-UG: Chiga (Oeganda)
+ChalkBase16: 'Krijt Base16 zei:'
+Change media options: Media-opties wijzigen
+Change or edit your theme: Je thema wijzigen of bewerken
+Change Password: Wachtwoord wijzigen
+Change the system settings carefully: Wijzig de systeeminstellingen zorgvuldig
+ChannelLayout: Kanaal lay-out
+Charlie Brown: Charlie Brown
+Chartreuse: Chartreuse
+Charts comming soon ish...: Grafieken komen binnenkort...
+ChartTooltip: GrafiekKnopinfo
+chat: Babbelen
+Chat: Babbelen
+Chat?: Babbelen?
+Check me: Controleer mij
+Check out the MudExThemeEdit Component: Bekijk de MudExThemeEdit-component
+CheckBox: Selectievakje
+CheckedIcon: Gecontroleerd pictogram
+Checker: Controleur
+Checker box: Checker vakje
+Chicago: Chicago
+Chicago - 60601: Chicago - 60601
+Chicago - 60601ender: Chicago - 60601ender
+ChildContentStyle: ChildContentStyle
+Chiller: Chiller
+Chip: Bikken
+ChipClass: Chipklasse
+ChipCloseable: ChipCloseable
+ChipColor: ChipKleur
+ChipsAdditionalAbove: ChipsAanvullendBoven
+ChipsAdditionalBelow: ChipsAanvullendHieronder
+ChipSelect: ChipSelect
+ChipSize: ChipSize
+ChipsMaxWidth: ChipsMaxBreedte
+ChipsOnly: Alleen chips
+ChipVariant: Chip-variant
+ChipWithoutItemTemplate: ChipWithoutItemTemplate
+Chocolate: Chocolade
+chr-Cher-US: Cherokee (Cherokee, Verenigde Staten)
+CircusBase16: 'CircusBase16 zei:'
+Cities you want to live: Steden waar je wilt wonen
+City: Stad
+Class: Klas
+ClassChip: ClassChip
+ClassicDarkBase16: Klassieke DarkBase16
+ClassicLightBase16: Klassieke LightBase16
+ClassSearchBox: ClassSearchBox
+Clear: Duidelijk
+Clearable: Opruimbaar
+Click here to choose a screen to capture. If not selected, you will be prompted when starting the recording.: Klik hier om een scherm te kiezen dat u wilt vastleggen. Als deze optie niet is geselecteerd, wordt u gevraagd de opname te starten.
+Click here to upload files: Klik hier om bestanden te uploaden
+Click the button below to enable them and load the third party services from disqus.com: Klik op de onderstaande knop om ze in te schakelen en de services van derden te laden vanuit disqus.com
+Clickable: Klikbaar
+ClickAction: KlikActie
+ClickPropagation: ClickPropagation
+Client Language has been changed: De taal van de klant is gewijzigd
+Close: Sluiten
+Closeable: Afsluitbaar
+CloseAfterSelect: CloseAfterSelect
+CloseButton: Knop Sluiten
+Closed: Gesloten
+CloseIcon: Pictogram sluiten
+CloseOnEscapeKey: CloseOnEscapeKey
+co-FR: Corsicaans (Frankrijk)
+Code: Code
+CodeBlockTheme: CodeBlockThema
+CodepenEmbed: CodepenInsluiten
+CodeschoolBase16: 'CodeschoolBase16 zei:'
+CollapseOnClick: CollapseOnClick
+Colonna MT: MT Kolom
+color: Kleur
+Color: Kleur
+ColorBrewer: ColorBrewer
+ColorBubble: KleurBubbel
+ColoredImagesForExternalFilePicker: ColoredImagesForExternalFilePicker
+ColorEdit: Kleur Bewerken
+ColorElements: KleurElementen
+ColorizeIcons: Pictogrammen inkleuren
+ColorMode: Kleurmodus
+ColorPicker: Kleurkiezer
+ColorPickerMode: ColorPicker-modus
+ColorPickerView: ColorPicker-weergave
+ColorsBase16: KleurenBasis16
+ColorStops: ColorStops
+ColorTemperature: KleurTemperatuur
+ColSpan: ColSpan
+Column: Kolom
+Columns Affected: Betrokken kolommen
+ColumnWidth: KolomBreedte
+Comic Sans MS: Komisch zonder MS
+Comments: Opmerkingen
+Common: Gemeenschappelijk
+Communication: Communicatie
+Community: Gemeenschap
+Compact: Compact
+Comparer: Vergelijken
+Component edit capture options: Opties voor het vastleggen van componenten bewerken
+Component in Dialog: Component in dialoogvenster
+Component to add additional adornment to a MudInput: Component om extra versiering toe te voegen aan een MudInput
+Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Component om een bestand weer te geven in een iframe- of objecttag of in een geregistreerde viewer die IMudExFileDisplay implementeert
+Component to display information about the current recording: Component om informatie over de huidige opname weer te geven
+Component to Edit Icon values: Component om pictogramwaarden te bewerken
+Component to Edit MudExColor: Component om MudExColor te bewerken
+Component to move the ChildContent to a specific element that can defined by ElementSelector.: Component om de ChildContent te verplaatsen naar een specifiek element dat kan worden gedefinieerd door ElementSelector.
+Component to select a theme from a list of themes.: Component om een thema te selecteren uit een lijst met thema's.
+ComponentBaseWithState: ComponentBaseWithState
+ComponentInDialog: ComponentInDialog
+Conditional updates: Voorwaardelijke updates
+Configure list values: Lijstwaarden configureren
+Confirm: Bevestigen
+CONFIRM: BEVESTIGEN
+Confirm and Ignore: Bevestigen en negeren
+Confirm and Set Required: Bevestigen en instellen vereist
+Confirm edit: Bevestig bewerken
+Confirm Password: Bevestig wachtwoord
+Confirm Registration: Bevestig de registratie
+Confirmation: Bevestiging
+ConnectAllAudioSources: ConnectAllAudioSources
+ConnectCapture: Verbinden vastleggen
+ConnectCurrentTab: Verbind HuidigTabblad
+ConnectionMode: Verbinding modus
+ConnectMicrophone: Microfoon aansluiten
+ConnectToCapture: ConnectToCapture
+contacts: Contactpersonen
+Content-Type: Inhoud-Type
+ContentAlignment: Uitlijning van inhoud
+ContentStream: Inhoud Stream
+ContentType: InhoudsType
+ContextMenuAction: ContextMenuActie
+Continue to {0}: Ga verder naar {0}
+Continuous: Continu
+Contrast: Tegenstelling
+Cooper Black: Cooper Zwart
+Copperplate Gothic Bold: Koperplaat Gotisch Vet
+Copperplate Gothic Light: Koperplaat gotisch licht
+Copy url: Kopie url
+Counter: Toonbank
+Country: Land
+Courier New: Koerier Nieuw
+Courrier: Post
+Create: Scheppen
+Create address: Adres aanmaken
+Create new backup: Maak een nieuwe back-up
+CreatedOn: Datum gemaakt
+Critical: Kritisch
+CropAndScale: Bijsnijden en schalen
+cs-CZ: Tsjechisch (Tsjechië)
+CSS Color Variables: CSS-kleurvariabelen
+CssVars: CssVars
+cu-RU: Kerk Slavisch (Rusland)
+CupcakeBase16: CupcakeBasis 16
+CupertinoBase16: 'CupertinoBase16 zei:'
+Current Password: Huidig wachtwoord
+Current Password is required!: Huidig wachtwoord is vereist!
+Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can change DarMode in the Top right menu or disable binding by toggle the switch: Momenteel is ThemeEditor gebonden aan DarkMode van het huidige thema en in {0}. U kunt DarMode wijzigen in het menu rechtsboven of binding uitschakelen door de schakelaar om te zetten
+Cursor: Cursor
+CursorPositionOrigin: CursorPositieOorsprong
+Custom: Gewoonte
+CustomContentErrorMessage: CustomContentErrorMessage
+Customize: Aanpassen
+cy-GB: Welsh (Verenigd Koninkrijk)
+D: D
+da-DK: Deens (Denemarken)
+da-GL: Deens (Groenland)
+Dallas: Dallas
+Dallas - 75201: Dallas - 75201
+Dallas - 75201ender: Dallas - 75201ender
+DanqingBase16: 'DanqingBase16 zei:'
+DarculaBase16: 'DarculaBase16 zei:'
+Dark: Donker
+DarkContrastText: DonkerContrastTekst
+DarkDarken: Donker verduisteren
+DarkGreen: Donkergroen
+DarkKhaki: Donker Kaki
+DarkLighten: Donker verlichten
+DarkMagenta: DarkMagenta
+DarkmossBase16: 'DarkmossBase16 zei:'
+DarkOliveGreen: DonkerOlijfgroen
+DarkOnly: Alleen donker
+DarkOrange: Donker Oranje
+DarkOrchid: Donkere orchidee
+DarkRed: Donkerrood
+DarkSalmon: Donkere zalm
+DarkSeaGreen: DonkerZeegroen
+DarkSlateBlue: DonkerSlateBlue
+DarkSlateGray: DonkerLeisteengrijs
+DarktoothBase16: 'DarktoothBase16 zei:'
+DarkTurquoise: Donker Turkoois
+DarkViolet: Donker Violet
+DarkVioletBase16: 'DarkVioletBase16 zei:'
+Dashboard: Dashboard
+Dashed: Onderbroken
+Data: Gegevens
+Data has been updated: Gegevens zijn bijgewerkt
+Database Backups: Back-ups van databases
+DataUrl: DataUrl
+DataVisualiserStyle: DataVisualiser-stijl
+date: datum
+Date: Datum
+Date Created: Datum gemaakt
+Date Range For Searching: Datumbereik om te zoeken
+DateOfBirth: Geboortedatum
+DateTime value is required using {0} type!: De waarde DateTime is vereist met behulp van {0} type!
+DateTimeLocal: DateTimeLokaal
+dav-KE: Taita (Kenia)
+de-AT: Duits (Oostenrijk)
+de-BE: Duits (België)
+de-CH: Duits (Zwitserland)
+de-DE: Duits (Duitsland)
+de-IT: Duits (Italië)
+de-LI: Duits (Liechtenstein)
+de-LU: Duits (Luxemburg)
+Debug: Debuggen
+Dec: Dec
+DecafBase16: DecafBase16
+decimal: decimaal
+Decimal: Decimaal
+Decimal value is required using {0} type!: Decimale waarde is vereist met behulp van {0} type!
+DeepPink: Diep roze
+DeepSkyBlue: DeepSkyBlue
+Default: Verstek
+DefaultBorderRadius: DefaultBorderRadius
+DefaultDarkBase16: StandaardDarkBase16
+DefaultLightBase16: StandaardLightBase16
+Defined: Gedefinieerd
+Delay: Uitstellen
+DelayValueChangeToPickerClose: DelayValueChangeToPickerSluiten
+Delete: Verwijderen
+Delete all: Alles verwijderen
+Delete Confirmation: Bevestiging verwijderen
+Delete Content: Inhoud verwijderen
+Delete Content {0}: Inhoud verwijderen '{0}'
+Delete Extended Attribute?: Uitgebreid attribuut verwijderen?
+Delete file from server: Bestand verwijderen van server
+Delete Image: Afbeelding verwijderen
+Delete Picture: Foto verwijderen
+Delete Role Content: Wil je de rol met Id {0} verwijderen?
+Delete these {0} elements: Deze {0} elementen verwijderen?
+Delete this element: Dit element verwijderen?
+Delete User: Gebruiker verwijderen
+Deletion Not Allowed: Verwijdering niet toegestaan
+Delimiter: Scheidingsteken
+Delimiters: Scheidingstekens
+Demo drag mode SnapDrag: Demo sleepmodus SnapDrag
+Demo for MudExDialog as inline: Demo voor MudExDialog als inline
+Demo for MudExTaskBar and not Modal dialogs: Demo voor MudExTaskBar en niet voor modale dialoogvensters
+Demo for simple integrated useful dialogs. Prompt, Info, MessageBox: Demo voor eenvoudige, geïntegreerde, nuttige dialoogvensters. Prompt, Info, MessageBox
+Demo for the MudExUploadEdit inside of a MudForm and a FluentValidator.: Demo voor de MudExUploadEdit in een MudForm en een FluentValidator.
+Demo for the MudExUploadEdit.: Demo voor de MudExUploadEdit.
+Demo for using custom can close in DialogOptionsEx: Demo voor het gebruik van aangepaste kan worden gesloten in DialogOptionsEx
+Demo for using Dialog and DialogBackground Appearance in DialogOptionsEx: Demo voor het gebruik van Dialog en DialogBackground Appearance in DialogOptionsEx
+Demo for using DialogOptionsEx: Demo voor het gebruik van DialogOptionsEx
+Demo for using DialogOptionsEx and pass position and size: Demo voor het gebruik van DialogOptionsEx en passpositie en -grootte
+Demo for using MudExObjectEdit for the same model with the default Demo but with some Meta configuration: Demo voor het gebruik van MudExObjectEdit voor hetzelfde model met de standaard demo, maar met een metaconfiguratie
+Demo for using MudExObjectEdit GroupingStyle.Tabs: Demo voor het gebruik van MudExObjectEdit GroupingStyle.Tabs
+Demo for using MudExObjectEdit only with bypassing an object: Demo voor het gebruik van MudExObjectEdit alleen met het omzeilen van een object
+Demo for using MudExObjectEdit with a configuration for Conditional using 'WithAttributesIf': Demo voor het gebruik van MudExObjectEdit met een configuratie voor Conditional met behulp van 'WithAttributesIf'
+Demo for using MudExObjectEdit with a model that contains file(s): Demo voor het gebruik van MudExObjectEdit met een model dat bestand(en) bevat
+Demo for using MudExObjectEdit with CodeGator Adapter and CodeGator Attributes: Demo voor het gebruik van MudExObjectEdit met CodeGator-adapter en CodeGator-kenmerken
+Demo for using MudExObjectEditPicker with a model that contains file(s): Demo voor het gebruik van MudExObjectEditPicker met een model dat bestand(en) bevat
+Demo of using explicit the MudExFileDisplayZip to show and select content inside of a zip file: Demo van het gebruik van de expliciete MudExFileDisplayZip om inhoud in een zip-bestand weer te geven en te selecteren
+Demonstration for a simple but very useful Enum Selector: Demonstratie voor een eenvoudige maar zeer bruikbare Enum Selector
+Demonstration of the MudExSplitter: Demonstratie van de MudExSplitter
+Demonstration of the quickly color select with MudExColorBubble: Demonstratie van de snelle kleurselectie met MudExColorBubble
+DEMOS: DEMOS
+Dense: Dicht
+Dependent permissions required: Afhankelijke machtigingen vereist
+Deployments: Implementaties
+Description: Beschrijving
+Description is required!: Beschrijving is vereist!
+Description_for_Age: Description_for_Age
+Description_for_City: Description_for_City
+Description_for_FirstName: Description_for_FirstName
+Description_for_Id: Description_for_Id
+Description_for_LastName: Description_for_LastName
+Description_for_Notice: Description_for_Notice
+Description_for_OtherAddresses: Description_for_OtherAddresses
+Description_for_PostalCode: Description_for_PostalCode
+Description_for_ProgramingSkills: Description_for_ProgramingSkills
+Description_for_Street: Description_for_Street
+Description_for_TrueOrFalse: Description_for_TrueOrFalse
+Dessert: Toetje
+detailed guide for more.: Gedetailleerde gids voor meer.
+Details for Trail ID: Details voor Trail ID
+Devibeans: Devibeans
+DeviceId: Apparaat-id
+DeviceListVariant: DeviceListVariant
+DeviceSelection: Apparaatselectie
+Dialog: Tweespraak
+Dialog Appearance: Weergave van dialogen
+Dialog Content: Inhoud van het dialoogvenster
+Dialog Drag & Drop: Dialoog slepen en neerzetten
+Dialog for editing objects with the MudExObjectEditForm: Dialoogvenster voor het bewerken van objecten met de MudExObjectEditForm
+Dialog Sample: Voorbeeld van dialoogvenster
+Dialog Samples: Voorbeelden van dialogen
+Dialog Snap Drag: Dialoogvenster Uitlijnen Slepen
+Dialog to display a file using {{{MudBlazor.Extensions.Components.MudExFileDisplay}}} component.: Dialoogvenster om een bestand weer te geven met behulp van de component {{{MudBlazor.Extensions.Components.MudExFileDisplay}}}.
+Dialog_Appearance: Dialog_Appearance
+DialogAppearance: DialoogUiterlijk
+DialogBackgroundAppearance: DialoogAchtergrondUiterlijk
+DialogOptions: DialoogvensterOpties
+Dialogs: Dialogen
+DialogsCanClose: DialogenKunnen Sluiten
+DialogServiceExt: DialogServiceExt
+DialogSnapDrag: DialoogSnapDrag
+DialogsPosition: DialoogvenstersPositie
+Diana Prince: Diana Prins
+DimGray: DimGrijs
+Direct: Rechtstreeks
+Direction: Richting
+DirtyseaBase16: Vuile zeebasis16
+Disable Grouping: Groeperen uitschakelen
+Disabled: Invalide
+DisableList: Lijst uitschakelen
+DisableOpacityChange: UitschakelingOpacityVerandering
+DisablePadding: Uitschakelen Padding
+DisablePopoverPadding: UitschakelenPopoverPadding
+DisablePositionMargin: DisablePositionMargin
+DisableSelectedItemStyle: DisableSelectedItemStyle
+DisableSizeMarginX: DisableSizeMarginX
+DisableSizeMarginY: DisableSizeMarginY
+DiscreteFrequencies: DiscreteFrequenties
+DisplayActionMenu: DisplayActieMenu
+DisplayErrors: Vertoning Fouten
+DisplayPresetList: Lijst met voorinstellingen weergeven
+Displays a tree structure as flat list: Geeft een boomstructuur weer als een platte lijst
+Displays a tree structure as horizontal navigable tree: Geeft een boomstructuur weer als horizontale navigeerbare boom
+Displays a tree structure as navigable Breadcrumb: Geeft een boomstructuur weer als navigeerbaar paneermeel
+Displays a tree structure as navigable card grid: Geeft een boomstructuur weer als navigeerbaar kaartraster
+Displays a tree structure as navigable List: Geeft een boomstructuur weer als navigeerbaar Lijst
+Displays a tree structure as simple tree: Geeft een boomstructuur weer als een eenvoudige boom
+DisplaySurface: Oppervlak weergeven
+DisplayTrackList: Tracklijst weergeven
+DisposeEvent: Beschikken over evenement
+Disqus comments are disabled by default.: Disqus-opmerkingen zijn standaard uitgeschakeld.
+Divider: Scheidingslijn
+DividerLight: Scheidingswand Licht
+dje-NE: Djerma (Niger)
+DNumber: Zilver
+Do you really want to restart the server?: Wil je de server echt opnieuw opstarten?
+Do you really want to restore the database from backup '{0}'? Note that any changes made after {1} are gone. This also means any changes made by any user: Wil je de database echt herstellen vanaf back-up '{0}'? Houd er rekening mee dat alle wijzigingen die na {1} zijn aangebracht, verdwenen zijn. Dit betekent ook alle wijzigingen die door een gebruiker worden aangebracht
+Do you want to delete the profile picture of {0}: Wil je de profielfoto van {0} verwijderen
+Do you want to delete the User {0}: Wilt u de User {0} verwijderen
+Docco: Docco
+Docked: Gedokt
+Document Deleted: Document verwijderd
+Document Extended Attributes: Uitgebreide kenmerken van het document
+Document Management: Documentbeheer
+Document Not Found!: Document niet gevonden!
+Document Saved: Document opgeslagen
+Document Store: Documenten opslaan
+Document Type: Soort document
+Document Type Deleted: Documenttype verwijderd
+Document Type is required!: Documenttype is vereist!
+Document Type Not Found!: Documenttype niet gevonden!
+Document Type Saved: Documenttype opgeslagen
+Document Type Updated: Documenttype bijgewerkt
+Document type with this name already exists.: Het documenttype met deze naam bestaat al.
+Document Types: Soorten documenten
+Document Types exported: Geëxporteerde documenttypen
+Document Updated: Document bijgewerkt
+Documentation: Documentatie
+Documents: Documenten
+DodgerBlue: DodgerBlauw
+doi-Deva-IN: Dogri (Devanagari, India)
+Don't have an account?: Heb je geen account?
+Done!: Klaar!
+Donut: Donut
+Dotted: Gestippeld
+Double: Dubbel
+DoubleClickAction: DoubleClickActie
+Download: Downloaden
+Download {0} files separately: Download {0} bestanden afzonderlijk
+Download {0} with {1} files as zip: Download {0} met {1} bestanden als zip
+Download file {0}: Bestand downloaden {0}
+Download file {0} as zip: Download bestand {0} als zip
+DraculaBase16: DraculaBase16
+Drag and Drop files here: Sleep bestanden hierheen
+DragEffect: Slepen Effect
+DragMode: DragMode
+Drawer: Lade
+DrawerBackground: LadeAchtergrond
+DrawerClipMode: LadeClipMode
+DrawerIcon: Lade Icoon
+DrawerMiniWidthLeft: LadeMiniBreedteLinks
+DrawerMiniWidthRight: LadeMiniBreedteRechts
+DrawerText: Lade-tekst
+DrawerVariant: Lade Variant
+DrawerWidthLeft: LadeBreedteLinks
+DrawerWidthRight: LadeBreedteRechts
+DroidCam Source 2: DroidCam Bron 2
+DroidCam Source 3: DroidCam Bron 3
+Drop Box: Dropbox
+Drop down component to select a culture: Vervolgkeuzecomponent om een cultuur te selecteren
+Drop down component to select an enum value or multiple on flags enums: Vervolgkeuzecomponent om een enum-waarde of meerdere te selecteren op vlaggen enums
+Drop files here: Zet hier bestanden neer
+DropBox external file picker component: Onderdeel van de externe bestandskiezer van DropBox
+DropBoxApiKey: DropBoxApiKey
+Dropdown list component to select one ore more fonts: Dropdown-lijstcomponent om een of meer lettertypen te selecteren
+DropShadow: Slagschaduw
+DropZoneClickAction: DropZoneClickActie
+dsb-DE: Neder-Sorbisch (Duitsland)
+dua-CM: Duala (Kameroen)
+DualCombined: Dubbel gecombineerd
+DualHorizontal: Dubbel Horizontaal
+DualVertical: Dubbel verticaal
+DuplicateErrorText: DuplicateErrorText
+Duration: Duur
+dv-MV: Divehi (Malediven)
+Dynamic component tests: Testen van dynamische componenten
+dyo-SN: Jola-Fonyi (Senegal)
+dz-BT: Dzongkha (Bhutan)
+E-mail: E-mail
+E-Mail: E-mail
+E-Mail not confirmed.: E-mail niet bevestigd. Controleer uw mailbox en bevestig uw e-mailadres. <a href='{0}'>Bevestiging per e-mail opnieuw verzenden</a>
+ebu-KE: Embu (Kenia)
+Edge: Rand
+EdgeDarkBase16: 'EdgeDarkBase16 zei:'
+EdgeLightBase16: 'EdgeLightBase16 zei:'
+Edit: Bewerken
+Edit {0}: '{0} bewerken'
+Edit a complex Model with included Collection of users: Bewerk een complex model met de meegeleverde verzameling gebruikers
+Edit Audio Constraints: Audiobeperkingen bewerken
+Edit Current Theme: Huidig thema bewerken
+Edit data in dialog: Gegevens bewerken in dialoogvenster
+Edit in TryMudEx: Bewerken in TryMudEx
+Edit Items: Items bewerken
+Edit only a Collection of users: Alleen een verzameling gebruikers bewerken
+Edit rating: Beoordeling bewerken
+Edit Running Component: Actief onderdeel bewerken
+Edit Test Object: Testobject bewerken
+Edit Users: Gebruikers bewerken
+Edit Video Constraints: Videobeperkingen bewerken
+Edit with shared MetaConfig: Bewerken met gedeelde MetaConfig
+Editable: Bewerkbaar
+Editing of the DB Connection can break whole application. Please edit this only if you know what you are doing: Het bewerken van de DB-verbinding kan de hele applicatie verbreken. Bewerk dit alleen als je weet wat je doet
+Editing of this endpoint can break AI integration: Het bewerken van dit eindpunt kan de AI-integratie verbreken
+EditMode: Bewerken
+Editor for a property of an object. Used internally inside the MudExObjectEdit: Editor voor een eigenschap van een object. Intern gebruikt in de MudExObjectEdit
+EditRunningComponent: BewerkenLopende Component
+Edmonton: Edmonton
+Edmonton - T5A 0A1: Edmonton - T5A 0A1
+Edmonton - T5A 0A1ender: Edmonton - T5A 0A1ender
+ee-GH: ooi (Ghana)
+ee-TG: Ooi (Togo)
+EightiesBase16: Jaren tachtigBase16
+el-CY: Grieks (Cyprus)
+el-GR: Grieks (Griekenland)
+Elevation: Hoogte
+Em: In
+email: E-mail
+Email: E-mail
+Email {0} is already registered.: E-mail {0} is al geregistreerd.
+Email cannot changed: E-mailadres kan niet worden gewijzigd
+Email Confirmation: E-mail bevestiging
+Email is not correct: E-mail is niet correct
+Email is required: E-mail is vereist
+Email is required!: E-mail is verplicht!
+EmbersBase16: Sintelsbasis16
+en-001: Nederlands (Wereld)
+en-029: Engels (Caraïben)
+en-150: Nederlands (Europa)
+en-AE: Engels (Verenigde Arabische Emiraten)
+en-AG: Engels (Antigua & Barbuda)
+en-AI: Engels (Anguilla)
+en-AS: Engels (Amerikaans-Samoa)
+en-AT: Nederlands (Oostenrijk)
+en-AU: Nederlands
+en-BB: Nederlands (Barbados)
+en-BE: Nederlands
+en-BI: Engels (Burundi)
+en-BM: Engels (Bermuda)
+en-BS: Engels (Bahama's)
+en-BW: Engels (Botswana)
+en-BZ: Nederlands (Belize)
+en-CA: Nederlands
+en-CC: Nederlands (Cocos [Keeling] Eilanden)
+en-CH: Nederlands (Zwitserland)
+en-CK: Nederlands (Cookeilanden)
+en-CM: Engels (Kameroen)
+en-CX: Nederlands (Christmas Island)
+en-CY: Nederlands
+en-DE: Engels (Duitsland)
+en-DK: Nederlands (Denemarken)
+en-DM: Nederlands (Dominica)
+en-ER: Engels (Eritrea)
+en-FI: Nederlands
+en-FJ: Engels (Fiji)
+en-FK: Engels (Falklandeilanden)
+en-FM: Nederlands (Micronesië)
+en-GB: Nederlands (Verenigd Koninkrijk)
+en-GD: Engels (Grenada)
+en-GG: Engels (Guernsey)
+en-GH: Nederlands
+en-GI: Nederlands (Gibraltar)
+en-GM: Engels (Gambia)
+en-GU: Nederlands (Guam)
+en-GY: Nederlands (Guyana)
+en-HK: Engels (Hong Kong SAR)
+en-ID: Nederlands (Indonesië)
+en-IE: Nederlands
+en-IL: Nederlands
+en-IM: Engels (Isle of Man)
+en-IN: Nederlands
+en-IO: Engels (Brits Indische Oceaanterritorium)
+en-JE: Nederlands (Jersey)
+en-JM: Engels (Jamaica)
+en-KE: Nederlands (Kenia)
+en-KI: Nederlands (Kiribati)
+en-KN: Engels (St. Kitts & Nevis)
+en-KY: Engels (Kaaimaneilanden)
+en-LC: Engels (St. Lucia)
+en-LR: Nederlands (Liberia)
+en-LS: Nederlands (Lesotho)
+en-MG: Engels (Madagaskar)
+en-MH: Nederlands (Marshalleilanden)
+en-MO: Engels (Macao SAR)
+en-MP: Engels (Noordelijke Marianen)
+en-MS: Nederlands (Montserrat)
+en-MT: Nederlands
+en-MU: Engels (Mauritius)
+en-MW: Nederlands
+en-MY: Nederlands
+en-NA: Engels (Namibië)
+en-NF: Engels (Norfolk Island)
+en-NG: Nederlands (Nigeria)
+en-NL: Nederlands
+en-NR: Engels (Nauru)
+en-NU: Nederlands (Niue)
+en-NZ: Engels (Nieuw-Zeeland)
+en-PG: Engels (Papoea-Nieuw-Guinea)
+en-PH: Nederlands
+en-PK: Nederlands
+en-PN: Engels (Pitcairneilanden)
+en-PR: Engels (Puerto Rico)
+en-PW: Nederlands (Palau)
+en-RW: Nederlands (Rwanda)
+en-SB: Engels (Salomonseilanden)
+en-SC: Nederlands (Seychellen)
+en-SD: Nederlands (Soedan)
+en-SE: Nederlands (Zweden)
+en-SG: Nederlands
+en-SH: Engels (St Helena, Ascension, Tristan da Cunha)
+en-SI: Engels (Slovenië)
+en-SL: Nederlands (Sierra Leone)
+en-SS: Engels (Zuid-Soedan)
+en-SX: Nederlands (Sint Maarten)
+en-SZ: Engels (Eswatini)
+en-TC: Engels (Turks- en Caicoseilanden)
+en-TK: Nederlands (Tokelau)
+en-TO: Engels (Tonga)
+en-TT: Engels (Trinidad en Tobago)
+en-TV: Engels (Tuvalu)
+en-TZ: Engels (Tanzania)
+en-UG: Engels (Oeganda)
+en-UM: Engels (Amerikaanse afgelegen eilanden)
+en-US: Engels (Verenigde Staten)
+en-US-posix: Engels (Verenigde Staten, Computer)
+en-VC: Engels (St. Vincent en de Grenadines)
+en-VG: Engels (Britse Maagdeneilanden)
+en-VI: Engels (Amerikaanse Maagdeneilanden)
+en-VU: Nederlands (Vanuatu)
+en-WS: Nederlands (Samoa)
+en-ZA: Engels (Zuid-Afrika)
+en-ZM: Nederlands (Zambia)
+en-ZW: Engels (Zimbabwe)
+Enable Disqus: Disqus inschakelen
+enables or disables virtualization.: Hiermee schakelt u virtualisatie in of uit.
+End: Einde
+English: Engels
+Engravers MT: Graveurs MT
+Enter email and your new password here: Vul hier je e-mailadres en je nieuwe wachtwoord in
+Enter email for password reset: Voer het e-mailadres in dat aan uw account is gekoppeld en u ontvangt een e-mail met een link om uw wachtwoord opnieuw in te stellen
+Enter name: Voer de naam in
+Enter name of backup file: Voer de naam van het back-upbestand in
+Enter new name of backup file: Voer de nieuwe naam van het back-upbestand in
+Enter the email address for the confirmation mail: Vul het e-mailadres voor de bevestigingsmail in
+Enter the URL to existing file: Voer de URL naar het bestaande bestand in
+Enter your message...: Voer uw bericht in...
+Entity Id: Entiteits-id
+Entity is required!: Entiteit is vereist!
+EntityCreatedBy: EntiteitGecreëerdDoor
+EntityCreatedOn (Local): EntityCreatedOn (lokaal)
+EntityCreatedOn (UTC): EntiteitAangemaakt op (UTC)
+EntityId: EntityId
+EntityLastModifiedBy: EntityLastModifiedBy
+EntityLastModifiedOn (Local): EntityLastModifiedOn (lokaal)
+EntityLastModifiedOn (UTC): EntityLastModifiedOn (UTC)
+Entree: Entree
+EnumSelect: EnumSelect
+Environment: Milieu
+eo-001: Esperanto (Wereld)
+EquilibriumDarkBase16: EvenwichtDarkBase16
+EquilibriumGrayDarkBase16: EvenwichtGrijsDonkerBasis 16
+EquilibriumGrayLightBase16: EvenwichtGrijsLichtBasis16
+EquilibriumLightBase16: EvenwichtLightBase16
+Eras Bold ITC: Tijdperken Bold ITC
+Eras Demi ITC: Tijdperken Demi ITC
+Eras Light ITC: Tijdperken Licht ITC
+Eras Medium ITC: Tijdperken Medium ITC
+Error: Fout
+ErrorAnimation: FoutAnimatie
+ErrorContrastText: ErrorContrastText
+ErrorDarken: FoutDarken
+ErrorId: ErrorId
+ErrorLighten: Fout verlichten
+ErrorMessage: Foutmelding
+ErrorText: FoutTekst
+es-419: Spaans (Latijns-Amerika)
+es-AR: Spaans (Argentinië)
+es-BO: Spaans (Bolivia)
+es-BR: Spaans (Brazilië)
+es-BZ: Spaans (Belize)
+es-CL: Spaans (Chili)
+es-CO: Spaans (Colombia)
+es-CR: Spaans (Costa Rica)
+es-CU: Spaans (Cuba)
+es-DO: Spaans (Dominicaanse Republiek)
+es-EC: Spaans (Ecuador)
+es-ES: Spaans (Spanje)
+es-GQ: Spaans (Equatoriaal-Guinea)
+es-GT: Spaans (Guatemala)
+es-HN: Spaans (Honduras)
+es-MX: Spaans (Mexico)
+es-NI: Spaans (Nicaragua)
+es-PA: Spaans (Panama)
+es-PE: Spaans (Peru)
+es-PH: Spaans (Filipijnen)
+es-PR: Spaans (Puerto Rico)
+es-PY: Spaans (Paraguay)
+es-SV: Spaans (El Salvador)
+es-US: Spaans (Verenigde Staten)
+es-UY: Spaans (Uruguay)
+es-VE: Spaans (Venezuela)
+Español: Spaans
+EspressoBase16: 'EspressoBase16 zei:'
+et-EE: Ests (Estland)
+Ethan Hunt: Ethan Jacht
+eu-ES: Baskisch (Spanje)
+EvaBase16: 'EvaBase16 zei:'
+EvaDimBase16: 'EvaDimBase16 zei:'
+ewo-CM: Ewondo (Kameroen)
+ExcelSheet.xlsx: ExcelSheet.xlsx
+Expand &nbsp; <b>not</b> &nbsp; loaded nodes: <b>Niet</b> &nbsp; geladen knooppunten uitvouwen &nbsp;
+Expand all nodes: Alle knooppunten uitvouwen
+Expand loaded nodes: Geladen knooppunten uitbreiden
+Expand/Collapse: Uitvouwen/samenvouwen
+ExpandBehaviour: Gedrag uitbreiden
+ExpandButtonDirection: ExpandButtonDirection
+ExpandedIcon: UitgebreidIcoon
+ExpandOnClick: ExpandOnClick
+ExpandOnFilter: ExpandOnFilter
+Explicit File Display Zip: Expliciete File Display Zip
+Export: Exporteren
+Export To Excel: Exporteren naar Excel
+Export_SheetName: Gegevens
+ExposureCompensation: BelichtingCompensatie
+ExposureMode: Belichting modus
+ExposureTime: Belichtingstijd
+Extended Attribute Deleted: Uitgebreid kenmerk verwijderd
+Extended Attribute Not Found!: Uitgebreid attribuut niet gevonden!
+Extended Attribute Saved: Uitgebreid kenmerk opgeslagen
+Extended Attribute Updated: Uitgebreid kenmerk bijgewerkt
+Extended Attribute with this Key already exists.: Uitgebreid attribuut met deze sleutel bestaat al.
+Extended Attributes: '\{0}\ Uitgebreide attributen'
+Extended Attributes exported: Uitgebreide attributen geëxporteerd
+ExtensionRestrictionType: ExtensieBeperkingType
+Extensions: Extensies
+External Id: Externe ID
+ExternalDialogOptions: ExterneDialogOpties
+ExternalId: ExternalId
+ExternalPickerImageSize: ExternalPickerImageSize
+ExternalProviderRendering: ExterneProviderRendering
+ExtraExtraLarge: ExtraExtraGroot
+ExtraLarge: ExtraGroot
+ExtraSmall: ExtraKlein
+fa-IR: Perzisch (Iran)
+FacingMode: Naar voren gerichte modus
+Fade: Vervagen
+FadeIn: Vervagen
+Failed to get client preferences: Kan clientvoorkeuren niet ophalen
+FallBackInIframe: TerugvalInIframe
+False: Vals
+FAQs: Veelgestelde vragen
+Far: Ver
+Features: Functies
+Feb: Februari
+Felix Titling: Felix Titeling
+Female: Vrouwelijk
+Female_ Text: Female_ Tekst
+ff-Adlm-BF: Fulah (Adlam, Burkina Faso)
+ff-Adlm-CM: Fulah (Adlam, Kameroen)
+ff-Adlm-GH: Fulah (Adlam, Ghana)
+ff-Adlm-GM: Fulah (Adlam, Gambia)
+ff-Adlm-GN: Fulah (Adlam, Guinee)
+ff-Adlm-GW: Fulah (Adlam, Guinee-Bissau)
+ff-Adlm-LR: Fulah (Adlam, Liberia)
+ff-Adlm-MR: Fulah (Adlam, Mauritanië)
+ff-Adlm-NE: Fulah (Adlam, Niger)
+ff-Adlm-NG: Fulah (Adlam, Nigeria)
+ff-Adlm-SL: Fulah (Adlam, Sierra Leone)
+ff-Adlm-SN: Fulah (Adlam, Senegal)
+ff-Latn-BF: Fulah (Latijn, Burkina Faso)
+ff-Latn-CM: Fulah (Latijn, Kameroen)
+ff-Latn-GH: Fulah (Latijn, Ghana)
+ff-Latn-GM: Fulah (Latijn, Gambia)
+ff-Latn-GN: Fulah (Latijn, Guinee)
+ff-Latn-GW: Fulah (Latijn, Guinee-Bissau)
+ff-Latn-LR: Fulah (Latijn, Liberia)
+ff-Latn-MR: Fulah (Latijn, Mauritanië)
+ff-Latn-NE: Fulah (Latijn, Niger)
+ff-Latn-NG: Fulah (Latijn, Nigeria)
+ff-Latn-SL: Fulah (Latijn, Sierra Leone)
+ff-Latn-SN: Fulah (Latijn, Senegal)
+FFTSize: FFTSize
+fi-FI: Fins (Finland)
+fil-PH: Filipijns (Filipijnen)
+File Display: Weergave van bestanden
+File Display with Stream: Bestandsweergave met Stream
+File Handling: Verwerking van bestanden
+File is required!: Bestand is vereist!
+FileDisplay: FileDisplay
+FileDisplayAsStream: FileDisplayAsStream
+FileDisplayZipWithPreview: BestandDisplayZipWithPreview
+FileInfo: FileInfo
+FileName: Bestandsnaam
+Files: Archief
+Files of this type ({0}) are not allowed. Only following types are allowed '{1}'. Try one of these extensions ({2}): Bestanden van dit type ({0}) zijn niet toegestaan. Alleen de volgende typen zijn toegestaan '{1}'. Probeer een van deze extensies ({2})
+Fill Administrator Credentials: Beheerdersgegevens invullen
+Fill Basic User Credentials: Basisgebruikersgegevens invullen
+FillAlpha: Vulling Alpha
+Filled: Gevuld
+Filter: Filter
+Filter...: Filter...
+Filter468: 'Filteren 468 zei:'
+FilterBehaviour: Filter gedrag
+FilterBoxClass: FilterBoxKlasse
+FilterBoxStyle: FilterBoxStyle
+FilterChipsPlacedRight: FilterChipsGeplaatstRechts
+Filtered Audit Trails exported: Gefilterde audittrails geëxporteerd
+Filtered Brands exported: Gefilterde merken geëxporteerd
+Filtered Document Types exported: Gefilterde documenttypen geëxporteerd
+Filtered Extended Attributes exported: Gefilterde uitgebreide kenmerken geëxporteerd
+Filtered Products exported: Gefilterde producten geëxporteerd
+Filtered Users exported: Gefilterde gebruikers geëxporteerd
+FilterEnabled: Filter ingeschakeld
+FilterHighlighting: FilterMarkeren
+Filtering: Filtering
+FilterMode: Filtermodus
+FilterMultiple: Filteren Meerdere
+FilterPlaceholder: Tijdelijke aanduiding voor Filter
+Filters: Filters
+FilterVariant: Filteren Variant
+Fiona Gallagher: Fiona Gallagher
+Firebrick: Vuurvaste steen
+First Name: Voornaam
+First Name is required: Voornaam is verplicht
+FirstName: Voornaam
+Fixed: Vast
+Flags Enum: Vlaggen Enum
+Flat: Plat
+Flat List: Vlakke lijst
+FlatBase16: Vlakke basis16
+FlatList: Lijst
+FlexEnd: FlexEnd
+FlexStart: FlexStart
+Flip: Flip
+FlipAlways: Altijd omdraaien
+FlipNever: OmdraaienNooit
+FlipOnOpen: FlipOnOpen
+FlipX: FlipX
+FlipY: FlipY
+FloralWhite: BloemenWit
+Florian Gilde: Florian Gilde
+FNumber: FNumber
+fo-DK: Faeröerse (Denemarken)
+fo-FO: Faeröer (Faeröer)
+FocusDistance: Scherpstellen
+FocusMode: Focus-modus
+FontFamily: Lettertype Familie
+FontSelect: FontSelect
+FontSize: Lettergrootte
+FontWeight: Lettertype Gewicht
+Footlight MT Light: Voetlicht MT Light
+Force pick Item: Object geforceerd kiezen
+Force pick Items: Items geforceerd kiezen
+Force select Item: Item geforceerd selecteren
+Force select Items: Items geforceerd selecteren
+ForceNativeRender: ForceNativeRender
+ForceSelectOfMudColor: ForceSelectOfMudColor
+ForceShrink: ForceShrink
+ForestGreen: Bos Groen
+Forgot password?: Wachtwoord vergeten?
+Format: Formatteren
+Foundation: Stichting
+fr-029: Frans (Caraïben)
+fr-BE: Frans (België)
+fr-BF: Frans (Burkina Faso)
+fr-BI: Frans (Burundi)
+fr-BJ: Frans (Benin)
+fr-BL: Frans (St. Barthélemy)
+fr-CA: Frans (Canada)
+fr-CD: Frans (Congo-Brazzaville [DRC])
+fr-CF: Frans (Centraal-Afrikaanse Republiek)
+fr-CG: Frans (Congo)
+fr-CH: Frans (Zwitserland)
+fr-CI: Frans (Ivoorkust)
+fr-CM: Frans (Kameroen)
+fr-DJ: Frans (Djibouti)
+fr-DZ: Frans (Algerije)
+fr-FR: Frans (Frankrijk)
+fr-GA: Frans (Gabon)
+fr-GF: Frans (Frans-Guyana)
+fr-GN: Frans (Guinee)
+fr-GP: Frans (Guadeloupe)
+fr-GQ: Frans (Equatoriaal-Guinea)
+fr-HT: Frans (Haïti)
+fr-KM: Frans (Comoren)
+fr-LU: Frans (Luxemburg)
+fr-MA: Frans (Marokko)
+fr-MC: Frans (Monaco)
+fr-MF: Frans (St. Martin)
+fr-MG: Frans (Madagaskar)
+fr-ML: Frans (Mali)
+fr-MQ: Frans (Martinique)
+fr-MR: Frans (Mauritanië)
+fr-MU: Frans (Mauritius)
+fr-NC: Frans (Nieuw-Caledonië)
+fr-NE: Frans (Niger)
+fr-PF: Frans (Frans-Polynesië)
+fr-PM: Frans (St. Pierre & Miquelon)
+fr-RE: Frans (Réunion)
+fr-RW: Frans (Rwanda)
+fr-SC: Frans (Seychellen)
+fr-SN: Frans (Senegal)
+fr-SY: Frans (Syrië)
+fr-TD: Frans (Tsjaad)
+fr-TG: Frans (Togo)
+fr-TN: Frans (Tunesië)
+fr-VU: Frans (Vanuatu)
+fr-WF: Frans (Wallis & Futuna)
+fr-YT: Frans (Mayotte)
+FrameRate: Framesnelheid
+FramerBase16: 'FramerBase16 zei:'
+Franklin Gothic Medium: Franklin Gothic Medium
+French: Frans
+FrequencyScale: Frequentie Schaal
+FruitSodaBase16: FruitSodaBase16
+Fuchsia: Fuchsia
+Full: Vol
+FullHeight: Volledige hoogte
+FullOctaveBands: FullOctaveBanden
+FullPaged: Volledig gepaged
+Fullscreen: Volledig scherm
+FullScreen: Volledig scherm
+FullScreenButtonIcon: Volledig schermKnopPictogram
+FullWidth: Volledige breedte
+fur-IT: Friulian (Italië)
+Futura: Toekomst
+fy-NL: Westfries (Nederland)
+ga-GB: Iers (Verenigd Koninkrijk)
+ga-IE: Iers (Ierland)
+Gain: Behalen
+Gainsboro: Gainsboro
+Garamond: Garamond
+gd-GB: Schots-Gaelisch (Verenigd Koninkrijk)
+Gender: Geslacht
+General: Algemeen
+Geneva: Genève
+George Miller: George Miller
+Georgia: Georgië
+German: Duits
+GhostWhite: Spookwit
+GigavoltBase16: GigavoltBase16
+Gigi: Gigi
+Gill Sans: Gill Sans
+Gill Sans MT: Kieuw zonder MT
+Github: Github
+GitHub Project repository: GitHub-opslagplaats voor projecten
+GithubBase16: 'GithubBase16 zei:'
+GithubDark: GithubDonker
+GithubDarkDimmed: GithubDarkDimmed
+gl-ES: Galicisch (Spanje)
+Gml: Gml
+gn-PY: Guarani (Paraguay)
+GoHome: Ga naar huis!
+Gold: Goud
+Goldenrod: Guldenroede
+Google: Googlen
+Google Drive: Google Drive
+Google Drive file picker component: Onderdeel van de Google Drive-bestandskiezer
+Googlecode: Google-code
+GoogleDarkBase16: 'GoogleDarkBase16 zei:'
+GoogleDriveClientId: GoogleDriveClientId
+GoogleLightBase16: GoogleLightBase16
+Goudy Old Style: Goudy oude stijl
+Goudy Stout: Goudse Stout
+Gradient: Gradiënt
+GradientDark: GradiëntDonker
+GradientForeground: GradiëntVoorgrond
+GradientLeft: GradiëntLinks
+GradientLight: Gradiënt Licht
+GradientRight: GradiëntRecht
+GradientText: Verloop Tekst
+Gravatar: Gravatar
+GravatarImageSize: GravatarImageSize
+Gray: Grijs
+GrayDark: GrijsDonker
+GrayDarker: GrijsDonkerder
+GrayDefault: Grijze standaard
+GrayLight: Grijs licht
+GrayLighter: GrijsAansteker
+Grayscale: Grijstinten
+GrayscaleDarkBase16: GrijstintenDarkBase16
+GrayscaleLightBase16: GrijstintenLightBase16
+Green: Groen
+GreenScreenBase16: 'GreenScreenBase16 zei:'
+GreenYellow: GroenGeel
+Grid: Rooster
+Grid_Enhanced: Grid_Enhanced
+GridCompact: RasterCompact
+GridIcon: Raster pictogram
+Groove: Sleur
+Group: Groep
+Group by types: Groeperen op type
+GroupBox: Groepsbus
+GroupId: GroupId
+GroupingEnabled: GroeperenIngeschakeld
+GroupsInitiallyExpanded: GroepenInitieel uitgevouwen
+GroupsNested: GroepenGenest
+GroupsSticky: GroepenSticky
+GruvboxDarkHardBase16: 'GruvboxDarkHardBase16 zei:'
+GruvboxDarkMediumBase16: MijnendoosDonkerMediumBase16
+GruvboxDarkPaleBase16: GruvboxDarkPaleBase16
+GruvboxDarkSoftBase16: 'GruvboxDarkSoftBase16 zei:'
+GruvboxLightHardBase16: 'GruvboxLightHardBase16 zei:'
+GruvboxLightMediumBase16: GruvboxLightMediumBase16
+GruvboxLightSoftBase16: 'GruvboxLightSoftBase16 zei:'
+gsw-CH: Zwitsers-Duits (Zwitserland)
+gsw-FR: Zwitsers-Duits (Frankrijk)
+gsw-LI: Zwitsers-Duits (Liechtenstein)
+gu-IN: Gujarati (India)
+GutterBottom: GutterBottom
+Gutters: Dakgoten
+guz-KE: Gusii (Kenia)
+gv-IM: Manx (eiland Man)
+h1: H1
+H1: H1
+h2: H2
+H2: H2
+h3: H3
+H3: H3
+h4: H4
+H4: H4
+h5: H5
+H5: H5
+h6: H6
+H6: H6
+ha-Latn-GH: Hausa (Latijn, Ghana)
+ha-Latn-NE: Hausa (Latijn, Niger)
+ha-Latn-NG: Hausa (Latijn, Nigeria)
+Haettenschweiler: Haettenschweiler
+HalfOctaveBands: HalfOctaafbanden
+Hannah Davis: Hannah Davis
+HardcoreBase16: Harde basis16
+Harlow Solid Italic: Harlow Solid cursief
+Harmonic16DarkBase16: Harmonisch16DarkBase16
+Harmonic16LightBase16: Harmonisch 16LightBase16
+Harrington: Harrington
+haw-US: Hawaïaans (Verenigde Staten)
+he-IL: Hebreeuws (Israël)
+Header.tiff: Header.tiff
+HeadShake: Hoofdschudden
+HeatMap: HeatMap
+HeetchDarkBase16: 'HeetchDarkBase16 zei:'
+HeetchLightBase16: 'HeetchLightBase16 zei:'
+Height: Hoogte
+HeliosBase16: 'HeliosBase16 zei:'
+Hello: Hallo
+Hello from dialog: Hallo uit dialoog
+Hello from dialog 1: Hallo van dialoog 1
+Hello from dialog sample page: Hallo van voorbeeldpagina van het dialoogvenster
+Hello World: Hallo mensen
+Hello...: Hallo...
+HelperId: Helper-ID
+HelperText: Helper-tekst
+HelperTextOnFocus: HelperTextOnFocus
+Helvetica: Helvetica
+Helvetica Narrow: Helvetica Smal
+Here is another Real demo available for: Hier is nog een Real-demo beschikbaar voor
+Here only number is configured to render with NumEdit edit but DataType is string. Also this field is ignored for import: Hier is alleen het nummer geconfigureerd om te renderen met NumEdit edit, maar DataType is een tekenreeks. Ook dit veld wordt genegeerd voor importeren
+Here you can edit the users, but only confirm if count is at least 2: Hier kunt u de gebruikers bewerken, maar alleen bevestigen als het aantal ten minste 2 is
+Here you can leave a comment for this permission for the current role: Hier kun je een reactie achterlaten voor deze machtiging voor de huidige rol
+Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Hier kunt u zien hoe u de MudExObjectEdit kunt gebruiken om de eigenschappen van een actief onderdeel te bewerken
+Here you find a Demo how to use the service directly: Hier vindt u een demo hoe u de service direct kunt gebruiken
+Hex: Hex
+HEX: HEX
+HexA: Hexa
+hi-IN: Hindi (India)
+Hidden: Verborgen
+Hide: Verbergen
+HideContentWhenCollapsed: HideContentWhenCollapsed
+HideDropDownWhenReadOnly: HideDropDownWhenReadOnly
+High Tower Text: Tekst Hoge Toren
+HighlightSearch: Hoogtepunten Zoeken
+Hinge: Scharnier
+Home: Thuis
+Honeydew: Honingdauw
+HopscotchBase16: Hinkelen Basis16
+HorizonDarkBase16: 'HorizonDarkBase16 zei:'
+HorizonLightBase16: 'HorizonLightBase16 zei:'
+Horizontal: Horizontaal
+HouseNumber: Getal
+Houston: Houston
+Houston - 77001: Houston - 77001
+Houston - 77001ender: Houston - 77001ender
+Houstonender: Houstonender
+HoverColor: HoverKleur
+HoverMode: Zweefmodus
+HoverOpacity: Zwevende eigenschappen
+hr-BA: Kroatisch (Bosnië en Herzegovina)
+hr-HR: Kroatisch (Kroatië)
+Href: Href
+hsb-DE: Opper-Sorbisch (Duitsland)
+HSL: Hogeschool
+HTML Colors: HTML-kleuren
+HtmlTag: Html-markering
+https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls: https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls
+https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc: https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc
+hu-HU: Hongaars (Hongarije)
+HumanoidDarkBase16: Humanoïde DarkBase16
+HumanoidLightBase16: Humanoïde LightBase16
+hy-AM: Armeens (Armenië)
+Hybrid: Hybride
+I agree to the terms and privacy: Ik ga akkoord met de voorwaarden en privacy
+I'm a also another separate control inside of the normal input: Ik ben ook een andere aparte controle binnen de normale ingang
+I'm a another separate control inside of the normal input: Ik ben een andere aparte controle binnen de normale ingang
+I'm a separate control inside of the normal input: Ik ben een aparte bediening binnen de normale ingang
+ia-001: Interlingua (Wereld)
+IaDarkBase16: 'IaDarkBase16 zei:'
+IaLightBase16: 'IaLightBase16 zei:'
+Ian Wright: Ian Wright
+ibb-NG: Ibibio (Nigeria)
+ICaptureService: ICaptureService
+Icon: Pictogram
+IconColor: IconKleur
+IconPicker: IconKiezer
+IconSize: IconSize
+IcyDarkBase16: 'IcyDarkBase16 zei:'
+id: legitimatiebewijs
+Id: Legitimatiebewijs
+id-ID: Indonesisch (Indonesië)
+Idea: Idee
+Identifier: Id
+If this is set a photo will be taken instead of a video.: Als dit is ingesteld, wordt er een foto gemaakt in plaats van een video.
+If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Als je dit pakket leuk vindt, zet ⭐ het dan op Github en deel het met je vrienden. Zo niet, dan kun je toch een ster geven en me laten weten wat ik kan verbeteren om het voor jou beter te maken.
+If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Als u deze opties als standaard instelt. Deze opties worden gebruikt voor alle dialoogvensters waarin geen opties zijn opgegeven. Voortzetten?
+ig-NG: Igbo (Nigeria)
+Ignore: Negeren
+IgnoredPropertiesForReset: GenegeerdeEigenschappenVoorReset
+IgnoredRenderControls: Genegeerde RenderControls
+ii-CN: Yi (China)
+Image format: Afbeelding formaat
+ImageAsBackgroundImage: AfbeeldingAlsAchtergrondAfbeelding
+Images: Beelden
+ImagesNewLine: AfbeeldingenNewLine
+Immediate: Onmiddellijk
+ImmediateText: Onmiddellijke tekst
+Impact: Impact
+Import: Importeren
+ImportExportIcon: Pictogram ImporterenExporteren
+In: In
+In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: In dit voorbeeld worden gegevens dynamisch geladen zodra het item voor het eerst in beeld verschijnt. Het onderdeel ondersteunt twee inhoudsslots
+In this sample you are forced to pick an user: In dit voorbeeld wordt u gedwongen een gebruiker te kiezen
+In this sample you are forced to pick some users: In dit voorbeeld wordt u gedwongen om enkele gebruikers te kiezen
+In this sample you are forced to select some users: In dit voorbeeld wordt u gedwongen enkele gebruikers te selecteren
+In this sample you can pick one user: In dit voorbeeld kunt u één gebruiker kiezen
+In this sample you can select multiple users: In dit voorbeeld kunt u meerdere gebruikers selecteren
+In this sample you can select one user: In dit voorbeeld kunt u één gebruiker selecteren
+Inches: Inch
+Include Entity fields (Export): Entiteitsvelden opnemen (Exporteren)
+Incorrect Password.: Onjuist wachtwoord.
+IndeterminateIcon: Onbepaald pictogram
+Indigo: Indigo
+Indonesia: Indonesië
+Info: Info
+Info & About: Info & Over
+InfoContrastText: InfoContrastText
+InfoDarken: InfoDarken
+InfoLighten: InfoVerlichten
+Informal Roman: Informeel Romeins
+Information: Informatie
+InfoText: InfoTekst
+inherit: erven
+Inherit: Erven
+Initial: Initiaal
+InitialColor: Initiële kleur
+InitiallyExpanded: AanvankelijkUitgebreid
+InitialMessage: Initieel bericht
+InitialMessageVisibilityTime: InitialMessageVisibilityTime
+InitialPreset: InitialPreset
+InitialRender: InitialRender
+Inline: Inline
+Inline Dialog: Inline dialoog
+InlineDialogs: Inline-dialogen
+InProgress: In uitvoering
+InputClass: Invoer Klasse
+InputId: Invoer-ID
+InputMode: Invoermodus
+InputStyle: Invoerstijl
+InputType: InvoerType
+Inset: Inzet
+IntegratedInDialogAsButtons: GeïntegreerdInDialogAsButtons
+IntegratedInDialogAsImages: GeïntegreerdInDialogAsImages
+InterimResults: Tussentijdse resultaten
+Invalid Credentials.: Ongeldige inloggegevens.
+IrBlack: IrZwart
+IrBlackBase16: 'IrBlackBase16 zei:'
+Is Active: Is actief
+Is Public: Is openbaar
+Is Public?: Is openbaar?
+is-IS: IJslands (IJsland)
+IsActive: Actief is
+IsblEditorDark: IsblEditorDark
+IsblEditorLight: IsblEditorLight
+IsMouseOverChip: IsMouseOverChip
+ISO: ISO
+IsOpen: IsOpen
+IsotopeBase16: IsotopeBase 16
+ISpeechRecognitionService: ISpeechRecognitionService
+IsPredefined: Vooraf gedefinieerd
+it-CH: Italiaans (Zwitserland)
+it-IT: Italiaans (Italië)
+it-SM: Italiaans (San Marino)
+it-VA: Italiaans (Vaticaanstad)
+Italian: Italiaans
+Item 1: Punt 1
+Item 2: Rubriek 2
+Item 3: Rubriek 3
+Item 3, Item 1: Item 3, item 1
+Item 4: Rubriek 4
+Item 5: Rubriek 5
+Item One: Punt Een
+Item Three: Punt drie
+Item Two: Punt twee
+ItemBackgroundColor: ItemAchtergrondKleur
+ItemClass: Artikelklasse
+ItemCollection: ItemCollectie
+ItemContent: ItemInhoud
+ItemContentClass: ItemContentClass
+ItemContentStyle: ItemContentStyle
+ItemContentTypo: ItemContentTypo
+ItemList: Lijst met artikelen
+Items: Items
+ItemsSource: ArtikelenBron
+ItemStyle: ItemStijl
+ItemWidth: ItemBreedte
+iu-CA: Inuktitut (Canada)
+iu-Latn-CA: Inuktitut (Latijn, Canada)
+Ivory: Ivoor
+ja-JP: Japans (Japan)
+JackInTheBox: JackInTheBox
+Jan: Jan
+JavaScript: JavaScript
+Jello: Jello
+jgo-CM: Ngomba (Kameroen)
+jmc-TZ: Machame (Tanzania)
+John Doe: John Doe
+Jokerman: grappenmaker
+Json: Json
+Json value is required using {0} type!: De Json-waarde is vereist met behulp van {0} type!
+Json value must be a valid json string using {0} type!: De Json-waarde moet een geldige json-tekenreeks zijn met behulp van {0} type!
+Juice ITC: Sap ITC
+Jul: Jul
+Julia Roberts: Julia Roberts
+Jun: Jun
+Justify: Rechtvaardigen
+jv-Java-ID: Javaans (Javaans, Indonesië)
+jv-Latn-ID: Javaans (Latijn, Indonesië)
+ka-GE: Georgisch (Georgië)
+kab-DZ: Kabylië (Algerije)
+kam-KE: Kamba (Kenia)
+kde-TZ: Makonde (Tanzania)
+kea-CV: Kabuverdianu (Kaapverdië)
+Keep scrolling to reveal the content below...: Blijf scrollen om de onderstaande inhoud te onthullen...
+KeepExisting: BehoudenBestaand
+KeepMaxSizeConstraints: KeepMaxSizeConstraints
+KeepRelations: Relaties behouden
+KeepState: Houden Staat
+Kevin Hart: Kevin Hart
+Key: Sleutel
+Key is required!: Sleutel is vereist!
+KeyDownPreventDefault: KeyDownPreventDefault
+KeyDownStopPropagation: KeyDownStopPropagation
+KeyUpPreventDefault: KeyUpPreventDefault
+KeyUpStopPropagation: KeyUpStopPropagatie
+Khaki: Kaki
+khq-ML: Koyra Chiini (Mali)
+ki-KE: Kikuyu (Kenia)
+Kilobytes: Kilobytes
+KimberBase16: 'KimberBase16 zei:'
+KimbieDark: KimbieDonker
+KimbieLight: KimbieLight
+kk-KZ: Kazachs (Kazachstan)
+kkj-CM: Kako (Kameroen)
+kl-GL: Kalaallisut (Groenland)
+kln-KE: Kalenjin (Kenia)
+km-KH: Khmer (Cambodja)
+kn-IN: Kannada (India)
+ko-KP: Koreaans (Noord-Korea)
+ko-KR: Koreaans (Korea)
+kok-IN: Konkani (India)
+Kommunikation - Mikrofon (Voicemod Virtual Audio Device (WDM)): Communicatie - Microfoon (Voicemod Virtual Audio Device (WDM))
+kr-Latn-NG: Kanuri (Latijn, Nigeria)
+ks-Arab-IN: Kashmiri (Arabisch, India)
+ks-Deva-IN: Kashmiri (Devanagari, India)
+ksb-TZ: Shambala (Tanzania)
+ksf-CM: Bafia (Kameroen)
+ksh-DE: Colognian (Duitsland)
+ku-Arab-IQ: Koerdisch (Arabisch, Irak)
+ku-Arab-IR: Koerdisch (Arabisch, Iran)
+Kunstler Script: Kunstler Script
+kw-GB: Cornish (Verenigd Koninkrijk)
+ky-KG: Kirgizië (Kirgizië)
+la-VA: Latijn (Vaticaanstad)
+Label: Etiket
+Label_Description: Beschrijving
+Label_for_Age: Label_for_Age
+Label_for_City: Label_for_City
+Label_for_FirstName: Label_for_FirstName
+Label_for_Gender: Label_for_Gender
+Label_for_HouseNumber: Label_for_HouseNumber
+Label_for_Id: Label_for_Id
+Label_for_Notice: Label_for_Notice
+Label_for_OtherAddresses: Label_for_OtherAddresses
+Label_for_PostalCode: Label_for_PostalCode
+Label_for_ProgramingSkills: Label_for_ProgramingSkills
+Label_for_Street: Label_for_Street
+Label_for_TrueOrFalse: Label_for_TrueOrFalse
+Label_UploadRequests: Archief
+LabelCustomTab: LabelCustomTab
+LabelDefinedTab: LabelGedefinieerdTab
+lag-TZ: Langi (Tanzania)
+Landscape: Landschap
+Language: Taal
+Languages: Talen
+Large: Groot
+LargeZipArchive.zip: LargeZipArchive.zip
+Last Name: Achternaam
+Last Name is required: Achternaam is verplicht
+LastName: Achternaam
+Laura Palmer: Laura Palmer
+Lavender: Lavendel
+LavenderBlush: Lavendel Blush
+LawnGreen: Gazon Groen
+LayoutProperties: Lay-outEigenschappen
+lb-LU: Luxemburgs (Luxemburg)
+Leave editor focus to update MudExStructuredDataEditor: Laat de focus van de redacteur liggen om MudExStructuredDataEditor bij te werken
+LedBars: Led-staven
+Left: Links
+Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): Linker deel in MudExSplitPanel. (Merk op dat u MudExSplitter ook rechtstreeks kunt gebruiken)
+LegacyRender: Erfenis weergeven
+Legend: Legende
+LemonChiffon: Citroen Chiffon
+LetterSpacing: LetterSpacing
+lg-UG: Ganda (Oeganda)
+Library: Bibliotheek
+LightBlue: Lichtblauw
+LightBulb: Gloeilamp
+LightBulbSize: Gloeilamp Grootte
+LightBulbSizeUnit: GloeilampGrootteEenheid
+LightCoral: Lichtkoraal
+LightCyan: Lichtcyaan
+Lightfair: Lichtbeurs
+LightGoldenrodYellow: LichtGuldenroedeGeel
+LightGray: Lichtgrijs
+LightGreen: Lichtgroen
+LightOnly: Alleen licht
+LightPink: Lichtroze
+LightSalmon: LichtZalm
+LightSeaGreen: LichtZee Groen
+LightSkyBlue: Licht Hemelsblauw
+LightSlateGray: LichtLeisteengrijs
+LightSpeed: Lichtsnelheid
+LightSteelBlue: LichtStaalBlauw
+LightYellow: Lichtgeel
+Lime: Kalk
+LimeGreen: Limoen Groen
+Line: Lijn
+Linear: Lineair
+LinearAmplitude: LineairAmplitude
+LinearBoost: Lineaire boost
+LineAreaGraph: Lijn Grafiek
+LineColor: Lijnkleur
+LineHeight: Lijn Hoogte
+Lines: Lijnen
+LinesDefault: LijnenStandaard
+LinesInputs: LijnenIngangen
+LineWidth: LijnBreedte
+Lioshi: Lioshi
+List: Lijst
+List appearance: Weergave van de lijst
+List behavior: Gedrag weergeven
+List item for MudExList.: Lijstitem voor MudExList.
+lkt-US: Lakota (Verenigde Staten)
+ln-AO: Lingala (Angola)
+ln-CD: Lingala (Congo-Brazzaville [DRC])
+ln-CF: Lingala (Centraal-Afrikaanse Republiek)
+ln-CG: Lingala (Congo-Kinshasa)
+lo-LA: Lao (Laos)
+LoadFileDataBytesInBackground: LoadFileDataBytesInBackground
+Loading: Laden
+Loading...: Laden...
+Local: Lokaal
+LocalizerPattern: LocalizerPatroon
+LockScroll: Scroll vergrendelen
+Log: Log
+Logged In.: Ingelogd.
+Logged Out.: Uitgelogd.
+LogicalSurface: Logisch oppervlak
+Login with Keycloak: Inloggen met Keycloak
+LoginDescription: Log in met uw inloggegevens.
+Logitech BRIO (046d:085e): Logitech BRIO (046d:085e)
+logLevel: logLevel
+logo.png: logo.png
+Logout: Logout
+Logout Confirmation: Wil je echt uitloggen?
+Logout user: Afmelden gebruiker
+London: Londen
+London - SW1A 1AA: Londen - SW1A 1AA
+London - SW1A 1AAender: Londen - SW1A 1AAender
+LondonTubeBase16: LondenTubeBase16
+LoRes: Lords
+Los Angeles: Los Angeles
+Los Angeles - 90001: Los Angeles - 90001
+Los Angeles - 90001ender: Los Angeles - 90001ender
+lrc-IQ: Noord-Luri (Irak)
+lrc-IR: Noord-Luri (Iran)
+lt-LT: Litouws (Litouwen)
+lu-CD: Luba-Katanga (Congo-Brazzaville [DRC])
+Lucida Bright: Lucida Helder
+Lucida Calligraphy: Lucida Kalligrafie
+Lucida Console: Lucida Console
+Lucida Fax: Lucida Fax
+Lucida Grande: Lucida Grande
+Lucida Handwriting: Lucida Handschrift
+Lucida Sans: Lucida Sans
+Lucida Sans Typewriter: Lucida zonder typemachine
+Lucida Sans Unicode: Lucida Sans Unicode
+LumiBars: LumiBars
+luo-KE: Luo (Kenia)
+luy-KE: Luyia (Kenia)
+lv-LV: Lets (Letland)
+Lyon: Lyon
+Lyon - 69001: Lyon - 69001
+Lyon - 69001ender: Lyon - 69001ender
+Lyrics: Tekst
+MacintoshBase16: MacintoshBase16
+Magneto: Magneto
+Magula: Magula
+mai-IN: Maithili (India)
+Mail: Post
+Main User: Hoofd gebruiker
+MainAddress: Hoofdadres
+MainSample.WebAssembly.Pages.Page_ObjectEditList+Brand: MainSample.WebAssembly.Pages.Page_ObjectEditList+Merk
+MainSample.WebAssembly.Services.SampleFile: MainSample.WebAssembly.Services.SampleFile
+MainSample.WebAssembly.Services.SampleFileWithStream: MainSample.WebAssembly.Services.SampleFileWithStream
+MainUser: Hoofdgebruiker
+Male: Mannelijk
+Manage {0} {1}'s Extended Attributes: Uitgebreide kenmerken van {0} {1} beheren
+Manage {0} {1}'s Permissions: De machtigingen van {0} {1} beheren
+Manage {0} {1}'s Roles: Beheer de rollen van {0} {1}
+Manage {0} Extended Attributes: Beheer {0} uitgebreide attributen
+Manage {0}'s Permissions: De machtigingen van {0} beheren
+Manage Brands.: Beheer merken.
+Manage Database Backups.: Databaseback-ups beheren of herstellen.
+Manage Document Types.: Documenttypen beheren.
+Manage Extended Attributes: Uitgebreide kenmerken beheren
+Manage Languages: Talen beheren
+Manage Permission: Machtiging beheren
+Manage Products.: Producten beheren.
+Manage Roles: Rollen beheren
+Manage Roles.: Rollen beheren.
+Manage Translations: Vertalingen beheren
+Manage Users: Gebruikers beheren
+Manage your account: Beheer uw account
+Manchester: Manchester
+Manchester - M1 1AE: Manchester - M1 1AE
+Manchester - M1 1AEender: Manchester - M1 1AEender
+Manual: Handmatig
+Mar: Mar
+Margin: Marge
+Mark all: Alles markeren
+Mark all as read: Alles markeren als gelezen
+Mark all as unread: Alles markeren als ongelezen
+Mark as read: Markeren lezen
+Mark as unread: Markeren als ongelezen
+MarrakeshBase16: 'MarrakeshBase16 zei:'
+Marseille: Marseille
+Marseille - 13001: Marseille - 13001
+Marseille - 13001ender: Marseille - 13001ender
+mas-KE: Masai (Kenia)
+mas-TZ: Masai (Tanzania)
+Mask: Masker
+MateriaBase16: 'MateriaBase16 zei:'
+MaterialBase16: MateriaalBase16
+MaterialDarkerBase16: MateriaalDarkerBase16
+MaterialLighterBase16: MateriaalLichterBase16
+MaterialPalenightBase16: MateriaalPalenightBase16
+MaterialVividBase16: MateriaalVividBase16
+Matura MT Script Capitals: Matura MT Schrift Hoofdletters
+MaxCaptureTime: MaxCaptureTime
+MaxChips: Max-chips
+MaxDecibels: MaxDecibel
+MaxFileSize: MaxBestandsgrootte
+MaxFPS: MaxFPS
+MaxFrequency: MaxFrequentie
+MaxHeight: MaxHoogte
+MaximizeButton: Knop maximaliseren
+MaxItems: MaxItems
+MaxItemWidth: MaxItemBreedte
+MaxLength: MaxLengte
+MaxLuminance: MaxLuminantie
+MaxMultipleFiles: MaxMultipleFiles
+MaxRecordingTime: MaxOpnametijd
+MaxWidth: MaxBreedte
+MaxZoomPixelRatio: Max. ZoomPixelverhouding
+May: Mei
+Medium: Gemiddeld
+MediumSlateBlue: MediumSlateBlauw
+MediumSpringGreen: MediumLenteGroen
+MediumTurquoise: Medium turkoois
+MediumVioletRed: MediumVioletRood
+Megabytes: Megabytes
+Mel: Mel
+MellowPurpleBase16: MellowPurpleBase16
+MenuAnchorOrigin: MenuAnchorOrigin
+MenuMaxHeight: MenuMaxHoogte
+MenuTransformOrigin: MenuTransformOrigin
+mer-KE: Meru (Kenia)
+Message will be deleted in {0} seconds: Het bericht wordt binnen {0} seconden verwijderd
+MessageClass: MessageClass
+MessageStyle: Berichtstijl
+MetaCoverImage: MetaCover-afbeelding
+Method 1: Methode 1
+Method 2: Methode 2
+MexicoLightBase16: 'MexicoLightBase16 zei:'
+mfe-MU: Morisyen (Mauritius)
+mg-MG: Malagasi (Madagaskar)
+mgh-MZ: Makhuwa-Meetto (Mozambique)
+mgo-CM: Metaʼ (Kameroen)
+mi-NZ: Maori (Nieuw-Zeeland)
+Michael Scott: Michaël Scott
+MicrophoneDeviceId: MicrofoonApparaat-ID
+MidnightBlue: Middernacht blauw
+Mikrofon (3- RODE NT-USB) (19f7:0003): Microfoon (3-RODE NT-USB) (19f7:0003)
+Mikrofon (DroidCam Virtual Audio): Microfoon (DroidCam virtuele audio)
+Mikrofon (Logitech BRIO) (046d:085e): Microfoon (Logitech BRIO) (046d:085e)
+Mikrofon (ROG Headset) (0b05:1876): Microfoon (ROG-headset) (0b05:1876)
+Mikrofon (USB Audio Device) (1b3f:2008): Mikrofon (USB-audioapparaat) (1b3f:2008)
+Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Voicemod virtueel audioapparaat (WDM))
+Millimeters: Millimeters
+MimeRestrictionType: MimeBeperkingsType
+MimeTypes: Mime-typen
+MinDecibels: MinDecibels
+MinFrequency: Min-frequentie
+MinHeight: MinHoogte
+Mini: Mini
+MinimizeButton: Knop minimaliseren
+MinLuminance: MinLuminantie
+MintCream: Munt crème
+MinZoomLevel: MinZoomLevel
+Mirror: Spiegel
+Misc: MISC
+Misc Options: Overige opties
+Mistral: Mistral
+MistyRose: Mistige roos
+mk-MK: Macedonisch (Noord-Macedonië)
+ml-IN: Malayalam (India)
+mn-MN: Mongools (Mongolië)
+mn-Mong-CN: Mongools (Mongools, China)
+mn-Mong-MN: Mongools (Mongools, Mongolië)
+mni-IN: Manipuri (India)
+Moccasin: Mocassin
+MochaBase16: Mokka Base16
+Modal: Kapitaal
+Mode: Wijze
+Model with File: Model met bestand
+Modern No. 20: Modern nr. 20
+moh-CA: Mohawk (Canada)
+Monaco: Monaco
+Monitor: Monitor
+MonoBlue: Monoblauw
+Monokai: Monokai
+MonokaiBase16: 'MonokaiBase16 zei:'
+MonokaiSublime: MonokaiSubliem
+Monotype Corsiva: Monotype Corsiva
+Month: Maand
+Montreal: Montréal
+Montreal - H1A 0A1: Montreal - H1A 0A1
+Montreal - H1A 0A1ender: Montréal - H1A 0A1ender
+Montserrat: Montserrat
+Motion: Beweging
+Mouse: Muis
+MouseOverMessageClass: MouseOverMessageKlasse
+MouseOverMessageStyle: MouseOverMessageStyle
+MouseWheelDownAction: MouseWheelDownActie
+MouseWheelUpAction: MouseWheelUpActie
+MoveContent: Inhoud verplaatsen
+mr-IN: Marathi (India)
+MS Outlook: MS Outlook
+MS Reference Sans Serif: MS Reference schreefloos
+MS Reference Specialty: MS Referentie Specialiteit
+MS Sans Serif: MS schreefloos
+MS Serif: MS Serif
+ms-BN: Maleis (Brunei)
+ms-ID: Maleis (Indonesië)
+ms-MY: Maleis (Maleisië)
+ms-SG: Maleis (Singapore)
+mt-MT: Maltees (Malta)
+mua-CM: Mundang (Kameroen)
+mud-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788: modder-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788
+MudAlert: Modder Alert
+MudAppBar: MudApp-balk
+MudAvatar: Modder Avatar
+MudAvatarGroup: Modder Avatar Groep
+MudBadge: MudBadge
+MudBlazor Components: MudBlazor-componenten
+MudBlazor Popover: MudBlazor-popover
+MudBlazor.Extensions.Components.ThemePreset`1[MainSample.WebAssembly.ClientTheme]: MudBlazor.Extensions.Components.ThemePreset'1[MainSample.WebAssembly.ClientTheme]
+MudBreadcrumbs: ModderPaneermeel
+MudBreakpointProvider: MudBreakpoint-aanbieder
+MudButton: Modder knop
+MudButtonGroup: MudButtonGroep
+MudCard: MudCard
+MudCardActions: MudCardActies
+MudCardContent: MudCard-inhoud
+MudCardHeader: MudCardHeader
+MudCardMedia: MudCardMedia
+MudCarouselItem: ModdercarrouselArtikel
+MudChart: Modder Grafiek
+MudChat: Modder Chat
+MudChatBubble: MudChatBubble
+MudChatFooter: MudChatFooter
+MudChatHeader: MudChat-header
+MudCollapse: ModderInstorten
+MudColorPicker: ModderKleurkiezer
+MudColorStringFormat: MudColorStringFormat
+MudContainer: Modder container
+MudContextualActionBar: MudContextualActionBar
+MudDatePicker: MudDateKiezer
+MudDateRangePicker: MudDateRangePicker
+MudDialog: Modderdialoog
+MudDialogContainer: MudDialogContainer
+MudDialogProvider: Aanbieder van MudDialog
+MudDivider: Modderverdeler
+MudDrawer: Modder lade
+MudDrawerContainer: Modderlade-container
+MudDrawerHeader: Modderlade-header
+MudDynamicTabs: MudDynamicTabs
+MudElement: Modder Element
+MudEx Components: MudEx-componenten
+MudExAdditionalAdornment: MudExAdditionalAdornment
+MudExAppearance: MudExUiterlijk
+MudExAppLoader: MudExAppLoader
+MudExAudioPlayer: MudExAudio-speler
+MudExCaptureButton: MudExCapture-knop
+MudExCaptureOptionsEdit: MudExCaptureOptiesBewerken
+MudExCardList: MudExCard-lijst
+MudExCardList with ItemsSource: MudExCardLijst met ItemsSource
+MudExCardList with ItemsSource and child content: MudExCardLijst met ItemsBron- en onderliggende inhoud
+MudExCardList<TData>: MudExCard-lijst<TData>
+MudExChipSelect: MudExChipSelecteer
+MudExChipSelect can used to select items from a collection as chips: MudExChipSelect kan worden gebruikt om items uit een collectie als chips te selecteren
+MudExChipSelect<T>: MudExChipSelecteer<T>
+MudExCodeView: MudExCode-weergave
+MudExCollectionEditor<T>: MudExCollectionEditor<T>
+MudExColor: MudExColor
+MudExColorBubble: MudExColorBubble
+MudExColorEdit: MudExColorBewerken
+MudExColorEdit is in general a MudBlazor Picker component specially for the struct MudExColor. But because name MudExColorPicker is already used for an extended ColorPicker this Component is named MusExColorEdit: MudExColorEdit is over het algemeen een MudBlazor Picker component speciaal voor de structuur MudExColor. Maar omdat de naam MudExColorPicker al wordt gebruikt voor een uitgebreide ColorPicker, wordt dit onderdeel MusExColorEdit genoemd
+MudExColorPicker: MudExColorPicker
+MudExColorUtils: MudExColorUtils
+MudExCss: MudExCss
+MudExCssBuilder: MudExCssBuilder
+MudExCultureSelect: MudExCultureSelecteer
+MudExDialog: MudExDialog
+MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog is het onderdeel dat u moet gebruiken als u een dialoogvenster wilt weergeven dat op uw pagina is inline met alle DialogExtensions.
+MudExDivider: MudExDivider
+MudExDropBoxFilePicker: MudExDropBoxFilePicker
+MudExEnumSelect: MudExEnumSelect
+MudExEnumSelect<TEnum>: MudExEnumSelect<TEnum>
+MudExFileDisplay: MudExFile-weergave
+MudExFileDisplayCode: MudExFileDisplayCode
+MudExFileDisplayDialog: MudExFileDisplayDialog
+MudExFileDisplayExcel: MudExFileDisplayExcel
+MudExFileDisplayFont: MudExFileDisplayFont
+MudExFileDisplayHtml: MudExFileDisplayHtml
+MudExFileDisplayOfficeLive: MudExFileDisplayOfficeLive
+MudExFileDisplayStructuredData: MudExFileDisplayStructuredData
+MudExFileDisplayZip: MudExFileDisplayZip
+MudExFontSelect: MudExFontSelect
+MudExFontSelect can used to select one ore more fonts: MudExFontSelect kan worden gebruikt om één of meerdere lettertypen te selecteren
+MudExGoogleFilePicker: MudExGoogleFilePicker
+MudExGradientText: MudExGradientText
+MudExGravatar: MudExGravatar
+MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar is een MudAvatar die automatisch de profielafbeelding van gravatar gebruikt als e-mailadres
+MudExGrid: ModderRooster
+MudExGrid Enhanced: MudExGrid Verbeterd
+MudExGridSection: MudExGridSectie
+MudExGroupBox: MudExGroupBox
+MudExHtmlEdit: MudExHtmlBewerken
+MudExIcon: MudExIcon
+MudExIcon is a simple MudIcon with extended possibilities to set all colors.: MudExIcon is een eenvoudige MudIcon met uitgebreide mogelijkheden om alle kleuren in te stellen.
+MudExIconButton: MudExIconButton
+MudExIconPicker: MudExIconKiezer
+MudExIconPicker is in general a MudBlazor Picker component specially for selecting an icon.: MudExIconPicker is over het algemeen een MudBlazor Picker component speciaal voor het selecteren van een icoon.
+MudExImageViewer: MudExImageViewer
+MudExList: MudExList
+MudExList can used to select one ore more items from a bindeable collection.: MudExList kan worden gebruikt om een of meer items uit een bindbare collectie te selecteren.
+MudExList is a component that allows you to select an item from a list of items. It is a wrapper for MudList.: MudExList is een onderdeel waarmee u een item kunt selecteren uit een lijst met items. Het is een wrapper voor MudList.
+MudExList<T>: MudExList<T>
+MudExListItem<T>: MudExListItem<T>
+MudExListSubheader is a sub header for MudExList.: MudExListSubheader is een subheader voor MudExList.
+MudExListSubheader<T>: MudExListSubheader<T>
+MudExMessageDialog: MudExMessageDialog
+MudExObjectEdit: MudExObjectBewerken
+MudExObjectEdit and MudExCollectionEditor with a shared config: MudExObjectEdit en MudExCollectionEditor met een gedeelde configuratie
+MudExObjectEdit with virtual property rendering: MudExObjectBewerken met rendering van virtuele eigenschappen
+MudExObjectEdit<T>: MudExObjectBewerken<T>
+MudExObjectEditDialog<T>: MudExObjectEditDialog<T>
+MudExObjectEditForm<T>: MudExObjectEditForm<T>
+MudExObjectEditPicker<T>: MudExObjectEditPicker<T>
+MudExOneDriveFilePicker: MudExOneDriveFilePicker
+MudExpansionPanel: MudExpansionPaneel
+MudExpansionPanels: MudExpansionPanelen
+MudExPicker: MudExPicker
+MudExPickerBase<T>: MudExPickerBase<T>
+MudExPopover: MudExPopover
+MudExPromptDialog: MudExPromptDialog
+MudExPromptDialog Component: MudExPromptDialog-component
+MudExPropertyEdit: MudExPropertyBewerken
+MudExSelect: MudExSelect
+MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect kan worden gebruikt om één of meerdere items uit een bindbare collectie te selecteren. Dit onderdeel ondersteunt ook alle animaties zoals dialogen of MudExPopover.
+MudExSelect<T>: MudExSelect<T>
+MudExSelectItem is a select item for MudExSelect.: MudExSelectItem is een geselecteerd item voor MudExSelect.
+MudExSelectItem<T>: MudExSelectItem<T>
+MudExSize is a readonly struct that provides a convenient and type-safe way to deal with size values in the context of MudBlazor components.: MudExSize is een readonly struct die een handige en typeveilige manier biedt om met groottewaarden om te gaan in de context van MudBlazor-componenten.
+MudExSize<T>: MudExSize<T>
+MudExSlideBar: MudExSlideBar
+MudExSpeechToTextButton: MudExSpeechToTextButton
+MudExSplitPanel: MudExSplitPaneel
+MudExSplitPanelItem: MudExSplitPanelItem
+MudExSplitter: MudExSplitter
+MudExStructuredDataEditor: MudExStructuredDataEditor
+MudExStyleBuilder: MudExStyleBuilder
+MudExSvg: MudExSvg
+MudExTagField: MudExTagField
+MudExTagField creates chips when user press on of the specified delimiter or presses enter.: MudExTagField maakt chips aan wanneer de gebruiker op een van de opgegeven scheidingstekens drukt of op enter drukt.
+MudExTagField is a component that allows the user to enter a list of values as chips.: MudExTagField is een component waarmee de gebruiker een lijst met waarden als chips kan invoeren.
+MudExTagField<T>: MudExTagField<T>
+MudExTaskBar: MudExTaskBar
+MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide  somewhere in your Layout: MudExTaskBar neemt de MudExSlideBar over en biedt een tabbalk om niet-modale dialoogvensters te selecteren. Geef gewoon ergens in uw lay-out op
+MudExTextField<T>: MudExTextField<T>
+MudExThemeEdit: MudExThemaBewerken
+MudExThemeEdit is a powerful component to edit one ore more themes: MudExThemeEdit is een krachtig onderdeel om een of meer thema's te bewerken
+MudExThemeEdit<TTheme>: MudExThemaBewerken<TTheme>
+MudExThemeSelect: MudExThemeSelect
+MudExThemeSelect<TTheme>: MudExThemeSelect<TTheme>
+MudExToggleableSearch: MudExToggleableZoeken
+MudExTreeView: MudExTree-weergave
+MudExTreeView is useful to bind tree structured items. The control that should used can be set with the ViewMode property: MudExTreeView is handig om items met boomstructuur te binden. Het besturingselement dat moet worden gebruikt, kan worden ingesteld met de eigenschap ViewMode
+MudExTreeView with template: MudExTreeView met sjabloon
+MudExTreeView<T>: MudExTree-weergave<T>
+MudExTreeViewBreadcrumb: MudExTreeViewBroodkruim
+MudExTreeViewBreadcrumb<T>: MudExTreeViewBroodkruim<T>
+MudExTreeViewCardGrid: MudExTreeViewCardGrid
+MudExTreeViewCardGrid<T>: MudExTreeViewCardGrid<T>
+MudExTreeViewDefault: MudExTreeViewDefault
+MudExTreeViewDefault<T>: MudExTreeViewDefault<T>
+MudExTreeViewFlatList: MudExTreeViewFlatList
+MudExTreeViewFlatList<T>: MudExTreeViewFlatList<T>
+MudExTreeViewHorizontal: MudExTreeViewHorizontaal
+MudExTreeViewHorizontal<T>: MudExTreeViewHorizontaal<T>
+MudExTreeViewList: MudExTreeViewList
+MudExTreeViewList<T>: MudExTreeViewList<T>
+MudExUploadEdit: MudExUploadBewerken
+MudExUploadEdit<T>: MudExUploadBewerken<T>
+MudExVirtualItem: MudExVirtualItem
+MudExVirtualize<TItem>: MudExVirtualiseren<TItem>
+MudFab: Modder Fab
+MudField: Modderveld
+MudFlexBreak: MudFlexBreak
+MudFocusTrap: ModderFocusVal
+MudForm: Modder Vorm
+MudGrid: Modder Raster
+MudHeatMapCell: ModderHeatMapCel
+MudHidden: ModderVerborgen
+MudHighlighter: Modder markeerstift
+MudIcon: Modder icoon
+MudIconButton: MudIconKnop
+MudImage: Mud afbeelding
+MudInputAdornment: ModderInputVersiering
+MudInputControl: MudInputControle
+MudInputLabel: ModderInputLabel
+MudInputString: ModderInputString
+MudItem: Modder Item
+MudLayout: Modder lay-out
+MudLink: Modder Link
+MudListSubheader: MudListSubheader
+MudMainContent: Modder Hoofdinhoud
+MudMask: Modder masker
+MudMenu: Modder Menu
+MudMenuItem: MudMenuItem
+MudMessageBox: MudMessageBox
+MudNavGroup: MudNav-groep
+MudNavLink: Modder NavLink
+MudNavMenu: MudNavMenu
+MudOverlay: Modder overlay
+MudPageContentNavigation: MudPageContentNavigatie
+MudPagination: Modderpaginering
+MudPaper: Modder Papier
+MudPickerContent: MudPicker-inhoud
+MudPickerToolbar: MudPicker-werkbalk
+MudPopover: Modder Popover
+MudPopoverProvider: MudPopover-aanbieder
+MudProgressCircular: ModderProgressCirculair
+MudProgressLinear: MudProgressLinear
+MudRating: Modder Beoordeling
+MudRatingItem: ModderBeoordelingArtikel
+MudRender: Modder weergeven
+MudRTLProvider: MudRTLProvider
+MudScrollToTop: ModderScrollNaarTop
+MudSimpleTable: ModderSimpleTable
+MudSkeleton: Modder Skelet
+MudSnackbarElement: MudSnackbarElement
+MudSnackbarProvider: MudSnackbarAanbieder
+MudSpacer: Modder Spacer
+MudStack: Modder Stapel
+MudStep: Modder Stap
+MudStepper: MudStepper
+MudSwipeArea: Modder Veeggebied
+MudTablePager: MudTablePager
+MudTabPanel: MudTabPaneel
+MudTabs: Modder tabbladen
+MudTd: MudTd
+MudText: Modder Tekst
+MudTextField with additional features: MudTextField met extra functies
+MudTFootRow: Modder TFootRow
+MudTh: Modder
+MudTHeadRow: ModderTHeadRow
+MudThemeProvider: Aanbieder van modderthema's
+MudTimeline: Modder Tijdlijn
+MudTimelineItem: MudTimelineItem
+MudTimePicker: MudTimePicker
+MudTimeSeriesChart: MudTimeSeriesGrafiek
+MudToggleIconButton: MudToggleIconKnop
+MudToolBar: Modder ToolBar
+MudTooltip: Modder Tooltip
+MudTr: Modder Tr
+MudTreeViewItemToggleButton: MudTreeViewItemToggleButton
+MultiSelect: MultiSelect
+MultiSelection: Meervoudige selectie
+MultiSelectionAlign: MultiSelectionAlign
+MultiSelectionComponent: MultiSelectionComponent
+MultiSelectWithCtrlKey: MultiSelectWithCtrlKey
+My Custom action: Mijn actie op maat
+my-MM: Birmees (Myanmar)
+mzn-IR: Mazanderani (Iran)
+name: naam
+Name: Naam
+Name is required: Naam is verplicht
+Name is required!: Naam is verplicht!
+NameContainerStyle: NaamContainerStyle
+Names: Namen
+naq-NA: Naam (Namibië)
+Natalie Portman: Natalie Portman
+NavajoWhite: NavajoWit
+NavigationExpandMode: NavigatieUitbreidmodus
+NavigationLinkBarClass: NavigatieLinkBarKlasse
+NavigationLinkBarStyle: NavigatieLinkBarStyle
+NavigationViewMode: NavigatieWeergaveModus
+NavigatorClass: Navigator Klasse
+NavigatorPosition: Navigator Positie
+NavigatorRectangleColor: NavigatorRechthoekKleur
+NavigatorSizeRatio: NavigatorGrootteVerhouding
+Navy: Marine
+nb-NO: Noorse Bokmål (Noorwegen)
+nb-SJ: Noorse Bokmål (Svalbard & Jan Mayen)
+nd-ZW: North Ndebele (Zimbabwe)
+nds-DE: Nederduits (Duitsland)
+nds-NL: Nederduits (Nederland)
+ne-IN: Nepalees (India)
+ne-NP: Nepalees (Nepal)
+NebulaBase16: NebulaBase16
+Never: Nooit
+New: Nieuw
+NEW Dialog Drag Drop Mode: NIEUW dialoogvenster Drag Drop-modus
+New dialog Feature - SnapDrag: Nieuwe dialoogfunctie - SnapDrag
+New Message From {0}: Nieuw bericht van {0}
+New MudExStructureDataEditor can used to edit json, xml or yaml string in a MudExObjectEdit: Nieuwe MudExStructureDataEditor kan worden gebruikt om json-, xml- of yaml-tekenreeks in een MudExObjectEdit te bewerken
+New Password: Nieuw wachtwoord
+New User 100: Nieuwe gebruiker 100
+New User 101: Nieuwe gebruiker 101
+New User 102: Nieuwe gebruiker 102
+New User 103: Nieuwe gebruiker 103
+New User 104: Nieuwe gebruiker 104
+New User 105: Nieuwe gebruiker 105
+New User 106: Nieuwe gebruiker 106
+New User 107: Nieuwe gebruiker 107
+New User 108: Nieuwe gebruiker 108
+New User 109: Nieuwe gebruiker 109
+New User 110: Nieuwe gebruiker 110
+New User 111: Nieuwe gebruiker 111
+New User 112: Nieuwe gebruiker 112
+New User 113: Nieuwe gebruiker 113
+New User 114: Nieuwe gebruiker 114
+New User 115: Nieuwe gebruiker 115
+New User 116: Nieuwe gebruiker 116
+New User 117: Nieuwe gebruiker 117
+New User 118: Nieuwe gebruiker 118
+New User 119: Nieuwe gebruiker 119
+New User 120: Nieuwe gebruiker 120
+New User 121: Nieuwe gebruiker 121
+New User 122: Nieuwe gebruiker 122
+New User 123: Nieuwe gebruiker 123
+New User 124: Nieuwe gebruiker 124
+New User 125: Nieuwe gebruiker 125
+New User 126: Nieuwe gebruiker 126
+New User 127: Nieuwe gebruiker 127
+New User 128: Nieuwe gebruiker 128
+New User 129: Nieuwe gebruiker 129
+New User 130: Nieuwe gebruiker 130
+New User 131: Nieuwe gebruiker 131
+New User 132: Nieuwe gebruiker 132
+New User 133: Nieuwe gebruiker 133
+New User 134: Nieuwe gebruiker 134
+New User 135: Nieuwe gebruiker 135
+New User 136: Nieuwe gebruiker 136
+New User 137: Nieuwe gebruiker 137
+New User 138: Nieuwe gebruiker 138
+New User 139: Nieuwe gebruiker 139
+New User 140: Nieuwe gebruiker 140
+New User 141: Nieuwe gebruiker 141
+New User 142: Nieuwe gebruiker 142
+New User 143: Nieuwe gebruiker 143
+New User 144: Nieuwe gebruiker 144
+New User 145: Nieuwe gebruiker 145
+New User 146: Nieuwe gebruiker 146
+New User 147: Nieuwe gebruiker 147
+New User 148: Nieuwe gebruiker 148
+New User 149: Nieuwe gebruiker 149
+New User 150: Nieuwe gebruiker 150
+New User 151: Nieuwe gebruiker 151
+New User 152: Nieuwe gebruiker 152
+New User 153: Nieuwe gebruiker 153
+New User 154: Nieuwe gebruiker 154
+New User 155: Nieuwe gebruiker 155
+New User 156: Nieuwe gebruiker 156
+New User 157: Nieuwe gebruiker 157
+New User 158: Nieuwe gebruiker 158
+New User 159: Nieuwe gebruiker 159
+New User 160: Nieuwe gebruiker 160
+New User 161: Nieuwe gebruiker 161
+New User 162: Nieuwe gebruiker 162
+New User 163: Nieuwe gebruiker 163
+New User 164: Nieuwe gebruiker 164
+New User 165: Nieuwe gebruiker 165
+New User 166: Nieuwe gebruiker 166
+New User 167: Nieuwe gebruiker 167
+New User 168: Nieuwe gebruiker 168
+New User 169: Nieuwe gebruiker 169
+New User 170: Nieuwe gebruiker 170
+New User 171: Nieuwe gebruiker 171
+New User 172: Nieuwe gebruiker 172
+New User 173: Nieuwe gebruiker 173
+New User 174: Nieuwe gebruiker 174
+New User 175: Nieuwe gebruiker 175
+New User 176: Nieuwe gebruiker 176
+New User 177: Nieuwe gebruiker 177
+New User 178: Nieuwe gebruiker 178
+New User 179: Nieuwe gebruiker 179
+New User 180: Nieuwe gebruiker 180
+New User 181: Nieuwe gebruiker 181
+New User 182: Nieuwe gebruiker 182
+New User 183: Nieuwe gebruiker 183
+New User 184: Nieuwe gebruiker 184
+New User 185: Nieuwe gebruiker 185
+New User 186: Nieuwe gebruiker 186
+New User 187: Nieuwe gebruiker 187
+New User 188: Nieuwe gebruiker 188
+New User 189: Nieuwe gebruiker 189
+New User 190: Nieuwe gebruiker 190
+New User 191: Nieuwe gebruiker 191
+New User 192: Nieuwe gebruiker 192
+New User 193: Nieuwe gebruiker 193
+New User 194: Nieuwe gebruiker 194
+New User 195: Nieuwe gebruiker 195
+New User 196: Nieuwe gebruiker 196
+New User 197: Nieuwe gebruiker 197
+New User 198: Nieuwe gebruiker 198
+New User 199: Nieuwe gebruiker 199
+New User 200: Nieuwe gebruiker 200
+New User 201: Nieuwe gebruiker 201
+New User 202: Nieuwe gebruiker 202
+New User 203: Nieuwe gebruiker 203
+New User 204: Nieuwe gebruiker 204
+New User 205: Nieuwe gebruiker 205
+New User 206: Nieuwe gebruiker 206
+New User 207: Nieuwe gebruiker 207
+New User 208: Nieuwe gebruiker 208
+New User 209: Nieuwe gebruiker 209
+New User 21: Nieuwe gebruiker 21
+New User 210: Nieuwe gebruiker 210
+New User 211: Nieuwe gebruiker 211
+New User 212: Nieuwe gebruiker 212
+New User 213: Nieuwe gebruiker 213
+New User 214: Nieuwe gebruiker 214
+New User 215: Nieuwe gebruiker 215
+New User 216: Nieuwe gebruiker 216
+New User 217: Nieuwe gebruiker 217
+New User 218: Nieuwe gebruiker 218
+New User 219: Nieuwe gebruiker 219
+New User 22: Nieuwe gebruiker 22
+New User 220: Nieuwe gebruiker 220
+New User 221: Nieuwe gebruiker 221
+New User 222: Nieuwe gebruiker 222
+New User 223: Nieuwe gebruiker 223
+New User 224: Nieuwe gebruiker 224
+New User 225: Nieuwe gebruiker 225
+New User 226: Nieuwe gebruiker 226
+New User 227: Nieuwe gebruiker 227
+New User 228: Nieuwe gebruiker 228
+New User 229: Nieuwe gebruiker 229
+New User 23: Nieuwe gebruiker 23
+New User 230: Nieuwe gebruiker 230
+New User 231: Nieuwe gebruiker 231
+New User 232: Nieuwe gebruiker 232
+New User 233: Nieuwe gebruiker 233
+New User 234: Nieuwe gebruiker 234
+New User 235: Nieuwe gebruiker 235
+New User 236: Nieuwe gebruiker 236
+New User 237: Nieuwe gebruiker 237
+New User 238: Nieuwe gebruiker 238
+New User 239: Nieuwe gebruiker 239
+New User 24: Nieuwe gebruiker 24
+New User 240: Nieuwe gebruiker 240
+New User 241: Nieuwe gebruiker 241
+New User 242: Nieuwe gebruiker 242
+New User 243: Nieuwe gebruiker 243
+New User 244: Nieuwe gebruiker 244
+New User 245: Nieuwe gebruiker 245
+New User 246: Nieuwe gebruiker 246
+New User 247: Nieuwe gebruiker 247
+New User 248: Nieuwe gebruiker 248
+New User 249: Nieuwe gebruiker 249
+New User 25: Nieuwe gebruiker 25
+New User 250: Nieuwe gebruiker 250
+New User 251: Nieuwe gebruiker 251
+New User 252: Nieuwe gebruiker 252
+New User 253: Nieuwe gebruiker 253
+New User 254: Nieuwe gebruiker 254
+New User 255: Nieuwe gebruiker 255
+New User 256: Nieuwe gebruiker 256
+New User 257: Nieuwe gebruiker 257
+New User 258: Nieuwe gebruiker 258
+New User 259: Nieuwe gebruiker 259
+New User 26: Nieuwe gebruiker 26
+New User 260: Nieuwe gebruiker 260
+New User 261: Nieuwe gebruiker 261
+New User 262: Nieuwe gebruiker 262
+New User 263: Nieuwe gebruiker 263
+New User 264: Nieuwe gebruiker 264
+New User 265: Nieuwe gebruiker 265
+New User 266: Nieuwe gebruiker 266
+New User 267: Nieuwe gebruiker 267
+New User 268: Nieuwe gebruiker 268
+New User 269: Nieuwe gebruiker 269
+New User 27: Nieuwe gebruiker 27
+New User 270: Nieuwe gebruiker 270
+New User 271: Nieuwe gebruiker 271
+New User 272: Nieuwe gebruiker 272
+New User 273: Nieuwe gebruiker 273
+New User 274: Nieuwe gebruiker 274
+New User 275: Nieuwe gebruiker 275
+New User 276: Nieuwe gebruiker 276
+New User 277: Nieuwe gebruiker 277
+New User 278: Nieuwe gebruiker 278
+New User 279: Nieuwe gebruiker 279
+New User 28: Nieuwe gebruiker 28
+New User 280: Nieuwe gebruiker 280
+New User 281: Nieuwe gebruiker 281
+New User 282: Nieuwe gebruiker 282
+New User 283: Nieuwe gebruiker 283
+New User 284: Nieuwe gebruiker 284
+New User 285: Nieuwe gebruiker 285
+New User 286: Nieuwe gebruiker 286
+New User 287: Nieuwe gebruiker 287
+New User 288: Nieuwe gebruiker 288
+New User 289: Nieuwe gebruiker 289
+New User 29: Nieuwe gebruiker 29
+New User 290: Nieuwe gebruiker 290
+New User 291: Nieuwe gebruiker 291
+New User 292: Nieuwe gebruiker 292
+New User 293: Nieuwe gebruiker 293
+New User 294: Nieuwe gebruiker 294
+New User 295: Nieuwe gebruiker 295
+New User 296: Nieuwe gebruiker 296
+New User 297: Nieuwe gebruiker 297
+New User 298: Nieuwe gebruiker 298
+New User 299: Nieuwe gebruiker 299
+New User 30: Nieuwe gebruiker 30
+New User 300: Nieuwe gebruiker 300
+New User 301: Nieuwe gebruiker 301
+New User 302: Nieuwe gebruiker 302
+New User 303: Nieuwe gebruiker 303
+New User 304: Nieuwe gebruiker 304
+New User 305: Nieuwe gebruiker 305
+New User 306: Nieuwe gebruiker 306
+New User 307: Nieuwe gebruiker 307
+New User 308: Nieuwe gebruiker 308
+New User 309: Nieuwe gebruiker 309
+New User 31: Nieuwe gebruiker 31
+New User 310: Nieuwe gebruiker 310
+New User 311: Nieuwe gebruiker 311
+New User 312: Nieuwe gebruiker 312
+New User 313: Nieuwe gebruiker 313
+New User 314: Nieuwe gebruiker 314
+New User 315: Nieuwe gebruiker 315
+New User 316: Nieuwe gebruiker 316
+New User 317: Nieuwe gebruiker 317
+New User 318: Nieuwe gebruiker 318
+New User 319: Nieuwe gebruiker 319
+New User 32: Nieuwe gebruiker 32
+New User 320: Nieuwe gebruiker 320
+New User 321: Nieuwe gebruiker 321
+New User 322: Nieuwe gebruiker 322
+New User 323: Nieuwe gebruiker 323
+New User 324: Nieuwe gebruiker 324
+New User 325: Nieuwe gebruiker 325
+New User 326: Nieuwe gebruiker 326
+New User 327: Nieuwe gebruiker 327
+New User 328: Nieuwe gebruiker 328
+New User 329: Nieuwe gebruiker 329
+New User 33: Nieuwe gebruiker 33
+New User 330: Nieuwe gebruiker 330
+New User 331: Nieuwe gebruiker 331
+New User 332: Nieuwe gebruiker 332
+New User 333: Nieuwe gebruiker 333
+New User 334: Nieuwe gebruiker 334
+New User 335: Nieuwe gebruiker 335
+New User 336: Nieuwe gebruiker 336
+New User 337: Nieuwe gebruiker 337
+New User 338: Nieuwe gebruiker 338
+New User 339: Nieuwe gebruiker 339
+New User 34: Nieuwe gebruiker 34
+New User 340: Nieuwe gebruiker 340
+New User 341: Nieuwe gebruiker 341
+New User 342: Nieuwe gebruiker 342
+New User 343: Nieuwe gebruiker 343
+New User 344: Nieuwe gebruiker 344
+New User 345: Nieuwe gebruiker 345
+New User 346: Nieuwe gebruiker 346
+New User 347: Nieuwe gebruiker 347
+New User 348: Nieuwe gebruiker 348
+New User 349: Nieuwe gebruiker 349
+New User 35: Nieuwe gebruiker 35
+New User 350: Nieuwe gebruiker 350
+New User 351: Nieuwe gebruiker 351
+New User 352: Nieuwe gebruiker 352
+New User 353: Nieuwe gebruiker 353
+New User 354: Nieuwe gebruiker 354
+New User 355: Nieuwe gebruiker 355
+New User 356: Nieuwe gebruiker 356
+New User 357: Nieuwe gebruiker 357
+New User 358: Nieuwe gebruiker 358
+New User 359: Nieuwe gebruiker 359
+New User 36: Nieuwe gebruiker 36
+New User 360: Nieuwe gebruiker 360
+New User 361: Nieuwe gebruiker 361
+New User 362: Nieuwe gebruiker 362
+New User 363: Nieuwe gebruiker 363
+New User 364: Nieuwe gebruiker 364
+New User 365: Nieuwe gebruiker 365
+New User 366: Nieuwe gebruiker 366
+New User 367: Nieuwe gebruiker 367
+New User 368: Nieuwe gebruiker 368
+New User 369: Nieuwe gebruiker 369
+New User 37: Nieuwe gebruiker 37
+New User 370: Nieuwe gebruiker 370
+New User 371: Nieuwe gebruiker 371
+New User 372: Nieuwe gebruiker 372
+New User 373: Nieuwe gebruiker 373
+New User 374: Nieuwe gebruiker 374
+New User 375: Nieuwe gebruiker 375
+New User 376: Nieuwe gebruiker 376
+New User 377: Nieuwe gebruiker 377
+New User 378: Nieuwe gebruiker 378
+New User 379: Nieuwe gebruiker 379
+New User 38: Nieuwe gebruiker 38
+New User 380: Nieuwe gebruiker 380
+New User 381: Nieuwe gebruiker 381
+New User 382: Nieuwe gebruiker 382
+New User 383: Nieuwe gebruiker 383
+New User 384: Nieuwe gebruiker 384
+New User 385: Nieuwe gebruiker 385
+New User 386: Nieuwe gebruiker 386
+New User 387: Nieuwe gebruiker 387
+New User 388: Nieuwe gebruiker 388
+New User 389: Nieuwe gebruiker 389
+New User 39: Nieuwe gebruiker 39
+New User 390: Nieuwe gebruiker 390
+New User 391: Nieuwe gebruiker 391
+New User 392: Nieuwe gebruiker 392
+New User 393: Nieuwe gebruiker 393
+New User 394: Nieuwe gebruiker 394
+New User 395: Nieuwe gebruiker 395
+New User 396: Nieuwe gebruiker 396
+New User 397: Nieuwe gebruiker 397
+New User 398: Nieuwe gebruiker 398
+New User 399: Nieuwe gebruiker 399
+New User 40: Nieuwe gebruiker 40
+New User 400: Nieuwe gebruiker 400
+New User 401: Nieuwe gebruiker 401
+New User 402: Nieuwe gebruiker 402
+New User 403: Nieuwe gebruiker 403
+New User 404: Nieuwe gebruiker 404
+New User 405: Nieuwe gebruiker 405
+New User 406: Nieuwe gebruiker 406
+New User 407: Nieuwe gebruiker 407
+New User 408: Nieuwe gebruiker 408
+New User 409: Nieuwe gebruiker 409
+New User 41: Nieuwe gebruiker 41
+New User 410: Nieuwe gebruiker 410
+New User 411: Nieuwe gebruiker 411
+New User 412: Nieuwe gebruiker 412
+New User 413: Nieuwe gebruiker 413
+New User 414: Nieuwe gebruiker 414
+New User 415: Nieuwe gebruiker 415
+New User 416: Nieuwe gebruiker 416
+New User 417: Nieuwe gebruiker 417
+New User 418: Nieuwe gebruiker 418
+New User 419: Nieuwe gebruiker 419
+New User 42: Nieuwe gebruiker 42
+New User 420: Nieuwe gebruiker 420
+New User 421: Nieuwe gebruiker 421
+New User 422: Nieuwe gebruiker 422
+New User 423: Nieuwe gebruiker 423
+New User 424: Nieuwe gebruiker 424
+New User 425: Nieuwe gebruiker 425
+New User 426: Nieuwe gebruiker 426
+New User 427: Nieuwe gebruiker 427
+New User 428: Nieuwe gebruiker 428
+New User 429: Nieuwe gebruiker 429
+New User 43: Nieuwe gebruiker 43
+New User 430: Nieuwe gebruiker 430
+New User 431: Nieuwe gebruiker 431
+New User 432: Nieuwe gebruiker 432
+New User 433: Nieuwe gebruiker 433
+New User 434: Nieuwe gebruiker 434
+New User 435: Nieuwe gebruiker 435
+New User 436: Nieuwe gebruiker 436
+New User 437: Nieuwe gebruiker 437
+New User 438: Nieuwe gebruiker 438
+New User 439: Nieuwe gebruiker 439
+New User 44: Nieuwe gebruiker 44
+New User 440: Nieuwe gebruiker 440
+New User 441: Nieuwe gebruiker 441
+New User 442: Nieuwe gebruiker 442
+New User 443: Nieuwe gebruiker 443
+New User 444: Nieuwe gebruiker 444
+New User 445: Nieuwe gebruiker 445
+New User 446: Nieuwe gebruiker 446
+New User 447: Nieuwe gebruiker 447
+New User 448: Nieuwe gebruiker 448
+New User 449: Nieuwe gebruiker 449
+New User 45: Nieuwe gebruiker 45
+New User 450: Nieuwe gebruiker 450
+New User 451: Nieuwe gebruiker 451
+New User 452: Nieuwe gebruiker 452
+New User 453: Nieuwe gebruiker 453
+New User 454: Nieuwe gebruiker 454
+New User 455: Nieuwe gebruiker 455
+New User 456: Nieuwe gebruiker 456
+New User 457: Nieuwe gebruiker 457
+New User 458: Nieuwe gebruiker 458
+New User 459: Nieuwe gebruiker 459
+New User 46: Nieuwe gebruiker 46
+New User 460: Nieuwe gebruiker 460
+New User 461: Nieuwe gebruiker 461
+New User 462: Nieuwe gebruiker 462
+New User 463: Nieuwe gebruiker 463
+New User 464: Nieuwe gebruiker 464
+New User 465: Nieuwe gebruiker 465
+New User 466: Nieuwe gebruiker 466
+New User 467: Nieuwe gebruiker 467
+New User 468: Nieuwe gebruiker 468
+New User 469: Nieuwe gebruiker 469
+New User 47: Nieuwe gebruiker 47
+New User 470: Nieuwe gebruiker 470
+New User 471: Nieuwe gebruiker 471
+New User 472: Nieuwe gebruiker 472
+New User 473: Nieuwe gebruiker 473
+New User 474: Nieuwe gebruiker 474
+New User 475: Nieuwe gebruiker 475
+New User 476: Nieuwe gebruiker 476
+New User 477: Nieuwe gebruiker 477
+New User 478: Nieuwe gebruiker 478
+New User 479: Nieuwe gebruiker 479
+New User 48: Nieuwe gebruiker 48
+New User 480: Nieuwe gebruiker 480
+New User 481: Nieuwe gebruiker 481
+New User 482: Nieuwe gebruiker 482
+New User 483: Nieuwe gebruiker 483
+New User 484: Nieuwe gebruiker 484
+New User 485: Nieuwe gebruiker 485
+New User 486: Nieuwe gebruiker 486
+New User 487: Nieuwe gebruiker 487
+New User 488: Nieuwe gebruiker 488
+New User 489: Nieuwe gebruiker 489
+New User 49: Nieuwe gebruiker 49
+New User 490: Nieuwe gebruiker 490
+New User 491: Nieuwe gebruiker 491
+New User 492: Nieuwe gebruiker 492
+New User 493: Nieuwe gebruiker 493
+New User 494: Nieuwe gebruiker 494
+New User 495: Nieuwe gebruiker 495
+New User 496: Nieuwe gebruiker 496
+New User 497: Nieuwe gebruiker 497
+New User 498: Nieuwe gebruiker 498
+New User 499: Nieuwe gebruiker 499
+New User 50: Nieuwe gebruiker 50
+New User 500: Nieuwe gebruiker 500
+New User 501: Nieuwe gebruiker 501
+New User 502: Nieuwe gebruiker 502
+New User 503: Nieuwe gebruiker 503
+New User 504: Nieuwe gebruiker 504
+New User 505: Nieuwe gebruiker 505
+New User 506: Nieuwe gebruiker 506
+New User 507: Nieuwe gebruiker 507
+New User 508: Nieuwe gebruiker 508
+New User 509: Nieuwe gebruiker 509
+New User 51: Nieuwe gebruiker 51
+New User 510: Nieuwe gebruiker 510
+New User 511: Nieuwe gebruiker 511
+New User 512: Nieuwe gebruiker 512
+New User 513: Nieuwe gebruiker 513
+New User 514: Nieuwe gebruiker 514
+New User 515: Nieuwe gebruiker 515
+New User 516: Nieuwe gebruiker 516
+New User 517: Nieuwe gebruiker 517
+New User 518: Nieuwe gebruiker 518
+New User 519: Nieuwe gebruiker 519
+New User 52: Nieuwe gebruiker 52
+New User 520: Nieuwe gebruiker 520
+New User 53: Nieuwe gebruiker 53
+New User 54: Nieuwe gebruiker 54
+New User 55: Nieuwe gebruiker 55
+New User 56: Nieuwe gebruiker 56
+New User 57: Nieuwe gebruiker 57
+New User 58: Nieuwe gebruiker 58
+New User 59: Nieuwe gebruiker 59
+New User 60: Nieuwe gebruiker 60
+New User 61: Nieuwe gebruiker 61
+New User 62: Nieuwe gebruiker 62
+New User 63: Nieuwe gebruiker 63
+New User 64: Nieuwe gebruiker 64
+New User 65: Nieuwe gebruiker 65
+New User 66: Nieuwe gebruiker 66
+New User 67: Nieuwe gebruiker 67
+New User 68: Nieuwe gebruiker 68
+New User 69: Nieuwe gebruiker 69
+New User 70: Nieuwe gebruiker 70
+New User 71: Nieuwe gebruiker 71
+New User 72: Nieuwe gebruiker 72
+New User 73: Nieuwe gebruiker 73
+New User 74: Nieuwe gebruiker 74
+New User 75: Nieuwe gebruiker 75
+New User 76: Nieuwe gebruiker 76
+New User 77: Nieuwe gebruiker 77
+New User 78: Nieuwe gebruiker 78
+New User 79: Nieuwe gebruiker 79
+New User 80: Nieuwe gebruiker 80
+New User 81: Nieuwe gebruiker 81
+New User 82: Nieuwe gebruiker 82
+New User 83: Nieuwe gebruiker 83
+New User 84: Nieuwe gebruiker 84
+New User 85: Nieuwe gebruiker 85
+New User 86: Nieuwe gebruiker 86
+New User 87: Nieuwe gebruiker 87
+New User 88: Nieuwe gebruiker 88
+New User 89: Nieuwe gebruiker 89
+New User 90: Nieuwe gebruiker 90
+New User 91: Nieuwe gebruiker 91
+New User 92: Nieuwe gebruiker 92
+New User 93: Nieuwe gebruiker 93
+New User 94: Nieuwe gebruiker 94
+New User 95: Nieuwe gebruiker 95
+New User 96: Nieuwe gebruiker 96
+New User 97: Nieuwe gebruiker 97
+New User 98: Nieuwe gebruiker 98
+New User 99: Nieuwe gebruiker 99
+New Values: Nieuwe waarden
+New York: New York
+New York - 10001: New York - 10001
+New York - 10001ender: New York - 10001ender
+New Yorkender: New Yorkender
+NextPreset: VolgendeVoorinstelling
+NextToSearchBox: VolgendeNaarZoekvak
+NextTrack: Volgende nummer
+Niagara Engraved: Niagara gegraveerd
+Niagara Solid: Niagara Vaste stof
+NightOwl: Nachtuil
+nl-AW: Nederlands (Aruba)
+nl-BE: Nederlands (België)
+nl-BQ: Nederlands (Bonaire, Sint Eustatius en Saba)
+nl-CW: Nederlands (Curaçao)
+nl-NL: Nederlands (Nederland)
+nl-SR: Nederlands (Suriname)
+nl-SX: Nederlands (Sint Maarten)
+nmg-CM: Kwasio (Kameroen)
+nn-NO: Noors Nynorsk (Noorwegen)
+NnfxDark: NnfxDonker
+NnfxLight: NnfxLicht
+nnh-CM: Ngiemboon (Kameroen)
+No: Nee
+No address: Geen adres
+No Allowed Actions: Geen toegestane acties
+No longer update automatically: Niet meer automatisch updaten
+No notifications: Geen meldingen
+No space available: Geen ruimte beschikbaar
+NoChips: Geen chips
+NodeBorderRadius: NodeBorderRadius
+NodePadding: Knooppunt opvullen
+NoHeader: GeenHeader
+NoIcon: NoIcon
+NoModalDialogs: NoModalDialogs
+none: geen
+None: Geen
+Nord: Noorden
+NordBase16: 'NordBase16 zei:'
+Normal: Normaal
+Not Allowed to add or delete Administrator Role if you have not this role.: Het is niet toegestaan om een beheerdersrol toe te voegen of te verwijderen als u deze rol niet hebt.
+Not allowed to Delete this user: Het is niet toegestaan om deze gebruiker te verwijderen
+Not Allowed.: Niet toegestaan.
+Not connected: Niet verbonden
+Not Modal Dialogs: Geen modale dialogen
+Note - Media options can't changed after a screen is selected: 'Opmerking: media-opties kunnen niet worden gewijzigd nadat een scherm is geselecteerd'
+NoteLabels: NoteLabels
+NotFoundMessage: De pagina die u zocht bestaat niet.
+Notice: Bemerken
+Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Merk op dat als u deze methode gebruikt, u een callback-referentie kunt specificeren waar de methode zich bevindt, als u dit niet doet, is de referentie het dialoogvenster zelf en moet u de methode in dit geval op uw DialogClass hebben
+Notifications: Meldingen
+Nov: Nov
+NovaBase16: 'NovaBase16 zei:'
+NoWrap: Geen Wrap
+npm-example-0.0.20.tgz: npm-voorbeeld-0.0.20.tgz
+nqo-GN: N'Ko (Guinee)
+nr-ZA: South Ndebele (Zuid-Afrika)
+nso-ZA: Sesotho sa Leboa (Zuid-Afrika)
+Nuget Package source: Bron Nuget-pakket
+Nullable enum: Nullable enum
+Nullable Flags Enum: Nullable vlaggen enum
+Number: Getal
+numeric: numeriek
+nus-SS: Nuer (Zuid-Soedan)
+nyn-UG: Nyankole (Oeganda)
+Object Edit in Dialog: Object bewerken in dialoogvenster
+ObjectEdit: ObjectBewerken
+ObjectEditCG: ObjectBewerkenCG
+ObjectEditCondition: ObjectEditConditie
+ObjectEditConfigured: ObjectEditConfigured
+ObjectEditFile: ObjectEditBestand
+ObjectEditInDialog: ObjectEditInDialog
+ObjectEditList: ObjectLijst bewerken
+ObjectEditPicker: ObjectEditPicker
+ObjectEditTabs: ObjectEditTabs
+ObjectEditVirtualized: ObjectEditGevirtualiseerd
+OBS Virtual Camera: OBS virtuele camera
+Obsidian: Obsidiaan
+oc-FR: Occitaans (Frankrijk)
+OceanBase16: 'OceanBase16 zei:'
+OceanicnextBase16: OceanischvolgendeBase16
+OCR A Extended: OCR A uitgebreid
+Oct: Oct
+Official MudBlazor website: Officiële MudBlazor website
+Offline: Offline
+OffsetX: Compensatie
+OffsetY: Offsets
+Ok: OK
+Old English Text MT: Oude Engelse tekst MT
+Old Paint: Oude verf
+Old paint found on a stone house door.: Oude verf gevonden op een stenen huisdeur.
+Old Values: Oude waarden
+OldLace: OudKant
+Olive: Olijf
+OliveDrab: Olijf Drab
+om-ET: Oromo (Ethiopië)
+om-KE: Oromo (Kenia)
+OnClickStopPropagation: OnClickStopPropagation
+OnContextMenuPreventDefault: OnContextMenuPreventDefault
+OnContextMenuStopPropagation: OnContextMenuStopPropagation
+OnCustomSelect: OnCustomSelect
+OnDefinedSelect: OnDefinedSelect
+One Drive: Eén schijf
+OnedarkBase16: 'Eenduistere basis16 zei:'
+OneDrive file picker component: Onderdeel OneDrive-bestandskiezer
+OneDriveClientId: OneDriveClientId
+OneEighthOctaveBands: EenAchtsteOctaafBanden
+OneFourthOctaveBands: EenVierdeOctaafBanden
+OneLightBase16: 'OneLightBase16 zei:'
+OneSixthOctaveBands: EenZesdeOctaafBanden
+OneThirdOctaveBands: EenDerdeOctaafbanden
+OneTwelfthOctaveBands: EenTwaalfdeOctaafBanden
+OneTwentyFourthOctaveBands: EenVierentwintigsteOctaafBanden
+Online: Online
+Only Selected Group (Export): Alleen geselecteerde groep (exporteren)
+OnlyValidateIfDirty: OnlyValidateIfDirty
+OnPlay: Spelen
+Onyx: Onyx
+Opacity: Dekking
+OpacityNotFocused: DekkingNietGericht
+Open: Openen
+Open in new browser tab: Openen in een nieuw browsertabblad
+Open now: Openen
+Open Url {0}: Open url {0}
+Open Url {0} in a new browser tab: Open Url {0} in een nieuw browsertabblad
+OpenIcon: Open icoon
+Optima: Optima
+Options: Opties
+or-IN: Odia (India)
+Orange: Oranje
+OrangeRed: OranjeRood
+Orchid: Orchidee
+Orientation: Oriëntatie
+Original Code Gator DynamicForm: Originele code Gator DynamicForm
+os-GE: Ossetic (Georgië)
+os-RU: Ossetisch (Rusland)
+Osaka: Osaka
+Osaka - 530-0001: Osaka - 530-0001
+Osaka - 530-0001ender: Osaka - 530-0001ender
+Oscar Wilde: Oscar Wilde
+Other: Ander
+Other Components: Andere componenten
+OtherAddresses: AndereAdressen
+Otherwise the full image will be downloaded: Anders wordt de volledige afbeelding gedownload
+Ottawa: Ottawa
+Ottawa - K1A 0A1: Ottawa - K1A 0A1
+Ottawa - K1A 0A1ender: Ottawa - K1A 0A1ender
+Out: Buiten
+OuterClass: OuterClass
+OutlineBars: Overzicht Bars
+Outlined: Geschetst
+OutrunDarkBase16: OntloopDarkBase16
+Outset: Begin
+OverflowBehavior: Overloop Gedrag
+Overlay: Overlappen
+OverlayChildContent: OverlayChildContent
+OverlayDark: OverlayDonker
+OverlayLight: Overlay-licht
+overline: Overline
+Overline: Overline
+OverscanCount: OverscanCount
+Overview: Overzicht
+Owner: Eigenaar
+pa-Arab-PK: Punjabi (Arabisch, Pakistan)
+pa-IN: Punjabi (India)
+Palatino: Palatine
+Palatino Linotype: Palatino Linotype
+PaleGreen: Bleekgroen
+Palette: Palet
+PaletteDark: PaletDonker
+PaletteIcon: Palet Icoon
+PaletteLight: Paletlicht
+PaleTurquoise: BleekTurkoois
+PaleVioletRed: BleekVioletRood
+Pan: Heer
+pap-029: Papiaments (Caribisch gebied)
+PapayaWhip: Papaja Zweep
+Paper: Papier
+PapercolorDarkBase16: PapierkleurDarkBase16
+PapercolorLightBase16: PapercolorLightBase16
+Papyrus: Papyrus
+ParaisoBase16: ParaisoBase16
+ParaisoDark: ParaisoDonker
+ParaisoLight: ParaisoLight
+ParametersForSubControls: ParametersForSubControls
+Parchment: Perkament
+Paris: Parijs
+Paris - 75001: Parijs - 75001
+Paris - 75001ender: Parijs - 75001ender
+PasqueBase16: 'PasqueBase16 zei:'
+Password: Wachtwoord
+Password Changed!: Wachtwoord gewijzigd!
+Password Confirmation: Wachtwoord bevestiging
+Password Confirmation is required!: Wachtwoordbevestiging is vereist!
+Password is required!: Wachtwoord is verplicht!
+Password must be at least of length 8: Wachtwoord moet minimaal lang zijn 8
+Password must contain at least one capital letter: Het wachtwoord moet ten minste één hoofdletter bevatten
+Password must contain at least one digit: Het wachtwoord moet ten minste één cijfer bevatten
+Password must contain at least one lowercase letter: Het wachtwoord moet ten minste één kleine letter bevatten
+Password Reset Mail has been sent to your authorized Email.: E-mail voor het opnieuw instellen van uw wachtwoord is verzonden naar uw geautoriseerde e-mailadres.
+Password Reset Successful!: Wachtwoord resetten gelukt!
+Passwords don't match: Wachtwoorden komen niet overeen
+PathSeparator: PadSeparator
+Pattern: Patroon
+pcm-Latn-NG: Nigeriaans Pidgin (Latijn, Nigeria)
+PeachPuff: Perzik Puff
+PeakLine: Piek
+Penelope Cruz: Penelope Cruz
+Percentage: Percentage
+Permission Name: Naam machtiging
+Perpetua: Eeuwig
+Persistent: Hardnekkig
+Personal: Persoonlijk
+Perspective3d: Perspectief 3d
+Peru: Peru
+Peter Griffin: Peter Griffioen
+PhdBase16: Doctoraatsbasis 16
+Philadelphia: Philadelphia
+Philadelphia - 19019: Philadelphia - 19019
+Philadelphia - 19019ender: Philadelphia - 19019ender
+Philadelphiaender: Philadelphia
+Phoenix: Feniks
+Phoenix - 85001: Feniks - 85001
+Phoenix - 85001ender: Feniks - 85001ender
+Phone Number: Telefoonnummer
+Phone number {0} is already registered.: Telefoonnummer {0} is al geregistreerd.
+PhoneNumber: Telefoonnummer
+Picas: Schoppen
+Pick Item: Item kiezen
+Pick Items: Items kiezen
+Pick one user: Kies een gebruiker
+Pick some users: Kies enkele gebruikers
+Picker: Plukker
+Picker appearance: Uiterlijk van de kiezer
+PickerHeight: PickerHoogte
+PickerStyle: Picker-stijl
+PickerVariant: Kiezer Variant
+PickerWidth: PickerBreedte
+PickFromDropBox: Kiezen uit DropBox
+PickFromGoogleDrive: Kiezen vanGoogleDrive
+PickFromOneDrive: Kiezen uit OneDrive
+PicoBase16: 'PicoBase16 zei:'
+Pie: Voet
+Pink: Roze
+Pixels: Pixels
+pl-PL: Pools (Polen)
+Placeholder: Tijdelijke aanduiding
+Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Speel met MudBlazor en MudBlazor.Extensions in een online Code Editor
+Playbill: Playbill
+Player: Speler
+Please confirm your account by <a href='{0}'>clicking here</a>.: Bevestig uw account door hier te <a href='{0}'></a>.
+Please enter your name: Vul uw naam in
+Please reset your password by <a href='{0}'>clicking here</a>.: Gelieve uw wachtwoord opnieuw in te stellen door hier te <a href='{0}'></a>.
+Please type {0} to confirm edit: Typ {0} om de bewerking te bevestigen
+Please upload your personal qualifications and references that confirm your person and qualification: Upload uw persoonlijke kwalificaties en referenties die uw persoon en kwalificatie bevestigen
+Please Wait: Een ogenblik geduld
+PleaseSelect: Selecteer alstublieft
+Plum: Pruim
+Points: Punten
+PointsOfInterest: Bezienswaardigheden
+Pojoaque: Pojoaque
+Poor Richard: Arme Richard
+PopBase16: 'PopBase16 zei:'
+Popover: Popover
+PopoverAnimation: Popover-animatie
+PopoverAnimationPosition: PopoverAnimationPositie
+PopoverAnimationTimingFunction: PopoverAnimationTimingFunction
+PopoverClass: Popover-klasse
+PopupEveryTime: Pop-upElke keer
+PopupOnlyOnce: Pop-upOnlyOnce
+PopverAnimation: Popver-animatie
+PorpleBase16: 'PorpleBase16 zei:'
+Portrait: Portret
+Position: Positie
+Position/Size Sample: Positie/grootte monster
+PostalCode: Postcode
+PowderBlue: Poederblauw
+Powerful component to edit a set of items and their properties.: Krachtig onderdeel om een set items en hun eigenschappen te bewerken.
+Powerful component to edit an object and its properties.: Krachtige component om een object en zijn eigenschappen te bewerken.
+Powerful UI Editor for json, xml or yaml content now also as viewer for MudExFileDisplay: Krachtige UI Editor voor json, xml of yaml content nu ook als viewer voor MudExFileDisplay
+Preferred way on MudExTextField: Voorkeursmanier op MudExTextField
+Preferred way on MudExTextField with For and ChildContent: Voorkeursmanier op MudExTextField met For en ChildContent
+PresetListBehaviour: PresetListBehaviour
+PresetListClass: PresetListClass
+PresetListMode: PresetListMode
+PresetListPosition: PresetListPosition
+PresetListToggleButtonPosition: PresetListToggleButtonPosition
+Presets: Voorinstellingen
+Preview: Voorbeeld
+PreviewButtonSize: VoorbeeldKnopGrootte
+PreviewFont: Voorbeeldlettertype
+PreviewIcon: Voorbeeld pictogram
+PreviewIconColor: VoorbeeldPictogramKleur
+PreviewImageInPresetList: VoorbeeldAfbeeldingInPresetList
+PreviewImageSize: VoorbeeldAfbeeldingGrootte
+PreviewInIframe: VoorbeeldInIframe
+PreviewMode: Voorvertoning
+PreviousPreset: VorigeVoorinstelling
+PreviousTrack: VorigeVolgen
+prg-001: Pruisisch (Wereld)
+Primary: Primair
+Primary Key: Primaire sleutel
+PrimaryContrastText: PrimairContrastTekst
+PrimaryDarken: PrimairDonkerder
+PrimaryLighten: PrimairVerlichten
+Print: Afdrukken
+PrintButtonIcon: PrintButtonIcon
+Pristina: Pristina
+Product Deleted: Product verwijderd!
+Product Not Found!: Product niet gevonden!
+Product Saved: Product opgeslagen!
+Product Updated: Product bijgewerkt!
+Products: Producten
+Products exported: Geëxporteerde producten
+Profile: Profiel
+Profile Details: Profiel Details
+Profile picture added.: Profielfoto toegevoegd.
+Profile picture deleted.: Profielfoto verwijderd.
+Profile updated: Profiel bijgewerkt
+ProgramingSkills: Programmeervaardigheden
+Property1: Eigendom1
+Property10: Eigendom10
+Property11: Woning 11
+Property12: Woning 12
+Property13: Woning 13
+Property14: Eigendom14
+Property15: Eigendom15
+Property16: Eigendom16
+Property17: Eigendom17
+Property18: Eigendom18
+Property19: Eigendom19
+Property2: Eigendom2
+Property20: Woning 20
+Property21: Eigendom21
+Property22: Eigendom22
+Property23: Eigendom23
+Property24: Woning 24
+Property25: Eigendom25
+Property26: Eigendom26
+Property27: Woning 27
+Property28: Eigendom28
+Property29: Woning 29
+Property3: Eigendom3
+Property30: Eigendom30
+Property31: Eigendom31
+Property32: Eigendom32
+Property33: Eigendom33
+Property34: Eigendom34
+Property35: Eigendom35
+Property36: Eigendom36
+Property37: Woning 37
+Property38: Eigendom38
+Property39: Eigendom39
+Property4: Eigendom4
+Property40: Eigendom40
+Property41: Woning 41
+Property42: Eigendom42
+Property43: Eigendom43
+Property44: Eigendom44
+Property45: Eigendom45
+Property5: Eigendom5
+Property6: Eigendom6
+Property7: Eigendom7
+Property8: Eigendom8
+Property9: Eigendom9
+prs-AF: prs (Afghanistan)
+ps-AF: Pasjtoe (Afghanistan)
+ps-PK: Pasjtoe (Pakistan)
+PseudoCss: PseudoCss
+pt-AO: Portugees (Angola)
+pt-BR: Portugees (Brazilië)
+pt-CH: Portugees (Zwitserland)
+pt-CV: Portugees (Kaapverdië)
+pt-GQ: Portugees (Equatoriaal-Guinea)
+pt-GW: Portugees (Guinee-Bissau)
+pt-LU: Portugees (Luxemburg)
+pt-MO: Portugees (Macao SAR)
+pt-MZ: Portugees (Mozambique)
+pt-PT: Portugees (Portugal)
+pt-ST: Portugees (São Tomé en Principe)
+pt-TL: Portugees (Oost-Timor)
+Public Profile: Advocaat
+Pulse: Polsslag
+Purebasic: Puur basisch
+Purple: Paars
+QtcreatorDark: QtcreatorDark
+QtcreatorLight: Qtcreator-licht
+QualiaBase16: 'QualiaBase16 zei:'
+Qualifications and References: Kwalificaties en referenties
+quc-GT: Kʼicheʼ (Guatemala)
+Quentin Tarantino: Quentin Tarantino
+Quick Insights.: Snelle inzichten.
+Quick Start Guide: Snelstartgids
+quz-BO: quz (Bolivia)
+quz-EC: quz (Ecuador)
+quz-PE: quz (Peru)
+Rachel Green: Rachel Groen
+Radial: Radiaal
+RadialInvert: RadiaalOmkeren
+Radius: Radius
+Rage Italic: Woede cursief
+RailscastsBase16: RailscastsBase16
+Rainbow: Regenboog
+Random: Willekeurig
+RandomColorUpdateDelay: Willekeurige KleurUpdateVertraging
+RarArchive.rar: RarArchive.rar
+Rate: Verhouding
+Rate must be greater than 0: Tarief moet groter zijn dan 0
+Ravie: Verrukt
+Read More: Lees meer
+Readme: Lezen
+readme.md: readme.md
+ReadOnly: Alleen lezen
+Realtime Updates & Insights with SignalR.: Realtime updates en inzichten met SignalR.
+RebeccaBase16: 'RebeccaBase16 zei:'
+RebeccaPurple: RebeccaPaars
+Record audio: Audio opnemen
+Record Audio: Audio opnemen
+Record Camera: Camera opnemen
+Record Main Camera: Hoofdcamera opnemen
+Record Main Camera Lower Quality: Neem de lagere kwaliteit van de hoofdcamera op
+Record Screen: Scherm opnemen
+Recording: Opname
+RecordingAnimation: Opname Animatie
+RecordingBorderAnimation: OpnameBorderAnimation
+RecordingColor: OpnemenKleur
+RecordingIcon: Opname pictogram
+Red: Rood
+Redirect: Doorsturen
+Redirecting to {0}: Doorverwijzen naar {0}
+Redirecting...: Omleiden...
+ReflexAlpha: Reflex Alpha
+ReflexBright: Reflex Helder
+ReflexFit: ReflexFit
+ReflexRatio: Reflex Ratio
+Refresh: Opfrissen
+Refreshed Token.: Vernieuwd token.
+Register: Registreren
+Register as: Registreer als
+Register as {0}: Registreer als {0}
+Register here: Registreer hier
+Register New User: Registreer nieuwe gebruiker
+Register User: Registreer gebruiker
+Registered Roles: Geregistreerde rollen
+Registered Users: Geregistreerde gebruikers
+Rel: Rel
+Relative: Betrekkelijk
+RelativeToParent: Familielid/ouder
+RelativeWidth: Relatieve breedte
+Reload: Herladen
+Reload Data: Gegevens opnieuw laden
+Rem: Rem
+Remember me?: Onthoud mij?
+RememberEditedOptions: OnthoudenBewerkteOpties
+Remove: Verwijderen
+Remove All: Alles verwijderen
+RemoveErrorAfter: RemoveErrorAfter
+RemoveErrorOnChange: VerwijderenFoutOnWijzigen
+RemoveItemButtonAlwaysRight: RemoveItemButtonAlwaysRight
+Rename: Herdopen
+Rename backup: De naam van back-up wijzigen
+Render with {0}: Renderen met {0}
+Render with MudExFileDisplayTiff: Renderen met Tiff viewer
+Render with MudExFileDisplayZip: Renderen met Zip-viewer
+Render with MudExImageViewer: Renderen met MudExImageViewer
+Render with native control: Renderen met native controle
+RenderBackLink: RenderBackLink
+RenderChipsAdditional: RenderChipsAanvullend
+Rendered Virtualized: Gevirtualiseerd weergegeven
+rendered when the item is outside the viewport.: gerenderd wanneer het item zich buiten de viewport bevindt.
+rendered when the item is visible in the viewport.: gerenderd wanneer het item zichtbaar is in de viewport.
+RenderHomeLink: RenderHomeLink
+RenderOnlyOnce: RenderOnlyOnce
+Required: Vereist
+RequiredError: VereisteFout
+Reset: Terugstellen
+Reset {0}: Reset {0}
+Reset all: Alles resetten
+Reset all properties?: Alle eigenschappen resetten?
+Reset password: Wachtwoord opnieuw instellen
+Reset Password: Wachtwoord opnieuw instellen
+Reset to initial data: Resetten naar oorspronkelijke gegevens
+Reset view: Weergave resetten
+ResetButtonIcon: ResetButtonIcon
+ResetToDefaultFirst: ResetToDefaultFirst
+Resizeable: Formaat wijzigen
+ResizeMode: Formaat wijzigen
+Resources: Weg
+Responsive: Responsieve
+Restart server: Server opnieuw opstarten
+Restore: Herstellen
+Restore database: Database herstellen
+Restore default: Standaardinstelling herstellen
+Restore finished: Herstel voltooid
+Restore in progress. Please wait until the restore is finished. This can take a while.: Herstel wordt uitgevoerd. Wacht tot het herstel is voltooid. Dit kan even duren.
+Revert: Terugkeren
+RGB: RGB
+RGBA: RGBA
+rgba(0,200,83,1): rgba(0,200,83,1)
+rgba(126,247,160,1): rgba(126,247,160,1)
+rgba(133,135,145,1): rgba(133,135,145,1)
+rgba(157,241,250,1): rgba(157,241,250,1)
+rgba(17,59,83,1): rgba(17,59,83,1)
+rgba(170,0,0,1): rgba(170;0;0;1)
+rgba(18,121,66,1): rgba(18,121,66,1)
+rgba(189,255,207,1): RGBA(189,255,207,1)
+rgba(19,184,232,1): rgba(19,184,232,1)
+rgba(191,125,17,1): rgba(191,125,17,1)
+rgba(20,220,113,1): RGBA (20,220,113,1)
+rgba(201,204,207,1): rgba(201,204,207,1)
+rgba(217,152,13,1): rgba(217,152,13,1)
+rgba(220,63,17,1): rgba(220,63,17,1)
+rgba(23,105,142,1): rgba(23,105,142,1)
+rgba(23,162,88,1): rgba(23,162,88,1)
+rgba(230,233,235,1): rgba(230,233,235,1)
+rgba(235,179,35,1): rgba(235,179,35,1)
+rgba(244,67,54,1): rgba(244,67,54,1)
+rgba(246,249,251,1): rgba(246,249,251,1)
+rgba(253,210,47,1): rgba(253,210,47,1)
+rgba(254,104,0,1): rgba(254,104,0,1)
+rgba(255,145,2,1): rgba(255,145,2,1)
+rgba(255,152,0,1): rgba(255,152,0,1)
+rgba(255,179,31,1): rgba(255,179,31,1)
+rgba(255,210,84,1): rgba(255,210,84,1)
+rgba(255,226,115,1): rgba(255,226,115,1)
+rgba(255,240,163,1): rgba(255,240,163,1)
+rgba(27,189,102,1): rgba(27,189,102,1)
+rgba(33,150,243,1): rgba(33,150,243,1)
+rgba(39,219,245,1): rgba(39,219,245,1)
+rgba(53,57,64,1): rgba(53,57,64,1)
+rgba(66,66,66,1): rgba(66,66,66,1)
+rgba(88,91,98,1): RGBA(88,91,98,1)
+rgba(9,137,194,1): rgba(9,137,194,1)
+Ridge: Bergkam
+Right: Rechts
+Right part in MudExSplitPanel.: Rechterdeel in MudExSplitPanel.
+RightToLeft: Van rechts naar links
+Ripple: Rimpeling
+RippleOpacity: Rimpelopaciteit
+RippleOpacitySecondary: RippleOpacitySecundair
+rm-CH: Reto-Romaans (Zwitserland)
+rn-BI: Rundi (Burundi)
+ro-MD: Roemeens (Moldavië)
+ro-RO: Roemeens (Roemenië)
+Roboto: Robot
+Rockwell: Rockwell
+Rockwell Condensed: Rockwell gecondenseerd
+Rockwell Extra Bold: Rockwell Extra Vet
+rof-TZ: Rombo (Tanzania)
+Role: Rol
+Role ID: Rol-ID
+Role Name: Naam rol
+Roles: Rollen
+Roles Updated: Rollen bijgewerkt!
+RootName: Wortelnaam
+RosPineBase16: 'RosPineBase16 zei:'
+RosPineDawnBase16: 'RosPineDawnBase16 zei:'
+RosPineMoonBase16: 'RosPineMoonBase16 zei:'
+RosyBrown: Rooskleurig Bruin
+Rotate: Draaien
+RoundBars: Ronde staven
+Rounded: Afgeronde
+Routeros: Routeros
+Row: Roeien
+RowSpan: RijSpan
+RowsPerPageString: Rijen per pagina
+RoyalBlue: Koninklijk Blauw
+ru-BY: Russisch (Wit-Rusland)
+ru-KG: Russisch (Kirgizië)
+ru-KZ: Russisch (Kazachstan)
+ru-MD: Russisch (Moldavië)
+ru-RU: Russisch (Rusland)
+ru-UA: Russisch (Oekraïne)
+RubberBand: Rubberen band
+RubberBandColor: RubberBandKleur
+RubberBandStyle: Rubberen Band-stijl
+Runic MT Condensed: RunenMT Gecondenseerd
+Runtime: Runtime
+Russian: Russisch
+rw-RW: Kinyarwanda (Rwanda)
+rwk-TZ: Rwa (Tanzania)
+sa-IN: Sanskriet (India)
+SaddleBrown: Zadel Bruin
+SagelightBase16: SalielichtBase16
+sah-RU: Sakha (Rusland)
+Salmon: Zalm
+Sample Card: Voorbeeldkaart
+Sample Dialog: Voorbeeld dialoogvenster
+Sample Headline: Voorbeeld kop
+Sample how to use Theme Select: Voorbeeld van het gebruik van Theme Select
+Sample mega: Voorbeeld mega
+Sample to see how you can render and use any component in a dialog as easy as possible: Voorbeeld om te zien hoe u een component in een dialoogvenster zo eenvoudig mogelijk kunt renderen en gebruiken
+sample.pdf: sample.pdf
+San Antonio: San Antonio
+San Antonio - 78201: San Antonio - 78201
+San Antonio - 78201ender: San Antonio - 78201ender
+San Diego: San Diego
+San Diego - 92101: San Diego - 92101
+San Diego - 92101ender: San Diego - 92101ender
+San Jose: San Jose
+San Jose - 95101: San José - 95101
+San Jose - 95101ender: San José - 95101ender
+SandBoxIframes: SandBoxIframes
+SandcastleBase16: ZandkasteelBase16
+SandyBrown: Zanderig bruin
+sans-serif: schreefloos
+Sans-serif: Schreefloos
+saq-KE: Samburu (Kenia)
+sat-Olck-IN: Santali (Ol Chiki, India)
+Saturation: Verzadiging
+Save: Redden
+Save {0} Changes: '{0} Wijzigingen opslaan'
+Save as: Opslaan als
+Save Changes: Wijzigingen opslaan
+Save image: Afbeelding opslaan
+Save Role: Rol opslaan
+Save visible area only: Sla alleen het zichtbare gebied op
+SaveButtonIcon: OpslaanKnopPictogram
+saved: Opgeslagen!
+sbp-TZ: Sangu (Tanzania)
+Scale: Schub
+SchoolBook: Schoolboek
+Scope: Draagwijdte
+Screen: Scherm
+Script MT Bold: Script MT Vet
+Scroll down to discover the content: Scroll naar beneden om de inhoud te ontdekken
+Scroll down to see the behavior: Scroll naar beneden om het gedrag te zien
+Scroll to top: Scroll naar bovenzijde
+sd-Arab-PK: Sindhi (Arabisch, Pakistan)
+sd-Deva-IN: Sindhi (Devanagari, India)
+se-FI: Noord-Sami (Finland)
+se-NO: Noord-Sami (Noorwegen)
+se-SE: Noord-Sami (Zweden)
+SeaGreen: Zeegroen
+search: zoeken
+Search: Zoeken
+Search by users: Zoeken op gebruikers
+Search For {0} Extended Attributes: Zoeken naar {0} uitgebreide attributen
+Search for Brands: Zoeken naar merken
+Search for Document Types: Zoeken naar documenttypen
+Search For Permissions: Zoeken naar machtigingen
+Search for Roles...: Zoeken naar rollen...
+Search for Trails: Zoeken naar paden
+Search For User Roles: Zoeken naar gebruikersrollen
+Search For Users: Zoeken naar gebruikers
+Search in New Values: Zoeken in nieuwe waarden
+Search in Old Values: Zoeken in oude waarden
+SearchBox: Zoekvak
+SearchBoxAdornment: ZoekvakVersiering
+SearchBoxAutoFocus: ZoekvakAutofocus
+SearchBoxBackgroundColor: ZoekvakAchtergrondKleur
+SearchBoxClearable: ZoekvakClearable
+SearchBoxPlaceholder: ZoekvakTijdelijke aanduiding
+SearchBoxVariant: Zoekvak Variant
+SearchString: Zoekreeks
+SeaShell: Zeeschelp
+Secondary: Secundair
+SecondaryBackgroundForNestedItemHeader: SecondaryBackgroundForNestedItemHeader
+SecondaryContrastText: SecundaireContrastTekst
+SecondaryDarken: Secundair Verduisteren
+SecondaryLighten: Secundair Verlichten
+Section 0: Sectie 0
+Section 1: Afdeling 1
+Section 10: Afdeling 10
+Section 11: Afdeling 11
+Section 12: Afdeling 12
+Section 13: Afdeling 13
+Section 14: Afdeling 14
+Section 15: Afdeling 15
+Section 2: Afdeling 2
+Section 3: Afdeling 3
+Section 4: Afdeling 4
+Section 5: Afdeling 5
+Section 6: Afdeling 6
+Section 7: Afdeling 7
+Section 8: Afdeling 8
+Section 9: Afdeling 9
+Security: Veiligheid
+See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.: Bekijk hoe u MudExFileDisplay kunt gebruiken om de inhoud van bestanden weer te geven. Ook een demonstratie hoe de interface IMudExFileDisplay te implementeren om eigen componenten voor specifieke bestandstypen te leveren.
+See how to use MudExObjectEdit in a dialog: Bekijk hoe u MudExObjectEdit gebruikt in een dialoogvenster
+See how you can use different pickers or delay change event with the MudExColorPicker: Bekijk hoe u verschillende kiezers kunt gebruiken of wijzigingsgebeurtenissen kunt uitstellen met de MudExColorPicker
+seh-MZ: Seine (Mozambique)
+Select: Selecteren
+Select a brand: Selecteer een merk
+Select All: Alles selecteren
+Select Item: Selecteer item
+Select Items: Items selecteren
+Select Language: Taal selecteren
+Select sample file (See weather.json to check how own components for files can be created): Selecteer een voorbeeldbestand (zie weather.json om te controleren hoe eigen componenten voor bestanden kunnen worden gemaakt)
+Select screen: Selecteer scherm
+SelectAll: SelectAlles
+SelectAllPosition: SelectAllPosition
+SelectAllText: SelectAllText
+SelectColorText: SelecteerKleurTekst
+Selected: Uitverkoren
+Selected Node: Geselecteerd knooppunt
+SelectedBrand: Geselecteerd merk
+SelectedIndex: Geselecteerde index
+SelectedItemBackgroundColor: SelectedItemBackgroundColor
+SelectedItemBorderColor: SelectedItemBorderColor
+SelectedItemColor: SelectedItemColor
+SelectedRequests: SelectedRequests
+SelectedValues: SelectedValues
+Selecting: Selecteren
+SelectionList: Selectielijst
+SelectionMode: Selectiemodus
+SelectionModeIcon: SelectionModeIcon
+SelectItemsMode: SelectItemsMode
+SelectorsForIgnoreBlur: SelectorsForIgnoreVervagen
+SelectorSize: SelectorGrootte
+SelectorsToKeepOpenOnMouseLeave: SelectorsToKeepOpenOnMouseLeave
+SelectValueOnTab: SelectValueOnTab
+SelectVariant: Variant selecteren
+Send: Verzenden
+Send confirmation email: Bevestigingsmail verzenden
+Sensitivity: Gevoeligheid
+Sep: Sep
+Server restarted successfully: Server opnieuw opgestart
+ses-ML: Koyraboro Senni (Mali)
+Set as Default options for all Dialogs: Instellen als standaardopties voor alle dialoogvensters
+Set empty/null for auto detection: Stel empty/null in voor automatische detectie
+Set new password: Stel een nieuw wachtwoord in
+Set this to automatically stop recording after the desired time.: Stel dit in om automatisch te stoppen met opnemen na de gewenste tijd.
+Set this to wait before a photo is taken: Stel dit in om te wachten voordat er een foto wordt gemaakt
+Set this to wait before recording starts: Stel dit in om te wachten voordat de opname begint
+SetChipsOnEnter: SetChipsOnEnter
+SetiUiBase16: SetiUiBase16
+SevenZipArchive.7z: SevenZipArchive.7z
+Severity: Strengheid
+sg-CF: Sango (Centraal-Afrikaanse Republiek)
+ShadesOfPurple: TintenvanPaars
+Shadows: Schaduwen
+Shake: Schudden
+ShapeshifterBase16: GedaanteverwisselaarBase16
+SharedConfig: Gedeelde Config
+Sharpness: Scherpte
+shi-Latn-MA: Tachelhit (Latijn, Marokko)
+shi-Tfng-MA: Tachelhit (Tifinagh, Marokko)
+Show: Tonen
+Show As Dialog: Weergeven als dialoogvenster
+Show as Tree: Weergeven als boom
+Show Demo: Demo tonen
+Show flat: Toon plat
+Show info: Toon info
+Show info for: Toon info voor
+Show Markup: Markeringen weergeven
+Show notification: Melding weergeven
+Show notification while recording: Melding weergeven tijdens het opnemen
+Show on github: Tonen op github
+Show or hide inherited fields from base class: Overgenomen velden van de basisklasse weergeven of verbergen
+Show Sample 1: Toon voorbeeld 1
+Show Sample 2: Toon voorbeeld 2
+Show Sample 3: Toon voorbeeld 3
+Show Sample Dialog: Voorbeelddialoogvenster weergeven
+Show Sample Dialog METHOD 1: Voorbeelddialoogvenster weergeven METHODE 1
+Show Sample Dialog METHOD 2: Voorbeelddialoogvenster weergeven METHODE 2
+Show Sample Dialogs: Voorbeelddialoogvensters weergeven
+Show selected: Toon geselecteerd
+Show With this Options: Weergeven met deze opties
+ShowAlpha: Toon Alpha
+ShowAtCursor: Toon AtCursor
+ShowBgColor: Toon BgKleur
+Showcard Gothic: Showcard Gotisch
+ShowClearButton: Duidelijke knop weergeven
+ShowCloseIcon: ToonSluitenIcoon
+ShowColorField: Toon Kleurveld
+ShowColorPreview: ShowColorPreview
+ShowContentError: ShowContentError
+ShowCssColorVariables: ShowCssColorVariabelen
+ShowFileUploadButton: ShowFileUploadButton
+ShowFilterInDrawer: ShowFilterInDrawer
+ShowFolderUploadButton: ShowFolderUploadButton
+ShowFPS: Toon FPS
+ShowFullScreenButton: Knop Volledig scherm weergeven
+ShowHtmlColors: Toon HtmlKleuren
+ShowInputs: Invoer weergeven
+ShowLogoInDrawer: ShowLogoInLade
+ShowModeSwitch: ShowMode-schakelaar
+ShowNavigator: Toon Navigator
+ShowNotificationWhileRecording: ToonMeldingTijdensOpnemen
+ShowPath: ShowPath
+ShowPeaks: Pieken weergeven
+ShowPresetNameOnChange: ShowPresetNameOnChange
+ShowPreview: Voorbeeld weergeven
+ShowPreviewOnClick: ToonVoorbeeldOpKlik
+ShowPrintButton: ToonPrintKnop
+ShowProgressForLoadingData: VoortgangVoorLadenGegevens weergeven
+ShowRemainingTimeOnly: Alleen weergeven
+ShowRenameButton: Knop TonenHernoemen
+ShowResetButton: ToonResetKnop
+Shows how you can use MudExAdditionalAdornment to ad as many adornments to any MudInput: Laat zien hoe u MudExAdditionalAdornment kunt gebruiken om zoveel mogelijk versieringen aan elke MudInput toe te voegen
+ShowSaveButton: Knop Opslaan weergeven
+ShowScaleX: ShowScaleX
+ShowScaleY: Toon schaal
+ShowSliders: Schuifregelaars weergeven
+ShowSpectrumOnRecording: ShowSpectrumOnRecording
+ShowThemeColors: Toon ThemaKleuren
+ShowToolbar: Werkbalk weergeven
+ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
+ShowVisualiser: Toon Visualiser
+ShowZoomInButton: ToonInzoomKnop
+ShowZoomOutButton: ToonZoomOutButton
+ShrinkLabel: Krimp Label
+si-LK: Singalees (Sri Lanka)
+Side: Kant
+Sienna: Sienna
+Sign In: Aanmelden
+Sign Up: Inschrijven
+SilkDarkBase16: 'ZijdeDarkBase16 zei:'
+SilkLightBase16: ZijdeLightBase16
+Silver: Zilver
+Simon Pack: Simon-pakket
+Simple: Eenvoudig
+Simple Card List with a hover effect.: Eenvoudige kaartlijst met een hover-effect.
+Simple CodeViewer Component: Eenvoudige CodeViewer-component
+Simple component to display Html files with MudExFileDisplay: Eenvoudige component om Html-bestanden weer te geven met MudExFileDisplay
+Simple component to display markdown files with MudExFileDisplay: Eenvoudig onderdeel om markdown-bestanden weer te geven met MudExFileDisplay
+Simple component to expand a Search field: Eenvoudig onderdeel om een zoekveld uit te vouwen
+Simple Confirmation: Eenvoudige bevestiging
+Simple Dialog: Eenvoudig dialoogvenster
+Simple Dialogs: Eenvoudige dialogen
+Simple Enum: Eenvoudige Enum
+Simple Excel file viewer: Eenvoudige Excel-bestandsviewer
+Simple extended popover that adds Animations and an onblur event to close if a click outside happens.: Eenvoudige uitgebreide pop-over die animaties toevoegt en een onblur-gebeurtenis om te sluiten als er een klik buiten gebeurt.
+Simple extension for MudAvatar to load automatically a profile image for an email address using Gravatar: Eenvoudige extensie voor MudAvatar om automatisch een profielafbeelding voor een e-mailadres te laden met behulp van Gravatar
+Simple MessageDialog: Eenvoudig MessageDialog
+Simple Prompt: Eenvoudige prompt
+Simple virtualize component that can be disabled with support for fixed items and ItemsProvider.: Eenvoudig virtualisatieonderdeel dat kan worden uitgeschakeld met ondersteuning voor vaste items en ItemsProvider.
+SimpleDialog: Eenvoudige dialoog
+SimulateOnHover: SimulerenOnHover
+SimulateWithFullSpectrumAudioData: SimulerenMetFullSpectrumAudioData
+SimulateWithRandomData: SimulerenMetWillekeurige Gegevens
+Single: Ongetrouwd
+SingleExpand: Enkel uitbreiden
+Size: Grootte
+sk-SK: Slowaaks (Slowakije)
+Skeleton: Skelet
+SkipSeparator: Skip-Separator
+SkyBlue: Hemelsblauw
+sl-SI: Sloveens (Slovenië)
+SlateBlue: Leisteen Blauw
+SlateGray: Leisteen grijs
+Slide: Glijden
+SlideBar: Schuifbalk
+SlideIn: Schuif in
+sma-NO: Zuid-Sami (Noorwegen)
+sma-SE: Zuid-Sami (Zweden)
+Small: Klein
+smj-NO: Lule Sami (Noorwegen)
+smj-SE: Lule Sami (Zweden)
+smn-FI: Inari Sami (Finland)
+Smoothing: Smoothing
+sms-FI: Skolt Sami (Finland)
+sn-Latn-ZW: Shona (Latijn, Zimbabwe)
+Snackbar: Snackbar
+SnackbarMessageMarkupString: SnackbarMessageMarkupString
+SnackbarMessageRenderFragment: SnackbarMessageRenderFragment
+SnackbarMessageText: SnackbarBerichtTekst
+Snap ITC: Snap ITC
+SnapDrag: Klikken
+SnazzyBase16: 'SnazzyBase16 zei:'
+Snow: Sneeuw
+so-DJ: Somalisch (Djibouti)
+so-ET: Somalisch (Ethiopië)
+so-KE: Somalisch (Kenia)
+so-SO: Somalisch (Somalië)
+SolarFlareBase16: SolarFlareBase16
+SolarFlareLightBase16: SolarFlareLightBase16
+SolarizedDarkBase16: GesolariseerdeDarkBase16
+SolarizedLightBase16: SolarizedLightBase16
+Solid: Degelijk
+Some: Sommige
+Some other: Enkele andere
+SomeOtherInformation: SoeverigeOverige informatie
+Something went wrong during the refresh token action: Er is iets misgegaan tijdens de actie voor het vernieuwen van tokens
+SomeUnimportantTestModel: SommigeOnbelangrijkTestModel
+SomeUnimportantTestModel as Json: SomeUnimportantTestModel als Json
+SpaceAround: Ruimte rondom
+SpaceBetween: Ruimte tussen
+SpaceEvenly: Gelijkmatig verdelen
+SpacemacsBase16: SpacemacsBase16
+Spacing: Afstand
+Specify Options...: Opties opgeven...
+Specify Quick Options...: Specificeer snelle opties...
+Spectrum: Spectrum
+SpectrumIcon: SpectrumIcoon
+SpinSpeed: Spin-snelheid
+SplitGradient: Gesplitste gradiënt
+SplitPanelItem for MudExSplitPanel component: SplitPanelItem voor MudExSplitPanel-component
+SpringGreen: Lente Groen
+sq-AL: Albanees (Albanië)
+sq-MK: Albanees (Noord-Macedonië)
+sq-XK: Albanees (Kosovo)
+Square: Vierkant
+sr-Cyrl-BA: Servisch (Cyrillisch, Bosnië en Herzegovina)
+sr-Cyrl-ME: Servisch (Cyrillisch, Montenegro)
+sr-Cyrl-RS: Servisch (Cyrillisch, Servië)
+sr-Cyrl-XK: Servisch (Cyrillisch, Kosovo)
+sr-Latn-BA: Servisch (Latijn, Bosnië en Herzegovina)
+sr-Latn-ME: Servisch (Latijn, Montenegro)
+sr-Latn-RS: Servisch (Latijn, Servië)
+sr-Latn-XK: Servisch (Latijn, Kosovo)
+Src: Src
+Srcery: Srcery
+ss-SZ: siSwati (Eswatini)
+ss-ZA: siSwati (Zuid-Afrika)
+ssy-ER: Saho (Eritrea)
+st-LS: Sesotho (Lesotho)
+st-ZA: Sesotho (Zuid-Afrika)
+StackedBar: Gestapelde staaf
+StackoverflowDark: StackoverflowDonker
+StackoverflowLight: StackoverflowLicht
+Standard - Mikrofon (Voicemod Virtual Audio Device (WDM)): Standaard - Mikrofon (Voicemod Virtual Audio Device (WDM))
+Start: Beginnen
+Start Capture: Vastleggen starten
+Start Recording: Begin met opnemen
+Start recording after: Begin met opnemen na
+Start/Stop selection: Start/Stop selectie
+State: Staat
+Static: Statisch
+Static card.: Statische kaart.
+Static item: Statisch artikel
+Status: Status
+SteelBlue: Staalblauw
+Stencil: Patroon
+Stereo: Stereo
+Steve Rogers: Steve Rogers
+Store: Winkel
+Stream: Stroom
+StreamUrlHandling: StreamUrl-afhandeling
+Street: Straat
+Street 2 2, 32365 City 2: Straat 2 2, 32365 Stad 2
+Strict: Streng
+StringProperty1: String-eigenschap1
+StringProperty10: StringProperty10
+StringProperty11: 'StringProperty11 zei:'
+StringProperty12: 'StringProperty12 zei:'
+StringProperty13: 'StringProperty13 zei:'
+StringProperty14: StringProperty14
+StringProperty15: StringProperty15
+StringProperty16: StringProperty16
+StringProperty17: 'StringProperty17 zei:'
+StringProperty18: StringEigendom18
+StringProperty19: StringEigendom19
+StringProperty2: StringEigenschap2
+StringProperty20: StringProperty20
+StringProperty21: 'StringProperty21 zei:'
+StringProperty22: 'StringProperty22 zei:'
+StringProperty23: 'StringProperty23 zei:'
+StringProperty24: 'StringProperty24 zei:'
+StringProperty25: 'StringProperty25 zei:'
+StringProperty26: 'StringProperty26 zei:'
+StringProperty27: 'StringProperty27 zei:'
+StringProperty28: 'StringProperty28 zei:'
+StringProperty29: 'StringProperty29 zei:'
+StringProperty3: StringProperty3
+StringProperty30: StringProperty30
+StringProperty31: 'StringProperty31 zei:'
+StringProperty32: 'StringProperty32 zei:'
+StringProperty33: 'StringProperty33 zei:'
+StringProperty34: 'StringProperty34 zei:'
+StringProperty35: 'StringProperty35 zei:'
+StringProperty36: 'StringProperty36 zei:'
+StringProperty37: 'StringProperty37 zei:'
+StringProperty38: 'StringProperty38 zei:'
+StringProperty39: StringProperty39
+StringProperty4: StringProperty4
+StringProperty40: 'StringProperty40 zei:'
+StringProperty41: 'StringProperty41 zei:'
+StringProperty42: 'StringProperty42 zei:'
+StringProperty43: 'StringProperty43 zei:'
+StringProperty44: StringProperty44
+StringProperty45: StringProperty45
+StringProperty46: 'StringProperty46 zei:'
+StringProperty47: 'StringProperty47 zei:'
+StringProperty48: 'StringProperty48 zei:'
+StringProperty49: StringProperty49
+StringProperty5: StringProperty5
+StringProperty50: StringProperty50
+StringProperty51: 'StringProperty51 zei:'
+StringProperty52: 'StringProperty52 zei:'
+StringProperty53: 'StringProperty53 zei:'
+StringProperty54: 'StringProperty54 zei:'
+StringProperty55: 'StringProperty55 zei:'
+StringProperty56: 'StringProperty56 zei:'
+StringProperty57: 'StringProperty57 zei:'
+StringProperty58: 'StringProperty58 zei:'
+StringProperty59: 'StringProperty59 zei:'
+StringProperty6: StringProperty6
+StringProperty60: StringProperty60
+StringProperty7: StringProperty7
+StringProperty8: StringEigenschap8
+StringProperty9: StringProperty9
+Striped: Gestreept
+Structured Data Edit: Gestructureerde gegevens bewerken
+StructuredDataEdit: Gestructureerde gegevensBewerken
+Style: Stijl
+StyleChip: Stijl Chip
+su-Latn-ID: Soendanees (Latijn, Indonesië)
+Subject: Onderwerp
+Subline description for sample card.: Sublijnbeschrijving voor voorbeeldkaart.
+Submit: Opslaan
+SubscribeToParentForm2: Abonneren op ParentForm2
+subtitle1: Ondertitel 1
+Subtitle1: Ondertiteling1
+subtitle2: Ondertitel 2
+Subtitle2: Ondertitel 2
+Success: Succes
+SuccessContrastText: SuccesContrastTekst
+SuccessDarken: Succes Verduisteren
+SuccessLighten: Succes Verlichten
+SummercampBase16: ZomerkampBase16
+SummerfruitDarkBase16: ZomerfruitDarkBase16
+SummerfruitLightBase16: ZomerfruitLightBase16
+Sunburst: Sunburst
+Super sample Content text.: Super voorbeeld Inhoudstekst.
+Support: Steunen
+Surface: Oppervlak
+Surname: Achternaam
+sv-AX: Zweeds (Åland-eilanden)
+sv-FI: Zweeds (Finland)
+sv-SE: Zweeds (Zweden)
+sw-CD: Kiswahili (Congo-Brazzaville [DRC])
+sw-KE: Kiswahili (Kenia)
+sw-TZ: Kiswahili (Tanzania)
+sw-UG: Kiswahili (Oeganda)
+Swagger: API-documentatie
+Swap: Ruilen
+Swedish: Zweeds
+SweetieBubbleGum-Regular.ttf: SweetieBubbleGum-Regular.ttf
+Swing: Schommel
+Switch: Schakelaar
+Switch expand button position: Positie van de uitvouwknop wisselen
+Switch overlay source: Overlaybron wisselen
+Symbol: Symbool
+SynthMidnightTerminalDarkBase16: SynthMidnightTerminalDarkBase16
+SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16
+syr-SY: Syrisch (Syrië)
+System: Systeem
+System Settings: Systeeminstellingen
+T3024Base16: T3024Base16
+ta-IN: Tamil (India)
+ta-LK: Tamil (Sri Lanka)
+ta-MY: Tamil (Maleisië)
+ta-SG: Tamil (Singapore)
+Table Name: Tabel Naam
+TableHover: TafelHover
+TableLines: Tabellijnen
+TableStriped: TafelGestreept
+Tada: Dan
+Tag: Dag
+TagField: Tagveld
+Tahoma: Tahoma
+Take case: Zaak aannemen
+Take photo after: Maak een foto na
+Take Photo from Main camera: Maak een foto van de hoofdcamera
+Take Photo from Main camera in 5 seconds: Maak een foto van de hoofdcamera in 5 seconden
+Take Photo only: Alleen foto maken
+Tan: Dus
+TangoBase16: 'TangoBase16 zei:'
+TarArchive.tar: TarArchive.tar
+Target: Doel
+Tax: Belasting
+Tax must be greater than 0: Belasting moet hoger zijn dan 0
+te-IN: Telugu (India)
+Teal: Taling
+tel: Tel
+Telephone: Telefoon
+TemplateClass: Sjabloon Klasse
+Temporary: Tijdelijk
+TenderBase16: 'TenderBase16 zei:'
+teo-KE: Teso (Kenia)
+teo-UG: Teso (Oeganda)
+Tertiary: Tertiair
+TertiaryContrastText: TertiairContrastTekst
+TertiaryDarken: TertiairDonkerder
+TertiaryLighten: TertiairLichter
+TEST: TEST
+Test and use components live without required environment: Test en gebruik componenten live zonder de vereiste omgeving
+Test the powerful MudExThemeEdit and change theme colors fonts and more: Test de krachtige MudExThemeBewerk en wijzig themakleuren, lettertypen en meer
+text: Sms
+Text: Sms
+Text value is required using {0} type!: Tekstwaarde is vereist met behulp van {0} type!
+TextAddExternal: TextAddExternal
+TextAddFromDropBox: TekstToevoegenVanDropBox
+TextAddFromGoogle: TekstToevoegenVan Google
+TextAddFromOneDrive: TekstAddFromOneDrive
+TextAddUrl: TekstAddUrl
+TextAddUrlMessage: TekstAddUrlMessage
+TextAddUrlTitle: TekstAddUrlTitle
+TextDisabled: TekstUitgeschakeld
+TextDropZone: TekstDropZone
+TextErrorDuplicateFile: TextErrorDuplicateFile
+TextErrorExtensionForbidden: TextErrorExtensionForbidden
+TextErrorExtensionNotAllowed: TextErrorExtensionNotAllowed
+TextErrorMaxFileCount: TekstFoutMaxFileCount
+TextErrorMaxFileSize: TekstFoutMaxBestandsgrootte
+TextErrorMimeTypeForbidden: TekstFoutMimeTypeVerboden
+TextErrorMimeTypeNotAllowed: TextErrorMimeTypeNotAllowed
+TextFillColor: TekstFillColor
+TextPrimary: TekstPrimair
+TextRemoveAll: TekstVerwijderenAlles
+TextSecondary: TekstSecundair
+TextStartRecording: TekstStartOpname
+TextStartVideoCapture: TekstStartVideoCapture
+TextTransform: TekstTransformatie
+TextUpdateSuppression: TekstUpdateOnderdrukking
+TextUploadFile: TekstUploadBestand
+TextUploadFiles: TekstUploadBestanden
+TextUploadFolder: TekstUploadMap
+tg-Cyrl-TJ: Tadzjieks (Cyrillisch, Tadzjikistan)
+th-TH: Thais (Thailand)
+The Checker field is required.: Het veld Checker is verplicht.
+The component also provides the <strong>IsVisibleChanged</strong> event, which triggers whenever the visibility of the item changes.: Het onderdeel biedt ook de gebeurtenis <strong>IsVisibleChanged</strong>, die wordt geactiveerd wanneer de zichtbaarheid van het item verandert.
+The content type {0} cannot be displayed without a suitable plugin: Het inhoudstype {0} kan niet worden weergegeven zonder een geschikte plug-in
+The field Number must be between 1 and 100.: Het veld Nummer moet tussen 1 en 100 liggen.
+The file ({0}) has already been added: Het bestand ({0}) is al toegevoegd
+The file has exceeded the maximum size of {0} with {1}. File size is {2}: Het bestand heeft de maximale grootte van {0} overschreden met {1}. De bestandsgrootte is {2}
+The following {0} permissions are also required for permission {1}: De volgende {0} machtigingen zijn ook vereist voor toestemming {1}
+The following permission is also required for permission {1}: De volgende toestemming is ook vereist voor toestemming {1}
+The maximum file size is 10 MB: De maximale bestandsgrootte is 10 MB
+The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: De MudExThemeEdit is een robuuste en veelzijdige tool die is ontworpen om het bewerken van een of meer thema's of presets effectief te vergemakkelijken. Het is inherent geschikt voor de donkere modus, de lichte modus of een combinatie van beide. Bovendien ondersteunt het afgeleide klassen van MudTheme, evenals aangepaste eigenschappen die er inherent aan zijn, waardoor het een uitgebreide en flexibele oplossing biedt voor al uw vereisten voor het bewerken van thema's.
+The Plugin '{0}' may be able to help: De plugin '{0}' kan mogelijk helpen
+The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: De sample is hetzelfde als het andere FileDisplay voorbeeld, maar met het verschil dat er geen URL wordt gebruikt; In plaats daarvan worden streams geladen en gebruikt.
+The server is just restarting. Please wait until the connection has been restored: De server is net opnieuw opgestart. Wacht tot de verbinding is hersteld
+The user "{0}" just changed some of this data: De gebruiker "{0}" heeft zojuist een deel van deze gegevens gewijzigd
+The user {0} has been logged off: De gebruiker {0} is afgemeld
+The User {0} has just edited, created or deleted entries here. You should reload the data: De gebruiker {0} hier zojuist items heeft bewerkt, aangemaakt of verwijderd. U moet de gegevens opnieuw laden
+Theme: Thema
+Theme Colors: Thema Kleuren
+Themes: Thema 's
+ThemeSelect: Thema selecteren
+There are no new notifications: Er zijn geen nieuwe meldingen
+These features make <strong>MudExVirtualItem</strong> ideal for optimizing performance when working with large datasets or dynamic content that doesn't need to be loaded all at once.: Deze functies maken <strong>MudExVirtualItem</strong> ideaal voor het optimaliseren van de prestaties bij het werken met grote datasets of dynamische inhoud die niet in één keer hoeft te worden geladen.
+This bar can be positioned left, right, top or bottom, and expands automatically on mouseover. This is also the Base component for the MudExTaskBar that automatically displays all open dialogs: Deze balk kan links, rechts, boven of onder worden geplaatst en wordt automatisch uitgevouwen wanneer u de muis over beweegt. Dit is ook de basiscomponent voor de MudExTaskBar die automatisch alle geopende dialoogvensters weergeeft
+This changes the Variant if Age is at least 18 and is enabled if Age is more than 1: Dit wijzigt de variant als de leeftijd ten minste 18 is en wordt ingeschakeld als de leeftijd meer dan 1 is
+This component and the dialog no modal behaviour is still in development and not ready for production use. Please report any issues you find on GitHub.: Deze component en de dialoog geen modaal gedrag is nog in ontwikkeling en nog niet klaar voor productiegebruik. Meld eventuele problemen die u op GitHub aantreft.
+This component uses the ICaptureService to capture audio and/or video data: Dit onderdeel maakt gebruik van de ICaptureService om audio- en/of videogegevens vast te leggen
+This component uses the ISpeechRecognitionService to record audio data and transcripts: Dit onderdeel maakt gebruik van de ISpeechRecognitionService om audiogegevens en transcripties op te nemen
+This Demo demonstrate using for the MudExCardList: Deze demo demonstreren het gebruik voor de MudExCardList
+This Demo demonstrate using the MudExAudioPlayer without the automatic use in MudExFileDisplay: Deze demo demonstreert het gebruik van de MudExAudioPlayer zonder het automatische gebruik in MudExFileDisplay
+This Demo demonstrate using the MudExCardList with an item source: Deze demo demonstreert het gebruik van de MudExCardList met een itembron
+This Demo demonstrate using the MudExCardList with an item source and child content together: Deze demo demonstreert het gebruik van de MudExCardList met een itembron en onderliggende inhoud samen
+This Demo demonstrate using the MudExImageViewer without the automatic use in MudExFileDisplay: Deze demo demonstreert het gebruik van de MudExImageViewer zonder het automatische gebruik in MudExFileDisplay
+This demo showcases the <strong>MudExVirtualItem</strong> component, a virtualized container that efficiently renders content<br/> only when it becomes visible in the viewport.: Deze demo toont het <strong>MudExVirtualItem-onderdeel</strong>, een gevirtualiseerde container die inhoud<br/> alleen efficiënt weergeeft wanneer deze zichtbaar wordt in de viewport.
+This demo shows how to pass a can close method: Deze demo laat zien hoe u een methode voor het sluiten van blikken doorgeeft
+This demo shows how you can use a selection with MudExSelect with a custom item provider: Deze demo laat zien hoe u een selectie kunt gebruiken met MudExSelect met een leverancier van aangepaste items
+This demo uses SnapDrag as DragMode on the DialogOptionsEx: Deze demo gebruikt SnapDrag als DragMode op de DialogOptionsEx
+This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open: Deze demo maakt gebruik van de IDialogEventService om het formaat te controleren of te slepen en slaat de nieuwste positie en grootte op als relatieve waarden en herstelt deze bij de volgende opening
+This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: Dit demonstreert de MudExThemeEdit-component die intern gebruikmaakt van MudExObjectEdit en MudExThemeSelect voor het bewerken van thema's
+This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: Deze demos toont de aanbevolen manier om MudExAdditionalAdornment te gebruiken met behulp van de RenderFragments 'For' en 'ChildContent'
+This dialog can confirmed when slider value is greater then 10: Dit dialoogvenster kan worden bevestigd wanneer de waarde van de schuifregelaar groter is dan 10
+This is a Json representation of the TestModel. This is ignored for Export and Import: Dit is een Json-weergave van het TestModel. Dit wordt genegeerd voor Exporteren en Importeren
+This is a simple information dialog that closes after {0} seconds: Dit is een eenvoudig informatiedialoogvenster dat na {0} seconden wordt gesloten
+This is a simple information dialog that closes after 0 seconds: Dit is een eenvoudig informatiedialoogvenster dat na 0 seconden wordt gesloten
+This is a simple information dialog that closes after 1 seconds: Dit is een eenvoudig informatievenster dat na 1 seconde wordt gesloten
+This is a simple information dialog that closes after 2 seconds: Dit is een eenvoudig informatievenster dat na 2 seconden wordt gesloten
+This is a simple information dialog that closes after 3 seconds: Dit is een eenvoudig informatievenster dat na 3 seconden wordt gesloten
+This is a simple information dialog that closes after 4 seconds: Dit is een eenvoudig informatievenster dat na 4 seconden wordt gesloten
+This is a simple information dialog that closes after 5 seconds: Dit is een eenvoudig informatievenster dat na 5 seconden wordt gesloten
+This is an Administrator Only View.: Dit is een weergave alleen voor beheerders.
+This is the MudEx Default theme: Dit is het MudEx Default thema
+This is the sample Popover. In general it inherits the original MudPopover.: Dit is het voorbeeld van Popover. Over het algemeen erft het de originele MudPopover.
+This one card is still added without an corresponding item.: Deze ene kaart wordt nog steeds toegevoegd zonder een bijbehorend item.
+This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: Dit gaat als methode door naar de dialoogopties. Het dialoogvenster wordt niet gesloten als de methode false retourneert. Het resultaat moet een bool of een Task&lt;bool zijn&gt;
+This photo was taken in a small village in Istra Croatia.: Deze foto is genomen in een klein dorpje in Istra, Kroatië.
+This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Deze kiezer biedt animaties, beter gedrag en een dialoogvenster dat alle DialogOptions ondersteunt. Om uw eigen pickercomponent te maken die u kunt erven van MudExPickerBase, of om gewoon eenvoudige inhoud te gebruiken, gebruikt u MudExPicker
+This sample demonstrate how to use the MudExCaptureService: In dit voorbeeld wordt gedemonstreerd hoe u de MudExCaptureService gebruikt
+This sample demonstrate the usage of MudExTreeView with an Item template: In dit voorbeeld wordt het gebruik van MudExTreeView met een itemsjabloon gedemonstreerd
+This sample uses the IDialogEventService to cancel the dialog close: In dit voorbeeld wordt de IDialogEventService gebruikt om het sluiten van het dialoogvenster te annuleren
+This sample uses the options for a can close callback: In dit voorbeeld worden de opties gebruikt voor een kan sluiten callback
+This section can be placed inside a MudExGrid component.: Dit gedeelte kan in een MudExGrid-component worden geplaatst.
+Thistle: Distel
+ThrottleInterval: Gashendelinterval
+ti-ER: Tigrinya (Eritrea)
+ti-ET: Tigrinya (Ethiopië)
+tig-ER: Tigre (Eritrea)
+Tilt: Kantelen
+Time: Tijd
+Times: Keer
+Times New Roman: Tijden Nieuw Romeins
+TimeSeries: Tijdreeks
+Tina Fey: Tina Fey
+Title: Titel
+Title is required!: Titel is vereist!
+tk-TM: Turkmeens (Turkmenistan)
+tn-BW: Setswana (Botswana)
+tn-ZA: Setswana (Zuid-Afrika)
+to-TO: Tongaans (Tonga)
+Toggle loading: Laden in-/uitschakelen
+Toggle right-to-left/left-to-right: Schakel van rechts naar links/van links naar rechts
+Toggle to {0}: Schakel over naar {0}
+Toggleable: Schakelbaar
+ToggleAllFeatures: ToggleAllFeatures
+ToggleFullPage: Schakelen Volledige pagina
+ToggleFullscreen: SchakelenVolledig scherm
+ToggleMicrophone: Microfoon in- en uitschakelen
+TogglePictureInPicture: TogglePictureInPicture
+TogglePlayPause: SchakelenSpelenPauzeren
+Token is required: Token is vereist
+Token Not Found!: Token niet gevonden!
+Tokyo: Tokio
+Tokyo - 100-0001: Tokio - 100-0001
+Tokyo - 100-0001ender: Tokio - 100-0001ender
+Tomato: Tomaat
+TomorrowBase16: Morgenbasis16
+TomorrowNightBase16: MorgenavondBase16
+TomorrowNightBlue: MorgenNachtBlauw
+TomorrowNightBright: MorgenNachtHelder
+ToolbarBackgroundColor: WerkbalkAchtergrondKleur
+ToolbarButtonColor: WerkbalkKnopKleur
+ToolbarButtonPosition: WerkbalkKnopPositie
+ToolbarButtonSize: WerkbalkKnopGrootte
+ToolbarButtonVariant: WerkbalkKnopVariant
+ToolbarClass: Werkbalk Klasse
+ToolBarClass: ToolBarKlasse
+ToolbarStyle: Werkbalkstijl
+ToolBarStyle: ToolBarStyle
+Tooltip: Knopinfo
+ToolTip: ToolTip
+ToolTip Three: ToolTip Drie
+ToolTip Two: ToolTip Twee
+ToolTipStyle: ToolTipStijl
+Top: Boven
+TopCenter: TopCenter
+TopLeft: Linksboven
+TopRight: Rechtsboven
+Torch: Fakkel
+Toronto: Toronto
+Toronto - M1B 1A1: Toronto - M1B 1A1
+Toronto - M1B 1A1ender: Toronto - M1B 1A1ender
+tr-CY: Turks (Cyprus)
+tr-TR: Turks (Turkije)
+Trace: Spoor
+TrackInfoPosition: TrackInfoPositie
+TrackList: Tracklist
+TrackListBehaviour: TrackListGedrag
+TrackListClass: TrackListKlasse
+TrackListCoverImage: TrackListCoverAfbeelding
+TrackListMode: TrackList-modus
+TrackListPosition: TrackListPositie
+TrackListToggleButtonPosition: TrackListToggleButtonPosition
+Trail Details: Details van het parcours
+TransformOrigin: Oorsprong transformeren
+Translations: Translations
+Translations are being imported: Vertalingen worden geïmporteerd
+Translations updated: Vertalingen bijgewerkt
+Transparent: Doorzichtig
+Trebuchet MS: Trebuchet MS
+TreeView: Boombeeld
+TreeView component that renders a tree structure of items.: TreeView-component die een boomstructuur van items weergeeft.
+TreeViewBreadcrumb: TreeViewPaneermeel
+TreeViewCardGrid: TreeViewCardGrid
+TreeViewDefault: TreeViewDefault
+TreeViewFlatList: TreeViewFlatList
+TreeViewHorizontal: TreeViewHorizontaal
+TreeViewList: TreeViewList
+TreeViewMode: TreeViewMode
+TrueLeds: TrueLeds
+TrueOrFalse: WaarOfOnwaar
+Try different role: Probeer een andere rol
+Try MudEx online: Probeer MudEx online
+Try MudEx online CodeEditor: Probeer MudEx online CodeEditor
+ts-ZA: Xitsonga (Zuid-Afrika)
+tt-RU: Tataars (Rusland)
+Turquoise: Turkoois
+TwilightBase16: 'SchemeringBase16 zei:'
+twq-NE: Tasawaq (Niger)
+Type: Type
+Type should be valid: Type moet geldig zijn
+Typo: Typefout
+TypoThemeDescription: TypefoutThemaBeschrijving
+TypoThemeName: TypefoutThemaNaam
+tzm-Arab-MA: Centrale Atlas Tamazight (Arabisch, Marokko)
+tzm-Latn-DZ: Centrale Atlas Tamazight (Latijn, Algerije)
+tzm-Latn-MA: Centrale Atlas Tamazight (Latijn, Marokko)
+tzm-Tfng-MA: Centrale Atlas Tamazight (Tifinagh, Marokko)
+ug-CN: Oeigoers (China)
+uk-UA: Oekraïens (Oekraïne)
+Uma Thurman: Uma Thurman
+Unassigned: Toegewezen
+UncheckedIcon: Niet aangevinktPictogram
+Underline: Onderstrepen
+Undo: Ongedaan maken
+UndoIcon: Pictogram ongedaan maken
+UnikittyDarkBase16: 'UnikittyDarkBase16 zei:'
+UnikittyLightBase16: 'UnikittyLightBase16 zei:'
+Unselectable: Niet selecteerbaar
+Unset: Unset
+Update: Update
+Update automatically next time: Update de volgende keer automatisch
+Update Brand: Update Merk
+Update Document: Document bijwerken
+Update Document Type: Documenttype bijwerken
+Update Extended Attribute: Uitgebreid kenmerk bijwerken
+Update Now: Nu bijwerken
+Update Permissions: Machtigingen bijwerken
+Update Product: Product bijwerken
+Update Role: Rol bijwerken
+Update Role Permissions: Rolmachtigingen bijwerken
+Update User Roles: Gebruikersrollen bijwerken
+UpdateBindingIfOnlyHSLChanged: UpdateBindingIfOnlyHSLChanged
+Updated: Bijgewerkt
+Updated User Status.: Bijgewerkte gebruikersstatus.
+UpdateItemsOnStateChange: UpdateItemsOnStateWijzigen
+Upload: Uploaden
+Upload Edit: Uploaden Bewerken
+Upload File: Bestand uploaden
+Upload Files: Bestanden uploaden
+Upload Folder: Map uploaden
+Upload Image: Afbeelding uploaden
+Upload in dialog: Uploaden in dialoogvenster
+Upload Qualifications and References: Kwalificaties en referenties uploaden
+UploadFieldId: UploadFieldId
+UploadFile: Bestand uploaden
+UploadFolder: Map uploaden
+UploadRequest: Aanvraag uploaden
+UploadRequests: UploadVerzoeken
+ur-IN: Urdu (India)
+ur-PK: Urdu (Pakistan)
+url: Naam-URL
+Url: Naamgever
+Use CodeGator Models: CodeGator-modellen gebruiken
+Use MudExAdditionalAdornment ad ChildContent: Gebruik MudExAdditionalAdornment ad ChildContent
+Use MudExAdditionalAdornment as ChildContent of a MudInput: Gebruik MudExAdditionalAdornment als kindInhoud van een MudInput
+Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Gebruik in plaats daarvan MudExSelect en stel MultiSelection in op true en ValuePresenter op Chip.
+UseCanvas: Canvas gebruiken
+UseColorPaletteInNativeBrowserControl: GebruikKleurPaletInNativeBrowserControl
+UseItemTemplateForSelection: UseItemTemplateForSelection
+UseMudExColorBubble: GebruikMudExColorBubble
+UseNativeBrowserControl: GebruikNativeBrowserControl
+User: Gebruiker
+User {0} Registered. Please check your Mailbox to verify!: Gebruiker {0} geregistreerd. Controleer uw mailbox om uw e-mailadres te verifiëren!
+User and Roles: Gebruiker en rollen
+User Data: Gebruikersgegevens
+User Deleted: Gebruiker verwijderd
+User Name: Gebruikersnaam
+User Not Active. Please contact the administrator.: Gebruiker niet actief. Wacht op activering of neem contact op met de beheerder.
+User Not Found!: Gebruiker niet gevonden!
+User Registered: Gebruiker geregistreerd!
+User Registered Mailbox: Gebruiker geregistreerd. De bevestigingsmail is in de brievenbus afgeleverd.
+User registration is not allowed: Gebruikersregistratie is niet toegestaan
+UserAttributes: Gebruikersattributen
+UserInformation: Gebruikersinformatie
+Username: Gebruikersnaam
+UserName: Gebruikersnaam
+Username {0} is already taken.: De {0} gebruikersnaam is al in gebruik.
+Username cannot changed: Gebruikersnaam kan niet worden gewijzigd
+UserName is required: Gebruikersnaam is vereist
+UserName must be at least of length 6: Gebruikersnaam moet ten minste lengte 6 hebben
+Username or Email: Gebruikersnaam of e-mailadres
+Users: Gebruikers
+Users and Roles: Gebruikers en rollen
+Users exported: Gebruikers geëxporteerd
+Uses the IDialogEventService and handles the before close event. Here you can just set args.Cancel to true to stop closing: Maakt gebruik van de IDialogEventService en handelt de gebeurtenis voor sluitingstijd af. Hier kun je gewoon args instellen. Annuleren naar waar om te stoppen met sluiten
+UTC: UTC
+Utilities: Utilities
+uz-Arab-AF: Oezbeeks (Arabisch, Afghanistan)
+uz-Cyrl-UZ: Oezbeeks (Cyrillisch, Oezbekistan)
+uz-Latn-UZ: Oezbeeks (Latijn, Oezbekistan)
+vai-Latn-LR: Vai (Latijn, Liberia)
+vai-Vaii-LR: Vai (Vai, Liberia)
+Validate Upload Edit in MudForm: Valideren Uploaden Bewerken in MudForm
+Validation: Validering
+Value: Waarde
+ValuePresenter: WaardePresentator
+Values: Waarden
+ValueString: WaardeTekenreeks
+Vancouver: Vancouver
+Vancouver - V5K 0A1: Vancouver - V5K 0A1
+Vancouver - V5K 0A1ender: Vancouver - V5K 0A1ender
+Variant: Variant
+ve-ZA: Venda (Zuid-Afrika)
+Verdana: Verdana
+Version: Versie
+vi-VN: Vietnamees (Vietnam)
+Video Content-Type: Type video-inhoud
+Video device: Video-apparaat
+VideoDevice: Video-apparaat
+View: Bekijken
+View Profile: Bekijk profiel
+ViewBox: Kijkdoos
+ViewDependsOnContentType: ViewDependsOnContentType
+ViewMode: Weergave
+ViewportHeight: ViewportHoogte
+ViewportMaximum: ViewportMaximum
+ViewportMinimum: ViewportMinimum
+ViewportWidth: ViewportWidth
+Viner Hand ITC: Viner Hand ITC
+Violet: Violet
+Virtualize: Virtualiseren
+Visible: Zichtbaar
+Visualizer: Visualizer
+VisualizerBackgroundColor: VisualizerBackgroundColor
+VisualizerElementBorderSize: VisualizerElementBorderSize
+Vivaldi: Vivaldi
+Vladimir Script: Vladimir Schrift
+vo-001: Volapük (Wereld)
+Volume: Volume
+Vs: Tegen
+Vs2015: VS2015
+VulcanBase16: 'VulcanBase16 zei:'
+vun-TZ: Vunjo (Tanzania)
+wae-CH: Walser (Zwitserland)
+wal-ET: Wolaytta (Ethiopië)
+Warning: Waarschuwing
+WarningContrastText: WaarschuwingContrastTekst
+WarningDarken: WaarschuwingVerduisteren
+WarningLighten: WaarschuwingVerlichten
+weather.json: weather.json
+Webdings: Banden
+Week: Week
+WeightingFilter: WegingFilter
+Welcome {0}: Welkom {0}
+whatever: wat dan ook
+Wheat: Tarwe
+White: Wit
+WhiteBalanceMode: Witbalansmodus
+WhiteList: Witte lijst
+WhiteSmoke: Witte Rook
+Wide Latin: Breed Latijn
+Width: Breedte
+Will be saved only when selected Permission: Wordt alleen opgeslagen als de geselecteerde machtiging
+Window: Venster
+Windows10Base16: Windows10Base16
+Windows10LightBase16: Windows10LightBase16
+Windows95Base16: Windows95Base16
+Windows95LightBase16: Windows95LightBase16
+WindowsHighContrastBase16: WindowsHighContrastBase16
+WindowsHighContrastLightBase16: RamenHoogContrastLichtBasis16
+WindowsNtBase16: WindowsNtBase16
+WindowsNtLightBase16: WindowsNtLightBase16
+Wingdings: Wingdings
+With custom configuration: Met aangepaste configuratie
+With default configuration: Met standaardconfiguratie
+With tabs: Met tabbladen
+With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: Met de MudExAdditionalAdornment-component kunt u zoveel versieringen hebben in elke op MudInput gebaseerde invoerbesturing zoals deze.
+With this component you can have an animation while loading the main blazor app: Met dit onderdeel kun je een animatie hebben tijdens het laden van de hoofd-blazor-app
+With_Selected: '{0} Geselecteerd'
+WithFullSpectrumAudioData: MetFullSpectrumAudioData
+WithFullSpectrumAudioDataPrefilledWithRandomData: MetFullSpectrumAudioDataBijgevuldMetWillekeurige Gegevens
+WithGoogleLatinFonts: Met GoogleLatinFonts
+WithoutBounds: Zonder grenzen
+WithRandomData: Met willekeurige gegevens
+WithRealAudioData: Met RealAudioData
+wo-SN: Wolof (Senegal)
+Wobble: Wiebelen
+WoodlandBase16: 'WoodlandBase16 zei:'
+WordDokument.doc: WordDokument.doc
+WrapChips: Wikkel Chips
+WrapToolBarContent: WrapToolBarInhoud
+Xcode: Xcode
+XcodeDuskBase16: 'XcodeDuskBase16 zei:'
+xh-ZA: isiXhosa (Zuid-Afrika)
+Xml: Xml
+xog-UG: Soga (Oeganda)
+Xt256: Xt256
+Yaml: Jaml
+yav-CM: Yangben (Kameroen)
+Yellow: Geel
+YellowGreen: GeelGroen
+Yes: Ja
+yi-001: Jiddisch (Wereld)
+yo-BJ: Yoruba (Benin)
+yo-NG: Yoruba (Nigeria)
+Yokohama: Yokohama
+Yokohama - 220-0001: Yokohama - 220-0001
+Yokohama - 220-0001ender: Yokohama - 220-0001ender
+you: jij
+You are logged out because the Permissions of one of your Roles have been updated.: U bent uitgelogd omdat de machtigingen van een van uw rollen zijn bijgewerkt.
+You are logged out because the user with your Token has been deleted or token is expired.: U bent uitgelogd omdat de gebruiker met uw token is verwijderd of het token is verlopen.
+You are logged out by an Administrator or profile change.: U bent uitgelogd door een beheerder of uw profiel is gewijzigd.
+You are Logged Out.: U bent uitgelogd.
+You can also use MudExAdditionalAdornment as ChildContent of a MudInput: U kunt MudExAdditionalAdornment ook gebruiken als ChildInhoud van een MudInput
+You can now Login with your credentials: U kunt nu inloggen met uw inloggegevens
+You cannot delete yourself: Je kunt jezelf niet verwijderen
+You clicked: Je hebt geklikt
+You don't need an extra JsonEditor anymore: Je hebt geen extra JsonEditor meer nodig
+You have {0} Users where you can pick from: Je hebt {0} gebruikers waaruit je kunt kiezen
+You picked: Je hebt gekozen
+You received a new chat message from {0}: Je hebt een nieuw chatbericht ontvangen van {0}
+You're leaving {0} and will redirected to {1}: U verlaat {0} en wordt doorgestuurd naar {1}
+Your e-mail address has been confirmed!: Uw e-mailadres is bevestigd!
+Your email address could not be verified. If you have any problems, please contact {0}: Uw e-mailadres kan niet worden geverifieerd. Als u problemen ondervindt, neem dan contact met {0} op
+Your Profile has been updated.: Uw profiel is bijgewerkt.
+Your Recent Activities.: Uw recente activiteiten.
+ZenburnBase16: 'ZenburnBase16 zei:'
+zgh-Tfng-MA: Standaard Marokkaans Tamazight (Tifinagh, Marokko)
+zh-CN: Chinees (China)
+zh-Hans-HK: Chinees (Vereenvoudigd, Hongkong SAR)
+zh-Hans-MO: Chinees (Vereenvoudigd, Macau SAR)
+zh-HK: Chinees (Hongkong SAR)
+zh-MO: Chinees (Macao SAR)
+zh-SG: Chinees (Singapore)
+zh-TW: Chinees (Taiwan)
+ZIndex: ZIndex
+ZipCode: Postcode
+Zoom: Zoom
+Zoom in: Inzoomen
+Zoom out: Uitzoomen
+ZoomInButtonIcon: ZoomInButtonIcon
+ZoomOnHover: ZoomOnHover
+ZoomOutButtonIcon: ZoomOutButtonIcon
+zu-ZA: isiZulu (Zuid-Afrika)

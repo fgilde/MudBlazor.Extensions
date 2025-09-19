@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor.Extensions.Components;
 using Nextended.Blazor.Models;
+using Nextended.Core.Extensions;
+using System.Text;
 
 namespace MudBlazor.Extensions.Core;
 
@@ -100,5 +102,45 @@ public interface IMudExFileService : IAsyncDisposable
     /// Reads an archive with system compression
     /// </summary>
     Task<(HashSet<MudExArchiveStructure> Structure, List<IArchivedBrowserFile> List)> ReadArchiveWithSystemCompressionAsync(Stream stream, string rootFolderName, string contentType);
+
+    
+    /// <summary>
+    /// Initiates the download of the specified content as a file with the given MIME type and file name.
+    /// </summary>
+    /// <param name="content">The content to be downloaded as a string.</param>
+    /// <param name="mimeType">The MIME type of the file to be downloaded.</param>
+    /// <param name="fileName">The name of the file to be downloaded.</param>
+    /// <returns>A <see cref="ValueTask"/> representing the asynchronous operation.</returns>
+    public ValueTask DownloadContentAsync(string content, string mimeType, string fileName);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="stream"></param>
+    /// <param name="mimeType"></param>
+    /// <param name="fileName"></param>
+    /// <returns></returns>
+    public ValueTask DownloadContentAsync(Stream stream, string mimeType, string fileName);
+
+
+    /// <summary>
+    /// Initiates the download of content represented as a byte array.
+    /// </summary>
+    /// <param name="bytes">The content to be downloaded, represented as a byte array.</param>
+    /// <param name="mimeType">The MIME type of the content, specifying its format.</param>
+    /// <param name="fileName">The name of the file to be downloaded.</param>
+    /// <returns>A <see cref="ValueTask"/> representing the asynchronous operation.</returns>
+    public ValueTask DownloadContentAsync(byte[] bytes, string mimeType, string fileName);
+
+
+    /// <summary>
+    /// Initiates the download of a file from the specified URL.
+    /// </summary>
+    /// <param name="url">The URL of the file to download.</param>
+    /// <param name="mimeType">The MIME type of the file to be downloaded.</param>
+    /// <param name="fileName">The name to assign to the downloaded file.</param>
+    /// <returns>A <see cref="ValueTask"/> representing the asynchronous operation.</returns>
+    public ValueTask DownloadAsync(string url, string mimeType, string fileName);
+
 
 }

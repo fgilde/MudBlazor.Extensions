@@ -1,5 +1,5 @@
 ﻿@page "/demos/{Group?}"
-
+@inherits BasePage
 
 <MudExCardList TData="object">
 
@@ -8,7 +8,7 @@
         <MudCard Class="index-card" @onclick="@(() => { Open(nav); })">
             <MudCardHeader Style="z-index: 5">
                 <CardHeaderContent>
-                    @Index.RenderNavEntry(nav)
+                    @Index.RenderNavEntry(nav, L)
                 </CardHeaderContent>
                 <CardHeaderActions>
                     <MudIcon Color="@nav.GetIconColor()" Icon="@nav.Icon" />
@@ -18,7 +18,7 @@
                 <MudText>@nav.Text</MudText>
                 @if (!string.IsNullOrEmpty(nav.Documentation))
                 {
-                    <MudText Typo="Typo.body2">@nav.Documentation</MudText>
+                    <MudText Typo="Typo.body2">@L[nav.Documentation]</MudText>
                 }
             </MudCardContent>
         </MudCard>

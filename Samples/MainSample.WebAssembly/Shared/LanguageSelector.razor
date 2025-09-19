@@ -1,0 +1,22 @@
+﻿
+@if (_languages != null)
+{
+    <MudMenu Class="mr-5" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" MaxHeight="350" Label="@DisplayStr(_currentCulture, false)" EndIcon="@Icons.Material.Outlined.Language"
+             Color="Color.Inherit" Dense="true">
+        @{
+            foreach (var language in _languages)
+            {
+                <MudMenuItem Disabled="language == _currentCulture" OnClick="(() => SetCulture(language))">
+                    <MudText Typo="Typo.body2">
+                        @if (language == _currentCulture)
+                        {
+                            <MudIcon Icon="@Icons.Material.Filled.Check" Class="mr-3 mb-n1"/>
+                        }
+                        @DisplayStr(language)
+                    </MudText>
+                </MudMenuItem>
+            }
+        }
+
+    </MudMenu>
+}

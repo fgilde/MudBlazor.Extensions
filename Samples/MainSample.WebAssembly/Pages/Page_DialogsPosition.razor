@@ -1,4 +1,5 @@
 ﻿@page "/dialogs-pos-size"
+@inherits BasePage
 @implements IAsyncDisposable
 @using MudBlazor.Extensions.Options
 @using MudBlazor.Extensions.Core
@@ -11,10 +12,10 @@
 <DemoComponent PageType="@GetType()">
     <MudGrid Style="width: 100%" Justify="Justify.Center">
         <MudItem xs="12">
-            <MudAlert><p> This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open </p></MudAlert>
+            <MudAlert><p> @L["This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open"] </p></MudAlert>
         </MudItem>
         <MudItem xs="3" Class="mb-4">
-            <MudButton Class="m-4" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
+            <MudButton Class="m-4" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">@L["Show Sample Dialog"]</MudButton>
         </MudItem>
     </MudGrid>
 </DemoComponent>
@@ -64,7 +65,7 @@
             options.MaxWidth = MaxWidth.ExtraExtraLarge;
             options.MaxHeight = MaxHeight.ExtraExtraLarge;
         }
-        IMudExDialogReference<SampleDialog>? dlgReference = await DialogService.ShowExAsync<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, options);
+        IMudExDialogReference<SampleDialog>? dlgReference = await DialogService.ShowExAsync<SampleDialog>(L["Simple Dialog"], dialog => { dialog.ContentMessage = L["Hello from dialog sample page"]; }, options);
     }
 
     public ValueTask DisposeAsync()

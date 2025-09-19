@@ -888,6 +888,8 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
 
     private string GetSelectTextPresenter()
     {
+        if (ToStringFunc != null && Value != null)
+            return ToStringFunc(Value);
         return Text;
     }
 

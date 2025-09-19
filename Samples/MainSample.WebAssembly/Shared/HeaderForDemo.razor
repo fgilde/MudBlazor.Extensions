@@ -1,22 +1,22 @@
 ﻿@using System.Reflection;
+@using Microsoft.Extensions.Localization
 @using MudBlazor.Extensions.Api
 @using MudBlazor.Extensions.Attribute
 @using MudBlazor.Extensions.Helper
-
+@inject IStringLocalizer<HeaderForDemo> L
 <div class="doc-header">
     
-    <PageHeader>@(DemoAttribute?.Name ?? Type.Name)</PageHeader>
-
-    <MudAlert>@Documentation</MudAlert>
+    <PageHeader>@L[(DemoAttribute?.Name ?? Type.Name)]</PageHeader>
+    <MudAlert>@(Documentation != null ? L[Documentation] : "Documentation")</MudAlert>
     @if (DemoAttribute != null)
     {
         @foreach (var info in DemoAttribute?.RelatedComponents?.Select(t => new {Type = t, BetaInfos = t.GetCustomAttributes<BetaAttribute>()}).Where(arg => arg?.BetaInfos?.Any() == true)!)
         {
-            <MudAlert Severity="Severity.Warning">@($"{ApiMemberInfo.GetGenericFriendlyTypeName(info.Type)} - {string.Join("<br/>", info.BetaInfos.Select(b => b.Message))}")</MudAlert>
+            <MudAlert Severity="Severity.Warning">@($"{ApiMemberInfo.GetGenericFriendlyTypeName(info.Type)} - {string.Join("<br/>", info.BetaInfos.Select(b => L[b.Message]))}")</MudAlert>
         }
         @foreach (var info in DemoAttribute?.RelatedComponents?.Select(t => new { Type = t, ObsoleteAttributes = t.GetCustomAttributes<ObsoleteAttribute>() }).Where(arg => arg?.ObsoleteAttributes?.Any() == true)!)
         {
-            <MudAlert Severity="Severity.Warning">@($"{ApiMemberInfo.GetGenericFriendlyTypeName(info.Type)} is obsolete - {string.Join("<br/>", info.ObsoleteAttributes.Select(b => b.Message))}")</MudAlert>
+            <MudAlert Severity="Severity.Warning">@($"{ApiMemberInfo.GetGenericFriendlyTypeName(info.Type)} is obsolete - {string.Join("<br/>", info.ObsoleteAttributes.Where(s => !string.IsNullOrEmpty(s.Message)).Select(b => L[b.Message]))}")</MudAlert>
         }
     }
 </div>
@@ -33,7 +33,8 @@
         {
             doc = await MudExResource.GetSummaryDocumentationAsync(DemoAttribute?.RelatedComponents?.FirstOrDefault());
         }
-        
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
         await base.OnInitializedAsync();
     }
 

@@ -1,4 +1,5 @@
 ﻿@page "/inline-dialog"
+@inherits BasePage
 @using MudBlazor.Extensions.Options
 
 @attribute [Demo(Group = "Dialog Samples", Name = "Inline Dialog", Documentation = "Demo for MudExDialog as inline ", Order = 30, Icon = MaterialDesignIcons.Normal.WindowMaximize, ForComponentTypes = new[] { typeof(MudExDialog) })]
@@ -8,7 +9,7 @@
         <Left>
             <div class="d-flex">
                 <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
-                    Edit rating
+                    @L["Edit rating"]
                 </MudButton>
                 <MudRating SelectedValue="rating" Disabled="true" Class="mt-1 ml-3"/>
             </div>
@@ -20,7 +21,7 @@
                     </MudText>
                 </TitleContent>
                 <DialogContent>
-                    <p>How awesome are inline dialogs?</p>
+                    <p>@L["How awesome are inline dialogs?"]</p>
                     <h3>DialogContentClickCount=@_dialogContentClickCount</h3>
                     <MudButton OnClick="DialogContentClick">DialogContent Click</MudButton>
                     <MudRating @bind-SelectedValue="rating" Class="mt-3"/>

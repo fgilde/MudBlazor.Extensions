@@ -1,4 +1,5 @@
 ﻿@page "/dialog-snap"
+@inherits BasePage
 @using MudBlazor.Extensions.Options
 
 @attribute [DemoNew(Group = "Dialog Samples", Name = "Dialog Snap Drag", Documentation = $"Demo drag mode {nameof(MudDialogDragMode.SnapDrag)}", Order = 10, Icon = @MaterialDesignIcons.Normal.CameraControl)]
@@ -8,12 +9,12 @@
     <MudGrid Style="width: 100%" Justify="Justify.Center">
         <MudItem xs="12">
             <MudAlert>
-                <p>This demo uses @nameof(MudDialogDragMode.SnapDrag) as @nameof(DialogOptionsEx.DragMode) on the @nameof(DialogOptionsEx)</p>
-                <p>After the dialog is shown you can drag it to the edges to see snap. Also you can use Ctrl + {ArrowKeys} to change position</p>
+                <p>@L[$"This demo uses {nameof(MudDialogDragMode.SnapDrag)} as {nameof(DialogOptionsEx.DragMode)} on the {nameof(DialogOptionsEx)}"]</p>
+                <p>@L["After the dialog is shown you can drag it to the edges to see snap. Also you can use Ctrl + {ArrowKeys} to change position"]</p>
             </MudAlert>
         </MudItem>
         <MudItem xs="3" Class="mb-4">
-            <MudButton Class="m-4" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
+            <MudButton Class="m-4" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">@L["Show Sample Dialog"]</MudButton>
         </MudItem>
     </MudGrid>
 </DemoComponent>
@@ -34,6 +35,6 @@
                 DisableSizeMarginY = true,
                 DisablePositionMargin = true
             };
-        return DialogService.ShowExAsync<SampleTabDialog>("Simple Dialog", dlgOptions);
+        return DialogService.ShowExAsync<SampleTabDialog>(L["Simple Dialog"], dlgOptions);
     }
 }

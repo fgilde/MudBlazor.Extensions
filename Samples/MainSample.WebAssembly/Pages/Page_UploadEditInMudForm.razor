@@ -1,49 +1,58 @@
 ﻿@page "/upload-edit-form"
+@inherits BasePage
+
 @using FluentValidation
 @using BlazorJS
+@using Microsoft.Extensions.Localization
 @using Newtonsoft.Json
 
 @attribute [Demo(Group = "File Handling", Name = "Validate Upload Edit in MudForm", Documentation = "Demo for the MudExUploadEdit inside of a MudForm and a FluentValidator.", Order = 6, Icon = Icons.Material.Outlined.Upload, ForComponentType = typeof(MudExUploadEdit<>))]
 
+@if (ValidationRules != null)
+{
+    <DemoComponent DocFiles="@(new[] { "Docs/MudExUploadEdit.md" })" Title="MudExUploadEdit" PageType="@GetType()">
+        <MudCard>
+            <MudForm Model="@model" @ref="@form" Validation="@(ValidationRules.ValidateValue)" ValidationDelay="0">
+                <MudCardContent>
+                    <MudTextField @bind-Value="model.Name"
+                                  For="@(() => model.Name)"
+                                  Immediate="true"
+                                  Label="Name"/>
 
-<DemoComponent DocFiles="@(new[] { "Docs/MudExUploadEdit.md" })" Title="MudExUploadEdit" PageType="@GetType()">
-    <MudCard>
-        <MudForm Model="@model" @ref="@form" Validation="@(ValidationRules.ValidateValue)" ValidationDelay="0">
-            <MudCardContent>
-                <MudTextField @bind-Value="model.Name"
-                              For="@(() => model.Name)"
-                              Immediate="true"
-                              Label="Name" />
 
-            
 
-                <MudExUploadEdit T="UploadableFile"
-                                 Variant="Variant.Outlined"
-                                 For="@(() => model.Files)"
-                                 TextUploadFile="Click here to upload files"
-                                 TextDropZone="Drag and Drop files here"
-                                 Label="Add files"
-                                 ColorizeIcons="true"
-                                 MinHeight="80"
-                                 Class="MudExUploadExCustom"
-                                 AllowRename="true"
-                                 @bind-UploadRequests="model.Files">
-                </MudExUploadEdit>
+                    <MudExUploadEdit T="UploadableFile"
+                                     Variant="Variant.Outlined"
+                                     For="@(() => model.Files)"
+                                     TextUploadFile="@L["Click here to upload files"]"
+                                     TextDropZone="@L["Drag and Drop files here"]"
+                                     Label="@L["Add files"]"
+                                     ColorizeIcons="true"
+                                     MinHeight="80"
+                                     Class="MudExUploadExCustom"
+                                     AllowRename="true"
+                                     @bind-UploadRequests="model.Files">
+                    </MudExUploadEdit>
 
-            </MudCardContent>
-            <MudCardActions>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Submit</MudButton>
-            </MudCardActions>
-        </MudForm>
-    </MudCard>
-</DemoComponent>
-
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Submit</MudButton>
+                </MudCardActions>
+            </MudForm>
+        </MudCard>
+    </DemoComponent>
+}
 
 @code {
     private MudForm form;
     private FileModel model = new();
-    private FileModelFluentValidator ValidationRules = new();
+    private FileModelFluentValidator? ValidationRules = null;
 
+    protected override void OnInitialized()
+    {
+        ValidationRules = new(L);
+        base.OnInitialized();
+    }
 
     private async Task Submit()
     {
@@ -69,7 +78,7 @@
     /// <typeparam name="OrderModel"></typeparam>
     public class FileModelFluentValidator : AbstractValidator<FileModel>
     {
-        public FileModelFluentValidator()
+        public FileModelFluentValidator(IStringLocalizer<BasePage> l)
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
@@ -80,7 +89,7 @@
                 .NotEmpty();
             When(x => x.File != null, () =>
             {
-                RuleFor(x => x.File.Size).LessThanOrEqualTo(10485760).WithMessage("The maximum file size is 10 MB");
+                RuleFor(x => x.File.Size).LessThanOrEqualTo(10485760).WithMessage(l["The maximum file size is 10 MB"]);
             });
         }
 

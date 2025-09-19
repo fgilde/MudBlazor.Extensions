@@ -1,7 +1,5 @@
-﻿@using BlazorJS
-@using Microsoft.Extensions.FileProviders
-@using Nextended.Core.Extensions
-@using System.Reflection
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Disqus> L
 
 <div id="@_id">
     <style id="styles">
@@ -13,14 +11,14 @@
     {
         <MudCard Elevation="1" Class="m-1">
             <MudCardContent>
-                <MudText Align="Align.Center" Typo="Typo.h6">Disqus comments are disabled by default.</MudText>
-                <MudText Class="mb-1" Align="Align.Center" Typo="Typo.body2">Click the button below to enable them and load the third party services from disqus.com</MudText>
+                <MudText Align="Align.Center" Typo="Typo.h6">@L["Disqus comments are disabled by default."]</MudText>
+                <MudText Class="mb-1" Align="Align.Center" Typo="Typo.body2">@L["Click the button below to enable them and load the third party services from disqus.com"]</MudText>
                 <MudGrid Class="mt-2" Justify="Justify.Center">
                     <MudItem>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="EnableDisqus">Enable Disqus</MudButton><br/>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="EnableDisqus">@L["Enable Disqus"]</MudButton><br/>
                     </MudItem>
                     <MudItem>
-                        <MudSwitch Color="Color.Primary" Label="Automatically allow next time" @bind-Value="@_rememberChoice"/>
+                        <MudSwitch Color="Color.Primary" Label="@L["Automatically allow next time"]" @bind-Value="@_rememberChoice"/>
                     </MudItem>
                 </MudGrid>
             </MudCardContent>

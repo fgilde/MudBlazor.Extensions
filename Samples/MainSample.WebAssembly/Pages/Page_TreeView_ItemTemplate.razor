@@ -1,13 +1,15 @@
 ﻿@page "/tree-view-item-tpl"
+@inherits BasePage
+
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Core.Enums
 
 @attribute [Demo(Name = "MudExTreeView with template", Order = 0, Group = "TreeView", Icon = Icons.Material.Outlined.AccountTree, Documentation = "This sample demonstrate the usage of MudExTreeView with an Item template ", ForComponentType = typeof(MudExTreeView<>))]
 
 <MudExEnumSelect TEnum="TreeViewMode" @bind-Value="@_treeViewMode" Label="TreeViewMode" />
-<MudCheckBox @bind-Value="_reverseExpand">Switch expand button position</MudCheckBox>
+<MudCheckBox @bind-Value="_reverseExpand">@L["Switch expand button position"]</MudCheckBox>
 
-<p>@($"Selected Node: {_selectedNode}")</p>
+<p>@($"{L["Selected Node"]}: {_selectedNode}")</p>
 <MudExDivider Color="MudExColor.Primary" />
 
 <div style="height: 80vh">

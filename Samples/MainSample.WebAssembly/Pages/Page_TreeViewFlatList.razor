@@ -1,4 +1,5 @@
 ﻿@page "/MudExTreeViewFlatList"
+@inherits BasePage
 
 
 @attribute [Demo(Name = "Flat List", Order = 4, Group = "TreeView", Icon = Icons.Material.Outlined.List, Documentation = "Displays a tree structure as flat list", ForComponentType = typeof(MudExTreeViewFlatList<>))]
@@ -8,7 +9,7 @@
     <SplitContainer>
         <Left>
             <div style="width: 100%; max-height: 100%">
-                <p>Selected: @_selectedNode?.Name</p>
+                <p>@($"{L["Selected Node"]}: {_selectedNode?.Name}")</p>
                 <MudExTreeViewFlatList @bind-SelectedNode="_selectedNode"
                                          @ref="component"
                                          Items="@Entries">

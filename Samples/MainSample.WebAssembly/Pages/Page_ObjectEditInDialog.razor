@@ -1,4 +1,6 @@
 ﻿@page "/dialog-object-edit"
+@inherits BasePage
+
 @using System.ComponentModel.DataAnnotations
 @using Newtonsoft.Json
 
@@ -6,7 +8,7 @@
 @attribute [Demo(Group = "MudExObjectEdit", Name = "Object Edit in Dialog", Order = 5, Documentation = "See how to use MudExObjectEdit in a dialog", Icon = Icons.Material.Outlined.DesktopWindows, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>), typeof(MudExObjectEditDialog<>) })]
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "SampleDialogOptions.cs"})">
-    <MudButton OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Edit Test Object</MudButton>
+    <MudButton OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">@L["Edit Test Object"]</MudButton>
 </DemoComponent>
 
 @code {
@@ -45,7 +47,7 @@
             { nameof(MudExObjectEditDialog<TestObject>.AllowExport), true },
             { nameof(MudExObjectEditDialog<TestObject>.AllowImport), true }
         };
-        var res = await DialogService.EditObjectAsync(new TestObject(), "Auto Generated Editor for TestObject", OnSubmit, SampleDialogOptions.FullSlideFromRight, 
+        var res = await DialogService.EditObjectAsync(new TestObject(), L["Auto Generated Editor for TestObject"], OnSubmit, SampleDialogOptions.FullSlideFromRight, 
         meta => meta.WrapEachInMudItem(i => i.xs = 6)
             .Property(m => m.UploadRequest)
             .WithoutLabel()            

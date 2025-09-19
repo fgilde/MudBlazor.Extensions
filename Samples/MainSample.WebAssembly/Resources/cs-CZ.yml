@@ -1,0 +1,4347 @@
+﻿_ Text: _Text
+--accent-color1: --akcent-barva1
+--accent-color2: --akcentní barva2
+--accent-color3: --akcent-barva3
+--accent-color4: --akcent-barva4
+--loading-color: --načítání – barva
+--mud-palette-black: --bláto-paleta-černá
+--mud-palette-primary: --mud-palette-primary
+--mud-palette-primary-darken: --mud-palette-primary-darken
+--mud-palette-primary-hover: --mud-palette-primary-hover
+--mud-palette-primary-lighten: --mud-palette-primary-lighten
+--mud-palette-primary-text: --mud-palette-primary-text
+--mud-palette-secondary: --bahno-paleta-sekundární
+--mud-palette-secondary-darken: --mud-palette-secondary-darken
+--mud-palette-secondary-hover: --mud-palette-sekundární-vznášet se
+--mud-palette-secondary-lighten: --mud-palette-secondary-lighten
+--mud-palette-secondary-text: --mud-palette-secondary-text
+--mud-palette-white: --bláto-paleta-bílá
+(currently the item is not visible): (v současné době není položka viditelná)
+(currently the item is visible): (v současné době je položka viditelná)
+4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+A: A
+A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Komponenta, která umožňuje uživateli vybrat hodnotu ze seznamu možných hodnot a zobrazit ji jako Chips nebo defaultní Combobox.
+A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Komponenta, kterou lze použít k posunutí ChildContent zespodu, shora, zleva nebo zprava najetím myší.
+A Component to display text with a gradient foreground or background: Komponenta pro zobrazení textu s přechodem v popředí nebo v pozadí
+A Component to display the content of a zip file: Komponenta pro zobrazení obsahu souboru zip
+A Component to edit and upload a list of files: Komponenta pro úpravu a nahrání seznamu souborů
+A Component to quickly select a color: Komponenta pro rychlý výběr barvy
+A connection to the server cannot be established. Your network connection may be down or the server is unreachable. Please wait until the connection has been restored: Nelze navázat připojení k serveru. Vaše síťové připojení může být mimo provoz nebo je server nedostupný. Počkejte prosím, dokud nebude připojení obnoveno
+A divider to separate content: Oddělovač pro oddělení obsahu
+A maximum of {0} files are allowed: Je povoleno maximálně {0} souborů
+A Popover can be used to display some content on top of another.: Překryvné okno lze použít k zobrazení určitého obsahu přes jiný.
+A powerful component to edit an object and its properties.: Výkonná komponenta pro úpravu objektu a jeho vlastností.
+A powerful editor that can handle json, xml or yaml content: Výkonný editor, který si poradí s obsahem ve formátu json, xml nebo yaml
+A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: Jednoduchá komponenta ColorPicker, která dědí komponentu MudColorPicker, ale přidává možnost odložit událost zavření a použít nativní komponentu výběru z prohlížeče
+A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: Jednoduchá komponenta mřížky, která podporuje Columns, Rows a ColSpan a RowSpan pro obsahující sekce.
+A SplitPanel Component: Komponenta SplitPanel
+A Splitter Component: Komponenta rozdělovače
+A WYSIWYG Html editor component.: Komponenta editoru jazyka HTML WYSIWYG.
+A11yDark: A11yDark
+A11yLight: A11ySvětlo
+aa-DJ: Afar (Džibutsko)
+aa-ER: Afar (Eritrea)
+aa-ET: Afar (Etiopie)
+about: Asi
+Account: Účet
+ActionButtons: Akční tlačítka
+ActionButtonsNewLine: ActionButtonsNewLine
+ActionDefault: ActionDefault
+ActionDisabled: Akce zakázána
+ActionDisabledBackground: ActionDisabledBackground
+Actions: Akce
+ActionsAdornment: AkceOzdoba
+ActionsClass: Třída ActionsClass
+Activate comments: Aktivovat komentáře
+Activate User?: Aktivovat uživatele?
+Active: Aktivní
+Active?: Aktivní?
+ActiveFilterOnly: AktivníFiltrPouze
+Adaptive: Přizpůsobivý
+ADblNumber: Číslo ADbl
+Add: Přidat
+Add 1000 random items: Přidat 1000 náhodných položek
+Add 500 Users: Přidat 500 uživatelů
+Add Brand: Přidat značku
+Add Document: Přidat dokument
+Add Document Type: Přidat typ dokumentu
+Add Extended Attribute: Přidat rozšířený atribut
+Add external Url: Přidat externí adresu URL
+Add files: Přidání souborů
+Add Product: Přidat produkt
+Add Role: Přidat roli
+Add Url: Přidat adresu URL
+Add user: Přidat uživatele
+Add user to both lists: Přidat uživatele do obou seznamů
+Additional Audio: Další zvuk
+Additional Video: Další video
+AdditionalAdornment: Doplňková ozdoba
+Address: Adresa
+Addresses: Adresy
+AddUrl: AddUrl
+Administrator: Správce
+Administrator Settings.: Nastavení správce.
+Administrators Profile's Status cannot be toggled: Stav profilu administrátora nelze přepínat
+Adornment: Ozdoba
+AdornmentAriaLabel: OzdobaAriaŠtítek
+AdornmentColor: OzdobaBarva
+AdornmentIcon: AdornmentIcon
+AdornmentText: Text ozdoby
+af-NA: afrikánština (Namibie)
+af-ZA: afrikánština (Jižní Afrika)
+After the dialog is shown you can drag it to the edges to see snap. Also you can use Ctrl + {ArrowKeys} to change position: Po zobrazení dialogového okna jej můžete přetáhnout k okrajům a zobrazit přichycení. Také můžete použít Ctrl + {ArrowKeys} ke změně pozice
+AfterBegin: Po spuštění
+AfterEnd: AfterEnd
+AfterSearchBox: AfterSearchBox
+Agate: Achát
+Age: Věk
+agq-CM: Aghem (Kamerun)
+ak-GH: Akan (Ghana)
+Albertus: Albertus
+Alice Johnson: Alice Johnsonová
+AliceBlue: AliceBlue
+Align: Zarovnat
+ALL COMPONENTS: VŠECHNY KOMPONENTY
+All Documents without Type are stored here: Zde jsou uloženy všechny dokumenty bez typu
+All Groups: Všechny skupiny
+All Permissions: Všechna oprávnění
+All roles: Všechny role
+All roles unfiltered: Všechny role nefiltrované
+AllFilters: Všechny filtry
+AllowAudioRecording: Povolit AudioRecording
+AllowColumnSizeChange: AllowColumnSizeChange
+AllowCopyUrl: Adresa AllowCopyUrl
+AllowDownload: PovolitStáhnout
+AllowDrop: Povolit pokles
+AllowDropBox: AllowDropBox
+AllowDuplicates: AllowDuplicates (Povolit duplikáty)
+AllowExternalUrl: AllowExternalUrl
+AllowFolderUpload: AllowFolderUpload
+AllowGoogleDrive: Povolit Disk Google
+AllowInteractingUnderRubberBand: Povolit interakci pod gumovým pásmem
+AllowMultiple: Povolit více
+AllowOneDrive: PovolitOneDrive
+AllowOpenInNewTab: Povolit OpenInNewTab
+AllowOpenOnReadOnly: Povolit OpenOnReadOnly
+AllowPreview: Povolit náhled
+AllowRemovingItems: AllowRemovingItems
+AllowRename: Povolit přejmenování
+AllowRubberBandSelection: Povolit výběr gumového pásma
+AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
+AllowSelectOnPreviewClick: Povolit VybratOnPreviewClick
+AllowVideoCapture: Povolit VideoCapture
+AlphaBars: AlphaBars
+Already have an account?: Už máte účet?
+Always: Vždy
+AlwaysEditOptions: Volby AlwaysEditOptions
+AlwaysShowValue: AlwaysShowValue
+AlwaysVisible: Vždy viditelný
+am-ET: Amharština (Etiopie)
+An Error has occured!: Došlo k chybě!
+An Error has occurred!: Došlo k chybě!
+An error occurred while confirming {0}: Při potvrzování {0} došlo k chybě
+An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used, and you can specify animations as well: Rozšířená komponenta SelectBox, která umožňuje vybrat více položek a poskytuje funkci vyhledávání také interně se používá MudExPopover a můžete také specifikovat animace
+An item that only renders the content if it is in the viewport.: Položka, která vykreslí obsah pouze v případě, že je ve výřezu.
+AnchorOrigin: Původ kotvy
+Andale Mono: Andale Mono
+Androidstudio: Androidstudio
+Animate: Životný
+AnimateAudioElementBorderColor: AnimateAudioElementBorderColor
+AnimateClose: Zavřít aplikaci Animate
+AnimateVisualizerBorderColor: AnimateVisualizerBorderColor
+Animation: Animace
+AnimationDuration: AnimationDuration
+AnimationDuration (in ms): AnimationDuration (v ms)
+AnimationDurationInMs: AnimationDurationInMs
+AnimationIn: Animace v
+AnimationInDirection: AnimaceInDirection
+AnimationInDuration: AnimationInDuration
+AnimationInPosition: AnimationInPosition
+AnimationOut: Výstup animace
+AnimationOutDirection: AnimaceOutDirection
+AnimationOutDuration: AnimationOutDuration
+AnimationOutPosition: AnimaceOutPosition
+AnimationPosition: AnimacePozice
+Animations: Animace
+AnimationTime: Animační čas
+AnimationTimingFunction: Funkce načasování animace
+AnOldHope: AnOldHope
+Another Demo theme: Další ukázkové téma
+AnotherRar.rar: AnotherRar.rar
+AnotherStringProperty10: AnotherStringProperty10
+AnotherStringProperty11: DalšíVlastnostŘetězce11
+AnotherStringProperty12: AnotherStringProperty12 (DalšíŘetězec)12
+AnotherStringProperty13: AnotherStringProperty13
+AnotherStringProperty14: AnotherStringProperty14 (DalšíŘetězec)14 – Přehrát ŘetězecŘetězec
+AnotherStringProperty15: AnotherStringProperty15 (Vlastnost dalšího řetězce)
+AnotherStringProperty16: AnotherStringProperty16
+AnotherStringProperty17: AnotherStringProperty17 (DalšíŘetězec)17 (DalšíŘetězec)17
+AnotherStringProperty18: AnotherStringProperty18 (DalšíŘetězecVlastnost18)
+AnotherStringProperty19: AnotherStringProperty19
+AnotherStringProperty20: AnotherStringProperty20 (DalšíŘetězec)20 – Vlastnost
+AnotherStringProperty21: AnotherStringProperty21 (DalšíŘetězecVlastnost21)
+AnotherStringProperty22: AnotherStringProperty22 (Vlastnost dalšího řetězce)
+AnotherStringProperty23: AnotherStringProperty23 (DalšíŘetězecVlastnost23)
+AnotherStringProperty24: AnotherStringProperty24 (DalšíŘetězecVlastnost24)
+AnotherStringProperty25: AnotherStringProperty25 (DalšíŘetězecVlastnost25)
+AnotherStringProperty26: AnotherStringProperty26 (DalšíŘetězec)26 – Čeština
+AnotherStringProperty27: AnotherStringProperty27 (Vlastnost dalšího řetězce)
+AnotherStringProperty28: AnotherStringProperty28 (DalšíŘetězecVlastnost28)
+AnotherStringProperty29: AnotherStringProperty29 (DalšíŘetězecVlastnost29)
+AnotherStringProperty30: AnotherStringProperty30 (DalšíVlastnostŘetězce30)
+AnotherStringProperty31: DalšíVlastnostŘetězce31
+AnotherStringProperty32: AnotherStringProperty32 (DalšíŘetězecVlastnost32)
+AnotherStringProperty33: AnotherStringProperty33 – Vlastnost dalšího řetězce
+AnotherStringProperty34: DalšíVlastnostŘetězce34
+AnotherStringProperty35: AnotherStringProperty35 (DalšíŘetězecVlastnost35)
+AnotherStringProperty36: 'AnotherStringProperty36 řekl:'
+AnotherStringProperty37: AnotherStringProperty37
+AnotherStringProperty38: AnotherStringProperty38 (Vlastnost dalšího řetězce)
+AnotherStringProperty39: DalšíVlastnostŘetězce39
+AnotherStringProperty40: DalšíVlastnostŘetězce40
+AnotherStringProperty41: 'AnotherStringProperty41 řekl:'
+AnotherStringProperty42: DalšíVlastnostŘetězce42
+AnotherStringProperty43: Vlastnost dalšího řetězce43
+AnotherStringProperty44: DalšíVlastnostŘetězce44
+AnotherStringProperty45: Vlastnost anotherStringProperty45
+AnotherStringProperty46: AnotherStringProperty46 (Vlastnost dalšího řetězce46)
+AnotherStringProperty47: DalšíVlastnostŘetězce47
+AnotherStringProperty48: 'DalšíVlastnostŘetězce48 – řekl:'
+AnotherStringProperty49: AnotherStringProperty49 (Vlastnost dalšího řetězce)
+AnotherStringProperty50: AnotherStringProperty50 (DalšíŘetězecVlastnost50)
+AnotherStringProperty51: AnotherStringProperty51 (Vlastnost dalšího řetězce51)
+AnotherStringProperty52: AnotherStringProperty52 (Vlastnost dalšího řetězce)
+AnotherStringProperty53: AnotherStringProperty53 (Vlastnost dalšího řetězce)
+AnotherStringProperty54: AnotherStringProperty54 (DalšíŘetězecVlastnost54)
+AnotherStringProperty55: AnotherStringProperty55 (Vlastnost dalšího řetězce)
+AnotherStringProperty56: AnotherStringProperty56 (Vlastnost dalšího řetězce)
+AnotherStringProperty57: AnotherStringProperty57 (DalšíVlastnostŘetězce57)
+AnotherStringProperty58: AnotherStringProperty58 (Vlastnost dalšího řetězce)
+AnotherStringProperty59: AnotherStringProperty59 (DalšíŘetězecVlastnost59)
+AnotherStringProperty60: DalšíVlastnostŘetězce60
+AnsiBands: AnsiBands
+AntiqueWhite: StarožitnostBílá
+ApathyBase16: 'ApathyBase16 řekl:'
+Api: Rozhraní api
+API: Rozhraní api
+API-Versions: Verze rozhraní API
+AppBar: AppBar
+AppbarBackground: AppbarBackground
+AppbarHeight: AppbarHeight
+AppbarText: AppbarText
+Appearance: Vzhled
+Appetizer: Předkrm
+Apple: Jablko
+Apple Gothic: Apple Gothic
+Application: Aplikace
+ApplicationDescription: Ukázková aplikace s WebAssembly a vzorem čisté architektury
+ApplicationSubDescription: Vítejte v Coworkee
+applies a CSS class when the item is not visible.: aplikuje třídu CSS, když položka není viditelná.
+applies a CSS class when the item is visible.: aplikuje třídu CSS, když je položka viditelná.
+applies styles when the item is not visible.: Aplikuje styly, když položka není viditelná.
+applies styles when the item is visible.: aplikuje styly, když je položka viditelná.
+Apply: Použít
+ApplyBackgroundImageFromTrack: PoužítBackgroundImageFromTrack
+ApprenticeBase16: Základna učňů16
+Apr: Dubna
+Aqua: Voda
+Aquamarine: Akvamarín
+ar-001: Arabština (svět)
+ar-AE: Arabština (Spojené arabské emiráty)
+ar-BH: Arabština (Bahrajn)
+ar-DJ: Arabština (Džibutsko)
+ar-DZ: Arabština (Alžírsko)
+ar-EG: Arabština (Egypt)
+ar-ER: Arabština (Eritrea)
+ar-IL: Arabština (Izrael)
+ar-IQ: Arabština (Irák)
+ar-JO: Arabština (Jordánsko)
+ar-KM: Arabština (Komory)
+ar-KW: Arabština (Kuvajt)
+ar-LB: Arabština (Libanon)
+ar-LY: Arabština (Libye)
+ar-MA: Arabština (Maroko)
+ar-MR: Arabština (Mauritánie)
+ar-OM: Arabština (Omán)
+ar-PS: Arabština (Palestinská samospráva)
+ar-QA: Arabština (Katar)
+ar-SA: Arabština (Saúdská Arábie)
+ar-SD: Arabština (Súdán)
+ar-SO: Arabština (Somálsko)
+ar-SS: Arabština (Jižní Súdán)
+ar-SY: Arabština (Sýrie)
+ar-TD: Arabština (Čad)
+ar-TN: Arabština (Tunisko)
+ar-YE: Arabština (Jemen)
+Archive.zip: Archive.zip
+ArduinoLight: ArduinoLight
+Are you sure to close: Opravdu se chystáte zavřít
+Are you sure you want to force logout for user {0}: Opravdu chcete vynutit odhlášení pro {0} uživatele
+Are you sure you want to restart Backend/Server?: Opravdu chcete restartovat backend/server?
+Are you sure you want to restore the default settings? This will overwrite any changes you've ever made here.: Opravdu chcete obnovit výchozí nastavení? Tím se přepíší všechny změny, které jste zde kdy provedli.
+Are you sure?: Opravdu?
+Arial: Arial
+Arial Black: Černá Arial
+Arial Narrow: Arial Narrow
+arn-CL: Mapučové (Chile)
+Arta: Umění
+As Admin you can filter for users here: Jako správce zde můžete filtrovat uživatele
+As Picker: Jako Picker
+as read: jak je uvedeno
+As simple as it sound. This is a simple GroupBox: Tak jednoduché, jak to zní. Jedná se o jednoduchý GroupBox
+As soon as your account has been activated you can log in: Jakmile bude váš účet aktivován, můžete se přihlásit
+as unread: jako nepřečtené
+as-IN: Ásámština (Indie)
+asa-TZ: Asu (Tanzanie)
+Ascetic: Asketa
+AshesBase16: 'AshesBase16 řekl:'
+AspectRatio: Poměr stran
+ast-ES: Asturština (Španělsko)
+At least one document is required: Je vyžadován alespoň jeden dokument
+AtelierCaveBase16: 'AtelierCaveBase16 řekl:'
+AtelierCaveLightBase16: AtelierCaveLightBase16
+AtelierDuneBase16: AtelierDuneBase16
+AtelierDuneLightBase16: AtelierDuneLightBase16
+AtelierEstuaryBase16: AtelierEstuaryBase16
+AtelierEstuaryLightBase16: AtelierEstuaryLightBase16
+AtelierForestBase16: AtelierForestBase16
+AtelierForestLightBase16: AtelierForestLightBase16
+AtelierHeathBase16: 'AtelierHeathBase16 řekl:'
+AtelierHeathLightBase16: AtelierHeathLightBase16
+AtelierLakesideBase16: AtelierLakesideBase16
+AtelierLakesideLightBase16: AtelierLakesideLightBase16
+AtelierPlateauBase16: AtelierPlateauBase16
+AtelierPlateauLightBase16: AtelierPlateauLightBase16
+AtelierSavannaBase16: WorkshopSavannaBase16
+AtelierSavannaLightBase16: AtelierSavannaLightBase16
+AtelierSeasideBase16: AtelierSeasideBase16
+AtelierSeasideLightBase16: AtelierSeasideLightBase16
+AtelierSulphurpoolBase16: AtelierSulphurpoolBase16
+AtelierSulphurpoolLightBase16: AtelierSulphurpoolLightBase16
+AtlasBase16: Databáze AtlasBase16
+AtomOneDark: AtomOneDark
+AtomOneDarkReasonable: AtomOneDarkRozumný
+AtomOneLight: AtomOneLight
+Audio Content-Type: Typ zvukového obsahu
+Audio devices: Zvuková zařízení
+AudioDevice: Zvukové zařízení
+AudioElementBackgroundColor: AudioElementBackgroundColor
+AudioElementBorderColor: Barva AudioElementBorderColor
+AudioElementBorderSize: AudioElementBorderSize
+AudioElementBorderStyle: AudioElementBorderStyle
+AudioElements: Zvukové prvky
+AudioElementWidth: AudioElementWidth
+Audit Trails: Auditní stopy
+Audit Trails exported: Exportované auditní stopy
+Aug: Srpen
+Austin: Austin
+Austin - 73301: Austin - 73301
+Austin - 73301ender: Austin - 73301ender
+Auto Confirm Email?: Automaticky potvrdit e-mail?
+Auto Generated Editor for TestObject: Automaticky generovaný editor pro TestObject
+Auto Stop recording after: Automaticky zastavit nahrávání po
+AutoApplyGradient: AutoApplyGradient
+AutoClear: Automatické vymazání
+AutoCloseBehaviour: Chování při automatickém zavírání
+AutoCloseOnSelect: AutoCloseOnSelect
+AutoCollapse: Automatické sbalení
+AutoExtractArchive: AutoExtractArchive
+AutoFocus: Automatické ostření
+AutoFocusFilter: Filtr automatického ostření
+AutoLoadFileDataBytes: AutoLoadFileDataBytes
+Automatically allow next time: Příště automaticky povolit
+AutoPlayNextTrackOnEnd: AutoPlayNextTrackOnEnd
+AutoRemoveError: Chyba automatického odstranění
+AutoShowHideAudioElement: AutoShowHideAudioElement
+AutoSize: Automatická velikost
+Available: K dispozici
+AvailableItems: Dostupné položky
+Avant Garde: Avantgarda
+az-Cyrl-AZ: ázerbájdžánština (cyrilice, ázerbájdžán)
+az-Latn-AZ: Ázerbájdžánština (latinka, Ázerbájdžán)
+Azure: Azurový
+B: B
+ba-RU: Baškir (Rusko)
+Back: Hřbet
+BackdropClick: BackdropClick
+Background: Pozadí
+BackgroundColor: Barva pozadí
+BackgroundGray: PozadíŠedá
+BackgroundImage: Obrázek na pozadí
+BackgroundPosition: Pozice na pozadí
+BackgroundRepeat: Opakování pozadí
+BackgroundSize: Velikost pozadí
+BackLinkLabel: BackLinkLabel
+Bar: Bar
+BarBeverage: BarNápoj
+Barcode: Čárový kód
+Barcode already exists.: Čárový kód již existuje.
+Barcode is required!: Čárový kód je povinný!
+BarIndex: Sloupec BarIndex
+Bark: Kůra
+BarLevel: Úroveň pruhu
+BarSpacing: Mezery mezi pruhy
+Bart Simpson: Bart Simpson
+bas-CM: Basaa (Kamerun)
+Base component for a picker: Základní komponenta pro picker
+Basic: Základní
+Basic role with default permissions: Základní role s výchozími oprávněními
+Bauhaus 93: Bauhaus 93
+be-BY: Běloruština (Bělorusko)
+BeforeBegin: BeforeBegin
+BeforeEnd: BeforeEnd
+BeforeSearchBox: BeforeSearchBox
+Behavior: Chování
+Behaviour: Chování
+Beige: Béžový
+Bell MT: Bell MT
+bem-ZM: Bemba (Zambie)
+Bernard MT Condensed: Bernard MT kondenzovaný
+BespinBase16: 'BespinBase16 řekl:'
+Beverage: Nápoj
+bez-TZ: Bena (Tanzanie)
+bg-BG: Bulharština (Bulharsko)
+BgAlpha: BgAlpha
+BgColor: Barva BgColor
+bin-NG: Edo (Nigérie)
+Bind Dark Mode: Vázat tmavý režim
+BindWidthToPicker: BindWidthToPicker
+Birmingham: Birmingham
+Birmingham - B1 1BD: Birmingham – B1 1BD
+Birmingham - B1 1BDender: Birmingham - B1 1BDender
+Bisque: Biskvit
+Black: Černý
+Blackadder ITC: Černá zmije ITC
+BlackList: Černá listina
+BlackMetalBase16: Základna BlackMetal16
+BlackMetalBathoryBase16: BlackMetalBathoryBase16
+BlackMetalBurzumBase16: BlackMetalBurzumBase16
+BlackMetalDarkFuneralBase16: BlackMetalDarkFuneralBase16
+BlackMetalGorgorothBase16: BlackMetalGorgorothBase16
+BlackMetalImmortalBase16: BlackMetalImmortalBase16
+BlackMetalKholdBase16: BlackMetalKholdBase16
+BlackMetalMardukBase16: 'BlackMetalMardukBase16 řekl:'
+BlackMetalMayhemBase16: BlackMetalMayhemBase16
+BlackMetalNileBase16: BlackMetalNileBase16
+BlackMetalVenomBase16: BlackMetalVenomBase16
+BlanchedAlmond: Blanšírované mandle
+Blazor wrapper component for AudioMotionAnalyzer: Komponenta obalu Blazor pro AudioMotionAnalyzer
+BlobUrl: BlobUrl –
+Blue: Modrý
+BlueViolet: Modrofialová
+bm-Latn-ML: Bamanankan (latinka, Mali)
+bn-BD: Bengálština (Bangladéš)
+bn-IN: Bangla (Indie)
+bo-CN: Tibetština (Čína)
+bo-IN: Tibetština (Indie)
+Bob Smith: Bob Smith
+Bodoni MT: Bodoni MT
+body1: tělo1
+Body1: Tělo1
+body2: tělo2
+Body2: Tělo2
+Bookman: Učenec
+BorderAnimationColors: BorderAnimationColors
+BorderColor: BorderColor
+Bordered: Ohraničený
+BorderOpacity: BorderOpacity
+BorderSize: Velikost ohraničení
+BorderStyle: BorderStyle
+Both: Oba
+BothDiagonal: ObaÚhlopříčka
+BothHorizontal: ObaHorizontální
+BothVertical: ObaVertikální
+Bottom: Dno
+BottomCenter: DolníCenter
+BottomLeft: Vlevo dole
+BottomRight: Vpravo dole
+Bounce: Odrazit se
+br-FR: Breton (Francie)
+Brand: Značka
+Brand Deleted: Značka vymazána
+Brand is required!: Značka je povinná!
+Brand Not Found!: Značka nenalezena!
+Brand Saved: Značka zachráněna!
+Brand Updated: Značka aktualizována!
+BrandName: Značka
+Brands: Značky
+Brands exported: Exportované značky
+Breadcrumb: Strouhanka
+BreadcrumbLink: Drobečková navigace Odkaz
+BreadcrumbSeparator: Oddělovač strouhanky
+BrewerBase16: Pivovarská základna16
+BrightBase16: Jasná základna16
+Brightness: Jas
+Broadway: Broadway
+BrogrammerBase16: 'BrogrammerBase16 řekl:'
+Brown: Hnědý
+BrownPaper: Hnědý papír
+Browse Available Documents.: Procházejte dostupné dokumenty.
+Browser: Prohlížeč
+BrowserFileExt: BrowserFileExt
+Brush Script MT: Štětec Script MT
+Brush Script Std: Standardní skript štětce
+BrushTreesBase16: 'BrushTreesBase16 řekl:'
+BrushTreesDarkBase16: 'BrushTreesDarkBase16 řekl:'
+brx-IN: Bodo (Indie)
+bs-Cyrl-BA: Bosenština (cyrilice, Bosna a Hercegovina)
+bs-Latn-BA: Bosenština (latinka, Bosna a Hercegovina)
+BurlyWood: BurlyWood
+button: knoflík
+Button: Knoflík
+Button component for capturing audio and video.: Komponenta tlačítka pro zachycení zvuku a videa.
+Button component for speech-to-text functionality, allowing for asynchronous recording and processing of speech input.: Komponenta tlačítka pro funkci převodu řeči na text, která umožňuje asynchronní záznam a zpracování hlasového vstupu.
+ButtonColor: Barva tlačítka
+ButtonSize: Velikost tlačítka
+ButtonsJustify: TlačítkaZarovnat do bloku
+ButtonType: Typ tlačítka
+ButtonVariant: ButtonVariant
+byn-ER: Blin (Eritrea)
+Bytes: Byty
+C: C
+C#: C#
+ca-AD: Katalánština (Andorra)
+ca-ES: Katalánština (Španělsko)
+ca-FR: Katalánština (Francie)
+ca-IT: Katalánština (Itálie)
+CadetBlue: Modrá barva CadetBlue
+Calgary: Calgary
+Calgary - T1X 0L3: Calgary - T1X 0L3
+Calgary - T1X 0L3ender: Calgary - T1X 0L3ender
+Californian FB: Kalifornský FB
+Can close: Může zavřít
+Cancel: Zrušit
+Cancel deletion: Zrušení mazání
+Cancelled: Odvolaný
+CanClose: Umět zavřít
+CanCloseCallbackName: Jméno zpětného volání může zavřít
+caption: titulek
+Caption: Titulek
+Capture: Zajmout
+Capture Screen: Obrazovka snímání
+Capture service: Služba snímání
+Capture video: Nahrát video
+CaptureButton: Tlačítko zachycení
+CaptureInfoComponent: Komponenta CaptureInfoComponent
+CaptureOptions: Možnosti snímání
+Card Grid: Mřížka karet
+CardEffect3d: Karetní efekt3d
+CardGrid: Mřížka CardGrid
+Catalog Management: Správa katalogu
+ccp-Cakm-BD: Chakma (Chakma, Bangladéš)
+ccp-Cakm-IN: Chakma (Chakma, Indie)
+ce-RU: Čečenština (Rusko)
+ceb-Latn-PH: Cebuano (latinka, Filipíny)
+Centaur: Kentaur
+Center: Střed
+CenterCenter: CenterCenter
+CenterLeft: Levý střed
+CenterRight: Pravý střed
+Centimeters: Centimetry
+Century Gothic: Století gotiky
+cgg-UG: Chiga (Uganda)
+ChalkBase16: ChalkBase16
+Change media options: Změna možností médií
+Change or edit your theme: Změna nebo úprava motivu
+Change Password: Změnit heslo
+Change the system settings carefully: Pečlivě změňte nastavení systému
+ChannelLayout: Rozvržení kanálu
+Charlie Brown: Charlie Brown
+Chartreuse: Chartreuska
+Charts comming soon ish...: Grafy budou brzy k dispozici ...
+ChartTooltip: Popisek grafu
+chat: Povídat si
+Chat: Povídat si
+Chat?: Povídat si?
+Check me: Zkontrolujte mě
+Check out the MudExThemeEdit Component: Podívejte se na komponentu MudExThemeEdit
+CheckBox: Zaškrtávací políčko
+CheckedIcon: Zaškrtnutá ikona
+Checker: Kontrolor
+Checker box: Kontrolní políčko
+Chicago: Chicago
+Chicago - 60601: Chicago - 60601
+Chicago - 60601ender: Chicago - 60601ender
+ChildContentStyle: ChildContentStyle
+Chiller: Chladnější
+Chip: Čip
+ChipClass: Čipová třída
+ChipCloseable: ChipCloseable
+ChipColor: Čipová barva
+ChipsAdditionalAbove: ChipsAdditionalAbove
+ChipsAdditionalBelow: ChipsAdditionalBelow
+ChipSelect: Čipový výběr
+ChipSize: Velikost čipu
+ChipsMaxWidth: ChipsMaxWidth
+ChipsOnly: Pouze žetony
+ChipVariant: Čipová varianta
+ChipWithoutItemTemplate: ChipWithoutItemTemplate
+Chocolate: Čokoláda
+chr-Cher-US: Cherokee (Cherokee, Spojené státy americké)
+CircusBase16: 'CircusBase16 řekl:'
+Cities you want to live: Města, ve kterých chcete bydlet
+City: Město
+Class: Třída
+ClassChip: Třída Chip
+ClassicDarkBase16: 'ClassicDarkBase16 řekl:'
+ClassicLightBase16: Klasická světelná základna16
+ClassSearchBox: ClassSearchBox
+Clear: Jasný
+Clearable: Smazatelné
+Click here to choose a screen to capture. If not selected, you will be prompted when starting the recording.: Kliknutím sem vyberte obrazovku, kterou chcete zachytit. Pokud není vybrána, budete vyzváni při spuštění nahrávání.
+Click here to upload files: Klikněte zde pro nahrání souborů
+Click the button below to enable them and load the third party services from disqus.com: Kliknutím na tlačítko níže je povolíte a načtete služby třetích stran z disqus.com
+Clickable: Lze kliknout
+ClickAction: KlikněteAkce
+ClickPropagation: ClickPropagation
+Client Language has been changed: Jazyk klienta byl změněn
+Close: Zavřít
+Closeable: Uzavíratelný
+CloseAfterSelect: ZavřítPo výběru
+CloseButton: ZavřítTlačítko
+Closed: Uzavřený
+CloseIcon: ZavřítIkona
+CloseOnEscapeKey: ZavřítOnEscapeKey
+co-FR: Korsičtina (Francie)
+Code: Kód
+CodeBlockTheme: Motiv bloku kódu
+CodepenEmbed: CodepenEmbed
+CodeschoolBase16: 'CodeschoolBase16 řekl:'
+CollapseOnClick: Sbalit při kliknutí
+Colonna MT: MT sloupec
+color: barva
+Color: Barva
+ColorBrewer: Pivovar barev
+ColorBubble: ColorBubble (Barevná) bublina (ColorT
+ColoredImagesForExternalFilePicker: ColoredImagesForExternalFilePicker
+ColorEdit: BarvaEditovat
+ColorElements: Prvky barev
+ColorizeIcons: OmalovánkyIkony
+ColorMode: Režim ColorMode
+ColorPicker: Výběr barvy ColorPicker
+ColorPickerMode: Režim ColorPickerMode
+ColorPickerView: ColorPickerView
+ColorsBase16: 'ColorsBase16 řekl:'
+ColorStops: Barevná zastavení
+ColorTemperature: Teplota barev
+ColSpan: Sloupec ColSpan
+Column: Sloupec
+Columns Affected: Ovlivněné sloupce
+ColumnWidth: Šířka sloupce
+Comic Sans MS: Comic Sans MS
+Comments: Komentáře
+Common: Společný
+Communication: Komunikace
+Community: Komunita
+Compact: Kompaktní
+Comparer: Porovnat
+Component edit capture options: Možnosti zachycení úprav komponenty
+Component in Dialog: Komponenta v dialogovém okně
+Component to add additional adornment to a MudInput: Komponenta pro přidání dalších ozdob do MudInput
+Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Komponenta pro zobrazení souboru v tagu iframe nebo object nebo v registrovaném prohlížeči, který implementuje IMudExFileDisplay
+Component to display information about the current recording: Komponenta pro zobrazení informací o aktuálním záznamu
+Component to Edit Icon values: Komponenta pro úpravu hodnot ikon
+Component to Edit MudExColor: Komponenta pro úpravu MudExColor
+Component to move the ChildContent to a specific element that can defined by ElementSelector.: Component pro přesunutí ChildContent do konkrétního elementu, který lze definovat pomocí ElementSelector.
+Component to select a theme from a list of themes.: Komponenta pro výběr motivu ze seznamu motivů.
+ComponentBaseWithState: KomponentaBaseWithState
+ComponentInDialog: KomponentaInDialog
+Conditional updates: Podmíněné aktualizace
+Configure list values: Konfigurace hodnot seznamu
+Confirm: Potvrdit
+CONFIRM: POTVRDIT
+Confirm and Ignore: Potvrdit a ignorovat
+Confirm and Set Required: Potvrdit a nastavit Povinné
+Confirm edit: Potvrdit úpravu
+Confirm Password: Potvrdit heslo
+Confirm Registration: Potvrdit registraci
+Confirmation: Potvrzení
+ConnectAllAudioSources: ConnectAllAudioSources
+ConnectCapture: Aplikace ConnectCapture
+ConnectCurrentTab: Karta ConnectCurrentTab
+ConnectionMode: Režim připojení
+ConnectMicrophone: Připojit mikrofon
+ConnectToCapture: ConnectToCapture
+contacts: Kontakty
+Content-Type: Typ obsahu
+ContentAlignment: Zarovnání obsahu
+ContentStream: Obsahový stream
+ContentType: Typ obsahu
+ContextMenuAction: Akce kontextové nabídky
+Continue to {0}: Pokračovat na {0}
+Continuous: Nepřetržitý
+Contrast: Kontrast
+Cooper Black: Cooper Černá
+Copperplate Gothic Bold: Mědirytina gotická tučná
+Copperplate Gothic Light: Mědirytina gotická světlá
+Copy url: Kopírovat adresu URL
+Counter: Počitadlo
+Country: Země
+Courier New: Kurýr Nový
+Courrier: Pošta
+Create: Vytvářet
+Create address: Vytvořit adresu
+Create new backup: Vytvořit novou zálohu
+CreatedOn: Datum vytvoření
+Critical: Kritický
+CropAndScale: Nástroj CropAndScale
+cs-CZ: Čeština (Česko)
+CSS Color Variables: Proměnné barev CSS
+CssVars: CssVars
+cu-RU: Církevní slovanština (Rusko)
+CupcakeBase16: Základna na košíčky16
+CupertinoBase16: 'CupertinoBase16 řekl:'
+Current Password: Aktuální heslo
+Current Password is required!: Je vyžadováno aktuální heslo!
+Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can change DarMode in the Top right menu or disable binding by toggle the switch: V současné době je ThemeEditor svázán s DarkMode z aktuálního tématu a v {0}. DarMode můžete změnit v pravém horním menu nebo vypnout vazbu přepnutím přepínače
+Cursor: Kurzor
+CursorPositionOrigin: Původní_poloha kurzoru
+Custom: Zvyk
+CustomContentErrorMessage: CustomContentErrorMessage
+Customize: Přizpůsobit
+cy-GB: Velština (Spojené království)
+D: D
+da-DK: Dánština (Dánsko)
+da-GL: Dánština (Grónsko)
+Dallas: Dallas
+Dallas - 75201: Dallas - 75201
+Dallas - 75201ender: Dallas - 75201ender
+DanqingBase16: 'DanqingBase16 řekl:'
+DarculaBase16: 'DarculaBase16 řekl:'
+Dark: Temný
+DarkContrastText: TmavýKontrastní Text
+DarkDarken: DarkDarken
+DarkGreen: Tmavě zelená
+DarkKhaki: DarkKhaki
+DarkLighten: DarkLighten
+DarkMagenta: Tmavá purpurová
+DarkmossBase16: 'DarkmossBase16 řekl:'
+DarkOliveGreen: DarkOliveGreen
+DarkOnly: DarkOnly
+DarkOrange: Tmavě oranžová
+DarkOrchid: DarkOrchid
+DarkRed: Tmavě červená
+DarkSalmon: Tmavý losos
+DarkSeaGreen: Tmavě mořská zelená
+DarkSlateBlue: TmaváSlatemodrá
+DarkSlateGray: TmaváBřidliceŠedá
+DarktoothBase16: Základna Darktooth16
+DarkTurquoise: Tmavě tyrkysová
+DarkViolet: Tmavě fialová
+DarkVioletBase16: TmaváFialováZákladna16
+Dashboard: Palubní deska
+Dashed: Uháněl
+Data: Data
+Data has been updated: Data byla aktualizována
+Database Backups: Zálohy databáze
+DataUrl: Adresa URL dat
+DataVisualiserStyle: DataVisualiserStyle
+date: rande
+Date: Rande
+Date Created: Datum vytvoření
+Date Range For Searching: Časové období pro vyhledávání
+DateOfBirth: Datum narození
+DateTime value is required using {0} type!: Hodnota DateTime je vyžadována pomocí {0} typu!
+DateTimeLocal: DateTimeLocal
+dav-KE: Taita (Keňa)
+de-AT: Němčina (Rakousko)
+de-BE: Němčina (Belgie)
+de-CH: Němčina (Švýcarsko)
+de-DE: Němčina (Německo)
+de-IT: Němčina (Itálie)
+de-LI: němčina (Lichtenštejnsko)
+de-LU: Němčina (Lucembursko)
+Debug: Ladicí
+Dec: Prosince
+DecafBase16: Bez kofeinu16
+decimal: desetinný
+Decimal: Desetinný
+Decimal value is required using {0} type!: Při použití {0} typu je vyžadována desetinná hodnota!
+DeepPink: DeepPink
+DeepSkyBlue: DeepSkyBlue
+Default: Výchozí
+DefaultBorderRadius: DefaultBorderRadius
+DefaultDarkBase16: 'VýchozíDarkBase16 řekl:'
+DefaultLightBase16: DefaultLightBase16 – Výchozí světelná základna
+Defined: Definovaný
+Delay: Zpoždění
+DelayValueChangeToPickerClose: DelayValueChangeToPickerClose
+Delete: Vymazat
+Delete all: Smazat vše
+Delete Confirmation: Potvrzení o odstranění
+Delete Content: Smazat obsah
+Delete Content {0}: Smazat obsah '{0}'
+Delete Extended Attribute?: Smazat rozšířený atribut?
+Delete file from server: Smazat soubor ze serveru
+Delete Image: Smazat obrázek
+Delete Picture: Smazat obrázek
+Delete Role Content: Chcete odstranit roli s ID {0}?
+Delete these {0} elements: Smazat tyto {0} prvky?
+Delete this element: Smazat tento prvek?
+Delete User: Odstranit uživatele
+Deletion Not Allowed: Mazání není povoleno
+Delimiter: Oddělovač
+Delimiters: Oddělovače
+Demo drag mode SnapDrag: Ukázkový režim přetažení SnapDrag
+Demo for MudExDialog as inline: Ukázka pro MudExDialog jako inline
+Demo for MudExTaskBar and not Modal dialogs: Ukázka pro dialogová okna MudExTaskBar a ne modální
+Demo for simple integrated useful dialogs. Prompt, Info, MessageBox: Ukázka pro jednoduché, integrované, užitečné dialogy. Výzva, Informace, MessageBox
+Demo for the MudExUploadEdit inside of a MudForm and a FluentValidator.: Ukázka pro MudExUploadEdit uvnitř MudForm a FluentValidator.
+Demo for the MudExUploadEdit.: Ukázka pro MudExUploadEdit.
+Demo for using custom can close in DialogOptionsEx: Ukázka pro použití vlastního může být zavřena v DialogOptionsEx
+Demo for using Dialog and DialogBackground Appearance in DialogOptionsEx: Ukázka použití dialogového okna a vzhledu DialogBackground v DialogOptionsEx
+Demo for using DialogOptionsEx: Ukázka pro použití DialogOptionsEx
+Demo for using DialogOptionsEx and pass position and size: Ukázka pro použití DialogOptionsEx a předání pozice a velikosti
+Demo for using MudExObjectEdit for the same model with the default Demo but with some Meta configuration: Ukázka pro použití MudExObjectEdit pro stejný model s výchozí ukázkou, ale s určitou meta konfigurací
+Demo for using MudExObjectEdit GroupingStyle.Tabs: Ukázka použití MudExObjectEdit GroupingStyle.Tabs
+Demo for using MudExObjectEdit only with bypassing an object: Ukázka použití MudExObjectEdit pouze s vynecháním objektu
+Demo for using MudExObjectEdit with a configuration for Conditional using 'WithAttributesIf': Ukázka použití MudExObjectEdit s konfigurací pro podmíněné použití 'WithAttributesIf'
+Demo for using MudExObjectEdit with a model that contains file(s): Ukázka použití nástroje MudExObjectEdit s modelem, který obsahuje soubory
+Demo for using MudExObjectEdit with CodeGator Adapter and CodeGator Attributes: Ukázka použití nástroje MudExObjectEdit s adaptérem CodeGator a atributy CodeGator
+Demo for using MudExObjectEditPicker with a model that contains file(s): Ukázka použití MudExObjectEditPicker s modelem, který obsahuje soubory
+Demo of using explicit the MudExFileDisplayZip to show and select content inside of a zip file: Ukázka použití explicitního MudExFileDisplayZip k zobrazení a výběru obsahu uvnitř souboru zip
+Demonstration for a simple but very useful Enum Selector: Ukázka jednoduchého, ale velmi užitečného nástroje pro výběr výčtu
+Demonstration of the MudExSplitter: Ukázka MudExSplitteru
+Demonstration of the quickly color select with MudExColorBubble: Ukázka rychlého výběru barev pomocí MudExColorBubble
+DEMOS: SVOBODNÝ LID
+Dense: Hustý
+Dependent permissions required: Jsou vyžadována závislá oprávnění
+Deployments: Nasazení
+Description: Popis
+Description is required!: Popis je povinný!
+Description_for_Age: Description_for_Age
+Description_for_City: Description_for_City
+Description_for_FirstName: Description_for_FirstName
+Description_for_Id: Description_for_Id
+Description_for_LastName: Description_for_LastName
+Description_for_Notice: Description_for_Notice
+Description_for_OtherAddresses: Description_for_OtherAddresses
+Description_for_PostalCode: Description_for_PostalCode
+Description_for_ProgramingSkills: Description_for_ProgramingSkills
+Description_for_Street: Description_for_Street
+Description_for_TrueOrFalse: Description_for_TrueOrFalse
+Dessert: Zákusek
+detailed guide for more.: podrobný průvodce pro více.
+Details for Trail ID: Podrobnosti o ID stezky
+Devibeans: Devibejci
+DeviceId: ID zařízení
+DeviceListVariant: Varianta seznamu zařízení
+DeviceSelection: Výběr zařízení
+Dialog: Dialog
+Dialog Appearance: Vzhled dialogového okna
+Dialog Content: Obsah dialogového okna
+Dialog Drag & Drop: Dialogové okno Přetáhni a pusť
+Dialog for editing objects with the MudExObjectEditForm: Dialog pro úpravy objektů pomocí příkazu MudExObjectEditForm
+Dialog Sample: Ukázka dialogového okna
+Dialog Samples: Ukázky dialogových oken
+Dialog Snap Drag: Dialogové okno Přitahovat přetahování
+Dialog to display a file using {{{MudBlazor.Extensions.Components.MudExFileDisplay}}} component.: Dialogové okno pro zobrazení souboru pomocí komponenty {{{MudBlazor.Extensions.Components.MudExFileDisplay}}}.
+Dialog_Appearance: Dialog_Appearance
+DialogAppearance: DialogVzhled
+DialogBackgroundAppearance: DialogBackgroundAppearance
+DialogOptions: Možnosti dialogu
+Dialogs: Dialogy
+DialogsCanClose: DialogyUmětZavřít
+DialogServiceExt: DialogServiceExt
+DialogSnapDrag: DialogSnapDrag
+DialogsPosition: DialogyPozice
+Diana Prince: Diana Prince
+DimGray: DimGray
+Direct: Nasměrovat
+Direction: Směr
+DirtyseaBase16: 'DirtyseaBase16 řekl:'
+Disable Grouping: Zakázat seskupování
+Disabled: Invalidní
+DisableList: Seznam možností zakázat
+DisableOpacityChange: DisableOpacityChange
+DisablePadding: DisablePadding
+DisablePopoverPadding: DisablePopoverPadding
+DisablePositionMargin: DisablePositionMargin
+DisableSelectedItemStyle: DisableSelectedItemStyle
+DisableSizeMarginX: DisableSizeMarginX
+DisableSizeMarginY: DisableSizeMarginY
+DiscreteFrequencies: Diskrétní frekvence
+DisplayActionMenu: DisplayActionMenu
+DisplayErrors: Chyby zobrazení
+DisplayPresetList: DisplayPresetList
+Displays a tree structure as flat list: Zobrazí stromovou strukturu jako prostý seznam
+Displays a tree structure as horizontal navigable tree: Zobrazí stromovou strukturu jako vodorovný navigační strom
+Displays a tree structure as navigable Breadcrumb: Zobrazí stromovou strukturu jako navigovatelnou drobečkovou navigaci
+Displays a tree structure as navigable card grid: Zobrazí stromovou strukturu jako navigovatelnou mřížku karet
+Displays a tree structure as navigable List: Zobrazí stromovou strukturu jako navigovatelnou Seznam
+Displays a tree structure as simple tree: Zobrazí stromovou strukturu jako jednoduchý strom
+DisplaySurface: DisplaySurface
+DisplayTrackList: DisplayTrackList
+DisposeEvent: DisposeEvent
+Disqus comments are disabled by default.: Komentáře Disqus jsou ve výchozím nastavení zakázány.
+Divider: Dělič
+DividerLight: Dělicí světlo
+dje-NE: Zarma (Niger)
+DNumber: DNumber
+Do you really want to restart the server?: Opravdu chcete restartovat server?
+Do you really want to restore the database from backup '{0}'? Note that any changes made after {1} are gone. This also means any changes made by any user: Opravdu chcete obnovit databázi ze zálohy '{0}'? Všimněte si, že všechny změny provedené po {1} budou odstraněny. To znamená také jakékoli změny provedené kterýmkoli uživatelem
+Do you want to delete the profile picture of {0}: Chcete smazat profilový obrázek {0}
+Do you want to delete the User {0}: Chcete smazat uživatelský {0}
+Docco: Dokument
+Docked: Zakotvený
+Document Deleted: Dokument odstraněn
+Document Extended Attributes: Rozšířené atributy dokumentu
+Document Management: Správa dokumentů
+Document Not Found!: Dokument nebyl nalezen!
+Document Saved: Dokument uložen
+Document Store: Úložiště dokumentů
+Document Type: Typ dokumentu
+Document Type Deleted: Typ dokumentu Odstraněn
+Document Type is required!: Typ dokumentu je povinný!
+Document Type Not Found!: Typ dokumentu nebyl nalezen!
+Document Type Saved: Typ dokumentu uložen
+Document Type Updated: Typ dokumentu byl aktualizován
+Document type with this name already exists.: Typ dokumentu s tímto názvem již existuje.
+Document Types: Typy dokumentů
+Document Types exported: Exportované typy dokumentů
+Document Updated: Dokument byl aktualizován
+Documentation: Dokumentace
+Documents: Dokumenty
+DodgerBlue: DodgerBlue
+doi-Deva-IN: Dógrí (Dévanágarí, Indie)
+Don't have an account?: Nemáte účet?
+Done!: Hotový!
+Donut: Kobliha
+Dotted: Tečkovaný
+Double: Dvojitý
+DoubleClickAction: Akce dvojitého kliknutí
+Download: Stáhnout
+Download {0} files separately: Samostatné stahování {0} souborů
+Download {0} with {1} files as zip: Stáhněte si {0} s {1} soubory jako zip
+Download file {0}: Stáhnout soubor {0}
+Download file {0} as zip: Stáhnout soubor {0} jako zip
+DraculaBase16: 'DraculaBase16 řekl:'
+Drag and Drop files here: Přetáhněte soubory sem
+DragEffect: Efekt přetažení
+DragMode: Režim tažení
+Drawer: Zásuvka
+DrawerBackground: ZásuvkaPozadí
+DrawerClipMode: Režim klipu zásuvky
+DrawerIcon: Ikona zásuvky
+DrawerMiniWidthLeft: ZásuvkaMiniŠířkaVlevo
+DrawerMiniWidthRight: ZásuvkaMiniŠířkaVpravo
+DrawerText: Text zásuvky
+DrawerVariant: Varianta zásuvky
+DrawerWidthLeft: ŠířkaZásuvkyVlevo
+DrawerWidthRight: ŠířkaZásuvkyVpravo
+DroidCam Source 2: DroidCam Source 2
+DroidCam Source 3: DroidCam Source 3
+Drop Box: Odkládací schránka
+Drop down component to select a culture: Rozbalovací komponenta pro výběr jazykové verze
+Drop down component to select an enum value or multiple on flags enums: Rozbalovací komponenta pro výběr hodnoty výčtu nebo více hodnot u příznaků výčtů
+Drop files here: Sem přetáhněte soubory
+DropBox external file picker component: Komponenta pro výběr externího souboru DropBoxu
+DropBoxApiKey: Klíč DropBoxApiKey
+Dropdown list component to select one ore more fonts: Komponenta rozevíracího seznamu pro výběr jednoho nebo více písem
+DropShadow: Stín
+DropZoneClickAction: DropZoneClickAction
+dsb-DE: Dolnolužická srbština (Německo)
+dua-CM: Duala (Kamerun)
+DualCombined: DualCombined
+DualHorizontal: DualHorizontální
+DualVertical: DualVertikální
+DuplicateErrorText: DuplicateErrorText
+Duration: Trvání
+dv-MV: Divehi (Maledivy)
+Dynamic component tests: Dynamické testy komponent
+dyo-SN: Jola-Fonyi (Senegal)
+dz-BT: Dzongkha (Bhútán)
+E-mail: E-mail
+E-Mail: E-mail
+E-Mail not confirmed.: E-mail nebyl potvrzen. Zkontrolujte prosím svou poštovní schránku a potvrďte svou e-mailovou adresu. <a href='{0}'>Znovu odeslat potvrzení e-mailem</a>
+ebu-KE: Embu (Keňa)
+Edge: Okraj
+EdgeDarkBase16: 'EdgeDarkBase16 řekl:'
+EdgeLightBase16: EdgeLightBase16
+Edit: Upravit
+Edit {0}: Upravit {0}
+Edit a complex Model with included Collection of users: Upravit složitý model se zahrnutou Kolekcí uživatelů
+Edit Audio Constraints: Upravit zvuková omezení
+Edit Current Theme: Upravit aktuální téma
+Edit data in dialog: Upravit data v dialogovém okně
+Edit in TryMudEx: Upravit v TryMudEx
+Edit Items: Upravit položky
+Edit only a Collection of users: Upravovat pouze kolekci uživatelů
+Edit rating: Upravit hodnocení
+Edit Running Component: Upravit spuštěnou komponentu
+Edit Test Object: Upravit testovací objekt
+Edit Users: Upravit uživatele
+Edit Video Constraints: Omezení úprav videa
+Edit with shared MetaConfig: Úpravy pomocí sdíleného MetaConfigu
+Editable: Upravitelný
+Editing of the DB Connection can break whole application. Please edit this only if you know what you are doing: Editace DB Connection může narušit celou aplikaci. Upravujte to prosím pouze v případě, že víte, co děláte
+Editing of this endpoint can break AI integration: Úprava tohoto koncového bodu může narušit integraci AI
+EditMode: Režim úprav
+Editor for a property of an object. Used internally inside the MudExObjectEdit: Editor pro vlastnost objektu. Používá se interně uvnitř objektu MudExObjectEdit
+EditRunningComponent: UpravitBěžícíKomponentu
+Edmonton: Edmonton
+Edmonton - T5A 0A1: Edmonton - T5A 0A1
+Edmonton - T5A 0A1ender: Edmonton - T5A 0A1ender
+ee-GH: Ewe (Ghana)
+ee-TG: Ewe (Togo)
+EightiesBase16: Osmdesátá létaZáklad16
+el-CY: Řečtina (Kypr)
+el-GR: řečtina (Řecko)
+Elevation: Elevace
+Em: V
+email: E-mail
+Email: E-mail
+Email {0} is already registered.: E-mailová {0} je již zaregistrována.
+Email cannot changed: E-mail nelze změnit
+Email Confirmation: Potvrzení e-mailem
+Email is not correct: E-mail není správný
+Email is required: E-mail je povinný
+Email is required!: E-mail je povinný!
+EmbersBase16: 'EmbersBase16 řekl:'
+en-001: Angličtina (svět)
+en-029: Angličtina (Karibik)
+en-150: Angličtina (Evropa)
+en-AE: Angličtina (Spojené arabské emiráty)
+en-AG: Angličtina (Antigua a Barbuda)
+en-AI: Angličtina (Anguilla)
+en-AS: Angličtina (Americká Samoa)
+en-AT: Angličtina (Rakousko)
+en-AU: Angličtina (Austrálie)
+en-BB: Angličtina (Barbados)
+en-BE: Angličtina (Belgie)
+en-BI: Angličtina (Burundi)
+en-BM: Angličtina (Bermudy)
+en-BS: Angličtina (Bahamy)
+en-BW: Angličtina (Botswana)
+en-BZ: Angličtina (Belize)
+en-CA: Angličtina (Kanada)
+en-CC: Angličtina (Kokosové [Keelingovy] ostrovy)
+en-CH: Angličtina (Švýcarsko)
+en-CK: Angličtina (Cookovy ostrovy)
+en-CM: Angličtina (Kamerun)
+en-CX: Angličtina (Vánoční ostrov)
+en-CY: Angličtina (Kypr)
+en-DE: Angličtina (Německo)
+en-DK: Angličtina (Dánsko)
+en-DM: Angličtina (Dominika)
+en-ER: Angličtina (Eritrea)
+en-FI: Angličtina (Finsko)
+en-FJ: Angličtina (Fidži)
+en-FK: Angličtina (Falklandské ostrovy)
+en-FM: Angličtina (Mikronésie)
+en-GB: Angličtina (Spojené království)
+en-GD: Angličtina (Grenada)
+en-GG: Angličtina (Guernsey)
+en-GH: Angličtina (Ghana)
+en-GI: Angličtina (Gibraltar)
+en-GM: Angličtina (Gambie)
+en-GU: Angličtina (Guam)
+en-GY: Angličtina (Guyana)
+en-HK: Angličtina (Hongkong – zvláštní správní oblast)
+en-ID: Angličtina (Indonésie)
+en-IE: Angličtina (Irsko)
+en-IL: Angličtina (Izrael)
+en-IM: Angličtina (Ostrov Man)
+en-IN: Angličtina (Indie)
+en-IO: Angličtina (Britské území v Indickém oceánu)
+en-JE: Angličtina (Jersey)
+en-JM: Angličtina (Jamajka)
+en-KE: Angličtina (Keňa)
+en-KI: Angličtina (Kiribati)
+en-KN: Angličtina (Svatý Kryštof a Nevis)
+en-KY: Angličtina (Kajmanské ostrovy)
+en-LC: Angličtina (Svatá Lucie)
+en-LR: Angličtina (Libérie)
+en-LS: Angličtina (Lesotho)
+en-MG: Angličtina (Madagaskar)
+en-MH: Angličtina (Marshallovy ostrovy)
+en-MO: Angličtina (Macao – zvláštní správní oblast AJ)
+en-MP: angličtina (Severní Mariany)
+en-MS: Angličtina (Montserrat)
+en-MT: Angličtina (Malta)
+en-MU: Angličtina (Mauricius)
+en-MW: Angličtina (Malawi)
+en-MY: Angličtina (Malajsie)
+en-NA: Angličtina (Namibie)
+en-NF: Angličtina (ostrov Norfolk)
+en-NG: Angličtina (Nigérie)
+en-NL: Angličtina (Nizozemsko)
+en-NR: Angličtina (Nauru)
+en-NU: Angličtina (Niue)
+en-NZ: Angličtina (Nový Zéland)
+en-PG: Angličtina (Papua-Nová Guinea)
+en-PH: Angličtina (Filipíny)
+en-PK: Angličtina (Pákistán)
+en-PN: Angličtina (Pitcairnovy ostrovy)
+en-PR: Angličtina (Portoriko)
+en-PW: Angličtina (Palau)
+en-RW: Angličtina (Rwanda)
+en-SB: Angličtina (Šalamounovy ostrovy)
+en-SC: Angličtina (Seychely)
+en-SD: Angličtina (Súdán)
+en-SE: Angličtina (Švédsko)
+en-SG: Angličtina (Singapur)
+en-SH: anglicky (Svatá Helena, Nanebevstoupení Páně, Tristan da Cunha)
+en-SI: Čeština (Slovinsko)
+en-SL: Angličtina (Sierra Leone)
+en-SS: Angličtina (Jižní Súdán)
+en-SX: Angličtina (Sint Maarten)
+en-SZ: Angličtina (Eswatini)
+en-TC: Angličtina (Ostrovy Turks a Caicos)
+en-TK: Angličtina (Tokelau)
+en-TO: Angličtina (Tonga)
+en-TT: Angličtina (Trinidad & Tobago)
+en-TV: Angličtina (Tuvalu)
+en-TZ: Angličtina (Tanzanie)
+en-UG: Angličtina (Uganda)
+en-UM: Angličtina (Odlehlé ostrovy USA)
+en-US: Angličtina (Spojené státy)
+en-US-posix: Angličtina (Spojené státy, počítač)
+en-VC: angličtina (Svatý Vincenc a Grenadiny)
+en-VG: Angličtina (Britské Panenské ostrovy)
+en-VI: Angličtina (Americké Panenské ostrovy)
+en-VU: Angličtina (Vanuatu)
+en-WS: Angličtina (Samoa)
+en-ZA: Angličtina (Jižní Afrika)
+en-ZM: Angličtina (Zambie)
+en-ZW: Angličtina (Zimbabwe)
+Enable Disqus: Povolit Disqus
+enables or disables virtualization.: Povolí nebo zakáže virtualizaci.
+End: Konec
+English: Angličtina
+Engravers MT: Gravírky MT
+Enter email and your new password here: Zde zadejte e-mail a své nové heslo
+Enter email for password reset: Zadejte e-mailovou adresu spojenou s vaším účtem a obdržíte e-mail s odkazem na obnovení hesla
+Enter name: Zadejte název
+Enter name of backup file: Zadejte název záložního souboru
+Enter new name of backup file: Zadejte nový název záložního souboru
+Enter the email address for the confirmation mail: Zadejte e-mailovou adresu pro potvrzovací e-mail
+Enter the URL to existing file: Zadejte adresu URL existujícího souboru
+Enter your message...: Zadejte svou zprávu...
+Entity Id: Entity Id
+Entity is required!: Entita je povinná!
+EntityCreatedBy: EntityCreatedBy
+EntityCreatedOn (Local): EntityCreatedOn (místní)
+EntityCreatedOn (UTC): EntityCreatedOn (UTC)
+EntityId: ID entity
+EntityLastModifiedBy: EntityLastModifiedBy
+EntityLastModifiedOn (Local): EntityLastModifiedOn (místní)
+EntityLastModifiedOn (UTC): EntityLastModifiedOn (UTC)
+Entree: Vchod
+EnumSelect: EnumSelect
+Environment: Životní prostředí
+eo-001: Esperanto (svět)
+EquilibriumDarkBase16: 'RovnováhaDarkBase16 řekl:'
+EquilibriumGrayDarkBase16: RovnováhaŠedáTmaváZákladna16
+EquilibriumGrayLightBase16: RovnováhaŠedá Světelná Základna16
+EquilibriumLightBase16: 'EquilibriumLightBase16 řekl:'
+Eras Bold ITC: Eras Bold ITC
+Eras Demi ITC: Eras Demi ITC
+Eras Light ITC: Eras Light ITC
+Eras Medium ITC: Éry Střední ITC
+Error: Chyba
+ErrorAnimation: Animace chyby
+ErrorContrastText: ErrorContrastText
+ErrorDarken: ErrorDarken
+ErrorId: ID chyby
+ErrorLighten: ErrorLighten
+ErrorMessage: Chybová zpráva
+ErrorText: Text chyby
+es-419: Španělština (Latinská Amerika)
+es-AR: Španělština (Argentina)
+es-BO: Španělština (Bolívie)
+es-BR: Španělština (Brazílie)
+es-BZ: Španělština (Belize)
+es-CL: Španělština (Chile)
+es-CO: Španělština (Kolumbie)
+es-CR: Španělština (Kostarika)
+es-CU: Španělština (Kuba)
+es-DO: Španělština (Dominikánská republika)
+es-EC: Španělština (Ekvádor)
+es-ES: Španělština (Španělsko)
+es-GQ: Španělština (Rovníková Guinea)
+es-GT: Španělština (Guatemala)
+es-HN: Španělština (Honduras)
+es-MX: Španělština (Mexiko)
+es-NI: Španělština (Nikaragua)
+es-PA: Španělština (Panama)
+es-PE: Španělština (Peru)
+es-PH: Španělština (Filipíny)
+es-PR: Španělština (Portoriko)
+es-PY: Španělština (Paraguay)
+es-SV: Španělština (El Salvador)
+es-US: Španělština (Spojené státy)
+es-UY: Španělština (Uruguay)
+es-VE: Španělština (Venezuela)
+Español: Španělština
+EspressoBase16: EspressoBase16
+et-EE: Estonština (Estonsko)
+Ethan Hunt: Ethan Hunt
+eu-ES: Baskičtina (Španělsko)
+EvaBase16: 'EvaBase16 řekl:'
+EvaDimBase16: 'EvaDimBase16 řekl:'
+ewo-CM: Ewondo (Kamerun)
+ExcelSheet.xlsx: ExcelSheet.xlsx
+Expand &nbsp; <b>not</b> &nbsp; loaded nodes: Rozbalit &nbsp; <b>nenačtené</b> &nbsp; uzly
+Expand all nodes: Rozbalit všechny uzly
+Expand loaded nodes: Rozbalení načtených uzlů
+Expand/Collapse: Rozbalit/Sbalit
+ExpandBehaviour: Rozšíření chování
+ExpandButtonDirection: Vlastnost ExpandButtonDirection
+ExpandedIcon: RozbalenáIkona
+ExpandOnClick: Rozbalit OnClick
+ExpandOnFilter: Rozbalit filtr
+Explicit File Display Zip: Explicitní zobrazení souboru Zip
+Export: Vývoz
+Export To Excel: Exportovat do aplikace Excel
+Export_SheetName: Data
+ExposureCompensation: Kompenzace expozice
+ExposureMode: Režim expozice
+ExposureTime: Doba expozice
+Extended Attribute Deleted: Rozšířený atribut byl odstraněn
+Extended Attribute Not Found!: Rozšířený atribut nebyl nalezen!
+Extended Attribute Saved: Rozšířený atribut uložen
+Extended Attribute Updated: Rozšířený atribut byl aktualizován
+Extended Attribute with this Key already exists.: Rozšířený atribut s tímto klíčem již existuje.
+Extended Attributes: '\{0}\ Rozšířené atributy'
+Extended Attributes exported: Exportované rozšířené atributy
+ExtensionRestrictionType: ExtensionRestrictionType
+Extensions: Rozšíření
+External Id: Externí ID
+ExternalDialogOptions: ExterníDialogOptions
+ExternalId: Identifikátor ExternalId
+ExternalPickerImageSize: ExternalPickerImageSize
+ExternalProviderRendering: Vykreslování ExternalProviderRendering
+ExtraExtraLarge: ExtraExtraLarge
+ExtraLarge: ExtraLarge
+ExtraSmall: Mimořádně malý
+fa-IR: Perština (Írán)
+FacingMode: Režim tváře
+Fade: Vadnout
+FadeIn: FadeIn
+Failed to get client preferences: Nepodařilo se získat předvolby klienta
+FallBackInIframe: FallBackInIframe
+False: Falešný
+FAQs: Nejčastější dotazy
+Far: Daleký
+Features: Rysy
+Feb: Únor
+Felix Titling: Felix Titling
+Female: Ženský
+Female_ Text: Female_ Text
+ff-Adlm-BF: Fulah (Adlam, Burkina Faso)
+ff-Adlm-CM: Fulah (Adlam, Kamerun)
+ff-Adlm-GH: Fulah (Adlam, Ghana)
+ff-Adlm-GM: Fulah (Adlam, Gambie)
+ff-Adlm-GN: Fulah (Adlam, Guinea)
+ff-Adlm-GW: Fulah (Adlam, Guinea-Bissau)
+ff-Adlm-LR: Fulah (Adlam, Libérie)
+ff-Adlm-MR: Fulah (Adlam, Mauritánie)
+ff-Adlm-NE: Fulah (Adlam, Niger)
+ff-Adlm-NG: Fulah (Adlam, Nigérie)
+ff-Adlm-SL: Fulah (Adlam, Sierra Leone)
+ff-Adlm-SN: Fulah (Adlam, Senegal)
+ff-Latn-BF: Fulah (latinka, Burkina Faso)
+ff-Latn-CM: Fulah (latinka, Kamerun)
+ff-Latn-GH: Fulah (latinka, Ghana)
+ff-Latn-GM: Fulah (latinka, Gambie)
+ff-Latn-GN: Fulah (latinka, Guinea)
+ff-Latn-GW: Fulah (latinka, Guinea-Bissau)
+ff-Latn-LR: Fulah (latinka, Libérie)
+ff-Latn-MR: Fulah (latinka, Mauritánie)
+ff-Latn-NE: Fulah (latinka, Niger)
+ff-Latn-NG: Fulah (latinka, Nigérie)
+ff-Latn-SL: Fulah (latinka, Sierra Leone)
+ff-Latn-SN: Fulah (latinka, Senegal)
+FFTSize: FFTSize
+fi-FI: Finština (Finsko)
+fil-PH: Filipínština (Filipíny)
+File Display: Zobrazení souboru
+File Display with Stream: Zobrazení souborů pomocí služby Stream
+File Handling: Manipulace se soubory
+File is required!: Soubor je povinný!
+FileDisplay: Zobrazení souboru
+FileDisplayAsStream: Soubor FileDisplayAsStream
+FileDisplayZipWithPreview: Soubor FileDisplayZipWithPreview
+FileInfo: Informace o souboru
+FileName: Jméno souboru
+Files: Soubory
+Files of this type ({0}) are not allowed. Only following types are allowed '{1}'. Try one of these extensions ({2}): Soubory tohoto typu ({0}) nejsou povoleny. Povoleny jsou pouze následující typy '{1}'. Vyzkoušejte jedno z těchto rozšíření ({2})
+Fill Administrator Credentials: Vyplňte přihlašovací údaje správce
+Fill Basic User Credentials: Vyplňte základní přihlašovací údaje uživatele
+FillAlpha: VýplňAlfa
+Filled: Naplnil
+Filter: Filtr
+Filter...: Filtr...
+Filter468: 'Filtr468 řekl:'
+FilterBehaviour: Chování filtru
+FilterBoxClass: Třída FilterBoxClass
+FilterBoxStyle: Styl filtrovacího boxu
+FilterChipsPlacedRight: FilterChipsUmístěnýVpravo
+Filtered Audit Trails exported: Filtrované auditní stopy exportované
+Filtered Brands exported: Exportované filtrované značky
+Filtered Document Types exported: Exportované filtrované typy dokumentů
+Filtered Extended Attributes exported: Exportované filtrované rozšířené atributy
+Filtered Products exported: Exportované filtrované produkty
+Filtered Users exported: Exportovaní filtrovaní uživatelé
+FilterEnabled: FilterEnabled
+FilterHighlighting: Zvýraznění filtru
+Filtering: Filtrování
+FilterMode: Režim filtru
+FilterMultiple: FiltrVícenásobný
+FilterPlaceholder: Zástupný symbol filtru
+Filters: Filtruje
+FilterVariant: Varianta filtru
+Fiona Gallagher: Fiona Gallagherová
+Firebrick: Žáruvzdorná cihla
+First Name: Křestní jméno
+First Name is required: Křestní jméno je povinné
+FirstName: Jméno
+Fixed: Stabilní
+Flags Enum: Výčet příznaků
+Flat: Byt
+Flat List: Plochý seznam
+FlatBase16: 'FlatBase16 řekl:'
+FlatList: Plochý seznam
+FlexEnd: FlexEnd
+FlexStart: Funkce FlexStart
+Flip: Salto
+FlipAlways: FlipAlways
+FlipNever: FlipNever
+FlipOnOpen: FlipOnOpen
+FlipX: FlipX
+FlipY: FlipY
+FloralWhite: Květinová bílá
+Florian Gilde: Florian Gilde
+FNumber: Moderátor
+fo-DK: Faerské ostrovy (Dánsko)
+fo-FO: Faerské ostrovy (Faerské ostrovy)
+FocusDistance: Zaostřovací vzdálenost
+FocusMode: Režim FocusMode
+FontFamily: Rodina písem
+FontSelect: Výběr písma
+FontSize: Velikost písma
+FontWeight: FontWeight
+Footlight MT Light: Footlight MT Light
+Force pick Item: Vynutit výběr položky
+Force pick Items: Vynutit výběr předmětů
+Force select Item: Vynutit výběr položky
+Force select Items: Vynutit výběr položek
+ForceNativeRender: ForceNativeRender
+ForceSelectOfMudColor: ForceSelectOfMudColor
+ForceShrink: ForceShrink – Síla
+ForestGreen: Lesní zelená
+Forgot password?: Zapomněli jste heslo?
+Format: Formát
+Foundation: Nadace
+fr-029: Francouzština (Karibik)
+fr-BE: Francouzština (Belgie)
+fr-BF: Francouzština (Burkina Faso)
+fr-BI: Francouzština (Burundi)
+fr-BJ: Francouzština (Benin)
+fr-BL: francouzština (St. Barthélemy)
+fr-CA: Francouzština (Kanada)
+fr-CD: Francouzština (Kongo [DRK])
+fr-CF: francouzština (Středoafrická republika)
+fr-CG: Francouzština (Kongo)
+fr-CH: Francouzština (Švýcarsko)
+fr-CI: francouzština (Pobřeží slonoviny)
+fr-CM: Francouzština (Kamerun)
+fr-DJ: Francouzština (Džibutsko)
+fr-DZ: Francouzština (Alžírsko)
+fr-FR: Francouzština (Francie)
+fr-GA: Francouzština (Gabon)
+fr-GF: Francouzština (Francouzská Guyana)
+fr-GN: Francouzština (Guinea)
+fr-GP: Francouzština (Guadeloupe)
+fr-GQ: Francouzština (Rovníková Guinea)
+fr-HT: Francouzština (Haiti)
+fr-KM: Francouzština (Komory)
+fr-LU: Francouzština (Lucembursko)
+fr-MA: Francouzština (Maroko)
+fr-MC: Francouzština (Monako)
+fr-MF: Francouzština (St. Martin)
+fr-MG: Francouzština (Madagaskar)
+fr-ML: Francouzština (Mali)
+fr-MQ: Francouzština (Martinik)
+fr-MR: Francouzština (Mauritánie)
+fr-MU: francouzština (Mauricius)
+fr-NC: Francouzština (Nová Kaledonie)
+fr-NE: Francouzština (Niger)
+fr-PF: Francouzština (Francouzská Polynésie)
+fr-PM: francouzsky (St. Pierre & Miquelon)
+fr-RE: Francouzština (Réunion)
+fr-RW: Francouzština (Rwanda)
+fr-SC: Francouzština (Seychely)
+fr-SN: Francouzština (Senegal)
+fr-SY: Francouzština (Sýrie)
+fr-TD: Francouzština (Čad)
+fr-TG: Francouzština (Togo)
+fr-TN: Francouzština (Tunisko)
+fr-VU: Francouzština (Vanuatu)
+fr-WF: francouzsky (Wallis & Futuna)
+fr-YT: Francouzština (Mayotte)
+FrameRate: Kmitočet snímků
+FramerBase16: 'FramerBase16 řekl:'
+Franklin Gothic Medium: Franklinovo gotické médium
+French: Francouzština
+FrequencyScale: Frekvenční škála
+FruitSodaBase16: Ovocná sodaBase16
+Fuchsia: Fuchsie
+Full: Plný
+FullHeight: Plná výška
+FullOctaveBands: Pásma plné oktávy
+FullPaged: Plné stránkování
+Fullscreen: Celá obrazovka
+FullScreen: Celá obrazovka
+FullScreenButtonIcon: Ikona tlačítka na celou obrazovku
+FullWidth: Plná šířka
+fur-IT: Friulian (Itálie)
+Futura: Budoucnost
+fy-NL: Západní fríština (Nizozemsko)
+ga-GB: Irština (Spojené království)
+ga-IE: Irština (Irsko)
+Gain: Získat
+Gainsboro: Gainsboro
+Garamond: Garamond
+gd-GB: Skotská gaelština (Spojené království)
+Gender: Pohlaví
+General: Obecné
+Geneva: Ženeva
+George Miller: George Miller
+Georgia: Gruzie
+German: Němčina
+GhostWhite: GhostWhite
+GigavoltBase16: 'GigavoltBase16 řekl:'
+Gigi: Gigi
+Gill Sans: Gill Sans
+Gill Sans MT: Žábry bez MT
+Github: Github
+GitHub Project repository: Úložiště projektu GitHub
+GithubBase16: 'GithubBase16 řekl:'
+GithubDark: GithubDark
+GithubDarkDimmed: GithubDarkDimmed
+gl-ES: Galicijština (Španělsko)
+Gml: Gml
+gn-PY: Guarani (Paraguay)
+GoHome: Jdi domů!
+Gold: Zlato
+Goldenrod: Zlatobýl
+Google: Google
+Google Drive: Disk Google
+Google Drive file picker component: Komponenta pro výběr souborů na Disku Google
+Googlecode: Kód Google
+GoogleDarkBase16: 'GoogleDarkBase16 řekl:'
+GoogleDriveClientId: ID klienta služby GoogleDriveClientId
+GoogleLightBase16: 'GoogleLightBase16 řekl:'
+Goudy Old Style: Goudy starý styl
+Goudy Stout: Goudy Stout
+Gradient: Spád
+GradientDark: GradientTmavý
+GradientForeground: GradientForeground
+GradientLeft: GradientLeft
+GradientLight: GradientLight
+GradientRight: GradientRight
+GradientText: Text přechodu
+Gravatar: Avatar
+GravatarImageSize: GravatarImageSize
+Gray: Šedý
+GrayDark: ŠedáTmavá
+GrayDarker: ŠedáTmavší
+GrayDefault: GrayDefault
+GrayLight: Světle šedé
+GrayLighter: Šedosvětlejší
+Grayscale: Stupně šedi
+GrayscaleDarkBase16: 'Stupně šediDarkBase16 řekl:'
+GrayscaleLightBase16: Stupně šediSvětlá základna16
+Green: Zelený
+GreenScreenBase16: 'GreenScreenBase16 řekl:'
+GreenYellow: ZelenáŽlutá
+Grid: Mřížka
+Grid_Enhanced: Grid_Enhanced
+GridCompact: GridCompact
+GridIcon: Ikona mřížky
+Groove: Drážka
+Group: Skupina
+Group by types: Seskupení podle typů
+GroupBox: Skupinový box
+GroupId: ID skupiny
+GroupingEnabled: SeskupováníPovoleno
+GroupsInitiallyExpanded: GroupsInitiallyExpanded
+GroupsNested: Vnořené skupiny
+GroupsSticky: GroupsSticky
+GruvboxDarkHardBase16: 'GruvboxDarkHardBase16 řekl:'
+GruvboxDarkMediumBase16: Minová skříňkaTmaváStředníZákladna16
+GruvboxDarkPaleBase16: 'GruvboxDarkPaleBase16 řekl:'
+GruvboxDarkSoftBase16: 'GruvboxDarkSoftBase16 řekl:'
+GruvboxLightHardBase16: 'GruvboxLightHardBase16 řekl:'
+GruvboxLightMediumBase16: Gruvbox Světlá středníZákladna16
+GruvboxLightSoftBase16: 'GruvboxLightSoftBase16 řekl:'
+gsw-CH: Švýcarská němčina (Švýcarsko)
+gsw-FR: Švýcarská němčina (Francie)
+gsw-LI: Švýcarská němčina (Lichtenštejnsko)
+gu-IN: Gudžarátština (Indie)
+GutterBottom: Žlabové dno
+Gutters: Pohasínal
+guz-KE: Gusii (Keňa)
+gv-IM: Manx (Ostrov Man)
+h1: H1
+H1: H1
+h2: H2
+H2: H2
+h3: H3
+H3: H3
+h4: H4
+H4: H4
+h5: H5
+H5: H5
+h6: H6
+H6: H6
+ha-Latn-GH: Hausa (latinka, ghana)
+ha-Latn-NE: Hausa (latina, Niger)
+ha-Latn-NG: Hausa (latinka, Nigérie)
+Haettenschweiler: Haettenschweiler
+HalfOctaveBands: Polooktávová pásma
+Hannah Davis: Hannah Davisová
+HardcoreBase16: 'HardcoreBase16 řekl:'
+Harlow Solid Italic: Harlow plná kurzíva
+Harmonic16DarkBase16: Harmonický16DarkBase16
+Harmonic16LightBase16: Harmonická16 Světelná základna16
+Harrington: Harrington
+haw-US: Havajština (Spojené státy americké)
+he-IL: Hebrejština (Izrael)
+Header.tiff: Header.tiff
+HeadShake: Zatřesení hlavou
+HeatMap: Teplotní mapa
+HeetchDarkBase16: 'HeetchDarkBase16 řekl:'
+HeetchLightBase16: 'HeetchLightBase16 řekl:'
+Height: Výška
+HeliosBase16: 'HeliosBase16 řekl:'
+Hello: Dobrý den
+Hello from dialog: Dobrý den z dialogu
+Hello from dialog 1: Dobrý den z dialogu 1
+Hello from dialog sample page: Pozdrav z ukázkové stránky dialogového okna
+Hello World: Ahoj světe
+Hello...: Dobrý den...
+HelperId: ID pomocníka
+HelperText: Pomocný text
+HelperTextOnFocus: HelperTextOnFocus
+Helvetica: Helvetica
+Helvetica Narrow: Helvetica Úzká
+Here is another Real demo available for: Zde je další ukázka Real dostupná pro
+Here only number is configured to render with NumEdit edit but DataType is string. Also this field is ignored for import: Zde je pouze číslo nakonfigurováno tak, aby se vykreslovalo pomocí úpravy NumEdit, ale DataType je řetězec. Toto pole je také ignorováno pro import
+Here you can edit the users, but only confirm if count is at least 2: Zde můžete upravit uživatele, ale potvrdit pouze to, zda je počet alespoň 2
+Here you can leave a comment for this permission for the current role: Zde můžete zanechat komentář k tomuto oprávnění pro aktuální roli
+Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Zde vidíte, jak můžete pomocí nástroje MudExObjectEdit upravit vlastnosti spuštěné komponenty
+Here you find a Demo how to use the service directly: Zde najdete demo jak službu přímo používat
+Hex: Šestnáctkový
+HEX: ŠESTNÁCTKOVÝ
+HexA: Hexa
+hi-IN: Hindština (Indie)
+Hidden: Schovaný
+Hide: Schovat
+HideContentWhenCollapsed: Skrýt obsah při sbalení
+HideDropDownWhenReadOnly: HideDropDownWhenReadOnly
+High Tower Text: Text vysoké věže
+HighlightSearch: ZvýrazněníVyhledávání
+Hinge: Závěs
+Home: Domov
+Honeydew: Medovice
+HopscotchBase16: 'HopscotchBase16 řekl:'
+HorizonDarkBase16: 'HorizonDarkBase16 řekl:'
+HorizonLightBase16: 'HorizonLightBase16 řekl:'
+Horizontal: Horizontální
+HouseNumber: Číslo
+Houston: Houston
+Houston - 77001: Houston - 77001
+Houston - 77001ender: Houston - 77001ender
+Houstonender: Houstonender
+HoverColor: Barva přechodu
+HoverMode: HoverMode
+HoverOpacity: Vznášející se neprůhlednost
+hr-BA: Chorvatština (Bosna a Hercegovina)
+hr-HR: Chorvatština (Chorvatsko)
+Href: Href
+hsb-DE: Hornolužická srbština (Německo)
+HSL: Vysokorychlostní železnice
+HTML Colors: Barvy HTML
+HtmlTag: HtmlTag
+https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls: https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls
+https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc: https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc
+hu-HU: Maďarština (Maďarsko)
+HumanoidDarkBase16: 'Humanoidní DarkBase16 řekl:'
+HumanoidLightBase16: Humanoidní světelná základna16
+hy-AM: Arménština (Arménie)
+Hybrid: Hybrid
+I agree to the terms and privacy: Souhlasím s podmínkami a ochranou osobních údajů
+I'm a also another separate control inside of the normal input: Jsem také další samostatný ovládací prvek uvnitř normálního vstupu
+I'm a another separate control inside of the normal input: Jsem další samostatný ovládací prvek uvnitř normálního vstupu
+I'm a separate control inside of the normal input: Jsem samostatný ovládací prvek uvnitř normálního vstupu
+ia-001: Interlingua (World)
+IaDarkBase16: 'IaDarkBase16 řekl:'
+IaLightBase16: 'IaLightBase16 řekl:'
+Ian Wright: Ian Wright
+ibb-NG: Ibibio (Nigérie)
+ICaptureService: ICaptureService
+Icon: Ikona
+IconColor: Barva ikony
+IconPicker: Ikona Picker
+IconSize: Velikost ikony
+IcyDarkBase16: 'IcyDarkBase16 řekl:'
+id: id
+Id: Id
+id-ID: Indonéština (Indonésie)
+Idea: Myšlenka
+Identifier: Identifikátor
+If this is set a photo will be taken instead of a video.: Pokud je toto nastaveno, bude místo videa pořízena fotografie.
+If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Pokud se vám tento balíček líbí, označte jej hvězdičkou ⭐ na Githubu a sdílejte jej se svými přáteli. Pokud ne, můžete mi dát hvězdičku i tak a dát mi vědět, co mohu zlepšit, aby to pro vás bylo lepší.
+If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Pokud tyto volby nastavíte jako výchozí. Tyto možnosti budou použity pro všechna dialogová okna, ve kterých nejsou zadány žádné možnosti. Pokračovat?
+ig-NG: Igbo (Nigérie)
+Ignore: Ignorovat
+IgnoredPropertiesForReset: IgnoredPropertiesForReset
+IgnoredRenderControls: IgnoredRenderControls
+ii-CN: Yi (Čína)
+Image format: Formát obrázku
+ImageAsBackgroundImage: ImageAsBackgroundImage
+Images: Obrazy
+ImagesNewLine: ImagesNewLine
+Immediate: Bezprostřední
+ImmediateText: Okamžitý text
+Impact: Dopad
+Import: Dovoz
+ImportExportIcon: Ikona importuexportu
+In: V
+In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: V tomto příkladu se data načítají dynamicky, jakmile se položka poprvé objeví v zobrazení. Komponenta podporuje dva sloty pro obsah
+In this sample you are forced to pick an user: V této ukázce jste nuceni vybrat uživatele
+In this sample you are forced to pick some users: V této ukázce jste nuceni vybrat některé uživatele
+In this sample you are forced to select some users: V této ukázce jste nuceni vybrat některé uživatele
+In this sample you can pick one user: V této ukázce si můžete vybrat jednoho uživatele
+In this sample you can select multiple users: V této ukázce můžete vybrat více uživatelů
+In this sample you can select one user: V této ukázce můžete vybrat jednoho uživatele
+Inches: Palce
+Include Entity fields (Export): Zahrnout pole entity (export)
+Incorrect Password.: Nesprávné heslo.
+IndeterminateIcon: NeurčitáIkona
+Indigo: Indigo
+Indonesia: Indonésie
+Info: Informace
+Info & About: Info & O nás
+InfoContrastText: InfoContrastText
+InfoDarken: InfoDarken
+InfoLighten: Informační osvětlení
+Informal Roman: Neformální latinka
+Information: Informace
+InfoText: Informační text
+inherit: zdědit
+Inherit: Zdědit
+Initial: Počáteční
+InitialColor: Počáteční barva
+InitiallyExpanded: Zpočátku rozšířeno
+InitialMessage: PočátečníMessage
+InitialMessageVisibilityTime: Počáteční zprávaVisibilityTime
+InitialPreset: Předvolba initial
+InitialRender: Počáteční vykreslování
+Inline: Vložený
+Inline Dialog: Vložené dialogové okno
+InlineDialogs: Vložená dialogová okna
+InProgress: Probíhá
+InputClass: Třída InputClass
+InputId: ID vstupu
+InputMode: Režim vstupu
+InputStyle: Vstupní styl
+InputType: Typ vstupu
+Inset: Vložit
+IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
+IntegratedInDialogAsImages: IntegratedInDialogAsImages
+InterimResults: Průběžné výsledky
+Invalid Credentials.: Neplatné přihlašovací údaje.
+IrBlack: IrBlack
+IrBlackBase16: 'IrBlackBase16 řekl:'
+Is Active: je aktivní
+Is Public: je veřejný
+Is Public?: Je veřejná?
+is-IS: Islandština (Island)
+IsActive: IsActive
+IsblEditorDark: IsblEditorDark
+IsblEditorLight: IsblEditorLight
+IsMouseOverChip: IsMouseOverChip
+ISO: ISO
+IsOpen: Je otevřený
+IsotopeBase16: Izotopová báze16
+ISpeechRecognitionService: Služba ISpeechRecognitionService
+IsPredefined: IsPredefined
+it-CH: italština (Švýcarsko)
+it-IT: Italština (Itálie)
+it-SM: italština (San Marino)
+it-VA: italština (Vatikán)
+Italian: Italština
+Item 1: Položka 1
+Item 2: Položka 2
+Item 3: Položka 3
+Item 3, Item 1: Položka 3, Položka 1
+Item 4: Položka 4
+Item 5: Položka 5
+Item One: Položka jedna
+Item Three: Bod tři
+Item Two: Bod dvě
+ItemBackgroundColor: ItemBackgroundColor
+ItemClass: Třída ItemClass
+ItemCollection: Kolekce položek
+ItemContent: Obsah položky
+ItemContentClass: Třída ItemContentClass
+ItemContentStyle: ItemContentStyle
+ItemContentTypo: ItemContentTypo
+ItemList: Seznam položek
+Items: Položky
+ItemsSource: Zdroj položek
+ItemStyle: Položka Style
+ItemWidth: ItemWidth
+iu-CA: Inuktitutština (Kanada)
+iu-Latn-CA: Inuktitutština (latinka, Kanada)
+Ivory: Slonovina
+ja-JP: Japonština (Japonsko)
+JackInTheBox: JackInTheBox
+Jan: Jan
+JavaScript: Jazyk JavaScript
+Jello: Ovocný dezert
+jgo-CM: Ngomba (Kamerun)
+jmc-TZ: Machame (Tanzanie)
+John Doe: Neznámý muž
+Jokerman: Jokerman
+Json: JSON
+Json value is required using {0} type!: Hodnota Json je vyžadována pomocí {0} typu!
+Json value must be a valid json string using {0} type!: Hodnota JSON musí být platný řetězec json používající typ {0}!
+Juice ITC: Šťáva ITC
+Jul: Červenec
+Julia Roberts: Julia Robertsová
+Jun: Jun
+Justify: Ospravedlnit
+jv-Java-ID: Javánština (jávština, Indonésie)
+jv-Latn-ID: Javánština (latinka, Indonésie)
+ka-GE: Gruzínština (Gruzie)
+kab-DZ: Kabyle (Alžírsko)
+kam-KE: Kamba (Keňa)
+kde-TZ: Makonde (Tanzanie)
+kea-CV: Kabuverdianu (Kapverdy)
+Keep scrolling to reveal the content below...: Pokračujte v posouvání a zobrazte obsah níže...
+KeepExisting: KeepExisting
+KeepMaxSizeConstraints: KeepMaxSizeConstraints
+KeepRelations: KeepRelations
+KeepState: Zachovat stav
+Kevin Hart: Kevin Hart
+Key: Klíč
+Key is required!: Klíč je vyžadován!
+KeyDownPreventDefault: Výchozí nastavení KeyDownPreventDefault
+KeyDownStopPropagation: KeyDownStopPropagation
+KeyUpPreventDefault: KeyUpPreventDefault
+KeyUpStopPropagation: KeyUpStopPropagation
+Khaki: Khaki
+khq-ML: Koyra Chiini (Mali)
+ki-KE: Kikuyu (Keňa)
+Kilobytes: Kilobyty
+KimberBase16: 'KimberBase16 řekl:'
+KimbieDark: KimbieDark
+KimbieLight: KimbieLight
+kk-KZ: Kazaština (Kazachstán)
+kkj-CM: Kako (Kamerun)
+kl-GL: Kalaallisut (Grónsko)
+kln-KE: Kalenjin (Keňa)
+km-KH: Khmérština (Kambodža)
+kn-IN: Kannada (Indie)
+ko-KP: Korejština (Severní Korea)
+ko-KR: Korejština (Korea)
+kok-IN: Konkani (Indie)
+Kommunikation - Mikrofon (Voicemod Virtual Audio Device (WDM)): Komunikace - Mikrofon (Voicemod Virtual Audio Device (WDM))
+kr-Latn-NG: Kanuri (latinka, Nigérie)
+ks-Arab-IN: Kašmírština (arabština, Indie)
+ks-Deva-IN: Kašmírština (Dévanágarí, Indie)
+ksb-TZ: Shambala (Tanzanie)
+ksf-CM: Bafia (Kamerun)
+ksh-DE: Kolín nad Rýnem (Německo)
+ku-Arab-IQ: Kurdština (arabština, Irák)
+ku-Arab-IR: Kurdština (arabština, Írán)
+Kunstler Script: Kunstler Script
+kw-GB: Cornish (Spojené království)
+ky-KG: Kyrgyzština (Kyrgyzstán)
+la-VA: Latina (Vatikán)
+Label: Označit
+Label_Description: Popis
+Label_for_Age: Label_for_Age
+Label_for_City: Label_for_City
+Label_for_FirstName: Label_for_FirstName
+Label_for_Gender: Label_for_Gender
+Label_for_HouseNumber: Label_for_HouseNumber
+Label_for_Id: Label_for_Id
+Label_for_Notice: Label_for_Notice
+Label_for_OtherAddresses: Label_for_OtherAddresses
+Label_for_PostalCode: Label_for_PostalCode
+Label_for_ProgramingSkills: Label_for_ProgramingSkills
+Label_for_Street: Label_for_Street
+Label_for_TrueOrFalse: Label_for_TrueOrFalse
+Label_UploadRequests: Soubory
+LabelCustomTab: Karta LabelCustomTab
+LabelDefinedTab: Karta LabelDefined
+lag-TZ: Langi (Tanzanie)
+Landscape: Krajina
+Language: Jazyk
+Languages: Jazyky
+Large: Velký
+LargeZipArchive.zip: LargeZipArchive.zip
+Last Name: Příjmení
+Last Name is required: Příjmení je povinné
+LastName: Příjmení
+Laura Palmer: Laura Palmerová
+Lavender: Levandule
+LavenderBlush: Levandule Tvářenka
+LawnGreen: Trávník Zelený
+LayoutProperties: Vlastnosti rozvržení
+lb-LU: Lucemburská (Luxembourg)
+Leave editor focus to update MudExStructuredDataEditor: Ponechání fokusu editoru pro aktualizaci MudExStructuredDataEditor
+LedBars: LedBars
+Left: Vlevo
+Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): Levá část v MudExSplitPanel. (Všimněte si, že můžete také použít MudExSplitter přímo)
+LegacyRender: LegacyRender
+Legend: Legenda
+LemonChiffon: CitronŠifon
+LetterSpacing: Mezery mezi písmeny
+lg-UG: Ganda (Uganda)
+Library: Knihovna
+LightBlue: Světle modrá
+LightBulb: Žárovka
+LightBulbSize: Velikost žárovky
+LightBulbSizeUnit: Jednotka velikosti žárovky
+LightCoral: Světelný korál
+LightCyan: Světle azurová
+Lightfair: Maják
+LightGoldenrodYellow: SvětlýZlatobýlově žlutá
+LightGray: Světle šedá
+LightGreen: Světle zelená
+LightOnly: SvětlýPouze
+LightPink: Světle růžová
+LightSalmon: Mořský losos
+LightSeaGreen: SvětelnáZelená
+LightSkyBlue: Světlá obloha
+LightSlateGray: SvětláŠedáBřidlicová
+LightSpeed: Rychlost světla
+LightSteelBlue: SvětelnáOcelová modrá
+LightYellow: Světle žlutá
+Lime: Vápno
+LimeGreen: Limetkově zelená
+Line: Řádek
+Linear: Lineární
+LinearAmplitude: Lineární amplituda
+LinearBoost: Technologie LinearBoost
+LineAreaGraph: LineAreaGraph
+LineColor: Barva čáry
+LineHeight: Výška řádku
+Lines: Řádky
+LinesDefault: ŘádkyVýchozí
+LinesInputs: ŘádkyVstupy
+LineWidth: Šířka čáry
+Lioshi: Lioshi
+List: Seznam
+List appearance: Vzhled seznamu
+List behavior: Chování seznamu
+List item for MudExList.: Položka seznamu pro MudExList.
+lkt-US: Lakota (Spojené státy americké)
+ln-AO: Lingala (Angola)
+ln-CD: Lingala (Kongo [DRK])
+ln-CF: Lingala (Středoafrická republika)
+ln-CG: Lingala (Kongo)
+lo-LA: Lao (Laos)
+LoadFileDataBytesInBackground: LoadFileDataBytesInBackground
+Loading: Nakládka
+Loading...: Nakládka...
+Local: Místní
+LocalizerPattern: Vzor lokalizátoru
+LockScroll: LockScroll – Zámek posouvání
+Log: Kláda
+Logged In.: Přihlášen.
+Logged Out.: Odhlášen.
+LogicalSurface: Logický povrch
+Login with Keycloak: Přihlášení pomocí Keycloaku
+LoginDescription: Přihlaste se pomocí svých přihlašovacích údajů.
+Logitech BRIO (046d:085e): Logitech BRIO (046d:085e)
+logLevel: Úroveň protokolu
+logo.png: logo.png
+Logout: Odhlášení od sítě
+Logout Confirmation: Opravdu se chcete odhlásit?
+Logout user: Odhlášení uživatele
+London: Londýnský
+London - SW1A 1AA: Londýn - SW1A 1AA
+London - SW1A 1AAender: Londýn - SW1A 1AAender
+LondonTubeBase16: 'LondonTubeBase16 řekl:'
+LoRes: Pánové
+Los Angeles: Los Angeles
+Los Angeles - 90001: Los Angeles - 90001
+Los Angeles - 90001ender: Los Angeles - 90001ender
+lrc-IQ: Severní Luri (Irák)
+lrc-IR: Severní Luri (Írán)
+lt-LT: litevština (Litva)
+lu-CD: Luba-Katanga (Kongo [DRK])
+Lucida Bright: Lucida Brightová
+Lucida Calligraphy: Kaligrafie Lucida
+Lucida Console: Konzole Lucida
+Lucida Fax: Lucida Fax
+Lucida Grande: Lucida Grande
+Lucida Handwriting: Lucida Rukopis
+Lucida Sans: Lucida Sans
+Lucida Sans Typewriter: Lucida Sans Psací stroj
+Lucida Sans Unicode: Lucida Sans Unicode
+LumiBars: LumiBars
+luo-KE: Luo (Keňa)
+luy-KE: Luyia (Keňa)
+lv-LV: Lotyština (Lotyšsko)
+Lyon: Lyon
+Lyon - 69001: Lyon - 69001
+Lyon - 69001ender: Lyon - 69001ender
+Lyrics: Texty písní
+MacintoshBase16: 'MacintoshBase16 řekl:'
+Magneto: Induktor
+Magula: Magula
+mai-IN: Maithili (Indie)
+Mail: Pošta
+Main User: Hlavní uživatel
+MainAddress: Hlavní adresa
+MainSample.WebAssembly.Pages.Page_ObjectEditList+Brand: MainSample.WebAssembly.Pages.Page_ObjectEditList+Značka
+MainSample.WebAssembly.Services.SampleFile: MainSample.WebAssembly.Services.SampleFile
+MainSample.WebAssembly.Services.SampleFileWithStream: MainSample.WebAssembly.Services.SampleFileWithStream
+MainUser: Hlavní uživatel
+Male: Muž
+Manage {0} {1}'s Extended Attributes: Správa rozšířených atributů {0} {1}
+Manage {0} {1}'s Permissions: Správa oprávnění {0} {1}
+Manage {0} {1}'s Roles: Správa rolí {0} {1}
+Manage {0} Extended Attributes: Správa rozšířených atributů {0}
+Manage {0}'s Permissions: Správa oprávnění {0}
+Manage Brands.: Spravovat značky.
+Manage Database Backups.: Spravujte nebo obnovujte zálohy databáze.
+Manage Document Types.: Správa typů dokumentů.
+Manage Extended Attributes: Správa rozšířených atributů
+Manage Languages: Správa jazyků
+Manage Permission: Správa oprávnění
+Manage Products.: Správa produktů.
+Manage Roles: Správa rolí
+Manage Roles.: Spravovat role.
+Manage Translations: Správa překladů
+Manage Users: Správa uživatelů
+Manage your account: Spravujte svůj účet
+Manchester: Manchester
+Manchester - M1 1AE: Manchester - M1 1AE
+Manchester - M1 1AEender: Manchester - M1 1AEender
+Manual: Manuál
+Mar: Ničit
+Margin: Marže
+Mark all: Označit vše
+Mark all as read: Označit vše jako přečtené
+Mark all as unread: Označit vše jako nepřečtené
+Mark as read: Označit přečteno
+Mark as unread: Označit jako nepřečtené
+MarrakeshBase16: MarrákešBase16
+Marseille: Marseille
+Marseille - 13001: Marseille - 13001
+Marseille - 13001ender: Marseille - 13001ender
+mas-KE: Masai (Keňa)
+mas-TZ: Masai (Tanzanie)
+Mask: Maska
+MateriaBase16: 'MateriaBase16 řekl:'
+MaterialBase16: MaterialBase16
+MaterialDarkerBase16: MateriálDarkerBase16
+MaterialLighterBase16: MateriálLehčíZákladna16
+MaterialPalenightBase16: MateriálPalenightBase16
+MaterialVividBase16: MateriálVividBase16
+Matura MT Script Capitals: Hlavní písmena skriptů Matura MT
+MaxCaptureTime: MaxCaptureTime
+MaxChips: MaxChips
+MaxDecibels: Maxdecibely
+MaxFileSize: Maximální velikost souboru
+MaxFPS: MaxFPS
+MaxFrequency: Maximální frekvence
+MaxHeight: MaxHeight
+MaximizeButton: MaximalizovatTlačítko
+MaxItems: MaxItems
+MaxItemWidth: MaxItemWidth
+MaxLength: MaxLength
+MaxLuminance: Maximální svítivost
+MaxMultipleFiles: MaxMultipleFiles
+MaxRecordingTime: MaxRecordingTime
+MaxWidth: MaxWidth
+MaxZoomPixelRatio: MaxZoomPixelRatio
+May: Květen
+Medium: Středně
+MediumSlateBlue: StředníBřidlicově modrá
+MediumSpringGreen: StředníJarní Zelená
+MediumTurquoise: Středně tyrkysová
+MediumVioletRed: StředníFialová Červená
+Megabytes: Megabyty
+Mel: Mel
+MellowPurpleBase16: MellowPurpleBase16
+MenuAnchorOrigin: MenuAnchorOrigin
+MenuMaxHeight: MenuMaxHeight
+MenuTransformOrigin: MenuTransformOrigin
+mer-KE: Meru (Keňa)
+Message will be deleted in {0} seconds: Zpráva bude smazána během {0} sekund
+MessageClass: Třída MessageClass
+MessageStyle: MessageStyle
+MetaCoverImage: MetaCoverImage
+Method 1: Metoda 1
+Method 2: Metoda 2
+MexicoLightBase16: 'MexikoLightBase16 řekl:'
+mfe-MU: Morisyen (Mauricius)
+mg-MG: Malgašština (Madagaskar)
+mgh-MZ: Makhuwa-Meetto (Mosambik)
+mgo-CM: Metaʼ (Kamerun)
+mi-NZ: Maorština (Nový Zéland)
+Michael Scott: Michael Scott
+MicrophoneDeviceId: Identifikátor mikrofonního zařízení
+MidnightBlue: Půlnoční modrá
+Mikrofon (3- RODE NT-USB) (19f7:0003): Mikrofon (3-RODE NT-USB) (19f7:0003)
+Mikrofon (DroidCam Virtual Audio): Mikrofon (DroidCam Virtual Audio)
+Mikrofon (Logitech BRIO) (046d:085e): Mikrofon (Logitech BRIO) (046d:085e)
+Mikrofon (ROG Headset) (0b05:1876): Mikrofon (ROG Headset) (0b05:1876)
+Mikrofon (USB Audio Device) (1b3f:2008): Mikrofon (USB Audio Device) (1b3f:2008)
+Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Voicemod Virtual Audio Device (WDM))
+Millimeters: Milimetry
+MimeRestrictionType: Typ mimeRestrictionType
+MimeTypes: MimeTypy
+MinDecibels: MinDecibely
+MinFrequency: Minimální frekvence
+MinHeight: MinHeight
+Mini: Mini
+MinimizeButton: Minimalizační tlačítko
+MinLuminance: MinLuminance
+MintCream: Mátový krém
+MinZoomLevel: Úroveň MinZoomu
+Mirror: Zrcadlo
+Misc: Různé
+Misc Options: Různé možnosti
+Mistral: Mistral
+MistyRose: MistyRose
+mk-MK: Makedonština (Severní Makedonie)
+ml-IN: Malayalam (Indie)
+mn-MN: Mongolština (Mongolsko)
+mn-Mong-CN: Mongolština (Mongolština, Čína)
+mn-Mong-MN: Mongolština (Mongolština, Mongolsko)
+mni-IN: Manipuri (Indie)
+Moccasin: Mokasín
+MochaBase16: 'MochaBase16 řekl:'
+Modal: Kapitál
+Mode: Režim
+Model with File: Model se souborem
+Modern No. 20: Moderní č. 20
+moh-CA: Mohawk (Kanada)
+Monaco: Monako
+Monitor: Monitor
+MonoBlue: MonoBlue
+Monokai: Monokai
+MonokaiBase16: 'MonokaiBase16 řekl:'
+MonokaiSublime: MonokaiSublime
+Monotype Corsiva: Monotyp Corsiva
+Month: Měsíc
+Montreal: Montreal
+Montreal - H1A 0A1: Montreal - H1A 0A1
+Montreal - H1A 0A1ender: Montreal - H1A 0A1ender
+Montserrat: Montserrat
+Motion: Pohyb
+Mouse: Myš
+MouseOverMessageClass: Třída MouseOverMessageClass
+MouseOverMessageStyle: Myš Přeskup zpráv
+MouseWheelDownAction: Akce MouseWheelDownAction
+MouseWheelUpAction: Akce MouseWheelUpAction
+MoveContent: Přesunout obsah
+mr-IN: Maráthština (Indie)
+MS Outlook: MS Outlook
+MS Reference Sans Serif: MS Reference Bezpatková
+MS Reference Specialty: Referenční specializace MS
+MS Sans Serif: MS bezpatková
+MS Serif: MS patka
+ms-BN: Malajština (Brunej)
+ms-ID: Malajština (Indonésie)
+ms-MY: Malajština (Malajsie)
+ms-SG: Malajština (Singapur)
+mt-MT: Maltština (Malta)
+mua-CM: Mundang (Kamerun)
+mud-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788: mud-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788
+MudAlert: MudAlert
+MudAppBar: MudAppBar
+MudAvatar: MudAvatar
+MudAvatarGroup: Skupina MudAvatar
+MudBadge: Odznak bláta
+MudBlazor Components: Komponenty MudBlazor
+MudBlazor Popover: MudBlazor Popover
+MudBlazor.Extensions.Components.ThemePreset`1[MainSample.WebAssembly.ClientTheme]: MudBlazor.Extensions.Components.ThemePreset'1[MainSample.WebAssembly.ClientTheme]
+MudBreadcrumbs: BlátoStrouhanka
+MudBreakpointProvider: MudBreakpointProvider
+MudButton: Tlačítko bláta
+MudButtonGroup: Skupina MudButtonGroup
+MudCard: MudCard
+MudCardActions: MudCardActions
+MudCardContent: Obsah karty MudCard
+MudCardHeader: Záhlaví karty MudCard.
+MudCardMedia: MudCardMedia
+MudCarouselItem: Položka bahenního kolotoče
+MudChart: MudChart
+MudChat: MudChat
+MudChatBubble: MudChatBubble
+MudChatFooter: MudChatFooter
+MudChatHeader: MudChatHeader
+MudCollapse: BahnKolaps
+MudColorPicker: MudColorPicker
+MudColorStringFormat: MudColorStringFormat
+MudContainer: Nádoba na bahno
+MudContextualActionBar: MudContextualActionBar
+MudDatePicker: MudDatePicker
+MudDateRangePicker: MudDateRangePicker
+MudDialog: MudDialog
+MudDialogContainer: MudDialogContainer
+MudDialogProvider: MudDialogProvider
+MudDivider: MudDivider
+MudDrawer: Zásuvka na bláto
+MudDrawerContainer: MudDrawerContainer
+MudDrawerHeader: Záhlaví šuplíku v bahně
+MudDynamicTabs: MudDynamicTabs
+MudElement: Bahenní element
+MudEx Components: Komponenty MudEx
+MudExAdditionalAdornment: MudExAdditionalOrnamentnment
+MudExAppearance: MudExAppearance
+MudExAppLoader: MudExAppLoader
+MudExAudioPlayer: MudExAudioPlayer
+MudExCaptureButton: MudExCaptureButton
+MudExCaptureOptionsEdit: MudExCaptureOptionsEdit
+MudExCardList: MudExCardList
+MudExCardList with ItemsSource: MudExCardList s ItemsSource
+MudExCardList with ItemsSource and child content: MudExCardList s ItemsSource a podřízeným obsahem
+MudExCardList<TData>: MudExCardList<TData>
+MudExChipSelect: MudExChipSelect
+MudExChipSelect can used to select items from a collection as chips: MudExChipSelect lze použít k výběru položek ze sbírky jako žetony
+MudExChipSelect<T>: MudExChipSelect<T>
+MudExCodeView: MudExCodeView
+MudExCollectionEditor<T>: MudExCollectionEditor<T>
+MudExColor: MudExColor
+MudExColorBubble: MudExColorBubble
+MudExColorEdit: MudExColorEdit
+MudExColorEdit is in general a MudBlazor Picker component specially for the struct MudExColor. But because name MudExColorPicker is already used for an extended ColorPicker this Component is named MusExColorEdit: MudExColorEdit je obecně komponenta MudBlazor Picker speciálně pro strukturu MudExColor. Protože se však název MudExColorPicker již používá pro rozšířený komponentu ColorPicker, má tato komponenta název MusExColorEdit
+MudExColorPicker: MudExColorPicker
+MudExColorUtils: MudExColorUtils
+MudExCss: MudExCss
+MudExCssBuilder: MudExCssBuilder
+MudExCultureSelect: MudExCultureSelect
+MudExDialog: MudExDialog
+MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog je komponenta, která se použije, když chcete zobrazit dialogové okno vložené na stránce se všemi DialogExtensions.
+MudExDivider: MudExDivider
+MudExDropBoxFilePicker: MudExDropBoxFilePicker
+MudExEnumSelect: MudExEnumSelect
+MudExEnumSelect<TEnum>: MudExEnumSelect<TEnum>
+MudExFileDisplay: MudExFileDisplay
+MudExFileDisplayCode: MudExFileDisplayCode
+MudExFileDisplayDialog: MudExFileDisplayDialog
+MudExFileDisplayExcel: MudExFileDisplayExcel
+MudExFileDisplayFont: MudExFileDisplayFont
+MudExFileDisplayHtml: MudExFileDisplayHtml
+MudExFileDisplayOfficeLive: MudExFileDisplayOfficeLive
+MudExFileDisplayStructuredData: MudExFileDisplayStructuredData
+MudExFileDisplayZip: MudExFileDisplayZip
+MudExFontSelect: MudExFontSelect
+MudExFontSelect can used to select one ore more fonts: MudExFontSelect lze použít k výběru jednoho nebo více písem
+MudExGoogleFilePicker: MudExGoogleFilePicker
+MudExGradientText: MudExGradientText
+MudExGravatar: MudExGravatar
+MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar je MudAvatar, který automaticky používá profilový obrázek z gravatar pro e-mailovou adresu
+MudExGrid: MudExGrid
+MudExGrid Enhanced: Vylepšeno MudExGrid
+MudExGridSection: MudExGridSection
+MudExGroupBox: MudExGroupBox
+MudExHtmlEdit: MudExHtmlEdit
+MudExIcon: MudExIcon
+MudExIcon is a simple MudIcon with extended possibilities to set all colors.: MudExIcon je jednoduchý MudIcon s rozšířenými možnostmi nastavení všech barev.
+MudExIconButton: MudExIconButton
+MudExIconPicker: MudExIconPicker
+MudExIconPicker is in general a MudBlazor Picker component specially for selecting an icon.: MudExIconPicker je obecně komponenta MudBlazor Picker speciálně pro výběr ikony.
+MudExImageViewer: MudExImageViewer
+MudExList: MudExList
+MudExList can used to select one ore more items from a bindeable collection.: MudExList lze použít k výběru jedné nebo více položek z kolekce s možností splatnosti.
+MudExList is a component that allows you to select an item from a list of items. It is a wrapper for MudList.: MudExList je komponenta, která vám umožňuje vybrat položku ze seznamu položek. Jedná se o obal pro MudList.
+MudExList<T>: MudExList<T>
+MudExListItem<T>: MudExListItem<T>
+MudExListSubheader is a sub header for MudExList.: MudExListSubheader je podhlaví pro MudExList.
+MudExListSubheader<T>: MudExListSubheader<T>
+MudExMessageDialog: MudExMessageDialog
+MudExObjectEdit: MudExObjectEdit
+MudExObjectEdit and MudExCollectionEditor with a shared config: MudExObjectEdit a MudExCollectionEditor se sdílenou konfigurací
+MudExObjectEdit with virtual property rendering: MudExObjectEdit s vykreslováním virtuálních vlastností
+MudExObjectEdit<T>: MudExObjectEdit<T>
+MudExObjectEditDialog<T>: MudExObjectEditDialog<T>
+MudExObjectEditForm<T>: MudExObjectEditForm<T>
+MudExObjectEditPicker<T>: MudExObjectEditPicker<T>
+MudExOneDriveFilePicker: MudExOneDriveFilePicker
+MudExpansionPanel: MudExpansionPanel
+MudExpansionPanels: MudExpansionPanels
+MudExPicker: MudExPicker
+MudExPickerBase<T>: MudExPickerBase<T>
+MudExPopover: MudExPopover
+MudExPromptDialog: MudExPromptDialog
+MudExPromptDialog Component: Komponenta MudExPromptDialog
+MudExPropertyEdit: MudExPropertyEdit
+MudExSelect: MudExSelect
+MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect lze použít k výběru jedné nebo více položek z kolekce s možností svázání. Tato komponenta také podporuje všechny animace, jako jsou dialogy nebo MudExPopover.
+MudExSelect<T>: MudExSelect<T>
+MudExSelectItem is a select item for MudExSelect.: MudExSelectItem je položka výběru pro MudExSelect.
+MudExSelectItem<T>: MudExSelectItem<T>
+MudExSize is a readonly struct that provides a convenient and type-safe way to deal with size values in the context of MudBlazor components.: MudExSize je struktura určená pouze ke čtení, která poskytuje pohodlný a typově bezpečný způsob, jak pracovat s hodnotami velikosti v kontextu komponent MudBlazor.
+MudExSize<T>: MudExSize<T>
+MudExSlideBar: MudExSlideBar
+MudExSpeechToTextButton: MudExSpeechToTextButton
+MudExSplitPanel: MudExSplitPanel
+MudExSplitPanelItem: MudExSplitPanelItem
+MudExSplitter: MudExSplitter
+MudExStructuredDataEditor: MudExStructuredDataEditor
+MudExStyleBuilder: MudExStyleBuilder
+MudExSvg: MudExSvg
+MudExTagField: MudExTagField
+MudExTagField creates chips when user press on of the specified delimiter or presses enter.: MudExTagField vytváří čipy, když uživatel stiskne zadaný oddělovač nebo stiskne klávesu Enter.
+MudExTagField is a component that allows the user to enter a list of values as chips.: MudExTagField je komponenta, která umožňuje uživateli zadat seznam hodnot jako čipy.
+MudExTagField<T>: MudExTagField<T>
+MudExTaskBar: MudExTaskBar
+MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide  somewhere in your Layout: MudExTaskBar dědí MudExSlideBar a poskytuje panel karet pro výběr nemodálních dialogů. Stačí zadat někde ve vašem rozvržení
+MudExTextField<T>: MudExTextField<T>
+MudExThemeEdit: MudExThemeEdit
+MudExThemeEdit is a powerful component to edit one ore more themes: MudExThemeEdit je výkonná komponenta pro úpravu jednoho nebo více témat
+MudExThemeEdit<TTheme>: MudExThemeEdit<TTheme>
+MudExThemeSelect: MudExThemeSelect
+MudExThemeSelect<TTheme>: MudExThemeSelect<TTheme>
+MudExToggleableSearch: MudExToggleableSearch
+MudExTreeView: MudExTreeView
+MudExTreeView is useful to bind tree structured items. The control that should used can be set with the ViewMode property: MudExTreeView je užitečný pro svázání položek strukturovaných stromem. Ovládací prvek, který by se měl použít, lze nastavit pomocí vlastnosti ViewMode
+MudExTreeView with template: MudExTreeView se šablonou
+MudExTreeView<T>: MudExTreeView<T>
+MudExTreeViewBreadcrumb: MudExTreeViewBreadcrumb
+MudExTreeViewBreadcrumb<T>: MudExTreeViewBreadcrumb<T>
+MudExTreeViewCardGrid: MudExTreeViewCardGrid
+MudExTreeViewCardGrid<T>: MudExTreeViewCardGrid<T>
+MudExTreeViewDefault: MudExTreeViewDefault
+MudExTreeViewDefault<T>: MudExTreeViewDefault<T>
+MudExTreeViewFlatList: MudExTreeViewFlatList
+MudExTreeViewFlatList<T>: MudExTreeViewFlatList<T>
+MudExTreeViewHorizontal: MudExTreeViewHorizontal
+MudExTreeViewHorizontal<T>: MudExTreeViewHorizontal<T>
+MudExTreeViewList: MudExTreeViewList
+MudExTreeViewList<T>: MudExTreeViewList<T>
+MudExUploadEdit: MudExUploadEdit
+MudExUploadEdit<T>: MudExUploadEdit<T>
+MudExVirtualItem: MudExVirtualItem
+MudExVirtualize<TItem>: MudExVirtualize<TItem>
+MudFab: MudFab
+MudField: Bahenní pole
+MudFlexBreak: MudFlexBreak
+MudFocusTrap: PastMudFocusTrap
+MudForm: MudForm (Bahenní tvar)
+MudGrid: MudGrid
+MudHeatMapCell: MudHeatMapCell
+MudHidden: MudHidden
+MudHighlighter: Zvýrazňovač bláta
+MudIcon: MudIcon
+MudIconButton: MudIconButton
+MudImage: MudImage
+MudInputAdornment: MudInputOrnamentnment
+MudInputControl: MudInputControl
+MudInputLabel: MudInputLabel
+MudInputString: MudInputString
+MudItem: MudItem
+MudLayout: MudLayout (Rozvržení bláta)
+MudLink: MudLink
+MudListSubheader: MudListSubheader
+MudMainContent: MudMainContent
+MudMask: Bahenní maska
+MudMenu: MudMenu
+MudMenuItem: MudMenuItem
+MudMessageBox: MudMessageBox
+MudNavGroup: MudNavGroup
+MudNavLink: MudNavLink
+MudNavMenu: MudNavMenu
+MudOverlay: Překrytí bahna
+MudPageContentNavigation: MudPageContentNavigation
+MudPagination: Stránkování bahna
+MudPaper: Papír do bláta
+MudPickerContent: MudPickerObsah
+MudPickerToolbar: Panel nástrojů MudPickerToolbar
+MudPopover: MudPopover
+MudPopoverProvider: MudPopoverProvider
+MudProgressCircular: MudProgressCircular
+MudProgressLinear: MudProgressLinear
+MudRating: Hodnocení bahna
+MudRatingItem: MudRatingItem
+MudRender: MudRender
+MudRTLProvider: MudRTLProvider
+MudScrollToTop: MudScrollToTop
+MudSimpleTable: MudSimpleTable
+MudSkeleton: MudSkeleton
+MudSnackbarElement: MudSnackbarElement
+MudSnackbarProvider: Poskytovatel MudSnackbaru
+MudSpacer: MudSpacer
+MudStack: Zásobník bahna
+MudStep: Mudstep
+MudStepper: Stepper bláta
+MudSwipeArea: MudSwipeArea
+MudTablePager: MudTablePager
+MudTabPanel: Panel MudTabPanel
+MudTabs: MudTabs
+MudTd: MudTd
+MudText: MudText
+MudTextField with additional features: MudTextField s dalšími funkcemi
+MudTFootRow: MudTFootRow
+MudTh: Bahno
+MudTHeadRow: MudTHeadRow
+MudThemeProvider: MudThemeProvider
+MudTimeline: Časová osa bláta
+MudTimelineItem: Položka MudTimelineItem
+MudTimePicker: MudTimePicker
+MudTimeSeriesChart: MudTimeSeriesChart
+MudToggleIconButton: MudToggleIconButton
+MudToolBar: MudToolBar
+MudTooltip: MudTooltip
+MudTr: MudTr
+MudTreeViewItemToggleButton: MudTreeViewItemToggleButton
+MultiSelect: Vícenásobný výběr
+MultiSelection: Vícenásobný výběr
+MultiSelectionAlign: Zarovnání vícenásobného výběru
+MultiSelectionComponent: MultiSelectionComponent
+MultiSelectWithCtrlKey: MultiSelectWithCtrlKey
+My Custom action: Moje vlastní akce
+my-MM: Barmština (Myanmar)
+mzn-IR: Mazanderani (Írán)
+name: Jméno
+Name: Jméno
+Name is required: Jméno je povinné
+Name is required!: Jméno je povinné!
+NameContainerStyle: NázevKontejnerStyl
+Names: Jména
+naq-NA: Název (Namibie)
+Natalie Portman: Natalie Portmanová
+NavajoWhite: NavajoWhite
+NavigationExpandMode: NavigationExpandMode
+NavigationLinkBarClass: NavigationLinkBarClass
+NavigationLinkBarStyle: NavigationLinkBarStyle
+NavigationViewMode: Režim NavigationViewMode
+NavigatorClass: Třída Navigator
+NavigatorPosition: Pozice navigátora
+NavigatorRectangleColor: NavigatorRectangleColor
+NavigatorSizeRatio: NavigatorSizeRatio
+Navy: Námořnictvo
+nb-NO: Norský bokmål (Norsko)
+nb-SJ: Norský bokmål (Špicberky a Jan Mayen)
+nd-ZW: North Ndebele (Zimbabwe)
+nds-DE: Dolní němčina (Německo)
+nds-NL: Dolní němčina (Nizozemsko)
+ne-IN: Nepálština (Indie)
+ne-NP: Nepálština (Nepál)
+NebulaBase16: Základna mlhoviny16
+Never: Nikdy
+New: Nový
+NEW Dialog Drag Drop Mode: NOVINKA Dialogové okno Režim přetažení
+New dialog Feature - SnapDrag: Nový dialog Funkce - SnapDrag
+New Message From {0}: Nová zpráva od {0}
+New MudExStructureDataEditor can used to edit json, xml or yaml string in a MudExObjectEdit: Nový MudExStructureDataEditor lze použít k úpravě řetězců json, xml nebo yaml v MudExObjectEdit
+New Password: Nové heslo
+New User 100: Nový uživatel 100
+New User 101: Nový uživatel 101
+New User 102: Nový uživatel 102
+New User 103: Nový uživatel 103
+New User 104: Nový uživatel 104
+New User 105: Nový uživatel 105
+New User 106: Nový uživatel 106
+New User 107: Nový uživatel 107
+New User 108: Nový uživatel 108
+New User 109: Nový uživatel 109
+New User 110: Nový uživatel 110
+New User 111: Nový uživatel 111
+New User 112: Nový uživatel 112
+New User 113: Nový uživatel 113
+New User 114: Nový uživatel 114
+New User 115: Nový uživatel 115
+New User 116: Nový uživatel 116
+New User 117: Nový uživatel 117
+New User 118: Nový uživatel 118
+New User 119: Nový uživatel 119
+New User 120: Nový uživatel 120
+New User 121: Nový uživatel 121
+New User 122: Nový uživatel 122
+New User 123: Nový uživatel 123
+New User 124: Nový uživatel 124
+New User 125: Nový uživatel 125
+New User 126: Nový uživatel 126
+New User 127: Nový uživatel 127
+New User 128: Nový uživatel 128
+New User 129: Nový uživatel 129
+New User 130: Nový uživatel 130
+New User 131: Nový uživatel 131
+New User 132: Nový uživatel 132
+New User 133: Nový uživatel 133
+New User 134: Nový uživatel 134
+New User 135: Nový uživatel 135
+New User 136: Nový uživatel 136
+New User 137: Nový uživatel 137
+New User 138: Nový uživatel 138
+New User 139: Nový uživatel 139
+New User 140: Nový uživatel 140
+New User 141: Nový uživatel 141
+New User 142: Nový uživatel 142
+New User 143: Nový uživatel 143
+New User 144: Nový uživatel 144
+New User 145: Nový uživatel 145
+New User 146: Nový uživatel 146
+New User 147: Nový uživatel 147
+New User 148: Nový uživatel 148
+New User 149: Nový uživatel 149
+New User 150: Nový uživatel 150
+New User 151: Nový uživatel 151
+New User 152: Nový uživatel 152
+New User 153: Nový uživatel 153
+New User 154: Nový uživatel 154
+New User 155: Nový uživatel 155
+New User 156: Nový uživatel 156
+New User 157: Nový uživatel 157
+New User 158: Nový uživatel 158
+New User 159: Nový uživatel 159
+New User 160: Nový uživatel 160
+New User 161: Nový uživatel 161
+New User 162: Nový uživatel 162
+New User 163: Nový uživatel 163
+New User 164: Nový uživatel 164
+New User 165: Nový uživatel 165
+New User 166: Nový uživatel 166
+New User 167: Nový uživatel 167
+New User 168: Nový uživatel 168
+New User 169: Nový uživatel 169
+New User 170: Nový uživatel 170
+New User 171: Nový uživatel 171
+New User 172: Nový uživatel 172
+New User 173: Nový uživatel 173
+New User 174: Nový uživatel 174
+New User 175: Nový uživatel 175
+New User 176: Nový uživatel 176
+New User 177: Nový uživatel 177
+New User 178: Nový uživatel 178
+New User 179: Nový uživatel 179
+New User 180: Nový uživatel 180
+New User 181: Nový uživatel 181
+New User 182: Nový uživatel 182
+New User 183: Nový uživatel 183
+New User 184: Nový uživatel 184
+New User 185: Nový uživatel 185
+New User 186: Nový uživatel 186
+New User 187: Nový uživatel 187
+New User 188: Nový uživatel 188
+New User 189: Nový uživatel 189
+New User 190: Nový uživatel 190
+New User 191: Nový uživatel 191
+New User 192: Nový uživatel 192
+New User 193: Nový uživatel 193
+New User 194: Nový uživatel 194
+New User 195: Nový uživatel 195
+New User 196: Nový uživatel 196
+New User 197: Nový uživatel 197
+New User 198: Nový uživatel 198
+New User 199: Nový uživatel 199
+New User 200: Nový uživatel 200
+New User 201: Nový uživatel 201
+New User 202: Nový uživatel 202
+New User 203: Nový uživatel 203
+New User 204: Nový uživatel 204
+New User 205: Nový uživatel 205
+New User 206: Nový uživatel 206
+New User 207: Nový uživatel 207
+New User 208: Nový uživatel 208
+New User 209: Nový uživatel 209
+New User 21: Nový uživatel 21
+New User 210: Nový uživatel 210
+New User 211: Nový uživatel 211
+New User 212: Nový uživatel 212
+New User 213: Nový uživatel 213
+New User 214: Nový uživatel 214
+New User 215: Nový uživatel 215
+New User 216: Nový uživatel 216
+New User 217: Nový uživatel 217
+New User 218: Nový uživatel 218
+New User 219: Nový uživatel 219
+New User 22: Nový uživatel 22
+New User 220: Nový uživatel 220
+New User 221: Nový uživatel 221
+New User 222: Nový uživatel 222
+New User 223: Nový uživatel 223
+New User 224: Nový uživatel 224
+New User 225: Nový uživatel 225
+New User 226: Nový uživatel 226
+New User 227: Nový uživatel 227
+New User 228: Nový uživatel 228
+New User 229: Nový uživatel 229
+New User 23: Nový uživatel 23
+New User 230: Nový uživatel 230
+New User 231: Nový uživatel 231
+New User 232: Nový uživatel 232
+New User 233: Nový uživatel 233
+New User 234: Nový uživatel 234
+New User 235: Nový uživatel 235
+New User 236: Nový uživatel 236
+New User 237: Nový uživatel 237
+New User 238: Nový uživatel 238
+New User 239: Nový uživatel 239
+New User 24: Nový uživatel 24
+New User 240: Nový uživatel 240
+New User 241: Nový uživatel 241
+New User 242: Nový uživatel 242
+New User 243: Nový uživatel 243
+New User 244: Nový uživatel 244
+New User 245: Nový uživatel 245
+New User 246: Nový uživatel 246
+New User 247: Nový uživatel 247
+New User 248: Nový uživatel 248
+New User 249: Nový uživatel 249
+New User 25: Nový uživatel 25
+New User 250: Nový uživatel 250
+New User 251: Nový uživatel 251
+New User 252: Nový uživatel 252
+New User 253: Nový uživatel 253
+New User 254: Nový uživatel 254
+New User 255: Nový uživatel 255
+New User 256: Nový uživatel 256
+New User 257: Nový uživatel 257
+New User 258: Nový uživatel 258
+New User 259: Nový uživatel 259
+New User 26: Nový uživatel 26
+New User 260: Nový uživatel 260
+New User 261: Nový uživatel 261
+New User 262: Nový uživatel 262
+New User 263: Nový uživatel 263
+New User 264: Nový uživatel 264
+New User 265: Nový uživatel 265
+New User 266: Nový uživatel 266
+New User 267: Nový uživatel 267
+New User 268: Nový uživatel 268
+New User 269: Nový uživatel 269
+New User 27: Nový uživatel 27
+New User 270: Nový uživatel 270
+New User 271: Nový uživatel 271
+New User 272: Nový uživatel 272
+New User 273: Nový uživatel 273
+New User 274: Nový uživatel 274
+New User 275: Nový uživatel 275
+New User 276: Nový uživatel 276
+New User 277: Nový uživatel 277
+New User 278: Nový uživatel 278
+New User 279: Nový uživatel 279
+New User 28: Nový uživatel 28
+New User 280: Nový uživatel 280
+New User 281: Nový uživatel 281
+New User 282: Nový uživatel 282
+New User 283: Nový uživatel 283
+New User 284: Nový uživatel 284
+New User 285: Nový uživatel 285
+New User 286: Nový uživatel 286
+New User 287: Nový uživatel 287
+New User 288: Nový uživatel 288
+New User 289: Nový uživatel 289
+New User 29: Nový uživatel 29
+New User 290: Nový uživatel 290
+New User 291: Nový uživatel 291
+New User 292: Nový uživatel 292
+New User 293: Nový uživatel 293
+New User 294: Nový uživatel 294
+New User 295: Nový uživatel 295
+New User 296: Nový uživatel 296
+New User 297: Nový uživatel 297
+New User 298: Nový uživatel 298
+New User 299: Nový uživatel 299
+New User 30: Nový uživatel 30
+New User 300: Nový uživatel 300
+New User 301: Nový uživatel 301
+New User 302: Nový uživatel 302
+New User 303: Nový uživatel 303
+New User 304: Nový uživatel 304
+New User 305: Nový uživatel 305
+New User 306: Nový uživatel 306
+New User 307: Nový uživatel 307
+New User 308: Nový uživatel 308
+New User 309: Nový uživatel 309
+New User 31: Nový uživatel 31
+New User 310: Nový uživatel 310
+New User 311: Nový uživatel 311
+New User 312: Nový uživatel 312
+New User 313: Nový uživatel 313
+New User 314: Nový uživatel 314
+New User 315: Nový uživatel 315
+New User 316: Nový uživatel 316
+New User 317: Nový uživatel 317
+New User 318: Nový uživatel 318
+New User 319: Nový uživatel 319
+New User 32: Nový uživatel 32
+New User 320: Nový uživatel 320
+New User 321: Nový uživatel 321
+New User 322: Nový uživatel 322
+New User 323: Nový uživatel 323
+New User 324: Nový uživatel 324
+New User 325: Nový uživatel 325
+New User 326: Nový uživatel 326
+New User 327: Nový uživatel 327
+New User 328: Nový uživatel 328
+New User 329: Nový uživatel 329
+New User 33: Nový uživatel 33
+New User 330: Nový uživatel 330
+New User 331: Nový uživatel 331
+New User 332: Nový uživatel 332
+New User 333: Nový uživatel 333
+New User 334: Nový uživatel 334
+New User 335: Nový uživatel 335
+New User 336: Nový uživatel 336
+New User 337: Nový uživatel 337
+New User 338: Nový uživatel 338
+New User 339: Nový uživatel 339
+New User 34: Nový uživatel 34
+New User 340: Nový uživatel 340
+New User 341: Nový uživatel 341
+New User 342: Nový uživatel 342
+New User 343: Nový uživatel 343
+New User 344: Nový uživatel 344
+New User 345: Nový uživatel 345
+New User 346: Nový uživatel 346
+New User 347: Nový uživatel 347
+New User 348: Nový uživatel 348
+New User 349: Nový uživatel 349
+New User 35: Nový uživatel 35
+New User 350: Nový uživatel 350
+New User 351: Nový uživatel 351
+New User 352: Nový uživatel 352
+New User 353: Nový uživatel 353
+New User 354: Nový uživatel 354
+New User 355: Nový uživatel 355
+New User 356: Nový uživatel 356
+New User 357: Nový uživatel 357
+New User 358: Nový uživatel 358
+New User 359: Nový uživatel 359
+New User 36: Nový uživatel 36
+New User 360: Nový uživatel 360
+New User 361: Nový uživatel 361
+New User 362: Nový uživatel 362
+New User 363: Nový uživatel 363
+New User 364: Nový uživatel 364
+New User 365: Nový uživatel 365
+New User 366: Nový uživatel 366
+New User 367: Nový uživatel 367
+New User 368: Nový uživatel 368
+New User 369: Nový uživatel 369
+New User 37: Nový uživatel 37
+New User 370: Nový uživatel 370
+New User 371: Nový uživatel 371
+New User 372: Nový uživatel 372
+New User 373: Nový uživatel 373
+New User 374: Nový uživatel 374
+New User 375: Nový uživatel 375
+New User 376: Nový uživatel 376
+New User 377: Nový uživatel 377
+New User 378: Nový uživatel 378
+New User 379: Nový uživatel 379
+New User 38: Nový uživatel 38
+New User 380: Nový uživatel 380
+New User 381: Nový uživatel 381
+New User 382: Nový uživatel 382
+New User 383: Nový uživatel 383
+New User 384: Nový uživatel 384
+New User 385: Nový uživatel 385
+New User 386: Nový uživatel 386
+New User 387: Nový uživatel 387
+New User 388: Nový uživatel 388
+New User 389: Nový uživatel 389
+New User 39: Nový uživatel 39
+New User 390: Nový uživatel 390
+New User 391: Nový uživatel 391
+New User 392: Nový uživatel 392
+New User 393: Nový uživatel 393
+New User 394: Nový uživatel 394
+New User 395: Nový uživatel 395
+New User 396: Nový uživatel 396
+New User 397: Nový uživatel 397
+New User 398: Nový uživatel 398
+New User 399: Nový uživatel 399
+New User 40: Nový uživatel 40
+New User 400: Nový uživatel 400
+New User 401: Nový uživatel 401
+New User 402: Nový uživatel 402
+New User 403: Nový uživatel 403
+New User 404: Nový uživatel 404
+New User 405: Nový uživatel 405
+New User 406: Nový uživatel 406
+New User 407: Nový uživatel 407
+New User 408: Nový uživatel 408
+New User 409: Nový uživatel 409
+New User 41: Nový uživatel 41
+New User 410: Nový uživatel 410
+New User 411: Nový uživatel 411
+New User 412: Nový uživatel 412
+New User 413: Nový uživatel 413
+New User 414: Nový uživatel 414
+New User 415: Nový uživatel 415
+New User 416: Nový uživatel 416
+New User 417: Nový uživatel 417
+New User 418: Nový uživatel 418
+New User 419: Nový uživatel 419
+New User 42: Nový uživatel 42
+New User 420: Nový uživatel 420
+New User 421: Nový uživatel 421
+New User 422: Nový uživatel 422
+New User 423: Nový uživatel 423
+New User 424: Nový uživatel 424
+New User 425: Nový uživatel 425
+New User 426: Nový uživatel 426
+New User 427: Nový uživatel 427
+New User 428: Nový uživatel 428
+New User 429: Nový uživatel 429
+New User 43: Nový uživatel 43
+New User 430: Nový uživatel 430
+New User 431: Nový uživatel 431
+New User 432: Nový uživatel 432
+New User 433: Nový uživatel 433
+New User 434: Nový uživatel 434
+New User 435: Nový uživatel 435
+New User 436: Nový uživatel 436
+New User 437: Nový uživatel 437
+New User 438: Nový uživatel 438
+New User 439: Nový uživatel 439
+New User 44: Nový uživatel 44
+New User 440: Nový uživatel 440
+New User 441: Nový uživatel 441
+New User 442: Nový uživatel 442
+New User 443: Nový uživatel 443
+New User 444: Nový uživatel 444
+New User 445: Nový uživatel 445
+New User 446: Nový uživatel 446
+New User 447: Nový uživatel 447
+New User 448: Nový uživatel 448
+New User 449: Nový uživatel 449
+New User 45: Nový uživatel 45
+New User 450: Nový uživatel 450
+New User 451: Nový uživatel 451
+New User 452: Nový uživatel 452
+New User 453: Nový uživatel 453
+New User 454: Nový uživatel 454
+New User 455: Nový uživatel 455
+New User 456: Nový uživatel 456
+New User 457: Nový uživatel 457
+New User 458: Nový uživatel 458
+New User 459: Nový uživatel 459
+New User 46: Nový uživatel 46
+New User 460: Nový uživatel 460
+New User 461: Nový uživatel 461
+New User 462: Nový uživatel 462
+New User 463: Nový uživatel 463
+New User 464: Nový uživatel 464
+New User 465: Nový uživatel 465
+New User 466: Nový uživatel 466
+New User 467: Nový uživatel 467
+New User 468: Nový uživatel 468
+New User 469: Nový uživatel 469
+New User 47: Nový uživatel 47
+New User 470: Nový uživatel 470
+New User 471: Nový uživatel 471
+New User 472: Nový uživatel 472
+New User 473: Nový uživatel 473
+New User 474: Nový uživatel 474
+New User 475: Nový uživatel 475
+New User 476: Nový uživatel 476
+New User 477: Nový uživatel 477
+New User 478: Nový uživatel 478
+New User 479: Nový uživatel 479
+New User 48: Nový uživatel 48
+New User 480: Nový uživatel 480
+New User 481: Nový uživatel 481
+New User 482: Nový uživatel 482
+New User 483: Nový uživatel 483
+New User 484: Nový uživatel 484
+New User 485: Nový uživatel 485
+New User 486: Nový uživatel 486
+New User 487: Nový uživatel 487
+New User 488: Nový uživatel 488
+New User 489: Nový uživatel 489
+New User 49: Nový uživatel 49
+New User 490: Nový uživatel 490
+New User 491: Nový uživatel 491
+New User 492: Nový uživatel 492
+New User 493: Nový uživatel 493
+New User 494: Nový uživatel 494
+New User 495: Nový uživatel 495
+New User 496: Nový uživatel 496
+New User 497: Nový uživatel 497
+New User 498: Nový uživatel 498
+New User 499: Nový uživatel 499
+New User 50: Nový uživatel 50
+New User 500: Nový uživatel 500
+New User 501: Nový uživatel 501
+New User 502: Nový uživatel 502
+New User 503: Nový uživatel 503
+New User 504: Nový uživatel 504
+New User 505: Nový uživatel 505
+New User 506: Nový uživatel 506
+New User 507: Nový uživatel 507
+New User 508: Nový uživatel 508
+New User 509: Nový uživatel 509
+New User 51: Nový uživatel 51
+New User 510: Nový uživatel 510
+New User 511: Nový uživatel 511
+New User 512: Nový uživatel 512
+New User 513: Nový uživatel 513
+New User 514: Nový uživatel 514
+New User 515: Nový uživatel 515
+New User 516: Nový uživatel 516
+New User 517: Nový uživatel 517
+New User 518: Nový uživatel 518
+New User 519: Nový uživatel 519
+New User 52: Nový uživatel 52
+New User 520: Nový uživatel 520
+New User 53: Nový uživatel 53
+New User 54: Nový uživatel 54
+New User 55: Nový uživatel 55
+New User 56: Nový uživatel 56
+New User 57: Nový uživatel 57
+New User 58: Nový uživatel 58
+New User 59: Nový uživatel 59
+New User 60: Nový uživatel 60
+New User 61: Nový uživatel 61
+New User 62: Nový uživatel 62
+New User 63: Nový uživatel 63
+New User 64: Nový uživatel 64
+New User 65: Nový uživatel 65
+New User 66: Nový uživatel 66
+New User 67: Nový uživatel 67
+New User 68: Nový uživatel 68
+New User 69: Nový uživatel 69
+New User 70: Nový uživatel 70
+New User 71: Nový uživatel 71
+New User 72: Nový uživatel 72
+New User 73: Nový uživatel 73
+New User 74: Nový uživatel 74
+New User 75: Nový uživatel 75
+New User 76: Nový uživatel 76
+New User 77: Nový uživatel 77
+New User 78: Nový uživatel 78
+New User 79: Nový uživatel 79
+New User 80: Nový uživatel 80
+New User 81: Nový uživatel 81
+New User 82: Nový uživatel 82
+New User 83: Nový uživatel 83
+New User 84: Nový uživatel 84
+New User 85: Nový uživatel 85
+New User 86: Nový uživatel 86
+New User 87: Nový uživatel 87
+New User 88: Nový uživatel 88
+New User 89: Nový uživatel 89
+New User 90: Nový uživatel 90
+New User 91: Nový uživatel 91
+New User 92: Nový uživatel 92
+New User 93: Nový uživatel 93
+New User 94: Nový uživatel 94
+New User 95: Nový uživatel 95
+New User 96: Nový uživatel 96
+New User 97: Nový uživatel 97
+New User 98: Nový uživatel 98
+New User 99: Nový uživatel 99
+New Values: Nové hodnoty
+New York: New York
+New York - 10001: New York - 10001
+New York - 10001ender: New York - 10001ender
+New Yorkender: New Yorkender
+NextPreset: DalšíPředvolba
+NextToSearchBox: NextToSearchBox
+NextTrack: DalšíTrack
+Niagara Engraved: Niagara Ryté
+Niagara Solid: Niagara Solid
+NightOwl: Noční sova
+nl-AW: Nizozemština (Aruba)
+nl-BE: Nizozemština (Belgie)
+nl-BQ: nizozemština (Bonaire, Svatý Eustach a Saba)
+nl-CW: Nizozemština (Curaçao)
+nl-NL: Nizozemština (Nizozemsko)
+nl-SR: Nizozemština (Surinam)
+nl-SX: Nizozemština (Sint Maarten)
+nmg-CM: Kwasio (Kamerun)
+nn-NO: Norština Nynorsk (Norsko)
+NnfxDark: NnfxDark
+NnfxLight: NnfxLight
+nnh-CM: Ngiemboon (Kamerun)
+No: Ne
+No address: Žádná adresa
+No Allowed Actions: Žádné povolené akce
+No longer update automatically: Již se neaktualizuje automaticky
+No notifications: Žádná oznámení
+No space available: Není k dispozici žádné místo
+NoChips: Žádné žetony
+NodeBorderRadius: Uzel BorderRadius
+NodePadding: Odsazení uzlů
+NoHeader: Metoda NoHeader
+NoIcon: Žádná ikona
+NoModalDialogs: NoModalDialogs
+none: žádný
+None: Žádný
+Nord: Sever
+NordBase16: 'NordBase16 řekl:'
+Normal: Normální
+Not Allowed to add or delete Administrator Role if you have not this role.: Není povoleno přidávat nebo odstraňovat roli správce, pokud tuto roli nemáte.
+Not allowed to Delete this user: Není povoleno smazat tohoto uživatele
+Not Allowed.: Není povoleno.
+Not connected: Není připojeno
+Not Modal Dialogs: Ne modální dialogy
+Note - Media options can't changed after a screen is selected: Poznámka – Po výběru obrazovky nelze změnit možnosti médií
+NoteLabels: Popisky poznámek
+NotFoundMessage: Stránka, kterou jste hledali, neexistuje.
+Notice: Oznámení
+Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Všimněte si, že pokud použijete tuto metodu, můžete zadat odkaz na zpětné volání, kde je metoda umístěna, pokud to neučiníte, odkazem je samotné dialogové okno a v tomto případě musíte mít metodu ve své DialogClass
+Notifications: Upozornění
+Nov: Listopad
+NovaBase16: 'NovaBase16 řekl:'
+NoWrap: Bez obalu
+npm-example-0.0.20.tgz: npm-example-0.0.20.tgz
+nqo-GN: N'Ko (Guinea)
+nr-ZA: South Ndebele (Jižní Afrika)
+nso-ZA: Sesotho sa Leboa (Jihoafrická republika)
+Nuget Package source: Zdroj balíčku NuGet
+Nullable enum: Výčet s možnou hodnotou null
+Nullable Flags Enum: Výčet příznaků s možnou hodnotou null
+Number: Číslo
+numeric: číselný
+nus-SS: Nuer (Jižní Súdán)
+nyn-UG: Nyankole (Uganda)
+Object Edit in Dialog: Dialogové okno Upravit objekt
+ObjectEdit: Upravit objekt
+ObjectEditCG: ObjektEditCG
+ObjectEditCondition: Podmínka úpravy objektu
+ObjectEditConfigured: ObjectEditConfigured
+ObjectEditFile: Soubor úprav objektu
+ObjectEditInDialog: ObjectEditInDialog
+ObjectEditList: ObjectEditList
+ObjectEditPicker: ObjectEditPicker
+ObjectEditTabs: Záložky úprav objektů
+ObjectEditVirtualized: ObjectEditVirtualized
+OBS Virtual Camera: Virtuální kamera OBS
+Obsidian: Obsidián
+oc-FR: Okcitánština (Francie)
+OceanBase16: 'OceanBase16 řekl:'
+OceanicnextBase16: 'OceanicnextBase16 řekl:'
+OCR A Extended: OCR A rozšířené
+Oct: Osmičkový
+Official MudBlazor website: Oficiální stránky MudBlazor
+Offline: Offline
+OffsetX: Posun X
+OffsetY: Odnože
+Ok: Ok
+Old English Text MT: Staroanglický text MT
+Old Paint: Starý nátěr
+Old paint found on a stone house door.: Stará barva nalezená na kamenných dveřích domu.
+Old Values: Staré hodnoty
+OldLace: Stará krajka
+Olive: Oliva
+OliveDrab: OliveDrab
+om-ET: Oromo (Etiopie)
+om-KE: Oromo (Keňa)
+OnClickStopPropagation: OnClickStopPropagation
+OnContextMenuPreventDefault: OnContextMenuPreventDefault
+OnContextMenuStopPropagation: OnContextMenuStopPropagation
+OnCustomSelect: Volba OnCustomSelect
+OnDefinedSelect: Volba OnDefinedSelect
+One Drive: Jedna jednotka
+OnedarkBase16: 'OnedarkBase16 řekl:'
+OneDrive file picker component: Komponenta pro výběr souborů OneDrive
+OneDriveClientId: OneDriveClientId
+OneEighthOctaveBands: Jedna osmioktávová pásma
+OneFourthOctaveBands: JedenČtvrtáOktávová pásma
+OneLightBase16: OneLightBase16
+OneSixthOctaveBands: OneSixthOctaveBands
+OneThirdOctaveBands: TřetinováOktávová pásma
+OneTwelfthOctaveBands: Jedna dvanáctioktávová pásma
+OneTwentyFourthOctaveBands: JedenDvacet ČtvrtáOktávová Pásma
+Online: Online
+Only Selected Group (Export): Pouze vybraná skupina (export)
+OnlyValidateIfDirty: OnlyValidateIfDirty
+OnPlay: OnPlay
+Onyx: Onyx
+Opacity: Neprůhlednost
+OpacityNotFocused: OpacityNotFocused
+Open: Otevřený
+Open in new browser tab: Otevřít v nové záložce prohlížeče
+Open now: Otevřený
+Open Url {0}: Otevřít adresu URL {0}
+Open Url {0} in a new browser tab: Otevření {0} adresy URL na nové kartě prohlížeče
+OpenIcon: OtevřítIkona
+Optima: Optimum
+Options: Volby
+or-IN: Odia (Indie)
+Orange: Pomeranč
+OrangeRed: Oranžově červená
+Orchid: Orchidea
+Orientation: Orientace
+Original Code Gator DynamicForm: Původní kód Gator DynamicForm
+os-GE: Ossetic (Gruzie)
+os-RU: Ossetic (Rusko)
+Osaka: Osaka
+Osaka - 530-0001: Ósaka - 530-0001
+Osaka - 530-0001ender: Ósaka - 530-0001ender
+Oscar Wilde: Oscar Wilde
+Other: Jiný
+Other Components: Další komponenty
+OtherAddresses: Jiné adresy
+Otherwise the full image will be downloaded: V opačném případě se stáhne celý obrázek
+Ottawa: Ottawa
+Ottawa - K1A 0A1: Ottawa - K1A 0A1
+Ottawa - K1A 0A1ender: Ottawa - K1A 0A1ender
+Out: Ven
+OuterClass: Vnější třída
+OutlineBars: Obrysové pruhy
+Outlined: Obtažen
+OutrunDarkBase16: 'OutrunDarkBase16 řekl:'
+Outset: Začátek
+OverflowBehavior: Chování při přetečení
+Overlay: Překrytí
+OverlayChildContent: PřekryvnýPotomský obsah
+OverlayDark: PřekrytíTmavý
+OverlayLight: Překrytí světla
+overline: Nadtržítko
+Overline: Nadtržítko
+OverscanCount: Nadměrný počet skenů
+Overview: Přehled
+Owner: Vlastník
+pa-Arab-PK: Paňdžábština (arabština, Pákistán)
+pa-IN: Paňdžábština (Indie)
+Palatino: Palatin
+Palatino Linotype: Palatino Linotyp
+PaleGreen: Bledě zelená
+Palette: Paleta
+PaletteDark: PaletteDark
+PaletteIcon: Ikona palety
+PaletteLight: Světlo palety
+PaleTurquoise: PaleTyrkysová
+PaleVioletRed: Bleděfialově červená
+Pan: Pán
+pap-029: Papiamento (Karibik)
+PapayaWhip: PapayaWhip
+Paper: Papír
+PapercolorDarkBase16: Barva papíruDarkBase16
+PapercolorLightBase16: Barva papíruLightBase16
+Papyrus: Papyrus
+ParaisoBase16: 'ParaisoBase16 řekl:'
+ParaisoDark: ParaisoDark
+ParaisoLight: ParaisoLight
+ParametersForSubControls: Parametry pro dílčí ovládací prvky
+Parchment: Pergamen
+Paris: Pařížský
+Paris - 75001: Paříž - 75001
+Paris - 75001ender: Paris - 75001ender
+PasqueBase16: 'PasqueBase16 řekl:'
+Password: Heslo
+Password Changed!: Heslo změněno!
+Password Confirmation: Potvrzení hesla
+Password Confirmation is required!: Je vyžadováno potvrzení hesla!
+Password is required!: Heslo je povinné!
+Password must be at least of length 8: Heslo musí být alespoň dlouhé 8
+Password must contain at least one capital letter: Heslo musí obsahovat alespoň jedno velké písmeno
+Password must contain at least one digit: Heslo musí obsahovat alespoň jednu číslici
+Password must contain at least one lowercase letter: Heslo musí obsahovat alespoň jedno malé písmeno
+Password Reset Mail has been sent to your authorized Email.: Na váš autorizovaný e-mail byl odeslán e-mail pro obnovení hesla.
+Password Reset Successful!: Obnovení hesla proběhlo úspěšně!
+Passwords don't match: Hesla se neshodují
+PathSeparator: Oddělovač cest
+Pattern: Vzor
+pcm-Latn-NG: nigerijský pidgin (latinka, Nigérie)
+PeachPuff: Broskvový labutěn
+PeakLine: PeakLine
+Penelope Cruz: Penelope Cruz
+Percentage: Procento
+Permission Name: Název oprávnění
+Perpetua: Permanentní
+Persistent: Vytrvalý
+Personal: Osobní
+Perspective3d: Perspektiva3d
+Peru: Peru
+Peter Griffin: Peter Griffin
+PhdBase16: 'Doktor PHDBASE16 řekl:'
+Philadelphia: Filadelfie
+Philadelphia - 19019: Filadelfie - 19019
+Philadelphia - 19019ender: Philadelphia - 19019ender
+Philadelphiaender: Philadelphiaender
+Phoenix: Fénix
+Phoenix - 85001: Fénix - 85001
+Phoenix - 85001ender: Fénix - 85001ender
+Phone Number: Telefonní číslo
+Phone number {0} is already registered.: Telefonní číslo {0} je již zaregistrováno.
+PhoneNumber: Telefonní číslo
+Picas: Rýče
+Pick Item: Vyberte položku
+Pick Items: Vybrat položky
+Pick one user: Vyberte jednoho uživatele
+Pick some users: Vyberte si některé uživatele
+Picker: Krumpáč
+Picker appearance: Vzhled výběru
+PickerHeight: Výška výběru
+PickerStyle: PickerStyle
+PickerVariant: PickVariant
+PickerWidth: Šířka výběru
+PickFromDropBox: PickFromDropBox
+PickFromGoogleDrive: Vyberte z Disku Google
+PickFromOneDrive: Vyberte si zOneDrive
+PicoBase16: 'PicoBase16 řekl:'
+Pie: Noha
+Pink: Růžový
+Pixels: Pixely
+pl-PL: Polština (Polsko)
+Placeholder: Zástupný
+Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Pohrajte si s MudBlazor a MudBlazor.Extensions v online editoru kódu
+Playbill: Divadelní plakát
+Player: Hráč
+Please confirm your account by <a href='{0}'>clicking here</a>.: Potvrďte prosím svůj účet kliknutím <a href='{0}'>klikněte zde</a>.
+Please enter your name: Zadejte prosím své jméno
+Please reset your password by <a href='{0}'>clicking here</a>.: Obnovte prosím své heslo pomocí <a href='{0}'>klikněte zde</a>.
+Please type {0} to confirm edit: Pro potvrzení úpravy zadejte {0}
+Please upload your personal qualifications and references that confirm your person and qualification: Nahrajte prosím svou osobní kvalifikaci a reference, které potvrzují vaši osobu a kvalifikaci
+Please Wait: Počkejte prosím
+PleaseSelect: ProsímVyberte
+Plum: Švestka
+Points: Výhybka
+PointsOfInterest: Body zájmu
+Pojoaque: Pojoaque
+Poor Richard: Chudák Richard
+PopBase16: 'PopBase16 řekl:'
+Popover: Překryv
+PopoverAnimation: PopoverAnimation
+PopoverAnimationPosition: PopoverAnimationPosition
+PopoverAnimationTimingFunction: Funkce načasování PopoverAnimation
+PopoverClass: Popover– třída
+PopupEveryTime: PopupEveryTime
+PopupOnlyOnce: PopupOnlyOnce
+PopverAnimation: PopverAnimation
+PorpleBase16: 'PorpleBase16 řekl:'
+Portrait: Portrét
+Position: Postavení
+Position/Size Sample: Ukázka pozice/velikosti
+PostalCode: Poštovní směrovací číslo
+PowderBlue: Prášková modrá
+Powerful component to edit a set of items and their properties.: Výkonná komponenta pro úpravu sady položek a jejich vlastností.
+Powerful component to edit an object and its properties.: Výkonná komponenta pro úpravu objektu a jeho vlastností.
+Powerful UI Editor for json, xml or yaml content now also as viewer for MudExFileDisplay: Výkonný editor uživatelského rozhraní pro obsah json, xml nebo yaml nyní také jako prohlížeč pro MudExFileDisplay
+Preferred way on MudExTextField: Preferovaný způsob na MudExTextField
+Preferred way on MudExTextField with For and ChildContent: Upřednostňovaný způsob na MudExTextField s For a ChildContent
+PresetListBehaviour: Chování přednastaveného seznamu
+PresetListClass: PresetListClass
+PresetListMode: PřednastavenýListMode
+PresetListPosition: PřednastavenýSeznamPozice
+PresetListToggleButtonPosition: PresetListToggleButtonPosition
+Presets: Přednastavuje
+Preview: Náhled
+PreviewButtonSize: Velikost tlačítka Náhled
+PreviewFont: Písmo náhledu
+PreviewIcon: Ikona náhledu
+PreviewIconColor: Barva ikony náhledu
+PreviewImageInPresetList: PreviewImageInPresetList
+PreviewImageSize: Velikost náhleduobrázku
+PreviewInIframe: NáhledInIframe
+PreviewMode: Režim náhledu
+PreviousPreset: PředchozíPřednastaveno
+PreviousTrack: PředchozíSledovat
+prg-001: Pruská (svět)
+Primary: Primární
+Primary Key: Primární klíč
+PrimaryContrastText: PrimárníKontrastní text
+PrimaryDarken: PrimaryDarken
+PrimaryLighten: PrimaryLighten
+Print: Tisknout
+PrintButtonIcon: Ikona tlačítka tisku
+Pristina: Priština
+Product Deleted: Produkt smazán!
+Product Not Found!: Produkt nebyl nalezen!
+Product Saved: Produkt zachráněn!
+Product Updated: Produkt aktualizován!
+Products: Produkty
+Products exported: Vyvážené produkty
+Profile: Profil
+Profile Details: Detaily profilu
+Profile picture added.: Přidán profilový obrázek.
+Profile picture deleted.: Profilový obrázek smazán.
+Profile updated: Profil aktualizován
+ProgramingSkills: Programovací dovednosti
+Property1: Vlastnost1
+Property10: Vlastnost10
+Property11: Vlastnost11
+Property12: Vlastnost12
+Property13: Majetek13
+Property14: Vlastnost14
+Property15: Vlastnost15
+Property16: Vlastnost16
+Property17: Majetek17
+Property18: Vlastnost18
+Property19: Vlastnost19
+Property2: Vlastnost2
+Property20: Vlastnost20
+Property21: Vlastnost21
+Property22: Vlastnost22
+Property23: Vlastnost23
+Property24: Vlastnost24
+Property25: Vlastnost25
+Property26: Vlastnost26
+Property27: Vlastnost27
+Property28: Vlastnost28
+Property29: Majetek29
+Property3: Vlastnost3
+Property30: Vlastnost30
+Property31: Majetek31
+Property32: Majetek32
+Property33: Vlastnost33
+Property34: Majetek34
+Property35: Vlastnost35
+Property36: Majetek36
+Property37: Majetek37
+Property38: Vlastnost38
+Property39: Vlastnost39
+Property4: Vlastnost4
+Property40: Majetek40
+Property41: Vlastnost41
+Property42: Vlastnost42
+Property43: Vlastnost43
+Property44: Majetek44
+Property45: Vlastnost45
+Property5: Vlastnost5
+Property6: Vlastnost6
+Property7: Vlastnost7
+Property8: Vlastnost8
+Property9: Vlastnost9
+prs-AF: prs (Afghánistán)
+ps-AF: paštština (Afghánistán)
+ps-PK: paštština (Pákistán)
+PseudoCss: PseudoCS
+pt-AO: Portugalština (Angola)
+pt-BR: Portugalština (Brazílie)
+pt-CH: Portugalština (Švýcarsko)
+pt-CV: Portugalština (Kapverdy)
+pt-GQ: Portugalština (Rovníková Guinea)
+pt-GW: Portugalština (Guinea-Bissau)
+pt-LU: Portugalština (Lucembursko)
+pt-MO: Portugalština (Macao – zvláštní správní oblast AJ)
+pt-MZ: Portugalština (Mosambik)
+pt-PT: Portugalština (Portugalsko)
+pt-ST: Portugalština (Svatý Tomáš a Princův ostrov)
+pt-TL: Portugalština (Východní Timor)
+Public Profile: Veřejný profil
+Pulse: Puls
+Purebasic: Purebasic
+Purple: Nachový
+QtcreatorDark: QtcreatorDark
+QtcreatorLight: QtcreatorLight
+QualiaBase16: 'QualiaBase16 řekl:'
+Qualifications and References: Kvalifikace a reference
+quc-GT: Kʼicheʼ (Guatemala)
+Quentin Tarantino: Quentin Tarantino
+Quick Insights.: Rychlé postřehy.
+Quick Start Guide: Stručný návod k obsluze
+quz-BO: quz (Bolívie)
+quz-EC: quz (Ekvádor)
+quz-PE: quz (Peru)
+Rachel Green: Rachel Greenová
+Radial: Radiální
+RadialInvert: RadiálníInverze
+Radius: Poloměr
+Rage Italic: Rage Kurzíva
+RailscastsBase16: 'RailscastsBase16 řekl:'
+Rainbow: Duha
+Random: Náhodný
+RandomColorUpdateDelay: RandomColorUpdateDelay
+RarArchive.rar: RarArchive.rar
+Rate: Sazba
+Rate must be greater than 0: Sazba musí být větší než 0
+Ravie: Potěšen
+Read More: Více
+Readme: Soubor Readme
+readme.md: readme.md
+ReadOnly: Pouze pro čtení
+Realtime Updates & Insights with SignalR.: Aktualizace a přehledy v reálném čase pomocí nástroje SignalR.
+RebeccaBase16: 'RebeccaBase16 řekl:'
+RebeccaPurple: RebeccaPurple
+Record audio: Záznam zvuku
+Record Audio: Záznam zvuku
+Record Camera: Záznamová kamera
+Record Main Camera: Záznam hlavní kamery
+Record Main Camera Lower Quality: Nahrávejte hlavní kameru v nižší kvalitě
+Record Screen: Obrazovka záznamu
+Recording: Nahrávka
+RecordingAnimation: Animace nahrávání
+RecordingBorderAnimation: RecordingBorderAnimation
+RecordingColor: Barva záznamu
+RecordingIcon: Ikona záznamu
+Red: Červený
+Redirect: Přesměrovat
+Redirecting to {0}: Přesměrování na {0}
+Redirecting...: Přesměrování...
+ReflexAlpha: Reflexní alfa
+ReflexBright: Reflexní světla
+ReflexFit: Reflexní střih
+ReflexRatio: Reflexní poměr
+Refresh: Osvěžit
+Refreshed Token.: Obnovený token.
+Register: Registrace
+Register as: Zaregistrujte se jako
+Register as {0}: Zaregistrujte se jako {0}
+Register here: Zaregistrujte se zde
+Register New User: Registrovat nového uživatele
+Register User: Registrovat uživatele
+Registered Roles: Registrované role
+Registered Users: Registrovaní uživatelé
+Rel: Rel
+Relative: Relativní
+RelativeToParent: RelativeToParent
+RelativeWidth: RelativeWidth
+Reload: Dobít
+Reload Data: Znovu načíst data
+Rem: Rem
+Remember me?: Pamatujete si mě?
+RememberEditedOptions: RememberEditedOptions
+Remove: Odstranit
+Remove All: Odstranit vše
+RemoveErrorAfter: RemoveErrorAfter
+RemoveErrorOnChange: RemoveErrorOnChange
+RemoveItemButtonAlwaysRight: RemoveItemButtonAlwaysRight
+Rename: Přejmenovat
+Rename backup: Přejmenování zálohy
+Render with {0}: Rendrování pomocí {0}
+Render with MudExFileDisplayTiff: Vykreslování pomocí prohlížeče Tiff
+Render with MudExFileDisplayZip: Vykreslování pomocí prohlížeče Zip
+Render with MudExImageViewer: Vykreslování pomocí nástroje MudExImageViewer
+Render with native control: Vykreslování s nativním řízením
+RenderBackLink: RenderBackLink
+RenderChipsAdditional: RenderChipsAdditional
+Rendered Virtualized: Vykreslené virtualizované
+rendered when the item is outside the viewport.: Vykreslí se, když je položka mimo výřez.
+rendered when the item is visible in the viewport.: Vykreslí se, když je položka viditelná ve výřezu.
+RenderHomeLink: RenderHomeLink
+RenderOnlyOnce: RenderOnlyOnce
+Required: Požadovaný
+RequiredError: PožadovanáChyba
+Reset: Resetovat
+Reset {0}: Resetovat {0}
+Reset all: Obnovit vše
+Reset all properties?: Obnovit všechny vlastnosti?
+Reset password: Obnovit heslo
+Reset Password: Obnovit heslo
+Reset to initial data: Obnovit na počáteční data
+Reset view: Obnovit zobrazení
+ResetButtonIcon: Ikona tlačítka ResetButton
+ResetToDefaultFirst: ResetToDefaultFirst
+Resizeable: Nastavitelná velikost
+ResizeMode: ResizeMode
+Resources: Prostředky
+Responsive: Citlivý
+Restart server: Restartovat server
+Restore: Obnovit
+Restore database: Obnovení databáze
+Restore default: Obnovit výchozí nastavení
+Restore finished: Obnovení dokončeno
+Restore in progress. Please wait until the restore is finished. This can take a while.: Probíhá obnova. Počkejte prosím na dokončení obnovy. To může chvíli trvat.
+Revert: Vrátit
+RGB: RGB
+RGBA: Oblast RGBA
+rgba(0,200,83,1): RGBA(0,200;83;1)
+rgba(126,247,160,1): RGBA(126,247,160,1)
+rgba(133,135,145,1): RGBA(133,135,145,1)
+rgba(157,241,250,1): RGBA(157,241,250,1)
+rgba(17,59,83,1): RGBA(17,59,83,1)
+rgba(170,0,0,1): RGBA(170,0,0;1)
+rgba(18,121,66,1): RGBA(18,121,66,1)
+rgba(189,255,207,1): RGBA(189,255,207,1)
+rgba(19,184,232,1): RGBA(19,184,232,1)
+rgba(191,125,17,1): RGBA(191,125,17,1)
+rgba(20,220,113,1): RGBA(20,220,113;1)
+rgba(201,204,207,1): RGBA(201,204,207,1)
+rgba(217,152,13,1): RGBA(217,152,13,1)
+rgba(220,63,17,1): RGBA(220,63,17,1)
+rgba(23,105,142,1): RGBA(23,105,142,1)
+rgba(23,162,88,1): RGBA(23,162,88;1)
+rgba(230,233,235,1): RGBA(230,233,235,1)
+rgba(235,179,35,1): RGBA(235,179,35,1)
+rgba(244,67,54,1): RGBA(244,67,54,1)
+rgba(246,249,251,1): RGBA(246,249,251,1)
+rgba(253,210,47,1): RGBA(253,210,47,1)
+rgba(254,104,0,1): RGBA(254,104,0;1)
+rgba(255,145,2,1): RGBA(255,145;2,1)
+rgba(255,152,0,1): RGBA(255,152,0,1)
+rgba(255,179,31,1): RGBA(255,179,31,1)
+rgba(255,210,84,1): RGBA(255,210;84,1)
+rgba(255,226,115,1): RGBA(255,226,115,1)
+rgba(255,240,163,1): RGBA(255,240,163,1)
+rgba(27,189,102,1): RGBA(27,189,102;1)
+rgba(33,150,243,1): RGBA(33,150,243,1)
+rgba(39,219,245,1): RGBA(39,219,245,1)
+rgba(53,57,64,1): RGBA(53,57,64,1)
+rgba(66,66,66,1): RGBA(66,66,66,1)
+rgba(88,91,98,1): RGBA(88,91,98,1)
+rgba(9,137,194,1): RGBA(9,137,194,1)
+Ridge: Hřeben
+Right: Vpravo
+Right part in MudExSplitPanel.: Pravá část v MudExSplitPanel.
+RightToLeft: ZpravaDoleva
+Ripple: Zvlnění
+RippleOpacity: Zvlnění neprůhlednosti
+RippleOpacitySecondary: RippleOpacitySecondary
+rm-CH: rétorománština (Švýcarsko)
+rn-BI: Rundi (Burundi)
+ro-MD: Rumunština (Moldavsko)
+ro-RO: rumunština (Rumunsko)
+Roboto: Robot
+Rockwell: Rockwell
+Rockwell Condensed: Rockwell kondenzovaný
+Rockwell Extra Bold: Rockwell Extra Bold
+rof-TZ: Rombo (Tanzanie)
+Role: Role
+Role ID: Role ID
+Role Name: Název role
+Roles: Role
+Roles Updated: Role aktualizovány!
+RootName: Kořenový název
+RosPineBase16: 'RosPineBase16 řekl:'
+RosPineDawnBase16: 'RosPineDawnBase16 řekl:'
+RosPineMoonBase16: 'RosPineMoonBase16 řekl:'
+RosyBrown: Růžovohnědá
+Rotate: Otáčet
+RoundBars: Kulaté tyče
+Rounded: Zaokrouhlený
+Routeros: Routeros
+Row: Veslovat
+RowSpan: Rozpětí řádků
+RowsPerPageString: Řádků na stránku
+RoyalBlue: Královská modrá
+ru-BY: Ruština (Bělorusko)
+ru-KG: Ruština (Kyrgyzstán)
+ru-KZ: Ruština (Kazachstán)
+ru-MD: Ruština (Moldavsko)
+ru-RU: Ruština (Rusko)
+ru-UA: Ruština (Ukrajina)
+RubberBand: Gumička
+RubberBandColor: Barva gumového pásu
+RubberBandStyle: Styl gumového pásku
+Runic MT Condensed: Runový MT kondenzovaný
+Runtime: Runtime
+Russian: Ruština
+rw-RW: Kinyarwanda (Rwanda)
+rwk-TZ: Rwa (Tanzanie)
+sa-IN: Sanskrt (Indie)
+SaddleBrown: Sedlová hnědá
+SagelightBase16: Základna Sagelight16
+sah-RU: Sakha (Rusko)
+Salmon: Losos
+Sample Card: Vzorová karta
+Sample Dialog: Ukázkový dialog
+Sample Headline: Ukázkový nadpis
+Sample how to use Theme Select: Ukázka použití funkce Výběr motivu
+Sample mega: Ukázka mega
+Sample to see how you can render and use any component in a dialog as easy as possible: Ukázka toho, jak můžete co nejsnadněji vykreslit a použít jakoukoli komponentu v dialogovém okně
+sample.pdf: sample.pdf
+San Antonio: San Antonio
+San Antonio - 78201: San Antonio - 78201
+San Antonio - 78201ender: San Antonio - 78201ender
+San Diego: San Diego
+San Diego - 92101: San Diego - 92101
+San Diego - 92101ender: San Diego - 92101ender
+San Jose: San José
+San Jose - 95101: San Jose - 95101
+San Jose - 95101ender: San Jose - 95101ender
+SandBoxIframes: PískovištěIframes
+SandcastleBase16: Hrad z písku16
+SandyBrown: SandyBrown
+sans-serif: bezpatkový
+Sans-serif: Bezpatkové
+saq-KE: Samburu (Keňa)
+sat-Olck-IN: Santali (Ol Chiki, Indie)
+Saturation: Sytost
+Save: Uložit
+Save {0} Changes: '{0} Uložit změny'
+Save as: Uložit jako
+Save Changes: Uložit změny
+Save image: Uložit obrázek
+Save Role: Uložit roli
+Save visible area only: Uložit pouze viditelnou oblast
+SaveButtonIcon: Ikona tlačítka SaveButton.
+saved: Uložený!
+sbp-TZ: Sangu (Tanzanie)
+Scale: Škála
+SchoolBook: Učebnice
+Scope: Rozsah
+Screen: Obrazovka
+Script MT Bold: Písmo MT Bold
+Scroll down to discover the content: Přejděte dolů a objevte obsah
+Scroll down to see the behavior: Přejděte dolů a podívejte se na chování
+Scroll to top: Přejděte na začátek
+sd-Arab-PK: Sindhština (arabština, Pákistán)
+sd-Deva-IN: Sindhi (Dévanágarí, Indie)
+se-FI: Severní sámština (Finsko)
+se-NO: Severní sámština (Norsko)
+se-SE: Severní sámština (Švédsko)
+SeaGreen: Mořská zelená
+search: hledání
+Search: Hledání
+Search by users: Vyhledávání podle uživatelů
+Search For {0} Extended Attributes: Hledání {0} rozšířených atributů
+Search for Brands: Vyhledávání značek
+Search for Document Types: Hledání typů dokumentů
+Search For Permissions: Hledat oprávnění
+Search for Roles...: Vyhledávání rolí...
+Search for Trails: Vyhledávání stezek
+Search For User Roles: Vyhledávání uživatelských rolí
+Search For Users: Hledat uživatele
+Search in New Values: Hledat v nových hodnotách
+Search in Old Values: Hledat ve starých hodnotách
+SearchBox: Vyhledávací pole
+SearchBoxAdornment: SearchBoxAdornment
+SearchBoxAutoFocus: SearchBoxAutoFocus
+SearchBoxBackgroundColor: Barva pozadí vyhledávacího pole
+SearchBoxClearable: SearchBoxClearable
+SearchBoxPlaceholder: SearchBoxPlaceholder
+SearchBoxVariant: Varianta vyhledávacího pole
+SearchString: Vyhledávací řetězec
+SeaShell: Lastura
+Secondary: Sekundární
+SecondaryBackgroundForNestedItemHeader: SecondaryBackgroundForNestedItemHeader
+SecondaryContrastText: SekundárníKontrastní Text
+SecondaryDarken: SecondaryDarken
+SecondaryLighten: SekundárníOsvětlení
+Section 0: Oddíl 0
+Section 1: Oddíl 1
+Section 10: Článek 10
+Section 11: Článek 11
+Section 12: Článek 12
+Section 13: Článek 13
+Section 14: Článek 14
+Section 15: Článek 15
+Section 2: Oddíl 2
+Section 3: Oddíl 3
+Section 4: Oddíl 4
+Section 5: Oddíl 5
+Section 6: Oddíl 6
+Section 7: Článek 7
+Section 8: Oddíl 8
+Section 9: Oddíl 9
+Security: Bezpečnost
+See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.: Podívejte se, jak používat MudExFileDisplay k zobrazení obsahu souboru. Také ukázka toho, jak implementovat rozhraní IMudExFileDisplay tak, aby poskytovalo vlastní komponenty pro specifické typy souborů.
+See how to use MudExObjectEdit in a dialog: Podívejte se, jak používat MudExObjectEdit v dialogovém okně
+See how you can use different pickers or delay change event with the MudExColorPicker: Podívejte se, jak můžete použít různé pickery nebo zpozdit událost změny pomocí nástroje MudExColorPicker.
+seh-MZ: Seina (Mosambik)
+Select: Vybrat
+Select a brand: Vyberte značku
+Select All: Vybrat vše
+Select Item: Vybrat položku
+Select Items: Vybrat položky
+Select Language: Vybrat jazyk
+Select sample file (See weather.json to check how own components for files can be created): Vyberte ukázkový soubor (v části weather.json si můžete ověřit, jak lze vytvořit vlastní komponenty pro soubory)
+Select screen: Vybrat obrazovku
+SelectAll: Vybrat vše
+SelectAllPosition: SelectAllPosition
+SelectAllText: SelectAllText
+SelectColorText: Vybrat barevný text
+Selected: Vybraný
+Selected Node: Vybraný uzel
+SelectedBrand: Vybraná značka
+SelectedIndex: VybranýIndex
+SelectedItemBackgroundColor: SelectedItemBackgroundColor
+SelectedItemBorderColor: SelectedItemBorderColor
+SelectedItemColor: SelectedItemColor
+SelectedRequests: Vybrané požadavky
+SelectedValues: SelectedValues
+Selecting: Vybírání
+SelectionList: Výběrový seznam
+SelectionMode: Režim výběru
+SelectionModeIcon: Ikona SelectionMode
+SelectItemsMode: Režim SelectItemsMode
+SelectorsForIgnoreBlur: SelectorsForIgnoreBlur
+SelectorSize: Velikost selektoru
+SelectorsToKeepOpenOnMouseLeave: SelectorsToKeepOpenOnMouseLeave
+SelectValueOnTab: VybratValueOnTab
+SelectVariant: Vybrat variantu
+Send: Poslat
+Send confirmation email: Odeslat potvrzovací e-mail
+Sensitivity: Citlivost
+Sep: Září
+Server restarted successfully: Server byl úspěšně restartován
+ses-ML: Koyraboro Senni (Mali)
+Set as Default options for all Dialogs: Nastavit jako výchozí volby pro všechna dialogová okna
+Set empty/null for auto detection: Nastavit empty/null pro automatickou detekci
+Set new password: Nastavit nové heslo
+Set this to automatically stop recording after the desired time.: Nastavte tuto možnost tak, aby se nahrávání po uplynutí požadované doby automaticky zastavilo.
+Set this to wait before a photo is taken: Nastavte tak, aby se před pořízením fotografie počkalo
+Set this to wait before recording starts: Nastavte tak, aby se počkalo před zahájením nahrávání
+SetChipsOnEnter: SetChipsOnEnter
+SetiUiBase16: 'SetiUiBase16 řekl:'
+SevenZipArchive.7z: SevenZipArchive.7z
+Severity: Závažnost
+sg-CF: Sango (Středoafrická republika)
+ShadesOfPurple: Odstíny fialové
+Shadows: Stíny
+Shake: Třást
+ShapeshifterBase16: 'ShapeshifterBase16 řekl:'
+SharedConfig: SdílenýConfig
+Sharpness: Bystrost
+shi-Latn-MA: Tachelhit (latinka, Maroko)
+shi-Tfng-MA: Tachelhit (Tifinagh, Maroko)
+Show: Ukázat
+Show As Dialog: Dialogové okno Zobrazit jako
+Show as Tree: Zobrazit jako strom
+Show Demo: Zobrazit ukázku
+Show flat: Zobrazit byt
+Show info: Zobrazit info
+Show info for: Zobrazit informace pro
+Show Markup: Zobrazit označení
+Show notification: Zobrazit oznámení
+Show notification while recording: Zobrazit upozornění během nahrávání
+Show on github: Zobrazit na GitHubu
+Show or hide inherited fields from base class: Zobrazit nebo skrýt zděděná pole ze základní třídy
+Show Sample 1: Zobrazit ukázku 1
+Show Sample 2: Zobrazit ukázku 2
+Show Sample 3: Zobrazit ukázku 3
+Show Sample Dialog: Zobrazit ukázkový dialog
+Show Sample Dialog METHOD 1: Zobrazit ukázkové dialogové okno METODA 1
+Show Sample Dialog METHOD 2: Zobrazit ukázkové dialogové okno METODA 2
+Show Sample Dialogs: Zobrazit ukázková dialogová okna
+Show selected: Zobrazit vybrané
+Show With this Options: Zobrazit s těmito možnostmi
+ShowAlpha: ShowAlpha
+ShowAtCursor: ZobrazitAtCursor
+ShowBgColor: ZobrazitBgColor
+Showcard Gothic: Showcard Gothic
+ShowClearButton: ZobrazitPrázdnéTlačítko
+ShowCloseIcon: Zobrazit ikonu zavření
+ShowColorField: ZobrazitBarevnéPole
+ShowColorPreview: ZobrazitBarevnýNáhled
+ShowContentError: Chyba zobrazení obsahu
+ShowCssColorVariables: ZobrazitCssColorVariables
+ShowFileUploadButton: Tlačítko ZobrazitSouborNahrát
+ShowFilterInDrawer: Zobrazit filtr v šuplíku
+ShowFolderUploadButton: ZobrazitSložkuNahrát
+ShowFPS: Zobrazit FPS
+ShowFullScreenButton: Tlačítko Zobrazit celou obrazovku
+ShowHtmlColors: Zobrazit barvy HTML.
+ShowInputs: Zobrazit vstupy
+ShowLogoInDrawer: ZobrazitLogoInDrawer
+ShowModeSwitch: Přepínač ShowModeSwitch
+ShowNavigator: Zobrazit Navigátor
+ShowNotificationWhileRecording: ZobrazitOznámeníZatímNahrávání
+ShowPath: ZobrazitCesta
+ShowPeaks: ShowPeaks
+ShowPresetNameOnChange: ZobrazitPřednastavenýNázevZměny
+ShowPreview: Zobrazit náhled
+ShowPreviewOnClick: Zobrazit náhled při kliknutí
+ShowPrintButton: ZobrazitTiskTlačítko
+ShowProgressForLoadingData: ZobrazitPokrokForLoadingData
+ShowRemainingTimeOnly: Ukázat RemainingTimeOnly
+ShowRenameButton: Tlačítko ZobrazitPřejmenovat
+ShowResetButton: ZobrazitResetTlačítko
+Shows how you can use MudExAdditionalAdornment to ad as many adornments to any MudInput: Ukazuje, jak lze pomocí nástroje MudExAdditionalAdornment přidat libovolný počet ozdob do libovolného souboru MudInput
+ShowSaveButton: ZobrazitUložitTlačítko
+ShowScaleX: Zobrazit ScaleX
+ShowScaleY: Zobrazit měřítko
+ShowSliders: Zobrazit posuvníky
+ShowSpectrumOnRecording: ShowSpectrumOnRecording
+ShowThemeColors: ZobrazitThemeColors
+ShowToolbar: Zobrazit panel nástrojů
+ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
+ShowVisualiser: Zobrazit vizualizér
+ShowZoomInButton: Zobrazit tlačítko ZoomInButton
+ShowZoomOutButton: ZobrazitTlačítko ZoomOut
+ShrinkLabel: Štítek smrštění
+si-LK: Sinhálština (Srí Lanka)
+Side: Bok
+Sienna: Siena
+Sign In: Přihlásit se
+Sign Up: Registrace
+SilkDarkBase16: 'SilkDarkBase16 řekl:'
+SilkLightBase16: SilkLightBase16
+Silver: Stříbro
+Simon Pack: Simon Pack
+Simple: Jednoduchý
+Simple Card List with a hover effect.: Jednoduchý seznam karet s efektem přejetí myší.
+Simple CodeViewer Component: Jednoduchá komponenta CodeViewer
+Simple component to display Html files with MudExFileDisplay: Jednoduchá komponenta pro zobrazení souborů HTML pomocí MudExFileDisplay
+Simple component to display markdown files with MudExFileDisplay: Jednoduchá komponenta pro zobrazení souborů markdown pomocí MudExFileDisplay
+Simple component to expand a Search field: Jednoduchá komponenta pro rozbalení vyhledávacího pole
+Simple Confirmation: Jednoduché potvrzení
+Simple Dialog: Jednoduché dialogové okno
+Simple Dialogs: Jednoduchá dialogová okna
+Simple Enum: Jednoduchý výčet
+Simple Excel file viewer: Jednoduchý prohlížeč souborů Excel
+Simple extended popover that adds Animations and an onblur event to close if a click outside happens.: Jednoduché rozšířené překryvné okno, které přidává animace a událost onblur, která se zavře, pokud dojde ke kliknutí venku.
+Simple extension for MudAvatar to load automatically a profile image for an email address using Gravatar: Jednoduché rozšíření pro MudAvatar pro automatické načtení profilového obrázku pro e-mailovou adresu pomocí Gravataru
+Simple MessageDialog: Jednoduchý dialogDialog zpráv
+Simple Prompt: Jednoduchá výzva
+Simple virtualize component that can be disabled with support for fixed items and ItemsProvider.: Jednoduchá virtualizační komponenta, kterou lze zakázat s podporou pevných položek a ItemsProvider.
+SimpleDialog: Jednoduchý dialog
+SimulateOnHover: SimulateOnHover
+SimulateWithFullSpectrumAudioData: SimulateWithFullSpectrumAudioData
+SimulateWithRandomData: SimulateWithRandomData
+Single: Jednotlivý
+SingleExpand: SingleExpand
+Size: Velikost
+sk-SK: Slovenština (Slovensko)
+Skeleton: Kostra
+SkipSeparator: SkipSeparator
+SkyBlue: Nebeská modř
+sl-SI: Slovinština (Slovinsko)
+SlateBlue: Břidlicově modrá
+SlateGray: Břidlicově šedá
+Slide: Klouzat
+SlideBar: Posuvník
+SlideIn: Zásuvný modul
+sma-NO: Jižní sámština (Norsko)
+sma-SE: Jižní sámština (Švédsko)
+Small: Malý
+smj-NO: Lule Sami (Norsko)
+smj-SE: Lule Sami (Švédsko)
+smn-FI: Inari Sami (Finsko)
+Smoothing: Vyhlazování
+sms-FI: Skoltština Sámština (Finsko)
+sn-Latn-ZW: Shona (latinka, Zimbabwe)
+Snackbar: Bufet
+SnackbarMessageMarkupString: SnackbarMessageMarkupString
+SnackbarMessageRenderFragment: SnackbarMessageRenderFragment
+SnackbarMessageText: SnackbarMessageText
+Snap ITC: Přichycení ITC
+SnapDrag: Funkce SnapDrag
+SnazzyBase16: 'SnazzyBase16 řekl:'
+Snow: Sníh
+so-DJ: Somálština (Džibutsko)
+so-ET: Somálština (Etiopie)
+so-KE: Somálština (Keňa)
+so-SO: Somálština (Somálsko)
+SolarFlareBase16: 'SolarFlareBase16 řekl:'
+SolarFlareLightBase16: SolarFlareLightBase16
+SolarizedDarkBase16: 'SolarizedDarkBase16 řekl:'
+SolarizedLightBase16: Solarizovaná světelná základna16
+Solid: Solidní
+Some: Nějaký
+Some other: Některé další
+SomeOtherInformation: NějakéjinéInformace
+Something went wrong during the refresh token action: Během akce obnovovacího tokenu se něco pokazilo
+SomeUnimportantTestModel: NějakýNedůležitýTestovací Model
+SomeUnimportantTestModel as Json: SomeUnimportantTestModel jako json
+SpaceAround: Vesmír kolem
+SpaceBetween: Mezera mezi
+SpaceEvenly: Rovnoměrně rozmístění
+SpacemacsBase16: 'SpacemacsBase16 řekl:'
+Spacing: Rozteč
+Specify Options...: Určete volby...
+Specify Quick Options...: Určete rychlé volby...
+Spectrum: Spektrum
+SpectrumIcon: SpectrumIcon
+SpinSpeed: Rychlost otáčení
+SplitGradient: RozdělitPřechod
+SplitPanelItem for MudExSplitPanel component: SplitPanelItem pro komponentu MudExSplitPanel
+SpringGreen: Jarní zelená
+sq-AL: albánština (Albánie)
+sq-MK: Albánština (Severní Makedonie)
+sq-XK: Albánština (Kosovo)
+Square: Náměstí
+sr-Cyrl-BA: Srbština (cyrilice, Bosna a Hercegovina)
+sr-Cyrl-ME: Srbština (cyrilice, Černá Hora)
+sr-Cyrl-RS: Srbština (cyrilice, Srbsko)
+sr-Cyrl-XK: Srbština (cyrilice, Kosovo)
+sr-Latn-BA: Srbština (latinka, Bosna a Hercegovina)
+sr-Latn-ME: Srbština (latinka, Černá Hora)
+sr-Latn-RS: Srbština (latinka, Srbsko)
+sr-Latn-XK: Srbština (latinka, Kosovo)
+Src: Src
+Srcery: Srcery
+ss-SZ: siSwati (Svazijsko)
+ss-ZA: siSwati (Jihoafrická republika)
+ssy-ER: Saho (Eritrea)
+st-LS: Sesotho (Lesotho)
+st-ZA: Sesotho (Jižní Afrika)
+StackedBar: Skládaná tyč
+StackoverflowDark: StackoverflowDark
+StackoverflowLight: StackoverflowLight
+Standard - Mikrofon (Voicemod Virtual Audio Device (WDM)): Standard - Mikrofon (Voicemod Virtual Audio Device (WDM))
+Start: Začínat
+Start Capture: Spustit aplikaci Capture
+Start Recording: Spustit nahrávání
+Start recording after: Spustit nahrávání po
+Start/Stop selection: Výběr Start/Stop
+State: Stát
+Static: Statický
+Static card.: Statická karta.
+Static item: Statická položka
+Status: Stav
+SteelBlue: Ocelově modrá
+Stencil: Šablona
+Stereo: Stereo
+Steve Rogers: Steve Rogers
+Store: Obchod
+Stream: Proud
+StreamUrlHandling: Zpracování pomocí streamUrl
+Street: Ulice
+Street 2 2, 32365 City 2: Ulice 2 2, 32365 Město 2
+Strict: Striktní
+StringProperty1: Vlastnost řetězce1
+StringProperty10: Vlastnost řetězce10
+StringProperty11: Vlastnost řetězce11
+StringProperty12: Vlastnost řetězce12
+StringProperty13: Vlastnost řetězce13
+StringProperty14: Vlastnost řetězce14
+StringProperty15: Vlastnost řetězce15
+StringProperty16: Vlastnost řetězce16
+StringProperty17: Vlastnost řetězce17
+StringProperty18: Vlastnost řetězce18
+StringProperty19: Vlastnost řetězce19
+StringProperty2: Vlastnost řetězce2
+StringProperty20: Vlastnost řetězce20
+StringProperty21: Vlastnost řetězce21
+StringProperty22: Vlastnost řetězce22
+StringProperty23: Vlastnost řetězce23
+StringProperty24: Vlastnost řetězce24
+StringProperty25: Vlastnost řetězce25
+StringProperty26: Vlastnost řetězce26
+StringProperty27: Vlastnost řetězce27
+StringProperty28: Vlastnost řetězce28
+StringProperty29: Vlastnost řetězce29
+StringProperty3: Vlastnost řetězce3
+StringProperty30: Vlastnost řetězce30
+StringProperty31: Vlastnost řetězce31
+StringProperty32: Vlastnost řetězce32
+StringProperty33: Vlastnost řetězce33
+StringProperty34: Vlastnost řetězce34
+StringProperty35: Vlastnost řetězce35
+StringProperty36: Vlastnost řetězce36
+StringProperty37: Vlastnost řetězce37
+StringProperty38: Vlastnost řetězce38
+StringProperty39: Vlastnost řetězce39
+StringProperty4: Vlastnost řetězce4
+StringProperty40: Vlastnost řetězce40
+StringProperty41: Vlastnost řetězce41
+StringProperty42: Vlastnost řetězce42
+StringProperty43: Vlastnost řetězce43
+StringProperty44: 'Vlastnost řetězce44 – řekl:'
+StringProperty45: Vlastnost řetězce45
+StringProperty46: Vlastnost řetězce46
+StringProperty47: Vlastnost řetězce47
+StringProperty48: Vlastnost řetězce48
+StringProperty49: Vlastnost řetězce49
+StringProperty5: Vlastnost řetězce5
+StringProperty50: Vlastnost řetězce50 – Vlastnost řetězce
+StringProperty51: Vlastnost řetězce51
+StringProperty52: Vlastnost řetězce52
+StringProperty53: Vlastnost řetězce53
+StringProperty54: Vlastnost řetězce54
+StringProperty55: Vlastnost řetězce55
+StringProperty56: Vlastnost řetězce56
+StringProperty57: Vlastnost řetězce57
+StringProperty58: Vlastnost řetězce58
+StringProperty59: Vlastnost řetězce59
+StringProperty6: Vlastnost řetězce6
+StringProperty60: Vlastnost řetězce60
+StringProperty7: Vlastnost řetězce7
+StringProperty8: Vlastnost řetězce8
+StringProperty9: Vlastnost řetězce9
+Striped: Proužkovaný
+Structured Data Edit: Strukturovaná data Editovat
+StructuredDataEdit: Strukturovaná dataEdit
+Style: Styl
+StyleChip: Stylový čip
+su-Latn-ID: Sundánština (latinka, Indonésie)
+Subject: Předmět
+Subline description for sample card.: Popis podřádku pro vzorovou kartu.
+Submit: Podat
+SubscribeToParentForm2: Přihlásit se k odběru rodičovskéhoFormuláře2
+subtitle1: titulky1
+Subtitle1: Titulky1
+subtitle2: titulky2
+Subtitle2: Titulky2
+Success: Úspěch
+SuccessContrastText: SuccessContrastText
+SuccessDarken: ÚspěchTemný
+SuccessLighten: Osvětlením úspěchu
+SummercampBase16: SummercampBase16
+SummerfruitDarkBase16: 'SummerfruitDarkBase16 řekl:'
+SummerfruitLightBase16: 'SummerfruitLightBase16 řekl:'
+Sunburst: Ve tvaru slunce
+Super sample Content text.: Super ukázka textu obsahu.
+Support: Podpora
+Surface: Povrch
+Surname: Příjmení
+sv-AX: Švédština (Ålandy)
+sv-FI: Švédština (Finsko)
+sv-SE: Švédština (Švédsko)
+sw-CD: Svahilština (Kongo [DRK])
+sw-KE: Kiswahili (Keňa)
+sw-TZ: Svahilština (Tanzanie)
+sw-UG: Kiswahili (Uganda)
+Swagger: Dokumentace API
+Swap: Vyměnit
+Swedish: Švédština
+SweetieBubbleGum-Regular.ttf: SweetieBubbleGum-Regular.ttf
+Swing: Swing
+Switch: Vypínač
+Switch expand button position: Přepnutí polohy tlačítka pro rozbalení
+Switch overlay source: Přepnutí zdroje překrytí
+Symbol: Symbol
+SynthMidnightTerminalDarkBase16: 'SynthMidnightTerminalDarkBase16 řekl:'
+SynthMidnightTerminalLightBase16: Syntetická půlnoční terminálová světelná základna16
+syr-SY: Syrština (Sýrie)
+System: Systém
+System Settings: Nastavení systému
+T3024Base16: 'T3024Base16 řekl:'
+ta-IN: Tamilština (Indie)
+ta-LK: Tamilština (Srí Lanka)
+ta-MY: Tamilština (Malajsie)
+ta-SG: Tamilština (Singapur)
+Table Name: Název tabulky
+TableHover: Vznášení se na tabulce
+TableLines: Řádky tabulky
+TableStriped: TableStriped
+Tada: Potom
+Tag: Den
+TagField: TagPole
+Tahoma: Tahoma
+Take case: Vzít případ
+Take photo after: Pořiďte fotografii po
+Take Photo from Main camera: Pořízení fotografie z hlavního fotoaparátu
+Take Photo from Main camera in 5 seconds: Pořiďte fotografii z hlavního fotoaparátu za 5 sekund
+Take Photo only: Pořizujte pouze fotografie
+Tan: Takže
+TangoBase16: 'TangoBase16 řekl:'
+TarArchive.tar: TarArchive.tar
+Target: Cíl
+Tax: Daň
+Tax must be greater than 0: Daň musí být větší než 0
+te-IN: Telugu (Indie)
+Teal: Modrozelený
+tel: Tel
+Telephone: Telefon
+TemplateClass: Třída šablony
+Temporary: Dočasný
+TenderBase16: 'TenderBase16 řekl:'
+teo-KE: Teso (Keňa)
+teo-UG: Teso (Uganda)
+Tertiary: Terciální
+TertiaryContrastText: Terciární kontrastní text
+TertiaryDarken: TerciaryDarken
+TertiaryLighten: TertiaryLighten
+TEST: TEST
+Test and use components live without required environment: Testování a používání komponent naživo bez požadovaného prostředí
+Test the powerful MudExThemeEdit and change theme colors fonts and more: Otestujte výkonný MudExThemeEdit a změňte barvy motivu, písma a další
+text: Text
+Text: Text
+Text value is required using {0} type!: Textová hodnota je vyžadována pomocí {0} typu!
+TextAddExternal: TextAddExternal
+TextAddFromDropBox: TextAddFromDropBox
+TextAddFromGoogle: TextPřidatZ Googlu
+TextAddFromOneDrive: TextAddFromOneDrive
+TextAddUrl: TextAddUrl – Adresa URL
+TextAddUrlMessage: TextAddUrlMessage
+TextAddUrlTitle: TextAddUrlTitle
+TextDisabled: Zakázáno v textu
+TextDropZone: TextDropZone
+TextErrorDuplicateFile: TextErrorDuplicateFile
+TextErrorExtensionForbidden: TextErrorExtensionForbidden
+TextErrorExtensionNotAllowed: TextErrorExtensionNotAllowed
+TextErrorMaxFileCount: TextErrorMaxFileCount
+TextErrorMaxFileSize: TextErrorMaxFileSize
+TextErrorMimeTypeForbidden: TextErrorMimeTypeForbidden
+TextErrorMimeTypeNotAllowed: TextErrorMimeTypeNotAllowed
+TextFillColor: Barva výplně textu
+TextPrimary: TextPrimary
+TextRemoveAll: TextRemoveAll
+TextSecondary: TextSecondary
+TextStartRecording: TextStartRecording
+TextStartVideoCapture: TextStartVideoCapture
+TextTransform: Transformovat textu
+TextUpdateSuppression: Potlačení aktualizace textu
+TextUploadFile: TextUploadFile
+TextUploadFiles: TextUploadFiles
+TextUploadFolder: Složka pro nahrávání textu
+tg-Cyrl-TJ: Tádžičtina (cyrilice, Tádžikistán)
+th-TH: Thajština (Thajsko)
+The Checker field is required.: Pole Kontrola je povinné.
+The component also provides the <strong>IsVisibleChanged</strong> event, which triggers whenever the visibility of the item changes.: Komponenta také poskytuje událost <strong>IsVisibleChanged</strong>, která se spustí při každé změně viditelnosti položky.
+The content type {0} cannot be displayed without a suitable plugin: Typ obsahu {0} nelze zobrazit bez vhodného pluginu
+The field Number must be between 1 and 100.: Pole Číslo musí být v rozmezí od 1 do 100.
+The file ({0}) has already been added: Soubor ({0}) již byl přidán
+The file has exceeded the maximum size of {0} with {1}. File size is {2}: Soubor překročil maximální velikost {0} s {1}. Velikost souboru je {2}
+The following {0} permissions are also required for permission {1}: Pro {1}oprávnění jsou také vyžadována následující oprávnění {0}
+The following permission is also required for permission {1}: Následující oprávnění je také vyžadováno pro oprávnění {1}
+The maximum file size is 10 MB: Maximální velikost souboru je 10 MB
+The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit je robustní a všestranný nástroj navržený tak, aby efektivně usnadnil úpravy jednoho nebo více témat nebo předvoleb. Ze své podstaty se přizpůsobuje tmavému režimu, světlému režimu nebo kombinaci obou. Navíc podporuje odvozené třídy z MudTheme, stejně jako vlastní vlastnosti, které jsou s ním spojeny, a poskytuje tak komplexní a flexibilní řešení pro všechny vaše požadavky na úpravu motivů.
+The Plugin '{0}' may be able to help: Plugin '{0}' může být schopen pomoci
+The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: Ukázka je stejná jako v druhém příkladu FileDisplay, ale s tím rozdílem, že se nepoužívá žádná adresa URL; Místo toho se načítají a používají datové proudy.
+The server is just restarting. Please wait until the connection has been restored: Server se právě restartuje. Počkejte prosím, dokud nebude připojení obnoveno
+The user "{0}" just changed some of this data: Uživatel "{0}" pouze změnil některé z těchto údajů
+The user {0} has been logged off: Uživatelský {0} byl odhlášen
+The User {0} has just edited, created or deleted entries here. You should reload the data: Uživatel zde {0} právě upravil, vytvořil nebo smazal záznamy. Měli byste data znovu načíst
+Theme: Téma
+Theme Colors: Barvy motivu
+Themes: Témata
+ThemeSelect: TémaVýběr
+There are no new notifications: Nejsou k dispozici žádná nová oznámení
+These features make <strong>MudExVirtualItem</strong> ideal for optimizing performance when working with large datasets or dynamic content that doesn't need to be loaded all at once.: Díky těmto funkcím je <strong>MudExVirtualItem</strong> ideální pro optimalizaci výkonu při práci s velkými datovými sadami nebo dynamickým obsahem, který není nutné načítat všechny najednou.
+This bar can be positioned left, right, top or bottom, and expands automatically on mouseover. This is also the Base component for the MudExTaskBar that automatically displays all open dialogs: Tento pruh může být umístěn vlevo, vpravo, nahoře nebo dole a po najetí myší se automaticky rozbalí. Toto je také základní komponenta pro MudExTaskBar, která automaticky zobrazuje všechny otevřené dialogy
+This changes the Variant if Age is at least 18 and is enabled if Age is more than 1: Tím se změní varianta, pokud je Věk alespoň 18 a je povolena, pokud je Věk větší než 1
+This component and the dialog no modal behaviour is still in development and not ready for production use. Please report any issues you find on GitHub.: Tato komponenta a dialog Žádné modální chování jsou stále ve vývoji a nejsou připraveny pro použití v produkčním prostředí. Nahlaste prosím všechny problémy, které najdete na GitHubu.
+This component uses the ICaptureService to capture audio and/or video data: Tato komponenta používá ICaptureService k zachycení zvukových nebo obrazových dat
+This component uses the ISpeechRecognitionService to record audio data and transcripts: Tato komponenta používá ISpeechRecognitionService k záznamu zvukových dat a přepisů
+This Demo demonstrate using for the MudExCardList: Tato ukázka demonstruje použití pro MudExCardList
+This Demo demonstrate using the MudExAudioPlayer without the automatic use in MudExFileDisplay: Tato ukázka demonstruje použití MudExAudioPlayer bez automatického použití v MudExFileDisplay
+This Demo demonstrate using the MudExCardList with an item source: Tato ukázka ukazuje použití MudExCardList se zdrojem položek
+This Demo demonstrate using the MudExCardList with an item source and child content together: Tato ukázka ukazuje použití MudExCardList se zdrojem položky a podřízeným obsahem společně
+This Demo demonstrate using the MudExImageViewer without the automatic use in MudExFileDisplay: Tato ukázka ukazuje použití MudExImageViewer bez automatického použití v MudExFileDisplay
+This demo showcases the <strong>MudExVirtualItem</strong> component, a virtualized container that efficiently renders content<br/> only when it becomes visible in the viewport.: Tato ukázka představuje komponentu <strong>MudExVirtualItem</strong>, virtualizovaný kontejner, který efektivně vykresluje obsah<br/> pouze tehdy, když se stane viditelným ve výřezu.
+This demo shows how to pass a can close method: Tato ukázka ukazuje, jak předat metodu může zavřít
+This demo shows how you can use a selection with MudExSelect with a custom item provider: Tato ukázka ukazuje, jak můžete použít výběr s MudExSelect s vlastním poskytovatelem položek
+This demo uses SnapDrag as DragMode on the DialogOptionsEx: Tato ukázka používá SnapDrag jako DragMode na DialogOptionsEx
+This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open: Tato ukázka používá IDialogEventService ke kontrole, změně velikosti nebo přetažení a uloží nejnovější pozici a velikost jako relativní hodnoty a obnoví je při příštím otevření
+This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: To ukazuje komponentu MudExThemeEdit, která interně používá MudExObjectEdit a MudExThemeSelect pro úpravy motivu
+This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: Tato ukázka ukazuje doporučený způsob použití MudExAdditionalAdornment s použitím RenderFragments "For" a "ChildContent"
+This dialog can confirmed when slider value is greater then 10: Toto dialogové okno může potvrdit, když je hodnota posuvníku větší než 10
+This is a Json representation of the TestModel. This is ignored for Export and Import: Toto je reprezentace JSON TestModel. Tato možnost se ignoruje při exportu a importu
+This is a simple information dialog that closes after {0} seconds: Jedná se o jednoduchý informační dialog, který se zavře po {0} sekundách
+This is a simple information dialog that closes after 0 seconds: Jedná se o jednoduchý informační dialog, který se zavře po 0 sekundách
+This is a simple information dialog that closes after 1 seconds: Jedná se o jednoduchý informační dialog, který se zavře po 1 sekundě
+This is a simple information dialog that closes after 2 seconds: Jedná se o jednoduchý informační dialog, který se zavře po 2 sekundách
+This is a simple information dialog that closes after 3 seconds: Jedná se o jednoduchý informační dialog, který se zavře po 3 sekundách
+This is a simple information dialog that closes after 4 seconds: Jedná se o jednoduchý informační dialog, který se zavře po 4 sekundách
+This is a simple information dialog that closes after 5 seconds: Jedná se o jednoduchý informační dialog, který se zavře po 5 sekundách
+This is an Administrator Only View.: Toto je zobrazení pouze pro správce.
+This is the MudEx Default theme: Toto je MudEx Výchozí téma
+This is the sample Popover. In general it inherits the original MudPopover.: Toto je ukázkový překryvný překryv. Obecně zdědí původní MudPopover.
+This one card is still added without an corresponding item.: Tato jedna karta je stále přidána bez odpovídající položky.
+This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: To se předává jako metoda do možností dialogu. Dialogové okno se nezavře, pokud metoda vrátí hodnotu false. Výsledkem musí být bool nebo Task&lt;bool&gt;
+This photo was taken in a small village in Istra Croatia.: Tato fotografie byla pořízena v malé vesnici v Istrii v Chorvatsku.
+This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Tento výběr přináší animace, lepší chování a dialog, který podporuje všechny DialogOptions. Chcete-li vytvořit vlastní komponentu picker jus inherit z MudExPickerBase, nebo pouze použít jednoduchý obsah, použijte MudExPicker
+This sample demonstrate how to use the MudExCaptureService: Tato ukázka ukazuje, jak používat službu MudExCaptureService
+This sample demonstrate the usage of MudExTreeView with an Item template: Tato ukázka ukazuje použití MudExTreeView se šablonou položky
+This sample uses the IDialogEventService to cancel the dialog close: Tato ukázka používá IDialogEventService ke zrušení zavření dialogového okna
+This sample uses the options for a can close callback: Tato ukázka používá možnosti pro zpětné volání může zavřít
+This section can be placed inside a MudExGrid component.: Tato část může být umístěna uvnitř komponenty MudExGrid.
+Thistle: Bodlák
+ThrottleInterval: Interval škrticí klapky
+ti-ER: Tigrinya (Eritrea)
+ti-ET: Tigrinya (Etiopie)
+tig-ER: Tigre (Eritrea)
+Tilt: Naklonění
+Time: Čas
+Times: Krát
+Times New Roman: Časy Nový Roman
+TimeSeries: Časová řada
+Tina Fey: Tina Feyová
+Title: Titul
+Title is required!: Název je povinný!
+tk-TM: Turkmen (Turkmenistán)
+tn-BW: Setswana (Botswana)
+tn-ZA: Setswana (Jihoafrická republika)
+to-TO: Tonžan (Tonga)
+Toggle loading: Přepnout načítání
+Toggle right-to-left/left-to-right: Přepnout zprava doleva/zleva doprava
+Toggle to {0}: Přepnout na {0}
+Toggleable: Přepínatelné
+ToggleAllFeatures: ToggleAllFeatures
+ToggleFullPage: ToggleFullPage
+ToggleFullscreen: PřepnutíCelá obrazovka
+ToggleMicrophone: Přepínací mikrofon
+TogglePictureInPicture: PřepnutíObrázekInPicture
+TogglePlayPause: TogglePlayPause
+Token is required: Token je povinný
+Token Not Found!: Token nebyl nalezen!
+Tokyo: Tokio
+Tokyo - 100-0001: Tokio - 100-0001
+Tokyo - 100-0001ender: Tokio - 100-0001ender
+Tomato: Rajče
+TomorrowBase16: 'TomorrowBase16 řekl:'
+TomorrowNightBase16: 'TomorrowNightBase16 řekl:'
+TomorrowNightBlue: TomorrowNightBlue
+TomorrowNightBright: TomorrowNightBright
+ToolbarBackgroundColor: Barva pozadí panelu nástrojů
+ToolbarButtonColor: Barva tlačítka panelu nástrojů
+ToolbarButtonPosition: Pozice tlačítka panelu nástrojů
+ToolbarButtonSize: Velikost tlačítka Toolbar
+ToolbarButtonVariant: ToolbarButtonVariant
+ToolbarClass: Třída Toolbar
+ToolBarClass: Třída ToolBarClass
+ToolbarStyle: Styl panelu nástrojů
+ToolBarStyle: ToolBarStyle
+Tooltip: Popisek nástroje
+ToolTip: Popisek nástroje
+ToolTip Three: Popisek tři
+ToolTip Two: Popisek dva
+ToolTipStyle: ToolTipStyle
+Top: Vrchol
+TopCenter: Horní centrum
+TopLeft: Vlevo nahoře
+TopRight: Vpravo nahoře
+Torch: Pochodeň
+Toronto: Toronto
+Toronto - M1B 1A1: Toronto - M1B 1A1
+Toronto - M1B 1A1ender: Toronto - M1B 1A1ender
+tr-CY: Turečtina (Kypr)
+tr-TR: Turečtina (Turecko)
+Trace: Stopa
+TrackInfoPosition: TrackInfoPosition
+TrackList: Seznam skladeb
+TrackListBehaviour: Chování v seznamu stop
+TrackListClass: Třída TrackListClass
+TrackListCoverImage: TrackListCoverImage
+TrackListMode: Režim seznamu stop
+TrackListPosition: Pozice v seznamu stop
+TrackListToggleButtonPosition: TrackListToggleButtonPosition
+Trail Details: Podrobnosti o stezce
+TransformOrigin: Původ transformace
+Translations: Překlady
+Translations are being imported: Importují se překlady
+Translations updated: Překlady aktualizovány
+Transparent: Transparentní
+Trebuchet MS: Trebuchet MS
+TreeView: Pohled na strom
+TreeView component that renders a tree structure of items.: Komponenta TreeView, která vykresluje stromovou strukturu položek.
+TreeViewBreadcrumb: TreeViewDrobečková navigace
+TreeViewCardGrid: TreeViewCardGrid
+TreeViewDefault: TreeViewDefault
+TreeViewFlatList: TreeViewFlatList
+TreeViewHorizontal: TreeViewHorizontal
+TreeViewList: Seznam zobrazení stromů
+TreeViewMode: Režim TreeViewMode
+TrueLeds: TrueLED diody
+TrueOrFalse: Pravda nebo nepravda
+Try different role: Zkuste jinou roli
+Try MudEx online: Vyzkoušejte MudEx online
+Try MudEx online CodeEditor: Vyzkoušejte MudEx online CodeEditor
+ts-ZA: Xitsonga (Jižní Afrika)
+tt-RU: Tatarština (Rusko)
+Turquoise: Tyrkys
+TwilightBase16: Soumraková základna16
+twq-NE: Tasawaq (Niger)
+Type: Typ
+Type should be valid: Typ by měl být platný
+Typo: Překlep
+TypoThemeDescription: TypoThemeDescription
+TypoThemeName: TypoThemeName
+tzm-Arab-MA: Centrální Atlas Tamazight (arabština, Maroko)
+tzm-Latn-DZ: Central Atlas Tamazight (latinka, Alžírsko)
+tzm-Latn-MA: Centrální atlas Tamazight (latinka, Maroko)
+tzm-Tfng-MA: Centrální Atlas Tamazight (Tifinagh, Maroko)
+ug-CN: Ujgurština (Čína)
+uk-UA: Ukrajinština (Ukrajina)
+Uma Thurman: Uma Thurman
+Unassigned: Nepřiřazeno
+UncheckedIcon: NezaškrtnutoIkona
+Underline: Podtrhnout
+Undo: Odčinit
+UndoIcon: Zpět Ikona
+UnikittyDarkBase16: UnikittyDarkBase16
+UnikittyLightBase16: UnikittyLightBase16
+Unselectable: Nevolitelné
+Unset: Neurovnaný
+Update: Aktualizace
+Update automatically next time: Příště automaticky aktualizovat
+Update Brand: Aktualizovat značku
+Update Document: Aktualizovat dokument
+Update Document Type: Aktualizovat typ dokumentu
+Update Extended Attribute: Aktualizovat rozšířený atribut
+Update Now: Aktualizovat nyní
+Update Permissions: Aktualizovat oprávnění
+Update Product: Aktualizovat produkt
+Update Role: Role aktualizace
+Update Role Permissions: Aktualizace oprávnění role
+Update User Roles: Aktualizace rolí uživatelů
+UpdateBindingIfOnlyHSLChanged: UpdateBindingIfOnlyHSLChanged
+Updated: Aktualizovaný
+Updated User Status.: Aktualizován stav uživatele.
+UpdateItemsOnStateChange: AktualizaceItemsOnStateChange
+Upload: Upload
+Upload Edit: Nahrát Upravit
+Upload File: Nahrát soubor
+Upload Files: Vkládat
+Upload Folder: Odeslat složku
+Upload Image: Nahrát obrázek
+Upload in dialog: Dialogové okno Nahrát do
+Upload Qualifications and References: Nahrát kvalifikaci a reference
+UploadFieldId: UploadFieldId
+UploadFile: Nahrát soubor
+UploadFolder: Složka pro nahrávání
+UploadRequest: Žádost o nahrání
+UploadRequests: Žádosti o nahrání
+ur-IN: Urdština (Indie)
+ur-PK: Urdština (Pákistán)
+url: Adresa URL
+Url: Adresa URL
+Use CodeGator Models: Použití modelů CodeGator
+Use MudExAdditionalAdornment ad ChildContent: Použití reklamy MudExAdditionalAdornment ChildContent
+Use MudExAdditionalAdornment as ChildContent of a MudInput: Použití souboru MudExAdditionalAdornment jako podřízeného obsahu souboru MudInput
+Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Místo toho použijte MudExSelect a nastavte MultiSelection na true a ValuePresenter na Chip.
+UseCanvas: PoužítPlátno
+UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
+UseItemTemplateForSelection: UseItemTemplateForSelection
+UseMudExColorBubble: PoužitíMudExColorBubble
+UseNativeBrowserControl: UseNativeBrowserControl
+User: Uživatel
+User {0} Registered. Please check your Mailbox to verify!: Uživatel {0} registrován. Zkontrolujte prosím svou poštovní schránku a ověřte svou e-mailovou adresu!
+User and Roles: Uživatelé a role
+User Data: Uživatelské údaje
+User Deleted: Uživatel odstraněn
+User Name: Uživatelské jméno
+User Not Active. Please contact the administrator.: Uživatel není aktivní. Vyčkejte prosím na aktivaci nebo kontaktujte administrátora.
+User Not Found!: Uživatel nenalezen!
+User Registered: Uživatel registrován!
+User Registered Mailbox: Uživatel registrován. Do poštovní schránky byl doručen potvrzovací e-mail.
+User registration is not allowed: Registrace uživatele není povolena
+UserAttributes: Atributy uživatele
+UserInformation: Informace o uživateli
+Username: Uživatelské jméno
+UserName: Uživatelské jméno
+Username {0} is already taken.: Uživatelské jméno {0} je již obsazeno.
+Username cannot changed: Uživatelské jméno nelze změnit
+UserName is required: Je vyžadováno uživatelské jméno
+UserName must be at least of length 6: Uživatelské jméno musí být alespoň dlouhé 6
+Username or Email: Uživatelské jméno nebo e-mail
+Users: Uživatelé
+Users and Roles: Uživatelé a role
+Users exported: Exportovaní uživatelé
+Uses the IDialogEventService and handles the before close event. Here you can just set args.Cancel to true to stop closing: Používá IDialogEventService a zpracovává událost před zavřením. Zde můžete pouze nastavit argy. Zrušit na true pro zastavení zavírání
+UTC: UTC
+Utilities: Nástroje
+uz-Arab-AF: Uzbečtina (Arabština, Afghánistán)
+uz-Cyrl-UZ: Uzbečtina (cyrilice, Uzbekistán)
+uz-Latn-UZ: Uzbečtina (latinka, Uzbekistán)
+vai-Latn-LR: Vai (latinka, Libérie)
+vai-Vaii-LR: Vai (Vai, Libérie)
+Validate Upload Edit in MudForm: Ověření nahrání úprav v aplikaci MudForm
+Validation: Validace
+Value: Hodnota
+ValuePresenter: ValuePresenter
+Values: Hodnoty
+ValueString: Řetězec hodnoty
+Vancouver: Vancouver
+Vancouver - V5K 0A1: Vancouver - V5K 0A1
+Vancouver - V5K 0A1ender: Vancouver - V5K 0A1ender
+Variant: Varianta
+ve-ZA: Venda (Jižní Afrika)
+Verdana: Verdana
+Version: Verze
+vi-VN: Vietnamština (Vietnam)
+Video Content-Type: Typ obsahu videa
+Video device: Video zařízení
+VideoDevice: Videozařízení
+View: Pohled
+View Profile: Zobrazit profil
+ViewBox: ViewBox
+ViewDependsOnContentType: Vlastnost ViewDependsOnContentType
+ViewMode: Režim zobrazení
+ViewportHeight: Výška výřezu
+ViewportMaximum: ViewportMaximum
+ViewportMinimum: Minimální zobrazení
+ViewportWidth: Šířka výřezu
+Viner Hand ITC: Viner Hand ITC
+Violet: Fialka
+Virtualize: Virtualizovat
+Visible: Viditelný
+Visualizer: Visualizer
+VisualizerBackgroundColor: VisualizerBackgroundColor
+VisualizerElementBorderSize: VisualizerElementBorderSize
+Vivaldi: Vivaldi
+Vladimir Script: Vladimir Script
+vo-001: Volapük (Svět)
+Volume: Hlasitost
+Vs: Vs
+Vs2015: VS2015
+VulcanBase16: 'VulcanBase16 řekl:'
+vun-TZ: Vunjo (Tanzanie)
+wae-CH: Walser (Švýcarsko)
+wal-ET: Wolaytta (Etiopie)
+Warning: Varování
+WarningContrastText: WarningContrastText
+WarningDarken: VarováníZtmavit
+WarningLighten: UpozorněníOsvětlit
+weather.json: weather.json
+Webdings: Popruhy
+Week: Týden
+WeightingFilter: Filtr hmotnosti
+Welcome {0}: Vítejte {0}
+whatever: cokoliv
+Wheat: Pšenice
+White: Bílý
+WhiteBalanceMode: Režim vyvážení bílé
+WhiteList: Seznam povolených položek
+WhiteSmoke: Bílý kouř
+Wide Latin: Široká latina
+Width: Šířka
+Will be saved only when selected Permission: Uloží se pouze v případě, že je vybrána možnost Oprávnění
+Window: Okno
+Windows10Base16: 'Windows10Base16 řekl:'
+Windows10LightBase16: 'Windows10LightBase16 řekl:'
+Windows95Base16: 'Windows95Base16 řekl:'
+Windows95LightBase16: 'Windows95LightBase16 řekl:'
+WindowsHighContrastBase16: 'WindowsHighContrastBase16 řekl:'
+WindowsHighContrastLightBase16: WindowsHighContrastLightBase16
+WindowsNtBase16: 'WindowsNtBase16 řekl:'
+WindowsNtLightBase16: 'WindowsNtLightBase16 řekl:'
+Wingdings: Wingdings
+With custom configuration: S vlastní konfigurací
+With default configuration: S výchozí konfigurací
+With tabs: S oušky
+With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: S komponentou MudExAdditionalAdornment můžete mít v libovolném vstupním ovládacím prvku založeném na MudInput, jako je tento, tolik doplňků.
+With this component you can have an animation while loading the main blazor app: Pomocí této komponenty můžete mít animaci při načítání hlavní blazor aplikace
+With_Selected: '{0} Vybrané'
+WithFullSpectrumAudioData: SFullSpectrumAudioData
+WithFullSpectrumAudioDataPrefilledWithRandomData: WithFullSpectrumAudioDataPrefilledWithRandomData
+WithGoogleLatinFonts: SGoogleLatinFonts
+WithoutBounds: Bez hranic
+WithRandomData: WithRandomData
+WithRealAudioData: SRealAudioData
+wo-SN: Wolof (Senegal)
+Wobble: Kolísat
+WoodlandBase16: 'WoodlandBase16 řekl:'
+WordDokument.doc: WordDokument.doc
+WrapChips: Obalové žetony
+WrapToolBarContent: WrapToolBarContent
+Xcode: Xcode
+XcodeDuskBase16: 'XcodeDuskBase16 řekl:'
+xh-ZA: isiXhosa (Jižní Afrika)
+Xml: Soubor XML
+xog-UG: Soga (Uganda)
+Xt256: 'XT256 řekl:'
+Yaml: Červený červený jazyk
+yav-CM: Yangben (Kamerun)
+Yellow: Žlutý
+YellowGreen: Žlutozelená
+Yes: Ano
+yi-001: Jidiš (svět)
+yo-BJ: Jorubština (Benin)
+yo-NG: Yoruba (Nigérie)
+Yokohama: Jokohama
+Yokohama - 220-0001: Jokohama - 220-0001
+Yokohama - 220-0001ender: Jokohama - 220-0001ender
+you: ty
+You are logged out because the Permissions of one of your Roles have been updated.: Jste odhlášeni, protože byla aktualizována oprávnění jedné z vašich rolí.
+You are logged out because the user with your Token has been deleted or token is expired.: Jste odhlášeni, protože uživatel s vaším tokenem byl smazán nebo platnost tokenu vypršela.
+You are logged out by an Administrator or profile change.: Jste odhlášeni správcem nebo se změnil profil.
+You are Logged Out.: Jste odhlášeni.
+You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment můžete také použít jako ChildContent souboru MudInput
+You can now Login with your credentials: Nyní se můžete přihlásit pomocí svých přihlašovacích údajů
+You cannot delete yourself: Nemůžete smazat sami sebe
+You clicked: Klikli jste na
+You don't need an extra JsonEditor anymore: Už nepotřebujete další JsonEditor
+You have {0} Users where you can pick from: Máte {0} Uživatelé, ze kterých si můžete vybrat
+You picked: Vybrali jste
+You received a new chat message from {0}: Obdrželi jste novou chatovou zprávu od {0}
+You're leaving {0} and will redirected to {1}: Opouštíte {0} a budete přesměrováni na {1}
+Your e-mail address has been confirmed!: Vaše e-mailová adresa byla potvrzena!
+Your email address could not be verified. If you have any problems, please contact {0}: Vaši e-mailovou adresu se nepodařilo ověřit. Pokud máte nějaké problémy, kontaktujte {0}
+Your Profile has been updated.: Váš profil byl aktualizován.
+Your Recent Activities.: Vaše nedávné aktivity.
+ZenburnBase16: 'ZenburnBase16 řekl:'
+zgh-Tfng-MA: Standardní marocký tamazight (Tifinagh, Maroko)
+zh-CN: Čínština (Čína)
+zh-Hans-HK: Čínština (zjednodušená, Hongkong – zvláštní správní oblast)
+zh-Hans-MO: Čínština (zjednodušená, Macao – zvláštní správní oblast KLDR)
+zh-HK: Čínština (Hongkong – zvláštní správní oblast ČLR)
+zh-MO: Čínština (Macao – zvláštní správní oblast AJ)
+zh-SG: Čínština (Singapur)
+zh-TW: Čínština (Tchaj-wan)
+ZIndex: ZIndex
+ZipCode: PSČ
+Zoom: Zvětšení
+Zoom in: Přiblížit
+Zoom out: Oddálit
+ZoomInButtonIcon: Ikona tlačítka ZoomInButton
+ZoomOnHover: ZoomOnHover
+ZoomOutButtonIcon: Ikona tlačítka ZoomOut
+zu-ZA: isiZulu (Jižní Afrika)

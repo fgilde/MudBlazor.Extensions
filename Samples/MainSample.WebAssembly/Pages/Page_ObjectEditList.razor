@@ -1,4 +1,6 @@
 ﻿@page "/object-edit-selection"
+@inherits BasePage
+
 @using BlazorJS
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using Newtonsoft.Json
@@ -30,7 +32,6 @@
 
         public string Name { get; set; }
         public string Description { get; set; }
-
     }
 
     private void Callback(EditContext e)

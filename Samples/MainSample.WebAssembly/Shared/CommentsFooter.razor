@@ -1,5 +1,7 @@
-﻿@using MudBlazor.Extensions.Core
+﻿@using Microsoft.Extensions.Localization
+@using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Helper
+@inject IStringLocalizer<CommentsFooter> L
 @if (Available)
 {
     <footer @ref="_footer" class="@ClassStr()">
@@ -15,7 +17,7 @@
         <MudExpansionPanel @bind-Expanded="_isExpanded" Style="margin: 0" Class="comment-footer" Dense="true" Icon="@Icons.Material.Filled.ExpandLess">
             <TitleContent>
                 <div class="d-flex">
-                    <MudText Class="comments-title"><strong>Comments</strong></MudText>
+                    <MudText Class="comments-title"><strong>@L["Comments"]</strong></MudText>
                     <MudIconButton Class="ml-auto" Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" OnClick="@Close"/>
                 </div>
             </TitleContent>

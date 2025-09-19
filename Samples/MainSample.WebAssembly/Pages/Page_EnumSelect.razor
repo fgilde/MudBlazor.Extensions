@@ -1,11 +1,12 @@
 ﻿@page "/enum-select"
+@inherits BasePage
 @attribute [Demo(Name = "MudExEnumSelect", Icon = Icons.Material.Outlined.List, Documentation = "Demonstration for a simple but very useful Enum Selector", ForComponentType = typeof(MudExEnumSelect<>))]
 
 <DemoComponent PageType="@GetType()">
 
     <MudCard Class="mb-10" Elevation="6">
         <MudCardHeader>
-            <MudText Typo="Typo.h6">Simple Enum</MudText>
+            <MudText Typo="Typo.h6">@L["Simple Enum"]</MudText>
         </MudCardHeader>
         <MudCardContent>
             <MudGrid>
@@ -13,7 +14,7 @@
                     <MudExEnumSelect TEnum="TestEnumState" @bind-Value="@State"></MudExEnumSelect>
                 </MudItem>
                 <MudItem md="3">
-                    <MudText>Selected: @State</MudText>
+                    <MudText>@L["Selected"]: @State</MudText>
                 </MudItem>
             </MudGrid>
         </MudCardContent>
@@ -22,7 +23,7 @@
 
     <MudCard Class="mb-10" Elevation="6">
         <MudCardHeader>
-            <MudText Typo="Typo.h6">Nullable enum</MudText>
+            <MudText Typo="Typo.h6">@L["Nullable enum"]</MudText>
         </MudCardHeader>
         <MudCardContent>
             <MudGrid>
@@ -33,11 +34,11 @@
                 <MudItem md="3">
                     @if (StateNullable.HasValue)
                     {
-                        <MudText>Selected: @StateNullable</MudText>
+                        <MudText>@L["Selected"]: @StateNullable</MudText>
                     }
                     else
                     {
-                        <MudText>Selected: NULL</MudText>
+                        <MudText>@L["Selected"]: NULL</MudText>
                     }
                 </MudItem>
             </MudGrid>
@@ -49,7 +50,7 @@
     
     <MudCard Class="mb-10" Elevation="6">
         <MudCardHeader>
-            <MudText Typo="Typo.h6">Flags Enum</MudText>
+            <MudText Typo="Typo.h6">@L["Flags Enum"]</MudText>
         </MudCardHeader>
         <MudCardContent>
             <MudGrid>
@@ -57,7 +58,7 @@
                     <MudExEnumSelect TEnum="DinnerItems" @bind-Value="@ChosenDinnerItems"></MudExEnumSelect>
                 </MudItem>
                 <MudItem md="3">
-                    <MudText>Selected: @ChosenDinnerItems</MudText>
+                    <MudText>@L["Selected"]: @ChosenDinnerItems</MudText>
                 </MudItem>
             </MudGrid>
         </MudCardContent>
@@ -66,7 +67,7 @@
     
     <MudCard Class="mb-10" Elevation="6">
         <MudCardHeader>
-            <MudText Typo="Typo.h6">Nullable Flags Enum</MudText>
+            <MudText Typo="Typo.h6">@L["Nullable Flags Enum"]</MudText>
         </MudCardHeader>
         <MudCardContent>
             <MudGrid>
@@ -76,11 +77,11 @@
                 <MudItem md="3">
                     @if (ChosenDinnerItemsNullable.HasValue)
                     {
-                        <MudText>Selected: @ChosenDinnerItemsNullable</MudText>
+                        <MudText>@L["Selected"]: @ChosenDinnerItemsNullable</MudText>
                     }
                     else
                     {
-                        <MudText>Selected: NULL</MudText>
+                        <MudText>@L["Selected"]: NULL</MudText>
                     }
                 </MudItem>
             </MudGrid>

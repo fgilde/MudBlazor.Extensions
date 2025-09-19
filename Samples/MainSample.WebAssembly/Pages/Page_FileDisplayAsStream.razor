@@ -1,4 +1,5 @@
 ﻿@page "/handle-file-as-streams"
+@inherits BasePage
 @using MainSample.WebAssembly.Services
 @using MudBlazor.Extensions.Options
 @inject SampleDataService sampleDataService
@@ -11,7 +12,7 @@
     {
         <MudProgressLinear Color="Color.Secondary" Indeterminate="true" />
     }
-    <MudExSelect Disabled="@_loading" T="SampleFileWithStream" ValuePresenter="ValuePresenter.ItemContent" HelperText="Select sample file (See weather.json to check how own components for files can be created)" ItemCollection="@_samples" Variant="Variant.Outlined" ToStringFunc="@(f => f?.Name ?? "")" @bind-Value="SampleFile">
+    <MudExSelect Disabled="@_loading" T="SampleFileWithStream" ValuePresenter="ValuePresenter.ItemContent" HelperText="@L["Select sample file (See weather.json to check how own components for files can be created)"]" ItemCollection="@_samples" Variant="Variant.Outlined" ToStringFunc="@(f => f?.Name ?? "")" @bind-Value="SampleFile">
         <ItemTemplate>
                 <div class="file-combo-item">
                     <MudExIcon Color="@context.Color" Icon="@context.Icon"></MudExIcon>
@@ -41,6 +42,7 @@
     private bool _loading;
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         if (MainLayout.Instance != null)
             MainLayout.Instance.ThemeChanged += InstanceOnThemeChanged;
         _loading = true;
@@ -68,7 +70,7 @@
         {
             return Task.FromResult(MudExFileDisplayContentErrorResult
                 .RedirectTo("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiZiqnBKWS8NHcKbRH04UkYjrCgxUMz6sVNw&usqp=CAU", "image/png")
-                .WithMessage("No word plugin found we display a sheep"));
+                .WithMessage(L["No word plugin found we display a sheep"]));
         }
         return Task.FromResult(MudExFileDisplayContentErrorResult.Unhandled);
     }

@@ -1,0 +1,4347 @@
+﻿_ Text: _Tekstualna poruka
+--accent-color1: --accent-color1
+--accent-color2: --accent-color2
+--accent-color3: --accent-color3
+--accent-color4: --accent-color4
+--loading-color: --učitavanje-boje
+--mud-palette-black: --paleta-blata-crna
+--mud-palette-primary: --paleta-blata-primarno
+--mud-palette-primary-darken: --paleta-blata-primarno-zatamniti
+--mud-palette-primary-hover: --paleta-blata-primarno-lebdeći
+--mud-palette-primary-lighten: --paleta-blata-primarno-posvijetliti
+--mud-palette-primary-text: --paleta-blata-primarni-tekst
+--mud-palette-secondary: --paleta-blata-sekundarna
+--mud-palette-secondary-darken: --paleta-blata-sekundarno-potamniti
+--mud-palette-secondary-hover: --paleta-blata-sekundarno-lebdenje
+--mud-palette-secondary-lighten: --paleta-blata-sekundarno-posvijetliti
+--mud-palette-secondary-text: --paleta-blata-sekundarni-tekst
+--mud-palette-white: --paleta-blata-bijela
+(currently the item is not visible): (trenutno stavka nije vidljiva)
+(currently the item is visible): (trenutno je stavka vidljiva)
+4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+A: A
+A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Komponenta koja korisniku omogućuje odabir vrijednosti s popisa mogućih vrijednosti i prikaz kao Čipovi ili zadani Combobox.
+A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Komponenta koja se može koristiti za klizanje ChildContent odozdo, odozgo, lijevo ili desno pokazivačem miša.
+A Component to display text with a gradient foreground or background: Komponenta za prikaz teksta s gradijentnim prednjim planom ili pozadinom
+A Component to display the content of a zip file: Komponenta za prikaz sadržaja zip datoteke
+A Component to edit and upload a list of files: Komponenta za uređivanje i učitavanje popisa datoteka
+A Component to quickly select a color: Komponenta za brzi odabir boje
+A connection to the server cannot be established. Your network connection may be down or the server is unreachable. Please wait until the connection has been restored: Veza s poslužiteljem ne može se uspostaviti. Vaša mrežna veza možda ne radi ili je poslužitelj nedostupan. Pričekajte dok se veza ne uspostavi
+A divider to separate content: Razdjelnik za odvajanje sadržaja
+A maximum of {0} files are allowed: Dopušteno je najviše {0} datoteka
+A Popover can be used to display some content on top of another.: Popover se može koristiti za prikaz nekog sadržaja na drugom.
+A powerful component to edit an object and its properties.: Moćna komponenta za uređivanje objekta i njegovih svojstava.
+A powerful editor that can handle json, xml or yaml content: Moćan uređivač koji može rukovati json, xml ili yaml sadržajem
+A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: Jednostavna komponenta ColorPicker koja nasljeđuje MudColorPicker, ali dodaje mogućnost odgode događaja zatvaranja i korištenja izvorne komponente birača iz preglednika
+A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: Jednostavna komponenta rešetke koja podržava stupce i retke te ColSpan i RowSpan za sadržavanje sekcija.
+A SplitPanel Component: Komponenta SplitPanel
+A Splitter Component: Komponenta razdjelnika
+A WYSIWYG Html editor component.: Komponenta WYSIWYG Html uređivača.
+A11yDark: A11yTamni
+A11yLight: A11yLight
+aa-DJ: Afar (Džibuti)
+aa-ER: Afar (Eritreja)
+aa-ET: Afar (Etiopija)
+about: O
+Account: Račun
+ActionButtons: Akcijski gumbi
+ActionButtonsNewLine: ActionButtonsNewLine
+ActionDefault: ActionDefault
+ActionDisabled: AkcijaOnemogućeno
+ActionDisabledBackground: ActionDisabledBackground
+Actions: Akcije
+ActionsAdornment: AkcijeUkras
+ActionsClass: AkcijeKlasa
+Activate comments: Aktivirajte komentare
+Activate User?: Aktivirati korisnika?
+Active: Aktivan
+Active?: Aktivan?
+ActiveFilterOnly: ActiveFilterOnly
+Adaptive: Prilagodljiv
+ADblNumber: ADblBroj
+Add: Dodati
+Add 1000 random items: Dodajte 1000 nasumičnih stavki
+Add 500 Users: Dodajte 500 korisnika
+Add Brand: Dodaj robnu marku
+Add Document: Dodaj dokument
+Add Document Type: Dodajte vrstu dokumenta
+Add Extended Attribute: Dodavanje proširenog atributa
+Add external Url: Dodavanje vanjskog URL-a
+Add files: Dodavanje datoteka
+Add Product: Dodaj proizvod
+Add Role: Dodaj ulogu
+Add Url: Dodavanje URL-a
+Add user: Dodavanje korisnika
+Add user to both lists: Dodavanje korisnika na oba popisa
+Additional Audio: Dodatni zvuk
+Additional Video: Dodatni videozapis
+AdditionalAdornment: Dodatni ukras
+Address: Adresa
+Addresses: Adrese
+AddUrl: AddUrl
+Administrator: Administrator
+Administrator Settings.: Administratorske postavke.
+Administrators Profile's Status cannot be toggled: Status administratorskog profila ne može se prebaciti
+Adornment: Ukras
+AdornmentAriaLabel: UkrasAriaLabel
+AdornmentColor: Boja ukrasa
+AdornmentIcon: Ikona ukrasa
+AdornmentText: UkrasTekst
+af-NA: afrikaans (Namibija)
+af-ZA: afrikaans (Južnoafrička Republika)
+After the dialog is shown you can drag it to the edges to see snap. Also you can use Ctrl + {ArrowKeys} to change position: Nakon što se dijaloški okvir prikaže, možete ga povući do rubova kako biste vidjeli škljocanje. Također možete koristiti Ctrl + {TipkeStrelice} za promjenu položaja
+AfterBegin: Poslije početka
+AfterEnd: Naknadni kraj
+AfterSearchBox: AfterSearchBox
+Agate: Ahat
+Age: Starost
+agq-CM: Aghem (Kamerun)
+ak-GH: Akan (Gana)
+Albertus: Albertus
+Alice Johnson: Alice Johnson
+AliceBlue: AliceBlue
+Align: Poravnati
+ALL COMPONENTS: SVE KOMPONENTE
+All Documents without Type are stored here: Ovdje su pohranjeni svi dokumenti bez vrste
+All Groups: Sve grupe
+All Permissions: Sva dopuštenja
+All roles: Sve uloge
+All roles unfiltered: Sve uloge nefiltrirane
+AllFilters: Svi filtri
+AllowAudioRecording: Dopusti snimanje zvuka
+AllowColumnSizeChange: DopustiVeličina stupcaPromjena
+AllowCopyUrl: AllowCopyUrl
+AllowDownload: DopustiPreuzimanje
+AllowDrop: Dopusti pad
+AllowDropBox: Dopusti DropBox
+AllowDuplicates: DopustiDuplikati
+AllowExternalUrl: AllowExternalUrl
+AllowFolderUpload: DopustiUčitavanje mape
+AllowGoogleDrive: Dopusti GoogleDrive
+AllowInteractingUnderRubberBand: Dopusti interakciju ispod gumene trake
+AllowMultiple: DopustiVišestruko
+AllowOneDrive: Dopusti OneDrive
+AllowOpenInNewTab: AllowOpenInNewTab
+AllowOpenOnReadOnly: AllowOpenOnReadOnly
+AllowPreview: DopustiPregled
+AllowRemovingItems: DopustiUklanjanje stavki
+AllowRename: DopustiPreimenovanje
+AllowRubberBandSelection: AllowRubberBandSelection
+AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
+AllowSelectOnPreviewClick: AllowSelectOnPreviewKliknite
+AllowVideoCapture: Dopusti snimanje videozapisa
+AlphaBars: Alfa trake
+Already have an account?: Već imate račun?
+Always: Uvijek
+AlwaysEditOptions: UvijekUrediOpcije
+AlwaysShowValue: AlwaysShowValue
+AlwaysVisible: Uvijek vidljivo
+am-ET: Amharski (Etiopija)
+An Error has occured!: Došlo je do pogreške!
+An Error has occurred!: Došlo je do pogreške!
+An error occurred while confirming {0}: Došlo je do pogreške prilikom potvrđivanja {0}
+An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used, and you can specify animations as well: Proširena komponenta SelectBox koja omogućuje odabir više stavki i pruža funkciju pretraživanja također interno koristi se MudExPopover, a možete odrediti i animacije
+An item that only renders the content if it is in the viewport.: Stavka koja prikazuje sadržaj samo ako se nalazi u prozoru za prikaz.
+AnchorOrigin: SidroPodrijetlo
+Andale Mono: Andale Mono
+Androidstudio: Androidstudio
+Animate: Animirati
+AnimateAudioElementBorderColor: AnimateAudioElementBorderColor
+AnimateClose: AnimateZatvori
+AnimateVisualizerBorderColor: AnimateVisualizerBorderColor
+Animation: Animacija
+AnimationDuration: Trajanje animacije
+AnimationDuration (in ms): AnimationDuration (u ms)
+AnimationDurationInMs: AnimationDurationInMs
+AnimationIn: Animacija u
+AnimationInDirection: Animacija u smjeru
+AnimationInDuration: AnimationInDuration
+AnimationInPosition: AnimacijaU položaju
+AnimationOut: AnimacijaIzlaz
+AnimationOutDirection: Usmjerenje animacije izvan smjera
+AnimationOutDuration: Trajanje Animacije
+AnimationOutPosition: AnimationOutPosition
+AnimationPosition: Položaj animacije
+Animations: Animacije
+AnimationTime: Vrijeme animacije
+AnimationTimingFunction: AnimationTimingFunction
+AnOldHope: AnOldHope
+Another Demo theme: Još jedna demo tema
+AnotherRar.rar: AnotherRar.rar
+AnotherStringProperty10: SvojstvoAnotherString10
+AnotherStringProperty11: Svojstvo drugog nizaNiza11
+AnotherStringProperty12: SvojstvoAnotherString12
+AnotherStringProperty13: SvojstvoAnotherString13
+AnotherStringProperty14: Svojstvo drugog nizaNiza14
+AnotherStringProperty15: Svojstvo drugog nizaNiza15
+AnotherStringProperty16: SvojstvoAnotherString16
+AnotherStringProperty17: SvojstvoAnotherString17
+AnotherStringProperty18: Svojstvo drugog nizaNiza18
+AnotherStringProperty19: SvojstvoAnotherString19
+AnotherStringProperty20: Svojstvo drugog nizaNiza20
+AnotherStringProperty21: SvojstvoAnotherString21
+AnotherStringProperty22: Svojstvo drugog nizaNiza22
+AnotherStringProperty23: Svojstvo drugog nizaNiza23
+AnotherStringProperty24: SvojstvoAnotherString24
+AnotherStringProperty25: Svojstvo drugog nizaNiza25
+AnotherStringProperty26: Svojstvo drugog nizaNiza26
+AnotherStringProperty27: Svojstvo drugog nizaNiza27
+AnotherStringProperty28: Svojstvo drugog nizaNiza28
+AnotherStringProperty29: Svojstvo drugog nizaNiza29
+AnotherStringProperty30: Svojstvo drugog nizaNiza30
+AnotherStringProperty31: Svojstvo drugog nizaNiza31
+AnotherStringProperty32: Svojstvo drugog nizaNiza32
+AnotherStringProperty33: AnotherStringProperty33
+AnotherStringProperty34: Svojstvo drugog nizaNiza34
+AnotherStringProperty35: Svojstvo drugog nizaNiza35
+AnotherStringProperty36: Svojstvo drugog nizaNiza36
+AnotherStringProperty37: AnotherStringProperty37
+AnotherStringProperty38: AnotherStringProperty38
+AnotherStringProperty39: Svojstvo drugog nizaNiza39
+AnotherStringProperty40: Svojstvo drugog nizaNiza40
+AnotherStringProperty41: Svojstvo drugog nizaNiza41
+AnotherStringProperty42: Svojstvo drugog nizaNiza42
+AnotherStringProperty43: Svojstvo drugog nizaNiza43
+AnotherStringProperty44: SvojstvoAnotherString44
+AnotherStringProperty45: Svojstvo drugog nizaNiza45
+AnotherStringProperty46: Svojstvo drugog nizaNiza46
+AnotherStringProperty47: Svojstvo drugog nizaNiza47
+AnotherStringProperty48: Svojstvo drugog nizaNiza48
+AnotherStringProperty49: SvojstvoAnotherString49
+AnotherStringProperty50: SvojstvoAnotherString50
+AnotherStringProperty51: Svojstvo drugog nizaNiza51
+AnotherStringProperty52: SvojstvoAnotherString52
+AnotherStringProperty53: Svojstvo drugog nizaNiza53
+AnotherStringProperty54: AnotherStringProperty54
+AnotherStringProperty55: AnotherStringProperty55
+AnotherStringProperty56: Svojstvo drugog nizaNiza56
+AnotherStringProperty57: AnotherStringProperty57
+AnotherStringProperty58: Svojstvo drugog nizaNiza58
+AnotherStringProperty59: Svojstvo drugog nizaNiza59
+AnotherStringProperty60: Svojstvo drugog nizaNiza60
+AnsiBands: AnsiBandovi
+AntiqueWhite: Starinska bijela
+ApathyBase16: Baza apatije16
+Api: Api
+API: API
+API-Versions: Verzije API-ja
+AppBar: AppBar
+AppbarBackground: AppbarPozadina
+AppbarHeight: AppbarHeight
+AppbarText: AppbarText
+Appearance: Izgled
+Appetizer: Predjelo
+Apple: Jabuka
+Apple Gothic: Jabučna gotika
+Application: Aplikacija
+ApplicationDescription: Primjer aplikacije s WebAssemblyom i uzorkom čiste arhitekture
+ApplicationSubDescription: Dobrodošli u Coworkee
+applies a CSS class when the item is not visible.: primjenjuje CSS klasu kada stavka nije vidljiva.
+applies a CSS class when the item is visible.: primjenjuje CSS klasu kada je stavka vidljiva.
+applies styles when the item is not visible.: Primjenjuje stilove kada stavka nije vidljiva.
+applies styles when the item is visible.: Primjenjuje stilove kada je stavka vidljiva.
+Apply: Primijeniti
+ApplyBackgroundImageFromTrack: PrimijeniBackgroundImageFromTrack
+ApprenticeBase16: Baza za pripravnike16
+Apr: Travnja
+Aqua: Aqua
+Aquamarine: Akvamarin
+ar-001: Arapski (svijet)
+ar-AE: Arapski (Ujedinjeni Arapski Emirati)
+ar-BH: arapski (Bahrein)
+ar-DJ: Arapski (Džibuti)
+ar-DZ: arapski (Alžir)
+ar-EG: arapski (Egipat)
+ar-ER: arapski (Eritreja)
+ar-IL: arapski (Izrael)
+ar-IQ: Arapski (Irak)
+ar-JO: arapski (Jordan)
+ar-KM: Arapski (Komori)
+ar-KW: arapski (Kuvajt)
+ar-LB: Arapski (Libanon)
+ar-LY: arapski (Libija)
+ar-MA: arapski (Maroko)
+ar-MR: Arapski (Mauritanija)
+ar-OM: arapski (Oman)
+ar-PS: Arapski (Palestinska samouprava)
+ar-QA: Arapski (Katar)
+ar-SA: Arapski (Saudijska Arabija)
+ar-SD: arapski (Sudan)
+ar-SO: arapski (Somalija)
+ar-SS: arapski (Južni Sudan)
+ar-SY: arapski (Sirija)
+ar-TD: arapski (Čad)
+ar-TN: arapski (Tunis)
+ar-YE: arapski (Jemen)
+Archive.zip: Archive.zip
+ArduinoLight: Arduinosvjetlo
+Are you sure to close: Jeste li sigurni da ćete zatvoriti
+Are you sure you want to force logout for user {0}: Jeste li sigurni da želite prisilno odjaviti za korisnički {0}
+Are you sure you want to restart Backend/Server?: Jeste li sigurni da želite ponovno pokrenuti pozadinu/poslužitelj?
+Are you sure you want to restore the default settings? This will overwrite any changes you've ever made here.: Jeste li sigurni da želite vratiti zadane postavke? Ovo će prebrisati sve promjene koje ste ikada unijeli ovdje.
+Are you sure?: Jesi siguran?
+Arial: Arial
+Arial Black: Arial Black
+Arial Narrow: Arial Narrow
+arn-CL: Mapuche (Čile)
+Arta: Umjetnost
+As Admin you can filter for users here: Kao administrator ovdje možete filtrirati korisnike
+As Picker: Kao birač
+as read: kako je pročitano
+As simple as it sound. This is a simple GroupBox: Jednostavno kao što zvuči. Ovo je jednostavan GroupBox
+As soon as your account has been activated you can log in: Čim je vaš račun aktiviran, možete se prijaviti
+as unread: kao nepročitano
+as-IN: Asamski (Indija)
+asa-TZ: Asu (Tanzanija)
+Ascetic: Asketa
+AshesBase16: Baza pepela16
+AspectRatio: Omjer aspekta
+ast-ES: Asturijski (Španjolska)
+At least one document is required: Potreban je najmanje jedan dokument
+AtelierCaveBase16: AteljeCaveBase16
+AtelierCaveLightBase16: AteljeCaveLightBase16
+AtelierDuneBase16: AtelierDuneBase16
+AtelierDuneLightBase16: AtelierDuneLightBase16
+AtelierEstuaryBase16: AtelierEstuaryBase16
+AtelierEstuaryLightBase16: AtelierEstuaryLightBase16
+AtelierForestBase16: AtelierForestBase16
+AtelierForestLightBase16: AteljeForestLightBase16
+AtelierHeathBase16: AteljeHeathBase16
+AtelierHeathLightBase16: AteljeHeathLightBase16
+AtelierLakesideBase16: AteljeLakesideBase16
+AtelierLakesideLightBase16: AteljeLakesideLightBase16
+AtelierPlateauBase16: AtelierPlateauBase16
+AtelierPlateauLightBase16: AtelierPlateauLightBase16
+AtelierSavannaBase16: RadionicaSavannaBase16
+AtelierSavannaLightBase16: AteljeSavannaLightBase16
+AtelierSeasideBase16: AtelierSeasideBase16
+AtelierSeasideLightBase16: AteljeSeasideLightBase16
+AtelierSulphurpoolBase16: AtelierSulphurpoolBase16
+AtelierSulphurpoolLightBase16: AtelierSulphurpoolLightBase16
+AtlasBase16: AtlasBase16
+AtomOneDark: AtomOneDark
+AtomOneDarkReasonable: AtomOneDarkReasonable
+AtomOneLight: AtomOneLight
+Audio Content-Type: Vrsta audio sadržaja
+Audio devices: Audio uređaji
+AudioDevice: Audiouređaj
+AudioElementBackgroundColor: AudioElementBackgroundColor
+AudioElementBorderColor: AudioElementBorderColor
+AudioElementBorderSize: AudioElementBorderSize
+AudioElementBorderStyle: AudioElementBorderStyle
+AudioElements: Audioelementi
+AudioElementWidth: Širina audioElementa
+Audit Trails: Revizijski tragovi
+Audit Trails exported: Izvezeni revizijski tragovi
+Aug: Kolovoz
+Austin: Austin
+Austin - 73301: Austin - 73301
+Austin - 73301ender: Austin - 73301ender
+Auto Confirm Email?: Automatsko potvrđivanje e-pošte?
+Auto Generated Editor for TestObject: Automatski generirani uređivač za TestObject
+Auto Stop recording after: Automatsko zaustavljanje snimanja nakon
+AutoApplyGradient: AutoApplyGradient
+AutoClear: Automatsko brisanje
+AutoCloseBehaviour: Automatsko zatvaranjePonašanje
+AutoCloseOnSelect: AutoCloseOnSelect
+AutoCollapse: Automatsko sažmanje
+AutoExtractArchive: Automatsko izdvajanjeArhiva
+AutoFocus: Automatsko fokusiranje
+AutoFocusFilter: AutoFocusFilter
+AutoLoadFileDataBytes: AutoLoadFileDataBytes
+Automatically allow next time: Automatski dopusti sljedeći put
+AutoPlayNextTrackOnEnd: Automatska reprodukcijaSljedećaTrackOnEnd
+AutoRemoveError: Pogreška automatskog uklanjanja
+AutoShowHideAudioElement: AutoShowSakrijAudioElement
+AutoSize: Automatska veličina
+Available: Dostupan
+AvailableItems: DostupniArtikli
+Avant Garde: Avangarda
+az-Cyrl-AZ: Azerbajdžanski (ćirilica, azerbajdžan)
+az-Latn-AZ: Azerbajdžanski (latinski, azerbajdžan)
+Azure: Plav
+B: B
+ba-RU: Baškirski (Rusija)
+Back: Leđa
+BackdropClick: PozadinaKliknite
+Background: Pozadina
+BackgroundColor: Boja pozadine
+BackgroundGray: PozadinaSiva
+BackgroundImage: Pozadinska slika
+BackgroundPosition: Pozadinski položaj
+BackgroundRepeat: PozadinaPonovite
+BackgroundSize: Veličina pozadine
+BackLinkLabel: Oznaka povratne veze
+Bar: Šipka
+BarBeverage: BarBeverage
+Barcode: Crtični kod
+Barcode already exists.: Crtični kod već postoji.
+Barcode is required!: Crtični kod je obavezan!
+BarIndex: Trakasti indeks
+Bark: Kora
+BarLevel: Razina bara
+BarSpacing: Razmak između traka
+Bart Simpson: Bart Simpson
+bas-CM: Basaa (Kamerun)
+Base component for a picker: Osnovna komponenta za berač
+Basic: Osnovni
+Basic role with default permissions: Osnovna uloga sa zadanim dozvolama
+Bauhaus 93: Bauhaus 93
+be-BY: Bjeloruski (Bjelorusija)
+BeforeBegin: Prije početka
+BeforeEnd: Prije kraja
+BeforeSearchBox: BeforeSearchBox
+Behavior: Ponašanje
+Behaviour: Ponašanje
+Beige: Bež
+Bell MT: Zvono MT
+bem-ZM: Bemba (Zambija)
+Bernard MT Condensed: Bernard MT Sažeto
+BespinBase16: BespinBase16
+Beverage: Piće
+bez-TZ: Bena (Tanzanija)
+bg-BG: bugarski (Bugarska)
+BgAlpha: BgAlpha
+BgColor: BgBoja
+bin-NG: Edo (Nigerija)
+Bind Dark Mode: Poveži tamni način rada
+BindWidthToPicker: BindWidthToPicker
+Birmingham: Birmingham
+Birmingham - B1 1BD: Birmingham - B1 1BD
+Birmingham - B1 1BDender: Birmingham - B1 1BDender
+Bisque: Čorba
+Black: Crn
+Blackadder ITC: Crna guja ITC
+BlackList: Crna lista
+BlackMetalBase16: BlackMetalBase16
+BlackMetalBathoryBase16: CrnaMetalBathoryBase16
+BlackMetalBurzumBase16: BlackMetalBurzumBase16
+BlackMetalDarkFuneralBase16: BlackMetalDarkFuneralBase16
+BlackMetalGorgorothBase16: CrnaMetalGorgorothBaza16
+BlackMetalImmortalBase16: BlackMetalImmortalBase16
+BlackMetalKholdBase16: BlackMetalKholdBase16
+BlackMetalMardukBase16: CrnaMetalMardukBase16
+BlackMetalMayhemBase16: BlackMetalMayhemBase16
+BlackMetalNileBase16: BlackMetalNileBase16
+BlackMetalVenomBase16: BlackMetalVenomBase16
+BlanchedAlmond: Blanširanobadem
+Blazor wrapper component for AudioMotionAnalyzer: Komponenta Blazor omotača za AudioMotionAnalyzer
+BlobUrl: BlobUrl
+Blue: Plav
+BlueViolet: PlavaLjubičasta
+bm-Latn-ML: Bamanankan (latinski, mali)
+bn-BD: Bengalski (Bangladeš)
+bn-IN: Bangla (Indija)
+bo-CN: Tibetanski (Kina)
+bo-IN: Tibetanski (Indija)
+Bob Smith: Bob Smith
+Bodoni MT: Bodoni MT
+body1: tijelo1
+Body1: Tijelo1
+body2: tijelo2
+Body2: Tijelo2
+Bookman: Knjigovođa
+BorderAnimationColors: BorderAnimationColors
+BorderColor: Boja obruba
+Bordered: Graniči
+BorderOpacity: BorderOpacity
+BorderSize: Veličina obruba
+BorderStyle: Stil obruba
+Both: Oba
+BothDiagonal: Obje dijagonale
+BothHorizontal: ObaHorizontalno
+BothVertical: ObojeOkomito
+Bottom: Dno
+BottomCenter: Donji centar
+BottomLeft: Dolje lijevo
+BottomRight: Dolje desno
+Bounce: Odskočiti
+br-FR: Bretonski (Francuska)
+Brand: Marka
+Brand Deleted: Robna marka izbrisana
+Brand is required!: Marka je obavezna!
+Brand Not Found!: Marka nije pronađena!
+Brand Saved: Brand spašen!
+Brand Updated: Brend ažuriran!
+BrandName: Marka
+Brands: Brandova
+Brands exported: Izvezene marke
+Breadcrumb: Krušne mrvice
+BreadcrumbLink: BreadcrumbLink
+BreadcrumbSeparator: BreadcrumbSeparator
+BrewerBase16: Baza piva16
+BrightBase16: Svijetla baza16
+Brightness: Vedrina
+Broadway: Broadway
+BrogrammerBase16: BrogrammerBase16
+Brown: Smeđ
+BrownPaper: Smeđi papir
+Browse Available Documents.: Pregledajte dostupne dokumente.
+Browser: Preglednik
+BrowserFileExt: BrowserFileExt
+Brush Script MT: Skripta kista MT
+Brush Script Std: Skripta kista standardno
+BrushTreesBase16: ČetkaStablaBaza16
+BrushTreesDarkBase16: BrushTreesDarkBase16
+brx-IN: Bodo (Indija)
+bs-Cyrl-BA: bosanski (ćirilica, Bosna i Hercegovina)
+bs-Latn-BA: Bosanski (latinski, Bosna i Hercegovina)
+BurlyWood: Snažno drvo
+button: dugme
+Button: Dugme
+Button component for capturing audio and video.: Komponenta gumba za snimanje zvuka i videa.
+Button component for speech-to-text functionality, allowing for asynchronous recording and processing of speech input.: Komponenta gumba za funkciju pretvaranja govora u tekst, koja omogućuje asinkrono snimanje i obradu govornog unosa.
+ButtonColor: Boja gumba
+ButtonSize: Veličina gumba
+ButtonsJustify: GumbiOpravdati
+ButtonType: Vrsta gumba
+ButtonVariant: TipkaVarijanta
+byn-ER: Blin (Eritreja)
+Bytes: Bajtova
+C: C
+C#: C#
+ca-AD: katalonski (Andora)
+ca-ES: katalonski (Španjolska)
+ca-FR: katalonski (Francuska)
+ca-IT: katalonski (Italija)
+CadetBlue: CadetBlue
+Calgary: Calgary
+Calgary - T1X 0L3: Calgary - T1X 0L3
+Calgary - T1X 0L3ender: Calgary - T1X 0L3ender
+Californian FB: Kalifornijski FB
+Can close: Može se zatvoriti
+Cancel: Otkazati
+Cancel deletion: Otkaži brisanje
+Cancelled: Poništen
+CanClose: MožeZatvori
+CanCloseCallbackName: CanCloseCallbackName
+caption: hapšenje
+Caption: Hapšenje
+Capture: Hvatanje
+Capture Screen: Snimanje zaslona
+Capture service: Usluga snimanja
+Capture video: Snimanje videozapisa
+CaptureButton: Gumb za snimanje
+CaptureInfoComponent: CaptureInfoComponent
+CaptureOptions: Opcije snimanja
+Card Grid: Mreža karata
+CardEffect3d: CardEffect3d
+CardGrid: Mreža kartica
+Catalog Management: Upravljanje katalogom
+ccp-Cakm-BD: Chakma (Chakma, Bangladeš)
+ccp-Cakm-IN: Chakma (Chakma, Indija)
+ce-RU: Čečen (Rusija)
+ceb-Latn-PH: Cebuano (latinski, Filipini)
+Centaur: Centaur
+Center: Središte
+CenterCenter: Središnji centar
+CenterLeft: CentarLijevo
+CenterRight: Desno u sredini
+Centimeters: Centimetara
+Century Gothic: Stoljetna gotika
+cgg-UG: Chiga (Uganda)
+ChalkBase16: Baza krede16
+Change media options: Promjena mogućnosti medija
+Change or edit your theme: Promjena ili uređivanje teme
+Change Password: Promijeni lozinku
+Change the system settings carefully: Pažljivo promijenite postavke sustava
+ChannelLayout: Raspored kanala
+Charlie Brown: Charlie Brown
+Chartreuse: Chartreuse
+Charts comming soon ish...: Ljestvice uskoro stižu ish...
+ChartTooltip: Opis alata grafikona
+chat: Čavrljanje
+Chat: Čavrljanje
+Chat?: Čavrljanje?
+Check me: Provjeri me
+Check out the MudExThemeEdit Component: Pogledajte komponentu MudExThemeEdit
+CheckBox: Potvrdni okvir
+CheckedIcon: OznačenaIkona
+Checker: Provjera
+Checker box: Potvrdni okvir
+Chicago: Chicago
+Chicago - 60601: Chicago - 60601
+Chicago - 60601ender: Chicago - 60601ender
+ChildContentStyle: ChildContentStyle
+Chiller: Hladnjak
+Chip: Čip
+ChipClass: Klasa čipova
+ChipCloseable: Čip koji se može zatvoriti
+ChipColor: Boja čipa
+ChipsAdditionalAbove: ČipsAdditionalAbove
+ChipsAdditionalBelow: ČipoviDodatnoIspod
+ChipSelect: Odabir čipa
+ChipSize: Veličina čipa
+ChipsMaxWidth: ČipoviMaksimalna širina
+ChipsOnly: Samo čipovi
+ChipVariant: Varijanta čipa
+ChipWithoutItemTemplate: ChipWithoutItemTemplate
+Chocolate: Čokolada
+chr-Cher-US: Cherokee (Cherokee, Sjedinjene Države)
+CircusBase16: Cirkuska baza16
+Cities you want to live: Gradovi u kojima želite živjeti
+City: Grad
+Class: Klasa
+ClassChip: Klasni čip
+ClassicDarkBase16: KlasičnaDarkBase16
+ClassicLightBase16: Klasična svjetlosna baza16
+ClassSearchBox: Okvir za pretraživanje klase
+Clear: Jasan
+Clearable: Jasno
+Click here to choose a screen to capture. If not selected, you will be prompted when starting the recording.: Kliknite ovdje da biste odabrali zaslon za snimanje. Ako nije odabrano, od vas će se zatražiti prilikom pokretanja snimanja.
+Click here to upload files: Kliknite ovdje za prijenos datoteka
+Click the button below to enable them and load the third party services from disqus.com: Kliknite gumb u nastavku da biste ih omogućili i učitali usluge trećih strana s disqus.com
+Clickable: Može se kliknuti
+ClickAction: Klik Akcija
+ClickPropagation: KlikŠirenje
+Client Language has been changed: Promijenjen je jezik klijenta
+Close: Blizak
+Closeable: Može se zatvoriti
+CloseAfterSelect: ZatvoriPoslijeodabir
+CloseButton: Gumb za zatvaranje
+Closed: Zatvoren
+CloseIcon: ZatvoriIkona
+CloseOnEscapeKey: CloseOnEscapeKey
+co-FR: Korzikanac (Francuska)
+Code: Zakonik
+CodeBlockTheme: CodeBlockTheme
+CodepenEmbed: CodepenEmbed
+CodeschoolBase16: Kodna škola16
+CollapseOnClick: CollapseOnClick
+Colonna MT: MT stupac
+color: boja
+Color: Boja
+ColorBrewer: ColorBrewer
+ColorBubble: Mjehurić u boji
+ColoredImagesForExternalFilePicker: ColoredImagesForExternalFilePicker
+ColorEdit: BojaUredi
+ColorElements: Elementi boja
+ColorizeIcons: ColorizeIcons
+ColorMode: Način rada u boji
+ColorPicker: Odabir boja
+ColorPickerMode: Način odabira boja
+ColorPickerView: ColorPickerView
+ColorsBase16: BojeBaza16
+ColorStops: Zaustavljanje boje
+ColorTemperature: Temperatura boje
+ColSpan: ColSpan
+Column: Stupac
+Columns Affected: Zahvaćeni stupci
+ColumnWidth: Širina stupca
+Comic Sans MS: Comic Sans MS
+Comments: Komentari
+Common: Zajednički
+Communication: Komunikacija
+Community: Zajednica
+Compact: Kompaktan
+Comparer: Usporediti
+Component edit capture options: Opcije snimanja uređivanja komponenti
+Component in Dialog: Komponenta u dijaloškom okviru
+Component to add additional adornment to a MudInput: Komponenta za dodavanje dodatnog ukrasa MudInputu
+Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Komponenta za prikaz datoteke u iframe ili objekt tagu ili u registriranom pregledniku koji implementira IMudExFileDisplay
+Component to display information about the current recording: Komponenta za prikaz informacija o trenutnoj snimci
+Component to Edit Icon values: Komponenta za uređivanje vrijednosti ikone
+Component to Edit MudExColor: Komponenta za uređivanje MudExColor
+Component to move the ChildContent to a specific element that can defined by ElementSelector.: Component za premještanje ChildContent na određeni element koji može definirati ElementSelector.
+Component to select a theme from a list of themes.: Komponenta za odabir teme s popisa tema.
+ComponentBaseWithState: KomponentaBaseWithState
+ComponentInDialog: KomponentaUDijalog
+Conditional updates: Uvjetna ažuriranja
+Configure list values: Konfiguriranje vrijednosti popisa
+Confirm: Potvrditi
+CONFIRM: POTVRDITI
+Confirm and Ignore: Potvrdi i zanemari
+Confirm and Set Required: Potvrdite i postavite obavezno
+Confirm edit: Potvrdi uređivanje
+Confirm Password: Potvrdite lozinku
+Confirm Registration: Potvrdi registraciju
+Confirmation: Potvrda
+ConnectAllAudioSources: Poveži sve izvore zvuka
+ConnectCapture: Povezivanje snimanja
+ConnectCurrentTab: ConnectCurrentTab
+ConnectionMode: Način povezivanja
+ConnectMicrophone: Povezivanje mikrofona
+ConnectToCapture: Povezivanje s hvatanjem
+contacts: Kontakte
+Content-Type: Vrsta sadržaja
+ContentAlignment: Poravnanje sadržaja
+ContentStream: Tok sadržaja
+ContentType: Vrsta sadržaja
+ContextMenuAction: ContextMenuAction
+Continue to {0}: Nastavite {0}
+Continuous: Kontinuiran
+Contrast: Razlika
+Cooper Black: Cooper crna
+Copperplate Gothic Bold: Bakrena gotika podebljana
+Copperplate Gothic Light: Bakrena gotička svjetiljka
+Copy url: Kopiraj url
+Counter: Brojač
+Country: Zemlja
+Courier New: Kurir Novo
+Courrier: Pošta
+Create: Stvoriti
+Create address: Kreiraj adresu
+Create new backup: Stvaranje nove sigurnosne kopije
+CreatedOn: Datum stvaranja
+Critical: Kritičan
+CropAndScale: CropAndScale
+cs-CZ: češki (Češka)
+CSS Color Variables: CSS varijable boja
+CssVars: CssVars
+cu-RU: Crkvenoslavenski (Rusija)
+CupcakeBase16: Baza za kolače16
+CupertinoBase16: CupertinoBase16
+Current Password: Trenutna lozinka
+Current Password is required!: Trenutna lozinka je obavezna!
+Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can change DarMode in the Top right menu or disable binding by toggle the switch: Trenutno je ThemeEditor vezan za DarkMode iz trenutne teme i u {0}. Možete promijeniti DarMode u gornjem desnom izborniku ili onemogućiti povezivanje prebacivanjem prekidača
+Cursor: Kursor
+CursorPositionOrigin: CursorPositionOrigin
+Custom: Običaj
+CustomContentErrorMessage: PrilagođenaContentErrorMessage
+Customize: Prilagoditi
+cy-GB: velški (Ujedinjeno Kraljevstvo)
+D: D
+da-DK: Danski (Danska)
+da-GL: Danski (Grenland)
+Dallas: Dallas
+Dallas - 75201: Dalas - 75201
+Dallas - 75201ender: Dalas - 75201ender
+DanqingBase16: DanqingBase16
+DarculaBase16: DarculaBase16
+Dark: Mračan
+DarkContrastText: DarkContrastText
+DarkDarken: TamnoPotamniti
+DarkGreen: Tamnozelena
+DarkKhaki: Tamnokaki
+DarkLighten: Tamno osvjetljenje
+DarkMagenta: Tamnomagenta
+DarkmossBase16: DarkmossBase16
+DarkOliveGreen: Tamnomaslinastozelena
+DarkOnly: Samo tamno
+DarkOrange: Tamno narančasta
+DarkOrchid: Tamna orhideja
+DarkRed: Tamnocrvena
+DarkSalmon: Tamni losos
+DarkSeaGreen: Tamnomorskozelena
+DarkSlateBlue: Tamnoplava
+DarkSlateGray: TamnoŠkriljevacSiva
+DarktoothBase16: DarktoothBase16
+DarkTurquoise: TamnoTirkizna
+DarkViolet: Tamnoljubičasta
+DarkVioletBase16: Tamnoljubičasta baza16
+Dashboard: Nadzorna ploča
+Dashed: Isprekidane
+Data: Podaci
+Data has been updated: Podaci su ažurirani
+Database Backups: Sigurnosne kopije baze podataka
+DataUrl: URL-a podataka
+DataVisualiserStyle: DataVisualiserStyle
+date: datum
+Date: Datum
+Date Created: Datum stvaranja
+Date Range For Searching: Datumski raspon za pretraživanje
+DateOfBirth: Datum rođenja
+DateTime value is required using {0} type!: Vrijednost DateTime potrebna je pomoću {0} vrste!
+DateTimeLocal: DatumVrijeme i lokalno
+dav-KE: Taita (Kenija)
+de-AT: Njemački (Austrija)
+de-BE: Njemački (Belgija)
+de-CH: Njemački (Švicarska)
+de-DE: Njemački (Njemačka)
+de-IT: Njemački (Italija)
+de-LI: Njemački (Lihtenštajn)
+de-LU: Njemački (Luksemburg)
+Debug: Ispraviti grešku
+Dec: Prosinac
+DecafBase16: Baza bez kofeina16
+decimal: decimala
+Decimal: Decimala
+Decimal value is required using {0} type!: Decimalna vrijednost je potrebna pomoću {0} tipa!
+DeepPink: Duboko ružičasta
+DeepSkyBlue: DeepSkyBlue
+Default: Propust
+DefaultBorderRadius: DefaultBorderRadius
+DefaultDarkBase16: ZadanoDarkBase16
+DefaultLightBase16: ZadanoLightBase16
+Defined: Definiran
+Delay: Kašnjenje
+DelayValueChangeToPickerClose: DelayValueChangeToPickerClose
+Delete: Izbrisati
+Delete all: Izbriši sve
+Delete Confirmation: Izbriši potvrdu
+Delete Content: Izbriši sadržaj
+Delete Content {0}: Brisanje sadržaja '{0}'
+Delete Extended Attribute?: Izbrisati prošireni atribut?
+Delete file from server: Izbriši datoteku s poslužitelja
+Delete Image: Izbriši sliku
+Delete Picture: Izbriši sliku
+Delete Role Content: Želite li izbrisati ulogu s ID {0}?
+Delete these {0} elements: Izbrisati ove {0} elemente?
+Delete this element: Izbrisati ovaj element?
+Delete User: Izbriši korisnika
+Deletion Not Allowed: Brisanje nije dopušteno
+Delimiter: Graničnik
+Delimiters: Graničnike
+Demo drag mode SnapDrag: Demo način povlačenja SnapDrag
+Demo for MudExDialog as inline: Demo za MudExDialog kao inline
+Demo for MudExTaskBar and not Modal dialogs: Demo za MudExTaskBar, a ne modalne dijaloge
+Demo for simple integrated useful dialogs. Prompt, Info, MessageBox: Demo za jednostavne integrirane korisne dijaloške okvire. Prompt, Info, MessageBox
+Demo for the MudExUploadEdit inside of a MudForm and a FluentValidator.: Demo za MudExUploadEdit unutar MudForma i FluentValidatora.
+Demo for the MudExUploadEdit.: Demo za MudExUploadEdit.
+Demo for using custom can close in DialogOptionsEx: Demo za korištenje prilagođenog može se zatvoriti u DialogOptionsEx
+Demo for using Dialog and DialogBackground Appearance in DialogOptionsEx: Demo za korištenje Dialog i DialogBackground Appearance u DialogOptionsEx
+Demo for using DialogOptionsEx: Demo za korištenje DialogOptionsEx
+Demo for using DialogOptionsEx and pass position and size: Demo za korištenje DialogOptionsEx i prolazi poziciju i veličinu
+Demo for using MudExObjectEdit for the same model with the default Demo but with some Meta configuration: Demo za korištenje MudExObjectEdita za isti model sa zadanim Demoom, ali s nekim Meta konfiguracijama
+Demo for using MudExObjectEdit GroupingStyle.Tabs: Demonstracija za korištenje MudExObjectEdit GroupingStyle.Tabs
+Demo for using MudExObjectEdit only with bypassing an object: Demo za korištenje MudExObjectEdita samo uz zaobilaženje objekta
+Demo for using MudExObjectEdit with a configuration for Conditional using 'WithAttributesIf': Demo za korištenje MudExObjectEdita s konfiguracijom za Conditional pomoću 'WithAttributesIf'
+Demo for using MudExObjectEdit with a model that contains file(s): Demo za korištenje MudExObjectEdita s modelom koji sadrži datoteke(e)
+Demo for using MudExObjectEdit with CodeGator Adapter and CodeGator Attributes: Demo za korištenje MudExObjectEdita s CodeGator adapterom i CodeGator atributima
+Demo for using MudExObjectEditPicker with a model that contains file(s): Demo za korištenje MudExObjectEditPicker s modelom koji sadrži datoteke(e)
+Demo of using explicit the MudExFileDisplayZip to show and select content inside of a zip file: Demonstracija korištenja eksplicitnog MudExFileDisplayZip za prikaz i odabir sadržaja unutar zip datoteke
+Demonstration for a simple but very useful Enum Selector: Demonstracija jednostavnog, ali vrlo korisnog Enum Selectora
+Demonstration of the MudExSplitter: Demonstracija MudExSplittera
+Demonstration of the quickly color select with MudExColorBubble: Demonstracija brzog odabira boja pomoću MudExColorBubble
+DEMOS: DEMO
+Dense: Gust
+Dependent permissions required: Potrebne su ovisne dozvole
+Deployments: Implementacije
+Description: Opis
+Description is required!: Opis je obavezan!
+Description_for_Age: Description_for_Age
+Description_for_City: Description_for_City
+Description_for_FirstName: Description_for_FirstName
+Description_for_Id: Description_for_Id
+Description_for_LastName: Description_for_LastName
+Description_for_Notice: Description_for_Notice
+Description_for_OtherAddresses: Description_for_OtherAddresses
+Description_for_PostalCode: Description_for_PostalCode
+Description_for_ProgramingSkills: Description_for_ProgramingSkills
+Description_for_Street: Description_for_Street
+Description_for_TrueOrFalse: Description_for_TrueOrFalse
+Dessert: Desert
+detailed guide for more.: Detaljan vodič za više.
+Details for Trail ID: Pojedinosti za ID staze
+Devibeans: Devibeans
+DeviceId: ID uređaja
+DeviceListVariant: PopisUređajaVarijanta
+DeviceSelection: Odabir uređaja
+Dialog: Dijaloški
+Dialog Appearance: Izgled dijaloškog okvira
+Dialog Content: Sadržaj dijaloškog okvira
+Dialog Drag & Drop: Dijalog Povuci i ispusti
+Dialog for editing objects with the MudExObjectEditForm: Dijaloški okvir za uređivanje objekata pomoću MudExObjectEditForm
+Dialog Sample: Uzorak dijaloga
+Dialog Samples: Uzorci dijaloga
+Dialog Snap Drag: Dijalog Povuci povuci
+Dialog to display a file using {{{MudBlazor.Extensions.Components.MudExFileDisplay}}} component.: Dijaloški okvir za prikaz datoteke pomoću komponente {{{MudBlazor.Extensions.Components.MudExFileDisplay}}}.
+Dialog_Appearance: Dialog_Appearance
+DialogAppearance: DijalogIzgled
+DialogBackgroundAppearance: DialogBackgroundAppearance
+DialogOptions: Opcije dijaloškog okvira
+Dialogs: Dijaloga
+DialogsCanClose: DijaloziMožemZatvori
+DialogServiceExt: DialogServiceExt
+DialogSnapDrag: DijalogSnapDrag
+DialogsPosition: Dijaloški okviriPoložaj
+Diana Prince: Diana Prince
+DimGray: DimGray
+Direct: Direktan
+Direction: Smjer
+DirtyseaBase16: Baza prljavog mora16
+Disable Grouping: Onemogući grupiranje
+Disabled: Onemogućen
+DisableList: Onemogućeni popis
+DisableOpacityChange: DisableOpacityChange
+DisablePadding: Onemogući podmetanje
+DisablePopoverPadding: OnemogućiPooverPadding
+DisablePositionMargin: DisablePositionMargin
+DisableSelectedItemStyle: DisableSelectedItemStyle
+DisableSizeMarginX: DisableSizeMarginX
+DisableSizeMarginY: DisableSizeMarginY
+DiscreteFrequencies: Diskretne frekvencije
+DisplayActionMenu: DisplayActionMenu
+DisplayErrors: Pogreške prikaza
+DisplayPresetList: PrikazPopis unaprijed postavljenih postavki
+Displays a tree structure as flat list: Prikazuje strukturu stabla kao plošnu listu
+Displays a tree structure as horizontal navigable tree: Prikazuje strukturu stabla kao vodoravno stablo za navigaciju
+Displays a tree structure as navigable Breadcrumb: Prikazuje strukturu stabla kao navigacijsku krušnu mrvicu
+Displays a tree structure as navigable card grid: Prikazuje strukturu stabla kao navigacijsku mrežu karata
+Displays a tree structure as navigable List: Prikazuje strukturu stabla kao navigacijski popis
+Displays a tree structure as simple tree: Prikazuje strukturu stabla kao jednostavno stablo
+DisplaySurface: Zaslonska površina
+DisplayTrackList: DisplayTrackList
+DisposeEvent: DispogeEvent
+Disqus comments are disabled by default.: Disqus komentari su onemogućeni prema zadanim postavkama.
+Divider: Razdjelnik
+DividerLight: Razdjelno svjetlo
+dje-NE: Zarma (Niger)
+DNumber: DNumber
+Do you really want to restart the server?: Želite li stvarno ponovno pokrenuti poslužitelj?
+Do you really want to restore the database from backup '{0}'? Note that any changes made after {1} are gone. This also means any changes made by any user: Želite li doista vratiti bazu podataka iz sigurnosne kopije '{0}'? Imajte na umu da su sve promjene napravljene nakon {1} nestale. To također znači sve promjene koje je napravio bilo koji korisnik
+Do you want to delete the profile picture of {0}: Želite li izbrisati profilnu sliku {0}
+Do you want to delete the User {0}: Želite li izbrisati korisnički {0}
+Docco: Docco
+Docked: Usidren
+Document Deleted: Dokument izbrisan
+Document Extended Attributes: Prošireni atributi dokumenta
+Document Management: Upravljanje dokumentima
+Document Not Found!: Dokument nije pronađen!
+Document Saved: Spremljeni dokument
+Document Store: Spremište dokumenata
+Document Type: Vrsta dokumenta
+Document Type Deleted: Vrsta dokumenta je izbrisana
+Document Type is required!: Vrsta dokumenta je obavezna!
+Document Type Not Found!: Vrsta dokumenta nije pronađena!
+Document Type Saved: Spremljena vrsta dokumenta
+Document Type Updated: Vrsta dokumenta ažurirana
+Document type with this name already exists.: Vrsta dokumenta s ovim nazivom već postoji.
+Document Types: Vrste dokumenata
+Document Types exported: Vrste izvezenih dokumenata
+Document Updated: Dokument ažuriran
+Documentation: Dokumentacija
+Documents: Dokumenata
+DodgerBlue: DodgerBlue
+doi-Deva-IN: Dogri (Devanagari, Indija)
+Don't have an account?: Nemate račun?
+Done!: Učinjeno!
+Donut: Krafna
+Dotted: Točkasta
+Double: Dvostruk
+DoubleClickAction: Dvostruka akcija klika
+Download: Preuzimanje
+Download {0} files separately: Preuzmite {0} datoteke zasebno
+Download {0} with {1} files as zip: Preuzmite {0} s {1} datotekama kao zip
+Download file {0}: Preuzmite datoteku {0}
+Download file {0} as zip: Preuzmite datoteku {0} kao zip
+DraculaBase16: DrakulaBase16
+Drag and Drop files here: Povuci i ispusti datoteke ovdje
+DragEffect: Efekt povlačenja
+DragMode: Način povlačenja
+Drawer: Ladica
+DrawerBackground: Pozadina ladice
+DrawerClipMode: Način rada isječka ladice
+DrawerIcon: Ikona ladice
+DrawerMiniWidthLeft: LadicaMiniŠirinaLijevo
+DrawerMiniWidthRight: LadicaMiniŠirinaDesno
+DrawerText: Tekst ladice
+DrawerVariant: LadicaVarijanta
+DrawerWidthLeft: Širina ladiceLijevo
+DrawerWidthRight: Širina ladiceDesno
+DroidCam Source 2: DroidCam Izvor 2
+DroidCam Source 3: DroidCam izvor 3
+Drop Box: Kutija za odlaganje
+Drop down component to select a culture: Padajuća komponenta za odabir kulture
+Drop down component to select an enum value or multiple on flags enums: Padajuća komponenta za odabir vrijednosti izmetanja ili više na zastavicama
+Drop files here: Ispustite datoteke ovdje
+DropBox external file picker component: Komponenta za odabir vanjskih datoteka DropBox
+DropBoxApiKey: DropBoxApiKey
+Dropdown list component to select one ore more fonts: Komponenta padajućeg popisa za odabir jednog ili više fontova
+DropShadow: Sjena
+DropZoneClickAction: DropZoneClickAction
+dsb-DE: Donjo lužičkosrpsko (Njemačka)
+dua-CM: Duala (Kamerun)
+DualCombined: Dvostruka kombinacija
+DualHorizontal: Dvostruko vodoravno
+DualVertical: Dvostruko okomito
+DuplicateErrorText: DuplicateErrorText
+Duration: Trajanje
+dv-MV: Divehi (Maldivi)
+Dynamic component tests: Ispitivanja dinamičkih komponenti
+dyo-SN: Jola-Fonyi (Senegal)
+dz-BT: Dzongkha (Butan)
+E-mail: E-pošta
+E-Mail: E-pošta
+E-Mail not confirmed.: E-pošta nije potvrđena. Provjerite svoj poštanski sandučić i potvrdite svoju adresu e-pošte. <a href='{0}'>Ponovno pošaljite potvrdu e-poštom</a>
+ebu-KE: Embu (Kenija)
+Edge: Rub
+EdgeDarkBase16: EdgeDarkBase16
+EdgeLightBase16: EdgeLightBase16
+Edit: Urediti
+Edit {0}: Uredi {0}
+Edit a complex Model with included Collection of users: Uređivanje složenog modela s uključenom zbirkom korisnika
+Edit Audio Constraints: Uređivanje audio ograničenja
+Edit Current Theme: Uredi trenutnu temu
+Edit data in dialog: Uređivanje podataka u dijaloškom okviru
+Edit in TryMudEx: Uredite u TryMudExu
+Edit Items: Uređivanje stavki
+Edit only a Collection of users: Uređivanje samo zbirke korisnika
+Edit rating: Uredi ocjenu
+Edit Running Component: Uređivanje tekuće komponente
+Edit Test Object: Uređivanje testnog objekta
+Edit Users: Uređivanje korisnika
+Edit Video Constraints: Uređivanje ograničenja videozapisa
+Edit with shared MetaConfig: Uređivanje sa zajedničkim MetaConfigom
+Editable: Uređivati
+Editing of the DB Connection can break whole application. Please edit this only if you know what you are doing: Uređivanje DB veze može pokvariti cijelu aplikaciju. Molimo uredite ovo samo ako znate što radite
+Editing of this endpoint can break AI integration: Uređivanje ove krajnje točke može prekinuti integraciju umjetne inteligencije
+EditMode: Način uređivanja
+Editor for a property of an object. Used internally inside the MudExObjectEdit: Uređivač za svojstvo objekta. Koristi se interno unutar MudExObjectEdit
+EditRunningComponent: EditRunningComponent
+Edmonton: Edmonton
+Edmonton - T5A 0A1: Edmonton - T5A 0A1
+Edmonton - T5A 0A1ender: Edmonton - T5A 0A1ender
+ee-GH: Ovca (Gana)
+ee-TG: Ovca (Togo)
+EightiesBase16: Baza osamdesetih16
+el-CY: grčki (Cipar)
+el-GR: grčki (Grčka)
+Elevation: Nagib
+Em: U
+email: E-pošta
+Email: E-pošta
+Email {0} is already registered.: E-mail {0} je već registriran.
+Email cannot changed: E-pošta se ne može promijeniti
+Email Confirmation: Potvrda e-pošte
+Email is not correct: E-pošta nije točna
+Email is required: E-pošta je obavezna
+Email is required!: E-pošta je obavezna!
+EmbersBase16: Baza žara16
+en-001: Engleski (Svijet)
+en-029: Engleski (Karibi)
+en-150: Hrvatski (Europa)
+en-AE: Hrvatski (Ujedinjeni Arapski Emirati)
+en-AG: Hrvatski (Antigva i Barbuda)
+en-AI: Hrvatski (Angvila)
+en-AS: Hrvatski (Američka Samoa)
+en-AT: Hrvatski (Austrija)
+en-AU: Hrvatski (Australija)
+en-BB: Hrvatski (Barbados)
+en-BE: Hrvatski (Belgija)
+en-BI: Hrvatski (Burundi)
+en-BM: Hrvatski (Bermuda)
+en-BS: Hrvatski (Bahami)
+en-BW: Hrvatski (Bocvana)
+en-BZ: Hrvatski (Belize)
+en-CA: Hrvatski (Kanada)
+en-CC: Engleski (Kokosovi otoci)
+en-CH: Hrvatski (Švicarska)
+en-CK: Hrvatski (Cookovi otoci)
+en-CM: Hrvatski (Kamerun)
+en-CX: Engleski (Božićni otok)
+en-CY: Hrvatski (Cipar)
+en-DE: Hrvatski (Njemačka)
+en-DK: Hrvatski (Danska)
+en-DM: Hrvatski (Dominica)
+en-ER: Hrvatski (Eritreja)
+en-FI: Hrvatski (Finska)
+en-FJ: Hrvatski (Fidži)
+en-FK: Hrvatski (Falklandski otoci)
+en-FM: Hrvatski (Mikronezija)
+en-GB: Hrvatski (Ujedinjeno Kraljevstvo)
+en-GD: Hrvatski (Grenada)
+en-GG: Engleski (Guernsey)
+en-GH: Hrvatski (Gana)
+en-GI: Hrvatski (Gibraltar)
+en-GM: Hrvatski (Gambija)
+en-GU: Hrvatski (Guam)
+en-GY: Hrvatski (Gvajana)
+en-HK: Engleski (Posebno upravno područje Hong Konga)
+en-ID: Hrvatski (Indonezija)
+en-IE: Hrvatski (Irska)
+en-IL: Hrvatski (Izrael)
+en-IM: Engleski (Otok Man)
+en-IN: Hrvatski (Indija)
+en-IO: Engleski (Britanski teritorij Indijskog oceana)
+en-JE: Hrvatski (Jersey)
+en-JM: Hrvatski (Jamajka)
+en-KE: Hrvatski (Kenija)
+en-KI: Hrvatski (Kiribati)
+en-KN: Engleski (St. Kitts i Nevis)
+en-KY: Engleski (Kajmanski otoci)
+en-LC: Engleski (Sveta Lucija)
+en-LR: Hrvatski (Liberija)
+en-LS: Hrvatski (Lesoto)
+en-MG: Hrvatski (Madagaskar)
+en-MH: Engleski (Maršalovi Otoci)
+en-MO: Hrvatski (Macao SAR)
+en-MP: Hrvatski (Sjeverni Marijanski otoci)
+en-MS: Hrvatski (Montserrat)
+en-MT: Hrvatski (Malta)
+en-MU: Hrvatski (Mauricijus)
+en-MW: Hrvatski (Malavi)
+en-MY: Hrvatski (Malezija)
+en-NA: Hrvatski (Namibija)
+en-NF: Hrvatski (Otok Norfolk)
+en-NG: Hrvatski (Nigerija)
+en-NL: Hrvatski (Nizozemska)
+en-NR: Hrvatski (Nauru)
+en-NU: Hrvatski (Niue)
+en-NZ: Hrvatski (Novi Zeland)
+en-PG: Engleski (Papua Nova Gvineja)
+en-PH: Hrvatski (Filipini)
+en-PK: Hrvatski (Pakistan)
+en-PN: Hrvatski (Pitcairnovi otoci)
+en-PR: Hrvatski (Portoriko)
+en-PW: Hrvatski (Palau)
+en-RW: Hrvatski (Ruanda)
+en-SB: Hrvatski (Salomonovi Otoci)
+en-SC: Hrvatski (Sejšeli)
+en-SD: Hrvatski (Sudan)
+en-SE: Hrvatski (Švedska)
+en-SG: Hrvatski (Singapur)
+en-SH: Engleski (Sveta Helena, Uzašašće, Tristan da Cunha)
+en-SI: Hrvatski (Slovenija)
+en-SL: Hrvatski (Sierra Leone)
+en-SS: Hrvatski (Južni Sudan)
+en-SX: Engleski (Sint Maarten)
+en-SZ: Hrvatski (Eswatini)
+en-TC: Hrvatski (Otoci Turks i Caicos)
+en-TK: Hrvatski (Tokelau)
+en-TO: Hrvatski (Tonga)
+en-TT: Hrvatski (Trinidad i Tobago)
+en-TV: Hrvatski (Tuvalu)
+en-TZ: Hrvatski (Tanzanija)
+en-UG: Hrvatski (Uganda)
+en-UM: Engleski (Udaljeni otoci SAD-a)
+en-US: Hrvatski (Sjedinjene Američke Države)
+en-US-posix: Hrvatski (Sjedinjene Američke Države, Računalo)
+en-VC: Engleski (St. Vincent i Grenadini)
+en-VG: Hrvatski (Britanski Djevičanski otoci)
+en-VI: Engleski (Američki Djevičanski otoci)
+en-VU: Hrvatski (Vanuatu)
+en-WS: Hrvatski (Samoa)
+en-ZA: Hrvatski (Južnoafrička Republika)
+en-ZM: Hrvatski (Zambija)
+en-ZW: Hrvatski (Zimbabve)
+Enable Disqus: Omogućite Disqus
+enables or disables virtualization.: Omogućuje ili onemogućuje virtualizaciju.
+End: Kraj
+English: Engleski
+Engravers MT: Graveri MT
+Enter email and your new password here: Ovdje unesite e-poštu i novu lozinku
+Enter email for password reset: Unesite adresu e-pošte povezanu s vašim računom i primit ćete e-poštu s poveznicom za ponovno postavljanje lozinke
+Enter name: Unesite ime
+Enter name of backup file: Unesite naziv datoteke sigurnosne kopije
+Enter new name of backup file: Unesite novi naziv datoteke sigurnosne kopije
+Enter the email address for the confirmation mail: Unesite adresu e-pošte za potvrdu
+Enter the URL to existing file: Unesite URL postojeće datoteke
+Enter your message...: Unesite svoju poruku...
+Entity Id: ID entiteta
+Entity is required!: Entitet je obavezan!
+EntityCreatedBy: EntitetStvorioAutor
+EntityCreatedOn (Local): EntityCreatedOn (lokalno)
+EntityCreatedOn (UTC): EntityCreatedOn (UTC)
+EntityId: ID entiteta
+EntityLastModifiedBy: EntitetLastModifiedBy
+EntityLastModifiedOn (Local): EntityLastModifiedOn (lokalno)
+EntityLastModifiedOn (UTC): EntitetLastModifiedOn (UTC)
+Entree: Ulaz
+EnumSelect: EnumSelect
+Environment: Okoliš
+eo-001: Esperanto (Svijet)
+EquilibriumDarkBase16: RavnotežaTamna baza16
+EquilibriumGrayDarkBase16: RavnotežaSivaTamna baza16
+EquilibriumGrayLightBase16: RavnotežaSiva svjetlosna baza16
+EquilibriumLightBase16: RavnotežaSvjetlosna baza16
+Eras Bold ITC: Eras Bold ITC
+Eras Demi ITC: Eras Demi ITC
+Eras Light ITC: Eras Light ITC
+Eras Medium ITC: Eras Medium ITC
+Error: Greška
+ErrorAnimation: Animacija pogreške
+ErrorContrastText: PogreškaKontrastTekst
+ErrorDarken: PogreškaZatamniti
+ErrorId: ID pogreške
+ErrorLighten: Olakšavanje pogrešaka
+ErrorMessage: Poruka o pogrešci
+ErrorText: Tekst pogreške
+es-419: Španjolski (Latinska Amerika)
+es-AR: španjolski (Argentina)
+es-BO: španjolski (Bolivija)
+es-BR: španjolski (Brazil)
+es-BZ: španjolski (Belize)
+es-CL: španjolski (Čile)
+es-CO: španjolski (Kolumbija)
+es-CR: španjolski (Kostarika)
+es-CU: španjolski (Kuba)
+es-DO: Španjolski (Dominikanska Republika)
+es-EC: španjolski (Ekvador)
+es-ES: španjolski (Španjolska)
+es-GQ: Španjolski (Ekvatorijalna Gvineja)
+es-GT: španjolski (Gvatemala)
+es-HN: španjolski (Honduras)
+es-MX: španjolski (Meksiko)
+es-NI: španjolski (Nikaragva)
+es-PA: španjolski (Panama)
+es-PE: španjolski (Peru)
+es-PH: španjolski (Filipini)
+es-PR: Španjolski (Portoriko)
+es-PY: španjolski (Paragvaj)
+es-SV: španjolski (El Salvador)
+es-US: španjolski (Sjedinjene Američke Države)
+es-UY: Španjolski (Urugvaj)
+es-VE: španjolski (Venezuela)
+Español: Španjolski
+EspressoBase16: EspressoBase16
+et-EE: estonski (Estonija)
+Ethan Hunt: Ethan Hunt
+eu-ES: Baskijski (Španjolska)
+EvaBase16: EvaBase16
+EvaDimBase16: EvaDimBase16
+ewo-CM: Ewondo (Kamerun)
+ExcelSheet.xlsx: ExcelSheet.xlsx
+Expand &nbsp; <b>not</b> &nbsp; loaded nodes: <b>Proširi</b> &nbsp; &nbsp; neučitane čvorove
+Expand all nodes: Proširi sve čvorove
+Expand loaded nodes: Proširite učitane čvorove
+Expand/Collapse: Proširi/Sažmi
+ExpandBehaviour: Proširi ponašanje
+ExpandButtonDirection: Proširi smjer gumba
+ExpandedIcon: Proširena ikona
+ExpandOnClick: Proširi na klik
+ExpandOnFilter: Proširi filtar
+Explicit File Display Zip: Eksplicitni prikaz datoteke Zip
+Export: Izvoz
+Export To Excel: Izvoz u Excel
+Export_SheetName: Podaci
+ExposureCompensation: Kompenzacija izloženosti
+ExposureMode: Način ekspozicije
+ExposureTime: Vrijeme izlaganja
+Extended Attribute Deleted: Prošireni atribut izbrisan
+Extended Attribute Not Found!: Prošireni atribut nije pronađen!
+Extended Attribute Saved: Spremljen prošireni atribut
+Extended Attribute Updated: Ažuriran prošireni atribut
+Extended Attribute with this Key already exists.: Prošireni atribut s ovim ključem već postoji.
+Extended Attributes: '\{0}\ Prošireni atributi'
+Extended Attributes exported: Eksportirani prošireni atributi
+ExtensionRestrictionType: ProširenjeOgraničenje Vrste
+Extensions: Ekstenzije
+External Id: Vanjski ID
+ExternalDialogOptions: Vanjske mogućnosti dijaloga
+ExternalId: Vanjski ID
+ExternalPickerImageSize: ExternalPickerImageSize
+ExternalProviderRendering: ExternalProviderRendering
+ExtraExtraLarge: Ekstraekstra velika
+ExtraLarge: Iznimno velik
+ExtraSmall: Ekstra mali
+fa-IR: Perzijski (Iran)
+FacingMode: Način suočavanja
+Fade: Izblijediti
+FadeIn: FadeIn
+Failed to get client preferences: Nije uspjelo dobiti postavke klijenta
+FallBackInIframe: FallBackInIframe
+False: Lažan
+FAQs: Često postavljana pitanja
+Far: Daleko
+Features: Značajkama
+Feb: Veljača
+Felix Titling: Felix Titling
+Female: Ženka
+Female_ Text: Female_ Tekst
+ff-Adlm-BF: Fulah (Adlam, Burkina Faso)
+ff-Adlm-CM: Fulah (Adlam, Kamerun)
+ff-Adlm-GH: Fulah (Adlam, Gana)
+ff-Adlm-GM: Fulah (Adlam, Gambija)
+ff-Adlm-GN: Fulah (Adlam, Gvineja)
+ff-Adlm-GW: Fulah (Adlam, Gvineja Bisau)
+ff-Adlm-LR: Fulah (Adlam, Liberija)
+ff-Adlm-MR: Fulah (Adlam, Mauritanija)
+ff-Adlm-NE: Fulah (Adlam, Niger)
+ff-Adlm-NG: Fulah (Adlam, Nigerija)
+ff-Adlm-SL: Fulah (Adlam, Sierra Leone)
+ff-Adlm-SN: Fulah (Adlam, Senegal)
+ff-Latn-BF: Fulah (latinski, Burkina Faso)
+ff-Latn-CM: Fulah (latinski, kamerun)
+ff-Latn-GH: Fulah (latinski, Gana)
+ff-Latn-GM: Fulah (latinski, Gambija)
+ff-Latn-GN: Fulah (latinski, gvineja)
+ff-Latn-GW: Fulah (latinski, Gvineja Bisau)
+ff-Latn-LR: Fulah (latinski, Liberija)
+ff-Latn-MR: Fulah (latinski, Mauritanija)
+ff-Latn-NE: Fulah (latinski, niger)
+ff-Latn-NG: Fulah (latinski, Nigerija)
+ff-Latn-SL: Fulah (latinski, Sierra Leone)
+ff-Latn-SN: Fulah (latinski, Senegal)
+FFTSize: FFTSize
+fi-FI: finski (Finska)
+fil-PH: Filipinac (Filipini)
+File Display: Prikaz datoteke
+File Display with Stream: Prikaz datoteka sa streamom
+File Handling: Rukovanje datotekama
+File is required!: Datoteka je obavezna!
+FileDisplay: Prikaz datoteka
+FileDisplayAsStream: DatotekaDisplayAsStream
+FileDisplayZipWithPreview: DatotekaDisplayZipWithPreview
+FileInfo: Informacije o datoteci
+FileName: Datoteke
+Files: Datotekama
+Files of this type ({0}) are not allowed. Only following types are allowed '{1}'. Try one of these extensions ({2}): Datoteke ove vrste ({0}) nisu dopuštene. Dopuštene su samo sljedeće vrste '{1}'. Isprobajte jedno od ovih proširenja ({2})
+Fill Administrator Credentials: Ispunite vjerodajnice administratora
+Fill Basic User Credentials: Ispunite osnovne korisničke vjerodajnice
+FillAlpha: FillAlpha
+Filled: Ispunjen
+Filter: Filtar
+Filter...: Filtar...
+Filter468: Filtar468
+FilterBehaviour: Ponašanje filtra
+FilterBoxClass: Klasa FilterBoxClass
+FilterBoxStyle: Stil filterBoxa
+FilterChipsPlacedRight: FilterChipsPlacedRight
+Filtered Audit Trails exported: Filtrirani revizijski tragovi izvezeni
+Filtered Brands exported: Filtrirane robne marke izvezene
+Filtered Document Types exported: Filtrirane vrste dokumenata koje se izvoze
+Filtered Extended Attributes exported: Filtrirani prošireni atributi izvezeni
+Filtered Products exported: Filtrirani proizvodi koji se izvoze
+Filtered Users exported: Filtrirani korisnici koji su izvezeni
+FilterEnabled: Omogućen filtar
+FilterHighlighting: Isticanje filtra
+Filtering: Filtriranje
+FilterMode: Način filtriranja
+FilterMultiple: FiltrirajVišestruko
+FilterPlaceholder: Rezervirano mjesto za filtar
+Filters: Filteri
+FilterVariant: Varijanta filtra
+Fiona Gallagher: Fiona Gallagher
+Firebrick: Šamotna opeka
+First Name: Ime
+First Name is required: Ime je obavezno
+FirstName: Ime
+Fixed: Fiksirane
+Flags Enum: Zastave Enum
+Flat: Stan
+Flat List: Popis stanova
+FlatBase16: Ravna baza16
+FlatList: Popis stanova
+FlexEnd: FlexEnd
+FlexStart: Fleksibilni početak
+Flip: Okrenuti
+FlipAlways: FlipAlways
+FlipNever: FlipNever
+FlipOnOpen: FlipOnOpen
+FlipX: FlipX
+FlipY: FlipY
+FloralWhite: Cvjetna bijela
+Florian Gilde: Florian Gilde
+FNumber: FNumber
+fo-DK: Farski (Danska)
+fo-FO: Farski (Farski otoci)
+FocusDistance: Udaljenost fokusa
+FocusMode: Način fokusiranja
+FontFamily: Obitelj fontova
+FontSelect: Odabir fonta
+FontSize: Veličina fonta
+FontWeight: Težina fonta
+Footlight MT Light: Svjetlo za noge MT svjetlo
+Force pick Item: Prisilno odabir stavke
+Force pick Items: Prisilno odabir predmeta
+Force select Item: Prisilni odabir stavke
+Force select Items: Prisilni odabir stavki
+ForceNativeRender: ForceNativeRender
+ForceSelectOfMudColor: ForceSelectOfMudColor
+ForceShrink: Prisilno smanjivanje
+ForestGreen: Šumsko zeleno
+Forgot password?: Zaboravili ste lozinku?
+Format: Oblik
+Foundation: Zaklada
+fr-029: Francuski (Karibi)
+fr-BE: Francuski (Belgija)
+fr-BF: Francuski (Burkina Faso)
+fr-BI: Francuski (Burundi)
+fr-BJ: Francuski (Benin)
+fr-BL: Francuski (St. Barthélemy)
+fr-CA: Francuski (Kanada)
+fr-CD: Francuski (Kongo [DRC])
+fr-CF: Francuska (Srednjoafrička Republika)
+fr-CG: Francuski (Kongo)
+fr-CH: Francuski (Švicarska)
+fr-CI: Francuski (Obala Bjelokosti)
+fr-CM: Francuski (Kamerun)
+fr-DJ: Francuski (Džibuti)
+fr-DZ: Francuski (Alžir)
+fr-FR: Francuski (Francuska)
+fr-GA: Francuski (Gabon)
+fr-GF: Francuski (Francuska Gvajana)
+fr-GN: Francuski (Gvineja)
+fr-GP: Francuski (Guadeloupe)
+fr-GQ: Francuski (Ekvatorijalna Gvineja)
+fr-HT: Francuski (Haiti)
+fr-KM: Francuski (Komori)
+fr-LU: Francuski (Luksemburg)
+fr-MA: Francuski (Maroko)
+fr-MC: Francuski (Monako)
+fr-MF: Francuski (St. Martin)
+fr-MG: Francuski (Madagaskar)
+fr-ML: Francuski (Mali)
+fr-MQ: Francuski (Martinique)
+fr-MR: Francuski (Mauritanija)
+fr-MU: Francuski (Mauricijus)
+fr-NC: Francuski (Nova Kaledonija)
+fr-NE: Francuski (Niger)
+fr-PF: Francuski (Francuska Polinezija)
+fr-PM: Francuski (St. Pierre & Miquelon)
+fr-RE: Francuski (Réunion)
+fr-RW: Francuski (Ruanda)
+fr-SC: Francuski (Sejšeli)
+fr-SN: Francuski (Senegal)
+fr-SY: Francuski (Sirija)
+fr-TD: Francuski (Čad)
+fr-TG: Francuski (Togo)
+fr-TN: Francuski (Tunis)
+fr-VU: Francuski (Vanuatu)
+fr-WF: Francuski (Wallis & Futuna)
+fr-YT: Francuski (Mayotte)
+FrameRate: Broj sličica u sekundi
+FramerBase16: FramerBase16
+Franklin Gothic Medium: Franklin gotički medij
+French: Francuski
+FrequencyScale: Frekvencijska ljestvica
+FruitSodaBase16: FruitSodaBase16
+Fuchsia: Fuksija
+Full: Pun
+FullHeight: Puna visina
+FullOctaveBands: Puni oktavni bendovi
+FullPaged: Potpuno stranica
+Fullscreen: Cijeli zaslon
+FullScreen: Cijeli zaslon
+FullScreenButtonIcon: Ikona gumba preko cijelog zaslona
+FullWidth: Puna širina
+fur-IT: Furlanski (Italija)
+Futura: Budućnost
+fy-NL: Zapadnofrizijski (Nizozemska)
+ga-GB: Irski (Ujedinjeno Kraljevstvo)
+ga-IE: Irski (Irska)
+Gain: Dobiti
+Gainsboro: Gainsboro
+Garamond: Garamond
+gd-GB: Škotski galski (Ujedinjeno Kraljevstvo)
+Gender: Spol
+General: Općenito
+Geneva: Ženeva
+George Miller: George Miller
+Georgia: Gruzija
+German: Njemački
+GhostWhite: Bijeli duh
+GigavoltBase16: Gigavoltna baza16
+Gigi: Gigi
+Gill Sans: Gill Sans
+Gill Sans MT: Gill bez MT-a
+Github: Github
+GitHub Project repository: Repozitorij GitHub projekta
+GithubBase16: GithubBase16
+GithubDark: GithubDark
+GithubDarkDimmed: GithubDarkDimmed
+gl-ES: galicijski (Španjolska)
+Gml: Gml
+gn-PY: Guarani (Paragvaj)
+GoHome: Idi doma!
+Gold: Zlato
+Goldenrod: Zlatnica
+Google: Google
+Google Drive: Google disk
+Google Drive file picker component: Komponenta za odabir datoteka Google diska
+Googlecode: Googlecode
+GoogleDarkBase16: GoogleDarkBase16
+GoogleDriveClientId: GoogleDriveClientId
+GoogleLightBase16: GoogleLightBase16
+Goudy Old Style: Goudy stari stil
+Goudy Stout: Goudy Stout
+Gradient: Gradijent
+GradientDark: GradijentDark
+GradientForeground: GradijentPrednji plan
+GradientLeft: GradijentLijevo
+GradientLight: Gradijentsvjetlo
+GradientRight: GradijentDesno
+GradientText: GradijentTekst
+Gravatar: Gravatar
+GravatarImageSize: GravatarImageSize
+Gray: Siv
+GrayDark: SivaTamna
+GrayDarker: SivaTamnije
+GrayDefault: GrayDefault
+GrayLight: Siva svjetlost
+GrayLighter: Sivi upaljač
+Grayscale: Sivi tonovi
+GrayscaleDarkBase16: Tamna baza16
+GrayscaleLightBase16: Svijetla baza u sivim tonovima16
+Green: Zelen
+GreenScreenBase16: Baza zelenog zaslona16
+GreenYellow: ZelenaŽuta
+Grid: Rešetka
+Grid_Enhanced: Grid_Enhanced
+GridCompact: GridCompact
+GridIcon: Ikona rešetke
+Groove: Brazda
+Group: Grupa
+Group by types: Grupiraj po vrstama
+GroupBox: Grupni okvir
+GroupId: ID grupe
+GroupingEnabled: Grupiranje omogućeno
+GroupsInitiallyExpanded: GroupsInitiallyExpanded
+GroupsNested: Ugniježđene grupe
+GroupsSticky: GrupeLjepljiv
+GruvboxDarkHardBase16: GruvboxTamnaTvrdaBaza16
+GruvboxDarkMediumBase16: MineboxDarkMediumBase16
+GruvboxDarkPaleBase16: GruvboxTamnaBlijedaBaza16
+GruvboxDarkSoftBase16: GruvboxDarkSoftBase16
+GruvboxLightHardBase16: GruvboxLightHardBase16
+GruvboxLightMediumBase16: GruvboxLaganoSrednjaBaza16
+GruvboxLightSoftBase16: GruvboxLightSoftBase16
+gsw-CH: Švicarski njemački (Švicarska)
+gsw-FR: Švicarski njemački (Francuska)
+gsw-LI: Švicarski njemački (Lihtenštajn)
+gu-IN: Gujarati (Indija)
+GutterBottom: Dno oluka
+Gutters: Oluka
+guz-KE: Gusii (Kenija)
+gv-IM: Manx (Otok Man)
+h1: H1
+H1: H1
+h2: H2
+H2: H2
+h3: H3
+H3: H3
+h4: H4
+H4: H4
+h5: H5
+H5: H5
+h6: H6
+H6: H6
+ha-Latn-GH: Hausa (latinski, Gana)
+ha-Latn-NE: Hausa (latinski, niger)
+ha-Latn-NG: Hausa (latinski, Nigerija)
+Haettenschweiler: Haettenschweiler
+HalfOctaveBands: Poluoktavni pojasevi
+Hannah Davis: Hannah Davis
+HardcoreBase16: HardcoreBase16
+Harlow Solid Italic: Harlow puni kurziv
+Harmonic16DarkBase16: Harmonična16Tamna baza16
+Harmonic16LightBase16: Harmonična16Svjetlosna baza16
+Harrington: Harrington
+haw-US: Havajski (Sjedinjene Države)
+he-IL: Hebrejski (Izrael)
+Header.tiff: Header.tiff
+HeadShake: Odmahivanje glavom
+HeatMap: Toplinska karta
+HeetchDarkBase16: HeetchDarkBase16
+HeetchLightBase16: HeetchLightBase16
+Height: Visina
+HeliosBase16: HeliosBase16
+Hello: Pozdrav
+Hello from dialog: Pozdrav iz dijaloga
+Hello from dialog 1: Pozdrav iz dijaloga 1
+Hello from dialog sample page: Pozdrav s ogledne stranice dijaloškog okvira
+Hello World: Zdravo svijete
+Hello...: Pozdrav...
+HelperId: Pomoćno ID
+HelperText: Pomoćni tekst
+HelperTextOnFocus: HelperTextOnFocus
+Helvetica: Helvetica
+Helvetica Narrow: Helvetica Narrow
+Here is another Real demo available for: Evo još jednog Real demoa dostupnog za
+Here only number is configured to render with NumEdit edit but DataType is string. Also this field is ignored for import: Ovdje je samo broj konfiguriran za prikaz s uređivanjem NumEdit, ali DataType je niz. Također se ovo polje zanemaruje za uvoz
+Here you can edit the users, but only confirm if count is at least 2: Ovdje možete uređivati korisnike, ali potvrdite samo ako je broj najmanje 2
+Here you can leave a comment for this permission for the current role: Ovdje možete ostaviti komentar za ovo dopuštenje za trenutnu ulogu
+Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Ovdje možete vidjeti kako možete koristiti MudExObjectEdit za uređivanje svojstava pokrenute komponente
+Here you find a Demo how to use the service directly: Ovdje ćete pronaći Demo kako izravno koristiti uslugu
+Hex: Hex
+HEX: HEX
+HexA: Hexa
+hi-IN: hindi (Indija)
+Hidden: Skriven
+Hide: Sakriti
+HideContentWhenCollapsed: HideContentWhenCollapsed
+HideDropDownWhenReadOnly: HideDropDownWhenReadOnly
+High Tower Text: Tekst visokog tornja
+HighlightSearch: IstaknutoPretraživanje
+Hinge: Zglob
+Home: Dom
+Honeydew: Medena rosa
+HopscotchBase16: Baza za viski16
+HorizonDarkBase16: HorizonDarkBase16
+HorizonLightBase16: HorizonLightBase16
+Horizontal: Vodoravan
+HouseNumber: Broj
+Houston: Houston
+Houston - 77001: Houston - 77001
+Houston - 77001ender: Houston - 77001ender
+Houstonender: Houstonender
+HoverColor: Boja lebdenja
+HoverMode: Način lebdenja
+HoverOpacity: Neprozirnost lebdenja
+hr-BA: Hrvatski (Bosna i Hercegovina)
+hr-HR: Hrvatski (Hrvatska)
+Href: Href
+hsb-DE: Gornjolužičkosrpski (Njemačka)
+HSL: HSL
+HTML Colors: HTML boje
+HtmlTag: HtmlOznaka
+https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls: https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls
+https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc: https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc
+hu-HU: mađarski (Mađarska)
+HumanoidDarkBase16: HumanoidDarkBase16
+HumanoidLightBase16: Humanoidna svjetlosna baza16
+hy-AM: Armenski (Armenija)
+Hybrid: Hibrid
+I agree to the terms and privacy: Slažem se s uvjetima i privatnošću
+I'm a also another separate control inside of the normal input: Ja sam također još jedna zasebna kontrola unutar normalnog ulaza
+I'm a another separate control inside of the normal input: Ja sam još jedna zasebna kontrola unutar normalnog ulaza
+I'm a separate control inside of the normal input: Ja sam zasebna kontrola unutar normalnog ulaza
+ia-001: Interlingua (Svijet)
+IaDarkBase16: IaDarkBase16
+IaLightBase16: IaLightBase16
+Ian Wright: Ian Wright
+ibb-NG: Ibibio (Nigerija)
+ICaptureService: ICaptureService
+Icon: Ikona
+IconColor: Boja ikone
+IconPicker: Birač ikona
+IconSize: Veličina ikone
+IcyDarkBase16: IcyDarkBase16
+id: Id
+Id: Id
+id-ID: indonezijski (Indonezija)
+Idea: Ideja
+Identifier: Identifikator
+If this is set a photo will be taken instead of a video.: Ako je ovo postavljeno, umjesto videozapisa snimit će se fotografija.
+If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Ako vam se sviđa ovaj paket, označite ga na ⭐ Githubu i podijelite ga sa svojim prijateljima. Ako ne, svejedno možete dati zvjezdicu i javiti mi što mogu poboljšati da vam bude bolje.
+If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Ako ovu opciju postavite kao zadanu. Ova opcija će se koristiti za sve dijaloške okvire u kojima nisu navedene opcije. Nastaviti?
+ig-NG: Igbo (Nigerija)
+Ignore: Ignorirati
+IgnoredPropertiesForReset: IgnoredPropertiesForReset
+IgnoredRenderControls: IgnoredRenderControls
+ii-CN: Yi (Kina)
+Image format: Format slike
+ImageAsBackgroundImage: ImageAsBackgroundImage
+Images: Slike
+ImagesNewLine: SlikeNova linija
+Immediate: Neposredan
+ImmediateText: Neposredni tekst
+Impact: Utjecaj
+Import: Uvoz
+ImportExportIcon: ImportExportIcon
+In: U
+In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: U ovom primjeru podaci se dinamički učitavaju čim se stavka prvi put pojavi u prikazu. Komponenta podržava dva utora za sadržaj
+In this sample you are forced to pick an user: U ovom uzorku prisiljeni ste odabrati korisnika
+In this sample you are forced to pick some users: U ovom uzorku prisiljeni ste odabrati neke korisnike
+In this sample you are forced to select some users: U ovom uzorku prisiljeni ste odabrati neke korisnike
+In this sample you can pick one user: U ovom uzorku možete odabrati jednog korisnika
+In this sample you can select multiple users: U ovom uzorku možete odabrati više korisnika
+In this sample you can select one user: U ovom uzorku možete odabrati jednog korisnika
+Inches: Inča
+Include Entity fields (Export): Uključivanje polja entiteta (izvoz)
+Incorrect Password.: Netočna lozinka.
+IndeterminateIcon: Neodređena_ikona
+Indigo: Indigo
+Indonesia: Indonezija
+Info: Informacije
+Info & About: Informacije i o nama
+InfoContrastText: InfoContrastText
+InfoDarken: InfoDarken
+InfoLighten: InfoLighten
+Informal Roman: Neformalni rimski
+Information: Informacija
+InfoText: InfoTekst
+inherit: naslijediti
+Inherit: Naslijediti
+Initial: Početni
+InitialColor: Početna boja
+InitiallyExpanded: U početku prošireno
+InitialMessage: Početna poruka
+InitialMessageVisibilityTime: PočetnaPorukaVidljivostiVremena
+InitialPreset: Početna postavka
+InitialRender: Početni render
+Inline: Inline
+Inline Dialog: Ugrađeni dijaloški okvir
+InlineDialogs: Umetnuti_dijalozi
+InProgress: U tijeku
+InputClass: Ulazna klasa
+InputId: Ulazni ID
+InputMode: Način unosa
+InputStyle: Stil unosa
+InputType: Vrsta ulaza
+Inset: Dodatak
+IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
+IntegratedInDialogAsImages: IntegratedInDialogAsImages
+InterimResults: Privremeni rezultati
+Invalid Credentials.: Nevažeće vjerodajnice.
+IrBlack: IrBlack
+IrBlackBase16: IrBlackBase16
+Is Active: Aktivan je
+Is Public: Javno je
+Is Public?: Je li javna?
+is-IS: islandski (Island)
+IsActive: IsActive
+IsblEditorDark: IsblEditorDark
+IsblEditorLight: IsblEditorLight
+IsMouseOverChip: IsMouseOverChip
+ISO: ISO
+IsOpen: IsOpen
+IsotopeBase16: Izotopska baza16
+ISpeechRecognitionService: ISpeechRecognitionService
+IsPredefined: IsUnaprijed definirano
+it-CH: Talijanski (Švicarska)
+it-IT: talijanski (Italija)
+it-SM: talijanski (San Marino)
+it-VA: talijanski (Vatikan)
+Italian: Talijanski
+Item 1: Stavka 1.
+Item 2: Stavka 2.
+Item 3: Stavka 3.
+Item 3, Item 1: Stavka 3, stavka 1
+Item 4: Stavka 4.
+Item 5: Stavka 5.
+Item One: Stavka prva
+Item Three: Stavka tri
+Item Two: Stavka dva
+ItemBackgroundColor: ItemBackgroundColor
+ItemClass: Klasa predmeta
+ItemCollection: Zbirka predmeta
+ItemContent: Sadržaj stavke
+ItemContentClass: ItemContentClass
+ItemContentStyle: StavkaStil sadržaja
+ItemContentTypo: ItemContentTypo
+ItemList: Popis predmeta
+Items: Predmeta
+ItemsSource: StavkeIzvor
+ItemStyle: Stil predmeta
+ItemWidth: Širina predmeta
+iu-CA: Inuktitut (Kanada)
+iu-Latn-CA: Inuktitut (latinski, Kanada)
+Ivory: Bjelokost
+ja-JP: Japanski (Japan)
+JackInTheBox: JackInTheBox
+Jan: Siječanj
+JavaScript: JavaScript
+Jello: Jello
+jgo-CM: Ngomba (Kamerun)
+jmc-TZ: Machame (Tanzanija)
+John Doe: John Doe
+Jokerman: Jokerman
+Json: Json
+Json value is required using {0} type!: Vrijednost JSON-a potrebna je pomoću {0} vrste!
+Json value must be a valid json string using {0} type!: Json vrijednost mora biti valjani JSON niz pomoću {0} vrste!
+Juice ITC: Sok ITC
+Jul: Srpnja
+Julia Roberts: Julia Roberts
+Jun: Lipanj
+Justify: Opravdati
+jv-Java-ID: Javanski (javanski, indonezijski)
+jv-Latn-ID: Javanski (latinski, indonezijski)
+ka-GE: Gruzijski (Gruzija)
+kab-DZ: Kabyle (Alžir)
+kam-KE: Kamba (Kenija)
+kde-TZ: Makonde (Tanzanija)
+kea-CV: Kabuverdianu (Zelenortski otoci)
+Keep scrolling to reveal the content below...: Nastavite se pomicati kako biste otkrili sadržaj u nastavku...
+KeepExisting: Zadrži postojeće
+KeepMaxSizeConstraints: KeepMaxSizeConstraints
+KeepRelations: Održavanje odnosa
+KeepState: Zadrži državu
+Kevin Hart: Kevin Hart
+Key: Ključ
+Key is required!: Ključ je potreban!
+KeyDownPreventDefault: KeyDownPreventDefault
+KeyDownStopPropagation: KeyDownStopPropagation
+KeyUpPreventDefault: KeyUpPreventDefault
+KeyUpStopPropagation: KeyUpStopPropagation
+Khaki: Khaki
+khq-ML: Koyra Chiini (Mali)
+ki-KE: Kikuyu (Kenija)
+Kilobytes: Kilobajta
+KimberBase16: KimberBase16
+KimbieDark: KimbieDark
+KimbieLight: KimbieLight
+kk-KZ: Kazahstanski (Kazahstan)
+kkj-CM: Kako (Kamerun)
+kl-GL: Kalaallisut (Grenland)
+kln-KE: Kalenjin (Kenija)
+km-KH: Kmerski (Kambodža)
+kn-IN: Kannada (Indija)
+ko-KP: korejski (Sjeverna Koreja)
+ko-KR: korejski (Koreja)
+kok-IN: Konkani (Indija)
+Kommunikation - Mikrofon (Voicemod Virtual Audio Device (WDM)): Komunikacija - mikrofon (Voicemod virtualni audio uređaj (WDM))
+kr-Latn-NG: Kanuri (latinski, Nigerija)
+ks-Arab-IN: Kašmirski (arapski, Indija)
+ks-Deva-IN: Kašmiri (Devanagari, Indija)
+ksb-TZ: Shambala (Tanzanija)
+ksf-CM: Bafia (Kamerun)
+ksh-DE: Colognian (Njemačka)
+ku-Arab-IQ: Kurdski (arapski, Irak)
+ku-Arab-IR: kurdski (arapski, iranski)
+Kunstler Script: Kunstler skripta
+kw-GB: Cornish (Ujedinjeno Kraljevstvo)
+ky-KG: Kirgistan (Kirgistan)
+la-VA: Latinski (Vatikan)
+Label: Etiketa
+Label_Description: Opis
+Label_for_Age: Label_for_Age
+Label_for_City: Label_for_City
+Label_for_FirstName: Label_for_FirstName
+Label_for_Gender: Label_for_Gender
+Label_for_HouseNumber: Label_for_HouseNumber
+Label_for_Id: Label_for_Id
+Label_for_Notice: Label_for_Notice
+Label_for_OtherAddresses: Label_for_OtherAddresses
+Label_for_PostalCode: Label_for_PostalCode
+Label_for_ProgramingSkills: Label_for_ProgramingSkills
+Label_for_Street: Label_for_Street
+Label_for_TrueOrFalse: Label_for_TrueOrFalse
+Label_UploadRequests: Datotekama
+LabelCustomTab: OznakaPrilagođenoKartica
+LabelDefinedTab: Kartica LabelDefinedTab
+lag-TZ: Langi (Tanzanija)
+Landscape: Krajolik
+Language: Jezik
+Languages: Jezici
+Large: Veliki
+LargeZipArchive.zip: LargeZipArchive.zip
+Last Name: Prezime
+Last Name is required: Prezime je obavezno
+LastName: Prezime
+Laura Palmer: Laura Palmer
+Lavender: Lavanda
+LavenderBlush: Rumenilo lavande
+LawnGreen: Travnjak
+LayoutProperties: Svojstva rasporeda
+lb-LU: luksemburški (Luksemburg)
+Leave editor focus to update MudExStructuredDataEditor: Ostavite fokus uređivača da biste ažurirali MudExStructuredDataEditor
+LedBars: LedŠipke
+Left: Lijevo
+Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): Lijevi dio u MudExSplitPanelu. (Napomena da MudExSplitter možete koristiti i izravno)
+LegacyRender: Naslijeđe Render
+Legend: Legenda
+LemonChiffon: LimunŠifon
+LetterSpacing: Razmak između slova
+lg-UG: Ganda (Uganda)
+Library: Knjižnica
+LightBlue: Svijetloplava
+LightBulb: Lightbulb
+LightBulbSize: Veličina žarulje
+LightBulbSizeUnit: LightBulbSizeUnit
+LightCoral: Svjetlosni koralj
+LightCyan: Lagano cijan
+Lightfair: Svjetlosni sajam
+LightGoldenrodYellow: SvijetlaZlatnicažuta
+LightGray: Svijetlo siva
+LightGreen: Svijetlozelena
+LightOnly: Samo svjetlo
+LightPink: Svijetlo ružičasta
+LightSalmon: Lagani losos
+LightSeaGreen: SvijetloMorskoZelena
+LightSkyBlue: SvjetloNeboplava
+LightSlateGray: SvijetloŠkriljevacSiva
+LightSpeed: Svjetlosna brzina
+LightSteelBlue: SvjetloČelikPlava
+LightYellow: Svijetložuta
+Lime: Lipa
+LimeGreen: Zelena limeta
+Line: Crta
+Linear: Linearni
+LinearAmplitude: Linearna amplituda
+LinearBoost: Linearno pojačanje
+LineAreaGraph: LineAreaGraph
+LineColor: Boja linije
+LineHeight: Visina crte
+Lines: Linije
+LinesDefault: Zadano postavkeRedaka
+LinesInputs: LinijeUlazi
+LineWidth: Širina crte
+Lioshi: Lioshi
+List: Popis
+List appearance: Izgled popisa
+List behavior: Ponašanje popisa
+List item for MudExList.: Stavka popisa za MudExList.
+lkt-US: Lakota (Sjedinjene Države)
+ln-AO: Lingala (Angola)
+ln-CD: Lingala (Kongo [DRC])
+ln-CF: Lingala (Srednjoafrička Republika)
+ln-CG: Lingala (Kongo)
+lo-LA: Lao (Laos)
+LoadFileDataBytesInBackground: LoadFileDataBytesInBackground
+Loading: Učitavanje
+Loading...: Učitavanje...
+Local: Lokalan
+LocalizerPattern: LokalizatorUzorak
+LockScroll: ZaključavanjeScroll
+Log: Klada
+Logged In.: Prijavljeni.
+Logged Out.: Odjavljen.
+LogicalSurface: Logička površina
+Login with Keycloak: Prijavite se s Keycloak
+LoginDescription: Prijavite se sa svojim vjerodajnicama.
+Logitech BRIO (046d:085e): Logitech BRIO (046d:085e)
+logLevel: logRazina
+logo.png: logo.png
+Logout: Odjava
+Logout Confirmation: Želite li se stvarno odjaviti?
+Logout user: Odjava korisnika
+London: London
+London - SW1A 1AA: London - SW1A 1AA
+London - SW1A 1AAender: London - SW1A 1AAender
+LondonTubeBase16: LondonTubeBase16
+LoRes: Gospodari
+Los Angeles: Los Angeles
+Los Angeles - 90001: Los Angeles - 90001
+Los Angeles - 90001ender: Los Angeles - 90001ender
+lrc-IQ: Sjeverni Luri (Irak)
+lrc-IR: Sjeverni Luri (Iran)
+lt-LT: litavski (Litva)
+lu-CD: Luba-Katanga (Kongo [DR Kongo])
+Lucida Bright: Lucida svijetla
+Lucida Calligraphy: Lucida kaligrafija
+Lucida Console: Konzola Lucida
+Lucida Fax: Lucida faks
+Lucida Grande: Lucida Grande
+Lucida Handwriting: Lucida rukopis
+Lucida Sans: Lucida Sans
+Lucida Sans Typewriter: Pisaći stroj Lucida Sans
+Lucida Sans Unicode: Lucida Sans Unicode
+LumiBars: LumiBarovi
+luo-KE: Luo (Kenija)
+luy-KE: Luyia (Kenija)
+lv-LV: latvijski (Latvija)
+Lyon: Lyon
+Lyon - 69001: Lyon - 69001
+Lyon - 69001ender: Lyon - 69001ender
+Lyrics: Lirika
+MacintoshBase16: MacintoshBase16
+Magneto: Magneto
+Magula: Magula
+mai-IN: Maithili (Indija)
+Mail: Pošta
+Main User: Glavni korisnik
+MainAddress: Glavna adresa
+MainSample.WebAssembly.Pages.Page_ObjectEditList+Brand: MainSample.WebAssembly.Pages.Page_ObjectEditList+Brend
+MainSample.WebAssembly.Services.SampleFile: MainSample.WebAssembly.Services.SampleFile
+MainSample.WebAssembly.Services.SampleFileWithStream: MainSample.WebAssembly.Services.SampleFileWithStream
+MainUser: Glavni korisnik
+Male: Muški
+Manage {0} {1}'s Extended Attributes: Upravljanje proširenim atributima {0} {1}
+Manage {0} {1}'s Permissions: Upravljanje dozvolama {0} {1}
+Manage {0} {1}'s Roles: Upravljanje ulogama {0} {1}
+Manage {0} Extended Attributes: Upravljanje {0} proširenim atributima
+Manage {0}'s Permissions: Upravljanje dopuštenjima {0}
+Manage Brands.: Upravljajte robnim markama.
+Manage Database Backups.: Upravljajte sigurnosnim kopijama baze podataka ili ih vratite.
+Manage Document Types.: Upravljanje vrstama dokumenata.
+Manage Extended Attributes: Upravljanje proširenim atributima
+Manage Languages: Upravljanje jezicima
+Manage Permission: Upravljanje dozvolom
+Manage Products.: Upravljanje proizvodima.
+Manage Roles: Upravljanje ulogama
+Manage Roles.: Upravljanje ulogama.
+Manage Translations: Upravljanje prijevodima
+Manage Users: Upravljanje korisnicima
+Manage your account: Upravljanje računom
+Manchester: Manchester
+Manchester - M1 1AE: Manchester - M1 1AE
+Manchester - M1 1AEender: Manchester - M1 1AEender
+Manual: Priručnik
+Mar: Pokvariti
+Margin: Margina
+Mark all: Označi sve
+Mark all as read: Označi sve kao pročitano
+Mark all as unread: Označi sve kao nepročitano
+Mark as read: Mark čita
+Mark as unread: Označi kao nepročitano
+MarrakeshBase16: Baza u Marakešu16
+Marseille: Marseille
+Marseille - 13001: Marseille - 13001
+Marseille - 13001ender: Marseille - 13001ender
+mas-KE: Masai (Kenija)
+mas-TZ: Masai (Tanzanija)
+Mask: Maska
+MateriaBase16: MateriaBase16
+MaterialBase16: Baza materijala16
+MaterialDarkerBase16: MaterijalTamnija baza16
+MaterialLighterBase16: MaterijalLakša baza16
+MaterialPalenightBase16: MaterijalPalenightBase16
+MaterialVividBase16: MaterijalŽivopisna baza16
+Matura MT Script Capitals: Matura MT Skripta Velika slova
+MaxCaptureTime: Maksimalno vrijeme snimanja
+MaxChips: MaxChips
+MaxDecibels: Maksimalni decibeli
+MaxFileSize: Maksimalna veličina datoteke
+MaxFPS: MaxFPS
+MaxFrequency: Maksimalna frekvencija
+MaxHeight: Maksimalna visina
+MaximizeButton: Gumb za maksimiziranje
+MaxItems: MaxItems
+MaxItemWidth: MaxItemWidth
+MaxLength: Maksimalna duljina
+MaxLuminance: MaxLuminance
+MaxMultipleFiles: MaxMultipleFiles
+MaxRecordingTime: Maksimalno vrijeme snimanja
+MaxWidth: Maksimalna širina
+MaxZoomPixelRatio: MaxZoomPixelRatio
+May: Svibanj
+Medium: Srednje jako
+MediumSlateBlue: Srednja škriljevcaplava
+MediumSpringGreen: Srednje proljetnozeleno
+MediumTurquoise: SrednjiTirkizna
+MediumVioletRed: Srednje ljubičastacrvena
+Megabytes: Megabajta
+Mel: Mel
+MellowPurpleBase16: MellowPurpleBase16
+MenuAnchorOrigin: IzbornikAnchorOrigin
+MenuMaxHeight: IzbornikMaxHeight
+MenuTransformOrigin: IzbornikTransformOrigin
+mer-KE: Meru (Kenija)
+Message will be deleted in {0} seconds: Poruka će biti izbrisana za {0} sekundi
+MessageClass: Klasa poruke
+MessageStyle: Stil poruke
+MetaCoverImage: MetaCoverImage
+Method 1: Metoda 1
+Method 2: Metoda 2
+MexicoLightBase16: MeksikoLightBase16
+mfe-MU: Morisyen (Mauricijus)
+mg-MG: Madagaskar (Madagaskar)
+mgh-MZ: Makhuwa-Meetto (Mozambik)
+mgo-CM: Metaʼ (Kamerun)
+mi-NZ: Maori (Novi Zeland)
+Michael Scott: Michael Scott
+MicrophoneDeviceId: MicrophoneDeviceId
+MidnightBlue: Ponoćno plavo
+Mikrofon (3- RODE NT-USB) (19f7:0003): Mikrofon (3-RODE NT-USB) (19f7:0003)
+Mikrofon (DroidCam Virtual Audio): Mikrofon (DroidCam Virtual Audio)
+Mikrofon (Logitech BRIO) (046d:085e): Mikrofon (Logitech BRIO) (046d:085e)
+Mikrofon (ROG Headset) (0b05:1876): Mikrofon (ROG slušalice) (0b05:1876)
+Mikrofon (USB Audio Device) (1b3f:2008): Mikrofon (USB audio uređaj) (1b3f:2008)
+Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Voicemod virtualni audio uređaj (WDM))
+Millimeters: Milimetara
+MimeRestrictionType: MimeRestrictionType
+MimeTypes: MimeTipovi
+MinDecibels: Minimalni decibeli
+MinFrequency: Minimalna frekvencija
+MinHeight: Minimalna visina
+Mini: Mini
+MinimizeButton: Minimizirati gumb
+MinLuminance: MinLuminance
+MintCream: Krema od mente
+MinZoomLevel: MinZoomLevel
+Mirror: Ogledalo
+Misc: Ostalo
+Misc Options: Razne opcije
+Mistral: Maestral
+MistyRose: Maglovita ruža
+mk-MK: Makedonski (Sjeverna Makedonija)
+ml-IN: Malajalam (Indija)
+mn-MN: Mongolski (Mongolija)
+mn-Mong-CN: Mongolski (Mongolski, Kina)
+mn-Mong-MN: Mongolski (mongolski, mongolski)
+mni-IN: Manipuri (Indija)
+Moccasin: Mokasine
+MochaBase16: MochaBase16
+Modal: Kapital
+Mode: Način
+Model with File: Model s datotekom
+Modern No. 20: Moderni broj 20
+moh-CA: Mohawk (Kanada)
+Monaco: Monako
+Monitor: Monitor
+MonoBlue: Monoplava
+Monokai: Monokai
+MonokaiBase16: MonokaiBase16
+MonokaiSublime: MonokaiSublime
+Monotype Corsiva: Monotip Corsiva
+Month: Mjesec
+Montreal: Montreal
+Montreal - H1A 0A1: Montreal - H1A 0A1
+Montreal - H1A 0A1ender: Montreal - H1A 0A1ender
+Montserrat: Montserrat
+Motion: Prijedlog
+Mouse: Miš
+MouseOverMessageClass: MouseOverMessageClass
+MouseOverMessageStyle: MouseOverMessageStyle
+MouseWheelDownAction: MouseWheelDownAction
+MouseWheelUpAction: MouseWheelUpAction
+MoveContent: Premjesti sadržaj
+mr-IN: Marathi (Indija)
+MS Outlook: MS Outlook
+MS Reference Sans Serif: MS Reference Sans Serif
+MS Reference Specialty: MS referentna specijalnost
+MS Sans Serif: MS Sans Serif
+MS Serif: MS serifni
+ms-BN: malajski (Brunej)
+ms-ID: malajski (Indonezija)
+ms-MY: malajski (Malezija)
+ms-SG: malajski (Singapur)
+mt-MT: malteški (Malta)
+mua-CM: Mundang (Kamerun)
+mud-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788: blato-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788
+MudAlert: Upozorenje o blatu
+MudAppBar: MudAppBar
+MudAvatar: Blatni avatar
+MudAvatarGroup: Grupa MudAvatar
+MudBadge: Značka blata
+MudBlazor Components: Komponente MudBlazor
+MudBlazor Popover: MudBlazor Popover
+MudBlazor.Extensions.Components.ThemePreset`1[MainSample.WebAssembly.ClientTheme]: MudBlazor.Extensions.Components.ThemePreset'1[MainSample.WebAssembly.ClientTheme]
+MudBreadcrumbs: BlatoKrušne mrvice
+MudBreakpointProvider: Pružatelj usluga MudBreakpoint
+MudButton: Gumb za blato
+MudButtonGroup: MudButtonGroup
+MudCard: MudCard
+MudCardActions: MudCardAkcije
+MudCardContent: MudCardSadržaj
+MudCardHeader: MudCardHeader
+MudCardMedia: MudCardMedia
+MudCarouselItem: Blatni vrtuljakItem
+MudChart: Blatni grafikon
+MudChat: Blatni razgovor
+MudChatBubble: MudChatBubble
+MudChatFooter: MudChatFooter
+MudChatHeader: MudChatHeader
+MudCollapse: Blatni kolaps
+MudColorPicker: MudColorPicker
+MudColorStringFormat: Blatna bojaStringFormat
+MudContainer: Spremnik za blato
+MudContextualActionBar: MudContextualActionBar
+MudDatePicker: MudDatePicker
+MudDateRangePicker: MudDateRangePicker
+MudDialog: Blatni dijalog
+MudDialogContainer: Spremnik blatnog dijaloga
+MudDialogProvider: MudDialogProvider
+MudDivider: Razdjelnik blata
+MudDrawer: Ladica za blato
+MudDrawerContainer: Spremnik ladice za blato
+MudDrawerHeader: Zaglavlje ladice za blato
+MudDynamicTabs: MudDynamicTabs
+MudElement: Element blata
+MudEx Components: MudEx komponente
+MudExAdditionalAdornment: MudExDodatniUkras
+MudExAppearance: MudExIzgled
+MudExAppLoader: MudExAppLoader
+MudExAudioPlayer: MudExAudioPlayer
+MudExCaptureButton: Gumb MudExCapture
+MudExCaptureOptionsEdit: MudExCaptureOptionsUredi
+MudExCardList: MudExCardList
+MudExCardList with ItemsSource: MudExCardList s ItemsSource
+MudExCardList with ItemsSource and child content: MudExCardList s ItemsSource i podređenim sadržajem
+MudExCardList<TData>: MudExCardList<TData>
+MudExChipSelect: MudExChipSelect
+MudExChipSelect can used to select items from a collection as chips: MudExChipSelect se može koristiti za odabir artikala iz kolekcije kao čipova
+MudExChipSelect<T>: MudExChipSelect<T>
+MudExCodeView: MudExCodeView
+MudExCollectionEditor<T>: Uređivač <T>zbirki MudExa
+MudExColor: MudExColor
+MudExColorBubble: MudExColorBubble
+MudExColorEdit: MudExColorUredi
+MudExColorEdit is in general a MudBlazor Picker component specially for the struct MudExColor. But because name MudExColorPicker is already used for an extended ColorPicker this Component is named MusExColorEdit: MudExColorEdit je općenito komponenta MudBlazor Picker posebno za strukturu MudExColor. Ali budući da se ime MudExColorPicker već koristi za prošireni ColorPicker, ova komponenta se zove MusExColorEdit
+MudExColorPicker: MudExColorPicker
+MudExColorUtils: MudExColorUtils
+MudExCss: MudExCss
+MudExCssBuilder: MudExCssBuilder
+MudExCultureSelect: MudExCultureSelect
+MudExDialog: MudExDialog
+MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog je komponenta koju ćete koristiti kada želite prikazati dijaloški okvir na vašoj stranici sa svim DialogExtensions.
+MudExDivider: Blatni razdjelnik
+MudExDropBoxFilePicker: MudExDropBoxFilePicker
+MudExEnumSelect: MudExEnumSelect
+MudExEnumSelect<TEnum>: MudExEnumSelect<TEnum>
+MudExFileDisplay: MudExFileDisplay
+MudExFileDisplayCode: MudExFileDisplayCode
+MudExFileDisplayDialog: MudExFileDisplayDialog
+MudExFileDisplayExcel: MudExFileDisplayExcel
+MudExFileDisplayFont: MudExFileDisplayFont
+MudExFileDisplayHtml: MudExFileDisplayHtml
+MudExFileDisplayOfficeLive: MudExFileDisplayOfficeLive
+MudExFileDisplayStructuredData: MudExFileDisplayStructuredData
+MudExFileDisplayZip: MudExFileDisplayZip
+MudExFontSelect: MudExFontSelect
+MudExFontSelect can used to select one ore more fonts: MudExFontSelect se može koristiti za odabir jednog ili više fontova
+MudExGoogleFilePicker: MudExGoogleFilePicker
+MudExGradientText: MudExGradientText
+MudExGravatar: MudExGravatar
+MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar je MudAvatar koji automatski koristi profilnu sliku iz gravatara za adresu e-pošte
+MudExGrid: Blatna mreža
+MudExGrid Enhanced: MudExGrid poboljšan
+MudExGridSection: Odjeljak MudExGrid
+MudExGroupBox: MudExGroupBox
+MudExHtmlEdit: MudExHtmlUredi
+MudExIcon: MudExIcon
+MudExIcon is a simple MudIcon with extended possibilities to set all colors.: MudExIcon je jednostavna MudIcon s proširenim mogućnostima postavljanja svih boja.
+MudExIconButton: MudExIconButton
+MudExIconPicker: MudExIconPicker
+MudExIconPicker is in general a MudBlazor Picker component specially for selecting an icon.: MudExIconPicker je općenito komponenta MudBlazor Picker posebno za odabir ikone.
+MudExImageViewer: MudExImageViewer
+MudExList: MudExList
+MudExList can used to select one ore more items from a bindeable collection.: MudExList se može koristiti za odabir jedne ili više stavki iz zbirke koja se može povezati.
+MudExList is a component that allows you to select an item from a list of items. It is a wrapper for MudList.: MudExList je komponenta koja vam omogućuje odabir stavke s popisa stavki. To je omot za MudList.
+MudExList<T>: MudExList<T>
+MudExListItem<T>: MudExListItem<T>
+MudExListSubheader is a sub header for MudExList.: MudExListSubheader je podzaglavlje za MudExList.
+MudExListSubheader<T>: MudExListPodnaslov<T>
+MudExMessageDialog: MudExMessageDialog
+MudExObjectEdit: MudExObjectUredi
+MudExObjectEdit and MudExCollectionEditor with a shared config: MudExObjectEdit i MudExCollectionEditor sa zajedničkom konfiguracijom
+MudExObjectEdit with virtual property rendering: MudExObjectEdit s virtualnim renderiranjem svojstava
+MudExObjectEdit<T>: MudExObjectUredi<T>
+MudExObjectEditDialog<T>: MudExObjectEditDialog<T>
+MudExObjectEditForm<T>: MudExObjectEditForm<T>
+MudExObjectEditPicker<T>: MudExObjectEditPicker<T>
+MudExOneDriveFilePicker: MudExOneDriveFilePicker
+MudExpansionPanel: Ploča za proširenje blata
+MudExpansionPanels: Ploče za širenje blata
+MudExPicker: MudExPicker
+MudExPickerBase<T>: MudExPickerBase<T>
+MudExPopover: MudExPopover
+MudExPromptDialog: MudExPromptDialog
+MudExPromptDialog Component: Komponenta MudExPromptDialog
+MudExPropertyEdit: MudExPropertyUredi
+MudExSelect: MudExSelect
+MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect se može koristiti za odabir jedne ili više stavki iz zbirke koja se može povezati. Također, ova komponenta podržava sve animacije poput dijaloga ili MudExPopovera.
+MudExSelect<T>: MudExSelect<T>
+MudExSelectItem is a select item for MudExSelect.: MudExSelectItem je odabrana stavka za MudExSelect.
+MudExSelectItem<T>: MudExSelectItem<T>
+MudExSize is a readonly struct that provides a convenient and type-safe way to deal with size values in the context of MudBlazor components.: MudExSize je struktura samo za čitanje koja pruža praktičan i tipski siguran način za rješavanje vrijednosti veličine u kontekstu MudBlazor komponenti.
+MudExSize<T>: MudExSize<T>
+MudExSlideBar: MudExSlideBar
+MudExSpeechToTextButton: MudExSpeechToTextButton
+MudExSplitPanel: MudExSplitPanel
+MudExSplitPanelItem: MudExSplitPanelItem
+MudExSplitter: Blatni razdjelnik
+MudExStructuredDataEditor: Uređivač podataka MudExStructured
+MudExStyleBuilder: MudExStyleBuilder
+MudExSvg: MudExSvg
+MudExTagField: MudExTagField
+MudExTagField creates chips when user press on of the specified delimiter or presses enter.: MudExTagField stvara čipove kada korisnik pritisne navedeni graničnik ili pritisne enter.
+MudExTagField is a component that allows the user to enter a list of values as chips.: MudExTagField je komponenta koja korisniku omogućuje unos popisa vrijednosti kao čipova.
+MudExTagField<T>: MudExTagField<T>
+MudExTaskBar: MudExTaskBar
+MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide  somewhere in your Layout: MudExTaskBar nasljeđuje MudExSlideBar i pruža traku s karticama za odabir nemodalnih dijaloških okvira. Samo navedite negdje u svom izgledu
+MudExTextField<T>: MudExTextField<T>
+MudExThemeEdit: MudExThemeUredi
+MudExThemeEdit is a powerful component to edit one ore more themes: MudExThemeEdit je moćna komponenta za uređivanje jedne ili više tema
+MudExThemeEdit<TTheme>: MudExThemeUredi<TTheme>
+MudExThemeSelect: MudExThemeSelect
+MudExThemeSelect<TTheme>: MudExThemeSelect<TTheme>
+MudExToggleableSearch: MudExToggleableSearch
+MudExTreeView: MudExTreeView
+MudExTreeView is useful to bind tree structured items. The control that should used can be set with the ViewMode property: MudExTreeView je koristan za povezivanje strukturiranih stavki stabla. Kontrola koju treba koristiti može se postaviti pomoću svojstva ViewMode
+MudExTreeView with template: MudExTreeView s predloškom
+MudExTreeView<T>: MudExTreeView<T>
+MudExTreeViewBreadcrumb: MudExTreeViewKrušna mrvica
+MudExTreeViewBreadcrumb<T>: MudExTreeViewKrušna mrvica<T>
+MudExTreeViewCardGrid: MudExTreeViewCardGrid
+MudExTreeViewCardGrid<T>: MudExTreeViewCardGrid<T>
+MudExTreeViewDefault: MudExTreeViewDefault
+MudExTreeViewDefault<T>: MudExTreeViewDefault<T>
+MudExTreeViewFlatList: MudExTreeViewFlatList
+MudExTreeViewFlatList<T>: MudExTreeViewFlatList<T>
+MudExTreeViewHorizontal: MudExTreeViewHorizontal
+MudExTreeViewHorizontal<T>: MudExTreeViewHorizontal<T>
+MudExTreeViewList: MudExTreeViewList
+MudExTreeViewList<T>: MudExTreeViewList<T>
+MudExUploadEdit: MudExUploadUredi
+MudExUploadEdit<T>: MudExUploadUredi<T>
+MudExVirtualItem: MudExVirtualItem
+MudExVirtualize<TItem>: MudExVirtualize<TItem>
+MudFab: Blatna tvornica
+MudField: Blatno polje
+MudFlexBreak: MudFlexBreak
+MudFocusTrap: MudFocusTrap
+MudForm: Oblik blata
+MudGrid: Blatna mreža
+MudHeatMapCell: Ćelija MudHeatMap
+MudHidden: BlatoSkriveno
+MudHighlighter: Blatni marker
+MudIcon: Ikona blata
+MudIconButton: Gumb MudIconButton
+MudImage: Blatna slika
+MudInputAdornment: MudInputUkras
+MudInputControl: Kontrola unosa blata
+MudInputLabel: Oznaka MudInputLabel
+MudInputString: MudInputString
+MudItem: MudItem
+MudLayout: Raspored blata
+MudLink: MudLink
+MudListSubheader: MudListPodnaslov
+MudMainContent: MudMainContent
+MudMask: Blatna maska
+MudMenu: Blatni izbornik
+MudMenuItem: MudMenuItem
+MudMessageBox: Kutija za poruke u blatu
+MudNavGroup: MudNavGroup
+MudNavLink: MudNavLink
+MudNavMenu: MudNavMenu
+MudOverlay: Blatni sloj
+MudPageContentNavigation: MudPageContentNavigacija
+MudPagination: BlatoPageginacija
+MudPaper: Blatni papir
+MudPickerContent: MudPickerSadržaj
+MudPickerToolbar: Alatna traka MudPicker
+MudPopover: MudPopover
+MudPopoverProvider: MudPopoverPružatelj usluga
+MudProgressCircular: MudProgressCircular
+MudProgressLinear: MudProgressLinear
+MudRating: Blato Ocjena
+MudRatingItem: MudRatingItem
+MudRender: BlatoRender
+MudRTLProvider: MudRTLProvider
+MudScrollToTop: BlatoScrollToTop
+MudSimpleTable: Tablica MudSimple
+MudSkeleton: Blatni kostur
+MudSnackbarElement: MudSnackbarElement
+MudSnackbarProvider: MudSnackbarPružatelj usluga
+MudSpacer: MudSpacer
+MudStack: Stog blata
+MudStep: Blatni korak
+MudStepper: MudStepper
+MudSwipeArea: Područje blatnog prevlačenja
+MudTablePager: MudTablePager
+MudTabPanel: Blatni tabPanel
+MudTabs: MudTabs
+MudTd: MudTd
+MudText: Blatni tekst
+MudTextField with additional features: MudTextField s dodatnim značajkama
+MudTFootRow: MudTFootRow
+MudTh: Blato
+MudTHeadRow: MudTHeadRow
+MudThemeProvider: MudThemeProvider
+MudTimeline: Vremenska crta blata
+MudTimelineItem: Stavka vremenske trake blata
+MudTimePicker: MudTimePicker
+MudTimeSeriesChart: Tablica MudTimeSeriesGrafikon
+MudToggleIconButton: Gumb MudToggleIconButton
+MudToolBar: MudToolBar
+MudTooltip: MudTooltip
+MudTr: MudTr
+MudTreeViewItemToggleButton: MudTreeViewItemToggleButton
+MultiSelect: Višestruki odabir
+MultiSelection: Višestruki odabir
+MultiSelectionAlign: MultiSelectionAlign
+MultiSelectionComponent: MultiSelectionComponent
+MultiSelectWithCtrlKey: MultiSelectWithCtrlKey
+My Custom action: Moja radnja Prilagođeno
+my-MM: Burmanski (Mjanmar)
+mzn-IR: Mazanderani (Iran)
+name: ime
+Name: Ime
+Name is required: Ime je obavezno
+Name is required!: Ime je obavezno!
+NameContainerStyle: NameContainerStyle
+Names: Imena
+naq-NA: Ime (Namibija)
+Natalie Portman: Natalie Portman
+NavajoWhite: NavajoWhite
+NavigationExpandMode: NavigationExpandMode
+NavigationLinkBarClass: NavigacijaLinkBarClass
+NavigationLinkBarStyle: NavigationLinkBarStyle
+NavigationViewMode: NavigacijaViewMode
+NavigatorClass: NavigatorClass
+NavigatorPosition: NavigatorPosition
+NavigatorRectangleColor: NavigatorRectangleColor
+NavigatorSizeRatio: Omjer veličine navigatora
+Navy: Mornarica
+nb-NO: Norveški bokmål (Norveška)
+nb-SJ: Norveški bokmål (Svalbard i Jan Mayen)
+nd-ZW: Sjeverni Ndebele (Zimbabve)
+nds-DE: Niski njemački (Njemačka)
+nds-NL: Niski njemački (Nizozemska)
+ne-IN: Nepalski (Indija)
+ne-NP: Nepalski (Nepal)
+NebulaBase16: Baza maglice16
+Never: Nikada
+New: Nov
+NEW Dialog Drag Drop Mode: NOVO Dijaloški okvir Način povlačenja ispuštanja
+New dialog Feature - SnapDrag: Nova značajka dijaloškog okvira - SnapDrag
+New Message From {0}: Nova poruka od {0}
+New MudExStructureDataEditor can used to edit json, xml or yaml string in a MudExObjectEdit: Novi MudExStructureDataEditor može se koristiti za uređivanje json, xml ili yaml niza u MudExObjectEdit
+New Password: Nova lozinka
+New User 100: Novi korisnik 100
+New User 101: Novi korisnik 101
+New User 102: Novi korisnik 102
+New User 103: Novi korisnik 103
+New User 104: Novi korisnik 104
+New User 105: Novi korisnik 105
+New User 106: Novi korisnik 106
+New User 107: Novi korisnik 107
+New User 108: Novi korisnik 108
+New User 109: Novi korisnik 109
+New User 110: Novi korisnik 110
+New User 111: Novi korisnik 111
+New User 112: Novi korisnik 112
+New User 113: Novi korisnik 113
+New User 114: Novi korisnik 114
+New User 115: Novi korisnik 115
+New User 116: Novi korisnik 116
+New User 117: Novi korisnik 117
+New User 118: Novi korisnik 118
+New User 119: Novi korisnik 119
+New User 120: Novi korisnik 120
+New User 121: Novi korisnik 121
+New User 122: Novi korisnik 122
+New User 123: Novi korisnik 123
+New User 124: Novi korisnik 124
+New User 125: Novi korisnik 125
+New User 126: Novi korisnik 126
+New User 127: Novi korisnik 127
+New User 128: Novi korisnik 128
+New User 129: Novi korisnik 129
+New User 130: Novi korisnik 130
+New User 131: Novi korisnik 131
+New User 132: Novi korisnik 132
+New User 133: Novi korisnik 133
+New User 134: Novi korisnik 134
+New User 135: Novi korisnik 135
+New User 136: Novi korisnik 136
+New User 137: Novi korisnik 137
+New User 138: Novi korisnik 138
+New User 139: Novi korisnik 139
+New User 140: Novi korisnik 140
+New User 141: Novi korisnik 141
+New User 142: Novi korisnik 142
+New User 143: Novi korisnik 143
+New User 144: Novi korisnik 144
+New User 145: Novi korisnik 145
+New User 146: Novi korisnik 146
+New User 147: Novi korisnik 147
+New User 148: Novi korisnik 148
+New User 149: Novi korisnik 149
+New User 150: Novi korisnik 150
+New User 151: Novi korisnik 151
+New User 152: Novi korisnik 152
+New User 153: Novi korisnik 153
+New User 154: Novi korisnik 154
+New User 155: Novi korisnik 155
+New User 156: Novi korisnik 156
+New User 157: Novi korisnik 157
+New User 158: Novi korisnik 158
+New User 159: Novi korisnik 159
+New User 160: Novi korisnik 160
+New User 161: Novi korisnik 161
+New User 162: Novi korisnik 162
+New User 163: Novi korisnik 163
+New User 164: Novi korisnik 164
+New User 165: Novi korisnik 165
+New User 166: Novi korisnik 166
+New User 167: Novi korisnik 167
+New User 168: Novi korisnik 168
+New User 169: Novi korisnik 169
+New User 170: Novi korisnik 170
+New User 171: Novi korisnik 171
+New User 172: Novi korisnik 172
+New User 173: Novi korisnik 173
+New User 174: Novi korisnik 174
+New User 175: Novi korisnik 175
+New User 176: Novi korisnik 176
+New User 177: Novi korisnik 177
+New User 178: Novi korisnik 178
+New User 179: Novi korisnik 179
+New User 180: Novi korisnik 180
+New User 181: Novi korisnik 181
+New User 182: Novi korisnik 182
+New User 183: Novi korisnik 183
+New User 184: Novi korisnik 184
+New User 185: Novi korisnik 185
+New User 186: Novi korisnik 186
+New User 187: Novi korisnik 187
+New User 188: Novi korisnik 188
+New User 189: Novi korisnik 189
+New User 190: Novi korisnik 190
+New User 191: Novi korisnik 191
+New User 192: Novi korisnik 192
+New User 193: Novi korisnik 193
+New User 194: Novi korisnik 194
+New User 195: Novi korisnik 195
+New User 196: Novi korisnik 196
+New User 197: Novi korisnik 197
+New User 198: Novi korisnik 198
+New User 199: Novi korisnik 199
+New User 200: Novi korisnik 200
+New User 201: Novi korisnik 201
+New User 202: Novi korisnik 202
+New User 203: Novi korisnik 203
+New User 204: Novi korisnik 204
+New User 205: Novi korisnik 205
+New User 206: Novi korisnik 206
+New User 207: Novi korisnik 207
+New User 208: Novi korisnik 208
+New User 209: Novi korisnik 209
+New User 21: Novi korisnik 21
+New User 210: Novi korisnik 210
+New User 211: Novi korisnik 211
+New User 212: Novi korisnik 212
+New User 213: Novi korisnik 213
+New User 214: Novi korisnik 214
+New User 215: Novi korisnik 215
+New User 216: Novi korisnik 216
+New User 217: Novi korisnik 217
+New User 218: Novi korisnik 218
+New User 219: Novi korisnik 219
+New User 22: Novi korisnik 22
+New User 220: Novi korisnik 220
+New User 221: Novi korisnik 221
+New User 222: Novi korisnik 222
+New User 223: Novi korisnik 223
+New User 224: Novi korisnik 224
+New User 225: Novi korisnik 225
+New User 226: Novi korisnik 226
+New User 227: Novi korisnik 227
+New User 228: Novi korisnik 228
+New User 229: Novi korisnik 229
+New User 23: Novi korisnik 23
+New User 230: Novi korisnik 230
+New User 231: Novi korisnik 231
+New User 232: Novi korisnik 232
+New User 233: Novi korisnik 233
+New User 234: Novi korisnik 234
+New User 235: Novi korisnik 235
+New User 236: Novi korisnik 236
+New User 237: Novi korisnik 237
+New User 238: Novi korisnik 238
+New User 239: Novi korisnik 239
+New User 24: Novi korisnik 24
+New User 240: Novi korisnik 240
+New User 241: Novi korisnik 241
+New User 242: Novi korisnik 242
+New User 243: Novi korisnik 243
+New User 244: Novi korisnik 244
+New User 245: Novi korisnik 245
+New User 246: Novi korisnik 246
+New User 247: Novi korisnik 247
+New User 248: Novi korisnik 248
+New User 249: Novi korisnik 249
+New User 25: Novi korisnik 25
+New User 250: Novi korisnik 250
+New User 251: Novi korisnik 251
+New User 252: Novi korisnik 252
+New User 253: Novi korisnik 253
+New User 254: Novi korisnik 254
+New User 255: Novi korisnik 255
+New User 256: Novi korisnik 256
+New User 257: Novi korisnik 257
+New User 258: Novi korisnik 258
+New User 259: Novi korisnik 259
+New User 26: Novi korisnik 26
+New User 260: Novi korisnik 260
+New User 261: Novi korisnik 261
+New User 262: Novi korisnik 262
+New User 263: Novi korisnik 263
+New User 264: Novi korisnik 264
+New User 265: Novi korisnik 265
+New User 266: Novi korisnik 266
+New User 267: Novi korisnik 267
+New User 268: Novi korisnik 268
+New User 269: Novi korisnik 269
+New User 27: Novi korisnik 27
+New User 270: Novi korisnik 270
+New User 271: Novi korisnik 271
+New User 272: Novi korisnik 272
+New User 273: Novi korisnik 273
+New User 274: Novi korisnik 274
+New User 275: Novi korisnik 275
+New User 276: Novi korisnik 276
+New User 277: Novi korisnik 277
+New User 278: Novi korisnik 278
+New User 279: Novi korisnik 279
+New User 28: Novi korisnik 28
+New User 280: Novi korisnik 280
+New User 281: Novi korisnik 281
+New User 282: Novi korisnik 282
+New User 283: Novi korisnik 283
+New User 284: Novi korisnik 284
+New User 285: Novi korisnik 285
+New User 286: Novi korisnik 286
+New User 287: Novi korisnik 287
+New User 288: Novi korisnik 288
+New User 289: Novi korisnik 289
+New User 29: Novi korisnik 29
+New User 290: Novi korisnik 290
+New User 291: Novi korisnik 291
+New User 292: Novi korisnik 292
+New User 293: Novi korisnik 293
+New User 294: Novi korisnik 294
+New User 295: Novi korisnik 295
+New User 296: Novi korisnik 296
+New User 297: Novi korisnik 297
+New User 298: Novi korisnik 298
+New User 299: Novi korisnik 299
+New User 30: Novi korisnik 30
+New User 300: Novi korisnik 300
+New User 301: Novi korisnik 301
+New User 302: Novi korisnik 302
+New User 303: Novi korisnik 303
+New User 304: Novi korisnik 304
+New User 305: Novi korisnik 305
+New User 306: Novi korisnik 306
+New User 307: Novi korisnik 307
+New User 308: Novi korisnik 308
+New User 309: Novi korisnik 309
+New User 31: Novi korisnik 31
+New User 310: Novi korisnik 310
+New User 311: Novi korisnik 311
+New User 312: Novi korisnik 312
+New User 313: Novi korisnik 313
+New User 314: Novi korisnik 314
+New User 315: Novi korisnik 315
+New User 316: Novi korisnik 316
+New User 317: Novi korisnik 317
+New User 318: Novi korisnik 318
+New User 319: Novi korisnik 319
+New User 32: Novi korisnik 32
+New User 320: Novi korisnik 320
+New User 321: Novi korisnik 321
+New User 322: Novi korisnik 322
+New User 323: Novi korisnik 323
+New User 324: Novi korisnik 324
+New User 325: Novi korisnik 325
+New User 326: Novi korisnik 326
+New User 327: Novi korisnik 327
+New User 328: Novi korisnik 328
+New User 329: Novi korisnik 329
+New User 33: Novi korisnik 33
+New User 330: Novi korisnik 330
+New User 331: Novi korisnik 331
+New User 332: Novi korisnik 332
+New User 333: Novi korisnik 333
+New User 334: Novi korisnik 334
+New User 335: Novi korisnik 335
+New User 336: Novi korisnik 336
+New User 337: Novi korisnik 337
+New User 338: Novi korisnik 338
+New User 339: Novi korisnik 339
+New User 34: Novi korisnik 34
+New User 340: Novi korisnik 340
+New User 341: Novi korisnik 341
+New User 342: Novi korisnik 342
+New User 343: Novi korisnik 343
+New User 344: Novi korisnik 344
+New User 345: Novi korisnik 345
+New User 346: Novi korisnik 346
+New User 347: Novi korisnik 347
+New User 348: Novi korisnik 348
+New User 349: Novi korisnik 349
+New User 35: Novi korisnik 35
+New User 350: Novi korisnik 350
+New User 351: Novi korisnik 351
+New User 352: Novi korisnik 352
+New User 353: Novi korisnik 353
+New User 354: Novi korisnik 354
+New User 355: Novi korisnik 355
+New User 356: Novi korisnik 356
+New User 357: Novi korisnik 357
+New User 358: Novi korisnik 358
+New User 359: Novi korisnik 359
+New User 36: Novi korisnik 36
+New User 360: Novi korisnik 360
+New User 361: Novi korisnik 361
+New User 362: Novi korisnik 362
+New User 363: Novi korisnik 363
+New User 364: Novi korisnik 364
+New User 365: Novi korisnik 365
+New User 366: Novi korisnik 366
+New User 367: Novi korisnik 367
+New User 368: Novi korisnik 368
+New User 369: Novi korisnik 369
+New User 37: Novi korisnik 37
+New User 370: Novi korisnik 370
+New User 371: Novi korisnik 371
+New User 372: Novi korisnik 372
+New User 373: Novi korisnik 373
+New User 374: Novi korisnik 374
+New User 375: Novi korisnik 375
+New User 376: Novi korisnik 376
+New User 377: Novi korisnik 377
+New User 378: Novi korisnik 378
+New User 379: Novi korisnik 379
+New User 38: Novi korisnik 38
+New User 380: Novi korisnik 380
+New User 381: Novi korisnik 381
+New User 382: Novi korisnik 382
+New User 383: Novi korisnik 383
+New User 384: Novi korisnik 384
+New User 385: Novi korisnik 385
+New User 386: Novi korisnik 386
+New User 387: Novi korisnik 387
+New User 388: Novi korisnik 388
+New User 389: Novi korisnik 389
+New User 39: Novi korisnik 39
+New User 390: Novi korisnik 390
+New User 391: Novi korisnik 391
+New User 392: Novi korisnik 392
+New User 393: Novi korisnik 393
+New User 394: Novi korisnik 394
+New User 395: Novi korisnik 395
+New User 396: Novi korisnik 396
+New User 397: Novi korisnik 397
+New User 398: Novi korisnik 398
+New User 399: Novi korisnik 399
+New User 40: Novi korisnik 40
+New User 400: Novi korisnik 400
+New User 401: Novi korisnik 401
+New User 402: Novi korisnik 402
+New User 403: Novi korisnik 403
+New User 404: Novi korisnik 404
+New User 405: Novi korisnik 405
+New User 406: Novi korisnik 406
+New User 407: Novi korisnik 407
+New User 408: Novi korisnik 408
+New User 409: Novi korisnik 409
+New User 41: Novi korisnik 41
+New User 410: Novi korisnik 410
+New User 411: Novi korisnik 411
+New User 412: Novi korisnik 412
+New User 413: Novi korisnik 413
+New User 414: Novi korisnik 414
+New User 415: Novi korisnik 415
+New User 416: Novi korisnik 416
+New User 417: Novi korisnik 417
+New User 418: Novi korisnik 418
+New User 419: Novi korisnik 419
+New User 42: Novi korisnik 42
+New User 420: Novi korisnik 420
+New User 421: Novi korisnik 421
+New User 422: Novi korisnik 422
+New User 423: Novi korisnik 423
+New User 424: Novi korisnik 424
+New User 425: Novi korisnik 425
+New User 426: Novi korisnik 426
+New User 427: Novi korisnik 427
+New User 428: Novi korisnik 428
+New User 429: Novi korisnik 429
+New User 43: Novi korisnik 43
+New User 430: Novi korisnik 430
+New User 431: Novi korisnik 431
+New User 432: Novi korisnik 432
+New User 433: Novi korisnik 433
+New User 434: Novi korisnik 434
+New User 435: Novi korisnik 435
+New User 436: Novi korisnik 436
+New User 437: Novi korisnik 437
+New User 438: Novi korisnik 438
+New User 439: Novi korisnik 439
+New User 44: Novi korisnik 44
+New User 440: Novi korisnik 440
+New User 441: Novi korisnik 441
+New User 442: Novi korisnik 442
+New User 443: Novi korisnik 443
+New User 444: Novi korisnik 444
+New User 445: Novi korisnik 445
+New User 446: Novi korisnik 446
+New User 447: Novi korisnik 447
+New User 448: Novi korisnik 448
+New User 449: Novi korisnik 449
+New User 45: Novi korisnik 45
+New User 450: Novi korisnik 450
+New User 451: Novi korisnik 451
+New User 452: Novi korisnik 452
+New User 453: Novi korisnik 453
+New User 454: Novi korisnik 454
+New User 455: Novi korisnik 455
+New User 456: Novi korisnik 456
+New User 457: Novi korisnik 457
+New User 458: Novi korisnik 458
+New User 459: Novi korisnik 459
+New User 46: Novi korisnik 46
+New User 460: Novi korisnik 460
+New User 461: Novi korisnik 461
+New User 462: Novi korisnik 462
+New User 463: Novi korisnik 463
+New User 464: Novi korisnik 464
+New User 465: Novi korisnik 465
+New User 466: Novi korisnik 466
+New User 467: Novi korisnik 467
+New User 468: Novi korisnik 468
+New User 469: Novi korisnik 469
+New User 47: Novi korisnik 47
+New User 470: Novi korisnik 470
+New User 471: Novi korisnik 471
+New User 472: Novi korisnik 472
+New User 473: Novi korisnik 473
+New User 474: Novi korisnik 474
+New User 475: Novi korisnik 475
+New User 476: Novi korisnik 476
+New User 477: Novi korisnik 477
+New User 478: Novi korisnik 478
+New User 479: Novi korisnik 479
+New User 48: Novi korisnik 48
+New User 480: Novi korisnik 480
+New User 481: Novi korisnik 481
+New User 482: Novi korisnik 482
+New User 483: Novi korisnik 483
+New User 484: Novi korisnik 484
+New User 485: Novi korisnik 485
+New User 486: Novi korisnik 486
+New User 487: Novi korisnik 487
+New User 488: Novi korisnik 488
+New User 489: Novi korisnik 489
+New User 49: Novi korisnik 49
+New User 490: Novi korisnik 490
+New User 491: Novi korisnik 491
+New User 492: Novi korisnik 492
+New User 493: Novi korisnik 493
+New User 494: Novi korisnik 494
+New User 495: Novi korisnik 495
+New User 496: Novi korisnik 496
+New User 497: Novi korisnik 497
+New User 498: Novi korisnik 498
+New User 499: Novi korisnik 499
+New User 50: Novi korisnik 50
+New User 500: Novi korisnik 500
+New User 501: Novi korisnik 501
+New User 502: Novi korisnik 502
+New User 503: Novi korisnik 503
+New User 504: Novi korisnik 504
+New User 505: Novi korisnik 505
+New User 506: Novi korisnik 506
+New User 507: Novi korisnik 507
+New User 508: Novi korisnik 508
+New User 509: Novi korisnik 509
+New User 51: Novi korisnik 51
+New User 510: Novi korisnik 510
+New User 511: Novi korisnik 511
+New User 512: Novi korisnik 512
+New User 513: Novi korisnik 513
+New User 514: Novi korisnik 514
+New User 515: Novi korisnik 515
+New User 516: Novi korisnik 516
+New User 517: Novi korisnik 517
+New User 518: Novi korisnik 518
+New User 519: Novi korisnik 519
+New User 52: Novi korisnik 52
+New User 520: Novi korisnik 520
+New User 53: Novi korisnik 53
+New User 54: Novi korisnik 54
+New User 55: Novi korisnik 55
+New User 56: Novi korisnik 56
+New User 57: Novi korisnik 57
+New User 58: Novi korisnik 58
+New User 59: Novi korisnik 59
+New User 60: Novi korisnik 60
+New User 61: Novi korisnik 61
+New User 62: Novi korisnik 62
+New User 63: Novi korisnik 63
+New User 64: Novi korisnik 64
+New User 65: Novi korisnik 65
+New User 66: Novi korisnik 66
+New User 67: Novi korisnik 67
+New User 68: Novi korisnik 68
+New User 69: Novi korisnik 69
+New User 70: Novi korisnik 70
+New User 71: Novi korisnik 71
+New User 72: Novi korisnik 72
+New User 73: Novi korisnik 73
+New User 74: Novi korisnik 74
+New User 75: Novi korisnik 75
+New User 76: Novi korisnik 76
+New User 77: Novi korisnik 77
+New User 78: Novi korisnik 78
+New User 79: Novi korisnik 79
+New User 80: Novi korisnik 80
+New User 81: Novi korisnik 81
+New User 82: Novi korisnik 82
+New User 83: Novi korisnik 83
+New User 84: Novi korisnik 84
+New User 85: Novi korisnik 85
+New User 86: Novi korisnik 86
+New User 87: Novi korisnik 87
+New User 88: Novi korisnik 88
+New User 89: Novi korisnik 89
+New User 90: Novi korisnik 90
+New User 91: Novi korisnik 91
+New User 92: Novi korisnik 92
+New User 93: Novi korisnik 93
+New User 94: Novi korisnik 94
+New User 95: Novi korisnik 95
+New User 96: Novi korisnik 96
+New User 97: Novi korisnik 97
+New User 98: Novi korisnik 98
+New User 99: Novi korisnik 99
+New Values: Nove vrijednosti
+New York: New York
+New York - 10001: New York - 10001
+New York - 10001ender: New York - 10001ender
+New Yorkender: New Yorkender
+NextPreset: SljedećaUnaprijed postavljena postavka
+NextToSearchBox: NextToSearchBox
+NextTrack: SljedećaStaza
+Niagara Engraved: Ugravirano na Niagari
+Niagara Solid: Niagara čvrsta
+NightOwl: Noćna ptica
+nl-AW: nizozemski (Aruba)
+nl-BE: nizozemski (Belgija)
+nl-BQ: nizozemski (Bonaire, Sint Eustatius i Saba)
+nl-CW: nizozemski (Curaçao)
+nl-NL: nizozemski (Nizozemska)
+nl-SR: nizozemski (Surinam)
+nl-SX: nizozemski (Sint Maarten)
+nmg-CM: Kwasio (Kamerun)
+nn-NO: Norveški Nynorsk (Norveška)
+NnfxDark: NnfxDark
+NnfxLight: NnfxLight
+nnh-CM: Ngiemboon (Kamerun)
+No: Ne
+No address: Nema adrese
+No Allowed Actions: Nema dopuštenih radnji
+No longer update automatically: Više se ne ažurira automatski
+No notifications: Nema obavijesti
+No space available: Nema slobodnog mjesta
+NoChips: Bez čipova
+NodeBorderRadius: NodeBorderRadius
+NodePadding: NodePadding
+NoHeader: NoHeader
+NoIcon: NeIkona
+NoModalDialogs: NoModalDials
+none: nijedan
+None: Nijedan
+Nord: Sjever
+NordBase16: NordBase16
+Normal: Normalan
+Not Allowed to add or delete Administrator Role if you have not this role.: Nije dopušteno dodavanje ili brisanje administratorske uloge ako nemate tu ulogu.
+Not allowed to Delete this user: Nije dopušteno brisanje ovog korisnika
+Not Allowed.: Nije dopušteno.
+Not connected: Nije povezano
+Not Modal Dialogs: Ne modalni dijalozi
+Note - Media options can't changed after a screen is selected: Napomena - Mogućnosti medija ne mogu se promijeniti nakon odabira zaslona
+NoteLabels: NapomenaOznake
+NotFoundMessage: Stranica koju ste tražili ne postoji.
+Notice: Obavijest
+Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Primijetite ako koristite ovu metodu, možete navesti referencu povratnog poziva gdje se metoda nalazi, ako to ne učinite, referenca je sam dijaloški okvir i u ovom slučaju morate imati metodu na svom DialogClass
+Notifications: Obavijesti
+Nov: Studeni
+NovaBase16: NovaBase16
+NoWrap: NoWrap
+npm-example-0.0.20.tgz: npm-primjer-0.0.20.tgz
+nqo-GN: N'Ko (Gvineja)
+nr-ZA: Južni Ndebele (Južnoafrička Republika)
+nso-ZA: Sesotho sa Leboa (Južnoafrička Republika)
+Nuget Package source: Izvor paketa NuGet
+Nullable enum: Nullable enum
+Nullable Flags Enum: Izbornik zastavica s mogućnošću nullable
+Number: Broj
+numeric: brojčani
+nus-SS: Nuer (Južni Sudan)
+nyn-UG: Nyankole (Uganda)
+Object Edit in Dialog: Uređivanje objekta u dijaloškom okviru
+ObjectEdit: ObjektUredi
+ObjectEditCG: ObjectEditCG
+ObjectEditCondition: Uvjet uređivanja objekta
+ObjectEditConfigured: ObjectEditConfigured
+ObjectEditFile: Datoteka za uređivanje objekta
+ObjectEditInDialog: ObjectEditInDialog
+ObjectEditList: Popis objekata za uređivanje
+ObjectEditPicker: ObjectEditPicker
+ObjectEditTabs: ObjektiEditTabs
+ObjectEditVirtualized: ObjectEditVirtualized
+OBS Virtual Camera: OBS virtualna kamera
+Obsidian: Obsidian
+oc-FR: Okcitanski (Francuska)
+OceanBase16: Oceanska baza16
+OceanicnextBase16: OceanicnextBase16
+OCR A Extended: OCR A Prošireno
+Oct: Listopad
+Official MudBlazor website: Službena web stranica MudBlazor
+Offline: Nezavisan
+OffsetX: OffsetX
+OffsetY: Offseta
+Ok: Ok
+Old English Text MT: Staroengleski tekst MT
+Old Paint: Stara boja
+Old paint found on a stone house door.: Stara boja pronađena na kamenim vratima kuće.
+Old Values: Stare vrijednosti
+OldLace: Stara čipka
+Olive: Maslina
+OliveDrab: MaslinaSumorno
+om-ET: Oromo (Etiopija)
+om-KE: Oromo (Kenija)
+OnClickStopPropagation: OnClickStopPropagation
+OnContextMenuPreventDefault: OnContextMenuPreventDefault
+OnContextMenuStopPropagation: OnContextMenuStopPropagation
+OnCustomSelect: OnCustomSelect
+OnDefinedSelect: OnDefinedSelect
+One Drive: Jedan pogon
+OnedarkBase16: OnedarkBase16
+OneDrive file picker component: Komponenta za odabir datoteka na servisu OneDrive
+OneDriveClientId: OneDriveClientId
+OneEighthOctaveBands: Pojasevi jedne osme oktave
+OneFourthOctaveBands: Pojasevi jedne četvrte oktave
+OneLightBase16: OneLightBase16
+OneSixthOctaveBands: Bendovi jedne šeste oktave
+OneThirdOctaveBands: Opseg jedne trećine oktave
+OneTwelfthOctaveBands: JedanDvanaesta oktavaBendovi
+OneTwentyFourthOctaveBands: Jedan dvadesetčetvrti oktavni pojasevi
+Online: Povezan
+Only Selected Group (Export): Samo odabrana grupa (izvoz)
+OnlyValidateIfDirty: OnlyValidateIfDirty
+OnPlay: OnPlay
+Onyx: Onix
+Opacity: Neprozirnost
+OpacityNotFocused: NeprozirnostNeusredotočena
+Open: Otvoren
+Open in new browser tab: Otvori u novoj kartici preglednika
+Open now: Otvoren
+Open Url {0}: Otvorite URL {0}
+Open Url {0} in a new browser tab: Otvorite {0} URL-a u novoj kartici preglednika
+OpenIcon: Otvorena ikona
+Optima: Optima
+Options: Mogućnosti
+or-IN: Odia (Indija)
+Orange: Naranča
+OrangeRed: Narančastacrvena
+Orchid: Orhideja
+Orientation: Orijentacija
+Original Code Gator DynamicForm: Izvorni kod Gator DynamicForm
+os-GE: Osetski (Gruzija)
+os-RU: Ossetic (Rusija)
+Osaka: Osaka
+Osaka - 530-0001: Osaka - 530-0001
+Osaka - 530-0001ender: Osaka - 530-0001ender
+Oscar Wilde: Oscar Wilde
+Other: Drugi
+Other Components: Ostale komponente
+OtherAddresses: OstaloAdrese
+Otherwise the full image will be downloaded: U suprotnom će se preuzeti cijela slika
+Ottawa: Ottawa
+Ottawa - K1A 0A1: Ottawa - K1A 0A1
+Ottawa - K1A 0A1ender: Ottawa - K1A 0A1ender
+Out: Van
+OuterClass: Vanjska klasa
+OutlineBars: Trake obrisa
+Outlined: Navedene
+OutrunDarkBase16: OutrunDarkBase16
+Outset: Početak
+OverflowBehavior: OverflowBehavior
+Overlay: Prekrivanje
+OverlayChildContent: OverlayChildContent
+OverlayDark: PrekrivanjeTamno
+OverlayLight: Svjetlo prekrivanja
+overline: Prekoračenje
+Overline: Prekoračenje
+OverscanCount: OverscanCount
+Overview: Pregled
+Owner: Vlasnik
+pa-Arab-PK: Pandžapski (arapski, Pakistan)
+pa-IN: Pandžapski (Indija)
+Palatino: Palatin
+Palatino Linotype: Palatinska linotipija
+PaleGreen: Blijedozelena
+Palette: Paleta
+PaletteDark: PaletaTamna
+PaletteIcon: Ikona palete
+PaletteLight: Paleta svjetla
+PaleTurquoise: BlijedoTirkizna
+PaleVioletRed: Blijedoljubičastacrvena
+Pan: Gospodin
+pap-029: Papiamento (Karibi)
+PapayaWhip: PapajaBič
+Paper: Papir
+PapercolorDarkBase16: Boja papiraTamna baza16
+PapercolorLightBase16: PapercolorLightBase16
+Papyrus: Papirus
+ParaisoBase16: ParaisoBase16
+ParaisoDark: ParaisoDark
+ParaisoLight: ParaisoLight
+ParametersForSubControls: Parametri za podkontrole
+Parchment: Pergament
+Paris: Pariz
+Paris - 75001: Pariz - 75001
+Paris - 75001ender: Pariz - 75001ender
+PasqueBase16: PasqueBase16
+Password: Lozinka
+Password Changed!: Lozinka promijenjena!
+Password Confirmation: Potvrda lozinke
+Password Confirmation is required!: Potrebna je potvrda lozinke!
+Password is required!: Lozinka je obavezna!
+Password must be at least of length 8: Lozinka mora biti najmanje duljine 8
+Password must contain at least one capital letter: Lozinka mora sadržavati najmanje jedno veliko slovo
+Password must contain at least one digit: Lozinka mora sadržavati najmanje jednu znamenku
+Password must contain at least one lowercase letter: Lozinka mora sadržavati najmanje jedno malo slovo
+Password Reset Mail has been sent to your authorized Email.: Pošta za poništavanje lozinke poslana je na vašu ovlaštenu e-poštu.
+Password Reset Successful!: Poništavanje lozinke uspješno!
+Passwords don't match: Lozinke se ne podudaraju
+PathSeparator: Razdjelnik staze
+Pattern: Uzorak
+pcm-Latn-NG: Nigerijski pidgin (latinski, nigerija)
+PeachPuff: BreskvaPuff
+PeakLine: Vrhunska linija
+Penelope Cruz: Penelope Cruz
+Percentage: Postotak
+Permission Name: Naziv dozvole
+Perpetua: Doživotan
+Persistent: Uporan
+Personal: Ličan
+Perspective3d: Perspektiva3d
+Peru: Peru
+Peter Griffin: Peter Griffin
+PhdBase16: Doktorat Base16
+Philadelphia: Philadelphia
+Philadelphia - 19019: Philadelphia - 19019
+Philadelphia - 19019ender: Philadelphia - 19019ender
+Philadelphiaender: Philadelphiaender
+Phoenix: Feniks
+Phoenix - 85001: Feniks - 85001
+Phoenix - 85001ender: Feniks - 85001ender
+Phone Number: Telefonski broj
+Phone number {0} is already registered.: Telefonski broj {0} je već registriran.
+PhoneNumber: Telefonski broj
+Picas: Pik
+Pick Item: Odaberite stavku
+Pick Items: Odabir predmeta
+Pick one user: Odaberite jednog korisnika
+Pick some users: Odaberite neke korisnike
+Picker: Skupljač
+Picker appearance: Izgled berača
+PickerHeight: Visina birača
+PickerStyle: Stil odabira
+PickerVariant: PickerVariant
+PickerWidth: Širina birača
+PickFromDropBox: PickFromDropBox
+PickFromGoogleDrive: OdaberiGoogleDrive
+PickFromOneDrive: OdaberiOneDrive
+PicoBase16: PicoBase16
+Pie: Stopalo
+Pink: Roza
+Pixels: Piksela
+pl-PL: Poljski (Poljska)
+Placeholder: Rezerviranog mjesta
+Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Poigrajte se s MudBlazorom i MudBlazor.Extensions u mrežnom uređivaču koda
+Playbill: Pozor oglas
+Player: Igrač
+Please confirm your account by <a href='{0}'>clicking here</a>.: Potvrdite svoj račun <a href='{0}'>klikom ovdje</a>.
+Please enter your name: Molimo unesite svoje ime
+Please reset your password by <a href='{0}'>clicking here</a>.: Molimo poništite lozinku <a href='{0}'>klikom ovdje</a>.
+Please type {0} to confirm edit: Molimo upišite {0} za potvrdu uređivanja
+Please upload your personal qualifications and references that confirm your person and qualification: Učitajte svoje osobne kvalifikacije i reference koje potvrđuju vašu osobu i kvalifikaciju
+Please Wait: Molim te čekaj
+PleaseSelect: Molimo odaberite
+Plum: Šljiva
+Points: Bodova
+PointsOfInterest: Točke interesa
+Pojoaque: Pojoaque
+Poor Richard: Jadni Richard
+PopBase16: PopBase16
+Popover: Popover
+PopoverAnimation: PopoverAnimation
+PopoverAnimationPosition: PopoverAnimationPosition
+PopoverAnimationTimingFunction: PopoverAnimationTimingFunction
+PopoverClass: PopoverClass
+PopupEveryTime: PopupEveryTime
+PopupOnlyOnce: PopupOnlyOnce
+PopverAnimation: PopverAnimacija
+PorpleBase16: PorpleBase16
+Portrait: Portret
+Position: Pozicija
+Position/Size Sample: Uzorak položaja/veličine
+PostalCode: Poštanski broj
+PowderBlue: Praškasta plava
+Powerful component to edit a set of items and their properties.: Moćna komponenta za uređivanje skupa stavki i njihovih svojstava.
+Powerful component to edit an object and its properties.: Moćna komponenta za uređivanje objekta i njegovih svojstava.
+Powerful UI Editor for json, xml or yaml content now also as viewer for MudExFileDisplay: Snažan uređivač korisničkog sučelja za json, xml ili yaml sadržaj sada i kao preglednik za MudExFileDisplay
+Preferred way on MudExTextField: Preferirani način na MudExTextField
+Preferred way on MudExTextField with For and ChildContent: Preferirani način na MudExTextFieldu s For i ChildContent
+PresetListBehaviour: PresetListBehavior
+PresetListClass: PresetListClass
+PresetListMode: Unaprijed postavljeni način rada
+PresetListPosition: PresetListPosition
+PresetListToggleButtonPosition: PresetListToggleButtonPosition
+Presets: Presets
+Preview: Pregled
+PreviewButtonSize: Veličina gumba za pregled
+PreviewFont: PretpregledFont
+PreviewIcon: Ikona pretpregleda
+PreviewIconColor: PreviewIconColor
+PreviewImageInPresetList: PreviewImageInPresetList
+PreviewImageSize: PretpregledVeličina slike
+PreviewInIframe: PreviewInIframe
+PreviewMode: Način pretpregleda
+PreviousPreset: PrethodnaUnaprijed postavljeno
+PreviousTrack: PrethodnaStaza
+prg-001: Pruski (Svijet)
+Primary: Glavni
+Primary Key: Primarni ključ
+PrimaryContrastText: PrimarniKontrastTekst
+PrimaryDarken: PrimarnoZatamniti
+PrimaryLighten: PrimarnoOsvijetliti
+Print: Otisak
+PrintButtonIcon: PrintButtonIcon
+Pristina: Priština
+Product Deleted: Proizvod je izbrisan!
+Product Not Found!: Proizvod nije pronađen!
+Product Saved: Proizvod spašen!
+Product Updated: Proizvod ažuriran!
+Products: Prerađevina
+Products exported: Izvezeni proizvodi
+Profile: Profil
+Profile Details: Detalji profila
+Profile picture added.: Dodana je profilna slika.
+Profile picture deleted.: Profilna slika je izbrisana.
+Profile updated: Profil ažuriran
+ProgramingSkills: Vještine programiranja
+Property1: Svojstvo1
+Property10: Svojstvo10
+Property11: Svojstvo11
+Property12: Svojstvo12
+Property13: Svojstvo13
+Property14: Svojstvo14
+Property15: Nekretnina15
+Property16: Svojstvo16
+Property17: Nekretnina17
+Property18: Nekretnina18
+Property19: Nekretnina19
+Property2: Svojstvo2
+Property20: Svojstvo20
+Property21: Svojstvo21
+Property22: Svojstvo22
+Property23: Svojstvo23
+Property24: Svojstvo24
+Property25: Svojstvo25
+Property26: Svojstvo26
+Property27: Svojstvo27
+Property28: Nekretnina28
+Property29: Imovina29
+Property3: Svojstvo3
+Property30: Nekretnina30
+Property31: Nekretnina31
+Property32: Svojstvo32
+Property33: Nekretnina33
+Property34: Svojstvo34
+Property35: Nekretnina35
+Property36: Nekretnina36
+Property37: Svojstvo37
+Property38: Svojstvo38
+Property39: Svojstvo39
+Property4: Svojstvo4
+Property40: Svojstvo40
+Property41: Svojstvo41
+Property42: Svojstvo42
+Property43: Nekretnina43
+Property44: Nekretnina44
+Property45: Svojstvo45
+Property5: Svojstvo5
+Property6: Svojstvo6
+Property7: Svojstvo7
+Property8: Svojstvo8
+Property9: Svojstvo9
+prs-AF: prs (Afganistan)
+ps-AF: Pashto (Afganistan)
+ps-PK: Pashto (Pakistan)
+PseudoCss: PseudoCss
+pt-AO: portugalski (Angola)
+pt-BR: portugalski (Brazil)
+pt-CH: portugalski (Švicarska)
+pt-CV: portugalski (Cabo Verde)
+pt-GQ: portugalski (Ekvatorijalna Gvineja)
+pt-GW: portugalski (Gvineja Bisau)
+pt-LU: portugalski (Luksemburg)
+pt-MO: Portugalski (Regionalno područje Makaa)
+pt-MZ: portugalski (Mozambik)
+pt-PT: portugalski (Portugal)
+pt-ST: portugalski (São Tomé & Principe)
+pt-TL: portugalski (Istočni Timor)
+Public Profile: Javni profil
+Pulse: Puls
+Purebasic: Čisti osnovni
+Purple: Ljubičast
+QtcreatorDark: QtcreatorDark
+QtcreatorLight: QtcreatorLight
+QualiaBase16: QualiaBase16
+Qualifications and References: Kvalifikacije i reference
+quc-GT: Kʼicheʼ (Gvatemala)
+Quentin Tarantino: Quentin Tarantino
+Quick Insights.: Brzi uvidi.
+Quick Start Guide: Vodič za brzi početak
+quz-BO: quz (Bolivija)
+quz-EC: quz (Ekvador)
+quz-PE: quz (Peru)
+Rachel Green: Rachel Green
+Radial: Radijalan
+RadialInvert: RadijalniInvert
+Radius: Polumjer
+Rage Italic: Bijes kurziv
+RailscastsBase16: RailscastsBase16
+Rainbow: Duga
+Random: Slučajan
+RandomColorUpdateDelay: RandomColorUpdateDelay
+RarArchive.rar: RarArchive.rar
+Rate: Stopa
+Rate must be greater than 0: Stopa mora biti veća od 0
+Ravie: Oduševljeni
+Read More: Opširnije
+Readme: Datoteka Readme
+readme.md: readme.md
+ReadOnly: Samo za čitanje
+Realtime Updates & Insights with SignalR.: Ažuriranja i uvidi u stvarnom vremenu uz SignalR.
+RebeccaBase16: RebeccaBase16
+RebeccaPurple: RebeccaLjubičasta
+Record audio: Snimanje zvuka
+Record Audio: Snimanje zvuka
+Record Camera: Kamera za snimanje
+Record Main Camera: Snimanje glavne kamere
+Record Main Camera Lower Quality: Snimanje glavne kamere niže kvalitete
+Record Screen: Zaslon za snimanje
+Recording: Snimanje
+RecordingAnimation: Animacija snimanja
+RecordingBorderAnimation: RecordingBorderAnimation
+RecordingColor: Boja snimanja
+RecordingIcon: Ikona snimanja
+Red: Crven
+Redirect: Preusmjeriti
+Redirecting to {0}: Preusmjeravanje na {0}
+Redirecting...: Preusmjeravanje...
+ReflexAlpha: ReflexAlpha
+ReflexBright: RefleksSvijetla
+ReflexFit: Refleksno uklapanje
+ReflexRatio: Refleksni omjer
+Refresh: Osvježiti
+Refreshed Token.: Osvježeni token.
+Register: Registar
+Register as: Registrirajte se kao
+Register as {0}: Registrirajte se kao {0}
+Register here: Registrirajte se ovdje
+Register New User: Registrirajte novog korisnika
+Register User: Registrirajte korisnika
+Registered Roles: Registrirane uloge
+Registered Users: Registrirani korisnici
+Rel: Rel
+Relative: Relativan
+RelativeToParent: RelativnoToParent
+RelativeWidth: RelativnaŠirina
+Reload: Ponovno učitati
+Reload Data: Ponovno učitajte podatke
+Rem: Rem
+Remember me?: Sjećate me se?
+RememberEditedOptions: RememberEditedOptions
+Remove: Odstraniti
+Remove All: Ukloni sve
+RemoveErrorAfter: RemoveErrorAfter
+RemoveErrorOnChange: RemoveErrorOnChange
+RemoveItemButtonAlwaysRight: RemoveItemButtonAlwaysRight
+Rename: Preimenovati
+Rename backup: Preimenuj sigurnosnu kopiju
+Render with {0}: Renderirajte s {0}
+Render with MudExFileDisplayTiff: Renderiranje pomoću Tiff preglednika
+Render with MudExFileDisplayZip: Renderiranje pomoću Zip preglednika
+Render with MudExImageViewer: Renderirajte pomoću MudExImageViewera
+Render with native control: Renderiranje s nativnom kontrolom
+RenderBackLink: RenderBackLink
+RenderChipsAdditional: RenderChipsAdditional
+Rendered Virtualized: Prikazano virtualizirano
+rendered when the item is outside the viewport.: Prikazuje se kada je stavka izvan prozora za prikaz.
+rendered when the item is visible in the viewport.: Prikazuje se kada je stavka vidljiva u prozoru za prikaz.
+RenderHomeLink: RenderHomeLink
+RenderOnlyOnce: RenderOnlyOnce
+Required: Potreban
+RequiredError: ObaveznaPogreška
+Reset: Brisanje
+Reset {0}: Resetirajte {0}
+Reset all: Poništi sve
+Reset all properties?: Resetirati sva svojstva?
+Reset password: Poništi lozinku
+Reset Password: Poništi lozinku
+Reset to initial data: Vrati na početne podatke
+Reset view: Ponovno postavljanje prikaza
+ResetButtonIcon: Ikona gumba za resetiranje
+ResetToDefaultFirst: ResetToDefaultFirst
+Resizeable: Mogućnost promjene veličine
+ResizeMode: Način promjene veličine
+Resources: Resursi
+Responsive: Odgovarajući
+Restart server: Ponovno pokrenite poslužitelj
+Restore: Vratiti
+Restore database: Vraćanje baze podataka
+Restore default: Vraćanje zadanih postavki
+Restore finished: Vraćanje završeno
+Restore in progress. Please wait until the restore is finished. This can take a while.: Vraćanje u tijeku. Pričekajte dok se vraćanje ne završi. To može potrajati.
+Revert: Okrenuti
+RGB: RGB
+RGBA: RGBA
+rgba(0,200,83,1): rgba(0,200,83,1)
+rgba(126,247,160,1): rgba(126,247,160,1)
+rgba(133,135,145,1): rgba(133,135,145,1)
+rgba(157,241,250,1): rgba(157,241,250,1)
+rgba(17,59,83,1): rgba(17,59,83,1)
+rgba(170,0,0,1): rgba(170,0,0,1)
+rgba(18,121,66,1): rgba(18,121,66,1)
+rgba(189,255,207,1): RGBA(189,255,207,1)
+rgba(19,184,232,1): rgba(19,184,232,1)
+rgba(191,125,17,1): rgba(191,125,17,1)
+rgba(20,220,113,1): RGBA (20,220,113,1)
+rgba(201,204,207,1): rgba(201,204,207,1)
+rgba(217,152,13,1): rgba(217,152,13,1)
+rgba(220,63,17,1): rgba(220,63,17,1)
+rgba(23,105,142,1): rgba(23,105,142,1)
+rgba(23,162,88,1): rgba(23,162,88,1)
+rgba(230,233,235,1): rgba(230,233,235,1)
+rgba(235,179,35,1): rgba(235,179,35,1)
+rgba(244,67,54,1): rgba(244,67,54,1)
+rgba(246,249,251,1): rgba (246,249,251,1)
+rgba(253,210,47,1): rgba(253,210,47,1)
+rgba(254,104,0,1): rgba(254,104,0,1)
+rgba(255,145,2,1): rgba(255,145,2,1)
+rgba(255,152,0,1): rgba(255,152,0,1)
+rgba(255,179,31,1): rgba(255,179,31,1)
+rgba(255,210,84,1): rgba(255,210,84,1)
+rgba(255,226,115,1): rgba(255,226,115,1)
+rgba(255,240,163,1): rgba(255,240,163,1)
+rgba(27,189,102,1): rgba(27,189,102,1)
+rgba(33,150,243,1): rgba(33,150,243,1)
+rgba(39,219,245,1): rgba(39,219,245,1)
+rgba(53,57,64,1): rgba(53,57,64,1)
+rgba(66,66,66,1): rgba(66,66,66,1)
+rgba(88,91,98,1): RGBA (88,91,98,1)
+rgba(9,137,194,1): rgba(9,137,194,1)
+Ridge: Brazda
+Right: Desno
+Right part in MudExSplitPanel.: Desni dio u MudExSplitPanelu.
+RightToLeft: S desna nalijevo
+Ripple: Mreškanje
+RippleOpacity: ValovitostNeprozirnost
+RippleOpacitySecondary: RippleOpacitySekundarna
+rm-CH: Romansh (Švicarska)
+rn-BI: Rundi (Burundi)
+ro-MD: rumunjski (Moldavija)
+ro-RO: rumunjski (Rumunjska)
+Roboto: Robot
+Rockwell: Rockwell
+Rockwell Condensed: Rockwell kondenziran
+Rockwell Extra Bold: Rockwell Extra Bold
+rof-TZ: Rombo (Tanzanija)
+Role: Uloga
+Role ID: ID uloge
+Role Name: Naziv uloge
+Roles: Uloge
+Roles Updated: Uloge ažurirane!
+RootName: Naziv korijena
+RosPineBase16: RosPineBase16
+RosPineDawnBase16: RosPineDawnBase16
+RosPineMoonBase16: RosPineMoonBase16
+RosyBrown: Ružičastosmeđa
+Rotate: Okretati
+RoundBars: Okrugle šipke
+Rounded: Zaobljen
+Routeros: Routeros
+Row: Red
+RowSpan: Raspon redaka
+RowsPerPageString: Redovi po stranici
+RoyalBlue: Kraljevska plava
+ru-BY: ruski (Bjelorusija)
+ru-KG: ruski (Kirgistan)
+ru-KZ: Ruski (Kazahstan)
+ru-MD: ruski (Moldavija)
+ru-RU: ruski (Rusija)
+ru-UA: ruski (Ukrajina)
+RubberBand: Gumena traka
+RubberBandColor: Boja gumene trake
+RubberBandStyle: Stil gumene trake
+Runic MT Condensed: Runski MT kondenzirani
+Runtime: Runtime
+Russian: Ruski
+rw-RW: Kinyarwanda (Ruanda)
+rwk-TZ: Rwa (Tanzanija)
+sa-IN: Sanskrit (Indija)
+SaddleBrown: Sedlosmeđa
+SagelightBase16: Baza kadulje16
+sah-RU: Sakha (Rusija)
+Salmon: Losos
+Sample Card: Uzorak kartice
+Sample Dialog: Primjer dijaloškog okvira
+Sample Headline: Primjer naslova
+Sample how to use Theme Select: Primjer korištenja odabira teme
+Sample mega: Uzorak mega
+Sample to see how you can render and use any component in a dialog as easy as possible: Primjer da vidite kako možete renderirati i koristiti bilo koju komponentu u dijaloškom okviru što je lakše moguće
+sample.pdf: sample.pdf
+San Antonio: San Antonio
+San Antonio - 78201: San Antonio - 78201
+San Antonio - 78201ender: San Antonio - 78201ender
+San Diego: San Diego
+San Diego - 92101: San Diego - 92101
+San Diego - 92101ender: San Diego - 92101ender
+San Jose: San Jose
+San Jose - 95101: San Jose - 95101
+San Jose - 95101ender: San Jose - 95101ender
+SandBoxIframes: SandBoxIframes
+SandcastleBase16: Baza dvorca od pijeska16
+SandyBrown: Pješčana smeđa
+sans-serif: sans-serifni
+Sans-serif: Sans-serif
+saq-KE: Samburu (Kenija)
+sat-Olck-IN: Santali (Ol Chiki, Indija)
+Saturation: Zasićenje
+Save: Spasiti
+Save {0} Changes: '{0} Spremite promjene'
+Save as: Spremi kao
+Save Changes: Spremi promjene
+Save image: Spremi sliku
+Save Role: Spremi ulogu
+Save visible area only: Spremi samo vidljivo područje
+SaveButtonIcon: Ikona gumba za spremi
+saved: Spremljeni!
+sbp-TZ: Sangu (Tanzanija)
+Scale: Vaga
+SchoolBook: Školski udžbenik
+Scope: Opseg
+Screen: Zaslon
+Script MT Bold: Skripta MT podebljano
+Scroll down to discover the content: Pomaknite se prema dolje da biste otkrili sadržaj
+Scroll down to see the behavior: Pomaknite se prema dolje da biste vidjeli ponašanje
+Scroll to top: Pomaknite se na vrh
+sd-Arab-PK: Sindhi (arapski, Pakistan)
+sd-Deva-IN: Sindhi (Devanagari, Indija)
+se-FI: Sjeverni Laponci (Finska)
+se-NO: Sjeverni Laponci (Norveška)
+se-SE: Sjeverni Laponci (Švedska)
+SeaGreen: Morsko zeleno
+search: pretraživanje
+Search: Pretraživanje
+Search by users: Pretraživanje po korisnicima
+Search For {0} Extended Attributes: Potražite {0} proširene atribute
+Search for Brands: Potražite robne marke
+Search for Document Types: Pretraživanje vrsta dokumenata
+Search For Permissions: Traženje dozvola
+Search for Roles...: Traži uloge...
+Search for Trails: Potražite staze
+Search For User Roles: Traženje korisničkih uloga
+Search For Users: Traži korisnike
+Search in New Values: Pretraživanje u novim vrijednostima
+Search in Old Values: Pretraživanje u starim vrijednostima
+SearchBox: Okvir za pretraživanje
+SearchBoxAdornment: SearchBoxUkras
+SearchBoxAutoFocus: SearchBoxAutoFocus
+SearchBoxBackgroundColor: SearchBoxBackgroundColor
+SearchBoxClearable: SearchBoxClearable
+SearchBoxPlaceholder: Rezervirano mjesto za pretraživanje
+SearchBoxVariant: Varijanta okvira za pretraživanje
+SearchString: Niz za pretraživanje
+SeaShell: Morska školjka
+Secondary: Sekundaran
+SecondaryBackgroundForNestedItemHeader: SecondaryBackgroundForNestedItemHeader
+SecondaryContrastText: SekundarniKontrastTekst
+SecondaryDarken: SekundarnoZatamniti
+SecondaryLighten: SekundarnoOsvijetliti
+Section 0: Odjeljak 0.
+Section 1: Odjeljak 1.
+Section 10: Odjeljak 10.
+Section 11: Odjeljak 11.
+Section 12: Odjeljak 12.
+Section 13: Odjeljak 13.
+Section 14: Odjeljak 14.
+Section 15: Odjeljak 15.
+Section 2: Odjeljak 2.
+Section 3: Odjeljak 3.
+Section 4: Odjeljak 4.
+Section 5: Odjeljak 5.
+Section 6: Odjeljak 6.
+Section 7: Odjeljak 7.
+Section 8: Odsjek 8.
+Section 9: Odjeljak 9.
+Security: Sigurnost
+See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.: Pogledajte kako koristiti MudExFileDisplay za prikaz sadržaja datoteka. Također demonstracija kako implementirati sučelje IMudExFileDisplay za pružanje vlastitih komponenti za određene vrste datoteka.
+See how to use MudExObjectEdit in a dialog: Pogledajte kako koristiti MudExObjectEdit u dijaloškom okviru
+See how you can use different pickers or delay change event with the MudExColorPicker: Pogledajte kako možete koristiti različite birače ili odgoditi događaj promjene pomoću MudExColorPicker
+seh-MZ: Seine (Mozambik)
+Select: Odabirati
+Select a brand: Odaberite marku
+Select All: Odaberi sve
+Select Item: Odaberi stavku
+Select Items: Odaberite stavke
+Select Language: Odaberite jezik
+Select sample file (See weather.json to check how own components for files can be created): Odaberite oglednu datoteku (Pogledajte weather.json kako biste provjerili kako se mogu stvoriti vlastite komponente za datoteke)
+Select screen: Odaberi zaslon
+SelectAll: Odaberi sve
+SelectAllPosition: Odaberi svePoložaj
+SelectAllText: Odaberi sav tekst
+SelectColorText: SelectColorText
+Selected: Odabrani
+Selected Node: Odabrani čvor
+SelectedBrand: Odabrana marka
+SelectedIndex: OdabraniIndeks
+SelectedItemBackgroundColor: SelectedItemBackgroundColor
+SelectedItemBorderColor: OdabranaItemBorderColor
+SelectedItemColor: OdabranaItemColor
+SelectedRequests: OdabraniZahtjevi
+SelectedValues: Odabrane vrijednosti
+Selecting: Odabir
+SelectionList: Popis odabira
+SelectionMode: Način odabira
+SelectionModeIcon: OdabirModeIkona
+SelectItemsMode: SelectItemsMode
+SelectorsForIgnoreBlur: SelektoriForIgnoreBlur
+SelectorSize: Veličina selektora
+SelectorsToKeepOpenOnMouseLeave: SelectorsToKeepOpenOnMouseLeave
+SelectValueOnTab: SelectValueOnTab
+SelectVariant: OdaberiVarijanta
+Send: Slati
+Send confirmation email: Pošaljite e-poštu s potvrdom
+Sensitivity: Osjetljivost
+Sep: Rujan
+Server restarted successfully: Poslužitelj se uspješno ponovno pokrenuo
+ses-ML: Koyraboro Senni (Mali)
+Set as Default options for all Dialogs: Postavi kao zadane opcije za sve dijaloške okvire
+Set empty/null for auto detection: Postavi prazno/null za automatsko otkrivanje
+Set new password: Postavite novu lozinku
+Set this to automatically stop recording after the desired time.: Postavite ovo za automatsko zaustavljanje snimanja nakon željenog vremena.
+Set this to wait before a photo is taken: Postavite ovo da pričeka prije snimanja fotografije
+Set this to wait before recording starts: Postavite ovo da čeka prije početka snimanja
+SetChipsOnEnter: SetChipsOnEnter
+SetiUiBase16: SetiUiBase16
+SevenZipArchive.7z: SevenZipArchive.7z
+Severity: Strogost
+sg-CF: Sango (Srednjoafrička Republika)
+ShadesOfPurple: Nijanse ljubičaste
+Shadows: Sjene
+Shake: Tresti
+ShapeshifterBase16: Baza mjenjača oblika16
+SharedConfig: Zajednička konfiguracija
+Sharpness: Oštrina
+shi-Latn-MA: Tachelhit (latinski, Maroko)
+shi-Tfng-MA: Tachelhit (Tifinagh, Maroko)
+Show: Pokazati
+Show As Dialog: Dijaloški okvir Prikaži kao
+Show as Tree: Prikaži kao stablo
+Show Demo: Prikaži demo
+Show flat: Prikaži stan
+Show info: Prikaži informacije
+Show info for: Prikaži informacije za
+Show Markup: Prikaži oznake
+Show notification: Prikaži obavijest
+Show notification while recording: Prikaz obavijesti tijekom snimanja
+Show on github: Pokaži na githubu
+Show or hide inherited fields from base class: Prikaz ili skrivanje naslijeđenih polja iz osnovne klase
+Show Sample 1: Prikaži uzorak 1
+Show Sample 2: Prikaži uzorak 2
+Show Sample 3: Prikaži uzorak 3
+Show Sample Dialog: Prikaz oglednog dijaloškog okvira
+Show Sample Dialog METHOD 1: Prikaz uzorka dijaloškog okvira METODA 1
+Show Sample Dialog METHOD 2: Prikaži uzorak dijaloškog okvira METODA 2
+Show Sample Dialogs: Prikaz oglednih dijaloških okvira
+Show selected: Prikaži odabrano
+Show With this Options: Prikaži s ovim opcijama
+ShowAlpha: ShowAlpha
+ShowAtCursor: ShowAtCursor
+ShowBgColor: ShowBgColor
+Showcard Gothic: Izložbeni Gothic
+ShowClearButton: PokažiČisti gumb
+ShowCloseIcon: PrikaziZatvoriIkona
+ShowColorField: ShowColorField
+ShowColorPreview: ShowColorPreview
+ShowContentError: ShowContentError
+ShowCssColorVariables: ShowCssColorVariables
+ShowFileUploadButton: PrikaziDatotekaUploadButton
+ShowFilterInDrawer: ShowFilterInDrawer
+ShowFolderUploadButton: Gumb za prijenos mape
+ShowFPS: ShowFPS
+ShowFullScreenButton: PrikaziCijeli zaslonGumb
+ShowHtmlColors: ShowHtmlColors
+ShowInputs: ShowInputs
+ShowLogoInDrawer: ShowLogoInDrawer
+ShowModeSwitch: ShowModeSwitch
+ShowNavigator: ShowNavigator
+ShowNotificationWhileRecording: ShowNotificationWhileRecording
+ShowPath: Prikaži put
+ShowPeaks: ShowPeaks
+ShowPresetNameOnChange: ShowPresetNameOnChange
+ShowPreview: PrikazPregled
+ShowPreviewOnClick: ShowPreviewOnClick
+ShowPrintButton: Gumb ShowPrintButton
+ShowProgressForLoadingData: ShowProgressForLoadingData
+ShowRemainingTimeOnly: ShowRemainingTimeOnly
+ShowRenameButton: PrikaziPreimenujGumb
+ShowResetButton: Gumb ShowReset
+Shows how you can use MudExAdditionalAdornment to ad as many adornments to any MudInput: Pokazuje kako možete koristiti MudExAdditionalAdornment za oglašavanje što više ukrasa na bilo koji MudInput
+ShowSaveButton: PokažiSpremiGumb
+ShowScaleX: ShowScaleX
+ShowScaleY: ShowScaleY
+ShowSliders: ShowSliders
+ShowSpectrumOnRecording: ShowSpectrumOnRecording
+ShowThemeColors: ShowThemeColors
+ShowToolbar: Prikazialatna traka
+ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
+ShowVisualiser: ShowVisualizer
+ShowZoomInButton: Gumb ShowZoomInButton
+ShowZoomOutButton: Gumb ShowZoomOutButton
+ShrinkLabel: SmanjitiOznaka
+si-LK: Sinhala (Šri Lanka)
+Side: Strana
+Sienna: Sjena
+Sign In: Prijavi se
+Sign Up: Prijavi se
+SilkDarkBase16: SilkDarkBase16
+SilkLightBase16: SilkLightBase16
+Silver: Srebro
+Simon Pack: Simon Pack
+Simple: Jednostavan
+Simple Card List with a hover effect.: Jednostavan popis karata s efektom lebdenja.
+Simple CodeViewer Component: Jednostavna komponenta preglednika kodova
+Simple component to display Html files with MudExFileDisplay: Jednostavna komponenta za prikaz Html datoteka s MudExFileDisplay
+Simple component to display markdown files with MudExFileDisplay: Jednostavna komponenta za prikaz markdown datoteka s MudExFileDisplay
+Simple component to expand a Search field: Jednostavna komponenta za proširenje polja za pretraživanje
+Simple Confirmation: Jednostavna potvrda
+Simple Dialog: Jednostavan dijalog
+Simple Dialogs: Jednostavni dijalozi
+Simple Enum: Jednostavni Enum
+Simple Excel file viewer: Jednostavan preglednik Excel datoteka
+Simple extended popover that adds Animations and an onblur event to close if a click outside happens.: Jednostavan prošireni skočni prozor koji dodaje animacije i događaj onblur za zatvaranje ako se dogodi klik vani.
+Simple extension for MudAvatar to load automatically a profile image for an email address using Gravatar: Jednostavno proširenje za MudAvatar za automatsko učitavanje profilne slike za adresu e-pošte pomoću Gravatara
+Simple MessageDialog: Jednostavna porukaDijalog
+Simple Prompt: Jednostavan upit
+Simple virtualize component that can be disabled with support for fixed items and ItemsProvider.: Jednostavna virtualizirana komponenta koja se može onemogućiti s podrškom za fiksne stavke i ItemsProvider.
+SimpleDialog: Jednostavan dijalog
+SimulateOnHover: SimulateOnHover
+SimulateWithFullSpectrumAudioData: SimulateWithFullSpectrumAudioData
+SimulateWithRandomData: SimulateWithRandomData
+Single: Neoženjen
+SingleExpand: SingleProširi
+Size: Veličina
+sk-SK: slovački (Slovačka)
+Skeleton: Kostur
+SkipSeparator: Preskoči separator
+SkyBlue: Nebesko plavo
+sl-SI: slovenski (Slovenija)
+SlateBlue: SlateBlue
+SlateGray: SlateGray
+Slide: Klizanje
+SlideBar: Klizna traka
+SlideIn: Klizni
+sma-NO: Južni Laponci (Norveška)
+sma-SE: Južni laponci (Švedska)
+Small: Malen
+smj-NO: Lule Sami (Norveška)
+smj-SE: Lule Sami (Švedska)
+smn-FI: Inari Sami (Finska)
+Smoothing: Izglađivanje
+sms-FI: Skolt Sami (Finska)
+sn-Latn-ZW: Shona (latinski, Zimbabve)
+Snackbar: Bife
+SnackbarMessageMarkupString: SnackbarMessageMarkupString
+SnackbarMessageRenderFragment: SnackbarMessageRenderFragment
+SnackbarMessageText: SnackbarMessageText
+Snap ITC: Snap ITC
+SnapDrag: SnapDrag
+SnazzyBase16: SnazzyBase16
+Snow: Snijeg
+so-DJ: Somalijski (Džibuti)
+so-ET: Somalijski (Etiopija)
+so-KE: Somalijski (Kenija)
+so-SO: Somalijski (Somalija)
+SolarFlareBase16: Solarna baklja16
+SolarFlareLightBase16: Solarna bakljaSvjetlosna baza16
+SolarizedDarkBase16: Solarizirana tamna baza16
+SolarizedLightBase16: Solarizirana baza svjetla16
+Solid: Solidan
+Some: Neki
+Some other: Neki drugi
+SomeOtherInformation: Neke drugeinformacije
+Something went wrong during the refresh token action: Nešto je pošlo po zlu tijekom akcije tokena za osvježavanje
+SomeUnimportantTestModel: SomeUnimportantTestModel
+SomeUnimportantTestModel as Json: SomeUnimportantTestModel kao Json
+SpaceAround: Svemir
+SpaceBetween: Prostor između
+SpaceEvenly: ProstorRavnomjerno
+SpacemacsBase16: SpacemacsBase16
+Spacing: Razmak
+Specify Options...: Navedite opcije...
+Specify Quick Options...: Navedite brze opcije...
+Spectrum: Spektar
+SpectrumIcon: Ikona spektra
+SpinSpeed: Brzina centrifuge
+SplitGradient: PodijeliGradijent
+SplitPanelItem for MudExSplitPanel component: SplitPanelItem za komponentu MudExSplitPanel
+SpringGreen: Proljetno zeleno
+sq-AL: Albanski (Albanija)
+sq-MK: Albanski (Sjeverna Makedonija)
+sq-XK: Albanski (Kosovo)
+Square: Kvadrat
+sr-Cyrl-BA: Srpski (ćirilica, Bosna i Hercegovina)
+sr-Cyrl-ME: srpski (ćirilica, Crna Gora)
+sr-Cyrl-RS: srpski (ćirilica, Srbija)
+sr-Cyrl-XK: srpski (ćirilica, Kosovo)
+sr-Latn-BA: Srpski (latinski, Bosna i Hercegovina)
+sr-Latn-ME: Srpski (Latinski, Crna Gora)
+sr-Latn-RS: srpski (latinica, srbija)
+sr-Latn-XK: srpski (latinski, kosovski)
+Src: Src
+Srcery: Srcery
+ss-SZ: siSwati (Eswatini)
+ss-ZA: siSwati (Južnoafrička Republika)
+ssy-ER: Saho (Eritreja)
+st-LS: Sesotho (Lesoto)
+st-ZA: Sesotho (Južnoafrička Republika)
+StackedBar: Složena traka
+StackoverflowDark: StackoverflowDark
+StackoverflowLight: StackoverflowLight
+Standard - Mikrofon (Voicemod Virtual Audio Device (WDM)): Standardno - Mikrofon (Voicemod virtualni audio uređaj (WDM))
+Start: Početak
+Start Capture: Pokreni snimanje
+Start Recording: Počnite snimati
+Start recording after: Počnite snimati nakon
+Start/Stop selection: Odabir Start/Stop
+State: Država
+Static: Statički
+Static card.: Statička kartica.
+Static item: Statički artikl
+Status: Status
+SteelBlue: Čelična plava
+Stencil: Matrica
+Stereo: Stereo
+Steve Rogers: Steve Rogers
+Store: Pohraniti
+Stream: Potok
+StreamUrlHandling: StreamUrlHandling
+Street: Ulica
+Street 2 2, 32365 City 2: Ulica 2 2, 32365 Grad 2
+Strict: Strog
+StringProperty1: Svojstvo_niza1
+StringProperty10: Svojstvo niza10
+StringProperty11: Svojstvo niza11
+StringProperty12: SvojstvoNiza12
+StringProperty13: Svojstvo niza13
+StringProperty14: Svojstvo niza14
+StringProperty15: SvojstvoNiza15
+StringProperty16: SvojstvoNiza16
+StringProperty17: SvojstvoNiza17
+StringProperty18: SvojstvoNiza18
+StringProperty19: SvojstvoNiza19
+StringProperty2: SvojstvoNiza2
+StringProperty20: SvojstvoNiza20
+StringProperty21: SvojstvoNiza21
+StringProperty22: SvojstvoNiza22
+StringProperty23: SvojstvoNiza23
+StringProperty24: SvojstvoNiza24
+StringProperty25: SvojstvoNiza25
+StringProperty26: SvojstvoNiza26
+StringProperty27: SvojstvoNiza27
+StringProperty28: SvojstvoNiza28
+StringProperty29: SvojstvoNiza29
+StringProperty3: Svojstvo niza3
+StringProperty30: SvojstvoNiza30
+StringProperty31: SvojstvoNiza31
+StringProperty32: Svojstvo niza32
+StringProperty33: Svojstvo_niza33
+StringProperty34: SvojstvoNiza34
+StringProperty35: SvojstvoNiza35
+StringProperty36: SvojstvoNiza36
+StringProperty37: Svojstvo_niza37
+StringProperty38: SvojstvoNiza38
+StringProperty39: SvojstvoNiza39
+StringProperty4: Svojstvo_niza4
+StringProperty40: Svojstvo_niza40
+StringProperty41: Svojstvo_niza41
+StringProperty42: Svojstvo_niza42
+StringProperty43: Svojstvo niza43
+StringProperty44: Svojstvo_niza44
+StringProperty45: SvojstvoNiza45
+StringProperty46: Svojstvo_niza46
+StringProperty47: Svojstvo niza47
+StringProperty48: Svojstvo_niza48
+StringProperty49: Svojstvo niza49
+StringProperty5: SvojstvoNiza5
+StringProperty50: Svojstvo niza50
+StringProperty51: SvojstvoNiza51
+StringProperty52: SvojstvoNiza52
+StringProperty53: SvojstvoNiza53
+StringProperty54: SvojstvoNiza54
+StringProperty55: SvojstvoNiza55
+StringProperty56: SvojstvoNiza56
+StringProperty57: SvojstvoNiza57
+StringProperty58: SvojstvoNiza58
+StringProperty59: SvojstvoNiza59
+StringProperty6: Svojstvo_niza6
+StringProperty60: Svojstvo niza60
+StringProperty7: Svojstvo_niza7
+StringProperty8: SvojstvoNizaSmijenje8
+StringProperty9: Svojstvo niza9
+Striped: Prugasta
+Structured Data Edit: Uređivanje strukturiranih podataka
+StructuredDataEdit: Strukturirani podaciUredi
+Style: Stil
+StyleChip: StilČip
+su-Latn-ID: Sundanski (latinski, indonezijski)
+Subject: Subjekt
+Subline description for sample card.: Opis podlinije za uzorak kartice.
+Submit: Predati se
+SubscribeToParentForm2: Pretplati se na roditeljski obrazac2
+subtitle1: podnaslov1
+Subtitle1: Podnaslov1
+subtitle2: podnaslov2
+Subtitle2: Podnaslov2
+Success: Uspjeh
+SuccessContrastText: SuccessContrastText
+SuccessDarken: UspjehDarken
+SuccessLighten: UspjehOlakšati
+SummercampBase16: SummercampBase16
+SummerfruitDarkBase16: SummerfruitTamna baza16
+SummerfruitLightBase16: SummerfruitLightBase16
+Sunburst: Sunburst
+Super sample Content text.: Super uzorak teksta sadržaja.
+Support: Podrška
+Surface: Površina
+Surname: Prezime
+sv-AX: Švedski (Ålandski otoci)
+sv-FI: Švedski (Finska)
+sv-SE: Švedski (Švedska)
+sw-CD: Kiswahili (Kongo [DRC])
+sw-KE: Kiswahili (Kenija)
+sw-TZ: Kiswahili (Tanzanija)
+sw-UG: Kiswahili (Uganda)
+Swagger: API dokumentacija
+Swap: Mijenjati
+Swedish: Švedski
+SweetieBubbleGum-Regular.ttf: SweetieBubbleGum-Regular.ttf
+Swing: Ljuljačka
+Switch: Skretnica
+Switch expand button position: Promijenite položaj gumba za proširenje
+Switch overlay source: Promjena izvora preklapanja
+Symbol: Simbol
+SynthMidnightTerminalDarkBase16: SynthMidnightTerminalDarkBase16
+SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16
+syr-SY: Sirijski (Sirija)
+System: Sustav
+System Settings: Postavke sustava
+T3024Base16: T3024Baza16
+ta-IN: Tamilski (Indija)
+ta-LK: Tamilski (Šri Lanka)
+ta-MY: Tamilski (Malezija)
+ta-SG: Tamilski (Singapur)
+Table Name: Naziv tablice
+TableHover: Stol Lebdi
+TableLines: Linije tablica
+TableStriped: StolPrugasti
+Tada: Zatim
+Tag: Dan
+TagField: Polje oznake
+Tahoma: Tahoma
+Take case: Uzmi slučaj
+Take photo after: Fotografirajte se nakon
+Take Photo from Main camera: Snimite fotografiju s glavne kamere
+Take Photo from Main camera in 5 seconds: Snimite fotografiju s glavne kamere za 5 sekundi
+Take Photo only: Samo za snimanje fotografija
+Tan: Dakle
+TangoBase16: TangoBase16
+TarArchive.tar: TarArchive.tar
+Target: Cilj
+Tax: Porez
+Tax must be greater than 0: Porez mora biti veći od 0
+te-IN: Telugu (Indija)
+Teal: Teal
+tel: Tel
+Telephone: Telefon
+TemplateClass: Klasa predloška
+Temporary: Privremen
+TenderBase16: TenderBase16
+teo-KE: Teso (Kenija)
+teo-UG: Teso (Uganda)
+Tertiary: Tercijarna
+TertiaryContrastText: TercijarniContrastText
+TertiaryDarken: TercijarnoDarken
+TertiaryLighten: TercijarnoOsvijetliti
+TEST: TEST
+Test and use components live without required environment: Testiranje i korištenje komponenti uživo bez potrebnog okruženja
+Test the powerful MudExThemeEdit and change theme colors fonts and more: Testirajte moćni MudExThemeEdit i promijenite boje teme, fontove i još mnogo toga
+text: Tekstualna poruka
+Text: Tekstualna poruka
+Text value is required using {0} type!: Tekstualna vrijednost je obavezna pomoću {0} tipa!
+TextAddExternal: TextAddExternal
+TextAddFromDropBox: TekstAddFromDropBox
+TextAddFromGoogle: TekstAddFromGoogle
+TextAddFromOneDrive: TekstAddFromOneDrive
+TextAddUrl: TextAddUrl
+TextAddUrlMessage: TekstAddUrlMessage
+TextAddUrlTitle: TekstAddUrlTitle
+TextDisabled: Onemogućeno tekstom
+TextDropZone: TextDropZone
+TextErrorDuplicateFile: TextErrorDuplicateFile
+TextErrorExtensionForbidden: TextErrorExtensionForbidden
+TextErrorExtensionNotAllowed: TextErrorExtensionNotAllowed
+TextErrorMaxFileCount: TextErrorMaxFileCount
+TextErrorMaxFileSize: TextErrorMaxFileSize
+TextErrorMimeTypeForbidden: TextErrorMimeTypeForbidden
+TextErrorMimeTypeNotAllowed: TextErrorMimeTypeNotAllowed
+TextFillColor: Boja ispune teksta
+TextPrimary: TekstPrimarno
+TextRemoveAll: TekstUkloni sve
+TextSecondary: TekstSekundarna
+TextStartRecording: TekstPočetakSnimanje
+TextStartVideoCapture: TextStartVideoCapture
+TextTransform: Pretvaranje teksta
+TextUpdateSuppression: Suzbijanje ažuriranja teksta
+TextUploadFile: Datoteka za prijenos teksta
+TextUploadFiles: TekstUploadFiles
+TextUploadFolder: Mapa za prijenos teksta
+tg-Cyrl-TJ: Tadžikistanski (ćirilica, Tadžikistan)
+th-TH: Tajlandski (Tajland)
+The Checker field is required.: Polje Provjera je obavezno.
+The component also provides the <strong>IsVisibleChanged</strong> event, which triggers whenever the visibility of the item changes.: Komponenta također pruža događaj <strong>IsVisibleChanged</strong>, koji se pokreće kad god se promijeni vidljivost stavke.
+The content type {0} cannot be displayed without a suitable plugin: Vrsta sadržaja {0} se ne može prikazati bez odgovarajućeg dodatka
+The field Number must be between 1 and 100.: Broj polja mora biti između 1 i 100.
+The file ({0}) has already been added: Datoteka ({0}) je već dodana
+The file has exceeded the maximum size of {0} with {1}. File size is {2}: Datoteka je premašila maksimalnu veličinu {0} s {1}. Veličina datoteke je {2}
+The following {0} permissions are also required for permission {1}: Za {1} dopuštenja potrebna su i sljedeća {0} dopuštenja
+The following permission is also required for permission {1}: Sljedeće dopuštenje također je potrebno za dozvolu {1}
+The maximum file size is 10 MB: Maksimalna veličina datoteke je 10 MB
+The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit je robustan i svestran alat dizajniran za učinkovito olakšavanje uređivanja jedne ili više tema ili unaprijed postavljenih postavki. Inherentno se prilagođava tamnom načinu rada, svijetlom načinu rada ili kombinaciji oba. Osim toga, podržava izvedene klase iz MudThemea, kao i prilagođena svojstva koja su mu svojstvena, pružajući tako sveobuhvatno i fleksibilno rješenje za sve vaše zahtjeve za uređivanje tema.
+The Plugin '{0}' may be able to help: Dodatak '{0}' može vam pomoći
+The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: Uzorak je isti kao i drugi primjer FileDisplaya, ali s tom razlikom što se ne koristi URL; umjesto toga, streamovi se učitavaju i koriste.
+The server is just restarting. Please wait until the connection has been restored: Poslužitelj se upravo ponovno pokreće. Pričekajte dok se veza ne uspostavi
+The user "{0}" just changed some of this data: Korisnik "{0}" upravo je promijenio neke od ovih podataka
+The user {0} has been logged off: Korisnički {0} je odjavljen
+The User {0} has just edited, created or deleted entries here. You should reload the data: Korisnički {0} je upravo uredio, stvorio ili izbrisao unose ovdje. Trebali biste ponovno učitati podatke
+Theme: Tema
+Theme Colors: Boje teme
+Themes: Teme
+ThemeSelect: Odabir teme
+There are no new notifications: Nema novih obavijesti
+These features make <strong>MudExVirtualItem</strong> ideal for optimizing performance when working with large datasets or dynamic content that doesn't need to be loaded all at once.: Ove značajke čine <strong>MudExVirtualItem</strong> idealnim za optimizaciju performansi pri radu s velikim skupovima podataka ili dinamičkim sadržajem koji se ne mora učitavati odjednom.
+This bar can be positioned left, right, top or bottom, and expands automatically on mouseover. This is also the Base component for the MudExTaskBar that automatically displays all open dialogs: Ova traka može biti postavljena lijevo, desno, gore ili dolje i automatski se širi pokazivačem miša. Ovo je također osnovna komponenta za MudExTaskBar koja automatski prikazuje sve otvorene dijaloške okvire
+This changes the Variant if Age is at least 18 and is enabled if Age is more than 1: Time se mijenja varijanta ako je dob najmanje 18 godina i omogućena je ako je dob veća od 1
+This component and the dialog no modal behaviour is still in development and not ready for production use. Please report any issues you find on GitHub.: Ova komponenta i dijalog bez modalnog ponašanja još uvijek su u razvoju i nisu spremni za proizvodnu upotrebu. Prijavite sve probleme koje pronađete na GitHubu.
+This component uses the ICaptureService to capture audio and/or video data: Ova komponenta koristi ICaptureService za snimanje audio i/ili video podataka
+This component uses the ISpeechRecognitionService to record audio data and transcripts: Ova komponenta koristi ISpeechRecognitionService za snimanje audio podataka i transkripata
+This Demo demonstrate using for the MudExCardList: Ovaj demo demonstrira korištenje za MudExCardList
+This Demo demonstrate using the MudExAudioPlayer without the automatic use in MudExFileDisplay: Ovaj demo demonstrira korištenje MudExAudioPlayera bez automatske upotrebe u MudExFileDisplayu
+This Demo demonstrate using the MudExCardList with an item source: Ovaj demo demonstrira korištenje MudExCardList s izvorom stavki
+This Demo demonstrate using the MudExCardList with an item source and child content together: Ovaj demo demonstrira korištenje MudExCardList s izvorom stavke i podređenim sadržajem zajedno
+This Demo demonstrate using the MudExImageViewer without the automatic use in MudExFileDisplay: Ovaj demo demonstrira korištenje MudExImageViewera bez automatske upotrebe u MudExFileDisplayu
+This demo showcases the <strong>MudExVirtualItem</strong> component, a virtualized container that efficiently renders content<br/> only when it becomes visible in the viewport.: Ovaj demo prikazuje komponentu <strong>MudExVirtualItem</strong>, virtualizirani spremnik koji učinkovito prikazuje sadržaj<br/> samo kada postane vidljiv u prozoru za prikaz.
+This demo shows how to pass a can close method: Ovaj demo pokazuje kako proći metodu zatvaranja limenki
+This demo shows how you can use a selection with MudExSelect with a custom item provider: Ovaj demo pokazuje kako možete koristiti odabir s MudExSelect s pružateljem prilagođenih artikala
+This demo uses SnapDrag as DragMode on the DialogOptionsEx: Ovaj demo koristi SnapDrag kao DragMode na DialogOptionsEx
+This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open: Ovaj demo koristi IDialogEventService za provjeru, promjenu veličine ili povlačenje i pohranjuje najnoviji položaj i veličinu kao relativne vrijednosti i vraća ih pri sljedećem otvaranju
+This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: Ovo demonstrira komponentu MudExThemeEdit koja interno koristi MudExObjectEdit i MudExThemeSelect za uređivanje teme
+This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: Ovaj demo prikazuje preporučeni način korištenja MudExAdditionalAdornment pomoću RenderFragments 'For' i 'ChildContent'
+This dialog can confirmed when slider value is greater then 10: Ovaj dijaloški okvir može potvrditi kada je vrijednost klizača veća od 10
+This is a Json representation of the TestModel. This is ignored for Export and Import: Ovo je JSON prikaz TestModela. To se zanemaruje za izvoz i uvoz
+This is a simple information dialog that closes after {0} seconds: Ovo je jednostavan informativni dijaloški okvir koji se zatvara nakon {0} sekundi
+This is a simple information dialog that closes after 0 seconds: Ovo je jednostavan informativni dijaloški okvir koji se zatvara nakon 0 sekundi
+This is a simple information dialog that closes after 1 seconds: Ovo je jednostavan informativni dijaloški okvir koji se zatvara nakon 1 sekunde
+This is a simple information dialog that closes after 2 seconds: Ovo je jednostavan informativni dijaloški okvir koji se zatvara nakon 2 sekunde
+This is a simple information dialog that closes after 3 seconds: Ovo je jednostavan informativni dijaloški okvir koji se zatvara nakon 3 sekunde
+This is a simple information dialog that closes after 4 seconds: Ovo je jednostavan informativni dijaloški okvir koji se zatvara nakon 4 sekunde
+This is a simple information dialog that closes after 5 seconds: Ovo je jednostavan informativni dijaloški okvir koji se zatvara nakon 5 sekundi
+This is an Administrator Only View.: Ovo je prikaz samo za administratore.
+This is the MudEx Default theme: Ovo je MudEx zadana tema
+This is the sample Popover. In general it inherits the original MudPopover.: Ovo je uzorak Popover. Općenito, nasljeđuje originalni MudPopover.
+This one card is still added without an corresponding item.: Ova jedna kartica se i dalje dodaje bez odgovarajuće stavke.
+This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: Ovo prolazi kao metoda na opcije dijaloškog okvira. Dijaloški okvir se neće zatvoriti ako metoda vrati false. Rezultat mora biti bool ili Task&lt;bool&gt;
+This photo was taken in a small village in Istra Croatia.: Ova fotografija snimljena je u malom selu u Istri.
+This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Ovaj birač donosi animacije, bolje ponašanje i dijaloški okvir koji podržava sve DialogOptions. Da biste stvorili vlastitu komponentu za odabir koju možete naslijediti od MudExPickerBase-a ili samo koristiti jednostavan sadržaj, koristite MudExPicker
+This sample demonstrate how to use the MudExCaptureService: Ovaj uzorak pokazuje kako koristiti MudExCaptureService
+This sample demonstrate the usage of MudExTreeView with an Item template: Ovaj uzorak pokazuje upotrebu MudExTreeView s predloškom stavke
+This sample uses the IDialogEventService to cancel the dialog close: Ovaj uzorak koristi IDialogEventService za otkazivanje zatvaranja dijaloškog okvira
+This sample uses the options for a can close callback: Ovaj uzorak koristi opcije za može zatvoriti povratni poziv
+This section can be placed inside a MudExGrid component.: Ovaj se odjeljak može postaviti unutar MudExGrid komponente.
+Thistle: Čičak
+ThrottleInterval: Interval gasa
+ti-ER: Tigrinya (Eritreja)
+ti-ET: Tigrinya (Etiopija)
+tig-ER: Tigre (Eritreja)
+Tilt: Podrezivati
+Time: Vrijeme
+Times: Puta
+Times New Roman: Times New Roman
+TimeSeries: Vremenska serija
+Tina Fey: Tina Fey
+Title: Naslov
+Title is required!: Titula je obavezna!
+tk-TM: Turkmenski (Turkmenistan)
+tn-BW: Setswana (Bocvana)
+tn-ZA: Setswana (Južnoafrička Republika)
+to-TO: Tonga (Tonga)
+Toggle loading: Uključi učitavanje
+Toggle right-to-left/left-to-right: Prebacivanje s desna na lijevo/s lijeva na desno
+Toggle to {0}: Prebaci na {0}
+Toggleable: Mogućnost prebacivanja
+ToggleAllFeatures: ToggleAllFeatures
+ToggleFullPage: ToggleFullPage
+ToggleFullscreen: PrebacivanjeCijeli zaslon
+ToggleMicrophone: Uključi mikrofon
+TogglePictureInPicture: TogglePictureInPicture
+TogglePlayPause: Uključi reprodukcijuPauza
+Token is required: Token je potreban
+Token Not Found!: Token nije pronađen!
+Tokyo: Tokiju
+Tokyo - 100-0001: Tokio - 100-0001
+Tokyo - 100-0001ender: Tokio - 100-0001ender
+Tomato: Rajčica
+TomorrowBase16: Sutra Baza16
+TomorrowNightBase16: Baza sutra navečer16
+TomorrowNightBlue: SutraNightBlue
+TomorrowNightBright: Sutra navečerSvijetlo
+ToolbarBackgroundColor: Alatna trakaBackgroundColor
+ToolbarButtonColor: Alatna trakaBoja gumba
+ToolbarButtonPosition: Položaj gumba alatne trake
+ToolbarButtonSize: Veličina gumba alatne trake
+ToolbarButtonVariant: Alatna trakaButtonVariant
+ToolbarClass: Alatna trakaKlasa
+ToolBarClass: Alatna trakaKlasa
+ToolbarStyle: Stil alatne trake
+ToolBarStyle: Stil alatne trake
+Tooltip: Opis alata
+ToolTip: Opis alata
+ToolTip Three: Opis alata tri
+ToolTip Two: Opis alata dva
+ToolTipStyle: ToolTipStyle
+Top: Vrh
+TopCenter: Gornji centar
+TopLeft: Gore lijevo
+TopRight: Gore desno
+Torch: Baklja
+Toronto: Toronto
+Toronto - M1B 1A1: Toronto - M1B 1A1
+Toronto - M1B 1A1ender: Toronto - M1B 1A1ender
+tr-CY: Turski (Cipar)
+tr-TR: Turski (Turska)
+Trace: Trag
+TrackInfoPosition: TrackInfoPosition
+TrackList: Popis pjesama
+TrackListBehaviour: TrackListBehavior
+TrackListClass: TrackListClass
+TrackListCoverImage: Popis pjesamaNaslovna slika
+TrackListMode: Način popisa pjesama
+TrackListPosition: TrackListPosition
+TrackListToggleButtonPosition: TrackListToggleButtonPosition
+Trail Details: Detalji staze
+TransformOrigin: TransformOrigin
+Translations: Prijevodi
+Translations are being imported: Prijevodi se uvoze
+Translations updated: Prijevodi ažurirani
+Transparent: Proziran
+Trebuchet MS: Trebušet MS
+TreeView: Pogled na stablo
+TreeView component that renders a tree structure of items.: TreeView komponenta koja prikazuje stablu stavki.
+TreeViewBreadcrumb: TreeViewKrušna mrvica
+TreeViewCardGrid: TreeViewCardGrid
+TreeViewDefault: StabloViewDefault
+TreeViewFlatList: TreeViewFlatList
+TreeViewHorizontal: Prikaz stablaVodoravno
+TreeViewList: Popis prikaza stabla
+TreeViewMode: Način prikaza stabla
+TrueLeds: Prave LED diode
+TrueOrFalse: TočnoIliNetočno
+Try different role: Isprobajte drugu ulogu
+Try MudEx online: Isprobajte MudEx online
+Try MudEx online CodeEditor: Isprobajte MudEx online CodeEditor
+ts-ZA: Xitsonga (Južnoafrička Republika)
+tt-RU: Tatarski (Rusija)
+Turquoise: Tirkiz
+TwilightBase16: Baza sumraka16
+twq-NE: Tasawaq (Niger)
+Type: Tip
+Type should be valid: Tip bi trebao biti valjan
+Typo: Pogreška pri upisu
+TypoThemeDescription: TypoThemeDescription
+TypoThemeName: Ime teme tipkanja
+tzm-Arab-MA: Središnji Atlas Tamazight (arapski, Maroko)
+tzm-Latn-DZ: Središnji atlas Tamazight (latinski, Alžir)
+tzm-Latn-MA: Središnji atlas Tamazight (latinski, maroko)
+tzm-Tfng-MA: Središnji atlas Tamazight (Tifinagh, Maroko)
+ug-CN: Ujguri (Kina)
+uk-UA: ukrajinski (Ukrajina)
+Uma Thurman: Uma Thurman
+Unassigned: Nedodijeljeni
+UncheckedIcon: NeoznačenaIkona
+Underline: Podvući
+Undo: Poništiti
+UndoIcon: PoništiIkona
+UnikittyDarkBase16: UnikittyDarkBase16
+UnikittyLightBase16: UnikittyLightBase16
+Unselectable: Ne može se odabrati
+Unset: Nepostavljeno
+Update: Ažurirati
+Update automatically next time: Automatski ažuriraj sljedeći put
+Update Brand: Ažurirajte marku
+Update Document: Ažuriranje dokumenta
+Update Document Type: Ažurirajte vrstu dokumenta
+Update Extended Attribute: Ažuriranje proširenog atributa
+Update Now: Ažuriraj
+Update Permissions: Dozvole za ažuriranje
+Update Product: Ažurirajte proizvod
+Update Role: Ažuriranje uloge
+Update Role Permissions: Ažuriranje dozvola za uloge
+Update User Roles: Ažuriranje korisničkih uloga
+UpdateBindingIfOnlyHSLChanged: UpdateBindingIfOnlyHSLChanged
+Updated: Ažuriran
+Updated User Status.: Ažurirani status korisnika.
+UpdateItemsOnStateChange: UpdateItemsOnStateChange
+Upload: Otpremanje
+Upload Edit: Učitaj Uredi
+Upload File: Prenesite datoteku
+Upload Files: Prenesite datoteke
+Upload Folder: Mapa za prijenos
+Upload Image: Prenesite sliku
+Upload in dialog: Prenesi u dijaloškom okviru
+Upload Qualifications and References: Učitajte kvalifikacije i reference
+UploadFieldId: ID polja za prijenos
+UploadFile: UčitavanjeDatoteka
+UploadFolder: Mapa za prijenos
+UploadRequest: Zahtjev za prijenos
+UploadRequests: Zahtjevi za prijenos
+ur-IN: Urdu (Indija)
+ur-PK: Urdu (Pakistan)
+url: URL
+Url: URL
+Use CodeGator Models: Koristite CodeGator modele
+Use MudExAdditionalAdornment ad ChildContent: Upotreba oglasa MudExAdditionalAdornment ChildContent
+Use MudExAdditionalAdornment as ChildContent of a MudInput: Koristite MudExAdditionalAdornment kao podređeni sadržaj MudInput
+Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Umjesto toga upotrijebite MudExSelect i postavite MultiSelection na true i ValuePresenter na Chip.
+UseCanvas: UpotrebaPlatno
+UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
+UseItemTemplateForSelection: UseItemTemplateForSelection
+UseMudExColorBubble: UpotrebaMudExColorBubble
+UseNativeBrowserControl: UseNativeBrowserControl
+User: Korisnik
+User {0} Registered. Please check your Mailbox to verify!: Korisnik {0} registriran. Provjerite svoj poštanski sandučić kako biste potvrdili svoju adresu e-pošte!
+User and Roles: Korisnik i uloge
+User Data: Korisnički podaci
+User Deleted: Korisnik je izbrisan
+User Name: Korisničko ime
+User Not Active. Please contact the administrator.: Korisnik nije aktivan. Pričekajte aktivaciju ili se obratite administratoru.
+User Not Found!: Korisnik nije pronađen!
+User Registered: Korisnik je registriran!
+User Registered Mailbox: Korisnik je registriran. Potvrdna pošta je isporučena u poštanski sandučić.
+User registration is not allowed: Registracija korisnika nije dopuštena
+UserAttributes: Korisnički atributi
+UserInformation: Podaci o korisniku
+Username: Korisničko ime
+UserName: Korisničko ime
+Username {0} is already taken.: Korisničko ime {0} je već zauzeto.
+Username cannot changed: Korisničko ime se ne može promijeniti
+UserName is required: Korisničko ime je obavezno
+UserName must be at least of length 6: Korisničko ime mora biti najmanje duljine 6
+Username or Email: Korisničko ime ili e-mail
+Users: Korisnici
+Users and Roles: Korisnici i uloge
+Users exported: Izvezeni korisnici
+Uses the IDialogEventService and handles the before close event. Here you can just set args.Cancel to true to stop closing: Koristi IDialogEventService i obrađuje događaj prije zatvaranja. Ovdje možete samo postaviti argumente. Odustani od istine da biste prestali zatvarati
+UTC: UTC
+Utilities: Komunalne usluge
+uz-Arab-AF: Uzbečki (arapski, Afganistan)
+uz-Cyrl-UZ: uzbečki (ćirilica, uzbekistan)
+uz-Latn-UZ: Uzbečki (latinski, uzbekistan)
+vai-Latn-LR: Vai (latinski, Liberija)
+vai-Vaii-LR: Vai (Vai, Liberija)
+Validate Upload Edit in MudForm: Potvrdite uređivanje prijenosa u MudFormu
+Validation: Provjera valjanosti
+Value: Vrijednost
+ValuePresenter: Izlagač vrijednosti
+Values: Vrijednosti
+ValueString: Vrijednosni niz
+Vancouver: Vancouver
+Vancouver - V5K 0A1: Vancouver - V5K 0A1
+Vancouver - V5K 0A1ender: Vancouver - V5K 0A1ender
+Variant: Varijanta
+ve-ZA: Venda (Južnoafrička Republika)
+Verdana: Verdana
+Version: Verzija
+vi-VN: Vijetnamski (Vijetnam)
+Video Content-Type: Vrsta video sadržaja
+Video device: Video uređaj
+VideoDevice: Videouređaj
+View: Pogled
+View Profile: Pogledaj profil
+ViewBox: Okvir za prikaz
+ViewDependsOnContentType: ViewDependsOnContentType
+ViewMode: Način prikaza
+ViewportHeight: ViewportHeight
+ViewportMaximum: ViewportMaximum
+ViewportMinimum: ViewportMinimum
+ViewportWidth: ViewportWidth
+Viner Hand ITC: Viner Hand ITC
+Violet: Ljubičica
+Virtualize: Virtualizaciju
+Visible: Vidljiv
+Visualizer: Vizualizator
+VisualizerBackgroundColor: VisualizerBackgroundColor
+VisualizerElementBorderSize: VisualizerElementBorderSize
+Vivaldi: Vivaldi
+Vladimir Script: Vladimir Script
+vo-001: Volapük (Svijet)
+Volume: Obim
+Vs: Vs
+Vs2015: Vs2015
+VulcanBase16: Vulkanska baza16
+vun-TZ: Vunjo (Tanzanija)
+wae-CH: Walser (Švicarska)
+wal-ET: Wolaytta (Etiopija)
+Warning: Upozorenje
+WarningContrastText: WarningContrastText
+WarningDarken: UpozorenjeZatamniti
+WarningLighten: UpozorenjeOsvijetliti
+weather.json: weather.json
+Webdings: Trake
+Week: Tjedan
+WeightingFilter: Filtar za vaganje
+Welcome {0}: Dobrodošli {0}
+whatever: bilo koji
+Wheat: Pšenica
+White: Bijeli
+WhiteBalanceMode: Način rada WhiteBalance
+WhiteList: Popis dopuštenih
+WhiteSmoke: Bijeli dim
+Wide Latin: Široki latinski
+Width: Širina
+Will be saved only when selected Permission: Spremit će se samo kada se odabere Dopuštenje
+Window: Prozor
+Windows10Base16: Windows10Base16
+Windows10LightBase16: Windows10LightBase16
+Windows95Base16: Windows95Base16
+Windows95LightBase16: Windows95LightBase16
+WindowsHighContrastBase16: WindowsVisoki kontrastBase16
+WindowsHighContrastLightBase16: WindowsHighContrastLightBase16
+WindowsNtBase16: WindowsNtBase16
+WindowsNtLightBase16: WindowsNtLightBase16
+Wingdings: Wingdings
+With custom configuration: S prilagođenom konfiguracijom
+With default configuration: Sa zadanom konfiguracijom
+With tabs: S karticama
+With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: S komponentom MudExAdditionalAdornment možete imati što više ukrasa u bilo kojoj kontroli unosa temeljenoj na MudInputu poput ove.
+With this component you can have an animation while loading the main blazor app: Pomoću ove komponente možete imati animaciju tijekom učitavanja glavne aplikacije blazor
+With_Selected: '{0} Odabrano'
+WithFullSpectrumAudioData: WithFullSpectrumAudioData
+WithFullSpectrumAudioDataPrefilledWithRandomData: WithFullSpectrumAudioDataPrefilledWithRandomData
+WithGoogleLatinFonts: SaGoogleLatinFonts
+WithoutBounds: Bez granica
+WithRandomData: WithRandomData
+WithRealAudioData: WithRealAudioData
+wo-SN: Wolof (Senegal)
+Wobble: Kolebati se
+WoodlandBase16: Šumska baza16
+WordDokument.doc: WordDokument.doc
+WrapChips: WrapChips
+WrapToolBarContent: WrapToolBarSadržaj
+Xcode: Xcode
+XcodeDuskBase16: XcodeDuskBase16
+xh-ZA: isiXhosa (Južnoafrička Republika)
+Xml: Xml
+xog-UG: Soga (Uganda)
+Xt256: Xt256
+Yaml: Yaml
+yav-CM: Yangben (Kamerun)
+Yellow: Žut
+YellowGreen: Žutozelena
+Yes: Da
+yi-001: Jidiš (svijet)
+yo-BJ: Yoruba (Benin)
+yo-NG: Yoruba (Nigerija)
+Yokohama: Yokohama
+Yokohama - 220-0001: Yokohama - 220-0001
+Yokohama - 220-0001ender: Yokohama - 220-0001ender
+you: ti
+You are logged out because the Permissions of one of your Roles have been updated.: Odjavljeni ste jer su ažurirane dozvole jedne od vaših uloga.
+You are logged out because the user with your Token has been deleted or token is expired.: Odjavljeni ste jer je korisnik s vašim tokenom izbrisan ili je token istekao.
+You are logged out by an Administrator or profile change.: Odjavljeni ste od strane administratora ili promjene profila.
+You are Logged Out.: Odjavljeni ste.
+You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Također možete koristiti MudExAdditionalOrnamentnment kao ChildContent of a MudInput
+You can now Login with your credentials: Sada se možete prijaviti sa svojim vjerodajnicama
+You cannot delete yourself: Ne možete se izbrisati
+You clicked: Kliknuli ste
+You don't need an extra JsonEditor anymore: Više vam ne treba dodatni JsonEditor
+You have {0} Users where you can pick from: Imate {0} korisnika gdje možete birati
+You picked: Odabrali ste
+You received a new chat message from {0}: Primili ste novu chat poruku od {0}
+You're leaving {0} and will redirected to {1}: Napuštate {0} i bit ćete preusmjereni na {1}
+Your e-mail address has been confirmed!: Vaša e-mail adresa je potvrđena!
+Your email address could not be verified. If you have any problems, please contact {0}: Vaša adresa e-pošte nije se mogla provjeriti. Ako imate bilo kakvih problema, obratite se {0}
+Your Profile has been updated.: Vaš profil je ažuriran.
+Your Recent Activities.: Vaše nedavne aktivnosti.
+ZenburnBase16: Zenburnova baza16
+zgh-Tfng-MA: Standardni marokanski Tamazight (Tifinagh, Maroko)
+zh-CN: Kineski (Kina)
+zh-Hans-HK: Kineski (pojednostavljeni, Posebna upravna regija Hong Kong)
+zh-Hans-MO: Kineski (pojednostavljeni, Macao SAR)
+zh-HK: Kineski (Posebno upravno područje Hong Konga)
+zh-MO: Kineski (Macao SAR)
+zh-SG: Kineski (Singapur)
+zh-TW: Kineski (Tajvan)
+ZIndex: ZIndex
+ZipCode: Poštanski broj
+Zoom: Zumiranje
+Zoom in: Zumiranje
+Zoom out: Smanjivanje
+ZoomInButtonIcon: ZoomInButtonIcon
+ZoomOnHover: ZoomOnHover
+ZoomOutButtonIcon: ZoomOutButtonIcon
+zu-ZA: isiZulu (Južna Afrika)

@@ -1,4 +1,6 @@
 ﻿@page "/object-edit-cg-adapter"
+@inherits BasePage
+
 @using System.ComponentModel.DataAnnotations
 @using BlazorJS
 @using CG.Blazor.Forms.Attributes
@@ -19,7 +21,7 @@
 
     <MudExDivider Class="mb-10" Color="MudExColor.Primary"/>
     
-    <MudText Class="mt-10" Color="Color.Primary">Original Code Gator DynamicForm</MudText>
+    <MudText Class="mt-10" Color="Color.Primary">@L["Original Code Gator DynamicForm"]</MudText>
     <MudPaper Outlined="true" Class="px-12 py-6">
         <CG.Blazor.Forms.DynamicForm OnSubmit="@Callback" Model="@Model" />
     </MudPaper>

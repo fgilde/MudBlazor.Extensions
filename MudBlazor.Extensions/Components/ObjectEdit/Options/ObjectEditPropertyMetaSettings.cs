@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.Localization;
+using MudBlazor.Extensions.Helper;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
@@ -103,7 +104,7 @@ public class ObjectEditPropertyMetaSettings
     {
         var localizerToUse = Localizer ?? localizer;
         var res = resolverFunc(Owner.PropertyInfo);
-        return localizerToUse != null ? localizerToUse[res] : res;
+        return localizerToUse != null && !string.IsNullOrEmpty(res) ? localizerToUse.TryLocalize(res) : res;
     }
 
     internal void UpdateConditionalSettings<TModel>(TModel model)

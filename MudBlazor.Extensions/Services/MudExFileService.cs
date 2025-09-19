@@ -15,6 +15,7 @@ using BlazorJS;
 using ExcelDataReader;
 using Nextended.Core;
 using System.Data;
+using System.Text;
 
 namespace MudBlazor.Extensions.Services;
 
@@ -267,7 +268,7 @@ public class MudExFileService : IMudExFileService
         var list = structure.Recursive(z => z?.Children ?? Enumerable.Empty<MudExArchiveStructure>()).Where(c => c is { IsDirectory: false, BrowserFile: not null }).Select(c => c.BrowserFile).ToList();
         return (structure, list);
     }
-
+    
     /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
@@ -276,6 +277,37 @@ public class MudExFileService : IMudExFileService
         foreach (var stream in _streams)
             await stream.DisposeAsync();
         _streams.Clear();
+    }
+
+    /// <inheritdoc />
+    public ValueTask DownloadContentAsync(string content, string mimeType, string fileName)
+    {
+        return DownloadContentAsync(Encoding.UTF8.GetBytes(content), mimeType, fileName);
+    }
+    
+    /// <inheritdoc />
+    public ValueTask DownloadContentAsync(Stream stream, string mimeType, string fileName)
+    {
+        return DownloadContentAsync(stream.ToByteArray(), mimeType, fileName);
+    }
+    
+    /// <inheritdoc />
+    public async ValueTask DownloadContentAsync(byte[] bytes, string mimeType, string fileName)
+    {
+        var url = await CreateBlobUrlAsync(bytes, mimeType);
+        //var url = await Nextended.Core.Types.DataUrl.GetDataUrlAsync(bytes, mimeType)
+        await DownloadAsync(url, mimeType, fileName);
+    }
+
+    /// <inheritdoc />
+    public ValueTask DownloadAsync(string url, string mimeType, string fileName)
+    {
+        return _jsRuntime.InvokeVoidAsync("MudBlazorExtensions.downloadFile", new
+        {
+            Url = url,
+            FileName = $"{fileName}",
+            MimeType = mimeType,
+        });
     }
 
     /// <summary>

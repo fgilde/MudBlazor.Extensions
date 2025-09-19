@@ -1,4 +1,6 @@
 ﻿@page "/theme-select"
+@inherits BasePage
+
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
 @attribute [Demo(Name = "MudExThemeSelect", Icon = Icons.Material.Outlined.Palette, Documentation = "Sample how to use Theme Select", ForComponentType = typeof(MudExThemeSelect<>))]
@@ -28,7 +30,7 @@
         await base.OnInitializedAsync();
         if (MainLayout.Instance != null)
             MainLayout.Instance.ThemeChanged += (_, _) => StateHasChanged();
-        _themes = ThemePreset.Create(("Default", "This is the MudEx Default theme", ClientTheme.DefaultTheme), ("Another", "Another Demo theme in Red",  Another: ClientTheme.SimpleBlue));
+        _themes = ThemePreset.Create(("Default", L["This is the MudEx Default theme"], ClientTheme.DefaultTheme), ("Another", L["Another Demo theme"],  Another: ClientTheme.SimpleBlue));
     }
 
     private void ThemeChanged(ClientTheme? theme)

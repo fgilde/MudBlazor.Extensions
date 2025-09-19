@@ -1,4 +1,5 @@
-﻿@using MudBlazor.Extensions.Options
+﻿@using Microsoft.Extensions.Localization
+@using MudBlazor.Extensions.Options
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Services
@@ -6,8 +7,9 @@
 @inject IDialogService dialogService;
 @inject MudExFileService fileService;
 @implements IMudExFileDisplay
+@inject IStringLocalizer<MySimpleJsonDisplay> L
 
-<span @onclick="@ShowCode" style="cursor: pointer; font-size: 10pt;text-decoration: underline; position: absolute; margin-top: -10px;">This is a self registered control for json files. Just implement IMudExFileDisplay. Click to see code</span>
+<span @onclick="@ShowCode" style="cursor: pointer; font-size: 10pt;text-decoration: underline; position: absolute; margin-top: -10px;">@L["This is a self registered control for json files. Just implement IMudExFileDisplay. Click to see code"]</span>
 
 <MudTextField ReadOnly="true" Value="@jsonValue" Variant="Variant.Outlined" T="string" Lines="16" Style="margin-top: 3px;"></MudTextField>
 
@@ -50,12 +52,17 @@
     }
 
     // That's all you need to implement from Interface. All other code depends on your component and on what you want to archive
-
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
+    }
     private async Task ShowCode()
     {
         var file = GH.Path($"Shared/{GetType().Name}.razor");
         string code = await http.GetStringAsync(file);
-        await dialogService.ShowComponentInDialogAsync<DemoMarkdown>("Code for this component", "Like this you can implement your own components that is responsible for a File",
+        await dialogService.ShowComponentInDialogAsync<DemoMarkdown>(L["Code for this component"], L["Like this you can implement your own components that is responsible for a File"],
             md =>
             {
                 md.Value = MudExCodeView.CodeAsMarkup(code);

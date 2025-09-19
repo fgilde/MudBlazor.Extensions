@@ -1,5 +1,5 @@
 ﻿@page "/capture-service"
-
+@inherits BasePage
 @using MudBlazor.Extensions.Core;
 @using MudBlazor.Extensions.Core.Capture;
 @using MudBlazor.Extensions.Core.W3C
@@ -26,16 +26,16 @@
     }
     else
     {
-        <MudMenu Class="ma-5" StartIcon="@Icons.Material.Filled.VideoCameraBack" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="Start Capture" Color="Color.Primary" Variant="Variant.Filled">
-            <MudMenuItem OnClick="@Record">Specify Options...</MudMenuItem>
-            <MudMenuItem OnClick="@RecordQuick">Specify Quick Options...</MudMenuItem>
+        <MudMenu Class="ma-5" StartIcon="@Icons.Material.Filled.VideoCameraBack" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Label="@L["Start Capture"]" Color="Color.Primary" Variant="Variant.Filled">
+            <MudMenuItem OnClick="@Record">@L["Specify Options..."]</MudMenuItem>
+            <MudMenuItem OnClick="@RecordQuick">@L["Specify Quick Options..."]</MudMenuItem>
             <MudDivider />
-            <MudMenuItem OnClick="@RecordScreen">Record Screen</MudMenuItem>
-            <MudMenuItem OnClick="@RecordMainCamera">Record Main Camera</MudMenuItem>
-            <MudMenuItem OnClick="@RecordMainCameraLow">Record Main Camera Lower Quality</MudMenuItem>
+            <MudMenuItem OnClick="@RecordScreen">@L["Record Screen"]</MudMenuItem>
+            <MudMenuItem OnClick="@RecordMainCamera">@L["Record Main Camera"]</MudMenuItem>
+            <MudMenuItem OnClick="@RecordMainCameraLow">@L["Record Main Camera Lower Quality"]</MudMenuItem>
             <MudDivider />
-            <MudMenuItem OnClick="@TakePhotoFromMainCamera">Take Photo from Main camera</MudMenuItem>
-            <MudMenuItem OnClick="@TakePhotoFromMainCamera5Sec">Take Photo from Main camera in 5 seconds</MudMenuItem>
+            <MudMenuItem OnClick="@TakePhotoFromMainCamera">@L["Take Photo from Main camera"]</MudMenuItem>
+            <MudMenuItem OnClick="@TakePhotoFromMainCamera5Sec">@L["Take Photo from Main camera in 5 seconds"]</MudMenuItem>
         </MudMenu>
     }
 

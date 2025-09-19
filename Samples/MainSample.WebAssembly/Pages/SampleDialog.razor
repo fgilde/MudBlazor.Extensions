@@ -1,4 +1,6 @@
-﻿@using MudBlazor.Extensions.Helper
+﻿@inherits BasePage
+
+@using MudBlazor.Extensions.Helper
 @using MainSample.WebAssembly.Utils
 @using System.Reflection
 
@@ -9,13 +11,13 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        Dialog Content
+        @L["Dialog Content"]
         <br/>
-        @ContentMessage       
+        @L[ContentMessage]
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+        <MudButton OnClick="Cancel">@L["Cancel"]</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">@L["Ok"]</MudButton>
     </DialogActions>
 </MudDialog>
 @code {

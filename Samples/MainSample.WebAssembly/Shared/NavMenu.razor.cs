@@ -63,6 +63,12 @@ public partial class NavMenu
         }
     }
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
+    }
 
     protected override Task OnAfterRenderAsync(bool firstRender)
     {

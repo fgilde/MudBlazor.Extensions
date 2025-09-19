@@ -1,5 +1,7 @@
 ﻿@page "/render/{TypeName?}"
 @page "/c/{TypeName?}"
+@inherits BasePage
+
 @using Nextended.Core.Extensions
 @using MudBlazor.Extensions.Api
 
@@ -11,7 +13,7 @@
     @if (AvailableDemo != null)
     {
         <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" ContentAlignment="HorizontalAlignment.Center">
-            <a href="@AvailableDemo.Href" target="@AvailableDemo.Target">Here is another Real demo available for @(ApiMemberInfo.GetGenericFriendlyTypeName(Type) ?? TypeName)</a>
+            <a href="@AvailableDemo.Href" target="@AvailableDemo.Target">@L["Here is another Real demo available for"] @(ApiMemberInfo.GetGenericFriendlyTypeName(Type) ?? TypeName)</a>
         </MudAlert>
     }
     <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
@@ -21,7 +23,7 @@
                 //type = Type.MakeGenericType(typeof(object));
                 <MudAlert ContentAlignment="HorizontalAlignment.Center" Severity="Severity.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Error">
                     <MudText Color="Color.Error">
-                        Can't render a generic type as dynamic currently
+                        @L["Can't render a generic type as dynamic currently"]
                     </MudText>
                 </MudAlert>
                 @*<DynamicComponent Type="ComponentRenderType"></DynamicComponent>*@
@@ -45,7 +47,7 @@ else
             <MudCard Class="index-card" @onclick="@(() => { Open(nav); })">
                 <MudCardHeader>
                     <CardHeaderContent>
-                        @Index.RenderNavEntry(nav)       
+                        @Index.RenderNavEntry(nav,L)       
                     </CardHeaderContent>
                     <CardHeaderActions>
                         @*<MudIconButton Icon="@nav.Icon" Color="Color.Default" />*@
@@ -53,10 +55,10 @@ else
                     </CardHeaderActions>
                 </MudCardHeader>
                 <MudCardContent>
-                    <MudText>@nav.Text</MudText>
+                    <MudText>@L[nav.Text]</MudText>
                     @if (!string.IsNullOrEmpty(nav.Documentation))
                     {
-                        <MudText Typo="Typo.body2">@nav.Documentation</MudText>
+                        <MudText Typo="Typo.body2">@L[nav.Documentation]</MudText>
                     }
                 </MudCardContent>
             </MudCard>

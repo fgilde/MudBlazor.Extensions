@@ -1,0 +1,4347 @@
+﻿_ Text: _Κείμενο
+--accent-color1: --Χρώμα-έμφασης1
+--accent-color2: --έμφαση-χρώμα2
+--accent-color3: --έμφαση-χρώμα3
+--accent-color4: --έμφαση-χρώμα4
+--loading-color: --φόρτωση-χρώμα
+--mud-palette-black: --παλέτα λάσπης-μαύρο
+--mud-palette-primary: --παλέτα λάσπης-πρωτεύον
+--mud-palette-primary-darken: --mud-palette-primary-darken
+--mud-palette-primary-hover: --mud-palette-primary-hover
+--mud-palette-primary-lighten: --mud-palette-primary-lighten
+--mud-palette-primary-text: --mud-palette-πρωτεύον-κείμενο
+--mud-palette-secondary: --παλέτα λάσπης-δευτερεύον
+--mud-palette-secondary-darken: --mud-palette-secondary-darken
+--mud-palette-secondary-hover: --mud-palette-secondary-hover
+--mud-palette-secondary-lighten: --mud-palette-secondary-lighten
+--mud-palette-secondary-text: --mud-palette-δευτερεύον-κείμενο
+--mud-palette-white: --παλέτα λάσπης-λευκό
+(currently the item is not visible): (προς το παρόν το στοιχείο δεν είναι ορατό)
+(currently the item is visible): (προς το παρόν το στοιχείο είναι ορατό)
+4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+A: Ένας
+A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Ένα συστατικό που επιτρέπει στο χρήστη να επιλέξει μια τιμή από μια λίστα πιθανών τιμών και να την εμφανίσει ως Chips ή προεπιλεγμένο Combobox.
+A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Ένα στοιχείο που μπορεί να χρησιμοποιηθεί για να σύρετε σε ένα ChildContent από κάτω, πάνω, αριστερά ή δεξιά με το ποντίκι.
+A Component to display text with a gradient foreground or background: Ένα στοιχείο για την εμφάνιση κειμένου με ντεγκραντέ προσκήνιο ή φόντο
+A Component to display the content of a zip file: Ένα στοιχείο για την εμφάνιση του περιεχομένου ενός αρχείου zip
+A Component to edit and upload a list of files: Ένα στοιχείο για επεξεργασία και αποστολή μιας λίστας αρχείων
+A Component to quickly select a color: Ένα συστατικό για γρήγορη επιλογή χρώματος
+A connection to the server cannot be established. Your network connection may be down or the server is unreachable. Please wait until the connection has been restored: Δεν είναι δυνατή η δημιουργία σύνδεσης με τον διακομιστή. Η σύνδεση δικτύου σας μπορεί να είναι απενεργοποιημένη ή να μην είναι δυνατή η πρόσβαση στον διακομιστή. Περιμένετε μέχρι να αποκατασταθεί η σύνδεση
+A divider to separate content: Διαχωριστικό για διαχωρισμό περιεχομένου
+A maximum of {0} files are allowed: Επιτρέπονται έως και {0} αρχεία
+A Popover can be used to display some content on top of another.: Ένα Popover μπορεί να χρησιμοποιηθεί για την εμφάνιση κάποιου περιεχομένου πάνω σε ένα άλλο.
+A powerful component to edit an object and its properties.: Ένα ισχυρό στοιχείο για την επεξεργασία ενός αντικειμένου και των ιδιοτήτων του.
+A powerful editor that can handle json, xml or yaml content: Ένας ισχυρός επεξεργαστής που μπορεί να χειριστεί περιεχόμενο json, xml ή yaml
+A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: Ένα απλό στοιχείο ColorPicker που κληρονομεί το MudColorPicker αλλά προσθέτει τη δυνατότητα καθυστέρησης του συμβάντος κλεισίματος και χρήσης ενός εγγενούς στοιχείου επιλογής από το πρόγραμμα περιήγησης
+A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: Ένα απλό στοιχείο πλέγματος που υποστηρίζει στήλες και γραμμές και ColSpan και RowSpan για να περιέχει ενότητες.
+A SplitPanel Component: Ένα στοιχείο SplitPanel
+A Splitter Component: Ένα εξάρτημα διαχωριστή
+A WYSIWYG Html editor component.: Ένα στοιχείο επεξεργασίας HTML WYSIWYG.
+A11yDark: A11yΣκούρο
+A11yLight: A11yΦως
+aa-DJ: Afar (Τζιμπουτί)
+aa-ER: Αφάρ (Ερυθραία)
+aa-ET: Αφάρ (Αιθιοπία)
+about: Περίπου
+Account: Λογαριασμός
+ActionButtons: Κουμπιά δράσης
+ActionButtonsNewLine: ActionButtonsNewLine
+ActionDefault: ΕνέργειαΠροεπιλογή
+ActionDisabled: ΕνέργειαΑπενεργοποιημένο
+ActionDisabledBackground: ΕνέργειαΑπενεργοποιημένοΦόντο
+Actions: Ενέργειες
+ActionsAdornment: ΔράσειςΣτολισμός
+ActionsClass: ActionsClass
+Activate comments: Ενεργοποίηση σχολίων
+Activate User?: Ενεργοποίηση χρήστη;
+Active: Δραστήριος
+Active?: Δραστήριος?
+ActiveFilterOnly: Μόνο ActiveFilterOnly
+Adaptive: Ευπροσάρμοστος
+ADblNumber: ADblNumber
+Add: Προσθέτω
+Add 1000 random items: Προσθέστε 1000 τυχαία αντικείμενα
+Add 500 Users: Προσθήκη 500 χρηστών
+Add Brand: Προσθήκη επωνυμίας
+Add Document: Προσθήκη εγγράφου
+Add Document Type: Προσθήκη τύπου εγγράφου
+Add Extended Attribute: Προσθήκη εκτεταμένου χαρακτηριστικού
+Add external Url: Προσθήκη εξωτερικής διεύθυνσης URL
+Add files: Προσθήκη αρχείων
+Add Product: Προσθήκη προϊόντος
+Add Role: Προσθήκη ρόλου
+Add Url: Προσθήκη URL
+Add user: Προσθήκη χρήστη
+Add user to both lists: Προσθήκη χρήστη και στις δύο λίστες
+Additional Audio: Πρόσθετος ήχος
+Additional Video: Πρόσθετο βίντεο
+AdditionalAdornment: Πρόσθετος στολισμός
+Address: Διεύθυνση
+Addresses: Διευθύνσεις
+AddUrl: Προσθήκη URL
+Administrator: Διαχειριστής
+Administrator Settings.: Ρυθμίσεις διαχειριστή.
+Administrators Profile's Status cannot be toggled: Δεν είναι δυνατή η εναλλαγή της κατάστασης του προφίλ διαχειριστή
+Adornment: Διακόσμηση
+AdornmentAriaLabel: ΣτολισμόςAriaLabel
+AdornmentColor: ΣτολισμόςΧρώμα
+AdornmentIcon: ΣτολισμόςΕικονίδιο
+AdornmentText: ΣτολισμόςΚείμενο
+af-NA: Αφρικάανς (Ναμίμπια)
+af-ZA: Αφρικάανς (Νότια Αφρική)
+After the dialog is shown you can drag it to the edges to see snap. Also you can use Ctrl + {ArrowKeys} to change position: Αφού εμφανιστεί ο διάλογος, μπορείτε να τον σύρετε στις άκρες για να δείτε το snap. Επίσης, μπορείτε να χρησιμοποιήσετε Ctrl + {Πλήκτρα βέλους} για να αλλάξετε θέση
+AfterBegin: Μετά την έναρξη
+AfterEnd: Μετά το τέλος
+AfterSearchBox: AfterSearchBox
+Agate: Αχάτης
+Age: Ηλικία
+agq-CM: Aghem (Καμερούν)
+ak-GH: Akan (Γκάνα)
+Albertus: Αλβέρτος
+Alice Johnson: Άλις Τζόνσον
+AliceBlue: ΑλίκηΜπλε
+Align: Ευθυγραμμίζω
+ALL COMPONENTS: ΟΛΑ ΤΑ ΕΞΑΡΤΗΜΑΤΑ
+All Documents without Type are stored here: Όλα τα Έγγραφα χωρίς Τύπο αποθηκεύονται εδώ
+All Groups: Όλες οι ομάδες
+All Permissions: Όλα τα δικαιώματα
+All roles: Όλοι οι ρόλοι
+All roles unfiltered: Όλοι οι ρόλοι αφιλτράριστοι
+AllFilters: Όλατα φίλτρα
+AllowAudioRecording: Να επιτρέπεται η εγγραφή ήχου
+AllowColumnSizeChange: AllowColumnSizeChange
+AllowCopyUrl: AllowCopyUrl
+AllowDownload: Να επιτρέπεταιΛήψη
+AllowDrop: AllowDrop
+AllowDropBox: AllowDropBox
+AllowDuplicates: Να επιτρέπονταιΔιπλότυπα
+AllowExternalUrl: AllowExternalUrl
+AllowFolderUpload: AllowFolderUpload
+AllowGoogleDrive: Να επιτρέπεταιGoogleDrive
+AllowInteractingUnderRubberBand: Να επιτρέπεταιη αλληλεπίδραση κάτω από το λάστιχο
+AllowMultiple: Να επιτρέπεταιΠολλαπλή
+AllowOneDrive: Να επιτρέπεταιOneDrive
+AllowOpenInNewTab: AllowOpenInNewTab
+AllowOpenOnReadOnly: AllowOpenOnReadOnly
+AllowPreview: AllowPreview
+AllowRemovingItems: AllowRemoveItems (Να επιτρέπεταιΚατάργησηΣτοιχείων)
+AllowRename: AllowRename
+AllowRubberBandSelection: AllowRubberBandSelection
+AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
+AllowSelectOnPreviewClick: AllowSelectOnPreviewClick
+AllowVideoCapture: AllowVideoCapture
+AlphaBars: Άλφα Μπαρ
+Already have an account?: Έχετε ήδη λογαριασμό;
+Always: Πάντα
+AlwaysEditOptions: AlwaysEditOptions
+AlwaysShowValue: AlwaysShowValue
+AlwaysVisible: Πάντα ορατό
+am-ET: Αμχαρικά (Αιθιοπία)
+An Error has occured!: Παρουσιάστηκε σφάλμα!
+An Error has occurred!: Παρουσιάστηκε σφάλμα!
+An error occurred while confirming {0}: Παρουσιάστηκε σφάλμα κατά την επιβεβαίωση {0}
+An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used, and you can specify animations as well: Ένα εκτεταμένο στοιχείο SelectBox που επιτρέπει την επιλογή πολλών στοιχείων και παρέχει μια λειτουργία αναζήτησης επίσης εσωτερικά χρησιμοποιείται το MudExPopover και μπορείτε επίσης να καθορίσετε κινούμενα σχέδια
+An item that only renders the content if it is in the viewport.: Ένα στοιχείο που αποδίδει το περιεχόμενο μόνο εάν βρίσκεται στη θύρα προβολής.
+AnchorOrigin: Προέλευση άγκυρας
+Andale Mono: Αντάλε Μονο
+Androidstudio: Androidστούντιο
+Animate: Ζωογονώ
+AnimateAudioElementBorderColor: AnimateAudioElementBorderColor
+AnimateClose: ΚίνησηΚλείσιμο
+AnimateVisualizerBorderColor: AnimateVisualizerBorderColor
+Animation: Εμψύχωση
+AnimationDuration: Κινούμενη εικόναΔιάρκεια
+AnimationDuration (in ms): AnimationDuration (σε ms)
+AnimationDurationInMs: AnimationDurationInMs
+AnimationIn: Κινούμενα σχέδιαΣε
+AnimationInDirection: AnimationInDirection
+AnimationInDuration: AnimationInDuration
+AnimationInPosition: AnimationInPosition
+AnimationOut: Έξοδος κινουμένων σχεδίων
+AnimationOutDirection: Κινούμενα σχέδιαOutDirection
+AnimationOutDuration: AnimationOutDuration
+AnimationOutPosition: Κινούμενη εικόναOutPosition
+AnimationPosition: Κινούμενη εικόναΘέση
+Animations: Κινούμενα σχέδια
+AnimationTime: Ώρα κινουμένων σχεδίων
+AnimationTimingFunction: AnimationTimingFunction
+AnOldHope: Η AnOldHope
+Another Demo theme: Ένα άλλο θέμα επίδειξης
+AnotherRar.rar: AnotherRar.rar
+AnotherStringProperty10: AnotherStringProperty10
+AnotherStringProperty11: AnotherStringProperty11
+AnotherStringProperty12: AnotherStringProperty12
+AnotherStringProperty13: AnotherStringProperty13
+AnotherStringProperty14: AnotherStringProperty14
+AnotherStringProperty15: AnotherStringProperty15
+AnotherStringProperty16: AnotherStringProperty16
+AnotherStringProperty17: AnotherStringProperty17
+AnotherStringProperty18: AnotherStringProperty18
+AnotherStringProperty19: AnotherStringProperty19
+AnotherStringProperty20: AnotherStringProperty20
+AnotherStringProperty21: AnotherStringProperty21
+AnotherStringProperty22: AnotherStringProperty22
+AnotherStringProperty23: AnotherStringProperty23
+AnotherStringProperty24: AnotherStringProperty24
+AnotherStringProperty25: AnotherStringProperty25
+AnotherStringProperty26: AnotherStringProperty26
+AnotherStringProperty27: AnotherStringProperty27
+AnotherStringProperty28: AnotherStringProperty28
+AnotherStringProperty29: AnotherStringProperty29
+AnotherStringProperty30: AnotherStringProperty30
+AnotherStringProperty31: AnotherStringProperty31
+AnotherStringProperty32: AnotherStringProperty32
+AnotherStringProperty33: AnotherStringProperty33
+AnotherStringProperty34: AnotherStringProperty34
+AnotherStringProperty35: AnotherStringProperty35
+AnotherStringProperty36: AnotherStringProperty36
+AnotherStringProperty37: AnotherStringProperty37
+AnotherStringProperty38: AnotherStringProperty38
+AnotherStringProperty39: AnotherStringProperty39
+AnotherStringProperty40: AnotherStringProperty40
+AnotherStringProperty41: AnotherStringProperty41
+AnotherStringProperty42: AnotherStringProperty42
+AnotherStringProperty43: AnotherStringProperty43
+AnotherStringProperty44: AnotherStringProperty44
+AnotherStringProperty45: AnotherStringProperty45
+AnotherStringProperty46: AnotherStringProperty46
+AnotherStringProperty47: AnotherStringProperty47
+AnotherStringProperty48: AnotherStringProperty48
+AnotherStringProperty49: AnotherStringProperty49
+AnotherStringProperty50: AnotherStringProperty50
+AnotherStringProperty51: AnotherStringProperty51
+AnotherStringProperty52: AnotherStringProperty52
+AnotherStringProperty53: AnotherStringProperty53
+AnotherStringProperty54: AnotherStringProperty54
+AnotherStringProperty55: AnotherStringProperty55
+AnotherStringProperty56: AnotherStringProperty56
+AnotherStringProperty57: AnotherStringProperty57
+AnotherStringProperty58: AnotherStringProperty58
+AnotherStringProperty59: AnotherStringProperty59
+AnotherStringProperty60: AnotherStringProperty60
+AnsiBands: Μπάντες AnsiBands
+AntiqueWhite: ΑντίκαΛευκό
+ApathyBase16: ΑπάθειαΒάση16
+Api: Διεπαφή προγραμματισμού εφαρμογών
+API: Διεπαφή προγραμματισμού εφαρμογών
+API-Versions: Εκδόσεις API
+AppBar: AppBar
+AppbarBackground: AppbarΦόντο
+AppbarHeight: Ύψος Appbar
+AppbarText: AppbarText
+Appearance: Εμφάνιση
+Appetizer: Ορεκτικό
+Apple: Μήλο
+Apple Gothic: Γοτθικός της Apple
+Application: Εφαρμογή
+ApplicationDescription: Δείγμα εφαρμογής με WebAssembly και μοτίβο καθαρής αρχιτεκτονικής
+ApplicationSubDescription: Καλώς ήρθατε στο Coworkee
+applies a CSS class when the item is not visible.: εφαρμόζει μια κλάση CSS όταν το στοιχείο δεν είναι ορατό.
+applies a CSS class when the item is visible.: εφαρμόζει μια κλάση CSS όταν το στοιχείο είναι ορατό.
+applies styles when the item is not visible.: Εφαρμόζει στιλ όταν το στοιχείο δεν είναι ορατό.
+applies styles when the item is visible.: Εφαρμόζει στιλ όταν το στοιχείο είναι ορατό.
+Apply: Εφαρμόζω
+ApplyBackgroundImageFromTrack: ApplyBackgroundImageFromTrack
+ApprenticeBase16: ΜαθητευόμενηΒάση16
+Apr: Απρ
+Aqua: Aqua
+Aquamarine: Ακουαμαρίνα
+ar-001: Αραβικά (Παγκόσμια)
+ar-AE: Αραβικά (Ηνωμένα Αραβικά Εμιράτα)
+ar-BH: Αραβικά (Μπαχρέιν)
+ar-DJ: Αραβικά (Τζιμπουτί)
+ar-DZ: Αραβικά (Αλγερία)
+ar-EG: Αραβικά (Αίγυπτος)
+ar-ER: Αραβικά (Ερυθραία)
+ar-IL: Αραβικά (Ισραήλ)
+ar-IQ: Αραβικά (Ιράκ)
+ar-JO: Αραβικά (Ιορδανίας)
+ar-KM: Αραβικά (Κομόρες)
+ar-KW: Αραβικά (Κουβέιτ)
+ar-LB: Αραβικά (Λίβανος)
+ar-LY: Αραβικά (Λιβύη)
+ar-MA: Αραβικά (Μαρόκο)
+ar-MR: Αραβικά (Μαυριτανία)
+ar-OM: Αραβικά (Ομάν)
+ar-PS: Αραβικά (Παλαιστινιακή Αρχή)
+ar-QA: Αραβικά (Κατάρ)
+ar-SA: Αραβικά (Σαουδική Αραβία)
+ar-SD: Αραβικά (Σουδάν)
+ar-SO: Αραβικά (Σομαλία)
+ar-SS: Αραβικά (Νότιο Σουδάν)
+ar-SY: Αραβικά (Συρία)
+ar-TD: Αραβικά (Τσαντ)
+ar-TN: Αραβικά (Τυνησίας)
+ar-YE: Αραβικά (Υεμένης)
+Archive.zip: Archive.zip
+ArduinoLight: Φως Arduino
+Are you sure to close: Είστε σίγουροι ότι θα κλείσετε
+Are you sure you want to force logout for user {0}: Είστε βέβαιοι ότι θέλετε να επιβάλετε την αποσύνδεση για {0} χρήστη
+Are you sure you want to restart Backend/Server?: Είστε βέβαιοι ότι θέλετε να κάνετε επανεκκίνηση του Backend/Server;
+Are you sure you want to restore the default settings? This will overwrite any changes you've ever made here.: Είστε βέβαιοι ότι θέλετε να επαναφέρετε τις προεπιλεγμένες ρυθμίσεις; Αυτό θα αντικαταστήσει τυχόν αλλαγές που έχετε κάνει ποτέ εδώ.
+Are you sure?: Είσαι σίγουρος?
+Arial: Άριαλ
+Arial Black: Arial Μαύρο
+Arial Narrow: Arial Στενό
+arn-CL: Μαπούτσε (Χιλή)
+Arta: Τέχνη
+As Admin you can filter for users here: Ως διαχειριστής μπορείτε να φιλτράρετε τους χρήστες εδώ
+As Picker: Ως επιλογέας
+as read: όπως διαβάζεται
+As simple as it sound. This is a simple GroupBox: Όσο απλό κι αν ακούγεται. Αυτό είναι ένα απλό GroupBox
+As soon as your account has been activated you can log in: Μόλις ενεργοποιηθεί ο λογαριασμός σας, μπορείτε να συνδεθείτε
+as unread: ως μη αναγνωσμένο
+as-IN: Ασαμέζικα (Ινδία)
+asa-TZ: Asu (Τανζανία)
+Ascetic: Ασκητής
+AshesBase16: Βάση στάχτης16
+AspectRatio: ΑναλογίαΔιαστάσεων
+ast-ES: Αστουριανή (Ισπανία)
+At least one document is required: Απαιτείται τουλάχιστον ένα έγγραφο
+AtelierCaveBase16: AtelierCaveBase16
+AtelierCaveLightBase16: ΑτελιέΣπήλαιοΦωςΒάση16
+AtelierDuneBase16: AtelierDuneBase16
+AtelierDuneLightBase16: AtelierDuneLightBase16
+AtelierEstuaryBase16: AtelierEstuaryBase16
+AtelierEstuaryLightBase16: AtelierEstuaryLightBase16
+AtelierForestBase16: AtelierForestBase16
+AtelierForestLightBase16: ΑτελιέForestLightBase16
+AtelierHeathBase16: AtelierHeathBase16
+AtelierHeathLightBase16: AtelierHeathLightBase16
+AtelierLakesideBase16: AtelierLakesideBase16
+AtelierLakesideLightBase16: AtelierLakesideLightBase16
+AtelierPlateauBase16: AtelierPlateauBase16
+AtelierPlateauLightBase16: AtelierPlateauLightBase16
+AtelierSavannaBase16: ΕργαστήριοΣαβάναΒάση16
+AtelierSavannaLightBase16: ΑτελιέΣαβάναΦωςΒάση16
+AtelierSeasideBase16: AtelierSeasideBase16
+AtelierSeasideLightBase16: AtelierSeasideLightBase16
+AtelierSulphurpoolBase16: AtelierSulphurpoolBase16
+AtelierSulphurpoolLightBase16: AtelierSulphurpoolLightBase16
+AtlasBase16: AtlasBase16
+AtomOneDark: Το AtomOneDark
+AtomOneDarkReasonable: AtomOneDarkΛογικό
+AtomOneLight: Το AtomOneLight
+Audio Content-Type: Τύπος περιεχομένου ήχου
+Audio devices: Συσκευές ήχου
+AudioDevice: Συσκευή ήχου
+AudioElementBackgroundColor: ΉχοςΣτοιχείοΦόντουΧρώμα
+AudioElementBorderColor: ΉχοςΣτοιχείοΠερίγραμμαΧρώμα
+AudioElementBorderSize: ΜέγεθοςΠεριγράμματοςΣτοιχείου Ήχου
+AudioElementBorderStyle: Στυλ AudioElementBorderStyle
+AudioElements: Στοιχεία ήχου
+AudioElementWidth: Πλάτος στοιχείου ήχου
+Audit Trails: Διαδρομές ελέγχου
+Audit Trails exported: Εξαγωγή διαδρομών ελέγχου
+Aug: Αυγ
+Austin: Ώστιν
+Austin - 73301: Όστιν - 73301
+Austin - 73301ender: Όστιν - 73301ender
+Auto Confirm Email?: Αυτόματη επιβεβαίωση email;
+Auto Generated Editor for TestObject: Επεξεργαστής αυτόματης δημιουργίας για TestObject
+Auto Stop recording after: Αυτόματη διακοπή εγγραφής μετά από
+AutoApplyGradient: Αυτόματη εφαρμογήΝτεγκραντέ
+AutoClear: Αυτόματη εκκαθάριση
+AutoCloseBehaviour: AutoCloseBehaviour
+AutoCloseOnSelect: AutoCloseOnSelect
+AutoCollapse: Αυτόματη σύμπτυξη
+AutoExtractArchive: AutoExtractArchive
+AutoFocus: Αυτόματη εστίαση
+AutoFocusFilter: Φίλτρο αυτόματης εστίασης
+AutoLoadFileDataBytes: AutoLoadFileDataBytes
+Automatically allow next time: Αυτόματη αποδοχή την επόμενη φορά
+AutoPlayNextTrackOnEnd: Αυτόματη αναπαραγωγήNextTrackOnEnd
+AutoRemoveError: AutoRemoveError
+AutoShowHideAudioElement: AutoShowHideAudioElement
+AutoSize: Αυτόματο μέγεθος
+Available: Διαθέσιμος
+AvailableItems: ΔιαθέσιμαΑντικείμενα
+Avant Garde: Πρωτοπορία
+az-Cyrl-AZ: Αζερμπαϊτζάν (Κυριλλικά, Αζερμπαϊτζάν)
+az-Latn-AZ: Αζερμπαϊτζάν (Λατινικά, Αζερμπαϊτζάν)
+Azure: Γαλανός
+B: B
+ba-RU: Μπασκίρ (Ρωσία)
+Back: Πλάτη
+BackdropClick: ΦόντοΚάντε κλικ
+Background: Φόντο
+BackgroundColor: Χρώμα φόντου
+BackgroundGray: ΦόντοΓκρι
+BackgroundImage: Εικόνα φόντου
+BackgroundPosition: ΦόντοΘέση
+BackgroundRepeat: ΦόντοΕπανάληψη
+BackgroundSize: Μέγεθος φόντου
+BackLinkLabel: BackLinkLabel
+Bar: Μπαρ
+BarBeverage: ΜπαρΠοτό
+Barcode: Γραμμωτός κώδικας
+Barcode already exists.: Ο γραμμωτός κώδικας υπάρχει ήδη.
+Barcode is required!: Απαιτείται barcode!
+BarIndex: ΜπαρΕυρετήριο
+Bark: Φλοιός
+BarLevel: Επίπεδο Μπαρ
+BarSpacing: Διάστιχο ράβδων
+Bart Simpson: Μπαρτ Σίμπσον
+bas-CM: Basaa (Καμερούν)
+Base component for a picker: Βασικό εξάρτημα για επιλογέα
+Basic: Βασικός
+Basic role with default permissions: Βασικός ρόλος με προεπιλεγμένα δικαιώματα
+Bauhaus 93: Μπάουχαους 93
+be-BY: Λευκορωσικά (Λευκορωσία)
+BeforeBegin: ΠρινΈναρξη
+BeforeEnd: ΠρινΤέλος
+BeforeSearchBox: Πριν από το SearchBox
+Behavior: Συμπεριφορά
+Behaviour: Συμπεριφορά
+Beige: Μπεζ
+Bell MT: Κουδούνι ΜΤ
+bem-ZM: Bemba (Ζάμπια)
+Bernard MT Condensed: Bernard MT Συμπυκνωμένο
+BespinBase16: BespinBase16
+Beverage: Ποτό
+bez-TZ: Bena (Τανζανία)
+bg-BG: Βουλγαρικά (Βουλγαρία)
+BgAlpha: Το BgAlpha
+BgColor: BgΧρώμα
+bin-NG: Έντο (Νιγηρία)
+Bind Dark Mode: Σύνδεση σκοτεινής λειτουργίας
+BindWidthToPicker: BindWidthToPicker
+Birmingham: Μπέρμιγχαμ
+Birmingham - B1 1BD: Μπέρμιγχαμ - B1 1BD
+Birmingham - B1 1BDender: Μπέρμιγχαμ - B1 1BDender
+Bisque: Είδος σούπας
+Black: Μαύρος
+Blackadder ITC: Blackadder ITC
+BlackList: Μαύρη λίστα
+BlackMetalBase16: ΜαύροΜεταλλικήΒάση16
+BlackMetalBathoryBase16: ΜαύροΜεταλλικόΜπάνιοΒάση16
+BlackMetalBurzumBase16: ΜαύροΜέταλλοBurzumBase16
+BlackMetalDarkFuneralBase16: BlackMetalDarkFuneralBase16
+BlackMetalGorgorothBase16: ΜαύροΜέταλλοGorgorothBase16
+BlackMetalImmortalBase16: ΜαύροΜέταλλοΑθάνατοςΒάση16
+BlackMetalKholdBase16: ΜαύροΜέταλλοKholdBase16
+BlackMetalMardukBase16: ΜαύροΜέταλλοMardukBase16
+BlackMetalMayhemBase16: ΜαύροΜέταλλοMayhemBase16
+BlackMetalNileBase16: ΜαύροΜέταλλοΝείλοςΒάση16
+BlackMetalVenomBase16: ΜαύροΜέταλλοΔηλητήριοΒάση16
+BlanchedAlmond: ΑσπρισμένοΑμύγδαλο
+Blazor wrapper component for AudioMotionAnalyzer: Εξάρτημα περιτυλίγματος Blazor για AudioMotionAnalyzer
+BlobUrl: Το BlobUrl
+Blue: Μπλε
+BlueViolet: ΜπλεΒιολετί
+bm-Latn-ML: Bamanankan (Λατινικά, Μάλι)
+bn-BD: Μπενγκάλι (Μπαγκλαντές)
+bn-IN: Bangla (Ινδία)
+bo-CN: Θιβετιανά (Κίνα)
+bo-IN: Θιβετιανά (Ινδία)
+Bob Smith: Μπομπ Σμιθ
+Bodoni MT: Μποδώνη ΜΤ
+body1: Σώμα1
+Body1: Σώμα1
+body2: Σώμα2
+Body2: Σώμα2
+Bookman: Μπούκμαν
+BorderAnimationColors: ΠερίγραμμαΚινούμεναΧρώματα
+BorderColor: Χρώμα περιγράμματος
+Bordered: Συνορεύει
+BorderOpacity: BorderOpacity
+BorderSize: Μέγεθος περιγράμματος
+BorderStyle: Στυλ περιγράμματος
+Both: Αμφότεροι
+BothDiagonal: Και τα δύοΔιαγώνιος
+BothHorizontal: Και τα δύοΟριζόντια
+BothVertical: Και τα δύοΚάθετα
+Bottom: Πυθμένας
+BottomCenter: ΚάτωΚέντρο
+BottomLeft: ΚάτωΑριστερά
+BottomRight: ΚάτωΔεξιά
+Bounce: Αναπήδηση
+br-FR: Βρετονικά (Γαλλία)
+Brand: Μάρκα
+Brand Deleted: Η επωνυμία διαγράφηκε
+Brand is required!: Απαιτείται μάρκα!
+Brand Not Found!: Η μάρκα δεν βρέθηκε!
+Brand Saved: Η μάρκα αποθηκεύτηκε!
+Brand Updated: Η μάρκα ενημερώθηκε!
+BrandName: Μάρκα
+Brands: Μάρκες
+Brands exported: Εξαγόμενες μάρκες
+Breadcrumb: Τριμμένη φρυγανιά
+BreadcrumbLink: BreadcrumbΣύνδεσμος
+BreadcrumbSeparator: Διαχωριστής φρυγανιάς
+BrewerBase16: Βάση ζυθοποιίας16
+BrightBase16: ΦωτεινήΒάση16
+Brightness: Φωτεινότητα
+Broadway: Μπρόντγουεϊ
+BrogrammerBase16: BrogrammerBase16
+Brown: Καφέ
+BrownPaper: ΚαφέΧαρτί
+Browse Available Documents.: Περιηγηθείτε στα διαθέσιμα έγγραφα.
+Browser: Πρόγραμμα περιήγησης
+BrowserFileExt: Πρόγραμμα περιήγησηςFileExt
+Brush Script MT: Σενάριο πινέλου MT
+Brush Script Std: Σενάριο πινέλου Std
+BrushTreesBase16: ΒούρτσαΔέντραΒάση16
+BrushTreesDarkBase16: ΒούρτσαΔέντραΣκοτεινήΒάση16
+brx-IN: Bodo (Ινδία)
+bs-Cyrl-BA: Βοσνιακά (Κυριλλικά, Βοσνία & Ερζεγοβίνη)
+bs-Latn-BA: Βοσνιακά (Λατινικά, Βοσνία & Ερζεγοβίνη)
+BurlyWood: Εύσωμο ξύλο
+button: κουμπί
+Button: Κουμπί
+Button component for capturing audio and video.: Στοιχείο κουμπιού για λήψη ήχου και βίντεο.
+Button component for speech-to-text functionality, allowing for asynchronous recording and processing of speech input.: Στοιχείο κουμπιού για λειτουργία ομιλίας σε κείμενο, που επιτρέπει την ασύγχρονη εγγραφή και επεξεργασία της εισαγωγής ομιλίας.
+ButtonColor: ΧρώμαΚουμπιού
+ButtonSize: ΚουμπίΜέγεθος
+ButtonsJustify: ΚουμπιάΑιτιολόγηση
+ButtonType: Τύπος κουμπιού
+ButtonVariant: ΚουμπίΠαραλλαγή
+byn-ER: Blin (Ερυθραία)
+Bytes: Bytes
+C: C
+C#: C#
+ca-AD: Καταλανικά (Ανδόρα)
+ca-ES: Καταλανικά (Ισπανία)
+ca-FR: Καταλανικά (Γαλλία)
+ca-IT: Καταλανικά (Ιταλία)
+CadetBlue: ΔόκιμοςΜπλε
+Calgary: Κάλγκαρι
+Calgary - T1X 0L3: Κάλγκαρι - T1X 0L3
+Calgary - T1X 0L3ender: Κάλγκαρι - T1X 0L3ender
+Californian FB: Καλιφορνέζικο FB
+Can close: Μπορεί να κλείσει
+Cancel: Ακυρώνω
+Cancel deletion: Ακύρωση διαγραφής
+Cancelled: Ακυρωμένος
+CanClose: ΜπορώΚλείσιμο
+CanCloseCallbackName: CanCloseCallbackName
+caption: λεζάντα
+Caption: Λεζάντα
+Capture: Σύλληψη
+Capture Screen: Λήψη οθόνης
+Capture service: Υπηρεσία λήψης
+Capture video: Λήψη βίντεο
+CaptureButton: Κουμπί λήψης
+CaptureInfoComponent: Καταγράψτε το InfoComponent
+CaptureOptions: Επιλογές λήψης
+Card Grid: Πλέγμα καρτών
+CardEffect3d: CardEffect3d
+CardGrid: Πλέγμα καρτών
+Catalog Management: Διαχείριση καταλόγου
+ccp-Cakm-BD: Chakma (Chakma, Μπαγκλαντές)
+ccp-Cakm-IN: Chakma (Chakma, Ινδία)
+ce-RU: Τσετσενία (Ρωσία)
+ceb-Latn-PH: Σεμπουάνο (Λατινικά, Φιλιππίνες)
+Centaur: Κένταυρος
+Center: Κέντρο
+CenterCenter: Κέντρο
+CenterLeft: Κεντροαριστερά
+CenterRight: ΚέντροΔεξιά
+Centimeters: Εκατοστόμετρα
+Century Gothic: Γοτθικός αιώνας
+cgg-UG: Chiga (Ουγκάντα)
+ChalkBase16: Βάση κιμωλίας16
+Change media options: Αλλαγή επιλογών πολυμέσων
+Change or edit your theme: Αλλαγή ή επεξεργασία του θέματός σας
+Change Password: Αλλαγή κωδικού πρόσβασης
+Change the system settings carefully: Αλλάξτε προσεκτικά τις ρυθμίσεις συστήματος
+ChannelLayout: ΔιάταξηΚαναλιού
+Charlie Brown: Τσάρλι Μπράουν
+Chartreuse: Σαρτρέζ
+Charts comming soon ish...: Τα charts έρχονται σύντομα...
+ChartTooltip: ΣυμβουλήΕργαλείου γραφήματος
+chat: Κουβέντα
+Chat: Κουβέντα
+Chat?: Κουβέντα?
+Check me: Έλεγξέ με
+Check out the MudExThemeEdit Component: Δείτε το στοιχείο MudExThemeEdit
+CheckBox: Πλαίσιο ελέγχου
+CheckedIcon: Επιλεγμένο εικονίδιο
+Checker: Πούλι
+Checker box: Κουτί ελέγχου
+Chicago: Σικάγο
+Chicago - 60601: Σικάγο - 60601
+Chicago - 60601ender: Σικάγο - 60601ender
+ChildContentStyle: ChildContentStyle
+Chiller: Ψυκτικό συγκρότημα
+Chip: Τσιπ
+ChipClass: Κατηγορία τσιπ
+ChipCloseable: ChipCloseable
+ChipColor: Χρώμα τσιπ
+ChipsAdditionalAbove: ΤσιπςΠρόσθετοςΠαραπάνω
+ChipsAdditionalBelow: ΤσιπςΠρόσθεταΠαρακάτω
+ChipSelect: Επιλογή Chip
+ChipSize: Μέγεθος τσιπ
+ChipsMaxWidth: ΤσιπςΜέγιστοΠλάτος
+ChipsOnly: Μόνο τσιπς
+ChipVariant: Παραλλαγή τσιπ
+ChipWithoutItemTemplate: ChipWithoutItemTemplate
+Chocolate: Σοκολάτα
+chr-Cher-US: Cherokee (Cherokee, Ηνωμένες Πολιτείες)
+CircusBase16: ΤσίρκοΒάση16
+Cities you want to live: Πόλεις που θέλετε να ζήσετε
+City: Πόλη
+Class: Κλάση
+ClassChip: ΚλάσηΤσιπ
+ClassicDarkBase16: ΚλασικήΣκοτεινήΒάση16
+ClassicLightBase16: ΚλασικήΒάσηΦωτός16
+ClassSearchBox: Πλαίσιο αναζήτησης τάξης
+Clear: Σαφής
+Clearable: Με δυνατότητα εκκαθάρισης
+Click here to choose a screen to capture. If not selected, you will be prompted when starting the recording.: Κάντε κλικ εδώ για να επιλέξετε μια οθόνη για λήψη. Εάν δεν επιλεγεί, θα σας ζητηθεί κατά την έναρξη της εγγραφής.
+Click here to upload files: Κάντε κλικ εδώ για να ανεβάσετε αρχεία
+Click the button below to enable them and load the third party services from disqus.com: Κάντε κλικ στο παρακάτω κουμπί για να τα ενεργοποιήσετε και να φορτώσετε τις υπηρεσίες τρίτων από disqus.com
+Clickable: Με δυνατότητα κλικ
+ClickAction: Κάντε κλικΕνέργεια
+ClickPropagation: Κάντε κλικΔιάδοση
+Client Language has been changed: Η γλώσσα του πελάτη έχει αλλάξει
+Close: Κλείνω
+Closeable: Κλείσιμο
+CloseAfterSelect: ΚλείσιμοΜετάΕπιλογή
+CloseButton: ΚλείσιμοΚουμπί
+Closed: Κλειστός
+CloseIcon: Εικονίδιο κλεισίματος
+CloseOnEscapeKey: ΚλείσιμοΣεEscapeKey
+co-FR: Κορσική (Γαλλία)
+Code: Κώδικας
+CodeBlockTheme: ΘέμαΜπλοκ Κώδικα
+CodepenEmbed: CodepenEmbed
+CodeschoolBase16: Βάση Codeschool16
+CollapseOnClick: ΣύμπτυξηΣτοΚλικ
+Colonna MT: Στήλη MT
+color: χρώμα
+Color: Χρώμα
+ColorBrewer: Χρωστική Ζυθοποιία
+ColorBubble: ΧρώμαΦούσκα
+ColoredImagesForExternalFilePicker: ΈγχρωμεςΕικόνεςγιαΕξωτερικόςΕπιλογέαςΑρχείων
+ColorEdit: ΧρώμαΕπεξεργασία
+ColorElements: ΧρώμαΣτοιχεία
+ColorizeIcons: Χρωματίστε τα εικονίδια
+ColorMode: Λειτουργία χρώματος
+ColorPicker: Επιλογέας χρώματος
+ColorPickerMode: ColorPickerMode (Λειτουργία επιλογής χρώματος)
+ColorPickerView: ColorPickerΠροβολή
+ColorsBase16: ΧρώματαΒάση16
+ColorStops: ΧρώμαΣταματά
+ColorTemperature: ΧρώμαΘερμοκρασία
+ColSpan: ΚολΣπαν
+Column: Στήλη
+Columns Affected: Στήλες που επηρεάζονται
+ColumnWidth: Πλάτοςστήλης
+Comic Sans MS: Κόμικ χωρίς MS
+Comments: Σχόλια
+Common: Κοινός
+Communication: Επικοινωνία
+Community: Κοινότητα
+Compact: Συμπαγής
+Comparer: Συγκρίνω
+Component edit capture options: Επιλογές καταγραφής επεξεργασίας στοιχείων
+Component in Dialog: Συστατικό στο παράθυρο διαλόγου
+Component to add additional adornment to a MudInput: Συστατικό για να προσθέσετε επιπλέον στολισμό σε ένα MudInput
+Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Στοιχείο για την εμφάνιση ενός αρχείου σε ένα iframe ή ένα tag αντικειμένου ή σε ένα καταχωρημένο πρόγραμμα προβολής που υλοποιεί το IMudExFileDisplay
+Component to display information about the current recording: Στοιχείο για την εμφάνιση πληροφοριών σχετικά με την τρέχουσα εγγραφή
+Component to Edit Icon values: Στοιχείο για επεξεργασία τιμών εικονιδίου
+Component to Edit MudExColor: Στοιχείο για επεξεργασία MudExColor
+Component to move the ChildContent to a specific element that can defined by ElementSelector.: Component για να μετακινήσετε το ChildContent σε ένα συγκεκριμένο στοιχείο που μπορεί να οριστεί από το ElementSelector.
+Component to select a theme from a list of themes.: Component για να επιλέξετε ένα θέμα από μια λίστα θεμάτων.
+ComponentBaseWithState: ΣυστατικόΒάσηΜεΚατάσταση
+ComponentInDialog: ComponentInDialog
+Conditional updates: Ενημερώσεις υπό όρους
+Configure list values: Ρύθμιση παραμέτρων τιμών λίστας
+Confirm: Επιβεβαιώνω
+CONFIRM: ΕΠΙΒΕΒΑΙΏΝΩ
+Confirm and Ignore: Επιβεβαίωση και παράβλεψη
+Confirm and Set Required: Επιβεβαιώστε και ορίστε το Απαιτούμενο
+Confirm edit: Επιβεβαίωση επεξεργασίας
+Confirm Password: Επιβεβαίωση κωδικού πρόσβασης
+Confirm Registration: Επιβεβαίωση εγγραφής
+Confirmation: Επιβεβαίωση
+ConnectAllAudioSources: ConnectAllAudioSources
+ConnectCapture: ConnectCapture
+ConnectCurrentTab: ConnectCurrentTab
+ConnectionMode: ΛειτουργίαΣύνδεσης
+ConnectMicrophone: ΣύνδεσηΜικρόφωνο
+ConnectToCapture: ConnectToCapture
+contacts: Επαφές
+Content-Type: Περιεχόμενο-Τύπος
+ContentAlignment: ΣτοίχισηΠεριεχομένου
+ContentStream: Ροή περιεχομένου
+ContentType: ContentType (Περιεχόμενο)
+ContextMenuAction: ContextMenuAction
+Continue to {0}: Συνεχίστε να {0}
+Continuous: Συνεχής
+Contrast: Αντιπαραβάλλω
+Cooper Black: Κούπερ Μπλακ
+Copperplate Gothic Bold: Χαλκογραφία Gothic Bold
+Copperplate Gothic Light: Χαλκογραφικό γοτθικό φως
+Copy url: Αντιγραφή url
+Counter: Μετρητής
+Country: Χώρα
+Courier New: Courier Νέο
+Courrier: Ταχυδρομείο
+Create: Δημιουργώ
+Create address: Δημιουργία διεύθυνσης
+Create new backup: Δημιουργία νέου αντιγράφου ασφαλείας
+CreatedOn: Ημερομηνία δημιουργίας
+Critical: Κρίσιμος
+CropAndScale: Περικοπή και κλίμακα
+cs-CZ: Τσεχικά (Τσεχίας)
+CSS Color Variables: Μεταβλητές χρώματος CSS
+CssVars: CssVars
+cu-RU: Εκκλησιαστική Σλαβική (Ρωσία)
+CupcakeBase16: CupcakeΒάση16
+CupertinoBase16: CupertinoBase16
+Current Password: Τρέχων κωδικός πρόσβασης
+Current Password is required!: Απαιτείται ο τρέχων κωδικός πρόσβασης!
+Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can change DarMode in the Top right menu or disable binding by toggle the switch: Επί του παρόντος, το ThemeEditor είναι συνδεδεμένο με το DarkMode από το τρέχον θέμα και το {0}. Μπορείτε να αλλάξετε το DarMode στο μενού επάνω δεξιά ή να απενεργοποιήσετε τη δέσμευση εναλλάσσοντας το διακόπτη
+Cursor: Δρομέας
+CursorPositionOrigin: ΔρομέαςΘέσηΠροέλευση
+Custom: Συνήθεια
+CustomContentErrorMessage: ΠροσαρμοσμένοContentErrorMessage
+Customize: Προσαρμογή
+cy-GB: Ουαλικά (Ηνωμένο Βασίλειο)
+D: D
+da-DK: Δανικά (Δανία)
+da-GL: Δανικά (Γροιλανδία)
+Dallas: Ντάλας
+Dallas - 75201: Ντάλας - 75201
+Dallas - 75201ender: Ντάλας - 75201ender
+DanqingBase16: DanqingΒάση16
+DarculaBase16: DarculaBase16
+Dark: Σκοτεινός
+DarkContrastText: ΚείμενοDarkContrastText
+DarkDarken: Σκοτάδι
+DarkGreen: Σκούρο πράσινο
+DarkKhaki: DarkKhaki
+DarkLighten: DarkLighten
+DarkMagenta: Σκούρο Ματζέντα
+DarkmossBase16: DarkmossΒάση16
+DarkOliveGreen: Σκούρο Λαδί Πράσινο
+DarkOnly: Μόνο σκοτάδι
+DarkOrange: Σκούροπορτοκαλί
+DarkOrchid: Σκοτεινή Ορχιδέα
+DarkRed: Σκούρο κόκκινο
+DarkSalmon: Σκοτεινός σολομός
+DarkSeaGreen: Σκούρο Πράσινο
+DarkSlateBlue: Σκούρο ΣχιστόλιθοΜπλε
+DarkSlateGray: ΣκούροΣχιστόλιθοςΓκρι
+DarktoothBase16: Βάση Darktooth16
+DarkTurquoise: Σκούρο Τιρκουάζ
+DarkViolet: Σκούρο βιολετί
+DarkVioletBase16: ΣκούροΒιολετίΒάση16
+Dashboard: Ταμπλό
+Dashed: Διακεκομμένη
+Data: Δεδομένα
+Data has been updated: Τα δεδομένα έχουν ενημερωθεί
+Database Backups: Αντίγραφα ασφαλείας βάσεων δεδομένων
+DataUrl: Διεύθυνση δεδομένων
+DataVisualiserStyle: DataVisualiserStyle
+date: ημερομηνία
+Date: Ημερομηνία
+Date Created: Ημερομηνία δημιουργίας
+Date Range For Searching: Εύρος ημερομηνιών για αναζήτηση
+DateOfBirth: Ημερομηνία Γέννησης
+DateTime value is required using {0} type!: Η τιμή ημερομηνίας/ώρας απαιτείται χρησιμοποιώντας {0} τύπο!
+DateTimeLocal: ΗμερομηνίαΏραΤοπική
+dav-KE: Taita (Κένυα)
+de-AT: Γερμανικά (Αυστρίας)
+de-BE: Γερμανικά (Βέλγιο)
+de-CH: Γερμανικά (Ελβετίας)
+de-DE: Γερμανικά (Γερμανίας)
+de-IT: Γερμανικά (Ιταλίας)
+de-LI: Γερμανικά (Λιχτενστάιν)
+de-LU: Γερμανικά (Λουξεμβούργο)
+Debug: Εντοπισμού σφαλμάτων
+Dec: Δεκ
+DecafBase16: ΝτεκαφεϊνέBase16
+decimal: δεκαδικός
+Decimal: Δεκαδικός
+Decimal value is required using {0} type!: Απαιτείται δεκαδική τιμή χρησιμοποιώντας {0} τύπο!
+DeepPink: Βαθύ ροζ
+DeepSkyBlue: Βαθύ SkyBlue
+Default: Προεπιλογή
+DefaultBorderRadius: ΠροεπιλεγμένηΑκτίνα Περιγράμματος
+DefaultDarkBase16: ΠροεπιλεγμένηΣκοτεινήΒάση16
+DefaultLightBase16: ΠροεπιλεγμένηΒάσηΦωτός16
+Defined: Ορίζεται
+Delay: Καθυστέρηση
+DelayValueChangeToPickerClose: DelayValueChangeToPickerClose
+Delete: Διαγράφω
+Delete all: Διαγραφή όλων
+Delete Confirmation: Διαγραφή επιβεβαίωσης
+Delete Content: Διαγραφή περιεχομένου
+Delete Content {0}: Διαγραφή περιεχομένου '{0}'
+Delete Extended Attribute?: Διαγραφή εκτεταμένου χαρακτηριστικού;
+Delete file from server: Διαγραφή αρχείου από διακομιστή
+Delete Image: Διαγραφή εικόνας
+Delete Picture: Διαγραφή εικόνας
+Delete Role Content: Θέλετε να διαγράψετε τον ρόλο με αναγνωριστικό {0};
+Delete these {0} elements: Να διαγραφούν αυτά τα {0} στοιχεία;
+Delete this element: Διαγραφή αυτού του στοιχείου;
+Delete User: Διαγραφή χρήστη
+Deletion Not Allowed: Δεν επιτρέπεται η διαγραφή
+Delimiter: Οριοθέτης
+Delimiters: Οριοθέτες
+Demo drag mode SnapDrag: Επίδειξη λειτουργίας μεταφοράς SnapDrag
+Demo for MudExDialog as inline: Επίδειξη για το MudExDialog ως ενσωματωμένο
+Demo for MudExTaskBar and not Modal dialogs: Επίδειξη για MudExTaskBar και όχι Modal διαλόγους
+Demo for simple integrated useful dialogs. Prompt, Info, MessageBox: Επίδειξη για απλούς ενσωματωμένους χρήσιμους διαλόγους. Προτροπή, Πληροφορίες, MessageBox
+Demo for the MudExUploadEdit inside of a MudForm and a FluentValidator.: Επίδειξη για το MudExUploadEdit μέσα σε ένα MudForm και ένα FluentValidator.
+Demo for the MudExUploadEdit.: Επίδειξη για το MudExUploadEdit.
+Demo for using custom can close in DialogOptionsEx: Η επίδειξη για τη χρήση προσαρμοσμένης μπορεί να κλείσει στο DialogOptionsEx
+Demo for using Dialog and DialogBackground Appearance in DialogOptionsEx: Επίδειξη για τη χρήση του διαλόγου και του DialogBackground Appearance στο DialogOptionsEx
+Demo for using DialogOptionsEx: Επίδειξη για τη χρήση του DialogOptionsEx
+Demo for using DialogOptionsEx and pass position and size: Επίδειξη για χρήση του DialogOptionsEx και θέση και μέγεθος πάσας
+Demo for using MudExObjectEdit for the same model with the default Demo but with some Meta configuration: Επίδειξη για τη χρήση του MudExObjectEdit για το ίδιο μοντέλο με το προεπιλεγμένο Demo αλλά με κάποια διαμόρφωση Meta
+Demo for using MudExObjectEdit GroupingStyle.Tabs: Επίδειξη για τη χρήση του MudExObjectEdit GroupingStyle.Tabs
+Demo for using MudExObjectEdit only with bypassing an object: Επίδειξη για χρήση του MudExObjectEdit μόνο με παράκαμψη αντικειμένου
+Demo for using MudExObjectEdit with a configuration for Conditional using 'WithAttributesIf': Επίδειξη για τη χρήση του MudExObjectEdit με διαμόρφωση για Conditional χρησιμοποιώντας το 'WithAttributesIf'
+Demo for using MudExObjectEdit with a model that contains file(s): Επίδειξη για τη χρήση του MudExObjectEdit με ένα μοντέλο που περιέχει αρχεία
+Demo for using MudExObjectEdit with CodeGator Adapter and CodeGator Attributes: Επίδειξη για τη χρήση του MudExObjectEdit με προσαρμογέα CodeGator και χαρακτηριστικά CodeGator
+Demo for using MudExObjectEditPicker with a model that contains file(s): Επίδειξη για τη χρήση του MudExObjectEditPicker με ένα μοντέλο που περιέχει αρχεία
+Demo of using explicit the MudExFileDisplayZip to show and select content inside of a zip file: Επίδειξη χρήσης ρητού του MudExFileDisplayZip για εμφάνιση και επιλογή περιεχομένου μέσα σε ένα αρχείο zip
+Demonstration for a simple but very useful Enum Selector: Επίδειξη για έναν απλό αλλά πολύ χρήσιμο επιλογέα απαρίθμησης
+Demonstration of the MudExSplitter: Επίδειξη του MudExSplitter
+Demonstration of the quickly color select with MudExColorBubble: Επίδειξη της γρήγορης επιλογής χρώματος με το MudExColorBubble
+DEMOS: ΕΠΙΔΕΙΞΕΙΣ
+Dense: Πυκνός
+Dependent permissions required: Απαιτούνται εξαρτώμενα δικαιώματα
+Deployments: Αναπτύξεις
+Description: Περιγραφή
+Description is required!: Απαιτείται περιγραφή!
+Description_for_Age: Description_for_Age
+Description_for_City: Description_for_City
+Description_for_FirstName: Description_for_FirstName
+Description_for_Id: Description_for_Id
+Description_for_LastName: Description_for_LastName
+Description_for_Notice: Description_for_Notice
+Description_for_OtherAddresses: Description_for_OtherAddresses
+Description_for_PostalCode: Description_for_PostalCode
+Description_for_ProgramingSkills: Description_for_ProgramingSkills
+Description_for_Street: Description_for_Street
+Description_for_TrueOrFalse: Description_for_TrueOrFalse
+Dessert: Επιδόρπιο
+detailed guide for more.: Αναλυτικός οδηγός για περισσότερα.
+Details for Trail ID: Λεπτομέρειες για το Trail ID
+Devibeans: Ντεβίμπες
+DeviceId: Αναγνωριστικό συσκευής
+DeviceListVariant: DeviceListVariant
+DeviceSelection: Επιλογή συσκευής
+Dialog: Διαλόγου
+Dialog Appearance: Εμφάνιση διαλόγου
+Dialog Content: Περιεχόμενο διαλόγου
+Dialog Drag & Drop: Διάλογος, μεταφορά & απόθεση
+Dialog for editing objects with the MudExObjectEditForm: Διάλογος για την επεξεργασία αντικειμένων με το MudExObjectEditForm
+Dialog Sample: Δείγμα διαλόγου
+Dialog Samples: Δείγματα διαλόγου
+Dialog Snap Drag: Διάλογος Έλξη Σύρσιμο
+Dialog to display a file using {{{MudBlazor.Extensions.Components.MudExFileDisplay}}} component.: Παράθυρο διαλόγου για την εμφάνιση ενός αρχείου χρησιμοποιώντας το στοιχείο {{{MudBlazor.Extensions.Components.MudExFileDisplay}}}.
+Dialog_Appearance: Dialog_Appearance
+DialogAppearance: ΔιάλογοςΕμφάνιση
+DialogBackgroundAppearance: ΔιάλογοςΦόντοΕμφάνιση
+DialogOptions: Επιλογές διαλόγου
+Dialogs: Διαλόγους
+DialogsCanClose: ΔιάλογοιCanClose
+DialogServiceExt: DialogServiceExt
+DialogSnapDrag: ΔιάλογοςSnapDrag
+DialogsPosition: ΔιάλογοιΘέση
+Diana Prince: Νταϊάνα Πρινς
+DimGray: DimGray
+Direct: Άμεσος
+Direction: Κατεύθυνση
+DirtyseaBase16: DirtyseaΒάση16
+Disable Grouping: Απενεργοποίηση ομαδοποίησης
+Disabled: Ανάπηρος
+DisableList: DisableList
+DisableOpacityChange: DisableOpacityChange (ΑπενεργοποίησηΑδιαφάνειαΑλλαγή)
+DisablePadding: ΑπενεργοποίησηΑναπλήρωση
+DisablePopoverPadding: ΑπενεργοποίησηPopoverPadding
+DisablePositionMargin: DisablePositionMargin
+DisableSelectedItemStyle: DisableSelectedItemStyle
+DisableSizeMarginX: DisableSizeMarginX
+DisableSizeMarginY: DisableSizeMarginY
+DiscreteFrequencies: ΔιακριτέςΣυχνότητες
+DisplayActionMenu: DisplayActionΜενού
+DisplayErrors: DisplayErrors
+DisplayPresetList: Εμφάνιση PresetList
+Displays a tree structure as flat list: Εμφανίζει μια δομή δέντρου ως επίπεδη λίστα
+Displays a tree structure as horizontal navigable tree: Εμφανίζει μια δομή δέντρου ως οριζόντιο πλοηγήσιμο δέντρο
+Displays a tree structure as navigable Breadcrumb: Εμφανίζει μια δομή δέντρου ως πλοηγήσιμη Breadcrumb
+Displays a tree structure as navigable card grid: Εμφανίζει μια δομή δέντρου ως πλοηγήσιμο πλέγμα καρτών
+Displays a tree structure as navigable List: Εμφανίζει μια δομή δέντρου ως πλοηγήσιμη Λίστα
+Displays a tree structure as simple tree: Εμφανίζει μια δομή δέντρου ως απλό δέντρο
+DisplaySurface: Επιφάνεια οθόνης
+DisplayTrackList: ΕμφάνισηTrackList
+DisposeEvent: ΑπόρριψηΕκδήλωση
+Disqus comments are disabled by default.: Τα σχόλια του Disqus είναι απενεργοποιημένα από προεπιλογή.
+Divider: Διαιρέτης
+DividerLight: ΔιαχωριστικόΦως
+dje-NE: Zarma (Νίγηρας)
+DNumber: DNumber
+Do you really want to restart the server?: Θέλετε πραγματικά να κάνετε επανεκκίνηση του διακομιστή;
+Do you really want to restore the database from backup '{0}'? Note that any changes made after {1} are gone. This also means any changes made by any user: Θέλετε πραγματικά να επαναφέρετε τη βάση δεδομένων από το εφεδρικό «{0}»; Σημειώστε ότι τυχόν αλλαγές που έγιναν μετά {1} έχουν εξαφανιστεί. Αυτό σημαίνει επίσης τυχόν αλλαγές που έγιναν από οποιονδήποτε χρήστη
+Do you want to delete the profile picture of {0}: Θέλετε να διαγράψετε την εικόνα προφίλ του {0}
+Do you want to delete the User {0}: Θέλετε να διαγράψετε το User {0}
+Docco: Ντοκκο
+Docked: Συνδεδεμένος
+Document Deleted: Το έγγραφο διαγράφηκε
+Document Extended Attributes: Χαρακτηριστικά Επέκτασης Εγγράφου
+Document Management: Διαχείρηση αρχείων
+Document Not Found!: Το έγγραφο δεν βρέθηκε!
+Document Saved: Το έγγραφο αποθηκεύτηκε
+Document Store: Χώρος αποθήκευσης εγγράφων
+Document Type: Τύπος εγγράφου
+Document Type Deleted: Διαγράφηκε ο τύπος εγγράφου
+Document Type is required!: Απαιτείται τύπος εγγράφου!
+Document Type Not Found!: Ο τύπος εγγράφου δεν βρέθηκε!
+Document Type Saved: Αποθηκευμένος τύπος εγγράφου
+Document Type Updated: Ενημερώθηκε ο τύπος εγγράφου
+Document type with this name already exists.: Ο τύπος εγγράφου με αυτό το όνομα υπάρχει ήδη.
+Document Types: Τύποι εγγράφων
+Document Types exported: Εξαγόμενοι τύποι εγγράφων
+Document Updated: Το έγγραφο ενημερώθηκε
+Documentation: Τεκμηρίωση
+Documents: Έγγραφα
+DodgerBlue: DodgerBlue
+doi-Deva-IN: Dogri (Devanagari, Ινδία)
+Don't have an account?: Δεν έχετε λογαριασμό;
+Done!: Εγινε!
+Donut: Ντόνατ
+Dotted: Διακεκομμένες
+Double: Διπλός
+DoubleClickAction: Διπλό κλικΔράση
+Download: Καταφόρτωση
+Download {0} files separately: Κατεβάστε {0} αρχεία ξεχωριστά
+Download {0} with {1} files as zip: Κατεβάστε {0} με {1} αρχεία ως zip
+Download file {0}: Λήψη αρχείου {0}
+Download file {0} as zip: Λήψη αρχείου {0} ως zip
+DraculaBase16: Βάση Δράκουλα16
+Drag and Drop files here: Σύρετε και αποθέστε αρχεία εδώ
+DragEffect: Εφέ μεταφοράς
+DragMode: Λειτουργία μεταφοράς
+Drawer: Συρτάρι
+DrawerBackground: ΣυρτάριΦόντο
+DrawerClipMode: DrawerClipMode (Λειτουργία DrawerClipMode)
+DrawerIcon: Εικονίδιο συρταριού
+DrawerMiniWidthLeft: ΣυρτάριMiniΠλάτοςΑριστερά
+DrawerMiniWidthRight: ΣυρτάριMiniΠλάτοςΔεξιά
+DrawerText: DrawerText
+DrawerVariant: Παραλλαγή συρταριού
+DrawerWidthLeft: ΣυρτάριΠλάτοςΑριστερά
+DrawerWidthRight: ΣυρτάριΠλάτοςΔεξιά
+DroidCam Source 2: Πηγή DroidCam 2
+DroidCam Source 3: Πηγή DroidCam 3
+Drop Box: Κουτί πτώσης
+Drop down component to select a culture: Αναπτυσσόμενο στοιχείο για να επιλέξετε μια κουλτούρα
+Drop down component to select an enum value or multiple on flags enums: Αναπτυσσόμενο στοιχείο για να επιλέξετε μια τιμή απαρίθμησης ή πολλαπλές σε σημαίες απαρίθμησης
+Drop files here: Απόθεση αρχείων εδώ
+DropBox external file picker component: Στοιχείο επιλογής εξωτερικού αρχείου DropBox
+DropBoxApiKey: Κλειδί DropBoxApi
+Dropdown list component to select one ore more fonts: Στοιχείο αναπτυσσόμενης λίστας για να επιλέξετε μία ή περισσότερες γραμματοσειρές
+DropShadow: Πτώση σκιάς
+DropZoneClickAction: DropZoneClickAction
+dsb-DE: Κάτω Σορβική (Γερμανία)
+dua-CM: Ντουάλα (Καμερούν)
+DualCombined: ΔιπλόΣυνδυασμένο
+DualHorizontal: ΔιπλήΟριζόντια
+DualVertical: ΔιπλήΚάθετη
+DuplicateErrorText: ΔιπλότυποΚείμενοΣφάλματος
+Duration: Διάρκεια
+dv-MV: Divehi (Μαλδίβες)
+Dynamic component tests: Δοκιμές δυναμικών εξαρτημάτων
+dyo-SN: Jola-Fonyi (Σενεγάλη)
+dz-BT: Dzongkha (Μπουτάν)
+E-mail: Email
+E-Mail: Email
+E-Mail not confirmed.: Το email δεν επιβεβαιώθηκε. Ελέγξτε το γραμματοκιβώτιό σας και επιβεβαιώστε τη διεύθυνση email σας. <a href='{0}'>Επανάληψη αποστολής επιβεβαίωσης μέσω email</a>
+ebu-KE: Embu (Κένυα)
+Edge: Άκρο
+EdgeDarkBase16: EdgeDarkBase16
+EdgeLightBase16: EdgeLightBase16
+Edit: Επεξεργασία
+Edit {0}: Επεξεργασία {0}
+Edit a complex Model with included Collection of users: Επεξεργαστείτε ένα σύνθετο μοντέλο με τη συλλογή χρηστών που περιλαμβάνεται
+Edit Audio Constraints: Επεξεργασία περιορισμών ήχου
+Edit Current Theme: Επεξεργασία τρέχοντος θέματος
+Edit data in dialog: Επεξεργασία δεδομένων στο παράθυρο διαλόγου
+Edit in TryMudEx: Επεξεργασία στο TryMudEx
+Edit Items: Επεξεργασία στοιχείων
+Edit only a Collection of users: Επεξεργασία μόνο μιας Συλλογής χρηστών
+Edit rating: Επεξεργασία βαθμολογίας
+Edit Running Component: Επεξεργασία τρέχοντος στοιχείου
+Edit Test Object: Επεξεργασία αντικειμένου δοκιμής
+Edit Users: Επεξεργασία χρηστών
+Edit Video Constraints: Επεξεργασία περιορισμών βίντεο
+Edit with shared MetaConfig: Επεξεργασία με κοινόχρηστο MetaConfig
+Editable: Επεξεργάσιμο
+Editing of the DB Connection can break whole application. Please edit this only if you know what you are doing: Η επεξεργασία της σύνδεσης DB μπορεί να σπάσει ολόκληρη την εφαρμογή. Παρακαλώ επεξεργαστείτε το μόνο αν ξέρετε τι κάνετε
+Editing of this endpoint can break AI integration: Η επεξεργασία αυτού του τελικού σημείου μπορεί να διακόψει την ενσωμάτωση AI
+EditMode: Λειτουργία επεξεργασίας
+Editor for a property of an object. Used internally inside the MudExObjectEdit: Editor για μια ιδιότητα ενός αντικειμένου. Χρησιμοποιείται εσωτερικά μέσα στο MudExObjectEdit
+EditRunningComponent: EditRunningComponent
+Edmonton: Έντμοντον
+Edmonton - T5A 0A1: Έντμοντον - T5A 0A1
+Edmonton - T5A 0A1ender: Έντμοντον - T5A 0A1ender
+ee-GH: Ewe (Γκάνα)
+ee-TG: Προβατίνα (Τόγκο)
+EightiesBase16: ΟγδόνταΒάση16
+el-CY: Ελληνικά (Κύπρου)
+el-GR: Ελληνικά (Ελλάδα)
+Elevation: Ανύψωση
+Em: Μέσα
+email: Email
+Email: Email
+Email {0} is already registered.: Το {0} email είναι ήδη καταχωρημένο.
+Email cannot changed: Το email δεν μπορεί να αλλάξει
+Email Confirmation: Επιβεβαίωση μέσω email
+Email is not correct: Το email δεν είναι σωστό
+Email is required: Απαιτείται email
+Email is required!: Απαιτείται email!
+EmbersBase16: EmbersBase16
+en-001: Αγγλικά (Παγκόσμια)
+en-029: Αγγλικά (Καραϊβικής)
+en-150: Ελληνικά (Ευρώπη)
+en-AE: Ελληνικά Αραβικά Εμιράτα)
+en-AG: Αγγλικά (Αντίγκουα και Μπαρμπούντα)
+en-AI: Αγγλικά (Ανγκουίλα)
+en-AS: Αγγλικά (Αμερικανικής Σαμόα)
+en-AT: Ελληνικά (Αυστρίας)
+en-AU: Αγγλικά (Αυστραλίας)
+en-BB: Αγγλικά (Μπαρμπάντος)
+en-BE: Αγγλικά (Βέλγιο)
+en-BI: Αγγλικά (Μπουρούντι)
+en-BM: Αγγλικά (Βερμούδες)
+en-BS: Αγγλικά (Μπαχάμες)
+en-BW: Αγγλικά (Μποτσουάνα)
+en-BZ: Αγγλικά (Μπελίζ)
+en-CA: Αγγλικά (Καναδάς)
+en-CC: Αγγλικά (Νήσοι Κόκος [Κίλινγκ])
+en-CH: Αγγλικά (Ελβετίας)
+en-CK: Αγγλικά (Νήσοι Κουκ)
+en-CM: Αγγλικά (Καμερούν)
+en-CX: Αγγλικά (Νησί των Χριστουγέννων)
+en-CY: Αγγλικά (Κύπρος)
+en-DE: Ελληνικά (Γερμανίας)
+en-DK: Αγγλικά (Δανίας)
+en-DM: Αγγλικά (Ντομίνικα)
+en-ER: Αγγλικά (Ερυθραία)
+en-FI: Αγγλικά (Φινλανδίας)
+en-FJ: Αγγλικά (Φίτζι)
+en-FK: Αγγλικά (Νήσοι Φώκλαντ)
+en-FM: Αγγλικά (Μικρονησία)
+en-GB: Ελληνικά
+en-GD: Αγγλικά (Γρενάδα)
+en-GG: Αγγλικά (Γκέρνσεϊ)
+en-GH: Αγγλικά (Γκάνα)
+en-GI: Αγγλικά (Γιβραλτάρ)
+en-GM: Αγγλικά (Γκάμπια)
+en-GU: Αγγλικά (Γκουάμ)
+en-GY: Αγγλικά (Γουιάνα)
+en-HK: Αγγλικά (ΕΔΠ Χονγκ Κονγκ)
+en-ID: Αγγλικά (Ινδονησίας)
+en-IE: Αγγλικά (Ιρλανδία)
+en-IL: Αγγλικά (Ισραήλ)
+en-IM: Αγγλικά (Νήσος του Μαν)
+en-IN: Αγγλικά (Ινδίας)
+en-IO: Αγγλικά (Βρετανικά Εδάφη Ινδικού Ωκεανού)
+en-JE: Αγγλικά (Τζέρσεϊ)
+en-JM: Αγγλικά (Τζαμάικα)
+en-KE: Αγγλικά (Κένυα)
+en-KI: Αγγλικά (Κιριμπάτι)
+en-KN: Αγγλικά (Σεντ Κιτς & Νέβις)
+en-KY: Αγγλικά (Νήσοι Κέιμαν)
+en-LC: Αγγλικά (Αγία Λουκία)
+en-LR: Αγγλικά (Λιβερία)
+en-LS: Αγγλικά (Λεσότο)
+en-MG: Αγγλικά (Μαδαγασκάρη)
+en-MH: Αγγλικά (Νήσοι Μάρσαλ)
+en-MO: Αγγλικά (ΕΔΠ Μακάο)
+en-MP: Αγγλικά (Βόρειες Μαριάνες Νήσοι)
+en-MS: Αγγλικά (Montserrat)
+en-MT: Αγγλικά (Μάλτα)
+en-MU: Αγγλικά (Μαυρίκιος)
+en-MW: Αγγλικά (Μαλάουι)
+en-MY: Αγγλικά (Μαλαισίας)
+en-NA: Αγγλικά (Ναμίμπια)
+en-NF: Αγγλικά (Νήσος Νόρφολκ)
+en-NG: Αγγλικά (Νιγηρία)
+en-NL: Αγγλικά (Ολλανδία)
+en-NR: Αγγλικά (Ναουρού)
+en-NU: Ελληνικά (Niue)
+en-NZ: Αγγλικά (Νέας Ζηλανδίας)
+en-PG: Αγγλικά (Παπούα Νέα Γουινέα)
+en-PH: Αγγλικά (Φιλιππίνων)
+en-PK: Αγγλικά (Πακιστάν)
+en-PN: Αγγλικά (Νήσοι Πίτκαιρν)
+en-PR: Αγγλικά (Πουέρτο Ρίκο)
+en-PW: Αγγλικά (Παλάου)
+en-RW: Αγγλικά (Ρουάντα)
+en-SB: Αγγλικά (Νήσοι Σολομώντος)
+en-SC: Αγγλικά (Σεϋχέλλες)
+en-SD: Αγγλικά (Σουδάν)
+en-SE: Αγγλικά (Σουηδία)
+en-SG: Αγγλικά (Σιγκαπούρης)
+en-SH: Αγγλικά (Αγία Ελένη, Ανάληψη, Τριστάν ντα Κούνια)
+en-SI: Ελληνικά (Σλοβενίας)
+en-SL: Αγγλικά (Σιέρα Λεόνε)
+en-SS: Αγγλικά (Νότιο Σουδάν)
+en-SX: Αγγλικά (Sint Maarten)
+en-SZ: Αγγλικά (Εσουατίνι)
+en-TC: Αγγλικά (Νήσοι Τερκς και Κάικος)
+en-TK: Αγγλικά (Τοκελάου)
+en-TO: Αγγλικά (Τόνγκα)
+en-TT: Αγγλικά (Τρινιντάντ & Τομπάγκο)
+en-TV: Αγγλικά (Τουβαλού)
+en-TZ: Αγγλικά (Τανζανία)
+en-UG: Αγγλικά (Ουγκάντα)
+en-UM: Αγγλικά (Απομακρυσμένα νησιά των ΗΠΑ)
+en-US: Αγγλικά (Ηνωμένων Πολιτειών)
+en-US-posix: Αγγλικά (Ηνωμένες Πολιτείες, Υπολογιστής)
+en-VC: Αγγλικά (Άγιος Βικέντιος & Γρεναδίνες)
+en-VG: Αγγλικά (Βρετανικές Παρθένοι Νήσοι)
+en-VI: Αγγλικά (Αμερικανικές Παρθένοι Νήσοι)
+en-VU: Αγγλικά (Βανουάτου)
+en-WS: Αγγλικά (Σαμόα)
+en-ZA: Αγγλικά (Νότια Αφρική)
+en-ZM: Αγγλικά (Ζάμπια)
+en-ZW: Αγγλικά (Ζιμπάμπουε)
+Enable Disqus: Ενεργοποίηση Disqus
+enables or disables virtualization.: ενεργοποιεί ή απενεργοποιεί την εικονικοποίηση.
+End: Τέλος
+English: Αγγλικά
+Engravers MT: Χαράκτες ΜΤ
+Enter email and your new password here: Εισάγετε το email και τον νέο σας κωδικό πρόσβασης εδώ
+Enter email for password reset: Εισαγάγετε τη διεύθυνση email που είναι συνδεδεμένη με τον λογαριασμό σας και θα λάβετε ένα email που θα περιέχει έναν σύνδεσμο για να επαναφέρετε τον κωδικό πρόσβασής σας
+Enter name: Εισάγετε όνομα
+Enter name of backup file: Εισαγάγετε το όνομα του αρχείου αντιγράφου ασφαλείας
+Enter new name of backup file: Εισαγάγετε το νέο όνομα του αρχείου αντιγράφου ασφαλείας
+Enter the email address for the confirmation mail: Εισαγάγετε τη διεύθυνση email για το μήνυμα επιβεβαίωσης
+Enter the URL to existing file: Εισαγάγετε τη διεύθυνση URL του υπάρχοντος αρχείου
+Enter your message...: Γράψτε το μήνυμά σας...
+Entity Id: Αναγνωριστικό οντότητας
+Entity is required!: Απαιτείται οντότητα!
+EntityCreatedBy: ΟντότηταCreatedBy
+EntityCreatedOn (Local): EntityCreatedOn (Τοπικό)
+EntityCreatedOn (UTC): EntityCreatedOn (UTC)
+EntityId: EntityId (Αναγνωριστικό οντότητας)
+EntityLastModifiedBy: ΟντότηταLastModifiedBy
+EntityLastModifiedOn (Local): EntityLastModifiedOn (Τοπικό)
+EntityLastModifiedOn (UTC): ΟντότηταLastModifiedOn (UTC)
+Entree: Είσοδος
+EnumSelect: Επιλογή απαρίθμησης
+Environment: Περιβάλλον
+eo-001: Εσπεράντο (Κόσμος)
+EquilibriumDarkBase16: ΙσορροπίαΣκοτεινήΒάση16
+EquilibriumGrayDarkBase16: ΙσορροπίαΓκριΣκοτεινήΒάση16
+EquilibriumGrayLightBase16: ΙσορροπίαΓκριΦωςΒάση16
+EquilibriumLightBase16: Βάση EquilibriumLight16
+Eras Bold ITC: Εποχές Bold ITC
+Eras Demi ITC: Εποχές Demi ITC
+Eras Light ITC: Eras Light ITC
+Eras Medium ITC: Εποχές Medium ITC
+Error: Λάθος
+ErrorAnimation: Κινούμενα σχέδια σφαλμάτων
+ErrorContrastText: ΚείμενοΣφάλματοςΑντίθεσης
+ErrorDarken: ΣφάλμαΣκοτάδι
+ErrorId: Αναγνωριστικό σφάλματος
+ErrorLighten: ΣφάλμαLighten
+ErrorMessage: Μήνυμα σφάλματος
+ErrorText: ΚείμενοΣφάλματος
+es-419: Ισπανικά (Λατινικής Αμερικής)
+es-AR: Ισπανικά (Αργεντινής)
+es-BO: Ισπανικά (Βολιβία)
+es-BR: Ισπανικά (Βραζιλίας)
+es-BZ: Ισπανικά (Μπελίζ)
+es-CL: Ισπανικά (Χιλή)
+es-CO: Ισπανικά (Κολομβία)
+es-CR: Ισπανικά (Κόστα Ρίκα)
+es-CU: Ισπανικά (Κούβα)
+es-DO: Ισπανικά (Δομινικανή Δημοκρατία)
+es-EC: Ισπανικά (Εκουαδόρ)
+es-ES: Ισπανικά (Ισπανίας)
+es-GQ: Ισπανικά (Ισημερινή Γουινέα)
+es-GT: Ισπανικά (Γουατεμάλα)
+es-HN: Ισπανικά (Ονδούρα)
+es-MX: Ισπανικά (Μεξικού)
+es-NI: Ισπανικά (Νικαράγουα)
+es-PA: Ισπανικά (Παναμάς)
+es-PE: Ισπανικά (Περού)
+es-PH: Ισπανικά (Φιλιππίνων)
+es-PR: Ισπανικά (Πουέρτο Ρίκο)
+es-PY: Ισπανικά (Παραγουάη)
+es-SV: Ισπανικά (Ελ Σαλβαδόρ)
+es-US: Ισπανικά (Ηνωμένων Πολιτειών)
+es-UY: Ισπανικά (Ουρουγουάη)
+es-VE: Ισπανικά (Βενεζουέλας)
+Español: Ισπανικά
+EspressoBase16: Βάση εσπρέσο16
+et-EE: Εσθονικά (Εσθονίας)
+Ethan Hunt: Ίθαν Χαντ
+eu-ES: Βασκικά (Ισπανία)
+EvaBase16: EvaBase16
+EvaDimBase16: Εύα DimBase16
+ewo-CM: Ewondo (Καμερούν)
+ExcelSheet.xlsx: ExcelSheet.xlsx
+Expand &nbsp; <b>not</b> &nbsp; loaded nodes: Αναπτύξτε &nbsp; τους κόμβους <b>που δεν</b> &nbsp; έχουν φορτωθεί
+Expand all nodes: Ανάπτυξη όλων των κόμβων
+Expand loaded nodes: Αναπτύξτε τους φορτωμένους κόμβους
+Expand/Collapse: Ανάπτυξη/Σύμπτυξη
+ExpandBehaviour: ExpandBehaviour
+ExpandButtonDirection: ExpandButtonDirection
+ExpandedIcon: ExpandedIcon
+ExpandOnClick: ExpandOnClick
+ExpandOnFilter: ExpandOnFilter
+Explicit File Display Zip: Zip εμφάνισης ρητού αρχείου
+Export: Εξαγωγή
+Export To Excel: Εξαγωγή σε Excel
+Export_SheetName: Δεδομένα
+ExposureCompensation: ΈκθεσηΑντιστάθμιση
+ExposureMode: Λειτουργία έκθεσης
+ExposureTime: Χρόνος έκθεσης
+Extended Attribute Deleted: Εκτεταμένο Χαρακτηριστικό Διαγράφηκε
+Extended Attribute Not Found!: Το εκτεταμένο χαρακτηριστικό δεν βρέθηκε!
+Extended Attribute Saved: Αποθηκευμένο εκτεταμένο χαρακτηριστικό
+Extended Attribute Updated: Ενημερώθηκε το εκτεταμένο χαρακτηριστικό
+Extended Attribute with this Key already exists.: Εκτεταμένο χαρακτηριστικό με αυτό το κλειδί υπάρχει ήδη.
+Extended Attributes: '\{0}\ Εκτεταμένα χαρακτηριστικά'
+Extended Attributes exported: Εξαγωγή εκτεταμένων χαρακτηριστικών
+ExtensionRestrictionType: ExtensionRestrictionType
+Extensions: Επεκτάσεις
+External Id: Εξωτερική ταυτότητα
+ExternalDialogOptions: ExternalDialogOptions
+ExternalId: Εξωτερικό αναγνωριστικό
+ExternalPickerImageSize: ΕξωτερικόςΕπιλογέαςΕικόναΜέγεθος
+ExternalProviderRendering: ExternalProviderRendering
+ExtraExtraLarge: ExtraExtraExtraLarge
+ExtraLarge: Πολύ μεγάλο
+ExtraSmall: Εξαιρετικά μικρό
+fa-IR: Περσικά (Ιράν)
+FacingMode: ΑντιμετωπίζονταςMode
+Fade: Ξεθωριάζω
+FadeIn: Ξεθωριάζει
+Failed to get client preferences: Αποτυχία λήψης προτιμήσεων πελάτη
+FallBackInIframe: FallBackInIframe
+False: Ψεύτικος
+FAQs: Συχνές ερωτήσεις
+Far: Μακριά
+Features: Χαρακτηριστικά
+Feb: Φεβ
+Felix Titling: Φέλιξ Τίτλινγκ
+Female: Θηλυκός
+Female_ Text: Female_ Κείμενο
+ff-Adlm-BF: Fulah (Adlam, Μπουρκίνα Φάσο)
+ff-Adlm-CM: Fulah (Adlam, Καμερούν)
+ff-Adlm-GH: Fulah (Adlam, Γκάνα)
+ff-Adlm-GM: Φούλα (Άντλαμ, Γκάμπια)
+ff-Adlm-GN: Fulah (Adlam, Γουινέα)
+ff-Adlm-GW: Φούλα (Αντλάμ, Γουινέα-Μπισάου)
+ff-Adlm-LR: Fulah (Adlam, Λιβερία)
+ff-Adlm-MR: Fulah (Adlam, Μαυριτανία)
+ff-Adlm-NE: Fulah (Adlam, Νίγηρας)
+ff-Adlm-NG: Fulah (Adlam, Νιγηρία)
+ff-Adlm-SL: Φούλα (Άντλαμ, Σιέρα Λεόνε)
+ff-Adlm-SN: Φούλα (Αντλάμ, Σενεγάλη)
+ff-Latn-BF: Fulah (Λατινικά, Μπουρκίνα Φάσο)
+ff-Latn-CM: Fulah (Λατινικά, Καμερούν)
+ff-Latn-GH: Fulah (Λατινικά, Γκάνα)
+ff-Latn-GM: Fulah (Λατινικά, Γκάμπια)
+ff-Latn-GN: Fulah (Λατινικά, Γουινέα)
+ff-Latn-GW: Fulah (Λατινικά, Γουινέα-Μπισάου)
+ff-Latn-LR: Fulah (Λατινικά, Λιβερία)
+ff-Latn-MR: Fulah (Λατινικά, Μαυριτανία)
+ff-Latn-NE: Fulah (Λατινικά, Νίγηρας)
+ff-Latn-NG: Fulah (Λατινικά, Νιγηρία)
+ff-Latn-SL: Fulah (Λατινικά, Σιέρα Λεόνε)
+ff-Latn-SN: Fulah (Λατινικά, Σενεγάλη)
+FFTSize: FFTSize
+fi-FI: Φινλανδικά (Φινλανδία)
+fil-PH: Φιλιππινέζικα (Φιλιππίνες)
+File Display: Εμφάνιση αρχείου
+File Display with Stream: Εμφάνιση αρχείων με ροή
+File Handling: Χειρισμός αρχείων
+File is required!: Απαιτείται αρχείο!
+FileDisplay: Εμφάνιση αρχείου
+FileDisplayAsStream: FileDisplayAsStream
+FileDisplayZipWithPreview: FileDisplayZipWithPreview
+FileInfo: Πληροφορίες αρχείου
+FileName: Όνομα_αρχείου
+Files: Αρχεία
+Files of this type ({0}) are not allowed. Only following types are allowed '{1}'. Try one of these extensions ({2}): Δεν επιτρέπονται αρχεία αυτού του τύπου ({0}). Μόνο οι ακόλουθοι τύποι επιτρέπονται «{1}». Δοκιμάστε μία από αυτές τις επεκτάσεις ({2})
+Fill Administrator Credentials: Συμπλήρωση διαπιστευτηρίων διαχειριστή
+Fill Basic User Credentials: Συμπλήρωση βασικών διαπιστευτηρίων χρήστη
+FillAlpha: FillAlpha
+Filled: Γεμάτη
+Filter: Φίλτρο
+Filter...: Φίλτρο...
+Filter468: Φίλτρο468
+FilterBehaviour: FilterBehaviour
+FilterBoxClass: FilterBoxΚλάση
+FilterBoxStyle: FilterBoxStyle
+FilterChipsPlacedRight: FilterChipsPlacedRight
+Filtered Audit Trails exported: Εξάγονται φιλτραρισμένες διαδρομές ελέγχου
+Filtered Brands exported: Εξάγονται φιλτραρισμένες επωνυμίες
+Filtered Document Types exported: Εξάγονται φιλτραρισμένοι τύποι εγγράφων
+Filtered Extended Attributes exported: Εξαγωγή φιλτραρισμένων εκτεταμένων χαρακτηριστικών
+Filtered Products exported: Εξάγονται φιλτραρισμένα προϊόντα
+Filtered Users exported: Εξαγωγή φιλτραρισμένων χρηστών
+FilterEnabled: Ενεργοποιημένο φίλτρο
+FilterHighlighting: Επισήμανση φίλτρου
+Filtering: Φιλτράρισμα
+FilterMode: Λειτουργία φίλτρου
+FilterMultiple: ΦίλτροΠολλαπλό
+FilterPlaceholder: Σύμβολο κράτησης θέσης φίλτρου
+Filters: Φίλτρα
+FilterVariant: ΦίλτροΠαραλλαγή
+Fiona Gallagher: Φιόνα Γκάλαχερ
+Firebrick: Πυρότουβλο
+First Name: Όνομα
+First Name is required: Το όνομα είναι υποχρεωτικό
+FirstName: ΌνομαΌνομα
+Fixed: Σταθερός
+Flags Enum: Σημαίες Enum
+Flat: Επίπεδος
+Flat List: Επίπεδη λίστα
+FlatBase16: ΕπίπεδηΒάση16
+FlatList: Επίπεδη λίστα
+FlexEnd: FlexEnd
+FlexStart: FlexStart
+Flip: Αναστροφή
+FlipAlways: ΑναστροφήΠάντα
+FlipNever: Αναποδογυρίστε ποτέ
+FlipOnOpen: FlipOnΆνοιγμα
+FlipX: ΦλιπΧ
+FlipY: ΦλιπΥ
+FloralWhite: ΛουλουδάτοΛευκό
+Florian Gilde: Φλόριαν Γκίλντε
+FNumber: FNumber
+fo-DK: Φερόε (Δανία)
+fo-FO: Φερόε (Νήσοι Φερόε)
+FocusDistance: ΑπόστασηΕστίασης
+FocusMode: Λειτουργία εστίασης
+FontFamily: Οικογένεια γραμματοσειρών
+FontSelect: Επιλογή γραμματοσειράς
+FontSize: Μέγεθος γραμματοσειράς
+FontWeight: Βάροςγραμματοσειράς
+Footlight MT Light: Φως ποδιών MT Light
+Force pick Item: Αναγκαστική επιλογή αντικειμένου
+Force pick Items: Αναγκαστική επιλογή αντικειμένων
+Force select Item: Αναγκαστική επιλογή στοιχείου
+Force select Items: Αναγκαστική επιλογή στοιχείων
+ForceNativeRender: ForceNativeRender
+ForceSelectOfMudColor: ForceSelectOfMudColor
+ForceShrink: Αναγκαστική συρρίκνωση
+ForestGreen: ΔάσοςΠράσινο
+Forgot password?: Ξεχάσατε τον κωδικό πρόσβασης;
+Format: Μορφή
+Foundation: Ίδρυμα
+fr-029: Γαλλικά (Καραϊβικής)
+fr-BE: Γαλλικά (Βέλγιο)
+fr-BF: Γαλλικά (Μπουρκίνα Φάσο)
+fr-BI: Γαλλικά (Μπουρούντι)
+fr-BJ: Γαλλικά (Μπενίν)
+fr-BL: Γαλλικά (Άγιος Βαρθολομαίος)
+fr-CA: Γαλλικά (Καναδάς)
+fr-CD: Γαλλικά (Κονγκό [ΛΔΚ])
+fr-CF: Γαλλικά (Κεντροαφρικανική Δημοκρατία)
+fr-CG: Γαλλικά (Κονγκό)
+fr-CH: Γαλλικά (Ελβετίας)
+fr-CI: Γαλλικά (Ακτή Ελεφαντοστού)
+fr-CM: Γαλλικά (Καμερούν)
+fr-DJ: Γαλλικά (Τζιμπουτί)
+fr-DZ: Γαλλικά (Αλγερία)
+fr-FR: Γαλλικά (Γαλλίας)
+fr-GA: Γαλλικά (Γκαμπόν)
+fr-GF: Γαλλικά (Γαλλική Γουιάνα)
+fr-GN: Γαλλικά (Γουινέα)
+fr-GP: Γαλλικά (Γουαδελούπη)
+fr-GQ: Γαλλικά (Ισημερινή Γουινέα)
+fr-HT: Γαλλικά (Αϊτής)
+fr-KM: Γαλλικά (Κομόρες)
+fr-LU: Γαλλικά (Λουξεμβούργο)
+fr-MA: Γαλλικά (Μαρόκο)
+fr-MC: Γαλλικά (Μονακό)
+fr-MF: Γαλλικά (Άγιος Μαρτίνος)
+fr-MG: Γαλλικά (Μαδαγασκάρη)
+fr-ML: Γαλλικά (Μάλι)
+fr-MQ: Γαλλικά (Μαρτινίκα)
+fr-MR: Γαλλικά (Μαυριτανία)
+fr-MU: Γαλλικά (Μαυρίκιος)
+fr-NC: Γαλλικά (Νέα Καληδονία)
+fr-NE: Γαλλικά (Νίγηρας)
+fr-PF: Γαλλικά (Γαλλική Πολυνησία)
+fr-PM: Γαλλικά (Σεν Πιερ & Μικελόν)
+fr-RE: Γαλλικά (Ρεϋνιόν)
+fr-RW: Γαλλικά (Ρουάντα)
+fr-SC: Γαλλικά (Σεϋχέλλες)
+fr-SN: Γαλλικά (Σενεγάλης)
+fr-SY: Γαλλικά (Συρία)
+fr-TD: Γαλλικά (Τσαντ)
+fr-TG: Γαλλικά (Τόγκο)
+fr-TN: Γαλλικά (Τυνησίας)
+fr-VU: Γαλλικά (Βανουάτου)
+fr-WF: Γαλλικά (Wallis & Futuna)
+fr-YT: Γαλλικά (Μαγιότ)
+FrameRate: Ρυθμός καρέ
+FramerBase16: Βάση πλαισίου16
+Franklin Gothic Medium: Franklin Gothic Μεσαίο
+French: Γαλλικά
+FrequencyScale: Κλίμακα συχνότητας
+FruitSodaBase16: ΦρουτσόδαΒάση16
+Fuchsia: Φούξια
+Full: Γεμάτος
+FullHeight: Πλήρες ύψος
+FullOctaveBands: FullOctaveBands
+FullPaged: Πλήρης σελιδοποίηση
+Fullscreen: Πλήρης οθόνη
+FullScreen: Πλήρης οθόνη
+FullScreenButtonIcon: Εικονίδιο κουμπιού πλήρους οθόνης
+FullWidth: Πλήρες πλάτος
+fur-IT: Friulian (Ιταλία)
+Futura: Μέλλον
+fy-NL: Δυτική Φριζία (Ολλανδία)
+ga-GB: Ιρλανδικά (Ηνωμένο Βασίλειο)
+ga-IE: Ιρλανδικά (Ιρλανδία)
+Gain: Κερδίζω
+Gainsboro: Γκέινσμπορο
+Garamond: Γκάραμοντ
+gd-GB: Σκωτσέζικα Γαελικά (Ηνωμένο Βασίλειο)
+Gender: Γένος
+General: Γενικά
+Geneva: Γενεύη
+George Miller: Τζορτζ Μίλερ
+Georgia: Γεωργία
+German: Γερμανικά
+GhostWhite: Λευκό φάντασμα
+GigavoltBase16: Βάση Gigavolt16
+Gigi: Τζίτζι
+Gill Sans: Γκιλ Σανς
+Gill Sans MT: Gill χωρίς MT
+Github: Το Github
+GitHub Project repository: Αποθετήριο έργου GitHub
+GithubBase16: Βάση Github16
+GithubDark: Το GithubDark
+GithubDarkDimmed: GithubDarkDimmed
+gl-ES: Γαλικιανά (Ισπανία)
+Gml: Gml
+gn-PY: Γκουαρανί (Παραγουάη)
+GoHome: Πήγαινε σπίτι σου!
+Gold: Χρυσός
+Goldenrod: Χρυσόβεργα
+Google: Η Google
+Google Drive: Google Drive
+Google Drive file picker component: Στοιχείο επιλογής αρχείων Google Drive
+Googlecode: Κωδικός Google
+GoogleDarkBase16: GoogleDarkBase16
+GoogleDriveClientId: GoogleDriveClientId
+GoogleLightBase16: Βάση GoogleLight16
+Goudy Old Style: Goudy Παλαιό Στυλ
+Goudy Stout: Goudy Stout
+Gradient: Διαβάθμισης
+GradientDark: ΔιαβάθμισηΣκούρο
+GradientForeground: GradientForeground
+GradientLeft: Ντεγκραντέ αριστερά
+GradientLight: ΝτεγκραντέΦως
+GradientRight: ΝτεγκραντέΔεξιά
+GradientText: ΝτεγκραντέΚείμενο
+Gravatar: Γκραβατάρ
+GravatarImageSize: GravatarImageSize
+Gray: Γκρίζος
+GrayDark: ΓκριΣκούρο
+GrayDarker: ΓκριΠιο σκούρο
+GrayDefault: GrayDefault
+GrayLight: ΓκριΦως
+GrayLighter: ΓκριΑναπτήρας
+Grayscale: Κλίμακα του γκρι
+GrayscaleDarkBase16: Κλίμακα του γκριDarkBase16
+GrayscaleLightBase16: Κλίμακα του γκριLightBase16
+Green: Πράσινος
+GreenScreenBase16: Βάση πράσινης οθόνης16
+GreenYellow: ΠράσινοΚίτρινο
+Grid: Πλέγμα
+Grid_Enhanced: Grid_Enhanced
+GridCompact: ΠλέγμαΣυμπαγές
+GridIcon: Εικονίδιο πλέγματος
+Groove: Αυλάκωση
+Group: Ομάδα
+Group by types: Ομαδοποίηση ανά τύπο
+GroupBox: Ομαδικό κουτί
+GroupId: Αναγνωριστικό ομάδας
+GroupingEnabled: ΟμαδοποίησηΕνεργοποιημένη
+GroupsInitiallyExpanded: ΟμάδεςΑρχικάΑναπτυγμένες
+GroupsNested: ΟμάδεςΈνθετες
+GroupsSticky: ΟμάδεςSticky
+GruvboxDarkHardBase16: GruvboxDarkHardBase16
+GruvboxDarkMediumBase16: MineboxΣκοτεινόΜεσαίοΒάση16
+GruvboxDarkPaleBase16: GruvboxDarkPaleBase16
+GruvboxDarkSoftBase16: GruvboxDarkSoftBase16
+GruvboxLightHardBase16: GruvboxΦωςΣκληρήΒάση16
+GruvboxLightMediumBase16: GruvboxΕλαφρύΜεσαίοΒάση16
+GruvboxLightSoftBase16: GruvboxLightSoftBase16
+gsw-CH: Ελβετικά Γερμανικά (Ελβετία)
+gsw-FR: Ελβετικά Γερμανικά (Γαλλία)
+gsw-LI: Ελβετικά Γερμανικά (Λιχτενστάιν)
+gu-IN: Γκουτζαράτι (Ινδία)
+GutterBottom: Υδρορροή
+Gutters: Υδρορροές
+guz-KE: Gusii (Κένυα)
+gv-IM: Manx (Νήσος του Μαν)
+h1: Η1
+H1: Η1
+h2: Η2
+H2: Η2
+h3: Η3
+H3: Η3
+h4: Η4
+H4: Η4
+h5: Η5
+H5: Η5
+h6: Η6
+H6: Η6
+ha-Latn-GH: Hausa (Λατινικά, Γκάνα)
+ha-Latn-NE: Hausa (Λατινικά, Νίγηρας)
+ha-Latn-NG: Hausa (Λατινικά, Νιγηρία)
+Haettenschweiler: Haettenschweiler
+HalfOctaveBands: Ζώνες μισής οκτάβας
+Hannah Davis: Χάνα Ντέιβις
+HardcoreBase16: Σκληροπυρηνική βάση16
+Harlow Solid Italic: Harlow Solid Πλάγια
+Harmonic16DarkBase16: Αρμονικός16ΣκοτεινήΒάση16
+Harmonic16LightBase16: Αρμονική16LightBase16
+Harrington: Χάρινγκτον
+haw-US: Χαβανέζικα (Ηνωμένες Πολιτείες)
+he-IL: Εβραϊκά (Ισραήλ)
+Header.tiff: Header.tiff
+HeadShake: Κούνημα κεφαλιού
+HeatMap: Χάρτης θερμότητας
+HeetchDarkBase16: HeetchDarkBase16
+HeetchLightBase16: HeetchLightBase16
+Height: Ύψος
+HeliosBase16: Βάση Helios16
+Hello: Γεια σας
+Hello from dialog: Γεια σας από το παράθυρο διαλόγου
+Hello from dialog 1: Γεια σας από το διάλογο 1
+Hello from dialog sample page: Γεια σας από τη σελίδα δείγματος διαλόγου
+Hello World: Γεια σου κόσμε
+Hello...: Γεια σας...
+HelperId: Αναγνωριστικό βοηθού
+HelperText: Βοηθητικό κείμενο
+HelperTextOnFocus: HelperTextOnFocus
+Helvetica: Χελβέτικα
+Helvetica Narrow: Helvetica Στενό
+Here is another Real demo available for: Εδώ είναι ένα άλλο Real demo διαθέσιμο για
+Here only number is configured to render with NumEdit edit but DataType is string. Also this field is ignored for import: Εδώ μόνο ο αριθμός έχει ρυθμιστεί για απόδοση με επεξεργασία NumEdit, αλλά το DataType είναι συμβολοσειρά. Επίσης, αυτό το πεδίο παραβλέπεται για εισαγωγή
+Here you can edit the users, but only confirm if count is at least 2: Εδώ μπορείτε να επεξεργαστείτε τους χρήστες, αλλά να επιβεβαιώσετε μόνο εάν ο αριθμός είναι τουλάχιστον 2
+Here you can leave a comment for this permission for the current role: Εδώ μπορείτε να αφήσετε ένα σχόλιο για αυτήν την άδεια για τον τρέχοντα ρόλο
+Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Εδώ μπορείτε να δείτε πώς μπορείτε να χρησιμοποιήσετε το MudExObjectEdit για να επεξεργαστείτε τις ιδιότητες ενός στοιχείου που εκτελείται
+Here you find a Demo how to use the service directly: Εδώ θα βρείτε ένα Demo πώς να χρησιμοποιήσετε την υπηρεσία απευθείας
+Hex: Εξάγωνο
+HEX: ΕΞΆΓΩΝΟ
+HexA: Εξάγωνο
+hi-IN: Χίντι (Ινδία)
+Hidden: Κρυμμένος
+Hide: Κρύβω
+HideContentWhenCollapsed: ΑπόκρυψηΠεριεχομένουΌτανΣυμπτύσσεται
+HideDropDownWhenReadOnly: HideDropDownWhenReadOnly
+High Tower Text: Κείμενο High Tower
+HighlightSearch: HighlightSearch
+Hinge: Μεντεσές
+Home: Σπίτι
+Honeydew: Μελιτώματος
+HopscotchBase16: ΚουτσόΒάση16
+HorizonDarkBase16: HorizonDarkBase16
+HorizonLightBase16: HorizonLightBase16
+Horizontal: Οριζόντιος
+HouseNumber: Αριθμός
+Houston: Χιούστον
+Houston - 77001: Χιούστον - 77001
+Houston - 77001ender: Χιούστον - 77001ender
+Houstonender: Χούστοουντερ
+HoverColor: HoverColor
+HoverMode: Λειτουργία αιώρησης
+HoverOpacity: ΑιώρησηΑδιαφάνεια
+hr-BA: Κροατικά (Βοσνία & Ερζεγοβίνη)
+hr-HR: Κροατικά (Κροατία)
+Href: Χρεφ
+hsb-DE: Άνω Σορβική (Γερμανία)
+HSL: HSL
+HTML Colors: Χρώματα HTML
+HtmlTag: Ετικέτα Html
+https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls: https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls
+https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc: https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc
+hu-HU: Ουγγρικά (Ουγγαρία)
+HumanoidDarkBase16: ΑνθρωποειδέςΣκοτεινήΒάση16
+HumanoidLightBase16: HumanoidLightBase16
+hy-AM: Αρμενικά (Αρμενίας)
+Hybrid: Υβρίδιο
+I agree to the terms and privacy: Συμφωνώ με τους όρους και το απόρρητο
+I'm a also another separate control inside of the normal input: Είμαι επίσης ένα άλλο ξεχωριστό στοιχείο ελέγχου μέσα στην κανονική είσοδο
+I'm a another separate control inside of the normal input: Είμαι ένα άλλο ξεχωριστό στοιχείο ελέγχου μέσα στην κανονική είσοδο
+I'm a separate control inside of the normal input: Είμαι ξεχωριστός έλεγχος μέσα στην κανονική είσοδο
+ia-001: Ιντερλίγγουα (Κόσμος)
+IaDarkBase16: ΙαΣκοτεινήΒάση16
+IaLightBase16: IaLightBase16
+Ian Wright: Ίαν Ράιτ
+ibb-NG: Ibibio (Νιγηρία)
+ICaptureService: ICaptureService
+Icon: Εικόνα
+IconColor: Χρώμα εικονιδίου
+IconPicker: Επιλογέας εικονιδίων
+IconSize: Μέγεθος εικονιδίου
+IcyDarkBase16: IcyDarkBase16
+id: αναγνωριστικό
+Id: Αναγνωριστικό
+id-ID: Ινδονησιακά (Ινδονησία)
+Idea: Ιδέα
+Identifier: Αναγνωριστικό
+If this is set a photo will be taken instead of a video.: Εάν οριστεί αυτό, θα ληφθεί μια φωτογραφία αντί για ένα βίντεο.
+If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Αν σας αρέσει αυτό το πακέτο, παρακαλούμε να το επισημάνετε με αστέρι ⭐ στο Github και να το μοιραστείτε με τους φίλους σας. Αν όχι, μπορείτε να δώσετε ένα αστέρι ούτως ή άλλως και να μου πείτε τι μπορώ να βελτιώσω για να το κάνω καλύτερο για εσάς.
+If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Εάν ορίσετε αυτές τις επιλογές ως προεπιλογή. Αυτές οι επιλογές θα χρησιμοποιηθούν για όλους τους διαλόγους όπου δεν έχουν καθοριστεί επιλογές. Συνεχίζω?
+ig-NG: Igbo (Νιγηρία)
+Ignore: Αγνοώ
+IgnoredPropertiesForReset: IgnoredPropertiesForReset
+IgnoredRenderControls: IgnoredRenderControls
+ii-CN: Yi (Κίνα)
+Image format: Μορφή εικόνας
+ImageAsBackgroundImage: ΕικόναΩςΦόντοΕικόνα
+Images: Εικόνες
+ImagesNewLine: ΕικόνεςNewLine
+Immediate: Άμεσος
+ImmediateText: Άμεσο κείμενο
+Impact: Αντίκτυπος
+Import: Εισαγωγή
+ImportExportIcon: ΕισαγωγήΕξαγωγήΕικονίδιο
+In: Μέσα
+In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: Σε αυτό το παράδειγμα, τα δεδομένα φορτώνονται δυναμικά μόλις το στοιχείο εμφανιστεί για πρώτη φορά στην προβολή. Το στοιχείο υποστηρίζει δύο υποδοχές περιεχομένου
+In this sample you are forced to pick an user: Σε αυτό το δείγμα αναγκάζεστε να επιλέξετε έναν χρήστη
+In this sample you are forced to pick some users: Σε αυτό το δείγμα αναγκάζεστε να επιλέξετε ορισμένους χρήστες
+In this sample you are forced to select some users: Σε αυτό το δείγμα αναγκάζεστε να επιλέξετε ορισμένους χρήστες
+In this sample you can pick one user: Σε αυτό το δείγμα μπορείτε να επιλέξετε έναν χρήστη
+In this sample you can select multiple users: Σε αυτό το δείγμα μπορείτε να επιλέξετε πολλούς χρήστες
+In this sample you can select one user: Σε αυτό το δείγμα μπορείτε να επιλέξετε έναν χρήστη
+Inches: Ίντσες
+Include Entity fields (Export): Συμπερίληψη πεδίων οντότητας (εξαγωγή)
+Incorrect Password.: Λανθασμένος κωδικός πρόσβασης.
+IndeterminateIcon: ΑπροσδιόριστοΕικονίδιο
+Indigo: Ινδικό
+Indonesia: Ινδονησία
+Info: Πληροφορίες
+Info & About: Πληροφορίες & Πληροφορίες
+InfoContrastText: InfoContrastText
+InfoDarken: ΠληροφορίεςDarken
+InfoLighten: Το InfoLighten
+Informal Roman: Άτυπη Ρωμαϊκή
+Information: Πληροφορία
+InfoText: InfoText
+inherit: κληρονομώ
+Inherit: Κληρονομώ
+Initial: Αρχικός
+InitialColor: ΑρχικόΧρώμα
+InitiallyExpanded: ΑρχικάΕπεκτάθηκε
+InitialMessage: ΑρχικόΜήνυμα
+InitialMessageVisibilityTime: InitialMessageVisibilityTime
+InitialPreset: ΑρχικήΠροεπιλογή
+InitialRender: InitialRender
+Inline: Ενσωματωμένη
+Inline Dialog: Ενσωματωμένος διάλογος
+InlineDialogs: Ενσωματωμένοιδιάλογοι
+InProgress: Σε εξέλιξη
+InputClass: InputΚλάση
+InputId: Αναγνωριστικό εισόδου
+InputMode: Λειτουργία εισόδου
+InputStyle: InputStyle
+InputType: Τύπος εισόδου
+Inset: Ένθετο
+IntegratedInDialogAsButtons: ΕνσωματωμέναInDialogAsButtons
+IntegratedInDialogAsImages: IntegratedInDialogAsImages
+InterimResults: ΕνδιάμεσαΑποτελέσματα
+Invalid Credentials.: Μη έγκυρα διαπιστευτήρια.
+IrBlack: ΙρΜπλακ
+IrBlackBase16: IrBlackBase16
+Is Active: Είναι ενεργό
+Is Public: Είναι Δημόσιο
+Is Public?: Είναι δημόσιο;
+is-IS: Ισλανδικά (Ισλανδίας)
+IsActive: Το IsActive
+IsblEditorDark: IsblEditorDark
+IsblEditorLight: IsblEditorLight
+IsMouseOverChip: IsMouseOverChip
+ISO: Το ISO
+IsOpen: Είναι ανοιχτό
+IsotopeBase16: Βάση ισοτόπων16
+ISpeechRecognitionService: ISpeechRecognitionService
+IsPredefined: Είναι προκαθορισμένο
+it-CH: Ιταλικά (Ελβετίας)
+it-IT: Ιταλικά (Ιταλίας)
+it-SM: Ιταλικά (Σαν Μαρίνο)
+it-VA: Ιταλικά (Πόλη του Βατικανού)
+Italian: Ιταλικά
+Item 1: Σημείο 1
+Item 2: Σημείο 2
+Item 3: Σημείο 3
+Item 3, Item 1: Στοιχείο 3, Στοιχείο 1
+Item 4: Σημείο 4
+Item 5: Σημείο 5
+Item One: Στοιχείο πρώτο
+Item Three: Σημείο τρίτο
+Item Two: Στοιχείο δεύτερο
+ItemBackgroundColor: ΧρώμαΦόντουΑντικειμένου
+ItemClass: Κατηγορία αντικειμένου
+ItemCollection: Συλλογή αντικειμένων
+ItemContent: Περιεχόμενο αντικειμένου
+ItemContentClass: ItemContentΚλάση
+ItemContentStyle: ItemContentStyle
+ItemContentTypo: ItemContentTypo
+ItemList: Λίστα αντικειμένων
+Items: Στοιχεία
+ItemsSource: Προέλευση αντικειμένων
+ItemStyle: Στυλ αντικειμένου
+ItemWidth: Πλάτος αντικειμένου
+iu-CA: Inuktitut (Καναδάς)
+iu-Latn-CA: Ινουκτιτούτ (Λατινικά, Καναδάς)
+Ivory: Φίλντισι
+ja-JP: Ιαπωνικά (Ιαπωνία)
+JackInTheBox: Κουτί JackInTheBox
+Jan: Ιαν
+JavaScript: JavaScript
+Jello: Ζελέ
+jgo-CM: Ngomba (Καμερούν)
+jmc-TZ: Machame (Τανζανία)
+John Doe: Τζον Ντο
+Jokerman: Τζόκερμαν
+Json: Τζον
+Json value is required using {0} type!: Η τιμή Json απαιτείται χρησιμοποιώντας {0} τύπο!
+Json value must be a valid json string using {0} type!: Η τιμή Json πρέπει να είναι μια έγκυρη συμβολοσειρά json χρησιμοποιώντας {0} τύπο!
+Juice ITC: Χυμός ITC
+Jul: Ιουλ
+Julia Roberts: Τζούλια Ρόμπερτς
+Jun: Ιουνίου
+Justify: Δικαιολογώ
+jv-Java-ID: Ιάβας (Ιάβας, Ινδονησία)
+jv-Latn-ID: Ιάβας (Λατινικά, Ινδονησία)
+ka-GE: Γεωργιανά (Γεωργία)
+kab-DZ: Καβύλη (Αλγερία)
+kam-KE: Kamba (Κένυα)
+kde-TZ: Makonde (Τανζανία)
+kea-CV: Kabuverdianu (Πράσινο Ακρωτήριο)
+Keep scrolling to reveal the content below...: Συνεχίστε να κάνετε κύλιση για να αποκαλύψετε το περιεχόμενο παρακάτω...
+KeepExisting: ΔιατήρησηΥπάρχον
+KeepMaxSizeConstraints: KeepMaxSizeConstraints
+KeepRelations: ΔιατήρησηΣχέσεων
+KeepState: ΔιατήρησηΚατάσταση
+Kevin Hart: Κέβιν Χαρτ
+Key: Κλειδί
+Key is required!: Απαιτείται κλειδί!
+KeyDownPreventDefault: KeyDownPreventDefault
+KeyDownStopPropagation: KeyDownStopΔιάδοση
+KeyUpPreventDefault: KeyUpPreventDefault
+KeyUpStopPropagation: KeyUpStopΔιάδοση
+Khaki: Χακί
+khq-ML: Koyra Chiini (Μάλι)
+ki-KE: Kikuyu (Κένυα)
+Kilobytes: Kilobytes
+KimberBase16: ΚίμπερΒάση16
+KimbieDark: Κίμπι Νταρκ
+KimbieLight: Κίμπι Λάιτ
+kk-KZ: Καζακστάν (Καζακστάν)
+kkj-CM: Kako (Καμερούν)
+kl-GL: Kalaallisut (Γροιλανδία)
+kln-KE: Kalenjin (Κένυα)
+km-KH: Χμερ (Καμπότζη)
+kn-IN: Κανάντα (Ινδία)
+ko-KP: Κορεάτικα (Βόρεια Κορέα)
+ko-KR: Κορεάτικα (Κορέα)
+kok-IN: Konkani (Ινδία)
+Kommunikation - Mikrofon (Voicemod Virtual Audio Device (WDM)): Επικοινωνία - Μικρόφωνο (Voicemod Virtual Audio Device (WDM))
+kr-Latn-NG: Kanuri (Λατινικά, Νιγηρία)
+ks-Arab-IN: Κασμίρ (Αραβικά, Ινδία)
+ks-Deva-IN: Κασμίρ (Ντεβαναγκάρι, Ινδία)
+ksb-TZ: Σαμπάλα (Τανζανία)
+ksf-CM: Μπάφια (Καμερούν)
+ksh-DE: Κολωνία (Γερμανία)
+ku-Arab-IQ: Κουρδικά (Αραβικά, Ιράκ)
+ku-Arab-IR: Κουρδικά (Αραβικά, Ιράν)
+Kunstler Script: Σενάριο Kunstler
+kw-GB: Cornish (Ηνωμένο Βασίλειο)
+ky-KG: Κιργιζικά (Κιργιστάν)
+la-VA: Λατινικά (Πόλη του Βατικανού)
+Label: Ετικέτα
+Label_Description: Περιγραφή
+Label_for_Age: Label_for_Age
+Label_for_City: Label_for_City
+Label_for_FirstName: Label_for_FirstName
+Label_for_Gender: Label_for_Gender
+Label_for_HouseNumber: Label_for_HouseNumber
+Label_for_Id: Label_for_Id
+Label_for_Notice: Label_for_Notice
+Label_for_OtherAddresses: Label_for_OtherAddresses
+Label_for_PostalCode: Label_for_PostalCode
+Label_for_ProgramingSkills: Label_for_ProgramingSkills
+Label_for_Street: Label_for_Street
+Label_for_TrueOrFalse: Label_for_TrueOrFalse
+Label_UploadRequests: Αρχεία
+LabelCustomTab: ΕτικέταΠροσαρμοσμένηΚαρτέλα
+LabelDefinedTab: ΕτικέταΚαθορισμένηΚαρτέλα
+lag-TZ: Langi (Τανζανία)
+Landscape: Τοπίο
+Language: Γλώσσα
+Languages: Γλώσσες
+Large: Μεγάλος
+LargeZipArchive.zip: LargeZipArchive.zip
+Last Name: Επώνυμο
+Last Name is required: Το επώνυμο είναι υποχρεωτικό
+LastName: Επώνυμο
+Laura Palmer: Λόρα Πάλμερ
+Lavender: Λεβάντα
+LavenderBlush: ΛεβάνταΡουζ
+LawnGreen: Γκαζόν
+LayoutProperties: ΙδιότητεςΔιάταξης
+lb-LU: Λουξεμβουργιανά (Λουξεμβούργο)
+Leave editor focus to update MudExStructuredDataEditor: Αφήστε την εστίαση του επεξεργαστή για να ενημερώσετε το MudExStructuredDataEditor
+LedBars: LedBars
+Left: Αριστερά
+Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): Αριστερό μέρος στο MudExSplitPanel. (Σημειώστε ότι μπορείτε επίσης να χρησιμοποιήσετε απευθείας το MudExSplitter)
+LegacyRender: Παλαιού τύπου
+Legend: Θρύλος
+LemonChiffon: ΛεμόνιΣιφόν
+LetterSpacing: Διάστιχο γραμμάτων
+lg-UG: Γκάντα (Ουγκάντα)
+Library: Βιβλιοθήκη
+LightBlue: Γαλάζιο
+LightBulb: Λάμπα
+LightBulbSize: Μέγεθος λαμπτήρα
+LightBulbSizeUnit: LightBulbSizeUnit
+LightCoral: Ελαφρύ Κοράλλι
+LightCyan: Ανοιχτό κυανό
+Lightfair: Λάιτφερ
+LightGoldenrodYellow: LightGoldenrodΚίτρινο
+LightGray: Ανοιχτό γκρι
+LightGreen: Ανοιχτό πράσινο
+LightOnly: Μόνο φως
+LightPink: Ανοιχτό ροζ
+LightSalmon: Ελαφρύς σολομός
+LightSeaGreen: LightSeaGreen
+LightSkyBlue: ΦωςSkyBlue
+LightSlateGray: ΑνοιχτόΣχιστόλιθοςΓκρι
+LightSpeed: Ταχύτητα φωτός
+LightSteelBlue: LightSteelΜπλε
+LightYellow: Ανοιχτό κίτρινο
+Lime: Ασβέστης
+LimeGreen: Πράσινο λάιμ
+Line: Γραμμή
+Linear: Γραμμικός
+LinearAmplitude: ΓραμμικόΠλάτος
+LinearBoost: Γραμμική ενίσχυση
+LineAreaGraph: ΓραμμικόΓράφημαΠεριοχής
+LineColor: Χρώμα γραμμής
+LineHeight: Ύψος γραμμής
+Lines: Γραμμές
+LinesDefault: ΓραμμέςΠροεπιλογή
+LinesInputs: ΓραμμέςΕίσοδοι
+LineWidth: Πλάτος γραμμής
+Lioshi: Λιόσι
+List: Λίστα
+List appearance: Εμφάνιση λίστας
+List behavior: Συμπεριφορά λίστας
+List item for MudExList.: Στοιχείο λίστας για το MudExList.
+lkt-US: Lakota (Ηνωμένες Πολιτείες)
+ln-AO: Lingala (Αγκόλα)
+ln-CD: Lingala (Κονγκό [ΛΔΚ])
+ln-CF: Lingala (Κεντροαφρικανική Δημοκρατία)
+ln-CG: Lingala (Κονγκό)
+lo-LA: Λάος (Λάος)
+LoadFileDataBytesInBackground: ΦόρτωσηΑρχείοΔεδομένωνBytesInBackground
+Loading: Φόρτωση
+Loading...: Φόρτωση...
+Local: Τοπικός
+LocalizerPattern: LocalizerPattern
+LockScroll: Κλείδωμα κύλισης
+Log: Κούτσουρο
+Logged In.: Συνδεδεμένος.
+Logged Out.: Αποσυνδέθηκε.
+LogicalSurface: ΛογικήΕπιφάνεια
+Login with Keycloak: Συνδεθείτε με το Keycloak
+LoginDescription: Συνδεθείτε με τα διαπιστευτήριά σας.
+Logitech BRIO (046d:085e): Logitech BRIO (046d:085e)
+logLevel: Επίπεδο αρχείου καταγραφής
+logo.png: logo.png
+Logout: Αποσύνδεση
+Logout Confirmation: Θέλετε πραγματικά να αποσυνδεθείτε;
+Logout user: Αποσύνδεση χρήστη
+London: Λονδίνο
+London - SW1A 1AA: Λονδίνο - SW1A 1AA
+London - SW1A 1AAender: Λονδίνο - SW1A 1AAender
+LondonTubeBase16: ΛονδίνοTubeBase16
+LoRes: Λόρδων
+Los Angeles: Λος Άντζελες
+Los Angeles - 90001: Λος Άντζελες - 90001
+Los Angeles - 90001ender: Λος Άντζελες - 90001ender
+lrc-IQ: Βόρειο Λούρι (Ιράκ)
+lrc-IR: Βόρειο Λούρι (Ιράν)
+lt-LT: Λιθουανικά (Λιθουανία)
+lu-CD: Λούμπα-Κατάνγκα (Κονγκό [ΛΔΚ])
+Lucida Bright: Λουσίντα Μπράιτ
+Lucida Calligraphy: Lucida Καλλιγραφία
+Lucida Console: Κονσόλα Lucida
+Lucida Fax: Φαξ Lucida
+Lucida Grande: Λουσίντα Γκράντε
+Lucida Handwriting: Χειρόγραφο Lucida
+Lucida Sans: Λουσίντα Σανς
+Lucida Sans Typewriter: Γραφομηχανή Lucida Sans
+Lucida Sans Unicode: Lucida Sans Unicode
+LumiBars: ΛούμιΜπαρ
+luo-KE: Luo (Κένυα)
+luy-KE: Luyia (Κένυα)
+lv-LV: Λετονικά (Λετονία)
+Lyon: Λυών
+Lyon - 69001: Λυών - 69001
+Lyon - 69001ender: Λυών - 69001ender
+Lyrics: Στίχοι
+MacintoshBase16: Βάση Macintosh16
+Magneto: Μαγνητο
+Magula: Μαγκούλα
+mai-IN: Maithili (Ινδία)
+Mail: Ταχυδρομείο
+Main User: Κύριος χρήστης
+MainAddress: Κύρια διεύθυνση
+MainSample.WebAssembly.Pages.Page_ObjectEditList+Brand: MainSample.WebAssembly.Pages.Page_ObjectEditList+Μάρκα
+MainSample.WebAssembly.Services.SampleFile: MainSample.WebAssembly.Services.SampleFile
+MainSample.WebAssembly.Services.SampleFileWithStream: MainSample.WebAssembly.Services.SampleFileWithStream
+MainUser: ΚύριοςΧρήστης
+Male: Αρσενικός
+Manage {0} {1}'s Extended Attributes: Διαχείριση των εκτεταμένων χαρακτηριστικών του {0} {1}
+Manage {0} {1}'s Permissions: Διαχείριση των δικαιωμάτων του {0} {1}
+Manage {0} {1}'s Roles: Διαχειριστείτε τους ρόλους του {0} {1}
+Manage {0} Extended Attributes: Διαχείριση {0} Εκτεταμένων Χαρακτηριστικών
+Manage {0}'s Permissions: Διαχείριση των δικαιωμάτων του {0}
+Manage Brands.: Διαχείριση επωνυμιών.
+Manage Database Backups.: Διαχειριστείτε ή επαναφέρετε αντίγραφα ασφαλείας βάσης δεδομένων.
+Manage Document Types.: Διαχείριση τύπων εγγράφων.
+Manage Extended Attributes: Διαχείριση Εκτεταμένων Χαρακτηριστικών
+Manage Languages: Διαχείριση γλωσσών
+Manage Permission: Διαχείριση δικαιωμάτων
+Manage Products.: Διαχείριση προϊόντων.
+Manage Roles: Διαχείριση ρόλων
+Manage Roles.: Διαχείριση ρόλων.
+Manage Translations: Διαχείριση μεταφράσεων
+Manage Users: Διαχείριση χρηστών
+Manage your account: Διαχείριση του λογαριασμού σας
+Manchester: Μάντσεστερ
+Manchester - M1 1AE: Μάντσεστερ - M1 1AE
+Manchester - M1 1AEender: Μάντσεστερ - M1 1AEender
+Manual: Εγχειρίδιο
+Mar: Μαρ
+Margin: Περιθώριο
+Mark all: Επισήμανση όλων
+Mark all as read: Επισήμανση όλων ως αναγνωσμένων
+Mark all as unread: Επισήμανση όλων ως μη αναγνωσμένων
+Mark as read: Ο Μαρκ διάβασε
+Mark as unread: Επισήμανση ως μη αναγνωσμένου
+MarrakeshBase16: ΜαρακέςΒάση16
+Marseille: Μασσαλία
+Marseille - 13001: Μασσαλία - 13001
+Marseille - 13001ender: Μασσαλία - 13001ender
+mas-KE: Μασάι (Κένυα)
+mas-TZ: Μασάι (Τανζανία)
+Mask: Μάσκα
+MateriaBase16: MateriaBase16
+MaterialBase16: ΥλικόΒάση16
+MaterialDarkerBase16: ΥλικόDarkerBase16
+MaterialLighterBase16: ΥλικόΑναπτήραςΒάση16
+MaterialPalenightBase16: ΥλικόPalenightBase16
+MaterialVividBase16: ΥλικόVividBase16
+Matura MT Script Capitals: Matura MT Κεφαλαία Σεναρίου
+MaxCaptureTime: ΜέγιστοςΧρόνος Λήψης
+MaxChips: Μέγιστα τσιπ
+MaxDecibels: MaxΝτεσιμπέλ
+MaxFileSize: ΜέγιστοΜέγεθοςΑρχείου
+MaxFPS: Μέγιστα FPS
+MaxFrequency: Μέγιστη συχνότητα
+MaxHeight: Μέγιστο ύψος
+MaximizeButton: Κουμπί MaximizeButton
+MaxItems: Μέγιστα αντικείμενα
+MaxItemWidth: ΜέγιστοΠλάτος Αντικειμένου
+MaxLength: Μέγιστο μήκος
+MaxLuminance: Μέγιστη φωτεινότητα
+MaxMultipleFiles: MaxMultipleFiles
+MaxRecordingTime: ΜέγιστοςΧρόνος Εγγραφής
+MaxWidth: Μέγιστο πλάτος
+MaxZoomPixelRatio: MaxZoomPixelRatio
+May: Μάιος
+Medium: Μέτριος
+MediumSlateBlue: ΜεσαίοΣχιστόλιθοςΜπλε
+MediumSpringGreen: ΜεσαίοΑνοιξιάτικοΠράσινο
+MediumTurquoise: ΜεσαίοΤιρκουάζ
+MediumVioletRed: ΜεσαίοΒιολετίΚόκκινο
+Megabytes: Megabyte
+Mel: Μελ
+MellowPurpleBase16: MellowPurpleBase16
+MenuAnchorOrigin: ΜενούAnchorOrigin
+MenuMaxHeight: ΜενούΜέγιστοΎψος
+MenuTransformOrigin: ΜενούTransformOrigin
+mer-KE: Meru (Κένυα)
+Message will be deleted in {0} seconds: Το μήνυμα θα διαγραφεί σε {0} δευτερόλεπτα
+MessageClass: MessageΚλάση
+MessageStyle: Στυλ μηνύματος
+MetaCoverImage: MetaCoverΕικόνα
+Method 1: Μέθοδος 1
+Method 2: Μέθοδος 2
+MexicoLightBase16: ΜεξικόLightBase16
+mfe-MU: Morisyen (Μαυρίκιος)
+mg-MG: Μαδαγασκάρη (Μαδαγασκάρη)
+mgh-MZ: Makhuwa-Meetto (Μοζαμβίκη)
+mgo-CM: Metaʼ (Καμερούν)
+mi-NZ: Μαορί (Νέα Ζηλανδία)
+Michael Scott: Μάικλ Σκοτ
+MicrophoneDeviceId: Αναγνωριστικό συσκευής μικροφώνου
+MidnightBlue: Μπλε του Μεσονυχτίου
+Mikrofon (3- RODE NT-USB) (19f7:0003): Μικρόφωνο (3-RODE NT-USB) (19f7:0003)
+Mikrofon (DroidCam Virtual Audio): Μικρόφωνο (DroidCam Virtual Audio)
+Mikrofon (Logitech BRIO) (046d:085e): Μικρόφωνο (Logitech BRIO) (046d:085e)
+Mikrofon (ROG Headset) (0b05:1876): Μικρόφωνο (ακουστικά ROG) (0b05:1876)
+Mikrofon (USB Audio Device) (1b3f:2008): Μικρόφων (USB Audio Device) (1b3f:2008)
+Mikrofon (Voicemod Virtual Audio Device (WDM)): Μικρόφων (Voicemod Virtual Audio Device (WDM))
+Millimeters: Χιλιοστόμετρα
+MimeRestrictionType: MimeRestrictionType
+MimeTypes: MimeΤύποι
+MinDecibels: MinDecibels
+MinFrequency: Ελάχιστη συχνότητα
+MinHeight: Ελάχιστο ύψος
+Mini: Μίνι
+MinimizeButton: Κουμπί ελαχιστοποίησης
+MinLuminance: Ελάχιστη φωτεινότητα
+MintCream: Κρέμα μέντας
+MinZoomLevel: MinZoomLevel
+Mirror: Καθρέφτης
+Misc: Διάφορα
+Misc Options: Διάφορες επιλογές
+Mistral: Μιστράλ
+MistyRose: Μίστι Ρόουζ
+mk-MK: Σλαβομακεδονικά (Βόρεια Μακεδονία)
+ml-IN: Μαλαγιαλάμ (Ινδία)
+mn-MN: Μογγολικά (Μογγολία)
+mn-Mong-CN: Μογγολικά (Μογγολικά, Κίνα)
+mn-Mong-MN: Μογγολικά (Μογγολικά, Μογγολία)
+mni-IN: Μανιπούρι (Ινδία)
+Moccasin: Μοκασίνι
+MochaBase16: ΜόκαΒάση16
+Modal: Πρωτεύουσα
+Mode: Μόδα
+Model with File: Μοντέλο με λίμα
+Modern No. 20: Μοντέρνο Νο 20
+moh-CA: Mohawk (Καναδάς)
+Monaco: Μονακό
+Monitor: Οθόνη
+MonoBlue: Μονομπλε
+Monokai: Μονοκάι
+MonokaiBase16: ΜονοκάιΒάση16
+MonokaiSublime: ΜονοκάιΥπέροχο
+Monotype Corsiva: Μονοτυπία Corsiva
+Month: Μήνας
+Montreal: Μόντρεαλ
+Montreal - H1A 0A1: Μόντρεαλ - H1A 0A1
+Montreal - H1A 0A1ender: Μόντρεαλ - H1A 0A1ender
+Montserrat: Μοντσερράτ
+Motion: Κίνηση
+Mouse: Ποντίκι
+MouseOverMessageClass: MouseOverMessageClass
+MouseOverMessageStyle: MouseOverMessageStyle
+MouseWheelDownAction: ΠοντίκιΤροχόςΚάτωΔράση
+MouseWheelUpAction: ΠοντίκιWheelUpAction
+MoveContent: Μετακίνηση Περιεχομένου
+mr-IN: Μαράθι (Ινδία)
+MS Outlook: MS Outlook
+MS Reference Sans Serif: Αναφορά MS Sans Serif
+MS Reference Specialty: Ειδικότητα αναφοράς MS
+MS Sans Serif: MS Sans Serif
+MS Serif: Κ.Σ. Σερίφ
+ms-BN: Μαλαισιανά (Μπρουνέι)
+ms-ID: Μαλαισιανά (Ινδονησία)
+ms-MY: Μαλαισιανά (Μαλαισία)
+ms-SG: Μαλαισιανά (Σιγκαπούρη)
+mt-MT: Μαλτέζικα (Μάλτα)
+mua-CM: Mundang (Καμερούν)
+mud-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788: λάσπη-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788
+MudAlert: MudAlert
+MudAppBar: MudAppBar
+MudAvatar: Λασποάβαταρ
+MudAvatarGroup: Ομάδα MudAvatar
+MudBadge: Σήμα λάσπης
+MudBlazor Components: Εξαρτήματα MudBlazor
+MudBlazor Popover: MudBlazor Popover
+MudBlazor.Extensions.Components.ThemePreset`1[MainSample.WebAssembly.ClientTheme]: MudBlazor.Extensions.Components.ThemePreset'1[MainSample.WebAssembly.ClientTheme]
+MudBreadcrumbs: ΛάσπηΤριμμένη Φρυγανιά
+MudBreakpointProvider: MudBreakpointΠάροχος
+MudButton: Κουμπί λάσπης
+MudButtonGroup: Ομάδα MudButton
+MudCard: Κάρτα λάσπης
+MudCardActions: MudCardΔράσεις
+MudCardContent: MudCardΠεριεχόμενο
+MudCardHeader: Κεφαλίδα MudCardHeader
+MudCardMedia: MudCardMedia
+MudCarouselItem: Καρουζέλ ΛάσπηςΑντικείμενο
+MudChart: Διάγραμμα λάσπης
+MudChat: Το MudChat
+MudChatBubble: Φούσκα MudChatBubble
+MudChatFooter: MudChatFooter
+MudChatHeader: MudChatΚεφαλίδα
+MudCollapse: Κατάρρευση λάσπης
+MudColorPicker: Επιλογέας χρώματος λάσπης
+MudColorStringFormat: MudColorStringFormat
+MudContainer: Δοχείο λάσπης
+MudContextualActionBar: MudContextualActionBar
+MudDatePicker: MudDatePicker
+MudDateRangePicker: MudDateRangePicker
+MudDialog: MudDialog
+MudDialogContainer: MudDialogContainer
+MudDialogProvider: MudDialogProvider
+MudDivider: Διαιρέτης λάσπης
+MudDrawer: Συρτάρι λάσπης
+MudDrawerContainer: MudDrawerContainer
+MudDrawerHeader: MudDrawerΚεφαλίδα
+MudDynamicTabs: MudDynamicTabs
+MudElement: Στοιχείο λάσπης
+MudEx Components: Εξαρτήματα MudEx
+MudExAdditionalAdornment: MudExΠρόσθετοςΣτολισμός
+MudExAppearance: MudExΕμφάνιση
+MudExAppLoader: MudExAppLoader
+MudExAudioPlayer: MudExAudioPlayer
+MudExCaptureButton: Κουμπί MudExCapture
+MudExCaptureOptionsEdit: MudExCaptureOptionsΕπεξεργασία
+MudExCardList: MudExCardList
+MudExCardList with ItemsSource: MudExCardList με ItemsSource
+MudExCardList with ItemsSource and child content: MudExCardList με ItemsSource και θυγατρικό περιεχόμενο
+MudExCardList<TData>: MudExCardList<TData>
+MudExChipSelect: MudExChipSelect
+MudExChipSelect can used to select items from a collection as chips: Το MudExChipSelect μπορεί να χρησιμοποιηθεί για την επιλογή αντικειμένων από μια συλλογή ως μάρκες
+MudExChipSelect<T>: MudExChipSelect<T>
+MudExCodeView: MudExCodeView
+MudExCollectionEditor<T>: MudExCollectionEditor<T>
+MudExColor: Χρώμα MudExColor
+MudExColorBubble: MudExColorBubble
+MudExColorEdit: MudExColorΕπεξεργασία
+MudExColorEdit is in general a MudBlazor Picker component specially for the struct MudExColor. But because name MudExColorPicker is already used for an extended ColorPicker this Component is named MusExColorEdit: Το MudExColorEdit είναι γενικά ένα εξάρτημα MudBlazor Picker ειδικά για τη δομή MudExColor. Αλλά επειδή το όνομα MudExColorPicker χρησιμοποιείται ήδη για ένα εκτεταμένο ColorPicker, αυτό το στοιχείο ονομάζεται MusExColorEdit
+MudExColorPicker: MudExColorPicker
+MudExColorUtils: MudExColorUtils
+MudExCss: MudExCss
+MudExCssBuilder: MudExCssBuilder
+MudExCultureSelect: MudExCultureSelect
+MudExDialog: MudExDialog
+MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: Το MudExDialog είναι το στοιχείο που πρέπει να χρησιμοποιήσετε όταν θέλετε να εμφανίσετε ένα παράθυρο διαλόγου ενσωματωμένο στη σελίδα σας με όλα τα DialogExtensions.
+MudExDivider: MudExΔιαχωριστικό
+MudExDropBoxFilePicker: MudExDropBoxFilePicker
+MudExEnumSelect: MudExEnumSelect
+MudExEnumSelect<TEnum>: MudExEnumSelect<TEnum>
+MudExFileDisplay: Οθόνη MudExFileDisplay
+MudExFileDisplayCode: MudExFileDisplayCode
+MudExFileDisplayDialog: MudExFileDisplayDialog
+MudExFileDisplayExcel: MudExFileDisplayExcel
+MudExFileDisplayFont: MudExFileDisplayFont
+MudExFileDisplayHtml: MudExFileDisplayHtml
+MudExFileDisplayOfficeLive: MudExFileDisplayOfficeLive
+MudExFileDisplayStructuredData: MudExFileDisplayStructuredData
+MudExFileDisplayZip: MudExFileDisplayZip
+MudExFontSelect: MudExFontSelect
+MudExFontSelect can used to select one ore more fonts: Το MudExFontSelect μπορεί να χρησιμοποιηθεί για την επιλογή μίας ή περισσότερων γραμματοσειρών
+MudExGoogleFilePicker: MudExGoogleFilePicker
+MudExGradientText: MudExGradientText
+MudExGravatar: MudExGravatar
+MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: Το MudExGravatar είναι ένα MudAvatar που χρησιμοποιεί αυτόματα την εικόνα προφίλ από το gravatar για μια διεύθυνση email
+MudExGrid: MudExGrid
+MudExGrid Enhanced: Βελτιωμένο MudExGrid
+MudExGridSection: MudExGridSection
+MudExGroupBox: MudExGroupBox
+MudExHtmlEdit: MudExHtmlΕπεξεργασία
+MudExIcon: Εικονίδιο MudExIcon
+MudExIcon is a simple MudIcon with extended possibilities to set all colors.: Το MudExIcon είναι ένα απλό MudIcon με εκτεταμένες δυνατότητες ρύθμισης όλων των χρωμάτων.
+MudExIconButton: MudExIconButton
+MudExIconPicker: MudExIconPicker
+MudExIconPicker is in general a MudBlazor Picker component specially for selecting an icon.: Το MudExIconPicker είναι γενικά ένα στοιχείο MudBlazor Picker ειδικά για την επιλογή ενός εικονιδίου.
+MudExImageViewer: MudExImageViewer
+MudExList: Λίστα MudExList
+MudExList can used to select one ore more items from a bindeable collection.: Το MudExList μπορεί να χρησιμοποιηθεί για την επιλογή ενός ή περισσότερων στοιχείων από μια συλλογή με δυνατότητα βιβλιοδεσίας.
+MudExList is a component that allows you to select an item from a list of items. It is a wrapper for MudList.: Το MudExList είναι ένα στοιχείο που σας επιτρέπει να επιλέξετε ένα στοιχείο από μια λίστα στοιχείων. Είναι ένα περιτύλιγμα για το MudList.
+MudExList<T>: Λίστα MudExList<T>
+MudExListItem<T>: MudExListItem<T>
+MudExListSubheader is a sub header for MudExList.: Το MudExListSubheader είναι μια δευτερεύουσα κεφαλίδα για το MudExList.
+MudExListSubheader<T>: MudExListΥποκεφαλίδα<T>
+MudExMessageDialog: MudExMessageDialog
+MudExObjectEdit: MudExObjectEdit
+MudExObjectEdit and MudExCollectionEditor with a shared config: MudExObjectEdit και MudExCollectionEditor με κοινόχρηστη διαμόρφωση
+MudExObjectEdit with virtual property rendering: MudExObjectEdit με απόδοση εικονικής ιδιότητας
+MudExObjectEdit<T>: MudExObjectEdit<T>
+MudExObjectEditDialog<T>: MudExObjectEditDialog<T>
+MudExObjectEditForm<T>: MudExObjectEditForm<T>
+MudExObjectEditPicker<T>: MudExObjectEditPicker<T>
+MudExOneDriveFilePicker: MudExOneDriveFilePicker
+MudExpansionPanel: Πίνακας επέκτασης λάσπης
+MudExpansionPanels: Πάνελ επέκτασης λάσπης
+MudExPicker: MudExPicker
+MudExPickerBase<T>: MudExPickerBase<T>
+MudExPopover: MudExPopover
+MudExPromptDialog: MudExPromptDialog
+MudExPromptDialog Component: Στοιχείο MudExPromptDialog
+MudExPropertyEdit: MudExPropertyΕπεξεργασία
+MudExSelect: Επιλογή MudExSelect
+MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: Το MudExSelect μπορεί να χρησιμοποιηθεί για την επιλογή ενός ή περισσότερων αντικειμένων από μια συλλογή με δυνατότητα βιβλιοδεσίας. Επίσης, αυτό το στοιχείο υποστηρίζει όλα τα κινούμενα σχέδια όπως διαλόγους ή MudExPopover.
+MudExSelect<T>: Επιλογή MudExSelect<T>
+MudExSelectItem is a select item for MudExSelect.: Το MudExSelectItem είναι ένα επιλεγμένο στοιχείο για το MudExSelect.
+MudExSelectItem<T>: MudExSelectItem<T>
+MudExSize is a readonly struct that provides a convenient and type-safe way to deal with size values in the context of MudBlazor components.: Το MudExSize είναι μια δομή μόνο για ανάγνωση που παρέχει έναν βολικό και ασφαλή τρόπο αντιμετώπισης των τιμών μεγέθους στο πλαίσιο των στοιχείων MudBlazor.
+MudExSize<T>: Μέγεθος MudExSize<T>
+MudExSlideBar: MudExSlideBar
+MudExSpeechToTextButton: MudExSpeechToTextButton
+MudExSplitPanel: MudExSplitPanel
+MudExSplitPanelItem: MudExSplitPanelItem
+MudExSplitter: MudExSplitter
+MudExStructuredDataEditor: MudExStructuredDataEditor
+MudExStyleBuilder: MudExStyleBuilder
+MudExSvg: MudExSvg
+MudExTagField: Πεδίο MudExTagField
+MudExTagField creates chips when user press on of the specified delimiter or presses enter.: Το MudExTagField δημιουργεί μάρκες όταν ο χρήστης πατήσει τον καθορισμένο οριοθέτη ή πατήσει enter.
+MudExTagField is a component that allows the user to enter a list of values as chips.: Το MudExTagField είναι ένα στοιχείο που επιτρέπει στο χρήστη να εισάγει μια λίστα τιμών ως τσιπ.
+MudExTagField<T>: Πεδίο MudExTagField<T>
+MudExTaskBar: MudExTaskBar
+MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide  somewhere in your Layout: Το MudExTaskBar κληρονομεί το MudExSlideBar και παρέχει μια γραμμή καρτελών για την επιλογή μη τροπικών διαλόγων. Απλώς δώστε κάπου στη Διάταξή σας
+MudExTextField<T>: MudExTextField<T>
+MudExThemeEdit: MudExThemeΕπεξεργασία
+MudExThemeEdit is a powerful component to edit one ore more themes: Το MudExThemeEdit είναι ένα ισχυρό στοιχείο για την επεξεργασία ενός ή περισσότερων θεμάτων
+MudExThemeEdit<TTheme>: MudExThemeΕπεξεργασία<TTheme>
+MudExThemeSelect: MudExThemeSelect
+MudExThemeSelect<TTheme>: MudExThemeSelect<TTheme>
+MudExToggleableSearch: MudExToggleableSearch
+MudExTreeView: MudExTreeView
+MudExTreeView is useful to bind tree structured items. The control that should used can be set with the ViewMode property: Το MudExTreeView είναι χρήσιμο για τη σύνδεση δομημένων στοιχείων δέντρου. Το στοιχείο ελέγχου που πρέπει να χρησιμοποιηθεί μπορεί να οριστεί με την ιδιότητα ViewMode
+MudExTreeView with template: MudExTreeView με πρότυπο
+MudExTreeView<T>: MudExTreeView<T>
+MudExTreeViewBreadcrumb: MudExTreeViewBreadcrumb
+MudExTreeViewBreadcrumb<T>: MudExTreeViewBreadcrumb<T>
+MudExTreeViewCardGrid: MudExTreeViewCardGrid
+MudExTreeViewCardGrid<T>: MudExTreeViewCardGrid<T>
+MudExTreeViewDefault: MudExTreeViewΠροεπιλογή
+MudExTreeViewDefault<T>: MudExTreeViewΠροεπιλογή<T>
+MudExTreeViewFlatList: MudExTreeViewFlatList
+MudExTreeViewFlatList<T>: MudExTreeViewFlatList<T>
+MudExTreeViewHorizontal: MudExTreeViewΟριζόντια
+MudExTreeViewHorizontal<T>: MudExTreeViewΟριζόντια<T>
+MudExTreeViewList: MudExTreeViewList
+MudExTreeViewList<T>: MudExTreeViewList<T>
+MudExUploadEdit: MudExUploadΕπεξεργασία
+MudExUploadEdit<T>: MudExUploadΕπεξεργασία<T>
+MudExVirtualItem: MudExVirtualItem
+MudExVirtualize<TItem>: MudExVirtualize<TItem>
+MudFab: Το MudFab
+MudField: Πεδίο λάσπης
+MudFlexBreak: ΛάσπηFlexBreak
+MudFocusTrap: MudFocusTrap
+MudForm: Μορφή λάσπης
+MudGrid: Πλέγμα λάσπης
+MudHeatMapCell: Το MudHeatMapCell
+MudHidden: ΛάσπηΚρυμμένο
+MudHighlighter: MudHighlighter
+MudIcon: Εικονίδιο λάσπης
+MudIconButton: MudIconButton
+MudImage: Εικόνα λάσπης
+MudInputAdornment: MudInputΣτολισμός
+MudInputControl: MudInputControl
+MudInputLabel: MudInputLabel
+MudInputString: MudInputString
+MudItem: Αντικείμενο λάσπης
+MudLayout: Διάταξη λάσπης
+MudLink: Σύνδεσμος λάσπης
+MudListSubheader: MudListΥποκεφαλίδα
+MudMainContent: MudMainΠεριεχόμενο
+MudMask: Μάσκα λάσπης
+MudMenu: Μενού λάσπης
+MudMenuItem: MudMenuItem
+MudMessageBox: MudMessageBox
+MudNavGroup: Ομάδα MudNav
+MudNavLink: MudNavLink
+MudNavMenu: MudNavΜενού
+MudOverlay: Επικάλυψη λάσπης
+MudPageContentNavigation: MudPageContentNavigation
+MudPagination: Σελιδοποίηση λάσπης
+MudPaper: Λασπόχαρτο
+MudPickerContent: MudPickerΠεριεχόμενο
+MudPickerToolbar: Γραμμή εργαλείων MudPicker
+MudPopover: Λασποποπόβερ
+MudPopoverProvider: MudPopoverΠάροχος
+MudProgressCircular: MudProgressΕγκύκλιος
+MudProgressLinear: MudProgressLinear
+MudRating: Βαθμολογία λάσπης
+MudRatingItem: MudRatingItem
+MudRender: MudRender
+MudRTLProvider: MudRTLProvider
+MudScrollToTop: MudScrollToTop
+MudSimpleTable: MudSimpleTable
+MudSkeleton: Σκελετός λάσπης
+MudSnackbarElement: ΛάσπηSnackbarElement
+MudSnackbarProvider: MudSnackbarΠάροχος
+MudSpacer: Διαχωριστής λάσπης
+MudStack: Λάσπη
+MudStep: Λάσπη
+MudStepper: MudStepper
+MudSwipeArea: MudSwipeArea
+MudTablePager: Επιτραπέζιος Τηλεειδοποιητής MudTablePager
+MudTabPanel: MudTabPanel
+MudTabs: MudTabs
+MudTd: MudTd
+MudText: Κείμενο λάσπης
+MudTextField with additional features: MudTextField με πρόσθετες δυνατότητες
+MudTFootRow: MudTFootRow
+MudTh: ΜουντΘ
+MudTHeadRow: MudTHeadRow
+MudThemeProvider: Πάροχος MudThemeProvider
+MudTimeline: Χρονολόγιο λάσπης
+MudTimelineItem: MudTimelineItem
+MudTimePicker: MudTimePicker
+MudTimeSeriesChart: Διάγραμμα MudTimeSeriesChart
+MudToggleIconButton: MudToggleIconButton
+MudToolBar: MudToolBar
+MudTooltip: MudTooltip
+MudTr: Το MudTr
+MudTreeViewItemToggleButton: MudTreeViewItemToggleButton
+MultiSelect: Πολλαπλή επιλογή
+MultiSelection: Πολλαπλή επιλογή
+MultiSelectionAlign: Στοίχιση πολλαπλών επιλογών
+MultiSelectionComponent: MultiSelectionComponent
+MultiSelectWithCtrlKey: MultiSelectWithCtrlKey
+My Custom action: Η προσαρμοσμένη ενέργεια μου
+my-MM: Βιρμανικά (Μιανμάρ)
+mzn-IR: Mazanderani (Ιράν)
+name: Όνομα
+Name: Όνομα
+Name is required: Το όνομα είναι υποχρεωτικό
+Name is required!: Το όνομα είναι υποχρεωτικό!
+NameContainerStyle: ΌνομαContainerStyle
+Names: Ονόματα
+naq-NA: Όνομα (Ναμίμπια)
+Natalie Portman: Νάταλι Πόρτμαν
+NavajoWhite: NavajoΛευκό
+NavigationExpandMode: ΠλοήγησηExpandMode
+NavigationLinkBarClass: NavigationLinkBarClass
+NavigationLinkBarStyle: NavigationLinkBarStyle
+NavigationViewMode: NavigationViewMode (Λειτουργία πλοήγησης)
+NavigatorClass: Κλάση Navigator
+NavigatorPosition: Θέση πλοηγού
+NavigatorRectangleColor: ΠλοηγόςΟρθογώνιοΧρώμα
+NavigatorSizeRatio: Αναλογία μεγέθους πλοηγού
+Navy: Ναυτικό
+nb-NO: Νορβηγικό Μποκμάλ (Νορβηγία)
+nb-SJ: Νορβηγικό Μποκμάλ (Σβάλμπαρντ & Γιαν Μαγιέν)
+nd-ZW: North Ndebele (Ζιμπάμπουε)
+nds-DE: Κάτω Γερμανικά (Γερμανία)
+nds-NL: Κάτω Γερμανικά (Ολλανδία)
+ne-IN: Νεπάλ (Ινδία)
+ne-NP: Νεπάλ (Νεπάλ)
+NebulaBase16: ΝεφέλωμαΒάση16
+Never: Ποτέ
+New: Νέος
+NEW Dialog Drag Drop Mode: ΝΕΟ Λειτουργία μεταφοράς απόθεσης διαλόγου
+New dialog Feature - SnapDrag: Νέα λειτουργία διαλόγου - SnapDrag
+New Message From {0}: Νέο μήνυμα από {0}
+New MudExStructureDataEditor can used to edit json, xml or yaml string in a MudExObjectEdit: Το νέο MudExStructureDataEditor μπορεί να χρησιμοποιηθεί για την επεξεργασία συμβολοσειράς json, xml ή yaml σε ένα MudExObjectEdit
+New Password: Νέος κωδικός πρόσβασης
+New User 100: Νέος χρήστης 100
+New User 101: Νέος χρήστης 101
+New User 102: Νέος χρήστης 102
+New User 103: Νέος χρήστης 103
+New User 104: Νέος χρήστης 104
+New User 105: Νέος χρήστης 105
+New User 106: Νέος χρήστης 106
+New User 107: Νέος χρήστης 107
+New User 108: Νέος χρήστης 108
+New User 109: Νέος χρήστης 109
+New User 110: Νέος χρήστης 110
+New User 111: Νέος χρήστης 111
+New User 112: Νέος χρήστης 112
+New User 113: Νέος χρήστης 113
+New User 114: Νέος χρήστης 114
+New User 115: Νέος χρήστης 115
+New User 116: Νέος χρήστης 116
+New User 117: Νέος χρήστης 117
+New User 118: Νέος χρήστης 118
+New User 119: Νέος χρήστης 119
+New User 120: Νέος χρήστης 120
+New User 121: Νέος χρήστης 121
+New User 122: Νέος χρήστης 122
+New User 123: Νέος χρήστης 123
+New User 124: Νέος χρήστης 124
+New User 125: Νέος χρήστης 125
+New User 126: Νέος χρήστης 126
+New User 127: Νέος χρήστης 127
+New User 128: Νέος χρήστης 128
+New User 129: Νέος χρήστης 129
+New User 130: Νέος χρήστης 130
+New User 131: Νέος χρήστης 131
+New User 132: Νέος χρήστης 132
+New User 133: Νέος χρήστης 133
+New User 134: Νέος χρήστης 134
+New User 135: Νέος χρήστης 135
+New User 136: Νέος χρήστης 136
+New User 137: Νέος χρήστης 137
+New User 138: Νέος χρήστης 138
+New User 139: Νέος χρήστης 139
+New User 140: Νέος χρήστης 140
+New User 141: Νέος χρήστης 141
+New User 142: Νέος χρήστης 142
+New User 143: Νέος χρήστης 143
+New User 144: Νέος χρήστης 144
+New User 145: Νέος χρήστης 145
+New User 146: Νέος χρήστης 146
+New User 147: Νέος χρήστης 147
+New User 148: Νέος χρήστης 148
+New User 149: Νέος χρήστης 149
+New User 150: Νέος χρήστης 150
+New User 151: Νέος χρήστης 151
+New User 152: Νέος χρήστης 152
+New User 153: Νέος χρήστης 153
+New User 154: Νέος χρήστης 154
+New User 155: Νέος χρήστης 155
+New User 156: Νέος χρήστης 156
+New User 157: Νέος χρήστης 157
+New User 158: Νέος χρήστης 158
+New User 159: Νέος χρήστης 159
+New User 160: Νέος χρήστης 160
+New User 161: Νέος χρήστης 161
+New User 162: Νέος χρήστης 162
+New User 163: Νέος χρήστης 163
+New User 164: Νέος χρήστης 164
+New User 165: Νέος χρήστης 165
+New User 166: Νέος χρήστης 166
+New User 167: Νέος χρήστης 167
+New User 168: Νέος χρήστης 168
+New User 169: Νέος χρήστης 169
+New User 170: Νέος χρήστης 170
+New User 171: Νέος χρήστης 171
+New User 172: Νέος χρήστης 172
+New User 173: Νέος χρήστης 173
+New User 174: Νέος χρήστης 174
+New User 175: Νέος χρήστης 175
+New User 176: Νέος χρήστης 176
+New User 177: Νέος χρήστης 177
+New User 178: Νέος χρήστης 178
+New User 179: Νέος χρήστης 179
+New User 180: Νέος χρήστης 180
+New User 181: Νέος χρήστης 181
+New User 182: Νέος χρήστης 182
+New User 183: Νέος χρήστης 183
+New User 184: Νέος χρήστης 184
+New User 185: Νέος χρήστης 185
+New User 186: Νέος χρήστης 186
+New User 187: Νέος χρήστης 187
+New User 188: Νέος χρήστης 188
+New User 189: Νέος χρήστης 189
+New User 190: Νέος χρήστης 190
+New User 191: Νέος χρήστης 191
+New User 192: Νέος χρήστης 192
+New User 193: Νέος χρήστης 193
+New User 194: Νέος χρήστης 194
+New User 195: Νέος χρήστης 195
+New User 196: Νέος χρήστης 196
+New User 197: Νέος χρήστης 197
+New User 198: Νέος χρήστης 198
+New User 199: Νέος χρήστης 199
+New User 200: Νέος χρήστης 200
+New User 201: Νέος χρήστης 201
+New User 202: Νέος χρήστης 202
+New User 203: Νέος χρήστης 203
+New User 204: Νέος χρήστης 204
+New User 205: Νέος χρήστης 205
+New User 206: Νέος χρήστης 206
+New User 207: Νέος χρήστης 207
+New User 208: Νέος χρήστης 208
+New User 209: Νέος χρήστης 209
+New User 21: Νέος χρήστης 21
+New User 210: Νέος χρήστης 210
+New User 211: Νέος χρήστης 211
+New User 212: Νέος χρήστης 212
+New User 213: Νέος χρήστης 213
+New User 214: Νέος χρήστης 214
+New User 215: Νέος χρήστης 215
+New User 216: Νέος χρήστης 216
+New User 217: Νέος χρήστης 217
+New User 218: Νέος χρήστης 218
+New User 219: Νέος χρήστης 219
+New User 22: Νέος χρήστης 22
+New User 220: Νέος χρήστης 220
+New User 221: Νέος χρήστης 221
+New User 222: Νέος χρήστης 222
+New User 223: Νέος χρήστης 223
+New User 224: Νέος χρήστης 224
+New User 225: Νέος χρήστης 225
+New User 226: Νέος χρήστης 226
+New User 227: Νέος χρήστης 227
+New User 228: Νέος χρήστης 228
+New User 229: Νέος χρήστης 229
+New User 23: Νέος χρήστης 23
+New User 230: Νέος χρήστης 230
+New User 231: Νέος χρήστης 231
+New User 232: Νέος χρήστης 232
+New User 233: Νέος χρήστης 233
+New User 234: Νέος χρήστης 234
+New User 235: Νέος χρήστης 235
+New User 236: Νέος χρήστης 236
+New User 237: Νέος χρήστης 237
+New User 238: Νέος χρήστης 238
+New User 239: Νέος χρήστης 239
+New User 24: Νέος χρήστης 24
+New User 240: Νέος χρήστης 240
+New User 241: Νέος χρήστης 241
+New User 242: Νέος χρήστης 242
+New User 243: Νέος χρήστης 243
+New User 244: Νέος χρήστης 244
+New User 245: Νέος χρήστης 245
+New User 246: Νέος χρήστης 246
+New User 247: Νέος χρήστης 247
+New User 248: Νέος χρήστης 248
+New User 249: Νέος χρήστης 249
+New User 25: Νέος χρήστης 25
+New User 250: Νέος χρήστης 250
+New User 251: Νέος χρήστης 251
+New User 252: Νέος χρήστης 252
+New User 253: Νέος χρήστης 253
+New User 254: Νέος χρήστης 254
+New User 255: Νέος χρήστης 255
+New User 256: Νέος χρήστης 256
+New User 257: Νέος χρήστης 257
+New User 258: Νέος χρήστης 258
+New User 259: Νέος χρήστης 259
+New User 26: Νέος χρήστης 26
+New User 260: Νέος χρήστης 260
+New User 261: Νέος χρήστης 261
+New User 262: Νέος χρήστης 262
+New User 263: Νέος χρήστης 263
+New User 264: Νέος χρήστης 264
+New User 265: Νέος χρήστης 265
+New User 266: Νέος χρήστης 266
+New User 267: Νέος χρήστης 267
+New User 268: Νέος χρήστης 268
+New User 269: Νέος χρήστης 269
+New User 27: Νέος χρήστης 27
+New User 270: Νέος χρήστης 270
+New User 271: Νέος χρήστης 271
+New User 272: Νέος χρήστης 272
+New User 273: Νέος χρήστης 273
+New User 274: Νέος χρήστης 274
+New User 275: Νέος χρήστης 275
+New User 276: Νέος χρήστης 276
+New User 277: Νέος χρήστης 277
+New User 278: Νέος χρήστης 278
+New User 279: Νέος χρήστης 279
+New User 28: Νέος χρήστης 28
+New User 280: Νέος χρήστης 280
+New User 281: Νέος χρήστης 281
+New User 282: Νέος χρήστης 282
+New User 283: Νέος χρήστης 283
+New User 284: Νέος χρήστης 284
+New User 285: Νέος χρήστης 285
+New User 286: Νέος χρήστης 286
+New User 287: Νέος χρήστης 287
+New User 288: Νέος χρήστης 288
+New User 289: Νέος χρήστης 289
+New User 29: Νέος χρήστης 29
+New User 290: Νέος χρήστης 290
+New User 291: Νέος χρήστης 291
+New User 292: Νέος χρήστης 292
+New User 293: Νέος χρήστης 293
+New User 294: Νέος χρήστης 294
+New User 295: Νέος χρήστης 295
+New User 296: Νέος χρήστης 296
+New User 297: Νέος χρήστης 297
+New User 298: Νέος χρήστης 298
+New User 299: Νέος χρήστης 299
+New User 30: Νέος χρήστης 30
+New User 300: Νέος χρήστης 300
+New User 301: Νέος χρήστης 301
+New User 302: Νέος χρήστης 302
+New User 303: Νέος χρήστης 303
+New User 304: Νέος χρήστης 304
+New User 305: Νέος χρήστης 305
+New User 306: Νέος χρήστης 306
+New User 307: Νέος χρήστης 307
+New User 308: Νέος χρήστης 308
+New User 309: Νέος χρήστης 309
+New User 31: Νέος χρήστης 31
+New User 310: Νέος χρήστης 310
+New User 311: Νέος χρήστης 311
+New User 312: Νέος χρήστης 312
+New User 313: Νέος χρήστης 313
+New User 314: Νέος χρήστης 314
+New User 315: Νέος χρήστης 315
+New User 316: Νέος χρήστης 316
+New User 317: Νέος χρήστης 317
+New User 318: Νέος χρήστης 318
+New User 319: Νέος χρήστης 319
+New User 32: Νέος χρήστης 32
+New User 320: Νέος χρήστης 320
+New User 321: Νέος χρήστης 321
+New User 322: Νέος χρήστης 322
+New User 323: Νέος χρήστης 323
+New User 324: Νέος χρήστης 324
+New User 325: Νέος χρήστης 325
+New User 326: Νέος χρήστης 326
+New User 327: Νέος χρήστης 327
+New User 328: Νέος χρήστης 328
+New User 329: Νέος χρήστης 329
+New User 33: Νέος χρήστης 33
+New User 330: Νέος χρήστης 330
+New User 331: Νέος χρήστης 331
+New User 332: Νέος χρήστης 332
+New User 333: Νέος χρήστης 333
+New User 334: Νέος χρήστης 334
+New User 335: Νέος χρήστης 335
+New User 336: Νέος χρήστης 336
+New User 337: Νέος χρήστης 337
+New User 338: Νέος χρήστης 338
+New User 339: Νέος χρήστης 339
+New User 34: Νέος χρήστης 34
+New User 340: Νέος χρήστης 340
+New User 341: Νέος χρήστης 341
+New User 342: Νέος χρήστης 342
+New User 343: Νέος χρήστης 343
+New User 344: Νέος χρήστης 344
+New User 345: Νέος χρήστης 345
+New User 346: Νέος χρήστης 346
+New User 347: Νέος χρήστης 347
+New User 348: Νέος χρήστης 348
+New User 349: Νέος χρήστης 349
+New User 35: Νέος χρήστης 35
+New User 350: Νέος χρήστης 350
+New User 351: Νέος χρήστης 351
+New User 352: Νέος χρήστης 352
+New User 353: Νέος χρήστης 353
+New User 354: Νέος χρήστης 354
+New User 355: Νέος χρήστης 355
+New User 356: Νέος χρήστης 356
+New User 357: Νέος χρήστης 357
+New User 358: Νέος χρήστης 358
+New User 359: Νέος χρήστης 359
+New User 36: Νέος χρήστης 36
+New User 360: Νέος χρήστης 360
+New User 361: Νέος χρήστης 361
+New User 362: Νέος χρήστης 362
+New User 363: Νέος χρήστης 363
+New User 364: Νέος χρήστης 364
+New User 365: Νέος χρήστης 365
+New User 366: Νέος χρήστης 366
+New User 367: Νέος χρήστης 367
+New User 368: Νέος χρήστης 368
+New User 369: Νέος χρήστης 369
+New User 37: Νέος χρήστης 37
+New User 370: Νέος χρήστης 370
+New User 371: Νέος χρήστης 371
+New User 372: Νέος χρήστης 372
+New User 373: Νέος χρήστης 373
+New User 374: Νέος χρήστης 374
+New User 375: Νέος χρήστης 375
+New User 376: Νέος χρήστης 376
+New User 377: Νέος χρήστης 377
+New User 378: Νέος χρήστης 378
+New User 379: Νέος χρήστης 379
+New User 38: Νέος χρήστης 38
+New User 380: Νέος χρήστης 380
+New User 381: Νέος χρήστης 381
+New User 382: Νέος χρήστης 382
+New User 383: Νέος χρήστης 383
+New User 384: Νέος χρήστης 384
+New User 385: Νέος χρήστης 385
+New User 386: Νέος χρήστης 386
+New User 387: Νέος χρήστης 387
+New User 388: Νέος χρήστης 388
+New User 389: Νέος χρήστης 389
+New User 39: Νέος χρήστης 39
+New User 390: Νέος χρήστης 390
+New User 391: Νέος χρήστης 391
+New User 392: Νέος χρήστης 392
+New User 393: Νέος χρήστης 393
+New User 394: Νέος χρήστης 394
+New User 395: Νέος χρήστης 395
+New User 396: Νέος χρήστης 396
+New User 397: Νέος χρήστης 397
+New User 398: Νέος χρήστης 398
+New User 399: Νέος χρήστης 399
+New User 40: Νέος χρήστης 40
+New User 400: Νέος χρήστης 400
+New User 401: Νέος χρήστης 401
+New User 402: Νέος χρήστης 402
+New User 403: Νέος χρήστης 403
+New User 404: Νέος χρήστης 404
+New User 405: Νέος χρήστης 405
+New User 406: Νέος χρήστης 406
+New User 407: Νέος χρήστης 407
+New User 408: Νέος χρήστης 408
+New User 409: Νέος χρήστης 409
+New User 41: Νέος χρήστης 41
+New User 410: Νέος χρήστης 410
+New User 411: Νέος χρήστης 411
+New User 412: Νέος χρήστης 412
+New User 413: Νέος χρήστης 413
+New User 414: Νέος χρήστης 414
+New User 415: Νέος χρήστης 415
+New User 416: Νέος χρήστης 416
+New User 417: Νέος χρήστης 417
+New User 418: Νέος χρήστης 418
+New User 419: Νέος χρήστης 419
+New User 42: Νέος χρήστης 42
+New User 420: Νέος χρήστης 420
+New User 421: Νέος χρήστης 421
+New User 422: Νέος χρήστης 422
+New User 423: Νέος χρήστης 423
+New User 424: Νέος χρήστης 424
+New User 425: Νέος χρήστης 425
+New User 426: Νέος χρήστης 426
+New User 427: Νέος χρήστης 427
+New User 428: Νέος χρήστης 428
+New User 429: Νέος χρήστης 429
+New User 43: Νέος χρήστης 43
+New User 430: Νέος χρήστης 430
+New User 431: Νέος χρήστης 431
+New User 432: Νέος χρήστης 432
+New User 433: Νέος χρήστης 433
+New User 434: Νέος χρήστης 434
+New User 435: Νέος χρήστης 435
+New User 436: Νέος χρήστης 436
+New User 437: Νέος χρήστης 437
+New User 438: Νέος χρήστης 438
+New User 439: Νέος χρήστης 439
+New User 44: Νέος χρήστης 44
+New User 440: Νέος χρήστης 440
+New User 441: Νέος χρήστης 441
+New User 442: Νέος χρήστης 442
+New User 443: Νέος χρήστης 443
+New User 444: Νέος χρήστης 444
+New User 445: Νέος χρήστης 445
+New User 446: Νέος χρήστης 446
+New User 447: Νέος χρήστης 447
+New User 448: Νέος χρήστης 448
+New User 449: Νέος χρήστης 449
+New User 45: Νέος χρήστης 45
+New User 450: Νέος χρήστης 450
+New User 451: Νέος χρήστης 451
+New User 452: Νέος χρήστης 452
+New User 453: Νέος χρήστης 453
+New User 454: Νέος χρήστης 454
+New User 455: Νέος χρήστης 455
+New User 456: Νέος χρήστης 456
+New User 457: Νέος χρήστης 457
+New User 458: Νέος χρήστης 458
+New User 459: Νέος χρήστης 459
+New User 46: Νέος χρήστης 46
+New User 460: Νέος χρήστης 460
+New User 461: Νέος χρήστης 461
+New User 462: Νέος χρήστης 462
+New User 463: Νέος χρήστης 463
+New User 464: Νέος χρήστης 464
+New User 465: Νέος χρήστης 465
+New User 466: Νέος χρήστης 466
+New User 467: Νέος χρήστης 467
+New User 468: Νέος χρήστης 468
+New User 469: Νέος χρήστης 469
+New User 47: Νέος χρήστης 47
+New User 470: Νέος χρήστης 470
+New User 471: Νέος χρήστης 471
+New User 472: Νέος χρήστης 472
+New User 473: Νέος χρήστης 473
+New User 474: Νέος χρήστης 474
+New User 475: Νέος χρήστης 475
+New User 476: Νέος χρήστης 476
+New User 477: Νέος χρήστης 477
+New User 478: Νέος χρήστης 478
+New User 479: Νέος χρήστης 479
+New User 48: Νέος χρήστης 48
+New User 480: Νέος χρήστης 480
+New User 481: Νέος χρήστης 481
+New User 482: Νέος χρήστης 482
+New User 483: Νέος χρήστης 483
+New User 484: Νέος χρήστης 484
+New User 485: Νέος χρήστης 485
+New User 486: Νέος χρήστης 486
+New User 487: Νέος χρήστης 487
+New User 488: Νέος χρήστης 488
+New User 489: Νέος χρήστης 489
+New User 49: Νέος χρήστης 49
+New User 490: Νέος χρήστης 490
+New User 491: Νέος χρήστης 491
+New User 492: Νέος χρήστης 492
+New User 493: Νέος χρήστης 493
+New User 494: Νέος χρήστης 494
+New User 495: Νέος χρήστης 495
+New User 496: Νέος χρήστης 496
+New User 497: Νέος χρήστης 497
+New User 498: Νέος χρήστης 498
+New User 499: Νέος χρήστης 499
+New User 50: Νέος χρήστης 50
+New User 500: Νέος χρήστης 500
+New User 501: Νέος χρήστης 501
+New User 502: Νέος χρήστης 502
+New User 503: Νέος χρήστης 503
+New User 504: Νέος χρήστης 504
+New User 505: Νέος χρήστης 505
+New User 506: Νέος χρήστης 506
+New User 507: Νέος χρήστης 507
+New User 508: Νέος χρήστης 508
+New User 509: Νέος χρήστης 509
+New User 51: Νέος χρήστης 51
+New User 510: Νέος χρήστης 510
+New User 511: Νέος χρήστης 511
+New User 512: Νέος χρήστης 512
+New User 513: Νέος χρήστης 513
+New User 514: Νέος χρήστης 514
+New User 515: Νέος χρήστης 515
+New User 516: Νέος χρήστης 516
+New User 517: Νέος χρήστης 517
+New User 518: Νέος χρήστης 518
+New User 519: Νέος χρήστης 519
+New User 52: Νέος χρήστης 52
+New User 520: Νέος χρήστης 520
+New User 53: Νέος χρήστης 53
+New User 54: Νέος χρήστης 54
+New User 55: Νέος χρήστης 55
+New User 56: Νέος χρήστης 56
+New User 57: Νέος χρήστης 57
+New User 58: Νέος χρήστης 58
+New User 59: Νέος χρήστης 59
+New User 60: Νέος χρήστης 60
+New User 61: Νέος χρήστης 61
+New User 62: Νέος χρήστης 62
+New User 63: Νέος χρήστης 63
+New User 64: Νέος χρήστης 64
+New User 65: Νέος χρήστης 65
+New User 66: Νέος χρήστης 66
+New User 67: Νέος χρήστης 67
+New User 68: Νέος χρήστης 68
+New User 69: Νέος χρήστης 69
+New User 70: Νέος χρήστης 70
+New User 71: Νέος χρήστης 71
+New User 72: Νέος χρήστης 72
+New User 73: Νέος χρήστης 73
+New User 74: Νέος χρήστης 74
+New User 75: Νέος χρήστης 75
+New User 76: Νέος χρήστης 76
+New User 77: Νέος χρήστης 77
+New User 78: Νέος χρήστης 78
+New User 79: Νέος χρήστης 79
+New User 80: Νέος χρήστης 80
+New User 81: Νέος χρήστης 81
+New User 82: Νέος χρήστης 82
+New User 83: Νέος χρήστης 83
+New User 84: Νέος χρήστης 84
+New User 85: Νέος χρήστης 85
+New User 86: Νέος χρήστης 86
+New User 87: Νέος χρήστης 87
+New User 88: Νέος χρήστης 88
+New User 89: Νέος χρήστης 89
+New User 90: Νέος χρήστης 90
+New User 91: Νέος χρήστης 91
+New User 92: Νέος χρήστης 92
+New User 93: Νέος χρήστης 93
+New User 94: Νέος χρήστης 94
+New User 95: Νέος χρήστης 95
+New User 96: Νέος χρήστης 96
+New User 97: Νέος χρήστης 97
+New User 98: Νέος χρήστης 98
+New User 99: Νέος χρήστης 99
+New Values: Νέες Αξίες
+New York: Νέα Υόρκη
+New York - 10001: Νέα Υόρκη - 10001
+New York - 10001ender: Νέα Υόρκη - 10001ender
+New Yorkender: Νέα Υόρκη
+NextPreset: ΕπόμενηΠροεπιλογή
+NextToSearchBox: NextToSearchBox
+NextTrack: ΕπόμενοΔιαδρομή
+Niagara Engraved: Νιαγάρα χαραγμένο
+Niagara Solid: Στερεό του Νιαγάρα
+NightOwl: Κουκουβάγια
+nl-AW: Ολλανδικά (Αρούμπα)
+nl-BE: Ολλανδικά (Βέλγιο)
+nl-BQ: Ολλανδικά (Μποναίρ, Άγιος Ευστάθιος και Σάμπα)
+nl-CW: Ολλανδικά (Κουρασάο)
+nl-NL: Ολλανδικά (Ολλανδία)
+nl-SR: Ολλανδικά (Σουρινάμ)
+nl-SX: Ολλανδικά (Sint Maarten)
+nmg-CM: Kwasio (Καμερούν)
+nn-NO: Νορβηγικό Nynorsk (Νορβηγία)
+NnfxDark: NnfxΣκοτάδι
+NnfxLight: NnfxΦως
+nnh-CM: Ngiemboon (Καμερούν)
+No: Όχι
+No address: Χωρίς διεύθυνση
+No Allowed Actions: Δεν επιτρέπονται ενέργειες
+No longer update automatically: Δεν ενημερώνεται πλέον αυτόματα
+No notifications: Δεν υπάρχουν ειδοποιήσεις
+No space available: Δεν υπάρχει διαθέσιμος χώρος
+NoChips: Όχι Τσιπς
+NodeBorderRadius: Ακτίνα περιγράμματος κόμβου
+NodePadding: NodePadding
+NoHeader: Όχικεφαλίδα
+NoIcon: Όχι εικονίδιο
+NoModalDialogs: NoModalDialogs
+none: κανένας
+None: Κανένας
+Nord: Βόρεια
+NordBase16: NordBase16
+Normal: Κανονικός
+Not Allowed to add or delete Administrator Role if you have not this role.: Δεν επιτρέπεται η προσθήκη ή η διαγραφή ρόλου διαχειριστή εάν δεν έχετε αυτόν τον ρόλο.
+Not allowed to Delete this user: Δεν επιτρέπεται η διαγραφή αυτού του χρήστη
+Not Allowed.: Δεν επιτρέπεται.
+Not connected: Μη συνδεδεμένο
+Not Modal Dialogs: Όχι Modal Dialogs
+Note - Media options can't changed after a screen is selected: Σημείωση - Οι επιλογές πολυμέσων δεν μπορούν να αλλάξουν μετά την επιλογή μιας οθόνης
+NoteLabels: ΣημείωσηΕτικέτες
+NotFoundMessage: Η σελίδα που αναζητούσατε δεν υπάρχει.
+Notice: Παρατηρώ
+Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Παρατηρήστε ότι αν χρησιμοποιείτε αυτή τη μέθοδο, μπορείτε να ορίσετε μια αναφορά επανάκλησης όπου βρίσκεται η μέθοδος, αν δεν το κάνετε αυτό, η αναφορά είναι ο ίδιος ο διάλογος και πρέπει να έχετε τη μέθοδο στο DialogClass σας σε αυτή την περίπτωση
+Notifications: Ειδοποιήσεις
+Nov: Νοε
+NovaBase16: NovaBase16
+NoWrap: Χωρίς αναδίπλωση
+npm-example-0.0.20.tgz: npm-παράδειγμα-0.0.20.tgz
+nqo-GN: N'Ko (Γουινέα)
+nr-ZA: South Ndebele (Νότια Αφρική)
+nso-ZA: Sesotho sa Leboa (Νότια Αφρική)
+Nuget Package source: Πηγή πακέτου Nuget
+Nullable enum: Nullable απαρίθμηση
+Nullable Flags Enum: Nullable Flags Απαρίθμηση
+Number: Αριθμός
+numeric: αριθμητικός
+nus-SS: Nuer (Νότιο Σουδάν)
+nyn-UG: Nyankole (Ουγκάντα)
+Object Edit in Dialog: Επεξεργασία αντικειμένου στο διάλογο
+ObjectEdit: ΑντικείμενοΕπεξεργασία
+ObjectEditCG: ObjectEditCG
+ObjectEditCondition: ObjectEditCondition
+ObjectEditConfigured: ObjectEditConfigured
+ObjectEditFile: ObjectEditFile
+ObjectEditInDialog: ObjectEditInDialog
+ObjectEditList: ObjectEditList
+ObjectEditPicker: ObjectEditPicker
+ObjectEditTabs: ObjectEditTabs
+ObjectEditVirtualized: ObjectEditVirtualized
+OBS Virtual Camera: Εικονική κάμερα OBS
+Obsidian: Οψιανού
+oc-FR: Οξιτανικά (Γαλλία)
+OceanBase16: Βάση Ocean16
+OceanicnextBase16: OceanicnextΒάση16
+OCR A Extended: OCR A Εκτεταμένο
+Oct: Σεπ
+Official MudBlazor website: Επίσημος ιστότοπος MudBlazor
+Offline: Εκτός σύνδεσης
+OffsetX: ΜετατόπισηX
+OffsetY: Μετατοπίσεις
+Ok: Ok
+Old English Text MT: Παλαιό αγγλικό κείμενο MT
+Old Paint: Παλιά Μπογιά
+Old paint found on a stone house door.: Παλιά μπογιά βρέθηκε σε μια πέτρινη πόρτα σπιτιού.
+Old Values: Παλιές Αξίες
+OldLace: Παλιά δαντέλα
+Olive: Ελιά
+OliveDrab: Λαδί Drab
+om-ET: Ορόμο (Αιθιοπία)
+om-KE: Ορόμο (Κένυα)
+OnClickStopPropagation: OnClickStopPropagation
+OnContextMenuPreventDefault: OnContextMenuPreventDefault
+OnContextMenuStopPropagation: OnContextMenuStopPropagation
+OnCustomSelect: OnCustomSelect
+OnDefinedSelect: OnDefinedSelect
+One Drive: Μία μονάδα δίσκου
+OnedarkBase16: ΜίασκοτεινήΒάση16
+OneDrive file picker component: Στοιχείο επιλογέα αρχείων OneDrive
+OneDriveClientId: OneDriveClientId
+OneEighthOctaveBands: ΈναΌγδοοΟκτάβαΜπάντες
+OneFourthOctaveBands: ΈναΤέταρτηΟκτάβαΜπάντες
+OneLightBase16: Βάση OneLight16
+OneSixthOctaveBands: Μπάντες OneSixthOctave
+OneThirdOctaveBands: Ζώνες Τρίτης Οκτάβας
+OneTwelfthOctaveBands: ΈναΔωδέκατη ΟκτάβαΜπάντες
+OneTwentyFourthOctaveBands: ΈναΕικοστήΤέταρτηΟκτάβαΜπάντες
+Online: Σε απευθείας σύνδεση
+Only Selected Group (Export): Μόνο επιλεγμένη ομάδα (εξαγωγή)
+OnlyValidateIfDirty: OnlyValidateIfDirty
+OnPlay: Στο παιχνίδι
+Onyx: Όνυξ
+Opacity: Αδιαφάνεια
+OpacityNotFocused: ΑδιαφάνειαΜηΕστιασμένη
+Open: Ανοίγω
+Open in new browser tab: Άνοιγμα σε νέα καρτέλα προγράμματος περιήγησης
+Open now: Ανοίγω
+Open Url {0}: Ανοίξτε το Url {0}
+Open Url {0} in a new browser tab: Ανοίξτε το Url {0} σε μια νέα καρτέλα του προγράμματος περιήγησης
+OpenIcon: Ανοίξτε το εικονίδιο
+Optima: Η Optima
+Options: Επιλογές
+or-IN: Odia (Ινδία)
+Orange: Πορτοκάλι
+OrangeRed: ΠορτοκαλίΚόκκινο
+Orchid: Ορχιδέα
+Orientation: Προσανατολισμός
+Original Code Gator DynamicForm: Αρχικός κώδικας Gator DynamicForm
+os-GE: Οσετική (Γεωργία)
+os-RU: Οσετική (Ρωσία)
+Osaka: Οσάκα
+Osaka - 530-0001: Οσάκα - 530-0001
+Osaka - 530-0001ender: Οσάκα - 530-0001ender
+Oscar Wilde: Όσκαρ Ουάιλντ
+Other: Άλλος
+Other Components: Άλλα εξαρτήματα
+OtherAddresses: ΆλλεςΔιευθύνσεις
+Otherwise the full image will be downloaded: Διαφορετικά, θα γίνει λήψη της πλήρους εικόνας
+Ottawa: Οτάβα
+Ottawa - K1A 0A1: Οττάβα - K1A 0A1
+Ottawa - K1A 0A1ender: Οττάβα - K1A 0A1ender
+Out: Έξω
+OuterClass: Εξωτερική τάξη
+OutlineBars: Γραμμές περιγράμματος
+Outlined: Περιγράφεται
+OutrunDarkBase16: ΞεπεράστεDarkBase16
+Outset: Αρχή
+OverflowBehavior: Συμπεριφορά υπερχείλισης
+Overlay: Στρώμα
+OverlayChildContent: ΕπικάλυψηΠαιδικόΠεριεχόμενο
+OverlayDark: ΕπικάλυψηΣκούρο
+OverlayLight: Φως επικάλυψης
+overline: Επιγραφή
+Overline: Υπεργράμμιση
+OverscanCount: OverscanCount
+Overview: Επισκόπηση
+Owner: Ιδιοκτήτης
+pa-Arab-PK: Παντζάμπι (Αραβικά, Πακιστάν)
+pa-IN: Παντζάμπι (Ινδία)
+Palatino: Παλατίνος
+Palatino Linotype: Λινοτυπία Palatino
+PaleGreen: Χλωμό Πράσινο
+Palette: Παλέτα
+PaletteDark: ΠαλέταΣκούρο
+PaletteIcon: Εικονίδιο παλέτας
+PaletteLight: ΠαλέταΦως
+PaleTurquoise: Απαλό Τιρκουάζ
+PaleVioletRed: Απαλό Βιολετί Κόκκινο
+Pan: Κύριος
+pap-029: Papiamento (Καραϊβική)
+PapayaWhip: ΠαπάγιαΜαστίγιο
+Paper: Χαρτί
+PapercolorDarkBase16: ΧρώμαΧαρτιούDarkBase16
+PapercolorLightBase16: ΧρώμαΧαρτιούLightBase16
+Papyrus: Πάπυρος
+ParaisoBase16: ParaisoBase16
+ParaisoDark: ParaisoDark
+ParaisoLight: ParaisoLight
+ParametersForSubControls: Παράμετροιγιαδευτερεύοντα στοιχεία ελέγχου
+Parchment: Περγαμηνή
+Paris: Παρίσι
+Paris - 75001: Παρίσι - 75001
+Paris - 75001ender: Παρίσι - 75001ender
+PasqueBase16: PasqueBase16
+Password: Κωδικός πρόσβασης
+Password Changed!: Ο κωδικός πρόσβασης άλλαξε!
+Password Confirmation: Επιβεβαίωση κωδικού πρόσβασης
+Password Confirmation is required!: Απαιτείται επιβεβαίωση κωδικού πρόσβασης!
+Password is required!: Απαιτείται κωδικός πρόσβασης!
+Password must be at least of length 8: Ο κωδικός πρόσβασης πρέπει να έχει μήκος τουλάχιστον 8
+Password must contain at least one capital letter: Ο κωδικός πρόσβασης πρέπει να περιέχει τουλάχιστον ένα κεφαλαίο γράμμα
+Password must contain at least one digit: Ο κωδικός πρόσβασης πρέπει να περιέχει τουλάχιστον ένα ψηφίο
+Password must contain at least one lowercase letter: Ο κωδικός πρόσβασης πρέπει να περιέχει τουλάχιστον ένα πεζό γράμμα
+Password Reset Mail has been sent to your authorized Email.: Το μήνυμα επαναφοράς κωδικού πρόσβασης έχει σταλεί στο εξουσιοδοτημένο email σας.
+Password Reset Successful!: Επιτυχής επαναφορά κωδικού πρόσβασης!
+Passwords don't match: Οι κωδικοί πρόσβασης δεν ταιριάζουν
+PathSeparator: Διαχωριστής διαδρομής
+Pattern: Πρότυπο
+pcm-Latn-NG: Νιγηριανό Pidgin (Λατινικά, Νιγηρία)
+PeachPuff: Ροδάκινο
+PeakLine: Γραμμή αιχμής
+Penelope Cruz: Πενέλοπε Κρουζ
+Percentage: Ποσοστό
+Permission Name: Όνομα δικαιώματος
+Perpetua: Διαρκής
+Persistent: Επίμονος
+Personal: Προσωπικός
+Perspective3d: Προοπτική3δ
+Peru: Περού
+Peter Griffin: Πίτερ Γκρίφιν
+PhdBase16: Διδακτορική Βάση16
+Philadelphia: Φιλαδέλφεια
+Philadelphia - 19019: Φιλαδέλφεια - 19019
+Philadelphia - 19019ender: Φιλαδέλφεια - 19019ender
+Philadelphiaender: Φιλαδέλφεια
+Phoenix: Φοίνιξ
+Phoenix - 85001: Φοίνιξ - 85001
+Phoenix - 85001ender: Φοίνικας - 85001ender
+Phone Number: Τηλεφωνικό νούμερο
+Phone number {0} is already registered.: Ο αριθμός τηλεφώνου {0} είναι ήδη καταχωρημένος.
+PhoneNumber: ΤηλέφωνοΝούμερο
+Picas: Μπαστούνι
+Pick Item: Επιλογή αντικειμένου
+Pick Items: Επιλογή αντικειμένων
+Pick one user: Επιλέξτε έναν χρήστη
+Pick some users: Επιλέξτε μερικούς χρήστες
+Picker: Επιλογέα
+Picker appearance: Εμφάνιση επιλογέα
+PickerHeight: Ύψος επιλογέα
+PickerStyle: Στυλ επιλογέα
+PickerVariant: PickerΠαραλλαγή
+PickerWidth: Πλάτος επιλογέα
+PickFromDropBox: Επιλογή από το DropBox
+PickFromGoogleDrive: Επιλέξτε από το GoogleDrive
+PickFromOneDrive: ΕπιλογήΑπόOneDrive
+PicoBase16: PicoBase16
+Pie: Πόδι
+Pink: Ροζ
+Pixels: Εικονοστοιχεία
+pl-PL: Πολωνικά (Πολωνίας)
+Placeholder: Σύμβολο κράτησης θέσης
+Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Παίξτε με το MudBlazor και το MudBlazor.Επεκτάσεις σε ένα διαδικτυακό πρόγραμμα επεξεργασίας κώδικα
+Playbill: Διαφημιστικό παιχνίδι
+Player: Παίκτης
+Please confirm your account by <a href='{0}'>clicking here</a>.: Επιβεβαιώστε τον λογαριασμό σας με <a href='{0}'>κάνοντας κλικ εδώ</a>.
+Please enter your name: Παρακαλώ εισάγετε το όνομά σας
+Please reset your password by <a href='{0}'>clicking here</a>.: Επαναφέρετε τον κωδικό πρόσβασής σας με <a href='{0}'>κάνοντας κλικ εδώ</a>.
+Please type {0} to confirm edit: Πληκτρολογήστε {0} για να επιβεβαιώσετε την επεξεργασία
+Please upload your personal qualifications and references that confirm your person and qualification: Ανεβάστε τα προσωπικά σας προσόντα και συστάσεις που επιβεβαιώνουν το πρόσωπο και τα προσόντα σας
+Please Wait: Παρακαλώ περίμενε
+PleaseSelect: ΠαρακαλώΕπιλέξτε
+Plum: Δαμάσκηνο
+Points: Σημεία
+PointsOfInterest: Σημεία Ενδιαφέροντος
+Pojoaque: Ποζοάκ
+Poor Richard: Ο καημένος ο Ρίτσαρντ
+PopBase16: Βάση Pop16
+Popover: Αναδυόμενο παράθυρο
+PopoverAnimation: PopoverΚινούμενα σχέδια
+PopoverAnimationPosition: PopoverAnimationΘέση
+PopoverAnimationTimingFunction: PopoverAnimationTimingFunction
+PopoverClass: PopoverΚλάση
+PopupEveryTime: Αναδυόμενο παράθυροΚάθε φορά
+PopupOnlyOnce: PopupOnlyOnce
+PopverAnimation: PopverAnimation
+PorpleBase16: ΠορφυρήΒάση16
+Portrait: Προσωπογραφία
+Position: Θέση
+Position/Size Sample: Δείγμα θέσης/μεγέθους
+PostalCode: Ταχυδρομικός κώδικας
+PowderBlue: ΠούδραΜπλε
+Powerful component to edit a set of items and their properties.: Ισχυρό στοιχείο για την επεξεργασία ενός συνόλου στοιχείων και των ιδιοτήτων τους.
+Powerful component to edit an object and its properties.: Ισχυρό στοιχείο για την επεξεργασία ενός αντικειμένου και των ιδιοτήτων του.
+Powerful UI Editor for json, xml or yaml content now also as viewer for MudExFileDisplay: Ισχυρός επεξεργαστής διεπαφής χρήστη για περιεχόμενο json, xml ή yaml τώρα και ως πρόγραμμα προβολής για το MudExFileDisplay
+Preferred way on MudExTextField: Προτιμώμενος τρόπος στο MudExTextField
+Preferred way on MudExTextField with For and ChildContent: Προτιμώμενος τρόπος στο MudExTextField με For και ChildContent
+PresetListBehaviour: PresetListBehavior
+PresetListClass: PresetListClass
+PresetListMode: PresetListMode
+PresetListPosition: ΠροκαθορισμένηΛίσταΘέση
+PresetListToggleButtonPosition: PresetListToggleButtonPosition
+Presets: Προεπιλογές
+Preview: Προεπισκόπηση
+PreviewButtonSize: Μέγεθος κουμπιού προεπισκόπησης
+PreviewFont: ΠροεπισκόπησηΓραμματοσειρά
+PreviewIcon: Εικονίδιο προεπισκόπησης
+PreviewIconColor: ΠροεπισκόπησηIconColor
+PreviewImageInPresetList: PreviewImageInPresetList
+PreviewImageSize: Μέγεθος εικόνας προεπισκόπησης
+PreviewInIframe: ΠροεπισκόπησηInIframe
+PreviewMode: Λειτουργία προεπισκόπησης
+PreviousPreset: Ένα ζευγάριΠροεπιλογή
+PreviousTrack: ΠροηγούμενοΠίστα
+prg-001: Πρωσικά (Κόσμος)
+Primary: Πρωταρχικός
+Primary Key: Πρωτεύον κλειδί
+PrimaryContrastText: ΠρωτεύονΚείμενοΑντίθεσης
+PrimaryDarken: ΚύριοςDarken
+PrimaryLighten: Πρωτεύον Lighten
+Print: Τυπώνω
+PrintButtonIcon: Εικονίδιο κουμπιού εκτύπωσης
+Pristina: Πρίστινα
+Product Deleted: Το προϊόν διαγράφηκε!
+Product Not Found!: Το προϊόν δεν βρέθηκε!
+Product Saved: Το προϊόν αποθηκεύτηκε!
+Product Updated: Το προϊόν ενημερώθηκε!
+Products: Προϊόντα
+Products exported: Εξαγόμενα προϊόντα
+Profile: Προφίλ
+Profile Details: Λεπτομέρειες Προφίλ
+Profile picture added.: Προστέθηκε φωτογραφία προφίλ.
+Profile picture deleted.: Η εικόνα προφίλ διαγράφηκε.
+Profile updated: Το προφίλ ενημερώθηκε
+ProgramingSkills: Δεξιότητες προγραμματισμού
+Property1: Ιδιοκτησία1
+Property10: Ακίνητα10
+Property11: Ακίνητα11
+Property12: Ακίνητα12
+Property13: Ακίνητα13
+Property14: Ακίνητα14
+Property15: Ακίνητα15
+Property16: Ακίνητα16
+Property17: Ακίνητα17
+Property18: Ακίνητα18
+Property19: Ακίνητα19
+Property2: Ιδιοκτησία2
+Property20: Ακίνητα20
+Property21: Ακίνητα21
+Property22: Ακίνητα22
+Property23: Ακίνητα23
+Property24: Ακίνητα24
+Property25: Ακίνητα25
+Property26: Ακίνητα26
+Property27: Ακίνητα27
+Property28: Ακίνητα28
+Property29: Ακίνητα29
+Property3: Ιδιοκτησία3
+Property30: Ακίνητα30
+Property31: Ακίνητα31
+Property32: Ακίνητα32
+Property33: Ακίνητα33
+Property34: Ακίνητα34
+Property35: Ακίνητα35
+Property36: Ακίνητα36
+Property37: Ακίνητα37
+Property38: Ακίνητα38
+Property39: Ακίνητα39
+Property4: Ιδιοκτησία4
+Property40: Ακίνητα40
+Property41: Ακίνητα41
+Property42: Ακίνητα42
+Property43: Ακίνητα43
+Property44: Ακίνητα44
+Property45: Ακίνητα45
+Property5: Ιδιοκτησία5
+Property6: Ιδιοκτησία6
+Property7: Ιδιοκτησία7
+Property8: Ιδιοκτησία8
+Property9: Ιδιοκτησία9
+prs-AF: prs (Αφγανιστάν)
+ps-AF: Πάστο (Αφγανιστάν)
+ps-PK: Πάστο (Πακιστάν)
+PseudoCss: ΨευδοCss
+pt-AO: Πορτογαλικά (Αγκόλα)
+pt-BR: Πορτογαλικά (Βραζιλίας)
+pt-CH: Πορτογαλικά (Ελβετίας)
+pt-CV: Πορτογαλικά (Πράσινο Ακρωτήριο)
+pt-GQ: Πορτογαλικά (Ισημερινή Γουινέα)
+pt-GW: Πορτογαλικά (Γουινέα-Μπισάου)
+pt-LU: Πορτογαλικά (Λουξεμβούργο)
+pt-MO: Πορτογαλικά (ΕΔΠ Μακάο)
+pt-MZ: Πορτογαλικά (Μοζαμβίκη)
+pt-PT: Πορτογαλικά (Πορτογαλίας)
+pt-ST: Πορτογαλικά (Σάο Τομέ και Πρίνσιπε)
+pt-TL: Πορτογαλικά (Ανατολικό Τιμόρ)
+Public Profile: Δημόσιο Προφίλ
+Pulse: Σφυγμός
+Purebasic: Καθαρός
+Purple: Μοβ
+QtcreatorDark: QtcreatorDark
+QtcreatorLight: Το QtcreatorLight
+QualiaBase16: QualiaBase16
+Qualifications and References: Προσόντα και Αναφορές
+quc-GT: Kʼicheʼ (Γουατεμάλα)
+Quentin Tarantino: Κουέντιν Ταραντίνο
+Quick Insights.: Γρήγορες πληροφορίες.
+Quick Start Guide: Οδηγός γρήγορης εκκίνησης
+quz-BO: quz (Βολιβία)
+quz-EC: quz (Εκουαδόρ)
+quz-PE: quz (Περού)
+Rachel Green: Ρέιτσελ Γκριν
+Radial: Ακτινικός
+RadialInvert: ΑκτινικήΑντιστροφή
+Radius: Ακτίνα
+Rage Italic: Οργή Πλάγια
+RailscastsBase16: RailscastsΒάση16
+Rainbow: Ουράνιο τόξο
+Random: Τυχαίος
+RandomColorUpdateDelay: ΤυχαίαΧρωματικήΕνημέρωσηΚαθυστέρηση
+RarArchive.rar: RarArchive.rar
+Rate: Ρυθμός
+Rate must be greater than 0: Η τιμή πρέπει να είναι μεγαλύτερη από 0
+Ravie: Υπερευχαριστημένος
+Read More: Διαβάστε περισσότερα
+Readme: Αρχείο Readme
+readme.md: readme.md
+ReadOnly: Μόνο για ανάγνωση
+Realtime Updates & Insights with SignalR.: Ενημερώσεις και πληροφορίες σε πραγματικό χρόνο με το SignalR.
+RebeccaBase16: ΡεβέκκαΒάση16
+RebeccaPurple: ΡεβέκκαΜωβ
+Record audio: Εγγραφή ήχου
+Record Audio: Εγγραφή ήχου
+Record Camera: Εγγραφή κάμερας
+Record Main Camera: Εγγραφή κύριας κάμερας
+Record Main Camera Lower Quality: Εγγραφή κύριας κάμερας χαμηλότερης ποιότητας
+Record Screen: Οθόνη εγγραφής
+Recording: Εγγραφή
+RecordingAnimation: ΕγγραφήΚινούμενα σχέδια
+RecordingBorderAnimation: ΕγγραφήBorderAnimation
+RecordingColor: ΕγγραφήΧρώμα
+RecordingIcon: Εικονίδιο εγγραφής
+Red: Κόκκινος
+Redirect: Επαναδιευθύνω
+Redirecting to {0}: Ανακατεύθυνση στο {0}
+Redirecting...: Ανακατεύθυνση...
+ReflexAlpha: Αντανακλαστικό Άλφα
+ReflexBright: ReflexBright
+ReflexFit: ReflexFit
+ReflexRatio: Αναλογία αντανακλαστικών
+Refresh: Δροσίζω
+Refreshed Token.: Ανανεωμένο διακριτικό.
+Register: Εγγράψου
+Register as: Εγγραφείτε ως
+Register as {0}: Εγγραφείτε ως {0}
+Register here: Εγγραφείτε εδώ
+Register New User: Εγγραφή νέου χρήστη
+Register User: Εγγραφή χρήστη
+Registered Roles: Εγγεγραμμένοι ρόλοι
+Registered Users: Εγγεγραμμένοι χρήστες
+Rel: Ρελ
+Relative: Συγγενής
+RelativeToParent: ΣχετικόςΜεΓονέας
+RelativeWidth: ΣχετικόΠλάτος
+Reload: Φορτώσετε εκ νέου
+Reload Data: Επαναφόρτωση δεδομένων
+Rem: Ρεμ
+Remember me?: Με θυμάσαι;
+RememberEditedOptions: ΘυμηθείτεEditedOptions
+Remove: Αφαιρώ
+Remove All: Αφαίρεση Όλων
+RemoveErrorAfter: RemoveErrorAfter
+RemoveErrorOnChange: RemoveErrorOnChange
+RemoveItemButtonAlwaysRight: RemoveItemButtonAlwaysRight
+Rename: Μετονομάζω
+Rename backup: Μετονομασία αντιγράφου ασφαλείας
+Render with {0}: Απόδοση με {0}
+Render with MudExFileDisplayTiff: Απόδοση με το πρόγραμμα προβολής Tiff
+Render with MudExFileDisplayZip: Απόδοση με το πρόγραμμα προβολής Zip
+Render with MudExImageViewer: Απόδοση με το MudExImageViewer
+Render with native control: Απόδοση με εγγενή έλεγχο
+RenderBackLink: RenderBackLink
+RenderChipsAdditional: RenderChipsΕπιπλέον
+Rendered Virtualized: Απόδοση εικονικά
+rendered when the item is outside the viewport.: όταν το στοιχείο βρίσκεται εκτός της θύρας προβολής.
+rendered when the item is visible in the viewport.: όταν το στοιχείο είναι ορατό στη θύρα προβολής.
+RenderHomeLink: RenderHomeLink
+RenderOnlyOnce: ΑπόδοσηΜόνοΜία φορά
+Required: Απαιτούμενο
+RequiredError: ΑπαιτείταιΣφάλμα
+Reset: Επαναφορά
+Reset {0}: Επαναφορά {0}
+Reset all: Επαναφορά όλων
+Reset all properties?: Επαναφορά όλων των ιδιοτήτων;
+Reset password: Επαναφορά κωδικού πρόσβασης
+Reset Password: Επαναφορά κωδικού πρόσβασης
+Reset to initial data: Επαναφορά στα αρχικά δεδομένα
+Reset view: Επαναφορά προβολής
+ResetButtonIcon: Εικονίδιο κουμπιού επαναφοράς
+ResetToDefaultFirst: ResetToDefaultFirst
+Resizeable: Με δυνατότητα αλλαγής μεγέθους
+ResizeMode: Αλλαγή μεγέθουςΛειτουργία
+Resources: Πόροι
+Responsive: Απαντητικός
+Restart server: Επανεκκίνηση διακομιστή
+Restore: Αποκαθιστώ
+Restore database: Επαναφορά βάσης δεδομένων
+Restore default: Επαναφορά προεπιλογής
+Restore finished: Η επαναφορά ολοκληρώθηκε
+Restore in progress. Please wait until the restore is finished. This can take a while.: Επαναφορά σε εξέλιξη. Περιμένετε μέχρι να ολοκληρωθεί η επαναφορά. Αυτό μπορεί να διαρκέσει λίγο.
+Revert: Επαναστρέφω
+RGB: Το RGB
+RGBA: ΡΓΚΜΠΑ
+rgba(0,200,83,1): ΡΓΚΒΑ(0,200,83,1)
+rgba(126,247,160,1): ΡΓΚΜΠΑ(126,247,160,1)
+rgba(133,135,145,1): ΡΓΚΜΠΑ(133,135,145,1)
+rgba(157,241,250,1): ΡΓΚΜΠΑ(157,241,250,1)
+rgba(17,59,83,1): ΡΓΚΜΠΑ(17,59,83,1)
+rgba(170,0,0,1): ΡΓΚΜΠΑ(170,0,0,1)
+rgba(18,121,66,1): ΡΓΚΒΑ(18,121,66,1)
+rgba(189,255,207,1): ΡΓΚΜΠΑ(189,255,207,1)
+rgba(19,184,232,1): ΡΓΚΜΠΑ(19,184,232,1)
+rgba(191,125,17,1): ΡΓΚΜΠΑ(191,125,17,1)
+rgba(20,220,113,1): ΡΓΚΒΑ(20,220,113,1)
+rgba(201,204,207,1): ΡΓΚΜΠΑ(201,204,207,1)
+rgba(217,152,13,1): ΡΓΚΜΠΑ(217,152,13,1)
+rgba(220,63,17,1): ΡΓΚΜΠΑ(220,63,17,1)
+rgba(23,105,142,1): ΡΓΚΜΠΑ(23,105,142,1)
+rgba(23,162,88,1): ΡΓΚΜΠΑ(23,162,88,1)
+rgba(230,233,235,1): ΡΓΚΜΠΑ(230,233,235,1)
+rgba(235,179,35,1): ΡΓΚΜΠΑ(235,179,35,1)
+rgba(244,67,54,1): ΡΓΚΜΠΑ(244,67,54,1)
+rgba(246,249,251,1): ΡΓΚΜΠΑ(246,249,251,1)
+rgba(253,210,47,1): ΡΓΚΜΠΑ(253,210,47,1)
+rgba(254,104,0,1): ΡΓΚΜΠΑ(254,104,0,1)
+rgba(255,145,2,1): ΡΓΚΜΠΑ(255,145,2,1)
+rgba(255,152,0,1): ΡΓΚΜΠΑ(255,152,0,1)
+rgba(255,179,31,1): ΡΓΚΜΠΑ(255,179,31,1)
+rgba(255,210,84,1): ΡΓΚΜΠΑ(255,210,84,1)
+rgba(255,226,115,1): ΡΓΚΜΠΑ(255,226,115,1)
+rgba(255,240,163,1): ΡΓΚΜΠΑ(255,240,163,1)
+rgba(27,189,102,1): ΡΓΚΜΠΑ(27,189,102,1)
+rgba(33,150,243,1): ΡΓΚΒΑ(33,150,243,1)
+rgba(39,219,245,1): ΡΓΚΜΠΑ(39,219,245,1)
+rgba(53,57,64,1): ΡΓΚΜΠΑ(53,57,64,1)
+rgba(66,66,66,1): ΡΓΚΜΠΑ(66,66,66,1)
+rgba(88,91,98,1): ΡΓΚΜΠΑ(88,91,98,1)
+rgba(9,137,194,1): ΡΓΚΜΠΑ(9,137,194,1)
+Ridge: Κορυφή
+Right: Δεξιά
+Right part in MudExSplitPanel.: Δεξί μέρος στο MudExSplitPanel.
+RightToLeft: ΔεξιάΠροςΑριστερά
+Ripple: Κυματισμός
+RippleOpacity: ΚυματισμόςΑδιαφάνεια
+RippleOpacitySecondary: RippleOpacitySecondary
+rm-CH: Romansh (Ελβετία)
+rn-BI: Rundi (Μπουρούντι)
+ro-MD: Ρουμανικά (Μολδαβίας)
+ro-RO: Ρουμανικά (Ρουμανία)
+Roboto: Ρομπότ
+Rockwell: Ρόκγουελ
+Rockwell Condensed: Rockwell Συμπυκνωμένο
+Rockwell Extra Bold: Ρόκγουελ Extra Bold
+rof-TZ: Ρόμπο (Τανζανία)
+Role: Ρόλος
+Role ID: Αναγνωριστικό ρόλου
+Role Name: Όνομα ρόλου
+Roles: Ρόλους
+Roles Updated: Οι ρόλοι ενημερώθηκαν!
+RootName: ΌνομαΡίζας
+RosPineBase16: RosPineΒάση16
+RosPineDawnBase16: RosPineDawnΒάση16
+RosPineMoonBase16: RosPineMoonBase16
+RosyBrown: Ρόζι Μπράουν
+Rotate: Περιστρέφομαι
+RoundBars: Στρογγυλές μπάρες
+Rounded: Στρογγυλεμένες
+Routeros: Δρομολογητής
+Row: Σειρά
+RowSpan: Εύρος σειρών
+RowsPerPageString: Σειρές ανά σελίδα
+RoyalBlue: Βασιλικό Μπλε
+ru-BY: Ρωσικά (Λευκορωσία)
+ru-KG: Ρωσικά (Κιργιστάν)
+ru-KZ: Ρωσικά (Καζακστάν)
+ru-MD: Ρωσικά (Μολδαβίας)
+ru-RU: Ρωσικά (Ρωσίας)
+ru-UA: Ρωσικά (Ουκρανία)
+RubberBand: Λάστιχο
+RubberBandColor: ΛάστιχοΧρώμα
+RubberBandStyle: Στυλ RubberBandStyle
+Runic MT Condensed: Ρουνικό MT Συμπυκνωμένο
+Runtime: Χρόνου εκτέλεσης
+Russian: Ρωσικά
+rw-RW: Κινιαρουάντα (Ρουάντα)
+rwk-TZ: Rwa (Τανζανία)
+sa-IN: Σανσκριτικά (Ινδία)
+SaddleBrown: ΣέλαΚαφέ
+SagelightBase16: Βάση Sagelight16
+sah-RU: Σάχα (Ρωσία)
+Salmon: Σολομός
+Sample Card: Δείγμα κάρτας
+Sample Dialog: Δείγμα διαλόγου
+Sample Headline: Δείγμα επικεφαλίδας
+Sample how to use Theme Select: Δείγμα χρήσης της Επιλογής θέματος
+Sample mega: Δείγμα mega
+Sample to see how you can render and use any component in a dialog as easy as possible: Δείγμα για να δείτε πώς μπορείτε να αποδώσετε και να χρησιμοποιήσετε οποιοδήποτε στοιχείο σε ένα παράθυρο διαλόγου όσο το δυνατόν πιο εύκολα
+sample.pdf: sample.pdf
+San Antonio: Σαν Αντόνιο
+San Antonio - 78201: Σαν Αντόνιο - 78201
+San Antonio - 78201ender: Σαν Αντόνιο - 78201ender
+San Diego: Σαν Ντιέγκο
+San Diego - 92101: Σαν Ντιέγκο - 92101
+San Diego - 92101ender: Σαν Ντιέγκο - 92101ender
+San Jose: Σαν Χοσέ
+San Jose - 95101: Σαν Χοσέ - 95101
+San Jose - 95101ender: Σαν Χοσέ - 95101ender
+SandBoxIframes: SandBoxIframes
+SandcastleBase16: SandcastleΒάση16
+SandyBrown: ΣάντιΜπράουν
+sans-serif: sans-serif
+Sans-serif: Σανς-σερίφ
+saq-KE: Σαμπούρου (Κένυα)
+sat-Olck-IN: Santali (Ol Chiki, Ινδία)
+Saturation: Κορεσμός
+Save: Σώζω
+Save {0} Changes: '{0} Αποθήκευση αλλαγών'
+Save as: Αποθήκευση ως
+Save Changes: Αποθήκευση αλλαγών
+Save image: Αποθήκευση εικόνας
+Save Role: Αποθήκευση ρόλου
+Save visible area only: Αποθήκευση μόνο ορατής περιοχής
+SaveButtonIcon: Εικονίδιο κουμπιού αποθήκευσης
+saved: Αποθηκεύτηκε!
+sbp-TZ: Sangu (Τανζανία)
+Scale: Κλίμακα
+SchoolBook: Σχολικό Βιβλίο
+Scope: Εμβέλεια
+Screen: Οθόνη
+Script MT Bold: Σενάριο MT Έντονη γραφή
+Scroll down to discover the content: Κάντε κύλιση προς τα κάτω για να ανακαλύψετε το περιεχόμενο
+Scroll down to see the behavior: Κάντε κύλιση προς τα κάτω για να δείτε τη συμπεριφορά
+Scroll to top: Κύλιση στην κορυφή
+sd-Arab-PK: Σίντι (Αραβικά, Πακιστάν)
+sd-Deva-IN: Σίντι (Ντεβαναγκάρι, Ινδία)
+se-FI: Βόρεια Σάμη (Φινλανδία)
+se-NO: Βόρεια Σάμη (Νορβηγία)
+se-SE: Βόρεια Σάμη (Σουηδία)
+SeaGreen: ΣιΠράσι
+search: αναζήτηση
+Search: Αναζήτηση
+Search by users: Αναζήτηση από χρήστες
+Search For {0} Extended Attributes: Αναζήτηση για {0} Extended Attributes
+Search for Brands: Αναζήτηση για επωνυμίες
+Search for Document Types: Αναζήτηση για τύπους εγγράφων
+Search For Permissions: Αναζήτηση για δικαιώματα
+Search for Roles...: Αναζήτηση ρόλων...
+Search for Trails: Αναζήτηση Μονοπατιών
+Search For User Roles: Αναζήτηση για ρόλους χρήστη
+Search For Users: Αναζήτηση χρηστών
+Search in New Values: Αναζήτηση σε νέες τιμές
+Search in Old Values: Αναζήτηση σε παλιές τιμές
+SearchBox: Πλαίσιο αναζήτησης
+SearchBoxAdornment: SearchBoxΣτολισμός
+SearchBoxAutoFocus: SearchBoxΑυτόματη εστίαση
+SearchBoxBackgroundColor: Πλαίσιο αναζήτησηςΧρώμα φόντου
+SearchBoxClearable: SearchBoxClearable
+SearchBoxPlaceholder: SearchBoxPlaceholder
+SearchBoxVariant: SearchBoxΠαραλλαγή
+SearchString: Συμβολοσειρά αναζήτησης
+SeaShell: Κοχύλι
+Secondary: Δευτερεύων
+SecondaryBackgroundForNestedItemHeader: SecondaryBackgroundForNestedItemHeader
+SecondaryContrastText: ΔευτερεύονΚείμενοΑντίθεσης
+SecondaryDarken: ΔευτερεύωνDarken
+SecondaryLighten: ΔευτερεύωνLighten
+Section 0: Τμήμα 0
+Section 1: Τμήμα 1
+Section 10: Τμήμα 10
+Section 11: Άρθρο 11
+Section 12: Άρθρο 12
+Section 13: Άρθρο 13
+Section 14: Άρθρο 14
+Section 15: Άρθρο 15
+Section 2: Τμήμα 2
+Section 3: Τμήμα 3
+Section 4: Τμήμα 4
+Section 5: Τμήμα 5
+Section 6: Τμήμα 6
+Section 7: Τμήμα 7
+Section 8: Τμήμα 8
+Section 9: Άρθρο 9
+Security: Ασφάλεια
+See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.: Δείτε πώς να χρησιμοποιήσετε το MudExFileDisplay για να εμφανίσετε τα περιεχόμενα του αρχείου. Επίσης, μια επίδειξη του τρόπου υλοποίησης της διεπαφής IMudExFileDisplay για την παροχή δικών της στοιχείων για συγκεκριμένους τύπους αρχείων.
+See how to use MudExObjectEdit in a dialog: Δείτε πώς να χρησιμοποιήσετε το MudExObjectEdit σε ένα παράθυρο διαλόγου
+See how you can use different pickers or delay change event with the MudExColorPicker: Δείτε πώς μπορείτε να χρησιμοποιήσετε διαφορετικούς επιλογείς ή να καθυστερήσετε την αλλαγή συμβάντος με το MudExColorPicker
+seh-MZ: Σηκουάνας (Μοζαμβίκη)
+Select: Διαλέγω
+Select a brand: Επιλέξτε μια μάρκα
+Select All: Επιλογή όλων
+Select Item: Επιλέξτε Στοιχείο
+Select Items: Επιλογή στοιχείων
+Select Language: Επιλέξτε Γλώσσα
+Select sample file (See weather.json to check how own components for files can be created): Επιλογή δείγματος αρχείου (Δείτε weather.json για να ελέγξετε πώς μπορούν να δημιουργηθούν τα δικά σας στοιχεία για αρχεία)
+Select screen: Επιλογή οθόνης
+SelectAll: ΕπιλέξτεΌλα
+SelectAllPosition: ΕπιλογήΌλωνΘέσης
+SelectAllText: ΕπιλογήΌλουΚειμένου
+SelectColorText: ΕπιλέξτεΧρώμαΚείμενο
+Selected: Επιλεγμένο
+Selected Node: Επιλεγμένος κόμβος
+SelectedBrand: ΕπιλεγμένηΜάρκα
+SelectedIndex: ΕπιλεγμένοΕυρετήριο
+SelectedItemBackgroundColor: SelectedItemBackgroundColor
+SelectedItemBorderColor: SelectedItemBorderColor
+SelectedItemColor: ΕπιλεγμένοΣτοιχείοΧρώμα
+SelectedRequests: ΕπιλεγμέναΑιτήματα
+SelectedValues: ΕπιλεγμένεςΤιμές
+Selecting: Επιλογή
+SelectionList: Λίστα επιλογής
+SelectionMode: Λειτουργία επιλογής
+SelectionModeIcon: Εικονίδιο SelectionModeIcon
+SelectItemsMode: SelectItemsMode
+SelectorsForIgnoreBlur: SelectorsForIgnoreBlur
+SelectorSize: SelectorSize
+SelectorsToKeepOpenOnMouseLeave: SelectorsToKeepOpenOnMouseLeave
+SelectValueOnTab: SelectValueOnTab
+SelectVariant: ΕπιλέξτεΠαραλλαγή
+Send: Αποστέλλω
+Send confirmation email: Αποστολή email επιβεβαίωσης
+Sensitivity: Ευαισθησία
+Sep: Σεπ
+Server restarted successfully: Επιτυχής επανεκκίνηση διακομιστή
+ses-ML: Koyraboro Senni (Μάλι)
+Set as Default options for all Dialogs: Ορισμός ως προεπιλεγμένων επιλογών για όλους τους διαλόγους
+Set empty/null for auto detection: Ορισμός κενού/μηδενικού για αυτόματη ανίχνευση
+Set new password: Ορισμός νέου κωδικού πρόσβασης
+Set this to automatically stop recording after the desired time.: Ρυθμίστε το ώστε να διακόπτεται αυτόματα η εγγραφή μετά τον επιθυμητό χρόνο.
+Set this to wait before a photo is taken: Ρυθμίστε το ώστε να περιμένει πριν από τη λήψη μιας φωτογραφίας
+Set this to wait before recording starts: Ρυθμίστε το ώστε να περιμένει πριν ξεκινήσει η εγγραφή
+SetChipsOnEnter: SetChipsOnEnter
+SetiUiBase16: SetiUiBase16
+SevenZipArchive.7z: SevenZipArchive.7z
+Severity: Αυστηρότητα
+sg-CF: Sango (Κεντροαφρικανική Δημοκρατία)
+ShadesOfPurple: ΑποχρώσειςΤουΜωβ
+Shadows: Σκιές
+Shake: Σείω
+ShapeshifterBase16: ShapeshifterΒάση16
+SharedConfig: SharedConfig
+Sharpness: Αιχμηρότητα
+shi-Latn-MA: Tachelhit (Λατινικά, Μαρόκο)
+shi-Tfng-MA: Tachelhit (Tifinagh, Μαρόκο)
+Show: Δείχνω
+Show As Dialog: Παράθυρο διαλόγου "Εμφάνιση ως"
+Show as Tree: Εμφάνιση ως δέντρο
+Show Demo: Εμφάνιση επίδειξης
+Show flat: Εμφάνιση επίπεδης
+Show info: Εμφάνιση πληροφοριών
+Show info for: Εμφάνιση πληροφοριών για
+Show Markup: Εμφάνιση σήμανσης
+Show notification: Εμφάνιση ειδοποίησης
+Show notification while recording: Εμφάνιση ειδοποίησης κατά την εγγραφή
+Show on github: Εμφάνιση στο github
+Show or hide inherited fields from base class: Εμφάνιση ή απόκρυψη μεταβιβαζόμενων πεδίων από την κλάση βάσης
+Show Sample 1: Εμφάνιση δείγματος 1
+Show Sample 2: Εμφάνιση δείγματος 2
+Show Sample 3: Εμφάνιση δείγματος 3
+Show Sample Dialog: Εμφάνιση δείγματος διαλόγου
+Show Sample Dialog METHOD 1: Εμφάνιση δείγματος διαλόγου ΜΕΘΟΔΟΣ 1
+Show Sample Dialog METHOD 2: Εμφάνιση δείγματος διαλόγου ΜΕΘΟΔΟΣ 2
+Show Sample Dialogs: Εμφάνιση δειγμάτων διαλόγων
+Show selected: Εμφάνιση επιλεγμένων
+Show With this Options: Εμφάνιση με αυτές τις επιλογές
+ShowAlpha: ΠροβολήAlpha
+ShowAtCursor: ShowAtCursor
+ShowBgColor: ΠροβολήBgColor
+Showcard Gothic: Showcard Gothic
+ShowClearButton: ShowClearButton
+ShowCloseIcon: ShowCloseIcon
+ShowColorField: ShowColorField
+ShowColorPreview: ΠροβολήΧρώμαΠροεπισκόπηση
+ShowContentError: ShowContentError
+ShowCssColorVariables: ShowCssColorVariables
+ShowFileUploadButton: ShowFileUploadButton
+ShowFilterInDrawer: ΕμφάνισηΦίλτροΣεΣυρτάρι
+ShowFolderUploadButton: ShowFolderUploadButton
+ShowFPS: ΠροβολήFPS
+ShowFullScreenButton: ShowFullScreenButton
+ShowHtmlColors: ΕμφάνισηHtmlΧρώματα
+ShowInputs: Εμφάνιση εισροών
+ShowLogoInDrawer: ΕμφάνισηΛογότυποΣεΣυρτάρι
+ShowModeSwitch: ShowModeSwitch
+ShowNavigator: ShowNavigator
+ShowNotificationWhileRecording: ΕμφάνισηΕιδοποίησηΚατά την Εγγραφή
+ShowPath: Εμφάνιση διαδρομής
+ShowPeaks: Εμφάνιση κορυφών
+ShowPresetNameOnChange: ΕμφάνισηPresetNameOnChange
+ShowPreview: ΠροβολήΠροεπισκόπηση
+ShowPreviewOnClick: ΕμφάνισηΠροεπισκόπησηOnClick
+ShowPrintButton: ShowPrintΚουμπί
+ShowProgressForLoadingData: ShowProgressForLoadingData
+ShowRemainingTimeOnly: ΕμφάνισηΥπόλοιποςΧρόνοςΜόνο
+ShowRenameButton: ShowRenameButton
+ShowResetButton: ShowResetButton
+Shows how you can use MudExAdditionalAdornment to ad as many adornments to any MudInput: Δείχνει πώς μπορείτε να χρησιμοποιήσετε το MudExAdditionalAdornment για να διαφημίσετε τόσα στολίδια σε οποιοδήποτε MudInput
+ShowSaveButton: ShowSaveButton
+ShowScaleX: ΠροβολήΚλίμακαΧ
+ShowScaleY: ΠροβολήΚλίμακαΥ
+ShowSliders: Εμφάνιση ρυθμιστικών
+ShowSpectrumOnRecording: ShowSpectrumOnRecording
+ShowThemeColors: ΕμφάνισηΘέμαΧρώματα
+ShowToolbar: ShowToolbar
+ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
+ShowVisualiser: ShowVisualiser
+ShowZoomInButton: ShowZoomInButton
+ShowZoomOutButton: ShowZoomOutButton
+ShrinkLabel: Συρρίκνωση ετικέτας
+si-LK: Σινχάλα (Σρι Λάνκα)
+Side: Πλευρά
+Sienna: Σιένα
+Sign In: Είσοδος
+Sign Up: Εγγραφή
+SilkDarkBase16: ΜετάξιΣκοτεινήΒάση16
+SilkLightBase16: SilkLightΒάση16
+Silver: Ασήμι
+Simon Pack: Σάιμον Πακ
+Simple: Απλός
+Simple Card List with a hover effect.: Απλή λίστα καρτών με εφέ αιώρησης.
+Simple CodeViewer Component: Απλό στοιχείο CodeViewer
+Simple component to display Html files with MudExFileDisplay: Απλό στοιχείο για την εμφάνιση αρχείων Html με το MudExFileDisplay
+Simple component to display markdown files with MudExFileDisplay: Απλό στοιχείο για την εμφάνιση αρχείων σήμανσης με το MudExFileDisplay
+Simple component to expand a Search field: Απλό στοιχείο για την ανάπτυξη ενός πεδίου αναζήτησης
+Simple Confirmation: Απλή επιβεβαίωση
+Simple Dialog: Απλός διάλογος
+Simple Dialogs: Απλοί διάλογοι
+Simple Enum: Απλή απαρίθμηση
+Simple Excel file viewer: Απλό πρόγραμμα προβολής αρχείων Excel
+Simple extended popover that adds Animations and an onblur event to close if a click outside happens.: Απλό εκτεταμένο αναδυόμενο παράθυρο που προσθέτει κινούμενα σχέδια και ένα συμβάν onblur για κλείσιμο εάν συμβεί ένα κλικ έξω.
+Simple extension for MudAvatar to load automatically a profile image for an email address using Gravatar: Απλή επέκταση για το MudAvatar να φορτώνει αυτόματα μια εικόνα προφίλ για μια διεύθυνση email χρησιμοποιώντας το Gravatar
+Simple MessageDialog: Απλό MessageDialog
+Simple Prompt: Απλή προτροπή
+Simple virtualize component that can be disabled with support for fixed items and ItemsProvider.: Απλό στοιχείο εικονικοποίησης που μπορεί να απενεργοποιηθεί με υποστήριξη για σταθερά στοιχεία και ItemsProvider.
+SimpleDialog: SimpleDialog
+SimulateOnHover: Προσομοίωση OnHover
+SimulateWithFullSpectrumAudioData: Προσομοίωση με δεδομένα ήχου πλήρους φάσματος
+SimulateWithRandomData: Προσομοίωση με τυχαία δεδομένα
+Single: Άγαμος
+SingleExpand: SingleExpand
+Size: Μέγεθος
+sk-SK: Σλοβακικά (Σλοβακία)
+Skeleton: Σκελετός
+SkipSeparator: SkipSeparator
+SkyBlue: Γαλάζιο
+sl-SI: Σλοβενικά (Σλοβενία)
+SlateBlue: ΣχιστόλιθοςΜπλε
+SlateGray: ΣχιστόλιθοςΓκρι
+Slide: Τσουλήθρα
+SlideBar: Γραμμή διαφανειών
+SlideIn: Ολίσθηση
+sma-NO: Νότια Σάμη (Νορβηγία)
+sma-SE: Νότια Σάμη (Σουηδία)
+Small: Μικρός
+smj-NO: Lule Sami (Νορβηγία)
+smj-SE: Lule Sami (Σουηδία)
+smn-FI: Inari Sami (Φινλανδία)
+Smoothing: Εξομάλυνση
+sms-FI: Σκολτ Σάμι (Φινλανδία)
+sn-Latn-ZW: Shona (Λατινικά, Ζιμπάμπουε)
+Snackbar: Σνακ μπαρ
+SnackbarMessageMarkupString: SnackbarMessageMarkupString
+SnackbarMessageRenderFragment: SnackbarMessageRenderFragment
+SnackbarMessageText: SnackbarΜήνυμαΚείμενο
+Snap ITC: Snap ITC
+SnapDrag: SnapDrag
+SnazzyBase16: SnazzyBase16
+Snow: Χιόνι
+so-DJ: Σομαλικά (Τζιμπουτί)
+so-ET: Σομαλία (Αιθιοπία)
+so-KE: Σομαλικά (Κένυα)
+so-SO: Σομαλία (Σομαλία)
+SolarFlareBase16: ΗλιακήΒάσηΦωτοβολίδων16
+SolarFlareLightBase16: ΗλιακήΦωτοβολίδαΒάση16
+SolarizedDarkBase16: ΗλιακήΣκοτεινήΒάση16
+SolarizedLightBase16: ΗλιακήΒάσηΦωτός16
+Solid: Στερεός
+Some: Μερικοί
+Some other: Ορισμένες άλλες
+SomeOtherInformation: ΚάποιεςΆλλεςΠληροφορίες
+Something went wrong during the refresh token action: Παρουσιάστηκε κάποιο πρόβλημα κατά τη διάρκεια της ενέργειας διακριτικού ανανέωσης
+SomeUnimportantTestModel: SomeUnimportantTestModel
+SomeUnimportantTestModel as Json: SomeUnimportantTestModel ως Json
+SpaceAround: ΧώροςΓύρω από
+SpaceBetween: ΔιάστημαΜεταξύ
+SpaceEvenly: ΧώροςΟμοιόμορφα
+SpacemacsBase16: SpacemacsΒάση16
+Spacing: Απόσταση
+Specify Options...: Καθορισμός επιλογών...
+Specify Quick Options...: Καθορίστε τις Γρήγορες επιλογές...
+Spectrum: Φάσμα
+SpectrumIcon: Εικονίδιο φάσματος
+SpinSpeed: Ταχύτητα περιστροφής
+SplitGradient: Διαίρεση Gradient
+SplitPanelItem for MudExSplitPanel component: SplitPanelItem για το στοιχείο MudExSplitPanel
+SpringGreen: ΣπρίνγκΓκριν
+sq-AL: Αλβανικά (Αλβανίας)
+sq-MK: Αλβανικά (Βόρεια Μακεδονία)
+sq-XK: Αλβανικά (Κόσοβο)
+Square: Πλατεία
+sr-Cyrl-BA: Σερβικά (Κυριλλικά, Βοσνία & Ερζεγοβίνη)
+sr-Cyrl-ME: Σερβικά (Κυριλλικά, Μαυροβούνιο)
+sr-Cyrl-RS: Σερβικά (Κυριλλικά, Σερβία)
+sr-Cyrl-XK: Σερβικά (Κυριλλικά, Κόσοβο)
+sr-Latn-BA: Σερβικά (Λατινικά, Βοσνία & Ερζεγοβίνη)
+sr-Latn-ME: Σερβικά (Λατινικά, Μαυροβούνιο)
+sr-Latn-RS: Σερβικά (Λατινικά, Σερβία)
+sr-Latn-XK: Σερβικά (Λατινικά, Κόσοβο)
+Src: Πηγή
+Srcery: Srcery
+ss-SZ: siSwati (Εσουατίνι)
+ss-ZA: siSwati (Νότια Αφρική)
+ssy-ER: Saho (Ερυθραία)
+st-LS: Σεσότο (Λεσότο)
+st-ZA: Σεσότο (Νότια Αφρική)
+StackedBar: Στοιβαγμένη μπάρα
+StackoverflowDark: StackoverflowDark
+StackoverflowLight: StackoverflowLight
+Standard - Mikrofon (Voicemod Virtual Audio Device (WDM)): Standard - Mikrofon (Εικονική συσκευή ήχου Voicemod (WDM))
+Start: Εκκίνηση
+Start Capture: Ξεκινήστε τη λήψη
+Start Recording: Ξεκινήστε την εγγραφή
+Start recording after: Ξεκινήστε την εγγραφή μετά από
+Start/Stop selection: Επιλογή έναρξης/διακοπής
+State: Κράτος
+Static: Στατικός
+Static card.: Στατική κάρτα.
+Static item: Στατικό στοιχείο
+Status: Κατάσταση
+SteelBlue: Ατσάλινο Μπλε
+Stencil: Στάμπο
+Stereo: Στέρεο
+Steve Rogers: Στιβ Ρότζερς
+Store: Κατάστημα
+Stream: Ρεύμα
+StreamUrlHandling: StreamUrlHandling
+Street: Οδός
+Street 2 2, 32365 City 2: Οδός 2 2, 32365 Πόλη 2
+Strict: Αυστηρός
+StringProperty1: ΙδιότηταΣυμβολοσειράς1
+StringProperty10: ΙδιότηταΣυμβολοσειράς10
+StringProperty11: ΙδιότηταΣυμβολοσειράς11
+StringProperty12: ΙδιότηταΣυμβολοσειράς12
+StringProperty13: ΙδιότηταΣυμβολοσειράς13
+StringProperty14: ΙδιότηταΣυμβολοσειράς14
+StringProperty15: ΙδιότηταΣυμβολοσειράς15
+StringProperty16: ΙδιότηταΣυμβολοσειράς16
+StringProperty17: ΙδιότηταΣυμβολοσειράς17
+StringProperty18: ΙδιότηταΣυμβολοσειράς18
+StringProperty19: ΙδιότηταΣυμβολοσειράς19
+StringProperty2: ΙδιότηταΣυμβολοσειράς2
+StringProperty20: ΙδιότηταΣυμβολοσειράς20
+StringProperty21: ΙδιότηταΣυμβολοσειράς21
+StringProperty22: ΙδιότηταΣυμβολοσειράς22
+StringProperty23: ΙδιότηταΣυμβολοσειράς23
+StringProperty24: ΙδιότηταΣυμβολοσειράς24
+StringProperty25: ΙδιότηταΣυμβολοσειράς25
+StringProperty26: ΙδιότηταΣυμβολοσειράς26
+StringProperty27: ΙδιότηταΣυμβολοσειράς27
+StringProperty28: ΙδιότηταΣυμβολοσειράς28
+StringProperty29: ΙδιότηταΣυμβολοσειράς29
+StringProperty3: ΙδιότηταΣυμβολοσειράς3
+StringProperty30: ΙδιότηταΣυμβολοσειράς30
+StringProperty31: ΙδιότηταΣυμβολοσειράς31
+StringProperty32: ΙδιότηταΣυμβολοσειράς32
+StringProperty33: ΙδιότηταΣυμβολοσειράς33
+StringProperty34: ΙδιότηταΣυμβολοσειράς34
+StringProperty35: ΙδιότηταΣυμβολοσειράς35
+StringProperty36: ΙδιότηταΣυμβολοσειράς36
+StringProperty37: ΙδιότηταΣυμβολοσειράς37
+StringProperty38: ΙδιότηταΣυμβολοσειράς38
+StringProperty39: ΙδιότηταΣυμβολοσειράς39
+StringProperty4: ΙδιότηταΣυμβολοσειράς4
+StringProperty40: ΙδιότηταΣυμβολοσειράς40
+StringProperty41: ΙδιότηταΣυμβολοσειράς41
+StringProperty42: ΙδιότηταΣυμβολοσειράς42
+StringProperty43: ΙδιότηταΣυμβολοσειράς43
+StringProperty44: ΙδιότηταΣυμβολοσειράς44
+StringProperty45: ΙδιότηταΣυμβολοσειράς45
+StringProperty46: ΙδιότηταΣυμβολοσειράς46
+StringProperty47: ΙδιότηταΣυμβολοσειράς47
+StringProperty48: ΙδιότηταΣυμβολοσειράς48
+StringProperty49: ΙδιότηταΣυμβολοσειράς49
+StringProperty5: ΙδιότηταΣυμβολοσειρά5
+StringProperty50: ΙδιότηταΣυμβολοσειράς50
+StringProperty51: ΙδιότηταΣυμβολοσειράς51
+StringProperty52: ΙδιότηταΣυμβολοσειράς52
+StringProperty53: ΙδιότηταΣυμβολοσειράς53
+StringProperty54: ΙδιότηταΣυμβολοσειράς54
+StringProperty55: ΙδιότηταΣυμβολοσειράς55
+StringProperty56: ΙδιότηταΣυμβολοσειράς56
+StringProperty57: ΙδιότηταΣυμβολοσειράς57
+StringProperty58: ΙδιότηταΣυμβολοσειράς58
+StringProperty59: ΙδιότηταΣυμβολοσειράς59
+StringProperty6: ΙδιότηταΣυμβολοσειρά6
+StringProperty60: ΙδιότηταΣυμβολοσειράς60
+StringProperty7: ΙδιότηταΣυμβολοσειράς7
+StringProperty8: ΙδιότηταΣυμβολοσειρά8
+StringProperty9: ΙδιότηταΣυμβολοσειράς9
+Striped: Ριγέ
+Structured Data Edit: Επεξεργασία δομημένων δεδομένων
+StructuredDataEdit: ΔομημέναΔεδομέναΕπεξεργασία
+Style: Ύφος
+StyleChip: ΣτυλΤσιπ
+su-Latn-ID: Σουνδανικά (Λατινικά, Ινδονησία)
+Subject: Θέμα
+Subline description for sample card.: Περιγραφή δευτερεύουσας γραμμής για δείγμα κάρτας.
+Submit: Υποβάλλω
+SubscribeToParentForm2: ΕγγραφήΣτοParentForm2
+subtitle1: υπότιτλος1
+Subtitle1: Υπότιτλος1
+subtitle2: υπότιτλος2
+Subtitle2: Υπότιτλος2
+Success: Επιτυχία
+SuccessContrastText: SuccessContrastText
+SuccessDarken: ΕπιτυχίαΣκοτάδι
+SuccessLighten: ΕπιτυχίαLighten
+SummercampBase16: Βάση καλοκαιρινής κατασκήνωσης16
+SummerfruitDarkBase16: SummerfruitDarkBase16
+SummerfruitLightBase16: SummerfruitLightBase16
+Sunburst: Ηλιοφάνεια
+Super sample Content text.: Σούπερ δείγμα κειμένου περιεχομένου.
+Support: Υποστηρίζω
+Surface: Επιφάνεια
+Surname: Επώνυμο
+sv-AX: Σουηδικά (Νήσοι Ώλαντ)
+sv-FI: Σουηδικά (Φινλανδίας)
+sv-SE: Σουηδικά (Σουηδία)
+sw-CD: Κισουαχίλι (Κονγκό [ΛΔΚ])
+sw-KE: Κισουαχίλι (Κένυα)
+sw-TZ: Κισουαχίλι (Τανζανία)
+sw-UG: Κισουαχίλι (Ουγκάντα)
+Swagger: Τεκμηρίωση API
+Swap: Ανταλλαγή
+Swedish: Σουηδικά
+SweetieBubbleGum-Regular.ttf: SweetieBubbleGum-Regular.ttf
+Swing: Κούνια
+Switch: Διακόπτης
+Switch expand button position: Εναλλαγή θέσης κουμπιού επέκτασης
+Switch overlay source: Εναλλαγή πηγής υπέρθεσης
+Symbol: Σύμβολο
+SynthMidnightTerminalDarkBase16: SynthMidnightTerminalDarkBase16
+SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16
+syr-SY: Συριακά (Συρία)
+System: Σύστημα
+System Settings: Ρυθμίσεις συστήματος
+T3024Base16: Τ3024Βάση16
+ta-IN: Ταμίλ (Ινδία)
+ta-LK: Ταμίλ (Σρι Λάνκα)
+ta-MY: Ταμίλ (Μαλαισία)
+ta-SG: Ταμίλ (Σιγκαπούρη)
+Table Name: Όνομα πίνακα
+TableHover: TableHover
+TableLines: Γραμμές πίνακα
+TableStriped: ΤραπέζιΡιγέ
+Tada: Τότε
+Tag: Μέρα
+TagField: Πεδίο ετικέτας
+Tahoma: Ταχόμα
+Take case: Πάρτε την υπόθεση
+Take photo after: Λήψη φωτογραφίας μετά
+Take Photo from Main camera: Λήψη φωτογραφίας από την κύρια κάμερα
+Take Photo from Main camera in 5 seconds: Λήψη φωτογραφίας από την κύρια κάμερα σε 5 δευτερόλεπτα
+Take Photo only: Λήψη μόνο φωτογραφίας
+Tan: Έτσι
+TangoBase16: TangoBase16
+TarArchive.tar: TarArchive.tar
+Target: Στόχος
+Tax: Φόρος
+Tax must be greater than 0: Ο φόρος πρέπει να είναι μεγαλύτερος από 0
+te-IN: Τελούγκου (Ινδία)
+Teal: Αγριόπαπια
+tel: Τηλ
+Telephone: Τηλέφωνο
+TemplateClass: TemplateΚλάση
+Temporary: Προσωρινός
+TenderBase16: Βάση προσφοράς16
+teo-KE: Teso (Κένυα)
+teo-UG: Teso (Ουγκάντα)
+Tertiary: Τριτογενής
+TertiaryContrastText: ΤριτογενέςΚείμενοΑντίθεσης
+TertiaryDarken: ΤριτογενήςDarken
+TertiaryLighten: ΤριτογενέςLighten
+TEST: ΔΟΚΙΜΉ
+Test and use components live without required environment: Δοκιμή και χρήση εξαρτημάτων ζωντανά χωρίς το απαιτούμενο περιβάλλον
+Test the powerful MudExThemeEdit and change theme colors fonts and more: Δοκιμάστε το ισχυρό MudExThemeEdit και αλλάξτε το θέμα, τα χρώματα, τις γραμματοσειρές και πολλά άλλα
+text: Κείμενο
+Text: Κείμενο
+Text value is required using {0} type!: Η τιμή κειμένου απαιτείται χρησιμοποιώντας {0} τύπο!
+TextAddExternal: ΚείμενοΠροσθήκηΕξωτερικό
+TextAddFromDropBox: TextAddFromDropBox
+TextAddFromGoogle: ΚείμενοΠροσθήκηΑπόGoogle
+TextAddFromOneDrive: TextAddFromOneDrive
+TextAddUrl: ΚείμενοAddUrl
+TextAddUrlMessage: ΚείμενοΠροσθήκηUrlMessage
+TextAddUrlTitle: TextAddUrlTitle
+TextDisabled: ΚείμενοΑπενεργοποιημένο
+TextDropZone: ΚείμενοDropZone
+TextErrorDuplicateFile: ΚείμενοΣφάλμαΔιπλότυποΑρχείο
+TextErrorExtensionForbidden: TextErrorExtensionForbidden
+TextErrorExtensionNotAllowed: TextErrorExtensionNotAllowed
+TextErrorMaxFileCount: ΚείμενοΣφάλμαMaxFileCount
+TextErrorMaxFileSize: ΚείμενοΣφάλμαΜέγιστοΜέγεθοςΑρχείου
+TextErrorMimeTypeForbidden: TextErrorMimeTypeForbidden
+TextErrorMimeTypeNotAllowed: TextErrorMimeTypeNotAllowed
+TextFillColor: ΚείμενοΓέμισμαΧρώμα
+TextPrimary: ΚείμενοΠρωτεύον
+TextRemoveAll: ΚείμενοΚατάργησηΌλα
+TextSecondary: ΚείμενοΔευτερεύον
+TextStartRecording: ΚείμενοΈναρξηΕγγραφή
+TextStartVideoCapture: ΚείμενοΈναρξηΛήψη βίντεο
+TextTransform: Μετασχηματισμός κειμένου
+TextUpdateSuppression: ΚείμενοΕνημέρωσηΚαταστολή
+TextUploadFile: ΚείμενοΜεταφόρτωσηΑρχείο
+TextUploadFiles: ΚείμενοΜεταφόρτωσηΑρχεία
+TextUploadFolder: ΚείμενοΜεταφόρτωσηΦάκελος
+tg-Cyrl-TJ: Τατζικιστάν (Κυριλλικά, Τατζικιστάν)
+th-TH: Ταϊλανδέζικα (Ταϊλάνδη)
+The Checker field is required.: Το πεδίο Έλεγχος είναι υποχρεωτικό.
+The component also provides the <strong>IsVisibleChanged</strong> event, which triggers whenever the visibility of the item changes.: Το στοιχείο παρέχει επίσης το συμβάν <strong>IsVisibleChanged</strong>, το οποίο ενεργοποιείται κάθε φορά που αλλάζει η ορατότητα του στοιχείου.
+The content type {0} cannot be displayed without a suitable plugin: Ο τύπος περιεχομένου {0} δεν μπορεί να εμφανιστεί χωρίς κατάλληλη προσθήκη
+The field Number must be between 1 and 100.: Ο αριθμός πεδίου πρέπει να είναι μεταξύ 1 και 100.
+The file ({0}) has already been added: Το αρχείο ({0}) έχει ήδη προστεθεί
+The file has exceeded the maximum size of {0} with {1}. File size is {2}: Το αρχείο έχει υπερβεί το μέγιστο μέγεθος του {0} με {1}. Το μέγεθος αρχείου είναι {2}
+The following {0} permissions are also required for permission {1}: Τα ακόλουθα δικαιώματα {0} απαιτούνται επίσης για {1} δικαιωμάτων
+The following permission is also required for permission {1}: Το ακόλουθο δικαίωμα απαιτείται επίσης για {1} άδειας
+The maximum file size is 10 MB: Το μέγιστο μέγεθος αρχείου είναι 10 MB
+The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: Το MudExThemeEdit είναι ένα ισχυρό και ευέλικτο εργαλείο που έχει σχεδιαστεί για να διευκολύνει αποτελεσματικά την επεξεργασία ενός ή περισσότερων θεμάτων ή προεπιλογών. Φιλοξενεί εγγενώς τη σκοτεινή λειτουργία, τη λειτουργία φωτός ή συνδυασμό και των δύο. Επιπλέον, υποστηρίζει παράγωγες από το MudTheme, καθώς και προσαρμοσμένες ιδιότητες που είναι εγγενείς σε αυτό, παρέχοντας έτσι μια ολοκληρωμένη και ευέλικτη λύση για όλες τις απαιτήσεις επεξεργασίας θεμάτων σας.
+The Plugin '{0}' may be able to help: Το πρόσθετο '{0}' μπορεί να βοηθήσει
+The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: Το δείγμα είναι το ίδιο με το άλλο παράδειγμα FileDisplay, αλλά με τη διαφορά ότι δεν χρησιμοποιείται διεύθυνση URL. Αντίθετα, οι ροές φορτώνονται και χρησιμοποιούνται.
+The server is just restarting. Please wait until the connection has been restored: Ο διακομιστής μόλις επανεκκινείται. Περιμένετε μέχρι να αποκατασταθεί η σύνδεση
+The user "{0}" just changed some of this data: Ο χρήστης "{0}" μόλις άλλαξε ορισμένα από αυτά τα δεδομένα
+The user {0} has been logged off: Ο χρήστης {0} έχει αποσυνδεθεί
+The User {0} has just edited, created or deleted entries here. You should reload the data: Ο χρήστης {0} μόλις επεξεργάστηκε, δημιούργησε ή διέγραψε καταχωρήσεις εδώ. Θα πρέπει να φορτώσετε ξανά τα δεδομένα
+Theme: Θέμα
+Theme Colors: Χρώματα θέματος
+Themes: Θέματα
+ThemeSelect: ΘέμαΕπιλογή
+There are no new notifications: Δεν υπάρχουν νέες ειδοποιήσεις
+These features make <strong>MudExVirtualItem</strong> ideal for optimizing performance when working with large datasets or dynamic content that doesn't need to be loaded all at once.: Αυτές οι δυνατότητες καθιστούν το <strong>MudExVirtualItem</strong> ιδανικό για βελτιστοποίηση της απόδοσης όταν εργάζεστε με μεγάλα σύνολα δεδομένων ή δυναμικό περιεχόμενο που δεν χρειάζεται να φορτωθεί ταυτόχρονα.
+This bar can be positioned left, right, top or bottom, and expands automatically on mouseover. This is also the Base component for the MudExTaskBar that automatically displays all open dialogs: Αυτή η γραμμή μπορεί να τοποθετηθεί αριστερά, δεξιά, πάνω ή κάτω και επεκτείνεται αυτόματα με το ποντίκι. Αυτό είναι επίσης το βασικό στοιχείο για το MudExTaskBar που εμφανίζει αυτόματα όλους τους ανοιχτούς διαλόγους
+This changes the Variant if Age is at least 18 and is enabled if Age is more than 1: Αυτό αλλάζει την Παραλλαγή εάν η Ηλικία είναι τουλάχιστον 18 ετών και ενεργοποιείται εάν η Ηλικία είναι μεγαλύτερη από 1
+This component and the dialog no modal behaviour is still in development and not ready for production use. Please report any issues you find on GitHub.: Αυτό το στοιχείο και ο διάλογος καμία τροπική συμπεριφορά δεν βρίσκεται ακόμη σε εξέλιξη και δεν είναι έτοιμη για παραγωγική χρήση. Αναφέρετε τυχόν προβλήματα που εντοπίζετε στο GitHub.
+This component uses the ICaptureService to capture audio and/or video data: Αυτό το στοιχείο χρησιμοποιεί το ICaptureService για τη λήψη δεδομένων ήχου ή/και βίντεο
+This component uses the ISpeechRecognitionService to record audio data and transcripts: Αυτό το στοιχείο χρησιμοποιεί την υπηρεσία ISpeechRecognitionService για την εγγραφή δεδομένων ήχου και μεταγραφών
+This Demo demonstrate using for the MudExCardList: Αυτή η επίδειξη δείχνει τη χρήση για το MudExCardList
+This Demo demonstrate using the MudExAudioPlayer without the automatic use in MudExFileDisplay: Αυτή η επίδειξη επίδειξης χρήσης του MudExAudioPlayer χωρίς την αυτόματη χρήση στο MudExFileDisplay
+This Demo demonstrate using the MudExCardList with an item source: Αυτή η επίδειξη επίδειξης χρησιμοποιώντας το MudExCardList με μια πηγή στοιχείων
+This Demo demonstrate using the MudExCardList with an item source and child content together: Αυτή η επίδειξη επίδειξης χρησιμοποιεί το MudExCardList με πηγή στοιχείου και θυγατρικό περιεχόμενο μαζί
+This Demo demonstrate using the MudExImageViewer without the automatic use in MudExFileDisplay: Αυτή η επίδειξη επίδειξης χρήσης του MudExImageViewer χωρίς την αυτόματη χρήση στο MudExFileDisplay
+This demo showcases the <strong>MudExVirtualItem</strong> component, a virtualized container that efficiently renders content<br/> only when it becomes visible in the viewport.: Αυτή η επίδειξη παρουσιάζει το στοιχείο <strong>MudExVirtualItem</strong>, ένα εικονικό κοντέινερ που αποδίδει αποτελεσματικά περιεχόμενο<br/> μόνο όταν γίνεται ορατό στη θύρα προβολής.
+This demo shows how to pass a can close method: Αυτή η επίδειξη δείχνει πώς να περάσετε μια μέθοδο κλεισίματος κονσερβών
+This demo shows how you can use a selection with MudExSelect with a custom item provider: Αυτή η επίδειξη δείχνει πώς μπορείτε να χρησιμοποιήσετε μια επιλογή με το MudExSelect με έναν πάροχο προσαρμοσμένων στοιχείων
+This demo uses SnapDrag as DragMode on the DialogOptionsEx: Αυτή η επίδειξη χρησιμοποιεί το SnapDrag ως DragMode στο DialogOptionsEx
+This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open: Αυτή η επίδειξη χρησιμοποιεί το IDialogEventService για να ελέγξει την αλλαγή μεγέθους ή τη μεταφορά και αποθηκεύει την πιο πρόσφατη θέση και μέγεθος ως σχετικές τιμές και να τις επαναφέρει στο επόμενο άνοιγμα
+This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: Αυτό δείχνει το στοιχείο MudExThemeEdit που χρησιμοποιεί εσωτερικά το MudExObjectEdit και το MudExThemeSelect για επεξεργασία θέματος
+This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: Αυτή η επίδειξη δείχνει τον προτεινόμενο τρόπο χρήσης του MudExAdditionalAdornment με τη χρήση των RenderFragments "For" και "ChildContent"
+This dialog can confirmed when slider value is greater then 10: Αυτός ο διάλογος μπορεί να επιβεβαιωθεί όταν η τιμή του ρυθμιστικού είναι μεγαλύτερη από 10
+This is a Json representation of the TestModel. This is ignored for Export and Import: Αυτή είναι μια αναπαράσταση Json του TestModel. Αυτό παραβλέπεται για την Εξαγωγή και την Εισαγωγή
+This is a simple information dialog that closes after {0} seconds: Αυτός είναι ένας απλός διάλογος πληροφοριών που κλείνει μετά από {0} δευτερόλεπτα
+This is a simple information dialog that closes after 0 seconds: Αυτός είναι ένας απλός διάλογος πληροφοριών που κλείνει μετά από 0 δευτερόλεπτα
+This is a simple information dialog that closes after 1 seconds: Αυτός είναι ένας απλός διάλογος πληροφοριών που κλείνει μετά από 1 δευτερόλεπτο
+This is a simple information dialog that closes after 2 seconds: Αυτός είναι ένας απλός διάλογος πληροφοριών που κλείνει μετά από 2 δευτερόλεπτα
+This is a simple information dialog that closes after 3 seconds: Αυτός είναι ένας απλός διάλογος πληροφοριών που κλείνει μετά από 3 δευτερόλεπτα
+This is a simple information dialog that closes after 4 seconds: Αυτός είναι ένας απλός διάλογος πληροφοριών που κλείνει μετά από 4 δευτερόλεπτα
+This is a simple information dialog that closes after 5 seconds: Αυτός είναι ένας απλός διάλογος πληροφοριών που κλείνει μετά από 5 δευτερόλεπτα
+This is an Administrator Only View.: Αυτή είναι μια προβολή μόνο διαχειριστή.
+This is the MudEx Default theme: Αυτό είναι το προεπιλεγμένο θέμα MudEx
+This is the sample Popover. In general it inherits the original MudPopover.: Αυτό είναι το δείγμα Popover. Γενικά κληρονομεί το αρχικό MudPopover.
+This one card is still added without an corresponding item.: Αυτή η μία κάρτα εξακολουθεί να προστίθεται χωρίς αντίστοιχο στοιχείο.
+This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: Αυτό περνά ως μέθοδος στις επιλογές διαλόγου. Ο διάλογος δεν θα κλείσει εάν η μέθοδος επιστρέψει false. Το αποτέλεσμα πρέπει να είναι ένα bool ή ένα Task&lt;bool&gt;
+This photo was taken in a small village in Istra Croatia.: Αυτή η φωτογραφία τραβήχτηκε σε ένα μικρό χωριό στην Ίστρα της Κροατίας.
+This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Αυτός ο επιλογέας φέρνει κινούμενα σχέδια, καλύτερες συμπεριφορές και ένα παράθυρο διαλόγου που υποστηρίζει όλα τα DialogOptions. Για να δημιουργήσετε το δικό σας στοιχείο επιλογής jus κληρονομήστε από το MudExPickerBase ή απλώς για να χρησιμοποιήσετε απλό περιεχόμενο χρησιμοποιήστε το MudExPicker
+This sample demonstrate how to use the MudExCaptureService: Αυτό το δείγμα δείχνει πώς να χρησιμοποιήσετε το MudExCaptureService
+This sample demonstrate the usage of MudExTreeView with an Item template: Αυτό το δείγμα δείχνει τη χρήση του MudExTreeView με ένα πρότυπο αντικειμένου
+This sample uses the IDialogEventService to cancel the dialog close: Αυτό το δείγμα χρησιμοποιεί το IDialogEventService για να ακυρώσει το παράθυρο διαλόγου κλείσιμο
+This sample uses the options for a can close callback: Αυτό το δείγμα χρησιμοποιεί τις επιλογές για μια δυνατότητα κλεισίματος κλήσης
+This section can be placed inside a MudExGrid component.: Αυτό το τμήμα μπορεί να τοποθετηθεί μέσα σε ένα στοιχείο MudExGrid.
+Thistle: Γαϊδουράγκαθο
+ThrottleInterval: Διάστημα γκαζιού
+ti-ER: Tigrinya (Ερυθραία)
+ti-ET: Τιγκρίνια (Αιθιοπία)
+tig-ER: Τίγκρε (Ερυθραία)
+Tilt: Κλίση
+Time: Ώρα
+Times: Φορές
+Times New Roman: Times New Roman
+TimeSeries: Χρονοσειρές
+Tina Fey: Τίνα Φέι
+Title: Τίτλος
+Title is required!: Ο τίτλος είναι υποχρεωτικός!
+tk-TM: Τουρκμενιστάν (Τουρκμενιστάν)
+tn-BW: Σετσουάνα (Μποτσουάνα)
+tn-ZA: Σετσουάνα (Νότια Αφρική)
+to-TO: Τόνγκα (Τόνγκα)
+Toggle loading: Εναλλαγή φόρτωσης
+Toggle right-to-left/left-to-right: Εναλλαγή από δεξιά προς τα αριστερά/από αριστερά προς τα δεξιά
+Toggle to {0}: Εναλλαγή σε {0}
+Toggleable: Δυνατότητα εναλλαγής
+ToggleAllFeatures: Εναλλαγή όλων των χαρακτηριστικών
+ToggleFullPage: Εναλλαγή πλήρους σελίδας
+ToggleFullscreen: ΕναλλαγήΠλήρης οθόνη
+ToggleMicrophone: ΕναλλαγήΜικρόφωνο
+TogglePictureInPicture: Εναλλαγή εικόνας σε εικόνα
+TogglePlayPause: ΕναλλαγήΑναπαραγωγήΠαύση
+Token is required: Απαιτείται διακριτικό
+Token Not Found!: Το διακριτικό δεν βρέθηκε!
+Tokyo: Τόκιο
+Tokyo - 100-0001: Τόκιο - 100-0001
+Tokyo - 100-0001ender: Τόκιο - 100-0001ender
+Tomato: Ντομάτα
+TomorrowBase16: ΑύριοΒάση16
+TomorrowNightBase16: TomorrowNightBase16
+TomorrowNightBlue: ΑύριοΝύχταΜπλε
+TomorrowNightBright: ΑύριοΝύχταΦωτεινό
+ToolbarBackgroundColor: Γραμμή εργαλείωνΧρώμα φόντου
+ToolbarButtonColor: Γραμμή εργαλείωνΚουμπίΧρώμα
+ToolbarButtonPosition: ToolbarButtonPosition
+ToolbarButtonSize: ToolbarButtonSize
+ToolbarButtonVariant: ToolbarButtonVariant
+ToolbarClass: ToolbarΚλάση
+ToolBarClass: ToolBarClass
+ToolbarStyle: ToolbarStyle
+ToolBarStyle: Στυλ γραμμής εργαλείων
+Tooltip: Συμβουλή εργαλείου
+ToolTip: Συμβουλή εργαλείου
+ToolTip Three: Συμβουλή Εργαλείου Τρία
+ToolTip Two: Συμβουλή εργαλείου δύο
+ToolTipStyle: ToolTipStyle
+Top: Κορυφή
+TopCenter: Τοπ Κέντρο
+TopLeft: Πάνω αριστερά
+TopRight: Πάνω δεξιά
+Torch: Πυρσός
+Toronto: Τορόντο
+Toronto - M1B 1A1: Τορόντο - M1B 1A1
+Toronto - M1B 1A1ender: Τορόντο - M1B 1A1ender
+tr-CY: Τουρκικά (Κύπρος)
+tr-TR: Τουρκικά (Τουρκίας)
+Trace: Ίχνος
+TrackInfoPosition: TrackInfoPosition
+TrackList: Λίστα κομματιών
+TrackListBehaviour: Συμπεριφορά λίστας κομματιών
+TrackListClass: TrackListClass
+TrackListCoverImage: TrackListCoverImage
+TrackListMode: TrackListMode (Λειτουργία λίστας κομματιών)
+TrackListPosition: TrackListPosition
+TrackListToggleButtonPosition: TrackListToggleButtonPosition
+Trail Details: Λεπτομέρειες μονοπατιού
+TransformOrigin: TransformOrigin
+Translations: Μεταφράσεις
+Translations are being imported: Εισάγονται μεταφράσεις
+Translations updated: Οι μεταφράσεις ενημερώθηκαν
+Transparent: Διαφανής
+Trebuchet MS: Trebuchet MS
+TreeView: Προβολή δέντρου
+TreeView component that renders a tree structure of items.: TreeView που αποδίδει μια δενδροειδή δομή στοιχείων.
+TreeViewBreadcrumb: TreeViewBreadcrumb
+TreeViewCardGrid: TreeViewCardGrid
+TreeViewDefault: TreeViewDefault
+TreeViewFlatList: TreeViewFlatList
+TreeViewHorizontal: TreeViewHorizontal
+TreeViewList: TreeViewList
+TreeViewMode: TreeViewMode (Λειτουργία προβολής δέντρου)
+TrueLeds: Αληθινά LED
+TrueOrFalse: ΣωστόΉΛάθος
+Try different role: Δοκιμάστε διαφορετικό ρόλο
+Try MudEx online: Δοκιμάστε το MudEx online
+Try MudEx online CodeEditor: Δοκιμάστε το MudEx online CodeEditor
+ts-ZA: Xitsonga (Νότια Αφρική)
+tt-RU: Ταταρικά (Ρωσία)
+Turquoise: Τυρκουάζ
+TwilightBase16: ΛυκόφωςΒάση16
+twq-NE: Tasawaq (Νίγηρας)
+Type: Δακτυλογραφώ
+Type should be valid: Ο τύπος πρέπει να είναι έγκυρος
+Typo: Τυπογραφικό λάθος
+TypoThemeDescription: TypoThemeΠεριγραφή
+TypoThemeName: TypoThemeName
+tzm-Arab-MA: Central Atlas Tamazight (Αραβικά, Μαρόκο)
+tzm-Latn-DZ: Central Atlas Tamazight (Λατινικά, Αλγερία)
+tzm-Latn-MA: Central Atlas Tamazight (Λατινικά, Μαρόκο)
+tzm-Tfng-MA: Central Atlas Tamazight (Tifinagh, Μαρόκο)
+ug-CN: Ουιγούροι (Κίνα)
+uk-UA: Ουκρανικά (Ουκρανία)
+Uma Thurman: Ούμα Θέρμαν
+Unassigned: Μη εκχωρημένο
+UncheckedIcon: Μη επιλεγμένο εικονίδιο
+Underline: Υπογραμμίζω
+Undo: Καταστρέφω
+UndoIcon: Εικονίδιο αναίρεσης
+UnikittyDarkBase16: UnikittyDarkBase16
+UnikittyLightBase16: UnikittyLightBase16
+Unselectable: Μη επιλέξιμο
+Unset: Ακύρωση
+Update: Ενημερώνω
+Update automatically next time: Αυτόματη ενημέρωση την επόμενη φορά
+Update Brand: Ενημέρωση επωνυμίας
+Update Document: Ενημέρωση εγγράφου
+Update Document Type: Ενημέρωση Τύπου Παραστατικού
+Update Extended Attribute: Ενημέρωση εκτεταμένου χαρακτηριστικού
+Update Now: Ενημέρωση τώρα
+Update Permissions: Δικαιώματα ενημέρωσης
+Update Product: Ενημέρωση προϊόντος
+Update Role: Ενημέρωση ρόλου
+Update Role Permissions: Ενημέρωση δικαιωμάτων ρόλων
+Update User Roles: Ενημέρωση ρόλων χρήστη
+UpdateBindingIfOnlyHSLChanged: UpdateBindingIfOnlyHSLChanged
+Updated: Ενημέρωση
+Updated User Status.: Ενημερωμένη κατάσταση χρήστη.
+UpdateItemsOnStateChange: UpdateItemsOnStateChange
+Upload: Ανέβασμα
+Upload Edit: Μεταφόρτωση Επεξεργασία
+Upload File: Μεταφόρτωση αρχείου
+Upload Files: Μεταφόρτωση αρχείων
+Upload Folder: Μεταφόρτωση φακέλου
+Upload Image: Ανέβασμα εικόνας
+Upload in dialog: Μεταφόρτωση στο παράθυρο διαλόγου
+Upload Qualifications and References: Ανεβάστε Προσόντα και Αναφορές
+UploadFieldId: ΜεταφόρτωσηFieldId
+UploadFile: ΜεταφόρτωσηΑρχείο
+UploadFolder: ΜεταφόρτωσηΦάκελος
+UploadRequest: UploadRequest
+UploadRequests: Αιτήματα μεταφόρτωσης
+ur-IN: Ουρντού (Ινδία)
+ur-PK: Ουρντού (Πακιστάν)
+url: Διεύθυνση URL
+Url: Διεύθυνση URL
+Use CodeGator Models: Χρησιμοποιήστε μοντέλα CodeGator
+Use MudExAdditionalAdornment ad ChildContent: Χρήση διαφήμισης MudExAdditionalAdornment ChildContent
+Use MudExAdditionalAdornment as ChildContent of a MudInput: Χρησιμοποιήστε το MudExAdditionalAdornment ως θυγατρικό περιεχόμενο ενός MudInput
+Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Χρησιμοποιήστε το MudExSelect και ορίστε το MultiSelection σε true και το ValuePresenter σε Chip.
+UseCanvas: ΧρήσηΚαμβάς
+UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
+UseItemTemplateForSelection: UseItemTemplateForSelection
+UseMudExColorBubble: ΧρήσηMudExColorBubble
+UseNativeBrowserControl: UseNativeBrowserControl
+User: Χρήστης
+User {0} Registered. Please check your Mailbox to verify!: Ο χρήστης {0} εγγεγραμμένος. Ελέγξτε το γραμματοκιβώτιό σας για να επαληθεύσετε τη διεύθυνση email σας!
+User and Roles: Χρήστης και ρόλοι
+User Data: Δεδομένα χρήστη
+User Deleted: Ο χρήστης διαγράφηκε
+User Name: Όνομα χρήστη
+User Not Active. Please contact the administrator.: Ο χρήστης δεν είναι ενεργός. Περιμένετε για ενεργοποίηση ή επικοινωνήστε με τον διαχειριστή.
+User Not Found!: Ο χρήστης δεν βρέθηκε!
+User Registered: Εγγεγραμμένος χρήστης!
+User Registered Mailbox: Εγγεγραμμένος χρήστης. Το μήνυμα επιβεβαίωσης έχει παραδοθεί στο γραμματοκιβώτιο.
+User registration is not allowed: Δεν επιτρέπεται η εγγραφή χρήστη
+UserAttributes: Χαρακτηριστικά χρήστη
+UserInformation: Πληροφορίες χρήστη
+Username: Όνομα χρήστη
+UserName: Ονομα χρήστη
+Username {0} is already taken.: Το όνομα χρήστη {0} είναι ήδη κατειλημμένο.
+Username cannot changed: Το όνομα χρήστη δεν μπορεί να αλλάξει
+UserName is required: Απαιτείται όνομα χρήστη
+UserName must be at least of length 6: Το UserName πρέπει να έχει μήκος τουλάχιστον 6
+Username or Email: Όνομα χρήστη ή email
+Users: Χρήστες
+Users and Roles: Χρήστες και ρόλοι
+Users exported: Εξαγωγή χρηστών
+Uses the IDialogEventService and handles the before close event. Here you can just set args.Cancel to true to stop closing: Χρησιμοποιεί το IDialogEventService και χειρίζεται το συμβάν πριν από το κλείσιμο. Εδώ μπορείτε απλώς να ορίσετε args. Ακύρωση σε true για να σταματήσετε το κλείσιμο
+UTC: UTC
+Utilities: Βοηθητικά προγράμματα
+uz-Arab-AF: Ουζμπεκικά (Αραβικά, Αφγανιστάν)
+uz-Cyrl-UZ: Ουζμπεκικά (Κυριλλικά, Ουζμπεκιστάν)
+uz-Latn-UZ: Ουζμπεκικά (Λατινικά, Ουζμπεκιστάν)
+vai-Latn-LR: Βάι (Λατινικά, Λιβερία)
+vai-Vaii-LR: Βάι (Βάι, Λιβερία)
+Validate Upload Edit in MudForm: Επικύρωση επεξεργασίας μεταφόρτωσης στο MudForm
+Validation: Επικύρωση
+Value: Τιμή
+ValuePresenter: ValuePresenter
+Values: Αξιεσ
+ValueString: Συμβολοσειρά τιμής
+Vancouver: Βανκούβερ
+Vancouver - V5K 0A1: Βανκούβερ - V5K 0A1
+Vancouver - V5K 0A1ender: Βανκούβερ - V5K 0A1ender
+Variant: Παραλλαγή
+ve-ZA: Venda (Νότια Αφρική)
+Verdana: Βερντάνα
+Version: Εκδοχή
+vi-VN: Βιετναμέζικα (Βιετνάμ)
+Video Content-Type: Τύπος περιεχομένου βίντεο
+Video device: Συσκευή βίντεο
+VideoDevice: Συσκευή βίντεο
+View: Άποψη
+View Profile: Προβολή προφίλ
+ViewBox: Πλαίσιο προβολής
+ViewDependsOnContentType: ΠροβολήΕξαρτάταιΑπόΠεριεχόμενοΤύπος
+ViewMode: Λειτουργία προβολής
+ViewportHeight: Ύψος θύρας προβολής
+ViewportMaximum: Θύρα προβολήςMaximum
+ViewportMinimum: Θύρα προβολήςΕλάχιστο
+ViewportWidth: Πλάτος θύρας προβολής
+Viner Hand ITC: Viner Hand ITC
+Violet: Βιολέτα
+Virtualize: Εικονικοποίηση
+Visible: Ορατός
+Visualizer: Οπτικοποιητής
+VisualizerBackgroundColor: ΟπτικοποιητήςΧρώμα φόντου
+VisualizerElementBorderSize: VisualizerElementBorderSize
+Vivaldi: Βιβάλντι
+Vladimir Script: Σενάριο Βλαντιμίρ
+vo-001: Volapük (Κόσμος)
+Volume: Τόμος
+Vs: Vs
+Vs2015: Vs2015
+VulcanBase16: VulcanBase16
+vun-TZ: Vunjo (Τανζανία)
+wae-CH: Walser (Ελβετία)
+wal-ET: Wolaytta (Αιθιοπία)
+Warning: Προειδοποίηση
+WarningContrastText: ΠροειδοποίησηΑντίθεσηΚείμενο
+WarningDarken: ΠροειδοποίησηΣκοτάδι
+WarningLighten: ΠροειδοποίησηΦωτισμός
+weather.json: weather.json
+Webdings: Ιστοί
+Week: Εβδομάδα
+WeightingFilter: Φίλτρο στάθμισης
+Welcome {0}: Καλώς ήρθατε {0}
+whatever: οτιδήποτε
+Wheat: Σιτάρι
+White: Άσπρος
+WhiteBalanceMode: Λειτουργία ισορροπίας λευκού
+WhiteList: Λευκή λίστα
+WhiteSmoke: Λευκός καπνός
+Wide Latin: Ευρεία Λατινική
+Width: Πλάτος
+Will be saved only when selected Permission: Θα αποθηκευτεί μόνο όταν επιλεγεί Δικαίωμα
+Window: Παράθυρο
+Windows10Base16: Τα Windows10Base16
+Windows10LightBase16: Windows10LightBase16
+Windows95Base16: Windows95Base16
+Windows95LightBase16: Windows95LightBase16
+WindowsHighContrastBase16: WindowsΥψηλήΑντίθεσηΒάση16
+WindowsHighContrastLightBase16: WindowsHighContrastLightBase16
+WindowsNtBase16: WindowsNtBase16
+WindowsNtLightBase16: WindowsNtLightBase16
+Wingdings: Φτερά
+With custom configuration: Με προσαρμοσμένη διαμόρφωση
+With default configuration: Με προεπιλεγμένη διαμόρφωση
+With tabs: Με καρτέλες
+With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: Με το στοιχείο MudExAdditionalAdornment μπορείτε να έχετε τόσα στολίδια σε οποιοδήποτε στοιχείο ελέγχου εισόδου που βασίζεται στο MudInput όπως αυτό.
+With this component you can have an animation while loading the main blazor app: Με αυτό το στοιχείο μπορείτε να έχετε μια κινούμενη εικόνα κατά τη φόρτωση της κύριας εφαρμογής blazor
+With_Selected: '{0} Επιλεγμένο'
+WithFullSpectrumAudioData: ΜεFullSpectrumAudioData
+WithFullSpectrumAudioDataPrefilledWithRandomData: ΜεFullSpectrumAudioDataPrefilledWithRandomData
+WithGoogleLatinFonts: ΜεGoogleLatinFonts
+WithoutBounds: ΧωρίςBounds
+WithRandomData: ΜεΤυχαίαΔεδομένα
+WithRealAudioData: ΜεRealAudioData
+wo-SN: Wolof (Σενεγάλη)
+Wobble: Ταλάντευση
+WoodlandBase16: Δασική Βάση16
+WordDokument.doc: WordDokument.doc
+WrapChips: WrapChips
+WrapToolBarContent: WrapToolBarΠεριεχόμενο
+Xcode: Κωδικός Χ
+XcodeDuskBase16: XcodeDuskΒάση16
+xh-ZA: isiXhosa (Νότια Αφρική)
+Xml: Χμλ
+xog-UG: Soga (Ουγκάντα)
+Xt256: Χτ256
+Yaml: Γιαμ
+yav-CM: Yangben (Καμερούν)
+Yellow: Κίτρινος
+YellowGreen: Κιτρινοπράσινο
+Yes: Ναι
+yi-001: Γίντις (Κόσμος)
+yo-BJ: Γιορούμπα (Μπενίν)
+yo-NG: Γιορούμπα (Νιγηρία)
+Yokohama: Γιοκοχάμα
+Yokohama - 220-0001: Γιοκοχάμα - 220-0001
+Yokohama - 220-0001ender: Γιοκοχάμα - 220-0001ender
+you: εσύ
+You are logged out because the Permissions of one of your Roles have been updated.: Έχετε αποσυνδεθεί επειδή τα δικαιώματα ενός από τους ρόλους σας έχουν ενημερωθεί.
+You are logged out because the user with your Token has been deleted or token is expired.: Έχετε αποσυνδεθεί επειδή ο χρήστης με το διακριτικό σας έχει διαγραφεί ή το διακριτικό έχει λήξει.
+You are logged out by an Administrator or profile change.: Έχετε αποσυνδεθεί από έναν Διαχειριστή ή αλλαγή προφίλ.
+You are Logged Out.: Έχετε αποσυνδεθεί.
+You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Μπορείτε επίσης να χρησιμοποιήσετε το MudExAdditionalAdornment ως ChildContent ενός MudInput
+You can now Login with your credentials: Τώρα μπορείτε να συνδεθείτε με τα διαπιστευτήριά σας
+You cannot delete yourself: Δεν μπορείτε να διαγράψετε τον εαυτό σας
+You clicked: Κάνατε κλικ
+You don't need an extra JsonEditor anymore: Δεν χρειάζεστε πλέον ένα επιπλέον JsonEditor
+You have {0} Users where you can pick from: Έχετε {0} χρήστες από τους οποίους μπορείτε να επιλέξετε
+You picked: Διάλεξες
+You received a new chat message from {0}: Λάβατε ένα νέο μήνυμα συνομιλίας από {0}
+You're leaving {0} and will redirected to {1}: Φεύγετε από {0} και θα ανακατευθυνθείτε στο {1}
+Your e-mail address has been confirmed!: Η διεύθυνση ηλεκτρονικού ταχυδρομείου σας έχει επιβεβαιωθεί!
+Your email address could not be verified. If you have any problems, please contact {0}: Δεν ήταν δυνατή η επαλήθευση της διεύθυνσης email σας. Εάν αντιμετωπίζετε οποιοδήποτε πρόβλημα, επικοινωνήστε μαζί {0}
+Your Profile has been updated.: Το προφίλ σας έχει ενημερωθεί.
+Your Recent Activities.: Οι πρόσφατες δραστηριότητές σας.
+ZenburnBase16: ZenburnΒάση16
+zgh-Tfng-MA: Standard Moroccan Tamazight (Tifinagh, Μαρόκο)
+zh-CN: Κινέζικα (Κίνα)
+zh-Hans-HK: Κινεζικά (Απλοποιημένα, ΕΔΠ Χονγκ Κονγκ)
+zh-Hans-MO: Κινεζικά (απλοποιημένα, ΕΔΠ Μακάο)
+zh-HK: Κινεζικά (ΕΔΠ Χονγκ Κονγκ)
+zh-MO: Κινεζικά (ΕΔΠ Μακάο)
+zh-SG: Κινέζικα (Σιγκαπούρης)
+zh-TW: Κινέζικα (Ταϊβάν)
+ZIndex: Πρότυπο
+ZipCode: Ταχυδρομικός κώδικας
+Zoom: Μεγένθυνση
+Zoom in: Μεγέθυνση
+Zoom out: Σμίκρυνση
+ZoomInButtonIcon: Εικονίδιο κουμπιού ζουμ
+ZoomOnHover: ZoomOnHover
+ZoomOutButtonIcon: ZoomOutButtonIcon
+zu-ZA: isiZulu (Νότια Αφρική)

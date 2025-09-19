@@ -1,4 +1,5 @@
 ﻿@page "/mud-ex-picker"
+@inherits BasePage
 
 
 @attribute [DemoNew(Name = "MudExPicker", Icon = Icons.Material.Outlined.ArrowDropDown, Documentation = "This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker", ForComponentTypes = new[] { typeof(MudExPicker) })]
@@ -15,18 +16,18 @@
                         <MudCard @onclick="@(() => Select(i1))">
                             <MudCardHeader>
                                 <CardHeaderContent>
-                                    <MudText Typo="Typo.h6">Sample Card @i1</MudText>
+                                    <MudText Typo="Typo.h6">@L["Sample Card"] @i1</MudText>
                                 </CardHeaderContent>
                                 <CardHeaderActions>
                                     <MudIconButton Icon="@Icons.Material.Filled.Camera" Color="Color.Default"/>
                                 </CardHeaderActions>
                             </MudCardHeader>
                             <MudCardContent Style="z-index: 5">
-                                <MudText>Super sample Content text.</MudText>
-                                <MudText Typo="Typo.body2">Subline description for sample card.</MudText>
+                                <MudText>@L["Super sample Content text."]</MudText>
+                                <MudText Typo="Typo.body2">@L["Subline description for sample card."]</MudText>
                             </MudCardContent>
                             <MudCardActions Style="z-index: 5">
-                                <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
+                                <MudButton Variant="Variant.Text" Color="Color.Primary">@L["Read More"]</MudButton>
                             </MudCardActions>
                         </MudCard>
                     }

@@ -1,10 +1,11 @@
 ﻿@page "/app-load"
+@inherits BasePage
 @using MudBlazor.Extensions.Helper
 
 
 @attribute [Demo(Name = "MudExAppLoader", Icon = Icons.Material.Outlined.Circle, Documentation = "With this component you can have an animation while loading the main blazor app")]
 
-<MudButton Disabled="@_demoHiding" Variant="Variant.Outlined" Color="Color.Primary" OnClick="@(() => _demo = !_demo)">@(_demo ? "Hide Demo": "Show Demo")</MudButton>
+<MudButton Disabled="@_demoHiding" Variant="Variant.Outlined" Color="Color.Primary" OnClick="@(() => _demo = !_demo)">@(_demo ? L["Hide Demo"]: L["Show Demo"])</MudButton>
 
 @if (_demo)
 {

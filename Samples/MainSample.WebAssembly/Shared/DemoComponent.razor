@@ -1,12 +1,16 @@
 ﻿@using System.Reflection
+@using Microsoft.Extensions.Localization
 @using MudBlazor.Extensions.Api
-
+@inject IStringLocalizer<DemoComponent> L
 <HeaderForDemo Type="@PageType" />
 
 <MudTabs Style="min-height: 100%" Elevation="2" Rounded="true" ApplyEffectsToContainer="true" >
     <MudHidden Breakpoint="Breakpoint.MdAndDown">
         <p style="top: 0; position: absolute; right: 0; margin-right: 22px; margin-top: -38px; font-size: 18pt; color: var(--mud-palette-primary); font-weight: bold;">
-            @Title
+            @if (!string.IsNullOrEmpty(Title))
+            {
+                @L[Title]
+            }
         </p>
     </MudHidden>
     <MudTabPanel Text="Demo">
@@ -15,7 +19,7 @@
     
     @if (!string.IsNullOrEmpty(CodeFile))
     {
-        <MudTabPanel Text="Code">
+        <MudTabPanel Text="@L["Code"]">
             <MudCard>
                 @if (CodeFiles is { Length: > 1 })
                 {
@@ -26,7 +30,7 @@
                         }
                     </MudSelect>
                 }
-                <MudLink Href="@SelectedCodeFilePath" Target="_blank" Color="Color.Primary">Show on github</MudLink>
+                <MudLink Href="@SelectedCodeFilePath" Target="_blank" Color="Color.Primary">@L["Show on github"]</MudLink>
             </MudCard>
             <DemoMarkdown Value="@SelectedCodeValue"></DemoMarkdown>
 
@@ -35,7 +39,7 @@
     
     @if (_docFiles?.Any() == true)
     {       
-        <MudTabPanel Text="Documentation">
+        <MudTabPanel Text="@L["Documentation"]">
                 <MudCard>
                 @if (_docFiles.Count > 1)
                     {
@@ -55,7 +59,7 @@
 
     @if (DemoAttribute?.RelatedComponents?.Any() == true)
     {
-        <MudTabPanel Text="Api">
+        <MudTabPanel Text="@L["Api"]">
             <MudCard>
                 @if (DemoAttribute.RelatedComponents.Count() > 1)
                 {
@@ -143,7 +147,7 @@
         {
             _selectedCodeFile = value;
             SelectedCodeFilePath = value.StartsWith("http") ? value : GH.Path(value);
-            SelectedCodeValue = "Loading...";
+            SelectedCodeValue = L["Loading"] + "...";
             StateHasChanged();
             Http.GetStringAsync(SelectedCodeFilePath).ContinueWith(async task =>
             {
@@ -171,5 +175,12 @@
             }
         }
         catch { }
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
     }
 }

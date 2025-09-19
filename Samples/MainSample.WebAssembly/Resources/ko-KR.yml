@@ -1,0 +1,4347 @@
+﻿_ Text: _문자 메시지
+--accent-color1: --악센트 색상1
+--accent-color2: --악센트 색상2
+--accent-color3: --악센트 색상3
+--accent-color4: --악센트 색상4
+--loading-color: --로딩 색상
+--mud-palette-black: --진흙 팔레트-블랙
+--mud-palette-primary: --진흙 팔레트-기본
+--mud-palette-primary-darken: --진흙 팔레트-기본 어두움
+--mud-palette-primary-hover: --진흙 팔레트-기본 호버
+--mud-palette-primary-lighten: --진흙 팔레트-기본 밝게
+--mud-palette-primary-text: --진흙 팔레트-기본 텍스트
+--mud-palette-secondary: --진흙 팔레트-보조
+--mud-palette-secondary-darken: --진흙 팔레트-보조 어두움
+--mud-palette-secondary-hover: --진흙 팔레트-보조 호버
+--mud-palette-secondary-lighten: --진흙 팔레트-보조 밝게
+--mud-palette-secondary-text: --진흙 팔레트-보조 텍스트
+--mud-palette-white: --진흙 팔레트-화이트
+(currently the item is not visible): (현재 항목이 표시되지 않습니다)
+(currently the item is visible): (현재 항목이 표시됩니다)
+4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+A: A
+A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: 사용자가 가능한 값 목록에서 값을 선택하고 칩 또는 기본 콤보 상자로 표시할 수 있는 구성 요소입니다.
+A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: 마우스를 올려 ChildContent를 아래쪽, 위쪽, 왼쪽 또는 오른쪽에서 슬라이드하는 데 사용할 수 있는 컴포넌트입니다.
+A Component to display text with a gradient foreground or background: 그라디언트 전경 또는 배경이 있는 텍스트를 표시하는 구성 요소
+A Component to display the content of a zip file: zip 파일의 내용을 표시하는 구성 요소
+A Component to edit and upload a list of files: 파일 목록을 편집하고 업로드하는 구성 요소
+A Component to quickly select a color: 색상을 빠르게 선택하는 구성 요소
+A connection to the server cannot be established. Your network connection may be down or the server is unreachable. Please wait until the connection has been restored: 서버에 대한 연결을 설정할 수 없습니다. 네트워크 연결이 끊어졌거나 서버에 연결할 수 없습니다. 연결이 복원될 때까지 기다리십시오.
+A divider to separate content: 콘텐츠를 구분하는 구분선
+A maximum of {0} files are allowed: 최대 {0}개의 파일이 허용됩니다.
+A Popover can be used to display some content on top of another.: 팝오버를 사용하여 일부 콘텐츠를 다른 콘텐츠 위에 표시할 수 있습니다.
+A powerful component to edit an object and its properties.: 개체와 해당 속성을 편집하는 강력한 구성 요소입니다.
+A powerful editor that can handle json, xml or yaml content: json, xml 또는 yaml 콘텐츠를 처리할 수 있는 강력한 편집기
+A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: MudColorPicker 를 상속하지만 닫기 이벤트를 지연시키고 브라우저에서 네이티브 피커 구성 요소를 사용할 수 있는 가능성을 추가하는 간단한 ColorPicker 구성 요소입니다
+A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: 섹션을 포함하기 위해 열, 행, ColSpan 및 RowSpan을 지원하는 간단한 그리드 구성 요소입니다.
+A SplitPanel Component: SplitPanel 컴포넌트
+A Splitter Component: 스플리터 컴포넌트
+A WYSIWYG Html editor component.: WYSIWYG Html 편집기 구성 요소입니다.
+A11yDark: A11y다크
+A11yLight: A11y라이트
+aa-DJ: 아파르(지부티)
+aa-ER: 아파르(에리트레아)
+aa-ET: 아파르(에티오피아)
+about: 약
+Account: 계좌
+ActionButtons: 액션 버튼
+ActionButtonsNewLine: ActionButtonsNewLine
+ActionDefault: Action기본값
+ActionDisabled: 작업 비활성화
+ActionDisabledBackground: ActionDisabledBackground
+Actions: 작업
+ActionsAdornment: 작업장식
+ActionsClass: Actions클래스
+Activate comments: 댓글 활성화
+Activate User?: 사용자를 활성화하시겠습니까?
+Active: 활동적인
+Active?: 활동적인?
+ActiveFilterOnly: 활성 필터만
+Adaptive: 적응
+ADblNumber: ADblNumber
+Add: 더하다
+Add 1000 random items: 무작위 아이템 1000개 추가
+Add 500 Users: 사용자 500명 추가
+Add Brand: 브랜드 추가
+Add Document: 문서 추가
+Add Document Type: 문서 유형 추가
+Add Extended Attribute: 확장 속성 추가
+Add external Url: 외부 URL 추가
+Add files: 파일 추가
+Add Product: 제품 추가
+Add Role: 역할 추가
+Add Url: URL 추가
+Add user: 사용자 추가
+Add user to both lists: 두 목록에 사용자 추가
+Additional Audio: 추가 오디오
+Additional Video: 추가 비디오
+AdditionalAdornment: 추가 장식
+Address: 주소
+Addresses: 주소
+AddUrl: AddUrl
+Administrator: 관리자
+Administrator Settings.: 관리자 설정.
+Administrators Profile's Status cannot be toggled: 관리자 프로필의 상태를 전환할 수 없습니다.
+Adornment: 장식
+AdornmentAriaLabel: 장식아리아라벨
+AdornmentColor: 장식 색상
+AdornmentIcon: 장식 아이콘
+AdornmentText: 장식 텍스트
+af-NA: 아프리칸스어(나미비아)
+af-ZA: 아프리칸스어(남아프리카 공화국)
+After the dialog is shown you can drag it to the edges to see snap. Also you can use Ctrl + {ArrowKeys} to change position: 대화상자가 표시된 후 가장자리로 드래그하여 스냅을 볼 수 있습니다. 또한 Ctrl + {화살표 키}를 사용하여 위치를 변경할 수 있습니다.
+AfterBegin: 애프터 시작
+AfterEnd: 애프터 엔드
+AfterSearchBox: 애프터 서치박스
+Agate: 마노
+Age: 연령
+agq-CM: Aghem (카메룬)
+ak-GH: 아칸(가나)
+Albertus: 알베르투스
+Alice Johnson: 앨리스 존슨
+AliceBlue: 앨리스블루
+Align: 정렬
+ALL COMPONENTS: 모든 구성 요소
+All Documents without Type are stored here: 유형이 없는 모든 문서는 여기에 저장됩니다.
+All Groups: 모든 그룹
+All Permissions: 모든 권한
+All roles: 모든 역할
+All roles unfiltered: 필터링되지 않은 모든 역할
+AllFilters: 모든 필터
+AllowAudioRecording: AllowAudioRecording
+AllowColumnSizeChange: AllowColumnSizeChange
+AllowCopyUrl: AllowCopyUrl
+AllowDownload: 다운로드 허용
+AllowDrop: 허용 드롭
+AllowDropBox: 드롭박스 허용
+AllowDuplicates: 중복 허용
+AllowExternalUrl: AllowExternalUrl
+AllowFolderUpload: AllowFolderUpload
+AllowGoogleDrive: 허용GoogleDrive
+AllowInteractingUnderRubberBand: AllowInteractingUnderRubberBand
+AllowMultiple: 허용다중
+AllowOneDrive: OneDrive 허용
+AllowOpenInNewTab: OpenInNewTab 허용
+AllowOpenOnReadOnly: AllowOpenOnReadOnly
+AllowPreview: 미리보기 허용
+AllowRemovingItems: AllowRemovingItems
+AllowRename: AllowRename
+AllowRubberBandSelection: AllowRubberBandSelection
+AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
+AllowSelectOnPreviewClick: AllowSelectOnPreview클릭
+AllowVideoCapture: AllowVideoCapture
+AlphaBars: 알파바
+Already have an account?: 이미 계정이 있으신가요?
+Always: 늘
+AlwaysEditOptions: AlwaysEditOptions
+AlwaysShowValue: 항상 값 표시
+AlwaysVisible: 항상 보이는
+am-ET: 암하라어(에티오피아)
+An Error has occured!: 오류가 발생했습니다!
+An Error has occurred!: 오류가 발생했습니다!
+An error occurred while confirming {0}: 확인 중 오류가 발생했습니다{0}
+An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used, and you can specify animations as well: 여러 항목을 선택할 수 있고 검색 기능을 제공하는 확장된 SelectBox 컴포넌트는 내부적으로도 MudExPopover가 사용되며 애니메이션도 지정할 수 있습니다
+An item that only renders the content if it is in the viewport.: 뷰포트에 있는 경우에만 콘텐츠를 렌더링하는 항목입니다.
+AnchorOrigin: 앵커 원점
+Andale Mono: 안데일 모노
+Androidstudio: 안드로이드스튜디오
+Animate: 애니메이션
+AnimateAudioElementBorderColor: AnimateAudioElementBorderColor
+AnimateClose: 애니메이트닫기
+AnimateVisualizerBorderColor: AnimateVisualizerBorderColor
+Animation: 애니메이션
+AnimationDuration: 애니메이션 지속 시간
+AnimationDuration (in ms): AnimationDuration(ms)
+AnimationDurationInMs: 애니메이션 지속 시간(AnimationDurationInMs)
+AnimationIn: 애니메이션인
+AnimationInDirection: 애니메이션 방향
+AnimationInDuration: 애니메이션 인듀레이션
+AnimationInPosition: 애니메이션 위치
+AnimationOut: 애니메이션 출력
+AnimationOutDirection: 애니메이션아웃 방향
+AnimationOutDuration: 애니메이션아웃 지속 시간
+AnimationOutPosition: 애니메이션아웃포지션
+AnimationPosition: 애니메이션 위치
+Animations: 애니메이션
+AnimationTime: 애니메이션 시간
+AnimationTimingFunction: AnimationTiming함수
+AnOldHope: 올드호프
+Another Demo theme: 또 다른 데모 테마
+AnotherRar.rar: AnotherRar.rar
+AnotherStringProperty10: AnotherStringProperty10
+AnotherStringProperty11: AnotherStringProperty11
+AnotherStringProperty12: AnotherStringProperty12
+AnotherStringProperty13: AnotherStringProperty13
+AnotherStringProperty14: AnotherStringProperty14
+AnotherStringProperty15: AnotherStringProperty15
+AnotherStringProperty16: AnotherStringProperty16
+AnotherStringProperty17: AnotherStringProperty17
+AnotherStringProperty18: AnotherStringProperty18
+AnotherStringProperty19: AnotherStringProperty19
+AnotherStringProperty20: AnotherStringProperty20
+AnotherStringProperty21: AnotherStringProperty21
+AnotherStringProperty22: AnotherStringProperty22
+AnotherStringProperty23: AnotherStringProperty23
+AnotherStringProperty24: AnotherStringProperty24
+AnotherStringProperty25: AnotherStringProperty25
+AnotherStringProperty26: AnotherStringProperty26
+AnotherStringProperty27: AnotherStringProperty27 입니다.
+AnotherStringProperty28: AnotherStringProperty28
+AnotherStringProperty29: AnotherStringProperty29
+AnotherStringProperty30: AnotherStringProperty30
+AnotherStringProperty31: AnotherStringProperty31
+AnotherStringProperty32: AnotherStringProperty32
+AnotherStringProperty33: AnotherStringProperty33
+AnotherStringProperty34: AnotherStringProperty34
+AnotherStringProperty35: AnotherStringProperty35
+AnotherStringProperty36: AnotherStringProperty36
+AnotherStringProperty37: AnotherStringProperty37 입니다.
+AnotherStringProperty38: AnotherStringProperty38
+AnotherStringProperty39: AnotherStringProperty39
+AnotherStringProperty40: AnotherStringProperty40
+AnotherStringProperty41: AnotherStringProperty41
+AnotherStringProperty42: AnotherStringProperty42
+AnotherStringProperty43: AnotherStringProperty43 입니다.
+AnotherStringProperty44: AnotherStringProperty44
+AnotherStringProperty45: AnotherStringProperty45
+AnotherStringProperty46: AnotherStringProperty46
+AnotherStringProperty47: AnotherStringProperty47
+AnotherStringProperty48: AnotherStringProperty48
+AnotherStringProperty49: AnotherStringProperty49
+AnotherStringProperty50: AnotherStringProperty50
+AnotherStringProperty51: AnotherStringProperty51
+AnotherStringProperty52: AnotherStringProperty52
+AnotherStringProperty53: AnotherStringProperty53
+AnotherStringProperty54: AnotherStringProperty54
+AnotherStringProperty55: AnotherStringProperty55
+AnotherStringProperty56: AnotherStringProperty56 입니다.
+AnotherStringProperty57: AnotherStringProperty57
+AnotherStringProperty58: AnotherStringProperty58
+AnotherStringProperty59: AnotherStringProperty59
+AnotherStringProperty60: AnotherStringProperty60
+AnsiBands: Ansi밴드
+AntiqueWhite: 앤티크화이트
+ApathyBase16: 무관심베이스16
+Api: 아피
+API: API
+API-Versions: API 버전
+AppBar: 앱바
+AppbarBackground: 앱바 배경
+AppbarHeight: 앱바높이
+AppbarText: 앱바텍스트
+Appearance: 외관
+Appetizer: 전채
+Apple: 사과
+Apple Gothic: 애플 고딕
+Application: 신청
+ApplicationDescription: WebAssembly 및 클린 아키텍처 패턴을 사용하는 샘플 애플리케이션
+ApplicationSubDescription: Coworkee에 오신 것을 환영합니다
+applies a CSS class when the item is not visible.: 항목이 표시되지 않을 때 CSS 클래스를 적용합니다.
+applies a CSS class when the item is visible.: 항목이 표시될 때 CSS 클래스를 적용합니다.
+applies styles when the item is not visible.: 항목이 표시되지 않을 때 스타일을 적용합니다.
+applies styles when the item is visible.: 항목이 표시될 때 스타일을 적용합니다.
+Apply: 적용하다
+ApplyBackgroundImageFromTrack: ApplyBackgroundImageFromTrack
+ApprenticeBase16: 견습생베이스16
+Apr: 4월
+Aqua: 아쿠아
+Aquamarine: 남록색
+ar-001: 아랍어(세계)
+ar-AE: 아랍어(아랍에미리트)
+ar-BH: 아랍어(바레인)
+ar-DJ: 아랍어(지부티)
+ar-DZ: 아랍어(알제리)
+ar-EG: 아랍어(이집트)
+ar-ER: 아랍어(에리트레아)
+ar-IL: 아랍어(이스라엘)
+ar-IQ: 아랍어(이라크)
+ar-JO: 아랍어(요르단)
+ar-KM: 아랍어(코모로)
+ar-KW: 아랍어(쿠웨이트)
+ar-LB: 아랍어(레바논)
+ar-LY: 아랍어(리비아)
+ar-MA: 아랍어(모로코)
+ar-MR: 아랍어(모리타니)
+ar-OM: 아랍어(오만)
+ar-PS: 아랍어(팔레스타인 자치정부)
+ar-QA: 아랍어(카타르)
+ar-SA: 아랍어(사우디아라비아)
+ar-SD: 아랍어(수단)
+ar-SO: 아랍어(소말리아)
+ar-SS: 아랍어(남수단)
+ar-SY: 아랍어(시리아)
+ar-TD: 아랍어(차드)
+ar-TN: 아랍어(튀니지)
+ar-YE: 아랍어(예멘)
+Archive.zip: Archive.zip
+ArduinoLight: 아두이노라이트
+Are you sure to close: 닫을 수 있습니까?
+Are you sure you want to force logout for user {0}: 사용자 {0}를 위해 강제로 로그아웃하시겠습니까?
+Are you sure you want to restart Backend/Server?: 백엔드/서버를 다시 시작하시겠습니까?
+Are you sure you want to restore the default settings? This will overwrite any changes you've ever made here.: 기본 설정을 복원하시겠습니까? 이렇게 하면 여기에서 변경한 내용을 덮어씁니다.
+Are you sure?: 확실한가요?
+Arial: 아리알
+Arial Black: 아리얼 블랙
+Arial Narrow: 아리얼 내로우
+arn-CL: 마푸체(칠레)
+Arta: 예술
+As Admin you can filter for users here: 관리자는 여기에서 사용자를 필터링할 수 있습니다.
+As Picker: 피커 역
+as read: 읽은 대로
+As simple as it sound. This is a simple GroupBox: 들리는 것처럼 간단합니다. 이것은 간단한 GroupBox입니다.
+As soon as your account has been activated you can log in: 계정이 활성화되면 즉시 로그인할 수 있습니다.
+as unread: 읽지 않은 것으로
+as-IN: 아삼어(인도)
+asa-TZ: 아수(탄자니아)
+Ascetic: 금욕주의자
+AshesBase16: 재베이스16
+AspectRatio: 종횡비
+ast-ES: 아스투리아스(스페인)
+At least one document is required: 최소 하나의 문서가 필요합니다.
+AtelierCaveBase16: 아틀리에동굴기지16
+AtelierCaveLightBase16: 동굴 광의 아틀리에베이스16
+AtelierDuneBase16: 아틀리에 듄베이스16
+AtelierDuneLightBase16: 아틀리에듄라이트베이스16
+AtelierEstuaryBase16: 아틀리에하구베이스16
+AtelierEstuaryLightBase16: 아틀리에하스처리라이트베이스16
+AtelierForestBase16: 아틀리에포레스트베이스16
+AtelierForestLightBase16: 아틀리에숲빛베이스16
+AtelierHeathBase16: 아틀리에히스베이스16
+AtelierHeathLightBase16: 아틀리에히스라이트베이스16
+AtelierLakesideBase16: 아틀리에레이크사이드베이스16
+AtelierLakesideLightBase16: 아틀리에레이크사이드라이트베이스16
+AtelierPlateauBase16: 아틀리에고원베이스16
+AtelierPlateauLightBase16: 아틀리에고원LightBase16
+AtelierSavannaBase16: 워크샵사바나베이스16
+AtelierSavannaLightBase16: 아틀리에사바나라이트베이스16
+AtelierSeasideBase16: 아틀리에씨사이드베이스16
+AtelierSeasideLightBase16: 아틀리에씨사이드라이트베이스16
+AtelierSulphurpoolBase16: 아틀리에유황풀Base16
+AtelierSulphurpoolLightBase16: 아틀리에유황고리라이트베이스16
+AtlasBase16: 아틀라스베이스16
+AtomOneDark: 아톰원다크
+AtomOneDarkReasonable: AtomOneDark합리적
+AtomOneLight: 아톰원라이트
+Audio Content-Type: 오디오 콘텐츠 유형
+Audio devices: 오디오 장치
+AudioDevice: 오디오 장치
+AudioElementBackgroundColor: 오디오 요소배경색
+AudioElementBorderColor: 오디오 요소 테두리 색상
+AudioElementBorderSize: 오디오 요소 테두리 크기
+AudioElementBorderStyle: 오디오 요소 테두리 스타일
+AudioElements: 오디오 요소
+AudioElementWidth: 오디오 요소 너비
+Audit Trails: 감사 추적
+Audit Trails exported: 내보낸 감사 추적
+Aug: 8월
+Austin: 오스틴
+Austin - 73301: 오스틴 - 73301
+Austin - 73301ender: 오스틴 - 73301ender
+Auto Confirm Email?: 이메일 자동 확인?
+Auto Generated Editor for TestObject: TestObject에 대한 자동 생성 편집기
+Auto Stop recording after: 자동 중지 후 녹화
+AutoApplyGradient: 자동 적용그라디언트
+AutoClear: 자동 지우기
+AutoCloseBehaviour: 자동 닫기 동작
+AutoCloseOnSelect: 자동 닫기 OnSelect
+AutoCollapse: 자동 축소
+AutoExtractArchive: 자동 추출아카이브
+AutoFocus: 자동 초점
+AutoFocusFilter: 자동 초점 필터
+AutoLoadFileDataBytes: 자동 로드FileDataBytes
+Automatically allow next time: 다음에 자동으로 허용
+AutoPlayNextTrackOnEnd: 자동 재생NextTrackOnEnd
+AutoRemoveError: 자동 제거 오류
+AutoShowHideAudioElement: 자동 표시 숨기기오디오 요소
+AutoSize: 자동 크기 조정
+Available: 이용할 수 있는
+AvailableItems: 사용 가능한 항목
+Avant Garde: 아방가르드
+az-Cyrl-AZ: 아제르바이잔어(키릴 자모, 아제르바이잔)
+az-Latn-AZ: 아제르바이잔어(라틴어, 아제르바이잔)
+Azure: 하늘빛
+B: B
+ba-RU: 바시키르(러시아)
+Back: 뒤로
+BackdropClick: BackdropClick
+Background: 배경
+BackgroundColor: 배경색
+BackgroundGray: 배경회색
+BackgroundImage: 배경 이미지
+BackgroundPosition: 배경위치
+BackgroundRepeat: 배경반복
+BackgroundSize: 배경 크기
+BackLinkLabel: 백링크 레이블
+Bar: 술집
+BarBeverage: 바음료
+Barcode: 바코드
+Barcode already exists.: 바코드가 이미 존재합니다.
+Barcode is required!: 바코드가 필수!
+BarIndex: 막대 인덱스
+Bark: 짖다
+BarLevel: 막대 수준
+BarSpacing: 막대 간격
+Bart Simpson: 바트 심슨
+bas-CM: 바사(카메룬)
+Base component for a picker: 피커의 기본 구성 요소
+Basic: 기초의
+Basic role with default permissions: 기본 권한이 있는 기본 역할
+Bauhaus 93: 바우하우스 93
+be-BY: 벨로루시어(벨로루시)
+BeforeBegin: 전시작
+BeforeEnd: 비전엔드(BeforeEnd)
+BeforeSearchBox: BeforeSearchBox
+Behavior: 행동
+Behaviour: 행동
+Beige: 베이지색의
+Bell MT: 벨 MT
+bem-ZM: 벰바(잠비아)
+Bernard MT Condensed: 버나드 MT 콘덴스
+BespinBase16: 베스핀베이스16
+Beverage: 음료
+bez-TZ: 베나(탄자니아)
+bg-BG: 불가리아어(불가리아)
+BgAlpha: Bg알파
+BgColor: BgColor
+bin-NG: 에도 (나이지리아)
+Bind Dark Mode: 바인드 다크 모드
+BindWidthToPicker: 바인드 너비 선택기
+Birmingham: 버밍엄
+Birmingham - B1 1BD: 버밍엄 - B1 1BD
+Birmingham - B1 1BDender: 버밍엄 - B1 1Bender
+Bisque: 비스크
+Black: 검정
+Blackadder ITC: 블랙애더 ITC
+BlackList: 블랙리스트
+BlackMetalBase16: 블랙메탈베이스16
+BlackMetalBathoryBase16: 블랙메탈바토리베이스16
+BlackMetalBurzumBase16: 블랙메탈버줌베이스16
+BlackMetalDarkFuneralBase16: 블랙메탈다크장례식베이스16
+BlackMetalGorgorothBase16: 블랙메탈고르고로스베이스16
+BlackMetalImmortalBase16: 블랙메탈불멸베이스16
+BlackMetalKholdBase16: 블랙메탈KholdBase16
+BlackMetalMardukBase16: 블랙메탈마르둑베이스16
+BlackMetalMayhemBase16: 블랙메탈메이헴베이스16
+BlackMetalNileBase16: 블랙메탈나일베이스16
+BlackMetalVenomBase16: 블랙메탈베놈베이스16
+BlanchedAlmond: 데친 아몬드
+Blazor wrapper component for AudioMotionAnalyzer: AudioMotionAnalyzer에 대한 Blazor 래퍼 구성 요소
+BlobUrl: BlobUrl
+Blue: 파랑
+BlueViolet: 블루바이올렛
+bm-Latn-ML: 바마난칸(라틴어, 말리어)
+bn-BD: 벵골어(방글라데시)
+bn-IN: 벵골어(인도)
+bo-CN: 티베트어(중국)
+bo-IN: 티베트어(인도)
+Bob Smith: 밥 스미스
+Bodoni MT: 보도니 MT
+body1: 본문1
+Body1: 본문1
+body2: 본문2
+Body2: 본문2
+Bookman: 북맨
+BorderAnimationColors: 테두리 애니메이션 색상
+BorderColor: 테두리 색상
+Bordered: 접경
+BorderOpacity: 테두리 불투명도
+BorderSize: 테두리 크기
+BorderStyle: 테두리 스타일
+Both: 둘다
+BothDiagonal: 둘 다 대각선
+BothHorizontal: 둘 다 수평
+BothVertical: 둘 다 수직
+Bottom: 밑바닥
+BottomCenter: 하단 중심
+BottomLeft: 왼쪽 하단
+BottomRight: 오른쪽 하단
+Bounce: 뛰어오르다
+br-FR: 브르타뉴(프랑스)
+Brand: 낙인
+Brand Deleted: 브랜드 삭제됨
+Brand is required!: 브랜드가 필수!
+Brand Not Found!: 브랜드를 찾을 수 없습니다!
+Brand Saved: 브랜드 저장!
+Brand Updated: 브랜드 업데이트!
+BrandName: 낙인
+Brands: 브랜드
+Brands exported: 수출 브랜드
+Breadcrumb: 이동 경로
+BreadcrumbLink: 이동 경로링크
+BreadcrumbSeparator: 이동 경로 구분 기호
+BrewerBase16: 브루어베이스16
+BrightBase16: 브라이트베이스16
+Brightness: 밝기
+Broadway: 브로드 웨이
+BrogrammerBase16: 브로그래머베이스16
+Brown: 갈색
+BrownPaper: 브라운 페이퍼
+Browse Available Documents.: 사용 가능한 문서를 찾아봅니다.
+Browser: 브라우저
+BrowserFileExt: 브라우저파일 내선
+Brush Script MT: 브러시 스크립트 MT
+Brush Script Std: 브러시 스크립트 표준
+BrushTreesBase16: 브러시트리베이스16
+BrushTreesDarkBase16: 브러시트리다크베이스16
+brx-IN: 보도(인도)
+bs-Cyrl-BA: 보스니아어(키릴 자모, 보스니아 헤르체고비나)
+bs-Latn-BA: 보스니아어(라틴어, 보스니아 헤르체고비나)
+BurlyWood: 벌리우드
+button: 단추
+Button: 단추
+Button component for capturing audio and video.: 오디오 및 비디오를 캡처하기 위한 버튼 구성 요소입니다.
+Button component for speech-to-text functionality, allowing for asynchronous recording and processing of speech input.: 음성 텍스트 변환 기능을 위한 버튼 구성 요소로, 음성 입력의 비동기 녹음 및 처리가 가능합니다.
+ButtonColor: 버튼 색상
+ButtonSize: 버튼 크기
+ButtonsJustify: 단추양쪽 맞추기
+ButtonType: 단추 유형
+ButtonVariant: 버튼 변형
+byn-ER: 블린(에리트레아)
+Bytes: 바이트
+C: C
+C#: C#
+ca-AD: 카탈로니아어(안도라)
+ca-ES: 카탈로니아어(스페인)
+ca-FR: 카탈로니아어(프랑스)
+ca-IT: 카탈로니아어(이탈리아)
+CadetBlue: 생도블루
+Calgary: 캘거리
+Calgary - T1X 0L3: 캘거리 - T1X 0L3
+Calgary - T1X 0L3ender: 캘거리 - T1X 0L3ender
+Californian FB: 캘리포니아 FB
+Can close: 닫을 수 있습니다.
+Cancel: 취소
+Cancel deletion: 삭제 취소
+Cancelled: 취소
+CanClose: 닫을 수 있습니다
+CanCloseCallbackName: 캔 닫기 콜백 이름
+caption: 캡션
+Caption: 캡션
+Capture: 사로잡다
+Capture Screen: 화면 캡처
+Capture service: 캡처 서비스
+Capture video: 비디오 캡처
+CaptureButton: 캡처 버튼
+CaptureInfoComponent: CaptureInfoComponent (캡처 정보 구성 요소)
+CaptureOptions: 캡처 옵션
+Card Grid: 카드 그리드
+CardEffect3d: 카드이펙트3d
+CardGrid: 카드그리드
+Catalog Management: 카탈로그 관리
+ccp-Cakm-BD: Chakma (Chakma, 방글라데시)
+ccp-Cakm-IN: Chakma (Chakma, 인도)
+ce-RU: 체첸(러시아)
+ceb-Latn-PH: 세부아노어(라틴어, 필리핀)
+Centaur: 켄타우루스자리
+Center: 중
+CenterCenter: 센터센터
+CenterLeft: 가운데 왼쪽
+CenterRight: 중앙 오른쪽
+Centimeters: 센티미터
+Century Gothic: 센추리 고딕
+cgg-UG: 치가(우간다)
+ChalkBase16: 분필베이스16
+Change media options: 미디어 옵션 변경
+Change or edit your theme: 테마 변경 또는 수정
+Change Password: 비밀번호 변경
+Change the system settings carefully: 시스템 설정을 신중하게 변경하십시오.
+ChannelLayout: 채널레이아웃
+Charlie Brown: 찰리 브라운
+Chartreuse: 연두색
+Charts comming soon ish...: 차트가 곧 출시될 예정입니다...
+ChartTooltip: 차트툴팁
+chat: 잡담
+Chat: 잡담
+Chat?: 잡담?
+Check me: 확인
+Check out the MudExThemeEdit Component: MudExThemeEdit 컴포넌트 확인
+CheckBox: 체크박스
+CheckedIcon: 체크 아이콘
+Checker: 검사기
+Checker box: 체커 박스
+Chicago: 시카고
+Chicago - 60601: 시카고 - 60601
+Chicago - 60601ender: 시카고 - 60601ender
+ChildContentStyle: 자식 콘텐츠 스타일
+Chiller: 냉각기
+Chip: 칩
+ChipClass: 칩클래스
+ChipCloseable: 칩 클로저블
+ChipColor: 칩컬러
+ChipsAdditionalAbove: 칩추가위
+ChipsAdditionalBelow: 칩추가아래
+ChipSelect: 칩셀렉트
+ChipSize: 칩 크기
+ChipsMaxWidth: 칩 최대 너비
+ChipsOnly: 칩만
+ChipVariant: 칩 변형
+ChipWithoutItemTemplate: ChipWithoutItemTemplate
+Chocolate: 초콜릿
+chr-Cher-US: 체로키(체로키, 미국)
+CircusBase16: 서커스베이스16
+Cities you want to live: 살고 싶은 도시
+City: 도시
+Class: 수업
+ClassChip: 클래스칩
+ClassicDarkBase16: 클래식다크베이스16
+ClassicLightBase16: 클래식라이트베이스16
+ClassSearchBox: 클래스 검색 상자
+Clear: 맑다
+Clearable: 클리어 가능
+Click here to choose a screen to capture. If not selected, you will be prompted when starting the recording.: 캡처할 화면을 선택하려면 여기를 클릭하십시오. 선택하지 않으면 녹화를 시작할 때 메시지가 표시됩니다.
+Click here to upload files: 파일을 업로드하려면 여기를 클릭하십시오.
+Click the button below to enable them and load the third party services from disqus.com: 아래 버튼을 클릭하여 활성화하고 disqus.com 에서 타사 서비스를 로드합니다.
+Clickable: 클릭 가능
+ClickAction: 클릭액션
+ClickPropagation: 클릭전파
+Client Language has been changed: 클라이언트 언어가 변경되었습니다.
+Close: 닫다
+Closeable: 닫을 수 있음
+CloseAfterSelect: 닫기 후 선택
+CloseButton: 닫기 단추
+Closed: 닫은
+CloseIcon: 닫기아이콘
+CloseOnEscapeKey: CloseOnEscapeKey
+co-FR: 코르시카(프랑스)
+Code: 코드
+CodeBlockTheme: 코드블록테마
+CodepenEmbed: 코드펜임베드
+CodeschoolBase16: 코드스쿨베이스16
+CollapseOnClick: CollapseOnClick
+Colonna MT: MT 컬럼
+color: 색
+Color: 색
+ColorBrewer: 컬러브루어
+ColorBubble: 컬러버블
+ColoredImagesForExternalFilePicker: ColoredImagesForExternalFilePicker(ColoredImagesForExternalFilePicker)
+ColorEdit: 색상 편집
+ColorElements: 색상 요소
+ColorizeIcons: 색상화 아이콘
+ColorMode: 색상 모드
+ColorPicker: 색상 선택기
+ColorPickerMode: 컬러피커 모드
+ColorPickerView: ColorPickerView
+ColorsBase16: 색상베이스16
+ColorStops: 컬러스톱
+ColorTemperature: 색온도
+ColSpan: 콜스팬
+Column: 열
+Columns Affected: 영향을 받는 열
+ColumnWidth: 열 너비
+Comic Sans MS: 코믹 산스 MS
+Comments: 코멘트
+Common: 보통의
+Communication: 통신
+Community: 커뮤니티
+Compact: 콤팩트
+Comparer: 비교하다
+Component edit capture options: 구성 요소 편집 캡처 옵션
+Component in Dialog: 대화 상자의 구성 요소
+Component to add additional adornment to a MudInput: MudInput에 장식을 추가하는 컴포넌트
+Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: iframe 또는 개체 태그 또는 IMudExFileDisplay를 구현하는 등록된 뷰어에 파일을 표시하는 구성 요소입니다
+Component to display information about the current recording: 현재 기록에 대한 정보를 표시하는 구성 요소
+Component to Edit Icon values: 아이콘 값을 편집하는 구성 요소
+Component to Edit MudExColor: MudExColor 편집 구성 요소
+Component to move the ChildContent to a specific element that can defined by ElementSelector.: Component를 사용하여 ChildContent를 ElementSelector로 정의할 수 있는 특정 요소로 이동합니다.
+Component to select a theme from a list of themes.: 구성 요소 테마 목록에서 테마를 선택합니다.
+ComponentBaseWithState: ComponentBaseWithState
+ComponentInDialog: ComponentInDialog
+Conditional updates: 조건부 업데이트
+Configure list values: 목록 값 구성
+Confirm: 확인하다
+CONFIRM: 확인하다
+Confirm and Ignore: 확인 및 무시
+Confirm and Set Required: 확인 및 필수 설정
+Confirm edit: 편집 확인
+Confirm Password: 비밀번호 확인
+Confirm Registration: 등록 확인
+Confirmation: 확인
+ConnectAllAudioSources: ConnectAllAudioSources
+ConnectCapture: 커넥트캡처
+ConnectCurrentTab: ConnectCurrentTab
+ConnectionMode: 연결 모드
+ConnectMicrophone: 연결마이크
+ConnectToCapture: 캡처에 연결
+contacts: 연락처
+Content-Type: 콘텐츠 유형
+ContentAlignment: 내용정렬
+ContentStream: 콘텐츠 스트림
+ContentType: 콘텐츠 유형
+ContextMenuAction: 컨텍스트 메뉴 액션
+Continue to {0}: 계속 {0}
+Continuous: 지속적
+Contrast: 대조
+Cooper Black: 쿠퍼 블랙
+Copperplate Gothic Bold: 동판 고딕 굵게
+Copperplate Gothic Light: 동판 고딕 빛
+Copy url: URL 복사
+Counter: 카운터
+Country: 나라
+Courier New: 택배 새
+Courrier: 우편
+Create: 창조하다
+Create address: 주소 생성
+Create new backup: 새 백업 만들기
+CreatedOn: 작성일
+Critical: 비판적인
+CropAndScale: 자르기 및 크기 조정
+cs-CZ: 체코어(체코)
+CSS Color Variables: CSS 색상 변수
+CssVars: CssVar
+cu-RU: 교회 슬라브어(러시아)
+CupcakeBase16: 컵케이크베이스16
+CupertinoBase16: 쿠퍼티노베이스16
+Current Password: 현재 비밀번호
+Current Password is required!: 현재 비밀번호가 필요합니다!
+Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can change DarMode in the Top right menu or disable binding by toggle the switch: 현재 ThemeEditor는 현재 테마에서 DarkMode에 바인딩되어 있으며 {0}입니다. 오른쪽 상단 메뉴에서 DarMode를 변경하거나 스위치를 전환하여 바인딩을 비활성화할 수 있습니다
+Cursor: 커서
+CursorPositionOrigin: 커서위치원점
+Custom: 관습
+CustomContentErrorMessage: 사용자 지정 콘텐츠 오류 메시지
+Customize: 사용자 지정
+cy-GB: 웨일스어(영국)
+D: D
+da-DK: 덴마크어(덴마크)
+da-GL: 덴마크어(그린란드)
+Dallas: 댈러스
+Dallas - 75201: 댈러스 - 75201
+Dallas - 75201ender: 댈러스 - 75201ender
+DanqingBase16: 단칭베이스16
+DarculaBase16: 다르큘라베이스16
+Dark: 어둠
+DarkContrastText: 어두운 대비 텍스트
+DarkDarken: 어둡게 어둡게
+DarkGreen: 다크그린
+DarkKhaki: 다크카키
+DarkLighten: 어둡게 밝히다
+DarkMagenta: 다크마젠타
+DarkmossBase16: 다크모스베이스16
+DarkOliveGreen: 다크올리브그린
+DarkOnly: 다크만
+DarkOrange: 다크오렌지
+DarkOrchid: 다크오키드
+DarkRed: 다크레드
+DarkSalmon: 다크 연어
+DarkSeaGreen: 다크씨그린
+DarkSlateBlue: 다크슬레이트블루
+DarkSlateGray: 다크슬레이트그레이
+DarktoothBase16: 다크이스베이스16
+DarkTurquoise: 다크 터콰이즈
+DarkViolet: 다크바이올렛
+DarkVioletBase16: 다크바이올렛베이스16
+Dashboard: 대시보드
+Dashed: 점선
+Data: 데이터
+Data has been updated: 데이터가 업데이트되었습니다.
+Database Backups: 데이터베이스 백업
+DataUrl: 데이터 URL
+DataVisualiserStyle: DataVisualiserStyle
+date: 날짜
+Date: 날짜
+Date Created: 작성일
+Date Range For Searching: 검색을 위한 날짜 범위
+DateOfBirth: 생년월일
+DateTime value is required using {0} type!: DateTime 값은 {0} 유형을 사용하여 필요합니다!
+DateTimeLocal: 날짜/시간로컬
+dav-KE: 타이타(케냐)
+de-AT: 독일어(오스트리아)
+de-BE: 독일어(벨기에)
+de-CH: 독일어(스위스)
+de-DE: 독일어(독일)
+de-IT: 독일어(이탈리아)
+de-LI: 독일어(리히텐슈타인)
+de-LU: 독일어(룩셈부르크)
+Debug: 디버그
+Dec: 12월
+DecafBase16: 디카페인베이스16
+decimal: 십진법
+Decimal: 십진법
+Decimal value is required using {0} type!: '{0} 유형을 사용하여 10진수 값이 필요합니다!'
+DeepPink: 딥핑크
+DeepSkyBlue: 딥스카이블루
+Default: 기본값
+DefaultBorderRadius: 기본 경계 반경
+DefaultDarkBase16: 기본값다크베이스16
+DefaultLightBase16: 기본 라이트베이스16
+Defined: 정의
+Delay: 지연
+DelayValueChangeToPickerClose: DelayValueChangeToPicker닫기
+Delete: 삭제하다
+Delete all: 모두 삭제
+Delete Confirmation: 확인 삭제
+Delete Content: 콘텐츠 삭제
+Delete Content {0}: 콘텐츠 '{0}' 삭제
+Delete Extended Attribute?: 확장 속성을 삭제하시겠습니까?
+Delete file from server: 서버에서 파일 삭제
+Delete Image: 이미지 삭제
+Delete Picture: 사진 삭제
+Delete Role Content: ID가 {0}인 역할을 삭제하시겠습니까?
+Delete these {0} elements: 이 {0} 요소를 삭제하시겠습니까?
+Delete this element: 이 요소를 삭제하시겠습니까?
+Delete User: 사용자 삭제
+Deletion Not Allowed: 삭제 불가
+Delimiter: 구분 기호
+Delimiters: 구분 기호
+Demo drag mode SnapDrag: 데모 드래그 모드 SnapDrag
+Demo for MudExDialog as inline: MudExDialog를 인라인으로 데모
+Demo for MudExTaskBar and not Modal dialogs: 모달이 아닌 MudExTaskBar 대화상자에 대한 데모
+Demo for simple integrated useful dialogs. Prompt, Info, MessageBox: 간단하고 통합된 유용한 대화 상자에 대한 데모입니다. 프롬프트, 정보, 메시지 상자
+Demo for the MudExUploadEdit inside of a MudForm and a FluentValidator.: MudForm 및 FluentValidator 내부의 MudExUploadEdit 데모입니다.
+Demo for the MudExUploadEdit.: MudExUploadEdit에 대한 데모입니다.
+Demo for using custom can close in DialogOptionsEx: 사용자 정의 사용에 대한 데모는 DialogOptionsEx에서 닫을 수 있습니다.
+Demo for using Dialog and DialogBackground Appearance in DialogOptionsEx: DialogOptionsEx에서 Dialog 및 DialogBackground 모양을 사용하기 위한 데모
+Demo for using DialogOptionsEx: DialogOptionsEx 사용 데모
+Demo for using DialogOptionsEx and pass position and size: DialogOptionsEx 및 패스 위치 및 크기 사용에 대한 데모
+Demo for using MudExObjectEdit for the same model with the default Demo but with some Meta configuration: 기본 데모가 있지만 일부 메타 환경설정이 있는 동일한 모델에 대해 MudExObjectEdit를 사용하는 데모
+Demo for using MudExObjectEdit GroupingStyle.Tabs: MudExObjectEdit GroupingStyle.Tabs 사용 데모
+Demo for using MudExObjectEdit only with bypassing an object: 오브젝트를 우회하여 MudExObjectEdit만 사용하는 데모
+Demo for using MudExObjectEdit with a configuration for Conditional using 'WithAttributesIf': "'WithAttributesIf'를 사용하여 조건부 구성과 함께 MudExObjectEdit를 사용하는 데모"
+Demo for using MudExObjectEdit with a model that contains file(s): 파일이 포함된 모델에서 MudExObjectEdit를 사용하는 데모
+Demo for using MudExObjectEdit with CodeGator Adapter and CodeGator Attributes: CodeGator 어댑터 및 CodeGator 속성과 함께 MudExObjectEdit를 사용하기 위한 데모
+Demo for using MudExObjectEditPicker with a model that contains file(s): 파일이 포함된 모델에서 MudExObjectEditPicker 를 사용하는 데모
+Demo of using explicit the MudExFileDisplayZip to show and select content inside of a zip file: MudExFileDisplayZip 을 명시적으로 사용하여 zip 파일 내부의 콘텐츠를 표시하고 선택하는 데모
+Demonstration for a simple but very useful Enum Selector: 간단하지만 매우 유용한 열거형 선택기에 대한 데모
+Demonstration of the MudExSplitter: MudExSplitter 시연
+Demonstration of the quickly color select with MudExColorBubble: MudExColorBubble을 사용한 빠른 색상 선택 데모
+DEMOS: 데모
+Dense: 빽빽한
+Dependent permissions required: 종속 권한 필요
+Deployments: 배포
+Description: 묘사
+Description is required!: 설명이 필수입니다!
+Description_for_Age: Description_for_Age
+Description_for_City: Description_for_City
+Description_for_FirstName: Description_for_FirstName
+Description_for_Id: Description_for_Id
+Description_for_LastName: Description_for_LastName
+Description_for_Notice: Description_for_Notice
+Description_for_OtherAddresses: Description_for_OtherAddresses
+Description_for_PostalCode: Description_for_PostalCode
+Description_for_ProgramingSkills: Description_for_ProgramingSkills
+Description_for_Street: Description_for_Street
+Description_for_TrueOrFalse: Description_for_TrueOrFalse
+Dessert: 디저트
+detailed guide for more.: 자세한 내용은 자세한 가이드입니다.
+Details for Trail ID: 트레일 ID에 대한 세부 정보
+Devibeans: 데비빈스
+DeviceId: 장치 ID
+DeviceListVariant: DeviceListVariant
+DeviceSelection: 장치 선택
+Dialog: 대화
+Dialog Appearance: 대화상자 모양
+Dialog Content: 대화 내용
+Dialog Drag & Drop: '대화상자: 드래그 앤 드롭'
+Dialog for editing objects with the MudExObjectEditForm: MudExObjectEditForm을 사용하여 오브젝트를 편집하기 위한 대화상자
+Dialog Sample: 대화 상자 샘플
+Dialog Samples: 대화 상자 샘플
+Dialog Snap Drag: 대화상자 스냅 드래그
+Dialog to display a file using {{{MudBlazor.Extensions.Components.MudExFileDisplay}}} component.: '{{{MudBlazor.Extensions.Components.MudExFileDisplay}}} 컴포넌트를 사용하여 파일을 표시하는 대화상자입니다.'
+Dialog_Appearance: Dialog_Appearance
+DialogAppearance: 대화 상자 모양
+DialogBackgroundAppearance: 대화 상자 배경 모양
+DialogOptions: 대화 상자 옵션
+Dialogs: 대화
+DialogsCanClose: 대화 상자 닫기 가능
+DialogServiceExt: 대화 상자 서비스 내선
+DialogSnapDrag: 대화 상자 스냅 드래그
+DialogsPosition: 대화 상자 위치
+Diana Prince: 다이애나 프린스
+DimGray: 딤그레이
+Direct: 직접적
+Direction: 방향
+DirtyseaBase16: 더티씨베이스16
+Disable Grouping: 그룹화 비활성화
+Disabled: 비활성화
+DisableList: DisableList 비활성화
+DisableOpacityChange: DisableOpacityChange
+DisablePadding: DisablePadding
+DisablePopoverPadding: DisablePopoverPadding
+DisablePositionMargin: DisablePositionMargin (위치 마진 비활성화)
+DisableSelectedItemStyle: DisableSelectedItemStyle 비활성화
+DisableSizeMarginX: DisableSizeMarginX (크기 여백X 비활성화)
+DisableSizeMarginY: DisableSizeMarginY (크기 여백 Y 비활성화)
+DiscreteFrequencies: 이산 주파수
+DisplayActionMenu: DisplayActionMenu 표시
+DisplayErrors: 디스플레이 오류
+DisplayPresetList: 디스플레이 프리셋 목록
+Displays a tree structure as flat list: 트리 구조를 플랫 리스트로 표시합니다.
+Displays a tree structure as horizontal navigable tree: 트리 구조를 수평 탐색 가능한 트리로 표시합니다.
+Displays a tree structure as navigable Breadcrumb: 트리 구조를 탐색 가능한 이동 경로로 표시합니다.
+Displays a tree structure as navigable card grid: 트리 구조를 탐색 가능한 카드 그리드로 표시합니다.
+Displays a tree structure as navigable List: 트리 구조를 탐색 가능한 목록으로 표시합니다.
+Displays a tree structure as simple tree: 트리 구조를 단순 트리로 표시합니다.
+DisplaySurface: 디스플레이 표면
+DisplayTrackList: DisplayTrackList 표시
+DisposeEvent: DisposeEvent
+Disqus comments are disabled by default.: Disqus 댓글은 기본적으로 비활성화되어 있습니다.
+Divider: 분배자
+DividerLight: 디바이더라이트
+dje-NE: 자르마(니제르)
+DNumber: D번호
+Do you really want to restart the server?: 정말 서버를 다시 시작하시겠습니까?
+Do you really want to restore the database from backup '{0}'? Note that any changes made after {1} are gone. This also means any changes made by any user: 백업 '{0}'에서 데이터베이스를 복원하고 싶습니까? {1} 이후에 변경한 내용은 모두 사라집니다. 이는 또한 모든 사용자가 변경한 모든 것을 의미합니다
+Do you want to delete the profile picture of {0}: '{0}의 프로필 사진을 삭제하시겠습니까?'
+Do you want to delete the User {0}: 사용자 {0} 삭제하시겠습니까?
+Docco: 닥코
+Docked: 도킹
+Document Deleted: 문서 삭제됨
+Document Extended Attributes: 문서 확장 속성
+Document Management: 문서 관리
+Document Not Found!: 문서를 찾을 수 없습니다!
+Document Saved: 저장된 문서
+Document Store: 문서 저장소
+Document Type: 문서 유형
+Document Type Deleted: 문서 종류 삭제됨
+Document Type is required!: 문서 유형은 필수입니다!
+Document Type Not Found!: 문서 유형을 찾을 수 없습니다!
+Document Type Saved: 저장된 문서 유형
+Document Type Updated: 문서 유형 업데이트됨
+Document type with this name already exists.: 이 이름의 문서 유형이 이미 존재합니다.
+Document Types: 문서 유형
+Document Types exported: 내보낸 문서 유형
+Document Updated: 문서 업데이트
+Documentation: 문서조사
+Documents: 문서
+DodgerBlue: 다저블루
+doi-Deva-IN: 도그리어(인도 데바나가리)
+Don't have an account?: 계정이 없으신가요?
+Done!: 수행!
+Donut: 도넛
+Dotted: 점선
+Double: 배
+DoubleClickAction: DoubleClick액션
+Download: 다운로드
+Download {0} files separately: '{0} 파일을 별도로 다운로드합니다.'
+Download {0} with {1} files as zip: '{1} 파일이 포함된 {0} zip으로 다운로드'
+Download file {0}: 파일 다운로드 {0}
+Download file {0} as zip: 파일 {0} zip으로 다운로드
+DraculaBase16: 드라큘라베이스16
+Drag and Drop files here: 여기에 파일을 끌어다 놓습니다.
+DragEffect: 드래그 효과
+DragMode: 드래그 모드
+Drawer: 서랍
+DrawerBackground: 서랍배경
+DrawerClipMode: 서랍 클립 모드
+DrawerIcon: 서랍 아이콘
+DrawerMiniWidthLeft: 서랍MiniWidthLeft
+DrawerMiniWidthRight: 서랍MiniWidth오른쪽
+DrawerText: 서랍 텍스트
+DrawerVariant: 서랍 변형
+DrawerWidthLeft: 서랍 너비왼쪽
+DrawerWidthRight: 서랍 너비오른쪽
+DroidCam Source 2: 드로이드캠 소스 2
+DroidCam Source 3: 드로이드캠 소스 3
+Drop Box: 드롭 박스
+Drop down component to select a culture: 드롭다운 구성 요소를 선택하여 문화권을 선택합니다.
+Drop down component to select an enum value or multiple on flags enums: 드롭다운 구성 요소를 사용하여 열거형 값 또는 플래그 열거형의 여러 항목을 선택합니다.
+Drop files here: 여기에 파일 드롭
+DropBox external file picker component: DropBox 외부 파일 선택기 구성 요소
+DropBoxApiKey: 드롭박스ApiKey
+Dropdown list component to select one ore more fonts: 드롭다운 목록 구성 요소를 사용하여 하나 이상의 글꼴을 선택합니다.
+DropShadow: 그림자
+DropZoneClickAction: 드롭존클릭액션
+dsb-DE: Lower Sorbian(독일)
+dua-CM: Duala (카메룬)
+DualCombined: 듀얼콤바인드
+DualHorizontal: 이중 수평
+DualVertical: 듀얼 버티컬
+DuplicateErrorText: DuplicateErrorText
+Duration: 기간
+dv-MV: 디베히(몰디브)
+Dynamic component tests: 동적 구성 요소 테스트
+dyo-SN: Jola-Fonyi (세네갈)
+dz-BT: 종카(부탄)
+E-mail: 메일 주소
+E-Mail: 메일 주소
+E-Mail not confirmed.: 이메일이 확인되지 않았습니다. 메일함을 확인하고 이메일 주소를 확인하십시오. <a href='{0}'>이메일 확인 다시 보내기</a>
+ebu-KE: 엠부(케냐)
+Edge: 가장자리
+EdgeDarkBase16: 엣지다크베이스16
+EdgeLightBase16: 엣지라이트베이스16
+Edit: 편집하다
+Edit {0}: '{0} 편집'
+Edit a complex Model with included Collection of users: 포함된 사용자 컬렉션이 있는 복잡한 모델 편집
+Edit Audio Constraints: 오디오 제약 조건 편집
+Edit Current Theme: 현재 테마 편집
+Edit data in dialog: 대화 상자에서 데이터 편집
+Edit in TryMudEx: TryMudEx에서 편집
+Edit Items: 항목 편집
+Edit only a Collection of users: 사용자 컬렉션만 편집
+Edit rating: 등급 편집
+Edit Running Component: 실행 중인 컴포넌트 편집
+Edit Test Object: 테스트 객체 편집
+Edit Users: 사용자 편집
+Edit Video Constraints: 비디오 제약 조건 편집
+Edit with shared MetaConfig: 공유 MetaConfig로 편집
+Editable: 편집
+Editing of the DB Connection can break whole application. Please edit this only if you know what you are doing: DB 연결을 편집하면 전체 애플리케이션이 중단될 수 있습니다. 자신이 무엇을 하고 있는지 알고 있는 경우에만 편집하십시오.
+Editing of this endpoint can break AI integration: 이 엔드포인트를 편집하면 AI 통합이 중단될 수 있습니다.
+EditMode: 편집 모드
+Editor for a property of an object. Used internally inside the MudExObjectEdit: 개체의 속성에 대한 편집기입니다. MudExObjectEdit 내부에서 사용됩니다.
+EditRunningComponent: EditRunningComponent (실행 중인 컴포넌트)
+Edmonton: 에드먼턴
+Edmonton - T5A 0A1: 에드먼턴 - T5A 0A1
+Edmonton - T5A 0A1ender: 에드먼턴 - T5A 0A1ender
+ee-GH: Ewe (가나)
+ee-TG: Ewe (토고)
+EightiesBase16: 80년대Base16
+el-CY: 그리스어(키프로스)
+el-GR: 그리스어(그리스)
+Elevation: 해발
+Em: 안으로
+email: 메일 주소
+Email: 메일 주소
+Email {0} is already registered.: 이메일 {0}가 이미 등록되어 있습니다.
+Email cannot changed: 전자 메일을 변경할 수 없습니다.
+Email Confirmation: 이메일 확인
+Email is not correct: 이메일이 올바르지 않습니다.
+Email is required: 이메일은 필수입니다.
+Email is required!: 이메일이 필수입니다!
+EmbersBase16: 엠버베이스16
+en-001: 영어(세계)
+en-029: 영어(카리브해)
+en-150: 한국어(유럽)
+en-AE: 영어(아랍에미리트)
+en-AG: 영어(앤티가 바부다)
+en-AI: 영어(앵귈라)
+en-AS: 영어(아메리칸 사모아)
+en-AT: 영어(오스트리아)
+en-AU: 영어(호주)
+en-BB: 영어(바베이도스)
+en-BE: 영어(벨기에)
+en-BI: 영어(부룬디)
+en-BM: 한국어 (버뮤다)
+en-BS: 영어(바하마)
+en-BW: 영어(보츠와나)
+en-BZ: 영어(벨리즈)
+en-CA: 영어(캐나다)
+en-CC: 영어(Cocos [Keeling] Islands)
+en-CH: 영어(스위스)
+en-CK: 영어(쿡 제도)
+en-CM: 한국어(카메룬)
+en-CX: 한국어 (크리스마스 섬)
+en-CY: 한국어 (키프로스)
+en-DE: 영어(독일)
+en-DK: 한국어 (덴마크)
+en-DM: 영어(도미니카)
+en-ER: 한국어(에리트레아)
+en-FI: 한국어(핀란드)
+en-FJ: 한국어 (피지)
+en-FK: 영어(포클랜드 제도)
+en-FM: 한국어(미크로네시아)
+en-GB: 영어(영국)
+en-GD: 한국어 (그레나다)
+en-GG: 영어(건지)
+en-GH: 영어(가나)
+en-GI: 한국어 (지브롤터)
+en-GM: 한국어 (감비아)
+en-GU: 영어(괌)
+en-GY: 한국어 (가이아나)
+en-HK: 영어(홍콩 특별행정구)
+en-ID: 영어(인도네시아)
+en-IE: 한국어 (아일랜드)
+en-IL: 영어(이스라엘)
+en-IM: 영어(맨섬)
+en-IN: 영어(인도)
+en-IO: 영어(영국령 인도양 영토)
+en-JE: 영어(저지)
+en-JM: 영어(자메이카)
+en-KE: 영어(케냐)
+en-KI: 한국어(키리바시)
+en-KN: 영어(세인트키츠네비스)
+en-KY: 영어(케이맨 제도)
+en-LC: 한국어 (세인트 루시아)
+en-LR: 한국어 (라이베리아)
+en-LS: 영어(레소토)
+en-MG: 영어(마다가스카르)
+en-MH: 한국어(마샬 군도)
+en-MO: 영어(마카오 특별행정구)
+en-MP: 한국어 (북마리아나 제도)
+en-MS: 영어(몬세라트)
+en-MT: 한국어 (몰타)
+en-MU: 영어(모리셔스)
+en-MW: 영어(말라위)
+en-MY: 영어(말레이시아)
+en-NA: 영어(나미비아)
+en-NF: 영어(노퍽 섬)
+en-NG: 영어(나이지리아)
+en-NL: 영어(네덜란드)
+en-NR: 영어(나우루)
+en-NU: 한국어 (니우에)
+en-NZ: 영어(뉴질랜드)
+en-PG: 영어(파푸아뉴기니)
+en-PH: 영어(필리핀)
+en-PK: 영어(파키스탄)
+en-PN: 영어(핏케언 제도)
+en-PR: 영어(푸에르토리코)
+en-PW: 영어(팔라우)
+en-RW: 한국어 (르완다)
+en-SB: 영어(솔로몬 제도)
+en-SC: 한국어(세이셸)
+en-SD: 한국어 (수단)
+en-SE: 영어(스웨덴)
+en-SG: 영어(싱가포르)
+en-SH: 영어(세인트 헬레나, 어센션, 트리스탄 다 쿠냐)
+en-SI: 영어(슬로베니아)
+en-SL: 한국어 (시에라리온)
+en-SS: 영어(남수단)
+en-SX: 영어(신트마르턴)
+en-SZ: 영어(에스와티니)
+en-TC: 영어(터크스 케이커스 제도)
+en-TK: 영어(토켈라우)
+en-TO: 한국어 (통가)
+en-TT: 영어(트리니다드 토바고)
+en-TV: 영어(투발루)
+en-TZ: 한국어(탄자니아)
+en-UG: 한국어(우간다)
+en-UM: 영어(미국 외딴 섬)
+en-US: 영어(미국)
+en-US-posix: 영어(미국, 컴퓨터)
+en-VC: 영어(세인트 빈센트 그레나딘)
+en-VG: 영어(영국령 버진 아일랜드)
+en-VI: 영어(미국령 버진 아일랜드)
+en-VU: 한국어 (바누아투)
+en-WS: 한국어 (사모아)
+en-ZA: 한국어(남아프리카 공화국)
+en-ZM: 한국어(잠비아)
+en-ZW: 영어(짐바브웨)
+Enable Disqus: Disqus 활성화
+enables or disables virtualization.: 가상화를 사용하거나 사용하지 않도록 설정합니다.
+End: 끝
+English: 영어
+Engravers MT: 조각사 MT
+Enter email and your new password here: 여기에 이메일과 새 비밀번호를 입력하세요.
+Enter email for password reset: 계정에 연결된 이메일 주소를 입력하면 비밀번호 재설정 링크가 포함된 이메일을 받게 됩니다
+Enter name: 이름 입력
+Enter name of backup file: 백업 파일 이름 입력
+Enter new name of backup file: 백업 파일의 새 이름을 입력합니다.
+Enter the email address for the confirmation mail: 확인 메일의 이메일 주소를 입력합니다
+Enter the URL to existing file: 기존 파일의 URL을 입력합니다.
+Enter your message...: 메시지 입력...
+Entity Id: 엔터티 ID
+Entity is required!: 엔티티가 필요합니다!
+EntityCreatedBy: 엔터티 생성자
+EntityCreatedOn (Local): EntityCreatedOn(로컬)
+EntityCreatedOn (UTC): EntityCreatedOn (UTC)
+EntityId: 엔티티 ID
+EntityLastModifiedBy: 엔티티마지막 수정자
+EntityLastModifiedOn (Local): EntityLastModifiedOn(로컬)
+EntityLastModifiedOn (UTC): EntityLastModifiedOn (UTC)
+Entree: 입구
+EnumSelect: 열거형 선택
+Environment: 환경
+eo-001: 에스페란토(세계)
+EquilibriumDarkBase16: 평형다크베이스16
+EquilibriumGrayDarkBase16: 평형회색어두운베이스16
+EquilibriumGrayLightBase16: 평형회색 빛베이스16
+EquilibriumLightBase16: 평형 LightBase16
+Eras Bold ITC: 에라스 볼드 ITC
+Eras Demi ITC: 에라스 데미 ITC
+Eras Light ITC: 에라스 라이트 ITC
+Eras Medium ITC: 시대 중형 ITC
+Error: 오류
+ErrorAnimation: ErrorAnimation
+ErrorContrastText: ErrorContrastText
+ErrorDarken: ErrorDarken
+ErrorId: 오류 ID
+ErrorLighten: 오류라이트
+ErrorMessage: 오류 메시지
+ErrorText: 오류 텍스트
+es-419: 스페인어(라틴 아메리카)
+es-AR: 스페인어(아르헨티나)
+es-BO: 스페인어(볼리비아)
+es-BR: 스페인어(브라질)
+es-BZ: 스페인어(벨리즈)
+es-CL: 스페인어(칠레)
+es-CO: 스페인어(콜롬비아)
+es-CR: 스페인어(코스타리카)
+es-CU: 스페인어(쿠바)
+es-DO: 스페인어(도미니카 공화국)
+es-EC: 스페인어(에콰도르)
+es-ES: 스페인어(스페인)
+es-GQ: 스페인어(적도 기니)
+es-GT: 스페인어(과테말라)
+es-HN: 스페인어(온두라스)
+es-MX: 스페인어(멕시코)
+es-NI: 스페인어(니카라과)
+es-PA: 스페인어(파나마)
+es-PE: 스페인어(페루)
+es-PH: 스페인어(필리핀)
+es-PR: 스페인어(푸에르토리코)
+es-PY: 스페인어(파라과이)
+es-SV: 스페인어(엘살바도르)
+es-US: 스페인어(미국)
+es-UY: 스페인어(우루과이)
+es-VE: 스페인어(베네수엘라)
+Español: 스페인어
+EspressoBase16: 에스프레소베이스16
+et-EE: 에스토니아어(에스토니아)
+Ethan Hunt: 에단 헌트
+eu-ES: 바스크어(스페인)
+EvaBase16: 에바베이스16
+EvaDimBase16: 에바딤베이스16
+ewo-CM: 이원도(카메룬)
+ExcelSheet.xlsx: ExcelSheet.xlsx
+Expand &nbsp; <b>not</b> &nbsp; loaded nodes: 로드<b>되지 않은</b> &nbsp; 노드 확장 &nbsp;
+Expand all nodes: 모든 노드 확장
+Expand loaded nodes: 로드된 노드 확장
+Expand/Collapse: 확장/축소
+ExpandBehaviour: 동작 확장(ExpandBehaviour)
+ExpandButtonDirection: ExpandButtonDirection
+ExpandedIcon: 확장된 아이콘
+ExpandOnClick: ExpandOn클릭
+ExpandOnFilter: 필터 확장
+Explicit File Display Zip: 명시적 파일 표시 Zip
+Export: 수출
+Export To Excel: Excel로 내보내기
+Export_SheetName: 데이터
+ExposureCompensation: 노출보상
+ExposureMode: 노출 모드
+ExposureTime: 노출 시간
+Extended Attribute Deleted: 확장 속성 삭제됨
+Extended Attribute Not Found!: 확장 속성을 찾을 수 없습니다!
+Extended Attribute Saved: 저장된 확장 속성
+Extended Attribute Updated: 확장 속성 업데이트
+Extended Attribute with this Key already exists.: 이 키가 있는 확장 속성이 이미 존재합니다.
+Extended Attributes: '\{0}\ 확장 속성'
+Extended Attributes exported: 내보낸 확장 속성
+ExtensionRestrictionType: ExtensionRestrictionType
+Extensions: 확장
+External Id: 외부 ID
+ExternalDialogOptions: 외부 대화 상자 옵션
+ExternalId: 외부 Id
+ExternalPickerImageSize: ExternalPicker이미지 크기
+ExternalProviderRendering: 외부 공급자 렌더링
+ExtraExtraLarge: 엑스트라크라지
+ExtraLarge: 특대
+ExtraSmall: 엑스트라스몰
+fa-IR: 페르시아어(이란)
+FacingMode: 페이싱 모드
+Fade: 사라지다
+FadeIn: 페이드인
+Failed to get client preferences: 클라이언트 기본 설정을 가져오지 못했습니다.
+FallBackInIframe: Iframe에서 폴백
+False: 거짓
+FAQs: 자주 묻는 질문(FAQ)
+Far: 멀리
+Features: 기능
+Feb: 2월
+Felix Titling: 펠릭스 타이틀링
+Female: 여성
+Female_ Text: Female_ 텍스트
+ff-Adlm-BF: 풀라(부르키나파소 아들람)
+ff-Adlm-CM: 풀라(카메룬 아들람)
+ff-Adlm-GH: 풀라(가나 아들람)
+ff-Adlm-GM: 풀라(감비아 아들람)
+ff-Adlm-GN: 풀라(아들람, 기니)
+ff-Adlm-GW: 풀라(아들람, 기니비사우)
+ff-Adlm-LR: 풀라(라이베리아 아들람)
+ff-Adlm-MR: 풀라(모리타니 아들람)
+ff-Adlm-NE: 풀라(니제르 아들람)
+ff-Adlm-NG: 풀라(나이지리아 아들람)
+ff-Adlm-SL: 풀라(아들람, 시에라리온)
+ff-Adlm-SN: 풀라(세네갈 아들람)
+ff-Latn-BF: 풀라(라틴어, 부르키나파소)
+ff-Latn-CM: 풀라(라틴어, 카메룬)
+ff-Latn-GH: 풀라(라틴어, 가나)
+ff-Latn-GM: 풀라(라틴어, 감비아)
+ff-Latn-GN: 풀라(라틴어, 기니)
+ff-Latn-GW: 풀라(라틴어, 기니비사우)
+ff-Latn-LR: 풀라(라틴어, 라이베리아)
+ff-Latn-MR: 풀라(라틴어, 모리타니)
+ff-Latn-NE: 풀라(라틴어, 니제르)
+ff-Latn-NG: 풀라(라틴어, 나이지리아)
+ff-Latn-SL: 풀라(라틴어, 시에라리온)
+ff-Latn-SN: 풀라(라틴어, 세네갈)
+FFTSize: FFT크기
+fi-FI: 핀란드어(핀란드)
+fil-PH: 필리핀어(필리핀)
+File Display: 파일 표시
+File Display with Stream: 스트림을 사용한 파일 표시
+File Handling: 파일 처리
+File is required!: 파일이 필요합니다!
+FileDisplay: 파일디스플레이
+FileDisplayAsStream: 파일디스플레이AsStream
+FileDisplayZipWithPreview: FileDisplayZipWithPreview
+FileInfo: 파일 정보
+FileName: 파일
+Files: 파일
+Files of this type ({0}) are not allowed. Only following types are allowed '{1}'. Try one of these extensions ({2}): 이 형식({0})의 파일은 허용되지 않습니다. 다음 유형만 '{1}'로 허용됩니다. 다음 확장 프로그램 중 하나를 사용해 보세요({2})
+Fill Administrator Credentials: 관리자 자격 증명 채우기
+Fill Basic User Credentials: 기본 사용자 자격 증명 채우기
+FillAlpha: 필알파
+Filled: 가득
+Filter: 필터
+Filter...: 필터...
+Filter468: 필터468
+FilterBehaviour: 필터 동작
+FilterBoxClass: FilterBox클래스
+FilterBoxStyle: 필터 상자 스타일
+FilterChipsPlacedRight: 필터칩배치오른쪽(FilterChipsPlacedRight)
+Filtered Audit Trails exported: 필터링된 감사 추적 내보내기
+Filtered Brands exported: 필터링된 브랜드 수출
+Filtered Document Types exported: 내보낸 필터링된 문서 유형
+Filtered Extended Attributes exported: 내보낸 필터링된 확장 속성
+Filtered Products exported: 필터링된 제품 내보내기
+Filtered Users exported: 필터링된 사용자 내보내기
+FilterEnabled: 필터 사용
+FilterHighlighting: 필터 강조 표시
+Filtering: 필터링
+FilterMode: 필터 모드
+FilterMultiple: 필터다중
+FilterPlaceholder: 필터자리 표시자
+Filters: 필터
+FilterVariant: 필터 변형
+Fiona Gallagher: 피오나 갤러거
+Firebrick: 내화 벽돌
+First Name: 이름
+First Name is required: 이름은 필수입니다.
+FirstName: 이름
+Fixed: 부정하게 결정된
+Flags Enum: 플래그 열거형
+Flat: 플랫
+Flat List: 플랫 리스트
+FlatBase16: 플랫베이스16
+FlatList: 플랫리스트
+FlexEnd: 플렉스엔드
+FlexStart: 플렉스 스타트
+Flip: 플립
+FlipAlways: 뒤집기 항상
+FlipNever: 뒤집기
+FlipOnOpen: 플립온열기
+FlipX: 플립엑스
+FlipY: 플립 Y
+FloralWhite: 플로럴화이트
+Florian Gilde: 플로리안 길드
+FNumber: F숫자
+fo-DK: 페로어(덴마크)
+fo-FO: 페로 제도(페로 제도)
+FocusDistance: 초점 거리
+FocusMode: 포커스 모드
+FontFamily: 글꼴 패밀리
+FontSelect: 글꼴 선택
+FontSize: 글꼴 크기
+FontWeight: 글꼴 가중치
+Footlight MT Light: 풋라이트 MT 라이트
+Force pick Item: 강제 선택 항목
+Force pick Items: 강제 선택 항목
+Force select Item: 항목 강제 선택
+Force select Items: 항목 강제 선택
+ForceNativeRender: ForceNativeRender (강제 네이티브 렌더)
+ForceSelectOfMudColor: 머드 컬러의 강제 선택
+ForceShrink: 강제 축소
+ForestGreen: 포레스트그린
+Forgot password?: 비밀번호를 잊으셨나요?
+Format: 판
+Foundation: 토대
+fr-029: 프랑스어(카리브해)
+fr-BE: 프랑스어(벨기에)
+fr-BF: 프랑스어(부르키나파소)
+fr-BI: 프랑스어(부룬디)
+fr-BJ: 프랑스어(베냉)
+fr-BL: 프랑스어(St. Barthélemy)
+fr-CA: 프랑스어(캐나다)
+fr-CD: 프랑스어(콩고[DRC])
+fr-CF: 프랑스어(중앙아프리카공화국)
+fr-CG: 프랑스어(콩고)
+fr-CH: 프랑스어(스위스)
+fr-CI: 프랑스어(코트디부아르)
+fr-CM: 프랑스어(카메룬)
+fr-DJ: 프랑스어(지부티)
+fr-DZ: 프랑스어(알제리)
+fr-FR: 프랑스어 (프랑스)
+fr-GA: 프랑스어(가봉)
+fr-GF: 프랑스어(프랑스령 기아나)
+fr-GN: 프랑스어(기니)
+fr-GP: 프랑스어(과들루프)
+fr-GQ: 프랑스어(적도 기니)
+fr-HT: 프랑스어(아이티)
+fr-KM: 프랑스어(코모로)
+fr-LU: 프랑스어(룩셈부르크)
+fr-MA: 프랑스어(모로코)
+fr-MC: 프랑스어(모나코)
+fr-MF: 프랑스어(세인트 마틴)
+fr-MG: 프랑스어(마다가스카르)
+fr-ML: 프랑스어(말리)
+fr-MQ: 프랑스어(마르티니크)
+fr-MR: 프랑스어(모리타니)
+fr-MU: 프랑스어(모리셔스)
+fr-NC: 프랑스어(뉴칼레도니아)
+fr-NE: 프랑스어(니제르)
+fr-PF: 프랑스어(프랑스령 폴리네시아)
+fr-PM: 프랑스어(생피에르 미클롱)
+fr-RE: 프랑스어(레위니옹)
+fr-RW: 프랑스어(르완다)
+fr-SC: 프랑스어(세이셸)
+fr-SN: 프랑스어(세네갈)
+fr-SY: 프랑스어(시리아)
+fr-TD: 프랑스어(차드)
+fr-TG: 프랑스어(토고)
+fr-TN: 프랑스어(튀니지)
+fr-VU: 프랑스어(바누아투)
+fr-WF: 프랑스어(월리스 푸투나)
+fr-YT: 프랑스어(마요트)
+FrameRate: 프레임 속도
+FramerBase16: 프레이머베이스16
+Franklin Gothic Medium: 프랭클린 고딕 미디엄
+French: 프랑스어
+FrequencyScale: 주파수 스케일
+FruitSodaBase16: 과일소다베이스16
+Fuchsia: 자홍색
+Full: 부르다
+FullHeight: 전체 높이
+FullOctaveBands: 풀옥타브 밴드
+FullPaged: 풀페이징
+Fullscreen: 전체 화면
+FullScreen: 전체 화면
+FullScreenButtonIcon: 전체 화면 버튼 아이콘
+FullWidth: 전체 너비
+fur-IT: 프리울리안 (이탈리아)
+Futura: 미래
+fy-NL: 서부 프리지아어(네덜란드)
+ga-GB: 아일랜드어(영국)
+ga-IE: 아일랜드어(아일랜드)
+Gain: 이득
+Gainsboro: 게인즈버러
+Garamond: 가라몬드
+gd-GB: 스코틀랜드 게일어(영국)
+Gender: 성별
+General: 일반
+Geneva: 제네바
+George Miller: 조지 밀러
+Georgia: 그루지야
+German: 독일어
+GhostWhite: 고스트화이트
+GigavoltBase16: 기가볼트베이스16
+Gigi: 지지
+Gill Sans: 길 산스
+Gill Sans MT: MT가 없는 아가미
+Github: 기피
+GitHub Project repository: GitHub 프로젝트 리포지토리
+GithubBase16: GithubBase16
+GithubDark: Github다크
+GithubDarkDimmed: GithubDark흐리게 표시됨
+gl-ES: 갈리시아어(스페인)
+Gml: 지엠
+gn-PY: 과라니(파라과이)
+GoHome: 집에 가세요!
+Gold: 금
+Goldenrod: 골든로드
+Google: 구글
+Google Drive: 구글 드라이브
+Google Drive file picker component: Google 드라이브 파일 선택기 구성요소
+Googlecode: 구글코드
+GoogleDarkBase16: 구글다크베이스16
+GoogleDriveClientId: GoogleDriveClientId
+GoogleLightBase16: 구글라이트베이스16
+Goudy Old Style: 구디 올드 스타일
+Goudy Stout: 구디 스타우트
+Gradient: 그라데이션
+GradientDark: 그라디언트어두움
+GradientForeground: 그라디언트 전경
+GradientLeft: 그라디언트 왼쪽
+GradientLight: 그라디언트 라이트
+GradientRight: 그라디언트 오른쪽
+GradientText: 그라디언트 텍스트
+Gravatar: 그라바타
+GravatarImageSize: Gravatar이미지 크기
+Gray: 회색
+GrayDark: 그레이다크
+GrayDarker: 회색어두운
+GrayDefault: 회색기본값
+GrayLight: 그레이라이트
+GrayLighter: 그레이라이터
+Grayscale: 그레이스케일
+GrayscaleDarkBase16: 그레이스케일다크베이스16
+GrayscaleLightBase16: 그레이스케일라이트베이스16
+Green: 녹색
+GreenScreenBase16: 그린스크린베이스16
+GreenYellow: 그린옐로우
+Grid: 그리드
+Grid_Enhanced: Grid_Enhanced
+GridCompact: 그리드컴팩트
+GridIcon: 그리드 아이콘
+Groove: 홈
+Group: 그룹
+Group by types: 유형별 그룹화
+GroupBox: 그룹박스
+GroupId: 그룹 ID
+GroupingEnabled: 그룹화 사용
+GroupsInitiallyExpanded: 그룹초기확장됨
+GroupsNested: 그룹중첩
+GroupsSticky: 그룹고정
+GruvboxDarkHardBase16: 그루브박스다크하드베이스16
+GruvboxDarkMediumBase16: 마인박스어두운미디엄베이스16
+GruvboxDarkPaleBase16: 그루브박스다크페일베이스16
+GruvboxDarkSoftBase16: 그루브박스다크소프트베이스16
+GruvboxLightHardBase16: 그루브박스라이트하드베이스16
+GruvboxLightMediumBase16: GruvboxLightMediumBase16
+GruvboxLightSoftBase16: 그루브박스라이트소프트베이스16
+gsw-CH: 스위스 독일어(스위스)
+gsw-FR: 스위스 독일어(프랑스)
+gsw-LI: 스위스 독일어(리히텐슈타인)
+gu-IN: 구자라트어(인도)
+GutterBottom: 홈통하단
+Gutters: 수구
+guz-KE: 구시(케냐)
+gv-IM: Manx(맨섬)
+h1: H1
+H1: H1
+h2: H2
+H2: H2
+h3: H3
+H3: H3
+h4: H4
+H4: H4
+h5: H5
+H5: H5
+h6: H6
+H6: H6
+ha-Latn-GH: 하우사어(라틴어, 가나)
+ha-Latn-NE: 하우사어(라틴어, 니제르)
+ha-Latn-NG: 하우사어(라틴어, 나이지리아)
+Haettenschweiler: 헤텐슈바일러
+HalfOctaveBands: 하프 옥타브 밴드
+Hannah Davis: 한나 데이비스
+HardcoreBase16: 하드코어베이스16
+Harlow Solid Italic: Harlow 솔리드 이탤릭체
+Harmonic16DarkBase16: 고조파16DarkBase16
+Harmonic16LightBase16: 고조파16LightBase16
+Harrington: 해 링 턴
+haw-US: 하와이안(미국)
+he-IL: 히브리어(이스라엘)
+Header.tiff: Header.tiff
+HeadShake: 헤드쉐이크
+HeatMap: 히트맵
+HeetchDarkBase16: 히치다크베이스16
+HeetchLightBase16: HeetchLightBase16
+Height: 높이
+HeliosBase16: 헬리오스베이스16
+Hello: 안녕하세요
+Hello from dialog: 대화에서 안녕하세요
+Hello from dialog 1: 대화 상자 1에서 안녕하세요
+Hello from dialog sample page: 대화 상자 샘플 페이지에서 Hello
+Hello World: 전 세계 여러분 안녕하세요
+Hello...: 안녕하세요...
+HelperId: 도우미 ID
+HelperText: 도우미 텍스트
+HelperTextOnFocus: 도우미 텍스트 포커스
+Helvetica: 헬베티카
+Helvetica Narrow: 헬베티카 내로우
+Here is another Real demo available for: 다음은 사용할 수 있는 또 다른 실제 데모입니다.
+Here only number is configured to render with NumEdit edit but DataType is string. Also this field is ignored for import: 여기서는 숫자만 NumEdit 편집으로 렌더링하도록 구성되지만 DataType은 문자열입니다. 또한 이 필드는 가져오기에 대해 무시됩니다
+Here you can edit the users, but only confirm if count is at least 2: 여기에서 사용자를 편집할 수 있지만 개수가 2 이상인 경우에만 확인합니다
+Here you can leave a comment for this permission for the current role: 여기에서 현재 역할에 대한 이 권한에 대한 의견을 남길 수 있습니다
+Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: 여기에서 MudExObjectEdit를 사용하여 실행 중인 컴포넌트의 프로퍼티를 편집하는 방법을 확인할 수 있습니다
+Here you find a Demo how to use the service directly: 여기에서 서비스를 직접 사용하는 방법에 대한 데모를 찾을 수 있습니다.
+Hex: 16 진수
+HEX: 16 진수
+HexA: 헥사
+hi-IN: 힌디어(인도)
+Hidden: 숨겨진
+Hide: 숨기다
+HideContentWhenCollapsed: HideContent언제 Collapsed
+HideDropDownWhenReadOnly: HideDropDownWhenReadOnly (숨김DropDownWhenReadOnly)
+High Tower Text: 하이 타워 텍스트
+HighlightSearch: 하이라이트검색
+Hinge: 경첩
+Home: 집
+Honeydew: 감로
+HopscotchBase16: 홉스카치베이스16
+HorizonDarkBase16: 호라이즌다크베이스16
+HorizonLightBase16: 호라이즌라이트베이스16
+Horizontal: 가로
+HouseNumber: 수
+Houston: 휴스턴
+Houston - 77001: 휴스턴 - 77001
+Houston - 77001ender: 휴스턴 - 77001ender
+Houstonender: 휴스턴
+HoverColor: 호버컬러
+HoverMode: 호버 모드
+HoverOpacity: 호버불투명도
+hr-BA: 크로아티아어(보스니아 헤르체고비나)
+hr-HR: 크로아티아어(크로아티아)
+Href: 흐레프
+hsb-DE: 어퍼 소르브어(독일)
+HSL: HSL
+HTML Colors: HTML 색상
+HtmlTag: Html태그
+https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls: https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls
+https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc: https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc
+hu-HU: 헝가리어(헝가리)
+HumanoidDarkBase16: 휴머노이드다크베이스16
+HumanoidLightBase16: 휴머노이드LightBase16
+hy-AM: 아르메니아어(아르메니아)
+Hybrid: 잡종
+I agree to the terms and privacy: 약관 및 개인 정보 보호에 동의합니다.
+I'm a also another separate control inside of the normal input: 나는 또한 일반 입력 내부의 또 다른 별도 컨트롤입니다.
+I'm a another separate control inside of the normal input: 나는 일반 입력 내부의 또 다른 별도 컨트롤입니다.
+I'm a separate control inside of the normal input: 일반 입력 내부의 별도의 컨트롤입니다.
+ia-001: 인터링구아(세계)
+IaDarkBase16: IaDarkBase16
+IaLightBase16: IaLightBase16
+Ian Wright: 이안 라이트
+ibb-NG: 이비비오(나이지리아)
+ICaptureService: ICaptureService
+Icon: 아이콘
+IconColor: 아이콘 색상
+IconPicker: 아이콘 선택기
+IconSize: 아이콘 크기
+IcyDarkBase16: 아이시다크베이스16
+id: 아이디
+Id: 아이디
+id-ID: 인도네시아어(인도네시아)
+Idea: 생각
+Identifier: 식별자
+If this is set a photo will be taken instead of a video.: 이 설정이 설정되면 비디오 대신 사진이 촬영됩니다.
+If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: 이 패키지가 마음에 들면 Github에 별표를 표시⭐하고 친구들과 공유하십시오. 그렇지 않다면 어쨌든 별을 주고 더 나은 결과를 위해 개선할 수 있는 점을 알려줄 수 있습니다.
+If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: 이 옵션을 기본값으로 설정하는 경우. 이 옵션은 옵션이 지정되지 않은 모든 대화 상자에 사용됩니다. 계속하다?
+ig-NG: 이그보어(나이지리아)
+Ignore: 무시하다
+IgnoredPropertiesForReset: IgnoredPropertiesForReset(재설정 무시됨)
+IgnoredRenderControls: 무시된 렌더링 컨트롤
+ii-CN: 이(중국)
+Image format: 이미지 형식
+ImageAsBackgroundImage: 이미지배경 이미지
+Images: 이미지
+ImagesNewLine: 이미지NewLine
+Immediate: 즉시
+ImmediateText: 즉시텍스트
+Impact: 영향
+Import: 수입
+ImportExportIcon: 가져오기 내보내기 아이콘
+In: 안으로
+In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: 이 예제에서 데이터는 항목이 보기에 처음 표시되는 즉시 동적으로 로드됩니다. 구성 요소는 두 개의 콘텐츠 슬롯을 지원합니다
+In this sample you are forced to pick an user: 이 샘플에서는 사용자를 선택해야 합니다
+In this sample you are forced to pick some users: 이 샘플에서는 일부 사용자를 선택해야 합니다.
+In this sample you are forced to select some users: 이 샘플에서는 일부 사용자를 선택해야 합니다
+In this sample you can pick one user: 이 샘플에서는 한 명의 사용자를 선택할 수 있습니다
+In this sample you can select multiple users: 이 샘플에서는 여러 사용자를 선택할 수 있습니다
+In this sample you can select one user: 이 샘플에서는 한 명의 사용자를 선택할 수 있습니다
+Inches: 인치
+Include Entity fields (Export): 엔터티 필드 포함(내보내기)
+Incorrect Password.: 비밀번호가 잘못되었습니다.
+IndeterminateIcon: 불확정 아이콘
+Indigo: 남빛
+Indonesia: 인도네시아
+Info: 정보
+Info & About: 정보 및 정보
+InfoContrastText: InfoContrastText
+InfoDarken: InfoDarken
+InfoLighten: 인포라이트
+Informal Roman: 비공식 로마
+Information: 정보
+InfoText: 인포텍스트
+inherit: 물려받다
+Inherit: 물려받다
+Initial: 최초의
+InitialColor: 초기 색상
+InitiallyExpanded: 초기확장됨
+InitialMessage: 초기 메시지
+InitialMessageVisibilityTime: 초기 메시지 표시 시간
+InitialPreset: 초기 사전 설정
+InitialRender: 초기 렌더링
+Inline: 인라인
+Inline Dialog: 인라인 대화 상자
+InlineDialogs: 인라인 대화 상자
+InProgress: 진행 중
+InputClass: 입력 클래스
+InputId: 입력 ID
+InputMode: 입력 모드
+InputStyle: 입력 스타일
+InputType: 입력 유형
+Inset: 삽입하다
+IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
+IntegratedInDialogAsImages: IntegratedInDialogAsImages
+InterimResults: 중간 결과
+Invalid Credentials.: 잘못된 자격 증명입니다.
+IrBlack: 아이어블랙
+IrBlackBase16: Ir블랙베이스16
+Is Active: 활성 상태
+Is Public: 퍼블릭
+Is Public?: 공개인가요?
+is-IS: 아이슬란드어(아이슬란드)
+IsActive: 활성 상태
+IsblEditorDark: IsblEditor다크
+IsblEditorLight: IsblEditorLight
+IsMouseOverChip: IsMouseOverChip
+ISO: ISO
+IsOpen: 열려 있습니다.
+IsotopeBase16: 동위원소 염기16
+ISpeechRecognitionService: ISpeechRecognitionService
+IsPredefined: 미리 정의된
+it-CH: 이탈리아어(스위스)
+it-IT: 이탈리아어(이탈리아)
+it-SM: 이탈리아어(산마리노)
+it-VA: 이탈리아어(바티칸 시국)
+Italian: 이탈리아어
+Item 1: 항목 1
+Item 2: 항목 2
+Item 3: 항목 3
+Item 3, Item 1: 항목 3, 항목 1
+Item 4: 항목 4
+Item 5: 항목 5
+Item One: 항목 1
+Item Three: 항목 3
+Item Two: 항목 2
+ItemBackgroundColor: 항목배경색
+ItemClass: 항목 클래스
+ItemCollection: 아이템 컬렉션
+ItemContent: 항목 내용
+ItemContentClass: ItemContent클래스
+ItemContentStyle: 항목 내용 스타일
+ItemContentTypo: 항목 내용오타
+ItemList: 항목 목록
+Items: 항목
+ItemsSource: 항목 소스
+ItemStyle: 항목 스타일
+ItemWidth: 항목 너비
+iu-CA: 이누크티투트어(캐나다)
+iu-Latn-CA: 이누크티투트어(라틴어, 캐나다)
+Ivory: 상아
+ja-JP: 일본어(일본)
+JackInTheBox: 잭인더박스
+Jan: 1월
+JavaScript: 자바스크립트
+Jello: 젤로
+jgo-CM: Ngomba (카메룬)
+jmc-TZ: Machame(탄자니아)
+John Doe: 존 도우
+Jokerman: 조커맨
+Json: 자본
+Json value is required using {0} type!: Json 값은 {0} 유형을 사용하여 필요합니다!
+Json value must be a valid json string using {0} type!: Json 값은 {0} 유형을 사용하는 유효한 json 문자열이어야 합니다!
+Juice ITC: 주스 ITC
+Jul: 7월
+Julia Roberts: 줄리아 로버츠
+Jun: 준
+Justify: 정당화
+jv-Java-ID: 자바어(자바어, 인도네시아)
+jv-Latn-ID: 자바어(라틴어, 인도네시아)
+ka-GE: 조지아어(조지아)
+kab-DZ: 카빌(알제리)
+kam-KE: 캄바(케냐)
+kde-TZ: Makonde(탄자니아)
+kea-CV: 카부베르디아누(카보베르데)
+Keep scrolling to reveal the content below...: 계속 스크롤하여 아래 내용을 표시하세요...
+KeepExisting: 기존 유지
+KeepMaxSizeConstraints: KeepMaxSize제약 조건
+KeepRelations: 관계 유지
+KeepState: 유지 상태
+Kevin Hart: 케빈 하트
+Key: 열쇠
+Key is required!: 열쇠가 필요합니다!
+KeyDownPreventDefault: KeyDownPrevent기본값
+KeyDownStopPropagation: KeyDownStop전파
+KeyUpPreventDefault: KeyUpPrevent기본값
+KeyUpStopPropagation: KeyUpStop전파
+Khaki: 카키색
+khq-ML: 코이라 치이니(말리)
+ki-KE: 키쿠유(케냐)
+Kilobytes: 킬로바이트
+KimberBase16: 킴버베이스16
+KimbieDark: 킴비다크
+KimbieLight: 킴비라이트
+kk-KZ: 카자흐스탄(카자흐스탄)
+kkj-CM: 카코(카메룬)
+kl-GL: 칼라알리수트(그린란드)
+kln-KE: 칼렌진(케냐)
+km-KH: 크메르어(캄보디아)
+kn-IN: 칸나다어(인도)
+ko-KP: 한국어(북한)
+ko-KR: 한국어(한국)
+kok-IN: 콘카니어(인도)
+Kommunikation - Mikrofon (Voicemod Virtual Audio Device (WDM)): 통신 - 마이크(Voicemod WDM(Virtual Audio Device))
+kr-Latn-NG: Kanuri (라틴어, 나이지리아)
+ks-Arab-IN: 카슈미르어(아랍어, 인도)
+ks-Deva-IN: 카슈미르어(인도 데바나가리)
+ksb-TZ: 샴발라(탄자니아)
+ksf-CM: Bafia (카메룬)
+ksh-DE: 쾰니아(독일)
+ku-Arab-IQ: 쿠르드어(아랍어, 이라크)
+ku-Arab-IR: 쿠르드어(아랍어, 이란)
+Kunstler Script: 쿤슬러 스크립트
+kw-GB: 콘월 (영국)
+ky-KG: 키르기스스탄(키르기스스탄)
+la-VA: 라틴어(바티칸 시국)
+Label: 레이블
+Label_Description: 묘사
+Label_for_Age: Label_for_Age
+Label_for_City: Label_for_City
+Label_for_FirstName: Label_for_FirstName
+Label_for_Gender: Label_for_Gender
+Label_for_HouseNumber: Label_for_HouseNumber
+Label_for_Id: Label_for_Id
+Label_for_Notice: Label_for_Notice
+Label_for_OtherAddresses: Label_for_OtherAddresses
+Label_for_PostalCode: Label_for_PostalCode
+Label_for_ProgramingSkills: Label_for_ProgramingSkills
+Label_for_Street: Label_for_Street
+Label_for_TrueOrFalse: Label_for_TrueOrFalse
+Label_UploadRequests: 파일
+LabelCustomTab: 레이블 사용자 정의 탭
+LabelDefinedTab: 레이블 정의 탭
+lag-TZ: 랑이(탄자니아)
+Landscape: 풍경화
+Language: 언어
+Languages: 언어들
+Large: 큰
+LargeZipArchive.zip: LargeZipArchive.zip
+Last Name: 성
+Last Name is required: 성은 필수입니다.
+LastName: 성
+Laura Palmer: 로라 팔머
+Lavender: 라벤더
+LavenderBlush: 라벤더 블러셔
+LawnGreen: 잔디 그린
+LayoutProperties: 레이아웃 속성
+lb-LU: 룩셈부르크어(룩셈부르크)
+Leave editor focus to update MudExStructuredDataEditor: 편집기 포커스를 남겨 MudExStructuredDataEditor 업데이트
+LedBars: 레드바
+Left: 왼쪽
+Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): MudExSplitPanel의 왼쪽 부분입니다. (MudExSplitter를 직접 사용할 수도 있습니다.)
+LegacyRender: 레거시렌더
+Legend: 전설
+LemonChiffon: 레몬쉬폰
+LetterSpacing: 레터 스페이싱
+lg-UG: 간다(우간다)
+Library: 도서관
+LightBlue: 라이트블루
+LightBulb: 전구
+LightBulbSize: 전구 크기
+LightBulbSizeUnit: 전구 크기 단위
+LightCoral: 라이트코랄
+LightCyan: 라이트시안
+Lightfair: 라이트페어
+LightGoldenrodYellow: 라이트골든로드옐로우
+LightGray: 라이트그레이
+LightGreen: 라이트그린
+LightOnly: 라이트 전용
+LightPink: 라이트핑크
+LightSalmon: 라이트연어
+LightSeaGreen: 라이트씨그린
+LightSkyBlue: 라이트스카이블루
+LightSlateGray: 라이트슬레이트그레이
+LightSpeed: 라이트스피드
+LightSteelBlue: 라이트스틸블루
+LightYellow: 라이트옐로우
+Lime: 라임
+LimeGreen: 라임그린
+Line: 줄
+Linear: 선형
+LinearAmplitude: 선형 진폭
+LinearBoost: 선형부스트
+LineAreaGraph: 선면적 그래프
+LineColor: 선색
+LineHeight: 라인 높이
+Lines: 라인
+LinesDefault: 선기본값
+LinesInputs: 라인입력
+LineWidth: 선폭
+Lioshi: 료시
+List: 목록
+List appearance: 목록 모양
+List behavior: 목록 동작
+List item for MudExList.: MudExList에 대한 리스트 항목입니다.
+lkt-US: 라코타(미국)
+ln-AO: 링갈라(앙골라)
+ln-CD: 링갈라어(콩고[DRC])
+ln-CF: 링갈라(중앙아프리카공화국)
+ln-CG: 링갈라(콩고)
+lo-LA: 라오스(라오스)
+LoadFileDataBytesInBackground: LoadFileDataBytesInBackground
+Loading: 로드
+Loading...: 로드...
+Local: 현지
+LocalizerPattern: 현지화 패턴
+LockScroll: 스크롤 잠금
+Log: 로그
+Logged In.: 로그인했습니다.
+Logged Out.: 로그아웃했습니다.
+LogicalSurface: 논리적 표면
+Login with Keycloak: Keycloak으로 로그인
+LoginDescription: 자격 증명으로 로그인합니다.
+Logitech BRIO (046d:085e): 로지텍 브리오(046d:085e)
+logLevel: 로그레벨
+logo.png: logo.png
+Logout: 로그아웃
+Logout Confirmation: 정말 로그아웃하고 싶습니까?
+Logout user: 로그아웃 사용자
+London: 런던
+London - SW1A 1AA: 런던 - SW1A 1AA
+London - SW1A 1AAender: 런던 - SW1A 1A엔더
+LondonTubeBase16: 런던튜브베이스16
+LoRes: 지배자
+Los Angeles: 로스앤젤레스
+Los Angeles - 90001: 로스앤젤레스 - 90001
+Los Angeles - 90001ender: 로스앤젤레스 - 90001ender
+lrc-IQ: 북부 루리(이라크)
+lrc-IR: 북부 루리(이란)
+lt-LT: 리투아니아어(리투아니아)
+lu-CD: 루바-카탕가(콩고[DRC])
+Lucida Bright: 루시다 브라이트
+Lucida Calligraphy: 루시다 서예
+Lucida Console: Lucida 콘솔
+Lucida Fax: 루시다 팩스
+Lucida Grande: 루시다 그란데
+Lucida Handwriting: 루시다 필기
+Lucida Sans: 루시다 산즈
+Lucida Sans Typewriter: Lucida Sans 타자기
+Lucida Sans Unicode: Lucida Sans 유니코드
+LumiBars: 루미바
+luo-KE: Luo(케냐)
+luy-KE: 루이아(케냐)
+lv-LV: 라트비아어(라트비아)
+Lyon: 리옹
+Lyon - 69001: 리옹 - 69001
+Lyon - 69001ender: 리옹 - 69001ender
+Lyrics: 가사
+MacintoshBase16: 매킨토시Base16
+Magneto: 마그네틱
+Magula: 마굴라
+mai-IN: 마이틸리(인도)
+Mail: 우편
+Main User: 주요 사용자
+MainAddress: 기본 주소
+MainSample.WebAssembly.Pages.Page_ObjectEditList+Brand: MainSample.WebAssembly.Pages.Page_ObjectEditList+브랜드
+MainSample.WebAssembly.Services.SampleFile: MainSample.WebAssembly.Services.Sample파일
+MainSample.WebAssembly.Services.SampleFileWithStream: MainSample.WebAssembly.Services.SampleFileWithStream
+MainUser: 메인 유저
+Male: 남성
+Manage {0} {1}'s Extended Attributes: '{0} {1}의 확장 속성 관리'
+Manage {0} {1}'s Permissions: '{0} {1}의 권한 관리'
+Manage {0} {1}'s Roles: '{0} {1}의 역할 관리'
+Manage {0} Extended Attributes: 확장 속성 관리 {0}
+Manage {0}'s Permissions: '{0}의 권한 관리'
+Manage Brands.: 브랜드 관리.
+Manage Database Backups.: 데이터베이스 백업을 관리하거나 복원합니다.
+Manage Document Types.: 문서 유형을 관리합니다.
+Manage Extended Attributes: 확장 속성 관리
+Manage Languages: 언어 관리
+Manage Permission: 권한 관리
+Manage Products.: 제품 관리.
+Manage Roles: 역할 관리
+Manage Roles.: 역할을 관리합니다.
+Manage Translations: 번역 관리
+Manage Users: 사용자 관리
+Manage your account: 계정 관리
+Manchester: 맨체스터
+Manchester - M1 1AE: 맨체스터 - M1 1AE
+Manchester - M1 1AEender: 맨체스터 - M1 1A엔더
+Manual: 수동
+Mar: 3월
+Margin: 여백
+Mark all: 모두 표시
+Mark all as read: 모두 읽음으로 표시
+Mark all as unread: 모두 읽지 않음으로 표시
+Mark as read: 읽음 표시
+Mark as unread: 읽지 않음으로 표시
+MarrakeshBase16: 마라케시Base16
+Marseille: 마르세유
+Marseille - 13001: 마르세유 - 13001
+Marseille - 13001ender: 마르세유 - 13001ender
+mas-KE: 마사이(케냐)
+mas-TZ: 마사이(탄자니아)
+Mask: 마스크
+MateriaBase16: 마테리아베이스16
+MaterialBase16: 재료베이스16
+MaterialDarkerBase16: 재질DarkerBase16
+MaterialLighterBase16: 재료라이터베이스16
+MaterialPalenightBase16: 재료PalenightBase16
+MaterialVividBase16: 자료VividBase16
+Matura MT Script Capitals: Matura MT 스크립트 대문자
+MaxCaptureTime: 최대 캡처 시간
+MaxChips: 맥스칩
+MaxDecibels: 최대 데시벨
+MaxFileSize: 최대 파일 크기
+MaxFPS: 최대 FPS
+MaxFrequency: 최대 주파수
+MaxHeight: 최대 높이
+MaximizeButton: MaximizeButton
+MaxItems: 최대 항목
+MaxItemWidth: 최대 항목 너비
+MaxLength: 최대 길이
+MaxLuminance: 최대 휘도
+MaxMultipleFiles: 최대 다중 파일
+MaxRecordingTime: 최대 녹화 시간
+MaxWidth: 최대 너비
+MaxZoomPixelRatio: 최대 줌픽셀 비율
+May: 5월
+Medium: 보통
+MediumSlateBlue: 미디엄슬레이트블루
+MediumSpringGreen: 미디엄스프링그린
+MediumTurquoise: 미디엄청록색
+MediumVioletRed: 미디엄바이올렛레드
+Megabytes: 메가바이트
+Mel: 멜
+MellowPurpleBase16: 멜로우퍼플베이스16
+MenuAnchorOrigin: 메뉴앵커원점
+MenuMaxHeight: 메뉴 최대 높이
+MenuTransformOrigin: 메뉴 변환 원점
+mer-KE: 메루(케냐)
+Message will be deleted in {0} seconds: 메시지는 {0}초 후에 삭제됩니다.
+MessageClass: 메시지 클래스
+MessageStyle: 메시지 스타일
+MetaCoverImage: 메타커버이미지
+Method 1: 방법 1
+Method 2: 방법 2
+MexicoLightBase16: 멕시코라이트베이스16
+mfe-MU: 모리셴(모리셔스)
+mg-MG: 마다가스카르(마다가스카르)
+mgh-MZ: Makhuwa-Meetto(모잠비크)
+mgo-CM: 메타(카메룬)
+mi-NZ: 마오리어(뉴질랜드)
+Michael Scott: 마이클 스콧
+MicrophoneDeviceId: 마이크 장치 ID
+MidnightBlue: 미드나잇블루
+Mikrofon (3- RODE NT-USB) (19f7:0003): 마이크(3-RODE NT-USB)(19f7:0003)
+Mikrofon (DroidCam Virtual Audio): 마이크(DroidCam 가상 오디오)
+Mikrofon (Logitech BRIO) (046d:085e): 마이크(로지텍 BRIO)(046d:085e)
+Mikrofon (ROG Headset) (0b05:1876): 마이크(ROG 헤드셋)(0b05:1876)
+Mikrofon (USB Audio Device) (1b3f:2008): Mikrofon (USB 오디오 장치) (1b3f:2008)
+Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon(Voicemod 가상 오디오 장치(WDM))
+Millimeters: 밀리미터
+MimeRestrictionType: MimeRestrictionType
+MimeTypes: 마임 타입
+MinDecibels: 최소 데시벨
+MinFrequency: 최소 주파수
+MinHeight: 최소 높이
+Mini: 미니
+MinimizeButton: 최소화 버튼
+MinLuminance: 최소 휘도
+MintCream: 민트크림
+MinZoomLevel: MinZoomLevel (최소 줌레벨)
+Mirror: 거울
+Misc: 기타
+Misc Options: 기타 옵션
+Mistral: 미스트랄
+MistyRose: 미스티로즈
+mk-MK: 마케도니아어(북마케도니아)
+ml-IN: 말라얄람어(인도)
+mn-MN: 몽골어(몽골)
+mn-Mong-CN: 몽골어(몽골어, 중국)
+mn-Mong-MN: 몽골어(몽골어, 몽골어)
+mni-IN: 마니푸리(인도)
+Moccasin: 모카신
+MochaBase16: 모카베이스16
+Modal: 수도
+Mode: 모드
+Model with File: 파일이 있는 모델
+Modern No. 20: 모던 20호
+moh-CA: 모호크족(캐나다)
+Monaco: 모나코
+Monitor: 모니터
+MonoBlue: 모노블루
+Monokai: 모노카이
+MonokaiBase16: 모노카이베이스16
+MonokaiSublime: 모노카이 숭고한
+Monotype Corsiva: 모노타입 코르시바
+Month: 달
+Montreal: 몬트리올
+Montreal - H1A 0A1: 몬트리올 - H1A 0A1
+Montreal - H1A 0A1ender: 몬트리올 - H1A 0A1ender
+Montserrat: 몬트세랫
+Motion: 움직임
+Mouse: 마우스
+MouseOverMessageClass: MouseOverMessage클래스
+MouseOverMessageStyle: 마우스 오버 메시지 스타일
+MouseWheelDownAction: 마우스 휠 다운액션
+MouseWheelUpAction: 마우스 휠업 액션
+MoveContent: 콘텐츠 이동
+mr-IN: 마라티어(인도)
+MS Outlook: MS 아웃룩
+MS Reference Sans Serif: MS 참조 산세리프
+MS Reference Specialty: MS 참조 전문 분야
+MS Sans Serif: MS 산세리프
+MS Serif: MS 세리프
+ms-BN: 말레이어(브루나이)
+ms-ID: 말레이어(인도네시아)
+ms-MY: 말레이어(말레이시아)
+ms-SG: 말레이어(싱가포르)
+mt-MT: 몰타어(몰타)
+mua-CM: 문당(카메룬)
+mud-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788: 진흙-EX-팝오버-8C7975A0-1F37-40CA-975A-B7ED66855788
+MudAlert: 진흙 경보
+MudAppBar: 머드앱바
+MudAvatar: 머드 아바타
+MudAvatarGroup: 머드아바타 그룹
+MudBadge: 무드바지
+MudBlazor Components: MudBlazor 구성 요소
+MudBlazor Popover: MudBlazor 팝오버
+MudBlazor.Extensions.Components.ThemePreset`1[MainSample.WebAssembly.ClientTheme]: MudBlazor.Extensions.Components.ThemePreset'1[MainSample.WebAssembly.ClientTheme]
+MudBreadcrumbs: MudB레드 부스러기
+MudBreakpointProvider: 머드 중단점 공급자
+MudButton: 머드 버튼
+MudButtonGroup: 머드 버튼 그룹
+MudCard: 머드 카드
+MudCardActions: 머드 카드 액션
+MudCardContent: 머드 카드 콘텐츠
+MudCardHeader: 머드 카드 헤더
+MudCardMedia: 머드카드미디어
+MudCarouselItem: 머드 캐러셀아이템
+MudChart: 머드 차트
+MudChat: 머드챗
+MudChatBubble: 머드챗버블
+MudChatFooter: MudChat바닥글
+MudChatHeader: 머드챗 헤더
+MudCollapse: 진흙 붕괴
+MudColorPicker: 진흙 컬러피커
+MudColorStringFormat: MudColorStringFormat (머드 컬러스트링 포맷)
+MudContainer: 머드 컨테이너
+MudContextualActionBar: 머드 컨텍스트 액션 바
+MudDatePicker: MudDatePicker(머드데이트 피커)
+MudDateRangePicker: MudDateRangePicker
+MudDialog: 진흙 대화 상자
+MudDialogContainer: 진흙 대화 상자컨테이너
+MudDialogProvider: 진흙 대화 제공자
+MudDivider: 머드 디바이더
+MudDrawer: 진흙 서랍
+MudDrawerContainer: 머드 서랍컨테이너
+MudDrawerHeader: 머드드로이어헤더
+MudDynamicTabs: 머드 다이내믹 탭
+MudElement: 머드 엘리먼트
+MudEx Components: MudEx 컴포넌트
+MudExAdditionalAdornment: MudEx추가 장식
+MudExAppearance: MudEx외관
+MudExAppLoader: MudExAppLoader (머드엑스앱로더)
+MudExAudioPlayer: MudEx오디오 플레이어
+MudExCaptureButton: MudEx캡처 버튼
+MudExCaptureOptionsEdit: MudExCaptureOptions편집
+MudExCardList: MudExCardList
+MudExCardList with ItemsSource: MudExCardList 와 ItemsSource
+MudExCardList with ItemsSource and child content: MudExCardList (ItemsSource 및 자식 콘텐츠)
+MudExCardList<TData>: MudExCardList<TData>
+MudExChipSelect: MudEx칩셀렉트
+MudExChipSelect can used to select items from a collection as chips: MudExChipSelect 는 컬렉션에서 항목을 칩으로 선택하는 데 사용할 수 있습니다
+MudExChipSelect<T>: MudEx칩셀렉트<T>
+MudExCodeView: MudExCodeView (MudExCodeView)
+MudExCollectionEditor<T>: MudExCollection에디터<T>
+MudExColor: MudExColor
+MudExColorBubble: MudExColorBubble
+MudExColorEdit: MudExColorEdit (MudEx 컬러에디트)
+MudExColorEdit is in general a MudBlazor Picker component specially for the struct MudExColor. But because name MudExColorPicker is already used for an extended ColorPicker this Component is named MusExColorEdit: MudExColorEdit 는 일반적으로 MudExColor 구조체를 위한 MudBlazor Picker 컴포넌트입니다. 하지만 이름 MudExColorPicker 가 이미 확장된 ColorPicker 에 사용되었기 때문에 이 컴포넌트의 이름은 MusExColorEdit 입니다
+MudExColorPicker: MudExColorPicker (뮤드엑스 컬러피커)
+MudExColorUtils: MudExColorUtils
+MudExCss: MudExCss
+MudExCssBuilder: MudExCss빌더
+MudExCultureSelect: MudExCultureSelect
+MudExDialog: MudEx대화 상자
+MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog 는 모든 DialogExtensions 와 함께 페이지에 인라인된 대화 상자를 표시하려는 경우 사용할 구성 요소입니다.
+MudExDivider: MudEx디바이더
+MudExDropBoxFilePicker: MudExDropBoxFilePicker (MudExDropBox파일 선택기)
+MudExEnumSelect: MudExEnumSelect (MudExEnum 선택)
+MudExEnumSelect<TEnum>: MudExEnumSelect (MudExEnum 선택)<TEnum>
+MudExFileDisplay: MudExFile디스플레이
+MudExFileDisplayCode: MudExFileDisplayCode (MudExFileDisplayCode)
+MudExFileDisplayDialog: MudExFileDisplayDialog (MudExFileDisplayDialog)
+MudExFileDisplayExcel: MudExFileDisplayExcel
+MudExFileDisplayFont: MudExFileDisplayFont (MudExFileDisplayFont)
+MudExFileDisplayHtml: MudExFileDisplayHtml (MudExFileDisplayHtml)
+MudExFileDisplayOfficeLive: MudExFileDisplayOfficeLive
+MudExFileDisplayStructuredData: MudExFileDisplayStructuredData
+MudExFileDisplayZip: MudExFileDisplayZip (MudExFileDisplayZip)
+MudExFontSelect: MudExFontSelect (MudExFont 선택)
+MudExFontSelect can used to select one ore more fonts: MudExFontSelect 를 사용하여 하나 이상의 글꼴을 선택할 수 있습니다.
+MudExGoogleFilePicker: MudExGoogle파일 선택기
+MudExGradientText: MudExGradientText (머드엑스그라디언트 텍스트)
+MudExGravatar: MudExGravatar
+MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar는 gravatar의 프로필 이미지를 이메일 주소로 자동으로 사용하는 MudAvatar입니다
+MudExGrid: 머덱스그리드
+MudExGrid Enhanced: MudExGrid 강화
+MudExGridSection: MudExGrid섹션
+MudExGroupBox: MudExGroupBox
+MudExHtmlEdit: MudExHtml편집
+MudExIcon: MudEx아이콘
+MudExIcon is a simple MudIcon with extended possibilities to set all colors.: MudExIcon은 모든 색상을 설정할 수 있는 확장된 기능을 갖춘 간단한 MudIcon입니다.
+MudExIconButton: MudExIconButton (머드엑스 아이콘 버튼)
+MudExIconPicker: MudExIconPicker
+MudExIconPicker is in general a MudBlazor Picker component specially for selecting an icon.: MudExIconPicker 는 일반적으로 아이콘을 선택하기 위한 MudBlazor Picker 컴포넌트입니다.
+MudExImageViewer: MudExImageViewer (머드엑스이미지 뷰어)
+MudExList: MudEx목록
+MudExList can used to select one ore more items from a bindeable collection.: MudExList 는 바인딩 가능한 컬렉션에서 하나 이상의 항목을 선택하는 데 사용할 수 있습니다.
+MudExList is a component that allows you to select an item from a list of items. It is a wrapper for MudList.: MudExList는 항목 리스트에서 항목을 선택할 수 있는 컴포넌트입니다. MudList의 래퍼입니다.
+MudExList<T>: MudEx목록<T>
+MudExListItem<T>: MudExList항목<T>
+MudExListSubheader is a sub header for MudExList.: MudExListSubheader는 MudExList의 서브 헤더입니다.
+MudExListSubheader<T>: MudExList서브헤더<T>
+MudExMessageDialog: MudExMessageDialog (머드엑스메시지 대화 상자)
+MudExObjectEdit: MudExObjectEdit(MudEx오브젝트 편집)
+MudExObjectEdit and MudExCollectionEditor with a shared config: MudExObjectEdit 및 MudExCollectionEditor(공유 구성)
+MudExObjectEdit with virtual property rendering: MudExObjectEdit(가상 프로퍼티 렌더링 포함)
+MudExObjectEdit<T>: MudExObjectEdit(MudEx오브젝트 편집)<T>
+MudExObjectEditDialog<T>: MudExObjectEditDialog (MudEx오브젝트 편집 대화 상자)<T>
+MudExObjectEditForm<T>: MudEx오브젝트 에디트 폼<T>
+MudExObjectEditPicker<T>: MudExObjectEditPicker<T>
+MudExOneDriveFilePicker: MudExOneDriveFilePicker
+MudExpansionPanel: 머드 확장패널
+MudExpansionPanels: 진흙 확장 패널
+MudExPicker: MudExPicker(머드엑스피커)
+MudExPickerBase<T>: MudExPickerBase<T>
+MudExPopover: MudEx팝오버
+MudExPromptDialog: MudExPromptDialog (MudExPromptDialog)
+MudExPromptDialog Component: MudExPromptDialog 컴포넌트
+MudExPropertyEdit: MudExPropertyEdit
+MudExSelect: MudExSelect
+MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect 를 사용하여 바인딩 가능한 컬렉션에서 하나 이상의 항목을 선택할 수 있습니다. 또한 이 컴포넌트는 대화 상자나 MudExPopover 와 같은 모든 애니메이션을 지원합니다.
+MudExSelect<T>: MudExSelect<T>
+MudExSelectItem is a select item for MudExSelect.: MudExSelectItem은 MudExSelect의 선택 항목입니다.
+MudExSelectItem<T>: MudEx항목 선택<T>
+MudExSize is a readonly struct that provides a convenient and type-safe way to deal with size values in the context of MudBlazor components.: MudExSize 는 MudBlazor 컴포넌트의 컨텍스트에서 크기 값을 처리하는 편리하고 타입 안전한 방법을 제공하는 읽기 전용 구조체입니다.
+MudExSize<T>: MudEx크기<T>
+MudExSlideBar: MudExSlideBar
+MudExSpeechToTextButton: MudExSpeechToTextButton (MudExSpeechToTextButton)
+MudExSplitPanel: MudExSplitPanel (MudEx 분할 패널)
+MudExSplitPanelItem: MudExSplitPanelItem (MudEx분할 패널 항목)
+MudExSplitter: MudExSplitter
+MudExStructuredDataEditor: MudExStructuredDataEditor
+MudExStyleBuilder: MudExStyle빌더
+MudExSvg: MudExSvg
+MudExTagField: MudExTag필드
+MudExTagField creates chips when user press on of the specified delimiter or presses enter.: MudExTagField 는 사용자가 지정된 구분 기호를 누르거나 Enter 키를 누를 때 칩을 생성합니다.
+MudExTagField is a component that allows the user to enter a list of values as chips.: MudExTagField 는 사용자가 값 목록을 칩으로 입력할 수 있는 컴포넌트입니다.
+MudExTagField<T>: MudExTag필드<T>
+MudExTaskBar: MudExTaskBar (MudEx 태스크바)
+MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide  somewhere in your Layout: MudExTaskBar는 MudExSlideBar를 상속하고 모달이 아닌 대화상자를 선택할 수 있는 탭바를 제공합니다. 레이아웃 어딘가에 제공하기만 하면 됩니다.
+MudExTextField<T>: MudExTextField<T>
+MudExThemeEdit: MudEx테마편집
+MudExThemeEdit is a powerful component to edit one ore more themes: MudExThemeEdit 는 하나 이상의 테마를 편집할 수 있는 강력한 구성 요소입니다
+MudExThemeEdit<TTheme>: MudEx테마편집<TTheme>
+MudExThemeSelect: MudEx테마 선택
+MudExThemeSelect<TTheme>: MudEx테마 선택<TTheme>
+MudExToggleableSearch: MudExToggleableSearch
+MudExTreeView: MudExTreeView
+MudExTreeView is useful to bind tree structured items. The control that should used can be set with the ViewMode property: MudExTreeView는 트리 구조 항목을 바인딩하는 데 유용합니다. 사용해야 하는 컨트롤은 ViewMode 속성을 사용하여 설정할 수 있습니다
+MudExTreeView with template: 템플릿이 있는 MudExTreeView
+MudExTreeView<T>: MudExTreeView<T>
+MudExTreeViewBreadcrumb: MudExTreeView이동 경로
+MudExTreeViewBreadcrumb<T>: MudExTreeView이동 경로<T>
+MudExTreeViewCardGrid: MudExTreeView카드그리드
+MudExTreeViewCardGrid<T>: MudExTreeView카드그리드<T>
+MudExTreeViewDefault: MudExTreeView기본값
+MudExTreeViewDefault<T>: MudExTreeView기본값<T>
+MudExTreeViewFlatList: MudExTreeView플랫 목록
+MudExTreeViewFlatList<T>: MudExTreeView플랫 목록<T>
+MudExTreeViewHorizontal: MudExTreeView수평
+MudExTreeViewHorizontal<T>: MudExTreeView수평<T>
+MudExTreeViewList: MudExTreeViewList (머드엑스트리뷰 목록)
+MudExTreeViewList<T>: MudExTreeViewList (머드엑스트리뷰 목록)<T>
+MudExUploadEdit: MudEx업로드편집
+MudExUploadEdit<T>: MudEx업로드편집<T>
+MudExVirtualItem: MudExVirtualItem (머드엑스가상 아이템)
+MudExVirtualize<TItem>: MudEx가상화<TItem>
+MudFab: 머드팹
+MudField: 머드필드
+MudFlexBreak: 머드플렉스브레이크
+MudFocusTrap: 머드 포커스 트랩
+MudForm: 머드 폼
+MudGrid: 머드 그리드
+MudHeatMapCell: 진흙히트맵셀
+MudHidden: 진흙 숨김
+MudHighlighter: 머드 하이라이터
+MudIcon: 머드아이콘
+MudIconButton: 머드 아이콘 버튼
+MudImage: 머드 이미지
+MudInputAdornment: 머드 입력장식
+MudInputControl: 머드 입력 컨트롤
+MudInputLabel: 머드 입력 레이블
+MudInputString: 머드 입력 문자열
+MudItem: 진흙 아이템
+MudLayout: 머드 레이아웃
+MudLink: 머드링크
+MudListSubheader: MudList하위 헤더
+MudMainContent: 머드메인 콘텐츠
+MudMask: 머드 마스크
+MudMenu: 진흙 메뉴
+MudMenuItem: 머드 메뉴 항목
+MudMessageBox: 진흙 메시지 상자
+MudNavGroup: 머드내비그룹
+MudNavLink: 머드내비링크
+MudNavMenu: 머드 내비게이션 메뉴
+MudOverlay: 머드 오버레이
+MudPageContentNavigation: MudPageContentNavigation (머드 페이지 콘텐츠) 탐색
+MudPagination: 진흙 페이지 매김
+MudPaper: 머드페이퍼
+MudPickerContent: 머드피커콘텐츠
+MudPickerToolbar: MudPicker도구 모음
+MudPopover: 머드팝오버
+MudPopoverProvider: 머드 팝오버 공급자
+MudProgressCircular: MudProgress순환
+MudProgressLinear: 머드 프로그레스리어 선형
+MudRating: 진흙 등급
+MudRatingItem: 머드 등급 항목
+MudRender: 머드 렌더
+MudRTLProvider: MudRTL프로바이더
+MudScrollToTop: 머드스크롤투탑
+MudSimpleTable: 머드 심플 테이블
+MudSkeleton: 머드스켈레톤
+MudSnackbarElement: 진흙스낵바엘리먼트
+MudSnackbarProvider: 머드스낵바공급자
+MudSpacer: 머드 스페이서
+MudStack: 머드 스택
+MudStep: 머드스텝
+MudStepper: 머드 스테퍼
+MudSwipeArea: 머드스와이프영역
+MudTablePager: 머드 테이블 페이지(MudTablePager)
+MudTabPanel: 머드 탭 패널
+MudTabs: 머드 탭
+MudTd: 진흙
+MudText: 머드 텍스트
+MudTextField with additional features: MudTextField(추가 기능 포함)
+MudTFootRow: 머드TFootRow
+MudTh: 진흙
+MudTHeadRow: 진흙
+MudThemeProvider: 진흙 테마 공급자
+MudTimeline: 머드타임라인
+MudTimelineItem: 머드 타임라인 항목
+MudTimePicker: 머드 타임 피커
+MudTimeSeriesChart: 머드타임시리즈차트
+MudToggleIconButton: 머드 토글 아이콘 버튼
+MudToolBar: 머드 툴바
+MudTooltip: 머드 툴팁
+MudTr: 머드트르
+MudTreeViewItemToggleButton: MudTreeViewItemToggleButton (머드트리뷰 아이템 토글 버튼)
+MultiSelect: 다중 선택
+MultiSelection: 다중 선택
+MultiSelectionAlign: 다중 선택 정렬
+MultiSelectionComponent: 다중 선택 구성 요소
+MultiSelectWithCtrlKey: 다중 선택 WithCtrlKey
+My Custom action: 내 사용자 지정 작업
+my-MM: 버마어(미얀마)
+mzn-IR: 마잔데라니(이란)
+name: 이름
+Name: 이름
+Name is required: 이름은 필수입니다.
+Name is required!: 이름은 필수입니다!
+NameContainerStyle: 이름컨테이너스타일
+Names: 이름
+naq-NA: 이름(나미비아)
+Natalie Portman: 나탈리 포트만
+NavajoWhite: 나바호화이트
+NavigationExpandMode: 탐색 확장 모드
+NavigationLinkBarClass: NavigationLinkBarClass
+NavigationLinkBarStyle: NavigationLinkBar스타일
+NavigationViewMode: NavigationViewMode
+NavigatorClass: NavigatorClass
+NavigatorPosition: Navigator위치
+NavigatorRectangleColor: NavigatorRectangleColor
+NavigatorSizeRatio: NavigatorSizeRatio
+Navy: 해군
+nb-NO: 노르웨이 복말(노르웨이)
+nb-SJ: 노르웨이 복크몰 (스발바르 & 얀 마옌)
+nd-ZW: North Ndebele (짐바브웨)
+nds-DE: 저지 독일어(독일)
+nds-NL: 저지 독일어(네덜란드)
+ne-IN: 네팔어(인도)
+ne-NP: 네팔어(네팔)
+NebulaBase16: 네뷸라베이스16
+Never: 결코
+New: 새로운
+NEW Dialog Drag Drop Mode: 새로운 대화 상자 드래그 드롭 모드
+New dialog Feature - SnapDrag: 새 대화 상자 기능 - SnapDrag
+New Message From {0}: '{0}의 새로운 메시지'
+New MudExStructureDataEditor can used to edit json, xml or yaml string in a MudExObjectEdit: 새로운 MudExStructureDataEditor를 사용하여 MudExObjectEdit에서 json, xml 또는 yaml 문자열을 편집할 수 있습니다.
+New Password: 새 비밀번호
+New User 100: 신규 사용자 100
+New User 101: 신규 사용자 101
+New User 102: 신규 사용자 102
+New User 103: 신규 사용자 103
+New User 104: 신규 사용자 104
+New User 105: 신규 사용자 105
+New User 106: 신규 사용자 106
+New User 107: 신규 사용자 107
+New User 108: 신규 사용자 108
+New User 109: 신규 사용자 109
+New User 110: 신규 사용자 110
+New User 111: 신규 사용자 111
+New User 112: 신규 사용자 112
+New User 113: 신규 사용자 113
+New User 114: 신규 사용자 114
+New User 115: 신규 사용자 115
+New User 116: 신규 사용자 116
+New User 117: 신규 사용자 117
+New User 118: 신규 사용자 118
+New User 119: 신규 사용자 119
+New User 120: 신규 사용자 120
+New User 121: 신규 사용자 121
+New User 122: 신규 사용자 122
+New User 123: 신규 사용자 123
+New User 124: 신규 사용자 124
+New User 125: 신규 사용자 125
+New User 126: 신규 사용자 126
+New User 127: 신규 사용자 127
+New User 128: 신규 사용자 128
+New User 129: 신규 사용자 129
+New User 130: 신규 사용자 130
+New User 131: 신규 사용자 131
+New User 132: 신규 사용자 132
+New User 133: 신규 사용자 133
+New User 134: 신규 사용자 134
+New User 135: 신규 사용자 135
+New User 136: 신규 사용자 136
+New User 137: 신규 사용자 137
+New User 138: 신규 사용자 138
+New User 139: 신규 사용자 139
+New User 140: 신규 사용자 140
+New User 141: 신규 사용자 141
+New User 142: 신규 사용자 142
+New User 143: 신규 사용자 143
+New User 144: 신규 사용자 144
+New User 145: 신규 사용자 145
+New User 146: 신규 사용자 146
+New User 147: 신규 사용자 147
+New User 148: 신규 사용자 148
+New User 149: 신규 사용자 149
+New User 150: 신규 사용자 150
+New User 151: 신규 사용자 151
+New User 152: 신규 사용자 152
+New User 153: 신규 사용자 153
+New User 154: 신규 사용자 154
+New User 155: 신규 사용자 155
+New User 156: 신규 사용자 156
+New User 157: 신규 사용자 157
+New User 158: 신규 사용자 158
+New User 159: 신규 사용자 159
+New User 160: 신규 사용자 160
+New User 161: 신규 사용자 161
+New User 162: 신규 사용자 162
+New User 163: 신규 사용자 163
+New User 164: 신규 사용자 164
+New User 165: 신규 사용자 165
+New User 166: 신규 사용자 166
+New User 167: 신규 사용자 167
+New User 168: 신규 사용자 168
+New User 169: 신규 사용자 169
+New User 170: 신규 사용자 170
+New User 171: 신규 사용자 171
+New User 172: 신규 사용자 172
+New User 173: 신규 사용자 173
+New User 174: 신규 사용자 174
+New User 175: 신규 사용자 175
+New User 176: 신규 사용자 176
+New User 177: 신규 사용자 177
+New User 178: 신규 사용자 178
+New User 179: 신규 사용자 179
+New User 180: 신규 사용자 180
+New User 181: 신규 사용자 181
+New User 182: 신규 사용자 182
+New User 183: 신규 사용자 183
+New User 184: 신규 사용자 184
+New User 185: 신규 사용자 185
+New User 186: 신규 사용자 186
+New User 187: 신규 사용자 187
+New User 188: 신규 사용자 188
+New User 189: 신규 사용자 189
+New User 190: 신규 사용자 190
+New User 191: 신규 사용자 191
+New User 192: 신규 사용자 192
+New User 193: 신규 사용자 193
+New User 194: 신규 사용자 194
+New User 195: 신규 사용자 195
+New User 196: 신규 사용자 196
+New User 197: 신규 사용자 197
+New User 198: 신규 사용자 198
+New User 199: 신규 사용자 199
+New User 200: 신규 사용자 200
+New User 201: 신규 사용자 201
+New User 202: 신규 사용자 202
+New User 203: 신규 사용자 203
+New User 204: 신규 사용자 204
+New User 205: 신규 사용자 205
+New User 206: 신규 사용자 206
+New User 207: 신규 사용자 207
+New User 208: 신규 사용자 208
+New User 209: 신규 사용자 209
+New User 21: 신규 사용자 21
+New User 210: 신규 사용자 210
+New User 211: 신규 사용자 211
+New User 212: 신규 사용자 212
+New User 213: 신규 사용자 213
+New User 214: 신규 사용자 214
+New User 215: 신규 사용자 215
+New User 216: 신규 사용자 216
+New User 217: 신규 사용자 217
+New User 218: 신규 사용자 218
+New User 219: 신규 사용자 219
+New User 22: 신규 사용자 22
+New User 220: 신규 사용자 220
+New User 221: 신규 사용자 221
+New User 222: 신규 사용자 222
+New User 223: 신규 사용자 223
+New User 224: 신규 사용자 224
+New User 225: 신규 사용자 225
+New User 226: 신규 사용자 226
+New User 227: 신규 사용자 227
+New User 228: 신규 사용자 228
+New User 229: 신규 사용자 229
+New User 23: 신규 사용자 23
+New User 230: 신규 사용자 230
+New User 231: 신규 사용자 231
+New User 232: 신규 사용자 232
+New User 233: 신규 사용자 233
+New User 234: 신규 사용자 234
+New User 235: 신규 사용자 235
+New User 236: 신규 사용자 236
+New User 237: 신규 사용자 237
+New User 238: 신규 사용자 238
+New User 239: 신규 사용자 239
+New User 24: 신규 사용자 24
+New User 240: 신규 사용자 240
+New User 241: 신규 사용자 241
+New User 242: 신규 사용자 242
+New User 243: 신규 사용자 243
+New User 244: 신규 사용자 244
+New User 245: 신규 사용자 245
+New User 246: 신규 사용자 246
+New User 247: 신규 사용자 247
+New User 248: 신규 사용자 248
+New User 249: 신규 사용자 249
+New User 25: 신규 사용자 25
+New User 250: 신규 사용자 250
+New User 251: 신규 사용자 251
+New User 252: 신규 사용자 252
+New User 253: 신규 사용자 253
+New User 254: 신규 사용자 254
+New User 255: 신규 사용자 255
+New User 256: 신규 사용자 256
+New User 257: 신규 사용자 257
+New User 258: 신규 사용자 258
+New User 259: 신규 사용자 259
+New User 26: 신규 사용자 26
+New User 260: 신규 사용자 260
+New User 261: 신규 사용자 261
+New User 262: 신규 사용자 262
+New User 263: 신규 사용자 263
+New User 264: 신규 사용자 264
+New User 265: 신규 사용자 265
+New User 266: 신규 사용자 266
+New User 267: 신규 사용자 267
+New User 268: 신규 사용자 268
+New User 269: 신규 사용자 269
+New User 27: 신규 사용자 27
+New User 270: 신규 사용자 270
+New User 271: 신규 사용자 271
+New User 272: 신규 사용자 272
+New User 273: 신규 사용자 273
+New User 274: 신규 사용자 274
+New User 275: 신규 사용자 275
+New User 276: 신규 사용자 276
+New User 277: 신규 사용자 277
+New User 278: 신규 사용자 278
+New User 279: 신규 사용자 279
+New User 28: 신규 사용자 28
+New User 280: 신규 사용자 280
+New User 281: 신규 사용자 281
+New User 282: 신규 사용자 282
+New User 283: 신규 사용자 283
+New User 284: 신규 사용자 284
+New User 285: 신규 사용자 285
+New User 286: 신규 사용자 286
+New User 287: 신규 사용자 287
+New User 288: 신규 사용자 288
+New User 289: 신규 사용자 289
+New User 29: 신규 사용자 29
+New User 290: 신규 사용자 290
+New User 291: 신규 사용자 291
+New User 292: 신규 사용자 292
+New User 293: 신규 사용자 293
+New User 294: 신규 사용자 294
+New User 295: 신규 사용자 295
+New User 296: 신규 사용자 296
+New User 297: 신규 사용자 297
+New User 298: 신규 사용자 298
+New User 299: 신규 사용자 299
+New User 30: 신규 사용자 30
+New User 300: 신규 사용자 300명
+New User 301: 신규 사용자 301
+New User 302: 신규 사용자 302
+New User 303: 신규 사용자 303
+New User 304: 신규 사용자 304
+New User 305: 신규 사용자 305
+New User 306: 신규 사용자 306
+New User 307: 신규 사용자 307
+New User 308: 신규 사용자 308
+New User 309: 신규 사용자 309
+New User 31: 신규 사용자 31
+New User 310: 신규 사용자 310
+New User 311: 신규 사용자 311
+New User 312: 신규 사용자 312
+New User 313: 신규 사용자 313
+New User 314: 신규 사용자 314
+New User 315: 신규 사용자 315
+New User 316: 신규 사용자 316
+New User 317: 신규 사용자 317
+New User 318: 신규 사용자 318
+New User 319: 신규 사용자 319
+New User 32: 신규 사용자 32
+New User 320: 신규 사용자 320
+New User 321: 신규 사용자 321
+New User 322: 신규 사용자 322
+New User 323: 신규 사용자 323
+New User 324: 신규 사용자 324
+New User 325: 신규 사용자 325
+New User 326: 신규 사용자 326
+New User 327: 신규 사용자 327
+New User 328: 신규 사용자 328
+New User 329: 신규 사용자 329
+New User 33: 신규 사용자 33
+New User 330: 신규 사용자 330
+New User 331: 신규 사용자 331
+New User 332: 신규 사용자 332
+New User 333: 신규 사용자 333
+New User 334: 신규 사용자 334
+New User 335: 신규 사용자 335
+New User 336: 신규 사용자 336
+New User 337: 신규 사용자 337
+New User 338: 신규 사용자 338
+New User 339: 신규 사용자 339
+New User 34: 신규 사용자 34
+New User 340: 신규 사용자 340
+New User 341: 신규 사용자 341
+New User 342: 신규 사용자 342
+New User 343: 신규 사용자 343
+New User 344: 신규 사용자 344
+New User 345: 신규 사용자 345
+New User 346: 신규 사용자 346
+New User 347: 신규 사용자 347
+New User 348: 신규 사용자 348
+New User 349: 신규 사용자 349
+New User 35: 신규 사용자 35
+New User 350: 신규 사용자 350
+New User 351: 신규 사용자 351
+New User 352: 신규 사용자 352
+New User 353: 신규 사용자 353
+New User 354: 신규 사용자 354
+New User 355: 신규 사용자 355
+New User 356: 신규 사용자 356
+New User 357: 신규 사용자 357
+New User 358: 신규 사용자 358
+New User 359: 신규 사용자 359
+New User 36: 신규 사용자 36
+New User 360: 신규 사용자 360
+New User 361: 신규 사용자 361
+New User 362: 신규 사용자 362
+New User 363: 신규 사용자 363
+New User 364: 신규 사용자 364
+New User 365: 신규 사용자 365
+New User 366: 신규 사용자 366
+New User 367: 신규 사용자 367
+New User 368: 신규 사용자 368
+New User 369: 신규 사용자 369
+New User 37: 신규 사용자 37
+New User 370: 신규 사용자 370
+New User 371: 신규 사용자 371
+New User 372: 신규 사용자 372
+New User 373: 신규 사용자 373
+New User 374: 신규 사용자 374
+New User 375: 신규 사용자 375
+New User 376: 신규 사용자 376
+New User 377: 신규 사용자 377
+New User 378: 신규 사용자 378
+New User 379: 신규 사용자 379
+New User 38: 신규 사용자 38
+New User 380: 신규 사용자 380
+New User 381: 신규 사용자 381
+New User 382: 신규 사용자 382
+New User 383: 신규 사용자 383
+New User 384: 신규 사용자 384
+New User 385: 신규 사용자 385
+New User 386: 신규 사용자 386
+New User 387: 신규 사용자 387
+New User 388: 신규 사용자 388
+New User 389: 신규 사용자 389
+New User 39: 신규 사용자 39
+New User 390: 신규 사용자 390
+New User 391: 신규 사용자 391
+New User 392: 신규 사용자 392
+New User 393: 신규 사용자 393
+New User 394: 신규 사용자 394
+New User 395: 신규 사용자 395
+New User 396: 신규 사용자 396
+New User 397: 신규 사용자 397
+New User 398: 신규 사용자 398
+New User 399: 신규 사용자 399
+New User 40: 신규 사용자 40
+New User 400: 신규 사용자 400
+New User 401: 신규 사용자 401
+New User 402: 신규 사용자 402
+New User 403: 신규 사용자 403
+New User 404: 신규 사용자 404
+New User 405: 신규 사용자 405
+New User 406: 신규 사용자 406
+New User 407: 신규 사용자 407
+New User 408: 신규 사용자 408
+New User 409: 신규 사용자 409
+New User 41: 신규 사용자 41
+New User 410: 신규 사용자 410
+New User 411: 신규 사용자 411
+New User 412: 신규 사용자 412
+New User 413: 신규 사용자 413
+New User 414: 신규 사용자 414
+New User 415: 신규 사용자 415
+New User 416: 신규 사용자 416
+New User 417: 신규 사용자 417
+New User 418: 신규 사용자 418
+New User 419: 신규 사용자 419
+New User 42: 신규 사용자 42
+New User 420: 신규 사용자 420
+New User 421: 신규 사용자 421
+New User 422: 신규 사용자 422
+New User 423: 신규 사용자 423
+New User 424: 신규 사용자 424
+New User 425: 신규 사용자 425
+New User 426: 신규 사용자 426
+New User 427: 신규 사용자 427
+New User 428: 신규 사용자 428
+New User 429: 신규 사용자 429
+New User 43: 신규 사용자 43
+New User 430: 신규 사용자 430
+New User 431: 신규 사용자 431
+New User 432: 신규 사용자 432
+New User 433: 신규 사용자 433
+New User 434: 신규 사용자 434
+New User 435: 신규 사용자 435
+New User 436: 신규 사용자 436
+New User 437: 신규 사용자 437
+New User 438: 신규 사용자 438
+New User 439: 신규 사용자 439
+New User 44: 신규 사용자 44
+New User 440: 신규 사용자 440
+New User 441: 신규 사용자 441
+New User 442: 신규 사용자 442
+New User 443: 신규 사용자 443
+New User 444: 신규 사용자 444
+New User 445: 신규 사용자 445
+New User 446: 신규 사용자 446
+New User 447: 신규 사용자 447
+New User 448: 신규 사용자 448
+New User 449: 신규 사용자 449
+New User 45: 신규 사용자 45
+New User 450: 신규 사용자 450
+New User 451: 신규 사용자 451
+New User 452: 신규 사용자 452
+New User 453: 신규 사용자 453
+New User 454: 신규 사용자 454
+New User 455: 신규 사용자 455
+New User 456: 신규 사용자 456
+New User 457: 신규 사용자 457
+New User 458: 신규 사용자 458
+New User 459: 신규 사용자 459
+New User 46: 신규 사용자 46
+New User 460: 신규 사용자 460
+New User 461: 신규 사용자 461
+New User 462: 신규 사용자 462
+New User 463: 신규 사용자 463
+New User 464: 신규 사용자 464
+New User 465: 신규 사용자 465
+New User 466: 신규 사용자 466
+New User 467: 신규 사용자 467
+New User 468: 신규 사용자 468
+New User 469: 신규 사용자 469
+New User 47: 신규 사용자 47
+New User 470: 신규 사용자 470
+New User 471: 신규 사용자 471
+New User 472: 신규 사용자 472
+New User 473: 신규 사용자 473
+New User 474: 신규 사용자 474
+New User 475: 신규 사용자 475
+New User 476: 신규 사용자 476
+New User 477: 신규 사용자 477
+New User 478: 신규 사용자 478
+New User 479: 신규 사용자 479
+New User 48: 신규 사용자 48
+New User 480: 신규 사용자 480
+New User 481: 신규 사용자 481
+New User 482: 신규 사용자 482
+New User 483: 신규 사용자 483
+New User 484: 신규 사용자 484
+New User 485: 신규 사용자 485
+New User 486: 신규 사용자 486
+New User 487: 신규 사용자 487
+New User 488: 신규 사용자 488
+New User 489: 신규 사용자 489
+New User 49: 신규 사용자 49
+New User 490: 신규 사용자 490
+New User 491: 신규 사용자 491
+New User 492: 신규 사용자 492
+New User 493: 신규 사용자 493
+New User 494: 신규 사용자 494
+New User 495: 신규 사용자 495
+New User 496: 신규 사용자 496
+New User 497: 신규 사용자 497
+New User 498: 신규 사용자 498
+New User 499: 신규 사용자 499
+New User 50: 신규 사용자 50
+New User 500: 신규 사용자 500명
+New User 501: 신규 사용자 501
+New User 502: 신규 사용자 502
+New User 503: 신규 사용자 503
+New User 504: 신규 사용자 504
+New User 505: 신규 사용자 505
+New User 506: 신규 사용자 506
+New User 507: 신규 사용자 507
+New User 508: 신규 사용자 508
+New User 509: 신규 사용자 509
+New User 51: 신규 사용자 51
+New User 510: 신규 사용자 510
+New User 511: 신규 사용자 511
+New User 512: 신규 사용자 512
+New User 513: 신규 사용자 513
+New User 514: 신규 사용자 514
+New User 515: 신규 사용자 515
+New User 516: 신규 사용자 516
+New User 517: 신규 사용자 517
+New User 518: 신규 사용자 518
+New User 519: 신규 사용자 519
+New User 52: 신규 사용자 52
+New User 520: 신규 사용자 520
+New User 53: 신규 사용자 53
+New User 54: 신규 사용자 54
+New User 55: 신규 사용자 55
+New User 56: 신규 사용자 56
+New User 57: 신규 사용자 57
+New User 58: 신규 사용자 58
+New User 59: 신규 사용자 59
+New User 60: 신규 사용자 60
+New User 61: 신규 사용자 61
+New User 62: 신규 사용자 62
+New User 63: 신규 사용자 63
+New User 64: 신규 사용자 64
+New User 65: 신규 사용자 65
+New User 66: 신규 사용자 66
+New User 67: 신규 사용자 67
+New User 68: 신규 사용자 68
+New User 69: 신규 사용자 69
+New User 70: 신규 사용자 70
+New User 71: 신규 사용자 71
+New User 72: 신규 사용자 72
+New User 73: 신규 사용자 73
+New User 74: 신규 사용자 74
+New User 75: 신규 사용자 75
+New User 76: 신규 사용자 76
+New User 77: 신규 사용자 77
+New User 78: 신규 사용자 78
+New User 79: 신규 사용자 79
+New User 80: 신규 사용자 80
+New User 81: 신규 사용자 81
+New User 82: 신규 사용자 82
+New User 83: 신규 사용자 83
+New User 84: 신규 사용자 84
+New User 85: 신규 사용자 85
+New User 86: 신규 사용자 86
+New User 87: 신규 사용자 87
+New User 88: 신규 사용자 88
+New User 89: 신규 사용자 89
+New User 90: 신규 사용자 90
+New User 91: 신규 사용자 91
+New User 92: 신규 사용자 92
+New User 93: 신규 사용자 93
+New User 94: 신규 사용자 94
+New User 95: 신규 사용자 95
+New User 96: 신규 사용자 96
+New User 97: 신규 사용자 97
+New User 98: 신규 사용자 98
+New User 99: 신규 사용자 99
+New Values: 새로운 가치
+New York: 뉴욕
+New York - 10001: 뉴욕 - 10001
+New York - 10001ender: 뉴욕 - 10001ender
+New Yorkender: 뉴요켄더
+NextPreset: 다음사전 설정
+NextToSearchBox: NextToSearchBox
+NextTrack: 다음트랙
+Niagara Engraved: 나이아가라 각인
+Niagara Solid: 나이아가라 솔리드
+NightOwl: 올빼미
+nl-AW: 네덜란드어(아루바)
+nl-BE: 네덜란드어(벨기에)
+nl-BQ: 네덜란드어(보네르, 신트 유스타티우스, 사바)
+nl-CW: 네덜란드어(퀴라소)
+nl-NL: 네덜란드어(네덜란드)
+nl-SR: 네덜란드어(수리남)
+nl-SX: 네덜란드어(신트마르턴)
+nmg-CM: 콰시오(카메룬)
+nn-NO: 노르웨이 니노르스크(노르웨이)
+NnfxDark: 엔프스다크
+NnfxLight: Nnfx라이트
+nnh-CM: Ngiemboon (카메룬)
+No: 아니요
+No address: 주소 없음
+No Allowed Actions: 허용되지 않는 작업
+No longer update automatically: 더 이상 자동으로 업데이트되지 않음
+No notifications: 알림 없음
+No space available: 사용 가능한 공간이 없습니다.
+NoChips: 노칩
+NodeBorderRadius: 노드 경계 반경
+NodePadding: 노드패딩
+NoHeader: 헤더 없음
+NoIcon: 노아이콘
+NoModalDialogs: NoModalDialogs
+none: 없음
+None: 없음
+Nord: 북쪽
+NordBase16: 노드베이스16
+Normal: 보통
+Not Allowed to add or delete Administrator Role if you have not this role.: 이 역할이 없는 경우 관리자 역할을 추가하거나 삭제할 수 없습니다.
+Not allowed to Delete this user: 이 사용자를 삭제할 수 없음
+Not Allowed.: 허용되지 않습니다.
+Not connected: 연결되지 않음
+Not Modal Dialogs: 모달 대화 상자가 아님
+Note - Media options can't changed after a screen is selected: 참고 - 화면을 선택한 후에는 미디어 옵션을 변경할 수 없습니다
+NoteLabels: 주레이블
+NotFoundMessage: 찾고 있던 페이지가 존재하지 않습니다.
+Notice: 통지
+Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: 이 메서드를 사용하는 경우 메서드가 있는 콜백 참조를 지정할 수 있으며, 이렇게 하지 않으면 참조가 대화 상자 자체이며 이 경우 DialogClass에 메서드가 있어야 합니다
+Notifications: 알림을
+Nov: 11월
+NovaBase16: 노바베이스16
+NoWrap: 노랩
+npm-example-0.0.20.tgz: npm-예-0.0.20.tgz
+nqo-GN: N'Ko (기니)
+nr-ZA: 사우스 은데벨레(남아프리카 공화국)
+nso-ZA: Sesotho sa Leboa (남아프리카 공화국)
+Nuget Package source: Nuget 패키지 원본
+Nullable enum: Nullable 열거형
+Nullable Flags Enum: Nullable 플래그 열거형
+Number: 수
+numeric: 숫자
+nus-SS: 누에르(남수단)
+nyn-UG: 냥콜레(우간다)
+Object Edit in Dialog: 대화상자에서 객체 편집
+ObjectEdit: 개체 편집
+ObjectEditCG: 오브젝트 에디트CG
+ObjectEditCondition: 개체 편집 조건
+ObjectEditConfigured: 개체 편집구성
+ObjectEditFile: 객체 편집 파일
+ObjectEditInDialog: 개체 편집 대화 상자
+ObjectEditList: 개체 편집 목록
+ObjectEditPicker: 개체 편집 선택기
+ObjectEditTabs: 개체 편집 탭
+ObjectEditVirtualized: ObjectEdit가상화
+OBS Virtual Camera: OBS 가상 카메라
+Obsidian: 흑요석
+oc-FR: 옥시탄(프랑스)
+OceanBase16: 오션베이스16
+OceanicnextBase16: 오세아니카넥스트Base16
+OCR A Extended: OCR A 확장
+Oct: 10월
+Official MudBlazor website: MudBlazor 공식 웹사이트
+Offline: 오프 라인
+OffsetX: 오프셋X
+OffsetY: 오프셋
+Ok: 그래
+Old English Text MT: 고대 영어 텍스트 MT
+Old Paint: 오래된 페인트
+Old paint found on a stone house door.: 돌집 문에서 발견된 오래된 페인트.
+Old Values: 오래된 가치
+OldLace: 올드 레이스
+Olive: 올리브
+OliveDrab: 올리브드랍
+om-ET: 오로모(에티오피아)
+om-KE: 오로모(케냐)
+OnClickStopPropagation: OnClickStop전파
+OnContextMenuPreventDefault: OnContextMenuPreventDefault
+OnContextMenuStopPropagation: OnContextMenuStopPropagation
+OnCustomSelect: OnCustomSelect
+OnDefinedSelect: OnDefinedSelect
+One Drive: 하나의 드라이브
+OnedarkBase16: 원다크베이스16
+OneDrive file picker component: OneDrive 파일 선택기 구성 요소
+OneDriveClientId: OneDriveClientId
+OneEighthOctaveBands: OneEighth옥타브밴드
+OneFourthOctaveBands: OneFourth옥타브 밴드
+OneLightBase16: OneLightBase16
+OneSixthOctaveBands: OneSixth옥타브 밴드
+OneThirdOctaveBands: 1/3옥타브밴드
+OneTwelfthOctaveBands: 112번째 옥타브 밴드
+OneTwentyFourthOctaveBands: OneTwentyFourth옥타브 밴드
+Online: 온라인
+Only Selected Group (Export): 선택한 그룹만(내보내기)
+OnlyValidateIfDirty: OnlyValidateIf더티
+OnPlay: 온플레이
+Onyx: 오닉스
+Opacity: 불투명도
+OpacityNotFocused: 불투명도포커스가 아님
+Open: 열다
+Open in new browser tab: 새 브라우저 탭에서 열기
+Open now: 열다
+Open Url {0}: URL {0} 열기
+Open Url {0} in a new browser tab: 새 브라우저 탭에서 Url {0} 열기
+OpenIcon: 아이콘 열기
+Optima: 옵 티 마
+Options: 옵션
+or-IN: 오디아(인도)
+Orange: 오렌지
+OrangeRed: 오렌지레드
+Orchid: 난초
+Orientation: 방향
+Original Code Gator DynamicForm: 원본 코드 Gator DynamicForm
+os-GE: 오세틱(조지아)
+os-RU: 오세틱(러시아)
+Osaka: 오사카
+Osaka - 530-0001: 오사카 - 530-0001
+Osaka - 530-0001ender: 오사카-530-0001엔더
+Oscar Wilde: 오스카 와일드
+Other: 다른
+Other Components: 포함된 다른 구성 요소
+OtherAddresses: 기타주소
+Otherwise the full image will be downloaded: 그렇지 않으면 전체 이미지가 다운로드됩니다
+Ottawa: 오타와
+Ottawa - K1A 0A1: 오타와 - K1A 0A1
+Ottawa - K1A 0A1ender: 오타와 - K1A 0A1ender
+Out: 아웃
+OuterClass: 아우터 클래스
+OutlineBars: 아웃라인바
+Outlined: 설명
+OutrunDarkBase16: OutrunDarkBase16
+Outset: 최초
+OverflowBehavior: 오버플로 동작
+Overlay: 오버레이
+OverlayChildContent: 오버레이 자식 콘텐츠
+OverlayDark: 오버레이다크
+OverlayLight: 오버레이라이트
+overline: 윗줄
+Overline: 윗줄
+OverscanCount: 오버스캔 카운트
+Overview: 개요
+Owner: 소유자
+pa-Arab-PK: 펀자브어(아랍어, 파키스탄)
+pa-IN: 펀자브어(인도)
+Palatino: 팔 라틴
+Palatino Linotype: 팔라티노 리노타입
+PaleGreen: 옅은 녹색
+Palette: 팔레트
+PaletteDark: 팔레트다크
+PaletteIcon: 팔레트 아이콘
+PaletteLight: 팔레트 라이트
+PaleTurquoise: 옅은 청록색
+PaleVioletRed: 옅은 바이올렛레드
+Pan: 신사
+pap-029: 파피아멘토(카리브해)
+PapayaWhip: 파파야 휩
+Paper: 종이
+PapercolorDarkBase16: 페이퍼컬러다크베이스16
+PapercolorLightBase16: 페이퍼컬러라이트베이스16
+Papyrus: 파피루스
+ParaisoBase16: 파라이소베이스16
+ParaisoDark: 파라이소다크
+ParaisoLight: 파라이소라이트
+ParametersForSubControls: 하위 컨트롤의 매개변수
+Parchment: 양피지
+Paris: 파리
+Paris - 75001: 파리 - 75001
+Paris - 75001ender: 파리 - 75001ender
+PasqueBase16: PasqueBase16
+Password: 암호
+Password Changed!: 비밀번호가 변경되었습니다!
+Password Confirmation: 비밀번호 확인
+Password Confirmation is required!: 비밀번호 확인이 필요합니다!
+Password is required!: 비밀번호가 필요합니다!
+Password must be at least of length 8: 암호는 길이가 8 이상이어야 합니다.
+Password must contain at least one capital letter: 비밀번호에는 하나 이상의 대문자가 포함되어야 합니다.
+Password must contain at least one digit: 비밀번호는 하나 이상의 숫자를 포함해야 합니다.
+Password must contain at least one lowercase letter: 암호에는 하나 이상의 소문자가 포함되어야 합니다.
+Password Reset Mail has been sent to your authorized Email.: 비밀번호 재설정 메일이 승인된 이메일로 전송되었습니다.
+Password Reset Successful!: 비밀번호 재설정 성공!
+Passwords don't match: 비밀번호가 일치하지 않습니다.
+PathSeparator: 경로구분 기호
+Pattern: 무늬
+pcm-Latn-NG: 나이지리아 피진어(라틴어, 나이지리아)
+PeachPuff: 복숭아퍼프
+PeakLine: 피크라인
+Penelope Cruz: 페넬로페 크루즈
+Percentage: 백분율
+Permission Name: 권한 이름
+Perpetua: 영구
+Persistent: 영구
+Personal: 개인
+Perspective3d: 원근감3D
+Peru: 페루
+Peter Griffin: 피터 그리핀
+PhdBase16: 박사베이스16
+Philadelphia: 필라델피아
+Philadelphia - 19019: 필라델피아 - 19019
+Philadelphia - 19019ender: 필라델피아 - 19019엔더
+Philadelphiaender: 필라델피아 엔더
+Phoenix: 불사조
+Phoenix - 85001: 피닉스 - 85001
+Phoenix - 85001ender: 피닉스 - 85001ender
+Phone Number: 전화번호
+Phone number {0} is already registered.: 전화번호 {0}는 이미 등록되어 있습니다.
+PhoneNumber: 전화번호
+Picas: 스페이드
+Pick Item: 항목 선택
+Pick Items: 항목 선택
+Pick one user: 사용자 한 명 선택
+Pick some users: 일부 사용자 선택
+Picker: 선택
+Picker appearance: 선택기 모양
+PickerHeight: 피커 높이
+PickerStyle: 피커스타일
+PickerVariant: 피커 변형
+PickerWidth: 피커 너비
+PickFromDropBox: 드롭박스에서 선택
+PickFromGoogleDrive: PickFromGoogle드라이브
+PickFromOneDrive: OneDrive에서 선택
+PicoBase16: 피코베이스16
+Pie: 발
+Pink: 분홍색
+Pixels: 픽셀
+pl-PL: 폴란드어(폴란드)
+Placeholder: 자리 표시자
+Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: 온라인 코드 편집기에서 MudBlazor 및 MudBlazor.Extensions를 가지고 놀아보세요.
+Playbill: 플레이빌
+Player: 배우
+Please confirm your account by <a href='{0}'>clicking here</a>.: 여기를 클릭하여 <a href='{0}'> 계정을 확인하십시오</a>.
+Please enter your name: 이름을 입력해 주세요
+Please reset your password by <a href='{0}'>clicking here</a>.: 여기를 클릭하여 <a href='{0}'> 비밀번호를 재설정하십시오</a>.
+Please type {0} to confirm edit: 편집을 확인하려면 {0} 입력하십시오.
+Please upload your personal qualifications and references that confirm your person and qualification: 귀하의 개인적 자격과 자격을 확인할 수 있는 개인 자격 및 추천서를 업로드하십시오.
+Please Wait: 기다리세요
+PleaseSelect: 선택하세요
+Plum: 자두
+Points: 포인트
+PointsOfInterest: 관심 지점
+Pojoaque: 포호아케
+Poor Richard: 불쌍한 리처드
+PopBase16: 팝베이스16
+Popover: 팝오버
+PopoverAnimation: 팝오버 애니메이션
+PopoverAnimationPosition: 팝오버 애니메이션 위치
+PopoverAnimationTimingFunction: PopoverAnimationTiming함수
+PopoverClass: 팝오버클래스
+PopupEveryTime: 팝업매번
+PopupOnlyOnce: 팝업 전용
+PopverAnimation: 팝버애니메이션
+PorpleBase16: 포플베이스16
+Portrait: 초상
+Position: 위치
+Position/Size Sample: 위치/크기 샘플
+PostalCode: 우편번호
+PowderBlue: 파우더블루
+Powerful component to edit a set of items and their properties.: 항목 세트와 해당 속성을 편집하는 강력한 구성 요소입니다.
+Powerful component to edit an object and its properties.: 개체와 해당 속성을 편집하는 강력한 구성 요소입니다.
+Powerful UI Editor for json, xml or yaml content now also as viewer for MudExFileDisplay: json, xml 또는 yaml 콘텐츠를 위한 강력한 UI 편집기는 이제 MudExFileDisplay의 뷰어로도 사용됩니다.
+Preferred way on MudExTextField: MudExTextField에서 선호하는 방법
+Preferred way on MudExTextField with For and ChildContent: For 및 ChildContent를 사용하는 MudExTextField에서 선호하는 방법
+PresetListBehaviour: 사전 설정 목록 동작
+PresetListClass: PresetListClass (프리셋 리스트 클래스)
+PresetListMode: 사전 설정 목록 모드
+PresetListPosition: 사전 설정 목록 위치
+PresetListToggleButtonPosition: PresetListToggleButtonPosition (프리셋 리스트 토글 버튼 위치)
+Presets: 프리셋
+Preview: 미리 보기
+PreviewButtonSize: PreviewButtonSize
+PreviewFont: 미리보기 글꼴
+PreviewIcon: 미리보기 아이콘
+PreviewIconColor: PreviewIconColor
+PreviewImageInPresetList: 미리 보기이미지사전 설정 목록
+PreviewImageSize: PreviewImageSize
+PreviewInIframe: PreviewInIframe
+PreviewMode: 프리뷰 모드
+PreviousPreset: Previous사전 설정
+PreviousTrack: 이전트랙
+prg-001: 프로이센 (세계)
+Primary: 본래의
+Primary Key: 기본 키
+PrimaryContrastText: 기본 대비 텍스트
+PrimaryDarken: 기본 어둡게
+PrimaryLighten: 기본 라이트
+Print: 인쇄하다
+PrintButtonIcon: 인쇄 단추 아이콘
+Pristina: 프리슈티나
+Product Deleted: 상품 삭제!
+Product Not Found!: 제품을 찾을 수 없습니다!
+Product Saved: 제품 저장!
+Product Updated: 제품 업데이트!
+Products: 제품
+Products exported: 수출 제품
+Profile: 윤곽
+Profile Details: 프로필 세부 정보
+Profile picture added.: 프로필 사진이 추가되었습니다.
+Profile picture deleted.: 프로필 사진이 삭제되었습니다.
+Profile updated: 프로필 업데이트
+ProgramingSkills: 프로그래밍 기술
+Property1: 속성1
+Property10: 속성10
+Property11: 속성11
+Property12: 속성12
+Property13: 속성13
+Property14: 속성14
+Property15: 속성15
+Property16: 속성16
+Property17: 속성17
+Property18: 속성18
+Property19: 속성19
+Property2: 속성2
+Property20: 속성20
+Property21: 속성21
+Property22: 속성22
+Property23: 속성23
+Property24: 속성24
+Property25: 속성25
+Property26: 속성26
+Property27: 속성27
+Property28: 속성28
+Property29: 속성29
+Property3: 속성3
+Property30: 속성30
+Property31: 속성31
+Property32: 속성32
+Property33: 속성33
+Property34: 속성34
+Property35: 속성35
+Property36: 속성36
+Property37: 속성37
+Property38: 속성38
+Property39: 속성39
+Property4: 속성4
+Property40: 속성40
+Property41: 속성41
+Property42: 속성42
+Property43: 속성43
+Property44: 속성44
+Property45: 속성45
+Property5: 속성5
+Property6: 속성6
+Property7: 속성7
+Property8: 속성8
+Property9: 속성9
+prs-AF: prs (아프가니스탄)
+ps-AF: 파슈토어(아프가니스탄)
+ps-PK: 파슈토어(파키스탄)
+PseudoCss: 의사 Css
+pt-AO: 포르투갈어(앙골라)
+pt-BR: 포르투갈어(브라질)
+pt-CH: 포르투갈어(스위스)
+pt-CV: 포르투갈어(카보베르데)
+pt-GQ: 포르투갈어(적도 기니)
+pt-GW: 포르투갈어(기니비사우)
+pt-LU: 포르투갈어(룩셈부르크)
+pt-MO: 포르투갈어(마카오 특별행정구)
+pt-MZ: 포르투갈어(모잠비크)
+pt-PT: 포르투갈어 (포르투갈)
+pt-ST: 포르투갈어(상투메 프린시페)
+pt-TL: 포르투갈어(동티모르)
+Public Profile: 공개 프로필
+Pulse: 맥박
+Purebasic: 순수 기본
+Purple: 보라색
+QtcreatorDark: Qt크리에이터다크
+QtcreatorLight: Qt크리에이터라이트
+QualiaBase16: 퀄리아베이스16
+Qualifications and References: 자격 및 추천서
+quc-GT: 키체(과테말라)
+Quentin Tarantino: 쿠엔틴 타란티노
+Quick Insights.: 빠른 통찰력.
+Quick Start Guide: 빠른 시작 가이드
+quz-BO: quz (볼리비아)
+quz-EC: quz (에콰도르)
+quz-PE: quz (페루)
+Rachel Green: 레이첼 그린
+Radial: 방사형
+RadialInvert: 방사형 반전
+Radius: 반지름
+Rage Italic: 분노 기울임꼴
+RailscastsBase16: 레일캐스트Base16
+Rainbow: 무지개
+Random: 임의의
+RandomColorUpdateDelay: 랜덤 컬러업데이트 지연
+RarArchive.rar: RarArchive.rar
+Rate: 율
+Rate must be greater than 0: 비율은 0보다 커야 합니다.
+Ravie: 기쁘게 생각
+Read More: 더 읽어보기
+Readme: 읽어보기
+readme.md: readme.md
+ReadOnly: 읽기 전용
+Realtime Updates & Insights with SignalR.: SignalR을 사용한 실시간 업데이트 및 인사이트.
+RebeccaBase16: 레베카베이스16
+RebeccaPurple: 레베카퍼플
+Record audio: 오디오 녹음
+Record Audio: 오디오 녹음
+Record Camera: 카메라 녹화
+Record Main Camera: 메인 카메라 녹화
+Record Main Camera Lower Quality: 메인 카메라 녹화 저화질
+Record Screen: 녹화 화면
+Recording: 녹음
+RecordingAnimation: 녹화애니메이션
+RecordingBorderAnimation: RecordingBorderAnimation (테두리 애니메이션 기록)
+RecordingColor: 녹음 색상
+RecordingIcon: 녹음 아이콘
+Red: 빨강
+Redirect: 리디렉션할
+Redirecting to {0}: '{0}로 리디렉션'
+Redirecting...: 리디렉션...
+ReflexAlpha: 리플렉스알파
+ReflexBright: 반사브라이트
+ReflexFit: 리플렉스핏
+ReflexRatio: 반사 비율
+Refresh: 리프레쉬
+Refreshed Token.: 새로 고친 토큰.
+Register: 등록기
+Register as: 등록
+Register as {0}: '{0}로 등록'
+Register here: 여기에서 등록하세요
+Register New User: 새 사용자 등록
+Register User: 사용자 등록
+Registered Roles: 등록된 역할
+Registered Users: 등록된 사용자
+Rel: 렐
+Relative: 상대적인
+RelativeToParent: RelativeToParent(부모 관계자)
+RelativeWidth: 상대 너비
+Reload: 새로고침
+Reload Data: 데이터 다시 로드
+Rem: 렘
+Remember me?: 날 기억해?
+RememberEditedOptions: RememberEditedOptions
+Remove: 제거하다
+Remove All: 모두 제거
+RemoveErrorAfter: RemoveErrorAfter
+RemoveErrorOnChange: RemoveErrorOnChange
+RemoveItemButtonAlwaysRight: RemoveItemButtonAlwaysRight
+Rename: 이름 바꾸기
+Rename backup: 백업 이름 바꾸기
+Render with {0}: '{0}로 렌더링'
+Render with MudExFileDisplayTiff: Tiff 뷰어로 렌더링
+Render with MudExFileDisplayZip: Zip 뷰어로 렌더링
+Render with MudExImageViewer: MudExImageViewer를 사용하여 렌더링
+Render with native control: 네이티브 컨트롤로 렌더링
+RenderBackLink: RenderBackLink (렌더링백링크)
+RenderChipsAdditional: RenderChips추가
+Rendered Virtualized: 렌더링된 가상화
+rendered when the item is outside the viewport.: 항목이 뷰포트 외부에 있을 때 렌더링됩니다.
+rendered when the item is visible in the viewport.: 항목이 뷰포트에 표시될 때 렌더링됩니다.
+RenderHomeLink: 렌더홈링크
+RenderOnlyOnce: 렌더링만 한 번
+Required: 필수
+RequiredError: 필수 오류
+Reset: 재설정
+Reset {0}: '{0} 재설정'
+Reset all: 모두 재설정
+Reset all properties?: 모든 속성을 재설정하시겠습니까?
+Reset password: 비밀번호 재설정
+Reset Password: 비밀번호 재설정
+Reset to initial data: 초기 데이터로 재설정
+Reset view: 보기 재설정
+ResetButtonIcon: ResetButtonIcon 재설정
+ResetToDefaultFirst: ResetToDefaultFirst
+Resizeable: 크기 조정 가능
+ResizeMode: 크기 조정 모드
+Resources: 리소스
+Responsive: 반응
+Restart server: 서버 다시 시작
+Restore: 복원
+Restore database: 데이터베이스 복원
+Restore default: 기본값 복원
+Restore finished: 복원 완료
+Restore in progress. Please wait until the restore is finished. This can take a while.: 복원이 진행 중입니다. 복원이 완료될 때까지 기다리십시오. 시간이 걸릴 수 있습니다.
+Revert: 되돌릴
+RGB: RGB
+RGBA: RGBA
+rgba(0,200,83,1): RGBA(0,200,83,1)
+rgba(126,247,160,1): RGBA(126,247,160,1)
+rgba(133,135,145,1): RGBA(133,135,145,1)
+rgba(157,241,250,1): RGBA(157,241,250,1)
+rgba(17,59,83,1): RGBA(17,59,83,1)
+rgba(170,0,0,1): RGBA(170,0,0,1)
+rgba(18,121,66,1): RGBA(18,121,66,1)
+rgba(189,255,207,1): RGBA(189,255,207,1)
+rgba(19,184,232,1): RGBA(19,184,232,1)
+rgba(191,125,17,1): RGBA(191,125,17,1)
+rgba(20,220,113,1): RGBA(20,220,113,1)
+rgba(201,204,207,1): RGBA(201,204,207,1)
+rgba(217,152,13,1): RGBA(217,152,13,1)
+rgba(220,63,17,1): RGBA(220,63,17,1)
+rgba(23,105,142,1): RGBA(23,105,142,1)
+rgba(23,162,88,1): RGBA(23,162,88,1)
+rgba(230,233,235,1): RGBA(230,233,235,1)
+rgba(235,179,35,1): RGBA(235,179,35,1)
+rgba(244,67,54,1): RGBA(244,67,54,1)
+rgba(246,249,251,1): RGBA(246,249,251,1)
+rgba(253,210,47,1): RGBA(253,210,47,1)
+rgba(254,104,0,1): RGBA(254,104,0,1)
+rgba(255,145,2,1): RGBA(255,145,2,1)
+rgba(255,152,0,1): RGBA(255,152,0,1)
+rgba(255,179,31,1): RGBA(255,179,31,1)
+rgba(255,210,84,1): RGBA(255,210,84,1)
+rgba(255,226,115,1): RGBA(255,226,115,1)
+rgba(255,240,163,1): RGBA(255,240,163,1)
+rgba(27,189,102,1): RGBA(27,189,102,1)
+rgba(33,150,243,1): RGBA(33,150,243,1)
+rgba(39,219,245,1): RGBA(39,219,245,1)
+rgba(53,57,64,1): RGBA(53,57,64,1)
+rgba(66,66,66,1): RGBA(66,66,66,1)
+rgba(88,91,98,1): RGBA(88,91,98,1)
+rgba(9,137,194,1): RGBA(9,137,194,1)
+Ridge: 릿지
+Right: 오른쪽
+Right part in MudExSplitPanel.: MudExSplitPanel의 오른쪽 부분입니다.
+RightToLeft: 오른쪽에서 왼쪽으로
+Ripple: 잔물결
+RippleOpacity: 리플 불투명도
+RippleOpacitySecondary: RippleOpacity보조
+rm-CH: 로만쉬(스위스)
+rn-BI: 룬디(부룬디)
+ro-MD: 루마니아어(몰도바)
+ro-RO: 루마니아어(루마니아)
+Roboto: 로봇
+Rockwell: 로크 웰
+Rockwell Condensed: 로크웰 응축
+Rockwell Extra Bold: 로크웰 엑스트라 볼드
+rof-TZ: Rombo(탄자니아)
+Role: 역할
+Role ID: 역할 ID
+Role Name: 역할 이름
+Roles: 역할
+Roles Updated: 역할이 업데이트되었습니다!
+RootName: 루트 이름
+RosPineBase16: 로스파인베이스16
+RosPineDawnBase16: 로스파인새벽베이스16
+RosPineMoonBase16: 로스파인문베이스16
+RosyBrown: 로지 브라운
+Rotate: 돌다
+RoundBars: 라운드바
+Rounded: 둥근
+Routeros: 라우터
+Row: 행
+RowSpan: 행 범위
+RowsPerPageString: 페이지당 행 수
+RoyalBlue: 로얄블루
+ru-BY: 러시아어(벨로루시)
+ru-KG: 러시아어(키르기스스탄)
+ru-KZ: 러시아어(카자흐스탄)
+ru-MD: 러시아어(몰도바)
+ru-RU: 러시아어(러시아)
+ru-UA: 러시아어(우크라이나)
+RubberBand: 고무밴드
+RubberBandColor: 고무 밴드 색상
+RubberBandStyle: 고무밴드 스타일
+Runic MT Condensed: 룬 MT 압축
+Runtime: 런타임
+Russian: 러시아어
+rw-RW: 키냐르완다어(르완다)
+rwk-TZ: Rwa(탄자니아)
+sa-IN: 산스크리트어(인도)
+SaddleBrown: 새들브라운
+SagelightBase16: 세이지라이트베이스16
+sah-RU: 사하(러시아)
+Salmon: 연어
+Sample Card: 샘플 카드
+Sample Dialog: 샘플 대화 상자
+Sample Headline: 샘플 헤드라인
+Sample how to use Theme Select: 테마 선택 사용 방법 샘플
+Sample mega: 샘플 메가
+Sample to see how you can render and use any component in a dialog as easy as possible: 대화 상자에서 구성 요소를 가능한 한 쉽게 렌더링하고 사용하는 방법을 확인하는 샘플
+sample.pdf: sample.pdf
+San Antonio: 샌안토니오
+San Antonio - 78201: 샌안토니오 - 78201
+San Antonio - 78201ender: 샌안토니오 - 78201ender
+San Diego: 샌디에이고
+San Diego - 92101: 샌디에이고 - 92101
+San Diego - 92101ender: 샌디에이고 - 92101ender
+San Jose: 새너제이
+San Jose - 95101: 산호세 - 95101
+San Jose - 95101ender: 산호세 - 95101ender
+SandBoxIframes: 샌드박스I프레임
+SandcastleBase16: 샌드캐슬베이스16
+SandyBrown: 샌디브라운
+sans-serif: 산세리프
+Sans-serif: 산세리프
+saq-KE: 삼부루(케냐)
+sat-Olck-IN: 산탈리(인도 올치키)
+Saturation: 채도
+Save: 구해내다
+Save {0} Changes: '{0} 변경 사항 저장'
+Save as: 다른 이름으로 저장
+Save Changes: 변경 사항 저장
+Save image: 이미지 저장
+Save Role: 역할 저장
+Save visible area only: 보이는 영역만 저장
+SaveButtonIcon: SaveButton아이콘
+saved: 저장!
+sbp-TZ: Sangu (탄자니아)
+Scale: 저울
+SchoolBook: 교과서
+Scope: 범위
+Screen: 화면
+Script MT Bold: 스크립트 MT 굵게
+Scroll down to discover the content: 아래로 스크롤하여 콘텐츠를 찾으세요.
+Scroll down to see the behavior: 아래로 스크롤하여 동작을 확인합니다.
+Scroll to top: 맨 위로 스크롤
+sd-Arab-PK: 신디어(아랍어, 파키스탄)
+sd-Deva-IN: 신디어(인도 데바나가리)
+se-FI: 북부 사미어(핀란드)
+se-NO: 북부 사미어(노르웨이)
+se-SE: 북부 사미어(스웨덴)
+SeaGreen: 씨그린
+search: 검색
+Search: 검색
+Search by users: 사용자별 검색
+Search For {0} Extended Attributes: '{0} 확장 속성 검색'
+Search for Brands: 브랜드 검색
+Search for Document Types: 문서 유형 검색
+Search For Permissions: 권한 검색
+Search for Roles...: 역할을 검색...
+Search for Trails: 트레일 검색
+Search For User Roles: 사용자 역할 검색
+Search For Users: 사용자 검색
+Search in New Values: 새 값에서 검색
+Search in Old Values: 이전 값에서 검색
+SearchBox: 검색상자
+SearchBoxAdornment: 검색상자장식
+SearchBoxAutoFocus: 검색상자자동 초점
+SearchBoxBackgroundColor: 검색 상자배경색
+SearchBoxClearable: 검색 상자 지우기 가능
+SearchBoxPlaceholder: SearchBox자리 표시자
+SearchBoxVariant: SearchBoxVariant
+SearchString: 검색문자열
+SeaShell: 조개
+Secondary: 보조
+SecondaryBackgroundForNestedItemHeader: SecondaryBackgroundForNestedItemHeader
+SecondaryContrastText: 보조 대조 텍스트
+SecondaryDarken: 보조 어둡게
+SecondaryLighten: 보조 라이트
+Section 0: 섹션 0
+Section 1: 섹션 1
+Section 10: 섹션 10
+Section 11: 섹션 11
+Section 12: 제12절
+Section 13: 제13부
+Section 14: 제14절
+Section 15: 제15부
+Section 2: 섹션 2
+Section 3: 섹션 3
+Section 4: 섹션 4
+Section 5: 섹션 5
+Section 6: 섹션 6
+Section 7: 섹션 7
+Section 8: 섹션 8
+Section 9: 섹션 9
+Security: 안전
+See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.: MudExFileDisplay를 사용하여 파일 내용을 표시하는 방법을 참조하십시오. 또한 IMudExFileDisplay 인터페이스를 구현하여 특정 파일 형식에 대한 자체 구성 요소를 제공하는 방법도 보여 줍니다.
+See how to use MudExObjectEdit in a dialog: 대화상자에서 MudExObjectEdit를 사용하는 방법 보기
+See how you can use different pickers or delay change event with the MudExColorPicker: MudExColorPicker 에서 다른 피커를 사용하거나 변경 이벤트를 지연하는 방법을 알아보세요.
+seh-MZ: 센 (모잠비크)
+Select: 고르다
+Select a brand: 브랜드 선택
+Select All: 모두 선택
+Select Item: 항목 선택
+Select Items: 항목 선택
+Select Language: 언어 선택
+Select sample file (See weather.json to check how own components for files can be created): 샘플 파일 선택(파일에 대한 자체 구성 요소를 만드는 방법을 확인하려면 weather.json 참조)
+Select screen: 화면 선택
+SelectAll: 모두 선택
+SelectAllPosition: 모든 위치 선택
+SelectAllText: SelectAllText
+SelectColorText: SelectColorText
+Selected: 선택한
+Selected Node: 선택한 노드
+SelectedBrand: 셀렉트브랜드
+SelectedIndex: 선택된 인덱스
+SelectedItemBackgroundColor: 선택한 항목배경색
+SelectedItemBorderColor: 선택한 항목테두리 색상
+SelectedItemColor: 선택한 항목 색상
+SelectedRequests: 선택된 요청
+SelectedValues: 선택된 값
+Selecting: 선택
+SelectionList: 선택 목록
+SelectionMode: 선택 모드
+SelectionModeIcon: 선택 모드 아이콘
+SelectItemsMode: 항목 모드 선택
+SelectorsForIgnoreBlur: SelectorsForIgnoreBlur
+SelectorSize: 선택기 크기
+SelectorsToKeepOpenOnMouseLeave: SelectorsToKeepOpenOnMouseLeave
+SelectValueOnTab: SelectValueOnTab
+SelectVariant: 변형 선택
+Send: 보내기
+Send confirmation email: 확인 이메일 보내기
+Sensitivity: 민감
+Sep: 9월
+Server restarted successfully: 서버가 다시 시작되었습니다.
+ses-ML: Koyraboro Senni (말리)
+Set as Default options for all Dialogs: 모든 대화 상자에 대한 기본 옵션으로 설정
+Set empty/null for auto detection: 자동 감지를 위해 비어 있음/null 설정
+Set new password: 새 비밀번호 설정
+Set this to automatically stop recording after the desired time.: 원하는 시간이 지나면 자동으로 녹화를 중지하도록 설정합니다.
+Set this to wait before a photo is taken: 사진을 찍기 전에 기다리도록 설정합니다
+Set this to wait before recording starts: 녹화가 시작되기 전에 기다리도록 설정합니다
+SetChipsOnEnter: 칩 온엔터 버튼 설정
+SetiUiBase16: 세티유이베이스16
+SevenZipArchive.7z: SevenZipArchive.7z
+Severity: 심각도
+sg-CF: Sango (중앙아프리카공화국)
+ShadesOfPurple: 보라색 음영
+Shadows: 그림자
+Shake: 떨다
+ShapeshifterBase16: 변신술사베이스16
+SharedConfig: 공유 구성
+Sharpness: 날카로움
+shi-Latn-MA: Tachelhit (라틴어, 모로코)
+shi-Tfng-MA: Tachelhit(모로코 티피나)
+Show: 보이다
+Show As Dialog: 다른 이름으로 표시 대화상자
+Show as Tree: 트리로 표시
+Show Demo: 데모 보기
+Show flat: 쇼 플랫
+Show info: 정보 보기
+Show info for: 정보 표시 대상
+Show Markup: 마크업 표시
+Show notification: 알림 표시
+Show notification while recording: 녹화 중 알림 표시
+Show on github: github에 표시
+Show or hide inherited fields from base class: 기본 클래스에서 상속된 필드 표시 또는 숨기기
+Show Sample 1: 샘플 1 표시
+Show Sample 2: 샘플 2 보기
+Show Sample 3: 샘플 3 보기
+Show Sample Dialog: 샘플 대화상자 표시
+Show Sample Dialog METHOD 1: 샘플 대화 상자 표시 방법 1
+Show Sample Dialog METHOD 2: 샘플 대화 상자 표시 방법 2
+Show Sample Dialogs: 샘플 대화 상자 표시
+Show selected: 선택된 항목 표시
+Show With this Options: 이 옵션으로 표시
+ShowAlpha: 쇼알파
+ShowAtCursor: 커서 표시
+ShowBgColor: ShowBgColor
+Showcard Gothic: 쇼카드 고딕
+ShowClearButton: ShowClearButton
+ShowCloseIcon: 닫기 아이콘 표시
+ShowColorField: ShowColorField
+ShowColorPreview: ShowColorPreview
+ShowContentError: ShowContentError 표시
+ShowCssColorVariables: ShowCssColorVariables
+ShowFileUploadButton: 파일 업로드 버튼 표시
+ShowFilterInDrawer: 필터 인드로어 표시
+ShowFolderUploadButton: 폴더 업로드 버튼 표시
+ShowFPS: FPS 표시
+ShowFullScreenButton: 전체 화면 버튼 표시
+ShowHtmlColors: Html색상 표시
+ShowInputs: 입력 표시
+ShowLogoInDrawer: ShowLogoInDrawer
+ShowModeSwitch: 모드 스위치 표시
+ShowNavigator: 내비게이터 표시
+ShowNotificationWhileRecording: ShowNotificationWhileRecording
+ShowPath: 쇼패스
+ShowPeaks: 쇼피크스
+ShowPresetNameOnChange: ShowPresetNameOnChange
+ShowPreview: 쇼미리보기
+ShowPreviewOnClick: ShowPreviewOnClick
+ShowPrintButton: 인쇄 버튼 표시
+ShowProgressForLoadingData: ShowProgressForLoadingData
+ShowRemainingTimeOnly: 남은 시간만 표시
+ShowRenameButton: ShowRenameButton 표시
+ShowResetButton: ShowResetButton 표시
+Shows how you can use MudExAdditionalAdornment to ad as many adornments to any MudInput: MudExAdditionalAdornment 를 사용하여 모든 MudInput 에 많은 장식을 광고하는 방법을 보여줍니다
+ShowSaveButton: 저장 버튼 표시
+ShowScaleX: 쇼스케일X
+ShowScaleY: 스케일 Y 표시
+ShowSliders: 쇼슬라이더
+ShowSpectrumOnRecording: ShowSpectrumOnRecording
+ShowThemeColors: 테마 색상 표시
+ShowToolbar: 도구 모음 표시
+ShowTrackInfosOnPlay: 트랙 인포스온플레이 표시
+ShowVisualiser: 쇼비주얼라이저
+ShowZoomInButton: ZoomInButton 표시
+ShowZoomOutButton: 줌아웃 버튼 표시
+ShrinkLabel: ShrinkLabel
+si-LK: 싱할라어(스리랑카)
+Side: 쪽
+Sienna: 시에나
+Sign In: 서명하세요
+Sign Up: 등록하세요
+SilkDarkBase16: 실크다크베이스16
+SilkLightBase16: 실크라이트베이스16
+Silver: 은
+Simon Pack: 사이먼 팩
+Simple: 간단한
+Simple Card List with a hover effect.: 호버 효과가 있는 간단한 카드 목록.
+Simple CodeViewer Component: 간단한 CodeViewer 구성 요소
+Simple component to display Html files with MudExFileDisplay: MudExFileDisplay를 사용하여 Html 파일을 표시하는 간단한 컴포넌트
+Simple component to display markdown files with MudExFileDisplay: MudExFileDisplay를 사용하여 마크다운 파일을 표시하는 간단한 구성 요소
+Simple component to expand a Search field: 검색 필드를 확장하는 간단한 구성 요소
+Simple Confirmation: 간단한 확인
+Simple Dialog: 간단한 대화 상자
+Simple Dialogs: 간단한 대화 상자
+Simple Enum: 단순 열거형
+Simple Excel file viewer: 간단한 Excel 파일 뷰어
+Simple extended popover that adds Animations and an onblur event to close if a click outside happens.: 외부 클릭이 발생하면 닫을 애니메이션과 onblur 이벤트를 추가하는 간단한 확장 팝오버입니다.
+Simple extension for MudAvatar to load automatically a profile image for an email address using Gravatar: Gravatar를 사용하여 이메일 주소의 프로필 이미지를 자동으로 로드하는 MudAvatar의 간단한 확장
+Simple MessageDialog: 간단한 MessageDialog
+Simple Prompt: 간단한 프롬프트
+Simple virtualize component that can be disabled with support for fixed items and ItemsProvider.: 고정 항목 및 ItemsProvider에 대한 지원을 사용하여 사용하지 않도록 설정할 수 있는 간단한 가상화 구성 요소입니다.
+SimpleDialog: 단순 대화 상자
+SimulateOnHover: 시뮬레이트 온 호버
+SimulateWithFullSpectrumAudioData: SimulateWithFullSpectrumAudioData
+SimulateWithRandomData: SimulateWithRandomData
+Single: 싱글
+SingleExpand: 단일확장
+Size: 크기
+sk-SK: 슬로바키아어(슬로바키아)
+Skeleton: 해골
+SkipSeparator: SkipSeparator
+SkyBlue: 스카이블루
+sl-SI: 슬로베니아어(슬로베니아)
+SlateBlue: 슬레이트블루
+SlateGray: 슬레이트그레이
+Slide: 슬라이드
+SlideBar: 슬라이드 바
+SlideIn: 슬라이드인
+sma-NO: 남부 사미어(노르웨이)
+sma-SE: 남부 사미어(스웨덴)
+Small: 작다
+smj-NO: 룰레 사미(노르웨이)
+smj-SE: 룰레 사미(스웨덴)
+smn-FI: 이나리 사미(핀란드)
+Smoothing: 스무 딩
+sms-FI: 스콜트 사미어(핀란드)
+sn-Latn-ZW: 쇼나어(라틴어, 짐바브웨)
+Snackbar: 스낵바
+SnackbarMessageMarkupString: 스낵바 메시지 마크업문자열
+SnackbarMessageRenderFragment: 스낵바 메시지 렌더링 조각
+SnackbarMessageText: 스낵바메시지 텍스트
+Snap ITC: 스냅 ITC
+SnapDrag: 스냅드래그
+SnazzyBase16: 스나지베이스16
+Snow: 눈
+so-DJ: 소말리아어(지부티)
+so-ET: 소말리아(에티오피아)
+so-KE: 소말리아어(케냐)
+so-SO: 소말리아어(소말리아)
+SolarFlareBase16: 솔라플레어베이스16
+SolarFlareLightBase16: 솔라플레어라이트베이스16
+SolarizedDarkBase16: 솔라라이즈드다크베이스16
+SolarizedLightBase16: SolarizedLightBase16
+Solid: 고체
+Some: 어떤
+Some other: 다른 것
+SomeOtherInformation: SomeOtherInformation
+Something went wrong during the refresh token action: 새로 고침 토큰 작업 중에 문제가 발생했습니다.
+SomeUnimportantTestModel: SomeUnimportantTestModel
+SomeUnimportantTestModel as Json: SomeUnimportantTestModel을 json으로
+SpaceAround: 스페이스 어라운드
+SpaceBetween: 스페이스 사이
+SpaceEvenly: 공간균일하게
+SpacemacsBase16: 스페이스맥베이스16
+Spacing: 간격
+Specify Options...: 옵션 지정...
+Specify Quick Options...: 빠른 옵션 지정...
+Spectrum: 스펙트럼
+SpectrumIcon: 스펙트럼 아이콘
+SpinSpeed: 스핀 스피드
+SplitGradient: 분할그라디언트
+SplitPanelItem for MudExSplitPanel component: MudExSplitPanel 컴포넌트에 대한 SplitPanelItem
+SpringGreen: 스프링그린
+sq-AL: 알바니아어(알바니아)
+sq-MK: 알바니아어(북마케도니아)
+sq-XK: 알바니아어(코소보)
+Square: 정사각형
+sr-Cyrl-BA: 세르비아어(키릴 자모, 보스니아 헤르체고비나)
+sr-Cyrl-ME: 세르비아어(키릴 자모, 몬테네그로)
+sr-Cyrl-RS: 세르비아어(키릴 자모, 세르비아)
+sr-Cyrl-XK: 세르비아어(키릴 자모, 코소보)
+sr-Latn-BA: 세르비아어(라틴어, 보스니아 헤르체고비나)
+sr-Latn-ME: 세르비아어(라틴어, 몬테네그로)
+sr-Latn-RS: 세르비아어(라틴어, 세르비아)
+sr-Latn-XK: 세르비아어(라틴어, 코소보)
+Src: 출처
+Srcery: 마법
+ss-SZ: siSwati (에스와티니)
+ss-ZA: siSwati(남아프리카 공화국)
+ssy-ER: 사호(에리트레아)
+st-LS: 세소토(레소토)
+st-ZA: 세소토(남아프리카 공화국)
+StackedBar: 스택바
+StackoverflowDark: 스택오버플로다크
+StackoverflowLight: 스택오버플로라이트
+Standard - Mikrofon (Voicemod Virtual Audio Device (WDM)): 표준 - Mikrofon(Voicemod WDM(가상 오디오 장치))
+Start: 시작하다
+Start Capture: 캡처 시작
+Start Recording: 녹음 시작
+Start recording after: 이후 녹화 시작
+Start/Stop selection: 시작/중지 선택
+State: 상태
+Static: 정적인
+Static card.: 정적 카드.
+Static item: 정적 항목
+Status: 상태
+SteelBlue: 스틸블루
+Stencil: 스텐실
+Stereo: 스테레오
+Steve Rogers: 스티브 로저스
+Store: 가게
+Stream: 시내
+StreamUrlHandling: StreamUrl 처리
+Street: 거리
+Street 2 2, 32365 City 2: 거리 2 2, 32365 도시 2
+Strict: 엄격한
+StringProperty1: 문자열 속성1
+StringProperty10: 문자열 속성10
+StringProperty11: 문자열 속성11
+StringProperty12: 문자열 속성12
+StringProperty13: 문자열 속성13
+StringProperty14: 문자열 속성14
+StringProperty15: 문자열 속성15
+StringProperty16: 문자열 속성16
+StringProperty17: 문자열 속성17
+StringProperty18: 문자열 속성18
+StringProperty19: 문자열 속성19
+StringProperty2: 문자열 속성2
+StringProperty20: 문자열 속성20
+StringProperty21: 문자열 속성21
+StringProperty22: 문자열 속성22
+StringProperty23: 문자열 속성23
+StringProperty24: 문자열 속성24
+StringProperty25: 문자열 속성25
+StringProperty26: 문자열 속성26
+StringProperty27: 문자열 속성27
+StringProperty28: 문자열 속성28
+StringProperty29: 문자열 속성29
+StringProperty3: 문자열 속성3
+StringProperty30: 문자열 속성30
+StringProperty31: 문자열 속성31
+StringProperty32: 문자열 속성32
+StringProperty33: 문자열 속성33
+StringProperty34: 문자열 속성34
+StringProperty35: 문자열 속성35
+StringProperty36: 문자열 속성36
+StringProperty37: 문자열 속성37
+StringProperty38: 문자열 속성38
+StringProperty39: 문자열 속성39
+StringProperty4: 문자열 속성4
+StringProperty40: 문자열 속성40
+StringProperty41: 문자열 속성41
+StringProperty42: 문자열 속성42
+StringProperty43: 문자열 속성43
+StringProperty44: 문자열 속성44
+StringProperty45: 문자열 속성45
+StringProperty46: 문자열 속성46
+StringProperty47: 문자열 속성47
+StringProperty48: 문자열 속성48
+StringProperty49: 문자열 속성49
+StringProperty5: 문자열 속성5
+StringProperty50: 문자열 속성50
+StringProperty51: 문자열 속성51
+StringProperty52: 문자열 속성52
+StringProperty53: 문자열 속성53
+StringProperty54: 문자열 속성54
+StringProperty55: 문자열 속성55
+StringProperty56: 문자열 속성56
+StringProperty57: 문자열 속성57
+StringProperty58: 문자열 속성58
+StringProperty59: 문자열 속성59
+StringProperty6: 문자열 속성6
+StringProperty60: 문자열 속성60
+StringProperty7: 문자열 속성7
+StringProperty8: 문자열 속성8
+StringProperty9: 문자열 속성9
+Striped: 스트라이프
+Structured Data Edit: 구조화된 데이터 편집
+StructuredDataEdit: 구조화된 데이터 편집
+Style: 스타일
+StyleChip: 스타일칩
+su-Latn-ID: 순다어(라틴어, 인도네시아)
+Subject: 제목
+Subline description for sample card.: 샘플 카드에 대한 하위 라인 설명입니다.
+Submit: 전송
+SubscribeToParentForm2: SubscribeToParentForm2
+subtitle1: 자막1
+Subtitle1: 부제1
+subtitle2: 부제2
+Subtitle2: 자막2
+Success: 성공
+SuccessContrastText: 성공 대조 텍스트
+SuccessDarken: 성공어두워짐
+SuccessLighten: 성공라이트
+SummercampBase16: 서머캠프Base16
+SummerfruitDarkBase16: 서머프루트다크베이스16
+SummerfruitLightBase16: 서머프루트 라이트베이스16
+Sunburst: 햇살
+Super sample Content text.: 슈퍼 샘플 콘텐츠 텍스트입니다.
+Support: 지원
+Surface: 표면
+Surname: 성
+sv-AX: 스웨덴어(올란드 제도)
+sv-FI: 스웨덴어(핀란드)
+sv-SE: 스웨덴어(스웨덴)
+sw-CD: 스와힐리어(콩고[DRC])
+sw-KE: 스와힐리어(케냐)
+sw-TZ: 스와힐리어(탄자니아)
+sw-UG: 스와힐리어(우간다)
+Swagger: API 문서
+Swap: 교환
+Swedish: 스웨덴어
+SweetieBubbleGum-Regular.ttf: SweetieBubbleGum-Regular.ttf
+Swing: 그네
+Switch: 스위치
+Switch expand button position: 확장 버튼 위치 전환
+Switch overlay source: 스위치 오버레이 소스
+Symbol: 상징
+SynthMidnightTerminalDarkBase16: 신디사이저미드나잇터미널다크베이스16
+SynthMidnightTerminalLightBase16: 신디사이저미드나잇터미널라이트베이스16
+syr-SY: 시리아어 (시리아)
+System: 체계
+System Settings: 시스템 설정
+T3024Base16: T3024베이스16
+ta-IN: 타밀어(인도)
+ta-LK: 타밀어(스리랑카)
+ta-MY: 타밀어(말레이시아)
+ta-SG: 타밀어(싱가포르)
+Table Name: 테이블 이름
+TableHover: 테이블호버
+TableLines: 테이블라인
+TableStriped: 테이블스트라이프
+Tada: 그러면
+Tag: 하루
+TagField: 태그 필드
+Tahoma: 타호마
+Take case: 사례 취하기
+Take photo after: 사진 찍기 후
+Take Photo from Main camera: 메인 카메라에서 사진 찍기
+Take Photo from Main camera in 5 seconds: 5초 안에 메인 카메라에서 사진 찍기
+Take Photo only: 사진만 찍기
+Tan: 그렇게
+TangoBase16: 탱고베이스16
+TarArchive.tar: TarArchive.tar
+Target: 과녁
+Tax: 세금
+Tax must be greater than 0: 세금은 0보다 커야 합니다.
+te-IN: 텔루구어(인도)
+Teal: 청록
+tel: 전화
+Telephone: 전화
+TemplateClass: 템플릿 클래스
+Temporary: 일시적인
+TenderBase16: 텐더베이스16
+teo-KE: Teso(케냐)
+teo-UG: 테소(우간다)
+Tertiary: 차
+TertiaryContrastText: TertiaryContrastText
+TertiaryDarken: 3차 어두워짐
+TertiaryLighten: 삼차 라이트
+TEST: 테스트
+Test and use components live without required environment: 필수 환경 없이 실시간으로 구성 요소를 테스트하고 사용하십시오.
+Test the powerful MudExThemeEdit and change theme colors fonts and more: 강력한 MudExTheme 테스트 테마 색상, 글꼴 등을 편집하고 변경합니다.
+text: 문자 메시지
+Text: 문자 메시지
+Text value is required using {0} type!: '{0} 유형을 사용하여 텍스트 값이 필요합니다!'
+TextAddExternal: 텍스트 추가 외부
+TextAddFromDropBox: 텍스트 추가에서 드롭 박스
+TextAddFromGoogle: TextAddFromGoogle
+TextAddFromOneDrive: TextAddFromOneDrive
+TextAddUrl: 텍스트 추가 URL
+TextAddUrlMessage: TextAddUrl메시지
+TextAddUrlTitle: 텍스트 추가UrlTitle
+TextDisabled: 텍스트 비활성화
+TextDropZone: 텍스트드롭존
+TextErrorDuplicateFile: 텍스트 오류 중복 파일
+TextErrorExtensionForbidden: TextErrorExtensionForbidden
+TextErrorExtensionNotAllowed: TextErrorExtensionNotAllowed(텍스트 오류 확장허용되지 않음)
+TextErrorMaxFileCount: 텍스트 오류 최대 파일 수
+TextErrorMaxFileSize: 텍스트 오류 최대 파일 크기
+TextErrorMimeTypeForbidden: TextErrorMimeTypeForbidden
+TextErrorMimeTypeNotAllowed: TextErrorMimeTypeNotAllowed
+TextFillColor: 텍스트 채우기 색상
+TextPrimary: 텍스트기본
+TextRemoveAll: 텍스트 제거 모두
+TextSecondary: 텍스트보조
+TextStartRecording: 텍스트시작 녹음
+TextStartVideoCapture: 텍스트 시작 비디오 캡처
+TextTransform: 텍스트 변환
+TextUpdateSuppression: 텍스트 업데이트 억제
+TextUploadFile: 텍스트 업로드 파일
+TextUploadFiles: 텍스트 업로드 파일
+TextUploadFolder: 텍스트 업로드 폴더
+tg-Cyrl-TJ: 타지크어(키릴 자모, 타지키스탄)
+th-TH: 태국어(태국)
+The Checker field is required.: Checker 필드는 필수입니다.
+The component also provides the <strong>IsVisibleChanged</strong> event, which triggers whenever the visibility of the item changes.: 또한 이 구성 요소는 항목의 가시성이 변경될 때마다 트리거되는 <strong>IsVisibleChanged</strong> 이벤트를 제공합니다.
+The content type {0} cannot be displayed without a suitable plugin: 콘텐츠 유형 {0}는 적절한 플러그인 없이는 표시할 수 없습니다.
+The field Number must be between 1 and 100.: Number 필드는 1에서 100 사이여야 합니다.
+The file ({0}) has already been added: 파일({0})이 이미 추가되었습니다.
+The file has exceeded the maximum size of {0} with {1}. File size is {2}: 파일이 {1} 있는 최대 {0} 크기를 초과했습니다. 파일 크기가 {2}입니다.
+The following {0} permissions are also required for permission {1}: 권한 {1}에는 다음과 같은 {0} 권한도 필요합니다
+The following permission is also required for permission {1}: 권한 {1}에도 다음 권한이 필요합니다
+The maximum file size is 10 MB: 최대 파일 크기는 10MB입니다.
+The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit는 하나 이상의 테마 또는 사전 설정을 효과적으로 편집할 수 있도록 설계된 강력하고 다재다능한 도구입니다. 본질적으로 다크 모드, 라이트 모드 또는 이 둘의 조합을 수용합니다. 또한 MudTheme에서 파생된 클래스와 고유한 사용자 정의 속성을 지원하므로 모든 테마 편집 요구 사항에 대한 포괄적이고 유연한 솔루션을 제공합니다.
+The Plugin '{0}' may be able to help: 플러그인 '{0}'이 도움이 될 수 있습니다.
+The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: 샘플은 다른 FileDisplay 예제와 동일하지만 URL이 사용되지 않는다는 차이점이 있습니다. 대신 스트림이 로드되고 사용됩니다.
+The server is just restarting. Please wait until the connection has been restored: 서버가 이제 막 다시 시작되고 있습니다. 연결이 복원될 때까지 기다리십시오.
+The user "{0}" just changed some of this data: 사용자 "{0}"이 데이터 중 일부를 변경했습니다.
+The user {0} has been logged off: 사용자 {0}이 로그오프되었습니다.
+The User {0} has just edited, created or deleted entries here. You should reload the data: 사용자 {0}이 방금 여기에서 항목을 편집, 생성 또는 삭제했습니다. 데이터를 다시 로드해야 합니다.
+Theme: 주제
+Theme Colors: 테마 색상
+Themes: 테마
+ThemeSelect: 테마선택
+There are no new notifications: 새 알림이 없습니다.
+These features make <strong>MudExVirtualItem</strong> ideal for optimizing performance when working with large datasets or dynamic content that doesn't need to be loaded all at once.: 이러한 기능을 통해 <strong>MudExVirtualItem</strong>은 한 번에 모두 로드할 필요가 없는 대규모 데이터 세트 또는 동적 콘텐츠로 작업할 때 성능을 최적화하는 데 이상적입니다.
+This bar can be positioned left, right, top or bottom, and expands automatically on mouseover. This is also the Base component for the MudExTaskBar that automatically displays all open dialogs: 이 막대는 왼쪽, 오른쪽, 위 또는 아래쪽에 배치할 수 있으며 마우스를 올려놓으면 자동으로 확장됩니다. 이것은 열려 있는 모든 대화상자를 자동으로 표시하는 MudExTaskBar의 기본 구성 요소이기도 합니다
+This changes the Variant if Age is at least 18 and is enabled if Age is more than 1: 이렇게 하면 Age가 18 이상인 경우 Variant가 변경되고 Age가 1보다 크면 활성화됩니다
+This component and the dialog no modal behaviour is still in development and not ready for production use. Please report any issues you find on GitHub.: 이 구성 요소와 대화 상자 모달 동작은 아직 개발 중이며 프로덕션 용도로 사용할 준비가 되지 않았습니다. GitHub에서 발견한 문제를 보고하십시오.
+This component uses the ICaptureService to capture audio and/or video data: 이 구성 요소는 ICaptureService를 사용하여 오디오 및/또는 비디오 데이터를 캡처합니다
+This component uses the ISpeechRecognitionService to record audio data and transcripts: 이 구성 요소는 ISpeechRecognitionService를 사용하여 오디오 데이터 및 대본을 녹음합니다
+This Demo demonstrate using for the MudExCardList: 이 데모에서는 MudExCardList 를 사용하는 방법을 보여줍니다.
+This Demo demonstrate using the MudExAudioPlayer without the automatic use in MudExFileDisplay: 이 데모는 MudExFileDisplay에서 자동 사용하지 않고 MudExAudioPlayer를 사용하는 방법을 보여줍니다.
+This Demo demonstrate using the MudExCardList with an item source: 이 데모에서는 아이템 소스와 함께 MudExCardList 를 사용하는 방법을 보여줍니다.
+This Demo demonstrate using the MudExCardList with an item source and child content together: 이 데모에서는 MudExCardList 를 아이템 소스와 자식 콘텐츠와 함께 사용하는 방법을 보여줍니다
+This Demo demonstrate using the MudExImageViewer without the automatic use in MudExFileDisplay: 이 데모는 MudExFileDisplay에서 자동 사용하지 않고 MudExImageViewer를 사용하는 방법을 보여줍니다.
+This demo showcases the <strong>MudExVirtualItem</strong> component, a virtualized container that efficiently renders content<br/> only when it becomes visible in the viewport.: 이 데모에서는 뷰포트에 콘텐츠가 표시될 때만 콘텐츠를<br/> 효율적으로 렌더링하는 가상화된 컨테이너인 <strong>MudExVirtualItem</strong> 컴포넌트를 보여줍니다.
+This demo shows how to pass a can close method: 이 데모는 can close 메서드를 전달하는 방법을 보여줍니다.
+This demo shows how you can use a selection with MudExSelect with a custom item provider: 이 데모에서는 사용자 정의 항목 공급자와 함께 MudExSelect 에서 선택 항목을 사용하는 방법을 보여줍니다
+This demo uses SnapDrag as DragMode on the DialogOptionsEx: 이 데모는 SnapDrag를 DialogOptionsEx에서 DragMode로 사용합니다.
+This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open: 이 데모는 IDialogEventService를 사용하여 크기 조정 또는 끌기를 확인하고 최신 위치와 크기를 상대 값으로 저장하고 다음에 열 때 복원합니다
+This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: 테마 편집을 위해 내부적으로 MudExObjectEdit 및 MudExThemeSelect 를 사용하는 MudExThemeEdit 컴포넌트를 보여줍니다
+This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: 이 데모는 RenderFragments 'For' 및 'ChildContent' 를 사용하여 MudExAdditionalAdornment 를 사용하는 권장 방법을 보여줍니다.
+This dialog can confirmed when slider value is greater then 10: 이 대화 상자는 슬라이더 값이 10보다 클 때 확인할 수 있습니다.
+This is a Json representation of the TestModel. This is ignored for Export and Import: 이것은 TestModel의 Json 표현입니다. 내보내기 및 가져오기에서는 무시됩니다.
+This is a simple information dialog that closes after {0} seconds: '{0}초 후에 닫히는 간단한 정보 대화 상자입니다'
+This is a simple information dialog that closes after 0 seconds: 0초 후에 닫히는 간단한 정보 대화 상자입니다
+This is a simple information dialog that closes after 1 seconds: 이것은 1초 후에 닫히는 간단한 정보 대화 상자입니다
+This is a simple information dialog that closes after 2 seconds: 이것은 2초 후에 닫히는 간단한 정보 대화 상자입니다
+This is a simple information dialog that closes after 3 seconds: 이것은 3초 후에 닫히는 간단한 정보 대화 상자입니다
+This is a simple information dialog that closes after 4 seconds: 이것은 4초 후에 닫히는 간단한 정보 대화 상자입니다
+This is a simple information dialog that closes after 5 seconds: 이것은 5초 후에 닫히는 간단한 정보 대화 상자입니다
+This is an Administrator Only View.: 관리자 전용 보기입니다.
+This is the MudEx Default theme: MudEx 디폴트 테마입니다.
+This is the sample Popover. In general it inherits the original MudPopover.: 이것은 샘플 팝오버입니다. 일반적으로 원래 MudPopover를 상속합니다.
+This one card is still added without an corresponding item.: 이 카드 한 장은 해당 아이템 없이 여전히 추가됩니다.
+This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: 이것은 대화 상자 옵션에 메서드로 전달됩니다. 메서드가 false를 반환하면 대화 상자가 닫히지 않습니다. 결과는 bool 또는 Task&lt;bool 이어야 합니다&gt;
+This photo was taken in a small village in Istra Croatia.: 이 사진은 크로아티아 이스트라의 작은 마을에서 찍은 것입니다.
+This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: 이 선택기는 애니메이션, 더 나은 동작 및 모든 DialogOptions를 지원하는 대화 상자를 제공합니다. MudExPickerBase에서 상속되는 고유한 선택기 구성 요소를 만들거나 간단한 콘텐츠를 사용하려면 MudExPicker를 사용합니다.
+This sample demonstrate how to use the MudExCaptureService: 이 샘플에서는 MudExCaptureService 를 사용하는 방법을 보여줍니다.
+This sample demonstrate the usage of MudExTreeView with an Item template: 이 샘플은 항목 템플릿과 함께 MudExTreeView를 사용하는 방법을 보여줍니다
+This sample uses the IDialogEventService to cancel the dialog close: 이 샘플에서는 IDialogEventService를 사용하여 대화 상자 닫기를 취소합니다.
+This sample uses the options for a can close callback: 이 샘플에서는 can close 콜백에 대한 옵션을 사용합니다
+This section can be placed inside a MudExGrid component.: 이 섹션은 MudExGrid 컴포넌트 안에 배치할 수 있습니다.
+Thistle: 엉겅퀴
+ThrottleInterval: 스로틀 간격
+ti-ER: 티그리냐(에리트레아)
+ti-ET: 티그리냐(에티오피아)
+tig-ER: 티그레(에리트레아)
+Tilt: 기울다
+Time: 시간
+Times: 배
+Times New Roman: 타임즈 뉴 로마
+TimeSeries: 시계열
+Tina Fey: 티나 페이
+Title: 타이틀
+Title is required!: 제목은 필수입니다!
+tk-TM: 투르크멘(투르크메니스탄)
+tn-BW: 세츠와나(보츠와나)
+tn-ZA: 세츠와나(남아프리카공화국)
+to-TO: 통가(통가)
+Toggle loading: 로딩 전환
+Toggle right-to-left/left-to-right: 오른쪽에서 왼쪽/왼쪽에서 오른쪽으로 전환
+Toggle to {0}: '{0}로 전환'
+Toggleable: 토글 가능
+ToggleAllFeatures: ToggleAll기능
+ToggleFullPage: 토글전체 페이지
+ToggleFullscreen: 토글전체 화면
+ToggleMicrophone: 토글마이크
+TogglePictureInPicture: TogglePictureInPicture
+TogglePlayPause: TogglePlayPause (토글플레이일시 중지)
+Token is required: 토큰이 필요합니다.
+Token Not Found!: 토큰을 찾을 수 없습니다!
+Tokyo: 도쿄
+Tokyo - 100-0001: 도쿄 - 100-0001
+Tokyo - 100-0001ender: 도쿄 - 100-0001엔더
+Tomato: 토마토
+TomorrowBase16: 투모로우베이스16
+TomorrowNightBase16: 내일밤Base16
+TomorrowNightBlue: 투모로우나이트블루
+TomorrowNightBright: 내일밤밝은
+ToolbarBackgroundColor: 툴바배경색
+ToolbarButtonColor: 도구 모음 단추 색상
+ToolbarButtonPosition: 도구 모음 버튼 위치
+ToolbarButtonSize: 도구 모음 버튼 크기
+ToolbarButtonVariant: ToolbarButtonVariant
+ToolbarClass: 툴바클래스
+ToolBarClass: ToolBar클래스
+ToolbarStyle: 도구 모음 스타일
+ToolBarStyle: 도구 모음 스타일
+Tooltip: 툴팁
+ToolTip: 툴팁
+ToolTip Three: 툴팁 3
+ToolTip Two: 툴팁 2
+ToolTipStyle: 툴팁스타일
+Top: 맨 위로
+TopCenter: 탑센터
+TopLeft: 왼쪽 상단
+TopRight: 오른쪽 상단
+Torch: 횃불
+Toronto: 토론토
+Toronto - M1B 1A1: 토론토 - M1B 1A1
+Toronto - M1B 1A1ender: 토론토 - M1B 1A1ender
+tr-CY: 터키어(키프로스)
+tr-TR: 터키어(터키)
+Trace: 자취
+TrackInfoPosition: TrackInfoPosition
+TrackList: 트랙리스트
+TrackListBehaviour: 트랙리스트 동작
+TrackListClass: 트랙리스트클래스
+TrackListCoverImage: 트랙리스트커버이미지
+TrackListMode: 트랙 리스트 모드
+TrackListPosition: 트랙 리스트 위치
+TrackListToggleButtonPosition: 트랙리스트토글버튼포지션
+Trail Details: 트레일 세부 정보
+TransformOrigin: 원점 변환
+Translations: 번역
+Translations are being imported: 번역을 가져오는 중입니다.
+Translations updated: 번역 업데이트
+Transparent: 투명한
+Trebuchet MS: 투석기 MS
+TreeView: 트리뷰
+TreeView component that renders a tree structure of items.: 항목의 트리 구조를 렌더링하는 TreeView 구성 요소입니다.
+TreeViewBreadcrumb: TreeView이동 경로
+TreeViewCardGrid: 트리뷰카드그리드
+TreeViewDefault: TreeView기본값
+TreeViewFlatList: TreeView플랫 목록
+TreeViewHorizontal: 트리뷰수평
+TreeViewList: 트리 뷰 목록
+TreeViewMode: 트리뷰 모드
+TrueLeds: 트루LED
+TrueOrFalse: 참 또는 거짓
+Try different role: 다른 역할 시도
+Try MudEx online: MudEx 온라인 체험하기
+Try MudEx online CodeEditor: MudEx 온라인 CodeEditor 사용해 보기
+ts-ZA: Xitsonga(남아프리카 공화국)
+tt-RU: 타타르어(러시아)
+Turquoise: 터키옥
+TwilightBase16: 트와일라잇베이스16
+twq-NE: 타사와크(니제르)
+Type: 형
+Type should be valid: 형식이 유효해야 합니다.
+Typo: 오타
+TypoThemeDescription: TypoTheme설명
+TypoThemeName: TypoThemeName
+tzm-Arab-MA: Central Atlas Tamazight (아랍어, 모로코)
+tzm-Latn-DZ: Central Atlas Tamazight (라틴어, 알제리)
+tzm-Latn-MA: Central Atlas Tamazight (라틴어, 모로코)
+tzm-Tfng-MA: Central Atlas Tamazight (모로코 티피나)
+ug-CN: 위구르어(중국)
+uk-UA: 우크라이나어(우크라이나)
+Uma Thurman: 우마 서먼
+Unassigned: 할당
+UncheckedIcon: 선택 취소 아이콘
+Underline: 밑줄
+Undo: 취소
+UndoIcon: 실행 취소 아이콘
+UnikittyDarkBase16: 유니키티 다크베이스16
+UnikittyLightBase16: 유니키티 라이트베이스16
+Unselectable: 선택 불가
+Unset: 해제
+Update: 업데이트
+Update automatically next time: 다음에 자동으로 업데이트
+Update Brand: 브랜드 업데이트
+Update Document: 문서 업데이트
+Update Document Type: 문서 유형 업데이트
+Update Extended Attribute: 확장 속성 업데이트
+Update Now: 지금 업데이트
+Update Permissions: 업데이트 권한
+Update Product: 제품 업데이트
+Update Role: 역할 업데이트
+Update Role Permissions: 역할 권한 업데이트
+Update User Roles: 사용자 역할 업데이트
+UpdateBindingIfOnlyHSLChanged: UpdateBindingIfOnlyHSLChanged
+Updated: 업데이트
+Updated User Status.: 사용자 상태가 업데이트되었습니다.
+UpdateItemsOnStateChange: UpdateItemsOnStateChange
+Upload: 업로드
+Upload Edit: 업로드 편집
+Upload File: 파일 업로드
+Upload Files: 파일 업로드
+Upload Folder: 업로드 폴더
+Upload Image: 이미지 업로드
+Upload in dialog: 대화 상자에서 업로드
+Upload Qualifications and References: 자격 및 추천서 업로드
+UploadFieldId: UploadFieldId
+UploadFile: 파일 업로드
+UploadFolder: UploadFolder
+UploadRequest: 업로드 요청
+UploadRequests: 업로드 요청
+ur-IN: 우르두어(인도)
+ur-PK: 우르두어(파키스탄)
+url: URL
+Url: URL
+Use CodeGator Models: CodeGator 모델 사용
+Use MudExAdditionalAdornment ad ChildContent: MudExAdditionalAdornment 광고 ChildContent 사용
+Use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment 를 MudInput 의 자식 콘텐츠로 사용
+Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: 대신 MudExSelect를 사용하고 MultiSelection을 true로, ValuePresenter를 Chip으로 설정합니다.
+UseCanvas: 캔버스 사용
+UseColorPaletteInNativeBrowserControl: ColorPaletteInNativeBrowserControl 사용
+UseItemTemplateForSelection: UseItemTemplateForSelection
+UseMudExColorBubble: MudExColorBubble 사용
+UseNativeBrowserControl: UseNativeBrowserControl
+User: 사용자
+User {0} Registered. Please check your Mailbox to verify!: 사용자 {0} 등록되었습니다. 메일함을 확인하여 이메일 주소를 확인하세요!
+User and Roles: 사용자 및 역할
+User Data: 사용자 데이터
+User Deleted: 사용자 삭제됨
+User Name: 사용자 이름
+User Not Active. Please contact the administrator.: 사용자가 활성 상태가 아닙니다. 활성화를 기다리거나 관리자에게 문의하십시오.
+User Not Found!: 사용자를 찾을 수 없습니다!
+User Registered: 사용자 등록!
+User Registered Mailbox: 사용자가 등록되었습니다. 확인 메일이 사서함으로 배달되었습니다.
+User registration is not allowed: 사용자 등록은 허용되지 않습니다.
+UserAttributes: 사용자 속성
+UserInformation: 사용자 정보
+Username: 사용자 이름
+UserName: 사용자 이름
+Username {0} is already taken.: 사용자 이름 {0}가 이미 사용되었습니다.
+Username cannot changed: 사용자 이름을 변경할 수 없습니다.
+UserName is required: UserName은 필수입니다.
+UserName must be at least of length 6: UserName의 길이는 6 이상이어야 합니다.
+Username or Email: 사용자 이름 또는 이메일
+Users: 사용자
+Users and Roles: 사용자 및 역할
+Users exported: 내보낸 사용자
+Uses the IDialogEventService and handles the before close event. Here you can just set args.Cancel to true to stop closing: IDialogEventService를 사용하고 닫기 전 이벤트를 처리합니다. 여기에서 args를 설정할 수 있습니다. 닫기를 중지하려면 true로 취소
+UTC: UTC
+Utilities: 유틸리티
+uz-Arab-AF: 우즈베키스탄(아랍어, 아프가니스탄)
+uz-Cyrl-UZ: 우즈베키스탄(키릴 자모, 우즈베키스탄)
+uz-Latn-UZ: 우즈베키스탄어(라틴어, 우즈베키스탄)
+vai-Latn-LR: Vai (라틴어, 라이베리아)
+vai-Vaii-LR: Vai (라이베리아 Vai)
+Validate Upload Edit in MudForm: MudForm에서 업로드 편집 검증
+Validation: 유효성 검사
+Value: 값
+ValuePresenter: 가치 발표자
+Values: 값
+ValueString: 값문자열
+Vancouver: 밴쿠버
+Vancouver - V5K 0A1: 밴쿠버 - V5K 0A1
+Vancouver - V5K 0A1ender: 밴쿠버 - V5K 0A1ender
+Variant: 변체
+ve-ZA: 벤다(남아프리카공화국)
+Verdana: 베르다나
+Version: 버전
+vi-VN: 베트남어(베트남)
+Video Content-Type: 비디오 콘텐츠 유형
+Video device: 비디오 장치
+VideoDevice: 비디오 장치
+View: 보기
+View Profile: 프로필 보기
+ViewBox: 뷰박스
+ViewDependsOnContentType: ViewDependsOnContentType
+ViewMode: 뷰 모드
+ViewportHeight: 뷰포트 높이
+ViewportMaximum: 뷰포트최대
+ViewportMinimum: 뷰포트최소
+ViewportWidth: 뷰포트 너비
+Viner Hand ITC: 바이너 핸드 ITC
+Violet: 보라색
+Virtualize: 가상화
+Visible: 보이는
+Visualizer: 시각화 도우미
+VisualizerBackgroundColor: 시각화 도저 배경색
+VisualizerElementBorderSize: VisualizerElementBorderSize
+Vivaldi: 비발디
+Vladimir Script: 블라디미르 스크립트
+vo-001: 볼라퓌크(세계)
+Volume: 음량
+Vs: 대
+Vs2015: 2015년
+VulcanBase16: 벌칸베이스16
+vun-TZ: Vunjo (탄자니아)
+wae-CH: 발저(스위스)
+wal-ET: Wolaytta(에티오피아)
+Warning: 경고
+WarningContrastText: WarningContrastText
+WarningDarken: 경고어둡게
+WarningLighten: 경고밝게
+weather.json: weather.json
+Webdings: 웹딩
+Week: 주
+WeightingFilter: 가중치 필터
+Welcome {0}: '{0} 환영합니다'
+whatever: 것은 무엇이든지
+Wheat: 밀
+White: 하얀
+WhiteBalanceMode: 화이트 밸런스 모드
+WhiteList: 화이트리스트
+WhiteSmoke: 화이트스모크
+Wide Latin: 와이드 라틴어
+Width: 너비
+Will be saved only when selected Permission: 선택한 경우에만 저장됩니다 권한
+Window: 창
+Windows10Base16: 윈도우10Base16
+Windows10LightBase16: 윈도우10라이트베이스16
+Windows95Base16: 윈도우95베이스16
+Windows95LightBase16: 윈도우95라이트베이스16
+WindowsHighContrastBase16: WindowsHighContrastBase16
+WindowsHighContrastLightBase16: WindowsHighContrastLightBase16
+WindowsNtBase16: 윈도우NtBase16
+WindowsNtLightBase16: 윈도우NtLightBase16
+Wingdings: 윙딩스
+With custom configuration: 사용자 지정 구성 사용
+With default configuration: 기본 구성
+With tabs: 탭 포함
+With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: MudExAdditionalAdornment 컴포넌트를 사용하면 이와 같은 MudInput 기반 입력 컨트롤에 원하는 만큼 많은 장식을 가질 수 있습니다.
+With this component you can have an animation while loading the main blazor app: 이 구성 요소를 사용하면 기본 blazor 앱을 로드하는 동안 애니메이션을 만들 수 있습니다
+With_Selected: '{0} 선택됨'
+WithFullSpectrumAudioData: WithFullSpectrumAudioData
+WithFullSpectrumAudioDataPrefilledWithRandomData: WithFullSpectrumAudioDataPrefilledWithRandomData
+WithGoogleLatinFonts: GoogleLatinFonts와 함께하세요
+WithoutBounds: 바운드 없음
+WithRandomData: 랜덤데이터 포함
+WithRealAudioData: RealAudioData와 함께하세요
+wo-SN: 월로프(세네갈)
+Wobble: 동요
+WoodlandBase16: 우드랜드베이스16
+WordDokument.doc: WordDokument.doc
+WrapChips: 랩칩
+WrapToolBarContent: WrapToolBarContent
+Xcode: 엑스 코드
+XcodeDuskBase16: 엑스코드더스크베이스16
+xh-ZA: isiXhosa(남아프리카 공화국)
+Xml: XML
+xog-UG: 소가(우간다)
+Xt256: 엑스트256
+Yaml: 얌
+yav-CM: 양벤(카메룬)
+Yellow: 황색
+YellowGreen: 옐로우그린
+Yes: 예
+yi-001: 이디시어(세계)
+yo-BJ: 요루바어(베냉)
+yo-NG: 요루바어(나이지리아)
+Yokohama: 요코하마
+Yokohama - 220-0001: 요코하마 - 220-0001
+Yokohama - 220-0001ender: 요코하마-220-0001ender
+you: 너
+You are logged out because the Permissions of one of your Roles have been updated.: 역할 중 하나의 권한이 업데이트되었기 때문에 로그아웃되었습니다.
+You are logged out because the user with your Token has been deleted or token is expired.: 토큰이 있는 사용자가 삭제되었거나 토큰이 만료되어 로그아웃된 것입니다.
+You are logged out by an Administrator or profile change.: 관리자 또는 프로필 변경으로 인해 로그아웃되었습니다.
+You are Logged Out.: 로그아웃되었습니다.
+You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment 를 MudInput 의 ChildContent 로 사용할 수도 있습니다
+You can now Login with your credentials: 이제 자격 증명으로 로그인할 수 있습니다.
+You cannot delete yourself: 자신을 삭제할 수 없습니다.
+You clicked: 클릭
+You don't need an extra JsonEditor anymore: 더 이상 추가 JsonEditor가 필요하지 않습니다.
+You have {0} Users where you can pick from: 선택할 수 있는 {0} 사용자가 있습니다.
+You picked: 선택한
+You received a new chat message from {0}: '{0}로부터 새 채팅 메시지를 받았습니다.'
+You're leaving {0} and will redirected to {1}: '{0}를 떠나고 {1}로 리디렉션됩니다.'
+Your e-mail address has been confirmed!: 이메일 주소가 확인되었습니다!
+Your email address could not be verified. If you have any problems, please contact {0}: 이메일 주소를 확인할 수 없습니다. 문제가 있으면 연락{0}
+Your Profile has been updated.: 프로필이 업데이트되었습니다.
+Your Recent Activities.: 최근 활동.
+ZenburnBase16: 젠번베이스16
+zgh-Tfng-MA: 스탠다드 모로코 Tamazight (티피나, 모로코)
+zh-CN: 중국어(중국)
+zh-Hans-HK: 중국어(간체자, 홍콩 특별행정구)
+zh-Hans-MO: 중국어(간체자, 마카오 특별행정구)
+zh-HK: 중국어(홍콩 특별행정구)
+zh-MO: 중국어(마카오특별행정구)
+zh-SG: 중국어(싱가포르)
+zh-TW: 중국어(대만)
+ZIndex: 지인덱스
+ZipCode: 우편 번호
+Zoom: 급상승
+Zoom in: 확대
+Zoom out: 축소
+ZoomInButtonIcon: ZoomInButtonIcon
+ZoomOnHover: 줌온호버
+ZoomOutButtonIcon: 줌아웃 버튼 아이콘
+zu-ZA: isiZulu (남아프리카 공화국)

@@ -1,0 +1,4347 @@
+﻿_ Text: _Metin
+--accent-color1: --vurgu-renk1
+--accent-color2: --vurgu rengi2
+--accent-color3: --vurgu rengi3
+--accent-color4: --vurgu-renk4
+--loading-color: --yükleniyor-renk
+--mud-palette-black: --çamur paleti-siyah
+--mud-palette-primary: --çamur-palet-birincil
+--mud-palette-primary-darken: --çamur-palet-birincil-koyulaştırmak
+--mud-palette-primary-hover: --çamur-paleti-birincil-vurgulu
+--mud-palette-primary-lighten: --çamur-paleti-birincil-hafifletmek
+--mud-palette-primary-text: --çamur-paleti-birincil-metin
+--mud-palette-secondary: --çamur-palet-ikincil
+--mud-palette-secondary-darken: --çamur-palet-ikincil-koyulaştırmak
+--mud-palette-secondary-hover: --çamur-palet-ikincil-vurgulu
+--mud-palette-secondary-lighten: --çamur-paleti-ikincil-hafifletmek
+--mud-palette-secondary-text: --çamur-paleti-ikincil-metin
+--mud-palette-white: --çamur-palet-beyaz
+(currently the item is not visible): (şu anda öğe görünmüyor)
+(currently the item is visible): (şu anda öğe görünür durumda)
+4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+A: A
+A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Kullanıcının olası değerler listesinden bir değer seçmesine ve bunu Çipler veya varsayılan Kombinasyon Kutusu olarak görüntülemesine olanak tanıyan bir bileşen.
+A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Bir ChildContent'i fareyle üzerine gelerek alttan, üstten, soldan veya sağdan kaydırmak için kullanılabilecek bir Bileşen.
+A Component to display text with a gradient foreground or background: Degrade ön plan veya arka plan ile metin görüntülemek için bir Bileşen
+A Component to display the content of a zip file: Bir zip dosyasının içeriğini görüntülemek için bir Bileşen
+A Component to edit and upload a list of files: Dosya listesini düzenlemek ve yüklemek için bir Bileşen
+A Component to quickly select a color: Hızlı bir şekilde renk seçmek için bir Bileşen
+A connection to the server cannot be established. Your network connection may be down or the server is unreachable. Please wait until the connection has been restored: Sunucuyla bağlantı kurulamıyor. Ağ bağlantınız kesilmiş olabilir veya sunucuya erişilemiyor olabilir. Lütfen bağlantı yeniden kurulana kadar bekleyin
+A divider to separate content: İçeriği ayırmak için bir bölücü
+A maximum of {0} files are allowed: En fazla {0} dosyaya izin verilir
+A Popover can be used to display some content on top of another.: Popover, bazı içerikleri diğerinin üzerinde görüntülemek için kullanılabilir.
+A powerful component to edit an object and its properties.: Bir nesneyi ve özelliklerini düzenlemek için güçlü bir bileşen.
+A powerful editor that can handle json, xml or yaml content: Json, xml veya yaml içeriğini işleyebilen güçlü bir düzenleyici
+A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: MudColorPicker'ı devralan ancak kapatma olayını geciktirme ve tarayıcıdan yerel bir seçici bileşeni kullanma olanağı ekleyen basit bir ColorPicker bileşeni
+A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: Bölümleri içermek için Sütunları ve Satırları ve ColSpan ve RowSpan'ı destekleyen basit bir kılavuz bileşeni.
+A SplitPanel Component: Bir SplitPanel Bileşeni
+A Splitter Component: Bir Ayırıcı Bileşeni
+A WYSIWYG Html editor component.: Bir WYSIWYG Html düzenleyici bileşeni.
+A11yDark: A11yKaranlık
+A11yLight: A11yIşık
+aa-DJ: Afar (Cibuti)
+aa-ER: Afar (Eritre)
+aa-ET: Afar (Etiyopya)
+about: Hakkında
+Account: Hesap
+ActionButtons: Eylem Düğmeleri
+ActionButtonsNewLine: ActionButtonsNewLine
+ActionDefault: Eylem Varsayılanı
+ActionDisabled: EylemDevre Dışı
+ActionDisabledBackground: ActionDisabledBackground
+Actions: Eylemler
+ActionsAdornment: EylemlerSüsleme
+ActionsClass: Eylemler Sınıfı
+Activate comments: Yorumları etkinleştir
+Activate User?: Kullanıcıyı Etkinleştir?
+Active: Etkin
+Active?: Etkin?
+ActiveFilterOnly: Yalnızca ActiveFilter
+Adaptive: Adaptif
+ADblNumber: ADbl Numarası
+Add: Eklemek
+Add 1000 random items: 1000 rastgele öğe ekle
+Add 500 Users: 500 Kullanıcı Ekle
+Add Brand: Marka ekle
+Add Document: Belge Ekle
+Add Document Type: Belge Türü Ekle
+Add Extended Attribute: Genişletilmiş öznitelik ekle
+Add external Url: Harici URL ekle
+Add files: Dosya ekleme
+Add Product: Ürün Ekle
+Add Role: Rol Ekle
+Add Url: URL ekle
+Add user: Kullanıcı ekle
+Add user to both lists: Her iki listeye de kullanıcı ekle
+Additional Audio: Ek Ses
+Additional Video: Ek Video
+AdditionalAdornment: Ek Süsleme
+Address: Adres
+Addresses: Adres
+AddUrl: URL Ekle
+Administrator: Yönetici
+Administrator Settings.: Yönetici Ayarları.
+Administrators Profile's Status cannot be toggled: Yönetici Profilinin Durumu değiştirilemez
+Adornment: Süsleme
+AdornmentAriaLabel: SüslemeAria Etiketi
+AdornmentColor: Süsleme Rengi
+AdornmentIcon: Süsleme Simgesi
+AdornmentText: Süsleme Metni
+af-NA: Afrikaans (Namibya)
+af-ZA: Afrikaans (Güney Afrika)
+After the dialog is shown you can drag it to the edges to see snap. Also you can use Ctrl + {ArrowKeys} to change position: İletişim kutusu gösterildikten sonra, yapışmayı görmek için kenarlara sürükleyebilirsiniz. Ayrıca konumu değiştirmek için Ctrl + {Ok Tuşları} tuşlarını da kullanabilirsiniz
+AfterBegin: Başlangıç Sonrası
+AfterEnd: AfterEnd
+AfterSearchBox: Arama Kutusundan Sonra
+Agate: Akik
+Age: Yaş
+agq-CM: Aghem (Kamerun)
+ak-GH: Akan (Gana)
+Albertus: Albertus Hakkında
+Alice Johnson: Alice Johnson
+AliceBlue: Alice Mavi
+Align: Hizalamak
+ALL COMPONENTS: TÜM BİLEŞENLER
+All Documents without Type are stored here: Türü Olmayan Tüm Belgeler burada saklanır
+All Groups: Tüm Gruplar
+All Permissions: Tüm İzinler
+All roles: Tüm roller
+All roles unfiltered: Tüm roller filtrelenmemiş
+AllFilters: Tüm Filtreler
+AllowAudioRecording: Ses Kaydına İzin Ver
+AllowColumnSizeChange: AllowColumnSizeChange
+AllowCopyUrl: İzin VerKopyaUrl
+AllowDownload: İndirmeye İzin Ver
+AllowDrop: İzin Ver Damla
+AllowDropBox: İzin Bırakma Kutusu
+AllowDuplicates: Kopyalara İzin Ver
+AllowExternalUrl: AllowExternalUrl
+AllowFolderUpload: AllowFolderUpload
+AllowGoogleDrive: GoogleDrive'a İzin Ver
+AllowInteractingUnderRubberBand: AllowInteractingUnderRubberBand
+AllowMultiple: Çoklu İzin Ver
+AllowOneDrive: OneDrive'a izin ver
+AllowOpenInNewTab: İzin VerAçılışInNewTab
+AllowOpenOnReadOnly: İzin VerOpenOnReadOnly
+AllowPreview: İzin Ver Önizleme
+AllowRemovingItems: AllowRemoveingItems
+AllowRename: Yeniden Adlandır
+AllowRubberBandSelection: Lastik Bant Seçimine İzin Ver
+AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
+AllowSelectOnPreviewClick: İzin VerSeçÖnizlemedeTıkla
+AllowVideoCapture: Video Yakalamaya İzin Ver
+AlphaBars: Alfa Çubukları
+Already have an account?: Zaten bir hesabınız var mı?
+Always: Her zaman
+AlwaysEditOptions: Her ZamanDüzenleme Seçenekleri
+AlwaysShowValue: Her Zaman Değeri Göster
+AlwaysVisible: Her Zaman Görünür
+am-ET: Amharca (Etiyopya)
+An Error has occured!: Bir Hata oluştu!
+An Error has occurred!: Bir Hata oluştu!
+An error occurred while confirming {0}: Onaylanırken bir hata oluştu{0}
+An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used, and you can specify animations as well: Birden fazla öğenin seçilmesine izin veren ve dahili olarak bir arama işlevi sağlayan genişletilmiş bir SelectBox bileşeni olan MudExPopover kullanılır ve animasyonları da belirtebilirsiniz
+An item that only renders the content if it is in the viewport.: İçeriği yalnızca görünüm penceresinde işleyen bir öğe.
+AnchorOrigin: AnchorOrigin
+Andale Mono: Andale Mono
+Androidstudio: Android stüdyosu
+Animate: Canlı
+AnimateAudioElementBorderColor: AnimateAudioElementBorderColor
+AnimateClose: Animasyonu Kapat
+AnimateVisualizerBorderColor: AnimateVisualizerBorderColor
+Animation: Animasyon
+AnimationDuration: AnimasyonSüresi
+AnimationDuration (in ms): AnimationDuration (ms cinsinden)
+AnimationDurationInMs: AnimasyonSüresiInMs
+AnimationIn: Animasyonda
+AnimationInDirection: AnimationInDirection
+AnimationInDuration: AnimationInDuration
+AnimationInPosition: AnimationInPosition
+AnimationOut: Animasyon Çıkışı
+AnimationOutDirection: AnimasyonÇıkış Yönü
+AnimationOutDuration: Animasyon Çıkış Süresi
+AnimationOutPosition: Animasyon Çıkışı Konumu
+AnimationPosition: Animasyon Konumu
+Animations: Animasyonlar
+AnimationTime: Animasyon Zamanı
+AnimationTimingFunction: AnimationTimingİşlevi
+AnOldHope: Eski Bir Umut
+Another Demo theme: Başka bir Demo teması
+AnotherRar.rar: AnotherRar.rar
+AnotherStringProperty10: AnotherStringProperty10
+AnotherStringProperty11: AnotherStringProperty11
+AnotherStringProperty12: AnotherStringProperty12
+AnotherStringProperty13: AnotherStringProperty13
+AnotherStringProperty14: AnotherStringProperty14
+AnotherStringProperty15: AnotherStringProperty15
+AnotherStringProperty16: AnotherStringProperty16
+AnotherStringProperty17: AnotherStringProperty17
+AnotherStringProperty18: AnotherStringProperty18
+AnotherStringProperty19: AnotherStringProperty19
+AnotherStringProperty20: AnotherStringProperty20
+AnotherStringProperty21: AnotherStringProperty21
+AnotherStringProperty22: AnotherStringProperty22
+AnotherStringProperty23: AnotherStringProperty23
+AnotherStringProperty24: AnotherStringProperty24
+AnotherStringProperty25: AnotherStringProperty25
+AnotherStringProperty26: AnotherStringProperty26
+AnotherStringProperty27: AnotherStringProperty27
+AnotherStringProperty28: AnotherStringProperty28
+AnotherStringProperty29: AnotherStringProperty29
+AnotherStringProperty30: AnotherStringProperty30
+AnotherStringProperty31: AnotherStringProperty31
+AnotherStringProperty32: AnotherStringProperty32
+AnotherStringProperty33: AnotherStringProperty33
+AnotherStringProperty34: AnotherStringProperty34
+AnotherStringProperty35: AnotherStringProperty35
+AnotherStringProperty36: AnotherStringProperty36
+AnotherStringProperty37: AnotherStringProperty37
+AnotherStringProperty38: AnotherStringProperty38
+AnotherStringProperty39: AnotherStringProperty39
+AnotherStringProperty40: AnotherStringProperty40
+AnotherStringProperty41: AnotherStringProperty41
+AnotherStringProperty42: AnotherStringProperty42
+AnotherStringProperty43: AnotherStringProperty43
+AnotherStringProperty44: AnotherStringProperty44
+AnotherStringProperty45: AnotherStringProperty45
+AnotherStringProperty46: AnotherStringProperty46
+AnotherStringProperty47: AnotherStringProperty47
+AnotherStringProperty48: AnotherStringProperty48
+AnotherStringProperty49: AnotherStringProperty49
+AnotherStringProperty50: AnotherStringProperty50
+AnotherStringProperty51: AnotherStringProperty51
+AnotherStringProperty52: AnotherStringProperty52
+AnotherStringProperty53: AnotherStringProperty53
+AnotherStringProperty54: AnotherStringProperty54
+AnotherStringProperty55: AnotherStringProperty55
+AnotherStringProperty56: AnotherStringProperty56
+AnotherStringProperty57: AnotherStringProperty57
+AnotherStringProperty58: AnotherStringProperty58
+AnotherStringProperty59: AnotherStringProperty59
+AnotherStringProperty60: AnotherStringProperty60
+AnsiBands: Ansi Bantları
+AntiqueWhite: Antika Beyaz
+ApathyBase16: İlgisizlikTabanı16
+Api: UPA
+API: UPA
+API-Versions: API Sürümleri
+AppBar: Uygulama Çubuğu
+AppbarBackground: Uygulama ÇubuğuArka Planı
+AppbarHeight: Uygulama Çubuğu Yüksekliği
+AppbarText: Uygulama Metni
+Appearance: Görünüş
+Appetizer: Meze
+Apple: Elma
+Apple Gothic: Elma Gotik
+Application: Uygulama
+ApplicationDescription: WebAssembly ve Temiz Mimari Deseni ile Örnek Uygulama
+ApplicationSubDescription: Coworkee'ye Hoş Geldiniz
+applies a CSS class when the item is not visible.: öğe görünür olmadığında bir CSS sınıfı uygular.
+applies a CSS class when the item is visible.: öğe görünür olduğunda bir CSS sınıfı uygular.
+applies styles when the item is not visible.: Öğe görünür olmadığında stilleri uygular.
+applies styles when the item is visible.: Öğe görünür olduğunda stilleri uygular.
+Apply: Uygulamak
+ApplyBackgroundImageFromTrack: ApplyBackgroundImageFromTrack
+ApprenticeBase16: Çırak Tabanı16
+Apr: Nisan
+Aqua: Aqua
+Aquamarine: Akuamarin
+ar-001: Arapça (Dünya)
+ar-AE: Arapça (Birleşik Arap Emirlikleri)
+ar-BH: Arapça (Bahreyn)
+ar-DJ: Arapça (Cibuti)
+ar-DZ: Arapça (Cezayir)
+ar-EG: Arapça (Mısır)
+ar-ER: Arapça (Eritre)
+ar-IL: Arapça (İsrail)
+ar-IQ: Arapça (Irak)
+ar-JO: Arapça (Ürdün)
+ar-KM: Arapça (Komorlar)
+ar-KW: Arapça (Kuveyt)
+ar-LB: Arapça (Lübnan)
+ar-LY: Arapça (Libya)
+ar-MA: Arapça (Fas)
+ar-MR: Arapça (Moritanya)
+ar-OM: Arapça (Umman)
+ar-PS: Arapça (Filistin Yönetimi)
+ar-QA: Arapça (Katar)
+ar-SA: Arapça (Suudi Arabistan)
+ar-SD: Arapça (Sudan)
+ar-SO: Arapça (Somali)
+ar-SS: Arapça (Güney Sudan)
+ar-SY: Arapça (Suriye)
+ar-TD: Arapça (Çad)
+ar-TN: Arapça (Tunus)
+ar-YE: Arapça (Yemen)
+Archive.zip: Archive.zip
+ArduinoLight: Arduino Işık
+Are you sure to close: Kapatacağınızdan emin misiniz?
+Are you sure you want to force logout for user {0}: Kullanıcı {0} için oturumu kapatmaya zorlamak istediğinizden emin misiniz?
+Are you sure you want to restart Backend/Server?: Arka Uç/Sunucuyu yeniden başlatmak istediğinizden emin misiniz?
+Are you sure you want to restore the default settings? This will overwrite any changes you've ever made here.: Varsayılan ayarları geri yüklemek istediğinizden emin misiniz? Bu, burada yaptığınız tüm değişikliklerin üzerine yazacaktır.
+Are you sure?: Emin misiniz?
+Arial: Arial
+Arial Black: Arial Siyah
+Arial Narrow: Arial Dar
+arn-CL: Mapuche (Şili)
+Arta: Sanat
+As Admin you can filter for users here: Yönetici olarak burada kullanıcılar için filtreleme yapabilirsiniz
+As Picker: Seçici olarak
+as read: Okunduğu gibi
+As simple as it sound. This is a simple GroupBox: Göründüğü kadar basit. Bu basit bir GroupBox'tır
+As soon as your account has been activated you can log in: Hesabınız etkinleştirilir etkinleştirilmez giriş yapabilirsiniz
+as unread: okunmamış olarak
+as-IN: Assam (Hindistan)
+asa-TZ: Asu (Tanzanya)
+Ascetic: Münzevi
+AshesBase16: Kül Tabanı16
+AspectRatio: En Boy Oranı
+ast-ES: Asturca (İspanya)
+At least one document is required: En az bir belge gereklidir
+AtelierCaveBase16: AtelierCaveBase16
+AtelierCaveLightBase16: AtelierCaveLightBase16
+AtelierDuneBase16: AtelierDuneBase16
+AtelierDuneLightBase16: AtelierDuneLightBase16
+AtelierEstuaryBase16: AtelierHaliçÜssü16
+AtelierEstuaryLightBase16: AtelierHaliçIşıkTabanı16
+AtelierForestBase16: AtelierForestBase16
+AtelierForestLightBase16: AtelierForestLightBase16
+AtelierHeathBase16: AtelierHeathBase16
+AtelierHeathLightBase16: AtelierHeathLightBase16
+AtelierLakesideBase16: AtelierLakesideBase16
+AtelierLakesideLightBase16: AtelierLakesideLightBase16
+AtelierPlateauBase16: AtelierPlateauBase16
+AtelierPlateauLightBase16: AtelierPlateauLightBase16
+AtelierSavannaBase16: AtölyeSavannaBase16
+AtelierSavannaLightBase16: AtelierSavannaLightBase16
+AtelierSeasideBase16: AtelierSeasideBase16
+AtelierSeasideLightBase16: AtelierSeasideLightBase16
+AtelierSulphurpoolBase16: AtelierSülfür HavuzuTabanı16
+AtelierSulphurpoolLightBase16: AtelierSülfür HavuzuIşık Tabanı16
+AtlasBase16: Atlas Tabanı16
+AtomOneDark: AtomOneKaranlık
+AtomOneDarkReasonable: AtomOneDarkMakul
+AtomOneLight: AtomOneLight
+Audio Content-Type: Ses İçeriği Türü
+Audio devices: Ses cihazları
+AudioDevice: Ses Cihazı
+AudioElementBackgroundColor: AudioElementBackgroundColor
+AudioElementBorderColor: AudioElementBorderColor
+AudioElementBorderSize: AudioElementBorderSize
+AudioElementBorderStyle: AudioElementBorderStyle
+AudioElements: Ses Öğeleri
+AudioElementWidth: AudioElementWidth
+Audit Trails: Denetim İzleri
+Audit Trails exported: Dışarı aktarılan Denetim İzleri
+Aug: Ağustos
+Austin: Austin
+Austin - 73301: Austin - 73301
+Austin - 73301ender: Austin - 73301ender
+Auto Confirm Email?: E-postayı Otomatik Onayla?
+Auto Generated Editor for TestObject: TestObject için Otomatik Oluşturulan Düzenleyici
+Auto Stop recording after: Kaydı Otomatik Durdur
+AutoApplyGradient: Otomatik UygulaGradyan
+AutoClear: Otomatik Temizle
+AutoCloseBehaviour: Otomatik Kapatma Davranışı
+AutoCloseOnSelect: Otomatik KapatmaOnSelect
+AutoCollapse: Otomatik Daralt
+AutoExtractArchive: Otomatik Çıkarma Arşivi
+AutoFocus: Otomatik Odaklama
+AutoFocusFilter: Otomatik Odaklama Filtresi
+AutoLoadFileDataBytes: Otomatik YüklemeDosya VerileriBaytları
+Automatically allow next time: Bir dahaki sefere otomatik olarak izin ver
+AutoPlayNextTrackOnEnd: Otomatik OynatSonraki ParçaOnEnd
+AutoRemoveError: Otomatik Kaldırma Hatası
+AutoShowHideAudioElement: AutoShowHideAudioElement
+AutoSize: Otomatik Boyutlandırma
+Available: Mevcut
+AvailableItems: Mevcut Öğeler
+Avant Garde: Avangard
+az-Cyrl-AZ: Azerice (Kiril, Azerbaycan)
+az-Latn-AZ: Azerice (Latince, Azerbaycan)
+Azure: Gök mavisi
+B: B
+ba-RU: Başkurt (Rusya)
+Back: Geri
+BackdropClick: Arka PlanTıkla
+Background: Arka plan
+BackgroundColor: Arka Plan Rengi
+BackgroundGray: Arka PlanGri
+BackgroundImage: Arka Plan Resmi
+BackgroundPosition: Arka Plan Konumu
+BackgroundRepeat: Arka Plan Tekrarı
+BackgroundSize: Arka Plan Boyutu
+BackLinkLabel: Geri Bağlantı Etiketi
+Bar: Çubuk
+BarBeverage: Barİçecek
+Barcode: Barkod
+Barcode already exists.: Barkod zaten var.
+Barcode is required!: Barkod gereklidir!
+BarIndex: BarDizin
+Bark: Ağaç kabuğu
+BarLevel: Çubuk Seviyesi
+BarSpacing: Çubuk Aralığı
+Bart Simpson: Bart Simpson'ın fotoğrafı.
+bas-CM: Basaa (Kamerun)
+Base component for a picker: Seçici için temel bileşen
+Basic: Temel
+Basic role with default permissions: Varsayılan izinlere sahip temel rol
+Bauhaus 93: Bauhaus 93
+be-BY: Beyaz Rusça (Beyaz Rusya)
+BeforeBegin: Başlamadan Önce
+BeforeEnd: Bitiş Öncesi
+BeforeSearchBox: Arama Kutusundan Önce
+Behavior: Davranış
+Behaviour: Davranış
+Beige: Bej
+Bell MT: Çan MT
+bem-ZM: Bemba (Zambiya)
+Bernard MT Condensed: Bernard MT Yoğunlaştırılmış
+BespinBase16: BespinBase16
+Beverage: Meşrubat
+bez-TZ: Bena (Tanzanya)
+bg-BG: Bulgarca (Bulgaristan)
+BgAlpha: BgAlfa
+BgColor: BgRenk
+bin-NG: Edo (Nijerya)
+Bind Dark Mode: Karanlık Modu Bağla
+BindWidthToPicker: BindWidthToPicker
+Birmingham: Birmingham
+Birmingham - B1 1BD: Birmingham - B1 1BD
+Birmingham - B1 1BDender: Birmingham - B1 1BDender
+Bisque: Bisküvi
+Black: Siyah
+Blackadder ITC: Blackadder ITC
+BlackList: Kara liste
+BlackMetalBase16: BlackMetal Tabanı16
+BlackMetalBathoryBase16: BlackMetalBathoryBase16
+BlackMetalBurzumBase16: BlackMetalBurzumBase16
+BlackMetalDarkFuneralBase16: BlackMetalDarkCenaze Tabanı16
+BlackMetalGorgorothBase16: SiyahMetalGorgorothBase16
+BlackMetalImmortalBase16: BlackMetalÖlümsüzTaban16
+BlackMetalKholdBase16: BlackMetalKholdBase16
+BlackMetalMardukBase16: BlackMetalMardukBase16
+BlackMetalMayhemBase16: BlackMetalMayhemBase16
+BlackMetalNileBase16: BlackMetalNileBase16
+BlackMetalVenomBase16: BlackMetalVenomBase16
+BlanchedAlmond: Beyazlatılmış Badem
+Blazor wrapper component for AudioMotionAnalyzer: AudioMotionAnalyzer için Blazor sarmalayıcı bileşeni
+BlobUrl: BlobUrl
+Blue: Mavi
+BlueViolet: Mavi Menekşe
+bm-Latn-ML: Bamanankan (Latince, Mali)
+bn-BD: Bengalce (Bangladeş)
+bn-IN: Bangla (Hindistan)
+bo-CN: Tibetçe (Çin)
+bo-IN: Tibetçe (Hindistan)
+Bob Smith: Bob Smith
+Bodoni MT: Bodoni MT
+body1: vücut1
+Body1: Gövde1
+body2: vücut2
+Body2: Gövde2
+Bookman: Kitapçı
+BorderAnimationColors: BorderAnimationColors
+BorderColor: Kenarlık Rengi
+Bordered: Sınırlan
+BorderOpacity: Sınır Opaklığı
+BorderSize: Kenarlık Boyutu
+BorderStyle: Kenarlık Stili
+Both: Her ikisi
+BothDiagonal: Her ikisi deDiyagonal
+BothHorizontal: Her ikisi deYatay
+BothVertical: Her ikisi deDikey
+Bottom: Dip
+BottomCenter: AltMerkez
+BottomLeft: Sol Alt
+BottomRight: Sağ Alt
+Bounce: Sıçrama
+br-FR: Breton (Fransa)
+Brand: Dağlamak
+Brand Deleted: Marka Silindi
+Brand is required!: Marka gereklidir!
+Brand Not Found!: Marka bulunamadı!
+Brand Saved: Marka Kaydedildi!
+Brand Updated: Marka Güncellendi!
+BrandName: Dağlamak
+Brands: Marka
+Brands exported: İhracat yapılan markalar
+Breadcrumb: Ekmek kırıntısı
+BreadcrumbLink: Ekmek Kırıntısı Bağlantısı
+BreadcrumbSeparator: BreadcrumbSeparator
+BrewerBase16: Bira Üssü16
+BrightBase16: Parlak Taban16
+Brightness: Parlaklık
+Broadway: Broadway
+BrogrammerBase16: BrogrammerBase16
+Brown: Kahverengi
+BrownPaper: Kahverengi Kağıt
+Browse Available Documents.: Mevcut belgelere göz atın.
+Browser: Tarayıcı
+BrowserFileExt: Tarayıcı DosyasıExt
+Brush Script MT: Fırça Komut Dosyası MT
+Brush Script Std: Fırça Komut Dosyası Std
+BrushTreesBase16: BrushTreesBase16
+BrushTreesDarkBase16: BrushTreesDarkBase16
+brx-IN: Bodo (Hindistan)
+bs-Cyrl-BA: Boşnakça (Kiril, Bosna Hersek)
+bs-Latn-BA: Boşnakça (Latince, Bosna Hersek)
+BurlyWood: İri Ağaç
+button: düğme
+Button: Düğme
+Button component for capturing audio and video.: Ses ve video yakalamak için düğme bileşeni.
+Button component for speech-to-text functionality, allowing for asynchronous recording and processing of speech input.: Konuşmayı metne dönüştürme işlevi için düğme bileşeni, konuşma girişinin eşzamansız kaydedilmesine ve işlenmesine olanak tanır.
+ButtonColor: Düğme Rengi
+ButtonSize: Düğme Boyutu
+ButtonsJustify: DüğmelerYasla
+ButtonType: Düğme Türü
+ButtonVariant: Düğme Varyantı
+byn-ER: Blin (Eritre)
+Bytes: Bayt
+C: C
+C#: C#
+ca-AD: Katalanca (Andorra)
+ca-ES: Katalanca (İspanya)
+ca-FR: Katalanca (Fransa)
+ca-IT: Katalanca (İtalya)
+CadetBlue: Harbiyeli Mavi
+Calgary: Calgary
+Calgary - T1X 0L3: Calgary - T1X 0L3
+Calgary - T1X 0L3ender: Calgary - T1X 0L3ender
+Californian FB: Kaliforniya FB
+Can close: Kapatabilir
+Cancel: İptal
+Cancel deletion: Silme işlemini iptal et
+Cancelled: Iptal
+CanClose: Kapatabilir
+CanCloseCallbackName: CanCloseCallbackName
+caption: Başlık
+Caption: Başlık
+Capture: Kapmak
+Capture Screen: Ekran Yakalama
+Capture service: Yakalama hizmeti
+Capture video: Video çekin
+CaptureButton: Yakalama Düğmesi
+CaptureInfoComponent: CaptureInfoBileşeni
+CaptureOptions: Yakalama Seçenekleri
+Card Grid: Kart Izgarası
+CardEffect3d: Kart Efekti3d
+CardGrid: Kart Izgarası
+Catalog Management: Katalog Yönetimi
+ccp-Cakm-BD: Chakma (Chakma, Bangladeş)
+ccp-Cakm-IN: Chakma (Chakma, Hindistan)
+ce-RU: Çeçence (Rusya)
+ceb-Latn-PH: Cebuano (Latince, Filipinler)
+Centaur: Erboğa
+Center: Orta
+CenterCenter: Merkez Merkezi
+CenterLeft: OrtaSol
+CenterRight: Merkez Sağ
+Centimeters: Santimetre
+Century Gothic: Yüzyıl Gotik
+cgg-UG: Chiga (Uganda)
+ChalkBase16: Tebeşir Tabanı16
+Change media options: Medya seçeneklerini değiştirme
+Change or edit your theme: Temanızı değiştirme veya düzenleme
+Change Password: Şifre değiştir
+Change the system settings carefully: Sistem ayarlarını dikkatlice değiştirin
+ChannelLayout: Kanal Düzeni
+Charlie Brown: Charlie Brown
+Chartreuse: Chartreuse
+Charts comming soon ish...: Grafikler yakında geliyor...
+ChartTooltip: ChartTooltip
+chat: Sohbet
+Chat: Sohbet
+Chat?: Sohbet?
+Check me: Beni kontrol et
+Check out the MudExThemeEdit Component: MudExThemeEdit Bileşenine göz atın
+CheckBox: Onay Kutusu
+CheckedIcon: Kontrol Edilen Simge
+Checker: Denetleyicisi
+Checker box: Dama kutusu
+Chicago: Chicago
+Chicago - 60601: Şikago - 60601
+Chicago - 60601ender: Şikago - 60601ender
+ChildContentStyle: ChildContentStyle
+Chiller: Chiller
+Chip: Yonga
+ChipClass: Çip Sınıfı
+ChipCloseable: Çip Kapatılabilir
+ChipColor: Çip Rengi
+ChipsAdditionalAbove: CipsEkYukarıda
+ChipsAdditionalBelow: CipsEkAşağıda
+ChipSelect: Çip Seçimi
+ChipSize: Çip Boyutu
+ChipsMaxWidth: CipsMaksimum Genişlik
+ChipsOnly: Yalnızca Cips
+ChipVariant: Çip Varyantı
+ChipWithoutItemTemplate: ChipWithoutItemTemplate
+Chocolate: Çikolata
+chr-Cher-US: Cherokee (Cherokee, Amerika Birleşik Devletleri)
+CircusBase16: Sirk Üssü16
+Cities you want to live: Yaşamak istediğiniz şehirler
+City: Şehir
+Class: Sınıf
+ClassChip: Sınıf Çipi
+ClassicDarkBase16: KlasikKaranlık Taban16
+ClassicLightBase16: ClassicLightBase16
+ClassSearchBox: Sınıf Arama Kutusu
+Clear: Berrak
+Clearable: Temizlenebilir
+Click here to choose a screen to capture. If not selected, you will be prompted when starting the recording.: Yakalanacak ekranı seçmek için burayı tıklayın. Seçilmezse, kaydı başlatırken size sorulacaktır.
+Click here to upload files: Dosyaları yüklemek için buraya tıklayın
+Click the button below to enable them and load the third party services from disqus.com: Bunları etkinleştirmek ve üçüncü taraf hizmetlerini disqus.com yüklemek için aşağıdaki düğmeyi tıklayın
+Clickable: Tıklanabilir
+ClickAction: Tıklama Eylemi
+ClickPropagation: Tıklama Yayılımı
+Client Language has been changed: İstemci Dili değiştirildi
+Close: Kapatmak
+Closeable: Kapatılabilir
+CloseAfterSelect: CloseAfterSelect
+CloseButton: Kapat Düğmesi
+Closed: Kapalı
+CloseIcon: Simgeyi Kapat
+CloseOnEscapeKey: CloseOnEscapeKey
+co-FR: Korsika (Fransa)
+Code: Kod
+CodeBlockTheme: Kod Bloğu Teması
+CodepenEmbed: CodepenEmbed
+CodeschoolBase16: Kod Okulu Tabanı16
+CollapseOnClick: Tıklatıldığında daralt
+Colonna MT: MT Sütunu
+color: Renk
+Color: Renk
+ColorBrewer: Renkli Bira Üreticisi
+ColorBubble: Renk Kabarcığı
+ColoredImagesForExternalFilePicker: ColoredImagesForExternalFilePicker
+ColorEdit: Renk Düzenle
+ColorElements: Renk Öğeleri
+ColorizeIcons: Renklendirme Simgeleri
+ColorMode: Renk Modu
+ColorPicker: Renk Seçici
+ColorPickerMode: Renk Seçici Modu
+ColorPickerView: Renk Seçici Görünümü
+ColorsBase16: RenklerTaban16
+ColorStops: Renk Durakları
+ColorTemperature: Renk Sıcaklığı
+ColSpan: ColSpan
+Column: Sütun
+Columns Affected: Etkilenen Sütunlar
+ColumnWidth: Sütun Genişliği
+Comic Sans MS: Çizgi Roman MS Yok
+Comments: Yorum
+Common: Meydan
+Communication: İletişim
+Community: Topluluk
+Compact: Kompakt
+Comparer: Karşılaştırmak
+Component edit capture options: Bileşen düzenleme yakalama seçenekleri
+Component in Dialog: İletişim Kutusundaki Bileşen
+Component to add additional adornment to a MudInput: MudInput'a ek süsleme eklemek için bileşen
+Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Bir dosyayı iframe veya nesne etiketinde ya da IMudExFileDisplay uygulayan kayıtlı bir görüntüleyicide görüntülemek için bileşen
+Component to display information about the current recording: Geçerli kayıtla ilgili bilgileri görüntülemek için bileşen
+Component to Edit Icon values: Simge değerlerini düzenlemek için bileşen
+Component to Edit MudExColor: MudExColor'ı Düzenlemek için Bileşen
+Component to move the ChildContent to a specific element that can defined by ElementSelector.: ChildContent'i ElementSelector tarafından tanımlanabilen belirli bir öğeye taşımak için bileşen.
+Component to select a theme from a list of themes.: Tema listesinden bir tema seçmek için bileşen.
+ComponentBaseWithState: ComponentBaseWithState
+ComponentInDialog: ComponentInDialog
+Conditional updates: Koşullu güncelleştirmeler
+Configure list values: Liste değerlerini yapılandırma
+Confirm: Onaylamak
+CONFIRM: ONAYLAMAK
+Confirm and Ignore: Onayla ve Yoksay
+Confirm and Set Required: Onaylayın ve Gerekli Ayarlayın
+Confirm edit: Düzenlemeyi onayla
+Confirm Password: Şifreyi Onayla
+Confirm Registration: Kaydı Onayla
+Confirmation: Onay
+ConnectAllAudioSources: Tüm Ses Kaynaklarını Bağlayın
+ConnectCapture: Yakalamayı Bağlayın
+ConnectCurrentTab: ConnectCurrentTab
+ConnectionMode: Bağlantı Modu
+ConnectMicrophone: Mikrofonu Bağla
+ConnectToCapture: Yakalamaya Bağlan
+contacts: Kişiler
+Content-Type: İçerik Türü
+ContentAlignment: İçerikHizalama
+ContentStream: İçerik Akışı
+ContentType: İçerik Türü
+ContextMenuAction: ContextMenuAction
+Continue to {0}: '{0} devam et'
+Continuous: Devamlı
+Contrast: Karşıtlık
+Cooper Black: Bakır Siyahı
+Copperplate Gothic Bold: Bakır Levha Gotik Kalın
+Copperplate Gothic Light: Bakır Levha Gotik Işık
+Copy url: URL'yi kopyala
+Counter: Sayaç
+Country: Ülke
+Courier New: Kurye Yeni
+Courrier: Posta
+Create: Yaratmak
+Create address: Adres oluştur
+Create new backup: Yeni yedekleme oluştur
+CreatedOn: Oluşturulma tarihi
+Critical: Kritik
+CropAndScale: Kırpma ve Ölçek
+cs-CZ: Çekçe (Çekya)
+CSS Color Variables: CSS Renk Değişkenleri
+CssVars: CssVar'lar
+cu-RU: Kilise Slav (Rusya)
+CupcakeBase16: CupcakeBase16
+CupertinoBase16: Cupertino Tabanı16
+Current Password: Geçerli Şifre
+Current Password is required!: Geçerli Şifre gereklidir!
+Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can change DarMode in the Top right menu or disable binding by toggle the switch: Şu anda ThemeEditor, mevcut temadan ve {0}'de DarkMode'a bağlanıyor. DarMode'u sağ üst menüden değiştirebilir veya anahtarı değiştirerek bağlamayı devre dışı bırakabilirsiniz.
+Cursor: İmleç
+CursorPositionOrigin: CursorPositionOrigin
+Custom: Töre
+CustomContentErrorMessage: CustomContentErrorMessage
+Customize: Özelleştir
+cy-GB: Galce (Birleşik Krallık)
+D: D
+da-DK: Danca (Danimarka)
+da-GL: Danca (Grönland)
+Dallas: Dallas
+Dallas - 75201: Dallas - 75201
+Dallas - 75201ender: Dallas - 75201ender
+DanqingBase16: DanqingBase16
+DarculaBase16: DarculaBase16
+Dark: Koyu
+DarkContrastText: KoyuKontrastMetin
+DarkDarken: Karanlık Karartma
+DarkGreen: Koyu Yeşil
+DarkKhaki: Koyu Haki
+DarkLighten: Koyu Aydınlatma
+DarkMagenta: Koyu Macenta
+DarkmossBase16: DarkmossBase16
+DarkOliveGreen: Koyu Zeytin Yeşili
+DarkOnly: Yalnızca Karanlık
+DarkOrange: Koyu Turuncu
+DarkOrchid: KoyuOrkide
+DarkRed: Koyu Kırmızı
+DarkSalmon: Koyu Somon
+DarkSeaGreen: Koyu Deniz Yeşili
+DarkSlateBlue: Koyu Arduvaz Mavisi
+DarkSlateGray: KoyuKayrak Grisi
+DarktoothBase16: Karanlık Diş Tabanı16
+DarkTurquoise: KoyuTurkuaz
+DarkViolet: Koyu Menekşe
+DarkVioletBase16: Koyu Menekşe Tabanı16
+Dashboard: Tablo
+Dashed: Kesik
+Data: Veri
+Data has been updated: Veriler güncellendi
+Database Backups: Veritabanı Yedeklemeleri
+DataUrl: Veri URL'si
+DataVisualiserStyle: DataVisualiserStyle
+date: tarih
+Date: Tarih
+Date Created: Oluşturulma Tarihi
+Date Range For Searching: Arama İçin Tarih Aralığı
+DateOfBirth: Doğum Tarihi
+DateTime value is required using {0} type!: DateTime değeri {0} tür kullanılarak gereklidir!
+DateTimeLocal: TarihSaatYerel
+dav-KE: Taita (Kenya)
+de-AT: Almanca (Avusturya)
+de-BE: Almanca (Belçika)
+de-CH: Almanca (İsviçre)
+de-DE: Almanca (Almanya)
+de-IT: Almanca (İtalya)
+de-LI: Almanca (Lihtenştayn)
+de-LU: Almanca (Lüksemburg)
+Debug: Hata ayıklama
+Dec: Aralık
+DecafBase16: KafeinsizBaz16
+decimal: On -da -lık
+Decimal: On -da -lık
+Decimal value is required using {0} type!: '{0} türü kullanıldığında ondalık değer gereklidir!'
+DeepPink: Derin Pembe
+DeepSkyBlue: Derin Gökyüzü Mavisi
+Default: Temerrüt
+DefaultBorderRadius: DefaultBorderRadius
+DefaultDarkBase16: VarsayılanDarkBase16
+DefaultLightBase16: VarsayılanIşıkTabanı16
+Defined: Tanımlanan
+Delay: Gecikme
+DelayValueChangeToPickerClose: DelayValueChangeToPickerClose
+Delete: Silmek
+Delete all: Tümünü sil
+Delete Confirmation: Silme Onayı
+Delete Content: İçeriği Sil
+Delete Content {0}: "'{0}' İçeriğini Sil"
+Delete Extended Attribute?: Genişletilmiş öznitelik silinsin mi?
+Delete file from server: Dosyayı sunucudan sil
+Delete Image: Resmi Sil
+Delete Picture: Resmi Sil
+Delete Role Content: Kimliği {0} olan rolü silmek istiyor musunuz?
+Delete these {0} elements: Bu {0} öğeleri silinsin mi?
+Delete this element: Bu öğe silinsin mi?
+Delete User: Kullanıcıyı Sil
+Deletion Not Allowed: Silmeye İzin Verilmiyor
+Delimiter: Sınırlayıcı
+Delimiters: Sınırlayıcı
+Demo drag mode SnapDrag: Demo sürükleme modu SnapDrag
+Demo for MudExDialog as inline: Satır içi olarak MudExDialog için demo
+Demo for MudExTaskBar and not Modal dialogs: Modal iletişim kutuları için değil, MudExTaskBar için demo
+Demo for simple integrated useful dialogs. Prompt, Info, MessageBox: Basit entegre kullanışlı diyaloglar için demo. İstem, Bilgi, Mesaj Kutusu
+Demo for the MudExUploadEdit inside of a MudForm and a FluentValidator.: MudForm ve FluentValidator içindeki MudExUploadEdit demosu.
+Demo for the MudExUploadEdit.: MudExUploadEdit için demo.
+Demo for using custom can close in DialogOptionsEx: Özel kullanım demosu DialogOptionsEx'te kapatılabilir
+Demo for using Dialog and DialogBackground Appearance in DialogOptionsEx: Diyalog ve Diyalog Kutusu kullanma demosuDialogOptionsEx'te Arka Plan Görünümü
+Demo for using DialogOptionsEx: DialogOptionsEx'i kullanma demosu
+Demo for using DialogOptionsEx and pass position and size: DialogOptionsEx'i kullanma ve geçiş konumu ve boyutu için tanıtım
+Demo for using MudExObjectEdit for the same model with the default Demo but with some Meta configuration: Varsayılan Demo ile ancak bazı Meta yapılandırmalarıyla aynı model için MudExObjectEdit'i kullanmak için demo
+Demo for using MudExObjectEdit GroupingStyle.Tabs: MudExObjectEdit GroupingStyle.Tabs kullanma demosu
+Demo for using MudExObjectEdit only with bypassing an object: MudExObjectEdit'i yalnızca bir nesneyi atlayarak kullanma demosu
+Demo for using MudExObjectEdit with a configuration for Conditional using 'WithAttributesIf': MudExObjectEdit'i 'WithAttributesIf' kullanarak Koşullu yapılandırmayla kullanma tanıtımı
+Demo for using MudExObjectEdit with a model that contains file(s): MudExObjectEdit'i dosya(lar) içeren bir modelle kullanma demosu
+Demo for using MudExObjectEdit with CodeGator Adapter and CodeGator Attributes: MudExObjectEdit'i CodeGator Adaptörü ve CodeGator Öznitelikleri ile kullanma tanıtımı
+Demo for using MudExObjectEditPicker with a model that contains file(s): MudExObjectEditPicker'ı dosya(lar) içeren bir modelle kullanma tanıtımı
+Demo of using explicit the MudExFileDisplayZip to show and select content inside of a zip file: Bir zip dosyasının içindeki içeriği göstermek ve seçmek için MudExFileDisplayZip'i açık kullanma tanıtımı
+Demonstration for a simple but very useful Enum Selector: Basit ama çok kullanışlı bir Enum Seçici için gösteri
+Demonstration of the MudExSplitter: MudExSplitter'ın Gösterimi
+Demonstration of the quickly color select with MudExColorBubble: MudExColorBubble ile hızlı renk seçiminin gösterimi
+DEMOS: DEMOLAR
+Dense: Yoğun
+Dependent permissions required: Gerekli bağımlı izinler
+Deployments: Dağıtım
+Description: Açıklama
+Description is required!: Açıklama gereklidir!
+Description_for_Age: Description_for_Age
+Description_for_City: Description_for_City
+Description_for_FirstName: Description_for_FirstName
+Description_for_Id: Description_for_Id
+Description_for_LastName: Description_for_LastName
+Description_for_Notice: Description_for_Notice
+Description_for_OtherAddresses: Description_for_OtherAddresses
+Description_for_PostalCode: Description_for_PostalCode
+Description_for_ProgramingSkills: Description_for_ProgramingSkills
+Description_for_Street: Description_for_Street
+Description_for_TrueOrFalse: Description_for_TrueOrFalse
+Dessert: Tatlı
+detailed guide for more.: Daha fazlası için ayrıntılı kılavuz.
+Details for Trail ID: İz Kimliği için ayrıntılar
+Devibeans: Devibeans
+DeviceId: Cihaz Kimliği
+DeviceListVariant: DeviceListVariant
+DeviceSelection: Cihaz Seçimi
+Dialog: Iletişim
+Dialog Appearance: Görünüm İletişim Kutusu
+Dialog Content: İletişim Kutusu İçeriği
+Dialog Drag & Drop: İletişim Kutusu Sürükle & Bırak
+Dialog for editing objects with the MudExObjectEditForm: MudExObjectEditForm ile nesneleri düzenleme iletişim kutusu
+Dialog Sample: İletişim Kutusu Örneği
+Dialog Samples: İletişim Kutusu Örnekleri
+Dialog Snap Drag: Sürüklemeyi Yapıştır İletişim Kutusu
+Dialog to display a file using {{{MudBlazor.Extensions.Components.MudExFileDisplay}}} component.: '{{{MudBlazor.Extensions.Components.MudExFileDisplay}}} bileşenini kullanarak bir dosya görüntülemek için iletişim kutusu.'
+Dialog_Appearance: Dialog_Appearance
+DialogAppearance: DiyalogGörünüm
+DialogBackgroundAppearance: DialogBackgroundAppearance
+DialogOptions: İletişim Kutusu Seçenekleri
+Dialogs: Diyalog
+DialogsCanClose: İletişim KutularıKapatabilir
+DialogServiceExt: DialogServiceExt
+DialogSnapDrag: İletişim KutusuSnapSürükleme
+DialogsPosition: İletişim KutularıPozisyon
+Diana Prince: Diana Prens
+DimGray: DimGray
+Direct: Dolaysız
+Direction: Yön
+DirtyseaBase16: Kirli Deniz Tabanı16
+Disable Grouping: Gruplamayı Devre Dışı Bırak
+Disabled: Sakat
+DisableList: Devre Dışı Bırakma Listesi
+DisableOpacityChange: Opaklık Değişikliğini Devre Dışı Bırak
+DisablePadding: Dolguyu Devre Dışı Bırak
+DisablePopoverPadding: PopoverPadding Devre Dışı Bırak
+DisablePositionMargin: DisablePositionMargin
+DisableSelectedItemStyle: DisableSelectedItemStyle
+DisableSizeMarginX: Devre Dışı BırakBoyut MarjıX
+DisableSizeMarginY: Devre Dışı BırakSizeMarginY
+DiscreteFrequencies: Ayrık Frekanslar
+DisplayActionMenu: DisplayActionMenu
+DisplayErrors: Görüntü Hataları
+DisplayPresetList: Ön Ayar Listesini Görüntüle
+Displays a tree structure as flat list: Bir ağaç yapısını düz liste olarak görüntüler
+Displays a tree structure as horizontal navigable tree: Bir ağaç yapısını yatay gezilebilir ağaç olarak görüntüler
+Displays a tree structure as navigable Breadcrumb: Bir ağaç yapısını gezilebilir Breadcrumb olarak görüntüler
+Displays a tree structure as navigable card grid: Bir ağaç yapısını gezilebilir kart ızgarası olarak görüntüler
+Displays a tree structure as navigable List: Bir ağaç yapısını gezilebilir Liste olarak görüntüler
+Displays a tree structure as simple tree: Bir ağaç yapısını basit ağaç olarak görüntüler
+DisplaySurface: Ekran Yüzeyi
+DisplayTrackList: DisplayTrackList
+DisposeEvent: Elden Çıkarma Olayı
+Disqus comments are disabled by default.: Disqus yorumları varsayılan olarak devre dışıdır.
+Divider: Pergel
+DividerLight: Bölücü Işık
+dje-NE: Zarma (Nijer)
+DNumber: Sayı
+Do you really want to restart the server?: Sunucuyu gerçekten yeniden başlatmak istiyor musunuz?
+Do you really want to restore the database from backup '{0}'? Note that any changes made after {1} are gone. This also means any changes made by any user: Veritabanını gerçekten '{0}' yedeğinden geri yüklemek istiyor musunuz? {1} sonra yapılan değişikliklerin ortadan kalktığını unutmayın. Bu aynı zamanda herhangi bir kullanıcı tarafından yapılan herhangi bir değişiklik anlamına gelir
+Do you want to delete the profile picture of {0}: "{0}'in profil resmini silmek istiyor musunuz?"
+Do you want to delete the User {0}: Kullanıcı {0} silmek istiyor musunuz?
+Docco: Belgesel
+Docked: Yerleşik
+Document Deleted: Belge Silindi
+Document Extended Attributes: Belge Genişletilmiş Öznitelikleri
+Document Management: Doküman yönetimi
+Document Not Found!: Belge Bulunamadı!
+Document Saved: Belge Kaydedildi
+Document Store: Belge Deposu
+Document Type: Belge Türü
+Document Type Deleted: Belge Türü Silindi
+Document Type is required!: Belge Türü gereklidir!
+Document Type Not Found!: Belge Türü Bulunamadı!
+Document Type Saved: Kaydedilen Belge Türü
+Document Type Updated: Belge Türü Güncellendi
+Document type with this name already exists.: Bu ada sahip belge türü zaten var.
+Document Types: Belge Türleri
+Document Types exported: Dışa aktarılan belge türleri
+Document Updated: Belge Güncellendi
+Documentation: Belge
+Documents: Evrak
+DodgerBlue: DodgerBlue
+doi-Deva-IN: Dogri (Devanagari, Hindistan)
+Don't have an account?: Hesabınız yok mu?
+Done!: Yapılmış!
+Donut: Çörek
+Dotted: Noktalı
+Double: Çift
+DoubleClickAction: Çift Tıklama Eylemi
+Download: İndirmek
+Download {0} files separately: '{0} dosyaları ayrı ayrı indirin'
+Download {0} with {1} files as zip: '{1} dosyalarıyla {0} zip olarak indirin'
+Download file {0}: Dosya {0} indirin
+Download file {0} as zip: Dosya {0} zip olarak indir
+DraculaBase16: Drakula Üssü16
+Drag and Drop files here: Dosyaları buraya sürükleyip bırakın
+DragEffect: Sürükle Efekti
+DragMode: Sürükle Modu
+Drawer: Çekmece
+DrawerBackground: ÇekmeceArka Plan
+DrawerClipMode: ÇekmeceKlip Modu
+DrawerIcon: Çekmece Simgesi
+DrawerMiniWidthLeft: ÇekmeceMiniGenişlikSol
+DrawerMiniWidthRight: ÇekmeceMiniGenişlikSağ
+DrawerText: Çekmece Metni
+DrawerVariant: Çekmece Varyantı
+DrawerWidthLeft: ÇekmeceGenişliğiSol
+DrawerWidthRight: ÇekmeceGenişliğiSağ
+DroidCam Source 2: DroidCam Kaynak 2
+DroidCam Source 3: DroidCam Kaynak 3
+Drop Box: Bırakma Kutusu
+Drop down component to select a culture: Bir kültür seçmek için açılır bileşen
+Drop down component to select an enum value or multiple on flags enums: Bayrak numaralandırmalarında bir numaralandırma değeri veya birden fazla numaralandırma seçmek için açılan bileşen
+Drop files here: Dosyaları buraya bırakın
+DropBox external file picker component: DropBox harici dosya seçici bileşeni
+DropBoxApiKey: DropBoxApiKey
+Dropdown list component to select one ore more fonts: Bir veya daha fazla yazı tipi seçmek için açılır liste bileşeni
+DropShadow: Gölge
+DropZoneClickAction: DropZoneTıklama Eylemi
+dsb-DE: Aşağı Sorb (Almanya)
+dua-CM: Duala (Kamerun)
+DualCombined: Çift Kombine
+DualHorizontal: Çift Yatay
+DualVertical: Çift Dikey
+DuplicateErrorText: DuplicateErrorText
+Duration: Süre
+dv-MV: Divehi (Maldivler)
+Dynamic component tests: Dinamik bileşen testleri
+dyo-SN: Jola-Fonyi (Senegal)
+dz-BT: Dzongkha (Butan)
+E-mail: E-posta
+E-Mail: E-posta
+E-Mail not confirmed.: E-posta onaylanmadı. Lütfen posta kutunuzu kontrol edin ve e-posta adresinizi onaylayın. <a href='{0}'>E-posta onayını yeniden gönder</a>
+ebu-KE: Embu (Kenya)
+Edge: Kenar
+EdgeDarkBase16: KenarKaranlık Taban16
+EdgeLightBase16: EdgeLightBase16
+Edit: Düzenlemek
+Edit {0}: Düzenle {0}
+Edit a complex Model with included Collection of users: Dahil edilen Kullanıcı Koleksiyonu ile karmaşık bir Modeli düzenleyin
+Edit Audio Constraints: Ses Kısıtlamalarını Düzenle
+Edit Current Theme: Geçerli Temayı Düzenle
+Edit data in dialog: İletişim kutusundaki verileri düzenle
+Edit in TryMudEx: TryMudEx'te düzenleyin
+Edit Items: Öğeleri Düzenle
+Edit only a Collection of users: Yalnızca bir Kullanıcı Koleksiyonunu düzenleyin
+Edit rating: Derecelendirmeyi düzenle
+Edit Running Component: Çalışan Bileşeni Düzenle
+Edit Test Object: Test Nesnesini Düzenle
+Edit Users: Kullanıcıları Düzenle
+Edit Video Constraints: Video Kısıtlamalarını Düzenle
+Edit with shared MetaConfig: Paylaşılan MetaConfig ile düzenleme
+Editable: Düzenlenebilir
+Editing of the DB Connection can break whole application. Please edit this only if you know what you are doing: DB Bağlantısının düzenlenmesi tüm uygulamayı bozabilir. Lütfen bunu yalnızca ne yaptığınızı biliyorsanız düzenleyin
+Editing of this endpoint can break AI integration: Bu uç noktanın düzenlenmesi yapay zeka entegrasyonunu bozabilir
+EditMode: Düzenleme Modu
+Editor for a property of an object. Used internally inside the MudExObjectEdit: Bir nesnenin özelliği için düzenleyici. MudExObjectEdit içinde dahili olarak kullanılır
+EditRunningComponent: EditRunningComponent
+Edmonton: Edmonton
+Edmonton - T5A 0A1: Edmonton - T5A 0A1
+Edmonton - T5A 0A1ender: Edmonton - T5A 0A1ender
+ee-GH: Koyun (Gana)
+ee-TG: Koyun (Togo)
+EightiesBase16: Seksenler Tabanı16
+el-CY: Yunanca (Kıbrıs)
+el-GR: Yunanca (Yunanistan)
+Elevation: Yükseklik
+Em: İçinde
+email: E-posta
+Email: E-posta
+Email {0} is already registered.: E-posta {0} zaten kayıtlı.
+Email cannot changed: E-posta değiştirilemez
+Email Confirmation: E-posta Onayı
+Email is not correct: E-posta doğru değil
+Email is required: E-posta gerekli
+Email is required!: E-posta gereklidir!
+EmbersBase16: Köz Tabanı16
+en-001: Türkçe (Dünya)
+en-029: İngilizce (Karayipler)
+en-150: Türkçe (Avrupa)
+en-AE: Türkçe (Birleşik Arap Emirlikleri)
+en-AG: İngilizce (Antigua & Barbuda)
+en-AI: İngilizce (Anguilla)
+en-AS: İngilizce (Amerikan Samoası)
+en-AT: Türkçe (Avusturya)
+en-AU: Türkçe (Avustralya)
+en-BB: Türkçe (Barbados)
+en-BE: Türkçe (Belçika)
+en-BI: İngilizce (Burundi)
+en-BM: İngilizce (Bermuda)
+en-BS: Türkçe (Bahamalar)
+en-BW: İngilizce (Botsvana)
+en-BZ: İngilizce (Belize)
+en-CA: Türkçe (Kanada)
+en-CC: İngilizce (Cocos [Keeling] Adaları)
+en-CH: Türkçe (İsviçre)
+en-CK: İngilizce (Cook Adaları)
+en-CM: Türkçe (Kamerun)
+en-CX: İngilizce (Christmas Island)
+en-CY: İngilizce (Kıbrıs)
+en-DE: Türkçe (Almanya)
+en-DK: İngilizce (Danimarka)
+en-DM: İngilizce (Dominika)
+en-ER: İngilizce (Eritre)
+en-FI: Türkçe (Finlandiya)
+en-FJ: Türkçe (Fiji)
+en-FK: İngilizce (Falkland Adaları)
+en-FM: İngilizce (Mikronezya)
+en-GB: Türkçe
+en-GD: İngilizce (Grenada)
+en-GG: İngilizce (Guernsey)
+en-GH: İngilizce (Gana)
+en-GI: İngilizce (Cebelitarık)
+en-GM: İngilizce (Gambiya)
+en-GU: İngilizce (Guam)
+en-GY: İngilizce (Guyana)
+en-HK: İngilizce (Hong Kong ÖİB)
+en-ID: Türkçe (Endonezya)
+en-IE: Türkçe (İrlanda)
+en-IL: Türkçe (İsrail)
+en-IM: İngilizce (Man Adası)
+en-IN: Türkçe (Hindistan)
+en-IO: İngilizce (Britanya Hint Okyanusu Toprakları)
+en-JE: İngilizce (Jersey)
+en-JM: Türkçe (Jamaika)
+en-KE: Türkçe (Kenya)
+en-KI: İngilizce (Kiribati)
+en-KN: İngilizce (St. Kitts & Nevis)
+en-KY: İngilizce (Cayman Adaları)
+en-LC: İngilizce (St. Lucia)
+en-LR: Türkçe (Liberya)
+en-LS: Türkçe (Lesotho)
+en-MG: İngilizce (Madagaskar)
+en-MH: İngilizce (Marshall Adaları)
+en-MO: İngilizce (Makao ÖİB)
+en-MP: İngilizce (Kuzey Mariana Adaları)
+en-MS: İngilizce (Montserrat)
+en-MT: Türkçe (Malta)
+en-MU: Türkçe (Mauritius)
+en-MW: İngilizce (Malavi)
+en-MY: Türkçe (Malezya)
+en-NA: Türkçe (Namibya)
+en-NF: İngilizce (Norfolk Adası)
+en-NG: Türkçe (Nijerya)
+en-NL: Türkçe (Hollanda)
+en-NR: İngilizce (Nauru)
+en-NU: İngilizce (Niue)
+en-NZ: Türkçe (Yeni Zelanda)
+en-PG: İngilizce (Papua Yeni Gine)
+en-PH: İngilizce (Filipinler)
+en-PK: Türkçe (Pakistan)
+en-PN: İngilizce (Pitcairn Adaları)
+en-PR: İngilizce (Porto Riko)
+en-PW: İngilizce (Palau)
+en-RW: Türkçe (Ruanda)
+en-SB: İngilizce (Solomon Adaları)
+en-SC: İngilizce (Seyşeller)
+en-SD: Türkçe (Sudan)
+en-SE: Türkçe (İsveç)
+en-SG: Türkçe (Singapur)
+en-SH: İngilizce (St Helena, Ascension, Tristan da Cunha)
+en-SI: İngilizce (Slovenya)
+en-SL: İngilizce (Sierra Leone)
+en-SS: İngilizce (Güney Sudan)
+en-SX: İngilizce (Sint Maarten)
+en-SZ: İngilizce (Eswatini)
+en-TC: İngilizce (Turks & Caicos Adaları)
+en-TK: İngilizce (Tokelau)
+en-TO: İngilizce (Tonga)
+en-TT: İngilizce (Trinidad & Tobago)
+en-TV: İngilizce (Tuvalu)
+en-TZ: Türkçe (Tanzanya)
+en-UG: Türkçe (Uganda)
+en-UM: İngilizce (ABD Dış Adaları)
+en-US: Türkçe (Amerika Birleşik Devletleri)
+en-US-posix: İngilizce (Amerika Birleşik Devletleri, Bilgisayar)
+en-VC: İngilizce (St. Vincent & Grenadinler)
+en-VG: İngilizce (Britanya Virjin Adaları)
+en-VI: İngilizce (ABD Virjin Adaları)
+en-VU: İngilizce (Vanuatu)
+en-WS: İngilizce (Samoa)
+en-ZA: Türkçe (Güney Afrika)
+en-ZM: İngilizce (Zambiya)
+en-ZW: Türkçe (Zimbabve)
+Enable Disqus: Disqus'u Etkinleştir
+enables or disables virtualization.: sanallaştırmayı etkinleştirir veya devre dışı bırakır.
+End: Son
+English: İngilizce
+Engravers MT: Gravürcüler MT
+Enter email and your new password here: E-postanızı ve yeni şifrenizi buraya girin
+Enter email for password reset: Hesabınıza bağlı e-posta adresini girin ve şifrenizi sıfırlamak için bir bağlantı içeren bir e-posta alacaksınız
+Enter name: Adı girin
+Enter name of backup file: Yedekleme dosyasının adını girin
+Enter new name of backup file: Yedekleme dosyasının yeni adını girin
+Enter the email address for the confirmation mail: Onay postası için e-posta adresini girin
+Enter the URL to existing file: Mevcut dosyanın URL'sini girin
+Enter your message...: Mesajınızı giriniz...
+Entity Id: Varlık Kimliği
+Entity is required!: Varlık gereklidir!
+EntityCreatedBy: VarlıkOluşturan
+EntityCreatedOn (Local): EntityCreatedOn (Yerel)
+EntityCreatedOn (UTC): EntityCreatedOn (UTC)
+EntityId: Varlık Kimliği
+EntityLastModifiedBy: VarlıkSonModifiedBy
+EntityLastModifiedOn (Local): EntityLastModifiedOn (Yerel)
+EntityLastModifiedOn (UTC): EntityLastModifiedOn (UTC)
+Entree: Giriş
+EnumSelect: Numaralandırma Seçimi
+Environment: Çevre
+eo-001: Esperanto (Dünya)
+EquilibriumDarkBase16: DengeKaranlıkTaban16
+EquilibriumGrayDarkBase16: DengeGriKoyuTaban16
+EquilibriumGrayLightBase16: DengeGriIşıkTabanı16
+EquilibriumLightBase16: DengeIşık Tabanı16
+Eras Bold ITC: Dönemler Kalın ITC
+Eras Demi ITC: Dönemler Demi ITC
+Eras Light ITC: Dönemler Işık ITC
+Eras Medium ITC: Dönemler Orta ITC
+Error: Hata
+ErrorAnimation: Hata Animasyonu
+ErrorContrastText: ErrorContrastText
+ErrorDarken: Hata Karartma
+ErrorId: Hata Kimliği
+ErrorLighten: Hata Hafifletme
+ErrorMessage: Hata İletisi
+ErrorText: Hata Metni
+es-419: İspanyolca (Latin Amerika)
+es-AR: İspanyolca (Arjantin)
+es-BO: İspanyolca (Bolivya)
+es-BR: İspanyolca (Brezilya)
+es-BZ: İspanyolca (Belize)
+es-CL: İspanyolca (Şili)
+es-CO: İspanyolca (Kolombiya)
+es-CR: İspanyolca (Kosta Rika)
+es-CU: İspanyolca (Küba)
+es-DO: İspanyolca (Dominik Cumhuriyeti)
+es-EC: İspanyolca (Ekvador)
+es-ES: İspanyolca (İspanya)
+es-GQ: İspanyolca (Ekvator Ginesi)
+es-GT: İspanyolca (Guatemala)
+es-HN: İspanyolca (Honduras)
+es-MX: İspanyolca (Meksika)
+es-NI: İspanyolca (Nikaragua)
+es-PA: İspanyolca (Panama)
+es-PE: İspanyolca (Peru)
+es-PH: İspanyolca (Filipinler)
+es-PR: İspanyolca (Porto Riko)
+es-PY: İspanyolca (Paraguay)
+es-SV: İspanyolca (El Salvador)
+es-US: İspanyolca (Amerika Birleşik Devletleri)
+es-UY: İspanyolca (Uruguay)
+es-VE: İspanyolca (Venezuela)
+Español: İspanyolca
+EspressoBase16: Espresso Tabanı16
+et-EE: Estonca (Estonya)
+Ethan Hunt: Ethan Avı
+eu-ES: Bask (İspanya)
+EvaBase16: EvaBase16
+EvaDimBase16: EvaDim Tabanı16
+ewo-CM: Ewondo (Kamerun)
+ExcelSheet.xlsx: ExcelSheet.xlsx
+Expand &nbsp; <b>not</b> &nbsp; loaded nodes: <b>Yüklenmeyen</b> &nbsp; düğümleri genişlet &nbsp;
+Expand all nodes: Tüm düğümleri genişlet
+Expand loaded nodes: Yüklü düğümleri genişlet
+Expand/Collapse: Genişlet/Daralt
+ExpandBehaviour: Davranışı Genişlet
+ExpandButtonDirection: ExpandButtonDirection
+ExpandedIcon: Genişletilmiş Simge
+ExpandOnClick: ExpandOnClick
+ExpandOnFilter: Filtreyi Genişlet
+Explicit File Display Zip: Açık Dosya Görüntüleme Zip
+Export: Ihracat
+Export To Excel: Excel'e Aktar
+Export_SheetName: Veri
+ExposureCompensation: Pozlama Telafisi
+ExposureMode: Pozlama Modu
+ExposureTime: Maruz Kalma Süresi
+Extended Attribute Deleted: Genişletilmiş Öznitelik Silindi
+Extended Attribute Not Found!: Genişletilmiş Özellik Bulunamadı!
+Extended Attribute Saved: Genişletilmiş Öznitelik Kaydedildi
+Extended Attribute Updated: Genişletilmiş Özellik Güncellendi
+Extended Attribute with this Key already exists.: Bu Anahtara sahip Genişletilmiş Öznitelik zaten var.
+Extended Attributes: '\{0}\ Genişletilmiş Öznitelikler'
+Extended Attributes exported: Dışa aktarılan Genişletilmiş Öznitelikler
+ExtensionRestrictionType: ExtensionRestrictionType
+Extensions: Uzantı -ları
+External Id: Dış Kimlik
+ExternalDialogOptions: Harici İletişim Kutusu Seçenekleri
+ExternalId: Harici Kimlik
+ExternalPickerImageSize: ExternalPickerImageSize
+ExternalProviderRendering: ExternalProviderRendering
+ExtraExtraLarge: EkstraEkstra Büyük
+ExtraLarge: Ekstra Büyük
+ExtraSmall: Ekstra Küçük
+fa-IR: Farsça (İran)
+FacingMode: Yüzleşme Modu
+Fade: Solmak
+FadeIn: FadeIn
+Failed to get client preferences: Müşteri tercihleri alınamadı
+FallBackInIframe: FallBackInIframe
+False: Yanlış
+FAQs: Yaygın sorular
+Far: Uzak
+Features: Özellik
+Feb: Şubat
+Felix Titling: Felix Başlık
+Female: Dişi
+Female_ Text: Female_ Metin
+ff-Adlm-BF: Fulah (Adlam, Burkina Faso)
+ff-Adlm-CM: Fulah (Adlam, Kamerun)
+ff-Adlm-GH: Fulah (Adlam, Gana)
+ff-Adlm-GM: Fulah (Adlam, Gambiya)
+ff-Adlm-GN: Fulah (Adlam, Gine)
+ff-Adlm-GW: Fulah (Adlam, Gine-Bissau)
+ff-Adlm-LR: Fulah (Adlam, Liberya)
+ff-Adlm-MR: Fulah (Adlam, Moritanya)
+ff-Adlm-NE: Fulah (Adlam, Nijer)
+ff-Adlm-NG: Fulah (Adlam, Nijerya)
+ff-Adlm-SL: Fulah (Adlam, Sierra Leone)
+ff-Adlm-SN: Fulah (Adlam, Senegal)
+ff-Latn-BF: Fulah (Latince, Burkina Faso)
+ff-Latn-CM: Fulah (Latince, Kamerun)
+ff-Latn-GH: Fulah (Latince, Gana)
+ff-Latn-GM: Fulah (Latince, Gambiya)
+ff-Latn-GN: Fulah (Latince, Gine)
+ff-Latn-GW: Fulah (Latince, Gine-Bissau)
+ff-Latn-LR: Fulah (Latince, Liberya)
+ff-Latn-MR: Fulah (Latince, Moritanya)
+ff-Latn-NE: Fulah (Latince, Nijer)
+ff-Latn-NG: Fulah (Latince, Nijerya)
+ff-Latn-SL: Fulah (Latince, Sierra Leone)
+ff-Latn-SN: Fulah (Latince, Senegal)
+FFTSize: FFTSize
+fi-FI: Fince (Finlandiya)
+fil-PH: Filipince (Filipinler)
+File Display: Dosya Görüntüleme
+File Display with Stream: Stream ile Dosya Görüntüleme
+File Handling: Dosya İşleme
+File is required!: Dosya gerekli!
+FileDisplay: Dosya Görüntüleme
+FileDisplayAsStream: FileDisplayAsStream
+FileDisplayZipWithPreview: FileDisplayZipWithPreview
+FileInfo: Dosya Bilgisi
+FileName: Dosyaadı
+Files: Dosyaları
+Files of this type ({0}) are not allowed. Only following types are allowed '{1}'. Try one of these extensions ({2}): Bu tür dosyalara ({0}) izin verilmez. Yalnızca aşağıdaki türlere '{1}' izin verilir. Bu uzantılardan birini deneyin ({2})
+Fill Administrator Credentials: Yönetici Kimlik Bilgilerini Doldurun
+Fill Basic User Credentials: Temel Kullanıcı Kimlik Bilgilerini Doldurun
+FillAlpha: Alfa Doldur
+Filled: Dolu
+Filter: Filtre
+Filter...: Filtre...
+Filter468: Filtre468
+FilterBehaviour: Filtre Davranışı
+FilterBoxClass: FilterBoxSınıfı
+FilterBoxStyle: Filtre Kutusu Stili
+FilterChipsPlacedRight: FilterChipsPlacedRight
+Filtered Audit Trails exported: Filtrelenmiş Denetim İzleri dışa aktarıldı
+Filtered Brands exported: Filtrelenen Markalar dışa aktarıldı
+Filtered Document Types exported: Dışa aktarılan Filtrelenmiş Belge Türleri
+Filtered Extended Attributes exported: Dışa aktarılan Filtrelenmiş Genişletilmiş Öznitelikler
+Filtered Products exported: Filtrelenen Ürünler ihraç edildi
+Filtered Users exported: Dışa aktarılan Filtrelenmiş Kullanıcılar
+FilterEnabled: Filtre Etkin
+FilterHighlighting: Filtre Vurgulama
+Filtering: Süzme
+FilterMode: Filtre Modu
+FilterMultiple: FiltreÇoklu
+FilterPlaceholder: FilterPlaceholder
+Filters: Filtre
+FilterVariant: Filtre Varyantı
+Fiona Gallagher: Fiona Gallagher
+Firebrick: Ateş tuğlası
+First Name: Ad
+First Name is required: Ad gereklidir
+FirstName: Adı
+Fixed: Sabit
+Flags Enum: Bayraklar Enum
+Flat: Düz
+Flat List: Daire Listesi
+FlatBase16: Düz Taban16
+FlatList: Düz Liste
+FlexEnd: Esnek Uç
+FlexStart: Esnek Başlangıç
+Flip: Flip
+FlipAlways: Her Zaman Çevir
+FlipNever: Asla Çevir
+FlipOnOpen: FlipOnOpen
+FlipX: FlipX
+FlipY: FlipY
+FloralWhite: Çiçek Beyazı
+Florian Gilde: Florian Gilde
+FNumber: FNumber
+fo-DK: Faroe (Danimarka)
+fo-FO: Faroe (Faroe Adaları)
+FocusDistance: Odak Mesafesi
+FocusMode: Odak Modu
+FontFamily: Yazı Tipi Ailesi
+FontSelect: Yazı Tipi Seçimi
+FontSize: Yazı Tipi Boyutu
+FontWeight: Yazı Tipi Ağırlığı
+Footlight MT Light: Ayak lambası MT Light
+Force pick Item: Öğeyi zorla seç
+Force pick Items: Öğeleri zorla seç
+Force select Item: Öğeyi seçmeye zorla
+Force select Items: Öğeleri seçmeye zorla
+ForceNativeRender: ForceNativeRender
+ForceSelectOfMudColor: ForceSelectOfMudColor
+ForceShrink: Zorla Küçültme
+ForestGreen: Orman Yeşili
+Forgot password?: Şifrenizi mi unuttunuz?
+Format: Biçim
+Foundation: Vakıf
+fr-029: Fransızca (Karayipler)
+fr-BE: Fransızca (Belçika)
+fr-BF: Fransızca (Burkina Faso)
+fr-BI: Fransızca (Burundi)
+fr-BJ: Fransızca (Benin)
+fr-BL: Fransızca (St. Barthélemy)
+fr-CA: Fransızca (Kanada)
+fr-CD: Fransızca (Kongo [DRC])
+fr-CF: Fransız (Orta Afrika Cumhuriyeti)
+fr-CG: Fransızca (Kongo)
+fr-CH: Fransızca (İsviçre)
+fr-CI: Fransızca (Fildişi Sahili)
+fr-CM: Fransızca (Kamerun)
+fr-DJ: Fransızca (Cibuti)
+fr-DZ: Fransızca (Cezayir)
+fr-FR: Fransızca (Fransa)
+fr-GA: Fransızca (Gabon)
+fr-GF: Fransızca (Fransız Guyanası)
+fr-GN: Fransızca (Gine)
+fr-GP: Fransızca (Guadeloupe)
+fr-GQ: Fransızca (Ekvator Ginesi)
+fr-HT: Fransızca (Haiti)
+fr-KM: Fransızca (Komorlar)
+fr-LU: Fransızca (Lüksemburg)
+fr-MA: Fransızca (Fas)
+fr-MC: Fransızca (Monako)
+fr-MF: Fransızca (St. Martin)
+fr-MG: Fransızca (Madagaskar)
+fr-ML: Fransızca (Mali)
+fr-MQ: Fransızca (Martinik)
+fr-MR: Fransızca (Moritanya)
+fr-MU: Fransızca (Mauritius)
+fr-NC: Fransızca (Yeni Kaledonya)
+fr-NE: Fransızca (Nijer)
+fr-PF: Fransızca (Fransız Polinezyası)
+fr-PM: Fransızca (St. Pierre & Miquelon)
+fr-RE: Fransızca (Réunion)
+fr-RW: Fransızca (Ruanda)
+fr-SC: Fransızca (Seyşeller)
+fr-SN: Fransızca (Senegal)
+fr-SY: Fransızca (Suriye)
+fr-TD: Fransızca (Çad)
+fr-TG: Fransızca (Togo)
+fr-TN: Fransızca (Tunus)
+fr-VU: Fransızca (Vanuatu)
+fr-WF: Fransızca (Wallis & Futuna)
+fr-YT: Fransızca (Mayotte)
+FrameRate: Kare Hızı
+FramerBase16: Çerçeve Tabanı16
+Franklin Gothic Medium: Franklin Gotik Ortamı
+French: Fransızca
+FrequencyScale: Frekans Ölçeği
+FruitSodaBase16: MeyveSodaBase16
+Fuchsia: Fuşya
+Full: Dolu
+FullHeight: Tam Yükseklik
+FullOctaveBands: Tam Oktav Bantları
+FullPaged: Tam Sayfalı
+Fullscreen: Tam ekran
+FullScreen: Tam Ekran
+FullScreenButtonIcon: Tam EkranDüğme Simgesi
+FullWidth: Tam Genişlik
+fur-IT: Friulian (İtalya)
+Futura: Gelecek
+fy-NL: Batı Frizcesi (Hollanda)
+ga-GB: İrlandaca (Birleşik Krallık)
+ga-IE: İrlandaca (İrlanda)
+Gain: Kazanç
+Gainsboro: Kazançlar
+Garamond: Garamond
+gd-GB: İskoç Galcesi (Birleşik Krallık)
+Gender: Cinsiyet
+General: Genel
+Geneva: Cenevre
+George Miller: George Miller
+Georgia: Gürcistan
+German: Almanca
+GhostWhite: Hayalet Beyaz
+GigavoltBase16: Gigavolt Tabanı16
+Gigi: Gigi Hakkında
+Gill Sans: Solungaç Sans
+Gill Sans MT: MT'siz Solungaç
+Github: Github
+GitHub Project repository: GitHub Proje deposu
+GithubBase16: GithubBase16
+GithubDark: GithubKaranlık
+GithubDarkDimmed: GithubDarkDimmed
+gl-ES: Galiçyaca (İspanya)
+Gml: Gml
+gn-PY: Guarani (Paraguay)
+GoHome: Eve Gidin!
+Gold: Altın
+Goldenrod: Goldenrod
+Google: Google'da
+Google Drive: Google sürücü
+Google Drive file picker component: Google Drive dosya seçici bileşeni
+Googlecode: Google kodu
+GoogleDarkBase16: GoogleKaranlık Tabanı16
+GoogleDriveClientId: GoogleDriveClientId
+GoogleLightBase16: GoogleIşık Tabanı16
+Goudy Old Style: Goudy Eski Tarz
+Goudy Stout: Goudy Yiğit
+Gradient: Gradyan
+GradientDark: Degrade Koyu
+GradientForeground: GradientForeground
+GradientLeft: GradyanSol
+GradientLight: Gradyan Işığı
+GradientRight: Gradyan Sağ
+GradientText: Gradyan Metni
+Gravatar: Gravatar
+GravatarImageSize: GravatarImageSize
+Gray: Gri
+GrayDark: GriKoyu
+GrayDarker: GriDaha Koyu
+GrayDefault: GriVarsayılan
+GrayLight: Gri Işık
+GrayLighter: Gri Çakmak
+Grayscale: Gri tonlamalı
+GrayscaleDarkBase16: Gri TonlamalıKoyu Taban16
+GrayscaleLightBase16: Gri TonlamalıIşıkTabanı16
+Green: Yeşil
+GreenScreenBase16: Yeşil Ekran Tabanı16
+GreenYellow: Yeşil Sarı
+Grid: Kılavuz
+Grid_Enhanced: Grid_Enhanced
+GridCompact: Izgara Kompakt
+GridIcon: Izgara Simgesi
+Groove: Oluk
+Group: Grup
+Group by types: Türlere göre gruplandırma
+GroupBox: Grup Kutusu
+GroupId: Grup Kimliği
+GroupingEnabled: GruplamaEtkin
+GroupsInitiallyExpanded: GruplarBaşlangıçtaGenişletilmiş
+GroupsNested: Gruplarİç İçe
+GroupsSticky: GruplarYapışkan
+GruvboxDarkHardBase16: GruvboxDarkHardBase16
+GruvboxDarkMediumBase16: MineboxKoyuOrtaTaban16
+GruvboxDarkPaleBase16: GruvboxDarkPaleBase16
+GruvboxDarkSoftBase16: GruvboxDarkSoftBase16
+GruvboxLightHardBase16: GruvboxLightHardBase16
+GruvboxLightMediumBase16: GruvboxHafifOrtaTaban16
+GruvboxLightSoftBase16: GruvboxLightSoftBase16
+gsw-CH: İsviçre Almancası (İsviçre)
+gsw-FR: İsviçre Almancası (Fransa)
+gsw-LI: İsviçre Almancası (Lihtenştayn)
+gu-IN: Gujarati (Hindistan)
+GutterBottom: Oluk Altı
+Gutters: Oluk
+guz-KE: Gusii (Kenya)
+gv-IM: Manx (Man Adası)
+h1: H1
+H1: H1
+h2: H2
+H2: H2
+h3: H3
+H3: H3
+h4: H4
+H4: H4
+h5: H5
+H5: H5
+h6: H6
+H6: H6
+ha-Latn-GH: Hausa (Latince, Gana)
+ha-Latn-NE: Hausa (Latince, Nijer)
+ha-Latn-NG: Hausa (Latince, Nijerya)
+Haettenschweiler: Haettenschweiler
+HalfOctaveBands: Yarım Oktav Bantları
+Hannah Davis: Hannah Davis
+HardcoreBase16: Sert Temel16
+Harlow Solid Italic: Harlow Düz İtalik
+Harmonic16DarkBase16: Harmonik16KaranlıkTaban16
+Harmonic16LightBase16: Harmonik16Işık Tabanı16
+Harrington: Harrington
+haw-US: Hawaii dili (Amerika Birleşik Devletleri)
+he-IL: İbranice (İsrail)
+Header.tiff: Header.tiff
+HeadShake: Kafa Sallama
+HeatMap: Isı Haritası
+HeetchDarkBase16: HeetchDarkBase16
+HeetchLightBase16: HeetchLightBase16
+Height: Yükseklik
+HeliosBase16: HeliosBase16
+Hello: Merhaba
+Hello from dialog: İletişim kutusundan merhaba
+Hello from dialog 1: 1. iletişim kutusundan merhaba
+Hello from dialog sample page: Diyalog örnek sayfasından merhaba
+Hello World: Merhaba Dünya
+Hello...: Merhaba...
+HelperId: Yardımcı Kimliği
+HelperText: Yardımcı Metin
+HelperTextOnFocus: HelperTextOnFocus
+Helvetica: Helvetica
+Helvetica Narrow: Helvetica Dar
+Here is another Real demo available for: İşte başka bir Gerçek demo
+Here only number is configured to render with NumEdit edit but DataType is string. Also this field is ignored for import: Burada yalnızca sayı NumEdit düzenlemesiyle işlenecek şekilde yapılandırılmıştır ancak DataType dizedir. Ayrıca bu alan içe aktarma için yok sayılır
+Here you can edit the users, but only confirm if count is at least 2: Burada kullanıcıları düzenleyebilirsiniz, ancak yalnızca sayı en az 2 ise onaylayabilirsiniz
+Here you can leave a comment for this permission for the current role: Burada mevcut rol için bu izin için yorum bırakabilirsiniz
+Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Burada, çalışan bir bileşenin özelliklerini düzenlemek için MudExObjectEdit'i nasıl kullanabileceğinizi görebilirsiniz
+Here you find a Demo how to use the service directly: Burada hizmetin doğrudan nasıl kullanılacağına dair bir Demo bulabilirsiniz
+Hex: Büyü
+HEX: BÜYÜ
+HexA: Hexa
+hi-IN: Hintçe (Hindistan)
+Hidden: Gizli
+Hide: Gizlemek
+HideContentWhenCollapsed: HideContentWhenCollapsed
+HideDropDownWhenReadOnly: HideDropDownWhenReadOnly
+High Tower Text: Yüksek Kule Metni
+HighlightSearch: Öne Çık Arama
+Hinge: Menteşe
+Home: Ev
+Honeydew: Honeydew
+HopscotchBase16: Seksek Tabanı16
+HorizonDarkBase16: UfukKaranlık Tabanı16
+HorizonLightBase16: Ufuk Işığı Tabanı16
+Horizontal: Yatay
+HouseNumber: Sayı
+Houston: Houston
+Houston - 77001: Houston - 77001
+Houston - 77001ender: Houston - 77001ender
+Houstonender: Houstonender
+HoverColor: HoverColor
+HoverMode: Gezinme Modu
+HoverOpacity: Havada Asılı Opaklık
+hr-BA: Hırvatça (Bosna Hersek)
+hr-HR: Hırvatça (Hırvatistan)
+Href: Href
+hsb-DE: Yukarı Sorbça (Almanya)
+HSL: HSL
+HTML Colors: HTML Renkleri
+HtmlTag: HtmlEtiketi
+https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls: https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls
+https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc: https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc
+hu-HU: Macarca (Macaristan)
+HumanoidDarkBase16: İnsansıKaranlıkTaban16
+HumanoidLightBase16: İnsansıIşık Tabanı16
+hy-AM: Ermeni (Ermenistan)
+Hybrid: Melez
+I agree to the terms and privacy: Şartları ve gizliliği kabul ediyorum
+I'm a also another separate control inside of the normal input: Ben de normal girişin içinde ayrı bir kontrolüm
+I'm a another separate control inside of the normal input: Ben normal girişin içinde başka bir ayrı kontrolüm
+I'm a separate control inside of the normal input: Ben normal girişin içinde ayrı bir kontrolüm
+ia-001: Interlingua (Dünya)
+IaDarkBase16: IaDarkBase16
+IaLightBase16: IaLightBase16
+Ian Wright: Ian Wright
+ibb-NG: Ibibio (Nijerya)
+ICaptureService: ICaptureService
+Icon: İkon
+IconColor: Simge Rengi
+IconPicker: Simge Seçici
+IconSize: Simge Boyutu
+IcyDarkBase16: Buzlu Karanlık Taban16
+id: Kimliği
+Id: Kimliği
+id-ID: Endonezyaca (Endonezya)
+Idea: Fikir
+Identifier: Tanımlayıcı
+If this is set a photo will be taken instead of a video.: Bu ayarlanırsa, video yerine fotoğraf çekilecektir.
+If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Bu paketi beğendiyseniz, lütfen Github'a yıldız ekleyin ⭐ ve arkadaşlarınızla paylaşın. Değilse, yine de bir yıldız verebilir ve sizin için daha iyi hale getirmek için neleri geliştirebileceğimi bana bildirebilirsiniz.
+If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Bu seçenekleri varsayılan olarak ayarlarsanız. Bu seçenekler, hiçbir seçeneğin belirtilmediği tüm iletişim kutuları için kullanılır. Devam etmek?
+ig-NG: Igbo (Nijerya)
+Ignore: Yok saymak
+IgnoredPropertiesForReset: IgnoredPropertiesForReset
+IgnoredRenderControls: IgnoredRenderControls
+ii-CN: Yi (Çin)
+Image format: Görüntü formatı
+ImageAsBackgroundImage: ImageAsBackgroundImage
+Images: Görüntü
+ImagesNewLine: GörüntülerNewLine
+Immediate: Hazır
+ImmediateText: Anında Metin
+Impact: Etki
+Import: Ithalat
+ImportExportIcon: İçe AktarDışa AktarSimge
+In: İçinde
+In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: Bu örnekte, öğe görünümde ilk göründüğü anda veriler dinamik olarak yüklenir. Bileşen iki içerik yuvasını destekler
+In this sample you are forced to pick an user: Bu örnekte bir kullanıcı seçmek zorunda kalırsınız
+In this sample you are forced to pick some users: Bu örnekte bazı kullanıcıları seçmek zorunda kalırsınız
+In this sample you are forced to select some users: Bu örnekte bazı kullanıcıları seçmek zorunda kalırsınız
+In this sample you can pick one user: Bu örnekte bir kullanıcı seçebilirsiniz
+In this sample you can select multiple users: Bu örnekte birden çok kullanıcı seçebilirsiniz
+In this sample you can select one user: Bu örnekte bir kullanıcı seçebilirsiniz
+Inches: Inç
+Include Entity fields (Export): Varlık alanlarını dahil et (Dışa aktar)
+Incorrect Password.: Yanlış şifre.
+IndeterminateIcon: Belirsiz Simge
+Indigo: İndigo
+Indonesia: Endonezya
+Info: Bilgi
+Info & About: Bilgi & Hakkında
+InfoContrastText: BilgiKontrast Metni
+InfoDarken: Bilgi Karartma
+InfoLighten: Bilgi Hafiflet
+Informal Roman: Gayri resmi Roma
+Information: Bilgi
+InfoText: Bilgi Metni
+inherit: Devralır
+Inherit: Devralır
+Initial: İlk
+InitialColor: InitialColor
+InitiallyExpanded: BaşlangıçtaGenişletilmiş
+InitialMessage: İlk Mesaj
+InitialMessageVisibilityTime: InitialMessageVisibilityTime
+InitialPreset: İlk Ön Ayar
+InitialRender: İlk Oluşturma
+Inline: Satır içi
+Inline Dialog: Satır İçi İletişim Kutusu
+InlineDialogs: Satır İçi İletişim Kutuları
+InProgress: Devam Ediyor
+InputClass: Giriş Sınıfı
+InputId: Giriş Kimliği
+InputMode: Giriş Modu
+InputStyle: Giriş Stili
+InputType: Giriş Türü
+Inset: Ankastre
+IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
+IntegratedInDialogAsImages: IntegratedInDialogAsImages
+InterimResults: Ara Sonuçlar
+Invalid Credentials.: Geçersiz Kimlik Bilgileri.
+IrBlack: Siyah
+IrBlackBase16: IrBlackBase16
+Is Active: Aktif
+Is Public: Herkese Açık
+Is Public?: Herkese Açık mı?
+is-IS: İzlandaca (İzlanda)
+IsActive: Aktif
+IsblEditorDark: IsblEditorDark
+IsblEditorLight: IsblEditorLight
+IsMouseOverChip: IsMouseOverChip
+ISO: ISO
+IsOpen: Açık
+IsotopeBase16: İzotop Tabanı16
+ISpeechRecognitionService: ISpeechRecognitionService
+IsPredefined: Önceden Tanımlanmıştır
+it-CH: İtalyanca (İsviçre)
+it-IT: İtalyanca (İtalya)
+it-SM: İtalyanca (San Marino)
+it-VA: İtalyanca (Vatikan)
+Italian: İtalyanca
+Item 1: Öğe 1
+Item 2: Öğe 2
+Item 3: Öğe 3
+Item 3, Item 1: Madde 3, Madde 1
+Item 4: Öğe 4
+Item 5: Öğe 5
+Item One: Birinci Öğe
+Item Three: Üçüncü Öğe
+Item Two: İkinci Öğe
+ItemBackgroundColor: ItemBackgroundColor
+ItemClass: ItemClass
+ItemCollection: Ürün Koleksiyonu
+ItemContent: Öğe İçeriği
+ItemContentClass: ItemContentSınıf
+ItemContentStyle: ItemContentStyle
+ItemContentTypo: ItemContentYazım hatası
+ItemList: Öğe Listesi
+Items: Eşya
+ItemsSource: ItemsSource
+ItemStyle: Öğe Stili
+ItemWidth: ItemWidth
+iu-CA: İnuitçe (Kanada)
+iu-Latn-CA: İnuitçe (Latince, Kanada)
+Ivory: Fildişi
+ja-JP: Japonca (Japonya)
+JackInTheBox: JackInTheBox
+Jan: Jan
+JavaScript: JavaScript
+Jello: Jello
+jgo-CM: Ngomba (Kamerun)
+jmc-TZ: Machame (Tanzanya)
+John Doe: John Doe
+Jokerman: Jokerman
+Json: Json
+Json value is required using {0} type!: '{0} tür kullanılarak Json değeri gereklidir!'
+Json value must be a valid json string using {0} type!: Json değeri, {0} türünü kullanan geçerli bir json dizesi olmalıdır!
+Juice ITC: Meyve Suyu ITC
+Jul: Temmuz
+Julia Roberts: Julia Roberts'ın fotoğrafı.
+Jun: Haziran
+Justify: Doğrulamak
+jv-Java-ID: Cava dili (Cava dili, Endonezya)
+jv-Latn-ID: Cava Dili (Latince, Endonezya)
+ka-GE: Gürcüce (Gürcistan)
+kab-DZ: Kabyle (Cezayir)
+kam-KE: Kamba (Kenya)
+kde-TZ: Makonde (Tanzanya)
+kea-CV: Kabuverdianu (Yeşil Burun Adaları)
+Keep scrolling to reveal the content below...: Aşağıdaki içeriği görmek için kaydırmaya devam edin...
+KeepExisting: Var Olmaya Devam Et
+KeepMaxSizeConstraints: KeepMaxSizeConstraints
+KeepRelations: İlişkileri Koru
+KeepState: Durumu Koru
+Kevin Hart: Kevin Hart'ın fotoğrafı.
+Key: Anahtar
+Key is required!: Anahtar gerekli!
+KeyDownPreventDefault: KeyDownPreventDefault
+KeyDownStopPropagation: KeyDownStopYayma
+KeyUpPreventDefault: KeyUpPreventDefault
+KeyUpStopPropagation: KeyUpStopYayılım
+Khaki: Haki
+khq-ML: Koyra Chiini (Mali)
+ki-KE: Kikuyu (Kenya)
+Kilobytes: Kilobayt
+KimberBase16: KimberBase16
+KimbieDark: KimbieKaranlık
+KimbieLight: Kimbie Işığı
+kk-KZ: Kazakça (Kazakistan)
+kkj-CM: Kako (Kamerun)
+kl-GL: Kalaallisut (Grönland)
+kln-KE: Kalenjin (Kenya)
+km-KH: Khmer (Kamboçya)
+kn-IN: Kannada (Hindistan)
+ko-KP: Korece (Kuzey Kore)
+ko-KR: Korece (Kore)
+kok-IN: Konkani (Hindistan)
+Kommunikation - Mikrofon (Voicemod Virtual Audio Device (WDM)): İletişim - Mikrofon (Voicemod Sanal Ses Cihazı (WDM))
+kr-Latn-NG: Kanuri (Latince, Nijerya)
+ks-Arab-IN: Keşmirce (Arapça, Hindistan)
+ks-Deva-IN: Keşmir (Devanagari, Hindistan)
+ksb-TZ: Şambala (Tanzanya)
+ksf-CM: Bafia (Kamerun)
+ksh-DE: Köln (Almanya)
+ku-Arab-IQ: Kürtçe (Arapça, Irak)
+ku-Arab-IR: Kürtçe (Arapça, İran)
+Kunstler Script: Kunstler Komut Dosyası
+kw-GB: Cornish (Birleşik Krallık)
+ky-KG: Kırgızca (Kırgızistan)
+la-VA: Latince (Vatikan)
+Label: Etiket
+Label_Description: Açıklama
+Label_for_Age: Label_for_Age
+Label_for_City: Label_for_City
+Label_for_FirstName: Label_for_FirstName
+Label_for_Gender: Label_for_Gender
+Label_for_HouseNumber: Label_for_HouseNumber
+Label_for_Id: Label_for_Id
+Label_for_Notice: Label_for_Notice
+Label_for_OtherAddresses: Label_for_OtherAddresses
+Label_for_PostalCode: Label_for_PostalCode
+Label_for_ProgramingSkills: Label_for_ProgramingSkills
+Label_for_Street: Label_for_Street
+Label_for_TrueOrFalse: Label_for_TrueOrFalse
+Label_UploadRequests: Dosyaları
+LabelCustomTab: EtiketÖzel Sekmesi
+LabelDefinedTab: LabelDefinedTab
+lag-TZ: Langi (Tanzanya)
+Landscape: Manzara
+Language: Dil
+Languages: Diller
+Large: Büyük
+LargeZipArchive.zip: LargeZipArchive.zip
+Last Name: Soyadı
+Last Name is required: Soyadı gereklidir
+LastName: Soyadı
+Laura Palmer: Laura Palmer
+Lavender: Lavanta
+LavenderBlush: Lavanta Allık
+LawnGreen: Çim Yeşili
+LayoutProperties: DüzenÖzellikleri
+lb-LU: Lüksemburgca (Lüksemburg)
+Leave editor focus to update MudExStructuredDataEditor: MudExStructuredDataEditor'ı güncellemek için düzenleyici odağını bırakın
+LedBars: Led Barlar
+Left: Sol
+Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): MudExSplitPanel'de sol kısım. (MudExSplitter'ı doğrudan da kullanabileceğinize dikkat edin)
+LegacyRender: Miras Oluşturma
+Legend: Efsane
+LemonChiffon: LimonŞifon
+LetterSpacing: Harf Aralığı
+lg-UG: Ganda (Uganda)
+Library: Kütüphane
+LightBlue: Açık Mavi
+LightBulb: Ampul
+LightBulbSize: Ampul Boyutu
+LightBulbSizeUnit: LightBulbSizeUnit
+LightCoral: Işık Mercan
+LightCyan: Açık Camgöbeği
+Lightfair: Işık Fuarı
+LightGoldenrodYellow: AçıkAltınBaşakSarı
+LightGray: Açık Gri
+LightGreen: Açık Yeşil
+LightOnly: Yalnızca Işık
+LightPink: Açık Pembe
+LightSalmon: Hafif Somon
+LightSeaGreen: Açık Deniz Yeşili
+LightSkyBlue: IşıkGök Mavisi
+LightSlateGray: Açık Arduvaz Grisi
+LightSpeed: Işık Hızı
+LightSteelBlue: Açık Çelik Mavi
+LightYellow: Açık Sarı
+Lime: Kireç
+LimeGreen: Kireç Yeşili
+Line: Satır
+Linear: Doğrusal
+LinearAmplitude: Doğrusal Genlik
+LinearBoost: Doğrusal Güçlendirme
+LineAreaGraph: ÇizgiAlanıGrafiği
+LineColor: Çizgi Rengi
+LineHeight: Çizgi Yüksekliği
+Lines: Satır
+LinesDefault: LinesDefault
+LinesInputs: Satır Girişleri
+LineWidth: Çizgi Genişliği
+Lioshi: Lioshi
+List: Liste
+List appearance: Liste görünümü
+List behavior: Liste davranışı
+List item for MudExList.: MudExList için liste öğesi.
+lkt-US: Lakota (Amerika Birleşik Devletleri)
+ln-AO: Lingala (Angola)
+ln-CD: Lingala (Kongo [DRC])
+ln-CF: Lingala (Orta Afrika Cumhuriyeti)
+ln-CG: Lingala (Kongo)
+lo-LA: Lao (Laos)
+LoadFileDataBytesInBackground: LoadFileDataBytesInBackground
+Loading: Yükleme
+Loading...: Yükleme...
+Local: Yöresel
+LocalizerPattern: LocalizerPattern
+LockScroll: Kilit Kaydırma
+Log: Kütük
+Logged In.: Giriş Yapıldı.
+Logged Out.: Oturumu Kapattı.
+LogicalSurface: Mantıksal Yüzey
+Login with Keycloak: Keycloak ile Giriş Yap
+LoginDescription: Kimlik Bilgilerinizle giriş yapın.
+Logitech BRIO (046d:085e): Logitech BRIO (046d:085e)
+logLevel: logDüzeyi
+logo.png: logo.png
+Logout: Oturum kapatma
+Logout Confirmation: Gerçekten Çıkış Yapmak istiyor musunuz?
+Logout user: Oturumu kapat kullanıcı
+London: Londra
+London - SW1A 1AA: Londra - SW1A 1AA
+London - SW1A 1AAender: Londra - SW1A 1AAender
+LondonTubeBase16: Londra Metro Üssü16
+LoRes: Lords
+Los Angeles: Los Angeles
+Los Angeles - 90001: Los Angeles - 90001
+Los Angeles - 90001ender: Los Angeles - 90001ender
+lrc-IQ: Kuzey Luri (Irak)
+lrc-IR: Kuzey Luri (İran)
+lt-LT: Litvanca (Litvanya)
+lu-CD: Luba-Katanga (Kongo [DRC])
+Lucida Bright: Lucida Parlak
+Lucida Calligraphy: Lucida Kaligrafi
+Lucida Console: Lucida Konsolu
+Lucida Fax: Lucida Faks
+Lucida Grande: Lucida Grande
+Lucida Handwriting: Lucida El Yazısı
+Lucida Sans: Lucida Sans
+Lucida Sans Typewriter: Lucida Sans Daktilo
+Lucida Sans Unicode: Lucida Sans Unicode
+LumiBars: Lumi Barlar
+luo-KE: Luo (Kenya)
+luy-KE: Luyia (Kenya)
+lv-LV: Letonca (Letonya)
+Lyon: Lyon
+Lyon - 69001: Lyon - 69001
+Lyon - 69001ender: Lyon - 69001ender
+Lyrics: Güfte
+MacintoshBase16: MacintoshBase16
+Magneto: Manyeto
+Magula: Magula
+mai-IN: Maithili (Hindistan)
+Mail: Posta
+Main User: Ana Kullanıcı
+MainAddress: AnaAdres
+MainSample.WebAssembly.Pages.Page_ObjectEditList+Brand: MainSample.WebAssembly.Pages.Page_ObjectEditList+Marka
+MainSample.WebAssembly.Services.SampleFile: MainSample.WebAssembly.Services.SampleFile
+MainSample.WebAssembly.Services.SampleFileWithStream: MainSample.WebAssembly.Services.SampleFileWithStream
+MainUser: Ana Kullanıcı
+Male: Erkek
+Manage {0} {1}'s Extended Attributes: "{0} {1}'in Genişletilmiş Özelliklerini Yönetin"
+Manage {0} {1}'s Permissions: "{0} {1}'nın İzinlerini Yönetin"
+Manage {0} {1}'s Roles: "{0} {1}'in Rollerini Yönetin"
+Manage {0} Extended Attributes: '{0} Genişletilmiş Öznitelikleri Yönetme'
+Manage {0}'s Permissions: "{0}'nın İzinlerini Yönetin"
+Manage Brands.: Markaları Yönetin.
+Manage Database Backups.: Veritabanı yedeklerini yönetin veya geri yükleyin.
+Manage Document Types.: Belge türlerini yönetin.
+Manage Extended Attributes: Genişletilmiş Öznitelikleri Yönetme
+Manage Languages: Dilleri Yönet
+Manage Permission: İzni Yönet
+Manage Products.: Ürünleri Yönet.
+Manage Roles: Rolleri Yönet
+Manage Roles.: Rolleri Yönetin.
+Manage Translations: Çevirileri Yönet
+Manage Users: Kullanıcıları Yönet
+Manage your account: Hesabını düzenle
+Manchester: Manchester
+Manchester - M1 1AE: Manchester - M1 1AE
+Manchester - M1 1AEender: Manchester - M1 1AEender
+Manual: El ile
+Mar: Mart
+Margin: Kenar boşluğu
+Mark all: Tümünü işaretle
+Mark all as read: Tümünü okundu olarak işaretle
+Mark all as unread: Tümünü okunmadı olarak işaretle
+Mark as read: Okundu olarak işaretle
+Mark as unread: Okunmadı olarak işaretle
+MarrakeshBase16: MarakeşÜssü16
+Marseille: Marsilya
+Marseille - 13001: Marsilya - 13001
+Marseille - 13001ender: Marsilya - 13001ender
+mas-KE: Masai (Kenya)
+mas-TZ: Masai (Tanzanya)
+Mask: Maske
+MateriaBase16: Malzeme Tabanı16
+MaterialBase16: Malzeme Tabanı16
+MaterialDarkerBase16: MalzemeKoyuTaban16
+MaterialLighterBase16: MalzemeLighterBase16
+MaterialPalenightBase16: MalzemePalenightBase16
+MaterialVividBase16: MalzemeCanlı Taban16
+Matura MT Script Capitals: Matura MT Yazı Başlıkları
+MaxCaptureTime: Maksimum Yakalama Süresi
+MaxChips: Maksimum Çipler
+MaxDecibels: Maksimum Desibel
+MaxFileSize: Maksimum Dosya Boyutu
+MaxFPS: Maksimum FPS
+MaxFrequency: Maksimum Frekans
+MaxHeight: Maksimum Yükseklik
+MaximizeButton: Büyütme Düğmesi
+MaxItems: Maksimum Öğe Sayısı
+MaxItemWidth: Maksimum Öğe Genişliği
+MaxLength: Maksimum Uzunluk
+MaxLuminance: Maksimum Parlaklık
+MaxMultipleFiles: MaxÇoklu Dosyalar
+MaxRecordingTime: Maksimum Kayıt Süresi
+MaxWidth: Maksimum Genişlik
+MaxZoomPixelRatio: MaxZoomPixelRatio
+May: Mayıs
+Medium: Orta
+MediumSlateBlue: OrtaArduvaz Mavisi
+MediumSpringGreen: OrtaBahar Yeşili
+MediumTurquoise: OrtaTurkuaz
+MediumVioletRed: OrtaMenekşeKırmızı
+Megabytes: Megabayt
+Mel: Mel
+MellowPurpleBase16: YumuşakMor Taban16
+MenuAnchorOrigin: MenuAnchorOrigin
+MenuMaxHeight: MenüMaksimum Yükseklik
+MenuTransformOrigin: MenuTransformOrigin
+mer-KE: Meru (Kenya)
+Message will be deleted in {0} seconds: Mesaj {0} saniye içinde silinecek
+MessageClass: Mesaj Sınıfı
+MessageStyle: Mesaj Stili
+MetaCoverImage: Meta Kapak Resmi
+Method 1: Yöntem 1
+Method 2: Yöntem 2
+MexicoLightBase16: Meksika Işık Tabanı16
+mfe-MU: Morisyen (Mauritius)
+mg-MG: Madagaskar (Madagaskar)
+mgh-MZ: Makhuwa-Meetto (Mozambik)
+mgo-CM: Metaʼ (Kamerun)
+mi-NZ: Maori (Yeni Zelanda)
+Michael Scott: Michael Scott
+MicrophoneDeviceId: MikrofonAygıt Kimliği
+MidnightBlue: Gece Mavisi
+Mikrofon (3- RODE NT-USB) (19f7:0003): Mikrofon (3-RODE NT-USB) (19f7:0003)
+Mikrofon (DroidCam Virtual Audio): Mikrofon (DroidCam Sanal Ses)
+Mikrofon (Logitech BRIO) (046d:085e): Mikrofon (Logitech BRIO) (046d:085e)
+Mikrofon (ROG Headset) (0b05:1876): Mikrofon (ROG Kulaklık) (0b05:1876)
+Mikrofon (USB Audio Device) (1b3f:2008): Mikrofon (USB Ses Cihazı) (1b3f:2008)
+Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Voicemod Sanal Ses Cihazı (WDM))
+Millimeters: Milimetre
+MimeRestrictionType: MimeRestrictionType
+MimeTypes: Mime Türleri
+MinDecibels: MinDesibel
+MinFrequency: MinFrekans
+MinHeight: MinYükseklik
+Mini: Mini
+MinimizeButton: Düğmeyi Küçült
+MinLuminance: MinParlaklık
+MintCream: Nane Kreması
+MinZoomLevel: MinZoomDüzeyi
+Mirror: Ayna
+Misc: Misc
+Misc Options: Çeşitli Seçenekler
+Mistral: Mistral
+MistyRose: Sisli Gül
+mk-MK: Makedonca (Kuzey Makedonya)
+ml-IN: Malayalam (Hindistan)
+mn-MN: Moğolca (Moğolistan)
+mn-Mong-CN: Moğolca (Moğolca, Çin)
+mn-Mong-MN: Moğolca (Moğolca, Moğolistan)
+mni-IN: Manipuri (Hindistan)
+Moccasin: Moka -sen
+MochaBase16: MochaBase16
+Modal: Başkent
+Mode: Mod
+Model with File: Dosyalı Model
+Modern No. 20: Modern No. 20
+moh-CA: Mohawk (Kanada)
+Monaco: Monako
+Monitor: Ekran
+MonoBlue: Tek Mavi
+Monokai: Monokai
+MonokaiBase16: MonokaiBase16
+MonokaiSublime: MonokaiYüce
+Monotype Corsiva: Tek tip Korsiva
+Month: Ay
+Montreal: Montreal
+Montreal - H1A 0A1: Montreal - H1A 0A1
+Montreal - H1A 0A1ender: Montreal - H1A 0A1ender
+Montserrat: Montserrat
+Motion: Hareket
+Mouse: Fare
+MouseOverMessageClass: MouseOverMessageSınıfı
+MouseOverMessageStyle: MouseOverMessageStyle
+MouseWheelDownAction: MouseWheelDownAction
+MouseWheelUpAction: MouseWheelUpAction
+MoveContent: İçeriği Taşı
+mr-IN: Marathi (Hindistan)
+MS Outlook: MS Görünümü
+MS Reference Sans Serif: MS Referansı Sans Serif
+MS Reference Specialty: MS Referans Uzmanlığı
+MS Sans Serif: MS Sans Serif
+MS Serif: MS Serif
+ms-BN: Malayca (Brunei)
+ms-ID: Malayca (Endonezya)
+ms-MY: Malayca (Malezya)
+ms-SG: Malayca (Singapur)
+mt-MT: Malta (Malta)
+mua-CM: Mundang (Kamerun)
+mud-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788: çamur-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788
+MudAlert: Çamur Uyarısı
+MudAppBar: MudAppBar
+MudAvatar: Çamur Avatarı
+MudAvatarGroup: MudAvatar Grubu
+MudBadge: Çamur Rozeti
+MudBlazor Components: MudBlazor Bileşenleri
+MudBlazor Popover: MudBlazor Açılır Penceresi
+MudBlazor.Extensions.Components.ThemePreset`1[MainSample.WebAssembly.ClientTheme]: MudBlazor.Extensions.Components.ThemePreset'1[MainSample.WebAssembly.ClientTheme]
+MudBreadcrumbs: Çamur Ekmek Kırıntıları
+MudBreakpointProvider: MudBreakpointSağlayıcısı
+MudButton: Çamur Düğmesi
+MudButtonGroup: MudButton Grubu
+MudCard: Çamur Kartı
+MudCardActions: MudCardActions
+MudCardContent: MudCardİçerik
+MudCardHeader: MudCardBaşlığı
+MudCardMedia: Çamur Kartı Medya
+MudCarouselItem: ÇamurKaruselÖğe
+MudChart: Çamur Grafiği
+MudChat: Çamur Sohbeti
+MudChatBubble: MudChatBubble
+MudChatFooter: MudChatFooter
+MudChatHeader: MudChatBaşlığı
+MudCollapse: Çamur Çöküşü
+MudColorPicker: Çamur Renk Seçici
+MudColorStringFormat: MudColorStringBiçimi
+MudContainer: Çamur Konteyneri
+MudContextualActionBar: MudContextualActionBar
+MudDatePicker: MudDatePicker
+MudDateRangePicker: MudDateRangePicker
+MudDialog: Çamur Diyaloğu
+MudDialogContainer: MudDialogContainer
+MudDialogProvider: MudDialogProvider
+MudDivider: Çamur Bölücü
+MudDrawer: Çamur Çekmecesi
+MudDrawerContainer: Çamur Çekmecesi Konteyneri
+MudDrawerHeader: MudDrawerBaşlığı
+MudDynamicTabs: MudDinamik Sekmeleri
+MudElement: Çamur Elemanı
+MudEx Components: MudEx Bileşenleri
+MudExAdditionalAdornment: MudExEk Süsleme
+MudExAppearance: MudExGörünüm
+MudExAppLoader: MudExAppLoader
+MudExAudioPlayer: MudExSes Oynatıcı
+MudExCaptureButton: MudExYakalama Düğmesi
+MudExCaptureOptionsEdit: MudExYakalama SeçenekleriDüzenle
+MudExCardList: MudExKart Listesi
+MudExCardList with ItemsSource: ItemsSource ile MudExCardList
+MudExCardList with ItemsSource and child content: ItemsSource ve alt içerikli MudExCardList
+MudExCardList<TData>: MudExKart Listesi<TData>
+MudExChipSelect: MudExChipSelect
+MudExChipSelect can used to select items from a collection as chips: MudExChipSelect, bir koleksiyondaki öğeleri çip olarak seçmek için kullanılabilir
+MudExChipSelect<T>: MudExChipSelect<T>
+MudExCodeView: MudExCodeView
+MudExCollectionEditor<T>: MudExCollectionEditor<T>
+MudExColor: MudExRenk
+MudExColorBubble: MudExRenkli Kabarcık
+MudExColorEdit: MudExRenkDüzenle
+MudExColorEdit is in general a MudBlazor Picker component specially for the struct MudExColor. But because name MudExColorPicker is already used for an extended ColorPicker this Component is named MusExColorEdit: MudExColorEdit genel olarak MudExColor yapısı için özel olarak bir MudBlazor Seçici bileşenidir. Ancak MudExColorPicker adı zaten genişletilmiş bir ColorPicker için kullanıldığından, bu Bileşen MusExColorEdit olarak adlandırılır
+MudExColorPicker: MudExRenk Seçici
+MudExColorUtils: MudExColorUtils
+MudExCss: MudExCss
+MudExCssBuilder: MudExCssBuilder
+MudExCultureSelect: MudExKültür Seçimi
+MudExDialog: MudExDialog
+MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog, sayfanızda tüm DialogExtensions ile satır içi bir iletişim kutusu göstermek istediğinizde kullanılacak bileşendir.
+MudExDivider: MudExBölücü
+MudExDropBoxFilePicker: MudExDropBoxDosya Seçici
+MudExEnumSelect: MudExEnum Seçimi
+MudExEnumSelect<TEnum>: MudExEnum Seçimi<TEnum>
+MudExFileDisplay: MudExDosya Ekranı
+MudExFileDisplayCode: MudExFileDisplayCode
+MudExFileDisplayDialog: MudExFileDisplayDialog
+MudExFileDisplayExcel: MudExFileDisplayExcel
+MudExFileDisplayFont: MudExFileDisplayFont
+MudExFileDisplayHtml: MudExFileDisplayHtml
+MudExFileDisplayOfficeLive: MudExFileDisplayOfficeLive
+MudExFileDisplayStructuredData: MudExFileDisplayStructuredData
+MudExFileDisplayZip: MudExFileDisplayZip
+MudExFontSelect: MudExYazı Tipi Seçimi
+MudExFontSelect can used to select one ore more fonts: MudExFontSelect, bir veya daha fazla yazı tipi seçmek için kullanılabilir
+MudExGoogleFilePicker: MudExGoogleDosya Seçici
+MudExGradientText: MudExGradientText
+MudExGravatar: MudExGravatar
+MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar, bir e-posta adresi için gravatar'daki profil resmini otomatik olarak kullanan bir MudAvatar'dır
+MudExGrid: MudExGrid
+MudExGrid Enhanced: MudExGrid Gelişmiş
+MudExGridSection: MudExGridBölümü
+MudExGroupBox: MudExGrup Kutusu
+MudExHtmlEdit: MudExHtmlDüzenle
+MudExIcon: MudExSimgesi
+MudExIcon is a simple MudIcon with extended possibilities to set all colors.: MudExIcon, tüm renkleri ayarlamak için genişletilmiş olanaklara sahip basit bir MudIcon'dur.
+MudExIconButton: MudExIconDüğmesi
+MudExIconPicker: MudExSimge Seçici
+MudExIconPicker is in general a MudBlazor Picker component specially for selecting an icon.: MudExIconPicker genel olarak bir simge seçmek için özel olarak bir MudBlazor Seçici bileşenidir.
+MudExImageViewer: MudExResim Görüntüleyici
+MudExList: MudExListesi
+MudExList can used to select one ore more items from a bindeable collection.: MudExList, bağlanabilir bir koleksiyondan bir veya daha fazla öğe seçmek için kullanılabilir.
+MudExList is a component that allows you to select an item from a list of items. It is a wrapper for MudList.: MudExList, bir öğe listesinden bir öğe seçmenize izin veren bir bileşendir. MudList için bir sarmalayıcıdır.
+MudExList<T>: MudExListesi<T>
+MudExListItem<T>: MudExListItem<T>
+MudExListSubheader is a sub header for MudExList.: MudExListSubheader, MudExList için bir alt başlıktır.
+MudExListSubheader<T>: MudExListAlt Başlığı<T>
+MudExMessageDialog: MudExMessageDialog
+MudExObjectEdit: MudExNesneDüzenle
+MudExObjectEdit and MudExCollectionEditor with a shared config: Paylaşılan bir yapılandırmaya sahip MudExObjectEdit ve MudExCollectionEditor
+MudExObjectEdit with virtual property rendering: Sanal özellik oluşturma ile MudExObjectEdit
+MudExObjectEdit<T>: MudExNesneDüzenle<T>
+MudExObjectEditDialog<T>: MudExObjectEditDialog<T>
+MudExObjectEditForm<T>: MudExObjectEditForm<T>
+MudExObjectEditPicker<T>: MudExObjectEditPicker<T>
+MudExOneDriveFilePicker: MudExOneDriveFilePicker
+MudExpansionPanel: Çamur Genişletme Paneli
+MudExpansionPanels: Çamur Genişletme Panelleri
+MudExPicker: MudExSeçici
+MudExPickerBase<T>: MudExPickerBase<T>
+MudExPopover: MudExPopover
+MudExPromptDialog: MudExPromptDialog
+MudExPromptDialog Component: MudExPromptDialog Bileşeni
+MudExPropertyEdit: MudExPropertyDüzenle
+MudExSelect: MudExSeç
+MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect, bağlanabilir bir koleksiyondan bir veya daha fazla öğe seçmek için kullanılabilir. Ayrıca bu bileşen, iletişim kutuları veya MudExPopover gibi tüm animasyonları destekler.
+MudExSelect<T>: MudExSeç<T>
+MudExSelectItem is a select item for MudExSelect.: MudExSelectItem, MudExSelect için bir seçim öğesidir.
+MudExSelectItem<T>: MudExSelectItem<T>
+MudExSize is a readonly struct that provides a convenient and type-safe way to deal with size values in the context of MudBlazor components.: MudExSize, MudBlazor bileşenleri bağlamında boyut değerleriyle başa çıkmak için kullanışlı ve tür açısından güvenli bir yol sağlayan salt okunur bir yapıdır.
+MudExSize<T>: MudExSize<T>
+MudExSlideBar: MudExSlayt Çubuğu
+MudExSpeechToTextButton: MudExSpeechToTextButton
+MudExSplitPanel: MudExBölünmüş Panel
+MudExSplitPanelItem: MudExSplitPanelÖğesi
+MudExSplitter: MudExSplitter
+MudExStructuredDataEditor: MudExStructuredDataEditor
+MudExStyleBuilder: MudExStil Oluşturucu
+MudExSvg: MudExSvg
+MudExTagField: MudExTagAlanı
+MudExTagField creates chips when user press on of the specified delimiter or presses enter.: MudExTagField, kullanıcı belirtilen sınırlayıcıya bastığında veya enter tuşuna bastığında yongalar oluşturur.
+MudExTagField is a component that allows the user to enter a list of values as chips.: MudExTagField, kullanıcının bir değer listesini çip olarak girmesine izin veren bir bileşendir.
+MudExTagField<T>: MudExTagAlanı<T>
+MudExTaskBar: MudExGörev Çubuğu
+MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide  somewhere in your Layout: MudExTaskBar, MudExSlideBar'ı devralır ve kalıcı olmayan iletişim kutularını seçmek için bir sekme çubuğu sağlar. Sadece Düzeninizde bir yer sağlayın
+MudExTextField<T>: MudExMetin Alanı<T>
+MudExThemeEdit: MudExThemeDüzenle
+MudExThemeEdit is a powerful component to edit one ore more themes: MudExThemeEdit, bir veya daha fazla temayı düzenlemek için güçlü bir bileşendir
+MudExThemeEdit<TTheme>: MudExThemeDüzenle<TTheme>
+MudExThemeSelect: MudExTema Seçimi
+MudExThemeSelect<TTheme>: MudExTema Seçimi<TTheme>
+MudExToggleableSearch: MudExToggleableSearch
+MudExTreeView: MudExAğaç Görünümü
+MudExTreeView is useful to bind tree structured items. The control that should used can be set with the ViewMode property: MudExTreeView, ağaç yapılandırılmış öğeleri bağlamak için kullanışlıdır. Kullanılması gereken denetim ViewMode özelliği ile ayarlanabilir
+MudExTreeView with template: Şablonlu MudExTreeView
+MudExTreeView<T>: MudExAğaç Görünümü<T>
+MudExTreeViewBreadcrumb: MudExTreeViewBreadcrumb
+MudExTreeViewBreadcrumb<T>: MudExTreeViewBreadcrumb<T>
+MudExTreeViewCardGrid: MudExTreeViewCardGrid
+MudExTreeViewCardGrid<T>: MudExTreeViewCardGrid<T>
+MudExTreeViewDefault: MudExTreeViewDefault
+MudExTreeViewDefault<T>: MudExTreeViewDefault<T>
+MudExTreeViewFlatList: MudExTreeViewFlatList
+MudExTreeViewFlatList<T>: MudExTreeViewFlatList<T>
+MudExTreeViewHorizontal: MudExTreeViewYatay
+MudExTreeViewHorizontal<T>: MudExTreeViewYatay<T>
+MudExTreeViewList: MudExTreeViewList
+MudExTreeViewList<T>: MudExTreeViewList<T>
+MudExUploadEdit: MudExUploadDüzenle
+MudExUploadEdit<T>: MudExUploadDüzenle<T>
+MudExVirtualItem: MudExSanal Öğe
+MudExVirtualize<TItem>: MudExSanallaştırma<TItem>
+MudFab: Çamur Fabrikası
+MudField: Çamur Alanı
+MudFlexBreak: Çamur Esnek Kırma
+MudFocusTrap: Çamur Odak Tuzağı
+MudForm: Çamur Formu
+MudGrid: Çamur Izgarası
+MudHeatMapCell: ÇamurIsı Haritası Hücresi
+MudHidden: Çamur Gizli
+MudHighlighter: Çamur Vurgulayıcı
+MudIcon: Çamur Simgesi
+MudIconButton: Çamur SimgesiDüğmesi
+MudImage: Çamur Görüntüsü
+MudInputAdornment: MudInputSüsleme
+MudInputControl: MudInputControl
+MudInputLabel: MudInputLabel
+MudInputString: MudInputString
+MudItem: Çamur Öğesi
+MudLayout: Çamur Düzeni
+MudLink: Çamur Bağlantısı
+MudListSubheader: MudListAlt Başlığı
+MudMainContent: MudMainContent
+MudMask: Çamur Maskesi
+MudMenu: Çamur Menüsü
+MudMenuItem: MudMenuItem
+MudMessageBox: Çamur Mesaj Kutusu
+MudNavGroup: MudNav Grubu
+MudNavLink: MudNavLink
+MudNavMenu: MudNav Menüsü
+MudOverlay: Çamur Kaplaması
+MudPageContentNavigation: MudPageContentNavigasyon
+MudPagination: Çamur Sayfalandırma
+MudPaper: Çamur Kağıdı
+MudPickerContent: MudPickerİçerik
+MudPickerToolbar: MudPickerAraç Çubuğu
+MudPopover: Çamur Patlatma
+MudPopoverProvider: MudPopover Sağlayıcısı
+MudProgressCircular: MudProgressCircular
+MudProgressLinear: ÇamurİlerlemeDoğrusal
+MudRating: Çamur Derecelendirmesi
+MudRatingItem: MudRatingItem
+MudRender: Çamur İşleme
+MudRTLProvider: MudRTLProvider
+MudScrollToTop: ÇamurKaydırmaÜst'e
+MudSimpleTable: MudSimpleTable
+MudSkeleton: Çamur İskeleti
+MudSnackbarElement: MudSnackbarElement
+MudSnackbarProvider: MudSnackbar Sağlayıcı
+MudSpacer: Çamur Ayırıcı
+MudStack: Çamur Yığını
+MudStep: Çamur Adımı
+MudStepper: Çamur Stepper
+MudSwipeArea: Çamur Kaydırma Alanı
+MudTablePager: MudTablePager
+MudTabPanel: Çamur Sekmesi Paneli
+MudTabs: Çamur Sekmeleri
+MudTd: Çamur Td
+MudText: Çamur Metni
+MudTextField with additional features: Ek özelliklere sahip MudTextField
+MudTFootRow: MudTFootRow
+MudTh: Çamur
+MudTHeadRow: Çamur Sırası
+MudThemeProvider: MudThemeSağlayıcı
+MudTimeline: Çamur Zaman Çizelgesi
+MudTimelineItem: MudTimelineItem
+MudTimePicker: Çamur Zamanı Seçici
+MudTimeSeriesChart: MudTimeSeriesGrafik
+MudToggleIconButton: MudToggleIconButton
+MudToolBar: Çamur Araç Çubuğu
+MudTooltip: Çamur İpucu
+MudTr: Çamur Tr
+MudTreeViewItemToggleButton: MudTreeViewItemToggleButton
+MultiSelect: Çoklu Seçim
+MultiSelection: Çoklu Seçim
+MultiSelectionAlign: Çoklu SeçimHizalama
+MultiSelectionComponent: Çoklu SeçimBileşeni
+MultiSelectWithCtrlKey: MultiSelectWithCtrlKey
+My Custom action: Özel eylemim
+my-MM: Birmanya (Myanmar)
+mzn-IR: Mazanderani (İran)
+name: ad
+Name: Ad
+Name is required: İsim gerekli
+Name is required!: İsim gereklidir!
+NameContainerStyle: NameContainerStyle
+Names: Ad -larını
+naq-NA: İsim (Namibya)
+Natalie Portman: Natalie Portman
+NavajoWhite: Navajo Beyaz
+NavigationExpandMode: NavigasyonGenişletme Modu
+NavigationLinkBarClass: NavigationLinkBarSınıfı
+NavigationLinkBarStyle: NavigationLinkBarStyle
+NavigationViewMode: NavigationViewMode
+NavigatorClass: Gezgin Sınıfı
+NavigatorPosition: NavigatorPosition
+NavigatorRectangleColor: NavigatorRectangleColor
+NavigatorSizeRatio: NavigatorSizeRatio
+Navy: Donanma
+nb-NO: Norveççe Bokmål (Norveç)
+nb-SJ: Norveççe Bokmål (Svalbard & Jan Mayen)
+nd-ZW: Kuzey Ndebele (Zimbabve)
+nds-DE: Düşük Almanca (Almanya)
+nds-NL: Aşağı Almanca (Hollanda)
+ne-IN: Nepalce (Hindistan)
+ne-NP: Nepalce (Nepal)
+NebulaBase16: BulutsuTabanı16
+Never: Hiç
+New: Yeni
+NEW Dialog Drag Drop Mode: YENİ İletişim Kutusu Sürükle Bırak Modu
+New dialog Feature - SnapDrag: Yeni iletişim kutusu Özellik - SnapDrag
+New Message From {0}: "{0}'dan Yeni Mesaj"
+New MudExStructureDataEditor can used to edit json, xml or yaml string in a MudExObjectEdit: Yeni MudExStructureDataEditor, bir MudExObjectEdit'te json, xml veya yaml dizesini düzenlemek için kullanılabilir
+New Password: Yeni Şifre
+New User 100: Yeni Kullanıcı 100
+New User 101: Yeni Kullanıcı 101
+New User 102: Yeni Kullanıcı 102
+New User 103: Yeni Kullanıcı 103
+New User 104: Yeni Kullanıcı 104
+New User 105: Yeni Kullanıcı 105
+New User 106: Yeni Kullanıcı 106
+New User 107: Yeni Kullanıcı 107
+New User 108: Yeni Kullanıcı 108
+New User 109: Yeni Kullanıcı 109
+New User 110: Yeni Kullanıcı 110
+New User 111: Yeni Kullanıcı 111
+New User 112: Yeni Kullanıcı 112
+New User 113: Yeni Kullanıcı 113
+New User 114: Yeni Kullanıcı 114
+New User 115: Yeni Kullanıcı 115
+New User 116: Yeni Kullanıcı 116
+New User 117: Yeni Kullanıcı 117
+New User 118: Yeni Kullanıcı 118
+New User 119: Yeni Kullanıcı 119
+New User 120: Yeni Kullanıcı 120
+New User 121: Yeni Kullanıcı 121
+New User 122: Yeni Kullanıcı 122
+New User 123: Yeni Kullanıcı 123
+New User 124: Yeni Kullanıcı 124
+New User 125: Yeni Kullanıcı 125
+New User 126: Yeni Kullanıcı 126
+New User 127: Yeni Kullanıcı 127
+New User 128: Yeni Kullanıcı 128
+New User 129: Yeni Kullanıcı 129
+New User 130: Yeni Kullanıcı 130
+New User 131: Yeni Kullanıcı 131
+New User 132: Yeni Kullanıcı 132
+New User 133: Yeni Kullanıcı 133
+New User 134: Yeni Kullanıcı 134
+New User 135: Yeni Kullanıcı 135
+New User 136: Yeni Kullanıcı 136
+New User 137: Yeni Kullanıcı 137
+New User 138: Yeni Kullanıcı 138
+New User 139: Yeni Kullanıcı 139
+New User 140: Yeni Kullanıcı 140
+New User 141: Yeni Kullanıcı 141
+New User 142: Yeni Kullanıcı 142
+New User 143: Yeni Kullanıcı 143
+New User 144: Yeni Kullanıcı 144
+New User 145: Yeni Kullanıcı 145
+New User 146: Yeni Kullanıcı 146
+New User 147: Yeni Kullanıcı 147
+New User 148: Yeni Kullanıcı 148
+New User 149: Yeni Kullanıcı 149
+New User 150: Yeni Kullanıcı 150
+New User 151: Yeni Kullanıcı 151
+New User 152: Yeni Kullanıcı 152
+New User 153: Yeni Kullanıcı 153
+New User 154: Yeni Kullanıcı 154
+New User 155: Yeni Kullanıcı 155
+New User 156: Yeni Kullanıcı 156
+New User 157: Yeni Kullanıcı 157
+New User 158: Yeni Kullanıcı 158
+New User 159: Yeni Kullanıcı 159
+New User 160: Yeni Kullanıcı 160
+New User 161: Yeni Kullanıcı 161
+New User 162: Yeni Kullanıcı 162
+New User 163: Yeni Kullanıcı 163
+New User 164: Yeni Kullanıcı 164
+New User 165: Yeni Kullanıcı 165
+New User 166: Yeni Kullanıcı 166
+New User 167: Yeni Kullanıcı 167
+New User 168: Yeni Kullanıcı 168
+New User 169: Yeni Kullanıcı 169
+New User 170: Yeni Kullanıcı 170
+New User 171: Yeni Kullanıcı 171
+New User 172: Yeni Kullanıcı 172
+New User 173: Yeni Kullanıcı 173
+New User 174: Yeni Kullanıcı 174
+New User 175: Yeni Kullanıcı 175
+New User 176: Yeni Kullanıcı 176
+New User 177: Yeni Kullanıcı 177
+New User 178: Yeni Kullanıcı 178
+New User 179: Yeni Kullanıcı 179
+New User 180: Yeni Kullanıcı 180
+New User 181: Yeni Kullanıcı 181
+New User 182: Yeni Kullanıcı 182
+New User 183: Yeni Kullanıcı 183
+New User 184: Yeni Kullanıcı 184
+New User 185: Yeni Kullanıcı 185
+New User 186: Yeni Kullanıcı 186
+New User 187: Yeni Kullanıcı 187
+New User 188: Yeni Kullanıcı 188
+New User 189: Yeni Kullanıcı 189
+New User 190: Yeni Kullanıcı 190
+New User 191: Yeni Kullanıcı 191
+New User 192: Yeni Kullanıcı 192
+New User 193: Yeni Kullanıcı 193
+New User 194: Yeni Kullanıcı 194
+New User 195: Yeni Kullanıcı 195
+New User 196: Yeni Kullanıcı 196
+New User 197: Yeni Kullanıcı 197
+New User 198: Yeni Kullanıcı 198
+New User 199: Yeni Kullanıcı 199
+New User 200: Yeni Kullanıcı 200
+New User 201: Yeni Kullanıcı 201
+New User 202: Yeni Kullanıcı 202
+New User 203: Yeni Kullanıcı 203
+New User 204: Yeni Kullanıcı 204
+New User 205: Yeni Kullanıcı 205
+New User 206: Yeni Kullanıcı 206
+New User 207: Yeni Kullanıcı 207
+New User 208: Yeni Kullanıcı 208
+New User 209: Yeni Kullanıcı 209
+New User 21: Yeni Kullanıcı 21
+New User 210: Yeni Kullanıcı 210
+New User 211: Yeni Kullanıcı 211
+New User 212: Yeni Kullanıcı 212
+New User 213: Yeni Kullanıcı 213
+New User 214: Yeni Kullanıcı 214
+New User 215: Yeni Kullanıcı 215
+New User 216: Yeni Kullanıcı 216
+New User 217: Yeni Kullanıcı 217
+New User 218: Yeni Kullanıcı 218
+New User 219: Yeni Kullanıcı 219
+New User 22: Yeni Kullanıcı 22
+New User 220: Yeni Kullanıcı 220
+New User 221: Yeni Kullanıcı 221
+New User 222: Yeni Kullanıcı 222
+New User 223: Yeni Kullanıcı 223
+New User 224: Yeni Kullanıcı 224
+New User 225: Yeni Kullanıcı 225
+New User 226: Yeni Kullanıcı 226
+New User 227: Yeni Kullanıcı 227
+New User 228: Yeni Kullanıcı 228
+New User 229: Yeni Kullanıcı 229
+New User 23: Yeni Kullanıcı 23
+New User 230: Yeni Kullanıcı 230
+New User 231: Yeni Kullanıcı 231
+New User 232: Yeni Kullanıcı 232
+New User 233: Yeni Kullanıcı 233
+New User 234: Yeni Kullanıcı 234
+New User 235: Yeni Kullanıcı 235
+New User 236: Yeni Kullanıcı 236
+New User 237: Yeni Kullanıcı 237
+New User 238: Yeni Kullanıcı 238
+New User 239: Yeni Kullanıcı 239
+New User 24: Yeni Kullanıcı 24
+New User 240: Yeni Kullanıcı 240
+New User 241: Yeni Kullanıcı 241
+New User 242: Yeni Kullanıcı 242
+New User 243: Yeni Kullanıcı 243
+New User 244: Yeni Kullanıcı 244
+New User 245: Yeni Kullanıcı 245
+New User 246: Yeni Kullanıcı 246
+New User 247: Yeni Kullanıcı 247
+New User 248: Yeni Kullanıcı 248
+New User 249: Yeni Kullanıcı 249
+New User 25: Yeni Kullanıcı 25
+New User 250: Yeni Kullanıcı 250
+New User 251: Yeni Kullanıcı 251
+New User 252: Yeni Kullanıcı 252
+New User 253: Yeni Kullanıcı 253
+New User 254: Yeni Kullanıcı 254
+New User 255: Yeni Kullanıcı 255
+New User 256: Yeni Kullanıcı 256
+New User 257: Yeni Kullanıcı 257
+New User 258: Yeni Kullanıcı 258
+New User 259: Yeni Kullanıcı 259
+New User 26: Yeni Kullanıcı 26
+New User 260: Yeni Kullanıcı 260
+New User 261: Yeni Kullanıcı 261
+New User 262: Yeni Kullanıcı 262
+New User 263: Yeni Kullanıcı 263
+New User 264: Yeni Kullanıcı 264
+New User 265: Yeni Kullanıcı 265
+New User 266: Yeni Kullanıcı 266
+New User 267: Yeni Kullanıcı 267
+New User 268: Yeni Kullanıcı 268
+New User 269: Yeni Kullanıcı 269
+New User 27: Yeni Kullanıcı 27
+New User 270: Yeni Kullanıcı 270
+New User 271: Yeni Kullanıcı 271
+New User 272: Yeni Kullanıcı 272
+New User 273: Yeni Kullanıcı 273
+New User 274: Yeni Kullanıcı 274
+New User 275: Yeni Kullanıcı 275
+New User 276: Yeni Kullanıcı 276
+New User 277: Yeni Kullanıcı 277
+New User 278: Yeni Kullanıcı 278
+New User 279: Yeni Kullanıcı 279
+New User 28: Yeni Kullanıcı 28
+New User 280: Yeni Kullanıcı 280
+New User 281: Yeni Kullanıcı 281
+New User 282: Yeni Kullanıcı 282
+New User 283: Yeni Kullanıcı 283
+New User 284: Yeni Kullanıcı 284
+New User 285: Yeni Kullanıcı 285
+New User 286: Yeni Kullanıcı 286
+New User 287: Yeni Kullanıcı 287
+New User 288: Yeni Kullanıcı 288
+New User 289: Yeni Kullanıcı 289
+New User 29: Yeni Kullanıcı 29
+New User 290: Yeni Kullanıcı 290
+New User 291: Yeni Kullanıcı 291
+New User 292: Yeni Kullanıcı 292
+New User 293: Yeni Kullanıcı 293
+New User 294: Yeni Kullanıcı 294
+New User 295: Yeni Kullanıcı 295
+New User 296: Yeni Kullanıcı 296
+New User 297: Yeni Kullanıcı 297
+New User 298: Yeni Kullanıcı 298
+New User 299: Yeni Kullanıcı 299
+New User 30: Yeni Kullanıcı 30
+New User 300: Yeni Kullanıcı 300
+New User 301: Yeni Kullanıcı 301
+New User 302: Yeni Kullanıcı 302
+New User 303: Yeni Kullanıcı 303
+New User 304: Yeni Kullanıcı 304
+New User 305: Yeni Kullanıcı 305
+New User 306: Yeni Kullanıcı 306
+New User 307: Yeni Kullanıcı 307
+New User 308: Yeni Kullanıcı 308
+New User 309: Yeni Kullanıcı 309
+New User 31: Yeni Kullanıcı 31
+New User 310: Yeni Kullanıcı 310
+New User 311: Yeni Kullanıcı 311
+New User 312: Yeni Kullanıcı 312
+New User 313: Yeni Kullanıcı 313
+New User 314: Yeni Kullanıcı 314
+New User 315: Yeni Kullanıcı 315
+New User 316: Yeni Kullanıcı 316
+New User 317: Yeni Kullanıcı 317
+New User 318: Yeni Kullanıcı 318
+New User 319: Yeni Kullanıcı 319
+New User 32: Yeni Kullanıcı 32
+New User 320: Yeni Kullanıcı 320
+New User 321: Yeni Kullanıcı 321
+New User 322: Yeni Kullanıcı 322
+New User 323: Yeni Kullanıcı 323
+New User 324: Yeni Kullanıcı 324
+New User 325: Yeni Kullanıcı 325
+New User 326: Yeni Kullanıcı 326
+New User 327: Yeni Kullanıcı 327
+New User 328: Yeni Kullanıcı 328
+New User 329: Yeni Kullanıcı 329
+New User 33: Yeni Kullanıcı 33
+New User 330: Yeni Kullanıcı 330
+New User 331: Yeni Kullanıcı 331
+New User 332: Yeni Kullanıcı 332
+New User 333: Yeni Kullanıcı 333
+New User 334: Yeni Kullanıcı 334
+New User 335: Yeni Kullanıcı 335
+New User 336: Yeni Kullanıcı 336
+New User 337: Yeni Kullanıcı 337
+New User 338: Yeni Kullanıcı 338
+New User 339: Yeni Kullanıcı 339
+New User 34: Yeni Kullanıcı 34
+New User 340: Yeni Kullanıcı 340
+New User 341: Yeni Kullanıcı 341
+New User 342: Yeni Kullanıcı 342
+New User 343: Yeni Kullanıcı 343
+New User 344: Yeni Kullanıcı 344
+New User 345: Yeni Kullanıcı 345
+New User 346: Yeni Kullanıcı 346
+New User 347: Yeni Kullanıcı 347
+New User 348: Yeni Kullanıcı 348
+New User 349: Yeni Kullanıcı 349
+New User 35: Yeni Kullanıcı 35
+New User 350: Yeni Kullanıcı 350
+New User 351: Yeni Kullanıcı 351
+New User 352: Yeni Kullanıcı 352
+New User 353: Yeni Kullanıcı 353
+New User 354: Yeni Kullanıcı 354
+New User 355: Yeni Kullanıcı 355
+New User 356: Yeni Kullanıcı 356
+New User 357: Yeni Kullanıcı 357
+New User 358: Yeni Kullanıcı 358
+New User 359: Yeni Kullanıcı 359
+New User 36: Yeni Kullanıcı 36
+New User 360: Yeni Kullanıcı 360
+New User 361: Yeni Kullanıcı 361
+New User 362: Yeni Kullanıcı 362
+New User 363: Yeni Kullanıcı 363
+New User 364: Yeni Kullanıcı 364
+New User 365: Yeni Kullanıcı 365
+New User 366: Yeni Kullanıcı 366
+New User 367: Yeni Kullanıcı 367
+New User 368: Yeni Kullanıcı 368
+New User 369: Yeni Kullanıcı 369
+New User 37: Yeni Kullanıcı 37
+New User 370: Yeni Kullanıcı 370
+New User 371: Yeni Kullanıcı 371
+New User 372: Yeni Kullanıcı 372
+New User 373: Yeni Kullanıcı 373
+New User 374: Yeni Kullanıcı 374
+New User 375: Yeni Kullanıcı 375
+New User 376: Yeni Kullanıcı 376
+New User 377: Yeni Kullanıcı 377
+New User 378: Yeni Kullanıcı 378
+New User 379: Yeni Kullanıcı 379
+New User 38: Yeni Kullanıcı 38
+New User 380: Yeni Kullanıcı 380
+New User 381: Yeni Kullanıcı 381
+New User 382: Yeni Kullanıcı 382
+New User 383: Yeni Kullanıcı 383
+New User 384: Yeni Kullanıcı 384
+New User 385: Yeni Kullanıcı 385
+New User 386: Yeni Kullanıcı 386
+New User 387: Yeni Kullanıcı 387
+New User 388: Yeni Kullanıcı 388
+New User 389: Yeni Kullanıcı 389
+New User 39: Yeni Kullanıcı 39
+New User 390: Yeni Kullanıcı 390
+New User 391: Yeni Kullanıcı 391
+New User 392: Yeni Kullanıcı 392
+New User 393: Yeni Kullanıcı 393
+New User 394: Yeni Kullanıcı 394
+New User 395: Yeni Kullanıcı 395
+New User 396: Yeni Kullanıcı 396
+New User 397: Yeni Kullanıcı 397
+New User 398: Yeni Kullanıcı 398
+New User 399: Yeni Kullanıcı 399
+New User 40: Yeni Kullanıcı 40
+New User 400: Yeni Kullanıcı 400
+New User 401: Yeni Kullanıcı 401
+New User 402: Yeni Kullanıcı 402
+New User 403: Yeni Kullanıcı 403
+New User 404: Yeni Kullanıcı 404
+New User 405: Yeni Kullanıcı 405
+New User 406: Yeni Kullanıcı 406
+New User 407: Yeni Kullanıcı 407
+New User 408: Yeni Kullanıcı 408
+New User 409: Yeni Kullanıcı 409
+New User 41: Yeni Kullanıcı 41
+New User 410: Yeni Kullanıcı 410
+New User 411: Yeni Kullanıcı 411
+New User 412: Yeni Kullanıcı 412
+New User 413: Yeni Kullanıcı 413
+New User 414: Yeni Kullanıcı 414
+New User 415: Yeni Kullanıcı 415
+New User 416: Yeni Kullanıcı 416
+New User 417: Yeni Kullanıcı 417
+New User 418: Yeni Kullanıcı 418
+New User 419: Yeni Kullanıcı 419
+New User 42: Yeni Kullanıcı 42
+New User 420: Yeni Kullanıcı 420
+New User 421: Yeni Kullanıcı 421
+New User 422: Yeni Kullanıcı 422
+New User 423: Yeni Kullanıcı 423
+New User 424: Yeni Kullanıcı 424
+New User 425: Yeni Kullanıcı 425
+New User 426: Yeni Kullanıcı 426
+New User 427: Yeni Kullanıcı 427
+New User 428: Yeni Kullanıcı 428
+New User 429: Yeni Kullanıcı 429
+New User 43: Yeni Kullanıcı 43
+New User 430: Yeni Kullanıcı 430
+New User 431: Yeni Kullanıcı 431
+New User 432: Yeni Kullanıcı 432
+New User 433: Yeni Kullanıcı 433
+New User 434: Yeni Kullanıcı 434
+New User 435: Yeni Kullanıcı 435
+New User 436: Yeni Kullanıcı 436
+New User 437: Yeni Kullanıcı 437
+New User 438: Yeni Kullanıcı 438
+New User 439: Yeni Kullanıcı 439
+New User 44: Yeni Kullanıcı 44
+New User 440: Yeni Kullanıcı 440
+New User 441: Yeni Kullanıcı 441
+New User 442: Yeni Kullanıcı 442
+New User 443: Yeni Kullanıcı 443
+New User 444: Yeni Kullanıcı 444
+New User 445: Yeni Kullanıcı 445
+New User 446: Yeni Kullanıcı 446
+New User 447: Yeni Kullanıcı 447
+New User 448: Yeni Kullanıcı 448
+New User 449: Yeni Kullanıcı 449
+New User 45: Yeni Kullanıcı 45
+New User 450: Yeni Kullanıcı 450
+New User 451: Yeni Kullanıcı 451
+New User 452: Yeni Kullanıcı 452
+New User 453: Yeni Kullanıcı 453
+New User 454: Yeni Kullanıcı 454
+New User 455: Yeni Kullanıcı 455
+New User 456: Yeni Kullanıcı 456
+New User 457: Yeni Kullanıcı 457
+New User 458: Yeni Kullanıcı 458
+New User 459: Yeni Kullanıcı 459
+New User 46: Yeni Kullanıcı 46
+New User 460: Yeni Kullanıcı 460
+New User 461: Yeni Kullanıcı 461
+New User 462: Yeni Kullanıcı 462
+New User 463: Yeni Kullanıcı 463
+New User 464: Yeni Kullanıcı 464
+New User 465: Yeni Kullanıcı 465
+New User 466: Yeni Kullanıcı 466
+New User 467: Yeni Kullanıcı 467
+New User 468: Yeni Kullanıcı 468
+New User 469: Yeni Kullanıcı 469
+New User 47: Yeni Kullanıcı 47
+New User 470: Yeni Kullanıcı 470
+New User 471: Yeni Kullanıcı 471
+New User 472: Yeni Kullanıcı 472
+New User 473: Yeni Kullanıcı 473
+New User 474: Yeni Kullanıcı 474
+New User 475: Yeni Kullanıcı 475
+New User 476: Yeni Kullanıcı 476
+New User 477: Yeni Kullanıcı 477
+New User 478: Yeni Kullanıcı 478
+New User 479: Yeni Kullanıcı 479
+New User 48: Yeni Kullanıcı 48
+New User 480: Yeni Kullanıcı 480
+New User 481: Yeni Kullanıcı 481
+New User 482: Yeni Kullanıcı 482
+New User 483: Yeni Kullanıcı 483
+New User 484: Yeni Kullanıcı 484
+New User 485: Yeni Kullanıcı 485
+New User 486: Yeni Kullanıcı 486
+New User 487: Yeni Kullanıcı 487
+New User 488: Yeni Kullanıcı 488
+New User 489: Yeni Kullanıcı 489
+New User 49: Yeni Kullanıcı 49
+New User 490: Yeni Kullanıcı 490
+New User 491: Yeni Kullanıcı 491
+New User 492: Yeni Kullanıcı 492
+New User 493: Yeni Kullanıcı 493
+New User 494: Yeni Kullanıcı 494
+New User 495: Yeni Kullanıcı 495
+New User 496: Yeni Kullanıcı 496
+New User 497: Yeni Kullanıcı 497
+New User 498: Yeni Kullanıcı 498
+New User 499: Yeni Kullanıcı 499
+New User 50: Yeni Kullanıcı 50
+New User 500: Yeni Kullanıcı 500
+New User 501: Yeni Kullanıcı 501
+New User 502: Yeni Kullanıcı 502
+New User 503: Yeni Kullanıcı 503
+New User 504: Yeni Kullanıcı 504
+New User 505: Yeni Kullanıcı 505
+New User 506: Yeni Kullanıcı 506
+New User 507: Yeni Kullanıcı 507
+New User 508: Yeni Kullanıcı 508
+New User 509: Yeni Kullanıcı 509
+New User 51: Yeni Kullanıcı 51
+New User 510: Yeni Kullanıcı 510
+New User 511: Yeni Kullanıcı 511
+New User 512: Yeni Kullanıcı 512
+New User 513: Yeni Kullanıcı 513
+New User 514: Yeni Kullanıcı 514
+New User 515: Yeni Kullanıcı 515
+New User 516: Yeni Kullanıcı 516
+New User 517: Yeni Kullanıcı 517
+New User 518: Yeni Kullanıcı 518
+New User 519: Yeni Kullanıcı 519
+New User 52: Yeni Kullanıcı 52
+New User 520: Yeni Kullanıcı 520
+New User 53: Yeni Kullanıcı 53
+New User 54: Yeni Kullanıcı 54
+New User 55: Yeni Kullanıcı 55
+New User 56: Yeni Kullanıcı 56
+New User 57: Yeni Kullanıcı 57
+New User 58: Yeni Kullanıcı 58
+New User 59: Yeni Kullanıcı 59
+New User 60: Yeni Kullanıcı 60
+New User 61: Yeni Kullanıcı 61
+New User 62: Yeni Kullanıcı 62
+New User 63: Yeni Kullanıcı 63
+New User 64: Yeni Kullanıcı 64
+New User 65: Yeni Kullanıcı 65
+New User 66: Yeni Kullanıcı 66
+New User 67: Yeni Kullanıcı 67
+New User 68: Yeni Kullanıcı 68
+New User 69: Yeni Kullanıcı 69
+New User 70: Yeni Kullanıcı 70
+New User 71: Yeni Kullanıcı 71
+New User 72: Yeni Kullanıcı 72
+New User 73: Yeni Kullanıcı 73
+New User 74: Yeni Kullanıcı 74
+New User 75: Yeni Kullanıcı 75
+New User 76: Yeni Kullanıcı 76
+New User 77: Yeni Kullanıcı 77
+New User 78: Yeni Kullanıcı 78
+New User 79: Yeni Kullanıcı 79
+New User 80: Yeni Kullanıcı 80
+New User 81: Yeni Kullanıcı 81
+New User 82: Yeni Kullanıcı 82
+New User 83: Yeni Kullanıcı 83
+New User 84: Yeni Kullanıcı 84
+New User 85: Yeni Kullanıcı 85
+New User 86: Yeni Kullanıcı 86
+New User 87: Yeni Kullanıcı 87
+New User 88: Yeni Kullanıcı 88
+New User 89: Yeni Kullanıcı 89
+New User 90: Yeni Kullanıcı 90
+New User 91: Yeni Kullanıcı 91
+New User 92: Yeni Kullanıcı 92
+New User 93: Yeni Kullanıcı 93
+New User 94: Yeni Kullanıcı 94
+New User 95: Yeni Kullanıcı 95
+New User 96: Yeni Kullanıcı 96
+New User 97: Yeni Kullanıcı 97
+New User 98: Yeni Kullanıcı 98
+New User 99: Yeni Kullanıcı 99
+New Values: Yeni Değerler
+New York: New York
+New York - 10001: New York - 10001
+New York - 10001ender: New York - 10001ender
+New Yorkender: New Yorklu
+NextPreset: SonrakiÖn Ayar
+NextToSearchBox: Arama Kutusuna Sonrakini
+NextTrack: Sonraki Parça
+Niagara Engraved: Niagara Kazınmış
+Niagara Solid: Niagara Katı
+NightOwl: Gece Kuşu
+nl-AW: Felemenkçe (Aruba)
+nl-BE: Felemenkçe (Belçika)
+nl-BQ: Felemenkçe (Bonaire, Sint Eustatius ve Saba)
+nl-CW: Felemenkçe (Curaçao)
+nl-NL: Felemenkçe (Hollanda)
+nl-SR: Felemenkçe (Surinam)
+nl-SX: Felemenkçe (Sint Maarten)
+nmg-CM: Kwasio (Kamerun)
+nn-NO: Norveç Nynorsk (Norveç)
+NnfxDark: NnfxKaranlık
+NnfxLight: NnfxIşık
+nnh-CM: Ngiemboon (Kamerun)
+No: Hayır
+No address: Adres yok
+No Allowed Actions: İzin Verilen Eylem Yok
+No longer update automatically: Artık otomatik olarak güncellenmiyor
+No notifications: Bildirim yok
+No space available: Boş yer yok
+NoChips: Cips Yok
+NodeBorderRadius: NodeBorderRadius
+NodePadding: Düğüm Doldurma
+NoHeader: Başlık Yok
+NoIcon: Simge Yok
+NoModalDialogs: NoModalDiyalogları
+none: hiç kimse
+None: Hiç kimse
+Nord: Kuzey
+NordBase16: Kuzey Üssü16
+Normal: Normal
+Not Allowed to add or delete Administrator Role if you have not this role.: Bu role sahip değilseniz Yönetici Rolü eklemenize veya silmenize izin verilmez.
+Not allowed to Delete this user: Bu kullanıcının silinmesine izin verilmiyor
+Not Allowed.: İzin verilmiyor.
+Not connected: Bağlı değil
+Not Modal Dialogs: Modal Olmayan İletişim Kutuları
+Note - Media options can't changed after a screen is selected: Not - Bir ekran seçildikten sonra medya seçenekleri değiştirilemez
+NoteLabels: Not Etiketleri
+NotFoundMessage: Aradığınız sayfa mevcut değil.
+Notice: Farkına varmak
+Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Bu yöntemi kullanırsanız, yöntemin bulunduğu yerde bir geri çağırma başvurusu belirtebileceğinize dikkat edin, bunu yapmazsanız başvuru iletişim kutusunun kendisidir ve bu durumda yöntemin DialogClass'ınızda olması gerekir
+Notifications: Bildirim
+Nov: Kasım
+NovaBase16: NovaBase16
+NoWrap: Sarma Yok
+npm-example-0.0.20.tgz: npm-örnek-0.0.20.tgz
+nqo-GN: N'Ko (Gine)
+nr-ZA: Güney Ndebele (Güney Afrika)
+nso-ZA: Sesotho sa Leboa (Güney Afrika)
+Nuget Package source: Nuget Paket kaynağı
+Nullable enum: Null atanabilir sabit listesi
+Nullable Flags Enum: Null Atanabilir Bayraklar Sabit Listesi
+Number: Sayı
+numeric: Sayısal
+nus-SS: Nuer (Güney Sudan)
+nyn-UG: Nyankole (Uganda)
+Object Edit in Dialog: İletişim Kutusunda Nesne Düzenleme
+ObjectEdit: NesneDüzenle
+ObjectEditCG: NesneDüzenleCG
+ObjectEditCondition: ObjectEditKoşul
+ObjectEditConfigured: ObjectEditYapılandırılmış
+ObjectEditFile: NesneDüzenleme Dosyası
+ObjectEditInDialog: ObjectEditInDialog
+ObjectEditList: NesneDüzenleme Listesi
+ObjectEditPicker: ObjectEditPicker
+ObjectEditTabs: NesneDüzenleme Sekmeleri
+ObjectEditVirtualized: ObjectEditSanallaştırılmış
+OBS Virtual Camera: OBS Sanal Kamera
+Obsidian: Obsidian
+oc-FR: Oksitanca (Fransa)
+OceanBase16: Okyanus Üssü16
+OceanicnextBase16: Okyanus Sonraki Üssü16
+OCR A Extended: OCR A Genişletilmiş
+Oct: Ekim
+Official MudBlazor website: Resmi MudBlazor web sitesi
+Offline: Çevrimdışı
+OffsetX: OfsetX
+OffsetY: Kaydırır
+Ok: Tamam
+Old English Text MT: Eski İngilizce Metin MT
+Old Paint: Eski Boya
+Old paint found on a stone house door.: Taş bir evin kapısında eski boya bulundu.
+Old Values: Eski Değerler
+OldLace: Eski Dantel
+Olive: Zeytin
+OliveDrab: Zeytin Kabuğu
+om-ET: Oromo (Etiyopya)
+om-KE: Oromo (Kenya)
+OnClickStopPropagation: OnClickStopYayılım
+OnContextMenuPreventDefault: OnContextMenuPreventDefault
+OnContextMenuStopPropagation: OnContextMenuStopYayılım
+OnCustomSelect: OnCustomSelect
+OnDefinedSelect: OnDefinedSelect
+One Drive: Tek Sürücü
+OnedarkBase16: OnedarkBase16
+OneDrive file picker component: OneDrive dosya seçici bileşeni
+OneDriveClientId: OneDriveClientId
+OneEighthOctaveBands: Sekizinci Oktav Bantları
+OneFourthOctaveBands: DörtüncüOktav Bantları
+OneLightBase16: OneLightBase16
+OneSixthOctaveBands: Altıncı Oktav Bantları
+OneThirdOctaveBands: Üçte BirOktav Bantları
+OneTwelfthOctaveBands: On İkinci Bir Oktav Bantları
+OneTwentyFourthOctaveBands: BirYirmi Dördüncü Oktav Bantları
+Online: Çevrimiçi
+Only Selected Group (Export): Yalnızca Seçilen Grup (Dışa Aktar)
+OnlyValidateIfDirty: OnlyValidateIfDirty
+OnPlay: Oyun İçi
+Onyx: Oniks
+Opacity: Opak -lık
+OpacityNotFocused: Opaklık Odaklanmamış
+Open: Açık
+Open in new browser tab: Yeni tarayıcı sekmesinde aç
+Open now: Açık
+Open Url {0}: URL'yi Aç {0}
+Open Url {0} in a new browser tab: URL {0} yeni bir tarayıcı sekmesinde aç
+OpenIcon: Açık Simge
+Optima: Optima
+Options: Seçenekler
+or-IN: Odia (Hindistan)
+Orange: Portakal
+OrangeRed: Turuncu Kırmızı
+Orchid: Orkide
+Orientation: Yönelim
+Original Code Gator DynamicForm: Orijinal Kod Timsah Dinamik Formu
+os-GE: Ossetic (Gürcistan)
+os-RU: Ossetic (Rusya)
+Osaka: Osaka
+Osaka - 530-0001: Osaka - 530-0001
+Osaka - 530-0001ender: Osaka - 530-0001ender
+Oscar Wilde: Oscar Wilde
+Other: Diğer
+Other Components: Diğer Bileşenler
+OtherAddresses: DiğerAdresler
+Otherwise the full image will be downloaded: Aksi takdirde resmin tamamı indirilecektir
+Ottawa: Ottawa
+Ottawa - K1A 0A1: Ottawa - K1A 0A1
+Ottawa - K1A 0A1ender: Ottawa - K1A 0A1ender
+Out: Dışarıya
+OuterClass: Dış Sınıf
+OutlineBars: Anahat Çubukları
+Outlined: Özet -lenen
+OutrunDarkBase16: OutrunDarkBase16
+Outset: Başlangıç
+OverflowBehavior: Taşma Davranışı
+Overlay: Kaplama
+OverlayChildContent: OverlayChildContent
+OverlayDark: Kaplama Koyu
+OverlayLight: Kaplama Işığı
+overline: Overline
+Overline: Overline
+OverscanCount: Aşırı Tarama Sayısı
+Overview: Genel bakış
+Owner: Sahip
+pa-Arab-PK: Pencapça (Arapça, Pakistan)
+pa-IN: Pencap (Hindistan)
+Palatino: Palatine
+Palatino Linotype: Palatino Linotipi
+PaleGreen: Soluk Yeşil
+Palette: Palet
+PaletteDark: Palet Koyu
+PaletteIcon: Palet Simgesi
+PaletteLight: Palet Işığı
+PaleTurquoise: Soluk Turkuaz
+PaleVioletRed: Soluk MenekşeKırmızı
+Pan: Centilmen
+pap-029: Papiamento (Karayipler)
+PapayaWhip: Papaya Kırbaç
+Paper: Kâğıt
+PapercolorDarkBase16: Kağıt RengiKoyuTaban16
+PapercolorLightBase16: PapercolorLightBase16
+Papyrus: Papirüs
+ParaisoBase16: ParaisoBase16
+ParaisoDark: ParaisoDark
+ParaisoLight: ParaisoLight
+ParametersForSubControls: Alt Kontroller İçin Parametreler
+Parchment: Parşömen
+Paris: Paris
+Paris - 75001: Paris - 75001
+Paris - 75001ender: Paris - 75001ender
+PasqueBase16: PasqueBase16
+Password: Parola
+Password Changed!: Şifre Değiştirildi!
+Password Confirmation: Şifre Onayı
+Password Confirmation is required!: Şifre Onayı gereklidir!
+Password is required!: Şifre gerekli!
+Password must be at least of length 8: Şifre en az 8 uzunluğunda olmalıdır
+Password must contain at least one capital letter: Şifre en az bir büyük harf içermelidir
+Password must contain at least one digit: Şifre en az bir rakam içermelidir
+Password must contain at least one lowercase letter: Şifre en az bir küçük harf içermelidir
+Password Reset Mail has been sent to your authorized Email.: Şifre Sıfırlama Maili yetkili E-postanıza gönderildi.
+Password Reset Successful!: Şifre Sıfırlama Başarılı!
+Passwords don't match: Şifreler eşleşmiyor
+PathSeparator: Yol Ayırıcı
+Pattern: Desen
+pcm-Latn-NG: Nijeryalı Pidgin (Latince, Nijerya)
+PeachPuff: Şeftali Pufu
+PeakLine: Zirve Çizgisi
+Penelope Cruz: Penelope Cruz
+Percentage: Yüzde
+Permission Name: İzin Adı
+Perpetua: Sürekli
+Persistent: Kalıcı
+Personal: Kişisel
+Perspective3d: Perspektif3d
+Peru: Peru
+Peter Griffin: Peter Griffin
+PhdBase16: Doktora Temeli16
+Philadelphia: Philadelphia
+Philadelphia - 19019: Philadelphia - 19019
+Philadelphia - 19019ender: Philadelphia - 19019ender
+Philadelphiaender: Philadelphiaender Belediyesi
+Phoenix: Anka
+Phoenix - 85001: Anka kuşu - 85001
+Phoenix - 85001ender: Anka kuşu - 85001ender
+Phone Number: Telefon numarası
+Phone number {0} is already registered.: Telefon numarası {0} zaten kayıtlı.
+PhoneNumber: Telefon Numarası
+Picas: Maça
+Pick Item: Eşya Seç
+Pick Items: Öğeleri Seç
+Pick one user: Bir kullanıcı seçin
+Pick some users: Bazı kullanıcılar seçin
+Picker: Seçici
+Picker appearance: Seçici görünümü
+PickerHeight: SeçiciYüksekliği
+PickerStyle: Seçici Stili
+PickerVariant: SeçiciVaryantı
+PickerWidth: PickerWidth
+PickFromDropBox: DropBox'tan Seç
+PickFromGoogleDrive: GoogleDrive'dan Seç
+PickFromOneDrive: OneDrive'dan Seç
+PicoBase16: PicoBase16
+Pie: Ayak
+Pink: Pembe
+Pixels: Piksel
+pl-PL: Lehçe (Polonya)
+Placeholder: Yer tutucu
+Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Çevrimiçi bir Kod Düzenleyicide MudBlazor ve MudBlazor.Extensions ile oynayın
+Playbill: Playbill
+Player: Oyuncu
+Please confirm your account by <a href='{0}'>clicking here</a>.: "Lütfen hesabınızı şu şekilde onaylayın: <a href='{0}'>buraya tıklayın</a>."
+Please enter your name: Lütfen adınızı girin
+Please reset your password by <a href='{0}'>clicking here</a>.: Lütfen şifrenizi <a href='{0}' ile sıfırlayın>buraya tıklayın</a>.
+Please type {0} to confirm edit: Düzenlemeyi onaylamak için lütfen {0} yazın
+Please upload your personal qualifications and references that confirm your person and qualification: Lütfen kişisel niteliklerinizi ve kişiliğinizi ve yeterliliğinizi doğrulayan referanslarınızı yükleyin
+Please Wait: Lütfen bekleyin
+PleaseSelect: Lütfen Seçiniz
+Plum: Erik
+Points: Nokta
+PointsOfInterest: İlgi Çekici Noktalar
+Pojoaque: Pojoak
+Poor Richard: Zavallı Richard
+PopBase16: PopBase16
+Popover: Açılır
+PopoverAnimation: Popover Animasyonu
+PopoverAnimationPosition: PopoverAnimationPosition
+PopoverAnimationTimingFunction: PopoverAnimationTimingİşlevi
+PopoverClass: Popover Sınıfı
+PopupEveryTime: Her Zaman Açılır
+PopupOnlyOnce: PopupOnlyOnce
+PopverAnimation: PopverAnimasyon
+PorpleBase16: PorpleBase16
+Portrait: Portre
+Position: Konum
+Position/Size Sample: Pozisyon/Boyut Örneği
+PostalCode: Posta kodu
+PowderBlue: Pudra Mavisi
+Powerful component to edit a set of items and their properties.: Bir dizi öğeyi ve özelliklerini düzenlemek için güçlü bileşen.
+Powerful component to edit an object and its properties.: Bir nesneyi ve özelliklerini düzenlemek için güçlü bileşen.
+Powerful UI Editor for json, xml or yaml content now also as viewer for MudExFileDisplay: Json, xml veya yaml içeriği için güçlü UI Düzenleyicisi artık MudExFileDisplay için de görüntüleyici olarak
+Preferred way on MudExTextField: MudExTextField'da tercih edilen yol
+Preferred way on MudExTextField with For and ChildContent: MudExTextField'da For ve ChildContent ile tercih edilen yol
+PresetListBehaviour: PresetListBehavior
+PresetListClass: PresetListSınıfı
+PresetListMode: PresetListMode
+PresetListPosition: PresetListPosition
+PresetListToggleButtonPosition: PresetListToggleButtonPosition
+Presets: Önayarları
+Preview: Önizleme
+PreviewButtonSize: PreviewButtonSize
+PreviewFont: Önizleme Yazı Tipi
+PreviewIcon: Önizleme Simgesi
+PreviewIconColor: ÖnizlemeSimgesiRenk
+PreviewImageInPresetList: PreviewImageInPresetList
+PreviewImageSize: PreviewImageSize
+PreviewInIframe: ÖnizlemeInIframe
+PreviewMode: Önizleme Modu
+PreviousPreset: ÖncekiÖn Ayar
+PreviousTrack: ÖncekiParça
+prg-001: Prusya (Dünya)
+Primary: Birincil
+Primary Key: Birincil anahtar
+PrimaryContrastText: BirincilKarşıtMetin
+PrimaryDarken: BirincilKarartma
+PrimaryLighten: BirincilHafifletme
+Print: Yazdırmak
+PrintButtonIcon: PrintButtonSimgesi
+Pristina: Priştine
+Product Deleted: Ürün silindi!
+Product Not Found!: Ürün bulunamadı!
+Product Saved: Ürün Kaydedildi!
+Product Updated: Ürün Güncellendi!
+Products: Ürünler
+Products exported: İhracat yapılan ürünler
+Profile: Profil
+Profile Details: Profil Detayları
+Profile picture added.: Profil resmi eklendi.
+Profile picture deleted.: Profil resmi silindi.
+Profile updated: Profil güncellendi
+ProgramingSkills: Programlama Becerileri
+Property1: Özellik1
+Property10: Özellik10
+Property11: Özellik11
+Property12: Özellik12
+Property13: Mülk13
+Property14: Özellik14
+Property15: Özellik15
+Property16: Özellik16
+Property17: Özellik17
+Property18: Özellik18
+Property19: Özellik19
+Property2: Özellik2
+Property20: Mülk20
+Property21: Mülk21
+Property22: Mülk22
+Property23: Mülk23
+Property24: Mülk24
+Property25: Mülk25
+Property26: Mülk26
+Property27: Mülk27
+Property28: Property28
+Property29: Özellik29
+Property3: Özellik3
+Property30: Özellik30
+Property31: Özellik31
+Property32: Mülk32
+Property33: Özellik33
+Property34: Mülk34
+Property35: Mülk35
+Property36: Mülk36
+Property37: Emlak37
+Property38: Özellik38
+Property39: Mülk39
+Property4: Özellik4
+Property40: Mülk40
+Property41: Özellik41
+Property42: Özellik42
+Property43: Mülk43
+Property44: Emlak44
+Property45: Mülk45
+Property5: Özellik5
+Property6: Özellik6
+Property7: Özellik7
+Property8: Özellik8
+Property9: Özellik9
+prs-AF: prs (Afganistan)
+ps-AF: Peştuca (Afganistan)
+ps-PK: Peştuca (Pakistan)
+PseudoCss: Sözde Css
+pt-AO: Portekizce (Angola)
+pt-BR: Portekizce (Brezilya)
+pt-CH: Portekizce (İsviçre)
+pt-CV: Portekizce (Cabo Verde)
+pt-GQ: Portekizce (Ekvator Ginesi)
+pt-GW: Portekizce (Gine-Bissau)
+pt-LU: Portekizce (Lüksemburg)
+pt-MO: Portekizce (Makao ÖİB)
+pt-MZ: Portekizce (Mozambik)
+pt-PT: Portekizce (Portekiz)
+pt-ST: Portekizce (São Tomé & Príncipe)
+pt-TL: Portekizce (Doğu Timor)
+Public Profile: Genel Profil
+Pulse: Nabız
+Purebasic: Saf temel
+Purple: Mor
+QtcreatorDark: QtcreatorDark
+QtcreatorLight: QtcreatorLight
+QualiaBase16: QualiaBase16
+Qualifications and References: Nitelikler ve Referanslar
+quc-GT: Kʼicheʼ (Guatemala)
+Quentin Tarantino: Quentin Tarantino
+Quick Insights.: Hızlı Bilgiler.
+Quick Start Guide: Hızlı başlangıç Kılavuzu
+quz-BO: quz (Bolivya)
+quz-EC: quz (Ekvador)
+quz-PE: quz (Peru)
+Rachel Green: Rachel Yeşil
+Radial: Radyal
+RadialInvert: RadyalTers Çevir
+Radius: Yarıçap
+Rage Italic: Öfke İtalik
+RailscastsBase16: RailscastsBase16
+Rainbow: Gökkuşağı
+Random: Rastgele
+RandomColorUpdateDelay: RandomColorUpdateDelay
+RarArchive.rar: RarArchive.rar
+Rate: Oran
+Rate must be greater than 0: Oran 0'dan büyük olmalıdır
+Ravie: Memnun
+Read More: Devamını Oku
+Readme: Benioku
+readme.md: readme.md
+ReadOnly: Salt okunur
+Realtime Updates & Insights with SignalR.: SignalR ile Gerçek Zamanlı Güncellemeler ve İçgörüler.
+RebeccaBase16: Rebecca Tabanı16
+RebeccaPurple: RebeccaMor
+Record audio: Ses kaydı
+Record Audio: Ses kaydı
+Record Camera: Kayıt Kamerası
+Record Main Camera: Ana Kamerayı Kaydet
+Record Main Camera Lower Quality: Ana Kamerayı Daha Düşük Kalitede Kaydedin
+Record Screen: Kayıt Ekranı
+Recording: Kayıt
+RecordingAnimation: Kayıt Animasyonu
+RecordingBorderAnimation: KayıtKenarlıkAnimasyonu
+RecordingColor: Kayıt Rengi
+RecordingIcon: Kayıt Simgesi
+Red: Kırmızı
+Redirect: Yönlendirme
+Redirecting to {0}: '{0} yönlendirme'
+Redirecting...: Yönlendirme...
+ReflexAlpha: RefleksAlfa
+ReflexBright: Refleks Parlak
+ReflexFit: Refleks Uyumu
+ReflexRatio: Refleks Oranı
+Refresh: Yenilemek
+Refreshed Token.: Yenilenen Token.
+Register: Kaydolmak
+Register as: Farklı kayıt ol
+Register as {0}: '{0} olarak kaydolun'
+Register here: Buradan kaydolun
+Register New User: Yeni Kullanıcı Kaydet
+Register User: Kullanıcı Kaydı
+Registered Roles: Kayıtlı Roller
+Registered Users: Kayıtlı Kullanıcılar
+Rel: Rel
+Relative: Akraba
+RelativeToParent: Akraba-Ebeveyn
+RelativeWidth: Bağıl Genişlik
+Reload: Yeni -den yükle
+Reload Data: Verileri Yeniden Yükle
+Rem: Rem
+Remember me?: Beni hatırladın mı?
+RememberEditedOptions: EditedOptions'ı Hatırla
+Remove: Kaldırmak
+Remove All: Tümünü Kaldır
+RemoveErrorAfter: RemoveErrorAfter
+RemoveErrorOnChange: RemoveErrorOnChange
+RemoveItemButtonAlwaysRight: RemoveItemButtonAlwaysRight
+Rename: Yeniden Adlandır
+Rename backup: Yedeklemeyi yeniden adlandır
+Render with {0}: '{0} ile render alın'
+Render with MudExFileDisplayTiff: Tiff görüntüleyici ile render al
+Render with MudExFileDisplayZip: Zip görüntüleyici ile render alın
+Render with MudExImageViewer: MudExImageViewer ile Render Alın
+Render with native control: Yerel kontrolle işleme
+RenderBackLink: RenderBackLink
+RenderChipsAdditional: RenderChipsEk
+Rendered Virtualized: Sanallaştırılmış Oluşturuldu
+rendered when the item is outside the viewport.: öğe görünüm alanının dışındayken oluşturulur.
+rendered when the item is visible in the viewport.: öğe görünüm alanında görünür olduğunda oluşturulur.
+RenderHomeLink: RenderHomeLink
+RenderOnlyOnce: Yalnızca Bir Kez Oluştur
+Required: Gerekli
+RequiredError: GerekliHata
+Reset: Sıfırlama
+Reset {0}: Reset {0}
+Reset all: Tümünü sıfırla
+Reset all properties?: Tüm özellikler sıfırlansın mı?
+Reset password: Şifreyi sıfırla
+Reset Password: Şifreyi Sıfırla
+Reset to initial data: Başlangıç verilerine sıfırla
+Reset view: Görünümü sıfırla
+ResetButtonIcon: ResetButtonIcon
+ResetToDefaultFirst: ResetToDefaultFirst
+Resizeable: Yeniden boyutlandırılabilir
+ResizeMode: Yeniden Boyutlandırma Modu
+Resources: Kaynaklar
+Responsive: Duyarlı
+Restart server: Sunucuyu yeniden başlat
+Restore: Geri yüklemek
+Restore database: Veritabanını geri yükle
+Restore default: Varsayılanı geri yükle
+Restore finished: Geri yükleme tamamlandı
+Restore in progress. Please wait until the restore is finished. This can take a while.: Geri yükleme devam ediyor. Lütfen geri yükleme bitene kadar bekleyin. Bu biraz zaman alabilir.
+Revert: Geri dönmek
+RGB: RGB
+RGBA: RGBA Hakkında
+rgba(0,200,83,1): rgba(0,200,83,1)
+rgba(126,247,160,1): RGBA(126,247,160,1)
+rgba(133,135,145,1): rgba(133,135,145,1)
+rgba(157,241,250,1): RGBA(157,241,250,1)
+rgba(17,59,83,1): RGBA(17,59,83,1)
+rgba(170,0,0,1): rgba(170,0,0,1)
+rgba(18,121,66,1): RGBA(18,121,66,1)
+rgba(189,255,207,1): RGBA(189,255,207,1)
+rgba(19,184,232,1): RGBA(19,184,232,1)
+rgba(191,125,17,1): RGBA(191,125,17,1)
+rgba(20,220,113,1): RGBA(20,220,113,1)
+rgba(201,204,207,1): RGBA(201,204,207,1)
+rgba(217,152,13,1): RGBA(217,152,13,1)
+rgba(220,63,17,1): RGBA(220,63,17,1)
+rgba(23,105,142,1): RGBA(23,105,142,1)
+rgba(23,162,88,1): RGBA(23,162,88,1)
+rgba(230,233,235,1): RGBA(230,233,235,1)
+rgba(235,179,35,1): RGBA(235,179,35,1)
+rgba(244,67,54,1): RGBA(244,67,54,1)
+rgba(246,249,251,1): RGBA(246,249,251,1)
+rgba(253,210,47,1): RGBA(253,210,47,1)
+rgba(254,104,0,1): RGBA(254,104,0,1)
+rgba(255,145,2,1): RGBA(255,145,2,1)
+rgba(255,152,0,1): RGBA(255,152,0,1)
+rgba(255,179,31,1): RGBA(255,179,31,1)
+rgba(255,210,84,1): RGBA(255,210,84,1)
+rgba(255,226,115,1): RGBA(255,226,115,1)
+rgba(255,240,163,1): RGBA(255,240,163,1)
+rgba(27,189,102,1): RGBA(27,189,102,1)
+rgba(33,150,243,1): RGBA(33,150,243,1)
+rgba(39,219,245,1): RGBA(39,219,245,1)
+rgba(53,57,64,1): RGBA(53,57,64,1)
+rgba(66,66,66,1): RGBA(66,66,66,1)
+rgba(88,91,98,1): RGBA(88,91,98,1)
+rgba(9,137,194,1): rgba(9,137,194,1)
+Ridge: Sırt
+Right: Sağ
+Right part in MudExSplitPanel.: MudExSplitPanel'de sağ kısım.
+RightToLeft: Sağdan Sola
+Ripple: Dalgalanma
+RippleOpacity: DalgalanmaOpaklık
+RippleOpacitySecondary: DalgalanmaOpacityİkincil
+rm-CH: Romanş (İsviçre)
+rn-BI: Rundi (Burundi)
+ro-MD: Romence (Moldova)
+ro-RO: Romence (Romanya)
+Roboto: Robot
+Rockwell: Rockwell
+Rockwell Condensed: Rockwell Yoğunlaştırılmış
+Rockwell Extra Bold: Rockwell Ekstra Kalın
+rof-TZ: Rombo (Tanzanya)
+Role: Rol
+Role ID: Rol Kimliği
+Role Name: Rol Adı
+Roles: Rolleri
+Roles Updated: Roller Güncellendi!
+RootName: Kök Adı
+RosPineBase16: RosPineBase16
+RosPineDawnBase16: RosPineDawnBase16
+RosPineMoonBase16: RosPineMoonBase16
+RosyBrown: Gül Kahverengi
+Rotate: Döndürmek
+RoundBars: Yuvarlak Çubuklar
+Rounded: Yuvarlak
+Routeros: Yönlendiriciler
+Row: Sıra
+RowSpan: Satır Aralığı
+RowsPerPageString: Sayfa başına satır sayısı
+RoyalBlue: Kraliyet Mavisi
+ru-BY: Rusça (Beyaz Rusya)
+ru-KG: Rusça (Kırgızistan)
+ru-KZ: Rusça (Kazakistan)
+ru-MD: Rusça (Moldova)
+ru-RU: Rusça (Rusya)
+ru-UA: Rusça (Ukrayna)
+RubberBand: Lastik Bant
+RubberBandColor: Lastik Bant Rengi
+RubberBandStyle: Lastik Bant Stili
+Runic MT Condensed: Runik MT Yoğunlaştırılmış
+Runtime: Çalışma zamanı
+Russian: Rusça
+rw-RW: Kinyarwanda (Ruanda)
+rwk-TZ: Rwa (Tanzanya)
+sa-IN: Sanskritçe (Hindistan)
+SaddleBrown: Eyer Kahverengi
+SagelightBase16: Adaçayı IşığıTabanı16
+sah-RU: Saha (Rusya)
+Salmon: Somon
+Sample Card: Örnek Kart
+Sample Dialog: Örnek İletişim Kutusu
+Sample Headline: Örnek Başlık
+Sample how to use Theme Select: Tema Seçimi'nin nasıl kullanılacağına dair örnek
+Sample mega: Örnek mega
+Sample to see how you can render and use any component in a dialog as easy as possible: Bir iletişim kutusundaki herhangi bir bileşeni nasıl kolayca oluşturabileceğinizi ve kullanabileceğinizi görmek için örnek
+sample.pdf: sample.pdf
+San Antonio: San Antonio
+San Antonio - 78201: San Antonio - 78201
+San Antonio - 78201ender: San Antonio - 78201ender
+San Diego: San Diego
+San Diego - 92101: San Diego - 92101
+San Diego - 92101ender: San Diego - 92101ender
+San Jose: San Jose
+San Jose - 95101: San Jose - 95101
+San Jose - 95101ender: San Jose - 95101ender
+SandBoxIframes: Kum Kutusu Çerçeveleri
+SandcastleBase16: Kumdan KaleÜssü16
+SandyBrown: Kumlu Kahverengi
+sans-serif: sans-serif
+Sans-serif: Sans-serif
+saq-KE: Samburu (Kenya)
+sat-Olck-IN: Santali (Ol Chiki, Hindistan)
+Saturation: Doygunluk
+Save: Kurtarmak
+Save {0} Changes: '{0} Değişiklikleri kaydet'
+Save as: Farklı kaydet
+Save Changes: Değişiklikleri Kaydet
+Save image: Resmi kaydet
+Save Role: Rolü Kaydet
+Save visible area only: Yalnızca görünür alanı kaydet
+SaveButtonIcon: SaveButtonSimgesi
+saved: Kaydedilmiş!
+sbp-TZ: Sangu (Tanzanya)
+Scale: Ölçeklemek
+SchoolBook: Okul Kitabı
+Scope: Kapsam
+Screen: Ekran
+Script MT Bold: Komut Dosyası MT Kalın
+Scroll down to discover the content: İçeriği keşfetmek için aşağı kaydırın
+Scroll down to see the behavior: Davranışı görmek için aşağı kaydırın
+Scroll to top: Sayfanın başına dön
+sd-Arab-PK: Sindhi (Arapça, Pakistan)
+sd-Deva-IN: Sindhi (Devanagari, Hindistan)
+se-FI: Kuzey Sami (Finlandiya)
+se-NO: Kuzey Sami (Norveç)
+se-SE: Kuzey Sami (İsveç)
+SeaGreen: Deniz Yeşili
+search: aramak
+Search: Aramak
+Search by users: Kullanıcılara göre ara
+Search For {0} Extended Attributes: '{0} Genişletilmiş Öznitelikleri Arayın'
+Search for Brands: Marka Arayın
+Search for Document Types: Belge Türlerini Arayın
+Search For Permissions: İzinleri Arayın
+Search for Roles...: Rolleri Arayın...
+Search for Trails: Parkur Ara
+Search For User Roles: Kullanıcı Rollerini Arayın
+Search For Users: Kullanıcı Ara
+Search in New Values: Yeni Değerlerde Ara
+Search in Old Values: Eski Değerlerde Arama
+SearchBox: Arama Kutusu
+SearchBoxAdornment: Arama KutusuSüsleme
+SearchBoxAutoFocus: Arama KutusuOtomatik Odaklama
+SearchBoxBackgroundColor: SearchBoxBackgroundColor
+SearchBoxClearable: Arama KutusuTemizlenebilir
+SearchBoxPlaceholder: SearchBoxPlaceholder
+SearchBoxVariant: Arama Kutusu Varyantı
+SearchString: Arama Dizesi
+SeaShell: Kabuk
+Secondary: İkincil
+SecondaryBackgroundForNestedItemHeader: SecondaryBackgroundForNestedItemHeader
+SecondaryContrastText: İkincilKarşıtMetin
+SecondaryDarken: İkincil Karartma
+SecondaryLighten: İkincil Hafiflet
+Section 0: Bölüm 0
+Section 1: Bölüm 1
+Section 10: Bölüm 10
+Section 11: Bölüm 11
+Section 12: Bölüm 12
+Section 13: Bölüm 13
+Section 14: Bölüm 14
+Section 15: Bölüm 15
+Section 2: Bölüm 2
+Section 3: Bölüm 3
+Section 4: Bölüm 4
+Section 5: Bölüm 5
+Section 6: Bölüm 6
+Section 7: Bölüm 7
+Section 8: Bölüm 8
+Section 9: Bölüm 9
+Security: Güvenlik
+See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.: Dosya içeriğini görüntülemek için MudExFileDisplay'in nasıl kullanılacağını görün. Ayrıca, belirli dosya türleri için kendi bileşenlerini sağlamak için IMudExFileDisplay arabiriminin nasıl uygulanacağı da gösterilmektedir.
+See how to use MudExObjectEdit in a dialog: Bir iletişim kutusunda MudExObjectEdit'in nasıl kullanılacağını görün
+See how you can use different pickers or delay change event with the MudExColorPicker: MudExColorPicker ile farklı seçicileri nasıl kullanabileceğinizi veya değişiklik olayını nasıl geciktirebileceğinizi görün
+seh-MZ: Seine (Mozambik)
+Select: Seçmek
+Select a brand: Bir marka seçin
+Select All: Tümünü Seç
+Select Item: Öğe Seç
+Select Items: Öğeleri Seç
+Select Language: Dil seçin
+Select sample file (See weather.json to check how own components for files can be created): Örnek dosya seçin (Dosyalar için kendi bileşenlerinin nasıl oluşturulabileceğini kontrol etmek için weather.json bakın)
+Select screen: Ekran seç
+SelectAll: Tümünü Seç
+SelectAllPosition: Tüm Konumu Seç
+SelectAllText: Tüm Metni Seç
+SelectColorText: SelectColorText
+Selected: Seçilmiş
+Selected Node: Seçili Düğüm
+SelectedBrand: Seçilen Marka
+SelectedIndex: Seçilen Dizin
+SelectedItemBackgroundColor: SelectedItemBackgroundColor
+SelectedItemBorderColor: SelectedItemBorderColor
+SelectedItemColor: SelectedItemColor
+SelectedRequests: Seçilen İstekler
+SelectedValues: SelectedValues
+Selecting: Seçme
+SelectionList: Seçim Listesi
+SelectionMode: Seçim Modu
+SelectionModeIcon: SelectionModeIcon
+SelectItemsMode: SelectItemsMode
+SelectorsForIgnoreBlur: SeçicilerForIgnoreBlur
+SelectorSize: SeçiciBoyut
+SelectorsToKeepOpenOnMouseLeave: SeçicilerToKeepOpenOnMouseLeave
+SelectValueOnTab: SelectValueOnTab
+SelectVariant: Varyantı Seç
+Send: Gönder
+Send confirmation email: Onay e-postası gönder
+Sensitivity: Duyarlılık
+Sep: Eylül
+Server restarted successfully: Sunucu başarıyla yeniden başlatıldı
+ses-ML: Koyraboro Senni (Mali)
+Set as Default options for all Dialogs: Tüm İletişim Kutuları için Varsayılan seçenekler olarak ayarla
+Set empty/null for auto detection: Otomatik algılama için boş/null olarak ayarlayın
+Set new password: Yeni şifre belirle
+Set this to automatically stop recording after the desired time.: Bunu, istenen süreden sonra kaydı otomatik olarak durduracak şekilde ayarlayın.
+Set this to wait before a photo is taken: Bunu, fotoğraf çekilmeden önce bekleyecek şekilde ayarlayın
+Set this to wait before recording starts: Bunu, kayıt başlamadan önce bekleyecek şekilde ayarlayın
+SetChipsOnEnter: SetChipsOnEnter
+SetiUiBase16: SetiUiBase16
+SevenZipArchive.7z: SevenZipArchive.7z
+Severity: Şiddet
+sg-CF: Sango (Orta Afrika Cumhuriyeti)
+ShadesOfPurple: Morun Tonları
+Shadows: Gölge
+Shake: Titremek
+ShapeshifterBase16: Şekil DeğiştiriciTaban16
+SharedConfig: Paylaşılan Yapılandırma
+Sharpness: Net -lik
+shi-Latn-MA: Tachelhit (Latince, Fas)
+shi-Tfng-MA: Tachelhit (Tifinagh, Fas)
+Show: Göstermek
+Show As Dialog: İletişim Kutusu Olarak Göster
+Show as Tree: Ağaç Olarak Göster
+Show Demo: Demoyu Göster
+Show flat: Daireyi göster
+Show info: Bilgileri göster
+Show info for: Şunun için bilgi göster
+Show Markup: İşaretlemeyi Göster
+Show notification: Bildirimi göster
+Show notification while recording: Kayıt sırasında bildirimi göster
+Show on github: Github'da göster
+Show or hide inherited fields from base class: Temel sınıftan devralınan alanları gösterme veya gizleme
+Show Sample 1: Örnek 1'i Göster
+Show Sample 2: Örnek 2'yi Göster
+Show Sample 3: Örnek 3'ü Göster
+Show Sample Dialog: Örnek İletişim Kutusunu Göster
+Show Sample Dialog METHOD 1: Örnek Göster İletişim Kutusu YÖNTEM 1
+Show Sample Dialog METHOD 2: Örnek İletişim Kutusunu Göster YÖNTEM 2
+Show Sample Dialogs: Örnek İletişim Kutularını Göster
+Show selected: Seçilenleri göster
+Show With this Options: Bu Seçeneklerle Göster
+ShowAlpha: Alfa'yı Göster
+ShowAtCursor: İmleci Göster
+ShowBgColor: GösterBgRenk
+Showcard Gothic: Gösteri Kartı Gotik
+ShowClearButton: Temizle Düğmesini Göster
+ShowCloseIcon: KapatSimgeyi Göster
+ShowColorField: ShowColorField
+ShowColorPreview: GösterRenk Önizlemesi
+ShowContentError: ShowContentError
+ShowCssColorVariables: ShowCssColorVariables
+ShowFileUploadButton: FileUploadButton'ı Göster
+ShowFilterInDrawer: ShowFilterInDrawer
+ShowFolderUploadButton: ShowFolderUploadButton
+ShowFPS: FPS'yi göster
+ShowFullScreenButton: ShowFullScreenButton
+ShowHtmlColors: HtmlRenklerini Göster
+ShowInputs: Girişleri Göster
+ShowLogoInDrawer: ShowLogoInDrawer
+ShowModeSwitch: ShowMode Anahtarı
+ShowNavigator: Gösteri Gezgini
+ShowNotificationWhileRecording: Kayıt Sırasında Bildirimi Göster
+ShowPath: Gösteri Yolu
+ShowPeaks: Gösteri Zirveleri
+ShowPresetNameOnChange: ShowPresetNameOnChange
+ShowPreview: Önizlemeyi Göster
+ShowPreviewOnClick: ShowPreviewOnClick
+ShowPrintButton: GösterYazdırDüğmesi
+ShowProgressForLoadingData: ShowProgressForLoadingData
+ShowRemainingTimeOnly: Yalnızca Kalan Zamanı Göster
+ShowRenameButton: ShowRenameButton
+ShowResetButton: ShowResetButton
+Shows how you can use MudExAdditionalAdornment to ad as many adornments to any MudInput: Herhangi bir MudInput'a mümkün olduğunca çok süsleme eklemek için MudExAdditionalAdornment'ı nasıl kullanabileceğinizi gösterir
+ShowSaveButton: KaydetDüğmesini Göster
+ShowScaleX: ÖlçekX'i Göster
+ShowScaleY: Ölçek Göster
+ShowSliders: Kaydırıcıları Göster
+ShowSpectrumOnRecording: ShowSpectrumOnRecording
+ShowThemeColors: ShowThemeColors
+ShowToolbar: Araç Çubuğunu Göster
+ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
+ShowVisualiser: Görüntüleyiciyi Göster
+ShowZoomInButton: Yakınlaştırma Düğmesini Göster
+ShowZoomOutButton: ZoomOutDüğmesini Göster
+ShrinkLabel: Shrink Etiket
+si-LK: Sinhala (Sri Lanka)
+Side: Yan
+Sienna: Sienna
+Sign In: Oturum Aç
+Sign Up: Kaydol
+SilkDarkBase16: İpekKoyu Taban16
+SilkLightBase16: İpek Işık Tabanı16
+Silver: Gümüş
+Simon Pack: Simon Paketi
+Simple: Basit
+Simple Card List with a hover effect.: Fareyle üzerine gelme efektli Basit Kart Listesi.
+Simple CodeViewer Component: Basit CodeViewer Bileşeni
+Simple component to display Html files with MudExFileDisplay: Html dosyalarını MudExFileDisplay ile görüntülemek için basit bileşen
+Simple component to display markdown files with MudExFileDisplay: MudExFileDisplay ile işaretleme dosyalarını görüntülemek için basit bileşen
+Simple component to expand a Search field: Arama alanını genişletmek için basit bileşen
+Simple Confirmation: Basit Onay
+Simple Dialog: Basit Diyalog
+Simple Dialogs: Basit Diyaloglar
+Simple Enum: Basit Numaralandırma
+Simple Excel file viewer: Basit Excel dosya görüntüleyici
+Simple extended popover that adds Animations and an onblur event to close if a click outside happens.: Animasyonlar ve dışarıda bir tıklama olursa kapatılacak bir onblur olayı ekleyen basit genişletilmiş açılır pencere.
+Simple extension for MudAvatar to load automatically a profile image for an email address using Gravatar: MudAvatar'ın Gravatar kullanarak bir e-posta adresi için profil resmini otomatik olarak yüklemesi için basit uzantı
+Simple MessageDialog: Basit Mesajİletişim Kutusu
+Simple Prompt: Basit İstem
+Simple virtualize component that can be disabled with support for fixed items and ItemsProvider.: Sabit öğeler ve ItemsProvider desteğiyle devre dışı bırakılabilen basit sanallaştırma bileşeni.
+SimpleDialog: Basit Diyalog
+SimulateOnHover: SimülasyonOnHover
+SimulateWithFullSpectrumAudioData: SimulateWithFullSpectrumAudioData
+SimulateWithRandomData: SimulateWithRandomData
+Single: Tek
+SingleExpand: Tek Genişletme
+Size: Boyut
+sk-SK: Slovakça (Slovakya)
+Skeleton: İskelet
+SkipSeparator: Ayırıcıyı Atla
+SkyBlue: Gök Mavisi
+sl-SI: Slovence (Slovenya)
+SlateBlue: Arduvaz Mavisi
+SlateGray: Kayrak Grisi
+Slide: Kaydırak
+SlideBar: Kaydırma çubuğu
+SlideIn: Slayt girişi
+sma-NO: Güney Sami (Norveç)
+sma-SE: Güney Sami (İsveç)
+Small: Küçük
+smj-NO: Lüle Sami (Norveç)
+smj-SE: Lüle Sami (İsveç)
+smn-FI: Inari Sami (Finlandiya)
+Smoothing: Yumuşatma
+sms-FI: Skolt Sami (Finlandiya)
+sn-Latn-ZW: Shona (Latince, Zimbabve)
+Snackbar: Atıştırmalık barı
+SnackbarMessageMarkupString: SnackbarMessageMarkupString
+SnackbarMessageRenderFragment: SnackbarMessageRenderFragment
+SnackbarMessageText: SnackbarMesajMetin
+Snap ITC: ITC'yi tutturun
+SnapDrag: SnapDrag
+SnazzyBase16: Şık Taban16
+Snow: Kar
+so-DJ: Somali (Cibuti)
+so-ET: Somali (Etiyopya)
+so-KE: Somali (Kenya)
+so-SO: Somali (Somali)
+SolarFlareBase16: Güneş Parlama Tabanı16
+SolarFlareLightBase16: SolarFlareLightBase16
+SolarizedDarkBase16: SolarizedDarkBase16
+SolarizedLightBase16: SolarizedLightBase16
+Solid: Katı
+Some: Bazı
+Some other: Diğer bazı
+SomeOtherInformation: SomeOtherInformation
+Something went wrong during the refresh token action: Belirteci yenileme eylemi sırasında bir sorun oluştu
+SomeUnimportantTestModel: BazıÖnemsizTestModel
+SomeUnimportantTestModel as Json: SomeUnimportantTestModel Json olarak
+SpaceAround: Uzay Etrafında
+SpaceBetween: Boşluk
+SpaceEvenly: UzayEşit
+SpacemacsBase16: Uzay Mac'leriBase16
+Spacing: Aralığı
+Specify Options...: Seçenekleri Belirleyin...
+Specify Quick Options...: Hızlı Seçenekleri Belirtin...
+Spectrum: Tayf
+SpectrumIcon: Spektrum Simgesi
+SpinSpeed: Dönme Hızı
+SplitGradient: Bölünmüş Gradyan
+SplitPanelItem for MudExSplitPanel component: MudExSplitPanel bileşeni için SplitPanelItem
+SpringGreen: Bahar Yeşili
+sq-AL: Arnavutça (Arnavutluk)
+sq-MK: Arnavutça (Kuzey Makedonya)
+sq-XK: Arnavutça (Kosova)
+Square: Kare
+sr-Cyrl-BA: Sırpça (Kiril, Bosna Hersek)
+sr-Cyrl-ME: Sırpça (Kiril, Karadağ)
+sr-Cyrl-RS: Sırpça (Kiril, Sırbistan)
+sr-Cyrl-XK: Sırpça (Kiril, Kosova)
+sr-Latn-BA: Sırpça (Latince, Bosna Hersek)
+sr-Latn-ME: Sırpça (Latince, Karadağ)
+sr-Latn-RS: Sırpça (Latince, Sırbistan)
+sr-Latn-XK: Sırpça (Latince, Kosova)
+Src: Src
+Srcery: Srcery
+ss-SZ: siSwati (Eswatini)
+ss-ZA: siSwati (Güney Afrika)
+ssy-ER: Saho (Eritre)
+st-LS: Sesotho (Lesotho)
+st-ZA: Sesotho (Güney Afrika)
+StackedBar: Yığılmış Çubuk
+StackoverflowDark: Yığın taşmasıKaranlık
+StackoverflowLight: Yığın Taşma Işığı
+Standard - Mikrofon (Voicemod Virtual Audio Device (WDM)): Standart - Mikrofon (Voicemod Sanal Ses Cihazı (WDM))
+Start: Başlamak
+Start Capture: Yakalamayı Başlat
+Start Recording: Kayda Başla
+Start recording after: Kayda şu süreden sonra başlayın
+Start/Stop selection: Başlat/Durdur seçimi
+State: Devlet
+Static: Duruk
+Static card.: Statik kart.
+Static item: Statik öğe
+Status: Durum
+SteelBlue: Çelik Mavisi
+Stencil: Şablon
+Stereo: Stereo
+Steve Rogers: Steve Rogers
+Store: Mağaza
+Stream: Dere
+StreamUrlHandling: StreamUrlHandling
+Street: Sokak
+Street 2 2, 32365 City 2: Sokak 2 2, 32365 Şehir 2
+Strict: Sıkı
+StringProperty1: DizeÖzelliği1
+StringProperty10: DizeÖzelliği10
+StringProperty11: DizeÖzelliği11
+StringProperty12: DizeÖzelliği12
+StringProperty13: DizeÖzelliği13
+StringProperty14: DizeÖzelliği14
+StringProperty15: DizeÖzelliği15
+StringProperty16: DizeÖzelliği16
+StringProperty17: DizeÖzelliği17
+StringProperty18: StringProperty18
+StringProperty19: StringProperty19
+StringProperty2: DizeÖzelliği2
+StringProperty20: DizeÖzelliği20
+StringProperty21: DizeÖzelliği21
+StringProperty22: DizeÖzelliği22
+StringProperty23: DizeÖzelliği23
+StringProperty24: DizeÖzelliği24
+StringProperty25: DizeÖzelliği25
+StringProperty26: DizeÖzelliği26
+StringProperty27: DizeÖzelliği27
+StringProperty28: DizeÖzelliği28
+StringProperty29: DizeÖzelliği29
+StringProperty3: DizeÖzelliği3
+StringProperty30: DizeÖzelliği30
+StringProperty31: DizeÖzelliği31
+StringProperty32: DizeÖzelliği32
+StringProperty33: DizeÖzelliği33
+StringProperty34: DizeÖzelliği34
+StringProperty35: DizeÖzelliği35
+StringProperty36: DizeÖzelliği36
+StringProperty37: DizeÖzelliği37
+StringProperty38: DizeÖzelliği38
+StringProperty39: DizeÖzelliği39
+StringProperty4: DizeÖzelliği4
+StringProperty40: DizeÖzelliği40
+StringProperty41: DizeÖzelliği41
+StringProperty42: DizeÖzelliği42
+StringProperty43: DizeÖzelliği43
+StringProperty44: DizeÖzelliği44
+StringProperty45: DizeÖzelliği45
+StringProperty46: DizeÖzelliği46
+StringProperty47: DizeÖzelliği47
+StringProperty48: DizeÖzelliği48
+StringProperty49: DizeÖzelliği49
+StringProperty5: DizeÖzelliği5
+StringProperty50: DizeÖzelliği50
+StringProperty51: DizeÖzelliği51
+StringProperty52: DizeÖzelliği52
+StringProperty53: DizeÖzelliği53
+StringProperty54: DizeÖzelliği54
+StringProperty55: DizeÖzelliği55
+StringProperty56: DizeÖzelliği56
+StringProperty57: DizeÖzelliği57
+StringProperty58: DizeÖzelliği58
+StringProperty59: DizeÖzelliği59
+StringProperty6: StringProperty6
+StringProperty60: DizeÖzelliği60
+StringProperty7: DizeÖzelliği7
+StringProperty8: DizeÖzelliği8
+StringProperty9: DizeÖzelliği9
+Striped: Çizgili
+Structured Data Edit: Yapılandırılmış Veri Düzenleme
+StructuredDataEdit: StructuredDataDüzenle
+Style: Üslup
+StyleChip: Stil Çipi
+su-Latn-ID: Sunda (Latince, Endonezya)
+Subject: Konu
+Subline description for sample card.: Örnek kart için alt hat açıklaması.
+Submit: Gönder
+SubscribeToParentForm2: EbeveynFormuna Abone Ol2
+subtitle1: altyazı1
+Subtitle1: Alt Başlık1
+subtitle2: altyazı2
+Subtitle2: Alt Başlık2
+Success: Başarı
+SuccessContrastText: BaşarıKontrastMetin
+SuccessDarken: Başarı Karartmak
+SuccessLighten: BaşarıHafifletme
+SummercampBase16: Yaz Kampı Üssü16
+SummerfruitDarkBase16: Yaz MeyvesiKaranlıkTaban16
+SummerfruitLightBase16: Yaz MeyvesiIşık Tabanı16
+Sunburst: Sunburst
+Super sample Content text.: Süper örnek İçerik metni.
+Support: Destek
+Surface: Yüzey
+Surname: Soyadı
+sv-AX: İsveççe (Åland Adaları)
+sv-FI: İsveççe (Finlandiya)
+sv-SE: İsveççe (İsveç)
+sw-CD: Kiswahili (Kongo [DRC])
+sw-KE: Kiswahili (Kenya)
+sw-TZ: Kiswahili (Tanzanya)
+sw-UG: Kiswahili (Uganda)
+Swagger: API Belgeleri
+Swap: Değiş tokuş etmek
+Swedish: İsveç dili
+SweetieBubbleGum-Regular.ttf: SweetieBubbleGum-Regular.ttf
+Swing: Salıncak
+Switch: Şalter
+Switch expand button position: Genişletme düğmesinin konumunu değiştir
+Switch overlay source: Kaplama kaynağını değiştir
+Symbol: Sembol
+SynthMidnightTerminalDarkBase16: SynthMidnightTerminalDarkBase16
+SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16
+syr-SY: Süryanice (Suriye)
+System: Sistem
+System Settings: Sistem ayarları
+T3024Base16: T3024Taban16
+ta-IN: Tamil (Hindistan)
+ta-LK: Tamilce (Sri Lanka)
+ta-MY: Tamilce (Malezya)
+ta-SG: Tamilce (Singapur)
+Table Name: Tablo Adı
+TableHover: TableHover
+TableLines: TableLines
+TableStriped: Tablo Çizgili
+Tada: Sonra
+Tag: Gün
+TagField: Etiket Alanı
+Tahoma: Tahoma Dili
+Take case: Davayı al
+Take photo after: Sonra fotoğraf çek
+Take Photo from Main camera: Ana kameradan Fotoğraf Çekin
+Take Photo from Main camera in 5 seconds: Ana kameradan 5 saniyede Fotoğraf Çekin
+Take Photo only: Yalnızca Fotoğraf Çek
+Tan: Öyle
+TangoBase16: TangoBase16
+TarArchive.tar: TarArchive.tar
+Target: Hedef
+Tax: Vergi
+Tax must be greater than 0: Vergi 0'dan büyük olmalıdır
+te-IN: Telugu (Hindistan)
+Teal: Çamurcun
+tel: Tel
+Telephone: Telefon
+TemplateClass: Şablon Sınıfı
+Temporary: Geçici
+TenderBase16: İhale Tabanı16
+teo-KE: Teso (Kenya)
+teo-UG: Teso (Uganda)
+Tertiary: Üçüncül
+TertiaryContrastText: ÜçüncülKarşıtMetin
+TertiaryDarken: Üçüncül Karartma
+TertiaryLighten: Üçüncül Hafifletme
+TEST: TEST
+Test and use components live without required environment: Bileşenleri gerekli ortam olmadan canlı olarak test edin ve kullanın
+Test the powerful MudExThemeEdit and change theme colors fonts and more: Güçlü MudExThemeEdit'i test edin ve tema renklerini, yazı tiplerini ve daha fazlasını değiştirin
+text: Metin
+Text: Metin
+Text value is required using {0} type!: Metin değeri {0} türü kullanılarak gereklidir!
+TextAddExternal: TextAddExternal
+TextAddFromDropBox: Metin EkleDropBox
+TextAddFromGoogle: MetinEkleGoogle'dan
+TextAddFromOneDrive: TextAddFromOneDrive
+TextAddUrl: Metin Eklentisi
+TextAddUrlMessage: TextAddUrlMessage
+TextAddUrlTitle: TextAddUrlTitle
+TextDisabled: Metin Devre Dışı
+TextDropZone: Metin Bırakma Bölgesi
+TextErrorDuplicateFile: TextErrorDuplicateFile
+TextErrorExtensionForbidden: TextErrorExtensionForbidden
+TextErrorExtensionNotAllowed: TextErrorExtensionNotAllowed
+TextErrorMaxFileCount: TextErrorMaxFileCount
+TextErrorMaxFileSize: TextErrorMaxFileSize
+TextErrorMimeTypeForbidden: TextErrorMimeTypeForbidden
+TextErrorMimeTypeNotAllowed: TextErrorMimeTypeNotAllowed
+TextFillColor: TextFillColor
+TextPrimary: Metin Birincil
+TextRemoveAll: TextRemoveAll
+TextSecondary: Metinİkincil
+TextStartRecording: TextStartRecording
+TextStartVideoCapture: TextStartVideo Yakalama
+TextTransform: Metin Dönüştürme
+TextUpdateSuppression: Metin GüncellemesiBastırma
+TextUploadFile: Metin Yükleme Dosyası
+TextUploadFiles: Metin Yükleme Dosyaları
+TextUploadFolder: TextUploadFolder
+tg-Cyrl-TJ: Tacikçe (Kiril, Tacikistan)
+th-TH: Thai (Tayland)
+The Checker field is required.: Denetleyici alanı gereklidir.
+The component also provides the <strong>IsVisibleChanged</strong> event, which triggers whenever the visibility of the item changes.: Bileşen ayrıca, öğenin görünürlüğü her değiştiğinde tetiklenen <strong>IsVisibleChanged</strong> olayını da sağlar.
+The content type {0} cannot be displayed without a suitable plugin: İçerik türü {0} uygun bir eklenti olmadan görüntülenemez
+The field Number must be between 1 and 100.: Sayı alanı 1 ile 100 arasında olmalıdır.
+The file ({0}) has already been added: Dosya ({0}) zaten eklendi
+The file has exceeded the maximum size of {0} with {1}. File size is {2}: Dosya, {1} ile {0} boyutu üst sınırını aştı. Dosya boyutu {2}
+The following {0} permissions are also required for permission {1}: İzin {1} için aşağıdaki {0} izinler de gereklidir
+The following permission is also required for permission {1}: İzin için aşağıdaki izin de gereklidir{1}
+The maximum file size is 10 MB: Maksimum dosya boyutu 10 MB'tır
+The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit, bir veya daha fazla temanın veya ön ayarın düzenlenmesini etkili bir şekilde kolaylaştırmak için tasarlanmış sağlam ve çok yönlü bir araçtır. Doğası gereği Karanlık modu, Aydınlık modu veya her ikisinin bir kombinasyonunu barındırır. Ek olarak, MudTheme'den türetilmiş sınıfların yanı sıra ona özgü özel özellikleri de destekler, böylece tüm tema düzenleme gereksinimleriniz için kapsamlı ve esnek bir çözüm sunar.
+The Plugin '{0}' may be able to help: Eklenti '{0}' yardımcı olabilir
+The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: Örnek, diğer FileDisplay örneğiyle aynıdır, ancak URL kullanılmaması farkıyla; bunun yerine akışlar yüklenir ve kullanılır.
+The server is just restarting. Please wait until the connection has been restored: Sunucu yeni başlatılıyor. Lütfen bağlantı yeniden kurulana kadar bekleyin
+The user "{0}" just changed some of this data: '"{0}" kullanıcısı bu verilerin bir kısmını değiştirdi'
+The user {0} has been logged off: Kullanıcı {0} oturumu kapatıldı
+The User {0} has just edited, created or deleted entries here. You should reload the data: Kullanıcı {0} buradaki girişleri düzenledi, oluşturdu veya sildi. Verileri yeniden yüklemelisiniz
+Theme: Tema
+Theme Colors: Tema Renkleri
+Themes: Temalar
+ThemeSelect: Tema Seç
+There are no new notifications: Yeni bildirim yok
+These features make <strong>MudExVirtualItem</strong> ideal for optimizing performance when working with large datasets or dynamic content that doesn't need to be loaded all at once.: Bu özellikler, <strong>MudExVirtualItem'ı</strong> büyük veri kümeleriyle veya bir kerede yüklenmesi gerekmeyen dinamik içerikle çalışırken performansı optimize etmek için ideal hale getirir.
+This bar can be positioned left, right, top or bottom, and expands automatically on mouseover. This is also the Base component for the MudExTaskBar that automatically displays all open dialogs: Bu çubuk sola, sağa, üste veya aşağıya yerleştirilebilir ve fareyle üzerine gelindiğinde otomatik olarak genişler. Bu aynı zamanda tüm açık iletişim kutularını otomatik olarak görüntüleyen MudExTaskBar'ın Temel bileşenidir
+This changes the Variant if Age is at least 18 and is enabled if Age is more than 1: Bu, Yaş en az 18 ise Varyantı değiştirir ve Yaş 1'den büyükse etkinleştirilir
+This component and the dialog no modal behaviour is still in development and not ready for production use. Please report any issues you find on GitHub.: Bu bileşen ve modal davranış yok iletişim kutusu hala geliştirme aşamasındadır ve üretim kullanımına hazır değildir. Lütfen GitHub'da bulduğunuz sorunları bildirin.
+This component uses the ICaptureService to capture audio and/or video data: Bu bileşen, ses ve/veya video verilerini yakalamak için ICaptureService'i kullanır
+This component uses the ISpeechRecognitionService to record audio data and transcripts: Bu bileşen, ses verilerini ve dökümleri kaydetmek için ISpeechRecognitionService kullanır
+This Demo demonstrate using for the MudExCardList: Bu Demo, MudExCardList için kullanımı gösterir
+This Demo demonstrate using the MudExAudioPlayer without the automatic use in MudExFileDisplay: Bu Demo, MudExAudioPlayer'ın MudExFileDisplay'de otomatik kullanım olmadan kullanılmasını gösterir
+This Demo demonstrate using the MudExCardList with an item source: Bu Demo, MudExCardList'in bir öğe kaynağıyla kullanılmasını gösterir
+This Demo demonstrate using the MudExCardList with an item source and child content together: Bu Demo, MudExCardList'in bir öğe kaynağı ve alt içerikle birlikte kullanılmasını gösterir
+This Demo demonstrate using the MudExImageViewer without the automatic use in MudExFileDisplay: Bu Demo, MudExFileDisplay'de otomatik kullanım olmadan MudExImageViewer'ın kullanımını gösterir
+This demo showcases the <strong>MudExVirtualItem</strong> component, a virtualized container that efficiently renders content<br/> only when it becomes visible in the viewport.: Bu demo, içeriği<br/> yalnızca görünüm alanında görünür hale geldiğinde verimli bir şekilde işleyen sanallaştırılmış bir kapsayıcı olan <strong>MudExVirtualItem</strong> bileşenini sergiliyor.
+This demo shows how to pass a can close method: Bu tanıtım, bir kutu kapatma yönteminin nasıl iletileceğini gösterir
+This demo shows how you can use a selection with MudExSelect with a custom item provider: Bu demo, MudExSelect ile bir seçimi özel bir öğe sağlayıcıyla nasıl kullanabileceğinizi gösterir
+This demo uses SnapDrag as DragMode on the DialogOptionsEx: Bu demo, DialogOptionsEx'te DragMode olarak SnapDrag'i kullanır
+This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open: Bu tanıtım, yeniden boyutlandırmayı veya sürüklemeyi denetlemek için IDialogEventService'i kullanır ve en son konumu ve boyutu göreli değerler olarak depolar ve bir sonraki açılışta geri yükler
+This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: Bu, tema düzenleme için dahili olarak MudExObjectEdit ve MudExThemeSelect kullanan MudExThemeEdit bileşenini gösterir
+This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: Bu demolar, MudExAdditionalAdornment'ı RenderFragments 'For' ve 'ChildContent' kullanarak kullanmanın önerilen yolunu gösterir.
+This dialog can confirmed when slider value is greater then 10: Bu iletişim kutusu, kaydırıcı değeri 10'dan büyük olduğunda onaylanabilir
+This is a Json representation of the TestModel. This is ignored for Export and Import: Bu, TestModel'in bir Json gösterimidir. Bu, Dışa Aktarma ve İçeri Aktarma için yoksayılır
+This is a simple information dialog that closes after {0} seconds: Bu, {0} saniye sonra kapanan basit bir bilgi iletişim kutusudur
+This is a simple information dialog that closes after 0 seconds: Bu, 0 saniye sonra kapanan basit bir bilgi iletişim kutusudur
+This is a simple information dialog that closes after 1 seconds: Bu, 1 saniye sonra kapanan basit bir bilgi iletişim kutusudur
+This is a simple information dialog that closes after 2 seconds: Bu, 2 saniye sonra kapanan basit bir bilgi iletişim kutusudur
+This is a simple information dialog that closes after 3 seconds: Bu, 3 saniye sonra kapanan basit bir bilgi iletişim kutusudur
+This is a simple information dialog that closes after 4 seconds: Bu, 4 saniye sonra kapanan basit bir bilgi iletişim kutusudur
+This is a simple information dialog that closes after 5 seconds: Bu, 5 saniye sonra kapanan basit bir bilgi iletişim kutusudur
+This is an Administrator Only View.: Bu, Yalnızca Yöneticilere Özel Bir Görünümdür.
+This is the MudEx Default theme: Bu, MudEx Varsayılan temasıdır
+This is the sample Popover. In general it inherits the original MudPopover.: Bu örnek Popover'dır. Genel olarak, orijinal MudPopover'ı devralır.
+This one card is still added without an corresponding item.: Bu tek kart, karşılık gelen bir öğe olmadan eklenir.
+This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: Bu, diyalog seçeneklerine yöntem olarak geçer. Yöntem false döndürürse iletişim kutusu kapanmaz. Sonucun bir bool veya Task&lt;bool olması gerekir&gt;
+This photo was taken in a small village in Istra Croatia.: Bu fotoğraf Hırvatistan'ın Istra kentindeki küçük bir köyde çekildi.
+This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Bu seçici animasyonlar, daha iyi davranışlar ve tüm DialogOptions'ı destekleyen bir iletişim kutusu getirir. Kendi seçici bileşeninizi oluşturmak için jus MudExPickerBase'den devralın veya sadece basit içerik kullanmak için MudExPicker'ı kullanın
+This sample demonstrate how to use the MudExCaptureService: Bu örnekte MudExCaptureService'in nasıl kullanılacağı gösterilmektedir
+This sample demonstrate the usage of MudExTreeView with an Item template: Bu örnek, MudExTreeView'un bir Öğe şablonuyla kullanımını gösterir
+This sample uses the IDialogEventService to cancel the dialog close: Bu örnek, iletişim kutusunu kapatmak için IDialogEventService'i kullanır
+This sample uses the options for a can close callback: Bu örnek, can close geri çağırma seçeneklerini kullanır
+This section can be placed inside a MudExGrid component.: Bu bölüm bir MudExGrid bileşeninin içine yerleştirilebilir.
+Thistle: Devedikeni
+ThrottleInterval: Gaz Kelebeği Aralığı
+ti-ER: Tigrinya (Eritre)
+ti-ET: Tigrinya (Etiyopya)
+tig-ER: Tigre (Eritre)
+Tilt: Eğmek
+Time: Saat
+Times: Kere
+Times New Roman: Times Yeni Roman
+TimeSeries: Zaman Serileri
+Tina Fey: Tina Fey
+Title: Başlık
+Title is required!: Başlık gereklidir!
+tk-TM: Türkmen (Türkmenistan)
+tn-BW: Setsvana (Botsvana)
+tn-ZA: Setsvana (Güney Afrika)
+to-TO: Tonga (Tonga)
+Toggle loading: Yüklemeyi değiştir
+Toggle right-to-left/left-to-right: Sağdan sola/soldan sağa geçiş yap
+Toggle to {0}: '{0}'
+Toggleable: Değiştirilebilir
+ToggleAllFeatures: Tüm Özellikleri Değiştir
+ToggleFullPage: ToggleFullPage
+ToggleFullscreen: Tam Ekranı Değiştir
+ToggleMicrophone: Mikrofonu Değiştir
+TogglePictureInPicture: Resim İçindeResim Aç/Kapat
+TogglePlayPause: TogglePlayPause'u Aç
+Token is required: Jeton gerekli
+Token Not Found!: Token Bulunamadı!
+Tokyo: Tokyo
+Tokyo - 100-0001: Tokyo - 100-0001
+Tokyo - 100-0001ender: Tokyo - 100-0001ender
+Tomato: Domates
+TomorrowBase16: YarınTemel16
+TomorrowNightBase16: YarınGece Üssü16
+TomorrowNightBlue: YarınGeceMavi
+TomorrowNightBright: YarınGeceParlak
+ToolbarBackgroundColor: Araç ÇubuğuArka PlanRengi
+ToolbarButtonColor: Araç ÇubuğuDüğmeRenk
+ToolbarButtonPosition: Araç ÇubuğuDüğmeKonumu
+ToolbarButtonSize: Araç ÇubuğuDüğmeBoyutu
+ToolbarButtonVariant: Araç ÇubuğuDüğmeVaryantı
+ToolbarClass: Araç Çubuğu Sınıfı
+ToolBarClass: ToolBar Sınıfı
+ToolbarStyle: Araç Çubuğu Stili
+ToolBarStyle: Araç Çubuğu Stili
+Tooltip: Araç ipucu
+ToolTip: Araç ipucu
+ToolTip Three: Araç İpucu Üç
+ToolTip Two: Araç İpucu İki
+ToolTipStyle: Araç İpucuStili
+Top: Sayfanın Üstü
+TopCenter: Üst Merkez
+TopLeft: Sol Üst
+TopRight: Sağ Üst
+Torch: Meşale
+Toronto: Toronto
+Toronto - M1B 1A1: Toronto - M1B 1A1
+Toronto - M1B 1A1ender: Toronto - M1B 1A1ender
+tr-CY: Türkçe (Kıbrıs)
+tr-TR: Türkçe (Türkiye)
+Trace: İz
+TrackInfoPosition: TrackInfoPosition
+TrackList: Parça listesi
+TrackListBehaviour: TrackListBehavior
+TrackListClass: Parça ListesiSınıfı
+TrackListCoverImage: TrackListCoverImage
+TrackListMode: Parça Listesi Modu
+TrackListPosition: Parça Listesi Konumu
+TrackListToggleButtonPosition: TrackListToggleButtonPosition
+Trail Details: Parkur Detayları
+TransformOrigin: Dönüşüm Kaynağı
+Translations: Çeviri -leri
+Translations are being imported: Çeviriler içe aktarılıyor
+Translations updated: Çeviriler güncellendi
+Transparent: Saydam
+Trebuchet MS: Mancınık MS
+TreeView: Ağaç Görünümü
+TreeView component that renders a tree structure of items.: TreeView öğelerin ağaç yapısını işleyen bileşen.
+TreeViewBreadcrumb: TreeViewBreadcrumb
+TreeViewCardGrid: TreeViewCardGrid
+TreeViewDefault: TreeViewDefault
+TreeViewFlatList: TreeViewFlatList
+TreeViewHorizontal: TreeViewYatay
+TreeViewList: TreeViewList
+TreeViewMode: TreeViewMode
+TrueLeds: Gerçek Led'ler
+TrueOrFalse: DoğruVeyaYanlış
+Try different role: Farklı bir rol deneyin
+Try MudEx online: MudEx'i çevrimiçi deneyin
+Try MudEx online CodeEditor: MudEx çevrimiçi CodeEditor'ı deneyin
+ts-ZA: Xitsonga (Güney Afrika)
+tt-RU: Tatar (Rusya)
+Turquoise: Turkuaz
+TwilightBase16: Alacakaranlık Üssü16
+twq-NE: Tasawaq (Nijer)
+Type: Tür
+Type should be valid: Tür geçerli olmalıdır
+Typo: Yazım hatası
+TypoThemeDescription: TypoThemeDescription
+TypoThemeName: TypoThemeName
+tzm-Arab-MA: Central Atlas Tamazight (Arapça, Fas)
+tzm-Latn-DZ: Central Atlas Tamazight (Latince, Cezayir)
+tzm-Latn-MA: Orta Atlas Tamazight (Latince, Fas)
+tzm-Tfng-MA: Orta Atlas Tamazight (Tifinagh, Fas)
+ug-CN: Uygurca (Çin)
+uk-UA: Ukraynaca (Ukrayna)
+Uma Thurman: Uma Thurman
+Unassigned: Atanma -mış
+UncheckedIcon: İşaretsizSimge
+Underline: Altını çizmek
+Undo: Geri almak
+UndoIcon: Geri Al Simgesi
+UnikittyDarkBase16: Tek KedicikKaranlık Taban16
+UnikittyLightBase16: Tek KedicikIşıkTabanı16
+Unselectable: Seçilemez
+Unset: Unset
+Update: Güncelleştirmek
+Update automatically next time: Bir dahaki sefere otomatik olarak güncelle
+Update Brand: Markayı Güncelle
+Update Document: Belgeyi Güncelle
+Update Document Type: Belge Türünü Güncelle
+Update Extended Attribute: Genişletilmiş Özniteliği Güncelle
+Update Now: Şimdi Güncelleştir
+Update Permissions: İzinleri Güncelle
+Update Product: Ürünü Güncelle
+Update Role: Rolü Güncelle
+Update Role Permissions: Rol İzinlerini Güncelleştirme
+Update User Roles: Kullanıcı rollerini güncelleme
+UpdateBindingIfOnlyHSLChanged: UpdateBindingIfOnlyHSLChanged
+Updated: Güncel -leştirilmiş
+Updated User Status.: Güncellenmiş Kullanıcı Durumu.
+UpdateItemsOnStateChange: UpdateItemsOnStateChange
+Upload: Karşıya yükleme
+Upload Edit: Yükle Düzenle
+Upload File: Dosya Yükle
+Upload Files: Dosyaları Yükle
+Upload Folder: Yükleme Klasörü
+Upload Image: Resim yükle
+Upload in dialog: İletişim kutusunda yükle
+Upload Qualifications and References: Nitelikleri ve Referansları Yükleyin
+UploadFieldId: UploadFieldId
+UploadFile: Dosya yükle
+UploadFolder: Yükleme Klasörü
+UploadRequest: Yükleme İsteği
+UploadRequests: Yükleme İstekleri
+ur-IN: Urduca (Hindistan)
+ur-PK: Urduca (Pakistan)
+url: URL
+Url: URL
+Use CodeGator Models: CodeGator Modellerini Kullanın
+Use MudExAdditionalAdornment ad ChildContent: MudExAdditionalSüsleme reklamını kullanın ChildContent
+Use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment'ı MudInput'un ChildContent Olarak Kullanın
+Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Bunun yerine MudExSelect'i kullanın ve MultiSelection'ı true ve ValuePresenter'ı Chip olarak ayarlayın.
+UseCanvas: Tuvali Kullan
+UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
+UseItemTemplateForSelection: UseItemTemplateForSelection
+UseMudExColorBubble: MudExColorBubble'ı kullanın
+UseNativeBrowserControl: UseNativeBrowserControl
+User: Kullanıcı
+User {0} Registered. Please check your Mailbox to verify!: Kullanıcı {0} Kayıtlı. E-posta adresinizi doğrulamak için lütfen Posta Kutunuzu kontrol edin!
+User and Roles: Kullanıcı ve Roller
+User Data: Kullanıcı Bilgisi
+User Deleted: Kullanıcı Silindi
+User Name: Kullanıcı Adı
+User Not Active. Please contact the administrator.: Kullanıcı Aktif Değil. Lütfen etkinleştirmeyi bekleyin veya yöneticiyle iletişime geçin.
+User Not Found!: Kullanıcı Bulunamadı!
+User Registered: Kullanıcı Kayıtlı!
+User Registered Mailbox: Kullanıcı Kayıtlı. Onay Maili Posta Kutusuna teslim edildi.
+User registration is not allowed: Kullanıcı kaydına izin verilmiyor
+UserAttributes: Kullanıcı Öznitelikleri
+UserInformation: Kullanıcı Bilgileri
+Username: Kullanıcı adı
+UserName: Kullanıcı adı
+Username {0} is already taken.: Kullanıcı adı {0} zaten alınmış.
+Username cannot changed: Kullanıcı adı değiştirilemez
+UserName is required: Kullanıcı Adı gereklidir
+UserName must be at least of length 6: UserName en az 6 uzunluğunda olmalıdır
+Username or Email: Kullanıcı adı veya e-posta
+Users: Kullanıcı
+Users and Roles: Kullanıcılar ve Roller
+Users exported: Dışa aktarılan kullanıcılar
+Uses the IDialogEventService and handles the before close event. Here you can just set args.Cancel to true to stop closing: IDialogEventService'i kullanır ve kapatmadan önce olayını işler. Burada sadece argümanları ayarlayabilirsiniz. Kapatmayı durdurmak için true olarak iptal et
+UTC: UTC
+Utilities: Yardımcı program
+uz-Arab-AF: Özbekçe (Arapça, Afganistan)
+uz-Cyrl-UZ: Özbekçe (Kiril, Özbekistan)
+uz-Latn-UZ: Özbekçe (Latince, Özbekistan)
+vai-Latn-LR: Vai (Latince, Liberya)
+vai-Vaii-LR: Vai (Vai, Liberya)
+Validate Upload Edit in MudForm: MudForm'da Yükleme Düzenlemesini Doğrula
+Validation: Doğrulama
+Value: Değer
+ValuePresenter: Değer Sunucusu
+Values: Değer
+ValueString: Değer Dizesi
+Vancouver: Vancouver
+Vancouver - V5K 0A1: Vancouver - V5K 0A1
+Vancouver - V5K 0A1ender: Vancouver - V5K 0A1ender
+Variant: Varyant
+ve-ZA: Venda (Güney Afrika)
+Verdana: Verdana
+Version: Sürüm
+vi-VN: Vietnamca (Vietnam)
+Video Content-Type: Video İçerik Türü
+Video device: Video cihazı
+VideoDevice: Video Cihazı
+View: Görünüm
+View Profile: Profili Görüntüle
+ViewBox: Görünüm Kutusu
+ViewDependsOnContentType: ViewDependsOnContentType
+ViewMode: Görünüm Modu
+ViewportHeight: Görüntü Alanı Yüksekliği
+ViewportMaximum: Görüntü AlanıMaksimum
+ViewportMinimum: Minimum Görünüm Alanı
+ViewportWidth: Görünüm AlanıGenişliği
+Viner Hand ITC: Viner El ITC
+Violet: Menekşe
+Virtualize: Sanal
+Visible: Görünür
+Visualizer: Görselleştiricisi
+VisualizerBackgroundColor: GörselleştiriciArka Plan Rengi
+VisualizerElementBorderSize: VisualizerElementBorderSize
+Vivaldi: Vivaldi
+Vladimir Script: Vladimir Yazısı
+vo-001: Volapük (Dünya)
+Volume: Hacim
+Vs: Vs
+Vs2015: Vs2015
+VulcanBase16: Vulkan Tabanı16
+vun-TZ: Vunjo (Tanzanya)
+wae-CH: Walser (İsviçre)
+wal-ET: Wolaytta (Etiyopya)
+Warning: Uyarı
+WarningContrastText: WarningContrastText
+WarningDarken: UyarıKarartma
+WarningLighten: UyarıHafifletmek
+weather.json: weather.json
+Webdings: Ağlar
+Week: Hafta
+WeightingFilter: Ağırlıklandırma Filtresi
+Welcome {0}: '{0} hoş geldiniz'
+whatever: ne
+Wheat: Buğday
+White: Beyaz
+WhiteBalanceMode: Beyaz Dengesi Modu
+WhiteList: Beyaz Liste
+WhiteSmoke: Beyaz Duman
+Wide Latin: Geniş Latince
+Width: Genişlik
+Will be saved only when selected Permission: Yalnızca İzin seçildiğinde kaydedilecektir
+Window: Pencere
+Windows10Base16: Windows10Base16
+Windows10LightBase16: Windows10LightBase16
+Windows95Base16: Windows95Base16
+Windows95LightBase16: Windows95LightBase16
+WindowsHighContrastBase16: WindowsHighContrastBase16
+WindowsHighContrastLightBase16: WindowsHighContrastLightBase16
+WindowsNtBase16: WindowsNtBase16
+WindowsNtLightBase16: WindowsNtLightBase16
+Wingdings: Wingdings
+With custom configuration: Özel yapılandırma ile
+With default configuration: Varsayılan yapılandırma ile
+With tabs: sekmeler ile
+With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: MudExAdditionalAdornment bileşeniyle, bunun gibi herhangi bir MudInput tabanlı giriş kontrolünde istediğiniz kadar süslemeye sahip olabilirsiniz.
+With this component you can have an animation while loading the main blazor app: Bu bileşenle, ana blazor uygulamasını yüklerken bir animasyona sahip olabilirsiniz
+With_Selected: '{0} Seçildi'
+WithFullSpectrumAudioData: FullSpectrumAudioData ile
+WithFullSpectrumAudioDataPrefilledWithRandomData: WithFullSpectrumAudioDataPrefilledWithRandomData
+WithGoogleLatinFonts: GoogleLatinFonts ile
+WithoutBounds: Sınır Olmadan
+WithRandomData: RandomData ile
+WithRealAudioData: RealAudioData ile
+wo-SN: Wolof (Senegal)
+Wobble: Sallantı
+WoodlandBase16: Ormanlık Taban16
+WordDokument.doc: WordDokument.doc
+WrapChips: Sarma Cipsleri
+WrapToolBarContent: WrapToolBarContent
+Xcode: X kodu
+XcodeDuskBase16: XcodeAlacakaranlık Tabanı16
+xh-ZA: isiXhosa (Güney Afrika)
+Xml: XML
+xog-UG: Soga (Uganda)
+Xt256: Xt256 Serisi
+Yaml: Yaml
+yav-CM: Yangben (Kamerun)
+Yellow: Sarı
+YellowGreen: Sarı Yeşil
+Yes: Evet
+yi-001: Yidiş (Dünya)
+yo-BJ: Yoruba (Benin)
+yo-NG: Yoruba (Nijerya)
+Yokohama: Yokohama
+Yokohama - 220-0001: Yokohama - 220-0001
+Yokohama - 220-0001ender: Yokohama - 220-0001ender
+you: sen
+You are logged out because the Permissions of one of your Roles have been updated.: Rollerinizden birinin İzinleri güncellendiği için oturumunuz kapatıldı.
+You are logged out because the user with your Token has been deleted or token is expired.: Token'ınıza sahip kullanıcı silindiği veya token'ın süresi dolduğu için oturumunuz kapatıldı.
+You are logged out by an Administrator or profile change.: Bir Yönetici veya profil değişikliği nedeniyle oturumunuz kapatıldı.
+You are Logged Out.: Oturumunuz Kapatıldı.
+You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment'ı bir MudInput'un ChildContent olarak da kullanabilirsiniz
+You can now Login with your credentials: Artık kimlik bilgilerinizle giriş yapabilirsiniz
+You cannot delete yourself: Kendinizi silemezsiniz
+You clicked: Tıkladınız
+You don't need an extra JsonEditor anymore: Artık fazladan bir JsonEditor'a ihtiyacınız yok
+You have {0} Users where you can pick from: Aralarından seçim yapabileceğiniz {0} Kullanıcınız var
+You picked: Sen seçtin
+You received a new chat message from {0}: "{0}'dan yeni bir sohbet mesajı aldınız"
+You're leaving {0} and will redirected to {1}: "{0}'den ayrılıyorsunuz ve şuraya yönlendirileceksiniz{1}"
+Your e-mail address has been confirmed!: E-posta adresiniz onaylandı!
+Your email address could not be verified. If you have any problems, please contact {0}: E-posta adresiniz doğrulanamadı. Herhangi bir sorununuz varsa, lütfen {0}
+Your Profile has been updated.: Profiliniz güncellendi.
+Your Recent Activities.: Son Aktiviteleriniz.
+ZenburnBase16: ZenburnBase16
+zgh-Tfng-MA: Standart Fas Tamazight'ı (Tifinagh, Fas)
+zh-CN: Çince (Çin)
+zh-Hans-HK: Çince (Basitleştirilmiş, Hong Kong ÖİB)
+zh-Hans-MO: Çince (Basitleştirilmiş, Makao ÖİB)
+zh-HK: Çince (Hong Kong ÖİB)
+zh-MO: Çince (Makao ÖİB)
+zh-SG: Çince (Singapur)
+zh-TW: Çince (Tayvan)
+ZIndex: ZIndex
+ZipCode: Posta kodu
+Zoom: Yakınlaştırmak
+Zoom in: Yakınlaştır
+Zoom out: Uzaklaştır
+ZoomInButtonIcon: ZoomInButtonSimgesi
+ZoomOnHover: Yakınlaştırma Üzerine Bakış
+ZoomOutButtonIcon: UzaklaştırDüğmeSimgesi
+zu-ZA: isiZulu (Güney Afrika)

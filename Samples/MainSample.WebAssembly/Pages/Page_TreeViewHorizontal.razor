@@ -1,4 +1,5 @@
 ﻿@page "/MudExTreeViewHorizontal"
+@inherits BasePage
 
 
 @attribute [Demo(Name = "Horizontal", Order = 2, Group = "TreeView", Icon = Icons.Material.Outlined.AccountTree, Documentation = "Displays a tree structure as horizontal navigable tree", ForComponentType = typeof(MudExTreeViewHorizontal<>))]
@@ -8,7 +9,7 @@
     <SplitContainer>
         <Left>
             <div style="width: 100%">
-                <p>Selected: @_selectedNode?.Name</p>
+                <p>@($"{L["Selected Node"]}: {_selectedNode?.Name}")</p>
                 <MudExTreeViewHorizontal @bind-SelectedNode="_selectedNode"
                                          @ref="component"
                                          Items="@Entries">

@@ -1,30 +1,36 @@
 ﻿@using MudBlazor.Extensions.Attribute;
 @using MudBlazor.Extensions.Helper
 @using System.Reflection;
+@using Microsoft.Extensions.Localization
 @using MudBlazor.Extensions.Api
-
+@inject IStringLocalizer<HeaderForType> L
 <div style="@Style" class="doc-header">
     
     @if (!DocumentationOnly)
     {
-        <PageHeader Typo="@Typo">@(ApiMemberInfo.GetGenericFriendlyTypeName(Type) ?? Fallback)</PageHeader>
+        <PageHeader Typo="@Typo">@L[(ApiMemberInfo.GetGenericFriendlyTypeName(Type) ?? Fallback)]</PageHeader>
     }
 
     @if (!string.IsNullOrEmpty(Documentation))
     {
-        <MudAlert>@Documentation</MudAlert>
+        <MudAlert>@L[Documentation]</MudAlert>
     }
 
     @if (betaInfos?.Any() == true)
     {
-        <MudAlert Severity="Severity.Warning">@($"{ApiMemberInfo.GetGenericFriendlyTypeName(Type)} - {string.Join("<br/>", betaInfos.Select(b => b.Message))}")</MudAlert>
+        <MudAlert Severity="Severity.Warning">@($"{ApiMemberInfo.GetGenericFriendlyTypeName(Type)} - {string.Join("<br/>", betaInfos.Select(b => L[b.Message]))}")</MudAlert>
     }
     
 </div>
 
 
 @code {
-
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
+    }
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         if (parameters.TryGetValue<Type>(nameof(Type), out var type) && Type != type)

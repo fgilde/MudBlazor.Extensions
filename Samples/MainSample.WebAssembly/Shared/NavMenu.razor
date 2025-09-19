@@ -1,6 +1,9 @@
-﻿@using MudBlazor.Extensions.Core
+﻿@using Microsoft.Extensions.Localization
+@using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Core.Enums
 @using Nextended.Core.Extensions
+@inject IStringLocalizer<NavMenu> L
+
 <MudExTreeView SelectedItemBackgroundColor="@(SelectedNavEntry?.HasChildren == true || ViewMode != TreeViewMode.Default ? MudExColor.Default : MudExColor.HoverBackground)"
                @bind-SelectedNode="SelectedNavEntry" 
                AllowedToSelectFunc="@HasAction" 
@@ -12,7 +15,8 @@
                FilterBoxStyle="margin:10px;" 
                Style="margin: 0 10px;" 
                ExpandButtonDirection="LeftOrRight.Right" 
-               @bind-ViewMode="@ViewMode" 
+               @bind-ViewMode="@ViewMode"
+               TextFunc="@(e => L[e.Text])"
                TreeViewModeToggleComponent="@(_toggleableViewModes?.Contains(ViewMode) == true ? TreeViewModeToggleComponent.ToggleButton : TreeViewModeToggleComponent.None)"
                ToggleableViewModes="@_toggleableViewModes"
                Items="@Entries">
@@ -35,7 +39,13 @@
     {
         if (context.Demo is DemoNewAttribute or DemoUpdatedAttribute)
         {
-            return @<MudChip T="NavigationEntry" Style="margin-left: 8px; margin-top: 0;" Size="Size.Small" Variant="Variant.Text" Color="@context.Demo.IconColor">@(context?.Demo.GetType().Name.Replace("Demo", "").Replace("Attribute", ""))</MudChip>;
+            return @<MudChip T="NavigationEntry"
+                             Style="margin-left: 8px; margin-top: 0;"
+                             Size="Size.Small"
+                             Variant="Variant.Text"
+                             Color="@context.Demo.IconColor">
+                @L[(context?.Demo.GetType().Name.Replace("Demo", "").Replace("Attribute", ""))]
+            </MudChip>;
         }
         return @<p></p>;
     }

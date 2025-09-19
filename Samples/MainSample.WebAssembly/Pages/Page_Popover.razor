@@ -1,4 +1,5 @@
 ﻿@page "/popover"
+@inherits BasePage
 
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
@@ -8,12 +9,12 @@
     <SplitContainer >
         <Left>
             <MudPaper Outlined="true" Class="px-12 py-6">
-                <MudButton Class="toggle-sample-btn" Variant="Variant.Filled" Color="Color.Primary" DropShadow="false" OnClick="@ToggleOpen">@(_popoverOpen ? "Close" : "Open")</MudButton>
+                <MudButton Class="toggle-sample-btn" Variant="Variant.Filled" Color="Color.Primary" DropShadow="false" OnClick="@ToggleOpen">@(_popoverOpen ? L["Close"] : L["Open"])</MudButton>
                 <MudExPopover Duration="800" @ref="component" OnBlur="@(OnBlur)" SelectorsForIgnoreBlur=".toggle-sample-btn" Open="_popoverOpen"
                               OverflowBehavior="OverflowBehavior.FlipAlways" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Paper="false">
                     <MudPaper Outlined="true" Class="px-4 py-8">
-                        <MudText>This is the sample Popover. In general it inherits the original MudPopover. </MudText>
-                        <MudLink Href="https://mudblazor.com/components/popover" Target="_blank">MudBlazor Popover</MudLink>
+                        <MudText>@L["This is the sample Popover. In general it inherits the original MudPopover."]</MudText>
+                        <MudLink Href="https://mudblazor.com/components/popover" Target="_blank">@L["MudBlazor Popover"]</MudLink>
                     </MudPaper>
                 </MudExPopover>
             </MudPaper>

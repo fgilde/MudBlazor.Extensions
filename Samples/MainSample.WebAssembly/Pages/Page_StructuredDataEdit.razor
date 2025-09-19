@@ -1,4 +1,6 @@
 ﻿@page "/structured-data-edit"
+@inherits BasePage
+
 @using Nextended.Core.Helper
 @using BlazorJS
 @using MudBlazor.Extensions.Helper
@@ -14,14 +16,14 @@
         </Left>
         <Right>            
             <MudToolBar>
-                <MudTooltip Text="Reset to initial data">
+                <MudTooltip Text="@L["Reset to initial data"]">
                     <MudIconButton OnClick="@ResetDataString" Icon="@Icons.Material.Outlined.Undo" Color="Color.Inherit" />
                 </MudTooltip>
                 <MudDivider Vertical="true"/>
-                <MudText Class="ml-5" Typo="Typo.caption" Color="Color.Info">Leave editor focus to update MudExStructuredDataEditor</MudText>                
+                <MudText Class="ml-5" Typo="Typo.caption" Color="Color.Info">@L["Leave editor focus to update MudExStructuredDataEditor"]</MudText>                
                 <MudSpacer />
                 <MudExEnumSelect Class="mt-5 mb-7" Clearable="false" SearchBox="false" Variant="Variant.Filled" ValueChanged="@OnDataTypeChange" TEnum="StructuredDataType" Value="@_dataType" />
-                <MudTooltip Text="Edit data in dialog">
+                <MudTooltip Text="@L["Edit data in dialog"]">
                     <MudIconButton OnClick="@ShowSampleJsonEditDialog" Icon="@Icons.Material.Outlined.DesktopWindows" Color="Color.Inherit" Class="ml-5" />
                 </MudTooltip>
             </MudToolBar>
@@ -58,7 +60,7 @@
 
     private async Task ShowSampleJsonEditDialog()
     {                       
-        var res = await DialogService.EditStructuredDataStringAsync(_dataType, _dataString, $"Auto Generated Editor for {_dataType}", ((_,_) => Task.FromResult("")), SampleDialogOptions.FullSlideFromRight, meta => meta.WrapEachInMudItem(i => i.xs = 6));
+        var res = await DialogService.EditStructuredDataStringAsync(_dataType, _dataString, $"{L["Auto Generated Editor for"]} {_dataType}", ((_,_) => Task.FromResult("")), SampleDialogOptions.FullSlideFromRight, meta => meta.WrapEachInMudItem(i => i.xs = 6));
         if (!res.Cancelled)
             await OnDataStringChanged(MudExJsonHelper.FormatDataStringIfJson(res.Result.ToString(), _dataType));
     }

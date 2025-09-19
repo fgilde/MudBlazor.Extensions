@@ -1,11 +1,20 @@
 ﻿@page "/test"
+@inherits BasePage
+
+@using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
+@using MudBlazor.Extensions.Services
+@using Nextended.Core
+@using Nextended.Core.Types
+@using Environment = System.Environment
+@inject IMudExFileService FileService
+
+@* <MudButton OnClick="@Download">Download non translated</MudButton> *@
 
 <DemoComponent PageType="@GetType()">
     
     <MudExEnumSelect Label="EnumSelect" TEnum="MudDialogDragMode" @bind-Value="_dragMode"  Variant="Variant.Outlined"></MudExEnumSelect>
-
 
     <MudGrid Style="width: 100%" Justify="Justify.Center">
         <MudItem xs="12">
@@ -145,6 +154,12 @@ Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
         public string Name { get; set; }
         public string Score { get; set; }
         public bool Retired { get; set; }
+    }
+
+    private async Task Download(MouseEventArgs arg)
+    {
+        var yamlStr = string.Join(Environment.NewLine, YamlLocalizerExtensions.Keys.Keys.Select(k => $"{k}: {k}"));
+        await FileService.DownloadContentAsync(yamlStr, "application/x-yaml", "resources.yml");
     }
 
 }

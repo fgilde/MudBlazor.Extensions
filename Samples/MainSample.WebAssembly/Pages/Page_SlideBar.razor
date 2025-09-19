@@ -1,4 +1,5 @@
 ﻿@page "/slide-bar"
+@inherits BasePage
 
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using Position = MudBlazor.Position
@@ -12,9 +13,9 @@
                 <MudDrawerContainer Class="mud-height-full">
                     <MudExSlideBar BackgroundColor="Color.Secondary" BorderSize="4" BorderColor="Color.Warning" RelativeToParent="true" @ref="component" Position="Position.Right">
                         <MudNavMenu>
-                            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Store">Store</MudNavLink>
-                            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.LocalLibrary">Library</MudNavLink>
-                            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Forum">Community</MudNavLink>
+                            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Store">@L["Store"]</MudNavLink>
+                            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.LocalLibrary">@L["Library"]</MudNavLink>
+                            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Forum">@L["Community"]</MudNavLink>
                         </MudNavMenu>
                     </MudExSlideBar>
                 </MudDrawerContainer>

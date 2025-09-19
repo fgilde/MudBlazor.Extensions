@@ -1,4 +1,5 @@
 ﻿@page "/MudExTreeViewDefault"
+@inherits BasePage
 
 
 @attribute [Demo(Name = "Default", Order = 1, Group = "TreeView", Icon = Icons.Material.Outlined.AccountTree, Documentation = "Displays a tree structure as simple tree", ForComponentType = typeof(MudExTreeViewDefault<>))]
@@ -8,7 +9,7 @@
     <SplitContainer>
         <Left>
             <div style="width: 100%">
-                <p>Selected: @_selectedNode?.Name</p>
+                <p>@($"{L["Selected Node"]}: {_selectedNode?.Name}")</p>
                 <MudExTreeViewDefault @bind-SelectedNode="_selectedNode"
                                          @ref="component"
                                          Items="@Entries">

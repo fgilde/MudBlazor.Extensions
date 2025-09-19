@@ -1,4 +1,6 @@
 ﻿@page "/objectedit-picker"
+@inherits BasePage
+
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Helper
@@ -34,7 +36,7 @@
     private async Task OnSubmit(EditContext ctx)
     {
         var asString = JsonConvert.SerializeObject(ctx.Model, Formatting.Indented);
-        await DialogService.ShowExAsync<SampleDialog>("Result", sd => sd.ContentMessage = asString, new DialogOptionsEx
+        await DialogService.ShowExAsync<SampleDialog>(L["Result"], sd => sd.ContentMessage = asString, new DialogOptionsEx
         {
             DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass),
             Position = DialogPosition.TopCenter,

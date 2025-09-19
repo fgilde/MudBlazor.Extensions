@@ -1,0 +1,4347 @@
+﻿_ Text: _テキスト
+--accent-color1: --アクセントカラー1
+--accent-color2: --アクセントカラー2
+--accent-color3: --アクセントカラー3
+--accent-color4: --アクセントカラー4
+--loading-color: --読み込み色
+--mud-palette-black: --泥パレット-黒
+--mud-palette-primary: --泥パレットプライマリ
+--mud-palette-primary-darken: --泥パレット-プライマリ-ダーク
+--mud-palette-primary-hover: --泥パレット-プライマリ-ホバー
+--mud-palette-primary-lighten: --泥パレットプライマリライト
+--mud-palette-primary-text: --泥パレット-プライマリテキスト
+--mud-palette-secondary: --泥パレット-二次
+--mud-palette-secondary-darken: --泥パレット-二次-暗くする
+--mud-palette-secondary-hover: --泥パレット-二次-ホバー
+--mud-palette-secondary-lighten: --泥パレット-二次-ライト
+--mud-palette-secondary-text: --泥パレット-二次テキスト
+--mud-palette-white: --泥パレット-白
+(currently the item is not visible): (現在、アイテムは表示されません)
+(currently the item is visible): (現在、アイテムは表示されています)
+4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+A: ある
+A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: ユーザーが可能な値のリストから値を選択し、それを Chips またはデフォルトのコンボボックスとして表示できるようにするコンポーネント。
+A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: マウスオーバーで ChildContent を下、上、左、右からスライドさせるために使用できるコンポーネント。
+A Component to display text with a gradient foreground or background: グラデーションの前景または背景を持つテキストを表示するコンポーネント
+A Component to display the content of a zip file: zip ファイルの内容を表示するコンポーネント
+A Component to edit and upload a list of files: ファイルのリストを編集およびアップロードするコンポーネント
+A Component to quickly select a color: 色をすばやく選択するためのコンポーネント
+A connection to the server cannot be established. Your network connection may be down or the server is unreachable. Please wait until the connection has been restored: サーバーへの接続を確立できません。ネットワーク接続がダウンしているか、サーバーにアクセスできない可能性があります。接続が回復するまでお待ちください
+A divider to separate content: コンテンツを区切る仕切り
+A maximum of {0} files are allowed: 最大 {0} 個のファイルが許可されます
+A Popover can be used to display some content on top of another.: ポップオーバーを使用して、一部のコンテンツを別のコンテンツの上に表示できます。
+A powerful component to edit an object and its properties.: オブジェクトとそのプロパティを編集するための強力なコンポーネント。
+A powerful editor that can handle json, xml or yaml content: json、xml、またはyamlコンテンツを処理できる強力なエディター
+A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: MudColorPicker を継承するが、閉じるイベントを遅らせ、ブラウザからネイティブ ピッカー コンポーネントを使用する可能性を追加する単純な ColorPicker コンポーネント
+A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: セクションを含むための列、行、ColSpan と RowSpan をサポートする単純なグリッド コンポーネント。
+A SplitPanel Component: SplitPanel コンポーネント
+A Splitter Component: スプリッターコンポーネント
+A WYSIWYG Html editor component.: WYSIWYG Html エディターコンポーネント。
+A11yDark: A11yダーク
+A11yLight: A11yライト
+aa-DJ: アファール(ジブチ)
+aa-ER: アファール(エリトリア)
+aa-ET: アファール(エチオピア)
+about: に関しては
+Account: アカウント
+ActionButtons: アクションボタン
+ActionButtonsNewLine: アクションボタン改行
+ActionDefault: アクションデフォルト
+ActionDisabled: アクション無効
+ActionDisabledBackground: ActionDisabledBackground (アクション無効バックグラウンド)
+Actions: アクション
+ActionsAdornment: アクション装飾
+ActionsClass: Actionsクラス
+Activate comments: コメントを有効にする
+Activate User?: ユーザーをアクティブ化しますか?
+Active: 能動
+Active?: 能動。
+ActiveFilterOnly: アクティブフィルターのみ
+Adaptive: アダプティヴ
+ADblNumber: ADbl番号
+Add: 足す
+Add 1000 random items: ランダムアイテムを1000個追加
+Add 500 Users: 500 ユーザーを追加する
+Add Brand: ブランドを追加
+Add Document: ドキュメントの追加
+Add Document Type: ドキュメント タイプの追加
+Add Extended Attribute: 拡張属性の追加
+Add external Url: 外部 URL の追加
+Add files: ファイルの追加
+Add Product: 製品の追加
+Add Role: ロールの追加
+Add Url: URLの追加
+Add user: ユーザーの追加
+Add user to both lists: 両方のリストにユーザーを追加する
+Additional Audio: 追加オーディオ
+Additional Video: 追加ビデオ
+AdditionalAdornment: 追加装飾
+Address: 住所
+Addresses: アドレス
+AddUrl: AddUrl (追加URL)
+Administrator: 管理者
+Administrator Settings.: 管理者設定。
+Administrators Profile's Status cannot be toggled: 管理者プロファイルのステータスを切り替えることはできません
+Adornment: 修飾
+AdornmentAriaLabel: 装飾アリアラベル
+AdornmentColor: 装飾カラー
+AdornmentIcon: 装飾アイコン
+AdornmentText: 装飾テキスト
+af-NA: アフリカーンス語(ナミビア)
+af-ZA: アフリカーンス語(南アフリカ)
+After the dialog is shown you can drag it to the edges to see snap. Also you can use Ctrl + {ArrowKeys} to change position: ダイアログが表示されたら、ダイアログをエッジにドラッグしてスナップを確認できます。また、Ctrl + {矢印キー}を使用して位置を変更することもできます
+AfterBegin: アフタービギン
+AfterEnd: アフターエンド
+AfterSearchBox: アフターサーチボックス
+Agate: 瑪瑙
+Age: 年齢
+agq-CM: アヘム (カメルーン)
+ak-GH: アカン(ガーナ)
+Albertus: アルベルトゥス
+Alice Johnson: アリス・ジョンソン
+AliceBlue: アリスブルー
+Align: 並べる
+ALL COMPONENTS: すべてのコンポーネント
+All Documents without Type are stored here: タイプのないすべてのドキュメントはここに保存されます
+All Groups: すべてのグループ
+All Permissions: すべての権限
+All roles: すべての役割
+All roles unfiltered: すべてのロールがフィルター処理されていない
+AllFilters: すべてのフィルター
+AllowAudioRecording: AllowAudioRecording (音声録音を許可)
+AllowColumnSizeChange: AllowColumnSizeChange を許可する
+AllowCopyUrl: AllowCopyUrl を許可します
+AllowDownload: ダウンロードを許可
+AllowDrop: AllowDrop (許可ドロップ)
+AllowDropBox: AllowDropBox を許可する
+AllowDuplicates: 重複を許可
+AllowExternalUrl: AllowExternalUrl を許可します
+AllowFolderUpload: AllowFolderUpload (許可フォルダアップロード)
+AllowGoogleDrive: Googleドライブを許可する
+AllowInteractingUnderRubberBand: AllowInteractingUnderRubberBand (AllowInteractingUnderRubberBand)
+AllowMultiple: 複数を許可
+AllowOneDrive: OneDrive を許可する
+AllowOpenInNewTab: OpenInNewTab を許可
+AllowOpenOnReadOnly: AllowOpenOnReadOnly (AllowOpenOnReadonly)
+AllowPreview: 許可プレビュー
+AllowRemovingItems: AllowRemovingItems (項目の削除を許可)
+AllowRename: 名前変更を許可
+AllowRubberBandSelection: AllowRubberBandSelection (ゴムバンド選択を許可)
+AllowSelectionOfNonEmptyNodes: NonEmptyNodes の選択を許可します
+AllowSelectOnPreviewClick: AllowSelectオンプレビュークリック
+AllowVideoCapture: ビデオキャプチャの許可
+AlphaBars: アルファバー
+Already have an account?: すでにアカウントをお持ちですか?
+Always: いつも
+AlwaysEditOptions: AlwaysEditオプション
+AlwaysShowValue: 常に値を表示する
+AlwaysVisible: 常時表示
+am-ET: アムハラ語(エチオピア)
+An Error has occured!: エラーが発生しました!
+An Error has occurred!: エラーが発生しました!
+An error occurred while confirming {0}: 確認中にエラーが発生しました{0}
+An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used, and you can specify animations as well: 複数のアイテムを選択でき、内部的にも検索機能を提供する拡張 SelectBox コンポーネントで、MudExPopover が使用され、アニメーションも指定できます
+An item that only renders the content if it is in the viewport.: ビューポート内にあるコンテンツのみをレンダリングするアイテム。
+AnchorOrigin: アンカーオリジン
+Andale Mono: アンデール・モノ
+Androidstudio: アンドロイドスタジオ
+Animate: 活気づける
+AnimateAudioElementBorderColor: AnimateAudioElementBorderColor (アニメーションオーディオ要素ボーダーカラー)
+AnimateClose: アニメーション閉じる
+AnimateVisualizerBorderColor: AnimateVisualizerBorderColor (アニメーションビジュアライザーボーダーカラー)
+Animation: アニメーション
+AnimationDuration: アニメーションデュレーション
+AnimationDuration (in ms): AnimationDuration (ミリ秒単位)
+AnimationDurationInMs: アニメーション期間InMs
+AnimationIn: アニメーションイン
+AnimationInDirection: アニメーション方向内
+AnimationInDuration: アニメーションの期間
+AnimationInPosition: アニメーションインポジション
+AnimationOut: アニメーション出力
+AnimationOutDirection: アニメーションアウトディレクション
+AnimationOutDuration: アニメーションアウトデュレーション
+AnimationOutPosition: アニメーションアウトポジション
+AnimationPosition: アニメーション位置
+Animations: アニメーション
+AnimationTime: アニメーションタイム
+AnimationTimingFunction: アニメーションタイミング関数
+AnOldHope: アンオールドホープ
+Another Demo theme: 別のデモテーマ
+AnotherRar.rar: AnotherRar.rar
+AnotherStringProperty10: 別の文字列プロパティ10
+AnotherStringProperty11: 別の文字列プロパティ11
+AnotherStringProperty12: 別の文字列プロパティ12
+AnotherStringProperty13: 別の文字列プロパティ13
+AnotherStringProperty14: 別の文字列プロパティ14
+AnotherStringProperty15: 別の文字列プロパティ15
+AnotherStringProperty16: AnotherStringプロパティ16
+AnotherStringProperty17: 別の文字列プロパティ17
+AnotherStringProperty18: 別の文字列プロパティ18
+AnotherStringProperty19: 別の文字列プロパティ19
+AnotherStringProperty20: AnotherStringプロパティ20
+AnotherStringProperty21: 別の文字列プロパティ21
+AnotherStringProperty22: 別の文字列プロパティ22
+AnotherStringProperty23: 別の文字列プロパティ23
+AnotherStringProperty24: 別の文字列プロパティ24
+AnotherStringProperty25: 別の文字列プロパティ25
+AnotherStringProperty26: 別の文字列プロパティ26
+AnotherStringProperty27: 別の文字列プロパティ27
+AnotherStringProperty28: 別の文字列プロパティ28
+AnotherStringProperty29: 別の文字列プロパティ29
+AnotherStringProperty30: 別の文字列プロパティ30
+AnotherStringProperty31: 別の文字列プロパティ31
+AnotherStringProperty32: 別の文字列プロパティ32
+AnotherStringProperty33: 別の文字列プロパティ33
+AnotherStringProperty34: 別の文字列プロパティ34
+AnotherStringProperty35: 別の文字列プロパティ35
+AnotherStringProperty36: 別の文字列プロパティ36
+AnotherStringProperty37: 別の文字列プロパティ37
+AnotherStringProperty38: 別の文字列プロパティ38
+AnotherStringProperty39: AnotherStringプロパティ39
+AnotherStringProperty40: 別の文字列プロパティ40
+AnotherStringProperty41: 別の文字列プロパティ41
+AnotherStringProperty42: 別の文字列プロパティ42
+AnotherStringProperty43: 別の文字列プロパティ43
+AnotherStringProperty44: 別の文字列プロパティ44
+AnotherStringProperty45: 別の文字列プロパティ45
+AnotherStringProperty46: 別の文字列プロパティ46
+AnotherStringProperty47: 別の文字列プロパティ47
+AnotherStringProperty48: 別の文字列プロパティ48
+AnotherStringProperty49: 別の文字列プロパティ49
+AnotherStringProperty50: AnotherStringプロパティ50
+AnotherStringProperty51: 別の文字列プロパティ51
+AnotherStringProperty52: 別の文字列プロパティ52
+AnotherStringProperty53: 別の文字列プロパティ53
+AnotherStringProperty54: 別の文字列プロパティ54
+AnotherStringProperty55: 別の文字列プロパティ55
+AnotherStringProperty56: 別の文字列プロパティ56
+AnotherStringProperty57: 別の文字列プロパティ57
+AnotherStringProperty58: 別の文字列プロパティ58
+AnotherStringProperty59: 別の文字列プロパティ59
+AnotherStringProperty60: 別の文字列プロパティ60
+AnsiBands: アンシバンド
+AntiqueWhite: アンティークホワイト
+ApathyBase16: アパシーベース16
+Api: APIの
+API: API
+API-Versions: API バージョン
+AppBar: AppBar (アプリバー)
+AppbarBackground: AppbarBackground (アプリバーの背景)
+AppbarHeight: AppbarHeight (アプリバーの高さ)
+AppbarText: AppbarText (アプリバーテキスト)
+Appearance: 様子
+Appetizer: 前菜
+Apple: 林檎
+Apple Gothic: アップルゴシック
+Application: アプリケーション
+ApplicationDescription: WebAssembly とクリーン アーキテクチャ パターンを使用したサンプル アプリケーション
+ApplicationSubDescription: Coworkeeへようこそ
+applies a CSS class when the item is not visible.: アイテムが表示されていない場合に CSS クラスを適用します。
+applies a CSS class when the item is visible.: アイテムが表示されているときに CSS クラスを適用します。
+applies styles when the item is not visible.: アイテムが表示されていないときにスタイルを適用します。
+applies styles when the item is visible.: アイテムが表示されているときにスタイルを適用します。
+Apply: 申し込む
+ApplyBackgroundImageFromTrack: ApplyBackgroundImageFromTrack
+ApprenticeBase16: 見習いベース16
+Apr: 4月
+Aqua: アクア
+Aquamarine: アクアマリン
+ar-001: アラビア語(世界)
+ar-AE: アラビア語(アラブ首長国連邦)
+ar-BH: アラビア語(バーレーン)
+ar-DJ: アラビア語(ジブチ)
+ar-DZ: アラビア語(アルジェリア)
+ar-EG: アラビア語(エジプト)
+ar-ER: アラビア語(エリトリア)
+ar-IL: アラビア語(イスラエル)
+ar-IQ: アラビア語(イラク)
+ar-JO: アラビア語(ヨルダン)
+ar-KM: アラビア語(コモロ)
+ar-KW: アラビア語(クウェート)
+ar-LB: アラビア語(レバノン)
+ar-LY: アラビア語(リビア)
+ar-MA: アラビア語(モロッコ)
+ar-MR: アラビア語(モーリタニア)
+ar-OM: アラビア語(オマーン)
+ar-PS: アラビア語(パレスチナ自治政府)
+ar-QA: アラビア語(カタール)
+ar-SA: アラビア語(サウジアラビア)
+ar-SD: アラビア語(スーダン)
+ar-SO: アラビア語(ソマリア)
+ar-SS: アラビア語(南スーダン)
+ar-SY: アラビア語(シリア)
+ar-TD: アラビア語(チャド)
+ar-TN: アラビア語(チュニジア)
+ar-YE: アラビア語(イエメン)
+Archive.zip: Archive.zip
+ArduinoLight: ArduinoLight (アードゥイノライト)
+Are you sure to close: 閉店してもよろしいですか?
+Are you sure you want to force logout for user {0}: ユーザー{0}のために強制的にログアウトしてもよろしいですか?
+Are you sure you want to restart Backend/Server?: バックエンド/サーバーを再起動してもよろしいですか?
+Are you sure you want to restore the default settings? This will overwrite any changes you've ever made here.: デフォルト設定に戻してもよろしいですか?これにより、ここで行った変更が上書きされます。
+Are you sure?: 確かですか。
+Arial: アリアル
+Arial Black: アリアルブラック
+Arial Narrow: アリアルナロー
+arn-CL: マプチェ(チリ)
+Arta: 芸術
+As Admin you can filter for users here: 管理者は、ここでユーザーをフィルタリングできます
+As Picker: ピッカーとして
+as read: 読んだように
+As simple as it sound. This is a simple GroupBox: 聞こえるほど簡単です。これは単純なGroupBoxです
+As soon as your account has been activated you can log in: アカウントが有効化されるとすぐにログインできます
+as unread: 未読として
+as-IN: アッサム語(インド)
+asa-TZ: アス(タンザニア)
+Ascetic: 行者
+AshesBase16: 灰ベース16
+AspectRatio: アスペクト比
+ast-ES: アストゥリアス(スペイン)
+At least one document is required: 少なくとも 1 つの書類が必要です
+AtelierCaveBase16: 洞窟のアトリエベース16
+AtelierCaveLightBase16: アトリエケーブライトベース16
+AtelierDuneBase16: アトリエデューンベース16
+AtelierDuneLightBase16: 砂丘のアトリエライトベース16
+AtelierEstuaryBase16: アトリエ河口ベース16
+AtelierEstuaryLightBase16: アトリエ河口ライトベース16
+AtelierForestBase16: アトリエフォレストベース16
+AtelierForestLightBase16: アトリエフォレストライトベース16
+AtelierHeathBase16: アトリエヒースベース16
+AtelierHeathLightBase16: アトリエヒースライトベース16
+AtelierLakesideBase16: アトリエレイクサイドベース16
+AtelierLakesideLightBase16: アトリエレイクサイドライトベース16
+AtelierPlateauBase16: アトリエプラトーベース16
+AtelierPlateauLightBase16: アトリエプラトーライトベース16
+AtelierSavannaBase16: ワークショップSavannaBase16
+AtelierSavannaLightBase16: アトリエサバンナライトベース16
+AtelierSeasideBase16: アトリエシーサイドベース16
+AtelierSeasideLightBase16: アトリエシーサイドライトベース16
+AtelierSulphurpoolBase16: アトリエ硫黄プールBase16
+AtelierSulphurpoolLightBase16: アトリエ硫黄プールライトベース16
+AtlasBase16: アトラスベース16
+AtomOneDark: アトムワンダーク
+AtomOneDarkReasonable: AtomOneDark合理的
+AtomOneLight: アトムワンライト
+Audio Content-Type: オーディオコンテンツタイプ
+Audio devices: オーディオデバイス
+AudioDevice: オーディオデバイス
+AudioElementBackgroundColor: オーディオ要素背景色
+AudioElementBorderColor: オーディオ要素ボーダーカラー
+AudioElementBorderSize: オーディオ要素ボーダーサイズ
+AudioElementBorderStyle: オーディオ要素ボーダースタイル
+AudioElements: オーディオ要素
+AudioElementWidth: オーディオ要素幅
+Audit Trails: 監査証跡
+Audit Trails exported: エクスポートされた監査証跡
+Aug: 8 月
+Austin: オースティン
+Austin - 73301: オースティン - 73301
+Austin - 73301ender: オースティン - 73301ender
+Auto Confirm Email?: メールを自動確認しますか?
+Auto Generated Editor for TestObject: TestObject の自動生成エディタ
+Auto Stop recording after: 録画を自動停止する
+AutoApplyGradient: AutoApplyグラデーション
+AutoClear: オートクリア
+AutoCloseBehaviour: 自動閉じ動作
+AutoCloseOnSelect: 自動閉じ選択
+AutoCollapse: オートコラプス
+AutoExtractArchive: 自動抽出アーカイブ
+AutoFocus: オートフォーカス
+AutoFocusFilter: オートフォーカスフィルター
+AutoLoadFileDataBytes: 自動ロードファイルデータバイト
+Automatically allow next time: 次回を自動的に許可する
+AutoPlayNextTrackOnEnd: AutoPlayNextTrackOnEnd (自動再生NextTrackOnEnd)
+AutoRemoveError: 自動削除エラー
+AutoShowHideAudioElement: AutoShowHideAudioElement (自動表示非表示オーディオ要素)
+AutoSize: オートサイズ
+Available: 利用できる
+AvailableItems: 利用可能なアイテム
+Avant Garde: アバンギャルド
+az-Cyrl-AZ: アゼルバイジャン語(キリル文字、アゼルバイジャン)
+az-Latn-AZ: アゼルバイジャン語(ラテン語、アゼルバイジャン)
+Azure: 紺碧
+B: B
+ba-RU: バシキール(ロシア)
+Back: 戻る
+BackdropClick: バックドロップクリック
+Background: バックグラウンド
+BackgroundColor: 背景色
+BackgroundGray: 背景グレー
+BackgroundImage: 背景画像
+BackgroundPosition: 背景ポジション
+BackgroundRepeat: 背景リピート
+BackgroundSize: 背景サイズ
+BackLinkLabel: バックリンクラベル
+Bar: バール
+BarBeverage: バービバレッジ
+Barcode: バーコード
+Barcode already exists.: バーコードはすでに存在します。
+Barcode is required!: バーコード必須!
+BarIndex: バーインデックス
+Bark: 樹皮
+BarLevel: バーレベル
+BarSpacing: バースペーシング
+Bart Simpson: バートシンプソン
+bas-CM: バサー(カメルーン)
+Base component for a picker: ピッカーの基本コンポーネント
+Basic: 基本的な
+Basic role with default permissions: 既定のアクセス許可を持つ基本ロール
+Bauhaus 93: バウハウス 93
+be-BY: ベラルーシ語(ベラルーシ)
+BeforeBegin: ビフォービオン開始
+BeforeEnd: 終了前
+BeforeSearchBox: BeforeSearchBox (検索ボックスの前)
+Behavior: 振舞い
+Behaviour: 行動
+Beige: ベージュ
+Bell MT: ベルMT
+bem-ZM: ベンバ(ザンビア)
+Bernard MT Condensed: バーナードMTコンデンス
+BespinBase16: ベスピンベース16
+Beverage: 飲料
+bez-TZ: ベナ(タンザニア)
+bg-BG: ブルガリア語(ブルガリア)
+BgAlpha: Bgアルファ
+BgColor: Bgカラー
+bin-NG: 江戸(ナイジェリア)
+Bind Dark Mode: ダークモードのバインド
+BindWidthToPicker: バインド幅からピッカーへ
+Birmingham: バーミンガム
+Birmingham - B1 1BD: バーミンガム - B1 1BD
+Birmingham - B1 1BDender: バーミンガム - B1 1Bベンダー
+Bisque: ビスク
+Black: 黒い
+Blackadder ITC: ブラックアダーITC
+BlackList: ブラックリスト
+BlackMetalBase16: ブラックメタルベース16
+BlackMetalBathoryBase16: ブラックメタルバトリーベース16
+BlackMetalBurzumBase16: ブラックメタルBurzumBase16
+BlackMetalDarkFuneralBase16: ブラックメタルダーク葬儀ベース16
+BlackMetalGorgorothBase16: ブラックメタルゴルゴロスベース16
+BlackMetalImmortalBase16: ブラックメタルイモータルベース16
+BlackMetalKholdBase16: ブラックメタルKholdBase16
+BlackMetalMardukBase16: ブラックメタルマルドゥクベース16
+BlackMetalMayhemBase16: ブラックメタルメイヘムベース16
+BlackMetalNileBase16: ブラックメタルナイルベース16
+BlackMetalVenomBase16: ブラックメタルヴェノムベース16
+BlanchedAlmond: ブランチングアーモンド
+Blazor wrapper component for AudioMotionAnalyzer: AudioMotionAnalyzer の Blazor ラッパー コンポーネント
+BlobUrl: ブロブ URL
+Blue: 青い
+BlueViolet: ブルーバイオレット
+bm-Latn-ML: バマナンカン語(ラテン語、マリ語)
+bn-BD: ベンガル語(バングラデシュ)
+bn-IN: バングラ語(インド)
+bo-CN: チベット語(中国)
+bo-IN: チベット語(インド)
+Bob Smith: ボブ・スミス
+Bodoni MT: MT ボドニ
+body1: ボディ1
+Body1: ボディ1
+body2: ボディ2
+Body2: ボディ2
+Bookman: 文人
+BorderAnimationColors: ボーダーアニメーションカラー
+BorderColor: ボーダーカラー
+Bordered: 隣接
+BorderOpacity: ボーダー不透明度
+BorderSize: ボーダーサイズ
+BorderStyle: ボーダースタイル
+Both: 両方とも
+BothDiagonal: 両方対角線
+BothHorizontal: 両方水平
+BothVertical: 両方垂直
+Bottom: 底
+BottomCenter: ボトムセンター
+BottomLeft: 左下
+BottomRight: 右下
+Bounce: 弾む
+br-FR: ブルトン(フランス)
+Brand: ブランド
+Brand Deleted: ブランド削除
+Brand is required!: ブランド必須!
+Brand Not Found!: ブランドが見つかりません!
+Brand Saved: ブランドが保存されました!
+Brand Updated: ブランド更新!
+BrandName: ブランド
+Brands: ブランド
+Brands exported: 輸出ブランド
+Breadcrumb: パンくずリスト
+BreadcrumbLink: パンくずリストリンク
+BreadcrumbSeparator: パンくずリストセパレータ
+BrewerBase16: ブリューワーベース16
+BrightBase16: ブライトベース16
+Brightness: 明るさ
+Broadway: ブロードウェイ
+BrogrammerBase16: ブログラマーベース16
+Brown: 褐色
+BrownPaper: ブラウンペーパー
+Browse Available Documents.: 使用可能なドキュメントを参照します。
+Browser: ブラウザー
+BrowserFileExt: ブラウザファイル内線
+Brush Script MT: ブラシスクリプトMT
+Brush Script Std: ブラシスクリプト標準
+BrushTreesBase16: ブラシツリーベース16
+BrushTreesDarkBase16: ブラシツリーダークベース16
+brx-IN: ボド(インド)
+bs-Cyrl-BA: ボスニア語(キリル文字、ボスニア・ヘルツェゴビナ)
+bs-Latn-BA: ボスニア語(ラテン語、ボスニア・ヘルツェゴビナ)
+BurlyWood: バーリーウッド
+button: ボタン
+Button: ボタン
+Button component for capturing audio and video.: オーディオとビデオをキャプチャするためのボタンコンポーネント。
+Button component for speech-to-text functionality, allowing for asynchronous recording and processing of speech input.: 音声テキスト変換機能用のボタンコンポーネントで、音声入力の非同期録音と処理を可能にします。
+ButtonColor: ボタンカラー
+ButtonSize: ボタンサイズ
+ButtonsJustify: ボタン両端揃え
+ButtonType: ボタンタイプ
+ButtonVariant: ボタンバリアント
+byn-ER: ブリン(エリトリア)
+Bytes: バイト
+C: C
+C#: C#
+ca-AD: カタルーニャ語(アンドラ)
+ca-ES: カタルーニャ語(スペイン)
+ca-FR: カタルーニャ語(フランス)
+ca-IT: カタルーニャ語(イタリア)
+CadetBlue: カデットブルー
+Calgary: カルガリー
+Calgary - T1X 0L3: カルガリー - T1X 0L3
+Calgary - T1X 0L3ender: カルガリー - T1X 0L3ender
+Californian FB: カリフォルニアのFB
+Can close: 閉じることができます
+Cancel: キャンセル
+Cancel deletion: 削除のキャンセル
+Cancelled: キャンセル
+CanClose: 閉じる
+CanCloseCallbackName: CanCloseコールバック名
+caption: キャプション
+Caption: キャプション
+Capture: 捕獲
+Capture Screen: キャプチャ画面
+Capture service: キャプチャーサービス
+Capture video: ビデオをキャプチャする
+CaptureButton: キャプチャボタン
+CaptureInfoComponent: CaptureInfoコンポーネント
+CaptureOptions: キャプチャオプション
+Card Grid: カードグリッド
+CardEffect3d: カードエフェクト3D
+CardGrid: カードグリッド
+Catalog Management: カタログ管理
+ccp-Cakm-BD: チャクマ (バングラデシュ チャクマ)
+ccp-Cakm-IN: チャクマ (チャクマ、インド)
+ce-RU: チェチェン(ロシア)
+ceb-Latn-PH: セブアノ語(ラテン語、フィリピン)
+Centaur: ケンタウロス
+Center: センター
+CenterCenter: センターセンター
+CenterLeft: 左中央
+CenterRight: センター右
+Centimeters: センチメートル
+Century Gothic: センチュリーゴシック様式
+cgg-UG: チガ(ウガンダ)
+ChalkBase16: チョークベース16
+Change media options: メディアオプションの変更
+Change or edit your theme: テーマを変更または編集する
+Change Password: パスワードの変更
+Change the system settings carefully: システム設定を慎重に変更する
+ChannelLayout: チャネルレイアウト
+Charlie Brown: チャーリー・ブラウン
+Chartreuse: シャルトリューズ
+Charts comming soon ish...: チャートは間もなく登場します...
+ChartTooltip: チャートツールチップ
+chat: チャット
+Chat: チャット
+Chat?: チャット。
+Check me: チェック
+Check out the MudExThemeEdit Component: MudExThemeEdit コンポーネントを確認する
+CheckBox: チェックボックス
+CheckedIcon: チェックアイコン
+Checker: チェッカー
+Checker box: チェッカーボックス
+Chicago: シカゴ
+Chicago - 60601: シカゴ - 60601
+Chicago - 60601ender: シカゴ - 60601ender
+ChildContentStyle: 子コンテンツスタイル
+Chiller: 冷凍 機
+Chip: 欠く
+ChipClass: チップクラス
+ChipCloseable: チップクローズ可能
+ChipColor: チップカラー
+ChipsAdditionalAbove: チップ追加上記
+ChipsAdditionalBelow: チップ追加下
+ChipSelect: チップセレクト
+ChipSize: チップサイズ
+ChipsMaxWidth: チップ最大幅
+ChipsOnly: チップのみ
+ChipVariant: チップバリアント
+ChipWithoutItemTemplate: ChipWithoutItemTemplate (チップなしアイテムテンプレート)
+Chocolate: チョコレート
+chr-Cher-US: チェロキー族(チェロキー族、米国)
+CircusBase16: サーカスベース16
+Cities you want to live: 住みたい街
+City: 都市
+Class: クラス
+ClassChip: クラスチップ
+ClassicDarkBase16: クラシックダークベース16
+ClassicLightBase16: クラシックライトベース16
+ClassSearchBox: クラス検索ボックス
+Clear: クリア
+Clearable: クリア可能
+Click here to choose a screen to capture. If not selected, you will be prompted when starting the recording.: キャプチャする画面を選択するには、ここをクリックしてください。選択しない場合は、録画開始時にプロンプトが表示されます。
+Click here to upload files: ファイルをアップロードするにはここをクリックしてください
+Click the button below to enable them and load the third party services from disqus.com: 下のボタンをクリックして有効にし、disqus.com からサードパーティのサービスをロードします
+Clickable: クリック可能
+ClickAction: クリックアクション
+ClickPropagation: クリック伝播
+Client Language has been changed: クライアント言語が変更されました
+Close: 閉める
+Closeable: 閉じられる
+CloseAfterSelect: CloseAfterSelect (選択後閉じる)
+CloseButton: 閉じるボタン
+Closed: クローズド
+CloseIcon: 閉じるアイコン
+CloseOnEscapeKey: CloseOnEscapeKey
+co-FR: コルシカ島(フランス)
+Code: コード
+CodeBlockTheme: コードブロックテーマ
+CodepenEmbed: Codepen埋め込み
+CodeschoolBase16: コードスクールベース16
+CollapseOnClick: 折りたたむオンクリック
+Colonna MT: MTカラム
+color: 色
+Color: 色
+ColorBrewer: カラーブリューワー
+ColorBubble: カラーバブル
+ColoredImagesForExternalFilePicker: ColoredImagesForExternalFilePicker
+ColorEdit: カラーエディット
+ColorElements: カラー要素
+ColorizeIcons: アイコンの色付け
+ColorMode: カラーモード
+ColorPicker: カラーピッカー
+ColorPickerMode: カラーピッカーモード
+ColorPickerView: カラーピッカービュー
+ColorsBase16: 色ベース16
+ColorStops: カラーストップ
+ColorTemperature: カラー温度
+ColSpan: コルスパン
+Column: コラム
+Columns Affected: 影響を受ける列
+ColumnWidth: 列幅
+Comic Sans MS: コミック・サンズMS
+Comments: コメント
+Common: コモン
+Communication: 通信
+Community: コミュニティ
+Compact: コンパクト
+Comparer: 比べる
+Component edit capture options: コンポーネント編集キャプチャオプション
+Component in Dialog: ダイアログ内のコンポーネント
+Component to add additional adornment to a MudInput: MudInput に装飾を追加するコンポーネント
+Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: iframe またはオブジェクト タグ、または IMudExFileDisplay を実装する登録済みビューアーにファイルを表示するコンポーネント
+Component to display information about the current recording: 現在の記録に関する情報を表示するコンポーネント
+Component to Edit Icon values: アイコン値を編集するコンポーネント
+Component to Edit MudExColor: MudExColor を編集するコンポーネント
+Component to move the ChildContent to a specific element that can defined by ElementSelector.: Componentを使用して、ElementSelectorで定義できる特定の要素にChildContentを移動します。
+Component to select a theme from a list of themes.: テーマのリストからテーマを選択するためのコンポーネント。
+ComponentBaseWithState: ComponentBaseWithState (コンポーネントベースと状態)
+ComponentInDialog: コンポーネントインダイアログ
+Conditional updates: 条件付き更新
+Configure list values: リスト値を構成する
+Confirm: 確認する
+CONFIRM: 確認する
+Confirm and Ignore: 確認と無視
+Confirm and Set Required: 確認して必須に設定
+Confirm edit: 編集の確認
+Confirm Password: パスワードの確認
+Confirm Registration: 登録の確認
+Confirmation: 確認
+ConnectAllAudioSources: ConnectAllAudioソース
+ConnectCapture: コネクトキャプチャ
+ConnectCurrentTab: ConnectCurrentタブ
+ConnectionMode: 接続モード
+ConnectMicrophone: ConnectMicrophone (マイクを接続)
+ConnectToCapture: ConnectToCapture(キャプチャーに接続)
+contacts: 連絡先
+Content-Type: コンテンツタイプ
+ContentAlignment: コンテンツ配置
+ContentStream: コンテンツストリーム
+ContentType: コンテンツタイプ
+ContextMenuAction: コンテキストメニューアクション
+Continue to {0}: 続きを読む{0}
+Continuous: 蟬
+Contrast: 対照
+Cooper Black: クーパー ブラック
+Copperplate Gothic Bold: 銅版ゴシックボールド
+Copperplate Gothic Light: 銅版ゴシックライト
+Copy url: URL をコピー
+Counter: カウンター
+Country: 国
+Courier New: 宅配便 新品
+Courrier: 郵便
+Create: 創造する
+Create address: 住所の作成
+Create new backup: 新しいバックアップを作成する
+CreatedOn: 作成日
+Critical: 危うい
+CropAndScale: クロップとスケール
+cs-CZ: チェコ語(チェコ)
+CSS Color Variables: CSS 色変数
+CssVars: CssVars
+cu-RU: 教会スラブ語(ロシア)
+CupcakeBase16: カップケーキベース16
+CupertinoBase16: クパチーノベース16
+Current Password: 現在のパスワード
+Current Password is required!: 現在のパスワードが必要です!
+Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can change DarMode in the Top right menu or disable binding by toggle the switch: 現在、ThemeEditorは現在のテーマからDarkModeにバインドされており、{0}です。右上のメニューで DarMode を変更するか、スイッチを切り替えてバインドを無効にすることができます
+Cursor: カーソル
+CursorPositionOrigin: カーソル位置原点
+Custom: 習慣
+CustomContentErrorMessage: カスタムコンテンツエラーメッセージ
+Customize: カスタマイズ
+cy-GB: ウェールズ語 (イギリス)
+D: D
+da-DK: デンマーク語(デンマーク)
+da-GL: デンマーク語(グリーンランド)
+Dallas: ダラス
+Dallas - 75201: ダラス - 75201
+Dallas - 75201ender: ダラス - 75201ender
+DanqingBase16: 丹青ベース16
+DarculaBase16: ダルキュラベース16
+Dark: 暗い
+DarkContrastText: ダークコントラストテキスト
+DarkDarken: ダークダーク
+DarkGreen: ダークグリーン
+DarkKhaki: ダークカーキ
+DarkLighten: ダークライトン
+DarkMagenta: ダークマゼンタ
+DarkmossBase16: ダークモスベース16
+DarkOliveGreen: ダークオリーブグリーン
+DarkOnly: ダークオンリー
+DarkOrange: ダークオレンジ
+DarkOrchid: ダークオーキッド
+DarkRed: ダークレッド
+DarkSalmon: ダークサーモン
+DarkSeaGreen: ダークシーグリーン
+DarkSlateBlue: ダークスレートブルー
+DarkSlateGray: ダークスレートグレー
+DarktoothBase16: ダークトゥースベース16
+DarkTurquoise: ダークターコイズ
+DarkViolet: ダークバイオレット
+DarkVioletBase16: ダークバイオレットベース16
+Dashboard: ダッシュボード
+Dashed: 破線
+Data: データ
+Data has been updated: データを更新しました
+Database Backups: データベース・バックアップ
+DataUrl: データ URL
+DataVisualiserStyle: DataVisualiserスタイル
+date: 日付
+Date: 日付
+Date Created: 作成日
+Date Range For Searching: 検索の日付範囲
+DateOfBirth: 生年月日
+DateTime value is required using {0} type!: DateTime 値は、{0}型を使用して必須です。
+DateTimeLocal: 日時ローカル
+dav-KE: タイタ(ケニア)
+de-AT: ドイツ語(オーストリア)
+de-BE: ドイツ語(ベルギー)
+de-CH: ドイツ語(スイス)
+de-DE: ドイツ語(ドイツ)
+de-IT: ドイツ語(イタリア)
+de-LI: ドイツ語(リヒテンシュタイン)
+de-LU: ドイツ語(ルクセンブルク)
+Debug: デバッグ
+Dec: 12 月
+DecafBase16: デカフェベース16
+decimal: 小数
+Decimal: 小数
+Decimal value is required using {0} type!: 10進数は{0}型で必要です!
+DeepPink: ディープピンク
+DeepSkyBlue: ディープスカイブルー
+Default: デフォルト
+DefaultBorderRadius: デフォルト境界半径
+DefaultDarkBase16: デフォルトダークベース16
+DefaultLightBase16: デフォルトライトベース16
+Defined: 定義
+Delay: 遅延
+DelayValueChangeToPickerClose: DelayValueChangeToPickerClose
+Delete: 削除
+Delete all: すべて削除
+Delete Confirmation: 確認の削除
+Delete Content: コンテンツの削除
+Delete Content {0}: コンテンツ「{0}」を削除する
+Delete Extended Attribute?: 拡張属性を削除しますか?
+Delete file from server: サーバーからファイルを削除する
+Delete Image: 画像の削除
+Delete Picture: 画像を削除
+Delete Role Content: ID {0}のロールを削除しますか?
+Delete these {0} elements: これらの{0}要素を削除しますか?
+Delete this element: この要素を削除しますか?
+Delete User: ユーザーの削除
+Deletion Not Allowed: 削除不可
+Delimiter: デリミタ
+Delimiters: 区切り 記号
+Demo drag mode SnapDrag: デモドラッグモードSnapDrag
+Demo for MudExDialog as inline: MudExDialog のデモをインラインとして
+Demo for MudExTaskBar and not Modal dialogs: モーダル ダイアログではなく MudExTaskBar のデモ
+Demo for simple integrated useful dialogs. Prompt, Info, MessageBox: シンプルに統合された便利なダイアログのデモ。プロンプト、情報、メッセージ ボックス
+Demo for the MudExUploadEdit inside of a MudForm and a FluentValidator.: MudForm と FluentValidator 内の MudExUploadEdit のデモ。
+Demo for the MudExUploadEdit.: MudExUploadEdit のデモ。
+Demo for using custom can close in DialogOptionsEx: カスタムを使用するためのデモは、DialogOptionsExで閉じることができます
+Demo for using Dialog and DialogBackground Appearance in DialogOptionsEx: DialogOptionsEx での Dialog と DialogBackground の外観を使用するためのデモ
+Demo for using DialogOptionsEx: DialogOptionsEx の使用デモ
+Demo for using DialogOptionsEx and pass position and size: DialogOptionsEx とパスの位置とサイズを使用するためのデモ
+Demo for using MudExObjectEdit for the same model with the default Demo but with some Meta configuration: デフォルトのデモで同じモデルに MudExObjectEdit を使用するデモですが、メタ設定を使用します。
+Demo for using MudExObjectEdit GroupingStyle.Tabs: MudExObjectEdit GroupingStyle.Tabs を使用するためのデモ
+Demo for using MudExObjectEdit only with bypassing an object: オブジェクトをバイパスしてのみ MudExObjectEdit を使用するデモ
+Demo for using MudExObjectEdit with a configuration for Conditional using 'WithAttributesIf': "'WithAttributesIf' を使用した条件付きの設定で MudExObjectEdit を使用するデモ"
+Demo for using MudExObjectEdit with a model that contains file(s): ファイルを含むモデルで MudExObjectEdit を使用するためのデモ
+Demo for using MudExObjectEdit with CodeGator Adapter and CodeGator Attributes: CodeGator アダプタおよび CodeGator アトリビュートで MudExObjectEdit を使用するためのデモ
+Demo for using MudExObjectEditPicker with a model that contains file(s): ファイルを含むモデルで MudExObjectEditPicker を使用するためのデモ
+Demo of using explicit the MudExFileDisplayZip to show and select content inside of a zip file: MudExFileDisplayZip を明示的に使用して、zip ファイル内のコンテンツを表示および選択するデモ
+Demonstration for a simple but very useful Enum Selector: シンプルだが非常に便利な列挙型セレクターのデモンストレーション
+Demonstration of the MudExSplitter: MudExSplitterのデモンストレーション
+Demonstration of the quickly color select with MudExColorBubble: MudExColorBubble を使用した素早く色を選択するデモンストレーション
+DEMOS: デモ
+Dense: 濃い
+Dependent permissions required: 必要な依存アクセス許可
+Deployments: 展開
+Description: 形容
+Description is required!: 説明は必須です!
+Description_for_Age: Description_for_Age
+Description_for_City: Description_for_City
+Description_for_FirstName: Description_for_FirstName
+Description_for_Id: Description_for_Id
+Description_for_LastName: Description_for_LastName
+Description_for_Notice: Description_for_Notice
+Description_for_OtherAddresses: Description_for_OtherAddresses
+Description_for_PostalCode: Description_for_PostalCode
+Description_for_ProgramingSkills: Description_for_ProgramingSkills
+Description_for_Street: Description_for_Street
+Description_for_TrueOrFalse: Description_for_TrueOrFalse
+Dessert: デザート
+detailed guide for more.: 詳細については、詳細なガイド。
+Details for Trail ID: トレイル ID の詳細
+Devibeans: デビビアン
+DeviceId: デバイス ID
+DeviceListVariant: デバイスリストバリアント
+DeviceSelection: デバイス選択
+Dialog: '] ダイアログ'
+Dialog Appearance: ダイアログの外観
+Dialog Content: ダイアログ コンテンツ
+Dialog Drag & Drop: ダイアログ ドラッグ アンド ドロップ
+Dialog for editing objects with the MudExObjectEditForm: MudExObjectEditForm を使用してオブジェクトを編集するためのダイアログ ボックス
+Dialog Sample: ダイアログのサンプル
+Dialog Samples: ダイアログのサンプル
+Dialog Snap Drag: ダイアログ スナップ ドラッグ
+Dialog to display a file using {{{MudBlazor.Extensions.Components.MudExFileDisplay}}} component.: '{{{MudBlazor.Extensions.Components.MudExFileDisplay}}}コンポーネントを使用してファイルを表示するダイアログ。'
+Dialog_Appearance: Dialog_Appearance
+DialogAppearance: ダイアログ外観
+DialogBackgroundAppearance: ダイアログ背景外観
+DialogOptions: ダイアログオプション
+Dialogs: ダイアログ
+DialogsCanClose: ダイアログ閉じる
+DialogServiceExt: ダイアログサービス内線
+DialogSnapDrag: ダイアログ スナップドラッグ
+DialogsPosition: ダイアログ位置
+Diana Prince: ダイアナ・プリンス
+DimGray: ディムグレー
+Direct: 直接
+Direction: 方向
+DirtyseaBase16: ダーティシーベース16
+Disable Grouping: グループ化の無効化
+Disabled: 無効
+DisableList: DisableList (無効リスト)
+DisableOpacityChange: DisableOpacityChange
+DisablePadding: DisablePadding
+DisablePopoverPadding: DisablePopoverPadding (ポップオーバーパディングの無効化)
+DisablePositionMargin: DisablePositionMargin (ディスablePositionマージン)
+DisableSelectedItemStyle: DisableSelectedItemStyle (選択項目スタイルの無効化)
+DisableSizeMarginX: DisableSizeMarginX (サイズマージンX の無効化)
+DisableSizeMarginY: DisableSizeMarginY (サイズマージン Y) の無効化
+DiscreteFrequencies: 離散周波数
+DisplayActionMenu: DisplayActionMenu (表示アクションメニュー)
+DisplayErrors: DisplayErrors (表示エラー)
+DisplayPresetList: 表示プリセットリスト
+Displays a tree structure as flat list: ツリー構造をフラットリストとして表示します。
+Displays a tree structure as horizontal navigable tree: ツリー構造を水平方向のナビゲーション可能なツリーとして表示します。
+Displays a tree structure as navigable Breadcrumb: ツリー構造をナビゲーション可能なパンくずリストとして表示します。
+Displays a tree structure as navigable card grid: ツリー構造をナビゲート可能なカードグリッドとして表示します。
+Displays a tree structure as navigable List: ツリー構造をナビゲーション可能なリストとして表示します。
+Displays a tree structure as simple tree: ツリー構造を単純なツリーとして表示します
+DisplaySurface: ディスプレイサーフェス
+DisplayTrackList: DisplayTrackList (表示トラックリスト)
+DisposeEvent: DisposeEvent (ディスポージイベント)
+Disqus comments are disabled by default.: Disqus コメントはデフォルトで無効になっています。
+Divider: ディバイダー
+DividerLight: ディバイダーライト
+dje-NE: ザルマ(ニジェール)
+DNumber: Dアカウント
+Do you really want to restart the server?: 本当にサーバーを再起動したいですか?
+Do you really want to restore the database from backup '{0}'? Note that any changes made after {1} are gone. This also means any changes made by any user: バックアップ「{0}」からデータベースを復元したいですか?{1}後に行われた変更はすべて消えます。これは、ユーザーによる変更も意味します
+Do you want to delete the profile picture of {0}: '{0}のプロフィール写真を削除しますか'
+Do you want to delete the User {0}: ユーザー{0}を削除しますか?
+Docco: ドッコ
+Docked: ドッキング
+Document Deleted: 削除されたドキュメント
+Document Extended Attributes: ドキュメント拡張属性
+Document Management: ドキュメント管理
+Document Not Found!: ドキュメントが見つかりません!
+Document Saved: 保存されたドキュメント
+Document Store: ドキュメント ストア
+Document Type: ドキュメントタイプ
+Document Type Deleted: 削除されたドキュメントタイプ
+Document Type is required!: ドキュメントタイプは必須です!
+Document Type Not Found!: ドキュメントタイプが見つかりません!
+Document Type Saved: 保存されたドキュメントタイプ
+Document Type Updated: ドキュメント タイプが更新されました
+Document type with this name already exists.: この名前のドキュメントタイプはすでに存在します。
+Document Types: ドキュメントタイプ
+Document Types exported: エクスポートされたドキュメントタイプ
+Document Updated: ドキュメントの更新
+Documentation: ドキュメンテーション
+Documents: 書類
+DodgerBlue: ドジャーブルー
+doi-Deva-IN: ドグリ語(デーヴァナーガリー語、インド)
+Don't have an account?: アカウントをお持ちではありませんか?
+Done!: 完成です！
+Donut: ドーナツ
+Dotted: 点線
+Double: 複
+DoubleClickAction: ダブルクリックアクション
+Download: ダウンロード
+Download {0} files separately: '{0}ファイルを個別にダウンロードする'
+Download {0} with {1} files as zip: '{1}ファイルを含む{0}をzipとしてダウンロードします'
+Download file {0}: ファイル{0}ダウンロード
+Download file {0} as zip: ファイル{0}zipとしてダウンロード
+DraculaBase16: ドラキュラベース16
+Drag and Drop files here: ここにファイルをドラッグ&ドロップ
+DragEffect: ドラッグ効果
+DragMode: ドラッグモード
+Drawer: 引き出し
+DrawerBackground: ドロワー背景
+DrawerClipMode: ドロワークリップモード
+DrawerIcon: ドロワーアイコン
+DrawerMiniWidthLeft: ドロワーMiniWidthLeft
+DrawerMiniWidthRight: 引き出しMiniWidth右
+DrawerText: ドロワーテキスト
+DrawerVariant: ドロワーバリアント
+DrawerWidthLeft: ドロワー幅左
+DrawerWidthRight: ドロワー幅右
+DroidCam Source 2: DroidCamソース2
+DroidCam Source 3: DroidCam ソース 3
+Drop Box: ドロップボックス
+Drop down component to select a culture: カルチャを選択するためのドロップダウンコンポーネント
+Drop down component to select an enum value or multiple on flags enums: 列挙値または複数のフラグ列挙型を選択するためのドロップダウンコンポーネント
+Drop files here: ここにファイルをドロップする
+DropBox external file picker component: DropBox 外部ファイル ピッカー コンポーネント
+DropBoxApiKey: ドロップボックスApiKey
+Dropdown list component to select one ore more fonts: ドロップダウンリストコンポーネントを使用して、1つまたは複数のフォントを選択します
+DropShadow: ドロップシャドウ
+DropZoneClickAction: ドロップゾーンクリックアクション
+dsb-DE: ニーダーソルブ語(ドイツ)
+dua-CM: デュアラ(カメルーン)
+DualCombined: デュアルコンバインド
+DualHorizontal: デュアル水平
+DualVertical: デュアルバーティカル
+DuplicateErrorText: DuplicateErrorText (エラーテキストの重複)
+Duration: 期間
+dv-MV: ディベヒ(モルディブ)
+Dynamic component tests: 動的コンポーネントテスト
+dyo-SN: Jola-Fonyi (セネガル)
+dz-BT: ゾンカ語(ブータン)
+E-mail: 電子メール
+E-Mail: 電子メール
+E-Mail not confirmed.: メールが確認されていません。メールボックスをご確認の上、メールアドレスをご確認ください。<a href='{0}'>確認メールを再送信</a>
+ebu-KE: エンブ(ケニア)
+Edge: 端
+EdgeDarkBase16: エッジダークベース16
+EdgeLightBase16: エッジライトベース16
+Edit: 編集
+Edit {0}: 編集{0}
+Edit a complex Model with included Collection of users: ユーザーのコレクションを含む複雑なモデルの編集
+Edit Audio Constraints: オーディオコンストレイントの編集
+Edit Current Theme: 現在のテーマを編集
+Edit data in dialog: ダイアログでデータを編集する
+Edit in TryMudEx: TryMudExで編集
+Edit Items: アイテムの編集
+Edit only a Collection of users: ユーザーのコレクションのみを編集する
+Edit rating: 評価の編集
+Edit Running Component: 実行中のコンポーネントを編集
+Edit Test Object: テストオブジェクトの編集
+Edit Users: ユーザーの編集
+Edit Video Constraints: ビデオ制約の編集
+Edit with shared MetaConfig: 共有 MetaConfig を使用した編集
+Editable: 編集
+Editing of the DB Connection can break whole application. Please edit this only if you know what you are doing: DB 接続を編集すると、アプリケーション全体が壊れる可能性があります。自分が何をしているのかわかっている場合にのみ編集してください
+Editing of this endpoint can break AI integration: このエンドポイントを編集すると、AI 統合が中断される可能性があります
+EditMode: 編集モード
+Editor for a property of an object. Used internally inside the MudExObjectEdit: オブジェクトのプロパティのエディター。MudExObjectEdit 内で内部的に使用されます
+EditRunningComponent: EditRunningコンポーネント
+Edmonton: エドモントン
+Edmonton - T5A 0A1: エドモントン - T5A 0A1
+Edmonton - T5A 0A1ender: エドモントン - T5A 0A1ender
+ee-GH: エウェ(ガーナ)
+ee-TG: Ewe (トーゴ)
+EightiesBase16: 80年代ベース16
+el-CY: ギリシャ語(キプロス)
+el-GR: ギリシャ語(ギリシャ)
+Elevation: 標高
+Em: で
+email: 電子メール
+Email: 電子メール
+Email {0} is already registered.: メール{0}は既に登録済みです。
+Email cannot changed: メールは変更できません
+Email Confirmation: 確認メール
+Email is not correct: メールが正しくありません
+Email is required: メールアドレスは必須です
+Email is required!: メールは必須です!
+EmbersBase16: エンバーベース16
+en-001: 英語(世界)
+en-029: 英語(カリブ海)
+en-150: 英語(ヨーロッパ)
+en-AE: 英語(アラブ首長国連邦)
+en-AG: 英語(アンティグア・バーブーダ)
+en-AI: 英語(アンギラ)
+en-AS: 英語(アメリカ領サモア)
+en-AT: 英語(オーストリア)
+en-AU: 英語(オーストラリア)
+en-BB: 英語(バルバドス)
+en-BE: 英語(ベルギー)
+en-BI: 日本語(ブルンジ)
+en-BM: 日本語(バミューダ)
+en-BS: 英語(バハマ)
+en-BW: 英語(ボツワナ)
+en-BZ: 日本語(ベリーズ)
+en-CA: 英語(カナダ)
+en-CC: 英語(ココス[キーリング]諸島)
+en-CH: 英語(スイス)
+en-CK: 英語(クック諸島)
+en-CM: 英語(カメルーン)
+en-CX: 英語(クリスマス島)
+en-CY: 英語(キプロス)
+en-DE: 英語(ドイツ)
+en-DK: 英語(デンマーク)
+en-DM: 英語(ドミニカ)
+en-ER: 英語(エリトリア)
+en-FI: 英語(フィンランド)
+en-FJ: 日本語(フィジー)
+en-FK: 英語(フォークランド諸島)
+en-FM: 英語(ミクロネシア)
+en-GB: 英語(英国)
+en-GD: 英語(グレナダ)
+en-GG: 英語(ガーンジー島)
+en-GH: 英語(ガーナ)
+en-GI: 英語(ジブラルタル)
+en-GM: 日本語(ガンビア)
+en-GU: 英語(グアム)
+en-GY: 英語(ガイアナ)
+en-HK: 英語(香港特別行政区)
+en-ID: 英語(インドネシア)
+en-IE: 英語(アイルランド)
+en-IL: 英語(イスラエル)
+en-IM: 英語(マン島)
+en-IN: 英語(インド)
+en-IO: 英語(英領インド洋地域)
+en-JE: 英語(ジャージー)
+en-JM: 日本語(ジャマイカ)
+en-KE: 英語(ケニア)
+en-KI: 英語(キリバス)
+en-KN: 英語(セントクリストファー・ネイビス)
+en-KY: 英語(ケイマン諸島)
+en-LC: 英語(セントルシア)
+en-LR: 日本語(リベリア)
+en-LS: 英語(レソト)
+en-MG: 英語(マダガスカル)
+en-MH: 日本語(マーシャル諸島)
+en-MO: 英語(マカオ特別行政区)
+en-MP: 英語(北マリアナ諸島)
+en-MS: 英語(モントセラト)
+en-MT: 英語(マルタ)
+en-MU: 日本語(モーリシャス)
+en-MW: 英語(マラウイ)
+en-MY: 英語(マレーシア)
+en-NA: 英語(ナミビア)
+en-NF: 英語(ノーフォーク島)
+en-NG: 英語(ナイジェリア)
+en-NL: 英語(オランダ)
+en-NR: 英語(ナウル)
+en-NU: 日本語(ニウエ)
+en-NZ: 英語(ニュージーランド)
+en-PG: 英語(パプアニューギニア)
+en-PH: 英語(フィリピン)
+en-PK: 英語(パキスタン)
+en-PN: 英語(ピトケアン諸島)
+en-PR: 英語(プエルトリコ)
+en-PW: 英語(パラオ)
+en-RW: 英語(ルワンダ)
+en-SB: 英語(ソロモン諸島)
+en-SC: 英語(セイシェル)
+en-SD: 日本語(スーダン)
+en-SE: 英語(スウェーデン)
+en-SG: 英語(シンガポール)
+en-SH: 英語(セントヘレナ、アセンション、トリスタンダクーニャ)
+en-SI: 英語(スロベニア)
+en-SL: 日本語(シエラレオネ)
+en-SS: 英語(南スーダン)
+en-SX: 英語(シントマールテン島)
+en-SZ: 英語(エスワティニ)
+en-TC: 英語(タークス・カイコス諸島)
+en-TK: 英語(トケラウ)
+en-TO: 英語(トンガ)
+en-TT: 英語(トリニダード・トバゴ)
+en-TV: 英語(ツバル)
+en-TZ: 英語(タンザニア)
+en-UG: 英語(ウガンダ)
+en-UM: 英語(米国離島)
+en-US: 英語 (米国)
+en-US-posix: 英語 (アメリカ合衆国, コンピュータ)
+en-VC: 英語(セントビンセント・グレナディーン諸島)
+en-VG: 英語(英領バージン諸島)
+en-VI: 英語(米領バージン諸島)
+en-VU: 日本語(バヌアツ)
+en-WS: 英語(サモア)
+en-ZA: 英語(南アフリカ)
+en-ZM: 日本語(ザンビア)
+en-ZW: 英語(ジンバブエ)
+Enable Disqus: Disqus を有効にする
+enables or disables virtualization.: 仮想化を有効または無効にします。
+End: 終わり
+English: 英語
+Engravers MT: 彫刻機 MT
+Enter email and your new password here: ここにメールアドレスと新しいパスワードを入力してください
+Enter email for password reset: アカウントにリンクされているメールアドレスを入力すると、パスワードをリセットするためのリンクが記載されたメールが届きます
+Enter name: 名前を入力
+Enter name of backup file: バックアップファイルの名前を入力
+Enter new name of backup file: バックアップファイルの新しい名前を入力します
+Enter the email address for the confirmation mail: 確認メールのメールアドレスを入力します
+Enter the URL to existing file: 既存のファイルのURLを入力します
+Enter your message...: メッセージを入力してください...
+Entity Id: エンティティ ID
+Entity is required!: エンティティは必須です!
+EntityCreatedBy: エンティティ作成者
+EntityCreatedOn (Local): EntityCreatedOn (ローカル)
+EntityCreatedOn (UTC): エンティティ作成日 (UTC)
+EntityId: エンティティ ID
+EntityLastModifiedBy: EntityLastModifiedBy
+EntityLastModifiedOn (Local): EntityLastModifiedOn (ローカル)
+EntityLastModifiedOn (UTC): EntityLastModifiedOn (UTC)
+Entree: 入り口
+EnumSelect: 列挙型選択
+Environment: 環境
+eo-001: エスペラント(世界)
+EquilibriumDarkBase16: 均衡ダークベース16
+EquilibriumGrayDarkBase16: 均衡グレーダークベース16
+EquilibriumGrayLightBase16: 平衡グレーライトベース16
+EquilibriumLightBase16: EquilibriumLightBase16 (平衡ライトベース)16
+Eras Bold ITC: エラス・ボールドITC
+Eras Demi ITC: エラスデミITC
+Eras Light ITC: エラスライトITC
+Eras Medium ITC: エラス・ミディアムITC
+Error: エラー
+ErrorAnimation: エラーアニメーション
+ErrorContrastText: ErrorContrastText (エラー対比テキスト)
+ErrorDarken: エラー暗くする
+ErrorId: エラー ID
+ErrorLighten: エラーライト
+ErrorMessage: エラーメッセージ
+ErrorText: エラーテキスト
+es-419: スペイン語(ラテンアメリカ)
+es-AR: スペイン語(アルゼンチン)
+es-BO: スペイン語(ボリビア)
+es-BR: スペイン語(ブラジル)
+es-BZ: スペイン語(ベリーズ)
+es-CL: スペイン語(チリ)
+es-CO: スペイン語(コロンビア)
+es-CR: スペイン語(コスタリカ)
+es-CU: スペイン語(キューバ)
+es-DO: スペイン語(ドミニカ共和国)
+es-EC: スペイン語(エクアドル)
+es-ES: スペイン語 (スペイン)
+es-GQ: スペイン語(赤道ギニア)
+es-GT: スペイン語(グアテマラ)
+es-HN: スペイン語(ホンジュラス)
+es-MX: スペイン語(メキシコ)
+es-NI: スペイン語(ニカラグア)
+es-PA: スペイン語(パナマ)
+es-PE: スペイン語(ペルー)
+es-PH: スペイン語(フィリピン)
+es-PR: スペイン語(プエルトリコ)
+es-PY: スペイン語(パラグアイ)
+es-SV: スペイン語(エルサルバドル)
+es-US: スペイン語 (米国)
+es-UY: スペイン語(ウルグアイ)
+es-VE: スペイン語(ベネズエラ)
+Español: スペイン語
+EspressoBase16: エスプレッソベース16
+et-EE: エストニア語(エストニア)
+Ethan Hunt: イーサン・ハント
+eu-ES: バスク語(スペイン)
+EvaBase16: エヴァベース16
+EvaDimBase16: EvaDimBase16
+ewo-CM: エウォンド(カメルーン)
+ExcelSheet.xlsx: ExcelSheet.xlsx
+Expand &nbsp; <b>not</b> &nbsp; loaded nodes: ロード<b>されていない</b>&nbsp;ノードを展開&nbsp;します
+Expand all nodes: すべてのノードを展開
+Expand loaded nodes: ロードされたノードを展開する
+Expand/Collapse: 広げる・折る
+ExpandBehaviour: 展開動作
+ExpandButtonDirection: ExpandButtonDirection (ボタン方向の展開)
+ExpandedIcon: 展開アイコン
+ExpandOnClick: クリック時展開
+ExpandOnFilter: フィルターの展開
+Explicit File Display Zip: 明示的なファイル表示 Zip
+Export: 輸出
+Export To Excel: Excelにエクスポート
+Export_SheetName: データ
+ExposureCompensation: 露出補正
+ExposureMode: 露出モード
+ExposureTime: 露出時間
+Extended Attribute Deleted: 拡張属性の削除
+Extended Attribute Not Found!: 拡張属性が見つかりません!
+Extended Attribute Saved: 拡張属性が保存されました
+Extended Attribute Updated: 拡張属性の更新
+Extended Attribute with this Key already exists.: このキーを持つ拡張属性はすでに存在します。
+Extended Attributes: '\{0}\ 拡張属性'
+Extended Attributes exported: エクスポートされた拡張属性
+ExtensionRestrictionType: ExtensionRestrictionType (拡張制限タイプ)
+Extensions: 拡張 機能
+External Id: 外部 ID
+ExternalDialogOptions: 外部ダイアログオプション
+ExternalId: 外部 ID
+ExternalPickerImageSize: ExternalPickerImageSize (外部ピッカー画像サイズ)
+ExternalProviderRendering: 外部プロバイダーレンダリング
+ExtraExtraLarge: エクストラエクストララージ
+ExtraLarge: 特大
+ExtraSmall: エクストラスモール
+fa-IR: ペルシャ語(イラン)
+FacingMode: フェーシングモード
+Fade: 剥げる
+FadeIn: フェードイン
+Failed to get client preferences: クライアント設定の取得に失敗しました
+FallBackInIframe: フォールバックイン Iframe
+False: 偽
+FAQs: よくある質問(FAQ)
+Far: 遠い
+Features: 顔立ち
+Feb: 2月
+Felix Titling: フェリックス・タイトル
+Female: 女性
+Female_ Text: テキストFemale_
+ff-Adlm-BF: フラ(アドラム、ブルキナファソ)
+ff-Adlm-CM: フラ(カメルーン、アドラム)
+ff-Adlm-GH: フラ(ガーナ、アドラム)
+ff-Adlm-GM: フラ(アドラム、ガンビア)
+ff-Adlm-GN: フラ(アドラム、ギニア)
+ff-Adlm-GW: フラ(アドラム、ギニアビサウ)
+ff-Adlm-LR: フラ(アドラム、リベリア)
+ff-Adlm-MR: フラ(モーリタニア、アドラム)
+ff-Adlm-NE: フラ(アドラム、ニジェール)
+ff-Adlm-NG: フラ(ナイジェリア、アドラム)
+ff-Adlm-SL: フラ(アドラム、シエラレオネ)
+ff-Adlm-SN: フラ(アドラム、セネガル)
+ff-Latn-BF: フラ (ラテン語、ブルキナファソ)
+ff-Latn-CM: フラ (ラテン語、カメルーン)
+ff-Latn-GH: フラ (ラテン語、ガーナ)
+ff-Latn-GM: フラ (ラテン語、ガンビア)
+ff-Latn-GN: フラ (ラテン語、ギニア)
+ff-Latn-GW: フラ (ラテン語、ギニアビサウ)
+ff-Latn-LR: フラ語(ラテン語、リベリア)
+ff-Latn-MR: フラ (ラテン語、モーリタニア)
+ff-Latn-NE: フラ語(ラテン語、ニジェール語)
+ff-Latn-NG: フラ (ラテン語、ナイジェリア)
+ff-Latn-SL: フラ (ラテン語、シエラレオネ)
+ff-Latn-SN: フラ (ラテン語、セネガル)
+FFTSize: FFTサイズ
+fi-FI: フィンランド語(フィンランド)
+fil-PH: フィリピン語(フィリピン)
+File Display: ファイル表示
+File Display with Stream: ストリームによるファイル表示
+File Handling: ファイル処理
+File is required!: ファイルが必要です!
+FileDisplay: ファイル表示
+FileDisplayAsStream: ファイルDisplayAsStream
+FileDisplayZipWithPreview: FileDisplayZipWithPreview (プレビュー付きファイル表示)
+FileInfo: ファイル情報
+FileName: ファイル名
+Files: ファイル
+Files of this type ({0}) are not allowed. Only following types are allowed '{1}'. Try one of these extensions ({2}): このタイプ ({0}) のファイルは許可されません。「{1}」は、次のタイプのみ許可されます。次のいずれかの拡張機能を試す ({2})
+Fill Administrator Credentials: 管理者資格情報の入力
+Fill Basic User Credentials: 基本ユーザー資格情報の入力
+FillAlpha: フィルアルファ
+Filled: 埋まる
+Filter: フィルター
+Filter...: フィルター。。。
+Filter468: フィルター468
+FilterBehaviour: フィルター動作
+FilterBoxClass: FilterBoxクラス
+FilterBoxStyle: フィルターボックススタイル
+FilterChipsPlacedRight: フィルターチップ配置右
+Filtered Audit Trails exported: エクスポートされたフィルター処理された監査証跡
+Filtered Brands exported: エクスポートされたフィルタリングされたブランド
+Filtered Document Types exported: エクスポートされたフィルタされたドキュメントタイプ
+Filtered Extended Attributes exported: エクスポートされたフィルター処理された拡張属性
+Filtered Products exported: エクスポートされたフィルター処理された製品
+Filtered Users exported: エクスポートされたフィルター処理されたユーザー
+FilterEnabled: フィルター有効
+FilterHighlighting: フィルターの強調表示
+Filtering: フィルタリング
+FilterMode: フィルターモード
+FilterMultiple: フィルターマルチプル
+FilterPlaceholder: フィルタープレースホルダー
+Filters: フィルター
+FilterVariant: フィルターバリアント
+Fiona Gallagher: フィオナ・ギャラガー
+Firebrick: 耐火れんが
+First Name: 名前
+First Name is required: 名は必須です
+FirstName: 名
+Fixed: 付け
+Flags Enum: フラグ列挙型
+Flat: 平
+Flat List: フラットリスト
+FlatBase16: フラットベース16
+FlatList: フラットリスト
+FlexEnd: フレックスエンド
+FlexStart: フレックススタート
+Flip: 弾く
+FlipAlways: フリップオールウェイズ
+FlipNever: フリップネバー
+FlipOnOpen: フリップオンオープン
+FlipX: フリップX
+FlipY: フリップY
+FloralWhite: フローラルホワイト
+Florian Gilde: フロリアン・ギルド
+FNumber: Fナンバー
+fo-DK: フェロー諸島(デンマーク)
+fo-FO: フェロー諸島(フェロー諸島)
+FocusDistance: フォーカス距離
+FocusMode: フォーカスモード
+FontFamily: フォントファミリー
+FontSelect: フォントセレクト
+FontSize: フォントサイズ
+FontWeight: フォントウェイト
+Footlight MT Light: フットライト MT ライト
+Force pick Item: アイテムの強制ピッキング
+Force pick Items: アイテムの強制ピッキング
+Force select Item: 項目を強制選択
+Force select Items: 項目を強制選択
+ForceNativeRender: ForceNativeRender (フォースネイティブレンダー)
+ForceSelectOfMudColor: ForceSelectOfMudColor (マッドカラーの強制選択)
+ForceShrink: フォースシュリンク
+ForestGreen: フォレストグリーン
+Forgot password?: パスワードをお忘れですか?
+Format: 形式
+Foundation: 財団
+fr-029: フランス語(カリブ海)
+fr-BE: フランス語(ベルギー)
+fr-BF: フランス語(ブルキナファソ)
+fr-BI: フランス語(ブルンジ)
+fr-BJ: フランス語(ベナン)
+fr-BL: フランス語(サンバルテルミー)
+fr-CA: フランス語(カナダ)
+fr-CD: フランス語(コンゴ[DRC])
+fr-CF: フランス語(中央アフリカ共和国)
+fr-CG: フランス語(コンゴ)
+fr-CH: フランス語(スイス)
+fr-CI: フランス語(コートジボワール)
+fr-CM: フランス語(カメルーン)
+fr-DJ: フランス語(ジブチ)
+fr-DZ: フランス語(アルジェリア)
+fr-FR: フランス語(フランス)
+fr-GA: フランス語(ガボン)
+fr-GF: フランス語(フランス領ギアナ)
+fr-GN: フランス語(ギニア)
+fr-GP: フランス語(グアドループ)
+fr-GQ: フランス語(赤道ギニア)
+fr-HT: フランス語(ハイチ)
+fr-KM: フランス語(コモロ)
+fr-LU: フランス語(ルクセンブルク)
+fr-MA: フランス語(モロッコ)
+fr-MC: フランス語(モナコ)
+fr-MF: フランス語(セントマーチン)
+fr-MG: フランス語(マダガスカル)
+fr-ML: フランス語(マリ)
+fr-MQ: フランス語(マルティニーク)
+fr-MR: フランス語(モーリタニア)
+fr-MU: フランス語(モーリシャス)
+fr-NC: フランス語(ニューカレドニア)
+fr-NE: フランス語(ニジェール)
+fr-PF: フランス語(フランス領ポリネシア)
+fr-PM: フランス語(サンピエール・ミクロン島)
+fr-RE: フランス語(レユニオン)
+fr-RW: フランス語(ルワンダ)
+fr-SC: フランス語(セイシェル)
+fr-SN: フランス語(セネガル)
+fr-SY: フランス語(シリア)
+fr-TD: フランス語(チャド)
+fr-TG: フランス語(トーゴ)
+fr-TN: フランス語(チュニジア)
+fr-VU: フランス語(バヌアツ)
+fr-WF: フランス語(ウォリス・フツナ)
+fr-YT: フランス語(マヨット島)
+FrameRate: フレームレート
+FramerBase16: フレーマーベース16
+Franklin Gothic Medium: フランクリン・ゴシック・ミディアム
+French: フランス語
+FrequencyScale: 周波数スケール
+FruitSodaBase16: フルーツソーダベース16
+Fuchsia: フクシア
+Full: 一杯
+FullHeight: フルハイト
+FullOctaveBands: フルオクターブバンド
+FullPaged: フルページ
+Fullscreen: フルスクリーン
+FullScreen: フルスクリーン
+FullScreenButtonIcon: フルスクリーンボタンアイコン
+FullWidth: 全幅
+fur-IT: フリウリ語(イタリア)
+Futura: 未来
+fy-NL: 西フリジア語(オランダ)
+ga-GB: アイルランド語 (イギリス)
+ga-IE: アイルランド語(アイルランド)
+Gain: 得
+Gainsboro: ゲインズボロ
+Garamond: ガラモンド
+gd-GB: スコットランドゲール語(イギリス)
+Gender: ジェンダー
+General: 全般
+Geneva: ジュネーブ
+George Miller: ジョージ・ミラー
+Georgia: グルジア
+German: ドイツ語
+GhostWhite: ゴーストホワイト
+GigavoltBase16: ギガボルトベース16
+Gigi: ジジ
+Gill Sans: ギル・サンズ
+Gill Sans MT: MTなしの鰓
+Github: Github(英語)
+GitHub Project repository: GitHub プロジェクトリポジトリ
+GithubBase16: GithubBase16
+GithubDark: Githubダーク
+GithubDarkDimmed: GithubDarkDimmed
+gl-ES: ガリシア語(スペイン)
+Gml: Gml
+gn-PY: グアラニ(パラグアイ)
+GoHome: 家へ帰ってください！
+Gold: 金
+Goldenrod: アキノキリンソウ
+Google: ググる
+Google Drive: Googleドライブ
+Google Drive file picker component: Google ドライブのファイル ピッカー コンポーネント
+Googlecode: Googleコード
+GoogleDarkBase16: グーグルダークベース16
+GoogleDriveClientId: GoogleDriveClientId
+GoogleLightBase16: グーグルライトベース16
+Goudy Old Style: グーディオールドスタイル
+Goudy Stout: グーディスタウト
+Gradient: 勾配
+GradientDark: グラデーションダーク
+GradientForeground: グラデーション前景
+GradientLeft: グラデーション左
+GradientLight: グラデーションライト
+GradientRight: グラデーション右
+GradientText: グラデーションテキスト
+Gravatar: グラバタール
+GravatarImageSize: グラバター画像サイズ
+Gray: 灰色
+GrayDark: グレーダーク
+GrayDarker: グレーダーク
+GrayDefault: グレーデフォルト
+GrayLight: グレーライト
+GrayLighter: グレーライター
+Grayscale: グレースケール
+GrayscaleDarkBase16: グレースケールダークベース16
+GrayscaleLightBase16: グレースケールライトベース16
+Green: 緑
+GreenScreenBase16: グリーンスクリーンベース16
+GreenYellow: 緑黄色
+Grid: グリッド
+Grid_Enhanced: Grid_Enhanced
+GridCompact: グリッドコンパクト
+GridIcon: グリッドアイコン
+Groove: グルーヴ
+Group: 群
+Group by types: タイプ別にグループ化
+GroupBox: グループボックス
+GroupId: グループ ID
+GroupingEnabled: グループ化有効
+GroupsInitiallyExpanded: グループ初期展開
+GroupsNested: グループネスト
+GroupsSticky: グループスティッキー
+GruvboxDarkHardBase16: GruvboxDarkHardBase16
+GruvboxDarkMediumBase16: マインボックスダークミディアムベース16
+GruvboxDarkPaleBase16: GruvboxDarkPaleBase16
+GruvboxDarkSoftBase16: グルブボックスダークソフトベース16
+GruvboxLightHardBase16: GruvboxLightHardBase16
+GruvboxLightMediumBase16: GruvboxLightMediumBase16
+GruvboxLightSoftBase16: GruvboxLightSoftBase16
+gsw-CH: スイスドイツ語(スイス)
+gsw-FR: スイスドイツ語(フランス)
+gsw-LI: スイスドイツ語(リヒテンシュタイン)
+gu-IN: グジャラート語(インド)
+GutterBottom: ガターボトム
+Gutters: 溝
+guz-KE: グシイ(ケニア)
+gv-IM: マンクス(マン島)
+h1: H1
+H1: H1
+h2: H2
+H2: H2
+h3: H3
+H3: H3
+h4: H4
+H4: H4
+h5: H5
+H5: H5
+h6: H6
+H6: H6
+ha-Latn-GH: ハウサ語(ラテン語、ガーナ)
+ha-Latn-NE: ハウサ語(ラテン語、ニジェール)
+ha-Latn-NG: ハウサ語(ラテン語、ナイジェリア)
+Haettenschweiler: ヘッテンシュヴァイラー
+HalfOctaveBands: ハーフオクターブバンド
+Hannah Davis: ハンナ・デイビス
+HardcoreBase16: ハードコアベース16
+Harlow Solid Italic: ハーロウソリッドイタリック
+Harmonic16DarkBase16: 高調波16ダークベース16
+Harmonic16LightBase16: 高調波16ライトベース16
+Harrington: ハリントン
+haw-US: ハワイアン(アメリカ)
+he-IL: ヘブライ語(イスラエル)
+Header.tiff: Header.tiff
+HeadShake: ヘッドシェイク
+HeatMap: ヒートマップ
+HeetchDarkBase16: HeetchDarkBase16
+HeetchLightBase16: HeetchLightBase16
+Height: 高さ
+HeliosBase16: ヘリオスベース16
+Hello: こんにちは
+Hello from dialog: ダイアログからこんにちは
+Hello from dialog 1: ダイアログ1からこんにちは
+Hello from dialog sample page: ダイアログからのこんにちはサンプルページ
+Hello World: ハローワールド
+Hello...: こんにちは。。。
+HelperId: ヘルパー ID
+HelperText: ヘルパーテキスト
+HelperTextOnFocus: ヘルパーテキストオンフォーカス
+Helvetica: ヘルベチカ
+Helvetica Narrow: ヘルベティカナロー
+Here is another Real demo available for: これは、次の方法で利用可能な別の実際のデモです。
+Here only number is configured to render with NumEdit edit but DataType is string. Also this field is ignored for import: ここでは、数値のみがNumEdit編集でレンダリングするように構成されていますが、DataTypeは文字列です。また、このフィールドはインポートでは無視されます
+Here you can edit the users, but only confirm if count is at least 2: ここではユーザーを編集できますが、カウントが2以上の場合のみ確認します
+Here you can leave a comment for this permission for the current role: ここでは、現在の役割に対するこの権限についてコメントを残すことができます
+Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: ここでは、MudExObjectEdit を使用して実行中のコンポーネントのプロパティを編集する方法を示します
+Here you find a Demo how to use the service directly: ここでは、サービスを直接使用する方法のデモを見つけることができます
+Hex: 16 進
+HEX: 16 進
+HexA: ヘキサ
+hi-IN: ヒンディー語(インド)
+Hidden: 隠れた
+Hide: 隠れる
+HideContentWhenCollapsed: HideContentWhenCollapsed (折りたたまれたときの非表示)
+HideDropDownWhenReadOnly: HideDropDownWhenReadOnly (HideDropDownWhenReadOnly )
+High Tower Text: ハイタワーテキスト
+HighlightSearch: ハイライトサーチ
+Hinge: 蝶番
+Home: 家
+Honeydew: 甘露
+HopscotchBase16: 石けり遊びベース16
+HorizonDarkBase16: ホライゾンダークベース16
+HorizonLightBase16: ホライゾンライトベース16
+Horizontal: 水平な
+HouseNumber: 数
+Houston: ヒューストン
+Houston - 77001: ヒューストン - 77001
+Houston - 77001ender: ヒューストン - 77001ender
+Houstonender: ヒューストナーダー
+HoverColor: ホバーカラー
+HoverMode: ホバーモード
+HoverOpacity: ホバー不透明度
+hr-BA: クロアチア語(ボスニア・ヘルツェゴビナ)
+hr-HR: クロアチア語(クロアチア)
+Href: Href
+hsb-DE: アッパーソルブ語(ドイツ)
+HSL: HSLの
+HTML Colors: HTML の色
+HtmlTag: Htmlタグ
+https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls: https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls
+https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc: https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc
+hu-HU: ハンガリー語(ハンガリー)
+HumanoidDarkBase16: ヒューマノイドDarkBase16
+HumanoidLightBase16: ヒューマノイドLightBase16
+hy-AM: アルメニア語(アルメニア)
+Hybrid: ハイブリッド
+I agree to the terms and privacy: 規約とプライバシーに同意します
+I'm a also another separate control inside of the normal input: 私は通常の入力内の別の別のコントロールでもあります
+I'm a another separate control inside of the normal input: 私は通常の入力内の別の別のコントロールです
+I'm a separate control inside of the normal input: 私は通常の入力内の別のコントロールです
+ia-001: インターリングア(世界)
+IaDarkBase16: IaDarkBase16
+IaLightBase16: IaLightBase16
+Ian Wright: イアン・ライト
+ibb-NG: イビビオ(ナイジェリア)
+ICaptureService: ICaptureService
+Icon: アイコン
+IconColor: アイコンカラー
+IconPicker: アイコンピッカー
+IconSize: アイコンサイズ
+IcyDarkBase16: IcyDarkBase16 (英語)
+id: 身分証明書
+Id: 身分証明書
+id-ID: インドネシア語(インドネシア)
+Idea: 着想
+Identifier: 識別子
+If this is set a photo will be taken instead of a video.: この設定をすると、動画ではなく写真が撮影されます。
+If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: このパッケージが気に入ったら、Githubにスターを付け⭐て友達と共有してください。そうでない場合は、とにかく星を付けて、より良いものにするために何を改善できるか教えてください。
+If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: このオプションをデフォルトとして設定した場合。このオプションは、オプションが指定されていないすべてのダイアログで使用されます。続ける。
+ig-NG: イボ語(ナイジェリア)
+Ignore: 不問に付す
+IgnoredPropertiesForReset: IgnoredPropertiesForReset(リセット用プロパティを無視)
+IgnoredRenderControls: 無視されたレンダーコントロール
+ii-CN: Yi (中国)
+Image format: 画像形式
+ImageAsBackgroundImage: イメージを背景イメージとして
+Images: 画像
+ImagesNewLine: 画像NewLine
+Immediate: 即座
+ImmediateText: 即時テキスト
+Impact: インパクト
+Import: 輸入
+ImportExportIcon: インポートエクスポートアイコン
+In: で
+In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: この例では、アイテムが最初にビューに表示されるとすぐに、データが動的に読み込まれます。コンポーネントは 2 つのコンテンツ スロットをサポートします
+In this sample you are forced to pick an user: このサンプルでは、ユーザーを選択する必要があります
+In this sample you are forced to pick some users: このサンプルでは、いくつかのユーザーを選択する必要があります
+In this sample you are forced to select some users: このサンプルでは、一部のユーザーを選択する必要があります
+In this sample you can pick one user: このサンプルでは、1 人のユーザーを選択できます
+In this sample you can select multiple users: このサンプルでは、複数のユーザーを選択できます
+In this sample you can select one user: このサンプルでは、1 人のユーザーを選択できます
+Inches: インチ
+Include Entity fields (Export): エンティティフィールドを含める (エクスポート)
+Incorrect Password.: パスワードが正しくありません。
+IndeterminateIcon: 不確定アイコン
+Indigo: インジゴ
+Indonesia: インドネシア
+Info: 情報
+Info & About: 情報と会社概要
+InfoContrastText: インフォコントラストテキスト
+InfoDarken: インフォダーケン
+InfoLighten: インフォライト
+Informal Roman: 非公式ローマ語
+Information: 情報
+InfoText: インフォテキスト
+inherit: 受け継ぐ
+Inherit: 受け継ぐ
+Initial: イニシャル
+InitialColor: 初期カラー
+InitiallyExpanded: 初期拡張
+InitialMessage: 初期メッセージ
+InitialMessageVisibilityTime: InitialMessageVisibilityTime (初期メッセージ可視時間)
+InitialPreset: 初期プリセット
+InitialRender: 初期レンダリング
+Inline: インライン
+Inline Dialog: インラインダイアログ
+InlineDialogs: インラインダイアログ
+InProgress: 進行中
+InputClass: 入力クラス
+InputId: 入力 Id
+InputMode: 入力モード
+InputStyle: 入力スタイル
+InputType: 入力タイプ
+Inset: はめ込み
+IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
+IntegratedInDialogAsImages: IntegratedInDialogAsImages
+InterimResults: 中間結果
+Invalid Credentials.: 無効な資格情報。
+IrBlack: Irブラック
+IrBlackBase16: Irブラックベース16
+Is Active: アクティブ
+Is Public: パブリック
+Is Public?: 公開されていますか?
+is-IS: アイスランド語(アイスランド)
+IsActive: アクティブ
+IsblEditorDark: IsblEditorDark
+IsblEditorLight: IsblEditorライト
+IsMouseOverChip: IsMouseOverChip です。
+ISO: 磯
+IsOpen: オープン
+IsotopeBase16: 同位体塩基16
+ISpeechRecognitionService: ISpeechRecognitionService
+IsPredefined: 定義済み
+it-CH: イタリア語(スイス)
+it-IT: イタリア語(イタリア)
+it-SM: イタリア語(サンマリノ)
+it-VA: イタリア語(バチカン市国)
+Italian: イタリア語
+Item 1: アイテム1
+Item 2: アイテム2
+Item 3: アイテム3
+Item 3, Item 1: 項目3、項目1
+Item 4: アイテム4
+Item 5: アイテム5
+Item One: 項目1
+Item Three: 項目3
+Item Two: 項目2
+ItemBackgroundColor: アイテム背景色
+ItemClass: アイテムクラス
+ItemCollection: アイテムコレクション
+ItemContent: アイテムコンテンツ
+ItemContentClass: ItemContentクラス
+ItemContentStyle: アイテムコンテンツスタイル
+ItemContentTypo: アイテムコンテンツタイプミス
+ItemList: アイテムリスト
+Items: 項目
+ItemsSource: アイテムソース
+ItemStyle: アイテムスタイル
+ItemWidth: アイテム幅
+iu-CA: イヌクティトゥット語(カナダ)
+iu-Latn-CA: イヌクティトゥット語(ラテン語、カナダ)
+Ivory: 象牙
+ja-JP: 日本語(日本)
+JackInTheBox: ジャックインザボックス
+Jan: 月
+JavaScript: JavaScript
+Jello: ゼリー
+jgo-CM: ンゴンバ(カメルーン)
+jmc-TZ: Machame(タンザニア)
+John Doe: ジョン・ドウ
+Jokerman: ジョーカーマン
+Json: Jsonの
+Json value is required using {0} type!: Json 型を使用すると必須{0}値!
+Json value must be a valid json string using {0} type!: Json値は、{0}型を使用した有効なjson文字列である必要があります。
+Juice ITC: ジュースITC
+Jul: 7 月
+Julia Roberts: ジュリアロバーツ
+Jun: 6 月
+Justify: 言い開く
+jv-Java-ID: ジャワ語(ジャワ語、インドネシア)
+jv-Latn-ID: ジャワ語(ラテン語、インドネシア語)
+ka-GE: グルジア語 (グルジア)
+kab-DZ: カビレ(アルジェリア)
+kam-KE: カンバ(ケニア)
+kde-TZ: マコンデ(タンザニア)
+kea-CV: カブベルディアヌ(カーボベルデ)
+Keep scrolling to reveal the content below...: スクロールを続けて、以下のコンテンツを表示します...
+KeepExisting: 既存の維持
+KeepMaxSizeConstraints: KeepMaxSizeConstraints (最大サイズの保持)
+KeepRelations: Keepリレーションシップ
+KeepState: キープステート
+Kevin Hart: ケビン・ハート
+Key: 鍵
+Key is required!: 鍵は必須です!
+KeyDownPreventDefault: KeyDownPreventデフォルト
+KeyDownStopPropagation: KeyDownStopPropagation (キーダウンストップ伝播)
+KeyUpPreventDefault: KeyUpPreventデフォルト
+KeyUpStopPropagation: KeyUpStopPropagation (KeyUpStop伝播)
+Khaki: カーキ色
+khq-ML: コイラ・チイニ(マリ)
+ki-KE: キクユ(ケニア)
+Kilobytes: キロバイト
+KimberBase16: キンバーベース16
+KimbieDark: キンビーダーク
+KimbieLight: キンビーライト
+kk-KZ: カザフ語(カザフスタン)
+kkj-CM: カコ(カメルーン)
+kl-GL: カラリスート(グリーンランド)
+kln-KE: カレンジン(ケニア)
+km-KH: クメール語(カンボジア)
+kn-IN: カンナダ語(インド)
+ko-KP: 韓国語(北朝鮮)
+ko-KR: 韓国語(韓国)
+kok-IN: コンカニ語(インド)
+Kommunikation - Mikrofon (Voicemod Virtual Audio Device (WDM)): 通信 - マイク (Voicemod 仮想オーディオ デバイス (WDM))
+kr-Latn-NG: カヌリ語(ラテン語、ナイジェリア)
+ks-Arab-IN: カシミール語(アラビア語、インド)
+ks-Deva-IN: カシミール語(インド、デーヴァナーガリー語)
+ksb-TZ: シャンバラ(タンザニア)
+ksf-CM: バフィア(カメルーン)
+ksh-DE: ケロン語(ドイツ)
+ku-Arab-IQ: クルド語(アラビア語、イラク)
+ku-Arab-IR: クルド語(アラビア語、イラン語)
+Kunstler Script: クンスラースクリプト
+kw-GB: コーニッシュ (イギリス)
+ky-KG: キルギス(キルギス)
+la-VA: ラテン語(バチカン市国)
+Label: ラベル
+Label_Description: 形容
+Label_for_Age: Label_for_Age
+Label_for_City: Label_for_City
+Label_for_FirstName: Label_for_FirstName
+Label_for_Gender: Label_for_Gender
+Label_for_HouseNumber: Label_for_HouseNumber
+Label_for_Id: Label_for_Id
+Label_for_Notice: Label_for_Notice
+Label_for_OtherAddresses: Label_for_OtherAddresses
+Label_for_PostalCode: Label_for_PostalCode
+Label_for_ProgramingSkills: Label_for_ProgramingSkills
+Label_for_Street: Label_for_Street
+Label_for_TrueOrFalse: Label_for_TrueOrFalse
+Label_UploadRequests: ファイル
+LabelCustomTab: ラベルカスタムタブ
+LabelDefinedTab: ラベル定義タブ
+lag-TZ: ランギ(タンザニア)
+Landscape: 景色
+Language: 言語
+Languages: 言語
+Large: 大きい
+LargeZipArchive.zip: LargeZipArchive.zip
+Last Name: 名字
+Last Name is required: 姓は必須です
+LastName: 姓
+Laura Palmer: ローラ・パーマー
+Lavender: ラベンダー
+LavenderBlush: ラベンダーブラッシュ
+LawnGreen: ローングリーン
+LayoutProperties: レイアウトプロパティ
+lb-LU: ルクセンブルク語(ルクセンブルク)
+Leave editor focus to update MudExStructuredDataEditor: エディタ フォーカスを残して MudExStructuredDataEditor を更新する
+LedBars: LEDバー
+Left: 左
+Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): MudExSplitPanel の左パーツ。(MudExSplitter を直接使用することもできます)
+LegacyRender: レガシーレンダー
+Legend: 伝説
+LemonChiffon: レモンシフォン
+LetterSpacing: レタースペーシング
+lg-UG: ガンダ(ウガンダ)
+Library: 図書館
+LightBlue: ライトブルー
+LightBulb: 電球
+LightBulbSize: 電球サイズ
+LightBulbSizeUnit: 電球サイズ単位
+LightCoral: ライトコーラル
+LightCyan: ライトシアン
+Lightfair: ライトフェア
+LightGoldenrodYellow: ライトゴールデンロッドイエロー
+LightGray: ライトグレー
+LightGreen: ライトグリーン
+LightOnly: ライトオンリー
+LightPink: ライトピンク
+LightSalmon: ライトサーモン
+LightSeaGreen: ライトシーグリーン
+LightSkyBlue: ライトスカイブルー
+LightSlateGray: ライトスレートグレー
+LightSpeed: ライトスピード
+LightSteelBlue: ライトスチールブルー
+LightYellow: ライトイエロー
+Lime: ライム
+LimeGreen: ライムグリーン
+Line: 線
+Linear: リニア
+LinearAmplitude: リニア振幅
+LinearBoost: リニアブースト
+LineAreaGraph: ラインエリアグラフ
+LineColor: ラインカラー
+LineHeight: ラインハイト
+Lines: 台詞
+LinesDefault: LinesDefault(線のデフォルト)
+LinesInputs: ライン入力
+LineWidth: 線幅
+Lioshi: リオシ
+List: リスト
+List appearance: リストの外観
+List behavior: リストの動作
+List item for MudExList.: MudExList のリスト項目。
+lkt-US: ラコタ (アメリカ合衆国)
+ln-AO: リンガラ語(アンゴラ)
+ln-CD: リンガラ語(コンゴ[DRC])
+ln-CF: リンガラ語(中央アフリカ共和国)
+ln-CG: リンガラ語(コンゴ)
+lo-LA: ラオス(ラオス)
+LoadFileDataBytesInBackground: LoadFileDataBytesInBackground (バックグラウンドでファイルデータバイト)
+Loading: 積載
+Loading...: 積載。。。
+Local: 地元の
+LocalizerPattern: ローカライザーパターン
+LockScroll: ロックスクロール
+Log: 丸太
+Logged In.: ログインしました。
+Logged Out.: ログアウトしました。
+LogicalSurface: 論理サーフェス
+Login with Keycloak: Keycloak でログインする
+LoginDescription: 認証情報でログインします。
+Logitech BRIO (046d:085e): ロジクール BRIO (046d:085e)
+logLevel: logLevel (ログレベル)
+logo.png: logo.png
+Logout: ログアウト
+Logout Confirmation: 本当にログアウトしたいですか?
+Logout user: ログアウトユーザー
+London: ロンドン
+London - SW1A 1AA: ロンドン - SW1A 1AA
+London - SW1A 1AAender: ロンドン - SW1A 1Aender
+LondonTubeBase16: ロンドンチューブベース16
+LoRes: 領主
+Los Angeles: ロサンゼルス
+Los Angeles - 90001: ロサンゼルス - 90001
+Los Angeles - 90001ender: ロサンゼルス - 90001ender
+lrc-IQ: ルリ北部(イラク)
+lrc-IR: 北ルリ(イラン)
+lt-LT: リトアニア語(リトアニア)
+lu-CD: ルバ・カタンガ(コンゴ[コンゴ民主共和国])
+Lucida Bright: ルシダ・ブライト
+Lucida Calligraphy: ルシダ書道
+Lucida Console: Lucidaコンソール
+Lucida Fax: ルシダファックス
+Lucida Grande: ルシダ グランデ
+Lucida Handwriting: Lucidaの手書き
+Lucida Sans: ルシダ・サンズ
+Lucida Sans Typewriter: Lucida Sans タイプライター
+Lucida Sans Unicode: Lucida Sans Unicode
+LumiBars: ルミバー
+luo-KE: ルオ(ケニア)
+luy-KE: ルイア(ケニア)
+lv-LV: ラトビア語(ラトビア)
+Lyon: リヨン
+Lyon - 69001: リヨン - 69001
+Lyon - 69001ender: リヨン - 69001ender
+Lyrics: 歌詞
+MacintoshBase16: MacintoshBase16
+Magneto: 磁気
+Magula: マグラ
+mai-IN: マイティリ(インド)
+Mail: 郵便
+Main User: メインユーザー
+MainAddress: メインアドレス
+MainSample.WebAssembly.Pages.Page_ObjectEditList+Brand: MainSample.WebAssembly.Pages.Page_ObjectEditList+ブランド
+MainSample.WebAssembly.Services.SampleFile: MainSample.WebAssembly.Services.SampleFile (メインサンプル.WebAssembly.Services.サンプルファイル)
+MainSample.WebAssembly.Services.SampleFileWithStream: MainSample.WebAssembly.Services.SampleFileWithStream
+MainUser: メインユーザー
+Male: 男性
+Manage {0} {1}'s Extended Attributes: '{0} {1}の拡張属性の管理'
+Manage {0} {1}'s Permissions: '{0} {1}の権限を管理する'
+Manage {0} {1}'s Roles: '{0} {1}の役割の管理'
+Manage {0} Extended Attributes: 拡張属性{0}管理
+Manage {0}'s Permissions: '{0}の権限を管理する'
+Manage Brands.: ブランドを管理します。
+Manage Database Backups.: データベース・バックアップを管理またはリストアします。
+Manage Document Types.: ドキュメント タイプを管理します。
+Manage Extended Attributes: 拡張属性の管理
+Manage Languages: 言語の管理
+Manage Permission: 権限の管理
+Manage Products.: 製品の管理。
+Manage Roles: ロールの管理
+Manage Roles.: ロールの管理。
+Manage Translations: 翻訳の管理
+Manage Users: ユーザーの管理
+Manage your account: アカウントを管理する
+Manchester: マンチェスター
+Manchester - M1 1AE: マンチェスター - M1 1AE
+Manchester - M1 1AEender: マンチェスター - M1 1Aエンダー
+Manual: 手動
+Mar: 台無しにする
+Margin: 余地
+Mark all: すべてマーク
+Mark all as read: すべて既読としてマークする
+Mark all as unread: すべてを未読としてマークする
+Mark as read: 既読にマーク
+Mark as unread: 未読としてマークする
+MarrakeshBase16: マラケシュBase16
+Marseille: マルセイユ
+Marseille - 13001: マルセイユ - 13001
+Marseille - 13001ender: マルセイユ - 13001ender
+mas-KE: マサイ(ケニア)
+mas-TZ: マサイ(タンザニア)
+Mask: マスク
+MateriaBase16: マテリアベース16
+MaterialBase16: 素材ベース16
+MaterialDarkerBase16: 素材DarkerBase16
+MaterialLighterBase16: 素材ライターベース16
+MaterialPalenightBase16: 素材PalenightBase16
+MaterialVividBase16: 素材VividBase16
+Matura MT Script Capitals: Matura MT スクリプトの大文字
+MaxCaptureTime: 最大キャプチャ時間
+MaxChips: マックスチップ
+MaxDecibels: 最大デシベル
+MaxFileSize: 最大ファイルサイズ
+MaxFPS: 最大FPS
+MaxFrequency: 最大周波数
+MaxHeight: 最大高さ
+MaximizeButton: ボタンの最大化
+MaxItems: 最大アイテム数
+MaxItemWidth: 最大アイテム幅
+MaxLength: 最大長
+MaxLuminance: 最大輝度
+MaxMultipleFiles: 最大マルチプルファイル
+MaxRecordingTime: 最大記録時間
+MaxWidth: 最大幅
+MaxZoomPixelRatio: 最大ズームピクセル比
+May: 5 月
+Medium: 中程度
+MediumSlateBlue: ミディアムスレートブルー
+MediumSpringGreen: ミディアムスプリンググリーン
+MediumTurquoise: ミディアムターコイズ
+MediumVioletRed: ミディアムバイオレットレッド
+Megabytes: メガバイト
+Mel: メル
+MellowPurpleBase16: メロウパープルベース16
+MenuAnchorOrigin: メニューアンカー原点
+MenuMaxHeight: メニュー最大高さ
+MenuTransformOrigin: メニュートランスフォーム原点
+mer-KE: メル(ケニア)
+Message will be deleted in {0} seconds: メッセージは{0}秒で削除されます
+MessageClass: メッセージクラス
+MessageStyle: メッセージスタイル
+MetaCoverImage: メタカバーイメージ
+Method 1: 方法1
+Method 2: 方法2
+MexicoLightBase16: メキシコLightBase16
+mfe-MU: モリシエン(モーリシャス)
+mg-MG: マダガスカル(マダガスカル)
+mgh-MZ: Makhuwa-Meetto(モザンビーク)
+mgo-CM: メタ(カメルーン)
+mi-NZ: マオリ語(ニュージーランド)
+Michael Scott: マイケル・スコット
+MicrophoneDeviceId: マイクデバイス ID
+MidnightBlue: ミッドナイトブルー
+Mikrofon (3- RODE NT-USB) (19f7:0003): マイク(3-RODE NT-USB)(19f7:0003)
+Mikrofon (DroidCam Virtual Audio): マイク(DroidCamバーチャルオーディオ)
+Mikrofon (Logitech BRIO) (046d:085e): マイク(ロジクールBRIO)(046d:085e)
+Mikrofon (ROG Headset) (0b05:1876): マイク(ROGヘッドセット)(0b05:1876)
+Mikrofon (USB Audio Device) (1b3f:2008): Mikrofon (USB オーディオ デバイス) (1b3f:2008)
+Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Voicemod 仮想オーディオ デバイス (WDM))
+Millimeters: ミリメートル
+MimeRestrictionType: MimeRestrictionType (MimeRestrictionType)
+MimeTypes: Mimeタイプ
+MinDecibels: 最小デシベル
+MinFrequency: 最小周波数
+MinHeight: 最小高さ
+Mini: ミニ
+MinimizeButton: 最小化ボタン
+MinLuminance: 最小輝度
+MintCream: ミントクリーム
+MinZoomLevel: 最小ズームレベル
+Mirror: 鏡
+Misc: 雑貨
+Misc Options: その他のオプション
+Mistral: ミストラル
+MistyRose: ミスティローズ
+mk-MK: マケドニア語(北マケドニア)
+ml-IN: マラヤーラム語(インド)
+mn-MN: モンゴル語(モンゴル)
+mn-Mong-CN: モンゴル語(モンゴル語、中国)
+mn-Mong-MN: モンゴル語(モンゴル語、モンゴル語)
+mni-IN: マニプリ(インド)
+Moccasin: モカシン
+MochaBase16: モカベース16
+Modal: 資本
+Mode: モード
+Model with File: ファイル付きモデル
+Modern No. 20: モダン No. 20
+moh-CA: モホーク族(カナダ)
+Monaco: モナコ
+Monitor: モニター
+MonoBlue: モノブルー
+Monokai: モノカイ
+MonokaiBase16: モノカイベース16
+MonokaiSublime: モノカイ崇高
+Monotype Corsiva: モノタイプ コルシバ
+Month: 月
+Montreal: モントリオール
+Montreal - H1A 0A1: モントリオール - H1A 0A1
+Montreal - H1A 0A1ender: モントリオール - H1A 0A1ender
+Montserrat: モントセラト
+Motion: 動議
+Mouse: 鼠
+MouseOverMessageClass: MouseOverMessageクラス
+MouseOverMessageStyle: MouseOverMessageStyle (マウスオーバーメッセージスタイル)
+MouseWheelDownAction: マウスホイールダウンアクション
+MouseWheelUpAction: MouseWheelUpアクション
+MoveContent: コンテンツの移動
+mr-IN: マラーティー語(インド)
+MS Outlook: MSアウトルック
+MS Reference Sans Serif: MSリファレンスサンセリフ
+MS Reference Specialty: MSリファレンススペシャリティ
+MS Sans Serif: MSサンセリフ
+MS Serif: MSセリフ
+ms-BN: マレー語(ブルネイ)
+ms-ID: マレー語(インドネシア)
+ms-MY: マレー語(マレーシア)
+ms-SG: マレー語(シンガポール)
+mt-MT: マルタ語(マルタ)
+mua-CM: ムンダン(カメルーン)
+mud-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788: 泥-EX-ポップオーバー-8C7975A0-1F37-40CA-975A-B7ED66855788
+MudAlert: マッドアラート
+MudAppBar: MudAppBar (マッドアプリバー)
+MudAvatar: マッドアバター
+MudAvatarGroup: マッドアバターグループ
+MudBadge: ムドバッジ
+MudBlazor Components: MudBlazorコンポーネント
+MudBlazor Popover: MudBlazorポップオーバー
+MudBlazor.Extensions.Components.ThemePreset`1[MainSample.WebAssembly.ClientTheme]: MudBlazor.Extensions.Components.ThemePreset'1[MainSample.WebAssembly.ClientTheme]
+MudBreadcrumbs: MudBreadcrumbs
+MudBreakpointProvider: MudBreakpointProvider (マッドブレークポイントプロバイダ)
+MudButton: マッドボタン
+MudButtonGroup: MudButtonGroup (マッドボタングループ)
+MudCard: マッドカード
+MudCardActions: MudCardアクション
+MudCardContent: MudCardコンテンツ
+MudCardHeader: MudCardヘッダー
+MudCardMedia: マッドカードメディア
+MudCarouselItem: MudCarouselアイテム
+MudChart: マッドチャート
+MudChat: マッドチャット
+MudChatBubble: MudChatバブル
+MudChatFooter: MudChatフッター
+MudChatHeader: MudChatヘッダー
+MudCollapse: マッドコラプス
+MudColorPicker: MudColorPicker (マッドカラーピッカー)
+MudColorStringFormat: MudColorStringFormat (マッドカラーストリングフォーマット)
+MudContainer: マッドコンテナ
+MudContextualActionBar: MudContextualActionBar (マッドコンテキストアクションバー)
+MudDatePicker: MudDateピッカー
+MudDateRangePicker: MudDateRangePicker (MudDateRangeピッカー)
+MudDialog: Mudダイアログ
+MudDialogContainer: MudDialogContainer (マッドダイアログコンテナ)
+MudDialogProvider: MudDialogProvider (マッドダイアログ プロバイダ)
+MudDivider: マッドディバイダー
+MudDrawer: マッドドロワー
+MudDrawerContainer: MudDrawerコンテナ
+MudDrawerHeader: MudDrawerヘッダー
+MudDynamicTabs: MudDynamicTabs (マッドダイナミック タブ)
+MudElement: マッドエレメント
+MudEx Components: MudEx コンポーネント
+MudExAdditionalAdornment: MudEx追加装飾
+MudExAppearance: MudEx外観
+MudExAppLoader: MudExAppLoader (MudExAppLoader)
+MudExAudioPlayer: MudExオーディオプレーヤー
+MudExCaptureButton: MudExCaptureボタン
+MudExCaptureOptionsEdit: MudExCaptureオプション編集
+MudExCardList: MudExCardリスト
+MudExCardList with ItemsSource: MudExCardList と ItemsSource
+MudExCardList with ItemsSource and child content: MudExCardList と ItemsSource および子コンテンツ
+MudExCardList<TData>: MudExCardリスト<TData>
+MudExChipSelect: MudExチップセレクト
+MudExChipSelect can used to select items from a collection as chips: MudExChipSelect を使用して、コレクションからアイテムをチップとして選択できます
+MudExChipSelect<T>: MudExチップセレクト<T>
+MudExCodeView: MudExCodeビュー
+MudExCollectionEditor<T>: MudExCollectionEditor (MudExコレクション エディタ<T>)
+MudExColor: MudExカラー
+MudExColorBubble: MudExColorBubble (MudExカラーバブル)
+MudExColorEdit: MudExColorEdit(MudExカラー編集)
+MudExColorEdit is in general a MudBlazor Picker component specially for the struct MudExColor. But because name MudExColorPicker is already used for an extended ColorPicker this Component is named MusExColorEdit: MudExColorEdit は、一般に、構造体 MudExColor 専用の MudBlazor Picker コンポーネントです。ただし、名前 MudExColorPicker は拡張 ColorPicker にすでに使用されているため、このコンポーネントの名前は MusExColorEdit です。
+MudExColorPicker: MudExカラーピッカー
+MudExColorUtils: MudExColorUtils (MudExColorユーティリティ)
+MudExCss: MudExCss (MudExCss)
+MudExCssBuilder: MudExCssビルダー
+MudExCultureSelect: MudExCultureセレクト
+MudExDialog: MudExダイアログ
+MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog は、すべての DialogExtensions を使用してページにインライン化されたダイアログを表示する場合に使用するコンポーネントです。
+MudExDivider: MudExディバイダ
+MudExDropBoxFilePicker: MudExDropBoxFilePicker(MudExDropBoxファイルピッカー)
+MudExEnumSelect: MudExEnumSelect (MudExEnumSelect )
+MudExEnumSelect<TEnum>: MudExEnumSelect (MudExEnumSelect <TEnum>)
+MudExFileDisplay: MudExファイル表示
+MudExFileDisplayCode: MudExファイル表示コード
+MudExFileDisplayDialog: MudExFileDisplayDialog (MudEx ファイル表示ダイアログ ボックス)
+MudExFileDisplayExcel: MudExファイル表示Excel
+MudExFileDisplayFont: MudExファイル表示フォント
+MudExFileDisplayHtml: MudExFileDisplayHtml (MudEx ファイル表示 HTML )
+MudExFileDisplayOfficeLive: MudExファイルディスプレイオフィスライブ
+MudExFileDisplayStructuredData: MudExFileDisplayStructuredData (MudExファイル表示構造化データ)
+MudExFileDisplayZip: MudEx ファイル表示 Zip
+MudExFontSelect: MudExFontSelect (MudExフォント選択)
+MudExFontSelect can used to select one ore more fonts: MudExFontSelect を使用して、1 つまたは複数のフォントを選択できます。
+MudExGoogleFilePicker: MudExGoogleFilePicker(MudExGoogleファイルピッカー)
+MudExGradientText: MudExGradientText (MudExグラデーションテキスト)
+MudExGravatar: MudExGravatar (ムードエックスグラバタール)
+MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatarは、gravatarのプロフィール画像をメールアドレスに自動で使用するMudAvatarです
+MudExGrid: MudExGrid (マッドエックスグリッド)
+MudExGrid Enhanced: MudExGrid の強化
+MudExGridSection: MudExGridSection (MudExGridセクション)
+MudExGroupBox: MudExGroupBox (MudExグループボックス)
+MudExHtmlEdit: MudExHtml編集
+MudExIcon: MudExアイコン
+MudExIcon is a simple MudIcon with extended possibilities to set all colors.: MudExIconは、すべての色を設定する可能性が拡張されたシンプルなMudIconです。
+MudExIconButton: MudExIconボタン
+MudExIconPicker: MudExアイコンピッカー
+MudExIconPicker is in general a MudBlazor Picker component specially for selecting an icon.: MudExIconPickerは、一般に、アイコンを選択するためのMudBlazorピッカーコンポーネントです。
+MudExImageViewer: MudExImageViewer (MudExイメージビューア)
+MudExList: MudExリスト
+MudExList can used to select one ore more items from a bindeable collection.: MudExList を使用して、バインド可能なコレクションから 1 つ以上のアイテムを選択できます。
+MudExList is a component that allows you to select an item from a list of items. It is a wrapper for MudList.: MudExList は、アイテムのリストからアイテムを選択できるコンポーネントです。MudListのラッパーです。
+MudExList<T>: MudExリスト<T>
+MudExListItem<T>: MudExListItem (MudExリストアイテム)<T>
+MudExListSubheader is a sub header for MudExList.: MudExListSubheader は、MudExList のサブヘッダーです。
+MudExListSubheader<T>: MudExListサブヘッダー<T>
+MudExMessageDialog: MudExメッセージダイアログ
+MudExObjectEdit: MudExObjectEdit(MudExオブジェクト編集)
+MudExObjectEdit and MudExCollectionEditor with a shared config: MudExObjectEdit と MudExCollectionEditor を共有設定で使用
+MudExObjectEdit with virtual property rendering: 仮想プロパティ レンダリングを使用した MudExObjectEdit
+MudExObjectEdit<T>: MudExObjectEdit(MudExオブジェクト編集)<T>
+MudExObjectEditDialog<T>: MudExオブジェクト編集ダイアログ(MudExObjectEditDialog)<T>
+MudExObjectEditForm<T>: MudExオブジェクトエディットフォーム(MudExObjectEditForm)<T>
+MudExObjectEditPicker<T>: MudExオブジェクト編集ピッカー<T>
+MudExOneDriveFilePicker: MudExOneDriveFilePicker (MudExOneDriveファイルピッカー)
+MudExpansionPanel: MudExpansionパネル
+MudExpansionPanels: MudExpansionパネル
+MudExPicker: MudExピッカー
+MudExPickerBase<T>: MudExPickerBase (マッド エクスピッカーベース<T>)
+MudExPopover: MudExポップオーバー
+MudExPromptDialog: MudExプロンプトダイアログ
+MudExPromptDialog Component: MudExPromptDialog コンポーネント
+MudExPropertyEdit: MudExプロパティ編集
+MudExSelect: MudExSelect (MudExセレクト)
+MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect を使用して、バインド可能なコレクションから 1 つまたは複数のアイテムを選択できます。また、このコンポーネントは、ダイアログや MudExPopover などのすべてのアニメーションをサポートしています。
+MudExSelect<T>: MudExSelect (MudExセレクト)<T>
+MudExSelectItem is a select item for MudExSelect.: MudExSelectItem は、MudExSelect の選択項目です。
+MudExSelectItem<T>: MudExSelectアイテム<T>
+MudExSize is a readonly struct that provides a convenient and type-safe way to deal with size values in the context of MudBlazor components.: MudExSize は、MudBlazor コンポーネントのコンテキストでサイズ値を処理するための便利でタイプセーフな方法を提供する読み取り専用構造体です。
+MudExSize<T>: MudExサイズ<T>
+MudExSlideBar: MudExSlideBar (MudExスライドバー)
+MudExSpeechToTextButton: MudExSpeechToTextButton (MudExSpeechToTextButton)
+MudExSplitPanel: MudExSplitパネル
+MudExSplitPanelItem: MudExSplitPanelItem (MudEx 分割パネル項目)
+MudExSplitter: MudExスプリッター
+MudExStructuredDataEditor: MudExStructuredDataEditor (MudExStructuredDataエディタ)
+MudExStyleBuilder: MudExStyleBuilder (MudExスタイルビルダー)
+MudExSvg: MudExSvg
+MudExTagField: MudExTagフィールド
+MudExTagField creates chips when user press on of the specified delimiter or presses enter.: MudExTagField は、ユーザが指定した区切り文字の on を押すか、Enter キーを押すとチップを作成します。
+MudExTagField is a component that allows the user to enter a list of values as chips.: MudExTagFieldは、ユーザーが値のリストをチップとして入力できるようにするコンポーネントです。
+MudExTagField<T>: MudExTagフィールド<T>
+MudExTaskBar: MudExTaskBar (MudExタスクバー)
+MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide  somewhere in your Layout: MudExTaskBar は MudExSlideBar を継承し、非モーダル ダイアログを選択するためのタブバーを提供します。レイアウトのどこかに指定するだけです
+MudExTextField<T>: MudExTextField (MudExテキストフィールド)<T>
+MudExThemeEdit: MudExテーマ編集
+MudExThemeEdit is a powerful component to edit one ore more themes: MudExThemeEdit は、1 つまたは複数のテーマを編集するための強力なコンポーネントです
+MudExThemeEdit<TTheme>: MudExテーマ編集<TTheme>
+MudExThemeSelect: MudExテーマ選択
+MudExThemeSelect<TTheme>: MudExテーマ選択<TTheme>
+MudExToggleableSearch: MudExToggleableSearch
+MudExTreeView: MudExTreeビュー
+MudExTreeView is useful to bind tree structured items. The control that should used can be set with the ViewMode property: MudExTreeView は、ツリー構造のアイテムをバインドするのに役立ちます。使用するコントロールは、ViewMode プロパティで設定できます
+MudExTreeView with template: テンプレート付き MudExTreeView
+MudExTreeView<T>: MudExTreeビュー<T>
+MudExTreeViewBreadcrumb: MudExTreeViewパンくずリスト
+MudExTreeViewBreadcrumb<T>: MudExTreeViewパンくずリスト<T>
+MudExTreeViewCardGrid: MudExTreeViewカードグリッド
+MudExTreeViewCardGrid<T>: MudExTreeViewカードグリッド<T>
+MudExTreeViewDefault: MudExTreeViewデフォルト
+MudExTreeViewDefault<T>: MudExTreeViewデフォルト<T>
+MudExTreeViewFlatList: MudExTreeViewFlatList (MudExツリービューフラットリスト)
+MudExTreeViewFlatList<T>: MudExTreeViewFlatList (MudExツリービューフラットリスト)<T>
+MudExTreeViewHorizontal: MudExTreeViewHorizontal (MudExTreeViewHorizontal)
+MudExTreeViewHorizontal<T>: MudExTreeViewHorizontal (MudExTreeViewHorizontal)<T>
+MudExTreeViewList: MudExTreeViewリスト
+MudExTreeViewList<T>: MudExTreeViewリスト<T>
+MudExUploadEdit: MudExアップロード編集
+MudExUploadEdit<T>: MudExアップロード編集<T>
+MudExVirtualItem: MudExVirtualItem (MudEx仮想アイテム)
+MudExVirtualize<TItem>: MudEx仮想化<TItem>
+MudFab: マッドファブ
+MudField: マッドフィールド
+MudFlexBreak: マッドフレックスブレイク
+MudFocusTrap: マッドフォーカストラップ
+MudForm: マッドフォーム
+MudGrid: マッドグリッド
+MudHeatMapCell: マッドヒートマップセル
+MudHidden: マッドヒドゥン
+MudHighlighter: マッドハイライター
+MudIcon: マッドアイコン
+MudIconButton: MudIconボタン
+MudImage: マッドイメージ
+MudInputAdornment: MudInputAdornment (マッドインプット装飾)
+MudInputControl: MudInputControl (マッド入力コントロール)
+MudInputLabel: MudInputLabel (マッド入力ラベル)
+MudInputString: MudInputString (泥入力文字列)
+MudItem: マッドアイテム
+MudLayout: マッドレイアウト
+MudLink: マッドリンク
+MudListSubheader: MudListサブヘッダー
+MudMainContent: Mudメインコンテンツ
+MudMask: マッドマスク
+MudMenu: マッドメニュー
+MudMenuItem: MudMenuItem (マッドメニュー項目)
+MudMessageBox: Mudメッセージボックス
+MudNavGroup: MudNavグループ
+MudNavLink: MudNavリンク
+MudNavMenu: MudNavメニュー
+MudOverlay: マッドオーバーレイ
+MudPageContentNavigation: MudPageContentNavigation (MudPageコンテンツ ナビゲーション)
+MudPagination: Mudページネーション
+MudPaper: マッドペーパー
+MudPickerContent: MudPickerコンテンツ
+MudPickerToolbar: MudPickerツールバー
+MudPopover: マッドポップオーバー
+MudPopoverProvider: MudPopoverプロバイダ
+MudProgressCircular: マッドプログレッシスタンサーキュラー
+MudProgressLinear: マッドプログレッシブリニア
+MudRating: マッドレーティング
+MudRatingItem: MudRatingアイテム
+MudRender: マッドレンダー
+MudRTLProvider: マッドRTLプロバイダー
+MudScrollToTop: マッドスクロールトゥトップ
+MudSimpleTable: MudSimpleTable (マッドシンプルテーブル)
+MudSkeleton: マッドスケルトン
+MudSnackbarElement: MudSnackbarElement (マッドスナックバーエレメント)
+MudSnackbarProvider: MudSnackbarプロバイダー
+MudSpacer: マッドスペーサー
+MudStack: マッドスタック
+MudStep: マッドステップ
+MudStepper: マッドステッパー
+MudSwipeArea: MudSwipeArea(マッドスワイプエリア)
+MudTablePager: マッドテーブルページ機
+MudTabPanel: MudTabパネル
+MudTabs: MudTab(マッドタブ)
+MudTd: マッドTd
+MudText: マッドテキスト
+MudTextField with additional features: MudTextField と追加機能
+MudTFootRow: マッドTFootRow
+MudTh: マッドス
+MudTHeadRow: マッドシードロウ
+MudThemeProvider: MudThemeProvider (マッドテーマプロバイダ)
+MudTimeline: マッドタイムライン
+MudTimelineItem: MudTimelineアイテム
+MudTimePicker: MudTimeピッカー
+MudTimeSeriesChart: MudTimeSeriesチャート
+MudToggleIconButton: MudToggleIconボタン
+MudToolBar: MudToolBar (マッドツールバー)
+MudTooltip: MudTooltip (マッドツールチップ)
+MudTr: マッドTr
+MudTreeViewItemToggleButton: MudTreeViewItemToggleButton (MudTreeViewアイテムトグルボタン)
+MultiSelect: マルチセレクト
+MultiSelection: 複数選択
+MultiSelectionAlign: 複数選択整列
+MultiSelectionComponent: マルチ選択コンポーネント
+MultiSelectWithCtrlKey: MultiSelectWithCtrlKey (マルチセレクトと CtrlKey)
+My Custom action: マイカスタムアクション
+my-MM: ビルマ語(ミャンマー)
+mzn-IR: マザンダーニ(イラン)
+name: 名前
+Name: 名前
+Name is required: 名前は必須です
+Name is required!: 名前は必須です!
+NameContainerStyle: 名前コンテナスタイル
+Names: 名
+naq-NA: 名前(ナミビア)
+Natalie Portman: ナタリーポートマン
+NavajoWhite: ナバホ族ホワイト
+NavigationExpandMode: ナビゲーション展開モード
+NavigationLinkBarClass: NavigationLinkBarクラス
+NavigationLinkBarStyle: NavigationLinkBarスタイル
+NavigationViewMode: ナビゲーションビューモード
+NavigatorClass: ナビゲータークラス
+NavigatorPosition: ナビゲーターポジション
+NavigatorRectangleColor: NavigatorRectangleColor
+NavigatorSizeRatio: ナビゲーターサイズ比率
+Navy: 海軍
+nb-NO: ノルウェー語ブークモール(ノルウェー)
+nb-SJ: ノルウェー語ブークモール(スバールバル諸島&ヤンマイエン島)
+nd-ZW: 北ンデベレ(ジンバブエ)
+nds-DE: 低地ドイツ語 (ドイツ)
+nds-NL: 低地ドイツ語(オランダ)
+ne-IN: ネパール語(インド)
+ne-NP: ネパール語(ネパール)
+NebulaBase16: NebulaBase16 (星雲ベース16)
+Never: 一度もない
+New: 新機能
+NEW Dialog Drag Drop Mode: NEW ダイアログ ドラッグ ドロップ モード
+New dialog Feature - SnapDrag: 新しいダイアログ機能 - SnapDrag
+New Message From {0}: '{0}からの新しいメッセージ'
+New MudExStructureDataEditor can used to edit json, xml or yaml string in a MudExObjectEdit: 新しい MudExStructureDataEditor を使用して、MudExObjectEdit で json、xml、または yaml 文字列を編集できます。
+New Password: 新しいパスワード
+New User 100: 新規ユーザー 100
+New User 101: 新規ユーザー 101
+New User 102: 新規ユーザー 102
+New User 103: 新規ユーザー 103
+New User 104: 新規ユーザー 104
+New User 105: 新規ユーザー 105
+New User 106: 新規ユーザー 106
+New User 107: 新規ユーザー 107
+New User 108: 新規ユーザー 108
+New User 109: 新規ユーザー 109
+New User 110: 新規ユーザー 110
+New User 111: 新規ユーザー 111
+New User 112: 新規ユーザー 112
+New User 113: 新規ユーザー 113
+New User 114: 新規ユーザー 114
+New User 115: 新規ユーザー 115
+New User 116: 新規ユーザー 116
+New User 117: 新規ユーザー 117
+New User 118: 新規ユーザー 118
+New User 119: 新規ユーザー 119
+New User 120: 新規ユーザー 120
+New User 121: 新規ユーザー 121
+New User 122: 新規ユーザー 122
+New User 123: 新規ユーザー 123
+New User 124: 新規ユーザー 124
+New User 125: 新規ユーザー 125
+New User 126: 新規ユーザー 126
+New User 127: 新規ユーザー 127
+New User 128: 新規ユーザー 128
+New User 129: 新規ユーザー 129
+New User 130: 新規ユーザー 130
+New User 131: 新規ユーザー 131
+New User 132: 新規ユーザー 132
+New User 133: 新規ユーザー 133
+New User 134: 新規ユーザー 134
+New User 135: 新規ユーザー 135
+New User 136: 新規ユーザー 136
+New User 137: 新規ユーザー 137
+New User 138: 新規ユーザー 138
+New User 139: 新規ユーザー 139
+New User 140: 新規ユーザー 140
+New User 141: 新規ユーザー 141
+New User 142: 新規ユーザー 142
+New User 143: 新規ユーザー 143
+New User 144: 新規ユーザー 144
+New User 145: 新規ユーザー 145
+New User 146: 新規ユーザー 146
+New User 147: 新規ユーザー 147
+New User 148: 新規ユーザー 148
+New User 149: 新規ユーザー 149
+New User 150: 新規ユーザー 150
+New User 151: 新規ユーザー 151
+New User 152: 新規ユーザー 152
+New User 153: 新規ユーザー 153
+New User 154: 新規ユーザー 154
+New User 155: 新規ユーザー 155
+New User 156: 新規ユーザー 156
+New User 157: 新規ユーザー 157
+New User 158: 新規ユーザー 158
+New User 159: 新規ユーザー 159
+New User 160: 新規ユーザー 160
+New User 161: 新規ユーザー 161
+New User 162: 新規ユーザー 162
+New User 163: 新規ユーザー 163
+New User 164: 新規ユーザー 164
+New User 165: 新規ユーザー 165
+New User 166: 新規ユーザー 166
+New User 167: 新規ユーザー 167
+New User 168: 新規ユーザー 168
+New User 169: 新規ユーザー 169
+New User 170: 新規ユーザー 170
+New User 171: 新規ユーザー 171
+New User 172: 新規ユーザー 172
+New User 173: 新規ユーザー 173
+New User 174: 新規ユーザー 174
+New User 175: 新規ユーザー 175
+New User 176: 新規ユーザー 176
+New User 177: 新規ユーザー 177
+New User 178: 新規ユーザー 178
+New User 179: 新規ユーザー 179
+New User 180: 新規ユーザー 180
+New User 181: 新規ユーザー 181
+New User 182: 新規ユーザー 182
+New User 183: 新規ユーザー 183
+New User 184: 新規ユーザー 184
+New User 185: 新規ユーザー 185
+New User 186: 新規ユーザー 186
+New User 187: 新規ユーザー 187
+New User 188: 新規ユーザー 188
+New User 189: 新規ユーザー 189
+New User 190: 新規ユーザー 190
+New User 191: 新規ユーザー 191
+New User 192: 新規ユーザー 192
+New User 193: 新規ユーザー 193
+New User 194: 新規ユーザー 194
+New User 195: 新規ユーザー 195
+New User 196: 新規ユーザー 196
+New User 197: 新規ユーザー 197
+New User 198: 新規ユーザー 198
+New User 199: 新規ユーザー 199
+New User 200: 新規ユーザー 200
+New User 201: 新規ユーザー 201
+New User 202: 新規ユーザー 202
+New User 203: 新規ユーザー 203
+New User 204: 新規ユーザー 204
+New User 205: 新規ユーザー 205
+New User 206: 新規ユーザー 206
+New User 207: 新規ユーザー 207
+New User 208: 新規ユーザー 208
+New User 209: 新規ユーザー 209
+New User 21: 新規ユーザー 21
+New User 210: 新規ユーザー 210
+New User 211: 新規ユーザー 211
+New User 212: 新規ユーザー 212
+New User 213: 新規ユーザー 213
+New User 214: 新規ユーザー 214
+New User 215: 新規ユーザー 215
+New User 216: 新規ユーザー 216
+New User 217: 新規ユーザー 217
+New User 218: 新規ユーザー 218
+New User 219: 新規ユーザー 219
+New User 22: 新規ユーザー 22
+New User 220: 新規ユーザー 220
+New User 221: 新規ユーザー 221
+New User 222: 新規ユーザー 222
+New User 223: 新規ユーザー 223
+New User 224: 新規ユーザー 224
+New User 225: 新規ユーザー 225
+New User 226: 新規ユーザー 226
+New User 227: 新規ユーザー 227
+New User 228: 新規ユーザー 228
+New User 229: 新規ユーザー 229
+New User 23: 新規ユーザー 23
+New User 230: 新規ユーザー 230
+New User 231: 新規ユーザー 231
+New User 232: 新規ユーザー 232
+New User 233: 新規ユーザー 233
+New User 234: 新規ユーザー 234
+New User 235: 新規ユーザー 235
+New User 236: 新規ユーザー 236
+New User 237: 新規ユーザー 237
+New User 238: 新規ユーザー 238
+New User 239: 新規ユーザー 239
+New User 24: 新規ユーザー 24
+New User 240: 新規ユーザー 240
+New User 241: 新規ユーザー 241
+New User 242: 新規ユーザー 242
+New User 243: 新規ユーザー 243
+New User 244: 新規ユーザー 244
+New User 245: 新規ユーザー 245
+New User 246: 新規ユーザー 246
+New User 247: 新規ユーザー 247
+New User 248: 新規ユーザー 248
+New User 249: 新規ユーザー 249
+New User 25: 新規ユーザー 25
+New User 250: 新規ユーザー 250
+New User 251: 新規ユーザー 251
+New User 252: 新規ユーザー 252
+New User 253: 新規ユーザー 253
+New User 254: 新規ユーザー 254
+New User 255: 新規ユーザー 255
+New User 256: 新規ユーザー 256
+New User 257: 新規ユーザー 257
+New User 258: 新規ユーザー 258
+New User 259: 新規ユーザー 259
+New User 26: 新規ユーザー 26
+New User 260: 新規ユーザー 260
+New User 261: 新規ユーザー 261
+New User 262: 新規ユーザー 262
+New User 263: 新規ユーザー 263
+New User 264: 新規ユーザー 264
+New User 265: 新規ユーザー 265
+New User 266: 新規ユーザー 266
+New User 267: 新規ユーザー 267
+New User 268: 新規ユーザー 268
+New User 269: 新規ユーザー 269
+New User 27: 新規ユーザー 27
+New User 270: 新規ユーザー 270
+New User 271: 新規ユーザー 271
+New User 272: 新規ユーザー 272
+New User 273: 新規ユーザー 273
+New User 274: 新規ユーザー 274
+New User 275: 新規ユーザー 275
+New User 276: 新規ユーザー 276
+New User 277: 新規ユーザー 277
+New User 278: 新規ユーザー 278
+New User 279: 新規ユーザー 279
+New User 28: 新規ユーザー 28
+New User 280: 新規ユーザー 280
+New User 281: 新規ユーザー 281
+New User 282: 新規ユーザー 282
+New User 283: 新規ユーザー 283
+New User 284: 新規ユーザー 284
+New User 285: 新規ユーザー 285
+New User 286: 新規ユーザー 286
+New User 287: 新規ユーザー 287
+New User 288: 新規ユーザー 288
+New User 289: 新規ユーザー 289
+New User 29: 新規ユーザー 29
+New User 290: 新規ユーザー 290
+New User 291: 新規ユーザー 291
+New User 292: 新規ユーザー 292
+New User 293: 新規ユーザー 293
+New User 294: 新規ユーザー 294
+New User 295: 新規ユーザー 295
+New User 296: 新規ユーザー 296
+New User 297: 新規ユーザー 297
+New User 298: 新規ユーザー 298
+New User 299: 新規ユーザー 299
+New User 30: 新規ユーザー 30
+New User 300: 新規ユーザー 300
+New User 301: 新規ユーザー 301
+New User 302: 新規ユーザー 302
+New User 303: 新規ユーザー 303
+New User 304: 新規ユーザー 304
+New User 305: 新規ユーザー 305
+New User 306: 新規ユーザー 306
+New User 307: 新規ユーザー 307
+New User 308: 新規ユーザー 308
+New User 309: 新規ユーザー 309
+New User 31: 新規ユーザー 31
+New User 310: 新規ユーザー 310
+New User 311: 新規ユーザー 311
+New User 312: 新規ユーザー 312
+New User 313: 新規ユーザー 313
+New User 314: 新規ユーザー 314
+New User 315: 新規ユーザー 315
+New User 316: 新規ユーザー 316
+New User 317: 新規ユーザー 317
+New User 318: 新規ユーザー 318
+New User 319: 新規ユーザー 319
+New User 32: 新規ユーザー 32
+New User 320: 新規ユーザー 320
+New User 321: 新規ユーザー 321
+New User 322: 新規ユーザー 322
+New User 323: 新規ユーザー 323
+New User 324: 新規ユーザー 324
+New User 325: 新規ユーザー 325
+New User 326: 新規ユーザー 326
+New User 327: 新規ユーザー 327
+New User 328: 新規ユーザー 328
+New User 329: 新規ユーザー 329
+New User 33: 新規ユーザー 33
+New User 330: 新規ユーザー 330
+New User 331: 新規ユーザー 331
+New User 332: 新規ユーザー 332
+New User 333: 新規ユーザー 333
+New User 334: 新規ユーザー 334
+New User 335: 新規ユーザー 335
+New User 336: 新規ユーザー 336
+New User 337: 新規ユーザー 337
+New User 338: 新規ユーザー 338
+New User 339: 新規ユーザー 339
+New User 34: 新規ユーザー 34
+New User 340: 新規ユーザー 340
+New User 341: 新規ユーザー 341
+New User 342: 新規ユーザー 342
+New User 343: 新規ユーザー 343
+New User 344: 新規ユーザー 344
+New User 345: 新規ユーザー 345
+New User 346: 新規ユーザー 346
+New User 347: 新規ユーザー 347
+New User 348: 新規ユーザー 348
+New User 349: 新規ユーザー 349
+New User 35: 新規ユーザー 35
+New User 350: 新規ユーザー 350
+New User 351: 新規ユーザー 351
+New User 352: 新規ユーザー 352
+New User 353: 新規ユーザー 353
+New User 354: 新規ユーザー 354
+New User 355: 新規ユーザー 355
+New User 356: 新規ユーザー 356
+New User 357: 新規ユーザー 357
+New User 358: 新規ユーザー 358
+New User 359: 新規ユーザー 359
+New User 36: 新規ユーザー 36
+New User 360: 新規ユーザー 360
+New User 361: 新規ユーザー 361
+New User 362: 新規ユーザー 362
+New User 363: 新規ユーザー 363
+New User 364: 新規ユーザー 364
+New User 365: 新規ユーザー 365
+New User 366: 新規ユーザー 366
+New User 367: 新規ユーザー 367
+New User 368: 新規ユーザー 368
+New User 369: 新規ユーザー 369
+New User 37: 新規ユーザー 37
+New User 370: 新規ユーザー 370
+New User 371: 新規ユーザー 371
+New User 372: 新規ユーザー 372
+New User 373: 新規ユーザー 373
+New User 374: 新規ユーザー 374
+New User 375: 新規ユーザー 375
+New User 376: 新規ユーザー 376
+New User 377: 新規ユーザー 377
+New User 378: 新規ユーザー 378
+New User 379: 新規ユーザー 379
+New User 38: 新規ユーザー 38
+New User 380: 新規ユーザー 380
+New User 381: 新規ユーザー 381
+New User 382: 新規ユーザー 382
+New User 383: 新規ユーザー 383
+New User 384: 新規ユーザー 384
+New User 385: 新規ユーザー 385
+New User 386: 新規ユーザー 386
+New User 387: 新規ユーザー 387
+New User 388: 新規ユーザー 388
+New User 389: 新規ユーザー 389
+New User 39: 新規ユーザー 39
+New User 390: 新規ユーザー 390
+New User 391: 新規ユーザー 391
+New User 392: 新規ユーザー 392
+New User 393: 新規ユーザー 393
+New User 394: 新規ユーザー 394
+New User 395: 新規ユーザー 395
+New User 396: 新規ユーザー 396
+New User 397: 新規ユーザー 397
+New User 398: 新規ユーザー 398
+New User 399: 新規ユーザー 399
+New User 40: 新規ユーザー 40
+New User 400: 新規ユーザー 400
+New User 401: 新規ユーザー 401
+New User 402: 新規ユーザー 402
+New User 403: 新規ユーザー 403
+New User 404: 新規ユーザー 404
+New User 405: 新規ユーザー 405
+New User 406: 新規ユーザー 406
+New User 407: 新規ユーザー 407
+New User 408: 新規ユーザー 408
+New User 409: 新規ユーザー 409
+New User 41: 新規ユーザー 41
+New User 410: 新規ユーザー 410
+New User 411: 新規ユーザー 411
+New User 412: 新規ユーザー 412
+New User 413: 新規ユーザー 413
+New User 414: 新規ユーザー 414
+New User 415: 新規ユーザー 415
+New User 416: 新規ユーザー 416
+New User 417: 新規ユーザー 417
+New User 418: 新規ユーザー 418
+New User 419: 新規ユーザー 419
+New User 42: 新規ユーザー 42
+New User 420: 新規ユーザー 420
+New User 421: 新規ユーザー 421
+New User 422: 新規ユーザー 422
+New User 423: 新規ユーザー 423
+New User 424: 新規ユーザー 424
+New User 425: 新規ユーザー 425
+New User 426: 新規ユーザー 426
+New User 427: 新規ユーザー 427
+New User 428: 新規ユーザー 428
+New User 429: 新規ユーザー 429
+New User 43: 新規ユーザー 43
+New User 430: 新規ユーザー 430
+New User 431: 新規ユーザー 431
+New User 432: 新規ユーザー 432
+New User 433: 新規ユーザー 433
+New User 434: 新規ユーザー 434
+New User 435: 新規ユーザー 435
+New User 436: 新規ユーザー 436
+New User 437: 新規ユーザー 437
+New User 438: 新規ユーザー 438
+New User 439: 新規ユーザー 439
+New User 44: 新規ユーザー 44
+New User 440: 新規ユーザー 440
+New User 441: 新規ユーザー 441
+New User 442: 新規ユーザー 442
+New User 443: 新規ユーザー 443
+New User 444: 新規ユーザー 444
+New User 445: 新規ユーザー 445
+New User 446: 新規ユーザー 446
+New User 447: 新規ユーザー 447
+New User 448: 新規ユーザー 448
+New User 449: 新規ユーザー 449
+New User 45: 新規ユーザー 45
+New User 450: 新規ユーザー 450
+New User 451: 新規ユーザー 451
+New User 452: 新規ユーザー 452
+New User 453: 新規ユーザー 453
+New User 454: 新規ユーザー 454
+New User 455: 新規ユーザー 455
+New User 456: 新規ユーザー 456
+New User 457: 新規ユーザー 457
+New User 458: 新規ユーザー 458
+New User 459: 新規ユーザー 459
+New User 46: 新規ユーザー 46
+New User 460: 新規ユーザー 460
+New User 461: 新規ユーザー 461
+New User 462: 新規ユーザー 462
+New User 463: 新規ユーザー 463
+New User 464: 新規ユーザー 464
+New User 465: 新規ユーザー 465
+New User 466: 新規ユーザー 466
+New User 467: 新規ユーザー 467
+New User 468: 新規ユーザー 468
+New User 469: 新規ユーザー 469
+New User 47: 新規ユーザー 47
+New User 470: 新規ユーザー 470
+New User 471: 新規ユーザー 471
+New User 472: 新規ユーザー 472
+New User 473: 新規ユーザー 473
+New User 474: 新規ユーザー 474
+New User 475: 新規ユーザー 475
+New User 476: 新規ユーザー 476
+New User 477: 新規ユーザー 477
+New User 478: 新規ユーザー 478
+New User 479: 新規ユーザー 479
+New User 48: 新規ユーザー 48
+New User 480: 新規ユーザー 480
+New User 481: 新規ユーザー 481
+New User 482: 新規ユーザー 482
+New User 483: 新規ユーザー 483
+New User 484: 新規ユーザー 484
+New User 485: 新規ユーザー 485
+New User 486: 新規ユーザー 486
+New User 487: 新規ユーザー 487
+New User 488: 新規ユーザー 488
+New User 489: 新規ユーザー 489
+New User 49: 新規ユーザー 49
+New User 490: 新規ユーザー 490
+New User 491: 新規ユーザー 491
+New User 492: 新規ユーザー 492
+New User 493: 新規ユーザー 493
+New User 494: 新規ユーザー 494
+New User 495: 新規ユーザー 495
+New User 496: 新規ユーザー 496
+New User 497: 新規ユーザー 497
+New User 498: 新規ユーザー 498
+New User 499: 新規ユーザー 499
+New User 50: 新規ユーザー 50
+New User 500: 新規ユーザー 500
+New User 501: 新規ユーザー 501
+New User 502: 新規ユーザー 502
+New User 503: 新規ユーザー 503
+New User 504: 新規ユーザー 504
+New User 505: 新規ユーザー 505
+New User 506: 新規ユーザー 506
+New User 507: 新規ユーザー 507
+New User 508: 新規ユーザー 508
+New User 509: 新規ユーザー 509
+New User 51: 新規ユーザー 51
+New User 510: 新規ユーザー 510
+New User 511: 新規ユーザー 511
+New User 512: 新規ユーザー 512
+New User 513: 新規ユーザー 513
+New User 514: 新規ユーザー 514
+New User 515: 新規ユーザー 515
+New User 516: 新規ユーザー 516
+New User 517: 新規ユーザー 517
+New User 518: 新規ユーザー 518
+New User 519: 新規ユーザー 519
+New User 52: 新規ユーザー 52
+New User 520: 新規ユーザー 520
+New User 53: 新規ユーザー 53
+New User 54: 新規ユーザー 54
+New User 55: 新規ユーザー 55
+New User 56: 新規ユーザー 56
+New User 57: 新規ユーザー 57
+New User 58: 新規ユーザー 58
+New User 59: 新規ユーザー 59
+New User 60: 新規ユーザー 60
+New User 61: 新規ユーザー 61
+New User 62: 新規ユーザー 62
+New User 63: 新規ユーザー 63
+New User 64: 新規ユーザー 64
+New User 65: 新規ユーザー 65
+New User 66: 新規ユーザー 66
+New User 67: 新規ユーザー 67
+New User 68: 新規ユーザー 68
+New User 69: 新規ユーザー 69
+New User 70: 新規ユーザー 70
+New User 71: 新規ユーザー 71
+New User 72: 新規ユーザー 72
+New User 73: 新規ユーザー 73
+New User 74: 新規ユーザー 74
+New User 75: 新規ユーザー 75
+New User 76: 新規ユーザー 76
+New User 77: 新規ユーザー 77
+New User 78: 新規ユーザー 78
+New User 79: 新規ユーザー 79
+New User 80: 新規ユーザー 80
+New User 81: 新規ユーザー 81
+New User 82: 新規ユーザー 82
+New User 83: 新規ユーザー 83
+New User 84: 新規ユーザー 84
+New User 85: 新規ユーザー 85
+New User 86: 新規ユーザー 86
+New User 87: 新規ユーザー 87
+New User 88: 新規ユーザー 88
+New User 89: 新規ユーザー 89
+New User 90: 新規ユーザー 90
+New User 91: 新規ユーザー 91
+New User 92: 新規ユーザー 92
+New User 93: 新規ユーザー 93
+New User 94: 新規ユーザー 94
+New User 95: 新規ユーザー 95
+New User 96: 新規ユーザー 96
+New User 97: 新規ユーザー 97
+New User 98: 新規ユーザー 98
+New User 99: 新規ユーザー 99
+New Values: 新しい価値観
+New York: ニューヨーク州
+New York - 10001: ニューヨーク - 10001
+New York - 10001ender: ニューヨーク - 10001ender
+New Yorkender: ニューヨーケンダー
+NextPreset: 次へプリセット
+NextToSearchBox: NextToSearchBox (次へ検索ボックス)
+NextTrack: 次のトラック
+Niagara Engraved: ナイアガラ刻印
+Niagara Solid: ナイアガラソリッド
+NightOwl: ナイトフクロウ
+nl-AW: オランダ語(アルバ)
+nl-BE: オランダ語 (ベルギー)
+nl-BQ: オランダ語(ボネール島、シントユースタティウス島、サバ島)
+nl-CW: オランダ語(キュラソー島)
+nl-NL: オランダ語(オランダ)
+nl-SR: オランダ語(スリナム)
+nl-SX: オランダ語(シントマールテン島)
+nmg-CM: クワシオ(カメルーン)
+nn-NO: ノルウェー語 Nynorsk (ノルウェー)
+NnfxDark: Nnfxダーク
+NnfxLight: Nnfxライト
+nnh-CM: ンギエンボン(カメルーン)
+No: いいえ
+No address: 住所なし
+No Allowed Actions: 許可されていないアクション
+No longer update automatically: 自動更新されなくなりました
+No notifications: 通知なし
+No space available: 空き容量がありません
+NoChips: ノーチップス
+NodeBorderRadius: ノードボーダー半径
+NodePadding: ノードパディング
+NoHeader: ヘッダーなし
+NoIcon: ノーアイコン
+NoModalDialogs: ノーモーダルダイアログ
+none: 何一つ
+None: 何一つ
+Nord: 北
+NordBase16: ノードベース16
+Normal: 正常
+Not Allowed to add or delete Administrator Role if you have not this role.: 管理者ロールがない場合、管理者ロールを追加または削除することはできません。
+Not allowed to Delete this user: このユーザーを削除することはできません
+Not Allowed.: 禁じられた。
+Not connected: 接続されていません
+Not Modal Dialogs: モーダルではないダイアログ
+Note - Media options can't changed after a screen is selected: 注 - 画面を選択した後は、メディアオプションを変更できません
+NoteLabels: 注:ラベル
+NotFoundMessage: 探していたページが存在しません。
+Notice: 告知
+Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: このメソッドを使用する場合は、メソッドが配置されているコールバック参照を指定できますが、これを行わない場合、参照はダイアログ自体であり、この場合はDialogClassにメソッドが必要です
+Notifications: 通知
+Nov: 11 月
+NovaBase16: ノバベース16
+NoWrap: ラップなし
+npm-example-0.0.20.tgz: npm-example-0.0.20.tgz
+nqo-GN: ンコ(ギニア)
+nr-ZA: 南ンデベレ(南アフリカ)
+nso-ZA: セソト・サ・レボア(南アフリカ)
+Nuget Package source: Nuget パッケージ ソース
+Nullable enum: Null 許容列挙型
+Nullable Flags Enum: Null 許容フラグ列挙型
+Number: 数
+numeric: 数値
+nus-SS: ヌエル(南スーダン)
+nyn-UG: ニャンコレ(ウガンダ)
+Object Edit in Dialog: ダイアログでのオブジェクト編集
+ObjectEdit: オブジェクト編集
+ObjectEditCG: オブジェクト編集CG
+ObjectEditCondition: オブジェクト編集条件
+ObjectEditConfigured: オブジェクト編集構成
+ObjectEditFile: オブジェクト編集ファイル
+ObjectEditInDialog: オブジェクト編集ダイアログ
+ObjectEditList: オブジェクト編集リスト
+ObjectEditPicker: オブジェクト編集ピッカー
+ObjectEditTabs: オブジェクト編集タブ
+ObjectEditVirtualized: オブジェクト編集仮想化
+OBS Virtual Camera: OBSバーチャルカメラ
+Obsidian: 黒曜石
+oc-FR: オック語(フランス)
+OceanBase16: オーシャンベース16
+OceanicnextBase16: オセアニックネクストベース16
+OCR A Extended: OCR A 拡張
+Oct: 10月
+Official MudBlazor website: MudBlazor公式サイト
+Offline: オフライン
+OffsetX: オフセットX
+OffsetY: オフセット
+Ok: わかりました
+Old English Text MT: 古英語テキスト MT
+Old Paint: 古いペイント
+Old paint found on a stone house door.: 石造りの家のドアで発見された古いペンキ。
+Old Values: 古い価値観
+OldLace: オールドレース
+Olive: オリーブ
+OliveDrab: オリーブドラブ
+om-ET: オロモ(エチオピア)
+om-KE: オロモ(ケニア)
+OnClickStopPropagation: オンクリックストップ伝播
+OnContextMenuPreventDefault: OnContextMenuPreventDefault
+OnContextMenuStopPropagation: OnContextMenuStopPropagation (オンコンテキストメニュー停止伝播)
+OnCustomSelect: オンカスタムセレクト
+OnDefinedSelect: オン定義選択
+One Drive: ワンドライブ
+OnedarkBase16: OnedarkBase16
+OneDrive file picker component: OneDrive ファイル ピッカー コンポーネント
+OneDriveClientId: OneDriveClientId です。
+OneEighthOctaveBands: 18thオクターブバンド
+OneFourthOctaveBands: 14thオクターブバンド
+OneLightBase16: OneLightBase16
+OneSixthOctaveBands: 16thオクターブバンド
+OneThirdOctaveBands: OneThirdオクターブバンド
+OneTwelfthOctaveBands: 12番目のオクターブバンド
+OneTwentyFourthOctaveBands: 124オクターブバンド
+Online: オンライン
+Only Selected Group (Export): 選択したグループのみ (エクスポート)
+OnlyValidateIfDirty: OnlyValidateIfダーティ
+OnPlay: オンプレイ
+Onyx: オニックス
+Opacity: 不透明
+OpacityNotFocused: 不透明度フォーカスなし
+Open: 開ける
+Open in new browser tab: 新しいブラウザータブで開く
+Open now: 開ける
+Open Url {0}: URLを開く{0}
+Open Url {0} in a new browser tab: 新しいブラウザタブで URL {0}を開く
+OpenIcon: アイコンを開く
+Optima: オプティマ
+Options: オプション
+or-IN: オディア(インド)
+Orange: オレンジ
+OrangeRed: オレンジレッド
+Orchid: 蘭
+Orientation: オリエンテーション
+Original Code Gator DynamicForm: オリジナルコード Gator DynamicForm
+os-GE: オセティック(ジョージア州)
+os-RU: オセティック(ロシア)
+Osaka: 大阪
+Osaka - 530-0001: 大阪府 - 530-0001
+Osaka - 530-0001ender: 大阪 - 530-0001ender
+Oscar Wilde: オスカー・ワイルド
+Other: 他
+Other Components: その他のコンポーネント
+OtherAddresses: その他アドレス
+Otherwise the full image will be downloaded: それ以外の場合は、フルイメージがダウンロードされます
+Ottawa: オタワ
+Ottawa - K1A 0A1: オタワ - K1A 0A1
+Ottawa - K1A 0A1ender: オタワ - K1A 0A1ender
+Out: アウト
+OuterClass: アウタークラス
+OutlineBars: アウトラインバー
+Outlined: 概説
+OutrunDarkBase16: OutrunDarkBase16
+Outset: 最初
+OverflowBehavior: オーバーフロー動作
+Overlay: オーバーレイ
+OverlayChildContent: OverlayChildContent (オーバーレイ子コンテンツ)
+OverlayDark: オーバーレイダーク
+OverlayLight: オーバーレイライト
+overline: オーバーライン
+Overline: オーバーライン
+OverscanCount: オーバースキャンカウント
+Overview: 概要
+Owner: 所有者
+pa-Arab-PK: パンジャブ語(アラビア語、パキスタン)
+pa-IN: パンジャブ語(インド)
+Palatino: 口蓋
+Palatino Linotype: パラティーノリノタイプ
+PaleGreen: ペールグリーン
+Palette: パレット
+PaletteDark: パレットダーク
+PaletteIcon: パレットアイコン
+PaletteLight: パレットライト
+PaleTurquoise: ペールターコイズ
+PaleVioletRed: ペールバイオレットレッド
+Pan: 紳士
+pap-029: パピアメント(カリブ海)
+PapayaWhip: パパイヤホイップ
+Paper: 紙
+PapercolorDarkBase16: ペーパーカラーダークベース16
+PapercolorLightBase16: ペーパーカラーライトベース16
+Papyrus: パピルス
+ParaisoBase16: ParaisoBase16
+ParaisoDark: パライソダーク
+ParaisoLight: パライソライト
+ParametersForSubControls: サブコントロールのパラメータ
+Parchment: 羊皮紙
+Paris: パリ
+Paris - 75001: パリ - 75001
+Paris - 75001ender: パリ - 75001ender
+PasqueBase16: パスクベース16
+Password: パスワード
+Password Changed!: パスワードが変更されました!
+Password Confirmation: パスワードの確認
+Password Confirmation is required!: パスワードの確認が必要です!
+Password is required!: パスワードは必須です!
+Password must be at least of length 8: パスワードは少なくとも長さ 8 である必要があります
+Password must contain at least one capital letter: パスワードには少なくとも 1 つの大文字を含める必要があります
+Password must contain at least one digit: パスワードには少なくとも 1 桁の数字が含まれている必要があります
+Password must contain at least one lowercase letter: パスワードには少なくとも 1 つの小文字が含まれている必要があります
+Password Reset Mail has been sent to your authorized Email.: パスワードリセットメールが認証されたメールアドレスに送信されました。
+Password Reset Successful!: パスワードのリセットに成功しました!
+Passwords don't match: パスワードが一致しない
+PathSeparator: パスセパレータ
+Pattern: パターン
+pcm-Latn-NG: ナイジェリア・ピジン語(ラテン語、ナイジェリア)
+PeachPuff: ピーチパフ
+PeakLine: ピークライン
+Penelope Cruz: ペネロペ・クルス
+Percentage: 百分率
+Permission Name: 権限名
+Perpetua: 永
+Persistent: 粘り強い
+Personal: 個人的
+Perspective3d: パースペクティブ3D
+Peru: ペルー
+Peter Griffin: ピーター・グリフィン
+PhdBase16: 博士ベース16
+Philadelphia: フィラデルフィア
+Philadelphia - 19019: フィラデルフィア - 19019
+Philadelphia - 19019ender: フィラデルフィア - 19019ender
+Philadelphiaender: フィラデルフィアエンダー
+Phoenix: フェニックス
+Phoenix - 85001: フェニックス - 85001
+Phoenix - 85001ender: フェニックス - 85001ender
+Phone Number: 電話番号
+Phone number {0} is already registered.: 電話番号{0}はすでに登録されています。
+PhoneNumber: 電話番号
+Picas: スペード
+Pick Item: 品目を選択
+Pick Items: 品目のピッキング
+Pick one user: 1 人のユーザーを選択
+Pick some users: ユーザーをいくつか選択する
+Picker: ピッカー
+Picker appearance: ピッカーの外観
+PickerHeight: ピッカー高さ
+PickerStyle: ピッカースタイル
+PickerVariant: ピッカーバリアント
+PickerWidth: ピッカー幅
+PickFromDropBox: ドロップボックスからピック
+PickFromGoogleDrive: PickFromGoogleドライブ
+PickFromOneDrive: OneDrive から選択
+PicoBase16: ピコベース16
+Pie: 足
+Pink: ピンク
+Pixels: ピクセル
+pl-PL: ポーランド語(ポーランド)
+Placeholder: プレースホルダ
+Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: オンラインコードエディターでMudBlazorとMudBlazor.Extensionsをいじる
+Playbill: プレイビル
+Player: プレーヤー
+Please confirm your account by <a href='{0}'>clicking here</a>.: <a href='{0}'>クリックしてアカウントを確認してください</a>。
+Please enter your name: お名前を入力してください
+Please reset your password by <a href='{0}'>clicking here</a>.: <a href='{0}'>クリックしてパスワードを再設定してください</a>。
+Please type {0} to confirm edit: 編集を確認するには{0}を入力してください
+Please upload your personal qualifications and references that confirm your person and qualification: あなたの個人的な資格とあなたの人格と資格を確認する推薦状をアップロードしてください
+Please Wait: お待ちください
+PleaseSelect: お選びください
+Plum: 李
+Points: ポイント
+PointsOfInterest: 興味のあるポイント
+Pojoaque: ポホアック
+Poor Richard: かわいそうなリチャード
+PopBase16: ポップベース16
+Popover: ポップオーバー
+PopoverAnimation: ポップオーバーアニメーション
+PopoverAnimationPosition: ポップオーバーアニメーション位置
+PopoverAnimationTimingFunction: PopoverAnimationTiming関数
+PopoverClass: ポップオーバークラス
+PopupEveryTime: ポップアップエブリタイム
+PopupOnlyOnce: ポップアップのみOnce
+PopverAnimation: ポップバーアニメーション
+PorpleBase16: PorpleBase16
+Portrait: 肖像
+Position: 立場
+Position/Size Sample: 位置/サイズサンプル
+PostalCode: 郵便番号
+PowderBlue: パウダーブルー
+Powerful component to edit a set of items and their properties.: 一連のアイテムとそのプロパティを編集するための強力なコンポーネント。
+Powerful component to edit an object and its properties.: オブジェクトとそのプロパティを編集するための強力なコンポーネント。
+Powerful UI Editor for json, xml or yaml content now also as viewer for MudExFileDisplay: json、xml、またはyamlコンテンツ用の強力なUIエディタが、MudExFileDisplayのビューアとしても使用できるようになりました
+Preferred way on MudExTextField: MudExTextField の推奨方法
+Preferred way on MudExTextField with For and ChildContent: MudExTextField で For と ChildContent を使用する推奨方法
+PresetListBehaviour: プリセットリスト動作
+PresetListClass: PresetListクラス
+PresetListMode: プリセットリストモード
+PresetListPosition: プリセットリストポジション
+PresetListToggleButtonPosition: プリセットリストトグルボタンポジション
+Presets: プリセット
+Preview: プレビュー
+PreviewButtonSize: プレビューボタンサイズ
+PreviewFont: プレビューフォント
+PreviewIcon: プレビューアイコン
+PreviewIconColor: プレビューアイコンカラー
+PreviewImageInPresetList: プレビューイメージインプリセットリスト
+PreviewImageSize: プレビュー画像サイズ
+PreviewInIframe: Iframe でプレビュー
+PreviewMode: プレビューモード
+PreviousPreset: 前へプリセット
+PreviousTrack: 前へトラック
+prg-001: プロイセン語(世界)
+Primary: 原発
+Primary Key: 主キー
+PrimaryContrastText: プライマリコントラストテキスト
+PrimaryDarken: プライマリ暗くする
+PrimaryLighten: プライマリーライト
+Print: プリント
+PrintButtonIcon: PrintButtonアイコン
+Pristina: プリシュティナ
+Product Deleted: 商品削除!
+Product Not Found!: 商品が見つかりません!
+Product Saved: 製品が保存されました!
+Product Updated: 製品更新!
+Products: プロダクツ
+Products exported: 輸出製品
+Profile: プロフィール
+Profile Details: プロファイルの詳細
+Profile picture added.: プロフィール写真が追加されました。
+Profile picture deleted.: プロフィール写真が削除されました。
+Profile updated: プロファイルの更新
+ProgramingSkills: プログラミングスキル
+Property1: プロパティ1
+Property10: プロパティ10
+Property11: プロパティ11
+Property12: プロパティ12
+Property13: プロパティ13
+Property14: プロパティ14
+Property15: プロパティ15
+Property16: プロパティ16
+Property17: プロパティ17
+Property18: プロパティ18
+Property19: プロパティ19
+Property2: プロパティ2
+Property20: プロパティ20
+Property21: プロパティ21
+Property22: プロパティ22
+Property23: プロパティ23
+Property24: プロパティ24
+Property25: プロパティ25
+Property26: プロパティ26
+Property27: プロパティ27
+Property28: プロパティ28
+Property29: プロパティ29
+Property3: プロパティ3
+Property30: プロパティ30
+Property31: プロパティ31
+Property32: プロパティ32
+Property33: プロパティ33
+Property34: プロパティ34
+Property35: プロパティ35
+Property36: プロパティ36
+Property37: プロパティ37
+Property38: プロパティ38
+Property39: プロパティ39
+Property4: プロパティ4
+Property40: プロパティ40
+Property41: プロパティ41
+Property42: プロパティ42
+Property43: 物件43
+Property44: プロパティ44
+Property45: プロパティ45
+Property5: プロパティ5
+Property6: プロパティ6
+Property7: プロパティ7
+Property8: プロパティ8
+Property9: プロパティ9
+prs-AF: prs (アフガニスタン)
+ps-AF: パシュトゥー語(アフガニスタン)
+ps-PK: パシュトゥー語(パキスタン)
+PseudoCss: 擬似Css
+pt-AO: ポルトガル語(アンゴラ)
+pt-BR: ポルトガル語(ブラジル)
+pt-CH: ポルトガル語(スイス)
+pt-CV: ポルトガル語(カーボベルデ)
+pt-GQ: ポルトガル語(赤道ギニア)
+pt-GW: ポルトガル語(ギニアビサウ)
+pt-LU: ポルトガル語(ルクセンブルク)
+pt-MO: ポルトガル語(マカオ特別行政区)
+pt-MZ: ポルトガル語(モザンビーク)
+pt-PT: ポルトガル語(ポルトガル)
+pt-ST: ポルトガル語(サントメ・プリンシペ)
+pt-TL: ポルトガル語(東ティモール)
+Public Profile: 公開プロフィール
+Pulse: 脈拍
+Purebasic: 純粋基本
+Purple: 紫
+QtcreatorDark: Qtクリエイターダーク
+QtcreatorLight: Qtcreatorライト
+QualiaBase16: クォリアベース16
+Qualifications and References: 資格と参考文献
+quc-GT: キチェ(グアテマラ)
+Quentin Tarantino: クエンティン・タランティーノ
+Quick Insights.: クイックインサイト。
+Quick Start Guide: クイックスタートガイド
+quz-BO: quz (ボリビア)
+quz-EC: quz (エクアドル)
+quz-PE: quz (ペルー)
+Rachel Green: レイチェル・グリーン
+Radial: ラジアル
+RadialInvert: ラジアル反転
+Radius: 半径
+Rage Italic: レイジ・イタリック体
+RailscastsBase16: RailsキャストBase16
+Rainbow: 虹
+Random: ランダム
+RandomColorUpdateDelay: ランダムカラー更新遅延
+RarArchive.rar: RarArchive.rar
+Rate: 率
+Rate must be greater than 0: レートは 0 より大きくなければなりません
+Ravie: 喜ぶ
+Read More: 続きを読む
+Readme: Readme (Readme)
+readme.md: readme.md
+ReadOnly: 読み取り専用
+Realtime Updates & Insights with SignalR.: SignalR によるリアルタイムの更新と分析情報。
+RebeccaBase16: レベッカベース16
+RebeccaPurple: レベッカパープル
+Record audio: オーディオを録音する
+Record Audio: オーディオを録音する
+Record Camera: カメラ録画
+Record Main Camera: メインカメラの録画
+Record Main Camera Lower Quality: メインカメラの低品質の記録
+Record Screen: 録画画面
+Recording: 録音
+RecordingAnimation: 録画アニメーション
+RecordingBorderAnimation: RecordingBorderAnimation (ボーダーアニメーションの記録)
+RecordingColor: 録音カラー
+RecordingIcon: 録画アイコン
+Red: 赤い
+Redirect: リダイレクト
+Redirecting to {0}: '{0}にリダイレクトする'
+Redirecting...: リダイレクト。。。
+ReflexAlpha: リフレックスアルファ
+ReflexBright: リフレックスブライト
+ReflexFit: リフレックスフィット
+ReflexRatio: 反射比率
+Refresh: リフレッシュ
+Refreshed Token.: リフレッシュされたトークン。
+Register: 登録する
+Register as: 登録登録
+Register as {0}: '{0}として登録する'
+Register here: 登録はこちらから
+Register New User: 新規ユーザーの登録
+Register User: ユーザー登録
+Registered Roles: 登録済みロール
+Registered Users: 登録ユーザー
+Rel: 関係
+Relative: 親戚
+RelativeToParent: 親から相対
+RelativeWidth: 相対幅
+Reload: 積み直す
+Reload Data: データの再読み込み
+Rem: レム
+Remember me?: 私のことを覚えていますか?
+RememberEditedOptions: RememberEditedOptions (編集済みオプションの記憶)
+Remove: 取り去る
+Remove All: すべて削除
+RemoveErrorAfter: RemoveErrorAfter エラー
+RemoveErrorOnChange: RemoveErrorOnChange (エラー時変更の削除)
+RemoveItemButtonAlwaysRight: RemoveItemButtonAlwaysRight
+Rename: 改名する
+Rename backup: バックアップの名前を変更する
+Render with {0}: '{0}でレンダリング'
+Render with MudExFileDisplayTiff: Tiff ビューアでレンダリング
+Render with MudExFileDisplayZip: Zip ビューアでレンダリング
+Render with MudExImageViewer: MudExImageViewer を使用したレンダリング
+Render with native control: ネイティブコントロールを使用したレンダリング
+RenderBackLink: レンダーバックリンク
+RenderChipsAdditional: RenderChips追加
+Rendered Virtualized: レンダリング仮想化
+rendered when the item is outside the viewport.: アイテムがビューポートの外側にあるときにレンダリングされます。
+rendered when the item is visible in the viewport.: アイテムがビューポートに表示されているときにレンダリングされます。
+RenderHomeLink: レンダーホームリンク
+RenderOnlyOnce: レンダリングのみ
+Required: 必須
+RequiredError: 必須エラー
+Reset: リセット
+Reset {0}: リセット{0}
+Reset all: すべてリセット
+Reset all properties?: すべてのプロパティをリセットしますか?
+Reset password: パスワードのリセット
+Reset Password: パスワードのリセット
+Reset to initial data: 初期データにリセット
+Reset view: ビューをリセット
+ResetButtonIcon: リセットボタンアイコン
+ResetToDefaultFirst: ResetToDefaultFirst (リセット・トゥ・デフォルト・ファースト)
+Resizeable: サイズ変更可能
+ResizeMode: サイズ変更モード
+Resources: リソース
+Responsive: 応答
+Restart server: サーバーを再起動する
+Restore: 戻す
+Restore database: データベースを復元する
+Restore default: デフォルトに戻す
+Restore finished: 復元が完了しました
+Restore in progress. Please wait until the restore is finished. This can take a while.: 復元が進行中です。復元が完了するまでお待ちください。これには時間がかかる場合があります。
+Revert: 戻す
+RGB: RGBの
+RGBA: RGBAの
+rgba(0,200,83,1): RGBA(0,200,83,1)
+rgba(126,247,160,1): RGBA(126,247,160,1)
+rgba(133,135,145,1): RGBA(133,135,145,1)
+rgba(157,241,250,1): RGBA(157,241,250,1)
+rgba(17,59,83,1): RGBA(17,59,83,1)
+rgba(170,0,0,1): rgba(170,0,0,1)
+rgba(18,121,66,1): RGBA(18,121,66,1)
+rgba(189,255,207,1): RGBA(189,255,207,1)
+rgba(19,184,232,1): RGBA(19,184,232,1)
+rgba(191,125,17,1): RGBA(191,125,17,1)
+rgba(20,220,113,1): RGBA(20,220,113,1)
+rgba(201,204,207,1): RGBA(201,204,207,1)
+rgba(217,152,13,1): RGBA(217,152,13,1)
+rgba(220,63,17,1): RGBA(220,63,17,1)
+rgba(23,105,142,1): RGBA(23,105,142,1)
+rgba(23,162,88,1): RGBA(23,162,88,1)
+rgba(230,233,235,1): RGBA(230,233,235,1)
+rgba(235,179,35,1): RGBA(235,179,35,1)
+rgba(244,67,54,1): RGBA(244,67,54,1)
+rgba(246,249,251,1): RGBA(246,249,251,1)
+rgba(253,210,47,1): RGBA(253,210,47,1)
+rgba(254,104,0,1): RGBA(254,104,0,1)
+rgba(255,145,2,1): RGBA(255,145,2,1)
+rgba(255,152,0,1): RGBA(255,152,0,1)
+rgba(255,179,31,1): RGBA(255,179,31,1)
+rgba(255,210,84,1): RGBA(255,210,84,1)
+rgba(255,226,115,1): RGBA(255,226,115,1)
+rgba(255,240,163,1): RGBA(255,240,163,1)
+rgba(27,189,102,1): RGBA(27,189,102,1)
+rgba(33,150,243,1): RGBA(33,150,243,1)
+rgba(39,219,245,1): RGBA(39,219,245,1)
+rgba(53,57,64,1): RGBA(53,57,64,1)
+rgba(66,66,66,1): RGBA(66,66,66,1)
+rgba(88,91,98,1): RGBA(88,91,98,1)
+rgba(9,137,194,1): RGBA(9,137,194,1)
+Ridge: リッジ
+Right: 右
+Right part in MudExSplitPanel.: MudExSplitPanel の右側の部分。
+RightToLeft: 右から左へ
+Ripple: 波紋
+RippleOpacity: リップル不透明度
+RippleOpacitySecondary: リップル不透明度セカンダリ
+rm-CH: ロマンシュ語(スイス)
+rn-BI: ルンディ(ブルンジ)
+ro-MD: ルーマニア語(モルドバ)
+ro-RO: ルーマニア語(ルーマニア)
+Roboto: ロボット
+Rockwell: ロックウェル
+Rockwell Condensed: ロックウェル凝縮
+Rockwell Extra Bold: ロックウェルエクストラボールド
+rof-TZ: ロンボ(タンザニア)
+Role: 役割
+Role ID: ロール ID
+Role Name: ロール名
+Roles: 役割
+Roles Updated: ロールが更新されました!
+RootName: ルート名
+RosPineBase16: ロスパインベース16
+RosPineDawnBase16: RosPineDawnベース16
+RosPineMoonBase16: ロスパインムーンベース16
+RosyBrown: ロージーブラウン
+Rotate: 回転
+RoundBars: 丸棒
+Rounded: 丸い
+Routeros: ルーターOS
+Row: 漕ぐ
+RowSpan: 行スパン
+RowsPerPageString: ページあたりの行数
+RoyalBlue: ロイヤルブルー
+ru-BY: ロシア語(ベラルーシ)
+ru-KG: ロシア語(キルギスタン)
+ru-KZ: ロシア語(カザフスタン)
+ru-MD: ロシア語(モルドバ)
+ru-RU: ロシア語(ロシア)
+ru-UA: ロシア語(ウクライナ)
+RubberBand: ラバーバンド
+RubberBandColor: ラバーバンドカラー
+RubberBandStyle: ラバーバンドスタイル
+Runic MT Condensed: ルーン文字 MT 凝縮
+Runtime: 実行中
+Russian: ロシア語
+rw-RW: キニャルワンダ語(ルワンダ)
+rwk-TZ: ルワ(タンザニア)
+sa-IN: サンスクリット語(インド)
+SaddleBrown: サドルブラウン
+SagelightBase16: セージライトベース16
+sah-RU: サハ(ロシア)
+Salmon: 鮭
+Sample Card: サンプルカード
+Sample Dialog: サンプルダイアログ
+Sample Headline: サンプル ヘッドライン
+Sample how to use Theme Select: テーマ選択の使用方法のサンプル
+Sample mega: サンプルメガ
+Sample to see how you can render and use any component in a dialog as easy as possible: ダイアログ内のコンポーネントをできるだけ簡単にレンダリングして使用する方法を確認するためのサンプル
+sample.pdf: sample.pdf
+San Antonio: サンアントニオ
+San Antonio - 78201: サンアントニオ - 78201
+San Antonio - 78201ender: サンアントニオ - 78201ender
+San Diego: サンディエゴ
+San Diego - 92101: サンディエゴ - 92101
+San Diego - 92101ender: サンディエゴ - 92101ender
+San Jose: サンノゼ
+San Jose - 95101: サンノゼ - 95101
+San Jose - 95101ender: サンノゼ - 95101ender
+SandBoxIframes: サンドボックスIframes
+SandcastleBase16: 砂の城ベース16
+SandyBrown: サンディブラウン
+sans-serif: サンセリフ
+Sans-serif: サンセリフ
+saq-KE: サンブル(ケニア)
+sat-Olck-IN: サンタリ(インド、オルチキ)
+Saturation: 飽和
+Save: セーブ
+Save {0} Changes: '{0} 変更を保存'
+Save as: 名前を付けて保存
+Save Changes: 変更を保存
+Save image: 画像を保存
+Save Role: ロールの保存
+Save visible area only: 表示領域のみを保存
+SaveButtonIcon: SaveButtonアイコン
+saved: 保存！
+sbp-TZ: サング(タンザニア)
+Scale: 規模
+SchoolBook: スクールブック
+Scope: スコープ
+Screen: スクリーン
+Script MT Bold: スクリプト MT 太字
+Scroll down to discover the content: 下にスクロールしてコンテンツを見つけてください
+Scroll down to see the behavior: 下にスクロールして動作を確認します
+Scroll to top: 一番上へスクロール
+sd-Arab-PK: シンド語(アラビア語、パキスタン)
+sd-Deva-IN: シンド語(デーヴァナーガリー語、インド)
+se-FI: 北サーミ語(フィンランド)
+se-NO: 北サーミ語(ノルウェー)
+se-SE: 北サーミ語(スウェーデン)
+SeaGreen: シーグリーン
+search: 捜索
+Search: 捜索
+Search by users: ユーザーによる検索
+Search For {0} Extended Attributes: '{0}拡張属性の検索'
+Search for Brands: ブランドの検索
+Search for Document Types: 伝票タイプの検索
+Search For Permissions: 権限の検索
+Search for Roles...: ロールの検索...
+Search for Trails: トレイルの検索
+Search For User Roles: ユーザーロールの検索
+Search For Users: ユーザーの検索
+Search in New Values: 新しい値で検索
+Search in Old Values: 古い値で検索
+SearchBox: 検索ボックス
+SearchBoxAdornment: 検索ボックス装飾
+SearchBoxAutoFocus: 検索ボックスオートフォーカス
+SearchBoxBackgroundColor: 検索ボックス背景色
+SearchBoxClearable: 検索ボックスクリア可能
+SearchBoxPlaceholder: SearchBoxプレースホルダー
+SearchBoxVariant: 検索ボックスバリアント
+SearchString: 検索文字列
+SeaShell: 貝
+Secondary: 付帯
+SecondaryBackgroundForNestedItemHeader: SecondaryBackgroundForNestedItemHeader (SecondaryBackgroundForNestedItemHeader)
+SecondaryContrastText: セカンダリコントラストテキスト
+SecondaryDarken: セカンダリ暗くする
+SecondaryLighten: セカンダリライト
+Section 0: セクション0
+Section 1: セクション1
+Section 10: セクション10
+Section 11: セクション11
+Section 12: セクション12
+Section 13: セクション13
+Section 14: セクション14
+Section 15: セクション15
+Section 2: セクション2
+Section 3: セクション3
+Section 4: セクション4
+Section 5: セクション5
+Section 6: セクション6
+Section 7: セクション7
+Section 8: セクション8
+Section 9: セクション9
+Security: 安全
+See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.: MudExFileDisplay を使用してファイルの内容を表示する方法を参照してください。また、インターフェイス IMudExFileDisplay を実装して、特定のファイルの種類に独自のコンポーネントを提供する方法のデモも示します。
+See how to use MudExObjectEdit in a dialog: ダイアログ ボックスで MudExObjectEdit を使用する方法を参照してください
+See how you can use different pickers or delay change event with the MudExColorPicker: MudExColorPicker でさまざまなピッカーを使用したり、変更イベントを遅らせたりする方法をご覧ください。
+seh-MZ: セーヌ川(モザンビーク)
+Select: 選ぶ
+Select a brand: ブランドを選択
+Select All: すべて選択
+Select Item: 項目を選択
+Select Items: 項目の選択
+Select Language: 言語の選択
+Select sample file (See weather.json to check how own components for files can be created): サンプルファイルを選択します(ファイル用の独自のコンポーネントを作成する方法を確認するには、weather.jsonを参照してください)
+Select screen: 画面を選択
+SelectAll: すべて選択
+SelectAllPosition: すべて位置の選択
+SelectAllText: すべてテキストを選択
+SelectColorText: SelectColorText (カラーテキストの選択)
+Selected: 入選
+Selected Node: 選択したノード
+SelectedBrand: 選択されたブランド
+SelectedIndex: 選択されたインデックス
+SelectedItemBackgroundColor: 選択したアイテム背景色
+SelectedItemBorderColor: 選択したアイテムボーダーカラー
+SelectedItemColor: 選択したアイテムカラー
+SelectedRequests: 選択された要求
+SelectedValues: 選択値
+Selecting: 選択
+SelectionList: 選択リスト
+SelectionMode: 選択モード
+SelectionModeIcon: 選択モードアイコン
+SelectItemsMode: SelectItemsMode を選択します
+SelectorsForIgnoreBlur: SelectorsForIgnoreBlur (SelectorsForIgnoreBlur)
+SelectorSize: セレクターサイズ
+SelectorsToKeepOpenOnMouseLeave: SelectorsToKeepOpenOnMouseLeave
+SelectValueOnTab: SelectValueOnTab (値オンタブ)
+SelectVariant: バリアントの選択
+Send: 送信
+Send confirmation email: 確認メールを送信する
+Sensitivity: 感度
+Sep: 9 月
+Server restarted successfully: サーバーが正常に再起動されました
+ses-ML: コイラボロ・センニ(マリ)
+Set as Default options for all Dialogs: すべてのダイアログのデフォルトオプションとして設定
+Set empty/null for auto detection: 自動検出の空/null を設定する
+Set new password: 新しいパスワードを設定する
+Set this to automatically stop recording after the desired time.: 希望の時間が経過すると自動的に録画を停止するように設定します。
+Set this to wait before a photo is taken: 写真が撮影されるまで待機するように設定します
+Set this to wait before recording starts: 録画開始前に待機するように設定します
+SetChipsOnEnter: SetChipsOnEnter (チップオンエンターの設定)
+SetiUiBase16: SetiUiBase16
+SevenZipArchive.7z: SevenZipArchive.7z
+Severity: 過酷
+sg-CF: サンゴ(中央アフリカ共和国)
+ShadesOfPurple: 紫の色合い
+Shadows: 影
+Shake: 振る
+ShapeshifterBase16: シェイプシフターベース16
+SharedConfig: 共有構成
+Sharpness: 切れ味
+shi-Latn-MA: タチェルヒト(ラテン語、モロッコ)
+shi-Tfng-MA: タチェルヒット(モロッコ、ティフィナ)
+Show: 見せる
+Show As Dialog: '[表示形式]ダイアログ'
+Show as Tree: ツリーとして表示
+Show Demo: デモを表示
+Show flat: フラットを表示
+Show info: 情報を表示
+Show info for: の情報を表示
+Show Markup: マークアップを表示
+Show notification: 通知を表示
+Show notification while recording: 録画中に通知を表示する
+Show on github: githubで表示
+Show or hide inherited fields from base class: 基本クラスから継承されたフィールドを表示または非表示にする
+Show Sample 1: サンプル1を表示
+Show Sample 2: サンプル2を表示
+Show Sample 3: サンプル3を表示
+Show Sample Dialog: サンプルダイアログを表示
+Show Sample Dialog METHOD 1: サンプルダイアログを表示方法 1
+Show Sample Dialog METHOD 2: サンプルダイアログを表示方法2
+Show Sample Dialogs: サンプルダイアログの表示
+Show selected: 選択項目を表示
+Show With this Options: このオプションで表示
+ShowAlpha: アルファ表示
+ShowAtCursor: カーソルの表示
+ShowBgColor: ShowBgColor (カラーの表示)
+Showcard Gothic: ショーカードゴシック
+ShowClearButton: クリアボタンの表示
+ShowCloseIcon: ShowCloseアイコン
+ShowColorField: ShowColorField (カラーフィールドの表示)
+ShowColorPreview: ShowColorプレビュー
+ShowContentError: ShowContentエラー
+ShowCssColorVariables: ShowCssColor変数
+ShowFileUploadButton: ファイルアップロードボタンの表示
+ShowFilterInDrawer: ShowFilterInDrawer (ドロワー内フィルターの表示)
+ShowFolderUploadButton: フォルダーアップロードボタンの表示
+ShowFPS: FPSを表示
+ShowFullScreenButton: ShowFullScreenButton (全画面ボタンを表示)
+ShowHtmlColors: ShowHtmlColors の表示
+ShowInputs: 入力の表示
+ShowLogoInDrawer: ShowLogoInDrawer (ドロワー内ロゴの表示)
+ShowModeSwitch: ShowModeスイッチ
+ShowNavigator: ナビゲーターの表示
+ShowNotificationWhileRecording: ShowNotificationWhileRecording (録画中表示)
+ShowPath: ショーパス
+ShowPeaks: ピークを表示
+ShowPresetNameOnChange: ShowPresetNameOnChange (事前設定名オン変更時の表示)
+ShowPreview: プレビューを表示
+ShowPreviewOnClick: ShowPreviewOnClick (クリック時のプレビュー)
+ShowPrintButton: ShowPrintButton を表示
+ShowProgressForLoadingData: ShowProgressForLoadingData (データの進行状況の表示)
+ShowRemainingTimeOnly: ShowRemainingTimeOnly (残り時間のみ表示)
+ShowRenameButton: 名前変更ボタンの表示
+ShowResetButton: リセットボタンの表示
+Shows how you can use MudExAdditionalAdornment to ad as many adornments to any MudInput: MudExAdditionalAdornment を使用して、任意の MudInput にできるだけ多くの装飾をアドする方法を示します
+ShowSaveButton: 保存ボタンの表示
+ShowScaleX: ショースケールX
+ShowScaleY: スケール Y を表示
+ShowSliders: ショースライダー
+ShowSpectrumOnRecording: ShowSpectrumOnRecording (録画時表示)
+ShowThemeColors: ShowThemeColors の
+ShowToolbar: ツールバーの表示
+ShowTrackInfosOnPlay: ShowTrackInfosOnPlay を表示
+ShowVisualiser: ShowVisualiser (ビジュアルライザーの表示)
+ShowZoomInButton: ZoomInButton の表示
+ShowZoomOutButton: ズームアウトボタンの表示
+ShrinkLabel: シュリンクラベル
+si-LK: シンハラ語(スリランカ)
+Side: 横
+Sienna: シエーナ
+Sign In: サインイン
+Sign Up: サインアップ
+SilkDarkBase16: シルクダークベース16
+SilkLightBase16: シルクライトベース16
+Silver: 銀
+Simon Pack: サイモンパック
+Simple: 簡単
+Simple Card List with a hover effect.: ホバー効果のあるシンプルなカードリスト。
+Simple CodeViewer Component: 単純な CodeViewer コンポーネント
+Simple component to display Html files with MudExFileDisplay: MudExFileDisplay を使用して HTML ファイルを表示するためのシンプルなコンポーネント
+Simple component to display markdown files with MudExFileDisplay: MudExFileDisplay を使用してマークダウン ファイルを表示するシンプルなコンポーネント
+Simple component to expand a Search field: 検索フィールドを展開するための単純なコンポーネント
+Simple Confirmation: 簡単な確認
+Simple Dialog: シンプルダイアログ
+Simple Dialogs: シンプルなダイアログ
+Simple Enum: 単純な列挙型
+Simple Excel file viewer: シンプルなExcelファイルビューア
+Simple extended popover that adds Animations and an onblur event to close if a click outside happens.: アニメーションと onblur イベントを追加して、外側のクリックが発生した場合に閉じるシンプルな拡張ポップオーバー。
+Simple extension for MudAvatar to load automatically a profile image for an email address using Gravatar: Gravatarを使用してメールアドレスのプロフィール画像を自動的に読み込むためのMudAvatarのシンプルな拡張機能
+Simple MessageDialog: 単純なメッセージダイアログ
+Simple Prompt: シンプルなプロンプト
+Simple virtualize component that can be disabled with support for fixed items and ItemsProvider.: 固定項目と ItemsProvider のサポートで無効にできる単純な仮想化コンポーネント。
+SimpleDialog: シンプルダイアログ
+SimulateOnHover: ホバー時のシミュレーション
+SimulateWithFullSpectrumAudioData: SimulateWithFullSpectrumAudioData (SimulateWithFullSpectrumAudioData)
+SimulateWithRandomData: SimulateWithRandomData (ランダムデータでシミュレート)
+Single: 単
+SingleExpand: シングル展開
+Size: 大きさ
+sk-SK: スロバキア語(スロバキア)
+Skeleton: 骸骨
+SkipSeparator: スキップセパレータ
+SkyBlue: スカイブルー
+sl-SI: スロベニア語(スロベニア)
+SlateBlue: スレートブルー
+SlateGray: スレートグレー
+Slide: 滑る
+SlideBar: スライドバー
+SlideIn: スライドイン
+sma-NO: 南サーミ語(ノルウェー)
+sma-SE: 南サーミ語(スウェーデン)
+Small: 小さい
+smj-NO: ルーレ・サミ(ノルウェー)
+smj-SE: ルーレ・サミ(スウェーデン)
+smn-FI: 稲荷サミ(フィンランド)
+Smoothing: スムージング
+sms-FI: スコルト・サーミ語(フィンランド)
+sn-Latn-ZW: ショナ語(ラテン語、ジンバブエ)
+Snackbar: スナックバー
+SnackbarMessageMarkupString: スナックバーメッセージマークアップ文字列
+SnackbarMessageRenderFragment: SnackbarMessageRenderFragment (スナックバーメッセージレンダリングフラグメント)
+SnackbarMessageText: スナックバーメッセージテキスト
+Snap ITC: スナップITC
+SnapDrag: スナップドラッグ
+SnazzyBase16: スナジーベース16
+Snow: 雪
+so-DJ: ソマリア(ジブチ)
+so-ET: ソマリア語(エチオピア)
+so-KE: ソマリア語(ケニア)
+so-SO: ソマリア語(ソマリア)
+SolarFlareBase16: ソーラーフレアベース16
+SolarFlareLightBase16: ソーラーフレアライトベース16
+SolarizedDarkBase16: SolarizedDarkBase16
+SolarizedLightBase16: ソーラー化LightBase16
+Solid: 固体
+Some: 幾
+Some other: その他
+SomeOtherInformation: SomeOtherInformation (その他情報)
+Something went wrong during the refresh token action: リフレッシュトークンアクション中に問題が発生しました
+SomeUnimportantTestModel: SomeUnimportantTestModel
+SomeUnimportantTestModel as Json: SomeUnimportantTestModel を json として
+SpaceAround: スペースアラウンド
+SpaceBetween: スペース間
+SpaceEvenly: スペース均等に
+SpacemacsBase16: スペースマックスベース16
+Spacing: スペーシング
+Specify Options...: オプションを指定...
+Specify Quick Options...: クイックオプションを指定...
+Spectrum: スペクトル
+SpectrumIcon: スペクトルアイコン
+SpinSpeed: スピンスピード
+SplitGradient: スプリットグラデーション
+SplitPanelItem for MudExSplitPanel component: MudExSplitPanel コンポーネントの SplitPanelItem
+SpringGreen: スプリンググリーン
+sq-AL: アルバニア語(アルバニア)
+sq-MK: アルバニア語(北マケドニア)
+sq-XK: アルバニア語(コソボ)
+Square: 正方形
+sr-Cyrl-BA: セルビア語(キリル文字、ボスニア・ヘルツェゴビナ)
+sr-Cyrl-ME: セルビア語(キリル文字、モンテネグロ)
+sr-Cyrl-RS: セルビア語(キリル文字、セルビア)
+sr-Cyrl-XK: セルビア語(キリル文字、コソボ)
+sr-Latn-BA: セルビア語(ラテン語、ボスニア・ヘルツェゴビナ)
+sr-Latn-ME: セルビア語(ラテン語、モンテネグロ)
+sr-Latn-RS: セルビア語(ラテン語、セルビア語)
+sr-Latn-XK: セルビア語(ラテン語、コソボ)
+Src: 出典
+Srcery: 呪術
+ss-SZ: siSwati (エスワティニ)
+ss-ZA: siSwati(南アフリカ)
+ssy-ER: サホ(エリトリア)
+st-LS: セソト語(レソト)
+st-ZA: セソト語(南アフリカ)
+StackedBar: スタックバー
+StackoverflowDark: スタックオーバーフローダーク
+StackoverflowLight: スタックオーバーフローライト
+Standard - Mikrofon (Voicemod Virtual Audio Device (WDM)): 標準 - Mikrofon(Voicemod 仮想オーディオ デバイス(WDM))
+Start: 始める
+Start Capture: キャプチャの開始
+Start Recording: 録音を開始する
+Start recording after: 録画開始後
+Start/Stop selection: 選択の開始/停止
+State: 状態
+Static: 静的
+Static card.: 静的カード。
+Static item: 静的アイテム
+Status: 地位
+SteelBlue: スチールブルー
+Stencil: 刷り込む
+Stereo: ステレオ
+Steve Rogers: スティーブ・ロジャース
+Store: 店
+Stream: 川
+StreamUrlHandling: StreamUrl 処理
+Street: 通り
+Street 2 2, 32365 City 2: ストリート 2 2, 32365 シティ 2
+Strict: 厳しい
+StringProperty1: 文字列プロパティ 1
+StringProperty10: 文字列プロパティ10
+StringProperty11: 文字列プロパティ11
+StringProperty12: 文字列プロパティ12
+StringProperty13: 文字列プロパティ13
+StringProperty14: 文字列プロパティ14
+StringProperty15: 文字列プロパティ15
+StringProperty16: 文字列プロパティ16
+StringProperty17: 文字列プロパティ17
+StringProperty18: 文字列プロパティ18
+StringProperty19: 文字列プロパティ19
+StringProperty2: 文字列プロパティ 2
+StringProperty20: 文字列プロパティ20
+StringProperty21: 文字列プロパティ21
+StringProperty22: 文字列プロパティ 22
+StringProperty23: 文字列プロパティ23
+StringProperty24: 文字列プロパティ24
+StringProperty25: 文字列プロパティ25
+StringProperty26: 文字列プロパティ26
+StringProperty27: 文字列プロパティ27
+StringProperty28: 文字列プロパティ28
+StringProperty29: 文字列プロパティ 29
+StringProperty3: 文字列プロパティ3
+StringProperty30: 文字列プロパティ30
+StringProperty31: 文字列プロパティ31
+StringProperty32: 文字列プロパティ32
+StringProperty33: 文字列プロパティ33
+StringProperty34: 文字列プロパティ34
+StringProperty35: 文字列プロパティ35
+StringProperty36: 文字列プロパティ36
+StringProperty37: 文字列プロパティ37
+StringProperty38: 文字列プロパティ38
+StringProperty39: 文字列プロパティ39
+StringProperty4: 文字列プロパティ4
+StringProperty40: 文字列プロパティ40
+StringProperty41: 文字列プロパティ41
+StringProperty42: 文字列プロパティ42
+StringProperty43: 文字列プロパティ43
+StringProperty44: 文字列プロパティ44
+StringProperty45: 文字列プロパティ45
+StringProperty46: 文字列プロパティ46
+StringProperty47: 文字列プロパティ47
+StringProperty48: 文字列プロパティ48
+StringProperty49: 文字列プロパティ49
+StringProperty5: 文字列プロパティ5
+StringProperty50: 文字列プロパティ50
+StringProperty51: 文字列プロパティ51
+StringProperty52: 文字列プロパティ52
+StringProperty53: 文字列プロパティ53
+StringProperty54: 文字列プロパティ54
+StringProperty55: 文字列プロパティ55
+StringProperty56: 文字列プロパティ56
+StringProperty57: 文字列プロパティ57
+StringProperty58: 文字列プロパティ58
+StringProperty59: 文字列プロパティ59
+StringProperty6: 文字列プロパティ6
+StringProperty60: 文字列プロパティ60
+StringProperty7: 文字列プロパティ7
+StringProperty8: 文字列プロパティ8
+StringProperty9: 文字列プロパティ9
+Striped: ストライプ
+Structured Data Edit: 構造化データの編集
+StructuredDataEdit: 構造化データ編集
+Style: スタイル
+StyleChip: スタイルチップ
+su-Latn-ID: スンダ語(ラテン語、インドネシア)
+Subject: 件名
+Subline description for sample card.: サンプルカードのサブラインの説明。
+Submit: 送信
+SubscribeToParentForm2: SubscribeToParentForm2 (サブスクライブ親フォーム2)
+subtitle1: サブタイトル1
+Subtitle1: サブタイトル1
+subtitle2: サブタイトル2
+Subtitle2: サブタイトル2
+Success: 成功
+SuccessContrastText: SuccessContrastテキスト
+SuccessDarken: サクセスダーク
+SuccessLighten: サクセスライトン
+SummercampBase16: サマーキャンプBase16
+SummerfruitDarkBase16: サマーフルーツダークベース16
+SummerfruitLightBase16: サマーフルーツライトベース16
+Sunburst: サンバースト
+Super sample Content text.: スーパーサンプルコンテンツテキスト。
+Support: 支える
+Surface: 表面
+Surname: 名字
+sv-AX: スウェーデン語(オーランド諸島)
+sv-FI: スウェーデン語(フィンランド)
+sv-SE: スウェーデン語(スウェーデン)
+sw-CD: スワヒリ語 (コンゴ [DRC])
+sw-KE: スワヒリ語(ケニア)
+sw-TZ: スワヒリ語(タンザニア)
+sw-UG: スワヒリ語(ウガンダ)
+Swagger: APIドキュメント
+Swap: スワップ
+Swedish: スウェーデン語
+SweetieBubbleGum-Regular.ttf: SweetieBubbleGum-Regular.ttf
+Swing: 振る
+Switch: スイッチ
+Switch expand button position: 展開ボタンの位置を切り替える
+Switch overlay source: スイッチオーバーレイソース
+Symbol: 記号
+SynthMidnightTerminalDarkBase16: シンセミッドナイトターミナルダークベース16
+SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16 (シンセミッドナイトターミナルライトベース16)
+syr-SY: シリア語(シリア)
+System: 制
+System Settings: システム設定
+T3024Base16: T3024ベース16
+ta-IN: タミル語 (インド)
+ta-LK: タミル語(スリランカ)
+ta-MY: タミル語(マレーシア)
+ta-SG: タミル語(シンガポール)
+Table Name: テーブル名
+TableHover: テーブルホバー
+TableLines: テーブルライン
+TableStriped: テーブルストライプ
+Tada: そうしたら
+Tag: 日
+TagField: タグフィールド
+Tahoma: タホマ
+Take case: ケースを取る
+Take photo after: 写真を撮る後
+Take Photo from Main camera: メインカメラから写真を撮る
+Take Photo from Main camera in 5 seconds: メインカメラから5秒で写真を撮る
+Take Photo only: 写真のみを撮る
+Tan: だから
+TangoBase16: タンゴベース16
+TarArchive.tar: TarArchive.tar
+Target: ターゲット
+Tax: 税金
+Tax must be greater than 0: 税は 0 より大きくなければなりません
+te-IN: テルグ語(インド)
+Teal: 小鴨
+tel: 電話
+Telephone: 電話
+TemplateClass: テンプレートクラス
+Temporary: 一時的
+TenderBase16: テンダーベース16
+teo-KE: Teso (ケニア)
+teo-UG: テソ(ウガンダ)
+Tertiary: 第 三
+TertiaryContrastText: TertiaryContrastText (三次コントラストテキスト)
+TertiaryDarken: 三次暗くなって
+TertiaryLighten: TertiaryLighten (三次ライトン)
+TEST: 試験
+Test and use components live without required environment: 必要な環境なしでコンポーネントをライブでテストして使用します
+Test the powerful MudExThemeEdit and change theme colors fonts and more: 強力な MudExTheme をテストするテーマの色、フォントなどを編集および変更する
+text: テキスト
+Text: テキスト
+Text value is required using {0} type!: テキスト値は、{0}型を使用して必須です。
+TextAddExternal: TextAddExternal (テキスト追加外部)
+TextAddFromDropBox: テキストAddFromDropBox
+TextAddFromGoogle: TextAddFromGoogle (TextAddFromGoogle)
+TextAddFromOneDrive: OneDrive からテキスト追加
+TextAddUrl: テキスト追加 URL
+TextAddUrlMessage: テキスト追加Urlメッセージ
+TextAddUrlTitle: テキスト追加URLTITLE
+TextDisabled: テキスト無効
+TextDropZone: テキストドロップゾーン
+TextErrorDuplicateFile: テキストエラー重複ファイル
+TextErrorExtensionForbidden: TextErrorExtensionForbidden (テキストエラー拡張禁止)
+TextErrorExtensionNotAllowed: TextErrorExtensionNotAllowed (テキストエラー拡張許可なし)
+TextErrorMaxFileCount: テキストエラー最大ファイル数
+TextErrorMaxFileSize: テキストエラー最大ファイルサイズ
+TextErrorMimeTypeForbidden: TextErrorMimeTypeForbidden (テキストエラーMimeTypeForbidden)
+TextErrorMimeTypeNotAllowed: TextErrorMimeTypeNotAllowed
+TextFillColor: テキスト塗りつぶしカラー
+TextPrimary: テキストプライマリ
+TextRemoveAll: テキスト削除すべて
+TextSecondary: テキストセカンダリ
+TextStartRecording: テキスト開始録音
+TextStartVideoCapture: テキストスタートビデオキャプチャ
+TextTransform: テキスト変換
+TextUpdateSuppression: テキスト更新抑制
+TextUploadFile: テキストアップロードファイル
+TextUploadFiles: テキストアップロードファイル
+TextUploadFolder: テキストアップロードフォルダ
+tg-Cyrl-TJ: タジク語(キリル文字、タジキスタン)
+th-TH: タイ語(タイ)
+The Checker field is required.: '[チェッカー] フィールドは必須です。'
+The component also provides the <strong>IsVisibleChanged</strong> event, which triggers whenever the visibility of the item changes.: このコンポーネントには、アイテムの可視性が変更されるたびにトリガーされる <strong>IsVisibleChanged</strong> イベントも用意されています。
+The content type {0} cannot be displayed without a suitable plugin: コンテンツタイプ{0}は、適切なプラグインがないと表示できません
+The field Number must be between 1 and 100.: フィールド Number は 1 から 100 までである必要があります。
+The file ({0}) has already been added: ファイル({0})はすでに追加されています
+The file has exceeded the maximum size of {0} with {1}. File size is {2}: ファイルが最大サイズの最大サイズを超えています {0} {1}。ファイルサイズは{2}
+The following {0} permissions are also required for permission {1}: 権限{1}には、次の{0}権限も必要です
+The following permission is also required for permission {1}: 権限{1}には、以下の権限も必要です
+The maximum file size is 10 MB: 最大ファイルサイズは10MBです
+The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit は、1 つ以上のテーマまたはプリセットの編集を効果的に容易にするように設計された堅牢で多用途のツールです。本質的に、ダーク モード、ライト モード、またはその両方の組み合わせに対応します。さらに、MudTheme からの派生クラスとそれに固有のカスタム プロパティをサポートしているため、すべてのテーマ編集要件に対応する包括的で柔軟なソリューションを提供します。
+The Plugin '{0}' may be able to help: プラグイン「{0}」が役立つかもしれません
+The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: このサンプルは、他の FileDisplay の例と同じですが、URL が使用されていないという違いがあります。代わりに、ストリームがロードされて使用されます。
+The server is just restarting. Please wait until the connection has been restored: サーバーが再起動中です。接続が回復するまでお待ちください
+The user "{0}" just changed some of this data: ユーザー "{0}" は、このデータの一部を変更しただけです
+The user {0} has been logged off: ユーザー{0}ログオフされている
+The User {0} has just edited, created or deleted entries here. You should reload the data: ユーザー{0}は、ここでエントリを編集、作成、または削除しました。データをリロードする必要があります
+Theme: テーマ
+Theme Colors: テーマの色
+Themes: テーマ
+ThemeSelect: テーマセレクト
+There are no new notifications: 新しい通知はありません
+These features make <strong>MudExVirtualItem</strong> ideal for optimizing performance when working with large datasets or dynamic content that doesn't need to be loaded all at once.: これらの機能により、<strong>MudExVirtualItem</strong> は、一度にロードする必要のない大規模なデータセットや動的コンテンツを操作する際のパフォーマンスを最適化するのに最適です。
+This bar can be positioned left, right, top or bottom, and expands automatically on mouseover. This is also the Base component for the MudExTaskBar that automatically displays all open dialogs: このバーは左、右、上、下に配置でき、マウスオーバーすると自動的に展開されます。これは、開いているすべてのダイアログ ボックスを自動的に表示する MudExTaskBar のベース コンポーネントでもあります
+This changes the Variant if Age is at least 18 and is enabled if Age is more than 1: これにより、[年齢] が 18 歳以上の場合はバリアントが変更され、[年齢] が 1 より大きい場合は有効になります
+This component and the dialog no modal behaviour is still in development and not ready for production use. Please report any issues you find on GitHub.: このコンポーネントとダイアログのモーダル動作は、まだ開発中であり、本番環境で使用する準備ができていません。GitHubで問題を見つけたら報告してください。
+This component uses the ICaptureService to capture audio and/or video data: このコンポーネントは、ICaptureService を使用してオーディオやビデオ データをキャプチャします
+This component uses the ISpeechRecognitionService to record audio data and transcripts: このコンポーネントは、ISpeechRecognitionService を使用して、オーディオ データとトランスクリプトを記録します
+This Demo demonstrate using for the MudExCardList: このデモでは、MudExCardList の使用をデモンストレーションします。
+This Demo demonstrate using the MudExAudioPlayer without the automatic use in MudExFileDisplay: このデモでは、MudExFileDisplay で自動使用せずに MudExAudioPlayer を使用する方法を示します
+This Demo demonstrate using the MudExCardList with an item source: このデモでは、アイテム ソースで MudExCardList を使用する方法を示します。
+This Demo demonstrate using the MudExCardList with an item source and child content together: このデモでは、MudExCardList をアイテム ソースと子コンテンツと一緒に使用する方法を示します
+This Demo demonstrate using the MudExImageViewer without the automatic use in MudExFileDisplay: このデモでは、MudExFileDisplay で自動使用せずに MudExImageViewer を使用する方法を示します。
+This demo showcases the <strong>MudExVirtualItem</strong> component, a virtualized container that efficiently renders content<br/> only when it becomes visible in the viewport.: このデモでは、ビューポートに表示される場合にのみコンテンツを効率的にレンダリングする仮想化コンテナである <strong>MudExVirtualItem</strong> コンポーネントを紹介します<br/>
+This demo shows how to pass a can close method: このデモでは、can close メソッドを渡す方法を示します
+This demo shows how you can use a selection with MudExSelect with a custom item provider: このデモでは、カスタム アイテム プロバイダで MudExSelect で選択を使用する方法を示します
+This demo uses SnapDrag as DragMode on the DialogOptionsEx: このデモでは、DialogOptionsEx の DragMode として SnapDrag を使用します。
+This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open: このデモでは、IDialogEventService を使用して、サイズ変更またはドラッグを確認し、最新の位置とサイズを相対値として格納し、次に開いたときに復元します
+This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: これは、テーマ編集に MudExObjectEdit と MudExThemeSelect を内部的に使用する MudExThemeEdit コンポーネントを示しています
+This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: このデモでは、RenderFragments 'For' と 'ChildContent' を使用して MudExAdditionalAdornment を使用する推奨される方法を示します。
+This dialog can confirmed when slider value is greater then 10: このダイアログは、スライダーの値が10より大きい場合に確認できます
+This is a Json representation of the TestModel. This is ignored for Export and Import: これは、TestModel の Json 表現です。これは、エクスポートとインポートでは無視されます
+This is a simple information dialog that closes after {0} seconds: これは、{0} 秒後に閉じる単純な情報ダイアログです
+This is a simple information dialog that closes after 0 seconds: これは、0 秒後に閉じる単純な情報ダイアログです
+This is a simple information dialog that closes after 1 seconds: これは、1 秒後に閉じる単純な情報ダイアログです
+This is a simple information dialog that closes after 2 seconds: これは、2 秒後に閉じる単純な情報ダイアログです
+This is a simple information dialog that closes after 3 seconds: これは、3 秒後に閉じる単純な情報ダイアログです
+This is a simple information dialog that closes after 4 seconds: これは、4 秒後に閉じる単純な情報ダイアログです
+This is a simple information dialog that closes after 5 seconds: これは、5 秒後に閉じる単純な情報ダイアログです
+This is an Administrator Only View.: これは管理者専用ビューです。
+This is the MudEx Default theme: これは MudEx の既定のテーマです
+This is the sample Popover. In general it inherits the original MudPopover.: これがサンプルのポップオーバーです。一般に、元の MudPopover を継承します。
+This one card is still added without an corresponding item.: このカード1枚は、該当アイテムなしでまだ追加される。
+This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: これは、ダイアログ オプションにメソッドとして渡されます。メソッドが false を返した場合、ダイアログは閉じません。結果は bool または Task&lt;bool である必要があります&gt;
+This photo was taken in a small village in Istra Croatia.: この写真は、クロアチアのイストラの小さな村で撮影されました。
+This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: このピッカーは、アニメーション、より優れた動作、およびすべての DialogOptions をサポートするダイアログをもたらします。MudExPickerBase から継承する独自のピッカー コンポーネントを作成するか、単純なコンテンツを使用するには、MudExPicker を使用します。
+This sample demonstrate how to use the MudExCaptureService: このサンプルでは、MudExCaptureService の使用方法を示します。
+This sample demonstrate the usage of MudExTreeView with an Item template: このサンプルでは、アイテム テンプレートでの MudExTreeView の使用法を示します
+This sample uses the IDialogEventService to cancel the dialog close: このサンプルでは、IDialogEventService を使用してダイアログの閉じを取り消します
+This sample uses the options for a can close callback: このサンプルでは、can close コールバックのオプションを使用します
+This section can be placed inside a MudExGrid component.: このセクションは、MudExGrid コンポーネント内に配置できます。
+Thistle: 薊
+ThrottleInterval: スロットルインターバル
+ti-ER: ティグリニャ語(エリトリア)
+ti-ET: ティグリニャ語(エチオピア)
+tig-ER: ティグレ(エリトリア)
+Tilt: 傾く
+Time: 時間
+Times: 倍
+Times New Roman: タイムズ・ニュー・ローマン
+TimeSeries: 時系列
+Tina Fey: ティナ・フェイ
+Title: タイトル
+Title is required!: タイトルは必須です!
+tk-TM: トルクメニスタン(トルクメニスタン)
+tn-BW: セツワナ語(ボツワナ)
+tn-ZA: セツワナ語(南アフリカ)
+to-TO: トンガ(トンガ)
+Toggle loading: 読み込みの切り替え
+Toggle right-to-left/left-to-right: 右から左/左から右に切り替える
+Toggle to {0}: '{0}に切り替える'
+Toggleable: 切り替え可能
+ToggleAllFeatures: ToggleAll機能
+ToggleFullPage: ToggleFullページ
+ToggleFullscreen: トグルフルスクリーン
+ToggleMicrophone: トグルマイク
+TogglePictureInPicture: TogglePictureInPicture (画像内)
+TogglePlayPause: TogglePlayPause (一時停止の切り替え)
+Token is required: トークンが必要です
+Token Not Found!: トークンが見つかりません!
+Tokyo: 東京
+Tokyo - 100-0001: 東京 - 100-0001
+Tokyo - 100-0001ender: 東京都 - 100-0001ender
+Tomato: トマト
+TomorrowBase16: トゥモローベース16
+TomorrowNightBase16: トゥモローナイトベース16
+TomorrowNightBlue: トゥモローナイトブルー
+TomorrowNightBright: トゥモローナイトブライト
+ToolbarBackgroundColor: ツールバー背景色
+ToolbarButtonColor: ツールバーボタンカラー
+ToolbarButtonPosition: ツールバーボタン位置
+ToolbarButtonSize: ツールバーボタンサイズ
+ToolbarButtonVariant: ツールバーボタンバリアント
+ToolbarClass: ツールバークラス
+ToolBarClass: ToolBarクラス
+ToolbarStyle: ツールバースタイル
+ToolBarStyle: ツールバースタイル
+Tooltip: ツールチップ
+ToolTip: ツールチップ
+ToolTip Three: ツールチップ 3
+ToolTip Two: ツールチップ 2
+ToolTipStyle: ツールチップスタイル
+Top: ページのトップへ
+TopCenter: トップセンター
+TopLeft: 左上
+TopRight: 右上
+Torch: トーチ
+Toronto: トロント
+Toronto - M1B 1A1: トロント - M1B 1A1
+Toronto - M1B 1A1ender: トロント - M1B 1A1ender
+tr-CY: トルコ語(キプロス)
+tr-TR: トルコ語(トルコ)
+Trace: 跡
+TrackInfoPosition: TrackInfoPosition (トラック情報位置)
+TrackList: トラックリスト
+TrackListBehaviour: トラックリスト動作
+TrackListClass: トラックリストクラス
+TrackListCoverImage: トラックリストカバーイメージ
+TrackListMode: トラックリストモード
+TrackListPosition: トラックリストポジション
+TrackListToggleButtonPosition: トラックリストトグルボタンポジション
+Trail Details: トレイルの詳細
+TransformOrigin: 変換原点
+Translations: 翻訳
+Translations are being imported: 翻訳がインポートされています
+Translations updated: 翻訳が更新されました
+Transparent: 透明
+Trebuchet MS: トレビュシェットMS
+TreeView: ツリービュー
+TreeView component that renders a tree structure of items.: 項目のツリー構造をレンダリングする TreeView コンポーネント。
+TreeViewBreadcrumb: ツリービューパンくずリスト
+TreeViewCardGrid: ツリービューカードグリッド
+TreeViewDefault: ツリービューデフォルト
+TreeViewFlatList: ツリービューフラットリスト
+TreeViewHorizontal: ツリービュー水平
+TreeViewList: ツリービューリスト
+TreeViewMode: ツリービューモード
+TrueLeds: トゥルーLED
+TrueOrFalse: TrueまたはFalse
+Try different role: 別の役割を試す
+Try MudEx online: MudExをオンラインで試す
+Try MudEx online CodeEditor: MudEx オンライン CodeEditor をお試しください
+ts-ZA: シツォンガ(南アフリカ)
+tt-RU: タタール語(ロシア)
+Turquoise: トルコ石
+TwilightBase16: トワイライトベース16
+twq-NE: タサワク(ニジェール)
+Type: 種類
+Type should be valid: 型は有効である必要があります
+Typo: タイプミス
+TypoThemeDescription: TypoTheme説明
+TypoThemeName: タイプミステーマ名
+tzm-Arab-MA: Central Atlas Tamazight (アラビア語、モロッコ)
+tzm-Latn-DZ: Central Atlas Tamazight (ラテン語、アルジェリア)
+tzm-Latn-MA: Central Atlas Tamazight (ラテン語、モロッコ)
+tzm-Tfng-MA: Central Atlas Tamazight (ティフィナー、モロッコ)
+ug-CN: ウイグル語(中国)
+uk-UA: ウクライナ語(ウクライナ)
+Uma Thurman: ユマ・サーマン
+Unassigned: 未割り当て
+UncheckedIcon: チェックなしアイコン
+Underline: アンダーライン
+Undo: 外す
+UndoIcon: 元に戻すアイコン
+UnikittyDarkBase16: ユニキティダークベース16
+UnikittyLightBase16: ユニキティライトベース16
+Unselectable: 選択不可
+Unset: 解除
+Update: 更新
+Update automatically next time: 次回自動更新
+Update Brand: ブランドの更新
+Update Document: ドキュメントの更新
+Update Document Type: ドキュメントタイプの更新
+Update Extended Attribute: 拡張属性の更新
+Update Now: 今すぐ更新
+Update Permissions: 権限の更新
+Update Product: 製品の更新
+Update Role: ロールの更新
+Update Role Permissions: ロール権限の更新
+Update User Roles: ユーザーロールの更新
+UpdateBindingIfOnlyHSLChanged: UpdateBindingIfOnlyHSL変更済み
+Updated: 更新
+Updated User Status.: 更新されたユーザーステータス。
+UpdateItemsOnStateChange: UpdateItemsOnState変更
+Upload: アップロード
+Upload Edit: アップロード編集
+Upload File: ファイルのアップロード
+Upload Files: ファイルのアップロード
+Upload Folder: アップロードフォルダ
+Upload Image: 画像のアップロード
+Upload in dialog: ダイアログでアップロード
+Upload Qualifications and References: 資格と参照のアップロード
+UploadFieldId: UploadFieldId
+UploadFile: アップロードファイル
+UploadFolder: アップロードフォルダ
+UploadRequest: アップロードリクエスト
+UploadRequests: アップロードリクエスト
+ur-IN: ウルドゥー語(インド)
+ur-PK: ウルドゥー語(パキスタン)
+url: URLアドレス
+Url: URLの
+Use CodeGator Models: CodeGator モデルの使用
+Use MudExAdditionalAdornment ad ChildContent: MudExAdditionalAdornment 広告を使用するChildContent
+Use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment を MudInput の子コンテンツとして使用する
+Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: 代わりに MudExSelect を使用し、MultiSelection を true に、ValuePresenter を Chip に設定します。
+UseCanvas: キャンバスを使用する
+UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
+UseItemTemplateForSelection: UseItemTemplateForSelection(選択用項目テンプレート)
+UseMudExColorBubble: MudExColorBubble を使用
+UseNativeBrowserControl: UseNativeBrowserControl を使用します
+User: 利用者
+User {0} Registered. Please check your Mailbox to verify!: ユーザー{0}登録済みです。メールボックスをチェックして、メールアドレスを確認してください。
+User and Roles: ユーザーとロール
+User Data: ユーザーデータ
+User Deleted: 削除されたユーザー
+User Name: ユーザー名
+User Not Active. Please contact the administrator.: ユーザーはアクティブではありません。アクティベーションを待つか、管理者にお問い合わせください。
+User Not Found!: ユーザーが見つかりません!
+User Registered: ユーザー登録しました!
+User Registered Mailbox: ユーザーが登録済み。確認メールがメールボックスに配信されました。
+User registration is not allowed: ユーザー登録はできません
+UserAttributes: ユーザー属性
+UserInformation: ユーザー情報
+Username: ユーザー名
+UserName: ユーザー名
+Username {0} is already taken.: ユーザー名{0}はすでに使用されています。
+Username cannot changed: ユーザー名は変更できません
+UserName is required: UserName は必須です
+UserName must be at least of length 6: UserName の長さは 6 以上である必要があります
+Username or Email: ユーザー名または電子メール
+Users: ユーザー
+Users and Roles: ユーザーとロール
+Users exported: エクスポートされたユーザー
+Uses the IDialogEventService and handles the before close event. Here you can just set args.Cancel to true to stop closing: IDialogEventService を使用し、close 前イベントを処理します。ここでは、引数を設定するだけです。クローズを停止するには、true にキャンセルします
+UTC: UTCの
+Utilities: ユーティリティ
+uz-Arab-AF: ウズベキスタン語(アラビア語、アフガニスタン)
+uz-Cyrl-UZ: ウズベキスタン語(キリル文字、ウズベキスタン)
+uz-Latn-UZ: ウズベキスタン語(ラテン語、ウズベキスタン)
+vai-Latn-LR: Vai (ラテン語、リベリア)
+vai-Vaii-LR: Vai (Vai, リベリア)
+Validate Upload Edit in MudForm: MudForm でのアップロード編集の検証
+Validation: 検証
+Value: 価値
+ValuePresenter: バリュープレゼンター
+Values: 価値観
+ValueString: 値文字列
+Vancouver: バンクーバー
+Vancouver - V5K 0A1: バンクーバー - V5K 0A1
+Vancouver - V5K 0A1ender: バンクーバー - V5K 0A1ender
+Variant: バリアント
+ve-ZA: ヴェンダ(南アフリカ)
+Verdana: ヴェルダナ
+Version: バージョン
+vi-VN: ベトナム語(ベトナム)
+Video Content-Type: ビデオコンテンツタイプ
+Video device: ビデオデバイス
+VideoDevice: ビデオデバイス
+View: 眺める
+View Profile: プロフィールを見る
+ViewBox: ビューボックス
+ViewDependsOnContentType: ViewDependsOnContentType
+ViewMode: ビューモード
+ViewportHeight: ビューポートの高さ
+ViewportMaximum: ビューポート最大値
+ViewportMinimum: ビューポート最小値
+ViewportWidth: ビューポート幅
+Viner Hand ITC: バイナーハンドITC
+Violet: 紫
+Virtualize: 仮想
+Visible: 目に見える
+Visualizer: ビジュアライザー
+VisualizerBackgroundColor: ビジュアライザー背景色
+VisualizerElementBorderSize: ビジュアライザー要素境界サイズ
+Vivaldi: ヴィヴァルディ
+Vladimir Script: ウラジミールスクリプト
+vo-001: Volapük(世界)
+Volume: 容積
+Vs: 対
+Vs2015: 対2015年
+VulcanBase16: バルカンベース16
+vun-TZ: ヴンジョ(タンザニア)
+wae-CH: ヴァルザー(スイス)
+wal-ET: ウォライッタ(エチオピア)
+Warning: 警告
+WarningContrastText: 警告コントラストテキスト
+WarningDarken: 警告暗くする
+WarningLighten: 警告明るくする
+weather.json: weather.json
+Webdings: ウェブディング
+Week: 週
+WeightingFilter: ウェイトフィルター
+Welcome {0}: ようこそ{0}
+whatever: 何と
+Wheat: 麦
+White: 白い
+WhiteBalanceMode: ホワイトバランスモード
+WhiteList: ホワイトリスト
+WhiteSmoke: ホワイトスモーク
+Wide Latin: ワイドラテン語
+Width: 幅
+Will be saved only when selected Permission: '[権限] を選択した場合にのみ保存されます'
+Window: 窓
+Windows10Base16: Windows10Base16
+Windows10LightBase16: Windows10LightBase16
+Windows95Base16: Windows95ベース16
+Windows95LightBase16: Windows95LightBase16
+WindowsHighContrastBase16: WindowsHighContrastBase16
+WindowsHighContrastLightBase16: WindowsHighContrastLightBase16
+WindowsNtBase16: WindowsNtベース16
+WindowsNtLightBase16: WindowsNtLightBase16
+Wingdings: ウィングディングス
+With custom configuration: カスタム構成の場合
+With default configuration: デフォルト設定の場合
+With tabs: タブ付き
+With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: MudExAdditionalAdornment コンポーネントを使用すると、このような MudInput ベースの入力コントロールにいくつでも装飾を含めることができます。
+With this component you can have an animation while loading the main blazor app: このコンポーネントを使用すると、メインの blazor アプリの読み込み中にアニメーションを作成できます
+With_Selected: '{0}選択済み'
+WithFullSpectrumAudioData: WithFullSpectrumAudioData
+WithFullSpectrumAudioDataPrefilledWithRandomData: WithFullSpectrumAudioDataPrefilledWithRandomData
+WithGoogleLatinFonts: GoogleLatinFonts と
+WithoutBounds: 無制限
+WithRandomData: ランダムデータと
+WithRealAudioData: RealAudioData と
+wo-SN: ウォロフ(セネガル)
+Wobble: ぐらつく
+WoodlandBase16: ウッドランドベース16
+WordDokument.doc: WordDokument.doc
+WrapChips: ラップチップス
+WrapToolBarContent: WrapToolBarコンテンツ
+Xcode: Xコード
+XcodeDuskBase16: XcodeDuskBase16
+xh-ZA: isiXhosa (南アフリカ)
+Xml: XML
+xog-UG: 曽我(ウガンダ)
+Xt256: Xt256
+Yaml: ヤムル
+yav-CM: ヤンベン(カメルーン)
+Yellow: 黄色
+YellowGreen: イエローグリーン
+Yes: はい
+yi-001: イディッシュ語 (世界)
+yo-BJ: ヨルバ語(ベナン)
+yo-NG: ヨルバ語(ナイジェリア)
+Yokohama: 横浜
+Yokohama - 220-0001: 横浜市 - 220-0001
+Yokohama - 220-0001ender: 横浜 - 220-0001ender
+you: あなたが
+You are logged out because the Permissions of one of your Roles have been updated.: ロールの 1 つの権限が更新されたため、ログアウトされています。
+You are logged out because the user with your Token has been deleted or token is expired.: トークンを持つユーザーが削除されたか、トークンの有効期限が切れているため、ログアウトされています。
+You are logged out by an Administrator or profile change.: 管理者またはプロファイルの変更によってログアウトされています。
+You are Logged Out.: ログアウトしています。
+You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment を MudInput の ChildContent として使用することもできます
+You can now Login with your credentials: 資格情報を使用してログインできるようになりました
+You cannot delete yourself: 自分自身は削除できません
+You clicked: クリックした
+You don't need an extra JsonEditor anymore: 追加のJsonEditorはもう必要ありません
+You have {0} Users where you can pick from: '{0} ユーザーから選択できる'
+You picked: あなたが選んだ
+You received a new chat message from {0}: '{0} から新しいチャット メッセージを受信しました'
+You're leaving {0} and will redirected to {1}: '{0}を離れ、{1}にリダイレクトされます。'
+Your e-mail address has been confirmed!: メールアドレスが確認されました!
+Your email address could not be verified. If you have any problems, please contact {0}: メールアドレスを確認できませんでした。お困りの際は、お問い合わせください{0}
+Your Profile has been updated.: プロフィールが更新されました。
+Your Recent Activities.: 最近のアクティビティ。
+ZenburnBase16: ゼンバーンベース16
+zgh-Tfng-MA: スタンダード・モロッコ・タマジット(モロッコ、ティフィナ)
+zh-CN: 中国語(中国)
+zh-Hans-HK: 中国語 (簡体字、香港特別行政区)
+zh-Hans-MO: 中国語 (簡体字、マカオ特別行政区)
+zh-HK: 中国語(香港特別行政区)
+zh-MO: 中国語(マカオ特別行政区)
+zh-SG: 中国語(シンガポール)
+zh-TW: 中国語(台湾)
+ZIndex: ZIndex
+ZipCode: 郵便番号
+Zoom: ズーム
+Zoom in: ズームインする
+Zoom out: ズームアウト
+ZoomInButtonIcon: ズームインボタンアイコン
+ZoomOnHover: ズームオンホバー
+ZoomOutButtonIcon: ズームアウトボタンアイコン
+zu-ZA: isiZulu (南アフリカ)

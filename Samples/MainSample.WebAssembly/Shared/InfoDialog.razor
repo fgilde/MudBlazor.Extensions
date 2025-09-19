@@ -1,5 +1,7 @@
 ﻿@using MudBlazor.Extensions.Helper
 @using System.Runtime.InteropServices
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<InfoDialog> L
 <MudDialog Class="@MudExCss.Classes.Dialog._Initial" ContentClass="">
     <TitleContent>
         <MudText Typo="Typo.h6">
@@ -22,42 +24,42 @@
         
         <MudCard Class="m-4">
             <MudCardContent>
-                <MudText Align="Align.Center" Typo="Typo.body1"><b>Runtime</b> @($"{RuntimeInformation.FrameworkDescription} - {RuntimeInformation.ProcessArchitecture}")</MudText>
-                <MudText Align="Align.Center" Typo="Typo.body1"><b>App Type</b> @($"{(MudExResource.IsClientSide ? "WebAssembly WASM" : "Server Side Rendered")}")</MudText>
+                <MudText Align="Align.Center" Typo="Typo.body1"><b>@L["Runtime"]</b> @($"{RuntimeInformation.FrameworkDescription} - {RuntimeInformation.ProcessArchitecture}")</MudText>
+                <MudText Align="Align.Center" Typo="Typo.body1"><b>@L["App Type"]</b> @($"{(MudExResource.IsClientSide ? L["WebAssembly WASM"] : L["Server Side Rendered"])}")</MudText>
                 <MudText Align="Align.Center" Typo="Typo.body1"><b>MudBlazor.Extensions</b> @MudExResource.MudExVersion().ToString()</MudText>
-                <MudText Align="Align.Center" Typo="Typo.body1"><b>for MudBlazor</b> @MudExResource.MudBlazorVersion().ToString()</MudText>
+                <MudText Align="Align.Center" Typo="Typo.body1"><b>MudBlazor</b> @MudExResource.MudBlazorVersion().ToString()</MudText>
             </MudCardContent>
         </MudCard>
         
         <MudCard>
             <MudCardHeader>
                 <CardHeaderContent>
-                    <MudText Typo="Typo.h6">Support project</MudText>
+                    <MudText Typo="Typo.h6">@L["Support project"]</MudText>
                 </CardHeaderContent>
                 <CardHeaderActions>
                     <MudIconButton Href="https://www.paypal.com/paypalme/fgilde/" Target="_blank" Icon="@Icons.Material.Filled.MonetizationOn" Color="Color.Default" />
                 </CardHeaderActions>
             </MudCardHeader>
             <MudCardContent>
-                <MudText>You don't need to, but you can support the project in some ways if you want.</MudText>
-                <MudText Typo="Typo.body2">1. If you're a developer feel free to contribute</MudText>
-                <MudText Typo="Typo.body2">2. Report Issues, bugs or feature ideas</MudText>
-                <MudText Typo="Typo.body2">3. Donate or become a sponsor</MudText>
-                <MudText Typo="Typo.body2">4. Give a star on github</MudText>
+                <MudText>@L["You don't need to, but you can support the project in some ways if you want."]</MudText>
+                <MudText Typo="Typo.body2">@L["1. If you're a developer feel free to contribute"]</MudText>
+                <MudText Typo="Typo.body2">@L["2. Report Issues, bugs or feature ideas"]</MudText>
+                <MudText Typo="Typo.body2">@L["3. Donate or become a sponsor"]</MudText>
+                <MudText Typo="Typo.body2">@L["4. Give a star on github"]</MudText>
             </MudCardContent>
             <MudCardActions>
-                <MudButton Variant="Variant.Text" Href="https://www.paypal.com/paypalme/fgilde/" Target="_blank" Color="Color.Warning">Donate with PayPal</MudButton>
-                <MudButton Variant="Variant.Text" Href="https://github.com/sponsors/fgilde" Target="_blank" Color="Color.Primary">Sponsor at GitHub</MudButton>
-                <MudButton Variant="Variant.Text" Href="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank" Color="Color.Secondary">Star the repository</MudButton>
+                <MudButton Variant="Variant.Text" Href="https://www.paypal.com/paypalme/fgilde/" Target="_blank" Color="Color.Warning">@L["Donate with PayPal"]</MudButton>
+                <MudButton Variant="Variant.Text" Href="https://github.com/sponsors/fgilde" Target="_blank" Color="Color.Primary">@L["Sponsor at GitHub"]</MudButton>
+                <MudButton Variant="Variant.Text" Href="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank" Color="Color.Secondary">@L["Star the repository"]</MudButton>
             </MudCardActions>
         </MudCard>
 
     </DialogContent>
     <DialogActions>
         <span class="copyright">
-            Created by <a href="https://github.com/fgilde"> Florian Gilde </a>
+            @L["Created by"] <a href="https://github.com/fgilde"> Florian Gilde </a>
         </span>
-        <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="Close">Close</MudButton>
+        <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="Close">@L["Close"]</MudButton>
     </DialogActions>
 </MudDialog>
 @code{
@@ -66,6 +68,12 @@
 
     [CascadingParameter] private IMudDialogInstance MudDialog { get; set; }
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
+    }
 
     public void Close()
     {

@@ -1,4 +1,6 @@
 ﻿@page "/mud-ex-select"
+@inherits BasePage
+
 @using MudBlazor.Extensions.Options
 
 @attribute [Demo(Name = "MudExSelect", Icon = Icons.Material.Outlined.ArrowDropDownCircle, Documentation = "MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.", ForComponentType = typeof(MudExSelect<>))]
@@ -19,7 +21,7 @@
                                  GroupBy="@(x => x.State)"
                                  PopoverAnimation="AnimationType.Pulse"
                                  ToStringFunc="@(x => x.Name + " - " + x.PostalCode)"
-                                 ItemCollection="_samples" SearchBox="true" T="City" Label="Cities you want to live" AnchorOrigin="Origin.BottomCenter">
+                                 ItemCollection="_samples" SearchBox="true" T="City" Label="@L["Cities you want to live"]" AnchorOrigin="Origin.BottomCenter">
                         <ItemTemplate>
                             <MudAlert>@context?.Name</MudAlert>
                         </ItemTemplate>

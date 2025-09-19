@@ -1,4 +1,5 @@
 ﻿@page "/chip-select"
+@inherits BasePage
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
 @attribute [Demo(Name = "MudExChipSelect", Icon = Icons.Material.Outlined.BubbleChart, Documentation = "MudExChipSelect can used to select items from a collection as chips", ForComponentType = typeof(MudExChipSelect<>))]
@@ -8,7 +9,7 @@
     <SplitContainer>
         <Left>
             <MudExChipSelect AvailableItems="@Available" @bind-SelectedValues="Selected" @ref="component"></MudExChipSelect>
-            <MudButton Class="mt-5" OnClick="@OnShowClick">Show selected</MudButton>
+            <MudButton Class="mt-5" OnClick="@OnShowClick">@L["Show selected"]</MudButton>
         </Left>
         <Right>
             <ComponentPropertyGrid ShowInherited="true" MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>

@@ -1,4 +1,5 @@
 ﻿@page "/dialogs"
+@inherits BasePage
 @using MudBlazor.Extensions.Options
 @using MudBlazor.Extensions.Core
 
@@ -10,13 +11,13 @@
         <Left>
             <div>
                 <MudNumericField Class="my-dialog-timer-field" Style="margin-top: -8px;max-width: 250px;" FullWidth="false" Min="0" Max="30" Variant="Variant.Text" Disabled="@(OpenDialogTask != null)" @bind-Value="seconds" Label="@($"Dialog opens in {seconds}s")"></MudNumericField>
-                <MudButton Disabled="@(OpenDialogTask != null)" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
+                <MudButton Disabled="@(OpenDialogTask != null)" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">@L["Show Sample Dialog"]</MudButton>
             </div>
         </Left>
         <Right>
             <MudExObjectEditForm StoreAndReadValueFromUrl="true" T="DialogOptionsEx" AfterImport="@(OnSettingsImported)" AllowExport="true" AllowImport="true" ShowSaveButton="false" ShowCancelButton="false" DefaultGroupName="Other" StickyActionBar="true" Value="@Options">
                 <ActionContent>
-                    <MudButton Variant="Variant.Filled" Color="Color.Warning" OnClick="@SetAsDefaultClick">Set as Default options for all Dialogs</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Warning" OnClick="@SetAsDefaultClick">@L["Set as Default options for all Dialogs"]</MudButton>
                 </ActionContent>
             </MudExObjectEditForm>
         </Right>
@@ -35,13 +36,13 @@
     [JSInvokable]
     public void AlarmClick()
     {
-        JsRuntime.InvokeVoidAsync("alert", "Alarm Clicked ");
+        JsRuntime.InvokeVoidAsync("alert", L["Alarm Clicked"]);
     }
 
     [JSInvokable]
     public void ColorLensClick()
     {
-        JsRuntime.InvokeVoidAsync("alert", "Color Lens Clicked");
+        JsRuntime.InvokeVoidAsync("alert", L["Color Lens Clicked"]);
     }
 
     public DialogOptionsEx Options { get; set; } = new()
@@ -79,13 +80,13 @@
         var options = Options.CloneOptions();
         
         options.Buttons = GetButtons();
-        IMudExDialogReference<SampleDialog>? dlgReference = await DialogService.ShowExAsync<SampleDialog>("Simple Dialog", dialog => { dialog.ContentMessage = "Hello from dialog sample page"; }, options);
+        IMudExDialogReference<SampleDialog>? dlgReference = await DialogService.ShowExAsync<SampleDialog>(L["Simple Dialog"], dialog => { dialog.ContentMessage = L["Hello from dialog sample page"]; }, options);
         
     }
 
     private async Task SetAsDefaultClick()
     {
-        var confirmed = await DialogService.ShowConfirmationDialogAsync("Set as Default options for all Dialogs", "If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?");
+        var confirmed = await DialogService.ShowConfirmationDialogAsync(L["Set as Default options for all Dialogs"], L["If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?"]);
         if (confirmed)
             Options.SetAsDefaultDialogOptions();
     }

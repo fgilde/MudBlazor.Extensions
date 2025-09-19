@@ -28,7 +28,13 @@ else
 
     [Parameter]
     public bool Animate { get; set; }
-    
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
+    }
     private string GetHomeLink()
     {
         var u = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);

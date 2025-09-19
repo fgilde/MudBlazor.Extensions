@@ -6,4 +6,11 @@
     
     [Parameter]
     public Typo? Typo { get; set; } = null;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
+    }
 }

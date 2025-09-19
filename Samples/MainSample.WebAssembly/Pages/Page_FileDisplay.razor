@@ -1,6 +1,6 @@
 ﻿@page "/file-display"
+@inherits BasePage
 @using System.Web
-@using MainSample.WebAssembly.Services
 @using MudBlazor.Extensions.Options
 @inject SampleDataService sampleDataService
 
@@ -8,7 +8,7 @@
 
 <DemoComponent PageType="@GetType()" CodeFiles="@(new [] {$"Pages/{GetType().Name}.razor", "Shared/MySimpleJsonDisplay.razor", "SampleDataService.cs"})">
 
-    <MudExSelect T="SampleFile" ValuePresenter="ValuePresenter.ItemContent" HelperText="Select sample file (See weather.json to check how own components for files can be created)" ItemCollection="@_samples" Variant="Variant.Outlined" ToStringFunc="@(f => f?.Name ?? "...")" @bind-Value="SampleFile">
+    <MudExSelect T="SampleFile" ValuePresenter="ValuePresenter.ItemContent" HelperText="@L["Select sample file (See weather.json to check how own components for files can be created)"]" ItemCollection="@_samples" Variant="Variant.Outlined" ToStringFunc="@(f => f?.Name ?? "...")" @bind-Value="SampleFile">
         <ItemTemplate>
             <div class="file-combo-item">
                 <MudExIcon Color="@context.Color" Icon="@context.Icon"></MudExIcon>
@@ -28,7 +28,7 @@
                           Dense="true"
                           FileName="@SampleFile.Name" Url="@SampleFile.Url" ContentType="@SampleFile.ContentType"></MudExFileDisplay>
         </div>
-        <MudButton OnClick="@OpenAsDialog" Variant="Variant.Filled" Color="Color.Primary">Show As Dialog</MudButton>
+        <MudButton OnClick="@OpenAsDialog" Variant="Variant.Filled" Color="Color.Primary">@L["Show As Dialog"]</MudButton>
     }
 </DemoComponent>
 
@@ -36,12 +36,13 @@
 @code {
     private List<SampleFile> _samples = new ();
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         _samples.AddRange(sampleDataService.GetSampleFiles());
         if (MainLayout.Instance != null)
             MainLayout.Instance.ThemeChanged += InstanceOnThemeChanged;
-
+        
         var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
         var queryParams = HttpUtility.ParseQueryString(uri.Query);
 
@@ -53,8 +54,6 @@
                 SampleFile = sampleFile;
             }
         }
-
-        return Task.CompletedTask;
     }
 
     private void InstanceOnThemeChanged(object? sender, MainLayout.ThemeChangedEventArgs e)
@@ -73,7 +72,7 @@
         {
             return Task.FromResult(MudExFileDisplayContentErrorResult
                 .RedirectTo("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiZiqnBKWS8NHcKbRH04UkYjrCgxUMz6sVNw&usqp=CAU", "image/png")
-                .WithMessage("No word plugin found we display a sheep"));
+                .WithMessage(L["No word plugin found we display a sheep"]));
         }
         return Task.FromResult(MudExFileDisplayContentErrorResult.Unhandled);
     }

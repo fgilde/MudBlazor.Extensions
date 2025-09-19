@@ -1,4 +1,6 @@
 ﻿@page "/upload-edit"
+@inherits BasePage
+
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 @using MudBlazor.Extensions.Core
 @using Nextended.Core.Extensions
@@ -20,7 +22,7 @@
                 </MudCardContent>
                 <MudCardActions>
                     <div class="mt-6" style="width: 100%; display: flex; justify-content: center; align-items: center">
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@ShowUploadDialog">Upload in dialog</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@ShowUploadDialog">@L["Upload in dialog"]</MudButton>
                     </div>
                 </MudCardActions>
             </MudCard>
@@ -70,7 +72,7 @@
             { nameof(MudExMessageDialog.Buttons), MudExDialogResultAction.OkCancel("Upload") },
             { nameof(MudExMessageDialog.Icon), Icons.Material.Filled.FileUpload }
         };
-        var res = await DialogService.ShowComponentInDialogAsync<MudExUploadEdit<UploadableFile>>("Upload content", "Upload content files as zip or separate",
+        var res = await DialogService.ShowComponentInDialogAsync<MudExUploadEdit<UploadableFile>>(L["Upload content"], L["Upload content files as zip or separate"],
             uploadEdit =>
             {
                 uploadEdit.AllowAudioRecording = true;

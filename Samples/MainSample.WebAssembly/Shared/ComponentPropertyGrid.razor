@@ -6,9 +6,10 @@
 @using System.Text
 @using System.IO.Compression
 @using System.Globalization
+@using Microsoft.Extensions.Localization
 @inherits MudExObjectEdit<T>
 @typeparam T
-
+@inject IStringLocalizer<ComponentPropertyGrid<T>> L
 @if (rendered)
 {
     @Inherited()
@@ -43,6 +44,9 @@ else
         StickyToolbarTop = "-8px";
         StoreAndReadValueFromUrl = true;
         MultiSearch = true;
+        if(MainLayout.Instance != null)
+            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
+    
         return base.OnInitializedAsync();
     }
 
@@ -110,21 +114,21 @@ else
     @<div>
         @if (!SearchActive)
     {
-        <MudTooltip Text="Edit in TryMudEx">
+        <MudTooltip Text="@L["Edit in TryMudEx"]">
             <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.PlayArrow" OnClick="@EditCode" />
         </MudTooltip>
-        <MudTooltip Text="Show Markup">
+        <MudTooltip Text="@L["Show Markup"]">
             <MudIconButton Icon="@Icons.Material.Filled.Code" OnClick="@ShowCode" />
         </MudTooltip>
         @if (ShowInheritedToggle)
         {
-            <MudTooltip Text="Show or hide inherited fields from base class">
+            <MudTooltip Text="@L["Show or hide inherited fields from base class"]">
                 <MudIconButton OnClick="@(() => OnChangeInherit(!_showInherited))" Color="@(_showInherited ? Color.Warning : Color.Default)"
                                Icon="@(_showInherited ? Icons.Material.Filled.Workspaces : Icons.Material.Outlined.Workspaces)"></MudIconButton>
             </MudTooltip>
         }
 
-        <MudTooltip Text="Group by types">
+        <MudTooltip Text="@L["Group by types"]">
             <MudIconButton OnClick="@(() => OnChangeGrouping(!_groupByTypes))" Color="@(_groupByTypes ? Color.Warning : Color.Default)"
                            Icon="@(_groupByTypes ? Icons.Material.Filled.TypeSpecimen : Icons.Material.Outlined.TypeSpecimen)"></MudIconButton>
         </MudTooltip>
@@ -162,7 +166,7 @@ else
         await DialogService.ShowComponentInDialogAsync<MudExCodeView>("Markup", null,
             md =>
             {
-                md.Code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value, generationComment);
+                md.Code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value, L[generationComment]);
                 md.Theme = MainLayout.GetCodeBlockTheme();
             },
             dialog =>
@@ -184,7 +188,7 @@ else
 
     private async Task EditCode()
     {
-        var code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value, generationComment);
+        var code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value, L[generationComment]);
         //var baseUrl = "https://localhost:44394";
         var baseUrl = AppConstants.Urls.TryOnline;
         var client = new HttpClient();

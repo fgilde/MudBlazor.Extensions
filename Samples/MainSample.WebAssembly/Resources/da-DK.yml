@@ -1,0 +1,4347 @@
+﻿_ Text: _Tekst
+--accent-color1: --accent-farve1
+--accent-color2: --accent-farve2
+--accent-color3: --accent-farve3
+--accent-color4: --accent-farve4
+--loading-color: --indlæser-farve
+--mud-palette-black: --mudder-palet-sort
+--mud-palette-primary: --mudder-palet-primær
+--mud-palette-primary-darken: --mudder-palet-primær-mørkere
+--mud-palette-primary-hover: --mudder-palet-primær-svæve
+--mud-palette-primary-lighten: --mudder-palet-primær-lysere
+--mud-palette-primary-text: --mudder-palet-primær-tekst
+--mud-palette-secondary: --mudder-palet-sekundær
+--mud-palette-secondary-darken: --mudder-palet-sekundær-mørkere
+--mud-palette-secondary-hover: --mudder-palet-sekundær-svæve
+--mud-palette-secondary-lighten: --mudder-palet-sekundær-lysere
+--mud-palette-secondary-text: --mudder-palet-sekundær-tekst
+--mud-palette-white: --mudder-palet-hvid
+(currently the item is not visible): (i øjeblikket er varen ikke synlig)
+(currently the item is visible): (i øjeblikket er varen synlig)
+4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+A: En
+A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: En komponent, der giver brugeren mulighed for at vælge en værdi fra en liste over mulige værdier og vise den som chips eller standard kombinationsboks.
+A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: En komponent, der kan bruges til at glide ind i et ChildContent fra bunden, toppen, venstre eller højre ved at holde musen over.
+A Component to display text with a gradient foreground or background: En komponent til at vise tekst med et forløb, forgrund eller baggrund
+A Component to display the content of a zip file: En komponent til at vise indholdet af en zip-fil
+A Component to edit and upload a list of files: En komponent til at redigere og uploade en liste over filer
+A Component to quickly select a color: En komponent til hurtigt at vælge en farve
+A connection to the server cannot be established. Your network connection may be down or the server is unreachable. Please wait until the connection has been restored: Der kan ikke oprettes forbindelse til serveren. Din netværksforbindelse kan være nede, eller serveren er utilgængelig. Vent venligst, indtil forbindelsen er genoprettet
+A divider to separate content: En skillevæg til at adskille indhold
+A maximum of {0} files are allowed: Der er maksimalt {0} tilladte filer
+A Popover can be used to display some content on top of another.: En Popover kan bruges til at vise noget indhold oven på et andet.
+A powerful component to edit an object and its properties.: En kraftfuld komponent til at redigere et objekt og dets egenskaber.
+A powerful editor that can handle json, xml or yaml content: En kraftfuld editor, der kan håndtere json-, xml- eller yaml-indhold
+A simple ColorPicker component that inherits the MudColorPicker but adds the possibility to delay the close event and use a native picker component from browser: En simpel ColorPicker-komponent, der arver MudColorPicker, men tilføjer muligheden for at forsinke lukningshændelsen og bruge en oprindelig vælgerkomponent fra browseren
+A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.: En simpel gitterkomponent, der understøtter Kolonner og Rækker og Kolonnespan og Rækkespænd til at indeholde sektioner.
+A SplitPanel Component: En SplitPanel-komponent
+A Splitter Component: En splitter-komponent
+A WYSIWYG Html editor component.: En WYSIWYG HTML-editorkomponent.
+A11yDark: A11yDark
+A11yLight: A11yLight
+aa-DJ: Afar (Djibouti)
+aa-ER: Afar (Eritrea)
+aa-ET: Afar (Etiopien)
+about: Omtrent
+Account: Konto
+ActionButtons: Handlingsknapper
+ActionButtonsNewLine: ActionButtonsNewLine
+ActionDefault: HandlingDefault
+ActionDisabled: HandlingDeaktiveret
+ActionDisabledBackground: ActionDisabledBaggrund
+Actions: Handlinger
+ActionsAdornment: HandlingerPynt
+ActionsClass: ActionsClass
+Activate comments: Aktivere kommentarer
+Activate User?: Aktivere bruger?
+Active: Aktiv
+Active?: Aktiv?
+ActiveFilterOnly: Kun aktivFilter
+Adaptive: Adaptive
+ADblNumber: ADblNumber
+Add: Tilføje
+Add 1000 random items: Tilføj 1000 tilfældige elementer
+Add 500 Users: Tilføj 500 brugere
+Add Brand: Tilføj mærke
+Add Document: Tilføj dokument
+Add Document Type: Tilføj dokumenttype
+Add Extended Attribute: Tilføj udvidet attribut
+Add external Url: Tilføj ekstern URL
+Add files: Tilføj filer
+Add Product: Tilføj produkt
+Add Role: Tilføj rolle
+Add Url: Tilføj URL
+Add user: Tilføj bruger
+Add user to both lists: Føj bruger til begge lister
+Additional Audio: Yderligere lyd
+Additional Video: Yderligere video
+AdditionalAdornment: Yderligere udsmykning
+Address: Adresse
+Addresses: Adresser
+AddUrl: Tilføj URL
+Administrator: Administrator
+Administrator Settings.: Administratorindstillinger.
+Administrators Profile's Status cannot be toggled: Administratorprofilens status kan ikke skiftes
+Adornment: Pynt
+AdornmentAriaLabel: UdsmykningAriaLabel
+AdornmentColor: UdsmykningFarve
+AdornmentIcon: UdsmykningIkon
+AdornmentText: Udsmykning Tekst
+af-NA: Afrikaans (Namibia)
+af-ZA: Afrikaans (Sydafrika)
+After the dialog is shown you can drag it to the edges to see snap. Also you can use Ctrl + {ArrowKeys} to change position: Når dialogen er vist, kan du trække den til kanterne for at se snap. Du kan også bruge Ctrl + {Piletaster} til at ændre position
+AfterBegin: EfterBegynde
+AfterEnd: Efterslut
+AfterSearchBox: AfterSearchBox
+Agate: Agat
+Age: Alder
+agq-CM: Aghem (Cameroun)
+ak-GH: Akan (Ghana)
+Albertus: Albertus
+Alice Johnson: Alice Johnson
+AliceBlue: AliceBlue
+Align: Justere
+ALL COMPONENTS: ALLE KOMPONENTER
+All Documents without Type are stored here: Alle dokumenter uden type gemmes her
+All Groups: Alle grupper
+All Permissions: Alle tilladelser
+All roles: Alle roller
+All roles unfiltered: Alle roller ufiltreret
+AllFilters: AlleFiltre
+AllowAudioRecording: TilladLydoptagelse
+AllowColumnSizeChange: AllowColumnSizeChange
+AllowCopyUrl: AllowCopyUrl
+AllowDownload: TilladDownload
+AllowDrop: Tillad Drop
+AllowDropBox: Tillad DropBox
+AllowDuplicates: TilladDubletter
+AllowExternalUrl: AllowExternalUrl
+AllowFolderUpload: AllowFolderUpload
+AllowGoogleDrive: TilladGoogleDrev
+AllowInteractingUnderRubberBand: TilladInteragere under RubberBand
+AllowMultiple: TilladMultiple
+AllowOneDrive: TilladOneDrive
+AllowOpenInNewTab: AllowOpenInNewTab
+AllowOpenOnReadOnly: AllowOpenOnReadOnly
+AllowPreview: TilladForhåndsvisning
+AllowRemovingItems: TilladFjernElementer
+AllowRename: TilladOmdøb
+AllowRubberBandSelection: TilladGummibåndValg
+AllowSelectionOfNonEmptyNodes: AllowSelectionOfNonEmptyNodes
+AllowSelectOnPreviewClick: AllowSelectOnPreviewKlik på
+AllowVideoCapture: Tillad VideoCapture
+AlphaBars: AlphaBars
+Already have an account?: Har du allerede en konto?
+Always: Altid
+AlwaysEditOptions: Altid RedigerIndstillinger
+AlwaysShowValue: AltidShowValue
+AlwaysVisible: Altid synlig
+am-ET: Amharisk (Etiopien)
+An Error has occured!: Der er opstået en fejl!
+An Error has occurred!: Der er opstået en fejl!
+An error occurred while confirming {0}: Der opstod en fejl under bekræftelse af {0}
+An extended SelectBox component that allows to select multiple items and provides a search function also internally the MudExPopover is used, and you can specify animations as well: En udvidet SelectBox-komponent, der gør det muligt at vælge flere elementer og giver en søgefunktion, også internt bruges MudExPopover, og du kan også angive animationer
+An item that only renders the content if it is in the viewport.: Et element, der kun gengiver indholdet, hvis det er i visningsporten.
+AnchorOrigin: Ankeroprindelse
+Andale Mono: Andale Mono
+Androidstudio: Androidstudio
+Animate: Animere
+AnimateAudioElementBorderColor: AnimateAudioElementBorderColor
+AnimateClose: AnimateLuk
+AnimateVisualizerBorderColor: AnimateVisualizerBorderColor
+Animation: Animation
+AnimationDuration: AnimationVarighed
+AnimationDuration (in ms): AnimationDuration (i ms)
+AnimationDurationInMs: AnimationVarighedInMs
+AnimationIn: Animation
+AnimationInDirection: AnimationInDirection
+AnimationInDuration: AnimationInDuration
+AnimationInPosition: AnimationInPosition
+AnimationOut: Animation ud
+AnimationOutDirection: AnimationOutDirection
+AnimationOutDuration: AnimationOutDuration
+AnimationOutPosition: AnimationOutPosition
+AnimationPosition: Animation Position
+Animations: Animationer
+AnimationTime: Animationstid
+AnimationTimingFunction: Funktionen AnimationTimingFunction
+AnOldHope: AnOldHope
+Another Demo theme: Et andet demo-tema
+AnotherRar.rar: AnotherRar.rar
+AnotherStringProperty10: AnotherStringProperty10
+AnotherStringProperty11: AnotherStringProperty11
+AnotherStringProperty12: AnotherStringProperty12
+AnotherStringProperty13: AnotherStringProperty13
+AnotherStringProperty14: AnotherStringProperty14
+AnotherStringProperty15: AnotherStringProperty15
+AnotherStringProperty16: AnotherStringProperty16
+AnotherStringProperty17: AnotherStringProperty17
+AnotherStringProperty18: AnotherStringProperty18
+AnotherStringProperty19: AnotherStringProperty19
+AnotherStringProperty20: AnotherStringProperty20
+AnotherStringProperty21: AnotherStringProperty21
+AnotherStringProperty22: AnotherStringProperty22
+AnotherStringProperty23: AnotherStringProperty23
+AnotherStringProperty24: AnotherStringProperty24
+AnotherStringProperty25: AnotherStringProperty25
+AnotherStringProperty26: AnotherStringProperty26
+AnotherStringProperty27: AnotherStringProperty27
+AnotherStringProperty28: AnotherStringProperty28
+AnotherStringProperty29: AnotherStringProperty29
+AnotherStringProperty30: AnotherStringProperty30
+AnotherStringProperty31: AnotherStringProperty31
+AnotherStringProperty32: AnotherStringProperty32
+AnotherStringProperty33: AnotherStringProperty33
+AnotherStringProperty34: AnotherStringProperty34
+AnotherStringProperty35: AnotherStringProperty35
+AnotherStringProperty36: AnotherStringProperty36
+AnotherStringProperty37: AnotherStringProperty37
+AnotherStringProperty38: AnotherStringProperty38
+AnotherStringProperty39: AnotherStringProperty39
+AnotherStringProperty40: AnotherStringProperty40
+AnotherStringProperty41: AnotherStringProperty41
+AnotherStringProperty42: AnotherStringProperty42
+AnotherStringProperty43: AnotherStringProperty43
+AnotherStringProperty44: AnotherStringProperty44
+AnotherStringProperty45: AnotherStringProperty45
+AnotherStringProperty46: AnotherStringProperty46
+AnotherStringProperty47: AnotherStringProperty47
+AnotherStringProperty48: AnotherStringProperty48
+AnotherStringProperty49: AnotherStringProperty49
+AnotherStringProperty50: AnotherStringProperty50
+AnotherStringProperty51: AnotherStringProperty51
+AnotherStringProperty52: AnotherStringProperty52
+AnotherStringProperty53: AnotherStringProperty53
+AnotherStringProperty54: AnotherStringProperty54
+AnotherStringProperty55: AnotherStringProperty55
+AnotherStringProperty56: AnotherStringProperty56
+AnotherStringProperty57: AnotherStringProperty57
+AnotherStringProperty58: AnotherStringProperty58
+AnotherStringProperty59: AnotherStringProperty59
+AnotherStringProperty60: AnotherStringProperty60
+AnsiBands: AnsiBands
+AntiqueWhite: AntikHvid
+ApathyBase16: ApathyBase16
+Api: Api
+API: API
+API-Versions: API-versioner
+AppBar: AppBar
+AppbarBackground: AppbarBaggrund
+AppbarHeight: AppbarHøjde
+AppbarText: AppbarText
+Appearance: Udseende
+Appetizer: Appetitvækker
+Apple: Æble
+Apple Gothic: Æble Gotisk
+Application: Ansøgning
+ApplicationDescription: Eksempelprogram med WebAssembly og Clean Architecture Pattern
+ApplicationSubDescription: Velkommen til Coworkee
+applies a CSS class when the item is not visible.: anvender en CSS-klasse, når elementet ikke er synligt.
+applies a CSS class when the item is visible.: anvender en CSS-klasse, når elementet er synligt.
+applies styles when the item is not visible.: Anvender typografier, når elementet ikke er synligt.
+applies styles when the item is visible.: Anvender formater, når elementet er synligt.
+Apply: Anvende
+ApplyBackgroundImageFromTrack: ApplyBackgroundImageFromTrack
+ApprenticeBase16: Lærlingebase16
+Apr: Apr
+Aqua: Aqua
+Aquamarine: Akvamarin
+ar-001: Arabisk (Verden)
+ar-AE: Arabisk (Forenede Arabiske Emirater)
+ar-BH: Arabisk (Bahrain)
+ar-DJ: Arabisk (Djibouti)
+ar-DZ: Arabisk (Algeriet)
+ar-EG: Arabisk (Egypten)
+ar-ER: Arabisk (Eritrea)
+ar-IL: Arabisk (Israel)
+ar-IQ: Arabisk (Irak)
+ar-JO: Arabisk (Jordan)
+ar-KM: Arabisk (Comorerne)
+ar-KW: Arabisk (Kuwait)
+ar-LB: Arabisk (Libanon)
+ar-LY: Arabisk (Libyen)
+ar-MA: Arabisk (Marokko)
+ar-MR: Arabisk (Mauretanien)
+ar-OM: Arabisk (Oman)
+ar-PS: Arabisk (Det Palæstinensiske Selvstyre)
+ar-QA: Arabisk (Qatar)
+ar-SA: Arabisk (Saudi-Arabien)
+ar-SD: Arabisk (Sudan)
+ar-SO: Arabisk (Somalia)
+ar-SS: Arabisk (Sydsudan)
+ar-SY: Arabisk (Syrien)
+ar-TD: Arabisk (Tchad)
+ar-TN: Arabisk (Tunesien)
+ar-YE: Arabisk (Yemen)
+Archive.zip: Archive.zip
+ArduinoLight: ArduinoLight
+Are you sure to close: Er du sikker på at lukke
+Are you sure you want to force logout for user {0}: Er du sikker på, at du vil gennemtvinge logout for brugerens {0}
+Are you sure you want to restart Backend/Server?: Er du sikker på, at du vil genstarte Backend/Server?
+Are you sure you want to restore the default settings? This will overwrite any changes you've ever made here.: Er du sikker på, at du vil gendanne standardindstillingerne? Dette vil overskrive alle ændringer, du nogensinde har foretaget her.
+Are you sure?: Er du sikker?
+Arial: Arial
+Arial Black: Arial Sort
+Arial Narrow: Arial Smal
+arn-CL: Mapuche (Chile)
+Arta: Kunst
+As Admin you can filter for users here: Som administrator kan du filtrere efter brugere her
+As Picker: Som Picker
+as read: som læst
+As simple as it sound. This is a simple GroupBox: Så simpelt som det lyder. Dette er en simpel GroupBox
+As soon as your account has been activated you can log in: Så snart din konto er blevet aktiveret, kan du logge ind
+as unread: som ulæst
+as-IN: Assamesisk (Indien)
+asa-TZ: Asu (Tanzania)
+Ascetic: Asketiske
+AshesBase16: AshesBase16
+AspectRatio: AspectRatio
+ast-ES: Asturisk (Spanien)
+At least one document is required: Der kræves mindst ét dokument
+AtelierCaveBase16: AtelierCaveBase16
+AtelierCaveLightBase16: AtelierCaveLightBase16
+AtelierDuneBase16: AtelierDuneBase16
+AtelierDuneLightBase16: AtelierDuneLightBase16
+AtelierEstuaryBase16: AtelierEstuaryBase16
+AtelierEstuaryLightBase16: AtelierEstuaryLightBase16
+AtelierForestBase16: AtelierForestBase16
+AtelierForestLightBase16: AtelierForestLightBase16
+AtelierHeathBase16: AtelierHeathBase16
+AtelierHeathLightBase16: AtelierHeathLightBase16
+AtelierLakesideBase16: AtelierLakesideBase16
+AtelierLakesideLightBase16: AtelierLakesideLightBase16
+AtelierPlateauBase16: AtelierPlateauBase16
+AtelierPlateauLightBase16: AtelierPlateauLightBase16
+AtelierSavannaBase16: VærkstedSavannaBase16
+AtelierSavannaLightBase16: AtelierSavannaLightBase16
+AtelierSeasideBase16: AtelierSeasideBase16
+AtelierSeasideLightBase16: AtelierSeasideLightBase16
+AtelierSulphurpoolBase16: AtelierSulphurpoolBase16
+AtelierSulphurpoolLightBase16: AtelierSulphurpoolLightBase16
+AtlasBase16: AtlasBase16
+AtomOneDark: AtomOneDark
+AtomOneDarkReasonable: AtomOneDarkReasonable
+AtomOneLight: AtomOneLight
+Audio Content-Type: Lydindhold-type
+Audio devices: Lydenheder
+AudioDevice: Lydenhed
+AudioElementBackgroundColor: AudioElementBackgroundColor
+AudioElementBorderColor: AudioElementBorderColor
+AudioElementBorderSize: AudioElementBorderSize
+AudioElementBorderStyle: AudioElementBorderStyle
+AudioElements: AudioElements
+AudioElementWidth: AudioElementWidth
+Audit Trails: Revisionsspor
+Audit Trails exported: Eksporterede revisionsspor
+Aug: Aug
+Austin: Austin
+Austin - 73301: Austin - 73301
+Austin - 73301ender: Austin - 73301ender
+Auto Confirm Email?: Bekræft e-mail automatisk?
+Auto Generated Editor for TestObject: Automatisk genereret editor til TestObject
+Auto Stop recording after: Stop automatisk optagelse efter
+AutoApplyGradient: AutoApplyGradient
+AutoClear: Automatisk rydning
+AutoCloseBehaviour: AutoCloseBehaviour
+AutoCloseOnSelect: AutoCloseOnSelect
+AutoCollapse: Skjul automatisk
+AutoExtractArchive: AutoExtractArchive
+AutoFocus: Autofokus
+AutoFocusFilter: AutofokusFilter
+AutoLoadFileDataBytes: AutoLoadFileDataBytes
+Automatically allow next time: Tillad automatisk næste gang
+AutoPlayNextTrackOnEnd: AutoPlayNextTrackOnEnd
+AutoRemoveError: AutoRemoveError
+AutoShowHideAudioElement: AutoShowHideAudioElement
+AutoSize: Automatisk størrelse
+Available: Tilgængelig
+AvailableItems: TilgængeligeVarer
+Avant Garde: Avantgarde
+az-Cyrl-AZ: Aserbajdsjansk (kyrillisk, aserbajdsjan)
+az-Latn-AZ: Aserbajdsjansk (latin, Aserbajdsjan)
+Azure: Azurblå
+B: B
+ba-RU: Basjkir (Rusland)
+Back: Ryg
+BackdropClick: BaggrundKlik på
+Background: Baggrund
+BackgroundColor: BaggrundFarve
+BackgroundGray: BaggrundGrå
+BackgroundImage: Baggrundsbillede
+BackgroundPosition: Baggrundsposition
+BackgroundRepeat: Baggrundsgentagelse
+BackgroundSize: Baggrundsstørrelse
+BackLinkLabel: BackLinkLabel
+Bar: Bar
+BarBeverage: BarBeverage
+Barcode: Stregkode
+Barcode already exists.: Stregkode findes allerede.
+Barcode is required!: Stregkode er påkrævet!
+BarIndex: BarIndex
+Bark: Bark
+BarLevel: Niveau med bjælke
+BarSpacing: BarSpacing
+Bart Simpson: Bart Simpson
+bas-CM: Basaa (Cameroun)
+Base component for a picker: Basiskomponent til en plukker
+Basic: Grundlæggende
+Basic role with default permissions: Grundlæggende rolle med standardtilladelser
+Bauhaus 93: Bauhaus 93
+be-BY: Hviderussisk (Hviderusland)
+BeforeBegin: FørBegynde
+BeforeEnd: Før slut
+BeforeSearchBox: FørSøgeboks
+Behavior: Adfærd
+Behaviour: Adfærd
+Beige: Beige
+Bell MT: Bell MT
+bem-ZM: Bemba (Zambia)
+Bernard MT Condensed: Bernard MT Kondenseret
+BespinBase16: BespinBase16
+Beverage: Drik
+bez-TZ: Bena (Tanzania)
+bg-BG: Bulgarsk (Bulgarien)
+BgAlpha: BgAlpha
+BgColor: BgColor
+bin-NG: Edo (Nigeria)
+Bind Dark Mode: Bind mørk tilstand
+BindWidthToPicker: BindWidthToPicker
+Birmingham: Birmingham
+Birmingham - B1 1BD: Esbjerg - B1 1BD
+Birmingham - B1 1BDender: Birmingham - B1 1BDender
+Bisque: Bisque
+Black: Sort
+Blackadder ITC: Blackadder ITC
+BlackList: Blacklist
+BlackMetalBase16: BlackMetalBase16
+BlackMetalBathoryBase16: BlackMetalBathoryBase16
+BlackMetalBurzumBase16: BlackMetalBurzumBase16
+BlackMetalDarkFuneralBase16: BlackMetalDarkFuneralBase16
+BlackMetalGorgorothBase16: BlackMetalGorgorothBase16
+BlackMetalImmortalBase16: BlackMetalImmortalBase16
+BlackMetalKholdBase16: BlackMetalKholdBase16
+BlackMetalMardukBase16: BlackMetalMardukBase16
+BlackMetalMayhemBase16: BlackMetalMayhemBase16
+BlackMetalNileBase16: BlackMetalNileBase16
+BlackMetalVenomBase16: BlackMetalVenomBase16
+BlanchedAlmond: Blancheret mandel
+Blazor wrapper component for AudioMotionAnalyzer: Blazor wrapper-komponent til AudioMotionAnalyzer
+BlobUrl: BlobUrl
+Blue: Blå
+BlueViolet: Blåviolet
+bm-Latn-ML: Bamanankan (Latin, Mali)
+bn-BD: Bengali (Bangladesh)
+bn-IN: Bangla (Indien)
+bo-CN: Tibetansk (Kina)
+bo-IN: Tibetansk (Indien)
+Bob Smith: Bob Smith
+Bodoni MT: Bodoni MT
+body1: krop1
+Body1: Krop1
+body2: krop2
+Body2: Krop 2
+Bookman: Bogmand
+BorderAnimationColors: BorderAnimationColors
+BorderColor: Kantfarve
+Bordered: Omkranset
+BorderOpacity: BorderOpacitet
+BorderSize: BorderSize
+BorderStyle: BorderStyle
+Both: Begge
+BothDiagonal: BeggeDiagonal
+BothHorizontal: Begge Vandret
+BothVertical: BeggeLodret
+Bottom: Bund
+BottomCenter: BottomCenter
+BottomLeft: NederstVenstre
+BottomRight: Nedersthøjre
+Bounce: Bounce
+br-FR: Bretonsk (Frankrig)
+Brand: Mærke
+Brand Deleted: Mærke slettet
+Brand is required!: Mærke er påkrævet!
+Brand Not Found!: Mærke ikke fundet!
+Brand Saved: Brand reddet!
+Brand Updated: Mærke opdateret!
+BrandName: Mærke
+Brands: Mærker
+Brands exported: Eksporterede mærker
+Breadcrumb: Brødkrumme
+BreadcrumbLink: BrødkrummeLink
+BreadcrumbSeparator: Brødkrummeseparator
+BrewerBase16: BrewerBase16
+BrightBase16: BrightBase16
+Brightness: Lysstyrke
+Broadway: Broadway
+BrogrammerBase16: BrogrammerBase16
+Brown: Brun
+BrownPaper: Brunt papir
+Browse Available Documents.: Gennemse tilgængelige dokumenter.
+Browser: Browser
+BrowserFileExt: BrowserFileExt
+Brush Script MT: Brush Script MT
+Brush Script Std: Pensel Script Std
+BrushTreesBase16: BrushTreesBase16
+BrushTreesDarkBase16: BrushTreesDarkBase16
+brx-IN: Bodø (Indien)
+bs-Cyrl-BA: Bosnisk (kyrillisk, Bosnien-Hercegovina)
+bs-Latn-BA: Bosnisk (latinsk, Bosnien-Hercegovina)
+BurlyWood: BurlyWood
+button: knap
+Button: Knap
+Button component for capturing audio and video.: Knapkomponent til optagelse af lyd og video.
+Button component for speech-to-text functionality, allowing for asynchronous recording and processing of speech input.: Knapkomponent til tale-til-tekst-funktionalitet, der giver mulighed for asynkron optagelse og behandling af taleinput.
+ButtonColor: Knapfarve
+ButtonSize: Knapstørrelse
+ButtonsJustify: KnapperJuster
+ButtonType: Knap Type
+ButtonVariant: KnapVariant
+byn-ER: Blin (Eritrea)
+Bytes: Byte
+C: C
+C#: C#
+ca-AD: Catalansk (Andorra)
+ca-ES: Catalansk (Spanien)
+ca-FR: Catalansk (Frankrig)
+ca-IT: Catalansk (Italien)
+CadetBlue: CadetBlue
+Calgary: Calgary
+Calgary - T1X 0L3: Calgary - T1X 0L3
+Calgary - T1X 0L3ender: Calgary - T1X 0L3ender
+Californian FB: Californisk FB
+Can close: Kan lukke
+Cancel: Aflyse
+Cancel deletion: Annuller sletning
+Cancelled: Aflyst
+CanClose: KanLuk
+CanCloseCallbackName: KanLukTilbagekaldNavn
+caption: billedtekst
+Caption: Billedtekst
+Capture: Fange
+Capture Screen: Optag skærm
+Capture service: Capture service
+Capture video: Optag video
+CaptureButton: CaptureButton
+CaptureInfoComponent: CaptureInfoComponent
+CaptureOptions: Indstillinger for optagelse
+Card Grid: Kort gitter
+CardEffect3d: CardEffect3d
+CardGrid: CardGrid
+Catalog Management: Katalog administration
+ccp-Cakm-BD: Chakma (Chakma, Bangladesh)
+ccp-Cakm-IN: Chakma (Chakma, Indien)
+ce-RU: Tjetjenien (Rusland)
+ceb-Latn-PH: Cebuano (Latin, Filippinerne)
+Centaur: Kentaur
+Center: Midte
+CenterCenter: CenterCenter
+CenterLeft: I midten til venstre
+CenterRight: Centerhøjre
+Centimeters: Centimeter
+Century Gothic: Århundrede Gotisk
+cgg-UG: Chiga (Uganda)
+ChalkBase16: Kridtbase16
+Change media options: Ændre medieindstillinger
+Change or edit your theme: Skift eller rediger dit tema
+Change Password: Skift adgangskode
+Change the system settings carefully: Skift systemindstillingerne omhyggeligt
+ChannelLayout: Kanal-layout
+Charlie Brown: Charlie Brown
+Chartreuse: Chartreuse
+Charts comming soon ish...: Hitlisterne kommer snart ish...
+ChartTooltip: ChartTooltip
+chat: Chatte
+Chat: Chatte
+Chat?: Chatte?
+Check me: Tjek mig
+Check out the MudExThemeEdit Component: Tjek MudExThemeEdit-komponenten
+CheckBox: Afkrydsningsfelt
+CheckedIcon: KontrolleretIkon
+Checker: Checker
+Checker box: Ternet felt
+Chicago: Chicago
+Chicago - 60601: Chicago - 60601
+Chicago - 60601ender: Chicago - 60601ender
+ChildContentStyle: ChildContentStyle
+Chiller: Chiller
+Chip: Jeton
+ChipClass: ChipClass
+ChipCloseable: ChipKan lukkes
+ChipColor: ChipColor
+ChipsAdditionalAbove: ChipsYderligereOvenfor
+ChipsAdditionalBelow: ChipsYderligereNedenfor
+ChipSelect: Vælg chip
+ChipSize: Chipstørrelse
+ChipsMaxWidth: ChipsMaxWidth
+ChipsOnly: Kun chips
+ChipVariant: ChipVariant
+ChipWithoutItemTemplate: ChipWithoutItemSkabelon
+Chocolate: Chokolade
+chr-Cher-US: Cherokee (Cherokee, Amerikas Forenede Stater)
+CircusBase16: Cirkusbase16
+Cities you want to live: Byer, du ønsker at bo i
+City: By
+Class: Klasse
+ClassChip: ClassChip
+ClassicDarkBase16: ClassicDarkBase16
+ClassicLightBase16: ClassicLightBase16
+ClassSearchBox: ClassSearchBox
+Clear: Tydelig
+Clearable: Kan ryddes
+Click here to choose a screen to capture. If not selected, you will be prompted when starting the recording.: Klik her for at vælge en skærm, der skal tages. Hvis det ikke er valgt, bliver du bedt om det, når du starter optagelsen.
+Click here to upload files: Klik her for at uploade filer
+Click the button below to enable them and load the third party services from disqus.com: Klik på knappen nedenfor for at aktivere dem og indlæse tredjepartstjenesterne fra disqus.com
+Clickable: Klikbar
+ClickAction: KlikHandling
+ClickPropagation: Klik på Formering
+Client Language has been changed: Klientsprog er blevet ændret
+Close: Lukke
+Closeable: Kan lukkes
+CloseAfterSelect: LukEfterVælg
+CloseButton: Luk-knap
+Closed: Lukket
+CloseIcon: LukIkon
+CloseOnEscapeKey: CloseOnEscapeKey
+co-FR: Korsikansk (Frankrig)
+Code: Kodeks
+CodeBlockTheme: CodeBlockTheme
+CodepenEmbed: CodepenEmbed
+CodeschoolBase16: CodeschoolBase16
+CollapseOnClick: Skjul ved klik
+Colonna MT: MT-klumme
+color: farve
+Color: Farve
+ColorBrewer: ColorBrewer
+ColorBubble: Farveboble
+ColoredImagesForExternalFilePicker: ColoredImagesForExternalFilePicker
+ColorEdit: FarveRediger
+ColorElements: ColorElements
+ColorizeIcons: Farvelæg ikoner
+ColorMode: Farvetilstand
+ColorPicker: ColorPicker
+ColorPickerMode: ColorPickerMode
+ColorPickerView: ColorPickerView
+ColorsBase16: FarverBase16
+ColorStops: ColorStops
+ColorTemperature: Farvetemperatur
+ColSpan: ColSpan
+Column: Kolonne
+Columns Affected: Berørte kolonner
+ColumnWidth: Kolonne bredde
+Comic Sans MS: Comic Sans MS
+Comments: Kommentarer
+Common: Fælles
+Communication: Kommunikation
+Community: Samfund
+Compact: Kompakt
+Comparer: Sammenligne
+Component edit capture options: Indstillinger for registrering af komponentredigering
+Component in Dialog: Komponent i dialogboks
+Component to add additional adornment to a MudInput: Komponent til at tilføje ekstra udsmykning til en MudInput
+Component to display a file in a iframe or object tag or in a registered viewer that implements IMudExFileDisplay: Komponent til visning af en fil i en iframe- eller objektkode eller i en registreret fremviser, der implementerer IMudExFileDisplay
+Component to display information about the current recording: Komponent til visning af oplysninger om den aktuelle optagelse
+Component to Edit Icon values: Komponent til redigering af ikonværdier
+Component to Edit MudExColor: Komponent til redigering af MudExColor
+Component to move the ChildContent to a specific element that can defined by ElementSelector.: Komponent for at flytte ChildContent til et bestemt element, der kan defineres af ElementSelector.
+Component to select a theme from a list of themes.: Komponent for at vælge et tema fra en liste over temaer.
+ComponentBaseWithState: ComponentBaseWithState
+ComponentInDialog: ComponentInDialog
+Conditional updates: Betingede opdateringer
+Configure list values: Konfigurere listeværdier
+Confirm: Bekræfte
+CONFIRM: BEKRÆFTE
+Confirm and Ignore: Bekræft og ignorer
+Confirm and Set Required: Bekræft og indstil påkrævet
+Confirm edit: Bekræft redigering
+Confirm Password: Bekræft adgangskode
+Confirm Registration: Bekræft registrering
+Confirmation: Bekræftelse
+ConnectAllAudioSources: ConnectAllAudioSources
+ConnectCapture: ConnectCapture
+ConnectCurrentTab: ConnectCurrentTab
+ConnectionMode: Forbindelsestilstand
+ConnectMicrophone: Tilslut mikrofon
+ConnectToCapture: ConnectToCapture
+contacts: Kontakter
+Content-Type: Indhold-type
+ContentAlignment: Justering af indhold
+ContentStream: Indholdsstrøm
+ContentType: Indholdstype
+ContextMenuAction: KontekstmenuHandling
+Continue to {0}: Fortsæt til {0}
+Continuous: Kontinuerlig
+Contrast: Kontrast
+Cooper Black: Cooper Black
+Copperplate Gothic Bold: Kobberstik Gotisk Fed
+Copperplate Gothic Light: Kobberstik Gotisk Lys
+Copy url: Kopier url
+Counter: Skranke
+Country: Land
+Courier New: Kurer Ny
+Courrier: Mail
+Create: Skabe
+Create address: Opret adresse
+Create new backup: Opret ny sikkerhedskopi
+CreatedOn: Oprettelsesdato
+Critical: Afgørende
+CropAndScale: Beskær og skaler
+cs-CZ: Tjekkisk (Tjekkiet)
+CSS Color Variables: CSS-farvevariabler
+CssVars: CssVars
+cu-RU: Kirkeslavisk (Rusland)
+CupcakeBase16: 'CupcakeBase16 sagde:'
+CupertinoBase16: CupertinoBase16
+Current Password: Nuværende adgangskode
+Current Password is required!: Nuværende adgangskode er påkrævet!
+Currently ThemeEditor is bind to DarkMode from current theme and in {0}. You can change DarMode in the Top right menu or disable binding by toggle the switch: I øjeblikket er ThemeEditor bundet til DarkMode fra det aktuelle tema og i {0}. Du kan ændre DarMode i menuen øverst til højre eller deaktivere binding ved at skifte kontakten
+Cursor: Markør
+CursorPositionOrigin: MarkørPositionOprindelse
+Custom: Sædvane
+CustomContentErrorMessage: CustomContentErrorMessage
+Customize: Tilpasse
+cy-GB: Welsh (Storbritannien)
+D: D
+da-DK: Dansk (Danmark)
+da-GL: Dansk (Grønland)
+Dallas: Dallas
+Dallas - 75201: Dallas - 75201
+Dallas - 75201ender: Dallas - 75201ender
+DanqingBase16: DanqingBase16
+DarculaBase16: DarculaBase16
+Dark: Mørk
+DarkContrastText: Mørk kontrasttekst
+DarkDarken: DarkDarken
+DarkGreen: Mørkegrøn
+DarkKhaki: Mørk Kakifarvet
+DarkLighten: Mørk lysning
+DarkMagenta: Mørk Magenta
+DarkmossBase16: DarkmossBase16
+DarkOliveGreen: DarkOliveGreen
+DarkOnly: Kun mørk
+DarkOrange: Mørk Orange
+DarkOrchid: DarkOrchid
+DarkRed: Mørkerød
+DarkSalmon: Mørk laks
+DarkSeaGreen: DarkSeaGreen
+DarkSlateBlue: Mørk skiferblå
+DarkSlateGray: Mørk skifergrå
+DarktoothBase16: DarktoothBase16
+DarkTurquoise: Mørk turkis
+DarkViolet: Mørk Violet
+DarkVioletBase16: Mørk VioletBase16
+Dashboard: Instrumentbræt
+Dashed: Stiplet
+Data: Data
+Data has been updated: Data er blevet opdateret
+Database Backups: Sikkerhedskopier af databaser
+DataUrl: DataUrl
+DataVisualiserStyle: DataVisualiserStyle
+date: dato
+Date: Dato
+Date Created: Oprettelsesdato
+Date Range For Searching: Datointerval til søgning
+DateOfBirth: Fødselsdato
+DateTime value is required using {0} type!: DateTime-værdien er påkrævet ved hjælp af {0} type!
+DateTimeLocal: DateTimeLocal
+dav-KE: Taita (Kenya)
+de-AT: Tysk (Østrig)
+de-BE: Tysk (Belgien)
+de-CH: Tysk (Schweiz)
+de-DE: Tysk (Tyskland)
+de-IT: Tysk (Italien)
+de-LI: Tysk (Liechtenstein)
+de-LU: Tysk (Luxembourg)
+Debug: Debug
+Dec: Dec
+DecafBase16: DecafBase16
+decimal: decimal
+Decimal: Decimal
+Decimal value is required using {0} type!: Decimalværdi er påkrævet ved hjælp af {0} type!
+DeepPink: Dyb Pink
+DeepSkyBlue: DeepSkyBlue
+Default: Standard
+DefaultBorderRadius: StandardBorderRadius
+DefaultDarkBase16: StandardDarkBase16
+DefaultLightBase16: DefaultLightBase16
+Defined: Defineret
+Delay: Forsinkelse
+DelayValueChangeToPickerClose: DelayValueChangeToPickerClose
+Delete: Slette
+Delete all: Slet alle
+Delete Confirmation: Slet bekræftelse
+Delete Content: Slet indhold
+Delete Content {0}: Slet indhold '{0}'
+Delete Extended Attribute?: Slette udvidet attribut?
+Delete file from server: Slet fil fra server
+Delete Image: Slet billede
+Delete Picture: Slet billede
+Delete Role Content: Vil du slette rollen med Id {0}?
+Delete these {0} elements: Slette disse {0} elementer?
+Delete this element: Vil du slette dette element?
+Delete User: Slet bruger
+Deletion Not Allowed: Sletning ikke tilladt
+Delimiter: Afgrænser
+Delimiters: Afgrænsere
+Demo drag mode SnapDrag: Demo-træktilstand SnapDrag
+Demo for MudExDialog as inline: Demo til MudExDialog som inline
+Demo for MudExTaskBar and not Modal dialogs: Demo til MudExTaskBar og ikke modale dialoger
+Demo for simple integrated useful dialogs. Prompt, Info, MessageBox: Demo til enkle integrerede nyttige dialoger. Prompt, Info, MessageBox
+Demo for the MudExUploadEdit inside of a MudForm and a FluentValidator.: Demo til MudExUploadEdit inde i en MudForm og en FluentValidator.
+Demo for the MudExUploadEdit.: Demo til MudExUploadEdit.
+Demo for using custom can close in DialogOptionsEx: Demo til brug af brugerdefineret kan lukke i DialogOptionsEx
+Demo for using Dialog and DialogBackground Appearance in DialogOptionsEx: Demo til brug af Dialog og DialogBackground Appearance i DialogOptionsEx
+Demo for using DialogOptionsEx: Demo til brug af DialogOptionsEx
+Demo for using DialogOptionsEx and pass position and size: Demo til brug af DialogOptionsEx og pasposition og størrelse
+Demo for using MudExObjectEdit for the same model with the default Demo but with some Meta configuration: Demo til brug af MudExObjectEdit til den samme model med standarddemoen, men med en vis Meta-konfiguration
+Demo for using MudExObjectEdit GroupingStyle.Tabs: Demo til brug af MudExObjectEdit GroupingStyle.Tabs
+Demo for using MudExObjectEdit only with bypassing an object: Demo til kun at bruge MudExObjectEdit ved at omgå et objekt
+Demo for using MudExObjectEdit with a configuration for Conditional using 'WithAttributesIf': Demo til brug af MudExObjectEdit med en konfiguration til betinget brug af 'WithAttributesIf'
+Demo for using MudExObjectEdit with a model that contains file(s): Demo til brug af MudExObjectEdit med en model, der indeholder fil(er)
+Demo for using MudExObjectEdit with CodeGator Adapter and CodeGator Attributes: Demo til brug af MudExObjectEdit med CodeGator Adapter og CodeGator Attributes
+Demo for using MudExObjectEditPicker with a model that contains file(s): Demo til brug af MudExObjectEditPicker med en model, der indeholder fil(er)
+Demo of using explicit the MudExFileDisplayZip to show and select content inside of a zip file: Demo af brug af eksplicit MudExFileDisplayZip til at vise og vælge indhold i en zip-fil
+Demonstration for a simple but very useful Enum Selector: Demonstration af en enkel, men meget nyttig Enum Selector
+Demonstration of the MudExSplitter: Demonstration af MudExSplitter
+Demonstration of the quickly color select with MudExColorBubble: Demonstration af det hurtige farvevalg med MudExColorBubble
+DEMOS: DEMOER
+Dense: Tæt
+Dependent permissions required: Kræver afhængige tilladelser
+Deployments: Installationer
+Description: Beskrivelse
+Description is required!: Beskrivelse er påkrævet!
+Description_for_Age: Description_for_Age
+Description_for_City: Description_for_City
+Description_for_FirstName: Description_for_FirstName
+Description_for_Id: Description_for_Id
+Description_for_LastName: Description_for_LastName
+Description_for_Notice: Description_for_Notice
+Description_for_OtherAddresses: Description_for_OtherAddresses
+Description_for_PostalCode: Description_for_PostalCode
+Description_for_ProgramingSkills: Description_for_ProgramingSkills
+Description_for_Street: Description_for_Street
+Description_for_TrueOrFalse: Description_for_TrueOrFalse
+Dessert: Dessert
+detailed guide for more.: Detaljeret vejledning for mere.
+Details for Trail ID: Oplysninger om Trail ID
+Devibeans: Devibeans
+DeviceId: Enheds-id
+DeviceListVariant: DeviceListVariant
+DeviceSelection: Valg af enhed
+Dialog: Dialog
+Dialog Appearance: Dialogens udseende
+Dialog Content: Dialogens indhold
+Dialog Drag & Drop: 'Dialog: Træk og slip'
+Dialog for editing objects with the MudExObjectEditForm: Dialog til redigering af objekter med MudExObjectEditForm
+Dialog Sample: Eksempel på dialogboks
+Dialog Samples: Eksempler på dialogbokse
+Dialog Snap Drag: 'Dialog: Fastgør træk'
+Dialog to display a file using {{{MudBlazor.Extensions.Components.MudExFileDisplay}}} component.: Dialogboks til at vise en fil ved hjælp af {{{MudBlazor.Extensions.Components.MudExFileDisplay}}} komponent.
+Dialog_Appearance: Dialog_Appearance
+DialogAppearance: DialogUdseende
+DialogBackgroundAppearance: DialogBaggrundUdseende
+DialogOptions: Dialogindstillinger
+Dialogs: Dialoger
+DialogsCanClose: DialogerCanClose
+DialogServiceExt: DialogServiceExt
+DialogSnapDrag: DialogSnapTræk
+DialogsPosition: DialogerPosition
+Diana Prince: Diana Prince
+DimGray: DimGrå
+Direct: Direkte
+Direction: Retning
+DirtyseaBase16: DirtyseaBase16
+Disable Grouping: Deaktiver gruppering
+Disabled: Handicappet
+DisableList: Deaktiver Liste
+DisableOpacityChange: DisableOpacitySkift
+DisablePadding: DeaktiverPadding
+DisablePopoverPadding: DisablePopoverPadding
+DisablePositionMargin: DisablePositionMargin
+DisableSelectedItemStyle: DisableSelectedItemStyle
+DisableSizeMarginX: DisableSizeMarginX
+DisableSizeMarginY: DisableSizeMarginY
+DiscreteFrequencies: Diskrete frekvenser
+DisplayActionMenu: DisplayActionMenu
+DisplayErrors: DisplayErrors
+DisplayPresetList: DisplayPresetList
+Displays a tree structure as flat list: Viser en træstruktur som en flad liste
+Displays a tree structure as horizontal navigable tree: Viser en træstruktur som vandret navigerbart træ
+Displays a tree structure as navigable Breadcrumb: Viser en træstruktur som navigerbar brødkrumme
+Displays a tree structure as navigable card grid: Viser en træstruktur som navigerbart kortgitter
+Displays a tree structure as navigable List: Viser en træstruktur som navigerbar liste
+Displays a tree structure as simple tree: Viser en træstruktur som et simpelt træ
+DisplaySurface: Skærmoverflade
+DisplayTrackList: DisplayTrackList
+DisposeEvent: BortskaffHændelse
+Disqus comments are disabled by default.: Disqus-kommentarer er som standard deaktiveret.
+Divider: Skillevæg
+DividerLight: Skillevæg Lys
+dje-NE: Zarma (Niger)
+DNumber: DNumber
+Do you really want to restart the server?: Vil du virkelig genstarte serveren?
+Do you really want to restore the database from backup '{0}'? Note that any changes made after {1} are gone. This also means any changes made by any user: Vil du virkelig gendanne databasen fra backup '{0}'? Bemærk, at alle ændringer, der foretages efter {1}, er væk. Dette betyder også eventuelle ændringer foretaget af enhver bruger
+Do you want to delete the profile picture of {0}: Vil du slette profilbilledet af {0}
+Do you want to delete the User {0}: Vil du slette brugerens {0}
+Docco: Docco
+Docked: Forankret
+Document Deleted: Dokumentet er slettet
+Document Extended Attributes: Udvidede attributter for dokumenter
+Document Management: Dokumenthåndtering
+Document Not Found!: Dokumentet blev ikke fundet!
+Document Saved: Dokument gemt
+Document Store: Dokumentlager
+Document Type: Dokumenttype
+Document Type Deleted: Dokumenttype slettet
+Document Type is required!: Dokumenttype er påkrævet!
+Document Type Not Found!: Dokumenttype ikke fundet!
+Document Type Saved: Dokumenttype gemt
+Document Type Updated: Dokumenttype opdateret
+Document type with this name already exists.: Dokumenttype med dette navn findes allerede.
+Document Types: Dokumenttyper
+Document Types exported: Eksporterede dokumenttyper
+Document Updated: Dokumentet er opdateret
+Documentation: Dokumentation
+Documents: Dokumenter
+DodgerBlue: DodgerBlue
+doi-Deva-IN: Dogri (Devanagari, Indien)
+Don't have an account?: Har du ikke en konto?
+Done!: Gjort!
+Donut: Doughnut
+Dotted: Prikket
+Double: Dobbelt
+DoubleClickAction: DobbeltklikHandling
+Download: Downloade
+Download {0} files separately: Download {0} filer separat
+Download {0} with {1} files as zip: Download {0} med {1} filer som zip
+Download file {0}: Download fil {0}
+Download file {0} as zip: Download fil {0} som zip
+DraculaBase16: DraculaBase16
+Drag and Drop files here: Træk og slip filer her
+DragEffect: Trækeffekt
+DragMode: Træk-tilstand
+Drawer: Skuffe
+DrawerBackground: Skuffebaggrund
+DrawerClipMode: DrawerClipMode
+DrawerIcon: SkuffeIkon
+DrawerMiniWidthLeft: SkuffeMiniWidthVenstre
+DrawerMiniWidthRight: SkuffeMiniWidthRight
+DrawerText: Skuffetekst
+DrawerVariant: SkuffeVariant
+DrawerWidthLeft: DrawerWidthVenstre
+DrawerWidthRight: DrawerWidthRight
+DroidCam Source 2: DroidCam Kilde 2
+DroidCam Source 3: DroidCam Kilde 3
+Drop Box: Afleveringsboks
+Drop down component to select a culture: Rullelistekomponent for at vælge en kultur
+Drop down component to select an enum value or multiple on flags enums: Rullelistekomponent for at vælge en enum-værdi eller flere på flag-enums
+Drop files here: Slip filer her
+DropBox external file picker component: Ekstern DropBox-filvælgerkomponent
+DropBoxApiKey: DropBoxApiKey
+Dropdown list component to select one ore more fonts: Rullelistekomponent til at vælge en eller flere skrifttyper
+DropShadow: DropShadow
+DropZoneClickAction: DropZoneClickAction
+dsb-DE: Nedre Sorbisk (Tyskland)
+dua-CM: Duala (Cameroun)
+DualCombined: DualCombined
+DualHorizontal: Dobbelt vandret
+DualVertical: DualVertical
+DuplicateErrorText: DuplicateErrorText
+Duration: Varighed
+dv-MV: Divehi (Maldiverne)
+Dynamic component tests: Test af dynamiske komponenter
+dyo-SN: Jola-Fonyi (Senegal)
+dz-BT: Dzongkha (Bhutan)
+E-mail: E-mail
+E-Mail: E-mail
+E-Mail not confirmed.: E-mail ikke bekræftet. Tjek venligst din postkasse og bekræft din e-mailadresse. <a href='{0}'>Send e-mailbekræftelse igen</a>
+ebu-KE: Embu (Kenya)
+Edge: Rand
+EdgeDarkBase16: EdgeDarkBase16
+EdgeLightBase16: EdgeLightBase16
+Edit: Redigere
+Edit {0}: Rediger {0}
+Edit a complex Model with included Collection of users: Rediger en kompleks model med inkluderet Samling af brugere
+Edit Audio Constraints: Rediger lydbegrænsninger
+Edit Current Theme: Rediger aktuelt tema
+Edit data in dialog: Rediger data i dialogboks
+Edit in TryMudEx: Rediger i TryMudEx
+Edit Items: Rediger elementer
+Edit only a Collection of users: Rediger kun en samling af brugere
+Edit rating: Rediger bedømmelse
+Edit Running Component: Rediger kørende komponent
+Edit Test Object: Rediger testobjekt
+Edit Users: Rediger brugere
+Edit Video Constraints: Rediger videobegrænsninger
+Edit with shared MetaConfig: Rediger med delt MetaConfig
+Editable: Redigerbare
+Editing of the DB Connection can break whole application. Please edit this only if you know what you are doing: Redigering af DB-forbindelsen kan ødelægge hele applikationen. Rediger kun dette, hvis du ved, hvad du laver
+Editing of this endpoint can break AI integration: Redigering af dette slutpunkt kan bryde AI-integrationen
+EditMode: Edit-tilstand
+Editor for a property of an object. Used internally inside the MudExObjectEdit: Editor for en egenskab for et objekt. Bruges internt i MudExObjectEdit
+EditRunningComponent: EditRunningComponent
+Edmonton: Edmonton
+Edmonton - T5A 0A1: København - T5A 0A1
+Edmonton - T5A 0A1ender: København - T5A 0A1ender
+ee-GH: Ewe (Ghana)
+ee-TG: Ewe (Togo)
+EightiesBase16: FirserneBase16
+el-CY: Græsk (Cypern)
+el-GR: Græsk (Grækenland)
+Elevation: Højde
+Em: I
+email: E-mail
+Email: E-mail
+Email {0} is already registered.: E-mail {0} er allerede registreret.
+Email cannot changed: E-mail kan ikke ændres
+Email Confirmation: Bekræftelse via e-mail
+Email is not correct: E-mail er ikke korrekt
+Email is required: E-mail er påkrævet
+Email is required!: E-mail er påkrævet!
+EmbersBase16: EmbersBase16
+en-001: Dansk (Verden)
+en-029: Engelsk (Caribien)
+en-150: Dansk (Europa)
+en-AE: Engelsk (Forenede Arabiske Emirater)
+en-AG: Engelsk (Antigua & Barbuda)
+en-AI: Engelsk (Anguilla)
+en-AS: Engelsk (Amerikansk Samoa)
+en-AT: Engelsk (Østrig)
+en-AU: Engelsk (Australien)
+en-BB: Engelsk (Barbados)
+en-BE: Engelsk (Belgien)
+en-BI: Engelsk (Burundi)
+en-BM: Engelsk (Bermuda)
+en-BS: Engelsk (Bahamas)
+en-BW: Engelsk (Botswana)
+en-BZ: Engelsk (Belize)
+en-CA: Dansk (Canada)
+en-CC: Engelsk (Kokosøerne)
+en-CH: Engelsk (Schweiz)
+en-CK: Dansk (Cookøerne)
+en-CM: Engelsk (Cameroun)
+en-CX: Engelsk (Christmas Island)
+en-CY: Dansk (Cypern)
+en-DE: Engelsk (Tyskland)
+en-DK: Dansk (Danmark)
+en-DM: Dansk (Dominica)
+en-ER: Engelsk (Eritrea)
+en-FI: Engelsk (Finland)
+en-FJ: Engelsk (Fiji)
+en-FK: Engelsk (Falklandsøerne)
+en-FM: Dansk (Mikronesien)
+en-GB: Engelsk (Storbritannien)
+en-GD: Engelsk (Grenada)
+en-GG: Engelsk (Guernsey)
+en-GH: Dansk (Ghana)
+en-GI: Engelsk (Gibraltar)
+en-GM: Engelsk (Gambia)
+en-GU: Engelsk (Guam)
+en-GY: Engelsk (Guyana)
+en-HK: Dansk (Hongkong SAR)
+en-ID: Dansk (Indonesien)
+en-IE: Engelsk (Irland)
+en-IL: Dansk (Israel)
+en-IM: Engelsk (Isle of Man)
+en-IN: Dansk (Indien)
+en-IO: Engelsk (Britisk territorium i Det Indiske Ocean)
+en-JE: Engelsk (Jersey)
+en-JM: Engelsk (Jamaica)
+en-KE: Dansk (Kenya)
+en-KI: Engelsk (Kiribati)
+en-KN: Engelsk (St. Kitts & Nevis)
+en-KY: Engelsk (Caymanøerne)
+en-LC: Dansk (St. Lucia)
+en-LR: Engelsk (Liberia)
+en-LS: Engelsk (Lesotho)
+en-MG: Engelsk (Madagaskar)
+en-MH: Engelsk (Marshalløerne)
+en-MO: Dansk (Macao SAR)
+en-MP: Engelsk (Nordmarianerne)
+en-MS: Engelsk (Montserrat)
+en-MT: Dansk (Malta)
+en-MU: Engelsk (Mauritius)
+en-MW: Engelsk (Malawi)
+en-MY: Engelsk (Malaysia)
+en-NA: Engelsk (Namibia)
+en-NF: Engelsk (Norfolk Island)
+en-NG: Engelsk (Nigeria)
+en-NL: Engelsk (Holland)
+en-NR: Dansk (Nauru)
+en-NU: Dansk (Niue)
+en-NZ: Engelsk (New Zealand)
+en-PG: Engelsk (Papua Ny Guinea)
+en-PH: Engelsk (Filippinerne)
+en-PK: Engelsk (Pakistan)
+en-PN: Engelsk (Pitcairn-øerne)
+en-PR: Engelsk (Puerto Rico)
+en-PW: Engelsk (Palau)
+en-RW: Engelsk (Rwanda)
+en-SB: Engelsk (Salomonøerne)
+en-SC: Engelsk (Seychellerne)
+en-SD: Dansk (Sudan)
+en-SE: Dansk (Sverige)
+en-SG: Dansk (Singapore)
+en-SH: Engelsk (St Helena, Ascension, Tristan da Cunha)
+en-SI: Dansk (Slovenien)
+en-SL: Engelsk (Sierra Leone)
+en-SS: Engelsk (Sydsudan)
+en-SX: Engelsk (Sint Maarten)
+en-SZ: Engelsk (Eswatini)
+en-TC: Engelsk (Turks- og Caicosøerne)
+en-TK: Engelsk (Tokelau)
+en-TO: Engelsk (Tonga)
+en-TT: Engelsk (Trinidad & Tobago)
+en-TV: Engelsk (Tuvalu)
+en-TZ: Engelsk (Tanzania)
+en-UG: Engelsk (Uganda)
+en-UM: Engelsk (USA's afsidesliggende øer)
+en-US: Dansk (Danmark)
+en-US-posix: Engelsk (USA, Computer)
+en-VC: Engelsk (St. Vincent & Grenadinerne)
+en-VG: Engelsk (De Britiske Jomfruøer)
+en-VI: Engelsk (De Amerikanske Jomfruøer)
+en-VU: Engelsk (Vanuatu)
+en-WS: Engelsk (Samoa)
+en-ZA: Engelsk (Sydafrika)
+en-ZM: Engelsk (Zambia)
+en-ZW: Engelsk (Zimbabwe)
+Enable Disqus: Aktiver Disqus
+enables or disables virtualization.: aktiverer eller deaktiverer virtualisering.
+End: Ende
+English: Engelsk
+Engravers MT: Gravører MT
+Enter email and your new password here: Indtast e-mail og din nye adgangskode her
+Enter email for password reset: Indtast den e-mailadresse, der er knyttet til din konto, og du vil modtage en e-mail med et link til at nulstille din adgangskode
+Enter name: Indtast navn
+Enter name of backup file: Indtast navnet på sikkerhedskopifilen
+Enter new name of backup file: Indtast nyt navn på sikkerhedskopifilen
+Enter the email address for the confirmation mail: Indtast e-mailadressen til bekræftelsesmailen
+Enter the URL to existing file: Indtast URL-adressen til den eksisterende fil
+Enter your message...: Skriv din besked...
+Entity Id: Enheds-id
+Entity is required!: Enhed er påkrævet!
+EntityCreatedBy: EntityCreatedBy
+EntityCreatedOn (Local): EntityCreatedOn (lokal)
+EntityCreatedOn (UTC): EntityCreatedOn (UTC)
+EntityId: EntityId
+EntityLastModifiedBy: EntityLastModifiedBy
+EntityLastModifiedOn (Local): EntityLastModifiedOn (lokal)
+EntityLastModifiedOn (UTC): EntityLastModifiedOn (UTC)
+Entree: Indgang
+EnumSelect: EnumSelect
+Environment: Miljø
+eo-001: Esperanto (Verden)
+EquilibriumDarkBase16: LigevægtDarkBase16
+EquilibriumGrayDarkBase16: LigevægtGråDarkBase16
+EquilibriumGrayLightBase16: LigevægtGråLysBase16
+EquilibriumLightBase16: LigevægtLightBase16
+Eras Bold ITC: Epoker Bold ITC
+Eras Demi ITC: Eras Demi ITC
+Eras Light ITC: Eras Light ITC
+Eras Medium ITC: Epoker Medium ITC
+Error: Fejl
+ErrorAnimation: Fejl-animation
+ErrorContrastText: ErrorContrastText
+ErrorDarken: FejlMørkere
+ErrorId: Fejl-id
+ErrorLighten: FejlLys
+ErrorMessage: Fejlmeddelelse
+ErrorText: Fejltekst
+es-419: Spansk (Latinamerika)
+es-AR: Spansk (Argentina)
+es-BO: Spansk (Bolivia)
+es-BR: Spansk (Brasilien)
+es-BZ: Spansk (Belize)
+es-CL: Spansk (Chile)
+es-CO: Spansk (Colombia)
+es-CR: Spansk (Costa Rica)
+es-CU: Spansk (Cuba)
+es-DO: Spansk (Den Dominikanske Republik)
+es-EC: Spansk (Ecuador)
+es-ES: Spansk (Spanien)
+es-GQ: Spansk (Ækvatorialguinea)
+es-GT: Spansk (Guatemala)
+es-HN: Spansk (Honduras)
+es-MX: Spansk (Mexico)
+es-NI: Spansk (Nicaragua)
+es-PA: Spansk (Panama)
+es-PE: Spansk (Peru)
+es-PH: Spansk (Filippinerne)
+es-PR: Spansk (Puerto Rico)
+es-PY: Spansk (Paraguay)
+es-SV: Spansk (El Salvador)
+es-US: Spansk (USA)
+es-UY: Spansk (Uruguay)
+es-VE: Spansk (Venezuela)
+Español: Spansk
+EspressoBase16: EspressoBase16
+et-EE: Estisk (Estland)
+Ethan Hunt: Ethan Hunt
+eu-ES: Baskisk (Spanien)
+EvaBase16: EvaBase16
+EvaDimBase16: EvaDimBase16
+ewo-CM: Ewondo (Cameroun)
+ExcelSheet.xlsx: ExcelSheet.xlsx
+Expand &nbsp; <b>not</b> &nbsp; loaded nodes: Udvid &nbsp; <b>noder, der ikke</b> &nbsp; er indlæst
+Expand all nodes: Udvid alle noder
+Expand loaded nodes: Udvid indlæste noder
+Expand/Collapse: Udvid/skjul
+ExpandBehaviour: UdvidAdfærd
+ExpandButtonDirection: UdvidKnapRetning
+ExpandedIcon: UdvidetIkon
+ExpandOnClick: UdvidPåKlik
+ExpandOnFilter: UdvidPåFilter
+Explicit File Display Zip: Eksplicit filvisning Zip
+Export: Eksport
+Export To Excel: Eksporter til Excel
+Export_SheetName: Data
+ExposureCompensation: Eksponeringskompensation
+ExposureMode: Eksponeringstilstand
+ExposureTime: Eksponeringstid
+Extended Attribute Deleted: Udvidet attribut slettet
+Extended Attribute Not Found!: Udvidet attribut ikke fundet!
+Extended Attribute Saved: Udvidet attribut gemt
+Extended Attribute Updated: Udvidet attribut opdateret
+Extended Attribute with this Key already exists.: Udvidet attribut med denne nøgle findes allerede.
+Extended Attributes: '\{0}\ Udvidede attributter'
+Extended Attributes exported: Udvidede attributter eksporteret
+ExtensionRestrictionType: ExtensionRestrictionType
+Extensions: Udvidelser
+External Id: Eksternt ID
+ExternalDialogOptions: ExternalDialogOptions
+ExternalId: EksternalId
+ExternalPickerImageSize: ExternalPickerImageSize
+ExternalProviderRendering: ExternalProviderRendering
+ExtraExtraLarge: ExtraExtraLarge
+ExtraLarge: Ekstra stor
+ExtraSmall: Ekstra lille
+fa-IR: Persisk (Iran)
+FacingMode: Vendt tilstand
+Fade: Falme
+FadeIn: FadeIn
+Failed to get client preferences: Klientindstillinger kunne ikke hentes
+FallBackInIframe: FallBackInIframe
+False: Falsk
+FAQs: Ofte stillede spørgsmål
+Far: Fjern
+Features: Funktioner
+Feb: Feb
+Felix Titling: Felix Titler
+Female: Kvindelig
+Female_ Text: Female_ tekst
+ff-Adlm-BF: Fulah (Adlam, Burkina Faso)
+ff-Adlm-CM: Fulah (Adlam, Cameroun)
+ff-Adlm-GH: Fulah (Adlam, Ghana)
+ff-Adlm-GM: Fulah (Adlam, Gambia)
+ff-Adlm-GN: Fulah (Adlam, Guinea)
+ff-Adlm-GW: Fulah (Adlam, Guinea-Bissau)
+ff-Adlm-LR: Fulah (Adlam, Liberia)
+ff-Adlm-MR: Fulah (Adlam, Mauretanien)
+ff-Adlm-NE: Fulah (Adlam, Niger)
+ff-Adlm-NG: Fulah (Adlam, Nigeria)
+ff-Adlm-SL: Fulah (Adlam, Sierra Leone)
+ff-Adlm-SN: Fulah (Adlam, Senegal)
+ff-Latn-BF: Fulah (Latin, Burkina Faso)
+ff-Latn-CM: Fulah (latin, Cameroun)
+ff-Latn-GH: Fulah (Latin, Ghana)
+ff-Latn-GM: Fulah (Latin, Gambia)
+ff-Latn-GN: Fulah (Latin, Guinea)
+ff-Latn-GW: Fulah (Latin, Guinea-Bissau)
+ff-Latn-LR: Fulah (Latin, Liberia)
+ff-Latn-MR: Fulah (latin, Mauretanien)
+ff-Latn-NE: Fulah (Latin, Niger)
+ff-Latn-NG: Fulah (Latin, Nigeria)
+ff-Latn-SL: Fulah (Latin, Sierra Leone)
+ff-Latn-SN: Fulah (Latin, Senegal)
+FFTSize: FFTSize
+fi-FI: Finsk (Finland)
+fil-PH: Filippinsk (Filippinerne)
+File Display: Visning af filer
+File Display with Stream: Filvisning med Stream
+File Handling: Filhåndtering
+File is required!: Fil er påkrævet!
+FileDisplay: FileDisplay
+FileDisplayAsStream: FileDisplayAsStream
+FileDisplayZipWithPreview: FileDisplayZipWithPreview
+FileInfo: Fil-info
+FileName: Filnavn
+Files: ﬁler
+Files of this type ({0}) are not allowed. Only following types are allowed '{1}'. Try one of these extensions ({2}): Filer af denne type ({0}) er ikke tilladt. Kun følgende typer er tilladt '{1}'. Prøv en af disse udvidelser ({2})
+Fill Administrator Credentials: Udfyld administratoroplysninger
+Fill Basic User Credentials: Udfyld grundlæggende brugeroplysninger
+FillAlpha: FillAlpha
+Filled: Fyldt
+Filter: Filter
+Filter...: Filter...
+Filter468: Filtrer468
+FilterBehaviour: Filteradfærd
+FilterBoxClass: FilterBoxClass
+FilterBoxStyle: FilterBoxStyle
+FilterChipsPlacedRight: FilterChipsPlacedRight
+Filtered Audit Trails exported: Eksporterede filtrerede revisionsspor
+Filtered Brands exported: Filtrerede mærker eksporteres
+Filtered Document Types exported: Filtrerede dokumenttyper eksporteret
+Filtered Extended Attributes exported: Filtrerede udvidede attributter eksporteret
+Filtered Products exported: Filtrerede produkter eksporteret
+Filtered Users exported: Filtrerede brugere eksporteret
+FilterEnabled: FilterAktiveret
+FilterHighlighting: FilterFremhævning
+Filtering: Filtrering
+FilterMode: Filter-tilstand
+FilterMultiple: Filtrer flere
+FilterPlaceholder: FilterPladsholder
+Filters: Filtre
+FilterVariant: Filtervariant
+Fiona Gallagher: Fiona Gallagher
+Firebrick: Ildsten
+First Name: Fornavn
+First Name is required: Fornavn er påkrævet
+FirstName: Fornavn
+Fixed: Fast
+Flags Enum: Flag Enum
+Flat: Flad
+Flat List: Flad liste
+FlatBase16: FlatBase16
+FlatList: FlatList
+FlexEnd: FlexEnd
+FlexStart: FlexStart
+Flip: Flip
+FlipAlways: FlipAlways
+FlipNever: FlipNever
+FlipOnOpen: FlipOnÅbn
+FlipX: FlipX
+FlipY: FlipY
+FloralWhite: Blomsterhvid
+Florian Gilde: Florian Gilde
+FNumber: FNumber
+fo-DK: Færøsk (Danmark)
+fo-FO: Færøsk (Færøerne)
+FocusDistance: FokusAfstand
+FocusMode: Fokustilstand
+FontFamily: FontFamily
+FontSelect: FontVælg
+FontSize: Skriftstørrelse
+FontWeight: Skrifttypevægt
+Footlight MT Light: Fodlygte MT Light
+Force pick Item: Tving plukning af vare
+Force pick Items: Force-pluk-varer
+Force select Item: Tving markering af element
+Force select Items: Tving markering af elementer
+ForceNativeRender: ForceNativeRender
+ForceSelectOfMudColor: ForceSelectOfMudColor
+ForceShrink: ForceShrink
+ForestGreen: Skovgrøn
+Forgot password?: Glemt adgangskode?
+Format: Format
+Foundation: Grund
+fr-029: Fransk (Caribien)
+fr-BE: Fransk (Belgien)
+fr-BF: Fransk (Burkina Faso)
+fr-BI: Fransk (Burundi)
+fr-BJ: Fransk (Benin)
+fr-BL: Fransk (St. Barthélemy)
+fr-CA: Fransk (Canada)
+fr-CD: Fransk (Congo [DRC])
+fr-CF: Fransk (Den Centralafrikanske Republik)
+fr-CG: Fransk (Congo)
+fr-CH: Fransk (Schweiz)
+fr-CI: Fransk (Côte d'Ivoire)
+fr-CM: Fransk (Cameroun)
+fr-DJ: Fransk (Djibouti)
+fr-DZ: Fransk (Algeriet)
+fr-FR: Fransk (Frankrig)
+fr-GA: Fransk (Gabon)
+fr-GF: Fransk (Fransk Guyana)
+fr-GN: Fransk (Guinea)
+fr-GP: Fransk (Guadeloupe)
+fr-GQ: Fransk (Ækvatorialguinea)
+fr-HT: Fransk (Haiti)
+fr-KM: Fransk (Comorerne)
+fr-LU: Fransk (Luxembourg)
+fr-MA: Fransk (Marokko)
+fr-MC: Fransk (Monaco)
+fr-MF: Fransk (St. Martin)
+fr-MG: Fransk (Madagaskar)
+fr-ML: Fransk (Mali)
+fr-MQ: Fransk (Martinique)
+fr-MR: Fransk (Mauretanien)
+fr-MU: Fransk (Mauritius)
+fr-NC: Fransk (Ny Kaledonien)
+fr-NE: Fransk (Niger)
+fr-PF: Fransk (Fransk Polynesien)
+fr-PM: Fransk (St. Pierre & Miquelon)
+fr-RE: Fransk (Réunion)
+fr-RW: Fransk (Rwanda)
+fr-SC: Fransk (Seychellerne)
+fr-SN: Fransk (Senegal)
+fr-SY: Fransk (Syrien)
+fr-TD: Fransk (Tchad)
+fr-TG: Fransk (Togo)
+fr-TN: Fransk (Tunesien)
+fr-VU: Fransk (Vanuatu)
+fr-WF: Fransk (Wallis & Futuna)
+fr-YT: Fransk (Mayotte)
+FrameRate: Billedhastighed
+FramerBase16: FramerBase16
+Franklin Gothic Medium: Franklin Gothic Medium
+French: Fransk
+FrequencyScale: Frekvensskala
+FruitSodaBase16: FrugtSodaBase16
+Fuchsia: Fuchsia
+Full: Fuld
+FullHeight: Fuld højde
+FullOctaveBands: Fuldoktavbånd
+FullPaged: Hele Sider
+Fullscreen: Fuld skærm
+FullScreen: Fuld skærm
+FullScreenButtonIcon: FuldskærmsknapIkon
+FullWidth: Fuld bredde
+fur-IT: Friulian (Italien)
+Futura: Fremtid
+fy-NL: Vestfrisisk (Holland)
+ga-GB: Irsk (Storbritannien)
+ga-IE: Irsk (Irland)
+Gain: Vinde
+Gainsboro: Gainsboro
+Garamond: Garamond
+gd-GB: Skotsk gælisk (Storbritannien)
+Gender: Køn
+General: Generel
+Geneva: Geneve
+George Miller: George Miller
+Georgia: Georgien
+German: Tysk
+GhostWhite: GhostWhite
+GigavoltBase16: GigavoltBase16
+Gigi: Gigi
+Gill Sans: Gill Sans
+Gill Sans MT: Gælle uden MT
+Github: Github
+GitHub Project repository: GitHub Project-lager
+GithubBase16: GithubBase16
+GithubDark: GithubDark
+GithubDarkDimmed: GithubDarkDimmed
+gl-ES: Galicisk (Spanien)
+Gml: Gml
+gn-PY: Guarani (Paraguay)
+GoHome: Gå hjem!
+Gold: Guld
+Goldenrod: Gyldenris
+Google: Google
+Google Drive: Google Drev
+Google Drive file picker component: Komponent til Google Drev-filvælger
+Googlecode: Googlekode
+GoogleDarkBase16: GoogleDarkBase16
+GoogleDriveClientId: GoogleDriveClientId
+GoogleLightBase16: GoogleLightBase16
+Goudy Old Style: Goudy gammel stil
+Goudy Stout: Goudy Stout
+Gradient: Stigning
+GradientDark: GradientDark
+GradientForeground: GradientForgrund
+GradientLeft: GradientVenstre
+GradientLight: GradientLight
+GradientRight: GradientRight
+GradientText: GradueringTekst
+Gravatar: Gravatar
+GravatarImageSize: GravatarImageSize
+Gray: Grå
+GrayDark: GråMørk
+GrayDarker: GråMørkere
+GrayDefault: GråDefault
+GrayLight: Gråt lys
+GrayLighter: GråLighter
+Grayscale: Gråtoner
+GrayscaleDarkBase16: GråtoneDarkBase16
+GrayscaleLightBase16: GråskalaLightBase16
+Green: Grøn
+GreenScreenBase16: GreenScreenBase16
+GreenYellow: GrønGul
+Grid: Gitter
+Grid_Enhanced: Grid_Enhanced
+GridCompact: GridCompact
+GridIcon: Gitter-ikon
+Groove: Rende
+Group: Gruppe
+Group by types: Gruppér efter typer
+GroupBox: GroupBox
+GroupId: Gruppe-id
+GroupingEnabled: GrupperingAktiveret
+GroupsInitiallyExpanded: GrupperOprindeligt udvidet
+GroupsNested: GrupperIndlejret
+GroupsSticky: GrupperKlæbrig
+GruvboxDarkHardBase16: GruvboxDarkHardBase16
+GruvboxDarkMediumBase16: MineboxDarkMediumBase16
+GruvboxDarkPaleBase16: GruvboxDarkPaleBase16
+GruvboxDarkSoftBase16: GruvboxDarkSoftBase16
+GruvboxLightHardBase16: GruvboxLightHardBase16
+GruvboxLightMediumBase16: GruvboxLightMediumBase16
+GruvboxLightSoftBase16: GruvboxLightSoftBase16
+gsw-CH: Schweizisk tysk (Schweiz)
+gsw-FR: Schweizertysk (Frankrig)
+gsw-LI: Schweizertysk (Liechtenstein)
+gu-IN: Gujarati (Indien)
+GutterBottom: GutterBottom
+Gutters: Tagrender
+guz-KE: Gusii (Kenya)
+gv-IM: Manx (Isle of Man)
+h1: H1
+H1: H1
+h2: H2
+H2: H2
+h3: H3
+H3: H3
+h4: H4
+H4: H4
+h5: H5
+H5: H5
+h6: H6
+H6: H6
+ha-Latn-GH: Hausa (Latin, Ghana)
+ha-Latn-NE: Hausa (Latin, Niger)
+ha-Latn-NG: Hausa (Latin, Nigeria)
+Haettenschweiler: Haettenschweiler
+HalfOctaveBands: Halvoktavbånd
+Hannah Davis: Hannah Davis
+HardcoreBase16: HardcoreBase16
+Harlow Solid Italic: Harlow Solid Kursiv
+Harmonic16DarkBase16: Harmonic16DarkBase16
+Harmonic16LightBase16: Harmonic16LightBase16
+Harrington: Harrington
+haw-US: Hawaiian (Amerikas Forenede Stater)
+he-IL: Hebraisk (Israel)
+Header.tiff: Header.tiff
+HeadShake: Hovedrystelser
+HeatMap: Varmekort
+HeetchDarkBase16: HeetchDarkBase16
+HeetchLightBase16: HeetchLightBase16
+Height: Højde
+HeliosBase16: HeliosBase16
+Hello: Hej
+Hello from dialog: Hej fra dialogen
+Hello from dialog 1: Hej fra dialog 1
+Hello from dialog sample page: Hej fra dialogeksempelsiden
+Hello World: Hej verden
+Hello...: Hej...
+HelperId: Hjælper-id
+HelperText: Hjælpertekst
+HelperTextOnFocus: HjælperTekstOnFocus
+Helvetica: Helvetica
+Helvetica Narrow: Helvetica smal
+Here is another Real demo available for: Her er en anden ægte demo tilgængelig for
+Here only number is configured to render with NumEdit edit but DataType is string. Also this field is ignored for import: Her er kun tal konfigureret til at gengive med NumEdit-redigering, men DataType er streng. Dette felt ignoreres også ved import
+Here you can edit the users, but only confirm if count is at least 2: Her kan du redigere brugerne, men kun bekræfte, hvis antallet er mindst 2
+Here you can leave a comment for this permission for the current role: Her kan du skrive en kommentar til denne tilladelse til den aktuelle rolle
+Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Her kan du se, hvordan du kan bruge MudExObjectEdit til at redigere egenskaberne for en kørende komponent
+Here you find a Demo how to use the service directly: Her finder du en demo om, hvordan du bruger tjenesten direkte
+Hex: Hex
+HEX: HEX
+HexA: Hexa
+hi-IN: Hindi (Indien)
+Hidden: Skjult
+Hide: Skjule
+HideContentWhenCollapsed: Skjul indholdNårSkjult
+HideDropDownWhenReadOnly: HideDropDownWhenReadOnly
+High Tower Text: Tekst med højt tårn
+HighlightSearch: FremhæveSøg
+Hinge: Hængsel
+Home: Hjem
+Honeydew: Honningdug
+HopscotchBase16: HopscotchBase16
+HorizonDarkBase16: HorizonDarkBase16
+HorizonLightBase16: HorizonLightBase16
+Horizontal: Horisontal
+HouseNumber: Tal
+Houston: Houston
+Houston - 77001: Houston - 77001
+Houston - 77001ender: Houston - 77001ender
+Houstonender: Houstonender
+HoverColor: HoverColor
+HoverMode: Hover-tilstand
+HoverOpacity: HoverOpacitet
+hr-BA: Kroatisk (Bosnien-Hercegovina)
+hr-HR: Kroatisk (Kroatien)
+Href: Href
+hsb-DE: Obersorbisk (Tyskland)
+HSL: HSL
+HTML Colors: HTML-farver
+HtmlTag: HTML-mærke
+https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls: https://www.cmu.edu/blackboard/files/evaluate/tests-example.xls
+https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc: https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc
+hu-HU: Ungarsk (Ungarn)
+HumanoidDarkBase16: HumanoidDarkBase16
+HumanoidLightBase16: HumanoidLightBase16
+hy-AM: Armensk (Armenien)
+Hybrid: Hybrid
+I agree to the terms and privacy: Jeg accepterer vilkårene og privatlivets fred
+I'm a also another separate control inside of the normal input: Jeg er også en anden separat kontrol inde i den normale indgang
+I'm a another separate control inside of the normal input: Jeg er en anden separat kontrol inde i den normale indgang
+I'm a separate control inside of the normal input: Jeg er en separat kontrol inde i den normale indgang
+ia-001: Interlingua (verden)
+IaDarkBase16: IaDarkBase16
+IaLightBase16: IaLightBase16
+Ian Wright: Ian Wright
+ibb-NG: Ibibio (Nigeria)
+ICaptureService: ICaptureService
+Icon: Ikon
+IconColor: Ikonfarve
+IconPicker: Ikonvælger
+IconSize: Ikonstørrelse
+IcyDarkBase16: IcyDarkBase16
+id: id
+Id: Id
+id-ID: Indonesisk (Indonesien)
+Idea: Idé
+Identifier: Identifikator
+If this is set a photo will be taken instead of a video.: Hvis dette er indstillet, vil der blive taget et billede i stedet for en video.
+If you like this package, please star ⭐ it on Github and share it with your friends. If not, you can give a star anyway and let me know what I can improve to make it better for you.: Hvis du kan lide denne pakke, kan du stjernemarkere ⭐ den på Github og dele den med dine venner. Hvis ikke, kan du alligevel give en stjerne og fortælle mig, hvad jeg kan forbedre for at gøre det bedre for dig.
+If you set this options as default. This options will be used for all dialogs where no options are specified. Continue?: Hvis du angiver denne indstilling som standard. Disse indstillinger vil blive brugt til alle dialoger, hvor der ikke er angivet nogen indstillinger. Fortsætte?
+ig-NG: Igbo (Nigeria)
+Ignore: Ignorere
+IgnoredPropertiesForReset: IgnoredPropertiesForReset
+IgnoredRenderControls: IgnoredRenderControls
+ii-CN: Yi (Kina)
+Image format: Billedformat
+ImageAsBackgroundImage: ImageAsBackgroundImage
+Images: Billeder
+ImagesNewLine: BillederNewLine
+Immediate: Umiddelbar
+ImmediateText: Øjeblikkelig tekst
+Impact: Indvirkning
+Import: Import
+ImportExportIcon: ImportExportIcon
+In: I
+In this example, data is loaded dynamically as soon as the item first appears within view. The component supports two content slots: I dette eksempel indlæses data dynamisk, så snart elementet først vises i visningen. Komponenten understøtter to indholdspladser
+In this sample you are forced to pick an user: I dette eksempel er du tvunget til at vælge en bruger
+In this sample you are forced to pick some users: I dette eksempel er du tvunget til at vælge nogle brugere
+In this sample you are forced to select some users: I dette eksempel er du tvunget til at vælge nogle brugere
+In this sample you can pick one user: I dette eksempel kan du vælge én bruger
+In this sample you can select multiple users: I dette eksempel kan du vælge flere brugere
+In this sample you can select one user: I dette eksempel kan du vælge én bruger
+Inches: Inches
+Include Entity fields (Export): Medtag objektfelter (eksporter)
+Incorrect Password.: Forkert adgangskode.
+IndeterminateIcon: UbestemtIkon
+Indigo: Indigo
+Indonesia: Indonesien
+Info: Info
+Info & About: Info & Om
+InfoContrastText: InfoContrastText
+InfoDarken: InfoDarken
+InfoLighten: InfoLighten
+Informal Roman: Uformel romersk
+Information: Information
+InfoText: Infotekst
+inherit: arve
+Inherit: Arve
+Initial: Initial
+InitialColor: Initialfarve
+InitiallyExpanded: Oprindeligt udvidet
+InitialMessage: Indledende besked
+InitialMessageVisibilityTime: InitialMessageVisibilityTime
+InitialPreset: InitialPreset
+InitialRender: InitialRender
+Inline: Inline
+Inline Dialog: Indbygget dialogboks
+InlineDialogs: InlineDialogbokse
+InProgress: Igangværende
+InputClass: InputClass
+InputId: InputId
+InputMode: Input-tilstand
+InputStyle: InputStyle
+InputType: Inputtype
+Inset: Indsat
+IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
+IntegratedInDialogAsImages: IntegratedInDialogAsImages
+InterimResults: Foreløbige resultater
+Invalid Credentials.: Ugyldige legitimationsoplysninger.
+IrBlack: IrBlack
+IrBlackBase16: IrBlackBase16
+Is Active: er aktiv
+Is Public: Er offentlig
+Is Public?: Er offentligt?
+is-IS: Islandsk (Island)
+IsActive: Eraktiv
+IsblEditorDark: IsblEditorDark
+IsblEditorLight: IsblEditorLight
+IsMouseOverChip: IsMouseOverChip
+ISO: ISO
+IsOpen: IsÅben
+IsotopeBase16: IsotopeBase16
+ISpeechRecognitionService: ISpeechRecognitionService
+IsPredefined: ErForuddefineret
+it-CH: Italiensk (Schweiz)
+it-IT: Italiensk (Italien)
+it-SM: Italiensk (San Marino)
+it-VA: Italiensk (Vatikanstaten)
+Italian: Italiensk
+Item 1: Punkt 1
+Item 2: Punkt 2
+Item 3: Punkt 3
+Item 3, Item 1: Punkt 3, punkt 1
+Item 4: Punkt 4
+Item 5: Punkt 5
+Item One: Punkt et
+Item Three: Punkt tre
+Item Two: Anden post
+ItemBackgroundColor: ItemBackgroundColor
+ItemClass: ItemClass
+ItemCollection: ItemCollection
+ItemContent: ItemContent
+ItemContentClass: ItemContentClass
+ItemContentStyle: ItemContentStyle
+ItemContentTypo: ItemContentTypo
+ItemList: Vareliste
+Items: Elementer
+ItemsSource: ElementerKilde
+ItemStyle: ItemStyle
+ItemWidth: Emne bredde
+iu-CA: Inuktitut (Canada)
+iu-Latn-CA: Inuktitut (Latin, Canada)
+Ivory: Elfenben
+ja-JP: Japansk (Japan)
+JackInTheBox: JackInTheBox
+Jan: Jan
+JavaScript: JavaScript
+Jello: Jello
+jgo-CM: Ngomba (Cameroun)
+jmc-TZ: Machame (Tanzania)
+John Doe: John Doe
+Jokerman: Jokerman
+Json: Json
+Json value is required using {0} type!: Json-værdi er påkrævet ved hjælp af {0} type!
+Json value must be a valid json string using {0} type!: Json-værdien skal være en gyldig json-streng ved hjælp af {0} type!
+Juice ITC: Juice ITC
+Jul: Jul
+Julia Roberts: Julia Roberts
+Jun: Jun
+Justify: Begrunde
+jv-Java-ID: Javanesisk (javanesisk, Indonesien)
+jv-Latn-ID: Javanesisk (latin, Indonesien)
+ka-GE: Georgisk (Georgien)
+kab-DZ: Kabyle (Algeriet)
+kam-KE: Kamba (Kenya)
+kde-TZ: Makonde (Tanzania)
+kea-CV: Kabuverdianu (Kap Verde)
+Keep scrolling to reveal the content below...: Bliv ved med at rulle for at afsløre indholdet nedenfor...
+KeepExisting: BeholdEksisterende
+KeepMaxSizeConstraints: KeepMaxSizeConstraints
+KeepRelations: Behold Relationer
+KeepState: KeepState
+Kevin Hart: Kevin Hart
+Key: Nøgle
+Key is required!: Nøgle er påkrævet!
+KeyDownPreventDefault: KeyDownPreventDefault
+KeyDownStopPropagation: KeyDownStopUdbredelse
+KeyUpPreventDefault: KeyUpPreventDefault
+KeyUpStopPropagation: KeyUpStop-udbredelse
+Khaki: Kakifarvet
+khq-ML: Koyra Chiini (Mali)
+ki-KE: Kikuyu (Kenya)
+Kilobytes: Kilobyte
+KimberBase16: KimberBase16
+KimbieDark: KimbieDark
+KimbieLight: KimbieLight
+kk-KZ: Kasakhisk (Kasakhstan)
+kkj-CM: Kako (Cameroun)
+kl-GL: Kalaallisut (Grønland)
+kln-KE: Kalenjin (Kenya)
+km-KH: Khmer (Cambodja)
+kn-IN: Kannada (Indien)
+ko-KP: Koreansk (Nordkorea)
+ko-KR: Koreansk (Korea)
+kok-IN: Konkani (Indien)
+Kommunikation - Mikrofon (Voicemod Virtual Audio Device (WDM)): Kommunikation - Mikrofon (Voicemod Virtual Audio Device (WDM))
+kr-Latn-NG: Kanuri (Latin, Nigeria)
+ks-Arab-IN: Kashmiri (arabisk, Indien)
+ks-Deva-IN: Kashmiri (Devanagari, Indien)
+ksb-TZ: Shambala (Tanzania)
+ksf-CM: Bafia (Cameroun)
+ksh-DE: Colognian (Tyskland)
+ku-Arab-IQ: Kurdisk (arabisk, Irak)
+ku-Arab-IR: Kurdisk (arabisk, Iran)
+Kunstler Script: Kunstler Script
+kw-GB: Cornish (Storbritannien)
+ky-KG: Kirgisistan (Kirgisistan)
+la-VA: Latin (Vatikanstaten)
+Label: Etiket
+Label_Description: Beskrivelse
+Label_for_Age: Label_for_Age
+Label_for_City: Label_for_City
+Label_for_FirstName: Label_for_FirstName
+Label_for_Gender: Label_for_Gender
+Label_for_HouseNumber: Label_for_HouseNumber
+Label_for_Id: Label_for_Id
+Label_for_Notice: Label_for_Notice
+Label_for_OtherAddresses: Label_for_OtherAddresses
+Label_for_PostalCode: Label_for_PostalCode
+Label_for_ProgramingSkills: Label_for_ProgramingSkills
+Label_for_Street: Label_for_Street
+Label_for_TrueOrFalse: Label_for_TrueOrFalse
+Label_UploadRequests: ﬁler
+LabelCustomTab: LabelCustomTab
+LabelDefinedTab: LabelDefinedTab
+lag-TZ: Langi (Tanzania)
+Landscape: Landskab
+Language: Sprog
+Languages: Sprog
+Large: Stor
+LargeZipArchive.zip: LargeZipArchive.zip
+Last Name: Efternavn
+Last Name is required: Efternavn er påkrævet
+LastName: Efternavn
+Laura Palmer: Laura Palmer
+Lavender: Lavendel
+LavenderBlush: LavendelBlush
+LawnGreen: Græsplænegrøn
+LayoutProperties: LayoutEgenskaber
+lb-LU: Luxembourgsk (Luxembourg)
+Leave editor focus to update MudExStructuredDataEditor: Lad redaktøren fokusere for at opdatere MudExStructuredDataEditor
+LedBars: LedBars
+Left: Venstre
+Left part in MudExSplitPanel. (Notice you can also use MudExSplitter directly): Venstre del i MudExSplitPanel. (Bemærk, at du også kan bruge MudExSplitter direkte)
+LegacyRender: LegacyRender
+Legend: Sagn
+LemonChiffon: CitronChiffon
+LetterSpacing: Bogstavafstand
+lg-UG: Ganda (Uganda)
+Library: Bibliotek
+LightBlue: Lyseblå
+LightBulb: Pære
+LightBulbSize: Pærestørrelse
+LightBulbSizeUnit: LyspærestørrelseEnhed
+LightCoral: Lys Koral
+LightCyan: LightCyan
+Lightfair: Lysmesse
+LightGoldenrodYellow: LysGyldenrisGul
+LightGray: Lysegrå
+LightGreen: Lysegrøn
+LightOnly: Kun lys
+LightPink: Lyserød
+LightSalmon: Lys laks
+LightSeaGreen: LysHavgrøn
+LightSkyBlue: LysSkyBlå
+LightSlateGray: Lys skifergrå
+LightSpeed: LightSpeed
+LightSteelBlue: Lysstålblå
+LightYellow: Lysegul
+Lime: Kalk
+LimeGreen: Limegrøn
+Line: Linje
+Linear: Lineær
+LinearAmplitude: Lineær amplitude
+LinearBoost: Lineært boost
+LineAreaGraph: LineAreaGraph
+LineColor: Linjefarve
+LineHeight: Linjehøjde
+Lines: Linjer
+LinesDefault: LinjerDefault
+LinesInputs: LinjerIndgange
+LineWidth: Linjebredde
+Lioshi: Lioshi
+List: Liste
+List appearance: Liste udseende
+List behavior: Listeadfærd
+List item for MudExList.: Listeelement til MudExList.
+lkt-US: Lakota (Amerikas Forenede Stater)
+ln-AO: Lingala (Angola)
+ln-CD: Lingala (Congo [DRC])
+ln-CF: Lingala (Den Centralafrikanske Republik)
+ln-CG: Lingala (Congo)
+lo-LA: Laos (Laos)
+LoadFileDataBytesInBackground: LoadFileDataBytesInBackground
+Loading: Pålæsning
+Loading...: Pålæsning...
+Local: Lokal
+LocalizerPattern: LocalizerPattern
+LockScroll: Lås rul
+Log: Log
+Logged In.: Logget ind.
+Logged Out.: Logget ud.
+LogicalSurface: Logisk overflade
+Login with Keycloak: Log ind med Keycloak
+LoginDescription: Log ind med dine legitimationsoplysninger.
+Logitech BRIO (046d:085e): Logitech BRIO (046d:085e)
+logLevel: logLevel
+logo.png: logo.png
+Logout: Logout
+Logout Confirmation: Vil du virkelig logge ud?
+Logout user: Log ud bruger
+London: London
+London - SW1A 1AA: København - SW1A 1AA
+London - SW1A 1AAender: København - SW1A 1AAender
+LondonTubeBase16: LondonTubeBase16
+LoRes: Lords
+Los Angeles: Los Angeles
+Los Angeles - 90001: Los Angeles - 90001
+Los Angeles - 90001ender: København - 90001ender
+lrc-IQ: Nordlige Luri (Irak)
+lrc-IR: Nordlige Luri (Iran)
+lt-LT: Litauisk (Litauen)
+lu-CD: Luba-Katanga (Congo [DRC])
+Lucida Bright: Lucida Bright
+Lucida Calligraphy: Lucida Kalligrafi
+Lucida Console: Lucida-konsol
+Lucida Fax: Lucida Fax
+Lucida Grande: Lucida Grande
+Lucida Handwriting: Lucida-håndskrift
+Lucida Sans: Lucida Sans
+Lucida Sans Typewriter: Lucida Sans Skrivemaskine
+Lucida Sans Unicode: Lucida Sans Unicode
+LumiBars: LumiBars
+luo-KE: Luo (Kenya)
+luy-KE: Luyia (Kenya)
+lv-LV: Lettisk (Letland)
+Lyon: Lyon
+Lyon - 69001: Lyon - 69001
+Lyon - 69001ender: Lyon - 69001ender
+Lyrics: Sangtekst
+MacintoshBase16: MacintoshBase16
+Magneto: Magneto
+Magula: Magula
+mai-IN: Maithili (Indien)
+Mail: Mail
+Main User: Primære bruger
+MainAddress: Hovedadresse
+MainSample.WebAssembly.Pages.Page_ObjectEditList+Brand: MainSample.WebAssembly.Pages.Page_ObjectEditList+Mærke
+MainSample.WebAssembly.Services.SampleFile: MainSample.WebAssembly.Services.SampleFile
+MainSample.WebAssembly.Services.SampleFileWithStream: MainSample.WebAssembly.Services.SampleFileWithStream
+MainUser: Hovedbruger
+Male: Mandlig
+Manage {0} {1}'s Extended Attributes: Administrer {0} {1} udvidede attributter
+Manage {0} {1}'s Permissions: Administrer {0} {1} tilladelser
+Manage {0} {1}'s Roles: Administrer {0} {1}'s roller
+Manage {0} Extended Attributes: Administrere {0} udvidede attributter
+Manage {0}'s Permissions: Administrer {0} tilladelser
+Manage Brands.: Administrer mærker.
+Manage Database Backups.: Administrer eller gendan sikkerhedskopier af databaser.
+Manage Document Types.: Administrere dokumenttyper.
+Manage Extended Attributes: Administrere udvidede attributter
+Manage Languages: Administrer sprog
+Manage Permission: Administrer tilladelse
+Manage Products.: Administrer produkter.
+Manage Roles: Administrere roller
+Manage Roles.: Administrer roller.
+Manage Translations: Administrer oversættelser
+Manage Users: Administrer brugere
+Manage your account: Administrer din konto
+Manchester: Manchester
+Manchester - M1 1AE: København - M1 1AE
+Manchester - M1 1AEender: Manchester - M1 1AEender
+Manual: Manual
+Mar: Mar
+Margin: Margen
+Mark all: Marker alle
+Mark all as read: Markér alle som læst
+Mark all as unread: Marker alle som ulæste
+Mark as read: Marker læst
+Mark as unread: Markér som ulæst
+MarrakeshBase16: MarrakeshBase16
+Marseille: Marseille
+Marseille - 13001: Marseille - 13001
+Marseille - 13001ender: Marseille - 13001ender
+mas-KE: Masai (Kenya)
+mas-TZ: Masai (Tanzania)
+Mask: Maske
+MateriaBase16: MateriaBase16
+MaterialBase16: MaterialeBase16
+MaterialDarkerBase16: MaterialeDarkerBase16
+MaterialLighterBase16: MaterialeLighterBase16
+MaterialPalenightBase16: MaterialePalenightBase16
+MaterialVividBase16: MaterialeVividBase16
+Matura MT Script Capitals: Matura MT Script Capitals
+MaxCaptureTime: MaxCaptureTime
+MaxChips: MaxChips
+MaxDecibels: MaxDecibels
+MaxFileSize: MaxFileSize
+MaxFPS: MaxFPS
+MaxFrequency: Maks. frekvens
+MaxHeight: Maks. højde
+MaximizeButton: Maksimer knappen
+MaxItems: MaxItems
+MaxItemWidth: MaxItemWidth
+MaxLength: Maks. længde
+MaxLuminance: MaxLuminance
+MaxMultipleFiles: MaxMultipleFiles
+MaxRecordingTime: Maks. Optagelsestid
+MaxWidth: Maks. bredde
+MaxZoomPixelRatio: MaxZoomPixelRatio
+May: Maj
+Medium: Medium
+MediumSlateBlue: MediumSkiferblå
+MediumSpringGreen: MediumSpringGreen
+MediumTurquoise: Mediumturkis
+MediumVioletRed: MediumVioletRød
+Megabytes: Megabyte
+Mel: Mel
+MellowPurpleBase16: MellowPurpleBase16
+MenuAnchorOrigin: MenuAnchorOrigin
+MenuMaxHeight: MenuMaxHeight
+MenuTransformOrigin: MenuTransformOrigin
+mer-KE: Meru (Kenya)
+Message will be deleted in {0} seconds: Beskeden slettes om {0} sekunder
+MessageClass: Beskedklasse
+MessageStyle: Beskedstil
+MetaCoverImage: MetaCoverImage
+Method 1: Metode 1
+Method 2: Metode 2
+MexicoLightBase16: MexicoLightBase16
+mfe-MU: Morisyen (Mauritius)
+mg-MG: Madagaskar (Madagaskar)
+mgh-MZ: Makhuwa-Meetto (Mozambique)
+mgo-CM: Metaʼ (Cameroun)
+mi-NZ: Maori (New Zealand)
+Michael Scott: Michael Scott
+MicrophoneDeviceId: MikrofonEnhedId
+MidnightBlue: Midnatsblå
+Mikrofon (3- RODE NT-USB) (19f7:0003): Mikrofon (3-RED NT-USB) (19f7:0003)
+Mikrofon (DroidCam Virtual Audio): Mikrofon (DroidCam virtuel lyd)
+Mikrofon (Logitech BRIO) (046d:085e): Mikrofon (Logitech BRIO) (046d:085e)
+Mikrofon (ROG Headset) (0b05:1876): Mikrofon (ROG-headset) (0b05:1876)
+Mikrofon (USB Audio Device) (1b3f:2008): Mikrofon (USB-lydenhed) (1b3f:2008)
+Mikrofon (Voicemod Virtual Audio Device (WDM)): Mikrofon (Voicemod Virtual Audio Device (WDM))
+Millimeters: Millimeter
+MimeRestrictionType: MimeRestrictionType
+MimeTypes: Mimetyper
+MinDecibels: MinDecibels
+MinFrequency: Min-frekvens
+MinHeight: MinHøjde
+Mini: Mini
+MinimizeButton: Minimer knap
+MinLuminance: MinLuminans
+MintCream: Mintcreme
+MinZoomLevel: MinZoomLevel
+Mirror: Spejl
+Misc: Misc
+Misc Options: Diverse muligheder
+Mistral: Mistral
+MistyRose: MistyRose
+mk-MK: Makedonsk (Nordmakedonien)
+ml-IN: Malayalam (Indien)
+mn-MN: Mongolsk (Mongoliet)
+mn-Mong-CN: Mongolsk (mongolsk, Kina)
+mn-Mong-MN: Mongolsk (mongolsk, Mongoliet)
+mni-IN: Manipuri (Indien)
+Moccasin: Moccasin
+MochaBase16: MochaBase16
+Modal: Kapital
+Mode: Tilstand
+Model with File: Model med fil
+Modern No. 20: Moderne nr. 20
+moh-CA: Mohawk (Canada)
+Monaco: Monaco
+Monitor: Skærm
+MonoBlue: MonoBlue
+Monokai: Monokai
+MonokaiBase16: MonokaiBase16
+MonokaiSublime: MonokaiSublime
+Monotype Corsiva: Monotype Corsiva
+Month: Måned
+Montreal: Montreal
+Montreal - H1A 0A1: Montreal - H1A 0A1
+Montreal - H1A 0A1ender: Montreal - H1A 0A1ender
+Montserrat: Montserrat
+Motion: Bevægelse
+Mouse: Mus
+MouseOverMessageClass: MouseOverMessageClass
+MouseOverMessageStyle: MouseOverMessageStyle
+MouseWheelDownAction: MouseWheelDownAction
+MouseWheelUpAction: MouseWheelUpAction
+MoveContent: Flyt indhold
+mr-IN: Marathi (Indien)
+MS Outlook: MS Outlook
+MS Reference Sans Serif: MS Reference Sans Serif
+MS Reference Specialty: MS Reference Speciale
+MS Sans Serif: MS Sans Serif
+MS Serif: MS Serif
+ms-BN: Malaysisk (Brunei)
+ms-ID: Malaysisk (Indonesien)
+ms-MY: Malaysisk (Malaysia)
+ms-SG: Malaysisk (Singapore)
+mt-MT: Maltesisk (Malta)
+mua-CM: Mundang (Cameroun)
+mud-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788: mudder-EX-POPOVER-8C7975A0-1F37-40CA-975A-B7ED66855788
+MudAlert: MudAlert
+MudAppBar: MudAppBar
+MudAvatar: MudAvatar
+MudAvatarGroup: MudAvatarGroup
+MudBadge: Muddermærke
+MudBlazor Components: MudBlazor-komponenter
+MudBlazor Popover: MudBlazor Popover
+MudBlazor.Extensions.Components.ThemePreset`1[MainSample.WebAssembly.ClientTheme]: MudBlazor.Extensions.Components.ThemePreset'1[MainSample.WebAssembly.ClientTheme]
+MudBreadcrumbs: Mudderbrødkrummer
+MudBreakpointProvider: MudBreakpoint-udbyder
+MudButton: Mudderknap
+MudButtonGroup: MudButtonGroup
+MudCard: Mudder
+MudCardActions: MudCardActions
+MudCardContent: MudCard-indhold
+MudCardHeader: MudCardHeader
+MudCardMedia: MudCardMedia
+MudCarouselItem: MudCarouselItem
+MudChart: Mudderdiagram
+MudChat: MudChat
+MudChatBubble: MudChatBubble
+MudChatFooter: MudChatFooter
+MudChatHeader: MudChatHeader
+MudCollapse: Mudderkollaps
+MudColorPicker: MudColorPicker
+MudColorStringFormat: MudColorStringFormat
+MudContainer: Mudderbeholder
+MudContextualActionBar: MudContextualActionBar
+MudDatePicker: MudDatePicker
+MudDateRangePicker: MudDateRangePicker
+MudDialog: MudDialog
+MudDialogContainer: MudDialogContainer
+MudDialogProvider: MudDialogProvider
+MudDivider: MudDivider
+MudDrawer: Mudder skuffe
+MudDrawerContainer: MudDrawerContainer
+MudDrawerHeader: MudDrawerHeader
+MudDynamicTabs: MudDynamicTabs
+MudElement: Mudderelement
+MudEx Components: MudEx-komponenter
+MudExAdditionalAdornment: MudExAdditionalOrnament
+MudExAppearance: MudExAppearance
+MudExAppLoader: MudExAppLoader
+MudExAudioPlayer: MudExAudioPlayer
+MudExCaptureButton: MudExCaptureButton
+MudExCaptureOptionsEdit: MudExCaptureOptionsRediger
+MudExCardList: MudExCardList
+MudExCardList with ItemsSource: MudExCardList med ItemsSource
+MudExCardList with ItemsSource and child content: MudExCardList med ItemsSource og underordnet indhold
+MudExCardList<TData>: MudExCardList<TData>
+MudExChipSelect: MudExChipVælg
+MudExChipSelect can used to select items from a collection as chips: MudExChipSelect kan bruges til at vælge genstande fra en samling som chips
+MudExChipSelect<T>: MudExChipVælg<T>
+MudExCodeView: MudExCodeView
+MudExCollectionEditor<T>: MudExCollectionEditor<T>
+MudExColor: MudExColor
+MudExColorBubble: MudExColorBubble
+MudExColorEdit: MudExColorRediger
+MudExColorEdit is in general a MudBlazor Picker component specially for the struct MudExColor. But because name MudExColorPicker is already used for an extended ColorPicker this Component is named MusExColorEdit: MudExColorEdit er generelt en MudBlazor Picker-komponent specielt til strukturen MudExColor. Men fordi navnet MudExColorPicker allerede bruges til en udvidet ColorPicker, hedder denne komponent MusExColorEdit
+MudExColorPicker: MudExColorPicker
+MudExColorUtils: MudExColorUtils
+MudExCss: MudExCss
+MudExCssBuilder: MudExCssBuilder
+MudExCultureSelect: MudExCultureSelect
+MudExDialog: MudExDialog
+MudExDialog is the component to use when you want to show a dialog inlined in your page with all DialogExtensions.: MudExDialog er den komponent, der skal bruges, når du vil vise en dialogboks indlejret på din side med alle DialogExtensions.
+MudExDivider: MudExDivider
+MudExDropBoxFilePicker: MudExDropBoxFilePicker
+MudExEnumSelect: MudExEnumSelect
+MudExEnumSelect<TEnum>: MudExEnumSelect<TEnum>
+MudExFileDisplay: MudExFileDisplay
+MudExFileDisplayCode: MudExFileDisplayCode
+MudExFileDisplayDialog: MudExFileDisplayDialog
+MudExFileDisplayExcel: MudExFileDisplayExcel
+MudExFileDisplayFont: MudExFileDisplayFont
+MudExFileDisplayHtml: MudExFileDisplayHtml
+MudExFileDisplayOfficeLive: MudExFileDisplayOfficeLive
+MudExFileDisplayStructuredData: MudExFileDisplayStructuredData
+MudExFileDisplayZip: MudExFileDisplayZip
+MudExFontSelect: MudExFontVælg
+MudExFontSelect can used to select one ore more fonts: MudExFontSelect kan bruges til at vælge en eller flere skrifttyper
+MudExGoogleFilePicker: MudExGoogleFilePicker
+MudExGradientText: MudExGradientText
+MudExGravatar: MudExGravatar
+MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar er en MudAvatar, der automatisk bruger profilbilledet fra gravatar til en e-mailadresse
+MudExGrid: MudExGrid
+MudExGrid Enhanced: MudExGrid forbedret
+MudExGridSection: MudExGrid-sektionen
+MudExGroupBox: MudExGroupBox
+MudExHtmlEdit: MudExHtmlRediger
+MudExIcon: MudExIcon
+MudExIcon is a simple MudIcon with extended possibilities to set all colors.: MudExIcon er en simpel MudIcon med udvidede muligheder for at indstille alle farver.
+MudExIconButton: MudExIconButton
+MudExIconPicker: MudExIconPicker
+MudExIconPicker is in general a MudBlazor Picker component specially for selecting an icon.: MudExIconPicker er generelt en MudBlazor Picker-komponent specielt til valg af et ikon.
+MudExImageViewer: MudExImageViewer
+MudExList: MudExList
+MudExList can used to select one ore more items from a bindeable collection.: MudExList kan bruges til at vælge en eller flere varer fra en bindbar samling.
+MudExList is a component that allows you to select an item from a list of items. It is a wrapper for MudList.: MudExList er en komponent, der giver dig mulighed for at vælge et element fra en liste over elementer. Det er en indpakning til MudList.
+MudExList<T>: MudExList<T>
+MudExListItem<T>: MudExListItem<T>
+MudExListSubheader is a sub header for MudExList.: MudExListSubheader er en underoverskrift til MudExList.
+MudExListSubheader<T>: MudExListSubheader<T>
+MudExMessageDialog: MudExMessageDialog
+MudExObjectEdit: MudExObjectRediger
+MudExObjectEdit and MudExCollectionEditor with a shared config: MudExObjectEdit og MudExCollectionEditor med en delt konfiguration
+MudExObjectEdit with virtual property rendering: MudExObjectEdit med gengivelse af virtuelle egenskaber
+MudExObjectEdit<T>: MudExObjectRediger<T>
+MudExObjectEditDialog<T>: MudExObjectEditDialog<T>
+MudExObjectEditForm<T>: MudExObjectEditForm<T>
+MudExObjectEditPicker<T>: MudExObjectEditPicker<T>
+MudExOneDriveFilePicker: MudExOneDriveFilePicker
+MudExpansionPanel: MudExpansionPanel
+MudExpansionPanels: MudExpansionPaneler
+MudExPicker: MudExPicker
+MudExPickerBase<T>: MudExPickerBase<T>
+MudExPopover: MudExPopover
+MudExPromptDialog: MudExPromptDialog
+MudExPromptDialog Component: MudExPromptDialog-komponent
+MudExPropertyEdit: MudExPropertyRediger
+MudExSelect: MudExSelect
+MudExSelect can used to select one ore more items from a bindeable collection. Also this component supports all animations like dialogs or MudExPopover.: MudExSelect kan bruges til at vælge en eller flere varer fra en bindbar samling. Denne komponent understøtter også alle animationer som dialoger eller MudExPopover.
+MudExSelect<T>: MudExSelect<T>
+MudExSelectItem is a select item for MudExSelect.: MudExSelectItem er et udvalgt element til MudExSelect.
+MudExSelectItem<T>: MudExSelectItem<T>
+MudExSize is a readonly struct that provides a convenient and type-safe way to deal with size values in the context of MudBlazor components.: MudExSize er en skrivebeskyttet struktur, der giver en bekvem og typesikker måde at håndtere størrelsesværdier i forbindelse med MudBlazor-komponenter.
+MudExSize<T>: MudExSize<T>
+MudExSlideBar: MudExSlideBar
+MudExSpeechToTextButton: MudExSpeechToTextButton
+MudExSplitPanel: MudExSplitPanel
+MudExSplitPanelItem: MudExSplitPanelItem
+MudExSplitter: MudExSplitter
+MudExStructuredDataEditor: MudExStructuredDataEditor
+MudExStyleBuilder: MudExStyleBuilder
+MudExSvg: MudExSvg
+MudExTagField: MudExTagField
+MudExTagField creates chips when user press on of the specified delimiter or presses enter.: MudExTagField opretter chips, når brugeren trykker på den angivne skilletegn eller trykker på enter.
+MudExTagField is a component that allows the user to enter a list of values as chips.: MudExTagField er en komponent, der giver brugeren mulighed for at indtaste en liste over værdier som chips.
+MudExTagField<T>: MudExTagField<T>
+MudExTaskBar: MudExTaskBar
+MudExTaskBar inherits the MudExSlideBar and provides a tabbar to select non modal dialogs. Just provide  somewhere in your Layout: MudExTaskBar arver MudExSlideBar og giver en fanelinje til at vælge ikke-modale dialoger. Du skal blot angive et sted i dit layout
+MudExTextField<T>: MudExTextField<T>
+MudExThemeEdit: MudExThemeRediger
+MudExThemeEdit is a powerful component to edit one ore more themes: MudExThemeEdit er en kraftfuld komponent til at redigere et eller flere temaer
+MudExThemeEdit<TTheme>: MudExThemeRediger<TTheme>
+MudExThemeSelect: MudExThemeSelect
+MudExThemeSelect<TTheme>: MudExThemeSelect<TTheme>
+MudExToggleableSearch: MudExToggleableSearch
+MudExTreeView: MudExTreeView
+MudExTreeView is useful to bind tree structured items. The control that should used can be set with the ViewMode property: MudExTreeView er nyttigt til at binde træstrukturerede elementer. Det kontrolelement, der skal bruges, kan angives med egenskaben ViewMode
+MudExTreeView with template: MudExTreeView med skabelon
+MudExTreeView<T>: MudExTreeView<T>
+MudExTreeViewBreadcrumb: MudExTreeViewBrødkrumme
+MudExTreeViewBreadcrumb<T>: MudExTreeViewBrødkrumme<T>
+MudExTreeViewCardGrid: MudExTreeViewCardGrid
+MudExTreeViewCardGrid<T>: MudExTreeViewCardGrid<T>
+MudExTreeViewDefault: MudExTreeViewDefault
+MudExTreeViewDefault<T>: MudExTreeViewDefault<T>
+MudExTreeViewFlatList: MudExTreeViewFlatList
+MudExTreeViewFlatList<T>: MudExTreeViewFlatList<T>
+MudExTreeViewHorizontal: MudExTreeViewVandret
+MudExTreeViewHorizontal<T>: MudExTreeViewVandret<T>
+MudExTreeViewList: MudExTreeViewList
+MudExTreeViewList<T>: MudExTreeViewList<T>
+MudExUploadEdit: MudExUploadRediger
+MudExUploadEdit<T>: MudExUploadRediger<T>
+MudExVirtualItem: MudExVirtualItem
+MudExVirtualize<TItem>: MudExVirtualize<TItem>
+MudFab: MudFab
+MudField: Mudderfelt
+MudFlexBreak: MudFlexBreak
+MudFocusTrap: MudFocusTrap
+MudForm: Mudderform
+MudGrid: MudGrid
+MudHeatMapCell: MudHeatMapCell
+MudHidden: MudHidden
+MudHighlighter: MudHighlighter
+MudIcon: Mudderikon
+MudIconButton: MudIconButton
+MudImage: MudImage
+MudInputAdornment: MudInputOrnament
+MudInputControl: MudInputControl
+MudInputLabel: MudInputLabel
+MudInputString: MudInputString
+MudItem: Muddergenstand
+MudLayout: Mudderlayout
+MudLink: MudLink
+MudListSubheader: MudListSubheader
+MudMainContent: MudMainContent
+MudMask: Mudder Maske
+MudMenu: Muddermenu
+MudMenuItem: MudMenuItem
+MudMessageBox: MudMessageBox
+MudNavGroup: MudNavGroup
+MudNavLink: MudNavLink
+MudNavMenu: MudNavMenu
+MudOverlay: MudOverlay
+MudPageContentNavigation: MudPageContentNavigation
+MudPagination: Mudderpaginering
+MudPaper: Mudderpapir
+MudPickerContent: MudPickerContent
+MudPickerToolbar: MudPickerToolbar
+MudPopover: MudPopover
+MudPopoverProvider: MudPopoverProvider
+MudProgressCircular: MudProgressCirkulær
+MudProgressLinear: MudProgressLinear
+MudRating: MudRating
+MudRatingItem: MudRatingItem
+MudRender: MudRender
+MudRTLProvider: MudRTLProvider
+MudScrollToTop: MudScrollToTop
+MudSimpleTable: MudSimpleTable
+MudSkeleton: Mudderskelet
+MudSnackbarElement: MudSnackbarElement
+MudSnackbarProvider: MudSnackbarUdbyder
+MudSpacer: Mudderafstandsstykke
+MudStack: MudStack
+MudStep: Mudder
+MudStepper: MudStepper
+MudSwipeArea: MudSwipe-området
+MudTablePager: MudTablePager
+MudTabPanel: MudTabPanel
+MudTabs: MudTabs
+MudTd: MudTd
+MudText: Mudder Tekst
+MudTextField with additional features: MudTextField med yderligere funktioner
+MudTFootRow: MudTFootRow
+MudTh: Mudder
+MudTHeadRow: MudTHeadRow
+MudThemeProvider: MudThemeProvider
+MudTimeline: MudTidslinje
+MudTimelineItem: MudTimelineItem
+MudTimePicker: MudTimePicker
+MudTimeSeriesChart: MudTimeSeries-diagram
+MudToggleIconButton: MudToggleIconButton
+MudToolBar: MudToolBar
+MudTooltip: MudTooltip
+MudTr: MudTr
+MudTreeViewItemToggleButton: MudTreeViewItemToggleButton
+MultiSelect: Vælg flere
+MultiSelection: MultiSelection
+MultiSelectionAlign: MultiSelectionAlign
+MultiSelectionComponent: MultiSelectionComponent
+MultiSelectWithCtrlKey: MultiSelectMedCtrlNøgle
+My Custom action: Min brugerdefinerede handling
+my-MM: Burmesisk (Myanmar)
+mzn-IR: Mazanderani (Iran)
+name: Navn
+Name: Navn
+Name is required: Navn er påkrævet
+Name is required!: Navn er påkrævet!
+NameContainerStyle: NameContainerStyle
+Names: Navne
+naq-NA: Navn (Namibia)
+Natalie Portman: Natalie Portman
+NavajoWhite: NavajoHvid
+NavigationExpandMode: NavigationExpandMode
+NavigationLinkBarClass: NavigationLinkBarClass
+NavigationLinkBarStyle: NavigationLinkBarStyle
+NavigationViewMode: NavigationViewMode
+NavigatorClass: NavigatorClass
+NavigatorPosition: Navigator Position
+NavigatorRectangleColor: NavigatorRectangleColor
+NavigatorSizeRatio: NavigatorSizeRatio
+Navy: Søværn
+nb-NO: Norsk bokmål (Norge)
+nb-SJ: Norsk bokmål (Svalbard & Jan Mayen)
+nd-ZW: North Ndebele (Zimbabwe)
+nds-DE: Plattysk (Tyskland)
+nds-NL: Plattysk (Holland)
+ne-IN: Nepalesisk (Indien)
+ne-NP: Nepalesisk (Nepal)
+NebulaBase16: NebulaBase16
+Never: Aldrig
+New: Ny
+NEW Dialog Drag Drop Mode: 'NY dialog: Træk slip-tilstand'
+New dialog Feature - SnapDrag: Ny dialogfunktion - SnapDrag
+New Message From {0}: Ny besked fra {0}
+New MudExStructureDataEditor can used to edit json, xml or yaml string in a MudExObjectEdit: Ny MudExStructureDataEditor kan bruges til at redigere json-, xml- eller yaml-streng i en MudExObjectEdit
+New Password: Ny adgangskode
+New User 100: Ny bruger 100
+New User 101: Ny bruger 101
+New User 102: Ny bruger 102
+New User 103: Ny bruger 103
+New User 104: Ny bruger 104
+New User 105: Ny bruger 105
+New User 106: Ny bruger 106
+New User 107: Ny bruger 107
+New User 108: Ny bruger 108
+New User 109: Ny bruger 109
+New User 110: Ny bruger 110
+New User 111: Ny bruger 111
+New User 112: Ny bruger 112
+New User 113: Ny bruger 113
+New User 114: Ny bruger 114
+New User 115: Ny bruger 115
+New User 116: Ny bruger 116
+New User 117: Ny bruger 117
+New User 118: Ny bruger 118
+New User 119: Ny bruger 119
+New User 120: Ny bruger 120
+New User 121: Ny bruger 121
+New User 122: Ny bruger 122
+New User 123: Ny bruger 123
+New User 124: Ny bruger 124
+New User 125: Ny bruger 125
+New User 126: Ny bruger 126
+New User 127: Ny bruger 127
+New User 128: Ny bruger 128
+New User 129: Ny bruger 129
+New User 130: Ny bruger 130
+New User 131: Ny bruger 131
+New User 132: Ny bruger 132
+New User 133: Ny bruger 133
+New User 134: Ny bruger 134
+New User 135: Ny bruger 135
+New User 136: Ny bruger 136
+New User 137: Ny bruger 137
+New User 138: Ny bruger 138
+New User 139: Ny bruger 139
+New User 140: Ny bruger 140
+New User 141: Ny bruger 141
+New User 142: Ny bruger 142
+New User 143: Ny bruger 143
+New User 144: Ny bruger 144
+New User 145: Ny bruger 145
+New User 146: Ny bruger 146
+New User 147: Ny bruger 147
+New User 148: Ny bruger 148
+New User 149: Ny bruger 149
+New User 150: Ny bruger 150
+New User 151: Ny bruger 151
+New User 152: Ny bruger 152
+New User 153: Ny bruger 153
+New User 154: Ny bruger 154
+New User 155: Ny bruger 155
+New User 156: Ny bruger 156
+New User 157: Ny bruger 157
+New User 158: Ny bruger 158
+New User 159: Ny bruger 159
+New User 160: Ny bruger 160
+New User 161: Ny bruger 161
+New User 162: Ny bruger 162
+New User 163: Ny bruger 163
+New User 164: Ny bruger 164
+New User 165: Ny bruger 165
+New User 166: Ny bruger 166
+New User 167: Ny bruger 167
+New User 168: Ny bruger 168
+New User 169: Ny bruger 169
+New User 170: Ny bruger 170
+New User 171: Ny bruger 171
+New User 172: Ny bruger 172
+New User 173: Ny bruger 173
+New User 174: Ny bruger 174
+New User 175: Ny bruger 175
+New User 176: Ny bruger 176
+New User 177: Ny bruger 177
+New User 178: Ny bruger 178
+New User 179: Ny bruger 179
+New User 180: Ny bruger 180
+New User 181: Ny bruger 181
+New User 182: Ny bruger 182
+New User 183: Ny bruger 183
+New User 184: Ny bruger 184
+New User 185: Ny bruger 185
+New User 186: Ny bruger 186
+New User 187: Ny bruger 187
+New User 188: Ny bruger 188
+New User 189: Ny bruger 189
+New User 190: Ny bruger 190
+New User 191: Ny bruger 191
+New User 192: Ny bruger 192
+New User 193: Ny bruger 193
+New User 194: Ny bruger 194
+New User 195: Ny bruger 195
+New User 196: Ny bruger 196
+New User 197: Ny bruger 197
+New User 198: Ny bruger 198
+New User 199: Ny bruger 199
+New User 200: Ny bruger 200
+New User 201: Ny bruger 201
+New User 202: Ny bruger 202
+New User 203: Ny bruger 203
+New User 204: Ny bruger 204
+New User 205: Ny bruger 205
+New User 206: Ny bruger 206
+New User 207: Ny bruger 207
+New User 208: Ny bruger 208
+New User 209: Ny bruger 209
+New User 21: Ny bruger 21
+New User 210: Ny bruger 210
+New User 211: Ny bruger 211
+New User 212: Ny bruger 212
+New User 213: Ny bruger 213
+New User 214: Ny bruger 214
+New User 215: Ny bruger 215
+New User 216: Ny bruger 216
+New User 217: Ny bruger 217
+New User 218: Ny bruger 218
+New User 219: Ny bruger 219
+New User 22: Ny bruger 22
+New User 220: Ny bruger 220
+New User 221: Ny bruger 221
+New User 222: Ny bruger 222
+New User 223: Ny bruger 223
+New User 224: Ny bruger 224
+New User 225: Ny bruger 225
+New User 226: Ny bruger 226
+New User 227: Ny bruger 227
+New User 228: Ny bruger 228
+New User 229: Ny bruger 229
+New User 23: Ny bruger 23
+New User 230: Ny bruger 230
+New User 231: Ny bruger 231
+New User 232: Ny bruger 232
+New User 233: Ny bruger 233
+New User 234: Ny bruger 234
+New User 235: Ny bruger 235
+New User 236: Ny bruger 236
+New User 237: Ny bruger 237
+New User 238: Ny bruger 238
+New User 239: Ny bruger 239
+New User 24: Ny bruger 24
+New User 240: Ny bruger 240
+New User 241: Ny bruger 241
+New User 242: Ny bruger 242
+New User 243: Ny bruger 243
+New User 244: Ny bruger 244
+New User 245: Ny bruger 245
+New User 246: Ny bruger 246
+New User 247: Ny bruger 247
+New User 248: Ny bruger 248
+New User 249: Ny bruger 249
+New User 25: Ny bruger 25
+New User 250: Ny bruger 250
+New User 251: Ny bruger 251
+New User 252: Ny bruger 252
+New User 253: Ny bruger 253
+New User 254: Ny bruger 254
+New User 255: Ny bruger 255
+New User 256: Ny bruger 256
+New User 257: Ny bruger 257
+New User 258: Ny bruger 258
+New User 259: Ny bruger 259
+New User 26: Ny bruger 26
+New User 260: Ny bruger 260
+New User 261: Ny bruger 261
+New User 262: Ny bruger 262
+New User 263: Ny bruger 263
+New User 264: Ny bruger 264
+New User 265: Ny bruger 265
+New User 266: Ny bruger 266
+New User 267: Ny bruger 267
+New User 268: Ny bruger 268
+New User 269: Ny bruger 269
+New User 27: Ny bruger 27
+New User 270: Ny bruger 270
+New User 271: Ny bruger 271
+New User 272: Ny bruger 272
+New User 273: Ny bruger 273
+New User 274: Ny bruger 274
+New User 275: Ny bruger 275
+New User 276: Ny bruger 276
+New User 277: Ny bruger 277
+New User 278: Ny bruger 278
+New User 279: Ny bruger 279
+New User 28: Ny bruger 28
+New User 280: Ny bruger 280
+New User 281: Ny bruger 281
+New User 282: Ny bruger 282
+New User 283: Ny bruger 283
+New User 284: Ny bruger 284
+New User 285: Ny bruger 285
+New User 286: Ny bruger 286
+New User 287: Ny bruger 287
+New User 288: Ny bruger 288
+New User 289: Ny bruger 289
+New User 29: Ny bruger 29
+New User 290: Ny bruger 290
+New User 291: Ny bruger 291
+New User 292: Ny bruger 292
+New User 293: Ny bruger 293
+New User 294: Ny bruger 294
+New User 295: Ny bruger 295
+New User 296: Ny bruger 296
+New User 297: Ny bruger 297
+New User 298: Ny bruger 298
+New User 299: Ny bruger 299
+New User 30: Ny bruger 30
+New User 300: Ny bruger 300
+New User 301: Ny bruger 301
+New User 302: Ny bruger 302
+New User 303: Ny bruger 303
+New User 304: Ny bruger 304
+New User 305: Ny bruger 305
+New User 306: Ny bruger 306
+New User 307: Ny bruger 307
+New User 308: Ny bruger 308
+New User 309: Ny bruger 309
+New User 31: Ny bruger 31
+New User 310: Ny bruger 310
+New User 311: Ny bruger 311
+New User 312: Ny bruger 312
+New User 313: Ny bruger 313
+New User 314: Ny bruger 314
+New User 315: Ny bruger 315
+New User 316: Ny bruger 316
+New User 317: Ny bruger 317
+New User 318: Ny bruger 318
+New User 319: Ny bruger 319
+New User 32: Ny bruger 32
+New User 320: Ny bruger 320
+New User 321: Ny bruger 321
+New User 322: Ny bruger 322
+New User 323: Ny bruger 323
+New User 324: Ny bruger 324
+New User 325: Ny bruger 325
+New User 326: Ny bruger 326
+New User 327: Ny bruger 327
+New User 328: Ny bruger 328
+New User 329: Ny bruger 329
+New User 33: Ny bruger 33
+New User 330: Ny bruger 330
+New User 331: Ny bruger 331
+New User 332: Ny bruger 332
+New User 333: Ny bruger 333
+New User 334: Ny bruger 334
+New User 335: Ny bruger 335
+New User 336: Ny bruger 336
+New User 337: Ny bruger 337
+New User 338: Ny bruger 338
+New User 339: Ny bruger 339
+New User 34: Ny bruger 34
+New User 340: Ny bruger 340
+New User 341: Ny bruger 341
+New User 342: Ny bruger 342
+New User 343: Ny bruger 343
+New User 344: Ny bruger 344
+New User 345: Ny bruger 345
+New User 346: Ny bruger 346
+New User 347: Ny bruger 347
+New User 348: Ny bruger 348
+New User 349: Ny bruger 349
+New User 35: Ny bruger 35
+New User 350: Ny bruger 350
+New User 351: Ny bruger 351
+New User 352: Ny bruger 352
+New User 353: Ny bruger 353
+New User 354: Ny bruger 354
+New User 355: Ny bruger 355
+New User 356: Ny bruger 356
+New User 357: Ny bruger 357
+New User 358: Ny bruger 358
+New User 359: Ny bruger 359
+New User 36: Ny bruger 36
+New User 360: Ny bruger 360
+New User 361: Ny bruger 361
+New User 362: Ny bruger 362
+New User 363: Ny bruger 363
+New User 364: Ny bruger 364
+New User 365: Ny bruger 365
+New User 366: Ny bruger 366
+New User 367: Ny bruger 367
+New User 368: Ny bruger 368
+New User 369: Ny bruger 369
+New User 37: Ny bruger 37
+New User 370: Ny bruger 370
+New User 371: Ny bruger 371
+New User 372: Ny bruger 372
+New User 373: Ny bruger 373
+New User 374: Ny bruger 374
+New User 375: Ny bruger 375
+New User 376: Ny bruger 376
+New User 377: Ny bruger 377
+New User 378: Ny bruger 378
+New User 379: Ny bruger 379
+New User 38: Ny bruger 38
+New User 380: Ny bruger 380
+New User 381: Ny bruger 381
+New User 382: Ny bruger 382
+New User 383: Ny bruger 383
+New User 384: Ny bruger 384
+New User 385: Ny bruger 385
+New User 386: Ny bruger 386
+New User 387: Ny bruger 387
+New User 388: Ny bruger 388
+New User 389: Ny bruger 389
+New User 39: Ny bruger 39
+New User 390: Ny bruger 390
+New User 391: Ny bruger 391
+New User 392: Ny bruger 392
+New User 393: Ny bruger 393
+New User 394: Ny bruger 394
+New User 395: Ny bruger 395
+New User 396: Ny bruger 396
+New User 397: Ny bruger 397
+New User 398: Ny bruger 398
+New User 399: Ny bruger 399
+New User 40: Ny bruger 40
+New User 400: Ny bruger 400
+New User 401: Ny bruger 401
+New User 402: Ny bruger 402
+New User 403: Ny bruger 403
+New User 404: Ny bruger 404
+New User 405: Ny bruger 405
+New User 406: Ny bruger 406
+New User 407: Ny bruger 407
+New User 408: Ny bruger 408
+New User 409: Ny bruger 409
+New User 41: Ny bruger 41
+New User 410: Ny bruger 410
+New User 411: Ny bruger 411
+New User 412: Ny bruger 412
+New User 413: Ny bruger 413
+New User 414: Ny bruger 414
+New User 415: Ny bruger 415
+New User 416: Ny bruger 416
+New User 417: Ny bruger 417
+New User 418: Ny bruger 418
+New User 419: Ny bruger 419
+New User 42: Ny bruger 42
+New User 420: Ny bruger 420
+New User 421: Ny bruger 421
+New User 422: Ny bruger 422
+New User 423: Ny bruger 423
+New User 424: Ny bruger 424
+New User 425: Ny bruger 425
+New User 426: Ny bruger 426
+New User 427: Ny bruger 427
+New User 428: Ny bruger 428
+New User 429: Ny bruger 429
+New User 43: Ny bruger 43
+New User 430: Ny bruger 430
+New User 431: Ny bruger 431
+New User 432: Ny bruger 432
+New User 433: Ny bruger 433
+New User 434: Ny bruger 434
+New User 435: Ny bruger 435
+New User 436: Ny bruger 436
+New User 437: Ny bruger 437
+New User 438: Ny bruger 438
+New User 439: Ny bruger 439
+New User 44: Ny bruger 44
+New User 440: Ny bruger 440
+New User 441: Ny bruger 441
+New User 442: Ny bruger 442
+New User 443: Ny bruger 443
+New User 444: Ny bruger 444
+New User 445: Ny bruger 445
+New User 446: Ny bruger 446
+New User 447: Ny bruger 447
+New User 448: Ny bruger 448
+New User 449: Ny bruger 449
+New User 45: Ny bruger 45
+New User 450: Ny bruger 450
+New User 451: Ny bruger 451
+New User 452: Ny bruger 452
+New User 453: Ny bruger 453
+New User 454: Ny bruger 454
+New User 455: Ny bruger 455
+New User 456: Ny bruger 456
+New User 457: Ny bruger 457
+New User 458: Ny bruger 458
+New User 459: Ny bruger 459
+New User 46: Ny bruger 46
+New User 460: Ny bruger 460
+New User 461: Ny bruger 461
+New User 462: Ny bruger 462
+New User 463: Ny bruger 463
+New User 464: Ny bruger 464
+New User 465: Ny bruger 465
+New User 466: Ny bruger 466
+New User 467: Ny bruger 467
+New User 468: Ny bruger 468
+New User 469: Ny bruger 469
+New User 47: Ny bruger 47
+New User 470: Ny bruger 470
+New User 471: Ny bruger 471
+New User 472: Ny bruger 472
+New User 473: Ny bruger 473
+New User 474: Ny bruger 474
+New User 475: Ny bruger 475
+New User 476: Ny bruger 476
+New User 477: Ny bruger 477
+New User 478: Ny bruger 478
+New User 479: Ny bruger 479
+New User 48: Ny bruger 48
+New User 480: Ny bruger 480
+New User 481: Ny bruger 481
+New User 482: Ny bruger 482
+New User 483: Ny bruger 483
+New User 484: Ny bruger 484
+New User 485: Ny bruger 485
+New User 486: Ny bruger 486
+New User 487: Ny bruger 487
+New User 488: Ny bruger 488
+New User 489: Ny bruger 489
+New User 49: Ny bruger 49
+New User 490: Ny bruger 490
+New User 491: Ny bruger 491
+New User 492: Ny bruger 492
+New User 493: Ny bruger 493
+New User 494: Ny bruger 494
+New User 495: Ny bruger 495
+New User 496: Ny bruger 496
+New User 497: Ny bruger 497
+New User 498: Ny bruger 498
+New User 499: Ny bruger 499
+New User 50: Ny bruger 50
+New User 500: Ny bruger 500
+New User 501: Ny bruger 501
+New User 502: Ny bruger 502
+New User 503: Ny bruger 503
+New User 504: Ny bruger 504
+New User 505: Ny bruger 505
+New User 506: Ny bruger 506
+New User 507: Ny bruger 507
+New User 508: Ny bruger 508
+New User 509: Ny bruger 509
+New User 51: Ny bruger 51
+New User 510: Ny bruger 510
+New User 511: Ny bruger 511
+New User 512: Ny bruger 512
+New User 513: Ny bruger 513
+New User 514: Ny bruger 514
+New User 515: Ny bruger 515
+New User 516: Ny bruger 516
+New User 517: Ny bruger 517
+New User 518: Ny bruger 518
+New User 519: Ny bruger 519
+New User 52: Ny bruger 52
+New User 520: Ny bruger 520
+New User 53: Ny bruger 53
+New User 54: Ny bruger 54
+New User 55: Ny bruger 55
+New User 56: Ny bruger 56
+New User 57: Ny bruger 57
+New User 58: Ny bruger 58
+New User 59: Ny bruger 59
+New User 60: Ny bruger 60
+New User 61: Ny bruger 61
+New User 62: Ny bruger 62
+New User 63: Ny bruger 63
+New User 64: Ny bruger 64
+New User 65: Ny bruger 65
+New User 66: Ny bruger 66
+New User 67: Ny bruger 67
+New User 68: Ny bruger 68
+New User 69: Ny bruger 69
+New User 70: Ny bruger 70
+New User 71: Ny bruger 71
+New User 72: Ny bruger 72
+New User 73: Ny bruger 73
+New User 74: Ny bruger 74
+New User 75: Ny bruger 75
+New User 76: Ny bruger 76
+New User 77: Ny bruger 77
+New User 78: Ny bruger 78
+New User 79: Ny bruger 79
+New User 80: Ny bruger 80
+New User 81: Ny bruger 81
+New User 82: Ny bruger 82
+New User 83: Ny bruger 83
+New User 84: Ny bruger 84
+New User 85: Ny bruger 85
+New User 86: Ny bruger 86
+New User 87: Ny bruger 87
+New User 88: Ny bruger 88
+New User 89: Ny bruger 89
+New User 90: Ny bruger 90
+New User 91: Ny bruger 91
+New User 92: Ny bruger 92
+New User 93: Ny bruger 93
+New User 94: Ny bruger 94
+New User 95: Ny bruger 95
+New User 96: Ny bruger 96
+New User 97: Ny bruger 97
+New User 98: Ny bruger 98
+New User 99: Ny bruger 99
+New Values: Nye værdier
+New York: New York
+New York - 10001: København - 10001
+New York - 10001ender: København - 10001ender
+New Yorkender: New Yorkender
+NextPreset: NæsteForudindstillet
+NextToSearchBox: NæsteTilSøgeboks
+NextTrack: Næstespor
+Niagara Engraved: Niagara indgraveret
+Niagara Solid: Niagara Solid
+NightOwl: Natteravn
+nl-AW: Hollandsk (Aruba)
+nl-BE: Hollandsk (Belgien)
+nl-BQ: Hollandsk (Bonaire, Sint Eustatius og Saba)
+nl-CW: Hollandsk (Curaçao)
+nl-NL: Hollandsk (Holland)
+nl-SR: Hollandsk (Surinam)
+nl-SX: Hollandsk (Sint Maarten)
+nmg-CM: Kwasio (Cameroun)
+nn-NO: Norsk nynorsk (Norge)
+NnfxDark: NnfxDark
+NnfxLight: NnfxLight
+nnh-CM: Ngiemboon (Cameroun)
+No: Nej
+No address: Ingen adresse
+No Allowed Actions: Ingen tilladte handlinger
+No longer update automatically: Opdateres ikke længere automatisk
+No notifications: Ingen meddelelser
+No space available: Ingen ledig plads
+NoChips: Ingen chips
+NodeBorderRadius: NodeBorderRadius
+NodePadding: NodePadding
+NoHeader: NoHeader
+NoIcon: Intet ikon
+NoModalDialogs: NoModalDialogs
+none: ingen
+None: Ingen
+Nord: Nord
+NordBase16: NordBase16
+Normal: Normal
+Not Allowed to add or delete Administrator Role if you have not this role.: Ikke tilladt at tilføje eller slette administratorrolle, hvis du ikke har denne rolle.
+Not allowed to Delete this user: Ikke tilladt at slette denne bruger
+Not Allowed.: Ikke tilladt.
+Not connected: Ikke tilsluttet
+Not Modal Dialogs: Ikke modale dialogbokse
+Note - Media options can't changed after a screen is selected: Bemærk - Medieindstillinger kan ikke ændres, når en skærm er valgt
+NoteLabels: BemærkEtiketter
+NotFoundMessage: Den side, du ledte efter, findes ikke.
+Notice: Meddelelse
+Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Bemærk, at hvis du bruger denne metode, kan du angive en tilbagekaldsreference, hvor metoden er placeret, hvis du ikke gør dette, er referencen selve dialogen, og du skal have metoden på din DialogClass i dette tilfælde
+Notifications: Meddelelser
+Nov: Nov
+NovaBase16: NovaBase16
+NoWrap: NoWrap
+npm-example-0.0.20.tgz: npm-eksempel-0.0.20.tgz
+nqo-GN: N'Ko (Guinea)
+nr-ZA: Sydndebele (Sydafrika)
+nso-ZA: Sesotho sa Leboa (Sydafrika)
+Nuget Package source: Nuget Package kilde
+Nullable enum: Nullable enum
+Nullable Flags Enum: Nullable Flags Enum
+Number: Tal
+numeric: numerisk
+nus-SS: Nuer (Sydsudan)
+nyn-UG: Nyankole (Uganda)
+Object Edit in Dialog: Objektredigering i dialogboks
+ObjectEdit: ObjectEdit
+ObjectEditCG: ObjektEditCG
+ObjectEditCondition: ObjektEditBetingelse
+ObjectEditConfigured: ObjektEditKonfigureret
+ObjectEditFile: ObjektRedigerfil
+ObjectEditInDialog: ObjektEditInDialog
+ObjectEditList: ObjectEditList
+ObjectEditPicker: ObjectEditPicker
+ObjectEditTabs: ObjektRedigerTabs
+ObjectEditVirtualized: ObjektEditVirtualiseret
+OBS Virtual Camera: OBS virtuelt kamera
+Obsidian: Obsidian
+oc-FR: Occitansk (Frankrig)
+OceanBase16: OceanBase16
+OceanicnextBase16: OceanicnextBase16
+OCR A Extended: OCR A forlænget
+Oct: Okt
+Official MudBlazor website: Officiel MudBlazor-hjemmeside
+Offline: Offline
+OffsetX: OffsetX
+OffsetY: Kompensationskøb
+Ok: Ok
+Old English Text MT: Gammel engelsk tekst MT
+Old Paint: Gammel maling
+Old paint found on a stone house door.: Gammel maling fundet på en stenhusdør.
+Old Values: Gamle værdier
+OldLace: OldLace
+Olive: Oliven
+OliveDrab: OlivenDrab
+om-ET: Oromo (Etiopien)
+om-KE: Oromo (Kenya)
+OnClickStopPropagation: OnClickStopUdbredelse
+OnContextMenuPreventDefault: OnContextMenuPreventDefault
+OnContextMenuStopPropagation: OnContextMenuStopUdbredelse
+OnCustomSelect: OnCustomSelect
+OnDefinedSelect: OnDefinedSelect
+One Drive: Et drev
+OnedarkBase16: OnedarkBase16
+OneDrive file picker component: OneDrive-filvælgerkomponent
+OneDriveClientId: OneDriveClientId
+OneEighthOctaveBands: EtOttendeOktavbånd
+OneFourthOctaveBands: EnFjerdeOktavbånd
+OneLightBase16: OneLightBase16
+OneSixthOctaveBands: Et sjetteOktavbånd
+OneThirdOctaveBands: EnTredjedelOktavbånd
+OneTwelfthOctaveBands: EnTolvteOktavbånd
+OneTwentyFourthOctaveBands: OneTwentyFourthOctaveBands
+Online: Online
+Only Selected Group (Export): Kun valgt gruppe (eksport)
+OnlyValidateIfDirty: KunValidereIfDirty
+OnPlay: OnPlay
+Onyx: Onyx
+Opacity: Opacitet
+OpacityNotFocused: OpacitetIkkeFokuseret
+Open: Åben
+Open in new browser tab: Åbn i ny browserfane
+Open now: Åben
+Open Url {0}: Åbn URL-{0}
+Open Url {0} in a new browser tab: Åbn URL-{0} i en ny browserfane
+OpenIcon: ÅbnIkon
+Optima: Optima
+Options: Indstillinger
+or-IN: Odia (Indien)
+Orange: Appelsin
+OrangeRed: Orangerød
+Orchid: Orkide
+Orientation: Orientering
+Original Code Gator DynamicForm: Original Code Gator DynamicForm
+os-GE: Ossetic (Georgien)
+os-RU: Ossetic (Rusland)
+Osaka: Osaka
+Osaka - 530-0001: Osaka - 530-0001
+Osaka - 530-0001ender: Osaka - 530-0001ender
+Oscar Wilde: Oscar Wilde
+Other: Anden
+Other Components: Andre komponenter
+OtherAddresses: AndetAdresser
+Otherwise the full image will be downloaded: Ellers vil det fulde billede blive downloadet
+Ottawa: Ottawa
+Ottawa - K1A 0A1: Ottawa - K1A 0A1
+Ottawa - K1A 0A1ender: Ottawa - K1A 0A1ender
+Out: Ud
+OuterClass: Ydre klasse
+OutlineBars: Kontur af søjler
+Outlined: Skitseret
+OutrunDarkBase16: OutrunDarkBase16
+Outset: Starten
+OverflowBehavior: OverløbFunktionsmåde
+Overlay: Overlay
+OverlayChildContent: OverlayChildContent
+OverlayDark: OverlayDark
+OverlayLight: OverlayLight
+overline: Overstregning
+Overline: Overstregning
+OverscanCount: OverscanCount
+Overview: Overblik
+Owner: Ejer
+pa-Arab-PK: Punjabi (arabisk, Pakistan)
+pa-IN: Punjabi (Indien)
+Palatino: Palatine
+Palatino Linotype: Palatino Linotype
+PaleGreen: Lysegrøn
+Palette: Palet
+PaletteDark: PaletMørk
+PaletteIcon: PaletIkon
+PaletteLight: PaletteLight
+PaleTurquoise: Bleg turkis
+PaleVioletRed: Blegeviolet Rød
+Pan: Herre
+pap-029: Papiamento (Caribien)
+PapayaWhip: Papayapisk
+Paper: Papir
+PapercolorDarkBase16: PapirfarveDarkBase16
+PapercolorLightBase16: PapirfarveLightBase16
+Papyrus: Papyrus
+ParaisoBase16: ParaisoBase16
+ParaisoDark: ParaisoDark
+ParaisoLight: ParaisoLight
+ParametersForSubControls: ParametreForSubControls
+Parchment: Pergament
+Paris: Paris
+Paris - 75001: Paris - 75001
+Paris - 75001ender: Paris - 75001ender
+PasqueBase16: PasqueBase16
+Password: Kodeord
+Password Changed!: Adgangskode ændret!
+Password Confirmation: Bekræftelse af adgangskode
+Password Confirmation is required!: Bekræftelse af adgangskode er påkrævet!
+Password is required!: Adgangskode er påkrævet!
+Password must be at least of length 8: Adgangskoden skal være mindst 8
+Password must contain at least one capital letter: Adgangskoden skal indeholde mindst ét stort bogstav
+Password must contain at least one digit: Adgangskoden skal indeholde mindst ét ciffer
+Password must contain at least one lowercase letter: Adgangskoden skal indeholde mindst ét lille bogstav
+Password Reset Mail has been sent to your authorized Email.: Mail til nulstilling af adgangskode er blevet sendt til din autoriserede e-mail.
+Password Reset Successful!: Nulstilling af adgangskode lykkedes!
+Passwords don't match: Adgangskoder stemmer ikke overens
+PathSeparator: PathSeparator
+Pattern: Mønster
+pcm-Latn-NG: Nigeriansk pidgin (latin, Nigeria)
+PeachPuff: PeachPuff
+PeakLine: PeakLine
+Penelope Cruz: Penelope Cruz
+Percentage: Procentdel
+Permission Name: Navn på tilladelse
+Perpetua: Evig
+Persistent: Hårdnakket
+Personal: Personlig
+Perspective3d: Perspektiv3d
+Peru: Peru
+Peter Griffin: Peter Griffin
+PhdBase16: PhdBase16
+Philadelphia: Philadelphia
+Philadelphia - 19019: Philadelphia - 19019
+Philadelphia - 19019ender: Philadelphia - 19019ender
+Philadelphiaender: Philadelphiaender
+Phoenix: Føniks
+Phoenix - 85001: Føniks - 85001
+Phoenix - 85001ender: Føniks - 85001ender
+Phone Number: Telefonnummer
+Phone number {0} is already registered.: Telefonnummer {0} allerede er registreret.
+PhoneNumber: Telefonnummer
+Picas: Spar
+Pick Item: Pluk vare
+Pick Items: Pluk varer
+Pick one user: Vælg én bruger
+Pick some users: Vælg nogle brugere
+Picker: Picker
+Picker appearance: Picker udseende
+PickerHeight: PickerHøjde
+PickerStyle: PickerStyle
+PickerVariant: PickerVariant
+PickerWidth: PickerBredde
+PickFromDropBox: PickFromDropBox
+PickFromGoogleDrive: Vælg fra GoogleDrev
+PickFromOneDrive: VælgFraOneDrive
+PicoBase16: 'PicoBase16 sagde:'
+Pie: Fod
+Pink: Lyserød
+Pixels: Pixel
+pl-PL: Polsk (Polen)
+Placeholder: Pladsholder
+Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor: Leg med MudBlazor og MudBlazor.Extensions i en online Code Editor
+Playbill: Spilleseddel
+Player: Spiller
+Please confirm your account by <a href='{0}'>clicking here</a>.: Bekræft venligst din konto ved at <a href='{0}'>klik her</a>.
+Please enter your name: Indtast venligst dit navn
+Please reset your password by <a href='{0}'>clicking here</a>.: Nulstil din adgangskode ved at <a href='{0}'>klikke her</a>.
+Please type {0} to confirm edit: Indtast {0} for at bekræfte redigeringen
+Please upload your personal qualifications and references that confirm your person and qualification: Upload venligst dine personlige kvalifikationer og referencer, der bekræfter din person og dine kvalifikationer
+Please Wait: Vent venligst
+PleaseSelect: Vælg venligst
+Plum: Blomme
+Points: Point
+PointsOfInterest: Interessepunkter
+Pojoaque: Pojoaque
+Poor Richard: Stakkels Richard
+PopBase16: PopBase16
+Popover: Popover
+PopoverAnimation: Popover-animation
+PopoverAnimationPosition: PopoverAnimationPosition.
+PopoverAnimationTimingFunction: PopoverAnimationTimingFunction
+PopoverClass: PopoverClass
+PopupEveryTime: PopupEveryTime
+PopupOnlyOnce: PopupOnlyOnce
+PopverAnimation: PopverAnimation
+PorpleBase16: PorpleBase16
+Portrait: Portræt
+Position: Position
+Position/Size Sample: Position/størrelse prøve
+PostalCode: Postnummer
+PowderBlue: PowderBlue
+Powerful component to edit a set of items and their properties.: Kraftfuld komponent til at redigere et sæt elementer og deres egenskaber.
+Powerful component to edit an object and its properties.: Kraftfuld komponent til redigering af et objekt og dets egenskaber.
+Powerful UI Editor for json, xml or yaml content now also as viewer for MudExFileDisplay: Kraftfuld UI Editor til json-, xml- eller yaml-indhold nu også som fremviser til MudExFileDisplay
+Preferred way on MudExTextField: Foretrukken måde på MudExTextField
+Preferred way on MudExTextField with For and ChildContent: Foretrukken måde på MudExTextField med For og ChildContent
+PresetListBehaviour: PresetListBehaviour
+PresetListClass: PresetListClass
+PresetListMode: PresetListMode
+PresetListPosition: PresetListPosition
+PresetListToggleButtonPosition: PresetListToggleButtonPosition
+Presets: Presets
+Preview: Preview
+PreviewButtonSize: PreviewButtonSize
+PreviewFont: PreviewFont
+PreviewIcon: EksempelIkon
+PreviewIconColor: PreviewIconColor
+PreviewImageInPresetList: PreviewImageInPresetList
+PreviewImageSize: ForhåndsvisningImageSize
+PreviewInIframe: PreviewInIframe
+PreviewMode: Forhåndsvisning
+PreviousPreset: ForrigeForudindstillet
+PreviousTrack: ForrigeSpor
+prg-001: Preussisk (verden)
+Primary: Primær
+Primary Key: Primær nøgle
+PrimaryContrastText: PrimærKontrasttekst
+PrimaryDarken: PrimærMørkere
+PrimaryLighten: Primær Lys
+Print: Trykke
+PrintButtonIcon: PrintButtonIcon
+Pristina: Pristina
+Product Deleted: Produktet slettet!
+Product Not Found!: Produktet blev ikke fundet!
+Product Saved: Produktet er gemt!
+Product Updated: Produktet er opdateret!
+Products: Produkter
+Products exported: Eksporterede produkter
+Profile: Profil
+Profile Details: Oplysninger om profil
+Profile picture added.: Profilbillede tilføjet.
+Profile picture deleted.: Profilbillede slettet.
+Profile updated: Profil opdateret
+ProgramingSkills: Programmering færdigheder
+Property1: Ejendom1
+Property10: Ejendom10
+Property11: Ejendom11
+Property12: Ejendom12
+Property13: Ejendom13
+Property14: Ejendom14
+Property15: Ejendom15
+Property16: Ejendom16
+Property17: Ejendom17
+Property18: Ejendom18
+Property19: Ejendom19
+Property2: Ejendom2
+Property20: Ejendom20
+Property21: Ejendom21
+Property22: Ejendom22
+Property23: Ejendom23
+Property24: Ejendom24
+Property25: Ejendom25
+Property26: Ejendom26
+Property27: Ejendom27
+Property28: Ejendom28
+Property29: Ejendom29
+Property3: Ejendom3
+Property30: Ejendom30
+Property31: Ejendom31
+Property32: Ejendom32
+Property33: Ejendom33
+Property34: Ejendom34
+Property35: Ejendom35
+Property36: Ejendom36
+Property37: Ejendom37
+Property38: Ejendom38
+Property39: Ejendom39
+Property4: Ejendom4
+Property40: Ejendom40
+Property41: Ejendom41
+Property42: Ejendom42
+Property43: Ejendom43
+Property44: Ejendom44
+Property45: Ejendom45
+Property5: Ejendom5
+Property6: Ejendom6
+Property7: Ejendom7
+Property8: Ejendom8
+Property9: Ejendom9
+prs-AF: prs (Afghanistan)
+ps-AF: Pashto (Afghanistan)
+ps-PK: Pashto (Pakistan)
+PseudoCss: PseudoCss
+pt-AO: Portugisisk (Angola)
+pt-BR: Portugisisk (Brasilien)
+pt-CH: Portugisisk (Schweiz)
+pt-CV: Portugisisk (Kap Verde)
+pt-GQ: Portugisisk (Ækvatorialguinea)
+pt-GW: Portugisisk (Guinea-Bissau)
+pt-LU: Portugisisk (Luxembourg)
+pt-MO: Portugisisk (Macao SAR)
+pt-MZ: Portugisisk (Mozambique)
+pt-PT: Portugisisk (Portugal)
+pt-ST: Portugisisk (São Tomé & Príncipe)
+pt-TL: Portugisisk (Timor-Leste)
+Public Profile: Offentlig profil
+Pulse: Puls
+Purebasic: Purebasic
+Purple: Lilla
+QtcreatorDark: QtcreatorDark
+QtcreatorLight: QtcreatorLight
+QualiaBase16: QualiaBase16
+Qualifications and References: Kvalifikationer og referencer
+quc-GT: Kʼicheʼ (Guatemala)
+Quentin Tarantino: Quentin Tarantino
+Quick Insights.: Hurtig indsigt.
+Quick Start Guide: Hurtig startvejledning
+quz-BO: quz (Bolivia)
+quz-EC: quz (Ecuador)
+quz-PE: quz (Peru)
+Rachel Green: Rachel Green
+Radial: Radial
+RadialInvert: Radialinverter
+Radius: Radius
+Rage Italic: Raseri kursiv
+RailscastsBase16: RailscastsBase16
+Rainbow: Regnbue
+Random: Tilfældig
+RandomColorUpdateDelay: RandomColorUpdateDelay
+RarArchive.rar: RarArchive.rar
+Rate: Tempo
+Rate must be greater than 0: Satsen skal være større end 0
+Ravie: Henrykt
+Read More: Læs mere
+Readme: Vigtigt!
+readme.md: readme.md
+ReadOnly: Skrivebeskyttet
+Realtime Updates & Insights with SignalR.: Opdateringer og indsigt i realtid med SignalR.
+RebeccaBase16: RebeccaBase16
+RebeccaPurple: RebeccaLilla
+Record audio: Optag lyd
+Record Audio: Optag lyd
+Record Camera: Optag kamera
+Record Main Camera: Optag hovedkamera
+Record Main Camera Lower Quality: Optag hovedkamera lavere kvalitet
+Record Screen: Optag skærm
+Recording: Indspilning
+RecordingAnimation: Optagelse Animation
+RecordingBorderAnimation: OptagelseBorderAnimation
+RecordingColor: RecordingColor
+RecordingIcon: IndspilningIkon
+Red: Rød
+Redirect: Omdirigere
+Redirecting to {0}: Omdirigering til {0}
+Redirecting...: Omdirigere...
+ReflexAlpha: ReflexAlpha
+ReflexBright: ReflexBright
+ReflexFit: ReflexFit
+ReflexRatio: Refleks-forhold
+Refresh: Opdatere
+Refreshed Token.: Opdateret token.
+Register: Registrer
+Register as: Tilmeld dig som
+Register as {0}: Tilmeld dig som {0}
+Register here: Tilmeld dig her
+Register New User: Registrer ny bruger
+Register User: Registrer bruger
+Registered Roles: Registrerede roller
+Registered Users: Registrerede brugere
+Rel: Rel
+Relative: Slægtning
+RelativeToParent: RelativeToParent
+RelativeWidth: Relativ bredde
+Reload: Genindlæse
+Reload Data: Genindlæs data
+Rem: Rem
+Remember me?: Kan du huske mig?
+RememberEditedOptions: HuskRedigerede Indstillinger
+Remove: Fjerne
+Remove All: Fjern alle
+RemoveErrorAfter: RemoveErrorAfter
+RemoveErrorOnChange: RemoveErrorOnChange
+RemoveItemButtonAlwaysRight: RemoveItemButtonAlwaysRight
+Rename: Omdøb
+Rename backup: Omdøb backup
+Render with {0}: Gengiv med {0}
+Render with MudExFileDisplayTiff: Gengiv med Tiff-fremviser
+Render with MudExFileDisplayZip: Gengiv med Zip-fremviser
+Render with MudExImageViewer: Gengiv med MudExImageViewer
+Render with native control: Gengiv med oprindelig kontrol
+RenderBackLink: RenderBackLink
+RenderChipsAdditional: RenderChipsAdditional
+Rendered Virtualized: Gengivet virtualiseret
+rendered when the item is outside the viewport.: gengives, når elementet er uden for visningsporten.
+rendered when the item is visible in the viewport.: gengives, når elementet er synligt i viewporten.
+RenderHomeLink: RenderHomeLink
+RenderOnlyOnce: RenderOnlyOnce
+Required: Kræves
+RequiredError: PåkrævetFejl
+Reset: Nulstille
+Reset {0}: Nulstil {0}
+Reset all: Nulstil alle
+Reset all properties?: Nulstille alle egenskaber?
+Reset password: Nulstil adgangskode
+Reset Password: Nulstil adgangskode
+Reset to initial data: Nulstil til oprindelige data
+Reset view: Nulstil visning
+ResetButtonIcon: NulstilKnapIkon
+ResetToDefaultFirst: ResetToDefaultFirst
+Resizeable: Kan tilpasses
+ResizeMode: Tilpas størrelsestilstand
+Resources: Ressourcer
+Responsive: Lydhør
+Restart server: Genstart serveren
+Restore: Genskabe
+Restore database: Gendan database
+Restore default: Gendan standard
+Restore finished: Gendan færdig
+Restore in progress. Please wait until the restore is finished. This can take a while.: Gendannelse i gang. Vent venligst, indtil gendannelsen er færdig. Dette kan tage et stykke tid.
+Revert: Vende tilbage
+RGB: RGB
+RGBA: RGBA
+rgba(0,200,83,1): rgba(0,200,83,1)
+rgba(126,247,160,1): rgba(126,247,160,1)
+rgba(133,135,145,1): rgba(133,135,145,1)
+rgba(157,241,250,1): rgba(157,241,250,1)
+rgba(17,59,83,1): rgba(17,59,83,1)
+rgba(170,0,0,1): rgba(170,0,0,1)
+rgba(18,121,66,1): rgba(18,121,66,1)
+rgba(189,255,207,1): RGBA(189,255,207,1)
+rgba(19,184,232,1): rgba(19,184,232,1)
+rgba(191,125,17,1): rgba(191,125,17,1)
+rgba(20,220,113,1): RGBA(20,220,113,1)
+rgba(201,204,207,1): rgba(201,204,207,1)
+rgba(217,152,13,1): rgba(217,152,13,1)
+rgba(220,63,17,1): rgba(220,63,17,1)
+rgba(23,105,142,1): rgba(23,105,142,1)
+rgba(23,162,88,1): rgba(23,162,88,1)
+rgba(230,233,235,1): rgba(230,233,235,1)
+rgba(235,179,35,1): rgba(235,179,35,1)
+rgba(244,67,54,1): rgba(244,67,54,1)
+rgba(246,249,251,1): rgba(246,249,251,1)
+rgba(253,210,47,1): rgba(253,210,47,1)
+rgba(254,104,0,1): rgba(254,104,0,1)
+rgba(255,145,2,1): rgba(255,145,2,1)
+rgba(255,152,0,1): rgba(255,152,0,1)
+rgba(255,179,31,1): rgba(255,179,31,1)
+rgba(255,210,84,1): rgba(255,210,84,1)
+rgba(255,226,115,1): rgba(255,226,115,1)
+rgba(255,240,163,1): rgba(255,240,163,1)
+rgba(27,189,102,1): rgba(27,189,102,1)
+rgba(33,150,243,1): rgba(33,150,243,1)
+rgba(39,219,245,1): rgba(39,219,245,1)
+rgba(53,57,64,1): rgba(53,57,64,1)
+rgba(66,66,66,1): rgba(66,66,66,1)
+rgba(88,91,98,1): RGBA(88,91,98,1)
+rgba(9,137,194,1): rgba(9,137,194,1)
+Ridge: Ryg
+Right: Højre
+Right part in MudExSplitPanel.: Højre del i MudExSplitPanel.
+RightToLeft: Højre-Venstre-Venstre
+Ripple: Krusning
+RippleOpacity: KrusningUigennemsigtighed
+RippleOpacitySecondary: RippleOpacitetSekundær
+rm-CH: Rætoromansk (Schweiz)
+rn-BI: Rundi (Burundi)
+ro-MD: Rumænsk (Moldova)
+ro-RO: Rumænsk (Rumænien)
+Roboto: Robot
+Rockwell: Rockwell
+Rockwell Condensed: Rockwell kondenseret
+Rockwell Extra Bold: Rockwell Ekstra Fed
+rof-TZ: Rombo (Tanzania)
+Role: Rolle
+Role ID: Rolle-id
+Role Name: Rollenavn
+Roles: Roller
+Roles Updated: Roller opdateret!
+RootName: Rodnavn
+RosPineBase16: RosPineBase16
+RosPineDawnBase16: RosPineDawnBase16
+RosPineMoonBase16: RosPineMoonBase16
+RosyBrown: Rosa brun
+Rotate: Rotere
+RoundBars: Rundstænger
+Rounded: Afrundet
+Routeros: Routeros
+Row: Række
+RowSpan: RowSpan
+RowsPerPageString: Rækker pr. side
+RoyalBlue: RoyalBlue
+ru-BY: Russisk (Hviderusland)
+ru-KG: Russisk (Kirgisistan)
+ru-KZ: Russisk (Kasakhstan)
+ru-MD: Russisk (Moldova)
+ru-RU: Russisk (Rusland)
+ru-UA: Russisk (Ukraine)
+RubberBand: Gummibånd
+RubberBandColor: Gummibåndfarve
+RubberBandStyle: Gummibåndsstil
+Runic MT Condensed: Rune MT Kondenseret
+Runtime: Runtime
+Russian: Russisk
+rw-RW: Kinyarwanda (Rwanda)
+rwk-TZ: Rwa (Tanzania)
+sa-IN: Sanskrit (Indien)
+SaddleBrown: Sadelbrun
+SagelightBase16: SagelightBase16
+sah-RU: Sakha (Rusland)
+Salmon: Laks
+Sample Card: Prøvekort
+Sample Dialog: Eksempel på dialogboks
+Sample Headline: Eksempel på overskrift
+Sample how to use Theme Select: Eksempel på, hvordan du bruger Temavalg
+Sample mega: Eksempel mega
+Sample to see how you can render and use any component in a dialog as easy as possible: Eksempel for at se, hvordan du kan gengive og bruge en komponent i en dialogboks så nemt som muligt
+sample.pdf: sample.pdf
+San Antonio: San Antonio
+San Antonio - 78201: San Antonio - 78201
+San Antonio - 78201ender: San Antonio - 78201ender
+San Diego: San Diego
+San Diego - 92101: San Diego - 92101
+San Diego - 92101ender: San Diego - 92101ender
+San Jose: San Jose
+San Jose - 95101: San Jose - 95101
+San Jose - 95101ender: San Jose - 95101ender
+SandBoxIframes: SandBoxIframes
+SandcastleBase16: SandcastleBase16
+SandyBrown: SandyBrown
+sans-serif: sans-serif
+Sans-serif: Sans-serif
+saq-KE: Samburu (Kenya)
+sat-Olck-IN: Santali (Ol Chiki, Indien)
+Saturation: Mætning
+Save: Spare
+Save {0} Changes: '{0} Gem ændringer'
+Save as: Gem som
+Save Changes: Gem ændringer
+Save image: Gem billede
+Save Role: Gem rolle
+Save visible area only: Gem kun synligt område
+SaveButtonIcon: SaveButtonIcon
+saved: Gemt!
+sbp-TZ: Sangu (Tanzania)
+Scale: Skæl
+SchoolBook: Skolebog
+Scope: Omfanget
+Screen: Skærm
+Script MT Bold: Script MT Fed
+Scroll down to discover the content: Rul ned for at se indholdet
+Scroll down to see the behavior: Rul ned for at se adfærden
+Scroll to top: Rul til toppen
+sd-Arab-PK: Sindhi (arabisk, Pakistan)
+sd-Deva-IN: Sindhi (Devanagari, Indien)
+se-FI: Nordsamisk (Finland)
+se-NO: Nordsamisk (Norge)
+se-SE: Nordsamisk (Sverige)
+SeaGreen: SeaGreen
+search: søge
+Search: Søge
+Search by users: Søg efter brugere
+Search For {0} Extended Attributes: Søg efter {0} udvidede attributter
+Search for Brands: Søg efter mærker
+Search for Document Types: Søg efter dokumenttyper
+Search For Permissions: Søg efter tilladelser
+Search for Roles...: Søg efter roller...
+Search for Trails: Søg efter ruter
+Search For User Roles: Søg efter brugerroller
+Search For Users: Søg efter brugere
+Search in New Values: Søg i nye værdier
+Search in Old Values: Søg i gamle værdier
+SearchBox: Søgefelt
+SearchBoxAdornment: SearchBoxAdornment
+SearchBoxAutoFocus: SearchBoxAutofokus
+SearchBoxBackgroundColor: SearchBoxBackgroundColor
+SearchBoxClearable: SøgefeltKan slettes
+SearchBoxPlaceholder: SearchBoxPladsholder
+SearchBoxVariant: Søgeboksvariant
+SearchString: SearchString
+SeaShell: Seashell
+Secondary: Sekundær
+SecondaryBackgroundForNestedItemHeader: SekundærBaggrundForNestedItemHeader
+SecondaryContrastText: Sekundær kontrasttekst
+SecondaryDarken: Sekundær Darken
+SecondaryLighten: Sekundær Lighten
+Section 0: Afsnit 0
+Section 1: Afsnit 1
+Section 10: Afsnit 10
+Section 11: Afsnit 11
+Section 12: Afsnit 12
+Section 13: Afsnit 13
+Section 14: Afsnit 14
+Section 15: Afsnit 15
+Section 2: Afsnit 2
+Section 3: Afsnit 3
+Section 4: Afsnit 4
+Section 5: Afsnit 5
+Section 6: Afsnit 6
+Section 7: Afsnit 7
+Section 8: Afsnit 8
+Section 9: Afsnit 9
+Security: Sikkerhed
+See how to use MudExFileDisplay to display file contents. Also a demonstration how to implement the interface IMudExFileDisplay to provide own components for specific file types.: Se, hvordan du bruger MudExFileDisplay til at vise filindhold. Også en demonstration af, hvordan man implementerer grænsefladen IMudExFileDisplay for at levere egne komponenter til specifikke filtyper.
+See how to use MudExObjectEdit in a dialog: Se, hvordan du bruger MudExObjectEdit i en dialogboks
+See how you can use different pickers or delay change event with the MudExColorPicker: Se, hvordan du kan bruge forskellige plukkere eller forsinke ændringshændelsen med MudExColorPicker
+seh-MZ: Seinen (Mozambique)
+Select: Markere
+Select a brand: Vælg et brand
+Select All: Vælg alle
+Select Item: Vælg vare
+Select Items: Vælg varer
+Select Language: Vælg sprog
+Select sample file (See weather.json to check how own components for files can be created): Vælg eksempelfil (se weather.json for at kontrollere, hvordan egne komponenter til filer kan oprettes)
+Select screen: Vælg skærm
+SelectAll: Vælg Alle
+SelectAllPosition: Vælg allePosition
+SelectAllText: Vælg alletekst
+SelectColorText: VælgFarvetekst
+Selected: Valgte
+Selected Node: Udvalgt node
+SelectedBrand: Udvalgt mærke
+SelectedIndex: SelectedIndex
+SelectedItemBackgroundColor: SelectedItemBackgroundColor
+SelectedItemBorderColor: SelectedItemBorderColor
+SelectedItemColor: SelectedItemColor
+SelectedRequests: SelectedRequests
+SelectedValues: ValgteVærdier
+Selecting: Vælge
+SelectionList: SelectionList
+SelectionMode: SelectionMode
+SelectionModeIcon: ValgtilstandIkon
+SelectItemsMode: VælgElementerTilstand
+SelectorsForIgnoreBlur: SelectorsForIgnoreBlur
+SelectorSize: SelectorSize
+SelectorsToKeepOpenOnMouseLeave: SelectorsToKeepOpenOnMouseLeave
+SelectValueOnTab: VælgVærdiPåTab
+SelectVariant: VælgVariant
+Send: Sende
+Send confirmation email: Send bekræftelses-e-mail
+Sensitivity: Følsomhed
+Sep: Sep
+Server restarted successfully: Serveren genstartede korrekt
+ses-ML: Koyraboro Senni (Mali)
+Set as Default options for all Dialogs: Indstil som standardindstillinger for alle dialogbokse
+Set empty/null for auto detection: Indstil tom/null til automatisk registrering
+Set new password: Indstil ny adgangskode
+Set this to automatically stop recording after the desired time.: Indstil dette til automatisk at stoppe optagelsen efter det ønskede tidspunkt.
+Set this to wait before a photo is taken: Indstil dette til at vente, før der tages et billede
+Set this to wait before recording starts: Indstil dette til at vente, før optagelsen starter
+SetChipsOnEnter: SetChipsOnEnter
+SetiUiBase16: SetiUiBase16
+SevenZipArchive.7z: SevenZipArchive.7z
+Severity: Alvorlighed
+sg-CF: Sango (Den Centralafrikanske Republik)
+ShadesOfPurple: NuancerOfPurple
+Shadows: Skygger
+Shake: Ryste
+ShapeshifterBase16: ShapeshifterBase16
+SharedConfig: SharedConfig
+Sharpness: Skarphed
+shi-Latn-MA: Tachelhit (latin, Marokko)
+shi-Tfng-MA: Tachelhit (Tifinagh, Marokko)
+Show: Vise
+Show As Dialog: Vis som dialogboks
+Show as Tree: Vis som træ
+Show Demo: Vis demo
+Show flat: Vis lejlighed
+Show info: Vis info
+Show info for: Vis info for
+Show Markup: Vis markering
+Show notification: Vis meddelelse
+Show notification while recording: Vis notifikation under optagelse
+Show on github: Vis på github
+Show or hide inherited fields from base class: Vise eller skjule nedarvede felter fra basisklassen
+Show Sample 1: Vis eksempel 1
+Show Sample 2: Vis eksempel 2
+Show Sample 3: Vis eksempel 3
+Show Sample Dialog: Vis eksempeldialogboks
+Show Sample Dialog METHOD 1: Vis eksempeldialogboks METODE 1
+Show Sample Dialog METHOD 2: Vis eksempeldialogboks METODE 2
+Show Sample Dialogs: Vis eksempler på dialogbokse
+Show selected: Vis valgte
+Show With this Options: Vis med denne mulighed
+ShowAlpha: Vis Alpha
+ShowAtCursor: VisAtCursor
+ShowBgColor: ShowBgColor
+Showcard Gothic: Showcard Gothic
+ShowClearButton: VisClearKnap
+ShowCloseIcon: VisLukIkon
+ShowColorField: Vis ColorField
+ShowColorPreview: VisfarveForhåndsvisning
+ShowContentError: ShowContentError
+ShowCssColorVariables: ShowCssColorVariables
+ShowFileUploadButton: VisFilUploadKnap
+ShowFilterInDrawer: ShowFilterInDrawer
+ShowFolderUploadButton: VisMappeUploadKnap
+ShowFPS: Vis FPS
+ShowFullScreenButton: VisFuldskærmKnap
+ShowHtmlColors: VisHtmlFarver
+ShowInputs: Vis indgange
+ShowLogoInDrawer: VisLogoInDrawer
+ShowModeSwitch: Vis-tilstand-switch
+ShowNavigator: ShowNavigator
+ShowNotificationWhileRecording: VisMeddelelseUnderoptagelse
+ShowPath: Vis sti
+ShowPeaks: ShowPeaks
+ShowPresetNameOnChange: VisForudindstillet NavnVedÆndring
+ShowPreview: VisForhåndsvisning
+ShowPreviewOnClick: VisForhåndsvisningPåKlik
+ShowPrintButton: VisPrintKnap
+ShowProgressForLoadingData: ShowProgressForLoadingData
+ShowRemainingTimeOnly: ShowRemainingTimeOnly
+ShowRenameButton: VisOmdøbKnap
+ShowResetButton: VisNulstilKnap
+Shows how you can use MudExAdditionalAdornment to ad as many adornments to any MudInput: Viser, hvordan du kan bruge MudExAdditionalAdornment til at tilføje så mange udsmykninger til enhver MudInput
+ShowSaveButton: VisGem knap
+ShowScaleX: ShowScaleX
+ShowScaleY: ShowScaleY
+ShowSliders: ShowSliders
+ShowSpectrumOnRecording: ShowSpectrumOnRecording
+ShowThemeColors: VisTemaFarver
+ShowToolbar: VisVærktøjslinje
+ShowTrackInfosOnPlay: ShowTrackInfosOnPlay
+ShowVisualiser: VisVisualiser
+ShowZoomInButton: VisZoomInKnap
+ShowZoomOutButton: VisZoomUdKnap
+ShrinkLabel: Krympemærke
+si-LK: Singalesisk (Sri Lanka)
+Side: Side
+Sienna: Sienna
+Sign In: Log på
+Sign Up: Tilmeld dig
+SilkDarkBase16: SilkeDarkBase16
+SilkLightBase16: SilkLightBase16
+Silver: Sølv
+Simon Pack: Simon-pakken
+Simple: Simpel
+Simple Card List with a hover effect.: Enkel kortliste med svæveeffekt.
+Simple CodeViewer Component: Simpel CodeViewer-komponent
+Simple component to display Html files with MudExFileDisplay: Enkel komponent til at vise HTML-filer med MudExFileDisplay
+Simple component to display markdown files with MudExFileDisplay: Enkel komponent til at vise markdown-filer med MudExFileDisplay
+Simple component to expand a Search field: Enkel komponent til udvidelse af et søgefelt
+Simple Confirmation: Simpel bekræftelse
+Simple Dialog: Simpel dialog
+Simple Dialogs: Enkle dialoger
+Simple Enum: Simpel Enum
+Simple Excel file viewer: Simpel Excel-filfremviser
+Simple extended popover that adds Animations and an onblur event to close if a click outside happens.: Simpelt udvidet popover, der tilføjer animationer og en onblur-begivenhed for at lukke, hvis der sker et klik udenfor.
+Simple extension for MudAvatar to load automatically a profile image for an email address using Gravatar: Enkel udvidelse til MudAvatar til automatisk at indlæse et profilbillede til en e-mailadresse ved hjælp af Gravatar
+Simple MessageDialog: Simpel MessageDialog
+Simple Prompt: Simpel prompt
+Simple virtualize component that can be disabled with support for fixed items and ItemsProvider.: Enkel virtualiseringskomponent, der kan deaktiveres med understøttelse af faste elementer og ItemsProvider.
+SimpleDialog: SimpleDialog
+SimulateOnHover: SimulateOnHover
+SimulateWithFullSpectrumAudioData: SimulateWithFullSpectrumAudioData
+SimulateWithRandomData: SimulateWithRandomData
+Single: Enlig
+SingleExpand: SingleUdvid
+Size: Størrelse
+sk-SK: Slovakisk (Slovakiet)
+Skeleton: Skelet
+SkipSeparator: SkipSeparator
+SkyBlue: Himmelblå
+sl-SI: Slovensk (Slovenien)
+SlateBlue: Skiferblå
+SlateGray: Skifergrå
+Slide: Glide
+SlideBar: SlideBar
+SlideIn: SlideIn
+sma-NO: Sydsamisk (Norge)
+sma-SE: Sydsamisk (Sverige)
+Small: Lille
+smj-NO: Lulesamisk (Norge)
+smj-SE: Lulesamisk (Sverige)
+smn-FI: Enaresamisk (Finland)
+Smoothing: Udjævning
+sms-FI: Skolte samisk (Finland)
+sn-Latn-ZW: Shona (Latin, Zimbabwe)
+Snackbar: Snackbar
+SnackbarMessageMarkupString: SnackbarMessageMarkupString
+SnackbarMessageRenderFragment: SnackbarMessageRenderFragment
+SnackbarMessageText: SnackbarMessageText
+Snap ITC: Fastgør ITC
+SnapDrag: Fastgør Træk
+SnazzyBase16: SnazzyBase16
+Snow: Sne
+so-DJ: Somalisk (Djibouti)
+so-ET: Somalisk (Etiopien)
+so-KE: Somalisk (Kenya)
+so-SO: Somalisk (Somalia)
+SolarFlareBase16: SolarFlareBase16
+SolarFlareLightBase16: SolarFlareLightBase16
+SolarizedDarkBase16: SolarizedDarkBase16
+SolarizedLightBase16: SolarizedLightBase16
+Solid: Fast
+Some: Nogle
+Some other: Nogle andre
+SomeOtherInformation: SomeOtherInformation
+Something went wrong during the refresh token action: Noget gik galt under opdateringstokenhandlingen
+SomeUnimportantTestModel: SomeUnimportantTestModel
+SomeUnimportantTestModel as Json: SomeUnimportantTestModel som Json
+SpaceAround: SpaceAround
+SpaceBetween: Mellemrum mellem
+SpaceEvenly: SpaceEvenly
+SpacemacsBase16: SpacemacsBase16
+Spacing: Afstand
+Specify Options...: Angiv indstillinger...
+Specify Quick Options...: Angiv hurtige indstillinger...
+Spectrum: Spektrum
+SpectrumIcon: Spektrum Ikon
+SpinSpeed: SpinSpeed
+SplitGradient: SplitGradient
+SplitPanelItem for MudExSplitPanel component: SplitPanelItem til MudExSplitPanel-komponent
+SpringGreen: Forårgrøn
+sq-AL: Albansk (Albanien)
+sq-MK: Albansk (Nordmakedonien)
+sq-XK: Albansk (Kosovo)
+Square: Firkant
+sr-Cyrl-BA: Serbisk (kyrillisk, Bosnien-Hercegovina)
+sr-Cyrl-ME: Serbisk (kyrillisk, Montenegro)
+sr-Cyrl-RS: Serbisk (kyrillisk, Serbien)
+sr-Cyrl-XK: Serbisk (kyrillisk, Kosovo)
+sr-Latn-BA: Serbisk (latin, Bosnien-Hercegovina)
+sr-Latn-ME: Serbisk (latin, Montenegro)
+sr-Latn-RS: Serbisk (latin, Serbien)
+sr-Latn-XK: Serbisk (latin, Kosovo)
+Src: Src
+Srcery: Trolddom
+ss-SZ: siSwati (Eswatini)
+ss-ZA: siSwati (Sydafrika)
+ssy-ER: Saho (Eritrea)
+st-LS: Sesotho (Lesotho)
+st-ZA: Sesotho (Sydafrika)
+StackedBar: StackedBar
+StackoverflowDark: StackoverflowDark
+StackoverflowLight: StackoverflowLight
+Standard - Mikrofon (Voicemod Virtual Audio Device (WDM)): Standard - Mikrofon (Voicemod Virtual Audio Device (WDM))
+Start: Begynde
+Start Capture: Start optagelse
+Start Recording: Start optagelse
+Start recording after: Start optagelsen efter
+Start/Stop selection: Start/Stop valg
+State: Stat
+Static: Statisk
+Static card.: Statisk kort.
+Static item: Statisk element
+Status: Status
+SteelBlue: Stålblå
+Stencil: Stencil
+Stereo: Stereoanlæg
+Steve Rogers: Steve Rogers
+Store: Butik
+Stream: Strøm
+StreamUrlHandling: StreamUrlHandling
+Street: Gade
+Street 2 2, 32365 City 2: Street 2 2, 32365 City 2
+Strict: Streng
+StringProperty1: StringProperty1
+StringProperty10: StringProperty10
+StringProperty11: StringProperty11
+StringProperty12: StringProperty12
+StringProperty13: StringProperty13
+StringProperty14: StringProperty14
+StringProperty15: StringProperty15
+StringProperty16: StringProperty16
+StringProperty17: StringProperty17
+StringProperty18: StringProperty18
+StringProperty19: StringProperty19
+StringProperty2: StringProperty2
+StringProperty20: StringProperty20
+StringProperty21: StringProperty21
+StringProperty22: StringProperty22
+StringProperty23: StringProperty23
+StringProperty24: StringProperty24
+StringProperty25: StringProperty25
+StringProperty26: StringProperty26
+StringProperty27: StringProperty27
+StringProperty28: StringProperty28
+StringProperty29: StringProperty29
+StringProperty3: StringProperty3
+StringProperty30: StringProperty30
+StringProperty31: StringProperty31
+StringProperty32: StringProperty32
+StringProperty33: StringProperty33
+StringProperty34: StringProperty34
+StringProperty35: StringProperty35
+StringProperty36: StringProperty36
+StringProperty37: StringProperty37
+StringProperty38: StringProperty38
+StringProperty39: StringProperty39
+StringProperty4: StringProperty4
+StringProperty40: StringProperty40
+StringProperty41: StringProperty41
+StringProperty42: StringProperty42
+StringProperty43: StringProperty43
+StringProperty44: StringProperty44
+StringProperty45: StringProperty45
+StringProperty46: StringProperty46
+StringProperty47: StringProperty47
+StringProperty48: StringProperty48
+StringProperty49: StringProperty49
+StringProperty5: StringProperty5
+StringProperty50: StringProperty50
+StringProperty51: StringProperty51
+StringProperty52: StringProperty52
+StringProperty53: StringProperty53
+StringProperty54: StringProperty54
+StringProperty55: StringProperty55
+StringProperty56: StringProperty56
+StringProperty57: StringProperty57
+StringProperty58: StringProperty58
+StringProperty59: StringProperty59
+StringProperty6: StringProperty6
+StringProperty60: StringProperty60
+StringProperty7: StringProperty7
+StringProperty8: StringProperty8
+StringProperty9: StringProperty9
+Striped: Stribet
+Structured Data Edit: Rediger strukturerede data
+StructuredDataEdit: Strukturerede dataRediger
+Style: Stil
+StyleChip: StyleChip
+su-Latn-ID: Sundanesisk (latin, Indonesien)
+Subject: Emne
+Subline description for sample card.: Underlinjebeskrivelse for eksempelkort.
+Submit: Indsende
+SubscribeToParentForm2: Abonner påParentForm2
+subtitle1: undertekst 1
+Subtitle1: Undertekst 1
+subtitle2: undertekst 2
+Subtitle2: Undertekst 2
+Success: Succes
+SuccessContrastText: SuccesKontrasttekst
+SuccessDarken: SuccesMørkere
+SuccessLighten: SuccesLys
+SummercampBase16: SommerlejrBase16
+SummerfruitDarkBase16: SommerfrugtDarkBase16
+SummerfruitLightBase16: SommerfrugtLightBase16
+Sunburst: Sunburst
+Super sample Content text.: Super eksempel på indholdstekst.
+Support: Støtte
+Surface: Overflade
+Surname: Efternavn
+sv-AX: Svensk (Ålandsøerne)
+sv-FI: Svensk (Finland)
+sv-SE: Svensk (Sverige)
+sw-CD: Kiswahili (Congo [DRC])
+sw-KE: Kiswahili (Kenya)
+sw-TZ: Kiswahili (Tanzania)
+sw-UG: Kiswahili (Uganda)
+Swagger: API-dokumentation
+Swap: Bytte
+Swedish: Svensk
+SweetieBubbleGum-Regular.ttf: SweetieBubbleGum-Regular.ttf
+Swing: Svinge
+Switch: Omskifter
+Switch expand button position: Skift placering af udvidelsesknap
+Switch overlay source: Skift overlejringskilde
+Symbol: Symbol
+SynthMidnightTerminalDarkBase16: SynthMidnightTerminalDarkBase16
+SynthMidnightTerminalLightBase16: SynthMidnightTerminalLightBase16
+syr-SY: Syrisk (Syrien)
+System: System
+System Settings: Systemindstillinger
+T3024Base16: T3024Base16
+ta-IN: Tamil (Indien)
+ta-LK: Tamil (Sri Lanka)
+ta-MY: Tamil (Malaysia)
+ta-SG: Tamil (Singapore)
+Table Name: Tabelens navn
+TableHover: TableHover
+TableLines: Tabellinjer
+TableStriped: TableStribet
+Tada: Derpå
+Tag: Dag
+TagField: TagField
+Tahoma: Tahoma
+Take case: Tag case
+Take photo after: Tag billede efter
+Take Photo from Main camera: Tag foto fra hovedkameraet
+Take Photo from Main camera in 5 seconds: Tag foto fra hovedkameraet på 5 sekunder
+Take Photo only: Tag kun billede
+Tan: Så
+TangoBase16: TangoBase16
+TarArchive.tar: TarArchive.tar
+Target: Mål
+Tax: Skat
+Tax must be greater than 0: Skatten skal være større end 0
+te-IN: Telugu (Indien)
+Teal: Krikand
+tel: Tel
+Telephone: Telefon
+TemplateClass: Skabelonklasse
+Temporary: Midlertidig
+TenderBase16: TenderBase16
+teo-KE: Teso (Kenya)
+teo-UG: Teso (Uganda)
+Tertiary: Tertiær
+TertiaryContrastText: TertiærKontrastTekst
+TertiaryDarken: TertiærMørkere
+TertiaryLighten: TertiærLys
+TEST: TEST
+Test and use components live without required environment: Test og brug komponenter live uden påkrævet miljø
+Test the powerful MudExThemeEdit and change theme colors fonts and more: Test den kraftfulde MudExThemeEdit, og skift temafarver, skrifttyper og mere
+text: Tekst
+Text: Tekst
+Text value is required using {0} type!: Tekstværdi er påkrævet ved hjælp af {0} type!
+TextAddExternal: TextAddExternal
+TextAddFromDropBox: TextAddFromDropBox
+TextAddFromGoogle: TextAddFromGoogle
+TextAddFromOneDrive: TextAddFromOneDrive
+TextAddUrl: TextAddUrl
+TextAddUrlMessage: TextAddUrlMessage
+TextAddUrlTitle: TextAddUrlTitle
+TextDisabled: TekstDeaktiveret
+TextDropZone: TekstDropZone
+TextErrorDuplicateFile: TextErrorDuplicateFile
+TextErrorExtensionForbidden: TextErrorExtensionForbidden
+TextErrorExtensionNotAllowed: TextErrorExtensionNotAllowed
+TextErrorMaxFileCount: TextErrorMaxFileCount
+TextErrorMaxFileSize: TextErrorMaxFileSize
+TextErrorMimeTypeForbidden: TextErrorMimeTypeForbidden
+TextErrorMimeTypeNotAllowed: TextErrorMimeTypeNotAllowed
+TextFillColor: TextFillColor
+TextPrimary: TekstPrimær
+TextRemoveAll: TekstRemoveAll
+TextSecondary: TekstSekundær
+TextStartRecording: TekstStartoptagelse
+TextStartVideoCapture: TextStartVideoCapture
+TextTransform: Teksttransformering
+TextUpdateSuppression: Undertrykkelse af tekstopdatering
+TextUploadFile: TekstUploadFil
+TextUploadFiles: Tekstuploadfiler
+TextUploadFolder: TextUploadFolder
+tg-Cyrl-TJ: Tajikisk (kyrillisk, Tadsjikistan)
+th-TH: Thai (Thailand)
+The Checker field is required.: Feltet Checker er påkrævet.
+The component also provides the <strong>IsVisibleChanged</strong> event, which triggers whenever the visibility of the item changes.: Komponenten indeholder også hændelsen <strong>IsVisibleChanged</strong>, som udløses, når varens synlighed ændres.
+The content type {0} cannot be displayed without a suitable plugin: Indholdstypen {0} kan ikke vises uden et passende plugin
+The field Number must be between 1 and 100.: Feltet Nummer skal være mellem 1 og 100.
+The file ({0}) has already been added: Filen ({0}) er allerede blevet tilføjet
+The file has exceeded the maximum size of {0} with {1}. File size is {2}: Filen har overskredet den maksimale størrelse på {0} med {1}. Filstørrelsen er {2}
+The following {0} permissions are also required for permission {1}: Følgende {0} tilladelser er også påkrævet for at give tilladelse {1}
+The following permission is also required for permission {1}: Følgende tilladelse er også påkrævet for at få tilladelse {1}
+The maximum file size is 10 MB: Den maksimale filstørrelse er 10 MB
+The MudExThemeEdit is a robust and versatile tool designed to effectively facilitate the editing of one or more themes or presets. It inherently accommodates Dark mode, Light mode, or a combination of both. Additionally, it supports derived classes from MudTheme, as well as custom properties inherent to it, thus providing a comprehensive and flexible solution for all your theme editing requirements.: MudExThemeEdit er et robust og alsidigt værktøj designet til effektivt at lette redigeringen af et eller flere temaer eller forudindstillinger. Det rummer i sagens natur mørk tilstand, lys tilstand eller en kombination af begge. Derudover understøtter den afledte klasser fra MudTheme, såvel som brugerdefinerede egenskaber, der er forbundet med den, hvilket giver en omfattende og fleksibel løsning til alle dine temaredigeringskrav.
+The Plugin '{0}' may be able to help: Plugin'et '{0}' kan muligvis hjælpe
+The sample is the same as the other FileDisplay example, but with the difference that no URL is used; instead, streams are loaded and used.: Eksemplet er det samme som det andet FileDisplay-eksempel, men med den forskel, at der ikke bruges nogen URL. i stedet indlæses og bruges streams.
+The server is just restarting. Please wait until the connection has been restored: Serveren genstarter bare. Vent venligst, indtil forbindelsen er genoprettet
+The user "{0}" just changed some of this data: Brugeren "{0}" har lige ændret nogle af disse data
+The user {0} has been logged off: Brugeren {0} er logget af
+The User {0} has just edited, created or deleted entries here. You should reload the data: Brugeren {0} har lige redigeret, oprettet eller slettet poster her. Du bør genindlæse dataene
+Theme: Tema
+Theme Colors: Tema Farver
+Themes: Temaer
+ThemeSelect: TemaVælg
+There are no new notifications: Der er ingen nye notifikationer
+These features make <strong>MudExVirtualItem</strong> ideal for optimizing performance when working with large datasets or dynamic content that doesn't need to be loaded all at once.: Disse funktioner gør <strong>MudExVirtualItem</strong> ideel til optimering af ydeevnen, når du arbejder med store datasæt eller dynamisk indhold, der ikke behøver at blive indlæst på én gang.
+This bar can be positioned left, right, top or bottom, and expands automatically on mouseover. This is also the Base component for the MudExTaskBar that automatically displays all open dialogs: Denne bjælke kan placeres til venstre, højre, øverst eller nederst og udvides automatisk, når musen holdes over. Dette er også Base-komponenten til MudExTaskBar, der automatisk viser alle åbne dialogbokse
+This changes the Variant if Age is at least 18 and is enabled if Age is more than 1: Dette ændrer varianten, hvis alderen er mindst 18 år, og den aktiveres, hvis alderen er mere end 1
+This component and the dialog no modal behaviour is still in development and not ready for production use. Please report any issues you find on GitHub.: Denne komponent og dialogen ingen modal adfærd er stadig under udvikling og ikke klar til produktionsbrug. Rapportér eventuelle problemer, du finder på GitHub.
+This component uses the ICaptureService to capture audio and/or video data: Denne komponent bruger ICaptureService til at optage lyd- og/eller videodata
+This component uses the ISpeechRecognitionService to record audio data and transcripts: Denne komponent bruger ISpeechRecognitionService til at optage lyddata og transskriptioner
+This Demo demonstrate using for the MudExCardList: Denne demo demonstrerer brug af MudExCardList
+This Demo demonstrate using the MudExAudioPlayer without the automatic use in MudExFileDisplay: Denne demo demonstrerer brug af MudExAudioPlayer uden automatisk brug i MudExFileDisplay
+This Demo demonstrate using the MudExCardList with an item source: Denne demo demonstrerer brug af MudExCardList med en varekilde
+This Demo demonstrate using the MudExCardList with an item source and child content together: Denne demo demonstrerer brug af MudExCardList med en elementkilde og underordnet indhold sammen
+This Demo demonstrate using the MudExImageViewer without the automatic use in MudExFileDisplay: Denne demo demonstrerer brugen af MudExImageViewer uden automatisk brug i MudExFileDisplay
+This demo showcases the <strong>MudExVirtualItem</strong> component, a virtualized container that efficiently renders content<br/> only when it becomes visible in the viewport.: Denne demo viser <strong>MudExVirtualItem-komponenten</strong>, en virtualiseret container, der effektivt kun gengiver indhold<br/>, når det bliver synligt i viewporten.
+This demo shows how to pass a can close method: Denne demo viser, hvordan du overfører en dåselukningsmetode
+This demo shows how you can use a selection with MudExSelect with a custom item provider: Denne demo viser, hvordan du kan bruge en markering med MudExSelect med en brugerdefineret vareudbyder
+This demo uses SnapDrag as DragMode on the DialogOptionsEx: Denne demo bruger SnapDrag som DragMode på DialogOptionsEx
+This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open: Denne demo bruger IDialogEventService til at kontrollere, ændre størrelse eller trække og gemme den seneste position og størrelse som relative værdier og gendanne dem ved næste åbning
+This demonstrate the MudExThemeEdit component that internally uses MudExObjectEdit and MudExThemeSelect for theme editing: Dette demonstrerer MudExThemeEdit-komponenten, der internt bruger MudExObjectEdit og MudExThemeSelect til temaredigering
+This demos showing the recommended way to use MudExAdditionalAdornment with using the RenderFragments `For` and `ChildContent`: Denne demonstration viser den anbefalede måde at bruge MudExAdditionalAdornment på ved hjælp af RenderFragments 'For' og 'ChildContent'
+This dialog can confirmed when slider value is greater then 10: Denne dialog kan bekræftes, når skyderens værdi er større end 10
+This is a Json representation of the TestModel. This is ignored for Export and Import: Dette er en Json-repræsentation af TestModel. Dette ignoreres ved eksport og import
+This is a simple information dialog that closes after {0} seconds: Dette er en simpel informationsdialog, der lukkes efter {0} sekunder
+This is a simple information dialog that closes after 0 seconds: Dette er en simpel informationsdialog, der lukkes efter 0 sekunder
+This is a simple information dialog that closes after 1 seconds: Dette er en simpel informationsdialog, der lukkes efter 1 sekund
+This is a simple information dialog that closes after 2 seconds: Dette er en simpel informationsdialog, der lukkes efter 2 sekunder
+This is a simple information dialog that closes after 3 seconds: Dette er en simpel informationsdialog, der lukkes efter 3 sekunder
+This is a simple information dialog that closes after 4 seconds: Dette er en simpel informationsdialog, der lukkes efter 4 sekunder
+This is a simple information dialog that closes after 5 seconds: Dette er en simpel informationsdialog, der lukkes efter 5 sekunder
+This is an Administrator Only View.: Dette er en visning kun for administratorer.
+This is the MudEx Default theme: Dette er MudEx Default-temaet
+This is the sample Popover. In general it inherits the original MudPopover.: Dette er eksemplet på Popover. Generelt arver den den originale MudPopover.
+This one card is still added without an corresponding item.: Dette ene kort tilføjes stadig uden et tilsvarende element.
+This passes as method to the dialog options. The dialog will not close if the method returns false. The result needs to be a bool or a Task&lt;bool&gt;: Dette overføres som metode til dialogindstillingerne. Dialogboksen lukkes ikke, hvis metoden returnerer falsk. Resultatet skal være en bool eller en Task&lt;bool&gt;
+This photo was taken in a small village in Istra Croatia.: Dette billede blev taget i en lille landsby i Istra, Kroatien.
+This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Denne vælger giver animationer, bedre adfærd og en dialog, der understøtter alle DialogOptions. For at oprette din egen plukkerkomponent arver du fra MudExPickerBase, eller bare for at bruge simpelt indhold skal du bruge MudExPicker
+This sample demonstrate how to use the MudExCaptureService: Dette eksempel viser, hvordan du bruger MudExCaptureService
+This sample demonstrate the usage of MudExTreeView with an Item template: Dette eksempel viser brugen af MudExTreeView med en Item-skabelon
+This sample uses the IDialogEventService to cancel the dialog close: I dette eksempel bruges IDialogEventService til at annullere dialogen
+This sample uses the options for a can close callback: I dette eksempel bruges indstillingerne for et tilbagekald til kan lukke
+This section can be placed inside a MudExGrid component.: Denne sektion kan placeres inde i en MudExGrid-komponent.
+Thistle: Tidsel
+ThrottleInterval: Gashåndtag
+ti-ER: Tigrinja (Eritrea)
+ti-ET: Tigrinja (Etiopien)
+tig-ER: Tigre (Eritrea)
+Tilt: Vippe
+Time: Tidspunkt
+Times: Gange
+Times New Roman: Times New Roman
+TimeSeries: TimeSeries
+Tina Fey: Tina Fey
+Title: Titel
+Title is required!: Titel er påkrævet!
+tk-TM: Turkmensk (Turkmenistan)
+tn-BW: Setswana (Botswana)
+tn-ZA: Setswana (Sydafrika)
+to-TO: Tongansk (Tonga)
+Toggle loading: Skift indlæsning
+Toggle right-to-left/left-to-right: Skift højre mod venstre/venstre mod højre
+Toggle to {0}: Skift til {0}
+Toggleable: Kan skiftes
+ToggleAllFeatures: SkiftAllFeatures
+ToggleFullPage: SkiftFullPage
+ToggleFullscreen: SkiftFuld skærm
+ToggleMicrophone: Skift mikrofon
+TogglePictureInPicture: Skift mellem billedetBillede
+TogglePlayPause: SkiftePlayPause
+Token is required: Token er påkrævet
+Token Not Found!: Token ikke fundet!
+Tokyo: Tokyo
+Tokyo - 100-0001: Tokyo - 100-0001
+Tokyo - 100-0001ender: Tokyo - 100-0001ender
+Tomato: Tomat
+TomorrowBase16: TomorrowBase16
+TomorrowNightBase16: TomorrowNightBase16
+TomorrowNightBlue: TomorrowNightBlue
+TomorrowNightBright: TomorrowNightBright
+ToolbarBackgroundColor: VærktøjslinjeBaggrundFarve
+ToolbarButtonColor: ToolbarButtonColor
+ToolbarButtonPosition: ToolbarButtonPosition
+ToolbarButtonSize: ToolbarButtonSize
+ToolbarButtonVariant: ToolbarButtonVariant
+ToolbarClass: ToolbarClass
+ToolBarClass: ToolBarClass
+ToolbarStyle: ToolbarStyle
+ToolBarStyle: VærktøjslinjeStil
+Tooltip: Værktøjstip
+ToolTip: Værktøjstip
+ToolTip Three: Værktøjstip tre
+ToolTip Two: Værktøjstip to
+ToolTipStyle: VærktøjstipStil
+Top: Top
+TopCenter: TopCenter
+TopLeft: Øverst til venstre
+TopRight: TopRight
+Torch: Fakkel
+Toronto: Toronto
+Toronto - M1B 1A1: Toronto - M1B 1A1
+Toronto - M1B 1A1ender: Toronto - M1B 1A1ender
+tr-CY: Tyrkisk (Cypern)
+tr-TR: Tyrkisk (Tyrkiet)
+Trace: Spore
+TrackInfoPosition: TrackInfoPosition
+TrackList: Trackliste
+TrackListBehaviour: TrackListBehaviour
+TrackListClass: TrackListClass
+TrackListCoverImage: TrackListCoverImage
+TrackListMode: TrackList-tilstand
+TrackListPosition: TrackListPosition
+TrackListToggleButtonPosition: TrackListToggleButtonPosition
+Trail Details: Oplysninger om stien
+TransformOrigin: TransformOrigin
+Translations: Oversættelser
+Translations are being imported: Oversættelser importeres
+Translations updated: Oversættelser opdateret
+Transparent: Gennemsigtig
+Trebuchet MS: Trebuchet MS
+TreeView: TreeView
+TreeView component that renders a tree structure of items.: TreeView-komponent, der gengiver en træstruktur af elementer.
+TreeViewBreadcrumb: TreeViewBrødkrumme
+TreeViewCardGrid: TreeViewCardGrid
+TreeViewDefault: TreeViewDefault
+TreeViewFlatList: TreeViewFlatList
+TreeViewHorizontal: TrævisningVandret
+TreeViewList: TreeViewList
+TreeViewMode: TreeView-tilstand
+TrueLeds: TrueLed'er
+TrueOrFalse: TrueOrFalse
+Try different role: Prøv en anden rolle
+Try MudEx online: Prøv MudEx online
+Try MudEx online CodeEditor: Prøv MudEx online CodeEditor
+ts-ZA: Xitsonga (Sydafrika)
+tt-RU: Tatariske (Rusland)
+Turquoise: Turkis
+TwilightBase16: TwilightBase16
+twq-NE: Tasawaq (Niger)
+Type: Slags
+Type should be valid: Type skal være gyldig
+Typo: Tastefejl
+TypoThemeDescription: TypoThemeBeskrivelse
+TypoThemeName: TypoThemeName
+tzm-Arab-MA: Det centrale Atlas Tamazight (arabisk, Marokko)
+tzm-Latn-DZ: Central Atlas Tamazight (latin, Algeriet)
+tzm-Latn-MA: Det centrale Atlas Tamazight (latin, Marokko)
+tzm-Tfng-MA: Det centrale Atlas Tamazight (Tifinagh, Marokko)
+ug-CN: Uighur (Kina)
+uk-UA: Ukrainsk (Ukraine)
+Uma Thurman: Uma Thurman
+Unassigned: Ikke tildelt
+UncheckedIcon: Ikke markeretIkon
+Underline: Understrege
+Undo: Fortryde
+UndoIcon: Fortryd ikon
+UnikittyDarkBase16: PartyKittyDarkBase16
+UnikittyLightBase16: UniKatyLightBase16
+Unselectable: Kan ikke vælges
+Unset: Ikke indstillet
+Update: Opdatering
+Update automatically next time: Opdater automatisk næste gang
+Update Brand: Opdater mærke
+Update Document: Opdater dokument
+Update Document Type: Opdater dokumenttype
+Update Extended Attribute: Opdater udvidet attribut
+Update Now: Opdater nu
+Update Permissions: Opdater tilladelser
+Update Product: Opdater produkt
+Update Role: Opdater rolle
+Update Role Permissions: Opdater rolletilladelser
+Update User Roles: Opdater brugerroller
+UpdateBindingIfOnlyHSLChanged: UpdateBindingIfOnlyHSLChanged
+Updated: Opdateret
+Updated User Status.: Opdateret brugerstatus.
+UpdateItemsOnStateChange: UpdateItemsOnStateChange
+Upload: Uploade
+Upload Edit: Upload Rediger
+Upload File: Upload fil
+Upload Files: Upload filer
+Upload Folder: Upload mappe
+Upload Image: Upload billede
+Upload in dialog: Upload i dialogboks
+Upload Qualifications and References: Upload kvalifikationer og referencer
+UploadFieldId: UploadFieldId
+UploadFile: Uploadfil
+UploadFolder: UploadFolder
+UploadRequest: Anmodning om upload
+UploadRequests: UploadAnmodninger
+ur-IN: Urdu (Indien)
+ur-PK: Urdu (Pakistan)
+url: URL-adresse
+Url: URL-adresse
+Use CodeGator Models: Brug CodeGator-modeller
+Use MudExAdditionalAdornment ad ChildContent: Brug MudExAdditionalAdornment-annonce ChildContent
+Use MudExAdditionalAdornment as ChildContent of a MudInput: Brug MudExAdditionalAdornment som underordnet indhold i et mudderinput
+Use MudExSelect instead and set MultiSelection to true and ValuePresenter to Chip.: Brug MudExSelect i stedet, og indstil MultiSelection til true og ValuePresenter til Chip.
+UseCanvas: BrugCanvas
+UseColorPaletteInNativeBrowserControl: UseColorPaletteInNativeBrowserControl
+UseItemTemplateForSelection: UseItemTemplateForSelection
+UseMudExColorBubble: BrugMudExColorBubble
+UseNativeBrowserControl: UseNativeBrowserControl
+User: Bruger
+User {0} Registered. Please check your Mailbox to verify!: Bruger {0} registreret. Tjek venligst din postkasse for at bekræfte din e-mailadresse!
+User and Roles: Bruger og roller
+User Data: Brugerdata
+User Deleted: Bruger slettet
+User Name: Brugernavn
+User Not Active. Please contact the administrator.: Brugeren er ikke aktiv. Vent venligst på aktivering eller kontakt administratoren.
+User Not Found!: Bruger ikke fundet!
+User Registered: Bruger registreret!
+User Registered Mailbox: Bruger registreret. Bekræftelsesmail er blevet leveret til postkassen.
+User registration is not allowed: Brugerregistrering er ikke tilladt
+UserAttributes: Bruger-attributter
+UserInformation: Brugerinformation
+Username: Brugernavn
+UserName: Brugernavn
+Username {0} is already taken.: Brugernavn {0} er allerede optaget.
+Username cannot changed: Brugernavn kan ikke ændres
+UserName is required: Brugernavn er påkrævet
+UserName must be at least of length 6: Brugernavn skal være mindst af længden 6
+Username or Email: Brugernavn eller e-mail
+Users: Brugere
+Users and Roles: Brugere og roller
+Users exported: Eksporterede brugere
+Uses the IDialogEventService and handles the before close event. Here you can just set args.Cancel to true to stop closing: Bruger IDialogEventService og håndterer hændelsen før lukning. Her kan du bare indstille args. Annuller til sand for at stoppe lukningen
+UTC: UTC
+Utilities: Utilities
+uz-Arab-AF: usbekisk (arabisk, Afghanistan)
+uz-Cyrl-UZ: usbekisk (kyrillisk, Usbekistan)
+uz-Latn-UZ: usbekisk (latin, Usbekistan)
+vai-Latn-LR: Vai (Latin, Liberia)
+vai-Vaii-LR: Vai (Vai, Liberia)
+Validate Upload Edit in MudForm: Valider uploadredigering i MudForm
+Validation: Validering
+Value: Værdi
+ValuePresenter: VærdiPræsentation
+Values: Værdier
+ValueString: ValueString
+Vancouver: Vancouver
+Vancouver - V5K 0A1: Vancouver - V5K 0A1
+Vancouver - V5K 0A1ender: Vancouver - V5K 0A1ender
+Variant: Variant
+ve-ZA: Venda (Sydafrika)
+Verdana: Verdana
+Version: Version
+vi-VN: Vietnamesisk (Vietnam)
+Video Content-Type: Video-indhold-type
+Video device: Videoenhed
+VideoDevice: Videoenhed
+View: Udsigt
+View Profile: Se profil
+ViewBox: Visningsboks
+ViewDependsOnContentType: ViewDependsOnContentType
+ViewMode: Visningstilstand
+ViewportHeight: UdsigtsportHøjde
+ViewportMaximum: VisningsportMaksimum
+ViewportMinimum: ViewportMinimum
+ViewportWidth: ViewportWidth
+Viner Hand ITC: Viner Hånd ITC
+Violet: Violet
+Virtualize: Virtualisere
+Visible: Synlig
+Visualizer: Visualizer
+VisualizerBackgroundColor: VisualizerBackgroundColor
+VisualizerElementBorderSize: VisualizerElementBorderSize
+Vivaldi: Vivaldi
+Vladimir Script: Vladimir Script
+vo-001: Volapük (Verden)
+Volume: Lydstyrke
+Vs: Vs
+Vs2015: Vs2015
+VulcanBase16: VulcanBase16
+vun-TZ: Vunjo (Tanzania)
+wae-CH: Walser (Schweiz)
+wal-ET: Wolaytta (Etiopien)
+Warning: Advarsel
+WarningContrastText: AdvarselKontrasttekst
+WarningDarken: AdvarselMørkere
+WarningLighten: AdvarselLighten
+weather.json: weather.json
+Webdings: Webdings
+Week: Uge
+WeightingFilter: VægtningFilter
+Welcome {0}: Velkommen {0}
+whatever: uanset
+Wheat: Hvede
+White: Hvid
+WhiteBalanceMode: WhiteBalanceMode
+WhiteList: Hvidliste
+WhiteSmoke: Hvid røg
+Wide Latin: Bredt latin
+Width: Bredde
+Will be saved only when selected Permission: Gemmes kun, når du vælger Tilladelse
+Window: Vindue
+Windows10Base16: Windows10Base16
+Windows10LightBase16: Windows10LightBase16
+Windows95Base16: Windows95Base16
+Windows95LightBase16: Windows95LightBase16
+WindowsHighContrastBase16: WindowsHighContrastBase16
+WindowsHighContrastLightBase16: WindowsHighContrastLightBase16
+WindowsNtBase16: WindowsNtBase16
+WindowsNtLightBase16: WindowsNtLightBase16
+Wingdings: Wingdings
+With custom configuration: Med brugerdefineret konfiguration
+With default configuration: Med standardkonfiguration
+With tabs: Med faner
+With the MudExAdditionalAdornment component you can have as many adornments in any MudInput based input control like this.: Med MudExAdditionalAdornment-komponenten kan du have så mange udsmykninger i enhver MudInput-baseret inputkontrol som denne.
+With this component you can have an animation while loading the main blazor app: Med denne komponent kan du have en animation, mens du indlæser den primære blazor-app
+With_Selected: '{0} Valgt'
+WithFullSpectrumAudioData: MedFullSpectrumAudioData
+WithFullSpectrumAudioDataPrefilledWithRandomData: MedFuldspektreLydDataForududfyldtMedTilfældige Data
+WithGoogleLatinFonts: MedGoogleLatinFonts
+WithoutBounds: Uden grænser
+WithRandomData: Med tilfældige data
+WithRealAudioData: Med RealAudioData
+wo-SN: Wolof (Senegal)
+Wobble: Wobble
+WoodlandBase16: WoodlandBase16
+WordDokument.doc: WordDokument.doc
+WrapChips: WrapChips
+WrapToolBarContent: WrapToolBarContent
+Xcode: Xcode
+XcodeDuskBase16: XcodeDuskBase16
+xh-ZA: isiXhosa (Sydafrika)
+Xml: Xml
+xog-UG: Soga (Uganda)
+Xt256: Xt256
+Yaml: Yaml
+yav-CM: Yangben (Cameroun)
+Yellow: Gul
+YellowGreen: Gulgrøn
+Yes: Ja
+yi-001: Jiddisch (verden)
+yo-BJ: Yoruba (Benin)
+yo-NG: Yoruba (Nigeria)
+Yokohama: Yokohama
+Yokohama - 220-0001: Yokohama - 220-0001
+Yokohama - 220-0001ender: Yokohama - 220-0001ender
+you: du
+You are logged out because the Permissions of one of your Roles have been updated.: Du er logget ud, fordi tilladelserne for en af dine roller er blevet opdateret.
+You are logged out because the user with your Token has been deleted or token is expired.: Du er logget ud, fordi brugeren med dit token er blevet slettet, eller tokenet er udløbet.
+You are logged out by an Administrator or profile change.: Du logges ud af en administrator eller profilændring.
+You are Logged Out.: Du er logget ud.
+You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Du kan også bruge MudExAdditionalAdornment som ChildContent i et MudInput
+You can now Login with your credentials: Du kan nu logge ind med dine legitimationsoplysninger
+You cannot delete yourself: Du kan ikke slette dig selv
+You clicked: Du klikkede på
+You don't need an extra JsonEditor anymore: Du behøver ikke længere en ekstra JsonEditor
+You have {0} Users where you can pick from: Du har {0} brugere, hvor du kan vælge mellem
+You picked: Du valgte
+You received a new chat message from {0}: Du har modtaget en ny chatbesked fra {0}
+You're leaving {0} and will redirected to {1}: Du forlader {0} og vil blive omdirigeret til {1}
+Your e-mail address has been confirmed!: Din e-mailadresse er blevet bekræftet!
+Your email address could not be verified. If you have any problems, please contact {0}: Din e-mailadresse kunne ikke bekræftes. Hvis du har problemer, bedes du kontakte {0}
+Your Profile has been updated.: Din profil er blevet opdateret.
+Your Recent Activities.: Dine seneste aktiviteter.
+ZenburnBase16: ZenburnBase16
+zgh-Tfng-MA: Standard marokkansk tamazight (Tifinagh, Marokko)
+zh-CN: Kinesisk (Kina)
+zh-Hans-HK: Kinesisk (forenklet, Hongkong SAR)
+zh-Hans-MO: Kinesisk (forenklet, Macao SAR)
+zh-HK: Kinesisk (Hongkong SAR)
+zh-MO: Kinesisk (Macao SAR)
+zh-SG: Kinesisk (Singapore)
+zh-TW: Kinesisk (Taiwan)
+ZIndex: ZIndex
+ZipCode: Postnummer
+Zoom: Zoome
+Zoom in: Zoom ind
+Zoom out: Zoom ud
+ZoomInButtonIcon: ZoomInButtonIkon
+ZoomOnHover: ZoomOnHover
+ZoomOutButtonIcon: ZoomUdKnapIkon
+zu-ZA: isiZulu (Sydafrika)

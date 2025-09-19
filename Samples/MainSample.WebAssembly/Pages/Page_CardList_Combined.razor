@@ -1,5 +1,5 @@
 ﻿@page "/card-combined"
-
+@inherits BasePage
 @attribute [Demo(Name = "MudExCardList with ItemsSource and child content", Icon = Icons.Material.Outlined.HorizontalSplit, Documentation = "This Demo demonstrate using the MudExCardList with an item source and child content together", ForComponentType = typeof(MudExCardList<>))]
 
 <DemoComponent PageType="@GetType()" Title="MudExCardList">
@@ -11,12 +11,12 @@
                 <MudCard>
                     <MudCardHeader>
                         <CardHeaderContent>
-                            <MudText Typo="Typo.h6">Static item</MudText>
+                            <MudText Typo="Typo.h6">@L["Static item"]</MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent >
-                        <MudText>Static card.</MudText>
-                        <MudText Typo="Typo.body2">This one card is still added without an corresponding item.</MudText>
+                        <MudText>@L["Static card."]</MudText>
+                        <MudText Typo="Typo.body2">@L["This one card is still added without an corresponding item."]</MudText>
                     </MudCardContent>
                 </MudCard>
             </MudExCardList>

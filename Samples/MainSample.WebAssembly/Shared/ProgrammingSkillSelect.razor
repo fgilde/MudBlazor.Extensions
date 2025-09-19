@@ -27,6 +27,11 @@
             new() { Name = "Pascal"}
         });
     }
-
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (MainLayout.Instance != null)
+            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
+    }
     private static string ItemNameRenderFn(Page_ObjectEditConfigured.ProgramingSkill item) => $"{item?.Name}";
 }
