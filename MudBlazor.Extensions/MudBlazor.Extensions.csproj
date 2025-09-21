@@ -23,7 +23,7 @@
   <!--Versioning-->
   <PropertyGroup>
     <MajorVersion>8</MajorVersion>
-    <MinorVersion>13s</MinorVersion>
+    <MinorVersion>13</MinorVersion>
     <PatchVersion>0</PatchVersion>
   </PropertyGroup>
 
