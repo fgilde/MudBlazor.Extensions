@@ -1,0 +1,19 @@
+﻿@inherits MudExJsRequiredBaseComponent<MudExDockLayout>
+
+<style>
+    /* Tabs/Aktionen weg */
+    .dv-hide-tabs .dv-tabs-and-actions-container { display: none !important; }
+    /* Inhalt darf vollflächig gehen */
+    .dv-hide-tabs .dv-content-container { height: 100% !important; }
+    /* Optional: minimaler Randabstand */
+    .dv-hide-tabs .dv-groupview { --dv-tab-height: 0px; }
+
+</style>
+
+
+<div @ref="_containerRef"
+     class="@($"{ClassName}{(HideTabHeaders ? " dv-hide-tabs" : "")}")"
+     style="@ContainerStyle">
+    @ChildContent
+</div>
+

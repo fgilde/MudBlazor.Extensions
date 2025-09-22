@@ -2240,6 +2240,21 @@
             Style for divider
             </summary>
         </member>
+        <member name="T:MudBlazor.Extensions.Components.MudExDockLayout">
+            <summary>
+            A Component to quickly select a color
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDockLayout.GetJsArguments">
+            <summary>
+            Gets the JavaScript arguments to pass to the component.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDockLayout.UpdateJsOptions">
+            <summary>
+            Update JS options
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.DropBoxFileInfo">
             <summary>
             File info for DropBox

@@ -1,0 +1,11 @@
+{
+  "version": "3.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "provider": "jsdelivr",
+      "library": "dockview-core@4.7.1",
+      "destination": "wwwroot/js/libs/dockview/"
+    }
+  ]
+}

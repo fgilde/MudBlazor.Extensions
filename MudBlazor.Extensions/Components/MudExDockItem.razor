@@ -1,0 +1,43 @@
+﻿@inherits ComponentBase
+@implements IDisposable
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="dv-node"
+         data-dv-id="@Id"
+         data-dv-title="@Title"
+         data-dv-dir="@DirectionString"
+         data-dv-hide="@HideHeaderString"
+         data-dv-close="@CanCloseString"
+         data-dv-float="@IsFloatingString">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [CascadingParameter] public MudExDockItem? ParentItem { get; set; }
+
+    // ALLE Optionen direkt am Item (keine Extraklasse)
+    [Parameter] public string Id { get; set; } = Guid.NewGuid().ToString("N");
+    [Parameter] public string Title { get; set; } = "Panel";
+    [Parameter] public string Component { get; set; } = "default"; // bleibt frei für spätere Komponententypen
+    [Parameter] public DockDirection Direction { get; set; } = DockDirection.Right;
+    [Parameter] public bool HideHeader { get; set; }                 // Header (Tabs) für diese Gruppe verbergen
+    [Parameter] public bool CanClose { get; set; } = true;           // Close-Button erlauben
+    [Parameter] public bool IsFloating { get; set; }                 // beim Anlegen floaten
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private string DirectionString => Direction switch
+    {
+        DockDirection.Left => "left",
+        DockDirection.Right => "right",
+        DockDirection.Up => "up",
+        DockDirection.Down => "down",
+        _ => "right"
+    };
+
+    private string HideHeaderString => HideHeader ? "true" : "false";
+    private string CanCloseString => CanClose ? "true" : "false";
+    private string IsFloatingString => IsFloating ? "true" : "false";
+
+    public void Dispose() {}
+}

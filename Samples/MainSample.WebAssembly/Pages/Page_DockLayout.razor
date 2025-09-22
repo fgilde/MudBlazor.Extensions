@@ -1,0 +1,76 @@
+﻿@page "/dock-layout"
+@inherits BasePage
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+@attribute [Demo(Name = "MudExDockLayout", Icon = Icons.Material.Outlined.ColorLens, Documentation = "Dock", ForComponentType = typeof(MudExDockLayout))]
+
+<MudButton OnClick="@Save">Save</MudButton>
+<MudButton OnClick="@Restore">Restore</MudButton>
+
+<MudExDockLayout @ref="_layout" ClassName="dockview-theme-vs">
+    <MudExDockItem Direction="DockDirection.Right">
+        <MudExDockItem Title="Left" IsFloating="true">
+            <p>Whatever</p>
+        </MudExDockItem>
+        <MudExDockItem Title="Right">
+            <p>Whatever 2</p>
+        </MudExDockItem>
+    </MudExDockItem>
+
+    <MudExDockItem Direction="DockDirection.Left">
+        <MudExDockItem Direction="DockDirection.Left" Title="Top" HideHeader="true">
+            <MudText Typo="Typo.h6">Oben</MudText>
+        </MudExDockItem>
+        <MudExDockItem Direction="DockDirection.Right" CanClose="false" Title="Bottom" >
+            <MudButton Color="Color.Primary">Unten (ohne Header)</MudButton>
+        </MudExDockItem>
+    </MudExDockItem>
+</MudExDockLayout>
+
+
+
+
+
+@code {
+    private MudExDockLayout? _layout;
+    private string json;
+    private async Task Save()
+    {
+        json = await _layout!.SaveLayoutAsync();
+        // -> in DB/LocalStorage sichern
+        Console.WriteLine(json);
+    }
+
+    private async Task Restore()
+    {
+        await _layout!.RestoreLayoutAsync(json);
+    }
+}
+
+
+@* <DemoComponent PageType="@GetType()" >
+    <SplitContainer>
+        <Left>
+            <MudExColorEdit Value="Color.Secondary" @ref="component"></MudExColorEdit>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent> *@
+
+
+@code {
+    // MudExColorEdit component;
+    // private Action<ObjectEditMeta<MudExColorEdit>> Configure()
+    // {
+    //     return meta =>
+    //     {
+    //         meta.Property(m => m.Localizer).Ignore();
+    //         meta.Property(m => m.CssVars).Ignore();
+    //         meta.Property(m => m.Color).WithAdditionalAttribute(nameof(MudColorPicker.ShowAlpha), false, true);
+    //         meta.IgnoreAllReadOnlyFields();
+    //     };
+    // }
+
+}
