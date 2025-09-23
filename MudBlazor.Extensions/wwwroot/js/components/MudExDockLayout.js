@@ -104,19 +104,17 @@
             this._planFromNode(root, rootDir, plan, () => localAnchor, v => { localAnchor = v; });
         }
 
-        for (const d of plan) {
-            const payload = { id: d.id, component: 'blazor', title: d.title };
-            if (d.position) payload.position = d.position;
-            const panel = this.api.addPanel(payload);
-
-            if (d.hideHeader === true && !this.containerRef.classList.contains('dv-hide-tabs')) {
+        for (const p of plan) {
+            const panel = this.api.addPanel(p);
+            panel.isVisible = p.isVisible;
+            if (p.hideHeader === true && !this.containerRef.classList.contains('dv-hide-tabs')) {
                 panel.group.header.hidden = true;
             }
-            if (d.float === true) {
-                this.api.addFloatingGroup(panel, d.floatBounds || undefined);
+            if (p.float === true) {
+                this.api.addFloatingGroup(panel, p.floatBounds || undefined);
             }
-            if (d.locked != null) {
-                panel.group.locked = d.locked === true ? true : d.locked;
+            if (p.locked != null) {
+                panel.group.locked = p.locked;
             }
         }
     }
@@ -127,23 +125,10 @@
         const nodeOptions = JSON.parse(node.dataset.options || '{}');
 
         if (!isContainer) {
-            const id = nodeOptions.id;
-            const title = nodeOptions.title ?? id;
-            const hideHeader = !!nodeOptions.hideHeader;
-            const isFloating = !!nodeOptions.isFloating;
-            // const canClose   = nodeOptions.canClose; // später via custom Tab-Renderer
-
-            // Leaf: Anker-Logik
             const anchor = getAnchor();
-            const desc = {
-                id, title, hideHeader,
-                float: isFloating,
-                position: anchor ? { referencePanel: anchor, direction: parentDir }
-                    : { direction: parentDir }
-            };
-
-            plan.push(desc);
-            setAnchor(id); 
+            plan.push(nodeOptions);
+            nodeOptions.position = anchor ? { referencePanel: anchor, direction: parentDir } : { direction: parentDir };
+            setAnchor(nodeOptions.id); 
             return;
         }
 

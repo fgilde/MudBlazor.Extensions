@@ -2268,6 +2268,11 @@
             Dock below the target panel
             </summary>
         </member>
+        <member name="F:MudBlazor.Extensions.Components.DockDirection.Within">
+            <summary>
+            Dock within the target panel
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDockLayout">
             <summary>
             A Component to quickly select a color

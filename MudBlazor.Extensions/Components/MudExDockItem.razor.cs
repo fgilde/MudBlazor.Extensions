@@ -15,12 +15,19 @@ public partial class MudExDockItem
     [ForJs, Parameter] public string Title { get; set; } = "Panel";
     [ForJs, Parameter] public DockDirection Direction { get; set; } = DockDirection.Right;
     [ForJs, Parameter] public bool HideHeader { get; set; }
+    [ForJs, Parameter] public bool Float { get; set; }
+
     [ForJs, Parameter] public bool CanClose { get; set; } = true;
-    [ForJs, Parameter] public bool IsFloating { get; set; }
+
+    [ForJs, Parameter] public bool Locked { get; set; }
+    [ForJs, Parameter] public bool IsVisible { get; set; } = true;
+    [ForJs, Parameter] public bool IsGroupActive { get; set; }
+    [ForJs, Parameter] public bool IsActive { get; set; }
+    [ForJs, Parameter] public bool IsFocused { get; set; }
 
     [Parameter] public RenderFragment ChildContent { get; set; }
 
-    private string Options => JsonConvert.SerializeObject(this.AsJsObject(new { id = Id }));
+    private string Options => JsonConvert.SerializeObject(this.AsJsObject());
 
     internal List<MudExDockItem> Children { get; } = new();
 

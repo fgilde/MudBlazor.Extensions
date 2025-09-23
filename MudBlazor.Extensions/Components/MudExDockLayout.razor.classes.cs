@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using static MudBlazor.Extensions.Components.MudExDockItem;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -31,7 +30,13 @@ public enum DockDirection
     /// Dock below the target panel
     /// </summary>
     [Description(nameof(Below))]
-    Below
+    Below,
+
+    /// <summary>
+    /// Dock within the target panel
+    /// </summary>
+    [Description(nameof(Within))]
+    Within
 }
 
 public enum DockTheme

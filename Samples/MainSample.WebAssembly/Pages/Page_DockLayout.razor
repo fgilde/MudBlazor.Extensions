@@ -9,20 +9,29 @@
 
 
 <MudExDockLayout @ref="_layout">
-    <!-- Root teilt horizontal -->
+    
     <MudExDockItem Direction="DockDirection.Right">
 
-        <!-- Linke Spalte: Container teilt vertikal -->
         <MudExDockItem Title="LeftArea" Direction="DockDirection.Below">
-            <MudExDockItem Title="Top">
-                <MudText Typo="Typo.h6">Oben</MudText>
+            <MudExDockItem Title="Top" IsFocused="true">
+                <MudCard Class="m-5 p-5" Elevation="4">
+                    <MudCardMedia Image="https://mudblazor.com/images/door.jpg" Height="200" />
+                    <MudCardContent>
+                        <MudText Typo="Typo.h5">@L["Old Paint"]</MudText>
+                        <MudText Typo="Typo.body2">@L["Old paint found on a stone house door."]</MudText>
+                        <MudText Typo="Typo.body2">@L["This photo was taken in a small village in Istra Croatia."]</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+                    </MudCardActions>
+                </MudCard>
             </MudExDockItem>
-            <MudExDockItem Title="Bottom">
+            <MudExDockItem Title="Bottom" IsVisible="false" IsActive="true">
                 <MudButton OnClick="@(() => cc++)" Color="Color.Primary">Click me @cc</MudButton>
             </MudExDockItem>
         </MudExDockItem>
 
-        <!-- Rechte Spalte: Leaf -->
         <MudExDockItem Title="Super Right">
             <p>Whatever 2</p>
         </MudExDockItem>
