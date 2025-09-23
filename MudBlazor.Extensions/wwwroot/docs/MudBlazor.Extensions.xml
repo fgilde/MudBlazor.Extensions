@@ -2240,6 +2240,34 @@
             Style for divider
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDockItem.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.DockDirection">
+            <summary>
+            Direction to dock a panel relative to another panel
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockDirection.Left">
+            <summary>
+            Dock to the left side of the target panel
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockDirection.Right">
+            <summary>
+            Dock to the right side of the target panel
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockDirection.Above">
+            <summary>
+            Dock above the target panel
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockDirection.Below">
+            <summary>
+            Dock below the target panel
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExDockLayout">
             <summary>
             A Component to quickly select a color

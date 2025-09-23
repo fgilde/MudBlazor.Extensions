@@ -7,33 +7,43 @@
 <MudButton OnClick="@Save">Save</MudButton>
 <MudButton OnClick="@Restore">Restore</MudButton>
 
-<MudExDockLayout @ref="_layout" ClassName="dockview-theme-vs">
+
+<MudExDockLayout @ref="_layout">
+    <!-- Root teilt horizontal -->
     <MudExDockItem Direction="DockDirection.Right">
-        <MudExDockItem Title="Left" IsFloating="true">
-            <p>Whatever</p>
+
+        <!-- Linke Spalte: Container teilt vertikal -->
+        <MudExDockItem Title="LeftArea" Direction="DockDirection.Below">
+            <MudExDockItem Title="Top">
+                <MudText Typo="Typo.h6">Oben</MudText>
+            </MudExDockItem>
+            <MudExDockItem Title="Bottom">
+                <MudButton OnClick="@(() => cc++)" Color="Color.Primary">Click me @cc</MudButton>
+            </MudExDockItem>
         </MudExDockItem>
-        <MudExDockItem Title="Right">
+
+        <!-- Rechte Spalte: Leaf -->
+        <MudExDockItem Title="Super Right">
             <p>Whatever 2</p>
         </MudExDockItem>
-    </MudExDockItem>
 
-    <MudExDockItem Direction="DockDirection.Left">
-        <MudExDockItem Direction="DockDirection.Left" Title="Top" HideHeader="true">
-            <MudText Typo="Typo.h6">Oben</MudText>
-        </MudExDockItem>
-        <MudExDockItem Direction="DockDirection.Right" CanClose="false" Title="Bottom" >
-            <MudButton Color="Color.Primary">Unten (ohne Header)</MudButton>
-        </MudExDockItem>
     </MudExDockItem>
 </MudExDockLayout>
 
 
 
 
-
 @code {
+    int cc = 0;
     private MudExDockLayout? _layout;
+    private string initJson = """{"grid":{"root":{"type":"branch","data":[{"type":"leaf","data":{"views":["MudExDockLayout-0.1","MudExDockLayout-0.0.1","MudExDockLayout-0.0.0"],"activeView":"MudExDockLayout-0.0.0","id":"3"},"size":1250}],"size":782.390625},"width":1250,"height":782.390625,"orientation":"HORIZONTAL"},"panels":{"MudExDockLayout-0.1":{"id":"MudExDockLayout-0.1","contentComponent":"blazor","title":"Super Right"},"MudExDockLayout-0.0.1":{"id":"MudExDockLayout-0.0.1","contentComponent":"blazor","title":"Bottom"},"MudExDockLayout-0.0.0":{"id":"MudExDockLayout-0.0.0","contentComponent":"blazor","title":"Top"}},"activeGroup":"3"}""";
     private string json;
+    protected override void OnInitialized()
+    {
+        json = initJson;
+        base.OnInitialized();
+    }
+
     private async Task Save()
     {
         json = await _layout!.SaveLayoutAsync();

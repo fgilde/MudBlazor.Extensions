@@ -3,9 +3,8 @@ using BlazorJS.Attributes;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Helper.Internal;
 using Nextended.Core.Extensions;
-using System.Text.Json.Serialization;
-using static MudBlazor.Extensions.Components.MudExDockItem;
 
 namespace MudBlazor.Extensions.Components
 {
@@ -18,12 +17,10 @@ namespace MudBlazor.Extensions.Components
         private string DockViewFile(string name, bool absolute= true) => JsImportHelper.JsPath($"{_dockViewPath}{name.EnsureStartsWith("/")}", absolute: absolute);
         private ElementReference _containerRef;
 
-        private readonly List<MudExDockItem> _roots = new();
 
-        public string RenderId { get; } = Guid.NewGuid().ToString("N").Substring(0, 8);
-
-        [Parameter] public RenderFragment? ChildContent { get; set; }
-        [ForJs, Parameter] public string ClassName { get; set; } = "dockview-theme-vs";
+        [Parameter] public string Id { get; set; } = nameof(MudExDockLayout);
+        [Parameter] public RenderFragment ChildContent { get; set; }
+        [Parameter] public DockTheme Theme { get; set; } = DockTheme.MudBlazor;
         [Parameter] public string ContainerStyle { get; set; } = "height:60vh;width:100%;min-height:320px;";
         [ForJs, Parameter] public string? InitialLayoutJson { get; set; }
         [Parameter] public bool HideTabHeaders { get; set; }
@@ -31,8 +28,21 @@ namespace MudBlazor.Extensions.Components
         [Parameter] public EventCallback<string> OnPanelAdded { get; set; }
         [Parameter] public EventCallback<string?> OnActiveChanged { get; set; }
         [Parameter] public EventCallback<string> OnPanelRemoved { get; set; }
-        
-       
+
+        internal List<MudExDockItem> RootItems { get; } = new();
+
+        internal int RegisterRoot(MudExDockItem item)
+        {
+            if (!RootItems.Contains(item)) RootItems.Add(item);
+            return RootItems.IndexOf(item);
+        }
+
+        internal void UnregisterRoot(MudExDockItem item)
+        {
+            RootItems.Remove(item);
+        }
+
+        private string ClassName => MudExCssBuilder.Default.AddClass(Theme.GetDescription()).AddClass(Class).ToString();
 
         protected override Task OnJsOptionsChanged()
         {
@@ -71,7 +81,7 @@ namespace MudBlazor.Extensions.Components
             return this.AsJsObject(new
             {
                 module = DockViewFile("/dockview-core.esm.js", false),
-                renderId = RenderId
+                className = ClassName
             });
         }
 
