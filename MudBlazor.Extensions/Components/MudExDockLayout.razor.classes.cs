@@ -4,6 +4,36 @@ namespace MudBlazor.Extensions.Components;
 
 
 /// <summary>
+/// Dock mode for the layout
+/// </summary>
+public enum DockMode
+{
+    /// <summary>
+    /// Dock mode with tabs and panels
+    /// </summary>
+    [Description(nameof(Dock))]
+    Dock,
+    /// <summary>
+    /// Grid mode with panels only
+    /// </summary>
+    [Description(nameof(Grid))]
+    Grid,
+
+    /// <summary>
+    /// Split mode
+    /// </summary>
+    [Description(nameof(Split))]
+    Split,
+
+    /// <summary>
+    /// Pane mode
+    /// </summary>
+    [Description(nameof(Pane))]
+    Pane
+}
+
+
+/// <summary>
 /// Direction to dock a panel relative to another panel
 /// </summary>
 public enum DockDirection

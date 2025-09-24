@@ -1,8 +1,7 @@
-﻿@inherits ComponentBase
-@implements IDisposable
+﻿@inherits MudExBaseComponent<MudExDockItem>
 
 <CascadingValue Value="this" IsFixed="true">
-    <div class="dv-node"
+    <div class="@ClassStr"
          data-options="@Options">
         @ChildContent
     </div>

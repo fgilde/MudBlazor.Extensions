@@ -14,7 +14,9 @@
 
     async init() {
         const { createDockview } = await import(this.options.module);
-
+        
+        const mode = this.options.mode?.toLowerCase(); // 'grid' | 'dock' | 'pane' | 'split'
+        // TODO: Support modes other than 'dock'
         this.api = createDockview(this.containerRef, {
             theme: {
                 className: this.options.className ?? 'dockview-theme-abyss'
@@ -50,8 +52,29 @@
 
         this.dotnet?.invokeMethodAsync('OnJsReady');
         this.observeAndBootstrap();
+        this.wireEvents();
     }
 
+    wireEvents() {
+        this.disposeEvents();
+        const push = (d) => this.disposables.push(d).length && d;
+        try { push(this.api.onDidAddPanel?.(p => this.dotnet?.invokeMethodAsync('OnJsPanelAdded', p.id))); } catch (e) { }
+        try { push(this.api.onDidRemovePanel?.(p => this.dotnet?.invokeMethodAsync('OnJsPanelRemoved', p.id))); } catch (e) { }
+        try { push(this.api.onDidActivePanelChange?.(e => this.dotnet?.invokeMethodAsync('OnJsActiveChanged', e?.id ?? null))); } catch (e) { }
+        try {
+            push(this.api.onDidMovePanel?.(e => {
+                const payload = { PanelId: e.panel?.id ?? null, FromGroupId: e.from?.id ?? e.fromGroup?.id ?? null, ToGroupId: e.to?.id ?? e.toGroup?.id ?? null, ToIndex: e.index ?? 0 };
+                this.dotnet?.invokeMethodAsync('OnJsPanelMoved', payload);
+            }));
+        } catch (e) { }
+    }
+
+    disposeEvents() {
+        for (const d of this.disposables || []) {
+            try { d?.dispose?.(); } catch (e) { }
+        }
+        this.disposables = [];
+    }
 
     indexDomLeaves() {
         const nodes = this.containerRef.querySelectorAll('.dv-node');
@@ -146,6 +169,10 @@
 
     fromJSON(json) {
         try { this.api?.fromJSON(typeof json === 'string' ? JSON.parse(json) : json); } catch (e) { }
+    }
+
+    dispose() {
+        this.disposeEvents();
     }
 }
 

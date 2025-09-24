@@ -8,12 +8,12 @@
 <MudButton OnClick="@Restore">Restore</MudButton>
 
 
-<MudExDockLayout @ref="_layout">
+<MudExDockLayout @ref="_layout" Mode="DockMode.Dock">
     
     <MudExDockItem Direction="DockDirection.Right">
 
         <MudExDockItem Title="LeftArea" Direction="DockDirection.Below">
-            <MudExDockItem Title="Top" IsFocused="true">
+            <MudExDockItem MinimumHeight="300" MaximumHeight="350" Title="Top" IsFocused="true" CanClose="false">
                 <MudCard Class="m-5 p-5" Elevation="4">
                     <MudCardMedia Image="https://mudblazor.com/images/door.jpg" Height="200" />
                     <MudCardContent>
@@ -27,7 +27,7 @@
                     </MudCardActions>
                 </MudCard>
             </MudExDockItem>
-            <MudExDockItem Title="Bottom" IsVisible="false" IsActive="true">
+            <MudExDockItem Title="Bottom" IsActive="true">
                 <MudButton OnClick="@(() => cc++)" Color="Color.Primary">Click me @cc</MudButton>
             </MudExDockItem>
         </MudExDockItem>

@@ -2243,6 +2243,34 @@
         <member name="M:MudBlazor.Extensions.Components.MudExDockItem.OnInitialized">
             <inheritdoc />
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDockItem.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.DockMode">
+            <summary>
+            Dock mode for the layout
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockMode.Dock">
+            <summary>
+            Dock mode with tabs and panels
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockMode.Grid">
+            <summary>
+            Grid mode with panels only
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockMode.Split">
+            <summary>
+            Split mode
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockMode.Pane">
+            <summary>
+            Pane mode
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.DockDirection">
             <summary>
             Direction to dock a panel relative to another panel
@@ -2271,21 +2299,6 @@
         <member name="F:MudBlazor.Extensions.Components.DockDirection.Within">
             <summary>
             Dock within the target panel
-            </summary>
-        </member>
-        <member name="T:MudBlazor.Extensions.Components.MudExDockLayout">
-            <summary>
-            A Component to quickly select a color
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExDockLayout.GetJsArguments">
-            <summary>
-            Gets the JavaScript arguments to pass to the component.
-            </summary>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExDockLayout.UpdateJsOptions">
-            <summary>
-            Update JS options
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.DropBoxFileInfo">
