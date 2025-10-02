@@ -1,7 +1,41 @@
+
+.mud-ex-grid-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 20;
+}
+
+
+.mud-ex-grid-placeholder {
+    position: absolute;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0.25;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.14) 0%, rgba(0,0,0,0.08) 60%, rgba(0,0,0,0) 70%), var(--mud-palette-primary);
+    mix-blend-mode: multiply;
+    border: 2px dashed rgba(255,255,255,0.7);
+    border-radius: 10px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.22);
+    transition: transform .1s ease, width .1s ease, height .1s ease, opacity .1s ease;
+}
+
+
+.mud-ex-grid-section {
+    position: relative;
+    transition: box-shadow .15s ease;
+
+    &.mud-ex-grid-dragging {
+        box-shadow: 0 8px 24px rgba(0,0,0,.18);
+    }
+}
+
+
 .mud-ex-grid {
     display: grid;
     box-sizing: border-box;
     width: 100%;
+    position: relative; 
 
     &.mud-ex-grid-height-full {
         min-height: 100vh;
@@ -10,6 +44,7 @@
     &.mud-ex-grid-height-full-without-appbar {
         min-height: calc(100vh - var(--mud-appbar-height));
     }
+
 
     @for $i from 2 through 12 {
         &.mud-ex-grid-column-#{$i} {
@@ -22,9 +57,35 @@
     }
 }
 
+
+
+.mud-ex-grid-section.mud-ex-grid-dragging {
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+}
+
+
+.mud-ex-grid-clone {
+    filter: drop-shadow(0 10px 22px rgba(0,0,0,.25));
+    opacity: .95;
+    transform-origin: center center;
+}
+
 .mud-ex-grid-section {
     display: inline-grid;
     overflow: auto;
+    position: relative;
+    transition: box-shadow .12s ease;    
+
+    &.mud-ex-grid-dragging {
+        box-shadow: 0 8px 24px rgba(0,0,0,.18);
+    }
+
+    transition: box-shadow .2s ease;
+
+    &.mud-ex-grid-dragging, &.mud-ex-grid-resizing {
+        box-shadow: 0 8px 24px rgba(0,0,0,.18);
+    }
+
 
     @for $i from 1 through 12 {
         &.mud-ex-grid-section-col-start-#{$i} {
@@ -42,5 +103,34 @@
         &.mud-ex-grid-section-row-end-#{$i} {
             grid-row-end: $i;
         }
+    }
+
+
+    .mud-ex-grid-section-handle {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        z-index: 5;
+        cursor: grab;
+        user-select: none;
+        background: var(--mud-palette-primary);
+        border-radius: 4px;
+        opacity: .85;
+    }
+
+    .mud-ex-grid-handle-e {
+        right: -6px;
+        top: calc(50% - 7px);
+    }
+
+    .mud-ex-grid-handle-s {
+        bottom: -6px;
+        left: calc(50% - 7px);
+    }
+
+    .mud-ex-grid-handle-se {
+        right: -6px;
+        bottom: -6px;
+        cursor: se-resize;
     }
 }

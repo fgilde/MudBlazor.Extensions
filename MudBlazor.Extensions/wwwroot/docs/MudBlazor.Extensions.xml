@@ -1772,7 +1772,7 @@
             Removes lambda signs from code
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExCodeView.GenerateBlazorMarkupFromInstance``1(``0,System.String)">
+        <member name="M:MudBlazor.Extensions.Components.MudExCodeView.GenerateBlazorMarkupFromInstance``1(``0,System.String,System.Boolean)">
             <summary>
             Generates Markup from instance
             </summary>
@@ -9475,6 +9475,11 @@
             Grouping with tabs
             </summary>
         </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.GroupingStyle.DockPanel">
+            <summary>
+            Grouping with dock panel
+            </summary>
+        </member>
         <member name="F:MudBlazor.Extensions.Components.ObjectEdit.GroupingStyle.None">
             <summary>
             No grouping style
@@ -14315,6 +14320,16 @@
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderDataDefaults">
             <summary>
             Class containing default render data for various types of properties.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderDataDefaults.RegisterInnerComponentOuter(System.Type,System.Type)">
+            <summary>
+            Register a inner component that requires an outer component as wrapper.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderDataDefaults.RegisterInnerComponentOuter``2">
+            <summary>
+            Register a inner component that requires an outer component as wrapper.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderDataDefaults.AddRenderDataProvider(System.IServiceProvider)">

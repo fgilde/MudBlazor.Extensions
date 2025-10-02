@@ -6,13 +6,13 @@
     <SplitContainer>
         <Left>
             <MudExGrid @ref="component" Class="mud-border-info border-2 border-solid" Column="8" Row="8" Height="800">
-                <MudExGridSection @ref="section1" Column="1" ColSpan="1" Row="1" RowSpan="1">
+                <MudExGridSection @ref="section1" Column="1" ColSpan="4" Row="1" RowSpan="4" Resizable="false" Movable="false">
                     <MudPaper Class="d-flex align-center justify-center mud-theme-primary">@L["Section 1"]</MudPaper>
                 </MudExGridSection>
 
-                <MudExGridSection @ref="section2" Column="2" ColSpan="1" Row="1" RowSpan="1">
+@*                 <MudExGridSection @ref="section2" Column="2" ColSpan="1" Row="1" RowSpan="1" Resizable="false" Movable="false">
                     <MudPaper Class="d-flex align-center justify-center mud-theme-secondary">@L["Section 2"]</MudPaper>
-                </MudExGridSection>
+                </MudExGridSection> *@
             </MudExGrid>
         </Left>
         <Right>
@@ -28,11 +28,11 @@
                         <ComponentPropertyGrid Value="@section1"></ComponentPropertyGrid>
                     </ChildContent>
                 </MudExpansionPanel>
-                <MudExpansionPanel Expanded="false" Text="@L["Section 2"]">
+@*                 <MudExpansionPanel Expanded="false" Text="@L["Section 2"]">
                     <ChildContent>
                         <ComponentPropertyGrid Value="@section2"></ComponentPropertyGrid>
                     </ChildContent>
-                </MudExpansionPanel>
+                </MudExpansionPanel> *@
             </MudExpansionPanels>
         </Right>
     </SplitContainer>

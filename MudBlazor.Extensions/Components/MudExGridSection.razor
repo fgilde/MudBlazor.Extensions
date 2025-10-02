@@ -1,13 +1,18 @@
 ﻿@inherits MudExBaseComponent<MudExGridSection>
-
 <div @ref="ElementReference"
-     @attributes="UserAttributes" class="@GetClass()" style="@Style"
+     data-id="@Id"
+     @attributes="UserAttributes" class="@GetClass()" style="@GetStyle()"
      @onclick="OnClickHandler"
      @ondblclick="@OnDblClickHandler"
      @onclick:stopPropagation="OnClickStopPropagation"
      @oncontextmenu="OnContextMenu"
      @oncontextmenu:preventDefault="OnContextMenuPreventDefault"
      @oncontextmenu:stopPropagation="OnContextMenuStopPropagation">
-    
+    @if (Resizable)
+    {
+        <div class="mud-ex-grid-section-handle mud-ex-grid-handle-se" @ref="HandleSE"></div>
+        <div class="mud-ex-grid-section-handle mud-ex-grid-handle-e" @ref="HandleE"></div>
+        <div class="mud-ex-grid-section-handle mud-ex-grid-handle-s" @ref="HandleS"></div>
+    }
     @ChildContent
 </div>

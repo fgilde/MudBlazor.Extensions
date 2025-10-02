@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
-using System.Data.Common;
+using Newtonsoft.Json;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -15,6 +16,11 @@ public partial class MudExGridSection
     private int _colspan = 1;
     private int _row = 1;
     private int _rowspan = 1;
+
+    [Inject] private IJSRuntime JS { get; set; }
+    private IJSObjectReference? _module;
+    private ElementReference HandleSE, HandleE, HandleS;
+
     private string GetClass() =>
         new MudExCssBuilder("mud-ex-grid-section")
             .AddClass($"mud-ex-grid-section-col-start-{Column}")
@@ -33,7 +39,16 @@ public partial class MudExGridSection
     /// Reference to the parent MudExGrid component.
     /// </summary>
     [CascadingParameter] public MudExGrid Grid { get; set; }
-    
+
+    [Parameter] public string? Id { get; set; }
+
+    [JSInvokable("MudEx_CommitLayout")]
+    public Task CommitLayoutJs(List<SectionLayoutDto> changes)
+    {
+        return Grid.CommitLayout(changes);
+    }
+
+
     /// <summary>
     /// Gets or sets the child content of the component.
     /// </summary>
@@ -63,26 +78,26 @@ public partial class MudExGridSection
     /// Gets or sets the row span of the component. Default is 1.
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.Item.Appearance)]
-    public int RowSpan { get =>_rowspan; set => Set(ref _rowspan, value, v => RowSpanChanged.InvokeAsync(v)); }
+    public int RowSpan { get => _rowspan; set => Set(ref _rowspan, value, v => RowSpanChanged.InvokeAsync(v)); }
 
     /// <summary>
     /// Callback that is invoked when the column position changes.
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.Item.Behavior)]
     public EventCallback<int> ColumnChanged { get; set; }
-    
+
     /// <summary>
     /// Callback that is invoked when the column span changes.
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.Item.Behavior)]
     public EventCallback<int> ColSpanChanged { get; set; }
-    
+
     /// <summary>
     /// Callback that is invoked when the row position changes.
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.Item.Behavior)]
     public EventCallback<int> RowChanged { get; set; }
-    
+
     /// <summary>
     /// Callback that is invoked when the row span changes.
     /// </summary>
@@ -93,8 +108,8 @@ public partial class MudExGridSection
     /// Event callback for the click event.
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.Item.Behavior)]
-    public EventCallback<MouseEventArgs> OnClick { get; set; }   
-    
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+
     /// <summary>
     /// Event callback for the double click event.
     /// </summary>
@@ -119,6 +134,36 @@ public partial class MudExGridSection
     [Parameter, SafeCategory(CategoryTypes.Item.Behavior)]
     public bool OnContextMenuPreventDefault { get; set; }
 
+    // New options
+    [Parameter] public bool Movable { get; set; } = false;
+    [Parameter] public bool Resizable { get; set; } = false;
+
+
+    // Constraints (grid units, not px)
+    [Parameter] public int MinCol { get; set; } = 1;
+    [Parameter] public int MaxCol { get; set; } = int.MaxValue;
+    [Parameter] public int MinRow { get; set; } = 1;
+    [Parameter] public int MaxRow { get; set; } = int.MaxValue;
+    [Parameter] public int MinColSpan { get; set; } = 1;
+    [Parameter] public int MaxColSpan { get; set; } = 12; // sane default
+    [Parameter] public int MinRowSpan { get; set; } = 1;
+    [Parameter] public int MaxRowSpan { get; set; } = 12;
+
+
+    // Optional axis lock
+    [Parameter] public bool LockX { get; set; }
+    [Parameter] public bool LockY { get; set; }
+
+
+    // Animation tuning
+    [Parameter] public bool Animate { get; set; } = true;
+    [Parameter] public int AnimationMs { get; set; } = 200;
+
+
+    // Lifecycle events
+    [Parameter] public EventCallback<(int Row, int Column)> OnMoved { get; set; }
+    [Parameter] public EventCallback<(int RowSpan, int ColSpan)> OnResized { get; set; }
+
     /// <summary>
     /// Gets or sets a value indicating whether the context menu event should stop propagation. Default is false.
     /// </summary>
@@ -128,6 +173,7 @@ public partial class MudExGridSection
     /// <inheritdoc />
     protected override void OnInitialized()
     {
+        Id ??= Guid.NewGuid().ToString("N");
         Grid?.RegisterSection(this);
     }
 
@@ -148,4 +194,61 @@ public partial class MudExGridSection
     /// </summary>    
     protected virtual Task OnDblClickHandler(MouseEventArgs ev) => OnDblClick.InvokeAsync(ev);
 
+
+
+    private string GetStyle() => new MudExStyleBuilder()
+        .With("transition", Animate ? $"transform {AnimationMs}ms, box-shadow {AnimationMs}ms" : null)
+        .AddRaw(Style)
+        .Build();
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            string js = JsImportHelper.ComponentJs<MudExGrid>();
+            _module = await JS.InvokeAsync<IJSObjectReference>("import", js);
+            await _module.InvokeVoidAsync("mudexGrid.bind", Grid.GridElement, DotNetObjectReference.Create(this));
+            if (Movable)
+                await _module.InvokeVoidAsync("mudexGrid.wireDrag", Grid.GridElement, ElementReference);
+            if (Resizable)
+                await _module.InvokeVoidAsync("mudexGrid.wireResize", Grid.GridElement, ElementReference, new object?[] { HandleE, HandleS, HandleSE });
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+
+    [JSInvokable]
+    public bool TryMoveJs(int dCol, int dRow)
+    {
+        // Axis-Lock hier zusätzlich respektieren, falls du’s im JS nicht schon machst
+        if (LockX) dRow = 0;
+        if (LockY) dCol = 0;
+
+        int targetCol = Math.Clamp(Column + dCol, MinCol, Math.Min(MaxCol, Grid.Column - ColSpan + 1));
+        int targetRow = Math.Clamp(Row + dRow, MinRow, Math.Min(MaxRow, Grid.Row - RowSpan + 1));
+
+        bool ok = Grid.TryMove(this, targetRow, targetCol);
+        if (ok) _ = OnMoved.InvokeAsync((Row, Column));
+        return ok;
+    }
+
+    [JSInvokable]
+    public bool TryResizeJs(int dCols, int dRows)
+    {
+        int targetColSpan = Math.Clamp(ColSpan + dCols, MinColSpan, Math.Min(MaxColSpan, Grid.Column - Column + 1));
+        int targetRowSpan = Math.Clamp(RowSpan + dRows, MinRowSpan, Math.Min(MaxRowSpan, Grid.Row - Row + 1));
+
+        bool ok = Grid.TryResize(this, targetRowSpan, targetColSpan);
+        if (ok) _ = OnResized.InvokeAsync((RowSpan, ColSpan));
+        return ok;
+    }
+
+    public void SetLayout(SectionLayoutDto ch)
+    {
+        ColSpan = ch.ColSpan;
+        RowSpan = ch.RowSpan;
+        Column = ch.Column;
+        Row = ch.Row;
+    }
 }
