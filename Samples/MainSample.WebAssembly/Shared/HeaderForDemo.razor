@@ -48,7 +48,7 @@
         set
         {
             _type = value;
-            DemoAttribute ??= value.GetCustomAttribute<DemoAttribute>();
+            DemoAttribute ??= value.GetCustomAttributes<DemoAttribute>()?.FirstOrDefault();
         }
     }
     

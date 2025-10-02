@@ -128,7 +128,7 @@
     [Parameter] public string[]? DocFiles { get; set; }
     [Parameter] public RenderFragment ChildContent { get; set; }
 
-    public DemoAttribute? DemoAttribute => PageType?.GetCustomAttribute<DemoAttribute>();
+    public DemoAttribute? DemoAttribute => PageType?.GetCustomAttributes<DemoAttribute>()?.FirstOrDefault();
 
     #endregion
 

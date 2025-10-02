@@ -19,7 +19,7 @@ namespace MudBlazor.Extensions.Components
         [Parameter] public string Id { get; set; } = nameof(MudExDockLayout);
         [Parameter] public RenderFragment ChildContent { get; set; }
         [Parameter] public DockTheme Theme { get; set; } = DockTheme.MudBlazor;
-        [Parameter] public DockMode Mode { get; set; } = DockMode.Dock;
+        //[Parameter] public DockMode Mode { get; set; } = DockMode.Dock;
         [Parameter] public string ContainerStyle { get; set; } = "height:60vh;width:100%;min-height:320px;";
         [ForJs, Parameter] public string InitialLayoutJson { get; set; }
         [Parameter] public bool HideTabHeaders { get; set; }
@@ -74,7 +74,7 @@ namespace MudBlazor.Extensions.Components
             {
                 module = DockViewFile("/dockview-core.esm.js", false),
                 className = ClassName,
-                mode = Mode.ToString().ToLowerInvariant(),
+                //mode = Mode.ToString().ToLowerInvariant(),
                 initialLayoutJson = InitialLayoutJson
             });
         }

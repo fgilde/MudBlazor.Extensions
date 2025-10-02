@@ -1,14 +1,13 @@
 ﻿@page "/dock-layout"
 @inherits BasePage
-@using MudBlazor.Extensions.Components.ObjectEdit.Options
 
-@attribute [Demo(Name = "MudExDockLayout", Icon = Icons.Material.Outlined.ColorLens, Documentation = "Dock", ForComponentType = typeof(MudExDockLayout))]
+@attribute [DemoNew(Name = "MudExDockLayout", Group=nameof(MudExDockLayout), Icon = Icons.Material.Outlined.Dock, Documentation = "Dock", ForComponentType = typeof(MudExDockLayout))]
 
-<MudButton OnClick="@Save">Save</MudButton>
-<MudButton OnClick="@Restore">Restore</MudButton>
+<MudButton OnClick="@Save">Save Current layout</MudButton>
+<MudButton Disabled="@(string.IsNullOrWhiteSpace(json))" OnClick="@Restore">Restore saved layout</MudButton>
 
 
-<MudExDockLayout @ref="_layout" Mode="DockMode.Dock">
+@* <MudExDockLayout @ref="_layout">
     
     <MudExDockItem Direction="DockDirection.Right">
 
@@ -28,36 +27,60 @@
                 </MudCard>
             </MudExDockItem>
             <MudExDockItem Title="Bottom" IsActive="true">
-                <MudButton OnClick="@(() => cc++)" Color="Color.Primary">Click me @cc</MudButton>
+                <MudButton Variant="Variant.Filled" OnClick="@(() => cc++)" Color="Color.Primary">Click me @cc</MudButton>
             </MudExDockItem>
         </MudExDockItem>
 
         <MudExDockItem Title="Super Right">
-            <p>Whatever 2</p>
+            <MudText Class="mb-5" Typo="Typo.h4" Color="Color.Secondary">@L["Sample Headline"]</MudText>
         </MudExDockItem>
 
     </MudExDockItem>
+</MudExDockLayout> *@
+
+<MudExDockLayout @ref="_layout">
+
+    
+
+    <MudExDockItem Title="LeftArea" Direction="DockDirection.Below">
+        <MudCard Class="m-5 p-5" Elevation="4">
+            <MudCardMedia Image="https://mudblazor.com/images/door.jpg" Height="200" />
+            <MudCardContent>
+                <MudText Typo="Typo.h5">@L["Old Paint"]</MudText>
+                <MudText Typo="Typo.body2">@L["Old paint found on a stone house door."]</MudText>
+                <MudText Typo="Typo.body2">@L["This photo was taken in a small village in Istra Croatia."]</MudText>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudExDockItem>
+    <MudExDockItem Direction="DockDirection.Above" Title="TOP">
+        <MudText Class="mb-5" Typo="Typo.h4" Color="Color.Secondary">@L["Sample Top"]</MudText>
+    </MudExDockItem>
+    <MudExDockItem Direction="DockDirection.Right" Title="right" IsActive="true">
+                <MudButton Variant="Variant.Filled" OnClick="@(() => cc++)" Color="Color.Primary">Click me @cc</MudButton>
+            </MudExDockItem>
+
+    <MudExDockItem Direction="DockDirection.Right" Title="Super Right">
+            <MudText Class="mb-5" Typo="Typo.h4" Color="Color.Secondary">@L["Sample Headline"]</MudText>
+        </MudExDockItem>
+
+    
 </MudExDockLayout>
-
-
 
 
 @code {
     int cc = 0;
     private MudExDockLayout? _layout;
-    private string initJson = """{"grid":{"root":{"type":"branch","data":[{"type":"leaf","data":{"views":["MudExDockLayout-0.1","MudExDockLayout-0.0.1","MudExDockLayout-0.0.0"],"activeView":"MudExDockLayout-0.0.0","id":"3"},"size":1250}],"size":782.390625},"width":1250,"height":782.390625,"orientation":"HORIZONTAL"},"panels":{"MudExDockLayout-0.1":{"id":"MudExDockLayout-0.1","contentComponent":"blazor","title":"Super Right"},"MudExDockLayout-0.0.1":{"id":"MudExDockLayout-0.0.1","contentComponent":"blazor","title":"Bottom"},"MudExDockLayout-0.0.0":{"id":"MudExDockLayout-0.0.0","contentComponent":"blazor","title":"Top"}},"activeGroup":"3"}""";
+   // private string initJson = """{"grid":{"root":{"type":"branch","data":[{"type":"leaf","data":{"views":["MudExDockLayout-0.1","MudExDockLayout-0.0.1","MudExDockLayout-0.0.0"],"activeView":"MudExDockLayout-0.0.0","id":"3"},"size":1250}],"size":782.390625},"width":1250,"height":782.390625,"orientation":"HORIZONTAL"},"panels":{"MudExDockLayout-0.1":{"id":"MudExDockLayout-0.1","contentComponent":"blazor","title":"Super Right"},"MudExDockLayout-0.0.1":{"id":"MudExDockLayout-0.0.1","contentComponent":"blazor","title":"Bottom"},"MudExDockLayout-0.0.0":{"id":"MudExDockLayout-0.0.0","contentComponent":"blazor","title":"Top"}},"activeGroup":"3"}""";
     private string json;
-    protected override void OnInitialized()
-    {
-        json = initJson;
-        base.OnInitialized();
-    }
+
 
     private async Task Save()
     {
         json = await _layout!.SaveLayoutAsync();
-        // -> in DB/LocalStorage sichern
-        Console.WriteLine(json);
     }
 
     private async Task Restore()

@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using System.Reflection;
-using System.Text;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.CompilerServices;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
@@ -19,7 +16,9 @@ using Nextended.Core;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 using Nextended.Core.Scopes;
-using TagLib;
+using System.ComponentModel;
+using System.Reflection;
+using System.Text;
 using IComponent = Microsoft.AspNetCore.Components.IComponent;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
@@ -766,18 +765,26 @@ public partial class MudExObjectEdit<T>
     }
 
 
-
-    private bool ShouldAddGrid(IEnumerable<ObjectEditPropertyMeta> meta) => WrapInMudGrid ?? ContainsRenderWrapperType(meta, typeof(MudItem));
+    private bool NeedsOuterFor(Type innerType, List<ObjectEditPropertyMeta> ml)
+    {
+        if (innerType == typeof(MudItem))
+            return (WrapInMudGrid ?? ContainsRenderWrapperType(ml, typeof(MudItem)));
+        return ContainsRenderWrapperType(ml, innerType);
+    }
 
     private IEnumerable<Type> OuterWrapperComponents(IEnumerable<ObjectEditPropertyMeta> meta)
     {
         var ml = meta.ToList();
-        if(ShouldAddGrid(ml))
-            yield return typeof(MudGrid);
-        if(ContainsRenderWrapperType(ml, typeof(MudTabPanel)))
-            yield return typeof(MudTabs);
+        var emitted = new HashSet<Type>();
+
+        foreach (var kv in RenderDataDefaults.ComponentWrapperMap)
+        {
+            if (NeedsOuterFor(kv.Key, ml) && emitted.Add(kv.Value))
+                yield return kv.Value;
+        }
     }
-    
+
+
     private string CssClassName => GroupingStyle == GroupingStyle.Flat ? $"mud-ex-object-edit-group-flat {(!GroupsCollapsible ? "mud-ex-hide-expand-btn" : "")}" : string.Empty;
 
 
@@ -921,17 +928,7 @@ public partial class MudExObjectEdit<T>
         if (expanded && SingleExpand)
             Panels().Where(g => g.Tag?.ToString() != groupId).Apply(g => g.CollapseAsync());
     }
-
-    //private bool GetIsExpanded(string groupId)
-    //{
-    //    var existing = _groups.FirstOrDefault(g => g.Tag?.ToString() == groupId);
-    //    if (existing != null)
-    //        return existing.Expanded;
-    //    if (SingleExpand && GroupsCollapsible && _groups.Any(p => p.Expanded))
-    //        return false;
-    //    return true;
-    //}
-
+    
     private Task ExpandCollapse()
     {
         Panels().Apply(g =>
@@ -1227,24 +1224,29 @@ public partial class MudExObjectEdit<T>
 
     private IEnumerable<(Type, IDictionary<string, object?>?)> GetGroupStyleOuterCmp()
     {
+        var attr = RenderWithAttribute.GetRenderWithFromEnumValue(GroupingStyle);
+        if (attr != null)
+        {
+            var outerType = RenderDataDefaults.GetOuterComponentFor(attr.ComponentType);
+            if (outerType != null)
+            {
+                var pa = AttributeParameterAttribute.GetAttributesFromEnumValue(GroupingStyle).
+                    MergeWith(GetCompatibleParameters(attr.ComponentType), new Dictionary<string, object?>
+                    {
+                        [nameof(Class)] = $"mud-ex-object-edit-{GroupingStyle.ToString().ToLower()}",
+                    })
+                    .Where(x => ComponentRenderHelper.IsValidParameter(attr.ComponentType, x.Key, x.Value))
+                    .ToDictionary(x => x.Key, x => x.Value);
+                yield return (outerType, pa);
+                yield break;
+            }
+        }
         switch (GroupingStyle)
         {
-            case GroupingStyle.Tabs:
-                yield return (typeof(MudTabs), new Dictionary<string, object?>
-                {
-                    [nameof(MudTabs.Class)] = "mud-ex-object-edit-tabs",
-                    [nameof(MudTabs.Elevation)] = 1
-                });
-                break;
-
-            case GroupingStyle.None:
-                yield return (typeof(FragmentWrapper), null);
-                break;
-
             default: // Panels
                 yield return (typeof(MudExpansionPanels), new Dictionary<string, object?>
                 {
-                    [nameof(MudExpansionPanels.Class)] = "mud-ex-object-edit-panels",
+                    [nameof(Class)] = $"mud-ex-object-edit-panels mud-ex-object-edit-{GroupingStyle.ToString().ToLower()}",
                     [nameof(MudExpansionPanels.Outlined)] = (GroupingStyle != GroupingStyle.Flat),
                     [nameof(MudExpansionPanels.Elevation)] = GroupElevation ?? (GroupingStyle == GroupingStyle.Flat ? 0 : 1),
                     [nameof(MudExpansionPanels.MultiExpansion)] = true
@@ -1254,25 +1256,28 @@ public partial class MudExObjectEdit<T>
     }
 
     private IEnumerable<(Type, IDictionary<string, object?>?)> GetGroupStyleInnerCmp(
-        string displayText, string groupId, bool disabled, string cssClass)
+        string displayText, string groupId, string cssClass)
     {
+        var attr = RenderWithAttribute.GetRenderWithFromEnumValue(GroupingStyle);
+        if (attr != null)
+        {
+            var pa = AttributeParameterAttribute.GetAttributesFromEnumValue(GroupingStyle).
+                MergeWith(GetCompatibleParameters(attr.ComponentType), new Dictionary<string, object?>
+                {
+                    [nameof(Class)] = $"mud-ex-object-edit-{GroupingStyle.ToString().ToLower()}",
+                    [nameof(Tag)] = groupId,
+                    [nameof(MudTabPanel.Text)] = displayText,
+                    [nameof(MudExDockItem.Title)] = displayText,
+                    [nameof(MudBaseInput<string>.Label)] = displayText,
+                })
+                .Where( x => ComponentRenderHelper.IsValidParameter(attr.ComponentType, x.Key, x.Value))
+                .ToDictionary( x => x.Key, x => x.Value);
+            
+            yield return (attr.ComponentType, pa);
+            yield break;
+        }
         switch (GroupingStyle)
         {
-            case GroupingStyle.Tabs:
-                yield return (typeof(MudTabPanel), new Dictionary<string, object?>
-                {
-                    [nameof(MudTabPanel.Text)] = displayText,
-                    [nameof(MudTabPanel.Class)] = cssClass
-                });
-                break;
-
-            case GroupingStyle.None:
-                yield return (typeof(FragmentWrapper), new Dictionary<string, object?>
-                {
-                    [nameof(FragmentWrapper.ChildContent)] = null 
-                });
-                break;
-
             default: // Panels
                 yield return (typeof(MudExpansionPanel), new Dictionary<string, object?>
                 {
@@ -1282,20 +1287,8 @@ public partial class MudExObjectEdit<T>
                     [nameof(MudExpansionPanel.Disabled)] = !GroupsCollapsible,
                     [nameof(MudExpansionPanel.Class)] = cssClass,
                     [nameof(MudExpansionPanel.Text)] = displayText
-                    // Hinweis: @ref kann DynamicComponent nicht direkt setzen.
-                    // Falls du @ref brauchst, lohnt ein dünnes Wrapper-Component für MudExpansionPanel.
                 });
                 break;
         }
-    }
-
-    private static IDictionary<string, object?> Merge(
-        IDictionary<string, object?>? a,
-        IDictionary<string, object?> b)
-    {
-        if (a is null) return b;
-        var dict = new Dictionary<string, object?>(a);
-        foreach (var kv in b) dict[kv.Key] = kv.Value;
-        return dict;
     }
 }

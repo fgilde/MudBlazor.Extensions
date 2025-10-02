@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using System.ComponentModel;
+using MudBlazor.Extensions.Components.ObjectEdit.Options;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
 
@@ -18,15 +19,26 @@ public enum GroupingStyle
     /// Use MudBlazor expansion panel
     /// </summary>
     DefaultExpansionPanel,
-    
+
     /// <summary>
     /// Grouping with tabs
     /// </summary>
+    [RenderWith<MudTabPanel>]
+    [AttributeParameter(nameof(MudTabPanel.BadgeColor), Color.Error)]
+    [AttributeParameter(nameof(MudTabPanel.IconColor), Color.Error)]
+    [AttributeParameter("Kalamari", "enemenemu")]
     Tabs,
+
+    /// <summary>
+    /// Grouping with dock panel
+    /// </summary>
+    [RenderWith<MudExDockItem>]
+    DockPanel,
 
     /// <summary>
     /// No grouping style
     /// </summary>
+    [RenderWith<FragmentWrapper>]
     None
 }
 

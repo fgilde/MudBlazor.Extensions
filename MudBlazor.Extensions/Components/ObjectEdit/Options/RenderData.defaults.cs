@@ -21,6 +21,38 @@ public static class RenderDataDefaults
     private static readonly List<IDefaultRenderDataProvider> Providers = new();
     private static bool _registeredServicesAdded;
 
+    internal static readonly IDictionary<Type, Type> ComponentWrapperMap = new Dictionary<Type, Type>
+        {
+            { typeof(MudExGridSection), typeof(MudExGrid) }, // MudExGridSection must be wrapped in MudExGrid
+            { typeof(MudItem), typeof(MudGrid) }, //MudItem must be wrapped in MudGrid
+            { typeof(MudTabPanel), typeof(MudTabs) }, //MudTabPanel must be wrapped in MudTabs
+            { typeof(MudExDockItem), typeof(MudExDockLayout) }//MudExDockItem must be wrapped in MudExDockLayout ..etc...
+        };
+
+    public static Type? GetOuterComponentFor<TInnerComponent>()
+        => GetOuterComponentFor(typeof(TInnerComponent));
+    public static Type? GetOuterComponentFor(Type innerComponentType)
+    {
+        ComponentWrapperMap.TryGetValue(innerComponentType, out var outerComponentType);
+        return outerComponentType;
+    }
+
+    /// <summary>
+    /// Register a inner component that requires an outer component as wrapper.
+    /// </summary>
+    public static void RegisterInnerComponentOuter(Type innerComponentType, Type outerComponentType)
+    {
+        ComponentWrapperMap.AddOrUpdate(innerComponentType, outerComponentType);
+    }
+
+    /// <summary>
+    /// Register a inner component that requires an outer component as wrapper.
+    /// </summary>
+    public static void RegisterInnerComponentOuter<TInnerComponent, TOuterComponent>()
+    {
+        ComponentWrapperMap.AddOrUpdate(typeof(TInnerComponent), typeof(TOuterComponent));
+    }
+
     /// <summary>
     /// Adds a default render data providers to the list of providers.
     /// </summary>

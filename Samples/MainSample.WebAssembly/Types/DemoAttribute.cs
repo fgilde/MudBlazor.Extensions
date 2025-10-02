@@ -63,7 +63,7 @@ public class DemoUpdatedAttribute : DemoAttribute
 }
 
 
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class DemoAttribute : Attribute
 {
     public Type PageType { get; private set; }
@@ -117,24 +117,38 @@ public class DemoAttribute : Attribute
     {
         var attrType = typeof(DemoAttribute);
 
+        // Alle Typen + alle Vorkommen von DemoAttribute flach auflösen
+        var allTypeAttributes =
+            attrType.Assembly.GetTypes()
+                .SelectMany(t =>
+                    t.GetCustomAttributes<DemoAttribute>(inherit: false)
+                     .Select(a => new { Type = t, Attribute = a }));
+
         if (!flat)
         {
-            var grouped = attrType.Assembly.GetTypes()
-                .Select(t => new { Type = t, Attribute = t.GetCustomAttribute<DemoAttribute>() })
-                .Where(r => r.Attribute != null)
-                .GroupBy(arg => arg?.Attribute?.Group);
+            // Leere/whitespace Gruppen wie "ungrouped" behandeln
+            var grouped = allTypeAttributes
+                .GroupBy(x => string.IsNullOrWhiteSpace(x.Attribute.Group) ? null : x.Attribute.Group);
 
             var navigationEntries = new HashSet<NavigationEntry>();
-            foreach (var g in grouped.OrderBy(g => g.Key == null ? 1 : 0).ThenBy(g => g.Key))
+
+            foreach (var g in grouped
+                         .OrderBy(g => g.Key == null ? 1 : 0)
+                         .ThenBy(g => g.Key))
             {
+                var groupName = g.Key ?? ungrouppedName;
+
                 var groupNavigationEntry = new NavigationEntry
                 {
-                    Text = g.Key ?? ungrouppedName,
-                    Href = $"/demos/{g.Key ?? ungrouppedName}",
+                    Text = groupName,
+                    Href = $"/demos/{groupName}",
                     Children = new HashSet<NavigationEntry>(),
                     // IsExpanded = g.Key == null
                 };
-                foreach (var r in g.OrderBy(r => r.Attribute.Order))
+
+                foreach (var r in g
+                             .OrderBy(r => r.Attribute.Order)
+                             .ThenBy(r => r.Attribute?.ToNavigationEntry(r.Type)?.Text)) // optional: stabilere Sortierung
                 {
                     var navigationEntry = r.Attribute.ToNavigationEntry(r.Type);
                     navigationEntry.Parent = groupNavigationEntry;
@@ -147,11 +161,12 @@ public class DemoAttribute : Attribute
             return navigationEntries;
         }
 
-        return attrType.Assembly.GetTypes()
-            .Select(t => new { Type = t, Attribute = t.GetCustomAttribute<DemoAttribute>() })
-            .Where(r => r.Attribute != null)
+        // Flache Liste aller Attribute über alle Typen
+        return allTypeAttributes
             .OrderBy(r => r.Attribute.Order)
+            .ThenBy(r => r.Attribute?.ToNavigationEntry(r.Type)?.Text) // optional
             .Select(r => r.Attribute.ToNavigationEntry(r.Type))
             .ToHashSet();
     }
+
 }
