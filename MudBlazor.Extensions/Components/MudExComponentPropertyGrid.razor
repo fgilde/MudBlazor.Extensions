@@ -1,0 +1,53 @@
+﻿@using Microsoft.Extensions.Localization
+@inherits MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit<T>
+@typeparam T
+@inject IStringLocalizer<MudExComponentPropertyGrid<T>> L
+@if (rendered)
+{
+    @Inherited()
+}
+else
+{
+    <MudProgressCircular Style="margin-top: 70%; margin-left: 50%;" Color="Color.Primary" Indeterminate="true" />
+}
+
+
+@code {
+
+    protected virtual RenderFragment GetToolbarContent()
+    {
+        return@<p></p>;
+    }
+
+    private RenderFragment RenderToolbarExtraContent()
+    {
+        return
+            @<div>
+                @GetToolbarContent()
+                @if (!SearchActive)
+                {
+                    <MudTooltip Text="@L["Show Markup"]">
+                        <MudIconButton Icon="@Icons.Material.Filled.Code" OnClick="@ShowCode"/>
+                    </MudTooltip>
+                    @if (ShowInheritedToggle)
+                    {
+                        <MudTooltip Text="@L["Show or hide inherited fields from base class"]">
+                            <MudIconButton OnClick="@(() => OnChangeInherit(!_showInherited))" Color="@(_showInherited ? Color.Warning : Color.Default)"
+                                           Icon="@(_showInherited ? Icons.Material.Filled.Workspaces : Icons.Material.Outlined.Workspaces)">
+                            </MudIconButton>
+                        </MudTooltip>
+                    }
+
+                    <MudTooltip Text="@L["Group by types"]">
+                        <MudIconButton OnClick="@(() => OnChangeGrouping(!_groupByTypes))" Color="@(_groupByTypes ? Color.Warning : Color.Default)"
+                                       Icon="@(_groupByTypes ? Icons.Material.Filled.TypeSpecimen : Icons.Material.Outlined.TypeSpecimen)">
+                        </MudIconButton>
+                    </MudTooltip>
+                }
+            </div>
+            ;
+    }
+
+    
+
+}

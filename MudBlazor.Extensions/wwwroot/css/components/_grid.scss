@@ -1,11 +1,12 @@
-
+/* =========================
+   Grid Overlay & Placeholder
+   ========================= */
 .mud-ex-grid-overlay {
     position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 20;
 }
-
 
 .mud-ex-grid-placeholder {
     position: absolute;
@@ -20,22 +21,14 @@
     transition: transform .1s ease, width .1s ease, height .1s ease, opacity .1s ease;
 }
 
-
-.mud-ex-grid-section {
-    position: relative;
-    transition: box-shadow .15s ease;
-
-    &.mud-ex-grid-dragging {
-        box-shadow: 0 8px 24px rgba(0,0,0,.18);
-    }
-}
-
-
+/* ======
+   Grid
+   ====== */
 .mud-ex-grid {
     display: grid;
     box-sizing: border-box;
     width: 100%;
-    position: relative; 
+    position: relative;
 
     &.mud-ex-grid-height-full {
         min-height: 100vh;
@@ -44,7 +37,6 @@
     &.mud-ex-grid-height-full-without-appbar {
         min-height: calc(100vh - var(--mud-appbar-height));
     }
-
 
     @for $i from 2 through 12 {
         &.mud-ex-grid-column-#{$i} {
@@ -57,12 +49,12 @@
     }
 }
 
-
-
+/* =========================
+   Dragging/Clone States
+   ========================= */
 .mud-ex-grid-section.mud-ex-grid-dragging {
     box-shadow: 0 8px 24px rgba(0,0,0,.18);
 }
-
 
 .mud-ex-grid-clone {
     filter: drop-shadow(0 10px 22px rgba(0,0,0,.25));
@@ -70,23 +62,21 @@
     transform-origin: center center;
 }
 
+/* =========================
+   Grid Section + Handles
+   ========================= */
 .mud-ex-grid-section {
     display: inline-grid;
-    overflow: auto;
     position: relative;
-    transition: box-shadow .12s ease;    
-
-    &.mud-ex-grid-dragging {
-        box-shadow: 0 8px 24px rgba(0,0,0,.18);
-    }
-
+    
+    overflow: visible;
     transition: box-shadow .2s ease;
 
-    &.mud-ex-grid-dragging, &.mud-ex-grid-resizing {
+    &.mud-ex-grid-dragging,
+    &.mud-ex-grid-resizing {
         box-shadow: 0 8px 24px rgba(0,0,0,.18);
     }
-
-
+    
     @for $i from 1 through 12 {
         &.mud-ex-grid-section-col-start-#{$i} {
             grid-column-start: $i;
@@ -104,33 +94,76 @@
             grid-row-end: $i;
         }
     }
-
-
+    
     .mud-ex-grid-section-handle {
         position: absolute;
         width: 14px;
         height: 14px;
         z-index: 5;
-        cursor: grab;
-        user-select: none;
-        background: var(--mud-palette-primary);
         border-radius: 4px;
-        opacity: .85;
+        background: var(--mud-palette-primary);
+        box-shadow: 0 2px 8px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.65);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .12s ease, transform .12s ease, box-shadow .12s ease;
+        user-select: none;
+        touch-action: none;
+        
+        &::after {
+            content: "";
+            position: absolute;
+            inset: -6px;
+        }
+    }
+    
+    &:hover .mud-ex-grid-section-handle,
+    &:focus-within .mud-ex-grid-section-handle,
+    &.mud-ex-grid-resizing .mud-ex-grid-section-handle {
+        opacity: .95;
+        pointer-events: auto;
     }
 
+    .mud-ex-grid-section-handle:hover {
+        box-shadow: 0 4px 14px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.85);
+    }
+    
     .mud-ex-grid-handle-e {
-        right: -6px;
-        top: calc(50% - 7px);
+        right: 0;
+        top: 50%;
+        transform: translate(50%, -50%); 
+        cursor: ew-resize;
     }
 
     .mud-ex-grid-handle-s {
-        bottom: -6px;
-        left: calc(50% - 7px);
+        left: 50%;
+        bottom: 0;
+        transform: translate(-50%, 50%);
+        cursor: ns-resize;
     }
 
     .mud-ex-grid-handle-se {
-        right: -6px;
-        bottom: -6px;
-        cursor: se-resize;
+        right: 0;
+        bottom: 0;
+        transform: translate(50%, 50%);
+        cursor: nwse-resize;
     }
 }
+
+/* =========================
+   Optional: Scrollbarer Inhalt
+   =========================
+*/
+.mud-ex-grid-section > .content {
+    overflow: auto;
+    height: 100%;
+}
+
+/* =========================
+   Optional: globaler Cursor beim Resizing   
+   ========================= */
+/*
+.mud-ex-grid-resizing,
+.mud-ex-grid-resizing * {
+  cursor: nwse-resize !important; 
+}
+*/

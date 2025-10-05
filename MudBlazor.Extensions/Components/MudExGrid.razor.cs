@@ -122,9 +122,29 @@ public partial class MudExGrid
     }
 
 
-    // Utility
     private bool IsOccupied(MudExGridSection ignore, int r, int c)
     => _childSections.Any(s => s != ignore && r >= s.Row && r < s.Row + s.RowSpan && c >= s.Column && c < s.Column + s.ColSpan);
+
+    /// <summary>
+    /// Returns all containing sections.
+    /// </summary>
+    public MudExGridSection[] GetAllChildSections() => _childSections.ToArray();
+
+    public (int Row, int Column)? GetNextFreeSpace()
+    {
+        for (int i = 1; i <= Row; i++)
+        {
+            for (int j = 1; j <= Column; j++)
+            {
+                if (!IsOccupied(null, i, j))
+                {
+                    return (i, j);
+                }
+            }
+        }
+
+        return null;
+    }
 
     public bool TryMove(MudExGridSection s, int newRow, int newCol)
     {
@@ -255,28 +275,7 @@ public partial class MudExGrid
         }
     }
 
-    /// <summary>
-    /// Returns all containing sections.
-    /// </summary>
-    public MudExGridSection[] GetAllChildSections() => _childSections.ToArray();
-
-    public (int Row, int Column)? GetNextFreeSpace()
-    {
-        bool isOccupied(int row, int col) => _childSections.Any(section => row >= section.Row && row < section.Row + section.RowSpan && col >= section.Column && col < section.Column + section.ColSpan);
-
-        for (int i = 1; i <= Row; i++)
-        {
-            for (int j = 1; j <= Column; j++)
-            {
-                if (!isOccupied(i, j))
-                {
-                    return (i, j); 
-                }
-            }
-        }
-
-        return null; 
-    }
+   
 
     /// <summary>
     /// The on click handler

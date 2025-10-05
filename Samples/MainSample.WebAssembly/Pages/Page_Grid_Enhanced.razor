@@ -13,8 +13,8 @@
                     @foreach (var section in _sections)
                     {
                         var label = $"Section {section.Index}";
-                        <MudExGridSection @ref="section.Component" @bind-Column="section.Column" @bind-ColSpan="section.ColSpan" @bind-Row="section.Row" @bind-RowSpan="section.RowSpan">
-                            <MudPaper Class="@($"d-flex align-center justify-center {section.Class}")">@(label)</MudPaper>
+                        <MudExGridSection WrapInGroupBox="true" @ref="section.Component" @bind-Column="section.Column" @bind-ColSpan="section.ColSpan" @bind-Row="section.Row" @bind-RowSpan="section.RowSpan">
+                            <MudPaper Style="height: 100%; width: 100%" Class="@($"d-flex align-center justify-center {section.Class}")">@(label)</MudPaper>
                         </MudExGridSection>
                     }
 

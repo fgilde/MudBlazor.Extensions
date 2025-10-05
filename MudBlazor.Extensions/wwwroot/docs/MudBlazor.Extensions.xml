@@ -3823,6 +3823,11 @@
             Gets or sets a value indicating whether the context menu event should stop propagation. Default is false.
             </summary>
         </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGrid.GetAllChildSections">
+            <summary>
+            Returns all containing sections.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExGrid.RegisterSection(MudBlazor.Extensions.Components.MudExGridSection)">
             <summary>
             Registers a section with the grid.
@@ -3834,11 +3839,6 @@
             Unregisters a section with the grid.
             </summary>
             <param name="section"></param>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExGrid.GetAllChildSections">
-            <summary>
-            Returns all containing sections.
-            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExGrid.OnClickHandler(Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
             <summary>
@@ -3858,6 +3858,16 @@
         <member name="P:MudBlazor.Extensions.Components.MudExGridSection.Grid">
             <summary>
             Reference to the parent MudExGrid component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.WrapInGroupBox">
+            <summary>
+            Set this to true to wrap the content in a MudExGroupBox.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.Title">
+            <summary>
+            The title for the MudExGroupBox if WrapInGroupBox is true.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExGridSection.ChildContent">

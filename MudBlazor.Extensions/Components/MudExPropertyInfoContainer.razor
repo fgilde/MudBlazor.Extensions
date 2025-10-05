@@ -5,7 +5,7 @@
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 @typeparam T;
-@inject IStringLocalizer<PropertyInfoContainer<T>> L
+@inject IStringLocalizer<MudExPropertyInfoContainer<T>> L
 
 <div style="display: flex; width: 100%;">
     <div style="flex: 1;">
@@ -27,15 +27,12 @@
     [Parameter]
     public PropertyInfo Property { get; set; }
 
+    [Inject] 
+    private IDialogService DialogService { get; set; }
+
     private Type? _type;
     private Type Type => _type ??= typeof(T).IsGenericType ? typeof(T).GetGenericTypeDefinition() : typeof(T);
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        if (MainLayout.Instance != null)
-            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
-    }
 
     private async Task ShowInfoAsync()
     {

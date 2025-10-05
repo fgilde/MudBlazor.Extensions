@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
-using Newtonsoft.Json;
+using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -16,6 +16,8 @@ public partial class MudExGridSection
     private int _colspan = 1;
     private int _row = 1;
     private int _rowspan = 1;
+    private SectionLayoutDto? _layout;
+    private bool _layoutSuspend;
 
     [Inject] private IJSRuntime JS { get; set; }
     private IJSObjectReference? _module;
@@ -48,6 +50,15 @@ public partial class MudExGridSection
         return Grid.CommitLayout(changes);
     }
 
+    /// <summary>
+    /// Set this to true to wrap the content in a MudExGroupBox.
+    /// </summary>
+    [Parameter] public bool WrapInGroupBox { get; set; }
+
+    /// <summary>
+    /// The title for the MudExGroupBox if WrapInGroupBox is true.
+    /// </summary>
+    [Parameter] public string? Title { get; set; }
 
     /// <summary>
     /// Gets or sets the child content of the component.
@@ -59,26 +70,26 @@ public partial class MudExGridSection
     /// Gets or sets the column position for the component. Default is 1.
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.Item.Appearance)]
-    public int Column { get => _column; set => Set(ref _column, value, v => ColumnChanged.InvokeAsync(v)); }
+    public int Column { get => _layout?.Column ?? _column; set => Set(ref _column, value, v => ColumnChanged.InvokeAsync(v)); }
 
 
     /// <summary>
     /// Gets or sets the column span of the component. Default is 1.
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.Item.Appearance)]
-    public int ColSpan { get => _colspan; set => Set(ref _colspan, value, v => ColSpanChanged.InvokeAsync(v)); }
+    public int ColSpan { get => _layout?.ColSpan ?? _colspan; set => Set(ref _colspan, value, v => ColSpanChanged.InvokeAsync(v)); }
 
     /// <summary>
     /// Gets or sets the row position for the component. Default is 1.
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.Item.Appearance)]
-    public int Row { get => _row; set => Set(ref _row, value, v => RowChanged.InvokeAsync(v)); }
+    public int Row { get => _layout?.Row ?? _row; set => Set(ref _row, value, v => RowChanged.InvokeAsync(v)); }
 
     /// <summary>
     /// Gets or sets the row span of the component. Default is 1.
     /// </summary>
     [Parameter, SafeCategory(CategoryTypes.Item.Appearance)]
-    public int RowSpan { get => _rowspan; set => Set(ref _rowspan, value, v => RowSpanChanged.InvokeAsync(v)); }
+    public int RowSpan { get => _layout?.RowSpan ?? _rowspan; set => Set(ref _rowspan, value, v => RowSpanChanged.InvokeAsync(v)); }
 
     /// <summary>
     /// Callback that is invoked when the column position changes.
@@ -135,8 +146,8 @@ public partial class MudExGridSection
     public bool OnContextMenuPreventDefault { get; set; }
 
     // New options
-    [Parameter] public bool Movable { get; set; } = false;
-    [Parameter] public bool Resizable { get; set; } = false;
+    [Parameter] public bool Movable { get; set; } = true;
+    [Parameter] public bool Resizable { get; set; } = true;
 
 
     // Constraints (grid units, not px)
@@ -151,7 +162,7 @@ public partial class MudExGridSection
 
 
     // Optional axis lock
-    [Parameter] public bool LockX { get; set; }
+    [Parameter] public bool LockX { get; set; } = true;
     [Parameter] public bool LockY { get; set; }
 
 
@@ -173,7 +184,7 @@ public partial class MudExGridSection
     /// <inheritdoc />
     protected override void OnInitialized()
     {
-        Id ??= Guid.NewGuid().ToString("N");
+        Id ??= BuildPathId();
         Grid?.RegisterSection(this);
     }
 
@@ -200,6 +211,13 @@ public partial class MudExGridSection
         .With("transition", Animate ? $"transform {AnimationMs}ms, box-shadow {AnimationMs}ms" : null)
         .AddRaw(Style)
         .Build();
+
+    private string BuildPathId()
+    {
+        return Guid.NewGuid().ToFormattedId();
+        var idx = Grid.GetAllChildSections().IndexOf(this);
+        return $"mud-ex-grid-section-{idx + 1}";
+    }
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -246,9 +264,14 @@ public partial class MudExGridSection
 
     public void SetLayout(SectionLayoutDto ch)
     {
+        if (_layoutSuspend)
+            return;
+        _layoutSuspend = true;
         ColSpan = ch.ColSpan;
         RowSpan = ch.RowSpan;
         Column = ch.Column;
         Row = ch.Row;
+        _layout = ch;
+        Task.Delay(200).ContinueWith(_ => _layoutSuspend = false);
     }
 }

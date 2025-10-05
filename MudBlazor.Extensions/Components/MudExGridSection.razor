@@ -8,11 +8,31 @@
      @oncontextmenu="OnContextMenu"
      @oncontextmenu:preventDefault="OnContextMenuPreventDefault"
      @oncontextmenu:stopPropagation="OnContextMenuStopPropagation">
-    @if (Resizable)
+    @if (WrapInGroupBox)
     {
-        <div class="mud-ex-grid-section-handle mud-ex-grid-handle-se" @ref="HandleSE"></div>
-        <div class="mud-ex-grid-section-handle mud-ex-grid-handle-e" @ref="HandleE"></div>
-        <div class="mud-ex-grid-section-handle mud-ex-grid-handle-s" @ref="HandleS"></div>
+        <MudExGroupBox Text="@Title">
+            @Child()
+        </MudExGroupBox>
     }
-    @ChildContent
+    else
+    {
+        @Child()
+    }
 </div>
+
+@code {
+
+    private RenderFragment Child()
+    {
+        return @<RenderChild>
+                   @if (Resizable)
+                   {
+                       <div class="mud-ex-grid-section-handle mud-ex-grid-handle-se" @ref="HandleSE"></div>
+                       <div class="mud-ex-grid-section-handle mud-ex-grid-handle-e" @ref="HandleE"></div>
+                       <div class="mud-ex-grid-section-handle mud-ex-grid-handle-s" @ref="HandleS"></div>
+                   }
+                   @ChildContent
+        </RenderChild>;
+    }
+
+}
