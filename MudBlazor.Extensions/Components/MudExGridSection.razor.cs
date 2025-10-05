@@ -151,7 +151,7 @@ public partial class MudExGridSection
 
 
     // Constraints (grid units, not px)
-    [Parameter] public int MinCol { get; set; } = 1;
+    [Parameter] public int MinCol { get; set; } = 2;
     [Parameter] public int MaxCol { get; set; } = int.MaxValue;
     [Parameter] public int MinRow { get; set; } = 1;
     [Parameter] public int MaxRow { get; set; } = int.MaxValue;
@@ -162,7 +162,7 @@ public partial class MudExGridSection
 
 
     // Optional axis lock
-    [Parameter] public bool LockX { get; set; } = true;
+    [Parameter] public bool LockX { get; set; }
     [Parameter] public bool LockY { get; set; }
 
 
