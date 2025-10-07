@@ -151,12 +151,12 @@ public partial class MudExGridSection
 
 
     // Constraints (grid units, not px)
-    [Parameter] public int MinCol { get; set; } = 2;
+    [Parameter] public int MinCol { get; set; } = 1;
     [Parameter] public int MaxCol { get; set; } = int.MaxValue;
     [Parameter] public int MinRow { get; set; } = 1;
     [Parameter] public int MaxRow { get; set; } = int.MaxValue;
     [Parameter] public int MinColSpan { get; set; } = 1;
-    [Parameter] public int MaxColSpan { get; set; } = 12; // sane default
+    [Parameter] public int MaxColSpan { get; set; } = 12; 
     [Parameter] public int MinRowSpan { get; set; } = 1;
     [Parameter] public int MaxRowSpan { get; set; } = 12;
 
@@ -208,7 +208,7 @@ public partial class MudExGridSection
 
 
     private string GetStyle() => new MudExStyleBuilder()
-        .With("transition", Animate ? $"transform {AnimationMs}ms, box-shadow {AnimationMs}ms" : null)
+        .With("transition", $"transform {AnimationMs}ms, box-shadow {AnimationMs}ms", Animate)
         .AddRaw(Style)
         .Build();
 
@@ -216,7 +216,8 @@ public partial class MudExGridSection
     {
         return Guid.NewGuid().ToFormattedId();
         var idx = Grid.GetAllChildSections().IndexOf(this);
-        return $"mud-ex-grid-section-{idx + 1}";
+        var res = $"mud-ex-grid-section-{idx + 1}";
+        return res;
     }
 
 
@@ -224,43 +225,16 @@ public partial class MudExGridSection
     {
         if (firstRender)
         {
-            string js = JsImportHelper.ComponentJs<MudExGrid>();
-            _module = await JS.InvokeAsync<IJSObjectReference>("import", js);
+            _module = await JS.ImportModuleAsync<MudExGrid>();
+           
             await _module.InvokeVoidAsync("mudexGrid.bind", Grid.GridElement, DotNetObjectReference.Create(this));
-            if (Movable)
-                await _module.InvokeVoidAsync("mudexGrid.wireDrag", Grid.GridElement, ElementReference);
-            if (Resizable)
-                await _module.InvokeVoidAsync("mudexGrid.wireResize", Grid.GridElement, ElementReference, new object?[] { HandleE, HandleS, HandleSE });
+            await _module.InvokeVoidAsync("mudexGrid.wireDrag", Grid.GridElement, ElementReference);
+            await _module.InvokeVoidAsync("mudexGrid.wireResize", Grid.GridElement, ElementReference, new object?[] { HandleE, HandleS, HandleSE });
         }
         await base.OnAfterRenderAsync(firstRender);
     }
 
 
-    [JSInvokable]
-    public bool TryMoveJs(int dCol, int dRow)
-    {
-        // Axis-Lock hier zusätzlich respektieren, falls du’s im JS nicht schon machst
-        if (LockX) dRow = 0;
-        if (LockY) dCol = 0;
-
-        int targetCol = Math.Clamp(Column + dCol, MinCol, Math.Min(MaxCol, Grid.Column - ColSpan + 1));
-        int targetRow = Math.Clamp(Row + dRow, MinRow, Math.Min(MaxRow, Grid.Row - RowSpan + 1));
-
-        bool ok = Grid.TryMove(this, targetRow, targetCol);
-        if (ok) _ = OnMoved.InvokeAsync((Row, Column));
-        return ok;
-    }
-
-    [JSInvokable]
-    public bool TryResizeJs(int dCols, int dRows)
-    {
-        int targetColSpan = Math.Clamp(ColSpan + dCols, MinColSpan, Math.Min(MaxColSpan, Grid.Column - Column + 1));
-        int targetRowSpan = Math.Clamp(RowSpan + dRows, MinRowSpan, Math.Min(MaxRowSpan, Grid.Row - Row + 1));
-
-        bool ok = Grid.TryResize(this, targetRowSpan, targetColSpan);
-        if (ok) _ = OnResized.InvokeAsync((RowSpan, ColSpan));
-        return ok;
-    }
 
     public void SetLayout(SectionLayoutDto ch)
     {

@@ -90,9 +90,9 @@ public partial class MudExGrid
 
 
     // Global behavior
-    [Parameter] public bool FloatMode { get; set; } = true; // allow items to float up when space frees
-    [Parameter] public bool CompactOnDrop { get; set; } = true; // run compaction after drop
-    [Parameter] public bool ResolveCollisions { get; set; } = true; // push items when overlapping
+    [Parameter] public bool FloatMode { get; set; } = false; // allow items to float up when space frees
+    [Parameter] public bool CompactOnDrop { get; set; } = false; // run compaction after drop
+    [Parameter] public bool ResolveCollisions { get; set; } = false; // push items when overlapping
 
 
     [JSInvokable("MudEx_CommitLayout")]
@@ -146,44 +146,7 @@ public partial class MudExGrid
         return null;
     }
 
-    public bool TryMove(MudExGridSection s, int newRow, int newCol)
-    {
-        newRow = Math.Max(1, Math.Min(Row, newRow));
-        newCol = Math.Max(1, Math.Min(Column, newCol));
 
-
-        if (ResolveCollisions)
-            PushOthers(s, newRow, newCol, s.RowSpan, s.ColSpan);
-
-
-        if (CanPlace(s, newRow, newCol, s.RowSpan, s.ColSpan))
-        {
-            s.Row = newRow; s.Column = newCol;
-            if (CompactOnDrop) Compact();
-            return true;
-        }
-        return false;
-    }
-
-
-    public bool TryResize(MudExGridSection s, int newRowSpan, int newColSpan)
-    {
-        newRowSpan = Math.Clamp(newRowSpan, s.MinRowSpan, Math.Min(s.MaxRowSpan, Row - s.Row + 1));
-        newColSpan = Math.Clamp(newColSpan, s.MinColSpan, Math.Min(s.MaxColSpan, Column - s.Column + 1));
-
-
-        if (ResolveCollisions)
-            PushOthers(s, s.Row, s.Column, newRowSpan, newColSpan);
-
-
-        if (CanPlace(s, s.Row, s.Column, newRowSpan, newColSpan))
-        {
-            s.RowSpan = newRowSpan; s.ColSpan = newColSpan;
-            if (CompactOnDrop) Compact();
-            return true;
-        }
-        return false;
-    }
 
 
     private bool CanPlace(MudExGridSection ignore, int r, int c, int rs, int cs)
@@ -194,48 +157,6 @@ public partial class MudExGrid
                 if (IsOccupied(ignore, i, j)) return false;
         return true;
     }
-
-
-    private void PushOthers(MudExGridSection mover, int r, int c, int rs, int cs)
-    {
-        // Simple push-down then right strategy (gridstack-like). Can be improved to BFS.
-        foreach (var s in _childSections.Where(x => x != mover))
-        {
-            bool overlap = !(s.Row + s.RowSpan - 1 < r || r + rs - 1 < s.Row || s.Column + s.ColSpan - 1 < c || c + cs - 1 < s.Column);
-            if (overlap)
-            {
-                // Prefer pushing down if there is room, else push right
-                int newRow = s.Row;
-                int newCol = s.Column;
-                if (s.Row + s.RowSpan <= Row) newRow = r + rs; else newCol = c + cs;
-
-
-                newRow = Math.Max(1, Math.Min(Row, newRow));
-                newCol = Math.Max(1, Math.Min(Column, newCol));
-
-
-                // Find nearest free spot scanning row-major
-                (int Row, int Col)? free = FindNearestFreeSpot(s, newRow, newCol);
-                if (free.HasValue)
-                {
-                    s.Row = free.Value.Row; s.Column = free.Value.Col;
-                }
-            }
-        }
-    }
-
-    private (int Row, int Col)? FindNearestFreeSpot(MudExGridSection s, int startR, int startC)
-    {
-        for (int i = startR; i <= Row; i++)
-        for (int j = (i == startR ? startC : 1); j <= Column; j++)
-            if (CanPlace(s, i, j, s.RowSpan, s.ColSpan)) return (i, j);
-        // fallback: scan from 1,1
-        for (int i = 1; i <= Row; i++)
-        for (int j = 1; j <= Column; j++)
-            if (CanPlace(s, i, j, s.RowSpan, s.ColSpan)) return (i, j);
-        return null;
-    }
-
 
     public void Compact()
     {
@@ -248,7 +169,6 @@ public partial class MudExGrid
             s.Row = r;
         }
     }
-
 
     /// <summary>
     /// Registers a section with the grid.

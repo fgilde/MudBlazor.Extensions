@@ -5,6 +5,9 @@
      @oncontextmenu="OnContextMenu"
      @oncontextmenu:preventDefault="OnContextMenuPreventDefault"
      @oncontextmenu:stopPropagation="OnContextMenuStopPropagation"
+     data-floatmode="@FloatMode.ToString().ToLower()"
+     data-compactondrop="@CompactOnDrop.ToString().ToLower()"
+     data-resolvecollisions="@ResolveCollisions.ToString().ToLower()"
      @ref="GridElement">
     <CascadingValue Value="@this" IsFixed="true">@ChildContent</CascadingValue>
     <div class="mud-ex-grid-overlay" aria-hidden="true"></div>
