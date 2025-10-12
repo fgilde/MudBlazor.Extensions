@@ -70,6 +70,7 @@ Add external Url: Aggiungi URL esterno
 Add files: Aggiungere file
 Add Product: Aggiungi prodotto
 Add Role: Aggiungi ruolo
+Add section: Aggiungi sezione
 Add Url: Aggiungi URL
 Add user: Aggiungi utente
 Add user to both lists: Aggiungi utente a entrambe le liste
@@ -3336,6 +3337,7 @@ Restore database: Ripristina database
 Restore default: Ripristina impostazioni predefinite
 Restore finished: Ripristino terminato
 Restore in progress. Please wait until the restore is finished. This can take a while.: Ripristino in corso. Attendi fino al termine del ripristino. Questo può richiedere un po' di tempo.
+Restore saved layout: Ripristina il layout salvato
 Revert: Regredire
 RGB: RGB
 RGBA: RGBA
@@ -3455,6 +3457,7 @@ Save: Salvare
 Save {0} Changes: '{0} Salvare le modifiche'
 Save as: Salva con nome
 Save Changes: Salva modifiche
+Save Current layout: Salva layout corrente
 Save image: Salva immagine
 Save Role: Salva ruolo
 Save visible area only: Salva solo l'area visibile
@@ -4315,7 +4318,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: L'utente è stato disconnesso da un amministratore o da una modifica del profilo.
 You are Logged Out.: Sei disconnesso.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: È anche possibile utilizzare MudExAdditionalAdornment come ChildContent di un MudInput
+You can move me: Puoi commuovermi
 You can now Login with your credentials: Ora puoi effettuare il Login con le tue credenziali
+You can resize me: Puoi ridimensionarmi
 You cannot delete yourself: Non puoi eliminare te stesso
 You clicked: Hai cliccato
 You don't need an extra JsonEditor anymore: Non hai più bisogno di un JsonEditor aggiuntivo

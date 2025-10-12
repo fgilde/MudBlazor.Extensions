@@ -70,6 +70,7 @@ Add external Url: Προσθήκη εξωτερικής διεύθυνσης URL
 Add files: Προσθήκη αρχείων
 Add Product: Προσθήκη προϊόντος
 Add Role: Προσθήκη ρόλου
+Add section: Προσθήκη ενότητας
 Add Url: Προσθήκη URL
 Add user: Προσθήκη χρήστη
 Add user to both lists: Προσθήκη χρήστη και στις δύο λίστες
@@ -3336,6 +3337,7 @@ Restore database: Επαναφορά βάσης δεδομένων
 Restore default: Επαναφορά προεπιλογής
 Restore finished: Η επαναφορά ολοκληρώθηκε
 Restore in progress. Please wait until the restore is finished. This can take a while.: Επαναφορά σε εξέλιξη. Περιμένετε μέχρι να ολοκληρωθεί η επαναφορά. Αυτό μπορεί να διαρκέσει λίγο.
+Restore saved layout: Επαναφορά αποθηκευμένης διάταξης
 Revert: Επαναστρέφω
 RGB: Το RGB
 RGBA: ΡΓΚΜΠΑ
@@ -3455,6 +3457,7 @@ Save: Σώζω
 Save {0} Changes: '{0} Αποθήκευση αλλαγών'
 Save as: Αποθήκευση ως
 Save Changes: Αποθήκευση αλλαγών
+Save Current layout: Αποθήκευση τρέχουσας διάταξης
 Save image: Αποθήκευση εικόνας
 Save Role: Αποθήκευση ρόλου
 Save visible area only: Αποθήκευση μόνο ορατής περιοχής
@@ -4315,7 +4318,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: Έχετε αποσυνδεθεί από έναν Διαχειριστή ή αλλαγή προφίλ.
 You are Logged Out.: Έχετε αποσυνδεθεί.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Μπορείτε επίσης να χρησιμοποιήσετε το MudExAdditionalAdornment ως ChildContent ενός MudInput
+You can move me: Μπορείς να με συγκινήσεις
 You can now Login with your credentials: Τώρα μπορείτε να συνδεθείτε με τα διαπιστευτήριά σας
+You can resize me: Μπορείτε να αλλάξετε το μέγεθός μου
 You cannot delete yourself: Δεν μπορείτε να διαγράψετε τον εαυτό σας
 You clicked: Κάνατε κλικ
 You don't need an extra JsonEditor anymore: Δεν χρειάζεστε πλέον ένα επιπλέον JsonEditor

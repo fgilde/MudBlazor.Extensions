@@ -12,6 +12,24 @@
 
 @* <MudButton OnClick="@Download">Download non translated</MudButton> *@
 
+<MudExGravatarCard Email="fgilde@gmail.com" />
+
+<!-- Custom-Karte mit allen Features -->
+<MudExGravatarCard Email="fgilde@gmail.com"
+                   Mode="GravatarCardMode.Custom"
+                   ShowHeaderImage="true"
+                   Elevation="4" />
+
+<!-- Custom-Karte nur mit bestimmten Informationen -->
+<MudExGravatarCard Email="fgilde@gmail.com"
+                   Mode="GravatarCardMode.Custom"
+                   ShowVerifiedAccounts="true"
+                   ShowInterests="false"
+                   ShowLinks="false" />
+
+
+
+
 <DemoComponent PageType="@GetType()">
     
     <MudExEnumSelect Label="EnumSelect" TEnum="MudDialogDragMode" @bind-Value="_dragMode"  Variant="Variant.Outlined"></MudExEnumSelect>

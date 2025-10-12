@@ -70,6 +70,7 @@ Add external Url: Tilføj ekstern URL
 Add files: Tilføj filer
 Add Product: Tilføj produkt
 Add Role: Tilføj rolle
+Add section: Tilføj afsnit
 Add Url: Tilføj URL
 Add user: Tilføj bruger
 Add user to both lists: Føj bruger til begge lister
@@ -3336,6 +3337,7 @@ Restore database: Gendan database
 Restore default: Gendan standard
 Restore finished: Gendan færdig
 Restore in progress. Please wait until the restore is finished. This can take a while.: Gendannelse i gang. Vent venligst, indtil gendannelsen er færdig. Dette kan tage et stykke tid.
+Restore saved layout: Gendan gemt layout
 Revert: Vende tilbage
 RGB: RGB
 RGBA: RGBA
@@ -3455,6 +3457,7 @@ Save: Spare
 Save {0} Changes: '{0} Gem ændringer'
 Save as: Gem som
 Save Changes: Gem ændringer
+Save Current layout: Gem aktuelt layout
 Save image: Gem billede
 Save Role: Gem rolle
 Save visible area only: Gem kun synligt område
@@ -4315,7 +4318,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: Du logges ud af en administrator eller profilændring.
 You are Logged Out.: Du er logget ud.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Du kan også bruge MudExAdditionalAdornment som ChildContent i et MudInput
+You can move me: Du kan bevæge mig
 You can now Login with your credentials: Du kan nu logge ind med dine legitimationsoplysninger
+You can resize me: Du kan ændre størrelsen på mig
 You cannot delete yourself: Du kan ikke slette dig selv
 You clicked: Du klikkede på
 You don't need an extra JsonEditor anymore: Du behøver ikke længere en ekstra JsonEditor

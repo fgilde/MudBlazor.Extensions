@@ -1,22 +1,32 @@
 ﻿@page "/mud-ex-grid"
 @inherits BasePage
-@attribute [Demo(Name = "MudExGrid", Icon = Icons.Material.Outlined.Grid4x4, ForComponentTypes = new[] { typeof(MudExGrid), typeof(MudExGridSection) })]
+@attribute [DemoUpdated(Name = "MudExGrid", Icon = Icons.Material.Outlined.Grid4x4, ForComponentTypes = new[] { typeof(MudExGrid), typeof(MudExGridSection) })]
 
 <DemoComponent PageType="@GetType()">
     <SplitContainer>
         <Left>
             <MudExGrid @ref="component" Class="mud-border-info border-2 border-solid" Column="8" Row="8" Height="800">
-                <MudExGridSection @ref="section1" Column="1" ColSpan="4" Row="1" RowSpan="4" Resizable="false" Movable="false">
-                    <MudPaper Class="d-flex align-center justify-center mud-theme-primary">@L["Section 1"]</MudPaper>
+                <MudExGridSection @ref="section1" Column="1" ColSpan="2" Row="1" RowSpan="2" Movable="true">
+                    <MudPaper Class="d-flex align-center justify-center mud-theme-primary">
+                        <div>
+                            <MudText Typo="Typo.h6">@L["Section 1"]</MudText>
+                            <MudText Typo="Typo.subtitle2">(@L["You can move me"])</MudText>
+                        </div>
+                    </MudPaper>
                 </MudExGridSection>
 
-@*                 <MudExGridSection @ref="section2" Column="2" ColSpan="1" Row="1" RowSpan="1" Resizable="false" Movable="false">
-                    <MudPaper Class="d-flex align-center justify-center mud-theme-secondary">@L["Section 2"]</MudPaper>
-                </MudExGridSection> *@
+                <MudExGridSection @ref="section2" Column="3" ColSpan="2" Row="1" RowSpan="2" Resizable="true">
+                    <MudPaper Class="d-flex align-center justify-center mud-theme-secondary">
+                        <div>
+                            <MudText Typo="Typo.h6">@L["Section 2"]</MudText>
+                            <MudText Typo="Typo.subtitle2">(@L["You can resize me"])</MudText>
+                        </div>
+                    </MudPaper>
+                </MudExGridSection>
             </MudExGrid>
         </Left>
         <Right>
-            
+
             <MudExpansionPanels MultiExpansion="true">
                 <MudExpansionPanel Expanded="true" Text="MudExGrid">
                     <ChildContent>
@@ -28,11 +38,11 @@
                         <ComponentPropertyGrid Value="@section1"></ComponentPropertyGrid>
                     </ChildContent>
                 </MudExpansionPanel>
-@*                 <MudExpansionPanel Expanded="false" Text="@L["Section 2"]">
+                <MudExpansionPanel Expanded="false" Text="@L["Section 2"]">
                     <ChildContent>
                         <ComponentPropertyGrid Value="@section2"></ComponentPropertyGrid>
                     </ChildContent>
-                </MudExpansionPanel> *@
+                </MudExpansionPanel>
             </MudExpansionPanels>
         </Right>
     </SplitContainer>
@@ -46,6 +56,5 @@
     MudExGrid component;
     MudExGridSection section1;
     MudExGridSection section2;
-    
-}
 
+}

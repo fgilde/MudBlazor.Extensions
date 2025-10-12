@@ -3,6 +3,8 @@
     elementStore = new Map();
     bootstrapped = false;
     observer = null;
+    disposables = [];
+    _isReinitializing = false;
 
     constructor(elementRef, containerRef, dotnet, options) {
         this.elementRef = elementRef;
@@ -10,31 +12,19 @@
         this.containerRef = containerRef;
         this.options = options || {};
         this.init();
+        window.DC = this; // Debug
     }
 
     async init() {
         const { createDockview } = await import(this.options.module);
-        
-        const mode = this.options.mode?.toLowerCase(); // 'grid' | 'dock' | 'pane' | 'split'
-        // TODO: Support modes other than 'dock'
+
+        // Nur 'dock' in dieser Version
         this.api = createDockview(this.containerRef, {
             theme: {
                 className: this.options.className ?? 'dockview-theme-abyss'
             },
             dndEdges: { top: true, right: true, bottom: true, left: true },
-            createComponent: (opts) => {
-                const el = this.elementStore.get(opts.id);
-                if (el) {
-                    el.style.display = '';
-                    el.style.height = '100%';
-                    el.style.width = '100%';
-                    el.style.overflow = 'auto';
-                    return { element: el, init() { }, update() { }, dispose() { } };
-                }
-                const div = document.createElement('div');
-                div.textContent = 'blazor';
-                return { element: div, init() { }, update() { }, dispose() { } };
-            }
+            createComponent: (opts) => this._createComponent(opts)
         });
 
         // 1) DOM-Leaves indexieren (für Restore/InitialLayout)
@@ -53,6 +43,20 @@
         this.dotnet?.invokeMethodAsync('OnJsReady');
         this.observeAndBootstrap();
         this.wireEvents();
+    }
+
+    _createComponent(opts) {
+        const el = this.elementStore.get(opts.id);
+        if (el) {
+            el.style.display = '';
+            el.style.height = '100%';
+            el.style.width = '100%';
+            el.style.overflow = 'auto';
+            return { element: el, init() { }, update() { }, dispose() { } };
+        }
+        const div = document.createElement('div');
+        div.textContent = 'blazor';
+        return { element: div, init() { }, update() { }, dispose() { } };
     }
 
     wireEvents() {
@@ -77,6 +81,7 @@
     }
 
     indexDomLeaves() {
+        this.elementStore.clear();
         const nodes = this.containerRef.querySelectorAll('.dv-node');
         for (const node of nodes) {
             // Leaf = keine direkten .dv-node-Kinder
@@ -110,7 +115,6 @@
 
     setOptions(options) {
         this.options = options;
-
     }
 
     _rootNodes() {
@@ -151,7 +155,7 @@
             const anchor = getAnchor();
             plan.push(nodeOptions);
             nodeOptions.position = anchor ? { referencePanel: anchor, direction: parentDir } : { direction: parentDir };
-            setAnchor(nodeOptions.id); 
+            setAnchor(nodeOptions.id);
             return;
         }
 
@@ -171,8 +175,88 @@
         try { this.api?.fromJSON(typeof json === 'string' ? JSON.parse(json) : json); } catch (e) { }
     }
 
+    /**
+     * Re-Init nach Blazor-Render: indexiert die aktuellen .dv-node Elemente neu
+     * und stellt das Layout wieder her (standard: aktuelles Layout beibehalten).
+     * 
+     * @param {Object} [opts]
+     * @param {boolean} [opts.preserveLayout=true] Layout per toJSON sichern und zurückspielen
+     * @param {boolean} [opts.raiseReady=false]    OnJsReady nach Re-Init erneut auslösen
+     * @param {string|null} [opts.initialLayoutJson] Optional anderes Layout verwenden
+     */
+    async reinitialize(opts = {}) {
+        if (this._isReinitializing) return;
+        this._isReinitializing = true;
+
+        const { preserveLayout = true, raiseReady = false, initialLayoutJson = null } = opts;
+
+        // 1) Layout sichern (falls gewünscht)
+        let layoutJson = '{}';
+        if (preserveLayout) {
+            try { layoutJson = this.toJSON(); } catch (e) { layoutJson = '{}'; }
+        } else if (initialLayoutJson) {
+            layoutJson = initialLayoutJson;
+        }
+
+        // 2) Events & Observer abschalten
+        try { this.disposeEvents(); } catch { }
+        try { this.observer?.disconnect?.(); } catch { }
+
+        // 3) Dockview-Instanz entsorgen
+        try { this.api?.dispose?.(); } catch { }
+
+        // 4) Flags & Store zurücksetzen
+        this.bootstrapped = false;
+        this.elementStore.clear();
+
+        // 5) Neu erstellen
+        const { createDockview } = await import(this.options.module);
+        this.api = createDockview(this.containerRef, {
+            theme: {
+                className: this.options.className ?? 'dockview-theme-abyss'
+            },
+            dndEdges: { top: true, right: true, bottom: true, left: true },
+            createComponent: (opts) => this._createComponent(opts)
+        });
+
+        // 6) Aktuelle DOM-Leaves erneut indexieren (Blazor hat evtl. neue/verschobene Knoten erzeugt)
+        this.indexDomLeaves();
+
+        // 7) Layout wiederherstellen (oder, wenn leer, erneut aus DOM bootstrappen)
+        try {
+            const parsed = JSON.parse(layoutJson || '{}');
+            if (parsed && Object.keys(parsed).length > 0) {
+                this.api.fromJSON(parsed);
+                this.bootstrapped = true;
+            } else {
+                const roots = this._rootNodes();
+                if (roots.length > 0) {
+                    this.bootstrapFromDom(roots);
+                    this.bootstrapped = true;
+                }
+            }
+        } catch (e) {
+            console.warn('reinitialize.fromJSON failed -> fallback to DOM bootstrap', e);
+            const roots = this._rootNodes();
+            if (roots.length > 0) {
+                this.bootstrapFromDom(roots);
+                this.bootstrapped = true;
+            }
+        }
+
+        // 8) Events wieder anbinden, optional Ready raisen
+        this.wireEvents();
+        if (raiseReady) {
+            try { this.dotnet?.invokeMethodAsync('OnJsReady'); } catch { }
+        }
+
+        this._isReinitializing = false;
+    }
+
     dispose() {
         this.disposeEvents();
+        try { this.observer?.disconnect?.(); } catch { }
+        try { this.api?.dispose?.(); } catch { }
     }
 }
 
@@ -180,4 +264,9 @@ window.MudExDockLayout = MudExDockLayout;
 
 export function initializeMudExDockLayout(elementRef, containerRef, dotnet, options) {
     return new MudExDockLayout(elementRef, containerRef, dotnet, options);
+}
+
+
+export async function reinitializeMudExDockLayout(instance, opts) {
+    return instance?.reinitialize?.(opts);
 }

@@ -70,6 +70,7 @@ Add external Url: Harici URL ekle
 Add files: Dosya ekleme
 Add Product: Ürün Ekle
 Add Role: Rol Ekle
+Add section: Bölüm ekle
 Add Url: URL ekle
 Add user: Kullanıcı ekle
 Add user to both lists: Her iki listeye de kullanıcı ekle
@@ -3336,6 +3337,7 @@ Restore database: Veritabanını geri yükle
 Restore default: Varsayılanı geri yükle
 Restore finished: Geri yükleme tamamlandı
 Restore in progress. Please wait until the restore is finished. This can take a while.: Geri yükleme devam ediyor. Lütfen geri yükleme bitene kadar bekleyin. Bu biraz zaman alabilir.
+Restore saved layout: Kaydedilen düzeni geri yükle
 Revert: Geri dönmek
 RGB: RGB
 RGBA: RGBA Hakkında
@@ -3455,6 +3457,7 @@ Save: Kurtarmak
 Save {0} Changes: '{0} Değişiklikleri kaydet'
 Save as: Farklı kaydet
 Save Changes: Değişiklikleri Kaydet
+Save Current layout: Geçerli düzeni kaydet
 Save image: Resmi kaydet
 Save Role: Rolü Kaydet
 Save visible area only: Yalnızca görünür alanı kaydet
@@ -4315,7 +4318,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: Bir Yönetici veya profil değişikliği nedeniyle oturumunuz kapatıldı.
 You are Logged Out.: Oturumunuz Kapatıldı.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment'ı bir MudInput'un ChildContent olarak da kullanabilirsiniz
+You can move me: Beni hareket ettirebilirsin
 You can now Login with your credentials: Artık kimlik bilgilerinizle giriş yapabilirsiniz
+You can resize me: Beni yeniden boyutlandırabilirsin
 You cannot delete yourself: Kendinizi silemezsiniz
 You clicked: Tıkladınız
 You don't need an extra JsonEditor anymore: Artık fazladan bir JsonEditor'a ihtiyacınız yok

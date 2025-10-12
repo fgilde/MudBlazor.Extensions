@@ -70,6 +70,7 @@ Add external Url: إضافة عنوان URL خارجي
 Add files: إضافة ملفات
 Add Product: إضافة منتج
 Add Role: إضافة دور
+Add section: إضافة قسم
 Add Url: إضافة عنوان URL
 Add user: إضافة مستخدم
 Add user to both lists: إضافة مستخدم إلى كلتا القائمتين
@@ -3336,6 +3337,7 @@ Restore database: استعادة قاعدة البيانات
 Restore default: استعادة الافتراضي
 Restore finished: استعادة الانتهاء
 Restore in progress. Please wait until the restore is finished. This can take a while.: الاستعادة قيد التقدم. يرجى الانتظار حتى تنتهي الاستعادة. قد يستغرق هذا بعض الوقت.
+Restore saved layout: استعادة التخطيط المحفوظ
 Revert: آض
 RGB: RGB
 RGBA: RGBA
@@ -3455,6 +3457,7 @@ Save: أنقذ
 Save {0} Changes: '{0} حفظ التغييرات'
 Save as: حفظ باسم
 Save Changes: حفظ التغييرات
+Save Current layout: حفظ التخطيط الحالي
 Save image: حفظ الصورة
 Save Role: حفظ الدور
 Save visible area only: حفظ المنطقة المرئية فقط
@@ -4315,7 +4318,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: تم تسجيل خروجك عن طريق تغيير المسؤول أو ملف التعريف.
 You are Logged Out.: لقد قمت بتسجيل الخروج.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: يمكنك أيضا استخدام MudExAdditionalAdornment كمحتوى فرعي ل MudInput
+You can move me: يمكنك تحريكي
 You can now Login with your credentials: يمكنك الآن تسجيل الدخول باستخدام بيانات الاعتماد الخاصة بك
+You can resize me: يمكنك تغيير حجمي
 You cannot delete yourself: لا يمكنك حذف نفسك
 You clicked: لقد نقرت
 You don't need an extra JsonEditor anymore: لم تعد بحاجة إلى JsonEditor إضافي بعد الآن

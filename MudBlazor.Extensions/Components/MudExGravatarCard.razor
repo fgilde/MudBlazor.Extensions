@@ -1,0 +1,143 @@
+﻿@using Microsoft.JSInterop
+@using MudBlazor.Extensions.Helper
+@namespace MudBlazor.Extensions.Components
+@inherits MudExBaseComponent<MudExGravatarCard>
+@inject IJSRuntime JsRuntime
+
+<div class="mud-ex-gravatar-card-container" style="@ContainerStyle">
+    @if (_isLoading)
+    {
+        <div class="mud-ex-gravatar-card-loading">
+            <MudProgressCircular Color="@LoadingColor" Indeterminate="true" />
+        </div>
+    }
+    else if (_error != null)
+    {
+        <MudAlert Severity="Severity.Error">@_error</MudAlert>
+    }
+    else
+    {
+        @if (Mode == GravatarCardMode.Iframe)
+        {
+            <iframe src="@_cardUrl" 
+                    width="@Width" 
+                    height="@Height" 
+                    style="border:0; margin:0; padding:0;"
+                    title="@($"Gravatar profile for {Email}")">
+            </iframe>
+        }
+        else if (Mode == GravatarCardMode.Custom && _profileData != null)
+        {
+            <MudCard Elevation="@Elevation" Class="@CardClass">
+                @if (ShowHeaderImage && !string.IsNullOrEmpty(_profileData.HeaderImage))
+                {
+                    <MudCardMedia Image="@_profileData.HeaderImage" Height="@HeaderImageHeight" />
+                }
+                <MudCardContent>
+                    <div class="d-flex align-items-center mb-3">
+                        @if (ShowAvatar)
+                        {
+                            <MudExGravatar Email="@Email"
+                                           Style="@AvatarImageStyle"
+                                           GravatarImageSize="@AvatarImageSize"
+                                           Elevation="@AvatarElevation"                                           
+                                           Variant="@AvatarImageVariant"
+                                           Color="@AvatarImageColor"
+                                           Rounded="@AvatarImageRounded"
+                                           Square="@AvatarImageSquare"
+                                           Size="@AvatarSize" 
+                                      Class="me-3" />
+                        }
+                        <div class="mr-2 ml-2 flex-grow-1" style="@MudExStyleBuilder.Default.WithJustifyItems(JustifyContent).Build()">
+                            @if (ShowDisplayName && !string.IsNullOrEmpty(_profileData.DisplayName))
+                            {
+                                <MudText Typo="Typo.h6">@_profileData.DisplayName</MudText>
+                            }
+                            @if (ShowPronouns && !string.IsNullOrEmpty(_profileData.Pronouns))
+                            {
+                                <MudText Typo="Typo.caption" Color="Color.Secondary">@_profileData.Pronouns</MudText>
+                            }
+                            @if (ShowJobTitle && !string.IsNullOrEmpty(_profileData.JobTitle))
+                            {
+                                <MudText Typo="Typo.body2">@_profileData.JobTitle</MudText>
+                            }
+                            @if (ShowCompany && !string.IsNullOrEmpty(_profileData.Company))
+                            {
+                                <MudText Typo="Typo.body2" Color="Color.Secondary">@_profileData.Company</MudText>
+                            }
+                            @if (ShowLocation && !string.IsNullOrEmpty(_profileData.Location))
+                            {
+                                <MudText Typo="Typo.body2">
+                                    <MudIcon Icon="@Icons.Material.Filled.LocationOn" Size="Size.Small" /> @_profileData.Location
+                                </MudText>
+                            }
+                        </div>
+                    </div>
+
+                    @if (ShowDescription && !string.IsNullOrEmpty(_profileData.Description))
+                    {
+                        <MudText Typo="Typo.body2" Class="mb-3">@_profileData.Description</MudText>
+                    }
+
+                    @if (ShowVerifiedAccounts && _profileData.VerifiedAccounts?.Any() == true)
+                    {
+                        <div class="mb-3">
+                            <MudText Typo="Typo.subtitle2" Class="mb-2">@TryLocalize("Verified accounts")</MudText>
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach (var account in _profileData.VerifiedAccounts.Where(a => !a.IsHidden))
+                                {
+                                    <MudChip T="string"
+                                             Href="@account.Url"
+                                             Target="_blank"
+                                             Size="Size.Small">
+                                        <MudImage Src="@account.ServiceIcon"/>
+                                        @account.ServiceLabel
+                                    </MudChip>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    @if (ShowInterests && _profileData.Interests?.Any() == true)
+                    {
+                        <div class="mb-3">
+                            <MudText Typo="Typo.subtitle2" Class="mb-2">@TryLocalize("Interests")</MudText>
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach (var interest in _profileData.Interests)
+                                {
+                                    <MudChip T="string" Size="Size.Small" Color="Color.Primary" Variant="Variant.Outlined">
+                                        @interest.Name
+                                    </MudChip>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    @if (ShowLinks && _profileData.Links?.Any() == true)
+                    {
+                        <div class="mb-3">
+                            <MudText Typo="Typo.subtitle2" Class="mb-2">@TryLocalize("Links")</MudText>
+                            @foreach (var link in _profileData.Links)
+                            {
+                                <MudLink Href="@link.Url" Target="_blank" Class="d-block mb-1">
+                                    <MudIcon Icon="@Icons.Material.Filled.Link" Size="Size.Small" /> @link.Label
+                                </MudLink>
+                            }
+                        </div>
+                    }
+                </MudCardContent>
+                @if (ShowProfileLink)
+                {
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text"
+                                   Color="Color.Primary"
+                                   Href="@_profileData.ProfileUrl"
+                                   Target="_blank">
+                            @TryLocalize("View full profile")
+                        </MudButton>
+                    </MudCardActions>
+                }
+            </MudCard>
+        }
+    }
+</div>

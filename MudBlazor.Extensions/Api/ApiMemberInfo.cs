@@ -249,6 +249,75 @@ public class ApiMemberInfo
         }
     }
 
+    public static bool IsDefaultValueOfProperty(object value, PropertyInfo prop)
+    {
+        var defaultFromApi = DefaultValue(prop);
+        var propType = prop.PropertyType;
+
+        var underlying = Nullable.GetUnderlyingType(propType);
+        var nonNullType = underlying ?? propType;
+
+        object typeDefault = defaultFromApi ?? (underlying != null
+            ? null
+            : (nonNullType.IsValueType ? Activator.CreateInstance(nonNullType) : null));
+
+        object NormalizeEnum(Type t, object v)
+        {
+            if (v == null) return null;
+            if (!t.IsEnum) return v;
+            var ul = Enum.GetUnderlyingType(t);
+            var converted = Convert.ChangeType(v, ul);
+            return Enum.ToObject(t, converted);
+        }
+
+        object NormalizeNumber(Type t, object v)
+        {
+            if (v == null) return null;
+            if (t.IsEnum) return NormalizeEnum(t, v);
+            if (typeof(IConvertible).IsAssignableFrom(t) && v is IConvertible)
+            {
+                try { return Convert.ChangeType(v, t); }
+                catch { }
+            }
+            return v;
+        }
+
+        bool IsEmptyEnumerable(object v)
+        {
+            if (v is string) return string.IsNullOrEmpty((string)v);
+            if (v is System.Collections.IEnumerable e)
+            {
+                var enumerator = e.GetEnumerator();
+                return !enumerator.MoveNext(); // keine Elemente -> leer
+            }
+            return false;
+        }
+
+        var normValue = NormalizeNumber(nonNullType, value);
+        var normDefault = NormalizeNumber(nonNullType, typeDefault);
+
+        if (nonNullType == typeof(float) && normValue is float fv && normDefault is float fd)
+            return Math.Abs(fv - fd) < 1e-6f;
+        if (nonNullType == typeof(double) && normValue is double dv && normDefault is double dd)
+            return Math.Abs(dv - dd) < 1e-9;
+
+        if (nonNullType == typeof(string))
+        {
+            var sVal = normValue as string;
+            var sDef = normDefault as string;
+            return string.IsNullOrEmpty(sVal) && string.IsNullOrEmpty(sDef);
+        }
+
+        if (typeof(System.Collections.IEnumerable).IsAssignableFrom(nonNullType) && nonNullType != typeof(string))
+        {
+            if (normValue == null) return normDefault == null;
+            if (IsEmptyEnumerable(normValue))
+                return normDefault == null || IsEmptyEnumerable(normDefault);
+        }
+
+        return Equals(normValue, normDefault);
+    }
+
     /// <summary>
     /// Returns a generic friendly type name by an full type name
     /// </summary>

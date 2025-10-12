@@ -118,52 +118,10 @@ a, .btn-link {
     --accent-color2: #423859;
     --accent-color3: #16868d;
     --accent-color4: #d0a733;
+    --loading-primary: #594ae2;
+    --loading-secondary: #ff4081;
 }
 
-.mud-ex-app-loader-loading-container .app-name {
-    background: linear-gradient( 90deg,var(--accent-color1),var(--accent-color2),var(--accent-color3),var(--accent-color4));
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-
-@keyframes rotate-background {
-    0% {
-        transform: scale(1.5) rotate(0deg);
-    }
-
-    100% {
-        transform: scale(1.5) rotate(360deg);
-    }
-}
-
-.mud-ex-app-loader-loading-container {
-    position: relative;
-    overflow: hidden;
-}
-
-.mud-ex-app-loader-loading-container::before {
-    content: "";
-    opacity:.15;
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background-image: linear-gradient(45deg, transparent 50%, var(--accent-color1) 50%), linear-gradient(135deg, transparent 50%, var(--accent-color2) 50%), linear-gradient(-135deg, transparent 50%, var(--accent-color3) 50%), linear-gradient(-45deg, transparent 50%, var(--accent-color4) 50%);
-    background-blend-mode: screen;
-    
-    /*background-image: linear-gradient(-60deg, #433859 50%, #01052D 50%);*/
-    /*background-image: linear-gradient(45deg, #433859 25%, transparent 25%, transparent 75%, #433859 75%), linear-gradient(-45deg, #01052D 25%, transparent 25%, transparent 75%, #01052D 75%), linear-gradient(-45deg, #34D399 0, transparent 25%, transparent 75%, #34D399 100%), linear-gradient(45deg, #FFC300 0, transparent 25%, transparent 75%, #FFC300 100%);*/
-
-    /*background: linear-gradient(to top right, var(--accent-color1) 50%, transparent 50.1%) 0 0 no-repeat, linear-gradient(to bottom right, var(--accent-color1) 50%, transparent 51%) 0 100% no-repeat, linear-gradient(to bottom right, var(--accent-color2) 50%, transparent 50.1%) 100% 0% no-repeat, linear-gradient(to bottom left, var(--accent-color2) 50%, transparent 51%) 0 0 no-repeat, linear-gradient(to bottom left, var(--accent-color3) 50%, transparent 50.1%) 100% 100% no-repeat, linear-gradient(to top left, var(--accent-color3) 50%, transparent 50.1%) 100% 0% no-repeat var(--accent-color4);
-    background-size: 50% 50%;
-    */
-    
-    animation: rotate-background 30s linear infinite;
-    z-index: -1;
-}
 
 .api-link {
     color: var(--mud-palette-primary);
@@ -172,40 +130,6 @@ a, .btn-link {
 .api-link:hover {
     text-decoration: underline;
 }
-
-
-.loading-progress {
-    position: relative;
-    display: block;
-    width: 8rem;
-    height: 8rem;
-    margin: 20vh auto 1rem auto;
-}
-
-    .loading-progress circle {
-        fill: none;
-        stroke: #e0e0e0;
-        stroke-width: 0.6rem;
-        transform-origin: 50% 50%;
-        transform: rotate(-90deg);
-    }
-
-        .loading-progress circle:last-child {
-            stroke: #1b6ec2;
-            stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
-            transition: stroke-dasharray 0.05s ease-in-out;
-        }
-
-.loading-progress-text {
-    position: absolute;
-    text-align: center;
-    font-weight: bold;
-    inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
-}
-
-    .loading-progress-text:after {
-        content: var(--blazor-load-percentage-text, "Loading");
-    }
 
 
 .monaco-editor-container {
@@ -275,3 +199,4 @@ a, .btn-link {
     margin-left: 10px !important;
     align-self: center;
 }
+

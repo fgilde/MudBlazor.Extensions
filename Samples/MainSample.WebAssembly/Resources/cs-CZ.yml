@@ -70,6 +70,7 @@ Add external Url: Přidat externí adresu URL
 Add files: Přidání souborů
 Add Product: Přidat produkt
 Add Role: Přidat roli
+Add section: Přidat sekci
 Add Url: Přidat adresu URL
 Add user: Přidat uživatele
 Add user to both lists: Přidat uživatele do obou seznamů
@@ -3336,6 +3337,7 @@ Restore database: Obnovení databáze
 Restore default: Obnovit výchozí nastavení
 Restore finished: Obnovení dokončeno
 Restore in progress. Please wait until the restore is finished. This can take a while.: Probíhá obnova. Počkejte prosím na dokončení obnovy. To může chvíli trvat.
+Restore saved layout: Obnovit uložené rozvržení
 Revert: Vrátit
 RGB: RGB
 RGBA: Oblast RGBA
@@ -3455,6 +3457,7 @@ Save: Uložit
 Save {0} Changes: '{0} Uložit změny'
 Save as: Uložit jako
 Save Changes: Uložit změny
+Save Current layout: Uložit aktuální rozvržení
 Save image: Uložit obrázek
 Save Role: Uložit roli
 Save visible area only: Uložit pouze viditelnou oblast
@@ -4315,7 +4318,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: Jste odhlášeni správcem nebo se změnil profil.
 You are Logged Out.: Jste odhlášeni.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment můžete také použít jako ChildContent souboru MudInput
+You can move me: Můžete mě přesunout
 You can now Login with your credentials: Nyní se můžete přihlásit pomocí svých přihlašovacích údajů
+You can resize me: Můžete změnit mou velikost
 You cannot delete yourself: Nemůžete smazat sami sebe
 You clicked: Klikli jste na
 You don't need an extra JsonEditor anymore: Už nepotřebujete další JsonEditor

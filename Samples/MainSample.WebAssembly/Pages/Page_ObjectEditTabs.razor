@@ -1,10 +1,9 @@
 ﻿@page "/mudex-object-edit-tabs"
 @inherits BasePage
 
-@using Newtonsoft.Json
 @using MudBlazor.Extensions.Components.ObjectEdit.Options
 
-@attribute [DemoNew(Group = "MudExObjectEdit", Name = "With tabs", Order = 1, Documentation = "Demo for using MudExObjectEdit GroupingStyle.Tabs ", Icon = Icons.Material.Outlined.Tab, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+@attribute [Demo(Group = "MudExObjectEdit", Name = "With tabs", Order = 1, Documentation = "Demo for using MudExObjectEdit GroupingStyle.Tabs ", Icon = Icons.Material.Outlined.Tab, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
 
 <DemoComponent PageType="@GetType()" DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "ObjectEditMetaConfig/MySimpleTypeRegistrations.cs", "Shared/ProgrammingSkillSelect.razor"})">

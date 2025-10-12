@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorJS.Attributes;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Helper;
-using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -42,6 +42,9 @@ public partial class MudExGridSection
     /// </summary>
     [CascadingParameter] public MudExGrid Grid { get; set; }
 
+    /// <summary>
+    /// Id of the section. Should be unique. If not set, an id will be generated.
+    /// </summary>
     [Parameter] public string? Id { get; set; }
 
     [JSInvokable("MudEx_CommitLayout")]
@@ -145,35 +148,98 @@ public partial class MudExGridSection
     [Parameter, SafeCategory(CategoryTypes.Item.Behavior)]
     public bool OnContextMenuPreventDefault { get; set; }
 
-    // New options
-    [Parameter] public bool Movable { get; set; } = true;
-    [Parameter] public bool Resizable { get; set; } = true;
+    /// <summary>
+    /// Specify if the section should be movable.
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")] 
+    public bool Movable { get; set; }
+
+    /// <summary>
+    /// Specify if the section should be resizeable.
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public bool Resizable { get; set; }
+
+    /// <summary>
+    /// Gets or sets the minimum column value. Default is 1.
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public int MinCol { get; set; } = 1;
+    
+    /// <summary>
+    /// Gets or sets the maximum column value. Default is <see cref="int.MaxValue"/>.
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public int MaxCol { get; set; } = int.MaxValue;
+    
+    /// <summary>
+    /// Gets or sets the minimum row value. Default is 1.
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public int MinRow { get; set; } = 1;
+    
+    /// <summary>
+    /// Gets or sets the maximum row value. Default is <see cref="int.MaxValue"/>.
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public int MaxRow { get; set; } = int.MaxValue;
+    
+    /// <summary>
+    /// Gets or sets the minimum column span value. Default is 1.
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public int MinColSpan { get; set; } = 1;
+    
+    /// <summary>
+    /// Gets or sets the maximum column span value. Default is 12.
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public int MaxColSpan { get; set; } = 12;
+    
+    /// <summary>
+    /// Gets or sets the minimum row span value. Default is 1.
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public int MinRowSpan { get; set; } = 1;
+    
+    /// <summary>
+    /// Gets or sets the maximum row span value. Default is 12.
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public int MaxRowSpan { get; set; } = 12;
 
 
-    // Constraints (grid units, not px)
-    [Parameter] public int MinCol { get; set; } = 1;
-    [Parameter] public int MaxCol { get; set; } = int.MaxValue;
-    [Parameter] public int MinRow { get; set; } = 1;
-    [Parameter] public int MaxRow { get; set; } = int.MaxValue;
-    [Parameter] public int MinColSpan { get; set; } = 1;
-    [Parameter] public int MaxColSpan { get; set; } = 12; 
-    [Parameter] public int MinRowSpan { get; set; } = 1;
-    [Parameter] public int MaxRowSpan { get; set; } = 12;
+
+    /// <summary>
+    /// When true and <see cref="Movable"/> is true element can only be moved on Y axis.
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")] 
+    public bool LockX { get; set; }
+
+    /// <summary>
+    /// When true and <see cref="Movable"/> is true element can only be moved on X axis.
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public bool LockY { get; set; }
 
 
-    // Optional axis lock
-    [Parameter] public bool LockX { get; set; }
-    [Parameter] public bool LockY { get; set; }
+    /// <summary>
+    /// When true the movement and resize will be animated.
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public bool Animate { get; set; } = true;
+
+    /// <summary>
+    /// Animation duration for move and resize
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public TimeSpan AnimationMs { get; set; } = TimeSpan.FromMilliseconds(200);
 
 
-    // Animation tuning
-    [Parameter] public bool Animate { get; set; } = true;
-    [Parameter] public int AnimationMs { get; set; } = 200;
-
-
-    // Lifecycle events
-    [Parameter] public EventCallback<(int Row, int Column)> OnMoved { get; set; }
-    [Parameter] public EventCallback<(int RowSpan, int ColSpan)> OnResized { get; set; }
+    /// <summary>
+    /// Event callback that is invoked when the manual position of the section changes.
+    /// </summary>
+    [Parameter] public EventCallback<SectionLayoutDto> OnManualPositionChanged { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether the context menu event should stop propagation. Default is false.
@@ -186,6 +252,7 @@ public partial class MudExGridSection
     {
         Id ??= BuildPathId();
         Grid?.RegisterSection(this);
+        base.OnInitialized();
     }
 
     /// <inheritdoc />
@@ -208,17 +275,11 @@ public partial class MudExGridSection
 
 
     private string GetStyle() => new MudExStyleBuilder()
-        .With("transition", $"transform {AnimationMs}ms, box-shadow {AnimationMs}ms", Animate)
+        .With("transition", $"transform {AnimationMs.TotalMilliseconds}ms, box-shadow {AnimationMs.TotalMilliseconds}ms", Animate)
         .AddRaw(Style)
         .Build();
 
-    private string BuildPathId()
-    {
-        return Guid.NewGuid().ToFormattedId();
-        var idx = Grid.GetAllChildSections().IndexOf(this);
-        var res = $"mud-ex-grid-section-{idx + 1}";
-        return res;
-    }
+    private string BuildPathId() => Grid.GetNewSectionId();
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -228,8 +289,10 @@ public partial class MudExGridSection
             _module = await JS.ImportModuleAsync<MudExGrid>();
            
             await _module.InvokeVoidAsync("mudexGrid.bind", Grid.GridElement, DotNetObjectReference.Create(this));
-            await _module.InvokeVoidAsync("mudexGrid.wireDrag", Grid.GridElement, ElementReference);
-            await _module.InvokeVoidAsync("mudexGrid.wireResize", Grid.GridElement, ElementReference, new object?[] { HandleE, HandleS, HandleSE });
+            if(Movable)
+                await _module.InvokeVoidAsync("mudexGrid.wireDrag", Grid.GridElement, ElementReference);
+            if(Resizable)
+                await _module.InvokeVoidAsync("mudexGrid.wireResize", Grid.GridElement, ElementReference, new object?[] { HandleE, HandleS, HandleSE });
         }
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -246,6 +309,12 @@ public partial class MudExGridSection
         Column = ch.Column;
         Row = ch.Row;
         _layout = ch;
+        OnManualPositionChanged.InvokeAsync(ch);
         Task.Delay(200).ContinueWith(_ => _layoutSuspend = false);
+    }
+
+    public SectionLayoutDto GetLayout()
+    {
+        return new SectionLayoutDto(Id, Row, Column, RowSpan, ColSpan);
     }
 }

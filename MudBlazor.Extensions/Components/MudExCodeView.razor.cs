@@ -337,10 +337,13 @@ public partial class MudExCodeView
             .Where(p => ObjectEditMeta.IsAllowedAsPropertyToEdit(p) && ObjectEditMeta.IsAllowedAsPropertyToEditOnAComponent<TComponent>(p));
 
         var props = properties?.ToDictionary(info => info, info => info.GetValue(componentInstance))
-            .Where(pair => ComponentRenderHelper.IsValidParameter(typeof(TComponent), pair.Key.Name, pair.Value)
-                           && pair.Value != null
-                           && (!hideDefaults || pair.Value != ApiMemberInfo.DefaultValue(pair.Key))
-                           && pair.Value?.GetType() != typeof(object)) ?? Enumerable.Empty<KeyValuePair<PropertyInfo, object>>();
+            .Where(pair =>
+                ComponentRenderHelper.IsValidParameter(typeof(TComponent), pair.Key.Name, pair.Value)
+                && pair.Value != null
+                && (!hideDefaults || !ApiMemberInfo.IsDefaultValueOfProperty(pair.Value, pair.Key))
+                && pair.Value?.GetType() != typeof(object)
+            ) ?? Enumerable.Empty<KeyValuePair<PropertyInfo, object>>();
+
 
         var parameterString = string.Join("\n",
             props.Select(p => new KeyValuePair<string, string>(p.Key.Name, MarkupValue(p.Value, p.Key.Name)))
@@ -355,6 +358,7 @@ public partial class MudExCodeView
 
         return markup;
     }
+    
 
     /// <summary>
     /// Returns the start and end tag for the given component name

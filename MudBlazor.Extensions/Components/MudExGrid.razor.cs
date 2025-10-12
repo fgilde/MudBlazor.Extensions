@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorJS.Attributes;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
+using Newtonsoft.Json;
 using System.Collections.Concurrent;
-using TagLib.Id3v2;
+using System.Threading.Channels;
+using static MudBlazor.CategoryTypes;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -15,6 +18,9 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExGrid
 {
+    int _sectionIdCounter = 0;
+    private bool _layoutSuspend;
+    private string _cssClassName = "mud-ex-grid";
     private ConcurrentBag<MudExGridSection> _childSections = new();
     internal ElementReference GridElement;
 
@@ -22,7 +28,7 @@ public partial class MudExGrid
     private IJSObjectReference? _module;
 
     private string GetClass() =>
-      new MudExCssBuilder("mud-ex-grid")
+      new MudExCssBuilder(_cssClassName)
           .AddClass($"mud-ex-grid-column-{Column}")
           .AddClass($"mud-ex-grid-row-{Row}")
           .AddClass(Class)
@@ -89,15 +95,37 @@ public partial class MudExGrid
     public bool OnContextMenuStopPropagation { get; set; }
 
 
-    // Global behavior
-    [Parameter] public bool FloatMode { get; set; } = false; // allow items to float up when space frees
-    [Parameter] public bool CompactOnDrop { get; set; } = false; // run compaction after drop
-    [Parameter] public bool ResolveCollisions { get; set; } = false; // push items when overlapping
+    /// <summary>
+    ///  Allow items to float up when space frees
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public bool FloatMode { get; set; }
+
+    /// <summary>
+    /// Set to true to run compaction after drop
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public bool CompactOnDrop { get; set; } 
+
+    /// <summary>
+    ///  Set to true to push items when overlapping
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public bool ResolveCollisions { get; set; } = true;
+
+    /// <summary>
+    /// Id of the grid.
+    /// </summary>
+    [Parameter] 
+    public string? Id { get; set; }
 
 
     [JSInvokable("MudEx_CommitLayout")]
     public async Task CommitLayout(List<SectionLayoutDto> changes)
     {
+        if (_layoutSuspend)
+            return;
+        _layoutSuspend = true;
         foreach (var ch in changes)
         {
             var s = _childSections.FirstOrDefault(x => x.Id == ch.Id);
@@ -107,6 +135,15 @@ public partial class MudExGrid
         if (CompactOnDrop) Compact();
                 
         await InvokeAsync(StateHasChanged);
+        await Task.Delay(200);
+        _layoutSuspend = false;
+
+    }
+    
+    protected override void OnInitialized()
+    {
+        Id ??= $"{_cssClassName}";
+        base.OnInitialized();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -146,8 +183,46 @@ public partial class MudExGrid
         return null;
     }
 
+    public void Compact()
+    {
+        foreach (var s in _childSections.OrderBy(x => x.Row).ThenBy(x => x.Column))
+        {
+            int r = s.Row;
+            while (r > 1 && CanPlace(s, r - 1, s.Column, s.RowSpan, s.ColSpan)) r--;
+            s.Row = r;
+        }
+    }
 
+    public Task<string> SaveLayoutAsync()
+    {
+        return Task.FromResult(JsonConvert.SerializeObject(GetLayout()));
+    }
 
+    private GridLayoutDto GetLayout()
+    {
+        return new GridLayoutDto(this.Column, this.Row, _childSections.Select(s => s.GetLayout()).ToList());
+    }
+    
+    public void SetLayout(GridLayoutDto layout)
+    {
+        Column = layout.Columns;
+        Row = layout.Rows;
+        foreach (var ch in layout.Sections)
+        {
+            var s = _childSections.FirstOrDefault(x => x.Id == ch.Id);
+            if (s is null) continue;
+            s.SetLayout(ch);
+        }
+    }
+
+    public Task RestoreLayoutAsync(string json)
+    {
+        var layout = JsonConvert.DeserializeObject<GridLayoutDto>(json);
+        if (layout is null) return Task.CompletedTask;
+
+        SetLayout(layout);
+        return Task.CompletedTask;
+    }
 
     private bool CanPlace(MudExGridSection ignore, int r, int c, int rs, int cs)
     {
@@ -157,18 +232,7 @@ public partial class MudExGrid
                 if (IsOccupied(ignore, i, j)) return false;
         return true;
     }
-
-    public void Compact()
-    {
-        if (!FloatMode) return;
-        // Pull each widget up as far as possible
-        foreach (var s in _childSections.OrderBy(x => x.Row).ThenBy(x => x.Column))
-        {
-            int r = s.Row;
-            while (r > 1 && CanPlace(s, r - 1, s.Column, s.RowSpan, s.ColSpan)) r--;
-            s.Row = r;
-        }
-    }
+    
 
     /// <summary>
     /// Registers a section with the grid.
@@ -201,4 +265,9 @@ public partial class MudExGrid
     /// The on click handler
     /// </summary>    
     protected virtual Task OnClickHandler(MouseEventArgs ev) => OnClick.InvokeAsync(ev);
+
+    internal string GetNewSectionId()
+    {
+        return $"{Id}-section-{++_sectionIdCounter}";
+    }
 }

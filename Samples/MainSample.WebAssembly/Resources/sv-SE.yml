@@ -70,6 +70,7 @@ Add external Url: Lägg till extern URL
 Add files: Lägg till filer
 Add Product: Lägg till produkt
 Add Role: Lägg till roll
+Add section: Lägg till avsnitt
 Add Url: Lägg till URL
 Add user: Lägg till användare
 Add user to both lists: Lägg till användare i båda listorna
@@ -3336,6 +3337,7 @@ Restore database: Återställa databas
 Restore default: Återställ standard
 Restore finished: Återställningen är klar
 Restore in progress. Please wait until the restore is finished. This can take a while.: Återställning pågår. Vänta tills återställningen är klar. Det kan ta en stund.
+Restore saved layout: Återställa sparad layout
 Revert: Återgå
 RGB: RGB
 RGBA: RGBA (Engelska)
@@ -3455,6 +3457,7 @@ Save: Spara
 Save {0} Changes: '{0} Spara ändringar'
 Save as: Spara som
 Save Changes: Spara ändringar
+Save Current layout: Spara aktuell layout
 Save image: Spara bild
 Save Role: Spara roll
 Save visible area only: Spara endast synligt område
@@ -4315,7 +4318,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: Du loggas ut av en administratör eller profiländring.
 You are Logged Out.: Du är utloggad.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Du kan också använda MudExAdditionalAdornment som ChildContent i en MudInput
+You can move me: Du kan röra mig
 You can now Login with your credentials: Du kan nu logga in med dina uppgifter
+You can resize me: Du kan ändra storlek på mig
 You cannot delete yourself: Du kan inte ta bort dig själv
 You clicked: Du klickade
 You don't need an extra JsonEditor anymore: Du behöver inte en extra JsonEditor längre

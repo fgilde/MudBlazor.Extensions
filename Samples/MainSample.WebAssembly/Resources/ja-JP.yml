@@ -70,6 +70,7 @@ Add external Url: 外部 URL の追加
 Add files: ファイルの追加
 Add Product: 製品の追加
 Add Role: ロールの追加
+Add section: セクションを追加
 Add Url: URLの追加
 Add user: ユーザーの追加
 Add user to both lists: 両方のリストにユーザーを追加する
@@ -3336,6 +3337,7 @@ Restore database: データベースを復元する
 Restore default: デフォルトに戻す
 Restore finished: 復元が完了しました
 Restore in progress. Please wait until the restore is finished. This can take a while.: 復元が進行中です。復元が完了するまでお待ちください。これには時間がかかる場合があります。
+Restore saved layout: 保存したレイアウトを復元する
 Revert: 戻す
 RGB: RGBの
 RGBA: RGBAの
@@ -3455,6 +3457,7 @@ Save: セーブ
 Save {0} Changes: '{0} 変更を保存'
 Save as: 名前を付けて保存
 Save Changes: 変更を保存
+Save Current layout: 現在のレイアウトを保存
 Save image: 画像を保存
 Save Role: ロールの保存
 Save visible area only: 表示領域のみを保存
@@ -4315,7 +4318,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: 管理者またはプロファイルの変更によってログアウトされています。
 You are Logged Out.: ログアウトしています。
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment を MudInput の ChildContent として使用することもできます
+You can move me: あなたは私を動かすことができます
 You can now Login with your credentials: 資格情報を使用してログインできるようになりました
+You can resize me: サイズを変更できます
 You cannot delete yourself: 自分自身は削除できません
 You clicked: クリックした
 You don't need an extra JsonEditor anymore: 追加のJsonEditorはもう必要ありません

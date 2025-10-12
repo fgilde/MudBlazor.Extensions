@@ -70,6 +70,7 @@ Add external Url: 외부 URL 추가
 Add files: 파일 추가
 Add Product: 제품 추가
 Add Role: 역할 추가
+Add section: 섹션 추가
 Add Url: URL 추가
 Add user: 사용자 추가
 Add user to both lists: 두 목록에 사용자 추가
@@ -3336,6 +3337,7 @@ Restore database: 데이터베이스 복원
 Restore default: 기본값 복원
 Restore finished: 복원 완료
 Restore in progress. Please wait until the restore is finished. This can take a while.: 복원이 진행 중입니다. 복원이 완료될 때까지 기다리십시오. 시간이 걸릴 수 있습니다.
+Restore saved layout: 저장된 레이아웃 복원
 Revert: 되돌릴
 RGB: RGB
 RGBA: RGBA
@@ -3455,6 +3457,7 @@ Save: 구해내다
 Save {0} Changes: '{0} 변경 사항 저장'
 Save as: 다른 이름으로 저장
 Save Changes: 변경 사항 저장
+Save Current layout: 현재 레이아웃 저장
 Save image: 이미지 저장
 Save Role: 역할 저장
 Save visible area only: 보이는 영역만 저장
@@ -4315,7 +4318,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: 관리자 또는 프로필 변경으로 인해 로그아웃되었습니다.
 You are Logged Out.: 로그아웃되었습니다.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment 를 MudInput 의 ChildContent 로 사용할 수도 있습니다
+You can move me: 당신은 나를 움직일 수 있습니다
 You can now Login with your credentials: 이제 자격 증명으로 로그인할 수 있습니다.
+You can resize me: 내 크기를 조정할 수 있습니다.
 You cannot delete yourself: 자신을 삭제할 수 없습니다.
 You clicked: 클릭
 You don't need an extra JsonEditor anymore: 더 이상 추가 JsonEditor가 필요하지 않습니다.

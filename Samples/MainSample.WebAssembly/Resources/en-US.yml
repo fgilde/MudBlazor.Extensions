@@ -70,6 +70,7 @@ Add external Url: Add external Url
 Add files: Add files
 Add Product: Add Product
 Add Role: Add Role
+Add section: Add section
 Add Url: Add Url
 Add user: Add user
 Add user to both lists: Add user to both lists
@@ -3336,6 +3337,7 @@ Restore database: Restore database
 Restore default: Restore default
 Restore finished: Restore finished
 Restore in progress. Please wait until the restore is finished. This can take a while.: Restore in progress. Please wait until the restore is finished. This can take a while.
+Restore saved layout: Restore saved layout
 Revert: Revert
 RGB: RGB
 RGBA: RGBA
@@ -3455,6 +3457,7 @@ Save: Save
 Save {0} Changes: '{0} Änderungen speichern'
 Save as: Save as
 Save Changes: Save Changes
+Save Current layout: Save Current layout
 Save image: Save image
 Save Role: Save Role
 Save visible area only: Save visible area only
@@ -4315,7 +4318,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: You are logged out by an Administrator or profile change.
 You are Logged Out.: You are Logged Out.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: You can also use MudExAdditionalAdornment as ChildContent of a MudInput
+You can move me: You can move me
 You can now Login with your credentials: You can now Login with your credentials
+You can resize me: You can resize me
 You cannot delete yourself: You cannot delete yourself
 You clicked: You clicked
 You don't need an extra JsonEditor anymore: You don't need an extra JsonEditor anymore
@@ -4345,3 +4350,12 @@ ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: ZoomOnHover
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (South Africa)
+Explore our most powerful tools: Explore our most powerful tools
+_{0} Components: '{0} Components'
+_{0} Demos: '{0} Demos'
+Dialog Extensions: Dialog Extensions
+Theme Editor: Theme Editor
+Ready to use: Ready to use
+Live examples: Live examples
+Build amazing UIs: Build amazing UIs
+More than {0} Components: More than {0} Components

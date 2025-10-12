@@ -1224,13 +1224,14 @@ public partial class MudExObjectEdit<T>
 
     private IEnumerable<(Type, IDictionary<string, object?>?)> GetGroupStyleOuterCmp()
     {
-        var attr = RenderWithAttribute.GetRenderWithFromEnumValue(GroupingStyle);
-        if (attr != null)
+        var attrInfo = RenderWithAttribute.GetRenderWithAndAttributesFromEnumValue(GroupingStyle);
+        if (attrInfo != null)
         {
+            var attr = attrInfo.Value.Attribute;
             var outerType = RenderDataDefaults.GetOuterComponentFor(attr.ComponentType);
             if (outerType != null)
             {
-                var pa = AttributeParameterAttribute.GetAttributesFromEnumValue(GroupingStyle).
+                var pa = attrInfo.Value.Parameters.
                     MergeWith(GetCompatibleParameters(attr.ComponentType), new Dictionary<string, object?>
                     {
                         [nameof(Class)] = $"mud-ex-object-edit-{GroupingStyle.ToString().ToLower()}",
@@ -1258,10 +1259,11 @@ public partial class MudExObjectEdit<T>
     private IEnumerable<(Type, IDictionary<string, object?>?)> GetGroupStyleInnerCmp(
         string displayText, string groupId, string cssClass)
     {
-        var attr = RenderWithAttribute.GetRenderWithFromEnumValue(GroupingStyle);
-        if (attr != null)
+        var attrInfo = RenderWithAttribute.GetRenderWithAndAttributesFromEnumValue(GroupingStyle);
+        if (attrInfo != null)
         {
-            var pa = AttributeParameterAttribute.GetAttributesFromEnumValue(GroupingStyle).
+            var attr = attrInfo.Value.Attribute;
+            var pa = attrInfo.Value.Parameters.
                 MergeWith(GetCompatibleParameters(attr.ComponentType), new Dictionary<string, object?>
                 {
                     [nameof(Class)] = $"mud-ex-object-edit-{GroupingStyle.ToString().ToLower()}",

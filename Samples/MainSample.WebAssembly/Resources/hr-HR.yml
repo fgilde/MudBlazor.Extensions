@@ -70,6 +70,7 @@ Add external Url: Dodavanje vanjskog URL-a
 Add files: Dodavanje datoteka
 Add Product: Dodaj proizvod
 Add Role: Dodaj ulogu
+Add section: Dodaj odjeljak
 Add Url: Dodavanje URL-a
 Add user: Dodavanje korisnika
 Add user to both lists: Dodavanje korisnika na oba popisa
@@ -3336,6 +3337,7 @@ Restore database: Vraćanje baze podataka
 Restore default: Vraćanje zadanih postavki
 Restore finished: Vraćanje završeno
 Restore in progress. Please wait until the restore is finished. This can take a while.: Vraćanje u tijeku. Pričekajte dok se vraćanje ne završi. To može potrajati.
+Restore saved layout: Vraćanje spremljenog izgleda
 Revert: Okrenuti
 RGB: RGB
 RGBA: RGBA
@@ -3455,6 +3457,7 @@ Save: Spasiti
 Save {0} Changes: '{0} Spremite promjene'
 Save as: Spremi kao
 Save Changes: Spremi promjene
+Save Current layout: Spremi trenutni izgled
 Save image: Spremi sliku
 Save Role: Spremi ulogu
 Save visible area only: Spremi samo vidljivo područje
@@ -4315,7 +4318,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: Odjavljeni ste od strane administratora ili promjene profila.
 You are Logged Out.: Odjavljeni ste.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Također možete koristiti MudExAdditionalOrnamentnment kao ChildContent of a MudInput
+You can move me: Možeš me pomaknuti
 You can now Login with your credentials: Sada se možete prijaviti sa svojim vjerodajnicama
+You can resize me: Možete mi promijeniti veličinu
 You cannot delete yourself: Ne možete se izbrisati
 You clicked: Kliknuli ste
 You don't need an extra JsonEditor anymore: Više vam ne treba dodatni JsonEditor

@@ -1,0 +1,19 @@
+﻿@page "/gravatar-card"
+@inherits BasePage
+@attribute [DemoNew(Name = "MudExGravatarCard", Icon = Icons.Material.Outlined.SupervisorAccount, Documentation = "MudExGravatarCard displays a Gravatar profile as card", ForComponentType = typeof(MudExGravatarCard))]
+
+<DemoComponent PageType="@GetType()" >
+    <SplitContainer>
+        <Left>
+            <MudExGravatarCard @ref="component" Email="fgilde@gmail.com"></MudExGravatarCard>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent>
+
+
+@code {
+    MudExGravatarCard component;
+}

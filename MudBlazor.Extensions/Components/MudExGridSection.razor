@@ -1,18 +1,9 @@
-﻿@inherits MudExBaseComponent<MudExGridSection>
+﻿@using BlazorJS.Attributes
+@using Newtonsoft.Json
+@inherits MudExBaseComponent<MudExGridSection>
 <div @ref="ElementReference"
      data-id="@Id"
-     data-movable="@Movable.ToString()"
-     data-resizable="@Resizable.ToString()"
-     data-lockx="@LockX.ToString()"
-     data-locky="@LockY.ToString()"
-     data-mincol="@MinCol"
-     data-maxcol="@MaxCol"
-     data-minrow="@MinRow"
-     data-maxrow="@MaxRow"
-     data-mincolspan="@MinColSpan"
-     data-maxcolspan="@MaxColSpan"
-     data-minrowspan="@MinRowSpan"
-     data-maxrowspan="@MaxRowSpan"
+     data-options="@JsonConvert.SerializeObject(this.AsJsObject())"
      @attributes="UserAttributes"
      class="@GetClass()" style="@GetStyle()"
      @onclick="OnClickHandler"

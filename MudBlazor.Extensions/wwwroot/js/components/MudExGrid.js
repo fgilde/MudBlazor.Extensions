@@ -45,59 +45,14 @@ function clearTransforms(gridEl) {
     });
 }
 
-function bBool(v, def=false) {
-    if (v === undefined) return def;
-    const s = String(v).trim().toLowerCase();
-    if (s === "") return false;
-    if (s === "true" || s === "1" || s === "yes" || s === "on") return true;
-    if (s === "false" || s === "0" || s === "no" || s === "off") return false;
-    return def;
-}
-
-function readGridOpts(gridEl) {
-    const d = gridEl.dataset;
-    return{
-        floatmode: bBool(d.floatmode, true),
-        compactondrop: bBool(d.compactondrop, true),
-        resolvecollisions: bBool(d.resolvecollisions, true)
-    };
-}
-
-function readOpts(el) {
-    const b = (v, def=false) => {
-        if (v === undefined) return def;
-        const s = String(v).trim().toLowerCase();
-        if (s === "") return false;
-        if (s === "true" || s === "1" || s === "yes" || s === "on") return true;
-        if (s === "false" || s === "0" || s === "no" || s === "off") return false;
-        return false;
-    };
-    const n = (v, def) => v === undefined || v === "" ? def : parseInt(v, 10);
-    const d = el.dataset;
-    return{
-        movable: b(d.movable, true),
-        resizable: b(d.resizable, true),
-        lockx: b(d.lockx, false),
-        locky: b(d.locky, false),
-        mincol: n(d.mincol, 1),
-        maxcol: n(d.maxcol, Number.MAX_SAFE_INTEGER),
-        minrow: n(d.minrow, 1),
-        maxrow: n(d.maxrow, Number.MAX_SAFE_INTEGER),
-        mincolspan: n(d.mincolspan, 1),
-        maxcolspan: n(d.maxcolspan, 12),
-        minrowspan: n(d.minrowspan, 1),
-        maxrowspan: n(d.maxrowspan, 12)
-    };
-}
-
 function canPlace(layout, itm) { return!layout.some(x => x.id !== itm.id && rectsOverlap(itm, x)); }
 
 function canPlaceWithOpts(layout, itm, rows, cols, optsMap) {
     const o = optsMap.get(itm.id) || {};
-    const minc = Math.max(1, o.mincol ?? 1);
-    const maxc = Math.min(cols - itm.colSpan + 1, o.maxcol ?? Number.MAX_SAFE_INTEGER);
-    const minr = Math.max(1, o.minrow ?? 1);
-    const maxr = Math.min(rows - itm.rowSpan + 1, o.maxrow ?? Number.MAX_SAFE_INTEGER);
+    const minc = Math.max(1, o.minCol ?? 1);
+    const maxc = Math.min(cols - itm.colSpan + 1, o.maxCol ?? Number.MAX_SAFE_INTEGER);
+    const minr = Math.max(1, o.minRow ?? 1);
+    const maxr = Math.min(rows - itm.rowSpan + 1, o.maxRow ?? Number.MAX_SAFE_INTEGER);
     if (itm.col < minc || itm.col > maxc) return false;
     if (itm.row < minr || itm.row > maxr) return false;
     if (itm.row + itm.rowSpan - 1 > rows || itm.col + itm.colSpan - 1 > cols) return false;
@@ -257,7 +212,7 @@ export const mudexGrid = {
         const placeholder = gridEl.querySelector(".mud-ex-grid-placeholder");
         let start = null, ctx = null, lastProposal = null;
         const onDown = e => {
-            const opts = readOpts(itemEl);
+            const opts = JSON.parse(itemEl.dataset.options);
             if (!opts.movable) return;
             if (e.button !== 0) return;
             itemEl.setPointerCapture(e.pointerId);
@@ -281,17 +236,17 @@ export const mudexGrid = {
         };
         const onMove = e => {
             if (!start || !ctx) return;
-            const opts = readOpts(itemEl);
+            const opts = JSON.parse(itemEl.dataset.options);
             const dx = e.clientX - start.x, dy = e.clientY - start.y;
             const stepX = Math.trunc((dx + Math.sign(dx) * 0.4 * ctx.m.cw) / ctx.m.cw);
             const stepY = Math.trunc((dy + Math.sign(dy) * 0.4 * ctx.m.ch) / ctx.m.ch);
-            const dCol = opts.lockx ? 0 : stepX;
-            const dRow = opts.locky ? 0 : stepY;
+            const dCol = opts.lockX ? 0 : stepX;
+            const dRow = opts.lockY ? 0 : stepY;
             const rows = ctx.m.rows, cols = ctx.m.cols;
-            const minc = Math.max(1, opts.mincol);
-            const maxc = Math.min(cols - ctx.me.colSpan + 1, Number.isFinite(opts.maxcol) ? opts.maxcol : cols);
-            const minr = Math.max(1, opts.minrow);
-            const maxr = Math.min(rows - ctx.me.rowSpan + 1, Number.isFinite(opts.maxrow) ? opts.maxrow : rows);
+            const minc = Math.max(1, opts.minCol);
+            const maxc = Math.min(cols - ctx.me.colSpan + 1, Number.isFinite(opts.maxCol) ? opts.maxCol : cols);
+            const minr = Math.max(1, opts.minRow);
+            const maxr = Math.min(rows - ctx.me.rowSpan + 1, Number.isFinite(opts.maxRow) ? opts.maxRow : rows);
             const target = {
                 ...ctx.me,
                 row: Math.max(minr, Math.min(maxr, ctx.me.row + dRow)),
@@ -299,8 +254,8 @@ export const mudexGrid = {
             };
             const optsMap = new Map([[ctx.me.id, opts]]);
             let proposal = [target, ...ctx.others.map(o => ({ ...o }))];
-            const gopts = readGridOpts(gridEl);
-            if (gopts.resolvecollisions) {
+            const gopts = JSON.parse(gridEl.dataset.options);
+            if (gopts.resolveCollisions) {
                 proposal = trySwapOrPush(proposal, target, rows, cols, optsMap);
             } else {
                 const tmp = proposal.map(x => x);
@@ -309,7 +264,7 @@ export const mudexGrid = {
                     proposal = [nf, ...ctx.others.map(o => ({ ...o }))];
                 }
             }
-            if (gopts.floatmode) {
+            if (gopts.floatMode) {
                 proposal = floatUp(proposal, rows, cols);
             }
             lastProposal = proposal;
@@ -329,9 +284,9 @@ export const mudexGrid = {
                 start = null;
                 return;
             }
-            const gopts = readGridOpts(gridEl);
+            const gopts = JSON.parse(gridEl.dataset.options);
             let finalProposal = lastProposal || [];
-            if (gopts.compactondrop) {
+            if (gopts.compactOnDrop) {
                 finalProposal = compactVertical(finalProposal, ctx.m.rows, ctx.m.cols);
             }
             const changes = finalProposal.map(x => ({
@@ -372,7 +327,7 @@ export const mudexGrid = {
             if (!handle) return;
             let start = null, ctx = null, lastProposal = null;
             const onDown = e => {
-                const opts = readOpts(itemEl);
+                const opts = JSON.parse(itemEl.dataset.options);
                 if (!opts.resizable) return;
                 e.stopPropagation();
                 handle.setPointerCapture(e.pointerId);
@@ -397,22 +352,22 @@ export const mudexGrid = {
             };
             const onMove = e => {
                 if (!start || !ctx) return;
-                const opts = readOpts(itemEl);
+                const opts = JSON.parse(itemEl.dataset.options);
                 const dx = e.clientX - start.x, dy = e.clientY - start.y;
                 const stepCols = (mode === "s") ? 0 : Math.trunc((dx + Math.sign(dx) * 0.4 * ctx.m.cw) / ctx.m.cw);
                 const stepRows = (mode === "e") ? 0 : Math.trunc((dy + Math.sign(dy) * 0.4 * ctx.m.ch) / ctx.m.ch);
                 const rows = ctx.m.rows, cols = ctx.m.cols;
                 let newW = ctx.me.colSpan + stepCols;
                 let newH = ctx.me.rowSpan + stepRows;
-                newW = Math.max(opts.mincolspan, Math.min(opts.maxcolspan, newW));
-                newH = Math.max(opts.minrowspan, Math.min(opts.maxrowspan, newH));
+                newW = Math.max(opts.minColSpan, Math.min(opts.maxColSpan, newW));
+                newH = Math.max(opts.minRowSpan, Math.min(opts.maxRowSpan, newH));
                 newW = Math.min(newW, cols - ctx.me.col + 1);
                 newH = Math.min(newH, rows - ctx.me.row + 1);
                 const target = { ...ctx.me, colSpan: newW, rowSpan: newH };
                 const optsMap = new Map([[ctx.me.id, opts]]);
                 let proposal = [target, ...ctx.others.map(o => ({ ...o }))];
-                const gopts = readGridOpts(gridEl);
-                if (gopts.resolvecollisions) {
+                const gopts = JSON.parse(gridEl.dataset.options);
+                if (gopts.resolveCollisions) {
                     proposal = trySwapOrPush(proposal, target, rows, cols, optsMap);
                 } else {
                     const tmp = proposal.map(x => x);
@@ -421,7 +376,7 @@ export const mudexGrid = {
                         proposal = [nf, ...ctx.others.map(o => ({ ...o }))];
                     }
                 }
-                if (gopts.floatmode) {
+                if (gopts.floatMode) {
                     proposal = floatUp(proposal, rows, cols);
                 }
                 lastProposal = proposal;
@@ -443,9 +398,9 @@ export const mudexGrid = {
                     start = null;
                     return;
                 }
-                const gopts = readGridOpts(gridEl);
+                const gopts = JSON.parse(gridEl.dataset.options);
                 let finalProposal = lastProposal || [];
-                if (gopts.compactondrop) {
+                if (gopts.compactOnDrop) {
                     finalProposal = compactVertical(finalProposal, ctx.m.rows, ctx.m.cols);
                 }
                 const changes = finalProposal.map(x => ({
@@ -471,10 +426,12 @@ export const mudexGrid = {
                     lastProposal = null;
                 }
             };
-            handle.addEventListener("pointerdown", onDown);
-            handle.addEventListener("pointermove", onMove);
-            handle.addEventListener("pointerup", onUp);
-            handle.addEventListener("pointercancel", onUp);
+            if (handle && typeof handle.addEventListener === 'function') {
+                handle.addEventListener("pointerdown", onDown);
+                handle.addEventListener("pointermove", onMove);
+                handle.addEventListener("pointerup", onUp);
+                handle.addEventListener("pointercancel", onUp);
+            }
         };
         attach(hE, "e");
         attach(hS, "s");

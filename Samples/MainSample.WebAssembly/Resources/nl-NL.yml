@@ -70,6 +70,7 @@ Add external Url: Externe URL toevoegen
 Add files: Bestanden toevoegen
 Add Product: Product toevoegen
 Add Role: Rol toevoegen
+Add section: Sectie toevoegen
 Add Url: Url toevoegen
 Add user: Gebruiker toevoegen
 Add user to both lists: Gebruiker toevoegen aan beide lijsten
@@ -3336,6 +3337,7 @@ Restore database: Database herstellen
 Restore default: Standaardinstelling herstellen
 Restore finished: Herstel voltooid
 Restore in progress. Please wait until the restore is finished. This can take a while.: Herstel wordt uitgevoerd. Wacht tot het herstel is voltooid. Dit kan even duren.
+Restore saved layout: Opgeslagen lay-out herstellen
 Revert: Terugkeren
 RGB: RGB
 RGBA: RGBA
@@ -3455,6 +3457,7 @@ Save: Redden
 Save {0} Changes: '{0} Wijzigingen opslaan'
 Save as: Opslaan als
 Save Changes: Wijzigingen opslaan
+Save Current layout: Huidige lay-out opslaan
 Save image: Afbeelding opslaan
 Save Role: Rol opslaan
 Save visible area only: Sla alleen het zichtbare gebied op
@@ -4315,7 +4318,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: U bent uitgelogd door een beheerder of uw profiel is gewijzigd.
 You are Logged Out.: U bent uitgelogd.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: U kunt MudExAdditionalAdornment ook gebruiken als ChildInhoud van een MudInput
+You can move me: Je kunt me verplaatsen
 You can now Login with your credentials: U kunt nu inloggen met uw inloggegevens
+You can resize me: U kunt het formaat van mij wijzigen
 You cannot delete yourself: Je kunt jezelf niet verwijderen
 You clicked: Je hebt geklikt
 You don't need an extra JsonEditor anymore: Je hebt geen extra JsonEditor meer nodig
