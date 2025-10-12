@@ -288,11 +288,11 @@
         </MudCard>
     </MudExCardList>
 
-    <!-- Feature -->
+    <!-- Feature 2 -->
     <MudExCardList HoverMode="@(MudExCardHoverMode.Zoom | MudExCardHoverMode.LightBulb)"
-                   HoverColor="Color.Warning" TData="object">
+                   HoverColor="MudExColor.Transparent" TData="object">
         <MudCard Class="index-card feature-card-special" Elevation="6"
-                 Style="@MudExStyleBuilder.Default.WithAnimatedConicGradientBorderedBackground(2, ["var(--mud-palette-background)"], ["#3300aa", "#0066aa", MudExColor.Info, MudExColor.Success, "purple"], TimeSpan.FromSeconds(5)).WithMaxWidth("none").WithWidth("100%").WithMarginLeft("10%").WithMarginRight("10%").Style"
+                 Style="@MudExStyleBuilder.Default.WithAnimatedConicGradientBorderedBackground(2, ["var(--mud-palette-background)"], ["#3300aa", "#0066aa", MudExColor.Info, MudExColor.Success, "purple"], TimeSpan.FromSeconds(8)).Style"
                  @onclick="@(() => { NavigationManager.NavigateTo("/dialog-snap"); })">
             <MudCardHeader>
                 <CardHeaderContent>
@@ -300,7 +300,7 @@
                         <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@MaterialDesignIcons.Normal.DockWindow" />
                         <div class="ml-5">
                             <MudText Typo="Typo.h5">@L["Dialog Drag & Drop"]</MudText>
-                            <MudChip T="string" Size="Size.Small" Color="Color.Warning" Class="pulse-animation">NEW</MudChip>
+                            <MudChip T="string" Size="Size.Small" Color="Color.Warning" Class="pulse-animation">@L["NEW"]</MudChip>
                         </div>
                     </div>
                 </CardHeaderContent>
@@ -310,6 +310,52 @@
                 <MudText Typo="Typo.body2" Style="margin-top: 8px;">@L["New dialog Feature - SnapDrag"]</MudText>
             </MudCardContent>
         </MudCard>
+        
+        <MudCard Class="index-card feature-card-special" Elevation="6"
+                 Style="@MudExStyleBuilder.Default.WithAnimatedConicGradientBorderedBackground(2, ["var(--mud-palette-background)"], ["#3300aa", "#0066aa", MudExColor.Secondary, MudExColor.Primary, "purple"], TimeSpan.FromSeconds(5)).Style"
+                 @onclick="@(() => { NavigationManager.NavigateTo("/dialog-snap"); })">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <div style="display: flex; align-items: center;">
+                        <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@MaterialDesignIcons.Normal.DockWindow" />
+                        <div class="ml-5">
+                            <MudText Typo="Typo.h5">@L["Dock Control"]</MudText>
+                            <MudChip T="string" Size="Size.Small" Color="Color.Warning" Class="pulse-animation">@L["NEW"]</MudChip>
+                        </div>
+                    </div>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.body1" Style="font-weight: 500;">@L["Introducing MudExDockControl"]</MudText>
+                <MudText Typo="Typo.body2" Style="margin-top: 8px;">
+                    @L["Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly."]
+                </MudText>
+            </MudCardContent>
+        </MudCard>
+
+        <MudCard Class="index-card feature-card-special" Elevation="6"
+                 Style="@MudExStyleBuilder.Default.WithAnimatedConicGradientBorderedBackground(2, ["var(--mud-palette-background)"], ["#3300aa", "#0066aa", MudExColor.Tertiary, MudExColor.Info, "purple"], TimeSpan.FromSeconds(2)).Style"
+                 @onclick="@(() => { NavigationManager.NavigateTo("/dialog-snap"); })">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <div style="display: flex; align-items: center;">
+                        <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@MaterialDesignIcons.Normal.GridLarge" />
+                        <div class="ml-5">
+                            <MudText Typo="Typo.h5">@L["MudExGrid Layout"]</MudText>
+                            <MudChip T="string" Size="Size.Small" Color="Color.Warning" Class="pulse-animation">@L["NEW"]</MudChip>
+                        </div>
+                    </div>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.body1" Style="font-weight: 500;">@L["MudExGrid — Now with Layout Editing"]</MudText>
+                <MudText Typo="Typo.body2" Style="margin-top: 8px;">
+                    @L["Move and resize grid items directly with drag & drop — design your layout dynamically at runtime."]
+                </MudText>
+            </MudCardContent>
+        </MudCard>
+
+
     </MudExCardList>
     
     <!-- Filter -->

@@ -23,10 +23,9 @@ public enum GroupingStyle
     /// <summary>
     /// Grouping with tabs
     /// </summary>
-    [RenderWith<MudTabPanel>]
-    [AttributeParameter(nameof(MudTabPanel.BadgeColor), Color.Error)]
-    [AttributeParameter(nameof(MudTabPanel.IconColor), Color.Error)]
-    [AttributeParameter("Kalamari", "enemenemu")]
+    [RenderWith<MudTabPanel>, 
+     AttributeParameter(nameof(MudTabPanel.BadgeColor), Color.Error)
+    ]
     Tabs,
 
     /// <summary>

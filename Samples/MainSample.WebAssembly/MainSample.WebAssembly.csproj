@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
+  <Import Project="..\..\MudBlazor.Extensions\version.generated.props"
+          Condition="Exists('..\..\MudBlazor.Extensions\version.generated.props')" />
+
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -8,25 +11,16 @@
     <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Resources\ar-SA.yml" />
-    <None Remove="Resources\bg-BG.yml" />
-    <None Remove="Resources\cs-CZ.yml" />
-    <None Remove="Resources\da-DK.yml" />
-    <None Remove="Resources\de-DE.yml" />
-    <None Remove="Resources\el-CY.yml" />
-    <None Remove="Resources\en-US.yml" />
-    <None Remove="Resources\es-ES.yml" />
-    <None Remove="Resources\fr-FR.yml" />
-    <None Remove="Resources\hr-HR.yml" />
-    <None Remove="Resources\it-IT.yml" />
-    <None Remove="Resources\ja-JP.yml" />
-    <None Remove="Resources\ko-KR.yml" />
-    <None Remove="Resources\nl-NL.yml" />
-    <None Remove="Resources\pl-PL.yml" />
-    <None Remove="Resources\sv-SE.yml" />
-    <None Remove="Resources\tr-TR.yml" />
-  </ItemGroup>
+  <PropertyGroup>
+    <PackageName>MudBlazor.Extensions</PackageName>
+    <PackageVersion>$(MudEx_PackageVersion)</PackageVersion>
+    <MajorVersion>$(MudEx_MajorVersion)</MajorVersion>
+    <MinorVersion>$(MudEx_MinorVersion)</MinorVersion>
+    <MudBlazorVersion>$(MudBlazor_Version)</MudBlazorVersion>
+
+    <!-- Optional: Cache-Token auf Package-Version legen -->
+    <CACHE_TOKEN>$(PackageVersion)</CACHE_TOKEN>
+  </PropertyGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\ar-SA.yml" />
@@ -87,5 +81,52 @@
     <Exec IgnoreExitCode="true" Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(ProjectDir).scripts\Export-CloudFlare-Deployments.ps1&quot; -OutputFile &quot;$(DeploymentsOutputFile)&quot;" WorkingDirectory="$(ProjectDir)" />
   </Target>-->
   <!-- END Collect deployments -->
+
+
+
+  <PropertyGroup>
+    <!-- Quelle/Ziel -->
+    <IndexTemplate>$(ProjectDir)wwwroot\index.template.html</IndexTemplate>
+    <IndexOutput>$(ProjectDir)wwwroot\index.html</IndexOutput>
+  </PropertyGroup>
+
+  <!-- Erzeugt index.html VOR Build/DevServer/StaticAssets -->
+  <Target Name="GenerateIndexHtml" BeforeTargets="Build;ResolveStaticWebAssets">
+    <Message Importance="High" Text="Generating $(IndexOutput) from $(IndexTemplate)" />
+
+    <!-- Hart abbrechen, wenn Template fehlt -->
+    <Error Condition="!Exists('$(IndexTemplate)')"
+           Text="Template not found: $(IndexTemplate). Create wwwroot\index.template.html first." />
+
+    <!-- Token-Replacement via PowerShell (rein .NET-String.Replace, kein Regex) -->
+    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+    $ErrorActionPreference='Stop'; ^
+    $in='$(IndexTemplate)'; $out='$(IndexOutput)'; ^
+    $text=[System.IO.File]::ReadAllText($in); ^
+    $map=@{ ^
+      'PackageName'='$(PackageName)'; ^
+      'PackageVersion'='$(PackageVersion)'; ^
+      'MudBlazorVersion'='$(MudBlazorVersion)'; ^
+      'ComponentCount'='$(ComponentCount)'; ^
+      'DemoCount'='$(DemoCount)'; ^
+      'CACHE_TOKEN'='$(CACHE_TOKEN)'; ^
+    }; ^
+    foreach($k in $map.Keys){ $text = $text.Replace('#{'+$k+'}#', $map[$k]) }; ^
+    [System.IO.File]::WriteAllText($out, $text, [System.Text.Encoding]::UTF8)" />
+
+    <!-- sicherstellen, dass die generierte Datei veröffentlicht wird -->
+    <ItemGroup>
+      <Content Include="$(IndexOutput)">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      </Content>
+      <!-- Template nicht veröffentlichen -->
+      <None Include="$(IndexTemplate)" />
+    </ItemGroup>
+
+    <!-- Nachkontrolle -->
+    <Error Condition="!Exists('$(IndexOutput)')" Text="Failed to generate $(IndexOutput)." />
+  </Target>
+
 
 </Project>

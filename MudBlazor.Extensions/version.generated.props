@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <MudEx_PackageVersion>8.13.0-prev-2510122346</MudEx_PackageVersion>
+    <MudEx_MajorVersion>8</MudEx_MajorVersion>
+    <MudEx_MinorVersion>13</MudEx_MinorVersion>
+    <MudBlazor_Version>8.13.0</MudBlazor_Version>
+  </PropertyGroup>
+</Project>
