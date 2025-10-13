@@ -113,9 +113,9 @@
   </ItemGroup>
 
 
-  <!--<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="cd &quot;$(ProjectDir)\.scripts&quot;&#xD;&#xA;powershell -ExecutionPolicy Bypass -File &quot;copyMarkdown.ps1&quot;" />
-  </Target>-->
+  </Target>
 
 
   <!-- Versions-Props generieren, damit andere Projekte sie importieren können -->

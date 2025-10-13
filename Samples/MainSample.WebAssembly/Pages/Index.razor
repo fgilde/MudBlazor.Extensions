@@ -359,8 +359,8 @@
     </MudExCardList>
     
     <!-- Filter -->
-    <MudExVirtualItem>
-        <div class="mb-3 mt-5" style="@MudExStyleBuilder.Default.WithAnimation(AnimationType.Scale, TimeSpan.FromMilliseconds(800), when: NotAnimated("type-selector")).Style">
+    <MudExVirtualItem IntersectingStyle="@MudExStyleBuilder.Default.WithAnimation(AnimationType.Scale, TimeSpan.FromMilliseconds(800)).Style">
+        <div class="mb-3 mt-5" style="">
             <MudToggleGroup Class="m-5" T="Type" SelectionMode="SelectionMode.MultiSelection" @bind-Values="_selectedAttributeTypes">
                 <MudToggleItem Value="@(typeof(DemoAttribute))">
                     <MudIcon Icon="@Icons.Material.Filled.Circle" Size="Size.Small" Color="Color.Default" />
@@ -385,7 +385,7 @@
                 @foreach (var nav in _demos.Where(n => !_selectedAttributeTypes.Any() || _selectedAttributeTypes.Contains(n?.Demo?.GetType())))
                 {
                     <MudExVirtualItem>
-                        <MudCard Style="@MudExStyleBuilder.Default.WithAnimation(AnimationType.Back, TimeSpan.FromMilliseconds(700), when: NotAnimated(nav)).Style" Class="index-card" Elevation="2" @onclick="@(() => { Open(nav); })">
+                        <MudCard Style="@MudExStyleBuilder.Default.WithAnimation(AnimationType.Back, TimeSpan.FromMilliseconds(700)).Style" Class="index-card" Elevation="2" @onclick="@(() => { Open(nav); })">
                             <MudCardHeader>
                                 <CardHeaderContent>
                                     @RenderNavEntry(nav, L)
@@ -413,7 +413,7 @@
                 @foreach (var nav in _components)
                 {
                     <MudExVirtualItem>
-                        <MudCard Style="@MudExStyleBuilder.Default.WithAnimation(AnimationType.Fade, TimeSpan.FromMilliseconds(700), when: NotAnimated(nav)).Style" Class="index-card" Elevation="2" @onclick="@(() => { Open(nav); })">
+                        <MudCard Style="@MudExStyleBuilder.Default.WithAnimation(AnimationType.Fade, TimeSpan.FromMilliseconds(700)).Style" Class="index-card" Elevation="2" @onclick="@(() => { Open(nav); })">
                             <MudCardHeader>
                                 <CardHeaderContent>
                                     @RenderNavEntry(nav, L)
@@ -447,7 +447,7 @@
 </script>
 
 @code {
-    private HashSet<object> _animated = new();
+
     private readonly HashSet<NavigationEntry> _demos = DemoAttribute.AllEntries(true);
     private readonly HashSet<NavigationEntry> _components = Navigations.ReflectMudExComponents();
 
@@ -487,13 +487,10 @@
                     @l[(nav?.Demo.GetType().Name.Replace("Demo", "").Replace("Attribute", ""))]
                 </MudChip>
         }
-        </div>;
+        </div>
+    ;
     }
 
-    private bool NotAnimated(object key)
-    {
-        return !_animated.Contains(key);
-    }
 
     private IEnumerable<Type> _selectedAttributeTypes = Type.EmptyTypes;
 
@@ -501,4 +498,5 @@
     {
         NavigationManager.NavigateTo(nav.Href);
     }
+    
 }
