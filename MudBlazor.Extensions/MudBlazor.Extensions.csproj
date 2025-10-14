@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+  <Import Project="..\Shared.props"/>
+
   <PropertyGroup>
 
     <TargetFrameworks>net8.0</TargetFrameworks>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <ImplicitUsings>enable</ImplicitUsings>
-
     <LangVersion>11</LangVersion>
     <Authors>Florian Gilde</Authors>
     <Description>MudBlazor.Extensions is a small extension library for MudBlazor from https://mudblazor.com/ </Description>
@@ -72,13 +73,13 @@
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0" />
     <PackageReference Include="AuralizeBlazor" Version="2.0.5" />
     <PackageReference Include="MudBlazor.Markdown" Version="8.11.0" />
-    <PackageReference Include="Nextended.Blazor" Version="9.0.23" />
-    <PackageReference Include="Nextended.Core" Version="9.0.23" />
+    <PackageReference Include="Nextended.Blazor" Version="9.0.25" />
+    <PackageReference Include="Nextended.Core" Version="9.0.25" />
     <PackageReference Include="BlazorJS" Version="2.2.0" />
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />    
-    <PackageReference Include="MudBlazor" Version="8.12.0" />
+    <PackageReference Include="MudBlazor" Version="8.13.0" />
     <PackageReference Include="BlazorParameterCastingMagic" Version="1.2.23060811" />
     <PackageReference Include="SharpCompress" Version="0.40.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
@@ -113,8 +114,36 @@
   </ItemGroup>
 
 
-  <!--<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="$(UpdateReadMeAndDeployments)">
     <Exec Command="cd &quot;$(ProjectDir)\.scripts&quot;&#xD;&#xA;powershell -ExecutionPolicy Bypass -File &quot;copyMarkdown.ps1&quot;" />
-  </Target>-->
+  </Target>
+
+
+  <!-- Versions-Props generieren, damit andere Projekte sie importieren können -->
+  <Target Name="WriteVersionProps" AfterTargets="Build">
+    <!-- MudBlazor-Version aus den PackageReferences herausziehen -->
+    <ItemGroup>
+      <_MudBlazorRef Include="@(PackageReference)" Condition="'%(PackageReference.Identity)'=='MudBlazor'" />
+    </ItemGroup>
+    <PropertyGroup>
+      <_MudBlazorVersion>%(_MudBlazorRef.Version)</_MudBlazorVersion>
+      <_OutProps>$(ProjectDir)version.generated.props</_OutProps>
+    </PropertyGroup>
+
+    <Message Importance="High" Text="Writing version props to $(_OutProps) (MudEx=$(PackageVersion), Major=$(MajorVersion), Minor=$(MinorVersion), MudBlazor=$(_MudBlazorVersion))" />
+
+    <WriteLinesToFile
+      File="$(_OutProps)"
+      Overwrite="true"
+      Lines="
+&lt;Project&gt;
+  &lt;PropertyGroup&gt;
+    &lt;MudEx_PackageVersion&gt;$(PackageVersion)&lt;/MudEx_PackageVersion&gt;
+    &lt;MudEx_MajorVersion&gt;$(MajorVersion)&lt;/MudEx_MajorVersion&gt;
+    &lt;MudEx_MinorVersion&gt;$(MinorVersion)&lt;/MudEx_MinorVersion&gt;
+    &lt;MudBlazor_Version&gt;$(_MudBlazorVersion)&lt;/MudBlazor_Version&gt;
+  &lt;/PropertyGroup&gt;
+&lt;/Project&gt;" />
+  </Target>
   
 </Project>

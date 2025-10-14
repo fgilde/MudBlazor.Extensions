@@ -2,6 +2,7 @@
 using MudBlazor.Extensions.Components;
 using MudBlazor.Extensions.Core.Enums;
 using MudBlazor.Extensions.Helper;
+using Nextended.Core.DeepClone;
 using Nextended.Core.Extensions;
 
 
@@ -131,6 +132,7 @@ public class ClientTheme : MudTheme
 
     #endregion
 
+
     public static ClientTheme DefaultTheme = new ClientTheme()
     {
         PaletteLight = new PaletteLight()
@@ -153,6 +155,35 @@ public class ClientTheme : MudTheme
         dark.Background = "#121518";
         dark.Surface = "#222529";
     }));
+    
+    public static ClientTheme New = new ClientTheme()
+    {
+        PaletteLight = new PaletteLight()
+        {
+            Primary = "#594AE2",
+            Secondary = "#FF4081",
+            Tertiary = "#1EC8A5",
+            AppbarBackground = "#1f2226",
+            Background = Colors.Gray.Lighten5,
+            DrawerBackground = "#FFF",
+            DrawerText = "rgba(0,0,0, 0.7)",
+            Success = "#19635d"
+        },
+        DrawerClipMode = DrawerClipMode.Docked,
+        DrawerVariant = DrawerVariant.Responsive,
+        //   Typography = DefaultTypography, // TODO: MudBlazor 8
+        LayoutProperties = DefaultLayoutProperties.SetProperties(l =>
+        {
+            l.DefaultBorderRadius = "8px";
+        })
+    }.SetProperties(t => t.PaletteDark = t.PaletteLight.ToPaletteDark().SetProperties(dark =>
+    {
+        dark.AppbarBackground = "#1f2226";
+        dark.DrawerBackground = "#1f2226";
+        dark.Background = "#121518";
+        dark.Surface = "#222529";
+    }));
+
 
     public static ClientTheme Last = new ClientTheme()
     {
@@ -194,7 +225,7 @@ public class ClientTheme : MudTheme
     
     public static ClientTheme CurrentTheme = DefaultTheme;
 
-    public static ICollection<ThemePreset<ClientTheme>> All => ThemePreset.Create(() => DefaultTheme, () => Last, () => SimpleBlue);
+    public static ICollection<ThemePreset<ClientTheme>> All => ThemePreset.Create(() => DefaultTheme, () => New, () => Last, () => SimpleBlue);
     
 
     public static async Task<ICollection<ThemePreset<ClientTheme>>> GetAllThemes(LocalStorageService storageService)

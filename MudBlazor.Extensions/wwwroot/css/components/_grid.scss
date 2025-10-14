@@ -1,7 +1,34 @@
+/* =========================
+   Grid Overlay & Placeholder
+   ========================= */
+.mud-ex-grid-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.mud-ex-grid-placeholder {
+    position: absolute;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0.25;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.14) 0%, rgba(0,0,0,0.08) 60%, rgba(0,0,0,0) 70%), var(--mud-palette-primary);
+    mix-blend-mode: multiply;
+    border: 2px dashed rgba(255,255,255,0.7);
+    border-radius: 10px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.22);
+    transition: transform .1s ease, width .1s ease, height .1s ease, opacity .1s ease;
+}
+
+/* ======
+   Grid
+   ====== */
 .mud-ex-grid {
     display: grid;
     box-sizing: border-box;
     width: 100%;
+    position: relative;
 
     &.mud-ex-grid-height-full {
         min-height: 100vh;
@@ -22,10 +49,34 @@
     }
 }
 
+/* =========================
+   Dragging/Clone States
+   ========================= */
+.mud-ex-grid-section.mud-ex-grid-dragging {
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+}
+
+.mud-ex-grid-clone {
+    filter: drop-shadow(0 10px 22px rgba(0,0,0,.25));
+    opacity: .95;
+    transform-origin: center center;
+}
+
+/* =========================
+   Grid Section + Handles
+   ========================= */
 .mud-ex-grid-section {
     display: inline-grid;
-    overflow: auto;
+    position: relative;
+    
+    overflow: visible;
+    transition: box-shadow .2s ease;
 
+    &.mud-ex-grid-dragging,
+    &.mud-ex-grid-resizing {
+        box-shadow: 0 8px 24px rgba(0,0,0,.18);
+    }
+    
     @for $i from 1 through 12 {
         &.mud-ex-grid-section-col-start-#{$i} {
             grid-column-start: $i;
@@ -43,4 +94,76 @@
             grid-row-end: $i;
         }
     }
+    
+    .mud-ex-grid-section-handle {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        z-index: 5;
+        border-radius: 4px;
+        background: var(--mud-palette-primary);
+        box-shadow: 0 2px 8px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.65);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .12s ease, transform .12s ease, box-shadow .12s ease;
+        user-select: none;
+        touch-action: none;
+        
+        &::after {
+            content: "";
+            position: absolute;
+            inset: -6px;
+        }
+    }
+    
+    &:hover .mud-ex-grid-section-handle,
+    &:focus-within .mud-ex-grid-section-handle,
+    &.mud-ex-grid-resizing .mud-ex-grid-section-handle {
+        opacity: .95;
+        pointer-events: auto;
+    }
+
+    .mud-ex-grid-section-handle:hover {
+        box-shadow: 0 4px 14px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.85);
+    }
+    
+    .mud-ex-grid-handle-e {
+        right: 0;
+        top: 50%;
+        transform: translate(50%, -50%); 
+        cursor: ew-resize;
+    }
+
+    .mud-ex-grid-handle-s {
+        left: 50%;
+        bottom: 0;
+        transform: translate(-50%, 50%);
+        cursor: ns-resize;
+    }
+
+    .mud-ex-grid-handle-se {
+        right: 0;
+        bottom: 0;
+        transform: translate(50%, 50%);
+        cursor: nwse-resize;
+    }
 }
+
+/* =========================
+   Optional: Scrollbarer Inhalt
+   =========================
+*/
+.mud-ex-grid-section > .content {
+    overflow: auto;
+    height: 100%;
+}
+
+/* =========================
+   Optional: globaler Cursor beim Resizing   
+   ========================= */
+/*
+.mud-ex-grid-resizing,
+.mud-ex-grid-resizing * {
+  cursor: nwse-resize !important; 
+}
+*/

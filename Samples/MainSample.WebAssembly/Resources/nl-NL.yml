@@ -1,4 +1,6 @@
 ﻿_ Text: _Sms
+_{0} Components: '{0} Componenten'
+_{0} Demos: "{0} demo's"
 --accent-color1: --accent-kleur1
 --accent-color2: --accent-kleur2
 --accent-color3: --accent-kleur3
@@ -70,6 +72,7 @@ Add external Url: Externe URL toevoegen
 Add files: Bestanden toevoegen
 Add Product: Product toevoegen
 Add Role: Rol toevoegen
+Add section: Sectie toevoegen
 Add Url: Url toevoegen
 Add user: Gebruiker toevoegen
 Add user to both lists: Gebruiker toevoegen aan beide lijsten
@@ -486,6 +489,7 @@ BrushTreesDarkBase16: BorstelbomenDarkBase16
 brx-IN: Bodo (India)
 bs-Cyrl-BA: Bosnisch (Cyrillisch, Bosnië en Herzegovina)
 bs-Latn-BA: Bosnisch (Latijn, Bosnië en Herzegovina)
+Build amazing UIs: Bouw geweldige gebruikersinterfaces
 BurlyWood: BurlyWood
 button: knoop
 Button: Knoop
@@ -682,6 +686,7 @@ Courrier: Post
 Create: Scheppen
 Create address: Adres aanmaken
 Create new backup: Maak een nieuwe back-up
+Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.: 'Maak krachtige, flexibele docklay-outs: sleep, drop, snap en organiseer uw dialogen of deelvensters moeiteloos.'
 CreatedOn: Datum gemaakt
 Critical: Kritisch
 CropAndScale: Bijsnijden en schalen
@@ -831,6 +836,7 @@ Dialog: Tweespraak
 Dialog Appearance: Weergave van dialogen
 Dialog Content: Inhoud van het dialoogvenster
 Dialog Drag & Drop: Dialoog slepen en neerzetten
+Dialog Extensions: Extensies voor dialoogvensters
 Dialog for editing objects with the MudExObjectEditForm: Dialoogvenster voor het bewerken van objecten met de MudExObjectEditForm
 Dialog Sample: Voorbeeld van dialoogvenster
 Dialog Samples: Voorbeelden van dialogen
@@ -1192,6 +1198,7 @@ ExpandedIcon: UitgebreidIcoon
 ExpandOnClick: ExpandOnClick
 ExpandOnFilter: ExpandOnFilter
 Explicit File Display Zip: Expliciete File Display Zip
+Explore our most powerful tools: Ontdek onze krachtigste tools
 Export: Exporteren
 Export To Excel: Exporteren naar Excel
 Export_SheetName: Gegevens
@@ -1654,6 +1661,7 @@ Inset: Inzet
 IntegratedInDialogAsButtons: GeïntegreerdInDialogAsButtons
 IntegratedInDialogAsImages: GeïntegreerdInDialogAsImages
 InterimResults: Tussentijdse resultaten
+Introducing MudExDockControl: Introductie van MudExDockControl
 Invalid Credentials.: Ongeldige inloggegevens.
 IrBlack: IrZwart
 IrBlackBase16: 'IrBlackBase16 zei:'
@@ -1843,6 +1851,7 @@ List: Lijst
 List appearance: Weergave van de lijst
 List behavior: Gedrag weergeven
 List item for MudExList.: Lijstitem voor MudExList.
+Live examples: Live voorbeelden
 lkt-US: Lakota (Verenigde Staten)
 ln-AO: Lingala (Angola)
 ln-CD: Lingala (Congo-Brazzaville [DRC])
@@ -2041,12 +2050,14 @@ Montreal: Montréal
 Montreal - H1A 0A1: Montreal - H1A 0A1
 Montreal - H1A 0A1ender: Montréal - H1A 0A1ender
 Montserrat: Montserrat
+More than {0} Components: Meer dan {0} Componenten
 Motion: Beweging
 Mouse: Muis
 MouseOverMessageClass: MouseOverMessageKlasse
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: MouseWheelDownActie
 MouseWheelUpAction: MouseWheelUpActie
+Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Verplaats en wijzig het formaat van rasteritems rechtstreeks met slepen en neerzetten - ontwerp uw lay-out dynamisch tijdens runtime.
 MoveContent: Inhoud verplaatsen
 mr-IN: Marathi (India)
 MS Outlook: MS Outlook
@@ -2147,7 +2158,9 @@ MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar is een MudAvatar die automatisch de profielafbeelding van gravatar gebruikt als e-mailadres
 MudExGrid: ModderRooster
+MudExGrid — Now with Layout Editing: MudExGrid — Nu met lay-out bewerken
 MudExGrid Enhanced: MudExGrid Verbeterd
+MudExGrid Layout: MudExGrid-indeling
 MudExGridSection: MudExGridSectie
 MudExGroupBox: MudExGroupBox
 MudExHtmlEdit: MudExHtmlBewerken
@@ -2336,6 +2349,7 @@ ne-NP: Nepalees (Nepal)
 NebulaBase16: NebulaBase16
 Never: Nooit
 New: Nieuw
+NEW: NIEUW
 NEW Dialog Drag Drop Mode: NIEUW dialoogvenster Drag Drop-modus
 New dialog Feature - SnapDrag: Nieuwe dialoogfunctie - SnapDrag
 New Message From {0}: Nieuw bericht van {0}
@@ -3254,6 +3268,7 @@ Read More: Lees meer
 Readme: Lezen
 readme.md: readme.md
 ReadOnly: Alleen lezen
+Ready to use: Klaar voor gebruik
 Realtime Updates & Insights with SignalR.: Realtime updates en inzichten met SignalR.
 RebeccaBase16: 'RebeccaBase16 zei:'
 RebeccaPurple: RebeccaPaars
@@ -3336,6 +3351,7 @@ Restore database: Database herstellen
 Restore default: Standaardinstelling herstellen
 Restore finished: Herstel voltooid
 Restore in progress. Please wait until the restore is finished. This can take a while.: Herstel wordt uitgevoerd. Wacht tot het herstel is voltooid. Dit kan even duren.
+Restore saved layout: Opgeslagen lay-out herstellen
 Revert: Terugkeren
 RGB: RGB
 RGBA: RGBA
@@ -3455,6 +3471,7 @@ Save: Redden
 Save {0} Changes: '{0} Wijzigingen opslaan'
 Save as: Opslaan als
 Save Changes: Wijzigingen opslaan
+Save Current layout: Huidige lay-out opslaan
 Save image: Afbeelding opslaan
 Save Role: Rol opslaan
 Save visible area only: Sla alleen het zichtbare gebied op
@@ -3971,6 +3988,7 @@ The user {0} has been logged off: De gebruiker {0} is afgemeld
 The User {0} has just edited, created or deleted entries here. You should reload the data: De gebruiker {0} hier zojuist items heeft bewerkt, aangemaakt of verwijderd. U moet de gegevens opnieuw laden
 Theme: Thema
 Theme Colors: Thema Kleuren
+Theme Editor: Thema Editor
 Themes: Thema 's
 ThemeSelect: Thema selecteren
 There are no new notifications: Er zijn geen nieuwe meldingen
@@ -4315,7 +4333,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: U bent uitgelogd door een beheerder of uw profiel is gewijzigd.
 You are Logged Out.: U bent uitgelogd.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: U kunt MudExAdditionalAdornment ook gebruiken als ChildInhoud van een MudInput
+You can move me: Je kunt me verplaatsen
 You can now Login with your credentials: U kunt nu inloggen met uw inloggegevens
+You can resize me: U kunt het formaat van mij wijzigen
 You cannot delete yourself: Je kunt jezelf niet verwijderen
 You clicked: Je hebt geklikt
 You don't need an extra JsonEditor anymore: Je hebt geen extra JsonEditor meer nodig

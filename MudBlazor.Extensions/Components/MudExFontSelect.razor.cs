@@ -61,6 +61,8 @@ public partial class MudExFontSelect
             MultiSelection = true;
         if (!IsOverwritten(nameof(ValuePresenter)))
             ValuePresenter = Options.ValuePresenter.Chip;
+        if (!IsOverwritten(nameof(Clearable)))
+            Clearable = true;
         _initialized = true;
     }
 

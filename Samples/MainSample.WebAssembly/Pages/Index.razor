@@ -4,187 +4,499 @@
 @using Microsoft.Extensions.Localization
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Core
-@using Newtonsoft.Json
+@using MudBlazor.Extensions.Options
 
 <style>
-    .mud-ex-object-edit-group-flat .mud-expand-panel-text:after {
-        background-color: var(@Color.Secondary.CssVarName());
+    .hero-section {
+        position: relative;
+        padding: 60px 0;
+        overflow: hidden;
     }
+
+    .hero-gradient {
+        background: linear-gradient(135deg, rgba(var(--mud-palette-primary-rgb), 0.1) 0%, rgba(var(--mud-palette-secondary-rgb), 0.1) 50%, rgba(var(--mud-palette-tertiary-rgb), 0.1) 100%);
+        animation: gradientShift 15s ease infinite;
+        background-size: 200% 200%;
+    }
+
+    @@keyframes gradientShift {
+        0%, 100% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+    }
+
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 24px;
+        margin: 40px 0;
+    }
+
+    .stat-card {
+        background: rgba(var(--mud-palette-surface-rgb), 0.6);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 24px;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(var(--mud-palette-primary-rgb), 0.2);
+    }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+            border-color: var(--mud-palette-primary);
+        }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--mud-palette-primary), var(--mud-palette-secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .feature-highlight {
+        position: relative;
+        padding: 40px 0;
+        margin: 60px 0;
+    }
+
+    .feature-card-special {
+        background: linear-gradient(135deg, rgba(var(--mud-palette-primary-rgb), 0.1), rgba(var(--mud-palette-secondary-rgb), 0.1));
+        border: 2px solid transparent;
+        background-clip: padding-box;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .feature-card-special::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, var(--mud-palette-primary), var(--mud-palette-secondary), var(--mud-palette-tertiary), var(--mud-palette-primary));
+            background-size: 400% 400%;
+            z-index: -1;
+            animation: borderGlow 8s ease infinite;
+            border-radius: inherit;
+        }
+
+    @@keyframes borderGlow {
+        0%, 100% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+    }
+
+    .section-header {
+        margin: 60px 0 30px 0;
+        text-align: center;
+    }
+
+    .section-divider {
+        height: 4px;
+        width: 100px;
+        background: linear-gradient(90deg, var(--mud-palette-primary), var(--mud-palette-secondary));
+        margin: 20px auto;
+        border-radius: 2px;
+    }
+
+    .index-card {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        background: rgba(var(--mud-palette-surface-rgb), 0.8);
+        backdrop-filter: blur(8px);
+    }
+
+        .index-card:hover {
+            transform: translateY(-4px) scale(1.02);
+        }
+
+    .filter-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 40px 0;
+        padding: 20px;
+        background: rgba(var(--mud-palette-surface-rgb), 0.4);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+    }
+
+    .pulse-animation {
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    @@keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.6;
+        }
+    }
+
+
+    .mud-ex-object-edit-group-flat .mud-expand-panel-text:after {
+        background-color: var( @Color.Secondary.CssVarName() );
+    }
+
+    .hero-badges {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 30px;
+    }
+
+    .badge-item {
+        background: rgba(var(--mud-palette-primary-rgb), 0.1);
+        border: 1px solid rgba(var(--mud-palette-primary-rgb), 0.3);
+        padding: 8px 16px;
+        display: flex;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+        .badge-item:hover {
+            background: rgba(var(--mud-palette-primary-rgb), 0.2);
+            transform: scale(1.05);
+        }
 </style>
 
+<div class="hero-section hero-gradient">
+    <MudContainer MaxWidth="MaxWidth.Large">
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudExGradientText Animate="true"
+                               Style="margin-bottom: 20px;" Align="Align.Center" Typo="Typo.h1">
+                @($"{MudExResource.PackageName} v{MudExResource.MudExVersion().Major}.{MudExResource.MudExVersion().Minor}")
+            </MudExGradientText>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+            <MudExGradientText Animate="true"
+                               Style="margin-bottom: 20px;" Align="Align.Center" Typo="Typo.h3">
+                @($"{MudExResource.PackageName} v{MudExResource.MudExVersion().Major}.{MudExResource.MudExVersion().Minor}")
+            </MudExGradientText>
+        </MudHidden>
 
-<MudHidden Breakpoint="Breakpoint.SmAndDown">
-    <MudExGradientText Animate="false"
-    Style="margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h2">MudBlazor.Extensions</MudExGradientText>
-</MudHidden>
-<MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
-    <MudExGradientText Animate="false"
-    Style="margin-bottom: 30px;" Align="Align.Center" Typo="Typo.h4">MudBlazor.Extensions</MudExGradientText>
-</MudHidden>
-<Support />
+        <MudText Align="Align.Center" Typo="Typo.h5" Style="margin-bottom: 20px; opacity: 0.9;">
+            @L["Supercharge your MudBlazor applications with powerful extensions"]
+        </MudText>
 
-<MudExCardList HoverMode="@(MudExCardHoverMode.Zoom | MudExCardHoverMode.CardEffect3d | MudExCardHoverMode.LightBulb)" HoverColor="Color.Warning" TData="object">
-    <MudCard Class="index-card" @onclick="@(() => { NavigationManager.NavigateTo("/structured-data-edit"); })">
-        <MudCardHeader >
-            <CardHeaderContent>
-                <div style="display: flex;">
-                    <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@Icons.Custom.FileFormats.FileCode"/>
-                    <MudText Class="ml-5" Typo="Typo.h6">MudExStructuredDataEditor</MudText>
-                </div>
-            </CardHeaderContent>
-        </MudCardHeader>
-        <MudCardContent >
-            <MudText>@L["You don't need an extra JsonEditor anymore"]</MudText>
-            <MudText Typo="Typo.body2">@L["Powerful UI Editor for json, xml or yaml content now also as viewer for MudExFileDisplay"]</MudText>
-                                          </MudCardContent>
-    </MudCard>
+        <div class="hero-badges">
+            <div class="badge-item" @onclick="ScrollToComponents">
+                <MudIcon Class="mr-3" Icon="@Icons.Material.Filled.Extension" Size="Size.Small" /> @L["More than {0} Components", _components.Count]
+            </div>
+            <div class="badge-item" @onclick="ScrollToDemos">
+                <MudIcon Class="mr-3" Icon="@Icons.Material.Filled.Science" Size="Size.Small" /> @L["{0} Demos", _demos.Count]
+            </div>
+            <div class="badge-item" @onclick="@(() => NavigationManager.NavigateTo("/dialogs"))">
+                <MudIcon Class="mr-3" Icon="@Icons.Material.Filled.Layers" Size="Size.Small" /> @L["Dialog Extensions"]
+            </div>
+            <div class="badge-item" @onclick="@(() => NavigationManager.NavigateTo("/theme-edit"))">
+                <MudIcon Class="mr-3" Icon="@Icons.Material.Filled.Palette" Size="Size.Small" /> @L["Theme Editor"]
+            </div>
+        </div>
 
-    <MudCard Class="index-card" @onclick="@(() => { NavigationManager.NavigateTo(AppConstants.Urls.GetTryOnline(MainLayout.Instance.IsDark)); })">
-        <MudCardHeader >
-            <CardHeaderContent>
-                <div style="display: flex;">
-                    <MudIcon Color="Color.Primary" Size="Size.Large" Icon="@Icons.Custom.Brands.MicrosoftVisualStudio"/>
-                    <MudText Class="ml-5" Typo="Typo.h6">@L["Try MudEx online CodeEditor"]</MudText>
-                                                            </div>
-            </CardHeaderContent>
-        </MudCardHeader>
-        <MudCardContent >
-            <MudText>@L["Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor"]</MudText>
-                        <MudText Typo="Typo.body2">@L["Test and use components live without required environment"]</MudText>
-            </MudCardContent>
-    </MudCard>
-
-    <MudCard Class="index-card" @onclick="@(() => { NavigationManager.NavigateTo("/theme-edit"); })">
-        <MudCardHeader >
-            <CardHeaderContent>
-                <div style="display: flex;">
-                    @((MarkupString)MudExSvg.ApplicationImage(ClientTheme.CurrentTheme, new MudExDimension(70, 50)))
-                    <MudText Class="ml-5" Typo="Typo.h6">@L["Check out the MudExThemeEdit Component"]</MudText>
-                </div>
-            </CardHeaderContent>
-        </MudCardHeader>
-        <MudCardContent >
-            <MudText>@L["Change or edit your theme"]</MudText>
-            <MudText Typo="Typo.body2">@L["Test the powerful MudExThemeEdit and change theme colors fonts and more"]</MudText>
-                                          </MudCardContent>
-    </MudCard>
-</MudExCardList>
-
-<MudExCardList HoverMode="@(MudExCardHoverMode.Zoom | MudExCardHoverMode.LightBulb)" HoverColor="Color.Warning" TData="object">
-    <MudCard Class="index-card" 
-    Style="@MudExStyleBuilder.Default.WithAnimatedConicGradientBorderedBackground(2, [MudExColor.Surface], ["#3300aa", "#0066aa", MudExColor.Info, MudExColor.Success, "purple"], TimeSpan.FromSeconds(5)).WithMaxWidth("none").WithWidth("100%").WithMarginLeft("10%").WithMarginRight("10%").Style" 
-    @onclick="@(() => { NavigationManager.NavigateTo("/dialog-snap"); })">
-        <MudCardHeader>
-            <CardHeaderContent>
-                <div style="display: flex;">
-                    <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@MaterialDesignIcons.Normal.DockWindow" />
-                    <MudText Class="ml-5" Typo="Typo.h6">@L["Dialog Drag & Drop"]</MudText>
-                                                            </div>
-            </CardHeaderContent>
-        </MudCardHeader>
-        <MudCardContent>
-            <MudText>@L["NEW Dialog Drag Drop Mode"]</MudText>
-                        <MudText Typo="Typo.body2">@L["New dialog Feature - SnapDrag"]</MudText>
-                                                      </MudCardContent>
-    </MudCard>
-
-</MudExCardList>
-
-
-<div class="mt-5 mb-5" style="display: flex; justify-content: center; align-items: center;">
-    <MudToggleGroup T="Type" SelectionMode="SelectionMode.MultiSelection" @bind-Values="_selectedAttributeTypes">
-        <MudToggleItem Value="@(typeof(DemoAttribute))">
-            <MudIcon Icon="@Icons.Material.Filled.Circle" Size="Size.Small" Color="Color.Default" />
-            <MudText Class="ml-3"> @L["Other"] </MudText>
-                                      </MudToggleItem>
-        <MudToggleItem Value="@(typeof(DemoNewAttribute))">
-            <MudIcon Icon="@Icons.Material.Filled.Circle" Size="Size.Small" Color="Color.Warning" />
-            <MudText Class="ml-3"> @L["New"] </MudText>
-                                      </MudToggleItem>
-        <MudToggleItem Value="@(typeof(DemoUpdatedAttribute))">
-            <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Circle" Color="Color.Info" />
-            <MudText Class="ml-3"> @L["Updated"] </MudText>
-                                      </MudToggleItem>
-    </MudToggleGroup>
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number">@_components.Count</div>
+                <MudText Typo="Typo.h6">@L["Components"]</MudText>
+                <MudText Typo="Typo.body2" Style="opacity: 0.7;">@L["Ready to use"]</MudText>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">@_demos.Count</div>
+                <MudText Typo="Typo.h6">@L["Demos"]</MudText>
+                <MudText Typo="Typo.body2" Style="opacity: 0.7;">@L["Live examples"]</MudText>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">∞</div>
+                <MudText Typo="Typo.h6">@L["Possibilities"]</MudText>
+                <MudText Typo="Typo.body2" Style="opacity: 0.7;">@L["Build amazing UIs"]</MudText>
+            </div>
+        </div>
+    </MudContainer>
 </div>
 
-<MudExpansionPanels MultiExpansion="true">
-    <MudExpansionPanel Expanded="true" Class="@($"mt-3 {("mud-ex-object-edit-group-flat")}")" Text="@L["DEMOS"]">
-        <MudExCardList TData="object">
+<Support />
 
-            @foreach (var nav in DemoAttribute.AllEntries(true).Where(n => !_selectedAttributeTypes.Any() || _selectedAttributeTypes.Contains(n?.Demo?.GetType())))
-            {
-                <MudCard Class="index-card" @onclick="@(() => { Open(nav); })">
-                    <MudCardHeader >
-                        <CardHeaderContent>
-                            @RenderNavEntry(nav,L)
-                        </CardHeaderContent>
-                        <CardHeaderActions>
-                            <MudIcon Color="@nav.GetIconColor()" Icon="@nav.Icon" />
-                        </CardHeaderActions>
-                    </MudCardHeader>
-                    <MudCardContent >
-                        <MudText>@L[nav.Text]</MudText>
-                        @if (!string.IsNullOrEmpty(nav.Documentation))
-                        {
-                            <MudText Typo="Typo.body2">@L[nav.Documentation]</MudText>
-                        }
-                    </MudCardContent>
-                </MudCard>
-            }
-        </MudExCardList>
-    </MudExpansionPanel>
+<MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Style="margin-top: 40px;">
+    <div class="section-header">
+        <MudText Typo="Typo.h3">@L["Featured Components"]</MudText>
+        <div class="section-divider"></div>
+        <MudText Typo="Typo.body1" Style="opacity: 0.8;">@L["Explore our most powerful tools"]</MudText>
+    </div>
+    
+    <!-- Features -->
+    <MudExCardList HoverMode="@(MudExCardHoverMode.Zoom | MudExCardHoverMode.CardEffect3d | MudExCardHoverMode.LightBulb)"
+                   HoverColor="Color.Warning" TData="object">
+        <MudCard Class="index-card" Elevation="3" @onclick="@(() => { NavigationManager.NavigateTo("/structured-data-edit"); })">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <div style="display: flex; align-items: center;">
+                        <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@Icons.Custom.FileFormats.FileCode" />
+                        <MudText Class="ml-5" Typo="Typo.h6">MudExStructuredDataEditor</MudText>
+                    </div>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.body1" Style="font-weight: 500;">@L["You don't need an extra JsonEditor anymore"]</MudText>
+                <MudText Typo="Typo.body2" Style="margin-top: 8px;">@L["Powerful UI Editor for json, xml or yaml content now also as viewer for MudExFileDisplay"]</MudText>
+            </MudCardContent>
+        </MudCard>
 
-    <MudExpansionPanel Expanded="true" Class="@($"mt-3 {("mud-ex-object-edit-group-flat")}")" Text="@L["ALL COMPONENTS"]">
-        <MudExCardList HoverColor="Color.Info" TData="object">
+        <MudCard Class="index-card" Elevation="3" @onclick="@(() => { NavigationManager.NavigateTo(AppConstants.Urls.GetTryOnline(MainLayout.Instance.IsDark)); })">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <div style="display: flex; align-items: center;">
+                        <MudIcon Color="Color.Primary" Size="Size.Large" Icon="@Icons.Custom.Brands.MicrosoftVisualStudio" />
+                        <MudText Class="ml-5" Typo="Typo.h6">@L["Try MudEx online CodeEditor"]</MudText>
+                    </div>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.body1" Style="font-weight: 500;">@L["Play around with MudBlazor and MudBlazor.Extensions in an online Code Editor"]</MudText>
+                <MudText Typo="Typo.body2" Style="margin-top: 8px;">@L["Test and use components live without required environment"]</MudText>
+            </MudCardContent>
+        </MudCard>
 
-            @foreach (var nav in Navigations.ReflectMudExComponents())
-            {
-                <MudCard Class="index-card" @onclick="@(() => { Open(nav); })">
-                    <MudCardHeader >
-                        <CardHeaderContent>
-                            @RenderNavEntry(nav,L)
-                        </CardHeaderContent>
-                        <CardHeaderActions>
-                            @*<MudIconButton Icon="@nav.Icon" Color="Color.Default" />*@
-                            <MudIcon Color="@nav.GetIconColor()" Icon="@nav.Icon" />
-                        </CardHeaderActions>
-                    </MudCardHeader>
-                    <MudCardContent >
-                        <MudText>@nav.Text</MudText>
-                        @if (!string.IsNullOrEmpty(nav.Documentation))
-                        {
-                            <MudText Typo="Typo.body2">@L[nav.Documentation]</MudText>
-                        }
-                    </MudCardContent>
-                </MudCard>
-            }
-        </MudExCardList>
-    </MudExpansionPanel>
+        <MudCard Class="index-card" Elevation="3" @onclick="@(() => { NavigationManager.NavigateTo("/theme-edit"); })">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <div style="display: flex; align-items: center;">
+                        @((MarkupString)MudExSvg.ApplicationImage(ClientTheme.CurrentTheme, new MudExDimension(70, 50)))
+                        <MudText Class="ml-5" Typo="Typo.h6">@L["Check out the MudExThemeEdit Component"]</MudText>
+                    </div>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.body1" Style="font-weight: 500;">@L["Change or edit your theme"]</MudText>
+                <MudText Typo="Typo.body2" Style="margin-top: 8px;">@L["Test the powerful MudExThemeEdit and change theme colors fonts and more"]</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudExCardList>
 
-</MudExpansionPanels>
+    <!-- Feature 2 -->
+    <MudExCardList HoverMode="@(MudExCardHoverMode.Zoom | MudExCardHoverMode.LightBulb)"
+                   HoverColor="MudExColor.Transparent" TData="object">
+        <MudCard Class="index-card feature-card-special" Elevation="6"
+                 Style="@MudExStyleBuilder.Default.WithAnimatedConicGradientBorderedBackground(2, ["var(--mud-palette-background)"], ["#3300aa", "#0066aa", MudExColor.Info, MudExColor.Success, "purple"], TimeSpan.FromSeconds(8)).Style"
+                 @onclick="@(() => { NavigationManager.NavigateTo("/dialog-snap"); })">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <div style="display: flex; align-items: center;">
+                        <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@MaterialDesignIcons.Normal.DockWindow" />
+                        <div class="ml-5">
+                            <MudText Typo="Typo.h5">@L["Dialog Drag & Drop"]</MudText>
+                            <MudChip T="string" Size="Size.Small" Color="Color.Warning" Class="pulse-animation">@L["NEW"]</MudChip>
+                        </div>
+                    </div>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.body1" Style="font-weight: 500;">@L["NEW Dialog Drag Drop Mode"]</MudText>
+                <MudText Typo="Typo.body2" Style="margin-top: 8px;">@L["New dialog Feature - SnapDrag"]</MudText>
+            </MudCardContent>
+        </MudCard>
+        
+        <MudCard Class="index-card feature-card-special" Elevation="6"
+                 Style="@MudExStyleBuilder.Default.WithAnimatedConicGradientBorderedBackground(2, ["var(--mud-palette-background)"], ["#3300aa", "#0066aa", MudExColor.Secondary, MudExColor.Primary, "purple"], TimeSpan.FromSeconds(5)).Style"
+                 @onclick="@(() => { NavigationManager.NavigateTo("/dock-layout"); })">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <div style="display: flex; align-items: center;">
+                        <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@MaterialDesignIcons.Normal.DockWindow" />
+                        <div class="ml-5">
+                            <MudText Typo="Typo.h5">@L["Dock Control"]</MudText>
+                            <MudChip T="string" Size="Size.Small" Color="Color.Warning" Class="pulse-animation">@L["NEW"]</MudChip>
+                        </div>
+                    </div>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.body1" Style="font-weight: 500;">@L["Introducing MudExDockControl"]</MudText>
+                <MudText Typo="Typo.body2" Style="margin-top: 8px;">
+                    @L["Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly."]
+                </MudText>
+            </MudCardContent>
+        </MudCard>
 
-@code
-{
+        <MudCard Class="index-card feature-card-special" Elevation="6"
+                 Style="@MudExStyleBuilder.Default.WithAnimatedConicGradientBorderedBackground(2, ["var(--mud-palette-background)"], ["#3300aa", "#0066aa", MudExColor.Tertiary, MudExColor.Info, "purple"], TimeSpan.FromSeconds(2)).Style"
+                 @onclick="@(() => { NavigationManager.NavigateTo("/mud-ex-grid-enhanced"); })">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <div style="display: flex; align-items: center;">
+                        <MudIcon Color="Color.Secondary" Size="Size.Large" Icon="@MaterialDesignIcons.Normal.GridLarge" />
+                        <div class="ml-5">
+                            <MudText Typo="Typo.h5">@L["MudExGrid Layout"]</MudText>
+                            <MudChip T="string" Size="Size.Small" Color="Color.Warning" Class="pulse-animation">@L["NEW"]</MudChip>
+                        </div>
+                    </div>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.body1" Style="font-weight: 500;">@L["MudExGrid — Now with Layout Editing"]</MudText>
+                <MudText Typo="Typo.body2" Style="margin-top: 8px;">
+                    @L["Move and resize grid items directly with drag & drop — design your layout dynamically at runtime."]
+                </MudText>
+            </MudCardContent>
+        </MudCard>
+
+
+    </MudExCardList>
+    
+    <!-- Filter -->
+    <MudExVirtualItem IntersectingStyle="@MudExStyleBuilder.Default.WithAnimation(AnimationType.Scale, TimeSpan.FromMilliseconds(800)).Style">
+        <div class="mb-3 mt-5" style="">
+            <MudToggleGroup Class="m-5" T="Type" SelectionMode="SelectionMode.MultiSelection" @bind-Values="_selectedAttributeTypes">
+                <MudToggleItem Value="@(typeof(DemoAttribute))">
+                    <MudIcon Icon="@Icons.Material.Filled.Circle" Size="Size.Small" Color="Color.Default" />
+                    <MudText Class="ml-2">@L["Other"]</MudText>
+                </MudToggleItem>
+                <MudToggleItem Value="@(typeof(DemoNewAttribute))">
+                    <MudIcon Icon="@Icons.Material.Filled.Circle" Size="Size.Small" Color="Color.Warning" />
+                    <MudText Class="ml-2">@L["New"]</MudText>
+                </MudToggleItem>
+                <MudToggleItem Value="@(typeof(DemoUpdatedAttribute))">
+                    <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Circle" Color="Color.Info" />
+                    <MudText Class="ml-2">@L["Updated"]</MudText>
+                </MudToggleItem>
+            </MudToggleGroup>
+        </div>
+    </MudExVirtualItem>
+    
+    <!-- Demos -->
+    <MudExpansionPanels Style="background: transparent" MultiExpansion="true">
+        <MudExpansionPanel Style="background: transparent" Expanded="true" Class="@($"mt-3 mud-ex-object-edit-group-flat scroll-fade-in")" Text="@L["DEMOS"]" id="demos-section">
+            <MudExCardList TData="object">
+                @foreach (var nav in _demos.Where(n => !_selectedAttributeTypes.Any() || _selectedAttributeTypes.Contains(n?.Demo?.GetType())))
+                {
+                    <MudExVirtualItem>
+                        <MudCard Style="@MudExStyleBuilder.Default.WithAnimation(AnimationType.Back, TimeSpan.FromMilliseconds(700)).Style" Class="index-card" Elevation="2" @onclick="@(() => { Open(nav); })">
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    @RenderNavEntry(nav, L)
+                                </CardHeaderContent>
+                                <CardHeaderActions>
+                                    <MudIcon Color="@nav.GetIconColor()" Icon="@nav.Icon" />
+                                </CardHeaderActions>
+                            </MudCardHeader>
+                            <MudCardContent>
+                                <MudText>@L[nav.Text]</MudText>
+                                @if (!string.IsNullOrEmpty(nav.Documentation))
+                                {
+                                    <MudText Typo="Typo.body2" Style="margin-top: 8px; opacity: 0.8;">@L[nav.Documentation]</MudText>
+                                }
+                            </MudCardContent>
+                        </MudCard>
+                    </MudExVirtualItem>
+                }
+            </MudExCardList>
+        </MudExpansionPanel>
+        
+        <!-- Components-->
+        <MudExpansionPanel Style="background: transparent" Expanded="true" Class="@($"mt-3 mud-ex-object-edit-group-flat scroll-fade-in")" Text="@L["ALL COMPONENTS"]" id="components-section">
+            <MudExCardList HoverColor="Color.Info" TData="object">
+                @foreach (var nav in _components)
+                {
+                    <MudExVirtualItem>
+                        <MudCard Style="@MudExStyleBuilder.Default.WithAnimation(AnimationType.Fade, TimeSpan.FromMilliseconds(700)).Style" Class="index-card" Elevation="2" @onclick="@(() => { Open(nav); })">
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    @RenderNavEntry(nav, L)
+                                </CardHeaderContent>
+                                <CardHeaderActions>
+                                    <MudIcon Color="@nav.GetIconColor()" Icon="@nav.Icon" />
+                                </CardHeaderActions>
+                            </MudCardHeader>
+                            <MudCardContent>
+                                <MudText>@nav.Text</MudText>
+                                @if (!string.IsNullOrEmpty(nav.Documentation))
+                                {
+                                    <MudText Typo="Typo.body2" Style="margin-top: 8px; opacity: 0.8;">@L[nav.Documentation]</MudText>
+                                }
+                            </MudCardContent>
+                        </MudCard>
+                    </MudExVirtualItem>
+                }
+            </MudExCardList>
+        </MudExpansionPanel>
+    </MudExpansionPanels>
+</MudContainer>
+
+<script>
+    window.scrollToElement = function(elementId) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+</script>
+
+@code {
+
+    private readonly HashSet<NavigationEntry> _demos = DemoAttribute.AllEntries(true);
+    private readonly HashSet<NavigationEntry> _components = Navigations.ReflectMudExComponents();
+
+    private async Task ScrollToSection(string sectionId)
+    {
+        await JsRuntime.InvokeVoidAsync("scrollToElement", sectionId);
+    }
+
+    private async Task ScrollToDemos()
+    {
+        await ScrollToSection("demos-section");
+    }
+
+    private async Task ScrollToComponents()
+    {
+        await ScrollToSection("components-section");
+    }
 
     internal static RenderFragment RenderNavEntry(NavigationEntry nav, IStringLocalizer<BasePage> l)
     {
         return @<div>
-                   <MudAlert Icon="@nav?.Demo?.GetIconStatusIcon()" Style="margin-top: -15px;padding: 0;background: transparent;" Variant="Variant.Text" Severity="@(nav?.Demo?.Severity ?? Severity.Normal)">
-                       <MudText Typo="Typo.subtitle1">@l[($"{(nav.Demo?.RelatedComponents?.FirstOrDefault()?.Name?.Split('`')?.FirstOrDefault() ?? nav.Text)}")]</MudText>
-                   </MudAlert>
-                   @if (nav?.Demo is DemoNewAttribute or DemoUpdatedAttribute)
-                   {
-                       <MudChip T="NavigationEntry" Style="float: right; margin-right: -27px;" Size="Size.Small" Variant="Variant.Text"
-                                Color="@nav.Demo.IconColor">
-                           @l[(nav?.Demo.GetType().Name.Replace("Demo", "").Replace("Attribute", ""))]
-                       </MudChip>
-                   }
-        </div>;
+            <MudAlert Icon="@nav?.Demo?.GetIconStatusIcon()"
+                      Style="margin-top: -15px;padding: 0;background: transparent;"
+                      Variant="Variant.Text"
+                      Severity="@(nav?.Demo?.Severity ?? Severity.Normal)">
+                <MudText Typo="Typo.subtitle1">
+                    @l[($"{(nav.Demo?.RelatedComponents?.FirstOrDefault()?.Name?.Split('`')?.FirstOrDefault() ?? nav.Text)}")]
+                </MudText>
+            </MudAlert>
+        @if (nav?.Demo is DemoNewAttribute or DemoUpdatedAttribute)
+        {
+                <MudChip T="NavigationEntry"
+                         Style="float: right; margin-right: -27px;"
+                         Size="Size.Small"
+                         Variant="Variant.Text"
+                         Color="@nav.Demo.IconColor">
+                    @l[(nav?.Demo.GetType().Name.Replace("Demo", "").Replace("Attribute", ""))]
+                </MudChip>
+        }
+        </div>
+    ;
     }
+
+
     private IEnumerable<Type> _selectedAttributeTypes = Type.EmptyTypes;
+
     private void Open(NavigationEntry nav)
     {
         NavigationManager.NavigateTo(nav.Href);
     }
+    
 }

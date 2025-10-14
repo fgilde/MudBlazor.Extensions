@@ -1,0 +1,71 @@
+﻿@using System.Reflection
+@using Microsoft.Extensions.Localization
+@using MudBlazor.Extensions.Api
+@using MudBlazor.Extensions.Core
+@using MudBlazor.Extensions.Helper
+@using MudBlazor.Extensions.Options
+@typeparam T;
+@inject IStringLocalizer<MudExPropertyInfoContainer<T>> L
+
+<div style="display: flex; width: 100%;">
+    <div style="flex: 1;">
+        @ChildContent
+    </div>
+
+    <div style="text-align: right; align-self: flex-start;">
+        <MudIconButton Style=" transform: scale(0.75) translateX(-25%); margin-left: 25%;" Color="Color.Info" OnClick="@(ShowInfoAsync)" Title="@($"{L["Show info for"]} {Property.Name}")" Icon="@Icons.Material.Outlined.Info" Size="Size.Small"> </MudIconButton>
+    </div>
+
+</div>
+
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public PropertyInfo Property { get; set; }
+
+    [Inject] 
+    private IDialogService DialogService { get; set; }
+
+    private Type? _type;
+    private Type Type => _type ??= typeof(T).IsGenericType ? typeof(T).GetGenericTypeDefinition() : typeof(T);
+
+
+    private async Task ShowInfoAsync()
+    {
+        var options = new DialogOptionsEx()
+            {
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true,
+                Animation = AnimationType.Slide,
+                Resizeable = true,
+                DragMode = MudDialogDragMode.Simple,
+                CloseButton = true,
+                DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass)
+            };
+
+        await DialogService.ShowComponentInDialogAsync<MudExApiView>(L["Info"], $"{ApiMemberInfo.GetGenericFriendlyTypeName(Type)} - {Property.Name}",
+            api =>
+            {
+                //api.Search = Property.Name;
+                api.ShowHeader = false;
+                api.ShowInheritance = false;
+                api.ShowTools = false;
+                api.ShowMethods = false;
+                api.ShowInherited = true;
+                api.Compact = true;
+                api.ShowOnly = new[] { Property.Name };
+                api.Type = Type;
+            },
+            dialog =>
+            {
+                dialog.Icon = Icons.Material.Filled.Info;
+                dialog.Buttons = MudExDialogResultAction.Ok();
+            },
+            options);
+    }
+
+}

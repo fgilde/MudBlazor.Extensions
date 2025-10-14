@@ -4311,10 +4311,37 @@
   fill: currentColor;
 }
 
+/* =========================
+   Grid Overlay & Placeholder
+   ========================= */
+.mud-ex-grid-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.mud-ex-grid-placeholder {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.25;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.14) 0%, rgba(0, 0, 0, 0.08) 60%, rgba(0, 0, 0, 0) 70%), var(--mud-palette-primary);
+  mix-blend-mode: multiply;
+  border: 2px dashed rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+  transition: transform 0.1s ease, width 0.1s ease, height 0.1s ease, opacity 0.1s ease;
+}
+
+/* ======
+   Grid
+   ====== */
 .mud-ex-grid {
   display: grid;
   box-sizing: border-box;
   width: 100%;
+  position: relative;
 }
 .mud-ex-grid.mud-ex-grid-height-full {
   min-height: 100vh;
@@ -4389,9 +4416,30 @@
   grid-template-rows: repeat(12, 8.3333333333%);
 }
 
+/* =========================
+   Dragging/Clone States
+   ========================= */
+.mud-ex-grid-section.mud-ex-grid-dragging {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.mud-ex-grid-clone {
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.25));
+  opacity: 0.95;
+  transform-origin: center center;
+}
+
+/* =========================
+   Grid Section + Handles
+   ========================= */
 .mud-ex-grid-section {
   display: inline-grid;
-  overflow: auto;
+  position: relative;
+  overflow: visible;
+  transition: box-shadow 0.2s ease;
+}
+.mud-ex-grid-section.mud-ex-grid-dragging, .mud-ex-grid-section.mud-ex-grid-resizing {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 }
 .mud-ex-grid-section.mud-ex-grid-section-col-start-1 {
   grid-column-start: 1;
@@ -4537,7 +4585,69 @@
 .mud-ex-grid-section.mud-ex-grid-section-row-end-12 {
   grid-row-end: 12;
 }
+.mud-ex-grid-section .mud-ex-grid-section-handle {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  z-index: 5;
+  border-radius: 4px;
+  background: var(--mud-palette-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease, transform 0.12s ease, box-shadow 0.12s ease;
+  user-select: none;
+  touch-action: none;
+}
+.mud-ex-grid-section .mud-ex-grid-section-handle::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+}
+.mud-ex-grid-section:hover .mud-ex-grid-section-handle, .mud-ex-grid-section:focus-within .mud-ex-grid-section-handle, .mud-ex-grid-section.mud-ex-grid-resizing .mud-ex-grid-section-handle {
+  opacity: 0.95;
+  pointer-events: auto;
+}
+.mud-ex-grid-section .mud-ex-grid-section-handle:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28), inset 0 0 0 1px rgba(255, 255, 255, 0.85);
+}
+.mud-ex-grid-section .mud-ex-grid-handle-e {
+  right: 0;
+  top: 50%;
+  transform: translate(50%, -50%);
+  cursor: ew-resize;
+}
+.mud-ex-grid-section .mud-ex-grid-handle-s {
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 50%);
+  cursor: ns-resize;
+}
+.mud-ex-grid-section .mud-ex-grid-handle-se {
+  right: 0;
+  bottom: 0;
+  transform: translate(50%, 50%);
+  cursor: nwse-resize;
+}
 
+/* =========================
+   Optional: Scrollbarer Inhalt
+   =========================
+*/
+.mud-ex-grid-section > .content {
+  overflow: auto;
+  height: 100%;
+}
+
+/* =========================
+   Optional: globaler Cursor beim Resizing   
+   ========================= */
+/*
+.mud-ex-grid-resizing,
+.mud-ex-grid-resizing * {
+  cursor: nwse-resize !important; 
+}
+*/
 .mud-ex-list {
   margin: 0;
   padding: 0;
@@ -5669,6 +5779,54 @@
   white-space: nowrap;
 }
 
+.dockview-theme-mud-ex {
+  --dv-paneview-active-outline-color: var(--mud-palette-primary);
+  --dv-active-sash-color: var(--mud-palette-primary);
+  --dv-tabs-and-actions-container-font-size: var(--mud-typography-button-size);
+  --dv-tabs-and-actions-container-height: calc(var(--mud-appbar-height, 64px) * 0.55);
+  --dv-tabs-and-actions-container-background-color: var(--mud-palette-background);
+  --dv-tab-font-size: var(--mud-typography-button-size);
+  --dv-tab-margin: 0;
+  --dv-tab-divider-color: var(--mud-palette-lines-default);
+  --dv-activegroup-visiblepanel-tab-background-color: var(--mud-palette-surface);
+  --dv-activegroup-hiddenpanel-tab-background-color: var(--mud-palette-background);
+  --dv-inactivegroup-visiblepanel-tab-background-color: var(--mud-palette-surface);
+  --dv-inactivegroup-hiddenpanel-tab-background-color: var(--mud-palette-background);
+  --dv-activegroup-visiblepanel-tab-color: var(--mud-palette-text-primary);
+  --dv-activegroup-hiddenpanel-tab-color: var(--mud-palette-text-secondary);
+  --dv-inactivegroup-visiblepanel-tab-color: var(--mud-palette-text-secondary);
+  --dv-inactivegroup-hiddenpanel-tab-color: var(--mud-palette-text-secondary);
+  --dv-group-view-background-color: var(--mud-palette-surface);
+  --dv-drag-over-background-color: var(--mud-palette-overlay-dark);
+  --dv-drag-over-border-color: var(--mud-palette-primary);
+  --dv-tabs-container-scrollbar-color: var(--mud-palette-lines-default);
+  --dv-icon-hover-background-color: color-mix(in srgb, var(--mud-palette-action-default), transparent 70%);
+  --dv-sash-color: var(--mud-palette-divider);
+  --dv-separator-border: var(--mud-palette-lines-default);
+  --dv-paneview-header-border-color: var(--mud-palette-divider);
+  --dv-border-radius: var(--mud-default-borderradius);
+  --dv-floating-box-shadow: 0 8px 24px rgba(0,0,0,.24);
+  --dv-active-sash-transition-duration: .1s;
+  --dv-active-sash-transition-delay: .5s;
+  --dv-overlay-z-index: var(--mud-zindex-popover, 1200);
+}
+
+.dv-hide-tabs .dv-tabs-and-actions-container {
+  display: none !important;
+}
+
+.dv-hide-tabs .dv-content-container {
+  height: 100% !important;
+}
+
+.dv-hide-tabs .dv-groupview {
+  --dv-tab-height: 0px;
+}
+
+.dv-hide-close {
+  background: yellow !important;
+}
+
 .mud-ex-blur {
   backdrop-filter: blur(10px);
 }
@@ -5726,12 +5884,12 @@
   animation: 44s -27s move infinite ease-in-out alternate;
 }
 .mud-ex-bg-dot::before {
-  text-shadow: 1.3062993827em 1.2599469547em 7px hsla(311.4813631221, 100%, 50%, 0.9), 1.4533558832em 2.393936712em 7px hsla(267.0993059, 100%, 50%, 0.9), 0.1246255017em 0.7612404418em 7px hsla(94.835190969, 100%, 50%, 0.9), 1.7073992182em 0.4330302561em 7px hsla(156.7728257645, 100%, 50%, 0.9), 0.3825817421em 0.7527176051em 7px hsla(102.1969017744, 100%, 50%, 0.9), 1.3180645289em -0.1169224999em 7px hsla(119.1554804271, 100%, 50%, 0.9), -0.3298361974em 0.3946762398em 7px hsla(303.5148918128, 100%, 50%, 0.9), -0.0831808856em 1.1299707284em 7px hsla(78.4725360883, 100%, 50%, 0.9), 1.1731842264em -0.3337771718em 7px hsla(89.4341932789, 100%, 50%, 0.9), 0.9116012888em 1.4987045266em 7px hsla(30.0024939544, 100%, 50%, 0.9), 0.9507048485em 1.9764727621em 7px hsla(171.2866752598, 100%, 50%, 0.9), 0.8447257915em -0.3980563827em 7px hsla(148.9868436002, 100%, 50%, 0.9), 0.4727303492em 1.5942189213em 7px hsla(210.8922008862, 100%, 50%, 0.9), -0.1144581926em 0.3577103561em 7px hsla(235.1006330313, 100%, 50%, 0.9), 1.3179810493em 1.0930314306em 7px hsla(101.3573454844, 100%, 50%, 0.9), 0.6294530698em 0.3333610661em 7px hsla(20.2807686026, 100%, 50%, 0.9), -0.2749103239em -0.3122467808em 7px hsla(84.5752106557, 100%, 50%, 0.9), 2.0259631812em 1.6902937833em 7px hsla(310.7268631183, 100%, 50%, 0.9), 0.8883764973em 0.8055075788em 7px hsla(57.5724017875, 100%, 50%, 0.9), 1.9190866491em 0.6781504779em 7px hsla(329.9195731475, 100%, 50%, 0.9), 0.5835222561em 0.7124735661em 7px hsla(91.9228425114, 100%, 50%, 0.9), 1.218199744em 1.4156281139em 7px hsla(129.6331971133, 100%, 50%, 0.9), 1.3243392924em -0.1074351422em 7px hsla(291.4283807087, 100%, 50%, 0.9), 1.1641277227em 0.1831845577em 7px hsla(165.447911346, 100%, 50%, 0.9), 1.4396333393em 2.219436724em 7px hsla(113.1170418464, 100%, 50%, 0.9), 0.8438739034em 0.8306068154em 7px hsla(293.4286376845, 100%, 50%, 0.9), 1.0914984293em 1.0294873975em 7px hsla(43.6655591112, 100%, 50%, 0.9), 0.0359006005em 0.3204621515em 7px hsla(201.1699630755, 100%, 50%, 0.9), 1.1434296144em 0.9993914917em 7px hsla(187.5361259881, 100%, 50%, 0.9), 0.5551129439em 1.5671539668em 7px hsla(310.026206503, 100%, 50%, 0.9), 0.7070820486em 1.4811804553em 7px hsla(288.6316972362, 100%, 50%, 0.9), 2.2949424535em 1.0639108365em 7px hsla(357.936226155, 100%, 50%, 0.9), 0.0530505173em -0.3524867783em 7px hsla(105.0845465446, 100%, 50%, 0.9), 0.9869058926em -0.4935944535em 7px hsla(311.5406215727, 100%, 50%, 0.9), 1.6489048298em 1.5993231003em 7px hsla(356.8437899567, 100%, 50%, 0.9), 0.3528441276em 1.6689797808em 7px hsla(195.2995125345, 100%, 50%, 0.9), 2.1557924096em 1.6877115335em 7px hsla(63.0745463727, 100%, 50%, 0.9), 2.2735784578em 1.2871785215em 7px hsla(349.4519898099, 100%, 50%, 0.9), 1.8518619504em 0.0351955109em 7px hsla(254.5197195025, 100%, 50%, 0.9), 1.53161533em 1.0147527208em 7px hsla(224.2190566453, 100%, 50%, 0.9), 0.5011099438em 0.6749393992em 7px hsla(77.8185235384, 100%, 50%, 0.9);
+  text-shadow: 0.8973147429em 0.4033532284em 7px hsla(171.01173582, 100%, 50%, 0.9), 2.0076193383em -0.2302950387em 7px hsla(13.5237748654, 100%, 50%, 0.9), 1.0964438636em -0.1576476294em 7px hsla(118.8661375246, 100%, 50%, 0.9), -0.1910526772em 1.2717645828em 7px hsla(230.0907547502, 100%, 50%, 0.9), 0.1433256897em 0.3754347113em 7px hsla(148.4014356979, 100%, 50%, 0.9), -0.0404277984em 0.2536231489em 7px hsla(123.3854852418, 100%, 50%, 0.9), 2.0508997939em 0.9709895676em 7px hsla(86.5402765326, 100%, 50%, 0.9), 0.7632049934em 0.7851040008em 7px hsla(350.2405785558, 100%, 50%, 0.9), -0.2205190014em 0.2962590491em 7px hsla(332.6209854717, 100%, 50%, 0.9), -0.4056528851em 1.2392342475em 7px hsla(49.5840774538, 100%, 50%, 0.9), 2.2498144026em -0.4646299627em 7px hsla(124.8656999451, 100%, 50%, 0.9), 1.580511182em 2.222413899em 7px hsla(20.7650759823, 100%, 50%, 0.9), 1.8194324274em 1.5812080428em 7px hsla(179.9964828769, 100%, 50%, 0.9), 1.4389561718em 2.4876004805em 7px hsla(266.8320643275, 100%, 50%, 0.9), 0.7823949505em 1.7176473484em 7px hsla(238.1087267594, 100%, 50%, 0.9), 1.3054415786em -0.2304501027em 7px hsla(118.0174056975, 100%, 50%, 0.9), 1.8084855677em 2.036973945em 7px hsla(294.2919646945, 100%, 50%, 0.9), 1.7618016418em 1.8743818479em 7px hsla(211.1084582217, 100%, 50%, 0.9), 0.1901082039em 1.3818307096em 7px hsla(291.6838931673, 100%, 50%, 0.9), 1.0390575854em -0.4652609917em 7px hsla(156.7936534764, 100%, 50%, 0.9), -0.2368962225em 0.6814998806em 7px hsla(134.7771482387, 100%, 50%, 0.9), 1.0661074202em 1.6067304896em 7px hsla(195.4777081404, 100%, 50%, 0.9), 0.5832835651em -0.1185226552em 7px hsla(104.8464866365, 100%, 50%, 0.9), 1.8883271094em 0.9840165375em 7px hsla(228.4936991274, 100%, 50%, 0.9), 1.9044945491em 0.5831129075em 7px hsla(303.8013819538, 100%, 50%, 0.9), 1.3631836547em 0.294965632em 7px hsla(345.3195258562, 100%, 50%, 0.9), 1.9293584131em -0.0185903034em 7px hsla(223.9904368234, 100%, 50%, 0.9), 2.0462208154em 2.0991476566em 7px hsla(255.0709402816, 100%, 50%, 0.9), 0.4624853952em 1.2042603952em 7px hsla(68.0028798376, 100%, 50%, 0.9), -0.1759130733em 0.9317525576em 7px hsla(25.3207162005, 100%, 50%, 0.9), 0.9946320387em -0.0366017977em 7px hsla(126.9937137659, 100%, 50%, 0.9), 1.8988199329em 0.9353780474em 7px hsla(201.5429116522, 100%, 50%, 0.9), 2.4810532489em 1.2421304811em 7px hsla(84.4349243643, 100%, 50%, 0.9), -0.012646733em 1.150412416em 7px hsla(169.9644984787, 100%, 50%, 0.9), -0.2261078758em 1.1862833058em 7px hsla(181.4827340301, 100%, 50%, 0.9), 1.2833871801em 0.0864357359em 7px hsla(97.4691983086, 100%, 50%, 0.9), 1.2474938217em 0.2330755948em 7px hsla(358.5514927038, 100%, 50%, 0.9), 1.5690787225em 0.6340366062em 7px hsla(139.5103040242, 100%, 50%, 0.9), 0.3224862598em 1.5648998914em 7px hsla(149.6080660862, 100%, 50%, 0.9), 2.0556530956em 0.5369516276em 7px hsla(193.7036438766, 100%, 50%, 0.9), -0.3498546373em 0.9294196319em 7px hsla(204.6152498268, 100%, 50%, 0.9);
   animation-duration: 44s;
   animation-delay: -27s;
 }
 .mud-ex-bg-dot::after {
-  text-shadow: 1.0920734112em 0.9148276322em 7px hsla(305.6537310792, 100%, 50%, 0.9), 2.206616501em -0.4670219755em 7px hsla(257.9567667391, 100%, 50%, 0.9), 0.8016033843em -0.2579403638em 7px hsla(258.9852517938, 100%, 50%, 0.9), -0.406546234em 1.8617824777em 7px hsla(52.3864139004, 100%, 50%, 0.9), 1.0089236815em 1.7922756906em 7px hsla(248.4038809673, 100%, 50%, 0.9), -0.0258661425em 1.2012128969em 7px hsla(326.6237633289, 100%, 50%, 0.9), 0.2020342772em -0.0768299112em 7px hsla(122.617605011, 100%, 50%, 0.9), 0.8539612302em 1.4840080337em 7px hsla(197.9039098787, 100%, 50%, 0.9), -0.4319498089em 2.2208812405em 7px hsla(325.5504387133, 100%, 50%, 0.9), 1.0760658521em 0.3888712518em 7px hsla(84.9059462533, 100%, 50%, 0.9), 0.3225538231em 0.4962926572em 7px hsla(150.1305546179, 100%, 50%, 0.9), 0.1309378288em 0.0280691787em 7px hsla(124.3293250771, 100%, 50%, 0.9), 1.6154148903em 1.5316385949em 7px hsla(3.076906118, 100%, 50%, 0.9), 0.3151765767em 1.152382657em 7px hsla(175.4715172679, 100%, 50%, 0.9), 0.8764479822em 1.4960898066em 7px hsla(81.387572825, 100%, 50%, 0.9), 0.9779050094em -0.1241755226em 7px hsla(280.1702327063, 100%, 50%, 0.9), 0.0407965608em -0.4639908382em 7px hsla(334.9158423409, 100%, 50%, 0.9), 0.5692138831em 0.8021541304em 7px hsla(309.2790814908, 100%, 50%, 0.9), 1.754586025em -0.3617260229em 7px hsla(345.5595549699, 100%, 50%, 0.9), 2.3438128413em -0.3675031489em 7px hsla(224.2768936524, 100%, 50%, 0.9), 1.7019359542em 0.5006854935em 7px hsla(233.1637556418, 100%, 50%, 0.9), 1.8483978111em 0.8514163927em 7px hsla(123.2041994114, 100%, 50%, 0.9), -0.4441631585em 0.1319300179em 7px hsla(302.1299417254, 100%, 50%, 0.9), 1.4022516926em -0.0506869589em 7px hsla(211.2465793661, 100%, 50%, 0.9), -0.4636887189em 0.7889634271em 7px hsla(333.5627538448, 100%, 50%, 0.9), -0.3939302427em 0.9316514555em 7px hsla(287.7308070216, 100%, 50%, 0.9), 0.9154159331em 2.1113645134em 7px hsla(321.0718027648, 100%, 50%, 0.9), 2.0723399683em 2.4853130272em 7px hsla(337.5040534482, 100%, 50%, 0.9), 0.5928003769em -0.2345318553em 7px hsla(59.9380751932, 100%, 50%, 0.9), 0.6789776133em 1.3620713291em 7px hsla(3.2169758146, 100%, 50%, 0.9), 2.4126395194em 2.4364588265em 7px hsla(53.2559747618, 100%, 50%, 0.9), 1.3600755659em 2.4096936926em 7px hsla(149.1882012043, 100%, 50%, 0.9), 0.6136760004em 1.0731133341em 7px hsla(308.6426500379, 100%, 50%, 0.9), 1.4175487741em 1.9872387679em 7px hsla(190.1362155007, 100%, 50%, 0.9), 1.7230806109em 0.5037796858em 7px hsla(46.0250666393, 100%, 50%, 0.9), 1.318622445em 0.8001750113em 7px hsla(65.2953897615, 100%, 50%, 0.9), 0.7503411167em -0.3404753377em 7px hsla(353.8909411583, 100%, 50%, 0.9), -0.3389580312em 1.2437242458em 7px hsla(150.4659584157, 100%, 50%, 0.9), 1.4267134737em 1.5541488107em 7px hsla(106.3370670134, 100%, 50%, 0.9), 0.8759662757em 1.8500199185em 7px hsla(96.0675419731, 100%, 50%, 0.9), 0.9462320689em 1.6066032233em 7px hsla(293.4553854217, 100%, 50%, 0.9);
+  text-shadow: -0.3584232464em 0.0499999254em 7px hsla(205.8351955899, 100%, 50%, 0.9), 1.7901882527em 0.613783737em 7px hsla(197.4398544441, 100%, 50%, 0.9), 1.1248383584em -0.4593140999em 7px hsla(359.1154917059, 100%, 50%, 0.9), 2.0309775488em 0.1338310671em 7px hsla(265.684920644, 100%, 50%, 0.9), 2.1552182703em 1.3233870648em 7px hsla(344.7167965324, 100%, 50%, 0.9), 1.4645917841em 0.3389935788em 7px hsla(185.6488348172, 100%, 50%, 0.9), 2.0359846744em 2.1613384776em 7px hsla(325.3501021343, 100%, 50%, 0.9), 0.9316113569em 1.160499477em 7px hsla(177.8132717538, 100%, 50%, 0.9), 0.5221185605em 1.569850183em 7px hsla(113.5918829278, 100%, 50%, 0.9), 0.4849206346em 1.8195860701em 7px hsla(61.6047503776, 100%, 50%, 0.9), 2.3070397401em 0.5219672594em 7px hsla(175.4224247508, 100%, 50%, 0.9), 1.3725555077em -0.1616951232em 7px hsla(13.1190722489, 100%, 50%, 0.9), 1.8218327141em 1.9532063428em 7px hsla(28.0169399349, 100%, 50%, 0.9), 0.1938670784em 1.7306940274em 7px hsla(152.0834789352, 100%, 50%, 0.9), 2.4640259201em 0.6698735232em 7px hsla(3.1699338166, 100%, 50%, 0.9), -0.167587939em -0.3772617294em 7px hsla(47.5133894262, 100%, 50%, 0.9), 0.1079942328em -0.0991209073em 7px hsla(51.7004245113, 100%, 50%, 0.9), 0.041248021em 0.8243548217em 7px hsla(215.7252548754, 100%, 50%, 0.9), 0.9551179097em 1.521425111em 7px hsla(103.0155200085, 100%, 50%, 0.9), 1.6827514313em 2.3514256482em 7px hsla(108.1301031562, 100%, 50%, 0.9), 2.2009778085em -0.1556716971em 7px hsla(198.3898885238, 100%, 50%, 0.9), -0.3426571082em 0.8123937615em 7px hsla(355.8451777035, 100%, 50%, 0.9), 1.4604098356em 1.4514890864em 7px hsla(312.1053969522, 100%, 50%, 0.9), 0.3724768847em 1.7637913246em 7px hsla(279.9326404699, 100%, 50%, 0.9), 1.0306138461em 1.3837782962em 7px hsla(321.5531205184, 100%, 50%, 0.9), 2.4225005174em 1.9927452041em 7px hsla(26.9099913291, 100%, 50%, 0.9), -0.2209920357em 1.4268451787em 7px hsla(209.570738595, 100%, 50%, 0.9), 1.7101862029em 2.2882624033em 7px hsla(41.810587408, 100%, 50%, 0.9), 1.0785670749em 1.6605415838em 7px hsla(301.3630875535, 100%, 50%, 0.9), 0.1914525028em 0.3877699318em 7px hsla(114.2243871422, 100%, 50%, 0.9), 2.4236220916em 2.072139901em 7px hsla(312.2299855213, 100%, 50%, 0.9), 1.4698599615em 0.0937328106em 7px hsla(115.5220034198, 100%, 50%, 0.9), 1.5222914686em 1.0002040249em 7px hsla(258.9875613659, 100%, 50%, 0.9), 0.5565641104em 1.5736931529em 7px hsla(339.1001033033, 100%, 50%, 0.9), 1.9422677407em -0.3572313151em 7px hsla(123.3486791598, 100%, 50%, 0.9), 0.4400388166em 2.1744409405em 7px hsla(14.1090994171, 100%, 50%, 0.9), -0.0438524834em -0.1500063447em 7px hsla(253.9380552769, 100%, 50%, 0.9), 0.5577723799em -0.4407307191em 7px hsla(154.4837464266, 100%, 50%, 0.9), 1.418144868em 0.8393305786em 7px hsla(287.3005964413, 100%, 50%, 0.9), 1.017089694em 0.446643156em 7px hsla(85.5261580736, 100%, 50%, 0.9), -0.3755013702em 0.0921237536em 7px hsla(44.6315784152, 100%, 50%, 0.9);
   animation-duration: 43s;
   animation-delay: -32s;
 }

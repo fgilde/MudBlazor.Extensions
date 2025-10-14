@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Components.Web;
+﻿using BlazorJS.Attributes;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
-using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Core;
+using MudBlazor.Extensions.Helper;
+using Newtonsoft.Json;
 using System.Collections.Concurrent;
+using System.Threading.Channels;
+using static MudBlazor.CategoryTypes;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -13,10 +18,17 @@ namespace MudBlazor.Extensions.Components;
 /// </summary>
 public partial class MudExGrid
 {
+    int _sectionIdCounter = 0;
+    private bool _layoutSuspend;
+    private string _cssClassName = "mud-ex-grid";
     private ConcurrentBag<MudExGridSection> _childSections = new();
+    internal ElementReference GridElement;
+
+    [Inject] private IJSRuntime JS { get; set; }
+    private IJSObjectReference? _module;
 
     private string GetClass() =>
-      new MudExCssBuilder("mud-ex-grid")
+      new MudExCssBuilder(_cssClassName)
           .AddClass($"mud-ex-grid-column-{Column}")
           .AddClass($"mud-ex-grid-row-{Row}")
           .AddClass(Class)
@@ -82,6 +94,146 @@ public partial class MudExGrid
     [Parameter, SafeCategory(CategoryTypes.Item.Behavior)]
     public bool OnContextMenuStopPropagation { get; set; }
 
+
+    /// <summary>
+    ///  Allow items to float up when space frees
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public bool FloatMode { get; set; }
+
+    /// <summary>
+    /// Set to true to run compaction after drop
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public bool CompactOnDrop { get; set; } 
+
+    /// <summary>
+    ///  Set to true to push items when overlapping
+    /// </summary>
+    [ForJs, Parameter, SafeCategory("Moving")]
+    public bool ResolveCollisions { get; set; } = true;
+
+    /// <summary>
+    /// Id of the grid.
+    /// </summary>
+    [Parameter] 
+    public string? Id { get; set; }
+
+
+    [JSInvokable("MudEx_CommitLayout")]
+    public async Task CommitLayout(List<SectionLayoutDto> changes)
+    {
+        if (_layoutSuspend)
+            return;
+        _layoutSuspend = true;
+        foreach (var ch in changes)
+        {
+            var s = _childSections.FirstOrDefault(x => x.Id == ch.Id);
+            if (s is null) continue;
+            s.SetLayout(ch);
+        }
+        if (CompactOnDrop) Compact();
+                
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(200);
+        _layoutSuspend = false;
+
+    }
+    
+    protected override void OnInitialized()
+    {
+        Id ??= $"{_cssClassName}";
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        string js = JsImportHelper.ComponentJs<MudExGrid>();
+        if (firstRender)
+        {
+            _module = await JS.InvokeAsync<IJSObjectReference>("import", js);
+            await _module.InvokeVoidAsync("mudexGrid.bind", GridElement, DotNetObjectReference.Create(this), Row, Column);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+
+    private bool IsOccupied(MudExGridSection ignore, int r, int c)
+    => _childSections.Any(s => s != ignore && r >= s.Row && r < s.Row + s.RowSpan && c >= s.Column && c < s.Column + s.ColSpan);
+
+    /// <summary>
+    /// Returns all containing sections.
+    /// </summary>
+    public MudExGridSection[] GetAllChildSections() => _childSections.ToArray();
+
+    public (int Row, int Column)? GetNextFreeSpace()
+    {
+        for (int i = 1; i <= Row; i++)
+        {
+            for (int j = 1; j <= Column; j++)
+            {
+                if (!IsOccupied(null, i, j))
+                {
+                    return (i, j);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public void Compact()
+    {
+        foreach (var s in _childSections.OrderBy(x => x.Row).ThenBy(x => x.Column))
+        {
+            int r = s.Row;
+            while (r > 1 && CanPlace(s, r - 1, s.Column, s.RowSpan, s.ColSpan)) r--;
+            s.Row = r;
+        }
+    }
+
+    public Task<string> SaveLayoutAsync()
+    {
+        return Task.FromResult(JsonConvert.SerializeObject(GetLayout()));
+    }
+
+    private GridLayoutDto GetLayout()
+    {
+        return new GridLayoutDto(this.Column, this.Row, _childSections.Select(s => s.GetLayout()).ToList());
+    }
+    
+    public void SetLayout(GridLayoutDto layout)
+    {
+        Column = layout.Columns;
+        Row = layout.Rows;
+        foreach (var ch in layout.Sections)
+        {
+            var s = _childSections.FirstOrDefault(x => x.Id == ch.Id);
+            if (s is null) continue;
+            s.SetLayout(ch);
+        }
+    }
+
+    public Task RestoreLayoutAsync(string json)
+    {
+        var layout = JsonConvert.DeserializeObject<GridLayoutDto>(json);
+        if (layout is null) return Task.CompletedTask;
+
+        SetLayout(layout);
+        return Task.CompletedTask;
+    }
+
+    private bool CanPlace(MudExGridSection ignore, int r, int c, int rs, int cs)
+    {
+        if (r < 1 || c < 1 || r + rs - 1 > Row || c + cs - 1 > Column) return false;
+        for (int i = r; i < r + rs; i++)
+            for (int j = c; j < c + cs; j++)
+                if (IsOccupied(ignore, i, j)) return false;
+        return true;
+    }
+    
+
     /// <summary>
     /// Registers a section with the grid.
     /// </summary>
@@ -107,31 +259,15 @@ public partial class MudExGrid
         }
     }
 
-    /// <summary>
-    /// Returns all containing sections.
-    /// </summary>
-    public MudExGridSection[] GetAllChildSections() => _childSections.ToArray();
-
-    public (int Row, int Column)? GetNextFreeSpace()
-    {
-        bool isOccupied(int row, int col) => _childSections.Any(section => row >= section.Row && row < section.Row + section.RowSpan && col >= section.Column && col < section.Column + section.ColSpan);
-
-        for (int i = 1; i <= Row; i++)
-        {
-            for (int j = 1; j <= Column; j++)
-            {
-                if (!isOccupied(i, j))
-                {
-                    return (i, j); 
-                }
-            }
-        }
-
-        return null; 
-    }
+   
 
     /// <summary>
     /// The on click handler
     /// </summary>    
     protected virtual Task OnClickHandler(MouseEventArgs ev) => OnClick.InvokeAsync(ev);
+
+    internal string GetNewSectionId()
+    {
+        return $"{Id}-section-{++_sectionIdCounter}";
+    }
 }

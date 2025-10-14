@@ -12,7 +12,7 @@ namespace MudBlazor.Extensions.Helper
     {
         private static string min => UseMinified ? ".min" : string.Empty;
 
-        internal static bool UseMinified = true;
+        internal static bool UseMinified = false;
 
         internal static string BasePath = "./_content/";
 
@@ -98,11 +98,12 @@ namespace MudBlazor.Extensions.Helper
             return JsPath($"/js/components/{componentName}{min}.js{Cb()}", assemblyDirName);
         }
 
-        internal static string JsPath(string path, string assemblyDirName = null)
+        internal static string JsPath(string path, string assemblyDirName = null, bool absolute = true)
         {
             //var assemblyDirName = Assembly.GetExecutingAssembly().GetName().Name;
             assemblyDirName ??= Assembly.GetCallingAssembly().GetName().Name;
-            return $"{BasePath.EnsureEndsWith("/")}{assemblyDirName}{path.EnsureStartsWith("/")}";
+            var res = $"{BasePath.EnsureEndsWith("/")}{assemblyDirName}{path.EnsureStartsWith("/")}";
+            return absolute ? res : res[1..]; // without leading dot
         }
 
         private static string Cb() => UseMinified ? string.Empty : $"?cb={DateTime.Now.Ticks}";

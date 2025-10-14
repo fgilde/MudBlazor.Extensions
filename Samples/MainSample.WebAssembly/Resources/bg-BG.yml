@@ -1,4 +1,6 @@
 ﻿_ Text: _Текст
+_{0} Components: '{0} Компоненти'
+_{0} Demos: '{0} демонстрации'
 --accent-color1: --акцент-цвят1
 --accent-color2: --акцент-цвят2
 --accent-color3: --акцент-цвят3
@@ -70,6 +72,7 @@ Add external Url: Добавяне на външен URL адрес
 Add files: Добавяне на файлове
 Add Product: Добави продукт
 Add Role: Добавяне на роля
+Add section: Добави раздел
 Add Url: Добавяне на URL адрес
 Add user: Добавяне на потребител
 Add user to both lists: Добавяне на потребител и към двата списъка
@@ -486,6 +489,7 @@ BrushTreesDarkBase16: ЧеткаДърветаТъмнаОснова16
 brx-IN: Бодо (Индия)
 bs-Cyrl-BA: Босненски (кирилица, Босна и Херцеговина)
 bs-Latn-BA: Босненски (латински, Босна и Херцеговина)
+Build amazing UIs: Създайте невероятни потребителски интерфейси
 BurlyWood: БърлиУуд
 button: копче
 Button: Копче
@@ -682,6 +686,7 @@ Courrier: Поща
 Create: Създавам
 Create address: Създаване на адрес
 Create new backup: Създаване на ново архивно копие
+Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.: Създавайте мощни, гъвкави оформления на докинг станцията – плъзгайте, пускайте, прилепвайте и организирайте диалоговите прозорци или панелите без усилие.
 CreatedOn: Дата на създаване
 Critical: Критичен
 CropAndScale: CropAndScale
@@ -831,6 +836,7 @@ Dialog: Диалог
 Dialog Appearance: Изглед на диалоговия прозорец
 Dialog Content: Съдържание на диалоговия прозорец
 Dialog Drag & Drop: Диалогов прозорец Плъзгане и пускане
+Dialog Extensions: Разширения на диалогови прозорци
 Dialog for editing objects with the MudExObjectEditForm: Диалогов прозорец за редактиране на обекти с MudExObjectEditForm
 Dialog Sample: Пример за диалогов прозорец
 Dialog Samples: Примери за диалогови прозорци
@@ -1192,6 +1198,7 @@ ExpandedIcon: РазширенаИкона
 ExpandOnClick: ExpandOnClick
 ExpandOnFilter: ExpandOnFilter
 Explicit File Display Zip: Zip за показване на изричен файл
+Explore our most powerful tools: Разгледайте нашите най-мощни инструменти
 Export: Износ
 Export To Excel: Експортиране в Excel
 Export_SheetName: Данни
@@ -1654,6 +1661,7 @@ Inset: Добавям
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: Междинни резултати
+Introducing MudExDockControl: Представяме ви MudExDockControl
 Invalid Credentials.: Невалидни идентификационни данни.
 IrBlack: IrBlack
 IrBlackBase16: IrBlackBase16
@@ -1843,6 +1851,7 @@ List: Списък
 List appearance: Външен вид на списъка
 List behavior: Поведение на списъка
 List item for MudExList.: Елемент от списък за MudExList.
+Live examples: Примери на живо
 lkt-US: Lakota (Съединени щати)
 ln-AO: Лингала (Ангола)
 ln-CD: Лингала (Конго [ДРК])
@@ -2041,12 +2050,14 @@ Montreal: Монреал
 Montreal - H1A 0A1: Монреал - H1A 0A1
 Montreal - H1A 0A1ender: Монреал - H1A 0A1ender
 Montserrat: Монсерат
+More than {0} Components: Повече от {0} компонента
 Motion: Движение
 Mouse: Мишка
 MouseOverMessageClass: MouseOverMessageClass
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: MouseWheelDownAction
 MouseWheelUpAction: MouseWheelUpAction
+Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Премествайте и преоразмерявайте елементите на мрежата директно с плъзгане и пускане – проектирайте оформлението си динамично по време на изпълнение.
 MoveContent: ПреместванеСъдържание
 mr-IN: Маратхи (Индия)
 MS Outlook: MS Outlook
@@ -2147,7 +2158,9 @@ MudExGradientText: Кален градиентТекст
 MudExGravatar: Кал ЕксГраватар
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar е MudAvatar, който автоматично използва изображението на профила от gravatar за имейл адрес
 MudExGrid: Кална мрежа
+MudExGrid — Now with Layout Editing: MudExGrid — вече с редактиране на оформление
 MudExGrid Enhanced: MudExGrid подобрен
+MudExGrid Layout: Оформление на MudExGrid
 MudExGridSection: MudExGridSection
 MudExGroupBox: Кална Ексгрупна кутия
 MudExHtmlEdit: Кален Изход HtmlРедактиране
@@ -2336,6 +2349,7 @@ ne-NP: Непалски (Непал)
 NebulaBase16: МъглявинаБаза16
 Never: Никога
 New: Нов
+NEW: НОВ
 NEW Dialog Drag Drop Mode: НОВ диалогов прозорец Режим на плъзгане
 New dialog Feature - SnapDrag: Функция за нов диалогов прозорец - SnapDrag
 New Message From {0}: Ново съобщение от {0}
@@ -3254,6 +3268,7 @@ Read More: Прочетете Повече
 Readme: Прочетете
 readme.md: readme.md
 ReadOnly: Само за четене
+Ready to use: Готов за употреба
 Realtime Updates & Insights with SignalR.: Актуализации и прозрения в реално време с SignalR.
 RebeccaBase16: RebeccaBase16
 RebeccaPurple: РебекаЛилаво
@@ -3336,6 +3351,7 @@ Restore database: Възстановяване на база данни
 Restore default: Възстановяване по подразбиране
 Restore finished: Възстановяването е завършено
 Restore in progress. Please wait until the restore is finished. This can take a while.: Възстановяване е в ход. Моля, изчакайте, докато възстановяването приключи. Това може да отнеме известно време.
+Restore saved layout: Възстановяване на запазеното оформление
 Revert: Обръщам
 RGB: RGB
 RGBA: RGBA
@@ -3455,6 +3471,7 @@ Save: Спасявам
 Save {0} Changes: '{0} Запазване на промените'
 Save as: Запазване като
 Save Changes: Запазване на промените
+Save Current layout: Запазване на текущото оформление
 Save image: Запазване на изображението
 Save Role: Запазване на ролята
 Save visible area only: Запазване само на видима област
@@ -3971,6 +3988,7 @@ The user {0} has been logged off: Потребителят {0} е излязъл
 The User {0} has just edited, created or deleted entries here. You should reload the data: Потребителят {0} току-що е редактирал, създал или изтрил записи тук. Трябва да презаредите данните
 Theme: Тема
 Theme Colors: Цветове на темата
+Theme Editor: Редактор на теми
 Themes: Теми
 ThemeSelect: ТемаИзбор
 There are no new notifications: Няма нови известия
@@ -4315,7 +4333,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: Излизате от системата си при промяна на администратор или профил.
 You are Logged Out.: Вие сте излезли.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Можете също да използвате MudExAdditionalDecoration като ChildContent на MudInput
+You can move me: Можеш да ме раздвижиш.
 You can now Login with your credentials: Вече можете да влезете с вашите идентификационни данни
+You can resize me: Можеш да ме преоразмериш.
 You cannot delete yourself: Не можете да изтриете себе си
 You clicked: Щракнахте
 You don't need an extra JsonEditor anymore: Вече нямате нужда от допълнителен JsonEditor

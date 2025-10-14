@@ -1,4 +1,6 @@
 ﻿_ Text: _Tekst
+_{0} Components: '{0} Komponenty'
+_{0} Demos: '{0} Pokazy'
 --accent-color1: --kolor-akcentujący1
 --accent-color2: --kolor-akcentu2
 --accent-color3: --kolor-akcentujący3
@@ -70,6 +72,7 @@ Add external Url: Dodawanie zewnętrznego adresu URL
 Add files: Dodawanie plików
 Add Product: Dodaj produkt
 Add Role: Dodaj rolę
+Add section: Dodaj sekcję
 Add Url: Dodaj adres URL
 Add user: Dodaj użytkownika
 Add user to both lists: Dodaj użytkownika do obu list
@@ -486,6 +489,7 @@ BrushTreesDarkBase16: ZaroślaDrzewaDarkBase16
 brx-IN: Bodo (Indie)
 bs-Cyrl-BA: bośniacki (cyrylica, Bośnia i Hercegowina)
 bs-Latn-BA: bośniacki (łac., Bośnia i Hercegowina)
+Build amazing UIs: Twórz niesamowite interfejsy użytkownika
 BurlyWood: Krzepkie drewno
 button: guzik
 Button: Guzik
@@ -682,6 +686,7 @@ Courrier: Poczta
 Create: Tworzyć
 Create address: Utwórz adres
 Create new backup: Utwórz nową kopię zapasową
+Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.: Twórz potężne, elastyczne układy dokujące — bez wysiłku przeciągaj, upuszczaj, przyciągaj i organizuj okna dialogowe lub panele.
 CreatedOn: Data utworzenia
 Critical: Krytyczny
 CropAndScale: CropAndScale (Uprawa i skala)
@@ -831,6 +836,7 @@ Dialog: Dialog
 Dialog Appearance: Okno dialogowe Wygląd
 Dialog Content: Okno dialogowe Zawartość
 Dialog Drag & Drop: Okno dialogowe Przeciągnij i upuść
+Dialog Extensions: Rozszerzenia okien dialogowych
 Dialog for editing objects with the MudExObjectEditForm: Okno dialogowe do edycji obiektów za pomocą MudExObjectEditForm
 Dialog Sample: Przykład okna dialogowego
 Dialog Samples: Przykłady w oknie dialogowym
@@ -1192,6 +1198,7 @@ ExpandedIcon: Rozszerzona ikona
 ExpandOnClick: RozwińNaKliknij
 ExpandOnFilter: RozwińFiltr
 Explicit File Display Zip: Jawny plik wyświetlania pliku zip
+Explore our most powerful tools: Poznaj nasze najpotężniejsze narzędzia
 Export: Eksport
 Export To Excel: Eksportuj do Excela
 Export_SheetName: Dane
@@ -1654,6 +1661,7 @@ Inset: Wstawka
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: Wyniki tymczasowe
+Introducing MudExDockControl: Przedstawiamy MudExDockControl
 Invalid Credentials.: Nieprawidłowe poświadczenia.
 IrBlackBase16: Niezależna baza danych 16
 Is Active: Jest aktywny
@@ -1842,6 +1850,7 @@ List: Lista
 List appearance: Wygląd listy
 List behavior: Zachowanie listy
 List item for MudExList.: Element listy dla MudExList.
+Live examples: Przykłady na żywo
 lkt-US: Lakota (Stany Zjednoczone)
 ln-AO: Lingala (Angola)
 ln-CD: Lingala (Kongo [DRK])
@@ -2040,12 +2049,14 @@ Montreal: Montreal
 Montreal - H1A 0A1: Montreal - H1A 0A1
 Montreal - H1A 0A1ender: Montreal - H1A 0A1ender
 Montserrat: Montserrat
+More than {0} Components: Ponad {0} komponentów
 Motion: Ruch
 Mouse: Mysz
 MouseOverMessageClass: MouseOverMessageClass
 MouseOverMessageStyle: MouseOverMessageStyle (styl wiadomości)
 MouseWheelDownAction: MouseWheelDownAction (Kółko w dół)
 MouseWheelUpAction: MouseWheelUpAction (Kółko MouseUpAction)
+Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Przenoś i zmieniaj rozmiar elementów siatki bezpośrednio za pomocą przeciągania i upuszczania — projektuj swój układ dynamicznie w czasie wykonywania.
 MoveContent: Przenieś zawartość
 mr-IN: Marathi (Indie)
 MS Outlook: MS Outlook
@@ -2146,7 +2157,9 @@ MudExGradientText: MudExGradientText (Tekst w tle)
 MudExGravatar: 'MudExGravatar powiedział:'
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar to MudAvatar, który automatycznie używa zdjęcia profilowego z gravatara jako adresu e-mail
 MudExGrid: Siatka MudExGrid
+MudExGrid — Now with Layout Editing: MudExGrid — teraz z edycją układu
 MudExGrid Enhanced: MudExGrid Ulepszone
+MudExGrid Layout: Układ MudExGrid
 MudExGridSection: Sekcja MudExGrid
 MudExGroupBox: Skrzynka grupowa MudExGroupBox
 MudExHtmlEdit: MudExHtmlEdytuj
@@ -2335,6 +2348,7 @@ ne-NP: nepalski (Nepal)
 NebulaBase16: MgławicaBaza 16
 Never: Nigdy
 New: Nowy
+NEW: NOWY
 NEW Dialog Drag Drop Mode: NOWOŚĆ Okno dialogowe Tryb przeciągnij i upuść
 New dialog Feature - SnapDrag: Nowa funkcja w oknie dialogowym - SnapDrag
 New Message From {0}: Nowa wiadomość od {0}
@@ -3253,6 +3267,7 @@ Read More: Czytaj więcej
 Readme: Plik Readme
 readme.md: readme.md
 ReadOnly: Tylko do odczytu
+Ready to use: Gotowy do użycia
 Realtime Updates & Insights with SignalR.: Aktualizacje i szczegółowe informacje w czasie rzeczywistym za pomocą usługi SignalR.
 RebeccaBase16: 'RebeccaBase16 powiedział:'
 RebeccaPurple: RebekaFioletowy
@@ -3335,6 +3350,7 @@ Restore database: Przywróć bazę danych
 Restore default: Przywróć domyślne
 Restore finished: Przywracanie zakończone
 Restore in progress. Please wait until the restore is finished. This can take a while.: Przywracanie w toku. Poczekaj, aż przywracanie zostanie zakończone. Może to chwilę potrwać.
+Restore saved layout: Przywróć zapisany układ
 Revert: Przywrócić
 RGB: RGB
 RGBA: Wskaźnik RGBA
@@ -3454,6 +3470,7 @@ Save: Zapisać
 Save {0} Changes: '{0} Zapisz zmiany'
 Save as: Zapisz jako
 Save Changes: Zapisz zmiany
+Save Current layout: Zapisz bieżący układ
 Save image: Zapisz obraz
 Save Role: Zapisz rolę
 Save visible area only: Zapisz tylko widoczny obszar
@@ -3970,6 +3987,7 @@ The user {0} has been logged off: Użytkownik {0} został wylogowany
 The User {0} has just edited, created or deleted entries here. You should reload the data: Użytkownik {0} właśnie edytował, tworzył lub usuwał tutaj wpisy. Powinieneś ponownie załadować dane
 Theme: Kompozycja
 Theme Colors: Kolorystyka motywu
+Theme Editor: Edytor motywów
 Themes: Tematy
 ThemeSelect: Wybór motywu
 There are no new notifications: Nie ma nowych powiadomień
@@ -4314,7 +4332,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: Zostałeś wylogowany przez Administratora lub zmianę profilu.
 You are Logged Out.: Jesteś wylogowany.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Możesz również użyć MudExAdditionalAdornment jako ChildContent elementu MudInput
+You can move me: Możesz mnie poruszyć
 You can now Login with your credentials: Możesz teraz zalogować się za pomocą swoich danych uwierzytelniających
+You can resize me: Możesz zmienić mój rozmiar
 You cannot delete yourself: Nie możesz usunąć siebie
 You clicked: Kliknąłeś
 You don't need an extra JsonEditor anymore: Nie potrzebujesz już dodatkowego edytora JsonEditor

@@ -1,4 +1,6 @@
 ﻿_ Text: _Text
+_{0} Components: '{0} Komponenty'
+_{0} Demos: '{0} ukázky'
 --accent-color1: --akcent-barva1
 --accent-color2: --akcentní barva2
 --accent-color3: --akcent-barva3
@@ -70,6 +72,7 @@ Add external Url: Přidat externí adresu URL
 Add files: Přidání souborů
 Add Product: Přidat produkt
 Add Role: Přidat roli
+Add section: Přidat sekci
 Add Url: Přidat adresu URL
 Add user: Přidat uživatele
 Add user to both lists: Přidat uživatele do obou seznamů
@@ -486,6 +489,7 @@ BrushTreesDarkBase16: 'BrushTreesDarkBase16 řekl:'
 brx-IN: Bodo (Indie)
 bs-Cyrl-BA: Bosenština (cyrilice, Bosna a Hercegovina)
 bs-Latn-BA: Bosenština (latinka, Bosna a Hercegovina)
+Build amazing UIs: Vytvářejte úžasná uživatelská rozhraní
 BurlyWood: BurlyWood
 button: knoflík
 Button: Knoflík
@@ -682,6 +686,7 @@ Courrier: Pošta
 Create: Vytvářet
 Create address: Vytvořit adresu
 Create new backup: Vytvořit novou zálohu
+Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.: Vytvářejte výkonná a flexibilní rozvržení doků – bez námahy přetahujte, pusťte, přichyťte a uspořádejte dialogová okna nebo panely.
 CreatedOn: Datum vytvoření
 Critical: Kritický
 CropAndScale: Nástroj CropAndScale
@@ -831,6 +836,7 @@ Dialog: Dialog
 Dialog Appearance: Vzhled dialogového okna
 Dialog Content: Obsah dialogového okna
 Dialog Drag & Drop: Dialogové okno Přetáhni a pusť
+Dialog Extensions: Rozšíření dialogového okna
 Dialog for editing objects with the MudExObjectEditForm: Dialog pro úpravy objektů pomocí příkazu MudExObjectEditForm
 Dialog Sample: Ukázka dialogového okna
 Dialog Samples: Ukázky dialogových oken
@@ -1192,6 +1198,7 @@ ExpandedIcon: RozbalenáIkona
 ExpandOnClick: Rozbalit OnClick
 ExpandOnFilter: Rozbalit filtr
 Explicit File Display Zip: Explicitní zobrazení souboru Zip
+Explore our most powerful tools: Prozkoumejte naše nejvýkonnější nástroje
 Export: Vývoz
 Export To Excel: Exportovat do aplikace Excel
 Export_SheetName: Data
@@ -1654,6 +1661,7 @@ Inset: Vložit
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: Průběžné výsledky
+Introducing MudExDockControl: Představujeme MudExDockControl
 Invalid Credentials.: Neplatné přihlašovací údaje.
 IrBlack: IrBlack
 IrBlackBase16: 'IrBlackBase16 řekl:'
@@ -1843,6 +1851,7 @@ List: Seznam
 List appearance: Vzhled seznamu
 List behavior: Chování seznamu
 List item for MudExList.: Položka seznamu pro MudExList.
+Live examples: Živé příklady
 lkt-US: Lakota (Spojené státy americké)
 ln-AO: Lingala (Angola)
 ln-CD: Lingala (Kongo [DRK])
@@ -2041,12 +2050,14 @@ Montreal: Montreal
 Montreal - H1A 0A1: Montreal - H1A 0A1
 Montreal - H1A 0A1ender: Montreal - H1A 0A1ender
 Montserrat: Montserrat
+More than {0} Components: Více než {0} komponent
 Motion: Pohyb
 Mouse: Myš
 MouseOverMessageClass: Třída MouseOverMessageClass
 MouseOverMessageStyle: Myš Přeskup zpráv
 MouseWheelDownAction: Akce MouseWheelDownAction
 MouseWheelUpAction: Akce MouseWheelUpAction
+Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Přesouvejte a měňte velikost položek mřížky přímo pomocí funkce drag & drop – navrhujte rozvržení dynamicky za běhu.
 MoveContent: Přesunout obsah
 mr-IN: Maráthština (Indie)
 MS Outlook: MS Outlook
@@ -2147,7 +2158,9 @@ MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar je MudAvatar, který automaticky používá profilový obrázek z gravatar pro e-mailovou adresu
 MudExGrid: MudExGrid
+MudExGrid — Now with Layout Editing: MudExGrid — Nyní s úpravami rozvržení
 MudExGrid Enhanced: Vylepšeno MudExGrid
+MudExGrid Layout: Rozvržení MudExGrid
 MudExGridSection: MudExGridSection
 MudExGroupBox: MudExGroupBox
 MudExHtmlEdit: MudExHtmlEdit
@@ -2336,6 +2349,7 @@ ne-NP: Nepálština (Nepál)
 NebulaBase16: Základna mlhoviny16
 Never: Nikdy
 New: Nový
+NEW: NOVÝ
 NEW Dialog Drag Drop Mode: NOVINKA Dialogové okno Režim přetažení
 New dialog Feature - SnapDrag: Nový dialog Funkce - SnapDrag
 New Message From {0}: Nová zpráva od {0}
@@ -3254,6 +3268,7 @@ Read More: Více
 Readme: Soubor Readme
 readme.md: readme.md
 ReadOnly: Pouze pro čtení
+Ready to use: Připraven k použití
 Realtime Updates & Insights with SignalR.: Aktualizace a přehledy v reálném čase pomocí nástroje SignalR.
 RebeccaBase16: 'RebeccaBase16 řekl:'
 RebeccaPurple: RebeccaPurple
@@ -3336,6 +3351,7 @@ Restore database: Obnovení databáze
 Restore default: Obnovit výchozí nastavení
 Restore finished: Obnovení dokončeno
 Restore in progress. Please wait until the restore is finished. This can take a while.: Probíhá obnova. Počkejte prosím na dokončení obnovy. To může chvíli trvat.
+Restore saved layout: Obnovit uložené rozvržení
 Revert: Vrátit
 RGB: RGB
 RGBA: Oblast RGBA
@@ -3455,6 +3471,7 @@ Save: Uložit
 Save {0} Changes: '{0} Uložit změny'
 Save as: Uložit jako
 Save Changes: Uložit změny
+Save Current layout: Uložit aktuální rozvržení
 Save image: Uložit obrázek
 Save Role: Uložit roli
 Save visible area only: Uložit pouze viditelnou oblast
@@ -3971,6 +3988,7 @@ The user {0} has been logged off: Uživatelský {0} byl odhlášen
 The User {0} has just edited, created or deleted entries here. You should reload the data: Uživatel zde {0} právě upravil, vytvořil nebo smazal záznamy. Měli byste data znovu načíst
 Theme: Téma
 Theme Colors: Barvy motivu
+Theme Editor: Editor témat
 Themes: Témata
 ThemeSelect: TémaVýběr
 There are no new notifications: Nejsou k dispozici žádná nová oznámení
@@ -4315,7 +4333,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: Jste odhlášeni správcem nebo se změnil profil.
 You are Logged Out.: Jste odhlášeni.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment můžete také použít jako ChildContent souboru MudInput
+You can move me: Můžete mě přesunout
 You can now Login with your credentials: Nyní se můžete přihlásit pomocí svých přihlašovacích údajů
+You can resize me: Můžete změnit mou velikost
 You cannot delete yourself: Nemůžete smazat sami sebe
 You clicked: Klikli jste na
 You don't need an extra JsonEditor anymore: Už nepotřebujete další JsonEditor

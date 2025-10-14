@@ -1,0 +1,49 @@
+
+.dockview-theme-mud-ex {
+    --dv-paneview-active-outline-color: var(--mud-palette-primary);
+    --dv-active-sash-color: var(--mud-palette-primary);    
+    --dv-tabs-and-actions-container-font-size: var(--mud-typography-button-size);    
+    --dv-tabs-and-actions-container-height: calc(var(--mud-appbar-height, 64px) * 0.55);
+    --dv-tabs-and-actions-container-background-color: var(--mud-palette-background);
+    --dv-tab-font-size: var(--mud-typography-button-size);
+    --dv-tab-margin: 0;
+    --dv-tab-divider-color: var(--mud-palette-lines-default);    
+    --dv-activegroup-visiblepanel-tab-background-color: var(--mud-palette-surface);
+    --dv-activegroup-hiddenpanel-tab-background-color: var(--mud-palette-background);
+    --dv-inactivegroup-visiblepanel-tab-background-color: var(--mud-palette-surface);
+    --dv-inactivegroup-hiddenpanel-tab-background-color: var(--mud-palette-background);
+    --dv-activegroup-visiblepanel-tab-color: var(--mud-palette-text-primary);
+    --dv-activegroup-hiddenpanel-tab-color: var(--mud-palette-text-secondary);
+    --dv-inactivegroup-visiblepanel-tab-color: var(--mud-palette-text-secondary);
+    --dv-inactivegroup-hiddenpanel-tab-color: var(--mud-palette-text-secondary);    
+    --dv-group-view-background-color: var(--mud-palette-surface);    
+    --dv-drag-over-background-color: var(--mud-palette-overlay-dark);
+    --dv-drag-over-border-color: var(--mud-palette-primary);
+    --dv-tabs-container-scrollbar-color: var(--mud-palette-lines-default);
+    --dv-icon-hover-background-color: color-mix(in srgb, var(--mud-palette-action-default), transparent 70%);    
+    --dv-sash-color: var(--mud-palette-divider);
+    --dv-separator-border: var(--mud-palette-lines-default);
+    --dv-paneview-header-border-color: var(--mud-palette-divider);    
+    --dv-border-radius: var(--mud-default-borderradius);
+    --dv-floating-box-shadow: 0 8px 24px rgba(0,0,0,.24);    
+    --dv-active-sash-transition-duration: .1s;
+    --dv-active-sash-transition-delay: .5s;    
+    --dv-overlay-z-index: var(--mud-zindex-popover, 1200);
+}
+
+
+
+.dv-hide-tabs .dv-tabs-and-actions-container {
+    display: none !important;
+}
+
+.dv-hide-tabs .dv-content-container {
+    height: 100% !important;
+}
+.dv-hide-tabs .dv-groupview {
+    --dv-tab-height: 0px;
+}
+
+.dv-hide-close {
+    background: yellow !important;
+}

@@ -1,4 +1,6 @@
 ﻿_ Text: _Metin
+_{0} Components: '{0} Bileşenleri'
+_{0} Demos: '{0} Demoları'
 --accent-color1: --vurgu-renk1
 --accent-color2: --vurgu rengi2
 --accent-color3: --vurgu rengi3
@@ -70,6 +72,7 @@ Add external Url: Harici URL ekle
 Add files: Dosya ekleme
 Add Product: Ürün Ekle
 Add Role: Rol Ekle
+Add section: Bölüm ekle
 Add Url: URL ekle
 Add user: Kullanıcı ekle
 Add user to both lists: Her iki listeye de kullanıcı ekle
@@ -486,6 +489,7 @@ BrushTreesDarkBase16: BrushTreesDarkBase16
 brx-IN: Bodo (Hindistan)
 bs-Cyrl-BA: Boşnakça (Kiril, Bosna Hersek)
 bs-Latn-BA: Boşnakça (Latince, Bosna Hersek)
+Build amazing UIs: Harika kullanıcı arayüzleri oluşturun
 BurlyWood: İri Ağaç
 button: düğme
 Button: Düğme
@@ -682,6 +686,7 @@ Courrier: Posta
 Create: Yaratmak
 Create address: Adres oluştur
 Create new backup: Yeni yedekleme oluştur
+Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.: Güçlü, esnek dock düzenleri oluşturun — diyaloglarınızı veya panellerinizi zahmetsizce sürükleyin, bırakın, yapıştırın ve düzenleyin.
 CreatedOn: Oluşturulma tarihi
 Critical: Kritik
 CropAndScale: Kırpma ve Ölçek
@@ -831,6 +836,7 @@ Dialog: Iletişim
 Dialog Appearance: Görünüm İletişim Kutusu
 Dialog Content: İletişim Kutusu İçeriği
 Dialog Drag & Drop: İletişim Kutusu Sürükle & Bırak
+Dialog Extensions: Uzantılar iletişim kutusu
 Dialog for editing objects with the MudExObjectEditForm: MudExObjectEditForm ile nesneleri düzenleme iletişim kutusu
 Dialog Sample: İletişim Kutusu Örneği
 Dialog Samples: İletişim Kutusu Örnekleri
@@ -1192,6 +1198,7 @@ ExpandedIcon: Genişletilmiş Simge
 ExpandOnClick: ExpandOnClick
 ExpandOnFilter: Filtreyi Genişlet
 Explicit File Display Zip: Açık Dosya Görüntüleme Zip
+Explore our most powerful tools: En güçlü araçlarımızı keşfedin
 Export: Ihracat
 Export To Excel: Excel'e Aktar
 Export_SheetName: Veri
@@ -1654,6 +1661,7 @@ Inset: Ankastre
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: Ara Sonuçlar
+Introducing MudExDockControl: MudExDockControl ile tanışın
 Invalid Credentials.: Geçersiz Kimlik Bilgileri.
 IrBlack: Siyah
 IrBlackBase16: IrBlackBase16
@@ -1843,6 +1851,7 @@ List: Liste
 List appearance: Liste görünümü
 List behavior: Liste davranışı
 List item for MudExList.: MudExList için liste öğesi.
+Live examples: Canlı örnekler
 lkt-US: Lakota (Amerika Birleşik Devletleri)
 ln-AO: Lingala (Angola)
 ln-CD: Lingala (Kongo [DRC])
@@ -2041,12 +2050,14 @@ Montreal: Montreal
 Montreal - H1A 0A1: Montreal - H1A 0A1
 Montreal - H1A 0A1ender: Montreal - H1A 0A1ender
 Montserrat: Montserrat
+More than {0} Components: "{0}'den Fazla Bileşen"
 Motion: Hareket
 Mouse: Fare
 MouseOverMessageClass: MouseOverMessageSınıfı
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: MouseWheelDownAction
 MouseWheelUpAction: MouseWheelUpAction
+Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Izgara öğelerini doğrudan sürükle ve bırak yöntemiyle taşıyın ve yeniden boyutlandırın — düzeninizi çalışma zamanında dinamik olarak tasarlayın.
 MoveContent: İçeriği Taşı
 mr-IN: Marathi (Hindistan)
 MS Outlook: MS Görünümü
@@ -2147,7 +2158,9 @@ MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar, bir e-posta adresi için gravatar'daki profil resmini otomatik olarak kullanan bir MudAvatar'dır
 MudExGrid: MudExGrid
+MudExGrid — Now with Layout Editing: MudExGrid — Şimdi Düzen Düzenleme ile
 MudExGrid Enhanced: MudExGrid Gelişmiş
+MudExGrid Layout: MudExGrid Düzeni
 MudExGridSection: MudExGridBölümü
 MudExGroupBox: MudExGrup Kutusu
 MudExHtmlEdit: MudExHtmlDüzenle
@@ -2336,6 +2349,7 @@ ne-NP: Nepalce (Nepal)
 NebulaBase16: BulutsuTabanı16
 Never: Hiç
 New: Yeni
+NEW: YENİ
 NEW Dialog Drag Drop Mode: YENİ İletişim Kutusu Sürükle Bırak Modu
 New dialog Feature - SnapDrag: Yeni iletişim kutusu Özellik - SnapDrag
 New Message From {0}: "{0}'dan Yeni Mesaj"
@@ -3254,6 +3268,7 @@ Read More: Devamını Oku
 Readme: Benioku
 readme.md: readme.md
 ReadOnly: Salt okunur
+Ready to use: Kullanıma hazır
 Realtime Updates & Insights with SignalR.: SignalR ile Gerçek Zamanlı Güncellemeler ve İçgörüler.
 RebeccaBase16: Rebecca Tabanı16
 RebeccaPurple: RebeccaMor
@@ -3336,6 +3351,7 @@ Restore database: Veritabanını geri yükle
 Restore default: Varsayılanı geri yükle
 Restore finished: Geri yükleme tamamlandı
 Restore in progress. Please wait until the restore is finished. This can take a while.: Geri yükleme devam ediyor. Lütfen geri yükleme bitene kadar bekleyin. Bu biraz zaman alabilir.
+Restore saved layout: Kaydedilen düzeni geri yükle
 Revert: Geri dönmek
 RGB: RGB
 RGBA: RGBA Hakkında
@@ -3455,6 +3471,7 @@ Save: Kurtarmak
 Save {0} Changes: '{0} Değişiklikleri kaydet'
 Save as: Farklı kaydet
 Save Changes: Değişiklikleri Kaydet
+Save Current layout: Geçerli düzeni kaydet
 Save image: Resmi kaydet
 Save Role: Rolü Kaydet
 Save visible area only: Yalnızca görünür alanı kaydet
@@ -3971,6 +3988,7 @@ The user {0} has been logged off: Kullanıcı {0} oturumu kapatıldı
 The User {0} has just edited, created or deleted entries here. You should reload the data: Kullanıcı {0} buradaki girişleri düzenledi, oluşturdu veya sildi. Verileri yeniden yüklemelisiniz
 Theme: Tema
 Theme Colors: Tema Renkleri
+Theme Editor: Tema Düzenleyici
 Themes: Temalar
 ThemeSelect: Tema Seç
 There are no new notifications: Yeni bildirim yok
@@ -4315,7 +4333,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: Bir Yönetici veya profil değişikliği nedeniyle oturumunuz kapatıldı.
 You are Logged Out.: Oturumunuz Kapatıldı.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment'ı bir MudInput'un ChildContent olarak da kullanabilirsiniz
+You can move me: Beni hareket ettirebilirsin
 You can now Login with your credentials: Artık kimlik bilgilerinizle giriş yapabilirsiniz
+You can resize me: Beni yeniden boyutlandırabilirsin
 You cannot delete yourself: Kendinizi silemezsiniz
 You clicked: Tıkladınız
 You don't need an extra JsonEditor anymore: Artık fazladan bir JsonEditor'a ihtiyacınız yok

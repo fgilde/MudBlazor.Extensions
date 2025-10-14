@@ -326,24 +326,27 @@ public partial class MudExCodeView
 
         return caller;
     }
-
     /// <summary>
     /// Generates Markup from instance
     /// </summary>
-    public static string GenerateBlazorMarkupFromInstance<TComponent>(TComponent componentInstance, string comment = "")
+    public static string GenerateBlazorMarkupFromInstance<TComponent>(TComponent componentInstance, string comment = "", bool hideDefaults = true)
     {
         // TODO: Move to central place with ApiMemberInfo
         var componentName = componentInstance?.GetType().FullName?.Replace(componentInstance.GetType().Namespace + ".", string.Empty);
         var properties = componentInstance?.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Where(p => ObjectEditMeta.IsAllowedAsPropertyToEdit(p) && ObjectEditMeta.IsAllowedAsPropertyToEditOnAComponent<TComponent>(p));
 
-        var props = properties?.ToDictionary(info => info.Name, info => info.GetValue(componentInstance))
-            .Where(pair => ComponentRenderHelper.IsValidParameter(typeof(TComponent), pair.Key, pair.Value)
-                           && pair.Value != null
-                           && pair.Value?.GetType() != typeof(object)) ?? Enumerable.Empty<KeyValuePair<string, object>>();
+        var props = properties?.ToDictionary(info => info, info => info.GetValue(componentInstance))
+            .Where(pair =>
+                ComponentRenderHelper.IsValidParameter(typeof(TComponent), pair.Key.Name, pair.Value)
+                && pair.Value != null
+                && (!hideDefaults || !ApiMemberInfo.IsDefaultValueOfProperty(pair.Value, pair.Key))
+                && pair.Value?.GetType() != typeof(object)
+            ) ?? Enumerable.Empty<KeyValuePair<PropertyInfo, object>>();
+
 
         var parameterString = string.Join("\n",
-            props.Select(p => new KeyValuePair<string, string>(p.Key, MarkupValue(p.Value, p.Key)))
+            props.Select(p => new KeyValuePair<string, string>(p.Key.Name, MarkupValue(p.Value, p.Key.Name)))
                 .Where(p => !string.IsNullOrWhiteSpace(p.Value))
                 .Select(p => $"{p.Key}=\"{p.Value}\""));
 
@@ -355,6 +358,7 @@ public partial class MudExCodeView
 
         return markup;
     }
+    
 
     /// <summary>
     /// Returns the start and end tag for the given component name

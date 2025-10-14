@@ -1,194 +1,43 @@
-﻿@using MudBlazor.Extensions.Helper
-@using MudBlazor.Extensions.Components.ObjectEdit.Options
-@using MudBlazor.Extensions.Core
-@using MudBlazor.Extensions.Options
-@using MudBlazor.Extensions.Services
-@using System.Text
+﻿@using System.Text
 @using System.IO.Compression
-@using System.Globalization
 @using Microsoft.Extensions.Localization
-@inherits MudExObjectEdit<T>
+@inherits MudExComponentPropertyGrid<T>
 @typeparam T
 @inject IStringLocalizer<ComponentPropertyGrid<T>> L
-@if (rendered)
-{
-    @Inherited()
-}
-else
-{
-    <MudProgressCircular Style="margin-top: 70%; margin-left: 50%;" Color="Color.Primary" Indeterminate="true" />
-}
+
+
+@Inherited()
 
 
 @code {
 
-    [Parameter] public bool ShowInherited { get; set; }
-    [Parameter] public bool ShowInheritedToggle { get; set; } = true;
-    [Parameter] public bool GroupByTypes { get; set; }
-    [Parameter] public EventCallback<bool> GroupByTypesChanged { get; set; }
-
-    [Inject] private IJsApiService JsApiService { get; set; }
-    [Inject] private MudExFileService FileService { get; set; }
-
-    private string generationComment = "This is generated and maybe not correct";
-    private bool rendered;
     private RenderFragment Inherited() => builder => base.BuildRenderTree(builder);
-    bool _showInherited;
-    bool _groupByTypes;
 
-    protected override Task OnInitializedAsync()
-    {
-        ToolBarContent = RenderToolbarExtraContent();
-        StickyToolbar = true;
-        ToolbarColor = Color.Surface;
-        StickyToolbarTop = "-8px";
-        StoreAndReadValueFromUrl = true;
-        MultiSearch = true;
-        if(MainLayout.Instance != null)
-            MainLayout.Instance.LanguageChanged += (_, _) => InvokeAsync(StateHasChanged);
-    
-        return base.OnInitializedAsync();
-    }
 
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender)
-        {
-            _showInherited = ShowInherited;
-            _groupByTypes = GroupByTypes;
-        }
-        base.OnAfterRender(firstRender);
-        if (!rendered)
-        {
-            rendered = true;
-            Task.Delay(500).ContinueWith(_ => InvokeAsync(StateHasChanged));
-        }
-    }
-
-    protected override ObjectEditMeta<T> ConfigureMetaBase(ObjectEditMeta<T> meta)
-    {
-        meta.IgnoreAllObsoleteFields();
-        if (ShowInheritedToggle)
-        {
-            meta.IgnoreAllInheritedFieldsIf(_ => !_showInherited, new[] { nameof(MudExBaseInput<T>.Color) });
-        }
-
-        if (_groupByTypes)
-            meta.GroupByTypes();
-        else
-            meta.GroupByCategoryAttribute();
-        meta.Properties<string>()
-        .Where(p => p?.Value?.ToString()?.StartsWith("<g") == true || p?.Value?.ToString()?.StartsWith("<path") == true)
-        .RenderWith<MudExIconPicker, string, string>(edit => edit.Value);
-
-        meta.Properties<string>()
-            .Where(p => IsValidCultureString(p.Value?.ToString()))
-        .RenderWith<MudExCultureSelect, string, CultureInfo>(edit => edit.Value, edit => edit.CultureHandling = NeutralCultureHandling.IgnoreNeutralCultures,
-                s => !string.IsNullOrWhiteSpace(s) ? CultureInfo.GetCultureInfo(s) : null, 
-                info => info?.Name ?? string.Empty);
-
-        meta.AllProperties.WrapIn<PropertyInfoContainer<T>>((p, cmp) => cmp.Property = p.PropertyInfo);
-
-        return base.ConfigureMetaBase(meta);
-    }
-
-    private bool IsValidCultureString(string s)
-    {
-        if (string.IsNullOrEmpty(s))
-            return false;
-
-        try
-        {
-            CultureInfo culture = new CultureInfo(s);
-            return s.Contains("-");
-        }
-        catch (CultureNotFoundException)
-        {
-            return false;
-        }
-    }
-
-    RenderFragment RenderToolbarExtraContent()
+    protected override RenderFragment GetToolbarContent()
     {
         return
-    @<div>
-        @if (!SearchActive)
-    {
-        <MudTooltip Text="@L["Edit in TryMudEx"]">
-            <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.PlayArrow" OnClick="@EditCode" />
-        </MudTooltip>
-        <MudTooltip Text="@L["Show Markup"]">
-            <MudIconButton Icon="@Icons.Material.Filled.Code" OnClick="@ShowCode" />
-        </MudTooltip>
-        @if (ShowInheritedToggle)
-        {
-            <MudTooltip Text="@L["Show or hide inherited fields from base class"]">
-                <MudIconButton OnClick="@(() => OnChangeInherit(!_showInherited))" Color="@(_showInherited ? Color.Warning : Color.Default)"
-                               Icon="@(_showInherited ? Icons.Material.Filled.Workspaces : Icons.Material.Outlined.Workspaces)"></MudIconButton>
-            </MudTooltip>
-        }
-
-        <MudTooltip Text="@L["Group by types"]">
-            <MudIconButton OnClick="@(() => OnChangeGrouping(!_groupByTypes))" Color="@(_groupByTypes ? Color.Warning : Color.Default)"
-                           Icon="@(_groupByTypes ? Icons.Material.Filled.TypeSpecimen : Icons.Material.Outlined.TypeSpecimen)"></MudIconButton>
-        </MudTooltip>
-    }
-    </div>;
-    }
-
-    private Task OnChangeInherit(bool b)
-    {
-        _showInherited = !_showInherited;
-        return Update();
-    }
-
-    private async Task OnChangeGrouping(bool b)
-    {
-        _groupByTypes = !_groupByTypes;
-        GroupByTypes = _groupByTypes;
-        await GroupByTypesChanged.InvokeAsync(_groupByTypes);
-        await CreateMetaIfNotExists(true);
-        await Update();
-    }
-
-    private Task Update()
-    {
-        UpdateAllConditions();
-        Refresh();
-        return Task.CompletedTask;
-    }
-
-
-    private async Task ShowCode()
-    {
-        var cls = await MudExStyleBuilder.Default.WithOverflow("hidden").AsImportant().BuildAsClassRuleAsync("hidden-overflow");
-
-        await DialogService.ShowComponentInDialogAsync<MudExCodeView>("Markup", null,
-            md =>
-            {
-                md.Code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value, L[generationComment]);
-                md.Theme = MainLayout.GetCodeBlockTheme();
-            },
-            dialog =>
-            {
-                dialog.Icon = Icons.Material.Filled.Code;
-                dialog.Buttons = MudExDialogResultAction.Ok();
-                dialog.ContentStyle = "height: 85%; margin-bottom: 12px;";
-
-            }, new DialogOptionsEx()
+            @<RenderChild>
+                @if (!SearchActive)
                 {
-                    DialogAppearance = MudExAppearance.FromCss(MudExCss.Classes.Dialog.Glass, MudExCss.Classes.Dialog.FullHeightContent, cls),
-                    DragMode = MudDialogDragMode.Simple,
-                    MaxWidth = MaxWidth.Medium,
-                    FullWidth = true,
-                    CloseButton = true,
-                    Resizeable = true,
-                });
+                    <MudTooltip Text="@L["Edit in TryMudEx"]">
+                        <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.PlayArrow" OnClick="@EditCode"/>
+                    </MudTooltip>
+                }
+            </RenderChild>
+            ;
+    }
+    
+
+    protected override Task ShowCode()
+    {
+        CodeTheme = MainLayout.GetCodeBlockTheme();
+        return base.ShowCode();
     }
 
     private async Task EditCode()
     {
-        var code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value, L[generationComment]);
+        var code = MudExCodeView.GenerateBlazorMarkupFromInstance(Value, L[GeneratedCodeComment]);
         //var baseUrl = "https://localhost:44394";
         var baseUrl = AppConstants.Urls.TryOnline;
         var client = new HttpClient();

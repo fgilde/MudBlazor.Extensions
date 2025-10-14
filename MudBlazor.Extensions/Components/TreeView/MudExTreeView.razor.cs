@@ -101,7 +101,7 @@ public partial class MudExTreeView<T>
 
 
     private Type GetComponentForViewMode()
-        => (GetRenderWithAttribute(ViewMode)?.ComponentType ?? typeof(MudExTreeViewDefault<>)).MakeGenericType(typeof(T));
+        => (RenderWithAttribute.GetRenderWithFromEnumValue(ViewMode)?.ComponentType ?? typeof(MudExTreeViewDefault<>)).MakeGenericType(typeof(T));
 
     private IDictionary<string, object> GetParameters()
     {
@@ -124,11 +124,6 @@ public partial class MudExTreeView<T>
         return res.ToDictionary(p => p.Key, p => p.Value);
     }
 
-    private static RenderWithAttribute GetRenderWithAttribute(Enum val)
-    {
-        var customAttributes = (RenderWithAttribute[])val.GetType().GetField(val.ToString()).GetCustomAttributes(typeof(RenderWithAttribute), false);
-        return customAttributes.FirstOrDefault();
-    }
 
     public static string IconFor(TreeViewMode mode)
     {

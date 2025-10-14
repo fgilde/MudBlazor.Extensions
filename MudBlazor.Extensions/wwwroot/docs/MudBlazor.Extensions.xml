@@ -1772,7 +1772,7 @@
             Removes lambda signs from code
             </summary>
         </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExCodeView.GenerateBlazorMarkupFromInstance``1(``0,System.String)">
+        <member name="M:MudBlazor.Extensions.Components.MudExCodeView.GenerateBlazorMarkupFromInstance``1(``0,System.String,System.Boolean)">
             <summary>
             Generates Markup from instance
             </summary>
@@ -2238,6 +2238,67 @@
         <member name="M:MudBlazor.Extensions.Components.MudExDivider.GetStyle">
             <summary>
             Style for divider
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDockItem.OnInitialized">
+            <inheritdoc />
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExDockItem.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.DockMode">
+            <summary>
+            Dock mode for the layout
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockMode.Dock">
+            <summary>
+            Dock mode with tabs and panels
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockMode.Grid">
+            <summary>
+            Grid mode with panels only
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockMode.Split">
+            <summary>
+            Split mode
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockMode.Pane">
+            <summary>
+            Pane mode
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.DockDirection">
+            <summary>
+            Direction to dock a panel relative to another panel
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockDirection.Left">
+            <summary>
+            Dock to the left side of the target panel
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockDirection.Right">
+            <summary>
+            Dock to the right side of the target panel
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockDirection.Above">
+            <summary>
+            Dock above the target panel
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockDirection.Below">
+            <summary>
+            Dock below the target panel
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.DockDirection.Within">
+            <summary>
+            Dock within the target panel
             </summary>
         </member>
         <member name="T:MudBlazor.Extensions.Components.DropBoxFileInfo">
@@ -3712,6 +3773,66 @@
         <member name="M:MudBlazor.Extensions.Components.MudExGravatar.OnAfterRenderAsync(System.Boolean)">
             <inheritdoc />
         </member>
+        <member name="T:MudBlazor.Extensions.Components.GravatarCardMode">
+            <summary>
+            Modus für die Gravatar-Karte
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.GravatarCardMode.Iframe">
+            <summary>
+            Verwendet ein Iframe zur Anzeige der offiziellen Gravatar-Profilkarte
+            </summary>
+        </member>
+        <member name="F:MudBlazor.Extensions.Components.GravatarCardMode.Custom">
+            <summary>
+            Lädt die Profildaten über die API und erstellt eine benutzerdefinierte Karte
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.GravatarProfile">
+            <summary>
+            Gravatar Profildaten Modell
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.VerifiedAccount">
+            <summary>
+            Verifiziertes Social-Media-Konto
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.Link">
+            <summary>
+            Link auf dem Profil
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.Interest">
+            <summary>
+            Interesse/Hobby
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.Language">
+            <summary>
+            Sprache
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.GalleryImage">
+            <summary>
+            Galeriebild
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.Payments">
+            <summary>
+            Zahlungsinformationen
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.CryptoWallet">
+            <summary>
+            Krypto-Wallet
+            </summary>
+        </member>
+        <member name="T:MudBlazor.Extensions.Components.ContactInfo">
+            <summary>
+            Kontaktinformationen
+            </summary>
+        </member>
         <member name="T:MudBlazor.Extensions.Components.MudExGrid">
             <summary>
             A simple grid component that supports Columns, and Rows and ColSpan and RowSpan for containing sections.
@@ -3762,6 +3883,31 @@
             Gets or sets a value indicating whether the context menu event should stop propagation. Default is false.
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGrid.FloatMode">
+            <summary>
+             Allow items to float up when space frees
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGrid.CompactOnDrop">
+            <summary>
+            Set to true to run compaction after drop
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGrid.ResolveCollisions">
+            <summary>
+             Set to true to push items when overlapping
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGrid.Id">
+            <summary>
+            Id of the grid.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExGrid.GetAllChildSections">
+            <summary>
+            Returns all containing sections.
+            </summary>
+        </member>
         <member name="M:MudBlazor.Extensions.Components.MudExGrid.RegisterSection(MudBlazor.Extensions.Components.MudExGridSection)">
             <summary>
             Registers a section with the grid.
@@ -3773,11 +3919,6 @@
             Unregisters a section with the grid.
             </summary>
             <param name="section"></param>
-        </member>
-        <member name="M:MudBlazor.Extensions.Components.MudExGrid.GetAllChildSections">
-            <summary>
-            Returns all containing sections.
-            </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.MudExGrid.OnClickHandler(Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
             <summary>
@@ -3797,6 +3938,21 @@
         <member name="P:MudBlazor.Extensions.Components.MudExGridSection.Grid">
             <summary>
             Reference to the parent MudExGrid component.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.Id">
+            <summary>
+            Id of the section. Should be unique. If not set, an id will be generated.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.WrapInGroupBox">
+            <summary>
+            Set this to true to wrap the content in a MudExGroupBox.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.Title">
+            <summary>
+            The title for the MudExGroupBox if WrapInGroupBox is true.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExGridSection.ChildContent">
@@ -3867,6 +4023,81 @@
         <member name="P:MudBlazor.Extensions.Components.MudExGridSection.OnContextMenuPreventDefault">
             <summary>
             Gets or sets a value indicating whether the context menu event should prevent its default action. Default is false.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.Movable">
+            <summary>
+            Specify if the section should be movable.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.Resizable">
+            <summary>
+            Specify if the section should be resizeable.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.MinCol">
+            <summary>
+            Gets or sets the minimum column value. Default is 1.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.MaxCol">
+            <summary>
+            Gets or sets the maximum column value. Default is <see cref="F:System.Int32.MaxValue"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.MinRow">
+            <summary>
+            Gets or sets the minimum row value. Default is 1.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.MaxRow">
+            <summary>
+            Gets or sets the maximum row value. Default is <see cref="F:System.Int32.MaxValue"/>.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.MinColSpan">
+            <summary>
+            Gets or sets the minimum column span value. Default is 1.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.MaxColSpan">
+            <summary>
+            Gets or sets the maximum column span value. Default is 12.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.MinRowSpan">
+            <summary>
+            Gets or sets the minimum row span value. Default is 1.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.MaxRowSpan">
+            <summary>
+            Gets or sets the maximum row span value. Default is 12.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.LockX">
+            <summary>
+            When true and <see cref="P:MudBlazor.Extensions.Components.MudExGridSection.Movable"/> is true element can only be moved on Y axis.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.LockY">
+            <summary>
+            When true and <see cref="P:MudBlazor.Extensions.Components.MudExGridSection.Movable"/> is true element can only be moved on X axis.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.Animate">
+            <summary>
+            When true the movement and resize will be animated.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.AnimationMs">
+            <summary>
+            Animation duration for move and resize
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExGridSection.OnManualPositionChanged">
+            <summary>
+            Event callback that is invoked when the manual position of the section changes.
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.MudExGridSection.OnContextMenuStopPropagation">
@@ -9414,6 +9645,11 @@
             Grouping with tabs
             </summary>
         </member>
+        <member name="F:MudBlazor.Extensions.Components.ObjectEdit.GroupingStyle.DockPanel">
+            <summary>
+            Grouping with dock panel
+            </summary>
+        </member>
         <member name="F:MudBlazor.Extensions.Components.ObjectEdit.GroupingStyle.None">
             <summary>
             No grouping style
@@ -9598,6 +9834,16 @@
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.SingleExpand">
             <summary>
             If this is true only one group can be expanded at a time other groups will be collapsed
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ParametersForGroupControl">
+            <summary>
+            Parameters here will be forwarded to used group control
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ParametersForGroupItem">
+            <summary>
+            Parameters here will be forwarded to the inner item cmp that is used inside the used group control
             </summary>
         </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.HasRegistrationForWholeObject">
@@ -14254,6 +14500,16 @@
         <member name="T:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderDataDefaults">
             <summary>
             Class containing default render data for various types of properties.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderDataDefaults.RegisterInnerComponentOuter(System.Type,System.Type)">
+            <summary>
+            Register a inner component that requires an outer component as wrapper.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderDataDefaults.RegisterInnerComponentOuter``2">
+            <summary>
+            Register a inner component that requires an outer component as wrapper.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Components.ObjectEdit.Options.RenderDataDefaults.AddRenderDataProvider(System.IServiceProvider)">
@@ -20656,6 +20912,16 @@
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithJustifyContent(MudBlazor.Extensions.Core.Css.JustifyContent,System.Boolean)">
             <summary>
             Specifies the justify-content property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithJustifyItems(MudBlazor.Extensions.Core.Css.JustifyContent,System.Boolean)">
+            <summary>
+            Specifies the justify-items property using a CSS string value, if the 'when' condition is true.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithJustifyItems(System.String,System.Boolean)">
+            <summary>
+            Specifies the justify-items property using a CSS string value, if the 'when' condition is true.
             </summary>
         </member>
         <member name="M:MudBlazor.Extensions.Helper.MudExStyleBuilder.WithFlexFlow(System.String,System.Boolean)">

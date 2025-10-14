@@ -1,4 +1,6 @@
 ﻿_ Text: _ Text
+_{0} Components: '{0} Components'
+_{0} Demos: '{0} Demos'
 --accent-color1: --accent-color1
 --accent-color2: --accent-color2
 --accent-color3: --accent-color3
@@ -70,6 +72,7 @@ Add external Url: Add external Url
 Add files: Add files
 Add Product: Add Product
 Add Role: Add Role
+Add section: Add section
 Add Url: Add Url
 Add user: Add user
 Add user to both lists: Add user to both lists
@@ -486,6 +489,7 @@ BrushTreesDarkBase16: BrushTreesDarkBase16
 brx-IN: Bodo (India)
 bs-Cyrl-BA: Bosnian (Cyrillic, Bosnia & Herzegovina)
 bs-Latn-BA: Bosnian (Latin, Bosnia & Herzegovina)
+Build amazing UIs: Build amazing UIs
 BurlyWood: BurlyWood
 button: button
 Button: Button
@@ -682,6 +686,7 @@ Courrier: Courrier
 Create: Create
 Create address: Create address
 Create new backup: Create new backup
+Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.: Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.
 CreatedOn: Date created
 Critical: Critical
 CropAndScale: CropAndScale
@@ -831,6 +836,7 @@ Dialog: Dialog
 Dialog Appearance: Dialog Appearance
 Dialog Content: Dialog Content
 Dialog Drag & Drop: Dialog Drag & Drop
+Dialog Extensions: Dialog Extensions
 Dialog for editing objects with the MudExObjectEditForm: Dialog for editing objects with the MudExObjectEditForm
 Dialog Sample: Dialog Sample
 Dialog Samples: Dialog Samples
@@ -1192,6 +1198,7 @@ ExpandedIcon: ExpandedIcon
 ExpandOnClick: ExpandOnClick
 ExpandOnFilter: ExpandOnFilter
 Explicit File Display Zip: Explicit File Display Zip
+Explore our most powerful tools: Explore our most powerful tools
 Export: Export
 Export To Excel: Export To Excel
 Export_SheetName: Data
@@ -1654,6 +1661,7 @@ Inset: Inset
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: InterimResults
+Introducing MudExDockControl: Introducing MudExDockControl
 Invalid Credentials.: Invalid Credentials.
 IrBlack: IrBlack
 IrBlackBase16: IrBlackBase16
@@ -1843,6 +1851,7 @@ List: List
 List appearance: List appearance
 List behavior: List behavior
 List item for MudExList.: List item for MudExList.
+Live examples: Live examples
 lkt-US: Lakota (United States)
 ln-AO: Lingala (Angola)
 ln-CD: Lingala (Congo [DRC])
@@ -2041,12 +2050,14 @@ Montreal: Montreal
 Montreal - H1A 0A1: Montreal - H1A 0A1
 Montreal - H1A 0A1ender: Montreal - H1A 0A1ender
 Montserrat: Montserrat
+More than {0} Components: More than {0} Components
 Motion: Motion
 Mouse: Mouse
 MouseOverMessageClass: MouseOverMessageClass
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: MouseWheelDownAction
 MouseWheelUpAction: MouseWheelUpAction
+Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.
 MoveContent: MoveContent
 mr-IN: Marathi (India)
 MS Outlook: MS Outlook
@@ -2147,7 +2158,9 @@ MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address
 MudExGrid: MudExGrid
+MudExGrid — Now with Layout Editing: MudExGrid — Now with Layout Editing
 MudExGrid Enhanced: MudExGrid Enhanced
+MudExGrid Layout: MudExGrid Layout
 MudExGridSection: MudExGridSection
 MudExGroupBox: MudExGroupBox
 MudExHtmlEdit: MudExHtmlEdit
@@ -2336,6 +2349,7 @@ ne-NP: Nepali (Nepal)
 NebulaBase16: NebulaBase16
 Never: Never
 New: New
+NEW: NEW
 NEW Dialog Drag Drop Mode: NEW Dialog Drag Drop Mode
 New dialog Feature - SnapDrag: New dialog Feature - SnapDrag
 New Message From {0}: New Message From {0}
@@ -3254,6 +3268,7 @@ Read More: Read More
 Readme: Readme
 readme.md: readme.md
 ReadOnly: ReadOnly
+Ready to use: Ready to use
 Realtime Updates & Insights with SignalR.: Realtime Updates & Insights with SignalR.
 RebeccaBase16: RebeccaBase16
 RebeccaPurple: RebeccaPurple
@@ -3336,6 +3351,7 @@ Restore database: Restore database
 Restore default: Restore default
 Restore finished: Restore finished
 Restore in progress. Please wait until the restore is finished. This can take a while.: Restore in progress. Please wait until the restore is finished. This can take a while.
+Restore saved layout: Restore saved layout
 Revert: Revert
 RGB: RGB
 RGBA: RGBA
@@ -3455,6 +3471,7 @@ Save: Save
 Save {0} Changes: '{0} Änderungen speichern'
 Save as: Save as
 Save Changes: Save Changes
+Save Current layout: Save Current layout
 Save image: Save image
 Save Role: Save Role
 Save visible area only: Save visible area only
@@ -3971,6 +3988,7 @@ The user {0} has been logged off: The user {0} has been logged off
 The User {0} has just edited, created or deleted entries here. You should reload the data: The User {0} has just edited, created or deleted entries here. You should reload the data
 Theme: Theme
 Theme Colors: Theme Colors
+Theme Editor: Theme Editor
 Themes: Themes
 ThemeSelect: ThemeSelect
 There are no new notifications: There are no new notifications
@@ -4315,7 +4333,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: You are logged out by an Administrator or profile change.
 You are Logged Out.: You are Logged Out.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: You can also use MudExAdditionalAdornment as ChildContent of a MudInput
+You can move me: You can move me
 You can now Login with your credentials: You can now Login with your credentials
+You can resize me: You can resize me
 You cannot delete yourself: You cannot delete yourself
 You clicked: You clicked
 You don't need an extra JsonEditor anymore: You don't need an extra JsonEditor anymore

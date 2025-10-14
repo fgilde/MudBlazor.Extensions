@@ -835,6 +835,7 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
     /// </summary>
     protected override Task UpdateTextPropertyAsync(bool updateValue)
     {
+        //TODO: #2 Checked this here is an error
         List<string> textList = new List<string>();
         if (Items != null && Items.Any())
         {
@@ -888,8 +889,14 @@ public partial class MudExSelect<T> : IMudExSelect, IMudExShadowSelect, IMudExCo
 
     private string GetSelectTextPresenter()
     {
-        if (ToStringFunc != null && Value != null)
-            return ToStringFunc(Value);
+        if (ToStringFunc != null) // TODO: this is a workaround for the TODO #2 in this file
+        {
+            if (MultiSelection && SelectedValues?.Any() == true)
+                return string.Join(Delimiter, SelectedValues.Select(x => ToStringFunc(x)));
+            if (Value != null)
+                return ToStringFunc(Value);
+        }
+        UpdateTextPropertyAsync(false);
         return Text;
     }
 

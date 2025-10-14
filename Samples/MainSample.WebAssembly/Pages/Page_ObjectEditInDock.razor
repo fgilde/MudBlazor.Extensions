@@ -1,0 +1,69 @@
+﻿@page "/mudex-object-edit-dock"
+@inherits BasePage
+
+@using Newtonsoft.Json
+@using MudBlazor.Extensions.Components.ObjectEdit.Options
+
+@attribute [DemoNew(Group = "MudExObjectEdit", Name = "With DockLayout", Order = 1, Documentation = "Demo for using MudExObjectEdit GroupingStyle.Tabs ", Icon = Icons.Material.Outlined.Tab, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+@attribute [DemoNew(Group = nameof(MudExDockLayout), Name = "DockLayout with ObjectEdit", Order = 1, Documentation = "Demo for using MudExObjectEdit GroupingStyle.Tabs ", Icon = Icons.Material.Outlined.Tab, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
+
+<MudButton OnClick="@TestClck">Test</MudButton>
+<DemoComponent PageType="@GetType()" DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "ObjectEditMetaConfig/MySimpleTypeRegistrations.cs", "Shared/ProgrammingSkillSelect.razor"})">
+    <MudExObjectEditForm 
+        @ref="_objectEdit"
+        T="TestClass"
+        AutoSkeletonOnLoad="true"
+        MetaConfiguration="@Configure"
+        Value="@Test"
+        AutoSaveRestoreState="true"
+        GroupingStyle="GroupingStyle.DockPanel">
+    </MudExObjectEditForm>
+</DemoComponent>
+
+
+@code {
+    MudExObjectEdit<TestClass> _objectEdit;
+    private void Configure(ObjectEditMeta<TestClass> meta)
+    {
+        meta.WrapEachInMudItem();
+        meta.Properties(x => x.FirstName, x => x.LastName, x => x.Title).WithGroup("Names");
+        meta.Properties(x => x.Gender, x => x.Age).WithGroup("Other");
+    }
+
+    public TestClass Test { get; set; } = new()
+    {
+        FirstName = "John",
+        LastName = "Doe",
+        Age = 30,
+        Address = new Address
+        {
+            Street = "123 Main St",
+            City = "Anytown",
+            ZipCode = "12345"
+        }
+    };
+
+    public class TestClass
+    {
+        public bool Gender { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Title { get; set; }
+        public int Age { get; set; }
+        public Address Address { get; set; }
+
+    }
+    public class Address
+    {
+        public string Street { get; set; }
+        public string City { get; set; }
+        public string ZipCode { get; set; }
+    }
+
+    private async Task TestClck()
+    {
+        var dl = _objectEdit.GetGroupOuterComponent<MudExDockLayout>();
+        await dl.ReinitializeAsync();
+    }
+
+}

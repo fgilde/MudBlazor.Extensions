@@ -1,0 +1,80 @@
+﻿@page "/dock-layout"
+@inherits BasePage
+
+@attribute [DemoNew(Name = "MudExDockLayout", Group = nameof(MudExDockLayout), Order = -1, Icon = Icons.Material.Outlined.ArrowDropDown, Documentation = "Dock", ForComponentType = typeof(MudExDockLayout))]
+
+<MudButton OnClick="@Save">@L["Save Current layout"]</MudButton>
+<MudButton Disabled="@(string.IsNullOrWhiteSpace(json))" OnClick="@Restore">@L["Restore saved layout"]</MudButton>
+
+<MudExDockLayout @ref="_layout">
+    <MudExDockItem Title="LeftArea" Direction="DockDirection.Below">
+        <MudCard Class="m-5 p-5" Elevation="4">
+            <MudCardMedia Image="https://mudblazor.com/images/door.jpg" Height="200" />
+            <MudCardContent>
+                <MudText Typo="Typo.h5">@L["Old Paint"]</MudText>
+                <MudText Typo="Typo.body2">@L["Old paint found on a stone house door."]</MudText>
+                <MudText Typo="Typo.body2">@L["This photo was taken in a small village in Istra Croatia."]</MudText>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudExDockItem>
+    <MudExDockItem Direction="DockDirection.Above" Title="TOP">
+        <MudText Class="mb-5" Typo="Typo.h4" Color="Color.Secondary">@L["Sample Top"]</MudText>
+    </MudExDockItem>
+    <MudExDockItem Direction="DockDirection.Right" Title="right" IsActive="true">
+        <MudButton Variant="Variant.Filled" OnClick="@(() => cc++)" Color="Color.Primary">Click me @cc</MudButton>
+    </MudExDockItem>
+
+    <MudExDockItem Direction="DockDirection.Right" Title="Super Right">
+        <MudText Class="mb-5" Typo="Typo.h4" Color="Color.Secondary">@L["Sample Headline"]</MudText>
+    </MudExDockItem>
+</MudExDockLayout>
+
+
+@code {
+    int cc = 0;
+    private MudExDockLayout? _layout;
+    private string json;
+
+
+    private async Task Save()
+    {
+        json = await _layout!.SaveLayoutAsync();
+    }
+
+    private async Task Restore()
+    {
+        await _layout!.RestoreLayoutAsync(json);
+    }
+}
+
+
+@* <DemoComponent PageType="@GetType()" >
+    <SplitContainer>
+        <Left>
+            <MudExColorEdit Value="Color.Secondary" @ref="component"></MudExColorEdit>
+        </Left>
+        <Right>
+            <ComponentPropertyGrid MetaConfiguration="@Configure()" Value="@component"></ComponentPropertyGrid>
+        </Right>
+    </SplitContainer>
+</DemoComponent> *@
+
+
+@code {
+    // MudExColorEdit component;
+    // private Action<ObjectEditMeta<MudExColorEdit>> Configure()
+    // {
+    //     return meta =>
+    //     {
+    //         meta.Property(m => m.Localizer).Ignore();
+    //         meta.Property(m => m.CssVars).Ignore();
+    //         meta.Property(m => m.Color).WithAdditionalAttribute(nameof(MudColorPicker.ShowAlpha), false, true);
+    //         meta.IgnoreAllReadOnlyFields();
+    //     };
+    // }
+
+}

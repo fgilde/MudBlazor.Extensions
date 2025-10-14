@@ -1,12 +1,15 @@
-﻿@inherits MudExBaseComponent<MudExGrid>
-
+﻿@using BlazorJS.Attributes
+@using Newtonsoft.Json
+@inherits MudExBaseComponent<MudExGrid>
 <div @attributes="UserAttributes" class="@GetClass()" style="@GetStyle()"
      @onclick="OnClickHandler"
      @onclick:stopPropagation="OnClickStopPropagation"
      @oncontextmenu="OnContextMenu"
      @oncontextmenu:preventDefault="OnContextMenuPreventDefault"
-     @oncontextmenu:stopPropagation="OnContextMenuStopPropagation">
-    <CascadingValue Value="@this" IsFixed="true">
-        @ChildContent
-    </CascadingValue>
+     @oncontextmenu:stopPropagation="OnContextMenuStopPropagation"
+     data-options="@JsonConvert.SerializeObject(this.AsJsObject())"
+     @ref="GridElement">
+    <CascadingValue Value="@this" IsFixed="true">@ChildContent</CascadingValue>
+    <div class="mud-ex-grid-overlay" aria-hidden="true"></div>
+    <div class="mud-ex-grid-placeholder" aria-hidden="true"></div>
 </div>

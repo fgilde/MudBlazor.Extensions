@@ -1,4 +1,6 @@
 ﻿_ Text: _Tekst
+_{0} Components: '{0} komponenter'
+_{0} Demos: '{0} Demoer'
 --accent-color1: --accent-farve1
 --accent-color2: --accent-farve2
 --accent-color3: --accent-farve3
@@ -70,6 +72,7 @@ Add external Url: Tilføj ekstern URL
 Add files: Tilføj filer
 Add Product: Tilføj produkt
 Add Role: Tilføj rolle
+Add section: Tilføj afsnit
 Add Url: Tilføj URL
 Add user: Tilføj bruger
 Add user to both lists: Føj bruger til begge lister
@@ -486,6 +489,7 @@ BrushTreesDarkBase16: BrushTreesDarkBase16
 brx-IN: Bodø (Indien)
 bs-Cyrl-BA: Bosnisk (kyrillisk, Bosnien-Hercegovina)
 bs-Latn-BA: Bosnisk (latinsk, Bosnien-Hercegovina)
+Build amazing UIs: Byg fantastiske brugergrænseflader
 BurlyWood: BurlyWood
 button: knap
 Button: Knap
@@ -682,6 +686,7 @@ Courrier: Mail
 Create: Skabe
 Create address: Opret adresse
 Create new backup: Opret ny sikkerhedskopi
+Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.: Opret kraftfulde, fleksible dock-layouts – træk, slip, fastgør og organiser dine dialoger eller paneler uden besvær.
 CreatedOn: Oprettelsesdato
 Critical: Afgørende
 CropAndScale: Beskær og skaler
@@ -831,6 +836,7 @@ Dialog: Dialog
 Dialog Appearance: Dialogens udseende
 Dialog Content: Dialogens indhold
 Dialog Drag & Drop: 'Dialog: Træk og slip'
+Dialog Extensions: Udvidelser til dialogbokse
 Dialog for editing objects with the MudExObjectEditForm: Dialog til redigering af objekter med MudExObjectEditForm
 Dialog Sample: Eksempel på dialogboks
 Dialog Samples: Eksempler på dialogbokse
@@ -1192,6 +1198,7 @@ ExpandedIcon: UdvidetIkon
 ExpandOnClick: UdvidPåKlik
 ExpandOnFilter: UdvidPåFilter
 Explicit File Display Zip: Eksplicit filvisning Zip
+Explore our most powerful tools: Udforsk vores mest effektive værktøjer
 Export: Eksport
 Export To Excel: Eksporter til Excel
 Export_SheetName: Data
@@ -1654,6 +1661,7 @@ Inset: Indsat
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: Foreløbige resultater
+Introducing MudExDockControl: Vi præsenterer MudExDockControl
 Invalid Credentials.: Ugyldige legitimationsoplysninger.
 IrBlack: IrBlack
 IrBlackBase16: IrBlackBase16
@@ -1843,6 +1851,7 @@ List: Liste
 List appearance: Liste udseende
 List behavior: Listeadfærd
 List item for MudExList.: Listeelement til MudExList.
+Live examples: Levende eksempler
 lkt-US: Lakota (Amerikas Forenede Stater)
 ln-AO: Lingala (Angola)
 ln-CD: Lingala (Congo [DRC])
@@ -2041,12 +2050,14 @@ Montreal: Montreal
 Montreal - H1A 0A1: Montreal - H1A 0A1
 Montreal - H1A 0A1ender: Montreal - H1A 0A1ender
 Montserrat: Montserrat
+More than {0} Components: Mere end {0} komponenter
 Motion: Bevægelse
 Mouse: Mus
 MouseOverMessageClass: MouseOverMessageClass
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: MouseWheelDownAction
 MouseWheelUpAction: MouseWheelUpAction
+Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Flyt og tilpas størrelsen på gitterelementer direkte med træk og slip – design dit layout dynamisk under kørsel.
 MoveContent: Flyt indhold
 mr-IN: Marathi (Indien)
 MS Outlook: MS Outlook
@@ -2147,7 +2158,9 @@ MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar er en MudAvatar, der automatisk bruger profilbilledet fra gravatar til en e-mailadresse
 MudExGrid: MudExGrid
+MudExGrid — Now with Layout Editing: MudExGrid – nu med layoutredigering
 MudExGrid Enhanced: MudExGrid forbedret
+MudExGrid Layout: MudExGrid-layout
 MudExGridSection: MudExGrid-sektionen
 MudExGroupBox: MudExGroupBox
 MudExHtmlEdit: MudExHtmlRediger
@@ -2336,6 +2349,7 @@ ne-NP: Nepalesisk (Nepal)
 NebulaBase16: NebulaBase16
 Never: Aldrig
 New: Ny
+NEW: NY
 NEW Dialog Drag Drop Mode: 'NY dialog: Træk slip-tilstand'
 New dialog Feature - SnapDrag: Ny dialogfunktion - SnapDrag
 New Message From {0}: Ny besked fra {0}
@@ -3254,6 +3268,7 @@ Read More: Læs mere
 Readme: Vigtigt!
 readme.md: readme.md
 ReadOnly: Skrivebeskyttet
+Ready to use: Klar til brug
 Realtime Updates & Insights with SignalR.: Opdateringer og indsigt i realtid med SignalR.
 RebeccaBase16: RebeccaBase16
 RebeccaPurple: RebeccaLilla
@@ -3336,6 +3351,7 @@ Restore database: Gendan database
 Restore default: Gendan standard
 Restore finished: Gendan færdig
 Restore in progress. Please wait until the restore is finished. This can take a while.: Gendannelse i gang. Vent venligst, indtil gendannelsen er færdig. Dette kan tage et stykke tid.
+Restore saved layout: Gendan gemt layout
 Revert: Vende tilbage
 RGB: RGB
 RGBA: RGBA
@@ -3455,6 +3471,7 @@ Save: Spare
 Save {0} Changes: '{0} Gem ændringer'
 Save as: Gem som
 Save Changes: Gem ændringer
+Save Current layout: Gem aktuelt layout
 Save image: Gem billede
 Save Role: Gem rolle
 Save visible area only: Gem kun synligt område
@@ -3971,6 +3988,7 @@ The user {0} has been logged off: Brugeren {0} er logget af
 The User {0} has just edited, created or deleted entries here. You should reload the data: Brugeren {0} har lige redigeret, oprettet eller slettet poster her. Du bør genindlæse dataene
 Theme: Tema
 Theme Colors: Tema Farver
+Theme Editor: Tema redaktør
 Themes: Temaer
 ThemeSelect: TemaVælg
 There are no new notifications: Der er ingen nye notifikationer
@@ -4315,7 +4333,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: Du logges ud af en administrator eller profilændring.
 You are Logged Out.: Du er logget ud.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: Du kan også bruge MudExAdditionalAdornment som ChildContent i et MudInput
+You can move me: Du kan bevæge mig
 You can now Login with your credentials: Du kan nu logge ind med dine legitimationsoplysninger
+You can resize me: Du kan ændre størrelsen på mig
 You cannot delete yourself: Du kan ikke slette dig selv
 You clicked: Du klikkede på
 You don't need an extra JsonEditor anymore: Du behøver ikke længere en ekstra JsonEditor

@@ -1,4 +1,6 @@
 ﻿_ Text: _문자 메시지
+_{0} Components: '{0} 구성 요소'
+_{0} Demos: '{0} 데모'
 --accent-color1: --악센트 색상1
 --accent-color2: --악센트 색상2
 --accent-color3: --악센트 색상3
@@ -70,6 +72,7 @@ Add external Url: 외부 URL 추가
 Add files: 파일 추가
 Add Product: 제품 추가
 Add Role: 역할 추가
+Add section: 섹션 추가
 Add Url: URL 추가
 Add user: 사용자 추가
 Add user to both lists: 두 목록에 사용자 추가
@@ -486,6 +489,7 @@ BrushTreesDarkBase16: 브러시트리다크베이스16
 brx-IN: 보도(인도)
 bs-Cyrl-BA: 보스니아어(키릴 자모, 보스니아 헤르체고비나)
 bs-Latn-BA: 보스니아어(라틴어, 보스니아 헤르체고비나)
+Build amazing UIs: 놀라운 UI 구축
 BurlyWood: 벌리우드
 button: 단추
 Button: 단추
@@ -682,6 +686,7 @@ Courrier: 우편
 Create: 창조하다
 Create address: 주소 생성
 Create new backup: 새 백업 만들기
+Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.: 강력하고 유연한 도크 레이아웃을 생성하여 대화 상자 또는 패널을 쉽게 드래그, 드롭, 스냅 및 구성할 수 있습니다.
 CreatedOn: 작성일
 Critical: 비판적인
 CropAndScale: 자르기 및 크기 조정
@@ -831,6 +836,7 @@ Dialog: 대화
 Dialog Appearance: 대화상자 모양
 Dialog Content: 대화 내용
 Dialog Drag & Drop: '대화상자: 드래그 앤 드롭'
+Dialog Extensions: 대화 상자 확장
 Dialog for editing objects with the MudExObjectEditForm: MudExObjectEditForm을 사용하여 오브젝트를 편집하기 위한 대화상자
 Dialog Sample: 대화 상자 샘플
 Dialog Samples: 대화 상자 샘플
@@ -1192,6 +1198,7 @@ ExpandedIcon: 확장된 아이콘
 ExpandOnClick: ExpandOn클릭
 ExpandOnFilter: 필터 확장
 Explicit File Display Zip: 명시적 파일 표시 Zip
+Explore our most powerful tools: 가장 강력한 도구 살펴보기
 Export: 수출
 Export To Excel: Excel로 내보내기
 Export_SheetName: 데이터
@@ -1654,6 +1661,7 @@ Inset: 삽입하다
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: 중간 결과
+Introducing MudExDockControl: MudExDockControl 소개
 Invalid Credentials.: 잘못된 자격 증명입니다.
 IrBlack: 아이어블랙
 IrBlackBase16: Ir블랙베이스16
@@ -1843,6 +1851,7 @@ List: 목록
 List appearance: 목록 모양
 List behavior: 목록 동작
 List item for MudExList.: MudExList에 대한 리스트 항목입니다.
+Live examples: 실제 예제
 lkt-US: 라코타(미국)
 ln-AO: 링갈라(앙골라)
 ln-CD: 링갈라어(콩고[DRC])
@@ -2041,12 +2050,14 @@ Montreal: 몬트리올
 Montreal - H1A 0A1: 몬트리올 - H1A 0A1
 Montreal - H1A 0A1ender: 몬트리올 - H1A 0A1ender
 Montserrat: 몬트세랫
+More than {0} Components: '{0}개 이상의 구성 요소'
 Motion: 움직임
 Mouse: 마우스
 MouseOverMessageClass: MouseOverMessage클래스
 MouseOverMessageStyle: 마우스 오버 메시지 스타일
 MouseWheelDownAction: 마우스 휠 다운액션
 MouseWheelUpAction: 마우스 휠업 액션
+Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: 드래그 앤 드롭으로 그리드 항목을 직접 이동하고 크기를 조정하여 런타임에 레이아웃을 동적으로 디자인할 수 있습니다.
 MoveContent: 콘텐츠 이동
 mr-IN: 마라티어(인도)
 MS Outlook: MS 아웃룩
@@ -2147,7 +2158,9 @@ MudExGradientText: MudExGradientText (머드엑스그라디언트 텍스트)
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar는 gravatar의 프로필 이미지를 이메일 주소로 자동으로 사용하는 MudAvatar입니다
 MudExGrid: 머덱스그리드
+MudExGrid — Now with Layout Editing: MudExGrid — 이제 레이아웃 편집 기능 포함
 MudExGrid Enhanced: MudExGrid 강화
+MudExGrid Layout: MudExGrid 레이아웃
 MudExGridSection: MudExGrid섹션
 MudExGroupBox: MudExGroupBox
 MudExHtmlEdit: MudExHtml편집
@@ -2336,6 +2349,7 @@ ne-NP: 네팔어(네팔)
 NebulaBase16: 네뷸라베이스16
 Never: 결코
 New: 새로운
+NEW: 새로운
 NEW Dialog Drag Drop Mode: 새로운 대화 상자 드래그 드롭 모드
 New dialog Feature - SnapDrag: 새 대화 상자 기능 - SnapDrag
 New Message From {0}: '{0}의 새로운 메시지'
@@ -3254,6 +3268,7 @@ Read More: 더 읽어보기
 Readme: 읽어보기
 readme.md: readme.md
 ReadOnly: 읽기 전용
+Ready to use: 사용 준비 완료
 Realtime Updates & Insights with SignalR.: SignalR을 사용한 실시간 업데이트 및 인사이트.
 RebeccaBase16: 레베카베이스16
 RebeccaPurple: 레베카퍼플
@@ -3336,6 +3351,7 @@ Restore database: 데이터베이스 복원
 Restore default: 기본값 복원
 Restore finished: 복원 완료
 Restore in progress. Please wait until the restore is finished. This can take a while.: 복원이 진행 중입니다. 복원이 완료될 때까지 기다리십시오. 시간이 걸릴 수 있습니다.
+Restore saved layout: 저장된 레이아웃 복원
 Revert: 되돌릴
 RGB: RGB
 RGBA: RGBA
@@ -3455,6 +3471,7 @@ Save: 구해내다
 Save {0} Changes: '{0} 변경 사항 저장'
 Save as: 다른 이름으로 저장
 Save Changes: 변경 사항 저장
+Save Current layout: 현재 레이아웃 저장
 Save image: 이미지 저장
 Save Role: 역할 저장
 Save visible area only: 보이는 영역만 저장
@@ -3971,6 +3988,7 @@ The user {0} has been logged off: 사용자 {0}이 로그오프되었습니다.
 The User {0} has just edited, created or deleted entries here. You should reload the data: 사용자 {0}이 방금 여기에서 항목을 편집, 생성 또는 삭제했습니다. 데이터를 다시 로드해야 합니다.
 Theme: 주제
 Theme Colors: 테마 색상
+Theme Editor: 테마 편집기
 Themes: 테마
 ThemeSelect: 테마선택
 There are no new notifications: 새 알림이 없습니다.
@@ -4315,7 +4333,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: 관리자 또는 프로필 변경으로 인해 로그아웃되었습니다.
 You are Logged Out.: 로그아웃되었습니다.
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment 를 MudInput 의 ChildContent 로 사용할 수도 있습니다
+You can move me: 당신은 나를 움직일 수 있습니다
 You can now Login with your credentials: 이제 자격 증명으로 로그인할 수 있습니다.
+You can resize me: 내 크기를 조정할 수 있습니다.
 You cannot delete yourself: 자신을 삭제할 수 없습니다.
 You clicked: 클릭
 You don't need an extra JsonEditor anymore: 더 이상 추가 JsonEditor가 필요하지 않습니다.

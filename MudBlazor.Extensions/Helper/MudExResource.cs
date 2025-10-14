@@ -16,6 +16,8 @@ public static class MudExResource
     private static readonly ConcurrentDictionary<Assembly, XmlDocument> XmlDocCache = new();
     private static readonly ConcurrentDictionary<string, string> EmbeddedFileContentCache = new();
 
+    public const string PackageName = "MudBlazor.Extensions";
+
     /// <summary>
     /// Returns whether the current runtime is client-side (WASM) or server-side
     /// </summary>

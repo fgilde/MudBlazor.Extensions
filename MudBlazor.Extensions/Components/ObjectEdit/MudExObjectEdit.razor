@@ -2,6 +2,7 @@
 @using MudBlazor.Extensions.Helper
 @using MudBlazor.Extensions.Options
 @using Microsoft.AspNetCore.Components.Rendering
+@using Nextended.Core.Extensions
 
 @typeparam T
 @inherits MudExBaseComponent<MudExObjectEdit<T>>
@@ -150,7 +151,7 @@
                                 };
 
                                 @BuildWrapped(
-                                    GetGroupStyleInnerCmp(displayName, groupId, !GroupsCollapsible, groupCss),
+                                    GetGroupStyleInnerCmp(displayName, groupId, groupCss),
                                     innerCombined
                                 )
                             }
@@ -184,10 +185,10 @@
 
         foreach (var (t, parms) in wrappers.Reverse())
         {
-            var child = current; // wichtig fürs Closure
+            var child = current; // important closure capture
             current = @<DynamicComponent Type="@t"
                                          @ref="@DynamicComponentRef"
-                              Parameters="@Merge(parms, new Dictionary<string, object?> { [nameof(FragmentWrapper.ChildContent)] = child })" />;
+                              Parameters="@((parms ?? new Dictionary<string, object>()).MergeWith(new Dictionary<string, object?> { [nameof(FragmentWrapper.ChildContent)] = child }))" />;
         }
 
         return current;
@@ -204,7 +205,6 @@
                                         @ref="@DynamicComponentRef"
                                          Parameters="@(new Dictionary<string, object?>
                                                      {
-                                                         // Standard-Slot für Inhalt
                                                          [nameof(FragmentWrapper.ChildContent)] = child
                                                      })" />;
         }

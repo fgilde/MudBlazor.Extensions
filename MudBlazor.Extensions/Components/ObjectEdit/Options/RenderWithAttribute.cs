@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using MudBlazor.Extensions.Helper;
 using Nextended.Core.Extensions;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit.Options;
@@ -25,23 +26,40 @@ public class RenderWithAttribute : System.Attribute
     {
         return meta.RenderWith(ComponentType);
     }
+
+    public static RenderWithAttribute GetRenderWithFromEnumValue(Enum val)
+    {
+        return EnumHelper.GetCustomAttributes<RenderWithAttribute>(val, false).FirstOrDefault();
+    }
+    
+    public static (RenderWithAttribute Attribute, IDictionary<string, object> Parameters)? GetRenderWithAndAttributesFromEnumValue(Enum val)
+    {
+        var attribute = GetRenderWithFromEnumValue(val);
+        if(attribute != null)
+        {
+            var parameters = AttributeParameterAttribute.GetAttributesFromEnumValue(val);
+            return (attribute, parameters);
+        }
+        return null;
+    }
 }
 
 public class RenderWithAttribute<TComponent> : RenderWithAttribute where TComponent : new()
 {
     private readonly IDictionary<string, object> _attributes;
-    //private string _valueFieldName;
+    private string _valueFieldName;
 
-    //public RenderWithAttribute(Dictionary<string, object> attributes = null) { }
+    public RenderWithAttribute(string valueField, Dictionary<string, object> attributes = null) : this(valueField)
+    { }
 
-    //public RenderWithAttribute(string valueField)
-    //{
-    //    _valueFieldName = valueField;
-    //}
+    public RenderWithAttribute(string valueField): base(typeof(TComponent))
+    {
+        _valueFieldName = valueField;
+    }
 
-    //public RenderWithAttribute(Expression<Func<TComponent, object>> valueField, Dictionary<string, object> attributes = null)
-    //    : this(valueField.GetMemberName(), attributes)
-    //{ }
+    public RenderWithAttribute(Expression<Func<TComponent, object>> valueField, Dictionary<string, object> attributes = null)
+        : this(valueField.GetMemberName(), attributes)
+    { }
 
     /// <summary>
     /// Applies the attribute to the given ObjectEditPropertyMeta instance.
@@ -54,6 +72,7 @@ public class RenderWithAttribute<TComponent> : RenderWithAttribute where TCompon
     public RenderWithAttribute() : base(typeof(TComponent))
     {}
 }
+
 
 [AttributeUsage(AttributeTargets.Property)]
 public class RenderWithAttribute<TComponent, TPropertyType, TFieldType> : RenderWithAttribute where TComponent : new()

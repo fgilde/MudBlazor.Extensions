@@ -1,4 +1,6 @@
 ﻿_ Text: _テキスト
+_{0} Components: '{0}コンポーネント'
+_{0} Demos: '{0}デモ'
 --accent-color1: --アクセントカラー1
 --accent-color2: --アクセントカラー2
 --accent-color3: --アクセントカラー3
@@ -70,6 +72,7 @@ Add external Url: 外部 URL の追加
 Add files: ファイルの追加
 Add Product: 製品の追加
 Add Role: ロールの追加
+Add section: セクションを追加
 Add Url: URLの追加
 Add user: ユーザーの追加
 Add user to both lists: 両方のリストにユーザーを追加する
@@ -486,6 +489,7 @@ BrushTreesDarkBase16: ブラシツリーダークベース16
 brx-IN: ボド(インド)
 bs-Cyrl-BA: ボスニア語(キリル文字、ボスニア・ヘルツェゴビナ)
 bs-Latn-BA: ボスニア語(ラテン語、ボスニア・ヘルツェゴビナ)
+Build amazing UIs: 素晴らしい UI を構築する
 BurlyWood: バーリーウッド
 button: ボタン
 Button: ボタン
@@ -682,6 +686,7 @@ Courrier: 郵便
 Create: 創造する
 Create address: 住所の作成
 Create new backup: 新しいバックアップを作成する
+Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.: 強力で柔軟なドックレイアウトを作成し、ダイアログやパネルを簡単にドラッグ、ドロップ、スナップ、整理できます。
 CreatedOn: 作成日
 Critical: 危うい
 CropAndScale: クロップとスケール
@@ -831,6 +836,7 @@ Dialog: '] ダイアログ'
 Dialog Appearance: ダイアログの外観
 Dialog Content: ダイアログ コンテンツ
 Dialog Drag & Drop: ダイアログ ドラッグ アンド ドロップ
+Dialog Extensions: ダイアログ拡張機能
 Dialog for editing objects with the MudExObjectEditForm: MudExObjectEditForm を使用してオブジェクトを編集するためのダイアログ ボックス
 Dialog Sample: ダイアログのサンプル
 Dialog Samples: ダイアログのサンプル
@@ -1192,6 +1198,7 @@ ExpandedIcon: 展開アイコン
 ExpandOnClick: クリック時展開
 ExpandOnFilter: フィルターの展開
 Explicit File Display Zip: 明示的なファイル表示 Zip
+Explore our most powerful tools: 最も強力なツールをご覧ください
 Export: 輸出
 Export To Excel: Excelにエクスポート
 Export_SheetName: データ
@@ -1654,6 +1661,7 @@ Inset: はめ込み
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: 中間結果
+Introducing MudExDockControl: MudExDockControl の紹介
 Invalid Credentials.: 無効な資格情報。
 IrBlack: Irブラック
 IrBlackBase16: Irブラックベース16
@@ -1843,6 +1851,7 @@ List: リスト
 List appearance: リストの外観
 List behavior: リストの動作
 List item for MudExList.: MudExList のリスト項目。
+Live examples: ライブ例
 lkt-US: ラコタ (アメリカ合衆国)
 ln-AO: リンガラ語(アンゴラ)
 ln-CD: リンガラ語(コンゴ[DRC])
@@ -2041,12 +2050,14 @@ Montreal: モントリオール
 Montreal - H1A 0A1: モントリオール - H1A 0A1
 Montreal - H1A 0A1ender: モントリオール - H1A 0A1ender
 Montserrat: モントセラト
+More than {0} Components: '{0}以上のコンポーネント'
 Motion: 動議
 Mouse: 鼠
 MouseOverMessageClass: MouseOverMessageクラス
 MouseOverMessageStyle: MouseOverMessageStyle (マウスオーバーメッセージスタイル)
 MouseWheelDownAction: マウスホイールダウンアクション
 MouseWheelUpAction: MouseWheelUpアクション
+Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: ドラッグ&ドロップでグリッドアイテムを直接移動およびサイズ変更し、実行時にレイアウトを動的にデザインします。
 MoveContent: コンテンツの移動
 mr-IN: マラーティー語(インド)
 MS Outlook: MSアウトルック
@@ -2147,7 +2158,9 @@ MudExGradientText: MudExGradientText (MudExグラデーションテキスト)
 MudExGravatar: MudExGravatar (ムードエックスグラバタール)
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatarは、gravatarのプロフィール画像をメールアドレスに自動で使用するMudAvatarです
 MudExGrid: MudExGrid (マッドエックスグリッド)
+MudExGrid — Now with Layout Editing: MudExGrid — レイアウト編集機能付き
 MudExGrid Enhanced: MudExGrid の強化
+MudExGrid Layout: MudExGrid レイアウト
 MudExGridSection: MudExGridSection (MudExGridセクション)
 MudExGroupBox: MudExGroupBox (MudExグループボックス)
 MudExHtmlEdit: MudExHtml編集
@@ -2336,6 +2349,7 @@ ne-NP: ネパール語(ネパール)
 NebulaBase16: NebulaBase16 (星雲ベース16)
 Never: 一度もない
 New: 新機能
+NEW: 新機能
 NEW Dialog Drag Drop Mode: NEW ダイアログ ドラッグ ドロップ モード
 New dialog Feature - SnapDrag: 新しいダイアログ機能 - SnapDrag
 New Message From {0}: '{0}からの新しいメッセージ'
@@ -3254,6 +3268,7 @@ Read More: 続きを読む
 Readme: Readme (Readme)
 readme.md: readme.md
 ReadOnly: 読み取り専用
+Ready to use: すぐに使える
 Realtime Updates & Insights with SignalR.: SignalR によるリアルタイムの更新と分析情報。
 RebeccaBase16: レベッカベース16
 RebeccaPurple: レベッカパープル
@@ -3336,6 +3351,7 @@ Restore database: データベースを復元する
 Restore default: デフォルトに戻す
 Restore finished: 復元が完了しました
 Restore in progress. Please wait until the restore is finished. This can take a while.: 復元が進行中です。復元が完了するまでお待ちください。これには時間がかかる場合があります。
+Restore saved layout: 保存したレイアウトを復元する
 Revert: 戻す
 RGB: RGBの
 RGBA: RGBAの
@@ -3455,6 +3471,7 @@ Save: セーブ
 Save {0} Changes: '{0} 変更を保存'
 Save as: 名前を付けて保存
 Save Changes: 変更を保存
+Save Current layout: 現在のレイアウトを保存
 Save image: 画像を保存
 Save Role: ロールの保存
 Save visible area only: 表示領域のみを保存
@@ -3971,6 +3988,7 @@ The user {0} has been logged off: ユーザー{0}ログオフされている
 The User {0} has just edited, created or deleted entries here. You should reload the data: ユーザー{0}は、ここでエントリを編集、作成、または削除しました。データをリロードする必要があります
 Theme: テーマ
 Theme Colors: テーマの色
+Theme Editor: テーマエディター
 Themes: テーマ
 ThemeSelect: テーマセレクト
 There are no new notifications: 新しい通知はありません
@@ -4315,7 +4333,9 @@ You are logged out because the user with your Token has been deleted or token is
 You are logged out by an Administrator or profile change.: 管理者またはプロファイルの変更によってログアウトされています。
 You are Logged Out.: ログアウトしています。
 You can also use MudExAdditionalAdornment as ChildContent of a MudInput: MudExAdditionalAdornment を MudInput の ChildContent として使用することもできます
+You can move me: あなたは私を動かすことができます
 You can now Login with your credentials: 資格情報を使用してログインできるようになりました
+You can resize me: サイズを変更できます
 You cannot delete yourself: 自分自身は削除できません
 You clicked: クリックした
 You don't need an extra JsonEditor anymore: 追加のJsonEditorはもう必要ありません

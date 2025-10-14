@@ -14,6 +14,18 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/components/MudExDockLayout.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExDockLayout.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/components/MudExGrid.min.js",
+    "inputFiles": [
+      "wwwroot/js/components/MudExGrid.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/components/MudExExternalFilePickerBase.min.js",
     "inputFiles": [
       "wwwroot/js/components/MudExExternalFilePickerBase.js"

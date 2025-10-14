@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using System.Reflection;
-using System.Text;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.CompilerServices;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
@@ -19,7 +16,9 @@ using Nextended.Core;
 using Nextended.Core.Extensions;
 using Nextended.Core.Helper;
 using Nextended.Core.Scopes;
-using TagLib;
+using System.ComponentModel;
+using System.Reflection;
+using System.Text;
 using IComponent = Microsoft.AspNetCore.Components.IComponent;
 
 namespace MudBlazor.Extensions.Components.ObjectEdit;
@@ -47,6 +46,16 @@ public partial class MudExObjectEdit<T>
     /// If this is true only one group can be expanded at a time other groups will be collapsed
     /// </summary>
     [Parameter] public bool SingleExpand { get; set; } = true;
+
+    /// <summary>
+    /// Parameters here will be forwarded to used group control
+    /// </summary>
+    [Parameter] public IDictionary<string, object> ParametersForGroupControl { get; set; }
+
+    /// <summary>
+    /// Parameters here will be forwarded to the inner item cmp that is used inside the used group control
+    /// </summary>
+    [Parameter] public IDictionary<string, object> ParametersForGroupItem { get; set; }
 
     /// <summary>
     /// Returns true if we have a registration for the current object that then uses the registered component
@@ -386,13 +395,34 @@ public partial class MudExObjectEdit<T>
     /// <summary>
     /// The filter value for the component.
     /// </summary>
-    [Parameter] public string Filter { get; set; }
+    [Parameter]
+    public string Filter
+    {
+        get => _filter;
+        set
+        {
+            var oldValue = _filter;
+            _filter = value;
+            _= CheckReinitAsync(oldValue, _filter);
+        }
+    }
 
 
     /// <summary>
     /// The filter values for the component.
     /// </summary>
-    [Parameter] public List<string> Filters { get; set; }
+    [Parameter]
+    public List<string> Filters
+    {
+        get => _filters;
+        set
+        {
+            var oldValue = _filters;
+            _filters = value;
+            _= CheckReinitAsync(oldValue, _filters);
+        }
+    }
+
 
     /// <summary>
     /// Whether to automatically hide disabled fields.
@@ -484,6 +514,7 @@ public partial class MudExObjectEdit<T>
     /// Set this to handle Reset on your own
     /// </summary>
     [Parameter] public Func<Task> CustomResetFunction { get; set; }
+    
 
     #endregion
 
@@ -710,6 +741,54 @@ public partial class MudExObjectEdit<T>
     /// </summary>
     public Task RaiseValueChanged() => ValueChanged.InvokeAsync(Value);
 
+    public DynamicComponent GetGroupOuterComponent()
+    {
+        return _groups.FirstOrDefault(g => g?.Parameters[nameof(Class)]?.ToString()?.Contains("mud-ex-group-outer") == true);
+    }
+
+    public T GetGroupOuterComponent<T>() where T : class, IComponent
+    {
+        var dynCmp = GetGroupOuterComponent();
+        return dynCmp?.Instance as T;
+    }
+
+    private Task CheckReinitAsync(string oldValue, string newValue)
+    {
+        oldValue ??= string.Empty;
+        newValue ??= string.Empty;
+        if (newValue != oldValue && !newValue.StartsWith(oldValue))
+        {
+            var reinitializable = GetGroupOuterComponent<IReinitializable>();
+            return reinitializable?.ReinitializeAsync() ?? Task.CompletedTask;
+        }
+        return Task.CompletedTask;
+    }
+
+    private Task CheckReinitAsync(List<string> oldValues, List<string> newValues)
+    {
+        if (oldValues == null && newValues == null)
+        {
+            return Task.CompletedTask;
+        }
+
+        if (oldValues == null || newValues == null || oldValues.Count != newValues.Count)
+        {
+            var reinitializable = GetGroupOuterComponent<IReinitializable>();
+            return reinitializable?.ReinitializeAsync() ?? Task.CompletedTask;
+        }
+
+        for (int i = 0; i < oldValues.Count; i++)
+        {
+            if (oldValues[i] != newValues[i] && !newValues[i].StartsWith(oldValues[i]))
+            {
+                var reinitializable = GetGroupOuterComponent<IReinitializable>();
+                return reinitializable?.ReinitializeAsync() ?? Task.CompletedTask;
+            }
+        }
+
+        return Task.CompletedTask;
+    }
+
     /// <summary>
     /// Called when a property value is changed
     /// </summary>
@@ -766,18 +845,26 @@ public partial class MudExObjectEdit<T>
     }
 
 
-
-    private bool ShouldAddGrid(IEnumerable<ObjectEditPropertyMeta> meta) => WrapInMudGrid ?? ContainsRenderWrapperType(meta, typeof(MudItem));
+    private bool NeedsOuterFor(Type innerType, List<ObjectEditPropertyMeta> ml)
+    {
+        if (innerType == typeof(MudItem))
+            return (WrapInMudGrid ?? ContainsRenderWrapperType(ml, typeof(MudItem)));
+        return ContainsRenderWrapperType(ml, innerType);
+    }
 
     private IEnumerable<Type> OuterWrapperComponents(IEnumerable<ObjectEditPropertyMeta> meta)
     {
         var ml = meta.ToList();
-        if(ShouldAddGrid(ml))
-            yield return typeof(MudGrid);
-        if(ContainsRenderWrapperType(ml, typeof(MudTabPanel)))
-            yield return typeof(MudTabs);
+        var emitted = new HashSet<Type>();
+
+        foreach (var kv in RenderDataDefaults.ComponentWrapperMap)
+        {
+            if (NeedsOuterFor(kv.Key, ml) && emitted.Add(kv.Value))
+                yield return kv.Value;
+        }
     }
-    
+
+
     private string CssClassName => GroupingStyle == GroupingStyle.Flat ? $"mud-ex-object-edit-group-flat {(!GroupsCollapsible ? "mud-ex-hide-expand-btn" : "")}" : string.Empty;
 
 
@@ -855,7 +942,7 @@ public partial class MudExObjectEdit<T>
     }
 
     private void OnMetaUpdateRequired(ObjectEditPropertyMeta meta)
-    {        
+    {
         CallStateHasChanged();
     }
 
@@ -913,7 +1000,7 @@ public partial class MudExObjectEdit<T>
             res += $"background-color: {ToolbarColor.ToCssStringValue()};";
         return res;
     }
-    
+
     private IEnumerable<MudExpansionPanel> Panels() => _groups.Select(g => g.Instance).OfType<MudExpansionPanel>();
 
     private void GroupExpandedChange(string groupId, bool expanded)
@@ -921,16 +1008,6 @@ public partial class MudExObjectEdit<T>
         if (expanded && SingleExpand)
             Panels().Where(g => g.Tag?.ToString() != groupId).Apply(g => g.CollapseAsync());
     }
-
-    //private bool GetIsExpanded(string groupId)
-    //{
-    //    var existing = _groups.FirstOrDefault(g => g.Tag?.ToString() == groupId);
-    //    if (existing != null)
-    //        return existing.Expanded;
-    //    if (SingleExpand && GroupsCollapsible && _groups.Any(p => p.Expanded))
-    //        return false;
-    //    return true;
-    //}
 
     private Task ExpandCollapse()
     {
@@ -1064,7 +1141,7 @@ public partial class MudExObjectEdit<T>
             op.MaxWidth = MaxWidth.Large;
             op.FullWidth = false;
             op.FullHeight = false;
-            
+
         }, new DialogParameters
         {
             { nameof(MudExFileDisplayDialog.AllowDownload), false },
@@ -1213,6 +1290,9 @@ public partial class MudExObjectEdit<T>
     }
 
     bool _defaultFocus = true;
+    private string _filter;
+    private List<string> _filters;
+
     private bool HasAutoFocus(ObjectEditPropertyMeta property)
     {
         var isConfigured = MetaInformation.AllProperties.Any(p => p?.Settings?.AutoFocus == true);
@@ -1227,52 +1307,69 @@ public partial class MudExObjectEdit<T>
 
     private IEnumerable<(Type, IDictionary<string, object?>?)> GetGroupStyleOuterCmp()
     {
+        var attrInfo = RenderWithAttribute.GetRenderWithAndAttributesFromEnumValue(GroupingStyle);
+        if (attrInfo != null)
+        {
+            var attr = attrInfo.Value.Attribute;
+            var outerType = RenderDataDefaults.GetOuterComponentFor(attr.ComponentType);
+            if (outerType != null)
+            {
+                var pa = attrInfo.Value.Parameters
+                    .MergeWith(GetCompatibleParameters(attr.ComponentType), new Dictionary<string, object?>
+                    {
+                        [nameof(Class)] = $"mud-ex-object-edit-{GroupingStyle.ToString().ToLower()}",
+                    })
+                    .MergeWith(ParametersForGroupControl ?? new Dictionary<string, object>())
+                    .Where(x => ComponentRenderHelper.IsValidParameter(attr.ComponentType, x.Key, x.Value))
+                    .ToDictionary(x => x.Key, x => x.Value);
+                pa[nameof(Class)] = $"{pa[nameof(Class)]} mud-ex-group-outer".Trim();
+                yield return (outerType, pa);
+                yield break;
+            }
+        }
         switch (GroupingStyle)
         {
-            case GroupingStyle.Tabs:
-                yield return (typeof(MudTabs), new Dictionary<string, object?>
-                {
-                    [nameof(MudTabs.Class)] = "mud-ex-object-edit-tabs",
-                    [nameof(MudTabs.Elevation)] = 1
-                });
-                break;
-
-            case GroupingStyle.None:
-                yield return (typeof(FragmentWrapper), null);
-                break;
-
             default: // Panels
-                yield return (typeof(MudExpansionPanels), new Dictionary<string, object?>
+                var res = (typeof(MudExpansionPanels), new Dictionary<string, object?>
                 {
-                    [nameof(MudExpansionPanels.Class)] = "mud-ex-object-edit-panels",
+                    [nameof(Class)] = $"mud-ex-object-edit-panels mud-ex-object-edit-{GroupingStyle.ToString().ToLower()}",
                     [nameof(MudExpansionPanels.Outlined)] = (GroupingStyle != GroupingStyle.Flat),
                     [nameof(MudExpansionPanels.Elevation)] = GroupElevation ?? (GroupingStyle == GroupingStyle.Flat ? 0 : 1),
                     [nameof(MudExpansionPanels.MultiExpansion)] = true
-                });
+                }.MergeWith(ParametersForGroupControl ?? new Dictionary<string, object>())
+                    .Where(x => ComponentRenderHelper.IsValidParameter(typeof(MudExpansionPanels), x.Key, x.Value))
+                .ToDictionary(x => x.Key, x => x.Value));
+                res.Item2[nameof(Class)] = $"{res.Item2[nameof(Class)]} mud-ex-group-outer".Trim();
+                yield return res;
                 break;
         }
     }
 
     private IEnumerable<(Type, IDictionary<string, object?>?)> GetGroupStyleInnerCmp(
-        string displayText, string groupId, bool disabled, string cssClass)
+        string displayText, string groupId, string cssClass)
     {
+        var attrInfo = RenderWithAttribute.GetRenderWithAndAttributesFromEnumValue(GroupingStyle);
+        if (attrInfo != null)
+        {
+            var attr = attrInfo.Value.Attribute;
+            var pa = attrInfo.Value.Parameters
+                .MergeWith(GetCompatibleParameters(attr.ComponentType), new Dictionary<string, object?>
+                {
+                    [nameof(Class)] = $"mud-ex-object-edit-{GroupingStyle.ToString().ToLower()}",
+                    [nameof(Tag)] = groupId,
+                    [nameof(MudTabPanel.Text)] = displayText,
+                    [nameof(MudExDockItem.Title)] = displayText,
+                    [nameof(MudBaseInput<string>.Label)] = displayText,
+                })
+                .MergeWith(ParametersForGroupItem ?? new Dictionary<string, object>())
+                .Where(x => ComponentRenderHelper.IsValidParameter(attr.ComponentType, x.Key, x.Value))
+                .ToDictionary(x => x.Key, x => x.Value);
+
+            yield return (attr.ComponentType, pa);
+            yield break;
+        }
         switch (GroupingStyle)
         {
-            case GroupingStyle.Tabs:
-                yield return (typeof(MudTabPanel), new Dictionary<string, object?>
-                {
-                    [nameof(MudTabPanel.Text)] = displayText,
-                    [nameof(MudTabPanel.Class)] = cssClass
-                });
-                break;
-
-            case GroupingStyle.None:
-                yield return (typeof(FragmentWrapper), new Dictionary<string, object?>
-                {
-                    [nameof(FragmentWrapper.ChildContent)] = null 
-                });
-                break;
-
             default: // Panels
                 yield return (typeof(MudExpansionPanel), new Dictionary<string, object?>
                 {
@@ -1282,20 +1379,11 @@ public partial class MudExObjectEdit<T>
                     [nameof(MudExpansionPanel.Disabled)] = !GroupsCollapsible,
                     [nameof(MudExpansionPanel.Class)] = cssClass,
                     [nameof(MudExpansionPanel.Text)] = displayText
-                    // Hinweis: @ref kann DynamicComponent nicht direkt setzen.
-                    // Falls du @ref brauchst, lohnt ein dünnes Wrapper-Component für MudExpansionPanel.
-                });
+                }
+                .MergeWith(ParametersForGroupItem ?? new Dictionary<string, object>())
+                    .Where(x => ComponentRenderHelper.IsValidParameter(typeof(MudExpansionPanel), x.Key, x.Value))
+                .ToDictionary(x => x.Key, x => x.Value));
                 break;
         }
-    }
-
-    private static IDictionary<string, object?> Merge(
-        IDictionary<string, object?>? a,
-        IDictionary<string, object?> b)
-    {
-        if (a is null) return b;
-        var dict = new Dictionary<string, object?>(a);
-        foreach (var kv in b) dict[kv.Key] = kv.Value;
-        return dict;
     }
 }

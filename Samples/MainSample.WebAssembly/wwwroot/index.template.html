@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>#{PackageName}# Sample Application</title>
+    <base href="/" />
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="logo.png">
+    <meta name="description" content="#{PackageName}# is blazor component and extension library for mudblazor.">
+    <meta name="keywords" content="blazor, asp.net core, wasm, web assembly, browser, components, extensions, online, single page application, dotnet, csharp, html, open-source, platform">
+    <meta name="author" content="Florian Gilde">
+    <meta property="og:title" content="#{PackageName}# is blazor component and extension library for mudblazor" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.mudex.org/" />
+    <meta property="og:image" content="https://www.mudex.org/sample-data/logo.png" />
+    <meta property="og:image:width" content="300" />
+    <meta property="og:image:height" content="300" />
+    <meta property="og:description" content="MudEx is blazor component and extension library for mudblazor." />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.mudex.org/">
+    <meta name="twitter:title" content="TryMudEx - Write, compile, execute and share Blazor components in the browser">
+    <meta name="twitter:description" content="MudEx is blazor component and extension library for mudblazor.">
+    <meta name="twitter:image" content="https://www.mudex.org/sample-data/logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <script src="/script.js?v=#{CACHE_TOKEN}#"></script>
+    <script src="_content/MudBlazor.Extensions/js/components/MudExAppLoader.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="css/app.css?v=#{CACHE_TOKEN}#" rel="stylesheet" />
+    <link href="_content/MudBlazor/MudBlazor.min.css?v=#{CACHE_TOKEN}#" rel="stylesheet" />
+    <link href="MainSample.WebAssembly.styles.css?v=#{CACHE_TOKEN}#" rel="stylesheet">
+    <link id="mudex-styles" href="_content/MudBlazor.Extensions/mudBlazorExtensions.min.css?v=#{CACHE_TOKEN}#" rel="stylesheet">
+    <script type="text/javascript" src="https://js.live.net/v7.2/OneDrive.js"></script>
+    <script src="/lib/monaco-editor/min/vs/loader.js?v=#{CACHE_TOKEN}#"></script>
+    <script src="./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.js"></script>
+    <link href="./_content/MudBlazor.Markdown/MudBlazor.Markdown.min.css" rel="stylesheet" />
+
+</head>
+<body>
+
+<mud-ex-app-loader AppName="" SubTitle="" AccentColor="#ff4081" MainAppId="app" Logo="/sample-data/logo.png">
+</mud-ex-app-loader>
+
+    <div id="app">
+        <div class="modern-loader-container" id="modernLoader">
+            <div class="logo-container">
+                <div class="logo-wrapper">
+                    <div class="logo-glow"></div>
+                    <img src="/sample-data/logo.png" alt="MudEx Logo" class="logo-img">
+                </div>
+            </div>
+
+            <h1 class="app-title">#{PackageName}# v#{PackageVersion}#</h1>
+            <p class="app-subtitle">for MudBlazor #{MudBlazorVersion}#</p>
+
+            <div class="loading-spinner-container">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+            </div>
+
+            <div class="loading-text">
+                Loading application
+                <span class="loading-dots">
+                    <span>.</span><span>.</span><span>.</span>
+                </span>
+            </div>
+
+            <div class="progress-bar-container">
+                <div class="progress-bar"></div>
+            </div>
+
+            <div class="feature-badges">
+                <div class="feature-badge">#{ComponentCount}# Components</div>
+                <div class="feature-badge">Powerful Extensions</div>
+                <div class="feature-badge">Utilities and more</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_content/MudBlazor/MudBlazor.min.js?v=#{CACHE_TOKEN}#"></script>
+</body>
+</html>
+
