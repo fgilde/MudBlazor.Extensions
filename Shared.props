@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup>
+    <UpdateReadMeAndDeployments>false</UpdateReadMeAndDeployments>
+  </PropertyGroup>
+</Project>

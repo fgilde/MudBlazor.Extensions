@@ -1,5 +1,11 @@
 ﻿/* Modern Loading Screen Styles */
 
+.mud-ex-app-loader-loading-container {
+    background: none !important;
+    scale: .3;
+    margin-top: 60px;
+}
+
 .modern-loader-container {
     position: fixed;
     inset: 0;

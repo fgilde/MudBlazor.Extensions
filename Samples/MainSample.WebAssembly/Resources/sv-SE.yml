@@ -1,4 +1,6 @@
 ﻿_ Text: _SMS
+_{0} Components: '{0} Komponenter'
+_{0} Demos: '{0} Demos'
 --accent-color1: --accent-färg1
 --accent-color2: --accent-färg2
 --accent-color3: --accent-färg3
@@ -487,6 +489,7 @@ BrushTreesDarkBase16: BorstarTrädMörkBase16
 brx-IN: Bodø (Indien)
 bs-Cyrl-BA: Bosniska (kyrilliska, Bosnien och Hercegovina)
 bs-Latn-BA: Bosniska (latinskt, Bosnien och Hercegovina)
+Build amazing UIs: Bygg fantastiska användargränssnitt
 BurlyWood: BurlyWood (på engelska)
 button: knapp
 Button: Knapp
@@ -683,6 +686,7 @@ Courrier: Post
 Create: Skapa
 Create address: Skapa adress
 Create new backup: Skapa ny säkerhetskopia
+Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.: Skapa kraftfulla, flexibla dockningslayouter – dra, släpp, fäst och organisera dina dialogrutor eller paneler utan ansträngning.
 CreatedOn: Skapad den
 Critical: Kritisk
 CropAndScale: BeskärOchSkala
@@ -832,6 +836,7 @@ Dialog: Dialog
 Dialog Appearance: Dialogrutans utseende
 Dialog Content: Dialogens innehåll
 Dialog Drag & Drop: Dialogruta Dra & Släpp
+Dialog Extensions: Utökningar av dialogrutor
 Dialog for editing objects with the MudExObjectEditForm: Dialogruta för redigering av objekt med MudExObjectEditForm
 Dialog Sample: Exempel på dialogruta
 Dialog Samples: Exempel på dialogruta
@@ -1193,6 +1198,7 @@ ExpandedIcon: ExpanderadIkon
 ExpandOnClick: ExpanderaVidKlicka
 ExpandOnFilter: ExpanderaVidFilter
 Explicit File Display Zip: Explicit filvisnings-zip
+Explore our most powerful tools: Utforska våra mest kraftfulla verktyg
 Export: Export
 Export To Excel: Exportera till Excel
 Export_SheetName: Data
@@ -1655,6 +1661,7 @@ Inset: Insats
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons (IntegratedInDialogAsKnappar)
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: InterimResultat
+Introducing MudExDockControl: Vi presenterar MudExDockControl
 Invalid Credentials.: Ogiltiga autentiseringsuppgifter.
 IrBlack: Irsvart
 IrBlackBase16: IrBlackBase16
@@ -1844,6 +1851,7 @@ List: Lista
 List appearance: Listans utseende
 List behavior: Beteende för listor
 List item for MudExList.: Listobjekt för MudExList.
+Live examples: Levande exempel
 lkt-US: Lakota (Förenta staterna)
 ln-AO: Lingala (Angola)
 ln-CD: Lingala (Kongo [Demokratiska republiken Kongo])
@@ -2042,12 +2050,14 @@ Montreal: Montreal
 Montreal - H1A 0A1: Montréal - H1A 0A1
 Montreal - H1A 0A1ender: Montréal - H1A 0A1ender
 Montserrat: Montserrat
+More than {0} Components: Mer än {0} komponenter
 Motion: Rörelse
 Mouse: Mus
 MouseOverMessageClass: MouseOverMessageClass (på engelska)
 MouseOverMessageStyle: MouseOverMessageStyle (på engelska)
 MouseWheelDownAction: MushjuletNedåtåtgärd
 MouseWheelUpAction: MouseWheelUpAction (mushjulupp)
+Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Flytta och ändra storlek på rutnätsobjekt direkt genom att dra och släppa – designa din layout dynamiskt vid körning.
 MoveContent: Flytta innehåll
 mr-IN: Marathi (Indien)
 MS Outlook: MS Utsikter
@@ -2148,7 +2158,9 @@ MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar är en MudAvatar som automatiskt använder profilbilden från gravatar för en e-postadress
 MudExGrid: MudExGrid (på engelska)
+MudExGrid — Now with Layout Editing: MudExGrid — Nu med layoutredigering
 MudExGrid Enhanced: MudExGrid Förbättrad
+MudExGrid Layout: MudExGrid Layout
 MudExGridSection: MudExGridAvsnitt
 MudExGroupBox: MudExGroupBox (på engelska)
 MudExHtmlEdit: MudExHtmlEdit
@@ -2337,6 +2349,7 @@ ne-NP: Nepali (Nepal)
 NebulaBase16: NebulaBase16
 Never: Aldrig
 New: Ny
+NEW: NY
 NEW Dialog Drag Drop Mode: NY dialogruta för dra-och-släpp-läge
 New dialog Feature - SnapDrag: Ny dialogfunktion - SnapDrag
 New Message From {0}: Nytt meddelande från {0}
@@ -3255,6 +3268,7 @@ Read More: Läs mer
 Readme: Viktigt
 readme.md: readme.md
 ReadOnly: Endast läsning
+Ready to use: Klar att använda
 Realtime Updates & Insights with SignalR.: Uppdateringar och insikter i realtid med SignalR.
 RebeccaBase16: RebeccaBase16
 RebeccaPurple: RebeccaLila
@@ -3974,6 +3988,7 @@ The user {0} has been logged off: Användaren {0} har loggats ut
 The User {0} has just edited, created or deleted entries here. You should reload the data: Användaren {0} just har redigerat, skapat eller tagit bort poster här. Du bör ladda om data
 Theme: Tema
 Theme Colors: Tema Färger
+Theme Editor: Redaktör för tema
 Themes: Teman
 ThemeSelect: ÄmneVälj
 There are no new notifications: Det finns inga nya aviseringar

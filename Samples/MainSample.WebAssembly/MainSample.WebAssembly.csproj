@@ -2,7 +2,7 @@
 
   <Import Project="..\..\MudBlazor.Extensions\version.generated.props"
           Condition="Exists('..\..\MudBlazor.Extensions\version.generated.props')" />
-
+  <Import Project="..\..\Shared.props"/>
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -74,12 +74,12 @@
   </Target>
 
   <!-- Collect deployments -->
-  <!--<PropertyGroup>
+  <PropertyGroup>
     <DeploymentsOutputFile>$(ProjectDir)wwwroot/deployments.json</DeploymentsOutputFile>
   </PropertyGroup>
-  <Target Name="ExportCloudflareDeployments" AfterTargets="Build" Condition="'$(Configuration)'=='Release'">
+  <Target Name="ExportCloudflareDeployments" AfterTargets="Build" Condition="$(UpdateReadMeAndDeployments)">
     <Exec IgnoreExitCode="true" Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(ProjectDir).scripts\Export-CloudFlare-Deployments.ps1&quot; -OutputFile &quot;$(DeploymentsOutputFile)&quot;" WorkingDirectory="$(ProjectDir)" />
-  </Target>-->
+  </Target>
   <!-- END Collect deployments -->
 
 

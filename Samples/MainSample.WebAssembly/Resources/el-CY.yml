@@ -1,4 +1,6 @@
 ﻿_ Text: _Κείμενο
+_{0} Components: '{0} Συστατικά'
+_{0} Demos: '{0} Επιδείξεις'
 --accent-color1: --Χρώμα-έμφασης1
 --accent-color2: --έμφαση-χρώμα2
 --accent-color3: --έμφαση-χρώμα3
@@ -487,6 +489,7 @@ BrushTreesDarkBase16: ΒούρτσαΔέντραΣκοτεινήΒάση16
 brx-IN: Bodo (Ινδία)
 bs-Cyrl-BA: Βοσνιακά (Κυριλλικά, Βοσνία & Ερζεγοβίνη)
 bs-Latn-BA: Βοσνιακά (Λατινικά, Βοσνία & Ερζεγοβίνη)
+Build amazing UIs: Δημιουργήστε εκπληκτικές διεπαφές χρήστη
 BurlyWood: Εύσωμο ξύλο
 button: κουμπί
 Button: Κουμπί
@@ -683,6 +686,7 @@ Courrier: Ταχυδρομείο
 Create: Δημιουργώ
 Create address: Δημιουργία διεύθυνσης
 Create new backup: Δημιουργία νέου αντιγράφου ασφαλείας
+Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.: Δημιουργήστε ισχυρές, ευέλικτες διατάξεις βάσης — σύρετε, αποθέστε, κουμπώστε και οργανώστε τα παράθυρα διαλόγου ή τα πάνελ σας χωρίς κόπο.
 CreatedOn: Ημερομηνία δημιουργίας
 Critical: Κρίσιμος
 CropAndScale: Περικοπή και κλίμακα
@@ -832,6 +836,7 @@ Dialog: Διαλόγου
 Dialog Appearance: Εμφάνιση διαλόγου
 Dialog Content: Περιεχόμενο διαλόγου
 Dialog Drag & Drop: Διάλογος, μεταφορά & απόθεση
+Dialog Extensions: Επεκτάσεις διαλόγου
 Dialog for editing objects with the MudExObjectEditForm: Διάλογος για την επεξεργασία αντικειμένων με το MudExObjectEditForm
 Dialog Sample: Δείγμα διαλόγου
 Dialog Samples: Δείγματα διαλόγου
@@ -1193,6 +1198,7 @@ ExpandedIcon: ExpandedIcon
 ExpandOnClick: ExpandOnClick
 ExpandOnFilter: ExpandOnFilter
 Explicit File Display Zip: Zip εμφάνισης ρητού αρχείου
+Explore our most powerful tools: Εξερευνήστε τα πιο ισχυρά εργαλεία μας
 Export: Εξαγωγή
 Export To Excel: Εξαγωγή σε Excel
 Export_SheetName: Δεδομένα
@@ -1655,6 +1661,7 @@ Inset: Ένθετο
 IntegratedInDialogAsButtons: ΕνσωματωμέναInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: ΕνδιάμεσαΑποτελέσματα
+Introducing MudExDockControl: Παρουσιάζουμε το MudExDockControl
 Invalid Credentials.: Μη έγκυρα διαπιστευτήρια.
 IrBlack: ΙρΜπλακ
 IrBlackBase16: IrBlackBase16
@@ -1844,6 +1851,7 @@ List: Λίστα
 List appearance: Εμφάνιση λίστας
 List behavior: Συμπεριφορά λίστας
 List item for MudExList.: Στοιχείο λίστας για το MudExList.
+Live examples: Ζωντανά παραδείγματα
 lkt-US: Lakota (Ηνωμένες Πολιτείες)
 ln-AO: Lingala (Αγκόλα)
 ln-CD: Lingala (Κονγκό [ΛΔΚ])
@@ -2042,12 +2050,14 @@ Montreal: Μόντρεαλ
 Montreal - H1A 0A1: Μόντρεαλ - H1A 0A1
 Montreal - H1A 0A1ender: Μόντρεαλ - H1A 0A1ender
 Montserrat: Μοντσερράτ
+More than {0} Components: Περισσότερα από {0} εξαρτήματα
 Motion: Κίνηση
 Mouse: Ποντίκι
 MouseOverMessageClass: MouseOverMessageClass
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: ΠοντίκιΤροχόςΚάτωΔράση
 MouseWheelUpAction: ΠοντίκιWheelUpAction
+Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Μετακινήστε και αλλάξτε το μέγεθος των στοιχείων πλέγματος απευθείας με μεταφορά και απόθεση — σχεδιάστε τη διάταξή σας δυναμικά κατά το χρόνο εκτέλεσης.
 MoveContent: Μετακίνηση Περιεχομένου
 mr-IN: Μαράθι (Ινδία)
 MS Outlook: MS Outlook
@@ -2148,7 +2158,9 @@ MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: Το MudExGravatar είναι ένα MudAvatar που χρησιμοποιεί αυτόματα την εικόνα προφίλ από το gravatar για μια διεύθυνση email
 MudExGrid: MudExGrid
+MudExGrid — Now with Layout Editing: MudExGrid — Τώρα με Επεξεργασία Διάταξης
 MudExGrid Enhanced: Βελτιωμένο MudExGrid
+MudExGrid Layout: Διάταξη MudExGrid
 MudExGridSection: MudExGridSection
 MudExGroupBox: MudExGroupBox
 MudExHtmlEdit: MudExHtmlΕπεξεργασία
@@ -2337,6 +2349,7 @@ ne-NP: Νεπάλ (Νεπάλ)
 NebulaBase16: ΝεφέλωμαΒάση16
 Never: Ποτέ
 New: Νέος
+NEW: ΝΈΟΣ
 NEW Dialog Drag Drop Mode: ΝΕΟ Λειτουργία μεταφοράς απόθεσης διαλόγου
 New dialog Feature - SnapDrag: Νέα λειτουργία διαλόγου - SnapDrag
 New Message From {0}: Νέο μήνυμα από {0}
@@ -3255,6 +3268,7 @@ Read More: Διαβάστε περισσότερα
 Readme: Αρχείο Readme
 readme.md: readme.md
 ReadOnly: Μόνο για ανάγνωση
+Ready to use: Έτοιμο προς χρήση
 Realtime Updates & Insights with SignalR.: Ενημερώσεις και πληροφορίες σε πραγματικό χρόνο με το SignalR.
 RebeccaBase16: ΡεβέκκαΒάση16
 RebeccaPurple: ΡεβέκκαΜωβ
@@ -3974,6 +3988,7 @@ The user {0} has been logged off: Ο χρήστης {0} έχει αποσυνδ�
 The User {0} has just edited, created or deleted entries here. You should reload the data: Ο χρήστης {0} μόλις επεξεργάστηκε, δημιούργησε ή διέγραψε καταχωρήσεις εδώ. Θα πρέπει να φορτώσετε ξανά τα δεδομένα
 Theme: Θέμα
 Theme Colors: Χρώματα θέματος
+Theme Editor: Επεξεργαστής θέματος
 Themes: Θέματα
 ThemeSelect: ΘέμαΕπιλογή
 There are no new notifications: Δεν υπάρχουν νέες ειδοποιήσεις

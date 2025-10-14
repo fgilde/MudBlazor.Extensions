@@ -1,4 +1,6 @@
 ﻿_ Text: _Tekstualna poruka
+_{0} Components: '{0} Komponente'
+_{0} Demos: '{0} demonstracije'
 --accent-color1: --accent-color1
 --accent-color2: --accent-color2
 --accent-color3: --accent-color3
@@ -487,6 +489,7 @@ BrushTreesDarkBase16: BrushTreesDarkBase16
 brx-IN: Bodo (Indija)
 bs-Cyrl-BA: bosanski (ćirilica, Bosna i Hercegovina)
 bs-Latn-BA: Bosanski (latinski, Bosna i Hercegovina)
+Build amazing UIs: Izradite nevjerojatna korisnička sučelja
 BurlyWood: Snažno drvo
 button: dugme
 Button: Dugme
@@ -683,6 +686,7 @@ Courrier: Pošta
 Create: Stvoriti
 Create address: Kreiraj adresu
 Create new backup: Stvaranje nove sigurnosne kopije
+Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.: Stvorite moćne, fleksibilne rasporede priključne stanice – povucite, ispustite, pričvrstite i organizirajte dijaloške okvire ili ploče bez napora.
 CreatedOn: Datum stvaranja
 Critical: Kritičan
 CropAndScale: CropAndScale
@@ -832,6 +836,7 @@ Dialog: Dijaloški
 Dialog Appearance: Izgled dijaloškog okvira
 Dialog Content: Sadržaj dijaloškog okvira
 Dialog Drag & Drop: Dijalog Povuci i ispusti
+Dialog Extensions: Proširenja dijaloga
 Dialog for editing objects with the MudExObjectEditForm: Dijaloški okvir za uređivanje objekata pomoću MudExObjectEditForm
 Dialog Sample: Uzorak dijaloga
 Dialog Samples: Uzorci dijaloga
@@ -1193,6 +1198,7 @@ ExpandedIcon: Proširena ikona
 ExpandOnClick: Proširi na klik
 ExpandOnFilter: Proširi filtar
 Explicit File Display Zip: Eksplicitni prikaz datoteke Zip
+Explore our most powerful tools: Istražite naše najmoćnije alate
 Export: Izvoz
 Export To Excel: Izvoz u Excel
 Export_SheetName: Podaci
@@ -1655,6 +1661,7 @@ Inset: Dodatak
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: Privremeni rezultati
+Introducing MudExDockControl: Predstavljamo MudExDockControl
 Invalid Credentials.: Nevažeće vjerodajnice.
 IrBlack: IrBlack
 IrBlackBase16: IrBlackBase16
@@ -1844,6 +1851,7 @@ List: Popis
 List appearance: Izgled popisa
 List behavior: Ponašanje popisa
 List item for MudExList.: Stavka popisa za MudExList.
+Live examples: Primjeri uživo
 lkt-US: Lakota (Sjedinjene Države)
 ln-AO: Lingala (Angola)
 ln-CD: Lingala (Kongo [DRC])
@@ -2042,12 +2050,14 @@ Montreal: Montreal
 Montreal - H1A 0A1: Montreal - H1A 0A1
 Montreal - H1A 0A1ender: Montreal - H1A 0A1ender
 Montserrat: Montserrat
+More than {0} Components: Više od {0} komponenti
 Motion: Prijedlog
 Mouse: Miš
 MouseOverMessageClass: MouseOverMessageClass
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: MouseWheelDownAction
 MouseWheelUpAction: MouseWheelUpAction
+Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Premještajte i mijenjajte veličinu stavki mreže izravno povlačenjem i ispuštanjem — dizajnirajte svoj izgled dinamički tijekom izvođenja.
 MoveContent: Premjesti sadržaj
 mr-IN: Marathi (Indija)
 MS Outlook: MS Outlook
@@ -2148,7 +2158,9 @@ MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar je MudAvatar koji automatski koristi profilnu sliku iz gravatara za adresu e-pošte
 MudExGrid: Blatna mreža
+MudExGrid — Now with Layout Editing: MudExGrid — sada s uređivanjem izgleda
 MudExGrid Enhanced: MudExGrid poboljšan
+MudExGrid Layout: MudExGrid izgled
 MudExGridSection: Odjeljak MudExGrid
 MudExGroupBox: MudExGroupBox
 MudExHtmlEdit: MudExHtmlUredi
@@ -2337,6 +2349,7 @@ ne-NP: Nepalski (Nepal)
 NebulaBase16: Baza maglice16
 Never: Nikada
 New: Nov
+NEW: NOV
 NEW Dialog Drag Drop Mode: NOVO Dijaloški okvir Način povlačenja ispuštanja
 New dialog Feature - SnapDrag: Nova značajka dijaloškog okvira - SnapDrag
 New Message From {0}: Nova poruka od {0}
@@ -3255,6 +3268,7 @@ Read More: Opširnije
 Readme: Datoteka Readme
 readme.md: readme.md
 ReadOnly: Samo za čitanje
+Ready to use: Spremno za upotrebu
 Realtime Updates & Insights with SignalR.: Ažuriranja i uvidi u stvarnom vremenu uz SignalR.
 RebeccaBase16: RebeccaBase16
 RebeccaPurple: RebeccaLjubičasta
@@ -3974,6 +3988,7 @@ The user {0} has been logged off: Korisnički {0} je odjavljen
 The User {0} has just edited, created or deleted entries here. You should reload the data: Korisnički {0} je upravo uredio, stvorio ili izbrisao unose ovdje. Trebali biste ponovno učitati podatke
 Theme: Tema
 Theme Colors: Boje teme
+Theme Editor: Uređivač tema
 Themes: Teme
 ThemeSelect: Odabir teme
 There are no new notifications: Nema novih obavijesti

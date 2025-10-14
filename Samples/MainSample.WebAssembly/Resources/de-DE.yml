@@ -1,4 +1,6 @@
 ﻿_ Text: _Text
+_{0} Components: '{0} Komponenten'
+_{0} Demos: '{0} Demos'
 --accent-color1: --akzentfarbe1
 --accent-color2: --akzentfarbe2
 --accent-color3: --akzentfarbe3
@@ -487,6 +489,7 @@ BrushTreesDarkBase16: BürstenBäumeDarkBase16
 brx-IN: Bodo (Indien)
 bs-Cyrl-BA: Bosnisch (Kyrillisch, Bosnien und Herzegowina)
 bs-Latn-BA: Bosnisch (Lateinisch, Bosnien und Herzegowina)
+Build amazing UIs: Erstellen Sie erstaunliche Benutzeroberflächen
 BurlyWood: BurlyWood
 button: Knopf
 Button: Knopf
@@ -683,6 +686,7 @@ Courrier: Post
 Create: Schaffen
 Create address: Adresse erstellen
 Create new backup: Erstellen eines neuen Backups
+Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.: Erstellen Sie leistungsstarke, flexible Dock-Layouts – ziehen Sie Ihre Dialogfelder oder Bedienfelder mühelos per Drag, Drop, Snap und organisieren Sie sie.
 CreatedOn: Erstellungsdatum
 Critical: Kritisch
 CropAndScale: ZuschneidenAndSkalieren
@@ -832,6 +836,7 @@ Dialog: Dialogfeld
 Dialog Appearance: Darstellung des Dialogfelds
 Dialog Content: Inhalt des Dialogs
 Dialog Drag & Drop: Dialog Drag & Drop
+Dialog Extensions: Dialogfeld-Erweiterungen
 Dialog for editing objects with the MudExObjectEditForm: Dialog zum Bearbeiten von Objekten mit dem MudExObjectEditForm
 Dialog Sample: Beispiel für einen Dialog
 Dialog Samples: Beispiele für Dialogfelder
@@ -1193,6 +1198,7 @@ ExpandedIcon: Erweitertes Symbol
 ExpandOnClick: ExpandOnClick
 ExpandOnFilter: ExpandOnFilter
 Explicit File Display Zip: Explizite Dateianzeige-Zip
+Explore our most powerful tools: Entdecken Sie unsere leistungsstärksten Tools
 Export: Exportieren
 Export To Excel: Nach Excel exportieren
 Export_SheetName: Daten
@@ -1655,6 +1661,7 @@ Inset: Einsatz
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: Zwischenergebnisse
+Introducing MudExDockControl: Einführung in MudExDockControl
 Invalid Credentials.: Ungültige Anmeldeinformationen.
 IrBlack: IrBlack
 IrBlackBase16: IrBlackBase16
@@ -1844,6 +1851,7 @@ List: Liste
 List appearance: Darstellung der Liste
 List behavior: Verhalten der Liste
 List item for MudExList.: Listeneintrag für MudExList.
+Live examples: Live-Beispiele
 lkt-US: Lakota (Vereinigte Staaten)
 ln-AO: Lingala (Angola)
 ln-CD: Lingala (Kongo [DRC])
@@ -2042,12 +2050,14 @@ Montreal: Montreal
 Montreal - H1A 0A1: Montreal - H1A 0A1
 Montreal - H1A 0A1ender: Montreal - H1A 0A1ender
 Montserrat: Montserrat
+More than {0} Components: Mehr als {0} Komponenten
 Motion: Bewegung
 Mouse: Maus
 MouseOverMessageClass: MouseOverMessageClass
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: MouseWheelDownAktion
 MouseWheelUpAction: MouseWheelUpAktion
+Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Verschieben und verkleinern Sie Rasterelemente direkt per Drag & Drop – gestalten Sie Ihr Layout dynamisch zur Laufzeit.
 MoveContent: Inhalt verschieben
 mr-IN: Marathi (Indien)
 MS Outlook: MS Outlook
@@ -2148,7 +2158,9 @@ MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar ist ein MudAvatar, der automatisch das Profilbild von Gravatar für eine E-Mail-Adresse verwendet
 MudExGrid: MudExGrid (Englisch)
+MudExGrid — Now with Layout Editing: MudExGrid — Jetzt mit Layout-Bearbeitung
 MudExGrid Enhanced: MudExGrid Erweitert
+MudExGrid Layout: MudExGrid-Layout
 MudExGridSection: MudExGridAbschnitt
 MudExGroupBox: MudExGroupBox
 MudExHtmlEdit: MudExHtmlBearbeiten
@@ -2337,6 +2349,7 @@ ne-NP: Nepali (Nepal)
 NebulaBase16: NebelBasis16
 Never: Nie
 New: Neu
+NEW: NEU
 NEW Dialog Drag Drop Mode: NEU Dialog Drag & Drop-Modus
 New dialog Feature - SnapDrag: Neue Dialogfunktion - SnapDrag
 New Message From {0}: Neue Nachricht von {0}
@@ -3255,6 +3268,7 @@ Read More: Weiterlesen
 Readme: Readme-Datei
 readme.md: readme.md
 ReadOnly: Schreibgeschützt
+Ready to use: Sofort einsatzbereit
 Realtime Updates & Insights with SignalR.: Echtzeit-Updates und Einblicke mit SignalR.
 RebeccaBase16: RebeccaBase16
 RebeccaPurple: RebeccaLila
@@ -3974,6 +3988,7 @@ The user {0} has been logged off: Der Benutzer {0} abgemeldet wurde
 The User {0} has just edited, created or deleted entries here. You should reload the data: Der Benutzer {0} hier gerade Einträge bearbeitet, erstellt oder gelöscht hat. Sie sollten die Daten neu laden
 Theme: Thema
 Theme Colors: Theme-Farben
+Theme Editor: Theme-Editor
 Themes: Themen
 ThemeSelect: ThemeSelect
 There are no new notifications: Es gibt keine neuen Benachrichtigungen

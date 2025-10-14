@@ -1,4 +1,6 @@
 ﻿_ Text: _نص
+_{0} Components: مكونات {0}
+_{0} Demos: '{0} العروض التوضيحية'
 --accent-color1: --لون لهجة1
 --accent-color2: --لهجة اللون 2
 --accent-color3: --لون لهجة3
@@ -487,6 +489,7 @@ BrushTreesDarkBase16: BrushTreesDarkBase16
 brx-IN: بودو (الهند)
 bs-Cyrl-BA: البوسنية (السيريلية والبوسنة والهرسك)
 bs-Latn-BA: البوسنية (اللاتينية والبوسنة والهرسك)
+Build amazing UIs: بناء واجهات مستخدم مذهلة
 BurlyWood: بورلي وود
 button: زر
 Button: زر
@@ -683,6 +686,7 @@ Courrier: بريد
 Create: خلق
 Create address: إنشاء عنوان
 Create new backup: إنشاء نسخة احتياطية جديدة
+Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.: قم بإنشاء تخطيطات إرساء قوية ومرنة - قم بسحب مربعات الحوار أو اللوحات وإفلاتها ومحاذاتها وتنظيمها دون عناء.
 CreatedOn: تاريخ الإنشاء
 Critical: حرج
 CropAndScale: CropAndScale
@@ -832,6 +836,7 @@ Dialog: حوار
 Dialog Appearance: مظهر الحوار
 Dialog Content: محتوى الحوار
 Dialog Drag & Drop: حوار السحب والإفلات
+Dialog Extensions: ملحقات الحوار
 Dialog for editing objects with the MudExObjectEditForm: مربع حوار لتحرير الكائنات باستخدام MudExObjectEditForm
 Dialog Sample: عينة الحوار
 Dialog Samples: عينات الحوار
@@ -1193,6 +1198,7 @@ ExpandedIcon: أيقونة موسعة
 ExpandOnClick: إكسبد أون كليك
 ExpandOnFilter: ExpandOnFilter
 Explicit File Display Zip: ملف صريح عرض الرمز البريدي
+Explore our most powerful tools: استكشف أقوى أدواتنا
 Export: تصدير
 Export To Excel: تصدير إلى Excel
 Export_SheetName: بيانات
@@ -1655,6 +1661,7 @@ Inset: الداخلي
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: النتائج المؤقتة
+Introducing MudExDockControl: تقديم MudExDockControl
 Invalid Credentials.: بيانات اعتماد غير صالحة.
 IrBlack: بلاك
 IrBlackBase16: IrBlackBase16
@@ -1844,6 +1851,7 @@ List: قائمة
 List appearance: مظهر القائمة
 List behavior: سلوك القائمة
 List item for MudExList.: عنصر قائمة ل MudExList.
+Live examples: أمثلة حية
 lkt-US: لاكوتا (الولايات المتحدة)
 ln-AO: لينغالا (أنغولا)
 ln-CD: لينغالا (الكونغو [جمهورية الكونغو الديمقراطية])
@@ -2042,12 +2050,14 @@ Montreal: مونتريال
 Montreal - H1A 0A1: مونتريال - H1A 0A1
 Montreal - H1A 0A1ender: مونتريال - H1A 0A1ender
 Montserrat: مونتسيرات
+More than {0} Components: أكثر من {0} مكونات
 Motion: الحركه
 Mouse: فأر
 MouseOverMessageClass: MouseOverMessageClass
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: MouseWheelDownAction
 MouseWheelUpAction: MouseWheelUpAction
+Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: انقل عناصر الشبكة وقم بتغيير حجمها مباشرة باستخدام السحب والإفلات - صمم تخطيطك ديناميكيا في وقت التشغيل.
 MoveContent: المحتوى المتحرك
 mr-IN: الماراثية (الهند)
 MS Outlook: مايكروسوفت أوتلوك
@@ -2148,7 +2158,9 @@ MudExGradientText: MudExGradientText
 MudExGravatar: الطين ExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar هو MudAvatar يستخدم تلقائيا صورة الملف الشخصي من gravatar لعنوان بريد إلكتروني
 MudExGrid: MudExGrid
+MudExGrid — Now with Layout Editing: MudExGrid - الآن مع تحرير التخطيط
 MudExGrid Enhanced: MudExGrid محسن
+MudExGrid Layout: تخطيط MudExGrid
 MudExGridSection: قسم MudExGrid
 MudExGroupBox: MudExGroupBox
 MudExHtmlEdit: الطين ExHtmlEdit
@@ -2337,6 +2349,7 @@ ne-NP: النيبالية (نيبال)
 NebulaBase16: قاعدة السديم 16
 Never: أبدا
 New: الجديد
+NEW: الجديد
 NEW Dialog Drag Drop Mode: جديد مربع حوار سحب وضع الإفلات
 New dialog Feature - SnapDrag: ميزة مربع الحوار الجديد - SnapDrag
 New Message From {0}: رسالة جديدة من {0}
@@ -3255,6 +3268,7 @@ Read More: اقرأ المزيد
 Readme: الملف التمهيدي
 readme.md: readme.md
 ReadOnly: للقراءة فقط
+Ready to use: جاهز للاستخدام
 Realtime Updates & Insights with SignalR.: تحديثات ورؤى في الوقت الفعلي مع SignalR.
 RebeccaBase16: ريبيكا بيس 16
 RebeccaPurple: ريبيكا بيربل
@@ -3974,6 +3988,7 @@ The user {0} has been logged off: تم تسجيل خروج {0} المستخدم
 The User {0} has just edited, created or deleted entries here. You should reload the data: قام {0} المستخدم للتو بتحرير الإدخالات أو إنشائها أو حذفها هنا. يجب عليك إعادة تحميل البيانات
 Theme: موضوع
 Theme Colors: ألوان الموضوع
+Theme Editor: محرر القوالب
 Themes: المواضيع
 ThemeSelect: ثيمةحدد
 There are no new notifications: لا توجد إشعارات جديدة

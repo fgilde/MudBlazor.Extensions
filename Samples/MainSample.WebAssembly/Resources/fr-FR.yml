@@ -1,4 +1,6 @@
 ﻿_ Text: _SMS
+_{0} Components: '{0} Composants'
+_{0} Demos: '{0} démos'
 --accent-color1: --couleur-accent1
 --accent-color2: --couleur-accent2
 --accent-color3: --couleur-accent3
@@ -487,6 +489,7 @@ BrushTreesDarkBase16: BrushTreesDarkBase16
 brx-IN: Bodo (Inde)
 bs-Cyrl-BA: Bosniaque (cyrillique, Bosnie-Herzégovine)
 bs-Latn-BA: Bosniaque (latin, Bosnie-Herzégovine)
+Build amazing UIs: Créez des interfaces utilisateur incroyables
 BurlyWood: Bois robuste
 button: bouton
 Button: Bouton
@@ -683,6 +686,7 @@ Courrier: Courrier
 Create: Créer
 Create address: Créer une adresse
 Create new backup: Créer une nouvelle sauvegarde
+Create powerful, flexible dock layouts — drag, drop, snap, and organize your dialogs or panels effortlessly.: 'Créez des agencements de dock puissants et flexibles : glissez, déposez, alignez et organisez vos boîtes de dialogue ou vos panneaux sans effort.'
 CreatedOn: Date de création
 Critical: Critique
 CropAndScale: CropAndScale (en anglais)
@@ -832,6 +836,7 @@ Dialog: Dialogue
 Dialog Appearance: Apparence de la boîte de dialogue
 Dialog Content: Contenu de la boîte de dialogue
 Dialog Drag & Drop: Boîte de dialogue Glisser-déposer
+Dialog Extensions: Extensions de boîte de dialogue
 Dialog for editing objects with the MudExObjectEditForm: Boîte de dialogue pour modifier des objets avec le MudExObjectEditForm
 Dialog Sample: Exemple de boîte de dialogue
 Dialog Samples: Exemples de boîtes de dialogue
@@ -1193,6 +1198,7 @@ ExpandedIcon: ExpandedIcon
 ExpandOnClick: ExpandOnClick
 ExpandOnFilter: ExpandOnFilter
 Explicit File Display Zip: Zip d’affichage de fichier explicite
+Explore our most powerful tools: Explorez nos outils les plus puissants
 Export: Exportation
 Export To Excel: Exporter vers Excel
 Export_SheetName: Données
@@ -1655,6 +1661,7 @@ Inset: Introduire
 IntegratedInDialogAsButtons: IntegratedInDialogAsButtons
 IntegratedInDialogAsImages: IntegratedInDialogAsImages
 InterimResults: Résultats intermédiaires
+Introducing MudExDockControl: Présentation de MudExDockControl
 Invalid Credentials.: Informations d’identification non valides.
 IrBlack: IrNoir
 IrBlackBase16: IrBlackBase16
@@ -1844,6 +1851,7 @@ List: Liste
 List appearance: Apparence de la liste
 List behavior: Comportement de la liste
 List item for MudExList.: Élément de liste pour MudExList.
+Live examples: Exemples en direct
 lkt-US: Lakota (États-Unis)
 ln-AO: Lingala (Angola)
 ln-CD: Lingala (Congo [RDC])
@@ -2042,12 +2050,14 @@ Montreal: Montréal
 Montreal - H1A 0A1: Montréal - H1A 0A1
 Montreal - H1A 0A1ender: Montréal - H1A 0A1ender
 Montserrat: Montserrat
+More than {0} Components: Plus de {0} composants
 Motion: Mouvement
 Mouse: Souris
 MouseOverMessageClass: MouseOverMessageClass
 MouseOverMessageStyle: MouseOverMessageStyle
 MouseWheelDownAction: MouseWheelDownAction
 MouseWheelUpAction: MouseWheelUpAction
+Move and resize grid items directly with drag & drop — design your layout dynamically at runtime.: Déplacez et redimensionnez les éléments de la grille directement par glisser-déposer - concevez votre mise en page de manière dynamique au moment de l’exécution.
 MoveContent: MoveContent (en anglais)
 mr-IN: Marathi (Inde)
 MS Outlook: MS Outlook
@@ -2148,7 +2158,9 @@ MudExGradientText: MudExGradientText
 MudExGravatar: MudExGravatar
 MudExGravatar is a MudAvatar that automatically uses the profile image from gravatar for an email address: MudExGravatar est un MudAvatar qui utilise automatiquement l’image de profil de gravatar pour une adresse e-mail
 MudExGrid: MudExGrid (en anglais)
+MudExGrid — Now with Layout Editing: MudExGrid — Maintenant avec l’édition de mise en page
 MudExGrid Enhanced: MudExGrid amélioré
+MudExGrid Layout: Mise en page MudExGrid
 MudExGridSection: MudExGridSection
 MudExGroupBox: Boîte MudExGroupBox
 MudExHtmlEdit: MudExHtmlEdit
@@ -2337,6 +2349,7 @@ ne-NP: Népalais (Népal)
 NebulaBase16: NebulaBase16
 Never: Jamais
 New: Nouveau
+NEW: NOUVEAU
 NEW Dialog Drag Drop Mode: NOUVEAU Mode glisser-déposer de la boîte de dialogue
 New dialog Feature - SnapDrag: Nouvelle fonctionnalité de boîte de dialogue - SnapDrag
 New Message From {0}: Nouveau message de {0}
@@ -3255,6 +3268,7 @@ Read More: Lire la suite
 Readme: Lisez-moi
 readme.md: readme.md
 ReadOnly: Lecture seule
+Ready to use: Prêt à l’emploi
 Realtime Updates & Insights with SignalR.: Mises à jour et informations en temps réel avec SignalR.
 RebeccaBase16: RebeccaBase16
 RebeccaPurple: RebeccaViolet
@@ -3974,6 +3988,7 @@ The user {0} has been logged off: L’utilisateur {0} a été déconnecté
 The User {0} has just edited, created or deleted entries here. You should reload the data: L’utilisateur {0} vient de modifier, de créer ou de supprimer des entrées ici. Vous devez recharger les données
 Theme: Thème
 Theme Colors: Couleurs du thème
+Theme Editor: Éditeur de thème
 Themes: Thèmes
 ThemeSelect: ThèmeSélectionner
 There are no new notifications: Il n’y a pas de nouvelles notifications
