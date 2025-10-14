@@ -5,6 +5,7 @@
     observer = null;
     disposables = [];
     _isReinitializing = false;
+    instanceId = crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random(); // stabile ID
 
     constructor(elementRef, containerRef, dotnet, options) {
         this.elementRef = elementRef;
@@ -12,17 +13,13 @@
         this.containerRef = containerRef;
         this.options = options || {};
         this.init();
-        window.DC = this; // Debug
     }
 
     async init() {
         const { createDockview } = await import(this.options.module);
 
-        // Nur 'dock' in dieser Version
         this.api = createDockview(this.containerRef, {
-            theme: {
-                className: this.options.className ?? 'dockview-theme-abyss'
-            },
+            theme: { className: this.options.className ?? 'dockview-theme-abyss' },
             dndEdges: { top: true, right: true, bottom: true, left: true },
             createComponent: (opts) => this._createComponent(opts)
         });
@@ -36,7 +33,7 @@
                 this.api.fromJSON(JSON.parse(this.options.initialLayoutJson));
                 this.bootstrapped = true;
                 this.dotnet?.invokeMethodAsync('OnJsReady');
-                return; // kein bootstrapFromDom nötig
+                return;
             } catch (e) { console.warn('fromJSON failed', e); }
         }
 
@@ -45,19 +42,86 @@
         this.wireEvents();
     }
 
+    // ---------------- Stash / Duplicate-Handling ----------------
+
+    _ensureStash() {
+        let stash = this.containerRef.querySelector(':scope > .dv-stash');
+        if (!stash) {
+            stash = document.createElement('div');
+            stash.className = 'dv-stash';
+            stash.style.display = 'none';
+            this.containerRef.appendChild(stash);
+        }
+        return stash;
+    }
+
+    _hideAndStash(node, id) {
+        if (!node) return;
+        try {
+            node.dataset.dvId = id;
+            node.style.display = 'none';
+            this._ensureStash().appendChild(node);
+        } catch { /* noop */ }
+    }
+
+    _hideAndStashDuplicates(id, exceptEl = null) {
+        const selector = `[data-dv-id="${CSS.escape(id)}"], .dv-node[data-options*='"id":"${CSS.escape(id)}"']`;
+        const nodes = this.containerRef.querySelectorAll(selector);
+        for (const n of nodes) {
+            if (exceptEl && n === exceptEl) continue;
+            this._hideAndStash(n, id);
+        }
+    }
+
+    // ---------------- Component-Erzeugung ----------------
+
     _createComponent(opts) {
-        const el = this.elementStore.get(opts.id);
+        // 1) bevorzugt: bereits gestashte/indizierte Instanz
+        let el = this.elementStore.get(opts.id);
+
+        // 2) Stash prüfen
+        if (!el) {
+            const stashHit = this.containerRef.querySelector(`:scope > .dv-stash [data-dv-id="${CSS.escape(opts.id)}"]`);
+            if (stashHit) {
+                el = stashHit;
+                this.elementStore.set(opts.id, el);
+            }
+        }
+
+        // 3) DOM (neue Leaf-Instanz) prüfen
+        if (!el) {
+            const domHit = this.containerRef.querySelector(`.dv-node [data-dv-id="${CSS.escape(opts.id)}"], .dv-node[data-options*='"id":"${CSS.escape(opts.id)}"']`);
+            if (domHit) {
+                el = domHit;
+                this.elementStore.set(opts.id, el);
+            }
+        }
+
         if (el) {
+            el.dataset.dvId = opts.id;
             el.style.display = '';
             el.style.height = '100%';
             el.style.width = '100%';
             el.style.overflow = 'auto';
-            return { element: el, init() { }, update() { }, dispose() { } };
+
+            // andere Kopien derselben id verstecken & stashen
+            this._hideAndStashDuplicates(opts.id, el);
+
+            return {
+                element: el,
+                init() { },
+                update() { },
+                dispose: () => this._hideAndStash(el, opts.id)
+            };
         }
+
+        // Fallback – wenn kein DOM-Content vorhanden ist
         const div = document.createElement('div');
         div.textContent = 'blazor';
         return { element: div, init() { }, update() { }, dispose() { } };
     }
+
+    // ---------------- Events ----------------
 
     wireEvents() {
         this.disposeEvents();
@@ -80,18 +144,31 @@
         this.disposables = [];
     }
 
+    // ---------------- DOM-Index & Bootstrap ----------------
+
     indexDomLeaves() {
-        this.elementStore.clear();
+        // NICHT clearen – vorhandene (gestashte/aktive) Referenzen behalten
         const nodes = this.containerRef.querySelectorAll('.dv-node');
         for (const node of nodes) {
-            // Leaf = keine direkten .dv-node-Kinder
             const hasChildNodes = Array.from(node.children).some(n => n.classList?.contains('dv-node'));
-            if (!hasChildNodes) {
-                const opts = JSON.parse(node.dataset.options || '{}');
-                if (!opts.id) continue;             // ohne stabile Id kein Mapping
-                node.style.display = 'none';        // wird später ins Panel „übernommen“
-                this.elementStore.set(opts.id, node);
+            if (hasChildNodes) continue;
+
+            const opts = JSON.parse(node.dataset.options || '{}');
+            const id = opts.id;
+            if (!id) continue;
+
+            if (this.elementStore.has(id)) {
+                // Duplikat -> sofort verstecken & stashen
+                this._hideAndStash(node, id);
+                continue;
             }
+
+            node.dataset.dvId = id;
+            node.style.display = 'none';
+            this.elementStore.set(id, node);
+
+            // Falls doch mehrere Instanzen existieren, alle übrigen einsammeln
+            this._hideAndStashDuplicates(id, node);
         }
     }
 
@@ -105,10 +182,7 @@
             this.observer?.disconnect();
         };
 
-        // sofort versuchen
         tryBootstrap();
-
-        // und falls ChildContent später kommt: MutationObserver
         this.observer = new MutationObserver(() => tryBootstrap());
         this.observer.observe(this.containerRef, { childList: true, subtree: true });
     }
@@ -167,6 +241,8 @@
         }
     }
 
+    // ---------------- Serialization ----------------
+
     toJSON() {
         try { return JSON.stringify(this.api?.toJSON() ?? {}); } catch (e) { return '{}'; }
     }
@@ -175,14 +251,11 @@
         try { this.api?.fromJSON(typeof json === 'string' ? JSON.parse(json) : json); } catch (e) { }
     }
 
+    // ---------------- Reinitialize ----------------
+
     /**
-     * Re-Init nach Blazor-Render: indexiert die aktuellen .dv-node Elemente neu
-     * und stellt das Layout wieder her (standard: aktuelles Layout beibehalten).
-     * 
-     * @param {Object} [opts]
-     * @param {boolean} [opts.preserveLayout=true] Layout per toJSON sichern und zurückspielen
-     * @param {boolean} [opts.raiseReady=false]    OnJsReady nach Re-Init erneut auslösen
-     * @param {string|null} [opts.initialLayoutJson] Optional anderes Layout verwenden
+     * Re-Init nach Blazor-Render: robust für gemischte Zustände (manche Items im Dockview,
+     * manche nur im DOM, manche temporär weg). Beibehaltet dieselbe Wrapper-Instanz.
      */
     async reinitialize(opts = {}) {
         if (this._isReinitializing) return;
@@ -190,7 +263,6 @@
 
         const { preserveLayout = true, raiseReady = false, initialLayoutJson = null } = opts;
 
-        // 1) Layout sichern (falls gewünscht)
         let layoutJson = '{}';
         if (preserveLayout) {
             try { layoutJson = this.toJSON(); } catch (e) { layoutJson = '{}'; }
@@ -198,31 +270,35 @@
             layoutJson = initialLayoutJson;
         }
 
-        // 2) Events & Observer abschalten
+        // alle bekannten Elemente in Stash parken (überleben Dispose)
+        try {
+            const stash = this._ensureStash();
+            for (const [id, el] of this.elementStore.entries()) {
+                if (!el) continue;
+                try {
+                    el.dataset.dvId = id;
+                    if (el.parentElement !== stash) stash.appendChild(el);
+                    el.style.display = 'none';
+                } catch { /* noop */ }
+            }
+        } catch { /* noop */ }
+
+        // Events/Observer aus, API entsorgen — Wrapper bleibt identisch
         try { this.disposeEvents(); } catch { }
         try { this.observer?.disconnect?.(); } catch { }
-
-        // 3) Dockview-Instanz entsorgen
         try { this.api?.dispose?.(); } catch { }
 
-        // 4) Flags & Store zurücksetzen
-        this.bootstrapped = false;
-        this.elementStore.clear();
-
-        // 5) Neu erstellen
+        // API neu erzeugen (gleiche Wrapper-Instanz!)
         const { createDockview } = await import(this.options.module);
         this.api = createDockview(this.containerRef, {
-            theme: {
-                className: this.options.className ?? 'dockview-theme-abyss'
-            },
+            theme: { className: this.options.className ?? 'dockview-theme-abyss' },
             dndEdges: { top: true, right: true, bottom: true, left: true },
             createComponent: (opts) => this._createComponent(opts)
         });
 
-        // 6) Aktuelle DOM-Leaves erneut indexieren (Blazor hat evtl. neue/verschobene Knoten erzeugt)
+        // DOM-Leaves mergen & Layout wiederherstellen
         this.indexDomLeaves();
 
-        // 7) Layout wiederherstellen (oder, wenn leer, erneut aus DOM bootstrappen)
         try {
             const parsed = JSON.parse(layoutJson || '{}');
             if (parsed && Object.keys(parsed).length > 0) {
@@ -244,14 +320,23 @@
             }
         }
 
-        // 8) Events wieder anbinden, optional Ready raisen
         this.wireEvents();
         if (raiseReady) {
             try { this.dotnet?.invokeMethodAsync('OnJsReady'); } catch { }
         }
 
+        // Duplikate final einsammeln
+        try {
+            for (const [id, el] of this.elementStore.entries()) {
+                if (!id || !el) continue;
+                this._hideAndStashDuplicates(id, el);
+            }
+        } catch { }
+
         this._isReinitializing = false;
     }
+
+    // ---------------- Cleanup ----------------
 
     dispose() {
         this.disposeEvents();
@@ -262,11 +347,16 @@
 
 window.MudExDockLayout = MudExDockLayout;
 
+// Caching: pro containerRef nur eine Wrapper-Instanz zurückgeben
 export function initializeMudExDockLayout(elementRef, containerRef, dotnet, options) {
-    return new MudExDockLayout(elementRef, containerRef, dotnet, options);
-}
-
-
-export async function reinitializeMudExDockLayout(instance, opts) {
-    return instance?.reinitialize?.(opts);
+    if (containerRef.__mudExDockInstance && containerRef.__mudExDockInstance instanceof MudExDockLayout) {
+        // ggf. Options/DotNet aktualisieren
+        const inst = containerRef.__mudExDockInstance;
+        inst.setOptions?.(options || inst.options);
+        inst.dotnet = dotnet || inst.dotnet;
+        return inst; // dieselbe Instanz
+    }
+    const inst = new MudExDockLayout(elementRef, containerRef, dotnet, options);
+    containerRef.__mudExDockInstance = inst; // cache
+    return inst;
 }

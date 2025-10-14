@@ -1,5 +1,6 @@
 ﻿@inherits MudExJsRequiredBaseComponent<MudExDockLayout>
 
+
 <CascadingValue Value="this" IsFixed="true">
     <div @ref="_containerRef"
          class="@($"{ClassName}{(HideTabHeaders ? " dv-hide-tabs" : "")}")"
@@ -7,4 +8,5 @@
         @ChildContent
     </div>
 </CascadingValue>
+
 

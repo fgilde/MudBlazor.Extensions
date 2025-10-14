@@ -9836,6 +9836,16 @@
             If this is true only one group can be expanded at a time other groups will be collapsed
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ParametersForGroupControl">
+            <summary>
+            Parameters here will be forwarded to used group control
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.ParametersForGroupItem">
+            <summary>
+            Parameters here will be forwarded to the inner item cmp that is used inside the used group control
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.ObjectEdit.MudExObjectEdit`1.HasRegistrationForWholeObject">
             <summary>
             Returns true if we have a registration for the current object that then uses the registered component

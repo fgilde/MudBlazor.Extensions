@@ -2,15 +2,15 @@
 using BlazorJS.Attributes;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Core;
 using MudBlazor.Extensions.Helper;
 using MudBlazor.Extensions.Helper.Internal;
 using Nextended.Core.Extensions;
-using System.Collections.Generic;
 
 namespace MudBlazor.Extensions.Components
 {
 
-    public partial class MudExDockLayout
+    public partial class MudExDockLayout: IReinitializable
     {
         private string _dockViewPath = "/js/libs/dockview/dist";
         private string DockViewFile(string name, bool absolute = true) => JsImportHelper.JsPath($"{_dockViewPath}{name.EnsureStartsWith("/")}", absolute: absolute);
@@ -90,6 +90,11 @@ namespace MudBlazor.Extensions.Components
 
         public Task RestoreLayoutAsync(string json)
             => JsReference!.InvokeVoidAsync("fromJSON", json).AsTask();
+
+        public async Task ReinitializeAsync()
+        {
+            await JsReference!.InvokeVoidAsync("reinitialize");
+        }
     }
 
     public record DockviewMovePanelEvent(string PanelId, string FromGroupId, string ToGroupId, int ToIndex);

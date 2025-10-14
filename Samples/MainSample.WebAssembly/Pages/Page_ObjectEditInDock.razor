@@ -7,9 +7,10 @@
 @attribute [DemoNew(Group = "MudExObjectEdit", Name = "With DockLayout", Order = 1, Documentation = "Demo for using MudExObjectEdit GroupingStyle.Tabs ", Icon = Icons.Material.Outlined.Tab, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 @attribute [DemoNew(Group = nameof(MudExDockLayout), Name = "DockLayout with ObjectEdit", Order = 1, Documentation = "Demo for using MudExObjectEdit GroupingStyle.Tabs ", Icon = Icons.Material.Outlined.Tab, ForComponentTypes = new[] { typeof(MudExObjectEdit<>), typeof(MudExObjectEditForm<>) })]
 
-
+<MudButton OnClick="@TestClck">Test</MudButton>
 <DemoComponent PageType="@GetType()" DocFiles="@(new [] {"Docs/ObjectEdit.md"})" CodeFiles="@(new []{$"Pages/{GetType().Name}.razor", "ObjectEditMetaConfig/MySimpleTypeRegistrations.cs", "Shared/ProgrammingSkillSelect.razor"})">
     <MudExObjectEditForm 
+        @ref="_objectEdit"
         T="TestClass"
         AutoSkeletonOnLoad="true"
         MetaConfiguration="@Configure"
@@ -21,7 +22,7 @@
 
 
 @code {
-
+    MudExObjectEdit<TestClass> _objectEdit;
     private void Configure(ObjectEditMeta<TestClass> meta)
     {
         meta.WrapEachInMudItem();
@@ -58,4 +59,11 @@
         public string City { get; set; }
         public string ZipCode { get; set; }
     }
+
+    private async Task TestClck()
+    {
+        var dl = _objectEdit.GetGroupOuterComponent<MudExDockLayout>();
+        await dl.ReinitializeAsync();
+    }
+
 }
