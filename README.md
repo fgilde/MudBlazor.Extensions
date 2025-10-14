@@ -389,11 +389,11 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2025-10-14 19:02:28 -->
- - 8.12.0 > Move MudExComponentPropertyGrid to MudEx, to have the easy possibility to add and component grid
- - 8.12.0 > Drag and Drop in MudExGrid [here](https://www.mudex.org/mud-ex-grid-enhanced)
- - 8.12.0 > New GroupMode DockPanel for MudExObjectEdit sample [here](https://www.mudex.org/mudex-object-edit-dock)
- - 8.12.0 > New Component MudExDockLayout sample [here](https://www.mudex.org/dock-layout)
- - 8.12.0 > New Component MudExGravatarCard sample [here](https://www.mudex.org/gravatar-card)
+ - 8.13.0 > Move MudExComponentPropertyGrid to MudEx, to have the easy possibility to add and component grid
+ - 8.13.0 > Drag and Drop in MudExGrid [here](https://www.mudex.org/mud-ex-grid-enhanced)
+ - 8.13.0 > New GroupMode DockPanel for MudExObjectEdit sample [here](https://www.mudex.org/mudex-object-edit-dock)
+ - 8.13.0 > New Component MudExDockLayout sample [here](https://www.mudex.org/dock-layout)
+ - 8.13.0 > New Component MudExGravatarCard sample [here](https://www.mudex.org/gravatar-card)
  - 8.11.0 > MudExObject edit now supports grouping by tabs and accordions. See sample [here](https://www.mudex.org/mudex-object-edit-tabs)
  - 8.11.0 > Small bug fixes
  - 8.9.0 > Support touch events for dialog dragging
