@@ -2,7 +2,7 @@
 
   <Import Project="..\..\MudBlazor.Extensions\version.generated.props"
           Condition="Exists('..\..\MudBlazor.Extensions\version.generated.props')" />
-  <Import Project="..\..\Shared.props"/>
+  <Import Condition="Exists('..\..\Shared.props')" Project="..\..\Shared.props"/>
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
