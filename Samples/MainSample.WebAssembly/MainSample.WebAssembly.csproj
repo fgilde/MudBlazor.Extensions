@@ -3,6 +3,7 @@
   <Import Project="..\..\MudBlazor.Extensions\version.generated.props"
           Condition="Exists('..\..\MudBlazor.Extensions\version.generated.props')" />
   <Import Condition="Exists('..\..\Shared.props')" Project="..\..\Shared.props"/>
+
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -91,15 +92,15 @@
   </PropertyGroup>
 
   <!-- Erzeugt index.html VOR Build/DevServer/StaticAssets -->
-  <Target Name="GenerateIndexHtml" BeforeTargets="Build;ResolveStaticWebAssets">
+  <!--<Target Name="GenerateIndexHtml" BeforeTargets="Build;ResolveStaticWebAssets">
     <Message Importance="High" Text="Generating $(IndexOutput) from $(IndexTemplate)" />
 
-    <!-- Hart abbrechen, wenn Template fehlt -->
-    <!--<Error Condition="!Exists('$(IndexTemplate)')"
-           Text="Template not found: $(IndexTemplate). Create wwwroot\index.template.html first." />-->
+    --><!-- Hart abbrechen, wenn Template fehlt --><!--
+    <Error Condition="!Exists('$(IndexTemplate)')"
+           Text="Template not found: $(IndexTemplate). Create wwwroot\index.template.html first." />
 
-    <!-- Token-Replacement via PowerShell (rein .NET-String.Replace, kein Regex) -->
-    <Exec IgnoreExitCode="true" Command="powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+    --><!-- Token-Replacement via PowerShell (rein .NET-String.Replace, kein Regex) --><!--
+    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -Command ^
     $ErrorActionPreference='Stop'; ^
     $in='$(IndexTemplate)'; $out='$(IndexOutput)'; ^
     $text=[System.IO.File]::ReadAllText($in); ^
@@ -114,19 +115,19 @@
     foreach($k in $map.Keys){ $text = $text.Replace('#{'+$k+'}#', $map[$k]) }; ^
     [System.IO.File]::WriteAllText($out, $text, [System.Text.Encoding]::UTF8)" />
 
-    <!-- sicherstellen, dass die generierte Datei veröffentlicht wird -->
+    --><!-- sicherstellen, dass die generierte Datei veröffentlicht wird --><!--
     <ItemGroup>
       <Content Include="$(IndexOutput)">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         <CopyToPublishDirectory>Always</CopyToPublishDirectory>
       </Content>
-      <!-- Template nicht veröffentlichen -->
+      --><!-- Template nicht veröffentlichen --><!--
       <None Include="$(IndexTemplate)" />
     </ItemGroup>
 
-    <!-- Nachkontrolle -->
+    --><!-- Nachkontrolle --><!--
     <Error Condition="!Exists('$(IndexOutput)')" Text="Failed to generate $(IndexOutput)." />
-  </Target>
+  </Target>-->
 
 
 </Project>
