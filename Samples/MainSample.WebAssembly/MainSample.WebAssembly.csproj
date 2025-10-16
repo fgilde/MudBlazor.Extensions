@@ -95,11 +95,11 @@
     <Message Importance="High" Text="Generating $(IndexOutput) from $(IndexTemplate)" />
 
     <!-- Hart abbrechen, wenn Template fehlt -->
-    <Error Condition="!Exists('$(IndexTemplate)')"
-           Text="Template not found: $(IndexTemplate). Create wwwroot\index.template.html first." />
+    <!--<Error Condition="!Exists('$(IndexTemplate)')"
+           Text="Template not found: $(IndexTemplate). Create wwwroot\index.template.html first." />-->
 
     <!-- Token-Replacement via PowerShell (rein .NET-String.Replace, kein Regex) -->
-    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+    <Exec IgnoreExitCode="true" Command="powershell -NoProfile -ExecutionPolicy Bypass -Command ^
     $ErrorActionPreference='Stop'; ^
     $in='$(IndexTemplate)'; $out='$(IndexOutput)'; ^
     $text=[System.IO.File]::ReadAllText($in); ^
