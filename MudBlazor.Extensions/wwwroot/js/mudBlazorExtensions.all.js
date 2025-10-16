@@ -3187,8 +3187,10 @@ window.MudBlazorExtensions = {
     focusAllAutoFocusElements: function () {
         const elements = document.querySelectorAll('[data-auto-focus="true"]');
         elements.forEach(element => {
-            element.removeAttribute('data-auto-focus');
-            (window.__originalBlazorFocusMethod || window.Blazor._internal.domWrapper.focus)(element);
+            try {
+                element.removeAttribute('data-auto-focus');
+                (window.__originalBlazorFocusMethod || window.Blazor._internal.domWrapper.focus)(element);
+            } catch (e) {}
         });
     }
 
@@ -3198,12 +3200,16 @@ window.MudBlazorExtensions = {
 window.MudBlazorExtensions.__bindEvents();
 
 (function () {
-
     if (window.__originalBlazorFocusMethod)
         return;
     window.__originalBlazorFocusMethod = window.Blazor._internal.domWrapper.focus;
     Blazor._internal.domWrapper.focus = function (element, preventScroll) {
-        element.setAttribute('data-auto-focus', 'true');
-        window.__originalBlazorFocusMethod(element, preventScroll);
+        if (element) {
+            try {
+                element.setAttribute('data-auto-focus', 'true');
+                window.__originalBlazorFocusMethod(element, preventScroll);
+            } catch (e) {
+            }
+        }
     };
 })();
