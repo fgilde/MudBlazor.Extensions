@@ -71,10 +71,10 @@
     <PackageReference Include="ExcelDataReader" Version="3.7.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.8" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0" />
-    <PackageReference Include="AuralizeBlazor" Version="2.0.5" />
+    <PackageReference Include="AuralizeBlazor" Version="2.0.6" />
     <PackageReference Include="MudBlazor.Markdown" Version="8.11.0" />
     <PackageReference Include="Nextended.Blazor" Version="9.0.25" />
-    <PackageReference Include="Nextended.Core" Version="9.0.25" />
+    <PackageReference Include="Nextended.Core" Version="9.0.26" />
     <PackageReference Include="BlazorJS" Version="2.2.0" />
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
