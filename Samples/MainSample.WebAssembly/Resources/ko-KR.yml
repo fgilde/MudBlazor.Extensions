@@ -20,7 +20,7 @@ _{0} Demos: '{0} 데모'
 --mud-palette-white: --진흙 팔레트-화이트
 (currently the item is not visible): (현재 항목이 표시되지 않습니다)
 (currently the item is visible): (현재 항목이 표시됩니다)
-4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+Unified-Voice.mp3: Unified-Voice.mp3
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: 사용자가 가능한 값 목록에서 값을 선택하고 칩 또는 기본 콤보 상자로 표시할 수 있는 구성 요소입니다.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: 마우스를 올려 ChildContent를 아래쪽, 위쪽, 왼쪽 또는 오른쪽에서 슬라이드하는 데 사용할 수 있는 컴포넌트입니다.
@@ -4365,3 +4365,4 @@ ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: 줌온호버
 ZoomOutButtonIcon: 줌아웃 버튼 아이콘
 zu-ZA: isiZulu (남아프리카 공화국)
+Starts in {0}: '{0}에서 시작'

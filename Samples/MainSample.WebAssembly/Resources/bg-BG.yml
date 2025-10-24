@@ -20,7 +20,7 @@ _{0} Demos: '{0} демонстрации'
 --mud-palette-white: --кална палитра-бяла
 (currently the item is not visible): (в момента елементът не се вижда)
 (currently the item is visible): (в момента елементът е видим)
-4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+Unified-Voice.mp3: Unified-Voice.mp3
 A: Една
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Компонент, който позволява на потребителя да избере стойност от списък с възможни стойности и да я покаже като чипове или разгъващ се списък по подразбиране.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Компонент, който може да се използва за плъзгане на ChildContent отдолу, отгоре, наляво или надясно с курсор на мишката
@@ -4365,3 +4365,4 @@ ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: ZoomOnHover
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (Южна Африка)
+Starts in {0}: Започва в {0}

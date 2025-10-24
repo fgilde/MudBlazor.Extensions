@@ -20,7 +20,7 @@ _{0} Demos: '{0} Demos'
 --mud-palette-white: --lera- palett-vit
 (currently the item is not visible): (för närvarande är objektet inte synligt)
 (currently the item is visible): (för närvarande är objektet synligt)
-4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+Unified-Voice.mp3: Unified-Voice.mp3
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: En komponent som gör det möjligt för användaren att välja ett värde från en lista med möjliga värden och visa det som brickor eller standardkombinationsruta.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: En komponent som kan användas för att skjuta in ett underordnat innehåll från botten, toppen, vänster eller höger genom att föra muspekaren över det.
@@ -4365,3 +4365,4 @@ ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: ZoomPåSväva
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (Sydafrika)
+Starts in {0}: Startar om {0}

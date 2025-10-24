@@ -6,7 +6,7 @@
     <TargetFrameworks>net8.0</TargetFrameworks>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <ImplicitUsings>enable</ImplicitUsings>
-    <LangVersion>11</LangVersion>
+    <LangVersion>12</LangVersion>
     <Authors>Florian Gilde</Authors>
     <Description>MudBlazor.Extensions is a small extension library for MudBlazor from https://mudblazor.com/ </Description>
     <PackageProjectUrl>https://www.mudex.org</PackageProjectUrl>
@@ -71,7 +71,7 @@
     <PackageReference Include="ExcelDataReader" Version="3.7.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.8" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0" />
-    <PackageReference Include="AuralizeBlazor" Version="2.0.6" />
+    <PackageReference Include="AuralizeBlazor" Version="2.0.8" />
     <PackageReference Include="MudBlazor.Markdown" Version="8.11.0" />
     <PackageReference Include="Nextended.Blazor" Version="9.0.25" />
     <PackageReference Include="Nextended.Core" Version="9.0.26" />

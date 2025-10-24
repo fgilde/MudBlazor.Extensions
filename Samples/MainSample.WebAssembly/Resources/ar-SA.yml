@@ -20,7 +20,7 @@ _{0} Demos: '{0} العروض التوضيحية'
 --mud-palette-white: '- لوحة الطين - أبيض'
 (currently the item is not visible): (العنصر غير مرئي حاليا)
 (currently the item is visible): (العنصر مرئي حاليا)
-4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+Unified-Voice.mp3: Unified-Voice.mp3
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: مكون يسمح للمستخدم بتحديد قيمة من قائمة القيم المحتملة وعرضها على أنها رقائق أو صندوق تحرير وسرد افتراضي.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: مكون يمكن استخدامه للتمرير في محتوى فرعي من الأسفل أو الأعلى أو اليسار أو اليمين عن طريق تمرير الماوس.

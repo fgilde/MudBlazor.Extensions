@@ -992,6 +992,26 @@
             Blazor wrapper component for AudioMotionAnalyzer
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExAudioPlayer.ServiceProvider">
+            <summary>
+            Gets or sets the <see cref="T:System.IServiceProvider"/> to be used for dependency injection.
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExAudioPlayer.LocalizerToUse">
+            <summary>
+            Gets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
+            </summary>
+        </member>
+        <member name="M:MudBlazor.Extensions.Components.MudExAudioPlayer.TryLocalize(System.String,System.Object[])">
+            <summary>
+            Tries to localize given text if localizer and translation is available
+            </summary>
+        </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExAudioPlayer.Localizer">
+            <summary>
+            Gets or sets the <see cref="T:Microsoft.Extensions.Localization.IStringLocalizer"/> to be used for localizing strings.
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExAudioPlayer.AudioElement">
             <summary>
             Reference to the audio element

@@ -20,7 +20,7 @@ _{0} Demos: '{0} Επιδείξεις'
 --mud-palette-white: --παλέτα λάσπης-λευκό
 (currently the item is not visible): (προς το παρόν το στοιχείο δεν είναι ορατό)
 (currently the item is visible): (προς το παρόν το στοιχείο είναι ορατό)
-4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+Unified-Voice.mp3: Unified-Voice.mp3
 A: Ένας
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Ένα συστατικό που επιτρέπει στο χρήστη να επιλέξει μια τιμή από μια λίστα πιθανών τιμών και να την εμφανίσει ως Chips ή προεπιλεγμένο Combobox.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Ένα στοιχείο που μπορεί να χρησιμοποιηθεί για να σύρετε σε ένα ChildContent από κάτω, πάνω, αριστερά ή δεξιά με το ποντίκι.
@@ -4365,3 +4365,4 @@ ZoomInButtonIcon: Εικονίδιο κουμπιού ζουμ
 ZoomOnHover: ZoomOnHover
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (Νότια Αφρική)
+Starts in {0}: Ξεκινά σε {0}

@@ -20,7 +20,7 @@ _{0} Demos: '{0} Demo'
 --mud-palette-white: --tavolozza-fango-bianco
 (currently the item is not visible): (attualmente l'elemento non è visibile)
 (currently the item is visible): (attualmente l'elemento è visibile)
-4.Unified-Voice.mp3: 4.Unified-Voice.mp3
+Unified-Voice.mp3: Unified-Voice.mp3
 A: Un
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Un componente che consente all'utente di selezionare un valore da un elenco di valori possibili e di visualizzarlo come Chips o Combobox predefinito.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Un componente che può essere utilizzato per far scorrere un ChildContent dal basso, dall'alto, da sinistra o da destra passando il mouse.
@@ -4365,3 +4365,4 @@ ZoomInButtonIcon: ZoomInButtonIcona
 ZoomOnHover: ZoomOnHover
 ZoomOutButtonIcon: ZoomOutButtonIcona
 zu-ZA: isiZulu (Sudafrica)
+Starts in {0}: Inizia in {0}

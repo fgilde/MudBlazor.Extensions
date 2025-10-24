@@ -32,7 +32,8 @@ public class SampleDataService
         yield return CreateSampleFile("readme.md", "text/markdown");
         yield return CreateSampleFile("Header.tiff", "image/tiff");
         yield return CreateSampleFile("SweetieBubbleGum-Regular.ttf", "font/ttf");
-        yield return CreateSampleFile("4.Unified-Voice.mp3", "audio/mpeg3");
+        yield return CreateSampleFile("Leben wie im Film.mp3", "audio/mpeg3");
+        yield return CreateSampleFile("Unified-Voice.mp3", "audio/mpeg3");
         yield return CreateSampleFile("WordDokument.doc", "application/msword");
         yield return CreateSampleFile("ExcelSheet.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         yield return CreateSampleFile("https://www.oasis-open.org/spectools/docs/wd-spectools-word-sample-04.doc", "application/msword");

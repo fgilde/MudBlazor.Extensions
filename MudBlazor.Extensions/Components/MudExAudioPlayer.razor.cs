@@ -1,9 +1,10 @@
-﻿using System.Reflection;
-using AuralizeBlazor;
+﻿using AuralizeBlazor;
 using AuralizeBlazor.Features;
 using AuralizeBlazor.Options;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor.Extensions.Attribute;
 using MudBlazor.Extensions.Core;
@@ -13,6 +14,7 @@ using MudBlazor.Extensions.Services;
 using Nextended.Blazor.Models;
 using Nextended.Core;
 using Nextended.Core.Extensions;
+using System.Reflection;
 
 namespace MudBlazor.Extensions.Components;
 
@@ -25,8 +27,33 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
     private bool _mouseWheelNeedsAlt;
     private string _id = $"mud-ex-audio-player-{Guid.NewGuid().ToFormattedId()}";
     private MudExColor _bg = MudExColor.Surface;
-    private MudExColor[] _borderColors = new[] { MudExColor.Primary, MudExColor.Secondary, MudExColor.Warning, MudExColor.Error };
-    
+    private MudExColor[] _borderColors = [MudExColor.Primary, MudExColor.Secondary, MudExColor.Warning, MudExColor.Error];
+
+    private IStringLocalizer<MudExAudioPlayer> FallbackLocalizer => ServiceProvider.GetService<IStringLocalizer<MudExAudioPlayer>>();
+
+    /// <summary>
+    /// Gets or sets the <see cref="IServiceProvider"/> to be used for dependency injection.
+    /// </summary>
+    [Inject]
+    protected IServiceProvider ServiceProvider { get; set; }
+
+    /// <summary>
+    /// Gets the <see cref="IStringLocalizer"/> to be used for localizing strings.
+    /// </summary>
+    protected IStringLocalizer LocalizerToUse => Localizer ?? FallbackLocalizer;
+
+
+    /// <summary>
+    /// Tries to localize given text if localizer and translation is available
+    /// </summary>
+    public string TryLocalize(string text, params object[] args) => LocalizerToUse.TryLocalize(text, args);
+
+    /// <summary>
+    /// Gets or sets the <see cref="IStringLocalizer"/> to be used for localizing strings.
+    /// </summary>
+    [Parameter, SafeCategory("Common")]
+    public IStringLocalizer Localizer { get; set; }
+
     /// <summary>
     /// Reference to the audio element
     /// </summary>
@@ -195,6 +222,7 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
     /// <inheritdoc />
     protected override void HandleOnPresetApplied(AuralizerPreset preset, PresetApplySettings settings)
     {        
+
         base.HandleOnPresetApplied(preset, settings);
         if (MudExFileDisplay != null)
             ApplyInitialSettingsForFileView(false);
@@ -209,10 +237,11 @@ public partial class MudExAudioPlayer : IMudExFileDisplay, IMudExComponent
             Presets = AuralizerPreset.All;
         }
 
-        //Features = new IVisualizerFeature[]
-        //{
-        //    new ShowLogoFeature() {Label =MudExFileDisplay?.FileName, Position = TextPosition.CenterCenter}
-        //};
+        Features =
+        [
+            new ShowLogoFeature {Label = Path.GetFileNameWithoutExtension(MudExFileDisplay?.FileName), LabelPosition = VisualPosition.BottomRight},
+            new LyricsDisplayFeature {TextPosition = LyricsPosition.Top, FontSize = 28, Colors = ["#ffffff"], CountDownFormatStr = TryLocalize("Starts in {0}")}
+        ];
         KeepState = true;
         ApplyBackgroundImageFromTrack = false;
         PreviewImageInPresetList = true;
