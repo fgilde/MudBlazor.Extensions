@@ -20,7 +20,6 @@ _{0} Demos: '{0} Pokazy'
 --mud-palette-white: --paleta-błota-biała
 (currently the item is not visible): (obecnie element nie jest widoczny)
 (currently the item is visible): (obecnie element jest widoczny)
-Unified-Voice.mp3: Unified-Voice.mp3
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Składnik, który umożliwia użytkownikowi wybranie wartości z listy możliwych wartości i wyświetlenie jej jako Żetony lub domyślne pole kombi.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Składnik, którego można użyć do przesuwania elementu ChildContent od dołu, od góry, w lewo lub w prawo za pomocą najechania myszą.
@@ -1540,6 +1539,7 @@ Here only number is configured to render with NumEdit edit but DataType is strin
 Here you can edit the users, but only confirm if count is at least 2: Tutaj możesz edytować użytkowników, ale potwierdzić tylko wtedy, gdy liczba wynosi co najmniej 2
 Here you can leave a comment for this permission for the current role: Tutaj możesz zostawić komentarz do tego uprawnienia dla bieżącej roli
 Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Tutaj możesz zobaczyć, jak możesz użyć MudExObjectEdit do edycji właściwości uruchomionego komponentu
+Here you find a Demo how build a tree picker: Tutaj znajdziesz demonstrację, jak zbudować zbieracz drzew
 Here you find a Demo how to use the service directly: Tutaj znajdziesz wersję demonstracyjną, jak bezpośrednio korzystać z usługi
 Hex: Urok
 HEX: UROK
@@ -2902,6 +2902,7 @@ Not Modal Dialogs: Nie modalne okna dialogowe
 Note - Media options can't changed after a screen is selected: Uwaga — opcji multimediów nie można zmienić po wybraniu ekranu
 NoteLabels: 'Uwaga: Etykiety'
 NotFoundMessage: Strona, której szukasz, nie istnieje.
+Nothing selected: Nic nie wybrano
 Notice: Zauważyć
 Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Zwróć uwagę, że jeśli używasz tej metody, możesz określić odwołanie zwrotne, w którym znajduje się metoda, jeśli tego nie zrobisz, odwołaniem jest samo okno dialogowe i w tym przypadku musisz mieć metodę w swoim DialogClass
 Notifications: Powiadomienia
@@ -3775,6 +3776,7 @@ Start Capture: Rozpocznij przechwytywanie
 Start Recording: Rozpocznij nagrywanie
 Start recording after: Rozpocznij nagrywanie po
 Start/Stop selection: Wybór Start/Stop
+Starts in {0}: Zaczyna się za {0}
 State: Stan
 Static: Statyczny
 Static card.: Karta statyczna.
@@ -4027,6 +4029,7 @@ This photo was taken in a small village in Istra Croatia.: To zdjęcie zostało 
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Ten selektor zapewnia animacje, lepsze zachowania i okno dialogowe, które obsługuje wszystkie opcje dialogowe. Aby utworzyć własny komponent selektora, należy odziedziczyć po MudExPickerBase, lub po prostu użyć prostej zawartości, użyj MudExPicker, aby utworzyć własny komponent selektora.
 This sample demonstrate how to use the MudExCaptureService: W tym przykładzie pokazano, jak używać usługi MudExCaptureService
 This sample demonstrate the usage of MudExTreeView with an Item template: W tym przykładzie pokazano użycie MudExTreeView z szablonem elementu
+This sample just shows how easily you can combine the MudExPicker with MudExTreeView to build a tree picker: Ten przykład pokazuje tylko, jak łatwo można połączyć MudExPicker z MudExTreeView w celu zbudowania selektora drzew.
 This sample uses the IDialogEventService to cancel the dialog close: W tym przykładzie użyto elementu IDialogEventService w celu anulowania zamknięcia okna dialogowego
 This sample uses the options for a can close callback: W tym przykładzie użyto opcji wywołania zwrotnego może zamknąć
 This section can be placed inside a MudExGrid component.: Tę sekcję można umieścić wewnątrz komponentu MudExGrid.
@@ -4143,6 +4146,7 @@ UncheckedIcon: NiezaznaczoneIkona
 Underline: Podkreślać
 Undo: Cofnąć
 UndoIcon: Cofnij ikonę
+Unified-Voice.mp3: Unified-Voice.mp3
 UnikittyDarkBase16: 'RożekDarkBase16 powiedział:'
 UnikittyLightBase16: Baza Kici Rożek KityLightBase16
 Unselectable: Nie można wybrać opcji
@@ -4364,4 +4368,3 @@ ZoomInButtonIcon: Ikona ZoomInButtonIcon
 ZoomOnHover: ZoomOnHover (Powiększenie po najechaniu kursorem)
 ZoomOutButtonIcon: Ikona ZoomOutButtonIcon
 zu-ZA: isiZulu (Republika Południowej Afryki)
-Starts in {0}: Zaczyna się za {0}

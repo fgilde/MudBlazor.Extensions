@@ -20,7 +20,6 @@ _{0} Demos: '{0} Demos'
 --mud-palette-white: --mud-palette-white
 (currently the item is not visible): (currently the item is not visible)
 (currently the item is visible): (currently the item is visible)
-Unified-Voice.mp3: Unified-Voice.mp3
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.
@@ -1540,6 +1539,7 @@ Here only number is configured to render with NumEdit edit but DataType is strin
 Here you can edit the users, but only confirm if count is at least 2: Here you can edit the users, but only confirm if count is at least 2
 Here you can leave a comment for this permission for the current role: Here you can leave a comment for this permission for the current role
 Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Here you can see how you can use the MudExObjectEdit to edit the properties of a running component
+Here you find a Demo how build a tree picker: Here you find a Demo how build a tree picker
 Here you find a Demo how to use the service directly: Here you find a Demo how to use the service directly
 Hex: Hex
 HEX: HEX
@@ -2903,6 +2903,7 @@ Not Modal Dialogs: Not Modal Dialogs
 Note - Media options can't changed after a screen is selected: Note - Media options can't changed after a screen is selected
 NoteLabels: NoteLabels
 NotFoundMessage: The page you were looking for doesn't exist.
+Nothing selected: Nothing selected
 Notice: Notice
 Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case
 Notifications: Notifications
@@ -3776,6 +3777,7 @@ Start Capture: Start Capture
 Start Recording: Start Recording
 Start recording after: Start recording after
 Start/Stop selection: Start/Stop selection
+Starts in {0}: Starts in {0}
 State: State
 Static: Static
 Static card.: Static card.
@@ -4028,6 +4030,7 @@ This photo was taken in a small village in Istra Croatia.: This photo was taken 
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker
 This sample demonstrate how to use the MudExCaptureService: This sample demonstrate how to use the MudExCaptureService
 This sample demonstrate the usage of MudExTreeView with an Item template: This sample demonstrate the usage of MudExTreeView with an Item template
+This sample just shows how easily you can combine the MudExPicker with MudExTreeView to build a tree picker: This sample just shows how easily you can combine the MudExPicker with MudExTreeView to build a tree picker.
 This sample uses the IDialogEventService to cancel the dialog close: This sample uses the IDialogEventService to cancel the dialog close
 This sample uses the options for a can close callback: This sample uses the options for a can close callback
 This section can be placed inside a MudExGrid component.: This section can be placed inside a MudExGrid component.
@@ -4144,6 +4147,7 @@ UncheckedIcon: UncheckedIcon
 Underline: Underline
 Undo: Undo
 UndoIcon: UndoIcon
+Unified-Voice.mp3: Unified-Voice.mp3
 UnikittyDarkBase16: UnikittyDarkBase16
 UnikittyLightBase16: UnikittyLightBase16
 Unselectable: Unselectable
@@ -4365,4 +4369,3 @@ ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: ZoomOnHover
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (South Africa)
-Starts in {0}: Starts in {0}

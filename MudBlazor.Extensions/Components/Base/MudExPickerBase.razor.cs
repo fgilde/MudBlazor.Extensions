@@ -24,6 +24,7 @@ public partial class MudExPickerBase<T>
     private Task CloseOverlayAsync() => CloseAsync(PickerActions == null);
     private double? _currentWidth;
     private string _id;
+    private bool _opened;
 
     /// <summary>
     /// Is true if init was called
@@ -167,6 +168,9 @@ public partial class MudExPickerBase<T>
     [Parameter]
     public bool AllowOpenOnReadOnly { get; set; }
 
+    public bool IsOpen => Rendered && _opened;
+
+
     /// <summary>
     /// Id for picker element
     /// </summary>
@@ -236,12 +240,18 @@ public partial class MudExPickerBase<T>
         }
     }
 
+    protected override Task OnClosedAsync()
+    {
+        _opened = false;
+        return base.OnClosedAsync();
+    }
 
     /// <inheritdoc />
     protected override async Task OnOpenedAsync()
     {
         await base.OnOpenedAsync();
         await BindPickerWidthAsync();
+        _opened = true;
     }
 
     private async Task BindPickerWidthAsync()

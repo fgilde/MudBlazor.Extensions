@@ -20,7 +20,6 @@ _{0} Demos: '{0} démos'
 --mud-palette-white: --mud-palette-white
 (currently the item is not visible): (actuellement, l’élément n’est pas visible)
 (currently the item is visible): (actuellement, l’élément est visible)
-Unified-Voice.mp3: Unified-Voice.mp3
 A: Un
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Composant qui permet à l’utilisateur de sélectionner une valeur dans une liste de valeurs possibles et de l’afficher sous forme de jetons ou de liste déroulante par défaut.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Un composant qui peut être utilisé pour glisser un ChildContent du bas, du haut, de la gauche ou de la droite au survol de la souris.
@@ -1540,6 +1539,7 @@ Here only number is configured to render with NumEdit edit but DataType is strin
 Here you can edit the users, but only confirm if count is at least 2: Ici, vous pouvez modifier les utilisateurs, mais ne confirmer que si le nombre est d’au moins 2
 Here you can leave a comment for this permission for the current role: Ici, vous pouvez laisser un commentaire pour cette autorisation pour le rôle actuel
 Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Ici, vous pouvez voir comment vous pouvez utiliser MudExObjectEdit pour modifier les propriétés d’un composant en cours d’exécution
+Here you find a Demo how build a tree picker: Vous trouverez ici une démo de la construction d’un cueilleur d’arbres
 Here you find a Demo how to use the service directly: Vous trouverez ici une démo de l’utilisation directe du service
 Hex: Sortilège
 HEX: SORTILÈGE
@@ -2903,6 +2903,7 @@ Not Modal Dialogs: Boîtes de dialogue non modales
 Note - Media options can't changed after a screen is selected: Remarque - Les options multimédias ne peuvent pas être modifiées après la sélection d’un écran
 NoteLabels: RemarqueÉtiquettes
 NotFoundMessage: La page que vous cherchiez n’existe pas.
+Nothing selected: Rien sélectionné
 Notice: Remarquer
 Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Notez que si vous utilisez cette méthode, vous pouvez spécifier une référence de rappel où se trouve la méthode, si vous ne le faites pas, la référence est la boîte de dialogue elle-même et vous devez avoir la méthode sur votre DialogClass dans ce cas
 Notifications: Notifications
@@ -3776,6 +3777,7 @@ Start Capture: Démarrer la capture
 Start Recording: Démarrer l’enregistrement
 Start recording after: Démarrer l’enregistrement après
 Start/Stop selection: Sélection Start/Stop
+Starts in {0}: Commence dans {0}
 State: État
 Static: Statique
 Static card.: Carte statique.
@@ -4028,6 +4030,7 @@ This photo was taken in a small village in Istra Croatia.: Cette photo a été p
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Ce sélecteur apporte des animations, de meilleurs comportements et une boîte de dialogue qui prend en charge toutes les DialogOptions. Pour créer votre propre composant de sélecteur, il faut l’hériter de MudExPickerBase, ou pour simplement utiliser du contenu simple, utilisez MudExPicker
 This sample demonstrate how to use the MudExCaptureService: Cet exemple illustre l’utilisation de MudExCaptureService
 This sample demonstrate the usage of MudExTreeView with an Item template: Cet exemple illustre l’utilisation de MudExTreeView avec un modèle d’élément
+This sample just shows how easily you can combine the MudExPicker with MudExTreeView to build a tree picker: Cet exemple montre simplement à quel point il est facile de combiner MudExPicker avec MudExTreeView pour créer un amasseur d’arbres.
 This sample uses the IDialogEventService to cancel the dialog close: Cet exemple utilise IDialogEventService pour annuler la boîte de dialogue fermer
 This sample uses the options for a can close callback: Cet exemple utilise les options d’un rappel can close
 This section can be placed inside a MudExGrid component.: Cette section peut être placée à l’intérieur d’un composant MudExGrid.
@@ -4144,6 +4147,7 @@ UncheckedIcon: DécochéeIcône
 Underline: Souligner
 Undo: Défaire
 UndoIcon: AnnulerIcône
+Unified-Voice.mp3: Unified-Voice.mp3
 UnikittyDarkBase16: UnikittyDarkBase16
 UnikittyLightBase16: UnikittyLightBase16
 Unselectable: Non sélectionnable
@@ -4365,4 +4369,3 @@ ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: ZoomOnHover
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (Afrique du Sud)
-Starts in {0}: Commence dans {0}

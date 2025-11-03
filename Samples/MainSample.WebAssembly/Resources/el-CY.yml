@@ -20,7 +20,6 @@ _{0} Demos: '{0} Επιδείξεις'
 --mud-palette-white: --παλέτα λάσπης-λευκό
 (currently the item is not visible): (προς το παρόν το στοιχείο δεν είναι ορατό)
 (currently the item is visible): (προς το παρόν το στοιχείο είναι ορατό)
-Unified-Voice.mp3: Unified-Voice.mp3
 A: Ένας
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Ένα συστατικό που επιτρέπει στο χρήστη να επιλέξει μια τιμή από μια λίστα πιθανών τιμών και να την εμφανίσει ως Chips ή προεπιλεγμένο Combobox.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Ένα στοιχείο που μπορεί να χρησιμοποιηθεί για να σύρετε σε ένα ChildContent από κάτω, πάνω, αριστερά ή δεξιά με το ποντίκι.
@@ -1540,6 +1539,7 @@ Here only number is configured to render with NumEdit edit but DataType is strin
 Here you can edit the users, but only confirm if count is at least 2: Εδώ μπορείτε να επεξεργαστείτε τους χρήστες, αλλά να επιβεβαιώσετε μόνο εάν ο αριθμός είναι τουλάχιστον 2
 Here you can leave a comment for this permission for the current role: Εδώ μπορείτε να αφήσετε ένα σχόλιο για αυτήν την άδεια για τον τρέχοντα ρόλο
 Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Εδώ μπορείτε να δείτε πώς μπορείτε να χρησιμοποιήσετε το MudExObjectEdit για να επεξεργαστείτε τις ιδιότητες ενός στοιχείου που εκτελείται
+Here you find a Demo how build a tree picker: Εδώ θα βρείτε ένα Demo πως φτιάξτε έναν συλλέκτη δέντρων
 Here you find a Demo how to use the service directly: Εδώ θα βρείτε ένα Demo πώς να χρησιμοποιήσετε την υπηρεσία απευθείας
 Hex: Εξάγωνο
 HEX: ΕΞΆΓΩΝΟ
@@ -2903,6 +2903,7 @@ Not Modal Dialogs: Όχι Modal Dialogs
 Note - Media options can't changed after a screen is selected: Σημείωση - Οι επιλογές πολυμέσων δεν μπορούν να αλλάξουν μετά την επιλογή μιας οθόνης
 NoteLabels: ΣημείωσηΕτικέτες
 NotFoundMessage: Η σελίδα που αναζητούσατε δεν υπάρχει.
+Nothing selected: Τίποτα επιλεγμένο
 Notice: Παρατηρώ
 Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Παρατηρήστε ότι αν χρησιμοποιείτε αυτή τη μέθοδο, μπορείτε να ορίσετε μια αναφορά επανάκλησης όπου βρίσκεται η μέθοδος, αν δεν το κάνετε αυτό, η αναφορά είναι ο ίδιος ο διάλογος και πρέπει να έχετε τη μέθοδο στο DialogClass σας σε αυτή την περίπτωση
 Notifications: Ειδοποιήσεις
@@ -3776,6 +3777,7 @@ Start Capture: Ξεκινήστε τη λήψη
 Start Recording: Ξεκινήστε την εγγραφή
 Start recording after: Ξεκινήστε την εγγραφή μετά από
 Start/Stop selection: Επιλογή έναρξης/διακοπής
+Starts in {0}: Ξεκινά σε {0}
 State: Κράτος
 Static: Στατικός
 Static card.: Στατική κάρτα.
@@ -4028,6 +4030,7 @@ This photo was taken in a small village in Istra Croatia.: Αυτή η φωτο�
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Αυτός ο επιλογέας φέρνει κινούμενα σχέδια, καλύτερες συμπεριφορές και ένα παράθυρο διαλόγου που υποστηρίζει όλα τα DialogOptions. Για να δημιουργήσετε το δικό σας στοιχείο επιλογής jus κληρονομήστε από το MudExPickerBase ή απλώς για να χρησιμοποιήσετε απλό περιεχόμενο χρησιμοποιήστε το MudExPicker
 This sample demonstrate how to use the MudExCaptureService: Αυτό το δείγμα δείχνει πώς να χρησιμοποιήσετε το MudExCaptureService
 This sample demonstrate the usage of MudExTreeView with an Item template: Αυτό το δείγμα δείχνει τη χρήση του MudExTreeView με ένα πρότυπο αντικειμένου
+This sample just shows how easily you can combine the MudExPicker with MudExTreeView to build a tree picker: Αυτό το δείγμα δείχνει απλώς πόσο εύκολα μπορείτε να συνδυάσετε το MudExPicker με το MudExTreeView για να δημιουργήσετε έναν επιλογέα δέντρων.
 This sample uses the IDialogEventService to cancel the dialog close: Αυτό το δείγμα χρησιμοποιεί το IDialogEventService για να ακυρώσει το παράθυρο διαλόγου κλείσιμο
 This sample uses the options for a can close callback: Αυτό το δείγμα χρησιμοποιεί τις επιλογές για μια δυνατότητα κλεισίματος κλήσης
 This section can be placed inside a MudExGrid component.: Αυτό το τμήμα μπορεί να τοποθετηθεί μέσα σε ένα στοιχείο MudExGrid.
@@ -4144,6 +4147,7 @@ UncheckedIcon: Μη επιλεγμένο εικονίδιο
 Underline: Υπογραμμίζω
 Undo: Καταστρέφω
 UndoIcon: Εικονίδιο αναίρεσης
+Unified-Voice.mp3: Unified-Voice.mp3
 UnikittyDarkBase16: UnikittyDarkBase16
 UnikittyLightBase16: UnikittyLightBase16
 Unselectable: Μη επιλέξιμο
@@ -4365,4 +4369,3 @@ ZoomInButtonIcon: Εικονίδιο κουμπιού ζουμ
 ZoomOnHover: ZoomOnHover
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (Νότια Αφρική)
-Starts in {0}: Ξεκινά σε {0}

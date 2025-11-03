@@ -20,7 +20,6 @@ _{0} Demos: '{0} Demoları'
 --mud-palette-white: --çamur-palet-beyaz
 (currently the item is not visible): (şu anda öğe görünmüyor)
 (currently the item is visible): (şu anda öğe görünür durumda)
-Unified-Voice.mp3: Unified-Voice.mp3
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Kullanıcının olası değerler listesinden bir değer seçmesine ve bunu Çipler veya varsayılan Kombinasyon Kutusu olarak görüntülemesine olanak tanıyan bir bileşen.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Bir ChildContent'i fareyle üzerine gelerek alttan, üstten, soldan veya sağdan kaydırmak için kullanılabilecek bir Bileşen.
@@ -1540,6 +1539,7 @@ Here only number is configured to render with NumEdit edit but DataType is strin
 Here you can edit the users, but only confirm if count is at least 2: Burada kullanıcıları düzenleyebilirsiniz, ancak yalnızca sayı en az 2 ise onaylayabilirsiniz
 Here you can leave a comment for this permission for the current role: Burada mevcut rol için bu izin için yorum bırakabilirsiniz
 Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Burada, çalışan bir bileşenin özelliklerini düzenlemek için MudExObjectEdit'i nasıl kullanabileceğinizi görebilirsiniz
+Here you find a Demo how build a tree picker: Burada bir ağaç toplayıcının nasıl oluşturulacağına dair bir Demo bulabilirsiniz
 Here you find a Demo how to use the service directly: Burada hizmetin doğrudan nasıl kullanılacağına dair bir Demo bulabilirsiniz
 Hex: Büyü
 HEX: BÜYÜ
@@ -2903,6 +2903,7 @@ Not Modal Dialogs: Modal Olmayan İletişim Kutuları
 Note - Media options can't changed after a screen is selected: Not - Bir ekran seçildikten sonra medya seçenekleri değiştirilemez
 NoteLabels: Not Etiketleri
 NotFoundMessage: Aradığınız sayfa mevcut değil.
+Nothing selected: Hiçbir şey seçilmedi
 Notice: Farkına varmak
 Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Bu yöntemi kullanırsanız, yöntemin bulunduğu yerde bir geri çağırma başvurusu belirtebileceğinize dikkat edin, bunu yapmazsanız başvuru iletişim kutusunun kendisidir ve bu durumda yöntemin DialogClass'ınızda olması gerekir
 Notifications: Bildirim
@@ -3776,6 +3777,7 @@ Start Capture: Yakalamayı Başlat
 Start Recording: Kayda Başla
 Start recording after: Kayda şu süreden sonra başlayın
 Start/Stop selection: Başlat/Durdur seçimi
+Starts in {0}: içinde başlar '{0}'
 State: Devlet
 Static: Duruk
 Static card.: Statik kart.
@@ -4028,6 +4030,7 @@ This photo was taken in a small village in Istra Croatia.: Bu fotoğraf Hırvati
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Bu seçici animasyonlar, daha iyi davranışlar ve tüm DialogOptions'ı destekleyen bir iletişim kutusu getirir. Kendi seçici bileşeninizi oluşturmak için jus MudExPickerBase'den devralın veya sadece basit içerik kullanmak için MudExPicker'ı kullanın
 This sample demonstrate how to use the MudExCaptureService: Bu örnekte MudExCaptureService'in nasıl kullanılacağı gösterilmektedir
 This sample demonstrate the usage of MudExTreeView with an Item template: Bu örnek, MudExTreeView'un bir Öğe şablonuyla kullanımını gösterir
+This sample just shows how easily you can combine the MudExPicker with MudExTreeView to build a tree picker: Bu örnek, bir ağaç seçici oluşturmak için MudExPicker'ı MudExTreeView ile ne kadar kolay birleştirebileceğinizi gösterir.
 This sample uses the IDialogEventService to cancel the dialog close: Bu örnek, iletişim kutusunu kapatmak için IDialogEventService'i kullanır
 This sample uses the options for a can close callback: Bu örnek, can close geri çağırma seçeneklerini kullanır
 This section can be placed inside a MudExGrid component.: Bu bölüm bir MudExGrid bileşeninin içine yerleştirilebilir.
@@ -4144,6 +4147,7 @@ UncheckedIcon: İşaretsizSimge
 Underline: Altını çizmek
 Undo: Geri almak
 UndoIcon: Geri Al Simgesi
+Unified-Voice.mp3: Unified-Voice.mp3
 UnikittyDarkBase16: Tek KedicikKaranlık Taban16
 UnikittyLightBase16: Tek KedicikIşıkTabanı16
 Unselectable: Seçilemez
@@ -4365,4 +4369,3 @@ ZoomInButtonIcon: ZoomInButtonSimgesi
 ZoomOnHover: Yakınlaştırma Üzerine Bakış
 ZoomOutButtonIcon: UzaklaştırDüğmeSimgesi
 zu-ZA: isiZulu (Güney Afrika)
-Starts in {0}: '{0}' içinde başlar

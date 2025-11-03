@@ -20,7 +20,6 @@ _{0} Demos: '{0} Demoer'
 --mud-palette-white: --mudder-palet-hvid
 (currently the item is not visible): (i øjeblikket er varen ikke synlig)
 (currently the item is visible): (i øjeblikket er varen synlig)
-Unified-Voice.mp3: Unified-Voice.mp3
 A: En
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: En komponent, der giver brugeren mulighed for at vælge en værdi fra en liste over mulige værdier og vise den som chips eller standard kombinationsboks.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: En komponent, der kan bruges til at glide ind i et ChildContent fra bunden, toppen, venstre eller højre ved at holde musen over.
@@ -1540,6 +1539,7 @@ Here only number is configured to render with NumEdit edit but DataType is strin
 Here you can edit the users, but only confirm if count is at least 2: Her kan du redigere brugerne, men kun bekræfte, hvis antallet er mindst 2
 Here you can leave a comment for this permission for the current role: Her kan du skrive en kommentar til denne tilladelse til den aktuelle rolle
 Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Her kan du se, hvordan du kan bruge MudExObjectEdit til at redigere egenskaberne for en kørende komponent
+Here you find a Demo how build a tree picker: Her finder du en Demo hvordan du bygger en træplukker
 Here you find a Demo how to use the service directly: Her finder du en demo om, hvordan du bruger tjenesten direkte
 Hex: Hex
 HEX: HEX
@@ -2903,6 +2903,7 @@ Not Modal Dialogs: Ikke modale dialogbokse
 Note - Media options can't changed after a screen is selected: Bemærk - Medieindstillinger kan ikke ændres, når en skærm er valgt
 NoteLabels: BemærkEtiketter
 NotFoundMessage: Den side, du ledte efter, findes ikke.
+Nothing selected: Intet valgt
 Notice: Meddelelse
 Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Bemærk, at hvis du bruger denne metode, kan du angive en tilbagekaldsreference, hvor metoden er placeret, hvis du ikke gør dette, er referencen selve dialogen, og du skal have metoden på din DialogClass i dette tilfælde
 Notifications: Meddelelser
@@ -3776,6 +3777,7 @@ Start Capture: Start optagelse
 Start Recording: Start optagelse
 Start recording after: Start optagelsen efter
 Start/Stop selection: Start/Stop valg
+Starts in {0}: Starter om {0}
 State: Stat
 Static: Statisk
 Static card.: Statisk kort.
@@ -4028,6 +4030,7 @@ This photo was taken in a small village in Istra Croatia.: Dette billede blev ta
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Denne vælger giver animationer, bedre adfærd og en dialog, der understøtter alle DialogOptions. For at oprette din egen plukkerkomponent arver du fra MudExPickerBase, eller bare for at bruge simpelt indhold skal du bruge MudExPicker
 This sample demonstrate how to use the MudExCaptureService: Dette eksempel viser, hvordan du bruger MudExCaptureService
 This sample demonstrate the usage of MudExTreeView with an Item template: Dette eksempel viser brugen af MudExTreeView med en Item-skabelon
+This sample just shows how easily you can combine the MudExPicker with MudExTreeView to build a tree picker: Dette eksempel viser blot, hvor nemt du kan kombinere MudExPicker med MudExTreeView for at oprette en træplukker.
 This sample uses the IDialogEventService to cancel the dialog close: I dette eksempel bruges IDialogEventService til at annullere dialogen
 This sample uses the options for a can close callback: I dette eksempel bruges indstillingerne for et tilbagekald til kan lukke
 This section can be placed inside a MudExGrid component.: Denne sektion kan placeres inde i en MudExGrid-komponent.
@@ -4144,6 +4147,7 @@ UncheckedIcon: Ikke markeretIkon
 Underline: Understrege
 Undo: Fortryde
 UndoIcon: Fortryd ikon
+Unified-Voice.mp3: Unified-Voice.mp3
 UnikittyDarkBase16: PartyKittyDarkBase16
 UnikittyLightBase16: UniKatyLightBase16
 Unselectable: Kan ikke vælges
@@ -4365,4 +4369,3 @@ ZoomInButtonIcon: ZoomInButtonIkon
 ZoomOnHover: ZoomOnHover
 ZoomOutButtonIcon: ZoomUdKnapIkon
 zu-ZA: isiZulu (Sydafrika)
-Starts in {0}: Starter om {0}

@@ -224,6 +224,11 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
     /// Callback when the selected node changes
     /// </summary>
     [Parameter] public EventCallback<TItem> SelectedNodeChanged { get; set; }
+
+    /// <summary>
+    /// Callback after a node was selected
+    /// </summary>
+    [Parameter] public EventCallback<TItem> AfterNodeSelected { get; set; }
     
     /// <summary>
     /// Callback when the filter changes
@@ -248,6 +253,7 @@ public abstract partial class MudExTreeViewBase<TItem> : MudExBaseComponent<MudE
             SelectedNodeChanged.InvokeAsync(value);
             if(ExpandOnClick)
                 ExpandTo(value);
+            AfterNodeSelected.InvokeAsync(value);
         });
     }
 

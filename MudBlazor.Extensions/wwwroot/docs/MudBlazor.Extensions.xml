@@ -15207,6 +15207,11 @@
             Callback when the selected node changes
             </summary>
         </member>
+        <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.AfterNodeSelected">
+            <summary>
+            Callback after a node was selected
+            </summary>
+        </member>
         <member name="P:MudBlazor.Extensions.Components.MudExTreeViewBase`1.FilterChanged">
             <summary>
             Callback when the filter changes

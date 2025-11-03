@@ -20,7 +20,6 @@ _{0} Demos: '{0}デモ'
 --mud-palette-white: --泥パレット-白
 (currently the item is not visible): (現在、アイテムは表示されません)
 (currently the item is visible): (現在、アイテムは表示されています)
-Unified-Voice.mp3: Unified-Voice.mp3
 A: ある
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: ユーザーが可能な値のリストから値を選択し、それを Chips またはデフォルトのコンボボックスとして表示できるようにするコンポーネント。
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: マウスオーバーで ChildContent を下、上、左、右からスライドさせるために使用できるコンポーネント。
@@ -1540,6 +1539,7 @@ Here only number is configured to render with NumEdit edit but DataType is strin
 Here you can edit the users, but only confirm if count is at least 2: ここではユーザーを編集できますが、カウントが2以上の場合のみ確認します
 Here you can leave a comment for this permission for the current role: ここでは、現在の役割に対するこの権限についてコメントを残すことができます
 Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: ここでは、MudExObjectEdit を使用して実行中のコンポーネントのプロパティを編集する方法を示します
+Here you find a Demo how build a tree picker: ここには、ツリーピッカーを構築する方法のデモがあります
 Here you find a Demo how to use the service directly: ここでは、サービスを直接使用する方法のデモを見つけることができます
 Hex: 16 進
 HEX: 16 進
@@ -2903,6 +2903,7 @@ Not Modal Dialogs: モーダルではないダイアログ
 Note - Media options can't changed after a screen is selected: 注 - 画面を選択した後は、メディアオプションを変更できません
 NoteLabels: 注:ラベル
 NotFoundMessage: 探していたページが存在しません。
+Nothing selected: 何も選択されていません
 Notice: 告知
 Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: このメソッドを使用する場合は、メソッドが配置されているコールバック参照を指定できますが、これを行わない場合、参照はダイアログ自体であり、この場合はDialogClassにメソッドが必要です
 Notifications: 通知
@@ -3776,6 +3777,7 @@ Start Capture: キャプチャの開始
 Start Recording: 録音を開始する
 Start recording after: 録画開始後
 Start/Stop selection: 選択の開始/停止
+Starts in {0}: で始まります {0}
 State: 状態
 Static: 静的
 Static card.: 静的カード。
@@ -4028,6 +4030,7 @@ This photo was taken in a small village in Istra Croatia.: この写真は、ク
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: このピッカーは、アニメーション、より優れた動作、およびすべての DialogOptions をサポートするダイアログをもたらします。MudExPickerBase から継承する独自のピッカー コンポーネントを作成するか、単純なコンテンツを使用するには、MudExPicker を使用します。
 This sample demonstrate how to use the MudExCaptureService: このサンプルでは、MudExCaptureService の使用方法を示します。
 This sample demonstrate the usage of MudExTreeView with an Item template: このサンプルでは、アイテム テンプレートでの MudExTreeView の使用法を示します
+This sample just shows how easily you can combine the MudExPicker with MudExTreeView to build a tree picker: このサンプルは、MudExPicker と MudExTreeView を組み合わせてツリー ピッカーを簡単に構築できることを示しています。
 This sample uses the IDialogEventService to cancel the dialog close: このサンプルでは、IDialogEventService を使用してダイアログの閉じを取り消します
 This sample uses the options for a can close callback: このサンプルでは、can close コールバックのオプションを使用します
 This section can be placed inside a MudExGrid component.: このセクションは、MudExGrid コンポーネント内に配置できます。
@@ -4144,6 +4147,7 @@ UncheckedIcon: チェックなしアイコン
 Underline: アンダーライン
 Undo: 外す
 UndoIcon: 元に戻すアイコン
+Unified-Voice.mp3: Unified-Voice.mp3
 UnikittyDarkBase16: ユニキティダークベース16
 UnikittyLightBase16: ユニキティライトベース16
 Unselectable: 選択不可
@@ -4365,4 +4369,3 @@ ZoomInButtonIcon: ズームインボタンアイコン
 ZoomOnHover: ズームオンホバー
 ZoomOutButtonIcon: ズームアウトボタンアイコン
 zu-ZA: isiZulu (南アフリカ)
-Starts in {0}: {0}で始まります

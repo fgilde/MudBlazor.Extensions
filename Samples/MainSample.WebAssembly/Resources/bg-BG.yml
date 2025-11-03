@@ -20,7 +20,6 @@ _{0} Demos: '{0} демонстрации'
 --mud-palette-white: --кална палитра-бяла
 (currently the item is not visible): (в момента елементът не се вижда)
 (currently the item is visible): (в момента елементът е видим)
-Unified-Voice.mp3: Unified-Voice.mp3
 A: Една
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Компонент, който позволява на потребителя да избере стойност от списък с възможни стойности и да я покаже като чипове или разгъващ се списък по подразбиране.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Компонент, който може да се използва за плъзгане на ChildContent отдолу, отгоре, наляво или надясно с курсор на мишката
@@ -1540,6 +1539,7 @@ Here only number is configured to render with NumEdit edit but DataType is strin
 Here you can edit the users, but only confirm if count is at least 2: Тук можете да редактирате потребителите, но само да потвърдите дали броят е поне 2
 Here you can leave a comment for this permission for the current role: Тук можете да оставите коментар за това разрешение за текущата роля
 Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Тук можете да видите как можете да използвате MudExObjectEdit, за да редактирате свойствата на работещ компонент
+Here you find a Demo how build a tree picker: Тук ще намерите демонстрация как да изградите машина за събиране на дървета
 Here you find a Demo how to use the service directly: Тук ще намерите демонстрация как да използвате услугата директно
 Hex: Шестнадесетичен
 HEX: ШЕСТНАДЕСЕТИЧЕН
@@ -2903,6 +2903,7 @@ Not Modal Dialogs: Немодални диалогови прозорци
 Note - Media options can't changed after a screen is selected: Забележка - Опциите за мултимедия не могат да се променят, след като е избран екран
 NoteLabels: ЗабележкаЕтикети
 NotFoundMessage: Страницата, която търсите, не съществува.
+Nothing selected: Нищо избрано
 Notice: Забелязвам
 Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Забележете, че ако използвате този метод, можете да зададете препратка към обратно извикване, където се намира методът, ако не направите това, препратката е самият диалогов прозорец и в този случай трябва да имате метода във вашия DialogClass
 Notifications: Уведомления
@@ -3776,6 +3777,7 @@ Start Capture: Стартиране на заснемането
 Start Recording: Започнете да записвате
 Start recording after: Започнете да записвате след
 Start/Stop selection: Избор на старт/стоп
+Starts in {0}: Започва в {0}
 State: Държава
 Static: Статични
 Static card.: Статична карта.
@@ -4028,6 +4030,7 @@ This photo was taken in a small village in Istra Croatia.: Тази снимка
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Този инструмент за избор носи анимации, по-добро поведение и диалогов прозорец, който поддържа всички DialogOptions. За да създадете свой собствен компонент за избор jus наследете от MudExPickerBase или просто да използвате просто съдържание, използвайте MudExPicker
 This sample demonstrate how to use the MudExCaptureService: Този пример демонстрира как да използвате MudExCaptureService
 This sample demonstrate the usage of MudExTreeView with an Item template: Този пример демонстрира използването на MudExTreeView с шаблон на елемент
+This sample just shows how easily you can combine the MudExPicker with MudExTreeView to build a tree picker: Този пример просто показва колко лесно можете да комбинирате MudExPicker с MudExTreeView, за да създадете инструмент за избор на дървета.
 This sample uses the IDialogEventService to cancel the dialog close: Този пример използва IDialogEventService, за да отмени затварянето на диалоговия прозорец
 This sample uses the options for a can close callback: Този пример използва опциите за обратно извикване може да затвори
 This section can be placed inside a MudExGrid component.: Тази секция може да бъде поставена вътре в компонент на MudExGrid.
@@ -4144,6 +4147,7 @@ UncheckedIcon: UnmarkedIcon
 Underline: Подчертавам
 Undo: Отменям
 UndoIcon: Отмяна на иконата
+Unified-Voice.mp3: Unified-Voice.mp3
 UnikittyDarkBase16: UnikittyDarkBase16
 UnikittyLightBase16: UnikittyLightBase16
 Unselectable: Неизбираем
@@ -4365,4 +4369,3 @@ ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: ZoomOnHover
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (Южна Африка)
-Starts in {0}: Започва в {0}

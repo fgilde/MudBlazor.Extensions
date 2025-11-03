@@ -20,7 +20,6 @@ _{0} Demos: '{0} ukázky'
 --mud-palette-white: --bláto-paleta-bílá
 (currently the item is not visible): (v současné době není položka viditelná)
 (currently the item is visible): (v současné době je položka viditelná)
-Unified-Voice.mp3: Unified-Voice.mp3
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Komponenta, která umožňuje uživateli vybrat hodnotu ze seznamu možných hodnot a zobrazit ji jako Chips nebo defaultní Combobox.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Komponenta, kterou lze použít k posunutí ChildContent zespodu, shora, zleva nebo zprava najetím myší.
@@ -1540,6 +1539,7 @@ Here only number is configured to render with NumEdit edit but DataType is strin
 Here you can edit the users, but only confirm if count is at least 2: Zde můžete upravit uživatele, ale potvrdit pouze to, zda je počet alespoň 2
 Here you can leave a comment for this permission for the current role: Zde můžete zanechat komentář k tomuto oprávnění pro aktuální roli
 Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Zde vidíte, jak můžete pomocí nástroje MudExObjectEdit upravit vlastnosti spuštěné komponenty
+Here you find a Demo how build a tree picker: Zde najdete ukázku jak postavit strom picker
 Here you find a Demo how to use the service directly: Zde najdete demo jak službu přímo používat
 Hex: Šestnáctkový
 HEX: ŠESTNÁCTKOVÝ
@@ -2903,6 +2903,7 @@ Not Modal Dialogs: Ne modální dialogy
 Note - Media options can't changed after a screen is selected: Poznámka – Po výběru obrazovky nelze změnit možnosti médií
 NoteLabels: Popisky poznámek
 NotFoundMessage: Stránka, kterou jste hledali, neexistuje.
+Nothing selected: Nic není vybráno
 Notice: Oznámení
 Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Všimněte si, že pokud použijete tuto metodu, můžete zadat odkaz na zpětné volání, kde je metoda umístěna, pokud to neučiníte, odkazem je samotné dialogové okno a v tomto případě musíte mít metodu ve své DialogClass
 Notifications: Upozornění
@@ -3776,6 +3777,7 @@ Start Capture: Spustit aplikaci Capture
 Start Recording: Spustit nahrávání
 Start recording after: Spustit nahrávání po
 Start/Stop selection: Výběr Start/Stop
+Starts in {0}: Začíná za {0}
 State: Stát
 Static: Statický
 Static card.: Statická karta.
@@ -4028,6 +4030,7 @@ This photo was taken in a small village in Istra Croatia.: Tato fotografie byla 
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Tento výběr přináší animace, lepší chování a dialog, který podporuje všechny DialogOptions. Chcete-li vytvořit vlastní komponentu picker jus inherit z MudExPickerBase, nebo pouze použít jednoduchý obsah, použijte MudExPicker
 This sample demonstrate how to use the MudExCaptureService: Tato ukázka ukazuje, jak používat službu MudExCaptureService
 This sample demonstrate the usage of MudExTreeView with an Item template: Tato ukázka ukazuje použití MudExTreeView se šablonou položky
+This sample just shows how easily you can combine the MudExPicker with MudExTreeView to build a tree picker: Tato ukázka ukazuje, jak snadno můžete zkombinovat MudExPicker s MudExTreeView a vytvořit tak strom Picker.
 This sample uses the IDialogEventService to cancel the dialog close: Tato ukázka používá IDialogEventService ke zrušení zavření dialogového okna
 This sample uses the options for a can close callback: Tato ukázka používá možnosti pro zpětné volání může zavřít
 This section can be placed inside a MudExGrid component.: Tato část může být umístěna uvnitř komponenty MudExGrid.
@@ -4144,6 +4147,7 @@ UncheckedIcon: NezaškrtnutoIkona
 Underline: Podtrhnout
 Undo: Odčinit
 UndoIcon: Zpět Ikona
+Unified-Voice.mp3: Unified-Voice.mp3
 UnikittyDarkBase16: UnikittyDarkBase16
 UnikittyLightBase16: UnikittyLightBase16
 Unselectable: Nevolitelné
@@ -4365,4 +4369,3 @@ ZoomInButtonIcon: Ikona tlačítka ZoomInButton
 ZoomOnHover: ZoomOnHover
 ZoomOutButtonIcon: Ikona tlačítka ZoomOut
 zu-ZA: isiZulu (Jižní Afrika)
-Starts in {0}: Začíná za {0}

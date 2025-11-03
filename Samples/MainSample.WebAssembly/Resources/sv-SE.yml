@@ -20,7 +20,6 @@ _{0} Demos: '{0} Demos'
 --mud-palette-white: --lera- palett-vit
 (currently the item is not visible): (för närvarande är objektet inte synligt)
 (currently the item is visible): (för närvarande är objektet synligt)
-Unified-Voice.mp3: Unified-Voice.mp3
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: En komponent som gör det möjligt för användaren att välja ett värde från en lista med möjliga värden och visa det som brickor eller standardkombinationsruta.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: En komponent som kan användas för att skjuta in ett underordnat innehåll från botten, toppen, vänster eller höger genom att föra muspekaren över det.
@@ -1540,6 +1539,7 @@ Here only number is configured to render with NumEdit edit but DataType is strin
 Here you can edit the users, but only confirm if count is at least 2: Här kan du redigera användarna, men bara bekräfta om antalet är minst 2
 Here you can leave a comment for this permission for the current role: Här kan du lämna en kommentar för denna behörighet för den aktuella rollen
 Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Här kan du se hur du kan använda MudExObjectEdit för att redigera egenskaperna för en komponent som körs
+Here you find a Demo how build a tree picker: Här hittar du en demo hur man bygger en trädplockare
 Here you find a Demo how to use the service directly: Här hittar du en demo hur du använder tjänsten direkt
 Hex: Hex
 HEX: HEX
@@ -2903,6 +2903,7 @@ Not Modal Dialogs: Inte modala dialoger
 Note - Media options can't changed after a screen is selected: Mediealternativen kan inte ändras efter att en skärm har valts
 NoteLabels: Etiketter
 NotFoundMessage: Sidan du letade efter finns inte.
+Nothing selected: Inget markerat
 Notice: Märka
 Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Observera att om du använder den här metoden kan du ange en återanropsreferens där metoden finns, om du inte gör detta är referensen själva dialogrutan och du måste ha metoden på din DialogClass i det här fallet
 Notifications: Meddelanden
@@ -3776,6 +3777,7 @@ Start Capture: Starta inspelning
 Start Recording: Börja spela in
 Start recording after: Börja spela in efter
 Start/Stop selection: Val av start/stopp
+Starts in {0}: Startar om {0}
 State: Stat
 Static: Statisk
 Static card.: Statiskt kort.
@@ -4028,6 +4030,7 @@ This photo was taken in a small village in Istra Croatia.: Det här fotot togs i
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Den här väljaren ger animeringar, bättre beteenden och en dialogruta som stöder alla DialogOptions. Om du vill skapa en egen väljarkomponent som du ärver från MudExPickerBase, eller bara använda enkelt innehåll, använder du MudExPicker
 This sample demonstrate how to use the MudExCaptureService: Det här exemplet visar hur du använder MudExCaptureService
 This sample demonstrate the usage of MudExTreeView with an Item template: Det här exemplet visar användningen av MudExTreeView med en objektmall
+This sample just shows how easily you can combine the MudExPicker with MudExTreeView to build a tree picker: Det här exemplet visar bara hur enkelt du kan kombinera MudExPicker med MudExTreeView för att bygga en trädväljare.
 This sample uses the IDialogEventService to cancel the dialog close: I det här exemplet används IDialogEventService för att avbryta stängningen av dialogrutan
 This sample uses the options for a can close callback: I det här exemplet används alternativen för ett återanrop som kan stängas
 This section can be placed inside a MudExGrid component.: Den här sektionen kan placeras inuti en MudExGrid-komponent.
@@ -4144,6 +4147,7 @@ UncheckedIcon: AvmarkeradIkon
 Underline: Understryka
 Undo: Ångra
 UndoIcon: ÅngraIkon
+Unified-Voice.mp3: Unified-Voice.mp3
 UnikittyDarkBase16: UnikittyDarkBase16
 UnikittyLightBase16: UnikittyLightBase16
 Unselectable: Går inte att välja
@@ -4365,4 +4369,3 @@ ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: ZoomPåSväva
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (Sydafrika)
-Starts in {0}: Startar om {0}

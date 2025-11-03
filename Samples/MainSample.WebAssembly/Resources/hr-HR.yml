@@ -20,7 +20,6 @@ _{0} Demos: '{0} demonstracije'
 --mud-palette-white: --paleta-blata-bijela
 (currently the item is not visible): (trenutno stavka nije vidljiva)
 (currently the item is visible): (trenutno je stavka vidljiva)
-Unified-Voice.mp3: Unified-Voice.mp3
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: Komponenta koja korisniku omogućuje odabir vrijednosti s popisa mogućih vrijednosti i prikaz kao Čipovi ili zadani Combobox.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: Komponenta koja se može koristiti za klizanje ChildContent odozdo, odozgo, lijevo ili desno pokazivačem miša.
@@ -1540,6 +1539,7 @@ Here only number is configured to render with NumEdit edit but DataType is strin
 Here you can edit the users, but only confirm if count is at least 2: Ovdje možete uređivati korisnike, ali potvrdite samo ako je broj najmanje 2
 Here you can leave a comment for this permission for the current role: Ovdje možete ostaviti komentar za ovo dopuštenje za trenutnu ulogu
 Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: Ovdje možete vidjeti kako možete koristiti MudExObjectEdit za uređivanje svojstava pokrenute komponente
+Here you find a Demo how build a tree picker: Ovdje možete pronaći Demo kako izgraditi berač stabala
 Here you find a Demo how to use the service directly: Ovdje ćete pronaći Demo kako izravno koristiti uslugu
 Hex: Hex
 HEX: HEX
@@ -2903,6 +2903,7 @@ Not Modal Dialogs: Ne modalni dijalozi
 Note - Media options can't changed after a screen is selected: Napomena - Mogućnosti medija ne mogu se promijeniti nakon odabira zaslona
 NoteLabels: NapomenaOznake
 NotFoundMessage: Stranica koju ste tražili ne postoji.
+Nothing selected: Ništa nije odabrano
 Notice: Obavijest
 Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: Primijetite ako koristite ovu metodu, možete navesti referencu povratnog poziva gdje se metoda nalazi, ako to ne učinite, referenca je sam dijaloški okvir i u ovom slučaju morate imati metodu na svom DialogClass
 Notifications: Obavijesti
@@ -3776,6 +3777,7 @@ Start Capture: Pokreni snimanje
 Start Recording: Počnite snimati
 Start recording after: Počnite snimati nakon
 Start/Stop selection: Odabir Start/Stop
+Starts in {0}: Počinje u {0}
 State: Država
 Static: Statički
 Static card.: Statička kartica.
@@ -4028,6 +4030,7 @@ This photo was taken in a small village in Istra Croatia.: Ova fotografija sniml
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: Ovaj birač donosi animacije, bolje ponašanje i dijaloški okvir koji podržava sve DialogOptions. Da biste stvorili vlastitu komponentu za odabir koju možete naslijediti od MudExPickerBase-a ili samo koristiti jednostavan sadržaj, koristite MudExPicker
 This sample demonstrate how to use the MudExCaptureService: Ovaj uzorak pokazuje kako koristiti MudExCaptureService
 This sample demonstrate the usage of MudExTreeView with an Item template: Ovaj uzorak pokazuje upotrebu MudExTreeView s predloškom stavke
+This sample just shows how easily you can combine the MudExPicker with MudExTreeView to build a tree picker: Ovaj uzorak samo pokazuje koliko lako možete kombinirati MudExPicker s MudExTreeView za izradu alata za odabir stabala.
 This sample uses the IDialogEventService to cancel the dialog close: Ovaj uzorak koristi IDialogEventService za otkazivanje zatvaranja dijaloškog okvira
 This sample uses the options for a can close callback: Ovaj uzorak koristi opcije za može zatvoriti povratni poziv
 This section can be placed inside a MudExGrid component.: Ovaj se odjeljak može postaviti unutar MudExGrid komponente.
@@ -4144,6 +4147,7 @@ UncheckedIcon: NeoznačenaIkona
 Underline: Podvući
 Undo: Poništiti
 UndoIcon: PoništiIkona
+Unified-Voice.mp3: Unified-Voice.mp3
 UnikittyDarkBase16: UnikittyDarkBase16
 UnikittyLightBase16: UnikittyLightBase16
 Unselectable: Ne može se odabrati
@@ -4365,4 +4369,3 @@ ZoomInButtonIcon: ZoomInButtonIcon
 ZoomOnHover: ZoomOnHover
 ZoomOutButtonIcon: ZoomOutButtonIcon
 zu-ZA: isiZulu (Južna Afrika)
-Starts in {0}: Počinje u {0}

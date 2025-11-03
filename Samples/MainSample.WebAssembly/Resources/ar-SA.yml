@@ -20,7 +20,6 @@ _{0} Demos: '{0} العروض التوضيحية'
 --mud-palette-white: '- لوحة الطين - أبيض'
 (currently the item is not visible): (العنصر غير مرئي حاليا)
 (currently the item is visible): (العنصر مرئي حاليا)
-Unified-Voice.mp3: Unified-Voice.mp3
 A: A
 A component that allows the user to select a value from a list of possible values and display it as Chips or default Combobox.: مكون يسمح للمستخدم بتحديد قيمة من قائمة القيم المحتملة وعرضها على أنها رقائق أو صندوق تحرير وسرد افتراضي.
 A Component that can used to slide in a ChildContent from the bottom, top , left or right by mouseover.: مكون يمكن استخدامه للتمرير في محتوى فرعي من الأسفل أو الأعلى أو اليسار أو اليمين عن طريق تمرير الماوس.
@@ -1540,6 +1539,7 @@ Here only number is configured to render with NumEdit edit but DataType is strin
 Here you can edit the users, but only confirm if count is at least 2: هنا يمكنك تعديل المستخدمين ، ولكن يمكنك التأكد فقط إذا كان العدد 2 على الأقل
 Here you can leave a comment for this permission for the current role: هنا يمكنك ترك تعليق لهذا الإذن للدور الحالي
 Here you can see how you can use the MudExObjectEdit to edit the properties of a running component: هنا يمكنك أن ترى كيف يمكنك استخدام MudExObjectEdit لتحرير خصائص مكون قيد التشغيل
+Here you find a Demo how build a tree picker: هنا تجد عرضا توضيحيا كيفية بناء منتقي الأشجار
 Here you find a Demo how to use the service directly: تجد هنا عرضا توضيحيا لكيفية استخدام الخدمة مباشرة
 Hex: الهيكس
 HEX: الهيكس
@@ -2903,6 +2903,7 @@ Not Modal Dialogs: ليست مربعات حوار مشروطة
 Note - Media options can't changed after a screen is selected: ملاحظة - لا يمكن تغيير خيارات الوسائط بعد تحديد الشاشة
 NoteLabels: ملاحظةالتسميات
 NotFoundMessage: الصفحة التي كنت تبحث عنها غير موجودة.
+Nothing selected: لا شيء محدد
 Notice: لاحظ
 Notice if you use this method, you can specify a callback reference where the method is located, if you don't do this the reference is the dialog itself and you need to have the method on your DialogClass in this case: لاحظ إذا كنت تستخدم هذه الطريقة ، فيمكنك تحديد مرجع معاودة الاتصال حيث توجد الطريقة ، إذا لم تقم بذلك ، فإن المرجع هو مربع الحوار نفسه وتحتاج إلى الحصول على الأسلوب على DialogClass في هذه الحالة
 Notifications: الاخطارات
@@ -3776,6 +3777,7 @@ Start Capture: بدء الالتقاط
 Start Recording: ابدأ التسجيل
 Start recording after: ابدأ التسجيل بعد
 Start/Stop selection: اختيار البدء/الإيقاف
+Starts in {0}: يبدأ في {0}
 State: حالة
 Static: ثابت
 Static card.: بطاقة ثابتة.
@@ -4028,6 +4030,7 @@ This photo was taken in a small village in Istra Croatia.: التقطت هذه �
 This picker brings animations, better behaviors and a dialog that supports all DialogOptions. To create your own picker component jus inherit from MudExPickerBase, or to just use simple content use MudExPicker: يجلب هذا المنتقي الرسوم المتحركة والسلوكيات الأفضل والحوار الذي يدعم جميع خيارات الحوار. لإنشاء مكون المنتقي الخاص بك يرث من MudExPickerBase ، أو لمجرد استخدام محتوى بسيط ، استخدم MudExPicker
 This sample demonstrate how to use the MudExCaptureService: يوضح هذا النموذج كيفية استخدام MudExCaptureService
 This sample demonstrate the usage of MudExTreeView with an Item template: يوضح هذا النموذج استخدام MudExTreeView مع قالب عنصر
+This sample just shows how easily you can combine the MudExPicker with MudExTreeView to build a tree picker: يوضح هذا النموذج فقط مدى سهولة دمج MudExPicker مع MudExTreeView لبناء منتقي الأشجار.
 This sample uses the IDialogEventService to cancel the dialog close: يستخدم هذا النموذج IDialogEventService لإلغاء إغلاق مربع الحوار
 This sample uses the options for a can close callback: يستخدم هذا النموذج خيارات رد الاتصال بإمكانية إغلاق
 This section can be placed inside a MudExGrid component.: يمكن وضع هذا القسم داخل مكون MudExGrid.
@@ -4144,6 +4147,7 @@ UncheckedIcon: UncheckedIcon
 Underline: تسطير
 Undo: تراجع
 UndoIcon: تراجع عن الأيقونة
+Unified-Voice.mp3: Unified-Voice.mp3
 UnikittyDarkBase16: يونيكيتي دارك بيس16
 UnikittyLightBase16: يونيكيتي لايت بيس16
 Unselectable: غير قابل للتحديد
