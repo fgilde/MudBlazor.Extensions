@@ -75,7 +75,7 @@ public class MudExDialogResultAction
     /// </summary>
     /// <param name="confirmText">The text for the "Cancel" button. Defaults to "Ok".</param>
     /// <returns>An array with a single "Cancel" action.</returns>
-    public static MudExDialogResultAction[] Cancel(string confirmText = "Ok") => new[] { OkCancel(confirmText).First() };
+    public static MudExDialogResultAction[] Cancel(string cancelText = "Cancel") => new[] { OkCancel(cancelText: cancelText).First() };
 
     /// <summary>
     /// Creates an array with both "Ok" and "Cancel" actions.

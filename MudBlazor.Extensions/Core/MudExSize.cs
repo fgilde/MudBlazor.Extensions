@@ -9,7 +9,8 @@ namespace MudBlazor.Extensions.Core;
 /// MudExSize is a readonly struct that provides a convenient and type-safe way to deal with size values in the context of MudBlazor components.
 /// </summary>
 [HasDocumentation("MudExSize.md")]
-public readonly struct MudExSize<T> where T : INumber<T>
+public readonly struct MudExSize<T> : IParsable<MudExSize<T>>
+    where T : INumber<T>
 {
     /// <summary>
     /// The value of the size.
@@ -156,4 +157,22 @@ public readonly struct MudExSize<T> where T : INumber<T>
     }
 
 
+    public static MudExSize<T> Parse(string s, IFormatProvider provider)
+    {
+        return new MudExSize<T>(s);
+    }
+
+    public static bool TryParse(string s, IFormatProvider provider, out MudExSize<T> result)
+    {
+        result = default;
+        try
+        {
+            result = new MudExSize<T>(s);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }

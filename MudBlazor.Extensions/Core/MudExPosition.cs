@@ -30,9 +30,10 @@ public struct MudExPosition
     /// </summary>
     public MudExPosition(string value)
     {
+        value = value.ToLower().Replace("px", "__tmp__");
         var parts = value.Split("x");
-        var width = new MudExSize<double>(parts.FirstOrDefault());
-        var height = new MudExSize<double>(parts.LastOrDefault());
+        var width = new MudExSize<double>(parts.FirstOrDefault()?.Replace("__tmp__", "px"));
+        var height = new MudExSize<double>(parts.LastOrDefault()?.Replace("__tmp__", "px"));
         Left = width;
         Top = height;
     }
