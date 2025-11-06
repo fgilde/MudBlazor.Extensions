@@ -7,6 +7,7 @@ on:
     paths:
       - 'docs/**'
       - 'mkdocs.yml'
+      - 'requirements.txt'
       - 'MudBlazor.Extensions/Docs/**'
       - '.github/workflows/docs.yml'
   workflow_dispatch:
@@ -38,11 +39,7 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        run: |
-          pip install mkdocs
-          pip install mkdocs-material
-          pip install mkdocs-material-extensions
-          pip install pymdown-extensions
+        run: pip install -r requirements.txt
 
       - name: Configure Git
         run: |
