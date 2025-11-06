@@ -1,0 +1,167 @@
+site_name: MudBlazor.Extensions Documentation
+site_url: https://fgilde.github.io/MudBlazor.Extensions/
+site_description: Comprehensive documentation for MudBlazor.Extensions - extending MudBlazor component library capabilities
+site_author: fgilde
+repo_url: https://github.com/fgilde/MudBlazor.Extensions
+repo_name: fgilde/MudBlazor.Extensions
+edit_uri: edit/main/docs/
+
+# Theme configuration
+theme:
+  name: material
+  logo: MudExtension.png
+  favicon: MudExtension.png
+  palette:
+    # Light mode - matching the sample page theme
+    - scheme: default
+      primary: custom
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode - matching the sample page dark theme
+    - scheme: slate
+      primary: custom
+      accent: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Montserrat
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - navigation.tracking
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - toc.follow
+    - toc.integrate
+
+# Extra CSS for custom colors matching the sample theme
+extra_css:
+  - stylesheets/extra.css
+
+# Extra JavaScript
+extra_javascript:
+  - javascripts/extra.js
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Plugins
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+  - tags
+
+# Navigation structure
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: getting-started/installation.md
+    - Setup: getting-started/setup.md
+  - Components:
+    - components/index.md
+    - Object Edit: components/object-edit.md
+    - Structured Data Editor: components/structured-data-editor.md
+    - File Display: components/file-display.md
+    - Upload Edit: components/upload-edit.md
+    - Tree View: components/tree-view.md
+    - App Loader: components/app-loader.md
+    - SVG Components: components/svg.md
+    - Other Components: components/other-components.md
+  - Extensions:
+    - extensions/index.md
+    - Dialog Extensions: extensions/dialog-extensions.md
+    - Browser Extensions: extensions/browser-extensions.md
+  - Utilities:
+    - utilities/index.md
+    - Color Utilities: utilities/color-utils.md
+    - CSS Builder: utilities/css-builder.md
+    - Style Builder: utilities/style-builder.md
+    - Size Utilities: utilities/size-utils.md
+  - Services:
+    - services/index.md
+    - Speech Recognition: services/speech-recognition.md
+  - API Reference:
+    - api/index.md
+  - Changelog: changelog.md
+  - About:
+    - License: about/license.md
+    - Contributing: about/contributing.md
+
+# Social links
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/fgilde/MudBlazor.Extensions
+    - icon: fontawesome/solid/box
+      link: https://www.nuget.org/packages/MudBlazor.Extensions
+      name: NuGet Package
+  version:
+    provider: mike
+  analytics:
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback!
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: >-
+            Thanks for your feedback! Help us improve by
+            <a href="https://github.com/fgilde/MudBlazor.Extensions/issues/new" target="_blank" rel="noopener">creating an issue</a>.
+
+# Copyright
+copyright: Copyright &copy; 2024 MudBlazor.Extensions
