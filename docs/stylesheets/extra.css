@@ -17,6 +17,7 @@
   /* Background and surfaces */
   --md-default-bg-color:        #fafafa;
   --md-code-bg-color:           #f5f5f5;
+  --md-code-fg-color:           #2c2c2c;
   
   /* Appbar/Header colors */
   --md-header-bg-color:         #1f2226;
@@ -144,17 +145,17 @@
   background-color: #1f2226;
 }
 
-/* Code highlighting improvements */
+/* Code highlighting improvements for light mode (default) */
 .highlight .hll { background-color: rgba(25, 155, 144, 0.15); }
 .highlight .c { color: #75715e } /* Comment */
 .highlight .k { color: #199b90 } /* Keyword */
-.highlight .n { color: #f8f8f2 } /* Name */
+.highlight .n { color: #2c2c2c } /* Name - dark color for light mode */
 .highlight .o { color: #199b90 } /* Operator */
 .highlight .s { color: #19635d } /* String */
 
 /* Ensure proper contrast for dark mode code */
 [data-md-color-scheme="slate"] .highlight .n { 
-  color: #f8f8f2; 
+  color: #f8f8f2; /* Light color for dark mode */
 }
 
 /* Custom badges */
