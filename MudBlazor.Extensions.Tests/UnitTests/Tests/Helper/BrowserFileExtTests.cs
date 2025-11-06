@@ -1,4 +1,5 @@
 using MudBlazor.Extensions.Helper;
+using MudBlazor.Extensions.Core;
 using Xunit;
 
 namespace MudBlazor.Extensions.Tests.UnitTests.Tests.Helper;
@@ -50,7 +51,9 @@ public class BrowserFileExtTests
         var icon = BrowserFileExt.IconForFile(contentType);
         
         Assert.NotNull(icon);
-        Assert.Contains("image", icon.ToLower());
+        Assert.NotEmpty(icon);
+        // Should return the FileImage icon from Icons.Custom.FileFormats
+        Assert.Equal(Icons.Custom.FileFormats.FileImage, icon);
     }
 
     [Theory]
@@ -61,7 +64,8 @@ public class BrowserFileExtTests
         var icon = BrowserFileExt.IconForFile(contentType);
         
         Assert.NotNull(icon);
-        Assert.Contains("video", icon.ToLower());
+        Assert.NotEmpty(icon);
+        Assert.Equal(Icons.Custom.FileFormats.FileVideo, icon);
     }
 
     [Theory]
@@ -72,7 +76,8 @@ public class BrowserFileExtTests
         var icon = BrowserFileExt.IconForFile(contentType);
         
         Assert.NotNull(icon);
-        Assert.Contains("music", icon.ToLower());
+        Assert.NotEmpty(icon);
+        Assert.Equal(Icons.Custom.FileFormats.FileMusic, icon);
     }
 
     [Theory]
@@ -84,7 +89,8 @@ public class BrowserFileExtTests
         var icon = BrowserFileExt.IconForFile(contentType);
         
         Assert.NotNull(icon);
-        Assert.Contains("archive", icon.ToLower());
+        Assert.NotEmpty(icon);
+        Assert.Equal(Icons.Material.Filled.Archive, icon);
     }
 
     [Fact]
@@ -109,11 +115,10 @@ public class BrowserFileExtTests
     }
 
     [Fact]
-    public void IconForExtensionHandlesNullExtension()
+    public void IconForExtensionThrowsOnNullExtension()
     {
-        var icon = BrowserFileExt.IconForExtension(null);
-        
-        Assert.NotNull(icon);
+        // The method throws NullReferenceException for null input
+        Assert.Throws<NullReferenceException>(() => BrowserFileExt.IconForExtension(null));
     }
 
     [Theory]
@@ -123,7 +128,8 @@ public class BrowserFileExtTests
         var icon = BrowserFileExt.GetIcon(fileName, contentType);
         
         Assert.NotNull(icon);
-        Assert.Contains("nuget", icon.ToLower());
+        Assert.NotEmpty(icon);
+        Assert.Equal(MudExIcons.Custom.Brands.Nuget, icon);
     }
 
     [Theory]

@@ -29,10 +29,10 @@ public class MudExDimensionTests
     [Fact]
     public void CanCreateDimensionFromString()
     {
-        var dimension = new MudExDimension("100pxx200px");
+        var dimension = new MudExDimension("100%x200%");
         
-        Assert.Equal("100px", dimension.Width.ToString());
-        Assert.Equal("200px", dimension.Height.ToString());
+        Assert.Equal("100%", dimension.Width.ToString());
+        Assert.Equal("200%", dimension.Height.ToString());
     }
 
     [Fact]
@@ -56,10 +56,10 @@ public class MudExDimensionTests
     [Fact]
     public void ImplicitConversionFromString()
     {
-        MudExDimension dimension = "100pxx200px";
+        MudExDimension dimension = "100%x200%";
         
-        Assert.Equal("100px", dimension.Width.ToString());
-        Assert.Equal("200px", dimension.Height.ToString());
+        Assert.Equal("100%", dimension.Width.ToString());
+        Assert.Equal("200%", dimension.Height.ToString());
     }
 
     [Fact]

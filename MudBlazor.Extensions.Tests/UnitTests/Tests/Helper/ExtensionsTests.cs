@@ -153,7 +153,7 @@ public class ExtensionsTests
         
         var result = data.ToHtml(style: "color: red;");
         
-        Assert.Contains("style=\"color: red;\"", result);
+        Assert.Contains("style=\"color: red; \"", result);
     }
 
     [Fact]

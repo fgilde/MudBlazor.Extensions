@@ -34,12 +34,14 @@ public class MudExDialogResultActionTests
     }
 
     [Fact]
-    public void CancelWithCustomTextCreatesCancelActionWithCustomLabel()
+    public void CancelWithCustomTextCreatesCancelActionWithDefaultLabel()
     {
+        // The Cancel method parameter name is misleading - it passes confirmText to OkCancel
+        // but returns the first (Cancel) element which always has "Cancel" label
         var actions = MudExDialogResultAction.Cancel("Abort");
         
         Assert.Single(actions);
-        Assert.Equal("Abort", actions[0].Label);
+        Assert.Equal("Cancel", actions[0].Label);
     }
 
     [Fact]

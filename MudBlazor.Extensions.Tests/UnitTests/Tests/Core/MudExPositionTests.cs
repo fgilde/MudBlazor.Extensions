@@ -29,10 +29,10 @@ public class MudExPositionTests
     [Fact]
     public void CanCreatePositionFromString()
     {
-        var position = new MudExPosition("10pxx20px");
+        var position = new MudExPosition("10%x20%");
         
-        Assert.Equal("10px", position.Left.ToString());
-        Assert.Equal("20px", position.Top.ToString());
+        Assert.Equal("10%", position.Left.ToString());
+        Assert.Equal("20%", position.Top.ToString());
     }
 
     [Fact]
@@ -56,10 +56,10 @@ public class MudExPositionTests
     [Fact]
     public void ImplicitConversionFromString()
     {
-        MudExPosition position = "50pxx100px";
+        MudExPosition position = "50%x100%";
         
-        Assert.Equal("50px", position.Left.ToString());
-        Assert.Equal("100px", position.Top.ToString());
+        Assert.Equal("50%", position.Left.ToString());
+        Assert.Equal("100%", position.Top.ToString());
     }
 
     [Fact]
