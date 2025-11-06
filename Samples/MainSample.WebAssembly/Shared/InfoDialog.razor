@@ -28,6 +28,7 @@
                 <MudText Align="Align.Center" Typo="Typo.body1"><b>@L["App Type"]</b> @($"{(MudExResource.IsClientSide ? L["WebAssembly WASM"] : L["Server Side Rendered"])}")</MudText>
                 <MudText Align="Align.Center" Typo="Typo.body1"><b>MudBlazor.Extensions</b> @MudExResource.MudExVersion().ToString()</MudText>
                 <MudText Align="Align.Center" Typo="Typo.body1"><b>MudBlazor</b> @MudExResource.MudBlazorVersion().ToString()</MudText>
+                
             </MudCardContent>
         </MudCard>
         
@@ -53,11 +54,13 @@
                 <MudButton Variant="Variant.Text" Href="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank" Color="Color.Secondary">@L["Star the repository"]</MudButton>
             </MudCardActions>
         </MudCard>
+        <MudButton Class="mt-2" Style="width: 100%" Variant="Variant.Text" Href="https://fgilde.github.io/MudBlazor.Extensions/" Target="_blank" Color="Color.Secondary">@L["Read the documentation"]</MudButton>
 
     </DialogContent>
     <DialogActions>
         <span class="copyright">
-            @L["Created by"] <a href="https://github.com/fgilde"> Florian Gilde </a>
+            @L["Created by"] <a href="https://github.com/fgilde">Florian Gilde </a> |
+            <a href="https://www.gilde.org"> www.gilde.org </a>
         </span>
         <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="Close">@L["Close"]</MudButton>
     </DialogActions>

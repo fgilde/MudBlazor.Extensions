@@ -17,18 +17,7 @@ public class DeploymentsService(NavigationManager navigationManager)
         }
         var client = new HttpClient { BaseAddress = new Uri(_navigationManager.BaseUri) };
         var json = await client.GetStringAsync("/deployments.json");
-        // TODO: github deployments
-        _deployments = (JsonConvert.DeserializeObject<Deployment[]>(json) ?? []).Concat([new Deployment()
-        {
-            Url = "https://fgilde.github.io/MudBlazor.Extensions/",
-            Stages = [new Stage { Name = "Deploy", Status = "success" }],
-            Environment = "GitHub",
-            ProjectName = "mudblazor-extensions",
-            AssemblyVersion = "1.1.0",
-            MudBlazorVersion = "6.0.2",
-            CreatedOn = new DateTime(2022, 8, 1),
-            ModifiedOn = new DateTime(2022, 8, 1)
-        }]).ToArray();
+        _deployments = (JsonConvert.DeserializeObject<Deployment[]>(json) ?? []).ToArray();
         return _deployments;
     }
 

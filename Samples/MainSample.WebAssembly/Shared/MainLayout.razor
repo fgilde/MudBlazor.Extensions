@@ -31,6 +31,10 @@
 
         <MudSpacer />
         
+        <MudExIconButton ToolTip="@L["Try MudEx online"]" Target="_blank" Link="@AppConstants.Urls.GetTryOnline(IsDark)" Icon="@Icons.Material.Rounded.PlayArrow" Color="@(IsDark? Color.Success: Color.Inherit)" />
+
+        <MudExDivider Size="2" Vertical="true" />
+        
         <LanguageSelector/>
         
         <MudExDivider Size="2" Vertical="true" />
@@ -39,7 +43,7 @@
             <ThemeEdit OnThemeChanged="@HandleThemeChange" @bind-IsDark="@IsDark" @bind-IsBusy="@IsOverlayVisible" />
         </MudTooltip>
 
-        <MudExDivider Size="2" Vertical="true" />
+        @* <MudExDivider Size="2" Vertical="true" /> *@
         
         <MudMenu Dense="true" AnchorOrigin="Origin.BottomRight" Icon="@Icons.Material.Filled.MoreVert">
             @if (!_commentsAvailable)
@@ -54,7 +58,8 @@
             <MudMenuItem Icon="@Icons.Custom.Brands.Microsoft" Href="https://www.nuget.org/packages/MudBlazor.Extensions" Target="_blank">Nuget</MudMenuItem>
             <MudMenuItem Icon="@Icons.Custom.Brands.GitHub" Href="https://github.com/fgilde/MudBlazor.Extensions" Target="_blank">GitHub</MudMenuItem>
             <MudExDivider Color="Color.Primary"/>
-            <MudMenuItem Icon="@Icons.Material.Outlined.Info" Size="Size.Small" Color="Color.Inherit" OnClick="ShowAbout">@L["Info"]</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Outlined.Help" Href="https://fgilde.github.io/MudBlazor.Extensions/" Target="_blank">@L["Documentation"]</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Outlined.Info" OnClick="ShowAbout">@L["Info"]</MudMenuItem>
         </MudMenu>
 
     </MudAppBar>
