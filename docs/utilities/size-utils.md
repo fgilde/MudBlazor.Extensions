@@ -37,4 +37,3 @@ In these examples:
 The `MudExSize<T>` struct also provides an override of the `ToString` method which returns a string representation of the size value along with its CSS unit, making it easy to use in contexts where a string size value is required.
 
 The struct provides implicit conversions to and from the type `T`, `string`, and `MudExSize<T>`, allowing for a seamless and intuitive usage in various scenarios.
-*/

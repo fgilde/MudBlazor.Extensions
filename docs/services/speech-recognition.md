@@ -57,4 +57,4 @@ Configuration options for the speech recognition service.
 - `CultureInfo`: The culture information derived from the language setting, influencing recognition dialect and locale. Ignored during JSON serialization.
 - `Lang`: The language code for the speech recognition.
 - `FinalResultsOnly`: Specifies if only final recognition results should be returned.
-- `Continuous`: Indicates whether the
+- `Continuous`: Indicates whether the recognition service should continue listening after the user stops speaking.
