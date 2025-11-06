@@ -1,0 +1,260 @@
+## Change Log    
+ - 8.13.0 > Move MudExComponentPropertyGrid to MudEx, to have the easy possibility to add and component grid
+ - 8.13.0 > Drag and Drop in MudExGrid [here](https://www.mudex.org/mud-ex-grid-enhanced)
+ - 8.13.0 > New GroupMode DockPanel for MudExObjectEdit sample [here](https://www.mudex.org/mudex-object-edit-dock)
+ - 8.13.0 > New Component MudExDockLayout sample [here](https://www.mudex.org/dock-layout)
+ - 8.13.0 > New Component MudExGravatarCard sample [here](https://www.mudex.org/gravatar-card)
+ - 8.11.0 > MudExObject edit now supports grouping by tabs and accordions. See sample [here](https://www.mudex.org/mudex-object-edit-tabs)
+ - 8.11.0 > Small bug fixes
+ - 8.9.0 > Support touch events for dialog dragging
+ - 8.9.0 > Fixes bug with icon picker if no value is specified
+ - 8.9.0 > Fixes bug with custom size in non modal dialogs
+ - 8.9.0 > Update MudBlazor to 8.9.0 and other Packages to latest version 
+ - 8.8.0 > Update MudBlazor to 8.8.0 and other Packages to latest version 
+ - 8.8.0 > Fix Bug in MudExOneDriveFilePicker where the file couldnt be loaded when AutoLoadDataBytes is true
+ - 8.7.0 > Update MudBlazor to 8.7.0
+ - 8.7.0 > Fix bug in SnapDrag Mode for dialog
+ - 8.6.1 > New finally implemented SnapDrag Mode for dialog. Sample available [here](https://www.mudex.org/dialog-snap)
+ - 8.6.0 > Improve performance for lightbulb on cards
+ - 8.6.0 > Update MudBlazor to 8.6.0
+ - 8.5.2 > Fix bug where no focus in searchbox is possible in MudExSelect
+ - 8.5.2 > DialogService now has more helping methods like PickAsync, SelectAsync or EditAsync for items editing
+ - 8.5.0 > Update to MudBlazor 8.5.0
+ - 8.5.0 > Bug fix 
+ - 8.5.0 > Inline dialog improvements for statechange and server rendered
+ - 8.3.0 > Update to MudBlazor 8.3.0
+ - 8.3.0 > Option for Screenshots in capture service
+ - 8.3.0 > Bugfix in MudExSelect 
+ - 8.2.1 > Fix label outlined bug in MudExSelect #120
+ - 8.2.0 > Update to MudBlazor 8.2.0
+ - 8.2.0 > Fix some smaller bugs
+ - 8.0.2 > CaptureService now supporting full VideoConstraints and AudioConstraints. 
+ - 8.0.1 > Fix small bug in MudExSelect
+ - 8.0.0 > Support for MudBlazor 8.0.0
+ - 8.0.0 > MudExObject now supports Protected elements where edit needs to be confirmed `meta.Property(m => m.LastName).WithEditConfirmation()`
+ - 2.1.0 > MudExObject now supports default focused element within the meta configuration with `meta.Property(m => m.LastName).WithDefaultFocus()`
+ - 2.1.0 > MudExObject edit now has AutoFocus for first input field if no other focus is configured
+ - 2.1.0 > Provide a Middleware again without deprecated UseMudExtensions now you should use `app.Use(MudExWebApp.MudExMiddleware);`
+ - 2.1.0 > Fix another bug with dialog that only occurs on webassembly projects hosted in a .net8 runtime
+ - 2.0.9 > Fix bug with dialog animations on server side rendered projects #112
+ - 2.0.8 > Ensure dialog initial relative state if configured
+ - 2.0.8 > Fix Remove Item Bug in Collection editor 
+ - 2.0.7 > Update MudBlazor to 7.15.0
+ - 2.0.7 > For the MudExObjectEdit you can now easially register a component as editor for a specific type [see here how you can register your component as editor for a type](https://www.mudex.org/d/ObjectEditRegisterComponent)
+ - 2.0.7 > **_Breaking:_** The DailogOptionsEx class has a new Property `KeepRelations`. this is true by default and ensures positions and sizes are in relative percentage values. With this a dialog stays in the same position and size relative to the screen size. If you want to have a dialog with fixed sizes and positions you can set this to false and return to the old behaviour. 
+ - 2.0.7 > The DailogOptionsEx class has a new Property `KeepMaxSizeConstraints`. if this is is true then the max width and max height while resizing is limited to initial MaxWidth or MaxHeight property values. 
+ - 2.0.7 > New Component [MudExObjectEditPicker](https://www.mudex.org//objectedit-picker) is the known MudExObjectEdit as a picker.
+ - 2.0.7 > All MudEx picker components like [MudExObjectEditPicker](https://www.mudex.org//objectedit-picker) [MudExColorEdit](https://www.mudex.org/mud-ex-color-edit), [MudExIconPicker](https://www.mudex.org/mud-ex-icon-picker) or [MudExPicker](https://www.mudex.org/mud-ex-picker) now inherits from new [MudExPickerBase](https://www.mudex.org/https://www.mudex.org/api/MudExPickerBase). All theese pickers now supports animations, and all DialogOptionsEx for PickerVariant as Dialog
+ - 2.0.7 > New Component [MudExPicker](https://www.mudex.org/mud-ex-picker) is a picker component that easially supports own picker content.
+ - 2.0.7 > New Component [MudExGroupBox](https://www.mudex.org/mud-ex-group-box) is a simple group box component to group content with a title and a border.
+ - 2.0.7 > [MudExUploadEdit](https://www.mudex.org/upload-edit) now allows recording of audio, video and captured screen directly using the new [CaptureService](https://www.mudex.org/capture-service)
+ - 2.0.7 > Add [CaptureService](https://www.mudex.org/capture-service) to allow easy recording of screen capture, camera video and audio
+ - 2.0.7 > New Component [MudExCaptureButton](https://www.mudex.org/mud-ex-capture-button) to allow easy recording of screen capture, camera video and audio
+ - 2.0.6 > [MudExAudioPlayer](https://www.mudex.org/file-display?file=Unified-Voice.mp3) now displays meta infos
+ - 2.0.6 > The [MudExImageViewer](https://www.mudex.org/image-view) now allows area to select with a rubberband and open, download, print or directly switching the view to the selected area as an image.
+ - 2.0.6 > Allow Xls and CSV files and fix header bug in [MudExFileDisplayExcel](https://www.mudex.org/file-display?file=ExcelSheet.xlsx)
+ - 2.0.6 > Allow async child loading in [MudExTreeView](https://www.mudex.org/demos/TreeView).
+ - 2.0.6 > Fixed error in sample app for [MudExSelect](https://www.mudex.org/mud-ex-select) and [MudExThemeEdit](https://www.mudex.org/theme-edit)
+ - 2.0.6 > update used nuget packages to latest versions
+ - 2.0.6 > update MudBlazor to 7.11.0
+ - 2.0.6 > Add New Component `MudExFileDisplayOfficeLive` to support preview of any remote accessable office files in [MudExFileDisplay](https://www.mudex.org/file-display) and [MudExUploadEdit](https://www.mudex.org/upload-edit) . 
+ - 2.0.6 > Use [MudExAdditionalAdornment](https://www.mudex.org/additional-adornments) for Theme edit buttons in [MudExThemeEdit](https://www.mudex.org/theme-edit)
+ - 2.0.6 > Fix some style bugs
+ - 2.0.6 > **_Breaking:_** Signature of [IMudExFileDisplay](https://www.mudex.org/api/IMudExFileDisplay) `CanHandleFile` changed to an async method. This allows to handle async file checks. The method now returns a Task&lt;bool&gt; instead of a bool.
+ - 2.0.5 > Update MudBlazor to 7.8.0
+ - 2.0.4 > The [MudExImageViewer](https://www.mudex.org/image-view) Now allows custom toolbar content and custom content for the new floating toolbar for the selected area.
+ - 2.0.4 > The [MudExImageViewer](https://www.mudex.org/image-view) now has an option to allow a rubberband selection. The user can then open, download, print or directly switching the view to the selected area as an image.
+           Also an event is fired when the user selects an area where an blob url and the image bytes are provided in.
+ - 2.0.4 > All file viewers can now implement a method to return info like meta tags for the info dialog.
+ - 2.0.4 > New propertry in MudExFileDisplay "IgnoredRenderControls" here you can specify an arry of types to ignore as file renderer.
+ - 2.0.4 > Update MudBlazor to 7.6.0
+ - 2.0.3 > Update MudBlazor to 7.5.0
+ - 2.0.3 > Fix small bugs
+ - 2.0.0 > Update MudBlazor to 7.0.0
+ - 2.0.0 > **_Breaking:_** Rename: Many properties and behavoirs as MudBlazor does. Se migration guide from MudBlazor 6 to 7 [here](https://github.com/MudBlazor/MudBlazor/issues/8447)
+ - 1.7.89 > Fix bug that uploadable file is not updated in MudExObjectEditDialog
+ - 1.7.88 > Dialogs now supporting a can close event to allow canceling the close event [see sample](https://www.mudex.org/dialogs-closing-event)
+ - 1.7.88 > Add new Components [MudExTreeView](https://www.mudex.org/demos/TreeView).
+ - 1.7.88 > Update MudBlazor to 6.20.0
+ - 1.7.88 > New Component `MudExFileDisplayExcel` to support preview of Excel files in [MudExFileDisplay](https://www.mudex.org/file-display) and [MudExUploadEdit](https://www.mudex.org/upload-edit) .
+ - 1.7.88 > [MudExUploadEdit](https://www.mudex.org/upload-edit) now supports recording audio.
+ - 1.7.88 > New Component [MudExGravatar](https://www.mudex.org/gravatar).
+ - 1.7.88 > Dialogs now supporting CustomSize and CustomPostion to allow more flexibility.
+ - 1.7.88 > New service [IDialogEventService](https://www.mudex.org/a/IDialogEventService) to allow handling of dialog events
+ - 1.7.88 > Dialog supports now a CloseAnimation
+ - 1.7.88 > New Service [ISpeechRecognitionService](https://www.mudex.org/d/ISpeechRecognitionService/ISpeechRecognitionService) to allow easy speech to text conversion or audio recording without any UI
+ - 1.7.88 > New Component [MudExSpeechToTextButton](https://www.mudex.org/speech-to-text) to allow easy speech to text conversion or audio recording
+ - 1.7.87 > Small minor BugFixes
+ - 1.7.87 > Improve key navigation in MudExSelect and MudExList
+ - 1.7.87 > Update MudBlazor to 6.19.1
+ - 1.7.86 > Update MudBlazor to 6.18.0
+ - 1.7.86 > Fix wrong js deploy for splitter.min.js
+ - 1.7.85 > Update MudBlazor to 6.17.0
+ - 1.7.85 > Splitter can now work with one element only
+ - 1.7.85 > Sample app to net 8
+ - 1.7.84 > Update MudBlazor to 6.15.0
+ - 1.7.84 > Fix hidden content sometimes in MudExFileDisplayDialog
+ - 1.7.84 > Fix Bug that no input can selected in draggable dialogs without header
+ - 1.7.84 > Register [MudExAudioPlayer](https://www.mudex.org/audio-player) as file viewer for audio files [see file sample](https://www.mudex.org/file-display?file=Unified-Voice.mp3)
+ - 1.7.83 > Register [MudExStructuredDataEditor](https://www.mudex.org/structured-data-edit) as file viewer for json, yml and xml files [see file sample](https://www.mudex.org/file-display?file=weather.json)
+ - 1.7.83 > Add viewer for font files for MudExFileDisplay [see file sample](https://www.mudex.org/file-display?file=SweetieBubbleGum-Regular.ttf)
+ - 1.7.83 > Add support for tiff images in MudExFileDisplay [see file sample](https://www.mudex.org/file-display?file=Header.tiff)
+ - 1.7.83 > Add new Component for displaying images [MudExImageViewer](https://www.mudex.org/image-view) also registered as IMudExFileDisplay [see file sample](https://www.mudex.org/file-display?file=logo.png)
+ - 1.7.81 > Add support for style and class in MudExCardList
+ - 1.7.81 > Add Itemtemplate for MudExUploadEdit
+ - 1.7.81 > Add Param for MudExUploadEdit to allow custom title in preview dialog based on File
+ - 1.7.81 > Fix bug for Checkbox in MudExObjectEdit and ensure new param Value is used
+ - 1.7.81 > Update package to MudBlazor 6.12.0
+ - 1.7.80 > Add target for .net8
+ - 1.7.80 > Update package to MudBlazor 6.11.2
+ - 1.7.80 > New Component [MudExAdditionalAdornment](https://www.mudex.org/additional-adornments) to add as many additional adornments as you want to any MudInput
+ - 1.7.79 > Allow inherit from MudExJsRequiredBaseComponent for other projects
+ - 1.7.79 > Hide dropdown icon if readonly in MudExSelect
+ - 1.7.79 > Set cursor to default for MudExSelect if readonly
+ - 1.7.78 > Fix error with js base bath
+ - 1.7.78 > Add configuration for JS base path
+ - 1.7.78 > Fix Validation bug in MudExUploadEdit
+ - 1.7.77 > Fix bug for UploadEdit with single file binding
+ - 1.7.77 > Add Parameters for PreviewIcon in MudExUploadEdit
+ - 1.7.77 > Fix bug for simple text in MudExSelect
+ - 1.7.77 > Add main text properties to MudExThemeEdit as default properties for SimpleEdit mode
+ - 1.7.76 > Add new components [MudExGoogleFilePicker](https://www.mudex.org/c/MudExGoogleFilePicker), [MudExDropBoxFilePicker](https://www.mudex.org/c/MudExDropBoxFilePicker) and [MudExOneDriveFilePicker](https://www.mudex.org/c/MudExOneDriveFilePicker) to allow picking files from cloud storages
+ - 1.7.76 > Add suport for Google Drive, One Drive and Drop Box in [MudExUploadEdit](https://www.mudex.org/upload-edit) more infos can be found [here](https://www.mudex.org/d/MudExUploadEdit)
+ - 1.7.76 > [MudExUploadEdit](https://www.mudex.org/upload-edit) is now a Form Component with validations included
+ - 1.7.76 > Fix memory leak in MudExPopover
+ - 1.7.76 > Add possibility to decide how data should loaded in [MudExUploadEdit](https://www.mudex.org/upload-edit) with the flags `AutoLoadFileDataBytes`, `ShowProgressForLoadingData` and `LoadFileDataBytesInBackground`
+ - 1.7.76 > Add possibility to specify DropZone and ItemTemplate in [MudExUploadEdit](https://www.mudex.org/upload-edit)
+ - 1.7.76 > Add possibility to specify DropZoneClickAction in [MudExUploadEdit](https://www.mudex.org/upload-edit)
+ - 1.7.75 > Fix Bug for using Streams on serverside rendered projects in MudExFileDisplay
+ - 1.7.75 > Fix Bug for using Blob url in MudExFileDisplay on serverside rendered projects
+ - 1.7.75 > Fix rendering error on serverside object edit
+ - 1.7.75 > Add parameter to tag field for AutoClear and fix clear for server side rendered projects
+ - 1.7.75 > Add posibility for custom click handler in MudExDialogResultAction used in `DialogService.ShowComponentInDialogAsync` sample is available [here](https://www.mudex.org/component-in-dialog)
+ - 1.7.75 > Add posibility to add condtions for buttons if you use `DialogService.ShowComponentInDialogAsync` sample is available [here](https://www.mudex.org/component-in-dialog)
+ - 1.7.75 > Add new Component MudExCheckBox with support of `HelperText` .This component is used for default bool RenderData in MudExObjectEdit by default
+ - 1.7.75 > Icons in all dialogs have a MudExColor param for icon color
+ - 1.7.75 > if ValuePresenter in [MudExSelect](https://www.mudex.org/mud-ex-select) is ItemConten it works now correctly for MultipleItems
+ - 1.7.75 > Add Parameter `UseItemTemplateForSelection` to [MudExSelect](https://www.mudex.org/mud-ex-select). If true the item template is use for the selection list, otherwise its use only if ValuePresenter is ItemContent or Chip
+ - 1.7.75 > Add ValuePresenter ChipWithoutItemTemplate to [MudExSelect](https://www.mudex.org/mud-ex-select) to allow Chip display without using item template
+ - 1.7.75 > Add SelectAllTemplate to [MudExSelect](https://www.mudex.org/mud-ex-select)
+ - 1.7.75 > Fix Shrink bug for [MudExSelect](https://www.mudex.org/mud-ex-select) after update
+ - 1.7.74 > Update MudBlazor to 6.11.0
+ - 1.7.74 > Support Path for Uploadable items in [MudExUploadEdit](https://www.mudex.org/upload-edit) when using auto extract on zip or folder upload
+ - 1.7.73 > Add overload methods to easially show themedit or guick file dialogs
+ - 1.7.72 > Fix CursorPositionOrigin on DialogOptions for option ShowAtCursor
+ - 1.7.72 > DialogOptionsEx now supporting MaxHeight similar to MaxWidth
+ - 1.7.71 > **_Breaking:_** Parameter AutoExtractZip is renamed to AutoExtractArchive and this feature now handles all archive types instead of zip only in [MudExUploadEdit](https://www.mudex.org/upload-edit)
+ - 1.7.71 > **_Breaking:_** Enum MimeRestrictionType is renamed to RestrictionType because now its used for Param MimeRestrictionType and ExtensionRestrictionType in [MudExUploadEdit](https://www.mudex.org/upload-edit)
+ - 1.7.71 > New Parameters (Extensions and ExtensionRestrictionType) to additional allow or disallow extensions [MudExUploadEdit](https://www.mudex.org/upload-edit)
+ - 1.7.69 > Adapt TryMudblazor for MudEx with better autocompletion, import and export as [TryMudEx](https://trymudex.azurewebsites.net)
+ - 1.7.69 > Create MudExFileDisplayCode as file viewer for [MudExFileDisplay](https://www.mudex.org/file-display)
+ - 1.7.68 > Fix memoryleak for streams in [MudExFileDisplay](https://www.mudex.org/file-display)
+ - 1.7.68 > Add new Parameter "ColorizeIcons" to [MudExUploadEdit](https://www.mudex.org/upload-edit) if true the icons will be colored
+ - 1.7.68 > **_Breaking:_** Add new Parameter "StreamUrlHandling" to [MudExUploadEdit](https://www.mudex.org/upload-edit) this can have the value `StreamUrlHandling.BlobUrl` or `StreamUrlHandling.DataUrl` this always was earlier handled as DataUrl what now changed as default to handle as BlobUrl to allow preview of bigger files as well
+ - 1.7.68 > **_Breaking:_** Add new Parameter "StreamUrlHandling" to [MudExFileDisplay](https://www.mudex.org/file-display) this can have the value `StreamUrlHandling.BlobUrl` or `StreamUrlHandling.DataUrl` this always was earlier handled as DataUrl what now changed as default to handle as BlobUrl to allow preview of bigger files as well
+ - 1.7.68 > Add new Parameter "ColorizeIcons" to [MudExFileDisplay](https://www.mudex.org/file-display) if true the icons will be colored
+ - 1.7.68 > New small component [MudExIcon](https://www.mudex.org/mud-ex-icon) default as MudIcon with the benefit of having [MudExColor](https://www.mudex.org/d/MudExColor) as ColorType that allows Theme and Customcolors in one type
+ - 1.7.68 > [MudExFileDisplayZip](https://www.mudex.org/file-display) now nativly supports Tar, Tar+Gzip, 7zip and Rar archives
+ - 1.7.68 > Update MudBlazor to 6.10.0
+ - 1.7.68 > Add Dense Parameter to [MudExFileDisplay](https://www.mudex.org/file-display)
+ - 1.7.68 > Add multi tag search in [MudExFileDisplay](https://www.mudex.org/file-display)
+ - 1.7.68 > Bugfix handle streams in [MudExFileDisplay](https://www.mudex.org/handle-file-as-streams)
+ - 1.7.68 > NEW COMPONENT! [MudExStructuredDataEditor](https://www.mudex.org/structured-data-edit) is a Json editor a Xml editor and a Yaml editor in one component
+ - 1.7.67 > Add Rar file support for [MudExUploadEdit](https://www.mudex.org/upload-edit) and [MudExFileDisplay](https://www.mudex.org/file-display)
+ - 1.7.67 > Setting to allow or disallow duplicates in [MudExTagField](https://www.mudex.org/tag-field) with ErrorAnimation and ErrorText support
+ - 1.7.66 > Support [MudExColor](https://www.mudex.org/d/MudExColor/MudExColor) with Theme Color or drawing color or html color or css variables for [MudExTagField](https://www.mudex.org/tag-field) and [MudExSelect](https://www.mudex.org/mud-ex-select)
+ - 1.7.66 > Support Nested and Sticky groups for [MudExSelect](https://www.mudex.org/mud-ex-select)
+ - 1.7.66 > Support Grouping by Function in [MudExSelect](https://www.mudex.org/mud-ex-select)
+ - 1.7.66 > Support MultiSearch with more tags in [MudExToggleableSearch](https://www.mudex.org/c/MudExToggleableSearch)
+ - 1.7.66 > Allow MultiSearch with more tags in [MudExObjectEdit](https://www.mudex.org/mudex-object-edit-with-configuration)
+ - 1.7.66 > Create new [MudExTagField](https://www.mudex.org/tag-field)
+ - 1.7.65 > Create new [MudExGrid](https://www.mudex.org/mud-ex-grid)
+ - 1.7.65 > Ensure FileUpload works on ServerSide rendered projects as well
+ - 1.7.65 > Add possibility to disable auto load of styles if you prefer to add them manually
+ - 1.7.65 > Make MudExChipSelect Obsolete and create new [MudExSelect](https://www.mudex.org/mud-ex-select)
+ - 1.7.64 > Fix error on server side rendered projects
+ - 1.7.64 > Remove need for `jsRuntime.InitializeMudBlazorExtensionsAsync()`
+ - 1.7.63 > Use MudMarkdown as IMudExFileDisplay to support markdown files in [MudExFileDisplay](https://www.mudex.org/file-display)
+ - 1.7.63 > Add new option to allow copy url to clipboard in [MudExFileDisplay](https://www.mudex.org/file-display)
+ - 1.7.63 > Fix bug in [MudExThemeEdit](https://www.mudex.org/theme-edit) where component wasnt loaded if its rendered in a dialog.
+ - 1.7.62 > Update all nuget packages to latest versions. Now using MudBlazor 6.7.0
+ - 1.7.61 > **_Breaking:_** Rename: Move namespace for Css enums like CssUnit, BorderStyle etc from MudBlazor.Extensions.Core to MudBlazor.Extensions.Core.Css
+ - 1.7.61 > new Component [MudExIconPicker](https://www.mudex.org/mud-ex-icon-picker) to select icons. Used in [API]((https://www.mudex.org/api)) overview and in ComponentGrid as MudExObjectedit config.
+ - 1.7.60 > Better component support for MudExObjectEdit
+ - 1.7.59 > Add Parameters for Typo and preview size in ThemeSelect
+ - 1.7.56 > Support default border radius in [MudExThemeSelect](https://www.mudex.org/theme-edit) 
+ - 1.7.55 > new Component [MudExThemeEdit](https://www.mudex.org/theme-edit) to edit theme(s) and presets of themes as easy as possible and supports all options from your inherited MudThemes.
+ - 1.7.54 > new Component [MudExThemeSelect](https://www.mudex.org/theme-select) to simple select a theme with an automatically generated preview image.
+ - 1.7.53 > Extend [MudExSvg](https://www.mudex.org/d/MudExSvg/MudExSvg) utils with new Methods to generate an SVG application image for the current theme.
+ - 1.7.50 > new Component [MudExColor](https://www.mudex.org/c/MudExColorEdit) for all color parameters as default renderer in MudExObjectEdit
+ - 1.7.48 > BugFix
+ - 1.7.47 > Update Microsoft.AspNetCore.Components.Web to 7.0.5 for .net 7 and 6.0.16 for .net 6
+ - 1.7.47 > Update MudBlazor to 6.4.1 and adapt MudExPopover required changes.
+ - 1.7.47 > **_Breaking:_** New Color Type [MudExColor](https://www.mudex.org/d/MudExColor) that can used with MudColor, MudBlazor.Color enum, string or it directly used for all color parameters.
+            Because of this change the static util class MudExColor is now MudExColorUtils and we have **_Breaking:_** changes for theese components. MudExDivider, MudExSlideBar, MudExTaskBar, MudExCardList, MudExGradientText, MudExObjectEdit, MudExCollectionEdit
+ - 1.7.47 > **_Breaking:_** Rename: Static util class MudExColor is now MudExColorUtils
+ - 1.7.46 > Ensure Min or Max sizes arn't overwritten when using Resizable
+ - 1.7.46 > More fluent overloads for [MudExStyleBuilder](https://www.mudex.org/d/MudExStyleBuilder/MudExStyleBuilder)
+ - 1.7.42 > Add Dialog Appearance 
+ - 1.7.41 > Add Documentation for some static utils
+ - 1.7.41 > Continue work on Taskbar and No Modal feature (still in progress)
+ - 1.7.41 > Support Inline Dialogs with new Component MudExDialog
+ - 1.7.41 > Bugfix on size when dialog resize is enabled
+ - 1.7.40 > Event bugfix
+ - 1.7.37 > MudExAppLoader web component to add loading animation for application
+ - 1.7.36 > MudExObjectEdit: Fix errors where in some cases a meta config expressions fails for the RenderWith extension
+ - 1.7.36 > New Possibility for ServerSideRendered Projects to use the IApplicationBuilder extension UseMudExtensions to bypass the need to register the JSRuntime 
+ - 1.7.36 > New Utils Methods for MudExCss  
+ - 1.7.36 > Setting DialogOptions as Default now also applys to dynamic dialogs for MudExCollectionEdit or MudExObjectEdit
+ - 1.7.36 > New Component [MudExGradientText](https://www.mudex.org/gradient-text)
+ - 1.7.36 > New Component [MudExCardList](https://www.mudex.org/card)
+ - 1.7.36 > New Component [MudExPopover](https://www.mudex.org/popover)
+ - 1.7.36 > Fix small DialogOptions bugs
+ - 1.7.35 > New Animations for dialogs Perspective3d and LightSpeed
+ - 1.7.34 > New Components [MudExSplitPanel](/c/MudExSplitPanel) [MudExSplitter](/c/MudExSplitter) [MudExDivider](/c/MudExDivider)
+ - 1.7.34 > **_Breaking:_** Rename: SvgIconHelper is now MudExSvg
+ - 1.7.34 > **_Breaking:_** Rename: CssHelper is now MudExCss
+ - 1.7.34 > **_Breaking:_** Rename: MudExColorHelper is now MudExColor
+ - 1.7.34 > **_Breaking:_** Move: Namespace MudBlazor.Extensions.Extensions is now MudBlazor.Extensions.Helper
+ - 1.7.33 > Fix bug if no header is active on dialogs
+ - 1.7.33 > Load Modules manually for MAUI Apps
+ - 1.7.31 > Update BlazorJS to v 2.0.0 and MudBlazor to 6.1.8.
+ - 1.7.30 > Fix broken layout in full-height dialogs with new css selector.
+ - 1.7.29 > Fix broken dialog header buttons positions based on MudBlazor css changes
+ - 1.7.28 > Update MudBlazor to 6.1.7 and implement missing members in IMudExDialogReference
+ - 1.7.27 > MudExObjectEdit and MudExCollectionEditor now supporting `Virtualize` on [MudExCollectionEditor](https://www.mudex.org/shared-config) its default enabled. But you need to specify height of control. On [MudExObjectEdit](https://www.mudex.org/virtualized-object-edit) is disabled and currently in Beta
+ - 1.7.27 > MudExObjectEdit and MudExCollectionEditor now supporting Height, MaxHeight and custom Style as Parameter
+ - 1.7.27 > MudExCollectionEditor now supporting Item search
+ - 1.7.27 > MudExCollectionEditor now supporting top or bottom toolbar position by setting the Parameter `ToolbarPosition`
+ - 1.7.26 > Improvements and extensibility for MudExFileDisplay
+ - 1.7.25 > DialogOptions can now set as Default for all dialogs where no explicit options are used
+ - 1.7.24 > Allow converting any IDialogReference to an `IMudExDialogReference<TComponent>` with Extension method AsMudExDialogReference. With this reference, the inner dialog component is type safe accessable
+ - 1.7.23 > New small dialogService extension method `ShowInformationAsync`
+ - 1.7.22 > New small dialogService extension method `PromptAsync`
+ - 1.7.21 > Correct initial color for colorpicker from MudExColorBubble
+ - 1.7.20 > .net6 and .net7 compatible. 
+ - 1.7.20 > New componments MudExColorPicker, MudExColorBubble, MudExUploadEdit
+ - 1.7.20 > Fixed Bug that localizer is not passed to MudExCollectionEdit 
+ - 1.7.10 > UPDATE TO .NET 7 and MudBlazor 6.1.2
+ - 1.6.76 > BugFix in MudExEnumSelect
+ - 1.6.74 > MudExEnumSelect select now supports nullable enums and flags
+ - 1.6.73 > Pass Class and ClassContent for MudExMessageDialog as Parameter
+ - 1.6.72 > Extension for DialogService to show any component in a dialog `dialogService.ShowComponentInDialogAsync<Component>(...)` [Sample](https://www.mudex.org/component-in-dialog)
+ - 1.6.70 > MudExObjectEdit has now events for before import and beforeexport, that allows you to change imported or exported date before executed
+ - 1.6.69 > BugFix wrong js was loaded
+ - 1.6.68 > New small DialogComponent `MudExMessageDialog` with custom actions and result and with small dialogServiceExtension `dialogService.ShowConfirmationDialogAsync`
+ - 1.6.68 > New parameter for MudExObjectEdit `ImportNeedsConfirmation` if this is true and `AllowImport` is true a file preview dialog appears on import and the user needs to confirm the import.
+ - 1.6.68 > Import and Export specifix properties only in MudExObjectEdit are now configurable with the MetaConfiguration
+ - 1.6.68 > Dialog DragMode without bound check. ScrollToTopPosition for MudExObjectEdit
+ - 1.6.67 > Add `MudExColorPicker` simple extended default MudColorPicker with one option `DelayValueChangeToPickerClose` (default true). If this is true ValueChanged is invoked after picker close
+ - 1.5.0 > Add `MudExObjectEdit` `MudExObjectEditForm` `MudExObjectEditDialog` and `MudExCollectionEditor`
+ - 1.4.6 > Registered Localizer is no longer a requirement
+ - 1.4.0 > Add New Component `MudExEnumSelect`
+ - 1.2.8 > Add New Component `MudExChipSelect`
+ - 1.2.6 > Add New Animationtypes for dialog or manual using
+ - 1.2.4 > Add Components `MudExFileDisplay` `MudExFileDisplayZip` and `MudExFileDisplayDialog`
+ - 1.2.2 > Animations can be combined
+ - 1.2.2 > Add animation fade
+ - 1.2.2 > Improved animations for dialogs
+ - 1.2.0 > Slide in animations for dialogs. 
+ - 1.1.2 > New option FullHeight for dialogs

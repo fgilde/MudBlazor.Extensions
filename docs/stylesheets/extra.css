@@ -1,0 +1,168 @@
+/* Custom CSS to match MudBlazor.Extensions sample page theme */
+
+:root {
+  /* Light mode colors matching ClientTheme.DefaultTheme */
+  --md-primary-fg-color:        #199b90;
+  --md-primary-fg-color--light: #19635d;
+  --md-primary-fg-color--dark:  #157570;
+  --md-primary-bg-color:        #ffffff;
+  --md-primary-bg-color--light: #f5f5f5;
+  
+  --md-accent-fg-color:         #199b90;
+  --md-accent-fg-color--transparent: rgba(25, 155, 144, 0.1);
+  
+  /* Success color */
+  --md-success-fg-color:        #19635d;
+  
+  /* Background and surfaces */
+  --md-default-bg-color:        #fafafa;
+  --md-code-bg-color:           #f5f5f5;
+  
+  /* Appbar/Header colors */
+  --md-header-bg-color:         #1f2226;
+  --md-header-fg-color:         #ffffff;
+}
+
+[data-md-color-scheme="slate"] {
+  /* Dark mode colors matching ClientTheme.DefaultTheme.PaletteDark */
+  --md-primary-fg-color:        #199b90;
+  --md-primary-fg-color--light: #19635d;
+  --md-primary-fg-color--dark:  #157570;
+  
+  --md-accent-fg-color:         #199b90;
+  
+  /* Dark theme backgrounds */
+  --md-default-bg-color:        #121518;
+  --md-default-fg-color:        rgba(255, 255, 255, 0.87);
+  
+  --md-code-bg-color:           #222529;
+  --md-code-fg-color:           rgba(255, 255, 255, 0.87);
+  
+  /* Appbar/Header in dark mode */
+  --md-header-bg-color:         #1f2226;
+  --md-header-fg-color:         #ffffff;
+  
+  /* Surface colors */
+  --md-typeset-table-color:     rgba(255, 255, 255, 0.05);
+  --md-admonition-bg-color:     #222529;
+}
+
+/* Header customization */
+.md-header {
+  background-color: var(--md-header-bg-color);
+  color: var(--md-header-fg-color);
+}
+
+.md-header__button {
+  color: var(--md-header-fg-color);
+}
+
+.md-header__title {
+  color: var(--md-header-fg-color);
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+}
+
+/* Navigation tabs */
+.md-tabs {
+  background-color: var(--md-header-bg-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Link colors */
+.md-typeset a {
+  color: var(--md-primary-fg-color);
+}
+
+.md-typeset a:hover {
+  color: var(--md-primary-fg-color--dark);
+}
+
+/* Code blocks with better styling */
+.md-typeset code {
+  background-color: var(--md-code-bg-color);
+  border-radius: 3px;
+  padding: 0.1em 0.4em;
+}
+
+/* Buttons and interactive elements */
+.md-button {
+  border-radius: 3px;
+}
+
+.md-button--primary {
+  background-color: var(--md-primary-fg-color);
+  border-color: var(--md-primary-fg-color);
+}
+
+.md-button--primary:hover {
+  background-color: var(--md-primary-fg-color--dark);
+  border-color: var(--md-primary-fg-color--dark);
+}
+
+/* Search box styling */
+.md-search__input {
+  border-radius: 3px;
+}
+
+.md-search__input::placeholder {
+  color: rgba(255, 255, 255, 0.54);
+}
+
+/* Admonitions with better contrast */
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 3px;
+}
+
+/* Logo sizing */
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 2rem;
+  width: auto;
+}
+
+/* Footer customization */
+.md-footer {
+  background-color: var(--md-header-bg-color);
+}
+
+.md-footer-meta {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Table of contents */
+.md-nav--primary .md-nav__title {
+  background-color: var(--md-primary-fg-color);
+}
+
+/* Sidebar navigation */
+.md-sidebar {
+  border-radius: 3px;
+}
+
+[data-md-color-scheme="slate"] .md-sidebar {
+  background-color: #1f2226;
+}
+
+/* Code highlighting improvements */
+.highlight .hll { background-color: rgba(25, 155, 144, 0.15); }
+.highlight .c { color: #75715e } /* Comment */
+.highlight .k { color: #199b90 } /* Keyword */
+.highlight .n { color: #f8f8f2 } /* Name */
+.highlight .o { color: #199b90 } /* Operator */
+.highlight .s { color: #19635d } /* String */
+
+/* Ensure proper contrast for dark mode code */
+[data-md-color-scheme="slate"] .highlight .n { 
+  color: #f8f8f2; 
+}
+
+/* Custom badges */
+.md-typeset .badge {
+  background-color: var(--md-primary-fg-color);
+  color: white;
+  padding: 0.2em 0.6em;
+  border-radius: 3px;
+  font-size: 0.85em;
+  font-weight: 500;
+}
