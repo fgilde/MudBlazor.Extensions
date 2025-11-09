@@ -12,13 +12,13 @@
         <meta name="author" content="fgilde">
       
       
-        <link rel="canonical" href="https://fgilde.github.io/MudBlazor.Extensions/components/app-loader/">
+        <link rel="canonical" href="https://fgilde.github.io/MudBlazor.Extensions/components/grid-layout/">
       
       
-        <link rel="prev" href="../tree-view/">
+        <link rel="prev" href="../pickers/">
       
       
-        <link rel="next" href="../pickers/">
+        <link rel="next" href="../display-media/">
       
       
       <link rel="icon" href="../../MudExtension.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>App Loader - MudBlazor.Extensions Documentation</title>
+        <title>Grid and Layout - MudBlazor.Extensions Documentation</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#mudexapploader" class="md-skip">
+        <a href="#grid-and-layout-components" class="md-skip">
           Skip to content
         </a>
       
@@ -121,7 +121,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              App Loader
+              Grid and Layout
             
           </span>
         </div>
@@ -805,32 +805,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    App Loader
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../app-loader/" class="md-nav__link">
         
   
   
@@ -841,53 +819,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#features" class="md-nav__link">
-    <span class="md-ellipsis">
-      Features
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#basic-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      Basic Usage
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#with-custom-message" class="md-nav__link">
-    <span class="md-ellipsis">
-      With Custom Message
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -920,10 +851,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../grid-layout/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Grid and Layout
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -934,6 +887,254 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mudexgrid" class="md-nav__link">
+    <span class="md-ellipsis">
+      MudExGrid
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MudExGrid">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drag-and-drop-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Drag and Drop Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mudexdocklayout" class="md-nav__link">
+    <span class="md-ellipsis">
+      MudExDockLayout
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MudExDockLayout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-usage_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mudexsplitpanel" class="md-nav__link">
+    <span class="md-ellipsis">
+      MudExSplitPanel
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MudExSplitPanel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-usage_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mudexsplitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      MudExSplitter
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MudExSplitter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-usage_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mudexdivider" class="md-nav__link">
+    <span class="md-ellipsis">
+      MudExDivider
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MudExDivider">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-usage_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      See Also
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1646,20 +1847,206 @@
   
 
 
-<h1 id="mudexapploader">MudExAppLoader<a class="headerlink" href="#mudexapploader" title="Permanent link">&para;</a></h1>
-<p>Application loading indicator with customizable appearance and behavior.</p>
-<h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
+<h1 id="grid-and-layout-components">Grid and Layout Components<a class="headerlink" href="#grid-and-layout-components" title="Permanent link">&para;</a></h1>
+<p>Advanced grid and layout components for creating flexible and responsive layouts.</p>
+<h2 id="mudexgrid">MudExGrid<a class="headerlink" href="#mudexgrid" title="Permanent link">&para;</a></h2>
+<p>Enhanced grid component with advanced features like drag-and-drop, sorting, and filtering.</p>
+<h3 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&lt;MudExGrid Items=&quot;@items&quot; /&gt;
+</span></code></pre></div>
+<h3 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h3>
 <ul>
-<li>✅ <strong>Customizable</strong> - Control appearance and behavior</li>
-<li>✅ <strong>Multiple Styles</strong> - Various loading indicator styles</li>
-<li>✅ <strong>Overlay Support</strong> - Full-screen or inline display</li>
+<li>Drag and drop row reordering</li>
+<li>Column sorting and filtering</li>
+<li>Inline editing</li>
+<li>Custom cell templates</li>
+<li>Pagination support</li>
+<li>Export to Excel/CSV</li>
+<li>Responsive design</li>
+<li>Grouping and aggregation</li>
 </ul>
-<h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&lt;MudExAppLoader /&gt;
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>@code {
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    private List&lt;Person&gt; items = new();
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>}
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>&lt;MudExGrid Items=&quot;@items&quot; 
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>           T=&quot;Person&quot;
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>           Sortable=&quot;true&quot;
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>           Filterable=&quot;true&quot;
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>           AllowDragDrop=&quot;true&quot;&gt;
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    &lt;Columns&gt;
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>        &lt;MudExGridColumn Property=&quot;p =&gt; p.Name&quot; Title=&quot;Name&quot; /&gt;
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>        &lt;MudExGridColumn Property=&quot;p =&gt; p.Email&quot; Title=&quot;Email&quot; /&gt;
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        &lt;MudExGridColumn Property=&quot;p =&gt; p.Age&quot; Title=&quot;Age&quot; /&gt;
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    &lt;/Columns&gt;
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>&lt;/MudExGrid&gt;
 </span></code></pre></div>
-<h2 id="with-custom-message">With Custom Message<a class="headerlink" href="#with-custom-message" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&lt;MudExAppLoader LoadingMessage=&quot;Loading application...&quot; /&gt;
+<h3 id="drag-and-drop-example">Drag and Drop Example<a class="headerlink" href="#drag-and-drop-example" title="Permanent link">&para;</a></h3>
+<p>Enable drag and drop for row reordering:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&lt;MudExGrid Items=&quot;@items&quot; 
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>           T=&quot;Person&quot;
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>           AllowDragDrop=&quot;true&quot;
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>           OnRowDropped=&quot;@OnRowDropped&quot;&gt;
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>&lt;/MudExGrid&gt;
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>@code {
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    private async Task OnRowDropped(MudExGridRowDroppedEventArgs&lt;Person&gt; args)
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    {
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>        // Handle row reordering
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>        items.Remove(args.Item);
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>        items.Insert(args.NewIndex, args.Item);
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    }
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>}
 </span></code></pre></div>
+<p><a href="https://www.mudex.org/mud-ex-grid-enhanced">View Live Demo</a></p>
+<h2 id="mudexdocklayout">MudExDockLayout<a class="headerlink" href="#mudexdocklayout" title="Permanent link">&para;</a></h2>
+<p>Flexible dock layout system for creating resizable, dockable panel layouts.</p>
+<h3 id="basic-usage_1">Basic Usage<a class="headerlink" href="#basic-usage_1" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&lt;MudExDockLayout&gt;
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    &lt;MudExDockItem Dock=&quot;DockPosition.Left&quot; Title=&quot;Sidebar&quot;&gt;
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>        &lt;!-- Sidebar content --&gt;
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    &lt;/MudExDockItem&gt;
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    &lt;MudExDockItem Dock=&quot;DockPosition.Fill&quot; Title=&quot;Main&quot;&gt;
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>        &lt;!-- Main content --&gt;
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    &lt;/MudExDockItem&gt;
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>&lt;/MudExDockLayout&gt;
+</span></code></pre></div>
+<h3 id="features_1">Features<a class="headerlink" href="#features_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Multiple dock positions (Left, Right, Top, Bottom, Fill)</li>
+<li>Resizable panels</li>
+<li>Collapsible panels</li>
+<li>Tabs for multiple panels in same position</li>
+<li>Drag and drop panel reorganization</li>
+<li>State persistence</li>
+<li>Responsive design</li>
+</ul>
+<h3 id="example_1">Example<a class="headerlink" href="#example_1" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&lt;MudExDockLayout Height=&quot;600px&quot; SaveState=&quot;true&quot;&gt;
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    &lt;MudExDockItem Dock=&quot;DockPosition.Left&quot; 
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>                   Title=&quot;Explorer&quot; 
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>                   Width=&quot;250px&quot;
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>                   Collapsible=&quot;true&quot;&gt;
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        &lt;MudList&gt;
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>            &lt;MudListItem Icon=&quot;@Icons.Material.Filled.Folder&quot;&gt;
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>                Documents
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>            &lt;/MudListItem&gt;
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>            &lt;MudListItem Icon=&quot;@Icons.Material.Filled.Folder&quot;&gt;
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>                Projects
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>            &lt;/MudListItem&gt;
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>        &lt;/MudList&gt;
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    &lt;/MudExDockItem&gt;
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>    &lt;MudExDockItem Dock=&quot;DockPosition.Bottom&quot; 
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>                   Title=&quot;Output&quot; 
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>                   Height=&quot;200px&quot;
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>                   Collapsible=&quot;true&quot;&gt;
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>        &lt;MudText&gt;Output console...&lt;/MudText&gt;
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>    &lt;/MudExDockItem&gt;
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>    &lt;MudExDockItem Dock=&quot;DockPosition.Fill&quot; Title=&quot;Editor&quot;&gt;
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>        &lt;!-- Main editor content --&gt;
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>    &lt;/MudExDockItem&gt;
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>&lt;/MudExDockLayout&gt;
+</span></code></pre></div>
+<p><a href="https://www.mudex.org/dock-layout">View Live Demo</a></p>
+<h2 id="mudexsplitpanel">MudExSplitPanel<a class="headerlink" href="#mudexsplitpanel" title="Permanent link">&para;</a></h2>
+<p>Split panel component for creating resizable divided areas.</p>
+<h3 id="basic-usage_2">Basic Usage<a class="headerlink" href="#basic-usage_2" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&lt;MudExSplitPanel&gt;
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    &lt;LeftPanel&gt;
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>        &lt;!-- Left content --&gt;
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    &lt;/LeftPanel&gt;
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    &lt;RightPanel&gt;
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        &lt;!-- Right content --&gt;
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    &lt;/RightPanel&gt;
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>&lt;/MudExSplitPanel&gt;
+</span></code></pre></div>
+<h3 id="features_2">Features<a class="headerlink" href="#features_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Horizontal or vertical split</li>
+<li>Resizable divider</li>
+<li>Minimum and maximum sizes</li>
+<li>Collapsible panels</li>
+<li>Multiple nested splits</li>
+<li>Responsive design</li>
+</ul>
+<h3 id="example_2">Example<a class="headerlink" href="#example_2" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&lt;MudExSplitPanel Orientation=&quot;SplitOrientation.Horizontal&quot; 
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>                 LeftSize=&quot;300px&quot;
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>                 MinLeftSize=&quot;200px&quot;
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>                 MaxLeftSize=&quot;500px&quot;&gt;
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    &lt;LeftPanel&gt;
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>        &lt;MudPaper Class=&quot;pa-4&quot; Elevation=&quot;0&quot;&gt;
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>            &lt;MudText Typo=&quot;Typo.h6&quot;&gt;Navigation&lt;/MudText&gt;
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>            &lt;!-- Navigation content --&gt;
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>        &lt;/MudPaper&gt;
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    &lt;/LeftPanel&gt;
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    &lt;RightPanel&gt;
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>        &lt;MudPaper Class=&quot;pa-4&quot; Elevation=&quot;0&quot;&gt;
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>            &lt;MudText Typo=&quot;Typo.h6&quot;&gt;Content&lt;/MudText&gt;
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>            &lt;!-- Main content --&gt;
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>        &lt;/MudPaper&gt;
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>    &lt;/RightPanel&gt;
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>&lt;/MudExSplitPanel&gt;
+</span></code></pre></div>
+<h2 id="mudexsplitter">MudExSplitter<a class="headerlink" href="#mudexsplitter" title="Permanent link">&para;</a></h2>
+<p>Splitter component for manually adjustable panel sizes.</p>
+<h3 id="basic-usage_3">Basic Usage<a class="headerlink" href="#basic-usage_3" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>&lt;MudExSplitter&gt;
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    &lt;MudExSplitPanelItem&gt;Panel 1&lt;/MudExSplitPanelItem&gt;
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    &lt;MudExSplitPanelItem&gt;Panel 2&lt;/MudExSplitPanelItem&gt;
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    &lt;MudExSplitPanelItem&gt;Panel 3&lt;/MudExSplitPanelItem&gt;
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>&lt;/MudExSplitter&gt;
+</span></code></pre></div>
+<h3 id="features_3">Features<a class="headerlink" href="#features_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Multiple panels support</li>
+<li>Adjustable dividers</li>
+<li>Horizontal or vertical orientation</li>
+<li>Proportional or fixed sizing</li>
+<li>Collapsible panels</li>
+</ul>
+<h2 id="mudexdivider">MudExDivider<a class="headerlink" href="#mudexdivider" title="Permanent link">&para;</a></h2>
+<p>Enhanced divider component with additional styling options.</p>
+<h3 id="basic-usage_4">Basic Usage<a class="headerlink" href="#basic-usage_4" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>&lt;MudExDivider /&gt;
+</span></code></pre></div>
+<h3 id="features_4">Features<a class="headerlink" href="#features_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Vertical or horizontal orientation</li>
+<li>Custom colors and thickness</li>
+<li>Text labels</li>
+<li>Icons</li>
+<li>Dashed or dotted styles</li>
+</ul>
+<h3 id="example_3">Example<a class="headerlink" href="#example_3" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>&lt;MudExDivider Label=&quot;Section 1&quot; /&gt;
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>&lt;MudExDivider Orientation=&quot;Orientation.Vertical&quot; 
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>              Color=&quot;Color.Primary&quot; 
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>              Thickness=&quot;2&quot; /&gt;
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>&lt;MudExDivider DividerType=&quot;DividerType.Dashed&quot; 
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>              Label=&quot;OR&quot; 
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>              Icon=&quot;@Icons.Material.Filled.MoreHoriz&quot; /&gt;
+</span></code></pre></div>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Use <code>MudExGrid</code> for tabular data with advanced features</li>
+<li>Use <code>MudExDockLayout</code> for complex application layouts</li>
+<li>Use <code>MudExSplitPanel</code> for simple two-panel layouts</li>
+<li>Set appropriate minimum sizes to prevent panels from becoming too small</li>
+<li>Save layout state for better user experience</li>
+<li>Test responsive behavior on different screen sizes</li>
+</ul>
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../other-components/">Other Components</a></li>
+<li><a href="../../utilities/css-builder/">CSS Builder</a></li>
+<li><a href="../../utilities/size-utils/">Size Utilities</a></li>
+</ul>
 
 
 
