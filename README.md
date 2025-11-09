@@ -389,6 +389,9 @@ MudBlazor.Extensions is released under the MIT License. See the bundled LICENSE 
 Latest Changes: 
 <!-- CHANGELOG:START -->
 <!-- Copied from CHANGELOG.md on 2025-10-14 19:02:28 -->
+ - 8.14.0 > Update to MudBlazor 8.14.0
+ - 8.14.0 > Add support for .net 10
+ - 8.14.0 > Add simple demo for MudExPicker combined with MudExTreeView [here](https://www.mudex.org/mud-ex-picker-tree-sample)
  - 8.13.0 > Move MudExComponentPropertyGrid to MudEx, to have the easy possibility to add and component grid
  - 8.13.0 > Drag and Drop in MudExGrid [here](https://www.mudex.org/mud-ex-grid-enhanced)
  - 8.13.0 > New GroupMode DockPanel for MudExObjectEdit sample [here](https://www.mudex.org/mudex-object-edit-dock)

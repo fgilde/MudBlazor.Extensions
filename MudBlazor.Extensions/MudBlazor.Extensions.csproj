@@ -18,6 +18,7 @@
     <PackageIcon>MudExtension.png</PackageIcon>
     <PackageIconUrl />
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>Blazor, MudBlazor Component, Extension, Animations, Form Generation, Blazor FileView, FileServices, Blazor Utils</PackageTags>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
