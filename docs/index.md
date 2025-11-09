@@ -1,6 +1,6 @@
 # MudBlazor.Extensions
 
-<div align="center">
+<div align="center" markdown>
 
 [![GitHub Repo stars](https://img.shields.io/github/stars/fgilde/mudblazor.extensions?color=594ae2&style=flat-square&logo=github)](https://github.com/fgilde/mudblazor.extensions/stargazers)
 [![GitHub](https://img.shields.io/github/license/garderoben/mudblazor?color=594ae2&style=flat-square&logo=github)](https://github.com/fgilde/MudBlazor.Extensions/blob/master/LICENSE)
@@ -121,6 +121,16 @@ Experience MudBlazor.Extensions in action:
 - **[Live Demo on Azure](https://mudex.azurewebsites.net/)** - Full-featured demo application
 - **[Live Demo on Cloudflare](https://mudblazor-extensions.pages.dev)** - Alternative demo hosting
 - **[Try Online](https://try.mudex.org/)** - Interactive playground
+
+## API Reference
+
+<div align="center" markdown>
+
+### 📚 [Complete API Reference](https://www.mudex.org/api?layout=empty)
+
+Browse the full API documentation with detailed information about all components, methods, and properties.
+
+</div>
 
 ## Popular Components
 

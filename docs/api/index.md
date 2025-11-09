@@ -2,6 +2,14 @@
 
 Complete API reference for MudBlazor.Extensions.
 
+<div align="center" markdown>
+
+## 🔗 [Full API Reference Documentation](https://www.mudex.org/api?layout=empty)
+
+Access the complete, interactive API reference with detailed documentation for all components, methods, properties, and classes.
+
+</div>
+
 ## Namespaces
 
 - `MudBlazor.Extensions` - Core extensions and utilities
