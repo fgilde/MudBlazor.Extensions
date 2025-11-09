@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
-  <Import Project="..\Shared.props"/>
+  <Import Project="..\Shared.props" />
 
   <PropertyGroup>
 
-    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <ImplicitUsings>enable</ImplicitUsings>
-    <LangVersion>12</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Authors>Florian Gilde</Authors>
     <Description>MudBlazor.Extensions is a small extension library for MudBlazor from https://mudblazor.com/ </Description>
     <PackageProjectUrl>https://www.mudex.org</PackageProjectUrl>
@@ -24,8 +24,8 @@
   <!--Versioning-->
   <PropertyGroup>
     <MajorVersion>8</MajorVersion>
-    <MinorVersion>13</MinorVersion>
-    <PatchVersion>2</PatchVersion>
+    <MinorVersion>14</MinorVersion>
+    <PatchVersion>0</PatchVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -68,22 +68,22 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="ExcelDataReader" Version="3.7.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.8" />
-    <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.10" />
+    <PackageReference Include="ExcelDataReader" Version="3.8.0" />
+    <PackageReference Include="ExcelDataReader.DataSet" Version="3.8.0" />
     <PackageReference Include="AuralizeBlazor" Version="2.0.8" />
     <PackageReference Include="MudBlazor.Markdown" Version="8.11.0" />
-    <PackageReference Include="Nextended.Blazor" Version="9.0.25" />
-    <PackageReference Include="Nextended.Core" Version="9.0.26" />
+    <PackageReference Include="Nextended.Blazor" Version="9.0.27" />
+    <PackageReference Include="Nextended.Core" Version="9.0.27" />
     <PackageReference Include="BlazorJS" Version="2.2.0" />
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />    
-    <PackageReference Include="MudBlazor" Version="8.13.0" />
+    <PackageReference Include="MudBlazor" Version="8.14.0" />
     <PackageReference Include="BlazorParameterCastingMagic" Version="1.2.25102110" />
-    <PackageReference Include="SharpCompress" Version="0.40.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
-    <PackageReference Include="MetadataExtractor" Version="2.8.1" />
+    <PackageReference Include="SharpCompress" Version="0.41.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+    <PackageReference Include="MetadataExtractor" Version="2.9.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -131,18 +131,7 @@
 
     <Message Importance="High" Text="Writing version props to $(_OutProps) (MudEx=$(PackageVersion), Major=$(MajorVersion), Minor=$(MinorVersion), MudBlazor=$(_MudBlazorVersion))" />
 
-    <WriteLinesToFile
-      File="$(_OutProps)"
-      Overwrite="true"
-      Lines="
-&lt;Project&gt;
-  &lt;PropertyGroup&gt;
-    &lt;MudEx_PackageVersion&gt;$(PackageVersion)&lt;/MudEx_PackageVersion&gt;
-    &lt;MudEx_MajorVersion&gt;$(MajorVersion)&lt;/MudEx_MajorVersion&gt;
-    &lt;MudEx_MinorVersion&gt;$(MinorVersion)&lt;/MudEx_MinorVersion&gt;
-    &lt;MudBlazor_Version&gt;$(_MudBlazorVersion)&lt;/MudBlazor_Version&gt;
-  &lt;/PropertyGroup&gt;
-&lt;/Project&gt;" />
+    <WriteLinesToFile File="$(_OutProps)" Overwrite="true" Lines="&#xD;&#xA;&lt;Project&gt;&#xD;&#xA;  &lt;PropertyGroup&gt;&#xD;&#xA;    &lt;MudEx_PackageVersion&gt;$(PackageVersion)&lt;/MudEx_PackageVersion&gt;&#xD;&#xA;    &lt;MudEx_MajorVersion&gt;$(MajorVersion)&lt;/MudEx_MajorVersion&gt;&#xD;&#xA;    &lt;MudEx_MinorVersion&gt;$(MinorVersion)&lt;/MudEx_MinorVersion&gt;&#xD;&#xA;    &lt;MudBlazor_Version&gt;$(_MudBlazorVersion)&lt;/MudBlazor_Version&gt;&#xD;&#xA;  &lt;/PropertyGroup&gt;&#xD;&#xA;&lt;/Project&gt;" />
   </Target>
   
 </Project>
