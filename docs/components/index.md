@@ -90,7 +90,7 @@ MudBlazor.Extensions provides a comprehensive set of components that extend and 
 
 <div class="grid cards" markdown>
 
--   **[MudExImageViewer](display-media.md#mudexImageviewer)**
+-   **[MudExImageViewer](display-media.md#mudeximageviewer)**
     
     Advanced image viewer with zoom, pan, and rotation.
 
