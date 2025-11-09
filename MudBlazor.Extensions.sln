@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.1.32414.318
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11201.2 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudBlazor.Extensions", "MudBlazor.Extensions\MudBlazor.Extensions.csproj", "{B40775AB-3519-4304-9528-29DD94DC34AB}"
 EndProject
@@ -43,6 +43,26 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Try.UserComponents", "TryMudEx\UserComponents\Try.UserComponents.csproj", "{37975869-21AC-4037-8020-30B18AA79B97}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudBlazor.Examples.Data", "TryMudEx\MudBlazor.Examples.Data\MudBlazor.Examples.Data.csproj", "{C1EE9657-6774-43A2-8B17-5D8D531FF406}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{E579C44E-6C7E-498B-AB95-8CEF25190111}"
+	ProjectSection(SolutionItems) = preProject
+		.github\FUNDING.yml = .github\FUNDING.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{C973627D-1D00-40BC-B54A-C83C5458DA18}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\docs.yml = .github\workflows\docs.yml
+		.github\workflows\nuget_preview_publish_and_app_deploy.yml = .github\workflows\nuget_preview_publish_and_app_deploy.yml
+		.github\workflows\nuget_release_publish.yml = .github\workflows\nuget_release_publish.yml
+		.github\workflows\TryMudEx.yml = .github\workflows\TryMudEx.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "issue_template", "issue_template", "{925AD780-0666-453F-88D6-C0E2DDA8FD94}"
+	ProjectSection(SolutionItems) = preProject
+		.github\ISSUE_TEMPLATE\bug_report.yml = .github\ISSUE_TEMPLATE\bug_report.yml
+		.github\ISSUE_TEMPLATE\config.yml = .github\ISSUE_TEMPLATE\config.yml
+		.github\ISSUE_TEMPLATE\feature_request.yml = .github\ISSUE_TEMPLATE\feature_request.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -112,6 +132,9 @@ Global
 		{9E893097-9AC8-4D1B-9718-C5E95B78A7DF} = {4A15B7F0-B489-4B0C-99F4-DC2729FFF194}
 		{37975869-21AC-4037-8020-30B18AA79B97} = {4A15B7F0-B489-4B0C-99F4-DC2729FFF194}
 		{C1EE9657-6774-43A2-8B17-5D8D531FF406} = {4A15B7F0-B489-4B0C-99F4-DC2729FFF194}
+		{E579C44E-6C7E-498B-AB95-8CEF25190111} = {D346CB7E-2FA9-4D05-B01C-BDA3D5353982}
+		{C973627D-1D00-40BC-B54A-C83C5458DA18} = {E579C44E-6C7E-498B-AB95-8CEF25190111}
+		{925AD780-0666-453F-88D6-C0E2DDA8FD94} = {E579C44E-6C7E-498B-AB95-8CEF25190111}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B052338-F6B3-4AE7-BDB8-2674AA90DBD6}
