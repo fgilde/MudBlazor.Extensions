@@ -46,6 +46,90 @@ MudBlazor.Extensions provides a comprehensive set of components that extend and 
 
 </div>
 
+### Picker Components
+
+<div class="grid cards" markdown>
+
+-   **[MudExColorPicker](pickers.md#mudexcolorpicker)**
+    
+    Enhanced color picker with various formats and presets.
+
+-   **[MudExIconPicker](pickers.md#mudexiconpicker)**
+    
+    Icon selection from MudBlazor icons library with search.
+
+-   **[MudExFontSelect](pickers.md#mudexfontselect)**
+    
+    Font selection with preview and Google Fonts integration.
+
+-   **[MudExEnumSelect](pickers.md#mudexenumselect)**
+    
+    Automatic enum selection with display name support.
+
+</div>
+
+### Layout Components
+
+<div class="grid cards" markdown>
+
+-   **[MudExGrid](grid-layout.md#mudexgrid)**
+    
+    Advanced grid with drag-drop, sorting, and filtering.
+
+-   **[MudExDockLayout](grid-layout.md#mudexdocklayout)**
+    
+    Flexible dock layout with resizable, dockable panels.
+
+-   **[MudExSplitPanel](grid-layout.md#mudexsplitpanel)**
+    
+    Split panel for creating resizable divided areas.
+
+</div>
+
+### Display and Media Components
+
+<div class="grid cards" markdown>
+
+-   **[MudExImageViewer](display-media.md#mudexImageviewer)**
+    
+    Advanced image viewer with zoom, pan, and rotation.
+
+-   **[MudExCodeView](display-media.md#mudexcodeview)**
+    
+    Code display with syntax highlighting.
+
+-   **[MudExMarkdown](display-media.md#mudexmarkdown)**
+    
+    Render GitHub-flavored markdown content.
+
+-   **[MudExGravatarCard](display-media.md#mudexgravatarcard)**
+    
+    User card with Gravatar integration.
+
+</div>
+
+### Form and Input Components
+
+<div class="grid cards" markdown>
+
+-   **[MudExTextField](form-inputs.md#mudextextfield)**
+    
+    Enhanced text field with advanced validation.
+
+-   **[MudExSelect](form-inputs.md#mudexselect)**
+    
+    Enhanced select with search and grouping.
+
+-   **[MudExChipSelect](form-inputs.md#mudexchipselect)**
+    
+    Chip-based multiple selection component.
+
+-   **[MudExColorEdit](form-inputs.md#mudexcoloredit)**
+    
+    Color editing with visual picker integration.
+
+</div>
+
 ### Utility Components
 
 <div class="grid cards" markdown>
@@ -58,31 +142,41 @@ MudBlazor.Extensions provides a comprehensive set of components that extend and 
     
     SVG component for rendering and manipulating SVG graphics.
 
+-   **[Other Components](other-components.md)**
+    
+    Additional utility components like lists, cards, and more.
+
 </div>
 
 ## All Components List
 
-| Component | Description | Category |
-|-----------|-------------|----------|
-| `MudExObjectEdit` | Auto-generate forms from objects | Data Editing |
-| `MudExObjectEditForm` | Form wrapper for object editing | Data Editing |
-| `MudExObjectEditDialog` | Dialog for object editing | Data Editing |
-| `MudExStructuredDataEditor` | Edit JSON/XML/YAML data | Data Editing |
-| `MudExFileDisplay` | Display file contents | File Management |
-| `MudExFileDisplayZip` | Display ZIP archive contents | File Management |
-| `MudExFileDisplayDialog` | Dialog for file display | File Management |
-| `MudExUploadEdit` | Advanced file upload | File Management |
-| `MudExTreeView` | Enhanced tree view | Navigation |
-| `MudExTreeViewBreadcrumb` | Tree view breadcrumbs | Navigation |
-| `MudExAppLoader` | Application loader | Utility |
-| `MudExSvg` | SVG graphics component | Utility |
-| `MudExDialog` | Enhanced dialog | Utility |
-| `MudExTextField` | Enhanced text field | Forms |
-| `MudExCultureSelect` | Culture selection | Forms |
-| `MudExAudioPlayer` | Audio player | Media |
-| `MudExSplitPanel` | Split panel layout | Layout |
-| `MudExSplitter` | Content splitter | Layout |
-| `MudExHtmlEdit` | HTML editor | Editing |
+| Component | Description | Documentation |
+|-----------|-------------|---------------|
+| `MudExObjectEdit` | Auto-generate forms from objects | [Object Edit](object-edit.md) |
+| `MudExStructuredDataEditor` | Edit JSON/XML/YAML data | [Structured Data](structured-data-editor.md) |
+| `MudExFileDisplay` | Display file contents | [File Display](file-display.md) |
+| `MudExUploadEdit` | Advanced file upload | [Upload Edit](upload-edit.md) |
+| `MudExTreeView` | Enhanced tree view | [Tree View](tree-view.md) |
+| `MudExColorPicker` | Color selection picker | [Pickers](pickers.md#mudexcolorpicker) |
+| `MudExIconPicker` | Icon selection picker | [Pickers](pickers.md#mudexiconpicker) |
+| `MudExFontSelect` | Font selection | [Pickers](pickers.md#mudexfontselect) |
+| `MudExEnumSelect` | Enum selection | [Pickers](pickers.md#mudexenumselect) |
+| `MudExGrid` | Advanced data grid | [Grid & Layout](grid-layout.md#mudexgrid) |
+| `MudExDockLayout` | Dockable layout system | [Grid & Layout](grid-layout.md#mudexdocklayout) |
+| `MudExSplitPanel` | Split panel layout | [Grid & Layout](grid-layout.md#mudexsplitpanel) |
+| `MudExImageViewer` | Image viewer with zoom | [Display & Media](display-media.md#mudeximageviewer) |
+| `MudExCodeView` | Code syntax highlighting | [Display & Media](display-media.md#mudexcodeview) |
+| `MudExMarkdown` | Markdown renderer | [Display & Media](display-media.md#mudexmarkdown) |
+| `MudExGravatarCard` | User card with Gravatar | [Display & Media](display-media.md#mudexgravatarcard) |
+| `MudExTextField` | Enhanced text field | [Form Inputs](form-inputs.md#mudextextfield) |
+| `MudExSelect` | Enhanced select | [Form Inputs](form-inputs.md#mudexselect) |
+| `MudExChipSelect` | Chip-based selection | [Form Inputs](form-inputs.md#mudexchipselect) |
+| `MudExHtmlEdit` | HTML editor | [Form Inputs](form-inputs.md#mudexhtmledit) |
+| `MudExList` | Enhanced list | [Other](other-components.md#mudexlist) |
+| `MudExCardList` | Card-based list | [Other](other-components.md#mudexcardlist) |
+| `MudExPopover` | Popover component | [Other](other-components.md#mudexpopover) |
+| `MudExAppLoader` | Application loader | [App Loader](app-loader.md) |
+| `MudExSvg` | SVG graphics | [SVG](svg.md) |
 
 ## Quick Start
 

@@ -115,6 +115,10 @@ nav:
     - Upload Edit: components/upload-edit.md
     - Tree View: components/tree-view.md
     - App Loader: components/app-loader.md
+    - Picker Components: components/pickers.md
+    - Grid and Layout: components/grid-layout.md
+    - Display and Media: components/display-media.md
+    - Form Inputs: components/form-inputs.md
     - SVG Components: components/svg.md
     - Other Components: components/other-components.md
   - Extensions:
@@ -127,6 +131,7 @@ nav:
     - CSS Builder: utilities/css-builder.md
     - Style Builder: utilities/style-builder.md
     - Size Utilities: utilities/size-utils.md
+    - Helper Utilities: utilities/helpers.md
   - Services:
     - services/index.md
     - Speech Recognition: services/speech-recognition.md
