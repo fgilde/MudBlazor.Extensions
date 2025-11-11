@@ -6,178 +6,23 @@
 @using MudBlazor.Extensions.Options
 @using MudBlazor.Extensions.Services
 @using Nextended.Core
+@using Nextended.Core.Contracts
 @using Nextended.Core.Types
 @using Environment = System.Environment
 @inject IMudExFileService FileService
 
-@* <MudButton OnClick="@Download">Download non translated</MudButton> *@
-
-<MudExGravatarCard Email="fgilde@gmail.com" />
-
-<!-- Custom-Karte mit allen Features -->
-<MudExGravatarCard Email="fgilde@gmail.com"
-                   Mode="GravatarCardMode.Custom"
-                   ShowHeaderImage="true"
-                   Elevation="4" />
-
-<!-- Custom-Karte nur mit bestimmten Informationen -->
-<MudExGravatarCard Email="fgilde@gmail.com"
-                   Mode="GravatarCardMode.Custom"
-                   ShowVerifiedAccounts="true"
-                   ShowInterests="false"
-                   ShowLinks="false" />
 
 
-
-
-<DemoComponent PageType="@GetType()">
-    
-    <MudExEnumSelect Label="EnumSelect" TEnum="MudDialogDragMode" @bind-Value="_dragMode"  Variant="Variant.Outlined"></MudExEnumSelect>
-
-    <MudGrid Style="width: 100%" Justify="Justify.Center">
-        <MudItem xs="12">
-            <MudAlert>
-                <p> This demo uses the IDialogEventService to check resize or dragged and stores the latest position and size as relative values and restore them on next open </p></MudAlert>
-
-            <MudExSelect T="string">
-                <MudExSelectItem T="string">test</MudExSelectItem>
-                <MudExSelectItem T="string">test 2</MudExSelectItem>
-            </MudExSelect>
-
-
-        </MudItem>
-
-
-        <MudItem xs="3" Class="mb-4">
-            <MudButton Class="m-4" OnClick="@ShowSampleDialog" Variant="Variant.Filled" Color="Color.Primary">Show Sample Dialog</MudButton>
-        </MudItem>
-    </MudGrid>
-
-    <MudExSelect Label="Moin moin" T="string" ItemCollection="@(new List<string>() { "Test 1", "Test 2" })" Variant="Variant.Outlined"></MudExSelect>
-
-    <MudTextField T="string" Variant="Variant.Outlined"></MudTextField>
-    <MudExTextField T="string" Variant="Variant.Outlined"></MudExTextField>
-
-    <MudSelect Variant="Variant.Outlined"
-               T="string"
-               Label="Original">
-        <MudSelectItem Value="@("Item1")">@("Item1")"</MudSelectItem>
-        <MudSelectItem Value="@("Item2")">@("Item2")"</MudSelectItem>
-        <MudSelectItem Value="@("Item3")">@("Item3")"</MudSelectItem>
-
-    </MudSelect>
-
-    @((MarkupString)_svg)
-</DemoComponent>
-
-<MudExSelect ItemCollection="_players" @bind-Value="_selected" ValuePresenter="ValuePresenter.ItemContent" 
-Placeholder="Template & ItemContent"Label="Select Player" 
-Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
-    <ItemTemplate>
-        <MudStack Class="mud-width-full" Justify="Justify.SpaceBetween">
-            <MudText><b>@context.Name</b></MudText>
-            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
-                <MudStack Row="true">
-                    <MudIcon Icon="@Icons.Material.Outlined.Person" />
-                    <MudText>@(context.Retired == true ? "Retired" : "Active")</MudText>
-                </MudStack>
-                <MudChip T="string" Color="Color.Info" Variant="Variant.Outlined">Total Score: @context.Score</MudChip>
-            </MudStack>
-        </MudStack>
-    </ItemTemplate>
-</MudExSelect>
-
-
-<MudStack>
-    <MudExGradientText Typo="Typo.h6">Edit object in Dialog</MudExGradientText>
-    <MudButton OnClick="@ShowGoodDialog" Variant="Variant.Filled" Color="Color.Primary">Test show currectly size modal</MudButton>
-    <MudButton OnClick="@ShowBadDialog" Variant="Variant.Filled" Color="Color.Primary">Test show incorrect non-modal</MudButton>
-</MudStack>
+<MudExRangeSlider T="int"
+                  Min="0" Max="100" Step="5"
+                  Immediate="true" Color="Color.Primary"
+                  @bind-Value="_ageRange" />
 
 
 @code {
-    List<Player> _players = null;
-    Player _selected = null;
-    MudDialogDragMode _dragMode = MudDialogDragMode.Simple;
-    [Inject]
-    MudExStyleBuilder _styleBuilder { get; set; }
-    private string _svg = string.Empty;
-    protected override async Task OnInitializedAsync()
-    {
-        _players = await LoadData();
-        _selected = _players.FirstOrDefault();
-    }
-
-    private async Task ShowGoodDialog()
-    {
-        DialogOptionsEx dlgOptions = new()
-        {
-            Resizeable = true,
-            Modal = true,
-            CustomSize = new("60%x60%")
-        };
-
-        await DialogService.ShowExAsync<SampleDialog>("title", dlgOptions);
-    }
-
-    private async Task ShowBadDialog()
-    {
-        DialogOptionsEx dlgOptions = new()
-        {
-            Resizeable = true,
-            Modal = false,
-            CustomSize = new("60%x60%")
-        };
-
-        await DialogService.ShowExAsync<SampleDialog>("title", dlgOptions);
-    }
-
-    private Task ShowSampleDialog()
-    {
-        DialogOptionsEx dlgOptions = new()
-            {
-                MaximizeButton = true,
-                CloseButton = true,
-                CloseOnEscapeKey = true,
-                MaxWidth = MaxWidth.Medium,
-                FullWidth = true,
-                Resizeable = true,
-                DragMode = _dragMode,
-                DisableSizeMarginY = true,
-                DisablePositionMargin = true
-            };
-        return DialogService.ShowExAsync<SampleTabDialog>("Simple Dialog", dlgOptions);
-    }
-
-    private async Task<List<Player>> LoadData() {
-        await Task.Delay(1000);
-        return new List<Player>
-        {
-            new Player("Kareem Abdul-Jabbar", "38.387", true),
-            new Player("LeBron James", "37.062", false),
-            new Player("Karl Malone", "36.928", true),
-            new Player("Kobe Bryant", "33.643", true),
-            new Player("Michael Jordan", "32.292", true),
-        };
-    }
-
-    private record Player {
-
-        public Player(string name, string score, bool retired) {
-            Name = name;
-            Score = score;
-            Retired = retired;
-        }
-
-        public string Name { get; set; }
-        public string Score { get; set; }
-        public bool Retired { get; set; }
-    }
-
-    private async Task Download(MouseEventArgs arg)
-    {
-        var yamlStr = string.Join(Environment.NewLine, YamlLocalizerExtensions.Keys.Keys.Select(k => $"{k}: {k}"));
-        await FileService.DownloadContentAsync(yamlStr, "application/x-yaml", "resources.yml");
-    }
-
+    private IRange<int> _ageRange = new RangeOf<int>(20, 60);
 }
+
+
+
+

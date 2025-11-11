@@ -1,0 +1,51 @@
+﻿@inherits MudExJsRequiredBaseComponent<MudExRangeSlider<T>>
+@typeparam T where T : struct, System.Numerics.INumber<T>
+
+
+<div @ref="ElementReference"
+     class="mud-ex-range-slider @Class"
+     style="@Style"
+     role="group"
+     aria-roledescription="range"
+     aria-disabled="@Disabled">
+
+
+    <div class="mud-ex-range-slider-track @ColorClass" @onclick="OnTrackClick" @ref="_trackRef">
+        <div class="mud-ex-range-slider-selection" style="left:@_leftPx; width:@_widthPx"></div>
+        <button class="mud-ex-range-slider-thumb start"
+                id="@_startId"
+                type="button"
+                @onpointerdown="e => OnPointerDownAsync(e, Thumb.Start)"
+                @onkeydown="e => OnKeyDownAsync(e, Thumb.Start)"
+                style="left:@_startPx"
+                role="slider"
+                aria-valuemin="@MinString"
+                aria-valuemax="@MaxString"
+                aria-valuenow="@StartString"
+                aria-labelledby="@AriaLabelledBy"
+                disabled="@Disabled" />
+
+
+        <button class="mud-ex-range-slider-thumb end"
+                id="@_endId"
+                type="button"
+                @onpointerdown="e => OnPointerDownAsync(e, Thumb.End)"
+                @onkeydown="e => OnKeyDownAsync(e, Thumb.End)"
+                style="left:@_endPx"
+                role="slider"
+                aria-valuemin="@MinString"
+                aria-valuemax="@MaxString"
+                aria-valuenow="@EndString"
+                aria-labelledby="@AriaLabelledBy"
+                disabled="@Disabled" />
+    </div>
+
+
+    @if (ShowInputs)
+    {
+        <div class="mud-ex-range-slider-inputs">
+            <MudNumericField T="T" Value="@Value.Start" ValueChanged="v => SetStartAsync(v, true)" Min="@Min" Max="@Max" Step="@Step" Disabled="@Disabled" />
+            <MudNumericField T="T" Value="@Value.End" ValueChanged="v => SetEndAsync(v, true)" Min="@Min" Max="@Max" Step="@Step" Disabled="@Disabled" />
+        </div>
+    }
+</div>

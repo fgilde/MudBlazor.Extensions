@@ -1,0 +1,51 @@
+﻿.mud-ex-range-slider {
+    position: relative;
+    width: 100%;
+    touch-action: none;
+    user-select: none;
+
+
+    .mud-ex-range-slider-track {
+        position: relative;
+        height: 4px;
+        border-radius: 2px;
+        background: var(--mud-palette-lines-default);
+    }
+
+
+    .mud-ex-range-slider-selection {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        background: var(--mud-palette-primary);
+        border-radius: 2px;
+        pointer-events: none;
+    }
+
+
+    .mud-ex-range-slider-thumb {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2px solid var(--mud-palette-surface);
+        background: var(--mud-palette-background);
+        box-shadow: 0 0 0 2px var(--mud-palette-primary);
+        cursor: pointer;
+    }
+
+
+    &.mud-ex-range-slider-primary .mud-ex-range-slider-selection {
+        background: var(--mud-palette-primary);
+    }
+
+    &.mud-ex-range-slider-secondary .mud-ex-range-slider-selection {
+        background: var(--mud-palette-secondary);
+    }
+
+    &.mud-ex-range-slider-tertiary .mud-ex-range-slider-selection {
+        background: var(--mud-palette-tertiary);
+    }
+}
