@@ -2,6 +2,7 @@
 @inherits MudExJsRequiredBaseComponent<MudExRangeSlider<T>>
 @typeparam T
 
+
 <div @ref="ElementReference"
      class="mud-ex-range-slider @Class"
      style="@Style"
@@ -23,8 +24,8 @@
                 @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.Start)"
                 @onkeydown="e => OnKeyDownAsync(e, Thumb.Start)"
                 role="slider"
-                aria-valuemin="@MinString"
-                aria-valuemax="@MaxString"
+                aria-valuemin="@SizeRangeStringStart"
+                aria-valuemax="@SizeRangeStringEnd"
                 aria-valuenow="@StartString"
                 aria-labelledby="@AriaLabelledBy"
                 disabled="@Disabled" />
@@ -35,8 +36,8 @@
                 @onpointerdown="e => OnThumbPointerDownAsync(e, Thumb.End)"
                 @onkeydown="e => OnKeyDownAsync(e, Thumb.End)"
                 role="slider"
-                aria-valuemin="@MinString"
-                aria-valuemax="@MaxString"
+                aria-valuemin="@SizeRangeStringStart"
+                aria-valuemax="@SizeRangeStringEnd"
                 aria-valuenow="@EndString"
                 aria-labelledby="@AriaLabelledBy"
                 disabled="@Disabled" />

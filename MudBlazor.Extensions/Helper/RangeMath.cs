@@ -1,120 +1,78 @@
-﻿using System.Numerics;
-using Nextended.Core.Contracts;
+﻿using Nextended.Core.Contracts;
+using System.Globalization;
+using System.Numerics;
 
 namespace MudBlazor.Extensions.Helper;
 
-internal static class RangeMath
+
+internal static class ValueMath<T> where T : IComparable<T>
 {
-    // Convert arbitrary numeric T to double for layout math
-    public static double ToDouble<T>(T value) where T : INumber<T>
-        => double.CreateChecked(value);
+    static bool IsDateTime => typeof(T) == typeof(DateTime);
 
-
-    public static T FromDouble<T>(double value) where T : INumber<T>
-        => T.CreateChecked(value);
-
-
-    public static T Clamp<T>(T value, T min, T max) where T : INumber<T>
-        => T.Min(T.Max(value, min), max);
-
-
-    public static T RoundToStep<T>(T value, T step, T min) where T : INumber<T>
+    public static double ToDouble(T v)
     {
-        if (step == T.Zero) return value;
-        // Snap to steps from min
-        var dv = ToDouble(value) - ToDouble(min);
-        var ds = ToDouble(step);
-        var snapped = Math.Round(dv / ds) * ds + ToDouble(min);
-        return FromDouble<T>(snapped);
+        if (IsDateTime) return ((DateTime)(object)v).Ticks;
+        try { return Convert.ToDouble(v, CultureInfo.InvariantCulture); } catch { return 0d; }
     }
 
-
-    public static double Percent<T>(T value, T min, T max) where T : INumber<T>
+    public static T FromDouble(double d)
     {
-        var a = ToDouble(value);
-        var mi = ToDouble(min);
-        var ma = ToDouble(max);
-        if (ma <= mi) return 0;
-        return (a - mi) / (ma - mi);
+        if (IsDateTime) return (T)(object)new DateTime(Convert.ToInt64(d));
+        return (T)Convert.ChangeType(d, typeof(T), CultureInfo.InvariantCulture)!;
     }
 
+    public static double Delta(IRange<T> r) => ToDouble(r.End) - ToDouble(r.Start);
 
-    public static T Lerp<T>(T min, T max, double percent) where T : INumber<T>
+    public static T AddDelta(T v, double delta)
     {
-        percent = Math.Clamp(percent, 0, 1);
-        var mi = ToDouble(min);
-        var ma = ToDouble(max);
-        var val = mi + (ma - mi) * percent;
-        return FromDouble<T>(val);
-    }
-}
-
-
-
-
-
-
-public class Range<T>: MudExRange<T> where T : struct, IComparable<T>
-{
-    public Range(T start, T end) : base(start, end)
-    {
-    }
-}
-
-public class MudExRange<T> : IRange<T> where T : struct, IComparable<T>
-{
-    public T Start { get; private set; }
-    public T End { get; private set; }
-
-
-    public MudExRange(T start, T end)
-    {
-        if (start.CompareTo(end) <= 0)
+        if (IsDateTime)
         {
-            Start = start; End = end;
+            var dt = (DateTime)(object)v;
+            return (T)(object)new DateTime((long)(dt.Ticks + delta));
         }
-        else
-        {
-            Start = end; End = start;
-        }
+        return FromDouble(ToDouble(v) + delta);
     }
 
-
-    public bool Contains(T value) => value.CompareTo(Start) >= 0 && value.CompareTo(End) <= 0;
-    public bool IsInRange(T value) => Contains(value);
-
-
-    public bool Intersects(IRange<T> other)
-        => other.End.CompareTo(Start) >= 0 && other.Start.CompareTo(End) <= 0;
-
-
-    public IRange<T>? Intersection(IRange<T> other)
+    public static T Clamp(T v, IRange<T> bounds)
     {
-        if (!Intersects(other)) return null;
-        var s = Max(Start, other.Start);
-        var e = Min(End, other.End);
-        return new MudExRange<T>(s, e);
+        var d = ToDouble(v);
+        var mi = ToDouble(bounds.Start);
+        var ma = ToDouble(bounds.End);
+        if (d < mi) return bounds.Start;
+        if (d > ma) return bounds.End;
+        return v;
     }
 
-
-    public IRange<T> Union(IRange<T> other)
+    public static double Percent(T v, IRange<T> size)
     {
-        // Require adjacency or overlap
-        if (other.Start.CompareTo(End) > 0 && !Equals(End, other.Start))
-            throw new InvalidOperationException("Ranges are separate – cannot union.");
-        if (Start.CompareTo(other.End) > 0 && !Equals(Start, other.End))
-            throw new InvalidOperationException("Ranges are separate – cannot union.");
-
-
-        var s = Min(Start, other.Start);
-        var e = Max(End, other.End);
-        return new MudExRange<T>(s, e);
+        var a = ToDouble(v);
+        var mi = ToDouble(size.Start);
+        var ma = ToDouble(size.End);
+        var span = Math.Max(1e-12, ma - mi);
+        return (a - mi) / span;
     }
 
+    public static T Lerp(IRange<T> size, double pct)
+    {
+        pct = Math.Clamp(pct, 0, 1);
+        var mi = ToDouble(size.Start);
+        var ma = ToDouble(size.End);
+        return FromDouble(mi + (ma - mi) * pct);
+    }
 
-    private static T Min(T a, T b) => a.CompareTo(b) <= 0 ? a : b;
-    private static T Max(T a, T b) => a.CompareTo(b) >= 0 ? a : b;
+    public static T SnapToStep(T v, IRange<T> size, IRange<T> step)
+    {
+        var stepLen = Math.Abs(Delta(step));
+        if (stepLen <= 0) return v;
+        var dv = ToDouble(v) - ToDouble(size.Start);
+        var snapped = Math.Round(dv / stepLen) * stepLen + ToDouble(size.Start);
+        var res = FromDouble(snapped);
+        return Clamp(res, size);
+    }
 
-
-    public override string ToString() => $"[{Start}..{End}]";
+    public static T AddSteps(T v, IRange<T> step, int steps)
+    {
+        var stepLen = Delta(step);
+        return AddDelta(v, stepLen * steps);
+    }
 }

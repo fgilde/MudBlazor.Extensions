@@ -3,30 +3,24 @@
 
 @using MudBlazor.Extensions.Core
 @using MudBlazor.Extensions.Helper
-@using MudBlazor.Extensions.Options
-@using MudBlazor.Extensions.Services
-@using Nextended.Core
 @using Nextended.Core.Contracts
-@using Nextended.Core.Types
-@using Environment = System.Environment
 @inject IMudExFileService FileService
 
 <MudExRangeSlider T="DateTime"
-                  Min="@(new DateTime(2015,1,1))"
-                  Max="@(new DateTime(2022,12,31))"
-                  StepSpan="@TimeSpan.FromDays(30)"
-                  AllowWholeRangeDrag="true"
-                  @bind-Value="_period" />
-@* 
+                  SizeRange="@(new MudExRange<DateTime>(new(2015,1,1), new(2022,12,31)))"
+                  StepRange="@(new MudExRange<DateTime>(new(2021,1,1), new(2021,2,1)))" 
+                  @bind-Value="_period"
+                  AllowWholeRangeDrag="true" />
+
 <MudExRangeSlider T="int"
-                  Min="0" Max="100" Step="5"
-                  Immediate="true" Color="Color.Primary"
-                  @bind-Value="_ageRange" /> *@
+                  SizeRange="@(new MudExRange<int>(0, 100))"
+                  StepRange="@(new MudExRange<int>(0, 5))" 
+                  @bind-Value="_nums" />
 
 
 @code {
-    private IRange<int> _ageRange = new RangeOf<int>(20, 60);
-    private IRange<DateTime> _period = new RangeOf<DateTime>(new DateTime(2021, 1, 1), new DateTime(2021, 12, 31));
+    private IRange<int> _nums = new MudExRange<int>(20, 60);
+    private IRange<DateTime> _period = new MudExRange<DateTime>(new(2021,1,1), new(2021,12,31));
 }
 
 

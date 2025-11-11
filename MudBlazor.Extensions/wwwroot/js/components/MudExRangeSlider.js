@@ -1,4 +1,5 @@
-﻿class MudExRangeSlider {
+﻿
+class MudExRangeSlider {
     constructor(rootEl, trackEl, dotnetRef) {
         this.rootEl = rootEl;
         this.trackEl = trackEl;

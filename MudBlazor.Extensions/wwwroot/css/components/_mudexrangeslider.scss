@@ -1,5 +1,4 @@
-﻿
-.mud-ex-range-slider {
+﻿.mud-ex-range-slider {
     position: relative;
     width: 100%;
     touch-action: none;
@@ -45,17 +44,5 @@
         &.end {
             left: calc(var(--p-end) * 100%);
         }
-    }
-
-    &.mud-ex-range-slider-primary .mud-ex-range-slider-selection {
-        background: var(--mud-palette-primary);
-    }
-
-    &.mud-ex-range-slider-secondary .mud-ex-range-slider-selection {
-        background: var(--mud-palette-secondary);
-    }
-
-    &.mud-ex-range-slider-tertiary .mud-ex-range-slider-selection {
-        background: var(--mud-palette-tertiary);
     }
 }
