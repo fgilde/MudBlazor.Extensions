@@ -11,25 +11,22 @@
 @using Environment = System.Environment
 @inject IMudExFileService FileService
 
-@* <MudExRangeSlider T="DateTime"
-                  Min="@new DateTime(2015,1,1)"
-                  Max="@new DateTime(2022,12,31)"
+<MudExRangeSlider T="DateTime"
+                  Min="@(new DateTime(2015,1,1))"
+                  Max="@(new DateTime(2022,12,31))"
                   StepSpan="@TimeSpan.FromDays(30)"
                   AllowWholeRangeDrag="true"
-                  @bind-Value="_period" /> *@
-
-
-
+                  @bind-Value="_period" />
+@* 
 <MudExRangeSlider T="int"
                   Min="0" Max="100" Step="5"
                   Immediate="true" Color="Color.Primary"
-                  @bind-Value="_ageRange" />
+                  @bind-Value="_ageRange" /> *@
 
 
 @code {
     private IRange<int> _ageRange = new RangeOf<int>(20, 60);
-    private IRange<DateTime> _period =
-        new MudExRange<DateTime>(new DateTime(2021,1,1), new DateTime(2021,12,31));
+    private IRange<DateTime> _period = new RangeOf<DateTime>(new DateTime(2021, 1, 1), new DateTime(2021, 12, 31));
 }
 
 
